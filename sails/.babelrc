@@ -1,0 +1,4 @@
+{
+  "plugins": ["transform-runtime", "react-html-attrs"],
+  "presets": ["es2015", "react"]
+}
