@@ -1,0 +1,16 @@
+sails:
+  build: .
+  ports:
+    - "8002:80"
+#  links:
+#    - postgres
+  volumes:
+    - ./sails:/app
+  environment:
+    - NODE_ENV=production
+  command: sails lift --prod
+
+#postgres:
+#    image: postgres:latest
+#    ports:
+#      - "8002:5432"
