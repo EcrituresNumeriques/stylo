@@ -2,15 +2,24 @@ sails:
   build: .
   ports:
     - "8002:80"
-#  links:
-#    - postgres
-  volumes:
-    - ./sails:/app
+  links:
+    - mongodb
+    - redis
   environment:
     - NODE_ENV=production
   command: sails lift --prod
-
-#postgres:
-#    image: postgres:latest
-#    ports:
-#      - "8002:5432"
+mongodb:
+  image: mongo:latest
+  container_name: "mongodb"
+  environment:
+    - MONGO_DATA_DIR=/data/db
+    - MONGO_LOG_DIR=/dev/null
+  volumes:
+    - ./data/db:/data/db
+  ports:
+    - 27017:27017
+  command: mongod --smallfiles --logpath=/dev/null # --quiet
+redis:
+  image: redis
+  ports:
+    - "6380:6379"
