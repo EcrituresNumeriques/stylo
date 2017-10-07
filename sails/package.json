@@ -18,7 +18,7 @@
     "sails-disk": "~0.10.9"
   },
   "scripts": {
-    "start": "sails lift --prod"
+    "start": "sails lift"
   },
   "main": "app.js",
   "repository": {
