@@ -12,6 +12,7 @@ export default class App extends Component {
   render() {
 
     return (
+      <p>test</p>
       <div class="app">
         <Header />
         <div class="container">

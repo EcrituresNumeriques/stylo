@@ -1,95 +1,71 @@
-'use strict';
-
-const path = require('path');
+const { resolve } = require('path');
 const webpack = require('webpack');
-const NODE_ENV = process.env.NODE_ENV;
-const SaveAssetsJson = require('assets-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-module.exports = {
-  devtool: '#source-map',
-
-  // Capture timing information for each module
-  profile: false,
-
-  // Switch loaders to debug mode
-  debug: false,
-
-  // Report the first error as a hard error instead of tolerating it
-  bail: true,
+const config = {
+  devtool: 'cheap-module-source-map',
 
   entry: [
-    'babel-polyfill',
     './assets/main.jsx',
+    './assets/styles/app.scss',
   ],
 
+  context: resolve(__dirname),
+
   output: {
-    path: 'public/dist/',
-    pathInfo: true,
-    publicPath: '/dist/',
-    filename: 'bundle.[hash].min.js',
-  },
-
-  resolve: {
-    root: path.join(__dirname, ''),
-    modulesDirectories: [
-      'web_modules',
-      'node_modules',
-      'assets',
-      'assets/components',
-    ],
-    extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx'],
-  },
-
-  resolveLoader: {
-    root: path.join(__dirname, 'node_modules'),
+    filename: 'bundle.js',
+    path: resolve(__dirname, 'dist'),
+    publicPath: '',
   },
 
   plugins: [
-    new CleanWebpackPlugin(['public/dist'], {
-      verbose: true,
-      dry: false,
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new HtmlWebpackPlugin({
+      template: `${__dirname}/assets/index.html`,
+      filename: 'index.html',
+      inject: 'body',
     }),
-    new webpack.optimize.OccurenceOrderPlugin(true),
-    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
+    }),
     new webpack.optimize.UglifyJsPlugin({
-      output: {
-        comments: false,
-      },
-      compress: {
-        warnings: false,
-        screw_ie8: true,
-      },
+      beautify: false
     }),
-    new SaveAssetsJson({
-      path: process.cwd(),
-      filename: 'assets.json',
-    }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-      },
-    }),
+    new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }),
+    new ExtractTextPlugin({ filename: './styles/style.css', disable: false, allChunks: true }),
+    new CopyWebpackPlugin([{ from: './vendors', to: 'vendors' }]),
   ],
 
   module: {
     loaders: [
       {
-        test: /\.scss$/, // sass files
-        loader: 'style!css!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded',
-      },
-      {
-        test: /\.(ttf|eot|svg|woff)(\?[a-z0-9]+)?$/, // fonts files
-        loader: 'file-loader?name=[path][name].[ext]',
-      },
-      {
-        test: /\.jsx?$/, // react files
+        test: /\.js?$/,
         exclude: /node_modules/,
-        loaders: ['babel?presets[]=es2015,presets[]=stage-0,presets[]=react'],
-        include: path.join(__dirname, 'assets'),
+        loader: 'babel-loader',
       },
-    ],
-
-    noParse: /\.min\.js/,
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            'css-loader',
+            { loader: 'sass-loader', query: { sourceMap: false } },
+          ],
+          publicPath: '../'
+        }),
+      },
+      { test: /\.(png|jpg|gif)$/, use: 'url-loader?limit=15000&name=images/[name].[ext]' },
+      { test: /\.eot(\?v=\d+.\d+.\d+)?$/, use: 'file-loader?name=fonts/[name].[ext]' },
+      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, use: 'url-loader?limit=10000&mimetype=application/font-woff&name=fonts/[name].[ext]' },
+      { test: /\.[ot]tf(\?v=\d+.\d+.\d+)?$/, use: 'url-loader?limit=10000&mimetype=application/octet-stream&name=fonts/[name].[ext]' },
+      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, use: 'url-loader?limit=10000&mimetype=image/svg+xml&name=images/[name].[ext]' },
+    ]
   },
 };
+
+module.exports = config;
