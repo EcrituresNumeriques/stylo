@@ -12,7 +12,7 @@
 
 module.exports = {
 
-  port: 3000,
+  port: 8000,
 
   /***************************************************************************
    * Set the default database connection for models in the development       *

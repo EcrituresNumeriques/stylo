@@ -1,15 +1,11 @@
 module.exports = {
   index: function (req, res) {
-
-    var bundle;
-
-    if (sails.config.environment === 'production') {
-      bundle = require('../../assets.json').main.js;
-      console.log(bundle);
+    let prod = true;
+    if(prod){
+      return res.sendfile(sails.config.appPath + '/dist/index.html');
     }
-
-    return res.view('index', {
-      bundle: bundle,
-    });
+    else{
+      res.view('index');
+    }
   },
 };
