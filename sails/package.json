@@ -1,5 +1,5 @@
 {
-  "name": "sails-react-webpack",
+  "name": "sails-docker",
   "private": false,
   "version": "0.2.0",
   "description": "A Sails, React & Webpack boilerplate",
@@ -15,10 +15,13 @@
   ],
   "dependencies": {
     "sails": "~0.12.2",
-    "sails-disk": "~0.10.9"
+    "sails-disk": "~0.10.9",
+    "ejs": "2.3.4",
+    "connect-redis": "^3.3.0"
   },
   "scripts": {
-    "start": "sails lift"
+    "start": "sails lift",
+    "dist": "sails lift --prod"
   },
   "main": "app.js",
   "repository": {

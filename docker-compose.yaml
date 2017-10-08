@@ -7,7 +7,6 @@ sails:
     - redis
   environment:
     - NODE_ENV=production
-  command: sails lift --prod
 mongodb:
   image: mongo:latest
   container_name: "mongodb"
