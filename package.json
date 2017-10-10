@@ -1,0 +1,20 @@
+{
+  "name": "stylo platform",
+  "version": "0.1.0",
+  "description": "global script",
+  "engines": {
+    "npm": ">=3"
+  },
+  "scripts": {
+    "build":"docker-compose build",
+    "dist":"docker-compose up",
+    "dev":"",
+  },
+  "author": "Arthur Juchereau",
+  "license": "GPL",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
