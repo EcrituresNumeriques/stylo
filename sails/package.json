@@ -17,7 +17,8 @@
     "sails": "~0.12.2",
     "sails-disk": "~0.10.9",
     "ejs": "2.3.4",
-    "connect-redis": "^3.3.0"
+    "connect-redis": "^3.3.0",
+    "bcrypt": "^1.0.2"
   },
   "scripts": {
     "start": "sails lift",

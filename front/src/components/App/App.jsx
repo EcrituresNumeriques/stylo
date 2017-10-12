@@ -12,7 +12,7 @@ export default class App extends Component {
       [
         <p key="a">test numero6</p>,
         <p key="b">nops</p>,
-        <p key="c">test 3</p>
+        <p key="c">test 2</p>
       ]
     );
   }
