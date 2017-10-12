@@ -27,6 +27,7 @@ html, body {
   .gridCentered{
       background-color: white;
       grid-area:center;
+      box-shadow: 0 0 50px #c0c0c0;
       padding:1em;
       input{
         padding:0.5em 1em;
@@ -36,6 +37,11 @@ html, body {
       input[type=submit]{
         background-color: green;
         color:white;
+        cursor:pointer;
+      }
+      p.note{
+        text-align:right;
+        margin:0.5em 0 0 0;
       }
   }
 

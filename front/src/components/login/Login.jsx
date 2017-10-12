@@ -16,6 +16,7 @@ export default class Login extends Component {
           <input type="text" placeholder="email"/>
           <input type="password" placeholder="password"/>
           <input type="submit" value="go" />
+          <p className="note">or create an account</p>
         </form>
       </div>
     );
