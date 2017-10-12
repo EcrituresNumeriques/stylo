@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Router, { Link, RouteHandler } from 'react-router';
+import Login from 'components/login/Login'
 
 export default class App extends Component {
   constructor(props) {
@@ -7,13 +8,8 @@ export default class App extends Component {
   }
 
   render() {
-
-    return (
-      [
-        <p key="a">test numero6</p>,
-        <p key="b">nops</p>,
-        <p key="c">test 2</p>
-      ]
+    return(
+      <Login />
     );
   }
 }

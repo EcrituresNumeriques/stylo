@@ -24,11 +24,13 @@
     "test:watch": "npm run test -- --watch",
     "open:cover": "npm run test:cover && opn ./coverage/lcov-report/index.html",
     "analyze-bundle": "babel-node ./tools/analyzeBundle.js",
-    "postinstall":"npm run build"
+    "postinstall": "npm run build"
   },
   "author": "Arthur Juchereau",
   "license": "GPL",
   "dependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "object-assign": "4.1.0",
     "react": "16.0.0",
     "react-dom": "16.0.0",

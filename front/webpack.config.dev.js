@@ -4,7 +4,8 @@ import path from 'path';
 
 export default {
   resolve: {
-    extensions: ['*', '.js', '.jsx', '.json']
+    extensions: ['*', '.js', '.jsx', '.json'],
+    modules: [path.resolve('./src'),"node_modules"]
   },
   devtool: 'cheap-module-eval-source-map', // more info:https://webpack.js.org/guides/development/#using-source-maps and https://webpack.js.org/configuration/devtool/
   entry: [
