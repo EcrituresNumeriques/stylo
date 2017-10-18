@@ -7,6 +7,12 @@ case "$1" in
     ;;
 "install")  echo  "install"
     npm install -g pm2
+    cd $SCRIPTPATH
+    cd sails
+    npm install
+    cd $SCRIPTPATH
+    cd front
+    npm install
     ;;
 "dev")  echo  "dev environment"
     cd $SCRIPTPATH

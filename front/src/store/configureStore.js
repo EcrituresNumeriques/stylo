@@ -6,6 +6,9 @@ import createHistory from 'history/createBrowserHistory';
 import { routerMiddleware } from 'react-router-redux';
 import rootReducer from '../reducers';
 export const history = createHistory();
+
+
+
 function configureStoreProd(initialState) {
   const reactRouterMiddleware = routerMiddleware(history);
   const middlewares = [
@@ -55,5 +58,5 @@ function configureStoreDev(initialState) {
 }
 
 const configureStore = process.env.NODE_ENV === 'production' ? configureStoreProd : configureStoreDev;
-
-export default configureStore;
+const store = configureStore();
+export default store;
