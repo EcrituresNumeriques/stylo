@@ -30,9 +30,9 @@ export default class Login extends Component {
       return null})
     .catch(function(error){return error})
     .then(function(error){if(error != null){alert(error.message)};}.bind(this));
-
-
   }
+
+
 
 
   render() {

@@ -23,7 +23,7 @@
 module.exports.routes = {
 
   // NOTE all routes defined before the 'GET /*' will override
-  
+
   //Register
   'POST /api/v1/register':'User_RegisterController.newUser',
 
@@ -36,6 +36,9 @@ module.exports.routes = {
   //status
   'GET /api/v1/status':'User_StatusController.status',
 
+
+  //Articles
+  'GET /api/v1/articles':'ArticlesController.find',
 
   // All GET requests are directed to the app controller which renders our app.
   'GET /*': {
