@@ -1,7 +1,7 @@
 sails:
   build: .
   ports:
-    - "8002:80"
+    - "80:80"
   links:
     - mongodb
     - redis
