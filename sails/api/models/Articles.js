@@ -10,26 +10,38 @@ module.exports = {
   autoPK: true,
   attributes: {
     owner:{
-      model:'Users'
-    },
-    xml:{
-      type:'text'
-    },
-    yaml:{
-      type:'text'
+      model:'Users',
+      defaultsTo:1
     },
     title:{
       type:'string',
-      size:256
+      size:256,
+      defaultsTo:"autocreated"
     },
     version:{
       type:'integer',
-      default:1
+      defaultsTo:1
     },
     revision:{
       type:'integer',
-      default:0
+      defaultsTo:0
+    },
+    versions:{
+      collection:'Versions',
+      via:'article'
     }
 
+  },
+
+  afterCreate: function(article, next){
+    sails.log.info(article); // This displays the proper article
+    let data = {owner:article.owner,article:article.id};
+    Versions.create(data).exec( function (err, version) {
+      sails.log.info(version); // This displays the proper article
+
+    });
+    next();
   }
+
+
 };

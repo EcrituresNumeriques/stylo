@@ -39,6 +39,9 @@ module.exports.routes = {
 
   //Articles
   'GET /api/v1/articles':'ArticlesController.find',
+  'GET /api/v1/articles/:id':'ArticlesController.findOne',
+  'POST /api/v1/articles':'ArticlesController.create',
+  'POST /api/v1/articles/:id':'ArticlesController.update',
 
   // All GET requests are directed to the app controller which renders our app.
   'GET /*': {
