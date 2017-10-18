@@ -6,6 +6,7 @@ ADD front /front
 RUN npm install -g n
 RUN n stable
 RUN npm install npm@latest -g
+RUN yarn global add npm
 
 RUN cd /front; npm i
 RUN cd /sails; npm i

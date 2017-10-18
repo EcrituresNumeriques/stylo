@@ -1,3 +1,4 @@
 data
 front/node_modules
 sails/.tmp
+package-lock.json
