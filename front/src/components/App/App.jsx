@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import Router, { Link, RouteHandler } from 'react-router';
+import { BrowserRouter,Route} from 'react-router-dom'
 import Login from 'components/login/Login'
+import Register from 'components/login/Register'
+import NotFound from 'components/NotFound/NotFound'
 
 export default class App extends Component {
   constructor(props) {
@@ -9,7 +11,11 @@ export default class App extends Component {
 
   render() {
     return(
-      <Login />
+      <div>
+        <Route exact path="/login" component={Login}/>
+        <Route exact path="/register" component={Register}/>
+        <Route path="/*" component={NotFound}/>
+      </div>
     );
   }
 }

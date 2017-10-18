@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link,withRouter } from 'react-router-dom';
 
-export default class NotFound extends Component {
+
+class NotFound extends Component {
+  constructor(props) {
+    super(props);
+    this.checkLogedIn();
+  }
+  checkLogedIn(){
+    this.props.history.push("/login");
+  }
+
   render() {
     return (
       <section>
-        <h2 ref="title">404. Not found.</h2>
-        <Link to="/">Go to index</Link>
+        <h2 ref="title">Status Check</h2>
       </section>
     );
   }
 }
+export default withRouter(NotFound);

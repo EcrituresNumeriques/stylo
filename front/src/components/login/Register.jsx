@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-export default class Login extends Component {
+export default class Register extends Component {
   constructor(props) {
     super(props);
   }
@@ -16,8 +16,9 @@ export default class Login extends Component {
         <form className="gridCentered" onSubmit={this.handleSubmit}>
           <input type="text" placeholder="email"/>
           <input type="password" placeholder="password"/>
-          <input type="submit" value="go" />
-          <p className="note">or <Link to="/register">create an account</Link></p>
+          <input type="password" placeholder="confirm password"/>
+          <input type="submit" value="create" />
+          <p className="note">or <Link to="/login">go to login</Link></p>
         </form>
       </div>
     );

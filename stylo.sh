@@ -12,7 +12,7 @@ case "$1" in
     cd $SCRIPTPATH
     cd sails
     pm2 start app.js
-    chromium-browser "http://localhost:3000"
+    chromium-browser "http://localhost:3000" &
     cd $SCRIPTPATH
     cd front
     npm run start
