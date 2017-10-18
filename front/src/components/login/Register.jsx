@@ -4,9 +4,31 @@ import { Link } from 'react-router-dom';
 export default class Register extends Component {
   constructor(props) {
     super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleSubmit = function(e){
     e.preventDefault();
+    //send to the backend a Register
+    let corps = {
+      email:this.refs.email.value,
+      password:this.refs.password.value,
+      Cpassword:this.refs.Cpassword.value,
+      username:this.refs.username.value
+    }
+    fetch("/api/v1/register",
+    {
+        method: "POST",
+        body: JSON.stringify(corps),
+        credentials: 'same-origin'
+    })
+    .then(function(res){
+      if(!res.ok){throw res.json();}
+      return res.json()})
+    .then(function(data){
+      browserHistory.push('/login');
+      return null})
+    .catch(function(error){return error})
+    .then(function(error){if(error != null){alert(error.message)};}.bind(this));
   }
 
 
@@ -14,9 +36,10 @@ export default class Register extends Component {
     return (
       <div className="gridCenter">
         <form className="gridCentered" onSubmit={this.handleSubmit}>
-          <input type="text" placeholder="email"/>
-          <input type="password" placeholder="password"/>
-          <input type="password" placeholder="confirm password"/>
+          <input type="text" placeholder="Email" ref="email"/>
+          <input type="text" placeholder="Username" ref="username"/>
+          <input type="password" placeholder="Password" ref="password"/>
+          <input type="password" placeholder="Confirm Password" ref="Cpassword"/>
           <input type="submit" value="create" />
           <p className="note">or <Link to="/login">go to login</Link></p>
         </form>

@@ -17,8 +17,8 @@ case "$1" in
 "dev")  echo  "dev environment"
     cd $SCRIPTPATH
     cd sails
-    pm2 start app.js
-    chromium-browser "http://localhost:3000" &
+    pm2 start app.js  --watch
+    chromium-browser "http://localhost:8000" &
     cd $SCRIPTPATH
     cd front
     npm run start

@@ -17,6 +17,7 @@ let renderApp = function(){
     document.getElementById('app')
   );
 };
+renderApp();
 
 if (module.hot) {
   module.hot.accept('./components/App/App', () => {

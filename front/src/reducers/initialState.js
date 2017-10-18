@@ -1,5 +1,5 @@
 export default {
   data:{
-    articles:['test']
+    articles:[]
   }
 };
