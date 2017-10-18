@@ -5,10 +5,14 @@ import { Link,withRouter } from 'react-router-dom';
 class NotFound extends Component {
   constructor(props) {
     super(props);
+    console.log('construct');
     this.checkLogedIn();
   }
   checkLogedIn(){
     this.props.history.push("/login");
+  }
+  componentDidUpdate(){
+    console.log("update")
   }
 
   render() {

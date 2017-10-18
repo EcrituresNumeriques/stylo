@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter,Route} from 'react-router-dom'
+import { BrowserRouter,Route,Switch} from 'react-router-dom'
 import Login from 'components/login/Login'
 import Register from 'components/login/Register'
 import NotFound from 'components/NotFound/NotFound'
@@ -12,9 +12,11 @@ export default class App extends Component {
   render() {
     return(
       <div>
-        <Route exact path="/login" component={Login}/>
-        <Route exact path="/register" component={Register}/>
-        <Route path="/*" component={NotFound}/>
+        <Switch>
+          <Route exact path="/login" component={Login}/>
+          <Route exact path="/register" component={Register}/>
+          <Route component={NotFound}/>
+        </Switch>
       </div>
     );
   }
