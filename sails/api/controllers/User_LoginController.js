@@ -13,9 +13,8 @@ module.exports = {
       let password = req.body.password || req.query.password || '';
       User_Credentials.findOne({email:email}).then(function(thisUser){
           if(bcrypt.compareSync(password,_.get(thisUser,'password','nops'))){
-              Users.findOne({id_user:thisUser.id_user}).exec(function(err,response){
+                Users.findOne({id:thisUser.id}).exec(function(err,response){
                 req.session.user = response;
-                //console.log(response);
                 res.ok(response);
               })
             }

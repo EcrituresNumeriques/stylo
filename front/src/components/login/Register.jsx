@@ -9,6 +9,7 @@ export default class Register extends Component {
   handleSubmit = function(e){
     e.preventDefault();
     //send to the backend a Register
+    let that = this;
     let corps = {
       email:this.refs.email.value,
       password:this.refs.password.value,
@@ -25,7 +26,7 @@ export default class Register extends Component {
       if(!res.ok){throw res.json();}
       return res.json()})
     .then(function(data){
-      browserHistory.push('/login');
+      that.props.history.push("/login");
       return null})
     .catch(function(error){return error})
     .then(function(error){if(error != null){alert(error.message)};}.bind(this));
