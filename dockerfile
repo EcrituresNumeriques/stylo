@@ -9,6 +9,7 @@ RUN npm install npm@latest -g
 RUN yarn global add npm
 
 RUN cd /front; npm i
+RUN cd /front; npm run build
 RUN cd /sails; npm i
 
 WORKDIR /sails
