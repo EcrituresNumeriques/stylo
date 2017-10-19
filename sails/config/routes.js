@@ -44,6 +44,13 @@ module.exports.routes = {
   'POST /api/v1/articles/:id':'ArticlesController.update',
   'DELETE /api/v1/articles/:id':'ArticlesController.destroy',
 
+  //Versions
+  'GET /api/v1/versions':'VersionsController.find',
+  'GET /api/v1/versions/:id':'VersionsController.findOne',
+  'POST /api/v1/versions':'VersionsController.create',
+  'POST /api/v1/versions/:id':'VersionsController.update',
+  'DELETE /api/v1/versions/:id':'VersionsController.destroy',
+
   // All GET requests are directed to the app controller which renders our app.
   'GET /*': {
     controller: 'AppController',

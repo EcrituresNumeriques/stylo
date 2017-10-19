@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import store from 'store/configureStore';
 import sortByIdDesc from 'helpers/sorts/idDesc';
+import Fork from 'components/articles/fork'
+import NewVersion from 'components/articles/newVersion'
 
 export default class Articles extends Component {
   constructor(props) {
@@ -81,9 +83,13 @@ export default class Articles extends Component {
         {this.state.edit && [
           <input key={"input"+this.props.article.id} type="text" ref="title"  defaultValue={this.props.article.title} onBlur={this.emitChangeArticleName}/>,
           <button key={"button"+this.props.article.id} className="primaryButton">OK</button>]}
-          {this.props.article.versions && this.props.article.versions.map((version)=>(
+          {this.props.article.versions && this.props.article.versions.map((version,i)=>(
           <li key={"versions"+version.id}>
-            v{version.version}.{version.revision} <Link to={"/version/"+version.id}>continue edit</Link>
+            v{version.version}.{version.revision}
+            {i==0 && <NewVersion {...version}/>}
+            {i==0 && <span>[Edit]</span>}
+            {i>0 && <Link to={"/version/"+version.id}>[see]</Link>}
+            <Fork {...version}/>
           </li>))}
       </ul>
     );
