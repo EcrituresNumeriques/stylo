@@ -46,6 +46,7 @@ export default class Write extends Component {
         //find the correct version
         let that = this;
         newActive = this.state.article.versions.find(function(version){return that.props.match.params.version == version.id});
+        console.log(newActive);
       }
       this.setState({activeId:this.props.match.params.version,active:newActive,compute:false});
     }
