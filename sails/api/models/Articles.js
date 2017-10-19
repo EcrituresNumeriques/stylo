@@ -34,11 +34,8 @@ module.exports = {
   },
 
   afterCreate: function(article, next){
-    sails.log.info(article); // This displays the proper article
     let data = {owner:article.owner,article:article.id};
     Versions.create(data).exec( function (err, version) {
-      sails.log.info(version); // This displays the proper article
-
     });
     next();
   }

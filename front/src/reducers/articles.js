@@ -8,6 +8,9 @@ import sortByIdDesc from './../helpers/sorts/idDesc';
 function immutableUnshift(arr, newEntry){
   return [ newEntry, ...arr ];
 }
+function immutableDelete (arr, index) {
+   return arr.slice(0,index).concat(arr.slice(index+1));
+}
 
 export default function fuelSavingsReducer(state = initialState.articles, action) {
   let newState = objectAssign({}, state);
@@ -24,6 +27,11 @@ export default function fuelSavingsReducer(state = initialState.articles, action
       let index = newState.articles.findIndex(function(element){return element.id == action.data.id;});
       newState.articles = Object.assign([], newState.articles, {[index]: action.data});
       return newState;}
+    case 'ARTICLES_DELETE':{
+      let index = newState.articles.findIndex(function(element){return element.id == action.data.id;});
+      newState.articles = immutableDelete(newState.articles,index);
+      return newState;
+    }
     default:
       return state;
   }

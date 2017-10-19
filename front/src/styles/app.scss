@@ -57,6 +57,16 @@ html, body {
     cursor:pointer;
     display:inline-block;
 }
+.alertButton {
+    background-color: red;
+    color:white;
+    border:1px solid red;
+    margin:0;
+    padding:0.5em 1em;
+    font-size: 1em;
+    cursor:pointer;
+    display:inline-block;
+}
 
 ul.unstyled{
   margin:1em 0 0 0;
