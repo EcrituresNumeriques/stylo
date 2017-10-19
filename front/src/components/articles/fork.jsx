@@ -9,7 +9,7 @@ export default class Fork extends Component {
 
   render() {
     return (
-      <span>[fork to new Article]</span>
+      <span>[fork]</span>
     );
   }
 }
