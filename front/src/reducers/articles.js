@@ -20,16 +20,29 @@ export default function fuelSavingsReducer(state = initialState.articles, action
       newState.articles = immutableUnshift(newState.articles,action.data);
       return newState;
     case 'ARTICLES_LOAD':
+      action.data = action.data.map(
+        function(article){
+          article.versions = article.versions.sort(sortByIdDesc);
+          return article;
+        }
+      );
       newState.articles = action.data.sort(sortByIdDesc);
       return newState;
     case 'ARTICLES_UPDATE':{
       //find correct article
       let index = newState.articles.findIndex(function(element){return element.id == action.data.id;});
+      if(action.data.versions)
+      {action.data.versions = action.data.versions.sort(sortByIdDesc);}
       newState.articles = Object.assign([], newState.articles, {[index]: action.data});
       return newState;}
     case 'ARTICLES_DELETE':{
       let index = newState.articles.findIndex(function(element){return element.id == action.data.id;});
       newState.articles = immutableDelete(newState.articles,index);
+      return newState;
+    }
+    case 'ARTICLES_ADDVERSION':{
+      let index = newState.articles.findIndex(function(element){return element.id == action.data.article;});
+      newState.articles[index].versions = immutableUnshift(newState.articles[index].versions,action.data);
       return newState;
     }
     default:

@@ -19,8 +19,7 @@ export default class NewVersion extends Component {
       return response.json();
     })
     .then(function(json){
-      that.setState({edit:false,delete:false});
-      store.dispatch({type:"ARTICLES_UPDATE",data:json});
+      store.dispatch({type:"ARTICLES_ADDVERSION",data:json});
       return null;
     });
   }

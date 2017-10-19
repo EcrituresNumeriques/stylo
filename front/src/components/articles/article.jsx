@@ -86,8 +86,8 @@ export default class Articles extends Component {
           {this.props.article.versions && this.props.article.versions.map((version,i)=>(
           <li key={"versions"+version.id}>
             v{version.version}.{version.revision}
-            {i==0 && <NewVersion {...version}/>}
             {i==0 && <span>[Edit]</span>}
+            {i==0 && <NewVersion {...version}/>}
             {i>0 && <Link to={"/version/"+version.id}>[see]</Link>}
             <Fork {...version}/>
           </li>))}
