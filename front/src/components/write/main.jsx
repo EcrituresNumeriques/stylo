@@ -30,6 +30,8 @@ export default class Write extends Component {
       json.versions = json.versions.sort(sortByIdDesc);
       let live = objectAssign({},json.versions[0]);
       that.setState({loaded:true,article:json,live,compute:true});
+      console.log('Post-FETCHAPI',this.state.article.versions);
+
       return null;
     });
   }
@@ -86,12 +88,15 @@ export default class Write extends Component {
     midState.live.xml = e.target.value;
     midState.active.xml = e.target.value;
     this.setState(midState);
+    console.log('Post-UpdatXMLe',this.state.article.versions);
+
   }
   updateYAML(e){
     let midState = this.state;
     midState.live.yaml = e.target.value;
     midState.active.yaml = e.target.value;
     this.setState(midState);
+    console.log('Post-UpdateYAML',this.state.article.versions);
   }
 
   render() {
