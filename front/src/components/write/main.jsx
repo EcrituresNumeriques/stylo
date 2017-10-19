@@ -105,7 +105,7 @@ export default class Write extends Component {
           </div>
           <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
           <div id="timeline">
-            <Link to={"/write/"+this.props.match.params.article} className={this.state.activeId?"":"active"}>live</Link>
+            <Link to={"/write/"+this.props.match.params.article} className={this.state.activeId?"":"active"}>Edit</Link>
             {this.state.article.versions.map((version)=>(
               <Link to={"/write/"+this.props.match.params.article+"/"+version.id} key={"versionWrite"+version.id} data-id={"versionWrite"+version.id} className={this.state.activeId == version.id?"active":"" }>v{version.version}.{version.revision}</Link>
             ))}

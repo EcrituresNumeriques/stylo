@@ -3,7 +3,6 @@ FROM node
 
 RUN npm install -g n
 RUN n stable
-RUN npm install npm@latest -g
 RUN yarn global add npm
 
 ADD front /front
