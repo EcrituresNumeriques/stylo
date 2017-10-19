@@ -15,6 +15,14 @@ module.exports = {
     article:{
       model:'Articles'
     },
+    version:{
+      type:'integer',
+      defaultsTo:1
+    },
+    revision:{
+      type:'integer',
+      defaultsTo:0
+    },
     xml:{
       type:'longtext'
     },
