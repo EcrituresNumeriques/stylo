@@ -31,6 +31,7 @@ export default function fuelSavingsReducer(state = initialState.articles, action
     case 'ARTICLES_UPDATE':{
       //find correct article
       let index = newState.articles.findIndex(function(element){return element.id == action.data.id;});
+      if(index < 0){index=0;}
       if(action.data.versions)
       {action.data.versions = action.data.versions.sort(sortByIdDesc);}
       newState.articles = Object.assign([], newState.articles, {[index]: action.data});

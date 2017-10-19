@@ -24,10 +24,12 @@ module.exports = {
       defaultsTo:0
     },
     xml:{
-      type:'longtext'
+      type:'longtext',
+      defaultsTo:'<XML></XML>'
     },
     yaml:{
-      type:'longtext'
+      type:'longtext',
+      defaultsTo:'Yaml:'
     }
   }
 };

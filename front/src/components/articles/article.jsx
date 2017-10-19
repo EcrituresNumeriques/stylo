@@ -72,7 +72,6 @@ export default class Articles extends Component {
   }
 
   render() {
-    console.log(this.props.article);
     return (
       <ul className="unstyled">
         {!this.state.edit && <p>
@@ -87,9 +86,9 @@ export default class Articles extends Component {
           {this.props.article.versions && this.props.article.versions.map((version,i)=>(
           <li key={"versions"+version.id}>
             v{version.version}.{version.revision}
-            {i==0 && <span>[Edit]</span>}
+            {i==0 && <Link to={"/write/"+this.props.article.id}>[edit]</Link>}
             {i==0 && <NewVersion {...version}/>}
-            {i>0 && <Link to={"/version/"+version.id}>[see]</Link>}
+            {i>0 && <Link to={"/write/"+this.props.article.id+"/"+version.id}>[see]</Link>}
             <Fork {...version}/>
           </li>))}
       </ul>

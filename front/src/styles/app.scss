@@ -57,6 +57,26 @@ html, body {
     cursor:pointer;
     display:inline-block;
 }
+.secondaryButton {
+    background-color: buttonface;
+    color:black;
+    border:1px solid buttonface;
+    margin:0;
+    padding:0.5em 1em;
+    font-size: 1em;
+    cursor:pointer;
+    display:inline-block;
+}
+.disabledButton {
+    background-color: #c0c0c0;
+    color:#909090;
+    border:1px solid #c0c0c0;
+    margin:0;
+    padding:0.5em 1em;
+    font-size: 1em;
+    cursor:not-allowed;
+    display:inline-block;
+}
 .alertButton {
     background-color: red;
     color:white;
@@ -89,5 +109,12 @@ ul.unstyled{
     display:inline-block;
     margin-right: 0.5em;
     color:#c0c0c0;
+  }
+}
+#timeline{
+  display:inline-block;
+  a {
+    display:block;
+    text-align: right;
   }
 }
