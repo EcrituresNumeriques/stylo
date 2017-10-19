@@ -12,6 +12,7 @@ export default class Write extends Component {
     this.sendNewVersion = this.sendNewVersion.bind(this);
     this.fetchAPI = this.fetchAPI.bind(this);
     this.updateXML = this.updateXML.bind(this);
+    this.updateYAML = this.updateYAML.bind(this);
     this.fetchAPI();
   }
 
@@ -74,10 +75,15 @@ export default class Write extends Component {
   }
 
   updateXML(e){
-    console.log(e.target.value);
     let midState = this.state;
     midState.live.xml = e.target.value;
     midState.active.xml = e.target.value;
+    this.setState(midState);
+  }
+  updateYAML(e){
+    let midState = this.state;
+    midState.live.yaml = e.target.value;
+    midState.active.yaml = e.target.value;
     this.setState(midState);
   }
 
@@ -99,7 +105,7 @@ export default class Write extends Component {
           </div>
           <textarea value={this.state.active.xml} disabled={this.state.activeId} onInput={this.updateXML} placeholder="XML via texture">
           </textarea>
-          <textarea value={this.state.active.yaml} disabled={this.state.activeId} placeholder="YAML editor">
+          <textarea value={this.state.active.yaml} disabled={this.state.activeId} onInput={this.updateYAML} placeholder="YAML editor">
           </textarea>
       </div>
     );
