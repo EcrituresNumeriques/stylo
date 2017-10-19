@@ -64,11 +64,14 @@ export default class Write extends Component {
       return response.json();
     })
     .then(function(json){
+      console.log("state",that.state);
       let midState = that.state;
       midState.article.versions = [json,...midState.article.versions];
       midState.live.version = version;
       midState.live.revision = revision;
+      console.log("midState",midState);
       that.setState(midState);
+      console.log("afterState",that.state);
       store.dispatch({type:"ARTICLES_ADDVERSION",data:json});
       return null;
     });
@@ -88,7 +91,6 @@ export default class Write extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div>
           <h1>{this.state.article.title}</h1>
