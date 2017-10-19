@@ -72,7 +72,7 @@ export default class Write extends Component {
     .then(function(json){
       console.log("state",that.state.article.versions);
       let midState = that.state;
-      midState.article.versions = [json,...midState.article.versions];
+      //midState.article.versions = [json,...midState.article.versions];
       midState.live.version = version;
       midState.live.revision = revision;
       console.log("midState",midState.article.versions);
