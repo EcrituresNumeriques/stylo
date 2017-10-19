@@ -1,16 +1,17 @@
 FROM node
 
-ADD sails /sails
-ADD front /front
 
 RUN npm install -g n
 RUN n stable
 RUN npm install npm@latest -g
 RUN yarn global add npm
 
+ADD sails /sails
+RUN cd /sails; npm i
+
+ADD front /front
 RUN cd /front; npm i
 RUN cd /front; npm run build
-RUN cd /sails; npm i
 
 WORKDIR /sails
 
