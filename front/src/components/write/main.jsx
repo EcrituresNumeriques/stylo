@@ -65,14 +65,14 @@ export default class Write extends Component {
       return response.json();
     })
     .then(function(json){
-      console.log("state",that.state);
+      console.log("state",that.state.article.versions);
       let midState = that.state;
       midState.article.versions = [json,...midState.article.versions];
       midState.live.version = version;
       midState.live.revision = revision;
-      console.log("midState",midState);
+      console.log("midState",midState.article.versions);
       that.setState(midState);
-      console.log("afterState",that.state);
+      console.log("afterState",that.state.article.versions);
       store.dispatch({type:"ARTICLES_ADDVERSION",data:json});
       return null;
     });
