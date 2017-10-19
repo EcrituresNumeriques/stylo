@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import store from 'store/configureStore';
+import objectAssign from 'object-assign';
 import sortByIdDesc from 'helpers/sorts/idDesc';
 
 export default class Write extends Component {
@@ -10,6 +11,7 @@ export default class Write extends Component {
     this.state = {loaded:false,live:{},active:{},activeId:this.props.match.params.version,article:{versions:[]}};
     this.sendNewVersion = this.sendNewVersion.bind(this);
     this.fetchAPI = this.fetchAPI.bind(this);
+    this.updateXML = this.updateXML.bind(this);
     this.fetchAPI();
   }
 
@@ -25,7 +27,8 @@ export default class Write extends Component {
     .then(function(json){
       store.dispatch({type:"ARTICLES_UPDATE",data:json});
       json.versions = json.versions.sort(sortByIdDesc);
-      that.setState({loaded:true,article:json,live:json.versions[0],compute:true});
+      let live = objectAssign({},json.versions[0]);
+      that.setState({loaded:true,article:json,live,compute:true});
       return null;
     });
   }
@@ -70,6 +73,13 @@ export default class Write extends Component {
     });
   }
 
+  updateXML(e){
+    console.log(e.target.value);
+    let midState = this.state;
+    midState.live.xml = e.target.value;
+    midState.active.xml = e.target.value;
+    this.setState(midState);
+  }
 
   render() {
     return (
@@ -87,7 +97,7 @@ export default class Write extends Component {
               <Link to={"/write/"+this.props.match.params.article+"/"+version.id} key={"versionWrite"+version.id}>{this.state.activeId == version.id && <span>==></span>}v{version.version}.{version.revision}</Link>
             ))}
           </div>
-          <textarea value={this.state.active.xml} disabled={this.state.activeId} placeholder="XML via texture">
+          <textarea value={this.state.active.xml} disabled={this.state.activeId} onInput={this.updateXML} placeholder="XML via texture">
           </textarea>
           <textarea value={this.state.active.yaml} disabled={this.state.activeId} placeholder="YAML editor">
           </textarea>
