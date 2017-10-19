@@ -113,8 +113,26 @@ ul.unstyled{
 }
 #timeline{
   display:inline-block;
+  padding:1em;
+  width:300px;
   a {
     display:block;
     text-align: right;
+    border-right:1px solid #c0c0c0;
   }
+  a:not(.active){
+    padding-right:0.5em;
+  }
+  a.active:after{
+    content:"---";
+    display:inline-block;
+    color:#c0c0c0;
+    margin-left:0.5em;
+
+  }
+}
+textarea{
+  vertical-align: top;
+  min-width:40em;
+  min-height:30em;
 }

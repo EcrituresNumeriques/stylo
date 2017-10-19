@@ -88,6 +88,7 @@ export default class Write extends Component {
   }
 
   render() {
+    console.log(this.state);
     return (
       <div>
           <h1>{this.state.article.title}</h1>
@@ -98,9 +99,9 @@ export default class Write extends Component {
           </div>
           <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
           <div id="timeline">
-            <Link to={"/write/"+this.props.match.params.article}>{this.state.activeId == undefined && <span>==></span>}live</Link>
+            <Link to={"/write/"+this.props.match.params.article} className={this.state.activeId?"":"active"}>live</Link>
             {this.state.article.versions.map((version)=>(
-              <Link to={"/write/"+this.props.match.params.article+"/"+version.id} key={"versionWrite"+version.id}>{this.state.activeId == version.id && <span>==></span>}v{version.version}.{version.revision}</Link>
+              <Link to={"/write/"+this.props.match.params.article+"/"+version.id} key={"versionWrite"+version.id} className={this.state.activeId == version.id?"active":"" }>v{version.version}.{version.revision}</Link>
             ))}
           </div>
           <textarea value={this.state.active.xml} disabled={this.state.activeId} onInput={this.updateXML} placeholder="XML via texture">
