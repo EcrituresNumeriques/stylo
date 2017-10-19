@@ -35,6 +35,7 @@ export default class Write extends Component {
   }
 
   componentDidUpdate(){
+    console.log('Update',this.state.article.versions);
     if(this.state.activeId != this.props.match.params.version || this.state.compute){
       let newActive;
       if(this.props.match.params.version == undefined){
@@ -103,7 +104,7 @@ export default class Write extends Component {
           <div id="timeline">
             <Link to={"/write/"+this.props.match.params.article} className={this.state.activeId?"":"active"}>live</Link>
             {this.state.article.versions.map((version)=>(
-              <Link to={"/write/"+this.props.match.params.article+"/"+version.id} key={"versionWrite"+version.id} className={this.state.activeId == version.id?"active":"" }>v{version.version}.{version.revision}</Link>
+              <Link to={"/write/"+this.props.match.params.article+"/"+version.id} key={"versionWrite"+version.id} data-id={"versionWrite"+version.id} className={this.state.activeId == version.id?"active":"" }>v{version.version}.{version.revision}</Link>
             ))}
           </div>
           <textarea value={this.state.active.xml} disabled={this.state.activeId} onInput={this.updateXML} placeholder="XML via texture">
