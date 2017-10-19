@@ -24,7 +24,9 @@ case "$1" in
     npm run start
     ;;
   "rebuild") echo "cleaning images + building"
+   cd $SCRIPTPATH
    docker rmi $(docker images --filter dangling=true)
+   git pull
    docker-compose build
    docker-compose up -d
    ;;
