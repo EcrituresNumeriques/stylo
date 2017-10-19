@@ -30,29 +30,23 @@ export default class Write extends Component {
       json.versions = json.versions.sort(sortByIdDesc);
       let live = objectAssign({},json.versions[0]);
       that.setState({loaded:true,article:json,live,compute:true});
-      console.log('Post-FETCHAPI',this.state.article.versions);
-
       return null;
     });
   }
 
   componentDidUpdate(){
-    console.log('Update',this.state.article.versions);
     if(this.state.activeId != this.props.match.params.version || this.state.compute){
       let newActive;
       if(this.props.match.params.version == undefined){
         //set the live as the active view
-        newActive = this.state.live;
+        newActive = objectAssign({},this.state.live);
       }
       else{
         //find the correct version
         let that = this;
-        newActive = this.state.article.versions.find(function(version){return that.props.match.params.version == version.id});
-        console.log(newActive);
+        newActive = objectAssign({},this.state.article.versions.find(function(version){return that.props.match.params.version == version.id}));
       }
-      console.log('pre-Update',this.state.article.versions);
       this.setState({activeId:this.props.match.params.version,active:newActive,compute:false});
-      console.log('Post-Update',this.state.article.versions);
     }
   }
 
@@ -70,33 +64,29 @@ export default class Write extends Component {
       return response.json();
     })
     .then(function(json){
-      console.log("state",that.state.article.versions);
-      let midState = that.state;
+      let midState = objectAssign({},that.state);
+      //Don't know why this still works
       //midState.article.versions = [json,...midState.article.versions];
       midState.live.version = version;
       midState.live.revision = revision;
-      console.log("midState",midState.article.versions);
       that.setState(midState);
-      console.log("afterState",that.state.article.versions);
       store.dispatch({type:"ARTICLES_ADDVERSION",data:json});
       return null;
     });
   }
 
   updateXML(e){
-    let midState = this.state;
+    let midState = objectAssign({},this.state);
     midState.live.xml = e.target.value;
     midState.active.xml = e.target.value;
     this.setState(midState);
-    console.log('Post-UpdatXMLe',this.state.article.versions);
 
   }
   updateYAML(e){
-    let midState = this.state;
+    let midState = objectAssign({},this.state);
     midState.live.yaml = e.target.value;
     midState.active.yaml = e.target.value;
     this.setState(midState);
-    console.log('Post-UpdateYAML',this.state.article.versions);
   }
 
   render() {
