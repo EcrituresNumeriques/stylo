@@ -31,7 +31,6 @@ export default class Write extends Component {
   }
 
   componentDidUpdate(){
-    console.log(this.state.live);
     if(this.state.activeId != this.props.match.params.version || this.state.compute){
       let newActive;
       if(this.props.match.params.version == undefined){
@@ -46,12 +45,12 @@ export default class Write extends Component {
       this.setState({activeId:this.props.match.params.version,active:newActive,compute:false});
     }
   }
+
   sendNewVersion(e,major=false){
     let that = this;
     let version = major?this.state.live.version+1:this.state.live.version;
     let revision = major?0:this.state.live.revision+1;
     let corps = {article:this.state.article.id,owner:this.state.article.owner,version,revision,xml:this.state.live.xml,yaml:this.state.live.yaml};
-    console.log("sending",corps);
     fetch('/api/v1/versions/',{
       method:'POST',
       body: JSON.stringify(corps),
@@ -63,7 +62,6 @@ export default class Write extends Component {
     .then(function(json){
       let midState = that.state;
       midState.article.versions = [json,...midState.article.versions];
-      console.log(version,revision)
       midState.live.version = version;
       midState.live.revision = revision;
       that.setState(midState);
@@ -89,9 +87,9 @@ export default class Write extends Component {
               <Link to={"/write/"+this.props.match.params.article+"/"+version.id} key={"versionWrite"+version.id}>{this.state.activeId == version.id && <span>==></span>}v{version.version}.{version.revision}</Link>
             ))}
           </div>
-          <textarea value={this.state.active.xml} placeholder="XML via texture">
+          <textarea value={this.state.active.xml} disabled={this.state.activeId} placeholder="XML via texture">
           </textarea>
-          <textarea value={this.state.active.yaml} placeholder="YAML editor">
+          <textarea value={this.state.active.yaml} disabled={this.state.activeId} placeholder="YAML editor">
           </textarea>
       </div>
     );
