@@ -25,7 +25,7 @@
 module.exports = {
   autoPK:true,
   attributes: {
-    id_user: {
+    owner: {
       model:'Users'
     },
     username: {

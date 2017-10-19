@@ -25,7 +25,7 @@ module.exports = function(req, res, next) {
       if(err){return res.forbidden({message:'Error.'})}
       else if(!record){return res.forbidden({message:'no record found.'})}
       else{
-        if(req.session.user && record.id_user === req.session.user.id_user){
+        if(req.session.user && record.owner === req.session.user.id){
           //owns this, pass to the next policy
           next();
         }

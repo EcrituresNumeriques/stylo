@@ -30,7 +30,7 @@ module.exports = {
             else{
               //console.log(thisUser,contextCredential);
               //User is created
-              contextCredential.id_user = thisUser.id_user;
+              contextCredential.owner = thisUser.id;
               contextCredential.save();
               result.ok(thisUser);
             }
