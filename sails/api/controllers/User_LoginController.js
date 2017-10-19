@@ -16,11 +16,17 @@ module.exports = {
         console.log(thisUser);
           if(bcrypt.compareSync(password,_.get(thisUser,'password','nops'))){
             console.log("Password good");
+            /*
                 Users.findOne({id:thisUser.id}).exec(function(err,response){
                   console.log(response);
                 req.session.user = response;
                 res.ok(response);
               })
+              */
+              Users.find().exec(function (err, records) {
+                console.log(records);
+                res.ok({loged:true});
+              });
             }
             else{
               res.badRequest({'humanReadable':'email or password invalid'});

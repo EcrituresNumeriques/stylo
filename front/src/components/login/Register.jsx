@@ -13,23 +13,27 @@ export default class Register extends Component {
     let corps = {
       email:this.refs.email.value,
       password:this.refs.password.value,
-      Cpassword:this.refs.Cpassword.value,
       username:this.refs.username.value
     }
-    fetch("/api/v1/register",
-    {
+    if(this.refs.password.value == this.refs.Cpassword.value){
+      fetch("/api/v1/register",
+      {
         method: "POST",
         body: JSON.stringify(corps),
         credentials: 'same-origin'
-    })
-    .then(function(res){
-      if(!res.ok){throw res.json();}
-      return res.json()})
-    .then(function(data){
-      that.props.history.push("/login");
-      return null})
-    .catch(function(error){return error})
-    .then(function(error){if(error != null){alert(error.message)};}.bind(this));
+      })
+      .then(function(res){
+        if(!res.ok){throw res.json();}
+        return res.json()})
+        .then(function(data){
+          that.props.history.push("/login");
+          return null})
+          .catch(function(error){return error})
+          .then(function(error){if(error != null){alert(error.message)};}.bind(this));
+    }
+    else{
+      alert('Passwords should match');
+    }
   }
 
 
