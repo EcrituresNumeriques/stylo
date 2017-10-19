@@ -72,6 +72,7 @@ export default class Articles extends Component {
   }
 
   render() {
+    console.log(this.props.article);
     return (
       <ul className="unstyled">
         {!this.state.edit && <p>

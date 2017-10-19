@@ -6,5 +6,19 @@
  */
 
 module.exports = {
-  
+  fork: function(req,res){
+    //console.log("Logging in");
+      let idToFork = req.param('id');
+      Versions.findOne({id:idToFork}).then(function(version){
+        Articles.findOne({id:version.article}).then(function(article){
+          Articles.create({owner:article.owner,title:article.title+"*"}).exec(function (err, newArticle) {
+            Versions.create({owner:version.owner,article:newArticle.id,revision:0,version:1,xml:version.xml,yaml:version.yaml}).exec(function (err, newVersion) {
+              newArticle = newArticle.toJSON();
+              newArticle.versions = [newVersion];
+              res.ok(newArticle);
+            });
+          });
+        });
+      });
+  }
 };

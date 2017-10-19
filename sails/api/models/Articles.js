@@ -20,7 +20,7 @@ module.exports = {
     },
     version:{
       type:'integer',
-      defaultsTo:1
+      defaultsTo:0
     },
     revision:{
       type:'integer',

@@ -48,7 +48,7 @@ module.exports.routes = {
   'GET /api/v1/versions':'VersionsController.find',
   'GET /api/v1/versions/:id':'VersionsController.findOne',
   'POST /api/v1/versions':'VersionsController.create',
-  'POST /api/v1/versions/:id':'VersionsController.update',
+  'POST /api/v1/versions/:id/fork':'VersionsController.fork',
   'DELETE /api/v1/versions/:id':'VersionsController.destroy',
 
   // All GET requests are directed to the app controller which renders our app.
