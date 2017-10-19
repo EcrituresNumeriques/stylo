@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import store from 'store/configureStore';
 import objectAssign from 'object-assign';
 import sortByIdDesc from 'helpers/sorts/idDesc';
+import ExportVersion from 'components/write/export';
 
 export default class Write extends Component {
   constructor(props) {
@@ -109,6 +110,7 @@ export default class Write extends Component {
           </textarea>
           <textarea value={this.state.active.yaml} disabled={this.state.activeId} onInput={this.updateYAML} placeholder="YAML editor">
           </textarea>
+          {this.state.activeId && <ExportVersion version={this.state.activeId}/>}
       </div>
     );
   }

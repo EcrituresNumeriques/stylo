@@ -1,6 +1,5 @@
 FROM node
 
-
 RUN npm install -g n
 RUN n stable
 RUN yarn global add npm
