@@ -3,10 +3,10 @@ SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 case "$1" in
 "deploy")  echo "Deploy stylo platform"
-    docker-compose up -d
+    sudo docker-compose up -d
     ;;
 "install")  echo  "install"
-    npm install -g pm2
+    sudo npm install -g pm2
     cd $SCRIPTPATH
     cd sails
     npm install
@@ -25,10 +25,10 @@ case "$1" in
     ;;
   "rebuild") echo "cleaning images + building"
    cd $SCRIPTPATH
-   docker rmi $(docker images --filter dangling=true)
+   sudo docker rmi $(docker images --filter dangling=true)
    git pull
-   docker-compose build
-   docker-compose up
+   sudo docker-compose build
+   sudo docker-compose up
    ;;
 *) echo "Usage: $0 deploy|rebuild|install|dev"
    ;;
