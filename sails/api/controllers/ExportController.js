@@ -13,6 +13,7 @@ module.exports = {
       //args = '-f markdown -t html --template=templateHtmlDcV0.html5 --filter pandoc-citeproc --ascii /'+thisVersion.id+'.yaml';
       callback = function (err, result) {
         if (err) {
+          console.log(err);
           fs.writeFileSync('/'+thisVersion.id+'.error', err.toString());
           res.attachment('/'+thisVersion.id+'.error');
           return false;
