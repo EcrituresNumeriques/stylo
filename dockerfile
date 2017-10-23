@@ -54,6 +54,9 @@ RUN echo "examples/git-diff.py" >> /installed-pandocfilters.txt
 
 RUN sed -i 's#examples#/usr/bin#' /installed-pandocfilters.txt
 
+RUN mkdir -p ~/.pandoc/
+RUN wget https://raw.githubusercontent.com/EcrituresNumeriques/chaineEditorialeSP/master/templates/templateHtmlDcV0.html5 > ~/.pandoc/templateHtmlDcV0.html5
+
 RUN npm install -g n
 RUN n stable
 RUN yarn global add npm
