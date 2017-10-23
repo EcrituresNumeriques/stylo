@@ -25,7 +25,7 @@ case "$1" in
     ;;
   "rebuild") echo "cleaning images + building"
    cd $SCRIPTPATH
-   sudo docker rmi $(docker images --filter dangling=true)
+   sudo docker rmi $(sudo docker images --filter dangling=true)
    git pull
    sudo docker-compose build
    sudo docker-compose up
