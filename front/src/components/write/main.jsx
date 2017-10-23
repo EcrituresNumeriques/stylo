@@ -4,6 +4,7 @@ import store from 'store/configureStore';
 import objectAssign from 'object-assign';
 import sortByIdDesc from 'helpers/sorts/idDesc';
 import ExportVersion from 'components/write/export';
+import SiteHeader from 'components/layout/siteHeader';
 
 export default class Write extends Component {
   constructor(props) {
@@ -100,7 +101,7 @@ export default class Write extends Component {
   render() {
     return (
       <div>
-          <p class="Banner"><img src="https://i.imgur.com/tBKKIzd.png"></p>
+          <SiteHeader />
           <h1>{this.state.article.title}</h1>
           <div>
             <Link to="/articles"  className="secondaryButton">Back to My articles</Link>
