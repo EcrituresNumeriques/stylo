@@ -26,7 +26,7 @@ export default class NewVersion extends Component {
 
   render() {
     return (
-      <span onClick={this.newVersion}>[New Version]</span>
+      <span className="primaryButton editButton" onClick={this.newVersion}>[New Version]</span>
     );
   }
 }
