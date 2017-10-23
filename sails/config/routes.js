@@ -53,7 +53,7 @@ module.exports.routes = {
 
 
   //exports
-  'GET /api/v1/export/:id':'ExportController.html',
+  'GET /api/v1/export/:version':'ExportController.html',
 
   // All GET requests are directed to the app controller which renders our app.
   'GET /*': {

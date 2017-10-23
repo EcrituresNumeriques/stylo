@@ -28,7 +28,7 @@ case "$1" in
    docker rmi $(docker images --filter dangling=true)
    git pull
    docker-compose build
-   docker-compose up -d
+   docker-compose up
    ;;
 *) echo "Usage: $0 deploy|rebuild|install|dev"
    ;;
