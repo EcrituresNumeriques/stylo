@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:dc="http://purl.org/dc/terms/"
+  version="XHTML+RDFa 1.0" $if(lang)$ xml:lang="$lang$"$endif$$if(dir)$ dir="$dir$"$endif$>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc templateHtmlEruditV0" />
+
+<!--DC-->
+
+$if(lang)$
+    <meta http-equiv="Content-language" content="$lang$" />
+$endif$
+$if(url_article_sp)$
+    <meta name="url" content="$url_article_sp$" />
+$endif$
+
+    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
+    <link rel="schema.MARCREL" href="http://www.loc.gov/loc.terms/relators/"/>
+    <link rel="DCTERMS.subject" href="http://rameau.bnf.fr"/>
+    <meta name="DC.type" content="Text" />
+    <meta name="DC.format" content="text/html" />
+$if(url_article_sp)$
+    <meta name="DC.identifier" scheme="URI" content="$url_article_sp$" />
+$endif$
+$if(issnnum)$
+    <meta name="DC.identifier" scheme="ISSN" content="$issnnum$" />
+$endif$
+    <meta name="DC.title" content="$title$" />
+    <meta name="DC.publisher" content="$publisher$" />
+    <meta name="DC.language" scheme="RFC3066" content="$lang$" />
+    <meta name="DC.type" content="journalArticle" />
+
+
+
+    <meta name="author" content="$for(authors)$$authors.forname$ $authors.surname$$sep$, $endfor$" />
+$if(authors)$
+$for(authors)$
+ <meta name="DC.creator" content="$authors.forname$ $authors.surname$" />
+   $endfor$
+$endif$
+$if(abstract)$
+$for(abstract)$
+    <meta name="description" xml:lang="$abstract.lang$" lang="$abstract.lang$" content="$abstract.text$" />
+    <meta name="DC.description" xml:lang="$abstract.lang$" lang="$abstract.lang$" content="$abstract.text$" />
+$endfor$
+$endif$
+
+
+
+$if(keyword_fr)$
+<meta name="keywords" xml:lang="fr" lang="fr" content="$for(keyword_fr)$$keyword_fr$$sep$, $endfor$" />
+$endif$
+
+$if(keyword_en)$
+<meta name="keywords" xml:lang="en" lang="en" content="$for(keyword_en)$$keyword_en$$sep$, $endfor$" />
+$endif$
+
+$if(controlledKeywords)$
+$for(controlledKeywords)$
+    <meta name="DC.subject" xml:lang="fr" lang="fr" content="$controlledKeywords.label$" />
+$endfor$
+$endif$
+
+
+    <meta name="DC.date" scheme="W3CDTF" content="$date$" />
+    <meta name="DC.rights" content="$rights$" />
+    <meta name="DC.relation.isPartOf" content="$dossier$" />
+    <meta name="DC.source" content="$journal$" />
+
+
+<meta name="citation_journal_title" content="$journal$" />
+    <meta name="citation_publisher" content="$publisher$" />
+$for(authors)$
+<meta name="citation_authors" content="$authors.forname$ $authors.surname$" />
+$endfor$
+    <meta name="citation_title" content="$title$" />
+    <meta name="citation_publication_date" content="$date$" />
+    <meta name="citation_online_date" content="$date$" />
+    <meta name="citation_issn" content="$issnnum$" />
+    <meta name="citation_isbn" content="$issnnum$" />
+
+<!--perinent?
+    <meta name="citation_issue" content="" />
+    <meta name="citation_firstpage" content="29" />
+    <meta name="citation_lastpage" content="55" />
+-->
+    <meta name="citation_language" content="$lang$" />
+
+    <meta name="citation_keywords" content="" />
+$if(abstract)$
+$for(abstract)$
+    <meta name="citation_abstract" xml:lang="$abstract.lang$" lang="$abstract.lang$" content="$abstract.text$" />
+
+$endfor$
+$endif$
+
+$if(translator)$
+$for(translator)$
+    <meta name="DC.contributor.trl" content="$translator.forname$ $translator.surname$" />
+$endfor$
+$endif$
+<!--
+    <meta name="DC.description.tableOfContents" content="$toc$"/>-->
+    <link title="schema(PRISM)" rel="schema.prism" href="http://prismstandard.org/namespaces/basic/2.0/"/>
+    <meta name="prism.url" content="$url_article_sp$"/>
+    <meta name="prism.publicationName" content="$journal$"/>
+
+
+<!--  <meta name="prism.number" content="4"/>
+    <meta name="prism.volume" content="47"/>
+-->
+    <meta name="prism.issueName" content="$dossier$"/>
+$if(redacteurDossier)$
+$for(redacteurDossier)$
+    <meta name="DC.contributor.edt" content="$redacteurDossier.forname$ $redacteurDossier.surname$" />
+$endfor$
+$endif$
+
+    <meta name="prism.publicationDate" content="$date$"/>
+    <meta name="prism.issn" content="$issnnum$"/>
+    <meta name="prism.eIssn" content="$issnnum$"/>
+    <meta name="prism.teaser" content="$abstract.fr$"/>
+
+
+<!--RDFa-->
+
+ <meta property="dc:type" content="Text" />
+    <meta property="dc:format" content="text/html" />
+$if(url_article_sp)$
+    <meta property="dc:identifier" scheme="URI" content="$url_article_sp$" />
+$endif$
+$if(issnnum)$
+    <meta property="dc:identifier" scheme="ISSN" content="$issnnum$" />
+$endif$
+    <meta property="dc:title" content="$title$" />
+    <meta property="dc:publisher" content="$publisher$" />
+    <meta property="dc:language" scheme="RFC3066" content="$lang$" />
+    <meta property="dc:type" content="journalArticle" />
+
+$for(authors)$
+    <meta property="dc:creator" content="$authors.forname$ $authors.surname$" />
+$endfor$
+
+$if(abstract)$
+$for(abstract)$
+
+    <meta property="dcterms:abstract" xml:lang="$abstract.lang$" lang="$abstract.lang$" content="$abstract.text$" />
+$endfor$
+$endif$
+
+
+$if(controlledKeywords)$
+$for(controlledKeywords)$
+    <meta property="dc:subject" xml:lang="fr" lang="fr" content="$controlledKeywords.label$" />
+  <link rel="dc:subject" href="$controlledKeywords.uriRameau$"/>
+$endfor$
+$endif$
+
+
+    <meta property="dcterm:created" scheme="W3CDTF" content="$date$" />
+    <meta property="dc:rights" content="$rights$" />
+    <meta property="dc:relation.isPartOf" content="$dossier$" />
+    <meta property="dc:source" content="$journal$" />
+
+
+<!--Nos metadonnees-->
+
+$if(controlledKeywords)$
+$for(controlledKeywords)$
+<meta name="controlledKeyword" content="$controlledKeywords.label$" uriRameau="$controlledKeywords.uriRameau$" idRameau="$controlledKeywords.idRameau$" wikidata="$controlledKeywords.wikidata$" />
+$endfor$
+$endif$
+
+$if(director)$
+$for(director)$
+<meta name="director" content="$director.forname$ $director.surname$" forname="$director.forname$" surname="$director.surname$" orcid="$director.orcid$" />
+$endfor$
+$endif$
+
+$if(authors)$
+$for(authors)$
+<meta name="author" content="$authors.forname$ $authors.surname$" forname="$authors.forname$" surname="$authors.surname$" orcid="$authors.orcid$" />
+$endfor$
+$endif$
+
+
+$if(redacteurDossier)$
+$for(redacteurDossier)$
+<meta name="redacteurDossier" content="$redacteurDossier.forname$ $redacteurDossier.surname$" forname="$redacteurDossier.forname$" surname="$redacteurDossier.surname$" orcid="$redacteurDossier.orcid$" />
+$endfor$
+$endif$
+
+$if(year)$
+<meta name="year" content="$year$" />
+$endif$
+
+  <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
+  <style type="text/css">code{white-space: pre;}</style>
+$if(quotes)$
+  <style type="text/css">q { quotes: "“" "”" "‘" "’"; }</style>
+$endif$
+$if(highlighting-css)$
+  <style type="text/css">
+$highlighting-css$
+  </style>
+$endif$
+$for(css)$
+  <link rel="stylesheet" href="$css$" type="text/css" />
+$endfor$
+$if(math)$
+  $math$
+$endif$
+$for(header-includes)$
+  $header-includes$
+$endfor$
+</head>
+<body>
+$for(include-before)$
+$include-before$
+$endfor$
+$if(toc)$
+<div id="$idprefix$TOC">
+$toc$
+</div>
+$endif$
+$body$
+$for(include-after)$
+$include-after$
+$endfor$
+</body>
+</html>
