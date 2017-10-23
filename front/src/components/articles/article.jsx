@@ -74,22 +74,23 @@ export default class Articles extends Component {
   render() {
     return (
       <ul className="unstyled">
-        {!this.state.edit && <p>
+        {!this.state.edit && <p className="articleTitle">
           {this.props.article.title}
-          <span onClick={this.startEdit}>[edit title]</span>
-          <span onClick={this.startDelete}>[Delete article]</span>
+          <span onClick={this.startEdit} className="primaryButton editButton"><i class="fa fa-pencil"></i> Rename</span>
+          <span onClick={this.startDelete} className="primaryButton deleteButton"><i class="fa fa-trash"></i> Delete</span>
           {this.state.delete && <button className="alertButton" onDoubleClick={this.deleteArticle}>DANGER! Doubleclick to delete</button>}
-        </p>}
+          </p>
+        }
         {this.state.edit && [
           <input key={"input"+this.props.article.id} type="text" ref="title"  defaultValue={this.props.article.title} onBlur={this.emitChangeArticleName}/>,
           <button key={"button"+this.props.article.id} className="primaryButton">OK</button>]}
           {this.props.article.versions && this.props.article.versions.map((version,i)=>(
           <li key={"versions"+version.id}>
             v{version.version}.{version.revision}
-            {i==0 && <Link to={"/write/"+this.props.article.id}>[edit]</Link>}
-            {i==0 && <NewVersion {...version}/>}
-            {i>0 && <Link to={"/write/"+this.props.article.id+"/"+version.id}>[see]</Link>}
-            <Fork {...version}/>
+            {i==0 && <Link to={"/write/"+this.props.article.id} className="primaryButton editButton"><i class="fa fa-pencil"></i> Edit</Link>}
+            {i==0 && <NewVersion {...version} className="primaryButton duplicateButton"><i class="fa fa-files-o"></i> New version</NewVersion>}
+            {i>0 && <Link to={"/write/"+this.props.article.id+"/"+version.id} className="primaryButton seeButton"><i class="fa fa-eye"></i> See</Link>}
+            <Fork {...version} className="primaryButton forkButton"><i class="fa fa-external-link"></i> Fork</Fork>
           </li>))}
       </ul>
     );

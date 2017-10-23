@@ -88,9 +88,74 @@ html, body {
     display:inline-block;
 }
 
+.editButton {
+  background-color: white;
+  color:grey;
+  border:1px solid grey;
+  margin:0;
+  margin-left: 60px;
+  padding:0.5em 0.7em;
+  font-size: 1em;
+  cursor:pointer;
+  display:inline-block;
+}
+
+.deleteButton {
+  background-color: white;
+  color:grey;
+  border:1px solid grey;
+  margin:0;
+  margin-left: 10px;
+  padding:0.5em 0.7em;
+  font-size: 1em;
+  cursor:pointer;
+  display:inline-block;
+}
+
+.duplicateButton {
+  background-color: white;
+  color:grey;
+  border:1px solid grey;
+  margin:0;
+  margin-left: 10px;
+  padding:0.5em 0.7em;
+  font-size: 1em;
+  cursor:pointer;
+  display:inline-block;
+}
+
+.seeButton {
+  background-color: white;
+  color:grey;
+  border:1px solid grey;
+  margin:0;
+  margin-left: 60px;
+  padding:0.5em 0.7em;
+  font-size: 1em;
+  cursor:pointer;
+  display:inline-block;
+}
+
+.forkButton {
+  background-color: white;
+  color:grey;
+  border:1px solid grey;
+  margin:0;
+  margin-left: 10px;
+  padding:0.5em 0.7em;
+  font-size: 1em;
+  cursor:pointer;
+  display:inline-block;
+}
+
 ul.unstyled{
-  margin:1em 0 0 0;
-  padding:0;
+    border-top: 1px solid lightgrey;
+    border-bottom: 1px solid lightgray;
+    margin: 10px 0 10px;
+    padding: 0px 10px 20px 10px;
+    h3{
+
+    }
   p,input {
     margin:0;
     padding:0.5em 1em;
@@ -99,6 +164,9 @@ ul.unstyled{
     cursor:pointer;
     display:inline-block;
     }
+  p.articleTitle {
+    font-size: 1.5em
+  }
   li {
     list-style: none;
     margin-left: 1em;
@@ -134,7 +202,7 @@ ul.unstyled{
 
 .Banner img{
   width: 100%;
-  padding-bottom: 20px;  
+  padding-bottom: 20px;
 }
 
 textarea{
