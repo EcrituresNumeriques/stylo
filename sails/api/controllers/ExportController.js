@@ -5,7 +5,8 @@ module.exports = {
   html: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
       fs.writeFileSync('/'+thisVersion.id+'.md', thisVersion.md);
-      fs.writeFileSync('/'+thisVersion.id+'.yaml', thisVersion.yaml);
+      let insertPos = thisVersion.yaml.lastIndexOf("\n---");
+      fs.writeFileSync('/'+thisVersion.id+'.yaml', thisVersion.yaml.substring(0,insertPos)+'\nbibliography: /'+thisVersion.id+'.bib'+thisVersion.yaml.substring(insertPos));
       fs.writeFileSync('/'+thisVersion.id+'.bib', thisVersion.bib);
       let src = '/'+thisVersion.id+'.md',
       args = '--standalone --template=templateHtmlDcV0.html5 --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml';

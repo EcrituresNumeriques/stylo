@@ -34,6 +34,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
+#install pandoc
 ENV PKGREL 1
 ENV VERSION 1.19.2.1
 ADD https://github.com/jgm/pandoc/releases/download/${VERSION}/pandoc-${VERSION}-${PKGREL}-amd64.deb /pandoc.deb
@@ -57,15 +58,21 @@ RUN sed -i 's#examples#/usr/bin#' /installed-pandocfilters.txt
 RUN mkdir -p ~/.pandoc/
 RUN wget https://raw.githubusercontent.com/EcrituresNumeriques/chaineEditorialeSP/master/templates/templateHtmlDcV0.html5 > ~/.pandoc/templateHtmlDcV0.html5
 
+#Make sure to get last node/npm versions
 RUN npm install -g n
 RUN n stable
 RUN yarn global add npm
 
-ADD sails /sails
+#speedup build process
+RUN mkdir /sails
+ADD sails/package.json /sails/
 RUN cd /sails; npm i
-
-ADD front /front
+RUN mkdir /front
+ADD front/package.json /front/
 RUN cd /front; npm i
+
+ADD sails /sails
+ADD front /front
 RUN cd /front; npm run build
 
 WORKDIR /sails
