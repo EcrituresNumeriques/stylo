@@ -57,6 +57,7 @@ export default class Articles extends Component {
   render() {
     return (
       <div>
+          <p class="Banner"><img src="https://i.imgur.com/tBKKIzd.png"></p>
           <h1>My Articles</h1>
           <p onClick={this.addArticle} className="primaryButton">Create new article</p>
           <p>{this.state.loaded?"Up to Date":"Fetching"}</p>

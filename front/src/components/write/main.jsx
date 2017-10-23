@@ -100,6 +100,7 @@ export default class Write extends Component {
   render() {
     return (
       <div>
+          <p class="Banner"><img src="https://i.imgur.com/tBKKIzd.png"></p>
           <h1>{this.state.article.title}</h1>
           <div>
             <Link to="/articles"  className="secondaryButton">Back to My articles</Link>
