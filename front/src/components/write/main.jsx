@@ -12,7 +12,8 @@ export default class Write extends Component {
     this.state = {loaded:false,live:{},active:{},activeId:this.props.match.params.version,article:{versions:[]}};
     this.sendNewVersion = this.sendNewVersion.bind(this);
     this.fetchAPI = this.fetchAPI.bind(this);
-    this.updateXML = this.updateXML.bind(this);
+    this.updateMD = this.updateMD.bind(this);
+    this.updateBIB = this.updateBIB.bind(this);
     this.updateYAML = this.updateYAML.bind(this);
     this.fetchAPI();
   }
@@ -55,7 +56,7 @@ export default class Write extends Component {
     let that = this;
     let version = major?this.state.live.version+1:this.state.live.version;
     let revision = major?0:this.state.live.revision+1;
-    let corps = {article:this.state.article.id,owner:this.state.article.owner,version,revision,md:this.state.live.md,yaml:this.state.live.yaml};
+    let corps = {article:this.state.article.id,owner:this.state.article.owner,version,revision,md:this.state.live.md,yaml:this.state.live.yaml,bib:this.state.live.bib};
     fetch('/api/v1/versions/',{
       method:'POST',
       body: JSON.stringify(corps),
@@ -76,7 +77,7 @@ export default class Write extends Component {
     });
   }
 
-  updateXML(e){
+  updateMD(e){
     let midState = objectAssign({},this.state);
     midState.live.md = e.target.value;
     midState.active.md = e.target.value;
@@ -87,6 +88,12 @@ export default class Write extends Component {
     let midState = objectAssign({},this.state);
     midState.live.yaml = e.target.value;
     midState.active.yaml = e.target.value;
+    this.setState(midState);
+  }
+  updateBIB(e){
+    let midState = objectAssign({},this.state);
+    midState.live.bib = e.target.value;
+    midState.active.bib = e.target.value;
     this.setState(midState);
   }
 
@@ -106,9 +113,11 @@ export default class Write extends Component {
               <Link to={"/write/"+this.props.match.params.article+"/"+version.id} key={"versionWrite"+version.id} data-id={"versionWrite"+version.id} className={this.state.activeId == version.id?"active":"" }>v{version.version}.{version.revision}</Link>
             ))}
           </div>
-          <textarea value={this.state.active.md} disabled={this.state.activeId} onInput={this.updateXML} placeholder="XML via texture">
+          <textarea value={this.state.active.md} disabled={this.state.activeId} onInput={this.updateMD} placeholder="Markdown">
           </textarea>
           <textarea value={this.state.active.yaml} disabled={this.state.activeId} onInput={this.updateYAML} placeholder="YAML editor">
+          </textarea>
+          <textarea value={this.state.active.bib} disabled={this.state.activeId} onInput={this.updateBIB} placeholder="BIBtext">
           </textarea>
           {this.state.activeId && <ExportVersion version={this.state.activeId}/>}
       </div>
