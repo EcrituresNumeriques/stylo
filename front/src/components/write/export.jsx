@@ -9,7 +9,7 @@ export default class Export extends Component {
   }
 
   getHTML(){
-    window.open('/api/v1/version/'+this.props.version+"/html",'_blank')
+    window.open('/api/v1/export/'+this.props.version,'_blank')
   }
 
   render() {

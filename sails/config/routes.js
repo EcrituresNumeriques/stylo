@@ -51,6 +51,10 @@ module.exports.routes = {
   'POST /api/v1/versions/:id/fork':'VersionsController.fork',
   'DELETE /api/v1/versions/:id':'VersionsController.destroy',
 
+
+  //exports
+  'GET /api/v1/export/:id':'ExportController.html',
+
   // All GET requests are directed to the app controller which renders our app.
   'GET /*': {
     controller: 'AppController',
