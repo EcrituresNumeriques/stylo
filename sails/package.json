@@ -17,6 +17,7 @@
     "bcrypt": "^1.0.2",
     "connect-redis": "^3.3.0",
     "ejs": "2.3.4",
+    "node-pandoc": "^0.3.0",
     "sails": "~0.12.2",
     "sails-disk": "~0.10.9",
     "sails-mongo": "^0.12.2"
