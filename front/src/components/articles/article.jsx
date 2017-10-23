@@ -88,9 +88,9 @@ export default class Articles extends Component {
           <li key={"versions"+version.id}>
             v{version.version}.{version.revision}
             {i==0 && <Link to={"/write/"+this.props.article.id} className="primaryButton editButton"><i class="fa fa-pencil"></i> Edit</Link>}
-            {i==0 && <NewVersion {...version} className="primaryButton duplicateButton"><i class="fa fa-files-o"></i> New version</NewVersion>}
+            {i==0 && <NewVersion {...version} />}
             {i>0 && <Link to={"/write/"+this.props.article.id+"/"+version.id} className="primaryButton seeButton"><i class="fa fa-eye"></i> See</Link>}
-            <Fork {...version} className="primaryButton forkButton"><i class="fa fa-external-link"></i> Fork</Fork>
+            <Fork {...version} />
           </li>))}
       </ul>
     );
