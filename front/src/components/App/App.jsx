@@ -5,6 +5,7 @@ import Register from 'components/login/Register'
 import NotFound from 'components/NotFound/NotFound'
 import Articles from 'components/articles/articles'
 import Write from 'components/write/main'
+import 'font-awesome-webpack'
 
 export default class App extends Component {
   constructor(props) {
