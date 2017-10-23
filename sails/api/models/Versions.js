@@ -27,6 +27,10 @@ module.exports = {
       type:'longtext',
       defaultsTo:'<XML></XML>'
     },
+    md:{
+      type:'longtext',
+      defaultsTo:'## titre'
+    },
     yaml:{
       type:'longtext',
       defaultsTo:'Yaml:'

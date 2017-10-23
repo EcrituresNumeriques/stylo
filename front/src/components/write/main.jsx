@@ -55,7 +55,7 @@ export default class Write extends Component {
     let that = this;
     let version = major?this.state.live.version+1:this.state.live.version;
     let revision = major?0:this.state.live.revision+1;
-    let corps = {article:this.state.article.id,owner:this.state.article.owner,version,revision,xml:this.state.live.xml,yaml:this.state.live.yaml};
+    let corps = {article:this.state.article.id,owner:this.state.article.owner,version,revision,md:this.state.live.md,yaml:this.state.live.yaml};
     fetch('/api/v1/versions/',{
       method:'POST',
       body: JSON.stringify(corps),
@@ -78,8 +78,8 @@ export default class Write extends Component {
 
   updateXML(e){
     let midState = objectAssign({},this.state);
-    midState.live.xml = e.target.value;
-    midState.active.xml = e.target.value;
+    midState.live.md = e.target.value;
+    midState.active.md = e.target.value;
     this.setState(midState);
 
   }
@@ -106,7 +106,7 @@ export default class Write extends Component {
               <Link to={"/write/"+this.props.match.params.article+"/"+version.id} key={"versionWrite"+version.id} data-id={"versionWrite"+version.id} className={this.state.activeId == version.id?"active":"" }>v{version.version}.{version.revision}</Link>
             ))}
           </div>
-          <textarea value={this.state.active.xml} disabled={this.state.activeId} onInput={this.updateXML} placeholder="XML via texture">
+          <textarea value={this.state.active.md} disabled={this.state.activeId} onInput={this.updateXML} placeholder="XML via texture">
           </textarea>
           <textarea value={this.state.active.yaml} disabled={this.state.activeId} onInput={this.updateYAML} placeholder="YAML editor">
           </textarea>
