@@ -81,9 +81,9 @@ export default class Articles extends Component {
   render() {
     return (
       <ul className="unstyled">
-        {!this.state.edit && [<p className="articleTitle">
-          {!this.state.open && <i class="fa fa-plus" aria-hidden="true" onClick={this.toggleOpen}/>}
-          {this.state.open && <i class="fa fa-minus" aria-hidden="true" onClick={this.toggleOpen}/>}
+        {!this.state.edit && [<p className="articleTitle"  onClick={this.toggleOpen}>
+          {!this.state.open && <i class="fa fa-plus" aria-hidden="true"/>}
+          {this.state.open && <i class="fa fa-minus" aria-hidden="true"/>}
           {this.props.article.title} ({dateFormat(new Date(this.props.article.updatedAt),"dd/mm/yy, HH:MM")})
         </p>,
           <nav>

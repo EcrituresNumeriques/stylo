@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
-<?xml-stylesheet href="https://raw.githubusercontent.com/EcrituresNumeriques/chaineEditorialeSP/master/xslt/HTML2eruditV0.xsl" type="text/xsl" ?>
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:dc="http://purl.org/dc/terms/"
   version="XHTML+RDFa 1.0" $if(lang)$ xml:lang="$lang$"$endif$$if(dir)$ dir="$dir$"$endif$>
+  <?xml-stylesheet href="https://raw.githubusercontent.com/EcrituresNumeriques/chaineEditorialeSP/master/xslt/HTML2eruditV0.xsl" type="text/xsl" ?>
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
