@@ -109,8 +109,10 @@ export default class Write extends Component {
             <Link to="/articles"  className="button secondaryButton">Back to My articles</Link>
             <button className={this.state.activeId?"button disabledButton":"button secondaryButton"} onClick={()=>this.sendNewVersion(null,true,false)}>Save as new version</button>
             <button className={this.state.activeId?"button disabledButton":"button secondaryButton"} onClick={this.sendNewVersion}>QuickSave</button>
-            {this.state.activeId && <ExportVersion version={this.state.activeId}/>}
+            {this.state.activeId && <ExportVersion version={this.state.activeId} target="HTML"/>}
             {!this.state.activeId && <button className="button primaryButton" onClick={()=>this.sendNewVersion(null,false,true)}>Export as HTML</button>}
+            {this.state.activeId && <ExportVersion version={this.state.activeId} target="EruditXML"/>}
+            {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,true)}>Export as EruditXML</button>}
           </div>
           <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
           <div id="timeline">

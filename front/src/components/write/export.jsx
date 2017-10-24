@@ -9,12 +9,16 @@ export default class Export extends Component {
   }
 
   getHTML(){
-    window.open('/api/v1/export/'+this.props.version,'_blank')
+    let target = "export";
+    if(this.props.target == "EruditXML"){
+      target='exportErudit';
+    }
+    window.open('/api/v1/'+target+'/'+this.props.version,'_blank')
   }
 
   render() {
     return (
-        <button className="button primaryButton" onClick={this.getHTML}>Export as HTML</button>
+        <button className="button primaryButton" onClick={this.getHTML}>Export as {this.props.target}</button>
     );
   }
 }
