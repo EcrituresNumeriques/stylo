@@ -9,7 +9,7 @@ export default class NewVersion extends Component {
   }
 
   newVersion(){
-    let corps = {article:this.props.article,owner:this.props.owner,version:this.props.version+1,revision:0,xml:this.props.xml,yaml:this.props.yaml};
+    let corps = {article:this.props.article,owner:this.props.owner,version:this.props.version+1,revision:0,xml:this.props.xml,yaml:this.props.yaml,md:this.props.md,bib:this.props.bib};
     fetch('/api/v1/versions/',{
       method:'POST',
       body: JSON.stringify(corps),

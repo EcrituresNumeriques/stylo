@@ -199,11 +199,29 @@ ul.unstyled{
 
   }
 }
-
-.Banner img{
-  width: 100%;
-  padding-bottom: 20px;
+div#app {
+  header {
+    margin-bottom: 20px;
+    img{
+      width: 100%;
+      padding-bottom: 20px;
+    }
+  }
+  main#mainView {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1000px;
+    background-color: white;
+    padding: 1em;
+    section {
+      h1 {
+        margin:0;
+        text-align: center;
+      }
+    }
+  }
 }
+
 
 textarea{
   vertical-align: top;

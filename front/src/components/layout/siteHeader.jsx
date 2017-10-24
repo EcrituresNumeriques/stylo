@@ -7,7 +7,9 @@ export default class SiteHeader extends Component {
 
 render() {
     return (
-          <p class="Banner"><img src="https://i.imgur.com/tBKKIzd.png"/></p>
+      <header>
+        <img src="https://i.imgur.com/tBKKIzd.png"/>
+      </header>
     );
   }
 }

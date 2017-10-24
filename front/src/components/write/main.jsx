@@ -100,13 +100,13 @@ export default class Write extends Component {
 
   render() {
     return (
-      <div>
-          <SiteHeader />
+      <section>
           <h1>{this.state.article.title}</h1>
           <div>
             <Link to="/articles"  className="secondaryButton">Back to My articles</Link>
             <button className={this.state.activeId?"disabledButton":"secondaryButton"} onClick={()=>this.sendNewVersion(null,true)}>Save as new version</button>
             <button className={this.state.activeId?"disabledButton":"secondaryButton"} onClick={this.sendNewVersion}>QuickSave</button>
+            {this.state.activeId && <ExportVersion version={this.state.activeId}/>}
           </div>
           <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
           <div id="timeline">
@@ -121,8 +121,7 @@ export default class Write extends Component {
           </textarea>
           <textarea value={this.state.active.bib} disabled={this.state.activeId} onInput={this.updateBIB} placeholder="BIBtext">
           </textarea>
-          {this.state.activeId && <ExportVersion version={this.state.activeId}/>}
-      </div>
+      </section>
     );
   }
 }

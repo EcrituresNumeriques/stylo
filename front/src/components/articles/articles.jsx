@@ -57,14 +57,13 @@ export default class Articles extends Component {
 
   render() {
     return (
-      <div>
-          <SiteHeader />
-          <h1><i className="fa fa-users" aria-hidden="true">My Articles</i></h1>
-          <p onClick={this.addArticle} className="primaryButton">Create new article</p>
-          <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
-          {!store.getState().articles.articles.length && <p>No articles found</p>}
-          {store.getState().articles.articles.map((article)=>(<Article key={"article"+article.id} article={article} />))}
-      </div>
+            <section>
+              <h1>My Articles</h1>
+              <p onClick={this.addArticle} className="primaryButton">Create new article</p>
+              <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
+              {!store.getState().articles.articles.length && <p>No articles found</p>}
+              {store.getState().articles.articles.map((article)=>(<Article key={"article"+article.id} article={article} />))}
+            </section>
     );
   }
 }

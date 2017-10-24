@@ -76,6 +76,7 @@ export default class Articles extends Component {
       <ul className="unstyled">
         {!this.state.edit && <p className="articleTitle">
           {this.props.article.title}
+          <Link to={"/write/"+this.props.article.id} className="primaryButton editButton"><i class="fa fa-pencil"></i> Edit</Link>
           <span onClick={this.startEdit} className="primaryButton editButton"><i class="fa fa-pencil"></i> Rename</span>
           <span onClick={this.startDelete} className="primaryButton deleteButton"><i class="fa fa-trash"></i> Delete</span>
           {this.state.delete && <button className="alertButton" onDoubleClick={this.deleteArticle}>DANGER! Doubleclick to delete</button>}
@@ -87,9 +88,8 @@ export default class Articles extends Component {
           {this.props.article.versions && this.props.article.versions.map((version,i)=>(
           <li key={"versions"+version.id}>
             v{version.version}.{version.revision}
-            {i==0 && <Link to={"/write/"+this.props.article.id} className="primaryButton editButton"><i class="fa fa-pencil"></i> Edit</Link>}
+            <Link to={"/write/"+this.props.article.id+"/"+version.id} className="primaryButton seeButton"><i class="fa fa-eye"></i> See</Link>
             {i==0 && <NewVersion {...version} />}
-            {i>0 && <Link to={"/write/"+this.props.article.id+"/"+version.id} className="primaryButton seeButton"><i class="fa fa-eye"></i> See</Link>}
             <Fork {...version} />
           </li>))}
       </ul>

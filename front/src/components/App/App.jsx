@@ -5,6 +5,7 @@ import Register from 'components/login/Register'
 import NotFound from 'components/NotFound/NotFound'
 import Articles from 'components/articles/articles'
 import Write from 'components/write/main'
+import Layout from 'components/layout/layout'
 import 'font-awesome-webpack'
 
 export default class App extends Component {
@@ -14,16 +15,16 @@ export default class App extends Component {
 
   render() {
     return(
-      <div>
         <Switch>
           <Route exact path="/login" component={Login}/>
           <Route exact path="/register" component={Register}/>
-          <Route exact path="/articles" component={Articles}/>
-          <Route exact path="/write/:article/:version" component={Write} />
-          <Route exact path="/write/:article" component={Write} />
+          <Layout>
+            <Route exact path="/articles" component={Articles}/>
+            <Route exact path="/write/:article/:version" component={Write} />
+            <Route exact path="/write/:article" component={Write} />
+          </Layout>
           <Route component={NotFound}/>
         </Switch>
-      </div>
     );
   }
 }
