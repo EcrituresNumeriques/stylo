@@ -15,7 +15,7 @@ export default class Articles extends Component {
     this.emitChangeArticleName = this.emitChangeArticleName.bind(this);
     this.deleteArticle = this.deleteArticle.bind(this);
     this.startEdit = this.startEdit.bind(this);
-    this.startDelete = this.startDelete.bind(this);
+    this.toggleDelete = this.toggleDelete.bind(this);
     this.toggleOpen = this.toggleOpen.bind(this);
   }
 
@@ -23,8 +23,8 @@ export default class Articles extends Component {
   startEdit(){
       this.setState({edit:true,delete:false});
   }
-  startDelete(){
-      this.setState({delete:true});
+  toggleDelete(){
+      this.setState({delete:!this.state.delete});
   }
   componentDidMount(){
     if(!this.props.article.versions){
@@ -89,7 +89,7 @@ export default class Articles extends Component {
           <nav>
             <Link to={"/write/"+this.props.article.id} className="button primaryButton"><i class="fa fa-pencil"></i> Edit</Link>
             <span onClick={this.startEdit} className="button"><i class="fa fa-pencil"></i> Rename</span>
-            <span onClick={this.startDelete} className="button"><i class="fa fa-trash"></i> Delete</span>
+            <span onClick={this.toggleDelete} className="button"><i class="fa fa-trash"></i> Delete</span>
             {this.state.delete && <button className="button alertButton" onDoubleClick={this.deleteArticle}>DANGER! Doubleclick to delete</button>}
           </nav>]
 

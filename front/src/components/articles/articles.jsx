@@ -60,7 +60,7 @@ export default class Articles extends Component {
     return (
             <section>
               <h1>My Articles</h1>
-              <p onClick={this.addArticle} className="button">Create new article</p>
+              <p onClick={this.addArticle} className="button primaryButton">Create new article</p>
               <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
               {!store.getState().articles.articles.length && <p>No articles found</p>}
               {store.getState().articles.articles.sort(sortByUpdateDesc).map((article)=>(<Article key={"article"+article.id} article={article} />))}
