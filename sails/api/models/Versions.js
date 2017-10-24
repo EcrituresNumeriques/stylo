@@ -33,7 +33,7 @@ module.exports = {
     },
     yaml:{
       type:'longtext',
-      defaultsTo:'Yaml:'
+      defaultsTo:'---\ntitle: Title\n---'
     }
   },
   afterCreate:function(version, next){
