@@ -53,7 +53,7 @@ export default class Write extends Component {
     }
   }
 
-  sendNewVersion(e,major=false){
+  sendNewVersion(e,major=false,exportAfter=false){
     let that = this;
     let version = major?this.state.live.version+1:this.state.live.version;
     let revision = major?0:this.state.live.revision+1;
@@ -73,6 +73,9 @@ export default class Write extends Component {
       midState.live.version = version;
       midState.live.revision = revision;
       that.setState(midState);
+      if(exportAfter){
+        window.open('/api/v1/export/'+json.id,'_blank');
+      }
       store.dispatch({type:"ARTICLES_ADDVERSION",data:json});
       return null;
     });
@@ -103,10 +106,11 @@ export default class Write extends Component {
       <section>
           <h1>{this.state.article.title}</h1>
           <div>
-            <Link to="/articles"  className="secondaryButton">Back to My articles</Link>
-            <button className={this.state.activeId?"disabledButton":"secondaryButton"} onClick={()=>this.sendNewVersion(null,true)}>Save as new version</button>
-            <button className={this.state.activeId?"disabledButton":"secondaryButton"} onClick={this.sendNewVersion}>QuickSave</button>
+            <Link to="/articles"  className="button secondaryButton">Back to My articles</Link>
+            <button className={this.state.activeId?"button disabledButton":"button secondaryButton"} onClick={()=>this.sendNewVersion(null,true,false)}>Save as new version</button>
+            <button className={this.state.activeId?"button disabledButton":"button secondaryButton"} onClick={this.sendNewVersion}>QuickSave</button>
             {this.state.activeId && <ExportVersion version={this.state.activeId}/>}
+            {!this.state.activeId && <button className="button primaryButton" onClick={()=>this.sendNewVersion(null,false,true)}>Export as HTML</button>}
           </div>
           <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
           <div id="timeline">
