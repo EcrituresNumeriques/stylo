@@ -47,115 +47,71 @@ html, body {
 
 }
 
+.button {
+  background-color: #fff;
+  color: grey;
+  border: 1px solid grey;
+  padding:0.5em 1em;
+  font-size: 1em;
+  cursor: pointer;
+  display: inline-block;
+  margin:0 0.25em;
+}
 .primaryButton {
     background-color: green;
     color:white;
     border:1px solid green;
-    margin:0;
-    padding:0.5em 1em;
-    font-size: 1em;
-    cursor:pointer;
-    display:inline-block;
-}
-.secondaryButton {
-    background-color: buttonface;
-    color:black;
-    border:1px solid buttonface;
-    margin:0;
-    padding:0.5em 1em;
-    font-size: 1em;
-    cursor:pointer;
-    display:inline-block;
 }
 .disabledButton {
     background-color: #c0c0c0;
     color:#909090;
     border:1px solid #c0c0c0;
-    margin:0;
-    padding:0.5em 1em;
     font-size: 1em;
     cursor:not-allowed;
-    display:inline-block;
 }
 .alertButton {
     background-color: red;
     color:white;
     border:1px solid red;
-    margin:0;
-    padding:0.5em 1em;
-    font-size: 1em;
-    cursor:pointer;
-    display:inline-block;
 }
 
 .editButton {
   background-color: white;
   color:grey;
   border:1px solid grey;
-  margin:0;
-  margin-left: 60px;
-  padding:0.5em 0.7em;
-  font-size: 1em;
-  cursor:pointer;
-  display:inline-block;
 }
 
 .deleteButton {
   background-color: white;
   color:grey;
   border:1px solid grey;
-  margin:0;
-  margin-left: 10px;
-  padding:0.5em 0.7em;
-  font-size: 1em;
-  cursor:pointer;
-  display:inline-block;
 }
 
 .duplicateButton {
   background-color: white;
   color:grey;
   border:1px solid grey;
-  margin:0;
-  margin-left: 10px;
-  padding:0.5em 0.7em;
-  font-size: 1em;
-  cursor:pointer;
-  display:inline-block;
 }
 
 .seeButton {
   background-color: white;
   color:grey;
   border:1px solid grey;
-  margin:0;
-  margin-left: 60px;
-  padding:0.5em 0.7em;
-  font-size: 1em;
-  cursor:pointer;
-  display:inline-block;
 }
 
 .forkButton {
   background-color: white;
   color:grey;
   border:1px solid grey;
-  margin:0;
-  margin-left: 10px;
-  padding:0.5em 0.7em;
-  font-size: 1em;
-  cursor:pointer;
-  display:inline-block;
 }
 
 ul.unstyled{
-    border-top: 1px solid lightgrey;
-    border-bottom: 1px solid lightgray;
-    margin: 10px 0 10px;
-    padding: 0px 10px 20px 10px;
-    h3{
-
-    }
+  margin:0;
+  padding:0.5em;
+  clear:both;
+  nav {
+    float:right;
+  }
   p,input {
     margin:0;
     padding:0.5em 1em;
@@ -165,9 +121,13 @@ ul.unstyled{
     display:inline-block;
     }
   p.articleTitle {
-    font-size: 1.5em
+    display:inline-block;
+    i {
+      margin-right: 1em;
+    }
   }
   li {
+    clear:both;
     list-style: none;
     margin-left: 1em;
     border-left:1px solid #c0c0c0;
@@ -178,6 +138,9 @@ ul.unstyled{
     margin-right: 0.5em;
     color:#c0c0c0;
   }
+}
+ul.unstyled:nth-child(2n){
+  background-color:#f8f8f8;
 }
 #timeline{
   display:inline-block;
@@ -208,6 +171,7 @@ div#app {
     }
   }
   main#mainView {
+    user-select: none;
     margin: 0 auto;
     width: 100%;
     max-width: 1000px;
@@ -215,8 +179,8 @@ div#app {
     padding: 1em;
     section {
       h1 {
-        margin:0;
-        text-align: center;
+        font-size: 2em;
+        margin:0 0 1em 0;
       }
     }
   }
@@ -224,6 +188,7 @@ div#app {
 
 
 textarea{
+  user-select: contain;
   vertical-align: top;
   min-width:40em;
   min-height:30em;

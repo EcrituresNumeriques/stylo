@@ -35,5 +35,11 @@ module.exports = {
       type:'longtext',
       defaultsTo:'Yaml:'
     }
+  },
+  afterCreate:function(version, next){
+    Articles.update({id:version.article},{updatedAt:new Date()}).exec(function afterwards(err, updated){
+      if (err) {return;};
+      next();
+    });
   }
 };

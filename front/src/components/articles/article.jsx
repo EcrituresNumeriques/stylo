@@ -4,15 +4,19 @@ import store from 'store/configureStore';
 import sortByIdDesc from 'helpers/sorts/idDesc';
 import Fork from 'components/articles/fork'
 import NewVersion from 'components/articles/newVersion'
+var dateFormat = require('dateformat');
+
+
 
 export default class Articles extends Component {
   constructor(props) {
     super(props);
-    this.state = {edit:false,delete:false};
+    this.state = {edit:false,delete:false,open:false};
     this.emitChangeArticleName = this.emitChangeArticleName.bind(this);
     this.deleteArticle = this.deleteArticle.bind(this);
     this.startEdit = this.startEdit.bind(this);
     this.startDelete = this.startDelete.bind(this);
+    this.toggleOpen = this.toggleOpen.bind(this);
   }
 
   //Set state needed
@@ -70,25 +74,33 @@ export default class Articles extends Component {
       return null;
     });
   }
+  toggleOpen(){
+    this.setState({open:!this.state.open});
+  }
 
   render() {
     return (
       <ul className="unstyled">
-        {!this.state.edit && <p className="articleTitle">
-          {this.props.article.title}
-          <Link to={"/write/"+this.props.article.id} className="primaryButton editButton"><i class="fa fa-pencil"></i> Edit</Link>
-          <span onClick={this.startEdit} className="primaryButton editButton"><i class="fa fa-pencil"></i> Rename</span>
-          <span onClick={this.startDelete} className="primaryButton deleteButton"><i class="fa fa-trash"></i> Delete</span>
-          {this.state.delete && <button className="alertButton" onDoubleClick={this.deleteArticle}>DANGER! Doubleclick to delete</button>}
-          </p>
+        {!this.state.edit && [<p className="articleTitle">
+          {!this.state.open && <i class="fa fa-plus" aria-hidden="true" onClick={this.toggleOpen}/>}
+          {this.state.open && <i class="fa fa-minus" aria-hidden="true" onClick={this.toggleOpen}/>}
+          {this.props.article.title} ({dateFormat(new Date(this.props.article.updatedAt),"dd/mm/yy, HH:MM")})
+        </p>,
+          <nav>
+            <Link to={"/write/"+this.props.article.id} className="button primaryButton"><i class="fa fa-pencil"></i> Edit</Link>
+            <span onClick={this.startEdit} className="button"><i class="fa fa-pencil"></i> Rename</span>
+            <span onClick={this.startDelete} className="button"><i class="fa fa-trash"></i> Delete</span>
+            {this.state.delete && <button className="button alertButton" onDoubleClick={this.deleteArticle}>DANGER! Doubleclick to delete</button>}
+          </nav>]
+
         }
         {this.state.edit && [
           <input key={"input"+this.props.article.id} type="text" ref="title"  defaultValue={this.props.article.title} onBlur={this.emitChangeArticleName}/>,
-          <button key={"button"+this.props.article.id} className="primaryButton">OK</button>]}
-          {this.props.article.versions && this.props.article.versions.map((version,i)=>(
+          <button key={"button"+this.props.article.id} className="button">OK</button>]}
+          {this.state.open && this.props.article.versions && this.props.article.versions.map((version,i)=>(
           <li key={"versions"+version.id}>
             v{version.version}.{version.revision}
-            <Link to={"/write/"+this.props.article.id+"/"+version.id} className="primaryButton seeButton"><i class="fa fa-eye"></i> See</Link>
+            <Link to={"/write/"+this.props.article.id+"/"+version.id} className="button"><i class="fa fa-eye"></i> See</Link>
             {i==0 && <NewVersion {...version} />}
             <Fork {...version} />
           </li>))}

@@ -26,7 +26,7 @@ export default class NewVersion extends Component {
 
   render() {
     return (
-      <span className="primaryButton duplicateButton" onClick={this.newVersion}><i class="fa fa-files-o"></i> New version</span>
+      <span className="button duplicateButton" onClick={this.newVersion}><i class="fa fa-files-o"></i> New version</span>
     );
   }
 }

@@ -15,7 +15,7 @@ export default class Export extends Component {
   render() {
     return (
       <div>
-        <button className="primaryButton" onClick={this.getHTML}>Export as HTML</button>
+        <button className="button" onClick={this.getHTML}>Export as HTML</button>
       </div>
     );
   }
