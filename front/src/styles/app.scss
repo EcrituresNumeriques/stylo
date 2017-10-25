@@ -198,7 +198,7 @@ aside#yamlEditor{
     overflow: hidden;
     right: 0;
     height: 100vh;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 div#app aside#yamlEditor >  section {
   position:absolute;

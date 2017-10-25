@@ -5,7 +5,7 @@ import React from 'react';
 import _ from 'lodash';
 
 export function Dossier(){
-  let redacteurDossier = store.getState().obj.redacteurDossier;
+  let redacteurDossier = _.get(store.getState().yamleditor.obj,"redacteurDossier",[]);
   let targetNewDossier = redacteurDossier.length;
   return(
     <section>

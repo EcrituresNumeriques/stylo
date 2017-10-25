@@ -6,10 +6,10 @@ import store from 'store/configureStore';
 import { TextInput } from './TextInput';
 import { Date} from './Date.jsx';
 import { Resumes} from './Resumes.jsx';
+import { Dossier } from './Dossier.jsx';
 
 //import { SelectInput } from './SelectInput.jsx';
 //import { Authors } from './Authors.jsx';
-//import { Dossier } from './Dossier.jsx';
 //import { Reviewers } from './Reviewers.jsx';
 //import { Collaborateurs} from './Collaborateurs.jsx';
 //import { MotsClefs} from './MotsClefs.jsx';
@@ -57,6 +57,7 @@ export default class YamlEditor extends Component{
         <TextInput target="subtitle" title="Sous-titre" forceValue={this.state.id?this.state.yaml.subtitle:null}/>
         <Date target="date" title="Date" forceValue={this.state.id?this.state.yaml.date:null}/>
         <Resumes/>
+        <Dossier />
       </section>
     )
   }
@@ -64,7 +65,6 @@ export default class YamlEditor extends Component{
 
 
 /*
-<Dossier />
 <Authors />
 <Reviewers />
 <Keywords/>
