@@ -4,7 +4,8 @@ import store from 'store/configureStore';
 import objectAssign from 'object-assign';
 import sortByIdDesc from 'helpers/sorts/idDesc';
 import ExportVersion from 'components/write/export';
-import SiteHeader from 'components/layout/siteHeader';
+import YamlEditor from 'components/yamleditor/Main';
+import YAML from 'js-yaml';
 
 export default class Write extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ export default class Write extends Component {
     });
   }
 
-  componentDidUpdate(){
+  componentDidUpdate(prevProps, prevState){
     if(this.state.activeId != this.props.match.params.version || this.state.compute){
       let newActive;
       if(this.props.match.params.version == undefined){
@@ -50,6 +51,16 @@ export default class Write extends Component {
         newActive = objectAssign({},this.state.article.versions.find(function(version){return that.props.match.params.version == version.id}));
       }
       this.setState({activeId:this.props.match.params.version,active:newActive,compute:false});
+    }
+    if(store.getState().yamleditor.misc.changed){
+      //updateYAML textarea here on yamleditor change;
+      store.dispatch({type:"FORM_REGISTERED"});
+      let midState = objectAssign({},this.state);
+      console.log("dumping : ",store.getState().yamleditor.obj);
+      let yaml = '---\n'+YAML.safeDump(store.getState().yamleditor.obj)+'---';
+      midState.live.yaml = yaml;
+      midState.active.yaml = yaml;
+      this.setState(midState);
     }
   }
 
@@ -72,6 +83,7 @@ export default class Write extends Component {
       //midState.article.versions = [json,...midState.article.versions];
       midState.live.version = version;
       midState.live.revision = revision;
+      midState.live.yaml = json.yaml;
       that.setState(midState);
       if(exportAfter){
         window.open('/api/v1/export/'+json.id,'_blank');
@@ -123,7 +135,8 @@ export default class Write extends Component {
           </div>
           <textarea value={this.state.active.md} disabled={this.state.activeId} onInput={this.updateMD} placeholder="Markdown">
           </textarea>
-          <textarea value={this.state.active.yaml} disabled={this.state.activeId} onInput={this.updateYAML} placeholder="YAML editor">
+          {!this.state.activeId && <YamlEditor {...this.state.live}/>}
+          <textarea value={this.state.active.yaml} disabled={this.state.activeId} placeholder="YAML editor">
           </textarea>
           <textarea value={this.state.active.bib} disabled={this.state.activeId} onInput={this.updateBIB} placeholder="BIBtext">
           </textarea>
