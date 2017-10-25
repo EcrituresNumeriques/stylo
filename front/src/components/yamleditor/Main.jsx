@@ -7,10 +7,10 @@ import { TextInput } from './TextInput';
 import { Date} from './Date.jsx';
 import { Resumes} from './Resumes.jsx';
 import { Dossier } from './Dossier.jsx';
+import { SelectInput } from './SelectInput.jsx';
+import { Authors } from './Authors.jsx';
+import { Reviewers } from './Reviewers.jsx';
 
-//import { SelectInput } from './SelectInput.jsx';
-//import { Authors } from './Authors.jsx';
-//import { Reviewers } from './Reviewers.jsx';
 //import { Collaborateurs} from './Collaborateurs.jsx';
 //import { MotsClefs} from './MotsClefs.jsx';
 //import { Rubriques} from './Rubriques.jsx';
@@ -58,6 +58,8 @@ export default class YamlEditor extends Component{
         <Date target="date" title="Date" forceValue={this.state.id?this.state.yaml.date:null}/>
         <Resumes/>
         <Dossier />
+        <Authors />
+        <Reviewers />
       </section>
     )
   }
@@ -65,8 +67,6 @@ export default class YamlEditor extends Component{
 
 
 /*
-<Authors />
-<Reviewers />
 <Keywords/>
 <Rubriques/>
 */

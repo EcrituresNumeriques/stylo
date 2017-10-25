@@ -5,7 +5,7 @@ import React from 'react';
 import _ from 'lodash';
 
 export function Authors(){
-  let authors = _.get(store.getState().obj,"authors",[]);
+  let authors = _.get(store.getState().yamleditor.obj,"authors",[]);
   let targetNewAuthor = authors.length;
   return(
     <section>

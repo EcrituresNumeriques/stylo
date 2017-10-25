@@ -5,7 +5,7 @@ import React from 'react';
 import _ from 'lodash';
 
 export function Reviewers(){
-  let reviewers = _.get(store.getState().obj,"reviewers",[]);
+  let reviewers = _.get(store.getState().yamleditor.obj,"reviewers",[]);
   let targetNewReviewer = reviewers.length;
   return(
     <section>
