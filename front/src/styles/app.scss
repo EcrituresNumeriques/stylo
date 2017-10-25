@@ -198,6 +198,7 @@ aside#yamlEditor{
     overflow: hidden;
     right: 0;
     height: 100vh;
+    overflow-y: scroll;
 }
 div#app aside#yamlEditor >  section {
   position:absolute;
@@ -284,7 +285,7 @@ div#app aside#yamlEditor >  section {
     border-style: solid;
   }
 }
-aside#yamlEditor >  section.closed{
+div#app aside#yamlEditor >  section.closed{
   right:-400px;
 }
 section#writeComponent{
