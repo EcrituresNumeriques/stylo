@@ -15,9 +15,6 @@ export class TextInput extends React.Component {
      };
   }
 
-  componentDidUpdate(){
-  }
-
   handleTextChange(event) {
     this.setState({value:event.target.value,changed:true});
     store.dispatch({type:"FORM_UPDATE",target:this.state.target, value:event.target.value});
@@ -27,7 +24,7 @@ export class TextInput extends React.Component {
   render() {
     return (
       <section className="reactForm">
-        <label>{this.state.title} :</label>
+        {this.state.element != "textArea" && <label>{this.state.title} :</label>}
         { this.state.element == "input" ? <input type="text" placeholder={this.state.placeholder} value={this.props.forceValue && !this.state.changed?this.props.forceValue:this.state.value} onChange={this.handleTextChange.bind(this)}/> :
         this.state.element == "textArea" ? <textarea placeholder={this.state.placeholder} value={this.state.value} onChange={this.handleTextChange.bind(this)}/> :
         null }

@@ -5,7 +5,7 @@ import React from 'react';
 import _ from 'lodash';
 
 export function Resumes(){
-  let resumes = _.get(store.getState().obj,"abstract",[]);
+  let resumes = _.get(store.getState().yamleditor.obj,"abstract",[]);
   let targetNewResume = resumes.length;
   return(
     <section>
@@ -19,8 +19,8 @@ export function Resumes(){
 function Resume(props){
   return(
     <section className="group">
-      <TextInput target={"abstract["+props.index+"].text"} title="Résumé" element="textArea"/>
       <SelectInput target={"abstract["+props.index+"].lang"} title="Language" placeholder="Choisir la langue du résumé" options={['fr','en','it']}/>
+      <TextInput target={"abstract["+props.index+"].text"} title="Résumé" element="textArea"/>
     </section>
   )
 }

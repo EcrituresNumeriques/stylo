@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { TextInput } from './TextInput';
-import { Date} from './Date.jsx';
 import objectAssign from 'object-assign';
 import YAML from 'js-yaml';
 import store from 'store/configureStore';
 
+import { TextInput } from './TextInput';
+import { Date} from './Date.jsx';
+import { Resumes} from './Resumes.jsx';
 
 //import { SelectInput } from './SelectInput.jsx';
-//import { Resumes} from './Resumes.jsx';
 //import { Authors } from './Authors.jsx';
 //import { Dossier } from './Dossier.jsx';
 //import { Reviewers } from './Reviewers.jsx';
@@ -56,6 +56,7 @@ export default class YamlEditor extends Component{
         <TextInput target="title" title="Titre" forceValue={this.state.id?this.state.yaml.title:null}/>
         <TextInput target="subtitle" title="Sous-titre" forceValue={this.state.id?this.state.yaml.subtitle:null}/>
         <Date target="date" title="Date" forceValue={this.state.id?this.state.yaml.date:null}/>
+        <Resumes/>
       </section>
     )
   }
@@ -63,7 +64,6 @@ export default class YamlEditor extends Component{
 
 
 /*
-<Resumes/>
 <Dossier />
 <Authors />
 <Reviewers />

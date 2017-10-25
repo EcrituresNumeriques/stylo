@@ -9,26 +9,14 @@ export class SelectInput extends React.Component {
         title:this.props.title,
         placeholder:this.props.placeholder || this.props.title,
         target : this.props.target,
-        value: _.get(store.getState().obj, this.props.target, ''),
-        options: this.props.options || ['fr','en','it']
+        value: _.get(store.getState().yamleditor.obj, this.props.target, ''),
+        options: this.props.options || ['fr','en','it'],
+        changed:false
      };
   }
 
-  componentDidMount(){
-    let context = this;
-    this.setState({unsubscribe : store.subscribe(function(){
-      let value = _.get(store.getState().obj, context.props.target, undefined);
-      if(typeof(value) != "undefined" && context.state.value != value){
-        context.setState({value:value});
-      }
-    })});
-  }
-
-  componentWillUnmount(){
-    this.state.unsubscribe();
-  }
-
   handleTextChange(event) {
+    this.setState({value:event.target.value,changed:true});
     store.dispatch({type:"FORM_UPDATE",target:this.state.target, value:event.target.value});
   }
 
@@ -36,7 +24,7 @@ export class SelectInput extends React.Component {
     return (
       <section className="reactForm">
         <label>{this.state.title} :</label>
-        <select onChange={this.handleTextChange.bind(this)} value={this.state.value}>
+        <select onChange={this.handleTextChange.bind(this)} value={this.props.forceValue && !this.state.changed?this.props.forceValue:this.state.value}>
           <option value="" disabled >{this.state.placeholder}</option>
           {this.state.options.map((o,i)=>(<option value={o} key={i}>{o}</option>))}
         </select>
