@@ -143,7 +143,7 @@ export default class Write extends Component {
           </div>
           <textarea value={this.state.active.md} disabled={this.state.activeId} onInput={this.updateMD} placeholder="Markdown">
           </textarea>
-          <textarea value={this.state.active.yaml} disabled={this.state.activeId} placeholder="YAML editor">
+          <textarea value={this.state.active.yaml} disabled={true} placeholder="YAML editor">
           </textarea>
           <textarea value={this.state.active.bib} disabled={this.state.activeId} onInput={this.updateBIB} placeholder="BIBtext">
           </textarea>
