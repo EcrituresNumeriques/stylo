@@ -10,11 +10,11 @@ import { Dossier } from './Dossier.jsx';
 import { SelectInput } from './SelectInput.jsx';
 import { Authors } from './Authors.jsx';
 import { Reviewers } from './Reviewers.jsx';
+import { Keywords} from './Keywords.jsx';
 
 //import { Collaborateurs} from './Collaborateurs.jsx';
 //import { MotsClefs} from './MotsClefs.jsx';
 //import { Rubriques} from './Rubriques.jsx';
-//import { Keywords} from './Keywords.jsx';
 //import { Types} from './Types.jsx';
 
 export default class YamlEditor extends Component{
@@ -60,6 +60,7 @@ export default class YamlEditor extends Component{
         <Dossier />
         <Authors />
         <Reviewers />
+        <Keywords/>
       </section>
     )
   }
@@ -67,6 +68,5 @@ export default class YamlEditor extends Component{
 
 
 /*
-<Keywords/>
 <Rubriques/>
 */

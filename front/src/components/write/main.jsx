@@ -56,7 +56,7 @@ export default class Write extends Component {
       //updateYAML textarea here on yamleditor change;
       store.dispatch({type:"FORM_REGISTERED"});
       let midState = objectAssign({},this.state);
-      console.log("dumping : ",store.getState().yamleditor.obj);
+      //console.log("dumping : ",store.getState().yamleditor.obj);
       let yaml = '---\n'+YAML.safeDump(store.getState().yamleditor.obj)+'---';
       midState.live.yaml = yaml;
       midState.active.yaml = yaml;

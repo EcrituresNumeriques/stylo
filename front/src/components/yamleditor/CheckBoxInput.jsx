@@ -9,28 +9,20 @@ export class CheckBoxInput extends React.Component {
         title:this.props.title,
         placeholder:this.props.placeholder || this.props.title,
         target : this.props.target,
-        value: _.get(store.getState().misc, this.props.target, ""),
-        element: this.props.element || 'input'
+        value: _.get(store.getState().yamleditor.misc, this.props.target, ""),
+        element: this.props.element || 'input',
+        changed:false
      };
   }
 
   componentDidMount(){
-    let context = this;
-    this.setState({unsubscribe : store.subscribe(function(){
-      let value = _.get(store.getState().misc, context.props.target, undefined);
-      if(typeof(value) != "undefined" && context.state.value != value){
-        context.setState({value:value});
-      }
-    })});
   }
 
-  componentWillUnmount(){
-    this.state.unsubscribe();
-  }
 
 
   handleTextChange(event) {
     let answer = event.target.checked;
+    this.setState({value:answer,changed:true});
     store.dispatch({type:"MISC_UPDATE",target:this.state.target, value:answer});
   }
 

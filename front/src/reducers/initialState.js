@@ -7,6 +7,6 @@ export default {
   },
   yamleditor:{
     obj:{},
-    misc:{}
+    misc:{uncontrolledKeywords:[]}
   }
 };

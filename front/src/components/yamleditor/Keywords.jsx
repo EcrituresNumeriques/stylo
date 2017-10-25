@@ -4,8 +4,8 @@ import React from 'react'
 import _ from 'lodash'
 
 export function Keywords(){
-  let uncontrolledKeywords = _.get(store.getState().misc,"uncontrolledKeywords",[]);
-  let categories = _.get(store.getState().misc,"categories",[]);
+  let uncontrolledKeywords = _.get(store.getState().yamleditor.misc,"uncontrolledKeywords",[]);
+  let categories = _.get(store.getState().yamleditor.misc,"categories",[]);
   let selected = categories.filter(function(category){
     return category.selected === true;
   });
@@ -36,7 +36,7 @@ export function Keywords(){
        store.dispatch({type:"MISC_UPDATE",target:"controlledKeywords["+this.props.index+"].selected", value:false});
       }
       else{
-        let uncontrolledKeywords = store.getState().misc.uncontrolledKeywords;
+        let uncontrolledKeywords = _.get(store.getState().yamleditor.misc,"uncontrolledKeywords",[]);
         uncontrolledKeywords.splice(this.props.index, 1);
         store.dispatch({type:"MISC_UPDATE",target:"uncontrolledKeywords", value:uncontrolledKeywords});
       }
@@ -59,14 +59,9 @@ class InputKeyword extends React.Component{
     super(props);
   }
 
-  componentDidMount(){
-  }
-
-  componentWillUnmount(){
-  }
 
   checkValueFR(event) {
-    let Categories = store.getState().misc.categories;
+    let Categories = _.get(store.getState().yamleditor.misc,"categories",[]);
     for(let i=0;i<Categories.length;i++){
       if(Categories[i].fr===event.target.value){
         store.dispatch({type:"MISC_UPDATE",target:"categories["+i+"].selected", value:true});
@@ -75,7 +70,7 @@ class InputKeyword extends React.Component{
     }
   }
   checkValueEN(event) {
-    let Categories = store.getState().misc.categories;
+    let Categories = _.get(store.getState().yamleditor.misc,"categories",[]);
     for(let i=0;i<Categories.length;i++){
       if(Categories[i].en===event.target.value){
         store.dispatch({type:"MISC_UPDATE",target:"categories["+i+"].selected", value:true});
@@ -85,7 +80,7 @@ class InputKeyword extends React.Component{
   }
   addKeyword(event){
     //Add uncontrolled keyword
-    let index = store.getState().misc.uncontrolledKeywords.length;
+    let index = _.get(store.getState().yamleditor.misc,"uncontrolledKeywords",[]).length;
     store.dispatch({type:"MISC_UPDATE",target:"uncontrolledKeywords["+index+"]", value:{fr:event.target.parentNode.querySelector("#kwFR").value,en:event.target.parentNode.querySelector("#kwEN").value}});
     event.target.parentNode.querySelector("#kwFR").value = "";
     event.target.parentNode.querySelector("#kwEN").value = "";

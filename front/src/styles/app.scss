@@ -204,7 +204,7 @@ div#app aside#yamlEditor >  section {
   position:absolute;
   right:0;
   z-index:100;
-  width:400px;
+  width:460px;
   background-color:white;
   border:1px solid lightgrey;
   padding:1em;
@@ -286,7 +286,7 @@ div#app aside#yamlEditor >  section {
   }
 }
 div#app aside#yamlEditor >  section.closed{
-  right:-400px;
+  right:-460px;
 }
 section#writeComponent{
   position:relative;
