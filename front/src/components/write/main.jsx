@@ -64,7 +64,7 @@ export default class Write extends Component {
     }
   }
 
-  sendNewVersion(e,major=false,exportAfter=false){
+  sendNewVersion(e,major=false,exportAfter=false,exportTarget="HTML"){
     let that = this;
     let version = major?this.state.live.version+1:this.state.live.version;
     let revision = major?0:this.state.live.revision+1;
@@ -86,7 +86,12 @@ export default class Write extends Component {
       midState.live.yaml = json.yaml;
       that.setState(midState);
       if(exportAfter){
-        window.open('/api/v1/export/'+json.id,'_blank');
+        if(exportTarget!="HTML"){
+          window.open('file:///home/marcello/Desktop/sp/git/chaineEditorialeSP/templates/xml.xml','_blank');
+        }
+        else{
+          window.open('/api/v1/export/'+json.id,'_blank');
+        }
       }
       store.dispatch({type:"ARTICLES_ADDVERSION",data:json});
       return null;
@@ -127,7 +132,7 @@ export default class Write extends Component {
             {this.state.activeId && <ExportVersion version={this.state.activeId} target="HTML"/>}
             {!this.state.activeId && <button className="button primaryButton" onClick={()=>this.sendNewVersion(null,false,true)}>Export as HTML</button>}
             {this.state.activeId && <ExportVersion version={this.state.activeId} target="EruditXML"/>}
-            {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,true)}>Export as EruditXML</button>}
+            {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,true,"EruditXML")}>Export as EruditXML</button>}
           </div>
           <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
           <div id="timeline">

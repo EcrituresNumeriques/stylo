@@ -12,8 +12,11 @@ export default class Export extends Component {
     let target = "export";
     if(this.props.target == "EruditXML"){
       target='exportErudit';
+      window.open('file:///home/marcello/Desktop/sp/git/chaineEditorialeSP/templates/xml.xml','_blank')
     }
-    window.open('/api/v1/'+target+'/'+this.props.version,'_blank')
+    else{
+      window.open('/api/v1/'+target+'/'+this.props.version,'_blank')
+    }
   }
 
   render() {

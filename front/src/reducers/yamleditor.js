@@ -72,7 +72,7 @@ function decompileKeywords(state){
     }
   }
 
-  console.log("decompile",JSON.stringify(state.misc));
+  //console.log("decompile",JSON.stringify(state.misc));
   return state;
 }
 
@@ -104,6 +104,6 @@ function compileKeywords(state){
   state.obj.keywords_fr = keyword_fr.join(',');
   state.obj.keywords_en = keyword_en.join(',');
   //console.log("update keywords");
-    console.log("compile",JSON.stringify(state.obj));
+    //console.log("compile",JSON.stringify(state.obj));
   return state;
 }
