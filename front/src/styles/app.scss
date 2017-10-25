@@ -14,6 +14,8 @@ html, body {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
+  overflow-x: hidden;
+  position:relative;
 }
 
 #app {
@@ -190,11 +192,99 @@ div#app {
     }
   }
 }
-
+aside#yamlEditor >  section {
+  position:absolute;
+  right:0;
+  width:400px;
+  background-color:white;
+  border:1px solid lightgrey;
+  padding:1em;
+  .reactForm{
+      display:flex;
+      align-items: baseline;
+      label{
+        padding:0.5em 1em;
+        display:block;
+        flex:0 0 150px;
+        margin:2px;
+        box-shadow: 0 1px 1px #f0f0f0;;
+        background-color:white;
+        text-align: right;
+      }
+      input, textarea, select {
+        padding:0.5em 1em;
+        display:block;
+        flex:1 1 auto;
+        margin:2px;
+        box-shadow: 0 1px 1px #f0f0f0;;
+        background-color:white;
+        text-align: left;
+        border:none;
+      }
+      label.lcheckbox{
+        flex:1 1 150px;
+        text-align: left;
+      }
+      input.icheckbox {
+        flex:0 0 auto;
+        margin: 0.5em 0em 0.5em 1em;
+      }
+      textarea {
+        height:5em;
+      }
+  }
+  .keywords{
+    display:flex;
+    align-items: baseline;
+    input {
+      padding:0.5em 1em;
+      display:block;
+      flex:1 1 auto;
+      margin:2px;
+      box-shadow: 0 1px 1px #f0f0f0;;
+      background-color:white;
+      text-align: left;
+      border:none;
+    }
+    input.controlled{
+      background-color: #f0fff0;
+    }
+    i {
+      padding:0.5em 1em;
+      background-color:red;
+      color:white;
+      cursor: pointer;
+    }
+    i.validate{
+      background-color:green;
+    }
+  }
+  #toggleYamlEditor{
+    cursor:pointer;
+    padding: 1em;
+    position: absolute;
+    left: calc(-3em + 2px);
+    top: 0;
+    background-color: white;
+    border-color:#d3d3d3;
+    border-width: 1px 0 1px 1px;
+    border-style: solid;
+  }
+}
+aside#yamlEditor >  section.closed{
+  right:-400px;
+}
+section#writeComponent{
+  position:relative;
+  #timeline{
+    position: absolute;
+    left: -110px;
+  }
+}
 
 textarea{
   user-select: contain;
   vertical-align: top;
-  min-width:40em;
+  width:100%;
   min-height:30em;
 }

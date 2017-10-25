@@ -20,7 +20,8 @@ import store from 'store/configureStore';
 export default class YamlEditor extends Component{
   constructor(props) {
     super(props);
-    this.state = {id:null};
+    this.toggleEdit = this.toggleEdit.bind(this);
+    this.state = {id:null,open:true};
   }
 
   componentDidUpdate(){
@@ -42,10 +43,15 @@ export default class YamlEditor extends Component{
     store.dispatch({type:"FORM_WIPE"});
   }
 
+  toggleEdit(){
+    this.setState({open:!this.state.open});
+  }
+
   render() {
     return(
-      <section>
-        <p>Yaml EDitor here</p>
+      <section className={this.state.open?"":"closed"}>
+        {!this.state.open && <i id="toggleYamlEditor" className="fa fa-pencil" aria-hidden="true" onClick={this.toggleEdit}/>}
+        {this.state.open && <i id="toggleYamlEditor" className="fa fa-times" aria-hidden="true" onClick={this.toggleEdit}/>}
         <TextInput target="id_sp" title="Identifiant" placeholder="SPxxxx" forceValue={this.state.id?this.state.yaml.id_sp:null}/>
         <TextInput target="title" title="Titre" forceValue={this.state.id?this.state.yaml.title:null}/>
         <TextInput target="subtitle" title="Sous-titre" forceValue={this.state.id?this.state.yaml.subtitle:null}/>
