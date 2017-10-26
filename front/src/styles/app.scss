@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+a{
+  text-decoration: none;
+}
+
 html, body {
   background: #f8f8f8;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -9,6 +13,9 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position:relative;
 }
 
 #app {
@@ -47,115 +54,71 @@ html, body {
 
 }
 
+.button {
+  background-color: #fff;
+  color: grey;
+  border: 1px solid grey;
+  padding:0.5em 1em;
+  font-size: 1em;
+  cursor: pointer;
+  display: inline-block;
+  margin:0 0.25em;
+}
 .primaryButton {
     background-color: green;
     color:white;
     border:1px solid green;
-    margin:0;
-    padding:0.5em 1em;
-    font-size: 1em;
-    cursor:pointer;
-    display:inline-block;
-}
-.secondaryButton {
-    background-color: buttonface;
-    color:black;
-    border:1px solid buttonface;
-    margin:0;
-    padding:0.5em 1em;
-    font-size: 1em;
-    cursor:pointer;
-    display:inline-block;
 }
 .disabledButton {
     background-color: #c0c0c0;
     color:#909090;
     border:1px solid #c0c0c0;
-    margin:0;
-    padding:0.5em 1em;
     font-size: 1em;
     cursor:not-allowed;
-    display:inline-block;
 }
 .alertButton {
     background-color: red;
     color:white;
     border:1px solid red;
-    margin:0;
-    padding:0.5em 1em;
-    font-size: 1em;
-    cursor:pointer;
-    display:inline-block;
 }
 
 .editButton {
   background-color: white;
   color:grey;
   border:1px solid grey;
-  margin:0;
-  margin-left: 60px;
-  padding:0.5em 0.7em;
-  font-size: 1em;
-  cursor:pointer;
-  display:inline-block;
 }
 
 .deleteButton {
   background-color: white;
   color:grey;
   border:1px solid grey;
-  margin:0;
-  margin-left: 10px;
-  padding:0.5em 0.7em;
-  font-size: 1em;
-  cursor:pointer;
-  display:inline-block;
 }
 
 .duplicateButton {
   background-color: white;
   color:grey;
   border:1px solid grey;
-  margin:0;
-  margin-left: 10px;
-  padding:0.5em 0.7em;
-  font-size: 1em;
-  cursor:pointer;
-  display:inline-block;
 }
 
 .seeButton {
   background-color: white;
   color:grey;
   border:1px solid grey;
-  margin:0;
-  margin-left: 60px;
-  padding:0.5em 0.7em;
-  font-size: 1em;
-  cursor:pointer;
-  display:inline-block;
 }
 
 .forkButton {
   background-color: white;
   color:grey;
   border:1px solid grey;
-  margin:0;
-  margin-left: 10px;
-  padding:0.5em 0.7em;
-  font-size: 1em;
-  cursor:pointer;
-  display:inline-block;
 }
 
 ul.unstyled{
-    border-top: 1px solid lightgrey;
-    border-bottom: 1px solid lightgray;
-    margin: 10px 0 10px;
-    padding: 0px 10px 20px 10px;
-    h3{
-
-    }
+  margin:0;
+  padding:0.5em;
+  clear:both;
+  nav {
+    float:right;
+  }
   p,input {
     margin:0;
     padding:0.5em 1em;
@@ -165,9 +128,13 @@ ul.unstyled{
     display:inline-block;
     }
   p.articleTitle {
-    font-size: 1.5em
+    display:inline-block;
+    i {
+      margin-right: 1em;
+    }
   }
   li {
+    clear:both;
     list-style: none;
     margin-left: 1em;
     border-left:1px solid #c0c0c0;
@@ -179,10 +146,13 @@ ul.unstyled{
     color:#c0c0c0;
   }
 }
+ul.unstyled:nth-child(2n){
+  background-color:#f8f8f8;
+}
 #timeline{
   display:inline-block;
   padding:1em;
-  width:300px;
+  width:100px;
   a {
     display:block;
     text-align: right;
@@ -208,6 +178,7 @@ div#app {
     }
   }
   main#mainView {
+    user-select: none;
     margin: 0 auto;
     width: 100%;
     max-width: 1000px;
@@ -215,16 +186,119 @@ div#app {
     padding: 1em;
     section {
       h1 {
-        margin:0;
-        text-align: center;
+        font-size: 2em;
+        margin:0 0 1em 0;
       }
     }
   }
 }
-
+aside#yamlEditor{
+  position: absolute;
+    left: 0;
+    overflow: hidden;
+    right: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+div#app aside#yamlEditor >  section {
+  position:absolute;
+  right:0;
+  z-index:100;
+  width:460px;
+  background-color:white;
+  border:1px solid lightgrey;
+  padding:1em;
+  h1{
+    font-size: 1em;
+    margin: 1em 0 1em;
+    text-align: center;
+  }
+  .reactForm{
+      display:flex;
+      align-items: baseline;
+      label{
+        padding:0.5em 1em;
+        display:block;
+        flex:0 0 150px;
+        margin:2px;
+        box-shadow: 0 1px 1px #f0f0f0;;
+        background-color:white;
+        text-align: right;
+      }
+      input, textarea, select {
+        padding:0.5em 1em;
+        display:block;
+        flex:1 1 auto;
+        margin:2px;
+        box-shadow: 0 1px 1px #f0f0f0;;
+        background-color:white;
+        text-align: left;
+        border:none;
+      }
+      label.lcheckbox{
+        flex:1 1 150px;
+        text-align: left;
+      }
+      input.icheckbox {
+        flex:0 0 auto;
+        margin: 0.5em 0em 0.5em 1em;
+      }
+      textarea {
+        min-height:3em;
+      }
+  }
+  .keywords{
+    display:flex;
+    align-items: baseline;
+    input {
+      padding:0.5em 1em;
+      display:block;
+      flex:1 1 auto;
+      margin:2px;
+      box-shadow: 0 1px 1px #f0f0f0;;
+      background-color:white;
+      text-align: left;
+      border:none;
+    }
+    input.controlled{
+      background-color: #f0fff0;
+    }
+    i {
+      padding:0.5em 1em;
+      background-color:red;
+      color:white;
+      cursor: pointer;
+    }
+    i.validate{
+      background-color:green;
+    }
+  }
+  #toggleYamlEditor{
+    cursor:pointer;
+    padding: 1em;
+    position: absolute;
+    left: calc(-3em + 2px);
+    top: -1px;
+    background-color: white;
+    border-color:#d3d3d3;
+    border-width: 1px 0 1px 1px;
+    border-style: solid;
+  }
+}
+div#app aside#yamlEditor >  section.closed{
+  right:-460px;
+}
+section#writeComponent{
+  position:relative;
+  #timeline{
+    position: absolute;
+    left: -110px;
+  }
+}
 
 textarea{
+  user-select: contain;
   vertical-align: top;
-  min-width:40em;
+  width:100%;
   min-height:30em;
 }

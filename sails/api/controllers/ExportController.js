@@ -26,5 +26,8 @@ module.exports = {
       };
       pandoc(src, args, callback);
     })
+  },
+  erudit: function (req, res) {
+    res.send('Not yet implemented');
   }
 };

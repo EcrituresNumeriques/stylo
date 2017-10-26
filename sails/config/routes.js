@@ -54,6 +54,7 @@ module.exports.routes = {
 
   //exports
   'GET /api/v1/export/:version':'ExportController.html',
+  'GET /api/v1/exportErudit/:version':'ExportController.erudit',
 
   // All GET requests are directed to the app controller which renders our app.
   'GET /*': {

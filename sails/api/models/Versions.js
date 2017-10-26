@@ -33,7 +33,13 @@ module.exports = {
     },
     yaml:{
       type:'longtext',
-      defaultsTo:'Yaml:'
+      defaultsTo:'---\ntitle: Title\n---'
     }
+  },
+  afterCreate:function(version, next){
+    Articles.update({id:version.article},{updatedAt:new Date()}).exec(function afterwards(err, updated){
+      if (err) {return;};
+      next();
+    });
   }
 };

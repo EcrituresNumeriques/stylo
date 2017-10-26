@@ -4,5 +4,9 @@ export default {
   },
   user:{
     log:false
+  },
+  yamleditor:{
+    obj:{},
+    misc:{uncontrolledKeywords:[]}
   }
 };

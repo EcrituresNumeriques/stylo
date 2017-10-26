@@ -4,7 +4,8 @@ import store from 'store/configureStore';
 import objectAssign from 'object-assign';
 import sortByIdDesc from 'helpers/sorts/idDesc';
 import ExportVersion from 'components/write/export';
-import SiteHeader from 'components/layout/siteHeader';
+import YamlEditor from 'components/yamleditor/Main';
+import YAML from 'js-yaml';
 
 export default class Write extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ export default class Write extends Component {
     });
   }
 
-  componentDidUpdate(){
+  componentDidUpdate(prevProps, prevState){
     if(this.state.activeId != this.props.match.params.version || this.state.compute){
       let newActive;
       if(this.props.match.params.version == undefined){
@@ -51,9 +52,19 @@ export default class Write extends Component {
       }
       this.setState({activeId:this.props.match.params.version,active:newActive,compute:false});
     }
+    if(store.getState().yamleditor.misc.changed){
+      //updateYAML textarea here on yamleditor change;
+      store.dispatch({type:"FORM_REGISTERED"});
+      let midState = objectAssign({},this.state);
+      //console.log("dumping : ",store.getState().yamleditor.obj);
+      let yaml = '---\n'+YAML.safeDump(store.getState().yamleditor.obj)+'---';
+      midState.live.yaml = yaml;
+      midState.active.yaml = yaml;
+      this.setState(midState);
+    }
   }
 
-  sendNewVersion(e,major=false){
+  sendNewVersion(e,major=false,exportAfter=false,exportTarget="HTML"){
     let that = this;
     let version = major?this.state.live.version+1:this.state.live.version;
     let revision = major?0:this.state.live.revision+1;
@@ -72,7 +83,16 @@ export default class Write extends Component {
       //midState.article.versions = [json,...midState.article.versions];
       midState.live.version = version;
       midState.live.revision = revision;
+      midState.live.yaml = json.yaml;
       that.setState(midState);
+      if(exportAfter){
+        if(exportTarget!="HTML"){
+          window.open('file:///home/marcello/Desktop/sp/git/chaineEditorialeSP/templates/xml.xml','_blank');
+        }
+        else{
+          window.open('/api/v1/export/'+json.id,'_blank');
+        }
+      }
       store.dispatch({type:"ARTICLES_ADDVERSION",data:json});
       return null;
     });
@@ -99,14 +119,20 @@ export default class Write extends Component {
   }
 
   render() {
-    return (
-      <section>
+    return ([
+      <aside id="yamlEditor">
+        {!this.state.activeId && <YamlEditor {...this.state.live}/>}
+      </aside>,
+      <section id="writeComponent">
           <h1>{this.state.article.title}</h1>
           <div>
-            <Link to="/articles"  className="secondaryButton">Back to My articles</Link>
-            <button className={this.state.activeId?"disabledButton":"secondaryButton"} onClick={()=>this.sendNewVersion(null,true)}>Save as new version</button>
-            <button className={this.state.activeId?"disabledButton":"secondaryButton"} onClick={this.sendNewVersion}>QuickSave</button>
-            {this.state.activeId && <ExportVersion version={this.state.activeId}/>}
+            <Link to="/articles"  className="button secondaryButton">Back to My articles</Link>
+            <button className={this.state.activeId?"button disabledButton":"button secondaryButton"} onClick={()=>this.sendNewVersion(null,true,false)}>Save as new version</button>
+            <button className={this.state.activeId?"button disabledButton":"button secondaryButton"} onClick={this.sendNewVersion}>QuickSave</button>
+            {this.state.activeId && <ExportVersion version={this.state.activeId} target="HTML"/>}
+            {!this.state.activeId && <button className="button primaryButton" onClick={()=>this.sendNewVersion(null,false,true)}>Export as HTML</button>}
+            {this.state.activeId && <ExportVersion version={this.state.activeId} target="EruditXML"/>}
+            {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,true,"EruditXML")}>Export as EruditXML</button>}
           </div>
           <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
           <div id="timeline">
@@ -117,11 +143,12 @@ export default class Write extends Component {
           </div>
           <textarea value={this.state.active.md} disabled={this.state.activeId} onInput={this.updateMD} placeholder="Markdown">
           </textarea>
-          <textarea value={this.state.active.yaml} disabled={this.state.activeId} onInput={this.updateYAML} placeholder="YAML editor">
+          <textarea value={this.state.active.yaml} disabled={true} placeholder="YAML editor">
           </textarea>
           <textarea value={this.state.active.bib} disabled={this.state.activeId} onInput={this.updateBIB} placeholder="BIBtext">
           </textarea>
       </section>
+      ]
     );
   }
 }
