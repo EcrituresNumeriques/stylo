@@ -1,4 +1,4 @@
-FROM node
+FROM node:8.9
 
 RUN echo "deb http://httpredir.debian.org/debian jessie contrib" > /etc/apt/sources.list.d/contrib.list ;\
     echo "deb http://httpredir.debian.org/debian jessie-updates contrib" >> /etc/apt/sources.list.d/contrib.list ;\
@@ -60,7 +60,7 @@ RUN wget https://raw.githubusercontent.com/EcrituresNumeriques/chaineEditorialeS
 
 #Make sure to get last node/npm versions
 RUN npm install -g n
-RUN n 8.9.0
+RUN n stable
 RUN yarn global add npm
 
 #speedup build process
