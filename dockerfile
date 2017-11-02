@@ -60,7 +60,7 @@ RUN wget https://raw.githubusercontent.com/EcrituresNumeriques/chaineEditorialeS
 
 #Make sure to get last node/npm versions
 RUN npm install -g n
-RUN n stable
+RUN n 8.9.0
 RUN yarn global add npm
 
 #speedup build process
