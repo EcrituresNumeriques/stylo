@@ -59,8 +59,6 @@ RUN mkdir -p ~/.pandoc/
 RUN wget https://raw.githubusercontent.com/EcrituresNumeriques/chaineEditorialeSP/master/templates/templateHtmlDcV0.html5 > ~/.pandoc/templateHtmlDcV0.html5
 
 #Make sure to get last node/npm versions
-RUN npm install -g n
-RUN n stable
 RUN yarn global add npm
 
 #speedup build process
