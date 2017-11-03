@@ -27,7 +27,7 @@
 
 
 2. mettre en place une url partageable pour une vue html
-  * Le scénario d'usage est que chaque version du document possède une version html dont l'url est partageable et accessible publiquement (comme sur google doc, on ne peut y accéder que si on nous envoie l'url).
+  ~~* Le scénario d'usage est que chaque version du document possède une version html dont l'url est partageable et accessible publiquement (comme sur google doc, on ne peut y accéder que si on nous envoie l'url).~~
   1. Développer une css minimale pour présenter correctement les articles.
   2. Intégrer par défaut le widget d'annotation hypothes.is (voir https://web.hypothes.is/for-publishers/#embedding)
   3. Sur la page listant les documents et versions, utiliser [l'API hypothesis](https://hypothes.is/api/) pour indiquer pour chaque version (vue html), le nombre d'annotations sur la vue et pourquoi pas, l'heure/date et user de la dernière annotation (indication pertinente pour un auteur qui aurait partagé en lecture/annotation son document). Voir [la doc Hypothes.is](http://h.readthedocs.org/).
