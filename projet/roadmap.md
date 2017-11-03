@@ -23,7 +23,8 @@
 
   il faudrait corriger un peu le scénario actuel sur la gestion des versions:
    * à la création d'un document, ou d'une nouvelle version, la vX.0 ne peut jamais être éditée/sauvée. Il faudrait pouvoir éditer et sauver dans la vX.0. Ou bien y a t il une logique contraire ? Peut-on envisager d'intégrer un autosave ?
-   * l'interface ne permet pas de comprendre que ce qu'on édite sera toujours sauvé dans une version incrémentée (+0,1 ou +1). Il faudrait donc éclaircir ce point en ajoutant sur ou à côté du bouton [Edit] la version qui sera effectivement sauvée. Exemple, si j'ai une v1.0 et v1.1 existantes, le bouton [Edit] devient [Edit v1.2]. De la même manière, le bouton [Quicksave] devrait devenir [Quicksave v1.2] et le bouton [New version] devrait devenir [New version v2.0]
+   * ~~l'interface ne permet pas de comprendre que ce qu'on édite sera toujours sauvé dans une version incrémentée (+0,1 ou +1). Il faudrait donc éclaircir ce point en ajoutant sur ou à côté du bouton [Edit] la version qui sera effectivement sauvée. Exemple, si j'ai une v1.0 et v1.1 existantes, le bouton [Edit] devient [Edit v1.2]. De la même manière, le bouton [Quicksave] devrait devenir [Quicksave v1.2] et le bouton [New version] devrait devenir [New version v2.0]~~
+
 
 2. mettre en place une url partageable pour une vue html
   * Le scénario d'usage est que chaque version du document possède une version html dont l'url est partageable et accessible publiquement (comme sur google doc, on ne peut y accéder que si on nous envoie l'url).
