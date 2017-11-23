@@ -17,6 +17,30 @@
 9. customisation du yaml Editor (v2)
 
 ---
+
+## Estimés
+
+### bloc 1
+- AutoSave : 3x8heures (8h restant)
+
+### bloc 2
+- css export articles (2 heures)
+- deploiement en ligne (Variable)
+- utilisation Hypothes.is (en ligne necessaire)
+ - migrer le YamlEditor pour utiliser le state (plus de dépendance à Redux): 8h
+- Editor Yaml nouveau schema YAML (4 heures)
+- implementation de l'API isidore (5x 8heures)
+- Intégrer BIBtext processor en javascript:4h (un semble bien fonctionner aux premiers test)
+- export XML erudit (8 heures)
+- export Latex/PDF (A rechercher)
+
+### bloc 3
+- alleger le chargement de api/v1/articles (contient toutes les versions pour le moment) et propager les changement au front end: 8h
+- fix login/register : 4h
+- attribuer correctelent les articles/versions: 4h
+- fork + send : 2h
+- integrer un git-like diff pour les versions mineures: 2j
+
 ## Détails
 
 1. Améliorer la gestion des version
