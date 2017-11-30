@@ -133,11 +133,11 @@ export default class Write extends Component {
             <button className={this.state.activeId?"button disabledButton":"button secondaryButton"} onClick={()=>this.sendNewVersion(null,true,false)}>Save as new version {this.state.live.version+1}.0</button>
             <button className={this.state.activeId?"button disabledButton":"button secondaryButton"} onClick={this.sendNewVersion}>QuickSave {this.state.live.version}.{this.state.live.revision+1}</button>
             {this.state.activeId && <ExportVersion version={this.state.activeId} target="HTML"/>}
-            {!this.state.activeId && <button className="button primaryButton" onClick={()=>this.sendNewVersion(null,false,true)}>Export as HTML</button>}
+            {!this.state.activeId && <button className="button primaryButton" onClick={()=>this.sendNewVersion(null,false,"HTML")}>Export as HTML</button>}
             {this.state.activeId && <ExportVersion version={this.state.activeId} target="hypothes.is"/>}
             {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,"hypotes.is")}>Export on hypothes.is</button>}
             {this.state.activeId && <ExportVersion version={this.state.activeId} target="EruditXML"/>}
-            {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,true,"EruditXML")}>Export as EruditXML</button>}
+            {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,"EruditXML")}>Export as EruditXML</button>}
           </div>
           <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
           <div id="timeline">
