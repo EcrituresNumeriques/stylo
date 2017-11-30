@@ -86,7 +86,10 @@ export default class Write extends Component {
       midState.live.yaml = json.yaml;
       that.setState(midState);
       if(exportAfter){
-        if(exportTarget!="HTML"){
+        if(exportTarget== "hypotes.is"){
+          window.open('https://via.hypothes.is/https://stylo.14159.ninja/api/v1/export/'+json.id,'_blank');
+        }
+        else if(exportTarget!="HTML"){
           window.open('file:///home/marcello/Desktop/sp/git/chaineEditorialeSP/templates/xml.xml','_blank');
         }
         else{
@@ -131,6 +134,8 @@ export default class Write extends Component {
             <button className={this.state.activeId?"button disabledButton":"button secondaryButton"} onClick={this.sendNewVersion}>QuickSave {this.state.live.version}.{this.state.live.revision+1}</button>
             {this.state.activeId && <ExportVersion version={this.state.activeId} target="HTML"/>}
             {!this.state.activeId && <button className="button primaryButton" onClick={()=>this.sendNewVersion(null,false,true)}>Export as HTML</button>}
+            {this.state.activeId && <ExportVersion version={this.state.activeId} target="hypothes.is"/>}
+            {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,true)}>Annotate</button>}
             {this.state.activeId && <ExportVersion version={this.state.activeId} target="EruditXML"/>}
             {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,true,"EruditXML")}>Export as EruditXML</button>}
           </div>
