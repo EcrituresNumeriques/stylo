@@ -86,7 +86,7 @@ export default class Write extends Component {
       midState.live.yaml = json.yaml;
       that.setState(midState);
       if(exportAfter){
-        if(exportTarget== "hypotes.is"){
+        if(exportTarget== "hypothes.is"){
           window.open('https://via.hypothes.is/https://stylo.14159.ninja/api/v1/export/'+json.id,'_blank');
         }
         else if(exportTarget!="HTML"){
@@ -135,7 +135,7 @@ export default class Write extends Component {
             {this.state.activeId && <ExportVersion version={this.state.activeId} target="HTML"/>}
             {!this.state.activeId && <button className="button primaryButton" onClick={()=>this.sendNewVersion(null,false,"HTML")}>Export as HTML</button>}
             {this.state.activeId && <ExportVersion version={this.state.activeId} target="hypothes.is"/>}
-            {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,"hypotes.is")}>Export on hypothes.is</button>}
+            {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,"hypothes.is")}>Export on hypothes.is</button>}
             {this.state.activeId && <ExportVersion version={this.state.activeId} target="EruditXML"/>}
             {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,"EruditXML")}>Export as EruditXML</button>}
           </div>
