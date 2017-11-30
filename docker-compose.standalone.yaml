@@ -1,15 +1,15 @@
-sails:
+sails-stylo:
   build: .
   ports:
     - "80:80"
   links:
-    - mongodb
-    - redis
+    - mongodb-stylo
+    - redis-stylo
   environment:
     - NODE_ENV=production
-mongodb:
+mongodb-stylo:
   image: mongo:latest
-  container_name: "mongodb"
+  container_name: "mongodb-stylo"
   environment:
     - MONGO_DATA_DIR=/data/db
     - MONGO_LOG_DIR=/dev/null
@@ -18,7 +18,7 @@ mongodb:
   ports:
     - 27017:27017
   command: mongod --smallfiles --logpath=/dev/null # --quiet
-redis:
+redis-stylo:
   image: redis
   ports:
     - "6380:6379"

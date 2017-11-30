@@ -52,7 +52,7 @@ module.exports.session = {
   *                                                                          *
   ***************************************************************************/
 
-   host: 'redis',
+   host: 'redis-stylo',
   // port: 6380,
   // ttl: <redis session TTL in seconds>,
   // db: 0,

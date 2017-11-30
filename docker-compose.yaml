@@ -2,6 +2,7 @@ version: "2"
 
 services:
   sails-stylo:
+    restart: always
     build: .
     links:
       - mongodb-stylo
@@ -14,6 +15,7 @@ services:
       - LETSENCRYPT_HOST=stylo.14159.ninja
       - LETSENCRYPT_EMAIL=arthur.juchereau@gmail.com
   mongodb-stylo:
+    restart: always
     image: mongo:latest
     container_name: "mongodb-stylo"
     environment:
@@ -23,6 +25,7 @@ services:
       - ./data/db:/data/db
     command: mongod --smallfiles --logpath=/dev/null # --quiet
   redis-stylo:
+    restart: always
     image: redis
 networks:
   default:
