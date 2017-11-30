@@ -25,8 +25,8 @@
 
 ### bloc 2
 - css export articles (2 heures)
-- deploiement en ligne (Variable)
-- utilisation Hypothes.is (en ligne necessaire)
+- ~~deploiement en ligne (Variable)~~
+- ~~utilisation Hypothes.is (en ligne necessaire)~~
  - migrer le YamlEditor pour utiliser le state (plus de dépendance à Redux): 8h
 - Editor Yaml nouveau schema YAML (4 heures)
 - implementation de l'API isidore (5x 8heures)
