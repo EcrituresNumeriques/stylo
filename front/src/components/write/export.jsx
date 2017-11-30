@@ -14,7 +14,7 @@ export default class Export extends Component {
       target='exportErudit';
       window.open('file:///home/marcello/Desktop/sp/git/chaineEditorialeSP/templates/xml.xml','_blank')
     }
-    else if(exportTarget== "hypotes.is"){
+    else if(this.props.target== "hypotes.is"){
       window.open('https://via.hypothes.is/https://stylo.14159.ninja/api/v1/'+target+'/'+this.props.version,'_blank');
     }
     else{

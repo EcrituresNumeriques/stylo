@@ -135,7 +135,7 @@ export default class Write extends Component {
             {this.state.activeId && <ExportVersion version={this.state.activeId} target="HTML"/>}
             {!this.state.activeId && <button className="button primaryButton" onClick={()=>this.sendNewVersion(null,false,true)}>Export as HTML</button>}
             {this.state.activeId && <ExportVersion version={this.state.activeId} target="hypothes.is"/>}
-            {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,true)}>Annotate</button>}
+            {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,"hypotes.is")}>Export on hypothes.is</button>}
             {this.state.activeId && <ExportVersion version={this.state.activeId} target="EruditXML"/>}
             {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,true,"EruditXML")}>Export as EruditXML</button>}
           </div>
