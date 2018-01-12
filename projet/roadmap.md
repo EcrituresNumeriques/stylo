@@ -2,6 +2,12 @@
 
 ## Roadmap pour Stylo (voir détails ci-dessous):
 
+### Prioriétés jan2017
+1. User
+2. intégrer le dernier yamlEditor
+3. autosave
+4. intégrer un éditeur MD
+
 ### Bloc 1
 1. améliorer la gestion des versions
 2. mettre en place un url pour une vue HTML
