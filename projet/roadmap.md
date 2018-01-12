@@ -5,14 +5,19 @@
 ### Prioriétés jan2017
 1. User
 2. intégrer le dernier yamlEditor
+  * [ ] éditeur SP vérifie le fonctionnement
+  * [ ] intégrer à stylo.
 3. autosave
+  * [ ] affiner l'autosave à partir d'un diff
 4. intégrer un éditeur MD
+  * [ ] simplemde.com
+  * [ ] utiliser atom pour éditer un text area dans le browser https://addons.mozilla.org/fr/firefox/addon/ghosttext/
 
 ### Bloc 1
-1. améliorer la gestion des versions
-2. mettre en place un url pour une vue HTML
+1. [x] améliorer la gestion des versions
+2. [x] mettre en place un url pour une vue HTML
 ### Bloc 2
-3. Yaml/yamlEditor
+3. [x] Yaml/yamlEditor
 4. mettre en place la gestion du partage
 5. exports
 ### Bloc 3
