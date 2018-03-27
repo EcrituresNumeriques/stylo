@@ -4,14 +4,14 @@ import store from 'store/configureStore';
 import objectAssign from 'object-assign';
 import sortByIdDesc from 'helpers/sorts/idDesc';
 import ExportVersion from 'components/write/export';
-import YamlEditor from 'components/yamleditor/Main';
+import YamlEditor from 'components/yamleditor/YamlEditor';
 import YAML from 'js-yaml';
 
 export default class Write extends Component {
   constructor(props) {
     super(props);
     //set state
-    this.state = {loaded:false,live:{},active:{},activeId:this.props.match.params.version,article:{versions:[]}};
+    this.state = {loaded:false,live:{yaml:{},md:{}},active:{yaml:{},md:{}},activeId:this.props.match.params.version,article:{versions:[]}};
     this.sendNewVersion = this.sendNewVersion.bind(this);
     this.fetchAPI = this.fetchAPI.bind(this);
     this.updateMD = this.updateMD.bind(this);
@@ -114,6 +114,13 @@ export default class Write extends Component {
     midState.active.yaml = e.target.value;
     this.setState(midState);
   }
+  updatingYAML(js){
+      console.log(js);
+    //let midState = objectAssign({},this.state);
+    //midState.live.yaml = YAML.safeDump(js);
+    //midState.active.yaml = YAML.safeDump(js);
+    //this.setState(midState);
+  }
   updateBIB(e){
     let midState = objectAssign({},this.state);
     midState.live.bib = e.target.value;
@@ -124,7 +131,7 @@ export default class Write extends Component {
   render() {
     return ([
       <aside id="yamlEditor">
-        {!this.state.activeId && <YamlEditor {...this.state.live}/>}
+        {!this.state.activeId && <YamlEditor props={this.state.live.yaml} exportChange={this.updatingYAML}/>}
       </aside>,
       <section id="writeComponent">
           <h1>{this.state.article.title}</h1>

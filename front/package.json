@@ -46,7 +46,9 @@
     "react-router-dom": "4.2.2",
     "react-router-redux": "5.0.0-alpha.6",
     "redux": "3.6.0",
-    "redux-thunk": "2.1.0"
+    "redux-thunk": "2.1.0",
+    "remove-markdown": "^0.2.2",
+    "stjs": "0.0.5"
   },
   "devDependencies": {
     "autoprefixer": "7.1.4",

@@ -19,7 +19,7 @@ export default class Articles extends Component {
 
   fetchAPI(){
     let that = this;
-    fetch('/api/v1/articles',{
+    fetch('/api/v1/my-articles',{
       method:'GET',
       credentials: 'same-origin'
     })

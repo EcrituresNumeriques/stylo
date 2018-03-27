@@ -1,0 +1,17 @@
+{
+    "categories":{
+        "{{#each $root}}":{
+            "label" : "{{#? this.name}}",
+            "uriRameau" : "{{#? this.data.urlrameau}}",
+            "idRameau" : "{{#? this.data.idrameau}}",
+            "wikidata" : "{{#? this.data.wikidata}}",
+            "term" : "{{#? this.term}}"
+         }
+     },
+     "keywords":{
+         "{{#each $root}}":{
+             "label" : "{{#? this.name}}",
+             "language": "{{#? this.language}}"
+          }
+     }
+ }

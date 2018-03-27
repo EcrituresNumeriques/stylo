@@ -9,9 +9,9 @@ module.exports = {
   tableName: 'articles',
   autoPK: true,
   attributes: {
-    owner:{
-      model:'Users',
-      defaultsTo:1
+    owners:{
+      collection:'Users',
+      via:'id'
     },
     title:{
       type:'string',
@@ -19,12 +19,7 @@ module.exports = {
       defaultsTo:"autocreated"
     },
     version:{
-      type:'integer',
-      defaultsTo:0
-    },
-    revision:{
-      type:'integer',
-      defaultsTo:0
+      model:'Versions'
     },
     versions:{
       collection:'Versions',
@@ -34,11 +29,14 @@ module.exports = {
   },
 
   afterCreate: function(article, next){
-    let data = {owner:article.owner,article:article.id};
+    console.log("creating version for article",article);
+    let data = {owner:article.owner[0],article:article.id};
     Versions.create(data).exec( function (err, version) {
+        console.log("created",version);
+        next();
     });
-    next();
-  }
+    }
+
 
 
 };

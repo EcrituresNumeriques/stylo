@@ -25,7 +25,10 @@ module.exports.policies = {
   * access)                                                                  *
   *                                                                          *
   ***************************************************************************/
-
+   ArticlesController :{
+       create:['isloggedIn','populateUserOwner'],
+       findMine:['isloggedIn'],
+   },
    '*': true,
 
   /***************************************************************************

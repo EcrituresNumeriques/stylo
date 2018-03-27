@@ -17,6 +17,7 @@ export default class Articles extends Component {
     this.startEdit = this.startEdit.bind(this);
     this.toggleDelete = this.toggleDelete.bind(this);
     this.toggleOpen = this.toggleOpen.bind(this);
+    this.startShare = this.startShare.bind(this);
   }
 
   //Set state needed
@@ -36,6 +37,24 @@ export default class Articles extends Component {
     if(this.state.edit){
       this.refs.title.focus();
       this.refs.title.select();
+    }
+  }
+  startShare(){
+    let that = this;
+    let recipient = window.prompt("Share this article with","test@stylo.io");
+    if(recipient == null || recipient == ""){}
+    else{
+        fetch('/api/v1/share-articles/'+this.props.article.id,{
+            method:'POST',
+            body: JSON.stringify({add:recipient}),
+            credentials: 'same-origin'
+        })
+        .then(function(response){
+            return response.json();
+        })
+        .then(function(json){
+            return null;
+        });
     }
   }
 
@@ -88,6 +107,8 @@ export default class Articles extends Component {
         </p>,
           <nav>
             <Link to={"/write/"+this.props.article.id} className="button primaryButton"><i class="fa fa-pencil"></i> Edit</Link>
+            <span onClick={this.startShare} className="button"><i class="fa fa-pencil"></i> Share</span>
+            <span onClick={this.startSend} className="button"><i class="fa fa-pencil"></i> Send</span>
             <span onClick={this.startEdit} className="button"><i class="fa fa-pencil"></i> Rename</span>
             <span onClick={this.toggleDelete} className="button"><i class="fa fa-trash"></i> Delete</span>
             {this.state.delete && <button className="button alertButton" onDoubleClick={this.deleteArticle}>DANGER! Doubleclick to delete</button>}

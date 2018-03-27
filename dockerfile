@@ -69,9 +69,10 @@ RUN mkdir /front
 ADD front/package.json /front/
 RUN cd /front; npm i
 
-ADD sails /sails
 ADD front /front
 RUN cd /front; npm run build
+
+ADD sails /sails
 
 WORKDIR /sails
 

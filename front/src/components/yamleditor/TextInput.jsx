@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import store from 'store/configureStore';
+const removeMd = require('remove-markdown');
 
 export class TextInput extends React.Component {
   constructor(props) {
@@ -9,23 +9,32 @@ export class TextInput extends React.Component {
         title:this.props.title,
         placeholder:this.props.placeholder || this.props.title,
         target : this.props.target,
-        value: _.get(store.getState().yamleditor.obj, this.props.target, ""),
-        element: this.props.element || 'input',
-        changed:false
+        value: _.get(this.props.state, this.props.target, ""),
+        element: this.props.element || 'input'
      };
+     this.handleTextChange = this.handleTextChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProp){
+    this.setState({value:_.get(nextProp.state, this.props.target, "")})
   }
 
   handleTextChange(event) {
-    this.setState({value:event.target.value,changed:true});
-    store.dispatch({type:"FORM_UPDATE",target:this.state.target, value:event.target.value});
+    this.props.updateState(event.target.value,this.props.target);
+    if(this.props.alias){
+      for(let i=0;i<this.props.alias.length;i++){
+        let value = event.target.value
+        if(this.props.alias[i].filterMD){value = removeMd(value)}
+        this.props.updateState(this.props.alias[i].prefix+value+this.props.alias[i].suffix,this.props.alias[i].target);
+      }
+    }
   }
-
 
   render() {
     return (
       <section className="reactForm">
-        {this.state.element != "textArea" && <label>{this.state.title} :</label>}
-        { this.state.element == "input" ? <input type="text" placeholder={this.state.placeholder} value={this.props.forceValue && !this.state.changed?this.props.forceValue:this.state.value} onChange={this.handleTextChange.bind(this)}/> :
+        <label>{this.state.title} :</label>
+        { this.state.element == "input" ? <input type="text" placeholder={this.state.placeholder} value={this.state.value} onChange={this.handleTextChange.bind(this)}/> :
         this.state.element == "textArea" ? <textarea placeholder={this.state.placeholder} value={this.state.value} onChange={this.handleTextChange.bind(this)}/> :
         null }
       </section>

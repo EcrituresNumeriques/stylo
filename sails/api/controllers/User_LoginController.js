@@ -13,7 +13,7 @@ module.exports = {
       let password = req.body.password || req.query.password || '';
       console.log("Entering login");
       User_Credentials.findOne({email:email}).then(function(thisUser){
-        console.log(thisUser);
+        console.log("userfound",thisUser);
           if(bcrypt.compareSync(password,_.get(thisUser,'password','nops'))){
             console.log("Password good");
             /*
@@ -23,13 +23,13 @@ module.exports = {
                 res.ok(response);
               })
               */
-              Users.find().exec(function (err, records) {
-                console.log(records);
-                res.ok({loged:true});
+              Users.findOne({email:thisUser.email}).exec(function (err, record) {
+                req.session.user = record;
+                res.ok({loged:true,id:record.id,username:record.username});
               });
             }
             else{
-              res.badRequest({'humanReadable':'email or password invalid'});
+              res.json(400, {'message':'email or password invalid'});
             }
         });
   },
