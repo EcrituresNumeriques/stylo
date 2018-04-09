@@ -25,7 +25,7 @@ export default class Fork extends Component {
 
   render() {
     return (
-      <span className="button forkButton" onClick={this.fork}><i class="fa fa-external-link"></i> Fork</span>
+      <span className="button forkButton" onClick={this.fork}><i className="fa fa-external-link"></i> Fork</span>
     );
   }
 }

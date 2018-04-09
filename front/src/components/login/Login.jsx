@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import store from 'store/configureStore';
+import SiteHeader from 'components/layout/siteHeader';
 
 
 export default class Login extends Component {
@@ -38,6 +39,7 @@ export default class Login extends Component {
   render() {
     return (
       <div className="gridCenter">
+        <SiteHeader/>
         <form className="gridCentered" onSubmit={this.handleSubmit}>
           <input type="text" placeholder="email" ref="email"/>
           <input type="password" placeholder="password" ref="password" />

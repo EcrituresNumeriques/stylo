@@ -12,15 +12,19 @@
 
 module.exports = {
 
-  port: 8000,
-
   /***************************************************************************
    * Set the default database connection for models in the development       *
    * environment (see config/connections.js and config/models.js )           *
    ***************************************************************************/
 
-  // models: {
-  //   connection: 'someMongodbServer'
-  // }
+   models: {
+     connection: 'MongodbServer'
+  },
+
+  /***************************************************************************
+   * Set the port in the production environment to 80                        *
+   ***************************************************************************/
+
+  port: 80,
 
 };

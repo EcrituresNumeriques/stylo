@@ -1,12 +1,13 @@
 sails-stylo:
   build: .
+  dockerfile: dockerfile.standalone
   ports:
     - "80:80"
   links:
     - mongodb-stylo
     - redis-stylo
   environment:
-    - NODE_ENV=production
+    - NODE_ENV=development
 mongodb-stylo:
   image: mongo:latest
   container_name: "mongodb-stylo"

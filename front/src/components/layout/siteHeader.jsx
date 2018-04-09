@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Login from './Login';
 
 export default class SiteHeader extends Component {
   constructor(props) {
@@ -8,7 +9,9 @@ export default class SiteHeader extends Component {
 render() {
     return (
       <header>
-        <img src="https://i.imgur.com/tBKKIzd.png"/>
+          <h1>Stylo</h1>
+          <div className="wrapper"/>
+          <Login />
       </header>
     );
   }

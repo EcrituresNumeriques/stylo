@@ -22,15 +22,41 @@ html, body {
   min-height: 100vh;
 }
 
+#app > header, .gridCenter > header {
+    padding:0.5rem 1rem;
+    background-color: green;
+    color:white;
+    display:flex;
+    align-items: center;
+    .wrapper {
+        flex:1 1 auto;
+    }
+    h1 {
+        margin:0;
+        flex:0 0 auto;
+    }
+    nav {
+        flex: 0 0 auto;
+        a {
+            color:white;
+            margin-left: 1rem;
+        }
+    }
+}
+
 .gridCenter{
   height: 100vh;
   display:grid;
   grid-template-columns:1fr auto 1fr;
-  grid-template-rows:1fr auto 1fr;
+  grid-template-rows:auto 1fr auto 1fr;
   grid-template-areas:
+  "header header header"
   ".. .. .."
   ".. center .."
   ".. .. ..";
+  header{
+      grid-area:header;
+  }
   .gridCentered{
       background-color: white;
       grid-area:center;

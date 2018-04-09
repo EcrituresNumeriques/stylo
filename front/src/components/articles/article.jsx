@@ -99,18 +99,18 @@ export default class Articles extends Component {
 
   render() {
     return (
-      <ul className="unstyled">
-        {!this.state.edit && [<p className="articleTitle"  onClick={this.toggleOpen}>
-          {!this.state.open && <i class="fa fa-plus" aria-hidden="true"/>}
-          {this.state.open && <i class="fa fa-minus" aria-hidden="true"/>}
+      <ul className="unstyled" key={"article"+this.props.article.id}>
+        {!this.state.edit && [<p className="articleTitle"  onClick={this.toggleOpen} key={"articletitle"+this.props.article.id}>
+          {!this.state.open && <i className="fa fa-plus" aria-hidden="true"/>}
+          {this.state.open && <i className="fa fa-minus" aria-hidden="true"/>}
           {this.props.article.title} ({dateFormat(new Date(this.props.article.updatedAt),"dd/mm/yy, HH:MM")})
         </p>,
-          <nav>
-            <Link to={"/write/"+this.props.article.id} className="button primaryButton"><i class="fa fa-pencil"></i> Edit</Link>
-            <span onClick={this.startShare} className="button"><i class="fa fa-pencil"></i> Share</span>
-            <span onClick={this.startSend} className="button"><i class="fa fa-pencil"></i> Send</span>
-            <span onClick={this.startEdit} className="button"><i class="fa fa-pencil"></i> Rename</span>
-            <span onClick={this.toggleDelete} className="button"><i class="fa fa-trash"></i> Delete</span>
+          <nav key={"articlenav"+this.props.article.id}>
+            <Link to={"/write/"+this.props.article.id} className="button primaryButton"><i className="fa fa-pencil"></i> Edit</Link>
+            <span onClick={this.startShare} className="button"><i className="fa fa-pencil"></i> Share</span>
+            <span onClick={this.startSend} className="button"><i className="fa fa-pencil"></i> Send</span>
+            <span onClick={this.startEdit} className="button"><i className="fa fa-pencil"></i> Rename</span>
+            <span onClick={this.toggleDelete} className="button"><i className="fa fa-trash"></i> Delete</span>
             {this.state.delete && <button className="button alertButton" onDoubleClick={this.deleteArticle}>DANGER! Doubleclick to delete</button>}
           </nav>]
 
@@ -121,7 +121,7 @@ export default class Articles extends Component {
           {this.state.open && this.props.article.versions && this.props.article.versions.map((version,i)=>(
           <li key={"versions"+version.id}>
             v{version.version}.{version.revision}
-            <Link to={"/write/"+this.props.article.id+"/"+version.id} className="button"><i class="fa fa-eye"></i> See</Link>
+            <Link to={"/write/"+this.props.article.id+"/"+version.id} className="button"><i className="fa fa-eye"></i> See</Link>
             {i==0 && <NewVersion {...version} />}
             <Fork {...version} />
           </li>))}

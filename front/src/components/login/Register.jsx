@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import SiteHeader from 'components/layout/siteHeader';
 
 export default class Register extends Component {
   constructor(props) {
@@ -40,6 +41,7 @@ export default class Register extends Component {
   render() {
     return (
       <div className="gridCenter">
+        <SiteHeader/>
         <form className="gridCentered" onSubmit={this.handleSubmit}>
           <input type="text" placeholder="Email" ref="email"/>
           <input type="text" placeholder="Username" ref="username"/>
