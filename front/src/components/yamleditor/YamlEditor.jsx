@@ -9,9 +9,9 @@ import { Rubriques} from './Rubriques.jsx';
 import { ControlledKeywords} from './ControlledKeywords.jsx';
 import { Keywords} from './Keywords.jsx';
 import _ from 'lodash';
-import {init} from '../redux/init.js';
-require('./../redux/rubriques.json');
-require('./../redux/transformKeywords.json');
+import {init} from './default/init.js';
+require('./default/rubriques.json');
+require('./default/transformKeywords.json');
 const removeMd = require('remove-markdown');
 const ST = require('stjs');
 
