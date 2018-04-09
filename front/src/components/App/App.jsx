@@ -22,8 +22,8 @@ export default class App extends Component {
           <Layout>
             <Route exact path="/" component={Articles}/>
             <Route exact path="/articles" component={Articles}/>
-            <Route exact path="/write/:article/:version" component={Write} />
-            <Route exact path="/write/:article" component={Live} />
+            <Route exact path="/write/:article/:version" component={Write}/>
+            <Route exact path="/write/:article" component={Live}/>
           </Layout>
           <Route component={NotFound}/>
         </Switch>

@@ -4,13 +4,21 @@ import store from 'store/configureStore';
 import objectAssign from 'object-assign';
 import ExportVersion from 'components/write/export';
 import YamlEditor from 'components/yamleditor/YamlEditor';
+import sortByDateDesc from 'helpers/sorts/dateDesc';
+import _ from 'lodash';
 import YAML from 'js-yaml';
 
 export default class Live extends Component {
   constructor(props) {
     super(props);
     //set state
-    this.state = {loaded:false,yaml:"loading",md:"loading",bib:"loading",title:"Title",version:0,revision:0,versions:[]};
+    this.state = {loaded:false,yaml:"loading",md:"loading",bib:"loading",title:"Title",version:0,revision:0,versions:[], autosave:{}};
+    this.updateMD = this.updateMD.bind(this);
+    this.updateBIB = this.updateBIB.bind(this);
+    this.updateYAML = this.updateYAML.bind(this);
+    this.sendNewVersion = this.sendNewVersion.bind(this);
+    this.autosave = _.debounce(this.autosave,1000);
+    this.fetchAPI = this.fetchAPI.bind(this);
     this.fetchAPI();
   }
 
@@ -24,7 +32,8 @@ export default class Live extends Component {
       return response.json();
     })
     .then(function(json){
-      that.setState({loaded:true, title:json.title, versions:json.versions,md:json.versions[json.versions.length-1].md,yaml:json.versions[json.versions.length-1].yaml,bib:json.versions[json.versions.length-1].bib});
+      json.versions = json.versions.sort(sortByDateDesc);
+      that.setState({loaded:true, title:json.title,version:json.versions[0].version,revision:json.versions[0].revision, versions:json.versions,md:json.versions[0].md,yaml:json.versions[0].yaml,bib:json.versions[0].bib});
       return null;
     });
   }
@@ -32,16 +41,80 @@ export default class Live extends Component {
   componentDidUpdate(prevProps, prevState){
   }
 
-  sendNewVersion(){
-
+  sendNewVersion(e,major=false){
+    let that = this;
+    let version = major?that.state.version+1:that.state.version;
+    let revision = major?0:that.state.revision+1;
+    let corps = {article:that.state.id,version,revision,md:that.state.md,yaml:that.state.yaml,bib:that.state.bib,article:that.props.match.params.article};
+    fetch('/api/v1/versions/',{
+      method:'POST',
+      body: JSON.stringify(corps),
+      credentials: 'same-origin'
+    })
+    .then(function(response){
+      return response.json();
+    })
+    .then(function(json){
+      that.setState(
+          function(state){
+              state.version = version;
+              state.revision = revision;
+              state.versions.push(json);
+              state.versions = state.versions.sort(sortByDateDesc);
+              return state;
+          }
+      );
+      return null;
+    });
   }
+
+  autosave(){
+      this.sendNewVersion(null,false);
+  }
+
+  updateMD(e){
+    const md = e.target.value;
+    this.setState(
+        function(state){
+            state.md = md;
+            return state;
+        }
+    );
+    this.autosave();
+  }
+  updateYAML(e){
+      const yaml = e.target.value;
+      this.setState(
+          function(state){
+              state.yaml = yaml;
+              return state;
+          }
+      );
+  }
+  updatingYAML(js){
+      console.log(js);
+    //let midState = objectAssign({},this.state);
+    //midState.live.yaml = YAML.safeDump(js);
+    //midState.active.yaml = YAML.safeDump(js);
+    //this.setState(midState);
+  }
+  updateBIB(e){
+      const bib = e.target.value;
+      this.setState(
+          function(state){
+              state.bib = bib;
+              return state;
+          }
+      );
+  }
+
 
   render() {
     return ([
-      <aside id="yamlEditor">
+      <aside id="yamlEditor" key="yamlEditor">
 
       </aside>,
-      <section id="writeComponent">
+      <section id="writeComponent" key="section">
           <h1>{this.state.title}</h1>
           <div>
             <Link to="/articles"  className="button secondaryButton">Back to My articles</Link>
@@ -58,11 +131,11 @@ export default class Live extends Component {
               <Link to={"/write/"+this.props.match.params.article+"/"+version.id} key={"versionWrite"+version.id} data-id={"versionWrite"+version.id} className={this.state.activeId == version.id?"active":"" }>v{version.version}.{version.revision}</Link>
             ))}
           </div>
-          <textarea value={this.state.md} onInput={this.updateMD} placeholder="Markdown">
+          <textarea value={this.state.md} onChange={this.updateMD} placeholder="Markdown">
           </textarea>
           <textarea value={this.state.yaml} disabled={true} placeholder="YAML editor">
           </textarea>
-          <textarea value={this.state.bib}  onInput={this.updateBIB} placeholder="BIBtext">
+          <textarea value={this.state.bib}  onChange={this.updateBIB} placeholder="BIBtext">
           </textarea>
       </section>
       ]
