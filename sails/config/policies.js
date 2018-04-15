@@ -29,6 +29,11 @@ module.exports.policies = {
        create:['isloggedIn','populateUserOwner'],
        findMine:['isloggedIn'],
    },
+   VersionsController :{
+       autosave:['isloggedIn','populateUserOwner'],
+       create:['isloggedIn','populateUserOwner'],
+       newVersion:['isloggedIn'],
+   },
    '*': true,
 
   /***************************************************************************

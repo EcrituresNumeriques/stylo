@@ -6,6 +6,7 @@ import sortByIdDesc from 'helpers/sorts/idDesc';
 import ExportVersion from 'components/write/export';
 import YamlEditor from 'components/yamleditor/YamlEditor';
 import YAML from 'js-yaml';
+import Timeline from 'components/write/Timeline';
 
 export default class Write extends Component {
   constructor(props) {
@@ -14,9 +15,6 @@ export default class Write extends Component {
     this.state = {loaded:false,live:{yaml:{},md:{}},active:{yaml:{},md:{}},activeId:this.props.match.params.version,article:{versions:[]}};
     this.sendNewVersion = this.sendNewVersion.bind(this);
     this.fetchAPI = this.fetchAPI.bind(this);
-    this.updateMD = this.updateMD.bind(this);
-    this.updateBIB = this.updateBIB.bind(this);
-    this.updateYAML = this.updateYAML.bind(this);
     this.fetchAPI();
   }
 
@@ -65,26 +63,6 @@ export default class Write extends Component {
   }
 
   sendNewVersion(e,major=false,exportAfter=false,exportTarget="HTML"){
-    let that = this;
-    let version = major?this.state.live.version+1:this.state.live.version;
-    let revision = major?0:this.state.live.revision+1;
-    let corps = {article:this.state.article.id,owner:this.state.article.owner,version,revision,md:this.state.live.md,yaml:this.state.live.yaml,bib:this.state.live.bib};
-    fetch('/api/v1/versions/',{
-      method:'POST',
-      body: JSON.stringify(corps),
-      credentials: 'same-origin'
-    })
-    .then(function(response){
-      return response.json();
-    })
-    .then(function(json){
-      let midState = objectAssign({},that.state);
-      //Don't know why this still works
-      //midState.article.versions = [json,...midState.article.versions];
-      midState.live.version = version;
-      midState.live.revision = revision;
-      midState.live.yaml = json.yaml;
-      that.setState(midState);
       if(exportAfter){
         if(exportTarget== "hypothes.is"){
           window.open('https://via.hypothes.is/https://stylo.14159.ninja/api/v1/export/'+json.id,'_blank');
@@ -96,71 +74,29 @@ export default class Write extends Component {
           window.open('/api/v1/export/'+json.id,'_blank');
         }
       }
-      store.dispatch({type:"ARTICLES_ADDVERSION",data:json});
       return null;
-    });
   }
-
-  updateMD(e){
-    let midState = objectAssign({},this.state);
-    midState.live.md = e.target.value;
-    midState.active.md = e.target.value;
-    this.setState(midState);
-
-  }
-  updateYAML(e){
-    let midState = objectAssign({},this.state);
-    midState.live.yaml = e.target.value;
-    midState.active.yaml = e.target.value;
-    this.setState(midState);
-  }
-  updatingYAML(js){
-      console.log(js);
-    //let midState = objectAssign({},this.state);
-    //midState.live.yaml = YAML.safeDump(js);
-    //midState.active.yaml = YAML.safeDump(js);
-    //this.setState(midState);
-  }
-  updateBIB(e){
-    let midState = objectAssign({},this.state);
-    midState.live.bib = e.target.value;
-    midState.active.bib = e.target.value;
-    this.setState(midState);
-  }
-
   render() {
-    return ([
-      <aside id="yamlEditor">
-        {!this.state.activeId && <YamlEditor props={this.state.live.yaml} exportChange={this.updatingYAML}/>}
-      </aside>,
+    return (
       <section id="writeComponent">
           <h1>{this.state.article.title}</h1>
           <div>
             <Link to="/articles"  className="button secondaryButton">Back to My articles</Link>
             <button className={this.state.activeId?"button disabledButton":"button secondaryButton"} onClick={()=>this.sendNewVersion(null,true,false)}>Save as new version {this.state.live.version+1}.0</button>
             <button className={this.state.activeId?"button disabledButton":"button secondaryButton"} onClick={this.sendNewVersion}>QuickSave {this.state.live.version}.{this.state.live.revision+1}</button>
-            {this.state.activeId && <ExportVersion version={this.state.activeId} target="HTML"/>}
-            {!this.state.activeId && <button className="button primaryButton" onClick={()=>this.sendNewVersion(null,false,true,"HTML")}>Export as HTML</button>}
-            {this.state.activeId && <ExportVersion version={this.state.activeId} target="hypothes.is"/>}
-            {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,true,"hypothes.is")}>Export on hypothes.is</button>}
-            {this.state.activeId && <ExportVersion version={this.state.activeId} target="EruditXML"/>}
-            {!this.state.activeId && <button className="button" onClick={()=>this.sendNewVersion(null,false,true,"EruditXML")}>Export as EruditXML</button>}
-          </div>
+            <ExportVersion version={this.state.activeId} target="HTML"/>
+            <ExportVersion version={this.state.activeId} target="hypothes.is"/>
+            <ExportVersion version={this.state.activeId} target="EruditXML"/>
+            </div>
           <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
-          <div id="timeline">
-            <Link to={"/write/"+this.props.match.params.article} className={this.state.activeId?"":"active"}>Edit</Link>
-            {this.state.article.versions.map((version)=>(
-              <Link to={"/write/"+this.props.match.params.article+"/"+version.id} key={"versionWrite"+version.id} data-id={"versionWrite"+version.id} className={this.state.activeId == version.id?"active":"" }>v{version.version}.{version.revision}</Link>
-            ))}
-          </div>
-          <textarea value={this.state.active.md} disabled={this.state.activeId} onInput={this.updateMD} placeholder="Markdown">
+          <Timeline activeId={this.state.activeId} article={this.props.match.params.article} versions={this.state.article.versions}/>
+          <textarea value={this.state.active.md} disabled={true} placeholder="Markdown">
           </textarea>
           <textarea value={this.state.active.yaml} disabled={true} placeholder="YAML editor">
           </textarea>
-          <textarea value={this.state.active.bib} disabled={this.state.activeId} onInput={this.updateBIB} placeholder="BIBtext">
+          <textarea value={this.state.active.bib} disabled={true} placeholder="BIBtext">
           </textarea>
       </section>
-      ]
     );
   }
 }

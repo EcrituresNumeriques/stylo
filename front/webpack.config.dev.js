@@ -12,13 +12,13 @@ export default {
     // must be first entry to properly set public path
     './src/webpack-public-path',
     'react-hot-loader/patch',
-    'webpack-hot-middleware/client?reload=true',
+    'webpack-hot-middleware/client?reload=true&path=http://localhost:3000/__webpack_hmr',
     path.resolve(__dirname, 'src/index.js') // Defining path seems necessary for this to work consistently on Windows machines.
   ],
   target: 'web',
   output: {
     path: path.resolve(__dirname, 'dist'), // Note: Physical files are only output by the production build task `npm run build`.
-    publicPath: '/',
+    publicPath: 'http://localhost:3000/',
     filename: 'bundle.js'
   },
   plugins: [

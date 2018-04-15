@@ -9,8 +9,8 @@ export default class Layout extends Component {
 render() {
     return (
       [
-        <SiteHeader />,
-        <main id="mainView">
+        <SiteHeader key="header" />,
+        <main id="mainView" key="mainview">
           {this.props.children}
         </main>
       ]

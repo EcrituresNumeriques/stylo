@@ -178,7 +178,7 @@ ul.unstyled:nth-child(2n){
 #timeline{
   display:inline-block;
   padding:1em;
-  width:100px;
+  //width:100px;
   a {
     display:block;
     text-align: right;
@@ -317,7 +317,7 @@ div#app aside#yamlEditor >  section.closed{
 section#writeComponent{
   position:relative;
   #timeline{
-    position: absolute;
+    //position: absolute;
     left: -110px;
   }
 }

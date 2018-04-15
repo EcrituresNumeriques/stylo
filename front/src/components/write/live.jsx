@@ -7,6 +7,7 @@ import YamlEditor from 'components/yamleditor/YamlEditor';
 import sortByDateDesc from 'helpers/sorts/dateDesc';
 import _ from 'lodash';
 import YAML from 'js-yaml';
+import Timeline from 'components/write/Timeline';
 
 export default class Live extends Component {
   constructor(props) {
@@ -41,12 +42,17 @@ export default class Live extends Component {
   componentDidUpdate(prevProps, prevState){
   }
 
-  sendNewVersion(e,major=false){
+  sendNewVersion(e,major=false,autosave=false,exportAfter=false,exportTarget='HTML'){
     let that = this;
-    let version = major?that.state.version+1:that.state.version;
-    let revision = major?0:that.state.revision+1;
-    let corps = {article:that.state.id,version,revision,md:that.state.md,yaml:that.state.yaml,bib:that.state.bib,article:that.props.match.params.article};
-    fetch('/api/v1/versions/',{
+    let title = 'a';
+    let version = that.state.version;
+    let revision = that.state.revision;
+    let target = 'autosave';
+    if(!autosave){
+      target = '';
+    }
+    let corps = {autosave,major,article:that.state.id,version,revision,md:that.state.md,yaml:that.state.yaml,bib:that.state.bib,article:that.props.match.params.article};
+    fetch('/api/v1/versions/'+target,{
       method:'POST',
       body: JSON.stringify(corps),
       credentials: 'same-origin'
@@ -57,19 +63,37 @@ export default class Live extends Component {
     .then(function(json){
       that.setState(
           function(state){
-              state.version = version;
-              state.revision = revision;
+              if(json.autosave){
+                state.versions = state.versions.filter(version => !(version.version == state.version && version.revision == state.revision && version.autosave == true && version.owner == json.owner));
+              }
+              else{
+                state.versions = state.versions.filter(version => !(version.version == state.version && version.revision == state.revision && version.autosave == true && version.owner == json.owner));
+              }
               state.versions.push(json);
               state.versions = state.versions.sort(sortByDateDesc);
+              state.version = json.version;
+              state.revision = json.revision;
               return state;
           }
       );
+      if(exportAfter){
+        if(exportTarget== "hypothes.is"){
+          window.open('https://via.hypothes.is/https://stylo.14159.ninja/api/v1/export/'+json.id,'_blank');
+        }
+        else if(exportTarget!="HTML"){
+          window.open('file:///home/marcello/Desktop/sp/git/chaineEditorialeSP/templates/xml.xml','_blank');
+        }
+        else{
+          window.open('/api/v1/export/'+json.id,'_blank');
+        }
+      }
+
       return null;
     });
   }
 
   autosave(){
-      this.sendNewVersion(null,false);
+      this.sendNewVersion(null,false,true);
   }
 
   updateMD(e){
@@ -120,17 +144,12 @@ export default class Live extends Component {
             <Link to="/articles"  className="button secondaryButton">Back to My articles</Link>
             <button className="button secondaryButton" onClick={()=>this.sendNewVersion(null,true,false)}>Save as new version {this.state.version+1}.0</button>
             <button className="button secondaryButton" onClick={this.sendNewVersion}>QuickSave {this.state.version}.{this.state.revision+1}</button>
-            <button className="button primaryButton" onClick={()=>this.sendNewVersion(null,false,true,"HTML")}>Export as HTML</button>
-            <button className="button" onClick={()=>this.sendNewVersion(null,false,true,"hypothes.is")}>Export on hypothes.is</button>
-            <button className="button" onClick={()=>this.sendNewVersion(null,false,true,"EruditXML")}>Export as EruditXML</button>
+            <button className="button primaryButton" onClick={()=>this.sendNewVersion(null,false,true,true,"HTML")}>Export as HTML</button>
+            <button className="button" onClick={()=>this.sendNewVersion(null,false,true,true,"hypothes.is")}>Export on hypothes.is</button>
+            <button className="button" onClick={()=>this.sendNewVersion(null,false,true,true,"EruditXML")}>Export as EruditXML</button>
           </div>
           <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
-          <div id="timeline">
-            <Link to={"/write/"+this.props.match.params.article} className="active">Edit</Link>
-            {this.state.versions.map((version)=>(
-              <Link to={"/write/"+this.props.match.params.article+"/"+version.id} key={"versionWrite"+version.id} data-id={"versionWrite"+version.id} className={this.state.activeId == version.id?"active":"" }>v{version.version}.{version.revision}</Link>
-            ))}
-          </div>
+          <Timeline activeId='live' article={this.props.match.params.article} versions={this.state.versions}/>
           <textarea value={this.state.md} onChange={this.updateMD} placeholder="Markdown">
           </textarea>
           <textarea value={this.state.yaml} disabled={true} placeholder="YAML editor">

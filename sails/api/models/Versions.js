@@ -15,6 +15,14 @@ module.exports = {
     article:{
       model:'Articles'
     },
+    autosave:{
+      type:'boolean',
+      'defaultsTo':true
+    },
+    titre:{
+      type:'string',
+      defaultsTo:''
+    },
     version:{
       type:'integer',
       defaultsTo:1
