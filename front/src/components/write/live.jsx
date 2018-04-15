@@ -130,6 +130,7 @@ export default class Live extends Component {
               return state;
           }
       );
+      this.autosave();
   }
 
 

@@ -13,6 +13,10 @@ export default function fuelSavingsReducer(state = initialState.user, action) {
       newState.log = true;
       newState.user = action.data;
       return newState;
+    case 'USER_STATUS':
+      newState.log = action.data.log;
+      newState.user = action.data;
+      return newState;
     default:
       return state;
   }

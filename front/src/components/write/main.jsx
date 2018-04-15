@@ -12,7 +12,7 @@ export default class Write extends Component {
   constructor(props) {
     super(props);
     //set state
-    this.state = {loaded:false,live:{yaml:{},md:{}},active:{yaml:{},md:{}},activeId:this.props.match.params.version,article:{versions:[]}};
+    this.state = {loaded:false,live:{yaml:"",md:"",bib:""},active:{yaml:"",md:"",bib:""},activeId:this.props.match.params.version,article:{versions:[]}};
     this.sendNewVersion = this.sendNewVersion.bind(this);
     this.fetchAPI = this.fetchAPI.bind(this);
     this.fetchAPI();
@@ -46,7 +46,7 @@ export default class Write extends Component {
       else{
         //find the correct version
         let that = this;
-        newActive = objectAssign({},this.state.article.versions.find(function(version){return that.props.match.params.version == version.id}));
+        newActive = objectAssign({yaml:'',md:'',bib:''},this.state.article.versions.find(function(version){return that.props.match.params.version == version.id}));
       }
       this.setState({activeId:this.props.match.params.version,active:newActive,compute:false});
     }

@@ -8,10 +8,28 @@ import Write from 'components/write/main'
 import Live from 'components/write/live'
 import Layout from 'components/layout/layout'
 import 'font-awesome-webpack'
+import store from 'store/configureStore';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
+    this.checkStatus = this.checkStatus.bind(this);
+    this.checkStatus();
+  }
+
+  checkStatus(){
+    let that = this;
+    fetch('/api/v1/status',{
+      method:'GET',
+      credentials: 'same-origin'
+    })
+    .then(function(response){
+      return response.json();
+    })
+    .then(function(json){
+      store.dispatch({type:"USER_STATUS",data:json});
+      return null;
+    });
   }
 
   render() {
