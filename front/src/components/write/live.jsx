@@ -8,6 +8,9 @@ import sortByDateDesc from 'helpers/sorts/dateDesc';
 import _ from 'lodash';
 import YAML from 'js-yaml';
 import Timeline from 'components/write/Timeline';
+import {Controlled as CodeMirror} from 'react-codemirror2'
+require('codemirror/mode/markdown/markdown');
+
 
 export default class Live extends Component {
   constructor(props) {
@@ -15,6 +18,7 @@ export default class Live extends Component {
     //set state
     this.state = {loaded:false,yaml:"loading",md:"loading",bib:"loading",title:"Title",version:0,revision:0,versions:[], autosave:{}};
     this.updateMD = this.updateMD.bind(this);
+    this.updateMDCM = this.updateMDCM.bind(this);
     this.updateBIB = this.updateBIB.bind(this);
     this.updateYAML = this.updateYAML.bind(this);
     this.sendNewVersion = this.sendNewVersion.bind(this);
@@ -106,6 +110,17 @@ export default class Live extends Component {
     );
     this.autosave();
   }
+
+  updateMDCM(editor, data, md){
+    this.setState(
+        function(state){
+            state.md = md;
+            return state;
+        }
+    );
+    this.autosave();
+  }
+
   updateYAML(e){
       const yaml = e.target.value;
       this.setState(
@@ -151,8 +166,7 @@ export default class Live extends Component {
           </div>
           <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
           <Timeline activeId='live' article={this.props.match.params.article} versions={this.state.versions}/>
-          <textarea value={this.state.md} onChange={this.updateMD} placeholder="Markdown">
-          </textarea>
+          <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineNumber:true}}/>
           <textarea value={this.state.yaml} disabled={true} placeholder="YAML editor">
           </textarea>
           <textarea value={this.state.bib}  onChange={this.updateBIB} placeholder="BIBtext">

@@ -1,3 +1,6 @@
+@import '../../node_modules/codemirror/lib/codemirror.css';
+@import '../../node_modules/codemirror/theme/material.css';
+
 *{
     box-sizing: border-box;
 }
@@ -327,4 +330,9 @@ textarea{
   vertical-align: top;
   width:100%;
   min-height:30em;
+}
+
+.react-codemirror2{
+  border:1px solid #c0c0c0;
+  padding:1em;
 }

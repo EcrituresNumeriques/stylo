@@ -7,6 +7,8 @@ import ExportVersion from 'components/write/export';
 import YamlEditor from 'components/yamleditor/YamlEditor';
 import YAML from 'js-yaml';
 import Timeline from 'components/write/Timeline';
+import {Controlled as CodeMirror} from 'react-codemirror2'
+require('codemirror/mode/markdown/markdown');
 
 export default class Write extends Component {
   constructor(props) {
@@ -90,8 +92,7 @@ export default class Write extends Component {
             </div>
           <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
           <Timeline activeId={this.state.activeId} article={this.props.match.params.article} versions={this.state.article.versions}/>
-          <textarea value={this.state.active.md} disabled={true} placeholder="Markdown">
-          </textarea>
+          <CodeMirror value={this.state.active.md} options={{mode:'markdown',readOnly:true}}/>
           <textarea value={this.state.active.yaml} disabled={true} placeholder="YAML editor">
           </textarea>
           <textarea value={this.state.active.bib} disabled={true} placeholder="BIBtext">
