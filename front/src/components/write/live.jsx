@@ -16,11 +16,12 @@ export default class Live extends Component {
   constructor(props) {
     super(props);
     //set state
-    this.state = {loaded:false,yaml:"loading",md:"loading",bib:"loading",title:"Title",version:0,revision:0,versions:[], autosave:{}};
+    this.state = {loaded:false,yaml:"title: loading",md:"# loading",bib:"loading",title:"Title",version:0,revision:0,versions:[], autosave:{}};
     this.updateMD = this.updateMD.bind(this);
     this.updateMDCM = this.updateMDCM.bind(this);
     this.updateBIB = this.updateBIB.bind(this);
     this.updateYAML = this.updateYAML.bind(this);
+    this.updatingYAML = this.updatingYAML.bind(this);
     this.sendNewVersion = this.sendNewVersion.bind(this);
     this.autosave = _.debounce(this.autosave,1000);
     this.fetchAPI = this.fetchAPI.bind(this);
@@ -130,12 +131,13 @@ export default class Live extends Component {
           }
       );
   }
-  updatingYAML(js){
-      console.log(js);
-    //let midState = objectAssign({},this.state);
-    //midState.live.yaml = YAML.safeDump(js);
-    //midState.active.yaml = YAML.safeDump(js);
-    //this.setState(midState);
+  updatingYAML(yaml){
+      console.log(yaml);
+      this.setState(
+          function(state){
+              state.yaml = yaml;
+              return state;
+      });
   }
   updateBIB(e){
       const bib = e.target.value;
@@ -152,7 +154,7 @@ export default class Live extends Component {
   render() {
     return ([
       <aside id="yamlEditor" key="yamlEditor">
-
+        <YamlEditor editor={false} yaml={this.state.yaml} exportChange={this.updatingYAML}/>
       </aside>,
       <section id="writeComponent" key="section">
           <h1>{this.state.title}</h1>

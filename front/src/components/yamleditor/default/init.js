@@ -1,3 +1,4 @@
+import { categories } from './categories';
 import { rubriques } from './rubriques';
 export let init = {
   obj:{
@@ -77,7 +78,7 @@ export let init = {
  },
  misc:{
    rubriques:[...[],...rubriques],
-   categories:[],
+   categories:[...[],...categories],
    uncontrolledKeywords:[],
    "keywords_fr":[],
    "keywords_en":[],

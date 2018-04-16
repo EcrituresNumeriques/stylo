@@ -14,13 +14,22 @@ require('./default/rubriques.json');
 require('./default/transformKeywords.json');
 const removeMd = require('remove-markdown');
 const ST = require('stjs');
+import YAML from 'js-yaml';
+
+let SexyYamlType = new YAML.Type('!sexy', {
+  kind: 'sequence', // See node kinds in YAML spec: http://www.yaml.org/spec/1.2/spec.html#kind//
+  construct: function (data) {
+    return data.map(function (string) { return 'sexy ' + string; });
+  }
+});
+let SEXY_SCHEMA = YAML.Schema.create([ SexyYamlType ]);
 
 
 export default class YamlEditor extends Component {
   constructor(props){
     super(props);
-    this.state = {obj:_.get(props,'yaml',init.obj),misc:init.misc};
-    console.log(this.state);
+    const jsObj = YAML.load(props.yaml, { schema: SEXY_SCHEMA }) || {};
+    this.state = {obj:jsObj,misc:init.misc};
     this.updateState = this.updateState.bind(this);
     this.updateMisc = this.updateMisc.bind(this);
     this.addKeyword = this.addKeyword.bind(this);
@@ -29,26 +38,34 @@ export default class YamlEditor extends Component {
 
     //load rubriques if provided
     if(props.rubriques){
+      //check if it is a string(URL) or Object
+      if(typeof props.rubriques == 'string'){
         fetch(props.rubriques)
         .then(function(response) {
-            return response.json();
+          return response.json();
         })
         .then(function(rubriques) {
-            that.updateMisc(rubriques,'rubriques','rubriques');
+          that.updateMisc(rubriques,'rubriques','rubriques');
         });
+      }
+      else if (typeof props.rubriques == 'object') {
+        that.updateMisc(props,'rubriques','rubriques');
+      }
     }
 
-    //load keywords if provided
-    if(props.keywords){
+    //load keywords if provided as an object
+    if(props.keywords && typeof props.keywords == 'object'){
+      console.log("updating keywords");
+    }
+    //load keywords if provided as URL
+    if(props.keywords && typeof props.keywords == 'string'){
         fetch(props.keywords)
         .then(function(response) {
             return response.json();
             //return {}
         })
         .then(function(keywords) {
-
             if(props.transformKeywords){
-
                 fetch(props.transformKeywords)
                 .then(function(response) {
                     return response.json();
@@ -99,11 +116,20 @@ export default class YamlEditor extends Component {
   }
 
   componentWillReceiveProps(nextProp){
-      this.updateState(nextProp.yaml);
+      const singleYaml = nextProp.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, "");
+      const singleYamlObj = YAML.load(singleYaml, { schema: SEXY_SCHEMA });
+      if(JSON.stringify(singleYamlObj) != JSON.stringify(this.state.obj)){
+        console.log("New props, updating state",JSON.stringify(singleYamlObj),JSON.stringify(this.state.obj));
+        this.updateState(singleYamlObj);
+      }
   }
 
   componentWillUpdate(nextProp,nextState){
-    this.props.exportChange(nextState.obj);
+    console.log("componentWillUpdate",nextProp.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, ""));
+
+    if(YAML.safeDump(nextState.obj),nextProp.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, "") != YAML.safeDump(nextState.obj)){
+      this.props.exportChange(YAML.safeDump(nextState.obj));
+    }
   }
 
   updateState(value,target = undefined){
@@ -111,11 +137,11 @@ export default class YamlEditor extends Component {
     if(!target){
       this.setState({obj:value});
       //Need to decompile rubriques/MotsClefs
+      /*
       this.setState(function(state){
         //set all rubriques to not selected then select from yaml
         state.misc.rubriques.map((r)=>(r.selected=false));
-        if(state.obj)
-        {state.obj.typeArticle.map(function(r){
+        state.obj.typeArticle.map(function(r){
           state.misc.rubriques.filter((o)=>(o.label==r)).map((o)=>(o.selected=true));
           return r;
         });
@@ -126,10 +152,9 @@ export default class YamlEditor extends Component {
           state.misc.categories.filter((o)=>(o.label==c)).map((o)=>(o.selected=true));
           return c;
         });
-        }
         return state;
       });
-
+*/
 
 
     }
@@ -139,6 +164,7 @@ export default class YamlEditor extends Component {
       this.setState((state)=>_.set(state, 'obj.'+target, value));
     }
   }
+
   updateMisc(value,target,type = undefined){
     //Update only the key changed, plus export the new state
       //console.log("changing key",target,value);
@@ -218,18 +244,29 @@ export default class YamlEditor extends Component {
   render(){
     return(
       <section>
-        <TextInput target="id_sp" alias={[{target:'bibliography',prefix:'',suffix:'.bib'}]} title="Identifiant" placeholder="SPxxxx" state={this.state.obj} updateState={this.updateState} />
+        {this.props.editor && <TextInput target="id_sp" alias={[{target:'bibliography',prefix:'',suffix:'.bib'}]} title="Identifiant" placeholder="SPxxxx" state={this.state.obj} updateState={this.updateState} />}
+
         <TextInput target="title_f" alias={[{target:'title',prefix:'',suffix:'',filterMD:true}]} title="Titre" state={this.state.obj} updateState={this.updateState} />
+
         <TextInput target="subtitle_f" alias={[{target:'subtitle',prefix:'',suffix:'',filterMD:true}]} title="Sous-titre" state={this.state.obj} updateState={this.updateState} />
-        <Date target="date" title="Date" state={this.state.obj} updateState={this.updateState} />
-        <TextInput target="url_article_sp" title="URL sens public" placeholder="http://sens-public.org/articleXXXX.html" state={this.state.obj} updateState={this.updateState} />
+
+        {this.props.editor && <Date target="date" title="Date" state={this.state.obj} updateState={this.updateState} />}
+
+        {this.props.editor && <TextInput target="url_article_sp" title="URL sens public" placeholder="http://sens-public.org/articleXXXX.html" state={this.state.obj} updateState={this.updateState} />}
+
         <Resumes state={this.state.obj}  updateState={this.updateState} />
-        <Dossier state={this.state.obj} updateState={this.updateState} />
+
+        {this.props.editor && <Dossier state={this.state.obj} updateState={this.updateState} />}
+
         <Authors state={this.state.obj} updateState={this.updateState} />
-        <Reviewers state={this.state.obj} updateState={this.updateState} />
-        <ControlledKeywords state={this.state.misc} updateMisc={this.updateMisc} />
+
+        {this.props.editor && <Reviewers state={this.state.obj} updateState={this.updateState} />}
+
+        {this.props.editor && <ControlledKeywords state={this.state.misc} updateMisc={this.updateMisc} />}
+
         <Keywords state={this.state} updateMisc={this.updateMisc} addKeyword={this.addKeyword} removeKeyword={this.removeKeyword} updateState={this.updateState}/>
-        <Rubriques state={this.state.misc} updateMisc={this.updateMisc} />
+
+        {this.props.editor && <Rubriques state={this.state.misc} updateMisc={this.updateMisc} />}
       </section>
     )
   }
