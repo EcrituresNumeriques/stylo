@@ -44,10 +44,18 @@ Actions:
 ## Editeur
 
 - source md stylée (pas de preview html)
-- v2: gestion du copier-coller word/html
-- import docx/odt/html
+- soft wrap
 - vue pagination
 - statut bar avec : nbr de mots/caractères, nbr de page,
+- import docx/odt/html, via commande pandoc, typiquement celle utilisée actuellement
+  - `> pandoc
+    -f docx
+    -t markdown
+    --extract-media=./
+    --atx-headers
+    SPxxxx.docx
+    -o SPxxxx.docx.md`
+- v2: gestion du copier-coller word/html
 
 ## Versions
 
