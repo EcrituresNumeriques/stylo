@@ -11,6 +11,7 @@ import Timeline from 'components/write/Timeline';
 import Sommaire from 'components/write/Sommaire';
 import Biblio from 'components/write/Biblio';
 import {Controlled as CodeMirror} from 'react-codemirror2'
+import Resizable from 're-resizable';
 require('codemirror/mode/markdown/markdown');
 
 
@@ -179,7 +180,7 @@ export default class Live extends Component {
           />
           <Sommaire md={this.state.md}/>
           <Biblio bib={this.state.bib}/>
-          <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true}}/>
+          <Resizable><CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity}}/></Resizable>
           <textarea value={this.state.bib}  onChange={this.updateBIB} placeholder="BIBtext" style={{display:"none"}}>
           </textarea>
       </section>

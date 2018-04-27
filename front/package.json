@@ -40,6 +40,7 @@
     "less-loader": "^4.0.3",
     "lodash": "^4.17.4",
     "object-assign": "4.1.0",
+    "re-resizable": "^4.4.8",
     "react": "16.0.0",
     "react-codemirror2": "^4.2.1",
     "react-dom": "16.0.0",

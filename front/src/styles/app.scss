@@ -347,6 +347,9 @@ textarea{
 .react-codemirror2{
   border:1px solid #c0c0c0;
   padding:1em;
+  .CodeMirror{
+      height:auto;
+  }
 }
 #timeline, #sommaire, #biblio {
   display:inline-block;
