@@ -87,7 +87,7 @@ export default class Live extends Component {
       );
       if(exportAfter){
         if(exportTarget== "hypothes.is"){
-          window.open('https://via.hypothes.is/https://stylo.14159.ninja/api/v1/exportArticle/'+json.article,'_blank');
+          window.open('https://via.hypothes.is/https://stylo.14159.ninja/api/v1/previewArticle/'+json.article,'_blank');
         }
         else if(exportTarget=="eruditXML"){
           window.open('file:///home/marcello/Desktop/sp/git/chaineEditorialeSP/templates/xml.xml','_blank');
