@@ -43,5 +43,9 @@ module.exports = {
       });
       return true;
     });
-  }
+    },
+    Updaty: function(req,res){
+        res.json({ok:true});
+        return true;
+    }
 };

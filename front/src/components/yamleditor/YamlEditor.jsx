@@ -119,16 +119,15 @@ export default class YamlEditor extends Component {
       const singleYaml = nextProp.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, "");
       const singleYamlObj = YAML.load(singleYaml, { schema: SEXY_SCHEMA });
       if(JSON.stringify(singleYamlObj) != JSON.stringify(this.state.obj)){
-        console.log("New props, updating state",JSON.stringify(singleYamlObj),JSON.stringify(this.state.obj));
+        //console.log("New props, updating state",JSON.stringify(singleYamlObj),JSON.stringify(this.state.obj));
         this.updateState(singleYamlObj);
       }
   }
 
   componentWillUpdate(nextProp,nextState){
-    console.log("componentWillUpdate",nextProp.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, ""));
-
-    if(YAML.safeDump(nextState.obj),nextProp.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, "") != YAML.safeDump(nextState.obj)){
-      this.props.exportChange(YAML.safeDump(nextState.obj));
+    //console.log("componentWillUpdate",nextProp.yaml,YAML.safeDump(nextState.obj), nextProp.yaml != '---\n'+YAML.safeDump(nextState.obj)+'---');
+    if(nextProp.yaml != '---\n'+YAML.safeDump(nextState.obj)+'---'){
+      this.props.exportChange('---\n'+YAML.safeDump(nextState.obj)+'---');
     }
   }
 

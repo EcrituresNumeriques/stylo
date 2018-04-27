@@ -19,13 +19,13 @@ module.exports = {
       type:'boolean',
       'defaultsTo':true
     },
-    titre:{
+    title:{
       type:'string',
       defaultsTo:''
     },
     version:{
       type:'integer',
-      defaultsTo:1
+      defaultsTo:0
     },
     revision:{
       type:'integer',
@@ -41,7 +41,7 @@ module.exports = {
     },
     yaml:{
       type:'longtext',
-      defaultsTo:'---\ntitle: Title\n---'
+      defaultsTo:'---\ntitle: Title\ntitle_f: Title\n---'
     }
   },
   afterCreate:function(version, next){

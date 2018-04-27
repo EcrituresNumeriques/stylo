@@ -9,7 +9,7 @@ export default class Export extends Component {
   }
 
   getHTML(){
-    let target = "export";
+    let target = "exportVersion";
     if(this.props.target == "EruditXML"){
       target='exportErudit';
       window.open('file:///home/marcello/Desktop/sp/git/chaineEditorialeSP/templates/xml.xml','_blank')

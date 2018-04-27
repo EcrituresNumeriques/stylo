@@ -8,6 +8,8 @@ import sortByDateDesc from 'helpers/sorts/dateDesc';
 import _ from 'lodash';
 import YAML from 'js-yaml';
 import Timeline from 'components/write/Timeline';
+import Sommaire from 'components/write/Sommaire';
+import Biblio from 'components/write/Biblio';
 import {Controlled as CodeMirror} from 'react-codemirror2'
 require('codemirror/mode/markdown/markdown');
 
@@ -67,7 +69,8 @@ export default class Live extends Component {
     })
     .then(function(json){
       that.setState(
-          function(state){
+          function(stateOld){
+              let state = objectAssign({},stateOld);
               if(json.autosave){
                 state.versions = state.versions.filter(version => !(version.version == state.version && version.revision == state.revision && version.autosave == true && version.owner == json.owner));
               }
@@ -83,13 +86,16 @@ export default class Live extends Component {
       );
       if(exportAfter){
         if(exportTarget== "hypothes.is"){
-          window.open('https://via.hypothes.is/https://stylo.14159.ninja/api/v1/export/'+json.id,'_blank');
+          window.open('https://via.hypothes.is/https://stylo.14159.ninja/api/v1/exportArticle/'+json.article,'_blank');
         }
-        else if(exportTarget!="HTML"){
+        else if(exportTarget=="eruditXML"){
           window.open('file:///home/marcello/Desktop/sp/git/chaineEditorialeSP/templates/xml.xml','_blank');
         }
+        else if(exportTarget=="previewHTML"){
+          window.open('/api/v1/previewArticle/'+json.article,'_blank');
+        }
         else{
-          window.open('/api/v1/export/'+json.id,'_blank');
+          window.open('/api/v1/exportArticle/'+json.article,'_blank');
         }
       }
 
@@ -132,12 +138,13 @@ export default class Live extends Component {
       );
   }
   updatingYAML(yaml){
-      console.log(yaml);
+      //console.log("exported",yaml);
       this.setState(
           function(state){
               state.yaml = yaml;
               return state;
       });
+      this.autosave();
   }
   updateBIB(e){
       const bib = e.target.value;
@@ -157,21 +164,23 @@ export default class Live extends Component {
         <YamlEditor editor={false} yaml={this.state.yaml} exportChange={this.updatingYAML}/>
       </aside>,
       <section id="writeComponent" key="section">
-          <h1>{this.state.title}</h1>
-          <div>
-            <Link to="/articles"  className="button secondaryButton">Back to My articles</Link>
-            <button className="button secondaryButton" onClick={()=>this.sendNewVersion(null,true,false)}>Save as new version {this.state.version+1}.0</button>
-            <button className="button secondaryButton" onClick={this.sendNewVersion}>QuickSave {this.state.version}.{this.state.revision+1}</button>
-            <button className="button primaryButton" onClick={()=>this.sendNewVersion(null,false,true,true,"HTML")}>Export as HTML</button>
-            <button className="button" onClick={()=>this.sendNewVersion(null,false,true,true,"hypothes.is")}>Export on hypothes.is</button>
-            <button className="button" onClick={()=>this.sendNewVersion(null,false,true,true,"EruditXML")}>Export as EruditXML</button>
-          </div>
-          <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
-          <Timeline activeId='live' article={this.props.match.params.article} versions={this.state.versions}/>
-          <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineNumber:true}}/>
-          <textarea value={this.state.yaml} disabled={true} placeholder="YAML editor">
-          </textarea>
-          <textarea value={this.state.bib}  onChange={this.updateBIB} placeholder="BIBtext">
+          <h1>{this.state.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>
+          <Timeline
+              activeId='live'
+              article={this.props.match.params.article}
+              versions={this.state.versions}
+              newVersion={()=>this.sendNewVersion(null,true,false)}
+              newRevision={()=>this.sendNewVersion()}
+              exportHTML={()=>this.sendNewVersion(null,false,true,true,"HTML")}
+              previewHTML={()=>this.sendNewVersion(null,false,true,true,"previewHTML")}
+              exportHypothesis={()=>this.sendNewVersion(null,false,true,true,"hypothes.is")}
+              exportErudit={()=>this.sendNewVersion(null,false,true,true,"eruditXML")}
+              downloadAll={()=>this.sendNewVersion(null,false,true,true,"zip")}
+          />
+          <Sommaire md={this.state.md}/>
+          <Biblio bib={this.state.bib}/>
+          <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true}}/>
+          <textarea value={this.state.bib}  onChange={this.updateBIB} placeholder="BIBtext" style={{display:"none"}}>
           </textarea>
       </section>
       ]

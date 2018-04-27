@@ -182,20 +182,32 @@ ul.unstyled:nth-child(2n){
   display:inline-block;
   padding:1em;
   //width:100px;
-  a {
+  a, #showed {
     display:block;
-    text-align: right;
     border-right:1px solid #c0c0c0;
+    border-left: 1px solid #c0c0c0;
+    border-bottom: 1px solid #c0c0c0;
+    padding:0.5rem 1rem;
+    color:black;
   }
-  a:not(.active){
-    padding-right:0.5em;
+  #showed {
+      background-color: green;
+      color:white;
+      ul {
+          padding:0;
+          margin:0;
+          list-style: none;
+          li {
+              margin-top:0.5rem;
+              display:block;
+              padding:0.5rem 1rem;
+              border:1px solid white;
+          }
+      }
   }
-  a.active:after{
-    content:"---";
-    display:inline-block;
-    color:#c0c0c0;
-    margin-left:0.5em;
-
+  a.active{
+      background-color: green;
+      color:white;
   }
 }
 div#app {
@@ -335,4 +347,10 @@ textarea{
 .react-codemirror2{
   border:1px solid #c0c0c0;
   padding:1em;
+}
+#timeline, #sommaire, #biblio {
+  display:inline-block;
+  padding:1em;
+    border:1px solid black;
+    margin-bottom: 1rem;
 }

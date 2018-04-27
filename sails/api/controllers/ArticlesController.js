@@ -8,7 +8,7 @@
 module.exports = {
   findMine: function(req,res){
     //console.log("Logging in");
-      Articles.find({owner:req.session.user.id}).populate("versions").exec(function(err,thisUsersArticle){
+      Articles.find({owner:req.session.user.id}).populate("versions",{limit: 1, sort: 'createdAt DESC'}).exec(function(err,thisUsersArticle){
         console.log("userfound",thisUsersArticle);
         res.ok(thisUsersArticle);
         });

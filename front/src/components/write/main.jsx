@@ -7,7 +7,10 @@ import ExportVersion from 'components/write/export';
 import YamlEditor from 'components/yamleditor/YamlEditor';
 import YAML from 'js-yaml';
 import Timeline from 'components/write/Timeline';
-import {Controlled as CodeMirror} from 'react-codemirror2'
+import Sommaire from 'components/write/Sommaire';
+import Biblio from 'components/write/Biblio';
+import {Controlled as CodeMirror} from 'react-codemirror2';
+import promptUser from 'helpers/UI/prompt';
 require('codemirror/mode/markdown/markdown');
 
 export default class Write extends Component {
@@ -15,8 +18,9 @@ export default class Write extends Component {
     super(props);
     //set state
     this.state = {loaded:false,live:{yaml:"",md:"",bib:""},active:{yaml:"",md:"",bib:""},activeId:this.props.match.params.version,article:{versions:[]}};
-    this.sendNewVersion = this.sendNewVersion.bind(this);
+    this.exportVersion = this.exportVersion.bind(this);
     this.fetchAPI = this.fetchAPI.bind(this);
+    this.tagVersion = this.tagVersion.bind(this);
     this.fetchAPI();
   }
 
@@ -30,8 +34,7 @@ export default class Write extends Component {
       return response.json();
     })
     .then(function(json){
-      store.dispatch({type:"ARTICLES_UPDATE",data:json});
-      json.versions = json.versions.sort(sortByIdDesc);
+      json.versions = [...json.versions].sort(sortByIdDesc);
       let live = objectAssign({},json.versions[0]);
       that.setState({loaded:true,article:json,live,compute:true});
       return null;
@@ -52,47 +55,69 @@ export default class Write extends Component {
       }
       this.setState({activeId:this.props.match.params.version,active:newActive,compute:false});
     }
-    if(store.getState().yamleditor.misc.changed){
-      //updateYAML textarea here on yamleditor change;
-      store.dispatch({type:"FORM_REGISTERED"});
-      let midState = objectAssign({},this.state);
-      //console.log("dumping : ",store.getState().yamleditor.obj);
-      let yaml = '---\n'+YAML.safeDump(store.getState().yamleditor.obj)+'---';
-      midState.live.yaml = yaml;
-      midState.active.yaml = yaml;
-      this.setState(midState);
-    }
   }
 
-  sendNewVersion(e,major=false,exportAfter=false,exportTarget="HTML"){
-      if(exportAfter){
-        if(exportTarget== "hypothes.is"){
-          window.open('https://via.hypothes.is/https://stylo.14159.ninja/api/v1/export/'+json.id,'_blank');
-        }
-        else if(exportTarget!="HTML"){
-          window.open('file:///home/marcello/Desktop/sp/git/chaineEditorialeSP/templates/xml.xml','_blank');
-        }
-        else{
-          window.open('/api/v1/export/'+json.id,'_blank');
-        }
-      }
+  exportVersion(exportTarget="HTML"){
+          if(exportTarget== "hypothes.is"){
+            window.open('https://via.hypothes.is/https://stylo.14159.ninja/api/v1/exportVersion/'+this.state.active.id,'_blank');
+          }
+          else if(exportTarget=="eruditXML"){
+            window.open('file:///home/marcello/Desktop/sp/git/chaineEditorialeSP/templates/xml.xml','_blank');
+          }
+          else if(exportTarget=="previewHTML"){
+            window.open('/api/v1/previewVersion/'+this.state.active.id,'_blank');
+          }
+          else{
+            window.open('/api/v1/exportVersion/'+this.state.active.id,'_blank');
+          }
       return null;
   }
+
+  tagVersion(id){
+      const that = this;
+      const callback = function(title){
+          fetch('/api/v1/versions/'+that.state.activeId,{
+              method:'PATCH',
+              body: JSON.stringify({title:title}),
+              credentials: 'same-origin'
+          })
+          .then(function(response){
+              return response.json();
+          })
+          .then(function(json){
+              return json.title;
+          });
+          return title;
+      }
+      const title = promptUser('Tag this versions',this.state.active.title || this.state.active.version+"."+this.state.active.revision,callback);
+      this.setState(function(state){
+          let newState = objectAssign({},state);
+          newState.active.title = title;
+          //find out why this mutate any state when going to live
+          let versions = [...newState.article.versions]
+          versions.find(function(version){return that.state.active.id == version.id}).title = title;
+          const returnState = objectAssign({},newState);
+          //active.title = title;
+          return returnState;
+      });
+  }
+
   render() {
     return (
       <section id="writeComponent">
           <h1>{this.state.article.title}</h1>
-          <div>
-            <Link to="/articles"  className="button secondaryButton">Back to My articles</Link>
-            <button className={this.state.activeId?"button disabledButton":"button secondaryButton"} onClick={()=>this.sendNewVersion(null,true,false)}>Save as new version {this.state.live.version+1}.0</button>
-            <button className={this.state.activeId?"button disabledButton":"button secondaryButton"} onClick={this.sendNewVersion}>QuickSave {this.state.live.version}.{this.state.live.revision+1}</button>
-            <ExportVersion version={this.state.activeId} target="HTML"/>
-            <ExportVersion version={this.state.activeId} target="hypothes.is"/>
-            <ExportVersion version={this.state.activeId} target="EruditXML"/>
-            </div>
           <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
-          <Timeline activeId={this.state.activeId} article={this.props.match.params.article} versions={this.state.article.versions}/>
-          <CodeMirror value={this.state.active.md} options={{mode:'markdown',readOnly:true}}/>
+          <Timeline activeId={this.state.activeId}
+              active={this.state.active}
+              article={this.props.match.params.article}
+              versions={this.state.article.versions}
+              tagVersion={this.tagVersion}
+              exportHTML={()=>this.exportVersion("HTML")}
+              previewHTML={()=>this.exportVersion("previewHTML")}
+              exportHypothesis={()=>this.exportVersion("hypothes.is")}
+              exportErudit={()=>this.exportVersion("eruditXML")}
+          />
+          <CodeMirror value={this.state.active.md} options={{mode:'markdown',readOnly:true,lineWrapping:true}}/>
           <textarea value={this.state.active.yaml} disabled={true} placeholder="YAML editor">
           </textarea>
           <textarea value={this.state.active.bib} disabled={true} placeholder="BIBtext">

@@ -49,15 +49,18 @@ module.exports.routes = {
   //Versions
   'GET /api/v1/versions':'VersionsController.find',
   'GET /api/v1/versions/:id':'VersionsController.findOne',
-  //'POST /api/v1/versions':'VersionsController.create',
   'POST /api/v1/versions/:id/fork':'VersionsController.fork',
   'POST /api/v1/versions/autosave':'VersionsController.autosave',
   'POST /api/v1/versions':'VersionsController.newVersion',
+  'PATCH /api/v1/versions/:id':'VersionsController.update',
   'DELETE /api/v1/versions/:id':'VersionsController.destroy',
 
 
   //exports
-  'GET /api/v1/export/:version':'ExportController.html',
+  'GET /api/v1/exportVersion/:version':'ExportController.html',
+  'GET /api/v1/previewVersion/:version':'ExportController.htmlPreview',
+  'GET /api/v1/exportArticle/:id':'ExportController.article',
+  'GET /api/v1/previewArticle/:id':'ExportController.articlePreview',
   'GET /api/v1/exportErudit/:version':'ExportController.erudit',
 
   // All GET requests are directed to the app controller which renders our app.

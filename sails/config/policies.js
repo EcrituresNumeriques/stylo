@@ -33,6 +33,7 @@ module.exports.policies = {
        autosave:['isloggedIn','populateUserOwner'],
        create:['isloggedIn','populateUserOwner'],
        newVersion:['isloggedIn'],
+       update:['isloggedIn','ownsThis']
    },
    '*': true,
 
