@@ -117,6 +117,8 @@ export default class Write extends Component {
               exportHypothesis={()=>this.exportVersion("hypothes.is")}
               exportErudit={()=>this.exportVersion("eruditXML")}
           />
+          <Sommaire md={this.state.active.md}/>
+          <Biblio bib={this.state.active.bib}/>
           <CodeMirror value={this.state.active.md} options={{mode:'markdown',readOnly:true,lineWrapping:true}}/>
           <textarea value={this.state.active.yaml} disabled={true} placeholder="YAML editor">
           </textarea>
