@@ -181,7 +181,9 @@ export default class Live extends Component {
           <Sommaire md={this.state.md}/>
           <Biblio bib={this.state.bib}/>
           <Resizable><CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity}}/></Resizable>
-          <textarea value={this.state.bib}  onChange={this.updateBIB} placeholder="BIBtext" style={{display:"none"}}>
+          <textarea value={this.state.yaml} disabled={true}  placeholder="yaml">
+          </textarea>
+          <textarea value={this.state.bib}  onChange={this.updateBIB} placeholder="BIBtext">
           </textarea>
       </section>
       ]
