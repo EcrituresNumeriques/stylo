@@ -354,3 +354,11 @@ textarea{
     border:1px solid black;
     margin-bottom: 1rem;
 }
+#sommaire {
+    pre {
+        width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+    }
+}

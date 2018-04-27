@@ -5,7 +5,14 @@ export default function Sommaire(props){
   return (
     <div id="sommaire">
         <h1>Sommaire</h1>
-        <p>{props.md}</p>
+        {props.md.split('\n').map(function(line,i){
+            if(line.match(/^#+/)){
+                return (<pre key={"line"+i}>{line}</pre>)
+            }
+            else{
+                return null
+            }
+        })}
     </div>
   )
 }
