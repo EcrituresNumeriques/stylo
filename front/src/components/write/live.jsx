@@ -19,7 +19,7 @@ export default class Live extends Component {
     super(props);
     this.instance = null;
     //set state
-    this.state = {loaded:false,yaml:"title: loading",md:"# loading",bib:"loading",title:"Title",version:0,revision:0,versions:[], autosave:{},cursor:1};
+    this.state = {loaded:false,yaml:"title: loading",md:"# loading",bib:"loading",title:"Title",version:0,revision:0,versions:[], autosave:{}};
     this.updateMD = this.updateMD.bind(this);
     this.updateMDCM = this.updateMDCM.bind(this);
     this.updateBIB = this.updateBIB.bind(this);

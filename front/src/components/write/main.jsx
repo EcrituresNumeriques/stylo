@@ -16,9 +16,11 @@ require('codemirror/mode/markdown/markdown');
 export default class Write extends Component {
   constructor(props) {
     super(props);
+    this.instance = null;
     //set state
     this.state = {loaded:false,live:{yaml:"",md:"",bib:""},active:{yaml:"",md:"",bib:""},activeId:this.props.match.params.version,article:{versions:[]}};
     this.exportVersion = this.exportVersion.bind(this);
+    this.setCodeMirrorCursor = this.setCodeMirrorCursor.bind(this);
     this.fetchAPI = this.fetchAPI.bind(this);
     this.tagVersion = this.tagVersion.bind(this);
     this.fetchAPI();
@@ -101,6 +103,10 @@ export default class Write extends Component {
           return returnState;
       });
   }
+  setCodeMirrorCursor(line){
+      this.instance.focus();
+      this.instance.setCursor(line,0);
+  }
 
   render() {
     return ([
@@ -116,11 +122,11 @@ export default class Write extends Component {
               exportHypothesis={()=>this.exportVersion("hypothes.is")}
               exportErudit={()=>this.exportVersion("eruditXML")}
           />
-          <Sommaire md={this.state.active.md}/>
+          <Sommaire md={this.state.active.md} setCursor={this.setCodeMirrorCursor}/>
           <Biblio bib={this.state.active.bib}/>
       </section>,
       <section id="input" key="input">
-          <CodeMirror value={this.state.active.md} options={{mode:'markdown',readOnly:true,lineWrapping:true}}/>
+          <CodeMirror value={this.state.active.md} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true}} editorDidMount={editor => { this.instance = editor }}/>
           <textarea value={this.state.active.yaml} disabled={true} placeholder="YAML editor">
           </textarea>
           <textarea value={this.state.active.bib} disabled={true} placeholder="BIBtext">

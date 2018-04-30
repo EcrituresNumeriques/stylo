@@ -15,7 +15,6 @@ export default function Sommaire(props){
                 if(matched[0] == "#### "){Tag = `h4`}
                 if(matched[0] == "##### "){Tag = `h5`}
                 if(matched[0] == "###### "){Tag = `h6`}
-                console.log(matched);
                 return (<Tag key={"line"+i} onClick={()=>props.setCursor(i)}>{line.replace(/#/g,'')}</Tag>)
             }
             else{
