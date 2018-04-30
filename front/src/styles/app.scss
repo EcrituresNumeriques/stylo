@@ -199,8 +199,10 @@ ul.unstyled:nth-child(2n){
           list-style: none;
           li {
               margin-top:0.5rem;
-              display:block;
-              padding:0.5rem 1rem;
+              margin-right: 0.5rem;
+              display:inline-block;
+              cursor:pointer;
+              padding:0.5rem 0.5rem;
               border:1px solid white;
           }
       }
@@ -232,9 +234,28 @@ div#app {
       }
     }
   }
+  main#WriteWrapper{
+    position:relative;
+    display:flex;
+    #writeComponent{
+      flex:250px 0 1;
+      background-color: white;
+      padding-right: 1rem;
+    }
+    #input{
+      flex:1200px 0 1;
+      background-color: white;
+    }
+  }
+  main#WriteWrapper:before,main#WriteWrapper:after{
+    display:block;
+    content:"";
+    flex:auto 1 1;
+  }
 }
 aside#yamlEditor{
-  position: absolute;
+  display:none;
+  position: fixed;
     left: 0;
     overflow: hidden;
     right: 0;
@@ -329,13 +350,7 @@ div#app aside#yamlEditor >  section {
 div#app aside#yamlEditor >  section.closed{
   right:-460px;
 }
-section#writeComponent{
-  position:relative;
-  #timeline{
-    //position: absolute;
-    left: -110px;
-  }
-}
+
 
 textarea{
   user-select: contain;
@@ -352,10 +367,15 @@ textarea{
   }
 }
 #timeline, #sommaire, #biblio {
-  display:inline-block;
-  padding:1em;
-    border:1px solid black;
-    margin-bottom: 1rem;
+  display:block;
+  padding:0;
+  margin-bottom: 1rem;
+    h1{
+      margin:0;
+      cursor:pointer;
+      padding:0.5rem 1rem;
+      border:1px solid #c0c0c0;
+    }
 }
 #sommaire {
     pre {

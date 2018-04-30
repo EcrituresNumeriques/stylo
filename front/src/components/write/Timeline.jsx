@@ -8,13 +8,13 @@ export default function Timeline(props){
         <div id="showed">
             Active version {props.active? props.active.title || props.active.version+"."+props.active.revision:props.activeId}
             <ul>
-                {props.newVersion && <li onClick={()=>props.newVersion()}>Save as New version</li>}
-                {props.newRevision && <li onClick={()=>props.newRevision()}>Save as Revision</li>}
-                {props.tagVersion && <li onClick={()=>props.tagVersion()}>Tag this version</li>}
-                {props.exportHTML && <li onClick={()=>props.exportHTML()}>Export HTML</li>}
-                {props.previewHTML && <li onClick={()=>props.previewHTML()}>Preview HTML</li>}
-                {props.exportHypothesis && <li onClick={()=>props.exportHypothesis()}>Export on hypothes.is</li>}
-                {props.exportErudit && <li onClick={()=>props.exportErudit()}>Export as EruditXML</li>}
+                {props.newVersion && <li onClick={()=>props.newVersion()}>{props.active.version+1}.0</li>}
+                {props.newRevision && <li onClick={()=>props.newRevision()}>{props.active.version}.{props.active.revision+1}</li>}
+                {props.tagVersion && <li onClick={()=>props.tagVersion()}>Tag</li>}
+                {props.exportHTML && <li onClick={()=>props.exportHTML()}>Export</li>}
+                {props.previewHTML && <li onClick={()=>props.previewHTML()}>Preview</li>}
+                {props.exportHypothesis && <li onClick={()=>props.exportHypothesis()}>Anotate</li>}
+                {props.exportErudit && <li onClick={()=>props.exportErudit()}>XML</li>}
             </ul>
         </div>
       <Link to={"/write/"+props.article} className={props.activeId == 'live'?"active":"" }>Live</Link>

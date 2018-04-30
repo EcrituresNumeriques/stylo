@@ -7,6 +7,7 @@ import Articles from 'components/articles/articles'
 import Write from 'components/write/main'
 import Live from 'components/write/live'
 import Layout from 'components/layout/layout'
+import WriteWrapper from 'components/layout/WriteWrapper'
 import 'font-awesome-webpack'
 import store from 'store/configureStore';
 
@@ -37,12 +38,9 @@ export default class App extends Component {
         <Switch>
           <Route exact path="/login" component={Login}/>
           <Route exact path="/register" component={Register}/>
-          <Layout>
-            <Route exact path="/" component={Articles} />
-            <Route exact path="/articles" component={Articles}/>
-            <Route exact path="/write/:article/:version" component={Write}/>
-            <Route exact path="/write/:article" component={Live}/>
-          </Layout>
+          <Route exact path="/articles" component={Layout}/>
+          <Route exact path="/" component={Login} />
+          <Route path="/write/" component={WriteWrapper}/>
           <Route component={NotFound}/>
         </Switch>
     );

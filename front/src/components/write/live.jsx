@@ -11,7 +11,6 @@ import Timeline from 'components/write/Timeline';
 import Sommaire from 'components/write/Sommaire';
 import Biblio from 'components/write/Biblio';
 import {Controlled as CodeMirror} from 'react-codemirror2'
-import Resizable from 're-resizable';
 require('codemirror/mode/markdown/markdown');
 
 
@@ -165,9 +164,10 @@ export default class Live extends Component {
         <YamlEditor editor={false} yaml={this.state.yaml} exportChange={this.updatingYAML}/>
       </aside>,
       <section id="writeComponent" key="section">
-          <h1>{this.state.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>
+        <h1>{this.state.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>
           <Timeline
               activeId='live'
+              active={this.state}
               article={this.props.match.params.article}
               versions={this.state.versions}
               newVersion={()=>this.sendNewVersion(null,true,false)}
@@ -180,7 +180,9 @@ export default class Live extends Component {
           />
           <Sommaire md={this.state.md}/>
           <Biblio bib={this.state.bib}/>
-          <Resizable><CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity}}/></Resizable>
+        </section>,
+        <section id="input" key="inputs">
+          <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity}}/>
           <textarea value={this.state.yaml} disabled={true}  placeholder="yaml">
           </textarea>
           <textarea value={this.state.bib}  onChange={this.updateBIB} placeholder="BIBtext">
