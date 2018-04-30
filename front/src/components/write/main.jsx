@@ -103,10 +103,9 @@ export default class Write extends Component {
   }
 
   render() {
-    return (
-      <section id="writeComponent">
-          <h1>{this.state.article.title}</h1>
-          <p>{this.state.loaded?"Up to Date":"Fetching"}</p>
+    return ([
+        <h1 id="title" key="title">{this.state.article.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>,
+      <section id="writeComponent" key="aside">
           <Timeline activeId={this.state.activeId}
               active={this.state.active}
               article={this.props.match.params.article}
@@ -119,12 +118,14 @@ export default class Write extends Component {
           />
           <Sommaire md={this.state.active.md}/>
           <Biblio bib={this.state.active.bib}/>
+      </section>,
+      <section id="input" key="input">
           <CodeMirror value={this.state.active.md} options={{mode:'markdown',readOnly:true,lineWrapping:true}}/>
           <textarea value={this.state.active.yaml} disabled={true} placeholder="YAML editor">
           </textarea>
           <textarea value={this.state.active.bib} disabled={true} placeholder="BIBtext">
           </textarea>
       </section>
-    );
+    ]);
   }
 }

@@ -18,13 +18,14 @@ export default class Live extends Component {
   constructor(props) {
     super(props);
     //set state
-    this.state = {loaded:false,yaml:"title: loading",md:"# loading",bib:"loading",title:"Title",version:0,revision:0,versions:[], autosave:{}};
+    this.state = {loaded:false,yaml:"title: loading",md:"# loading",bib:"loading",title:"Title",version:0,revision:0,versions:[], autosave:{},cursor:0};
     this.updateMD = this.updateMD.bind(this);
     this.updateMDCM = this.updateMDCM.bind(this);
     this.updateBIB = this.updateBIB.bind(this);
     this.updateYAML = this.updateYAML.bind(this);
     this.updatingYAML = this.updatingYAML.bind(this);
     this.sendNewVersion = this.sendNewVersion.bind(this);
+    this.setCodeMirrorCursor = this.setCodeMirrorCursor.bind(this);
     this.autosave = _.debounce(this.autosave,1000);
     this.fetchAPI = this.fetchAPI.bind(this);
     this.fetchAPI();
@@ -156,6 +157,10 @@ export default class Live extends Component {
       );
       this.autosave();
   }
+  setCodeMirrorCursor(line){
+      console.log(line);
+      this.setState({cursor:line});
+  }
 
 
   render() {
@@ -163,8 +168,8 @@ export default class Live extends Component {
       <aside id="yamlEditor" key="yamlEditor">
         <YamlEditor editor={false} yaml={this.state.yaml} exportChange={this.updatingYAML}/>
       </aside>,
+        <h1 id="title" key="title">{this.state.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>,
       <section id="writeComponent" key="section">
-        <h1>{this.state.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>
           <Timeline
               activeId='live'
               active={this.state}
@@ -178,15 +183,11 @@ export default class Live extends Component {
               exportErudit={()=>this.sendNewVersion(null,false,true,true,"eruditXML")}
               downloadAll={()=>this.sendNewVersion(null,false,true,true,"zip")}
           />
-          <Sommaire md={this.state.md}/>
+          <Sommaire md={this.state.md} setCursor={this.setCodeMirrorCursor}/>
           <Biblio bib={this.state.bib}/>
         </section>,
         <section id="input" key="inputs">
-          <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity}}/>
-          <textarea value={this.state.yaml} disabled={true}  placeholder="yaml">
-          </textarea>
-          <textarea value={this.state.bib}  onChange={this.updateBIB} placeholder="BIBtext">
-          </textarea>
+          <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity}} cursor={{line: this.state.cursor,ch: 0}} onCursor={(editor, data) => {}}/>
       </section>
       ]
     );

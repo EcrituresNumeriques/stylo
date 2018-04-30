@@ -235,22 +235,29 @@ div#app {
     }
   }
   main#WriteWrapper{
+      user-select: none;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1450px;
     position:relative;
     display:flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    #title{
+        flex:100% 0 0;
+        margin:0;
+        padding:0.5rem 1rem;
+        display:none;
+    }
     #writeComponent{
       flex:250px 0 1;
       background-color: white;
-      padding-right: 1rem;
+      margin-right: 1rem;
     }
     #input{
-      flex:1200px 0 1;
+      flex:800px 1 1;
       background-color: white;
     }
-  }
-  main#WriteWrapper:before,main#WriteWrapper:after{
-    display:block;
-    content:"";
-    flex:auto 1 1;
   }
 }
 aside#yamlEditor{
@@ -361,9 +368,14 @@ textarea{
 
 .react-codemirror2{
   border:1px solid #c0c0c0;
-  padding:1em;
   .CodeMirror{
       height:auto;
+  }
+  .CodeMirror-scroll{
+      min-height: 600px;
+  }
+  .CodeMirror-lines{
+      padding:1rem;
   }
 }
 #timeline, #sommaire, #biblio {
