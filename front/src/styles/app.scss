@@ -178,40 +178,8 @@ ul.unstyled{
 ul.unstyled:nth-child(2n){
   background-color:#f8f8f8;
 }
-#timeline{
-  display:inline-block;
-  padding:1em;
-  //width:100px;
-  a, #showed {
-    display:block;
-    border-right:1px solid #c0c0c0;
-    border-left: 1px solid #c0c0c0;
-    border-bottom: 1px solid #c0c0c0;
-    padding:0.5rem 1rem;
-    color:black;
-  }
-  #showed {
-      background-color: green;
-      color:white;
-      ul {
-          padding:0;
-          margin:0;
-          list-style: none;
-          li {
-              margin-top:0.5rem;
-              margin-right: 0.5rem;
-              display:inline-block;
-              cursor:pointer;
-              padding:0.5rem 0.5rem;
-              border:1px solid white;
-          }
-      }
-  }
-  a.active{
-      background-color: green;
-      color:white;
-  }
-}
+
+
 div#app {
   header {
     margin-bottom: 20px;
@@ -251,8 +219,130 @@ div#app {
     }
     #writeComponent{
       flex:250px 0 1;
-      background-color: white;
       margin-right: 1rem;
+      #timeline, #sommaire, #biblio {
+
+          background-color: white;
+        display:block;
+        padding:0;
+        margin-bottom: 1rem;
+          h1.title{
+            margin:0;
+            cursor:pointer;
+            padding:0.5rem 1rem;
+            border:1px solid #c0c0c0;
+          }
+      }
+      #sommaire {
+            h1.title{
+                border-left: 0px solid #c0c0c0;
+                border-right: 0px solid #c0c0c0;
+                border-bottom: 1px solid #c0c0c0;
+            }
+          border-left: 1px solid #c0c0c0;
+          border-right: 1px solid #c0c0c0;
+          border-bottom: 1px solid #c0c0c0;
+          padding-bottom: 0.25rem;
+          pre,h1:not(.title),h2,h3,h4,h5,h6 {
+              width: 250px;
+              font-size: 1rem;
+              font-weight: 400;
+              font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              margin:0;
+              padding:0.15rem 1rem;
+              cursor:pointer;
+          }
+          pre,h2,h3,h4,h5,h6{
+          }
+          h1:not(.title){
+              border-top: 1px solid #c0c0c0;
+              counter-increment: h1;
+              counter-reset: h2;
+              padding-top:0.5rem;
+              margin-top:0.5rem;
+          }
+          h1:nth-child(2){
+              margin-top:0;
+              border-top:none;
+          }
+          h1:not(.title):before{
+              content: counter(h1, decimal) ".";
+          }
+          h2{
+              counter-increment: h2;
+          }
+          h2:before{
+              content:  counter(h1, decimal) "." counter(h2, upper-latin) ;
+          }
+          h3{
+              counter-increment: h3;
+          }
+          h3:before{
+              content: counter(h1, decimal) "." counter(h2, upper-latin) "." counter(h3, upper-roman) ;
+          }
+          h4{
+              counter-increment: h4;
+          }
+          h4:before{
+              content: counter(h1, decimal) "." counter(h2, upper-latin) "." counter(h3, upper-roman) "." counter(h4, lower-latin) ;
+          }
+          h5{
+              counter-increment: h5;
+          }
+          h5:before{
+              content: counter(h1, decimal) "." counter(h2, upper-latin) "." counter(h3, upper-roman) "." counter(h4, lower-latin) "." counter(h5, lower-roman) ;
+          }
+          h6{
+              counter-increment: h6;
+          }
+          h6:before{
+              content: counter(h1, decimal) "." counter(h2, upper-latin) "." counter(h3, upper-roman) "." counter(h4, lower-latin) "." counter(h5, lower-roman) "." counter(h6, lower-greek);
+          }
+          pre{
+              counter-increment: pre;
+          }
+          pre:before{
+              content: counter(h1, decimal) "." counter(h2, upper-latin) "." counter(h3, upper-roman) "." counter(h4, lower-latin) "." counter(h5, lower-roman) "." counter(h6, lower-greek) " " counter(pre, disc);
+          }
+
+      }
+
+      #timeline{
+        display:inline-block;
+        //width:100px;
+        a, #showed {
+          display:block;
+          border-right:1px solid #c0c0c0;
+          border-left: 1px solid #c0c0c0;
+          border-bottom: 1px solid #c0c0c0;
+          padding:0.5rem 1rem;
+          color:black;
+        }
+        #showed {
+            background-color: green;
+            color:white;
+            ul {
+                padding:0;
+                margin:0;
+                list-style: none;
+                li {
+                    margin-top:0.5rem;
+                    margin-right: 0.5rem;
+                    display:inline-block;
+                    cursor:pointer;
+                    padding:0.5rem 0.5rem;
+                    border:1px solid white;
+                }
+            }
+        }
+        a.active{
+            background-color: green;
+            color:white;
+        }
+      }
     }
     #input{
       flex:800px 1 1;
@@ -377,23 +467,4 @@ textarea{
   .CodeMirror-lines{
       padding:1rem;
   }
-}
-#timeline, #sommaire, #biblio {
-  display:block;
-  padding:0;
-  margin-bottom: 1rem;
-    h1{
-      margin:0;
-      cursor:pointer;
-      padding:0.5rem 1rem;
-      border:1px solid #c0c0c0;
-    }
-}
-#sommaire {
-    pre {
-        width: 250px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-    }
 }

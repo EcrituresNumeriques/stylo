@@ -17,8 +17,9 @@ require('codemirror/mode/markdown/markdown');
 export default class Live extends Component {
   constructor(props) {
     super(props);
+    this.instance = null;
     //set state
-    this.state = {loaded:false,yaml:"title: loading",md:"# loading",bib:"loading",title:"Title",version:0,revision:0,versions:[], autosave:{},cursor:0};
+    this.state = {loaded:false,yaml:"title: loading",md:"# loading",bib:"loading",title:"Title",version:0,revision:0,versions:[], autosave:{},cursor:1};
     this.updateMD = this.updateMD.bind(this);
     this.updateMDCM = this.updateMDCM.bind(this);
     this.updateBIB = this.updateBIB.bind(this);
@@ -158,8 +159,8 @@ export default class Live extends Component {
       this.autosave();
   }
   setCodeMirrorCursor(line){
-      console.log(line);
-      this.setState({cursor:line});
+      this.instance.focus();
+      this.instance.setCursor(line,0);
   }
 
 
@@ -187,7 +188,7 @@ export default class Live extends Component {
           <Biblio bib={this.state.bib}/>
         </section>,
         <section id="input" key="inputs">
-          <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity}} cursor={{line: this.state.cursor,ch: 0}} onCursor={(editor, data) => {}}/>
+          <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true}} editorDidMount={editor => { this.instance = editor }}/>
       </section>
       ]
     );

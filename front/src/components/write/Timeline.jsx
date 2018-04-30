@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export default function Timeline(props){
   return (
     <div id="timeline">
-        <h1>Versions</h1>
+        <h1 className="title">Versions</h1>
         <div id="showed">
             Active version {props.active? props.active.title || props.active.version+"."+props.active.revision:props.activeId}
             <ul>
