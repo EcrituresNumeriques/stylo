@@ -13,9 +13,19 @@ div#app aside#yamlEditor >  section {
   border:1px solid lightgrey;
   padding:1em;
   h1{
-    font-size: 1em;
-    margin: 1em 0 1em;
-    text-align: center;
+    font-size: 1.15em;
+    margin:0;
+    padding:0.5rem 1rem;
+    background-color:#f0f0f0;
+  }
+  p.addToArray{
+      margin:0 0 1rem 0;
+      padding:0.5rem 1rem;
+      background-color:#f0f0f0;
+  }
+  section.group {
+    margin: 1em 0 0;
+    border: 1px solid #f0f0f0;
   }
   .reactForm{
       display:flex;
