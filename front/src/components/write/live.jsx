@@ -10,8 +10,10 @@ import YAML from 'js-yaml';
 import Timeline from 'components/write/Timeline';
 import Sommaire from 'components/write/Sommaire';
 import Biblio from 'components/write/Biblio';
+import ModalTextarea from 'components/modals/ModalTextarea';
 import {Controlled as CodeMirror} from 'react-codemirror2'
 require('codemirror/mode/markdown/markdown');
+import Bibliography, {parseString} from 'bibliography';
 
 
 export default class Live extends Component {
@@ -19,10 +21,16 @@ export default class Live extends Component {
     super(props);
     this.instance = null;
     //set state
-    this.state = {loaded:false,yaml:"title: loading",md:"# loading",bib:"loading",title:"Title",version:0,revision:0,versions:[], autosave:{}};
+    this.state = {loaded:false,yaml:"title: loading",md:"# loading",bib:"loading",title:"Title",version:0,revision:0,versions:[], autosave:{},modalAddRef:false,modalSourceRef:false};
     this.updateMD = this.updateMD.bind(this);
     this.updateMDCM = this.updateMDCM.bind(this);
     this.updateBIB = this.updateBIB.bind(this);
+    this.addRef = this.addRef.bind(this);
+    this.skipRef = this.skipRef.bind(this);
+    this.addNewRef = this.addNewRef.bind(this);
+    this.sourceRef = this.sourceRef.bind(this);
+    this.closeSourceRef = this.closeSourceRef.bind(this);
+    this.submitSourceRef = this.submitSourceRef.bind(this);
     this.updateYAML = this.updateYAML.bind(this);
     this.updatingYAML = this.updatingYAML.bind(this);
     this.sendNewVersion = this.sendNewVersion.bind(this);
@@ -162,7 +170,50 @@ export default class Live extends Component {
       this.instance.focus();
       this.instance.setCursor(line,0);
   }
-
+  addRef(){
+      this.setState({modalAddRef:true});
+  }
+  skipRef(){
+      this.setState({modalAddRef:false});
+  }
+  addNewRef(newRef){
+      try{
+          let additions = parseString(newRef);
+          let entries = Object.values(additions.entries);
+          if(entries.length){
+              this.setState({bib:this.state.bib+'\n'+newRef,modalAddRef:false});
+              this.autosave();
+          }
+          else{
+              alert("Unable to find a reference");
+          }
+      }
+      catch(error){
+          alert(error);
+      }
+  }
+  sourceRef(){
+      this.setState({modalSourceRef:true});
+  }
+  closeSourceRef(){
+      this.setState({modalSourceRef:false});
+  }
+  submitSourceRef(newSource){
+      try{
+          let additions = parseString(newSource);
+          let entries = Object.values(additions.entries);
+          if(entries.length){
+              this.setState({bib:newSource,modalSourceRef:false});
+              this.autosave();
+          }
+          else{
+              alert("Unable to find a reference");
+          }
+      }
+      catch(error){
+          alert(error);
+      }
+  }
 
   render() {
     return ([
@@ -185,7 +236,9 @@ export default class Live extends Component {
               downloadAll={()=>this.sendNewVersion(null,false,true,true,"zip")}
           />
           <Sommaire md={this.state.md} setCursor={this.setCodeMirrorCursor}/>
-          <Biblio bib={this.state.bib}/>
+          <Biblio bib={this.state.bib} addRef={this.addRef} sourceRef={this.sourceRef}/>
+          {this.state.modalAddRef && <ModalTextarea cancel={this.skipRef} confirm={this.addNewRef} title="Add new reference(s)" text="please copy paste below the references you want to add in BiBtex format" placeholder="@misc{schnapp_knowledge_2013, address = {Hannover},	type = {Lecture}, title = {Knowledge {Design} {Incubating} new knowledge forms / genres / spaces in the laboratory of the digital humanities}, shorttitle = {Knowledge {Design}}, url = {https://www.volkswagenstiftung.de/en/news/news-details/news/detail/artikel/herrenhausen-lecture-knowledge-design-1/marginal/4296.html}, language = {EN},	author = {Schnapp, Jeffrey}, month = {12}, year = {2013},	file = {HH_lectures_Schnapp_01.pdf:/home/nicolas/Zotero/storage/6AZA85MP/HH_lectures_Schnapp_01.pdf:application/pdf}}"/>}
+          {this.state.modalSourceRef && <ModalTextarea cancel={this.closeSourceRef} confirm={this.submitSourceRef} title="References" text="" placeholder="" value={this.state.bib}/>}
         </section>,
         <section id="input" key="inputs">
           <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true}} editorDidMount={editor => { this.instance = editor }}/>

@@ -1,0 +1,64 @@
+#modalWrapper{
+    width:100vw;
+    height:100vh;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index: 1000;
+    aside{
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 1001;
+    }
+    main{
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%,-50%);
+        background-color: white;
+        border:1px solid #c0c0c0;
+        padding:1rem;
+        z-index: 1002;
+        width:450px;
+        h1{
+            margin:0;
+            text-align: center;
+        }
+        p{
+            text-align: center;
+        }
+        textarea{
+            display:block;
+            width:100%;
+        }
+        nav{
+            text-align: right;
+            margin-top:0.5rem;
+            button{
+                padding:0.5rem 1rem;
+                border:none;
+                border-left: 1px solid #c0c0c0;
+                border-right: 1px solid #c0c0c0;
+                border-bottom: 1px solid #c0c0c0;
+                display:inline-block;
+                color:white;
+                cursor: pointer;
+            }
+            button.primary{
+                background-color: green;
+            }
+            button.secondary{
+                background-color: dimgrey;
+            }
+            button::-moz-focus-inner{
+                border:0;
+                padding:0;
+            }
+        }
+    }
+
+}

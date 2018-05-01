@@ -1,5 +1,6 @@
 @import '../../node_modules/codemirror/lib/codemirror.css';
 @import '../../node_modules/codemirror/theme/material.css';
+@import './modal.scss';
 
 *{
     box-sizing: border-box;
@@ -233,6 +234,39 @@ div#app {
             border:1px solid #c0c0c0;
           }
       }
+        #biblio{
+            button{
+                padding:0.5rem 1rem;
+                border:none;
+                border-left: 1px solid #c0c0c0;
+                border-right: 1px solid #c0c0c0;
+                border-bottom: 1px solid #c0c0c0;
+                background-color: green;
+                display:block;
+                width:100%;
+                color:white;
+                cursor: pointer;
+            }
+            button::-moz-focus-inner{
+                border:0;
+                padding:0;
+            }
+            pre{
+                width: 250px;
+                font-size: 1rem;
+                font-weight: 400;
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                margin:0;
+                padding:0.5rem 1rem;
+                cursor:pointer;
+                border-left: 1px solid #c0c0c0;
+                border-right: 1px solid #c0c0c0;
+                border-bottom: 1px solid #c0c0c0;
+            }
+        }
       #sommaire {
             h1.title{
                 border-left: 0px solid #c0c0c0;

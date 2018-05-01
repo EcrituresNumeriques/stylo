@@ -31,6 +31,7 @@
   "dependencies": {
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "bibliography": "^0.1.0",
     "codemirror": "^5.36.0",
     "dateformat": "^3.0.2",
     "font-awesome": "^4.7.0",
@@ -42,6 +43,7 @@
     "object-assign": "4.1.0",
     "re-resizable": "^4.4.8",
     "react": "16.0.0",
+    "react-clipboard.js": "^1.1.3",
     "react-codemirror2": "^5.0.0",
     "react-dom": "16.0.0",
     "react-redux": "5.0.5",
