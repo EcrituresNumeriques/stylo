@@ -395,13 +395,13 @@ div#app {
   }
 }
 aside#yamlEditor{
-  display:none;
   position: fixed;
-    left: 0;
     overflow: hidden;
+    width:460px;
     right: 0;
     height: 100vh;
     overflow-y: auto;
+    z-index: 500;
 }
 div#app aside#yamlEditor >  section {
   position:absolute;
