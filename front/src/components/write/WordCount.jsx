@@ -10,11 +10,11 @@ export default function WordCount(props){
 
 
     return (
-        <section id="stat">
+        <div id="stat">
             <h1 className="title">Stats</h1>
             <p>Words : {wordCount}</p>
             <p>Characters : {charCountNoSpace}</p>
             <p>Citations : {citationNb}</p>
-        </section>
+        </div>
     )
 }
