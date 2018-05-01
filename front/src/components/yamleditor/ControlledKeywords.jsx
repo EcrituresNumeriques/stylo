@@ -10,8 +10,8 @@ export function ControlledKeywords(props){
         <datalist id="keywordsFR">
           {categories.map((o,i)=>(<option key={"keywordsFR"+i} value={o.label}/>))}
         </datalist>
-        {categories.filter((c)=>c.selected).map((o,i)=>(<Keyword key={"keywords"+i} object={o} controlled={true} updateMisc={props.updateMisc}/>))}
-        <InputKeyword updateMisc={props.updateMisc} state={props.state}/>
+        {categories.filter((c)=>c.selected).map((o,i)=>(<Keyword key={"keywords"+i} object={o} controlled={true} updateMisc={props.updateMisc} readOnly={props.readOnly}/>))}
+        {!props.readOnly && <InputKeyword updateMisc={props.updateMisc} state={props.state}/>}
       </section>
     )
   }
@@ -20,7 +20,7 @@ function Keyword(props){
       return(
         <div className="keywords">
           <input className="controlled" type="text" placeholder="label" value={props.object.label} readOnly="true"/>
-          <i className="fa fa-minus-circle" aria-hidden="true" data-id={props.index} onClick={()=>props.updateMisc(false,"categories["+props.object.id+"].selected","removeControlled")}></i>
+          {!props.readOnly && <i className="fa fa-minus-circle" aria-hidden="true" data-id={props.index} onClick={()=>props.updateMisc(false,"categories["+props.object.id+"].selected","removeControlled")}></i>}
         </div>
       )
   }

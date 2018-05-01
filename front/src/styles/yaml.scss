@@ -7,6 +7,9 @@ aside#yamlEditor{
     overflow-y: auto;
     z-index: 500;
 }
+div#app aside#yamlEditor >  section.readOnly{
+    color: #c0c0c0;
+}
 div#app aside#yamlEditor >  section {
   width:460px;
   background-color:white;

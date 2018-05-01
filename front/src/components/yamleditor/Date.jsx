@@ -36,7 +36,7 @@ export class Date extends React.Component {
     return (
       <section className="reactForm">
         <label>{this.state.title} :</label>
-        <input type="date" placeholder={this.state.placeholder} value={this.state.value} onChange={this.handleTextChange.bind(this)}/>
+        <input type="date" placeholder={this.state.placeholder} disabled={this.props.readOnly} value={this.state.value} onChange={this.handleTextChange.bind(this)}/>
       </section>
     )
   }

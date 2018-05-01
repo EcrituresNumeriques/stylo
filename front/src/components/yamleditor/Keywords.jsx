@@ -29,8 +29,8 @@ export function Keywords(props){
         </datalist>
 
 
-        {uncontrolledKeywords.map((o,i)=>(<Keyword key={"keywords"+i} index={i} object={o} removeKeyword={props.removeKeyword} updateMisc={props.updateMisc}/>))}
-        <InputKeyword state={props.state.misc} addKeyword={props.addKeyword} updateMisc={props.updateMisc}/>
+        {uncontrolledKeywords.map((o,i)=>(<Keyword key={"keywords"+i} index={i} object={o} removeKeyword={props.removeKeyword} updateMisc={props.updateMisc} readOnly={props.readOnly}/>))}
+        {!props.readOnly && <InputKeyword state={props.state.misc} addKeyword={props.addKeyword} updateMisc={props.updateMisc}/>}
       </section>
     )
   }
@@ -40,9 +40,9 @@ export function Keywords(props){
 
       return(
         <div className="keywords">
-          <input className="free" type="text" placeholder="FR" value={props.object.fr} onChange={(e)=>props.updateMisc(e.target.value,'keywords_fr[' + props.index + ']','uncontrolledKeywords')}/>
-          <input className="free" type="text" placeholder="EN" value={props.object.en} onChange={(e)=>props.updateMisc(e.target.value,'keywords_en[' + props.index + ']','uncontrolledKeywords')}/>
-          <i className="fa fa-minus-circle" aria-hidden="true" data-id={props.index} onClick={()=>props.removeKeyword(props.index)}></i>
+          <input className="free" type="text" placeholder="FR" value={props.object.fr} disabled={props.readOnly} onChange={(e)=>props.updateMisc(e.target.value,'keywords_fr[' + props.index + ']','uncontrolledKeywords')}/>
+          <input className="free" type="text" placeholder="EN" value={props.object.en} disabled={props.readOnly} onChange={(e)=>props.updateMisc(e.target.value,'keywords_en[' + props.index + ']','uncontrolledKeywords')}/>
+          {!props.readOnly && <i className="fa fa-minus-circle" aria-hidden="true" data-id={props.index} onClick={()=>props.removeKeyword(props.index)}></i>}
         </div>
       )
   }

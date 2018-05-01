@@ -36,6 +36,10 @@ export default class YamlEditor extends Component {
     this.addKeyword = this.addKeyword.bind(this);
     this.removeKeyword = this.removeKeyword.bind(this);
     const that = this;
+    this.readOnly = false;
+    if(!props.exportChange){
+        this.readOnly = true;
+    }
 
     //load rubriques if provided
     if(props.rubriques){
@@ -127,8 +131,10 @@ export default class YamlEditor extends Component {
 
   componentWillUpdate(nextProp,nextState){
     //console.log("componentWillUpdate",nextProp.yaml,YAML.safeDump(nextState.obj), nextProp.yaml != '---\n'+YAML.safeDump(nextState.obj)+'---');
-    if(nextProp.yaml != '---\n'+YAML.safeDump(nextState.obj)+'---'){
-      this.props.exportChange('---\n'+YAML.safeDump(nextState.obj)+'---');
+    if(this.props.exportChange){
+        if(nextProp.yaml != '---\n'+YAML.safeDump(nextState.obj)+'---'){
+            this.props.exportChange('---\n'+YAML.safeDump(nextState.obj)+'---');
+        }
     }
   }
 
@@ -243,30 +249,30 @@ export default class YamlEditor extends Component {
 
   render(){
     return(
-      <section>
-        {this.props.editor && <TextInput target="id_sp" alias={[{target:'bibliography',prefix:'',suffix:'.bib'}]} title="Identifiant" placeholder="SPxxxx" state={this.state.obj} updateState={this.updateState} />}
+      <section className={this.readOnly?"readOnly":""}>
+        {this.props.editor && <TextInput target="id_sp" alias={[{target:'bibliography',prefix:'',suffix:'.bib'}]} title="Identifiant" placeholder="SPxxxx" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
 
-        <TextInput target="title_f" alias={[{target:'title',prefix:'',suffix:'',filterMD:true}]} title="Titre" state={this.state.obj} updateState={this.updateState} />
+        <TextInput target="title_f" alias={[{target:'title',prefix:'',suffix:'',filterMD:true}]} title="Titre" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
 
-        <TextInput target="subtitle_f" alias={[{target:'subtitle',prefix:'',suffix:'',filterMD:true}]} title="Sous-titre" state={this.state.obj} updateState={this.updateState} />
+        <TextInput target="subtitle_f" alias={[{target:'subtitle',prefix:'',suffix:'',filterMD:true}]} title="Sous-titre" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
 
-        {this.props.editor && <Date target="date" title="Date" state={this.state.obj} updateState={this.updateState} />}
+        {this.props.editor && <Date target="date" title="Date" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
 
-        {this.props.editor && <TextInput target="url_article_sp" title="URL sens public" placeholder="http://sens-public.org/articleXXXX.html" state={this.state.obj} updateState={this.updateState} />}
+        {this.props.editor && <TextInput target="url_article_sp" title="URL sens public" placeholder="http://sens-public.org/articleXXXX.html" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
 
-        <Resumes state={this.state.obj}  updateState={this.updateState} />
+        <Resumes state={this.state.obj}  updateState={this.updateState}  readOnly={this.readOnly}/>
 
-        {this.props.editor && <Dossier state={this.state.obj} updateState={this.updateState} />}
+        {this.props.editor && <Dossier state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
 
-        <Authors state={this.state.obj} updateState={this.updateState} />
+        <Authors state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
 
-        {this.props.editor && <Reviewers state={this.state.obj} updateState={this.updateState} />}
+        {this.props.editor && <Reviewers state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
 
-        {this.props.editor && <ControlledKeywords state={this.state.misc} updateMisc={this.updateMisc} />}
+        {this.props.editor && <ControlledKeywords state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
 
-        <Keywords state={this.state} updateMisc={this.updateMisc} addKeyword={this.addKeyword} removeKeyword={this.removeKeyword} updateState={this.updateState}/>
+        <Keywords state={this.state} updateMisc={this.updateMisc} addKeyword={this.addKeyword} removeKeyword={this.removeKeyword} updateState={this.updateState} readOnly={this.readOnly}/>
 
-        {this.props.editor && <Rubriques state={this.state.misc} updateMisc={this.updateMisc} />}
+        {this.props.editor && <Rubriques state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
       </section>
     )
   }

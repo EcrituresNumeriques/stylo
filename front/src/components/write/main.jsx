@@ -23,6 +23,8 @@ export default class Write extends Component {
     this.setCodeMirrorCursor = this.setCodeMirrorCursor.bind(this);
     this.fetchAPI = this.fetchAPI.bind(this);
     this.tagVersion = this.tagVersion.bind(this);
+    this.toggleYamlEditor = this.toggleYamlEditor.bind(this);
+    this.toggleEditorYaml = this.toggleEditorYaml.bind(this);
     this.fetchAPI();
   }
 
@@ -103,6 +105,12 @@ export default class Write extends Component {
           return returnState;
       });
   }
+  toggleYamlEditor(){
+      this.setState({yamlEditor:!this.state.yamlEditor});
+  }
+  toggleEditorYaml(){
+      this.setState({editorYaml:!this.state.editorYaml});
+  }
   setCodeMirrorCursor(line){
       this.instance.focus();
       this.instance.setCursor(line,0);
@@ -110,6 +118,12 @@ export default class Write extends Component {
 
   render() {
     return ([
+        <aside id="yamlEditor" key="yamlEditor">
+          {!this.state.yamlEditor && <nav className="open" onClick={()=>this.toggleYamlEditor()}>Metadonnées</nav>}
+          {this.state.yamlEditor && <nav className="close" onClick={()=>this.toggleYamlEditor()}>close</nav>}
+          {this.state.yamlEditor && <nav className="toggleEditor" onClick={()=>this.toggleEditorYaml()}>Mode authors/editor</nav>}
+          {this.state.yamlEditor && <YamlEditor editor={this.state.editorYaml} yaml={this.state.active.yaml}/>}
+        </aside>,
         <h1 id="title" key="title">{this.state.article.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>,
       <section id="writeComponent" key="aside">
           <Timeline activeId={this.state.activeId}
