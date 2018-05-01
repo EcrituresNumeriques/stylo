@@ -248,8 +248,8 @@ div#app {
             button{
                 padding:0.5rem 1rem;
                 border:none;
-                border-left: 1px solid #c0c0c0;
-                border-right: 1px solid #c0c0c0;
+                border-left: 1px solid green;
+                border-right: 1px solid green;
                 border-bottom: 1px solid #c0c0c0;
                 background-color: green;
                 display:block;
@@ -261,8 +261,8 @@ div#app {
                 border:0;
                 padding:0;
             }
-            pre{
-                width: 250px;
+            p{
+                width: 100%;
                 font-size: 1rem;
                 font-weight: 400;
                 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
