@@ -21,7 +21,7 @@ export default class Live extends Component {
     super(props);
     this.instance = null;
     //set state
-    this.state = {loaded:false,yaml:"title: loading",md:"",bib:"test",title:"Title",version:0,revision:0,versions:[], autosave:{},modalAddRef:false,modalSourceRef:false,yamlEditor:false};
+    this.state = {loaded:false,yaml:"title: loading",md:"",bib:"test",title:"Title",version:0,revision:0,versions:[], autosave:{},modalAddRef:false,modalSourceRef:false,yamlEditor:false,editorYaml:false};
     this.updateMD = this.updateMD.bind(this);
     this.updateMDCM = this.updateMDCM.bind(this);
     this.updateBIB = this.updateBIB.bind(this);
@@ -35,6 +35,7 @@ export default class Live extends Component {
     this.updatingYAML = this.updatingYAML.bind(this);
     this.sendNewVersion = this.sendNewVersion.bind(this);
     this.toggleYamlEditor = this.toggleYamlEditor.bind(this);
+    this.toggleEditorYaml = this.toggleEditorYaml.bind(this);
     this.setCodeMirrorCursor = this.setCodeMirrorCursor.bind(this);
     this.autosave = _.debounce(this.autosave,1000);
     this.fetchAPI = this.fetchAPI.bind(this);
@@ -194,13 +195,17 @@ export default class Live extends Component {
   toggleYamlEditor(){
       this.setState({yamlEditor:!this.state.yamlEditor});
   }
+  toggleEditorYaml(){
+      this.setState({editorYaml:!this.state.editorYaml});
+  }
 
   render() {
     return ([
       <aside id="yamlEditor" key="yamlEditor">
         {!this.state.yamlEditor && <nav className="open" onClick={()=>this.toggleYamlEditor()}>Metadonnées</nav>}
         {this.state.yamlEditor && <nav className="close" onClick={()=>this.toggleYamlEditor()}>close</nav>}
-        {this.state.yamlEditor && <YamlEditor editor={false} yaml={this.state.yaml} exportChange={this.updatingYAML}/>}
+        {this.state.yamlEditor && <nav className="toggleEditor" onClick={()=>this.toggleEditorYaml()}>Mode authors/editor</nav>}
+        {this.state.yamlEditor && <YamlEditor editor={this.state.editorYaml} yaml={this.state.yaml} exportChange={this.updatingYAML}/>}
       </aside>,
         <h1 id="title" key="title">{this.state.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>,
       <section id="writeComponent" key="section">

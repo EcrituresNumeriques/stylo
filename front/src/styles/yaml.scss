@@ -3,7 +3,7 @@ aside#yamlEditor{
     overflow: hidden;
     width:auto;
     right: 0;
-    height: calc(100vh - 106px);
+    height: calc(100vh - 146px);
     overflow-y: auto;
     z-index: 500;
 }
@@ -112,5 +112,14 @@ div#app aside#yamlEditor >  nav.close{
   padding:0.5rem 1rem;
   border: 1px solid #c0c0c0;
   position: fixed;
+  cursor:pointer;
+}
+div#app aside#yamlEditor >  nav.toggleEditor{
+  background-color:white;
+  padding:0.5rem 1rem;
+  border-top: 1px solid #c0c0c0;
+  border-left: 1px solid #c0c0c0;
+  border-right: 1px solid #c0c0c0;
+  text-align: right;
   cursor:pointer;
 }
