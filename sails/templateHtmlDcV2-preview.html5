@@ -400,7 +400,7 @@ $endif$
        <span resource="#periodical">
          <span property="publisher">$publisher$</span><br />
          $if(issnnum)$
-         <span property="issn">$issnnum$</span> ;<br />
+         <span property="issn">$issnnum$</span><br />
          $endif$
        </span>
 
@@ -408,11 +408,11 @@ $endif$
        <div property="isPartOf" typeof="PublicationIssue" resource="#issue">
          <span typeof="Periodical" resource="#periodical">
          $if(journal)$
-         <span property="name">$journal$</span>,
+         <span property="name">$journal$</span>
          </span>
          $endif$
          $if(date)$
-         <span property="datePublished">$date$</span>,
+         <span property="datePublished">$date$</span>
          $endif$
 <!--Indexation dossier-->
   $if(dossier)$
