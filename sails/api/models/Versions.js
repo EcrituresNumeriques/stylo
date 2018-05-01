@@ -37,7 +37,7 @@ module.exports = {
     },
     md:{
       type:'longtext',
-      defaultsTo:'## titre'
+      defaultsTo:'# titre'
     },
     yaml:{
       type:'longtext',
