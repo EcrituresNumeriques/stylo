@@ -369,6 +369,15 @@ div.indexations-foaf,div#schema-scholarly-article,div.authorKeywords_fr,div.auth
     background-color: #f0f0f0;
     padding: 0.5rem 1rem;
 }
+div.indexations-foaf:before{
+    content:"foaf:"
+}
+div.authorKeywords_fr:before{
+    content:"Mot-clefs: "
+}
+div.authorKeywords_en:before{
+    content:"Keywords: "
+}
   </style>
 </head>
 
