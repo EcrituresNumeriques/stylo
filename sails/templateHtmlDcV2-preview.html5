@@ -312,6 +312,63 @@ Schema specialise pour les revues et journaux-->
         font-size: 2em;
         margin: 0 0 1em 0;
       }
+
+div#app main#mainView p {
+  text-align: justify;
+  font-family: sans;
+  font-size: 1.1em;
+  line-height: 1.6em;
+
+}
+
+div#app main#mainView h1, div#app main#mainView h2, div#app main#mainView h3 {
+  color:purple;
+
+}
+
+div#app main#mainView a{
+  color:purple;
+}
+
+div#app main#mainView li {
+  text-align: justify;
+  font-family: sans;
+  font-size: 1.1em;
+  line-height: 1.5em;
+}
+
+div#app main#mainView blockquote {
+  border-left: 4px solid lightgrey;
+  padding-left: 1em;
+  font-style: italic;
+  font-size: 1em;
+}
+
+div#app main#mainView sup {
+  font-size: 0.7em;
+}
+div#app main#mainView .citation {
+  color: darkslateblue;
+}
+
+div#app main#mainView .footnoteRef {
+  font-weight: 600;
+}
+
+div#app main#mainView .references p{
+  font-size: 0.9em;
+  line-height: 1.3em;
+}
+
+div#app main#mainView .footnotes p {
+  font-size: 0.9em;
+  line-height: 1.3em;
+}
+
+div.indexations-foaf,div#schema-scholarly-article,div.authorKeywords_fr,div.authorKeywords_en{
+    background-color: #f0f0f0;
+    padding: 0.5rem 1rem;
+}
   </style>
 </head>
 
