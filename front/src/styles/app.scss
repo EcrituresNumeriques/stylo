@@ -221,7 +221,7 @@ div#app {
     #writeComponent{
       flex:250px 0 1;
       margin-right: 1rem;
-      #timeline, #sommaire, #biblio {
+      #timeline, #sommaire, #biblio, #stat {
 
           background-color: white;
         display:block;
@@ -232,6 +232,16 @@ div#app {
             cursor:pointer;
             padding:0.5rem 1rem;
             border:1px solid #c0c0c0;
+          }
+      }
+      #stat{
+          p {
+              text-align: right;
+              padding:0.5rem 1rem;
+              margin:0;
+              border-left: 1px solid #c0c0c0;
+              border-right: 1px solid #c0c0c0;
+              border-bottom: 1px solid #c0c0c0;
           }
       }
         #biblio{

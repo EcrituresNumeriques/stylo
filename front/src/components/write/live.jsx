@@ -10,6 +10,7 @@ import YAML from 'js-yaml';
 import Timeline from 'components/write/Timeline';
 import Sommaire from 'components/write/Sommaire';
 import Biblio from 'components/write/Biblio';
+import WordCount from 'components/write/WordCount';
 import ModalTextarea from 'components/modals/ModalTextarea';
 import {Controlled as CodeMirror} from 'react-codemirror2'
 require('codemirror/mode/markdown/markdown');
@@ -212,6 +213,7 @@ export default class Live extends Component {
           />
           <Sommaire md={this.state.md} setCursor={this.setCodeMirrorCursor}/>
           <Biblio bib={this.state.bib} addRef={this.addRef} sourceRef={this.sourceRef}/>
+          <WordCount md={this.state.md}/>
           {this.state.modalAddRef && <ModalTextarea cancel={this.skipRef} confirm={this.addNewRef} title="Add new reference(s)" text="please copy paste below the references you want to add in BiBtex format" placeholder="@misc{schnapp_knowledge_2013, address = {Hannover},	type = {Lecture}, title = {Knowledge {Design} {Incubating} new knowledge forms / genres / spaces in the laboratory of the digital humanities}, shorttitle = {Knowledge {Design}}, url = {https://www.volkswagenstiftung.de/en/news/news-details/news/detail/artikel/herrenhausen-lecture-knowledge-design-1/marginal/4296.html}, language = {EN},	author = {Schnapp, Jeffrey}, month = {12}, year = {2013},	file = {HH_lectures_Schnapp_01.pdf:/home/nicolas/Zotero/storage/6AZA85MP/HH_lectures_Schnapp_01.pdf:application/pdf}}"/>}
           {this.state.modalSourceRef && <ModalTextarea cancel={this.closeSourceRef} confirm={this.submitSourceRef} title="References" text="" placeholder="" value={this.state.bib}/>}
         </section>,
