@@ -370,13 +370,16 @@ div.indexations-foaf,div#schema-scholarly-article,div.authorKeywords_fr,div.auth
     padding: 0.5rem 1rem;
 }
 div.indexations-foaf:before{
-    content:"foaf:"
+    content:"foaf: ";
+    font-style:italic;
 }
 div.authorKeywords_fr:before{
-    content:"Mot-clefs: "
+    content:"Mot-clefs: ";
+    font-style:italic;
 }
 div.authorKeywords_en:before{
-    content:"Keywords: "
+    content:"Keywords: ";
+    font-style:italic;
 }
   </style>
 </head>
