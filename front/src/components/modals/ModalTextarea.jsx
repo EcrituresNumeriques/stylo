@@ -15,7 +15,7 @@ export default class ModalTextarea extends Component {
             confirmButton:this.props.confirmButton || "confirm",
             cancel:this.props.cancel || this.defaultCancel,
             confirm:this.props.confirm || this.defaultConfirm
-        }
+        };
     }
 
     defaultCancel(){
