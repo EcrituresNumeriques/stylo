@@ -28,7 +28,8 @@ let SEXY_SCHEMA = YAML.Schema.create([ SexyYamlType ]);
 export default class YamlEditor extends Component {
   constructor(props){
     super(props);
-    const jsObj = YAML.load(props.yaml, { schema: SEXY_SCHEMA }) || {};
+    const singleYaml = props.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, "");
+    const jsObj = YAML.load(singleYaml, { schema: SEXY_SCHEMA }) || {};
     this.state = {obj:jsObj,misc:init.misc};
     this.updateState = this.updateState.bind(this);
     this.updateMisc = this.updateMisc.bind(this);

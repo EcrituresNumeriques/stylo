@@ -21,7 +21,7 @@ export default class Live extends Component {
     super(props);
     this.instance = null;
     //set state
-    this.state = {loaded:false,yaml:"title: loading",md:"",bib:"test",title:"Title",version:0,revision:0,versions:[], autosave:{},modalAddRef:false,modalSourceRef:false};
+    this.state = {loaded:false,yaml:"title: loading",md:"",bib:"test",title:"Title",version:0,revision:0,versions:[], autosave:{},modalAddRef:false,modalSourceRef:false,yamlEditor:false};
     this.updateMD = this.updateMD.bind(this);
     this.updateMDCM = this.updateMDCM.bind(this);
     this.updateBIB = this.updateBIB.bind(this);
@@ -34,6 +34,7 @@ export default class Live extends Component {
     this.updateYAML = this.updateYAML.bind(this);
     this.updatingYAML = this.updatingYAML.bind(this);
     this.sendNewVersion = this.sendNewVersion.bind(this);
+    this.toggleYamlEditor = this.toggleYamlEditor.bind(this);
     this.setCodeMirrorCursor = this.setCodeMirrorCursor.bind(this);
     this.autosave = _.debounce(this.autosave,1000);
     this.fetchAPI = this.fetchAPI.bind(this);
@@ -190,11 +191,16 @@ export default class Live extends Component {
               this.setState({bib:newSource,modalSourceRef:false});
               this.autosave();
   }
+  toggleYamlEditor(){
+      this.setState({yamlEditor:!this.state.yamlEditor});
+  }
 
   render() {
     return ([
       <aside id="yamlEditor" key="yamlEditor">
-        <YamlEditor editor={false} yaml={this.state.yaml} exportChange={this.updatingYAML}/>
+        {!this.state.yamlEditor && <nav className="open" onClick={()=>this.toggleYamlEditor()}>Metadonnées</nav>}
+        {this.state.yamlEditor && <nav className="close" onClick={()=>this.toggleYamlEditor()}>close</nav>}
+        {this.state.yamlEditor && <YamlEditor editor={false} yaml={this.state.yaml} exportChange={this.updatingYAML}/>}
       </aside>,
         <h1 id="title" key="title">{this.state.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>,
       <section id="writeComponent" key="section">
