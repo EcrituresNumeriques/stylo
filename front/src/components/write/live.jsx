@@ -37,6 +37,7 @@ export default class Live extends Component {
     this.toggleYamlEditor = this.toggleYamlEditor.bind(this);
     this.toggleEditorYaml = this.toggleEditorYaml.bind(this);
     this.setCodeMirrorCursor = this.setCodeMirrorCursor.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
     this.autosave = _.debounce(this.autosave,1000);
     this.fetchAPI = this.fetchAPI.bind(this);
     this.fetchAPI();
@@ -199,6 +200,40 @@ export default class Live extends Component {
       this.setState({editorYaml:!this.state.editorYaml});
   }
 
+      componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    handleScroll(event) {
+        //Attention, ne pas surcharger cette methode, Peut grandement ralentir le front-end
+        const height = window.scrollY + window.innerHeight;
+        const headerPlusMargin = 73;
+        const diffHeight = height - (this.refs.leftColumn.offsetHeight + headerPlusMargin );
+        const previousPadding = parseInt(this.refs.leftColumn.style.paddingTop) || 0;
+        if(window.scrollY < headerPlusMargin && previousPadding){
+            console.log("reset Scroll",window.scrollY,headerPlusMargin,previousPadding);
+            this.refs.leftColumn.style.paddingTop = 0;
+        }
+        else if(window.scrollY > headerPlusMargin && diffHeight > 0){
+            console.log("Add padding",diffHeight,window.scrollY,headerPlusMargin,previousPadding);
+            //Need to add paddingTop to the left column
+            //console.log(previousPadding);
+            //console.log(previousPadding,diffHeight,height);
+            this.refs.leftColumn.style.paddingTop = previousPadding + diffHeight + "px";
+        }
+        else if(previousPadding>0){
+                console.log("Remove padding")
+                this.refs.leftColumn.style.paddingTop = previousPadding + diffHeight + "px";
+        }
+        else{
+            console.log("nothing to do");
+        }
+    }
+
   render() {
     return ([
       <aside id="yamlEditor" key="yamlEditor">
@@ -208,7 +243,7 @@ export default class Live extends Component {
         {this.state.yamlEditor && <YamlEditor editor={this.state.editorYaml} yaml={this.state.yaml} exportChange={this.updatingYAML}/>}
       </aside>,
         <h1 id="title" key="title">{this.state.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>,
-      <section id="writeComponent" key="section">
+      <section id="writeComponent" key="section" ref="leftColumn">
           <Timeline
               activeId='live'
               active={this.state}
@@ -228,7 +263,7 @@ export default class Live extends Component {
           {this.state.modalAddRef && <ModalTextarea cancel={this.skipRef} confirm={this.addNewRef} title="Add new reference(s)" text="please copy paste below the references you want to add in BiBtex format" placeholder="@misc{schnapp_knowledge_2013, address = {Hannover},	type = {Lecture}, title = {Knowledge {Design} {Incubating} new knowledge forms / genres / spaces in the laboratory of the digital humanities}, shorttitle = {Knowledge {Design}}, url = {https://www.volkswagenstiftung.de/en/news/news-details/news/detail/artikel/herrenhausen-lecture-knowledge-design-1/marginal/4296.html}, language = {EN},	author = {Schnapp, Jeffrey}, month = {12}, year = {2013},	file = {HH_lectures_Schnapp_01.pdf:/home/nicolas/Zotero/storage/6AZA85MP/HH_lectures_Schnapp_01.pdf:application/pdf}}"/>}
           {this.state.modalSourceRef && <ModalTextarea cancel={this.closeSourceRef} confirm={this.submitSourceRef} title="References" text="" placeholder="" value={this.state.bib}/>}
         </section>,
-        <section id="input" key="inputs">
+        <section id="input" key="inputs" ref="inputs">
           <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true}} editorDidMount={editor => { this.instance = editor }}/>
       </section>
       ]
