@@ -215,22 +215,19 @@ export default class Live extends Component {
         const diffHeight = height - (this.refs.leftColumn.offsetHeight + headerPlusMargin );
         const previousPadding = parseInt(this.refs.leftColumn.style.paddingTop) || 0;
         if(window.scrollY < headerPlusMargin && previousPadding){
-            console.log("reset Scroll",window.scrollY,headerPlusMargin,previousPadding);
+            //console.log("reset Scroll",window.scrollY,headerPlusMargin,previousPadding);
             this.refs.leftColumn.style.paddingTop = 0;
         }
         else if(window.scrollY > headerPlusMargin && diffHeight > 0){
-            console.log("Add padding",diffHeight,window.scrollY,headerPlusMargin,previousPadding);
+            //console.log("Add padding",diffHeight,window.scrollY,headerPlusMargin,previousPadding);
             //Need to add paddingTop to the left column
             //console.log(previousPadding);
             //console.log(previousPadding,diffHeight,height);
             this.refs.leftColumn.style.paddingTop = previousPadding + diffHeight + "px";
         }
-        else if(previousPadding>0){
-                console.log("Remove padding")
-                this.refs.leftColumn.style.paddingTop = previousPadding + diffHeight + "px";
-        }
-        else{
-            console.log("nothing to do");
+        else if(window.scrollY > headerPlusMargin && window.scrollY < (headerPlusMargin + previousPadding)){
+                //console.log("Remove padding",(headerPlusMargin + previousPadding),window.scrollY);
+                this.refs.leftColumn.style.paddingTop = (window.scrollY - headerPlusMargin) + "px";
         }
     }
 
