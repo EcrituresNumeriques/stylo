@@ -21,7 +21,7 @@ export default class Live extends Component {
     super(props);
     this.instance = null;
     //set state
-    this.state = {loaded:false,yaml:"title: loading",md:"",bib:"test",title:"Title",version:0,revision:0,versions:[], autosave:{},modalAddRef:false,modalSourceRef:false,yamlEditor:false,editorYaml:false};
+    this.state = {loaded:false,yaml:"title: loading",md:"",bib:"test",title:"Title",version:0,revision:0,versions:[], autosave:{},modalAddRef:false,modalSourceRef:false,yamlEditor:false,editorYaml:false,biblioClosed:false,versionsClosed:false,sommaireClosed:false,statsClosed:false,previousScroll:0};
     this.updateMD = this.updateMD.bind(this);
     this.updateMDCM = this.updateMDCM.bind(this);
     this.updateBIB = this.updateBIB.bind(this);
@@ -38,6 +38,10 @@ export default class Live extends Component {
     this.toggleEditorYaml = this.toggleEditorYaml.bind(this);
     this.setCodeMirrorCursor = this.setCodeMirrorCursor.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.toggleBiblio = this.toggleBiblio.bind(this);
+    this.toggleVersions = this.toggleVersions.bind(this);
+    this.toggleSommaire = this.toggleSommaire.bind(this);
+    this.toggleStats = this.toggleStats.bind(this);
     this.autosave = _.debounce(this.autosave,1000);
     this.fetchAPI = this.fetchAPI.bind(this);
     this.fetchAPI();
@@ -209,6 +213,8 @@ export default class Live extends Component {
     }
 
     handleScroll(event) {
+        const movement = this.state.previousScroll - window.scrollY;
+        this.setState({previousScroll:window.scrollY});
         //Attention, ne pas surcharger cette methode, Peut grandement ralentir le front-end
         const height = window.scrollY + window.innerHeight;
         const headerPlusMargin = 73;
@@ -218,17 +224,30 @@ export default class Live extends Component {
             //console.log("reset Scroll",window.scrollY,headerPlusMargin,previousPadding);
             this.refs.leftColumn.style.paddingTop = 0;
         }
-        else if(window.scrollY > headerPlusMargin && diffHeight > 0){
+        else if(window.scrollY > headerPlusMargin && diffHeight > 0 && movement < 0){
             //console.log("Add padding",diffHeight,window.scrollY,headerPlusMargin,previousPadding);
             //Need to add paddingTop to the left column
             //console.log(previousPadding);
             //console.log(previousPadding,diffHeight,height);
             this.refs.leftColumn.style.paddingTop = previousPadding + diffHeight + "px";
         }
-        else if(window.scrollY > headerPlusMargin && window.scrollY < (headerPlusMargin + previousPadding)){
+        else if(window.scrollY > headerPlusMargin && window.scrollY < (headerPlusMargin + previousPadding) && movement > 0){
                 //console.log("Remove padding",(headerPlusMargin + previousPadding),window.scrollY);
-                this.refs.leftColumn.style.paddingTop = (window.scrollY - headerPlusMargin) + "px";
+                this.refs.leftColumn.style.paddingTop = (window.scrollY - headerPlusMargin + 10) + "px";
         }
+    }
+
+    toggleBiblio(){
+        this.setState({biblioClosed:!this.state.biblioClosed});
+    }
+    toggleVersions(){
+        this.setState({versionsClosed:!this.state.versionsClosed});
+    }
+    toggleSommaire(){
+        this.setState({sommaireClosed:!this.state.sommaireClosed});
+    }
+    toggleStats(){
+        this.setState({statsClosed:!this.state.statsClosed});
     }
 
   render() {
@@ -253,10 +272,11 @@ export default class Live extends Component {
               exportHypothesis={()=>this.sendNewVersion(null,false,true,true,"hypothes.is")}
               exportErudit={()=>this.sendNewVersion(null,false,true,true,"eruditXML")}
               downloadAll={()=>this.sendNewVersion(null,false,true,true,"zip")}
+              closed={this.state.versionsClosed} toggle={this.toggleVersions}
           />
-          <Sommaire md={this.state.md} setCursor={this.setCodeMirrorCursor}/>
-          <Biblio bib={this.state.bib} addRef={this.addRef} sourceRef={this.sourceRef}/>
-          <WordCount md={this.state.md}/>
+          <Sommaire md={this.state.md} setCursor={this.setCodeMirrorCursor} closed={this.state.sommaireClosed} toggle={this.toggleSommaire}/>
+          <Biblio bib={this.state.bib} addRef={this.addRef} sourceRef={this.sourceRef} closed={this.state.biblioClosed} toggle={this.toggleBiblio}/>
+          <WordCount md={this.state.md} closed={this.state.statsClosed} toggle={this.toggleStats}/>
           {this.state.modalAddRef && <ModalTextarea cancel={this.skipRef} confirm={this.addNewRef} title="Add new reference(s)" text="please copy paste below the references you want to add in BiBtex format" placeholder="@misc{schnapp_knowledge_2013, address = {Hannover},	type = {Lecture}, title = {Knowledge {Design} {Incubating} new knowledge forms / genres / spaces in the laboratory of the digital humanities}, shorttitle = {Knowledge {Design}}, url = {https://www.volkswagenstiftung.de/en/news/news-details/news/detail/artikel/herrenhausen-lecture-knowledge-design-1/marginal/4296.html}, language = {EN},	author = {Schnapp, Jeffrey}, month = {12}, year = {2013},	file = {HH_lectures_Schnapp_01.pdf:/home/nicolas/Zotero/storage/6AZA85MP/HH_lectures_Schnapp_01.pdf:application/pdf}}"/>}
           {this.state.modalSourceRef && <ModalTextarea cancel={this.closeSourceRef} confirm={this.submitSourceRef} title="References" text="" placeholder="" value={this.state.bib}/>}
         </section>,

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export default function Timeline(props){
   return (
     <div id="timeline">
-        <h1 className="title">Versions</h1>
+        <h1 className={props.closed?"title closed":"title"} onDoubleClick={()=>props.toggle()}>Versions</h1>
         <div id="showed">
             Active version {props.active? props.active.title || props.active.version+"."+props.active.revision:props.activeId}
             <ul>
@@ -17,10 +17,12 @@ export default function Timeline(props){
                 {props.exportErudit && <li onClick={()=>props.exportErudit()}>XML</li>}
             </ul>
         </div>
-      <Link to={"/write/"+props.article} className={props.activeId == 'live'?"active":"" }>Live</Link>
-      {props.versions.map((version)=>(
-        <Link to={"/write/"+props.article+"/"+version.id} key={"versionWrite"+version.id} data-id={"versionWrite"+version.id} className={props.activeId == version.id?"active":"" }>{!version.title?"":version.title} ({version.version+'.'+version.revision})</Link>
-      ))}
+        {!props.closed &&<section>
+          <Link to={"/write/"+props.article} className={props.activeId == 'live'?"active":"" }>Live</Link>
+          {props.versions.map((version)=>(
+            <Link to={"/write/"+props.article+"/"+version.id} key={"versionWrite"+version.id} data-id={"versionWrite"+version.id} className={props.activeId == version.id?"active":"" }>{!version.title?"":version.title} ({version.version+'.'+version.revision})</Link>
+          ))}
+        </section>}
     </div>
   )
 }
