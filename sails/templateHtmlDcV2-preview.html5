@@ -262,9 +262,11 @@ Schema specialise pour les revues et journaux-->
         padding: 0;
         width: 100%;
         height: 100%;
-        overflow-y: scroll;
         overflow-x: hidden;
         position: relative;
+      }
+      body {
+        overflow-y: scroll;
       }
 
       #app {
@@ -301,7 +303,6 @@ Schema specialise pour les revues et journaux-->
         padding-bottom: 20px;
       }
       div#app main#mainView {
-        user-select: none;
         margin: 0 auto;
         width: 100%;
         max-width: 1000px;
