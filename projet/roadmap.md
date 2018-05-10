@@ -1,6 +1,20 @@
 
 
-## Roadmap pour Stylo (voir détails ci-dessous):
+## Roadmap :
+
+### > fin mai2018
+
+1. Sortie xml. Pour la démo fin mai, peut-être intégrer un bouton "preview xml"..
+2. Sortie tex ou pdf : à intégrer dans l'export zip (voir issue #4)
+3. vers un certain standing... :
+  1. ajouter un how-to : on se disait que ce pourrait être un article par défaut chez tous les utilisateurs.
+  2. permettre un feedback :
+    - un [bandeau github](https://blog.github.com/2008-12-19-github-ribbons/), vers une issue
+    - formulaire de support ou formulaire de retours (en structurant un peu le retour d'expérience)
+  3. faire une passe design graphique sur l'ensemble du site. à rediscuter.
+
+
+---
 
 ### Prioriétés jan2017
 1. User
