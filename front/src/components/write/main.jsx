@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import store from 'store/configureStore';
 import objectAssign from 'object-assign';
 import sortByIdDesc from 'helpers/sorts/idDesc';
-import ExportVersion from 'components/write/export';
 import YamlEditor from 'components/yamleditor/YamlEditor';
-import YAML from 'js-yaml';
 import Timeline from 'components/write/Timeline';
 import Sommaire from 'components/write/Sommaire';
 import Biblio from 'components/write/Biblio';
@@ -28,6 +24,22 @@ export default class Write extends Component {
     this.fetchAPI();
   }
 
+  componentDidUpdate(prevProps, prevState){
+    if(this.state.activeId != this.props.match.params.version || this.state.compute){
+      let newActive;
+      if(this.props.match.params.version == undefined){
+        //set the live as the active view
+        newActive = objectAssign({},this.state.live);
+      }
+      else{
+        //find the correct version
+        let that = this;
+        newActive = objectAssign({yaml:'',md:'',bib:''},this.state.article.versions.find(function(version){return that.props.match.params.version == version.id;}));
+      }
+      this.setState({activeId:this.props.match.params.version,active:newActive,compute:false});
+    }
+  }
+
   fetchAPI(){
     let that = this;
     fetch('/api/v1/articles/'+this.props.match.params.article,{
@@ -43,22 +55,6 @@ export default class Write extends Component {
       that.setState({loaded:true,article:json,live,compute:true});
       return null;
     });
-  }
-
-  componentDidUpdate(prevProps, prevState){
-    if(this.state.activeId != this.props.match.params.version || this.state.compute){
-      let newActive;
-      if(this.props.match.params.version == undefined){
-        //set the live as the active view
-        newActive = objectAssign({},this.state.live);
-      }
-      else{
-        //find the correct version
-        let that = this;
-        newActive = objectAssign({yaml:'',md:'',bib:''},this.state.article.versions.find(function(version){return that.props.match.params.version == version.id}));
-      }
-      this.setState({activeId:this.props.match.params.version,active:newActive,compute:false});
-    }
   }
 
   exportVersion(exportTarget="HTML"){
@@ -77,7 +73,7 @@ export default class Write extends Component {
       return null;
   }
 
-  tagVersion(id){
+  tagVersion(){
       const that = this;
       const callback = function(title){
           fetch('/api/v1/versions/'+that.state.activeId,{
@@ -92,14 +88,14 @@ export default class Write extends Component {
               return json.title;
           });
           return title;
-      }
+      };
       const title = promptUser('Tag this versions',this.state.active.title || this.state.active.version+"."+this.state.active.revision,callback);
       this.setState(function(state){
           let newState = objectAssign({},state);
           newState.active.title = title;
           //find out why this mutate any state when going to live
-          let versions = [...newState.article.versions]
-          versions.find(function(version){return that.state.active.id == version.id}).title = title;
+          let versions = [...newState.article.versions];
+          versions.find(function(version){return that.state.active.id == version.id;}).title = title;
           const returnState = objectAssign({},newState);
           //active.title = title;
           return returnState;
@@ -140,11 +136,9 @@ export default class Write extends Component {
           <Biblio bib={this.state.active.bib}/>
       </section>,
       <section id="input" key="input">
-          <CodeMirror value={this.state.active.md} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true}} editorDidMount={editor => { this.instance = editor }}/>
-          <textarea value={this.state.active.yaml} disabled={true} placeholder="YAML editor">
-          </textarea>
-          <textarea value={this.state.active.bib} disabled={true} placeholder="BIBtext">
-          </textarea>
+          <CodeMirror value={this.state.active.md} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true}} editorDidMount={editor => { this.instance = editor; }}/>
+          <textarea value={this.state.active.yaml} disabled={true} placeholder="YAML editor" />
+          <textarea value={this.state.active.bib} disabled={true} placeholder="BIBtext" />
       </section>
     ]);
   }
