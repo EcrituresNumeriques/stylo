@@ -63,7 +63,7 @@ export default class Write extends Component {
 
   exportVersion(exportTarget="HTML"){
           if(exportTarget== "hypothes.is"){
-            window.open('https://via.hypothes.is/https://stylo.14159.ninja/api/v1/previewVersion/'+this.state.active.id,'_blank');
+            window.open('https://via.hypothes.is/'+window.location.protocol+'//'+window.location.hostname+'/api/v1/previewVersion/'+this.state.active.id,'_blank');
           }
           else if(exportTarget=="eruditXML"){
             window.open('file:///home/marcello/Desktop/sp/git/chaineEditorialeSP/templates/xml.xml','_blank');

@@ -15,7 +15,7 @@ export default class Export extends Component {
       window.open('file:///home/marcello/Desktop/sp/git/chaineEditorialeSP/templates/xml.xml','_blank')
     }
     else if(this.props.target == "hypothes.is"){
-      window.open('https://via.hypothes.is/https://stylo.14159.ninja/api/v1/'+target+'/'+this.props.version,'_blank');
+      window.open('https://via.hypothes.is/'+window.location.protocol+'//'+window.location.hostname+'/api/v1/'+target+'/'+this.props.version,'_blank');
     }
     else{
       window.open('/api/v1/'+target+'/'+this.props.version,'_blank')
