@@ -66,6 +66,7 @@ main#WriteWrapper{
           }
           p{
             width: 100%;
+            max-width: 275px;
               font-size: 1rem;
               font-weight: 400;
               font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -86,6 +87,7 @@ main#WriteWrapper{
         padding-bottom: 0.25rem;
         pre,h1:not(.title),h2,h3,h4,h5,h6 {
             width: 100%;
+            max-width: 275px;
             font-size: 1rem;
             font-weight: 400;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
