@@ -1,12 +1,12 @@
 version: "2"
 
 services:
-  sails-styloProd:
+  sails-stylo-prod:
     restart: always
     build: .
     links:
-      - mongodb-styloProd
-      - redis-styloProd
+      - mongodb-stylo-prod
+      - redis-stylo-prod
     environment:
       - NODE_ENV=production
       - VIRTUAL_HOST=stylo.ecrituresnumeriques.ca
@@ -14,7 +14,7 @@ services:
       - VIRTUAL_PORT=80
       - LETSENCRYPT_HOST=stylo.ecrituresnumeriques.ca
       - LETSENCRYPT_EMAIL=arthur.juchereau@gmail.com
-  mongodb-styloProd:
+  mongodb-stylo-prod:
     restart: always
     image: mongo:latest
     container_name: "mongodb-stylo"
@@ -24,7 +24,7 @@ services:
     volumes:
       - ./dataProd/db:/dataProd/db
     command: mongod --smallfiles --logpath=/dev/null # --quiet
-  redis-styloProd:
+  redis-stylo-prod:
     restart: always
     image: redis
 networks:
