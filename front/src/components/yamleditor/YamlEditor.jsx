@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TextInput } from './TextInput.jsx';
+import { SelectInput } from './SelectInput.jsx';
 import { Resumes} from './Resumes.jsx';
 import { Authors } from './Authors.jsx';
 import { Dossier } from './Dossier.jsx';
@@ -255,6 +256,7 @@ export default class YamlEditor extends Component {
         <TextInput target="title_f" alias={[{target:'title',prefix:'',suffix:'',filterMD:true}]} title="Titre" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
 
         <TextInput target="subtitle_f" alias={[{target:'subtitle',prefix:'',suffix:'',filterMD:true}]} title="Sous-titre" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
+        <SelectInput target={"lang"} title="Lang" placeholder="Choisir la langue du texte" options={['fr','en','ita','es','es','pt','de','uk','ar']}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
 
         {this.props.editor && <Date target="date" title="Date" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
 

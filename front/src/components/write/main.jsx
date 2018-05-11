@@ -119,7 +119,7 @@ export default class Write extends Component {
   render() {
     return ([
         <aside id="yamlEditor" key="yamlEditor">
-          {!this.state.yamlEditor && <nav className="open" onClick={()=>this.toggleYamlEditor()}>Metadonnées</nav>}
+          {!this.state.yamlEditor && <nav className="open" onClick={()=>this.toggleYamlEditor()}>Metadata</nav>}
           {this.state.yamlEditor && <nav className="close" onClick={()=>this.toggleYamlEditor()}>close</nav>}
           {this.state.yamlEditor && <nav className="toggleEditor" onClick={()=>this.toggleEditorYaml()}>Mode authors/editor</nav>}
           {this.state.yamlEditor && <YamlEditor editor={this.state.editorYaml} yaml={this.state.active.yaml}/>}
