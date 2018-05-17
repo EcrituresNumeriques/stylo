@@ -15,7 +15,7 @@ export default class Login extends Component {
     let corps = {
       password:this.refs.password.value,
       email:this.refs.email.value
-    }
+    };
     fetch("/api/v1/login",
     {
         method: "POST",
@@ -24,13 +24,13 @@ export default class Login extends Component {
     })
     .then(function(res){
       if(!res.ok){throw res.json();}
-      return res.json()})
+      return res.json();})
     .then(function(data){
       store.dispatch({type:"USER_LOGIN",data:data});
       that.props.history.push("/articles");
-      return null})
-    .catch(function(error){return error})
-    .then(function(error){if(error != null){alert(error.message)};}.bind(this));
+      return null;})
+    .catch(function(error){return error;})
+    .then(function(error){if(error != null){alert(error.message);}}.bind(this));
   }
 
 
@@ -41,7 +41,7 @@ export default class Login extends Component {
       <div className="gridCenter">
         <SiteHeader/>
         <form className="gridCentered" onSubmit={this.handleSubmit}>
-          <input type="text" placeholder="email" ref="email"/>
+          <input type="text" placeholder="email or username" ref="email"/>
           <input type="password" placeholder="password" ref="password" />
           <input type="submit" value="go" />
           <p className="note">or <Link to="/register">create an account</Link></p>
