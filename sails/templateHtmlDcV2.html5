@@ -31,7 +31,7 @@
      <meta name="DC.publisher" class="producteurNum" content="$prodnum$" />
      <meta name="DC.publisher" class="diffuseur" content="$diffnum$" />
      <meta name="DC.language" content="$lang$" />
-     <meta name="DC.date" class="completeDate" content="$date$" />
+     <meta name="DC.date" class="completeDate" content="$year$-$month$-$day$" />
      <meta name="DC.date" class="year" content="$year$" />
      <meta name="DC.rights" content="$rights$" />
      <meta name="DC.source" content="$journal$" />
@@ -86,9 +86,6 @@
   $for(controlledKeywords)$
   $if(controlledKeywords.label)$
   <meta name="DC.subject" xml:lang="fr" lang="fr" content="$controlledKeywords.label$" />
-  $endif$
-  $if(controlledKeywords.fr)$
-  <meta name="DC.subject" xml:lang="fr" lang="fr" content="$controlledKeywords.fr$" />
   $endif$
   $endfor$
   $endif$
@@ -206,10 +203,6 @@ Schema specialise pour les revues et journaux-->
   <meta property="dc:subject" xml:lang="fr" lang="fr" content="$controlledKeywords.label$" />
   <link rel="dc:subject" href="$controlledKeywords.uriRameau$"/>
   $endif$
-  $if(controlledKeywords.fr)$
-  <meta property="dc:subject" xml:lang="fr" lang="fr" content="$controlledKeywords.fr$" />
-  <link rel="dc:subject" href="$controlledKeywords.url$"/>
-  $endif$
   $endfor$
   $endif$
 
@@ -274,7 +267,6 @@ Schema specialise pour les revues et journaux-->
       <div vocab="http://xmlns.com/foaf/0.1/" typeof="Person" class="foaf-author">
        <span property="familyName">$authors.surname$</span>
        <span property="firstName">$authors.forname$</span>
-       <span property="gender">$director.gender$</span>
        <span property="openid">$authors.orcid$</span>
       </div>
      </div>
@@ -288,7 +280,7 @@ Schema specialise pour les revues et journaux-->
       <div vocab="http://xmlns.com/foaf/0.1/" typeof="Person" class="foaf-redactor">
        <span property="familyName">$redacteurDossier.surname$</span>
        <span property="firstName">$redacteurDossier.forname$</span>
-       <span property="gender">$director.gender$</span>
+       <span property="gender">$redacteurDossier.gender$</span>
        <span property="openid">$redacteurDossier.orcid$</span>
       </div>
      </div>
@@ -327,26 +319,19 @@ $endif$
   $endfor$
   $endif$
 
-
 <!--Indexation editeur-->
        <span resource="#periodical">
          <span property="publisher">$publisher$</span><br />
-         $if(issnnum)$
-         <span property="issn">$issnnum$</span><br />
-         $endif$
+         <span property="issn">$issnnum$</span>
        </span>
 
 <!--Indexation revue-->
        <div property="isPartOf" typeof="PublicationIssue" resource="#issue">
          <span typeof="Periodical" resource="#periodical">
-         $if(journal)$
          <span property="name">$journal$</span>
          </span>
-         $endif$
-         $if(date)$
          <span property="datePublished">$date$</span>
-         $endif$
-         
+
 <!--Indexation dossier-->
   $if(dossier)$
   $for(dossier)$
@@ -371,18 +356,17 @@ $if(controlledKeywords)$
 <div class="keywords" vocab="http://purl.org/dc/terms/">
 $for(controlledKeywords)$
 $if(controlledKeywords.label)$
-  <div class="$controlledKeywords.label$" lang="">
-    <span property="subject" class="label">$controlledKeywords.label$</span>,
-    <span property="subject" class="uriRameau">$controlledKeywords.uriRameau$</span>,
-    <span property="subject" class="idRameau">$controlledKeywords.idRameau$</span>,
-    <span property="subject" class="wikidata">$controlledKeywords.wikidata$</span>
-  </div>
+  <div class="$controlledKeywords.label$" lang="fr">
+    <span property="subject" class="label">$controlledKeywords.label$</span>
+$if(controlledKeywords.uriRameau)$
+    <span property="subject" class="uriRameau">$controlledKeywords.uriRameau$</span>
 $endif$
-$if(controlledKeywords.fr)$
-  <div class="$controlledKeywords.fr$" lang="fr">
-    <span property="subject" class="label">$controlledKeywords.fr$</span>,
-     <span property="subject" class="idRameau">$controlledKeywords.id$</span>,
-     <span property="subject" class="uriRameau">$controlledKeywords.url$</span>,
+$if(controlledKeywords.idRameau)$
+    <span property="subject" class="idRameau">$controlledKeywords.idRameau$</span>
+$endif$
+$if(controlledKeywords.wikidata)$
+    <span property="subject" class="wikidata">$controlledKeywords.wikidata$</span>
+$endif$
   </div>
 $endif$
 $endfor$
