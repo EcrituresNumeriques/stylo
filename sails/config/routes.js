@@ -60,7 +60,9 @@ module.exports.routes = {
   'GET /api/v1/exportVersion/:version':'ExportController.html',
   'GET /api/v1/previewVersion/:version':'ExportController.htmlPreview',
   'GET /api/v1/exportArticle/:id':'ExportController.article',
+  'GET /api/v1/zipArticle/:id':'ExportController.articleZIP',
   'GET /api/v1/previewArticle/:id':'ExportController.articlePreview',
+  'GET /api/v1/zipVersion/:version':'ExportController.versionZIP',
   'GET /api/v1/exportErudit/:version':'ExportController.erudit',
 
   // All GET requests are directed to the app controller which renders our app.
