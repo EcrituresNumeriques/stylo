@@ -67,6 +67,9 @@ export default class Write extends Component {
           else if(exportTarget=="previewHTML"){
             window.open('/api/v1/previewVersion/'+this.state.active.id,'_blank');
           }
+          else if(exportTarget=="ZIP"){
+            window.open('/api/v1/zipVersion/'+this.state.active.id,'_blank');
+          }
           else{
             window.open('/api/v1/exportVersion/'+this.state.active.id,'_blank');
           }
@@ -128,6 +131,7 @@ export default class Write extends Component {
               versions={this.state.article.versions}
               tagVersion={this.tagVersion}
               exportHTML={()=>this.exportVersion("HTML")}
+              exportZIP={()=>this.exportVersion("ZIP")}
               previewHTML={()=>this.exportVersion("previewHTML")}
               exportHypothesis={()=>this.exportVersion("hypothes.is")}
               exportErudit={()=>this.exportVersion("eruditXML")}

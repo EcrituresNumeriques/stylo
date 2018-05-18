@@ -111,6 +111,9 @@ export default class Live extends Component {
         else if(exportTarget=="previewHTML"){
           window.open('/api/v1/previewArticle/'+json.article,'_blank');
         }
+        else if(exportTarget=="ZIP"){
+          window.open('/api/v1/zipArticle/'+json.article,'_blank');
+        }
         else{
           window.open('/api/v1/exportArticle/'+json.article,'_blank');
         }
@@ -268,6 +271,7 @@ export default class Live extends Component {
               newVersion={()=>this.sendNewVersion(null,true,false)}
               newRevision={()=>this.sendNewVersion()}
               exportHTML={()=>this.sendNewVersion(null,false,true,true,"HTML")}
+              exportZIP={()=>this.sendNewVersion(null,false,true,true,"ZIP")}
               previewHTML={()=>this.sendNewVersion(null,false,true,true,"previewHTML")}
               exportHypothesis={()=>this.sendNewVersion(null,false,true,true,"hypothes.is")}
               exportErudit={()=>this.sendNewVersion(null,false,true,true,"eruditXML")}

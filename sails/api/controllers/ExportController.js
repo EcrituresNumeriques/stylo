@@ -147,6 +147,7 @@ module.exports = {
     Articles.findOne({id:req.params.id}).populate("versions",{limit: 1, sort: 'createdAt DESC'}).then(function(thisArticle){
         console.log(thisArticle);
     const thisVersion = thisArticle.versions[0];
+    const filename = thisArticle.title || thisVersion.title || thisVersion.version+'.'+thisVersion.revision;
     fs.writeFileSync('/'+thisVersion.id+'.md', thisVersion.md+'\n');
     let insertPos = thisVersion.yaml.lastIndexOf("\n---");
     fs.writeFileSync('/'+thisVersion.id+'.yaml', thisVersion.yaml.substring(0,insertPos)+'\nbibliography: /'+thisVersion.id+'.bib'+thisVersion.yaml.substring(insertPos));
@@ -170,7 +171,7 @@ module.exports = {
 
         output.on('close', function() {
           console.log('archive done');
-          const filename = thisVersion.title || thisVersion.version+'.'+thisVersion.revision;
+          
           //res.attachment('/'+thisVersion.id+'.yaml');
           res.set('Content-Type', 'application/zip');
           res.set('Content-Disposition', 'attachment; filename="'+filename+'.zip"');
@@ -181,7 +182,7 @@ module.exports = {
         archive.file('/'+thisVersion.id+'.yaml',{name: thisVersion.id+'.yaml'});
         archive.file('/'+thisVersion.id+'.md',{name: thisVersion.id+'.md'});
         archive.file('/'+thisVersion.id+'.bib',{name: thisVersion.id+'.bib'});
-        archive.append(result, {name:thisVersion.id+'.html'});
+        archive.append(result, {name:filename+'.html'});
         archive.finalize();
         // Without the -o arg, the converted value will be returned.
 
