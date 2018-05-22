@@ -5,13 +5,39 @@
 ### > fin mai2018
 
 1. Sortie xml. Pour la démo fin mai, peut-être intégrer un bouton "preview xml"..
-2. Sortie tex ou pdf : à intégrer dans l'export zip (voir issue #4)
+  * voir : https://docs.gravitee.io/apim_policies_xslt.html
+2. Modal export :
+  1. pdf
+  2. html
+  3. (xml tei) / xml erudit
+  4. zip (avec seulement md/yaml/bibtex)
 3. vers un certain standing... :
   1. ajouter un how-to : on se disait que ce pourrait être un article par défaut chez tous les utilisateurs.
-  2. permettre un feedback :
+  2. github doc : stylo-doc
+  3. permettre un feedback :
     - un [bandeau github](https://blog.github.com/2008-12-19-github-ribbons/), vers une issue
-    - formulaire de support ou formulaire de retours (en structurant un peu le retour d'expérience)
+    - un bouton formulaire de support ou formulaire de retours (en structurant un peu le retour d'expérience
   3. faire une passe design graphique sur l'ensemble du site. à rediscuter.
+
+
+---
+
+* liste d'usagers pour les inscrits : envoyer à qlq plutôt que l'email : avec profil public (listé publiquement)/privé (passe uniquement par l'email/username), ou profil followé/ami ?
+- Gestion de suivi de modification via un diffmerge : implémentation d'un client git en js.
+  - on utilisera https://neil.fraser.name/software/diff_match_patch/demos/diff.html
+- Importation bibliographie via zotero (fin mai ?)
+  - scénario : on choisit dès le début si zotero (clé dossier public) sinon bibtex
+  - on implémente d'abord la version group public, membership n'importe.
+  - requête pour 1 collection d'1 user au format bibtex : https://api.zotero.org/users/458284/collections/BXJZJKTI/items?format=bibtex&v=1
+  - requête pour 1 groupe public https://api.zotero.org/groups/1062519/items/top?start=0&limit=25&format=bibtex&v=1
+- ajouter dans le yamleditor le parametrage de nocite : citer tout ou pas.
+  - [ ] issue sur yamleditor
+- Implémentation versionnage git (sur framagit)
+  - simple push (version 2019)
+  - full git compliant (version 2021 ?)
+- possibilité de customisation des métadonnées (en prévision des diff. revues.)
+- exportation vers d'autres formats (TEI)
+
 
 
 ---
