@@ -20,7 +20,7 @@
 
 [À propos](pages/about.md)
 [Tester Stylo](http://stylo.ecrituresnumeriques.ca)
-
+[Contacts](pages/contacts.md)
 [English Documentation](../en_EN/)
 
 <!-- A more complex navigation example: ----------------------------------------
