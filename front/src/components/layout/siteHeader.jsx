@@ -15,14 +15,14 @@ render() {
           <div className="wrapper"/>
           {
             loggedIn && <nav>
-                          <Ling to='http://stylo-doc.ecrituresnumeriques.ca'>Documentation</Link>
+                          <a href='http://stylo-doc.ecrituresnumeriques.ca' target="_blank">Documentation</a>
                           <Link to='/articles'>Mes articles</Link>
                           <Link to='/articles'>{store.getState().user.user.username}</Link>
                        </nav>
           }
           {
             !loggedIn &&   <nav>
-                    <Ling to='http://stylo-doc.ecrituresnumeriques.ca'>Documentation</Link>
+                    <a href='http://stylo-doc.ecrituresnumeriques.ca' target="_blank">Documentation</a>
                     <Link to="/login">Login</Link>
                     <Link to="/register">Register</Link>
               </nav>
