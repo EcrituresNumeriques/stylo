@@ -15,11 +15,11 @@ Vous pouvez visualiser l'article à tout moment en cliquant sur le bouton **Prev
 
 ## Les titres
 
-Les titres de niveaux 2 doivent être balisés avec 2 `#` (`##`) et non un seul, car le titre de niveau 1 correspond au titre de l'article, déclaré dans les métadonnées.
+Les titres de niveaux 2 doivent être balisés avec 2 \`#\` (\`##\`) et non un seul, car le titre de niveau 1 correspond au titre de l'article, déclaré dans les métadonnées.
 
 ### Titres de niveau 3
 
-Les titres de niveaux 3 doivent être balisés avec 3 `#` et ainsi de suite.
+Les titres de niveaux 3 doivent être balisés avec 3 \`#\` et ainsi de suite.
 
 Un saut de ligne correspond au début d'un nouveau paragraphe.
 
@@ -93,7 +93,7 @@ Il est également possible d'ajouter une référence ainsi : « Comme le dit @go
 
 La clé peut aussi être accompagnée de précision comme ici [@goody_raison_1979, pp.115].
 
-Les références citées se retrouveront ensuite à la fin du texte dans la section `## Bibliographie`
+Les références citées se retrouveront ensuite à la fin du texte dans la section \`## Bibliographie\`
 
 ### Les citations
 
