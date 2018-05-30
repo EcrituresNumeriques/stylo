@@ -4,8 +4,9 @@
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
+
 const defaultArticle = {
-  md:`## Introduction
+    md: `## Introduction
 
 Stylo est un éditeur de texte scientifique. Pour faire vos premiers pas sur Stylo, commencez par éditer cet article.
 
@@ -132,14 +133,14 @@ Plusieurs types d'exports sont disponibles :
 [^2]: Voici une note déclarée en fin de document
 [^notePage]: Voici une note avec un label textuel.
 `,
-  bib:`@book{goody_raison_1979,
+    bib: `@book{goody_raison_1979,
 	series = {Le sens commun},
 	title = {La {Raison} graphique. {La} domestication de la pensée sauvage.},
 	publisher = {Les Editions de Minuit},
 	author = {Goody, Jack},
 	year = {1979},
 }`,
-  yaml:`---
+    yaml: `---
 title: Stylo
 title_f: Stylo
 subtitle_f: Un article type
