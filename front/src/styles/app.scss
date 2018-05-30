@@ -35,8 +35,9 @@ body {
 
 #app > header, .gridCenter > header {
     padding:0.5rem 1rem;
-    background-color: green;
-    color:white;
+    background-color: #7c7c7c;
+    border: 1px solid #d8d8d8;
+    color: white;
     display:flex;
     align-items: center;
     .wrapper {
@@ -45,11 +46,12 @@ body {
     h1 {
         margin:0;
         flex:0 0 auto;
+        font-style: italic;
     }
     nav {
         flex: 0 0 auto;
         a {
-            color:white;
+            color: white;
             margin-left: 1rem;
         }
     }
@@ -95,6 +97,7 @@ body {
   background-color: #fff;
   color: grey;
   border: 1px solid grey;
+  border-radius: 0.1rem;
   padding:0.5em 1em;
   font-size: 1em;
   cursor: pointer;
@@ -102,9 +105,9 @@ body {
   margin:0 0.25em;
 }
 .primaryButton {
-    background-color: green;
-    color:white;
-    border:1px solid green;
+  background-color: #7c7c7c;
+  color: white;
+  border: 1px solid grey;
 }
 .disabledButton {
     background-color: #c0c0c0;
@@ -210,7 +213,7 @@ div#app {
       }
     }
   }
- 
+
 }
 
 
@@ -220,6 +223,7 @@ textarea{
   vertical-align: top;
   width:100%;
   min-height:30em;
+  padding: 1rem 1rem;
 }
 
 .react-codemirror2{
