@@ -65,6 +65,7 @@ module.exports = {
   // Export for specific versions
   html: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
+      console.log("got preview of ",req.param('preview'));
       const preview = req.param('preview') == "true" ? true:false;
       computeHTML(thisVersion,res,preview);
     })
