@@ -19,7 +19,7 @@ const computeHTML = function(version,callback,preview=false,footnotes=false){
 const downloadHTML = function (err, result, version) {
   if (err) {
     console.log(err);
-    fs.writeFileSync('/'version.id+'.error', err.toString());
+    fs.writeFileSync('/'+version.id+'.error', err.toString());
     res.attachment('/'+version.id+'.error');
     return false;
   }
