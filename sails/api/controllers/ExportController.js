@@ -2,21 +2,27 @@ const fs = require('fs');
 var pandoc = require('node-pandoc');
 var archiver = require('archiver');
 
+const computeHTML = function(version,callback,preview=false,footnotes=false){
+  fs.writeFileSync('/'+version.id+'.md', version.md+'\n');
+  let insertPos = version.yaml.lastIndexOf("\n---");
+  fs.writeFileSync('/'+version.id+'.yaml', version.yaml.substring(0,insertPos)+'\nbibliography: /'+version.id+'.bib'+version.yaml.substring(insertPos));
+  fs.writeFileSync('/'+version.id+'.bib', version.bib);
+  let src = '/'+version.id+'.md',
+  let args = '';
+  if(preview){args += '--standalone --template=templates/templateHtmlDcV2-preview.html5'}
+  else{args += '--standalone --template=templates/templateHtmlDcV2.html5'}
+  args += ' --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml';
+  if(footnotes){args += ' --csl templates/lettres-et-sciences-humaines-fr.csl'}
+  pandoc(src, args, callback);
+}
+
+
 module.exports = {
 
   // Export for specific versions
 
   html: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
-      fs.writeFileSync('/'+thisVersion.id+'.md', thisVersion.md+'\n');
-      let insertPos = thisVersion.yaml.lastIndexOf("\n---");
-      fs.writeFileSync('/'+thisVersion.id+'.yaml', thisVersion.yaml.substring(0,insertPos)+'\nbibliography: /'+thisVersion.id+'.bib'+thisVersion.yaml.substring(insertPos));
-      fs.writeFileSync('/'+thisVersion.id+'.bib', thisVersion.bib);
-      let src = '/'+thisVersion.id+'.md',
-      args = '--standalone --template=templates/templateHtmlDcV2.html5 --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml';
-      // Ca fonctionne
-      //args = '--standalone --template=templates/templateHtmlDcV2.html5 --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml --csl templates/lettres-et-sciences-humaines-fr.csl';
-      //args = '-f markdown -t html --template=templates/templateHtmlDcV0.html5 --filter pandoc-citeproc --ascii /'+thisVersion.id+'.yaml';
       callback = function (err, result) {
         if (err) {
           console.log(err);
@@ -32,7 +38,7 @@ module.exports = {
           res.send(new Buffer(result));
         }
       };
-      pandoc(src, args, callback);
+      computeHTML(thisVersion,callback)
     })
   },
 
