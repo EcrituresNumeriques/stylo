@@ -62,7 +62,7 @@ export default class Write extends Component {
             window.open('https://via.hypothes.is/'+window.location.protocol+'//'+window.location.hostname+'/api/v1/previewVersion/'+this.state.active.id,'_blank');
           }
           else if(exportTarget=="eruditXML"){
-            window.open('file:///home/marcello/Desktop/sp/git/chaineEditorialeSP/templates/xml.xml','_blank');
+            window.open('https://ecrituresnumeriques.github.io/saxon-xsl-transform/?source='+window.location.protocol+'//'+window.location.hostname+'/api/v1/previewVersion/'+this.state.active.id,'_blank');
           }
           else if(exportTarget=="previewHTML"){
             window.open('/api/v1/previewVersion/'+this.state.active.id,'_blank');
