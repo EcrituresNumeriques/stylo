@@ -13,7 +13,7 @@
   4. zip (avec seulement md/yaml/bibtex)
 3. vers un certain standing... :
   1. ajouter un how-to : on se disait que ce pourrait être un article par défaut chez tous les utilisateurs.
-  2. github doc : stylo-doc
+  2. ~~github doc : stylo-doc~~
   3. permettre un feedback :
     - un [bandeau github](https://blog.github.com/2008-12-19-github-ribbons/), vers une issue
     - un bouton formulaire de support ou formulaire de retours (en structurant un peu le retour d'expérience
