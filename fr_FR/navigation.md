@@ -3,7 +3,7 @@
   -- Do NOT remove the leading `#` character.
   -->
 
-# Stylo - Documentation 
+# Stylo - Documentation
 
 <!--
   -- Default theme
@@ -18,10 +18,21 @@
   -- (Read: http://dynalon.github.io/mdwiki/#!quickstart.md#Adding_a_navigation)
   -->
 
-[À propos](pages/about.md)
+[Projet]()
+
+  * [À propos](pages/about.md)
+  * [Contacts](pages/contacts.md)
+
+[Documentation]()
+
+  * [Premiers pas](pages/premierpas.md)
+  * [Écrire en markdown](syntaxemarkdown.md)
+  * [Bibliographie](bibliographie.md)
+  * [Pour aller plus loin](pourallerplusloin.md)
+
 [Tester Stylo](http://stylo.ecrituresnumeriques.ca)
-[Contacts](pages/contacts.md)
-[English Documentation](../en_EN/)
+
+[_EN_](../en_EN/)
 
 <!-- A more complex navigation example: ----------------------------------------
 
@@ -61,6 +72,5 @@
   -- (Read: http://dynalon.github.io/mdwiki/#!quickstart.md#Adding_a_navigation)
   -->
 
-<!--
-[gimmick:themechooser](Choose theme)
--->
+
+[gimmick:theme](readable)
