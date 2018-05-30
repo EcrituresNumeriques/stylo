@@ -16,7 +16,7 @@ const computeHTML = function(version,callback,preview=false,footnotes=false){
   pandoc(src, args, callback);
 };
 
-const downloadHTML = function (err, result, version) {
+const downloadHTML = function (err, result, version, res) {
   if (err) {
     console.log(err);
     fs.writeFileSync('/'+version.id+'.error', err.toString());
@@ -39,7 +39,7 @@ module.exports = {
 
   html: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
-      computeHTML(thisVersion,(err, result)=>downloadHTML(err, result, thisVersion));
+      computeHTML(thisVersion,(err, result)=>downloadHTML(err, result, thisVersion, res));
     })
   },
 
