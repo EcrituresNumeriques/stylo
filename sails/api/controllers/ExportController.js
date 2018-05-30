@@ -2,7 +2,7 @@ const fs = require('fs');
 var pandoc = require('node-pandoc');
 var archiver = require('archiver');
 
-const computeHTML = function(res,version,callback,preview=false,footnotes=false){
+const computeHTML = function(version,callback,preview=false,footnotes=false){
   fs.writeFileSync('/'+version.id+'.md', version.md+'\n');
   let insertPos = version.yaml.lastIndexOf("\n---");
   fs.writeFileSync('/'+version.id+'.yaml', version.yaml.substring(0,insertPos)+'\nbibliography: /'+version.id+'.bib'+version.yaml.substring(insertPos));
@@ -11,7 +11,7 @@ const computeHTML = function(res,version,callback,preview=false,footnotes=false)
   let args = '';
   if(preview){args += '--standalone --template=templates/templateHtmlDcV2-preview.html5'}
   else{args += '--standalone --template=templates/templateHtmlDcV2.html5'}
-  args += ' --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml';
+  args += ' --ascii --filter pandoc-citeproc -f markdown -t html /'+version.id+'.yaml';
   if(footnotes){args += ' --csl templates/lettres-et-sciences-humaines-fr.csl'}
   pandoc(src, args, callback);
     console.log('entered export');
@@ -40,7 +40,7 @@ module.exports = {
           res.send(new Buffer(result));
         }
       };
-      computeHTML(res,thisVersion,callback)
+      computeHTML(thisVersion,callback)
     })
   },
 
