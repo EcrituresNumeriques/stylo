@@ -14,8 +14,22 @@ const computeHTML = function(version,callback,preview=false,footnotes=false){
   args += ' --ascii --filter pandoc-citeproc -f markdown -t html /'+version.id+'.yaml';
   if(footnotes){args += ' --csl templates/lettres-et-sciences-humaines-fr.csl'}
   pandoc(src, args, callback);
-    console.log('entered export');
-}
+};
+const downloadHTML = function (err, result) {
+  if (err) {
+    console.log(err);
+    fs.writeFileSync('/'+thisVersion.id+'.error', err.toString());
+    res.attachment('/'+thisVersion.id+'.error');
+    return false;
+  }
+  else{
+    // Without the -o arg, the converted value will be returned.
+    const filename = thisVersion.title || thisVersion.version+'.'+thisVersion.revision;
+    res.set('Content-Type', 'text/html');
+    res.set('Content-Disposition', 'attachment; filename="'+filename+'"');
+    res.send(new Buffer(result));
+  }
+};
 
 
 module.exports = {
@@ -24,23 +38,7 @@ module.exports = {
 
   html: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
-      callback = function (err, result) {
-        console.log('entered callback');
-        if (err) {
-          console.log(err);
-          fs.writeFileSync('/'+thisVersion.id+'.error', err.toString());
-          res.attachment('/'+thisVersion.id+'.error');
-          return false;
-        }
-        else{
-          // Without the -o arg, the converted value will be returned.
-          const filename = thisVersion.title || thisVersion.version+'.'+thisVersion.revision;
-          res.set('Content-Type', 'text/html');
-          res.set('Content-Disposition', 'attachment; filename="'+filename+'"');
-          res.send(new Buffer(result));
-        }
-      };
-      computeHTML(thisVersion,callback)
+      computeHTML(thisVersion,downloadHTML);
     })
   },
 
