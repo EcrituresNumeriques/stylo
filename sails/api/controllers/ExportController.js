@@ -32,7 +32,7 @@ const computeHTML = function(version,res,preview=false,footnotes=false){
   pandoc(src, args, (err, result)=>downloadHTML(err, result, version, res, preview));
 };
 
-const ComputeZip = function(version,res){
+const ComputeZip = function(version,res,title=undefined){
   fs.writeFileSync('/'+version.id+'.md', version.md+'\n');
   let insertPos = version.yaml.lastIndexOf("\n---");
   fs.writeFileSync('/'+version.id+'.yaml', version.yaml.substring(0,insertPos)+'\nbibliography: /'+version.id+'.bib'+version.yaml.substring(insertPos));
@@ -45,7 +45,7 @@ const ComputeZip = function(version,res){
 
   output.on('close', function() {
     console.log('archive done');
-    const filename = version.title || version.version+'.'+version.revision;
+    const filename = title || version.title || version.version+'.'+version.revision;
     //res.attachment('/'+thisVersion.id+'.yaml');
     res.set('Content-Type', 'application/zip');
     res.set('Content-Disposition', 'attachment; filename="'+filename+'.zip"');
@@ -87,114 +87,20 @@ module.exports = {
 
   article: function (req, res) {
       Articles.findOne({id:req.params.id}).populate("versions",{limit: 1, sort: 'createdAt DESC'}).then(function(thisArticle){
-          console.log(thisArticle);
-      const thisVersion = thisArticle.versions[0];
-      fs.writeFileSync('/'+thisVersion.id+'.md', thisVersion.md+'\n');
-      let insertPos = thisVersion.yaml.lastIndexOf("\n---");
-      fs.writeFileSync('/'+thisVersion.id+'.yaml', thisVersion.yaml.substring(0,insertPos)+'\nbibliography: /'+thisVersion.id+'.bib'+thisVersion.yaml.substring(insertPos));
-      fs.writeFileSync('/'+thisVersion.id+'.bib', thisVersion.bib);
-      let src = '/'+thisVersion.id+'.md',
-      args = '--standalone --template=templates/templateHtmlDcV2.html5 --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml';
-      //args = '-f markdown -t html --template=templates/templateHtmlDcV0.html5 --filter pandoc-citeproc --ascii /'+thisVersion.id+'.yaml';
-      callback = function (err, result) {
-        if (err) {
-          console.log(err);
-          fs.writeFileSync('/'+thisVersion.id+'.error', err.toString());
-          res.attachment('/'+thisVersion.id+'.error');
-          return false;
-        }
-        else{
-          // Without the -o arg, the converted value will be returned.
-          const filename = thisVersion.title || thisVersion.version+'.'+thisVersion.revision;
-          res.set('Content-Type', 'text/html');
-          res.set('Content-Disposition', 'attachment; filename="'+filename+'"');
-          res.send(new Buffer(result));
-        }
-      };
-      pandoc(src, args, callback);
+      computeHTML(thisArticle.versions[0],res);
     })
   },
 
   articleZIP: function (req, res) {
     Articles.findOne({id:req.params.id}).populate("versions",{limit: 1, sort: 'createdAt DESC'}).then(function(thisArticle){
-        console.log(thisArticle);
-    const thisVersion = thisArticle.versions[0];
-    const filename = thisArticle.title || thisVersion.title || thisVersion.version+'.'+thisVersion.revision;
-    fs.writeFileSync('/'+thisVersion.id+'.md', thisVersion.md+'\n');
-    let insertPos = thisVersion.yaml.lastIndexOf("\n---");
-    fs.writeFileSync('/'+thisVersion.id+'.yaml', thisVersion.yaml.substring(0,insertPos)+'\nbibliography: /'+thisVersion.id+'.bib'+thisVersion.yaml.substring(insertPos));
-    fs.writeFileSync('/'+thisVersion.id+'.bib', thisVersion.bib);
-    let src = '/'+thisVersion.id+'.md',
-    args = '--standalone --template=templates/templateHtmlDcV2.html5 --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml';
-    //args = '-f markdown -t html --template=templates/templateHtmlDcV0.html5 --filter pandoc-citeproc --ascii /'+thisVersion.id+'.yaml';
-    callback = function (err, result) {
-      if (err) {
-        console.log(err);
-        fs.writeFileSync('/'+thisVersion.id+'.error', err.toString());
-        res.attachment('/'+thisVersion.id+'.error');
-        return false;
-      }
-      else{
-
-        var output = fs.createWriteStream('/'+thisVersion.id+'.zip');
-        var archive = archiver('zip', {
-          zlib: { level: 9 } // Sets the compression level.
-        });
-
-        output.on('close', function() {
-          console.log('archive done');
-
-          //res.attachment('/'+thisVersion.id+'.yaml');
-          res.set('Content-Type', 'application/zip');
-          res.set('Content-Disposition', 'attachment; filename="'+filename+'.zip"');
-          res.send(new Buffer(fs.readFileSync('/'+thisVersion.id+'.zip')));
-        });
-
-        archive.pipe(output);
-        archive.file('/'+thisVersion.id+'.yaml',{name: thisVersion.id+'.yaml'});
-        archive.file('/'+thisVersion.id+'.md',{name: thisVersion.id+'.md'});
-        archive.file('/'+thisVersion.id+'.bib',{name: thisVersion.id+'.bib'});
-        archive.append(result, {name:filename+'.html'});
-        archive.finalize();
-        // Without the -o arg, the converted value will be returned.
-
-      }
-    };
-    pandoc(src, args, callback);
+    const filename = thisArticle.title || undefined;
+    ComputeZip(thisArticle.versions[0],res,filename);
   })
 },
 
   articlePreview: function (req, res) {
       Articles.findOne({id:req.params.id}).populate("versions",{limit: 1, sort: 'createdAt DESC'}).then(function(thisArticle){
-                    console.log(thisArticle);
-      const thisVersion = thisArticle.versions[0];
-      fs.writeFileSync('/'+thisVersion.id+'.md', thisVersion.md+'\n');
-      let insertPos = thisVersion.yaml.lastIndexOf("\n---");
-      fs.writeFileSync('/'+thisVersion.id+'.yaml', thisVersion.yaml.substring(0,insertPos)+'\nbibliography: /'+thisVersion.id+'.bib'+thisVersion.yaml.substring(insertPos));
-      fs.writeFileSync('/'+thisVersion.id+'.bib', thisVersion.bib);
-      let src = '/'+thisVersion.id+'.md',
-      args = '--standalone --template=templates/templateHtmlDcV2-preview.html5 --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml';
-      //args = '-f markdown -t html --template=templates/templateHtmlDcV0.html5 --filter pandoc-citeproc --ascii /'+thisVersion.id+'.yaml';
-      callback = function (err, result) {
-        if (err) {
-          console.log(err);
-          fs.writeFileSync('/'+thisVersion.id+'.error', err.toString());
-          res.attachment('/'+thisVersion.id+'.error');
-          return false;
-        }
-        else{
-          // Without the -o arg, the converted value will be returned.
-          res.set('Content-Type', 'text/html');
-          res.send(new Buffer(result));
-        }
-      };
-      pandoc(src, args, callback);
+      computeHTML(thisArticle.versions[0],res,true);
     })
   },
-
-
-
-  erudit: function (req, res) {
-    res.send('Not yet implemented');
-  }
 };
