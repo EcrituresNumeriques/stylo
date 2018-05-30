@@ -32,6 +32,33 @@ const computeHTML = function(version,res,preview=false,footnotes=false){
   pandoc(src, args, (err, result)=>downloadHTML(err, result, version, res, preview));
 };
 
+const ComputeZip = function(version,res){
+  fs.writeFileSync('/'+version.id+'.md', version.md+'\n');
+  let insertPos = version.yaml.lastIndexOf("\n---");
+  fs.writeFileSync('/'+version.id+'.yaml', version.yaml.substring(0,insertPos)+'\nbibliography: /'+version.id+'.bib'+version.yaml.substring(insertPos));
+  fs.writeFileSync('/'+version.id+'.bib', version.bib);
+
+  var output = fs.createWriteStream('/'+version.id+'.zip');
+  var archive = archiver('zip', {
+    zlib: { level: 9 } // Sets the compression level.
+  });
+
+  output.on('close', function() {
+    console.log('archive done');
+    const filename = version.title || version.version+'.'+version.revision;
+    //res.attachment('/'+thisVersion.id+'.yaml');
+    res.set('Content-Type', 'application/zip');
+    res.set('Content-Disposition', 'attachment; filename="'+filename+'.zip"');
+    res.send(new Buffer(fs.readFileSync('/'+version.id+'.zip')));
+  });
+
+  archive.pipe(output);
+  archive.file('/'+version.id+'.yaml',{name: version.id+'.yaml'});
+  archive.file('/'+version.id+'.md',{name: version.id+'.md'});
+  archive.file('/'+version.id+'.bib',{name: version.id+'.bib'});
+  archive.finalize();
+}
+
 
 module.exports = {
 
@@ -50,50 +77,7 @@ module.exports = {
 
   versionZIP: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
-      fs.writeFileSync('/'+thisVersion.id+'.md', thisVersion.md+'\n');
-      let insertPos = thisVersion.yaml.lastIndexOf("\n---");
-      fs.writeFileSync('/'+thisVersion.id+'.yaml', thisVersion.yaml.substring(0,insertPos)+'\nbibliography: /'+thisVersion.id+'.bib'+thisVersion.yaml.substring(insertPos));
-      fs.writeFileSync('/'+thisVersion.id+'.bib', thisVersion.bib);
-      let src = '/'+thisVersion.id+'.md',
-      args = '--standalone --template=templates/templateHtmlDcV2.html5 --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml';
-      //args = '-f markdown -t html --template=templates/templateHtmlDcV0.html5 --filter pandoc-citeproc --ascii /'+thisVersion.id+'.yaml';
-      callback = function (err, result) {
-        if (err) {
-          console.log(err);
-          fs.writeFileSync('/'+thisVersion.id+'.error', err.toString());
-          res.attachment('/'+thisVersion.id+'.error');
-          return false;
-        }
-        else{
-
-          var output = fs.createWriteStream('/'+thisVersion.id+'.zip');
-          var archive = archiver('zip', {
-            zlib: { level: 9 } // Sets the compression level.
-          });
-
-          output.on('close', function() {
-            console.log('archive done');
-            const filename = thisVersion.title || thisVersion.version+'.'+thisVersion.revision;
-            //res.attachment('/'+thisVersion.id+'.yaml');
-            res.set('Content-Type', 'application/zip');
-            res.set('Content-Disposition', 'attachment; filename="'+filename+'.zip"');
-            res.send(new Buffer(fs.readFileSync('/'+thisVersion.id+'.zip')));
-          });
-
-          archive.pipe(output);
-          archive.file('/'+thisVersion.id+'.yaml',{name: thisVersion.id+'.yaml'});
-          archive.file('/'+thisVersion.id+'.md',{name: thisVersion.id+'.md'});
-          archive.file('/'+thisVersion.id+'.bib',{name: thisVersion.id+'.bib'});
-          archive.append(result, {name:thisVersion.id+'.html'});
-          archive.finalize();
-
-
-
-          // Without the -o arg, the converted value will be returned.
-
-        }
-      };
-      pandoc(src, args, callback);
+      ComputeZip(thisVersion,res);
     })
   },
 
