@@ -2,20 +2,6 @@ const fs = require('fs');
 var pandoc = require('node-pandoc');
 var archiver = require('archiver');
 
-const computeHTML = function(version,callback,preview=false,footnotes=false){
-  fs.writeFileSync('/'+version.id+'.md', version.md+'\n');
-  let insertPos = version.yaml.lastIndexOf("\n---");
-  fs.writeFileSync('/'+version.id+'.yaml', version.yaml.substring(0,insertPos)+'\nbibliography: /'+version.id+'.bib'+version.yaml.substring(insertPos));
-  fs.writeFileSync('/'+version.id+'.bib', version.bib);
-  let src = '/'+version.id+'.md';
-  let args = '';
-  if(preview){args += '--standalone --template=templates/templateHtmlDcV2-preview.html5'}
-  else{args += '--standalone --template=templates/templateHtmlDcV2.html5'}
-  args += ' --ascii --filter pandoc-citeproc -f markdown -t html /'+version.id+'.yaml';
-  if(footnotes){args += ' --csl templates/lettres-et-sciences-humaines-fr.csl'}
-  pandoc(src, args, callback);
-};
-
 const downloadHTML = function (err, result, version, res) {
   if (err) {
     console.log(err);
@@ -32,6 +18,24 @@ const downloadHTML = function (err, result, version, res) {
   }
 };
 
+const computeHTML = function(version,res,preview=false,footnotes=false){
+  fs.writeFileSync('/'+version.id+'.md', version.md+'\n');
+  let insertPos = version.yaml.lastIndexOf("\n---");
+  fs.writeFileSync('/'+version.id+'.yaml', version.yaml.substring(0,insertPos)+'\nbibliography: /'+version.id+'.bib'+version.yaml.substring(insertPos));
+  fs.writeFileSync('/'+version.id+'.bib', version.bib);
+  let src = '/'+version.id+'.md';
+  let args = '';
+  if(preview){args += '--standalone --template=templates/templateHtmlDcV2-preview.html5'}
+  else{args += '--standalone --template=templates/templateHtmlDcV2.html5'}
+  args += ' --ascii --filter pandoc-citeproc -f markdown -t html /'+version.id+'.yaml';
+  if(footnotes){args += ' --csl templates/lettres-et-sciences-humaines-fr.csl'}
+
+  let callback;
+  if(preview){callback = (err, result)=>downloadHTML(err, result, version, res);}
+  else{callback = (err, result)=>downloadHTML(err, result, version, res);}
+  pandoc(src, args, callback);
+};
+
 
 module.exports = {
 
@@ -39,7 +43,7 @@ module.exports = {
 
   html: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
-      computeHTML(thisVersion,(err, result)=>downloadHTML(err, result, thisVersion, res));
+      computeHTML(thisVersion,res);
     })
   },
 
