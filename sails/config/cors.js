@@ -38,6 +38,8 @@ module.exports.cors = {
   ***************************************************************************/
 
   // allRoutes: false,
+  allRoutes: true,
+  allowOrigins: ['http://localhost/','https://localhost/','https://stylo.14159.ninja','https://stylo.ecrituresnumeriques.ca','https://ecrituresnumeriques.github.io']
 
   /***************************************************************************
   *                                                                          *
