@@ -7,7 +7,7 @@ const computeHTML = function(version,callback,preview=false,footnotes=false){
   let insertPos = version.yaml.lastIndexOf("\n---");
   fs.writeFileSync('/'+version.id+'.yaml', version.yaml.substring(0,insertPos)+'\nbibliography: /'+version.id+'.bib'+version.yaml.substring(insertPos));
   fs.writeFileSync('/'+version.id+'.bib', version.bib);
-  let src = '/'+version.id+'.md',
+  let src = '/'+version.id+'.md';
   let args = '';
   if(preview){args += '--standalone --template=templates/templateHtmlDcV2-preview.html5'}
   else{args += '--standalone --template=templates/templateHtmlDcV2.html5'}
