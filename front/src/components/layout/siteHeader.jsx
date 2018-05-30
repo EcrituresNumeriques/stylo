@@ -13,20 +13,14 @@ render() {
       <header>
           <h1>_Stylo_</h1>
           <div className="wrapper"/>
-          {
-            loggedIn && <nav>
-                          <a href='http://stylo-doc.ecrituresnumeriques.ca' target="_blank">Documentation</a>
-                          <Link to='/articles'>Mes articles</Link>
-                          <Link to='/articles'>{store.getState().user.user.username}</Link>
-                       </nav>
-          }
-          {
-            !loggedIn &&   <nav>
-                    <a href='http://stylo-doc.ecrituresnumeriques.ca' target="_blank">Documentation</a>
-                    <Link to="/login">Login</Link>
-                    <Link to="/register">Register</Link>
-              </nav>
-          }
+          <nav>
+            <a href='http://stylo-doc.ecrituresnumeriques.ca' target="_blank">Documentation</a>
+            <a href='https://github.com/EcrituresNumeriques/stylo/issues' target="_blank">Report an issue</a>
+            {loggedIn && <Link to='/articles'>Mes articles</Link>}
+            {loggedIn && <Link to='/articles'>{store.getState().user.user.username}</Link>}
+            {!loggedIn && <Link to="/login">Login</Link>}
+            {!loggedIn && <Link to="/register">Register</Link>}
+        </nav>
       </header>
     );
   }
