@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:dc="http://purl.org/dc/terms/"
+      xmlns:foaf="http://xmlns.com/foaf/0.1/"
+      $if(lang)$ xml:lang="$lang$"$endif$$if(dir)$ dir="$dir$"$endif$>
+
+<head>
+     <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
+     <link rel="schema.MARCREL" href="http://www.loc.gov/loc.terms/relators/"/>
+     <link rel="DCTERMS.subject" href="http://rameau.bnf.fr"/>
+     <link rel="schema.prism" href="http://prismstandard.org/namespaces/basic/2.0/"/>
+
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+     <meta name="generator" content="pandoc templateHtmlEruditV2" />
+
+
+<!--Metadonnees Dublin Core -->
+
+     <meta name="DC.type" content="Text" />
+     <meta name="DC.format" content="text/html" />
+     <meta name="DC.type" content="journalArticle" />
+     <meta name="DC.type" class="typeArticle" content="$typeArticle$" />
+     <meta name="DC.title" content="$title$" />
+     <meta name="DC.title.Main" content="$title$" />
+   $if(subtitle)$
+   <meta name="DC.title.Subtitle" content="$subtitle$" />
+   $endif$
+     <meta name="DC.publisher" class="editeur" content="$publisher$" />
+     <meta name="DC.publisher" class="producteur" content="$prod$" />
+     <meta name="DC.publisher" class="producteurNum" content="$prodnum$" />
+     <meta name="DC.publisher" class="diffuseur" content="$diffnum$" />
+     <meta name="DC.language" content="$lang$" />
+     <meta name="DC.date" class="completeDate" content="$year$-$month$-$day$" />
+     <meta name="DC.date" class="year" content="$year$" />
+     <meta name="DC.rights" content="$rights$" />
+     <meta name="DC.source" content="$journal$" />
+     <meta name="DC.relation.isPartOf" content="$dossier$" />
+
+  $if(url_article_sp)$
+     <meta name="url" content="$url_article_sp$" />
+  $endif$
+  $if(url_article_sp)$
+     <meta name="DC.identifier" content="$url_article_sp$" />
+  $endif$
+  $if(issnnum)$
+     <meta name="DC.identifier" class="issn" content="$issnnum$" />
+  $endif$
+
+<!--Utilisation de MARCREL pour specifier le role du "contributeur" en Dublin core
+    drt = director -->
+  $if(director)$
+  $for(director)$
+     <meta name="director" content="$director.forname$ $director.surname$" />
+     <meta name="DC.contributor.drt" content="$director.forname$ $director.surname$" />
+     <meta name="MARCREL.drt" content="$director.forname$ $director.surname$" />
+  $endfor$
+  $endif$
+
+<!--Auteur de l'article -->
+  $if(authors)$
+  $for(authors)$
+     <meta name="author" content="$authors.forname$ $authors.surname$" />
+     <meta name="DC.creator" content="$authors.forname$ $authors.surname$" />
+  $endfor$
+  $endif$
+
+<!--Resumes -->
+  $if(abstract)$
+  $for(abstract)$
+     <meta name="description" xml:lang="$abstract.lang$" lang="$abstract.lang$" content="$abstract.text$" />
+     <meta name="DC.description" xml:lang="$abstract.lang$" lang="$abstract.lang$" content="$abstract.text$" />
+  $endfor$
+  $endif$
+
+<!--Mots cles auteurs -->
+  $if(keyword_fr)$
+     <meta name="keywords" xml:lang="fr" lang="fr" content="$for(keyword_fr)$$keyword_fr$$sep$, $endfor$" />
+  $endif$
+
+  $if(keyword_en)$
+     <meta name="keywords" xml:lang="en" lang="en" content="$for(keyword_en)$$keyword_en$$sep$, $endfor$" />
+  $endif$
+
+  $if(controlledKeywords)$
+  $for(controlledKeywords)$
+  $if(controlledKeywords.label)$
+  <meta name="DC.subject" xml:lang="fr" lang="fr" content="$controlledKeywords.label$" />
+  $endif$
+  $endfor$
+  $endif$
+
+<!--  traducteur avec specification MARCREL -->
+  $if(translator)$
+  $for(translator)$
+  <meta name="DC.contributor.trl" content="$translator.forname$ $translator.surname$" />
+  <meta name="MARCREL.trl" content="$translator.forname$ $translator.surname$" />
+  $endfor$
+  $endif$
+
+<!--  redacteur avec specification MARCREL -->
+  $if(redacteurDossier)$
+  $for(redacteurDossier)$
+     <meta name="DC.contributor.edt" content="$redacteurDossier.forname$ $redacteurDossier.surname$" />
+     <meta name="MARCREL.edt" content="$redacteurDossier.forname$ $redacteurDossier.surname$" />
+  $endfor$
+  $endif$
+
+<!--  table des matières -->
+  $if(toc)$
+  $for(toc)$
+     <meta name="DC.description.tableOfContents" content="$toc$"/>
+  $endfor$
+  $endif$
+
+
+<!-- schema citation : Indexation pour Google Scholar  -->
+     <meta name="citation_journal_title" content="$journal$" />
+     <meta name="citation_publisher" content="$publisher$" />
+  $for(authors)$
+     <meta name="citation_authors" content="$authors.forname$ $authors.surname$" />
+  $endfor$
+     <meta name="citation_title" content="$title$" />
+   $if(subtitle)$
+   <meta name="citation_subtitle" content="$subtitle$" />
+   $endif$
+     <meta name="citation_publication_date" content="$date$" />
+     <meta name="citation_online_date" content="$date$" />
+     <meta name="citation_issn" content="$issnnum$" />
+     <meta name="citation_isbn" content="$issnnum$" />
+<!--si numero de dossier existe
+    <meta name="citation_issue" content="$dossiernum$" />
+-->
+     <meta name="citation_language" content="$lang$" />
+
+  $if(abstract)$
+  $for(abstract)$
+     <meta name="citation_abstract" xml:lang="$abstract.lang$" lang="$abstract.lang$" content="$abstract.text$" />
+  $endfor$
+  $endif$
+
+  $if(keyword_fr)$
+     <meta name="citation_keywords" xml:lang="fr" lang="fr" content="$for(keyword_fr)$$keyword_fr$$sep$, $endfor$" />
+  $endif$
+
+  $if(keyword_en)$
+     <meta name="citation_keywords" xml:lang="en" lang="en" content="$for(keyword_en)$$keyword_en$$sep$, $endfor$" />
+  $endif$
+
+<!--si on veut indexer le lien vers le pdf
+<meta name="citation_pdf_url" content="$pdf-article$">
+-->
+
+
+
+<!--PRISM schema - Publishing Requirements for Industry Standard Metadata
+Schema specialise pour les revues et journaux-->
+     <meta name="prism.url" content="$url_article_sp$"/>
+     <meta name="prism.publicationName" content="$journal$"/>
+     <meta name="prism.corporateEntity" content="$publisher$"/>
+     <meta name="prism.issueName" content="$dossier$"/>
+     <meta name="prism.number" content="$dossier.id$" />
+     <meta name="prism.publicationDate" content="$date$"/>
+     <meta name="prism.genre" content="$typeArticle$"/>
+     <meta name="prism.issn" content="$issnnum$"/>
+     <meta name="prism.eIssn" content="$issnnum$"/>
+     <meta name="prism.teaser" content="$abstract.fr$"/>
+
+
+<!--RDFa pour ajout des metadonnees DC-->
+     <meta property="dc:format" content="text/html" />
+  $if(url_article_sp)$
+     <meta property="dc:identifier" content="$url_article_sp$" />
+  $endif$
+  $if(issnnum)$
+     <meta property="dc:identifier" content="$issnnum$" />
+  $endif$
+     <meta property="dc:title" content="$title$" />
+     <meta property="dc:title.Main" content="$title$" />
+   $if(subtitle)$
+   <meta property="dc:title.Subtitle" content="$subtitle$" />
+   $endif$
+     <meta property="dc:publisher" content="$publisher$" />
+     <meta property="dc:language" content="$lang$" />
+     <meta property="dc:type" content="journalArticle" />
+     <meta property="dcterm:created" content="$date$" />
+     <meta property="dc:rights" content="$rights$" />
+     <meta property="dc:relation.isPartOf" content="$dossier$" />
+     <meta property="dc:source" content="$journal$" />
+  $for(authors)$
+     <meta property="dc:creator" content="$authors.forname$ $authors.surname$" />
+  $endfor$
+
+  $if(abstract)$
+  $for(abstract)$
+     <meta property="dcterms:abstract" xml:lang="$abstract.lang$" lang="$abstract.lang$" content="$abstract.text$" />
+  $endfor$
+  $endif$
+
+  $if(controlledKeywords)$
+  $for(controlledKeywords)$
+  $if(controlledKeywords.label)$
+  <meta property="dc:subject" xml:lang="fr" lang="fr" content="$controlledKeywords.label$" />
+  <link rel="dc:subject" href="$controlledKeywords.uriRameau$"/>
+  $endif$
+  $endfor$
+  $endif$
+
+<!-- Si on veut rajouter les dates de soumission et acceptation des articles (a rajouter d'abord dans le yaml)
+
+  $if(dateSubmitted)$
+  $for(dateSubmitted)$
+     <meta property="dc:dateSubmitted" content="$dateSubmitted$" />
+  $endfor$
+  $endif$
+
+  $if(dateAccepted)$
+  $for(dateAccepted)$
+     <meta property="dc:dateAccepted" content="$dateAccepted$" />
+  $endfor$
+  $endif$
+-->
+
+<!--Fin des metadonnees dans le Head-->
+
+<!--Balise Title pour affichage titre dans le navigateur--><!--
+     <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>-->
+   <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$$if(subtitle)$ : $subtitle$$endif$</title>
+
+<!--style et lien vers CSS-->
+     <style type="text/css">code{white-space: pre;}</style>
+  $if(quotes)$
+     <style type="text/css">q { quotes: "“" "”" "‘" "’"; }</style>
+  $endif$
+  $if(highlighting-css)$
+     <style type="text/css">$highlighting-css$</style>
+  $endif$
+  $for(css)$
+     <link rel="stylesheet" href="$css$" type="text/css" />
+  $endfor$
+  $if(math)$
+  $math$
+  $endif$
+  $for(header-includes)$
+  $header-includes$
+  $endfor$
+</head>
+
+<!--corps du document-->
+<body>
+  $for(include-before)$
+  $include-before$
+  $endfor$
+  $if(toc)$
+     <div id="$idprefix$TOC">
+  $toc$
+     </div>
+  $endif$
+
+ <!--indexations FOAF-->
+
+<div class="indexations-foaf">
+<!--indexation FOAF pour auteur de l'article-->
+  $if(authors)$
+  $for(authors)$
+     <div property="http://purl.org/dc/terms/creator">
+      <div vocab="http://xmlns.com/foaf/0.1/" typeof="Person" class="foaf-author">
+       <span property="familyName">$authors.surname$</span>
+       <span property="firstName">$authors.forname$</span>
+       <span property="openid">$authors.orcid$</span>
+      </div>
+     </div>
+  $endfor$
+  $endif$
+
+<!--indexation FOAF pour redacteur du dossier-->
+  $if(redacteurDossier)$
+  $for(redacteurDossier)$
+     <div property="http://purl.org/dc/terms/contributor.edt">
+      <div vocab="http://xmlns.com/foaf/0.1/" typeof="Person" class="foaf-redactor">
+       <span property="familyName">$redacteurDossier.surname$</span>
+       <span property="firstName">$redacteurDossier.forname$</span>
+       <span property="gender">$redacteurDossier.gender$</span>
+       <span property="openid">$redacteurDossier.orcid$</span>
+      </div>
+     </div>
+  $endfor$
+  $endif$
+
+<!--indexation FOAF pour directeur de la revue-->
+  $if(director)$
+  $for(director)$
+     <div property="http://purl.org/dc/terms/contributor.drt">
+      <div vocab="http://xmlns.com/foaf/0.1/" typeof="Person" class="foaf-director">
+       <span property="familyName">$director.surname$</span>
+       <span property="firstName">$director.forname$</span>
+       <span property="gender">$director.gender$</span>
+       <span property="openid">$director.orcid$</span>
+      </div>
+     </div>
+  $endfor$
+  $endif$
+</div>
+
+<!--Integration schema "ScholarlyArticle"-->
+     <div vocab="http://schema.org/" typeof="ScholarlyArticle" resource="#article" id="schema-scholarly-article">
+
+       <span property="name">$title_f$</span><br />
+$if(subtitle_f)$
+$for(subtitle_f)$
+       <span property="name">$subtitle_f$</span><br />
+$endfor$
+$endif$
+
+<!--Indexation auteur de l'article-->
+  $if(authors)$
+  $for(authors)$
+       <span property="author">$authors.forname$ $authors.surname$</span><br />
+  $endfor$
+  $endif$
+
+<!--Indexation editeur-->
+       <span resource="#periodical">
+         <span property="publisher">$publisher$</span><br />
+         <span property="issn">$issnnum$</span>
+       </span>
+
+<!--Indexation revue-->
+       <div property="isPartOf" typeof="PublicationIssue" resource="#issue">
+         <span typeof="Periodical" resource="#periodical">
+         <span property="name">$journal$</span>
+         </span>
+         <span property="datePublished">$date$</span>
+
+<!--Indexation dossier-->
+  $if(dossier)$
+  $for(dossier)$
+          <span property="isPartOf" typeof="PublicationVolume" resource="#periodical" class="titreDossier">$dossier.title$</span>
+  $endfor$
+  $endif$
+
+
+<!-- Indexation resumes -->
+    <div class="description">
+       $if(abstract)$
+       $for(abstract)$
+          <div property="description" class="resume" lang="$abstract.lang$">$abstract.text_f$</div>
+       $endfor$
+       $endif$
+    </div>
+
+       </div>
+
+<!-- Indexation mots cles controles -->
+$if(controlledKeywords)$
+<div class="keywords" vocab="http://purl.org/dc/terms/">
+$for(controlledKeywords)$
+$if(controlledKeywords.label)$
+  <div class="$controlledKeywords.label$" lang="fr">
+    <span property="subject" class="label">$controlledKeywords.label$</span>
+$if(controlledKeywords.uriRameau)$
+    <span property="subject" class="uriRameau">$controlledKeywords.uriRameau$</span>
+$endif$
+$if(controlledKeywords.idRameau)$
+    <span property="subject" class="idRameau">$controlledKeywords.idRameau$</span>
+$endif$
+$if(controlledKeywords.wikidata)$
+    <span property="subject" class="wikidata">$controlledKeywords.wikidata$</span>
+$endif$
+  </div>
+$endif$
+$endfor$
+</div>
+$endif$
+
+</div> <!-- end Integration schema "ScholarlyArticle"-->
+
+     <!--Indexation mots cles auteurs-->
+            <div class="authorKeywords_fr" vocab="http://purl.org/dc/terms/" lang="fr">
+       $if(keyword_fr_f)$
+       $for(keyword_fr_f)$
+                <span property="subject">$keyword_fr_f$</span>
+       $endfor$
+       $endif$
+            </div>
+   <div class="authorKeywords_en" vocab="http://purl.org/dc/terms/" lang="en">
+       $if(keyword_en_f)$
+       $for(keyword_en_f)$
+                <span property="subject">$keyword_en_f$</span>
+       $endfor$
+       $endif$
+            </div>
+
+
+<!--Corps de l'article-->
+<div class="article">
+  $body$
+  $for(include-after)$
+  $include-after$
+  $endfor$
+</div>
+
+</body>
+</html>

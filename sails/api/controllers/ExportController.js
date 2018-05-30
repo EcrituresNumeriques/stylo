@@ -13,7 +13,8 @@ module.exports = {
       fs.writeFileSync('/'+thisVersion.id+'.yaml', thisVersion.yaml.substring(0,insertPos)+'\nbibliography: /'+thisVersion.id+'.bib'+thisVersion.yaml.substring(insertPos));
       fs.writeFileSync('/'+thisVersion.id+'.bib', thisVersion.bib);
       let src = '/'+thisVersion.id+'.md',
-      args = '--standalone --template=templateHtmlDcV2.html5 --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml';
+      //args = '--standalone --template=templateHtmlDcV2.html5 --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml';
+      args = '--standalone --template=templateHtmlDcV2.html5 --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml --csl templates/lettres-et-sciences-humaines-fr.csl';
       //args = '-f markdown -t html --template=templateHtmlDcV0.html5 --filter pandoc-citeproc --ascii /'+thisVersion.id+'.yaml';
       callback = function (err, result) {
         if (err) {
@@ -171,7 +172,7 @@ module.exports = {
 
         output.on('close', function() {
           console.log('archive done');
-          
+
           //res.attachment('/'+thisVersion.id+'.yaml');
           res.set('Content-Type', 'application/zip');
           res.set('Content-Disposition', 'attachment; filename="'+filename+'.zip"');
