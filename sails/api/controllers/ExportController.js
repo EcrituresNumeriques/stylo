@@ -71,12 +71,6 @@ module.exports = {
     })
   },
 
-  htmlPreview: function (req, res) {
-    Versions.findOne({id:req.params.version}).then(function(thisVersion){
-      computeHTML(thisVersion,res,true);
-    })
-  },
-
   versionZIP: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
       ComputeZip(thisVersion,res);
@@ -89,7 +83,8 @@ module.exports = {
 
   article: function (req, res) {
       Articles.findOne({id:req.params.id}).populate("versions",{limit: 1, sort: 'createdAt DESC'}).then(function(thisArticle){
-      computeHTML(thisArticle.versions[0],res);
+      const preview = req.param('preview') == "true" ? true:false;
+      computeHTML(thisArticle.versions[0],res,preview);
     })
   },
 
@@ -97,12 +92,6 @@ module.exports = {
     Articles.findOne({id:req.params.id}).populate("versions",{limit: 1, sort: 'createdAt DESC'}).then(function(thisArticle){
     const filename = thisArticle.title || undefined;
     ComputeZip(thisArticle.versions[0],res,filename);
-  })
-},
-
-  articlePreview: function (req, res) {
-      Articles.findOne({id:req.params.id}).populate("versions",{limit: 1, sort: 'createdAt DESC'}).then(function(thisArticle){
-      computeHTML(thisArticle.versions[0],res,true);
     })
-  },
+  }
 };

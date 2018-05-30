@@ -106,7 +106,7 @@ export default class Live extends Component {
           window.open('https://via.hypothes.is/'+window.location.protocol+'//'+window.location.hostname+'/api/v1/previewArticle/'+json.article,'_blank');
         }
         else if(exportTarget=="eruditXML"){
-          window.open('https://ecrituresnumeriques.github.io/saxon-xsl-transform/?source='+window.location.protocol+'//'+window.location.hostname+'/api/v1/previewArticle/'+json.article,'_blank');
+          window.open('https://ecrituresnumeriques.github.io/saxon-xsl-transform/?source='+window.location.protocol+'//'+window.location.hostname+'/api/v1/htmlArticle/'+json.article,'_blank');
         }
         else if(exportTarget=="previewHTML"){
           window.open('/api/v1/exportArticle/'+json.article+'?preview=true','_blank');
@@ -115,7 +115,7 @@ export default class Live extends Component {
           window.open('/api/v1/zipArticle/'+json.article,'_blank');
         }
         else{
-          window.open('/api/v1/exportArticle/'+json.article,'_blank');
+          window.open('/api/v1/htmlArticle/'+json.article,'_blank');
         }
       }
 
