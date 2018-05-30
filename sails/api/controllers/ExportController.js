@@ -38,7 +38,7 @@ module.exports = {
 
   html: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
-      computeHTML(thisVersion,downloadHTML);
+      computeHTML(thisVersion,(err, result)=>downloadHTML(err, result));
     })
   },
 
