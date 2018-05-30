@@ -13,8 +13,9 @@ module.exports = {
       fs.writeFileSync('/'+thisVersion.id+'.yaml', thisVersion.yaml.substring(0,insertPos)+'\nbibliography: /'+thisVersion.id+'.bib'+thisVersion.yaml.substring(insertPos));
       fs.writeFileSync('/'+thisVersion.id+'.bib', thisVersion.bib);
       let src = '/'+thisVersion.id+'.md',
-      //args = '--standalone --template=templateHtmlDcV2.html5 --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml';
-      args = '--standalone --template=templateHtmlDcV2.html5 --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml --csl templates/lettres-et-sciences-humaines-fr.csl';
+      args = '--standalone --template=templateHtmlDcV2.html5 --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml';
+      // Ca fonctionne
+      //args = '--standalone --template=templateHtmlDcV2.html5 --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml --csl templates/lettres-et-sciences-humaines-fr.csl';
       //args = '-f markdown -t html --template=templateHtmlDcV0.html5 --filter pandoc-citeproc --ascii /'+thisVersion.id+'.yaml';
       callback = function (err, result) {
         if (err) {
