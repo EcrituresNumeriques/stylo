@@ -2,7 +2,7 @@ const fs = require('fs');
 var pandoc = require('node-pandoc');
 var archiver = require('archiver');
 
-const computeHTML = function(version,callback,preview=false,footnotes=false){
+const computeHTML = function(res,version,callback,preview=false,footnotes=false){
   fs.writeFileSync('/'+version.id+'.md', version.md+'\n');
   let insertPos = version.yaml.lastIndexOf("\n---");
   fs.writeFileSync('/'+version.id+'.yaml', version.yaml.substring(0,insertPos)+'\nbibliography: /'+version.id+'.bib'+version.yaml.substring(insertPos));
@@ -38,7 +38,7 @@ module.exports = {
           res.send(new Buffer(result));
         }
       };
-      computeHTML(thisVersion,callback)
+      computeHTML(res,thisVersion,callback)
     })
   },
 
