@@ -266,7 +266,7 @@ Schema specialise pour les revues et journaux-->
 
       #app > header, .gridCenter > header {
         padding: 0.5rem 1rem;
-        background-color: green;
+        background-color: #7c7c7c;
         color: white;
         display: flex;
         align-items: center;
