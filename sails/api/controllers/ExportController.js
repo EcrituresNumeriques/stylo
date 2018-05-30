@@ -14,6 +14,7 @@ const computeHTML = function(res,version,callback,preview=false,footnotes=false)
   args += ' --ascii --filter pandoc-citeproc -f markdown -t html /'+thisVersion.id+'.yaml';
   if(footnotes){args += ' --csl templates/lettres-et-sciences-humaines-fr.csl'}
   pandoc(src, args, callback);
+    console.log('entered export');
 }
 
 
@@ -24,6 +25,7 @@ module.exports = {
   html: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
       callback = function (err, result) {
+        console.log('entered callback');
         if (err) {
           console.log(err);
           fs.writeFileSync('/'+thisVersion.id+'.error', err.toString());
