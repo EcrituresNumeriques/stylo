@@ -4,8 +4,8 @@
 
 ### > fin mai2018
 
-1. ~ Sortie xml. Pour la démo fin mai, peut-être intégrer un bouton "preview xml".. ~
-  ~ * voir : https://docs.gravitee.io/apim_policies_xslt.html ~
+1. ~~ Sortie xml. Pour la démo fin mai, peut-être intégrer un bouton "preview xml".. ~~
+  ~~ * voir : https://docs.gravitee.io/apim_policies_xslt.html ~~
 2. Modal export :
   1. pdf
   2. html
