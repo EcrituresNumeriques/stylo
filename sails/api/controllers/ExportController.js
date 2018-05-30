@@ -2,7 +2,7 @@ const fs = require('fs');
 var pandoc = require('node-pandoc');
 var archiver = require('archiver');
 
-const downloadHTML = function (err, result, version, res) {
+const downloadHTML = function (err, result, version, res, preview=false) {
   if (err) {
     console.log(err);
     fs.writeFileSync('/'+version.id+'.error', err.toString());
@@ -13,7 +13,7 @@ const downloadHTML = function (err, result, version, res) {
     // Without the -o arg, the converted value will be returned.
     const filename = version.title || version.version+'.'+version.revision;
     res.set('Content-Type', 'text/html');
-    res.set('Content-Disposition', 'attachment; filename="'+filename+'"');
+    if(!preview){res.set('Content-Disposition', 'attachment; filename="'+filename+'"');}
     res.send(new Buffer(result));
   }
 };
@@ -29,18 +29,13 @@ const computeHTML = function(version,res,preview=false,footnotes=false){
   else{args += '--standalone --template=templates/templateHtmlDcV2.html5'}
   args += ' --ascii --filter pandoc-citeproc -f markdown -t html /'+version.id+'.yaml';
   if(footnotes){args += ' --csl templates/lettres-et-sciences-humaines-fr.csl'}
-
-  let callback;
-  if(preview){callback = (err, result)=>downloadHTML(err, result, version, res);}
-  else{callback = (err, result)=>downloadHTML(err, result, version, res);}
-  pandoc(src, args, callback);
+  pandoc(src, args, (err, result)=>downloadHTML(err, result, version, res, preview));
 };
 
 
 module.exports = {
 
   // Export for specific versions
-
   html: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
       computeHTML(thisVersion,res);
