@@ -65,7 +65,7 @@ export default class Write extends Component {
             window.open('https://ecrituresnumeriques.github.io/saxon-xsl-transform/?source='+window.location.protocol+'//'+window.location.hostname+'/api/v1/previewVersion/'+this.state.active.id,'_blank');
           }
           else if(exportTarget=="previewHTML"){
-            window.open('/api/v1/previewVersion/'+this.state.active.id,'_blank');
+            window.open('/api/v1/exportVersion/'+this.state.active.id+'?preview=true','_blank');
           }
           else if(exportTarget=="ZIP"){
             window.open('/api/v1/zipVersion/'+this.state.active.id,'_blank');
