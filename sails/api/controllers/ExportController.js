@@ -66,7 +66,7 @@ module.exports = {
   html: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
       const preview = req.param('preview') || false;
-      computeHTML(thisVersion,res);
+      computeHTML(thisVersion,res,preview);
     })
   },
 
