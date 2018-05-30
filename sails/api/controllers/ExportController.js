@@ -15,16 +15,17 @@ const computeHTML = function(version,callback,preview=false,footnotes=false){
   if(footnotes){args += ' --csl templates/lettres-et-sciences-humaines-fr.csl'}
   pandoc(src, args, callback);
 };
-const downloadHTML = function (err, result) {
+
+const downloadHTML = function (err, result, version) {
   if (err) {
     console.log(err);
-    fs.writeFileSync('/'+thisVersion.id+'.error', err.toString());
-    res.attachment('/'+thisVersion.id+'.error');
+    fs.writeFileSync('/'version.id+'.error', err.toString());
+    res.attachment('/'+version.id+'.error');
     return false;
   }
   else{
     // Without the -o arg, the converted value will be returned.
-    const filename = thisVersion.title || thisVersion.version+'.'+thisVersion.revision;
+    const filename = version.title || version.version+'.'+version.revision;
     res.set('Content-Type', 'text/html');
     res.set('Content-Disposition', 'attachment; filename="'+filename+'"');
     res.send(new Buffer(result));
@@ -38,7 +39,7 @@ module.exports = {
 
   html: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
-      computeHTML(thisVersion,(err, result)=>downloadHTML(err, result));
+      computeHTML(thisVersion,(err, result)=>downloadHTML(err, result, thisVersion));
     })
   },
 
