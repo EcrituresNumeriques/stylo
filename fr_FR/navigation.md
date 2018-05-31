@@ -21,7 +21,8 @@
 [Projet]()
 
   * [À propos](pages/about.md)
-  * [Contacts](pages/contacts.md)
+  * [Sources](pages/sources.md)
+  * [Contact](pages/contacts.md)
 
 [Documentation]()
 
