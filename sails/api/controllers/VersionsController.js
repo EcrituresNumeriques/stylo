@@ -37,7 +37,7 @@ module.exports = {
       const computedVersion = req.body.major?req.body.version+1:req.body.version;
       const computedRevision = req.body.major?0:req.body.revision+1;
       const newVersion = {...req.body,version:computedVersion,revision:computedRevision,owner:req.session.user.id}
-      console.log(computedVersion,computedRevision,newVersion);
+      //console.log(computedVersion,computedRevision,newVersion);
       Versions.create(newVersion).then(function(newVersion){
         res.json(newVersion);
       });

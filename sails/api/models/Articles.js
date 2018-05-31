@@ -29,12 +29,12 @@ module.exports = {
   },
 
   afterCreate: function(article, next){
-    console.log("creating version for article",article);
-    let data = {owner:article.owner[0],article:article.id};
-    Versions.create(data).exec( function (err, version) {
-        console.log("created",version);
-        next();
-    });
+    //console.log("creating version for article",article);
+      let data = {owner:article.owner[0],article:article.id};
+      Versions.create(data).exec( function (err, version) {
+          //console.log("created Version At article creation");
+          next();
+      });
     }
 
 

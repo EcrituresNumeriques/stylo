@@ -21,7 +21,7 @@ module.exports = {
     else{
         //check if there's already an user with this email
         Users.findOne({email:request.email}).then(function(thisUser){
-            console.log("email served this user",thisUser);
+            //console.log("email served this user",thisUser);
             //User found, throw error
             if(thisUser){
                 result.json(400, {message:"this email is already linked to an account"});

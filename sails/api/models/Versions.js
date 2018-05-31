@@ -42,6 +42,10 @@ module.exports = {
     yaml:{
       type:'longtext',
       defaultsTo:'---\ntitle: Title\ntitle_f: Title\n---'
+    },
+    bib:{
+      type:'longtext',
+      defaultsTo:''
     }
   },
   afterCreate:function(version, next){

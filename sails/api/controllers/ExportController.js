@@ -4,7 +4,7 @@ var archiver = require('archiver');
 
 const downloadHTML = function (err, result, version, res, preview=false) {
   if (err) {
-    console.log(err);
+    //console.log(err);
     fs.writeFileSync('/'+version.id+'.error', err.toString());
     res.attachment('/'+version.id+'.error');
     return false;
@@ -44,7 +44,7 @@ const ComputeZip = function(version,res,title=undefined){
   });
 
   output.on('close', function() {
-    console.log('archive done');
+    //console.log('archive done');
     const filename = title || version.title || version.version+'.'+version.revision;
     //res.attachment('/'+thisVersion.id+'.yaml');
     res.set('Content-Type', 'application/zip');
