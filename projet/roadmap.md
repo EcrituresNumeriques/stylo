@@ -10,7 +10,7 @@
   1. pdf
   2. ~~html~~
   3. (xml tei) / ~~xml erudit~~
-  4. zip (avec seulement md/yaml/bibtex)
+  4. ~~zip (avec seulement md/yaml/bibtex)~~
 3. vers un certain standing... :
   1. ajouter un how-to : on se disait que ce pourrait être un article par défaut chez tous les utilisateurs.
   2. ~~github doc : stylo-doc~~
