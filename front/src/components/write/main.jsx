@@ -183,7 +183,7 @@ handleScroll(event) {
               cancel={this.closeExportModal}
               exportHTML={(preview,citations)=>this.exportVersion("HTML",preview,citations)}
               exportZIP={()=>this.exportVersion("ZIP")}
-              exportErudit={()=>this.exportVersion("eruditXML")}
+              exportErudit={(preview,citations)=>this.exportVersion("eruditXML",preview,citations)}
             />
           }
           <Sommaire md={this.state.active.md} setCursor={this.setCodeMirrorCursor}/>

@@ -290,7 +290,7 @@ export default class Live extends Component {
               cancel={this.closeExportModal}
               exportHTML={(preview,citations)=>this.sendNewVersion(null,false,true,true,"HTML",preview,citations)}
               exportZIP={()=>this.sendNewVersion(null,false,true,true,"ZIP")}
-              exportErudit={()=>this.sendNewVersion(null,false,true,true,"eruditXML")}
+              exportErudit={(preview,citations)=>this.sendNewVersion(null,false,true,true,"eruditXML",preview,citations)}
             />
           }
           <Sommaire md={this.state.md} setCursor={this.setCodeMirrorCursor} closed={this.state.sommaireClosed} toggle={this.toggleSommaire}/>
