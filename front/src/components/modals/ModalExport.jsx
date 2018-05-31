@@ -3,8 +3,8 @@ import Select from 'react-select';
 //import 'react-select/dist/react-select.css';
 
 const citationStyle=[
-  { value: 'inline', label: 'Citations inline', className: 'State-NSW' },
-  { value: 'footnotes', label: 'Citations en footnote', className: 'State-NSW' }
+  { value: 'inline', label: 'Inline citations ', className: 'State-NSW' },
+  { value: 'footnotes', label: 'Footnote Citations ', className: 'State-NSW' }
 ];
 
 export default class ModalExport extends Component {
@@ -34,7 +34,7 @@ export default class ModalExport extends Component {
                 <aside/>
                 <main>
                     <fieldset>
-                      <legend>Export HTML</legend>
+                      <legend>Parameters</legend>
                       <Select
               					id="citation-style"
               					ref={(ref) => { this.citation = ref; }}
@@ -50,16 +50,14 @@ export default class ModalExport extends Component {
               					rtl={false}
               					searchable={false}
               				/>
+                    </fieldset>
+                    <fieldset>
+                      <legend>Format</legend>
                       <nav>
                           <button onClick={()=>this.props.exportHTML(true,this.state.citationStyle)} className="secondary">preview</button>
                           <button onClick={()=>{this.props.exportHTML(false,this.state.citationStyle);this.props.cancel()}} className="primary">HTML</button>
-                      </nav>
-                    </fieldset>
-                    <fieldset>
-                      <legend>Publishing formats</legend>
-                      <nav>
                           <button onClick={()=>{this.props.exportErudit();this.props.cancel()}} className="primary">XML (erudit)</button>
-                          <button onClick={()=>{this.props.exportZIP();this.props.cancel()}} className="primary">ZIP (md/bib/yaml)</button>
+                          <button onClick={()=>{this.props.exportZIP();this.props.cancel()}} className="primary">ZIP</button>
                       </nav>
                     </fieldset>
                     <nav>
