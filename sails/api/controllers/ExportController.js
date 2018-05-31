@@ -65,9 +65,9 @@ module.exports = {
   // Export for specific versions
   html: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
-      console.log("got preview of ",req.param('preview'));
       const preview = req.param('preview') == "true" ? true:false;
-      computeHTML(thisVersion,res,preview);
+      const footnotes = req.param('footnotes') == "true" ? true:false;
+      computeHTML(thisVersion,res,preview,footnotes);
     })
   },
 
@@ -84,7 +84,8 @@ module.exports = {
   article: function (req, res) {
       Articles.findOne({id:req.params.id}).populate("versions",{limit: 1, sort: 'createdAt DESC'}).then(function(thisArticle){
       const preview = req.param('preview') == "true" ? true:false;
-      computeHTML(thisArticle.versions[0],res,preview);
+      const footnotes = req.param('footnotes') == "true" ? true:false;
+      computeHTML(thisArticle.versions[0],res,preview,footnotes);
     })
   },
 
