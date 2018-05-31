@@ -24,6 +24,7 @@ export default class Write extends Component {
     this.toggleEditorYaml = this.toggleEditorYaml.bind(this);
     this.openExportModal = this.openExportModal.bind(this);
     this.closeExportModal = this.closeExportModal.bind(this);
+    this.handleScroll = _.debounce(this.handleScroll.bind(this),300);
     this.fetchAPI();
   }
 
@@ -42,6 +43,38 @@ export default class Write extends Component {
       this.setState({activeId:this.props.match.params.version,active:newActive,compute:false});
     }
   }
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+}
+
+componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+}
+
+handleScroll(event) {
+    const movement = this.state.previousScroll - window.scrollY;
+    this.setState({previousScroll:window.scrollY});
+    //Attention, ne pas surcharger cette methode, Peut grandement ralentir le front-end
+    const height = window.scrollY + window.innerHeight;
+    const headerPlusMargin = 73;
+    const diffHeight = height - (this.refs.leftColumn.offsetHeight + headerPlusMargin );
+    const previousPadding = parseInt(this.refs.leftColumn.style.paddingTop) || 0;
+    if(window.scrollY < headerPlusMargin && previousPadding){
+        //console.log("reset Scroll",window.scrollY,headerPlusMargin,previousPadding);
+        this.refs.leftColumn.style.paddingTop = 0;
+    }
+    else if(window.scrollY > headerPlusMargin && diffHeight > 0 && movement < 0){
+        //console.log("Add padding",diffHeight,window.scrollY,headerPlusMargin,previousPadding);
+        //Need to add paddingTop to the left column
+        //console.log(previousPadding);
+        //console.log(previousPadding,diffHeight,height);
+        this.refs.leftColumn.style.paddingTop = previousPadding + diffHeight + "px";
+    }
+    else if(window.scrollY > headerPlusMargin && window.scrollY < (headerPlusMargin + previousPadding) && movement > 0){
+            //console.log("Remove padding",(headerPlusMargin + previousPadding),window.scrollY);
+            this.refs.leftColumn.style.paddingTop = (window.scrollY - headerPlusMargin + 10) + "px";
+    }
+}
 
   fetchAPI(){
     let that = this;
@@ -136,7 +169,7 @@ export default class Write extends Component {
           {this.state.yamlEditor && <YamlEditor editor={this.state.editorYaml} yaml={this.state.active.yaml}/>}
         </aside>,
         <h1 id="title" key="title">{this.state.article.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>,
-      <section id="writeComponent" key="aside">
+      <section id="writeComponent" key="aside"  ref="leftColumn">
           <Timeline activeId={this.state.activeId}
               active={this.state.active}
               article={this.props.match.params.article}
