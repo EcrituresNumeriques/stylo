@@ -109,13 +109,15 @@ export default class Live extends Component {
           window.open('https://via.hypothes.is/'+window.location.protocol+'//'+window.location.hostname+'/api/v1/htmlArticle/'+json.article+'?preview=true','_blank');
         }
         else if(exportTarget=="eruditXML"){
-          window.open('https://ecrituresnumeriques.github.io/saxon-xsl-transform/?source='+window.location.protocol+'//'+window.location.hostname+'/api/v1/htmlArticle/'+json.article+'?preview=true','_blank');
+          let parameters = "?preview=true";
+          if(citations){parameters += "&citation="+citations}
+          window.open('https://ecrituresnumeriques.github.io/saxon-xsl-transform/?source='+window.location.protocol+'//'+window.location.hostname+'/api/v1/htmlArticle/'+json.article+parameters,'_blank');
         }
         else if(exportTarget=="ZIP"){
           window.open('/api/v1/zipArticle/'+json.article,'_blank');
         }
         else{
-          let parameters = "?"
+          let parameters = "?";
           if(preview){parameters += "preview=true&"}
           if(citations){parameters += "citation="+citations}
           window.open('/api/v1/htmlArticle/'+json.article+parameters,'_blank');
