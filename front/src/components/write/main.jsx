@@ -24,7 +24,7 @@ export default class Write extends Component {
     this.toggleEditorYaml = this.toggleEditorYaml.bind(this);
     this.openExportModal = this.openExportModal.bind(this);
     this.closeExportModal = this.closeExportModal.bind(this);
-    this.handleScroll = _.debounce(this.handleScroll.bind(this),300);
+    this.handleScroll = _.throttle(this.handleScroll.bind(this),500);
     this.fetchAPI();
   }
 

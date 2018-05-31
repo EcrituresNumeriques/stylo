@@ -40,7 +40,7 @@ export default class Live extends Component {
     this.toggleYamlEditor = this.toggleYamlEditor.bind(this);
     this.toggleEditorYaml = this.toggleEditorYaml.bind(this);
     this.setCodeMirrorCursor = this.setCodeMirrorCursor.bind(this);
-    this.handleScroll = _.debounce(this.handleScroll.bind(this),300);
+    this.handleScroll = _.throttle(this.handleScroll.bind(this),500);
     this.toggleBiblio = this.toggleBiblio.bind(this);
     this.toggleVersions = this.toggleVersions.bind(this);
     this.toggleSommaire = this.toggleSommaire.bind(this);
