@@ -1,31 +1,31 @@
 import React, { Component } from 'react';
+import Select from 'react-select';
+//import 'react-select/dist/react-select.css';
+
+const citationStyle=[
+  { value: 'inline', label: 'Citations inline', className: 'State-NSW' },
+  { value: 'footnotes', label: 'Citations en footnote', className: 'State-NSW' }
+];
 
 export default class ModalExport extends Component {
     constructor(props) {
         super(props);
         this.defaultCancel = this.defaultCancel.bind(this);
-        this.defaultConfirm = this.defaultConfirm.bind(this);
-        this.setValue = this.setValue.bind(this);
+        this.updateCitationStyle = this.updateCitationStyle.bind(this);
         this.state = {
-            title:this.props.title || "title",
-            text:this.props.text || "text",
-            value:this.props.value || "",
-            placeholder: this.props.placeholder || "placeholder",
             cancelButton:this.props.cancelButton || "cancel",
-            confirmButton:this.props.confirmButton || "confirm",
             cancel:this.props.cancel || this.defaultCancel,
-            confirm:this.props.confirm || this.defaultConfirm
+            citationStyle:'inline'
         };
     }
 
     defaultCancel(){
         console.log("closing, no props provided");
     }
-    defaultConfirm(value){
-        console.log("trying to send, no props provided:",value,"not sent anywhere");
-    }
-    setValue(e){
-        this.setState({value:e.target.value})
+    updateCitationStyle (newValue) {
+      this.setState({
+        citationStyle: newValue,
+      });
     }
 
     render(){
@@ -33,12 +33,37 @@ export default class ModalExport extends Component {
             <nav id="modalWrapper">
                 <aside/>
                 <main>
-                    <h1>{this.state.title}</h1>
-                    <p>{this.state.text}</p>
-                    <textarea value={this.state.value} placeholder={this.state.placeholder} onChange={this.setValue}/>
+                    <fieldset>
+                      <legend>Export HTML</legend>
+                      <Select
+              					id="citation-style"
+              					ref={(ref) => { this.citation = ref; }}
+              					onBlurResetsInput={false}
+              					onSelectResetsInput={false}
+              					options={citationStyle}
+              					simpleValue
+              					clearable={false}
+              					name="citationStyle"
+              					disabled={false}
+              					value={this.state.citationStyle}
+              					onChange={this.updateCitationStyle}
+              					rtl={false}
+              					searchable={false}
+              				/>
+                      <nav>
+                          <button onClick={()=>this.props.exportHTML(true,this.state.citationStyle)} className="secondary">preview</button>
+                          <button onClick={()=>{this.props.exportHTML(false,this.state.citationStyle);this.props.cancel()}} className="primary">HTML</button>
+                      </nav>
+                    </fieldset>
+                    <fieldset>
+                      <legend>Publishing formats</legend>
+                      <nav>
+                          <button onClick={()=>{this.props.exportErudit();this.props.cancel()}} className="primary">XML (erudit)</button>
+                          <button onClick={()=>{this.props.exportZIP();this.props.cancel()}} className="primary">ZIP (md/bib/yaml)</button>
+                      </nav>
+                    </fieldset>
                     <nav>
                         <button onClick={()=>this.state.cancel()} className="secondary">{this.state.cancelButton}</button>
-                        <button onClick={()=>this.state.confirm(this.state.value)} className="primary">{this.state.confirmButton}</button>
                     </nav>
                 </main>
             </nav>

@@ -10,6 +10,7 @@ export default function Timeline(props){
             <ul>
                 {props.newVersion && <li onClick={()=>props.newVersion()}>{props.active.version+1}.0</li>}
                 {props.newRevision && <li onClick={()=>props.newRevision()}>{props.active.version}.{props.active.revision+1}</li>}
+                {props.export && <li onClick={()=>props.export()}>Export modal</li>}
                 {props.tagVersion && <li onClick={()=>props.tagVersion()}>Tag</li>}
                 {props.exportHTML && <li onClick={()=>props.exportHTML()}>Export</li>}
                 {props.exportZIP && <li onClick={()=>props.exportZIP()}>ZIP</li>}

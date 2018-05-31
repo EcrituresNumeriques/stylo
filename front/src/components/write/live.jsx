@@ -12,6 +12,7 @@ import Sommaire from 'components/write/Sommaire';
 import Biblio from 'components/write/Biblio';
 import WordCount from 'components/write/WordCount';
 import ModalTextarea from 'components/modals/ModalTextarea';
+import ModalExport from 'components/modals/ModalExport';
 import {Controlled as CodeMirror} from 'react-codemirror2'
 require('codemirror/mode/markdown/markdown');
 
@@ -21,12 +22,14 @@ export default class Live extends Component {
     super(props);
     this.instance = null;
     //set state
-    this.state = {loaded:false,yaml:"title: loading",md:"",bib:"test",title:"Title",version:0,revision:0,versions:[], autosave:{},modalAddRef:false,modalSourceRef:false,yamlEditor:false,editorYaml:false,biblioClosed:false,versionsClosed:false,sommaireClosed:false,statsClosed:false,previousScroll:0};
+    this.state = {loaded:false,yaml:"title: loading",md:"",bib:"test",title:"Title",version:0,revision:0,versions:[], autosave:{},modalAddRef:false,modalSourceRef:false,modalExport:false,yamlEditor:false,editorYaml:false,biblioClosed:false,versionsClosed:false,sommaireClosed:false,statsClosed:false,previousScroll:0};
     this.updateMD = this.updateMD.bind(this);
     this.updateMDCM = this.updateMDCM.bind(this);
     this.updateBIB = this.updateBIB.bind(this);
     this.addRef = this.addRef.bind(this);
     this.skipRef = this.skipRef.bind(this);
+    this.openExportModal = this.openExportModal.bind(this);
+    this.closeExportModal = this.closeExportModal.bind(this);
     this.addNewRef = this.addNewRef.bind(this);
     this.sourceRef = this.sourceRef.bind(this);
     this.closeSourceRef = this.closeSourceRef.bind(this);
@@ -66,7 +69,7 @@ export default class Live extends Component {
   componentDidUpdate(prevProps, prevState){
   }
 
-  sendNewVersion(e,major=false,autosave=false,exportAfter=false,exportTarget='HTML'){
+  sendNewVersion(e,major=false,autosave=false,exportAfter=false,exportTarget='HTML',preview=false,citations=false){
     let that = this;
     let title = 'a';
     let version = that.state.version;
@@ -108,14 +111,14 @@ export default class Live extends Component {
         else if(exportTarget=="eruditXML"){
           window.open('https://ecrituresnumeriques.github.io/saxon-xsl-transform/?source='+window.location.protocol+'//'+window.location.hostname+'/api/v1/htmlArticle/'+json.article+'?preview=true','_blank');
         }
-        else if(exportTarget=="previewHTML"){
-          window.open('/api/v1/htmlArticle/'+json.article+'?preview=true','_blank');
-        }
         else if(exportTarget=="ZIP"){
           window.open('/api/v1/zipArticle/'+json.article,'_blank');
         }
         else{
-          window.open('/api/v1/htmlArticle/'+json.article,'_blank');
+          let parameters = "?"
+          if(preview){parameters += "preview=true&"}
+          if(citations){parameters += "citation="+citations}
+          window.open('/api/v1/htmlArticle/'+json.article+parameters,'_blank');
         }
       }
 
@@ -189,6 +192,12 @@ export default class Live extends Component {
   addNewRef(newRef){
       this.setState({bib:this.state.bib+'\n'+newRef,modalAddRef:false});
       this.autosave();
+  }
+  openExportModal(){
+      this.setState({modalExport:true});
+  }
+  closeExportModal(){
+      this.setState({modalExport:false});
   }
   sourceRef(){
       this.setState({modalSourceRef:true});
@@ -270,14 +279,18 @@ export default class Live extends Component {
               versions={this.state.versions}
               newVersion={()=>this.sendNewVersion(null,true,false)}
               newRevision={()=>this.sendNewVersion()}
-              exportHTML={()=>this.sendNewVersion(null,false,true,true,"HTML")}
-              exportZIP={()=>this.sendNewVersion(null,false,true,true,"ZIP")}
-              previewHTML={()=>this.sendNewVersion(null,false,true,true,"previewHTML")}
               exportHypothesis={()=>this.sendNewVersion(null,false,true,true,"hypothes.is")}
-              exportErudit={()=>this.sendNewVersion(null,false,true,true,"eruditXML")}
-              downloadAll={()=>this.sendNewVersion(null,false,true,true,"zip")}
+              export = {()=>this.openExportModal()}
               closed={this.state.versionsClosed} toggle={this.toggleVersions}
           />
+          {this.state.modalExport &&
+            <ModalExport
+              cancel={this.closeExportModal}
+              exportHTML={(preview,citations)=>this.sendNewVersion(null,false,true,true,"HTML",preview,citations)}
+              exportZIP={()=>this.sendNewVersion(null,false,true,true,"ZIP")}
+              exportErudit={()=>this.sendNewVersion(null,false,true,true,"eruditXML")}
+            />
+          }
           <Sommaire md={this.state.md} setCursor={this.setCodeMirrorCursor} closed={this.state.sommaireClosed} toggle={this.toggleSommaire}/>
           <Biblio bib={this.state.bib} addRef={this.addRef} sourceRef={this.sourceRef} closed={this.state.biblioClosed} toggle={this.toggleBiblio}/>
           <WordCount md={this.state.md} closed={this.state.statsClosed} toggle={this.toggleStats}/>

@@ -18,7 +18,7 @@ const downloadHTML = function (err, result, version, res, preview=false) {
   }
 };
 
-const computeHTML = function(version,res,preview=false,footnotes=false){
+const computeHTML = function(version,res,preview=false,citation=false){
   fs.writeFileSync('/'+version.id+'.md', version.md+'\n');
   let insertPos = version.yaml.lastIndexOf("\n---");
   fs.writeFileSync('/'+version.id+'.yaml', version.yaml.substring(0,insertPos)+'\nbibliography: /'+version.id+'.bib'+version.yaml.substring(insertPos));
@@ -28,7 +28,7 @@ const computeHTML = function(version,res,preview=false,footnotes=false){
   if(preview){args += '--standalone --template=templates/templateHtmlDcV2-preview.html5'}
   else{args += '--standalone --template=templates/templateHtmlDcV2.html5'}
   args += ' --ascii --filter pandoc-citeproc -f markdown -t html /'+version.id+'.yaml';
-  if(footnotes){args += ' --csl templates/lettres-et-sciences-humaines-fr.csl'}
+  if(citation == "footnotes"){args += ' --csl templates/lettres-et-sciences-humaines-fr.csl'}
   pandoc(src, args, (err, result)=>downloadHTML(err, result, version, res, preview));
 };
 
@@ -66,8 +66,8 @@ module.exports = {
   html: function (req, res) {
     Versions.findOne({id:req.params.version}).then(function(thisVersion){
       const preview = req.param('preview') == "true" ? true:false;
-      const footnotes = req.param('footnotes') == "true" ? true:false;
-      computeHTML(thisVersion,res,preview,footnotes);
+      const citation = req.param('citation',"inline");
+      computeHTML(thisVersion,res,preview,citation);
     })
   },
 
@@ -84,8 +84,8 @@ module.exports = {
   article: function (req, res) {
       Articles.findOne({id:req.params.id}).populate("versions",{limit: 1, sort: 'createdAt DESC'}).then(function(thisArticle){
       const preview = req.param('preview') == "true" ? true:false;
-      const footnotes = req.param('footnotes') == "true" ? true:false;
-      computeHTML(thisArticle.versions[0],res,preview,footnotes);
+      const citation = req.param('citation',"inline");
+      computeHTML(thisArticle.versions[0],res,preview,citation);
     })
   },
 

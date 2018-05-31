@@ -17,7 +17,8 @@
   3. permettre un feedback :
     - un [bandeau github](https://blog.github.com/2008-12-19-github-ribbons/), vers une issue
     - un bouton formulaire de support ou formulaire de retours (en structurant un peu le retour d'expérience
-  3. faire une passe design graphique sur l'ensemble du site. à rediscuter.
+  4. faire une passe design graphique sur l'ensemble du site. à rediscuter.
+  5. No-cite dans le Yaml
 
 
 ---
