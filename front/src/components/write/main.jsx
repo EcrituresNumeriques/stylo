@@ -5,6 +5,7 @@ import YamlEditor from 'components/yamleditor/YamlEditor';
 import Timeline from 'components/write/Timeline';
 import Sommaire from 'components/write/Sommaire';
 import Biblio from 'components/write/Biblio';
+import ModalExport from 'components/modals/ModalExport';
 import {Controlled as CodeMirror} from 'react-codemirror2';
 import promptUser from 'helpers/UI/prompt';
 require('codemirror/mode/markdown/markdown');
@@ -14,13 +15,15 @@ export default class Write extends Component {
     super(props);
     this.instance = null;
     //set state
-    this.state = {loaded:false,live:{yaml:"",md:"",bib:""},active:{yaml:"",md:"",bib:""},activeId:this.props.match.params.version,article:{versions:[]}};
+    this.state = {loaded:false,live:{yaml:"",md:"",bib:""},active:{yaml:"",md:"",bib:""},activeId:this.props.match.params.version,article:{versions:[]},modalExport:false};
     this.exportVersion = this.exportVersion.bind(this);
     this.setCodeMirrorCursor = this.setCodeMirrorCursor.bind(this);
     this.fetchAPI = this.fetchAPI.bind(this);
     this.tagVersion = this.tagVersion.bind(this);
     this.toggleYamlEditor = this.toggleYamlEditor.bind(this);
     this.toggleEditorYaml = this.toggleEditorYaml.bind(this);
+    this.openExportModal = this.openExportModal.bind(this);
+    this.closeExportModal = this.closeExportModal.bind(this);
     this.fetchAPI();
   }
 
@@ -57,23 +60,30 @@ export default class Write extends Component {
     });
   }
 
-  exportVersion(exportTarget="HTML"){
-          if(exportTarget== "hypothes.is"){
-            window.open('https://via.hypothes.is/'+window.location.protocol+'//'+window.location.hostname+'/api/v1/htmlVersion/'+this.state.active.id+'?preview=true','_blank');
-          }
-          else if(exportTarget=="eruditXML"){
-            window.open('https://ecrituresnumeriques.github.io/saxon-xsl-transform/?source='+window.location.protocol+'//'+window.location.hostname+'/api/v1/htmlVersion/'+this.state.active.id+'?preview=true','_blank');
-          }
-          else if(exportTarget=="previewHTML"){
-            window.open('/api/v1/htmlVersion/'+this.state.active.id+'?preview=true','_blank');
-          }
-          else if(exportTarget=="ZIP"){
-            window.open('/api/v1/zipVersion/'+this.state.active.id,'_blank');
-          }
-          else{
-            window.open('/api/v1/htmlVersion/'+this.state.active.id,'_blank');
-          }
+  exportVersion(exportTarget="HTML",preview=false,citations=false){
+        if(exportTarget== "hypothes.is"){
+          window.open('https://via.hypothes.is/'+window.location.protocol+'//'+window.location.hostname+'/api/v1/htmlVersion/'+this.state.active.id+'?preview=true','_blank');
+        }
+        else if(exportTarget=="eruditXML"){
+          window.open('https://ecrituresnumeriques.github.io/saxon-xsl-transform/?source='+window.location.protocol+'//'+window.location.hostname+'/api/v1/htmlVersion/'+this.state.active.id+'?preview=true','_blank');
+        }
+        else if(exportTarget=="ZIP"){
+          window.open('/api/v1/zipVersion/'+this.state.active.id,'_blank');
+        }
+        else{
+          let parameters = "?"
+          if(preview){parameters += "preview=true&"}
+          if(citations){parameters += "citation="+citations}
+          window.open('/api/v1/htmlVersion/'+this.state.active.id+parameters,'_blank');
+        }
       return null;
+  }
+
+  openExportModal(){
+      this.setState({modalExport:true});
+  }
+  closeExportModal(){
+      this.setState({modalExport:false});
   }
 
   tagVersion(){
@@ -130,12 +140,17 @@ export default class Write extends Component {
               article={this.props.match.params.article}
               versions={this.state.article.versions}
               tagVersion={this.tagVersion}
-              exportHTML={()=>this.exportVersion("HTML")}
-              exportZIP={()=>this.exportVersion("ZIP")}
-              previewHTML={()=>this.exportVersion("previewHTML")}
               exportHypothesis={()=>this.exportVersion("hypothes.is")}
-              exportErudit={()=>this.exportVersion("eruditXML")}
+              export = {()=>this.openExportModal()}
           />
+          {this.state.modalExport &&
+            <ModalExport
+              cancel={this.closeExportModal}
+              exportHTML={(preview,citations)=>this.exportVersion("HTML",preview,citations)}
+              exportZIP={()=>this.exportVersion("ZIP")}
+              exportErudit={()=>this.exportVersion("eruditXML")}
+            />
+          }
           <Sommaire md={this.state.active.md} setCursor={this.setCodeMirrorCursor}/>
           <Biblio bib={this.state.active.bib}/>
       </section>,
