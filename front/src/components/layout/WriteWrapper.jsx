@@ -13,12 +13,12 @@ render() {
     return (
       [
         <SiteHeader key="header" />,
-        <Switch key="map">
           <main id="WriteWrapper" key="mainview">
-            <Route exact path="/write/:article/:version" component={Write}/>
-            <Route exact path="/write/:article" component={Live}/>
+            <Switch key="map">
+              <Route exact path="/write/:article/:version" component={Write}/>
+              <Route exact path="/write/:article" component={Live}/>
+            </Switch>
           </main>
-        </Switch>
       ]
     )}
 }
