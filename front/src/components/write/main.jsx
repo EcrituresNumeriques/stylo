@@ -168,7 +168,6 @@ handleScroll(event) {
           {this.state.yamlEditor && <nav className="toggleEditor" onClick={()=>this.toggleEditorYaml()}>Mode authors/editor</nav>}
           {this.state.yamlEditor && <YamlEditor editor={this.state.editorYaml} yaml={this.state.active.yaml}/>}
         </aside>,
-        <h1 id="title" key="title">{this.state.article.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>,
       <section id="writeComponent" key="aside"  ref="leftColumn">
           <Timeline activeId={this.state.activeId}
               active={this.state.active}
@@ -190,6 +189,7 @@ handleScroll(event) {
           <Biblio bib={this.state.active.bib}/>
       </section>,
       <section id="input" key="input">
+        <h1 id="title" key="title">{this.state.article.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>
           <CodeMirror value={this.state.active.md} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true}} editorDidMount={editor => { this.instance = editor; }}/>
           <textarea value={this.state.active.yaml} disabled={true} placeholder="YAML editor" />
           <textarea value={this.state.active.bib} disabled={true} placeholder="BIBtext" />

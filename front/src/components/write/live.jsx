@@ -13,7 +13,9 @@ import Biblio from 'components/write/Biblio';
 import WordCount from 'components/write/WordCount';
 import ModalTextarea from 'components/modals/ModalTextarea';
 import ModalExport from 'components/modals/ModalExport';
-import {Controlled as CodeMirror} from 'react-codemirror2'
+import {Controlled as CodeMirror} from 'react-codemirror2';
+import Select from 'react-select';
+import DiffMatchPatch from 'diff-match-patch';
 require('codemirror/mode/markdown/markdown');
 
 
@@ -22,7 +24,7 @@ export default class Live extends Component {
     super(props);
     this.instance = null;
     //set state
-    this.state = {loaded:false,yaml:"title: loading",md:"",bib:"test",title:"Title",version:0,revision:0,versions:[], autosave:{},modalAddRef:false,modalSourceRef:false,modalExport:false,yamlEditor:false,editorYaml:false,biblioClosed:false,versionsClosed:false,sommaireClosed:false,statsClosed:false,previousScroll:0};
+    this.state = {loaded:false,yaml:"title: loading",md:"",bib:"test",title:"Title",version:0,revision:0,versions:[], autosave:{},modalAddRef:false,modalSourceRef:false,modalExport:false,yamlEditor:false,editorYaml:false,biblioClosed:false,versionsClosed:false,sommaireClosed:false,statsClosed:false,previousScroll:0,compareTo:null};
     this.updateMD = this.updateMD.bind(this);
     this.updateMDCM = this.updateMDCM.bind(this);
     this.updateBIB = this.updateBIB.bind(this);
@@ -264,6 +266,13 @@ export default class Live extends Component {
         this.setState({statsClosed:!this.state.statsClosed});
     }
 
+    computeDiff(text1,text2){
+      let dmp = new DiffMatchPatch();
+      let d = dmp.diff_main(text1, text2);
+      dmp.diff_cleanupSemantic(d);
+      return dmp.diff_prettyHtml(d);
+    }
+
   render() {
     return ([
       <aside id="yamlEditor" key="yamlEditor">
@@ -272,7 +281,6 @@ export default class Live extends Component {
         {this.state.yamlEditor && <nav className="toggleEditor" onClick={()=>this.toggleEditorYaml()}>Mode authors/editor</nav>}
         {this.state.yamlEditor && <YamlEditor editor={this.state.editorYaml} yaml={this.state.yaml} exportChange={this.updatingYAML}/>}
       </aside>,
-        <h1 id="title" key="title">{this.state.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>,
       <section id="writeComponent" key="section" ref="leftColumn">
           <Timeline
               activeId='live'
@@ -300,7 +308,24 @@ export default class Live extends Component {
           {this.state.modalSourceRef && <ModalTextarea cancel={this.closeSourceRef} confirm={this.submitSourceRef} title="References" text="" placeholder="" value={this.state.bib}/>}
         </section>,
         <section id="input" key="inputs" ref="inputs">
-          <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true}} editorDidMount={editor => { this.instance = editor }}/>
+          <h1 id="title" key="title">{this.state.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>
+          <Select
+            id="citation-style"
+            ref={(ref) => { this.versions = ref; }}
+            onBlurResetsInput={false}
+            onSelectResetsInput={false}
+            options={[{value:null,label:'No compare'},...this.state.versions.filter((v)=>(!v.autosave)).map((v)=>({value:v.id,label:v.version+'.'+v.revision}))]}
+            simpleValue
+            clearable={false}
+            name="citationStyle"
+            disabled={false}
+            value={this.state.compareTo}
+            onChange={(e)=>(this.setState(function(state){state.compareTo = e;return state}))}
+            rtl={false}
+            searchable={false}
+          />
+          <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true}} editorDidMount={editor => { this.instance = editor }}/>
+          {this.state.compareTo && <pre dangerouslySetInnerHTML={{__html:this.computeDiff(this.state.versions.find((v)=>v.id==this.state.compareTo).md,this.state.md)}}></pre>}
       </section>
       ]
     );

@@ -33,6 +33,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "codemirror": "^5.36.0",
     "dateformat": "^3.0.2",
+    "diff-match-patch": "^1.0.1",
     "font-awesome": "^4.7.0",
     "font-awesome-webpack": "0.0.5-beta.2",
     "js-yaml": "^3.10.0",
