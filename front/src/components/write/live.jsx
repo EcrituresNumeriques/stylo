@@ -307,7 +307,7 @@ export default class Live extends Component {
           {this.state.modalAddRef && <ModalTextarea cancel={this.skipRef} confirm={this.addNewRef} title="Add new reference(s)" text="please copy paste below the references you want to add in BiBtex format" placeholder="@misc{schnapp_knowledge_2013, address = {Hannover},	type = {Lecture}, title = {Knowledge {Design} {Incubating} new knowledge forms / genres / spaces in the laboratory of the digital humanities}, shorttitle = {Knowledge {Design}}, url = {https://www.volkswagenstiftung.de/en/news/news-details/news/detail/artikel/herrenhausen-lecture-knowledge-design-1/marginal/4296.html}, language = {EN},	author = {Schnapp, Jeffrey}, month = {12}, year = {2013},	file = {HH_lectures_Schnapp_01.pdf:/home/nicolas/Zotero/storage/6AZA85MP/HH_lectures_Schnapp_01.pdf:application/pdf}}"/>}
           {this.state.modalSourceRef && <ModalTextarea cancel={this.closeSourceRef} confirm={this.submitSourceRef} title="References" text="" placeholder="" value={this.state.bib}/>}
         </section>,
-        <section id="input" key="inputs" ref="inputs">
+        <section id="input" key="inputs" ref="inputs" className={this.state.compareTo?"compared":"solo"}>
           <h1 id="title" key="title">{this.state.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>
           <Select
             id="citation-style"
@@ -325,7 +325,7 @@ export default class Live extends Component {
             searchable={false}
           />
           <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true}} editorDidMount={editor => { this.instance = editor }}/>
-          {this.state.compareTo && <pre dangerouslySetInnerHTML={{__html:this.computeDiff(this.state.versions.find((v)=>v.id==this.state.compareTo).md,this.state.md)}}></pre>}
+          {this.state.compareTo && <div id="compareTo" dangerouslySetInnerHTML={{__html:this.computeDiff(this.state.versions.find((v)=>v.id==this.state.compareTo).md,this.state.md)}}></div>}
       </section>
       ]
     );

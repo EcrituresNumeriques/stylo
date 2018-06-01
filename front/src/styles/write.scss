@@ -180,11 +180,33 @@ main#WriteWrapper{
       }
     }
   }
+  #input.compared{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:auto 1fr;
+    grid-template-areas:
+    "title select"
+    "md compareTo"
+    "yaml yaml"
+    "bib bib";
+  }
+  #input.solo{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:auto 1fr;
+    grid-template-areas:
+    "title select"
+    "md md"
+    "yaml yaml"
+    "bib bib";
+  }
   #input{
     flex:800px 1 1;
     background-color: white;
     border:1px solid #c0c0c0;
+
     #title{
+        grid-area:title;
         flex:100% 0 0;
         margin:0.5rem 0 0 0;
         padding:0.5rem 1rem;
@@ -196,11 +218,16 @@ main#WriteWrapper{
       content:"# ";
     }
     div.Select{
-      display:inline-block;
-      min-width:12rem;
+      grid-area:select;
       position: relative;
       z-index: 7000;
       vertical-align: bottom;
+    }
+    #compareTo{
+      grid-area:compareTo;
+    }
+    .react-codemirror2{
+      grid-area:md;
     }
     textarea{
       border:none;
