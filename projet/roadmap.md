@@ -33,20 +33,22 @@
 
 ### > fin mai2018
 
+
 1. [x] Sortie xml. Pour la démo fin mai, peut-être intégrer un bouton "preview xml"..
   * voir : https://docs.gravitee.io/apim_policies_xslt.html
 2. Modal export :
   1. pdf
   2. [x] html
-  3. (xml tei) / xml erudit
+  3. (xml tei) / ~~xml erudit~~
   4. zip (avec seulement md/yaml/bibtex)
 3. vers un certain standing... :
   1. [x] ajouter un how-to : on se disait que ce pourrait être un article par défaut chez tous les utilisateurs.
   2. github doc : stylo-doc
   3. permettre un feedback :
-    - un [bandeau github](https://blog.github.com/2008-12-19-github-ribbons/), vers une issue
+    - ~~un [bandeau github](https://blog.github.com/2008-12-19-github-ribbons/), vers une issue~~
     - un bouton formulaire de support ou formulaire de retours (en structurant un peu le retour d'expérience
   4. [x] faire une passe design graphique sur l'ensemble du site. à rediscuter.
+  5. No-cite dans le Yaml
 
 
 ---

@@ -11,11 +11,8 @@ export default function Timeline(props){
                 {props.newVersion && <li onClick={()=>props.newVersion()}>{props.active.version+1}.0</li>}
                 {props.newRevision && <li onClick={()=>props.newRevision()}>{props.active.version}.{props.active.revision+1}</li>}
                 {props.tagVersion && <li onClick={()=>props.tagVersion()}>Tag</li>}
-                {props.exportHTML && <li onClick={()=>props.exportHTML()}>Export</li>}
-                {props.exportZIP && <li onClick={()=>props.exportZIP()}>ZIP</li>}
-                {props.previewHTML && <li onClick={()=>props.previewHTML()}>Preview</li>}
+                {props.export && <li onClick={()=>props.export()}>Export</li>}
                 {props.exportHypothesis && <li onClick={()=>props.exportHypothesis()}>Anotate</li>}
-                {props.exportErudit && <li onClick={()=>props.exportErudit()}>XML</li>}
             </ul>
         </div>
         {!props.closed &&<section>

@@ -11,17 +11,16 @@ render() {
     const loggedIn = store.getState().user.log;
     return (
       <header>
-          <h1>Stylo</h1>
+          <h1>_Stylo_</h1>
           <div className="wrapper"/>
-          {
-            loggedIn && <nav><Link to='/articles'>{store.getState().user.user.username}</Link></nav>
-          }
-          {
-            !loggedIn &&   <nav>
-                    <Link to="/login">Login</Link>
-                    <Link to="/register">Register</Link>
-              </nav>
-          }
+          <nav>
+            <a href='http://stylo-doc.ecrituresnumeriques.ca' target="_blank">Documentation</a>
+            <a href='https://github.com/EcrituresNumeriques/stylo/issues' target="_blank">Report an issue</a>
+            {loggedIn && <Link to='/articles'>My articles</Link>}
+            {loggedIn && <Link to='/articles'>{store.getState().user.user.username}</Link>}
+            {!loggedIn && <Link to="/login">Login</Link>}
+            {!loggedIn && <Link to="/register">Register</Link>}
+        </nav>
       </header>
     );
   }

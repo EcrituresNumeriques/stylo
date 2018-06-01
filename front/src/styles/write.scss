@@ -16,6 +16,7 @@ main#WriteWrapper{
   #writeComponent{
     flex:275px 0 0;
     margin-right: 1rem;
+    transition: padding 0.5s;
     #timeline, #sommaire, #biblio, #stat {
       background-color: white;
       display:block;
@@ -51,7 +52,7 @@ main#WriteWrapper{
               padding:0.5rem 1rem;
               border:none;
               border-bottom: 1px solid #c0c0c0;
-              background-color: green;
+              background-color: #7c7c7c;
               display:block;
               width:100%;
               color:white;
@@ -152,8 +153,6 @@ main#WriteWrapper{
     }
 
     #timeline{
-      display:inline-block;
-      //width:100px;
       a, #showed {
         display:block;
         border-bottom: 1px solid #c0c0c0;
@@ -164,7 +163,7 @@ main#WriteWrapper{
         border-bottom: none;
       }
       #showed {
-          background-color: green;
+          background-color: #7c7c7c;
           color:white;
           ul {
               padding:0;
@@ -181,7 +180,7 @@ main#WriteWrapper{
           }
       }
       a.active{
-          background-color: green;
+          background-color:  #7c7c7c;
           color:white;
       }
     }
