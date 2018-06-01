@@ -1,23 +1,52 @@
-
-
 ## Roadmap :
+
+### > septembre 2018
+
+**Priorité 1 (été)**
+
+- [ ] header éditeur : Titre de l'article + bouton compare
+- [ ] **diff entre versions**
+- [ ] **import/synchro Zotero**
+- [ ] améliorer l'éditeur wysiwym
+  - [ ] mode visuel + tooltips footnote/biblio ? + agrandir/réduire la police
+  - [ ] "fausse pagination"
+  - [ ] correction ortho.
+  - [ ] surlignage de la ligne curseur.
+- [ ] gestion du lock avec message d'avertissement : attention
+- [ ] Ergo des autres modals:
+  - [ ] Biblio : icônes sur les références biblio pour dire : "cliquer et coller la clé dans le presse papier"
+  - [ ] Versions : icônes preview sur chaque version ?
+  - [ ] Sommaire : améliorer le saut de section : flash/surlignage de la ligne
+
+**Priorité 2**
+
+- push > git
+- image dropping
+- gestion du lock : websocket : ajout des modifications du live + versions en semi-temps réel.
+- dashboard usages - tracking/logging
+
+**Priorité 3**
+
+- pipelines vers erudit, vers site de revue
+  - service Erudit pour générer le xml ?
+- version standalone
 
 ### > fin mai2018
 
-1. Sortie xml. Pour la démo fin mai, peut-être intégrer un bouton "preview xml"..
+1. [x] Sortie xml. Pour la démo fin mai, peut-être intégrer un bouton "preview xml"..
   * voir : https://docs.gravitee.io/apim_policies_xslt.html
 2. Modal export :
   1. pdf
-  2. html
+  2. [x] html
   3. (xml tei) / xml erudit
   4. zip (avec seulement md/yaml/bibtex)
 3. vers un certain standing... :
-  1. ajouter un how-to : on se disait que ce pourrait être un article par défaut chez tous les utilisateurs.
+  1. [x] ajouter un how-to : on se disait que ce pourrait être un article par défaut chez tous les utilisateurs.
   2. github doc : stylo-doc
   3. permettre un feedback :
     - un [bandeau github](https://blog.github.com/2008-12-19-github-ribbons/), vers une issue
     - un bouton formulaire de support ou formulaire de retours (en structurant un peu le retour d'expérience
-  3. faire une passe design graphique sur l'ensemble du site. à rediscuter.
+  4. [x] faire une passe design graphique sur l'ensemble du site. à rediscuter.
 
 
 ---
