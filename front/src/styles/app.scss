@@ -32,7 +32,9 @@ body {
 #app {
   min-height: 100vh;
 }
-
+#app > header > h1{
+  color:white;
+}
 #app > header, .gridCenter > header {
     padding:0.5rem 1rem;
     background-color: #7c7c7c;
