@@ -42,7 +42,7 @@ La fonction **[send]** fait la même opération, mais le nouvel article est dire
 
 ## Nouvel article
 
-Pour créer un nouvel article, il suffit de cliquer su lre bouton, ![Nouvel article](uploads/images/nouvelarticle.png)
+Pour créer un nouvel article, il suffit de cliquer su le bouton, ![Nouvel article](uploads/images/nouvelarticle.png)
 
 puis de rentrer un nom d'article dans le champs ouvert ![nommer un article](uploads/images/createnew.png)
 
@@ -110,3 +110,9 @@ Le bouton [Metadata] permet d'ouvrir le volet de métadonnées. Deux modes d'éd
 2. **Mode éditeur (avancé)** - permet d'éditer l'ensemble des métadonnées relatives à une revue savante : identifiant d'un article, informations de dossier, information d'évaluation, catégories de la revue, mots-clés de la revue, etc.
 
 ## - Statistiques
+
+Le menu "Statistiqes" donne des informations sur: ![statistiques](uploads/images/statistiques.png)
+
+- Le nombre de mots
+- Le nombre de caractères
+- Le nombre de citations 
