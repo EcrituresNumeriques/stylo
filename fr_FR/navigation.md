@@ -26,7 +26,7 @@
 
 [Documentation]()
 
-  * [Premiers pas](pages/premierpas.md)
+  * [Premiers pas](pages/premierspas.md)
   * [Écrire en markdown](syntaxemarkdown.md)
   * [Bibliographie](bibliographie.md)
   * [Pour aller plus loin](pourallerplusloin.md)
