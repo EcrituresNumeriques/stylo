@@ -27,9 +27,9 @@
 [Documentation]()
 
   * [Premiers pas](pages/premierspas.md)
-  * [Écrire en markdown](syntaxemarkdown.md)
-  * [Bibliographie](bibliographie.md)
-  * [Pour aller plus loin](pourallerplusloin.md)
+  * [Écrire en markdown](pages/syntaxemarkdown.md)
+  * [Bibliographie](pages/bibliographie.md)
+  * [Pour aller plus loin](pages/pourallerplusloin.md)
 
 [Tester Stylo](http://stylo.ecrituresnumeriques.ca)
 
