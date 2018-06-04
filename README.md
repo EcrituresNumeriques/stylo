@@ -11,6 +11,10 @@ L'environnement de travail de Stylo intègre une chaîne éditoriale complète b
 - l'annotation
 - le partage de document
 
-Stylo est disponible en bétatest [ici](http://stylo.ecrituresnumeriques.ca/)
+Stylo est disponible en bétatest [stylo.ecrituresnumeriques.ca](http://stylo.ecrituresnumeriques.ca/)
 
-Plus d'information sur [la documentation](http://stylo-doc.ecrituresnumeriques.ca/).
+Plus d'informations sur [la documentation](http://stylo-doc.ecrituresnumeriques.ca/).
+
+---
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
