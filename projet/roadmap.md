@@ -17,6 +17,7 @@
   - [ ] Biblio : icônes sur les références biblio pour dire : "cliquer et coller la clé dans le presse papier"
   - [ ] Versions : icônes preview sur chaque version ?
   - [ ] Sommaire : améliorer le saut de section : flash/surlignage de la ligne
+⁻ [ ] Export pdf
 
 **Priorité 2**
 
