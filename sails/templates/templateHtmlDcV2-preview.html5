@@ -308,8 +308,8 @@ Schema specialise pour les revues et journaux-->
       div#app main#mainView p {
         text-align: justify;
         font-family: sans;
-        font-size: 1.1em;
-        line-height: 1.6em;
+        font-size: 1em;
+        line-height: 1.5em;
       }
 
       div#app main#mainView h1, div#app main#mainView h2, div#app main#mainView h3 {
@@ -323,8 +323,8 @@ Schema specialise pour les revues et journaux-->
       div#app main#mainView li {
         text-align: justify;
         font-family: sans;
-        font-size: 1.1em;
-        line-height: 1.5em;
+        font-size: 1em;
+        line-height: 1.4em;
       }
 
       div#app main#mainView blockquote {
