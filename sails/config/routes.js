@@ -24,18 +24,17 @@ module.exports.routes = {
 
   // NOTE all routes defined before the 'GET /*' will override
 
+  //User
   //Register
   'POST /api/v1/register':'User_RegisterController.newUser',
-
   //Login
   'POST /api/v1/login':'User_LoginController.validateLogin',
-
   //logout user
   'POST /api/v1/logout':'User_LoginController.logout',
-
   //status
   'GET /api/v1/status':'User_StatusController.status',
-
+  //Update infos
+  'POST /api/v1/profile':'UsersController.updateInfos',
 
   //Articles
   'GET /api/v1/my-articles':'ArticlesController.findMine',

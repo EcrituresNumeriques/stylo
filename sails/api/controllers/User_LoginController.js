@@ -25,7 +25,7 @@ module.exports = {
               */
               Users.findOne({email:thisUser.email}).exec(function (err, record) {
                 req.session.user = record;
-                res.ok({loged:true,id:record.id,username:record.username});
+                res.ok({...record,loged:true});
               });
             }
             else{

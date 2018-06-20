@@ -35,6 +35,9 @@ module.exports.policies = {
        newVersion:['isloggedIn'],
        update:['isloggedIn','ownsThis']
    },
+   UsersController:{
+       updateInfos:['isloggedIn','populateUserOwner','protectAdmin'],
+   },
    '*': true,
 
   /***************************************************************************

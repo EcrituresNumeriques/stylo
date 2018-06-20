@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter,Route,Switch} from 'react-router-dom'
 import Login from 'components/login/Login'
 import Register from 'components/login/Register'
+import Profile from 'components/login/Profile';
 import NotFound from 'components/NotFound/NotFound'
 import Articles from 'components/articles/articles'
 import Write from 'components/write/main'
@@ -39,6 +40,7 @@ export default class App extends Component {
           <Route exact path="/login" component={Login}/>
           <Route exact path="/register" component={Register}/>
           <Route exact path="/articles" component={Layout}/>
+          <Route exact path="/profile" component={Profile}/>
           <Route exact path="/" component={Login} />
           <Route path="/write/" component={WriteWrapper}/>
           <Route component={NotFound}/>

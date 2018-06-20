@@ -31,10 +31,14 @@ module.exports = {
   afterCreate: function(article, next){
     //console.log("creating version for article",article);
       let data = {owner:article.owner[0],article:article.id};
-      Versions.create(data).exec( function (err, version) {
-          //console.log("created Version At article creation");
-          next();
-      });
+      Users.findOne({id:article.owner[0]}).exec( function(error,User){
+        if(error){console.log("creating new Version for new Article failed",error)}
+        if(User.yaml){data.yaml = User.yaml}
+        Versions.create(data).exec( function (err, version) {
+            //console.log("created Version At article creation");
+            next();
+        });
+      })
     }
 
 

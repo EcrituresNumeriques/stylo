@@ -25,8 +25,7 @@ module.exports = {
     });
   },
   updateInfos: function(req,res){
-
-    let id = req.params.parentid || req.params.id ;
+    let id = req.session.user.id;
     Users.update({id:id},req.body).exec(function afterwards(err, updated){
       if (err) { return res.error({message:'error update'});}
       req.session.user = updated[0];
