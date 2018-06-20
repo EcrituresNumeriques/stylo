@@ -1,6 +1,6 @@
 import { categories } from './categories';
 import { rubriques } from './rubriques';
-import { defaultYaml } from 'data/defaultYaml';
+import { defaultYaml } from '../../../data/defaultYaml';
 export let init = {
   obj:defaultYaml,
  misc:{
