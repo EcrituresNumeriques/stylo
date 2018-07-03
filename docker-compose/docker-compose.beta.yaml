@@ -19,7 +19,7 @@ services:
       - MONGO_DATA_DIR=/data/db
       - MONGO_LOG_DIR=/dev/null
     volumes:
-      - data/db:/data/db
+      - "./data/db:/data/db"
     command: mongod --smallfiles --logpath=/dev/null # --quiet
   redis-stylo-beta:
     restart: always
