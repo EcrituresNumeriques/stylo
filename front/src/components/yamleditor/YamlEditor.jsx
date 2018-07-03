@@ -258,6 +258,7 @@ export default class YamlEditor extends Component {
 
         <TextInput target="subtitle_f" alias={[{target:'subtitle',prefix:'',suffix:'',filterMD:true}]} title="Sous-titre" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
         <SelectInput target={"lang"} title="Lang" placeholder="Choisir la langue du texte" options={['fr','en','ita','es','es','pt','de','uk','ar']}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
+        <MultipleChoice target={"nocite"} title="Citation" placeholder="inclure:" options={[{label:"All citations",value:"*"},{label:"Only the ones used", value:""}]}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
 
         {this.props.editor && <Date target="date" title="Date" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
 
@@ -274,7 +275,6 @@ export default class YamlEditor extends Component {
         {this.props.editor && <ControlledKeywords state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
 
         <Keywords state={this.state} updateMisc={this.updateMisc} addKeyword={this.addKeyword} removeKeyword={this.removeKeyword} updateState={this.updateState} readOnly={this.readOnly}/>
-        <MultipleChoice target={"nocite"} title="Citation" placeholder="inclure:" options={[{label:"All citations",value:"*"},{label:"Only the ones used", value:""}]}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
 
         {this.props.editor && <Rubriques state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
       </section>
