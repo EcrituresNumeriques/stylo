@@ -4,8 +4,8 @@ sails-stylo:
   ports:
     - "8080:80"
   links:
-    - mongodb-stylo
-    - redis-stylo
+    - mongodb-stylo:mongodb
+    - redis-stylo:redis-stylo
   environment:
     - NODE_ENV=development
 mongodb-stylo:

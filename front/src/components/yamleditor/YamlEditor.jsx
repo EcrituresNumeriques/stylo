@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { TextInput } from './TextInput.jsx';
 import { SelectInput } from './SelectInput.jsx';
+import { MultipleChoice } from './MultipleChoice.jsx';
 import { Resumes} from './Resumes.jsx';
 import { Authors } from './Authors.jsx';
 import { Dossier } from './Dossier.jsx';
@@ -273,6 +274,7 @@ export default class YamlEditor extends Component {
         {this.props.editor && <ControlledKeywords state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
 
         <Keywords state={this.state} updateMisc={this.updateMisc} addKeyword={this.addKeyword} removeKeyword={this.removeKeyword} updateState={this.updateState} readOnly={this.readOnly}/>
+        <MultipleChoice target={"nocite"} title="Citation" placeholder="inclure:" options={[{label:"All citations",value:"*"},{label:"Only the ones used", value:""}]}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
 
         {this.props.editor && <Rubriques state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
       </section>
