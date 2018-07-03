@@ -14,7 +14,7 @@ export const defaultYaml = {
     "prod": "Sens Public",
     "prodnum": "Sens Public",
     "diffnum": "Érudit",
-    "rights": "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
+    "rights": "Creative Commons Attribution-ShareAlike 4.0 International (CC-BY-SA 4.0)",
     "issnnum": "2104-3272",
     "journal": "Sens public",
     "director": [

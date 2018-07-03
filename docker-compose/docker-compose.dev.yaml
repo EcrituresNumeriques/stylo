@@ -2,7 +2,7 @@ sails-stylo:
   build: .
   dockerfile: dockerfile.standalone
   ports:
-    - "80:80"
+    - "8080:80"
   links:
     - mongodb-stylo
     - redis-stylo
