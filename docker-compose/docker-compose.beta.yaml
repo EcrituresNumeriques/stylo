@@ -24,7 +24,3 @@ services:
   redis-stylo-beta:
     restart: always
     image: redis
-networks:
-  default:
-    external:
-      name: root_default
