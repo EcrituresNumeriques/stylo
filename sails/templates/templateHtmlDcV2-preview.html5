@@ -330,7 +330,6 @@ Schema specialise pour les revues et journaux-->
       div#app main#mainView blockquote {
         border-left: 4px solid lightgrey;
         padding-left: 1em;
-        font-style: italic;
         font-size: 1em;
       }
 
