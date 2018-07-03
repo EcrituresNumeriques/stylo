@@ -8,7 +8,7 @@ services:
       - "80:80"
     links:
       - mongodb-stylo-beta:mongodb
-      - redis-stylo-beta
+      - redis-stylo-beta:redis-stylo
     environment:
       - NODE_ENV=production
   mongodb-stylo-beta:
