@@ -115,4 +115,16 @@ Le menu "Statistiqes" donne des informations sur: ![statistiques](uploads/images
 
 - Le nombre de mots
 - Le nombre de caractères
-- Le nombre de citations 
+- Le nombre de citations
+
+## Annotation
+
+Il y a deux possibilités d'annotation:
+
+1. Annoter une version
+2. Annoter l'article
+
+Pour annoter une version, cliquez sur le numéro de la version que vous voulez annoter et ensuite cliquez sur Anotate. Une prévisualisation de l'article en html s'ouvrira avec l'outil d'annotation hyothes.is sur la droite.
+Si vous annotez une version, vos annotation ne seront pas visibles sur les autres versions.
+
+Pour annoter l'article, cliquez sur Live et ensuite sur Anotate. Les annotations concerneront l'article. On pourra toujours les voir en regardant le "Anotate" du "Live". Cependant, puisque le live est sujet à des changements, les annotations pourront ne plus être ancrées aux bonnes parties du textes (qui pourraient avoir été supprimées ou déplacées).

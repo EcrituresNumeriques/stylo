@@ -56,6 +56,14 @@ Donnera:
 
 Voici un **mot** en gras
 
+
+## Images
+
+## Liens
+
+## Citations
+
+
 ## Balisage sémantique
 
 Les mots ou les expressions que l'on veut baliser sémantiquement sont entre ```[]``` et suivi par des ```{}``` dans lesquelles on déclare la classe.
