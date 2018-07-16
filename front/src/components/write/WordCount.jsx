@@ -4,8 +4,10 @@ export default function WordCount(props){
         let value = props.md || "";
         let regex = /\s+/gi;
         let citation = /\[@[\w-]+/gi;
-        let wordCount = value.trim().replace(regex, ' ').split(' ').length;
-        let charCountNoSpace = value.replace(regex, '').length;
+        let noMarkDown = /[#_*]+\s?/gi;
+        let wordCount = value.trim().replace(noMarkDown, '').replace(regex, ' ').split(' ').length;
+        let charCountNoSpace = value.replace(noMarkDown, '').replace(regex, '').length;
+        let charCountPlusSpace = value.replace(noMarkDown, '').length;
         let citationNb = value.replace(regex,'').replace(citation,' ').split(' ').length-1;
 
     return (
@@ -14,6 +16,7 @@ export default function WordCount(props){
             {!props.closed &&<section>
                 <p>Words : {wordCount}</p>
                 <p>Characters : {charCountNoSpace}</p>
+                <p>Characters (plus spaces) : {charCountPlusSpace}</p>
                 <p>Citations : {citationNb}</p>
             </section>}
         </div>
