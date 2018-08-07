@@ -1,0 +1,67 @@
+div#app main#mainView{
+
+.articleBox {
+    div {
+        div.actions{
+            margin:0 1rem 1rem 1rem;
+            a.button:first-child{
+                margin-left:0;
+            }
+        }
+        div.sommaire{
+            h1{
+                padding:1rem;
+                padding:0 1rem;
+                font-size: 1rem;
+                margin:0;
+            }
+            section{
+                h1,h2,h3,h4,h5,h6{
+                    color:#303030;
+                    padding:0 1rem;
+                    font-size: 1rem;
+                    margin:0;
+                }
+                h1{
+                    counter-increment: h1;
+                    counter-reset: h2;
+                }
+                h1:before{
+                    content: counter(h1, decimal) ".";
+                }
+                h2{
+                    counter-increment: h2;
+                }
+                h2:before{
+                    content:  counter(h1, decimal) "." counter(h2, upper-latin) ;
+                }
+                h3{
+                    counter-increment: h3;
+                }
+                h3:before{
+                    content: counter(h1, decimal) "." counter(h2, upper-latin) "." counter(h3, upper-roman) ;
+                }
+                h4{
+                    counter-increment: h4;
+                }
+                h4:before{
+                    content: counter(h1, decimal) "." counter(h2, upper-latin) "." counter(h3, upper-roman) "." counter(h4, lower-latin) ;
+                }
+                h5{
+                    counter-increment: h5;
+                }
+                h5:before{
+                    content: counter(h1, decimal) "." counter(h2, upper-latin) "." counter(h3, upper-roman) "." counter(h4, lower-latin) "." counter(h5, lower-roman) ;
+                }
+                h6{
+                    counter-increment: h6;
+                }
+                h6:before{
+                    content: counter(h1, decimal) "." counter(h2, upper-latin) "." counter(h3, upper-roman) "." counter(h4, lower-latin) "." counter(h5, lower-roman) "." counter(h6, lower-greek);
+                }
+            }
+        }
+    }
+                    
+}
+}

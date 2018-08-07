@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function Sommaire(props){
   return (
-    <div id="sommaire">
+    <div id="sommaire" className="sommaire">
         <h1 className={props.closed?"title closed":"title"} onDoubleClick={()=>props.toggle()}>Sommaire</h1>
         {!props.closed && <section>
             {props.md && props.md.split('\n').map(function(line,i){

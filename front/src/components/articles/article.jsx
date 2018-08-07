@@ -4,6 +4,7 @@ import store from 'store/configureStore';
 import sortByIdDesc from 'helpers/sorts/idDesc';
 import Fork from 'components/articles/fork'
 import NewVersion from 'components/articles/newVersion'
+import Sommaire from 'components/write/Sommaire'
 var dateFormat = require('dateformat');
 
 
@@ -99,7 +100,7 @@ export default class Articles extends Component {
 
   render() {
     return (
-      <ul className="unstyled" key={"article"+this.props.article.id}>
+      <ul className="unstyled articleBox" key={"article"+this.props.article.id}>
         {!this.state.edit && [<p className="articleTitle"  onClick={this.toggleOpen} key={"articletitle"+this.props.article.id}>
           {!this.state.open && <i className="fa fa-plus" aria-hidden="true"/>}
           {this.state.open && <i className="fa fa-minus" aria-hidden="true"/>}
@@ -119,12 +120,15 @@ export default class Articles extends Component {
           <input key={"input"+this.props.article.id} type="text" ref="title"  defaultValue={this.props.article.title} onBlur={this.emitChangeArticleName}/>,
           <button key={"button"+this.props.article.id} className="button">OK</button>]}
           {this.state.open && this.props.article.versions && this.props.article.versions.map((version,i)=>(
-          <li key={"versions"+version.id}>
-            v{version.version}.{version.revision}
+          <div key={"versions"+version.id}>
+            <p>Last version : v{version.version}.{version.revision}</p>
+            <div className="actions">
             <Link to={"/write/"+this.props.article.id+"/"+version.id} className="button"><i className="fa fa-eye"></i> See</Link>
             {i==0 && <NewVersion {...version} />}
             <Fork {...version} />
-          </li>))}
+            </div>
+            <Sommaire md={version.md}/>
+          </div>))}
       </ul>
     );
   }
