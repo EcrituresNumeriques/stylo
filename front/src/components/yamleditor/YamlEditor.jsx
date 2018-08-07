@@ -32,11 +32,13 @@ export default class YamlEditor extends Component {
     super(props);
     const singleYaml = props.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, "");
     const jsObj = YAML.load(singleYaml, { schema: SEXY_SCHEMA }) || {};
-    this.state = {obj:jsObj,misc:init.misc};
+    const miscInit = JSON.parse(JSON.stringify(init.misc));
+    this.state = {obj:jsObj,misc:this.computeFromYaml(jsObj,miscInit)};
     this.updateState = this.updateState.bind(this);
     this.updateMisc = this.updateMisc.bind(this);
     this.addKeyword = this.addKeyword.bind(this);
     this.removeKeyword = this.removeKeyword.bind(this);
+    this.computeFromYaml = this.computeFromYaml.bind(this);
     const that = this;
     this.readOnly = false;
     if(!props.exportChange){
@@ -52,10 +54,12 @@ export default class YamlEditor extends Component {
           return response.json();
         })
         .then(function(rubriques) {
+          console.log("rubriques1",rubriques);
           that.updateMisc(rubriques,'rubriques','rubriques');
         });
       }
       else if (typeof props.rubriques == 'object') {
+        console.log("rubriques2",props.rubriques);
         that.updateMisc(props,'rubriques','rubriques');
       }
     }
@@ -119,7 +123,21 @@ export default class YamlEditor extends Component {
 
         });
     }
+  }
 
+  computeFromYaml(jsObj,misc){
+    jsObj.typeArticle.map((r)=>console.log("r",r));
+    //Add rubriques
+    jsObj.typeArticle.map(function(r){
+      misc.rubriques.filter((o)=>(o.label==r)).map((o)=>(o.selected=true));
+      return r;
+    });
+    //Add controlledKeywords
+    jsObj.controlledKeywords.map(c=>c.label).map(function(c){
+      misc.categories.filter((o)=>(o.label==c)).map((o)=>(o.selected=true));
+      return c;
+    });
+    return misc;
   }
 
   componentWillReceiveProps(nextProp){
@@ -140,31 +158,12 @@ export default class YamlEditor extends Component {
     }
   }
 
+
+
   updateState(value,target = undefined){
     //No target, update the whole state, don't export
     if(!target){
       this.setState({obj:value});
-      //Need to decompile rubriques/MotsClefs
-      /*
-      this.setState(function(state){
-        //set all rubriques to not selected then select from yaml
-        state.misc.rubriques.map((r)=>(r.selected=false));
-        state.obj.typeArticle.map(function(r){
-          state.misc.rubriques.filter((o)=>(o.label==r)).map((o)=>(o.selected=true));
-          return r;
-        });
-        //Set all controlled keyword to not selected then select from yaml
-        state.misc.categories.map((c)=>(c.selected=false));
-        if(!state.obj.controlledKeywords){state.obj.controlledKeywords = []}
-        state.obj.controlledKeywords.map(c=>c.label).map(function(c){
-          state.misc.categories.filter((o)=>(o.label==c)).map((o)=>(o.selected=true));
-          return c;
-        });
-        return state;
-      });
-*/
-
-
     }
     //Update only the key changed, plus export the new state
     else{
