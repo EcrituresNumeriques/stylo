@@ -10,6 +10,7 @@ import { Date} from './Date.jsx';
 import { Rubriques} from './Rubriques.jsx';
 import { ControlledKeywords} from './ControlledKeywords.jsx';
 import { Keywords} from './Keywords.jsx';
+import ImportYaml from './ImportYaml.jsx';
 import _ from 'lodash';
 import {init} from './default/init.js';
 require('./default/rubriques.json');
@@ -163,7 +164,8 @@ export default class YamlEditor extends Component {
   updateState(value,target = undefined){
     //No target, update the whole state, don't export
     if(!target){
-      this.setState({obj:value});
+      const miscInit = JSON.parse(JSON.stringify(init.misc));
+      this.setState({obj:value,misc:this.computeFromYaml(value,miscInit)});
     }
     //Update only the key changed, plus export the new state
     else{
@@ -251,6 +253,7 @@ export default class YamlEditor extends Component {
   render(){
     return(
       <section className={this.readOnly?"readOnly":""}>
+        {this.props.editor && <ImportYaml state={this.state} updateState={this.updateState} />}
         {this.props.editor && <TextInput target="id_sp" alias={[{target:'bibliography',prefix:'',suffix:'.bib'}]} title="Identifiant" placeholder="SPxxxx" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
 
         <TextInput target="title_f" alias={[{target:'title',prefix:'',suffix:'',filterMD:true}]} title="Titre" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
