@@ -6,10 +6,22 @@ main#WriteWrapper{
   position:relative;
   display:flex;
   flex-wrap: wrap;
+  @media (min-width: 850px) {
+    flex-wrap: nowrap;
+  }
+
+
   align-items: flex-start;
+
+  #input {
+    flex:800px 1 1;
+  }
 
   #writeComponent{
     flex:275px 0 0;
+    @media (max-width: 850px) {
+      flex:275px 1 1;
+    }
     margin-right: 1rem;
     transition: padding 0.5s;
     #timeline, #sommaire, #biblio, #stat {

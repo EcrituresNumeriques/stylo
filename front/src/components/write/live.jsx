@@ -23,8 +23,12 @@ export default class Live extends Component {
   constructor(props) {
     super(props);
     this.instance = null;
+    let defaultConfig = {biblioClosed:false,versionsClosed:false,sommaireClosed:false,statsClosed:false,previousScroll:0}
+    if(window.innerWidth < 850){
+      defaultConfig = {biblioClosed:true,versionsClosed:true,sommaireClosed:true,statsClosed:true,previousScroll:0}
+    }
     //set state
-    this.state = {loaded:false,yaml:"title: loading",md:"",bib:"test",title:"Title",version:0,revision:0,versions:[], autosave:{},modalAddRef:false,modalSourceRef:false,modalExport:false,yamlEditor:false,editorYaml:false,biblioClosed:false,versionsClosed:false,sommaireClosed:false,statsClosed:false,previousScroll:0,compareTo:null};
+    this.state = {...defaultConfig,loaded:false,yaml:"title: loading",md:"",bib:"test",title:"Title",version:0,revision:0,versions:[], autosave:{},modalAddRef:false,modalSourceRef:false,modalExport:false,yamlEditor:false,editorYaml:false,compareTo:null};
     this.updateMD = this.updateMD.bind(this);
     this.updateMDCM = this.updateMDCM.bind(this);
     this.updateBIB = this.updateBIB.bind(this);
@@ -229,27 +233,33 @@ export default class Live extends Component {
     }
 
     handleScroll(event) {
-        const movement = this.state.previousScroll - window.scrollY;
-        this.setState({previousScroll:window.scrollY});
-        //Attention, ne pas surcharger cette methode, Peut grandement ralentir le front-end
-        const height = window.scrollY + window.innerHeight;
-        const headerPlusMargin = 73;
-        const diffHeight = height - (this.refs.leftColumn.offsetHeight + headerPlusMargin );
-        const previousPadding = parseInt(this.refs.leftColumn.style.paddingTop) || 0;
-        if(window.scrollY < headerPlusMargin && previousPadding){
+      //Enable the left column tracking only for wider screens
+        if(window.innerWidth > 850){
+          const movement = this.state.previousScroll - window.scrollY;
+          this.setState({previousScroll:window.scrollY});
+          //Attention, ne pas surcharger cette methode, Peut grandement ralentir le front-end
+          const height = window.scrollY + window.innerHeight;
+          const headerPlusMargin = 73;
+          const diffHeight = height - (this.refs.leftColumn.offsetHeight + headerPlusMargin );
+          const previousPadding = parseInt(this.refs.leftColumn.style.paddingTop) || 0;
+          if(window.scrollY < headerPlusMargin && previousPadding){
             //console.log("reset Scroll",window.scrollY,headerPlusMargin,previousPadding);
             this.refs.leftColumn.style.paddingTop = 0;
-        }
-        else if(window.scrollY > headerPlusMargin && diffHeight > 0 && movement < 0){
+          }
+          else if(window.scrollY > headerPlusMargin && diffHeight > 0 && movement < 0){
             //console.log("Add padding",diffHeight,window.scrollY,headerPlusMargin,previousPadding);
             //Need to add paddingTop to the left column
             //console.log(previousPadding);
             //console.log(previousPadding,diffHeight,height);
             this.refs.leftColumn.style.paddingTop = previousPadding + diffHeight + "px";
+          }
+          else if(window.scrollY > headerPlusMargin && window.scrollY < (headerPlusMargin + previousPadding) && movement > 0){
+            //console.log("Remove padding",(headerPlusMargin + previousPadding),window.scrollY);
+            this.refs.leftColumn.style.paddingTop = (window.scrollY - headerPlusMargin + 10) + "px";
+          }
         }
-        else if(window.scrollY > headerPlusMargin && window.scrollY < (headerPlusMargin + previousPadding) && movement > 0){
-                //console.log("Remove padding",(headerPlusMargin + previousPadding),window.scrollY);
-                this.refs.leftColumn.style.paddingTop = (window.scrollY - headerPlusMargin + 10) + "px";
+        else{
+          this.refs.leftColumn.style.paddingTop = 0;
         }
     }
 
