@@ -2,10 +2,11 @@
     "categories":{
         "{{#each $root}}":{
             "label" : "{{#? this.name}}",
-            "uriRameau" : "{{#? this.data.urlrameau}}",
-            "idRameau" : "{{#? this.data.idrameau}}",
+            "uriRameau" : "{{#? this.data.uriRameau}}",
+            "idRameau" : "{{#? this.data.idRameau}}",
             "wikidata" : "{{#? this.data.wikidata}}",
-            "term" : "{{#? this.term}}"
+            "term" : "{{#? this.term}}",
+            "selected" : false
          }
      },
      "keywords":{
