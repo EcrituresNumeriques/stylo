@@ -29,7 +29,7 @@ After the image is built, you should have a stylo instance running on http://loc
 
 # deploy production
 
-Deploying for production is really close to beta, you just get the ssl working for access to https. For that, you will need a reverse proxy. 
+Deploying for production is really close to beta, you just get the ssl working for access to https. For that, you will need a reverse proxy.
 
 We provide example docker-compose yaml file for the Nginx reverse-proxy, but you are free to craft your own depending on your infrastructure.
 You first need to copy either just the stylo solution, or the full stylo+reverse proxy solution as your docker-compose.yaml
@@ -82,3 +82,28 @@ npm run start
 `
 
 You will now see the front end on http://localhost:8080
+
+# Add an administrator
+
+The only way to add an administrator (You don't really need one, but to see usage and do basic user operation you will) is to alter the mongodb using the shell.
+You can find the name of the mongodb docker instance in your docker-compose.yaml (root of the repo)
+
+`
+docker exec -it <NameOfMongoInstance> mongo
+`
+
+You will enter the mongo shell, you will need then to type:
+
+`
+use sails
+db.users.update({email:"<EmailOfTheAccountYouWantAsAdministrator>"},{$set:{admin:true}});
+`
+
+the system shoud respond something like, (else, there's something wrong):
+
+`
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+`
+
+
+the same procedure can be used to remove administrative priviledge with admin:false;
