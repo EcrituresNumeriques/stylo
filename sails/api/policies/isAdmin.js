@@ -16,6 +16,6 @@ module.exports = function(req, res, next) {
     return next();
   }
   else {
-    return res.forbidden({message:'you do not own this record.'});
+    return res.forbidden({message:'you are not admin.'});
   }
 };

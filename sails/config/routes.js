@@ -61,6 +61,12 @@ module.exports.routes = {
   'GET /api/v1/zipArticle/:id':'ExportController.articleZIP',
   'GET /api/v1/zipVersion/:version':'ExportController.versionZIP',
 
+
+
+  // Admin sections
+  'GET /api/v1/admin/users':'AdminController.users',
+  'GET /api/v1/admin/articles':'AdminController.articles',
+
   // All GET requests are directed to the app controller which renders our app.
   'GET /*': {
     controller: 'AppController',

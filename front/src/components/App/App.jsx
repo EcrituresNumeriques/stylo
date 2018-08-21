@@ -41,6 +41,7 @@ export default class App extends Component {
           <Route exact path="/register" component={Register}/>
           <Route exact path="/articles" component={Layout}/>
           <Route exact path="/profile" component={Profile}/>
+          <Route exact path="/admin" component={Layout}/>
           <Route exact path="/" component={Login} />
           <Route path="/write/" component={WriteWrapper}/>
           <Route component={NotFound}/>
