@@ -42,7 +42,7 @@ La fonction **[send]** fait la même opération, mais le nouvel article est dire
 
 ## Nouvel article
 
-Pour créer un nouvel article, il suffit de cliquer su le bouton, ![Nouvel article](uploads/images/nouvelarticle.png)
+Pour créer un nouvel article, il suffit de cliquer sur le bouton, ![Nouvel article](uploads/images/nouvelarticle.png)
 
 puis de rentrer un nom d'article dans le champs ouvert ![nommer un article](uploads/images/createnew.png)
 
@@ -68,13 +68,13 @@ Le module Versions contient :
 1. une liste d'actions pour la version active
 2. une liste des versions
 
-La liste des versions permet de passer de la version éditable à une version antérieure. La version active est grisée dans la liste des version. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. Ainsi en chargeant une ancienne version, ce sont ces trois éléments qui sont mis à jour. ![active](uploads/images/activeversion.png)
+La liste des versions permet de passer de la version éditable (Live) à une version antérieure. La version active est grisée dans la liste des version. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. Ainsi en chargeant une ancienne version, ce sont ces trois éléments qui sont mis à jour. ![active](uploads/images/activeversion.png)
 
 Un simple clic sur une version permet de charger (activer) la version d'un article.
 
 Pour revenir à la version éditable (_Live_), il suffit de cliquer sur [Live] tout en haut de la liste des versions. ![Live](uploads/images/live.png)
 
-En mode _Live_, plusieurs fonctions sont disponibles :
+Pour la version éditable (_Live_), plusieurs fonctions sont disponibles :
 
 |bouton|fonction|
 |:-:|:--|
@@ -83,16 +83,27 @@ En mode _Live_, plusieurs fonctions sont disponibles :
 |![export](uploads/images/export.png) | pour exporter et de télécharger le document dans différents format : html5, xml erudit, etc.  |
 |![anotate](uploads/images/anotate.png) | pour ouvrir la version html annotable  |
 
+Pour une version antérieure (non éditable), s'ajoute la fonction [Tag] :
+
+|bouton|fonction|
+|:-:|:--|
+|![tag](uploads/images/tag.png)|pour ajouter une appelation de version|
+![mytag](uploads/images/mytag.png)
+
+
+## - Export
 Le module d'export offre plusieurs formats et permet également de choisir entre deux styles de citations : ![moduleexport](uploads/images/exportmodal.png)
 
 * inline citations : la référence de type _(Goody, 1976)_ est ajoutée dans le corps du texte,
 * footnotes citations : la référence est intégrée avec un appel de note.
 
-|![zip](uploads/images/zip.png) | pour télécharger les trois composants de l'article : métadonnées, bibliographie, corps de texte  |
+|bouton|fonction|
+|:-:|:--|
 |![preview](uploads/images/preview.png) | pour ouvrir l'aperçu html de l'article   |
-|![xml](uploads/images/xml.png) | pour prévisualiser une version xml  |
+|![preview](uploads/images/html.png) | pour télécharger une version html prête à mettre en ligne |
+|![xml (Erudit)](uploads/images/xml.png) | pour prévisualiser une version xml au schéma Erudit |
+|![zip](uploads/images/zip.png) | pour télécharger les trois composants de l'article : métadonnées (.yaml), bibliographie (.bib), corps de texte (.md)  |
 
-Lorsqu'une version antérieure (non éditable) est chargée, vous pouvez en plus ajouter une appelation de version en cliquant sur le bouton [tag]. ![mytag](uploads/images/mytag.png) ![tag](uploads/images/tag.png)
 
 ## - Sommaire
 
