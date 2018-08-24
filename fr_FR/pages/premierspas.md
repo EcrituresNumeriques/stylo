@@ -42,7 +42,7 @@ La fonction **[send]** fait la même opération, mais le nouvel article est dire
 
 ## Nouvel article
 
-Pour créer un nouvel article, il suffit de cliquer su lre bouton, ![Nouvel article](uploads/images/nouvelarticle.png)
+Pour créer un nouvel article, il suffit de cliquer su le bouton, ![Nouvel article](uploads/images/nouvelarticle.png)
 
 puis de rentrer un nom d'article dans le champs ouvert ![nommer un article](uploads/images/createnew.png)
 
@@ -121,3 +121,21 @@ Le bouton [Metadata] permet d'ouvrir le volet de métadonnées. Deux modes d'éd
 2. **Mode éditeur (avancé)** - permet d'éditer l'ensemble des métadonnées relatives à une revue savante : identifiant d'un article, informations de dossier, information d'évaluation, catégories de la revue, mots-clés de la revue, etc.
 
 ## - Statistiques
+
+Le menu "Statistiqes" donne des informations sur: ![statistiques](uploads/images/statistiques.png)
+
+- Le nombre de mots
+- Le nombre de caractères
+- Le nombre de citations
+
+## Annotation
+
+Il y a deux possibilités d'annotation:
+
+1. Annoter une version
+2. Annoter l'article
+
+Pour annoter une version, cliquez sur le numéro de la version que vous voulez annoter et ensuite cliquez sur Anotate. Une prévisualisation de l'article en html s'ouvrira avec l'outil d'annotation hyothes.is sur la droite.
+Si vous annotez une version, vos annotation ne seront pas visibles sur les autres versions.
+
+Pour annoter l'article, cliquez sur Live et ensuite sur Anotate. Les annotations concerneront l'article. On pourra toujours les voir en regardant le "Anotate" du "Live". Cependant, puisque le live est sujet à des changements, les annotations pourront ne plus être ancrées aux bonnes parties du textes (qui pourraient avoir été supprimées ou déplacées).
