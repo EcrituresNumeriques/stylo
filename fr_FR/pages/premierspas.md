@@ -60,30 +60,39 @@ L'environnement d'édition est composé de 5 modules :
 
 ## - Versions
 
+Il n'y a pas de bouton "Save" ou "Sauvegarder" dans Stylo ! En effet votre travail est automatiquement sauvegardé
+
 Le module Versions contient :
 ![versions](uploads/images/versions.png)
 
 1. une liste d'actions pour la version active
 2. une liste des versions
 
-La version active est grisée dans la liste des version. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. Ainsi en chargeant une ancienne version, ce sont ces trois éléments qui sont mis à jour. ![active](uploads/images/activeversion.png)
+La liste des versions permet de passer de la version éditable à une version antérieure. La version active est grisée dans la liste des version. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. Ainsi en chargeant une ancienne version, ce sont ces trois éléments qui sont mis à jour. ![active](uploads/images/activeversion.png)
 
-Un clic sur une version permet de charger la version d'un article.
+Un simple clic sur une version permet de charger (activer) la version d'un article.
 
 Pour revenir à la version éditable (_Live_), il suffit de cliquer sur [Live] tout en haut de la liste des versions. ![Live](uploads/images/live.png)
 
-Pour la version active, plusieurs fonctions sont disponibles :
+En mode _Live_, plusieurs fonctions sont disponibles :
 
 |bouton|fonction|
 |:-:|:--|
 |![version](uploads/images/version.png) | pour enregistrer une version majeure  |
 |![sousversion](uploads/images/sousversion.png) | pour enregistrer une sous-version |
-|![tag](uploads/images/tag.png) | pour ajouter un titre de version  |
 |![export](uploads/images/export.png) | pour exporter et de télécharger le document dans différents format : html5, xml erudit, etc.  |
+|![anotate](uploads/images/anotate.png) | pour ouvrir la version html annotable  |
+
+Le module d'export offre plusieurs formats et permet également de choisir entre deux styles de citations : ![moduleexport](uploads/images/exportmodal.png)
+
+* inline citations : la référence de type _(Goody, 1976)_ est ajoutée dans le corps du texte,
+* footnotes citations : la référence est intégrée avec un appel de note.
+
 |![zip](uploads/images/zip.png) | pour télécharger les trois composants de l'article : métadonnées, bibliographie, corps de texte  |
 |![preview](uploads/images/preview.png) | pour ouvrir l'aperçu html de l'article   |
-|![anotate](uploads/images/anotate.png) | pour ouvrir la version html annotable  |
 |![xml](uploads/images/xml.png) | pour prévisualiser une version xml  |
+
+Lorsqu'une version antérieure (non éditable) est chargée, vous pouvez en plus ajouter une appelation de version en cliquant sur le bouton [tag]. ![mytag](uploads/images/mytag.png) ![tag](uploads/images/tag.png)
 
 ## - Sommaire
 
@@ -100,6 +109,8 @@ Les références doivent être ajoutées au format bibtex. Vous pouvez directeme
 
 
 Pour ajouter une référence à l'article, il suffit de cliquer sur la référence, puis de coller la référence dans le texte à l'endroit souhaité. Ainsi, un clic revient à "copier" la clé de la référence dans le presse-papier. Il ne reste plus qu'à la coller dans le corps de texte. ![biblioex](uploads/images/biblioex.png)
+
+NOTE: Il sera bientôt possible de synchroniser un dossier Zotero avec l'outil de bibliographie. Les références se mettront à jour alors automatiquement à jour avec le dossier Zotero.
 
 
 ## - Métadonnées
