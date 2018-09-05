@@ -127,6 +127,8 @@ export default class YamlEditor extends Component {
   }
 
   computeFromYaml(jsObj,misc){
+    jsObj = jsObj || {};
+    jsObj.typeArticle = jsObj.typeArticle || [];
     jsObj.typeArticle.map((r)=>console.log("r",r));
     //Add rubriques
     jsObj.typeArticle.map(function(r){
@@ -134,6 +136,7 @@ export default class YamlEditor extends Component {
       return r;
     });
     //Add controlledKeywords
+    jsObj.controlledKeywords = jsObj.controlledKeywords || []
     jsObj.controlledKeywords.map(c=>c.label).map(function(c){
       misc.categories.filter((o)=>(o.label==c)).map((o)=>(o.selected=true));
       return c;
