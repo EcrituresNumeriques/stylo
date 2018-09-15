@@ -14,6 +14,9 @@
      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
      <meta name="generator" content="pandoc templateHtmlEruditV2" />
 
+<!-- for preview only, meta to be removed when published -->
+     <meta name="robots" content="noindex, nofollow">
+
 
 <!--Metadonnees Dublin Core -->
 
@@ -97,6 +100,15 @@
   <meta name="MARCREL.trl" content="$translator.forname$ $translator.surname$" />
   $endfor$
   $endif$
+
+
+  <!--  transcripteur avec specification MARCREL -->
+    $if(transcriber)$
+    $for(transcriber)$
+    <meta name="DC.contributor.trc" content="$transcriber.forname$ $transcriber.surname$" />
+    <meta name="MARCREL.trc" content="$transcriber.forname$ $transcriber.surname$" />
+    $endfor$
+    $endif$
 
 <!--  redacteur avec specification MARCREL -->
   $if(redacteurDossier)$
@@ -187,9 +199,22 @@ Schema specialise pour les revues et journaux-->
      <meta property="dc:rights" content="$rights$" />
      <meta property="dc:relation.isPartOf" content="$dossier$" />
      <meta property="dc:source" content="$journal$" />
+
   $for(authors)$
      <meta property="dc:creator" content="$authors.forname$ $authors.surname$" />
   $endfor$
+
+  $if(translator)$
+  $for(translator)$
+     <meta property="dc:contributor.trl" content="$translator.forname$ $translator.surname$" />
+  $endfor$
+  $endif$
+
+  $if(transcriber)$
+  $for(transcriber)$
+     <meta property="dc:contributor.trc" content="$transcriber.forname$ $transcriber.surname$" />
+  $endfor$
+  $endif$
 
   $if(abstract)$
   $for(abstract)$
@@ -296,6 +321,32 @@ Schema specialise pour les revues et journaux-->
        <span property="firstName">$director.forname$</span>
        <span property="gender">$director.gender$</span>
        <span property="openid">$director.orcid$</span>
+      </div>
+     </div>
+  $endfor$
+  $endif$
+</div>
+
+<!--indexation FOAF pour traducteur de l'article -->
+  $if(translator)$
+  $for(translator)$
+     <div property="http://purl.org/dc/terms/contributor.trl">
+      <div vocab="http://xmlns.com/foaf/0.1/" typeof="Person" class="foaf-translator">
+       <span property="familyName">$translator.surname$</span>
+       <span property="firstName">$translator.forname$</span>
+      </div>
+     </div>
+  $endfor$
+  $endif$
+</div>
+
+<!--indexation FOAF pour transcripteur des propos (entretiens, débats) -->
+  $if(transcriber)$
+  $for(transcriber)$
+     <div property="http://purl.org/dc/terms/contributor.trc">
+      <div vocab="http://xmlns.com/foaf/0.1/" typeof="Person" class="foaf-transcriber">
+       <span property="familyName">$transcriber.surname$</span>
+       <span property="firstName">$transcriber.forname$</span>
       </div>
      </div>
   $endfor$

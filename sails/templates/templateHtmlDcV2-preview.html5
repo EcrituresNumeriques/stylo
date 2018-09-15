@@ -14,6 +14,9 @@
      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
      <meta name="generator" content="pandoc templateHtmlEruditV2" />
 
+<!-- for preview only, meta to be removed when published -->
+     <meta name="robots" content="noindex, nofollow">
+
 
 <!--Metadonnees Dublin Core -->
 
@@ -97,6 +100,15 @@
   <meta name="MARCREL.trl" content="$translator.forname$ $translator.surname$" />
   $endfor$
   $endif$
+
+
+  <!--  transcripteur avec specification MARCREL -->
+    $if(transcriber)$
+    $for(transcriber)$
+    <meta name="DC.contributor.trc" content="$transcriber.forname$ $transcriber.surname$" />
+    <meta name="MARCREL.trc" content="$transcriber.forname$ $transcriber.surname$" />
+    $endfor$
+    $endif$
 
 <!--  redacteur avec specification MARCREL -->
   $if(redacteurDossier)$
@@ -187,9 +199,22 @@ Schema specialise pour les revues et journaux-->
      <meta property="dc:rights" content="$rights$" />
      <meta property="dc:relation.isPartOf" content="$dossier$" />
      <meta property="dc:source" content="$journal$" />
+
   $for(authors)$
      <meta property="dc:creator" content="$authors.forname$ $authors.surname$" />
   $endfor$
+
+  $if(translator)$
+  $for(translator)$
+     <meta property="dc:contributor.trl" content="$translator.forname$ $translator.surname$" />
+  $endfor$
+  $endif$
+
+  $if(transcriber)$
+  $for(transcriber)$
+     <meta property="dc:contributor.trc" content="$transcriber.forname$ $transcriber.surname$" />
+  $endfor$
+  $endif$
 
   $if(abstract)$
   $for(abstract)$
@@ -252,7 +277,7 @@ Schema specialise pour les revues et journaux-->
         margin: 0;
         padding: 0;
         width: 100%;
-        min-height: 100%;
+        height: 100%;
         overflow-x: hidden;
         position: relative;
       }
@@ -266,7 +291,7 @@ Schema specialise pour les revues et journaux-->
 
       #app > header, .gridCenter > header {
         padding: 0.5rem 1rem;
-        background-color: #7c7c7c;
+        background-color: green;
         color: white;
         display: flex;
         align-items: center;
@@ -305,146 +330,309 @@ Schema specialise pour les revues et journaux-->
         margin: 0 0 1em 0;
       }
 
-      div#app main#mainView p {
-        text-align: justify;
-        font-family: sans;
-        font-size: 1em;
-        line-height: 1.5em;
-      }
+div#app main#mainView p {
+  text-align: justify;
+  font-family: sans;
+  font-size: 1.1em;
+  line-height: 1.6em;
 
-      div#app main#mainView h1, div#app main#mainView h2, div#app main#mainView h3 {
-        color:purple;
-      }
+}
 
-      div#app main#mainView a{
-        color:purple;
-      }
+div#app main#mainView h1, div#app main#mainView h2, div#app main#mainView h3 {
+  color:purple;
 
-      div#app main#mainView li {
-        text-align: justify;
-        font-family: sans;
-        font-size: 1em;
-        line-height: 1.4em;
-      }
+}
 
-      div#app main#mainView blockquote {
-        border-left: 4px solid lightgrey;
-        padding-left: 1em;
-        font-size: 1em;
-      }
+div#app main#mainView a{
+  color:purple;
+}
 
-      div#app main#mainView sup {
-        font-size: 0.7em;
-      }
+div#app main#mainView li {
+  text-align: justify;
+  font-family: sans;
+  font-size: 1.1em;
+  line-height: 1.5em;
+}
 
-      div#app main#mainView .citation {
-        color: darkslateblue;
-      }
+div#app main#mainView blockquote {
+  border-left: 4px solid lightgrey;
+  padding-left: 1em;
+  font-style: italic;
+  font-size: 1em;
+}
 
-      div#app main#mainView .footnoteRef {
-        font-weight: 600;
-      }
+div#app main#mainView sup {
+  font-size: 0.7em;
+}
+div#app main#mainView .citation {
+  color: darkslateblue;
+}
 
-      div#app main#mainView .references p{
-        font-size: 0.9em;
-        line-height: 1.3em;
-      }
+div#app main#mainView .footnoteRef {
+  font-weight: 600;
+}
 
-      div#app main#mainView .footnotes p {
-        font-size: 0.9em;
-        line-height: 1.3em;
-      }
+div#app main#mainView .references p{
+  font-size: 0.9em;
+  line-height: 1.3em;
+}
 
-      div.indexations-foaf{
-          background-color: #f0f0f0;
-          padding: 0.5rem 1rem;
-      }
+div#app main#mainView .footnotes p {
+  font-size: 0.9em;
+  line-height: 1.3em;
+}
 
-      div#schema-scholarly-article{
-          background-color: #f0f0f0;
-          padding: 0.5rem 1rem;
-      }
+div.indexations-foaf{
+    background-color: #f0f0f0;
+    padding: 0.5rem 1rem;
+}
 
-      #schema-scholarly-article > span:nth-child(1)::before {
-          content: "Title: ";
-      }
+div#schema-scholarly-article{
+    background-color: #f0f0f0;
+    padding: 0.5rem 1rem;
 
-      #schema-scholarly-article > span:nth-child(1) {
-          font-size:2rem;
-      }
+}
 
-      #schema-scholarly-article > span:nth-child(3)::before{
-          content: "Subtitle: ";
-          font-weight: bold;
-      }
+#schema-scholarly-article > span:nth-child(1)::before {
 
-      #schema-scholarly-article > span[property="author"]::before{
-          content:"Author: ";
-          font-weight: bold;
-      }
 
-      .indexations-foaf {
-          display:none;
-      }
+content: "Title: ";
 
-      #schema-scholarly-article > span:nth-child(9) > span:nth-child(1)::before {
-          content:"Publisher: ";
-          font-weight: bold;
-      }
+}
 
-      #schema-scholarly-article > span:nth-child(9) > span:nth-child(3)::before {
-          content:"ISSN: ";
-          font-weight: bold;
-      }
+#schema-scholarly-article > span:nth-child(1) {
 
-      #schema-scholarly-article > div:nth-child(10) > span:nth-child(1) > span:nth-child(1)::before {
-          content:"Journal: ";
-          font-weight: bold;
-      }
+font-size:2rem;
 
-      #schema-scholarly-article > div:nth-child(10) > span:nth-child(2)::before {
-          content:"Date: ";
-          font-weight: bold;
-      }
+}
 
-      .titreDossier::before {
-          content:"Dossier: ";
-          font-weight: bold;
-      }
+#schema-scholarly-article > span:nth-child(3)::before{
 
-      div.resume:nth-child(1)::before {
-          content:"Abstract: ";
-          font-weight: bold;
-      }
 
-      .keywords::before {
-          content:"Aligned Keywords:";
-          font-weight: bold;
-      }
+content: "Subtitle: ";
+font-weight: bold;
 
-      div.authorKeywords_fr {
-          background-color: #f0f0f0;
-          padding: 0.5rem 1rem;
-      }
+}
 
-      div.authorKeywords_en {
-          background-color: #f0f0f0;
-          padding: 0.5rem 1rem;
-      }
+#schema-scholarly-article > span[property="author"]::before{
+content:"Author: ";
+font-weight: bold;
+}
 
-      div.indexations-foaf:before {
-          content:"foaf: ";
-          font-style:italic;
+.indexations-foaf {
+display:none;
+}
 
-      }
-      div.authorKeywords_fr:before {
-          content:"Mot-clefs: ";
-          font-style:italic;
-      }
-      div.authorKeywords_en:before {
-          content:"Keywords: ";
-          font-style:italic;
-      }
+#schema-scholarly-article > span:nth-child(9) > span:nth-child(1)::before{
+
+content:"Publisher: ";
+font-weight: bold;
+
+}
+
+#schema-scholarly-article > span:nth-child(9) > span:nth-child(3)::before{
+content:"ISSN: ";
+font-weight: bold;
+}
+
+#schema-scholarly-article > div:nth-child(10) > span:nth-child(1) > span:nth-child(1)::before{
+content:"Journal: ";
+font-weight: bold;
+}
+
+#schema-scholarly-article > div:nth-child(10) > span:nth-child(2)::before{
+content:"Date: ";
+font-weight: bold;
+}
+
+.titreDossier::before{
+content:"Dossier: ";
+font-weight: bold;
+}
+
+div.resume:nth-child(1)::before{
+content:"Abstract: ";
+font-weight: bold;
+}
+
+.keywords::before{
+content:"Aligned Keywords:";
+font-weight: bold;
+}
+
+div.authorKeywords_fr{
+    background-color: #f0f0f0;
+    padding: 0.5rem 1rem;
+}
+
+div.authorKeywords_en{
+    background-color: #f0f0f0;
+    padding: 0.5rem 1rem;
+}
+
+div.indexations-foaf:before{
+    content:"foaf: ";
+    font-style:italic;
+
+}
+div.authorKeywords_fr:before{
+    content:"Mot-clefs: ";
+    font-style:italic;
+}
+div.authorKeywords_en:before{
+    content:"Keywords: ";
+    font-style:italic;
+}
+
+p span.epigraphe {
+  margin-left: 100px;
+  margin-right: 300px;
+  text-align: left;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  float: right;
+  font-style: italic;
+}
+
+p span.dedicace {
+  margin-left: 100px;
+  text-align: left;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  float: right;
+  font-style: italic;
+}
+
+p span.note {
+  margin-left: 100px;
+  text-align: left;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  float: right;
+  font-style: italic;
+}
+
+span.these {
+  background-color: MistyRose;
+}
+
+span.these:hover::before {
+  content: "Thèse: <";
+  position:relative;
+  color: purple;
+  background-color: whitesmoke;
+  font-size: 1em;
+  padding-left:5px;
+  padding-right:5px;
+}
+
+span.these:hover::after {
+  content: ">";
+  position:relative;
+  color: purple;
+  background-color: whitesmoke;
+  font-size: 1em;
+  padding-left:5px;
+  padding-right:5px;
+}
+
+span.exemple {
+  background-color: PowderBlue;
+}
+
+span.exemple:hover::before {
+  content: "Exemple: <";
+  position:relative;
+  color: purple;
+  background-color: whitesmoke;
+  font-size: 1em;
+  padding-left:5px;
+  padding-right:5px;
+}
+
+span.exemple:hover::after {
+  content: ">";
+  position:relative;
+  color: purple;
+  background-color: whitesmoke;
+  font-size: 1em;
+  padding-left:5px;
+  padding-right:5px;
+}
+
+span.concept {
+  background-color: Plum;
+}
+
+span.concept:hover::before {
+  content: "Concept clé: <";
+  position:relative;
+  color: purple;
+  background-color: whitesmoke;
+  font-size: 1em;
+  padding-left:5px;
+  padding-right:5px;
+}
+
+span.concept:hover::after {
+  content: ">";
+  position:relative;
+  color: purple;
+  background-color: whitesmoke;
+  font-size: 1em;
+  padding-left:5px;
+  padding-right:5px;
+}
+
+span.definition {
+  background-color: Peachpuff;
+}
+
+span.definition:hover::before {
+  content: "Définition: <";
+  position:relative;
+  color: purple;
+  background-color: whitesmoke;
+  font-size: 1em;
+  padding-left:5px;
+  padding-right:5px;
+}
+
+span.definition:hover::after {
+  content: ">";
+  position:relative;
+  color: purple;
+  background-color: whitesmoke;
+  font-size: 1em;
+  padding-left:5px;
+  padding-right:5px;
+}
+
+span.question {
+  background-color: PaleGoldenRod ;
+}
+
+span.question:hover::before {
+  content: "Question: <";
+  position:relative;
+  color: purple;
+  background-color: whitesmoke;
+  font-size: 1em;
+  padding-left:5px;
+  padding-right:5px;
+}
+
+span.question:hover::after {
+  content: ">";
+  position:relative;
+  color: purple;
+  background-color: whitesmoke;
+  font-size: 1em;
+  padding-left:5px;
+  padding-right:5px;
+}
+
+}
   </style>
 </head>
 
@@ -501,6 +689,32 @@ Schema specialise pour les revues et journaux-->
        <span property="firstName">$director.forname$</span>
        <span property="gender">$director.gender$</span>
        <span property="openid">$director.orcid$</span>
+      </div>
+     </div>
+  $endfor$
+  $endif$
+</div>
+
+<!--indexation FOAF pour traducteur de l'article -->
+  $if(translator)$
+  $for(translator)$
+     <div property="http://purl.org/dc/terms/contributor.trl">
+      <div vocab="http://xmlns.com/foaf/0.1/" typeof="Person" class="foaf-translator">
+       <span property="familyName">$translator.surname$</span>
+       <span property="firstName">$translator.forname$</span>
+      </div>
+     </div>
+  $endfor$
+  $endif$
+</div>
+
+<!--indexation FOAF pour transcripteur des propos (entretiens, débats) -->
+  $if(transcriber)$
+  $for(transcriber)$
+     <div property="http://purl.org/dc/terms/contributor.trc">
+      <div vocab="http://xmlns.com/foaf/0.1/" typeof="Person" class="foaf-transcriber">
+       <span property="familyName">$transcriber.surname$</span>
+       <span property="firstName">$transcriber.forname$</span>
       </div>
      </div>
   $endfor$
