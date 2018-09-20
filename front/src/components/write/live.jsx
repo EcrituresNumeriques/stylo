@@ -237,13 +237,14 @@ export default class Live extends Component {
       this.setState({modalSourceZotero:false});
   }
   submitSourceZotero(groupID){
-              this.setState({zoteroURL:'https://api.zotero.org/groups/'+groupID+'/items?v=3&format=bibtex',zoteroGroupID:groupID,modalSourceZotero:false});
-              this.refreshZotero();
+      let zoteroURL = 'https://api.zotero.org/groups/'+groupID+'/items?v=3&format=bibtex';
+              this.setState({zoteroURL:zoteroURL,zoteroGroupID:groupID,modalSourceZotero:false});
+              this.refreshZotero(zoteroURL);
   }
-  refreshZotero(){
+  refreshZotero(zoteroURL = this.state.zoteroURL){
     this.setState({zoteroFetch:true});
     let that = this;
-    fetch(this.state.zoteroURL,{
+    fetch(zoteroURL,{
       method:'GET',
       credentials: 'same-origin'
     })
