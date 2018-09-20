@@ -238,7 +238,7 @@ export default class Live extends Component {
   }
   submitSourceZotero(groupID){
               this.setState({zoteroURL:'https://api.zotero.org/groups/'+groupID+'/items?v=3&format=bibtex',zoteroGroupID:groupID,modalSourceZotero:false});
-              this.autosave();
+              this.refreshZotero();
   }
   refreshZotero(){
     this.setState({zoteroFetch:true});
