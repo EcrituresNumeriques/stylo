@@ -12,6 +12,7 @@ import Sommaire from 'components/write/Sommaire';
 import Biblio from 'components/write/Biblio';
 import WordCount from 'components/write/WordCount';
 import ModalTextarea from 'components/modals/ModalTextarea';
+import ModalInput from 'components/modals/ModalInput';
 import ModalExport from 'components/modals/ModalExport';
 import {Controlled as CodeMirror} from 'react-codemirror2';
 import Select from 'react-select';
@@ -28,7 +29,15 @@ export default class Live extends Component {
       defaultConfig = {biblioClosed:true,versionsClosed:true,sommaireClosed:true,statsClosed:true,previousScroll:0}
     }
     //set state
-    this.state = {...defaultConfig,loaded:false,yaml:"title: loading",md:"",bib:"test",title:"Title",version:0,revision:0,versions:[], autosave:{},modalAddRef:false,modalSourceRef:false,modalExport:false,yamlEditor:false,editorYaml:false,compareTo:null};
+    this.state = {
+      ...defaultConfig,
+      loaded:false,yaml:"title: loading",md:"",bib:"test",title:"Title",version:0,revision:0,versions:[],
+      autosave:{},modalAddRef:false,modalSourceRef:false,modalExport:false,yamlEditor:false,editorYaml:false,compareTo:null,
+      modalSourceZotero:false,
+      zoteroURL:null,
+      zoteroGroupID:null,
+      zoteroFetch:false
+    };
     this.updateMD = this.updateMD.bind(this);
     this.updateMDCM = this.updateMDCM.bind(this);
     this.updateBIB = this.updateBIB.bind(this);
@@ -40,6 +49,10 @@ export default class Live extends Component {
     this.sourceRef = this.sourceRef.bind(this);
     this.closeSourceRef = this.closeSourceRef.bind(this);
     this.submitSourceRef = this.submitSourceRef.bind(this);
+    this.sourceZotero = this.sourceZotero.bind(this);
+    this.closeSourceZotero = this.closeSourceZotero.bind(this);
+    this.submitSourceZotero = this.submitSourceZotero.bind(this);
+    this.refreshZotero = this.refreshZotero.bind(this);
     this.updateYAML = this.updateYAML.bind(this);
     this.updatingYAML = this.updatingYAML.bind(this);
     this.sendNewVersion = this.sendNewVersion.bind(this);
@@ -67,7 +80,7 @@ export default class Live extends Component {
     })
     .then(function(json){
       json.versions = json.versions.sort(sortByDateDesc);
-      that.setState({loaded:true, title:json.title,version:json.versions[0].version,revision:json.versions[0].revision, versions:json.versions,md:json.versions[0].md,yaml:json.versions[0].yaml,bib:json.versions[0].bib});
+      that.setState({loaded:true, title:json.title,version:json.versions[0].version,revision:json.versions[0].revision, versions:json.versions,md:json.versions[0].md,yaml:json.versions[0].yaml,bib:json.versions[0].bib,zoteroURL:json.versions[0].zoteroURL,zoteroGroupID:json.versions[0].zoteroGroupID});
       return null;
     });
   }
@@ -84,7 +97,7 @@ export default class Live extends Component {
     if(!autosave){
       target = '';
     }
-    let corps = {autosave,major,article:that.state.id,version,revision,md:that.state.md,yaml:that.state.yaml,bib:that.state.bib,article:that.props.match.params.article};
+    let corps = {autosave,major,article:that.state.id,version,revision,md:that.state.md,yaml:that.state.yaml,bib:that.state.bib,article:that.props.match.params.article,zoteroURL:this.state.zoteroURL,zoteroGroupID:this.state.zoteroGroupID};
     fetch('/api/v1/versions/'+target,{
       method:'POST',
       body: JSON.stringify(corps),
@@ -217,6 +230,32 @@ export default class Live extends Component {
               this.setState({bib:newSource,modalSourceRef:false});
               this.autosave();
   }
+  sourceZotero(){
+      this.setState({modalSourceZotero:true});
+  }
+  closeSourceZotero(){
+      this.setState({modalSourceZotero:false});
+  }
+  submitSourceZotero(groupID){
+              this.setState({zoteroURL:'https://api.zotero.org/groups/'+groupID+'/items?v=3&format=bibtex',zoteroGroupID:groupID,modalSourceZotero:false});
+              this.autosave();
+  }
+  refreshZotero(){
+    this.setState({zoteroFetch:true});
+    let that = this;
+    fetch(this.state.zoteroURL,{
+      method:'GET',
+      credentials: 'same-origin'
+    })
+    .then(function(response){
+      return response.text();
+    })
+    .then(function(bib){
+      console.log('Fetched', bib)
+      that.setState({zoteroFetch:false,bib:bib});
+      that.autosave();
+    });
+  }
   toggleYamlEditor(){
       this.setState({yamlEditor:!this.state.yamlEditor});
   }
@@ -312,7 +351,7 @@ export default class Live extends Component {
             />
           }
           <Sommaire md={this.state.md} setCursor={this.setCodeMirrorCursor} closed={this.state.sommaireClosed} toggle={this.toggleSommaire}/>
-          <Biblio bib={this.state.bib} addRef={this.addRef} sourceRef={this.sourceRef} closed={this.state.biblioClosed} toggle={this.toggleBiblio}/>
+          <Biblio bib={this.state.bib} addRef={this.addRef} sourceRef={this.sourceRef} closed={this.state.biblioClosed} toggle={this.toggleBiblio} sourceZotero={this.sourceZotero} refreshZotero={this.refreshZotero} zoteroURL={this.state.zoteroURL} zoteroFetch={this.state.zoteroFetch}/>
           <WordCount md={this.state.md} closed={this.state.statsClosed} toggle={this.toggleStats}/>
           {this.state.modalAddRef && <ModalTextarea cancel={this.skipRef} confirm={this.addNewRef} title="Add new reference(s)" text="please copy paste below the references you want to add in BiBtex format" placeholder={`@book{goody_raison_1979,
   series = {Le sens commun},
@@ -322,6 +361,7 @@ export default class Live extends Component {
   year = {1979},
 }`}/>}
           {this.state.modalSourceRef && <ModalTextarea cancel={this.closeSourceRef} confirm={this.submitSourceRef} title="References" text="" placeholder="" value={this.state.bib}/>}
+          {this.state.modalSourceZotero && <ModalInput cancel={this.closeSourceZotero} confirm={this.submitSourceZotero} title="Config Zotero" text={"Enter here the ID number of the group (needs to be public) as found in https://www.zotero.org/groups/{IDnumber}/{name}. Currently set to fetch from : "+this.state.zoteroURL} placeholder="IDnumber, ex 2229019" value={this.state.zoteroGroupID}/>}
         </section>,
         <section id="input" key="inputs" ref="inputs" className={this.state.compareTo?"compared":"solo"}>
           <h1 id="title" key="title">{this.state.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>
