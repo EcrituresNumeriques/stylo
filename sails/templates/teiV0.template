@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_jtei.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_jtei.rng" type="application/xml"
+	schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" rend="jTEI">
+  <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title type="main">$title$</title>
+            $for(authors)$
+            <author>
+               
+               <name>
+                  <forename>$authors.forname$</forename> 
+                  <surname>$authors.surname$</surname>
+                  <idno type="orcid">http://www.orcid.org/$authors.orcid$</idno>
+                 
+               </name>
+              
+               <affiliation/>
+               <email/>
+            </author>
+            $endfor$
+         </titleStmt>
+         <publicationStmt>
+          
+            <publisher>Département des littératures de langue française</publisher>
+            <date when="$date$">$day$/$month$/$year$</date>
+            <availability>
+               <p>$rights$</p>
+            </availability>
+         </publicationStmt>
+         <sourceDesc>
+            <p>No source, born digital.</p>
+         </sourceDesc>
+      </fileDesc>
+      <encodingDesc>
+         <projectDesc>
+            <p>Sens public</p>
+         </projectDesc>
+      </encodingDesc>
+      <profileDesc>
+         <langUsage>
+            <language ident="$lang$">$lang$</language>
+         </langUsage>
+         <textClass>
+            
+            <keywords xml:lang="fr">
+               $for(controlledKeywords)$
+               <term xml:id="$controlledKeywords.idRameau$">$controlledKeywords.label$</term>
+               $endfor$
+               $for(keyword_fr)$
+               <term>$keyword_fr$</term>
+               $endfor$
+            </keywords>
+               <keywords xml:lang="en">
+               $for(keyword_en)$
+               <term>$keyword_en$</term>
+               $endfor$
+            </keywords>
+         </textClass>
+      </profileDesc>
+      <revisionDesc>
+         <change/>
+      </revisionDesc>
+  </teiHeader>
+  <text>
+      <front>
+         $for(abstract)$
+         <div type="abstract" xml:id="abstract$abstract.lang$" xml:lang="$abstract.lang$"><p>$abstract.text$</p></div>
+         $endfor$
+      </front>
+      <body>
+      
+      $body$
+      </body>
+    
+      <back>
+         <div type="bibliography">
+        
+            <listBibl>
+               <bibl xml:id="bloggs13"/>
+            </listBibl>
+         </div>
+      </back>
+  </text>
+</TEI>
