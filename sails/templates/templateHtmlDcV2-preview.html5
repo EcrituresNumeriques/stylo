@@ -704,6 +704,7 @@ span.question:hover::after {
      </div>
   $endfor$
   $endif$
+</div>
 
 <!--Integration schema "ScholarlyArticle"-->
      <div vocab="http://schema.org/" typeof="ScholarlyArticle" resource="#article" id="schema-scholarly-article">
