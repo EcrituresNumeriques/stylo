@@ -277,7 +277,7 @@ Schema specialise pour les revues et journaux-->
         margin: 0;
         padding: 0;
         width: 100%;
-        height: 100%;
+        min-height: 100%;
         overflow-x: hidden;
         position: relative;
       }
@@ -291,7 +291,7 @@ Schema specialise pour les revues et journaux-->
 
       #app > header, .gridCenter > header {
         padding: 0.5rem 1rem;
-        background-color: green;
+        background-color: #7c7c7c;
         color: white;
         display: flex;
         align-items: center;
@@ -330,159 +330,146 @@ Schema specialise pour les revues et journaux-->
         margin: 0 0 1em 0;
       }
 
-div#app main#mainView p {
-  text-align: justify;
-  font-family: sans;
-  font-size: 1.1em;
-  line-height: 1.6em;
+      div#app main#mainView p {
+        text-align: justify;
+        font-family: sans;
+        font-size: 1em;
+        line-height: 1.5em;
+      }
 
-}
+      div#app main#mainView h1, div#app main#mainView h2, div#app main#mainView h3 {
+        color:purple;
+      }
 
-div#app main#mainView h1, div#app main#mainView h2, div#app main#mainView h3 {
-  color:purple;
+      div#app main#mainView a{
+        color:purple;
+      }
 
-}
+      div#app main#mainView li {
+        text-align: justify;
+        font-family: sans;
+        font-size: 1em;
+        line-height: 1.4em;
+      }
 
-div#app main#mainView a{
-  color:purple;
-}
+      div#app main#mainView blockquote {
+        border-left: 4px solid lightgrey;
+        padding-left: 1em;
+        font-size: 1em;
+      }
 
-div#app main#mainView li {
-  text-align: justify;
-  font-family: sans;
-  font-size: 1.1em;
-  line-height: 1.5em;
-}
+      div#app main#mainView sup {
+        font-size: 0.7em;
+      }
 
-div#app main#mainView blockquote {
-  border-left: 4px solid lightgrey;
-  padding-left: 1em;
-  font-style: italic;
-  font-size: 1em;
-}
+      div#app main#mainView .citation {
+        color: darkslateblue;
+      }
 
-div#app main#mainView sup {
-  font-size: 0.7em;
-}
-div#app main#mainView .citation {
-  color: darkslateblue;
-}
+      div#app main#mainView .footnoteRef {
+        font-weight: 600;
+      }
 
-div#app main#mainView .footnoteRef {
-  font-weight: 600;
-}
+      div#app main#mainView .references p{
+        font-size: 0.9em;
+        line-height: 1.3em;
+      }
 
-div#app main#mainView .references p{
-  font-size: 0.9em;
-  line-height: 1.3em;
-}
+      div#app main#mainView .footnotes p {
+        font-size: 0.9em;
+        line-height: 1.3em;
+      }
 
-div#app main#mainView .footnotes p {
-  font-size: 0.9em;
-  line-height: 1.3em;
-}
+      div.indexations-foaf{
+          background-color: #f0f0f0;
+          padding: 0.5rem 1rem;
+      }
 
-div.indexations-foaf{
-    background-color: #f0f0f0;
-    padding: 0.5rem 1rem;
-}
+      div#schema-scholarly-article{
+          background-color: #f0f0f0;
+          padding: 0.5rem 1rem;
+      }
 
-div#schema-scholarly-article{
-    background-color: #f0f0f0;
-    padding: 0.5rem 1rem;
+      #schema-scholarly-article > span:nth-child(1)::before {
+          content: "Title: ";
+      }
 
-}
+      #schema-scholarly-article > span:nth-child(1) {
+          font-size:2rem;
+      }
 
-#schema-scholarly-article > span:nth-child(1)::before {
+      #schema-scholarly-article > span:nth-child(3)::before{
+          content: "Subtitle: ";
+          font-weight: bold;
+      }
 
+      #schema-scholarly-article > span[property="author"]::before{
+          content:"Author: ";
+          font-weight: bold;
+      }
 
-content: "Title: ";
+      .indexations-foaf {
+          display:none;
+      }
 
-}
+      #schema-scholarly-article > span:nth-child(9) > span:nth-child(1)::before {
+          content:"Publisher: ";
+          font-weight: bold;
+      }
 
-#schema-scholarly-article > span:nth-child(1) {
+      #schema-scholarly-article > span:nth-child(9) > span:nth-child(3)::before {
+          content:"ISSN: ";
+          font-weight: bold;
+      }
 
-font-size:2rem;
+      #schema-scholarly-article > div:nth-child(10) > span:nth-child(1) > span:nth-child(1)::before {
+          content:"Journal: ";
+          font-weight: bold;
+      }
 
-}
+      #schema-scholarly-article > div:nth-child(10) > span:nth-child(2)::before {
+          content:"Date: ";
+          font-weight: bold;
+      }
 
-#schema-scholarly-article > span:nth-child(3)::before{
+      .titreDossier::before {
+          content:"Dossier: ";
+          font-weight: bold;
+      }
 
+      div.resume:nth-child(1)::before {
+          content:"Abstract: ";
+          font-weight: bold;
+      }
 
-content: "Subtitle: ";
-font-weight: bold;
+      .keywords::before {
+          content:"Aligned Keywords:";
+          font-weight: bold;
+      }
 
-}
+      div.authorKeywords_fr {
+          background-color: #f0f0f0;
+          padding: 0.5rem 1rem;
+      }
 
-#schema-scholarly-article > span[property="author"]::before{
-content:"Author: ";
-font-weight: bold;
-}
+      div.authorKeywords_en {
+          background-color: #f0f0f0;
+          padding: 0.5rem 1rem;
+      }
 
-.indexations-foaf {
-display:none;
-}
+      div.indexations-foaf:before {
+          content:"foaf: ";
+          font-style:italic;
 
-#schema-scholarly-article > span:nth-child(9) > span:nth-child(1)::before{
-
-content:"Publisher: ";
-font-weight: bold;
-
-}
-
-#schema-scholarly-article > span:nth-child(9) > span:nth-child(3)::before{
-content:"ISSN: ";
-font-weight: bold;
-}
-
-#schema-scholarly-article > div:nth-child(10) > span:nth-child(1) > span:nth-child(1)::before{
-content:"Journal: ";
-font-weight: bold;
-}
-
-#schema-scholarly-article > div:nth-child(10) > span:nth-child(2)::before{
-content:"Date: ";
-font-weight: bold;
-}
-
-.titreDossier::before{
-content:"Dossier: ";
-font-weight: bold;
-}
-
-div.resume:nth-child(1)::before{
-content:"Abstract: ";
-font-weight: bold;
-}
-
-.keywords::before{
-content:"Aligned Keywords:";
-font-weight: bold;
-}
-
-div.authorKeywords_fr{
-    background-color: #f0f0f0;
-    padding: 0.5rem 1rem;
-}
-
-div.authorKeywords_en{
-    background-color: #f0f0f0;
-    padding: 0.5rem 1rem;
-}
-
-div.indexations-foaf:before{
-    content:"foaf: ";
-    font-style:italic;
-
-}
-div.authorKeywords_fr:before{
-    content:"Mot-clefs: ";
-    font-style:italic;
-}
-div.authorKeywords_en:before{
-    content:"Keywords: ";
-    font-style:italic;
-}
+      }
+      div.authorKeywords_fr:before {
+          content:"Mot-clefs: ";
+          font-style:italic;
+      }
+      div.authorKeywords_en:before {
+          content:"Keywords: ";
+          font-style:italic;
+      }
 
 p span.epigraphe {
   margin-left: 100px;
