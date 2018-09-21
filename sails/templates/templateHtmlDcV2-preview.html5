@@ -680,7 +680,6 @@ span.question:hover::after {
      </div>
   $endfor$
   $endif$
-</div>
 
 <!--indexation FOAF pour traducteur de l'article -->
   $if(translator)$
@@ -693,7 +692,6 @@ span.question:hover::after {
      </div>
   $endfor$
   $endif$
-</div>
 
 <!--indexation FOAF pour transcripteur des propos (entretiens, débats) -->
   $if(transcriber)$
@@ -706,7 +704,6 @@ span.question:hover::after {
      </div>
   $endfor$
   $endif$
-</div>
 
 <!--Integration schema "ScholarlyArticle"-->
      <div vocab="http://schema.org/" typeof="ScholarlyArticle" resource="#article" id="schema-scholarly-article">
