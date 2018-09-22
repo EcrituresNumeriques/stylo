@@ -18,10 +18,10 @@ git clone git@github.com:EcrituresNumeriques/stylo.git
 
 Stylo uses submodules to pull templates (and those templates are hosted of platform on framagit), if you have an account with ssh enabled on framagit, you can pull all submodules with
 
-`
+```
 git submodule init
 git submodule update
-`
+```
 
 if you don't have an account yet, you can pull files from https://framagit.org/ecrinum/templates-stylo and put them in the folder sails/template/ <= NOT RECOMMENDED
 
@@ -93,11 +93,11 @@ This gives your access to stylo (no-front end) on http://localhost:8080, your mo
 
 You will need then to build and server the front end via node.js and npm :
 
-`
+```
 cd front
 npm install
 npm run start
-`
+```
 
 You will now see the front end on http://localhost:8080
 
@@ -112,10 +112,10 @@ docker exec -it <NameOfMongoInstance> mongo
 
 You will enter the mongo shell, you will need then to type:
 
-`
+```
 use sails
 db.users.update({email:"<EmailOfTheAccountYouWantAsAdministrator>"},{$set:{admin:true}});
-`
+```
 
 the system shoud respond something like, (else, there's something wrong):
 
