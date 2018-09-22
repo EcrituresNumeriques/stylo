@@ -8,6 +8,24 @@ Depending on your needs, you may want to install stylo in different ways :
  In any case you will need on your computer docker[https://docs.docker.com/install/] and docker-compose[https://docs.docker.com/compose/install/]
  Developpement require node.js and npm installed as well
 
+# Clone git project
+
+First step is to clone the project, you can use either the https or ssh version of the repo
+
+`
+git clone git@github.com:EcrituresNumeriques/stylo.git
+`
+
+Stylo uses submodules to pull templates (and those templates are hosted of platform on framagit), if you have an account with ssh enabled on framagit, you can pull all submodules with
+
+`
+git submodule init
+git submodule update
+`
+
+if you don't have an account yet, you can pull files from https://framagit.org/ecrinum/templates-stylo and put them in the folder sails/template/ <= NOT RECOMMENDED
+
+
 # deploy beta
 
 This is the easiest deployement.
