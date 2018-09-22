@@ -1,0 +1,3 @@
+[submodule "sails/templates"]
+	path = sails/templates
+	url = git@framagit.org:ecrinum/templates-stylo.git
