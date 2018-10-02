@@ -58,6 +58,21 @@ Voici un **mot** en gras
 
 
 ## Images
+Une image peut être intégrée à un document rédigé avec le langage de balisage Markdown avec le balisage suivant :
+
+- un point d'exclamation `!` ;
+- suivi de crochets `[]` comportant la description de l'image ;
+- puis de parenthèses `()` comportant le chemin ou l'adresse de l'image.
+
+Voici une image, en l'occurrence le logo du W3C (World Wide Web Consortium) :
+
+![Logo du W3C composé de la lettre W en bleu, du chiffre 3 en bleu et de la lettre C en noir](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/W3C_icon.svg/212px-W3C_icon.svg.png)
+
+Et voici le balisage correspondant :
+
+```
+![Logo du W3C composé de la lettre W en bleu, du chiffre 3 en bleu et de la lettre C en noir](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/W3C_icon.svg/212px-W3C_icon.svg.png)
+```
 
 ## Liens
 Les liens se balisent en distinguant :
