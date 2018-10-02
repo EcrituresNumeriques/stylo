@@ -72,7 +72,17 @@ Voici [un lien vers une page Wikipédia](https://fr.wikipedia.org/wiki/Hyperlien
 ```
 
 ## Citations
+Une citation peut être indiquée sémantiquement par le biais du balisage suivant : un crochet fermant suivi d'un espace en début de paragraphe `> `.
+Voici un exemple de citation :
 
+> Un lien hypertexte ou hyperlien permet en cliquant dessus d'atteindre un autre endroit de la page, une autre page ou un autre site évalué comme pertinent par l'auteur.
+> Source : [Wikipédia](https://fr.wikipedia.org/wiki/Hyperlien)
+
+Et voici le balisage correspondant :
+```
+> Un lien hypertexte ou hyperlien permet en cliquant dessus d'atteindre un autre endroit de la page, une autre page ou un autre site évalué comme pertinent par l'auteur.
+> Source : [Wikipédia](https://fr.wikipedia.org/wiki/Hyperlien)
+```
 
 ## Balisage sémantique
 
