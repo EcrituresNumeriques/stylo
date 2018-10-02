@@ -37,7 +37,7 @@ Voici mon texte[^1]
 
 ## Italiques et gras
 
-- L'italique se balise avec des ```_````avant et après le mot ou l'expression en italique. Par exemple:
+- L'italique se balise avec des ```_``` avant et après le mot ou l'expression en italique. Par exemple:
 ```
 Voici un _mot_ en italique
 ```
@@ -47,7 +47,7 @@ Donnerai:
 Voici un _mot_ en italique
 
 
-- Le gras se balise avec deux ```**````avant et après le mot ou l'expression en italique. Par exemple:
+- Le gras se balise avec deux ```**``` avant et après le mot ou l'expression en italique. Par exemple:
 ```
 Voici un **mot** en gras
 ```
@@ -60,6 +60,16 @@ Voici un **mot** en gras
 ## Images
 
 ## Liens
+Les liens se balisent en distinguant :
+
+- le lien, c'est-à-dire le mot ou l'expression indiqué comme un lien, avec des crochets `[]` ;
+- et la cible, l'URL de destination, avec des parenthèses `()`.
+
+Voici [un lien vers une page Wikipédia](https://fr.wikipedia.org/wiki/Hyperlien), et les balises correspondantes :
+
+```
+[un lien vers une page Wikipédia](https://fr.wikipedia.org/wiki/Hyperlien)
+```
 
 ## Citations
 
@@ -79,4 +89,3 @@ Donnera en HTML:
 ```
 Voici la <span class="these">thèse fondamentale de l'article</span>
 ```
-
