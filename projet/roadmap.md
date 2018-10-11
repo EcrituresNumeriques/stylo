@@ -4,6 +4,10 @@
 
 **Priorité 1 (été)**
 
+- [ ] gestion de la liste des articles: pouvoir drag&dropper les articles dans des "dossiers" 
+  - principe: gestion de labels par utilisateur et non par article: ce qui permet à chacun d'avoir sa propre organisation.
+  - liste des utilisateurs par article
+  - suppression d'un article partagé ne supprime pas chez les autres 
 - [ ] header éditeur : Titre de l'article + bouton compare
 - [ ] **diff entre versions**
 - [ ] **import/synchro Zotero**
@@ -15,6 +19,7 @@
 - [ ] gestion du lock avec message d'avertissement : attention
 - [ ] Ergo des autres modals:
   - [ ] Biblio : icônes sur les références biblio pour dire : "cliquer et coller la clé dans le presse papier"
+    - visualiser les infos : auteur/titre/date
   - [ ] Versions : icônes preview sur chaque version ?
   - [ ] Sommaire : améliorer le saut de section : flash/surlignage de la ligne
 ⁻ [ ] Export pdf
