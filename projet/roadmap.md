@@ -2,37 +2,69 @@
 
 ### > septembre 2018
 
-**Priorité 1 (été)**
+**Priorité 1 (d'ici Noël)**
 
-- [ ] gestion de la liste des articles: pouvoir drag&dropper les articles dans des "dossiers" 
-  - principe: gestion de labels par utilisateur et non par article: ce qui permet à chacun d'avoir sa propre organisation.
-  - liste des utilisateurs par article
-  - suppression d'un article partagé ne supprime pas chez les autres 
-- [ ] header éditeur : Titre de l'article + bouton compare
+- migration (20nov)
+  - [ ] **la suppression d'un article** partagé ne doit pas supprimer chez les autres
+
+- [ ] **gestion de la liste des articles** (2j. pour les labels)
+    - principe: gestion de labels par utilisateur et non par article: ce qui permet à chacun d'avoir sa propre organisation.
+    - pouvoir drag&dropper les articles dans des "dossiers"
+
+- [ ] **liste des utilisateurs par article** (1 semaine)
+
+- [ ] **visualisation des espaces insécables** non encodés (si 1j de travail, on y va. Sinon on descend la priorité)
+  - [ ] hacker la font pour afficher l'espace insécables (&160;)
+    - [ ] vérifier si le hack fonctionne pour le diff.
+  - [ ] bouton pour ajouter un espace insécable
+
 - [ ] **diff entre versions**
-- [x] **import/synchro Zotero**
-  - [ ] synchro sur compte privé/sous-collection
-  - [ ] issue #41
+  - bouton rétablir + commentaire + clic sur modif positionne le curseur d'édition
+  - POC (1 semaine) dans une page dédiée
 
-- [ ] Templates & process
+- [x] **import/synchro Zotero**
+  - [x] synchro sur sous-collection (done pour version sails 1.0)
+  - [ ] compte privé
+  - [ ] issue #41 (
+  - [ ] contacter zotero pour un acces api privilégié. (nicolas)
+  - [ ] Autre piste : betterbibtex
+
+- [ ] limitation des nbrs de version (1h30)
+  - [ ] on met un nbr de version infini et on ne charge que les 30 dernières + bouton pour charger les autres versions.
+
+- [ ] Templates & process (Nicolas et Marcello)
   - [ ] 1 neutre pour la preview HTML (Nicolas)
-  - [ ] choix entre 3 types de documents
+  - [ ] choix entre 3 types de documents : article, mémoire,
   - [ ] mémoire, thèse
-- [ ] limitation des nbrs de version à 50 versions et message d'erreur > fork ou on écrase les premières versions ?
-- [ ] améliorer l'éditeur wysiwym
-  - [ ] mode visuel + tooltips footnote/biblio ? + agrandir/réduire la police
-  - [ ] "fausse pagination"
-  - [ ] correction ortho.
-  - [ ] surlignage de la ligne curseur.
-- [ ] gestion du lock avec message d'avertissement : attention
+
+
 - [ ] Ergo des autres modals:
   - [ ] Biblio : icônes sur les références biblio pour dire : "cliquer et coller la clé dans le presse papier"
     - [ ] visualiser les infos : auteur/titre/date
-  - [ ] Versions : icônes preview sur chaque version ?
-  - [ ] Sommaire : améliorer le saut de section : flash/surlignage de la ligne
+    - [ ] affichage conflictuel : metadonnées VS comparaison de fichier
+  - [ ] Versions :
+    - icônes preview sur chaque version ?
+    - fetcher le nbr d'annotation + la date de la dernière annotation (idée->>regarder l'api hypothes.is pour récupérer toutes les annotations sur une url tronquée des versions)
+  - [ ] Sommaire : améliorer le saut de section : flash/surlignage de la ligne (v. nouvel éditeur)
+
+
+- [ ] gestion du lock avec message d'avertissement, subscribe côté frondend
+- [ ] gestion utilisateur (avec affichage de la liste)
 
 
 **Priorité 2**
+
+- [ ] **Comparaison** - quelques soient les versions
+
+- [ ] **Affichage** - gestion du header éditeur
+  - Edition du Titre de l'article + gestion titre long pour bouton compare
+
+
+- [ ] améliorer l'éditeur wysiwym (v. nouvel éditeur)
+  - [ ] correction ortho.
+  - [ ] surlignage de la ligne curseur.
+  - [ ] "fausse pagination"
+  - [ ] mode visuel + tooltips footnote/biblio ? + agrandir/réduire la police
 
 - [ ] push > git
 - [ ] image dropping
