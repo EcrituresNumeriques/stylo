@@ -10,7 +10,15 @@
   - suppression d'un article partagé ne supprime pas chez les autres 
 - [ ] header éditeur : Titre de l'article + bouton compare
 - [ ] **diff entre versions**
-- [ ] **import/synchro Zotero**
+- [x] **import/synchro Zotero**
+  - [ ] synchro sur compte privé/sous-collection
+  - [ ] issue #41
+
+- [ ] Templates & process
+  - [ ] 1 neutre pour la preview HTML (Nicolas)
+  - [ ] choix entre 3 types de documents
+  - [ ] mémoire, thèse
+- [ ] limitation des nbrs de version à 50 versions et message d'erreur > fork ou on écrase les premières versions ?
 - [ ] améliorer l'éditeur wysiwym
   - [ ] mode visuel + tooltips footnote/biblio ? + agrandir/réduire la police
   - [ ] "fausse pagination"
@@ -19,17 +27,19 @@
 - [ ] gestion du lock avec message d'avertissement : attention
 - [ ] Ergo des autres modals:
   - [ ] Biblio : icônes sur les références biblio pour dire : "cliquer et coller la clé dans le presse papier"
-    - visualiser les infos : auteur/titre/date
+    - [ ] visualiser les infos : auteur/titre/date
   - [ ] Versions : icônes preview sur chaque version ?
   - [ ] Sommaire : améliorer le saut de section : flash/surlignage de la ligne
-⁻ [ ] Export pdf
+
 
 **Priorité 2**
 
-- push > git
-- image dropping
-- gestion du lock : websocket : ajout des modifications du live + versions en semi-temps réel.
-- dashboard usages - tracking/logging
+- [ ] push > git
+- [ ] image dropping
+- [ ] gestion du lock : websocket : ajout des modifications du live + versions en semi-temps réel.
+- [ ] dashboard usages - tracking/logging
+- [ ] synchro locale
+- [ ] export pdf
 
 **Priorité 3**
 
