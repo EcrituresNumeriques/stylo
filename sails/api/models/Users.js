@@ -283,8 +283,7 @@ module.exports = {
       controlledKeywords: []
       link-citations: true
       nocite: ''
-      
-      ---`
+---`
     }
   },
   afterCreate: function(user, next){
