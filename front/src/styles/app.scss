@@ -242,7 +242,10 @@ textarea{
 .react-codemirror2{
   .CodeMirror{
       height:auto;
-      font-family: "BellweatherSans-shownbsp", monospace
+      font-family: "BellweatherSans-shownbsp", monospace;
+  }
+  .CodeMirror-cursors{
+    font-family: monospace;
   }
   .CodeMirror-scroll{
       min-height: 600px;
