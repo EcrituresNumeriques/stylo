@@ -39,7 +39,7 @@ module.exports.routes = {
   //Articles
   'GET /api/v1/my-articles':'ArticlesController.findMine',
   'GET /api/v1/articles':'ArticlesController.find',
-  'GET /api/v1/articles/:id':'ArticlesController.findOne',
+  'GET /api/v1/articles/:id':'ArticlesController.findLastVersions',
   'POST /api/v1/articles':'ArticlesController.create',
   'POST /api/v1/articles/:id':'ArticlesController.update',
   'POST /api/v1/share-articles/:id':'ArticlesController.share',

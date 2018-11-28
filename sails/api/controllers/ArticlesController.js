@@ -13,6 +13,12 @@ module.exports = {
         res.ok(thisUsersArticle);
         });
   },
+  findLastVersions: function(req,res){
+      Articles.findOne({id:req.params.id}).populate("versions",{limit: 30, sort: 'createdAt DESC'}).exec(function(err,thisArticle){
+      //console.log("userfound",thisUsersArticle);
+      res.ok(thisArticle);
+      });
+  },
   share: function(req,res){
     //console.log("searching",req.body,req.query,req.params);
       Articles.findOne({id:req.params.id}).exec(function(err,thisArticle){

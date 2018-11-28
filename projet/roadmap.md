@@ -13,9 +13,9 @@
 
 - [ ] **liste des utilisateurs par article** (1 semaine)
 
-- [ ] **visualisation des espaces insécables** non encodés (si 1j de travail, on y va. Sinon on descend la priorité)
-  - [ ] hacker la font pour afficher l'espace insécables (&160;)
-    - [ ] vérifier si le hack fonctionne pour le diff.
+- [X] **visualisation des espaces insécables** non encodés (si 1j de travail, on y va. Sinon on descend la priorité)
+  - [X] hacker la font pour afficher l'espace insécables (&160;)
+    - [X] vérifier si le hack fonctionne pour le diff.
   - [ ] bouton pour ajouter un espace insécable
 
 - [ ] **diff entre versions**
@@ -30,7 +30,8 @@
   - [ ] Autre piste : betterbibtex
 
 - [ ] limitation des nbrs de version (1h30)
-  - [ ] on met un nbr de version infini et on ne charge que les 30 dernières + bouton pour charger les autres versions.
+  - [x] on ne charge que les 30 dernières
+  - [ ] on met un nbr de version infini via un bouton pour charger les anciennes versions
 
 - [ ] Templates & process (Nicolas et Marcello)
   - [ ] 1 neutre pour la preview HTML (Nicolas)
