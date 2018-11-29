@@ -4,6 +4,7 @@ import webpack from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import WebpackMd5Hash from 'webpack-md5-hash';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 import path from 'path';
 
 const GLOBALS = {
@@ -25,6 +26,9 @@ export default {
     filename: '[name].[chunkhash].js'
   },
   plugins: [
+    new CopyWebpackPlugin([
+      { from: 'src/fonts', to: 'fonts' }
+    ]),
     // Hash the files using MD5 so that their names change when the content changes.
     new WebpackMd5Hash(),
 
