@@ -5,7 +5,7 @@
 **Priorité 1 (d'ici Noël)**
 
 - migration (20nov)
-  - [ ] **la suppression d'un article** partagé ne doit pas supprimer chez les autres
+  - [x] **la suppression d'un article** partagé ne doit pas supprimer chez les autres
 
 - [ ] **gestion de la liste des articles** (2j. pour les labels)
     - principe: gestion de labels par utilisateur et non par article: ce qui permet à chacun d'avoir sa propre organisation.
