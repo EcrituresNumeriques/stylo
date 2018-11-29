@@ -19,6 +19,14 @@ module.exports = {
       res.ok(thisArticle);
       });
   },
+  removeFromOwners: function(req,res){
+    Articles.findOne({id:req.params.id}).exec(function(err,thisArticle){
+    //console.log("userfound",thisUsersArticle);
+      thisArticle.owner = thisArticle.owner.filter((a)=>(a != req.session.user.id))
+      thisArticle.save();
+      res.ok(thisArticle);
+    });
+  },
   share: function(req,res){
     //console.log("searching",req.body,req.query,req.params);
       Articles.findOne({id:req.params.id}).exec(function(err,thisArticle){

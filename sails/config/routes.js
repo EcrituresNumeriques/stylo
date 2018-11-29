@@ -43,7 +43,7 @@ module.exports.routes = {
   'POST /api/v1/articles':'ArticlesController.create',
   'POST /api/v1/articles/:id':'ArticlesController.update',
   'POST /api/v1/share-articles/:id':'ArticlesController.share',
-  'DELETE /api/v1/articles/:id':'ArticlesController.destroy',
+  'DELETE /api/v1/articles/:id':'ArticlesController.removeFromOwners',
 
   //Versions
   'GET /api/v1/versions':'VersionsController.find',
