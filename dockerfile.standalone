@@ -37,7 +37,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 #install pandoc
 ENV PKGREL 1
 ENV VERSION 1.19.2.1
-ADD pandoc-${VERSION}-${PKGREL}-amd64.deb /pandoc.deb
+ADD vendors/pandoc-${VERSION}-${PKGREL}-amd64.deb /pandoc.deb
 RUN export DEBIAN_FRONTEND=noninteractive \
     && dpkg -i /pandoc.deb \
     && rm /pandoc.deb
@@ -50,7 +50,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && ls examples/*.py > /installed-pandocfilters.txt \
     && rm -rf /pandocfilters
 
-ADD https://raw.githubusercontent.com/silvio/pandocfilters/sfr/git-diff-filter/examples/git-diff.py /usr/bin/git-diff.py
+ADD vendors/git-diff.py /usr/bin/git-diff.py
 RUN echo "examples/git-diff.py" >> /installed-pandocfilters.txt
 
 RUN sed -i 's#examples#/usr/bin#' /installed-pandocfilters.txt
