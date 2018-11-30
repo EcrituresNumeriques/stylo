@@ -13,6 +13,7 @@ import Biblio from 'components/write/Biblio';
 import WordCount from 'components/write/WordCount';
 import ModalTextarea from 'components/modals/ModalTextarea';
 import ModalInput from 'components/modals/ModalInput';
+import ModalDualInput from 'components/modals/ModalDualInput';
 import ModalExport from 'components/modals/ModalExport';
 import {Controlled as CodeMirror} from 'react-codemirror2';
 import Select from 'react-select';
@@ -36,6 +37,7 @@ export default class Live extends Component {
       modalSourceZotero:false,
       zoteroURL:null,
       zoteroGroupID:null,
+      zoteroCollectionKey:null,
       zoteroFetch:false
     };
     this.updateMD = this.updateMD.bind(this);
@@ -80,7 +82,7 @@ export default class Live extends Component {
     })
     .then(function(json){
       json.versions = json.versions.sort(sortByDateDesc);
-      that.setState({loaded:true, title:json.title,version:json.versions[0].version,revision:json.versions[0].revision, versions:json.versions,md:json.versions[0].md,yaml:json.versions[0].yaml,bib:json.versions[0].bib,zoteroURL:json.versions[0].zoteroURL,zoteroGroupID:json.versions[0].zoteroGroupID});
+      that.setState({loaded:true, title:json.title,version:json.versions[0].version,revision:json.versions[0].revision, versions:json.versions,md:json.versions[0].md,yaml:json.versions[0].yaml,bib:json.versions[0].bib,zoteroCollectionKey:json.versions[0].zoteroCollectionKey,zoteroURL:json.versions[0].zoteroURL,zoteroGroupID:json.versions[0].zoteroGroupID});
       return null;
     });
   }
@@ -97,7 +99,7 @@ export default class Live extends Component {
     if(!autosave){
       target = '';
     }
-    let corps = {autosave,major,article:that.state.id,version,revision,md:that.state.md,yaml:that.state.yaml,bib:that.state.bib,article:that.props.match.params.article,zoteroURL:this.state.zoteroURL,zoteroGroupID:this.state.zoteroGroupID};
+    let corps = {autosave,major,article:that.state.id,version,revision,md:that.state.md,yaml:that.state.yaml,bib:that.state.bib,article:that.props.match.params.article,zoteroURL:this.state.zoteroURL,zoteroGroupID:this.state.zoteroGroupID,zoteroCollectionKey:this.state.zoteroCollectionKey};
     fetch('/api/v1/versions/'+target,{
       method:'POST',
       body: JSON.stringify(corps),
@@ -236,9 +238,11 @@ export default class Live extends Component {
   closeSourceZotero(){
       this.setState({modalSourceZotero:false});
   }
-  submitSourceZotero(groupID){
-      let zoteroURL = 'https://api.zotero.org/groups/'+groupID+'/items?v=3&format=bibtex';
-              this.setState({zoteroURL:zoteroURL,zoteroGroupID:groupID,modalSourceZotero:false});
+  submitSourceZotero(groupID,collectionKey = null){
+      let zoteroURL =  'https://api.zotero.org/groups/';
+      if(collectionKey){zoteroURL += `${groupID}/collections/${collectionKey}/items/?v=3&format=bibtex`}
+      else{zoteroURL += groupID+'/items?v=3&format=bibtex';}
+              this.setState({zoteroURL:zoteroURL,zoteroGroupID:groupID,zoteroCollectionKey:collectionKey,modalSourceZotero:false});
               this.refreshZotero(zoteroURL);
   }
   refreshZotero(zoteroURL = this.state.zoteroURL){
@@ -362,7 +366,10 @@ export default class Live extends Component {
   year = {1979},
 }`}/>}
           {this.state.modalSourceRef && <ModalTextarea cancel={this.closeSourceRef} confirm={this.submitSourceRef} title="References" text="" placeholder="" value={this.state.bib}/>}
-          {this.state.modalSourceZotero && <ModalInput cancel={this.closeSourceZotero} confirm={this.submitSourceZotero} title="Config Zotero" text={"Enter here the ID number of the group (needs to be public) as found in https://www.zotero.org/groups/{IDnumber}/{name}. Currently set to fetch from : "+this.state.zoteroURL} placeholder="IDnumber, ex 2229019" value={this.state.zoteroGroupID}/>}
+          {this.state.modalSourceZotero && <ModalDualInput cancel={this.closeSourceZotero} confirm={this.submitSourceZotero} title="Config Zotero" text={"Enter here the ID number of the group (needs to be public), and collection key if desired, as found in https://www.zotero.org/groups/{IDnumber}/{name}. Currently set to fetch from : "+this.state.zoteroURL} placeholder="IDnumber, ex 2229019"
+          text2='(optional) Please enter the collection Key you want to fetch from, as found in https://www.zotero.org/groups/{IDnumber}/{name}/items/collectionKey/{collectionKey}' value={this.state.zoteroGroupID}
+          value2={this.state.zoteroCollectionKey}
+        />}
         </section>,
         <section id="input" key="inputs" ref="inputs" className={this.state.compareTo?"compared":"solo"}>
           <h1 id="title" key="title">{this.state.title} ({this.state.loaded?"Up to Date":"Fetching"})</h1>
