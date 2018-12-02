@@ -16,14 +16,14 @@ export default function Biblio(props){
     entries = bib.split(/(?=@)/g)
       .filter((ref)=>(ref.match(/^@/g)))
       .map((ref)=>(ref.replace(/^\s+|\s+$/g, '')))
-      .map((ref)=>({title:ref.replace(/\n/g,'&#13;'),key:ref.match(/^@.+{(.+),/)[1]}))
+      .map((ref)=>({title:ref,key:ref.match(/^@.+{(.+),/)[1]}))
       .sort(compare);
 
   return (
     <div id="biblio">
         <h1 className={props.closed?"title closed":"title"} onDoubleClick={()=>props.toggle()}>Biblio</h1>
         {!props.closed && <section>
-            {entries.map((ref,i)=>(<Clipboard key={"ref"+i} component="p" data-clipboard-text={"[@"+ref.key+"]"} button-title={"[@"+ref.title+"]"}>@{ref.key}</Clipboard>))}
+            {entries.map((ref,i)=>(<Clipboard key={"ref"+i} component="p" data-clipboard-text={"[@"+ref.key+"]"} button-title={ref.title}>@{ref.key}</Clipboard>))}
         </section>}
         {props.addRef && !props.closed && <button onClick={()=>props.addRef()}>+ Add reference</button>}
         {props.sourceRef && !props.closed && <button onClick={()=>props.sourceRef()}>See source</button>}
