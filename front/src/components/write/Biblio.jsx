@@ -12,8 +12,21 @@ function compare(a,b) {
 
 export default function Biblio(props){
     const bib = props.bib || "";
+
+    const itemsAllowed = [
+      "@book",
+      "@article",
+      "@incollection",
+      "@phdthesis",
+      "@misc",
+      "@inproceedings",
+      "@techreport",
+      "@unpublished",
+    ]
+    const regex = new RegExp('/(?='+itemsAllowed.join(')|(?=')+')/g')
+  
     let entries = [];
-    entries = bib.split(/(?=@)/g)
+    entries = bib.split(regex)
       .filter((ref)=>(ref.match(/^@/g)))
       .map((ref)=>(ref.replace(/^\s+|\s+$/g, '')))
       .map((ref)=>({title:ref,key:ref.match(/^@.+{(.+),/)[1]}))
