@@ -13,7 +13,9 @@ function compare(a,b) {
 export default function Biblio(props){
     const bib = props.bib || "";
 
+    // TODO Understand why we need a spacer for book to be understood
     const itemsAllowed = [
+      "@spacer",
       "@book",
       "@article",
       "@incollection",
@@ -24,7 +26,7 @@ export default function Biblio(props){
       "@unpublished",
     ]
     const regex = new RegExp('/(?='+itemsAllowed.join(')|(?=')+')/g')
-  
+
     let entries = [];
     entries = bib.split(regex)
       .filter((ref)=>(ref.match(/^@/g)))
