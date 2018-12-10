@@ -388,7 +388,7 @@ export default class Live extends Component {
             rtl={false}
             searchable={false}
           />
-          <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true}} editorDidMount={editor => { this.instance = editor }}/>
+          <CodeMirror value={this.state.md} onBeforeChange={this.updateMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true,extraKeys:{"Shift-Ctrl-Space": function(cm) {cm.replaceSelection("\u00a0");}}}} editorDidMount={editor => { this.instance = editor }}/>
           {this.state.compareTo && <div id="compareTo" dangerouslySetInnerHTML={{__html:this.computeDiff(this.state.versions.find((v)=>v.id==this.state.compareTo).md,this.state.md)}}></div>}
       </section>
       ]
