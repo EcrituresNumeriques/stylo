@@ -99,6 +99,14 @@ Et voici le balisage correspondant :
 > Source : [Wikipédia](https://fr.wikipedia.org/wiki/Hyperlien)
 ```
 
+## Espace insécable
+
+Les espaces insécables sont représentés par un point médian : `·`. Exemple : `Comment allez-vous·?` Ils peuvent ajoutés avec la commande `Ctrl`+`Shift`+`Espace`.
+
+Il est aussi possible d'utiliser l'espace insécable en ASCII `&nbsp;`.
+
+À noter que si votre source markdown provient de la conversion pandoc docx (ou odt) vers markdown, les espaces insécables seront conservés et présentés dans Stylo sous forme de point médian.
+
 ## Balisage sémantique
 
 Les mots ou les expressions que l'on veut baliser sémantiquement sont entre ```[]``` et suivi par des ```{}``` dans lesquelles on déclare la classe.
