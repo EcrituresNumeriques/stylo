@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import store from 'store/configureStore';
 import objectAssign from 'object-assign';
-import ExportVersion from 'components/write/export';
 import YamlEditor from 'components/yamleditor/YamlEditor';
 import sortByDateDesc from 'helpers/sorts/dateDesc';
 import _ from 'lodash';
-import YAML from 'js-yaml';
 import Timeline from 'components/write/Timeline';
 import Sommaire from 'components/write/Sommaire';
 import Biblio from 'components/write/Biblio';
 import WordCount from 'components/write/WordCount';
 import ModalTextarea from 'components/modals/ModalTextarea';
-import ModalInput from 'components/modals/ModalInput';
 import ModalDualInput from 'components/modals/ModalDualInput';
 import ModalExport from 'components/modals/ModalExport';
 import {Controlled as CodeMirror} from 'react-codemirror2';
@@ -99,7 +94,7 @@ export default class Live extends Component {
     if(!autosave){
       target = '';
     }
-    let corps = {autosave,major,article:that.state.id,version,revision,md:that.state.md,yaml:that.state.yaml,bib:that.state.bib,article:that.props.match.params.article,zoteroURL:this.state.zoteroURL,zoteroGroupID:this.state.zoteroGroupID,zoteroCollectionKey:this.state.zoteroCollectionKey};
+    let corps = {autosave,major,version,revision,md:that.state.md,yaml:that.state.yaml,bib:that.state.bib,article:that.props.match.params.article,zoteroURL:this.state.zoteroURL,zoteroGroupID:this.state.zoteroGroupID,zoteroCollectionKey:this.state.zoteroCollectionKey};
     fetch('/api/v1/versions/'+target,{
       method:'POST',
       body: JSON.stringify(corps),
