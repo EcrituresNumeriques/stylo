@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const Password = require('../models/user_password');
 const Token = require('../models/user_token');
+const prepRecord = require('../helpers/prepRecord');
 
 module.exports = {
   createUser: async args => {
