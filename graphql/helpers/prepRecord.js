@@ -1,8 +1,10 @@
+const dateToString = require('./dateToString');
+
 const prepRecord = record => ({
     ...record._doc,
     _id:record.id,
-    updatedAt:new Date(record._doc.updatedAt).toUTCString(),
-    createdAt:new Date(record._doc.createdAt).toUTCString()
+    updatedAt:dateToString(record._doc.updatedAt),
+    createdAt:dateToString(record._doc.createdAt)
 })
 
 module.exports = prepRecord;
