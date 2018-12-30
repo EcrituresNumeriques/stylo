@@ -5,8 +5,18 @@ const paginate = require('../helpers/paginate');
 const User = require('../models/user');
 const Password = require('../models/user_password');
 const Token = require('../models/user_token');
+const Tag = require('../models/tag');
 const Article = require('../models/article');
+const Version = require('../models/version');
 
+
+/*
+---------------------------------------------------------
+|                                                       |
+|                       Users                           |
+|                                                       |
+---------------------------------------------------------
+*/
 
 const populateUser =  (user) => {
     const cleanedUser = prepRecord(user);
@@ -22,6 +32,9 @@ const populateUser =  (user) => {
 const getUserById = async (userId) => {
     try {
         const user = await User.findById(userId);
+        if(!user){
+            throw new Error(`Unable to find this user : _id ${userId} does not exist`)
+        }
         return populateUser(user);
     } catch (err) {
         throw err;
@@ -38,13 +51,69 @@ const getUsersByIds = async (usersIds,args) => {
     }
 };
 
+/*
+---------------------------------------------------------
+|                                                       |
+|                       Versions                        |
+|                                                       |
+---------------------------------------------------------
+*/
+
+const populateVersion = (version) => {
+    const cleanedVersion = prepRecord(version);
+    return {
+        ...cleanedVersion,
+        owner: getUserById.bind(this, cleanedVersion.owner),
+        article: getArticleById.bind(this, cleanedVersion.article || [])
+    }
+}
+
 const getVersionsByIds = async (versionsIds,args) => {
-    return [{_id:"hello Version"}]
+    try{
+        versionsIds = paginate(versionsIds,args.limit,args.page);
+        const versions = await Version.find({ _id: { $in: versionsIds } });
+        return versions.map(populateVersion);
+    }
+    catch(err){
+        throw err
+    }
 };
 
+/*
+---------------------------------------------------------
+|                                                       |
+|                       Tags                            |
+|                                                       |
+---------------------------------------------------------
+*/
+
+const populateTag = (tag) => {
+    const cleanedTag = prepRecord(tag)
+    return {
+        ...cleanedTag,
+        owner:getUserById.bind(this, cleanedTag.owner || []),
+        articles:getArticlesByIds.bind(this.cleanedTag.articles || [])
+    }
+}
+
 const getTagsByIds = async (tagsIds,args) => {
-    return [{_id:"hello tag"}]
+    try{
+        tagsIds = paginate(tagsIds,args.limit,args.page);
+        const tags = await Tag.find({ _id: { $in: tagsIds } });
+        return tags.map(populateTag);
+    }
+    catch(err){
+        throw err
+    }
 };
+
+/*
+---------------------------------------------------------
+|                                                       |
+|                       Articles                        |
+|                                                       |
+---------------------------------------------------------
+*/
 
 const populateArticle = (article) => {
     const cleanedArticle = prepRecord(article)
@@ -54,7 +123,6 @@ const populateArticle = (article) => {
         versions:getVersionsByIds.bind(this.cleanedArticle.versions || [])
     }
 }
-
 const getArticlesByIds = async (articlesIds,args) => {
     try{
         articlesIds = paginate(articlesIds,args.limit,args.page);
@@ -65,6 +133,26 @@ const getArticlesByIds = async (articlesIds,args) => {
         throw err
     }
 };
+const getArticleById = async (articleId) => {
+    try {
+        const article = await Article.findById(articleId);
+        if(!article){
+            throw new Error(`Unable to find this article : _id ${articleId} does not exist`)
+        }
+        return populateArticle(article);
+    } catch (err) {
+        throw err;
+    }
+};
+
+/*
+---------------------------------------------------------
+|                                                       |
+|                       Tokens                          |
+|                                                       |
+---------------------------------------------------------
+*/
+
 
 const populateToken =  (token) => {
     const cleanedToken = prepRecord(token);
@@ -86,6 +174,14 @@ const getTokensByIds = async (tokensIds,args) => {
         throw err
     }
 };
+
+/*
+---------------------------------------------------------
+|                                                       |
+|                       Passwords                       |
+|                                                       |
+---------------------------------------------------------
+*/
 
 const populatePassword =  (password) => {
     const cleanedPassword = prepRecord(password);
@@ -111,3 +207,4 @@ const getPasswordsByIds = async (passwordsIds,args) => {
 
 
 exports.populateUser = populateUser;
+exports.getUserById = getUserById;

@@ -3,11 +3,13 @@ const Isemail = require('isemail');
 
 const User = require('../models/user');
 const Password = require('../models/user_password');
-const Token = require('../models/user_token');
 
-const { populateUser } = require('./nestedModel')
+const { populateUser, getUserById } = require('./nestedModel')
 
 module.exports = {
+
+  // Mutations
+
   createUser: async args => {
     try{
       const userInput = {...args.user}
@@ -34,24 +36,32 @@ module.exports = {
       newUser.passwords.push(newPassword)
       newPassword.users.push(newUser)
       const createdUser = await newUser.save();
-      const createdPassword = await newPassword.save();
+      await newPassword.save();
       return populateUser(createdUser)
 
     }
     catch(err){
       throw err
     }
-        
-
-    return {_id: "blablabla",displayName:"Arthur"}
   },
   createUserFromPassword: () => ([]),
   createPasswordForUser: () => ([]),
   createTokenForUser: () => ([]),
+
+  // Queries
+  
   users: async () => {
     try{
       const users = await User.find();
       return users.map(populateUser)
+    }
+    catch(err){
+      throw err
+    }
+  },
+  user: async (args) => {
+    try{
+      return await getUserById(args._id)
     }
     catch(err){
       throw err

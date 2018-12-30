@@ -17,14 +17,14 @@ const versionSchema = new Schema({
   },
   title:{
     type:String,
-    default:''
+    default:'New Article'
   },
   version:{
-    type:Integer,
+    type:Number,
     default:0
   },
   revision:{
-    type:Integer,
+    type:Number,
     defaults:0
   },
   md:{

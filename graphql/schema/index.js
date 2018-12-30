@@ -21,14 +21,32 @@ type User {
 
 type Tag{
   _id: ID!
+  owner:User!
+  articles:[Article!]!
+  title:String!
+  description:String
+  createdAt:String
+  updatedAt:String
 }
 
 type Version{
   _id: ID!
+  createdAt:String
+  updatedAt:String
+  bib:String
+  yaml:String
+  md:String
+  revision:Int
+  version:Int
+  autosave:Boolean
+  article:Article
+  owner:User
 }
 
 type Article {
   _id: ID!
+  createdAt:String
+  updatedAt:String
   owners: [User!]!
   title: String
   versions: [Version!]!
@@ -64,6 +82,7 @@ input UserInput {
 
 type RootQuery {
   users:[User!]!
+  user(_id:ID!):User!
 }
 
 type RootMutation {
