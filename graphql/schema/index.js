@@ -23,8 +23,15 @@ type Tag{
   _id: ID!
 }
 
+type Version{
+  _id: ID!
+}
+
 type Article {
   _id: ID!
+  owners: [User!]!
+  title: String
+  versions: [Version!]!
 }
 
 type Token {

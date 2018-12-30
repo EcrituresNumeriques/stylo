@@ -5,6 +5,7 @@ const paginate = require('../helpers/paginate');
 const User = require('../models/user');
 const Password = require('../models/user_password');
 const Token = require('../models/user_token');
+const Article = require('../models/article');
 
 
 const populateUser =  (user) => {
@@ -37,12 +38,32 @@ const getUsersByIds = async (usersIds,args) => {
     }
 };
 
+const getVersionsByIds = async (versionsIds,args) => {
+    return [{_id:"hello Version"}]
+};
+
 const getTagsByIds = async (tagsIds,args) => {
     return [{_id:"hello tag"}]
 };
 
+const populateArticle = (article) => {
+    const cleanedArticle = prepRecord(article)
+    return {
+        ...cleanedArticle,
+        owners:getUsersByIds.bind(this, cleanedArticle.owners || []),
+        versions:getVersionsByIds.bind(this.cleanedArticle.versions || [])
+    }
+}
+
 const getArticlesByIds = async (articlesIds,args) => {
-    return [{_id:"hello article"}]
+    try{
+        articlesIds = paginate(articlesIds,args.limit,args.page);
+        const articles = await Article.find({ _id: { $in: articlesIds } });
+        return articles.map(populateArticle);
+    }
+    catch(err){
+        throw err
+    }
 };
 
 const populateToken =  (token) => {
