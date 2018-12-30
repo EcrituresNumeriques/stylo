@@ -6,14 +6,14 @@ type User {
   _id: ID!
   displayName: String!
   email: String!
+  firstName:String
+  lastName:String
+  institution:String
   tags(limit:Int,page:Int):[Tag!]!
   articles(limit:Int,page:Int):[Article!]!
   tokens(limit:Int,page:Int):[Token!]!
   passwords(limit:Int,page:Int):[Password!]!
   admin:Boolean
-  firstName:String
-  lastName:String
-  institution:String
   yaml:String
   createdAt:String
   updatedAt:String
@@ -21,57 +21,57 @@ type User {
 
 type Tag{
   _id: ID!
-  owner:User!
-  articles:[Article!]!
   title:String!
   description:String
+  articles:[Article!]!
+  owner:User!
   createdAt:String
   updatedAt:String
 }
 
 type Version{
   _id: ID!
-  createdAt:String
-  updatedAt:String
-  bib:String
-  yaml:String
-  md:String
-  revision:Int
   version:Int
+  revision:Int
+  md:String
+  yaml:String
+  bib:String
   autosave:Boolean
   article:Article
   owner:User
+  createdAt:String
+  updatedAt:String
 }
 
 type Article {
   _id: ID!
+  title: String
+  owners(limit:Int,page:Int): [User!]!
+  versions(limit:Int,page:Int): [Version!]!
   createdAt:String
   updatedAt:String
-  owners: [User!]!
-  title: String
-  versions: [Version!]!
 }
 
 type Token {
   _id: ID!
+  name:String
+  user:User!
+  expiresAt:String
+  active:Boolean
   createdAt:String!
   updatedAt:String!
-  user:User!
-  name:String
-  active:Boolean
-  expiresAt:String
 }
 
 type Password {
   _id: ID!
-  createdAt:String!
-  updatedAt:String!
-  users(limit:Int,page:Int):[User!]!
-  username:String!
   email:String!
+  username:String!
+  users(limit:Int,page:Int):[User!]!
   unlock:String
   active:Boolean
   expiresAt:String
+  createdAt:String!
+  updatedAt:String!
 }
 
 input UserInput {
