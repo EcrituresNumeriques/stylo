@@ -26,6 +26,7 @@ const populateUser =  (user) => {
         articles: getArticlesByIds.bind(this, cleanedUser.articles || []),
         tokens: getTokensByIds.bind(this, cleanedUser.tokens || []),
         passwords: getPasswordsByIds.bind(this, cleanedUser.passwords || []),
+        acquintances: getUsersByIds.bind(this, cleanedUser.acquintances || []),
     }
 };
 

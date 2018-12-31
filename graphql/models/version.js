@@ -31,6 +31,10 @@ const versionSchema = new Schema({
     type:String,
     default:'# titre'
   },
+  sommaire:{
+    type:String,
+    default:'# titre'
+  },
   yaml:{
     type:String,
     default:defaultsData.yaml

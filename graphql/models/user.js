@@ -5,12 +5,19 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   email: {
     type: String,
+    unique:true,
     required: true
   },
   tags:[
     {
       type:Schema.Types.ObjectId,
       ref: 'Tag'
+    }
+  ],
+  acquintances:[
+    {
+      type:Schema.Types.ObjectId,
+      ref: 'User'
     }
   ],
   articles: [

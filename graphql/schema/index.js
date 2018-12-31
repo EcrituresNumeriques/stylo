@@ -10,6 +10,7 @@ type User {
   lastName:String
   institution:String
   tags(limit:Int,page:Int):[Tag!]!
+  acquintances(limit:Int,page:Int):[User!]!
   articles(limit:Int,page:Int):[Article!]!
   tokens(limit:Int,page:Int):[Token!]!
   passwords(limit:Int,page:Int):[Password!]!
@@ -34,6 +35,7 @@ type Version{
   version:Int
   revision:Int
   md:String
+  sommaire:String
   yaml:String
   bib:String
   autosave:Boolean
@@ -56,6 +58,7 @@ type Token {
   _id: ID!
   name:String
   user:User!
+  token:String
   expiresAt:String
   active:Boolean
   createdAt:String!
@@ -80,13 +83,39 @@ input UserInput {
   password: String!
 }
 
+input VersionInput {
+  article:ID!
+  version: Int!
+  revision: Int!
+  md: String
+  yaml: String
+  bib: String
+
+}
+
 type RootQuery {
-  users:[User!]!
+  # admins : users:[User!]!
+  # admins : articles:[Article!]!
+
   user(_id:ID!):User!
+  # article(_id:ID!):Article!
 }
 
 type RootMutation {
-  createUser(user:UserInput):User!
+  createUser(user:UserInput!):User!
+  # createArticle(title:String!):Article!
+  # autosave(version:VersionInput!):Version!
+  # save(version:VersionInput!):Version!
+  # createTag(title:String!):Tag!
+  # addToTag(article:ID!,tag:ID!):Article!
+  # shareArticle(article:ID!,to:ID!):Article!
+  # sendArticle(article:ID!,to:ID!):Article!
+  # forkArticle(version:ID!):Article!
+  # renameArticle(article:ID!,title:String!):Article!
+  # deleteArticle(article:ID!):Article!
+  # addPassword(password:UserInput!):Password!
+  # addToken(user:ID!):Token!
+  # addUser(user:UserInput!,password:ID!):User!
 }
 
 schema {
