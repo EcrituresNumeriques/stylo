@@ -10,6 +10,9 @@ const Article = require('../models/article');
 const Version = require('../models/version');
 
 
+const DataLoader = require('dataloader');
+
+
 /*
 ---------------------------------------------------------
 |                                                       |
@@ -42,15 +45,34 @@ const getUserById = async (userId) => {
     }
 };
 const getUsersByIds = async (usersIds,args) => {
+    console.log("Entering getUsersByIds",usersIds,args);
     try{
         usersIds = paginate(usersIds,args.limit,args.page);
-        const users = await User.find({ _id: { $in: usersIds } });
-        return users.map(populateUser);
+        if(usersIds.length === 0){ return [] }
+        return usersIds.map((userId) => (getUsersByIdsLoader.load(userId)));
+        //const users = await User.find({ _id: { $in: usersIds } });
+        //return users.map(populateUser);
     }
     catch(err){
         throw err
     }
 };
+
+const getUsersByIdsNF = async (usersIds) => {
+    console.log("Entering dataloader getUsersByIds",usersIds);
+    try{
+        //return 
+        const users = User.find({ _id: { $in: usersIds } })
+        let processedUsers = users.map(populateUser);
+        console.log(processedUsers);
+        return processedUsers
+    }
+    catch(err){
+        throw err
+    }
+};
+
+const getUsersByIdsLoader = new DataLoader(getUsersByIdsNF);
 
 /*
 ---------------------------------------------------------
@@ -72,6 +94,7 @@ const populateVersion = (version) => {
 const getVersionsByIds = async (versionsIds,args) => {
     try{
         versionsIds = paginate(versionsIds,args.limit,args.page);
+        if(versionsIds.length === 0){ return [] }
         const versions = await Version.find({ _id: { $in: versionsIds } });
         return versions.map(populateVersion);
     }
@@ -100,6 +123,7 @@ const populateTag = (tag) => {
 const getTagsByIds = async (tagsIds,args) => {
     try{
         tagsIds = paginate(tagsIds,args.limit,args.page);
+        if(tagsIds.length === 0){ return [] }
         const tags = await Tag.find({ _id: { $in: tagsIds } });
         return tags.map(populateTag);
     }
@@ -127,6 +151,7 @@ const populateArticle = (article) => {
 const getArticlesByIds = async (articlesIds,args) => {
     try{
         articlesIds = paginate(articlesIds,args.limit,args.page);
+        if(articlesIds.length === 0){ return [] }
         const articles = await Article.find({ _id: { $in: articlesIds } });
         return articles.map(populateArticle);
     }
@@ -168,6 +193,7 @@ const populateToken =  (token) => {
 const getTokensByIds = async (tokensIds,args) => {
     try{
         tokensIds = paginate(tokensIds,args.limit,args.page);
+        if(tokensIds.length === 0){ return [] }
         const tokens = await Token.find({ _id: { $in: tokensIds } });
         return tokens.map(populateToken);
     }
@@ -198,6 +224,7 @@ const populatePassword =  (password) => {
 const getPasswordsByIds = async (passwordsIds,args) => {
     try{
         passwordsIds = paginate(passwordsIds,args.limit,args.page);
+        if(passwordsIds.length === 0){ return [] }
         const passwords = await Password.find({ _id: { $in: passwordsIds } });
         return passwords.map(populatePassword);
     }
