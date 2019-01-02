@@ -25,8 +25,9 @@ module.exports = (req, res, next) => {
     req.isAuth = false;
     return next();
   }
-  req.isAuth = true;
-  req.user.userId = decodedToken.userId;
+
+  //JWT seems ok, fetching info
+
   if(decodedToken.passwordId){
     await Password.findByIdAndUpdate(decodedToken.passwordId);
     req.user.passwordId = decodedToken.passwordId;
@@ -35,6 +36,11 @@ module.exports = (req, res, next) => {
     await Token.findByIdAndUpdate(decodedToken.token);
     req.user.token = decodedToken.token;
   }
-  else{req.user.session = true}
+  else{
+    //something is wrong
+    throw new Error("not a session, not a password")
+  }
+  req.isAuth = true;
+  req.user.userId = decodedToken.userId;
   next();
 };
