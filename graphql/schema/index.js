@@ -77,6 +77,12 @@ type Password {
   updatedAt:String!
 }
 
+type AuthToken {
+  token:String
+  tokenExpiration: Int
+  password:Password!
+}
+
 input UserInput {
   email: String!
   username: String!
@@ -90,20 +96,22 @@ input VersionInput {
   md: String
   yaml: String
   bib: String
-
 }
+
 
 type RootQuery {
   # admins : users:[User!]!
   # admins : articles:[Article!]!
 
   user(_id:ID!):User!
-  login(username:String,email:String,password:String!):Password
+  login(username:String,email:String,password:String!):AuthToken
+
   # article(_id:ID!):Article!
 }
 
 type RootMutation {
   createUser(user:UserInput!):User!
+
   # createArticle(title:String!):Article!
   # autosave(version:VersionInput!):Version!
   # save(version:VersionInput!):Version!

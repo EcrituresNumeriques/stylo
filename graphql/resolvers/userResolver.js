@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const Isemail = require('isemail');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 const Password = require('../models/user_password');
@@ -67,17 +68,33 @@ module.exports = {
       throw err
     }
   },
-  login: async (args) => {
+  login: async (args, req) => {
     try{
-      console.log(args)
       let findProp = {...args}
       delete findProp.password
       const fetchedPassword = await Password.findOne(findProp)
       if(!fetchedPassword){throw new Error("Password not found")}
-      
+      if(!await bcrypt.compare(args.password,fetchedPassword.password)){
+        throw new Error("Password is incorrect");
+      }
+      const payload = {
+        usersIds:fetchedPassword.users.map(user => user._id.toString()),
+        passwordId:fetchedPassword.id
+      }
+      console.log(payload)
 
+      const token = jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        {expiresIn: '1h'}
+      )
+      req.user = payload;
 
-      return populatePassword(fetchedPassword)
+      return {
+        token:token, 
+        tokenExpiration: 1, 
+        password:populatePassword(fetchedPassword)
+      }
     }
     catch(err){
       throw err
