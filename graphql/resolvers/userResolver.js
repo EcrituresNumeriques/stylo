@@ -4,7 +4,7 @@ const Isemail = require('isemail');
 const User = require('../models/user');
 const Password = require('../models/user_password');
 
-const { populateUser, getUserById } = require('./nestedModel')
+const { populateUser, getUserById, populatePassword } = require('./nestedModel')
 
 module.exports = {
 
@@ -62,6 +62,22 @@ module.exports = {
   user: async (args) => {
     try{
       return await getUserById(args._id)
+    }
+    catch(err){
+      throw err
+    }
+  },
+  login: async (args) => {
+    try{
+      console.log(args)
+      let findProp = {...args}
+      delete findProp.password
+      const fetchedPassword = await Password.findOne(findProp)
+      if(!fetchedPassword){throw new Error("Password not found")}
+      
+
+
+      return populatePassword(fetchedPassword)
     }
     catch(err){
       throw err

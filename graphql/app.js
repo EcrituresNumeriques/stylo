@@ -7,11 +7,13 @@ const graphQlSchema = require('./schema/index');
 const graphQlResolvers = require('./resolvers/index');
 
 const isAuth = require('./middleware/isAuth')
+const displayUser = require('./middleware/displayUser')
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(isAuth);
+app.use(displayUser);
 
 app.use(
   '/graphql',

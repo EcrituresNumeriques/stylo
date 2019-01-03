@@ -50,27 +50,31 @@ const getUsersByIds = async (usersIds,args) => {
         usersIds = paginate(usersIds,args.limit,args.page);
         if(usersIds.length === 0){ return [] }
         return usersIds.map((userId) => (getUsersByIdsLoader.load(userId)));
-        //const users = await User.find({ _id: { $in: usersIds } });
-        //return users.map(populateUser);
     }
     catch(err){
         throw err
     }
 };
 
-const getUsersByIdsNF = async (usersIds) => {
-    console.log("Entering dataloader getUsersByIds",usersIds);
-    try{
-        //return 
-        const users = User.find({ _id: { $in: usersIds } })
-        let processedUsers = users.map(populateUser);
-        console.log(processedUsers);
-        return processedUsers
-    }
-    catch(err){
-        throw err
-    }
-};
+const getUsersByIdsNF = (usersIds) => {
+    const ids = usersIds
+    return User.find({ _id: { $in: usersIds } })
+    .then(users => users.map(populateUser))
+    .then(users => {
+        let byIdUsers = {}
+        for(let i = 0; i < users.length;i++){
+            byIdUsers[users[i]._id] = users[i]
+        }
+        return byIdUsers
+    })
+    .then(users => {
+        let response = []
+        for(let i = 0; i < ids.length;i++){
+            response.push(users[ids[i]] || null)
+        }
+        return response
+    })
+}
 
 const getUsersByIdsLoader = new DataLoader(getUsersByIdsNF);
 
@@ -236,3 +240,5 @@ const getPasswordsByIds = async (passwordsIds,args) => {
 
 exports.populateUser = populateUser;
 exports.getUserById = getUserById;
+exports.populatePassword = populatePassword;
+exports.populateToken = populateToken;
