@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const Isemail = require('isemail');
 const jwt = require('jsonwebtoken');
+const ms = require('ms');
 
 const User = require('../models/user');
 const Password = require('../models/user_password');
@@ -70,8 +71,9 @@ module.exports = {
   },
   login: async (args, req) => {
     try{
-      let findProp = {...args}
-      delete findProp.password
+      //login via email or username
+      console.log("login",args)
+      let findProp = args.username? {username:args.username}:{email:args.email}
       const fetchedPassword = await Password.findOne(findProp)
       if(!fetchedPassword){throw new Error("Password not found")}
       if(!await bcrypt.compare(args.password,fetchedPassword.password)){
@@ -82,16 +84,17 @@ module.exports = {
         passwordId:fetchedPassword.id
       }
 
+      const expiration = args.expiration || '1h'
       const token = jwt.sign(
         payload,
         process.env.JWT_SECRET,
-        {expiresIn: '1h'}
+        {expiresIn: expiration}
       )
       req.user = payload;
 
       return {
         token:token, 
-        tokenExpiration: 1, 
+        tokenExpiration: ms(expiration),  
         password:populatePassword(fetchedPassword)
       }
     }
@@ -106,14 +109,15 @@ module.exports = {
     const fetchedPassword = await Password.findOne({_id : req.user.passwordId})
     if(!fetchedPassword){throw new Error("Password not found")}
     const payload = { usersIds:req.user.usersIds, passwordId: req.user.passwordId}
+    const expiration = args.expiration || '1h'
     const token = jwt.sign(
       payload,
       process.env.JWT_SECRET,
-      {expiresIn: '1h'}
+      {expiresIn: expiration}
     )
     return {
       token:token, 
-      tokenExpiration: 1, 
+      tokenExpiration: ms(expiration), 
       password:populatePassword(fetchedPassword)
     }
   }

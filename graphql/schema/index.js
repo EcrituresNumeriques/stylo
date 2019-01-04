@@ -104,8 +104,8 @@ type RootQuery {
   # admins : articles:[Article!]!
 
   user(_id:ID!):User!
-  login(username:String,email:String,password:String!):AuthToken
-  refreshToken:AuthToken
+  login(username:String,email:String,password:String!,expiration:String):AuthToken
+  refreshToken(expiration:String):AuthToken
 
   # article(_id:ID!):Article!
 }
