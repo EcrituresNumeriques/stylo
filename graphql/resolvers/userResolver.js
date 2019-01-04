@@ -5,6 +5,10 @@ const ms = require('ms');
 
 const User = require('../models/user');
 const Password = require('../models/user_password');
+const Article = require('../models/article');
+const Version = require('../models/version');
+
+const defaultsData = require('../data/defaultsData')
 
 const { populateUser, getUserById, populatePassword } = require('./nestedModel')
 
@@ -43,8 +47,25 @@ module.exports = {
       const newPassword = new Password({email:userInput.email,username:userInput.username, password:bcrypt.hashSync(userInput.password,10)})
       newUser.passwords.push(newPassword)
       newPassword.users.push(newUser)
+      
+
+      //Add default article + default version
+      const defaultArticle = defaultsData.article
+      const newArticle = new Article({title:defaultArticle.title});
+      const newVersion = new Version({md:defaultArticle.md,yaml:defaultArticle.yaml,bib:defaultArticle.bib,sommaire:defaultArticle.sommaire});
+      newArticle.versions.push(newVersion)
+      newVersion.article = newArticle
+
+      newUser.articles.push(newArticle)
+      newArticle.owners.push(newUser)
+
+
       const createdUser = await newUser.save();
       await newPassword.save();
+      await newArticle.save();
+      await newVersion.save();
+
+
       return populateUser(createdUser)
 
     }

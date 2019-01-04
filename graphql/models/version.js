@@ -17,7 +17,7 @@ const versionSchema = new Schema({
   },
   title:{
     type:String,
-    default:'New Article'
+    default:''
   },
   version:{
     type:Number,
@@ -25,7 +25,7 @@ const versionSchema = new Schema({
   },
   revision:{
     type:Number,
-    defaults:0
+    default:0
   },
   md:{
     type:String,

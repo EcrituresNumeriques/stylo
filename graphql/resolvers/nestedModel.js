@@ -39,6 +39,7 @@ const getUserById = async (userId) => {
         if(!user){
             throw new Error(`Unable to find this user : _id ${userId} does not exist`)
         }
+        console.log(populateUser(user))
         return populateUser(user);
     } catch (err) {
         throw err;
@@ -120,7 +121,7 @@ const populateTag = (tag) => {
     return {
         ...cleanedTag,
         owner:getUserById.bind(this, cleanedTag.owner || []),
-        articles:getArticlesByIds.bind(this.cleanedTag.articles || [])
+        articles:getArticlesByIds.bind(this, cleanedTag.articles || [])
     }
 }
 
@@ -149,7 +150,7 @@ const populateArticle = (article) => {
     return {
         ...cleanedArticle,
         owners:getUsersByIds.bind(this, cleanedArticle.owners || []),
-        versions:getVersionsByIds.bind(this.cleanedArticle.versions || [])
+        versions:getVersionsByIds.bind(this, cleanedArticle.versions || [])
     }
 }
 const getArticlesByIds = async (articlesIds,args) => {
@@ -157,6 +158,10 @@ const getArticlesByIds = async (articlesIds,args) => {
         articlesIds = paginate(articlesIds,args.limit,args.page);
         if(articlesIds.length === 0){ return [] }
         const articles = await Article.find({ _id: { $in: articlesIds } });
+        if(!articles){
+            return []
+        }
+        console.log(articles.map(populateArticle))
         return articles.map(populateArticle);
     }
     catch(err){
