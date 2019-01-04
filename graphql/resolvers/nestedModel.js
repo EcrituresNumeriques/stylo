@@ -45,7 +45,7 @@ const getUserById = async (userId) => {
     }
 };
 const getUsersByIds = async (usersIds,args) => {
-    console.log("Entering getUsersByIds",usersIds,args);
+    //console.log("Entering getUsersByIds",usersIds,args);
     try{
         usersIds = paginate(usersIds,args.limit,args.page);
         if(usersIds.length === 0){ return [] }

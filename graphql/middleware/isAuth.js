@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
   // Case 1, we got a jwt for a session
   // Case 1.5, we got a jwt for a token
   if(method =="Bearer"){
-    //console.log("Bearer token", payload)
+    // Bearer token, payload is the token
     let decodedToken
     try{
       decodedToken = jwt.verify(payload,process.env.JWT_SECRET)
@@ -40,8 +40,7 @@ module.exports = async (req, res, next) => {
   }
   // case 2, we got credentials
   else if(method == "Basic"){
-    //console.log("TODO basic auth username:password",atob(payload))
-
+    // basic auth username:password <= base64 atob(payload)
     const [username,password] = atob(payload).split(':')
     const fetchedPassword = await Password.findOne({username:username}).populate('users')
       if(!fetchedPassword){

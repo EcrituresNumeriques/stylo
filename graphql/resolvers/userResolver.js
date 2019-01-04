@@ -81,7 +81,6 @@ module.exports = {
         usersIds:fetchedPassword.users.map(user => user._id.toString()),
         passwordId:fetchedPassword.id
       }
-      console.log(payload)
 
       const token = jwt.sign(
         payload,
@@ -98,6 +97,24 @@ module.exports = {
     }
     catch(err){
       throw err
+    }
+  },
+  refreshToken: async (args, req) => {
+    if(!req.isAuth || !req.user){
+      throw new Error("Can't refresh user not logged");
+    }
+    const fetchedPassword = await Password.findOne({_id : req.user.passwordId})
+    if(!fetchedPassword){throw new Error("Password not found")}
+    const payload = { usersIds:req.user.usersIds, passwordId: req.user.passwordId}
+    const token = jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      {expiresIn: '1h'}
+    )
+    return {
+      token:token, 
+      tokenExpiration: 1, 
+      password:populatePassword(fetchedPassword)
     }
   }
 }

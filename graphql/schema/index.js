@@ -105,6 +105,7 @@ type RootQuery {
 
   user(_id:ID!):User!
   login(username:String,email:String,password:String!):AuthToken
+  refreshToken:AuthToken
 
   # article(_id:ID!):Article!
 }
