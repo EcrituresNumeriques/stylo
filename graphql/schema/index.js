@@ -87,6 +87,10 @@ input UserInput {
   email: String!
   username: String!
   password: String!
+  displayName: String
+  firstName: String
+  lastName: String
+  institution: String
 }
 
 input VersionInput {

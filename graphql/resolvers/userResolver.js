@@ -33,7 +33,13 @@ module.exports = {
       }
 
       //Create user then password
-      const newUser = new User({email: userInput.email, displayName: userInput.username})
+      const newUser = new User({
+        email: userInput.email,
+        displayName: userInput.displayName || userInput.username,
+        institution: userInput.institution || null,
+        firstName: userInput.firstName || null,
+        lastName: userInput.lastName || null
+      });
       const newPassword = new Password({email:userInput.email,username:userInput.username, password:bcrypt.hashSync(userInput.password,10)})
       newUser.passwords.push(newPassword)
       newPassword.users.push(newUser)
