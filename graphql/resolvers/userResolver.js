@@ -19,7 +19,7 @@ module.exports = {
   createUser: async args => {
     try{
       const userInput = {...args.user}
-      
+
       //Todo check if email is really an email
       if(!Isemail.validate(userInput.email)){
         throw new Error('Email is not correctly formated.');
@@ -47,7 +47,7 @@ module.exports = {
       const newPassword = new Password({email:userInput.email,username:userInput.username, password:bcrypt.hashSync(userInput.password,10)})
       newUser.passwords.push(newPassword)
       newPassword.users.push(newUser)
-      
+
 
       //Add default article + default version
       const defaultArticle = defaultsData.article
@@ -78,7 +78,6 @@ module.exports = {
   createTokenForUser: () => ([]),
 
   // Queries
-  
   users: async () => {
     try{
       const users = await User.find();
@@ -120,8 +119,8 @@ module.exports = {
       req.user = payload;
 
       return {
-        token:token, 
-        tokenExpiration: ms(expiration),  
+        token:token,
+        tokenExpiration: ms(expiration),
         password:populatePassword(fetchedPassword)
       }
     }
@@ -143,8 +142,8 @@ module.exports = {
       {expiresIn: expiration}
     )
     return {
-      token:token, 
-      tokenExpiration: ms(expiration), 
+      token:token,
+      tokenExpiration: ms(expiration),
       password:populatePassword(fetchedPassword)
     }
   }

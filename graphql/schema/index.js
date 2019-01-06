@@ -110,8 +110,8 @@ type RootQuery {
   user(_id:ID!):User!
   login(username:String,email:String,password:String!,expiration:String):AuthToken
   refreshToken(expiration:String):AuthToken
-
-  # article(_id:ID!):Article!
+  article(_id:ID!):Article!
+  
 }
 
 type RootMutation {
@@ -137,5 +137,3 @@ schema {
     mutation: RootMutation
 }
 `);
-
-
