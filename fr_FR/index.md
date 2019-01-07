@@ -13,6 +13,9 @@ L'environnement de travail de Stylo intègre une chaîne éditoriale complète b
   - **l'annotation**
   - **le partage de document**
 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qcwEqbcxBF8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ---
 
 <a class="btn btn-info" href="http://stylo.ecrituresnumeriques.ca" role="button">Tester Stylo</a> <a class="btn btn-info" href="pages/premierspas.md" role="button">Premiers pas</a>
