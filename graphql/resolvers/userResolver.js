@@ -8,6 +8,8 @@ const Password = require('../models/user_password');
 const Article = require('../models/article');
 const Version = require('../models/version');
 
+const isUser = require('../policies/isUser')
+
 const defaultsData = require('../data/defaultsData')
 
 const { populateUser, getUserById, populatePassword } = require('./nestedModel')
@@ -87,9 +89,10 @@ module.exports = {
       throw err
     }
   },
-  user: async (args) => {
+  user: async (args,req) => {
     try{
-      return await getUserById(args._id)
+      isUser(args,req)
+      return await getUserById(args.user)
     }
     catch(err){
       throw err

@@ -107,27 +107,26 @@ type RootQuery {
   # admins : users:[User!]!
   # admins : articles:[Article!]!
 
-  user(_id:ID!):User!
+  user(user:ID!):User!
   login(username:String,email:String,password:String!,expiration:String):AuthToken
   refreshToken(expiration:String):AuthToken
-  article(_id:ID!):Article!
+  article(article:ID!):Article!
   
 }
 
 type RootMutation {
   createUser(user:UserInput!):User!
-
-  # createArticle(title:String!):Article!
-  # autosave(version:VersionInput!):Version!
-  # save(version:VersionInput!):Version!
-  # createTag(title:String!):Tag!
+  createArticle(title:String!,user:ID!):Article!
+  
+  # save(version:VersionInput!,auto:Boolean!,user:ID!):Version!
+  # createTag(title:String!,user:ID!):Tag!
   # addToTag(article:ID!,tag:ID!):Article!
   # shareArticle(article:ID!,to:ID!):Article!
   # sendArticle(article:ID!,to:ID!):Article!
-  # forkArticle(version:ID!):Article!
+  # fork is sendArticle to yourself
   # renameArticle(article:ID!,title:String!):Article!
   # deleteArticle(article:ID!):Article!
-  # addPassword(password:UserInput!):Password!
+  # addPassword(password:UserInput!,user:ID!):Password!
   # addToken(user:ID!):Token!
   # addUser(user:UserInput!,password:ID!):User!
 }
