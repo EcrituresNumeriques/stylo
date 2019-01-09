@@ -39,7 +39,7 @@ const getUserById = async (userId) => {
         if(!user){
             throw new Error(`Unable to find this user : _id ${userId} does not exist`)
         }
-        console.log(populateUser(user))
+        //console.log(populateUser(user))
         return populateUser(user);
     } catch (err) {
         throw err;
@@ -161,7 +161,7 @@ const getArticlesByIds = async (articlesIds,args) => {
         if(!articles){
             return []
         }
-        console.log(articles.map(populateArticle))
+        //console.log(articles.map(populateArticle))
         return articles.map(populateArticle);
     }
     catch(err){
