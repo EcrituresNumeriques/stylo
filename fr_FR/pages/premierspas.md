@@ -99,10 +99,10 @@ Le module d'export offre plusieurs formats et permet également de choisir entre
 
 |bouton|fonction|
 |:-:|:--|
-|![preview](uploads/images/preview.png) | pour ouvrir l'aperçu html de l'article   |
-|![preview](uploads/images/html.png) | pour télécharger une version html prête à mettre en ligne |
-|![xml (Erudit)](uploads/images/xml.png) | pour prévisualiser une version xml au schéma Erudit |
-|![zip](uploads/images/zip.png) | pour télécharger les trois composants de l'article : métadonnées (.yaml), bibliographie (.bib), corps de texte (.md)  |
+|![[preview]](uploads/images/preview.png) | pour ouvrir l'aperçu html de l'article   |
+|![[HTML]](uploads/images/html.png) | pour télécharger une version html prête à mettre en ligne |
+|![[XML (erudit])](uploads/images/xml.png) | pour prévisualiser une version xml au schéma Erudit |
+|![[ZIP]](uploads/images/zip.png) | pour télécharger les trois composants de l'article : métadonnées (.yaml), bibliographie (.bib), corps de texte (.md)  |
 
 
 ## - Sommaire
