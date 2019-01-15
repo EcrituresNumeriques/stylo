@@ -50,6 +50,7 @@ type Article {
   title: String
   owners(limit:Int,page:Int): [User!]!
   versions(limit:Int,page:Int): [Version!]!
+  tags(limit:Int,page:Int):[Tag!]!
   createdAt:String
   updatedAt:String
 }
@@ -81,6 +82,7 @@ type AuthToken {
   token:String
   tokenExpiration: Int
   password:Password!
+  users:[User!]!
 }
 
 input UserInput {

@@ -103,7 +103,7 @@ module.exports = {
       //login via email or username
       console.log("login",args)
       let findProp = args.username? {username:args.username}:{email:args.email}
-      const fetchedPassword = await Password.findOne(findProp)
+      const fetchedPassword = await Password.findOne(findProp).populate("users")
       if(!fetchedPassword){throw new Error("Password not found")}
       if(!await bcrypt.compare(args.password,fetchedPassword.password)){
         throw new Error("Password is incorrect");
@@ -124,7 +124,8 @@ module.exports = {
       return {
         token:token,
         tokenExpiration: ms(expiration),
-        password:populatePassword(fetchedPassword)
+        password:populatePassword(fetchedPassword),
+        users:fetchedPassword.users.map(populateUser)
       }
     }
     catch(err){

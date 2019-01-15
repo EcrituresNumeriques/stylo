@@ -150,7 +150,8 @@ const populateArticle = (article) => {
     return {
         ...cleanedArticle,
         owners:getUsersByIds.bind(this, cleanedArticle.owners || []),
-        versions:getVersionsByIds.bind(this, cleanedArticle.versions || [])
+        versions:getVersionsByIds.bind(this, cleanedArticle.versions || []),
+        tags:getTagsByIds.bind(this, cleanedArticle.tags || [])
     }
 }
 const getArticlesByIds = async (articlesIds,args) => {
