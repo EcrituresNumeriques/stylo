@@ -9,6 +9,7 @@ const Article = require('../models/article');
 const Version = require('../models/version');
 
 const isUser = require('../policies/isUser')
+const isAdmin = require('../policies/isAdmin')
 
 const defaultsData = require('../data/defaultsData')
 
@@ -80,8 +81,11 @@ module.exports = {
   createTokenForUser: () => ([]),
 
   // Queries
-  users: async () => {
+  
+  //Only available for admins
+  users: async (_,req) => {
     try{
+      isAdmin(req);
       const users = await User.find();
       return users.map(populateUser)
     }
@@ -101,7 +105,7 @@ module.exports = {
   login: async (args, req) => {
     try{
       //login via email or username
-      console.log("login",args)
+      //console.log("login",args)
       let findProp = args.username? {username:args.username}:{email:args.email}
       const fetchedPassword = await Password.findOne(findProp).populate("users")
       if(!fetchedPassword){throw new Error("Password not found")}
@@ -110,7 +114,8 @@ module.exports = {
       }
       const payload = {
         usersIds:fetchedPassword.users.map(user => user._id.toString()),
-        passwordId:fetchedPassword.id
+        passwordId:fetchedPassword.id,
+        admin:fetchedPassword.users.filter(user => user.admin).length > 0 ? true : false
       }
 
       const expiration = args.expiration || '1h'

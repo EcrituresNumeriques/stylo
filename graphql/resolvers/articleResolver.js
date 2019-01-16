@@ -7,6 +7,7 @@ const Version = require('../models/version');
 const User = require('../models/user');
 
 const isUser = require('../policies/isUser')
+const isAdmin = require('../policies/isAdmin')
 
 const { populateArticle } = require('./nestedModel')
 
@@ -48,5 +49,15 @@ module.exports = {
     catch(err){
       throw err
     }
-  }
+  },
+  articles: async (_,req) => {
+    try{
+      isAdmin(req);
+      const articles = await Article.find();
+      return articles.map(populateArticle)
+    }
+    catch(err){
+      throw err
+    }
+  },
 }

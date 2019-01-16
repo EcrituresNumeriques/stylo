@@ -22,7 +22,7 @@ type User {
 
 type Tag{
   _id: ID!
-  title:String!
+  name:String!
   description:String
   articles:[Article!]!
   owner:User!
@@ -107,21 +107,25 @@ input VersionInput {
 
 
 type RootQuery {
-  # admins : users:[User!]!
-  # admins : articles:[Article!]!
+  
+  # admins only
+  articles:[Article!]!
+  users:[User!]!
 
+  # users
   user(user:ID!):User!
-  login(username:String,email:String,password:String!,expiration:String):AuthToken
   refreshToken(expiration:String):AuthToken
   article(article:ID!):Article!
   
+  # anyone
+  login(username:String,email:String,password:String!,expiration:String):AuthToken
 }
 
 type RootMutation {
   createUser(user:UserInput!):User!
   createArticle(title:String!,user:ID!):Article!
   saveVersion(version:VersionInput!,user:ID!):Version!
-  # createTag(title:String!,user:ID!):Tag!
+  createTag(name:String!,description:String,user:ID!):Tag!
   # addToTag(article:ID!,tag:ID!):Article!
   # shareArticle(article:ID!,to:ID!):Article!
   # sendArticle(article:ID!,to:ID!):Article!
