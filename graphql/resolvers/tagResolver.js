@@ -5,6 +5,8 @@ const Tag = require('../models/tag');
 
 const isUser = require('../policies/isUser')
 
+const populateArgs = require('../helpers/populateArgs')
+
 module.exports = {
   createTag: async (args,req) => {
 
@@ -26,12 +28,29 @@ module.exports = {
       const createdTag = await newTag.save();
       await thisUser.save();
 
-      console.log(populateTag(createdTag))
+      //Save the tag ID in the req object, for other resolver to consum with "new" ID
+      req.created = {...req.created,tag:createdTag.id}
+
       return populateTag(createdTag)
     }
     catch(err){
       throw err
     }
 
+  },
+  addToTag: async (args,req) => {
+    try{
+      args = populateArgs(args,req)
+
+      //load user
+      //load article and tag
+
+      //if user owns tag + article, push each in the other
+      
+      return { _id:"test"}
+    }
+    catch(err){
+      throw err
+    }
   }
 }

@@ -126,9 +126,9 @@ type RootMutation {
   createArticle(title:String!,user:ID!):Article!
   saveVersion(version:VersionInput!,user:ID!):Version!
   createTag(name:String!,description:String,user:ID!):Tag!
-  # addToTag(article:ID!,tag:ID!):Article!
+  addToTag(article:ID!,tag:ID!):Article!
   # shareArticle(article:ID!,to:ID!):Article!
-  # sendArticle(article:ID!,to:ID!):Article!
+  # sendArticle(article:ID!,version:ID,to:ID!):Article! # this is a copy of last version OR specified version
   # fork is sendArticle to yourself
   # renameArticle(article:ID!,title:String!):Article!
   # deleteArticle(article:ID!):Article!
