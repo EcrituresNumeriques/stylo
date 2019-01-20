@@ -45,6 +45,11 @@ module.exports = {
 
   },
   article: async (args) => {
+
+    // -------------------------------------------
+    // TODO: verify user has acces to this article
+    // -------------------------------------------
+
     try{
       return await getArticleById(args.article)
     }
