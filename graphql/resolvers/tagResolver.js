@@ -8,7 +8,7 @@ const isUser = require('../policies/isUser')
 const populateArgs = require('../helpers/populateArgs')
 
 module.exports = {
-  createTag: async (args,req) => {
+  createTag: async (args,{req}) => {
 
     console.log("entering tag creation")
     //filter bad requests
@@ -38,7 +38,7 @@ module.exports = {
     }
 
   },
-  addToTag: async (args,req) => {
+  addToTag: async (args,{req}) => {
     try{
       args = populateArgs(args,req)
 

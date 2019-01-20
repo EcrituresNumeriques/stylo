@@ -17,11 +17,12 @@ app.use(displayUser);
 
 app.use(
   '/graphql',
-  graphqlHttp({
+  graphqlHttp((req,res) => ({
     schema: graphQlSchema,
     rootValue: graphQlResolvers,
-    graphiql: true
-  })
+    graphiql: true,
+    context: {req,res}
+  }))
 );
 
 mongoose

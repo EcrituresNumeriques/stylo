@@ -83,7 +83,7 @@ module.exports = {
   // Queries
   
   //Only available for admins
-  users: async (_,req) => {
+  users: async (_,{req}) => {
     try{
       isAdmin(req);
       const users = await User.find();
@@ -93,7 +93,7 @@ module.exports = {
       throw err
     }
   },
-  user: async (args,req) => {
+  user: async (args,{req}) => {
     try{
       isUser(args,req)
       return await getUserById(args.user)
@@ -102,7 +102,7 @@ module.exports = {
       throw err
     }
   },
-  login: async (args, req) => {
+  login: async (args, {req}) => {
     try{
       //login via email or username
       //console.log("login",args)
@@ -137,7 +137,7 @@ module.exports = {
       throw err
     }
   },
-  refreshToken: async (args, req) => {
+  refreshToken: async (args, {req}) => {
     if(!req.isAuth || !req.user){
       throw new Error("Can't refresh user not logged");
     }

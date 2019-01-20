@@ -12,8 +12,7 @@ const isAdmin = require('../policies/isAdmin')
 const { populateArticle } = require('./nestedModel')
 
 module.exports = {
-  createArticle: async (args,req) => {
-
+  createArticle: async (args,{req}) => {
     //filter bad requests
     try{
       isUser(args,req)
@@ -53,7 +52,7 @@ module.exports = {
       throw err
     }
   },
-  articles: async (_,req) => {
+  articles: async (_,{req}) => {
     try{
       isAdmin(req);
       const articles = await Article.find();

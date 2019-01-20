@@ -3,7 +3,7 @@ const Version = require('../models/version');
 const isUser = require('../policies/isUser')
 
 module.exports = {
-  saveVersion: async (args,req) => {
+  saveVersion: async (args,{req}) => {
 
     //filter bad requests
     try{
