@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser')
 const graphqlHttp = require('express-graphql');
 const mongoose = require('mongoose');
 
@@ -12,6 +13,7 @@ const displayUser = require('./middleware/displayUser')
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(isAuth);
 app.use(displayUser);
 

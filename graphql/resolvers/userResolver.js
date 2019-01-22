@@ -113,7 +113,8 @@ module.exports = {
       const payload = {
         usersIds:fetchedPassword.users.map(user => user._id.toString()),
         passwordId:fetchedPassword.id,
-        admin:fetchedPassword.users.filter(user => user.admin).length > 0 ? true : false
+        admin:fetchedPassword.users.filter(user => user.admin).length > 0 ? true : false,
+        session:true
       }
 
       const token = jwt.sign(
@@ -134,22 +135,24 @@ module.exports = {
       throw err
     }
   },
-  refreshToken: async (args, {req}) => {
-    if(!req.isAuth || !req.user){
-      throw new Error("Can't refresh user not logged");
+  refreshToken: async (_, {req}) => {
+    if(!req.user_noCSRF){
+      throw new Error("Can't refresh user without cookie");
     }
-    const fetchedPassword = await Password.findOne({_id : req.user.passwordId})
+    const fetchedPassword = await Password.findOne({_id : req.user_noCSRF.passwordId}).populate("users")
     if(!fetchedPassword){throw new Error("Password not found")}
-    const payload = { usersIds:req.user.usersIds, passwordId: req.user.passwordId}
-    const expiration = args.expiration || '1h'
+    const payload = {
+      usersIds:fetchedPassword.users.map(user => user._id.toString()),
+      passwordId:fetchedPassword.id,
+      admin:fetchedPassword.users.filter(user => user.admin).length > 0 ? true : false,
+      session:true
+    }
     const token = jwt.sign(
       payload,
-      process.env.JWT_SECRET,
-      {expiresIn: expiration}
+      process.env.JWT_SECRET
     )
     return {
       token:token,
-      tokenExpiration: ms(expiration),
       password:populatePassword(fetchedPassword)
     }
   }
