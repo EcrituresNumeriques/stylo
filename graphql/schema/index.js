@@ -80,7 +80,6 @@ type Password {
 
 type AuthToken {
   token:String
-  tokenExpiration: Int
   password:Password!
   users:[User!]!
 }
@@ -107,7 +106,6 @@ input VersionInput {
 
 
 type RootQuery {
-  
   # admins only
   articles:[Article!]!
   users:[User!]!
@@ -118,7 +116,7 @@ type RootQuery {
   article(article:ID!):Article!
   
   # anyone
-  login(username:String,email:String,password:String!,expiration:String):AuthToken
+  login(username:String,email:String,password:String!):AuthToken
 }
 
 type RootMutation {

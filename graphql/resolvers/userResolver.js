@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
 const Isemail = require('isemail');
 const jwt = require('jsonwebtoken');
-const ms = require('ms');
 
 const User = require('../models/user');
 const Password = require('../models/user_password');
@@ -102,10 +101,9 @@ module.exports = {
       throw err
     }
   },
-  login: async (args, {req}) => {
+  login: async (args, {req,res}) => {
     try{
       //login via email or username
-      //console.log("login",args)
       let findProp = args.username? {username:args.username}:{email:args.email}
       const fetchedPassword = await Password.findOne(findProp).populate("users")
       if(!fetchedPassword){throw new Error("Password not found")}
@@ -118,17 +116,16 @@ module.exports = {
         admin:fetchedPassword.users.filter(user => user.admin).length > 0 ? true : false
       }
 
-      const expiration = args.expiration || '1h'
       const token = jwt.sign(
         payload,
-        process.env.JWT_SECRET,
-        {expiresIn: expiration}
+        process.env.JWT_SECRET
       )
+
       req.user = payload;
+      res.cookie("graphQL-jwt",token,{expires:0,httpOnly:true,secure:process.env.HTTPS})
 
       return {
         token:token,
-        tokenExpiration: ms(expiration),
         password:populatePassword(fetchedPassword),
         users:fetchedPassword.users.map(populateUser)
       }
