@@ -18,7 +18,7 @@ module.exports = {
 
   // Mutations
 
-  createUser: async args => {
+  createUser: async (args,{req}) => {
     try{
       const userInput = {...args.user}
 
@@ -67,6 +67,8 @@ module.exports = {
       await newArticle.save();
       await newVersion.save();
 
+      //Save the user/article/version/password ID in the req object, for other resolver to consum with "new" ID
+      req.created = {...req.created,article:newArticle.id,user:createdUser.id,version:newVersion.id,password:newPassword.id}
 
       return populateUser(createdUser)
 

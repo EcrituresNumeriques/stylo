@@ -34,8 +34,8 @@ module.exports = {
       await newVersion.save();
       await thisUser.save();
 
-      //Save the tag ID in the req object, for other resolver to consum with "new" ID
-      req.created = {...req.created,article:createdArticle.id}
+      //Save the article and version ID in the req object, for other resolver to consum with "new" ID
+      req.created = {...req.created,article:createdArticle.id,version:newVersion.id}
 
       return populateArticle(createdArticle)
     }
