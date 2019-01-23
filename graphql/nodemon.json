@@ -1,6 +1,8 @@
 {
     "env": {
         "JWT_SECRET": "YuD0^kIlS$HZzsT!zEypKkjZ9mVSq0pfUx7EgnlbDFUBW7!Hc90",
+        "JWT_SECRET_SESSION": "34t!9mRbq2ZxCRWsIKR2bCJLyB2*bgayw@^F$v",
+        "JWT_SECRET_SESSION_COOKIE": "@l1HpOrtRg2Mc^UwN@oHj9lPrZ^eLF4$2cfv7n",
         "HTTPS": false
     }
 }

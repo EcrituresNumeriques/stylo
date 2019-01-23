@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const atob = require('atob');
 const bcrypt = require('bcryptjs');
 
+const isEquivalent = require('../helpers/isEquivalent')
 
 const Password = require('../models/user_password');
 const Token = require('../models/user_token');
@@ -14,11 +15,10 @@ module.exports = async (req, _, next) => {
   // Case 1, we got a cookie for a session, but no header
   if(req.cookies && req.cookies['graphQL-jwt']){
     try{
-
-      const noCRSF = jwt.verify(req.cookies['graphQL-jwt'],process.env.JWT_SECRET)
+      const noCRSF = jwt.verify(req.cookies['graphQL-jwt'],process.env.JWT_SECRET_SESSION_COOKIE)
       if(noCRSF && noCRSF.session){
         req.user_noCSRF = noCRSF
-        console.log("we got a token",noCRSF)
+        //console.log("we got a token",noCRSF)
       }
     }
     catch(err){
@@ -41,12 +41,29 @@ module.exports = async (req, _, next) => {
 
   // case 1,5 we got a cookie + a jwt header
   if(method =="Bearer" && req.user_noCSRF){
-    if(payload == req.cookies['graphQL-jwt']){
-      req.user = req.user_noCSRF;
-      req.isAuth = true;
-      console.log("exiting session loggin complete")
+    try{
+      const token = jwt.verify(payload,process.env.JWT_SECRET_SESSION)
+      if(token && token.session){
+        delete token.iat
+        delete req.user_noCSRF.iat
+        console.log("testing the two tokens",token,req.user_noCSRF,isEquivalent(token,req.user_noCSRF))
+        if(isEquivalent(token,req.user_noCSRF)){
+          req.user = req.user_noCSRF;
+          req.isAuth = true;
+          console.log("exiting session loggin complete")
+          return next();
+        }
+      }
+    }
+    catch(err){
+      // cookietoken mismatch or invalid
+      console.log("exiting error in the header+cookie")
       return next();
     }
+
+
+
+
   }
 
   // Case 2, we got a jwt for a token

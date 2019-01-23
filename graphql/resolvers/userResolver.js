@@ -119,11 +119,17 @@ module.exports = {
 
       const token = jwt.sign(
         payload,
-        process.env.JWT_SECRET
+        process.env.JWT_SECRET_SESSION
+      )
+      const tokenCookie = jwt.sign(
+        payload,
+        process.env.JWT_SECRET_SESSION_COOKIE
       )
 
-      req.user = payload;
-      res.cookie("graphQL-jwt",token,{expires:0,httpOnly:true,secure:process.env.HTTPS})
+      //All query are async, can't channel req to another resolver
+      //req.user = payload;
+      console.log("setting cookie:",tokenCookie);
+      res.cookie("graphQL-jwt",tokenCookie,{expires:0,httpOnly:true,secure:process.env.HTTPS})
 
       return {
         token:token,
@@ -149,11 +155,12 @@ module.exports = {
     }
     const token = jwt.sign(
       payload,
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET_SESSION
     )
     return {
       token:token,
-      password:populatePassword(fetchedPassword)
+      password:populatePassword(fetchedPassword),
+      users:fetchedPassword.users.map(populateUser)
     }
   }
 }
