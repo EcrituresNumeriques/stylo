@@ -11,7 +11,7 @@ module.exports = async (req, _, next) => {
   
   req.isAuth = false;
   
-  console.log("entered middleware");
+  //console.log("entered middleware");
   // Case 1, we got a cookie for a session, but no header
   if(req.cookies && req.cookies['graphQL-jwt']){
     try{
@@ -23,7 +23,7 @@ module.exports = async (req, _, next) => {
     }
     catch(err){
       // cookietoken mismatch or invalid
-      console.log("exiting error in the cookie")
+      //console.log("exiting error in the cookie")
       return next();
     }
   }
@@ -31,7 +31,7 @@ module.exports = async (req, _, next) => {
   const authHeader = req.get('Authorization');
   //If no auth header, no need to continue checking stuff
   if (!authHeader) {
-    console.log("exiting no header")
+    //console.log("exiting no header")
     return next();
   }
   
@@ -46,18 +46,18 @@ module.exports = async (req, _, next) => {
       if(token && token.session){
         delete token.iat
         delete req.user_noCSRF.iat
-        console.log("testing the two tokens",token,req.user_noCSRF,isEquivalent(token,req.user_noCSRF))
+        //console.log("testing the two tokens",token,req.user_noCSRF,isEquivalent(token,req.user_noCSRF))
         if(isEquivalent(token,req.user_noCSRF)){
           req.user = req.user_noCSRF;
           req.isAuth = true;
-          console.log("exiting session loggin complete")
+          //console.log("exiting session loggin complete")
           return next();
         }
       }
     }
     catch(err){
       // cookietoken mismatch or invalid
-      console.log("exiting error in the header+cookie")
+      //console.log("exiting error in the header+cookie")
       return next();
     }
 
@@ -73,7 +73,7 @@ module.exports = async (req, _, next) => {
     try{
       decodedToken = jwt.verify(payload,process.env.JWT_SECRET)
       if(!decodedToken){
-        console.log("exiting token not verified")
+        //console.log("exiting token not verified")
         return next();
       }
 
@@ -81,13 +81,12 @@ module.exports = async (req, _, next) => {
 
       req.user = decodedToken
       req.isAuth = true;
-      console.log("exiting token complete")
-
+      //console.log("exiting token complete")
       return next();
     }
     catch(err){
       //token mismatch or invalid
-      console.log("exiting error in the token")
+      //console.log("exiting error in the token")
       return next();
     }
   }
@@ -97,11 +96,11 @@ module.exports = async (req, _, next) => {
     const [username,password] = atob(payload).split(':')
     const fetchedPassword = await Password.findOne({username:username}).populate('users')
       if(!fetchedPassword){
-        console.log("exiting no password")
+        //console.log("exiting no password")
         return next();
       }
       if(!await bcrypt.compare(password,fetchedPassword.password)){
-        console.log("exiting password mismatch")
+        //console.log("exiting password mismatch")
         return next();
       }
       req.user = {
@@ -109,9 +108,9 @@ module.exports = async (req, _, next) => {
           passwordId:fetchedPassword.id
       }
       req.isAuth = true;
-      console.log("exiting password success")
+      //console.log("exiting password success")
       return next();
   }
-  console.log("exiting alone")
+  //console.log("exiting alone")
   return next();
 };
