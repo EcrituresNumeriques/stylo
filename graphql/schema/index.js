@@ -96,8 +96,7 @@ input UserInput {
 
 input VersionInput {
   article:ID!
-  version: Int!
-  revision: Int!
+  major:Boolean
   auto: Boolean
   md: String
   yaml: String
@@ -122,7 +121,7 @@ type RootQuery {
 type RootMutation {
   createUser(user:UserInput!):User!
   createArticle(title:String!,user:ID!):Article!
-  #saveVersion(version:VersionInput!,user:ID!):Version!
+  saveVersion(version:VersionInput!,user:ID!):Version!
   createTag(name:String!,description:String,user:ID!):Tag!
   addToTag(article:ID!,tag:ID!):Article!
   # shareArticle(article:ID!,to:ID!):Article!

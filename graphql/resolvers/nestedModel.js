@@ -245,6 +245,7 @@ const getPasswordsByIds = async (passwordsIds,args) => {
 
 
 exports.populateTag = populateTag;
+exports.populateVersion = populateVersion;
 exports.populateUser = populateUser;
 exports.getUserById = getUserById;
 exports.populatePassword = populatePassword;

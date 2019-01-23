@@ -57,14 +57,15 @@ module.exports = {
       const newVersion = new Version({md:defaultArticle.md,yaml:defaultArticle.yaml,bib:defaultArticle.bib,sommaire:defaultArticle.sommaire});
       newArticle.versions.push(newVersion)
       newVersion.article = newArticle
-
+      
       newUser.articles.push(newArticle)
       newArticle.owners.push(newUser)
-
-
+      
+      
       const createdUser = await newUser.save();
       await newPassword.save();
       await newArticle.save();
+      newVersion.owner = createdUser
       await newVersion.save();
 
       //Save the user/article/version/password ID in the req object, for other resolver to consum with "new" ID

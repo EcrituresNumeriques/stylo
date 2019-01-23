@@ -9,12 +9,15 @@ const User = require('../models/user');
 const isUser = require('../policies/isUser')
 const isAdmin = require('../policies/isAdmin')
 
+const populateArgs = require('../helpers/populateArgs')
+
 const { populateArticle } = require('./nestedModel')
 
 module.exports = {
   createArticle: async (args,{req}) => {
     //filter bad requests
     try{
+      args = populateArgs(args,req)
       isUser(args,req)
 
       //fetch user
