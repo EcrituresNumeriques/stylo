@@ -111,6 +111,7 @@ type RootQuery {
 
   # users
   user(user:ID!):User!
+  # test description user
   refreshToken(expiration:String):AuthToken
   article(article:ID!):Article!
   
