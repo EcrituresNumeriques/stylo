@@ -121,6 +121,7 @@ type RootQuery {
 
 type RootMutation {
   createUser(user:UserInput!):User!
+  #addAcquintance(email:String!,user:ID!):User!
   createArticle(title:String!,user:ID!):Article!
   saveVersion(version:VersionInput!,user:ID!):Version!
   createTag(name:String!,description:String,user:ID!):Tag!
