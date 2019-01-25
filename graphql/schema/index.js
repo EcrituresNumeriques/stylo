@@ -107,28 +107,49 @@ input VersionInput {
 
 type RootQuery {
   # admins only
+  "Reserved for admins"
   articles:[Article!]!
+  "Reserved for admins"
   users:[User!]!
 
-  # users
+
+  "Fetch user info [need to be authentificated as this user]"
   user(user:ID!):User!
-  # test description user
+
+  "Fetch bearer token based on your cookie graphQL-jwt [Need to be loged in previously and send the appropriate cookie]"
   refreshToken(expiration:String):AuthToken
+
+  "Fetch article info [need to have acces to this article]"
   article(article:ID!):Article!
   
-  # anyone
+  "Login using email/username and password, retrieve token+cookie"
   login(username:String,email:String,password:String!):AuthToken
 }
 
 type RootMutation {
+
+  "Create user + default article"
   createUser(user:UserInput!):User!
+
+  #loginMutation(username:String,email:String,password:String!):AuthToken
   #addAcquintance(email:String!,user:ID!):User!
   #changePassword(password:ID!,old:String!,new:String!):Password!
   #resetPassword(password:ID!,jwt:String!,new:String!):Password!
+  #setPrimaryUser(user:ID!):Password
+  
+  "Create article for specified user [need to be authentificated as specified user]"
   createArticle(title:String!,user:ID!):Article!
+
+  "Save a new version for article [need to be authentificated as specified user]"
   saveVersion(version:VersionInput!,user:ID!):Version!
+  
+  "Create tag [need to be authentificated as specified user]"
   createTag(name:String!,description:String,user:ID!):Tag!
-  addToTag(article:ID!,tag:ID!):Article!
+  
+  #"Add article to a specified tag [Need to be authenficated as owner of the tag]"
+  #addToTag(article:ID!,tag:ID!):Article!
+
+
   # shareArticle(article:ID!,to:ID!):Article!
   # sendArticle(article:ID!,version:ID,to:ID!):Article! # this is a copy of last version OR specified version
   # fork is sendArticle to yourself

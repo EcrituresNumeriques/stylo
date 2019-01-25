@@ -11,7 +11,7 @@ const isAdmin = require('../policies/isAdmin')
 
 const defaultsData = require('../data/defaultsData')
 
-const { populateUser, getUserById, populatePassword } = require('./nestedModel')
+const { populateUser, getUserById } = require('./nestedModel')
 
 module.exports = {
 
