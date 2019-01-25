@@ -80,6 +80,7 @@ type Password {
 
 type AuthToken {
   token:String
+  token_cookie:String
   password:Password!
   users:[User!]!
 }
@@ -122,6 +123,8 @@ type RootQuery {
 type RootMutation {
   createUser(user:UserInput!):User!
   #addAcquintance(email:String!,user:ID!):User!
+  #changePassword(password:ID!,old:String!,new:String!):Password!
+  #resetPassword(password:ID!,jwt:String!,new:String!):Password!
   createArticle(title:String!,user:ID!):Article!
   saveVersion(version:VersionInput!,user:ID!):Version!
   createTag(name:String!,description:String,user:ID!):Tag!
