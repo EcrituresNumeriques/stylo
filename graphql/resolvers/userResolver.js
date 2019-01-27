@@ -92,7 +92,7 @@ module.exports = {
       if(thisAcquintance.id === args.user){ throw new Error('Can not add yourself to acquintance')}
 
       //Check if acquintance is not already in array
-      console.log(thisUser.acquintances.map(a => a.toString()),thisAcquintance.id)
+      //console.log(thisUser.acquintances.map(a => a.toString()),thisAcquintance.id)
       if(thisUser.acquintances.map(a => a.toString()).includes(thisAcquintance.id)){ throw new Error('Email is already an acquintance')}
 
       //If all clear, add to acquintance

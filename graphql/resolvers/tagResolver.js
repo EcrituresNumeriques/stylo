@@ -50,6 +50,10 @@ module.exports = {
       const thisTag = await Tag.findOne({_id:args.tag,owner:args.user})
       if(!thisTag){throw new Error('Unable to find tag')}
 
+      //Check if not already inside tag
+      if(thisArticle.tags.map(t => t.toString()).includes(thisTag.id)){throw new Error('Article already tagged')}
+      if(thisTag.articles.map(a => a.toString()).includes(thisArticle.id)){throw new Error('Tag already set for article')}
+
       //if user owns tag + article, push each in the other
       //console.log(thisArticle)
       //console.log(thisTag)
