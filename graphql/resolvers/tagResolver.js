@@ -51,8 +51,8 @@ module.exports = {
       if(!thisTag){throw new Error('Unable to find tag')}
 
       //if user owns tag + article, push each in the other
-      console.log(thisArticle)
-      console.log(thisTag)
+      //console.log(thisArticle)
+      //console.log(thisTag)
       thisArticle.tags.push(thisTag)
       thisTag.articles.push(thisArticle)
 

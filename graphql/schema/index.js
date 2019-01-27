@@ -135,7 +135,10 @@ type RootMutation {
   "Log in the request, store user and password to be used as 'new' in userID fields"
   loginMutation(username:String,email:String,password:String!):Password!
 
-  #addAcquintance(email:String!,user:ID!):User!
+  "Add an email to your acquintances [need to be authentificated as user]"
+  addAcquintance(email:String!,user:ID!):User!
+  
+  
   #changePassword(password:ID!,old:String!,new:String!):Password!
   #resetPassword(password:ID!,jwt:String!,new:String!):Password!
   #setPrimaryUser(user:ID!):Password
@@ -151,6 +154,10 @@ type RootMutation {
   
   "Add article to a specified tag [Need to be authenficated as owner of the tag]"
   addToTag(article:ID!,tag:ID!,user:ID!):Article!
+
+  
+  #deleteTag
+  #removeFromTag
 
 
   # shareArticle(article:ID!,to:ID!):Article!

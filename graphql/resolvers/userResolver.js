@@ -13,6 +13,8 @@ const defaultsData = require('../data/defaultsData')
 
 const { populateUser, getUserById } = require('./nestedModel')
 
+const populateArgs = require('../helpers/populateArgs')
+
 module.exports = {
 
   // Mutations
@@ -77,6 +79,34 @@ module.exports = {
       throw err
     }
   },
+  addAcquintance: async (args,{req}) => {
+    try{
+      populateArgs(args)
+      isUser(args,req)
+
+      thisAcquintance = await User.findOne({email:args.email})
+      if(!thisAcquintance){throw new Error('No user found with this email')}
+      thisUser = await User.findOne({_id:args.user})
+
+      //Check if acquintance is the user itself
+      if(thisAcquintance.id === args.user){ throw new Error('Can not add yourself to acquintance')}
+
+      //Check if acquintance is not already in array
+      console.log(thisUser.acquintances.map(a => a.toString()),thisAcquintance.id)
+      if(thisUser.acquintances.map(a => a.toString()).includes(thisAcquintance.id)){ throw new Error('Email is already an acquintance')}
+
+      //If all clear, add to acquintance
+      thisUser.acquintances.push(thisAcquintance)
+      const returnUser = await thisUser.save();
+
+      return populateUser(returnUser)
+    }
+    catch(err){
+      throw err
+    }
+  },
+
+
   createUserFromPassword: () => ([]),
   createPasswordForUser: () => ([]),
   createTokenForUser: () => ([]),
