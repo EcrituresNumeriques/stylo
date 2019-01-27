@@ -149,8 +149,8 @@ type RootMutation {
   "Create tag [need to be authentificated as specified user]"
   createTag(name:String!,description:String,user:ID!):Tag!
   
-  #"Add article to a specified tag [Need to be authenficated as owner of the tag]"
-  #addToTag(article:ID!,tag:ID!):Article!
+  "Add article to a specified tag [Need to be authenficated as owner of the tag]"
+  addToTag(article:ID!,tag:ID!,user:ID!):Article!
 
 
   # shareArticle(article:ID!,to:ID!):Article!

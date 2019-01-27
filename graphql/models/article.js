@@ -18,6 +18,12 @@ const articleSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Version'
     }
+  ],
+  tags:[
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Tag'
+    }
   ]
 }, {timestamps: true});
 
