@@ -5,17 +5,40 @@ const Password = require('../models/user_password');
 
 const { populateUser, populatePassword } = require('./nestedModel')
 
+const verifCreds = async (args) => {
+  try{
+    let findProp = args.username? {username:args.username}:{email:args.email}
+    const fetchedPassword = await Password.findOne(findProp).populate("users")
+    if(!fetchedPassword){throw new Error("Password not found")}
+    if(!await bcrypt.compare(args.password,fetchedPassword.password)){
+      throw new Error("Password is incorrect");
+    }
+    return fetchedPassword
+  }
+  catch(err){
+    throw err
+  }
+}
 
 module.exports = {
+  loginMutation: async (args,{req,res}) => {
+
+    //The resolver only logs the user + password in the req object
+    const fetchedPassword = await verifCreds(args);
+    
+    //Add password to the req.created list + add users in the req.list
+    req.created = {...req.created, user:fetchedPassword.users[0].id, password:fetchedPassword.id}
+    req.user = {
+      usersIds:fetchedPassword.users.map(user => user._id.toString()),
+      passwordId:fetchedPassword.id
+    }
+    req.isAuth = true;
+
+    return populatePassword(fetchedPassword)
+  },
   login: async (args, {req,res}) => {
     try{
-      //login via email or username
-      let findProp = args.username? {username:args.username}:{email:args.email}
-      const fetchedPassword = await Password.findOne(findProp).populate("users")
-      if(!fetchedPassword){throw new Error("Password not found")}
-      if(!await bcrypt.compare(args.password,fetchedPassword.password)){
-        throw new Error("Password is incorrect");
-      }
+      const fetchedPassword = await verifCreds(args);
       const payload = {
         usersIds:fetchedPassword.users.map(user => user._id.toString()),
         passwordId:fetchedPassword.id,

@@ -71,6 +71,7 @@ type Password {
   email:String!
   username:String!
   users(limit:Int,page:Int):[User!]!
+  defaultUser:User!
   unlock:String
   active:Boolean
   expiresAt:String
@@ -131,7 +132,9 @@ type RootMutation {
   "Create user + default article"
   createUser(user:UserInput!):User!
 
-  #loginMutation(username:String,email:String,password:String!):AuthToken
+  "Log in the request, store user and password to be used as 'new' in userID fields"
+  loginMutation(username:String,email:String,password:String!):Password!
+
   #addAcquintance(email:String!,user:ID!):User!
   #changePassword(password:ID!,old:String!,new:String!):Password!
   #resetPassword(password:ID!,jwt:String!,new:String!):Password!

@@ -225,6 +225,7 @@ const populatePassword =  (password) => {
     return {
         ...cleanedPassword,
         users:getUsersByIds.bind(this,cleanedPassword.users || []),
+        defaultUser:getUserById.bind(this,cleanedPassword.users[0]),
         password:null,
         unlock:dateToString(cleanedPassword.unlock),
         expiresAt:cleanedPassword.expiresAt? dateToString(cleanedPassword.expiresAt) : null,

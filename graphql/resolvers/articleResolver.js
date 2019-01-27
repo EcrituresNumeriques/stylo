@@ -40,6 +40,8 @@ module.exports = {
       //Save the article and version ID in the req object, for other resolver to consum with "new" ID
       req.created = {...req.created,article:createdArticle.id,version:newVersion.id}
 
+      // TODO: filter owners vers ID
+      createdArticle.owners = createdArticle.owners.map(o => o.id)
       return populateArticle(createdArticle)
     }
     catch(err){
