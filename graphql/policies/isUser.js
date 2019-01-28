@@ -3,6 +3,7 @@ const isAuth = require('./isAuth')
 module.exports = (args,req) => {
     try{
         isAuth(req)
+        //console.log(req.user.usersIds)
         if(req.user && req.user.admin === true){
             return true
         }

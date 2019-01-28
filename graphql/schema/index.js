@@ -141,9 +141,16 @@ type RootMutation {
   "Change password"
   changePassword(password:ID!,old:String!,new:String!,user:ID!):Password!
 
-
+  #TODO
+  #require Email provider
   #resetPassword(password:ID!,jwt:String!,new:String!):Password!
-  #setPrimaryUser(user:ID!):Password
+  
+  # addPassword(password:ID!,user:ID!):Password!
+  # addToken(user:ID!):Token!
+  # addUser(user:ID!,password:ID!):User!
+  
+  "Change default user when login in + for loginMutation"
+  setPrimaryUser(password:ID!,user:ID!):Password!
   
   "Create article for specified user [need to be authentificated as specified user]"
   createArticle(title:String!,user:ID!):Article!
@@ -167,9 +174,6 @@ type RootMutation {
   # fork is sendArticle to yourself
   # renameArticle(article:ID!,title:String!):Article!
   # deleteArticle(article:ID!):Article!
-  # addPassword(password:UserInput!,user:ID!):Password!
-  # addToken(user:ID!):Token!
-  # addUser(user:UserInput!,password:ID!):User!
 }
 
 schema {

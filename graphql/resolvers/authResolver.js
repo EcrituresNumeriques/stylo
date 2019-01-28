@@ -34,7 +34,8 @@ module.exports = {
     req.created = {...req.created, user:fetchedPassword.users[0].id, password:fetchedPassword.id}
     req.user = {
       usersIds:fetchedPassword.users.map(user => user._id.toString()),
-      passwordId:fetchedPassword.id
+      passwordId:fetchedPassword.id,
+      admin:fetchedPassword.users.filter(user => user.admin).length > 0 ? true : false,
     }
     req.isAuth = true;
 
@@ -77,7 +78,7 @@ module.exports = {
   },
   changePassword: async (args, {req}) => {
     try{
-      populateArgs(args)
+      populateArgs(args,req)
       isUser(args,req)
 
       //find Password + confirm it belongs to authentificated user
@@ -94,6 +95,28 @@ module.exports = {
       const fetchedPassword = await thisPassword.save()
 
       return populatePassword(fetchedPassword)
+
+    }
+    catch(err){
+      throw err
+    }
+  },
+  setPrimaryUser: async (args,{req}) => {
+    try{
+      populateArgs(args,req)
+      isUser(args,req)
+
+      //Recover password
+      const thisPassword = await Password.findOne({_id:args.password,users:args.user})
+      if(!thisPassword){throw new Error('Unable to fetch password')}
+
+      //Extract user from thisPassword.users and push it first
+      thisPassword.users.pull(args.user)
+      thisPassword.users.unshift(args.user)
+
+      const returnPassword = await thisPassword.save()
+
+      return populatePassword(returnPassword)
 
     }
     catch(err){

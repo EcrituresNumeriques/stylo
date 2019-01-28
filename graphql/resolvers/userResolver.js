@@ -81,7 +81,7 @@ module.exports = {
   },
   addAcquintance: async (args,{req}) => {
     try{
-      populateArgs(args)
+      populateArgs(args,req)
       isUser(args,req)
 
       thisAcquintance = await User.findOne({email:args.email})
