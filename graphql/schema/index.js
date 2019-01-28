@@ -144,7 +144,6 @@ type RootMutation {
   #TODO
   #require Email provider
   #resetPassword(password:ID!,jwt:String!,new:String!):Password!
-  
   # addToken(user:ID!):Token!
 
   "Give access to a user using a password's email"
@@ -169,8 +168,8 @@ type RootMutation {
   "Add article to a specified tag [Need to be authenficated as owner of the tag]"
   addToTag(article:ID!,tag:ID!,user:ID!):Article!
 
-
-  #deleteTag
+  "Delete tag and all articles carrying it"
+  deleteTag(tag:ID!,user:ID!):User!
   #removeFromTag
 
 

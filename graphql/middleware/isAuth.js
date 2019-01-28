@@ -18,7 +18,7 @@ module.exports = async (req, _, next) => {
       const noCRSF = jwt.verify(req.cookies['graphQL-jwt'],process.env.JWT_SECRET_SESSION_COOKIE)
       if(noCRSF && noCRSF.session){
         req.user_noCSRF = noCRSF
-        console.log("we got a token",noCRSF)
+        //console.log("we got a token",noCRSF)
       }
     }
     catch(err){

@@ -1,4 +1,4 @@
-const {populateTag, populateArticle} = require('./nestedModel')
+const {populateTag, populateArticle, populateUser} = require('./nestedModel')
 
 const User = require('../models/user');
 const Tag = require('../models/tag');
@@ -69,5 +69,31 @@ module.exports = {
     catch(err){
       throw err
     }
-  }
+  },
+  deleteTag: async (args,{req}) => {
+    try{
+      populateArgs(args,req)
+      isUser(args,req)
+
+      //Recover tag, and all articles
+      const thisTag = await Tag.findOne({_id:args.tag,owner:args.user})
+      if(!thisTag){throw new Error('Unable to find tag')}
+
+      //fetch user
+      const thisUser = await User.findOne({_id:args.user})
+      if(!thisUser){throw new Error('This user does not exist')}
+
+      //pull tags from user and article + remove tag
+      thisUser.tags.pull(args.tag)
+      await Article.updateMany({tags:args.tag},{$pull:{tags:args.tag}})
+      await Tag.findOneAndRemove({_id:args.tag})
+      const returnUser = await thisUser.save()
+
+      return populateUser(returnUser)
+    }
+    catch(err){
+      throw err
+    }
+  },
+
 }
