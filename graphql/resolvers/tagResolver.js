@@ -70,6 +70,37 @@ module.exports = {
       throw err
     }
   },
+  removeFromTag: async (args,{req}) => {
+    try{
+      args = populateArgs(args,req)
+      isUser(args,req)
+
+      //load article and tag
+      const thisArticle = await Article.findOne({_id:args.article,owners:args.user})
+      if(!thisArticle){throw new Error('Unable to find article')}      
+      const thisTag = await Tag.findOne({_id:args.tag,owner:args.user})
+      if(!thisTag){throw new Error('Unable to find tag')}
+
+      //Check if already inside tag
+      if(!thisArticle.tags.map(t => t.toString()).includes(thisTag.id)){throw new Error('Article not tagged')}
+      if(!thisTag.articles.map(a => a.toString()).includes(thisArticle.id)){throw new Error('Tag not set for article')}
+
+      //if user owns tag + article, push each in the other
+      //console.log(thisArticle)
+      //console.log(thisTag)
+      thisArticle.tags.pull(thisTag)
+      thisTag.articles.pull(thisArticle)
+
+      //saving
+      const returnArticle = await thisArticle.save()
+      await thisTag.save()
+      
+      return populateArticle(returnArticle)
+    }
+    catch(err){
+      throw err
+    }
+  },
   deleteTag: async (args,{req}) => {
     try{
       populateArgs(args,req)
