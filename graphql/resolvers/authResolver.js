@@ -151,6 +151,37 @@ module.exports = {
       throw err
     }
   },
+  removeCredential: async (args, {req}) => {
+    try{
+      populateArgs(args,req)
+      isUser(args,req)
+
+      const thisPassword = await Password.findOne({email:args.email})
+      if(!thisPassword){throw new Error('Password not found')}
+      const thisUser = await User.findOne({_id:args.user})
+      if(!thisUser){throw new Error('User not found')}
+
+      //Check if email is the user's one
+      if(thisUser.email === args.email){throw new Error('Can not remove master email')}
+
+      //pull it from
+      if(!thisPassword.users.map(u => u.toString()).includes(thisUser.id)){throw new Error('Password not a credential for this user')}
+      if(!thisUser.passwords.map(p => p.toString()).includes(thisPassword.id)){throw new Error('Users not having this password as a credential')}
+
+      //All good
+      thisPassword.users.pull(thisUser)
+      thisUser.passwords.pull(thisPassword)
+
+      await thisPassword.save()
+      const returnUser = await thisUser.save()
+
+      return populateUser(returnUser)
+
+    }
+    catch(err){
+      throw err
+    }
+  },
   refreshToken: async (_, {req}) => {
     if(!req.user_noCSRF){
       throw new Error("Can't refresh user without cookie");

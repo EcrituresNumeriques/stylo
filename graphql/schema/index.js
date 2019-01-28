@@ -147,9 +147,12 @@ type RootMutation {
   
   # addToken(user:ID!):Token!
 
-  "Give access to a password using it's email for an user"
+  "Give access to a user using a password's email"
   addCredential(email:String!,user:ID!):User!
   # If need to create new user user createUser + addCredential
+
+  "Remove access to a user using a password's email (can't be the main email)"
+  removeCredential(email:String!,user:ID!):User!
 
   "Change default user when login in + for loginMutation"
   setPrimaryUser(password:ID!,user:ID!):Password!
