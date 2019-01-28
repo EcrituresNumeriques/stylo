@@ -3,6 +3,10 @@ const bcrypt = require('bcryptjs');
 
 const Password = require('../models/user_password');
 
+const populateArgs = require('../helpers/populateArgs');
+
+const isUser = require('../policies/isUser')
+
 const { populateUser, populatePassword } = require('./nestedModel')
 
 const verifCreds = async (args) => {
@@ -66,6 +70,31 @@ module.exports = {
         password:populatePassword(fetchedPassword),
         users:fetchedPassword.users.map(populateUser)
       }
+    }
+    catch(err){
+      throw err
+    }
+  },
+  changePassword: async (args, {req}) => {
+    try{
+      populateArgs(args)
+      isUser(args,req)
+
+      //find Password + confirm it belongs to authentificated user
+      const thisPassword = await Password.findOne({_id:args.password,users:args.user})
+      if(!thisPassword){throw new Error('Password not found')}
+
+
+      //check old password
+      if(!await bcrypt.compare(args.old,thisPassword.password)){
+        throw new Error("Old password is incorrect");
+      }
+      //Set new password
+      thisPassword.password = bcrypt.hashSync(args.new,10)
+      const fetchedPassword = await thisPassword.save()
+
+      return populatePassword(fetchedPassword)
+
     }
     catch(err){
       throw err
