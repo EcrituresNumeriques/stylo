@@ -49,6 +49,31 @@ module.exports = {
     }
 
   },
+  shareArticle: async (args,{req}) => {
+    try{
+      populateArgs(args,req)
+      isUser(args,req)
+
+      //Fetch article and user to send to
+      const fetchedArticle = await Article.findOne({_id:args.article,owners:args.user})
+      if(!fetchedArticle){throw new Error('Unable to find article')}
+      const fetchedUser = await User.findOne({_id:args.to})
+      if(!fetchedUser){throw new Error('Unable to find user')}
+
+      //Add user to list of owner
+      fetchedArticle.owners.push(fetchedUser)
+      fetchedUser.articles.push(fetchedArticle)
+
+      const returnArticle = await fetchedArticle.save()
+      await fetchedUser.save()
+
+      return populateArticle(returnArticle)
+
+    }
+    catch(err){
+      throw err
+    }
+  },
   article: async (args) => {
 
     // -------------------------------------------

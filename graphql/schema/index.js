@@ -174,12 +174,13 @@ type RootMutation {
   "Remove article from a specified tag [Need to be authenficated as owner of the tag]"
   removeFromTag(article:ID!,tag:ID!,user:ID!):Article!
 
+  "add a user to an article"
+  shareArticle(article:ID!,to:ID!,user:ID!):Article!
 
-  # shareArticle(article:ID!,to:ID!):Article!
-  # sendArticle(article:ID!,version:ID,to:ID!):Article! # this is a copy of last version OR specified version
+  # sendArticle(article:ID!,version:ID,to:ID!,user:ID!):Article! # this is a copy of last version OR specified version
   # fork is sendArticle to yourself
-  # renameArticle(article:ID!,title:String!):Article!
-  # deleteArticle(article:ID!):Article!
+  # renameArticle(article:ID!,title:String!,user:ID!):Article!
+  # deleteArticle(article:ID!,user:ID!):Article!
 }
 
 schema {
