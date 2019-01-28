@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const Password = require('../models/user_password');
+const User = require('../models/user');
 
 const populateArgs = require('../helpers/populateArgs');
 
@@ -118,6 +119,33 @@ module.exports = {
 
       return populatePassword(returnPassword)
 
+    }
+    catch(err){
+      throw err
+    }
+  },
+  addCredential: async (args,{req}) => {
+    try{
+      populateArgs(args,req)
+      isUser(args,req)
+
+      const thisPassword = await Password.findOne({email:args.email})
+      if(!thisPassword){throw new Error('Password not found')}
+      const thisUser = await User.findOne({_id:args.user})
+      if(!thisUser){throw new Error('User not found')}
+
+      //Check if password or user not already in
+      if(thisPassword.users.map(u => u.toString()).includes(thisUser.id)){throw new Error('Password already a credential')}
+      if(thisUser.passwords.map(p => p.toString()).includes(thisPassword.id)){throw new Error('Users already a credential')}
+
+      //All good
+      thisPassword.users.push(thisUser)
+      thisUser.passwords.push(thisPassword)
+
+      await thisPassword.save()
+      const returnUser = await thisUser.save()
+
+      return populateUser(returnUser)
     }
     catch(err){
       throw err

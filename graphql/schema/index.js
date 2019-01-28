@@ -145,10 +145,12 @@ type RootMutation {
   #require Email provider
   #resetPassword(password:ID!,jwt:String!,new:String!):Password!
   
-  # addPassword(password:ID!,user:ID!):Password!
   # addToken(user:ID!):Token!
-  # addUser(user:ID!,password:ID!):User!
-  
+
+  "Give access to a password using it's email for an user"
+  addCredential(email:String!,user:ID!):User!
+  # If need to create new user user createUser + addCredential
+
   "Change default user when login in + for loginMutation"
   setPrimaryUser(password:ID!,user:ID!):Password!
   
