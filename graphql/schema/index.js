@@ -184,8 +184,8 @@ type RootMutation {
   "Rename an article you own"
   renameArticle(article:ID!,title:String!,user:ID!):Article!
 
-  
-  # deleteArticle(article:ID!,user:ID!):Article!
+  "Remove from owners"
+  deleteArticle(article:ID!,user:ID!):Article!
 }
 
 schema {

@@ -142,6 +142,28 @@ module.exports = {
       throw err
     }
   },
+  deleteArticle: async (args, {req}) => {
+    try{
+      populateArgs(args,req)
+      isUser(args,req)
+
+      //Fetch article
+      let fetchedArticle = await Article.findOne({_id:args.article,owners:args.user})
+      if(!fetchedArticle){throw new Error('Unable to find article')}
+
+      //if all good remove user from owners
+      fetchedArticle.owners.pull(args.user)
+
+      //save
+      const returnedArticle = await fetchedArticle.save()
+
+      return populateArticle(returnedArticle)
+
+    }
+    catch(err){
+      throw err
+    }
+  },
   article: async (args,{req}) => {
 
     // -------------------------------------------
