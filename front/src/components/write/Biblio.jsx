@@ -38,7 +38,7 @@ export default function Biblio(props){
     <div id="biblio">
         <h1 className={props.closed?"title closed":"title"} onDoubleClick={()=>props.toggle()}>Biblio</h1>
         {!props.closed && <section>
-            {entries.map((ref,i)=>(<Clipboard key={"ref"+i} component="p" data-clipboard-text={"[@"+ref.key+"]"} button-title={ref.title}>@{ref.key}</Clipboard>))}
+            {entries.map((ref,i)=>(<Clipboard key={"ref"+i} component="p" data-clipboard-text={"[@"+ref.key+"]"} button-title={ref.title}><span>@{ref.key}</span></Clipboard>))}
         </section>}
         {props.addRef && !props.closed && <button onClick={()=>props.addRef()}>+ Add reference</button>}
         {props.sourceRef && !props.closed && <button onClick={()=>props.sourceRef()}>See source</button>}

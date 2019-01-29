@@ -65,12 +65,9 @@ div#app aside#yamlEditor >  section {
       }
   }
   .keywords{
-    display:flex;
-    align-items: baseline;
     input {
       padding:0.5em 1em;
       display:block;
-      flex:1 1 auto;
       margin:2px;
       box-shadow: 0 1px 1px #f0f0f0;;
       background-color:white;

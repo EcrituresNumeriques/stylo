@@ -9,7 +9,7 @@ import { Reviewers } from './Reviewers.jsx';
 import { Date} from './Date.jsx';
 import { Rubriques} from './Rubriques.jsx';
 import { ControlledKeywords} from './ControlledKeywords.jsx';
-import { Keywords} from './Keywords.jsx';
+import { Keywords} from './newKeywords.jsx';
 import ImportYaml from './ImportYaml.jsx';
 import _ from 'lodash';
 import {init} from './default/init.js';
@@ -267,6 +267,8 @@ export default class YamlEditor extends Component {
         <TextInput target="subtitle_f" alias={[{target:'subtitle',prefix:'',suffix:'',filterMD:true}]} title="Sous-titre" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
         <Authors state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
         <Date target="date" title="Date" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
+        <Resumes state={this.state.obj}  updateState={this.updateState}  readOnly={this.readOnly}/>
+        <Keywords state={this.state} updateMisc={this.updateMisc} addKeyword={this.addKeyword} removeKeyword={this.removeKeyword} updateState={this.updateState} readOnly={this.readOnly}/>
       </section>
     )
   }
@@ -284,7 +286,7 @@ export default class YamlEditor extends Component {
 
         {this.props.editor && <TextInput target="url_article_sp" title="URL sens public" placeholder="http://sens-public.org/articleXXXX.html" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
 
-        <Resumes state={this.state.obj}  updateState={this.updateState}  readOnly={this.readOnly}/>
+        
 
         {this.props.editor && <Dossier state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
 
@@ -293,8 +295,6 @@ export default class YamlEditor extends Component {
         {this.props.editor && <Reviewers state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
 
         {this.props.editor && <ControlledKeywords state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
-
-        <Keywords state={this.state} updateMisc={this.updateMisc} addKeyword={this.addKeyword} removeKeyword={this.removeKeyword} updateState={this.updateState} readOnly={this.readOnly}/>
 
         {this.props.editor && <Rubriques state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
       </section>
