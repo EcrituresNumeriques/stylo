@@ -3,12 +3,13 @@ const bcrypt = require('bcryptjs');
 
 const Password = require('../models/user_password');
 const User = require('../models/user');
+const Token = require('../models/user_token');
 
 const populateArgs = require('../helpers/populateArgs');
 
 const isUser = require('../policies/isUser')
 
-const { populateUser, populatePassword } = require('./nestedModel')
+const { populateUser, populatePassword, populateToken } = require('./nestedModel')
 
 const verifCreds = async (args) => {
   try{
@@ -202,6 +203,65 @@ module.exports = {
       token:token,
       password:populatePassword(fetchedPassword),
       users:fetchedPassword.users.map(populateUser)
+    }
+  },
+  addToken: async (args,{req}) => {
+    try{
+      populateArgs(args,req)
+      isUser(args,req)
+
+      const thisUser = await User.findOne({_id:args.user})
+      if(!thisUser){throw new Error('User not found')}
+
+      //Generate Token in JWT + Token instance
+      let newToken = new Token({name:args.name})
+      const payload = {
+        usersId:thisUser.id,
+        tokenId:newToken.id,
+        admin:thisUser.admin
+      }
+      const token = jwt.sign(
+        payload,
+        process.env.JWT_SECRET_TOKEN
+      )
+      
+
+      newToken.user = thisUser.id
+      newToken.token = bcrypt.hashSync(token,10)
+      thisUser.tokens.push(newToken)
+      let returnedToken = await newToken.save();
+      await thisUser.save()
+
+      returnedToken._doc.token = token
+      
+      req.created = {...req.created,token:returnedToken.id}
+
+      return populateToken(returnedToken)
+
+    }
+    catch(err){
+      throw err
+    }
+  },
+  deleteToken: async (args,{req}) => {
+    try{
+      populateArgs(args,req)
+      isUser(args,req)
+
+      const thisUser = await User.findOne({_id:args.user})
+      if(!thisUser){throw new Error('User not found')}
+      const thisToken = await Token.findOne({_id:args.token})
+      if(!thisToken){throw new Error('Token not found')}
+
+      thisUser.tokens.pull(thisToken);
+      
+      const returnedUser = await thisUser.save()
+      await Token.deleteOne({_id:args.token})
+
+      return populateUser(returnedUser)
+    }
+    catch(err){
+      throw err
     }
   }
 }

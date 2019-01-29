@@ -195,7 +195,6 @@ const populateToken =  (token) => {
     return {
         ...cleanedToken,
         user:getUserById.bind(this,cleanedToken.user || []),
-        token:null,
         expiresAt:cleanedToken.expiresAt? dateToString(cleanedToken.expiresAt) : null,
     }
 };
