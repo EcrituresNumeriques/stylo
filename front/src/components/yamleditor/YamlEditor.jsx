@@ -164,7 +164,7 @@ export default class YamlEditor extends Component {
 
 
 
-  updateState(value,target = undefined){
+  updateState(value,target = undefined,removeFromArray = undefined){
     //No target, update the whole state, don't export
     if(!target){
       const miscInit = JSON.parse(JSON.stringify(init.misc));
@@ -172,8 +172,16 @@ export default class YamlEditor extends Component {
     }
     //Update only the key changed, plus export the new state
     else{
+      //Remove target array, removing removeFromArray index
+      if(typeof(removeFromArray) == "number"){
+        this.setState((state)=>{
+          let nextArray = _.get(state,'obj.'+target);
+          _.set(state, 'obj.'+target, [...nextArray.slice(0,removeFromArray),...nextArray.slice(removeFromArray+1)])
+          return state
+        })
+      }
       //console.log("changing key",target,value);
-      this.setState((state)=>_.set(state, 'obj.'+target, value));
+      else{this.setState((state)=>_.set(state, 'obj.'+target, value))}
     }
   }
 
@@ -251,17 +259,24 @@ export default class YamlEditor extends Component {
       });
   }
 
-
-
   render(){
+    return(
+      <section className={this.readOnly?"readOnly":""}>
+        {this.props.editor && <ImportYaml state={this.state} updateState={this.updateState} />}
+        <TextInput target="title_f" alias={[{target:'title',prefix:'',suffix:'',filterMD:true}]} title="Titre" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
+        <TextInput target="subtitle_f" alias={[{target:'subtitle',prefix:'',suffix:'',filterMD:true}]} title="Sous-titre" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
+        <Authors state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
+        <Date target="date" title="Date" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
+      </section>
+    )
+  }
+
+  renderOld(){
     return(
       <section className={this.readOnly?"readOnly":""}>
         {this.props.editor && <ImportYaml state={this.state} updateState={this.updateState} />}
         {this.props.editor && <TextInput target="id_sp" alias={[{target:'bibliography',prefix:'',suffix:'.bib'}]} title="Identifiant" placeholder="SPxxxx" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
 
-        <TextInput target="title_f" alias={[{target:'title',prefix:'',suffix:'',filterMD:true}]} title="Titre" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
-
-        <TextInput target="subtitle_f" alias={[{target:'subtitle',prefix:'',suffix:'',filterMD:true}]} title="Sous-titre" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
         <SelectInput target={"lang"} title="Lang" placeholder="Choisir la langue du texte" options={['fr','en','ita','es','es','pt','de','uk','ar']}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
         <MultipleChoice target={"nocite"} title="Citations" options={[{label:"All citations",value:"@*"},{label:"Only the ones used", value:""}]}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
 
