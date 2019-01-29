@@ -123,7 +123,26 @@ module.exports = {
     }
 
   },
-  article: async (args) => {
+  renameArticle: async (args,{req}) => {
+    try{
+      populateArgs(args,req)
+      isUser(args,req)
+
+      //Fetch Article
+      const fetchedArticle = await Article.findOne({_id:args.article,owners:args.user})
+      if(!fetchedArticle){throw new Error('Unable to find article')}
+
+      //If all good, change title
+      fetchedArticle.title = args.title
+      const returnedArticle = await fetchedArticle.save()
+
+      return populateArticle(returnedArticle)
+    }
+    catch(err){
+      throw err
+    }
+  },
+  article: async (args,{req}) => {
 
     // -------------------------------------------
     // TODO: verify user has acces to this article

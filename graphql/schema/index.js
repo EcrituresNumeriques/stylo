@@ -181,8 +181,10 @@ type RootMutation {
   sendArticle(article:ID!,version:ID,to:ID!,user:ID!):Article! # this is a copy of last version OR specified version
   # fork is sendArticle to yourself
 
+  "Rename an article you own"
+  renameArticle(article:ID!,title:String!,user:ID!):Article!
+
   
-  # renameArticle(article:ID!,title:String!,user:ID!):Article!
   # deleteArticle(article:ID!,user:ID!):Article!
 }
 
