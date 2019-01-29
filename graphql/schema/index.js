@@ -177,8 +177,11 @@ type RootMutation {
   "add a user to an article"
   shareArticle(article:ID!,to:ID!,user:ID!):Article!
 
-  # sendArticle(article:ID!,version:ID,to:ID!,user:ID!):Article! # this is a copy of last version OR specified version
+  "Send last version, or specified version, to an user"
+  sendArticle(article:ID!,version:ID,to:ID!,user:ID!):Article! # this is a copy of last version OR specified version
   # fork is sendArticle to yourself
+
+  
   # renameArticle(article:ID!,title:String!,user:ID!):Article!
   # deleteArticle(article:ID!,user:ID!):Article!
 }

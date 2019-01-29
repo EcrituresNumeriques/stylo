@@ -74,6 +74,55 @@ module.exports = {
       throw err
     }
   },
+  sendArticle: async (args,{req}) => {
+    try{
+
+      populateArgs(args,req)
+      isUser(args,req)
+      
+      //Fetch article and user to send to
+      const fetchedArticle = await Article.findOne({_id:args.article,owners:args.user})
+      if(!fetchedArticle){throw new Error('Unable to find article')}
+      const fetchedUser = await User.findOne({_id:args.to})
+      if(!fetchedUser){throw new Error('Unable to find user')}
+
+      let fetchedVersion
+      if(args.version){
+        fetchedVersion = await Version.findOne({_id:args.version,article:args.article})
+      }
+      else {
+        fetchedVersion = await Version.findOne({_id:fetchedArticle.versions[fetchedArticle.versions.length-1].toString()})
+      }
+      if(!fetchedArticle){throw new Error('Unable to fetch version')}
+
+      //clone version
+
+      let newVersion = new Version({
+        md:fetchedVersion.md,
+        sommaire:fetchedVersion.sommaire,
+        yaml:fetchedVersion.yaml,
+        bib:fetchedVersion.bib
+      });
+      //All good, create new Article & merge version/article/user
+      let newArticle = new Article({title:'[Sent] '+fetchedArticle.title})
+      newArticle.owners.push(fetchedUser.id)
+      newArticle.versions.push(newVersion)
+      fetchedUser.articles.push(newArticle)
+      newVersion.owner = fetchedUser
+
+      //Save the three objects
+      const returnedArticle = await newArticle.save()
+      await fetchedUser.save()
+      await newVersion.save()
+
+      return populateArticle(returnedArticle)
+      
+    }
+    catch(err){
+      throw err
+    }
+
+  },
   article: async (args) => {
 
     // -------------------------------------------
