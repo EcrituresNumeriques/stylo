@@ -84,9 +84,10 @@ module.exports = {
       populateArgs(args,req)
       isUser(args,req)
 
-      thisAcquintance = await User.findOne({email:args.email})
+      let thisAcquintance = await User.findOne({email:args.email})
       if(!thisAcquintance){throw new Error('No user found with this email')}
-      thisUser = await User.findOne({_id:args.user})
+      let thisUser = await User.findOne({_id:args.user})
+      if(!thisUser){throw new Error('Unable to find user')}
 
       //Check if acquintance is the user itself
       if(thisAcquintance.id === args.user){ throw new Error('Can not add yourself to acquintance')}
@@ -105,12 +106,29 @@ module.exports = {
       throw err
     }
   },
+  updateUser: async (args,{req}) => {
+    try{
+      populateArgs(args,req)
+      isUser(args,req)
+
+      let thisUser = await User.findOne({_id:args.user})
+      if(!thisUser){throw new Error('Unable to find user')}
+
+      if(args.displayName){thisUser.displayName = args.displayName}
+      if(args.firstName){thisUser.firstName = args.firstName}
+      if(args.lastName){thisUser.lastName = args.lastName}
+      if(args.institution){thisUser.institution = args.institution}
+      if(args.yaml){thisUser.yaml = args.yaml}
+      const returnedUser = await thisUser.save()
+
+      return populateUser(returnedUser)
 
 
-  createUserFromPassword: () => ([]),
-  createPasswordForUser: () => ([]),
-  createTokenForUser: () => ([]),
-
+    }
+    catch(err){
+      throw err
+    }
+  },
   // Queries
   
   //Only available for admins

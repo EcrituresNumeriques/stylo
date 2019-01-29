@@ -141,6 +141,9 @@ type RootMutation {
   "Change password"
   changePassword(password:ID!,old:String!,new:String!,user:ID!):Password!
 
+  "Change user information"
+  updateUser(user:ID!,displayName:String,firstName:String,lastName:String,institution:String,yaml:String):User!
+
   #TODO
   #require Email provider
   #resetPassword(password:ID!,jwt:String!,new:String!):Password!
@@ -148,7 +151,7 @@ type RootMutation {
 
   "Give access to a user using a password's email"
   addCredential(email:String!,user:ID!):User!
-  # If need to create new user user createUser + addCredential
+  # If need to create new user: createUser + addCredential
 
   "Remove access to a user using a password's email (can't be the main email)"
   removeCredential(email:String!,user:ID!):User!
