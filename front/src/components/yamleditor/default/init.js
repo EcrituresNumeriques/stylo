@@ -18,33 +18,34 @@ title: ""
 subtitle_f: ""
 subtitle: ""
 authors: []
-date:""
-year::"
-month:""
-day:""
+date: ""
+year: ""
+month: ""
+day: ""
 abstract: []
 keywords: []
 controlledKeywords: []
-lang:""
-id:""
-url_article:""
+lang: ""
+id: ""
+url_article: ""
 typeArticle: []
-publisher:""
-journal:""
-issnnum:""
-directors:[]
-prod:""
-prodnum:""
-diffnum:""
-rights:""
-dossier:[]
-issueDirectors:[]
-reviewers:[]
-translators:[]
-transcriber:[]
-translationOf:[]
-bibliography:""
+publisher: ""
+journal: ""
+issnnum: ""
+directors: []
+prod: ""
+prodnum: ""
+diffnum: ""
+rights: ""
+dossier: []
+issueDirectors: []
+reviewers: []
+translators: []
+transcriber: []
+translationOf: []
+bibliography: ""
 link-citations: true
-nocite:""`
+nocite: ""
+`
  
 };

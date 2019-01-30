@@ -31,8 +31,11 @@ let SEXY_SCHEMA = YAML.Schema.create([ SexyYamlType ]);
 export default class YamlEditor extends Component {
   constructor(props){
     super(props);
+    //load defaultYaml, merge it with specified yaml
+    const defaultYaml = YAML.load(init.yaml, { schema: SEXY_SCHEMA }) || {};
     const singleYaml = props.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, "");
-    const jsObj = YAML.load(singleYaml, { schema: SEXY_SCHEMA }) || {};
+    const parsed = YAML.load(singleYaml, { schema: SEXY_SCHEMA }) || {};
+    const jsObj = {...defaultYaml,...parsed}
     const miscInit = JSON.parse(JSON.stringify(init.misc));
     this.state = {obj:jsObj,misc:this.computeFromYaml(jsObj,miscInit)};
     this.updateState = this.updateState.bind(this);
@@ -151,12 +154,27 @@ export default class YamlEditor extends Component {
       }
   }
 
+  cleanOutput(object){
+    let cleaning = JSON.parse(JSON.stringify(object))
+    for (var propName in cleaning) { 
+      if (cleaning[propName] === null || cleaning[propName] === undefined || cleaning[propName] === "") {
+        delete cleaning[propName];
+      }
+      if(Array.isArray(cleaning[propName]) && cleaning[propName].length === 0){
+        delete cleaning[propName];
+        //console.log("deleting",propName)  
+      }
+    }
+    return cleaning
+  }
+
   componentWillUpdate(nextProp,nextState){
     //console.log("componentWillUpdate",nextProp.yaml,YAML.safeDump(nextState.obj), nextProp.yaml != '---\n'+YAML.safeDump(nextState.obj)+'---');
     if(this.props.exportChange){
-        if(nextProp.yaml != '---\n'+YAML.safeDump(nextState.obj)+'---'){
-            this.props.exportChange('---\n'+YAML.safeDump(nextState.obj)+'---');
-        }
+      if(nextProp.yaml != '---\n'+YAML.safeDump(this.cleanOutput(nextState.obj))+'---'){
+        console.log(this.cleanOutput(nextState.obj))
+        this.props.exportChange('---\n'+YAML.safeDump(this.cleanOutput(nextState.obj))+'---');
+      }
     }
   }
 
