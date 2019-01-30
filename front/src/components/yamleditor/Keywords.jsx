@@ -1,59 +1,36 @@
 import React from 'react'
+import {SelectInput} from './SelectInput.jsx'
+import {TextInput} from './TextInput.jsx'
 import _ from 'lodash'
 
 export function Keywords(props){
-  let keyword_fr_f = _.get(props.state,"obj.keyword_fr_f",'');
-  let keyword_en_f = _.get(props.state,"obj.keyword_en_f",'');
-
-  if(!Array.isArray(keyword_en_f)){keyword_en_f = keyword_en_f == '' ? []:keyword_en_f.split(', ')}
-  else{props.updateState(keyword_en_f.join(', '),'keyword_en_f')}
-  if(!Array.isArray(keyword_fr_f)){keyword_fr_f = keyword_fr_f == '' ? []:keyword_fr_f.split(', ')}
-  else{props.updateState(keyword_en_f.join(', '),'keyword_fr_f')}
-
-  //If imported, add in misc state
-  if(props.state.misc.keywords_fr.length != keyword_fr_f.length){props.updateMisc(keyword_fr_f,'keywords_fr');}
-  if(props.state.misc.keywords_en.length != keyword_en_f.length){props.updateMisc(keyword_en_f,'keywords_en');}
-
-  let uncontrolledKeywords = [];
-  for(let i=0;i<keyword_fr_f.length || i<keyword_en_f.length;i++){
-    uncontrolledKeywords.push({fr:_.get(keyword_fr_f,"["+i+"]",""),en:_.get(keyword_en_f,"["+i+"]","")});
-  }
+  const keywords_lang = _.get(props.state,"obj.keywords",[]);
+  const targetNewKeywordLang = keywords_lang.length
   return(
       <section className="group">
-        <h1><i className="fa fa-tag" aria-hidden="true"></i> Mots clés</h1>
-        <datalist id="keywordsUCFR">
-          {props.state.misc.uncontrolled_fr && props.state.misc.uncontrolled_fr.map((o,i)=>(<option key={"keywordsUCFR"+i} value={o}/>))}
-        </datalist>
-        <datalist id="keywordsUCEN">
-          {props.state.misc.uncontrolled_en && props.state.misc.uncontrolled_en.map((o,i)=>(<option key={"keywordsUCeN"+i} value={o}/>))}
-        </datalist>
-
-
-        {uncontrolledKeywords.map((o,i)=>(<Keyword key={"keywords"+i} index={i} object={o} removeKeyword={props.removeKeyword} updateMisc={props.updateMisc} readOnly={props.readOnly}/>))}
-        {!props.readOnly && <InputKeyword state={props.state.misc} addKeyword={props.addKeyword} updateMisc={props.updateMisc}/>}
+        <h1><i className="fa fa-tag" aria-hidden="true"></i> Mots-clés</h1>
+        {keywords_lang.map((o,i)=>(<KeywordLang key={"keyword"+i} object={o} index={i} state={props.state} updateState={props.updateState} readOnly={props.readOnly}/>))}
+        {!props.readOnly && <p className="addToArray" onClick={function(){props.updateState({lang:"",list:"",list_f:""},"keywords["+targetNewKeywordLang+"]")}}><i className="fa fa-user-plus" aria-hidden="true"></i> Ajouter une langue</p>}
       </section>
     )
   }
 
-  function Keyword(props){
-
-
+  function KeywordLang(props){
+      const updateKeywords = (keywords,indexLang,keyword,index)=>{
+        keywords[index] = keyword
+        if(keyword.endsWith(",")){
+          {keywords = [...keywords.slice(0,index),"",keyword.replace(/\,$/, ''),keywords.slice(index+1)]}
+        }
+        else if(keyword === ""){keywords = [...keywords.slice(0,index),...keywords.slice(index+1)]}
+        props.updateState(keywords.join(',').replace(/\,$/, ''),"keywords["+indexLang+"].list_f")
+      }
+      const keywords = props.object.list_f.split(',')
       return(
         <div className="keywords">
-          <input className="free" type="text" placeholder="FR" value={props.object.fr} disabled={props.readOnly} onChange={(e)=>props.updateMisc(e.target.value,'keywords_fr[' + props.index + ']','uncontrolledKeywords')}/>
-          <input className="free" type="text" placeholder="EN" value={props.object.en} disabled={props.readOnly} onChange={(e)=>props.updateMisc(e.target.value,'keywords_en[' + props.index + ']','uncontrolledKeywords')}/>
-          {!props.readOnly && <i className="fa fa-minus-circle" aria-hidden="true" data-id={props.index} onClick={()=>props.removeKeyword(props.index)}></i>}
+          <SelectInput target={"keywords["+props.index+"].lang"} title="Language" placeholder="Choisir la langue des mot-clés" options={['fr','en','it','es','es','pt','de','uk','ar']}  state={props.state.obj} updateState={props.updateState} readOnly={props.readOnly}/>
+
+          {keywords.map((k,i)=>(<input key={"keywordLang"+props.index+"-"+i} value={k} onChange={(e)=>updateKeywords(keywords,props.index,e.target.value,i)}/>))}
+          {!props.readOnly && <p onClick={function(){props.updateState("","keywords",props.index)}}><i className="fa fa-user-minus" aria-hidden="true"></i> Supprimer</p>}
         </div>
       )
   }
-
-
-function InputKeyword(props){
-    return(
-      <div className="keywords">
-        <input type="text" id="kwFR" placeholder="mot clé" list="keywordsUCFR" value={_.get(props.state,"keyword_fr_f","")} onInput={(e)=>props.updateMisc(e.target.value,'keyword_fr_f')}/>
-        <input type="text" id="kwEN" placeholder="Keyword" list="keywordsUCEN" value={_.get(props.state,"keyword_en_f","")} onInput={(e)=>props.updateMisc(e.target.value,'keyword_en_f')}/>
-        <i className="fa fa-check validate" aria-hidden="true" onClick={()=>props.addKeyword()}></i>
-      </div>
-    )
-}

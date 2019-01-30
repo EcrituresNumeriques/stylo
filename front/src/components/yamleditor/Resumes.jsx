@@ -19,7 +19,7 @@ function Resume(props){
   return(
     <section className="group">
       <TextInput target={"abstract["+props.index+"].text_f"} alias={[{target:"abstract["+props.index+"].text",prefix:'',suffix:'',filterMD:true}]} title="Résumé" element="textArea"  state={props.state} updateState={props.updateState} readOnly={props.readOnly}/>
-      <SelectInput target={"abstract["+props.index+"].lang"} title="Language" placeholder="Choisir la langue du résumé" options={['fr','en','ita','es','es','pt','de','uk','ar']}  state={props.state} updateState={props.updateState} readOnly={props.readOnly}/>
+      <SelectInput target={"abstract["+props.index+"].lang"} title="Language" placeholder="Choisir la langue du résumé" options={['fr','en','it','es','es','pt','de','uk','ar']}  state={props.state} updateState={props.updateState} readOnly={props.readOnly}/>
       {!props.readOnly && <p onClick={function(){props.updateState("","abstract",props.index)}}><i className="fa fa-user-minus" aria-hidden="true"></i> Supprimer</p>}
     </section>
   )
