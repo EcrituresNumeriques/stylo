@@ -223,9 +223,9 @@ export default class YamlEditor extends Component {
       }
       else if (type=="removeControlled") {
         this.setState(function(state){
-            state.obj.controlledKeywords = state.misc.categories.filter((c)=>c.selected).map((o)=>(Object.assign({},o))).map(function(o){delete o.selected;return o;});
-            return state;
-          });
+          state.obj.controlledKeywords = state.misc.categories.filter((c)=>c.selected).map((o)=>(Object.assign({},o))).map(function(o){delete o.selected;return o;});
+          return state;
+        });
       }
       else if (type=='uncontrolledKeywords'){
         this.setState(function(state){
@@ -236,69 +236,57 @@ export default class YamlEditor extends Component {
           return state;
         });
       }
-  }
-
+    }
+    
   render(){
     return(
       <section className={this.readOnly?"readOnly":""}>
 
         {this.props.editor && <ImportYaml state={this.state} updateState={this.updateState} />}
         
+        {this.props.editor && <TextInput target="id" alias={[{target:'bibliography',prefix:'',suffix:'.bib'}]} title="Identifiant" placeholder="SPxxxx" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
+        {this.props.editor && <TextInput target="url_article" title="URL de l'article" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
         <TextInput target="title_f" alias={[{target:'title',prefix:'',suffix:'',filterMD:true}]} title="Titre" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
-        
         <TextInput target="subtitle_f" alias={[{target:'subtitle',prefix:'',suffix:'',filterMD:true}]} title="Sous-titre" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
+        <Date target="date" title="Date" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
+        <SelectInput target={"lang"} title="Lang" placeholder="Choisir la langue du texte" options={['fr','en','it','es','es','pt','de','uk','ar']}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
+        <TextInput target="rights" title="Licence" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
+        <section>
+          <h1>Bibliographie</h1>
+          <TextInput target="bibliography" title="Bibliographie" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
+          
+          {this.props.editor && <MultipleChoice target={"link-citations"} title="Liens de citation" options={[{label:"oui",value:true},{label:"pas de liens", value:false}]}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
+          
+          <MultipleChoice target={"nocite"} title="Afficher" options={[{label:"Toutes les citations",value:"@*"},{label:"Citations utilisées", value:""}]}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
+        </section>
         
         <ArrayOfPeople target="authors" titre="Auteurs" action="auteur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
-        
-        <Date target="date" title="Date" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
-        
         <Resumes state={this.state.obj}  updateState={this.updateState}  readOnly={this.readOnly}/>
-        
-        {this.props.editor && <TranslationOf state={this.state.obj}  updateState={this.updateState}  readOnly={this.readOnly}/>}
-        
         <Keywords state={this.state} updateMisc={this.updateMisc} updateState={this.updateState} readOnly={this.readOnly}/>
-        
         {this.props.editor && <ControlledKeywords state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
-        
-        <SelectInput target={"lang"} title="Lang" placeholder="Choisir la langue du texte" options={['fr','en','it','es','es','pt','de','uk','ar']}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
-        
-        {this.props.editor && <TextInput target="id" alias={[{target:'bibliography',prefix:'',suffix:'.bib'}]} title="Identifiant" placeholder="SPxxxx" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
-        
-        {this.props.editor && <TextInput target="url_article" title="URL de l'article" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
-        
         {this.props.editor && <Rubriques state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
         
-        {this.props.editor && <TextInput target="publisher" title="Publisher" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
-        
-        {this.props.editor && <TextInput target="journal" title="Journal" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
-        
-        {this.props.editor && <TextInput target="issnum" title="ISSN" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
-        
-        {this.props.editor && <TextInput target="prod" title="Producteur" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
-        
-        {this.props.editor && <TextInput target="prodnum" title="Prodnum" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
-        
-        {this.props.editor && <TextInput target="diffnum" title="Diffnum" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
-        
-        <TextInput target="rights" title="Licence" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
-        
-        <TextInput target="bibliography" title="Bibliographie" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
-        
-        {this.props.editor && <MultipleChoice target={"link-citations"} title="Liens de citation" options={[{label:"oui",value:true},{label:"pas de liens", value:false}]}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
-        
-        <MultipleChoice target={"nocite"} title="Afficher" options={[{label:"Toutes les citations",value:"@*"},{label:"Citations utilisées", value:""}]}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
-        
-        {this.props.editor && <ArrayOfPeople target="directors" titre="Directeurs" action="directeur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
-        
-        {this.props.editor && <Dossier state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
-        
-        {this.props.editor && <ArrayOfPeople target="issueDirectors" titre="Directeurs du dossier" action="directeur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
-        
+        {this.props.editor && <section>
+          <h1>Diffusion</h1>
+          {this.props.editor && <TextInput target="publisher" title="Publisher" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
+          {this.props.editor && <TextInput target="journal" title="Journal" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
+          {this.props.editor && <ArrayOfPeople target="directors" titre="Directeurs" action="directeur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}  
+          {this.props.editor && <TextInput target="issnum" title="ISSN" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}  
+          {this.props.editor && <TextInput target="prod" title="Producteur" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
+          {this.props.editor && <TextInput target="prodnum" title="Prodnum" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
+          {this.props.editor && <TextInput target="diffnum" title="Diffnum" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
+          {this.props.editor && <Dossier state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
+          {this.props.editor && <ArrayOfPeople target="issueDirectors" titre="Directeurs du dossier" action="directeur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
+        </section>}
+
         {this.props.editor && <ArrayOfPeople target="reviewers" titre="Réviseurs" action="réviseur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
         
         {this.props.editor && <ArrayOfPeople target="translators" titre="Traducteurs" action="traducteur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
         
+        {this.props.editor && <TranslationOf state={this.state.obj}  updateState={this.updateState}  readOnly={this.readOnly}/>}
+        
         {this.props.editor && <ArrayOfPeople target="transcriber" titre="Transcripteur" action="transcripteur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
+      
       </section>
     )
   }
