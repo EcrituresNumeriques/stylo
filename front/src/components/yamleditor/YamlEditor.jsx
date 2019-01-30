@@ -3,6 +3,7 @@ import { TextInput } from './TextInput.jsx';
 import { SelectInput } from './SelectInput.jsx';
 import { MultipleChoice } from './MultipleChoice.jsx';
 import { Resumes} from './Resumes.jsx';
+import { TranslationOf } from './TranslationOf.jsx';
 import { ArrayOfPeople } from './ArrayOfPeople.jsx';
 import { Dossier } from './Dossier.jsx';
 import { Date} from './Date.jsx';
@@ -228,6 +229,7 @@ export default class YamlEditor extends Component {
         <ArrayOfPeople target="authors" titre="Auteurs" action="auteur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
         <Date target="date" title="Date" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
         <Resumes state={this.state.obj}  updateState={this.updateState}  readOnly={this.readOnly}/>
+        <TranslationOf state={this.state.obj}  updateState={this.updateState}  readOnly={this.readOnly}/>
         <Keywords state={this.state} updateMisc={this.updateMisc} updateState={this.updateState} readOnly={this.readOnly}/>
         {this.props.editor && <ControlledKeywords state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
         <SelectInput target={"lang"} title="Lang" placeholder="Choisir la langue du texte" options={['fr','en','it','es','es','pt','de','uk','ar']}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
