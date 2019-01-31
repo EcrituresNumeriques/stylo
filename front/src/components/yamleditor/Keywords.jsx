@@ -1,6 +1,6 @@
 import React from 'react'
 import {SelectInput} from './SelectInput.jsx'
-import {TextInput} from './TextInput.jsx'
+const removeMd = require('remove-markdown');
 import _ from 'lodash'
 
 export function Keywords(props){
@@ -22,7 +22,9 @@ export function Keywords(props){
           {keywords = [...keywords.slice(0,index),"",keyword.replace(/\,$/, ''),keywords.slice(index+1)]}
         }
         else if(keyword === ""){keywords = [...keywords.slice(0,index),...keywords.slice(index+1)]}
-        props.updateState(keywords.join(',').replace(/\,$/, ''),"keywords["+indexLang+"].list_f")
+        const nextKeywords = keywords.join(',').replace(/\,$/, '')
+        props.updateState(nextKeywords,"keywords["+indexLang+"].list_f")
+        props.updateState(removeMd(nextKeywords),"keywords["+indexLang+"].list")
       }
       const keywords = props.object.list_f.split(',')
       return(
