@@ -138,7 +138,7 @@ export default class Live extends Component {
           if(citations){parameters += "&citation="+citations}
           if(format){parameters += "&format="+format}
           parameters += "&bibstyle=chicago";
-          window.open('https://localhost:9090/cgi-bin/exportArticle/exec.cgi?id='+that.state.title+'v'+that.state.version+'-'+that.state.revision+'&version='+json.id+'&processor=xelatex&source='+window.location.protocol+'//'+window.location.hostname+'/'+parameters,'_blank');
+          window.open('https://localhost:9090/cgi-bin/exportArticle/exec.cgi?id='+that.state.title.replace(" ","_")+'v'+that.state.version+'-'+that.state.revision+'&version='+json.id+'&processor=xelatex&source='+window.location.protocol+'//'+window.location.hostname+'/'+parameters,'_blank');
         }
         else if(exportTarget=="ZIP"){
           window.open('/api/v1/zipArticle/'+json.article,'_blank');
