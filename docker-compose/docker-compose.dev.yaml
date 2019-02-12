@@ -1,13 +1,13 @@
-sails-stylo:
-  build: .
-  dockerfile: dockerfile.standalone
-  ports:
-    - "8080:80"
-  links:
-    - mongodb-stylo:mongodb
-    - redis-stylo:redis-stylo
-  environment:
-    - NODE_ENV=development
+#sails-stylo:
+#  build: .
+#  dockerfile: dockerfile.standalone
+#  ports:
+#    - "8080:80"
+#  links:
+#    - mongodb-stylo:mongodb
+#    - redis-stylo:redis-stylo
+#  environment:
+#    - NODE_ENV=development
 mongodb-stylo:
   image: mongo:latest
   container_name: "mongodb-stylo"
@@ -19,7 +19,14 @@ mongodb-stylo:
   ports:
     - 27017:27017
   command: mongod --smallfiles --logpath=/dev/null # --quiet
-redis-stylo:
-  image: redis
+#redis-stylo:
+#  image: redis
+#  ports:
+#    - "6380:6379"
+mongodb-admin:
+  image: mongo-express
+  container_name: "mongodb-admin"
+  links:
+    - mongodb-stylo:mongo
   ports:
-    - "6380:6379"
+    - 3031:8081
