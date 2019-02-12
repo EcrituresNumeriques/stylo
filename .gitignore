@@ -1,6 +1,7 @@
 /data
 dataProd
 front/node_modules
+graphql/node_modules
 sails/.tmp
 package-lock.json
 docker-compose.yaml

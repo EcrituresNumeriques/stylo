@@ -3,9 +3,9 @@ import { TextInput } from './TextInput.jsx';
 import { SelectInput } from './SelectInput.jsx';
 import { MultipleChoice } from './MultipleChoice.jsx';
 import { Resumes} from './Resumes.jsx';
-import { Authors } from './Authors.jsx';
+import { TranslationOf } from './TranslationOf.jsx';
+import { ArrayOfPeople } from './ArrayOfPeople.jsx';
 import { Dossier } from './Dossier.jsx';
-import { Reviewers } from './Reviewers.jsx';
 import { Date} from './Date.jsx';
 import { Rubriques} from './Rubriques.jsx';
 import { ControlledKeywords} from './ControlledKeywords.jsx';
@@ -31,14 +31,15 @@ let SEXY_SCHEMA = YAML.Schema.create([ SexyYamlType ]);
 export default class YamlEditor extends Component {
   constructor(props){
     super(props);
+    //load defaultYaml, merge it with specified yaml
+    const defaultYaml = YAML.load(init.yaml, { schema: SEXY_SCHEMA }) || {};
     const singleYaml = props.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, "");
-    const jsObj = YAML.load(singleYaml, { schema: SEXY_SCHEMA }) || {};
+    const parsed = YAML.load(singleYaml, { schema: SEXY_SCHEMA }) || {};
+    const jsObj = {...defaultYaml,...parsed}
     const miscInit = JSON.parse(JSON.stringify(init.misc));
     this.state = {obj:jsObj,misc:this.computeFromYaml(jsObj,miscInit)};
     this.updateState = this.updateState.bind(this);
     this.updateMisc = this.updateMisc.bind(this);
-    this.addKeyword = this.addKeyword.bind(this);
-    this.removeKeyword = this.removeKeyword.bind(this);
     this.computeFromYaml = this.computeFromYaml.bind(this);
     const that = this;
     this.readOnly = false;
@@ -153,18 +154,33 @@ export default class YamlEditor extends Component {
       }
   }
 
+  cleanOutput(object){
+    let cleaning = JSON.parse(JSON.stringify(object))
+    for (var propName in cleaning) { 
+      if (cleaning[propName] === null || cleaning[propName] === undefined || cleaning[propName] === "") {
+        delete cleaning[propName];
+      }
+      if(Array.isArray(cleaning[propName]) && cleaning[propName].length === 0){
+        delete cleaning[propName];
+        //console.log("deleting",propName)  
+      }
+    }
+    return cleaning
+  }
+
   componentWillUpdate(nextProp,nextState){
     //console.log("componentWillUpdate",nextProp.yaml,YAML.safeDump(nextState.obj), nextProp.yaml != '---\n'+YAML.safeDump(nextState.obj)+'---');
     if(this.props.exportChange){
-        if(nextProp.yaml != '---\n'+YAML.safeDump(nextState.obj)+'---'){
-            this.props.exportChange('---\n'+YAML.safeDump(nextState.obj)+'---');
-        }
+      if(nextProp.yaml != '---\n'+YAML.safeDump(this.cleanOutput(nextState.obj))+'---'){
+        console.log(this.cleanOutput(nextState.obj))
+        this.props.exportChange('---\n'+YAML.safeDump(this.cleanOutput(nextState.obj))+'---');
+      }
     }
   }
 
 
 
-  updateState(value,target = undefined){
+  updateState(value,target = undefined,removeFromArray = undefined){
     //No target, update the whole state, don't export
     if(!target){
       const miscInit = JSON.parse(JSON.stringify(init.misc));
@@ -172,8 +188,16 @@ export default class YamlEditor extends Component {
     }
     //Update only the key changed, plus export the new state
     else{
+      //Remove target array, removing removeFromArray index
+      if(typeof(removeFromArray) == "number"){
+        this.setState((state)=>{
+          let nextArray = _.get(state,'obj.'+target);
+          _.set(state, 'obj.'+target, [...nextArray.slice(0,removeFromArray),...nextArray.slice(removeFromArray+1)])
+          return state
+        })
+      }
       //console.log("changing key",target,value);
-      this.setState((state)=>_.set(state, 'obj.'+target, value));
+      else{this.setState((state)=>_.set(state, 'obj.'+target, value))}
     }
   }
 
@@ -199,9 +223,9 @@ export default class YamlEditor extends Component {
       }
       else if (type=="removeControlled") {
         this.setState(function(state){
-            state.obj.controlledKeywords = state.misc.categories.filter((c)=>c.selected).map((o)=>(Object.assign({},o))).map(function(o){delete o.selected;return o;});
-            return state;
-          });
+          state.obj.controlledKeywords = state.misc.categories.filter((c)=>c.selected).map((o)=>(Object.assign({},o))).map(function(o){delete o.selected;return o;});
+          return state;
+        });
       }
       else if (type=='uncontrolledKeywords'){
         this.setState(function(state){
@@ -212,76 +236,57 @@ export default class YamlEditor extends Component {
           return state;
         });
       }
-  }
-  addKeyword(values){
-    //Update only the key changed, plus export the new state
-      console.log("adding",this.state.misc.keyword_fr_f,this.state.misc.keyword_en_f);
-      this.setState(function(state){
-        //Padd arrays in case they are not the same length
-        while(state.misc.keywords_en.length < state.misc.keywords_fr.length){
-          state.misc.keywords_en.push("");
-        }
-        while(state.misc.keywords_fr.length < state.misc.keywords_en.length){
-          state.misc.keywords_fr.push("");
-        }
-
-        //Add new keyword
-        state.misc.keywords_fr.push(this.state.misc.keyword_fr_f || "");
-        state.misc.keywords_en.push(this.state.misc.keyword_en_f || "");
-        state.obj.keyword_fr_f = state.misc.keywords_fr.join(', ');
-        state.obj.keyword_en_f = state.misc.keywords_en.join(', ');
-        state.obj.keyword_fr = removeMd(state.misc.keywords_fr.join(', '));
-        state.obj.keyword_en = removeMd(state.misc.keywords_en.join(', '));
-        state.misc.keyword_fr_f = "";
-        state.misc.keyword_en_f = "";
-        return state;
-      });
-  }
-  removeKeyword(index){
-    //Update only the key changed, plus export the new state
-      console.log("removing",index);
-      this.setState(function(state){
-        state.misc.keywords_fr.splice(index,1);
-        state.misc.keywords_en.splice(index,1);
-        state.obj.keyword_fr_f = state.misc.keywords_fr.join(', ');
-        state.obj.keyword_en_f = state.misc.keywords_en.join(', ');
-        state.obj.keyword_fr = removeMd(state.misc.keywords_fr.join(', '));
-        state.obj.keyword_en = removeMd(state.misc.keywords_en.join(', '));
-        return state;
-      });
-  }
-
-
-
+    }
+    
   render(){
     return(
       <section className={this.readOnly?"readOnly":""}>
+
         {this.props.editor && <ImportYaml state={this.state} updateState={this.updateState} />}
-        {this.props.editor && <TextInput target="id_sp" alias={[{target:'bibliography',prefix:'',suffix:'.bib'}]} title="Identifiant" placeholder="SPxxxx" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
-
+        
+        {this.props.editor && <TextInput target="id" alias={[{target:'bibliography',prefix:'',suffix:'.bib'}]} title="Identifiant" placeholder="SPxxxx" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
+        {this.props.editor && <TextInput target="url_article" title="URL de l'article" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
         <TextInput target="title_f" alias={[{target:'title',prefix:'',suffix:'',filterMD:true}]} title="Titre" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
-
-        <TextInput target="subtitle_f" alias={[{target:'subtitle',prefix:'',suffix:'',filterMD:true}]} title="Sous-titre" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
-        <SelectInput target={"lang"} title="Lang" placeholder="Choisir la langue du texte" options={['fr','en','ita','es','es','pt','de','uk','ar']}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
-        <MultipleChoice target={"nocite"} title="Citations" options={[{label:"All citations",value:"@*"},{label:"Only the ones used", value:""}]}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
-
-        {this.props.editor && <Date target="date" title="Date" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
-
-        {this.props.editor && <TextInput target="url_article_sp" title="URL sens public" placeholder="http://sens-public.org/articleXXXX.html" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
-
+        <TextInput target="subtitle_f" alias={[{target:'subtitle',prefix:'',suffix:'',filterMD:true}]} title="Sous-titre" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
+        <Date target="date" title="Date" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
+        <SelectInput target={"lang"} title="Lang" placeholder="Choisir la langue du texte" options={['fr','en','it','es','es','pt','de','uk','ar']}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
+        <TextInput target="rights" title="Licence" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
+        <section>
+          <h1>Bibliographie</h1>
+          <TextInput target="bibliography" title="Bibliographie" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
+          
+          {this.props.editor && <MultipleChoice target={"link-citations"} title="Liens de citation" options={[{label:"oui",value:true},{label:"pas de liens", value:false}]}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
+          
+          <MultipleChoice target={"nocite"} title="Afficher" options={[{label:"Toutes les citations",value:"@*"},{label:"Citations utilisées", value:""}]}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
+        </section>
+        
+        <ArrayOfPeople target="authors" titre="Auteurs" action="auteur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
         <Resumes state={this.state.obj}  updateState={this.updateState}  readOnly={this.readOnly}/>
-
-        {this.props.editor && <Dossier state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
-
-        <Authors state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />
-
-        {this.props.editor && <Reviewers state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
-
+        <Keywords state={this.state} updateMisc={this.updateMisc} updateState={this.updateState} readOnly={this.readOnly}/>
         {this.props.editor && <ControlledKeywords state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
-
-        <Keywords state={this.state} updateMisc={this.updateMisc} addKeyword={this.addKeyword} removeKeyword={this.removeKeyword} updateState={this.updateState} readOnly={this.readOnly}/>
-
         {this.props.editor && <Rubriques state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
+        
+        {this.props.editor && <section>
+          <h1>Diffusion</h1>
+          {this.props.editor && <TextInput target="publisher" title="Publisher" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
+          {this.props.editor && <TextInput target="journal" title="Journal" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
+          {this.props.editor && <ArrayOfPeople target="directors" titre="Directeurs" action="directeur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}  
+          {this.props.editor && <TextInput target="issnum" title="ISSN" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}  
+          {this.props.editor && <TextInput target="prod" title="Producteur" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
+          {this.props.editor && <TextInput target="prodnum" title="Prodnum" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
+          {this.props.editor && <TextInput target="diffnum" title="Diffnum" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
+          {this.props.editor && <Dossier state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly} />}
+          {this.props.editor && <ArrayOfPeople target="issueDirectors" titre="Directeurs du dossier" action="directeur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
+        </section>}
+
+        {this.props.editor && <ArrayOfPeople target="reviewers" titre="Réviseurs" action="réviseur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
+        
+        {this.props.editor && <ArrayOfPeople target="translators" titre="Traducteurs" action="traducteur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
+        
+        {this.props.editor && <TranslationOf state={this.state.obj}  updateState={this.updateState}  readOnly={this.readOnly}/>}
+        
+        {this.props.editor && <ArrayOfPeople target="transcriber" titre="Transcripteur" action="transcripteur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
+      
       </section>
     )
   }

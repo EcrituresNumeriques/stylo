@@ -58,6 +58,7 @@ export default class ModalExport extends Component {
                           <button onClick={()=>{this.props.exportHTML(false,this.state.citationStyle);this.props.cancel()}} className="primary">HTML</button>
                           <button onClick={()=>{this.props.exportErudit(true,this.state.citationStyle);this.props.cancel()}} className="primary">XML (erudit)</button>
                           <button onClick={()=>{this.props.exportZIP();this.props.cancel()}} className="primary">ZIP</button>
+                          <button onClick={()=>{this.props.exportPDF();this.props.cancel()}} className="primary">PDF</button>
                       </nav>
                     </fieldset>
                     <nav>

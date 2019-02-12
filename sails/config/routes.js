@@ -61,7 +61,10 @@ module.exports.routes = {
   'GET /api/v1/zipArticle/:id':'ExportController.articleZIP',
   'GET /api/v1/zipVersion/:version':'ExportController.versionZIP',
 
-
+  'GET /htmlVersion/:version':'ExportController.html',
+  'GET /zipBook/:id':'ExportController.articleZIP',
+  'GET /zipArticle/:id':'ExportController.articleZIP',
+  'GET /zipVersion/:version':'ExportController.versionZIP',
 
   // Admin sections
   'GET /api/v1/admin/users':'AdminController.users',
