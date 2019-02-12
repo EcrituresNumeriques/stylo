@@ -33,7 +33,7 @@ This is the easiest deployement.
 You first need to copy the beta docker-compose file to the root folder
 
 `
-cp docker-compose/docker-compose.beta.yaml docker-compose.yaml
+cp example_docker-compose/docker-compose.beta.yaml docker-compose.yaml
 `
 
 Change all the information you want to change (database path on your machine (default : data/db), port used (default:80))
@@ -53,13 +53,13 @@ We provide example docker-compose yaml file for the Nginx reverse-proxy, but you
 You first need to copy either just the stylo solution, or the full stylo+reverse proxy solution as your docker-compose.yaml
 
 `
-cp docker-compose/docker-compose.prod.yaml docker-compose.yaml
+cp example_docker-compose/docker-compose.prod.yaml docker-compose.yaml
 `
 
 OR
 
 `
-cp docker-compose/docker-compose.full.yaml docker-compose.yaml
+cp example_docker-compose/docker-compose.full.yaml docker-compose.yaml
 `
 
 Change all the informations you want to change (database path on your machine (default : /home/backup/MongoStylo/db) and the virtual_host+letsencrypt_host that should direct to a domain or subdomain that points to your machine/server via your DNS).
@@ -81,7 +81,7 @@ After the image is built, you should have a stylo instance running on your serve
 Usefull to change the code and see direct changes in local. /!\ NOT SUITED FOR PROLONGATED USE BY ACTUAL USERS /!\
 
 `
-cp docker-compose/docker-compose.dev.yaml docker-compose.yaml
+cp example_docker-compose/docker-compose.dev.yaml docker-compose.yaml
 `
 then run the command
 
