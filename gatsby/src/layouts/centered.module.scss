@@ -1,0 +1,20 @@
+.grid{
+    display: grid;
+    grid-row-gap: 1rem;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: auto 1fr auto 1fr;
+    grid-template-areas: 
+    "header header header"
+    "...... ...... ......"
+    "...... main   ......"
+    "...... ...... ......"
+}
+
+.header{
+    grid-area: header;
+}
+
+.main {
+    grid-area: main;
+    background-color:yellow;
+}

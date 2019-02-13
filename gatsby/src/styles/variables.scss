@@ -1,0 +1,18 @@
+// Toggle Darkmode
+// $main-background-color: #202020;
+// $main-color: #f0f0f0;
+$main-background-color: #f0f0f0;
+$main-color: #202020;
+
+
+
+$phone-width:100%;
+
+$tablet-breakpoint:1080px;
+$tablet-width:calc($phone-breakpoint - 2rem);
+
+$screen-breakpoint:1400px;
+$screen-width:1080px;
+
+$large-screen-breakpoint:2160px;
+$large-screen-width:1500px;

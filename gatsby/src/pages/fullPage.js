@@ -1,11 +1,11 @@
 import React from "react"
 
-import Centered from '../layouts/Centered'
+import FullPage from '../layouts/FullPage'
 
 import '../styles/general.scss'
 
 export default () => (
-    <Centered title="Hello Stylo">
+    <FullPage title="Hello Stylo">
         <h1>Hello World!</h1>
-    </Centered>
+    </FullPage>
 )

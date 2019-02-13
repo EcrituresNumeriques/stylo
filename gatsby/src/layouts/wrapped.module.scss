@@ -1,0 +1,51 @@
+@import '../styles/variables.scss';
+@import '../styles/defaults.scss';
+
+.grid{
+    display: grid;
+    grid-row-gap: 1rem;
+    grid-template-columns: auto;
+    grid-template-rows: auto auto;
+    grid-template-areas: 
+    "header"
+    "main";
+    
+    @media screen and (min-width: $tablet-breakpoint){
+        grid-template-columns: 1fr $tablet-width 1fr;
+        grid-template-rows: auto auto 1fr;
+        grid-template-areas: 
+        "header header header"
+        "...... main ......"
+        "...... .... ......"
+    }
+    
+    @media screen and (min-width: $screen-breakpoint){
+        grid-template-columns: 1fr $screen-width 1fr;
+        grid-template-rows: auto auto 1fr;
+        grid-template-areas: 
+        "header header header"
+        "...... main ......"
+        "...... .... ......"
+    }
+    
+    @media screen and (min-width: $large-screen-breakpoint){
+        grid-template-columns: 1fr $large-screen-width 1fr;
+        grid-template-rows: auto auto 1fr;
+        grid-template-areas: 
+        "header header header"
+        "...... main ......"
+        "...... .... ......"
+    }
+}
+
+.header{
+    grid-area: header;
+}
+
+.main {
+    grid-area: main;
+    background-color:yellow;
+    section{
+        @extend .wrapped-center;
+    }
+}

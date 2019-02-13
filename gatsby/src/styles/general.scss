@@ -1,0 +1,21 @@
+@import 'variables.scss';
+@import 'defaults.scss';
+
+
+html{
+    background-color:$main-background-color;
+    color:$main-color;
+}
+
+html,body,#___gatsby,#___gatsby > div, #___gatsby > div > main{
+    height:100%;
+}
+
+* {
+    box-sizing:border-box;
+}
+
+ul,p,h1,h2,h3,h4,h5,html,body {
+    margin:0;
+    padding:0;
+}
