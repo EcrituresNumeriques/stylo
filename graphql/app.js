@@ -12,6 +12,13 @@ const displayUser = require('./middleware/displayUser')
 
 const app = express();
 
+//Look for environnement variables
+const mongoServer = process.env.MONGO_SERVER || localhost
+const mongoServerPort = process.env.MONGO_SERVER_PORT || 27017
+const mongoServerDB = process.env.MONGO_SERVER_DB || 'graphql'
+const listenPort = process.env.NODE_ENV === "Dev" ? 3030:80
+
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(isAuth);
@@ -28,9 +35,9 @@ app.use(
 );
 
 mongoose
-  .connect('mongodb://localhost:27017/graphql', {useNewUrlParser: true})
+  .connect(`mongodb://${mongoServer}:${mongoServerPort}/${mongoServerDB}`, {useNewUrlParser: true})
   .then(() => {
-    app.listen(3030);
+    app.listen(listenPort);
   })
   .catch(err => {
     console.log(err);
