@@ -1,0 +1,31 @@
+{
+    "name": "gatsby-stylo-front-end",
+    "private": true,
+    "description": "Stylo front-end, online text editor for scholars",
+    "version": "0.1.0",
+    "license": "MIT",
+    "scripts": {
+      "build": "gatsby build",
+      "develop": "gatsby develop -p 80 -H 0.0.0.0",
+      "start": "npm run develop",
+      "serve": "gatsby serve -p 80 -H 0.0.0.0",
+      "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
+    },
+    "dependencies": {
+      "gatsby": "^2.0.115",
+      "gatsby-plugin-react-helmet": "^3.0.6",
+      "gatsby-plugin-sass": "^2.0.10",
+      "node-sass": "^4.11.0",
+      "react": "next",
+      "react-dom": "next",
+      "react-helmet": "^5.2.0"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/gatsbyjs/gatsby-starter-hello-world"
+    },
+    "bugs": {
+      "url": "https://github.com/gatsbyjs/gatsby/issues"
+    }
+  }
+  

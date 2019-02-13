@@ -34,3 +34,16 @@ services:
       - JWT_SECRET_TOKEN=SuperSecureButYouShouldChangeMe
       - JWT_SECRET_SESSION=DidITellYouHowMuchYouShouldChangeMe?
       - JWT_SECRET_SESSION_COOKIE=NoNoNoReallyIInsistYouShouldChangeMe
+  front-stylo:
+    build: 
+      context: ./gatsby
+      dockerfile: dockerfile-dev
+    container_name: "front-stylo"
+    volumes:
+      - ./gatsby/src:/usr/src/app/src
+      - ./gatsby/static:/usr/src/app/static
+      - ./gatsby/gatsby-config.js:/usr/src/app/gatsby-config.js
+    ports:
+      - 3000:80
+    depends_on:
+      - graphql-stylo
