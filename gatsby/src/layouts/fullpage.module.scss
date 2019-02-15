@@ -1,3 +1,5 @@
+@import '../styles/defaults.scss';
+
 .grid{
     display: grid;
     grid-row-gap: 1rem;
@@ -15,4 +17,7 @@
 .main {
     grid-area: main;
     background-color:yellow;
+    section{
+        @extend .wrapped-center;
+    }
 }

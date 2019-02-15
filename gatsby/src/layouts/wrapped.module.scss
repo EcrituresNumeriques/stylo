@@ -21,21 +21,21 @@
     }
     
     @media screen and (min-width: $screen-breakpoint){
-        grid-template-columns: 100%;
+        grid-template-columns: 1fr $screen-width 1fr;
         grid-template-rows: auto auto 1fr;
         grid-template-areas: 
-        "header"
-        "main"
-        "....";
+        "header header header "
+        "...... main ....."
+        ".... ..... ......";
     }
     
     @media screen and (min-width: $large-screen-breakpoint){
-        grid-template-columns: 100%;
+        grid-template-columns: 1fr $screen-width 1fr;
         grid-template-rows: auto auto 1fr;
         grid-template-areas: 
-        "header"
-        "main"
-        "....";
+        "header header header "
+        "...... main ....."
+        ".... ..... ......";
     }
 }
 

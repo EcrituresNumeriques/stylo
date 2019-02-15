@@ -6,6 +6,8 @@ import '../styles/general.scss'
 
 export default () => (
     <Wrapped title="Hello Stylo">
-        <h1>Hello World!</h1>
+        <section>
+            <h1>Hello World!</h1>
+        </section>
     </Wrapped>
 )
