@@ -11,30 +11,30 @@
     "main";
     
     @media screen and (min-width: $tablet-breakpoint){
-        grid-template-columns: 1fr $tablet-width 1fr;
+        grid-template-columns: 100%;
         grid-template-rows: auto auto 1fr;
         grid-template-areas: 
-        "header header header"
-        "...... main ......"
-        "...... .... ......"
+        "header"
+        "main"
+        "main";
     }
     
     @media screen and (min-width: $screen-breakpoint){
-        grid-template-columns: 1fr $screen-width 1fr;
+        grid-template-columns: 100%;
         grid-template-rows: auto auto 1fr;
         grid-template-areas: 
-        "header header header"
-        "...... main ......"
-        "...... .... ......"
+        "header"
+        "main"
+        "main";
     }
     
     @media screen and (min-width: $large-screen-breakpoint){
-        grid-template-columns: 1fr $large-screen-width 1fr;
+        grid-template-columns: 100%;
         grid-template-rows: auto auto 1fr;
         grid-template-areas: 
-        "header header header"
-        "...... main ......"
-        "...... .... ......"
+        "header"
+        "main"
+        "main";
     }
 }
 
