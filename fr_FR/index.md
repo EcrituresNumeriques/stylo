@@ -14,7 +14,6 @@ L'environnement de travail de Stylo intègre une chaîne éditoriale complète b
   - **le partage de document**
 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/qcwEqbcxBF8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ---
 

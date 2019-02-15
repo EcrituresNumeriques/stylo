@@ -31,6 +31,9 @@
   * [Bibliographie](pages/bibliographie.md)
   * [Pour aller plus loin](pages/pourallerplusloin.md)
 
+[Publications](pages/publications.md)
+
+
 [Tester Stylo](http://stylo.ecrituresnumeriques.ca)
 
 [_EN_](../en_EN/)
