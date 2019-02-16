@@ -1,7 +1,25 @@
 import React, { useState } from "react"
 import { Link } from "gatsby"
+import { connect } from "react-redux"
 
 import styles from './header.module.scss'
+
+const mapStateToProps = ({ logedIn }) => {
+    return { logedIn }
+}
+
+const mapDispatchToProps = dispatch => {
+    return { 
+        login: () => dispatch({ type: `LOGIN` }),
+        logout: () => dispatch({ type: `LOGOUT` })
+    }
+}
+
+const ConnectedCounter = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Header)
+
 
 const Header = (props) => {
     
@@ -15,4 +33,4 @@ const Header = (props) => {
     )
 }
 
-export default Header
+export default ConnectedCounter
