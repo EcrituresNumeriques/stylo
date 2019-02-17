@@ -15,10 +15,6 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-const ConnectedCounter = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Header)
 
 
 const Header = (props) => {
@@ -29,8 +25,14 @@ const Header = (props) => {
             <Link to="/wrapped">Wrapped</Link>
             <Link to="/fullPage">fullPage</Link>
             Headerino
+            {props.logedIn && <p onClick={()=>props.logout()}>Log out</p>}
+            {!props.logedIn && <p onClick={()=>props.login()}>Log in</p>}
         </header> 
     )
 }
 
-export default ConnectedCounter
+const ConnectedHeader = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Header)
+export default ConnectedHeader
