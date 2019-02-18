@@ -15,6 +15,12 @@ html,body,#___gatsby,#___gatsby > div, #___gatsby > div > main{
     box-sizing:border-box;
 }
 
+a {
+    color:$main-color-links;
+    font-weight: bolder;
+    text-decoration: none;
+}
+
 ul,p,h1,h2,h3,h4,h5,html,body {
     margin:0;
     padding:0;

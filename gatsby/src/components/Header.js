@@ -20,6 +20,13 @@ const mapDispatchToProps = dispatch => {
 const ConnectedHeader = (props) => {
     return (
         <header className={`${styles.header} ${props.className}`}>
+            <h1>_Stylo_</h1>
+            <nav>
+                <a href="http://stylo-doc.ecrituresnumeriques.ca/" target="_blank">Documentation</a>
+                <a href="https://github.com/EcrituresNumeriques/stylo/issues" target="_blank">Report an issue</a>
+                {!props.logedIn && <Link to="/login">Login</Link>}
+                {!props.logedIn && <Link to="/register">Register</Link>}
+            </nav>
             <Link to="/centered">Centered</Link>
             <Link to="/wrapped">Wrapped</Link>
             <Link to="/fullPage">fullPage</Link>

@@ -2,4 +2,9 @@
 
 .header {
     @extend .wrapped-center;
+    display:flex;
+    align-items: center;
+    > h1 {
+        font-style: italic;
+    }
 }
