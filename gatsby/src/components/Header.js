@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { Link } from "gatsby"
 import { connect } from "react-redux"
 
@@ -17,8 +17,7 @@ const mapDispatchToProps = dispatch => {
 
 
 
-const Header = (props) => {
-    
+const ConnectedHeader = (props) => {
     return (
         <header className={`${styles.header} ${props.className}`}>
             <Link to="/centered">Centered</Link>
@@ -31,8 +30,8 @@ const Header = (props) => {
     )
 }
 
-const ConnectedHeader = connect(
+const Header = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Header)
-export default ConnectedHeader
+)(ConnectedHeader)
+export default Header
