@@ -121,17 +121,10 @@ export default class Live extends Component {
           }
       );
       if(exportAfter){
-        console.log(exportAfter,exportTarget,exportTarget=="PDF")
         if(exportTarget== "hypothes.is"){
           window.open('https://via.hypothes.is/'+window.location.protocol+'//'+window.location.hostname+'/api/v1/htmlArticle/'+json.article+'?preview=true','_blank');
         }
-        else if(exportTarget=="eruditXML"){
-          let parameters = "?preview=true";
-          if(citations){parameters += "&citation="+citations}
-          window.open('https://ecrituresnumeriques.github.io/saxon-xsl-transform/?source='+window.location.protocol+'//'+window.location.hostname+'/api/v1/htmlArticle/'+json.article+parameters,'_blank');
-        }
         else if(exportTarget=="PDF"){
-          console.log("HELLO")
           let format = "pdf";
           console.log(that.state)
           let parameters = "";
@@ -358,8 +351,14 @@ export default class Live extends Component {
               cancel={this.closeExportModal}
               exportHTML={(preview,citations)=>this.sendNewVersion(null,false,true,true,"HTML",preview,citations)}
               exportZIP={()=>this.sendNewVersion(null,false,true,true,"ZIP")}
-              exportErudit={(preview,citations)=>this.sendNewVersion(null,false,true,true,"eruditXML",preview,citations)}
               exportPDF={(preview,citations)=>this.sendNewVersion(null,false,true,true,"PDF",preview,citations)}
+              exportTEX={(preview,citations)=>this.sendNewVersion(null,false,true,true,"TEX",preview,citations)}
+              exportXML={(preview,citations)=>this.sendNewVersion(null,false,true,true,"XML",preview,citations)}
+              exportODT={(preview,citations)=>this.sendNewVersion(null,false,true,true,"ODT",preview,citations)}
+              exportDOCX={(preview,citations)=>this.sendNewVersion(null,false,true,true,"DOCX",preview,citations)}
+              exportHTML5={(preview,citations)=>this.sendNewVersion(null,false,true,true,"HTML5",preview,citations)}
+              exportEPUB={(preview,citations)=>this.sendNewVersion(null,false,true,true,"EPUB",preview,citations)}
+              exportTEI={(preview,citations)=>this.sendNewVersion(null,false,true,true,"TEI",preview,citations)}
             />
           }
           <Sommaire md={this.state.md} setCursor={this.setCodeMirrorCursor} closed={this.state.sommaireClosed} toggle={this.toggleSommaire}/>
