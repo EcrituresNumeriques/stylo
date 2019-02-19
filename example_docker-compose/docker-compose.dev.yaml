@@ -40,9 +40,9 @@ services:
       dockerfile: dockerfile-dev
     container_name: "front-stylo"
     volumes:
-      - /c/Users/Arthur/Documents/stylo/gatsby/src:/usr/src/app/src
-      - /c/Users/Arthur/Documents/stylo/gatsby/static:/usr/src/app/static
-      - /c/Users/Arthur/Documents/stylo/gatsby/gatsby-config.js:/usr/src/app/gatsby-config.js
+      - ./gatsby/src:/usr/src/app/src
+      - ./gatsby/static:/usr/src/app/static
+      - ./gatsby/gatsby-config.js:/usr/src/app/gatsby-config.js
     ports:
       - 3000:80
     depends_on:
