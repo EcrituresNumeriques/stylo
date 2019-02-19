@@ -21,8 +21,9 @@ const computeHTML = function(version,res,preview=false,citation=false){
   let args = '';
   if(preview){args += '--standalone --template=templates/templateHtmlDcV2-preview.html5'}
   else{args += '--standalone --template=templates/templateHtmlDcV2.html5'}
-  args += ' --ascii --filter pandoc-citeproc -f markdown -t html /'+version.id+'.yaml';
-  if(citation == "footnotes"){args += ' --csl templates/lettres-et-sciences-humaines-fr.csl'}
+  args += ' --verbose --standalone --section-divs --ascii --toc --csl=templates/chicagomodified.csl -f markdown -t html5 --filter pandoc-citeproc /'+version.id+'.yaml';
+  //args += ' --ascii --filter pandoc-citeproc -f markdown -t html /'+version.id+'.yaml';
+  //if(citation == "footnotes"){args += ' --csl templates/lettres-et-sciences-humaines-fr.csl'}
   pandoc(src, args, (err, result)=>downloadHTML(err, result, version, res, preview));
 };
 
