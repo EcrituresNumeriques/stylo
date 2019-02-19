@@ -124,23 +124,32 @@ export default class Live extends Component {
         if(exportTarget== "hypothes.is"){
           window.open('https://via.hypothes.is/'+window.location.protocol+'//'+window.location.hostname+'/api/v1/htmlArticle/'+json.article+'?preview=true','_blank');
         }
-        else if(exportTarget=="PDF"){
-          let format = "pdf";
+        else if(exportTarget=="ZIP"){
+          window.open('/api/v1/zipArticle/'+json.article,'_blank');
+        }
+        else if(exportTarget=="HTML"){
+          let parameters = "?";
+          if(preview){parameters += "preview=true&"}
+          if(citations){parameters += "citation="+citations}
+          window.open('/api/v1/htmlArticle/'+json.article+parameters,'_blank');
+        }
+        else{
+          let format;
+          if(exportTarget=="PDF"){format = "pdf";}
+          if(exportTarget=="TEX"){format = "tex";}
+          if(exportTarget=="XML"){format = "xml";}
+          if(exportTarget=="ODT"){format = "odt";}
+          if(exportTarget=="DOCX"){format = "docx";}
+          if(exportTarget=="HTML5"){format = "html5";}
+          if(exportTarget=="EPUB"){format = "epub";}
+          if(exportTarget=="TEI"){format = "tei";}
+
           console.log(that.state)
           let parameters = "";
           if(citations){parameters += "&citation="+citations}
           if(format){parameters += "&format="+format}
           parameters += "&bibstyle=chicagomodified";
           window.open('http://localhost:9090/cgi-bin/exportArticle/exec.cgi?id='+that.state.title.replace(/\s/g,"_")+'v'+that.state.version+'-'+that.state.revision+'&version='+json.id+'&processor=xelatex&source='+window.location.protocol+'//'+window.location.hostname+'/'+parameters,'_blank');
-        }
-        else if(exportTarget=="ZIP"){
-          window.open('/api/v1/zipArticle/'+json.article,'_blank');
-        }
-        else{
-          let parameters = "?";
-          if(preview){parameters += "preview=true&"}
-          if(citations){parameters += "citation="+citations}
-          window.open('/api/v1/htmlArticle/'+json.article+parameters,'_blank');
         }
       }
 
