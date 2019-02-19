@@ -56,9 +56,15 @@ export default class ModalExport extends Component {
                       <nav>
                           <button onClick={()=>this.props.exportHTML(true,this.state.citationStyle)} className="secondary">preview</button>
                           <button onClick={()=>{this.props.exportHTML(false,this.state.citationStyle);this.props.cancel()}} className="primary">HTML</button>
-                          <button onClick={()=>{this.props.exportErudit(true,this.state.citationStyle);this.props.cancel()}} className="primary">XML (erudit)</button>
                           <button onClick={()=>{this.props.exportZIP();this.props.cancel()}} className="primary">ZIP</button>
                           <button onClick={()=>{this.props.exportPDF();this.props.cancel()}} className="primary">PDF</button>
+                          <button onClick={()=>{this.props.exportTEX();this.props.cancel()}} className="primary">TEX</button>
+                          <button onClick={()=>{this.props.exportXML();this.props.cancel()}} className="primary">XML</button>
+                          <button onClick={()=>{this.props.exportODT();this.props.cancel()}} className="primary">ODT</button>
+                          <button onClick={()=>{this.props.exportDOCX();this.props.cancel()}} className="primary">DOCX</button>
+                          <button onClick={()=>{this.props.exportHTML5();this.props.cancel()}} className="primary">HTML5</button>
+                          <button onClick={()=>{this.props.exportEPUB();this.props.cancel()}} className="primary">EPUB</button>
+                          <button onClick={()=>{this.props.exportTEI();this.props.cancel()}} className="primary">TEI</button>
                       </nav>
                     </fieldset>
                     <nav>
