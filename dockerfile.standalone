@@ -36,7 +36,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 #install pandoc
 ENV PKGREL 1
-ENV VERSION 1.19.2.1
+ENV VERSION 2.6
 ADD vendors/pandoc-${VERSION}-${PKGREL}-amd64.deb /pandoc.deb
 RUN export DEBIAN_FRONTEND=noninteractive \
     && dpkg -i /pandoc.deb \

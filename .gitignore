@@ -1,5 +1,7 @@
 /data
 dataProd
+node_modules
+gatsby/node_modules
 front/node_modules
 graphql/node_modules
 sails/.tmp

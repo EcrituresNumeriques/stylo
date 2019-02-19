@@ -3,19 +3,13 @@ var pandoc = require('node-pandoc');
 var archiver = require('archiver');
 
 const downloadHTML = function (err, result, version, res, preview=false) {
-  if (err) {
-    //console.log(err);
-    fs.writeFileSync('/'+version.id+'.error', err.toString());
-    res.attachment('/'+version.id+'.error');
-    return false;
-  }
-  else{
+  let writeback = err? err.toString() : result;
+
     // Without the -o arg, the converted value will be returned.
     const filename = version.title || version.version+'.'+version.revision;
     res.set('Content-Type', 'text/html');
     if(!preview){res.set('Content-Disposition', 'attachment; filename="'+filename+'"');}
-    res.send(new Buffer(result));
-  }
+    res.send(new Buffer(writeback));
 };
 
 const computeHTML = function(version,res,preview=false,citation=false){
@@ -82,6 +76,7 @@ module.exports = {
 
 
   article: function (req, res) {
+    console.log("starting article export");
       Articles.findOne({id:req.params.id}).populate("versions",{limit: 1, sort: 'createdAt DESC'}).then(function(thisArticle){
       const preview = req.param('preview') == "true" ? true:false;
       const citation = req.param('citation',"inline");
