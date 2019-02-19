@@ -17,7 +17,7 @@ L'environnement de travail de Stylo intègre une chaîne éditoriale complète b
 
 ---
 
-<a class="btn btn-info" href="http://stylo.ecrituresnumeriques.ca" role="button">Tester Stylo</a> <a class="btn btn-info" href="pages/premierspas.md" role="button">Premiers pas</a>
+<a class="btn btn-info" href="http://stylo.ecrituresnumeriques.ca" role="button">Tester Stylo</a> <a class="btn btn-info" href="pages/premierspas.md" role="button">Premiers pas</a> <a class="btn btn-info" href="pages/publications.md" role="button">Démo</a>
 
 ---
 
