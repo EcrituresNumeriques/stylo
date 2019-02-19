@@ -5,8 +5,8 @@ export function People(props){
   return(
     <section className="group">
       <TextInput target={props.keyState+"["+props.index+"].surname"} title="Nom" state={props.state} updateState={props.updateState} readOnly={props.readOnly}/>
-      <TextInput target={props.keyState+"["+props.index+"].orcid"} title="Orcid" state={props.state} updateState={props.updateState} readOnly={props.readOnly}/>
       <TextInput target={props.keyState+"["+props.index+"].forname"} title="Prénom" state={props.state} updateState={props.updateState} readOnly={props.readOnly}/>
+      <TextInput target={props.keyState+"["+props.index+"].orcid"} title="Orcid" state={props.state} updateState={props.updateState} readOnly={props.readOnly}/>
       <TextInput target={props.keyState+"["+props.index+"].viaf"} title="VIAF" state={props.state} updateState={props.updateState} readOnly={props.readOnly}/>
       <TextInput target={props.keyState+"["+props.index+"].foaf"} title="FOAF" state={props.state} updateState={props.updateState} readOnly={props.readOnly}/>
       <TextInput target={props.keyState+"["+props.index+"].isni"} title="ISNI" state={props.state} updateState={props.updateState} readOnly={props.readOnly}/>
