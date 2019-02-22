@@ -58,8 +58,8 @@ link-citations: true
 nocite: ''
 ---`,
   title:'New article',
-  sommaire:'## title',
-  md:'## title',
+  sommaire:'',
+  md:'',
   article: {
       title:'How to Stylo',
       sommaire:`## Introduction
