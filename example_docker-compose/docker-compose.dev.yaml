@@ -36,13 +36,12 @@ services:
       - JWT_SECRET_SESSION_COOKIE=NoNoNoReallyIInsistYouShouldChangeMe
   front-stylo:
     build: 
-      context: ./gatsby
+      context: ./front
       dockerfile: dockerfile-dev
     container_name: "front-stylo"
     volumes:
-      - ./gatsby/src:/usr/src/app/src
-      - ./gatsby/static:/usr/src/app/static
-      - ./gatsby/gatsby-config.js:/usr/src/app/gatsby-config.js
+      - ./front/gatsby:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
       - 3000:80
     depends_on:
