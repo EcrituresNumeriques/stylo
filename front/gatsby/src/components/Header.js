@@ -27,10 +27,6 @@ const ConnectedHeader = (props) => {
                 {!props.logedIn && <Link to="/login">Login</Link>}
                 {!props.logedIn && <Link to="/register">Register</Link>}
             </nav>
-            <Link to="/centered">Centered</Link>
-            <Link to="/wrapped">Wrapped</Link>
-            <Link to="/fullPage">fullPage</Link>
-            Headerino
             {props.logedIn && <p onClick={()=>props.logout()}>Log out</p>}
             {!props.logedIn && <p onClick={()=>props.login()}>Log in</p>}
         </header> 

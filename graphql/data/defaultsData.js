@@ -31,7 +31,7 @@ director:
 abstract: []
 authors: []
 dossier:
-  - title: Varia
+  - title: ''
     id: ''
 redacteurDossier: []
 typeArticle: []
