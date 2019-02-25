@@ -1,10 +1,21 @@
 @import '../styles/defaults.scss';
+@import '../styles/variables.scss';
 
 .header {
     @extend .wrapped-center;
     display:flex;
     align-items: center;
+    justify-content: space-between;
+    padding:0.5rem 1rem;
     > h1 {
         font-style: italic;
+    }
+    nav{
+        display:flex;
+        flex-wrap: wrap;
+        a {
+            display:block;
+            margin-left:1em;
+        }
     }
 }

@@ -1,0 +1,23 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+.box {
+    padding:1rem;
+    border:1px solid $main-border-color;
+    form {
+        input{
+            padding: .5em 1em;
+            display: block;
+            width: 100%;
+            border-top:1px solid $main-border-color;
+            border-left:1px solid $main-border-color;
+            border-right:1px solid $main-border-color;
+        }
+        input[type=submit]{
+            background-color:$main-color;
+            color:$main-background-color;
+            border-bottom:1px solid $main-border-color;
+        }
+    }
+    
+}

@@ -45,12 +45,13 @@
 
 .header{
     grid-area: header;
+    background-color: $main-color;
+    color:$main-background-color;
+    a {
+        color:$main-background-color;
+    }
 }
 
 .main {
     grid-area: main;
-    background-color:yellow;
-    section{
-        @extend .wrapped-center;
-    }
 }
