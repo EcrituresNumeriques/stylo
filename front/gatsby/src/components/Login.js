@@ -15,6 +15,7 @@ const ConnectedLogin = (props) => {
     return (
         <section className={styles.box}>
             <form onSubmit={(event)=>{event.preventDefault();console.log('clicked')}}>
+                <h1>Login</h1>
                 <input type="text" placeholder="email or username"/>
                 <input type="password" placeholder="password"/>
                 <input type="submit" value="go"/>
