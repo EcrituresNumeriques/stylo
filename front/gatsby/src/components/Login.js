@@ -19,7 +19,6 @@ const ConnectedLogin = (props) => {
                 <input type="password" placeholder="password"/>
                 <input type="submit" value="go"/>
                 <p className="note">or <Link to="/register">create an account</Link></p>
-                <p>{props.logedIn? 'You are loged in:':'You are not loged in'}</p>
             </form>
         </section> 
     )
