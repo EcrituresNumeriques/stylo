@@ -5,6 +5,8 @@ import { connect } from "react-redux"
 import etv from '../helpers/eventTargetValue'
 import validateEmail from '../helpers/validationEmail'
 
+import askGraphQL from '../helpers/graphQL';
+
 import styles from './register.module.scss'
 
 const mapStateToProps = ({ logedIn }) => {
@@ -24,12 +26,47 @@ const ConnectedRegister = (props) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [institution, setInstitution] = useState('');
-
+    const query = "mutation($email:String!,$username:String!,$password:String!,$displayName:String,$firstName:String,$lastName:String,$institution:String){\n  createUser(user:{email:$email,username:$username,password:$password,displayName:$displayName,firstName:$firstName,lastName:$lastName,institution:$institution}){_id}}"
     let user = {email, username, password, passwordC, displayName, firstName, lastName, institution}
+
+    const createUser = async (query,user) => {
+        //Validate stuff client-side
+        if(user.password != user.passwordC){
+            alert('Password and Password confirm mismatch')
+            return false
+        }
+        if(user.password == ""){
+            alert('password is empty')
+            return false
+        }
+        if(user.username == ""){
+            alert('Username is empty')
+            return false
+        }
+        if(user.email == ""){
+            alert('Email is empty')
+            return false
+        }
+        if(!validateEmail(user.email)){
+            alert('Email appears to be malformed')
+            return false
+        }
+
+
+        try{
+            await askGraphQL({query,variables:user})
+            //if no error thrown, we can navigate to /login
+            navigate('/login')
+        }
+        catch(err){
+            console.log("failed")
+        }
+    }
+
 
     return (
         <section className={styles.box}>
-            <form onSubmit={(event)=>{event.preventDefault();console.log(user)}}>
+            <form onSubmit={(event)=>{event.preventDefault();createUser(query,user)}}>
                 <h1>Required</h1>
                 <input type="text" placeholder="Email*" className={validateEmail(email)?null:styles.beware} value={email} onChange={(e)=>setEmail(etv(e))}/>
                 <input type="text" placeholder="Username*" value={username} onChange={(e)=>setUsername(etv(e))}/>
