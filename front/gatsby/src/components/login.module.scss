@@ -4,6 +4,7 @@
 .box {
     padding:1rem;
     border:1px solid $main-border-color;
+    background-color:$extra-background-color;
     form {
         input{
             padding: .5em 1em;

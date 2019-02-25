@@ -4,6 +4,7 @@
 .box {
     padding:1rem;
     border:1px solid $main-border-color;
+    background-color:$extra-background-color;
     form {
         input{
             padding: .5em 1em;
@@ -17,6 +18,16 @@
             background-color:$main-color;
             color:$main-background-color;
             border-bottom:1px solid $main-border-color;
+            margin-top:1rem;
+        }
+        h1{
+            font-size: 100%;
+            margin-bottom:1rem;
+            text-align: center
+        }
+        h1:last-of-type{
+            padding-top:1rem;
+            margin-top:1rem;
         }
         p{
             margin-top: 1rem;

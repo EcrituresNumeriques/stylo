@@ -15,11 +15,12 @@ const ConnectedRegister = (props) => {
     return (
         <section className={styles.box}>
             <form onSubmit={(event)=>{event.preventDefault();console.log('clicked')}}>
+                <h1>Required</h1>
                 <input type="text" placeholder="Email*"/>
                 <input type="text" placeholder="Username*"/>
                 <input type="password" placeholder="Password*"/>
                 <input type="password" placeholder="Confirm password*"/>
-                <hr/>
+                <h1>Optional</h1>
                 <input type="text" placeholder="Display Name"/>
                 <input type="text" placeholder="First Name"/>
                 <input type="text" placeholder="Last Name"/>
