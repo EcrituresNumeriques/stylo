@@ -17,7 +17,8 @@ const mapStateToProps = ({ logedIn, users, sessionToken }) => {
 
 
 const ConnectedArticles = (props) => {
-    if(!props.logedIn){
+    const isBrowser = typeof window !== 'undefined';
+    if(isBrowser && !props.logedIn){
         navigate('/login')
         return <p>redirecting</p>
     }

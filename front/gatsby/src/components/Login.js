@@ -21,7 +21,8 @@ const mapDispatchToProps = dispatch => {
 
 
 const ConnectedLogin = (props) => {
-    if(props.logedIn){
+    const isBrowser = typeof window !== 'undefined';
+    if(isBrowser && props.logedIn){
         navigate('/articles')
     }
 
