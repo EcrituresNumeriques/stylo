@@ -40,11 +40,8 @@ const ConnectedArticles = (props) => {
     const filterByTagsSelected = (article) => {
         const listOfTagsSelected = tags.filter(t => t.selected)
         if(listOfTagsSelected.length === 0){ return true }
-        console.log("one or more selected")
         let pass = true
-        console.log(article.tags.map(t => t._id))
         for(let i=0;i<listOfTagsSelected.length;i++){
-            console.log("comparing",listOfTagsSelected[i]._id,article.tags.map(t => t._id))
             if(!article.tags.map(t => t._id).includes(listOfTagsSelected[i]._id)){pass = false}
         }
         return pass
