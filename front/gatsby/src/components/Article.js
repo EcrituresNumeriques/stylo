@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {Link} from 'gatsby'
 
-import styles from './articles.module.scss'
+import styles from './Articles.module.scss'
 
 export default (props) => {
 
