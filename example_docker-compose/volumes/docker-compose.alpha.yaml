@@ -50,5 +50,6 @@ services:
       - VIRTUAL_PORT=80
       - LETSENCRYPT_HOST=alpha.stylo.14159.ninja
       - LETSENCRYPT_EMAIL=arthur.juchereau@gmail.com
+      - GRAPHQL_ENDPOINT=https://graphql.stylo.14159.ninja
     depends_on:
       - graphql-stylo
