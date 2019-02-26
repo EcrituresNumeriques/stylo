@@ -27,7 +27,7 @@ const verifCreds = async (args) => {
 }
 
 module.exports = {
-  loginMutation: async (args,{req,res}) => {
+  loginMutation: async (args,{req,_}) => {
 
     //The resolver only logs the user + password in the req object
     const fetchedPassword = await verifCreds(args);
@@ -43,7 +43,7 @@ module.exports = {
 
     return populatePassword(fetchedPassword)
   },
-  login: async (args, {req,res}) => {
+  login: async (args, {_,res}) => {
     try{
       const fetchedPassword = await verifCreds(args);
       const payload = {
@@ -64,8 +64,8 @@ module.exports = {
 
       //All query are async, can't channel req to another resolver
       //req.user = payload;
-      console.log("setting cookie:",tokenCookie);
-      res.cookie("graphQL-jwt",tokenCookie,{expires:0,httpOnly:true,secure:process.env.HTTPS})
+      console.log("setting cookie:",tokenCookie,process.env.HTTPS);
+      res.cookie("graphQL-jwt",tokenCookie,{expires:0,httpOnly:true,secure:process.env.HTTPS === "true"})
 
       return {
         token:token,

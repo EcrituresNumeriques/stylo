@@ -21,12 +21,12 @@ const listenPort = process.env.NODE_ENV === "Dev" ? 3030:80
 
 const corsOptions = {
   origin: process.env.ALLOW_CORS_FRONTEND || 'http://localhost:3000',
-  optionsSuccessStatus: 200
-
+  optionsSuccessStatus: 200,
+  credentials: true,
 }
 
 
-app.use(cors())
+app.use(cors(corsOptions))
 
 app.use(bodyParser.json());
 app.use(cookieParser());

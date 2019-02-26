@@ -38,9 +38,9 @@ module.exports = async (req, _, next) => {
   const method = authHeader.split(' ')[0]
   const payload = authHeader.split(' ')[1]
 
-
+  console.log("Parsing authorizations",method, payload)
   // case 1,5 we got a cookie + a jwt header
-  if(method =="Bearer" && req.user_noCSRF){
+  if(method =="Session" && req.user_noCSRF){
     try{
       const token = jwt.verify(payload,process.env.JWT_SECRET_SESSION)
       if(token && token.session){

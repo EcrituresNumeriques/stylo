@@ -10,7 +10,6 @@ const mapStateToProps = ({ logedIn, password, users }) => {
 
 const mapDispatchToProps = dispatch => {
     return { 
-        login: () => dispatch({ type: `LOGIN` }),
         logout: () => dispatch({ type: `LOGOUT` })
     }
 }
@@ -23,8 +22,6 @@ const ConnectedHeader = (props) => {
             <section className={styles.header}>
                 <h1>_Stylo_</h1>
                 <nav>
-                    {props.logedIn && <p onClick={()=>props.logout()}>Log out</p>}
-                    {!props.logedIn && <p onClick={()=>props.login()}>Log in</p>}
                     <a href="http://stylo-doc.ecrituresnumeriques.ca/" target="_blank" rel="noopener noreferrer">Documentation</a>
                     <a href="https://github.com/EcrituresNumeriques/stylo/issues" target="_blank" rel="noopener noreferrer">Report an issue</a>
                     {props.logedIn && <>
@@ -33,6 +30,7 @@ const ConnectedHeader = (props) => {
                     </>}
                     {!props.logedIn && <Link to="/login">Login</Link>}
                     {!props.logedIn && <Link to="/register">Register</Link>}
+                    {props.logedIn && <p onClick={()=>props.logout()}>Log out</p>}
                 </nav>
             </section>
         </header> 
