@@ -1,9 +1,6 @@
 import env from '../helpers/env'
 
 const askGraphQL = async (payload,action = 'fetching from the server',token = null) => {
-
-    console.log(token)
-
     const response = await fetch(env.GRAPHQL_ENDPOINT,{
         method: "POST",
         mode: "cors",

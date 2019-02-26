@@ -1,0 +1,78 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+
+
+
+.section {
+    @extend .wrapped-center;
+    padding:1rem;
+    border:1px solid $main-border-color;
+    background-color:$extra-background-color;
+    > h1{
+        margin-bottom:1rem;
+    }
+    > p {
+        margin-bottom:1rem;
+    }
+    > article {  
+        padding:1rem;
+        h1{
+            @extend .clickable;
+            span {
+                display: inline-block;
+                width:1rem;
+                text-align: center;
+                font-weight: bold;
+            }
+        }
+        nav {
+            float:right;
+            a {
+                display: inline-block;
+                border: 1px solid $main-border-color;
+                padding:0.5rem;
+                margin:-0.5rem 0.25rem;
+            }
+            a:not(.primary){
+                background-color: $button-secondary-background;
+                color:$button-secondary-color;
+
+            }
+            a:last-child{
+                margin-right:-0.5rem;
+            }
+        }
+    }
+    > article:nth-of-type(2n+1){
+        background-color:$main-background-color;
+    }
+}
+
+.button {
+    @extend .clickable;
+    display:inline-block;
+    padding:0.5rem 1rem;
+    margin-right:0.5rem;
+    background-color: $button-primary-background !important;
+    color: $button-primary-color !important;
+}
+
+.primary {
+    background-color: $button-primary-background !important;
+    color: $button-primary-color !important;
+}
+
+.tags{
+    @extend .clickable;
+    display:inline-block;
+    border:1px solid $main-border-color;
+    padding:0.5rem;
+    margin-right:0.5rem;
+}
+
+.selectedTags {
+    @extend .tags;
+    background-color: $button-primary-background !important;
+    color: $button-primary-color !important;
+}

@@ -7,9 +7,15 @@ $main-background-color: #f0f0f0;
 $main-color: #202020;
 $main-color-links: #000000;
 
-$main-border-color:#c0c0c0;
+$main-border-color:grey;
 
 $beware-background:#ffd0d0;
+
+$button-primary-background:$main-color;
+$button-primary-color:$main-background-color;
+$button-secondary-background:$extra-background-color;
+$button-secondary-color:$main-border-color;
+
 
 
 $phone-width:100%;

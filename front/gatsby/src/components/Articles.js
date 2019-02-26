@@ -4,6 +4,13 @@ import { connect } from "react-redux"
 
 import askGraphQL from '../helpers/graphQL';
 
+import Article from './Article'
+import CreateTag from './CreateTag'
+import CreateArticle from './CreateArticle'
+
+import styles from './Articles.module.scss'
+
+
 const mapStateToProps = ({ logedIn, users, sessionToken }) => {
     return { logedIn, users, sessionToken }
 }
@@ -18,39 +25,72 @@ const ConnectedArticles = (props) => {
     const [isLoading,setIsLoading] = useState(false)
     const [articles,setArticles] = useState([])
     const [tags,setTags] = useState([])
+    const [displayName,setDisplayName] = useState(props.users[0].displayName)
+    const [creatingTag, setCreatingTag] = useState(false)
+    const [creatingArticle, setCreatingArticle] = useState(false)
+    const [needReload,setNeedReload] = useState(true)
 
-    const query = "query($user:ID!){user(user:$user){ displayName tags{ _id name } articles{ _id title owners{ displayName } versions{ _id version revision autosave } tags{ name _id }}}}"
+    const findAndUpdateTag = (tags,id)=> {
+        const immutableTags = JSON.parse(JSON.stringify(tags))
+        const tag = immutableTags.find(t => t._id === id)
+        tag.selected = !tag.selected
+        return immutableTags
+    }
+
+    const filterByTagsSelected = (article) => {
+        const listOfTagsSelected = tags.filter(t => t.selected)
+        if(listOfTagsSelected.length === 0){ return true }
+        console.log("one or more selected")
+        let pass = true
+        console.log(article.tags.map(t => t._id))
+        for(let i=0;i<listOfTagsSelected.length;i++){
+            console.log("comparing",listOfTagsSelected[i]._id,article.tags.map(t => t._id))
+            if(!article.tags.map(t => t._id).includes(listOfTagsSelected[i]._id)){pass = false}
+        }
+        return pass
+    }
+
+    const query = "query($user:ID!){user(user:$user){ displayName tags{ _id name } articles{ _id title updatedAt owners{ displayName } versions{ _id version revision autosave } tags{ name _id }}}}"
     const user = {user:props.users[0]._id}
 
     useEffect(()=>{
-        //Self invoking async function
-        (async () =>{
-            try{
-                setIsLoading(true)
-                const data = await askGraphQL({query,variables:user},'fetching articles',props.sessionToken)
-                setArticles(data.user.articles)
-                setTags(data.user.tags)
-                setIsLoading(false)
-            }
-            catch(err){
-                alert(err)
-            }
-        })()
-    },[])
+        if(needReload){
+            //Self invoking async function
+            (async () =>{
+                try{
+                    setIsLoading(true)
+                    const data = await askGraphQL({query,variables:user},'fetching articles',props.sessionToken)
+                    //Need to sort by updatedAt desc
+                    setArticles(data.user.articles.reverse())
+                    setTags(data.user.tags.map(t => ({...t,selected:false})))
+                    setDisplayName(data.user.displayName)
+                    setIsLoading(false)
+                    setNeedReload(false)
+                }
+                catch(err){
+                    alert(err)
+                }
+            })()
+        }
+    },[needReload])
 
     return (
-        <section>
+        <section className={styles.section}>
+            <h1>Articles for {displayName}</h1>
+            <p className={styles.button} onClick={()=>setCreatingArticle(!creatingArticle)}>{creatingArticle? 'Cancel new Article' : 'Create new Article'}</p>
+            <p className={styles.button} onClick={()=>setCreatingTag(!creatingTag)}>{creatingTag? 'Cancel new Tag' : 'Create new Tag'}</p>
+            {creatingTag && !isLoading && <CreateTag articles={articles} triggerReload={()=>{setCreatingTag(false);setNeedReload(true)}}/>}
+            {creatingArticle && !isLoading && <CreateArticle tags={tags} triggerReload={()=>{setCreatingArticle(false);setNeedReload(true)}}/>}
         	{isLoading && <>
-                <h1>Articles for {props.users[0].displayName}</h1>
                 <p key="loading">Loading articles...</p>
             </>}
             {!isLoading && <>
-                <p key="loaded">Loaded</p>
+                <p key="loaded">Up to date</p>
                 {tags.map((t)=>(
-                    <p key={`tag-${t._id}`}>{JSON.stringify(t)}</p>
+                    <p className={t.selected?styles.selectedTags:styles.tags} key={`tag-${t._id}`} onClick={()=>setTags(findAndUpdateTag(tags,t._id))}>{t.name}</p>
                 ))}
-                {articles.map((a)=>(
-                    <p key={`article-${a._id}`}>{JSON.stringify(a)}</p>
+                {articles.filter(filterByTagsSelected).map((a)=>(
+                    <Article key={`article-${a._id}`} {...a} />
                 ))}
             </>}
         </section>
