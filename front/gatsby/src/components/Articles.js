@@ -17,8 +17,9 @@ const ConnectedArticles = (props) => {
 
     const [isLoading,setIsLoading] = useState(false)
     const [articles,setArticles] = useState([])
+    const [tags,setTags] = useState([])
 
-    const query = "query($user:ID!){user(user:$user){ displayName articles{ _id title owners{ displayName } versions{ _id version revision autosave } tags{ name _id }}}}"
+    const query = "query($user:ID!){user(user:$user){ displayName tags{ _id name } articles{ _id title owners{ displayName } versions{ _id version revision autosave } tags{ name _id }}}}"
     const user = {user:props.users[0]._id}
 
     useEffect(()=>{
@@ -28,6 +29,8 @@ const ConnectedArticles = (props) => {
                 setIsLoading(true)
                 const data = await askGraphQL({query,variables:user},'fetching articles',props.sessionToken)
                 setArticles(data.user.articles)
+                setTags(data.user.tags)
+                setIsLoading(false)
             }
             catch(err){
                 alert(err)
@@ -37,12 +40,19 @@ const ConnectedArticles = (props) => {
 
     return (
         <section>
-            <h1>Articles for {props.users[0].displayName}</h1>
-        	{isLoading && <p>Loading articles...</p>}
-            {!isLoading && <p>Loaded</p>}
-            {articles.map((a)=>(
-                <p>{JSON.stringify(a)}</p>
-            ))}
+        	{isLoading && <>
+                <h1>Articles for {props.users[0].displayName}</h1>
+                <p key="loading">Loading articles...</p>
+            </>}
+            {!isLoading && <>
+                <p key="loaded">Loaded</p>
+                {tags.map((t)=>(
+                    <p key={`tag-${t._id}`}>{JSON.stringify(t)}</p>
+                ))}
+                {articles.map((a)=>(
+                    <p key={`article-${a._id}`}>{JSON.stringify(a)}</p>
+                ))}
+            </>}
         </section>
     )
 }
