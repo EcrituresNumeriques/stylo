@@ -4,8 +4,8 @@ import { connect } from "react-redux"
 
 import styles from './header.module.scss'
 
-const mapStateToProps = ({ logedIn }) => {
-    return { logedIn }
+const mapStateToProps = ({ logedIn, password, users }) => {
+    return { logedIn, password, users }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -27,6 +27,10 @@ const ConnectedHeader = (props) => {
                     {!props.logedIn && <p onClick={()=>props.login()}>Log in</p>}
                     <a href="http://stylo-doc.ecrituresnumeriques.ca/" target="_blank" rel="noopener noreferrer">Documentation</a>
                     <a href="https://github.com/EcrituresNumeriques/stylo/issues" target="_blank" rel="noopener noreferrer">Report an issue</a>
+                    {props.logedIn && <>
+                        <p>{JSON.stringify(props.users.map(u => u.displayName))}</p>
+                        <p>{JSON.stringify(props.password.username)}</p>
+                    </>}
                     {!props.logedIn && <Link to="/login">Login</Link>}
                     {!props.logedIn && <Link to="/register">Register</Link>}
                 </nav>

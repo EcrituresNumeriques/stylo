@@ -4,16 +4,15 @@ const initialState = { logedIn: false, users:[],password:undefined,sessionToken:
 
 const reducer = (state, action) => {
   if (action.type === `LOGIN`) {
-    return Object.assign({}, state, {
-      logedIn: true,
-      users:[
-        {id:"test",username:"Arthur",email:"test@test.com"},
-        {id:"test2",username:"Arthur2",email:"test2@test.com"},
-        {id:"test3",username:"Arthur3",email:"test3@test.com"},
-      ],
-      password:{username:"Arthur",email:"test@test.com"},
-      sessionToken:"test"
-    })
+    const login = action.login
+    if(login.password && login.users && login.token){
+      return Object.assign({}, state, {
+        logedIn: true,
+        users: login.users,
+        password: login.password,
+        sessionToken: login.token
+      })
+    }
   }
   else if (action.type === `LOGOUT`) {
     return Object.assign({}, state, {

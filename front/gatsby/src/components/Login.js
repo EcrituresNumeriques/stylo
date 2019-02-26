@@ -12,6 +12,14 @@ const mapStateToProps = ({ logedIn }) => {
     return { logedIn }
 }
 
+const mapDispatchToProps = dispatch => {
+    return { 
+        login: (data) => dispatch({ type: `LOGIN`, login: data }),
+        logout: () => dispatch({ type: `LOGOUT` })
+    }
+}
+
+
 const ConnectedLogin = (props) => {
     if(props.logedIn){
         navigate('/articles')
@@ -24,11 +32,11 @@ const ConnectedLogin = (props) => {
 
     const loginUser = async (query,user) => {
         //Validate stuff client-side
-        if(user.email == ""){
+        if(user.email === ""){
             alert('Email/username is empty')
             return false
         }
-        if(user.password == ""){
+        if(user.password === ""){
             alert('password is empty')
             return false
         }
@@ -39,12 +47,13 @@ const ConnectedLogin = (props) => {
 
 
         try{
-            console.log(await askGraphQL({query,variables:user}))
+            const data = await askGraphQL({query,variables:user})
+            props.login(data.login)
             //if no error thrown, we can navigate to /login
             
         }
         catch(err){
-            console.log("failed")
+            alert(err)
         }
     }
 
@@ -62,6 +71,7 @@ const ConnectedLogin = (props) => {
 }
 
 const Login = connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(ConnectedLogin)
 export default Login

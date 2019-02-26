@@ -31,19 +31,19 @@ const ConnectedRegister = (props) => {
 
     const createUser = async (query,user) => {
         //Validate stuff client-side
-        if(user.password != user.passwordC){
+        if(user.password !== user.passwordC){
             alert('Password and Password confirm mismatch')
             return false
         }
-        if(user.password == ""){
+        if(user.password === ""){
             alert('password is empty')
             return false
         }
-        if(user.username == ""){
+        if(user.username === ""){
             alert('Username is empty')
             return false
         }
-        if(user.email == ""){
+        if(user.email === ""){
             alert('Email is empty')
             return false
         }

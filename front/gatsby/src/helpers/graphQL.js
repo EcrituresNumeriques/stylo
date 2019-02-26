@@ -24,6 +24,7 @@ const askGraphQL = async (payload,action = 'fetching from the server') => {
     }
     
     const json = await response.json()
+    if(json.errors){throw new Error(json.errors[0].message)}
     return json.data
 }
 
