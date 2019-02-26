@@ -18,9 +18,10 @@ const mongoServer = process.env.MONGO_SERVER || localhost
 const mongoServerPort = process.env.MONGO_SERVER_PORT || 27017
 const mongoServerDB = process.env.MONGO_SERVER_DB || 'graphql'
 const listenPort = process.env.NODE_ENV === "Dev" ? 3030:80
+const origin = process.env.ALLOW_CORS_FRONTEND || 'http://localhost:3000'
 
 const corsOptions = {
-  origin: process.env.ALLOW_CORS_FRONTEND || 'http://localhost:3000',
+  origin: origin,
   optionsSuccessStatus: 200,
   credentials: true,
 }
