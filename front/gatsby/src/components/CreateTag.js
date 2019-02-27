@@ -29,7 +29,7 @@ const ConnectedCreateTag = (props) => {
     const createTag = async (event, cb,query, variables, token) => {
         try{
             event.preventDefault();
-            const data = await askGraphQL({query,variables},'creating new tag',token)
+            await askGraphQL({query,variables},'creating new tag',token)
             cb()
         }
         catch(err){

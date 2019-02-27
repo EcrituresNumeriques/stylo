@@ -47,3 +47,8 @@ services:
       - 3000:80
     depends_on:
       - graphql-stylo
+
+networks:
+  default:
+    external:
+      name: root_default
