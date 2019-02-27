@@ -13,6 +13,20 @@
     user-select: none;
 }
 
+.primary-button{
+    @extend .clickable;
+    background-color: $button-primary-background !important;
+    color: $button-primary-color !important;
+    padding:0.5rem 1rem;
+}
+
+.secondary-button{
+    @extend .clickable;
+    background-color: $button-secondary-background !important;
+    color: $button-secondary-color !important;
+    padding:0.5rem 1rem;
+}
+
 .wrapped-center{
     margin:0 auto;
     width: 100%;

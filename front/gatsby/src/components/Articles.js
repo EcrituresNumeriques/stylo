@@ -76,14 +76,15 @@ const ConnectedArticles = (props) => {
         <section className={styles.section}>
             <h1>Articles for {displayName}</h1>
             <p className={styles.button} onClick={()=>setCreatingArticle(!creatingArticle)}>{creatingArticle? 'Cancel new Article' : 'Create new Article'}</p>
-            <p className={styles.button} onClick={()=>setCreatingTag(!creatingTag)}>{creatingTag? 'Cancel new Tag' : 'Create new Tag'}</p>
-            {creatingTag && !isLoading && <CreateTag articles={articles} triggerReload={()=>{setCreatingTag(false);setNeedReload(true)}}/>}
-            {creatingArticle && !isLoading && <CreateArticle tags={tags} triggerReload={()=>{setCreatingArticle(false);setNeedReload(true)}}/>}
         	{isLoading && <>
                 <p key="loading">Loading articles...</p>
             </>}
             {!isLoading && <>
                 <p key="loaded">Up to date</p>
+                
+                {creatingTag &&  <CreateTag articles={articles} triggerReload={()=>{setCreatingTag(false);setNeedReload(true)}}/>}
+                {creatingArticle  && <CreateArticle tags={tags} triggerReload={()=>{setCreatingArticle(false);setNeedReload(true)}}/>}
+                <p className={styles.button} onClick={()=>setCreatingTag(!creatingTag)}>{creatingTag? 'Cancel new Tag' : 'Create new Tag'}</p>
                 {tags.map((t)=>(
                     <p className={t.selected?styles.selectedTags:styles.tags} key={`tag-${t._id}`} onClick={()=>setTags(findAndUpdateTag(tags,t._id))}>{t.name}</p>
                 ))}

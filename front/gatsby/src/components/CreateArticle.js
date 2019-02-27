@@ -4,6 +4,8 @@ import { connect } from "react-redux"
 import etv from '../helpers/eventTargetValue'
 import askGraphQL from '../helpers/graphQL';
 
+import styles from './Articles.module.scss'
+
 const mapStateToProps = ({ users, sessionToken }) => {
     return { users, sessionToken }
 }
@@ -36,12 +38,13 @@ const ConnectedCreateArticle = (props) => {
     }
 
     return (
-        <section>
+        <section className={styles.create}>
            <form onSubmit={(event)=>{createTag(event, props.triggerReload, query, variables, props.sessionToken)}}>
-                <input type="text" placeholder="Tag Name" value={title} onChange={(e)=>setTitle(etv(e))}/><br/>
+                <input type="text" placeholder="Article title" value={title} onChange={(e)=>setTitle(etv(e))}/>
                 <ul>
+                    <li>Add tags =></li>
                 {tagsSelected.map(t=>(
-                        <li key={`selectTag-${t._id}`} onClick={()=>setTagsSelected(findAndUpdateTag(tagsSelected,t._id))}>{t.selected ? `${t.name} [X]`:`${t.name} [ ]`}</li>
+                        <li key={`selectTag-${t._id}`} className={t.selected?styles.selected:styles.unselected} onClick={()=>setTagsSelected(findAndUpdateTag(tagsSelected,t._id))}>{t.name}</li>
                     ))}
                 </ul>
                 <input type="submit" value="Create Article"/>

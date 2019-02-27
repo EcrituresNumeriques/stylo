@@ -15,13 +15,15 @@ export default (props) => {
         </nav>
         <h1 onClick={()=>setExpanded(!expanded)}><span>{expanded?'-':'+'}</span> {props.title} ({props.updatedAt})</h1>
         {expanded && <section>
-            <h2>by {props.owners.map(o=>o.displayName).join(', ')}</h2>
+            <h2>by <span>{props.owners.map(o=>o.displayName).join(', ')}</span></h2>
             <ul>
+                <p>Last versions:</p>
                 {props.versions.map(v=>(
                     <li key={`version-${v._id}`}>{`${v.message?v.message:'no label'} (${v.autosave?'autosaved':''} v${v.version}.${v.revision})`}</li>
                 ))}
             </ul>
             <ul>
+                <p>Tags:</p>
                 {props.tags.map(t=>
                     <li key={`article-${props._id}-${t._id}`}>{t.name}</li>
                 )}
