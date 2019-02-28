@@ -51,6 +51,7 @@ type Article {
   title: String
   owners(limit:Int,page:Int): [User!]!
   versions(limit:Int,page:Int): [Version!]!
+  live:Version!
   tags(limit:Int,page:Int):[Tag!]!
   createdAt:String
   updatedAt:String

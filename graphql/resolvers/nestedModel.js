@@ -101,7 +101,20 @@ const getVersionsByIds = async (versionsIds,args) => {
         versionsIds = paginate(versionsIds,args.limit,args.page);
         if(versionsIds.length === 0){ return [] }
         const versions = await Version.find({ _id: { $in: versionsIds } });
-        return versions.map(populateVersion);
+        return versions.reverse().map(populateVersion);
+    }
+    catch(err){
+        throw err
+    }
+};
+
+const getVersionById = async (versionId) => {
+    try{
+        const version = await Version.findById(versionId);
+        if(!version){
+            throw new Error(`Version id ${versionId} does not exist`)
+        }
+        return populateVersion(version);
     }
     catch(err){
         throw err
@@ -151,6 +164,7 @@ const populateArticle = (article) => {
         ...cleanedArticle,
         owners:getUsersByIds.bind(this, cleanedArticle.owners || []),
         versions:getVersionsByIds.bind(this, cleanedArticle.versions || []),
+        live:getVersionById.bind(this, cleanedArticle.versions[cleanedArticle.versions.length-1] || []),
         tags:getTagsByIds.bind(this, cleanedArticle.tags || [])
     }
 }
