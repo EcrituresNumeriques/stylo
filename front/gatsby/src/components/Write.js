@@ -1,5 +1,6 @@
 import React, {useEffect,useState} from 'react'
-import { connect } from "react-redux"
+import { connect } from 'react-redux'
+import { navigate } from 'gatsby'
 
 import askGraphQL from '../helpers/graphQL';
 import styles from './write.module.scss'
@@ -9,8 +10,12 @@ const mapStateToProps = ({ logedIn, sessionToken, users }) => {
 }
 
 const ConnectedWrite = (props) => {
+  if(!props.logedIn){
+    navigate('/login')
+    return (<p>Redirecting...</p>)
+  }
   const readOnly = props.version? true:false;
-  const query = "query($article:ID!){article(article:$article){ title owners { displayName } versions(limit:1){ md sommaire bib yaml} } }"
+  const query = "query($article:ID!){article(article:$article){ title owners { displayName } versions(limit:1){ md sommaire bib yaml message} } }"
   const variables = {user:props.users[0]._id,article:props.id}
   const [isLoading,setIsLoading] = useState(false)
   const [live, setLive] = useState({})

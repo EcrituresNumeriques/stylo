@@ -38,6 +38,7 @@ type Version{
   sommaire:String
   yaml:String
   bib:String
+  message:String
   autosave:Boolean
   article:Article
   owner:User

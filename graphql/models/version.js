@@ -27,6 +27,10 @@ const versionSchema = new Schema({
     type:Number,
     default:0
   },
+  message:{
+    type:String,
+    default:''
+  },
   md:{
     type:String,
     default:'# titre'
