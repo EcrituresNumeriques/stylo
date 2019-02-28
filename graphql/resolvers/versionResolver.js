@@ -4,7 +4,7 @@ const User = require('../models/user');
 
 const isUser = require('../policies/isUser')
 
-const { populateVersion } = require('./nestedModel')
+const { populateVersion, getVersionById } = require('./nestedModel')
 
 const populateArgs = require('../helpers/populateArgs')
 
@@ -82,5 +82,16 @@ module.exports = {
       throw err
     }
 
+  },
+  version: async (args,{req}) => {
+
+    // TODO need to make sure user should have access to this version 
+
+    try{
+      return await getVersionById(args.version)
+    }
+    catch(err){
+      throw err
+    }
   }
 }

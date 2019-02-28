@@ -124,6 +124,9 @@ type RootQuery {
 
   "Fetch article info [need to have acces to this article]"
   article(article:ID!):Article!
+
+  "Fetch version info"
+  version(version:ID!):Version!
   
   "Login using email/username and password, retrieve token+cookie"
   login(username:String,email:String,password:String!):AuthToken

@@ -266,3 +266,4 @@ exports.populatePassword = populatePassword;
 exports.populateToken = populateToken;
 exports.populateArticle = populateArticle;
 exports.getArticleById = getArticleById;
+exports.getVersionById = getVersionById;
