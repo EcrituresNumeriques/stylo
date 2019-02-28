@@ -15,16 +15,18 @@ const ConnectedWrite = (props) => {
     return (<p>Redirecting...</p>)
   }
   const readOnly = props.version? true:false;
-  const query = "query($article:ID!){article(article:$article){ title owners { displayName } versions(limit:1){ md sommaire bib yaml message} } }"
+  const query = "query($article:ID!){article(article:$article){ title owners { displayName } live{ md sommaire bib yaml message} versions{ _id version revision message autosave } } }"
   const variables = {user:props.users[0]._id,article:props.id}
   const [isLoading,setIsLoading] = useState(false)
   const [live, setLive] = useState({})
+  const [versions, setVersions] = useState([])
 
   useEffect(()=>{
     (async () => {
       setIsLoading(true)
       const data = await askGraphQL({query,variables},'fetching Live version',props.sessionToken)
-      setLive(data.article.versions[0])
+      setLive(data.article.live)
+      setVersions(data.article.versions)
       setIsLoading(false)
     })()
 
@@ -38,7 +40,10 @@ const ConnectedWrite = (props) => {
         {readOnly && <p>ReadOnly</p>}
         Writing {props.id} {props.version}
         {isLoading && <p>Loading...</p>}
-        {!isLoading && <p>{JSON.stringify(live)}</p>}
+        {!isLoading && <>
+          <p>{JSON.stringify(versions)}</p>
+          <p>{JSON.stringify(live)}</p>
+        </>}
       </article>
     </section>
   )
