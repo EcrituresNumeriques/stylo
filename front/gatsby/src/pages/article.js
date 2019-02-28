@@ -2,6 +2,7 @@ import React from 'react'
 import { navigate } from 'gatsby'
 import { Router, Location } from "@reach/router"
 import FullPage from '../layouts/FullPage'
+import Write from '../components/Write'
 
 export default () => (
     <Location>
@@ -25,7 +26,7 @@ const ArticleEmpty = () => {
 const ArticleID = props => (
     <FullPage>
         <section>
-            <p>Hello this article {props.id}-{props.version}</p>
+            <Write {...props}/>
         </section>
     </FullPage>
 )
