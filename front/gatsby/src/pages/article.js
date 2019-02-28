@@ -1,22 +1,31 @@
 import React from 'react'
+import { navigate } from 'gatsby'
+import { Router, Location } from "@reach/router"
+import FullPage from '../layouts/FullPage'
 
-import { Router, Link, Location } from "@reach/router"
-
-export default (props) => (
+export default () => (
     <Location>
         {({location}) => (
             <Router location={location} className="router">
-                <Article path="/article"/>
+                <ArticleEmpty path="/article"/>
+                <ArticleID path="/article/:id/version/:version"/>
                 <ArticleID path="/article/:id"/>
             </Router>
         )}
     </Location>
 )
 
-const Article = props => (
-    <p>Hello article <Link to="/article/test">lien down</Link></p>
-)
+const ArticleEmpty = () => {
+    navigate('/articles');
+    return(
+        <p>Bad request, redirecting</p>
+    )
+}
 
 const ArticleID = props => (
-    <p>Hello this article</p>
+    <FullPage>
+        <section>
+            <p>Hello this article {props.id}-{props.version}</p>
+        </section>
+    </FullPage>
 )

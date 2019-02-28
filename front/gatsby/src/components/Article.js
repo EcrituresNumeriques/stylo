@@ -19,7 +19,7 @@ export default (props) => {
             <ul>
                 <p>Last versions:</p>
                 {props.versions.map(v=>(
-                    <li key={`version-${v._id}`}>{`${v.message?v.message:'no label'} (${v.autosave?'autosaved':''} v${v.version}.${v.revision})`}</li>
+                    <li key={`version-${v._id}`}><Link to={`/article/${props._id}/version/${v._id}`}>{`${v.message?v.message:'no label'} (${v.autosave?'autosaved':''} v${v.version}.${v.revision})`}</Link></li>
                 ))}
             </ul>
             <ul>

@@ -20,17 +20,16 @@ const ConnectedHeader = (props) => {
     return (
         <header className={props.className}>
             <section className={styles.header}>
-                <h1>_Stylo_</h1>
+                <h1><Link to='/'>_Stylo_</Link></h1>
                 <nav>
-                    <a href="http://stylo-doc.ecrituresnumeriques.ca/" target="_blank" rel="noopener noreferrer">Documentation</a>
-                    <a href="https://github.com/EcrituresNumeriques/stylo/issues" target="_blank" rel="noopener noreferrer">Report an issue</a>
                     {props.logedIn && <>
-                        <p>{JSON.stringify(props.users.map(u => u.displayName))}</p>
-                        <p>{JSON.stringify(props.password.username)}</p>
+                        <Link to='/users'>{JSON.stringify(props.users.map(u => u.displayName))}</Link>
+                        <Link to='/profile'>{props.password.username}</Link>
+                        <Link to='/articles'>My Articles</Link>
+                        <p onClick={()=>props.logout()}>Log out</p>
                     </>}
                     {!props.logedIn && <Link to="/login">Login</Link>}
                     {!props.logedIn && <Link to="/register">Register</Link>}
-                    {props.logedIn && <p onClick={()=>props.logout()}>Log out</p>}
                 </nav>
             </section>
         </header> 

@@ -13,7 +13,8 @@
     nav{
         display:flex;
         flex-wrap: wrap;
-        a {
+        a,p {
+            @extend .clickable;
             display:block;
             margin-left:1em;
         }
