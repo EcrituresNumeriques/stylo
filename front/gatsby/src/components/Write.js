@@ -7,12 +7,12 @@ import styles from './write.module.scss'
 
 import WriteLeft from './Write/WriteLeft'
 import WriteRight from './Write/WriteRight'
-import 'codemirror/mode/markdown/markdown';
-import 'codemirror/lib/codemirror.css'
 
 let CodeMirror = () => (<p>No window</p>)
-if (typeof window !== `undefined`) {
+if (typeof window !== `undefined` && typeof navigator !== `undefined`) {
   const {Controlled} = require("react-codemirror2")
+  require('codemirror/mode/markdown/markdown');
+  require('codemirror/lib/codemirror.css')
   CodeMirror = Controlled
 }
 
