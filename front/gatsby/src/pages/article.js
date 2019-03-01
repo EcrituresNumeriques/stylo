@@ -16,8 +16,8 @@ export default () => (
     </Location>
 )
 
+const isBrowser = typeof window !== 'undefined';
 const ArticleEmpty = () => {
-    const isBrowser = typeof window !== 'undefined';
     if(!isBrowser){
         return (<p>not compiling</p>)
     }
@@ -27,8 +27,11 @@ const ArticleEmpty = () => {
     )
 }
 
-const ArticleID = props => (
-    <FullPage>
+const ArticleID = props => {
+    if(!isBrowser){
+        return (<p>not compiling</p>)
+    }
+    return (<FullPage>
             <Write {...props}/>
-    </FullPage>
-)
+    </FullPage>)
+}

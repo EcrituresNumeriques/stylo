@@ -8,7 +8,6 @@ import styles from './write.module.scss'
 import WriteLeft from './Write/WriteLeft'
 import WriteRight from './Write/WriteRight'
 
-
 import {Controlled as CodeMirror} from 'react-codemirror2';
 import 'codemirror/mode/markdown/markdown';
 import 'codemirror/lib/codemirror.css'
@@ -18,8 +17,7 @@ const mapStateToProps = ({ logedIn, sessionToken, users }) => {
 }
 
 const ConnectedWrite = (props) => {
-  const isBrowser = typeof window !== 'undefined';
-  if(isBrowser && !props.logedIn){
+  if(!props.logedIn){
     navigate('/login')
     return (<p>Redirecting...</p>)
   }
