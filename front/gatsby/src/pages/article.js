@@ -17,6 +17,10 @@ export default () => (
 )
 
 const ArticleEmpty = () => {
+    const isBrowser = typeof window !== 'undefined';
+    if(!isBrowser){
+        return (<p>not compiling</p>)
+    }
     navigate('/articles');
     return(
         <p>Bad request, redirecting</p>
