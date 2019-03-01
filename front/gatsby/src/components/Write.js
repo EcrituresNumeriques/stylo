@@ -7,10 +7,14 @@ import styles from './write.module.scss'
 
 import WriteLeft from './Write/WriteLeft'
 import WriteRight from './Write/WriteRight'
-
-import {Controlled as CodeMirror} from 'react-codemirror2';
 import 'codemirror/mode/markdown/markdown';
 import 'codemirror/lib/codemirror.css'
+
+let CodeMirror = () => (<p>No window</p>)
+if (typeof window !== `undefined`) {
+  const {Controlled} = require("react-codemirror2")
+  CodeMirror = Controlled
+}
 
 const mapStateToProps = ({ logedIn, sessionToken, users }) => {
   return { logedIn, sessionToken, users  }
@@ -63,7 +67,7 @@ const ConnectedWrite = (props) => {
         {isLoading && <p>Loading...</p>}
         {!isLoading && <>
           {readOnly && <pre>{live.md}</pre>}
-          {!readOnly && isBrowser && <CodeMirror value={live.md} onBeforeChange={handleMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true,extraKeys:{"Shift-Ctrl-Space": function(cm) {cm.replaceSelection("\u00a0");}}}} editorDidMount={editor => { instanceCM = editor }}/>}
+          {!readOnly && <CodeMirror value={live.md} onBeforeChange={handleMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true,extraKeys:{"Shift-Ctrl-Space": function(cm) {cm.replaceSelection("\u00a0");}}}} editorDidMount={editor => { instanceCM = editor }}/>}
           {!readOnly && <pre>{live.md}</pre>}
         </>}
       </article>
