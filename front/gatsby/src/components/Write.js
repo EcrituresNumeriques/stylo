@@ -6,6 +6,7 @@ import askGraphQL from '../helpers/graphQL';
 import styles from './write.module.scss'
 
 import WriteLeft from './Write/WriteLeft'
+import WriteRight from './Write/WriteRight'
 
 const mapStateToProps = ({ logedIn, sessionToken, users }) => {
   return { logedIn, sessionToken, users  }
@@ -46,11 +47,7 @@ const ConnectedWrite = (props) => {
   return (
     <section className={styles.container}>
       {!isLoading && <WriteLeft article={articleInfos} {...live} versions={versions} readOnly={readOnly}/>}
-      <nav className={styles.right}>
-        <section>
-          <h1>YamlEditor</h1>
-        </section>
-      </nav>
+      {!isLoading && <WriteRight {...live} readOnly={readOnly}/>}
   
       <article className={styles.article}>
         {isLoading && <p>Loading...</p>}

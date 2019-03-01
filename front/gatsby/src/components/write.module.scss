@@ -21,21 +21,17 @@
   height:100%;
 }
 
-.sliderleft{
+.slider{
   position:fixed;
   top:0;
   bottom:0;
   width:400px;
   overflow-x: visible;
-  border-right:1px solid $main-border-color;
-  transition:left 0.5s ease, background 0.5s ease, border 0.5s ease;
   nav{
     @extend .clickable;
     position:absolute;
-    right:0;
     top:0;
-    padding:0.5rem 1rem;
-    text-align: right;
+    padding:0.75rem 1rem;
     transition:background-color 0.5s ease;
   }
   .close{
@@ -80,6 +76,26 @@
   }
 }
 
+.sliderleft{
+  @extend .slider;
+  transition:left 0.5s ease, background 0.5s ease, border 0.5s ease;
+  border-right:1px solid $main-border-color;
+  nav{
+    text-align: right;
+  }
+}
+.sliderright{
+  @extend .slider;
+  transition:right 0.5s ease, background 0.5s ease, border 0.5s ease;
+  border-left:1px solid $main-border-color;
+  nav{
+    text-align: left;
+  }
+  div{
+    text-align: right;
+  }
+}
+
 .right{
   @extend .sliderleft;
   right:0;
@@ -104,8 +120,36 @@
   background-color:rgba(255,255,255,0);
   border-right:0px solid $main-border-color;
   nav{
-    right:-100px;
+    right:-80px;
+    transition:left 0.5s ease;
+  }  
+  .open{
+    color:grey;
+    background-color:rgba(0,0,0,0);
+  }
+}
+
+
+
+.expandRight{
+  @extend .sliderright;
+  right:0;
+  background-color:rgba(255,255,255,1);
+  nav{
+    color:$main-color;
+    left:0;
     transition:right 0.5s ease;
+  }
+}
+
+.retractRight{
+  @extend .sliderright;
+  right:-400px;
+  background-color:rgba(255,255,255,0);
+  border-right:0px solid $main-border-color;
+  nav{
+    left:-120px;
+    transition:left 0.5s ease;
   }  
   .open{
     color:grey;
