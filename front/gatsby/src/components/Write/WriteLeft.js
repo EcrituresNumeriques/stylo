@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import styles from './write.module.scss'
+import styles from '../write.module.scss'
 
 export default (props) => {
 

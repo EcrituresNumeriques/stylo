@@ -5,7 +5,7 @@ import { navigate } from 'gatsby'
 import askGraphQL from '../helpers/graphQL';
 import styles from './write.module.scss'
 
-import WriteLeft from './WriteLeft'
+import WriteLeft from './Write/WriteLeft'
 
 const mapStateToProps = ({ logedIn, sessionToken, users }) => {
   return { logedIn, sessionToken, users  }
