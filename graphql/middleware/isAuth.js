@@ -38,7 +38,7 @@ module.exports = async (req, _, next) => {
   const method = authHeader.split(' ')[0]
   const payload = authHeader.split(' ')[1]
 
-  console.log("Parsing authorizations",method, payload)
+  //console.log("Parsing authorizations",method, payload)
   // case 1,5 we got a cookie + a jwt header
   if(method =="Session" && req.user_noCSRF){
     try{

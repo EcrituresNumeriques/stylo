@@ -64,7 +64,7 @@ module.exports = {
 
       //All query are async, can't channel req to another resolver
       //req.user = payload;
-      console.log("setting cookie:",tokenCookie,process.env.HTTPS);
+      //console.log("setting cookie:",tokenCookie,process.env.HTTPS);
       res.cookie("graphQL-jwt",tokenCookie,{expires:0,httpOnly:true,secure:process.env.HTTPS === "true"})
 
       return {

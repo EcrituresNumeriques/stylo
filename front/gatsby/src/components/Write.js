@@ -40,7 +40,7 @@ const ConnectedWrite = (props) => {
 
   return (
     <section className={styles.container}>
-      <WriteLeft article={articleInfos} live={live} versions={versions} />
+      {!isLoading && <WriteLeft article={articleInfos} {...live} versions={versions} />}
       <nav className={styles.right}>
         <section>
           <h1>YamlEditor</h1>
