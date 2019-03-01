@@ -15,12 +15,16 @@
     "gatsby": "^2.0.115",
     "gatsby-plugin-react-helmet": "^3.0.6",
     "gatsby-plugin-sass": "^2.0.10",
+    "js-yaml": "^3.12.2",
+    "lodash": "^4.17.11",
     "node-sass": "^4.11.0",
     "react": "next",
     "react-dom": "next",
     "react-helmet": "^5.2.0",
     "react-redux": "^6.0.0",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "remove-markdown": "^0.3.0",
+    "stjs": "0.0.5"
   },
   "repository": {
     "type": "git",
