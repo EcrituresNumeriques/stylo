@@ -9,7 +9,8 @@
     padding:1rem;
     width:100%;
   }
-  pre{
+  > pre{
+    margin-top:0;
     padding:1rem;
     width:100%;
     white-space: pre-wrap; 
