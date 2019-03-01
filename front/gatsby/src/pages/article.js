@@ -29,8 +29,6 @@ const ArticleEmpty = () => {
 
 const ArticleID = props => (
     <FullPage>
-        <section>
             <Write {...props}/>
-        </section>
     </FullPage>
 )

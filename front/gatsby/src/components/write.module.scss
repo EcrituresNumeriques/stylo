@@ -4,11 +4,21 @@
 .article{
   @extend .wrapped-center;
   background-color:$extra-background-color;
-  padding:1rem;
+  height:100%;
+  textarea{
+    padding:1rem;
+    width:100%;
+  }
+  pre{
+    padding:1rem;
+    width:100%;
+    white-space: pre-wrap; 
+  }
 }
 
 .container{
   position: relative;
+  height:100%;
 }
 
 .sliderleft{
@@ -28,6 +38,10 @@
     text-align: right;
     transition:background-color 0.5s ease;
   }
+  .close{
+    background-color:$main-background-color;
+  }
+
   div{
     overflow-y:auto;
     height:100%;
@@ -71,13 +85,7 @@
   right:0;
 }
 
-.close{
-  background-color:$main-background-color;
-}
 
-.open{
-  background-color:$main-color;
-}
 
 .expandleft{
   @extend .sliderleft;
@@ -98,6 +106,9 @@
   nav{
     right:-100px;
     transition:right 0.5s ease;
-    color:$main-background-color;
+  }  
+  .open{
+    color:grey;
+    background-color:rgba(0,0,0,0);
   }
 }

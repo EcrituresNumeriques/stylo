@@ -21,9 +21,9 @@ export default (props) => {
             <h1>{props.article.title}</h1>
             <h2>by {props.article.owners.join(', ')}</h2>
           </header>
-          <Versions versions={props.versions}/>
+          <Versions versions={props.versions} article={props.article._id}/>
           <Sommaire md={props.md}/>
-          <Biblio bib={props.bib}/>
+          <Biblio bib={props.bib} readOnly={props.readOnly}/>
           <Stats md={props.md}/>
         </div>
         </>}

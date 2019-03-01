@@ -8,8 +8,6 @@ export default (props) => {
   
   const [expand,setExpand] = useState(true)
   // eslint-disable-next-line
-  console.log("props",props)
-
   const lines = props.md.split('\n').filter(l=>l.match(/^#+\ /))
 
   return (

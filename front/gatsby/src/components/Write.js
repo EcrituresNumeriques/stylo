@@ -17,7 +17,12 @@ const ConnectedWrite = (props) => {
     return (<p>Redirecting...</p>)
   }
   const readOnly = props.version? true:false;
-  const query = "query($article:ID!){article(article:$article){ title owners { displayName } live{ md sommaire bib yaml message} versions{ _id version revision message autosave } } }"
+  const query = "query($article:ID!){article(article:$article){ _id title owners{ displayName } versions{ _id version revision message autosave } "
+  const getLive = "live{ md sommaire bib yaml message} } }"
+  const getVersion = `} version(version:"${props.version}"){ md sommaire bib yaml message } }`
+
+  const fullQuery = props.version?query + getVersion:query + getLive
+  
   const variables = {user:props.users[0]._id,article:props.id}
   const [isLoading,setIsLoading] = useState(true)
   const [live, setLive] = useState({})
@@ -27,20 +32,20 @@ const ConnectedWrite = (props) => {
   useEffect(()=>{
     (async () => {
       setIsLoading(true)
-      const data = await askGraphQL({query,variables},'fetching Live version',props.sessionToken)
-      setLive(data.article.live)
-      setArticleInfos({title:data.article.title,owners:data.article.owners.map(o => o.displayName)})
+      const data = await askGraphQL({query:fullQuery,variables},'fetching Live version',props.sessionToken)
+      setLive(props.version?data.version:data.article.live)
+      setArticleInfos({_id:data.article._id,title:data.article.title,owners:data.article.owners.map(o => o.displayName)})
       setVersions(data.article.versions)
       setIsLoading(false)
     })()
 
     
     console.log("trigger use effect")
-  },[])
+  },[props.version])
 
   return (
     <section className={styles.container}>
-      {!isLoading && <WriteLeft article={articleInfos} {...live} versions={versions} />}
+      {!isLoading && <WriteLeft article={articleInfos} {...live} versions={versions} readOnly={readOnly}/>}
       <nav className={styles.right}>
         <section>
           <h1>YamlEditor</h1>
@@ -48,12 +53,10 @@ const ConnectedWrite = (props) => {
       </nav>
   
       <article className={styles.article}>
-        {readOnly && <p>ReadOnly</p>}
-        Writing {props.id} {props.version}
         {isLoading && <p>Loading...</p>}
         {!isLoading && <>
-          <p>{JSON.stringify(versions)}</p>
-          <p>{JSON.stringify(live)}</p>
+          {readOnly && <pre>{live.md}</pre>}
+          {!readOnly && <pre>{live.md}</pre>}
         </>}
       </article>
     </section>

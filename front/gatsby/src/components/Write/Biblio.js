@@ -45,6 +45,7 @@ export default (props) => {
       <h1 className={expand?null:styles.closed} onDoubleClick={()=>setExpand(!expand)}>Bibliography</h1>
       {expand && <>
         {entries.map((ref)=>(<p key={`ref-${ref.key}`} data-clipboard-text={"[@"+ref.key+"]"} button-title={ref.title}><span>@{ref.key}</span></p>))}
+        {!props.readOnly && <p>Do stuff</p>}
       </>}
     </section>
   )

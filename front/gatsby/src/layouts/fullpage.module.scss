@@ -2,7 +2,8 @@
 
 .grid{
     display: grid;
-    grid-row-gap: 1rem;
+    grid-row-gap: 0;
+    height:100%;
     grid-template-columns: 100%;
     grid-template-rows: auto 1fr;
     grid-template-areas: 
@@ -21,4 +22,5 @@
 
 .main {
     grid-area: main;
+    height:100%;
 }
