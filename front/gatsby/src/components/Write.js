@@ -19,7 +19,7 @@ const ConnectedWrite = (props) => {
   const readOnly = props.version? true:false;
   const query = "query($article:ID!){article(article:$article){ title owners { displayName } live{ md sommaire bib yaml message} versions{ _id version revision message autosave } } }"
   const variables = {user:props.users[0]._id,article:props.id}
-  const [isLoading,setIsLoading] = useState(false)
+  const [isLoading,setIsLoading] = useState(true)
   const [live, setLive] = useState({})
   const [versions, setVersions] = useState([])
   const [articleInfos, setArticleInfos] = useState({title:"",owners:[]})

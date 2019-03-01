@@ -10,7 +10,7 @@ export default (props) => {
   // eslint-disable-next-line
   console.log("props",props)
 
-  const lines = props.md?props.md.split('\n').filter(l=>l.match(/^#+\ /)):[]
+  const lines = props.md.split('\n').filter(l=>l.match(/^#+\ /))
 
   return (
     
