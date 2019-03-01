@@ -18,7 +18,8 @@ const mapStateToProps = ({ logedIn, sessionToken, users }) => {
 }
 
 const ConnectedWrite = (props) => {
-  if(!props.logedIn){
+  const isBrowser = typeof window !== 'undefined';
+  if(isBrowser && !props.logedIn){
     navigate('/login')
     return (<p>Redirecting...</p>)
   }
@@ -64,7 +65,7 @@ const ConnectedWrite = (props) => {
         {isLoading && <p>Loading...</p>}
         {!isLoading && <>
           {readOnly && <pre>{live.md}</pre>}
-          {!readOnly && <CodeMirror value={live.md} onBeforeChange={handleMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true,extraKeys:{"Shift-Ctrl-Space": function(cm) {cm.replaceSelection("\u00a0");}}}} editorDidMount={editor => { instanceCM = editor }}/>}
+          {!readOnly && isBrowser && <CodeMirror value={live.md} onBeforeChange={handleMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true,extraKeys:{"Shift-Ctrl-Space": function(cm) {cm.replaceSelection("\u00a0");}}}} editorDidMount={editor => { instanceCM = editor }}/>}
           {!readOnly && <pre>{live.md}</pre>}
         </>}
       </article>
