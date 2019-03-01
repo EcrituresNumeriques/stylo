@@ -12,7 +12,6 @@ let CodeMirror = () => (<p>No window</p>)
 if (typeof window !== `undefined` && typeof navigator !== `undefined`) {
   const {Controlled} = require("react-codemirror2")
   require('codemirror/mode/markdown/markdown');
-  require('codemirror/lib/codemirror.css')
   CodeMirror = Controlled
 }
 
@@ -68,7 +67,6 @@ const ConnectedWrite = (props) => {
         {!isLoading && <>
           {readOnly && <pre>{live.md}</pre>}
           {!readOnly && <CodeMirror value={live.md} onBeforeChange={handleMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true,extraKeys:{"Shift-Ctrl-Space": function(cm) {cm.replaceSelection("\u00a0");}}}} editorDidMount={editor => { instanceCM = editor }}/>}
-          {!readOnly && <pre>{live.md}</pre>}
         </>}
       </article>
     </section>

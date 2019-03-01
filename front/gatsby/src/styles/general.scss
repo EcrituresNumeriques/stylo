@@ -1,6 +1,7 @@
 @import 'variables.scss';
 @import 'defaults.scss';
-
+@import '../../node_modules/codemirror/lib/codemirror.css';
+@import '../../node_modules/codemirror/theme/material.css';
 
 html{
     background-color:$main-background-color;
@@ -37,4 +38,20 @@ ul,p,h1,h2,h3,h4,h5,html,body {
 }
 li{
     list-style: none;
+}
+
+.react-codemirror2{
+    .CodeMirror{
+        height:auto;
+        font-family: "BellweatherSans-shownbsp", monospace;
+    }
+    .CodeMirror-cursors{
+        font-family: monospace;
+    }
+    .CodeMirror-scroll{
+        min-height: 600px;
+    }
+    .CodeMirror-lines{
+        padding:1rem;
+    }
 }
