@@ -6,3 +6,94 @@
   background-color:$extra-background-color;
   padding:1rem;
 }
+
+.container{
+  position: relative;
+}
+
+.sliderleft{
+  position:fixed;
+  top:0;
+  bottom:0;
+  width:400px;
+  overflow-x: visible;
+  border-right:1px solid $main-border-color;
+  transition:left 0.5s ease, background 0.5s ease, border 0.5s ease;
+  nav{
+    @extend .clickable;
+    position:absolute;
+    right:0;
+    top:0;
+    padding:0.5rem 1rem;
+    text-align: right;
+    transition:background-color 0.5s ease;
+  }
+  div{
+    overflow-y:auto;
+    height:100%;
+    header{
+      h1{
+        font-size:1.5rem;
+        padding:0.5rem 1rem 0 1rem;
+      }
+      h2{
+        font-size: 1.2rem;
+        padding:0 1rem 0.5rem 1rem;
+        font-weight:normal
+      }
+    }
+    section{
+      > h1{
+        font-size:1.2rem;
+        @extend .clickable;
+        border-top:1px solid $main-border-color;
+        border-bottom:1px solid $main-border-color;
+        padding:0.5rem 1rem;
+        background-color:$main-background-color;
+      }
+      > h1.closed{
+        background-color:$main-color;
+        color:$main-background-color;
+      }
+      > p{
+        padding:0.5rem 1rem 0 1rem;
+      }
+    }
+  }
+}
+
+.right{
+  @extend .sliderleft;
+  right:0;
+}
+
+.close{
+  background-color:$main-background-color;
+}
+
+.open{
+  background-color:$main-color;
+}
+
+.expandleft{
+  @extend .sliderleft;
+  left:0;
+  background-color:rgba(255,255,255,1);
+  nav{
+    color:$main-color;
+    right:0;
+    transition:right 0.5s ease;
+  }
+}
+
+.retractleft{
+  @extend .sliderleft;
+  left:-400px;
+  background-color:rgba(255,255,255,0);
+  border-right:0px solid $main-border-color;
+  nav{
+    right:-100px;
+    transition:right 0.5s ease;
+    color:$main-background-color;
+  }
+}

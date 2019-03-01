@@ -5,6 +5,8 @@ import { navigate } from 'gatsby'
 import askGraphQL from '../helpers/graphQL';
 import styles from './write.module.scss'
 
+import WriteLeft from './WriteLeft'
+
 const mapStateToProps = ({ logedIn, sessionToken, users }) => {
   return { logedIn, sessionToken, users  }
 }
@@ -20,12 +22,14 @@ const ConnectedWrite = (props) => {
   const [isLoading,setIsLoading] = useState(false)
   const [live, setLive] = useState({})
   const [versions, setVersions] = useState([])
+  const [articleInfos, setArticleInfos] = useState({title:"",owners:[]})
 
   useEffect(()=>{
     (async () => {
       setIsLoading(true)
       const data = await askGraphQL({query,variables},'fetching Live version',props.sessionToken)
       setLive(data.article.live)
+      setArticleInfos({title:data.article.title,owners:data.article.owners.map(o => o.displayName)})
       setVersions(data.article.versions)
       setIsLoading(false)
     })()
@@ -35,7 +39,14 @@ const ConnectedWrite = (props) => {
   },[])
 
   return (
-    <section>
+    <section className={styles.container}>
+      <WriteLeft article={articleInfos} live={live} versions={versions} />
+      <nav className={styles.right}>
+        <section>
+          <h1>YamlEditor</h1>
+        </section>
+      </nav>
+  
       <article className={styles.article}>
         {readOnly && <p>ReadOnly</p>}
         Writing {props.id} {props.version}
