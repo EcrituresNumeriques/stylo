@@ -16,7 +16,7 @@ export default (props) => {
             <h1>Metadata</h1>
           </header>
           {props.readOnly && <YamlEditor yaml={props.yaml}/>}
-          {!props.readOnly && <YamlEditor yaml={props.yaml} exportChange={(change)=>console.log(change)}/>}
+          {!props.readOnly && <YamlEditor yaml={props.yaml} exportChange={(change)=>props.handleYaml(change)}/>}
 
         </div>
         </>}
