@@ -66,6 +66,6 @@ export default (timeDifference) => {
   else if(timeDifference < 3 * 365 * 24 * 60 * 60 * 1000){string = 'Less than 3 year ago'}
   else if(timeDifference < 4 * 365 * 24 * 60 * 60 * 1000){string = 'Less than 4 year ago'}
   else if(timeDifference < 5 * 365 * 24 * 60 * 60 * 1000){string = 'Less than 5 year ago'}
-  else{string = 'A really long time ago'}
+  else{console.log(timeDifference);string = 'A really long time ago'}
   return string
 }

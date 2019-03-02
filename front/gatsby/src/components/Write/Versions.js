@@ -8,29 +8,26 @@ import howLongAgo from '../../helpers/howLongAgo';
 
 export default (props) => {
   const [expand,setExpand] = useState(true)
-  const [versions, setVersions] = useState(props.versions)
   const [message,setMessage] = useState('')
-  const [lastSave, setLastSave] = useState(new Date(props.versions[0].updatedAt))
   const [savedAgo, setSavedAgo] = useState('now')
 
   useEffect(() => {
-    var timerID = setInterval( () => tick(), 1000 );
+    var timerID = setInterval( () => tick(props.versions[0].updatedAt), 1000 );
     return function cleanup() {
         clearInterval(timerID);
       };
-  });
-  function tick() {
-    const timeDifference = new Date() - lastSave
+  },[props.versions]);
+  function tick(date) {
+    const timeDifference = new Date() - new Date(date)
     setSavedAgo( howLongAgo(timeDifference) );
   }
 
   
   const saveVersion = async (e,major = false) => {
     e.preventDefault()
-    setLastSave(new Date())
     setMessage('')
     const newVersion = await props.sendVersion(false,major, message)
-    setVersions([newVersion.saveVersion,...versions])
+    //setVersions([newVersion.saveVersion,...versions])
   }
 
 
@@ -47,7 +44,7 @@ export default (props) => {
             <button className={message?styles.primary:styles.secondary} onClick={e=>saveVersion(e,false)}>Save Minor</button>
             <button className={message?styles.primary:styles.secondary} onClick={e=>saveVersion(e,true)}>Save Major</button>
           </form>}
-          {versions.map(v=><li key={`showVersion-${v._id}`}><Link to={`/article/${props.article._id}/version/${v._id}`}>{v.message?v.message:'No label'} ({v.autosave?'autosaved ':null}{v.version}.{v.revision})</Link></li>)}
+          {props.versions.map(v=><li key={`showVersion-${v._id}`}><Link to={`/article/${props.article._id}/version/${v._id}`}>{v.message?v.message:'No label'} ({v.autosave?'autosaved ':null}{v.version}.{v.revision})</Link></li>)}
         </ul>
       </>}
     </section>

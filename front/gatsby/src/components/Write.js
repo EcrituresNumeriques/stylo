@@ -11,6 +11,7 @@ import WriteRight from './Write/WriteRight'
 import useDebounce from '../hooks/debounce'
 
 import _ from 'lodash'
+import Versions from './Write/Versions';
 
 let CodeMirror = () => (<p>No window</p>)
 if (typeof window !== `undefined` && typeof navigator !== `undefined`) {
@@ -43,14 +44,23 @@ const ConnectedWrite = (props) => {
   const [live, setLive] = useState({})
   const [versions, setVersions] = useState([])
   const [articleInfos, setArticleInfos] = useState({title:"",owners:[]})
-  const [reloadSwitch, setReloadSwitch] = useState(true)
   
   
   
   const sendVersion = async (autosave = true,major = false, message = "") => {
     try{
-      const query = `mutation($user:ID!,$article:ID!,$md:String!,$bib:String!,$yaml:String!,$autosave:Boolean!,$major:Boolean!,$message:String){saveVersion(version:{article:$article,major:$major,auto:$autosave,md:$md,yaml:$yaml,bib:$bib,message:$message},user:$user){ _id version revision message autosave } }`
-      return await askGraphQL({query,variables:{...variables,...live,autosave,major,message}},'saving new version',props.sessionToken)
+      const query = `mutation($user:ID!,$article:ID!,$md:String!,$bib:String!,$yaml:String!,$autosave:Boolean!,$major:Boolean!,$message:String){saveVersion(version:{article:$article,major:$major,auto:$autosave,md:$md,yaml:$yaml,bib:$bib,message:$message},user:$user){ _id version revision message autosave updatedAt } }`
+      const response = await askGraphQL({query,variables:{...variables,...live,autosave,major,message}},'saving new version',props.sessionToken)
+      if(!autosave || versions[0]._id !== response.saveVersion._id){
+        setVersions([response.saveVersion,...versions])
+      }
+      else{
+        //Last version had same _id, we gucchi to update!
+        const immutableV = [...versions]
+        const [_,...rest] = immutableV
+        setVersions([response.saveVersion,...rest])
+      }
+      return response
     }
     catch(err){
       alert(err)
@@ -59,14 +69,12 @@ const ConnectedWrite = (props) => {
   
   // TODO fix le debounce sur l'autosave
   //const autosave = async ( ) => await sendVersion(true,false, "Autosave")
-  const autosave = ()=>console.log('Autosave not yet implemented')  
+  //const autosave = ()=>console.log('Autosave not yet implemented')  
 
-  
-  const debouncedLive = useDebounce(live, 2000);
+  //Autosave debouncing on the live
+  const debouncedLive = useDebounce(live, 1000);
   useEffect(()=>{
-    console.log("trying useEffect",debouncedLive)
     if(!readOnly && !isLoading){
-      console.log("firing an autosave",debouncedLive)
       sendVersion(true,false, "Autosave")
     }
   },[debouncedLive])
@@ -79,6 +87,7 @@ const ConnectedWrite = (props) => {
     await setLive({...live,yaml:yaml})
   }
   
+  //Reload when version switching
   useEffect(()=>{
     (async () => {
       setIsLoading(true)
@@ -99,7 +108,7 @@ const ConnectedWrite = (props) => {
         {isLoading && <p>Loading...</p>}
         {!isLoading && <>
           {readOnly && <pre>{live.md}</pre>}
-          {!readOnly && <CodeMirror value={live.md} onBeforeChange={handleMDCM} onChange={autosave} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true,extraKeys:{"Shift-Ctrl-Space": function(cm) {cm.replaceSelection("\u00a0");}}}} editorDidMount={editor => { instanceCM = editor }}/>}
+          {!readOnly && <CodeMirror value={live.md} onBeforeChange={handleMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true,extraKeys:{"Shift-Ctrl-Space": function(cm) {cm.replaceSelection("\u00a0");}}}} editorDidMount={editor => { instanceCM = editor }}/>}
         </>}
       </article>
     </section>
