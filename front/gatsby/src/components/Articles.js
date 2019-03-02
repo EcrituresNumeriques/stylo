@@ -48,7 +48,7 @@ const ConnectedArticles = (props) => {
         return pass
     }
 
-    const query = "query($user:ID!){user(user:$user){ displayName tags{ _id name } articles{ _id title updatedAt owners{ displayName } versions{ _id version revision autosave } tags{ name _id }}}}"
+    const query = "query($user:ID!){user(user:$user){ displayName tags{ _id name } articles{ _id title updatedAt owners{ displayName } versions{ _id version revision autosave message } tags{ name _id }}}}"
     const user = {user:props.users[0]._id}
 
     useEffect(()=>{

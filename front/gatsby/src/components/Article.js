@@ -3,6 +3,8 @@ import {Link} from 'gatsby'
 
 import styles from './Articles.module.scss'
 
+import howLongAgo from '../helpers/howLongAgo'
+
 export default (props) => {
 
     const [expanded,setExpanded] = useState(false)
@@ -13,7 +15,7 @@ export default (props) => {
             <Link to={`/article/${props._id}`}>Export</Link>
             <Link to={`/article/${props._id}`} className={styles.primary}>Edit</Link>
         </nav>
-        <h1 onClick={()=>setExpanded(!expanded)}><span>{expanded?'-':'+'}</span> {props.title} ({props.updatedAt})</h1>
+        <h1 onClick={()=>setExpanded(!expanded)}><span>{expanded?'-':'+'}</span> {props.title} ({howLongAgo(new Date() - new Date(props.updatedAt))})</h1>
         {expanded && <section>
             <h2>by <span>{props.owners.map(o=>o.displayName).join(', ')}</span></h2>
             <ul>

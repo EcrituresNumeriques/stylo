@@ -30,11 +30,7 @@ export default (props) => {
     setLastSave(new Date())
     setMessage('')
     const newVersion = await props.sendVersion(false,major, message)
-    console.log(newVersion.saveVersion);
     setVersions([newVersion.saveVersion,...versions])
-
-    //Need retrigger atm, but should not be (can ask graphQL here for new things, or wait for the answer from sendVersion)
-    //props.triggerReload()
   }
 
 
