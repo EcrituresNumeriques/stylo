@@ -6,7 +6,6 @@ import YamlEditor from './yamleditor/YamlEditor'
 export default (props) => {
 
   const [expanded,setExpanded] = useState(false)
-  console.log(props)
  
   return (
     <nav className={`${expanded?styles.expandRight:styles.retractRight}`}>

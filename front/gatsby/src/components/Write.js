@@ -8,6 +8,8 @@ import styles from './write.module.scss'
 import WriteLeft from './Write/WriteLeft'
 import WriteRight from './Write/WriteRight'
 
+import _ from 'lodash'
+
 let CodeMirror = () => (<p>No window</p>)
 if (typeof window !== `undefined` && typeof navigator !== `undefined`) {
   const {Controlled} = require("react-codemirror2")
@@ -25,7 +27,7 @@ const ConnectedWrite = (props) => {
     return (<p>Redirecting...</p>)
   }
   const readOnly = props.version? true:false;
-  const query = "query($article:ID!){article(article:$article){ _id title owners{ displayName } versions{ _id version revision message autosave } "
+  const query = "query($article:ID!){article(article:$article){ _id title owners{ displayName } versions{ _id version revision message autosave updatedAt } "
   const getLive = "live{ md sommaire bib yaml message} } }"
   const getVersion = `} version(version:"${props.version}"){ md sommaire bib yaml message } }`
 
@@ -39,10 +41,34 @@ const ConnectedWrite = (props) => {
   const [live, setLive] = useState({})
   const [versions, setVersions] = useState([])
   const [articleInfos, setArticleInfos] = useState({title:"",owners:[]})
+  const [reloadSwitch, setReloadSwitch] = useState(true)
   
-  const handleMDCM = (_, __, md)=>{
-    setLive({...live,md:md})
+  
+  
+  const sendVersion = async (autosave = true,major = false, message = "") => {
+    try{
+      const query = `mutation($user:ID!,$article:ID!,$md:String!,$bib:String!,$yaml:String!,$autosave:Boolean!,$major:Boolean!,$message:String){saveVersion(version:{article:$article,major:$major,auto:$autosave,md:$md,yaml:$yaml,bib:$bib,message:$message},user:$user){ _id version revision message autosave } }`
+      return await askGraphQL({query,variables:{...variables,...live,autosave,major,message}},'saving new version',props.sessionToken)
+    }
+    catch(err){
+      alert(err)
+    }
   }
+  
+  // TODO fix le debounce sur l'autosave
+  //const autosave = async ( ) => await sendVersion(true,false, "Autosave")
+  const autosave = ()=>console.log('Autosave not yet implemented')  
+
+
+  const handleMDCM = async (___, __, md)=>{
+    await setLive({...live,md:md})
+  }
+  const handleYaml = async (yaml) => {
+    await setLive({...live,yaml:yaml})
+  }
+
+  const triggerReload = ()=>setReloadSwitch(!reloadSwitch)
+  
   useEffect(()=>{
     (async () => {
       setIsLoading(true)
@@ -52,21 +78,18 @@ const ConnectedWrite = (props) => {
       setVersions(data.article.versions)
       setIsLoading(false)
     })()
-
-    
-    console.log("trigger use effect")
-  },[props.version])
+  },[props.version,reloadSwitch])
 
   return (
     <section className={styles.container}>
-      {!isLoading && <WriteLeft article={articleInfos} {...live} versions={versions} readOnly={readOnly}/>}
-      {!isLoading && <WriteRight {...live} readOnly={readOnly}/>}
+      {!isLoading && <WriteLeft article={articleInfos} {...live} versions={versions} readOnly={readOnly} sendVersion={sendVersion}triggerReload={triggerReload} />}
+      {!isLoading && <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly}/>}
   
       <article className={styles.article}>
         {isLoading && <p>Loading...</p>}
         {!isLoading && <>
           {readOnly && <pre>{live.md}</pre>}
-          {!readOnly && <CodeMirror value={live.md} onBeforeChange={handleMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true,extraKeys:{"Shift-Ctrl-Space": function(cm) {cm.replaceSelection("\u00a0");}}}} editorDidMount={editor => { instanceCM = editor }}/>}
+          {!readOnly && <CodeMirror value={live.md} onBeforeChange={handleMDCM} onChange={autosave} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true,extraKeys:{"Shift-Ctrl-Space": function(cm) {cm.replaceSelection("\u00a0");}}}} editorDidMount={editor => { instanceCM = editor }}/>}
         </>}
       </article>
     </section>

@@ -31,6 +31,7 @@ module.exports = {
 
       const lastVersion = articleToSaveInto.versions[articleToSaveInto.versions.length-1]
       let values = {...lastVersion._doc}
+      values = {...values,message:args.version.message}
       if(args.version.md){
         values = {...values, md:args.version.md}
         values = {...values, sommaire:args.version.md.split('\n').filter((line) => (line.match(/^#+\ /))).join('\n')}

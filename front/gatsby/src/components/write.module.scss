@@ -73,8 +73,36 @@
       > p{
         padding:0.5rem 1rem 0 1rem;
       }
-      > ul > li{
-        padding:0.5rem 1rem 0 1rem;
+      > ul { 
+        li{
+          padding:0.5rem 1rem 0 1rem;
+        }
+        p {
+          padding:0.5rem 1rem;
+        }
+      }
+        
+      form.liveVersion{
+        background-color:$main-background-color;
+        input{
+          display:box;
+          width:100%;
+          padding:0.5rem 1rem;
+        }
+        button{
+          border:none;
+          border-bottom: 1px solid $main-border-color;
+          width:50%;
+        }
+        button.secondary{
+          @extend .secondary-button;
+        }
+        button.primary{
+          @extend .primary-button;
+        }
+        button:first-of-type{
+          border-right:1px solid $main-border-color;
+        }
       }
     }
   }

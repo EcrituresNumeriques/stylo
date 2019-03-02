@@ -105,6 +105,7 @@ input VersionInput {
   md: String
   yaml: String
   bib: String
+  message: String
 }
 
 
