@@ -31,7 +31,7 @@ module.exports = {
 
       const lastVersion = articleToSaveInto.versions[articleToSaveInto.versions.length-1]
       let values = {...lastVersion._doc}
-      values = {...values,message:args.version.message}
+      values = {...values,message:args.version.message,owner:thisUser.id}
       if(args.version.md){
         values = {...values, md:args.version.md}
         values = {...values, sommaire:args.version.md.split('\n').filter((line) => (line.match(/^#+\ /))).join('\n')}
@@ -50,11 +50,14 @@ module.exports = {
 
       //console.log(values)
 
+      //console.log("Saving version",values,lastVersion, thisUser)
       if(args.version.auto && lastVersion.autosave && lastVersion.owner == thisUser.id){
           //Updating last autosave
+          //console.log("updating")
           returnedVersion = await Version.findOneAndUpdate({_id:values._id},{$set:{...values}})
       }
       else{
+        //console.log("fullSave")
         //full save, add new record
         delete values._id
 

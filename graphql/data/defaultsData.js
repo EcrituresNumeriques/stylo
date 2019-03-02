@@ -60,6 +60,7 @@ nocite: ''
   title:'New article',
   sommaire:'',
   md:'',
+  message:'Genesis',
   article: {
       title:'How to Stylo',
       sommaire:`## Introduction

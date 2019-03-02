@@ -8,6 +8,8 @@ import styles from './write.module.scss'
 import WriteLeft from './Write/WriteLeft'
 import WriteRight from './Write/WriteRight'
 
+import useDebounce from '../hooks/debounce'
+
 import _ from 'lodash'
 
 let CodeMirror = () => (<p>No window</p>)
@@ -59,15 +61,23 @@ const ConnectedWrite = (props) => {
   //const autosave = async ( ) => await sendVersion(true,false, "Autosave")
   const autosave = ()=>console.log('Autosave not yet implemented')  
 
-
+  
+  const debouncedLive = useDebounce(live, 2000);
+  useEffect(()=>{
+    console.log("trying useEffect",debouncedLive)
+    if(!readOnly && !isLoading){
+      console.log("firing an autosave",debouncedLive)
+      sendVersion(true,false, "Autosave")
+    }
+  },[debouncedLive])
+  
+  
   const handleMDCM = async (___, __, md)=>{
     await setLive({...live,md:md})
   }
   const handleYaml = async (yaml) => {
     await setLive({...live,yaml:yaml})
   }
-
-  const triggerReload = ()=>setReloadSwitch(!reloadSwitch)
   
   useEffect(()=>{
     (async () => {
@@ -78,11 +88,11 @@ const ConnectedWrite = (props) => {
       setVersions(data.article.versions)
       setIsLoading(false)
     })()
-  },[props.version,reloadSwitch])
+  },[props.version])
 
   return (
     <section className={styles.container}>
-      {!isLoading && <WriteLeft article={articleInfos} {...live} versions={versions} readOnly={readOnly} sendVersion={sendVersion}triggerReload={triggerReload} />}
+      {!isLoading && <WriteLeft article={articleInfos} {...live} versions={versions} readOnly={readOnly} sendVersion={sendVersion} />}
       {!isLoading && <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly}/>}
   
       <article className={styles.article}>

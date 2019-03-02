@@ -26,7 +26,7 @@ module.exports = {
 
       //Add default article + default version
       const newArticle = new Article({title:args.title || defaultsData.title});
-      const newVersion = new Version({md:defaultsData.md,yaml:thisUser.yaml || defaultsData.yaml,bib:'',sommaire:defaultsData.sommaire});
+      const newVersion = new Version({md:defaultsData.md,yaml:thisUser.yaml || defaultsData.yaml,bib:'',sommaire:defaultsData.sommaire,message:defaultsData.message});
       newArticle.versions.push(newVersion)
       newVersion.article = newArticle
 
