@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useState, useRef, useEffect} from "react"
 import { Link, navigate } from "gatsby"
 import { connect } from "react-redux"
 
@@ -25,12 +25,11 @@ const ConnectedLogin = (props) => {
     if(isBrowser && props.logedIn){
         navigate('/articles')
     }
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const query = "query($email:String,$username:String,$password:String!){login(username:$username,email:$email,password:$password){token token_cookie password{_id username}users{_id displayName}}}"
     let user = {email, password}
-
+    
     const loginUser = async (query,user) => {
         //Validate stuff client-side
         if(user.email === ""){
@@ -45,8 +44,8 @@ const ConnectedLogin = (props) => {
             user.username = user.email
             delete user.email
         }
-
-
+        
+        
         try{
             const data = await askGraphQL({query,variables:user})
             props.login(data.login)
@@ -57,12 +56,19 @@ const ConnectedLogin = (props) => {
             alert(err)
         }
     }
-
+    const usernameRef = useRef()
+    useEffect(
+        () => {
+          console.log("render");
+          usernameRef.current.focus();
+        },[usernameRef]
+      );
+    
     return (
         <section className={styles.box}>
             <form onSubmit={(event)=>{event.preventDefault();loginUser(query,user)}}>
                 <h1>Login</h1>
-                <input type="text" placeholder="email or username" value={email} onChange={(e)=>setEmail(etv(e))}/>
+                <input type="text" placeholder="email or username" ref={usernameRef} value={email} onChange={(e)=>setEmail(etv(e))}/>
                 <input type="password" placeholder="password" value={password} onChange={(e)=>setPassword(etv(e))}/>
                 <input type="submit" value="go"/>
                 <p className="note">or <Link to="/register">create an account</Link></p>
