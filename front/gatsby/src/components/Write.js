@@ -11,7 +11,6 @@ import WriteRight from './Write/WriteRight'
 import useDebounce from '../hooks/debounce'
 
 import _ from 'lodash'
-import Versions from './Write/Versions';
 
 let CodeMirror = () => (<p>No window</p>)
 if (typeof window !== `undefined` && typeof navigator !== `undefined`) {

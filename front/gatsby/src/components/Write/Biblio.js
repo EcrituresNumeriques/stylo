@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 
 
 import styles from '../write.module.scss'
+import Modal from '../Modal'
+import Bibliographe from './bibliographe/Bibliographe'
 
 
 export default (props) => {
@@ -38,6 +40,7 @@ export default (props) => {
       .sort(compare);
 
   const [expand,setExpand] = useState(true)
+  const [modal, setModal] = useState(false)
 
   return (
     
@@ -45,8 +48,11 @@ export default (props) => {
       <h1 className={expand?null:styles.closed} onDoubleClick={()=>setExpand(!expand)}>Bibliography</h1>
       {expand && <>
         {entries.map((ref)=>(<p key={`ref-${ref.key}`} data-clipboard-text={"[@"+ref.key+"]"} button-title={ref.title}><span>@{ref.key}</span></p>))}
-        {!props.readOnly && <p>Do stuff</p>}
+        {!props.readOnly && <button className={styles.secondary} onClick={()=>setModal(true)}>Manage Bibliography</button>}
       </>}
+      {modal && <Modal cancel={()=>setModal(false)}>
+        <Bibliographe />
+      </Modal>}
     </section>
   )
 }
