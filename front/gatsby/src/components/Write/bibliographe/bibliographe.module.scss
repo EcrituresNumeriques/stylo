@@ -1,0 +1,26 @@
+@import '../../../styles/defaults.scss';
+@import '../../../styles/variables.scss';
+
+.selector{
+  display:flex;
+  flex-wrap:no-wrap;
+  border-right:1px solid $main-border-color;
+  > p {
+    flex:1 1 auto;
+    @extend .clickable;
+    padding:0.5rem 1rem;
+    border-left:1px solid $main-border-color;
+    border-top:1px solid $main-border-color;
+    border-bottom:1px solid $main-border-color;
+  }
+  p.selected{
+    @extend .primary-button
+  }
+}
+.raw {
+  > textarea{
+    display:block;
+    width:100%;
+    height:50vh;
+  }
+}

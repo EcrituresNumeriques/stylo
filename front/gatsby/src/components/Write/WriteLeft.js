@@ -23,7 +23,7 @@ export default (props) => {
           </header>
           <Versions {...props}/>
           <Sommaire md={props.md}/>
-          <Biblio bib={props.bib} readOnly={props.readOnly}/>
+          <Biblio {...props} />
           <Stats md={props.md}/>
         </div>
         </>}

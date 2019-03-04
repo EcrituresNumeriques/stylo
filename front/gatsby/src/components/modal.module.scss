@@ -19,5 +19,7 @@
   z-index: 101;
   transform:translate(-50%,-50%);
   padding:1rem;
+  max-width:90%;
+  max-height: 90%;
   background-color:$main-background-color;
 }

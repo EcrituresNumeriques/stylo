@@ -4,40 +4,10 @@ import React, {useState} from 'react'
 import styles from '../write.module.scss'
 import Modal from '../Modal'
 import Bibliographe from './bibliographe/Bibliographe'
-
+import bib2key from './bibliographe/CitationsFilter'
 
 export default (props) => {
-
-  const compare = (a,b) => {
-    if (a.key < b.key)
-      return -1;
-    if (a.key > b.key)
-      return 1;
-    return 0;
-  }
-
-  const bib = props.bib || "";
-
-    // TODO Understand why we need a spacer for book to be understood
-    const itemsAllowed = [
-      "@spacer",
-      "@book",
-      "@article",
-      "@incollection",
-      "@phdthesis",
-      "@misc",
-      "@inproceedings",
-      "@techreport",
-      "@unpublished",
-    ]
-    const regex = new RegExp('/(?='+itemsAllowed.join(')|(?=')+')/g')
-
-    let entries = [];
-    entries = bib.split(regex)
-      .filter((ref)=>(ref.match(/^@/g)))
-      .map((ref)=>(ref.replace(/^\s+|\s+$/g, '')))
-      .map((ref)=>({title:ref,key:ref.match(/^@.+{(.+),/)[1]}))
-      .sort(compare);
+  let entries = bib2key(props.bib)
 
   const [expand,setExpand] = useState(true)
   const [modal, setModal] = useState(false)
@@ -51,7 +21,7 @@ export default (props) => {
         {!props.readOnly && <button className={styles.secondary} onClick={()=>setModal(true)}>Manage Bibliography</button>}
       </>}
       {modal && <Modal cancel={()=>setModal(false)}>
-        <Bibliographe />
+        <Bibliographe bib={props.bib} success={props.handleBib} cancel={()=>setModal(false)}/>
       </Modal>}
     </section>
   )

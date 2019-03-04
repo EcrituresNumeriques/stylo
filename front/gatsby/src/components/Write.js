@@ -85,6 +85,9 @@ const ConnectedWrite = (props) => {
   const handleYaml = async (yaml) => {
     await setLive({...live,yaml:yaml})
   }
+  const handleBib = async (bib) => {
+    await setLive({...live,bib:bib})
+  }
   
   //Reload when version switching
   useEffect(()=>{
@@ -100,7 +103,7 @@ const ConnectedWrite = (props) => {
 
   return (
     <section className={styles.container}>
-      {!isLoading && <WriteLeft article={articleInfos} {...live} versions={versions} readOnly={readOnly} sendVersion={sendVersion} />}
+      {!isLoading && <WriteLeft article={articleInfos} {...live} versions={versions} readOnly={readOnly} sendVersion={sendVersion} handleBib={handleBib} />}
       {!isLoading && <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly}/>}
   
       <article className={styles.article}>
