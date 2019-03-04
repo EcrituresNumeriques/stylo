@@ -49,6 +49,7 @@ type Version{
 type Article {
   _id: ID!
   title: String
+  zoteroLink: String
   owners(limit:Int,page:Int): [User!]!
   versions(limit:Int,page:Int): [Version!]!
   live:Version!
@@ -197,6 +198,9 @@ type RootMutation {
 
   "Rename an article you own"
   renameArticle(article:ID!,title:String!,user:ID!):Article!
+
+  "Change the zoteroLink to an article"
+  zoteroArticle(article:ID!,zotero:String!,user:ID!):Article!
 
   "Remove from owners"
   deleteArticle(article:ID!,user:ID!):Article!

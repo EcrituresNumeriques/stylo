@@ -29,7 +29,7 @@ const ConnectedWrite = (props) => {
     return (<p>Redirecting...</p>)
   }
   const readOnly = props.version? true:false;
-  const query = "query($article:ID!){article(article:$article){ _id title owners{ displayName } versions{ _id version revision message autosave updatedAt } "
+  const query = "query($article:ID!){article(article:$article){ _id title zoteroLink owners{ displayName } versions{ _id version revision message autosave updatedAt } "
   const getLive = "live{ md sommaire bib yaml message} } }"
   const getVersion = `} version(version:"${props.version}"){ md sommaire bib yaml message } }`
 
@@ -42,7 +42,7 @@ const ConnectedWrite = (props) => {
   const [isLoading,setIsLoading] = useState(true)
   const [live, setLive] = useState({})
   const [versions, setVersions] = useState([])
-  const [articleInfos, setArticleInfos] = useState({title:"",owners:[]})
+  const [articleInfos, setArticleInfos] = useState({title:"",owners:[],zoteroLink:""})
   
   
   
@@ -95,7 +95,7 @@ const ConnectedWrite = (props) => {
       setIsLoading(true)
       const data = await askGraphQL({query:fullQuery,variables},'fetching Live version',props.sessionToken)
       setLive(props.version?data.version:data.article.live)
-      setArticleInfos({_id:data.article._id,title:data.article.title,owners:data.article.owners.map(o => o.displayName)})
+      setArticleInfos({_id:data.article._id,title:data.article.title,zoteroLink:data.article.zoteroLink,owners:data.article.owners.map(o => o.displayName)})
       setVersions(data.article.versions)
       setIsLoading(false)
     })()

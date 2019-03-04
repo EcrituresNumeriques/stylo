@@ -162,6 +162,7 @@ const populateArticle = (article) => {
     const cleanedArticle = prepRecord(article)
     return {
         ...cleanedArticle,
+        zoteroLink:cleanedArticle.zoteroLink || "",
         owners:getUsersByIds.bind(this, cleanedArticle.owners || []),
         versions:getVersionsByIds.bind(this, cleanedArticle.versions || []),
         live:getVersionById.bind(this, cleanedArticle.versions[cleanedArticle.versions.length-1] || []),

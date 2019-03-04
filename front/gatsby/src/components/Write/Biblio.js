@@ -21,7 +21,7 @@ export default (props) => {
         {!props.readOnly && <button className={styles.secondary} onClick={()=>setModal(true)}>Manage Bibliography</button>}
       </>}
       {modal && <Modal cancel={()=>setModal(false)}>
-        <Bibliographe bib={props.bib} success={props.handleBib} cancel={()=>setModal(false)}/>
+        <Bibliographe bib={props.bib} success={props.handleBib} cancel={()=>setModal(false)} article={props.article}/>
       </Modal>}
     </section>
   )

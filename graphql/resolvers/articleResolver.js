@@ -142,6 +142,25 @@ module.exports = {
       throw err
     }
   },
+  zoteroArticle: async (args,{req}) => {
+    try{
+      populateArgs(args,req)
+      isUser(args,req)
+
+      //Fetch Article
+      const fetchedArticle = await Article.findOne({_id:args.article,owners:args.user})
+      if(!fetchedArticle){throw new Error('Unable to find article')}
+
+      //If all good, change title
+      fetchedArticle.zoteroLink = args.zotero
+      const returnedArticle = await fetchedArticle.save()
+
+      return populateArticle(returnedArticle)
+    }
+    catch(err){
+      throw err
+    }
+  },
   deleteArticle: async (args, {req}) => {
     try{
       populateArgs(args,req)

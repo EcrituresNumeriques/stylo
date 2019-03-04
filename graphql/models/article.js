@@ -13,6 +13,10 @@ const articleSchema = new Schema({
     required:true,
     default:"autocreated"
   },
+  zoteroLink:{
+    type:String,
+    default:""
+  },
   versions:[
     {
       type: Schema.Types.ObjectId,
