@@ -32,7 +32,7 @@
   bottom:0;
   width:400px;
   overflow-x: visible;
-  nav{
+  > nav{
     @extend .clickable;
     position:absolute;
     top:0;
@@ -43,21 +43,21 @@
     background-color:$main-background-color;
   }
 
-  div{
+  > div{
     overflow-y:auto;
     height:100%;
-    header{
-      h1{
+    > header{
+      > h1{
         font-size:1.5rem;
         padding:0.5rem 1rem 0 1rem;
       }
-      h2{
+      > h2{
         font-size: 1.2rem;
         padding:0 1rem 0.5rem 1rem;
         font-weight:normal
       }
     }
-    section{
+    > section{
       margin-top:1rem;
       > h1{
         font-size:1.2rem;
@@ -75,10 +75,10 @@
         padding:0.5rem 1rem 0 1rem;
       }
       > ul { 
-        li{
+        > li{
           padding:0.5rem 1rem 0 1rem;
         }
-        p {
+        > p {
           padding:0.5rem 1rem;
         }
       }
@@ -90,18 +90,18 @@
           width:100%;
           padding:0.5rem 1rem;
         }
-        button{
+        > button{
           border:none;
           border-bottom: 1px solid $main-border-color;
           width:50%;
         }
-        button.secondary{
+        > button.secondary{
           @extend .secondary-button;
         }
-        button.primary{
+        > button.primary{
           @extend .primary-button;
         }
-        button:first-of-type{
+        > button:first-of-type{
           border-right:1px solid $main-border-color;
         }
       }
@@ -113,7 +113,7 @@
   @extend .slider;
   transition:left 0.5s ease, background 0.5s ease, border 0.5s ease;
   border-right:1px solid $main-border-color;
-  nav{
+  > nav{
     text-align: right;
   }
 }
@@ -121,10 +121,10 @@
   @extend .slider;
   transition:right 0.5s ease, background 0.5s ease, border 0.5s ease;
   border-left:1px solid $main-border-color;
-  nav{
+  > nav{
     text-align: left;
   }
-  div{
+  > div{
     text-align: right;
   }
 }
@@ -140,7 +140,7 @@
   @extend .sliderleft;
   left:0;
   background-color:rgba(255,255,255,1);
-  nav{
+  > nav{
     color:$main-color;
     right:0;
     transition:right 0.5s ease;
@@ -152,7 +152,7 @@
   left:-400px;
   background-color:rgba(255,255,255,0);
   border-right:0px solid $main-border-color;
-  nav{
+  > nav{
     right:-80px;
     transition:left 0.5s ease;
   }  
@@ -168,7 +168,7 @@
   @extend .sliderright;
   right:0;
   background-color:rgba(255,255,255,1);
-  nav{
+  > nav{
     color:$main-color;
     left:0;
     transition:right 0.5s ease;
@@ -180,7 +180,7 @@
   right:-400px;
   background-color:rgba(255,255,255,0);
   border-right:0px solid $main-border-color;
-  nav{
+  > nav{
     left:-130px;
     transition:left 0.5s ease;
   }  
