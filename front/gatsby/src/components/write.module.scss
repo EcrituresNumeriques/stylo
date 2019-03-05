@@ -125,7 +125,17 @@
     text-align: left;
   }
   > div{
+
     text-align: right;
+    > nav {
+      p{
+        @extend .clickable;
+      }
+    }
+    > textarea {
+      width:100%;
+      height:100%;
+    }
   }
 }
 

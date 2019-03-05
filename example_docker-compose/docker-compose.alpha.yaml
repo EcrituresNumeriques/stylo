@@ -62,6 +62,7 @@ services:
       dockerfile: dockerfile
     container_name: "front-stylo"
     environment:
+      - URL_EXPORT=stylo.14159.ninja
       - VIRTUAL_HOST=alpha.stylo.14159.ninja
       - VIRTUAL_NETWORK=nginx-proxy
       - VIRTUAL_PORT=80
