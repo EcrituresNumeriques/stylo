@@ -44,16 +44,17 @@ const ConnectedBibliographe = (props) => {
       }
     }
     //FetchZotero
-    console.log("fetching", zoteroLink)
     fetch('https://api.zotero.org/groups/'+zoteroLink+'/items/?v=3&format=bibtex',{
       method:'GET',
       credentials: 'same-origin'
     })
     .then(function(response){
-      return response.text();
+      return response.text()
     })
     .then(function(bib){
-      setBib(bib);
+      setBib(bib)
+      success(bib)
+      props.cancel()
     });
   }
 
@@ -67,7 +68,7 @@ const ConnectedBibliographe = (props) => {
       </nav>
 
       {selector === 'zotero' && <div className={styles.zotero}>
-      <p>Please paste the URL of your zotero library, so that it looks like https://www.zotero.org/groups/<strong>IDnumber/name/items/collectionKey/collectionKey</strong></p>
+      <p>Please paste the URL of your zotero library, so that it looks like https://www.zotero.org/groups/<strong>[IDnumber]/collections/[IDcollection]</strong></p>
       <label>https://www.zotero.org/groups/</label>
       <input type="text" placeholder="IDnumber/name/items/collectionKey/collectionKey" value={zoteroLink} onChange={e=>setZoteroLink(etv(e))}/>
       <button onClick={()=>saveNewZotero()}>Save zotero link and fetch</button>
