@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const {exportArticleHtml} = require('./export.js')
+const {exportArticleHtml, exportArticleZip, exportBookHtml, exportBookZip, exportVersionHtml, exportVersionZip} = require('./export.js')
 
 const app = express();
 
@@ -13,10 +13,12 @@ const listenPort = process.env.NODE_ENV === "Dev" ? 3060:80
 const redirect = process.env.URL_FRONTEND || 'http://localhost:3000'
 
 
-app.get('/htmlVersion/:id',(req,res,next)=>res.send('<p>export</p>'));
+app.get('/htmlVersion/:id',exportVersionHtml);
 app.get('/htmlArticle/:id',exportArticleHtml);
-app.get('/zipVersion/:id',(req,res,next)=>res.send('<p>export</p>'));
-app.get('/zipArticle/:id',(req,res,next)=>res.send('<p>export</p>'));
+app.get('/zipVersion/:id',exportVersionZip);
+app.get('/zipArticle/:id',exportArticleZip);
+app.get('/htmlBook/:id',exportBookHtml);
+app.get('/zipBook/:id',exportBookZip);
 
 app.use((req,res,next)=>{
   return res.redirect(301, redirect+req.originalUrl)
