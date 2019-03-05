@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+const {exportArticleHtml} = require('./export.js')
+
 const app = express();
 
 //Look for environnement variables
@@ -12,7 +14,7 @@ const redirect = process.env.URL_FRONTEND || 'http://localhost:3000'
 
 
 app.get('/htmlVersion/:id',(req,res,next)=>res.send('<p>export</p>'));
-app.get('/htmlArticle/:id',(req,res,next)=>res.send('<p>export</p>'));
+app.get('/htmlArticle/:id',exportArticleHtml);
 app.get('/zipVersion/:id',(req,res,next)=>res.send('<p>export</p>'));
 app.get('/zipArticle/:id',(req,res,next)=>res.send('<p>export</p>'));
 
