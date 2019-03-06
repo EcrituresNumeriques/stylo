@@ -2,7 +2,7 @@ const shell = require('shelljs')
 const Article = require('./models/article')
 const Version = require('./models/version')
 
-const exportHTML = ({bib,yaml,md,id},res,req) => {
+const exportHTML = ({bib,yaml,md,id,title},res,req) => {
 
   let template = '../templates-stylo/templateHtml5.html5'
   if(req.query.preview){
@@ -15,12 +15,16 @@ const exportHTML = ({bib,yaml,md,id},res,req) => {
   shell.echo(bib).to(`${id}.bib`)
   shell.echo(yaml).to(`${id}.yaml`)
   const pandoc = shell.exec(`pandoc ${id}.md ${id}.yaml --bibliography ${id}.bib --standalone --template=${template} --section-divs --ascii --toc --csl=../templates-stylo/chicagomodified.csl -f markdown -t html5 -o ${id}.html`).code
-  const html5 = shell.cat(`${id}.html`)
   if(pandoc !== 0){
-    res.status(403).send(`${html5}`)
+    const html5 = shell.cat(`${id}.html`)
+    return res.status(500).send(`${html5}`)
   }
-  res.send(`${html5}`)
-}
+  if(!req.query.preview){
+    res.set('Content-Disposition', `attachment; filename="${title}v.html"`)
+  }
+  const html5 = shell.cat(`${id}.html`)
+  return res.send(`${html5}`)
+  }
 
 module.exports = {
   exportArticleHtml: async (req,res,next)=>{
@@ -36,7 +40,7 @@ module.exports = {
       }
       const cleanedVersion = version._doc
 
-      exportHTML({bib:cleanedVersion.bib,yaml:cleanedVersion.yaml,md:cleanedVersion.md, id:cleanedVersion._id}, res, req)
+      exportHTML({bib:cleanedVersion.bib,yaml:cleanedVersion.yaml,md:cleanedVersion.md, id:cleanedVersion._id, title:article._doc.title}, res, req)
 
     }
     catch(err){

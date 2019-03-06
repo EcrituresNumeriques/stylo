@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 import {Link} from 'gatsby'
 
 import styles from './Articles.module.scss'
+import env from '../helpers/env'
+
 
 import howLongAgo from '../helpers/howLongAgo'
 
@@ -12,6 +14,7 @@ export default (props) => {
     return (
     <article>
         <nav>
+            <a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/htmlArticle/${props._id}?preview=true`} target="_blank" rel="noopener noreferrer">Annotate</a>
             <Link to={`/article/${props._id}`}>Export</Link>
             <Link to={`/article/${props._id}`} className={styles.primary}>Edit</Link>
         </nav>
