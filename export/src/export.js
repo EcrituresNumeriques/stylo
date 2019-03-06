@@ -2,31 +2,25 @@ const shell = require('shelljs')
 const Article = require('./models/article')
 const Version = require('./models/version')
 
-const exportHTML = ({bib,yaml,md},res,req) => {
+const exportHTML = ({bib,yaml,md,id},res,req) => {
 
-  //let args = '';
-  //if(preview){args += '--standalone --template=templates/templateHtml5-preview.html5 -H templates/preview.html'}
-  //else{args += '--standalone --template=templates/templateHtml5.html5'}
-  //args += ' --verbose --standalone --section-divs --ascii --toc --csl=templates/chicagomodified.csl -f markdown -t html5 --filter pandoc-citeproc /'+version.id+'.yaml';
-  //args += ' --ascii --filter pandoc-citeproc -f markdown -t html /'+version.id+'.yaml';
-  //if(citation == "footnotes"){args += ' --csl templates/lettres-et-sciences-humaines-fr.csl'}
-  //pandoc(src, args, (err, result)=>downloadHTML(err, result, version, res, preview));
+  let template = '../templates-stylo/templateHtml5.html5'
+  if(req.query.preview){
+    template='../templates-stylo/templateHtml5-preview.html5 -H ../templates-stylo/preview.html'
+  }
 
-  const pwd = shell.exec('pwd')
-  shell.echo(md).to('src/data/md.md')
-  const pandoc = shell.exec(`pandoc src/data/md.md --standalone --template=src/templates-stylo/templateHtml5.html5 --section-divs --ascii --toc --csl=src/templates-stylo/chicagomodified.csl -f markdown -t html5 -o src/data/html5.html`)
   shell.cd('src/data')
-  const html5 = shell.cat('html5.html')
-
-
-
-
+  shell.exec(`rm ${id}*`)
+  shell.echo(md).to(`${id}.md`)
+  shell.echo(bib).to(`${id}.bib`)
+  shell.echo(yaml).to(`${id}.yaml`)
+  const pandoc = shell.exec(`pandoc ${id}.md ${id}.yaml --bibliography ${id}.bib --standalone --template=${template} --section-divs --ascii --toc --csl=../templates-stylo/chicagomodified.csl -f markdown -t html5 -o ${id}.html`).code
+  const html5 = shell.cat(`${id}.html`)
+  if(pandoc !== 0){
+    res.status(403).send(`${html5}`)
+  }
   res.send(`${html5}`)
 }
-
-
-const cat = shell.cat('/usr/src/app/src/export.js')
-
 
 module.exports = {
   exportArticleHtml: async (req,res,next)=>{
@@ -42,7 +36,7 @@ module.exports = {
       }
       const cleanedVersion = version._doc
 
-      exportHTML({bib:cleanedVersion.bib,yaml:cleanedVersion.yaml,md:cleanedVersion.md}, res, req)
+      exportHTML({bib:cleanedVersion.bib,yaml:cleanedVersion.yaml,md:cleanedVersion.md, id:cleanedVersion._id}, res, req)
 
     }
     catch(err){
