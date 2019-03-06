@@ -47,8 +47,21 @@ module.exports = {
       res.status(404).send(err)
     }
   },
-  exportVersionHtml: (req,res,next)=>{
-    res.send(`<p>Exporting Version ${req.params.id} to HTML</p>`)
+  exportVersionHtml: async (req,res,next)=>{
+    try{
+     const version = await Version.findById(req.params.id)
+      if(!version){
+        throw new Error('Version not found')
+      }
+      const cleanedVersion = version._doc
+
+      exportHTML({bib:cleanedVersion.bib,yaml:cleanedVersion.yaml,md:cleanedVersion.md, id:cleanedVersion._id, title:cleanedVersion._id}, res, req)
+
+    }
+    catch(err){
+      res.status(404).send(err)
+    } 
+  
   },
   exportArticleZip: (req,res,next)=>{
     res.send(`<p>Exporting Article ${req.params.id} to ZIP</p>`)
