@@ -58,7 +58,7 @@ copy package.json .
 
 RUN npm install
 
-copy src src
+COPY src src
 
 EXPOSE 80
 CMD ["npm","run","start"]
