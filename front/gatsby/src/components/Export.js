@@ -13,17 +13,12 @@ export default props => {
 
   
 
-  const [format, setFormat] = useState('html')
-  const [csl,setCsl] = useState('chigagomodified')
+  const [format, setFormat] = useState('html5')
+  const [csl,setCsl] = useState('chicagomodified')
   const [citation,setCitation] = useState('false')
 
   const startExport = () => {
-    if(format === 'html' || format === 'zip'){
-      window.open(`${env.EXPORT_ENDPOINT}/${format}${props.article?'Article':'Version'}/${props._id}?format=${csl}`)
-    }
-    else{
-      window.open(`http://localhost:9090/cgi-bin/exportArticle/exec.cgi?id=${filterAlphaNum(props.title)}v${props.version}-${props.revision}&version=${props.versionId}&processor=xelatex&source=${env.EXPORT_ENDPOINT}/&format=${format}&bibstyle=${csl}&citation=${citation}`,'_blank');
-    }
+      window.open(`http://localhost:9090/cgi-bin/exportArticle/exec.cgi?id=${filterAlphaNum(props.title)}v${props.version}-${props.revision}&version=${props.versionId}&processor=xelatex&source=${env.EXPORT_ENDPOINT}/&format=${format}&bibstyle=${csl}&toc=${citation}`,'_blank');
   }
 
   return(
@@ -31,24 +26,23 @@ export default props => {
       <h1>export</h1>
       <form>
         <select value={format} onChange={(e)=>setFormat(etv(e))}>
-          <option value="html">HTML</option>
+          <option value="html5">HTML5</option>
           <option value="zip">ZIP</option>
-          <option value="pdf">PDF via Process</option>
-          <option value="xml">XML (érudit) via Process</option>
-          <option value="odt">ODT via Process</option>
-          <option value="docx">DOCX via Process</option>
-          <option value="html5">HTML5 via Process</option>
-          <option value="epub">EPUB via Process</option>
-          <option value="tei">TEI via Process</option>
+          <option value="pdf">PDF</option>
+          <option value="xml">XML (érudit)</option>
+          <option value="odt">ODT</option>
+          <option value="docx">DOCX</option>
+          <option value="epub">EPUB</option>
+          <option value="tei">TEI</option>
         </select>
         <select value={csl} onChange={(e)=>setCsl(etv(e))}>
-          <option value="chigagomodified">chigagomodified</option>
+          <option value="chicagomodified">chicagomodified</option>
           <option value="lettres-et-sciences-humaines-fr">lettres-et-sciences-humaines-fr</option>
           <option value="chicago-fullnote-bibliography-fr">chicago-fullnote-bibliography-fr</option>
         </select>
         <select value={citation} onChange={(e)=>setCitation(etv(e))}>
-          <option value={true}>Inline citation</option>
-          <option value={false}>Regular citation</option>
+          <option value={true}>Table of content</option>
+          <option value={false}>No table of content</option>
         </select>
       </form>
       <nav>
