@@ -16,7 +16,7 @@ export default (props) => {
     return (
     <article>
         {exporting && <Modal cancel={()=>setExporting(false)}>
-            <Export {...props}/>
+            <Export {...props} article={true} versionId={props.versions[0]._id} version={props.versions[0].version}revision={props.versions[0].revision}/>
         </Modal>}
         <nav>
             <a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/htmlArticle/${props._id}?preview=true`} target="_blank" rel="noopener noreferrer">Annotate</a>
