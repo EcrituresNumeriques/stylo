@@ -6,6 +6,7 @@ import env from '../helpers/env'
 
 import Modal from './Modal'
 import Export from './Export'
+import ShareCenter from './ShareCenter'
 import howLongAgo from '../helpers/howLongAgo'
 
 export default (props) => {
@@ -25,6 +26,7 @@ export default (props) => {
         </nav>
         <h1 onClick={()=>setExpanded(!expanded)}><span>{expanded?'-':'+'}</span> {props.title} ({howLongAgo(new Date() - new Date(props.updatedAt))})</h1>
         {expanded && <section>
+            <ShareCenter {...props}/>
             <h2>by <span>{props.owners.map(o=>o.displayName).join(', ')}</span></h2>
             <ul>
                 <p>Last versions:</p>

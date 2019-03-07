@@ -89,7 +89,7 @@ const ConnectedArticles = (props) => {
                     <p className={t.selected?styles.selectedTags:styles.tags} key={`tag-${t._id}`} onClick={()=>setTags(findAndUpdateTag(tags,t._id))}>{t.name}</p>
                 ))}
                 {articles.filter(filterByTagsSelected).map((a)=>(
-                    <Article key={`article-${a._id}`} {...a} />
+                    <Article key={`article-${a._id}`} {...a} setNeedReload={()=>setNeedReload(true)}/>
                 ))}
             </>}
         </section>
