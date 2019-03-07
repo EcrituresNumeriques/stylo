@@ -60,6 +60,9 @@ module.exports = {
       const fetchedUser = await User.findOne({_id:args.to})
       if(!fetchedUser){throw new Error('Unable to find user')}
 
+      //Check if user is not already in array
+      if(fetchedArticle.owners.map(a => a.toString()).includes(fetchedUser.id)){ throw new Error('Article already shared with this user')}
+
       //Add user to list of owner
       fetchedArticle.owners.push(fetchedUser)
       fetchedUser.articles.push(fetchedArticle)
@@ -104,7 +107,12 @@ module.exports = {
         bib:fetchedVersion.bib
       });
       //All good, create new Article & merge version/article/user
-      let newArticle = new Article({title:'[Sent] '+fetchedArticle.title})
+      let prefix = '[Sent] '
+      if(args.user === args.to){
+        prefix = '[fork] '
+      }
+
+      let newArticle = new Article({title:prefix+fetchedArticle.title, zoteroLink:fetchedArticle.zoteroLink})
       newArticle.owners.push(fetchedUser.id)
       newArticle.versions.push(newVersion)
       fetchedUser.articles.push(newArticle)
