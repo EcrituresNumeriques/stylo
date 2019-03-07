@@ -15,10 +15,10 @@ export default props => {
 
   const [format, setFormat] = useState('html5')
   const [csl,setCsl] = useState('chicagomodified')
-  const [citation,setCitation] = useState('false')
+  const [toc,setToc] = useState('false')
 
   const startExport = () => {
-      window.open(`http://localhost:9090/cgi-bin/exportArticle/exec.cgi?id=${filterAlphaNum(props.title)}v${props.version}-${props.revision}&version=${props.versionId}&processor=xelatex&source=${env.EXPORT_ENDPOINT}/&format=${format}&bibstyle=${csl}&toc=${citation}`,'_blank');
+      window.open(`http://localhost:9090/cgi-bin/exportArticle/exec.cgi?id=${filterAlphaNum(props.title)}v${props.version}-${props.revision}&version=${props.versionId}&processor=xelatex&source=${env.EXPORT_ENDPOINT}/&format=${format}&bibstyle=${csl}&toc=${toc}`,'_blank');
   }
 
   return(
@@ -40,7 +40,7 @@ export default props => {
           <option value="lettres-et-sciences-humaines-fr">lettres-et-sciences-humaines-fr</option>
           <option value="chicago-fullnote-bibliography-fr">chicago-fullnote-bibliography-fr</option>
         </select>
-        <select value={citation} onChange={(e)=>setCitation(etv(e))}>
+        <select value={toc} onChange={(e)=>setToc(etv(e))}>
           <option value={true}>Table of content</option>
           <option value={false}>No table of content</option>
         </select>
