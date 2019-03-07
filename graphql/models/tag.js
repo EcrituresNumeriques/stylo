@@ -9,6 +9,14 @@ const tagSchema = new Schema({
   description: {
     type: String
   },
+  bib: {
+    type: String,
+    default:""
+  },
+  yaml: {
+    type: String,
+    default:""
+  },
   owner: {
       type: Schema.Types.ObjectId,
       ref: 'User'

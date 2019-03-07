@@ -5,6 +5,7 @@ import { connect } from "react-redux"
 import askGraphQL from '../helpers/graphQL';
 import styles from './books.module.scss'
 
+import Book from './Book'
 
 const mapStateToProps = ({ logedIn, users, sessionToken }) => {
     return { logedIn, users, sessionToken }
@@ -28,7 +29,7 @@ const ConnectedBooks = (props) => {
             //Self invoking async function
             (async () =>{
                 try{
-                    const query = `query($user:ID!){user(user:$user){ displayName tags{ _id name  bib yaml articles{ _id title updatedAt versions(limit:1){ _id version revision autosave message } } } } }`
+                    const query = `query($user:ID!){user(user:$user){ displayName tags{ _id name  bib yaml updatedAt articles{ _id title updatedAt versions(limit:1){ _id version revision autosave message } } } } }`
                     const user = {user:props.users[0]._id}
                     setIsLoading(true)
                     const data = await askGraphQL({query,variables:user},'fetching articles',props.sessionToken)
@@ -49,7 +50,10 @@ const ConnectedBooks = (props) => {
         <section className={styles.section}>
             <h1>Books for {displayName}</h1>
             <p>Books are like super-tags, they are a collection of articles that you can ordonnate and export all at once</p>
-            <p>Below are your tags eligible for being books:</p>
+            <p>Below are your tags eligible to be books:</p>
+            <ul>
+                {tags.map(t=><Book {...t}/>)}
+            </ul>
 
         </section>
     )

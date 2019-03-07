@@ -133,6 +133,8 @@ const populateTag = (tag) => {
     const cleanedTag = prepRecord(tag)
     return {
         ...cleanedTag,
+        bib:cleanedTag.bib || "",
+        yaml:cleanedTag.yaml || "",
         owner:getUserById.bind(this, cleanedTag.owner || []),
         articles:getArticlesByIds.bind(this, cleanedTag.articles || [])
     }

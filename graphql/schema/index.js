@@ -23,6 +23,8 @@ type User {
 type Tag{
   _id: ID!
   name:String!
+  bib:String!
+  yaml:String!
   description:String
   articles:[Article!]!
   owner:User!
