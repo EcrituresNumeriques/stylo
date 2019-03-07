@@ -1,0 +1,16 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+
+.section {
+  @extend .wrapped-center;
+  padding:1rem;
+  border:1px solid $main-border-color;
+  background-color:$extra-background-color;
+  > h1{
+      margin-bottom:1rem;
+  }
+  > p {
+      margin-bottom:1rem;
+  }
+}
