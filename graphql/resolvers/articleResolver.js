@@ -178,11 +178,18 @@ module.exports = {
       let fetchedArticle = await Article.findOne({_id:args.article,owners:args.user})
       if(!fetchedArticle){throw new Error('Unable to find article')}
 
+      //fetch User
+      const fetchedUser = await User.findOne({_id:args.user})
+      if(!fetchedUser){throw new Error('Unable to find user')}
+
+
       //if all good remove user from owners
       fetchedArticle.owners.pull(args.user)
+      fetchedUser.articles.pull(args.article)
 
       //save
       const returnedArticle = await fetchedArticle.save()
+      await fetchedUser.save()
 
       return populateArticle(returnedArticle)
 

@@ -3,6 +3,28 @@
 
 
 
+.alert{
+    background-color:red;
+    color:white;
+    padding:1rem;
+    button.delete{
+        border:1px solid white;
+        background-color:red;
+        color:white;
+        margin-top:1rem;
+        padding:0.5rem 1rem;
+        @extend .clickable;
+    }
+    button.cancel{
+        border:1px solid white;
+        color:red;
+        background-color:white;
+        margin-right:1rem;
+        padding:0.5rem 1rem;
+        @extend .clickable;
+    }
+}
+
 
 .section {
     @extend .wrapped-center;

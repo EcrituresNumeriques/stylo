@@ -6,6 +6,7 @@ import env from '../helpers/env'
 
 import Modal from './Modal'
 import Export from './Export'
+import ArticleDelete from './ArticleDelete'
 import ShareCenter from './ShareCenter'
 import howLongAgo from '../helpers/howLongAgo'
 
@@ -13,6 +14,7 @@ export default (props) => {
 
     const [expanded,setExpanded] = useState(false)
     const [exporting,setExporting] = useState(false)
+    const [deleting,setDeleting] = useState(false)
 
     return (
     <article>
@@ -40,6 +42,8 @@ export default (props) => {
                     <li key={`article-${props._id}-${t._id}`}>{t.name}</li>
                 )}
             </ul>
+            <p onClick={()=>setDeleting(true)}>Delete Article</p>
+            {deleting && <div className={styles.alert}><p>You are trying to delete this article, double click on the "delete button" below to proceed</p><button className={styles.cancel} onClick={()=>setDeleting(false)}>Cancel</button><ArticleDelete {...props}/></div>}
         </section>}
     </article>
     )
