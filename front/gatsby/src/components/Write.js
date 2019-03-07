@@ -31,7 +31,7 @@ const ConnectedWrite = (props) => {
   const readOnly = props.version? true:false;
   const query = "query($article:ID!){article(article:$article){ _id title zoteroLink owners{ displayName } versions{ _id version revision message autosave updatedAt } "
   const getLive = "live{ md sommaire bib yaml message} } }"
-  const getVersion = `} version(version:"${props.version}"){ md sommaire bib yaml message } }`
+  const getVersion = `} version(version:"${props.version}"){ _id md sommaire bib yaml message revision version } }`
 
   const fullQuery = props.version?query + getVersion:query + getLive
 
