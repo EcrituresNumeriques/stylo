@@ -3,6 +3,8 @@ import React, {useState} from 'react'
 import env from '../helpers/env'
 import etv from '../helpers/eventTargetValue'
 
+import styles from './export.module.scss'
+
 const filterAlphaNum = (string) => {
   return string.replace(/\s/g,"_").replace(/[ÉéÈèÊêËë]/g,"e").replace(/[ÔôÖö]/g,"o").replace(/[ÂâÄäÀà]/g,"a").replace(/[Çç]/g,"c").replace(/[^A-Za-z0-9_]/g,"")  
 }
@@ -25,7 +27,7 @@ export default props => {
   }
 
   return(
-    <section>
+    <section className={styles.export}>
       <h1>export</h1>
       <form>
         <select value={format} onChange={(e)=>setFormat(etv(e))}>
@@ -49,8 +51,9 @@ export default props => {
           <option value={false}>Regular citation</option>
         </select>
       </form>
-
-      <p onClick={()=>startExport()}>Export</p>
+      <nav>
+        <p onClick={()=>startExport()}>Export</p>
+      </nav>
 
     </section>
   )
