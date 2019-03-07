@@ -40,7 +40,7 @@ export default (props) => {
             </ul>
             {!deleting && <p className={styles.deleteMe} onClick={()=>setDeleting(true)}>Delete Article</p>}
             <ul>
-                <p>Tags (<span onClick={()=>setEditTags(!editTags)}>{editTags?'finish':'edit'}</span>):</p>
+                <p>Tags (<span onClick={()=>{if(editTags){props.setNeedReload()}setEditTags(!editTags);}}>{editTags?'finish':'edit'}</span>):</p>
                 <ArticleTags editTags={editTags} {...props} stateTags={tags} setTags={(ts)=>setTags(ts)}/>
             </ul>
             {deleting && <div className={styles.alert}><p>You are trying to delete this article, double click on the "delete button" below to proceed</p><button className={styles.cancel} onClick={()=>setDeleting(false)}>Cancel</button><ArticleDelete {...props}/></div>}

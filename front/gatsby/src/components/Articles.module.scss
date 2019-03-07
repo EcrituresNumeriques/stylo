@@ -32,6 +32,22 @@
     border:1px solid $main-border-color;
 }
 
+.clickMeOff{
+    @extend .clickable;
+    @extend .primary-button;
+    display:inline-block;
+    margin-right:0.5rem;
+    border:1px solid $main-border-color;
+}
+
+.clickMeOn{
+    @extend .clickable;
+    @extend .secondary-button;
+    display:inline-block;
+    margin-right:0.5rem;
+    border:1px solid $main-border-color;
+}
+
 
 .section {
     @extend .wrapped-center;
