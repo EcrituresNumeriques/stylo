@@ -32,6 +32,9 @@ const exportZIP = ({bib,yaml,md,id,title},res,req) => {
   shell.echo(md).to(`${id}.md`)
   shell.echo(bib).to(`${id}.bib`)
   shell.echo(yaml).to(`${id}.yaml`)
+  shell.sed('-i', /^.*bibliography.*$/, '', `${id}.yaml`)
+  shell.exec(`sed -i '$ d' ${id}.yaml`)
+  shell.echo(`bibliography: ${id}.bib\n---`).toEnd(`${id}.yaml`)
   shell.exec(`zip ${title}.zip ${id}.*`)
   res.set('Content-Disposition', `attachment; filename="${title}.zip"`)
   return res.download(`${process.env.PWD}/src/data/${title}.zip`)
@@ -74,26 +77,6 @@ module.exports = {
       res.status(404).send(err)
     } 
   
-  },
-  exportArticleZip: async (req,res,next)=>{
-    try{
-      const article = await Article.findById(req.params.id)
-      if(!article){
-        throw new Error('Article Not found')
-      }
-      const versionID = article._doc.versions[article._doc.versions.length-1]
-      const version = await Version.findById(versionID)
-      if(!version){
-        throw new Error('Version not found')
-      }
-      const cleanedVersion = version._doc
-
-      exportZIP({bib:cleanedVersion.bib,yaml:cleanedVersion.yaml,md:cleanedVersion.md, id:cleanedVersion._id, title:article._doc.title}, res, req)
-
-    }
-    catch(err){
-      res.status(404).send(err)
-    }
   },
   exportVersionZip: async (req,res,next)=>{
     try{
