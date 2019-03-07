@@ -25,6 +25,13 @@
     }
 }
 
+.deleteMe{
+    float:right;
+    @extend .secondary-button;
+    margin-right:-0.5rem;
+    border:1px solid $main-border-color;
+}
+
 
 .section {
     @extend .wrapped-center;

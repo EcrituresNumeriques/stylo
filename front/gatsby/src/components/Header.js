@@ -25,6 +25,7 @@ const ConnectedHeader = (props) => {
                     {props.logedIn && <>
                         <Link to='/users'>{JSON.stringify(props.users.map(u => u.displayName))}</Link>
                         <Link to='/profile'>{props.password.username}</Link>
+                        <Link to='/books'>My Books</Link>
                         <Link to='/articles'>My Articles</Link>
                         <p onClick={()=>props.logout()}>Log out</p>
                     </>}

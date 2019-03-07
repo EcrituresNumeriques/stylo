@@ -8,4 +8,8 @@ exports.onCreatePage = ({ page, actions }) => {
       page.matchPath = `/article/*`
       createPage(page)
     }
+    else if (page.path === `/book/`) {
+      page.matchPath = `/book/*`
+      createPage(page)
+    }
   }

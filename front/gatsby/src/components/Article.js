@@ -8,6 +8,7 @@ import Modal from './Modal'
 import Export from './Export'
 import ArticleDelete from './ArticleDelete'
 import ShareCenter from './ShareCenter'
+import ArticleTags from './ArticleTags'
 import howLongAgo from '../helpers/howLongAgo'
 
 export default (props) => {
@@ -15,14 +16,15 @@ export default (props) => {
     const [expanded,setExpanded] = useState(false)
     const [exporting,setExporting] = useState(false)
     const [deleting,setDeleting] = useState(false)
-
+    const [editTags, setEditTags] = useState(false)
+    const [tags, setTags] = useState(props.tags)
     return (
     <article>
         {exporting && <Modal cancel={()=>setExporting(false)}>
             <Export {...props} article={true} versionId={props.versions[0]._id} version={props.versions[0].version}revision={props.versions[0].revision}/>
         </Modal>}
         <nav>
-            <a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/htmlArticle/${props._id}?preview=true`} target="_blank" rel="noopener noreferrer">Annotate</a>
+            <a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/htmlArticle/${props._id}?preview=true`} target="_blank" rel="noopener noreferrer">Preview</a>
             <p onClick={()=>setExporting(true)}>Export</p>
             <Link to={`/article/${props._id}`} className={styles.primary}>Edit</Link>
         </nav>
@@ -36,13 +38,11 @@ export default (props) => {
                     <li key={`version-${v._id}`}><Link to={`/article/${props._id}/version/${v._id}`}>{`${v.message?v.message:'no label'} (${v.autosave?'autosaved':''} v${v.version}.${v.revision})`}</Link></li>
                 ))}
             </ul>
+            {!deleting && <p className={styles.deleteMe} onClick={()=>setDeleting(true)}>Delete Article</p>}
             <ul>
-                <p>Tags:</p>
-                {props.tags.map(t=>
-                    <li key={`article-${props._id}-${t._id}`}>{t.name}</li>
-                )}
+                <p>Tags (<span onClick={()=>setEditTags(!editTags)}>{editTags?'finish':'edit'}</span>):</p>
+                <ArticleTags editTags={editTags} {...props} stateTags={tags} setTags={(ts)=>setTags(ts)}/>
             </ul>
-            <p onClick={()=>setDeleting(true)}>Delete Article</p>
             {deleting && <div className={styles.alert}><p>You are trying to delete this article, double click on the "delete button" below to proceed</p><button className={styles.cancel} onClick={()=>setDeleting(false)}>Cancel</button><ArticleDelete {...props}/></div>}
         </section>}
     </article>
