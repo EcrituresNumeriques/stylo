@@ -12,7 +12,7 @@ export default props => {
   
 
   const [format, setFormat] = useState('html')
-  const [csl,setCsl] = useState('chigagomodifie')
+  const [csl,setCsl] = useState('chigagomodified')
   const [citation,setCitation] = useState('false')
 
   const startExport = () => {
@@ -20,7 +20,7 @@ export default props => {
       window.open(`${env.EXPORT_ENDPOINT}/${format}${props.article?'Article':'Version'}/${props._id}?format=${csl}`)
     }
     else{
-      window.open(`http://localhost:9090/cgi-bin/exportArticle/exec.cgi?id=${filterAlphaNum(props.title)}v${props.version}-${props.revision}&version=${props.versionId}&processor=xelatex&source=${window.location.protocol}//${window.location.hostname}/&format=${format}&bibstyle=${csl}&citation=${citation}`,'_blank');
+      window.open(`http://localhost:9090/cgi-bin/exportArticle/exec.cgi?id=${filterAlphaNum(props.title)}v${props.version}-${props.revision}&version=${props.versionId}&processor=xelatex&source=${env.EXPORT_ENDPOINT}/&format=${format}&bibstyle=${csl}&citation=${citation}`,'_blank');
     }
   }
 
