@@ -18,7 +18,14 @@ export default props => {
   const [toc,setToc] = useState('false')
 
   const startExport = () => {
+    if(props.book){
+      //For books
+      window.open(`http://localhost:9090/cgi-bin/exportBook/exec.cgi?id=${filterAlphaNum(props.name)}&book=${props.bookId}&processor=xelatex&source=${env.EXPORT_ENDPOINT}/&format=${format}&bibstyle=${csl}&toc=${toc}`,'_blank');
+    }
+    else{
+      //For articles/versions
       window.open(`http://localhost:9090/cgi-bin/exportArticle/exec.cgi?id=${filterAlphaNum(props.title)}v${props.version}-${props.revision}&version=${props.versionId}&processor=xelatex&source=${env.EXPORT_ENDPOINT}/&format=${format}&bibstyle=${csl}&toc=${toc}`,'_blank');
+    }
   }
 
   return(
