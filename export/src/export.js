@@ -114,7 +114,9 @@ module.exports = {
        // ordonate chapters by alphabet ASC
        const mds = chapters.sort(alphaSort).map(c=>c.versions[c.versions.length-1].md)
 
-       exportHTML({bib:cleanedBook.bib,yaml:cleanedBook.yaml,md:'# '+cleanedBook.name+'\n\n'+mds.join('\n\n'), id:cleanedBook._id, title:cleanedBook.name}, res, req)
+       const bibs = chapters.sort(alphaSort).map(c=>c.versions[c.versions.length-1].bib)
+
+       exportHTML({bib:bibs.join('\n'),yaml:cleanedBook.yaml,md:'# '+cleanedBook.name+'\n\n'+mds.join('\n\n'), id:cleanedBook._id, title:cleanedBook.name}, res, req)
  
      }
      catch(err){
@@ -135,7 +137,9 @@ module.exports = {
        // ordonate chapters by alphabet ASC
        const mds = chapters.sort(alphaSort).map(c=>c.versions[c.versions.length-1].md)
 
-       exportZIP({bib:cleanedBook.bib,yaml:cleanedBook.yaml,md:'# '+cleanedBook.name+'\n\n'+mds.join('\n\n'), id:cleanedBook._id, title:cleanedBook.name}, res, req)
+       const bibs = chapters.sort(alphaSort).map(c=>c.versions[c.versions.length-1].bib)
+
+       exportZIP({bib:bibs.join('\n'),yaml:cleanedBook.yaml,md:'# '+cleanedBook.name+'\n\n'+mds.join('\n\n'), id:cleanedBook._id, title:cleanedBook.name}, res, req)
  
     }
     catch(err){
