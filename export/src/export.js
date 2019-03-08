@@ -1,6 +1,7 @@
 const shell = require('shelljs')
 const Article = require('./models/article')
 const Version = require('./models/version')
+const Tag = require('./models/tag')
 
 const exportHTML = ({bib,yaml,md,id,title},res,req) => {
 
@@ -38,6 +39,12 @@ const exportZIP = ({bib,yaml,md,id,title},res,req) => {
   shell.exec(`zip ${title}.zip ${id}.*`)
   res.set('Content-Disposition', `attachment; filename="${title}.zip"`)
   return res.download(`${process.env.PWD}/src/data/${title}.zip`)
+}
+
+const alphaSort = (a, b) => {
+  if(a.title < b.title) { return -1; }
+  if(a.title > b.title) { return 1; }
+  return 0;
 }
 
 
@@ -93,10 +100,28 @@ module.exports = {
        res.status(404).send(err)
      } 
   },
-  exportBookHtml: (req,res,next)=>{
-    res.send(`<p>Exporting Book ${req.params.id} to HTML</p>`)
+  exportBookHtml: async (req,res,next)=>{
+    try{
+      const book = await Tag.findById(req.params.id)
+       if(!book){
+         throw new Error('Book not found')
+       }
+       const cleanedBook = book._doc
+ 
+       //Get the mashed md of all last version of all chapters
+       const chapters = await Article.find({_id:{$in: cleanedBook.articles}}).populate('versions')
+
+       // ordonate chapters by alphabet ASC
+       const mds = chapters.sort(alphaSort).map(c=>c.versions[c.versions.length-1].md)
+
+       exportHTML({bib:cleanedBook.bib,yaml:cleanedBook.yaml,md:'# '+cleanedBook.name+'\n\n'+mds.join('\n\n'), id:cleanedBook._id, title:cleanedBook.name}, res, req)
+ 
+     }
+     catch(err){
+       res.status(404).send(err)
+     } 
   },
-  exportBookZip: (req,res,next)=>{
+  exportBookZip: async (req,res,next)=>{
     res.send(`<p>Exporting Book ${req.params.id} to ZIP</p>`)
   },
 }

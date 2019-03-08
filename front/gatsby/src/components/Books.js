@@ -52,7 +52,7 @@ const ConnectedBooks = (props) => {
             <p>Books are like super-tags, they are a collection of articles that you can ordonnate and export all at once</p>
             <p>Below are your tags eligible to be books:</p>
             <ul>
-                {tags.map(t=><Book {...t}/>)}
+                {tags.map(t=><Book key={`book-${t._id}`} {...t}/>)}
             </ul>
 
         </section>
