@@ -6,6 +6,7 @@ import env from '../helpers/env'
 
 import Modal from './Modal'
 import Export from './Export'
+import Chapter from './Chapter'
 import howLongAgo from '../helpers/howLongAgo'
 
 const alphaSort = (a, b) => {
@@ -33,7 +34,7 @@ export default (props) => {
         {expanded && <section>
           <ul>
             <p>Chapters:</p>
-            {props.articles.sort(alphaSort).map(a=><li key={`chapter-${props._id}-${a._id}`}>{a.title} ({a.versions[0].version}.{a.versions[0].revision} {a.versions[0].message})</li>)}
+            {props.articles.sort(alphaSort).map(a=><Chapter key={`chapter-${props._id}-${a._id}`} {...a} setNeedReload={props.setNeedReload}/>)}
           </ul>
         </section>}
             
