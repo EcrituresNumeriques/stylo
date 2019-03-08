@@ -122,6 +122,24 @@ module.exports = {
      } 
   },
   exportBookZip: async (req,res,next)=>{
-    res.send(`<p>Exporting Book ${req.params.id} to ZIP</p>`)
+    try{
+      const book = await Tag.findById(req.params.id)
+       if(!book){
+         throw new Error('Book not found')
+       }
+       const cleanedBook = book._doc
+ 
+       //Get the mashed md of all last version of all chapters
+       const chapters = await Article.find({_id:{$in: cleanedBook.articles}}).populate('versions')
+
+       // ordonate chapters by alphabet ASC
+       const mds = chapters.sort(alphaSort).map(c=>c.versions[c.versions.length-1].md)
+
+       exportZIP({bib:cleanedBook.bib,yaml:cleanedBook.yaml,md:'# '+cleanedBook.name+'\n\n'+mds.join('\n\n'), id:cleanedBook._id, title:cleanedBook.name}, res, req)
+ 
+    }
+    catch(err){
+       res.status(404).send(err)
+    } 
   },
 }
