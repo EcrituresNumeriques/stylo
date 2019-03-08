@@ -70,7 +70,7 @@ const ConnectedBibliographe = (props) => {
       {selector === 'zotero' && <div className={styles.zotero}>
       <p>Please paste the URL of your zotero library, so that it looks like https://www.zotero.org/groups/<strong>[IDnumber]/collections/[IDcollection]</strong></p>
       <label>https://www.zotero.org/groups/</label>
-      <input type="text" placeholder="IDnumber/name/items/collectionKey/collectionKey" value={zoteroLink} onChange={e=>setZoteroLink(etv(e))}/>
+      <input type="text" placeholder="[IDnumber]/collection/[collectionKey]" value={zoteroLink} onChange={e=>setZoteroLink(etv(e))}/>
       <button onClick={()=>saveNewZotero()}>Save zotero link and fetch</button>
 
       </div>}

@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {Link} from 'gatsby'
+import { connect } from "react-redux"
 
 import styles from './Articles.module.scss'
 import env from '../helpers/env'
@@ -11,13 +12,34 @@ import ShareCenter from './ShareCenter'
 import ArticleTags from './ArticleTags'
 import howLongAgo from '../helpers/howLongAgo'
 
-export default (props) => {
+import etv from '../helpers/eventTargetValue'
+import askGraphQL from '../helpers/graphQL';
+
+const mapStateToProps = ({ logedIn, users, sessionToken }) => {
+    return { logedIn, users, sessionToken }
+}
+
+const ConnectedArticle = (props) => {
 
     const [expanded,setExpanded] = useState(false)
     const [exporting,setExporting] = useState(false)
     const [deleting,setDeleting] = useState(false)
     const [editTags, setEditTags] = useState(false)
     const [tags, setTags] = useState(props.tags)
+    const [renaming,setRenaming] = useState(false)
+    const [title,setTitle] = useState(props.title)
+    const [tempTitle,setTempTitle] = useState(props.title)
+
+    const rename = async (e) => {
+        e.preventDefault();
+        const query = `mutation($article:ID!,$title:String!,$user:ID!){renameArticle(article:$article,title:$title,user:$user){title}}`
+        const variables = {user:props.users[0]._id,article:props._id,title:tempTitle}
+        await askGraphQL({query,variables},'Renaming Article',props.sessionToken)
+        setTitle(tempTitle)
+        setRenaming(false)
+    }
+
+
     return (
     <article>
         {exporting && <Modal cancel={()=>setExporting(false)}>
@@ -28,7 +50,11 @@ export default (props) => {
             <p onClick={()=>setExporting(true)}>Export</p>
             <Link to={`/article/${props._id}`} className={styles.primary}>Edit</Link>
         </nav>
-        <h1 onClick={()=>setExpanded(!expanded)}><span>{expanded?'-':'+'}</span> {props.title} ({howLongAgo(new Date() - new Date(props.updatedAt))})</h1>
+        {!renaming && <h1 onClick={()=>setExpanded(!expanded)}><span>{expanded?'-':'+'}</span> {title} ({howLongAgo(new Date() - new Date(props.updatedAt))})<span onClick={()=>setRenaming(true)}>(rename)</span></h1>}
+        {renaming && <form onSubmit={e=>rename(e)}>
+            <input value={tempTitle} onChange={(e)=>setTempTitle(etv(e))} /><input type="submit" value="Rename"/><span onClick={()=>setRenaming(false)}>(cancel)</span>
+
+        </form>}
         {expanded && <section>
             <ShareCenter {...props}/>
             <h2>by <span>{props.owners.map(o=>o.displayName).join(', ')}</span></h2>
@@ -48,3 +74,9 @@ export default (props) => {
     </article>
     )
 }
+
+const Article = connect(
+    mapStateToProps
+)(ConnectedArticle)
+
+export default Article

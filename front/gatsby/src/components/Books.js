@@ -34,7 +34,7 @@ const ConnectedBooks = (props) => {
                     setIsLoading(true)
                     const data = await askGraphQL({query,variables:user},'fetching articles',props.sessionToken)
                     //Need to sort by updatedAt desc
-                    setTags(data.user.tags)
+                    setTags(data.user.tags.reverse())
                     setDisplayName(data.user.displayName)
                     setIsLoading(false)
                     setNeedReload(false)
