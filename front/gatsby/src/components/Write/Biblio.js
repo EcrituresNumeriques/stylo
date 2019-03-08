@@ -3,12 +3,12 @@ import React, {useState} from 'react'
 
 import styles from '../write.module.scss'
 import Modal from '../Modal'
+import Reference from './Reference'
 import Bibliographe from './bibliographe/Bibliographe'
 import bib2key from './bibliographe/CitationsFilter'
 
 export default (props) => {
   let entries = bib2key(props.bib)
-
   const [expand,setExpand] = useState(true)
   const [modal, setModal] = useState(false)
 
@@ -17,7 +17,7 @@ export default (props) => {
     <section>
       <h1 className={expand?null:styles.closed} onDoubleClick={()=>setExpand(!expand)}>Bibliography</h1>
       {expand && <>
-        {entries.map((ref)=>(<p key={`ref-${ref.key}`} data-clipboard-text={"[@"+ref.key+"]"} button-title={ref.title}><span>@{ref.key}</span></p>))}
+        {entries.map((ref)=>(<Reference key={`ref-${ref.cle}`} {...ref}/>))}
         {!props.readOnly && <button className={styles.secondary} onClick={()=>setModal(true)}>Manage Bibliography</button>}
       </>}
       {modal && <Modal cancel={()=>setModal(false)}>

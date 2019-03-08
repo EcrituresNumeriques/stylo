@@ -1,9 +1,9 @@
 export default (input) => {
 
 const compare = (a,b) => {
-  if (a.key < b.key)
+  if (a.cle < b.cle)
     return -1;
-  if (a.key > b.key)
+  if (a.cle > b.cle)
     return 1;
   return 0;
 }
@@ -25,7 +25,7 @@ const bib = input || ""
 let entries = bib.split(regex)
   .filter((ref)=>(ref.match(/^@/g)))
   .map((ref)=>(ref.replace(/^\s+|\s+$/g, '')))
-  .map((ref)=>({title:ref,key:ref.match(/^@.+{(.+),/)[1]}))
+  .map((ref)=>({title:ref,cle:ref.match(/^@.+{(.+),/)[1]}))
   .sort(compare);
 
   return entries

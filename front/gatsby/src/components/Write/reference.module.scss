@@ -1,0 +1,14 @@
+@import '../../styles/defaults.scss';
+@import '../../styles/variables.scss';
+
+
+.reference{
+  @extend .clickable;
+  background-color:$extra-background-color;
+  transition:color 1s ease,background 1s ease;
+  &.clicked{
+    background-color:$main-color;
+    color:$extra-background-color;
+    transition:none;
+  }
+}

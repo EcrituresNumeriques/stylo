@@ -76,7 +76,7 @@ const ConnectedBibliographe = (props) => {
       </div>}
       {selector === 'citations' && <div className={styles.citations}>
       <textarea value={addCitation} onChange={(e)=>setAddCitation(etv(e))} placeholder="Paste here the bibtext of the citation you want to add"/><button onClick={()=>mergeCitations()}>Add</button>
-      {bib2key(bib).map((b,i)=><p key={`citation-${b.key}-${i}`} className={styles.citation}>@{b.key}<i onClick={()=>removeCitation(i)}>Remove</i></p>)}
+      {bib2key(bib).map((b,i)=><p key={`citation-${b.cle}-${i}`} className={styles.citation}>@{b.cle}<i onClick={()=>removeCitation(i)}>Remove</i></p>)}
       </div>}
       {selector === 'raw' && <div className={styles.raw}>
         <textarea value={bib} onChange={(e)=>setBib(etv(e))} />
