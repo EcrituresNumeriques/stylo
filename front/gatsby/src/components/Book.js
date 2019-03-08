@@ -25,7 +25,7 @@ export default (props) => {
             <Export {...props} book={true} bookId={props._id}/>
         </Modal>}
         <nav>
-            <a href={`${env.EXPORT_ENDPOINT}/htmlBook/${props._id}?preview=true`} target="_blank" rel="noopener noreferrer">Preview</a>
+            <a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/htmlBook/${props._id}?preview=true`} target="_blank" rel="noopener noreferrer">Preview</a>
             <p onClick={()=>setExporting(true)}>Export</p>
             <Link to={`/book/${props._id}`} className={styles.primary}>Edit</Link>
         </nav>
