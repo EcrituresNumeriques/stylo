@@ -5,6 +5,7 @@ const defaultsData = require('../data/defaultsData')
 const Article = require('../models/article');
 const Version = require('../models/version');
 const User = require('../models/user');
+const Tag = require('../models/tag');
 
 const isUser = require('../policies/isUser')
 const isAdmin = require('../policies/isAdmin')
@@ -186,6 +187,9 @@ module.exports = {
       //if all good remove user from owners
       fetchedArticle.owners.pull(args.user)
       fetchedUser.articles.pull(args.article)
+
+      //Remove from all of user's tag
+      await Tag.updateMany({owner:fetchedUser.id},{$pull: {articles:fetchedArticle.id}},{safe:true})
 
       //save
       const returnedArticle = await fetchedArticle.save()
