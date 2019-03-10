@@ -16,7 +16,7 @@ export default (props) => {
       <h1 className={expand?null:styles.closed} onDoubleClick={()=>setExpand(!expand)}>Table of content</h1>
       {expand && <>
         <ul>
-          {lines.map((l,i)=><li key={`line-${i}-${l}`}>{l}</li>)}
+          {lines.map((l,i)=><li key={`line-${i}-${l}`}>{l.replace(/#+\s/g,'')}</li>)}
         </ul>
       </>}
     </section>
