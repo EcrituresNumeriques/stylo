@@ -22,7 +22,7 @@ export default (props) => {
             <h2>by {props.article.owners.join(', ')}</h2>
           </header>
           <Versions {...props}/>
-          <Sommaire md={props.md}/>
+          <Sommaire {...props} />
           <Biblio {...props} />
           <Stats md={props.md}/>
         </div>

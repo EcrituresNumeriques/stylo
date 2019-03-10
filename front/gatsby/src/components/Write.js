@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react'
+import React, {useEffect,useState,useRef} from 'react'
 import { connect } from 'react-redux'
 import { navigate } from 'gatsby'
 
@@ -35,9 +35,26 @@ const ConnectedWrite = (props) => {
 
   const fullQuery = props.version?query + getVersion:query + getLive
 
-  let instanceCM = null;
+  let instanceCM = useRef(null);
 
-  
+  const setCodeMirrorCursor = (line) => {
+    try{
+      const editor = instanceCM.current.editor
+      editor.focus();
+      editor.execCommand('goDocEnd')
+      editor.setCursor(line,0)
+      editor.execCommand('goLineEnd')
+    }
+    catch(err){
+      console.log('too fast, editor not mounted yet')
+    }
+    
+
+
+    //instanceCM.focus();
+    //instanceCM.setCursor(line,0);
+  } 
+
   const variables = {user:props.users[0]._id,article:props.id}
   const [isLoading,setIsLoading] = useState(true)
   const [live, setLive] = useState({})
@@ -66,11 +83,10 @@ const ConnectedWrite = (props) => {
     }
   }
   
-  // TODO fix le debounce sur l'autosave
-  //const autosave = async ( ) => await sendVersion(true,false, "Autosave")
-  //const autosave = ()=>console.log('Autosave not yet implemented')  
+
 
   //Autosave debouncing on the live
+  // TODO: Do not save when opening
   const debouncedLive = useDebounce(live, 1000);
   useEffect(()=>{
     if(!readOnly && !isLoading){
@@ -103,14 +119,14 @@ const ConnectedWrite = (props) => {
 
   return (
     <section className={styles.container}>
-      {!isLoading && <WriteLeft article={articleInfos} {...live} versions={versions} readOnly={readOnly} sendVersion={sendVersion} handleBib={handleBib} />}
+      {!isLoading && <WriteLeft article={articleInfos} {...live} versions={versions} readOnly={readOnly} sendVersion={sendVersion} handleBib={handleBib} setCodeMirrorCursor={setCodeMirrorCursor} />}
       {!isLoading && <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly}/>}
   
       <article className={styles.article}>
         {isLoading && <p>Loading...</p>}
         {!isLoading && <>
           {readOnly && <pre>{live.md}</pre>}
-          {!readOnly && <CodeMirror value={live.md} onBeforeChange={handleMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true,extraKeys:{"Shift-Ctrl-Space": function(cm) {cm.replaceSelection("\u00a0");}}}} editorDidMount={editor => { instanceCM = editor }}/>}
+          {!readOnly && <CodeMirror value={live.md} onBeforeChange={handleMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true,extraKeys:{"Shift-Ctrl-Space": function(cm) {cm.replaceSelection("\u00a0");}}}} ref={instanceCM}/>}
         </>}
       </article>
     </section>

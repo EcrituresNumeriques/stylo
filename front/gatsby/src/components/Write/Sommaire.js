@@ -8,7 +8,7 @@ export default (props) => {
   
   const [expand,setExpand] = useState(true)
   // eslint-disable-next-line
-  const lines = props.md.split('\n').filter(l=>l.match(/^#+\ /))
+  const lines = props.md.split('\n').map((l,i)=>{return {line:i,payload:l}}).filter(l=>l.payload.match(/^##+\ /))
 
   return (
     
@@ -16,7 +16,7 @@ export default (props) => {
       <h1 className={expand?null:styles.closed} onDoubleClick={()=>setExpand(!expand)}>Table of content</h1>
       {expand && <>
         <ul>
-          {lines.map((l,i)=><li key={`line-${i}-${l}`}>{l.replace(/#+\s/g,'')}</li>)}
+          {lines.map((l)=><li key={`line-${l.line}-${l.payload}`} onClick={()=>props.setCodeMirrorCursor(l.line)}>{l.payload.replace(/#/,'').replace(/#\s/g,'\u21B3').replace(/#/g,'\xa0\xa0')}</li>)}
         </ul>
       </>}
     </section>
