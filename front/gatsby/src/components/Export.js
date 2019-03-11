@@ -16,11 +16,13 @@ export default props => {
   const [format, setFormat] = useState('html5')
   const [csl,setCsl] = useState('chicagomodified')
   const [toc,setToc] = useState('false')
+  const [unnumbered,setUnnumbered] = useState('false')
+  const [tdl,setTdl] = useState('false')
 
   const startExport = () => {
     if(props.book){
       //For books
-      window.open(`http://localhost:9090/cgi-bin/exportBook/exec.cgi?id=${filterAlphaNum(props.name)}&book=${props.bookId}&processor=xelatex&source=${env.EXPORT_ENDPOINT}/&format=${format}&bibstyle=${csl}&toc=${toc}`,'_blank');
+      window.open(`http://localhost:9090/cgi-bin/exportBook/exec.cgi?id=${filterAlphaNum(props.name)}&book=${props.bookId}&processor=xelatex&source=${env.EXPORT_ENDPOINT}/&format=${format}&bibstyle=${csl}&toc=${toc}&tdl=${tdl}&unnumbered=${unnumbered}`,'_blank');
     }
     else{
       //For articles/versions
@@ -51,6 +53,14 @@ export default props => {
           <option value={true}>Table of content</option>
           <option value={false}>No table of content</option>
         </select>
+        {props.book && <select value={unnumbered} onChange={(e)=>setUnnumbered(etv(e))}>
+          <option value="false">Section and Chapters: numbered</option>
+          <option value="true">Section and Chapters: unnumbered</option>
+        </select>}
+        {props.book && <select value={tdl} onChange={(e)=>setTdl(etv(e))}>
+          <option value="part">Book division: Part & chapters</option>
+          <option value="chapter">Book division: Chapter only</option>
+        </select>}
       </form>
       <nav>
         <p onClick={()=>startExport()}>Export</p>
