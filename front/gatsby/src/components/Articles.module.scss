@@ -63,8 +63,10 @@
     > article {  
         padding:1rem;
         h1{
-            @extend .clickable;
-            span {
+            span{
+                @extend .clickable;
+            }
+            span:first-child {
                 display: inline-block;
                 width:1rem;
                 text-align: center;

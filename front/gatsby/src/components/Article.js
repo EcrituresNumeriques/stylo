@@ -50,7 +50,7 @@ const ConnectedArticle = (props) => {
             <p onClick={()=>setExporting(true)}>Export</p>
             <Link to={`/article/${props._id}`} className={styles.primary}>Edit</Link>
         </nav>
-        {!renaming && <h1 onClick={()=>setExpanded(!expanded)}><span>{expanded?'-':'+'}</span> {title} ({howLongAgo(new Date() - new Date(props.updatedAt))})<span onClick={()=>setRenaming(true)}>(rename)</span></h1>}
+        {!renaming && <h1><span onClick={()=>setExpanded(!expanded)}>{expanded?'-':'+'}</span><span onClick={()=>setExpanded(!expanded)}> {title} ({howLongAgo(new Date() - new Date(props.updatedAt))})</span><span onClick={()=>setRenaming(true)}>(rename)</span></h1>}
         {renaming && <form onSubmit={e=>rename(e)}>
             <input value={tempTitle} onChange={(e)=>setTempTitle(etv(e))} /><input type="submit" value="Rename"/><span onClick={()=>setRenaming(false)}>(cancel)</span>
 
