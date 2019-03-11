@@ -9,6 +9,41 @@ import env from '../../helpers/env'
 import Modal from '../Modal'
 import Export from '../Export'
 
+Date.prototype.getUTCMinutesDoubleDigit = function(){
+  if(this.getUTCMinutes() < 10){
+    return "0"+this.getUTCMinutes()
+  }
+  return this.getUTCMinutes()
+}
+Date.prototype.getUTCHoursDoubleDigit = function(){
+  if(this.getUTCHours() < 10){
+    return "0"+this.getUTCHours()
+  }
+  return this.getUTCHours()
+}
+Date.prototype.getUTCMonthDoubleDigit = function(){
+  if(this.getUTCMonth()+1 < 9){
+    return "0"+Number(this.getUTCMonth()+1)
+  }
+  return Number(this.getUTCMonth()+1)
+}
+Date.prototype.getUTCDateDoubleDigit = function(){
+  if(this.getUTCDate() < 10){
+    return "0"+this.getUTCDate()
+  }
+  return this.getUTCDate()
+}
+
+Date.prototype.formatMMDDYYYY = function(){
+  return (
+    this.getUTCHoursDoubleDigit() +
+    ":" + this.getUTCMinutesDoubleDigit() +
+    "utc " +  this.getUTCDateDoubleDigit() +
+    "/" +  this.getUTCMonthDoubleDigit() + 
+    "/" +  this.getFullYear()
+  )
+}
+
 export default (props) => {
 
   //Default if live
@@ -79,7 +114,7 @@ export default (props) => {
           {props.versions.map(v=><li key={`showVersion-${v._id}`}><Link to={`/article/${props.article._id}/version/${v._id}`}>{v.message?v.message:'No label'} ({v.autosave?'autosaved ':null}{v.version}.{v.revision})</Link>
           <p>
             {v.owner && <span>by <strong>{v.owner.displayName}</strong> </span>}
-            <span>at {new Date(v.updatedAt).toISOString()}</span>
+            <span>at {new Date(v.updatedAt).formatMMDDYYYY()}</span>
             </p>
           <nav> <p onClick={()=>{setExportVar({...exportVar,article:false,_id:v._id,versionId:v._id,version:v.version,    revision:v.revision});setExporting(true)}}>export</p><a href={`${env.EXPORT_ENDPOINT}/htmlVersion/${v._id}?preview=true`} target="_blank" rel="noopener noreferrer">preview</a></nav></li>)}
         </ul>
