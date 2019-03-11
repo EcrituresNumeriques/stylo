@@ -6,6 +6,9 @@
   @extend .clickable;
   background-color:$extra-background-color;
   transition:color 1s ease,background 1s ease;
+  &:nth-child(2n+1){
+    background-color:$main-background-color;
+  }
   &.clicked{
     background-color:$main-color;
     color:$extra-background-color;

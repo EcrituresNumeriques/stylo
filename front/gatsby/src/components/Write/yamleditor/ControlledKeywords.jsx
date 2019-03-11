@@ -20,7 +20,7 @@ function Keyword(props){
       return(
         <div className="keywords">
           <input className="controlled" type="text" placeholder="label" value={props.object.label} readOnly="true"/>
-          {!props.readOnly && <i className="fa fa-minus-circle" aria-hidden="true" data-id={props.index} onClick={()=>props.updateMisc(false,"categories["+props.object.id+"].selected","removeControlled")}></i>}
+          {!props.readOnly && <i className="fa fa-minus-circle" aria-hidden="true" data-id={props.index} onClick={()=>props.updateMisc(false,"categories["+props.object.id+"].selected","removeControlled")}>X</i>}
         </div>
       )
   }
