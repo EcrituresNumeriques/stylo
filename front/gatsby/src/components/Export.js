@@ -22,11 +22,11 @@ export default props => {
   const startExport = () => {
     if(props.book){
       //For books
-      window.open(`http://localhost:9090/cgi-bin/exportBook/exec.cgi?id=${filterAlphaNum(props.name)}&book=${props.bookId}&processor=xelatex&source=${env.EXPORT_ENDPOINT}/&format=${format}&bibstyle=${csl}&toc=${toc}&tld=${tld}&unnumbered=${unnumbered}`,'_blank');
+      window.open(`${env.PROCESS_ENDPOINT}/cgi-bin/exportBook/exec.cgi?id=${filterAlphaNum(props.name)}&book=${props.bookId}&processor=xelatex&source=${env.EXPORT_ENDPOINT}/&format=${format}&bibstyle=${csl}&toc=${toc}&tld=${tld}&unnumbered=${unnumbered}`,'_blank');
     }
     else{
       //For articles/versions
-      window.open(`http://localhost:9090/cgi-bin/exportArticle/exec.cgi?id=${filterAlphaNum(props.title)}v${props.version}-${props.revision}&version=${props.versionId}&processor=xelatex&source=${env.EXPORT_ENDPOINT}/&format=${format}&bibstyle=${csl}&toc=${toc}`,'_blank');
+      window.open(`${env.PROCESS_ENDPOINT}/cgi-bin/exportArticle/exec.cgi?id=${filterAlphaNum(props.title)}v${props.version}-${props.revision}&version=${props.versionId}&processor=xelatex&source=${env.EXPORT_ENDPOINT}/&format=${format}&bibstyle=${csl}&toc=${toc}`,'_blank');
     }
   }
 
