@@ -91,7 +91,7 @@ const populateVersion = (version) => {
     const cleanedVersion = prepRecord(version);
     return {
         ...cleanedVersion,
-        owner: getUserById.bind(this, cleanedVersion.owner),
+        owner: cleanedVersion.owner?getUserById.bind(this, cleanedVersion.owner):null,
         article: getArticleById.bind(this, cleanedVersion.article || [])
     }
 }

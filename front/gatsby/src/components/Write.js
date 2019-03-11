@@ -29,9 +29,9 @@ const ConnectedWrite = (props) => {
     return (<p>Redirecting...</p>)
   }
   const readOnly = props.version? true:false;
-  const query = "query($article:ID!){article(article:$article){ _id title zoteroLink owners{ displayName } versions{ _id version revision message autosave updatedAt } "
-  const getLive = "live{ md sommaire bib yaml message} } }"
-  const getVersion = `} version(version:"${props.version}"){ _id md sommaire bib yaml message revision version } }`
+  const query = "query($article:ID!){article(article:$article){ _id title zoteroLink owners{ displayName } versions{ _id version revision message autosave updatedAt owner{ displayName }} "
+  const getLive = "live{ md sommaire bib yaml message owner{ displayName }} } }"
+  const getVersion = `} version(version:"${props.version}"){ _id md sommaire bib yaml message revision version owner{ displayName }} }`
 
   const fullQuery = props.version?query + getVersion:query + getLive
 
@@ -65,7 +65,7 @@ const ConnectedWrite = (props) => {
   
   const sendVersion = async (autosave = true,major = false, message = "") => {
     try{
-      const query = `mutation($user:ID!,$article:ID!,$md:String!,$bib:String!,$yaml:String!,$autosave:Boolean!,$major:Boolean!,$message:String){saveVersion(version:{article:$article,major:$major,auto:$autosave,md:$md,yaml:$yaml,bib:$bib,message:$message},user:$user){ _id version revision message autosave updatedAt } }`
+      const query = `mutation($user:ID!,$article:ID!,$md:String!,$bib:String!,$yaml:String!,$autosave:Boolean!,$major:Boolean!,$message:String){saveVersion(version:{article:$article,major:$major,auto:$autosave,md:$md,yaml:$yaml,bib:$bib,message:$message},user:$user){ _id version revision message autosave updatedAt owner{ displayName }} }`
       const response = await askGraphQL({query,variables:{...variables,...live,autosave,major,message}},'saving new version',props.sessionToken)
       if(!autosave || versions[0]._id !== response.saveVersion._id){
         setVersions([response.saveVersion,...versions])
