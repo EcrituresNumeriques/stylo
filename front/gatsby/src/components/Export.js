@@ -38,6 +38,7 @@ export default props => {
           <option value="html5">HTML5</option>
           <option value="zip">ZIP</option>
           <option value="pdf">PDF</option>
+          <option value="tex">LATEX</option>
           <option value="xml">XML (érudit)</option>
           <option value="odt">ODT</option>
           <option value="docx">DOCX</option>
