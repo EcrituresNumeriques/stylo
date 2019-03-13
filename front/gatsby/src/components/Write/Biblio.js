@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 
-
-import styles from '../write.module.scss'
 import Modal from '../Modal'
 import Reference from './Reference'
 import Bibliographe from './bibliographe/Bibliographe'
 import bib2key from './bibliographe/CitationsFilter'
+
+import styles from './biblio.module.scss'
 
 export default (props) => {
   let entries = bib2key(props.bib)
@@ -14,7 +14,7 @@ export default (props) => {
 
   return (
     
-    <section>
+    <section id={styles.section}>
       <h1 className={expand?null:styles.closed} onDoubleClick={()=>setExpand(!expand)}>Bibliography</h1>
       {expand && <>
         {entries.map((ref)=>(<Reference key={`ref-${ref.cle}`} {...ref}/>))}

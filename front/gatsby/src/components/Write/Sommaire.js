@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import styles from '../write.module.scss'
+import styles from './sommaire.module.scss'
 
 
 export default (props) => {
@@ -21,7 +21,7 @@ export default (props) => {
 
   return (
     
-    <section>
+    <section id={styles.section}>
       <h1 className={expand?null:styles.closed} onDoubleClick={()=>setExpand(!expand)}>Table of content</h1>
       {expand && <>
         <ul>

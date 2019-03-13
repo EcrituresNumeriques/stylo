@@ -119,7 +119,7 @@ const ConnectedWrite = (props) => {
 
   return (
     <section className={styles.container}>
-      {!isLoading && <WriteLeft article={articleInfos} {...live} versions={versions} readOnly={readOnly} sendVersion={sendVersion} handleBib={handleBib} setCodeMirrorCursor={setCodeMirrorCursor} />}
+      {!isLoading && <WriteLeft article={articleInfos} {...live} selectedVersion={props.version} versions={versions} readOnly={readOnly} sendVersion={sendVersion} handleBib={handleBib} setCodeMirrorCursor={setCodeMirrorCursor} />}
       {!isLoading && <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly}/>}
   
       <article className={styles.article}>

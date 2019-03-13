@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react'
 import { Link } from 'gatsby'
-import styles from '../write.module.scss'
+import styles from './versions.module.scss'
 
 import etv from '../../helpers/eventTargetValue'
 import howLongAgo from '../../helpers/howLongAgo';
@@ -96,7 +96,7 @@ export default (props) => {
 
   return (
     
-    <section>
+    <section id={styles.section}>
       <h1 className={expand?null:styles.closed} onDoubleClick={()=>setExpand(!expand)}>Versions</h1>
       {exporting && <Modal cancel={()=>setExporting(false)}>
             <Export {...exportVar} />
@@ -111,12 +111,14 @@ export default (props) => {
             <button className={message?styles.primary:styles.secondary} onClick={e=>saveVersion(e,false)}>Save Minor</button>
             <button className={message?styles.primary:styles.secondary} onClick={e=>saveVersion(e,true)}>Save Major</button>
           </form>}
-          {props.versions.map(v=><li key={`showVersion-${v._id}`}><Link to={`/article/${props.article._id}/version/${v._id}`}>{v.message?v.message:'No label'} ({v.autosave?'autosaved ':null}{v.version}.{v.revision})</Link>
-          <p>
-            {v.owner && <span>by <strong>{v.owner.displayName}</strong> </span>}
-            <span>at {new Date(v.updatedAt).formatMMDDYYYY()}</span>
+          {props.versions.map(v=>
+            <li key={`showVersion-${v._id}`} className={v._id === props.selectedVersion?styles.selected:null}><Link to={`/article/${props.article._id}/version/${v._id}`}>{v.message?v.message:'No label'} ({v.autosave?'autosaved ':null}{v.version}.{v.revision})</Link>
+            <p>
+              {v.owner && <span>by <strong>{v.owner.displayName}</strong> </span>}
+              <span>at {new Date(v.updatedAt).formatMMDDYYYY()}</span>
             </p>
-          <nav> <p onClick={()=>{setExportVar({...exportVar,article:false,_id:v._id,versionId:v._id,version:v.version,    revision:v.revision});setExporting(true)}}>export</p><a href={`${env.EXPORT_ENDPOINT}/htmlVersion/${v._id}?preview=true`} target="_blank" rel="noopener noreferrer">preview</a></nav></li>)}
+            <nav> <p onClick={()=>{setExportVar({...exportVar,article:false,_id:v._id,versionId:v._id,version:v.version,    revision:v.revision});setExporting(true)}}>export</p><a href={`${env.EXPORT_ENDPOINT}/htmlVersion/${v._id}?preview=true`} target="_blank" rel="noopener noreferrer">preview</a></nav></li>
+          )}
         </ul>
       </>}
     </section>
