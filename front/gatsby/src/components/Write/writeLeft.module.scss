@@ -1,0 +1,40 @@
+@import '../../styles/defaults.scss';
+@import '../../styles/variables.scss';
+
+.sliderleft{
+  @extend .slider;
+  transition:left 0.5s ease, background 0.5s ease, border 0.5s ease;
+  border-right:1px solid $main-border-color;
+  > nav{
+    text-align: right;
+  }
+}
+
+
+
+
+.expandleft{
+  @extend .sliderleft;
+  left:0;
+  background-color:rgba(255,255,255,1);
+  > nav{
+    color:$main-color;
+    right:0;
+    transition:right 0.5s ease;
+  }
+}
+
+.retractleft{
+  @extend .sliderleft;
+  left:-400px;
+  background-color:rgba(255,255,255,0);
+  border-right:0px solid $main-border-color;
+  > nav{
+    right:-80px;
+    transition:left 0.5s ease;
+  }  
+  .open{
+    color:grey;
+    background-color:rgba(0,0,0,0);
+  }
+}

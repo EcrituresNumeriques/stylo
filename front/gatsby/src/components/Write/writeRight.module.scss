@@ -1,6 +1,5 @@
 @import '../../styles/defaults.scss';
 @import '../../styles/variables.scss';
-@import '../write.module.scss';
 
 
 .expandRight{
@@ -50,12 +49,6 @@
     }
   }
 }
-
-.right{
-  @extend .sliderleft;
-  right:0;
-}
-
 
 .yamlEditor{
   overflow-x: hidden;

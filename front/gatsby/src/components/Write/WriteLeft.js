@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import styles from '../write.module.scss'
+import styles from './writeLeft.module.scss'
 import Stats from './Stats'
 import Biblio from './Biblio'
 import Sommaire from './Sommaire'
