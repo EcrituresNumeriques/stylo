@@ -11,6 +11,8 @@ export default () => (
                 <ArticleEmpty path="/article"/>
                 <ArticleID path="/article/:id/version/:version"/>
                 <ArticleID path="/article/:id"/>
+                <ArticleID path="/article/:id/version/:version/compare/:compareTo"/>
+                <ArticleID path="/article/:id/compare/:compareTo"/>
             </Router>
         )}
     </Location>

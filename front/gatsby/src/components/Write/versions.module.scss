@@ -25,6 +25,9 @@
     > li.selected{
       background-color: $selected-background;
     }
+    > li.compareTo{
+      background-color: $beware-background;
+    }
     > p{
       padding:0.5rem 1rem;
     }

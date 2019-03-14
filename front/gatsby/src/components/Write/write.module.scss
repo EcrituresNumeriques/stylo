@@ -1,22 +1,31 @@
 @import '../../styles/defaults.scss';
 @import '../../styles/variables.scss';
 
+
+.compare{
+  @extend .wrapped-center;
+  background-color:$extra-background-color;
+  padding:1rem;
+}
 .article{
   @extend .wrapped-center;
   background-color:$extra-background-color;
   height:100%;
+  display:flex;
   textarea{
     padding:1rem;
     width:100%;
   }
   > div {
     padding:1rem;
+    flex:1 1 50%;
   }
-  > pre{
+  > pre, > div > pre{
     margin-top:0;
     padding:1rem;
     width:100%;
     white-space: pre-wrap; 
+    flex:1 1 50%;
   }
 }
 

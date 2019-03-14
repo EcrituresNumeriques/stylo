@@ -112,12 +112,17 @@ export default (props) => {
             <button className={message?styles.primary:styles.secondary} onClick={e=>saveVersion(e,true)}>Save Major</button>
           </form>}
           {props.versions.map(v=>
-            <li key={`showVersion-${v._id}`} className={v._id === props.selectedVersion?styles.selected:null}><Link to={`/article/${props.article._id}/version/${v._id}`}>{v.message?v.message:'No label'} ({v.autosave?'autosaved ':null}{v.version}.{v.revision})</Link>
-            <p>
-              {v.owner && <span>by <strong>{v.owner.displayName}</strong> </span>}
-              <span>at {new Date(v.updatedAt).formatMMDDYYYY()}</span>
-            </p>
-            <nav> <p onClick={()=>{setExportVar({...exportVar,article:false,_id:v._id,versionId:v._id,version:v.version,    revision:v.revision});setExporting(true)}}>export</p><a href={`${env.EXPORT_ENDPOINT}/htmlVersion/${v._id}?preview=true`} target="_blank" rel="noopener noreferrer">preview</a></nav></li>
+            <li key={`showVersion-${v._id}`} className={v._id === props.selectedVersion?styles.selected:v._id === props.compareTo?styles.compareTo:null}><Link to={`/article/${props.article._id}/version/${v._id}`}>{v.message?v.message:'No label'} ({v.autosave?'autosaved ':null}{v.version}.{v.revision})</Link>
+              <p>
+                {v.owner && <span>by <strong>{v.owner.displayName}</strong> </span>}
+                <span>at {new Date(v.updatedAt).formatMMDDYYYY()}</span>
+              </p>
+              <nav> 
+                <Link to={`/article/${props.article._id}/${props.selectedVersion?'version/'+props.selectedVersion+'/':''}compare/${v._id}`}>Compare</Link>
+                <p onClick={()=>{setExportVar({...exportVar,article:false,_id:v._id,versionId:v._id,version:v.version,    revision:v.revision});setExporting(true)}}>export</p>
+                <a href={`${env.EXPORT_ENDPOINT}/htmlVersion/${v._id}?preview=true`} target="_blank" rel="noopener noreferrer">preview</a>
+              </nav>
+            </li>
           )}
         </ul>
       </>}

@@ -7,6 +7,7 @@ import styles from './write.module.scss'
 
 import WriteLeft from './WriteLeft'
 import WriteRight from './WriteRight'
+import Compare from './Compare'
 
 import useDebounce from '../../hooks/debounce'
 
@@ -30,8 +31,8 @@ const ConnectedWrite = (props) => {
   }
   const readOnly = props.version? true:false;
   const query = "query($article:ID!){article(article:$article){ _id title zoteroLink owners{ displayName } versions{ _id version revision message autosave updatedAt owner{ displayName }} "
-  const getLive = "live{ md sommaire bib yaml message owner{ displayName }} } }"
-  const getVersion = `} version(version:"${props.version}"){ _id md sommaire bib yaml message revision version owner{ displayName }} }`
+  const getLive = "live{ md bib yaml message owner{ displayName }} } }"
+  const getVersion = `} version(version:"${props.version}"){ _id md bib yaml message revision version owner{ displayName }} }`
 
   const fullQuery = props.version?query + getVersion:query + getLive
 
@@ -96,6 +97,9 @@ const ConnectedWrite = (props) => {
     if(!readOnly && !isLoading){
       setFirstLoad(false)
     }
+    else{
+      setFirstLoad(true)
+    }
   },[debouncedLive])
   
   
@@ -123,14 +127,19 @@ const ConnectedWrite = (props) => {
 
   return (
     <section className={styles.container}>
-      {!isLoading && <WriteLeft article={articleInfos} {...live} selectedVersion={props.version} versions={versions} readOnly={readOnly} sendVersion={sendVersion} handleBib={handleBib} setCodeMirrorCursor={setCodeMirrorCursor} />}
+      {!isLoading && <WriteLeft article={articleInfos} {...live} compareTo={props.compareTo} selectedVersion={props.version} versions={versions} readOnly={readOnly} sendVersion={sendVersion} handleBib={handleBib} setCodeMirrorCursor={setCodeMirrorCursor} />}
       {!isLoading && <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly}/>}
   
+      {props.compareTo && 
+      <p className={styles.compare}>
+        Comparing {readOnly?`${live.message?live.message:'No label'} v${live.version}.${live.revision}`:'Editing mode'} with {props.compareTo}
+      </p>}
       <article className={styles.article}>
         {isLoading && <p>Loading...</p>}
         {!isLoading && <>
           {readOnly && <pre>{live.md}</pre>}
           {!readOnly && <CodeMirror value={live.md} onBeforeChange={handleMDCM} options={{mode:'markdown',lineWrapping:true,viewportMargin:Infinity,autofocus:true,spellcheck:true,extraKeys:{"Shift-Ctrl-Space": function(cm) {cm.replaceSelection("\u00a0");}}}} ref={instanceCM}/>}
+          {props.compareTo && <Compare {...props} live={live} />}
         </>}
       </article>
     </section>
