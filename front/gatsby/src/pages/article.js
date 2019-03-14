@@ -2,7 +2,7 @@ import React from 'react'
 import { navigate } from 'gatsby'
 import { Router, Location } from "@reach/router"
 import FullPage from '../layouts/FullPage'
-import Write from '../components/Write'
+import Write from '../components/Write/Write'
 
 export default () => (
     <Location>

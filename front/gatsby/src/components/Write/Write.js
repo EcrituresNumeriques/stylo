@@ -2,13 +2,13 @@ import React, {useEffect,useState,useRef} from 'react'
 import { connect } from 'react-redux'
 import { navigate } from 'gatsby'
 
-import askGraphQL from '../helpers/graphQL';
+import askGraphQL from '../../helpers/graphQL';
 import styles from './write.module.scss'
 
-import WriteLeft from './Write/WriteLeft'
-import WriteRight from './Write/WriteRight'
+import WriteLeft from './WriteLeft'
+import WriteRight from './WriteRight'
 
-import useDebounce from '../hooks/debounce'
+import useDebounce from '../../hooks/debounce'
 
 import _ from 'lodash'
 
@@ -60,6 +60,7 @@ const ConnectedWrite = (props) => {
   const [live, setLive] = useState({})
   const [versions, setVersions] = useState([])
   const [articleInfos, setArticleInfos] = useState({title:"",owners:[],zoteroLink:""})
+  const [firstLoad,setFirstLoad] = useState(true)
   
   
   
@@ -89,8 +90,11 @@ const ConnectedWrite = (props) => {
   // TODO: Do not save when opening
   const debouncedLive = useDebounce(live, 1000);
   useEffect(()=>{
-    if(!readOnly && !isLoading){
+    if(!readOnly && !isLoading && !firstLoad){
       sendVersion(true,false, "Autosave")
+    }
+    if(!readOnly && !isLoading){
+      setFirstLoad(false)
     }
   },[debouncedLive])
   
