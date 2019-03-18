@@ -118,7 +118,8 @@ export default (props) => {
                 <span>at {new Date(v.updatedAt).formatMMDDYYYY()}</span>
               </p>
               <nav> 
-                <Link to={`/article/${props.article._id}/${props.selectedVersion?'version/'+props.selectedVersion+'/':''}compare/${v._id}`}>Compare</Link>
+                {v._id !== props.compareTo && <Link to={`/article/${props.article._id}/${props.selectedVersion?'version/'+props.selectedVersion+'/':''}compare/${v._id}`}>Compare</Link>}
+                {v._id === props.compareTo && <Link to={`/article/${props.article._id}/${props.selectedVersion?'version/'+props.selectedVersion:''}`}>Stop</Link>}
                 <p onClick={()=>{setExportVar({...exportVar,article:false,_id:v._id,versionId:v._id,version:v.version,    revision:v.revision});setExporting(true)}}>export</p>
                 <a href={`${env.EXPORT_ENDPOINT}/htmlVersion/${v._id}?preview=true`} target="_blank" rel="noopener noreferrer">preview</a>
               </nav>

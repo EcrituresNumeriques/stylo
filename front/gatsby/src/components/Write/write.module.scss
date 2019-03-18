@@ -2,11 +2,6 @@
 @import '../../styles/variables.scss';
 
 
-.compare{
-  @extend .wrapped-center;
-  background-color:$extra-background-color;
-  padding:1rem;
-}
 .article{
   @extend .wrapped-center;
   background-color:$extra-background-color;

@@ -8,6 +8,7 @@ import styles from './write.module.scss'
 import WriteLeft from './WriteLeft'
 import WriteRight from './WriteRight'
 import Compare from './Compare'
+import CompareSelect from './CompareSelect'
 
 import useDebounce from '../../hooks/debounce'
 
@@ -130,10 +131,7 @@ const ConnectedWrite = (props) => {
       {!isLoading && <WriteLeft article={articleInfos} {...live} compareTo={props.compareTo} selectedVersion={props.version} versions={versions} readOnly={readOnly} sendVersion={sendVersion} handleBib={handleBib} setCodeMirrorCursor={setCodeMirrorCursor} />}
       {!isLoading && <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly}/>}
   
-      {props.compareTo && 
-      <p className={styles.compare}>
-        Comparing {readOnly?`${live.message?live.message:'No label'} v${live.version}.${live.revision}`:'Editing mode'} with {props.compareTo}
-      </p>}
+      {props.compareTo && <CompareSelect live={live} {...props} versions={versions} readOnly={readOnly} article={articleInfos} selectedVersion={props.version}/>}
       <article className={styles.article}>
         {isLoading && <p>Loading...</p>}
         {!isLoading && <>
