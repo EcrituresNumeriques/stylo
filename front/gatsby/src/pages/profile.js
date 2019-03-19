@@ -9,7 +9,7 @@ export default () => {
     return (
     <Wrapped title="Stylo | My Profile">
         <section>
-            {isBrowser && <p>Profile management</p>}
+            {isBrowser && <p>Profile management Page</p>}
         </section>
     </Wrapped>
 )}

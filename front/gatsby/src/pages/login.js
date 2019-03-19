@@ -6,7 +6,7 @@ import Login from '../components/Login'
 import '../styles/general.scss'
 
 export default () => (
-    <Centered title="Hello Stylo">
+    <Centered title="Stylo | Login">
         <Login />
     </Centered>
 )

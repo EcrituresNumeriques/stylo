@@ -6,7 +6,7 @@ import Register from '../components/Register'
 import '../styles/general.scss'
 
 export default () => (
-    <Centered title="Hello Stylo">
+    <Centered title="Stylo | Register">
         <Register />
     </Centered>
 )
