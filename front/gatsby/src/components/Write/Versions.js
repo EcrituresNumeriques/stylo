@@ -80,6 +80,8 @@ export default (props) => {
         clearInterval(timerID);
       };
   },[props.versions]);
+
+
   function tick(date) {
     const timeDifference = new Date() - new Date(date)
     setSavedAgo( howLongAgo(timeDifference) );

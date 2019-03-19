@@ -1,6 +1,7 @@
 import React from "react"
 
 import Wrapped from '../layouts/Wrapped'
+import Profile from '../components/Profile'
 
 import '../styles/general.scss'
 
@@ -9,7 +10,7 @@ export default () => {
     return (
     <Wrapped title="Stylo | My Profile">
         <section>
-            {isBrowser && <p>Profile management Page</p>}
+            {isBrowser && <Profile />}
         </section>
     </Wrapped>
 )}

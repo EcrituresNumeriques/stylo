@@ -1,0 +1,6 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+.monP{
+    @extend .clickable;
+}
