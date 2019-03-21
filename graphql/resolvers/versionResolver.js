@@ -42,6 +42,7 @@ module.exports = {
       if(args.version.bib){
         values = {...values, bib:args.version.bib}
       }
+      values.autosave = args.version.auto
 
       delete values.createdAt
       delete values.updatedAt
@@ -51,25 +52,20 @@ module.exports = {
       //console.log(values)
 
       //console.log("Saving version",values,lastVersion, thisUser)
-      if(args.version.auto && lastVersion.autosave && lastVersion.owner == thisUser.id){
+      if(lastVersion.autosave && lastVersion.owner == thisUser.id){
           //Updating last autosave
-          //console.log("updating")
+          console.log("updating",JSON.stringify(values))
           returnedVersion = await Version.findOneAndUpdate({_id:values._id},{$set:{...values}})
+          console.log("returnVersion",JSON.stringify(returnedVersion))
       }
       else{
-        //console.log("fullSave")
+        console.log("fullSave",JSON.stringify(values))
         //full save, add new record
         delete values._id
 
         //Add major or not + set autosave status
-        if(!args.version.auto){
-          if(args.version.major){values.version++;values.revision=0}
-          else{values.revision++}
-          values.autosave = false
-        }
-        else{
-          values.autosave = true
-        }
+        if(args.version.major){values.version++;values.revision=0}
+        else{values.revision++}
 
         returnedVersion = await Version.create({...values})
         articleToSaveInto.versions.push(returnedVersion)
