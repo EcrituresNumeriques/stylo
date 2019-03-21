@@ -54,9 +54,9 @@ module.exports = {
       //console.log("Saving version",values,lastVersion, thisUser)
       if(lastVersion.autosave && lastVersion.owner == thisUser.id){
           //Updating last autosave
-          console.log("updating",JSON.stringify(values))
+          if(args.version.major){values.version++;values.revision=0}
           returnedVersion = await Version.findOneAndUpdate({_id:values._id},{$set:{...values}})
-          console.log("returnVersion",JSON.stringify(returnedVersion))
+          returnedVersion._doc = {...returnedVersion._doc,...values}
       }
       else{
         console.log("fullSave",JSON.stringify(values))

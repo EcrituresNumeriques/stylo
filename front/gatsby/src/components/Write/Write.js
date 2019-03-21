@@ -70,7 +70,7 @@ const ConnectedWrite = (props) => {
     try{
       const query = `mutation($user:ID!,$article:ID!,$md:String!,$bib:String!,$yaml:String!,$autosave:Boolean!,$major:Boolean!,$message:String){saveVersion(version:{article:$article,major:$major,auto:$autosave,md:$md,yaml:$yaml,bib:$bib,message:$message},user:$user){ _id version revision message autosave updatedAt owner{ displayName }} }`
       const response = await askGraphQL({query,variables:{...variables,...live,autosave,major,message}},'saving new version',props.sessionToken)
-      if(!autosave || versions[0]._id !== response.saveVersion._id){
+      if(versions[0]._id !== response.saveVersion._id){
         setVersions([response.saveVersion,...versions])
       }
       else{
