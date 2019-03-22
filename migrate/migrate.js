@@ -30,7 +30,10 @@ module.exports = async () => {
 
     // insert articles, VERSIONS + ZOTEROLINK missing
 
-    const articlesToUpdate = articles.filter(a=>a.title).map(a=>({...a,_id:a._id['$oid'],owners:a.owner}))
+    const articlesToUpdate = articles.filter(a=>a.title).map(a=>{
+      console.log(`importing article ${a.title}`)
+      return {...a,_id:a._id['$oid'],owners:a.owner}
+    })
     const insertedArticles = await Article.insertMany(articlesToUpdate)
     if(!insertedArticles){
      return false
@@ -42,6 +45,7 @@ module.exports = async () => {
         u.displayName = u.displayName+'#'+i
       }
       displayNameList.push(u.displayName)
+      console.log(`Migrating user ${u.displayName}`)
       return {
       ...u,
       _id:u._id['$oid'],
@@ -56,6 +60,13 @@ module.exports = async () => {
      return false
     }
 
+    //Push to User the password ID
+    for(let i=0;i<user_credentials.length;i++){
+      console.log(`Linking ${user_credentials[i].owner['$oid']} and ${user_credentials[i].username}`)
+      await User.findOneAndUpdate({_id: user_credentials[i].owner['$oid']}, {$push: {passwords: user_credentials[i]._id['$oid']}});
+    }
+    
+    
     //insert Credentials, looks good
     const passwordsToUpdate = user_credentials.reverse().filter(c=>true).map((c,i)=>{
 
@@ -69,7 +80,7 @@ module.exports = async () => {
       }
       emailList.push(c.email)
 
-
+      console.log(`Migrating password for ${c.username}`)
       return {
       _id:c._id['$oid'],
       users:[c.owner['$oid']],
@@ -86,6 +97,7 @@ module.exports = async () => {
     //insert versions
 
     const versionsToUpdate = versions.map(v=>{
+      console.log(`Migrating version for ${v.article['$oid']} v${v.version}.${v.revision}`)
       return {
         _id:v._id['$oid'],
         //Looks like some data don't have an owner, giving them user[0] _id
