@@ -83,6 +83,15 @@ module.exports = {
     }
 
   },
+  unlinkVersion: async (args,{req})=>{
+    try{
+      args = populateArgs(args,req)
+      isUser(args,req)
+    }
+    catch(err){
+      throw err
+    }
+  },
   version: async (args,{req}) => {
 
     // TODO need to make sure user should have access to this version 
