@@ -39,7 +39,7 @@ module.exports = async () => {
      return false
     }
 
-    // insert users, ARTICLES + PASSWORDS missing
+    // insert users, linking seems ok
     const userToUpdate = users.filter(u=>true).reverse().map((u,i)=>{
       if(displayNameList.includes(u.displayName)){
         u.displayName = u.displayName+'#'+i
@@ -60,12 +60,6 @@ module.exports = async () => {
      return false
     }
 
-    //Push to User the password ID
-    for(let i=0;i<user_credentials.length;i++){
-      console.log(`Linking ${user_credentials[i].owner['$oid']} and ${user_credentials[i].username}`)
-      await User.findOneAndUpdate({_id: user_credentials[i].owner['$oid']}, {$push: {passwords: user_credentials[i]._id['$oid']}});
-    }
-    
     
     //insert Credentials, looks good
     const passwordsToUpdate = user_credentials.reverse().filter(c=>true).map((c,i)=>{
@@ -116,6 +110,46 @@ module.exports = async () => {
     const insertedVersions = await Version.insertMany(versionsToUpdate)
     if(!insertedVersions){
       return false
+    }
+
+
+    
+    //Push to user the articles ID
+    for(let i=0;i<articles.length;i++){
+      console.log(`Linking ${articles[i].title}`)
+      for(let o=0;o<articles[i].owner.length;o++){
+        console.log(`to ${articles[i].owner[o]}`)
+        await User.findOneAndUpdate({_id: articles[i].owner[o]}, {$push: {articles: articles[i]._id['$oid']}})
+      }
+    }
+    
+    //Push to User the password ID
+    for(let i=0;i<user_credentials.length;i++){
+      console.log(`Linking ${user_credentials[i].owner['$oid']} and ${user_credentials[i].username}`)
+      await User.findOneAndUpdate({_id: user_credentials[i].owner['$oid']}, {$push: {passwords: user_credentials[i]._id['$oid']}});
+    }
+    
+    //Push to article the version ID + zotero links
+    for(let i=0;i<versions.length;i++){
+      console.log(`${versions[i]._id['$oid']} => ${versions[i].article['$oid']}`)
+      await Article.findOneAndUpdate({_id: versions[i].article['$oid']}, {$push: {versions: versions[i]._id['$oid']}})
+    }
+
+    articlesZotero = {}
+    //ZoteroLink
+    //2255653/collections/TNJMPE8P
+    for(let i=0;i<versions.length;i++){
+      //console.log("Zotero =>",versions[i].zoteroGroupID,versions[i].zoteroCollectionKey)
+      articlesZotero[versions[i].article['$oid']] = versions[i].zoteroGroupID? versions[i].zoteroCollectionKey? versions[i].zoteroGroupID+'/collections/'+versions[i].zoteroCollectionKey: versions[i].zoteroGroupID : null
+      //console.log(`${versions[i]._id['$oid']} => ${versions[i].article['$oid']}`)
+      //await Article.findOneAndUpdate({_id: versions[i].article['$oid']}, {$push: {versions: versions[i]._id['$oid']}})
+    }
+    
+    const zoteroToArticles = Object.entries(articlesZotero).filter(o=>o[1]);
+    
+    for(let i=0;i<zoteroToArticles.length;i++){
+      console.log(`updating ZoteroLink for ${zoteroToArticles[i][0]} to ${zoteroToArticles[i][1]}`)
+      await Article.findOneAndUpdate({_id: zoteroToArticles[i][0]}, {$set: {zoteroLink: zoteroToArticles[i][1]}})
     }
 
   }
