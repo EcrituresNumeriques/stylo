@@ -46,7 +46,7 @@ const ConnectedArticle = (props) => {
             <Export {...props} article={true} versionId={props.versions[0]._id} version={props.versions[0].version}revision={props.versions[0].revision}/>
         </Modal>}
         <nav>
-            <a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/htmlArticle/${props._id}?preview=true`} target="_blank" rel="noopener noreferrer">Preview</a>
+            <a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/api/v1/htmlArticle/${props._id}?preview=true`} target="_blank" rel="noopener noreferrer">Preview</a>
             <p onClick={()=>setExporting(true)}>Export</p>
             <Link to={`/article/${props._id}`} className={styles.primary}>Edit</Link>
         </nav>
