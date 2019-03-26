@@ -19,6 +19,13 @@ app.get('/zipVersion/:id',exportVersionZip);
 app.get('/htmlBook/:id',exportBookHtml);
 app.get('/zipBook/:id',exportBookZip);
 
+//Duplicate
+app.get('/api/v1/htmlVersion/:id',exportVersionHtml);
+app.get('/api/v1/htmlArticle/:id',exportArticleHtml);
+app.get('/api/v1/zipVersion/:id',exportVersionZip);
+app.get('/api/v1/htmlBook/:id',exportBookHtml);
+app.get('/api/v1/zipBook/:id',exportBookZip);
+
 app.use((req,res,next)=>{
   return res.redirect(301, redirect+req.originalUrl)
 })
