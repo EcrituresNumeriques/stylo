@@ -30,13 +30,16 @@ const ConnectedUser = props => {
   const [institution,setInstitution] = useState('')
   const [yaml,setYaml] = useState('')
   const [user,setUser] = useState({email:'',_id:'',admin:false,createdAt:'',updatedAt:''})
+  const [passwords, setPasswords] = useState([])
+  const [tokens, setTokens] = useState([])
   const [isLoading,setIsLoading] = useState(true)
+  const [emailLogin,setEmailLogin] = useState('')
 
   
   useEffect(()=>{
     (async ()=>{
       try{
-        const query = "query($user:ID!){user(user:$user){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution }}"
+        const query = `query($user:ID!){user(user:$user){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution passwords{ _id username email } tokens{ _id name active }}}`
         const variables = {user:props.activeUser._id}
         const data = await askGraphQL({query,variables},'fetching user',props.sessionToken)
         setDisplayNameH1(data.user.displayName)
@@ -45,6 +48,8 @@ const ConnectedUser = props => {
         setLastName(data.user.lastName || '')
         setInstitution(data.user.institution || '')
         setYaml(data.user.yaml)
+        setPasswords(data.user.passwords)
+        setTokens(data.user.tokens)
         setUser(data.user)
         setIsLoading(false)
       }
@@ -58,7 +63,7 @@ const ConnectedUser = props => {
     e.preventDefault();
     try{
       setIsLoading(true)
-      const query = `mutation($user:ID!,$displayName:String!,$firstName:String,$lastName:String, $institution:String,$yaml:String){updateUser(user:$user,displayName:$displayName,firstName:$firstName, lastName: $lastName, institution:$institution, yaml:$yaml){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution }}`
+      const query = `mutation($user:ID!,$displayName:String!,$firstName:String,$lastName:String, $institution:String,$yaml:String){updateUser(user:$user,displayName:$displayName,firstName:$firstName, lastName: $lastName, institution:$institution, yaml:$yaml){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution passwords{ _id username email } tokens{ _id name active }}}`
       const variables = {user:props.activeUser._id,yaml,displayName,firstName,lastName,institution}
       const data = await askGraphQL({query,variables},'updating user',props.sessionToken)
       setDisplayNameH1(data.updateUser.displayName)
@@ -68,6 +73,8 @@ const ConnectedUser = props => {
       setLastName(data.updateUser.lastName || '')
       setInstitution(data.updateUser.institution || '')
       setYaml(data.updateUser.yaml)
+      setPasswords(data.updateUser.passwords)
+      setTokens(data.updateUser.tokens)
       setUser(data.updateUser)
       setIsLoading(false)
     }
@@ -75,6 +82,27 @@ const ConnectedUser = props => {
       alert(`Couldn't update User: ${err}`)
     }
 
+  }
+
+  const addNewLogin = async (e) => {
+    e.preventDefault();
+    try{
+      const query = `mutation($user:ID!,$email:String!){
+        addCredential(email:$email,user:$user){
+          passwords{
+            _id
+            email
+            username
+          }
+        }
+      }`
+      const variables = {email:emailLogin,user:props.activeUser._id}
+      const data = await askGraphQL({query,variables},'Adding password to user',props.sessionToken)
+      setPasswords(data.addCredential.passwords)
+    }
+    catch(err){
+      alert(err)
+    }
   }
 
   return(
@@ -98,7 +126,19 @@ const ConnectedUser = props => {
         
       </form>
       <h2>Logins allowed</h2>
-      <h2>Tokens allowed</h2>    
+      <ul>
+        {isLoading && <li>Fetching..</li>}
+        {!isLoading && passwords.map(p=><li>{p._id} {p.username}</li>)}
+      </ul>
+      <form onSubmit={(e)=>addNewLogin(e)}>
+        <input placeholder="Email of the login to allow" value={emailLogin} onChange={(e)=>setEmailLogin(etv(e))}/>
+        <button>Give full access</button>
+      </form>
+      <h2>Tokens allowed</h2>
+      <ul>
+        {isLoading && <li>Fetching..</li>}
+        {!isLoading && tokens.map(p=><li>{p._id} {p.username}</li>)}
+      </ul>    
     </section>
   )
 }
