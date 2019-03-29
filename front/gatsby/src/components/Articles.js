@@ -11,8 +11,8 @@ import CreateArticle from './CreateArticle'
 import styles from './Articles.module.scss'
 
 
-const mapStateToProps = ({ logedIn, users, sessionToken }) => {
-    return { logedIn, users, sessionToken }
+const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
+    return { logedIn, activeUser, sessionToken }
 }
 
 
@@ -26,7 +26,7 @@ const ConnectedArticles = (props) => {
     const [isLoading,setIsLoading] = useState(false)
     const [articles,setArticles] = useState([])
     const [tags,setTags] = useState([])
-    const [displayName,setDisplayName] = useState(props.users[0].displayName)
+    const [displayName,setDisplayName] = useState(props.activeUser.displayName)
     const [creatingTag, setCreatingTag] = useState(false)
     const [creatingArticle, setCreatingArticle] = useState(false)
     const [needReload,setNeedReload] = useState(true)
@@ -49,7 +49,7 @@ const ConnectedArticles = (props) => {
     }
 
     const query = "query($user:ID!){user(user:$user){ displayName tags{ _id name } articles{ _id title updatedAt owners{ displayName } versions{ _id version revision autosave message } tags{ name _id }}}}"
-    const user = {user:props.users[0]._id}
+    const user = {user:props.activeUser._id}
 
     useEffect(()=>{
         if(needReload){

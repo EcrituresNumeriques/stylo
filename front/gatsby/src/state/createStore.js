@@ -9,10 +9,20 @@ const reducer = (state, action) => {
       return Object.assign({}, state, {
         logedIn: true,
         users: login.users,
+        activeUser: login.users[0],
         password: login.password,
         sessionToken: login.token
       })
     }
+  }
+  else if(action.type === 'UPDATE_ACTIVE_USER'){
+    console.log("updating displayName")
+    return Object.assign({}, state, {
+      activeUser: {...state.activeUser, displayName: action.payload}
+    })
+  }
+  else if(action.type === 'SWITCH'){
+    console.log("switching user")
   }
   else if (action.type === `LOGOUT`) {
     return Object.assign({}, state, {

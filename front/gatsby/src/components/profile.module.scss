@@ -1,6 +1,47 @@
 @import '../styles/defaults.scss';
 @import '../styles/variables.scss';
 
-.monP{
-    @extend .clickable;
+.section{
+    background-color: $extra-background-color;
+    padding:1rem;
+    p{
+        margin-top:0.5rem;
+    }
+    h2{
+        margin-top: 1rem;
+        font-size:1.2rem;
+    }
+    h1{
+        font-size:1.7rem;
+        color:$extra-color;
+    }
+    ul {
+        margin-top:0.5rem;
+        li{
+            padding:1rem 1rem;
+        }
+        li:nth-child(2n+1){
+            background-color:$main-background-color;
+        }
+        li:first-child{
+            border:1px solid $main-border-color;
+        }
+    }
+    form{
+        margin-top:0.5rem;
+        text-align: right;
+        input{
+            display: block;
+            width:100%;
+            padding:0.5rem 1rem;
+        }
+        button{
+            border:none;
+            margin-top:0.5rem;
+            @extend .primary-button;
+        }
+        button:disabled{
+            @extend .secondary-button;
+        }
+    }
 }

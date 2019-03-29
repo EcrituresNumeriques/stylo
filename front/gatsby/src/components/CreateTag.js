@@ -6,8 +6,8 @@ import askGraphQL from '../helpers/graphQL';
 
 import styles from './Articles.module.scss'
 
-const mapStateToProps = ({ users, sessionToken }) => {
-    return { users, sessionToken }
+const mapStateToProps = ({ activeUser, sessionToken }) => {
+    return { activeUser, sessionToken }
 }
 
 const ConnectedCreateTag = (props) => {
@@ -26,7 +26,7 @@ const ConnectedCreateTag = (props) => {
     let baseQuery = 'mutation($name:String!, $description:String, $user:ID!){ createTag(name:$name,description:$description,user:$user){ _id name } '
     let addToTag = articlesSelected.filter(a=>a.selected).map((a,i) => `addToTag${i}: addToTag(article:"${a._id}",tag:"new",user:$user){ _id }`).join(' ')
     const query = baseQuery + addToTag + '}'
-    const variables = {user:props.users[0]._id, name, description}
+    const variables = {user:props.activeUser._id, name, description}
 
     const createTag = async (event, cb,query, variables, token) => {
         try{

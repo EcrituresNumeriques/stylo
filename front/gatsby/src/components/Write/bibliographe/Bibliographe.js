@@ -6,8 +6,8 @@ import etv from '../../../helpers/eventTargetValue'
 import bib2key from './CitationsFilter'
 import askGraphQL from '../../../helpers/graphQL';
 
-const mapStateToProps = ({ logedIn, sessionToken, users }) => {
-  return { logedIn, sessionToken, users  }
+const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
+  return { logedIn, sessionToken, activeUser  }
 }
 
 const ConnectedBibliographe = (props) => {
@@ -36,7 +36,7 @@ const ConnectedBibliographe = (props) => {
       console.log("saving to graphQL",props.article.zoteroLink, zoteroLink,props.sessionToken)
       try{
         const query =`mutation($user:ID!,$article:ID!,$zotero:String!){zoteroArticle(article:$article,zotero:$zotero,user:$user){ _id zoteroLink}}`
-        const variables = {zotero:zoteroLink,user:props.users[0]._id,article:props.article._id}
+        const variables = {zotero:zoteroLink,user:props.activeUser._id,article:props.article._id}
         await askGraphQL({query,variables},"updating zoteroLink",props.sessionToken)
       }
       catch(err){

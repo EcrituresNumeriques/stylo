@@ -7,8 +7,8 @@ import styles from './books.module.scss'
 
 import Book from './Book'
 
-const mapStateToProps = ({ logedIn, users, sessionToken }) => {
-    return { logedIn, users, sessionToken }
+const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
+    return { logedIn, activeUser, sessionToken }
 }
 
 
@@ -20,7 +20,7 @@ const ConnectedBooks = (props) => {
     }
 
     const [isLoading,setIsLoading] = useState(true)
-    const [displayName,setDisplayName] = useState(props.users[0].displayName)
+    const [displayName,setDisplayName] = useState(props.activeUser.displayName)
     const [tags,setTags] = useState([])
     const [needReload,setNeedReload] = useState(true)
 
@@ -30,7 +30,7 @@ const ConnectedBooks = (props) => {
             (async () =>{
                 try{
                     const query = `query($user:ID!){user(user:$user){ displayName tags{ _id name  bib yaml updatedAt articles{ _id title updatedAt versions(limit:1){ _id version revision autosave message } } } } }`
-                    const user = {user:props.users[0]._id}
+                    const user = {user:props.activeUser._id}
                     setIsLoading(true)
                     const data = await askGraphQL({query,variables:user},'fetching articles',props.sessionToken)
                     //Need to sort by updatedAt desc

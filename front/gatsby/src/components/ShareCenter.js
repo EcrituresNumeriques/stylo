@@ -8,8 +8,8 @@ import Modal from './Modal'
 import Acquintances from './Acquintances'
 
 
-const mapStateToProps = ({ logedIn, sessionToken, users }) => {
-  return { logedIn, sessionToken, users }
+const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
+  return { logedIn, sessionToken, activeUser }
 }
 
 const ConnectedShareCenter = (props) => {
@@ -20,7 +20,7 @@ const ConnectedShareCenter = (props) => {
   const fork = async () => {
     try{
       const query = `mutation($user:ID!,$article:ID!){sendArticle(article:$article,to:$user,user:$user){ _id }}`
-      const variables = {user:props.users[0]._id,to:props.users[0]._id,article:props._id}
+      const variables = {user:props.activeUser._id,to:props.activeUser._id,article:props._id}
       await askGraphQL({query,variables}, 'forking Article',props.sessionToken)
       props.setNeedReload()
     }

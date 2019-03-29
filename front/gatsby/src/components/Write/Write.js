@@ -21,8 +21,8 @@ if (typeof window !== `undefined` && typeof navigator !== `undefined`) {
   CodeMirror = Controlled
 }
 
-const mapStateToProps = ({ logedIn, sessionToken, users }) => {
-  return { logedIn, sessionToken, users  }
+const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
+  return { logedIn, sessionToken, activeUser  }
 }
 
 const ConnectedWrite = (props) => {
@@ -57,7 +57,7 @@ const ConnectedWrite = (props) => {
     //instanceCM.setCursor(line,0);
   } 
 
-  const variables = {user:props.users[0]._id,article:props.id}
+  const variables = {user:props.activeUser._id,article:props.id}
   const [isLoading,setIsLoading] = useState(true)
   const [live, setLive] = useState({})
   const [versions, setVersions] = useState([])

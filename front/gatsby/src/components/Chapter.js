@@ -1,14 +1,12 @@
-import React, {useState, useEffect} from 'react'
-import {navigate} from 'gatsby'
+import React, {useState} from 'react'
 import { connect } from "react-redux"
 
 import askGraphQL from '../helpers/graphQL';
-import styles from './books.module.scss'
 import etv from '../helpers/eventTargetValue'
 
 
-const mapStateToProps = ({ logedIn, users, sessionToken }) => {
-    return { logedIn, users, sessionToken }
+const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
+    return { logedIn, activeUser, sessionToken }
 }
 
 const ConnectedChapter = props => {
@@ -20,7 +18,7 @@ const ConnectedChapter = props => {
   const rename = async (e) => {
     e.preventDefault();
     const query = `mutation($article:ID!,$title:String!,$user:ID!){renameArticle(article:$article,title:$title,user:$user){title}}`
-    const variables = {user:props.users[0]._id,article:props._id,title:tempTitle}
+    const variables = {user:props.activeUser._id,article:props._id,title:tempTitle}
     await askGraphQL({query,variables},'Renaming Article',props.sessionToken)
     setTitle(tempTitle)
     setRenaming(false)

@@ -15,8 +15,8 @@ import howLongAgo from '../helpers/howLongAgo'
 import etv from '../helpers/eventTargetValue'
 import askGraphQL from '../helpers/graphQL';
 
-const mapStateToProps = ({ logedIn, users, sessionToken }) => {
-    return { logedIn, users, sessionToken }
+const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
+    return { logedIn, activeUser, sessionToken }
 }
 
 const ConnectedArticle = (props) => {
@@ -33,7 +33,7 @@ const ConnectedArticle = (props) => {
     const rename = async (e) => {
         e.preventDefault();
         const query = `mutation($article:ID!,$title:String!,$user:ID!){renameArticle(article:$article,title:$title,user:$user){title}}`
-        const variables = {user:props.users[0]._id,article:props._id,title:tempTitle}
+        const variables = {user:props.activeUser._id,article:props._id,title:tempTitle}
         await askGraphQL({query,variables},'Renaming Article',props.sessionToken)
         setTitle(tempTitle)
         setRenaming(false)

@@ -6,8 +6,8 @@ import styles from './acquintances.module.scss'
 import askGraphQL from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
 
-const mapStateToProps = ({ logedIn, sessionToken, users }) => {
-  return { logedIn, sessionToken, users }
+const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
+  return { logedIn, sessionToken, activeUser }
 }
 
 const ConnectedAcquintances = (props) => {
@@ -19,7 +19,7 @@ const ConnectedAcquintances = (props) => {
   const addContact = async (e) => {
     e.preventDefault();
     const query = `mutation($user:ID!,$email:String!){addAcquintance(email:$email,user:$user){ _id }}`
-    const variables = {user:props.users[0]._id,email:contact}
+    const variables = {user:props.activeUser._id,email:contact}
     await askGraphQL({query,variables}, 'Adding acquintances',props.sessionToken)
     setContact('')
     setLoading(true)
@@ -28,7 +28,7 @@ const ConnectedAcquintances = (props) => {
   const shareWith = async (to) => {
     try{
       const query = `mutation($user:ID!,$article:ID!,$to:ID!){${props.action}Article(article:$article,to:$to,user:$user){ _id }}`
-      const variables = {user:props.users[0]._id,to:to,article:props._id}
+      const variables = {user:props.activeUser._id,to:to,article:props._id}
       await askGraphQL({query,variables}, 'Sharing Article',props.sessionToken)
       props.setNeedReload()
       props.cancel()
@@ -42,7 +42,7 @@ const ConnectedAcquintances = (props) => {
     if(loading){
       (async () =>{
         const query = `query($user:ID!){user(user:$user){ acquintances{ _id displayName email } } }`
-        const variables = {user:props.users[0]._id}
+        const variables = {user:props.activeUser._id}
         const data = await askGraphQL({query,variables}, 'Fetching acquintances',props.sessionToken)
         setLoading(false)
         setAcquintances(data.user.acquintances)

@@ -5,8 +5,8 @@ import { connect } from "react-redux"
 import askGraphQL from '../helpers/graphQL';
 import styles from './Articles.module.scss'
 
-const mapStateToProps = ({ logedIn, users, sessionToken }) => {
-  return { logedIn, users, sessionToken }
+const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
+  return { logedIn, activeUser, sessionToken }
 }
 
 
@@ -16,7 +16,7 @@ const ConnectedArticleTags = (props) => {
     props.setTags([...props.stateTags,{_id,name}])
     try{
       const query=`mutation($article:ID!,$tag:ID!,$user:ID!){addToTag(article:$article,tag:$tag,user:$user){ _id }}`
-      const variables={article:props._id,tag:_id,user:props.users[0]._id}
+      const variables={article:props._id,tag:_id,user:props.activeUser._id}
       await askGraphQL({query,variables},'adding to tag',props.sessionToken)
     }
     catch(err){
@@ -29,7 +29,7 @@ const ConnectedArticleTags = (props) => {
     props.setTags(props.stateTags.filter(t=>t._id !== id))
     try{
       const query=`mutation($article:ID!,$tag:ID!,$user:ID!){removeFromTag(article:$article,tag:$tag,user:$user){ _id }}`
-      const variables={article:props._id,tag:id,user:props.users[0]._id}
+      const variables={article:props._id,tag:id,user:props.activeUser._id}
       await askGraphQL({query,variables},'removing from tag',props.sessionToken)
     }
     catch(err){
