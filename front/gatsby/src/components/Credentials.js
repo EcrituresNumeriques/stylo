@@ -12,7 +12,7 @@ const mapStateToProps = ({ logedIn, users, activeUser, sessionToken, password })
 }
 const mapDispatchToProps = dispatch => {
     return { 
-        switchUser: (u) => dispatch({ type: `SWITCH`, data: u }),
+        switchUser: (u) => dispatch({ type: `SWITCH`, payload: u }),
         updateUser: (u) => dispatch({type: 'RELOAD_USERS', payload: u})
     }
 }
