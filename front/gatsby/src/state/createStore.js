@@ -27,9 +27,7 @@ const reducer = (state, action) => {
     })
   }
   else if(action.type === 'SWITCH'){
-    console.log(action);
     if(state.users.map(u=>u._id).includes(action.payload._id)){
-      console.log("switching user")
       return Object.assign({},state,{activeUser:action.payload})
     }
   }

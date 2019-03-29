@@ -128,7 +128,7 @@ const ConnectedUser = props => {
       <h2>Logins allowed</h2>
       <ul>
         {isLoading && <li>Fetching..</li>}
-        {!isLoading && passwords.map(p=><li>{p._id} {p.username}</li>)}
+        {!isLoading && passwords.map(p=><li key={`userLogin-${p._id}`}>{p._id} {p.username}</li>)}
       </ul>
       <form onSubmit={(e)=>addNewLogin(e)}>
         <input placeholder="Email of the login to allow" value={emailLogin} onChange={(e)=>setEmailLogin(etv(e))}/>
