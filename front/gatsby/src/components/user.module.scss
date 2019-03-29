@@ -40,3 +40,11 @@
 
   }
 }
+
+.rightAlign{
+  text-align: right;
+  margin-top:0.5rem;
+  > button {
+    @extend .primary-button;
+  }
+}

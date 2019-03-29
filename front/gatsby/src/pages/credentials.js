@@ -1,16 +1,16 @@
 import React from "react"
 
 import Wrapped from '../layouts/Wrapped'
-import Profile from '../components/Profile'
+import Credentials from '../components/Credentials'
 
 import '../styles/general.scss'
 
 export default () => {
     const isBrowser = typeof window !== 'undefined';
     return (
-    <Wrapped title="Stylo | My Profile">
+    <Wrapped title="Stylo | My Credentials">
         <section>
-            {isBrowser && <Profile />}
+            {isBrowser && <Credentials />}
         </section>
     </Wrapped>
 )}

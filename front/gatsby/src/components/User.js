@@ -41,9 +41,9 @@ const ConnectedUser = props => {
         const data = await askGraphQL({query,variables},'fetching user',props.sessionToken)
         setDisplayNameH1(data.user.displayName)
         setDisplayName(data.user.displayName)
-        setFirstName(data.user.firstName)
-        setLastName(data.user.lastName)
-        setInstitution(data.user.institution)
+        setFirstName(data.user.firstName || '')
+        setLastName(data.user.lastName || '')
+        setInstitution(data.user.institution || '')
         setYaml(data.user.yaml)
         setUser(data.user)
         setIsLoading(false)
@@ -58,15 +58,15 @@ const ConnectedUser = props => {
     e.preventDefault();
     try{
       setIsLoading(true)
-      const query = `mutation($user:ID!,$displayName:String!,$firstName:String,$lastName:String, $institution:String,$yaml:String){updateUser(user:$user,displayName:$displayName,firstName:$firstName, lastName: $lastName, institution:$institution, yaml:$yaml){ displayName _id email admin createdAt updatedAt yaml }}`
+      const query = `mutation($user:ID!,$displayName:String!,$firstName:String,$lastName:String, $institution:String,$yaml:String){updateUser(user:$user,displayName:$displayName,firstName:$firstName, lastName: $lastName, institution:$institution, yaml:$yaml){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution }}`
       const variables = {user:props.activeUser._id,yaml,displayName,firstName,lastName,institution}
       const data = await askGraphQL({query,variables},'updating user',props.sessionToken)
       setDisplayNameH1(data.updateUser.displayName)
       setDisplayName(data.updateUser.displayName)
       props.updateActiveUser(displayName)
-      setFirstName(data.updateUser.firstName)
-      setLastName(data.updateUser.lastName)
-      setInstitution(data.updateUser.institution)
+      setFirstName(data.updateUser.firstName || '')
+      setLastName(data.updateUser.lastName || '')
+      setInstitution(data.updateUser.institution || '')
       setYaml(data.updateUser.yaml)
       setUser(data.updateUser)
       setIsLoading(false)
@@ -94,7 +94,8 @@ const ConnectedUser = props => {
         <label>Last name:</label><input type="text" value={lastName} onChange={(e)=>setLastName(etv(e))} placeholder="Last name" />
         <label>Institution:</label><input type="text" value={institution} onChange={(e)=>setInstitution(etv(e))} placeholder="Institution name" />
         <label>Default YAML:</label><textarea value={yaml} onChange={(e)=>setYaml(etv(e))} placeholder="" />
-        <button>Update</button>
+        <div className={styles.rightAlign}><button>Update</button></div>
+        
       </form>
       <h2>Logins allowed</h2>
       <h2>Tokens allowed</h2>    

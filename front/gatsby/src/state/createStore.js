@@ -21,6 +21,11 @@ const reducer = (state, action) => {
       activeUser: {...state.activeUser, displayName: action.payload}
     })
   }
+  else if(action.type === 'RELOAD_USERS'){
+    return Object.assign({}, state, {
+      users: action.payload
+    })
+  }
   else if(action.type === 'SWITCH'){
     console.log("switching user")
   }
