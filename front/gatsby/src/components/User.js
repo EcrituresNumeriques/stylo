@@ -5,6 +5,8 @@ import { connect } from "react-redux"
 import askGraphQL from '../helpers/graphQL';
 import etv from '../helpers/eventTargetValue'
 import styles from './user.module.scss'
+import UserConnectedLogin from './UserAllowedLogin'
+
 
 const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
   return { logedIn, activeUser, sessionToken }
@@ -105,6 +107,26 @@ const ConnectedUser = props => {
     }
   }
 
+  const removeLogin = async (email) => {
+    try{
+      const query = `mutation($user:ID!,$email:String!){
+        removeCredential(email:$email,user:$user){
+          passwords{
+            _id
+            email
+            username
+          }
+        }
+      }`
+      const variables = {email:email,user:props.activeUser._id}
+      const data = await askGraphQL({query,variables},'Removing password to user',props.sessionToken)
+      setPasswords(data.removeCredential.passwords)
+    }
+    catch(err){
+      alert(err)
+    }
+  }
+
   return(
     <section className={styles.section}>
       <h1>User management ({displayNameH1})</h1>
@@ -128,7 +150,7 @@ const ConnectedUser = props => {
       <h2>Logins allowed</h2>
       <ul>
         {isLoading && <li>Fetching..</li>}
-        {!isLoading && passwords.map(p=><li key={`userLogin-${p._id}`}>{p._id} {p.username}</li>)}
+        {!isLoading && passwords.map(p=><UserConnectedLogin key={`userLogin-${p._id}`} {...p} user={user.email} removeLogin={removeLogin}/>)}
       </ul>
       <form onSubmit={(e)=>addNewLogin(e)}>
         <input placeholder="Email of the login to allow" value={emailLogin} onChange={(e)=>setEmailLogin(etv(e))}/>
