@@ -27,7 +27,7 @@ const ConnectedLogin = (props) => {
     }
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const query = "query($email:String,$username:String,$password:String!){login(username:$username,email:$email,password:$password){token token_cookie password{_id username}users{_id displayName}}}"
+    const query = "query($email:String,$username:String,$password:String!){login(username:$username,email:$email,password:$password){token token_cookie password{_id username}users{_id email displayName}}}"
     let user = {email, password}
     
     const loginUser = async (query,user) => {

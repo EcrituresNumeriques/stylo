@@ -28,8 +28,7 @@ const ConnectedCredentials = props => {
     useEffect(()=>{
         (async ()=>{
           try{
-            const query = "query{ refreshToken{ users { _id displayName } } }"
-            const variables = {user:props.activeUser._id}
+            const query = "query{ refreshToken{ users { _id displayName email } } }"
             const data = await askGraphQL({query},'fetching user',props.sessionToken)
             props.updateUser(data.refreshToken.users)
             setIsLoading(false)

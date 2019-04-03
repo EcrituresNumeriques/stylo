@@ -36,6 +36,11 @@ const reducer = (state, action) => {
       ...initialState
     })
   }
+  else if (action.type === 'REMOVE_MYSELF_ALLOWED_LOGIN'){
+    const remainingUsers = state.users.filter(u=>u._id !== action.payload)
+    console.log("Removing myself",Object.assign({},state,{users:remainingUsers,activeUser:remainingUsers[0]}))
+    return Object.assign({},state,{users:remainingUsers,activeUser:remainingUsers[0]})
+  }
   return state
 }
 

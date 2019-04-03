@@ -20,8 +20,8 @@ const ConnectedUserAllowedLogin = props => {
 
   return (
     <li className={styles.resetFloat}>
-      {props.user !== props.email && <button className={styles.button} onDoubleClick={()=>props.removeLogin(props.email)}>Remove access</button>}
-      {props._id} {props.email}
+      {props.user !== props.email && <button className={styles.button} onDoubleClick={()=>props.removeLogin(props.email,props._id)}>Revoke access</button>}
+      {props.email}
     </li>
   )
 }

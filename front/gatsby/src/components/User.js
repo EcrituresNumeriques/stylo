@@ -8,12 +8,13 @@ import styles from './user.module.scss'
 import UserConnectedLogin from './UserAllowedLogin'
 
 
-const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
-  return { logedIn, activeUser, sessionToken }
+const mapStateToProps = ({ logedIn, password, activeUser, sessionToken }) => {
+  return { logedIn, password, activeUser, sessionToken }
 }
 const mapDispatchToProps = dispatch => {
   return { 
-      updateActiveUser: (displayName) => dispatch({ type: `UPDATE_ACTIVE_USER`, payload: displayName })
+      updateActiveUser: (displayName) => dispatch({ type: `UPDATE_ACTIVE_USER`, payload: displayName }),
+      removedMyself: (_id) => dispatch({type: 'REMOVE_MYSELF_ALLOWED_LOGIN', payload: _id})
   }
 }
 
@@ -100,6 +101,7 @@ const ConnectedUser = props => {
       }`
       const variables = {email:emailLogin,user:props.activeUser._id}
       const data = await askGraphQL({query,variables},'Adding password to user',props.sessionToken)
+      setEmailLogin('')
       setPasswords(data.addCredential.passwords)
     }
     catch(err){
@@ -107,7 +109,7 @@ const ConnectedUser = props => {
     }
   }
 
-  const removeLogin = async (email) => {
+  const removeLogin = async (email,_id) => {
     try{
       const query = `mutation($user:ID!,$email:String!){
         removeCredential(email:$email,user:$user){
@@ -121,6 +123,13 @@ const ConnectedUser = props => {
       const variables = {email:email,user:props.activeUser._id}
       const data = await askGraphQL({query,variables},'Removing password to user',props.sessionToken)
       setPasswords(data.removeCredential.passwords)
+      
+      // User removed itself from allowedCredentials
+      if(props.password._id === _id){
+        //user._id
+        props.removedMyself(user._id)
+        navigate('/credentials')
+      }
     }
     catch(err){
       alert(err)
