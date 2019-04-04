@@ -43,19 +43,33 @@ const ConnectedCredentials = props => {
     const [password, setPassword] = useState('');
     const [passwordC, setPasswordC] = useState('');
     const [isLoading,setIsLoading] = useState(true)
-    const [isUpdating,setIsUpdatinng] = useState(false)
+    const [isUpdating,setIsUpdating] = useState(false)
 
     const changePassword = async (e) => {
         e.preventDefault();
         try{
-            setIsUpdatinng(true)
+            setIsUpdating(true)
             const query = `mutation($password:ID!, $old:String!, $new:String!, $user:ID!){ changePassword(password:$password,old:$old,new:$new,user:$user){ _id } }`
             const variables = {password:props.password._id, old: passwordO, new:password, user: props.activeUser._id}
             const data = await askGraphQL({query, variables},'update Password',props.sessionToken)
             setPassword('')
             setPasswordO('')
             setPasswordC('')
-            setIsUpdatinng(false)
+            setIsUpdating(false)
+        }
+        catch(err){
+            alert(err)
+        }
+    }
+
+    const setDefault = async (user) => {
+        try{
+            setIsUpdating(true)
+            const query = `mutation($password:ID!, $user:ID!){ setPrimaryUser(password:$password,user:$user){ users { _id displayName email } } }`
+            const variables = {password:props.password._id, user: user}
+            const data = await askGraphQL({query, variables},'Set user as default',props.sessionToken)
+            setIsUpdating(false)
+            props.updateUser(data.setPrimaryUser.users)
         }
         catch(err){
             alert(err)
@@ -76,7 +90,7 @@ const ConnectedCredentials = props => {
             <h2>User selection</h2>
             <p>If your <strong>Credentials</strong> are associated with multiple <strong>Users</strong>, you'll be able to set active user and default active User here ({isLoading?'fetching..':'up to date'})</p>
             <ul>
-                {props.users.map((u,i)=><CredentialsUserSelect key={`user-${u._id}`} {...props} u={u}/>)}
+                {props.users.map((u,i)=><CredentialsUserSelect key={`user-${u._id}`} {...props} u={u} setDefault={setDefault}/>)}
             </ul>
 
         </section>
