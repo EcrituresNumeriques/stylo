@@ -161,15 +161,11 @@ const ConnectedUser = props => {
         {isLoading && <li>Fetching..</li>}
         {!isLoading && passwords.map(p=><UserConnectedLogin key={`userLogin-${p._id}`} {...p} user={user.email} removeLogin={removeLogin}/>)}
       </ul>
-      <form onSubmit={(e)=>addNewLogin(e)}>
+      <form onSubmit={(e)=>addNewLogin(e)} id={styles.newLogin}>
         <input placeholder="Email of the login to allow" value={emailLogin} onChange={(e)=>setEmailLogin(etv(e))}/>
-        <button>Give full access</button>
+        <div className={styles.rightAlign}><button>Give full access</button></div>
       </form>
-      <h2>Tokens allowed</h2>
-      <ul>
-        {isLoading && <li>Fetching..</li>}
-        {!isLoading && tokens.map(p=><li>{p._id} {p.username}</li>)}
-      </ul>    
+ 
     </section>
   )
 }

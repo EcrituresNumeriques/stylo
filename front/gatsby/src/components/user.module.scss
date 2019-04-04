@@ -48,3 +48,10 @@
     @extend .primary-button;
   }
 }
+
+#newLogin{
+  > input{
+    display:block;
+    width:100%;
+  }
+}
