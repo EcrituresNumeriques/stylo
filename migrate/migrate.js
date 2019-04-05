@@ -11,6 +11,17 @@ const Article = require('./models/article');
 const Version = require('./models/version');
 
 
+const YAML = require('js-yaml');
+
+let SexyYamlType = new YAML.Type('!sexy', {
+  kind: 'sequence', // See node kinds in YAML spec: http://www.yaml.org/spec/1.2/spec.html#kind//
+  construct: function (data) {
+    return data.map(function (string) { return 'sexy ' + string; });
+  }
+});
+let SEXY_SCHEMA = YAML.Schema.create([ SexyYamlType ]);
+
+
 module.exports = async () => {
   console.log(`${articles.length} articles, ${versions.length} versions, ${users.length} users, ${user_credentials.length} passwords`)
 
@@ -152,10 +163,60 @@ module.exports = async () => {
       await Article.findOneAndUpdate({_id: zoteroToArticles[i][0]}, {$set: {zoteroLink: zoteroToArticles[i][1]}})
     }
 
+    console.log('Adding new Version for updated YAML')
+    let nbrUpdated = 0
+    let nbrFailed = 0
+
+
+
+  const iArticles = await Article.find().populate('versions')
+  console.log(iArticles.length)
+
+   for(a of iArticles){ 
+      const lastVersion = a.versions[a.versions.length-1]
+      console.log('Starting ',lastVersion._id)
+    
+      try{
+      const singleYaml = lastVersion.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, "");
+      let singleYamlObj = YAML.load(singleYaml, { schema: SEXY_SCHEMA });
+
+      singleYamlObj.keywords = [{
+        lang:'fr',
+        list:singleYamlObj.keyword_fr || '',
+        list_f:singleYamlObj.keyword_fr_f || ''
+      },{
+        lang:'en',
+        list:singleYamlObj.keyword_en || '',
+        list_f:singleYamlObj.keyword_en_f || ''
+      }]
+
+      delete singleYamlObj.keyword_en
+      delete singleYamlObj.keyword_en_f
+      delete singleYamlObj.keyword_fr
+      delete singleYamlObj.keyword_fr_f
+
+      lastVersion.yaml = '---\n'+YAML.safeDump(singleYamlObj)+'---'
+      delete lastVersion._id
+      delete lastVersion.createdAt
+      delete lastVersion.updatedAt
+      lastVersion.message = 'Migration Stylo'
+      lastVersion.autosave = true
+      lastVersion.revision++
+
+      const savedVersion = await Version.create(lastVersion)
+      await Article.findOneAndUpdate({_id: savedVersion._doc.article}, {$push: {versions: savedVersion.id}})
+      }
+      catch(err){
+        console.log('abort',lastVersion._id,lastVersion.yaml)
+      }
+
   }
-  catch(err){
-    return err
-  }
+}
+catch(err){
+  return false
+}
+
+
 
   return true
 }

@@ -47,6 +47,10 @@ const versionSchema = new Schema({
     type:String,
     default:''
   },
+  hidden:{
+    type:Boolean,
+    default:false
+  }
 }, {timestamps:true});
 
 module.exports = mongoose.model('Version', versionSchema);
