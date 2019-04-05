@@ -1,0 +1,66 @@
+version: '2'
+
+services:
+  mongodb-stylo:
+    image: mongo:latest
+    container_name: "mongodb-stylo"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles --logpath=/dev/null 
+  mongodb-admin:
+    image: mongo-express
+    container_name: "mongodb-admin"
+    links:
+      - mongodb-stylo:mongo
+    ports:
+      - 3031:8081
+  graphql-stylo:
+    build: ./graphql/
+    container_name: "graphql-stylo"
+    ports:
+      - 3030:80
+    depends_on:
+      - mongodb-stylo
+    environment:
+      - MONGO_SERVER=mongodb-stylo
+      - MONGO_SERVER_PORT=27017
+      - MONGO_SERVER_DB=stylo
+      - HTTPS=false
+      - JWT_SECRET_TOKEN=SuperSecureButYouShouldChangeMe
+      - JWT_SECRET_SESSION=DidITellYouHowMuchYouShouldChangeMe?
+      - JWT_SECRET_SESSION_COOKIE=NoNoNoReallyIInsistYouShouldChangeMe
+      - ALLOW_CORS_FRONTEND=http://localhost:3000
+  export-stylo:
+    build: ./export/
+    container_name: "export-stylo"
+    ports:
+      - 3060:80
+    depends_on:
+      - mongodb-stylo
+    environment:
+      - MONGO_SERVER=mongodb-stylo
+      - MONGO_SERVER_PORT=27017
+      - MONGO_SERVER_DB=stylo
+      - URL_FRONTEND=http://localhost:3000
+  front-stylo:
+    build: 
+      context: ./front
+      dockerfile: dockerfile-dev
+    container_name: "front-stylo"
+    volumes:
+      - ./front/gatsby:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3000:80
+    depends_on:
+      - graphql-stylo
+
+networks:
+  default:
+    external:
+      name: root_default

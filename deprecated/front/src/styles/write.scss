@@ -1,0 +1,252 @@
+main#WriteWrapper{
+    user-select: none;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1450px;
+  position:relative;
+  display:flex;
+  flex-wrap: wrap;
+  @media (min-width: 850px) {
+    flex-wrap: nowrap;
+  }
+
+
+  align-items: flex-start;
+
+  #input {
+    flex:800px 1 1;
+  }
+
+  #writeComponent{
+    flex:275px 0 0;
+    @media (max-width: 850px) {
+      flex:275px 1 1;
+    }
+    margin-right: 1rem;
+    transition: padding 0.5s;
+    #timeline, #sommaire, #biblio, #stat {
+      background-color: white;
+      display:block;
+      padding:0;
+      margin-bottom: 1rem;
+      border: 1px solid #c0c0c0;
+        h1.title{
+          margin:0;
+          width:100%;
+          cursor:pointer;
+          padding:0.5rem 1rem;
+          border-bottom:1px solid #c0c0c0;
+        }
+        h1.title.closed{
+            background-color: #303030;
+            color:white;
+        }
+        section{
+            max-height: 25vh;
+            width:100%;
+            overflow-y: auto;
+        }
+    }
+    #stat{
+        p {
+            text-align: left;
+            padding:0.5rem 1rem;
+            margin:0;
+        }
+    }
+      #biblio{
+          button{
+              padding:0.5rem 1rem;
+              border:none;
+              border-bottom: 1px solid #c0c0c0;
+              background-color: #7c7c7c;
+              display:block;
+              width:100%;
+              color:white;
+              cursor: pointer;
+          }
+          button::-moz-focus-inner{
+              border:0;
+              padding:0;
+          }
+          button:last-child{
+              border-bottom: none;
+          }
+          p{
+            width: 100%;
+            max-width: 275px;
+              font-size: 1rem;
+              font-weight: 400;
+              font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              margin:0;
+              padding:0.5rem 1rem;
+              cursor:pointer;
+              border-bottom: 1px solid #c0c0c0;
+          }
+      }
+    #sommaire {
+          h1.title{
+              border-bottom: 1px solid #c0c0c0;
+          }
+        border-bottom: 1px solid #c0c0c0;
+        padding-bottom: 0.25rem;
+        pre,h1:not(.title),h2,h3,h4,h5,h6 {
+            width: 100%;
+            max-width: 275px;
+            font-size: 1rem;
+            font-weight: 400;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin:0;
+            padding:0.15rem 1rem;
+            cursor:pointer;
+        }
+        h1:not(.title){
+            border-top: 1px solid #c0c0c0;
+            counter-increment: h1;
+            counter-reset: h2;
+            padding-top:0.5rem;
+            margin-top:0.5rem;
+        }
+        h1:not(.title):nth-child(1){
+            margin-top:0;
+            border-top:none;
+        }
+        h1:not(.title):before{
+            content: counter(h1, decimal) ".";
+        }
+        h2{
+            counter-increment: h2;
+        }
+        h2:before{
+            content:  counter(h1, decimal) "." counter(h2, upper-latin) ;
+        }
+        h3{
+            counter-increment: h3;
+        }
+        h3:before{
+            content: counter(h1, decimal) "." counter(h2, upper-latin) "." counter(h3, upper-roman) ;
+        }
+        h4{
+            counter-increment: h4;
+        }
+        h4:before{
+            content: counter(h1, decimal) "." counter(h2, upper-latin) "." counter(h3, upper-roman) "." counter(h4, lower-latin) ;
+        }
+        h5{
+            counter-increment: h5;
+        }
+        h5:before{
+            content: counter(h1, decimal) "." counter(h2, upper-latin) "." counter(h3, upper-roman) "." counter(h4, lower-latin) "." counter(h5, lower-roman) ;
+        }
+        h6{
+            counter-increment: h6;
+        }
+        h6:before{
+            content: counter(h1, decimal) "." counter(h2, upper-latin) "." counter(h3, upper-roman) "." counter(h4, lower-latin) "." counter(h5, lower-roman) "." counter(h6, lower-greek);
+        }
+        pre{
+            counter-increment: pre;
+        }
+        pre:before{
+            content: counter(h1, decimal) "." counter(h2, upper-latin) "." counter(h3, upper-roman) "." counter(h4, lower-latin) "." counter(h5, lower-roman) "." counter(h6, lower-greek) " " counter(pre, disc);
+        }
+
+    }
+
+    #timeline{
+      a, #showed {
+        display:block;
+        border-bottom: 1px solid #c0c0c0;
+        padding:0.5rem 1rem;
+        color:black;
+      }
+      a:last-child{
+        border-bottom: none;
+      }
+      #showed {
+          background-color: #7c7c7c;
+          color:white;
+          ul {
+              padding:0;
+              margin:0;
+              list-style: none;
+              li {
+                  margin-top:0.5rem;
+                  margin-right: 0.5rem;
+                  display:inline-block;
+                  cursor:pointer;
+                  padding:0.5rem 0.5rem;
+                  border:1px solid white;
+              }
+          }
+      }
+      a.active{
+          background-color:  #7c7c7c;
+          color:white;
+      }
+    }
+  }
+  #input.compared{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:auto 1fr;
+    grid-template-areas:
+    "title select"
+    "md compareTo"
+    "yaml yaml"
+    "bib bib";
+  }
+  #input.solo{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:auto 1fr;
+    grid-template-areas:
+    "title select"
+    "md md"
+    "yaml yaml"
+    "bib bib";
+  }
+  #input{
+    flex:800px 1 1;
+    background-color: white;
+    border:1px solid #c0c0c0;
+
+    #title{
+        font-family: "BellweatherSans-shownbsp";
+        grid-area:title;
+        flex:100% 0 0;
+        margin:0.5rem 0 0 0;
+        padding:0.5rem 1rem;
+        font-size: 1.15rem;
+        color:blue;
+        display:inline-block;
+    }
+    #title:before{
+      content:"# ";
+    }
+    div.Select{
+      grid-area:select;
+      position: relative;
+      z-index: 499;
+      vertical-align: bottom;
+    }
+    #compareTo{
+      grid-area:compareTo;
+      font-family: "BellweatherSans-shownbsp", monospace;
+    }
+    .react-codemirror2{
+      grid-area:md;
+    }
+    textarea{
+      border:none;
+      border-top:1px solid #c0c0c0;
+      display:block;
+    }
+  }
+}

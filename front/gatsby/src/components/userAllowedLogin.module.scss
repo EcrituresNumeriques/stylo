@@ -1,0 +1,16 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+.button {
+  float:right;
+  @extend .primary-button;
+  margin-top:-0.5rem;
+  margin-right:-0.5rem;
+}
+.resetFloat{
+  clear:both;
+  padding:0.5rem;
+  &:nth-child(2n+1){
+    background-color:$main-background-color;
+  }
+}

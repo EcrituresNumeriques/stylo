@@ -1,0 +1,26 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+
+.export{
+  > h1{
+    font-size:1.4rem;
+    margin-bottom:1rem;
+  }
+  > form{
+    margin-bottom:1rem;
+    select{
+      display:block;
+      width:100%;
+    }
+  }
+  > nav {
+    text-align: right;
+    margin-bottom:1rem;
+    float: right;
+    > p{
+      display: inline-block;
+      @extend .primary-button;
+    }
+  }
+}

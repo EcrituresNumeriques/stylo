@@ -1,0 +1,39 @@
+{
+  "name": "sails-docker",
+  "private": false,
+  "version": "0.2.0",
+  "description": "A Sails, React & Webpack boilerplate",
+  "engines": {
+    "node": "5.8.0",
+    "npm": ">= 3.7.3"
+  },
+  "keywords": [
+    "sails",
+    "react",
+    "webpack",
+    "boilerplate"
+  ],
+  "dependencies": {
+    "archiver": "^2.1.1",
+    "bcrypt": "^1.0.2",
+    "connect-redis": "^3.3.0",
+    "ejs": "2.3.4",
+    "memfs": "^2.5.7",
+    "node-pandoc": "^0.3.0",
+    "sails": "~0.12.2",
+    "sails-disk": "~0.10.9",
+    "sails-mongo": "^0.12.2"
+  },
+  "scripts": {
+    "start": "sails lift",
+    "dist": "sails lift --prod"
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/markmur/sails-react-webpack.git"
+  },
+  "author": "Arthur Juchereau",
+  "license": "GPL",
+  "devDependencies": {}
+}

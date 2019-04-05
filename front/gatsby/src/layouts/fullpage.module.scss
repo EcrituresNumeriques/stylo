@@ -1,0 +1,26 @@
+@import '../styles/defaults.scss';
+
+.grid{
+    display: grid;
+    grid-row-gap: 0;
+    height:100%;
+    grid-template-columns: 100%;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 
+    "header"
+    "main"
+}
+
+.header{
+    grid-area: header;
+    background-color: $main-color;
+    color:$main-background-color;
+    a {
+        color:$main-background-color;
+    }
+}
+
+.main {
+    grid-area: main;
+    height:100%;
+}

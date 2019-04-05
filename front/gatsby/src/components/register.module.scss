@@ -1,0 +1,48 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+.beware{
+    background-color:$beware-background;
+}
+
+
+.box {
+    padding:1rem;
+    border:1px solid $main-border-color;
+    background-color:$extra-background-color;
+    form {
+        input{
+            padding: .5em 1em;
+            display: block;
+            width: 100%;
+            border-top:1px solid $main-border-color;
+            border-left:1px solid $main-border-color;
+            border-right:1px solid $main-border-color;
+        }
+        
+        input[type=submit]{
+            background-color:$main-color;
+            color:$main-background-color;
+            border-bottom:1px solid $main-border-color;
+            margin-top:1rem;
+        }
+        h1{
+            font-size: 100%;
+            margin-bottom:1rem;
+            text-align: center
+        }
+        h1:last-of-type{
+            padding-top:1rem;
+            margin-top:1rem;
+        }
+        p{
+            margin-top: 1rem;
+            text-align: right;
+            a {
+                font-weight: normal;
+                color:#007eff;
+            }
+        }
+    }
+    
+}

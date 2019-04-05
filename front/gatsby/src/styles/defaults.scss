@@ -1,0 +1,78 @@
+@import 'variables.scss';
+
+
+.no-user-select{
+    -webkit-user-select: none; /* Safari 3.1+ */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none; /* Standard syntax */
+}
+
+.clickable {
+    cursor:pointer;
+    user-select: none;
+}
+
+.primary-button{
+    @extend .clickable;
+    background-color: $button-primary-background !important;
+    color: $button-primary-color !important;
+    padding:0.5rem 1rem;
+}
+
+.secondary-button{
+    @extend .clickable;
+    background-color: $button-secondary-background !important;
+    color: $button-secondary-color !important;
+    padding:0.5rem 1rem;
+}
+
+.wrapped-center{
+    margin:0 auto;
+    width: 100%;
+    @media screen and (min-width: $tablet-breakpoint){
+        max-width: $tablet-width;
+    }
+    @media screen and (min-width: $screen-breakpoint){
+        max-width: $screen-width;
+    }
+    @media screen and (min-width: $large-screen-breakpoint){
+        max-width: $large-screen-width;
+    }
+
+}
+
+.slider{
+    position:fixed;
+    z-index: 10;
+    top:0;
+    bottom:0;
+    width:400px;
+    overflow-x: visible;
+    > nav{
+      @extend .clickable;
+      position:absolute;
+      top:0;
+      padding:0.75rem 1rem;
+      transition:background-color 0.5s ease;
+    }
+    .close{
+      background-color:$main-background-color;
+    }
+  
+    > div{
+      overflow-y:auto;
+      height:100%;
+      > header{
+        > h1{
+          font-size:1.5rem;
+          padding:0.5rem 1rem 0 1rem;
+        }
+        > h2{
+          font-size: 1.2rem;
+          padding:0 1rem 0.5rem 1rem;
+          font-weight:normal
+        }
+      }
+    }
+  }

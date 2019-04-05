@@ -1,0 +1,169 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+
+
+.alert{
+    background-color:red;
+    color:white;
+    padding:1rem;
+    button.delete{
+        border:1px solid white;
+        background-color:red;
+        color:white;
+        margin-top:1rem;
+        padding:0.5rem 1rem;
+        @extend .clickable;
+    }
+    button.cancel{
+        border:1px solid white;
+        color:red;
+        background-color:white;
+        margin-right:1rem;
+        padding:0.5rem 1rem;
+        @extend .clickable;
+    }
+}
+
+.deleteMe{
+    float:right;
+    @extend .secondary-button;
+    margin-right:-0.5rem;
+    border:1px solid $main-border-color;
+}
+
+.clickMeOff{
+    @extend .clickable;
+    @extend .primary-button;
+    display:inline-block;
+    margin-right:0.5rem;
+    border:1px solid $main-border-color;
+}
+
+.clickMeOn{
+    @extend .clickable;
+    @extend .secondary-button;
+    display:inline-block;
+    margin-right:0.5rem;
+    border:1px solid $main-border-color;
+}
+
+
+.section {
+    @extend .wrapped-center;
+    padding:1rem;
+    border:1px solid $main-border-color;
+    background-color:$extra-background-color;
+    > h1{
+        margin-bottom:1rem;
+    }
+    > p {
+        margin-bottom:1rem;
+    }
+    > article {  
+        padding:1rem;
+        h1{
+            span{
+                @extend .clickable;
+            }
+            span:first-child {
+                display: inline-block;
+                width:1rem;
+                text-align: center;
+                font-weight: bold;
+            }
+        }
+        > section {
+            h2 {
+                font-size:1rem;
+                font-weight:normal;
+                span {
+                    font-weight:bold;
+                }
+            }
+            ul{
+                margin-top:1rem;
+            }
+        }
+        nav {
+            float:right;
+            a,p {
+                @extend .clickable;
+                display: inline-block;
+                border: 1px solid $main-border-color;
+                padding:0.5rem;
+                margin:-0.5rem 0.25rem;
+            }
+            p:not(.primary),a:not(.primary){
+                background-color: $button-secondary-background;
+                color:$button-secondary-color;
+
+            }
+            a:last-child{
+                margin-right:-0.5rem;
+            }
+        }
+    }
+    > article:nth-of-type(2n+1){
+        background-color:$main-background-color;
+    }
+}
+
+.button {
+    @extend .clickable;
+    display:inline-block;
+    padding:0.5rem 1rem;
+    margin-right:0.5rem;
+    background-color: $button-primary-background !important;
+    color: $button-primary-color !important;
+}
+
+.primary {
+    background-color: $button-primary-background !important;
+    color: $button-primary-color !important;
+}
+
+.tags{
+    @extend .clickable;
+    display:inline-block;
+    border:1px solid $main-border-color;
+    padding:0.5rem;
+    margin-right:0.5rem;
+}
+
+.selectedTags {
+    @extend .tags;
+    background-color: $button-primary-background !important;
+    color: $button-primary-color !important;
+}
+
+.create{
+    background-color:$main-background-color;
+    margin-bottom: 1rem;
+    padding:1rem;
+    form {
+        input,textarea{
+            width:100%;
+            display:block;
+            padding:0.5rem 1rem;
+            margin-bottom:1rem;
+            border:none;
+        }
+        input[type=submit]{
+            width:auto;
+            margin-top:1rem;
+            margin-bottom:0;
+            @extend .primary-button;
+        }
+        ul {
+            li{
+                @extend .secondary-button;
+                display:inline-block;
+                margin-right:0.5rem;
+            }
+            li.selected{
+                @extend .primary-button;
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+version: "2"
+
+services:
+  sails-stylo-beta:
+    restart: always
+    build: .
+    ports:
+      - "80:80"
+    links:
+      - mongodb-stylo-beta:mongodb
+      - redis-stylo-beta:redis-stylo
+    environment:
+      - NODE_ENV=production
+  mongodb-stylo-beta:
+    restart: always
+    image: mongo:latest
+    container_name: "mongodb-stylo-beta"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - "./data/db:/data/db"
+    command: mongod --smallfiles --logpath=/dev/null # --quiet
+  redis-stylo-beta:
+    restart: always
+    image: redis

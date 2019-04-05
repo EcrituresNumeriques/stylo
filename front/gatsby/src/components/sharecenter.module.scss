@@ -1,0 +1,18 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+.reset{
+  clear:both;
+}
+
+.share{
+  float:right;
+  margin-top:1rem;
+  margin-right:-0.5rem;
+  p{
+    @extend .secondary-button;
+    border:1px solid $main-border-color;
+    margin-left:0.5rem;
+    display:inline-block;
+  }
+}
