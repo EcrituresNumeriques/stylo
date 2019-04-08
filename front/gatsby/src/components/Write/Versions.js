@@ -107,7 +107,7 @@ export default (props) => {
         <ul>
           {props.readOnly && <li key={`showVersion-GoLive`}><Link to={`/article/${props.article._id}`}>Edit</Link></li>}
           {!props.readOnly && <p>Edition - Last save: {savedAgo}</p>}
-          {!props.readOnly && <><p onClick={()=>{setExportVar({...exportVar,article:true,_id:props.article._id,versionId:props.versions[0]._id,    version:props.versions[0].version,    revision:props.versions[0].revision});setExporting(true)}} className={styles.button}>Export</p><a href={`${env.EXPORT_ENDPOINT}/htmlArticle/${props.article._id}?preview=true`} target="_blank" rel="noopener noreferrer" className={styles.button}>preview</a></>}
+          {!props.readOnly && <><p onClick={()=>{setExportVar({...exportVar,article:true,_id:props.article._id,versionId:props.versions[0]._id,    version:props.versions[0].version,    revision:props.versions[0].revision});setExporting(true)}} className={styles.button}>Export</p><a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/api/v1/htmlArticle/${props.article._id}?preview=true`} target="_blank" rel="noopener noreferrer" className={styles.button}>preview</a></>}
           {!props.readOnly && <form className={styles.liveVersion} onSubmit={e=>saveVersion(e,false)}>
             <input type="text" placeholder="Label of the version" value={message} onChange={(e)=>setMessage(etv(e))}/>
             <button className={message?styles.primary:styles.secondary} onClick={e=>saveVersion(e,false)}>Save Minor</button>
@@ -123,7 +123,7 @@ export default (props) => {
                 {v._id !== props.compareTo && <Link to={`/article/${props.article._id}/${props.selectedVersion?'version/'+props.selectedVersion+'/':''}compare/${v._id}`}>Compare</Link>}
                 {v._id === props.compareTo && <Link to={`/article/${props.article._id}/${props.selectedVersion?'version/'+props.selectedVersion:''}`}>Stop</Link>}
                 <p onClick={()=>{setExportVar({...exportVar,article:false,_id:v._id,versionId:v._id,version:v.version,    revision:v.revision});setExporting(true)}}>export</p>
-                <a href={`${env.EXPORT_ENDPOINT}/htmlVersion/${v._id}?preview=true`} target="_blank" rel="noopener noreferrer">preview</a>
+                <a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/api/v1/htmlVersion/${v._id}?preview=true`} target="_blank" rel="noopener noreferrer">preview</a>
               </nav>
             </li>
           )}
