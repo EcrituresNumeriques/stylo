@@ -44,6 +44,7 @@ export default props => {
           <option value="docx">DOCX</option>
           <option value="epub">EPUB</option>
           <option value="tei">TEI</option>
+          <option value="icml">ICML</option>
         </select>
         <select value={csl} onChange={(e)=>setCsl(etv(e))}>
           <option value="chicagomodified">chicagomodified</option>
