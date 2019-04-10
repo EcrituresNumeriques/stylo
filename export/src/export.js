@@ -3,6 +3,10 @@ const Article = require('./models/article')
 const Version = require('./models/version')
 const Tag = require('./models/tag')
 
+const filterAlphaNum = (string) => {
+  return string.replace(/\s/g,"_").replace(/[ÉéÈèÊêËë]/g,"e").replace(/[ÔôÖö]/g,"o").replace(/[ÂâÄäÀà]/g,"a").replace(/[Çç]/g,"c").replace(/[^A-Za-z0-9_]/g,"")  
+}
+
 const exportHTML = ({bib,yaml,md,id,title},res,req) => {
 
   let template = '../templates-stylo/templateHtml5.html5'
@@ -21,7 +25,7 @@ const exportHTML = ({bib,yaml,md,id,title},res,req) => {
     return res.status(500).send(`${html5}`)
   }
   if(!req.query.preview){
-    res.set('Content-Disposition', `attachment; filename="${title}.html"`)
+    res.set('Content-Disposition', `attachment; filename="${filterAlphaNum(title)}.html"`)
   }
   const html5 = shell.cat(`${id}.html`)
   return res.send(`${html5}`)
@@ -36,9 +40,9 @@ const exportZIP = ({bib,yaml,md,id,title},res,req) => {
   shell.sed('-i', /^.*bibliography.*$/, '', `${id}.yaml`)
   shell.exec(`sed -i '$ d' ${id}.yaml`)
   shell.echo(`bibliography: ${id}.bib\n---`).toEnd(`${id}.yaml`)
-  shell.exec(`zip ${title}.zip ${id}.*`)
-  res.set('Content-Disposition', `attachment; filename="${title}.zip"`)
-  return res.download(`${process.env.PWD}/src/data/${title}.zip`)
+  shell.exec(`zip ${filterAlphaNum(title)}.zip ${id}.*`)
+  res.set('Content-Disposition', `attachment; filename="${filterAlphaNum(title)}.zip"`)
+  return res.download(`${process.env.PWD}/src/data/${filterAlphaNum(title)}.zip`)
 }
 
 const alphaSort = (a, b) => {
