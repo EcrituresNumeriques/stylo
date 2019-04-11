@@ -40,9 +40,9 @@ const exportZIP = ({bib,yaml,md,id,title},res,req) => {
   shell.sed('-i', /^.*bibliography.*$/, '', `${id}.yaml`)
   shell.exec(`sed -i '$ d' ${id}.yaml`)
   shell.echo(`bibliography: ${id}.bib\n---`).toEnd(`${id}.yaml`)
-  shell.exec(`zip ${filterAlphaNum(title)}.zip ${id}.*`)
-  res.set('Content-Disposition', `attachment; filename="${filterAlphaNum(title)}.zip"`)
-  return res.download(`${process.env.PWD}/src/data/${filterAlphaNum(title)}.zip`)
+  shell.exec(`zip ${title}.zip ${id}.*`)
+  res.set('Content-Disposition', `attachment; filename="${title}.zip"`)
+  return res.download(`${process.env.PWD}/src/data/${title}.zip`)
 }
 
 const alphaSort = (a, b) => {
@@ -149,7 +149,7 @@ module.exports = {
        const firstChapter = chapters.sort(alphaSort)[0]
        const yaml = firstChapter.versions[firstChapter.versions.length-1].yaml
 
-       exportZIP({bib:[cleanedBook.bib, ...bibs].join('\n'),yaml:yaml,md:mds.join('\n\n'), id:cleanedBook._id, title:cleanedBook.name}, res, req)
+       exportZIP({bib:[cleanedBook.bib, ...bibs].join('\n'),yaml:yaml,md:mds.join('\n\n'), id:cleanedBook._id, title:filterAlphaNum(cleanedBook.name)}, res, req)
  
     }
     catch(err){
