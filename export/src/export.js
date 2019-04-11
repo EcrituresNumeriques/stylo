@@ -22,7 +22,6 @@ const exportHTML = ({bib,yaml,md,id,title},res,req) => {
   shell.echo(md).to(`${id}.md`)
   shell.echo(bib).to(`${id}.bib`)
   shell.echo(yaml).to(`${id}.yaml`)
-  console.log("Pandoc in progress")
   const pandoc = shell.exec(`pandoc ${id}.md ${id}.yaml --bibliography ${id}.bib --standalone --template=${template} --section-divs --ascii --toc --csl=../templates-stylo/chicagomodified.csl -f markdown -t html5 -o ${id}.html`).code
   if(pandoc !== 0){
     const html5 = shell.cat(`${id}.html`)
