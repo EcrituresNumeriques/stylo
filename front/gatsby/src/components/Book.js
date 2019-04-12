@@ -3,6 +3,7 @@ import {Link} from 'gatsby'
 
 import styles from './books.module.scss'
 import env from '../helpers/env'
+import etv from '../helpers/eventTargetValue'
 
 import Modal from './Modal'
 import Export from './Export'
@@ -19,6 +20,8 @@ export default (props) => {
 
     const [expanded,setExpanded] = useState(false)
     const [exporting,setExporting] = useState(false)
+    const [tempName,setTempName] = useState(props.name)
+    const [isRenaming,setIsRenaming] = useState(false)
 
     return (
     <article>
@@ -30,7 +33,8 @@ export default (props) => {
             <p onClick={()=>setExporting(true)}>Export</p>
             <Link to={`/book/${props._id}`} className={styles.primary}>Edit</Link>
         </nav>
-        <h1 onClick={()=>setExpanded(!expanded)}><span>{expanded?'-':'+'}</span> {props.name} ({howLongAgo(new Date() - new Date(props.updatedAt))})</h1>
+        {!isRenaming && <h1><span onClick={()=>setExpanded(!expanded)}>{expanded?'-':'+'} {props.name} ({howLongAgo(new Date() - new Date(props.updatedAt))})</span> <span onClick={()=>setIsRenaming(true)}>[rename]</span></h1>}
+        {isRenaming && <p><input value={tempName} onChange={(e)=>setTempName(etv(e))}/><button>Rename</button><button onClick={()=>{setIsRenaming(false);setTempName(props.name)}}>Cancel</button></p>}
         {expanded && <section>
           <ul>
             <p>Chapters:</p>
