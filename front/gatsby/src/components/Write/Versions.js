@@ -105,14 +105,6 @@ export default (props) => {
         </Modal>}
       {expand && <>
         <ul>
-          {props.readOnly && <li key={`showVersion-GoLive`}><Link to={`/article/${props.article._id}`}>Edit</Link></li>}
-          {!props.readOnly && <p>Edition - Last save: {savedAgo}</p>}
-          {!props.readOnly && <><p onClick={()=>{setExportVar({...exportVar,article:true,_id:props.article._id,versionId:props.versions[0]._id,    version:props.versions[0].version,    revision:props.versions[0].revision});setExporting(true)}} className={styles.button}>Export</p><a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/api/v1/htmlArticle/${props.article._id}?preview=true`} target="_blank" rel="noopener noreferrer" className={styles.button}>preview</a></>}
-          {!props.readOnly && <form className={styles.liveVersion} onSubmit={e=>saveVersion(e,false)}>
-            <input type="text" placeholder="Label of the version" value={message} onChange={(e)=>setMessage(etv(e))}/>
-            <button className={message?styles.primary:styles.secondary} onClick={e=>saveVersion(e,false)}>Save Minor</button>
-            <button className={message?styles.primary:styles.secondary} onClick={e=>saveVersion(e,true)}>Save Major</button>
-          </form>}
           {props.versions.map(v=>
             <li key={`showVersion-${v._id}`} className={v._id === props.selectedVersion?styles.selected:v._id === props.compareTo?styles.compareTo:null}><Link to={`/article/${props.article._id}/version/${v._id}`}>{v.message?v.message:'No label'} ({v.autosave?'autosaved ':null}{v.version}.{v.revision})</Link>
               <p>
