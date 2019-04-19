@@ -13,9 +13,9 @@ export default (props) => {
   const [modal, setModal] = useState(false)
 
   return (
-    
+
     <section id={styles.section}>
-      <h1 className={expand?null:styles.closed} onDoubleClick={()=>setExpand(!expand)}>Bibliography</h1>
+      <h1 className={expand?null:styles.closed} onClick={()=>setExpand(!expand)}>{expand?"-":"+"} Bibliography</h1>
       {expand && <>
         {entries.map((ref)=>(<Reference key={`ref-${ref.cle}`} {...ref}/>))}
         {!props.readOnly && <button className={styles.secondary} onClick={()=>setModal(true)}>Manage Bibliography</button>}
