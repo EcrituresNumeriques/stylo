@@ -51,7 +51,7 @@ const ConnectedBooks = (props) => {
             <h1>Books for {displayName}</h1>
             <p>Books are like super-tags, they are a collection of articles that you can ordonnate and export all at once</p>
             <p>Below are your tags eligible to be books:</p>
-            {tags.map(t=><Book key={`book-${t._id}`} {...t} setNeedReload={()=>setNeedReload(true)}/>)}
+            {tags.map(t=><Book key={`book-${t._id}`} {...t} setNeedReload={()=>setNeedReload(true)} activeUser={props.activeUser} sessionToken={props.sessionToken}/>)}
 
         </section>
     )

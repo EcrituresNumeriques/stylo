@@ -5,6 +5,8 @@ import styles from './books.module.scss'
 import env from '../helpers/env'
 import etv from '../helpers/eventTargetValue'
 
+import askGraphQL from '../helpers/graphQL';
+
 import Modal from './Modal'
 import Export from './Export'
 import Chapter from './Chapter'
@@ -16,12 +18,22 @@ const alphaSort = (a, b) => {
   return 0;
 }
 
+
 export default (props) => {
 
     const [expanded,setExpanded] = useState(false)
     const [exporting,setExporting] = useState(false)
     const [tempName,setTempName] = useState(props.name)
+    const [name,setName] = useState(props.name)
     const [isRenaming,setIsRenaming] = useState(false)
+
+    const renameBook = async () => {
+      const query = `mutation($user:ID!,$tag:ID!,$name:String,$description:String){ updateTag(user:$user,tag:$tag,name:$name,description:$description){ _id name description } }`
+      const variables = {user:props.activeUser._id, tag: props._id, name: tempName}
+      const newTag = await askGraphQL({query,variables},"Updating infos of the tag", props.sessionToken)
+      setName(newTag.updateTag.name)
+      setIsRenaming(false)
+    }
 
     return (
     <article>
@@ -33,8 +45,8 @@ export default (props) => {
             <p onClick={()=>setExporting(true)}>Export</p>
             <Link to={`/book/${props._id}`} className={styles.primary}>Edit</Link>
         </nav>
-        {!isRenaming && <h1><span onClick={()=>setExpanded(!expanded)}>{expanded?'-':'+'} {props.name} ({howLongAgo(new Date() - new Date(props.updatedAt))})</span> <span onClick={()=>setIsRenaming(true)}>[rename]</span></h1>}
-        {isRenaming && <p><input value={tempName} onChange={(e)=>setTempName(etv(e))}/><button>Rename</button><button onClick={()=>{setIsRenaming(false);setTempName(props.name)}}>Cancel</button></p>}
+        {!isRenaming && <h1><span onClick={()=>setExpanded(!expanded)}>{expanded?'-':'+'} {name} ({howLongAgo(new Date() - new Date(props.updatedAt))})</span> <span onClick={()=>setIsRenaming(true)}>[rename]</span></h1>}
+        {isRenaming && <p><input value={tempName} onChange={(e)=>setTempName(etv(e))}/><button onClick={()=>renameBook()}>Rename</button><button onClick={()=>{setIsRenaming(false);setTempName(props.name)}}>Cancel</button></p>}
         {expanded && <section>
           <ul>
             <p>Chapters:</p>

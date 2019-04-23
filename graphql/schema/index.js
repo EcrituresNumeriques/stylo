@@ -184,6 +184,9 @@ type RootMutation {
   
   "Create tag [need to be authentificated as specified user]"
   createTag(name:String!,description:String,user:ID!):Tag!
+
+  "update name and description of a tag [need to be authentificated as specified user]"
+  updateTag(name:String,description:String,tag:ID!,user:ID!):Tag!
   
   "Delete tag and all articles carrying it"
   deleteTag(tag:ID!,user:ID!):User!
