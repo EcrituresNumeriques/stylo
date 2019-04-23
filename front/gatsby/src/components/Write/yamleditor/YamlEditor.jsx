@@ -270,7 +270,7 @@ export default class YamlEditor extends Component {
           <h1>Diffusion</h1>
           {this.props.editor && <TextInput target="publisher" title="Publisher" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
           {this.props.editor && <TextInput target="journal" title="Journal" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
-          {this.props.editor && <ArrayOfPeople target="directors" titre="Directors" action="director" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}  
+          {this.props.editor && <ArrayOfPeople target="director" titre="Directors" action="director" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}  
           {this.props.editor && <TextInput target="issnum" title="ISSN" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}  
           {this.props.editor && <TextInput target="prod" title="Productor" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
           {this.props.editor && <TextInput target="prodnum" title="Prodnum" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
