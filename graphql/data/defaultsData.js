@@ -79,6 +79,9 @@ nocite: ''
 ### Métadonnées
 ### Preview et annotation
 ### Export
+## Annotations sémantiques
+### Annotation dans un paragraphe
+### Annotation de plusieurs paragraphes
 ## Bibliographie`,
       md: `## Introduction
 
