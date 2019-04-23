@@ -143,13 +143,13 @@ Cette liste sera automatiquement ordonnée de 1 à 4.
 
 ## Appareil critique
 
-### Notes à bas de page
+### Notes de bas de page
 
 Un appel de note de bas de page se fait ainsi[^1].  Par ailleurs, la note peut être déclarée n'importe où dans le document[^2], en fin de document ou juste en dessous par exemple[^3].
 
 [^3]: Une note déclarée "n'importe où", ici, juste en dessous du paragraphe correspondant.
 
-Le label de la note peut être ce que vous voulez : il peut être indifférement un chiffre ou une suite de caractères[^notePage].
+Le label de la note peut être ce que vous voulez : il peut être indifféremment un chiffre ou une suite de caractères[^notePage].
 
 Une note de bas de page peut aussi être écrite dans le corps du texte, en sortant l'accent circonflexe des crochets^[Ceci est une note de bas de page inline. Elle peut être aussi longue que vous voulez, elle sera transformée comme les autres en note de bas de page].
 
@@ -162,7 +162,7 @@ Les références sont ensuite insérées dans le texte grâce à leur _clé bibt
 Pour résumer :
 
   1. clic sur la référence: copier la clé
-  2. coller ou CTLR+V : colle la clé dans le texte où est positionné le curseur [@goody_raison_1979].
+  2. coller ou CTRL+V : colle la clé dans le texte où est positionné le curseur [@goody_raison_1979].
 
 Il est également possible d'ajouter une référence ainsi : « Comme le dit @goody_raison_1979, le geste ... »
 
@@ -198,6 +198,60 @@ Plusieurs types d'exports sont disponibles :
 - Zip : comprend les trois sources de l'article : yaml (métadonnées), bibtex (bibliographie), md (corps de texte)
 - ...
 
+## Annotations sémantiques
+
+Il est possible de structurer sémantiquement votre texte avec des simples balises.
+
+Il y a deux types d'annotation sémantiques:
+
+1. Des annotations qui concernent un ou plusieurs mots dans le même paragraphe
+2. Des annotations qui concernent plusieurs paragraphes
+
+### Annotation dans un paragraphe
+
+La syntaxe:
+
+[Voici la thèse de l'article]{.these}
+
+Produira en HTML:
+
+<span class="these">Voici la thèse de l'article</span>
+
+Dans la preview vous pouvez visualiser les classes:
+
+- these
+- definition
+- exemple
+- concept
+- epigraphe
+- dedicace
+- note
+
+### Annotation de plusieurs paragraphes
+
+La syntaxe:
+
+
+::: {.maclasse}
+
+Ici un paragraphe.
+
+Ici un autre paragraphe.
+
+:::
+
+Produira en HTML:
+
+\`\`\`html
+
+<div class="maclasse">
+  <p>Ici un paragraphe.</p>
+  <p>Ici un autre paragraphe.</p>
+</div>
+
+\`\`\`
+Pour plus d'informations, consultez la documentation.
+
 ## Bibliographie
 
 <!-- La bibliographie apparaîtra automatiquement en fin d'article, à cet endroit -->
@@ -207,7 +261,8 @@ Plusieurs types d'exports sont disponibles :
 [^2]: Voici une note déclarée en fin de document
 [^notePage]: Voici une note avec un label textuel.
 `,
-      bib: `@book{goody_raison_1979,
+      bib: `
+@book{goody_raison_1979,
   series = {Le sens commun},
   title = {La {Raison} graphique. {La} domestication de la pensée sauvage.},
   publisher = {Les Editions de Minuit},
@@ -215,25 +270,10 @@ Plusieurs types d'exports sont disponibles :
   year = {1979},
 }`,
       yaml: `---
-title: Stylo
 title_f: Stylo
+title: Stylo
 subtitle_f: Un article type
 subtitle: Un article type
-lang: fr
-abstract:
-  - lang: fr
-    text: >-
-      C'est article est un exemple d'article type édité sur Stylo. Stylo est un
-      éditeur d'article scientifique dédié aux sciences humaines.
-
-      Vous pouvez éditer cet article pour vous entraîner. Une documentation plus
-      complète est accessible en cliquant sur le lien documentation.
-    text_f: >-
-      C'est article est un exemple d'article type édité sur _Stylo_. _Stylo_ est
-      un éditeur d'article scientifique dédié aux sciences humaines.
-
-      Vous pouvez éditer cet article pour vous entraîner. Une documentation plus
-      complète est accessible en cliquant sur le lien documentation.
 authors:
   - forname: Marcello
     surname: Vitali-Rosati
@@ -249,23 +289,42 @@ authors:
     foaf: ''
     isni: ''
     wikidata: ''
-keyword_fr_f: 'édition, bac-à-sable'
-keyword_en_f: 'publishing, sandbox'
-keyword_fr: 'édition, bac-à-sable'
-keyword_en: 'publishing, sandbox'
-id_sp: SP1234
-bibliography: SP1234.bib
 date: 2018/05/29
 year: '2018'
 month: '05'
 day: '29'
-controlledKeywords:
-  - label: 'Édition, presse et médias'
-    uriRameau: 'http://catalogue.bnf.fr/ark:/12148/cb13318593f/'
-    idRameau: FRBNF13318593
-    term: Developmental editing Editing
+abstract:
+  - lang: fr
+    text: >-
+      C'est article est un exemple d'article type édité sur Stylo. Stylo est un
+      éditeur d'article scientifique dédié aux sciences humaines.
+
+      Vous pouvez éditer cet article pour vous entraîner. Une documentation plus
+      complète est accessible en cliquant sur le lien documentation.
+    text_f: >-
+      C'est article est un exemple d'article type édité sur _Stylo_. _Stylo_ est
+      un éditeur d'article scientifique dédié aux sciences humaines. 
+
+      Vous pouvez éditer cet article pour vous entraîner. Une documentation plus
+      complète est accessible en cliquant sur le lien documentation.
+keywords:
+  - lang: fr
+    list: 'édition, bac-à-sable'
+    list_f: 'édition, bac-à-sable'
+  - lang: en
+    list: 'publishing, sandbox'
+    list_f: 'publishing, sandbox'
+lang: fr
 typeArticle:
   - Essai
+bibliography: SP1234.bib
+link-citations: true
+nocite: '*'
+id_sp: SP1234
+controlledKeywords:
+  - label: Édition
+    uriRameau: 'http://catalogue.bnf.fr/ark:/12148/cb13318593f'
+    idRameau: FRBNF13318593
 ---`
   }
 
