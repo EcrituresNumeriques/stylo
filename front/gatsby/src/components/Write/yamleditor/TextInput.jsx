@@ -9,7 +9,8 @@ export class TextInput extends React.Component {
         title:this.props.title,
         placeholder:this.props.placeholder || this.props.title,
         target : this.props.target,
-        value: _.get(this.props.state, this.props.target, ""),
+        //Required to fetch props alias in case props.target isn't defined
+        value: this.props.alias ? _.get(this.props.state, this.props.target, undefined) || _.get(this.props.state, this.props.alias[0].target, ""):_.get(this.props.state, this.props.target, ""),
         element: this.props.element || 'input'
      };
      this.handleTextChange = this.handleTextChange.bind(this);
