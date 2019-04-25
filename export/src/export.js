@@ -171,6 +171,8 @@ module.exports = {
 
       shell.cd('src/data')
       const dirName = returnTags.map(t=>filterAlphaNum(t._doc.name)).join('-')
+      shell.exec(`rm -R ${dirName}`)
+      shell.exec(`rm ${dirName}.zip`)
       shell.exec(`mkdir ${dirName}`)
       titles.forEach(a => {
         shell.echo(a.md).to(`${dirName}/${filterAlphaNum(a.title)}.md`)
@@ -178,23 +180,11 @@ module.exports = {
         shell.echo(a.yaml).to(`${dirName}/${filterAlphaNum(a.title)}.yaml`)
       });
       const ls = shell.ls(dirName)
+      shell.exec(`zip ${dirName}.zip ${dirName}/*`)
+      shell.exec(`rm -R ${dirName}`)
       shell.cd('../../')
-
-
-      return res.send(`${JSON.stringify(tags)} <br/><br/> ${JSON.stringify(returnTags.map(t=>t._doc))} <br/><br/><br/> ${JSON.stringify(titles)} <br/><br/> ${dirName} / ${ls}`)
-      /*
-      shell.cd('src/data')
-      shell.exec(`rm ${id}*`)
-      shell.echo(md).to(`${id}.md`)
-      shell.echo(bib).to(`${id}.bib`)
-      shell.echo(yaml).to(`${id}.yaml`)
-      shell.sed('-i', /^.*bibliography.*$/, '', `${id}.yaml`)
-      shell.exec(`sed -i '$ d' ${id}.yaml`)
-      shell.echo(`bibliography: ${id}.bib\n---`).toEnd(`${id}.yaml`)
-      shell.exec(`zip ${filterAlphaNum(title)}.zip ${id}.*`)
-      res.set('Content-Disposition', `attachment; filename="${filterAlphaNum(title)}.zip"`)
-      return res.download(`${process.env.PWD}/src/data/${filterAlphaNum(title)}.zip`)
-      */
+      res.set('Content-Disposition', `attachment; filename="${dirName}.zip"`)
+      return res.download(`${process.env.PWD}/src/data/${dirName}.zip`)
     }
     catch(err){
       res.status(404).send(err)
