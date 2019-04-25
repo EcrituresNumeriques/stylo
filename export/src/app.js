@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const {exportArticleHtml, exportBookHtml, exportBookZip, exportVersionHtml, exportVersionZip} = require('./export.js')
+const {exportArticleHtml, exportBookHtml, exportBookZip, exportVersionHtml, exportVersionZip, exportBatchTagZip} = require('./export.js')
 
 const app = express();
 
@@ -19,7 +19,15 @@ app.get('/zipVersion/:id',exportVersionZip);
 app.get('/htmlBook/:id',exportBookHtml);
 app.get('/zipBook/:id',exportBookZip);
 
-//Duplicate
+//New nomenclature
+app.get('/version/:id/html',exportVersionHtml);
+app.get('/version/:id/zip',exportVersionZip);
+app.get('/article/:id/html',exportArticleHtml);
+app.get('/book/:id/html',exportBookHtml);
+app.get('/book/:id/zip',exportBookZip);
+app.get('/tag/:ids/zip',exportBatchTagZip);
+
+//Duplicate for old way
 app.get('/api/v1/htmlVersion/:id',exportVersionHtml);
 app.get('/api/v1/htmlArticle/:id',exportArticleHtml);
 app.get('/api/v1/zipVersion/:id',exportVersionZip);

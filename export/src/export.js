@@ -45,6 +45,7 @@ const exportZIP = ({bib,yaml,md,id,title},res,req) => {
   shell.exec(`sed -i '$ d' ${id}.yaml`)
   shell.echo(`bibliography: ${id}.bib\n---`).toEnd(`${id}.yaml`)
   shell.exec(`zip ${filterAlphaNum(title)}.zip ${id}.*`)
+  shell.cd('../../')
   res.set('Content-Disposition', `attachment; filename="${filterAlphaNum(title)}.zip"`)
   return res.download(`${process.env.PWD}/src/data/${filterAlphaNum(title)}.zip`)
 }
@@ -160,4 +161,43 @@ module.exports = {
        res.status(404).send(err)
     } 
   },
+  exportBatchTagZip: async (req,res) => {
+    try{
+      const tags = req.params.ids.split(',')
+      const returnTags = await Tag.find({_id:{$in:tags}})
+
+      const articles = await Article.find({tags:{$all:tags}}).populate({path: 'versions', options: {limit: 1, sort:{updatedAt:-1}} })
+      const titles = articles.map(a => ({title:a._doc.title,md:a._doc.versions[0].md,bib:a._doc.versions[0].bib,yaml:a._doc.versions[0].yaml}))
+
+      shell.cd('src/data')
+      const dirName = returnTags.map(t=>filterAlphaNum(t._doc.name)).join('-')
+      shell.exec(`mkdir ${dirName}`)
+      titles.forEach(a => {
+        shell.echo(a.md).to(`${dirName}/${filterAlphaNum(a.title)}.md`)
+        shell.echo(a.bib).to(`${dirName}/${filterAlphaNum(a.title)}.bib`)
+        shell.echo(a.yaml).to(`${dirName}/${filterAlphaNum(a.title)}.yaml`)
+      });
+      const ls = shell.ls(dirName)
+      shell.cd('../../')
+
+
+      return res.send(`${JSON.stringify(tags)} <br/><br/> ${JSON.stringify(returnTags.map(t=>t._doc))} <br/><br/><br/> ${JSON.stringify(titles)} <br/><br/> ${dirName} / ${ls}`)
+      /*
+      shell.cd('src/data')
+      shell.exec(`rm ${id}*`)
+      shell.echo(md).to(`${id}.md`)
+      shell.echo(bib).to(`${id}.bib`)
+      shell.echo(yaml).to(`${id}.yaml`)
+      shell.sed('-i', /^.*bibliography.*$/, '', `${id}.yaml`)
+      shell.exec(`sed -i '$ d' ${id}.yaml`)
+      shell.echo(`bibliography: ${id}.bib\n---`).toEnd(`${id}.yaml`)
+      shell.exec(`zip ${filterAlphaNum(title)}.zip ${id}.*`)
+      res.set('Content-Disposition', `attachment; filename="${filterAlphaNum(title)}.zip"`)
+      return res.download(`${process.env.PWD}/src/data/${filterAlphaNum(title)}.zip`)
+      */
+    }
+    catch(err){
+      res.status(404).send(err)
+   } 
+  }
 }
