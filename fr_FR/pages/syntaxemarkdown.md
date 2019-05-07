@@ -109,6 +109,10 @@ Il est aussi possible d'utiliser l'espace insécable en ASCII `&nbsp;`.
 
 ## Balisage sémantique
 
+Le balisage sémantique permet de spécifier la fonction d'un mot, d'une expression ou d'un paragraphe.
+
+Stylo permet un balisage sémantique libre : chaque auteur peut définir ses propres balises en fonction de ses besoins particulier.
+
 Les mots ou les expressions que l'on veut baliser sémantiquement sont entre ```[]``` et suivi par des ```{}``` dans lesquelles on déclare la classe.
 
 Par exemple:
@@ -122,3 +126,71 @@ Donnera en HTML:
 ```
 Voici la <span class="these">thèse fondamentale de l'article</span>
 ```
+
+Pour baliser un paragraphe entier, on peut utiliser la syntaxe suivante:
+
+```
+::: {.these}
+Mon paragraphe qui contient une thèse de l'article.
+:::
+```
+Qui donnera en HTML
+
+
+```
+<div class="these">
+Mon paragraphe qui contient une thèse de l'article.
+</div>
+```
+
+La prévisualisation Stylo implémente l'affichage des classes sémantiques suivantes:
+
+- these
+- description
+- exemple
+- epigraphe
+- concept
+- definition
+- dedicace
+- question
+
+Il est possible de baliser un élément textuel avec plusieurs attributs. Par exemple:
+
+```
+::: {.infogeo}
+[Athène]{.ville id="https://www.wikidata.org/wiki/Q1524" gps="37.58.46N, 23.42.58E"} est la capitale de la Grèce.
+:::
+
+```
+Donnera en HTML:
+```
+<div class="infogeo">
+<p><span id="https://www.wikidata.org/wiki/Q1524" class="ville" data-gps="37.58.46N, 23.42.58E">Athène</span> est la capitale de la Grèce.</p>
+</div>
+```
+
+## Tableaux
+
+Les tableaux se réalisent avec la syntaxe suivante:
+
+- `|` sépare les colonnes
+- un saut de ligne sépare les lignes
+- `-` produit des lignes de séparation
+
+Par exemple, la syntaxe:
+
+```
+|Nom    |Prénom|Date de naissance|Lieu de naissance|Couleur des yeux|
+|------ |---|---|---|---|
+|Bianchini|Francesco|3-1-1920|Scandicci|Bleux|
+|Dupont|Pierre|7-9-1989|Chicoutimi|Verts|
+|Gianna|Bienfaisant|9-10-2005  |Florence|Marrons   |
+```
+
+Donnera:
+
+|Nom    |Prénom|Date de naissance|Lieu de naissance|Couleur des yeux|
+|------ |---|---|---|---|
+|Bianchini|Francesco|3-1-1920|Scandicci|Bleux|
+|Dupont|Pierre|7-9-1989|Chicoutimi|Verts|
+|Gianna|Bienfaisant|9-10-2005  |Florence|Marrons   |
