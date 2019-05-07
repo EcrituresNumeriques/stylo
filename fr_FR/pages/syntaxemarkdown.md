@@ -111,35 +111,39 @@ Il est aussi possible d'utiliser l'espace insécable en ASCII `&nbsp;`.
 
 Le balisage sémantique permet de spécifier la fonction d'un mot, d'une expression ou d'un paragraphe.
 
-Stylo permet un balisage sémantique libre : chaque auteur peut définir ses propres balises en fonction de ses besoins particulier.
+Stylo permet un balisage sémantique libre : chaque auteur peut définir sa propre sémantique en fonction de ses besoins particulier. Elle pourra ensuite être implémentée dans les templates d'export ou les feuilles de style personnalisées (voir la section [Personnaliser son export](pages/export.md#personnaliser)).
 
-Les mots ou les expressions que l'on veut baliser sémantiquement sont entre ```[]``` et suivi par des ```{}``` dans lesquelles on déclare la classe.
+La syntaxe markdown de balisage sémantique est la suivante : `[terme à baliser]{.categorie}`.
 
-Par exemple:
+Par exemple : `On peut considérer cette [rupture]{.concept} emblématique de ...` identifie le terme `rupture` comme un `concept`
 
-```
+Le texte markdown suivant :
+
+```markdown
 Voici la [thèse fondamentale de l'article]{.these}.
 ```
 
-Donnera en HTML:
+Donnera en HTML :
 
-```
+```html
 Voici la <span class="these">thèse fondamentale de l'article</span>
 ```
 
-Pour baliser un paragraphe entier, on peut utiliser la syntaxe suivante:
+Pour baliser un paragraphe entier, on utilise la syntaxe suivante :
 
-```
+```md
 ::: {.these}
+
 Mon paragraphe qui contient une thèse de l'article.
+
 :::
 ```
 Qui donnera en HTML
 
 
-```
+```html
 <div class="these">
-Mon paragraphe qui contient une thèse de l'article.
+  <p>Mon paragraphe qui contient une thèse de l'article.</p>
 </div>
 ```
 
@@ -148,22 +152,27 @@ La prévisualisation Stylo implémente l'affichage des classes sémantiques suiv
 - these
 - description
 - exemple
-- epigraphe
 - concept
 - definition
-- dedicace
 - question
+- epigraphe
+- dedicace
+- credits
+- source
 
 Il est possible de baliser un élément textuel avec plusieurs attributs. Par exemple:
 
-```
+```markdown
+
 ::: {.infogeo}
+
 [Athène]{.ville id="https://www.wikidata.org/wiki/Q1524" gps="37.58.46N, 23.42.58E"} est la capitale de la Grèce.
+
 :::
 
 ```
 Donnera en HTML:
-```
+```html
 <div class="infogeo">
 <p><span id="https://www.wikidata.org/wiki/Q1524" class="ville" data-gps="37.58.46N, 23.42.58E">Athène</span> est la capitale de la Grèce.</p>
 </div>
@@ -174,23 +183,26 @@ Donnera en HTML:
 Les tableaux se réalisent avec la syntaxe suivante:
 
 - `|` sépare les colonnes
-- un saut de ligne sépare les lignes
-- `-` produit des lignes de séparation
+- un saut de ligne simple sépare les lignes
+- la seconde ligne définit l'alignement de la colonne :
+  - `:--` aligne la colonne à gauche
+  - `:-:` aligne la colonne au centre
+  - `--:` aligne la colonne à droite
 
-Par exemple, la syntaxe:
+Par exemple, la syntaxe :
 
-```
-|Nom    |Prénom|Date de naissance|Lieu de naissance|Couleur des yeux|
-|------ |---|---|---|---|
+```markdown
+|Nom|Prénom|Date de naissance|Lieu de naissance|Couleur des yeux|
+|:--|:--|:-:|:-:|--:|
 |Bianchini|Francesco|3-1-1920|Scandicci|Bleux|
 |Dupont|Pierre|7-9-1989|Chicoutimi|Verts|
-|Gianna|Bienfaisant|9-10-2005  |Florence|Marrons   |
+|Gianna|Bienfaisant|9-10-2005|Florence|Marrons|
 ```
 
 Donnera:
 
 |Nom    |Prénom|Date de naissance|Lieu de naissance|Couleur des yeux|
-|------ |---|---|---|---|
+|:------ |:---|:-:|:-:|---:|
 |Bianchini|Francesco|3-1-1920|Scandicci|Bleux|
 |Dupont|Pierre|7-9-1989|Chicoutimi|Verts|
 |Gianna|Bienfaisant|9-10-2005  |Florence|Marrons   |
