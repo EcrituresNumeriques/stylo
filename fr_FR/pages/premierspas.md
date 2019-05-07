@@ -1,6 +1,6 @@
 # Premiers pas
 
-Un article dans Stylo est composé par trois éléments distincts :
+Un article dans Stylo est composé de trois éléments distincts :
 
   - un corps de texte
   - des métadonnées
@@ -20,17 +20,16 @@ Pour chaque article, plusieurs actions sont possibles :
 | ![rename](uploads/images/rename.png) | pour renommer l'article|
 | ![delete](uploads/images/delete.png) | pour supprimer l'article et toutes ses versions|
 
-Note: Le nom de l'article ne correspond pas au titre final de l'article.
+Note: Le nom du document ne correspond pas au titre de l'article.
 
-Attention: Supprimer un article est irréversible.
+Attention: Supprimer un article est irréversible. Si l'article est partagé avec un autre usager, après sa suppression, il restera accessible pour ce dernier.
 
-![plus](uploads/images/plus.png) Le bouton **[+]** présente la dernière version enregistrée, sur laquelle plusieurs actions sont accessibles :
+![plus](uploads/images/plus.png) Le bouton **[+]** donne accès à d'autres possibilités d'édition du document : 
 
-|bouton|fonction|
-|:-:|:--|
-| ![see](uploads/images/see.png) | pour ouvrir cette version de l'article en lecture. |
-| ![new](uploads/images/new.png) | pour créer une nouvelle version de l'article en édition |
-| ![fork](uploads/images/fork.png) | pour créer un nouvel article clone à partir de cette version |
+- les options de partage (share, fork, send)
+- la liste des précédentes versions enregistrées
+- l'édition des tags
+- la suppression du document
 
 ## [share] [fork] [send] ?
 

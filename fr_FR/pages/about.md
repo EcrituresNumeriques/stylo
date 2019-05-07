@@ -20,28 +20,27 @@ Le code source de Stylo est disponible sur Github [].
 - Fonctionnalités éditeur de texte WYSIWYM et raccourcis clavier
 - Enrichissement sémantique
 - Développement de connecteurs pour éditeurs off-line
+- Écriture collaborative en modification synchrone
 - Documentation en anglais
 
 ## La philosophie de Stylo
 
-<!-- 1. pourquoi Stylo (10min)
-  - édition maitrisée de qualité (potentiellement à partir de l'auteur) jusqu'à la diffusion : continuité de la chaine.
-    - données structurées et pourquoi
-  - solution non propriétaire
-  - coût : gain sur les couts erudit et pum
-2. principes de Stylo (7min)
-  - différencier le sémantique du graphique, cad le sens de l'affichage
-  - maitriser des sorties multi-modales,
-    - le texte circule dans diff. formes (site, print, pdf)
-  - adaptabililité de la chaine, pas de workflow défini (VS OJS) -->
 
 Éditeur de texte WYSIWYM pour les sciences humaines, Stylo est conçu pour changer l’ensemble de la chaîne éditoriale numérique des revues savantes en Sciences Humaines.
 
-Bien que fondamentale en vue d’une diffusion numérique, la structuration des documents et leur balisage sont actuellement reportés à la fin du processus éditorial, quand en réalité ceux-ci devraient être envisagés dès la production (par l’auteur lui-même, dès la première révision des articles). À cet égard, il semblerait urgent et logique de réintégrer le travail de balisage et de structuration en début de chaîne. Notre équipe est en train de développer l'éditeur de texte Stylo. La philosophie de Stylo consiste à remettre dans les mains des chercheurs la gestion du balisage en partant cette fois-ci de leurs compétences, qui sont des compétences sémantiques plutôt que graphiques. L'éditeur proposera un affichage graphique très simple ainsi qu’un balisage très léger mais spécifique, tout en offrant la possibilité d'exporter le texte en XML, en PDF ou en HTML.
+Bien que fondamentale en vue d’une diffusion numérique, la structuration des documents et leur balisage sont actuellement reportés à la fin du processus éditorial, quand en réalité ceux-ci devraient être envisagés dès la production (par l’auteur lui-même, dès la première révision des articles). À cet égard, il semblerait urgent et logique de réintégrer le travail de balisage et de structuration en début de chaîne. 
 
-Stylo est un projet réalisé en partenariat avec Érudit. Le projet pilote s'adresse à des revues savantes diffusées par Érudit et vise à réduire les coût de la chaîne éditoriale tout en produisant des informations plus pertinentes et plus riches.
+La philosophie de Stylo consiste à remettre dans les mains des chercheurs la gestion du balisage en partant cette fois-ci de leurs compétences, qui sont des compétences sémantiques plutôt que graphiques. 
 
-## Roadmap
+L'éditeur est basé sur la séparation entre le balisage sémantique et les affichages graphiques, ce qui permet à l'auteur de se concentrer sur le sens de son texte au lieu que sur la mise en forme.
+
+Stylo propose une solution libre, basée sur des standards (markdown, yaml, bibtex) qui permet de:
+
+- produire des textes bien balisés avec des métadonnées riches et une bibliographie structurée
+- prouduire de multiples sorties (PDF, HTML, XML, ODT...) à partir d'un seul document
+
+Stylo est un outil qui implémente des formats et des technologies de conversion existantes et déjà utilisées par la communauté, ce qui permet une libre circulation des documents qui ne sont pas enfermés dans un format particulier.
+
 
 
 
