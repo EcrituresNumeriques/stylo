@@ -28,15 +28,20 @@
 
   * [Premiers pas](pages/premierspas.md)
   * [Écrire en markdown](pages/syntaxemarkdown.md)
-  * [Bibliographie](pages/bibliographie.md)
-  * [Pour aller plus loin](pages/pourallerplusloin.md)
+  * [Structurer la bibliographie](pages/bibliographie.md)
+  * [Exporter un article](pages/export.md)
+  * [Gérer vos articles](pages/mesarticles.md)
+  * [Editer un livre ou un mémoire](pages/livre.md)
+  * [Comprendre l'interface](pages/interface.md)
+  * [Paramétrer son compte](pages/parametres.md)
+  * [Résoudre les problèmes connus](pages/casparticuliers.md)
+  * [Documentation technique](pages/documentationtechnique.md)
 
-[Publications](pages/publications.md)
-
+[Ressources](pages/publications.md)
 
 [Tester Stylo](http://stylo.ecrituresnumeriques.ca)
 
-[_EN_](../en_EN/)
+<!-- [_EN_](../en_EN/) -->
 
 <!-- A more complex navigation example: ----------------------------------------
 

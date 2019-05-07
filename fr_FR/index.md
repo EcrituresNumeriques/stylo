@@ -1,17 +1,19 @@
 # Stylo - un éditeur de texte sémantique
 
-Bienvenue sur la documentation de Stylo. Stylo est un éditeur de texte simplifiant la rédaction et l'édition d'article scientifique en sciences humaines et sociales.
+Bienvenue sur la documentation de Stylo. Stylo est un éditeur de texte simplifiant la rédaction et l'édition d'articles scientifiques en Sciences Humaines et Sociales.
 
-Il est destiné aux auteurs et aux éditeurs de revues scientifiques engagés dans une édition scientifique de qualité.
+Il est destiné aux auteur·e·s et aux éditeur·rice·s engagé·e·s dans une édition scientifique de qualité.
 
 L'environnement de travail de Stylo intègre une chaîne éditoriale complète basée sur [pandoc](http://pandoc.org/) et outillée des modules suivants :
 
   - **un éditeur de métadonnées**
-  - **un versionnage**
-  - **une gestion de la bibliographie**
-  - **différents formats exports** : html5, xml (TEI, Erudit), pdf...
-  - **l'annotation**
-  - **le partage de document**
+  - **un gestionnaire de versions**
+  - **un gestionnaire de la bibliographie**
+  - **différents formats d'export** : HTML5, XML (TEI, ÉruditArticle), PDF...
+  - **un outil d'annotation**
+  - **le partage des documents pour une édition collaborative**
+
+Stylo est développé par la [Chaire de recherche du Canada sur les écritures numériques](http://ecrituresnumeriques.ca/) et l'entreprise [PiNinja](https://3.14159.ninja/), avec le soutien d'[Érudit](http://erudit.org/), sous licence [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE).
 
 
 
