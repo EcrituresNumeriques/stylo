@@ -46,16 +46,22 @@ La fonction **[Send]** réalise la même opération, mais le nouvel article est 
 Cliquez sur le boutton “Create a new article” (vous devrez renseigner le titre de l’article dans la case prévue à cet effet, puis cliquer à nouveau sur le bouton “create”).
 
 Pour créer un nouvel article, il suffit de cliquer sur le bouton
+
 ![Nouvel article](uploads/images/nouvelarticle.png). 
 
 Vous devez ensuite renseigner le nom du document dans le champs prévu à cet effet 
+
 ![nommer un article](uploads/images/createnew.png) 
+
 et valider l'opération en cliquant une nouvelle fois sur le bouton 
+
 ![Nouvel article](uploads/images/nouvelarticle.png). 
 
 L’article apparait désormais dans votre liste d’articles. 
 Cliquez sur le bouton
+
 ![edit](uploads/images/edit.png) 
+
 pour accéder à l’environnement d’édition et commencer à éditer votre article.
 
 ## Édition
@@ -91,7 +97,7 @@ Voici mon texte[^1]
 [^1]:Une note de bas de page avec appel et renvoi
 ```
 
-	- sans appel de note : 
+sans appel de note : 
 
 ```
 Voici mon texte^[une note de bas de page inline.]
@@ -115,6 +121,7 @@ Ainsi, lorsque vous êtes parvenu·e·s à une version que vous jugez satisfaisa
 	- **[Save Minor]** et **[Save Major]** pour sauvegarder une version mineure ou majeure de votre travail
 	- ![export](uploads/images/export.png) : pour exporter et de télécharger le document dans différents format : html5, xml erudit, etc.
 	- **[preview]** pour accéder à la prévisualisation de votre travail et l'annoter
+
 
 - Pour une version antérieure :
 	- **[Compare]** pour comparer les différentes versions (une version antérieure et la version actuelle ou deux versions antérieures). Pour davantage d'informations sur la fonction **[Compare]**, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/interface.md)
@@ -147,6 +154,7 @@ Vous pouvez directement [structurer vos références en bibtex](http://www.andy-
 - voir tutoriels : <a class="btn btn-info" href="http://sens-public.org/IMG/pdf/Utiliser_Zotero.pdf" role="button">Zotero</a> <a class="btn btn-info" href="https://libguides.usask.ca/c.php?g=218034&p=1446316" role="button">Mendeley</a>
 
 Pour ajouter une référence à l'article, il suffit de cliquer sur la référence, puis de coller (Ctrl+V) la référence dans le texte à l'endroit souhaité. Ainsi, un clic revient à "copier" la clé de la référence dans le presse-papier. Il ne reste plus qu'à la coller dans le corps de texte. 
+
 ![biblioex](uploads/images/biblioex.png)
 
 Pour davantage d'informations sur la gestion de la bibliographie, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/bibliographie.md)
@@ -154,7 +162,9 @@ Pour davantage d'informations sur la gestion de la bibliographie, vous pouvez co
 
 ## - Métadonnées
 
-Le bouton [Metadata] permet d'ouvrir le volet de métadonnées. Trois modes d'édition sont disponibles : ![metadata](uploads/images/metadata.png)
+![metadata](uploads/images/metadata.png)
+
+Le bouton [Metadata] permet d'ouvrir le volet de métadonnées. Trois modes d'édition sont disponibles : 
 
 1. **Basic Mode** : permet d'éditer les métadonnées fondamentales : Titre, sous-titre, résumés, auteur·e·s et mots-clés.
 2. **Editor Mode** : permet d'éditer l'ensemble des métadonnées relatives à une revue savante : identifiant d'un article, informations de dossier, information d'évaluation, catégories de la revue, mots-clés de la revue, etc.
