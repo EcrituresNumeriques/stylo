@@ -35,7 +35,7 @@ app.get('/api/v1/htmlBook/:id',exportBookHtml);
 app.get('/api/v1/zipBook/:id',exportBookZip);
 
 app.use((req,res,next)=>{
-  return res.redirect(301, redirect+req.originalUrl)
+  return res.redirect(302, redirect+req.originalUrl)
 })
 
 mongoose
