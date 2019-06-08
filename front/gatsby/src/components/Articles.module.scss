@@ -87,21 +87,6 @@
         }
         nav {
             float:right;
-            a,p {
-                @extend .clickable;
-                display: inline-block;
-                border: 1px solid $main-border-color;
-                padding:0.5rem;
-                margin:-0.5rem 0.25rem;
-            }
-            p:not(.primary),a:not(.primary){
-                background-color: $button-secondary-background;
-                color:$button-secondary-color;
-
-            }
-            a:last-child{
-                margin-right:-0.5rem;
-            }
         }
     }
     > article:nth-of-type(2n+1){

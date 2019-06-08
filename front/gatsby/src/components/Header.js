@@ -23,10 +23,9 @@ const ConnectedHeader = (props) => {
                 <h1><Link to='/'>_Stylo_</Link></h1>
                 <nav>
                     {props.logedIn && <>
-                        <Link to='/users'>{props.activeUser.displayName}</Link>
-                        <Link to='/credentials'>Credentials</Link>
-                        <Link to='/books'>My Books</Link>
-                        <Link to='/articles'>My Articles</Link>
+                        <Link to='/credentials'>{props.activeUser.displayName}</Link>
+                        <Link to='/books'>Books</Link>
+                        <Link to='/articles'>Articles</Link>
                         <p onClick={()=>props.logout()}>Log out</p>
                     </>}
                     {!props.logedIn && <Link to="/login">Login</Link>}
