@@ -102,6 +102,13 @@
     background-color: $button-primary-background !important;
     color: $button-primary-color !important;
 }
+.buttonsec {
+    @extend .clickable;
+    display:inline-block;
+    padding:0.5rem 1rem;
+    margin-right:0.5rem;
+    border:1px solid $main-border-color;
+    }
 
 .primary {
     background-color: $button-primary-background !important;
@@ -124,7 +131,7 @@
 
 .create{
     background-color:$main-background-color;
-    margin-bottom: 1rem;
+    border-bottom:1px solid $main-border-color;
     padding:1rem;
     form {
         input,textarea{
