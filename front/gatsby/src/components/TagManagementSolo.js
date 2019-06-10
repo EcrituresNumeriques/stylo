@@ -33,6 +33,7 @@ export default connect(mapStateToProps)((props) => {
       <p onClick={()=>setExpanded(!expanded)}>{expanded?"-":"+"}</p>
       <p onClick={()=>props.setTags(findAndUpdateTag(props.tags,props.t._id))}>{props.t.name}</p>
       {expanded && <p>{props.t.description}</p>}
+      {expanded && <p>color : {props.t.color}</p>}
       {expanded && <button onDoubleClick={()=>deleteTag(props.t._id)}>Delete {props.t.name}</button>}
     </div>
   )

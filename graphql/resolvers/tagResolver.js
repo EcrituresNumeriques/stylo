@@ -140,6 +140,9 @@ module.exports = {
       if(args.description){
         thisTag.description = args.description
       }
+      if(args.color){
+        thisTag.color = args.color
+      }
       const returnTag = await thisTag.save()
       return populateTag(returnTag)
     }

@@ -13,6 +13,9 @@ const tagSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'User'
   },
+  color: {
+    type: String
+  },
   articles:[
     {
       type: Schema.Types.ObjectId,

@@ -90,9 +90,7 @@ const ConnectedArticle = (props) => {
 
         </form>}
         <div style={{height:"0.5rem",paddingLeft:"1rem"}}>
-            <span style={{fontSize:"0.6rem",backgroundColor:"red",display:"inline-block",padding:"0.25rem",marginRight:"0.5rem",borderRadius:"100% 100%"}}></span>
-            <span style={{fontSize:"0.6rem",backgroundColor:"blue",display:"inline-block",padding:"0.25rem",marginRight:"0.5rem",borderRadius:"100% 100%"}}></span>
-            <span style={{fontSize:"0.6rem",backgroundColor:"green",display:"inline-block",padding:"0.25rem",marginRight:"0.5rem",borderRadius:"100% 100%"}}></span>
+            {tags.map(t=><span key={"tagColor-"+t._id} style={{fontSize:"0.6rem",backgroundColor:t.color,display:"inline-block",padding:"0.25rem",marginRight:"0.5rem",borderRadius:"100% 100%"}}></span>)}
             by <span>{props.owners.map(o=>o.displayName).join(', ')}</span>
             <span style={{fontSize:"0.7rem"}}>({howLongAgo(new Date() - new Date(props.updatedAt))})</span>
         </div>
