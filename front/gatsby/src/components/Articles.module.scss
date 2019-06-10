@@ -26,10 +26,9 @@
 }
 
 .deleteMe{
-    float:right;
-    @extend .secondary-button;
-    margin-right:-0.5rem;
-    border:1px solid $main-border-color;
+    position:absolute;
+    bottom:1rem;
+    right:1rem;
 }
 
 .clickMeOff{
@@ -62,6 +61,7 @@
     }
     > article {  
         padding:1rem;
+        position:relative;
         h1{
             span{
                 @extend .clickable;

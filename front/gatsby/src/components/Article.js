@@ -102,7 +102,9 @@ const ConnectedArticle = (props) => {
                     <li key={`version-${v._id}`}><Link to={`/article/${props._id}/version/${v._id}`}>{`${v.message?v.message:'no label'} (${v.autosave?'autosaved':''} v${v.version}.${v.revision})`}</Link></li>
                 ))}
             </ul>
-            {!deleting && <p className={styles.deleteMe} onClick={()=>setDeleting(true)}>Delete Article</p>}
+            {!deleting && <p className={styles.deleteMe}><Bouton title="Delete" onClick={()=>setDeleting(true)} >
+                <Icon.Trash />
+            </Bouton></p>}
             <ul>
                 <p>Tags (<span onClick={()=>{if(editTags){props.setNeedReload()}setEditTags(!editTags);}}>{editTags?'finish':'edit'}</span>):</p>
                 <ArticleTags editTags={editTags} {...props} stateTags={tags} setTags={(ts)=>setTags(ts)}/>
