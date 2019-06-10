@@ -9,7 +9,6 @@ import CreateArticle from './CreateArticle'
 
 import styles from './Articles.module.scss'
 import TagManagement from './TagManagement';
-import CreateTag from './CreateTag'
 
 const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
     return { logedIn, activeUser, sessionToken }
@@ -31,14 +30,6 @@ const ConnectedArticles = (props) => {
     const [needReload,setNeedReload] = useState(true)
     const [tagManagement,setTagManagement] = useState(false)
 
-    const findAndUpdateTag = (tags,id)=> {
-        console.log("test")
-        const immutableTags = JSON.parse(JSON.stringify(tags))
-        const tag = immutableTags.find(t => t._id === id)
-        tag.selected = !tag.selected
-        return immutableTags
-    }
-
     const filterByTagsSelected = (article) => {
         const listOfTagsSelected = tags.filter(t => t.selected)
         if(listOfTagsSelected.length === 0){ return true }
@@ -49,7 +40,7 @@ const ConnectedArticles = (props) => {
         return pass
     }
 
-    const query = "query($user:ID!){user(user:$user){ displayName tags{ _id name } articles{ _id title updatedAt owners{ displayName } versions{ _id version revision autosave message } tags{ name _id }}}}"
+    const query = "query($user:ID!){user(user:$user){ displayName tags{ _id description name } articles{ _id title updatedAt owners{ displayName } versions{ _id version revision autosave message } tags{ name description _id }}}}"
     const user = {user:props.activeUser._id}
 
     useEffect(()=>{

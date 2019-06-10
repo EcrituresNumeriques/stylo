@@ -8,7 +8,7 @@
   border-right:1px solid $main-border-color;
   > div {
     overflow-y: auto;
-    button{
+    > button{
       @extend .clickable;
       float: right;
       background-color:transparent;
@@ -31,9 +31,26 @@
   border-right:0px solid $main-border-color;
 }
 .tags{
-  @extend .clickable;
-  padding:0.5rem 1rem;
   border-top:1px solid $main-border-color;
+  display:flex;
+  flex-wrap: wrap;
+  > p {
+    &:first-child{
+      @extend .clickable;
+      flex:0 0 1rem;
+    }
+    &:nth-child(2){
+      @extend .clickable;
+      flex:0 0 calc(100% - 2rem)
+    }
+    &:nth-child(3){
+      flex:0 0 100%;
+    }
+    > button {
+      background-color:yellow;
+    }
+    padding:0.5rem;
+  }
 }
 .selectedTags{
   @extend .tags;

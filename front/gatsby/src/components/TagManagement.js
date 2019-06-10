@@ -2,15 +2,10 @@ import React, {useState} from "react"
 
 import styles from './tagManagement.module.scss'
 import CreateTag from './CreateTag'
+import TagManagementSolo from "./TagManagementSolo";
 export default (props) => {
 
-  const findAndUpdateTag = (tags,id)=> {
-    console.log("test")
-    const immutableTags = JSON.parse(JSON.stringify(tags))
-    const tag = immutableTags.find(t => t._id === id)
-    tag.selected = !tag.selected
-    return immutableTags
-  }
+
 
   const [creatingTag, setCreatingTag] = useState(false)
     
@@ -26,7 +21,7 @@ export default (props) => {
 
 
       {props.tags.map((t)=>(
-        <p className={t.selected?styles.selectedTags:styles.tags} key={`tagy-${t._id}`} onClick={()=>props.setTags(findAndUpdateTag(props.tags,t._id))}>{t.name}</p>
+        <TagManagementSolo {...props} t={t} styles={styles} key={"thistag"+t._id}/>
       ))}
       </div>
     </nav>
