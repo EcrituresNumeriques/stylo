@@ -7,6 +7,8 @@ import askGraphQL from '../helpers/graphQL'
 import Modal from './Modal'
 import Acquintances from './Acquintances'
 
+import Bouton from './Bouton'
+import * as Icon from 'react-feather';
 
 const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
   return { logedIn, sessionToken, activeUser }
@@ -37,8 +39,9 @@ const ConnectedShareCenter = (props) => {
       </Modal>}
       <div className={styles.reset} />
       <div className={styles.share}>
-        <p onClick={()=>{setShareType('share');setSharing(true)}}>Share</p>
-        <p onClick={()=>{setShareType('send');setSharing(true)}}>Send</p>
+        <Bouton title="Share" onClick={()=>setSharing(true)}>
+          <Icon.Send/>
+        </Bouton>
         <p onClick={async ()=>{await fork()}}>Fork</p>
       </div>
     </>

@@ -8,7 +8,7 @@ import env from '../helpers/env'
 import Modal from './Modal'
 import Export from './Export'
 import ArticleDelete from './ArticleDelete'
-import ShareCenter from './ShareCenter'
+import Acquintances from './Acquintances'
 import ArticleTags from './ArticleTags'
 import howLongAgo from '../helpers/howLongAgo'
 
@@ -32,6 +32,19 @@ const ConnectedArticle = (props) => {
     const [renaming,setRenaming] = useState(false)
     const [title,setTitle] = useState(props.title)
     const [tempTitle,setTempTitle] = useState(props.title)
+    const [sharing,setSharing] = useState(false)
+
+    const fork = async () => {
+        try{
+          const query = `mutation($user:ID!,$article:ID!){sendArticle(article:$article,to:$user,user:$user){ _id }}`
+          const variables = {user:props.activeUser._id,to:props.activeUser._id,article:props._id}
+          await askGraphQL({query,variables}, 'forking Article',props.sessionToken)
+          props.setNeedReload()
+        }
+        catch(err){
+          alert(err)
+        }
+      }
 
     const rename = async (e) => {
         e.preventDefault();
@@ -48,9 +61,18 @@ const ConnectedArticle = (props) => {
         {exporting && <Modal cancel={()=>setExporting(false)}>
             <Export {...props} article={true} versionId={props.versions[0]._id} version={props.versions[0].version}revision={props.versions[0].revision}/>
         </Modal>}
+        {sharing && <Modal cancel={()=>setSharing(false)}>
+            <Acquintances {...props} cancel={()=>setSharing(false)}/>
+        </Modal>}
         <nav>
             <Bouton title="Preview" href={`${env.EXPORT_ENDPOINT}/api/v1/htmlArticle/${props._id}?preview=true`}>
                 <Icon.Eye />
+            </Bouton>
+            <Bouton title="Share" onClick={()=>setSharing(true)}>
+                <Icon.Send/>
+            </Bouton>
+            <Bouton title="Duplicate" onClick={()=>fork()}>
+                <Icon.Copy />
             </Bouton>
             <Bouton title="Export" onClick={()=>setExporting(true)}>
                 <Icon.Printer/>
@@ -75,7 +97,6 @@ const ConnectedArticle = (props) => {
             <span style={{fontSize:"0.7rem"}}>({howLongAgo(new Date() - new Date(props.updatedAt))})</span>
         </div>
         {expanded && <section>
-            <ShareCenter {...props}/>
             <h2></h2>
             <ul>
                 <p>Last versions:</p>
