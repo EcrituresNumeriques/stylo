@@ -18,17 +18,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
               graphviz \
               imagemagick \
               inotify-tools \
-              latex-xcolor \
               make \
               python-pygraphviz \
               python3 \
-              texlive-bibtex-extra \
-              texlive-fonts-extra \
-              texlive-lang-all \
-              texlive-latex-base \
-              texlive-latex-extra \
-              texlive-math-extra \
-              texlive-xetex \
               wget \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*

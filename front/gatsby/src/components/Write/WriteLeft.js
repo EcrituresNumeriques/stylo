@@ -5,13 +5,14 @@ import Stats from './Stats'
 import Biblio from './Biblio'
 import Sommaire from './Sommaire'
 import Versions from './Versions'
+import Edit from './Edit'
 
 export default (props) => {
 
   const [expanded,setExpanded] = useState(true)
 
 
-  
+
   return (
     <nav className={`${expanded?styles.expandleft:styles.retractleft}`}>
         <nav onClick={()=>setExpanded(!expanded)} className={expanded?styles.close:styles.open}>{expanded?'close':'open'}</nav>
@@ -21,6 +22,7 @@ export default (props) => {
             <h1>{props.article.title}</h1>
             <h2>by {props.article.owners.join(', ')}</h2>
           </header>
+          <Edit {...props}/>
           <Versions {...props}/>
           <Sommaire {...props} />
           <Biblio {...props} />

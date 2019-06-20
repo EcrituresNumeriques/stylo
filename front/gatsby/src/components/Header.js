@@ -4,12 +4,14 @@ import { connect } from "react-redux"
 
 import styles from './header.module.scss'
 
+// Gestionnaire d'état (quel user est enregistré, enregistré ou non, etc.)
 const mapStateToProps = ({ logedIn, password, activeUser }) => {
     return { logedIn, password, activeUser }
 }
 
+// définit des actions (ici message LOGOUT)
 const mapDispatchToProps = dispatch => {
-    return { 
+    return {
         logout: () => dispatch({ type: `LOGOUT` })
     }
 }
@@ -24,6 +26,7 @@ const ConnectedHeader = (props) => {
                 <nav>
                     {props.logedIn && <>
                         <Link to='/credentials'>{props.activeUser.displayName}</Link>
+                        <a href='http://stylo-doc.ecrituresnumeriques.ca' target='_blank' rel='noopener noreferrer'>Documentation</a>
                         <Link to='/books'>Books</Link>
                         <Link to='/articles'>Articles</Link>
                         <p onClick={()=>props.logout()}>Log out</p>
@@ -32,7 +35,7 @@ const ConnectedHeader = (props) => {
                     {!props.logedIn && <Link to="/register">Register</Link>}
                 </nav>
             </section>
-        </header> 
+        </header>
     )
 }
 

@@ -5,7 +5,7 @@ import styles from './stats.module.scss'
 
 export default (props) => {
 
-  
+
   const [expand,setExpand] = useState(true)
 
   let value = props.md || "";
@@ -19,9 +19,9 @@ export default (props) => {
 
 
   return (
-    
+
     <section id={styles.section}>
-      <h1 className={expand?null:styles.closed} onDoubleClick={()=>setExpand(!expand)}>Stats</h1>
+      <h1 className={expand?null:styles.closed} onClick={()=>setExpand(!expand)}>{expand?"-":"+"} Stats</h1>
       {expand && <>
           <p>Words : {wordCount}</p>
           <p>Characters : {charCountNoSpace}</p>
