@@ -51,6 +51,9 @@ export default props => {
 
   return (
         <section id={styles.section}>
+          {exporting && <Modal cancel={()=>setExporting(false)}>
+            <Export {...exportVar} />
+          </Modal>}
           <h1 className={expand?null:styles.closed} onClick={()=>setExpand(!expand)}>{expand?"-":"+"} Edition</h1>
           {expand && <>
               {props.readOnly && <li key={`showVersion-GoLive`}><Link to={`/article/${props.article._id}`}>Edit</Link></li>}
