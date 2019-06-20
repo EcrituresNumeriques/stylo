@@ -1,9 +1,7 @@
-import React, {useState,useEffect} from 'react'
+import React, {useState} from 'react'
 import { Link } from 'gatsby'
 import styles from './versions.module.scss'
 
-import etv from '../../helpers/eventTargetValue'
-import howLongAgo from '../../helpers/howLongAgo';
 import env from '../../helpers/env'
 
 import Modal from '../Modal'
@@ -69,31 +67,10 @@ export default (props) => {
 
 
   const [expand,setExpand] = useState(true)
-  const [message,setMessage] = useState('')
-  const [savedAgo, setSavedAgo] = useState('now')
   const [exporting, setExporting] = useState(false)
   const [exportVar, setExportVar] = useState(expVar)
 
-  useEffect(() => {
-    var timerID = setInterval( () => tick(props.versions[0].updatedAt), 1000 );
-    return function cleanup() {
-        clearInterval(timerID);
-      };
-  },[props.versions]);
 
-
-  function tick(date) {
-    const timeDifference = new Date() - new Date(date)
-    setSavedAgo( howLongAgo(timeDifference) );
-  }
-
-
-  const saveVersion = async (e,major = false) => {
-    e.preventDefault()
-    const newVersion = await props.sendVersion(false,major, message)
-    setMessage('')
-    //setVersions([newVersion.saveVersion,...versions])
-  }
 
 
   return (

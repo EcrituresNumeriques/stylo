@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 
 import { Link } from 'gatsby'
 
@@ -37,7 +37,7 @@ export default props => {
 
   const [expand,setExpand] = useState(true)
   const [message,setMessage] = useState('')
-  const [savedAgo, setSavedAgo] = useState('now')
+  const [savedAgo, setSavedAgo] = useState(howLongAgo(new Date() - new Date(props.versions[0].updatedAt)))
   const [exporting, setExporting] = useState(false)
   const [exportVar, setExportVar] = useState(expVar)
 
@@ -46,6 +46,20 @@ export default props => {
     const newVersion = await props.sendVersion(false,major, message)
     setMessage('')
     //setVersions([newVersion.saveVersion,...versions])
+  }
+
+  useEffect(() => {
+    console.log("refresh")
+    var timerID = setInterval( () => tick(props.versions[0].updatedAt), 1000 );
+    return function cleanup() {
+        clearInterval(timerID);
+      };
+  },[props.versions]);
+
+
+  function tick(date) {
+    const timeDifference = new Date() - new Date(date)
+    setSavedAgo( howLongAgo(timeDifference) );
   }
 
 
