@@ -11,12 +11,14 @@ const mapStateToProps = ({ logedIn, password, activeUser }) => {
 }
 
 const ConnectedIndex = (props) => {
-    
-    if(props.logedIn){
-        navigate('/articles')
-    }
-    else{
-        navigate('/login')
+    const isBrowser = typeof window !== 'undefined';
+    if(isBrowser){
+        if(props.logedIn){
+            navigate('/articles')
+        }
+        else{
+            navigate('/login')
+        }
     }
     return (
         <Centered><p>Redirecting</p></Centered>
