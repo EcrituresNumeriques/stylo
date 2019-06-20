@@ -86,7 +86,12 @@ const ConnectedArticle = (props) => {
                 <Icon.Edit3 />
             </Bouton></h1>}
         {renaming && <form onSubmit={e=>rename(e)}>
-            <input value={tempTitle} onChange={(e)=>setTempTitle(etv(e))} /><input type="submit" value="Rename"/><span onClick={()=>setRenaming(false)}>(cancel)</span>
+            <input value={tempTitle} onChange={(e)=>setTempTitle(etv(e))} /><Bouton title="Save" onClick={(e)=>rename(e)}>
+                <Icon.Save/>
+            </Bouton>
+            <Bouton title="Cancel" onClick={()=>setRenaming(false)}>
+                <Icon.X/>
+            </Bouton>
 
         </form>}
         <div style={{height:"0.5rem",paddingLeft:"1rem"}}>

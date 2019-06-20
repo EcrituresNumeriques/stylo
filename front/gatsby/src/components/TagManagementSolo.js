@@ -86,7 +86,7 @@ export default connect(mapStateToProps)((props) => {
           </Bouton>
           <div className={props.styles.spacer}>
             </div>
-          <Bouton title="Delete" onClick={()=>cancelEdit()}>
+          <Bouton title="Cancel" onClick={()=>cancelEdit()}>
             <Icon.X/>
           </Bouton>
               

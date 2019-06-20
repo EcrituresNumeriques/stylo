@@ -60,6 +60,12 @@
         margin-bottom:1rem;
     }
     > article {  
+        > form {   
+            span{
+                vertical-align: text-top;
+                margin-left:0.5rem;
+            }
+        }
         padding:1rem;
         position:relative;
         h1{
