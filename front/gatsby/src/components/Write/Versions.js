@@ -39,7 +39,7 @@ Date.prototype.formatMMDDYYYY = function(){
     this.getUTCHoursDoubleDigit() +
     ":" + this.getUTCMinutesDoubleDigit() +
     "utc " +  this.getUTCDateDoubleDigit() +
-    "/" +  this.getUTCMonthDoubleDigit() + 
+    "/" +  this.getUTCMonthDoubleDigit() +
     "/" +  this.getFullYear()
   )
 }
@@ -87,7 +87,7 @@ export default (props) => {
     setSavedAgo( howLongAgo(timeDifference) );
   }
 
-  
+
   const saveVersion = async (e,major = false) => {
     e.preventDefault()
     const newVersion = await props.sendVersion(false,major, message)
@@ -97,29 +97,21 @@ export default (props) => {
 
 
   return (
-    
+
     <section id={styles.section}>
-      <h1 className={expand?null:styles.closed} onDoubleClick={()=>setExpand(!expand)}>Versions</h1>
+      <h1 className={expand?null:styles.closed} onClick={()=>setExpand(!expand)}>{expand?"-":"+"} Versions</h1>
       {exporting && <Modal cancel={()=>setExporting(false)}>
             <Export {...exportVar} />
         </Modal>}
       {expand && <>
         <ul>
-          {props.readOnly && <li key={`showVersion-GoLive`}><Link to={`/article/${props.article._id}`}>Edit</Link></li>}
-          {!props.readOnly && <p>Edition - Last save: {savedAgo}</p>}
-          {!props.readOnly && <><p onClick={()=>{setExportVar({...exportVar,article:true,_id:props.article._id,versionId:props.versions[0]._id,    version:props.versions[0].version,    revision:props.versions[0].revision});setExporting(true)}} className={styles.button}>Export</p><a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/api/v1/htmlArticle/${props.article._id}?preview=true`} target="_blank" rel="noopener noreferrer" className={styles.button}>preview</a></>}
-          {!props.readOnly && <form className={styles.liveVersion} onSubmit={e=>saveVersion(e,false)}>
-            <input type="text" placeholder="Label of the version" value={message} onChange={(e)=>setMessage(etv(e))}/>
-            <button className={message?styles.primary:styles.secondary} onClick={e=>saveVersion(e,false)}>Save Minor</button>
-            <button className={message?styles.primary:styles.secondary} onClick={e=>saveVersion(e,true)}>Save Major</button>
-          </form>}
           {props.versions.map(v=>
             <li key={`showVersion-${v._id}`} className={v._id === props.selectedVersion?styles.selected:v._id === props.compareTo?styles.compareTo:null}><Link to={`/article/${props.article._id}/version/${v._id}`}>{v.message?v.message:'No label'} ({v.autosave?'autosaved ':null}{v.version}.{v.revision})</Link>
               <p>
                 {v.owner && <span>by <strong>{v.owner.displayName}</strong> </span>}
                 <span>at {new Date(v.updatedAt).formatMMDDYYYY()}</span>
               </p>
-              <nav> 
+              <nav>
                 {v._id !== props.compareTo && <Link to={`/article/${props.article._id}/${props.selectedVersion?'version/'+props.selectedVersion+'/':''}compare/${v._id}`}>Compare</Link>}
                 {v._id === props.compareTo && <Link to={`/article/${props.article._id}/${props.selectedVersion?'version/'+props.selectedVersion:''}`}>Stop</Link>}
                 <p onClick={()=>{setExportVar({...exportVar,article:false,_id:v._id,versionId:v._id,version:v.version,    revision:v.revision});setExporting(true)}}>export</p>

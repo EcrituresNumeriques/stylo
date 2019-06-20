@@ -1,5 +1,7 @@
 import { createStore as reduxCreateStore } from "redux"
 
+// Définit tout ce qui se passe quand un message d'action est envoyé
+
 const initialState = { logedIn: false, users:[],password:undefined,sessionToken:undefined }
 
 const reducer = (state, action) => {
