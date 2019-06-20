@@ -52,7 +52,7 @@ const ConnectedArticles = (props) => {
                     const data = await askGraphQL({query,variables:user},'fetching articles',props.sessionToken)
                     //Need to sort by updatedAt desc
                     setArticles(data.user.articles.reverse())
-                    setTags(data.user.tags.map(t => ({...t,selected:false,color:t.color || "#909090"})))
+                    setTags(data.user.tags.map(t => ({...t,selected:false,color:t.color || "grey"})))
                     setDisplayName(data.user.displayName)
                     setIsLoading(false)
                     setNeedReload(false)

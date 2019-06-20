@@ -32,24 +32,26 @@
 }
 .tags{
   border-top:1px solid $main-border-color;
-  display:flex;
-  flex-wrap: wrap;
-  > p {
-    &:first-child{
-      @extend .clickable;
-      flex:0 0 1rem;
-    }
-    &:nth-child(2){
+  > .reader{
+    display:flex;
+    flex-wrap: wrap; 
+    > p {
+      &:first-child{
+        @extend .clickable;
+        flex:0 0 1rem;
+      }
+      &:nth-child(2){
       @extend .clickable;
       flex:0 0 calc(100% - 2rem)
+      }
+      &:nth-child(3){
+        flex:0 0 100%;
+      }
+      > button {
+        background-color:yellow;
+      }
+      padding:0.5rem;
     }
-    &:nth-child(3){
-      flex:0 0 100%;
-    }
-    > button {
-      background-color:yellow;
-    }
-    padding:0.5rem;
   }
 }
 .selectedTags{
@@ -62,4 +64,33 @@
   @extend .clickable;
   padding:0.5rem 1rem;
   background-color: $main-background-color;
+}
+
+.action{
+  flex:0 0 100%;
+  margin-top:1rem;
+  padding-right:1rem;
+  display:flex;
+  > span{
+    flex:0 0 auto;
+  }
+  > .spacer {
+    flex:1 1 auto;
+  }
+
+}
+
+.writer{
+  border:3px solid $main-lighter-color;
+  background-color: $main-background-color;
+}
+
+.editTag{
+  input,textarea{
+    width:100%;
+    padding:0.5rem;
+    border:none;
+    background-color:transparent;
+    border-bottom: 1px solid $main-border-color;
+  }
 }

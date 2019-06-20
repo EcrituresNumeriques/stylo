@@ -53,8 +53,7 @@ const ConnectedAcquintances = (props) => {
 
   return (
     <section className={styles.acquintances}>
-      <nav><p onClick={()=>setAction("share")}>Share</p><p onClick={()=>setAction("send")}>Send</p></nav>
-      <h1>{action} article</h1>
+      <nav><p onClick={()=>setAction("share")} className={action === "share"?styles.selected:null}>Share</p><p onClick={()=>setAction("send")} className={action === "send"?styles.selected:null}>Send</p></nav>
       <form onSubmit={(e)=>addContact(e)}>
         <input type="text" placeholder="Email of the contact you want to add" value={contact} onChange={(e)=>setContact(etv(e))} />
         <button>Add</button>
