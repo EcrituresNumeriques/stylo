@@ -29,7 +29,7 @@ const ConnectedBooks = (props) => {
             //Self invoking async function
             (async () =>{
                 try{
-                    const query = `query($user:ID!){user(user:$user){ displayName tags{ _id name  bib yaml updatedAt articles{ _id title updatedAt versions(limit:1){ _id version revision autosave message } } } } }`
+                    const query = `query($user:ID!){user(user:$user){ displayName tags{ _id name updatedAt articles{ _id title updatedAt versions(limit:1){ _id version revision autosave message } } } } }`
                     const user = {user:props.activeUser._id}
                     setIsLoading(true)
                     const data = await askGraphQL({query,variables:user},'fetching articles',props.sessionToken)
@@ -51,7 +51,7 @@ const ConnectedBooks = (props) => {
             <h1>Books for {displayName}</h1>
             <p>Books are like super-tags, they are a collection of articles that you can ordonnate and export all at once</p>
             <p>Below are your tags eligible to be books:</p>
-            {tags.map(t=><Book key={`book-${t._id}`} {...t} setNeedReload={()=>setNeedReload(true)}/>)}
+            {tags.map(t=><Book key={`book-${t._id}`} {...t} setNeedReload={()=>setNeedReload(true)} activeUser={props.activeUser} sessionToken={props.sessionToken}/>)}
 
         </section>
     )

@@ -5,11 +5,10 @@ import { connect } from "react-redux"
 import askGraphQL from '../helpers/graphQL';
 
 import Article from './Article'
-import CreateTag from './CreateTag'
 import CreateArticle from './CreateArticle'
 
 import styles from './Articles.module.scss'
-
+import TagManagement from './TagManagement';
 
 const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
     return { logedIn, activeUser, sessionToken }
@@ -27,16 +26,9 @@ const ConnectedArticles = (props) => {
     const [articles,setArticles] = useState([])
     const [tags,setTags] = useState([])
     const [displayName,setDisplayName] = useState(props.activeUser.displayName)
-    const [creatingTag, setCreatingTag] = useState(false)
     const [creatingArticle, setCreatingArticle] = useState(false)
     const [needReload,setNeedReload] = useState(true)
-
-    const findAndUpdateTag = (tags,id)=> {
-        const immutableTags = JSON.parse(JSON.stringify(tags))
-        const tag = immutableTags.find(t => t._id === id)
-        tag.selected = !tag.selected
-        return immutableTags
-    }
+    const [tagManagement,setTagManagement] = useState(false)
 
     const filterByTagsSelected = (article) => {
         const listOfTagsSelected = tags.filter(t => t.selected)
@@ -48,7 +40,7 @@ const ConnectedArticles = (props) => {
         return pass
     }
 
-    const query = "query($user:ID!){user(user:$user){ displayName tags{ _id name } articles{ _id title updatedAt owners{ displayName } versions{ _id version revision autosave message } tags{ name _id }}}}"
+    const query = "query($user:ID!){user(user:$user){ displayName tags{ _id description color name } articles{ _id title updatedAt owners{ displayName } versions{ _id version revision autosave message } tags{ name color _id }}}}"
     const user = {user:props.activeUser._id}
 
     useEffect(()=>{
@@ -60,7 +52,7 @@ const ConnectedArticles = (props) => {
                     const data = await askGraphQL({query,variables:user},'fetching articles',props.sessionToken)
                     //Need to sort by updatedAt desc
                     setArticles(data.user.articles.reverse())
-                    setTags(data.user.tags.map(t => ({...t,selected:false})))
+                    setTags(data.user.tags.map(t => ({...t,selected:false,color:t.color || "grey"})))
                     setDisplayName(data.user.displayName)
                     setIsLoading(false)
                     setNeedReload(false)
@@ -76,18 +68,11 @@ const ConnectedArticles = (props) => {
         <section className={styles.section}>
             <h1>Articles for {displayName}</h1>
             <p className={styles.button} onClick={()=>setCreatingArticle(!creatingArticle)}>{creatingArticle? 'Cancel new Article' : 'Create new Article'}</p>
-        	{isLoading && <>
-                <p key="loading">Loading articles...</p>
-            </>}
-            {!isLoading && <>
-                <p key="loaded">Up to date</p>
-                
-                {creatingTag &&  <CreateTag articles={articles} triggerReload={()=>{setCreatingTag(false);setNeedReload(true)}}/>}
+            <p  className={styles.buttonsec} onClick={()=>setTagManagement(!tagManagement)}>Manage tags</p>
+            <TagManagement tags={tags} close={()=>setTagManagement(false)} focus={tagManagement} articles={articles} setNeedReload={()=>setNeedReload(true)} setTags={setTags} updateTag=
+            {updateTag}/>
+            {!isLoading && <>                
                 {creatingArticle  && <CreateArticle tags={tags} triggerReload={()=>{setCreatingArticle(false);setNeedReload(true)}}/>}
-                <p className={styles.button} onClick={()=>setCreatingTag(!creatingTag)}>{creatingTag? 'Cancel new Tag' : 'Create new Tag'}</p>
-                {tags.map((t)=>(
-                    <p className={t.selected?styles.selectedTags:styles.tags} key={`tag-${t._id}`} onClick={()=>setTags(findAndUpdateTag(tags,t._id))}>{t.name}</p>
-                ))}
                 {articles.filter(filterByTagsSelected).map((a)=>(
                     <Article key={`article-${a._id}`} masterTags={tags} {...a} setNeedReload={()=>setNeedReload(true)}/>
                 ))}

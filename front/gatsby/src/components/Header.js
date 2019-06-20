@@ -25,11 +25,10 @@ const ConnectedHeader = (props) => {
                 <h1><Link to='/'>_Stylo_</Link></h1>
                 <nav>
                     {props.logedIn && <>
-                        <Link to='/articles'>Articles</Link>
-                        <Link to='/books'>Books</Link>
+                        <Link to='/credentials'>{props.activeUser.displayName}</Link>
                         <a href='http://stylo-doc.ecrituresnumeriques.ca' target='_blank' rel='noopener noreferrer'>Documentation</a>
-                        <Link to='/users'>{props.activeUser.displayName}</Link>
-                        <Link to='/credentials'>Settings</Link>
+                        <Link to='/books'>Books</Link>
+                        <Link to='/articles'>Articles</Link>
                         <p onClick={()=>props.logout()}>Log out</p>
                     </>}
                     {!props.logedIn && <Link to="/login">Login</Link>}

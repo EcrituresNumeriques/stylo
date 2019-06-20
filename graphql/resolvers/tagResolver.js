@@ -126,5 +126,29 @@ module.exports = {
       throw err
     }
   },
+  updateTag: async (args,{req}) => {
+    try{
+      populateArgs(args,req)
+      isUser(args,req)
+
+      const thisTag = await Tag.findOne({_id:args.tag,owner:args.user})
+      if(!thisTag){throw new Error('Unable to find tag')}
+
+      if(args.name){
+        thisTag.name = args.name
+      }
+      if(args.description){
+        thisTag.description = args.description
+      }
+      if(args.color){
+        thisTag.color = args.color
+      }
+      const returnTag = await thisTag.save()
+      return populateTag(returnTag)
+    }
+    catch(err){
+      throw err
+    }
+  }
 
 }

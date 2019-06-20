@@ -8,7 +8,7 @@ import '../styles/general.scss'
 export default () => {
     const isBrowser = typeof window !== 'undefined';
     return (
-    <Wrapped title="Hello Stylo">
+    <Wrapped title="Stylo | Articles">
         <section>
             {isBrowser && <Articles/>}
         </section>

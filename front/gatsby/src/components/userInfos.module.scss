@@ -1,0 +1,65 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+.section{
+  //background-color: $extra-background-color;
+  //color:$main-color;
+  margin-top:1rem;
+  > p{
+      margin-top:0.5rem;
+  }
+  > h2{
+      margin-top: 1rem;
+      margin-bottom:1rem;
+      font-size:1.2rem;
+  }
+  > h1{
+      font-size:1.7rem;
+      color:$extra-color;
+  }
+  > form{
+    margin-top:1rem;
+    input,textarea,p{
+      padding:0.5rem;
+      background-color:$main-color;
+      color:$main-background-color;
+    }
+    input, p{
+      display:inline-block;
+      width:80%;
+    }
+    textarea{
+      display:inline-block;
+      width:80%;
+      height:15rem;
+    }
+    input,textarea{
+      border:none;
+      border-bottom:1px solid $main-lighter-color;
+    }
+    label{
+      padding:0.5rem;
+      display:inline-block;
+      width:20%;
+      padding-right:1rem;
+      text-align: right;
+      vertical-align: top;
+    }
+
+  }
+}
+
+.rightAlign{
+  text-align: right;
+  margin-top:0.5rem;
+  > button {
+    @extend .primary-button;
+  }
+}
+
+#newLogin{
+  > input{
+    display:block;
+    width:100%;
+  }
+}
