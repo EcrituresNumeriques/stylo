@@ -2,7 +2,6 @@
 @import '../styles/variables.scss';
 
 .sliderleft{
-  background-color:yellow;
   @extend .slider;
   transition:left 0.5s ease, background 0.5s ease, border 0.5s ease;
   border-right:1px solid $main-border-color;
@@ -13,6 +12,12 @@
       float: right;
       background-color:transparent;
       border:none;
+      padding:0.5rem 1rem;
+    }
+    > input {
+      border:none;
+      display:block;
+      width:100%;
       padding:0.5rem 1rem;
     }
   }
