@@ -69,8 +69,7 @@ const ConnectedArticles = (props) => {
             <h1>Articles for {displayName}</h1>
             <p className={styles.button} onClick={()=>setCreatingArticle(!creatingArticle)}>{creatingArticle? 'Cancel new Article' : 'Create new Article'}</p>
             <p  className={styles.buttonsec} onClick={()=>setTagManagement(!tagManagement)}>Manage tags</p>
-            <TagManagement tags={tags} close={()=>setTagManagement(false)} focus={tagManagement} articles={articles} setNeedReload={()=>setNeedReload(true)} setTags={setTags} updateTag=
-            {updateTag}/>
+            <TagManagement tags={tags} close={()=>setTagManagement(false)} focus={tagManagement} articles={articles} setNeedReload={()=>setNeedReload(true)} setTags={setTags}/>
             {!isLoading && <>                
                 {creatingArticle  && <CreateArticle tags={tags} triggerReload={()=>{setCreatingArticle(false);setNeedReload(true)}}/>}
                 {articles.filter(filterByTagsSelected).map((a)=>(

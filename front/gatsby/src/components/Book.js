@@ -12,6 +12,9 @@ import Export from './Export'
 import Chapter from './Chapter'
 import howLongAgo from '../helpers/howLongAgo'
 
+import Bouton from './Bouton'
+import * as Icon from 'react-feather';
+
 const alphaSort = (a, b) => {
   if(a.title < b.title) { return -1; }
   if(a.title > b.title) { return 1; }
@@ -41,9 +44,13 @@ export default (props) => {
             <Export {...props} book={true} bookId={props._id}/>
         </Modal>}
         <nav>
-            <a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/htmlBook/${props._id}?preview=true`} target="_blank" rel="noopener noreferrer">Preview</a>
-            <p onClick={()=>setExporting(true)}>Export</p>
-            <Link to={`/book/${props._id}`} className={styles.primary}>Edit</Link>
+
+            <Bouton title="Preview" href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/htmlBook/${props._id}?preview=true`}>
+                <Icon.Eye />
+            </Bouton>
+            <Bouton title="Export" onClick={()=>setExporting(true)}>
+                <Icon.Printer/>
+            </Bouton>
         </nav>
         {!isRenaming && <h1><span onClick={()=>setExpanded(!expanded)}>{expanded?'-':'+'} {name} ({howLongAgo(new Date() - new Date(props.updatedAt))})</span> <span onClick={()=>setIsRenaming(true)}>[rename]</span></h1>}
         {isRenaming && <p><input value={tempName} onChange={(e)=>setTempName(etv(e))}/><button onClick={()=>renameBook()}>Rename</button><button onClick={()=>{setIsRenaming(false);setTempName(props.name)}}>Cancel</button></p>}
