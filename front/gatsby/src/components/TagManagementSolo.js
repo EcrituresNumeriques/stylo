@@ -36,6 +36,15 @@ export default connect(mapStateToProps)((props) => {
     props.setNeedReload()
   }
 
+  const saveTag = async () => {
+    console.log("hello update tag")
+    const query = `mutation($user:ID!,$tag:ID!,$color:String!,$name:String!,$description:String!){updateTag(user:$user,tag:$tag,name:$name,description:$description,color:$color){ _id name description color }}`
+    const variables = {user:props.activeUser._id,tag:props.t._id, name: tempName, description: tempDescription, color: tempColor}
+    const data = await askGraphQL({query,variables},"update tag", props.sessionToken)
+    props.setNeedReload()
+    setEdit(false)
+  }
+
   const cancelEdit = () => {
     setTempColor(props.t.color)
     setTempName(props.t.name)
@@ -72,7 +81,7 @@ export default connect(mapStateToProps)((props) => {
         </form>
 
         <nav className={props.styles.action}> 
-          <Bouton title="Validate" onClick={()=>setEdit(false)}>
+          <Bouton title="Validate" onClick={()=>saveTag()}>
             <Icon.Save/>
           </Bouton>
           <div className={props.styles.spacer}>
