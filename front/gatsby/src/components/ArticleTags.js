@@ -12,8 +12,8 @@ const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
 
 const ConnectedArticleTags = (props) => {
 
-  const addToTags = async ({name,_id}) => {
-    props.setTags([...props.stateTags,{_id,name}])
+  const addToTags = async ({name,_id,color}) => {
+    props.setTags([...props.stateTags,{_id,name,color}])
     try{
       const query=`mutation($article:ID!,$tag:ID!,$user:ID!){addToTag(article:$article,tag:$tag,user:$user){ _id }}`
       const variables={article:props._id,tag:_id,user:props.activeUser._id}
@@ -46,7 +46,7 @@ const ConnectedArticleTags = (props) => {
         <li className={styles.clickMeOff} onClick={()=>rmFromTags(t._id)} key={`article-${props._id}-${t._id}`}>{t.name} [X]</li>
       )}
       {props.editTags && props.masterTags.filter(t => !props.stateTags.map(u=>u._id).includes(t._id)).map(t=>
-        <li className={styles.clickMeOn} onClick={()=>addToTags({_id:t._id,name:t.name})} key={`article-${props._id}-${t._id}`}>{t.name} [ ]</li>
+        <li className={styles.clickMeOn} onClick={()=>addToTags({_id:t._id,name:t.name, color:t.color})} key={`article-${props._id}-${t._id}`}>{t.name} [ ]</li>
       )}
     </>
   )
