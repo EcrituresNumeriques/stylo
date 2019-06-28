@@ -13,6 +13,14 @@
   }
 }
 
+.error{
+  background-color:red;
+  padding:0.5rem;
+  color:$main-background-color;
+  text-align: center;
+  margin-top:0;
+}
+
 .retractRight{
   @extend .sliderright;
   right:-400px;
@@ -57,6 +65,7 @@
     display:flex;
     flex-wrap: nowrap;
     > p{
+      flex:1 1 calc(100% / 3);
       text-align: center;
       padding:0.5rem 1rem;
       background-color:$main-background-color;
