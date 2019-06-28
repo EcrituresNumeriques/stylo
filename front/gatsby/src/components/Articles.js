@@ -3,6 +3,7 @@ import {navigate} from 'gatsby'
 import { connect } from "react-redux"
 
 import askGraphQL from '../helpers/graphQL';
+import etv from '../helpers/eventTargetValue'
 
 import Article from './Article'
 import CreateArticle from './CreateArticle'
@@ -23,6 +24,7 @@ const ConnectedArticles = (props) => {
     }
 
     const [isLoading,setIsLoading] = useState(false)
+    const [filter,setFilter] = useState("")
     const [articles,setArticles] = useState([])
     const [tags,setTags] = useState([])
     const [displayName,setDisplayName] = useState(props.activeUser.displayName)
@@ -30,8 +32,22 @@ const ConnectedArticles = (props) => {
     const [needReload,setNeedReload] = useState(true)
     const [tagManagement,setTagManagement] = useState(false)
 
+    const sortByUpdatedAt = (a, b) => {
+        const da = new Date(a.updatedAt)
+        const db = new Date(b.updatedAt)
+        if(da > db){
+            return -1
+        }
+        else if(db > da){
+            return 1
+        }
+        else{
+            return 0
+        }
+    }
+
     const filterByTagsSelected = (article) => {
-        const listOfTagsSelected = tags.filter(t => t.selected)
+        const listOfTagsSelected = [...tags].filter(t => t.selected)
         if(listOfTagsSelected.length === 0){ return true }
         let pass = true
         for(let i=0;i<listOfTagsSelected.length;i++){
@@ -72,7 +88,8 @@ const ConnectedArticles = (props) => {
             <TagManagement tags={tags} close={()=>setTagManagement(false)} focus={tagManagement} articles={articles} setNeedReload={()=>setNeedReload(true)} setTags={setTags}/>
             {!isLoading && <>                
                 {creatingArticle  && <CreateArticle tags={tags} triggerReload={()=>{setCreatingArticle(false);setNeedReload(true)}}/>}
-                {articles.filter(filterByTagsSelected).map((a)=>(
+                <input id={styles.filter} type="text" value={filter} onChange={(e)=>setFilter(etv(e))}/>
+                {articles.filter(filterByTagsSelected).filter(a => a.title.indexOf(filter) > -1).sort(sortByUpdatedAt).map((a)=>(
                     <Article key={`article-${a._id}`} masterTags={tags} {...a} setNeedReload={()=>setNeedReload(true)}/>
                 ))}
             </>}
