@@ -88,8 +88,8 @@ const ConnectedArticles = (props) => {
             <TagManagement tags={tags} close={()=>setTagManagement(false)} focus={tagManagement} articles={articles} setNeedReload={()=>setNeedReload(true)} setTags={setTags}/>
             {!isLoading && <>                
                 {creatingArticle  && <CreateArticle tags={tags} triggerReload={()=>{setCreatingArticle(false);setNeedReload(true)}}/>}
-                <input id={styles.filter} type="text" value={filter} onChange={(e)=>setFilter(etv(e))}/>
-                {articles.filter(filterByTagsSelected).filter(a => a.title.indexOf(filter) > -1).sort(sortByUpdatedAt).map((a)=>(
+                <input id={styles.filter} type="text" value={filter} placeholder="Search" onChange={(e)=>setFilter(etv(e))}/>
+                {articles.filter(filterByTagsSelected).filter(a => a.title.toLowerCase().indexOf(filter.toLowerCase()) > -1).sort(sortByUpdatedAt).map((a)=>(
                     <Article key={`article-${a._id}`} masterTags={tags} {...a} setNeedReload={()=>setNeedReload(true)}/>
                 ))}
             </>}
