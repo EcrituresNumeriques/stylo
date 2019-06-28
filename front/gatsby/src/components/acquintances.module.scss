@@ -2,6 +2,21 @@
 @import '../styles/variables.scss';
 
 .acquintances{
+  > nav{
+    display:flex;
+    width:100%;
+    margin-bottom:1rem;
+    border:1px solid $main-border-color;
+    > p {
+      flex:1 1 50%;
+      @extend .clickable;
+      background-color:$main-background-color;
+      padding:0.5rem 1rem;
+      &.selected{
+        @extend .primary-button;
+      }
+    }
+  }
   h1{
     font-size:1.4rem;
     margin-bottom:1rem;
@@ -20,14 +35,14 @@
       border:none;
     }
   }
-  p{
+  > p{
     padding:0.5rem 1rem;
     span{
       @extend .primary-button;
       float:right;
     }
   }
-  p:nth-child(2n+1){
+  > p:nth-child(2n+1){
     background-color:$extra-background-color;
   }
   margin-bottom:1rem;

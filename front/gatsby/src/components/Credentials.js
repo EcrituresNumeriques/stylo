@@ -78,20 +78,20 @@ const ConnectedCredentials = props => {
 
     return(
         <section className={styles.section}>
-            <h1>Credentials management</h1>
-            <p>This section is strictly private, information are only related to your credentials, the combination of username(or email) and password</p>
+            <h1>Account selection</h1>
+            <p>If your <strong>Credentials</strong> are associated with multiple <strong>Accounts</strong>, you'll be able to set active account and default active Account here ({isLoading?'fetching..':'up to date'})</p>
+            <ul>
+                {props.users.map((u,i)=><CredentialsUserSelect key={`user-${u._id}`} {...props} u={u} setDefault={setDefault}/>)}
+            </ul>
             <h2>Change password</h2>
+            <p>This section is strictly private, changing your password will only affect your combination of username/email and password. Other users having access to one or more of your available accounts won't be affected.</p>
             <form onSubmit={(e)=>changePassword(e)}>
                 <input type="password" placeholder="Old password" value={passwordO} onChange={(e)=>setPasswordO(etv(e))}/>
                 <input type="password" placeholder="New password" value={password} onChange={(e)=>setPassword(etv(e))}/>
                 <input type="password" placeholder="Confirm new password" className={password === passwordC?null:styles.beware} value={passwordC} onChange={(e)=>setPasswordC(etv(e))}/>
                 <button disabled={!password || !passwordO || (password !== passwordC)}>{isUpdating?'Updating..':'Change'}</button>
             </form>
-            <h2>User selection</h2>
-            <p>If your <strong>Credentials</strong> are associated with multiple <strong>Users</strong>, you'll be able to set active user and default active User here ({isLoading?'fetching..':'up to date'})</p>
-            <ul>
-                {props.users.map((u,i)=><CredentialsUserSelect key={`user-${u._id}`} {...props} u={u} setDefault={setDefault}/>)}
-            </ul>
+            
 
         </section>
     )

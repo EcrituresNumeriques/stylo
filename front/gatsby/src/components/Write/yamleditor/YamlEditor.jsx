@@ -35,7 +35,14 @@ export default class YamlEditor extends Component {
     //load defaultYaml, merge it with specified yaml
     const defaultYaml = YAML.load(init.yaml, { schema: SEXY_SCHEMA }) || {};
     const singleYaml = props.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, "");
-    const parsed = YAML.load(singleYaml, { schema: SEXY_SCHEMA }) || {};
+    let parsed = {}
+    try{
+      parsed = YAML.load(singleYaml, { schema: SEXY_SCHEMA }) || {};
+      props.error("")
+    }
+    catch(e){
+      props.error(e.reason + e.message.split("\n")[0])
+    }
     const jsObj = {...defaultYaml,...parsed}
     const miscInit = JSON.parse(JSON.stringify(init.misc));
     this.state = {obj:jsObj,misc:this.computeFromYaml(jsObj,miscInit)};

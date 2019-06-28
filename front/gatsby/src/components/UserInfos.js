@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 
 import askGraphQL from '../helpers/graphQL';
 import etv from '../helpers/eventTargetValue'
-import styles from './user.module.scss'
+import styles from './userInfos.module.scss'
 import UserConnectedLogin from './UserAllowedLogin'
 
 
@@ -18,15 +18,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const ConnectedUser = props => {    
-  const isBrowser = typeof window !== 'undefined';
-  if(isBrowser && !props.logedIn){
-    navigate('/login')
-    return <p>redirecting</p>
-  }
-
-
-  const [displayNameH1,setDisplayNameH1] = useState(props.activeUser.displayName)
+const ConnectedUser = props => {
   const [displayName,setDisplayName] = useState('')
   const [firstName,setFirstName] = useState('')
   const [lastName,setLastName] = useState('')
@@ -45,7 +37,7 @@ const ConnectedUser = props => {
         const query = `query($user:ID!){user(user:$user){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution passwords{ _id username email } tokens{ _id name active }}}`
         const variables = {user:props.activeUser._id}
         const data = await askGraphQL({query,variables},'fetching user',props.sessionToken)
-        setDisplayNameH1(data.user.displayName)
+        //setDisplayNameH1(data.user.displayName)
         setDisplayName(data.user.displayName)
         setFirstName(data.user.firstName || '')
         setLastName(data.user.lastName || '')
@@ -69,7 +61,7 @@ const ConnectedUser = props => {
       const query = `mutation($user:ID!,$displayName:String!,$firstName:String,$lastName:String, $institution:String,$yaml:String){updateUser(user:$user,displayName:$displayName,firstName:$firstName, lastName: $lastName, institution:$institution, yaml:$yaml){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution passwords{ _id username email } tokens{ _id name active }}}`
       const variables = {user:props.activeUser._id,yaml,displayName,firstName,lastName,institution}
       const data = await askGraphQL({query,variables},'updating user',props.sessionToken)
-      setDisplayNameH1(data.updateUser.displayName)
+      //setDisplayNameH1(data.updateUser.displayName)
       setDisplayName(data.updateUser.displayName)
       props.updateActiveUser(displayName)
       setFirstName(data.updateUser.firstName || '')
@@ -137,26 +129,23 @@ const ConnectedUser = props => {
   }
 
   return(
-    <section className={styles.section}>
-      <h1>User management ({displayNameH1})</h1>
-
-      <h2>User information</h2>
+    <section class={styles.section}>
+      <h2>Account information</h2>
       <form onSubmit={(e)=>updateInfo(e)}>
-        <label>Information: </label><p>{isLoading?'fetching..':'up to date'}</p>
-        <label>Email:</label><p>{user.email}</p>
-        <label>ID:</label><p>{user._id}</p>
-        <label>Status:</label><p>{user.admin?'Admin':'User'}</p>
-        <label>Created At:</label><p>{user.createdAt}</p>
-        <label>Updated At:</label><p>{user.updatedAt}</p>
         <label>Display name:</label><input type="text" value={displayName} onChange={(e)=>setDisplayName(etv(e))} placeholder="Display name" />
         <label>First Name:</label><input type="text" value={firstName} onChange={(e)=>setFirstName(etv(e))} placeholder="First name" />
         <label>Last name:</label><input type="text" value={lastName} onChange={(e)=>setLastName(etv(e))} placeholder="Last name" />
         <label>Institution:</label><input type="text" value={institution} onChange={(e)=>setInstitution(etv(e))} placeholder="Institution name" />
         <label>Default YAML:</label><textarea value={yaml} onChange={(e)=>setYaml(etv(e))} placeholder="" />
-        <div className={styles.rightAlign}><button>Update</button></div>
-        
+        <div className={styles.rightAlign}><button>Update</button>
+        </div>
+        <label>Primary email:</label><p>{user.email}</p>
+        <label>ID:</label><p>{user._id}</p>
+        <label>Status:</label><p>{user.admin?'Admin':'Basic account'}</p>
+        <label>Created At:</label><p>{user.createdAt}</p>
+        <label>Updated At:</label><p>{user.updatedAt}</p>
       </form>
-      <h2>Logins allowed</h2>
+      <h2>Allowed credentials</h2>
       <ul>
         {isLoading && <li>Fetching..</li>}
         {!isLoading && passwords.map(p=><UserConnectedLogin key={`userLogin-${p._id}`} {...p} user={user.email} removeLogin={removeLogin}/>)}
@@ -165,7 +154,6 @@ const ConnectedUser = props => {
         <input placeholder="Email of the login to allow" value={emailLogin} onChange={(e)=>setEmailLogin(etv(e))}/>
         <div className={styles.rightAlign}><button>Give full access</button></div>
       </form>
- 
     </section>
   )
 }

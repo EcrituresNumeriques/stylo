@@ -1,5 +1,7 @@
 import { createStore as reduxCreateStore } from "redux"
 
+// Définit tout ce qui se passe quand un message d'action est envoyé
+
 const initialState = { logedIn: false, users:[],password:undefined,sessionToken:undefined }
 
 const reducer = (state, action) => {
@@ -18,7 +20,8 @@ const reducer = (state, action) => {
   else if(action.type === 'UPDATE_ACTIVE_USER'){
     console.log("updating displayName")
     return Object.assign({}, state, {
-      activeUser: {...state.activeUser, displayName: action.payload}
+      activeUser: {...state.activeUser, displayName: action.payload}},{
+      users:[...state.users].map(u=>{ if(state.activeUser._id === u._id){u.displayName = action.payload}return u})
     })
   }
   else if(action.type === 'RELOAD_USERS'){

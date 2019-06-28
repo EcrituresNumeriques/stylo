@@ -1,0 +1,57 @@
+@import '../../styles/defaults.scss';
+@import '../../styles/variables.scss';
+
+#section {
+    > h1 {
+      font-size:1.2rem;
+      @extend .clickable;
+      border-top:1px solid $main-border-color;
+      border-bottom:1px solid $main-border-color;
+      padding:0.5rem 1rem;
+      background-color:$main-background-color;
+    }
+
+
+    > nav {
+      display:flex;
+      border-bottom:1px solid $main-border-color;
+      > a, >p {
+        flex:1 1 50%;
+        padding:0.5rem 1rem;
+        text-align:center;
+        @extend .clickable;
+        background-color: $main-background-color;
+      }
+      > p {
+        border-right:1px solid $main-border-color;
+      }
+    }
+    > p{
+      padding:0.5rem 1rem;
+    }
+    > li > a {
+      display:block;
+      padding:0.5rem 1rem;
+      @extend .clickable;
+    }
+    > form {
+      width:100%;
+      padding:0;
+      > input {
+        width:100%;
+        display:block;
+        padding:0.5rem 1rem;
+        border:none;
+        border-top:1px solid $main-border-color
+      }
+      > button{
+        width:50%;
+        padding:0.5rem 1rem;
+      }
+    }
+
+    .closed{
+      background-color:$main-color;
+      color:$main-background-color;
+    }
+}

@@ -8,12 +8,15 @@ import env from '../helpers/env'
 import Modal from './Modal'
 import Export from './Export'
 import ArticleDelete from './ArticleDelete'
-import ShareCenter from './ShareCenter'
+import Acquintances from './Acquintances'
 import ArticleTags from './ArticleTags'
 import howLongAgo from '../helpers/howLongAgo'
 
 import etv from '../helpers/eventTargetValue'
 import askGraphQL from '../helpers/graphQL';
+
+import Bouton from './Bouton'
+import * as Icon from 'react-feather';
 
 const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
     return { logedIn, activeUser, sessionToken }
@@ -29,6 +32,19 @@ const ConnectedArticle = (props) => {
     const [renaming,setRenaming] = useState(false)
     const [title,setTitle] = useState(props.title)
     const [tempTitle,setTempTitle] = useState(props.title)
+    const [sharing,setSharing] = useState(false)
+
+    const fork = async () => {
+        try{
+          const query = `mutation($user:ID!,$article:ID!){sendArticle(article:$article,to:$user,user:$user){ _id }}`
+          const variables = {user:props.activeUser._id,to:props.activeUser._id,article:props._id}
+          await askGraphQL({query,variables}, 'forking Article',props.sessionToken)
+          props.setNeedReload()
+        }
+        catch(err){
+          alert(err)
+        }
+      }
 
     const rename = async (e) => {
         e.preventDefault();
@@ -45,26 +61,55 @@ const ConnectedArticle = (props) => {
         {exporting && <Modal cancel={()=>setExporting(false)}>
             <Export {...props} article={true} versionId={props.versions[0]._id} version={props.versions[0].version}revision={props.versions[0].revision}/>
         </Modal>}
+        {sharing && <Modal cancel={()=>setSharing(false)}>
+            <Acquintances {...props} cancel={()=>setSharing(false)}/>
+        </Modal>}
         <nav>
-            <a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/api/v1/htmlArticle/${props._id}?preview=true`} target="_blank" rel="noopener noreferrer">Preview</a>
-            <p onClick={()=>setExporting(true)}>Export</p>
-            <Link to={`/article/${props._id}`} className={styles.primary}>Edit</Link>
+            <Bouton title="Preview" href={`${env.EXPORT_ENDPOINT}/api/v1/htmlArticle/${props._id}?preview=true`}>
+                <Icon.Eye />
+            </Bouton>
+            <Bouton title="Share" onClick={()=>setSharing(true)}>
+                <Icon.Send/>
+            </Bouton>
+            <Bouton title="Duplicate" onClick={()=>fork()}>
+                <Icon.Copy />
+            </Bouton>
+            <Bouton title="Export" onClick={()=>setExporting(true)}>
+                <Icon.Printer/>
+            </Bouton>
+            <Bouton title="Edit" primary={true} href={`/article/${props._id}`}>
+                <Icon.Edit3 />
+            </Bouton>
         </nav>
-        {!renaming && <h1><span onClick={()=>setExpanded(!expanded)}>{expanded?'-':'+'}</span><span onClick={()=>setExpanded(!expanded)}> {title} ({howLongAgo(new Date() - new Date(props.updatedAt))})</span><span onClick={()=>setRenaming(true)}>(rename)</span></h1>}
+        {!renaming && <h1><span onClick={()=>setExpanded(!expanded)}>{expanded?'-':'+'}</span><span onClick={()=>setExpanded(!expanded)}> {title} </span>
+            <Bouton title="Edit" thin={true} onClick={()=>setRenaming(true)}>
+                <Icon.Edit3 />
+            </Bouton></h1>}
         {renaming && <form onSubmit={e=>rename(e)}>
-            <input value={tempTitle} onChange={(e)=>setTempTitle(etv(e))} /><input type="submit" value="Rename"/><span onClick={()=>setRenaming(false)}>(cancel)</span>
+            <input value={tempTitle} onChange={(e)=>setTempTitle(etv(e))} /><Bouton title="Save" onClick={(e)=>rename(e)}>
+                <Icon.Save/>
+            </Bouton>
+            <Bouton title="Cancel" onClick={()=>setRenaming(false)}>
+                <Icon.X/>
+            </Bouton>
 
         </form>}
+        <div style={{height:"0.5rem",paddingLeft:"1rem"}}>
+            {tags.map(t=><span key={"tagColor-"+t._id} style={{fontSize:"0.6rem",backgroundColor:t.color || "grey",display:"inline-block",padding:"0.25rem",marginRight:"0.5rem",borderRadius:"100% 100%"}}></span>)}
+            by <span>{props.owners.map(o=>o.displayName).join(', ')}</span>
+            <span style={{fontSize:"0.7rem"}}>({howLongAgo(new Date() - new Date(props.updatedAt))})</span>
+        </div>
         {expanded && <section>
-            <ShareCenter {...props}/>
-            <h2>by <span>{props.owners.map(o=>o.displayName).join(', ')}</span></h2>
+            <h2></h2>
             <ul>
                 <p>Last versions:</p>
                 {props.versions.map(v=>(
                     <li key={`version-${v._id}`}><Link to={`/article/${props._id}/version/${v._id}`}>{`${v.message?v.message:'no label'} (${v.autosave?'autosaved':''} v${v.version}.${v.revision})`}</Link></li>
                 ))}
             </ul>
-            {!deleting && <p className={styles.deleteMe} onClick={()=>setDeleting(true)}>Delete Article</p>}
+            {!deleting && <p className={styles.deleteMe}><Bouton title="Delete" onClick={()=>setDeleting(true)} >
+                <Icon.Trash />
+            </Bouton></p>}
             <ul>
                 <p>Tags (<span onClick={()=>{if(editTags){props.setNeedReload()}setEditTags(!editTags);}}>{editTags?'finish':'edit'}</span>):</p>
                 <ArticleTags editTags={editTags} {...props} stateTags={tags} setTags={(ts)=>setTags(ts)}/>
