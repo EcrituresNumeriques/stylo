@@ -110,7 +110,7 @@ module.exports = {
       //All good, create new Article & merge version/article/user
       let prefix = '[Sent] '
       if(args.user === args.to){
-        prefix = '[fork] '
+        prefix = '[Copy] '
       }
 
       let newArticle = new Article({title:prefix+fetchedArticle.title, zoteroLink:fetchedArticle.zoteroLink})
