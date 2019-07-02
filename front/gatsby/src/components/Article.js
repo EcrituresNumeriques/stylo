@@ -65,7 +65,7 @@ const ConnectedArticle = (props) => {
             <Acquintances {...props} cancel={()=>setSharing(false)}/>
         </Modal>}
         <nav>
-            <Bouton title="Preview" href={`${env.EXPORT_ENDPOINT}/api/v1/htmlArticle/${props._id}?preview=true`}>
+            <Bouton title="Preview" href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/api/v1/htmlArticle/${props._id}?preview=true`}>
                 <Icon.Eye />
             </Bouton>
             <Bouton title="Share" onClick={()=>setSharing(true)}>
