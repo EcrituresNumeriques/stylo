@@ -1,6 +1,6 @@
 # À propos de Stylo
 
-Le projet est réalisé par la [Chaire de Recherche du Canada sur les écritures numériques](http://ecrituresnumeriques.ca) et l'entreprise [PiNinja](https://3.14159.ninja/), avec le soutien d'[Érudit](http://erudit.org/), sous licence [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE).
+Le projet est dirigé par la [Chaire de Recherche du Canada sur les écritures numériques](http://ecrituresnumeriques.ca) et a été réalisé par l'entreprise [PiNinja](https://3.14159.ninja/), avec le soutien d'[Érudit](http://erudit.org/), sous licence [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE).
 
 <img src="uploads/images/logo-crc-ecrinum.png" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:250px">
 
@@ -8,7 +8,7 @@ Le projet est réalisé par la [Chaire de Recherche du Canada sur les écritures
 
 ## Le projet
 
-Stylo est actuellement un prototype, en cours de développement, implémenté dans la chaîne éditoriale de la revue [Sens Public](http://sens-public.org) et de la maison [Les ateliers](http://ateliers.sens-public.org) et en phase de test pour d'autres revues. Il est par ailleurs utilisé par différent·e·s auteur·e·s et étudiant·e·s à titre personnel pour leurs travaux scientifiques.
+Stylo est actuellement un outil prototype en cours de développement, implémenté dans la chaîne éditoriale de la revue [Sens Public](http://sens-public.org) et de la maison [Les ateliers](http://ateliers.sens-public.org). Il est actuellement en phase de test pour d'autres revues. Il est par ailleurs utilisé par différent·e·s auteur·e·s et étudiant·e·s à titre personnel pour leurs travaux scientifiques et/ou universitaires.
 
 Stylo peut être utilisé en ligne à l'adresse [stylo.ecrituresnumeriques.ca](https://stylo.ecrituresnumeriques.ca). Cette instance de Stylo est déployée et maintenue par l'entreprise PiNinja, qui assure la sauvegarde et la sécurite des données.
 
@@ -23,32 +23,29 @@ Le code source de Stylo est disponible sur Github [].
 - Écriture collaborative en modification synchrone
 - Documentation en anglais
 
-## La philosophie de Stylo
+## La philosophie *Stylo*
 
+Éditeur de texte WYSIWYM pour les sciences humaines, Stylo est conçu pour changer l’ensemble de la chaîne éditoriale numérique des revues savantes en Sciences Humaines et Sociales.
 
-Éditeur de texte WYSIWYM pour les sciences humaines, Stylo est conçu pour changer l’ensemble de la chaîne éditoriale numérique des revues savantes en Sciences Humaines.
+Bien que fondamentale en vue d’une diffusion numérique, la structuration des documents et leur balisage sont actuellement reportés à la fin du processus éditorial, quand en réalité ceux-ci devraient être envisagés dès la production (par l’auteur lui-même, dès la première révision des articles). À cet égard, il semble urgent et cohérent de réintégrer le travail de balisage et de structuration en début de chaîne éditoriale. 
 
-Bien que fondamentale en vue d’une diffusion numérique, la structuration des documents et leur balisage sont actuellement reportés à la fin du processus éditorial, quand en réalité ceux-ci devraient être envisagés dès la production (par l’auteur lui-même, dès la première révision des articles). À cet égard, il semblerait urgent et logique de réintégrer le travail de balisage et de structuration en début de chaîne. 
+La philosophie de Stylo consiste à remettre dans les mains des chercheur·e·s la gestion du balisage en partant cette fois-ci de leurs compétences, qui relèvent davantage de compétences sémantiques que graphiques. 
 
-La philosophie de Stylo consiste à remettre dans les mains des chercheurs la gestion du balisage en partant cette fois-ci de leurs compétences, qui sont des compétences sémantiques plutôt que graphiques. 
+L'éditeur est basé sur la séparation entre le balisage sémantique et les affichages graphiques, ce qui permet à l'auteur·e de se consacrer au sens du texte plutôt que sur sa mise en forme.
 
-L'éditeur est basé sur la séparation entre le balisage sémantique et les affichages graphiques, ce qui permet à l'auteur de se concentrer sur le sens de son texte au lieu que sur la mise en forme.
-
-Stylo propose une solution libre, basée sur des standards (markdown, yaml, bibtex) qui permet de:
+Stylo propose une solution libre, basée sur des standards (markdown, yaml, bibtex) qui permet de :
 
 - produire des textes bien balisés avec des métadonnées riches et une bibliographie structurée
 - prouduire de multiples sorties (PDF, HTML, XML, ODT...) à partir d'un seul document
 
 Stylo est un outil qui implémente des formats et des technologies de conversion existantes et déjà utilisées par la communauté, ce qui permet une libre circulation des documents qui ne sont pas enfermés dans un format particulier.
 
+## Contributeurs et contributrices
 
-
-
-## Contributeurs
-
-Arthur Juchereau
-Marcello
-Servanne
-Nicolas
-Margot
-Lena
+Les chercheur·e·s participant à la réalisation de ce projet sont les suivants : 
+[Arthur Juchereau](http://lightiumdev.ecrituresnumeriques.ca/fr/Equipe/Arthur-Juchereau)
+[Marcello Vitali-Rosati](http://lightiumdev.ecrituresnumeriques.ca/fr/Equipe/Marcello-Vitali-Rosati)
+[Servanne Monjour](http://lightiumdev.ecrituresnumeriques.ca/fr/Equipe/Servanne-Monjour-)
+[Nicolas Sauret](http://lightiumdev.ecrituresnumeriques.ca/fr/Equipe/Nicolas-Sauret)
+[Margot Mellet](http://lightiumdev.ecrituresnumeriques.ca/fr/Equipe/Margot-Mellet)
+[Lena Krause](http://lightiumdev.ecrituresnumeriques.ca/fr/Equipe/Lena-Krause)
