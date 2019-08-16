@@ -1,16 +1,24 @@
-# Premiers pas
+# Premiers pas dans Stylo
 
+## Création d'un compte
+Afin d'éditer dans Stylo, la création d'un compte utilisateur est nécessaire. Pour créer un compte, veuillez cliquer [ici](https://front.stylo.ecrituresnumeriques.ca/register)
+
+## Page d'utilisateur
+La page d'accueil de votre compte Stylo liste vos articles ainsi que ceux qui ont été partagés avec vous.
+
+Par défaut, un premier article “How to Stylo” est présent sur la plateforme, et détaille chaque étape de la rédaction d’un article. N’hésitez pas à vous y référer si vous souhaitez directement écrire votre article dans Stylo, ou si vous avez des questions sur des articles à traitement particulier (illustrations, etc.).
+
+## Structure d'un article
 Un article dans Stylo est composé à partir de trois éléments distincts :
 
   - un corps de texte
   - des métadonnées
   - une bibliographie
+  
+L'interface d'édition se structure ainsi : 
 
-## Liste des articles
+![Schéma de l'interface d'édition de Stylo](https://i.imgur.com/IIHPXiU.png)
 
-La page d'accueil de votre compte Stylo liste vos articles ainsi que ceux qui ont été partagés avec vous.
-
-Par défaut, un premier article “How to Stylo” est présent sur la plateforme, et détaille chaque étape de la rédaction d’un article. N’hésitez pas à vous y référer si vous souhaitez directement écrire votre article dans Stylo, ou si vous avez des questions sur des articles à traitement particulier (illustrations, etc.).
 
 Pour chaque article, plusieurs actions sont possibles :
 
