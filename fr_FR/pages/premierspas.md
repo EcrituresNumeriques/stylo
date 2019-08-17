@@ -1,38 +1,44 @@
 # Premiers pas dans Stylo
 
 ## Création d'un compte
-Afin d'éditer dans Stylo, la création d'un compte utilisateur est nécessaire. Pour créer un compte, veuillez cliquer [ici](https://front.stylo.ecrituresnumeriques.ca/register)
+Afin d'éditer dans Stylo, la création d'un compte utilisateur est nécessaire. Pour créer un compte, veuillez cliquer [ici](https://front.stylo.ecrituresnumeriques.ca/register) et fournir les infomations obligatoire : 
+
+![](uploads/images/Register.png)
+
+Si vous possédez déjà un compte, connectez-vous [ici](https://front.stylo.ecrituresnumeriques.ca/login).
 
 ## Page d'utilisateur
-La page d'accueil de votre compte Stylo liste vos articles ainsi que ceux qui ont été partagés avec vous.
+La page d'accueil de votre compte Stylo liste vos articles personnels ainsi que ceux qui ont été partagés avec vous par d'autres utilisateurs de Stylo.
 
 Par défaut, un premier article “How to Stylo” est présent sur la plateforme, et détaille chaque étape de la rédaction d’un article. N’hésitez pas à vous y référer si vous souhaitez directement écrire votre article dans Stylo, ou si vous avez des questions sur des articles à traitement particulier (illustrations, etc.).
 
 ## Structure d'un article
-Un article dans Stylo est composé à partir de trois éléments distincts :
+Un article dans Stylo est se structure ainsi :
 
-  - un corps de texte
-  - des métadonnées
-  - une bibliographie
-  
-L'interface d'édition se structure ainsi : 
+  - un corps de texte : espace pour le contenu de l'article.
+  - un gestionnaire de métadonnées : espace pour les informations concernant l'article (résumé, auteur, date, etc.)
+  - une gestionnaire de versions : espace permettant d'enregistrer et de nommer des versions mineures (*Save Minor*) ou majeures (*Save Major*), des les consulter en cliquant sur le nom de la version et d'effectuer diverses actions sur cette version (comparaison avec d'autres versions, export, visualisation).
+  - un gestionnaire de bibliographie : espace pour renseigner les références citées ou non dans le corps du texte.
+  - une table des matières : espace renseignant sur la structure de développement de l'article.
+  - un outil statistiques : renseignant sur les caractères statistiques de l'article. 
 
-![Schéma de l'interface d'édition de Stylo](https://i.imgur.com/IIHPXiU.png)
+
+![Schéma de l'interface d'édition de Stylo](uploads/images/Structure.png)
 
 
 Pour chaque article, plusieurs actions sont possibles :
 
 |bouton|fonction|
 |:-:|:--|
-| ![edit](uploads/images/edit.png) | pour ouvrir l'article en édition|
-| ![share](uploads/images/share.png) | pour partager l'article et son historique de versions avec un autre usager de Stylo|
-| ![send](uploads/images/send.png) | pour envoyer uniquement la dernière version de l'article à un autre usager de Stylo|
-| ![rename](uploads/images/rename.png) | pour renommer l'article|
-| ![delete](uploads/images/delete.png) | pour supprimer l'article et tout son historique de versions|
+| ![Edit](uploads/images/Edit.png) | pour ouvrir l'article en édition|
+| ![Share](uploads/images/Share.png) | pour partager l'article et son historique de versions avec un autre usager de Stylo qui s'intitulera ainsi : "[Copy]New article"|
+| ![Duplicate](uploads/images/Duplicate.png) | pour dupliquer uniquement la dernière version de l'article|
+| ![Rename](uploads/images/Rename.png) | pour renommer l'article|
+| ![Plus](uploads/images/plus.png) | pour développer d'autres fonctions de l'article :|
 
 Note: Le nom du document tel que visible sur Stylo ne correspond pas au titre de l'article qui sera généré.
 
-Attention: Supprimer un article est irréversible. Si l'article est partagé avec un autre usager, après sa suppression, il restera accessible pour ce dernier.
+**Attention :** Supprimer un article est irréversible. Si l'article est partagé avec un autre usager, après sa suppression, il restera accessible pour ce dernier.
 
 ![plus](uploads/images/plus.png) Le bouton **[+]** donne accès à d'autres possibilités d'édition du document : 
 
