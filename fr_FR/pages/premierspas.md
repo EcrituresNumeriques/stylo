@@ -38,7 +38,7 @@ Un article dans Stylo est composé à partir de trois éléments distincts :
   - des métadonnées
   - une bibliographie
 
-Stylo propose une interface intégrée pour éditer chacun de ces éléments, dont les sources sont accessibles à tout moment via [le module d'export](#export).
+Stylo propose une interface intégrée pour éditer chacun de ces éléments, dont les sources sont accessibles à tout moment via [le module d'export](premierspas.md#Export).
 
 ## L'interface d'édition
 L'interface d'édition d'un article présente plusieurs modules :
