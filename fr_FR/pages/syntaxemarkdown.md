@@ -178,6 +178,37 @@ Donnera en HTML:
 </div>
 ```
 
+Il est également possible d'utiliser ce balisage sémantique pour structurer les données en RDFa, voici deux exemples:
+
+
+```markdown
+
+Auteur du texte: [John Dewey]{property="dc:creator"}
+
+```
+
+Donnera en HTML:
+```html
+
+<p>Auteur du texte: <span data-property="dc:creator">John Dewey</span></p>
+
+```
+
+Deuxième exemple:
+
+```markdown
+
+John Dewey est né le [20 octobre 1859]{property="dc:date" content="1859-10-20"}.
+
+```
+
+Donnera en HTML:
+```html
+
+<p>John Dewey est né le <span property="dc:date" content="1859-10-20">20 octobre 1859</span></p>
+
+```
+
 ## Tableaux
 
 Les tableaux se réalisent avec la syntaxe suivante:
