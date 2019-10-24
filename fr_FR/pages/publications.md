@@ -1,3 +1,11 @@
+# Permanences 
+
+La CRCEN organise des sessions de permanence hebdomadaire pour le suivi de l'édition dans Stylo. Lors de ces sessions, il est possible de poser des questions à l'équipe présente, pour perfectionner l'utilisation de Stylo, régler d'éventuels problèmes d'édition. 
+
+Les sessions ont lieu chaque jeudi matin de 11h à 12h (heure canadienne) à compter du jeudi 31 octobre 2019. 
+
+La participation et le suivi de ces sessions est libre et disponible [en ligne](https://meet.jit.si/stylo).
+
 # Publications
 
 Stylo a été présenté dans différentes occasions scientifiques et professionnelles :
