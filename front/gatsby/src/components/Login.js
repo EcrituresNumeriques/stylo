@@ -13,7 +13,7 @@ const mapStateToProps = ({ logedIn }) => {
 }
 
 const mapDispatchToProps = dispatch => {
-    return { 
+    return {
         login: (data) => dispatch({ type: `LOGIN`, login: data }),
         logout: () => dispatch({ type: `LOGOUT` })
     }
@@ -29,7 +29,7 @@ const ConnectedLogin = (props) => {
     const [password, setPassword] = useState('');
     const query = "query($email:String,$username:String,$password:String!){login(username:$username,email:$email,password:$password){token token_cookie password{_id username}users{_id email displayName}}}"
     let user = {email, password}
-    
+
     const loginUser = async (query,user) => {
         //Validate stuff client-side
         if(user.email === ""){
@@ -44,13 +44,13 @@ const ConnectedLogin = (props) => {
             user.username = user.email
             delete user.email
         }
-        
-        
+
+
         try{
             const data = await askGraphQL({query,variables:user})
             props.login(data.login)
             //if no error thrown, we can navigate to /login
-            
+
         }
         catch(err){
             alert(err)
@@ -63,8 +63,11 @@ const ConnectedLogin = (props) => {
           usernameRef.current.focus();
         },[usernameRef]
       );
-    
+
     return (
+        <section className="disclaimer">
+          <p>Looking for technical and editing support? Join the <a href="https://ecrituresnumeriques.ca/en/2019/10/25/Stylo-technical-and-editing-support" target="_blank">weekly session</a> for Stylo users.</p>
+        </section>
         <section className={styles.box}>
             <form onSubmit={(event)=>{event.preventDefault();loginUser(query,user)}}>
                 <h1>Login</h1>
@@ -73,7 +76,7 @@ const ConnectedLogin = (props) => {
                 <input type="submit" value="go"/>
                 <p className="note">or <Link to="/register">create an account</Link></p>
             </form>
-        </section> 
+        </section>
     )
 }
 
