@@ -1,7 +1,9 @@
 # Stylo - un éditeur de texte sémantique
 
 ---
+
 Une permanence est ouverte tous les jeudis de 11h à 12h (heure canadienne) pour poser des questions, perfectionner l'utilisation de Stylo, etc.  : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Rejoignez la permenanence en visioconférence</a>
+
 ---
 
 Bienvenue sur la documentation de Stylo. Stylo est un éditeur de texte simplifiant la rédaction et l'édition d'articles scientifiques en Sciences Humaines et Sociales.
