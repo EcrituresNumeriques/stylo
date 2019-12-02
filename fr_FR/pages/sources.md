@@ -1,13 +1,13 @@
-## Source Stylo
+## Source de Stylo
 
-Les bugs ou les problèmes techniques peuvent être signalés sur le [repo Github du projet](https://github.com/EcrituresNumeriques/stylo/issues).
+Les bugs ou les problèmes techniques peuvent être signalés sur le [dépôt GitHub du projet](https://github.com/EcrituresNumeriques/stylo/issues).
 
 <a class="btn btn-info" href="https://github.com/EcrituresNumeriques/stylo/issues/new" role="button">Signaler un bug</a>
 
-Tout autre retour ou commentaire peut être envoyé par email.
+Tout autre retour ou commentaire peut être envoyé [par courriel](crc.ecrituresnumeriques@gmail.com).
 
-## Source documentation
+## Source de la documentation
 
-Vous pouvez enrichir et modifier cette documentation sur son [repo Github](https://github.com/EcrituresNumeriques/stylo-doc/tree/gh-pages/fr_FR).
+Vous pouvez enrichir et modifier cette documentation sur son [depôt GitHub](https://github.com/EcrituresNumeriques/stylo-doc/tree/gh-pages/fr_FR).
 
-<a class="btn btn-info" href="https://github.com/EcrituresNumeriques/stylo-doc/tree/gh-pages/fr_FR" role="button">Editez les sources</a>
+<a class="btn btn-info" href="https://github.com/EcrituresNumeriques/stylo-doc/tree/gh-pages/fr_FR" role="button">Éditez les sources</a>

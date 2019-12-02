@@ -32,11 +32,11 @@
   * [Prévisualiser et annoter un article](pages/preview.md)
   * [Exporter un article](pages/export.md)
   * [Gérer vos articles](pages/mesarticles.md)
-  * [Editer un livre ou un mémoire](pages/livre.md)
+  <!--* [Editer un livre ou un mémoire](pages/livre.md)
   * [Comprendre l'interface](pages/interface.md)
   * [Paramétrer son compte](pages/parametres.md)
   * [Résoudre les problèmes connus](pages/casparticuliers.md)
-  * [Documentation technique](pages/documentationtechnique.md)
+  * [Documentation technique](pages/documentationtechnique.md)-->
 
 [Ressources](pages/publications.md)
 
