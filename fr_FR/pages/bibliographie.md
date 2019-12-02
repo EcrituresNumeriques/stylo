@@ -1,8 +1,15 @@
 # Gestion de références
 
-Les références bibliographiques sont gérées au format bibtex. Les références peuvent être générées à partir d'un outils de gestion bibliographique comme Zotero, Endnote ou autre.
+Les références bibliographiques sont gérées au format BibTeX. Les références peuvent être générées à partir d'un outils de gestion bibliographique comme Zotero, Endnote ou autre.
 
-Il est également possible de synchroniser les références d'un article avec un sous-dossier (une collection) d'un groupe Zotero public, en renseignant simplement l'identifiant du sous-dossier.
+Il est également possible de synchroniser les références d'un article avec un sous-dossier (une collection) d'un groupe Zotero public, en renseignant l'identifiant du sous-dossier :
+
+1. dans le panneau de gauche sélectionnez "Bibliography" puis "Manage Bibliography"
+2. suivez les indications pour importer votre bibliographie depuis Zotero : indiquez l'identifiant du groupe suivi de `collections` puis de l'identifiant de la sous-collection. Exemple : `322999/collections/5MJ6MP6P`
+3. cliquez sur "Save zotero link and fetch"
+4. vos références bibliographiques devraient apparaître dans le panneau de gauche sous "Bibliography"
+
+Quelques erreurs fréquentes à éviter : votre groupe doit être public, l'identifiant du groupe et l'identifiant de la sous-collection sont séparés par `/collections/`.
 
 ## Cas généraux
 
@@ -27,6 +34,6 @@ Affichage dans Atom | Affichage définitif
 
 ## Quelques ressources
 
-- [Qu'est-ce que Zotéro ?](http://editorialisation.org/ediwiki/index.php?title=Zotero)
-- [Comment installer et utiliser Zotéro ?](http://www.bib.umontreal.ca/lgb/Zotero/tutoriel/1-installer-zotero.htm)
-- [Comment importer rapidement une bibliographie vers Zotéro ?](http://www.youtube.com/watch?v=S-f3J9LOqdQ)
+- [Qu'est-ce que Zotero ?](http://editorialisation.org/ediwiki/index.php?title=Zotero)
+- [Comment installer et utiliser Zotero ?](https://bib.umontreal.ca/citer/logiciels-bibliographiques/zotero/installer)
+- [Comment importer rapidement une bibliographie vers Zotero ?](http://www.youtube.com/watch?v=S-f3J9LOqdQ)
