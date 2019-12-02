@@ -4,7 +4,7 @@ La CRCEN organise des sessions de permanence hebdomadaire pour le suivi de l'éd
 
 Les sessions ont lieu chaque jeudi matin de 11h à 12h (heure canadienne) à compter du jeudi 31 octobre 2019.
 
-La participation et le suivi de ces sessions est libre et disponible en ligne en visioconférence : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Rejoignez la permenanence en visioconférence</a>
+La participation et le suivi de ces sessions est libre et disponible en ligne en visioconférence : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Rejoignez la permanence en visioconférence</a>
 
 # Publications
 
@@ -20,7 +20,7 @@ Stylo a été présenté dans différentes occasions scientifiques et profession
   - [Présentation](http://nicolassauret.net/s_StyloCRIHN/) (Nicolas Sauret)
 4. Vitrine DH, CRIHN, fév. 2019 ([lien](https://crihn.openum.ca/nouvelles/2018/12/01/vitrine-hn-dh-showcase-2019/))
   - [Présentation](http://nicolassauret.net/s_StyloVitrineDH/) (Nicolas Sauret)
-5. Colloque international Numerev, juin 2019 ([lien](https://numerev.com/programme-colloque-numerev.html))
+5. Colloque international Numerev, juin 2019 ([lien](https://numerev.com/agenda.id-9.html))
   - [Présentation](http://nicolassauret.net/s_StyloNumerev/) (Nicolas Sauret)
   - [Vidéo (youtube)](https://youtu.be/-WHoTXw6Two?t=20878)
 

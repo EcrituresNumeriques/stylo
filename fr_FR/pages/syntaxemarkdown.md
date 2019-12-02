@@ -3,32 +3,32 @@
 ## Titres
 
 - Le titre de niveau 1 - à savoir le titre de l'article - doit être renseigné dans les métadonnées
-- Les titres de niveau 2 (titres de section) sont précédés par 2 ```#```. Par exemple: ```## Introduction```
-- Les titres de niveau 3 (sous-section) sont précédés par 3 ```#```. Par exemple: ```### Mon titre de sous-section```
+- Les titres de niveau 2 (titres de section) sont précédés par 2 ```#```. Par exemple : ```## Introduction```
+- Les titres de niveau 3 (sous-section) sont précédés par 3 ```#```. Par exemple : ```### Mon titre de sous-section```
 - Et ainsi de suite (niveau 4, 4 ```#```, etc.)
 
 ## Les notes
 
 Les notes peuvent être dans le corps du texte (inline) ou avec appel de note et renvoi en bas de l'article.
 
-Exemples:
+Exemples :
 
 ```
-Voici mon texte^[une note de bas de page inline.]
+Voici mon texte[^une note de bas de page inline.]
 ```
 
-Donnera:
+Donnera :
 
-Voici mon texte^[une note de bas de page inline.]
+Voici mon texte[^une note de bas de page inline.]
 
-Ou alors:
+Ou alors :
 
 ```
 Voici mon texte[^1]
 
 [^1]:Une note de bas de page avec appel et renvoi
 ```
-Donnera:
+Donnera :
 
 
 Voici mon texte[^1]
@@ -37,28 +37,28 @@ Voici mon texte[^1]
 
 ## Italiques et gras
 
-- L'italique se balise avec des ```_``` avant et après le mot ou l'expression en italique. Par exemple:
+- L'italique se balise avec des ```_``` avant et après le mot ou l'expression en italique. Par exemple :
 ```
 Voici un _mot_ en italique
 ```
 
-Donnerai:
+Donnera :
 
 Voici un _mot_ en italique
 
 
-- Le gras se balise avec deux ```**``` avant et après le mot ou l'expression en italique. Par exemple:
+- Le gras se balise avec deux ```**``` avant et après le mot ou l'expression en italique. Par exemple :
 ```
 Voici un **mot** en gras
 ```
 
-Donnera:
+Donnera :
 
 Voici un **mot** en gras
 
 
 ## Images
-Une image peut être intégrée à un document rédigé avec le langage de balisage Markdown avec le balisage suivant :
+Une image peut être intégrée à un document rédigé avec le langage de balisage Markdown selon le modèle suivant :
 
 - un point d'exclamation `!` ;
 - suivi de crochets `[]` comportant la description de l'image ;
@@ -101,7 +101,7 @@ Et voici le balisage correspondant :
 
 ## Espace insécable
 
-Les espaces insécables sont représentés par un point médian : `·`. Exemple : `Comment allez-vous·?` Ils peuvent ajoutés avec la commande `Ctrl`+`Shift`+`Espace`.
+Les espaces insécables sont représentés par un point médian : `·`. Exemple : `Comment allez-vous·?` Ils peuvent être ajoutés avec la commande `Ctrl`+`Shift`+`Espace`.
 
 Il est aussi possible d'utiliser l'espace insécable en ASCII `&nbsp;`.
 
@@ -111,11 +111,11 @@ Il est aussi possible d'utiliser l'espace insécable en ASCII `&nbsp;`.
 
 Le balisage sémantique permet de spécifier la fonction d'un mot, d'une expression ou d'un paragraphe.
 
-Stylo permet un balisage sémantique libre : chaque auteur peut définir sa propre sémantique en fonction de ses besoins particulier. Elle pourra ensuite être implémentée dans les templates d'export ou les feuilles de style personnalisées (voir la section [Personnaliser son export](pages/export.md#personnaliser)).
+Stylo permet un balisage sémantique libre : chaque auteur peut définir sa propre sémantique en fonction de ses besoins particuliers. Elle pourra ensuite être implémentée dans les templates d'export ou les feuilles de style personnalisées (voir la section [Personnaliser son export](pages/mesarticles.md)).
 
 La syntaxe markdown de balisage sémantique est la suivante : `[terme à baliser]{.categorie}`.
 
-Par exemple : `On peut considérer cette [rupture]{.concept} emblématique de ...` identifie le terme `rupture` comme un `concept`
+Par exemple : `On peut considérer cette [rupture]{.concept} emblématique de...` identifie le terme `rupture` comme un `concept`
 
 Le texte markdown suivant :
 
@@ -138,7 +138,7 @@ Mon paragraphe qui contient une thèse de l'article.
 
 :::
 ```
-Qui donnera en HTML
+Qui donnera en HTML :
 
 
 ```html
@@ -147,7 +147,7 @@ Qui donnera en HTML
 </div>
 ```
 
-La prévisualisation Stylo implémente l'affichage des classes sémantiques suivantes:
+La prévisualisation Stylo implémente l'affichage des classes sémantiques suivantes :
 
 - these
 - description
@@ -160,41 +160,41 @@ La prévisualisation Stylo implémente l'affichage des classes sémantiques suiv
 - credits
 - source
 
-Il est possible de baliser un élément textuel avec plusieurs attributs. Par exemple:
+Il est possible de baliser un élément textuel avec plusieurs attributs. Par exemple :
 
 ```markdown
 
 ::: {.infogeo}
 
-[Athène]{.ville id="https://www.wikidata.org/wiki/Q1524" gps="37.58.46N, 23.42.58E"} est la capitale de la Grèce.
+[Athènes]{.ville id="https://www.wikidata.org/wiki/Q1524" gps="37.58.46N, 23.42.58E"} est la capitale de la Grèce.
 
 :::
 
 ```
-Donnera en HTML:
+Donnera en HTML :
 ```html
 <div class="infogeo">
 <p><span id="https://www.wikidata.org/wiki/Q1524" class="ville" data-gps="37.58.46N, 23.42.58E">Athène</span> est la capitale de la Grèce.</p>
 </div>
 ```
 
-Il est également possible d'utiliser ce balisage sémantique pour structurer les données en RDFa, voici deux exemples:
+Il est également possible d'utiliser ce balisage sémantique pour structurer les données en RDFa, voici deux exemples :
 
 
 ```markdown
 
-Auteur du texte: [John Dewey]{property="dc:creator"}
+Auteur du texte : [John Dewey]{property="dc:creator"}
 
 ```
 
-Donnera en HTML:
+Donnera en HTML :
 ```html
 
-<p>Auteur du texte: <span data-property="dc:creator">John Dewey</span></p>
+<p>Auteur du texte : <span data-property="dc:creator">John Dewey</span></p>
 
 ```
 
-Deuxième exemple:
+Deuxième exemple :
 
 ```markdown
 
@@ -202,7 +202,7 @@ John Dewey est né le [20 octobre 1859]{property="dc:date" content="1859-10-20"}
 
 ```
 
-Donnera en HTML:
+Donnera en HTML :
 ```html
 
 <p>John Dewey est né le <span property="dc:date" content="1859-10-20">20 octobre 1859</span></p>
