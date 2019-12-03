@@ -23,6 +23,8 @@ Stylo a été présenté dans différentes occasions scientifiques et profession
 5. Colloque international Numerev, juin 2019 ([lien](https://numerev.com/agenda.id-9.html))
   - [Présentation](http://nicolassauret.net/s_StyloNumerev/) (Nicolas Sauret)
   - [Vidéo (youtube)](https://youtu.be/-WHoTXw6Two?t=20878)
+6. Cours Culture numérique enseigné par Peppe Cavallari au collège universitaire de Sciences Po Paris : présentation de Stylo par Nicolas Sauret aux étudiants
+  - [Présentation](http://nicolassauret.net/s_StyloCultNum/) (Nicolas Sauret)
 
 ---
 ## Démo

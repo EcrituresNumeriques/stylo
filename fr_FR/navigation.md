@@ -30,7 +30,6 @@
   * [Écrire en markdown](pages/syntaxemarkdown.md)
   * [Structurer la bibliographie](pages/bibliographie.md)
   * [Prévisualiser et annoter un article](pages/preview.md)
-  * [Exporter un article](pages/export.md)
   * [Gérer vos articles](pages/mesarticles.md)
 
 [Ressources](pages/publications.md)
