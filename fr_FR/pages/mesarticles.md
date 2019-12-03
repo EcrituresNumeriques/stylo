@@ -93,9 +93,9 @@ Vous pouvez également développer le bloc de l'article en cliquant sur l'icone 
 
 |bouton|fonction|
 |:-:|:--|
-| ![Versions](uploads/images/Version.png) pour consulter l'historique des versions enregistrées |
-| ![Tag](uploads/images/Tag.png) pour renseigner les tags de l'article en cliquant sur "edit" |
-| ![Delete](uploads/images/Delete.png) pour supprimer l'article. |
+| ![Versions](uploads/images/Version.png) | pour consulter l'historique des versions enregistrées |
+| ![Tag](uploads/images/Tag.png) | pour renseigner les tags de l'article en cliquant sur "edit" |
+| ![Delete](uploads/images/Delete.png) | pour supprimer l'article. |
 
 ## Renommer un article
 
