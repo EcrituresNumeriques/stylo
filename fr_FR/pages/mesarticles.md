@@ -51,7 +51,9 @@ Vous pouvez visualiser les détails du tag en cliquant sur le "+" situé à côt
 
 Vous avez alors accès au descriptif du tag en lecture, mais également à plusieurs fonctionnalités :
 
-| ![Delete](uploads/images/Delete.png) pour supprimer le tag. |
+|bouton|fonction|
+|:-:|:--|
+| ![Delete](uploads/images/Delete.png) | pour supprimer le tag. |
 | ![Edit](uploads/images/Edit.png) | pour ouvrir le tag en édition|
 
 Le mode édition du tag se présente ainsi :
@@ -64,7 +66,7 @@ Cet espace vous permet de :
 - modifier le descriptif du tag
 - choisir une couleur du tag en renseignant le champs avec les possibilités suivantes : "blue", "pink", "red", "green", "yellow", "black", "white", "brown", "cyan", "magenta" ...
 
-N'oubliez pas d'enregistrer vos modifications une fois votre édition du tag terminée. 
+N'oubliez pas d'enregistrer vos modifications une fois votre édition du tag terminée.
 
 ## Effectuer une recherche dans vos articles
 
@@ -89,6 +91,8 @@ Chaque article se présente comme un bloc dans votre liste. Cet espace dédié �
 
 Vous pouvez également développer le bloc de l'article en cliquant sur l'icone "+" située à gauche du titre de votre article. Vous avez alors accès à :
 
+|bouton|fonction|
+|:-:|:--|
 | ![Versions](uploads/images/Version.png) pour consulter l'historique des versions enregistrées |
 | ![Tag](uploads/images/Tag.png) pour renseigner les tags de l'article en cliquant sur "edit" |
 | ![Delete](uploads/images/Delete.png) pour supprimer l'article. |
