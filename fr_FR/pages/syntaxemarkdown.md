@@ -14,26 +14,26 @@ Les notes peuvent être dans le corps du texte (inline) ou avec appel de note et
 Exemples :
 
 ```
-Voici mon texte[^une note de bas de page inline.]
+Voici mon texte[^une note de bas de page inline].
 ```
 
-Donnera :
+rendra :
 
-Voici mon texte[^une note de bas de page inline.]
+Voici mon texte^[une note de bas de page inline].
 
 Ou alors :
 
 ```
-Voici mon texte[^1]
+Voici mon texte[^1].
 
-[^1]:Une note de bas de page avec appel et renvoi
+[^1]: Une note de bas de page avec appel et renvoi.
 ```
-Donnera :
+rendra :
 
 
-Voici mon texte[^1]
+Voici mon texte[^1].
 
-[^1]:Une note de bas de page avec appel et renvoi
+[^1]: Une note de bas de page avec appel et renvoi.
 
 ## Italiques et gras
 
