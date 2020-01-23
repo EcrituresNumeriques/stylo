@@ -36,4 +36,4 @@ Affichage dans Atom | Affichage définitif
 
 - [Qu'est-ce que Zotero ?](http://editorialisation.org/ediwiki/index.php?title=Zotero)
 - [Comment installer et utiliser Zotero ?](https://bib.umontreal.ca/citer/logiciels-bibliographiques/zotero/installer)
-- [Comment importer rapidement une bibliographie vers Zotero ?](http://www.youtube.com/watch?v=S-f3J9LOqdQ)
+- [Comment importer rapidement une bibliographie vers Zotero ?](https://bib.umontreal.ca/citer/logiciels-bibliographiques/zotero/installer#h5o-13)
