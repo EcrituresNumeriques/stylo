@@ -57,6 +57,8 @@ L'interface d'édition d'un article présente plusieurs modules :
 
 La fonction **[Share]** permet d'inviter des co-auteur·rice·s à travailler sur le même article. Ces utilisateurs ont alors accès à tout l'historique. Les versions de l'article se synchronisent pour tous les utilisateurs au-fur-et à mesure des modifications effectuées sur le document.
 
+**Attention** : Partager un article avec un autre utilisateur est possible uniquement en renseignant l'adresse courriel qui a servi à créer le compte utilisateur sur Stylo. 
+
 ## Nouvel article
 
 Cliquez sur le boutton “Create a new article” (vous devrez renseigner le titre de l’article dans la case prévue à cet effet, puis cliquer à nouveau sur le bouton “Create”).
@@ -83,6 +85,14 @@ Cliquez sur le bouton
 ![edit](uploads/images/Edit.png)
 
 pour accéder à l’environnement d’édition et commencer à éditer votre article.
+
+## Importer
+
+Si le contenu destiné à être édité est déjà structuré dans un autres format, dans un autre environnement, il est possible de le transférer dans l'espace d'édition de Stylo. Stylo gère essentiellement du langage Markdown (extension .md) : pour importer un contenu actuellement en format DOC (extension .doc) ou DOCX (extension .docx), nous avons mis en place un [convertisseur en ligne](https://stylo-export.ecrituresnumeriques.ca/importdocx.html) permettant de convertir un document docx vers md. La procédure à adopter est détaillée sur la page de conversion. 
+
+![Import](uploads/images/Import.png)
+
+Une fois la conversion effectuée, un document .md est généré : ouvrez-le avec un éditeur de texte (Atom, GeDit), et copier-coller le contenu du document dans l'espace de votre article en Stylo. 
 
 ## Édition
 
@@ -131,7 +141,7 @@ Pour approfondir vos connaissances en syntaxe Markdown, vous pouvez consulter la
 
 Une version du document correspond à une sauvegarde de votre travail. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. Ainsi en chargeant une ancienne version, ce sont ces trois éléments qui sont mis à jour. ![active](uploads/images/NomVersion.png)
 
-Votre travail est automatiquement sauvegardé sur Stylo, vous pouvez - et cela est conseillé - cependant utiliser les fonctions de sauvegard pour enregistrer des versions mineures (**[Save Minor]**) ou majeures (**[Save Major]**) en nommant ces différentes versions.
+Votre travail est automatiquement sauvegardé sur Stylo, vous pouvez - et cela est conseillé - cependant utiliser les fonctions de sauvegard pour enregistrer des versions mineures (**[Save Minor]**) ou majeures (**[Save Major]**) en nommant ces différentes versions. Une version mineure correspond à des modifications mineures tandis qu'une version majeure acte l'établissement d'une version dont les modifications sont importantes. 
 
 Ainsi, lorsque vous êtes parvenu·e·s à une version que vous jugez satisfaisante, vous pouvez titre votre version dans le champs *Label of the version* avant de l'enregistrer en tant que version mineure ou majeure.
 
