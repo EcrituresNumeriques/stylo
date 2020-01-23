@@ -3,9 +3,9 @@
 ## Titres
 
 - Le titre de niveau 1 - à savoir le titre de l'article - doit être renseigné dans les métadonnées
-- Les titres de niveau 2 (titres de section) sont précédés par 2 ```#```. Par exemple : ```## Introduction```
-- Les titres de niveau 3 (sous-section) sont précédés par 3 ```#```. Par exemple : ```### Mon titre de sous-section```
-- Et ainsi de suite (niveau 4, 4 ```#```, etc.)
+- Les titres de niveau 2 (titres de section) sont précédés par 2 `#`. Par exemple : `## Introduction`
+- Les titres de niveau 3 (sous-section) sont précédés par 3 `#`. Par exemple : `### Mon titre de sous-section`
+- Et ainsi de suite (niveau 4, 4 `#`, etc.)
 
 ## Les notes
 
@@ -14,12 +14,12 @@ Les notes peuvent être dans le corps du texte (inline) ou avec appel de note et
 Exemples :
 
 ```
-Voici mon texte^[une note de bas de page inline].
+Voici mon texte^[Une note de bas de page inline.].
 ```
 
 rendra :
 
-Voici mon texte^[une note de bas de page inline].
+Voici mon texte[^3].
 
 
 Ou alors :
@@ -29,16 +29,16 @@ Voici mon texte[^1].
 
 [^1]: Une note de bas de page avec appel et renvoi.
 ```
+
 rendra :
 
+Voici mon texte[^2].
 
-Voici mon texte[^1].
-
-[^1]: Une note de bas de page avec appel et renvoi.
 
 ## Italiques et gras
 
 - L'italique se balise avec des ```_``` avant et après le mot ou l'expression en italique. Par exemple :
+
 ```
 Voici un _mot_ en italique
 ```
@@ -95,6 +95,7 @@ Voici un exemple de citation :
 > Source : [Wikipédia](https://fr.wikipedia.org/wiki/Hyperlien)
 
 Et voici le balisage correspondant :
+
 ```
 > Un lien hypertexte ou hyperlien permet en cliquant dessus d'atteindre un autre endroit de la page, une autre page ou un autre site évalué comme pertinent par l'auteur.
 > Source : [Wikipédia](https://fr.wikipedia.org/wiki/Hyperlien)
@@ -116,7 +117,7 @@ Stylo permet un balisage sémantique libre : chaque auteur peut définir sa prop
 
 La syntaxe markdown de balisage sémantique est la suivante : `[terme à baliser]{.categorie}`.
 
-Par exemple : `On peut considérer cette [rupture]{.concept} emblématique de...` identifie le terme `rupture` comme un `concept`
+Par exemple : `On peut considérer cette [rupture]{.concept} emblématique de...` identifie le terme `rupture` comme un `concept`.
 
 Le texte markdown suivant :
 
@@ -139,8 +140,8 @@ Mon paragraphe qui contient une thèse de l'article.
 
 :::
 ```
-Qui donnera en HTML :
 
+Qui donnera en HTML :
 
 ```html
 <div class="these">
@@ -170,9 +171,10 @@ Il est possible de baliser un élément textuel avec plusieurs attributs. Par ex
 [Athènes]{.ville id="https://www.wikidata.org/wiki/Q1524" gps="37.58.46N, 23.42.58E"} est la capitale de la Grèce.
 
 :::
-
 ```
+
 Donnera en HTML :
+
 ```html
 <div class="infogeo">
 <p><span id="https://www.wikidata.org/wiki/Q1524" class="ville" data-gps="37.58.46N, 23.42.58E">Athène</span> est la capitale de la Grèce.</p>
@@ -181,18 +183,16 @@ Donnera en HTML :
 
 Il est également possible d'utiliser ce balisage sémantique pour structurer les données en RDFa, voici deux exemples :
 
-
 ```markdown
 
 Auteur du texte : [John Dewey]{property="dc:creator"}
-
 ```
 
 Donnera en HTML :
+
 ```html
 
 <p>Auteur du texte : <span data-property="dc:creator">John Dewey</span></p>
-
 ```
 
 Deuxième exemple :
@@ -204,6 +204,7 @@ John Dewey est né le [20 octobre 1859]{property="dc:date" content="1859-10-20"}
 ```
 
 Donnera en HTML :
+
 ```html
 
 <p>John Dewey est né le <span property="dc:date" content="1859-10-20">20 octobre 1859</span></p>
@@ -231,10 +232,13 @@ Par exemple, la syntaxe :
 |Gianna|Bienfaisant|9-10-2005|Florence|Marrons|
 ```
 
-Donnera:
+Donnera :
 
 |Nom    |Prénom|Date de naissance|Lieu de naissance|Couleur des yeux|
 |:------ |:---|:-:|:-:|---:|
 |Bianchini|Francesco|3-1-1920|Scandicci|Bleux|
 |Dupont|Pierre|7-9-1989|Chicoutimi|Verts|
 |Gianna|Bienfaisant|9-10-2005  |Florence|Marrons   |
+
+[^2]: Une note de bas de page avec appel et renvoi.
+[^3]: Une note de bas de page inline.
