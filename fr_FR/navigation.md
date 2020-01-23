@@ -31,6 +31,7 @@
   * [Structurer la bibliographie](pages/bibliographie.md)
   * [Prévisualiser et annoter un article](pages/preview.md)
   * [Gérer vos articles](pages/mesarticles.md)
+  * [Résoudre des problèmes](pages/problemes.md)
 
 [Ressources](pages/publications.md)
 
