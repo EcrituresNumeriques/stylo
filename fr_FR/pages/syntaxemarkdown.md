@@ -14,12 +14,13 @@ Les notes peuvent être dans le corps du texte (inline) ou avec appel de note et
 Exemples :
 
 ```
-Voici mon texte[^une note de bas de page inline].
+Voici mon texte^[une note de bas de page inline].
 ```
 
 rendra :
 
 Voici mon texte^[une note de bas de page inline].
+
 
 Ou alors :
 
