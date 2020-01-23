@@ -19,20 +19,20 @@ Voici mon texte^[Une note de bas de page inline.].
 
 rendra :
 
-Voici mon texte[^3].
+Voici mon texte<sup><a href="#note-1" id="#note-1-b">1</a></sup>.
 
 
 Ou alors :
 
 ```
-Voici mon texte[^1].
+Voici mon texte[^2].
 
-[^1]: Une note de bas de page avec appel et renvoi.
+[^2]: Une note de bas de page avec appel et renvoi.
 ```
 
 rendra :
 
-Voici mon texte[^2].
+Voici mon texte <sup><a href="#note-2" id="#note-2-b">2</a></sup>.
 
 
 ## Italiques et gras
@@ -240,5 +240,5 @@ Donnera :
 |Dupont|Pierre|7-9-1989|Chicoutimi|Verts|
 |Gianna|Bienfaisant|9-10-2005  |Florence|Marrons   |
 
-[^2]: Une note de bas de page avec appel et renvoi.
-[^3]: Une note de bas de page inline.
+1. <span id="note-1">Une note de bas de page avec appel et renvoi. <a href="#note-1-b">↩</a></span>
+2. <span id="note-2">Une note de bas de page inline. <a href="#note-2-b">↩</a></span>
