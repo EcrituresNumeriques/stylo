@@ -201,7 +201,7 @@ Pour davantage d'informations sur la gestion de la bibliographie, vous pouvez co
 
 ![metadata](uploads/images/metadata.png)
 
-Le bouton [Metadata] permet d'ouvrir le volet de métadonnées. Trois modes d'édition sont disponibles :
+Le bouton [Metadata] permet d'ouvrir le volet des métadonnées. Trois modes d'édition sont disponibles :
 
 1. **Basic Mode** : permet d'éditer les métadonnées fondamentales : Titre, sous-titre, résumés, auteur·e·s et mots-clés.
 2. **Editor Mode** : permet d'éditer l'ensemble des métadonnées relatives à une revue savante : identifiant d'un article, informations de dossier, information d'évaluation, catégories de la revue, mots-clés de la revue, etc.
@@ -214,6 +214,9 @@ Le bouton [Metadata] permet d'ouvrir le volet de métadonnées. Trois modes d'é
 
 Pour davantage d'informations sur l'édition des métadonnées, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/bibliographie.md)
 
+**Attention** : dans le volet des métadonnées se trouve la division sur la "Bibliographie" dont l'option *Display* permettant de choisir de visualiser la bibliographie dans son entièreté ("All citations") ou uniquement les références qui ont été citées dans le corps de l'article ("Only used"). 
+
+![All citation](uploads/images/allCitation.png)
 
 ## - Statistiques
 
