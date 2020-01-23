@@ -143,11 +143,11 @@ Un doublon de l'article sera alors généré et apparaîtra en haut de la liste 
 
 ## Exporter un article
 
-Pour exporter un article, il faut cliquer sur le bouton "export" :
+Pour exporter un article, il faut cliquer sur le bouton "Export" depuis la page "My articles" ou depuis la page d'édition de l'article :
 
 ![Export](uploads/images/Export.png)
 
-Le menu d'export permets de choisir le format d'export, le style bibliographique et si l'on veut ou pas intégrer une table de matières.
+Le menu d'export permets de choisir le format d'export, le style bibliographique et si l'on veut ou non intégrer une table de matières.
 
 ![Export](uploads/images/export2.png)
 
@@ -166,17 +166,17 @@ Les formats supportés sont:
 
 Il est possible de choisir parmi plusieurs styles bibliographiques dont certains intègrent la référence dans le texte (par exemple Chicago, qui insère la référence dans le corps du texte entre parenthèses) et d'autres ajoutent une note avec la référence.
 
-Le module d'export se charge de mettre en forme les références, d'ajouter ou enlever les espaces, d'insérer des "Ibid." en accord avec le style etc.
+Le module d'export se charge de mettre en forme les références, d'ajouter ou d'enlever les espaces, d'insérer des "Ibid." en accord avec le style etc.
 
-Les exports sont produits grâce à l'outil de conversion [pandoc](https://pandoc.org/) sur la base de tempates disponibles [ici](https://framagit.org/ecrinum/templates-stylo).
+Les exports sont produits grâce à l'outil de conversion [pandoc](https://pandoc.org/) sur la base de templates disponibles [ici](https://framagit.org/ecrinum/templates-stylo).
 
-L'export permet aussi de télécharger les fichiers source de Stylo - et les médias insérés dans l'article s'il y en a.
+L'export permet aussi de télécharger les fichiers-source de Stylo - et les médias insérés dans l'article s'il y en a.
 
 ### Personaliser son export
 
-À partir des fichiers sources, il est possible de produire des exports personalisés - mise en page, graphisme, métadonnées - en utilisant l'outil de conversion [pandoc](https://pandoc.org/).
+À partir des fichiers-source, il est possible de produire des exports personalisés - mise en page, graphismes, métadonnées - en utilisant l'outil de conversion [pandoc](https://pandoc.org/).
 
-Pour plus d'informations sur l'emploi des templates, cf. ce [tutoriel](https://framagit.org/marviro/tutorielmdpandoc/blob/master/parcours/04_edition.md#les-templates-dans-pandoc)
+Pour plus d'informations sur l'emploi des templates, voir ce [tutoriel](https://framagit.org/marviro/tutorielmdpandoc/blob/master/parcours/04_edition.md#les-templates-dans-pandoc)
 
 ## Développer les autres fonctionnalités de l'article
 
