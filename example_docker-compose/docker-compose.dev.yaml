@@ -11,7 +11,7 @@ services:
       - ./data/db:/data/db
     ports:
       - 27017:27017
-    command: mongod --smallfiles --logpath=/dev/null 
+    command: mongod --logpath=/dev/null 
   mongodb-admin:
     image: mongo-express
     container_name: "mongodb-admin"
