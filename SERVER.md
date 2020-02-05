@@ -54,3 +54,14 @@ cp example_docker-compose/docker-compose.dev.yaml docker-compose.yaml
 docker network create root_default
 docker-compose up -d --build
 ```
+
+
+# Reverse proxy
+
+```bash
+git clone https://github.com/PookMook/docker-NginxProxy-letsEncrypt.git
+mv docker-NginxProxy-letsEncrypt/ reverse-DNS
+cd reverse-DNS/
+chmod +x reload.sh
+docker-compose up -d
+```
