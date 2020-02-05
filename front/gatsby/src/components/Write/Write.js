@@ -76,6 +76,7 @@ const ConnectedWrite = (props) => {
       else{
         //Last version had same _id, we gucchi to update!
         const immutableV = [...versions]
+        //shift the first item of the array
         const [_,...rest] = immutableV
         setVersions([response.saveVersion,...rest])
       }

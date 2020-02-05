@@ -29,7 +29,7 @@ export default class ImportYaml extends Component {
 
   importYaml(overideYaml){
     try{
-      const singleYaml = overideYaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, "");
+      const singleYaml = overideYaml.replace(/[-]{3}\n/g, "").replace(/\n[-]{3}/g, "");
       const jsObj = YAML.load(singleYaml, { schema: SEXY_SCHEMA }) || {};
       const newYamlObj = {...this.props.state.obj,...jsObj}
       console.log("overiding",newYamlObj);

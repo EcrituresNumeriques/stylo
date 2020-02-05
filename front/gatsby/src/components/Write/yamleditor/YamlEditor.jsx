@@ -34,7 +34,7 @@ export default class YamlEditor extends Component {
     super(props);
     //load defaultYaml, merge it with specified yaml
     const defaultYaml = YAML.load(init.yaml, { schema: SEXY_SCHEMA }) || {};
-    const singleYaml = props.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, "");
+    const singleYaml = props.yaml.replace(/[-]{3}\n/g, "").replace(/\n[-]{3}/g, "");
     let parsed = {}
     try{
       parsed = YAML.load(singleYaml, { schema: SEXY_SCHEMA }) || {};
@@ -154,7 +154,7 @@ export default class YamlEditor extends Component {
   }
 
   componentWillReceiveProps(nextProp){
-      const singleYaml = nextProp.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, "");
+      const singleYaml = nextProp.yaml.replace(/[-]{3}\n/g, "").replace(/\n[-]{3}/g, "");
       const singleYamlObj = YAML.load(singleYaml, { schema: SEXY_SCHEMA });
       if(JSON.stringify(singleYamlObj) !== JSON.stringify(this.state.obj)){
         //console.log("New props, updating state",JSON.stringify(singleYamlObj),JSON.stringify(this.state.obj));
