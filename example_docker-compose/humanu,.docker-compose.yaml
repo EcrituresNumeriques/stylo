@@ -72,4 +72,4 @@ services:
 networks:
   default:
     external:
-      name: arthur_default
+      name: root_default
