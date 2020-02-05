@@ -51,7 +51,7 @@ const ConnectedCredentials = props => {
             setIsUpdating(true)
             const query = `mutation($password:ID!, $old:String!, $new:String!, $user:ID!){ changePassword(password:$password,old:$old,new:$new,user:$user){ _id } }`
             const variables = {password:props.password._id, old: passwordO, new:password, user: props.activeUser._id}
-            const data = await askGraphQL({query, variables},'update Password',props.sessionToken)
+            await askGraphQL({query, variables},'update Password',props.sessionToken)
             setPassword('')
             setPasswordO('')
             setPasswordC('')

@@ -12,7 +12,7 @@ import CompareSelect from './CompareSelect'
 
 import useDebounce from '../../hooks/debounce'
 
-import _ from 'lodash'
+//import _ from 'lodash'
 
 let CodeMirror = () => (<p>No window</p>)
 if (typeof window !== `undefined` && typeof navigator !== `undefined`) {

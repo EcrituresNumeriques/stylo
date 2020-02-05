@@ -43,7 +43,8 @@ export default props => {
 
   const saveVersion = async (e,major = false) => {
     e.preventDefault()
-    const newVersion = await props.sendVersion(false,major, message)
+    await props.sendVersion(false,major, message)
+    //const newVersion = await props.sendVersion(false,major, message)
     setMessage('')
     //setVersions([newVersion.saveVersion,...versions])
   }

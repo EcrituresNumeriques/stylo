@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
+
 import ModalTextarea from './ModalTextarea.jsx';
 import YAML from 'js-yaml';
 

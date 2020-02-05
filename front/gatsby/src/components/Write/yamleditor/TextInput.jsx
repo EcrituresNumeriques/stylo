@@ -35,8 +35,8 @@ export class TextInput extends React.Component {
     return (
       <section className="reactForm">
         <label>{this.state.title} :</label>
-        { this.state.element == "input" ? <input type="text" placeholder={this.state.placeholder} disabled={this.props.readOnly} value={this.state.value} onChange={this.handleTextChange.bind(this)}/> :
-        this.state.element == "textArea" ? <textarea placeholder={this.state.placeholder} value={this.state.value} disabled={this.props.readOnly} onChange={this.handleTextChange.bind(this)}/> :
+        { this.state.element === "input" ? <input type="text" placeholder={this.state.placeholder} disabled={this.props.readOnly} value={this.state.value} onChange={this.handleTextChange.bind(this)}/> :
+        this.state.element === "textArea" ? <textarea placeholder={this.state.placeholder} value={this.state.value} disabled={this.props.readOnly} onChange={this.handleTextChange.bind(this)}/> :
         null }
       </section>
     )

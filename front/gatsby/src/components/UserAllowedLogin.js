@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux"
 
-import askGraphQL from '../helpers/graphQL';
 import styles from './userAllowedLogin.module.scss'
 
 

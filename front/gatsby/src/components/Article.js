@@ -100,7 +100,6 @@ const ConnectedArticle = (props) => {
             <span style={{fontSize:"0.7rem"}}>({howLongAgo(new Date() - new Date(props.updatedAt))})</span>
         </p>
         {expanded && <section>
-            <h2></h2>
             <ul>
                 <p>Last versions:</p>
                 {props.versions.map(v=>(

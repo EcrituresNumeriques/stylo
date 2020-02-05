@@ -105,11 +105,11 @@ export default class YamlEditor extends Component {
                         .root();
 
                     //fr
-                    const uncontrolled_fr = uncontrolled.filter(k => k.language == "fr").map(k => k.label);
+                    const uncontrolled_fr = uncontrolled.filter(k => k.language === "fr").map(k => k.label);
                     that.updateMisc(uncontrolled_fr,'uncontrolled_fr');
 
                     //en
-                    const uncontrolled_en = uncontrolled.filter(k => k.language == "en").map(k => k.label);
+                    const uncontrolled_en = uncontrolled.filter(k => k.language === "en").map(k => k.label);
                     that.updateMisc(uncontrolled_en,'uncontrolled_en');
                 });
             }
@@ -123,11 +123,11 @@ export default class YamlEditor extends Component {
                 const uncontrolled = keywords.filter(k => !k.aligned);
 
                 //fr
-                const uncontrolled_fr = uncontrolled.filter(k => k.language == "fr").map(k => k.label);
+                const uncontrolled_fr = uncontrolled.filter(k => k.language === "fr").map(k => k.label);
                 that.updateMisc(uncontrolled_fr,'uncontrolled_fr');
 
                 //en
-                const uncontrolled_en = uncontrolled.filter(k => k.language == "en").map(k => k.label);
+                const uncontrolled_en = uncontrolled.filter(k => k.language === "en").map(k => k.label);
                 that.updateMisc(uncontrolled_en,'uncontrolled_en');
             }
 
@@ -141,13 +141,13 @@ export default class YamlEditor extends Component {
     jsObj.typeArticle.map((r)=>console.log("r",r));
     //Add rubriques
     jsObj.typeArticle.map(function(r){
-      misc.rubriques.filter((o)=>(o.label==r)).map((o)=>(o.selected=true));
+      misc.rubriques.filter((o)=>(o.label===r)).map((o)=>(o.selected=true));
       return r;
     });
     //Add controlledKeywords
     jsObj.controlledKeywords = jsObj.controlledKeywords || []
     jsObj.controlledKeywords.map(c=>c.label).map(function(c){
-      misc.categories.filter((o)=>(o.label==c)).map((o)=>(o.selected=true));
+      misc.categories.filter((o)=>(o.label===c)).map((o)=>(o.selected=true));
       return c;
     });
     return misc;
@@ -156,7 +156,7 @@ export default class YamlEditor extends Component {
   componentWillReceiveProps(nextProp){
       const singleYaml = nextProp.yaml.replace(/[\-]{3}\n/g, "").replace(/\n[\-]{3}/g, "");
       const singleYamlObj = YAML.load(singleYaml, { schema: SEXY_SCHEMA });
-      if(JSON.stringify(singleYamlObj) != JSON.stringify(this.state.obj)){
+      if(JSON.stringify(singleYamlObj) !== JSON.stringify(this.state.obj)){
         //console.log("New props, updating state",JSON.stringify(singleYamlObj),JSON.stringify(this.state.obj));
         this.updateState(singleYamlObj);
       }
@@ -179,7 +179,7 @@ export default class YamlEditor extends Component {
   componentWillUpdate(nextProp,nextState){
     //console.log("componentWillUpdate",nextProp.yaml,YAML.safeDump(nextState.obj), nextProp.yaml != '---\n'+YAML.safeDump(nextState.obj)+'---');
     if(this.props.exportChange){
-      if(nextProp.yaml != '---\n'+YAML.safeDump(this.cleanOutput(nextState.obj))+'---'){
+      if(nextProp.yaml !== '---\n'+YAML.safeDump(this.cleanOutput(nextState.obj))+'---'){
         console.log(this.cleanOutput(nextState.obj))
         this.props.exportChange('---\n'+YAML.safeDump(this.cleanOutput(nextState.obj))+'---');
       }
@@ -214,13 +214,13 @@ export default class YamlEditor extends Component {
       //console.log("changing key",target,value);
       this.setState((state)=>_.set(state, 'misc.'+target, value));
       //Need to calculate the next state.obj
-      if(type=="rubriques"){
+      if(type==="rubriques"){
         this.setState((state)=>_.set(state,'obj.typeArticle',state.misc.rubriques.filter((r)=>(r.selected)).map(r=>r.label)));
       }
-      else if(type=="controlledKeywords"){
+      else if(type==="controlledKeywords"){
         //Check if a controlled keyword match the search
         this.setState(function(state){
-            let toSet = state.misc.categories.filter((c)=>(c.label==value));
+            let toSet = state.misc.categories.filter((c)=>(c.label===value));
             if(toSet.length > 0){
               toSet.map(c=>c.selected=true);
               state.misc.keywordSearch = "";
@@ -229,13 +229,13 @@ export default class YamlEditor extends Component {
             return state;
           });
       }
-      else if (type=="removeControlled") {
+      else if (type==="removeControlled") {
         this.setState(function(state){
           state.obj.controlledKeywords = state.misc.categories.filter((c)=>c.selected).map((o)=>(Object.assign({},o))).map(function(o){delete o.selected;return o;});
           return state;
         });
       }
-      else if (type=='uncontrolledKeywords'){
+      else if (type==='uncontrolledKeywords'){
         this.setState(function(state){
           state.obj.keyword_fr_f = state.misc.keywords_fr.join(', ');
           state.obj.keyword_en_f = state.misc.keywords_en.join(', ');
