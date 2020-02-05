@@ -26,10 +26,10 @@ const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
 }
 
 const ConnectedWrite = (props) => {
-  if(!props.logedIn){
+/*   if(!props.logedIn){
     navigate('/login')
     return (<p>Redirecting...</p>)
-  }
+  } */
   const readOnly = props.version? true:false;
   const query = "query($article:ID!){article(article:$article){ _id title zoteroLink owners{ displayName } versions{ _id version revision message autosave updatedAt owner{ displayName }} "
   const getLive = "live{ md bib yaml message owner{ displayName }} } }"
