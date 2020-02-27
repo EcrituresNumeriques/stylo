@@ -14,7 +14,7 @@ Par défaut, un premier article “How to Stylo” est présent sur la plateform
 
 Pour chaque article, plusieurs actions sont possibles :
 
-|bouton|fonction|
+|Bouton|Fonction|
 |:-:|:--|
 | ![Edit](uploads/images/Edit.png) | pour ouvrir l'article en édition|
 | ![Share](uploads/images/Share.png) | pour partager l'article et son historique de versions avec un autre usager de Stylo qui s'intitulera ainsi : "[Copy]New article"|
@@ -65,7 +65,7 @@ Cliquez sur le boutton “Create a new article” (vous devrez renseigner le tit
 
 Pour créer un nouvel article, il suffit de cliquer sur le bouton :
 
-![Nouvel article](uploads/images/Create.png).
+![Nouvel article](uploads/images/Create.png)
 
 Vous devez ensuite renseigner le nom du document dans le champs prévu à cet effet
 
@@ -73,7 +73,7 @@ Vous devez ensuite renseigner le nom du document dans le champs prévu à cet ef
 
 et valider l'opération en cliquant une nouvelle fois sur le bouton
 
-![Nouvel article](uploads/images/Create.png).
+![Nouvel article](uploads/images/Create.png)
 
 Lors de cette opération, il vous est également possible d'ajouter des tags à l'article en cliquant sur le bouton
 
@@ -153,7 +153,7 @@ Chaque version comporte ses plusieurs fonctionnalités :
 
 - Pour la version éditable (*Edition*) :
 
-|bouton|fonction|
+|Bouton|Fonction|
 |:-:|:--|
 | ![Save Major](uploads/images/Major.png) | pour sauvegarder une version majeure de votre travail |
 | ![Save Minor](uploads/images/Minor.png) | pour sauvegarder une version mineure de votre travail |
@@ -197,7 +197,7 @@ Pour ajouter une référence à l'article, il suffit de cliquer sur la référen
 Pour davantage d'informations sur la gestion de la bibliographie, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/bibliographie.md)
 
 
-## - Métadonnées
+## Métadonnées
 
 ![metadata](uploads/images/metadata.png)
 
@@ -218,7 +218,7 @@ Pour davantage d'informations sur l'édition des métadonnées, vous pouvez cons
 
 ![All citation](uploads/images/allCitation.png)
 
-## - Statistiques
+## Statistiques
 
 ![statistiques](uploads/images/statistiques.png)
 
