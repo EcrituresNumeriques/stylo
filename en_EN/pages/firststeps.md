@@ -27,7 +27,7 @@ For each article, many actions are possible:
 |:-:|:--|
 | ![Edit](uploads/images/Edit.png) | To open the article and edit|
 | ![Share](uploads/images/Share.png) | To share the article and its version history with
-another Stylo user. It will be called: "[Copy\] New article"|
+another Stylo user. It will be called: "[Copy] New article"|
 | ![Duplicate](uploads/images/Duplicate.png) | To duplicate only the last version of the article|
 | ![Rename](uploads/images/Rename.png) | To rename the article|
 | ![Plus](uploads/images/plus.png) | To expand other functions relating to the article|
