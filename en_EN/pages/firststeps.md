@@ -24,22 +24,15 @@ require special treatment (illustrations, etc.).
 For each article, many actions are possible:
 
 |Button|Function|
-
 |:-:|:--|
 | ![Edit](uploads/images/Edit.png) | To open the article and edit|
-
 | ![Share](uploads/images/Share.png) | To share the article and its version history with
 another Stylo user. It will be called: "[Copy\] New article"|
-
 | ![Duplicate](uploads/images/Duplicate.png) | To duplicate only the last version of the article|
-
 | ![Rename](uploads/images/Rename.png) | To rename the article|
-
 | ![Plus](uploads/images/plus.png) | To expand other functions relating to the article|
-
 || ![Versions](uploads/images/Version.png) To consult the history of saved versions|
 || ![Tag](uploads/images/Tag.png) To fill in the article tags by clicking on "edit"|
-|
 || ![Delete](uploads/images/Delete.png) To delete the article|
 
 Note: The document name, as it is visible in Stylo, does not correspond
