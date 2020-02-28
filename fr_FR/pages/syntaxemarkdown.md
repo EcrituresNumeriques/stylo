@@ -103,7 +103,7 @@ Et voici le balisage correspondant :
 
 ## Espace insécable
 
-Les espaces insécables sont représentés par un point médian : `·`. Exemple : `Comment allez-vous·?` Ils peuvent être ajoutés avec la commande `Ctrl`+`Shift`+`Espace`.
+Les espaces insécables sont représentés par un point discret : `·`. Exemple : `Comment allez-vous·?` Ils peuvent être ajoutés avec la commande `Ctrl`+`Shift`+`Espace`.
 
 Il est aussi possible d'utiliser l'espace insécable en ASCII `&nbsp;`.
 
