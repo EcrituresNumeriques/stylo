@@ -28,12 +28,12 @@ brackets:
 
 |Display in Atom | Definitive display
 |:--|:--|
-|`Real space, that of our material life, `<br/>` and cyber space (which is
+|`Real space, that of our material life,`<br/>`and cyber space (which is
 certainly `<br/>` not completely virtual) must not `<br/>` be referred to using separate `<br/>`
 monikers because they intermingle more `<br/>` and more solidly
 [@shirky_here_2008, p. 194].` | `Real space, that of our material
 life, `<br/>` and cyber space (which is certainly `<br/>` not completely virtual) must
-not be referred to using separate `<br/>` monikers because they intermingle more
+not be referred to using separate`<br/>`monikers because they intermingle more
 and more solidly (Shirky 2008, 194).`| 
 
 2. If the author's name already appears, and you would like to simply
