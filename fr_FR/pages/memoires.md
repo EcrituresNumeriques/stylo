@@ -33,7 +33,11 @@ Par défaut la bibliographie générée est celle de l'ensemble des références
 
 Mais il est également possible de structurer cette bibliographie : dans un mémoire ou une thèse, la bibliographie est souvent divisées en différentes sections. Stylo permet de créer une bibliographie organisée en sous-sections. Voici les deux étapes à suivre :
 
-1. dans les métadonnées du mémoire, il faut déclarer les différentes sections de la bibliographie. Pour cela, passez les métadonnées en mode raw ![rawmode](images/alpha_rawmode.png), puis à la fin, avant `---`, ajoutez les lignes suivantes :
+1. dans les métadonnées du mémoire, il faut déclarer les différentes sections de la bibliographie. Pour cela, passez les métadonnées en mode raw
+
+![rawmode](uploads/images/alpha_rawmode.png)
+
+Puis à la fin, avant `---`, ajoutez les lignes suivantes :
 
 ```yaml
 subbiblio:
@@ -59,7 +63,7 @@ L'export du mémoire se fait à travers un template LaTeX dédié. Il correspond
 
 D'autres templates (modèles) seront disponibles prochainement.
 
-![exportbook](images/alpha_exportbook.png)
+![exportbook](uploads/images/alpha_exportbook.png)
 
 Plusieurs options sont disponibles :
 
