@@ -32,6 +32,7 @@
   * [Prévisualiser et annoter un article](pages/preview.md)
   * [Gérer vos articles](pages/mesarticles.md)
   * [Résoudre des problèmes](pages/problemes.md)
+  * [Mémoires et thèses](pages/memoires.md)
 
 [Ressources](pages/publications.md)
 
