@@ -15,13 +15,16 @@ const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
     return { logedIn, activeUser, sessionToken }
 }
 
-
-const ConnectedArticles = (props) => {
+const withLogin = props => {
     const isBrowser = typeof window !== 'undefined';
     if(isBrowser && !props.logedIn){
         navigate('/login')
         return <p>redirecting</p>
     }
+    return <ConnectedArticles {...props}/>
+}
+
+const ConnectedArticles = (props) => {
 
     const [isLoading,setIsLoading] = useState(false)
     const [filter,setFilter] = useState("")
@@ -99,5 +102,5 @@ const ConnectedArticles = (props) => {
 
 const Articles = connect(
     mapStateToProps
-)(ConnectedArticles)
+)(withLogin)
 export default Articles

@@ -11,13 +11,16 @@ const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
     return { logedIn, activeUser, sessionToken }
 }
 
-
-const ConnectedBooks = (props) => {
+const withLogin = props => {
     const isBrowser = typeof window !== 'undefined';
     if(isBrowser && !props.logedIn){
         navigate('/login')
         return <p>redirecting</p>
     }
+    return <ConnectedBooks {...props}/>
+}
+
+const ConnectedBooks = (props) => {
 
     const [isLoading,setIsLoading] = useState(true)
     const [displayName,setDisplayName] = useState(props.activeUser.displayName)
@@ -59,5 +62,5 @@ const ConnectedBooks = (props) => {
 
 const Books = connect(
     mapStateToProps
-)(ConnectedBooks)
+)(withLogin)
 export default Books

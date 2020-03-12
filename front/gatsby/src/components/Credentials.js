@@ -17,14 +17,16 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-
-const ConnectedCredentials = props => {
+const withLogin = props => {
     const isBrowser = typeof window !== 'undefined';
     if(isBrowser && !props.logedIn){
         navigate('/login')
         return <p>redirecting</p>
     }
+    return <ConnectedCredentials {...props}/>
+}
 
+const ConnectedCredentials = props => {
     useEffect(()=>{
         (async ()=>{
           try{
@@ -101,6 +103,6 @@ const ConnectedCredentials = props => {
 const Credentials = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ConnectedCredentials)
+)(withLogin)
 
 export default Credentials
