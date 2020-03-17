@@ -26,10 +26,6 @@ If you have an account with ssh enabled on framagit, you can pull all submodules
     $ git submodule update
 
 
-If you don't want to create an account, you can pull files from https://framagit.org/ecrinum/templates-stylo and put them in the *export/src/templates-stylo* folder.
-Please note, that it's not recommended and should only be used as a temporary workaround.
-
-
 ## deploy beta
 
 This is the easiest deployment.
