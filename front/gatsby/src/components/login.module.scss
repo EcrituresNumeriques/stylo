@@ -26,13 +26,43 @@
             text-align: center
         }
         p{
-            margin-top:1rem;
+            margin-bottom:1rem;
             text-align: right;
             a {
                 font-weight: normal;
                 color:#007eff;
             }
         }
+        a.human-num-btn{
+            color: red;
+            &.create-account{
+                background-color: #f7931e;
+            }
+        }
     }
-    
+}
+
+.humanNumCreateAccountBtn {
+    &::before {
+        content: "";
+        width: 1.25em;
+        display: block;
+        background-size: contain;
+        background-image: url('/human-num-logo.svg');
+        background-position: left center;
+        background-repeat: no-repeat;
+        position: absolute;
+        left: 0.25em;
+        top: 0;
+        bottom: 0;
+    }
+
+    color: white;
+    background-color: #f7931e;
+    font-weight: 200;
+    font-size: 0.8em;
+    padding: 0.25em;
+    padding-left: 2em;
+    padding-right: 1em;
+    position: relative;
 }

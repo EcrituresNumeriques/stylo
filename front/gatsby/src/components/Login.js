@@ -72,6 +72,7 @@ const ConnectedLogin = (props) => {
                 <input type="password" placeholder="password" value={password} onChange={(e)=>setPassword(etv(e))}/>
                 <input type="submit" value="go"/>
                 <p className="note">or <Link to="/register">create an account</Link></p>
+                <a className={styles.humanNumCreateAccountBtn} href="https://humanid.huma-num.fr/register">Create a Human-Num account</a>
             </form>
         </section> 
     )
