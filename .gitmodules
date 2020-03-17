@@ -1,6 +1,6 @@
 [submodule "sails/templates"]
 	path = sails/templates
-	url = git@framagit.org:ecrinum/templates-stylo.git
+	url = https://framagit.org/ecrinum/templates-stylo.git
 [submodule "export/src/templates-stylo"]
 	path = export/src/templates-stylo
-	url = git@framagit.org:stylo-editeur/templates-stylo.git
+	url = https://framagit.org/stylo-editeur/templates-stylo.git
