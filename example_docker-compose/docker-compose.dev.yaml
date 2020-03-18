@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 
 services:
   mongodb-stylo:
@@ -11,12 +11,17 @@ services:
       - ./data/db:/data/db
     ports:
       - 27017:27017
-    command: mongod --logpath=/dev/null 
+    command: mongod --logpath=/dev/null
+    healthcheck:
+      test: echo 'db.stats().ok' | mongo localhost:27017 --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 5
   mongodb-admin:
     image: mongo-express
     container_name: "mongodb-admin"
-    links:
-      - mongodb-stylo:mongo
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb-stylo
     ports:
       - 3031:8081
   graphql-stylo:
@@ -25,7 +30,8 @@ services:
     ports:
       - 3030:80
     depends_on:
-      - mongodb-stylo
+      mongodb-stylo:
+        condition: service_healthy
     environment:
       - MONGO_SERVER=mongodb-stylo
       - MONGO_SERVER_PORT=27017
@@ -41,14 +47,15 @@ services:
     ports:
       - 3060:80
     depends_on:
-      - mongodb-stylo
+      mongodb-stylo:
+        condition: service_healthy
     environment:
       - MONGO_SERVER=mongodb-stylo
       - MONGO_SERVER_PORT=27017
       - MONGO_SERVER_DB=stylo
       - URL_FRONTEND=http://localhost:3000
   front-stylo:
-    build: 
+    build:
       context: ./front
       dockerfile: dockerfile-dev
     container_name: "front-stylo"
@@ -59,8 +66,3 @@ services:
       - 3000:80
     depends_on:
       - graphql-stylo
-
-networks:
-  default:
-    external:
-      name: root_default

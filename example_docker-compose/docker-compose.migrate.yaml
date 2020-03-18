@@ -1,16 +1,13 @@
-version: '2'
+version: '2.1'
 
 services:
   migrate:
     build: ./migrate/
     container_name: "migrate"
     depends_on:
-      - mongodb-stylo
+      mongodb-stylo:
+        condition: service_healthy
     environment:
       - MONGO_SERVER=mongodb-stylo
       - MONGO_SERVER_PORT=27017
       - MONGO_SERVER_DB=stylo
-networks:
-  default:
-    external:
-      name: root_default
