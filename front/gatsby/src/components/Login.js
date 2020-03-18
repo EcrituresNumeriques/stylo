@@ -64,10 +64,11 @@ const ConnectedLogin = (props) => {
         },[usernameRef]
       );
 
-    return (
-        <section className="disclaimer">
-          <p>Looking for technical and editing support? Join the <a href="https://ecrituresnumeriques.ca/en/2019/10/25/Stylo-technical-and-editing-support" target="_blank">weekly session</a> for Stylo users.</p>
+    return (<>
+        <section className={styles.disclaimer}>
+          <p>Looking for technical and editing support?<br/>Join the <a href="https://ecrituresnumeriques.ca/en/2019/10/25/Stylo-technical-and-editing-support" target="_blank">weekly session</a> for Stylo users.</p>
         </section>
+
         <section className={styles.box}>
             <form onSubmit={(event)=>{event.preventDefault();loginUser(query,user)}}>
                 <h1>Login</h1>
@@ -77,7 +78,7 @@ const ConnectedLogin = (props) => {
                 <p className="note">or <Link to="/register">create an account</Link></p>
             </form>
         </section>
-    )
+    </>)
 }
 
 const Login = connect(

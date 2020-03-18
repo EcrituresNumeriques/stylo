@@ -6,9 +6,9 @@
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
-    "develop": "gatsby develop -p 80 -H 0.0.0.0",
+    "develop": "gatsby develop -p 3000 -H 0.0.0.0",
     "start": "npm run develop",
-    "serve": "gatsby serve -p 80 -H 0.0.0.0",
+    "serve": "gatsby serve -p 3000 -H 0.0.0.0",
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
   },
   "dependencies": {
