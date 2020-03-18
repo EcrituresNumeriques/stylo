@@ -41,6 +41,8 @@ services:
       - JWT_SECRET_SESSION=DidITellYouHowMuchYouShouldChangeMe?
       - JWT_SECRET_SESSION_COOKIE=NoNoNoReallyIInsistYouShouldChangeMe
       - ALLOW_CORS_FRONTEND=http://localhost:3000
+      - OPENID_CONNECT_CLIENT_ID="..."
+      - OPENID_CONNECT_CLIENT_SECRET="..."
   export-stylo:
     build: ./export/
     container_name: "export-stylo"

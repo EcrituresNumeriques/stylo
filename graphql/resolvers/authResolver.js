@@ -13,6 +13,7 @@ const { populateUser, populatePassword, populateToken } = require('./nestedModel
 
 const verifCreds = async (args) => {
   try{
+    console.log('verifCreds', args)
     let findProp = args.username? {username:args.username}:{email:args.email}
     const fetchedPassword = await Password.findOne(findProp).populate("users")
     if(!fetchedPassword){throw new Error("Password not found")}
@@ -45,6 +46,7 @@ module.exports = {
   },
   login: async (args, {_,res}) => {
     try{
+      console.log('login', args)
       const fetchedPassword = await verifCreds(args);
       const payload = {
         usersIds:fetchedPassword.users.map(user => user._id.toString()),

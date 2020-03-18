@@ -1,6 +1,8 @@
 module.exports = (req) => {
-    if(!req.isAuth){
+    // fixme: use a global middleware...
+    if(!req.user){
         throw new Error("Not authentificated")
     }
+
     return true
 }

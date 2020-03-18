@@ -2,12 +2,26 @@ import { createStore as reduxCreateStore } from "redux"
 
 // Définit tout ce qui se passe quand un message d'action est envoyé
 
-const initialState = { logedIn: false, users:[],password:undefined,sessionToken:undefined }
+const initialState = {
+  logedIn: false,
+  users: [],
+  password: undefined,
+  sessionToken: undefined,
+}
 
-const reducer = (state, action) => {
-  if (action.type === `LOGIN`) {
+const reducer = (state = initialState, action) => {
+  if (action.type === 'PROFILE') {
+    const {data:activeUser} = action
+    return Object.assign({}, state, {
+      activeUser,
+      logedIn: true,
+      users: [activeUser._id]
+    })
+  }
+  else if (action.type === `LOGIN`) {
     const login = action.login
     if(login.password && login.users && login.token){
+      console.log('LOGIN???')
       return Object.assign({}, state, {
         logedIn: true,
         users: login.users,
@@ -44,7 +58,8 @@ const reducer = (state, action) => {
     console.log("Removing myself",Object.assign({},state,{users:remainingUsers,activeUser:remainingUsers[0]}))
     return Object.assign({},state,{users:remainingUsers,activeUser:remainingUsers[0]})
   }
-  return state
+
+  return initialState
 }
 
 

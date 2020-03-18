@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 const defaultsData = require('../data/defaultsData')
+
+const Article = require('./article');
+const Version = require('./version');
+
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -62,4 +66,30 @@ const userSchema = new Schema({
   }
 }, {timestamps: true});
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema)
+module.exports.postCreate = function postCreate (newUser) {
+  console.log('%s has been saved', newUser._id);
+
+  // Create a new default article for each new user
+  const defaultArticle = defaultsData.article
+  const newArticle = new Article({title: defaultArticle.title});
+  const newVersion = new Version({
+    md: defaultArticle.md,
+    yaml: defaultArticle.yaml,
+    bib: defaultArticle.bib,
+    sommaire: defaultArticle.sommaire
+  });
+
+  newArticle.versions.push(newVersion)
+  newVersion.article = newArticle
+  newVersion.owner = newUser
+  
+  newUser.articles.push(newArticle)
+  newArticle.owners.push(newUser)
+  
+  return Promise.all([
+    newUser.save(),
+    newArticle.save(),
+    newVersion.save(),
+  ])
+}

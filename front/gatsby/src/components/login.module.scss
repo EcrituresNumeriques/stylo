@@ -60,6 +60,32 @@
     position: relative;
 }
 
+.humanNumConnectBtn {
+    &::before {
+        content: "";
+        width: 1.25em;
+        display: block;
+        background-size: contain;
+        background-image: url('/human-num-logo.svg');
+        background-position: left center;
+        background-repeat: no-repeat;
+        position: absolute;
+        left: 0.25em;
+        top: 0;
+        bottom: 0;
+    }
+
+    display: block;
+    color: white;
+    background-color: #c00;
+    font-weight: 200;
+    font-size: 0.8em;
+    padding: 0.25em;
+    padding-left: 2em;
+    padding-right: 1em;
+    position: relative;
+}
+
 .disclaimer {
     padding: 1rem;
     border: 1px solid $main-border-color;
