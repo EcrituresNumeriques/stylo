@@ -1,127 +1,89 @@
 # How to install Stylo
 
-Depending on your needs, you may want to install stylo in different ways :
- - developpement (suited for changing the code of stylo rapidely)
- - beta (suited for easy installation and few configuration)
- - production (suited for deployement in the long term)
+Depending on your needs, you may want to install Stylo in different ways :
 
- In any case you will need on your computer docker[https://docs.docker.com/install/] and docker-compose[https://docs.docker.com/compose/install/]
- Developpement require node.js and npm installed as well
-
-# Clone git project
-
-First step is to clone the project, you can use either the https or ssh version of the repo
-
-`
-git clone git@github.com:EcrituresNumeriques/stylo.git
-`
-
-Stylo uses submodules to pull templates (and those templates are hosted of platform on framagit), if you have an account with ssh enabled on framagit, you can pull all submodules with
-
-```
-git submodule init
-git submodule update
-```
-
-if you don't have an account yet, you can pull files from https://framagit.org/ecrinum/templates-stylo and put them in the folder sails/template/ <= NOT RECOMMENDED
+ - Development (suited for making changes to Stylo rapidly)
+ - Production (suited to run securely as an end-user service)
 
 
-# deploy beta
+ In any case, you will need on your computer [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/).
+ Development requires node.js and npm installed as well.
 
-This is the easiest deployement.
+## Clone git project
 
-You first need to copy the beta docker-compose file to the root folder
-
-`
-cp example_docker-compose/docker-compose.beta.yaml docker-compose.yaml
-`
-
-Change all the information you want to change (database path on your machine (default : data/db), port used (default:80))
-then run the command
-
-`
-docker-compose up -d --build
-`
-
-After the image is built, you should have a stylo instance running on http://localhost (or http://localhost:portYouSpecified)
-
-# deploy production
-
-Deploying for production is really close to beta, you just get the ssl working for access to https. For that, you will need a reverse proxy.
-
-We provide example docker-compose yaml file for the Nginx reverse-proxy, but you are free to craft your own depending on your infrastructure.
-You first need to copy either just the stylo solution, or the full stylo+reverse proxy solution as your docker-compose.yaml
-
-`
-cp example_docker-compose/docker-compose.prod.yaml docker-compose.yaml
-`
-
-OR
-
-`
-cp example_docker-compose/docker-compose.full.yaml docker-compose.yaml
-`
-
-Change all the informations you want to change (database path on your machine (default : /home/backup/MongoStylo/db) and the virtual_host+letsencrypt_host that should direct to a domain or subdomain that points to your machine/server via your DNS).
-
-`
-vi docker-compose.yaml
-`
-
-then run the command
-
-`
-docker-compose up -d --build
-`
-
-After the image is built, you should have a stylo instance running on your server, provinding access from https at the VIRTUAL_HOST and LETSENCRYPT_HOST specified (they should be the same, and you should direct it from your DNS to your server, idealy prior to running docker-compose up -d --build, this way the SSL certificate gets generated and you don't have to wait for letsEncrypt to purge its DNS cache)
-
-# deploy for testing
-
-Usefull to change the code and see direct changes in local. /!\ NOT SUITED FOR PROLONGATED USE BY ACTUAL USERS /!\
-
-`
-cp example_docker-compose/docker-compose.dev.yaml docker-compose.yaml
-`
-then run the command
-
-`
-docker-compose up -d --build
-`
-
-This gives your access to stylo (no-front end) on http://localhost:8080, your mongoDB database on localhost:27017 and your redis instance on localhost:6380 /!\ WITH NO PASSWORD, REMEMBER NOT TO USE FOR ACTUAL USERS /!\
-
-You will need then to build and server the front end via node.js and npm :
-
-```
-cd front
-npm install
-npm run start
-```
-
-You will now see the front end on http://localhost:8080
-
-# Add an administrator
-
-The only way to add an administrator (You don't really need one, but to see usage and do basic user operation you will) is to alter the mongodb using the shell.
-You can find the name of the mongodb docker instance in your docker-compose.yaml (root of the repo)
-
-`
-docker exec -it <NameOfMongoInstance> mongo
-`
-
-You will enter the mongo shell, you will need then to type:
-
-```
-use sails
-db.users.update({email:"<EmailOfTheAccountYouWantAsAdministrator>"},{$set:{admin:true}});
-```
-
-the system shoud respond something like, (else, there's something wrong):
-
-`
-WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
-`
+First step is to clone the project, you can use either the HTTPS or SSH version of the repository URL:
 
 
-the same procedure can be used to remove administrative priviledge with admin:false;
+    $ git clone git@github.com:EcrituresNumeriques/stylo.git
+
+
+Stylo uses submodules to pull templates (and those templates are hosted on framagit).
+If you have an account with ssh enabled on framagit, you can pull all submodules using the following commands:
+
+
+    $ git submodule init
+    $ git submodule update
+
+
+# Build on a development machine
+
+Useful to edit the code and see direct changes in local.
+
+**IMPORTANT: NOT SUITED FOR PROLONGED USE BY ACTUAL USERS**
+
+First, checkout the `dev` branch:
+
+    $ git checkout dev
+
+Then, copy the `docker-compose.dev.yaml` file:
+
+    $ cp example_docker-compose/docker-compose.dev.yaml docker-compose.yaml
+
+
+Then, run the following command:
+
+    $ docker-compose up -d --build
+
+**NOTE:** The first time, this command can take a few dozen minutes depending on your network speed and machine capabilities. Subsequent calls will be faster.
+
+This gives your access to:
+- Stylo (frontend): http://localhost:3000
+- GraphQL endpoint: http://localhost:3060
+- MongoDB administration tool: http://localhost:3031
+
+
+## Build for production
+
+Deploying for production is really close, except it tweaks a few things to ensure a smooth run.
+
+We recommend you to host Stylo **behind a reverse proxy**. We provide a working configuration example below for the Nginx server.
+
+
+### Prepare the server
+
+After _cloning_ the repo, build the service and its dependencies:
+
+    $ cp example_docker-compose/docker-compose.prod.yaml docker-compose.yaml
+    $ docker-compose up -d --build
+
+
+After the image is built, you should have a Stylo instance running on your server.
+Now, we need to expose it to the outside world with a reverse proxy.
+
+### Expose online
+
+Obtain a working sample file with the following command:
+
+    $ wget -O /etc/nginx/sites-available/stylo.conf \
+        https://github.com/EcrituresNumeriques/stylo/raw/dev/infrastructure/stylo.huma-num.fr.conf
+
+Replace the service domain name:
+
+    $ sed -i s/stylo.huma-num.fr/STYLO_SUBDOMAIN.MYDOMAIN.TLD/g' /etc/nginx/sites-available/stylo.conf
+
+Alternatively, alter the various ports, and domains on your own.
+
+When you are done, enable the website and reload the configuration:
+
+    $ ln -s /etc/nginx/sites-available/stylo.conf /etc/nginx/sites-enable/stylo.conf
+    $ nginx reload
