@@ -52,38 +52,38 @@ This gives your access to:
 - MongoDB administration tool: http://localhost:3031
 
 
-Then, you will need to build and serve the frontend via Node.js and npm :
+## Build for production
 
-```
-cd front/gatsby
-npm install
-npm run start
-```
+Deploying for production is really close, except it tweaks a few things to ensure a smooth run.
 
-You will now see the frontend on http://localhost:8080
-
-## Add an administrator
-
-The only way to add an administrator (you don't really need one, but to see usage and do basic user operations you will) is to alter the mongodb using the shell.
-You can find the name of the mongodb docker instance in your `docker-compose.yaml` (at the root of your repository).
+We recommend you to host Stylo **behind a reverse proxy**. We provide a working configuration example below for the Nginx server.
 
 
-    $ docker exec -it <NameOfMongoInstance> mongo
+### Prepare the server
+
+After _cloning_ the repo, build the service and its dependencies:
+
+    $ cp example_docker-compose/docker-compose.prod.yaml docker-compose.yaml
+    $ docker-compose up -d --build
 
 
-You will enter the mongo shell, then type the following command to alter an existing account as an administrator:
+After the image is built, you should have a Stylo instance running on your server.
+Now, we need to expose it to the outside world with a reverse proxy.
 
-```
-use sails
-db.users.update({email:"<EmailOfTheAccountYouWantAsAdministrator>"},{$set:{admin:true}});
-```
+### Expose online
 
-The system shoud respond:
+Obtain a working sample file with the following command:
 
-```
-WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
-```
+    $ wget -O /etc/nginx/sites-available/stylo.conf \
+        https://github.com/EcrituresNumeriques/stylo/raw/dev/infrastructure/stylo.huma-num.fr.conf
 
-Otherwise there's something wrong!
+Replace the service domain name:
 
-The same procedure can be used to remove administrative priviledge with `admin:false`.
+    $ sed -i s/stylo.huma-num.fr/STYLO_SUBDOMAIN.MYDOMAIN.TLD/g' /etc/nginx/sites-available/stylo.conf
+
+Alternatively, alter the various ports, and domains on your own.
+
+When you are done, enable the website and reload the configuration:
+
+    $ ln -s /etc/nginx/sites-available/stylo.conf /etc/nginx/sites-enable/stylo.conf
+    $ nginx reload
