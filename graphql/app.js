@@ -13,21 +13,29 @@ const OidcStrategy = require('passport-openidconnect').Strategy
 const graphQlSchema = require('./schema/index')
 const graphQlResolvers = require('./resolvers/index')
 
-const isAuth = require('./middleware/isAuth')
-const displayUser = require('./middleware/displayUser')
-
 const User = require('./models/user')
-const {postCreate} = User
+const { postCreate } = User
 
-const app = express();
+const app = express()
 
-//Look for environnement variables
-const mongoServer = process.env.MONGO_SERVER || 'localhost'
-const mongoServerPort = process.env.MONGO_SERVER_PORT || 27017
-const mongoServerDB = process.env.MONGO_SERVER_DB || 'graphql'
+const mongoServer = process.env.MONGO_SERVER
+const mongoServerPort = process.env.MONGO_SERVER_PORT
+const mongoServerDB = process.env.MONGO_SERVER_DB
+
 const listenPort = process.env.NODE_ENV === 'dev' ? 3030 : 80
-const origin = process.env.ALLOW_CORS_FRONTEND || 'http://localhost:3000'
-const jwtSecret = process.env.JWT_SECRET || 'VerySecureSecret!'
+const origin = process.env.ALLOW_CORS_FRONTEND
+const jwtSecret = process.env.JWT_SECRET_SESSION_COOKIE
+const sessionSecret = process.env.SESSION_SECRET
+const oicName = process.env.OPENID_CONNECT_NAME
+const oicIssuer = process.env.OPENID_CONNECT_ISSUER
+const oicAuthUrl = process.env.OPENID_CONNECT_AUTH_URL
+const oicTokenUrl = process.env.OPENID_CONNECT_TOKEN_URL
+const oicUserInfoUrl = process.env.OPENID_CONNECT_USER_INFO_URL
+const oicCallbackUrl = process.env.OPENID_CONNECT_CALLBACK_URL
+const oicClientId = process.env.OPENID_CONNECT_CLIENT_ID
+const oicClientSecret = process.env.OPENID_CONNECT_CLIENT_SECRET
+const oicScope = process.env.OPENID_CONNECT_SCOPE || 'profile email'
+const secure = process.env.HTTPS === 'true'
 
 const corsOptions = {
   origin: origin,
@@ -35,19 +43,17 @@ const corsOptions = {
   credentials: true,
 }
 
-  // via https://auth-test.huma-num.fr/.well-known/openid-configuration
-  passport.use('oidc', new OidcStrategy({
-  name: 'humanid',
-  issuer: 'https://auth-test.huma-num.fr',
-  authorizationURL: 'https://auth-test.huma-num.fr/oauth2/authorize',
-  tokenURL: 'https://auth-test.huma-num.fr/oauth2/token',
-  userInfoURL: 'https://auth-test.huma-num.fr/oauth2/userinfo',
-  clientID: process.env.OPENID_CONNECT_CLIENT_ID,
-  clientSecret: process.env.OPENID_CONNECT_CLIENT_SECRET,
-  callbackURL: 'http://localhost:3030/authorization-code/callback',
-  scope: 'profile email'
+passport.use('oidc', new OidcStrategy({
+  name: oicName,
+  issuer: oicIssuer,
+  authorizationURL: oicAuthUrl,
+  tokenURL: oicTokenUrl,
+  userInfoURL: oicUserInfoUrl,
+  clientID: oicClientId,
+  clientSecret: oicClientSecret,
+  callbackURL: oicCallbackUrl,
+  scope: oicScope
 }, (issuer, sub, profile, accessToken, refreshToken, done) => {
-  console.log('passwport oidc strategy', issuer, sub, profile, accessToken, refreshToken)
   return done(null, profile);
 }))
 
@@ -60,10 +66,10 @@ passport.deserializeUser((obj, next) => {
 })
 
 app.use(cors(corsOptions))
-app.use(bodyParser.json({limit:'50mb'}))
+app.use(bodyParser.json({ limit: '50mb' }))
 app.use(cookieParser())
 app.use(session({
-  secret: 'MyVoiceIsMyPassportVerifyMe',
+  secret: sessionSecret,
   resave: false,
   saveUninitialized: true
 }))
@@ -86,7 +92,7 @@ app.get('/profile', async (req, res) => {
 
 app.use('/authorization-code/callback',
   passport.authenticate('oidc', { failureRedirect: '/error' }), async (req, res) => {
-    const {email, given_name, family_name, name:displayName} = req.user._json
+    const { email, given_name, family_name, name: displayName } = req.user._json
     let user = await User.findOne({ email })
 
     // we create a new user if we could find one
@@ -102,7 +108,7 @@ app.use('/authorization-code/callback',
       // we populate a user with initial content
       await user.save().then(postCreate)
     }
-    
+
     // generate a JWT token
     const payload = {
       usersIds: [user._id.toString()],
@@ -115,10 +121,10 @@ app.use('/authorization-code/callback',
       jwtSecret
     )
 
-    res.cookie("graphQL-jwt", token, { 
-      expires: 0, 
+    res.cookie("graphQL-jwt", token, {
+      expires: 0,
       httpOnly: true,
-      secure: process.env.HTTPS === "true"
+      secure: secure
     })
 
     res.redirect(origin)
@@ -132,16 +138,16 @@ app.get('/logout', (req, res) => {
 
 app.use(
   '/graphql',
-  graphqlHttp((req,res) => ({
+  graphqlHttp((req, res) => ({
     schema: graphQlSchema,
     rootValue: graphQlResolvers,
     graphiql: true,
-    context: {req,res}
+    context: { req, res }
   }))
 )
 
 mongoose
-  .connect(`mongodb://${mongoServer}:${mongoServerPort}/${mongoServerDB}`, {useNewUrlParser: true})
+  .connect(`mongodb://${mongoServer}:${mongoServerPort}/${mongoServerDB}`, { useNewUrlParser: true })
   .then(() => {
     console.log('Listening on port', listenPort)
     app.listen(listenPort)

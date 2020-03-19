@@ -29,6 +29,15 @@ services:
       - JWT_SECRET_TOKEN=SuperSecureButYouShouldChangeMe
       - JWT_SECRET_SESSION=DidITellYouHowMuchYouShouldChangeMe?
       - JWT_SECRET_SESSION_COOKIE=NoNoNoReallyIInsistYouShouldChangeMe
+      - SESSION_SECRET=aNotSoSecureSessionSecret!
+      - OPENID_CONNECT_NAME=HumanID
+      - OPENID_CONNECT_ISSUER=https://humanid.huma-num.fr
+      - OPENID_CONNECT_AUTH_URL=https://humanid.huma-num.fr/oauth2/authorize
+      - OPENID_CONNECT_TOKEN_URL=https://humanid.huma-num.fr/oauth2/token
+      - OPENID_CONNECT_USER_INFO_URL=https://humanid.huma-num.fr/oauth2/userinfo
+      - OPENID_CONNECT_CALLBACK_URL=https://stylo.huma-num.fr/authorization-code/callback
+      - OPENID_CONNECT_CLIENT_ID=clientId
+      - OPENID_CONNECT_CLIENT_SECRET=secret
       - ALLOW_CORS_FRONTEND=https://stylo.huma-num.fr
     ports:
       - 3030:80

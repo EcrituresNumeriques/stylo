@@ -2,6 +2,7 @@ import React from "react"
 import { navigate} from "gatsby"
 import { connect } from "react-redux"
 
+import env from '../helpers/env'
 import styles from './login.module.scss'
 
 const mapStateToProps = (state) => {
@@ -11,8 +12,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        login: (data) => dispatch({ type: `LOGIN`, login: data }),
-        logout: () => dispatch({ type: `LOGOUT` })
+        login: (data) => dispatch({ type: 'LOGIN', login: data }),
+        logout: () => dispatch({ type: 'LOGOUT' })
     }
 }
 
@@ -31,11 +32,11 @@ const ConnectedLogin = ({logedIn}) => {
         <section className={styles.box}>
             <h1>Login</h1>
             <p>
-                <a className={styles.humanNumCreateAccountBtn} href="https://auth-test.huma-num.fr/register?service=http://localhost:3030/authorization-code/callback">Create a Human-Num account</a>
+                <a className={styles.humanNumCreateAccountBtn} href={env.HUMAN_ID_REGISTER_ENDPOINT}>Create a Human-Num account</a>
             </p>
 
             <p>
-                <a className={styles.humanNumConnectBtn} href="http://localhost:3030/login">Connect with Human-Num</a>
+                <a className={styles.humanNumConnectBtn} href={env.BACKEND_ENDPOINT + '/login'}>Connect with Human-Num</a>
             </p>
         </section>
     </>)
