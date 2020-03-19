@@ -18,10 +18,9 @@ const reducer = (state = initialState, action) => {
       users: [activeUser._id]
     })
   }
-  else if (action.type === `LOGIN`) {
+  else if (action.type === 'LOGIN') {
     const login = action.login
     if(login.password && login.users && login.token){
-      console.log('LOGIN???')
       return Object.assign({}, state, {
         logedIn: true,
         users: login.users,
@@ -32,7 +31,6 @@ const reducer = (state = initialState, action) => {
     }
   }
   else if(action.type === 'UPDATE_ACTIVE_USER'){
-    console.log("updating displayName")
     return Object.assign({}, state, {
       activeUser: {...state.activeUser, displayName: action.payload}},{
       users:[...state.users].map(u=>{ if(state.activeUser._id === u._id){u.displayName = action.payload}return u})
@@ -48,14 +46,13 @@ const reducer = (state = initialState, action) => {
       return Object.assign({},state,{activeUser:action.payload})
     }
   }
-  else if (action.type === `LOGOUT`) {
+  else if (action.type === 'LOGOUT') {
     return Object.assign({}, state, {
       ...initialState
     })
   }
   else if (action.type === 'REMOVE_MYSELF_ALLOWED_LOGIN'){
     const remainingUsers = state.users.filter(u=>u._id !== action.payload)
-    console.log("Removing myself",Object.assign({},state,{users:remainingUsers,activeUser:remainingUsers[0]}))
     return Object.assign({},state,{users:remainingUsers,activeUser:remainingUsers[0]})
   }
 

@@ -13,7 +13,6 @@ const { populateUser, populatePassword, populateToken } = require('./nestedModel
 
 const verifCreds = async (args) => {
   try{
-    console.log('verifCreds', args)
     let findProp = args.username? {username:args.username}:{email:args.email}
     const fetchedPassword = await Password.findOne(findProp).populate("users")
     if(!fetchedPassword){throw new Error("Password not found")}
@@ -32,7 +31,7 @@ module.exports = {
 
     //The resolver only logs the user + password in the req object
     const fetchedPassword = await verifCreds(args);
-    
+
     //Add password to the req.created list + add users in the req.list
     req.created = {...req.created, user:fetchedPassword.users[0].id, password:fetchedPassword.id}
     req.user = {
@@ -46,7 +45,6 @@ module.exports = {
   },
   login: async (args, {_,res}) => {
     try{
-      console.log('login', args)
       const fetchedPassword = await verifCreds(args);
       const payload = {
         usersIds:fetchedPassword.users.map(user => user._id.toString()),
@@ -226,7 +224,7 @@ module.exports = {
         payload,
         process.env.JWT_SECRET_TOKEN
       )
-      
+
 
       newToken.user = thisUser.id
       newToken.token = bcrypt.hashSync(token,10)
@@ -235,7 +233,7 @@ module.exports = {
       await thisUser.save()
 
       returnedToken._doc.token = token
-      
+
       req.created = {...req.created,token:returnedToken.id}
 
       return populateToken(returnedToken)
@@ -256,7 +254,7 @@ module.exports = {
       if(!thisToken){throw new Error('Token not found')}
 
       thisUser.tokens.pull(thisToken);
-      
+
       const returnedUser = await thisUser.save()
       await Token.deleteOne({_id:args.token})
 

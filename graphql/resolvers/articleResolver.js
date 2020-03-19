@@ -83,7 +83,7 @@ module.exports = {
 
       populateArgs(args,req)
       isUser(args,req)
-      
+
       //Fetch article and user to send to
       const fetchedArticle = await Article.findOne({_id:args.article,owners:args.user})
       if(!fetchedArticle){throw new Error('Unable to find article')}
@@ -125,7 +125,7 @@ module.exports = {
       await newVersion.save()
 
       return populateArticle(returnedArticle)
-      
+
     }
     catch(err){
       throw err
@@ -204,7 +204,6 @@ module.exports = {
   },
   article: async (args,{req}) => {
 
-    console.log('article', req.user)
     // -------------------------------------------
     // TODO: verify user has acces to this article
     // -------------------------------------------
@@ -218,7 +217,6 @@ module.exports = {
   },
   articles: async (_,{req}) => {
     try{
-      console.log('articles', req.user)
       isAdmin(req);
       const articles = await Article.find();
       return articles.map(populateArticle)
