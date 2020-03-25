@@ -183,8 +183,8 @@ module.exports = {
       throw err
     }
   },
-  refreshToken: async (_, {req}) => {
-    if(!req.user_noCSRF){
+  refreshToken: async (_, {req, res}) => {
+    if (!req.user) {
       throw new Error("Can't refresh user without cookie");
     }
     const fetchedPassword = await Password.findOne({_id : req.user_noCSRF.passwordId}).populate("users")
@@ -195,10 +195,18 @@ module.exports = {
       admin:fetchedPassword.users.filter(user => user.admin).length > 0 ? true : false,
       session:true
     }
+
     const token = jwt.sign(
       payload,
-      process.env.JWT_SECRET_SESSION
+      process.env.JWT_SECRET_SESSION_COOKIE
     )
+
+    res.cookie('graphQL-jwt', token, {
+      expires: 0,
+      httpOnly: true,
+      secure: process.env.HTTPS === 'true'
+    })
+
     return {
       token:token,
       password:populatePassword(fetchedPassword),

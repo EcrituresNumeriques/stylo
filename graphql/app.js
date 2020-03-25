@@ -14,6 +14,7 @@ const graphQlSchema = require('./schema/index')
 const graphQlResolvers = require('./resolvers/index')
 
 const User = require('./models/user')
+const Password = require('./models/user_password')
 const { postCreate } = User
 
 const app = express()
@@ -57,6 +58,7 @@ passport.use('oidc', new OidcStrategy({
   return done(null, profile);
 }))
 
+// mandatory
 passport.serializeUser((user, next) => {
   next(null, user)
 })
@@ -76,12 +78,29 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+app.use(function (req, res, next) {
+  const jwtToken = req.cookies && req.cookies['graphQL-jwt']
+
+  if (jwtToken) {
+    try {
+      const user = jwt.verify(jwtToken, jwtSecret)
+  
+      req.user = user
+      req.isAuth = true
+    }
+    catch (error) {
+      return next(error)
+    }
+  }
+
+  return next()
+})
 
 app.use('/login', passport.authenticate('oidc'))
 
 app.get('/profile', async (req, res) => {
   if (req.user) {
-    let user = await User.findOne({ email: req.user._json.email })
+    let user = await User.findOne({ email: req.user.email })
     res.status(200)
     res.json({ user })
   } else {
@@ -105,14 +124,25 @@ app.use('/authorization-code/callback',
         lastName: family_name || ''
       })
 
+      // add a "password" to allow the user to connect as himself!
+      // a user can have multiple "passwords" (ie. accounts) linked to it.
+      // this mecanism is used to share content between accounts.
+      const password = new Password({email, username: displayName, password: ''})
+      user.passwords.push(password)
+      password.users.push(user)
+      await password.save()
+
       // we populate a user with initial content
       await user.save().then(postCreate)
     }
 
+    const userPassword = await Password.findOne({ email }).populate("users")
+
     // generate a JWT token
     const payload = {
-      usersIds: [user._id.toString()],
-      passwordId: null,
+      email,
+      usersIds: userPassword.users.map(user => user._id.toString()),
+      passwordId: userPassword.id,
       admin: Boolean(user.admin),
       session: true
     }
@@ -141,7 +171,7 @@ app.use(
   graphqlHttp((req, res) => ({
     schema: graphQlSchema,
     rootValue: graphQlResolvers,
-    graphiql: true,
+    graphiql: process.env.NODE_ENV === 'dev',
     context: { req, res }
   }))
 )
