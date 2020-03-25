@@ -33,10 +33,12 @@ const versionSchema = new Schema({
   },
   md:{
     type:String,
-    default:`## section title
-<-- Add your text here, and the document title in the metadatas tool -->
-1. Use only title of level 2 (##) for sections and more (level 1 is used for the article title)
-2. The text is automatically saved. You can version it with [Save as] button
+    default:`## Section Title
+
+Add your text here, and the document title in the metadatas tool.
+
+1. Use only title of level 2 (`##`) for sections and more (level 1 is used for the article title)
+2. The text is automatically saved. You can version it with `[Save as]` button
 3. Check the documentation in the menu`
   },
   sommaire:{
