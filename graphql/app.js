@@ -127,7 +127,7 @@ app.use('/authorization-code/callback',
       // add a "password" to allow the user to connect as himself!
       // a user can have multiple "passwords" (ie. accounts) linked to it.
       // this mecanism is used to share content between accounts.
-      const password = new Password({email, username: displayName, password: ''})
+      const password = new Password({email, username: displayName})
       user.passwords.push(password)
       password.users.push(user)
       await password.save()

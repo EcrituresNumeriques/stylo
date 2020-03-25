@@ -44,8 +44,7 @@ const userSchema = new Schema({
   ],
   displayName: {
     type: String,
-    unique:true,
-    required: true
+    required: false
   },
   admin: {
     type:Boolean,

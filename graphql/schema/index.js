@@ -72,7 +72,7 @@ type Token {
 type Password {
   _id: ID!
   email:String!
-  username:String!
+  username:String
   users(limit:Int,page:Int):[User!]!
   defaultUser:User!
   unlock:String
@@ -91,7 +91,7 @@ type AuthToken {
 
 input UserInput {
   email: String!
-  username: String!
+  username: String
   password: String!
   displayName: String
   firstName: String

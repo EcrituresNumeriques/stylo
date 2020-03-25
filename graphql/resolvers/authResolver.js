@@ -187,13 +187,16 @@ module.exports = {
     if (!req.user) {
       throw new Error("Can't refresh user without cookie");
     }
-    const fetchedPassword = await Password.findOne({_id : req.user_noCSRF.passwordId}).populate("users")
-    if(!fetchedPassword){throw new Error("Password not found")}
+    const fetchedPassword = await Password.findOne({ _id: req.user.passwordId }).populate("users")
+    if (!fetchedPassword) {
+      throw new Error("Password not found")
+    }
     const payload = {
-      usersIds:fetchedPassword.users.map(user => user._id.toString()),
-      passwordId:fetchedPassword.id,
-      admin:fetchedPassword.users.filter(user => user.admin).length > 0 ? true : false,
-      session:true
+      email: req.user.email,
+      usersIds: fetchedPassword.users.map(user => user._id.toString()),
+      passwordId: fetchedPassword.id,
+      admin: fetchedPassword.users.filter(user => user.admin).length > 0 ? true : false,
+      session: true
     }
 
     const token = jwt.sign(
@@ -208,9 +211,9 @@ module.exports = {
     })
 
     return {
-      token:token,
-      password:populatePassword(fetchedPassword),
-      users:fetchedPassword.users.map(populateUser)
+      token: token,
+      password: populatePassword(fetchedPassword),
+      users: fetchedPassword.users.map(populateUser)
     }
   },
   addToken: async (args,{req}) => {
