@@ -96,7 +96,11 @@ app.use(function (req, res, next) {
   return next()
 })
 
-app.use('/login', passport.authenticate('oidc'))
+app.use(
+  '/login',
+  (req, res, next) => req.user ? res.redirect('/') : next(),
+  passport.authenticate('oidc')
+)
 
 app.get('/profile', async (req, res) => {
   if (req.user) {
