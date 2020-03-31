@@ -1,4 +1,6 @@
-# Refresh paquet ubuntu + install docker
+# Install on an Ubuntu server
+
+First, install the following system dependencies:
 
 ```bash
 sudo apt update
@@ -9,6 +11,11 @@ sudo apt-get install \
     curl \
     gnupg-agent \
     software-properties-common
+```
+
+Then, install `docker` from the official repository:
+
+```
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
@@ -16,10 +23,9 @@ sudo add-apt-repository \
    stable"
 sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io
-
 ```
 
-# auto start docker (+group add no sudo)
+Add your user to the `docker` group to run Docker as a non-root user:
 
 ```bash
 sudo groupadd docker
@@ -27,17 +33,14 @@ sudo usermod -aG docker $USER
 sudo systemctl enable docker
 ```
 
-
-# install docker-compose
+Install `docker-compose`:
 
 ```bash
 sudo curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
-
 ```
 
-
-# clone repo stylo
+Clone the stylo repository:
 
 ```bash
 cd ~
@@ -46,23 +49,22 @@ cd git
 git clone https://github.com/EcrituresNumeriques/stylo.git
 ```
 
-# initialisation dev
+Update the submodule:
 
 ```bash
 cd stylo
-cp example_docker-compose/humanu,.docker-compose.yaml docker-compose.yaml
-docker network create root_default
-docker-compose up -d --build
+git submodule init
+git submodule update
 ```
 
-
-# Reverse proxy
+Copy and configure the `docker-compose.yaml`:
 
 ```bash
-git clone https://github.com/PookMook/docker-NginxProxy-letsEncrypt.git
-mv docker-NginxProxy-letsEncrypt/ reverse-DNS
-cd reverse-DNS/
-chmod +x reload.sh
-docker-compose up -d
-./reload.sh
+cp example_docker-compose/docker-compose.prod.yaml docker-compose.yaml
+```
+
+Finally, start the application:
+
+```bash
+docker-compose up -d --build
 ```
