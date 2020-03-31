@@ -26,7 +26,7 @@ const ConnectedUser = props => {
   const [yaml,setYaml] = useState('')
   const [user,setUser] = useState({email:'',_id:'',admin:false,createdAt:'',updatedAt:''})
   const [passwords, setPasswords] = useState([])
-  const [tokens, setTokens] = useState([])
+  //const [tokens, setTokens] = useState([])
   const [isLoading,setIsLoading] = useState(true)
   const [emailLogin,setEmailLogin] = useState('')
 
@@ -44,7 +44,7 @@ const ConnectedUser = props => {
         setInstitution(data.user.institution || '')
         setYaml(data.user.yaml)
         setPasswords(data.user.passwords)
-        setTokens(data.user.tokens)
+        //setTokens(data.user.tokens)
         setUser(data.user)
         setIsLoading(false)
       }
@@ -69,7 +69,7 @@ const ConnectedUser = props => {
       setInstitution(data.updateUser.institution || '')
       setYaml(data.updateUser.yaml)
       setPasswords(data.updateUser.passwords)
-      setTokens(data.updateUser.tokens)
+      //setTokens(data.updateUser.tokens)
       setUser(data.updateUser)
       setIsLoading(false)
     }

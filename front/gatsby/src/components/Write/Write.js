@@ -12,7 +12,7 @@ import CompareSelect from './CompareSelect'
 
 import useDebounce from '../../hooks/debounce'
 
-import _ from 'lodash'
+//import _ from 'lodash'
 
 let CodeMirror = () => (<p>No window</p>)
 if (typeof window !== `undefined` && typeof navigator !== `undefined`) {
@@ -26,10 +26,10 @@ const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
 }
 
 const ConnectedWrite = (props) => {
-  if(!props.logedIn){
+/*   if(!props.logedIn){
     navigate('/login')
     return (<p>Redirecting...</p>)
-  }
+  } */
   const readOnly = props.version? true:false;
   const query = "query($article:ID!){article(article:$article){ _id title zoteroLink owners{ displayName } versions{ _id version revision message autosave updatedAt owner{ displayName }} "
   const getLive = "live{ md bib yaml message owner{ displayName }} } }"
@@ -76,6 +76,7 @@ const ConnectedWrite = (props) => {
       else{
         //Last version had same _id, we gucchi to update!
         const immutableV = [...versions]
+        //shift the first item of the array
         const [_,...rest] = immutableV
         setVersions([response.saveVersion,...rest])
       }

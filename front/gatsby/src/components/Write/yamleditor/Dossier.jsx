@@ -1,6 +1,5 @@
 import { TextInput } from './TextInput.jsx';
 import React from 'react';
-import _ from 'lodash';
 
 export function Dossier(props){
   return(

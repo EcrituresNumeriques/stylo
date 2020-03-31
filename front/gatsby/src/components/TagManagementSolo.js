@@ -40,7 +40,7 @@ export default connect(mapStateToProps)((props) => {
     console.log("hello update tag")
     const query = `mutation($user:ID!,$tag:ID!,$color:String!,$name:String!,$description:String!){updateTag(user:$user,tag:$tag,name:$name,description:$description,color:$color){ _id name description color }}`
     const variables = {user:props.activeUser._id,tag:props.t._id, name: tempName, description: tempDescription, color: tempColor}
-    const data = await askGraphQL({query,variables},"update tag", props.sessionToken)
+    await askGraphQL({query,variables},"update tag", props.sessionToken)
     props.setNeedReload()
     setEdit(false)
   }

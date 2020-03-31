@@ -1,7 +1,4 @@
 import React, {useState} from 'react'
-import {Link} from 'gatsby'
-
-import styles from './books.module.scss'
 import env from '../helpers/env'
 import etv from '../helpers/eventTargetValue'
 

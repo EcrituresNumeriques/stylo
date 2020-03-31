@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 
 services:
   mongodb-stylo-prod:
@@ -9,22 +9,28 @@ services:
       - MONGO_LOG_DIR=/dev/null
     volumes:
       - ./data/db:/data/db
-    command: mongod --smallfiles --logpath=/dev/null 
+    command: mongod --smallfiles --logpath=/dev/null
+    healthcheck:
+      test: echo 'db.stats().ok' | mongo localhost:27017 --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 5
   mongodb-admin-prod:
     image: mongo-express
     container_name: "mongodb-admin-prod"
     environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb-stylo-prod
+      - ME_CONFIG_BASICAUTH_PASSWORD=AdminPassword
       - ME_CONFIG_BASICAUTH_PASSWORD=AdminPassword
       - ME_CONFIG_BASICAUTH_USERNAME=Username
-    links:
-      - mongodb-stylo-prod:mongo
     ports:
       - 3060:8081
   graphql-stylo-prod:
     build: ./graphql/
     container_name: "graphql-stylo-prod"
     depends_on:
-      - mongodb-stylo-prod
+      mongodb-stylo-prod:
+        condition: service_healthy
     environment:
       - MONGO_SERVER=mongodb-stylo-prod
       - MONGO_SERVER_PORT=27017
@@ -43,7 +49,8 @@ services:
     build: ./export/
     container_name: "export-stylo-prod"
     depends_on:
-      - mongodb-stylo-prod
+      mongodb-stylo-prod:
+        condition: service_healthy
     environment:
       - MONGO_SERVER=mongodb-stylo-prod
       - MONGO_SERVER_PORT=27017
@@ -55,7 +62,7 @@ services:
       - LETSENCRYPT_HOST=stylo.ecrituresnumeriques.ca
       - LETSENCRYPT_EMAIL=arthur.juchereau@gmail.com
   front-stylo-prod:
-    build: 
+    build:
       context: ./front
       dockerfile: dockerfile
     container_name: "front-stylo-prod"
@@ -68,8 +75,3 @@ services:
       - LETSENCRYPT_EMAIL=arthur.juchereau@gmail.com
     depends_on:
       - graphql-stylo-prod
-      
-networks:
-  default:
-    external:
-      name: arthur_default

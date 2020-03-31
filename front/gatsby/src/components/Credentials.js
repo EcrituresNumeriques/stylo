@@ -17,14 +17,16 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-
-const ConnectedCredentials = props => {
+const withLogin = props => {
     const isBrowser = typeof window !== 'undefined';
     if(isBrowser && !props.logedIn){
         navigate('/login')
         return <p>redirecting</p>
     }
+    return <ConnectedCredentials {...props}/>
+}
 
+const ConnectedCredentials = props => {
     useEffect(()=>{
         (async ()=>{
           try{
@@ -51,7 +53,7 @@ const ConnectedCredentials = props => {
             setIsUpdating(true)
             const query = `mutation($password:ID!, $old:String!, $new:String!, $user:ID!){ changePassword(password:$password,old:$old,new:$new,user:$user){ _id } }`
             const variables = {password:props.password._id, old: passwordO, new:password, user: props.activeUser._id}
-            const data = await askGraphQL({query, variables},'update Password',props.sessionToken)
+            await askGraphQL({query, variables},'update Password',props.sessionToken)
             setPassword('')
             setPasswordO('')
             setPasswordC('')
@@ -101,6 +103,6 @@ const ConnectedCredentials = props => {
 const Credentials = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ConnectedCredentials)
+)(withLogin)
 
 export default Credentials
