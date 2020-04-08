@@ -31,11 +31,7 @@ Useful to edit the code and see direct changes in local.
 
 **IMPORTANT: NOT SUITED FOR PROLONGED USE BY ACTUAL USERS**
 
-First, checkout the `dev` branch:
-
-    $ git checkout dev
-
-Then, copy the `docker-compose.dev.yaml` file:
+Copy the `docker-compose.dev.yaml` file:
 
     $ cp example_docker-compose/docker-compose.dev.yaml docker-compose.yaml
 
