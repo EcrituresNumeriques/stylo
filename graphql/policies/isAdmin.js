@@ -1,15 +1,14 @@
-const isAuth = require('./isAuth')
-
 module.exports = (req) => {
-    try{
-        isAuth(req)
-        if(req.user && req.user.admin === true){
+    try {
+        if (!req.user) {
+            throw new Error("Not authenticated")
+        }
+        if (req.user.admin === true) {
             return true
         }
         throw new Error("Only available for administrators")
     }
-    catch(err){
+    catch (err) {
         throw err
     }
-    
 }

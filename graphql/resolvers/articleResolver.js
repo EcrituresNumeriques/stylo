@@ -83,7 +83,7 @@ module.exports = {
 
       populateArgs(args,req)
       isUser(args,req)
-      
+
       //Fetch article and user to send to
       const fetchedArticle = await Article.findOne({_id:args.article,owners:args.user})
       if(!fetchedArticle){throw new Error('Unable to find article')}
@@ -125,7 +125,7 @@ module.exports = {
       await newVersion.save()
 
       return populateArticle(returnedArticle)
-      
+
     }
     catch(err){
       throw err

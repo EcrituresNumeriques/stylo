@@ -31,7 +31,7 @@ module.exports = {
 
     //The resolver only logs the user + password in the req object
     const fetchedPassword = await verifCreds(args);
-    
+
     //Add password to the req.created list + add users in the req.list
     req.created = {...req.created, user:fetchedPassword.users[0].id, password:fetchedPassword.id}
     req.user = {
@@ -183,26 +183,37 @@ module.exports = {
       throw err
     }
   },
-  refreshToken: async (_, {req}) => {
-    if(!req.user_noCSRF){
+  refreshToken: async (_, {req, res}) => {
+    if (!req.user) {
       throw new Error("Can't refresh user without cookie");
     }
-    const fetchedPassword = await Password.findOne({_id : req.user_noCSRF.passwordId}).populate("users")
-    if(!fetchedPassword){throw new Error("Password not found")}
-    const payload = {
-      usersIds:fetchedPassword.users.map(user => user._id.toString()),
-      passwordId:fetchedPassword.id,
-      admin:fetchedPassword.users.filter(user => user.admin).length > 0 ? true : false,
-      session:true
+    const fetchedPassword = await Password.findOne({ _id: req.user.passwordId }).populate("users")
+    if (!fetchedPassword) {
+      throw new Error("Password not found")
     }
+    const payload = {
+      email: req.user.email,
+      usersIds: fetchedPassword.users.map(user => user._id.toString()),
+      passwordId: fetchedPassword.id,
+      admin: fetchedPassword.users.filter(user => user.admin).length > 0 ? true : false,
+      session: true
+    }
+
     const token = jwt.sign(
       payload,
-      process.env.JWT_SECRET_SESSION
+      process.env.JWT_SECRET_SESSION_COOKIE
     )
+
+    res.cookie('graphQL-jwt', token, {
+      expires: 0,
+      httpOnly: true,
+      secure: process.env.HTTPS === 'true'
+    })
+
     return {
-      token:token,
-      password:populatePassword(fetchedPassword),
-      users:fetchedPassword.users.map(populateUser)
+      token: token,
+      password: populatePassword(fetchedPassword),
+      users: fetchedPassword.users.map(populateUser)
     }
   },
   addToken: async (args,{req}) => {
@@ -224,7 +235,7 @@ module.exports = {
         payload,
         process.env.JWT_SECRET_TOKEN
       )
-      
+
 
       newToken.user = thisUser.id
       newToken.token = bcrypt.hashSync(token,10)
@@ -233,7 +244,7 @@ module.exports = {
       await thisUser.save()
 
       returnedToken._doc.token = token
-      
+
       req.created = {...req.created,token:returnedToken.id}
 
       return populateToken(returnedToken)
@@ -254,7 +265,7 @@ module.exports = {
       if(!thisToken){throw new Error('Token not found')}
 
       thisUser.tokens.pull(thisToken);
-      
+
       const returnedUser = await thisUser.save()
       await Token.deleteOne({_id:args.token})
 

@@ -9,22 +9,12 @@ services:
       - MONGO_LOG_DIR=/dev/null
     volumes:
       - ./data/db:/data/db
-    command: mongod --smallfiles --logpath=/dev/null
+    command: mongod --logpath=/dev/null
     healthcheck:
       test: echo 'db.stats().ok' | mongo localhost:27017 --quiet
       interval: 5s
       timeout: 5s
       retries: 5
-  mongodb-admin-prod:
-    image: mongo-express
-    container_name: "mongodb-admin-prod"
-    environment:
-      - ME_CONFIG_MONGODB_SERVER=mongodb-stylo-prod
-      - ME_CONFIG_BASICAUTH_PASSWORD=AdminPassword
-      - ME_CONFIG_BASICAUTH_PASSWORD=AdminPassword
-      - ME_CONFIG_BASICAUTH_USERNAME=Username
-    ports:
-      - 3060:8081
   graphql-stylo-prod:
     build: ./graphql/
     container_name: "graphql-stylo-prod"
@@ -39,12 +29,18 @@ services:
       - JWT_SECRET_TOKEN=SuperSecureButYouShouldChangeMe
       - JWT_SECRET_SESSION=DidITellYouHowMuchYouShouldChangeMe?
       - JWT_SECRET_SESSION_COOKIE=NoNoNoReallyIInsistYouShouldChangeMe
-      - ALLOW_CORS_FRONTEND=https://front.stylo.ecrituresnumeriques.ca
-      - VIRTUAL_HOST=graphql.stylo.ecrituresnumeriques.ca
-      - VIRTUAL_NETWORK=nginx-proxy
-      - VIRTUAL_PORT=80
-      - LETSENCRYPT_HOST=graphql.stylo.ecrituresnumeriques.ca
-      - LETSENCRYPT_EMAIL=arthur.juchereau@gmail.com
+      - SESSION_SECRET=aNotSoSecureSessionSecret!
+      - OPENID_CONNECT_NAME=HumanID
+      - OPENID_CONNECT_ISSUER=https://humanid.huma-num.fr
+      - OPENID_CONNECT_AUTH_URL=https://humanid.huma-num.fr/oauth2/authorize
+      - OPENID_CONNECT_TOKEN_URL=https://humanid.huma-num.fr/oauth2/token
+      - OPENID_CONNECT_USER_INFO_URL=https://humanid.huma-num.fr/oauth2/userinfo
+      - OPENID_CONNECT_CALLBACK_URL=https://stylo.huma-num.fr/authorization-code/callback
+      - OPENID_CONNECT_CLIENT_ID=clientId
+      - OPENID_CONNECT_CLIENT_SECRET=secret
+      - ALLOW_CORS_FRONTEND=https://stylo.huma-num.fr
+    ports:
+      - 3030:80
   export-stylo-prod:
     build: ./export/
     container_name: "export-stylo-prod"
@@ -55,12 +51,9 @@ services:
       - MONGO_SERVER=mongodb-stylo-prod
       - MONGO_SERVER_PORT=27017
       - MONGO_SERVER_DB=stylo
-      - URL_FRONTEND=https://front.stylo.ecrituresnumeriques.ca
-      - VIRTUAL_HOST=stylo.ecrituresnumeriques.ca
-      - VIRTUAL_NETWORK=nginx-proxy
-      - VIRTUAL_PORT=80
-      - LETSENCRYPT_HOST=stylo.ecrituresnumeriques.ca
-      - LETSENCRYPT_EMAIL=arthur.juchereau@gmail.com
+      - URL_FRONTEND=https://stylo.huma-num.fr
+    ports:
+      - 3060:80
   front-stylo-prod:
     build:
       context: ./front
@@ -68,10 +61,7 @@ services:
     container_name: "front-stylo-prod"
     environment:
       - URL_EXPORT=stylo.ecrituresnumeriques.ca
-      - VIRTUAL_HOST=front.stylo.ecrituresnumeriques.ca
-      - VIRTUAL_NETWORK=nginx-proxy
-      - VIRTUAL_PORT=80
-      - LETSENCRYPT_HOST=front.stylo.ecrituresnumeriques.ca
-      - LETSENCRYPT_EMAIL=arthur.juchereau@gmail.com
+    ports:
+      - 3000:80
     depends_on:
       - graphql-stylo-prod

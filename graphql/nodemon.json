@@ -3,7 +3,20 @@
         "JWT_SECRET_TOKEN": "YuD0^kIlS$HZzsT!zEypKkjZ9mVSq0pfUx7EgnlbDFUBW7!Hc90",
         "JWT_SECRET_SESSION": "34t!9mRbq2ZxCRWsIKR2bCJLyB2*bgayw@^F$v",
         "JWT_SECRET_SESSION_COOKIE": "@l1HpOrtRg2Mc^UwN@oHj9lPrZ^eLF4$2cfv7n",
+        "SESSION_SECRET": "MyVoiceIsMyPassportVerifyMe!",
+        "MONGO_SERVER": "localhost",
+        "MONGO_SERVER_PORT": 27017,
+        "MONGO_SERVER_DB": "graphql",
+        "ALLOW_CORS_FRONTEND": "http://localhost:3000",
+        "OPENID_CONNECT_NAME": "humanid",
+        "OPENID_CONNECT_ISSUER": "https://auth-test.huma-num.fr",
+        "OPENID_CONNECT_AUTH_URL": "https://auth-test.huma-num.fr/oauth2/authorize",
+        "OPENID_CONNECT_TOKEN_URL": "https://auth-test.huma-num.fr/oauth2/token",
+        "OPENID_CONNECT_USER_INFO_URL": "https://auth-test.huma-num.fr/oauth2/userinfo",
+        "OPENID_CONNECT_CALLBACK_URL": "http://localhost:3030/authorization-code/callback",
+        "OPENID_CONNECT_CLIENT_ID": "...",
+        "OPENID_CONNECT_CLIENT_SECRET": "...",
         "HTTPS": false,
-        "NODE_ENV": "Dev"
+        "NODE_ENV": "dev"
     }
 }

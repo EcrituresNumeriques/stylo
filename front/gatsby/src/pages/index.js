@@ -11,6 +11,7 @@ const mapStateToProps = ({ logedIn, password, activeUser }) => {
 }
 
 const ConnectedIndex = (props) => {
+    
     const isBrowser = typeof window !== 'undefined';
     if(isBrowser){
         if(props.logedIn){
