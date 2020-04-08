@@ -68,3 +68,19 @@ Finally, start the application:
 ```bash
 docker-compose up -d --build
 ```
+
+## Deploy a new version
+
+Push changes to the master branch then connect to the server using `ssh`.
+Fetch the changes:
+
+```
+cd git/stylo
+git pull --rebase
+```
+
+Update and restart Stylo:
+
+```
+docker-compose up -d --build
+```
