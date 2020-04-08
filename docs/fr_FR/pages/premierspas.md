@@ -170,7 +170,7 @@ Pour visualiser une ancienne version, il vous suffit de cliquer sur son titre. P
 ## Export
 Le module d'export offre plusieurs formats (HTML5, XML, PDF, etc.), permet de choisir un style bibliographique, et la présence ou non d'une table des matières.
 
-Pour davantage d'informations sur l'export Stylo, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/export.md)
+Pour davantage d'informations sur l'export Stylo, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/mesarticles.md#Exporter_un_article)
 
 ## Sommaire
 

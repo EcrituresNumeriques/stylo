@@ -168,15 +168,15 @@ Il est possible de choisir parmi plusieurs styles bibliographiques dont certains
 
 Le module d'export se charge de mettre en forme les références, d'ajouter ou d'enlever les espaces, d'insérer des "Ibid." en accord avec le style etc.
 
-Les exports sont produits grâce à l'outil de conversion [pandoc](https://pandoc.org/) sur la base de templates disponibles [ici](https://framagit.org/ecrinum/templates-stylo).
+Les exports sont produits grâce à l'outil de conversion [pandoc](https://pandoc.org/) sur la base de templates disponibles [ici](https://framagit.org/stylo-editeur/templates-stylo).
 
-L'export permet aussi de télécharger les fichiers-source de Stylo - et les médias insérés dans l'article s'il y en a.
+L'export permet aussi de télécharger les fichiers-source de Stylo (.md, .bib, .yaml) - et les médias insérés dans l'article s'il y en a.
 
 ### Personaliser son export
 
-À partir des fichiers-source, il est possible de produire des exports personalisés - mise en page, graphismes, métadonnées - en utilisant l'outil de conversion [pandoc](https://pandoc.org/).
+À partir des fichiers-source, il est possible de produire des exports personalisés - mise en page, graphismes, métadonnées - en s'appuyant sur les fonctionnalités de l'outil de conversion [pandoc](https://pandoc.org/).
 
-Pour plus d'informations sur l'emploi des templates, voir ce [tutoriel](https://framagit.org/marviro/tutorielmdpandoc/blob/master/parcours/04_edition.md#les-templates-dans-pandoc)
+Pour plus d'informations sur l'emploi des templates, voir ce [tutoriel](https://gitlab.huma-num.fr/ecrinum/manuels/tutoriel-markdown-pandoc)
 
 ## Développer les autres fonctionnalités de l'article
 
