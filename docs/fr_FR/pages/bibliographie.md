@@ -10,8 +10,6 @@ Vous pouvez directement [structurer vos références en bibtex](http://www.andy-
 
 - voir tutoriels : <a class="btn btn-info" href="http://archive.sens-public.org/IMG/pdf/Utiliser_Zotero.pdf" role="button">Zotero</a> <a class="btn btn-info" href="https://libguides.usask.ca/c.php?g=218034&p=1446316" role="button">Mendeley</a>
 
-![biblioex](uploads/images/biblioex.png)
-
 ## Synchroniser une collection Zotero
 
 Il est possible de synchroniser les références d'un article avec un sous-dossier (une collection) d'un groupe Zotero public, en renseignant l'identifiant du sous-dossier :
@@ -25,7 +23,7 @@ Quelques erreurs fréquentes à éviter : votre groupe doit être public, l'iden
 
 ## Insérer une référence bibliographique
 
-Pour ajouter une référence à l'article, il suffit de cliquer sur la référence, puis de coller (Ctrl+V) la référence dans le texte à l'endroit souhaité. Elle apparaitra alors ainsi `[shirky_here_2008]`. Pour bien comprendre, un clic revient à "copier" la clé bibtex de la référence dans le presse-papier.
+Pour ajouter une référence à l'article, il suffit de cliquer sur la référence, puis de coller (Ctrl+V) la référence dans le texte à l'endroit souhaité. Elle apparaitra alors ainsi `[shirky_here_2008]`. Pour bien comprendre, un clic revient à "copier" la clé bibtex de la référence dans le presse-papier. ![biblioex](uploads/images/biblioex.png)
 
 Insérer une clé bibtex dans le corps de texte a deux effets :
 
@@ -37,29 +35,29 @@ Insérer une clé bibtex dans le corps de texte a deux effets :
 
 
 La syntaxe Markdown permet de structurer finement vos références bibliographiques. En fonction des besoins, voici différents cas de figure pour produire l'appel de citation :
-- `[@shirky_here_2008]` produira l'appel de citation suivant : (Shirky 2008)
-- `[@shirky_here_2008, p194]` produira l'appel de citation suivant : (Shirky 2008, p194)
-- `@shirky_here_2008` produira l'appel de citation suivant : Shirky (2008)
-- `[-@shirky_here_2008]` produira l'appel de citation suivant : (2008)
+- `[@shirky_here_2008]` produira : (Shirky 2008)
+- `[@shirky_here_2008, p194]` produira : (Shirky 2008, p194)
+- `@shirky_here_2008` produira : Shirky (2008)
+- `[-@shirky_here_2008]` produira : (2008)
 
 Par exemple :
 
-1. Si vous souhaitez citer l'auteur + l'année et la page entre parenthèses :
+- Si vous souhaitez citer l'auteur + l'année et la page entre parenthèses :
 
-|Affichage dans Atom | Affichage définitif|
+|Dans l'éditeur | Dans la preview|
 |:--|:--|
 |`L’espace réel, celui de notre vie matérielle,`<br/>`et le cyberespace (qui n’est certes`<br/>`pas si complètement virtuel) ne devraient`<br/>`pas faire l’objet d’appellations séparées`<br/>`puisqu’ils s’interpénètrent de plus`<br/>`en plus fermement [@shirky_here_2008, p. 194].` | `L’espace réel, celui de notre vie matérielle,`<br/>`et le cyberespace (qui n’est certes`<br/>` pas si complètement virtuel) ne devraient`<br/>`pas faire l’objet d’appellations séparées`<br/>`puisqu’ils s’interpénètrent de plus`<br/>`en plus fermement (Shirky 2008, 194).`|
 
-2. Si le nom de l'auteur apparaît déjà, et que vous souhaitez simplement ajouter l'année de publication entre parenthèses :
+- Si le nom de l'auteur apparaît déjà, et que vous souhaitez simplement ajouter l'année de publication entre parenthèses :
 
-|Affichage dans Atom | Affichage définitif|
+|Dans l'éditeur | Dans la preview|
 |:--|:--|
 |`Clay @shirky_here_2008[p. 194] a suggéré que l’espace réel`<br/>`, celui de notre vie matérielle, et`<br/>`le cyberespace (qui n’est certes pas si complètement`<br/>`virtuel) ne devraient pas faire l’objet`<br/>`d’appellations séparées puisqu’ils s’interpénètrent `<br/>`de plus en plus fermement.` | `Clay Shirky (2008, 194), a suggéré que l’espace réel`<br/>`, celui de notre vie matérielle, et`<br/>`le cyberespace (qui n’est certes pas si complètement`<br/>`virtuel) ne devraient pas faire l’objet`<br/>`d’appellations séparées puisqu’ils s’interpénètrent`<br/>`de plus en plus fermement.`|
 
-3. Afin d'éviter la répétition d'un nom, et indiquer seulement l'année, faire figurer un `-` devant la clé.
+- Afin d'éviter la répétition d'un nom, et indiquer seulement l'année, faire figurer un `-` devant la clé.
 
 
-|Affichage dans Atom | Affichage définitif|
+|Dans l'éditeur | Dans la preview|
 |:--|:--|
 |`Des artistes conceptuels avaient cherché`<br/>`(apparemment sans grand succès ou`<br/>`sans grande conviction si l’on`<br/>`en croit Lucy Lippard [-@lippard_six_1973 ; -@lippard_get_1984])`<br/>`à contourner les règles du marché de l’art.` | `Des artistes conceptuels avaient cherché`<br/>`(apparemment sans grand succès ou`<br/>`sans grande conviction si l’on en croit Lucy Lippard (1973 ; 1984))`<br/>`à contourner les règles du marché de l’art.`|
 
