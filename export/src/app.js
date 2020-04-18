@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const {exportArticleHtml, exportBookHtml, exportBookZip, exportVersionHtml, exportVersionZip, exportBatchTagZip} = require('./export.js')
+const {exportArticleHtml, exportArticleZip, exportBookHtml, exportBookZip, exportVersionHtml, exportVersionZip, exportBatchTagZip} = require('./export.js')
 
 const app = express();
 
@@ -15,6 +15,7 @@ const redirect = process.env.URL_FRONTEND || 'http://localhost:3000'
 
 app.get('/htmlVersion/:id',exportVersionHtml);
 app.get('/htmlArticle/:id',exportArticleHtml);
+app.get('/zipArticle/:id',exportArticleZip);
 app.get('/zipVersion/:id',exportVersionZip);
 app.get('/htmlBook/:id',exportBookHtml);
 app.get('/zipBook/:id',exportBookZip);
@@ -23,6 +24,7 @@ app.get('/zipBook/:id',exportBookZip);
 app.get('/version/:id/html',exportVersionHtml);
 app.get('/version/:id/zip',exportVersionZip);
 app.get('/article/:id/html',exportArticleHtml);
+app.get('/article/:id/zip',exportArticleZip);
 app.get('/book/:id/html',exportBookHtml);
 app.get('/book/:id/zip',exportBookZip);
 app.get('/tag/:ids/zip',exportBatchTagZip);

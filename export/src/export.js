@@ -78,6 +78,26 @@ module.exports = {
       res.status(404).send(err)
     }
   },
+  exportArticleZip: async (req,res,next)=>{
+    try{
+      const article = await Article.findById(req.params.id)
+      if(!article){
+        throw new Error('Article Not found')
+      }
+      const versionID = article._doc.versions[article._doc.versions.length-1]
+      const version = await Version.findById(versionID)
+      if(!version){
+        throw new Error('Version not found')
+      }
+      const cleanedVersion = version._doc
+
+      exportZIP({bib:cleanedVersion.bib,yaml:cleanedVersion.yaml,md:cleanedVersion.md, id:cleanedVersion._id, title:article._doc.title}, res, req)
+
+    }
+    catch(err){
+      res.status(404).send(err)
+    }
+  },
   exportVersionHtml: async (req,res,next)=>{
     try{
      const version = await Version.findById(req.params.id)
