@@ -31,9 +31,10 @@ Useful to edit the code and see direct changes in local.
 
 **IMPORTANT: NOT SUITED FOR PROLONGED USE BY ACTUAL USERS**
 
-Copy the `docker-compose.dev.yaml` file:
+Copy the `docker-compose.yaml` file and configure the environment files:
 
-    $ cp example_docker-compose/docker-compose.dev.yaml docker-compose.yaml
+    $ cp example_docker-compose/docker-compose.yaml docker-compose.yaml
+    $ cp example_docker-compose/stylo-*.env .
 
 
 Then, run the following command:
@@ -59,7 +60,8 @@ We recommend you to host Stylo **behind a reverse proxy**. We provide a working 
 
 After _cloning_ the repo, build the service and its dependencies:
 
-    $ cp example_docker-compose/docker-compose.prod.yaml docker-compose.yaml
+    $ cp example_docker-compose/docker-compose.yaml docker-compose.yaml
+    $ cp example_docker-compose/stylo-*.env .
     $ docker-compose up -d --build
 
 

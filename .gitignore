@@ -5,3 +5,4 @@ front/node_modules
 graphql/node_modules
 sails/.tmp
 docker-compose.yaml
+stylo-*.env
