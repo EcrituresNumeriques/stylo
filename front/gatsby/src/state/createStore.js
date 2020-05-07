@@ -12,7 +12,6 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   if (action.type === 'PROFILE') {
     const {data:activeUser} = action
-    console.log(activeUser)
     return Object.assign({}, state, {
       activeUser,
       logedIn: true,
@@ -24,7 +23,6 @@ const reducer = (state = initialState, action) => {
   }
   else if (action.type === 'LOGIN') {
     const login = action.login
-    console.log('login', login)
     if(login.password && login.users && login.token){
       return Object.assign({}, state, {
         logedIn: true,
