@@ -60,8 +60,7 @@ We recommend you to host Stylo **behind a reverse proxy**. We provide a working 
 
 After _cloning_ the repo, build the service and its dependencies:
 
-    $ cp example_docker-compose/docker-compose.yaml docker-compose.yaml
-    $ cp example_docker-compose/stylo-*.env .
+    $ cp stylo-example.env stylo.env
     $ docker-compose up -d --build
 
 
