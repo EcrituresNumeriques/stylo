@@ -9,6 +9,7 @@ const cors = require('cors')
 const session = require('express-session')
 const passport = require('passport')
 const OidcStrategy = require('passport-openidconnect').Strategy
+const LocalStrategy = require('passport-local').Strategy
 
 const graphQlSchema = require('./schema/index')
 const graphQlResolvers = require('./resolvers/index')
@@ -55,8 +56,16 @@ passport.use('oidc', new OidcStrategy({
   callbackURL: oicCallbackUrl,
   scope: oicScope
 }, (issuer, sub, profile, accessToken, refreshToken, done) => {
-  return done(null, profile);
+  return done(null, profile)
 }))
+
+passport.use(new LocalStrategy({ session: false },
+  function (username, password, done) {
+    graphQlResolvers.verifCreds({username, password})
+      .then(userPassword => done(null, userPassword))
+      .catch(e => done(e, false))
+  }
+))
 
 // mandatory
 passport.serializeUser((user, next) => {
@@ -84,7 +93,7 @@ app.use(function (req, res, next) {
   if (jwtToken) {
     try {
       const user = jwt.verify(jwtToken, jwtSecret)
-  
+
       req.user = user
       req.isAuth = true
     }
@@ -96,7 +105,7 @@ app.use(function (req, res, next) {
   return next()
 })
 
-app.use(
+app.get(
   '/login',
   (req, res, next) => req.user ? res.redirect('/') : next(),
   passport.authenticate('oidc')
@@ -131,7 +140,7 @@ app.use('/authorization-code/callback',
       // add a "password" to allow the user to connect as himself!
       // a user can have multiple "passwords" (ie. accounts) linked to it.
       // this mecanism is used to share content between accounts.
-      const password = new Password({email, username: displayName})
+      const password = new Password({ email, username: displayName })
       user.passwords.push(password)
       password.users.push(user)
       await password.save()
@@ -169,6 +178,37 @@ app.get('/logout', (req, res) => {
   res.clearCookie('graphQL-jwt')
   res.redirect('/')
 })
+
+app.post('/login', 
+  passport.authenticate('local', { failWithError: true }),
+  function onSuccess(req, res, next) {
+    const user = req.user
+    const payload = {
+      email: user.email,
+      usersIds: user.users.map(user => user._id.toString()),
+      passwordId: user._id,
+      admin: Boolean(user.admin),
+      session: true
+    }
+
+    const token = jwt.sign(
+      payload,
+      jwtSecret
+    )
+
+    res.cookie("graphQL-jwt", token, {
+      expires: 0,
+      httpOnly: true,
+      secure: secure
+    })
+    
+    res.statusCode = 200
+    res.json({password: user.password, users: user.users, token})
+  },
+  function onFailure (error, req, res, next) {
+    res.statusCode = 401
+    res.json({})
+  })
 
 app.use(
   '/graphql',
