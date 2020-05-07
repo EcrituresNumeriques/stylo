@@ -1,0 +1,32 @@
+---
+
+- hosts: stylo
+  tasks:
+    - name: Use python3
+      alternatives:
+        name: python
+        path: /usr/bin/python3
+
+    - name: Install pip
+      become: yes
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Install Python dependencies
+      pip:
+        name:
+          - pip==20.1
+          - docker==4.2.0
+          - docker-compose==1.25.5
+
+    - name: Checkout and update Stylo
+      git:
+        repo: 'https://github.com/EcrituresNumeriques/stylo.git'
+        dest: ~/stylo
+        version: 'master'
+
+    - name: Rebuild and restart Docker containers
+      docker_compose:
+        project_src: ~/stylo
+        build: yes
