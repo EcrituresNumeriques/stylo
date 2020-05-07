@@ -12,14 +12,19 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   if (action.type === 'PROFILE') {
     const {data:activeUser} = action
+    console.log(activeUser)
     return Object.assign({}, state, {
       activeUser,
       logedIn: true,
+      // it will allow password modification if logged with password,
+      // otherwise it means we use an external auth service
+      password: (activeUser.passwords.find(p => p.email === activeUser.email) || {}).password,
       users: [activeUser._id]
     })
   }
   else if (action.type === 'LOGIN') {
     const login = action.login
+    console.log('login', login)
     if(login.password && login.users && login.token){
       return Object.assign({}, state, {
         logedIn: true,

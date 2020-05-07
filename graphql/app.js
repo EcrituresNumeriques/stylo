@@ -107,13 +107,13 @@ app.use(function (req, res, next) {
 
 app.get(
   '/login',
-  (req, res, next) => req.user ? res.redirect('/') : next(),
+  (req, res, next) => req.user ? res.redirect(origin) : next(),
   passport.authenticate('oidc')
 )
 
 app.get('/profile', async (req, res) => {
   if (req.user) {
-    let user = await User.findOne({ email: req.user.email })
+    let user = await User.findOne({ email: req.user.email }).populate("passwords")
     res.status(200)
     res.json({ user })
   } else {
@@ -176,7 +176,7 @@ app.use('/authorization-code/callback',
 app.get('/logout', (req, res) => {
   req.logout()
   res.clearCookie('graphQL-jwt')
-  res.redirect('/')
+  res.redirect(origin)
 })
 
 app.post('/login', 
