@@ -43,6 +43,7 @@ const ConnectedLogin = ({ logedIn, login }) => {
             body: JSON.stringify({ username, password })
         })
         .then(response => {
+            console.log('response.ok', response.ok)
             return response.ok ? response.json() : Promise.reject(new Error('Email or password is incorrect'))
         })
         .then(login)
@@ -81,11 +82,11 @@ const ConnectedLogin = ({ logedIn, login }) => {
             <hr/>
             
             <p>
-                <a className={styles.humanNumCreateAccountBtn} href={env.HUMAN_ID_REGISTER_ENDPOINT}>Create a Human-Num account</a>
+                <a className={styles.humaNumCreateAccountBtn} href={env.HUMAN_ID_REGISTER_ENDPOINT}>Create a Huma-Num account</a>
             </p>
 
             <p>
-                <a className={styles.humanNumConnectBtn} href={env.BACKEND_ENDPOINT + '/login'}>Connect with Human-Num</a>
+                <a className={styles.humaNumConnectBtn} href={env.BACKEND_ENDPOINT + '/login'}>Connect with Huma-Num</a>
             </p>
         </section>
     </>)

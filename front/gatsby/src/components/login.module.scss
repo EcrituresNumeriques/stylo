@@ -11,13 +11,13 @@
     }
 }
 
-%humanNumBtn {
+%humaNumBtn {
     &::before {
         content: "";
         width: 1.25em;
         display: block;
         background-size: contain;
-        background-image: url('/human-num-logo.svg');
+        background-image: url('/huma-num-logo.svg');
         background-position: left center;
         background-repeat: no-repeat;
         position: absolute;
@@ -35,13 +35,13 @@
     margin-bottom: 0.25em;
 }
 
-.humanNumCreateAccountBtn {
-    @extend %humanNumBtn;
+.humaNumCreateAccountBtn {
+    @extend %humaNumBtn;
     background-color: #f7931e;
 }
 
-.humanNumConnectBtn {
-    @extend %humanNumBtn;
+.humaNumConnectBtn {
+    @extend %humaNumBtn;
     background-color: #c00;
 }
 
