@@ -182,12 +182,12 @@ app.get('/logout', (req, res) => {
 app.post('/login', 
   passport.authenticate('local', { failWithError: true }),
   function onSuccess(req, res, next) {
-    const user = req.user
+    const userPassword = req.user
     const payload = {
-      email: user.email,
-      usersIds: user.users.map(user => user._id.toString()),
-      passwordId: user._id,
-      admin: Boolean(user.admin),
+      email: userPassword.email,
+      usersIds: userPassword.users.map(user => user._id.toString()),
+      passwordId: userPassword._id,
+      admin: Boolean(userPassword.admin),
       session: true
     }
 
@@ -201,13 +201,14 @@ app.post('/login',
       httpOnly: true,
       secure: secure
     })
-    
+
     res.statusCode = 200
-    res.json({password: user.password, users: user.users, token})
+    res.json({password: userPassword, users: userPassword.users, token})
   },
   function onFailure (error, req, res, next) {
+    console.error('error', error)
     res.statusCode = 401
-    res.json({})
+    res.json({ error })
   })
 
 app.use(
