@@ -40,7 +40,7 @@ services:
       - OPENID_CONNECT_CLIENT_SECRET=secret
       - ALLOW_CORS_FRONTEND=https://stylo.huma-num.fr
     ports:
-      - 3030:80
+      - 3030:3030
   export-stylo-prod:
     build: ./export/
     container_name: "export-stylo-prod"
@@ -53,7 +53,7 @@ services:
       - MONGO_SERVER_DB=stylo
       - URL_FRONTEND=https://stylo.huma-num.fr
     ports:
-      - 3060:80
+      - 3060:3060
   front-stylo-prod:
     build:
       context: ./front
@@ -62,6 +62,6 @@ services:
     environment:
       - URL_EXPORT=stylo.ecrituresnumeriques.ca
     ports:
-      - 3000:80
+      - 3000:3000
     depends_on:
       - graphql-stylo-prod

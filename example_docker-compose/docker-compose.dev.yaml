@@ -28,7 +28,7 @@ services:
     build: ./graphql/
     container_name: "graphql-stylo"
     ports:
-      - 3030:80
+      - 3030:3030
     depends_on:
       mongodb-stylo:
         condition: service_healthy
@@ -47,7 +47,7 @@ services:
     build: ./export/
     container_name: "export-stylo"
     ports:
-      - 3060:80
+      - 3060:3060
     depends_on:
       mongodb-stylo:
         condition: service_healthy
@@ -65,6 +65,6 @@ services:
       - ./front/gatsby:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - 3000:80
+      - 3000:3000
     depends_on:
       - graphql-stylo
