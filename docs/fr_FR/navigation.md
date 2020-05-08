@@ -36,7 +36,9 @@
 
 [Ressources](pages/publications.md)
 
-[Tester Stylo](http://stylo.ecrituresnumeriques.ca)
+[Tester Stylo](https://stylo.ecrituresnumeriques.ca)
+
+[Source de stylo](https://github.com/EcrituresNumeriques/stylo)
 
 <!-- [_EN_](../en_EN/) -->
 
