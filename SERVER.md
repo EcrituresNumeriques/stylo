@@ -62,10 +62,10 @@ git submodule init
 git submodule update
 ```
 
-Copy and configure the `docker-compose.yaml`:
+Copy the `stylo-example.env` file and edit the variables:
 
 ```bash
-cp example_docker-compose/docker-compose.prod.yaml docker-compose.yaml
+cp stylo-example.env stylo.env
 ```
 
 Finally, start the application:
