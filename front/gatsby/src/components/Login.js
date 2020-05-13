@@ -65,8 +65,8 @@ const ConnectedLogin = ({ logedIn, login }) => {
                 <fieldset>
                     <legend>Connect via Huma-Num <small>(recommended)</small></legend>
                     <p>
-                        <a className={styles.humaNumCreateAccountBtn} href={env.HUMAN_ID_REGISTER_ENDPOINT}>Create a Huma-Num account</a>
                         <a className={styles.humaNumConnectBtn} href={env.BACKEND_ENDPOINT + '/login/openid'}>Connect with Huma-Num</a>
+                        <a className={styles.humaNumCreateAccountBtn} href={env.HUMAN_ID_REGISTER_ENDPOINT}>Create a Huma-Num account</a>
                     </p>
                     <p className={styles.note}>
                         💡 If you use the same email address for your <strong>existing</strong> Stylo account
