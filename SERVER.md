@@ -130,3 +130,8 @@ docker exec -i mongodb-stylo sh -c 'mongorestore --archive' < stylo-prod.dump
 docker exec mongodb-stylo mongo --quiet --eval "db.adminCommand({listDatabases: 1}).databases.map(n => n.name)"
 # ['admin', 'config', 'local', 'stylo-prod']
 ```
+
+**NOTE**: If you need to rename the database during the import, you can use `--nsFrom` and `--nsTo`.
+For instance, if we want to rename the database from `stylo` to `stylo-prod`, we can use:
+
+    $ docker exec -i mongodb-stylo sh -c 'mongorestore --archive --nsFrom="stylo.*" --nsTo="stylo-prod.*"' < stylo-prod.dump
