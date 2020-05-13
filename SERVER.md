@@ -114,3 +114,19 @@ Once it's done, check that the configuration is valid with `nginx -t` then resta
 ```
 systemctl restart nginx
 ```
+
+# Database operations
+
+## Backup
+
+```bash
+docker exec mongodb-stylo sh -c 'mongodump --archive --db stylo-prod' > stylo-prod.dump
+```
+
+## Restore
+
+```bash
+docker exec -i mongodb-stylo sh -c 'mongorestore --archive' < stylo-prod.dump
+docker exec mongodb-stylo mongo --quiet --eval "db.adminCommand({listDatabases: 1}).databases.map(n => n.name)"
+# ['admin', 'config', 'local', 'stylo-prod']
+```
