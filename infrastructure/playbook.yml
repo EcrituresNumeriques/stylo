@@ -26,7 +26,7 @@
       become: yes
       copy:
         src: ./{{ site }}.conf
-        dest: /etc/nginx/sites-enabled/{{ site }}
+        dest: /etc/nginx/sites-enabled/{{ site }}.conf
       notify: reload nginx
 
     - name: Checkout and update Stylo
