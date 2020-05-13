@@ -5,11 +5,11 @@ const processEndpoint = process.env.GATSBY_PROCESS_ENDPOINT
 const humanIDRegisterEndpoint = process.env.HUMAN_ID_REGISTER_ENDPOINT
 
 const env = {
-  BACKEND_ENDPOINT: backendEndpoint || 'http://stylo.huma-num.fr',
-  GRAPHQL_ENDPOINT: graphqlEndpoint || 'http://stylo.huma-num.fr/graphql',
-  EXPORT_ENDPOINT: exportEndpoint || 'http://stylo.huma-num.fr',
-  PROCESS_ENDPOINT: processEndpoint || 'https://stylo-export.ecrituresnumeriques.ca',
-  HUMAN_ID_REGISTER_ENDPOINT: humanIDRegisterEndpoint || 'https://humanid.huma-num.fr/register?service=http://stylo.huma-num.fr/authorization-code/callback'
+  BACKEND_ENDPOINT: backendEndpoint || 'http://localhost:3030',
+  GRAPHQL_ENDPOINT: graphqlEndpoint || 'http://localhost:3030/graphql',
+  EXPORT_ENDPOINT: exportEndpoint || 'http://localhost:3060',
+  PROCESS_ENDPOINT: processEndpoint || 'http://localhost:9090',
+  HUMAN_ID_REGISTER_ENDPOINT: humanIDRegisterEndpoint || 'https://auth-test.huma-num.fr/register?service=http://localhost:3030/authorization-code/callback'
 }
 
 export default env;

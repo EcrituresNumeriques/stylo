@@ -1,7 +1,6 @@
 const protocol = process.env.PROTOCOL || 'http'
 const domain = process.env.DOMAIN || 'localhost'
 
-
 module.exports = {
     siteMetadata:{
         title: 'Stylo',
