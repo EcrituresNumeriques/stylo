@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 80
+ENV NODE_ENV "production"
+EXPOSE 3030
+
 CMD ["npm", "run", "prod"]
 

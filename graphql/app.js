@@ -24,7 +24,7 @@ const mongoServer = process.env.MONGO_SERVER
 const mongoServerPort = process.env.MONGO_SERVER_PORT
 const mongoServerDB = process.env.MONGO_SERVER_DB
 
-const listenPort = process.env.NODE_ENV === 'dev' ? 3030 : 80
+const listenPort = process.env.PORT || 3030
 const origin = process.env.ALLOW_CORS_FRONTEND
 const jwtSecret = process.env.JWT_SECRET_SESSION_COOKIE
 const sessionSecret = process.env.SESSION_SECRET
@@ -106,7 +106,7 @@ app.use(function (req, res, next) {
 })
 
 app.get(
-  '/login',
+  '/login/openid',
   (req, res, next) => req.user ? res.redirect(origin) : next(),
   passport.authenticate('oidc')
 )

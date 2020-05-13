@@ -86,7 +86,7 @@ const ConnectedLogin = ({ logedIn, login }) => {
             </p>
 
             <p>
-                <a className={styles.humaNumConnectBtn} href={env.BACKEND_ENDPOINT + '/login'}>Connect with Huma-Num</a>
+                <a className={styles.humaNumConnectBtn} href={env.BACKEND_ENDPOINT + '/login/openid'}>Connect with Huma-Num</a>
             </p>
         </section>
     </>)
