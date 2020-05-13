@@ -30,7 +30,7 @@ jobs:
       run: |
         echo "$ANSIBLE_VAULT_PASSWORD" > infrastructure/.ansible-vault-password
         mkdir ~/.ssh
-        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ssh
+        echo "$SSH_PRIVATE_KEY_DEV" > ~/.ssh/id_ssh
         chmod 600 ~/.ssh/id_ssh
 
     - name: Run playbook
