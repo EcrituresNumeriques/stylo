@@ -11,22 +11,23 @@ const isUser = require('../policies/isUser')
 
 const { populateUser, populatePassword, populateToken } = require('./nestedModel')
 
-const verifCreds = async (args) => {
-  try{
-    let findProp = args.username? {username:args.username}:{email:args.email}
-    const fetchedPassword = await Password.findOne(findProp).populate("users")
-    if(!fetchedPassword){throw new Error("Password not found")}
-    if(!await bcrypt.compare(args.password,fetchedPassword.password)){
-      throw new Error("Password is incorrect");
-    }
-    return fetchedPassword
+const verifCreds = async ({ username, password }) => {
+  let findProp = { $or: [{ username }, { email: username }] }
+  const fetchedPassword = await Password.findOne(findProp).populate("users")
+
+  if (!fetchedPassword) {
+    throw new Error("Password not found")
   }
-  catch(err){
-    throw err
+
+  if (!await bcrypt.compare(password,fetchedPassword.password)) {
+    throw new Error("Password is incorrect");
   }
+
+  return fetchedPassword
 }
 
 module.exports = {
+  verifCreds: verifCreds,
   loginMutation: async (args,{req,_}) => {
 
     //The resolver only logs the user + password in the req object

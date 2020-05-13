@@ -4,11 +4,10 @@ const askGraphQL = async (payload,action = 'fetching from the server',token = nu
     const response = await fetch(env.GRAPHQL_ENDPOINT,{
         method: "POST",
         mode: "cors",
-        credentials: 'include', 
+        credentials: 'include',
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Authorization": token? "Session "+token:null
+          "Accept": "application/json"
         },
         body: JSON.stringify(payload),
     })

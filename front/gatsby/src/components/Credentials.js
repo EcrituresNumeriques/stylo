@@ -40,8 +40,28 @@ const ConnectedCredentials = props => {
         })()
       },[])
 
-    const [isLoading,setIsLoading] = useState(true)
-    const [_,setIsUpdating] = useState(false)
+      const [password, setPassword] = useState('');
+      const [passwordO, setPasswordO] = useState('');
+      const [passwordC, setPasswordC] = useState('');
+      const [isLoading,setIsLoading] = useState(true)
+      const [isUpdating,setIsUpdating] = useState(false)
+  
+      const changePassword = async (e) => {
+          e.preventDefault();
+          try{
+              setIsUpdating(true)
+              const query = `mutation($password:ID!, $old:String!, $new:String!, $user:ID!){ changePassword(password:$password,old:$old,new:$new,user:$user){ _id } }`
+              const variables = {password:props.password._id, old: passwordO, new:password, user: props.activeUser._id}
+              await askGraphQL({query, variables},'update Password',props.sessionToken)
+              setPassword('')
+              setPasswordO('')
+              setPasswordC('')
+              setIsUpdating(false)
+          }
+          catch(err){
+              alert(err)
+          }
+      }
 
     const setDefault = async (user) => {
         try{
@@ -64,6 +84,18 @@ const ConnectedCredentials = props => {
             <ul>
                 {props.users.map((u,i)=><CredentialsUserSelect key={`user-${u._id}`} {...props} u={u} setDefault={setDefault}/>)}
             </ul>
+
+            {props.password && <>
+                <h2>Change password</h2>
+                <p>This section is strictly private, changing your password will only affect your combination of username/email and password. Other users having access to one or more of your available accounts won't be affected.</p>
+                <form onSubmit={(e)=>changePassword(e)}>
+                    <input type="password" placeholder="Old password" value={passwordO} onChange={(e)=>setPasswordO(e.target.value)}/>
+                    <input type="password" placeholder="New password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
+                    <input type="password" placeholder="Confirm new password" className={password === passwordC?null:styles.beware} value={passwordC} onChange={(e)=>setPasswordC(e.target.value)}/>
+                    <button disabled={!password || !passwordO || (password !== passwordC)}>{isUpdating?'Updating..':'Change'}</button>
+                </form>
+            </>}
+
         </section>
     )
 }

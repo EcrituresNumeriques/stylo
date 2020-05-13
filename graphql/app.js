@@ -9,6 +9,7 @@ const cors = require('cors')
 const session = require('express-session')
 const passport = require('passport')
 const OidcStrategy = require('passport-openidconnect').Strategy
+const LocalStrategy = require('passport-local').Strategy
 
 const graphQlSchema = require('./schema/index')
 const graphQlResolvers = require('./resolvers/index')
@@ -23,7 +24,7 @@ const mongoServer = process.env.MONGO_SERVER
 const mongoServerPort = process.env.MONGO_SERVER_PORT
 const mongoServerDB = process.env.MONGO_SERVER_DB
 
-const listenPort = process.env.NODE_ENV === 'dev' ? 3030 : 80
+const listenPort = process.env.PORT || 3030
 const origin = process.env.ALLOW_CORS_FRONTEND
 const jwtSecret = process.env.JWT_SECRET_SESSION_COOKIE
 const sessionSecret = process.env.SESSION_SECRET
@@ -55,8 +56,16 @@ passport.use('oidc', new OidcStrategy({
   callbackURL: oicCallbackUrl,
   scope: oicScope
 }, (issuer, sub, profile, accessToken, refreshToken, done) => {
-  return done(null, profile);
+  return done(null, profile)
 }))
+
+passport.use(new LocalStrategy({ session: false },
+  function (username, password, done) {
+    graphQlResolvers.verifCreds({username, password})
+      .then(userPassword => done(null, userPassword))
+      .catch(e => done(e, false))
+  }
+))
 
 // mandatory
 passport.serializeUser((user, next) => {
@@ -84,7 +93,7 @@ app.use(function (req, res, next) {
   if (jwtToken) {
     try {
       const user = jwt.verify(jwtToken, jwtSecret)
-  
+
       req.user = user
       req.isAuth = true
     }
@@ -96,15 +105,17 @@ app.use(function (req, res, next) {
   return next()
 })
 
-app.use(
-  '/login',
-  (req, res, next) => req.user ? res.redirect('/') : next(),
+app.get('/login', (req, res, _) => res.redirect(origin))
+
+app.get(
+  '/login/openid',
+  (req, res, next) => req.user ? res.redirect(origin) : next(),
   passport.authenticate('oidc')
 )
 
 app.get('/profile', async (req, res) => {
   if (req.user) {
-    let user = await User.findOne({ email: req.user.email })
+    let user = await User.findOne({ email: req.user.email }).populate("passwords")
     res.status(200)
     res.json({ user })
   } else {
@@ -131,7 +142,7 @@ app.use('/authorization-code/callback',
       // add a "password" to allow the user to connect as himself!
       // a user can have multiple "passwords" (ie. accounts) linked to it.
       // this mecanism is used to share content between accounts.
-      const password = new Password({email, username: displayName})
+      const password = new Password({ email, username: displayName })
       user.passwords.push(password)
       password.users.push(user)
       await password.save()
@@ -167,8 +178,40 @@ app.use('/authorization-code/callback',
 app.get('/logout', (req, res) => {
   req.logout()
   res.clearCookie('graphQL-jwt')
-  res.redirect('/')
+  res.redirect(origin)
 })
+
+app.post('/login',
+  passport.authenticate('local', { failWithError: true }),
+  function onSuccess(req, res, next) {
+    const userPassword = req.user
+    const payload = {
+      email: userPassword.email,
+      usersIds: userPassword.users.map(user => user._id.toString()),
+      passwordId: userPassword._id,
+      admin: Boolean(userPassword.admin),
+      session: true
+    }
+
+    const token = jwt.sign(
+      payload,
+      jwtSecret
+    )
+
+    res.cookie("graphQL-jwt", token, {
+      expires: 0,
+      httpOnly: true,
+      secure: secure
+    })
+
+    res.statusCode = 200
+    res.json({password: userPassword, users: userPassword.users, token})
+  },
+  function onFailure (error, req, res, next) {
+    console.error('error', error)
+    res.statusCode = 401
+    res.json({ error })
+  })
 
 app.use(
   '/graphql',

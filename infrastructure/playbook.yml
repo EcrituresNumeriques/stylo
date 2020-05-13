@@ -3,9 +3,11 @@
 - hosts: stylo
   tasks:
     - name: Use python3
+      become: yes
       alternatives:
+        link: /usr/bin/python
         name: python
-        path: /usr/bin/python3
+        path: /usr/bin/python3.6
 
     - name: Install pip
       become: yes
@@ -20,18 +22,33 @@
           - docker==4.2.0
           - docker-compose==1.25.5
 
+    - name: Update NGINX settings
+      become: yes
+      copy:
+        src: ./{{ site }}.conf
+        dest: /etc/nginx/sites-enabled/{{ site }}.conf
+      notify: reload nginx
+
     - name: Checkout and update Stylo
       git:
         repo: 'https://github.com/EcrituresNumeriques/stylo.git'
         dest: ~/stylo
-        version: 'master'
+        version: 'issue-151-auth-user-pass'
 
     - name: Copy environment config file to front
       copy:
         src: ~/stylo/stylo.env
         dest: ~/stylo/front/gatsby/.env.production
+        remote_src: yes
 
     - name: Rebuild and restart Docker containers
       docker_compose:
         project_src: ~/stylo
         build: yes
+
+  handlers:
+    - name: reload nginx
+      become: true
+      service:
+        name: nginx
+        state: reloaded

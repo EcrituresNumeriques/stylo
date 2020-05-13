@@ -129,7 +129,7 @@ const ConnectedUser = props => {
   }
 
   return(
-    <section class={styles.section}>
+    <section className={styles.section}>
       <h2>Account information</h2>
       <form onSubmit={(e)=>updateInfo(e)}>
         <label>Display name:</label><input type="text" value={displayName} onChange={(e)=>setDisplayName(etv(e))} placeholder="Display name" />

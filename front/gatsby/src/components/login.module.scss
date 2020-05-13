@@ -2,59 +2,144 @@
 @import '../styles/variables.scss';
 
 .box {
-    padding:1rem;
-    border:1px solid $main-border-color;
-    background-color: $extra-background-color;
+  max-width: 30rem;
+  padding: 1rem;
+  border: 1px solid $main-border-color;
+  background-color: $extra-background-color;
 
-    h1 {
-        margin-bottom: 1rem;
+  h1 {
+    margin-bottom: 1rem;
+  }
+
+  form > fieldset {
+    border: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+
+    legend {
+      font-weight: bold;
+      padding-bottom: 0.25rem;
     }
+  }
+
+  p {
+    padding-bottom: 0.5rem;
+  }
+
+  p:last-child {
+    padding-bottom: 0;
+  }
+
+  hr {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  input {
+    line-height: 1.25;
+    padding: calc(.5em - 1px) calc(.75em - 1px);
+  }
+
+  a {
+    font-weight: normal;
+    color: #1565C0;
+    cursor: pointer;
+    text-decoration: underline;
+  }
 }
 
-%humanNumBtn {
-    &::before {
-        content: "";
-        width: 1.25em;
-        display: block;
-        background-size: contain;
-        background-image: url('/human-num-logo.svg');
-        background-position: left center;
-        background-repeat: no-repeat;
-        position: absolute;
-        left: 0.25em;
-        top: 0;
-        bottom: 0;
-    }
+.note {
+  font-size: 0.8rem;
+}
 
+.fieldHorizontal {
+  display: flex;
+  font-size: 0.8rem;
+  padding-bottom: 0.5rem;
+
+  label {
+    padding-top: .375rem;
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 0;
+    margin-right: 1rem;
+    text-align: right;
+  }
+
+  input {
+    display: flex;
+    flex-basis: 0;
+    flex-grow: 4;
+    flex-shrink: 1;
+    border-radius: 0;
+    font-size: .75rem;
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+  }
+
+  button {
+    background-color: #e5e5e5;
+    color: #363636;
+    cursor: pointer;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    font-size: 0.75rem;
+    padding: calc(.5em - 1px) calc(.75em - 1px);
+  }
+}
+
+%humaNumBtn {
+  &::before {
+    content: "";
+    width: 1.25em;
     display: block;
-    color: white;
-    font-weight: 200;
-    font-size: 0.8em;
-    padding: 0.25em 1em 0.25em 2em;
-    position: relative;
-    margin-bottom: 0.25em;
+    background-size: contain;
+    background-image: url('/huma-num-logo.svg');
+    background-position: left center;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: 0.25em;
+    top: 0;
+    bottom: 0;
+  }
+
+  text-decoration: none;
+  display: block;
+  color: white;
+  font-weight: 200;
+  font-size: 0.8em;
+  padding: 0.25em 1em 0.25em 2em;
+  position: relative;
+  margin-bottom: 0.25em;
 }
 
-.humanNumCreateAccountBtn {
-    @extend %humanNumBtn;
-    background-color: #f7931e;
+a.humaNumCreateAccountBtn {
+  @extend %humaNumBtn;
+  background-color: #f7931e;
 }
 
-.humanNumConnectBtn {
-    @extend %humanNumBtn;
-    background-color: #c00;
+a.humaNumConnectBtn {
+  @extend %humaNumBtn;
+  background-color: #c00;
 }
 
 .disclaimer {
-    padding: 1rem;
-    border: 1px solid $main-border-color;
-    background-color: $extra-background-color;
-    margin-bottom: 1rem;
-    p {
-        text-align: center;
-        a {
-            font-weight: normal;
-            color:#007eff;
-        }
+  max-width: 30rem;
+  padding: 1rem;
+  border: 1px solid $main-border-color;
+  background-color: $extra-background-color;
+  margin-bottom: 1rem;
+
+  p {
+    text-align: center;
+
+    a {
+      font-weight: normal;
+      color: #1565C0;
+      cursor: pointer;
+      text-decoration: underline;
     }
+  }
 }

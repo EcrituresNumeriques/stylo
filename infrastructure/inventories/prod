@@ -1,0 +1,6 @@
+[stylo:vars]
+ansible_become_pass='{{ stylo_become_pass }}'
+site=stylo.huma-num.fr
+
+[stylo]
+node01 ansible_user=stylo ansible_host=cchum-kvm-stylo.in2p3.fr

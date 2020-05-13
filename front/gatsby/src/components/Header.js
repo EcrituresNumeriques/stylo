@@ -6,8 +6,8 @@ import env from '../helpers/env'
 import styles from './header.module.scss'
 
 // Gestionnaire d'état (quel user est enregistré, enregistré ou non, etc.)
-const mapStateToProps = ({ logedIn, password, activeUser }) => {
-    return { logedIn, password, activeUser }
+const mapStateToProps = ({ logedIn, activeUser }) => {
+    return { logedIn, activeUser }
 }
 
 

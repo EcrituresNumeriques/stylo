@@ -95,8 +95,7 @@ docker-compose up -d --build
 Fetch the configuration file:
 
 ```
-wget https://raw.githubusercontent.com/EcrituresNumeriques/stylo/master/infrastructure/stylo.huma-num.fr.conf -O- | sudo tee /etc/nginx/sites-available/stylo.huma-num.fr.conf
-sudo ln -s /etc/nginx/sites-available/stylo.huma-num.fr.conf /etc/nginx/sites-enabled/stylo.huma-num.fr.conf
+wget https://raw.githubusercontent.com/EcrituresNumeriques/stylo/master/infrastructure/files/stylo.huma-num.fr.conf -O- | sudo tee /etc/nginx/sites-enabled/stylo.huma-num.fr.conf
 ```
 
 Edit the configuration to set the correct domain.
