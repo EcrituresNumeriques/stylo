@@ -1,8 +1,8 @@
-const backendEndpoint = process.env.STYLO_BACKEND_ENDPOINT
+const backendEndpoint = process.env.GATSBY_STYLO_BACKEND_ENDPOINT
 const graphqlEndpoint = process.env.GATSBY_GRAPHQL_ENDPOINT
 const exportEndpoint = process.env.GATSBY_EXPORT_ENDPOINT
 const processEndpoint = process.env.GATSBY_PROCESS_ENDPOINT
-const humanIDRegisterEndpoint = process.env.HUMAN_ID_REGISTER_ENDPOINT
+const humanIDRegisterEndpoint = process.env.GATSBY_HUMAN_ID_REGISTER_ENDPOINT
 
 const env = {
   BACKEND_ENDPOINT: backendEndpoint || 'http://localhost:3030',
