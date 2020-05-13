@@ -26,6 +26,11 @@
         dest: ~/stylo
         version: 'master'
 
+    - name: Copy environment config file to front
+      copy:
+        src: ~/stylo/stylo.env
+        dest: ~/stylo/front/gatsby/.env.production
+
     - name: Rebuild and restart Docker containers
       docker_compose:
         project_src: ~/stylo
