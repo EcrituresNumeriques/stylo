@@ -33,7 +33,7 @@
       git:
         repo: 'https://github.com/EcrituresNumeriques/stylo.git'
         dest: ~/stylo
-        version: 'issue-151-auth-user-pass'
+        version: 'master'
 
     - name: Copy environment config file to front
       copy:
