@@ -3,9 +3,11 @@
 - hosts: stylo
   tasks:
     - name: Use python3
+      become: yes
       alternatives:
+        link: /usr/bin/python
         name: python
-        path: /usr/bin/python3
+        path: /usr/bin/python3.6
 
     - name: Install pip
       become: yes
@@ -23,11 +25,8 @@
     - name: Update NGINX settings
       become: yes
       copy:
-        src: ./{{ item }}
-        dest: /etc/nginx/sites-enabled/{{ item }}
-      loop:
-        - stylo-dev.huma-num.fr.conf
-        # - stylo.huma-num.fr.conf
+        src: ./{{ site }}.conf
+        dest: /etc/nginx/sites-enabled/{{ site }}
       notify: reload nginx
 
     - name: Checkout and update Stylo
