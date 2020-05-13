@@ -105,6 +105,8 @@ app.use(function (req, res, next) {
   return next()
 })
 
+app.get('/login', (req, res, _) => res.redirect(origin))
+
 app.get(
   '/login/openid',
   (req, res, next) => req.user ? res.redirect(origin) : next(),
@@ -179,7 +181,7 @@ app.get('/logout', (req, res) => {
   res.redirect(origin)
 })
 
-app.post('/login', 
+app.post('/login',
   passport.authenticate('local', { failWithError: true }),
   function onSuccess(req, res, next) {
     const userPassword = req.user
