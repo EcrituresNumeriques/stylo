@@ -60,34 +60,39 @@ const ConnectedLogin = ({ logedIn, login }) => {
         </section>
 
         <section className={styles.box}>
-            <h1>Login</h1>
-            
-            
-            
+            <h1>🔒 Login</h1>
             <form onSubmit={handleSubmit}>
-                <p>
-                    <label>Username: <input type="string" name="username" required={true} ref={usernameInput} /></label>
-                </p>
-                <p>
-                    <label>Password: <input type="password" name="password" required={true} autoComplete="current-password" ref={passwordInput} /></label>
-                </p>
-                <p>
-                    <button type="submit">Login</button>
-                </p>
-
-                <p className="note">
-                    or <Link to="/register">create an account</Link>
-                </p>
+                <fieldset>
+                    <legend>Connect via Huma-Num <small>(recommended)</small></legend>
+                    <p>
+                        <a className={styles.humaNumCreateAccountBtn} href={env.HUMAN_ID_REGISTER_ENDPOINT}>Create a Huma-Num account</a>
+                        <a className={styles.humaNumConnectBtn} href={env.BACKEND_ENDPOINT + '/login/openid'}>Connect with Huma-Num</a>
+                    </p>
+                    <p className={styles.note}>
+                        💡 If you use the same email address for your <strong>existing</strong> Stylo account
+                        and for your Huma-Num account, the two accounts will be automatically merged.
+                    </p>
+                </fieldset>
+                <hr/>
+                <fieldset>
+                    <legend>Connect with an existing Stylo account</legend>
+                    <div className={styles.fieldHorizontal}>
+                        <label className="label">Username</label>
+                        <input type="string" name="username" required={true} ref={usernameInput} />
+                    </div>
+                    <div className={styles.fieldHorizontal}>
+                        <label className="label">Password</label>
+                        <input type="password" name="password" required={true} autoComplete="current-password" ref={passwordInput} />
+                    </div>
+                    <div className={styles.fieldHorizontal}>
+                        <label/>
+                        <button type="submit">Login</button>
+                    </div>
+                    <p className="note">
+                        or <Link to="/register">create an account</Link>
+                    </p>
+                </fieldset>
             </form>
-            <hr/>
-            
-            <p>
-                <a className={styles.humaNumCreateAccountBtn} href={env.HUMAN_ID_REGISTER_ENDPOINT}>Create a Huma-Num account</a>
-            </p>
-
-            <p>
-                <a className={styles.humaNumConnectBtn} href={env.BACKEND_ENDPOINT + '/login/openid'}>Connect with Huma-Num</a>
-            </p>
         </section>
     </>)
 }
