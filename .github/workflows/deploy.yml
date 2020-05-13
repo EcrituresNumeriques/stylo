@@ -23,7 +23,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install ansible==2.9.7 requests
 
-    - name: set ansible config secrets
+    - name: Set Ansible config secrets
       env:
         ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD_DEV }}
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
@@ -32,6 +32,10 @@ jobs:
         mkdir ~/.ssh
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ssh
         chmod 600 ~/.ssh/id_ssh
+
+    - name: Test ssh
+      run: |
+        ssh -vvv -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/runner/.ssh/id_ssh"' -o ConnectTimeout=20 stylo@cchum-kvm-stylo-dev.in2p3.fr '/bin/sh -c "echo hello"'
 
     - name: Run playbook
       working-directory: ./infrastructure
