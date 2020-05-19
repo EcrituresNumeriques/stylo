@@ -39,7 +39,6 @@ services:
     environment:
       - MONGO_SERVER=mongodb-stylo
       - MONGO_SERVER_PORT=27017
-      - MONGO_SERVER_DB=stylo
     ports:
       - 3060:3060
   front-stylo:
