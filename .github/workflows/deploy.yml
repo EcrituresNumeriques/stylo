@@ -24,14 +24,22 @@ jobs:
         pip install ansible==2.9.7 requests
 
     - name: Set Ansible config secrets
-      env:
-        ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD_DEV }}
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
       run: |
-        echo "$ANSIBLE_VAULT_PASSWORD" > infrastructure/.ansible-vault-password
+        echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_DEV }}" > infrastructure/.ansible-vault-password
         mkdir ~/.ssh
-        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_ssh
         chmod 600 ~/.ssh/id_ssh
+
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_ssh
+        chmod 600 ~/.ssh/id_ssh
+        ssh-keyscan -t ssh-ed25519 cchum-kvm-stylo.in2p3.fr
+
+    - name: Test ssh
+      run: |
+        ssh -vvv -C -o ControlMaster=auto -o StrictHostKeyChecking=no -o ControlPersist=60s -i ~/.ssh/id_ssh -o ConnectTimeout=20 stylo@cchum-kvm-stylo-dev.in2p3.fr '/bin/sh -c "echo hello"'
 
     - name: Run playbook
       working-directory: ./infrastructure
