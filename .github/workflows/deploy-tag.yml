@@ -2,6 +2,8 @@ name: Ansible deploy production
 
 on:
   push:
+    branches:
+      - master
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v2.1.3
 
@@ -23,15 +25,23 @@ jobs:
         python -m pip install --upgrade pip
         pip install ansible==2.9.7 requests
 
-    - name: set ansible config secrets
-      env:
-        ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD_PROD }}
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_PROD }}
+    - name: Set Ansible config secrets
       run: |
-        echo "$ANSIBLE_VAULT_PASSWORD" > infrastructure/.ansible-vault-password
-        mkdir .ssh
-        echo "$SSH_PRIVATE_KEY" > .ssh/id_ssh
-        chmod 600 .ssh/id_ssh
+        echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_PROD }}" > infrastructure/.ansible-vault-password
+        mkdir ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_ssh
+        chmod 600 ~/.ssh/id_ssh
+
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_ssh
+        chmod 600 ~/.ssh/id_ssh
+        ssh-keyscan -t ssh-ed25519 cchum-kvm-stylo.in2p3.fr
+
+    - name: Test ssh
+      run: |
+        ssh -vvv -C -o ControlMaster=auto -o StrictHostKeyChecking=no -o ControlPersist=60s -i ~/.ssh/id_ssh -o ConnectTimeout=20 stylo@cchum-kvm-stylo.in2p3.fr '/bin/sh -c "echo hello"'
 
     - name: Run playbook
       working-directory: ./infrastructure
