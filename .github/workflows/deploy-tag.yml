@@ -28,14 +28,11 @@ jobs:
     - name: Set Ansible config secrets
       run: |
         echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_PROD }}" > infrastructure/.ansible-vault-password
-        mkdir ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_ssh
-        chmod 600 ~/.ssh/id_ssh
 
     - name: Setup SSH
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_ssh
         chmod 600 ~/.ssh/id_ssh
         ssh-keyscan -t ssh-ed25519 cchum-kvm-stylo.in2p3.fr
 
