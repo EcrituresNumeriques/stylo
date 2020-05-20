@@ -36,6 +36,9 @@ jobs:
         chmod 600 ~/.ssh/id_ed25519
         ssh-keyscan -t ssh-ed25519 cchum-kvm-stylo.in2p3.fr
 
+    - name: Give me your ip
+      run: wget -qO- https://ipecho.net/plain ; echo
+
     - name: Test ssh
       run: |
         ssh -vvv -C -o ControlMaster=auto -o StrictHostKeyChecking=no -o ControlPersist=60s -o ConnectTimeout=20 stylo@cchum-kvm-stylo.in2p3.fr '/bin/sh -c "echo hello"'
