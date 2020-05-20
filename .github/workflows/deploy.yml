@@ -33,10 +33,6 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ssh
         chmod 600 ~/.ssh/id_ssh
 
-    - name: Test ssh
-      run: |
-        ssh -vvv -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/runner/.ssh/id_ssh"' -o ConnectTimeout=20 stylo@cchum-kvm-stylo-dev.in2p3.fr '/bin/sh -c "echo hello"'
-
     - name: Run playbook
       working-directory: ./infrastructure
       run: ansible-playbook -i inventories/dev --extra-vars "@vault-dev.yml" --private-key ~/.ssh/id_ssh --vault-password-file ./.ansible-vault-password playbook.yml -vvvv
