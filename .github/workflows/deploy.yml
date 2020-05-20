@@ -39,7 +39,7 @@ jobs:
 
     - name: Test ssh
       run: |
-        ssh -vvv -C -o ControlMaster=auto -o StrictHostKeyChecking=no -o ControlPersist=60s -i ~/.ssh/id_ssh -o ConnectTimeout=20 stylo@cchum-kvm-stylo-dev.in2p3.fr '/bin/sh -c "echo hello"'
+        ssh -vvv -C -o ControlMaster=auto -o StrictHostKeyChecking=no -o ControlPersist=60s -o ConnectTimeout=20 stylo@cchum-kvm-stylo-dev.in2p3.fr '/bin/sh -c "echo hello"'
 
     - name: Run playbook
       working-directory: ./infrastructure
