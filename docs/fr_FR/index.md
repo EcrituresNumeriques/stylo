@@ -1,5 +1,7 @@
 # Stylo - un éditeur de texte sémantique
 
+**📢 Pour des raisons de migration de serveurs, Stylo sera coupé jeudi 21 mai 2020 à 2h (heure de Montréal UTC−04:00, soit 8h heure de Paris) pour une durée maximale de 12 heures. Pendant cette période nous vous recommandons de ne pas utiliser Stylo, nous ne pourrons pas garantir la sauvegarde de vos modifications. Merci de votre compréhension.**
+
 Une permanence est ouverte tous les jeudis de 11h à 12h (heure canadienne) pour poser des questions, perfectionner l'utilisation de Stylo, etc.  : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Rejoignez la permanence en visioconférence</a>
 
 ---
