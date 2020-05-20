@@ -2,6 +2,26 @@
 ansible_become_pass='{{ stylo_become_pass }}'
 site=stylo-dev.huma-num.fr
 ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q oncletom@ssh-oncletom.alwaysdata.net"'
+https=true
+mongo_server_db='stylo-prod'
+jwt_secret_token='{{ jwt_secret_token }}'
+jwt_secret_session='{{ jwt_secret_session }}'
+jwt_secret_session_cookie='{{ jwt_secret_session_cookie }}'
+session_secret='{{ session_secret }}'
+openid_connect_name='HumanID'
+openid_connect_issuer='https://auth-test.huma-num.fr'
+openid_connect_auth_url='https://auth-test.huma-num.fr/oauth2/authorize'
+openid_connect_token_url='https://auth-test.huma-num.fr/oauth2/token'
+openid_connect_user_info_url='https://auth-test.huma-num.fr/oauth2/userinfo'
+openid_connect_callback_url='https://stylo-dev.huma-num.fr/authorization-code/callback'
+openid_connect_client_id={{ openid_connect_client_id }}
+openid_connect_client_secret={{ openid_connect_client_secret }}
+allow_cors_frontend='https://stylo-dev.huma-num.fr'
+gatsby_stylo_backend_endpoint='https://stylo-dev.huma-num.fr'
+gatsby_graphql_endpoint='https://stylo-dev.huma-num.fr/graphql'
+gatsby_export_endpoint='https://stylo-dev.huma-num.fr'
+gatsby_process_endpoint='https://stylo-export.ecrituresnumeriques.ca'
+gatsby_human_id_register_endpoint='https://auth-test.huma-num.fr/register?service=https://stylo-dev.huma-num.fr/authorization-code/callback'
 
 [stylo]
 node01 ansible_user=stylo ansible_host=cchum-kvm-stylo-dev.in2p3.fr
