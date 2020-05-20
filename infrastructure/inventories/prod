@@ -1,7 +1,6 @@
 [stylo:vars]
 ansible_become_pass='{{ stylo_become_pass }}'
 site=stylo.huma-num.fr
-ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q oncletom@ssh-oncletom.alwaysdata.net"'
 
 [stylo]
-node01 ansible_user=stylo ansible_host=cchum-kvm-stylo.in2p3.fr
+node01 ansible_user=stylo ansible_host=cchum-kvm-stylo.in2p3.fr ansible_ssh_common_args='-F /dev/null -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p oncletom@ssh-oncletom.alwaysdata.net"'
