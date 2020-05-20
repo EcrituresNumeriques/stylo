@@ -34,7 +34,7 @@ jobs:
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_ed25519
-        chmod 600 ~/.ssh/id_ssh
+        chmod 600 ~/.ssh/id_ed25519
         ssh-keyscan -t ssh-ed25519 cchum-kvm-stylo-dev.in2p3.fr
 
     - name: Test ssh
