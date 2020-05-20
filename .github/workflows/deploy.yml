@@ -27,20 +27,12 @@ jobs:
       run: |
         echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_DEV }}" > infrastructure/.ansible-vault-password
 
-    - name: Give me your ip
-      run: wget -qO- https://ipecho.net/plain ; echo
-
     - name: Setup SSH
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
-        ssh-keyscan -t ssh-ed25519 cchum-kvm-stylo-dev.in2p3.fr
-
-    - name: Test ssh
-      run: |
-        ssh -vvv -C -o ControlMaster=auto -o StrictHostKeyChecking=no -o ControlPersist=60s -o ConnectTimeout=20 stylo@cchum-kvm-stylo-dev.in2p3.fr '/bin/sh -c "echo hello"'
 
     - name: Run playbook
       working-directory: ./infrastructure
-      run: ansible-playbook -i inventories/dev --extra-vars "@vault-dev.yml" --private-key ~/.ssh/id_ssh --vault-password-file ./.ansible-vault-password playbook.yml -vvvv
+      run: ansible-playbook -i inventories/dev --extra-vars "@vault-dev.yml" --private-key ~/.ssh/id_ssh --vault-password-file ./.ansible-vault-password playbook.yml
