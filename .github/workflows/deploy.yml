@@ -30,6 +30,9 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_ssh
         chmod 600 ~/.ssh/id_ssh
 
+    - name: Give me your ip
+      run: wget -qO- https://ipecho.net/plain ; echo
+
     - name: Setup SSH
       run: |
         mkdir -p ~/.ssh
