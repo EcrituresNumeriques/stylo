@@ -19,7 +19,7 @@ allow_cors_frontend='https://stylo.huma-num.fr'
 gatsby_stylo_backend_endpoint='https://stylo.huma-num.fr'
 gatsby_graphql_endpoint='https://stylo.huma-num.fr/graphql'
 # Conserve stylo.ecrituresnumeriques.ca car les annotations hypothes.is sont liées à ce nom de domaine
-GATSBY_EXPORT_ENDPOINT='https://stylo.ecrituresnumeriques.ca'
+gatsby_export_endpoint='https://stylo.ecrituresnumeriques.ca'
 gatsby_process_endpoint='https://stylo-export.ecrituresnumeriques.ca'
 gatsby_human_id_register_endpoint='https://humanid.huma-num.fr/register?service=http://stylo.huma-num.fr/authorization-code/callback'
 
