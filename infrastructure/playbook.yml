@@ -35,11 +35,13 @@
         dest: ~/stylo
         version: 'master'
 
-    - name: Copy environment config file to front
+    - name: Copy environment config file
       copy:
-        src: ~/stylo/stylo.env
-        dest: ~/stylo/front/gatsby/.env.production
-        remote_src: yes
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+      loop:
+        - { src: './stylo.env', dest: '~/stylo/stylo.env' }
+        - { src: './stylo.env', dest: '~/stylo/front/gatsby/.env.production' }
 
     - name: Rebuild and restart Docker containers
       docker_compose:
