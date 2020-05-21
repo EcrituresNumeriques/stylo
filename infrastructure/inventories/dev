@@ -1,7 +1,6 @@
 [stylo:vars]
 ansible_become_pass='{{ stylo_become_pass }}'
 site=stylo-dev.huma-num.fr
-ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q oncletom@ssh-oncletom.alwaysdata.net"'
 https=true
 mongo_server_db='stylo-prod'
 jwt_secret_token='{{ jwt_secret_token }}'
@@ -24,4 +23,4 @@ gatsby_process_endpoint='https://stylo-export.ecrituresnumeriques.ca'
 gatsby_human_id_register_endpoint='https://auth-test.huma-num.fr/register?service=https://stylo-dev.huma-num.fr/authorization-code/callback'
 
 [stylo]
-node01 ansible_user=stylo ansible_host=cchum-kvm-stylo-dev.in2p3.fr
+node01 ansible_user=stylo ansible_host=cchum-kvm-stylo-dev.in2p3.fr ansible_ssh_common_args='-A -F /dev/null -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ProxyCommand="ssh -W %h:%p -q oncletom@ssh-oncletom.alwaysdata.net"'
