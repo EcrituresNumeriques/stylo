@@ -46,8 +46,6 @@ Then, run the following command:
 This gives your access to:
 - Stylo (frontend): http://localhost:3000
 - GraphQL endpoint: http://localhost:3060
-- MongoDB administration tool: http://localhost:3031
-
 
 ## Build for production
 
