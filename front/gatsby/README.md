@@ -1,6 +1,6 @@
 # Stylo frontend
 
-Frontend for the site hosted at https://stylo.ecrituresnumeriques.ca
+Frontend for the site hosted at https://stylo.huma-num.fr
 
 ## Prerequisite
 
