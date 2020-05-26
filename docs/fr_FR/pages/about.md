@@ -10,7 +10,7 @@ Le projet est dirigé par la [Chaire de Recherche du Canada sur les écritures n
 
 Stylo est actuellement un outil prototype en cours de développement, implémenté dans la chaîne éditoriale de la revue [Sens Public](http://sens-public.org) et de la maison [Les ateliers](https://ateliers.sens-public.org). Il est actuellement en phase de test pour d'autres revues dans le cadre notamment du projet partenariat [Revue2.0](http://revue20.org/). Cet outil est par ailleurs utilisé par différent·e·s auteur·e·s et étudiant·e·s à titre personnel pour leurs travaux scientifiques et/ou institutionnelles.
 
-Stylo peut être utilisé en ligne à l'adresse [stylo.ecrituresnumeriques.ca](https://stylo.ecrituresnumeriques.ca). Cette instance de Stylo est déployée et maintenue par l'entreprise PiNinja, qui assure la sauvegarde et la sécurité des données.
+Stylo peut être utilisé en ligne à l'adresse [stylo.huma-num.fr](https://stylo.huma-num.fr). Cette instance de Stylo est déployée et maintenue par [Huma-Num](https://www.huma-num.fr), qui assure la sauvegarde et la sécurité des données.
 
 Le code source de Stylo est disponible [sur Github](https://github.com/EcrituresNumeriques/stylo/).
 
