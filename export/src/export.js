@@ -2,19 +2,40 @@ const shell = require('shelljs')
 const Article = require('./models/article')
 const Version = require('./models/version')
 const Tag = require('./models/tag')
+const YAML = require('js-yaml')
+const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 
 const filterAlphaNum = (string) => {
   if(typeof(string) === 'object'){
     string = string.toString()
   }
-  return string.replace(/\s/g,"_").replace(/[ÉéÈèÊêËë]/g,"e").replace(/[ÔôÖö]/g,"o").replace(/[ÂâÄäÀà]/g,"a").replace(/[Çç]/g,"c").replace(/[^A-Za-z0-9_]/g,"")  
+  return string.replace(/\s/g,"_").replace(/[ÉéÈèÊêËë]/g,"e").replace(/[ÔôÖö]/g,"o").replace(/[ÂâÄäÀà]/g,"a").replace(/[Çç]/g,"c").replace(/[^A-Za-z0-9_]/g,"")
 }
 
 const exportHTML = ({bib,yaml,md,id,title},res,req) => {
 
   let template = '../templates-stylo/templateHtml5.html5'
-  if(req.query.preview){
-    template='../templates-stylo/templateHtml5-preview.html5 -H ../templates-stylo/preview.html'
+  if (req.query.preview) {
+    template = '../templates-stylo/templateHtml5-preview.html5 -H ../templates-stylo/preview.html'
+  }
+
+  // add a canonical URL
+  if (canonicalBaseUrl) {
+    try {
+      // the YAML contains a single document enclosed in "---" to satisfy pandoc
+      // thereby, we need to use "load all":
+      const docs = YAML.safeLoadAll(yaml, 'utf8')
+      // add link-canonical to the first (and only) document
+      const doc = docs[0]
+      doc['link-canonical'] = canonicalBaseUrl + req.originalUrl
+      // dump the result enclosed in "---"
+      yaml = `---
+${YAML.safeDump(doc)}
+---
+`
+    } catch (e) {
+      console.log('Unable to set the canonical URL', e)
+    }
   }
 
   shell.cd('src/data')
@@ -23,11 +44,11 @@ const exportHTML = ({bib,yaml,md,id,title},res,req) => {
   shell.echo(bib).to(`${id}.bib`)
   shell.echo(yaml).to(`${id}.yaml`)
   const pandoc = shell.exec(`pandoc ${id}.md ${id}.yaml --bibliography ${id}.bib --standalone --template=${template} --section-divs --ascii --toc --csl=../templates-stylo/chicagomodified.csl -f markdown -t html5 -o ${id}.html`).code
-  if(pandoc !== 0){
+  if (pandoc !== 0) {
     const html5 = shell.cat(`${id}.html`)
     return res.status(500).send(`${html5}`)
   }
-  if(!req.query.preview){
+  if (!req.query.preview) {
     res.set('Content-Disposition', `attachment; filename="${filterAlphaNum(title)}.html"`)
   }
   const html5 = shell.cat(`${id}.html`)
@@ -91,8 +112,8 @@ module.exports = {
     }
     catch(err){
       res.status(404).send(err)
-    } 
-  
+    }
+
   },
   exportVersionZip: async (req,res,next)=>{
     try{
@@ -101,13 +122,13 @@ module.exports = {
          throw new Error('Version not found')
        }
        const cleanedVersion = version._doc
- 
+
        exportZIP({bib:cleanedVersion.bib,yaml:cleanedVersion.yaml,md:cleanedVersion.md, id:cleanedVersion._id, title:cleanedVersion._id}, res, req)
- 
+
      }
      catch(err){
        res.status(404).send(err)
-     } 
+     }
   },
   exportBookHtml: async (req,res,next)=>{
     try{
@@ -116,7 +137,7 @@ module.exports = {
          throw new Error('Book not found')
        }
        const cleanedBook = book._doc
- 
+
        //Get the mashed md of all last version of all chapters
        const chapters = await Article.find({_id:{$in: cleanedBook.articles}}).populate('versions')
 
@@ -129,11 +150,11 @@ module.exports = {
        const yaml = firstChapter.versions[firstChapter.versions.length-1].yaml
 
        exportHTML({bib:[cleanedBook.bib, ...bibs].join('\n'),yaml:yaml,md:mds.join('\n\n'), id:cleanedBook._id, title:cleanedBook.name}, res, req)
- 
+
      }
      catch(err){
        res.status(404).send(err)
-     } 
+     }
   },
   exportBookZip: async (req,res,next)=>{
     try{
@@ -142,7 +163,7 @@ module.exports = {
          throw new Error('Book not found')
        }
        const cleanedBook = book._doc
- 
+
        //Get the mashed md of all last version of all chapters
        const chapters = await Article.find({_id:{$in: cleanedBook.articles}}).populate('versions')
 
@@ -155,11 +176,11 @@ module.exports = {
        const yaml = firstChapter.versions[firstChapter.versions.length-1].yaml
 
        exportZIP({bib:[cleanedBook.bib, ...bibs].join('\n'),yaml:yaml,md:mds.join('\n\n'), id:cleanedBook._id, title:cleanedBook.name}, res, req)
- 
+
     }
     catch(err){
        res.status(404).send(err)
-    } 
+    }
   },
   exportBatchTagZip: async (req,res) => {
     try{
@@ -188,6 +209,6 @@ module.exports = {
     }
     catch(err){
       res.status(404).send(err)
-   } 
+   }
   }
 }
