@@ -51,7 +51,12 @@ ${YAML.safeDump(doc)}
   if (!req.query.preview) {
     res.set('Content-Disposition', `attachment; filename="${filterAlphaNum(title)}.html"`)
   }
-  const html5 = shell.cat(`${id}.html`)
+  let html5 = shell.cat(`${id}.html`)
+  if (canonicalBaseUrl && !html5.includes('<link rel="canonical"')) {
+    // HACK! we add the link tag in the head!
+    html5 = html5.replace(/(<head>\s?)/gs, `$1<link rel="canonical" href="${canonicalBaseUrl + req.originalUrl}">`)
+  }
+
   shell.cd('../../')
   return res.send(`${html5}`)
 }
