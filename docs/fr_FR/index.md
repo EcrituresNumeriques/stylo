@@ -25,7 +25,7 @@ Stylo est développé par la [Chaire de recherche du Canada sur les écritures n
 
 ---
 
-<a class="btn btn-info" href="http://stylo.ecrituresnumeriques.ca" role="button">Tester Stylo</a> <a class="btn btn-info" href="pages/premierspas.md" role="button">Premiers pas</a> <a class="btn btn-info" href="pages/publications.md" role="button">Démo</a>
+<a class="btn btn-info" href="https://stylo.huma-num.fr" role="button">Tester Stylo</a> <a class="btn btn-info" href="pages/premierspas.md" role="button">Premiers pas</a> <a class="btn btn-info" href="pages/publications.md" role="button">Démo</a>
 
 ---
 
