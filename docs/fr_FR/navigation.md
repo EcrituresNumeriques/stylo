@@ -36,9 +36,7 @@
 
 [Ressources](pages/publications.md)
 
-[📢 Coupure de Stylo cette nuit pour 12h](https://github.com/EcrituresNumeriques/stylo/projects/4)
-
-<!--[Tester Stylo](https://stylo.ecrituresnumeriques.ca)-->
+[Tester Stylo](https://stylo.huma-num.fr)
 
 <!--[Source de stylo](https://github.com/EcrituresNumeriques/stylo)-->
 
