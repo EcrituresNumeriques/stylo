@@ -13,12 +13,14 @@ openid_connect_auth_url='https://humanid.huma-num.fr/oauth2/authorize'
 openid_connect_token_url='https://humanid.huma-num.fr/oauth2/token'
 openid_connect_user_info_url='https://humanid.huma-num.fr/oauth2/userinfo'
 openid_connect_callback_url='https://stylo.huma-num.fr/authorization-code/callback'
-openid_connect_client_id={{ openid_connect_client_id }}
-openid_connect_client_secret={{ openid_connect_client_secret }}
+openid_connect_client_id='{{ openid_connect_client_id }}'
+openid_connect_client_secret='{{ openid_connect_client_secret }}'
 allow_cors_frontend='https://stylo.huma-num.fr'
 gatsby_stylo_backend_endpoint='https://stylo.huma-num.fr'
 gatsby_graphql_endpoint='https://stylo.huma-num.fr/graphql'
-gatsby_export_endpoint='https://stylo.huma-num.fr'
+# Conserve stylo.ecrituresnumeriques.ca car les annotations hypothes.is sont liées à ce nom de domaine
+gatsby_export_endpoint='https://stylo.ecrituresnumeriques.ca'
+export_canonical_base_url='https://stylo.huma-num.fr'
 gatsby_process_endpoint='https://stylo-export.ecrituresnumeriques.ca'
 gatsby_human_id_register_endpoint='https://humanid.huma-num.fr/register?service=http://stylo.huma-num.fr/authorization-code/callback'
 

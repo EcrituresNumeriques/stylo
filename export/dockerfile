@@ -46,11 +46,13 @@ RUN echo "examples/git-diff.py" >> /installed-pandocfilters.txt
 
 RUN sed -i 's#examples#/usr/bin#' /installed-pandocfilters.txt
 
-copy package.json .
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
 
-RUN npm install
+RUN npm ci --only=production
 
 COPY src src
 
 EXPOSE 3060
-CMD ["npm","run","start"]
+CMD ["npm", "run", "start"]
