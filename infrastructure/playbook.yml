@@ -36,7 +36,7 @@
         version: 'master'
 
     - name: Copy environment config file
-      copy:
+      template:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
       loop:
