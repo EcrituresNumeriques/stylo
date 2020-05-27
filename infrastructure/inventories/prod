@@ -23,7 +23,7 @@ gatsby_export_endpoint='https://stylo.ecrituresnumeriques.ca'
 # Désactive l'URL canonical vers stylo.huma-num.fr car Hypthesis ne sait pas faire le lien
 export_canonical_base_url=''
 gatsby_process_endpoint='https://stylo-export.ecrituresnumeriques.ca'
-gatsby_human_id_register_endpoint='https://humanid.huma-num.fr/register?service=http://stylo.huma-num.fr/authorization-code/callback'
+gatsby_human_id_register_endpoint='https://humanid.huma-num.fr/register?service=https://stylo.huma-num.fr/authorization-code/callback'
 
 [stylo]
 node01 ansible_user=stylo ansible_host=cchum-kvm-stylo.in2p3.fr
