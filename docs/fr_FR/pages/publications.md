@@ -29,4 +29,6 @@ Stylo a été présenté dans différentes occasions scientifiques et profession
 ---
 ## Démo
 
+<iframe width="560" height="315" src="https://ia601507.us.archive.org/24/items/stylo-doc-fr/StyloDocFR.mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="align:center;"></iframe>
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/qcwEqbcxBF8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="align:center;"></iframe>
