@@ -15,6 +15,7 @@ const ConnectedBibliographe = (props) => {
   const defaultSuccess = (result) => console.log(result)
   const success = props.success || defaultSuccess
   const [selector,setSelector] = useState('zotero')
+  const [isSaving, setSaving] = useState(false)
   const [bib,setBib] = useState(props.bib)
   const [addCitation,setAddCitation] = useState('')
   const [zoteroLink,setZoteroLink] = useState(props.article.zoteroLink || "")
@@ -32,6 +33,8 @@ const ConnectedBibliographe = (props) => {
   }
 
   const saveNewZotero = async () => {
+    setSaving(true)
+
     // saveOnGraphQL
     if (props.article.zoteroLink !== zoteroLink) {
       console.log("saving to graphQL", props.article.zoteroLink, zoteroLink, props.sessionToken)
@@ -41,17 +44,24 @@ const ConnectedBibliographe = (props) => {
         await askGraphQL({ query,variables }, "updating zoteroLink", props.sessionToken)
       }
       catch (err) {
+        setSaving(false)
         alert(err)
       }
     }
+    
     // we synchronize the collection, any time we save
     if (zoteroLink) {
       await fetchBibliographyFromCollection(zoteroLink).then(result => {
+        setSaving(false)
         const bib = result.join('\n')
         setBib(bib)
         success(bib)
         props.cancel()
       })
+    }
+    else {
+      // previous value was empty, and we tried to save an empty value again
+      setSaving(false)
     }
   }
 
@@ -65,12 +75,14 @@ const ConnectedBibliographe = (props) => {
       </nav>
 
       {selector === 'zotero' && <div className={styles.zotero}>
-      <p>Please paste the URL of your zotero library, so that it looks like https://www.zotero.org/groups/<strong>[IDnumber]/collections/[IDcollection]</strong></p>
-      <label>https://www.zotero.org/groups/</label>
-      <input type="text" placeholder="[IDnumber]/collections/[collectionKey]" value={zoteroLink} onChange={e=>setZoteroLink(etv(e))}/>
-      <button onClick={()=>saveNewZotero()}>Save zotero link and fetch</button>
-
+        <form disabled={isSaving} onSubmit={(e) => e.preventDefault() && saveNewZotero()}>
+          <p>Please paste the URL of your zotero library, so that it looks like https://www.zotero.org/groups/<strong>[IDnumber]/collections/[IDcollection]</strong></p>
+          <label>https://www.zotero.org/groups/</label>
+          <input type="text" placeholder="[IDnumber]/collections/[IDcollection]" value={zoteroLink} onChange={e=>setZoteroLink(etv(e))}/>
+          <button type="submit" onClick={() => saveNewZotero()} disabled={isSaving || (!zoteroLink && zoteroLink === props.article.zoteroLink)}>{isSaving ? 'Saving…' : 'Save zotero link and fetch'}</button>
+        </form>
       </div>}
+
       {selector === 'citations' && <div className={styles.citations}>
       <textarea value={addCitation} onChange={(e)=>setAddCitation(etv(e))} placeholder="Paste here the bibtext of the citation you want to add"/><button onClick={()=>mergeCitations()}>Add</button>
       {bib2key(bib).map((b,i)=><p key={`citation-${b.cle}-${i}`} className={styles.citation}>@{b.cle}<i onClick={()=>removeCitation(i)}>Remove</i></p>)}
