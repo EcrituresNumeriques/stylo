@@ -1,4 +1,5 @@
 export default (timeDifference) => {
+  // todo: use https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat
   let string;
   if(timeDifference < 39 * 1000){string = 'moments ago'}
   else if(timeDifference < 9 * 60 * 1000){string = 'minutes ago'}

@@ -77,8 +77,8 @@ export default props => {
               
               {!props.readOnly && <form className={styles.liveVersion} onSubmit={e=>saveVersion(e,false)}>
                 <input type="text" placeholder="Label of the version" value={message} onChange={(e)=>setMessage(etv(e))}/>
-                <button className={message?styles.primary:styles.secondary} onClick={e=>saveVersion(e,false)}>Save Minor</button>
-                <button className={message?styles.primary:styles.secondary} onClick={e=>saveVersion(e,true)}>Save Major</button>
+                <button onClick={e=>saveVersion(e,false)}>Save Minor</button>
+                <button onClick={e=>saveVersion(e,true)}>Save Major</button>
               </form>}</>}
         </section>
   )

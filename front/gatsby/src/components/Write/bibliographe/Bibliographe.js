@@ -1,10 +1,11 @@
-import React,{useState} from 'react'
-import { connect } from 'react-redux'
+import React, {useState} from 'react'
+import {connect} from 'react-redux'
 
 import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
 import bib2key from './CitationsFilter'
 import askGraphQL from '../../../helpers/graphQL';
+import { fetchBibliographyFromCollection } from '../../../helpers/zotero'
 
 const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
   return { logedIn, sessionToken, activeUser  }
@@ -19,43 +20,39 @@ const ConnectedBibliographe = (props) => {
   const [zoteroLink,setZoteroLink] = useState(props.article.zoteroLink || "")
 
 
-  const mergeCitations = ()=>{
-    setBib(bib+'\n'+addCitation)
+  const mergeCitations = () => {
+    setBib(bib + '\n' + addCitation)
     setAddCitation('')
   }
 
   const removeCitation = (index) => {
     const nextArray = bib2key(bib)
-    nextArray.splice(index,1)
-    setBib(nextArray.map(b=>b.title).join('\n'))
+    nextArray.splice(index, 1)
+    setBib(nextArray.map(b => b.title).join('\n'))
   }
 
   const saveNewZotero = async () => {
-    //saveOnGraphQL
-    if(props.article.zoteroLink !== zoteroLink){
-      console.log("saving to graphQL",props.article.zoteroLink, zoteroLink,props.sessionToken)
-      try{
+    // saveOnGraphQL
+    if (props.article.zoteroLink !== zoteroLink) {
+      console.log("saving to graphQL", props.article.zoteroLink, zoteroLink, props.sessionToken)
+      try {
         const query =`mutation($user:ID!,$article:ID!,$zotero:String!){zoteroArticle(article:$article,zotero:$zotero,user:$user){ _id zoteroLink}}`
-        const variables = {zotero:zoteroLink,user:props.activeUser._id,article:props.article._id}
-        await askGraphQL({query,variables},"updating zoteroLink",props.sessionToken)
+        const variables = { zotero: zoteroLink, user: props.activeUser._id, article: props.article._id }
+        await askGraphQL({ query,variables }, "updating zoteroLink", props.sessionToken)
       }
-      catch(err){
+      catch (err) {
         alert(err)
       }
     }
-    //FetchZotero
-    fetch('https://api.zotero.org/groups/'+zoteroLink+'/items/?v=3&format=bibtex',{
-      method:'GET',
-      credentials: 'same-origin'
-    })
-    .then(function(response){
-      return response.text()
-    })
-    .then(function(bib){
-      setBib(bib)
-      success(bib)
-      props.cancel()
-    });
+    // we synchronize the collection, any time we save
+    if (zoteroLink) {
+      await fetchBibliographyFromCollection(zoteroLink).then(result => {
+        const bib = result.join('\n')
+        setBib(bib)
+        success(bib)
+        props.cancel()
+      })
+    }
   }
 
   return (
