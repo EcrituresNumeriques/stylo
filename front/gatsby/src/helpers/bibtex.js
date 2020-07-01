@@ -14,6 +14,7 @@ export async function parse (bibtex, options = { expectOutput: false }) {
 export function validate(bibtext) {
   return parse(bibtext).then(result => ({
       success: Object.keys(result.entries).length,
+      empty: String(bibtext).trim().length === 0,
       errors: result.errors.map(error => error.type + ' at line ' + error.line),
       warnings: result.warnings.map(error => error.type + ' at line ' + error.line)
   }))

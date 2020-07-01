@@ -2,7 +2,7 @@ import {parse, validate} from './bibtex'
 
 describe('parse', () => {
     test('it should return line errors on syntax error', () => {
-        const tex = `@book{noauthor_test19_nodate,
+        const text = `@book{noauthor_test19_nodate,
             title = {test19
         }
         
@@ -10,13 +10,13 @@ describe('parse', () => {
             title = {test26}
         }`
 
-        return parse(tex).then(result => {
-            expect(result).toHaveProperty(['errors', 0, 'type'], 'token_mismatch')
+        return validate(text).then(result => {
+          expect(result.errors).toEqual(expect.arrayContaining(['token_mismatch at line 5']))
         })
     })
 
     test('it should return an empty error array if syntax is correct', () => {
-        const tex = `@book{noauthor_test19_nodate,
+        const text = `@book{noauthor_test19_nodate,
             title = {test19}
         }
         
@@ -24,17 +24,41 @@ describe('parse', () => {
             title = {test26}
         }`
 
-        return parse(tex).then(result => {
+        return validate(text).then(result => {
             expect(result).toHaveProperty('errors', [])
-            expect(result).toHaveProperty(['entries', '1', 'entry_key'], 'noauthor_test19_nodate')
+            expect(result.success).toEqual(2)
         })
     })
 
     test('it should return an empty entries', () => {
-      const tex = `abcd`
+      const text = ` abcd `
 
-      return parse(tex).then(result => {
-        expect(result).toHaveProperty('entries', {})
+      return validate(text).then(result => {
+        expect(result).toHaveProperty('empty', false)
+        expect(result).toHaveProperty('success', 0)
+        expect(result).toHaveProperty('warnings', [])
+        expect(result).toHaveProperty('errors', [])
+      })
+    })
+
+    test('it should be okay with an empty string', () => {
+      const text = ''
+
+      return validate(text).then(result => {
+        expect(result).toHaveProperty('empty', true)
+        expect(result).toHaveProperty('success', 0)
+        expect(result).toHaveProperty('warnings', [])
+        expect(result).toHaveProperty('errors', [])
+      })
+    })
+
+
+    test('it should be okay with a trimmable value', () => {
+      const text = '   '
+
+      return validate(text).then(result => {
+        expect(result).toHaveProperty('empty', true)
+        expect(result).toHaveProperty('success', 0)
         expect(result).toHaveProperty('warnings', [])
         expect(result).toHaveProperty('errors', [])
       })
@@ -50,9 +74,9 @@ describe('parse', () => {
       @book {noauthor_test24_nodate,
         title = {test24}
       }`
-      return parse(text).then(result => {
-        expect(result.entries).toMatchObject({1: {}})
-        expect(result).toHaveProperty(['warnings', 0], {type: 'unknown_type', type_name: 'foo', line: 7})
+      return validate(text).then(result => {
+        expect(result).toHaveProperty('success', 1)
+        expect(result.warnings).toEqual(expect.arrayContaining(['unknown_type at line 7']))
     })
   })
   test('it should validate a bitext', () => {
