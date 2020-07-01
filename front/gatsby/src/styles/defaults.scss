@@ -13,6 +13,14 @@
     user-select: none;
 }
 
+.hoverable {
+  &:hover, &:focus {
+    text-decoration: underline;
+    text-decoration-skip-ink: all;
+    text-decoration-thickness: 2;
+  }
+}
+
 .primary-button{
     @extend .clickable;
     background-color: $button-primary-background !important;
