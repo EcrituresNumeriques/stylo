@@ -60,7 +60,7 @@
   }
   > p.citation{
     padding:0.5rem 1rem;
-    > i {
+    > button {
       float:right;
       margin-left:1rem;
       @extend .clickable;
