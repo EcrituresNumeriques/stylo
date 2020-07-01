@@ -20,29 +20,25 @@ const ConnectedBibliographe = (props) => {
   const [bib, setBib] = useState(props.bib)
   const [addCitation, setAddCitation] = useState('')
   const [isCitationValid, setCitationValid] = useState(false)
+  const [isRawBibtexValid, setRawBibtexValid] = useState(false)
   const [zoteroLink, setZoteroLink] = useState(props.article.zoteroLink || "")
   const citationForm = useRef()
-
 
   const mergeCitations = () => {
     setBib(bib + '\n' + addCitation)
     citationForm.current.reset()
   }
 
-  const validateCitation = (bibtex, next) => {
+  const validateCitation = (bibtex, stateHook, next) => {
+    next(bibtex)
+
     validate(bibtex).then(result => {
       if (result.warnings.length || result.errors.length) {
-        setCitationValid(false)
+        stateHook(false)
         console.error(result.warnings.join('\n') + result.errors.join('\n'))
       }
       else {
-        if (result.success !== 0) {
-          setCitationValid(true)
-          next(bibtex)
-        }
-        else {
-          setCitationValid(false)
-        }
+        stateHook(result.empty || result.success !== 0)
       }
     })
   }
@@ -88,7 +84,7 @@ const ConnectedBibliographe = (props) => {
 
   return (
     <article>
-      <h1 className={styles.title}>Bibliographe</h1>
+      <h1 className={styles.title}>Bibliography</h1>
       <nav className={styles.selector}>
         <p className={selector === "zotero"?styles.selected:null} onClick={()=>setSelector('zotero')}>Zotero</p>
         <p className={selector === "citations"?styles.selected:null} onClick={()=>setSelector('citations')}>Citations</p>
@@ -97,15 +93,15 @@ const ConnectedBibliographe = (props) => {
 
       {selector === 'zotero' && <div className={styles.zotero}>
         <form onSubmit={(e) => e.preventDefault() && saveNewZotero()}>
-          <p>Please paste the URL of your zotero library, so that it looks like https://www.zotero.org/groups/<strong>[IDnumber]/collections/[IDcollection]</strong></p>
+          <p>Please paste the URL of your Zotero library, so that it looks like https://www.zotero.org/groups/<strong>[IDnumber]/collections/[IDcollection]</strong></p>
           <label>https://www.zotero.org/groups/</label>
           <input type="text" placeholder="[IDnumber]/collections/[IDcollection]" value={zoteroLink} onChange={e=>setZoteroLink(etv(e))}/>
-          <button type="submit" onClick={() => saveNewZotero()} disabled={isSaving || (!zoteroLink && zoteroLink === props.article.zoteroLink)}>{isSaving ? 'Saving…' : 'Save zotero link and fetch'}</button>
+          <button type="submit" onClick={() => saveNewZotero()} disabled={isSaving || (!zoteroLink && zoteroLink === props.article.zoteroLink)}>{isSaving ? 'Saving…' : 'Save Zotero link and fetch'}</button>
         </form>
       </div>}
 
       {selector === 'citations' && <form ref={citationForm} onSubmit={(e) => e.preventDefault() && mergeCitations()} className={styles.citations}>
-        <textarea onChange={event => validateCitation(etv(event), setAddCitation)} placeholder="Paste here the bibtext of the citation you want to add"/>
+        <textarea onChange={event => validateCitation(etv(event), setCitationValid, setAddCitation)} placeholder="Paste here the bibtext of the citation you want to add"/>
         
         <button type="submit" disabled={isCitationValid !== true} onClick={() => mergeCitations()}>Add</button>
         
@@ -113,12 +109,15 @@ const ConnectedBibliographe = (props) => {
           @{b.cle}
           <button onClick={()=>removeCitation(i)}>Remove</button>
         </p>)}
+        <button onClick={()=>{success(bib); props.cancel()}} className={styles.primary}>Save</button>
       </form>}
 
-      {selector === 'raw' && <div className={styles.raw}>
-        <textarea value={bib} onChange={(e)=>setBib(etv(e))} />
-      </div>}
-      <button onClick={()=>{success(bib);props.cancel()}} className={styles.primary}>Save</button>
+      {selector === 'raw' && <form onSubmit={(e) => e.preventDefault()}>
+        <div className={styles.raw}>
+          <textarea defaultValue={bib} onChange={event => validateCitation(etv(event), setRawBibtexValid, setBib)} />
+        </div>
+        <button disabled={isRawBibtexValid !== true} onClick={()=>{success(bib); props.cancel()}} className={styles.primary}>Save</button>
+      </form>}
 
     </article>
   )
