@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import {connect} from 'react-redux'
 
 import styles from './bibliographe.module.scss'
@@ -6,6 +6,7 @@ import etv from '../../../helpers/eventTargetValue'
 import bib2key from './CitationsFilter'
 import askGraphQL from '../../../helpers/graphQL';
 import { fetchBibliographyFromCollection } from '../../../helpers/zotero'
+import { validate } from '../../../helpers/bibtex'
 
 const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
   return { logedIn, sessionToken, activeUser  }
@@ -14,16 +15,36 @@ const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
 const ConnectedBibliographe = (props) => {
   const defaultSuccess = (result) => console.log(result)
   const success = props.success || defaultSuccess
-  const [selector,setSelector] = useState('zotero')
+  const [selector, setSelector] = useState('zotero')
   const [isSaving, setSaving] = useState(false)
-  const [bib,setBib] = useState(props.bib)
-  const [addCitation,setAddCitation] = useState('')
-  const [zoteroLink,setZoteroLink] = useState(props.article.zoteroLink || "")
+  const [bib, setBib] = useState(props.bib)
+  const [addCitation, setAddCitation] = useState('')
+  const [isCitationValid, setCitationValid] = useState(false)
+  const [zoteroLink, setZoteroLink] = useState(props.article.zoteroLink || "")
+  const citationForm = useRef()
 
 
   const mergeCitations = () => {
     setBib(bib + '\n' + addCitation)
-    setAddCitation('')
+    citationForm.current.reset()
+  }
+
+  const validateCitation = (bibtex, next) => {
+    validate(bibtex).then(result => {
+      if (result.warnings.length || result.errors.length) {
+        setCitationValid(false)
+        console.error(result.warnings.join('\n') + result.errors.join('\n'))
+      }
+      else {
+        if (result.success !== 0) {
+          setCitationValid(true)
+          next(bibtex)
+        }
+        else {
+          setCitationValid(false)
+        }
+      }
+    })
   }
 
   const removeCitation = (index) => {
@@ -37,7 +58,7 @@ const ConnectedBibliographe = (props) => {
 
     // saveOnGraphQL
     if (props.article.zoteroLink !== zoteroLink) {
-      console.log("saving to graphQL", props.article.zoteroLink, zoteroLink, props.sessionToken)
+      console.log("saving to graphQL", props.article.zoteroLink, zoteroLink)
       try {
         const query =`mutation($user:ID!,$article:ID!,$zotero:String!){zoteroArticle(article:$article,zotero:$zotero,user:$user){ _id zoteroLink}}`
         const variables = { zotero: zoteroLink, user: props.activeUser._id, article: props.article._id }
@@ -75,7 +96,7 @@ const ConnectedBibliographe = (props) => {
       </nav>
 
       {selector === 'zotero' && <div className={styles.zotero}>
-        <form disabled={isSaving} onSubmit={(e) => e.preventDefault() && saveNewZotero()}>
+        <form onSubmit={(e) => e.preventDefault() && saveNewZotero()}>
           <p>Please paste the URL of your zotero library, so that it looks like https://www.zotero.org/groups/<strong>[IDnumber]/collections/[IDcollection]</strong></p>
           <label>https://www.zotero.org/groups/</label>
           <input type="text" placeholder="[IDnumber]/collections/[IDcollection]" value={zoteroLink} onChange={e=>setZoteroLink(etv(e))}/>
@@ -83,10 +104,17 @@ const ConnectedBibliographe = (props) => {
         </form>
       </div>}
 
-      {selector === 'citations' && <div className={styles.citations}>
-      <textarea value={addCitation} onChange={(e)=>setAddCitation(etv(e))} placeholder="Paste here the bibtext of the citation you want to add"/><button onClick={()=>mergeCitations()}>Add</button>
-      {bib2key(bib).map((b,i)=><p key={`citation-${b.cle}-${i}`} className={styles.citation}>@{b.cle}<i onClick={()=>removeCitation(i)}>Remove</i></p>)}
-      </div>}
+      {selector === 'citations' && <form ref={citationForm} onSubmit={(e) => e.preventDefault() && mergeCitations()} className={styles.citations}>
+        <textarea onChange={event => validateCitation(etv(event), setAddCitation)} placeholder="Paste here the bibtext of the citation you want to add"/>
+        
+        <button type="submit" disabled={isCitationValid !== true} onClick={() => mergeCitations()}>Add</button>
+        
+        {bib2key(bib).map((b,i)=> <p key={`citation-${b.cle}-${i}`} className={styles.citation}>
+          @{b.cle}
+          <button onClick={()=>removeCitation(i)}>Remove</button>
+        </p>)}
+      </form>}
+
       {selector === 'raw' && <div className={styles.raw}>
         <textarea value={bib} onChange={(e)=>setBib(etv(e))} />
       </div>}
