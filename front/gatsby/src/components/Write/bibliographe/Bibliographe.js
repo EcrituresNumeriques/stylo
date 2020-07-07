@@ -1,11 +1,11 @@
-import React, {useRef, useState} from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import {connect} from 'react-redux'
 
 import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
 import bib2key from './CitationsFilter'
 import askGraphQL from '../../../helpers/graphQL';
-import {fetchBibliographyFromCollection} from '../../../helpers/zotero'
+import {fetchBibliographyFromGroupSuffix, fetchBibliographyFromCollectionId, fetchUserCollections} from '../../../helpers/zotero'
 import {toBibtex, validate} from '../../../helpers/bibtex'
 import ReferenceTypeIcon from '../../ReferenceTypeIcon.js'
 
@@ -23,7 +23,19 @@ const ConnectedBibliographe = (props) => {
   const [isCitationValid, setCitationValid] = useState(false)
   const [isRawBibtexValid, setRawBibtexValid] = useState(false)
   const [zoteroLink, setZoteroLink] = useState(props.article.zoteroLink || "")
+  const [zoteroCollectionId, setZoteroCollectionId] = useState(null)
+  const {zoteroToken} = props.activeUser
+  const [zoteroCollections, setZoteroCollections] = useState([])
   const citationForm = useRef()
+
+  useEffect(() => {
+    if (zoteroToken) {
+      setSaving(true)
+      fetchUserCollections({ token: zoteroToken })
+        .then(setZoteroCollections)
+        .finally(() => setSaving(false))
+    }
+  }, [zoteroToken])
 
   const citations = bib2key(bib)
 
@@ -76,7 +88,7 @@ const ConnectedBibliographe = (props) => {
 
     // we synchronize the collection, any time we save
     if (zoteroLink) {
-      await fetchBibliographyFromCollection(zoteroLink).then(result => {
+      await fetchBibliographyFromGroupSuffix(zoteroLink).then(result => {
         setSaving(false)
         const bib = result.join('\n')
         setBib(bib)
@@ -88,6 +100,17 @@ const ConnectedBibliographe = (props) => {
       // previous value was empty, and we tried to save an empty value again
       setSaving(false)
     }
+  }
+
+  const importCollection = ({ token, collectionId }) => {
+    setSaving(true)
+    fetchBibliographyFromCollectionId({ token, collectionId}).then(result => {
+        setSaving(false)
+        const bib = result.join('\n')
+        setBib(bib)
+        success(bib)
+        props.cancel()
+      })
   }
 
   return (
@@ -105,6 +128,16 @@ const ConnectedBibliographe = (props) => {
           <label>https://www.zotero.org/groups/</label>
           <input type="text" placeholder="[IDnumber]/collections/[IDcollection]" value={zoteroLink} onChange={e=>setZoteroLink(etv(e))}/>
           <button type="submit" onClick={() => saveNewZotero()} disabled={isSaving || (!zoteroLink && zoteroLink === props.article.zoteroLink)}>{isSaving ? 'Saving…' : 'Save Zotero link and fetch'}</button>
+        </form>
+        <hr />
+        <form disabled={isSaving} onSubmit={(e) => e.preventDefault()}>
+          <select onChange={(event) => setZoteroCollectionId(etv(event))}>
+            <option value="">{isSaving ? 'Fetching collections…' : 'Pick a collection'}</option>
+            {zoteroCollections.map(({ data }) => <option key={data.key} value={data.key}>{data.name}</option>)}
+          </select>
+
+          {zoteroToken && <button type="submit" disabled={!zoteroCollectionId || isSaving} onClick={() => importCollection({ token: zoteroToken, collectionId: zoteroCollectionId })}>Import this private collection</button>}
+          {!zoteroToken && <button type="button">Connect my Zotero account</button>}
         </form>
       </div>}
 

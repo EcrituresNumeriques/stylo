@@ -1,12 +1,21 @@
 import LinkHeader from 'http-link-header'
 import { bindActionCreators } from 'redux'
 
+export const fetchBibliographyFromGroupSuffix = zoteroLink => fetchBibliographyFromCollection(`groups/${zoteroLink}/items`)
+export const fetchBibliographyFromCollectionId = async ({collectionId, token}) => {
+    const {key, userID} = await fetchUserFromToken(token)
+    return fetchBibliographyFromCollection(`users/${userID}/collections/${collectionId}/items`, key)
+}
+
 /**
  * @param {*} zoteroLink - format "2478772/collections/UGF4W4PZ"
  */
-export function fetchBibliographyFromCollection (zoteroLink) {
-    const url = new URL(`https://api.zotero.org/groups/${zoteroLink}/items`)
+export function fetchBibliographyFromCollection (endpoint, key = null) {
+    const url = new URL(`https://api.zotero.org/${endpoint}`)
     url.searchParams.set('format', 'bibtex')
+    if (key) {
+        url.searchParams.set('key', key)
+    }
 
     return fetchZoteroFromUrl(url, [])
 }
@@ -43,4 +52,16 @@ export async function fetchZoteroFromUrl (url, agg = []) {
     }
 
     return agg
+}
+
+function fetchUserFromToken(token) {
+    return fetch(`https://api.zotero.org/keys/${token}`)
+        .then(response => response.json())
+}
+
+export async function fetchUserCollections({ token }) {
+    const {userID, username, key} = await fetchUserFromToken(token)
+
+    return fetch(`https://api.zotero.org/users/${userID}/collections?key=${key}`)
+        .then(response => response.json())
 }

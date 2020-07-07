@@ -3,15 +3,18 @@ import { createStore as reduxCreateStore } from "redux"
 // Définit tout ce qui se passe quand un message d'action est envoyé
 
 const initialState = {
+  activeUser: undefined,
   logedIn: false,
   users: [],
   password: undefined,
-  sessionToken: undefined,
+  sessionToken: undefined
 }
 
 const reducer = (state = initialState, action) => {
   if (action.type === 'PROFILE') {
     const {data:activeUser} = action
+    activeUser.zoteroToken = 'W5oSViHSuwZXRP4g5tqgBCD4'
+
     return Object.assign({}, state, {
       activeUser,
       logedIn: true,
