@@ -10,9 +10,9 @@ describe('CitationFilter', () => {
             title = {test26}
         }`
 
-        return expect(getEntries(text)).toEqual([
-            { title: 'test19', key: 'noauthor_test19_nodate', type: 'book' },
-            { title: 'test26', key: 'noauthor_test26_nodate', type: 'book' }
+        return expect(getEntries(text)).toMatchObject([
+            { title: 'test19', key: 'noauthor_test19_nodate', type: 'book', entry: {} },
+            { title: 'test26', key: 'noauthor_test26_nodate', type: 'book', entry: {} }
         ])
     })
 
@@ -21,8 +21,8 @@ describe('CitationFilter', () => {
         title = {The {Org} {Mode} 7 {Reference} {Manual} - {Organize} your life with {GNU} {Emacs}}
       }`
 
-      return expect(getEntries(text)).toEqual([
-        { title: 'The Org Mode 7 Reference Manual - Organize your life with GNU Emacs', key: 'dominik_org_2010', type: 'book' },
+      return expect(getEntries(text)).toMatchObject([
+        { title: 'The Org Mode 7 Reference Manual - Organize your life with GNU Emacs', key: 'dominik_org_2010', type: 'book', entry: {} },
      ])
     })
 })
