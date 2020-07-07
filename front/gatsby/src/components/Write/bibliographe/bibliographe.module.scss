@@ -59,8 +59,14 @@
     margin-bottom:1rem;
   }
 
+  .responsiveTable {
+    max-height: 270px;
+    overflow: auto;
+  }
+
   .citationList {
     width: 100%;
+    border-collapse: collapse;
 
     td, th {
       padding: 5px;
@@ -72,6 +78,8 @@
   }
   .colKey {
     text-align: left;
+    word-wrap: break-word;
+    max-width: 1px;
   }
   .colActions {
     text-align: right;
