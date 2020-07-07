@@ -79,19 +79,24 @@ describe('parse', () => {
         expect(result.warnings).toEqual(expect.arrayContaining(['unknown_type at line 7']))
     })
   })
-  test('it should validate a bitext', () => {
-    const text = `@book{noauthor_test26_nodate,
-      title = {test26}
-    }
-    
-    @foo {
-
-    @book {noauthor_test24_nodate,
-      title = {test24}
+  test('it should validate a given bibtex', () => {
+    const text = `@misc{dehut_en_2018,
+      type = {Billet},
+      title = {En finir avec {Word} ! {Pour} une analyse des enjeux relatifs aux traitements de texte et à leur utilisation},
+      url = {https://eriac.hypotheses.org/80},
+      abstract = {Le titre de ce billet aurait pu être formé autour d’une expression célèbre attribuée à Caton l’ancien : delenda carthago[1], il faut détruire Carthage. Citation dont on trouve notamment un écho chez Plutarque[2] qui relate...},
+      language = {fr-FR},
+      urldate = {2018-03-29},
+      journal = {L’atelier des savoirs},
+      author = {Dehut, Julien},
+      month = jan,
+      year = {2018},
+      file = {Snapshot:/home/antoine/Zotero/storage/VC32TEFF/Dehut - En finir avec Word ! Pour une analyse des enjeux r.html:text/html}
     }`
+
     return validate(text).then(result => {
-      expect(result.warnings).toEqual(expect.arrayContaining(['unknown_type at line 7']))
-      expect(result.errors).toEqual(expect.arrayContaining(['missing_equal_sign at line 7', 'token_mismatch at line 7']))
+      expect(result.warnings).toEqual([])
+      expect(result.errors).toEqual([])
   })
 })
 })

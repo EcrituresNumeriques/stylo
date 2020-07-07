@@ -18,7 +18,7 @@ export default (props) => {
       <h1 className={expand?null:styles.closed} onClick={()=>setExpand(!expand)}>{expand?"-":"+"} Bibliography</h1>
       {expand && <>
         {!props.readOnly && <button onClick={()=>setModal(true)}>Manage Bibliography</button>}
-        {entries.map((ref)=>(<Reference key={`ref-${ref.cle}`} {...ref}/>))}
+        {entries.map((entry, index)=>(<Reference key={`ref-${entry.key}-${index}`} entry={entry} />))}
       </>}
       {modal && <Modal cancel={()=>setModal(false)}>
         <Bibliographe bib={props.bib} success={props.handleBib} cancel={()=>setModal(false)} article={props.article}/>
