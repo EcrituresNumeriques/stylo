@@ -6,7 +6,7 @@ import etv from '../../../helpers/eventTargetValue'
 import bib2key from './CitationsFilter'
 import askGraphQL from '../../../helpers/graphQL';
 import { fetchBibliographyFromCollection } from '../../../helpers/zotero'
-import { validate } from '../../../helpers/bibtex'
+import { validate, toBibtex } from '../../../helpers/bibtex'
 
 const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
   return { logedIn, sessionToken, activeUser  }
@@ -23,6 +23,8 @@ const ConnectedBibliographe = (props) => {
   const [isRawBibtexValid, setRawBibtexValid] = useState(false)
   const [zoteroLink, setZoteroLink] = useState(props.article.zoteroLink || "")
   const citationForm = useRef()
+
+  const citations = bib2key(bib)
 
   const mergeCitations = () => {
     setBib(bib + '\n' + addCitation)
@@ -43,10 +45,15 @@ const ConnectedBibliographe = (props) => {
     })
   }
 
-  const removeCitation = (index) => {
-    const nextArray = bib2key(bib)
-    nextArray.splice(index, 1)
-    setBib(nextArray.map(b => b.title).join('\n'))
+  const removeCitation = (citations, indexToRemove) => {
+    const filteredEntries = citations
+      .filter((entry, index) => index !== indexToRemove)
+      .map(({ entry }) => entry)
+
+    const bibtext = toBibtex(filteredEntries)
+
+    // we reform the bibtex output based on what we were able to parse
+    setBib(bibtext)
   }
 
   const saveNewZotero = async () => {
