@@ -29,7 +29,8 @@ export default (input) => {
     .map(([key, entry]) => ({
       title: flatten(entry.fields.title),
       type: entry.bib_type,
-      key: entry.entry_key
+      key: entry.entry_key,
+      entry
     }))
     .sort(compare)
 }
