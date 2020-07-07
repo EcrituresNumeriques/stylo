@@ -1,5 +1,23 @@
 # Journal de développement
 
+## Mardi 7 juillet 2020
+
+### Ce que j'ai aimé/appris
+
+- j'ai appris encore un peu de Passport (pour l'OAuth Zotero)
+- j'ai réappris les `--fixup` git (généralement je fais des rebase interactive en devant me rappeler où mettre quoi)
+- utiliser l'API zotero dans un flow OAuth
+- y'a toujours des trucs un peu magiques dans React (`useState`, `useEffect`) ; pas clair pourquoi on les met (ça te sort de ton code, on fait plaisir à React)
+- j'ai aimé la réutilisation de Passport pour l'OAuth mais pas pour l'authentification, juste pour récupérer le token Zotero
+- j'ai bien aimé comment on a résolu deux bugs sans le savoir — ajouter le parseur pour reformer le Bibtex raw après avoir supprimer un élément bibliographique, a résolu le bug de parsing — qui était en fait déjà avant qu'on intervienne sur le projet, mais qu'on ne pouvait pas voir en raison de l'absence de pagination
+- j'ai trouvé ça chouette de tester les flux de données, j'étais en confiance quand on refactorait l'import des collections
+- la gestion du state de React rend le processus d'import assez chouette en terme d'expérience utilisateur
+- je suis content de l'utilisation du temps : on est allé plus lentement que prévu sur la correction de bugs, et on est allé plus vite sur l'OAuth Zotero
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- pas cette fois-ci (je me suis souvenu qu'on pouvait suivre un·e participant·e)
+
 ## Mercredi 1er juillet 2020
 
 ### Ce que j'ai aimé/appris
