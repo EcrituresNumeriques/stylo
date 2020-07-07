@@ -1,4 +1,4 @@
-import {BibLatexParser} from 'biblatex-csl-converter'
+import {BibLatexParser, BibLatexExporter} from 'biblatex-csl-converter'
 
 export async function parse (bibtex, options = { expectOutput: false }) {
     const parser = new BibLatexParser(bibtex, {
@@ -9,6 +9,14 @@ export async function parse (bibtex, options = { expectOutput: false }) {
 
     // {"entries":{},"errors":[],"warnings":[],"comments":[],"strings":{},"jabref":{"groups":false,"meta":{}}}
     return parser.parse()
+}
+
+export function toBibtex (entries) {
+  const bibDB = entries.reduce((db, entry, i) => {
+    return Object.assign(db, { [String(i)]: entry })
+  }, {})
+
+  return (new BibLatexExporter(bibDB, false, {exportUnexpectedFields: true})).parse()
 }
 
 /**

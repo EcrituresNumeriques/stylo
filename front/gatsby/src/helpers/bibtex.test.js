@@ -1,4 +1,5 @@
-import {parse, validate} from './bibtex'
+import {parse, validate, toBibtex} from './bibtex'
+import bib2key from '../components/Write/bibliographe/CitationsFilter.js'
 
 describe('parse', () => {
     test('it should return line errors on syntax error', () => {
@@ -97,6 +98,27 @@ describe('parse', () => {
     return validate(text).then(result => {
       expect(result.warnings).toEqual([])
       expect(result.errors).toEqual([])
+    })
   })
-})
+
+  test('it should validate a given bibtex', () => {
+    const text = `@misc{dehut_en_2018,
+      type = {Billet},
+      title = {En finir avec {Word} ! {Pour} une analyse des enjeux relatifs aux traitements de texte et à leur utilisation},
+      url = {https://eriac.hypotheses.org/80},
+      abstract = {Le titre de ce billet aurait pu être formé autour d’une expression célèbre attribuée à Caton l’ancien : delenda carthago[1], il faut détruire Carthage. Citation dont on trouve notamment un écho chez Plutarque[2] qui relate...},
+      language = {fr-FR},
+      urldate = {2018-03-29},
+      journal = {L’atelier des savoirs},
+      author = {Dehut, Julien},
+      month = jan,
+      year = {2018},
+      file = {Snapshot:/home/antoine/Zotero/storage/VC32TEFF/Dehut - En finir avec Word ! Pour une analyse des enjeux r.html:text/html}
+    }`
+
+    const entries = bib2key(text).map(({ entry }) => entry)
+
+    expect(toBibtex(entries)).toMatch('journaltitle = {L’atelier des savoirs}')
+    expect(toBibtex(entries)).toMatch('file = {Snapshot:/home/antoine/Zotero/storage/VC32TEFF/Dehut - En finir avec Word ! Pour une analyse des enjeux r.html:text/html}')
+  })
 })

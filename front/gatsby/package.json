@@ -12,7 +12,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "biblatex-csl-converter": "^1.9.1",
+    "biblatex-csl-converter": "github:Mogztter/biblatex-csl-converter#issue-112-export-unexpected-fields",
     "codemirror": "^5.51.0",
     "diff-match-patch": "^1.0.4",
     "gatsby": "^2.19.12",
