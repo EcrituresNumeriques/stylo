@@ -11,11 +11,21 @@ export async function parse (bibtex, options = { expectOutput: false }) {
     return parser.parse()
 }
 
+/**
+ *
+ * We tolerate `unexpected_field` warnings as it's user provided, it does not have any side effect
+ * @see https://github.com/EcrituresNumeriques/stylo/issues/187
+ *
+ * @param {string} bibtext
+ * @returns {Promise[{success: number,empty: boolean,warnings: Array.<string>,error: Array.<string>}]}
+ */
 export function validate(bibtext) {
   return parse(bibtext).then(result => ({
       success: Object.keys(result.entries).length,
       empty: String(bibtext).trim().length === 0,
       errors: result.errors.map(error => error.type + ' at line ' + error.line),
-      warnings: result.warnings.map(error => error.type + ' at line ' + error.line)
+      warnings: result.warnings
+        .filter(error => error.type !== 'unexpected_field')
+        .map(error => error.type + ' at line ' + error.line)
   }))
 }
