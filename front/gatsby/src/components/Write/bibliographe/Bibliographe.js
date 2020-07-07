@@ -105,18 +105,24 @@ const ConnectedBibliographe = (props) => {
         
         <button type="submit" disabled={isCitationValid !== true} onClick={() => mergeCitations()}>Add</button>
         
-        <table className={styles.citationList}>
-        <colgroup>
-          <col className={styles.colIcon} />
-          <col className={styles.colKey} />
-          <col className={styles.colActions} />
-        </colgroup>
-        {bib2key(bib).map((b, i)=> <tr key={`citation-${b.key}-${i}`} className={styles.citation}>
-          <td className={styles.colIcon}>{b.type}</td>
-          <th className={styles.colKey} scope="row">@{b.key}</th>
-          <td className={styles.colActions}><button onClick={()=>removeCitation(i)}>Remove</button></td>
-        </tr>)}
-        </table>
+        <p>{citations.length} citations.</p>
+
+        <div className={styles.responsiveTable}>
+          <table className={styles.citationList}>
+            <colgroup>
+              <col className={styles.colIcon} />
+              <col className={styles.colKey} />
+              <col className={styles.colActions} />
+            </colgroup>
+            <tbody>
+              {citations.map((b, i)=> <tr key={`citation-${b.key}-${i}`} className={styles.citation}>
+                <td className={styles.colIcon}>{b.type}</td>
+                <th className={styles.colKey} scope="row">@{b.key}</th>
+                <td className={styles.colActions}><button onClick={()=>removeCitation(citations, i)}>Remove</button></td>
+              </tr>)}
+            </tbody>
+          </table>
+        </div>
         <button onClick={()=>{success(bib); props.cancel()}} className={styles.primary}>Save</button>
       </form>}
 
