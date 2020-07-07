@@ -7,6 +7,7 @@ import bib2key from './CitationsFilter'
 import askGraphQL from '../../../helpers/graphQL';
 import {fetchBibliographyFromCollection} from '../../../helpers/zotero'
 import {toBibtex, validate} from '../../../helpers/bibtex'
+import ReferenceTypeIcon from '../../ReferenceTypeIcon.js'
 
 const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
   return { logedIn, sessionToken, activeUser  }
@@ -89,30 +90,6 @@ const ConnectedBibliographe = (props) => {
     }
   }
 
-  const IconNameMap = {
-    article: 'journal-article',
-    book: 'book',
-    booklet: 'journal-article',
-    inbook: 'book-section',
-    incollection: 'document',
-    inproceedings: 'conference-paper',
-    manual: 'book',
-    mastersthesis: 'thesis',
-    misc: 'journal-article',
-    phdthesis: 'thesis',
-    proceedings: 'book',
-    techreport: 'report',
-    unpublished: 'manuscript'
-  }
-
-  const iconName = (bibtextType) => {
-    const iconName = IconNameMap[bibtextType]
-    if (iconName) {
-      return iconName
-    }
-    return 'book'
-  }
-
   return (
     <article>
       <h1 className={styles.title}>Bibliography</h1>
@@ -148,7 +125,7 @@ const ConnectedBibliographe = (props) => {
             <tbody>
               {citations.map((b, i)=> <tr key={`citation-${b.key}-${i}`} className={styles.citation}>
                 <td className={`icon-${b.type} ${styles.colIcon}`}>
-                  <img src={`/bibtext/${iconName(b.type)}.svg`} alt={b.type} title={b.type}/>
+                  <ReferenceTypeIcon type={b.type} />
                 </td>
                 <th className={styles.colKey} scope="row">@{b.key}</th>
                 <td className={styles.colActions}><button onClick={()=>removeCitation(citations, i)}>Remove</button></td>
