@@ -1,12 +1,12 @@
-import React, {useState, useRef} from 'react'
+import React, {useRef, useState} from 'react'
 import {connect} from 'react-redux'
 
 import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
 import bib2key from './CitationsFilter'
 import askGraphQL from '../../../helpers/graphQL';
-import { fetchBibliographyFromCollection } from '../../../helpers/zotero'
-import { validate, toBibtex } from '../../../helpers/bibtex'
+import {fetchBibliographyFromCollection} from '../../../helpers/zotero'
+import {toBibtex, validate} from '../../../helpers/bibtex'
 
 const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
   return { logedIn, sessionToken, activeUser  }
@@ -72,7 +72,7 @@ const ConnectedBibliographe = (props) => {
         alert(err)
       }
     }
-    
+
     // we synchronize the collection, any time we save
     if (zoteroLink) {
       await fetchBibliographyFromCollection(zoteroLink).then(result => {
@@ -87,6 +87,30 @@ const ConnectedBibliographe = (props) => {
       // previous value was empty, and we tried to save an empty value again
       setSaving(false)
     }
+  }
+
+  const IconNameMap = {
+    article: 'journal-article',
+    book: 'book',
+    booklet: 'journal-article',
+    inbook: 'book-section',
+    incollection: 'document',
+    inproceedings: 'conference-paper',
+    manual: 'book',
+    mastersthesis: 'thesis',
+    misc: 'journal-article',
+    phdthesis: 'thesis',
+    proceedings: 'book',
+    techreport: 'report',
+    unpublished: 'manuscript'
+  }
+
+  const iconName = (bibtextType) => {
+    const iconName = IconNameMap[bibtextType]
+    if (iconName) {
+      return iconName
+    }
+    return 'book'
   }
 
   return (
@@ -109,9 +133,9 @@ const ConnectedBibliographe = (props) => {
 
       {selector === 'citations' && <form ref={citationForm} onSubmit={(e) => e.preventDefault() && mergeCitations()} className={styles.citations}>
         <textarea onChange={event => validateCitation(etv(event), setCitationValid, setAddCitation)} placeholder="Paste here the bibtext of the citation you want to add"/>
-        
+
         <button type="submit" disabled={isCitationValid !== true} onClick={() => mergeCitations()}>Add</button>
-        
+
         <p>{citations.length} citations.</p>
 
         <div className={styles.responsiveTable}>
@@ -123,7 +147,9 @@ const ConnectedBibliographe = (props) => {
             </colgroup>
             <tbody>
               {citations.map((b, i)=> <tr key={`citation-${b.key}-${i}`} className={styles.citation}>
-                <td className={styles.colIcon}>{b.type}</td>
+                <td className={`icon-${b.type} ${styles.colIcon}`}>
+                  <img src={`/bibtext/${iconName(b.type)}.svg`} alt={b.type} title={b.type}/>
+                </td>
                 <th className={styles.colKey} scope="row">@{b.key}</th>
                 <td className={styles.colActions}><button onClick={()=>removeCitation(citations, i)}>Remove</button></td>
               </tr>)}
