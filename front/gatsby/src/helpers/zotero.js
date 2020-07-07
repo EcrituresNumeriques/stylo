@@ -1,4 +1,5 @@
 import LinkHeader from 'http-link-header'
+import { bindActionCreators } from 'redux'
 
 /**
  * @param {*} zoteroLink - format "2478772/collections/UGF4W4PZ"
@@ -31,7 +32,9 @@ export async function fetchZoteroFromUrl (url, agg = []) {
     const { headers } = response
     const bib = await response.text()
 
-    agg.push(bib)
+    if (bib && bib.trim().length > 0) {
+        agg.push(bib)
+    }
 
     const nextLink = getNextLink(headers)
 

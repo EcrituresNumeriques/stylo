@@ -22,6 +22,7 @@ export default (input) => {
     processUnknown: true,
     async: false
   })
+  .sort(compare);
 
   const {entries} = parser.parse()
 
