@@ -29,6 +29,13 @@
         dest: /etc/nginx/sites-enabled/{{ site }}.conf
       notify: reload nginx
 
+    - name: Copy systemd service file
+      become: yes
+      copy:
+        src: ./docker-compose-stylo.service
+        dest: /etc/systemd/system/docker-compose-stylo.service
+      notify: start docker-compose-stylo
+
     - name: Checkout and update Stylo
       git:
         repo: 'https://github.com/EcrituresNumeriques/stylo.git'
@@ -54,3 +61,9 @@
       service:
         name: nginx
         state: reloaded
+    - name: start docker-compose-stylo
+      become: true
+      systemd:
+        name: docker-compose-stylo
+        state: started
+        enabled: yes
