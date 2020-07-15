@@ -4,13 +4,13 @@ Requires=docker.service
 After=docker.service
 StartLimitIntervalSec=60
 StartLimitBurst=3
-TimeoutStartSec=0
 
 [Service]
 WorkingDirectory=/home/stylo/stylo
 ExecStart=/usr/local/bin/docker-compose up
 ExecStop=/usr/local/bin/docker-compose down
 Restart=on-failure
+TimeoutStartSec=0
 
 [Install]
 WantedBy=multi-user.target
