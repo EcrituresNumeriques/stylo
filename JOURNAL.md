@@ -1,5 +1,21 @@
 # Journal de développement
 
+## Mercredi 15 juillet 2020
+
+### Ce que j'ai aimé/appris
+
+- le débrief avec Antoine
+- on a des pistes assez claires pour améliorer ce qu'on a développé (validation bibtex, etc.)
+- connecter le bouton "m'identifier avec Zotero" avec une popup ça rendait le flux assez simple
+
+### Ce que j'ai trouvé difficile
+
+- la synchronisation des données du profil une fois connecté (à Stylo, à Zotero), pour que l'information redescende dans les composants, _et_ lorsqu'on affiche l'application de zéro (refresh, ou nouvelle session) ; ça pris du temps alors que je ne l'avais pas identifié comme un point de blocage
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- rien de spécial
+
 ## Mardi 7 juillet 2020
 
 ### Ce que j'ai aimé/appris
