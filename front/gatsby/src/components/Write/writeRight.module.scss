@@ -59,6 +59,9 @@
 }
 
 .yamlEditor{
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
   overflow-x: hidden;
   > nav{
     margin:1rem 0;

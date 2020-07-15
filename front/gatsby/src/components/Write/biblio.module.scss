@@ -20,11 +20,9 @@
   > p{
     padding:0.5rem 1rem;
   }
-  > button.secondary{
-    @extend .secondary-button;
-    display:block;
+  > button {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
     width:100%;
-    border:none;
-    border-top:1px solid $main-border-color;
   }
 }

@@ -9,7 +9,7 @@
     "develop": "gatsby develop -p 3000 -H 0.0.0.0",
     "start": "npm run develop",
     "serve": "gatsby serve -p 3000 -H 0.0.0.0",
-    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
+    "test": "jest"
   },
   "dependencies": {
     "codemirror": "^5.51.0",
@@ -17,6 +17,7 @@
     "gatsby": "^2.19.12",
     "gatsby-plugin-react-helmet": "^3.1.22",
     "gatsby-plugin-sass": "^2.1.28",
+    "http-link-header": "^1.0.2",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15",
     "node-sass": "^4.13.1",
@@ -37,5 +38,11 @@
   },
   "bugs": {
     "url": "https://github.com/ecrituresnumeriques/stylo/issues"
+  },
+  "devDependencies": {
+    "babel-jest": "^26.1.0",
+    "babel-preset-gatsby": "^0.4.12",
+    "jest": "^26.1.0",
+    "node-fetch": "^2.6.0"
   }
 }
