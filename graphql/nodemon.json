@@ -16,6 +16,9 @@
         "OPENID_CONNECT_CALLBACK_URL": "http://localhost:3030/authorization-code/callback",
         "OPENID_CONNECT_CLIENT_ID": "...",
         "OPENID_CONNECT_CLIENT_SECRET": "...",
+        "ZOTERO_AUTH_CLIENT_KEY": "...",
+        "ZOTERO_AUTH_CLIENT_SECRET": "...",
+        "ZOTERO_AUTH_CALLBACK_URL": "http://localhost:3030/authorization-code/zotero/callback",
         "HTTPS": false,
         "NODE_ENV": "dev"
     }
