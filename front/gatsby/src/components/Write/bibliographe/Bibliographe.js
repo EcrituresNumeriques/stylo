@@ -1,5 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react'
 import {connect} from 'react-redux'
+import env from '../../../helpers/env'
 
 import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
@@ -13,8 +14,13 @@ const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
   return { logedIn, sessionToken, activeUser  }
 }
 
+const mapDispatchToProps = dispatch => ({
+  refreshProfile: () => dispatch({ type: 'REFRESH_PROFILE' })
+})
+
 const ConnectedBibliographe = (props) => {
   const defaultSuccess = (result) => console.log(result)
+  const {refreshProfile} = props
   const success = props.success || defaultSuccess
   const [selector, setSelector] = useState('zotero')
   const [isSaving, setSaving] = useState(false)
@@ -137,7 +143,15 @@ const ConnectedBibliographe = (props) => {
           </select>
 
           {zoteroToken && <button type="submit" disabled={!zoteroCollectionId || isSaving} onClick={() => importCollection({ token: zoteroToken, collectionId: zoteroCollectionId })}>Import this private collection</button>}
-          {!zoteroToken && <button type="button">Connect my Zotero account</button>}
+          {!zoteroToken && <button type="button" onClick={() => {
+            const popup = window.open(`${env.BACKEND_ENDPOINT}/login/zotero`, 'openid', 'width=320&height=640&menubar=0&toolbar=0')
+            popup.addEventListener('message', (event) => { 
+              console.log(`Received message: ${event.data}`)
+              refreshProfile()
+              popup.close()
+            })
+          }
+          }>Connect my Zotero account</button>}
         </form>
       </div>}
 
@@ -181,7 +195,7 @@ const ConnectedBibliographe = (props) => {
 }
 
 const Bibliographe = connect(
-  mapStateToProps
+  mapStateToProps, mapDispatchToProps
 )(ConnectedBibliographe)
 
 export default Bibliographe

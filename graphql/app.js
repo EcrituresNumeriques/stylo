@@ -15,6 +15,7 @@ const OAuthStrategy = require('passport-oauth').OAuthStrategy;
 const graphQlSchema = require('./schema/index')
 const graphQlResolvers = require('./resolvers/index')
 
+const { createJWTToken } = require('./helpers/token')
 const User = require('./models/user')
 const Password = require('./models/user_password')
 const { postCreate } = User
@@ -64,11 +65,8 @@ passport.use('zotero', new OAuthStrategy({
     callbackURL: zoteroAuthCallbackUrl,
     sessionKey: 'oauth_token'
   },
-  function(token, tokenSecret, profile, done) {
-   console.log('token', token)
-   console.log('tokenSecret', tokenSecret)
-   console.log('profile', profile)
-   done(null, { token })
+  function(zoteroToken, tokenSecret, profile, done) {
+    return done(null, { zoteroToken })
   }
 ))
 
@@ -146,7 +144,7 @@ app.get('/profile', async (req, res) => {
   if (req.user) {
     let user = await User.findOne({ email: req.user.email }).populate("passwords")
     res.status(200)
-    res.json({ user })
+    res.json({ user, zoteroToken: req.user.zoteroToken })
   } else {
     res.status(404)
     res.json({})
@@ -155,9 +153,36 @@ app.get('/profile', async (req, res) => {
 
 app.use('/authorization-code/zotero/callback',
   passport.authenticate('zotero', { failureRedirect: '/error' }), async (req, res) => {
-    // { token: 'zoteroToken' }
-    console.log(req.user)
-    res.redirect(origin)
+    // passport overrides "req.user" (session) with the Zotero token
+    const { zoteroToken } = req.user
+    const jwtToken = req.cookies && req.cookies['graphQL-jwt']
+    if (jwtToken) {
+      try {
+        // reverts "req.user" with the user connected
+        const user = jwt.verify(jwtToken, jwtSecret)
+        req.user = user
+        req.isAuth = true
+        const email = req.user.email
+
+        // adds the Zotero token in the JWT token
+        const token = await createJWTToken({ email, jwtSecret}, { zoteroToken })
+        res.cookie("graphQL-jwt", token, {
+          expires: 0,
+          httpOnly: true,
+          secure: secure
+        })
+        res.statusCode = 200
+        res.set('Content-Type', 'text/html')
+        res.end('<script>window.message("close", window.opener);</script>')
+      }
+      catch (error) {
+        res.statusCode = 401
+        res.redirect(origin)
+      }
+    } else {
+      res.statusCode = 401
+      res.redirect(origin)
+    }
   })
 
 app.use('/authorization-code/callback',
@@ -187,20 +212,8 @@ app.use('/authorization-code/callback',
       await user.save().then(postCreate)
     }
 
-    const userPassword = await Password.findOne({ email }).populate("users")
-
     // generate a JWT token
-    const payload = {
-      email,
-      usersIds: userPassword.users.map(user => user._id.toString()),
-      passwordId: userPassword.id,
-      admin: Boolean(user.admin),
-      session: true
-    }
-    const token = jwt.sign(
-      payload,
-      jwtSecret
-    )
+    const token = await createJWTToken({ email, jwtSecret })
 
     res.cookie("graphQL-jwt", token, {
       expires: 0,
