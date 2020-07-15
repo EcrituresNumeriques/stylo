@@ -57,6 +57,7 @@ const ConnectedWrite = (props) => {
     //instanceCM.setCursor(line,0);
   } 
 
+  // FIXME: activeUser can be undefined, we should call "/profile" and then load this component if the user is authenticated.
   const variables = {user:props.activeUser._id,article:props.id}
   const [isLoading,setIsLoading] = useState(true)
   const [live, setLive] = useState({})

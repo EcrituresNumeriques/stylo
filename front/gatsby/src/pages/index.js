@@ -1,43 +1,49 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
 import {navigate} from "gatsby"
+import {getUserProfile} from '../helpers/userProfile'
+
 
 import Centered from '../layouts/Centered'
 
 import '../styles/general.scss'
 
-const mapStateToProps = ({ logedIn, password, activeUser }) => {
-    return { logedIn, password, activeUser }
+const isBrowser = () => typeof window !== 'undefined';
+
+
+const mapDispatchToProps = dispatch => ({
+    refreshProfile: () => getUserProfile().then(response => dispatch({ type: 'PROFILE', ...response }))
+})
+
+const mapStateToProps = ({ logedIn, hasBooted, activeUser }) => {
+  return { logedIn, hasBooted, activeUser }
 }
 
 const ConnectedIndex = (props) => {
-    
-    const isBrowser = typeof window !== 'undefined';
-    if(isBrowser){
-        if(props.logedIn){
-            navigate('/articles')
-        }
-        else{
-            navigate('/login')
-        }
-    }
-    return (
-        <Centered><p>Redirecting</p></Centered>
-    )
+    const {refreshProfile, hasBooted} = props
 
-    // return (
-    //     <Centered title="Hello Stylo">
-    //         <h1>Hello World!</h1>
-    //         <h2>hello </h2>
-    //         <p>
-    //             <a href="http://stylo-doc.ecrituresnumeriques.ca/" target="_blank" rel="noopener noreferrer">Documentation</a><br/>
-    //             <a href="https://github.com/EcrituresNumeriques/stylo/issues" target="_blank" rel="noopener noreferrer">Report an issue</a>
-    //         </p>                    
-    //     </Centered>
-    //     )
+    useEffect(() => {
+        refreshProfile()
+    })
+
+    if (hasBooted && isBrowser()) {
+      if (props.logedIn) {
+        navigate('/articles')
+      }
+      else {
+        navigate('/login')
+      }
+    }
+
+    if (!hasBooted) {
+      return <Centered><p>Loading…</p></Centered>
+    }
+    else {
+      return <Centered><p>Redirecting…</p></Centered>
+    }
 }
 
 const Index = connect(
-    mapStateToProps
+    mapStateToProps, mapDispatchToProps
 )(ConnectedIndex)
 export default Index

@@ -1,42 +1,32 @@
-import env from '../helpers/env'
 import { createStore as reduxCreateStore } from "redux"
 
 // Définit tout ce qui se passe quand un message d'action est envoyé
 
 const initialState = {
-  activeUser: undefined,
   logedIn: false,
   users: [],
   password: undefined,
-  sessionToken: undefined
+  sessionToken: undefined,
 }
 
 const reducer = (state = initialState, action) => {
-  if (action.type === 'REFRESH_PROFILE') {
-    fetch(`${env.BACKEND_ENDPOINT}/profile`, {
-      method: 'GET',
-      credentials: 'include',
-      cors: true
-    })
-      .then(res => res.json())
-      .then(({ user: activeUser, zoteroToken }) => {
-        console.log('activeUser', activeUser)
-        console.log('zoteroToken', zoteroToken)
-        if (activeUser) {
-          // to be removed once it is persisted in database
-          activeUser.zoteroToken = zoteroToken
+  if (action.type === 'PROFILE') {
+    if (!action.user) {
+      return { ...state, hasBooted: true }
+    }
 
-          return Object.assign({}, state, {
-            activeUser,
-            logedIn: true,
-            // it will allow password modification if logged with password,
-            // otherwise it means we use an external auth service
-            password: (activeUser.passwords.find(p => p.email === activeUser.email) || {}),
-            users: [activeUser._id]
-          })
-        }
-        return Object.assign({}, state, {})
-      })
+    const { zoteroToken, user: activeUser } = action
+    activeUser.zoteroToken = zoteroToken
+
+    return Object.assign({}, state, {
+      hasBooted: true,
+      activeUser,
+      logedIn: true,
+      // it will allow password modification if logged with password,
+      // otherwise it means we use an external auth service
+      password: (activeUser.passwords.find(p => p.email === activeUser.email) || {}),
+      users: [activeUser._id]
+    })
   }
   else if (action.type === 'LOGIN') {
     const login = action.login

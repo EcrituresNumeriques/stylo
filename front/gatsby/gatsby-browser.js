@@ -1,6 +1,3 @@
-import wrapWithProvider, {store} from "./src/components/provider"
-
-
-store.dispatch({ type: 'REFRESH_PROFILE' })
+import wrapWithProvider from "./src/components/provider"
 
 export const wrapRootElement = wrapWithProvider

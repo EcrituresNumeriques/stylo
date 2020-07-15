@@ -4,6 +4,7 @@ import env from '../../../helpers/env'
 
 import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
+import {getUserProfile} from '../../../helpers/userProfile'
 import bib2key from './CitationsFilter'
 import askGraphQL from '../../../helpers/graphQL';
 import {fetchBibliographyFromGroupSuffix, fetchBibliographyFromCollectionId, fetchUserCollections} from '../../../helpers/zotero'
@@ -15,7 +16,7 @@ const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  refreshProfile: () => dispatch({ type: 'REFRESH_PROFILE' })
+  refreshProfile: () => getUserProfile().then(response => dispatch({ type: 'PROFILE', ...response }))
 })
 
 const ConnectedBibliographe = (props) => {
