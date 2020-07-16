@@ -3,19 +3,20 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 import styles from './reference.module.scss'
 
-export default props => {
+export default ({ entry }) => {
+  const {key, title} = entry
 
   const [copied, setCopied] = useState(false)
   useEffect(()=>{
-    if(copied){
+    if (copied) {
       setCopied(false)
     }
-  },[copied])
+  }, [copied])
 
   return (
-    <CopyToClipboard text={`[@${props.cle}]`} onCopy={()=>setCopied(true)}>
-      <p className={`${styles.reference} ${copied?styles.clicked:null}`}>
-        <span>@{props.cle}</span>
+    <CopyToClipboard text={`[@${key}]`} onCopy={() => setCopied(true)}>
+      <p className={`${styles.reference} ${copied ? styles.clicked: null}`} title={title}>
+        <span>@{key}</span>
       </p>
     </CopyToClipboard>
   )

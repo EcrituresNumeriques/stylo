@@ -1,32 +1,36 @@
-export default (input) => {
+import { BibLatexParser } from 'biblatex-csl-converter'
 
-const compare = (a,b) => {
-  if (a.cle < b.cle)
-    return -1;
-  if (a.cle > b.cle)
-    return 1;
-  return 0;
+const compare = (a, b) => {
+  if (a.key < b.key) return -1
+  if (a.key > b.key) return 1
+  return 0
 }
 
-const itemsAllowed = [
-  "@spacer",
-  "@book",
-  "@article",
-  "@incollection",
-  "@phdthesis",
-  "@misc",
-  "@inproceedings",
-  "@techreport",
-  "@unpublished",
-]
-const regex = new RegExp('/(?='+itemsAllowed.join(')|(?=')+')/g')
-const bib = input || ""
+const flatten = (entryTitle) => {
+  return entryTitle
+    .map(({ text }) => text)
+    .join('')
+}
 
-let entries = bib.split(regex)
-  .filter((ref)=>(ref.match(/^@/g)))
-  .map((ref)=>(ref.replace(/^\s+|\s+$/g, '')))
-  .map((ref)=>({title:ref,cle:ref.match(/^@.+{(.+),/)[1]}))
-  .sort(compare);
+/**
+ * @param {string} Bibtex bibliography
+ * @returns {Array.<{ title: string, key: string, type: string }}
+ */
+export default (input) => {
+  const parser = new BibLatexParser(input, {
+    processUnexpected: true,
+    processUnknown: true,
+    async: false
+  })
 
-  return entries
+  const {entries} = parser.parse()
+
+  return Object.entries(entries)
+    .map(([key, entry]) => ({
+      title: flatten(entry.fields.title),
+      type: entry.bib_type,
+      key: entry.entry_key,
+      entry
+    }))
+    .sort(compare)
 }
