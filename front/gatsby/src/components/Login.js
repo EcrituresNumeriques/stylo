@@ -60,7 +60,7 @@ const ConnectedLogin = ({ logedIn, login }) => {
         </section>
 
         <section className={styles.box}>
-            <h1>🔒 Login</h1>
+            <h1 className={styles.loginTitle}>Login</h1>
             <form onSubmit={handleSubmit}>
                 <fieldset>
                     <legend>Connect via Huma-Num <small>(recommended)</small></legend>
@@ -69,7 +69,7 @@ const ConnectedLogin = ({ logedIn, login }) => {
                         <a className={styles.humaNumCreateAccountBtn} href={env.HUMAN_ID_REGISTER_ENDPOINT}>Create a Huma-Num account</a>
                     </p>
                     <p className={styles.note}>
-                        💡 If you use the same email address for your <strong>existing</strong> Stylo account
+                        If you use the same email address for your <strong>existing</strong> Stylo account
                         and for your Huma-Num account, the two accounts will be automatically merged.
                     </p>
                 </fieldset>

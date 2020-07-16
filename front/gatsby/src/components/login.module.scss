@@ -51,6 +51,17 @@
 }
 
 .note {
+  &::before {
+    content: ' ';
+    background-image: url('/images/bulb.svg');
+    background-size: contain;
+    color: white;
+    display: inline-block;
+    height: 14px;
+    margin-right: .25em;
+    width: 14px;
+    align-self: center;
+  }
   font-size: 0.8rem;
 }
 
@@ -123,6 +134,21 @@ a.humaNumCreateAccountBtn {
 a.humaNumConnectBtn {
   @extend %humaNumBtn;
   background-color: #c00;
+}
+
+h1.loginTitle {
+  &::before {
+    content: ' ';
+    background-image: url('/images/key.svg');
+    background-size: contain;
+    color: white;
+    display: inline-block;
+    height: 24px;
+    margin-right: .25em;
+    width: 24px;
+    align-self: center;
+  }
+  margin-left: .5em;
 }
 
 .disclaimer {
