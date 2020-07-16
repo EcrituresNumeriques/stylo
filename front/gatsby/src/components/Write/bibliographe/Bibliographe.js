@@ -51,10 +51,10 @@ const ConnectedBibliographe = (props) => {
       .filter((entry, index) => index !== indexToRemove)
       .map(({ entry }) => entry)
 
-    const bibtext = toBibtex(filteredEntries)
+    const bibtex = toBibtex(filteredEntries)
 
     // we reform the bibtex output based on what we were able to parse
-    setBib(bibtext)
+    setBib(bibtex)
   }
 
   const saveNewZotero = async () => {
@@ -96,7 +96,7 @@ const ConnectedBibliographe = (props) => {
       <nav className={styles.selector}>
         <p className={selector === "zotero"?styles.selected:null} onClick={()=>setSelector('zotero')}>Zotero</p>
         <p className={selector === "citations"?styles.selected:null} onClick={()=>setSelector('citations')}>Citations</p>
-        <p className={selector === "raw"?styles.selected:null} onClick={()=>setSelector('raw')}>Raw bibtex</p>
+        <p className={selector === "raw"?styles.selected:null} onClick={()=>setSelector('raw')}>Raw BibTeX</p>
       </nav>
 
       {selector === 'zotero' && <div className={styles.zotero}>
@@ -109,7 +109,7 @@ const ConnectedBibliographe = (props) => {
       </div>}
 
       {selector === 'citations' && <form ref={citationForm} onSubmit={(e) => e.preventDefault() && mergeCitations()} className={styles.citations}>
-        <textarea onChange={event => validateCitation(etv(event), setCitationValid, setAddCitation)} placeholder="Paste here the bibtext of the citation you want to add"/>
+        <textarea onChange={event => validateCitation(etv(event), setCitationValid, setAddCitation)} placeholder="Paste here the BibTeX of the citation you want to add"/>
 
         <button type="submit" disabled={isCitationValid !== true} onClick={() => mergeCitations()}>Add</button>
 
