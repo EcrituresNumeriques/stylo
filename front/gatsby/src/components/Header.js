@@ -10,8 +10,6 @@ const mapStateToProps = ({ logedIn, activeUser }) => {
     return { logedIn, activeUser }
 }
 
-
-
 const ConnectedHeader = (props) => {
     return (
         <header className={props.className}>
@@ -22,11 +20,11 @@ const ConnectedHeader = (props) => {
                         <Link to='/credentials'>{props.activeUser.displayName}</Link>
                         <Link to='/books'>Books</Link>
                         <Link to='/articles'>Articles</Link>
-                        <a href={env.BACKEND_ENDPOINT + '/logout'} class={styles.logoutAction}>Log out</a>
+                        <a href={env.BACKEND_ENDPOINT + '/logout'} className={styles.logoutAction}>Log out</a>
                     </>}
                     {!props.logedIn && <Link to="/login">Login</Link>}
                     {!props.logedIn && <Link to="/register" className={styles.registerAction}>Register</Link>}
-                    <a href='http://stylo-doc.ecrituresnumeriques.ca' class={styles.documentationLink} target='_blank' rel='noopener noreferrer'>Documentation</a>
+                    <a href='http://stylo-doc.ecrituresnumeriques.ca' className={styles.documentationLink} target='_blank' rel='noopener noreferrer'>Documentation</a>
                 </nav>
             </section>
         </header>
