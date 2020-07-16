@@ -15,7 +15,7 @@ export default (props) => {
   return (
 
     <section id={styles.section}>
-      <h1 className={expand?null:styles.closed} onClick={()=>setExpand(!expand)}>{expand?"-":"+"} Bibliography</h1>
+      <h1 className={expand ? null : styles.closed} onClick={() => setExpand(!expand)}>{expand ? "-" : "+"} Bibliography</h1>
       {expand && <>
         {!props.readOnly && <button onClick={()=>setModal(true)}>Manage Bibliography</button>}
         {entries.map((entry, index)=>(<Reference key={`ref-${entry.key}-${index}`} entry={entry} />))}

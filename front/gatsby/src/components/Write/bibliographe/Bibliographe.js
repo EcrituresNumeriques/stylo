@@ -1,12 +1,13 @@
-import React, {useState, useRef} from 'react'
+import React, {useRef, useState} from 'react'
 import {connect} from 'react-redux'
 
 import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
 import bib2key from './CitationsFilter'
 import askGraphQL from '../../../helpers/graphQL';
-import { fetchBibliographyFromCollection } from '../../../helpers/zotero'
-import { validate, toBibtex } from '../../../helpers/bibtex'
+import {fetchBibliographyFromCollection} from '../../../helpers/zotero'
+import {toBibtex, validate} from '../../../helpers/bibtex'
+import ReferenceTypeIcon from '../../ReferenceTypeIcon.js'
 
 const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
   return { logedIn, sessionToken, activeUser  }
@@ -50,10 +51,10 @@ const ConnectedBibliographe = (props) => {
       .filter((entry, index) => index !== indexToRemove)
       .map(({ entry }) => entry)
 
-    const bibtext = toBibtex(filteredEntries)
+    const bibtex = toBibtex(filteredEntries)
 
     // we reform the bibtex output based on what we were able to parse
-    setBib(bibtext)
+    setBib(bibtex)
   }
 
   const saveNewZotero = async () => {
@@ -72,7 +73,7 @@ const ConnectedBibliographe = (props) => {
         alert(err)
       }
     }
-    
+
     // we synchronize the collection, any time we save
     if (zoteroLink) {
       await fetchBibliographyFromCollection(zoteroLink).then(result => {
@@ -95,7 +96,7 @@ const ConnectedBibliographe = (props) => {
       <nav className={styles.selector}>
         <p className={selector === "zotero"?styles.selected:null} onClick={()=>setSelector('zotero')}>Zotero</p>
         <p className={selector === "citations"?styles.selected:null} onClick={()=>setSelector('citations')}>Citations</p>
-        <p className={selector === "raw"?styles.selected:null} onClick={()=>setSelector('raw')}>Raw bibtex</p>
+        <p className={selector === "raw"?styles.selected:null} onClick={()=>setSelector('raw')}>Raw BibTeX</p>
       </nav>
 
       {selector === 'zotero' && <div className={styles.zotero}>
@@ -108,10 +109,10 @@ const ConnectedBibliographe = (props) => {
       </div>}
 
       {selector === 'citations' && <form ref={citationForm} onSubmit={(e) => e.preventDefault() && mergeCitations()} className={styles.citations}>
-        <textarea onChange={event => validateCitation(etv(event), setCitationValid, setAddCitation)} placeholder="Paste here the bibtext of the citation you want to add"/>
-        
+        <textarea onChange={event => validateCitation(etv(event), setCitationValid, setAddCitation)} placeholder="Paste here the BibTeX of the citation you want to add"/>
+
         <button type="submit" disabled={isCitationValid !== true} onClick={() => mergeCitations()}>Add</button>
-        
+
         <p>{citations.length} citations.</p>
 
         <div className={styles.responsiveTable}>
@@ -123,7 +124,9 @@ const ConnectedBibliographe = (props) => {
             </colgroup>
             <tbody>
               {citations.map((b, i)=> <tr key={`citation-${b.key}-${i}`} className={styles.citation}>
-                <td className={styles.colIcon}>{b.type}</td>
+                <td className={`icon-${b.type} ${styles.colIcon}`}>
+                  <ReferenceTypeIcon type={b.type} />
+                </td>
                 <th className={styles.colKey} scope="row">@{b.key}</th>
                 <td className={styles.colActions}><button onClick={()=>removeCitation(citations, i)}>Remove</button></td>
               </tr>)}

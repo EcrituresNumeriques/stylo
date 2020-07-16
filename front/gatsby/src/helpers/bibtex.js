@@ -20,20 +20,48 @@ export function toBibtex (entries) {
 }
 
 /**
- *
  * We tolerate `unexpected_field` warnings as it's user provided, it does not have any side effect
  * @see https://github.com/EcrituresNumeriques/stylo/issues/187
  *
- * @param {string} bibtext
- * @returns {Promise[{success: number,empty: boolean,warnings: Array.<string>,error: Array.<string>}]}
+ * @param {string} bibtex
+ * @returns {Promise<{success: number,empty: boolean,warnings: Array.<string>,error: Array.<string>}>}
  */
-export function validate(bibtext) {
-  return parse(bibtext).then(result => ({
+export function validate(bibtex) {
+  return parse(bibtex).then(result => ({
       success: Object.keys(result.entries).length,
-      empty: String(bibtext).trim().length === 0,
+      empty: String(bibtex).trim().length === 0,
       errors: result.errors.map(error => error.type + ' at line ' + error.line),
       warnings: result.warnings
         .filter(error => error.type !== 'unexpected_field')
         .map(error => error.type + ' at line ' + error.line)
   }))
+}
+
+const IconNameMap = {
+  article: 'journal-article',
+  book: 'book',
+  booklet: 'journal-article',
+  inbook: 'book-section',
+  incollection: 'document',
+  inproceedings: 'conference-paper',
+  manual: 'book',
+  mastersthesis: 'thesis',
+  misc: 'journal-article',
+  phdthesis: 'thesis',
+  proceedings: 'book',
+  techreport: 'report',
+  unpublished: 'manuscript'
+}
+
+/**
+ * Get the icon name for a given Bibtex type.
+ * @param bibtexType
+ * @returns {string}
+ */
+export function iconName (bibtexType) {
+  const iconName = IconNameMap[bibtexType]
+  if (iconName) {
+    return iconName
+  }
+  return 'book'
 }

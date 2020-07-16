@@ -3,6 +3,8 @@
 
 
 .reference{
+  display: flex;
+  align-items: center;
   @extend .clickable;
   background-color:$extra-background-color;
   transition:color 1s ease,background 1s ease;
@@ -13,5 +15,10 @@
     background-color:$main-color;
     color:$extra-background-color;
     transition:none;
+  }
+  img {
+    width: 1em;
+    height: 1em;
+    margin-right: 0.35em;
   }
 }
