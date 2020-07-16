@@ -20,7 +20,7 @@
         a {
             @extend .hoverable;
         }
-        
+
         a,p {
             @extend .clickable;
             display: block;
@@ -32,7 +32,7 @@
 .logoutAction {
     &::after {
         content: ' ';
-        background-image: url('/logout.svg');
+        background-image: url('/images/logout.svg');
         background-size: contain;
         color: white;
         display: inline-block;
