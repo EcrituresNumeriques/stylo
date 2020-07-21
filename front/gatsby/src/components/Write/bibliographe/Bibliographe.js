@@ -145,14 +145,14 @@ const ConnectedBibliographe = (props) => {
 
           {zoteroToken && <button type="submit" disabled={!zoteroCollectionId || isSaving} onClick={() => importCollection({ token: zoteroToken, collectionId: zoteroCollectionId })}>Import this private collection</button>}
           {!zoteroToken && <button type="button" onClick={() => {
-            const popup = window.open(`${env.BACKEND_ENDPOINT}/login/zotero`, 'openid', 'width=320&height=640&menubar=0&toolbar=0')
-            popup.addEventListener('message', (event) => { 
-              console.log(`Received message: ${event.data}`)
-              refreshProfile()
-              popup.close()
-            })
-          }
-          }>Connect my Zotero account</button>}
+            const popup = window.open(`${env.BACKEND_ENDPOINT}/login/zotero`, 'openid', 'width=660&height=360&menubar=0&toolbar=0')
+            const intervalId = setInterval(() => {
+              if (popup.closed) {
+                refreshProfile()
+                clearInterval(intervalId)
+              }
+            }, 1000)
+          }}>Connect my Zotero account</button>}
         </form>
       </div>}
 

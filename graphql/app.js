@@ -172,8 +172,10 @@ app.use('/authorization-code/zotero/callback',
           secure: secure
         })
         res.statusCode = 200
-        res.set('Content-Type', 'text/html')
-        res.end('<script>window.message("close", window.opener);</script>')
+        res.set({
+          'Content-Type': 'text/html'
+        })
+        res.end(`<script>window.close();</script>`)
       }
       catch (error) {
         res.statusCode = 401
