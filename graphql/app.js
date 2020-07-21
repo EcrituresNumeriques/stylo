@@ -66,9 +66,6 @@ passport.use('zotero', new OAuthStrategy({
     sessionKey: 'oauth_token'
   },
   function(zoteroToken, tokenSecret, profile, done) {
-    console.log('zoteroToken', zoteroToken)
-    console.log('profile', profile)
-    console.log('tokenSecret', tokenSecret)
     return done(null, { zoteroToken })
   }
 ))
