@@ -9,16 +9,16 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   email: {
     type: String,
-    unique:true,
+    unique: true,
     required: true
   },
-  tags:[
+  tags: [
     {
       type:Schema.Types.ObjectId,
       ref: 'Tag'
     }
   ],
-  acquintances:[
+  acquintances: [
     {
       type:Schema.Types.ObjectId,
       ref: 'User'
@@ -36,7 +36,7 @@ const userSchema = new Schema({
       ref: 'Token'
     }
   ],
-  passwords:[
+  passwords: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Password'
@@ -48,7 +48,7 @@ const userSchema = new Schema({
   },
   admin: {
     type:Boolean,
-    default:false
+    default: false
   },
   firstName: {
     type: String
@@ -59,9 +59,12 @@ const userSchema = new Schema({
   institution: {
     type: String
   },
-  yaml:{
-    type:String,
-    defaults:defaultsData.yaml
+  zoteroToken: {
+    type: String
+  },
+  yaml: {
+    type: String,
+    defaults: defaultsData.yaml
   }
 }, {timestamps: true});
 

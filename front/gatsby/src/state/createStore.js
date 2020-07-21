@@ -15,8 +15,7 @@ const reducer = (state = initialState, action) => {
       return { ...state, hasBooted: true }
     }
 
-    const { zoteroToken, user: activeUser } = action
-    activeUser.zoteroToken = zoteroToken
+    const { user: activeUser } = action
 
     return Object.assign({}, state, {
       hasBooted: true,
@@ -27,6 +26,10 @@ const reducer = (state = initialState, action) => {
       password: (activeUser.passwords.find(p => p.email === activeUser.email) || {}),
       users: [activeUser._id]
     })
+  }
+  else if (action.type === 'CLEAR_ZOTERO_TOKEN') {
+    state.activeUser.zoteroToken = null
+    return state
   }
   else if (action.type === 'LOGIN') {
     const login = action.login

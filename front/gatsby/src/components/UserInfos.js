@@ -2,7 +2,7 @@ import React,{useState, useEffect} from 'react'
 import {navigate} from 'gatsby'
 import { connect } from "react-redux"
 
-import askGraphQL from '../helpers/graphQL';
+import askGraphQL from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
 import styles from './userInfos.module.scss'
 import UserConnectedLogin from './UserAllowedLogin'
@@ -14,8 +14,9 @@ const mapStateToProps = ({ logedIn, password, activeUser, sessionToken }) => {
 const mapDispatchToProps = dispatch => {
   return { 
       updateActiveUser: (displayName) => dispatch({ type: `UPDATE_ACTIVE_USER`, payload: displayName }),
-      removedMyself: (_id) => dispatch({type: 'REMOVE_MYSELF_ALLOWED_LOGIN', payload: _id})
-  }
+      removedMyself: (_id) => dispatch({type: 'REMOVE_MYSELF_ALLOWED_LOGIN', payload: _id}),
+      clearZoteroToken: () => dispatch({ type: 'CLEAR_ZOTERO_TOKEN' })
+    }
 }
 
 const ConnectedUser = props => {
@@ -24,17 +25,18 @@ const ConnectedUser = props => {
   const [lastName,setLastName] = useState('')
   const [institution,setInstitution] = useState('')
   const [yaml,setYaml] = useState('')
-  const [user,setUser] = useState({email:'',_id:'',admin:false,createdAt:'',updatedAt:''})
+  const [user,setUser] = useState({email:'',_id:'',admin:false,createdAt:'',updatedAt:'',zoteroToken: '', zoteroUsername: ''})
   const [passwords, setPasswords] = useState([])
   //const [tokens, setTokens] = useState([])
   const [isLoading,setIsLoading] = useState(true)
   const [emailLogin,setEmailLogin] = useState('')
+  const {clearZoteroToken} = props
 
   
   useEffect(()=>{
     (async ()=>{
       try{
-        const query = `query($user:ID!){user(user:$user){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution passwords{ _id username email } tokens{ _id name active }}}`
+        const query = `query($user:ID!){user(user:$user){ displayName _id email admin createdAt updatedAt yaml firstName zoteroToken lastName institution passwords{ _id username email } tokens{ _id name active }}}`
         const variables = {user:props.activeUser._id}
         const data = await askGraphQL({query,variables},'fetching user',props.sessionToken)
         //setDisplayNameH1(data.user.displayName)
@@ -54,11 +56,21 @@ const ConnectedUser = props => {
     })()
   },[])
 
+  const unlinkZoteroAccount = async () => {
+    const query = `mutation($user:ID!,$zoteroToken:String){updateUser(user:$user, zoteroToken:$zoteroToken){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken passwords{ _id username email } tokens{ _id name active } }}`
+    const variables = {user:props.activeUser._id, zoteroToken: null}
+    setIsLoading(true)
+    const data = await askGraphQL({query, variables}, 'clear Zotero Token', props.sessionToken)
+    setUser(data.updateUser)
+    clearZoteroToken()
+    setIsLoading(true)
+  }
+
   const updateInfo = async (e) => {
     e.preventDefault();
     try{
       setIsLoading(true)
-      const query = `mutation($user:ID!,$displayName:String!,$firstName:String,$lastName:String, $institution:String,$yaml:String){updateUser(user:$user,displayName:$displayName,firstName:$firstName, lastName: $lastName, institution:$institution, yaml:$yaml){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution passwords{ _id username email } tokens{ _id name active }}}`
+      const query = `mutation($user:ID!,$displayName:String!,$firstName:String,$lastName:String, $institution:String,$yaml:String){updateUser(user:$user,displayName:$displayName,firstName:$firstName, lastName: $lastName, institution:$institution, yaml:$yaml){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken passwords{ _id username email } tokens{ _id name active }}}`
       const variables = {user:props.activeUser._id,yaml,displayName,firstName,lastName,institution}
       const data = await askGraphQL({query,variables},'updating user',props.sessionToken)
       //setDisplayNameH1(data.updateUser.displayName)
@@ -136,6 +148,7 @@ const ConnectedUser = props => {
         <label>First Name:</label><input type="text" value={firstName} onChange={(e)=>setFirstName(etv(e))} placeholder="First name" />
         <label>Last name:</label><input type="text" value={lastName} onChange={(e)=>setLastName(etv(e))} placeholder="Last name" />
         <label>Institution:</label><input type="text" value={institution} onChange={(e)=>setInstitution(etv(e))} placeholder="Institution name" />
+        <label>Zotero:</label><p>{user.zoteroToken ? <span>Linked with <b>{user.zoteroToken}</b> account.</span> : <span>No linked account.</span>}{user.zoteroToken && <button title="Unlink this Zotero account" onClick={(e) => e.preventDefault() || unlinkZoteroAccount()}>Unlink</button>}</p>
         <label>Default YAML:</label><textarea value={yaml} onChange={(e)=>setYaml(etv(e))} placeholder="" />
         <div className={styles.rightAlign}><button>Update</button>
         </div>

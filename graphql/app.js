@@ -66,6 +66,9 @@ passport.use('zotero', new OAuthStrategy({
     sessionKey: 'oauth_token'
   },
   function(zoteroToken, tokenSecret, profile, done) {
+    console.log('zoteroToken', zoteroToken)
+    console.log('profile', profile)
+    console.log('tokenSecret', tokenSecret)
     return done(null, { zoteroToken })
   }
 ))
@@ -142,9 +145,9 @@ app.get('/login/zotero', passport.authenticate('zotero', { scope: zoteroAuthScop
 
 app.get('/profile', async (req, res) => {
   if (req.user) {
-    let user = await User.findOne({ email: req.user.email }).populate("passwords")
+    const user = await User.findOne({ email: req.user.email }).populate("passwords")
     res.status(200)
-    res.json({ user, zoteroToken: req.user.zoteroToken })
+    res.json({ user })
   } else {
     res.status(404)
     res.json({})
@@ -164,13 +167,11 @@ app.use('/authorization-code/zotero/callback',
         req.isAuth = true
         const email = req.user.email
 
-        // adds the Zotero token in the JWT token
-        const token = await createJWTToken({ email, jwtSecret}, { zoteroToken })
-        res.cookie("graphQL-jwt", token, {
-          expires: 0,
-          httpOnly: true,
-          secure: secure
-        })
+        // save the Zotero token
+        const authenticatedUser = await User.findOne({ email })
+        authenticatedUser.zoteroToken = zoteroToken
+        const result = await authenticatedUser.save()
+
         res.statusCode = 200
         res.set({
           'Content-Type': 'text/html'
@@ -178,6 +179,7 @@ app.use('/authorization-code/zotero/callback',
         res.end(`<script>window.close();</script>`)
       }
       catch (error) {
+        console.error('error', error)
         res.statusCode = 401
         res.redirect(origin)
       }

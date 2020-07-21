@@ -16,6 +16,7 @@ type User {
   passwords(limit:Int,page:Int):[Password!]!
   admin:Boolean
   yaml:String
+  zoteroToken:String
   createdAt:String
   updatedAt:String
 }
@@ -149,7 +150,7 @@ type RootMutation {
   changePassword(password:ID!,old:String!,new:String!,user:ID!):Password!
 
   "Change user information"
-  updateUser(user:ID!,displayName:String,firstName:String,lastName:String,institution:String,yaml:String):User!
+  updateUser(user:ID!,displayName:String,firstName:String,lastName:String,institution:String,zoteroToken:String,yaml:String):User!
 
   #TODO
   #require Email provider
