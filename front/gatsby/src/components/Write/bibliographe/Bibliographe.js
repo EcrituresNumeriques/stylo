@@ -7,7 +7,7 @@ import etv from '../../../helpers/eventTargetValue'
 import {getUserProfile} from '../../../helpers/userProfile'
 import bib2key from './CitationsFilter'
 import askGraphQL from '../../../helpers/graphQL';
-import {fetchBibliographyFromGroupSuffix, fetchBibliographyFromCollectionId, fetchUserCollections} from '../../../helpers/zotero'
+import {fetchBibliographyFromCollectionHref, fetchAllCollectionsPerLibrary} from '../../../helpers/zotero'
 import {toBibtex, validate} from '../../../helpers/bibtex'
 import ReferenceTypeIcon from '../../ReferenceTypeIcon.js'
 
@@ -30,15 +30,15 @@ const ConnectedBibliographe = (props) => {
   const [isCitationValid, setCitationValid] = useState(false)
   const [isRawBibtexValid, setRawBibtexValid] = useState(false)
   const [zoteroLink, setZoteroLink] = useState(props.article.zoteroLink || "")
-  const [zoteroCollectionId, setZoteroCollectionId] = useState(null)
+  const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)
   const {zoteroToken} = props.activeUser
-  const [zoteroCollections, setZoteroCollections] = useState([])
+  const [zoteroCollections, setZoteroCollections] = useState({})
   const citationForm = useRef()
 
   useEffect(() => {
     if (zoteroToken) {
       setSaving(true)
-      fetchUserCollections({ token: zoteroToken })
+      fetchAllCollectionsPerLibrary({ token: zoteroToken })
         .then(setZoteroCollections)
         .finally(() => setSaving(false))
     }
@@ -95,7 +95,7 @@ const ConnectedBibliographe = (props) => {
 
     // we synchronize the collection, any time we save
     if (zoteroLink) {
-      await fetchBibliographyFromGroupSuffix(zoteroLink).then(result => {
+      await fetchBibliographyFromCollectionHref({ collectionHref: `https://api.zotero.org/${zoteroLink}` }).then(result => {
         setSaving(false)
         const bib = result.join('\n')
         setBib(bib)
@@ -109,9 +109,9 @@ const ConnectedBibliographe = (props) => {
     }
   }
 
-  const importCollection = ({ token, collectionId }) => {
+  const importCollection = ({ token, collectionHref }) => {
     setSaving(true)
-    fetchBibliographyFromCollectionId({ token, collectionId}).then(result => {
+    fetchBibliographyFromCollectionHref({ token, collectionHref }).then(result => {
         setSaving(false)
         const bib = result.join('\n')
         setBib(bib)
@@ -119,6 +119,17 @@ const ConnectedBibliographe = (props) => {
         props.cancel()
       })
   }
+
+  const zoteroCollectionSelect = (<select onChange={(event) => setZoteroCollectionHref(etv(event))}>
+      <option value="">{isSaving ? 'Fetching collections…' : 'Pick a collection'}</option>
+      {
+        Object.entries(zoteroCollections).map(([_, collections]) => (
+          <optgroup key={collections[0].key} label={`${collections[0].library.name} (${collections[0].library.type})`}>
+            {collections.map(({data, meta, links}) => <option key={data.key} value={links.self.href}>{data.name} ({meta.numItems} items)</option>)}
+          </optgroup>
+        ))
+      }
+    </select>)
 
   return (
     <article>
@@ -128,7 +139,6 @@ const ConnectedBibliographe = (props) => {
         <p className={selector === "citations"?styles.selected:null} onClick={()=>setSelector('citations')}>Citations</p>
         <p className={selector === "raw"?styles.selected:null} onClick={()=>setSelector('raw')}>Raw BibTeX</p>
       </nav>
-
       {selector === 'zotero' && <div className={styles.zotero}>
         <form onSubmit={(e) => e.preventDefault() && saveNewZotero()}>
           <p>Please paste the URL of your Zotero library, so that it looks like https://www.zotero.org/groups/<strong>[IDnumber]/collections/[IDcollection]</strong></p>
@@ -138,12 +148,8 @@ const ConnectedBibliographe = (props) => {
         </form>
         <hr />
         <form disabled={isSaving} onSubmit={(e) => e.preventDefault()}>
-          <select onChange={(event) => setZoteroCollectionId(etv(event))}>
-            <option value="">{isSaving ? 'Fetching collections…' : 'Pick a collection'}</option>
-            {zoteroCollections.map(({ data }) => <option key={data.key} value={data.key}>{data.name}</option>)}
-          </select>
-
-          {zoteroToken && <button type="submit" disabled={!zoteroCollectionId || isSaving} onClick={() => importCollection({ token: zoteroToken, collectionId: zoteroCollectionId })}>Import this private collection</button>}
+          {zoteroCollectionSelect}
+          {zoteroToken && <button type="submit" disabled={!zoteroCollectionHref || isSaving} onClick={() => importCollection({ token: zoteroToken, collectionHref: zoteroCollectionHref })}>Import this private collection</button>}
           {!zoteroToken && <button type="button" onClick={() => {
             const popup = window.open(`${env.BACKEND_ENDPOINT}/login/zotero`, 'openid', 'width=660&height=360&menubar=0&toolbar=0')
             const intervalId = setInterval(() => {

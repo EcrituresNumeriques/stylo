@@ -1,25 +1,11 @@
 import LinkHeader from 'http-link-header'
 
-/**
- * @param {string} zoteroLink - format "2478772/collections/UGF4W4PZ"
- */
-export const fetchBibliographyFromGroupSuffix = zoteroLink => fetchBibliographyFromCollection(`groups/${zoteroLink}/items`)
-export const fetchBibliographyFromCollectionId = async ({collectionId, token}) => {
-    const {key, userID} = await fetchUserFromToken(token)
-    return fetchBibliographyFromCollection(`users/${userID}/collections/${collectionId}/items`, key)
-}
-
-/**
- * @param {string} endpoint
- * @param {string|null} key
- */
-export function fetchBibliographyFromCollection (endpoint, key = null) {
-    const url = new URL(`https://api.zotero.org/${endpoint}`)
+export const fetchBibliographyFromCollectionHref = async ({collectionHref, token: key = null}) => {
+    const url = new URL(collectionHref + '/items')
     url.searchParams.set('format', 'bibtex')
     if (key) {
         url.searchParams.set('key', key)
     }
-
     return fetchZoteroFromUrl(url, [])
 }
 
@@ -57,13 +43,36 @@ export async function fetchZoteroFromUrl (url, agg = []) {
     return agg
 }
 
-function fetchUserFromToken(token) {
+async function fetchUserFromToken(token) {
     return fetch(`https://api.zotero.org/keys/${token}`)
         .then(response => response.json())
 }
 
+async function fetchAllCollections({userID, key}) {
+    let collections = []
+    const groups = await fetch(`https://api.zotero.org/users/${userID}/groups?key=${key}`).then(response => response.json())
+    for await(const group of groups) {
+      collections = collections.concat(await fetch(`${group.links.self.href}/collections?key=${key}`).then(response => response.json()))
+    }
+    collections = collections.concat(await fetch(`https://api.zotero.org/users/${userID}/collections?key=${key}`).then(response => response.json()))
+    return collections
+}
+
+export async function fetchAllCollectionsPerLibrary({ token }) {
+    const {userID, key} = await fetchUserFromToken(token)
+    const collections = await fetchAllCollections({userID, key})
+    const result = {}
+    for (const collection of collections) {
+        const key = collection.library.type + '-' + collection.library.name
+        const lib = result[key] || []
+        lib.push(collection)
+        result[key] = lib
+    }
+    return result
+}
+
 export async function fetchUserCollections({ token }) {
-    const {userID, username, key} = await fetchUserFromToken(token)
+    const {userID, key} = await fetchUserFromToken(token)
 
     return fetch(`https://api.zotero.org/users/${userID}/collections?key=${key}`)
         .then(response => response.json())

@@ -59,7 +59,7 @@ const corsOptions = {
 passport.use('zotero', new OAuthStrategy({
     requestTokenURL: zoteroRequestTokenEndpoint,
     accessTokenURL: zoteroAccessTokenEndpoint,
-    userAuthorizationURL: zoteroAuthorizeEndpoint,
+    userAuthorizationURL: zoteroAuthorizeEndpoint + '?all_groups=read&library_access=1',
     consumerKey: zoteroAuthClientKey,
     consumerSecret: zoteroAuthClientSecret,
     callbackURL: zoteroAuthCallbackUrl,
