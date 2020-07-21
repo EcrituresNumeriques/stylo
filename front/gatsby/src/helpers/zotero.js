@@ -1,6 +1,8 @@
 import LinkHeader from 'http-link-header'
-import { bindActionCreators } from 'redux'
 
+/**
+ * @param {string} zoteroLink - format "2478772/collections/UGF4W4PZ"
+ */
 export const fetchBibliographyFromGroupSuffix = zoteroLink => fetchBibliographyFromCollection(`groups/${zoteroLink}/items`)
 export const fetchBibliographyFromCollectionId = async ({collectionId, token}) => {
     const {key, userID} = await fetchUserFromToken(token)
@@ -8,7 +10,8 @@ export const fetchBibliographyFromCollectionId = async ({collectionId, token}) =
 }
 
 /**
- * @param {*} zoteroLink - format "2478772/collections/UGF4W4PZ"
+ * @param {string} endpoint
+ * @param {string|null} key
  */
 export function fetchBibliographyFromCollection (endpoint, key = null) {
     const url = new URL(`https://api.zotero.org/${endpoint}`)
