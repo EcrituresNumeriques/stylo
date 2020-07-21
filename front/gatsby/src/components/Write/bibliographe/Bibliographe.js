@@ -95,7 +95,7 @@ const ConnectedBibliographe = (props) => {
 
     // we synchronize the collection, any time we save
     if (zoteroLink) {
-      await fetchBibliographyFromCollectionHref({ collectionHref: `https://api.zotero.org/${zoteroLink}` }).then(result => {
+      await fetchBibliographyFromCollectionHref({ collectionHref: `https://api.zotero.org/groups/${zoteroLink}` }).then(result => {
         setSaving(false)
         const bib = result.join('\n')
         setBib(bib)
