@@ -1,5 +1,24 @@
 # Journal de développement
 
+## Mardi 21 juillet 2020
+
+### Ce que j'ai aimé/appris
+
+- j'ai trouvé que la répartition du travail était plus confortable (Thomas front, Guillaume back)
+- je me sens plus à l'aise avec React au fil des sessions
+- j'ai aimé écrire ma première requête GraphQL, et brancher ça à la base de données
+- on a un flot Zotero complet (avec un bouton Unlink), et toutes les collections !
+- trouver où ajouter les "scopes" Zotero pour autoriser en lecture l'accès aux groupes privés
+
+### Ce que j'ai trouvé difficile
+
+- le mix entre state global, state local, données distantes, données de l'API, structure de base de données
+- `window.postMessage()` qui ne fonctionnait plus lors de la reprise, on a passé 1h à remettre des choses en l'état, alors qu'on avait l'impression que ça fonctionnait
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- se faire une démo 10 minutes avant la fin de la session pour avoir des idées claires sur quoi on termine
+
 ## Mercredi 15 juillet 2020
 
 ### Ce que j'ai aimé/appris
