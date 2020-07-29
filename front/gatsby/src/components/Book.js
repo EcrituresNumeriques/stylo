@@ -42,7 +42,7 @@ export default (props) => {
         </Modal>}
         <nav>
 
-            <Bouton title="Preview" href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/htmlBook/${props._id}?preview=true`}>
+            <Bouton title="Preview" href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/export/book/${props._id}/html?preview=true`}>
                 <Icon.Eye />
             </Bouton>
             <Bouton title="Export" onClick={()=>setExporting(true)}>
@@ -57,7 +57,7 @@ export default (props) => {
             {props.articles.sort(alphaSort).map(a=><Chapter key={`chapter-${props._id}-${a._id}`} {...a} setNeedReload={props.setNeedReload}/>)}
           </ul>
         </section>}
-            
+
     </article>
     )
 }
