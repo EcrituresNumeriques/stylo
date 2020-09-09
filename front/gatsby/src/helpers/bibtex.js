@@ -32,7 +32,7 @@ export function validate(bibtex) {
       empty: String(bibtex).trim().length === 0,
       errors: result.errors.map(error => error.type + ' at line ' + error.line),
       warnings: result.warnings
-        .filter(error => error.type !== 'unexpected_field')
+        .filter(error => error.type !== 'unexpected_field' && error.type !== 'unknown_field')
         .map(error => error.type + ' at line ' + error.line)
   }))
 }
