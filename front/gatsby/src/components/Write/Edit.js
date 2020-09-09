@@ -72,9 +72,9 @@ export default props => {
           <h1 className={expand?null:styles.closed} onClick={()=>setExpand(!expand)}>{expand?"-":"+"} Edition</h1>
           {expand && <>
               {props.readOnly && <li key={`showVersion-GoLive`}><Link to={`/article/${props.article._id}`}>Edit</Link></li>}
-              {!props.readOnly && <nav><p onClick={()=>{setExportVar({...exportVar,article:true,_id:props.article._id,versionId:props.versions[0]._id,    version:props.versions[0].version,    revision:props.versions[0].revision});setExporting(true)}} className={styles.button}>Export</p><a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/api/v1/htmlArticle/${props.article._id}?preview=true`} target="_blank" rel="noopener noreferrer" className={styles.button}>preview</a></nav>}
+              {!props.readOnly && <nav><p onClick={()=>{setExportVar({...exportVar,article:true,_id:props.article._id,versionId:props.versions[0]._id,    version:props.versions[0].version,    revision:props.versions[0].revision});setExporting(true)}} className={styles.button}>Export</p><a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/export/article/${props.article._id}/html?preview=true`} target="_blank" rel="noopener noreferrer" className={styles.button}>preview</a></nav>}
               {!props.readOnly && <p>Edition - Last save: {savedAgo}</p>}
-              
+
               {!props.readOnly && <form className={styles.liveVersion} onSubmit={e=>saveVersion(e,false)}>
                 <input type="text" placeholder="Label of the version" value={message} onChange={(e)=>setMessage(etv(e))}/>
                 <button onClick={e=>saveVersion(e,false)}>Save Minor</button>
