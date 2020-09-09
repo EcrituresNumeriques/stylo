@@ -1,12 +1,12 @@
 import React from "react"
 
-import Centered from '../layouts/Centered'
+import App from '../layouts/App'
 import Login from '../components/Login'
 
 import '../styles/general.scss'
 
 export default () => (
-    <Centered title="Stylo | Login">
+    <App layout="centered" title="Stylo | Login">
         <Login />
-    </Centered>
+    </App>
 )

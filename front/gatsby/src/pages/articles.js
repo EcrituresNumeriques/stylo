@@ -1,6 +1,6 @@
 import React from "react"
 
-import Wrapped from '../layouts/Wrapped'
+import App from '../layouts/App'
 import Articles from '../components/Articles'
 
 import '../styles/general.scss'
@@ -8,9 +8,9 @@ import '../styles/general.scss'
 export default () => {
     const isBrowser = typeof window !== 'undefined';
     return (
-    <Wrapped title="Stylo | Articles">
+    <App title="Stylo | Articles" layout="wrapped">
         <section>
             {isBrowser && <Articles/>}
         </section>
-    </Wrapped>
+    </App>
 )}

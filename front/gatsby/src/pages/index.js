@@ -3,9 +3,7 @@ import { connect } from "react-redux"
 import {navigate} from "gatsby"
 import {getUserProfile} from '../helpers/userProfile'
 
-
-import Centered from '../layouts/Centered'
-
+import App from '../layouts/App'
 import '../styles/general.scss'
 
 const isBrowser = () => typeof window !== 'undefined';
@@ -19,10 +17,11 @@ const mapStateToProps = ({ logedIn, hasBooted, activeUser }) => {
   return { logedIn, hasBooted, activeUser }
 }
 
-const ConnectedIndex = (props) => {
+const Index = (props) => {
     const {refreshProfile, hasBooted} = props
 
     useEffect(() => {
+      console.log('index.useEffect')
         refreshProfile()
     })
 
@@ -35,15 +34,7 @@ const ConnectedIndex = (props) => {
       }
     }
 
-    if (!hasBooted) {
-      return <Centered><p>Loading…</p></Centered>
-    }
-    else {
-      return <Centered><p>Redirecting…</p></Centered>
-    }
+    return <App layout="centered" header={false}><p>{hasBooted ? 'Redirecting…' : 'Loading…'}</p></App>
 }
 
-const Index = connect(
-    mapStateToProps, mapDispatchToProps
-)(ConnectedIndex)
-export default Index
+export default connect(mapStateToProps, mapDispatchToProps)(Index)

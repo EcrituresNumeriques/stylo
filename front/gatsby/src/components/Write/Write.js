@@ -50,23 +50,24 @@ const ConnectedWrite = (props) => {
     catch(err){
       console.log('too fast, editor not mounted yet')
     }
-    
+
 
 
     //instanceCM.focus();
     //instanceCM.setCursor(line,0);
-  } 
+  }
 
   // FIXME: activeUser can be undefined, we should call "/profile" and then load this component if the user is authenticated.
-  const variables = {user:props.activeUser._id,article:props.id}
+  console.log('<ConnectedWrite>', {activeUser: props.activeUser})
+  const variables = { user: props.activeUser && props.activeUser._id, article: props.id }
   const [isLoading,setIsLoading] = useState(true)
   const [live, setLive] = useState({})
   const [versions, setVersions] = useState([])
   const [articleInfos, setArticleInfos] = useState({title:"",owners:[],zoteroLink:""})
   const [firstLoad,setFirstLoad] = useState(true)
-  
-  
-  
+
+
+
   const sendVersion = async (autosave = true,major = false, message = "") => {
     try{
       const query = `mutation($user:ID!,$article:ID!,$md:String!,$bib:String!,$yaml:String!,$autosave:Boolean!,$major:Boolean!,$message:String){saveVersion(version:{article:$article,major:$major,auto:$autosave,md:$md,yaml:$yaml,bib:$bib,message:$message},user:$user){ _id version revision message autosave updatedAt owner{ displayName }} }`
@@ -87,13 +88,14 @@ const ConnectedWrite = (props) => {
       alert(err)
     }
   }
-  
+
 
 
   //Autosave debouncing on the live
   // TODO: Do not save when opening
   const debouncedLive = useDebounce(live, 1000);
   useEffect(()=>{
+    console.log('article.useEffect')
     if(!readOnly && !isLoading && !firstLoad){
       sendVersion(true,false, "Autosave")
     }
@@ -104,8 +106,8 @@ const ConnectedWrite = (props) => {
       setFirstLoad(true)
     }
   },[debouncedLive])
-  
-  
+
+
   const handleMDCM = async (___, __, md)=>{
     await setLive({...live,md:md})
   }
@@ -115,7 +117,7 @@ const ConnectedWrite = (props) => {
   const handleBib = async (bib) => {
     await setLive({...live,bib:bib})
   }
-  
+
   //Reload when version switching
   useEffect(()=>{
     (async () => {
@@ -132,7 +134,7 @@ const ConnectedWrite = (props) => {
     <section className={styles.container}>
       {!isLoading && <WriteLeft article={articleInfos} {...live} compareTo={props.compareTo} selectedVersion={props.version} versions={versions} readOnly={readOnly} sendVersion={sendVersion} handleBib={handleBib} setCodeMirrorCursor={setCodeMirrorCursor} />}
       {!isLoading && <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly}/>}
-  
+
       {props.compareTo && <CompareSelect live={live} {...props} versions={versions} readOnly={readOnly} article={articleInfos} selectedVersion={props.version}/>}
       <article className={styles.article}>
         {isLoading && <p>Loading...</p>}

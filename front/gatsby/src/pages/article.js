@@ -1,8 +1,8 @@
 import React from 'react'
 import { navigate } from 'gatsby'
 import { Router, Location } from "@reach/router"
-import FullPage from '../layouts/FullPage'
 import Write from '../components/Write/Write'
+import App from '../layouts/App'
 
 export default () => (
     <Location>
@@ -33,7 +33,8 @@ const ArticleID = props => {
     if(!isBrowser){
         return (<p>not compiling</p>)
     }
-    return (<FullPage>
+
+    return (<App layout="fullPage">
             <Write {...props}/>
-    </FullPage>)
+    </App>)
 }
