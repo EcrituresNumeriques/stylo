@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 
-const { exportArticleHtml, exportBookHtml, exportBookZip, exportVersionHtml, exportVersionZip, exportBatchTagZip } = require('./export.js')
+const { exportArticleHtml, exportArticleZip, exportBookHtml, exportBookZip, exportVersionHtml, exportVersionZip, exportBatchTagZip } = require('./export.js')
 
 const app = express()
 
@@ -15,6 +15,7 @@ const exportRouter = express.Router()
 exportRouter.get('/version/:id/html', exportVersionHtml)
 exportRouter.get('/version/:id/zip', exportVersionZip)
 exportRouter.get('/article/:id/html', exportArticleHtml)
+exportRouter.get('/article/:id/zip', exportArticleZip)
 exportRouter.get('/book/:id/html', exportBookHtml)
 exportRouter.get('/book/:id/zip', exportBookZip)
 exportRouter.get('/tag/:ids/zip', exportBatchTagZip)
