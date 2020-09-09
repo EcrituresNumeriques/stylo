@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react'
+import React, {useRef, useMemo, useState, useEffect} from 'react'
 import {connect} from 'react-redux'
 import env from '../../../helpers/env'
 
@@ -44,7 +44,7 @@ const ConnectedBibliographe = (props) => {
     }
   }, [zoteroToken])
 
-  const citations = bib2key(bib)
+  const citations = useMemo(() => bib2key(bib), [bib])
 
   const mergeCitations = () => {
     setBib(bib + '\n' + addCitation)
