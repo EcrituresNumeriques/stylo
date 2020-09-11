@@ -25,7 +25,7 @@ Stylo\'s source code is available [on Github](https://github.com/EcrituresNumeri
 - Collaborative writing through simultaneous changes
 - English resource information
 
-## *Stylo*-sophy
+## Stylo-sophy
 
 Stylo, a WYSIWYM text editor for Human Sciences, is designed to change the entire digital editorial chain of scholarly journals in the Human and Social Sciences.
 
