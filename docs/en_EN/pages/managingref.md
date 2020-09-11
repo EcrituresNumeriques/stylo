@@ -44,7 +44,7 @@ For example :
 
 | In the editor | In the preview|
 |:--|:--|
-|Real space, the space of our material life, and cyberspace (which is certainly not so completely virtual) should not be called separately, since they interpenetrate each other more firmly [@shirky_here_2008, p. 194]. Real space, the space of our material life, and cyberspace (which is certainly not so completely virtual) should not be separately named since they interpenetrate each other more strongly (Shirky 2008, 194).|
+|`Real space, the space of our material life, `<br/>`and cyberspace (which is certainly `<br/>`not so completely virtual) should not be `<br/>`called separately, since they `<br/>`interpenetrate each other more `<br/>`firmly [@shirky_here_2008, p. 194]. `|` Real space, the space of our material life,`<br/>` and cyberspace (which is certainly `<br/>`not so completely virtual) should not be `<br/>`called separately, since they `<br/>`interpenetrate each other more `<br/>`firmly (Shirky 2008, 194).`|
 
 - If the author's name already appears, and you just want to add the year of publication in brackets :
 
