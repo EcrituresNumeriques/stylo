@@ -57,7 +57,7 @@ For example :
 
 |In the editor | In the preview|
 |:--|:--|
-|Conceptual artists had tried to circumvent the rules of the art market (apparently without much success or without much conviction, if we are to believe Lucy Lippard [-@lippard_six_1973; -@lippard_get_1984])`<br/>>>> to circumvent the rules of the art market. Conceptual artists had tried to circumvent the rules of the art market (apparently without much success or without much conviction according to Lucy Lippard (1973; 1984)).`|
+|`Conceptual artists had tried to circumvent`<br/>` the rules of the art market (apparently`<br/>` without much success or`<br/>` without much conviction, if`<br/>` we are to believe Lucy Lippard [-@lippard_six_1973; -@lippard_get_1984])`<br/>` to circumvent the rules of the art market. `<br/>`Conceptual artists had tried to circumvent`<br/>` the rules of the art market`<br/>` (apparently without much success or`<br/>` without much conviction according to Lucy Lippard (1973; 1984)).`|
 
 ## Some resources
 
