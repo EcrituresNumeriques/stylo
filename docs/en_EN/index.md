@@ -1,10 +1,8 @@
 # Stylo - a semantic text editor
 
-**Stylo changed server during May 2020, if you encounter any difficulties, do not hesitate to contact us [write].(mailto:crc.ecrituresnumeriques@gmail.com)**.
+**📢 Stylo changed server during May 2020, if you encounter any difficulties, do not hesitate to contact us [write](mailto:crc.ecrituresnumeriques@gmail.com)**.
 
-A helpdesk is open every Thursday from 11am to 12pm (Canadian time) to respond to questions, improve the use of Stylo, etc. : 
-<a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Reach the helpdesk
-by videoconference</a>
+A helpdesk is open every Thursday from 11am to 12pm (Canadian time) to respond to questions, improve the use of Stylo, etc. : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Reach the helpdesk by videoconference</a>
 
 ---
 
