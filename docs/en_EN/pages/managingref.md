@@ -1,4 +1,3 @@
-
 # Managing references
 
 Bibliographic references are managed in BibTex format. The references
