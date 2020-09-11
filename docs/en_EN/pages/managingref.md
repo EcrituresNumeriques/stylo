@@ -50,7 +50,7 @@ For example :
 
 |In the publisher | In the preview|
 |:--|:--|
-|`Clay @shirky_here_2008 [p. 194] suggested that real space`<br/>`, that of our material life, and `<br/>`cyberspace (which is certainly not so completely `<br/>`virtual) should not be called `<br/>`separate since they interpenetrate `<br/>` more and more firmly. ` | `Clay Shirky (2008, 194), suggested that real space, the space of our material life, and cyberspace (which is certainly not so completely virtual) should not be called separately since they are increasingly firmly interpenetrating.`|
+|`Clay @shirky_here_2008 [p. 194] suggested that real space,`<br/>` that of our material life, and `<br/>`cyberspace (which is certainly not so completely `<br/>`virtual) should not be called `<br/>`separate since they interpenetrate `<br/>` more and more firmly. ` | `Clay Shirky (2008, 194), suggested that real space, `<br/>`that of our material life, and `<br/>`cyberspace (which is certainly not so completely `<br/>`virtual) should not be called `<br/>`separate since they interpenetrate `<br/>` more and more firmly.`|
 
 - To avoid repetition of a name, and to indicate only the year, put a `-' in front of the key.
 
