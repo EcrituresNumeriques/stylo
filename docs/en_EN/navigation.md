@@ -3,8 +3,7 @@
   -- Do NOT remove the leading `#` character.
   -->
 
-# Your wiki name
-
+# Stylo - Documentation
 
 <!--
   -- Default theme
@@ -19,8 +18,26 @@
   -- (Read: http://dynalon.github.io/mdwiki/#!quickstart.md#Adding_a_navigation)
   -->
 
-[About](pages/about.md)
-[Download](pages/download.md)
+[Project]()
+
+  * [About](pages/about.md)
+  * [Sources](pages/sources.md)
+  * [Contacts](pages/contacts.md)
+
+[Documentation]()
+
+  * [First steps](pages/firststeps.md)
+  * [Writing in Markdown](pages/markdownsyntax.md)
+  * [Manage my bibliography](pages/managingref.md)
+  * [Preview and annotate an article](pages/preview.md)
+  * [Manage my article](pages/myarticles.md)
+  * [Solving problems](pages/problems.md)
+
+[Ressources](pages/publications.md)
+
+[Test Stylo](http://stylo.ecrituresnumeriques.ca)
+
+<!-- [_EN_](../en_EN/) -->
 
 <!-- A more complex navigation example: ----------------------------------------
 
@@ -60,6 +77,5 @@
   -- (Read: http://dynalon.github.io/mdwiki/#!quickstart.md#Adding_a_navigation)
   -->
 
-<!--
-[gimmick:themechooser](Choose theme)
--->
+
+[gimmick:theme](readable)
