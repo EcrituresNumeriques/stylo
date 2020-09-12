@@ -49,9 +49,6 @@ module.exports = {
 
       let returnedVersion;
 
-      //console.log(values)
-
-      //console.log("Saving version",values,lastVersion, thisUser)
       if(lastVersion.autosave && lastVersion.owner == thisUser.id){
           //Updating last autosave
           if(args.version.major){values.version++;values.revision=0}
@@ -59,7 +56,6 @@ module.exports = {
           returnedVersion._doc = {...returnedVersion._doc,...values}
       }
       else{
-        console.log("fullSave",JSON.stringify(values))
         //full save, add new record
         delete values._id
 
@@ -72,11 +68,7 @@ module.exports = {
         await articleToSaveInto.save()
       }
 
-      //console.log(returnedVersion)
-      
       return populateVersion(returnedVersion)
-     
-     
     }
     catch(err){
       throw err
