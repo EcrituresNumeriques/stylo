@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-const graphqlHttp = require('express-graphql')
+const {graphqlHTTP: graphqlHttp} = require('express-graphql')
 const mongoose = require('mongoose')
 const cors = require('cors')
 
