@@ -11,3 +11,4 @@ jobs:
       run: |
         cp stylo-example.env stylo.env
         docker-compose build
+        docker-compose run front-stylo npm test
