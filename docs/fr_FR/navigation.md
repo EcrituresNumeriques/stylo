@@ -70,9 +70,9 @@
 
 [Change the Language]()
 
-  * [English (United States)](/en_US/)
-  * [English (United Kingdom)](/en_GB/)
-  * [Italian](/it/)
+  * [English](/en_EN/)
+<!--  * [English (United Kingdom)](/en_GB/)
+  * [Italian](/it/)-->
 
 
 <!--
