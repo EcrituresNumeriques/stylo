@@ -71,8 +71,6 @@
 [Change the Language]()
 
   * [English](/en_EN/)
-<!--  * [English (United Kingdom)](/en_GB/)
-  * [Italian](/it/)-->
 
 
 <!--
