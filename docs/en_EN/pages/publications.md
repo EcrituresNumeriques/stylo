@@ -33,4 +33,6 @@ The *Canada Research Chair in Digital Textualities* has presented Stylo at vario
 
 ## Resources - Demo
 
+<iframe width="560" height="315" src="https://ia601400.us.archive.org/16/items/stylo_202009/Stylo.mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="align:center;"></iframe>
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/qcwEqbcxBF8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="align:center;"></iframe>
