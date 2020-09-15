@@ -1,12 +1,11 @@
 # Resources - Helpdesk
 
----
-
 The *Canada Research Chair in Digital Textualities* organises weekly sessions to monitor Stylo. During these sessions, it is possible to ask the team questions, perfect the use of Stylo and resolve any publishing issues.
 
 The sessions take place every Thursday morning from 11am to 12pm (Canadian time), starting Thursday 31 October 2019.
 
 Participation in, and attendance to, these sessions are free and available online via videoconference: 
+
 <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Reach the helpdesk by videoconference</a> 
 
 # Resources - Publications
