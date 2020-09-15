@@ -64,13 +64,11 @@
   -- Could be useful when there's more than one language wiki.
   -->
 
-<!--
+
 [Change the Language]()
 
-  * [English (United States)](/en_US/)
-  * [English (United Kingdom)](/en_GB/)
-  * [Italian](/it/)
--->
+  * [Français](/fr_FR/)
+
 
 <!--
   -- Let the user choose a theme
