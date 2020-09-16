@@ -3,11 +3,11 @@
 ---
 
 ## Creating an account
-To use Stylo, creating a user account is necessary. To create an account, please click [here](https://front.stylo.ecrituresnumeriques.ca/register) and fill in the mandatory fields
+To use Stylo, creating a user account is necessary. To create an account, please click [here](https://stylo.huma-num.fr/register) and fill in the mandatory fields
 
 ![Register](uploads/images/Register.png)
 
-If you already have an account, sign-in [here](https://front.stylo.ecrituresnumeriques.ca/login).
+If you already have an account, sign-in [here](https://stylo.huma-num.fr).
 
 ## User page
 The home page for your Stylo account lists your personal articles as well as those that have been shared with you by other Stylo users.
