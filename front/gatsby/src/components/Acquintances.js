@@ -6,8 +6,8 @@ import styles from './acquintances.module.scss'
 import askGraphQL from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
 
-const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
-  return { logedIn, sessionToken, activeUser }
+const mapStateToProps = ({ sessionToken, activeUser }) => {
+  return { sessionToken, activeUser }
 }
 
 const ConnectedAcquintances = (props) => {

@@ -20,7 +20,7 @@ const ConnectedHeader = (props) => {
     </>
     :
     <>
-      <Link to="/login">Login</Link>
+      <Link to="/">Login</Link>
       <Link to="/register" className={styles.registerAction}>Register</Link>
     </>
 

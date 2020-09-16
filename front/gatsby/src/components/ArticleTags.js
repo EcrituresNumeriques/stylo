@@ -5,8 +5,8 @@ import { connect } from "react-redux"
 import askGraphQL from '../helpers/graphQL';
 import styles from './Articles.module.scss'
 
-const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
-  return { logedIn, activeUser, sessionToken }
+const mapStateToProps = ({ activeUser, sessionToken }) => {
+  return { activeUser, sessionToken }
 }
 
 

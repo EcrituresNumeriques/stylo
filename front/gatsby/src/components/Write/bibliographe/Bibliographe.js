@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react'
+import React, {useRef, useMemo, useState, useEffect} from 'react'
 import {connect} from 'react-redux'
 import env from '../../../helpers/env'
 
@@ -11,8 +11,8 @@ import {fetchBibliographyFromCollectionHref, fetchAllCollectionsPerLibrary} from
 import {toBibtex, validate} from '../../../helpers/bibtex'
 import ReferenceTypeIcon from '../../ReferenceTypeIcon.js'
 
-const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
-  return { logedIn, sessionToken, activeUser  }
+const mapStateToProps = ({ sessionToken, activeUser }) => {
+  return { sessionToken, activeUser  }
 }
 
 const mapDispatchToProps = dispatch => ({
@@ -27,7 +27,7 @@ const ConnectedBibliographe = (props) => {
   const [isSaving, setSaving] = useState(false)
   const [bib, setBib] = useState(props.bib)
   const [addCitation, setAddCitation] = useState('')
-  const [isCitationValid, setCitationValid] = useState(false)
+  const [citationValidationResult, setCitationValidationResult] = useState({valid: false})
   const [isRawBibtexValid, setRawBibtexValid] = useState(false)
   const [zoteroLink, setZoteroLink] = useState(props.article.zoteroLink || "")
   const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)
@@ -44,23 +44,22 @@ const ConnectedBibliographe = (props) => {
     }
   }, [zoteroToken])
 
-  const citations = bib2key(bib)
+  const citations = useMemo(() => bib2key(bib), [bib])
 
   const mergeCitations = () => {
     setBib(bib + '\n' + addCitation)
     citationForm.current.reset()
   }
 
-  const validateCitation = (bibtex, stateHook, next) => {
+  const validateCitation = (bibtex, setCitationValidationResult, next) => {
     next(bibtex)
 
     validate(bibtex).then(result => {
       if (result.warnings.length || result.errors.length) {
-        stateHook(false)
-        console.error(result.warnings.join('\n') + result.errors.join('\n'))
+        setCitationValidationResult({ valid: false, messages: [...result.errors, ...result.warnings] })
       }
       else {
-        stateHook(result.empty || result.success !== 0)
+        setCitationValidationResult({ valid: result.empty || result.success !== 0 })
       }
     })
   }
@@ -144,12 +143,12 @@ const ConnectedBibliographe = (props) => {
           <p>Please paste the URL of your Zotero library, so that it looks like https://www.zotero.org/groups/<strong>[IDnumber]/collections/[IDcollection]</strong></p>
           <label>https://www.zotero.org/groups/</label>
           <input type="text" placeholder="[IDnumber]/collections/[IDcollection]" value={zoteroLink} onChange={e=>setZoteroLink(etv(e))}/>
-          <button type="submit" onClick={() => saveNewZotero()} disabled={isSaving || (!zoteroLink && zoteroLink === props.article.zoteroLink)}>{isSaving ? 'Saving…' : 'Save Zotero link and fetch'}</button>
+          <button type="submit" onClick={() => saveNewZotero()} disabled={isSaving || (!zoteroLink && zoteroLink === props.article.zoteroLink)}>{isSaving ? 'Fetching…' : 'Replace bibliography with this collection'}</button>
         </form>
         <hr />
         <form disabled={isSaving} onSubmit={(e) => e.preventDefault()}>
           {zoteroCollectionSelect}
-          {zoteroToken && <button type="submit" disabled={!zoteroCollectionHref || isSaving} onClick={() => importCollection({ token: zoteroToken, collectionHref: zoteroCollectionHref })}>Import this private collection</button>}
+          {zoteroToken && <button type="submit" disabled={!zoteroCollectionHref || isSaving} onClick={() => importCollection({ token: zoteroToken, collectionHref: zoteroCollectionHref })}>{isSaving ? 'Fetching…' : 'Replace bibliography with this private collection'}</button>}
           {!zoteroToken && <button type="button" onClick={() => {
             const popup = window.open(`${env.BACKEND_ENDPOINT}/login/zotero`, 'openid', 'width=660&height=360&menubar=0&toolbar=0')
             const intervalId = setInterval(() => {
@@ -163,10 +162,13 @@ const ConnectedBibliographe = (props) => {
       </div>}
 
       {selector === 'citations' && <form ref={citationForm} onSubmit={(e) => e.preventDefault() && mergeCitations()} className={styles.citations}>
-        <textarea onChange={event => validateCitation(etv(event), setCitationValid, setAddCitation)} placeholder="Paste here the BibTeX of the citation you want to add"/>
-
-        <button type="submit" disabled={isCitationValid !== true} onClick={() => mergeCitations()}>Add</button>
-
+        <textarea onChange={event => validateCitation(etv(event), setCitationValidationResult, setAddCitation)} placeholder="Paste here the BibTeX of the citation you want to add"/>
+        {(citationValidationResult.messages) &&
+        (<ul className={styles.citationMessages}>
+          {citationValidationResult.messages.map(m => <li>{m}</li>)}
+        </ul>)
+        }
+        <button type="submit" disabled={citationValidationResult.valid !== true} onClick={() => mergeCitations()}>Add</button>
         <p>{citations.length} citations.</p>
 
         <div className={styles.responsiveTable}>

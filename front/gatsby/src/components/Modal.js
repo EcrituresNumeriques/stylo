@@ -4,7 +4,7 @@ import styles from './modal.module.scss'
 
 export default (props) => {
   
-  const defaultCancel = () => console.log("cancel")
+  const defaultCancel = () => {}
   const cancel = props.cancel || defaultCancel
   
   return (

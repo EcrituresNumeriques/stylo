@@ -28,7 +28,7 @@
     "react-dom": "^16.13.1",
     "react-feather": "^1.1.6",
     "react-helmet": "^5.2.1",
-    "react-redux": "^6.0.0",
+    "react-redux": "^7.1.0",
     "redux": "^4.0.5",
     "remove-markdown": "^0.3.0",
     "stjs": "0.0.5"

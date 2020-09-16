@@ -1,12 +1,12 @@
-import React from "react"
+import React from 'react'
 
-import Centered from '../layouts/Centered'
+import App from '../layouts/App'
 import Register from '../components/Register'
 
 import '../styles/general.scss'
 
 export default () => (
-    <Centered title="Stylo | Register">
-        <Register />
-    </Centered>
+  <App layout="centered" title="Stylo | Register">
+    <Register />
+  </App>
 )

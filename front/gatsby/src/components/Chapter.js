@@ -5,8 +5,8 @@ import askGraphQL from '../helpers/graphQL';
 import etv from '../helpers/eventTargetValue'
 
 
-const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
-    return { logedIn, activeUser, sessionToken }
+const mapStateToProps = ({ activeUser, sessionToken }) => {
+    return { activeUser, sessionToken }
 }
 
 const ConnectedChapter = props => {

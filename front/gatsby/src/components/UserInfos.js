@@ -8,8 +8,8 @@ import styles from './userInfos.module.scss'
 import UserConnectedLogin from './UserAllowedLogin'
 
 
-const mapStateToProps = ({ logedIn, password, activeUser, sessionToken }) => {
-  return { logedIn, password, activeUser, sessionToken }
+const mapStateToProps = ({ password, activeUser, sessionToken }) => {
+  return { password, activeUser, sessionToken }
 }
 const mapDispatchToProps = dispatch => {
   return { 
