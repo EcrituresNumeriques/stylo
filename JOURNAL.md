@@ -1,5 +1,30 @@
 # Journal de développement
 
+## Mercredi 16 septembre 2020
+
+### Ce que j'ai aimé/appris
+
+- une nouvelle librairie — react-jsonschema-form — qui est assez cool
+- je me sens plus à l'aise, plus familier avec la syntaxe JSX, les props et tout
+- idem avec Gatsby, faire une passe sur les composants a bien aidé
+- on a bien avancé dans l'aprem
+- j'aime bien supprimer des trucs
+- j'ai l'impression qu'on va recoder une fonctionnalité en écrivant peu de code, et en s'appuyant sur un principe plus solide
+- refondre le chargement et la validation de l'authentification en nettoyant l'application, en la rendant plus solide
+- merger les pull request en attente ! ça libère
+- j'ai aimé la proposition d'écrire le composant en dehors du code, on a testé notre intuition
+- on a quasiment un schéma fini à une exception près
+
+### Ce que j'ai trouvé difficile
+
+- N/A
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- refaire du pair programming en présentiel
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
 ## Mardi 21 juillet 2020
 
 ### Ce que j'ai aimé/appris
