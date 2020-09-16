@@ -7,8 +7,8 @@ import Bouton from './Bouton'
 import * as Icon from 'react-feather';
 
 
-const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
-  return { logedIn, activeUser, sessionToken }
+const mapStateToProps = ({ activeUser, sessionToken }) => {
+  return { activeUser, sessionToken }
 }
 
 const findAndUpdateTag = (tags,id)=> {

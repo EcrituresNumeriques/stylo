@@ -1,38 +1,26 @@
 import React from 'react'
-import { navigate } from 'gatsby'
-import { Router, Location } from "@reach/router"
+import { Router, Location } from '@reach/router'
 import App from '../layouts/App'
 import WriteBook from '../components/WriteBook'
+import PrivateRoute from '../components/PrivateRoute'
 
 export default () => (
-    <Location>
-        {({location}) => (
-            <Router location={location} className="router">
-                <BookEmpty path="/book"/>
-                <BookID path="/book/:id/chapter/:chapter"/>
-                <BookID path="/book/:id"/>
-            </Router>
-        )}
-    </Location>
+  <Location>
+    {({ location }) => (
+      <Router location={location} className="router">
+        <BookID path="/book/:id/chapter/:chapter" />
+        <BookID path="/book/:id" />
+      </Router>
+    )}
+  </Location>
 )
 
-const isBrowser = typeof window !== 'undefined';
-const BookEmpty = () => {
-    if(!isBrowser){
-        return (<p>not compiling</p>)
-    }
-    navigate('/books');
-    return(
-        <p>Bad request, redirecting</p>
-    )
-}
-
-const BookID = props => {
-    if(!isBrowser){
-        return (<p>not compiling</p>)
-    }
-    
-    return (<App layout="fullPage">
-            <WriteBook {...props}/>
-    </App>)
+const BookID = (props) => {
+  return (
+    <App layout="fullPage">
+      <PrivateRoute>
+        <WriteBook {...props} />
+      </PrivateRoute>
+    </App>
+  )
 }

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-import { connect, useDispatch } from 'react-redux'
-import { getUserProfile } from '../helpers/userProfile'
+import { connect } from 'react-redux'
 
 import SEO from '../components/SEO'
 import Header from '../components/Header'
@@ -14,19 +13,14 @@ const mapStateToProps = ({ hasBooted }) => {
 }
 
 const App = (props) => {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    getUserProfile().then((response) =>
-      dispatch({ type: 'PROFILE', ...response })
-    )
-  })
+  const { layout, hasBooted } = props
 
   let styles
-  if (props.layout === 'wrapped') {
+  if (layout === 'wrapped') {
     styles = wrappedStyles
-  } else if (props.layout === 'fullPage') {
+  } else if (layout === 'fullPage') {
     styles = fullPageStyles
-  } else if (props.layout === 'centered') {
+  } else if (layout === 'centered') {
     styles = centeredStyles
   } else {
     // default
@@ -36,7 +30,10 @@ const App = (props) => {
     <div className={styles.grid}>
       <SEO {...props} />
       <Header className={styles.header} />
-      <main className={styles.main}>{props.children}</main>
+      <main className={styles.main}>
+        {hasBooted && props.children}
+        {!hasBooted && <p>Loading…</p>}
+      </main>
     </div>
   )
 }

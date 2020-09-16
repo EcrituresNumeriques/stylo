@@ -4,8 +4,8 @@ import { connect } from "react-redux"
 import styles from './userAllowedLogin.module.scss'
 
 
-const mapStateToProps = ({ logedIn, activeUser, sessionToken }) => {
-  return { logedIn, activeUser, sessionToken }
+const mapStateToProps = ({ activeUser, sessionToken }) => {
+  return { activeUser, sessionToken }
 }
 
 const mapDispatchToProps = dispatch => {

@@ -11,8 +11,8 @@ import {fetchBibliographyFromCollectionHref, fetchAllCollectionsPerLibrary} from
 import {toBibtex, validate} from '../../../helpers/bibtex'
 import ReferenceTypeIcon from '../../ReferenceTypeIcon.js'
 
-const mapStateToProps = ({ logedIn, sessionToken, activeUser }) => {
-  return { logedIn, sessionToken, activeUser  }
+const mapStateToProps = ({ sessionToken, activeUser }) => {
+  return { sessionToken, activeUser  }
 }
 
 const mapDispatchToProps = dispatch => ({
