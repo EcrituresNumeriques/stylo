@@ -8,7 +8,7 @@ import askGraphQL from '../helpers/graphQL'
 
 import styles from './register.module.scss'
 
-const Register = () => {
+const Register = (props) => {
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -17,7 +17,8 @@ const Register = () => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [institution, setInstitution] = useState('')
-  const query = `mutation($email:String!, $username:String!, $password:String!, $displayName:String, $firstName:String, $lastName:String, $institution:String) {
+  const query =
+    `mutation($email:String!, $username:String!, $password:String!, $displayName:String, $firstName:String, $lastName:String, $institution:String) {
        createUser(user: {
          email:$email,
          username:$username,

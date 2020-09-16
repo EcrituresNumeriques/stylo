@@ -20,7 +20,6 @@ export default class ImportYaml extends Component {
   }
 
   toggleImport(){
-    console.log("toggle");
     this.setState(function(state){
       state.import = !state.import;
       return state;
@@ -32,7 +31,6 @@ export default class ImportYaml extends Component {
       const singleYaml = overideYaml.replace(/[-]{3}\n/g, "").replace(/\n[-]{3}/g, "");
       const jsObj = YAML.load(singleYaml, { schema: SEXY_SCHEMA }) || {};
       const newYamlObj = {...this.props.state.obj,...jsObj}
-      console.log("overiding",newYamlObj);
       this.props.updateState(newYamlObj);
       this.toggleImport();
     }

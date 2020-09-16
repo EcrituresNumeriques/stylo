@@ -64,19 +64,17 @@ export default class YamlEditor extends Component {
           return response.json();
         })
         .then(function(rubriques) {
-          console.log("rubriques1",rubriques);
           that.updateMisc(rubriques,'rubriques','rubriques');
         });
       }
       else if (typeof props.rubriques == 'object') {
-        console.log("rubriques2",props.rubriques);
         that.updateMisc(props,'rubriques','rubriques');
       }
     }
 
     //load keywords if provided as an object
     if(props.keywords && typeof props.keywords == 'object'){
-      console.log("updating keywords");
+      console.log("Updating keywords");
     }
     //load keywords if provided as URL
     if(props.keywords && typeof props.keywords == 'string'){
@@ -138,7 +136,6 @@ export default class YamlEditor extends Component {
   computeFromYaml(jsObj,misc){
     jsObj = jsObj || {};
     jsObj.typeArticle = jsObj.typeArticle || [];
-    jsObj.typeArticle.map((r)=>console.log("r",r));
     //Add rubriques
     jsObj.typeArticle.map(function(r){
       misc.rubriques.filter((o)=>(o.label===r)).map((o)=>(o.selected=true));
@@ -157,7 +154,6 @@ export default class YamlEditor extends Component {
       const singleYaml = nextProp.yaml.replace(/[-]{3}\n/g, "").replace(/\n[-]{3}/g, "");
       const singleYamlObj = YAML.load(singleYaml, { schema: SEXY_SCHEMA });
       if(JSON.stringify(singleYamlObj) !== JSON.stringify(this.state.obj)){
-        //console.log("New props, updating state",JSON.stringify(singleYamlObj),JSON.stringify(this.state.obj));
         this.updateState(singleYamlObj);
       }
   }
@@ -170,14 +166,12 @@ export default class YamlEditor extends Component {
       }
       if(Array.isArray(cleaning[propName]) && cleaning[propName].length === 0){
         delete cleaning[propName];
-        //console.log("deleting",propName)  
       }
     }
     return cleaning
   }
 
   componentWillUpdate(nextProp,nextState){
-    //console.log("componentWillUpdate",nextProp.yaml,YAML.safeDump(nextState.obj), nextProp.yaml != '---\n'+YAML.safeDump(nextState.obj)+'---');
     if(this.props.exportChange){
       if(nextProp.yaml !== '---\n'+YAML.safeDump(this.cleanOutput(nextState.obj))+'---'){
         console.log(this.cleanOutput(nextState.obj))
@@ -204,14 +198,12 @@ export default class YamlEditor extends Component {
           return state
         })
       }
-      //console.log("changing key",target,value);
       else{this.setState((state)=>_.set(state, 'obj.'+target, value))}
     }
   }
 
   updateMisc(value,target,type = undefined){
     //Update only the key changed, plus export the new state
-      //console.log("changing key",target,value);
       this.setState((state)=>_.set(state, 'misc.'+target, value));
       //Need to calculate the next state.obj
       if(type==="rubriques"){
