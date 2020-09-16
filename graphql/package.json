@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
-    "prod": "NODE_ENV=production node app.js"
+    "prod": "NODE_ENV=production node --heapsnapshot-signal=SIGUSR2 app.js"
   },
   "author": "",
   "license": "ISC",
