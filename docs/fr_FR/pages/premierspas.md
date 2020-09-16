@@ -1,11 +1,11 @@
 # Premiers pas dans Stylo
 
 ## Création d'un compte
-Afin d'éditer dans Stylo, la création d'un compte utilisateur est nécessaire. Pour créer un compte, veuillez cliquer [ici](https://front.stylo.ecrituresnumeriques.ca/register) et fournir les infomations obligatoire :
+Afin d'éditer dans Stylo, la création d'un compte utilisateur est nécessaire. Pour créer un compte, veuillez cliquer [ici](https://stylo.huma-num.fr/register) et fournir les infomations obligatoire :
 
 ![Register](uploads/images/Register.png)
 
-Si vous possédez déjà un compte, connectez-vous [ici](https://front.stylo.ecrituresnumeriques.ca/login).
+Si vous possédez déjà un compte, connectez-vous [ici](https://stylo.huma-num.fr).
 
 ## Page d'utilisateur
 La page d'accueil de votre compte Stylo liste vos articles personnels ainsi que ceux qui ont été partagés avec vous par d'autres utilisateurs de Stylo.
