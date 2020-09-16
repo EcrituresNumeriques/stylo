@@ -10,10 +10,12 @@ const session = require('express-session')
 const passport = require('passport')
 const OidcStrategy = require('passport-openidconnect').Strategy
 const LocalStrategy = require('passport-local').Strategy
+const OAuthStrategy = require('passport-oauth').OAuthStrategy;
 
 const graphQlSchema = require('./schema/index')
 const graphQlResolvers = require('./resolvers/index')
 
+const { createJWTToken } = require('./helpers/token')
 const User = require('./models/user')
 const Password = require('./models/user_password')
 const { postCreate } = User
@@ -37,6 +39,15 @@ const oicCallbackUrl = process.env.OPENID_CONNECT_CALLBACK_URL
 const oicClientId = process.env.OPENID_CONNECT_CLIENT_ID
 const oicClientSecret = process.env.OPENID_CONNECT_CLIENT_SECRET
 const oicScope = process.env.OPENID_CONNECT_SCOPE || 'profile email'
+
+const zoteroAuthClientKey = process.env.ZOTERO_AUTH_CLIENT_KEY
+const zoteroAuthClientSecret = process.env.ZOTERO_AUTH_CLIENT_SECRET
+const zoteroAuthCallbackUrl = process.env.ZOTERO_AUTH_CALLBACK_URL
+const zoteroRequestTokenEndpoint = process.env.ZOTERO_REQUEST_TOKEN_ENDPOINT || 'https://www.zotero.org/oauth/request'
+const zoteroAccessTokenEndpoint = process.env.ZOTERO_ACCESS_TOKEN_ENDPOINT || 'https://www.zotero.org/oauth/access'
+const zoteroAuthorizeEndpoint = process.env.ZOTERO_AUTHORIZE_ENDPOINT || 'https://www.zotero.org/oauth/authorize'
+const zoteroAuthScope = ['library_access=1', 'all_groups=read']
+
 const secure = process.env.HTTPS === 'true'
 
 const corsOptions = {
@@ -44,6 +55,20 @@ const corsOptions = {
   optionsSuccessStatus: 200,
   credentials: true,
 }
+
+passport.use('zotero', new OAuthStrategy({
+    requestTokenURL: zoteroRequestTokenEndpoint,
+    accessTokenURL: zoteroAccessTokenEndpoint,
+    userAuthorizationURL: zoteroAuthorizeEndpoint + '?all_groups=read&library_access=1',
+    consumerKey: zoteroAuthClientKey,
+    consumerSecret: zoteroAuthClientSecret,
+    callbackURL: zoteroAuthCallbackUrl,
+    sessionKey: 'oauth_token'
+  },
+  function(zoteroToken, tokenSecret, profile, done) {
+    return done(null, { zoteroToken })
+  }
+))
 
 passport.use('oidc', new OidcStrategy({
   name: oicName,
@@ -113,9 +138,11 @@ app.get(
   passport.authenticate('oidc')
 )
 
+app.get('/login/zotero', passport.authenticate('zotero', { scope: zoteroAuthScope }))
+
 app.get('/profile', async (req, res) => {
   if (req.user) {
-    let user = await User.findOne({ email: req.user.email }).populate("passwords")
+    const user = await User.findOne({ email: req.user.email }).populate("passwords")
     res.status(200)
     res.json({ user })
   } else {
@@ -123,6 +150,41 @@ app.get('/profile', async (req, res) => {
     res.json({})
   }
 })
+
+app.use('/authorization-code/zotero/callback',
+  passport.authenticate('zotero', { failureRedirect: '/error' }), async (req, res) => {
+    // passport overrides "req.user" (session) with the Zotero token
+    const { zoteroToken } = req.user
+    const jwtToken = req.cookies && req.cookies['graphQL-jwt']
+    if (jwtToken) {
+      try {
+        // reverts "req.user" with the user connected
+        const user = jwt.verify(jwtToken, jwtSecret)
+        req.user = user
+        req.isAuth = true
+        const email = req.user.email
+
+        // save the Zotero token
+        const authenticatedUser = await User.findOne({ email })
+        authenticatedUser.zoteroToken = zoteroToken
+        const result = await authenticatedUser.save()
+
+        res.statusCode = 200
+        res.set({
+          'Content-Type': 'text/html'
+        })
+        res.end(`<script>window.close();</script>`)
+      }
+      catch (error) {
+        console.error('error', error)
+        res.statusCode = 401
+        res.redirect(origin)
+      }
+    } else {
+      res.statusCode = 401
+      res.redirect(origin)
+    }
+  })
 
 app.use('/authorization-code/callback',
   passport.authenticate('oidc', { failureRedirect: '/error' }), async (req, res) => {
@@ -151,20 +213,8 @@ app.use('/authorization-code/callback',
       await user.save().then(postCreate)
     }
 
-    const userPassword = await Password.findOne({ email }).populate("users")
-
     // generate a JWT token
-    const payload = {
-      email,
-      usersIds: userPassword.users.map(user => user._id.toString()),
-      passwordId: userPassword.id,
-      admin: Boolean(user.admin),
-      session: true
-    }
-    const token = jwt.sign(
-      payload,
-      jwtSecret
-    )
+    const token = await createJWTToken({ email, jwtSecret })
 
     res.cookie("graphQL-jwt", token, {
       expires: 0,

@@ -43,7 +43,6 @@ const ConnectedLogin = ({ logedIn, login }) => {
             body: JSON.stringify({ username, password })
         })
         .then(response => {
-            console.log('response.ok', response.ok)
             return response.ok ? response.json() : Promise.reject(new Error('Email or password is incorrect'))
         })
         .then(login)

@@ -11,8 +11,14 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   if (action.type === 'PROFILE') {
-    const {data:activeUser} = action
+    if (!action.user) {
+      return { ...state, hasBooted: true }
+    }
+
+    const { user: activeUser } = action
+
     return Object.assign({}, state, {
+      hasBooted: true,
       activeUser,
       logedIn: true,
       // it will allow password modification if logged with password,
@@ -20,6 +26,10 @@ const reducer = (state = initialState, action) => {
       password: (activeUser.passwords.find(p => p.email === activeUser.email) || {}),
       users: [activeUser._id]
     })
+  }
+  else if (action.type === 'CLEAR_ZOTERO_TOKEN') {
+    state.activeUser.zoteroToken = null
+    return state
   }
   else if (action.type === 'LOGIN') {
     const login = action.login

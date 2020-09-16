@@ -24,6 +24,7 @@ gatsby_export_endpoint='https://stylo.ecrituresnumeriques.ca'
 export_canonical_base_url=''
 gatsby_process_endpoint='https://stylo-export.ecrituresnumeriques.ca'
 gatsby_human_id_register_endpoint='https://humanid.huma-num.fr/register?service=https://stylo.huma-num.fr/authorization-code/callback'
+zotero_auth_callback_url='http://stylo.huma-num.fr/authorization-code/zotero/callback'
 
 [stylo]
 node01 ansible_user=stylo ansible_host=cchum-kvm-stylo.in2p3.fr
