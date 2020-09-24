@@ -50,8 +50,7 @@ export default props => {
   }
 
   useEffect(() => {
-    console.log("refresh")
-    var timerID = setInterval( () => tick(props.versions[0].updatedAt), 1000 );
+    const timerID = setInterval( () => tick(props.versions[0].updatedAt), 1000 );
     return function cleanup() {
         clearInterval(timerID);
       };

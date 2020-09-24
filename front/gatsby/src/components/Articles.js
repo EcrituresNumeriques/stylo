@@ -15,7 +15,6 @@ const mapStateToProps = ({ activeUser, sessionToken }) => {
 }
 
 const ConnectedArticles = (props) => {
-  console.log({ props })
   const [isLoading, setIsLoading] = useState(false)
   const [filter, setFilter] = useState('')
   const [articles, setArticles] = useState([])

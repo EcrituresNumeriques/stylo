@@ -12,7 +12,6 @@ const mapStateToProps = ({ activeUser, sessionToken }) => {
 }
 
 const findAndUpdateTag = (tags,id)=> {
-  console.log("test")
   const immutableTags = JSON.parse(JSON.stringify(tags))
   const tag = immutableTags.find(t => t._id === id)
   tag.selected = !tag.selected
@@ -21,7 +20,6 @@ const findAndUpdateTag = (tags,id)=> {
 
 
 export default connect(mapStateToProps)((props) => {
-  
   const [expanded,setExpanded] = useState(false)
   const [edit,setEdit] = useState(false)
   const [tempName,setTempName] = useState(props.t.name)
@@ -29,7 +27,6 @@ export default connect(mapStateToProps)((props) => {
   const [tempColor,setTempColor] = useState(props.t.color)
 
   const deleteTag = async (id) => {
-    console.log("hello destroy tag "+id)
     const query = `mutation($user:ID!,$tag:ID!){deleteTag(user:$user,tag:$tag){ _id }}`
     const variables = {user:props.activeUser._id,tag:props.t._id}
     await askGraphQL({query,variables},"Deleting tag", props.sessionToken)
@@ -37,7 +34,6 @@ export default connect(mapStateToProps)((props) => {
   }
 
   const saveTag = async () => {
-    console.log("hello update tag")
     const query = `mutation($user:ID!,$tag:ID!,$color:String!,$name:String!,$description:String!){updateTag(user:$user,tag:$tag,name:$name,description:$description,color:$color){ _id name description color }}`
     const variables = {user:props.activeUser._id,tag:props.t._id, name: tempName, description: tempDescription, color: tempColor}
     await askGraphQL({query,variables},"update tag", props.sessionToken)
@@ -60,7 +56,7 @@ export default connect(mapStateToProps)((props) => {
       <p onClick={()=>props.setTags(findAndUpdateTag(props.tags,props.t._id))}>{props.t.name}</p>
       {expanded && <p>{props.t.description}</p>}
       {expanded && <nav className={props.styles.action}>
-        
+
         <Bouton title="Edit" onClick={()=>setEdit(true)}>
           <Icon.Edit3/>
         </Bouton>
@@ -68,7 +64,7 @@ export default connect(mapStateToProps)((props) => {
         <Bouton title="Delete" onClick={()=>deleteTag(props.t._id)}>
           <Icon.Trash/>
         </Bouton>
-            
+
       </nav>}
       </section>}
       {edit && <section className={props.styles.writer}>
@@ -80,7 +76,7 @@ export default connect(mapStateToProps)((props) => {
 
         </form>
 
-        <nav className={props.styles.action}> 
+        <nav className={props.styles.action}>
           <Bouton title="Validate" onClick={()=>saveTag()}>
             <Icon.Save/>
           </Bouton>
@@ -89,7 +85,7 @@ export default connect(mapStateToProps)((props) => {
           <Bouton title="Cancel" onClick={()=>cancelEdit()}>
             <Icon.X/>
           </Bouton>
-              
+
         </nav>
       </section>}
     </div>

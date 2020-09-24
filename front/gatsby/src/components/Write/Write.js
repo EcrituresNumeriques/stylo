@@ -18,15 +18,15 @@ const mapStateToProps = ({ sessionToken, activeUser }) => {
 
 // lazy-loading otherwise "gatsby build" will fail:
 // WebpackError: ReferenceError: navigator is not defined
-// - codemirror.js:18 
+// - codemirror.js:18
 //   node_modules/codemirror/lib/codemirror.js:18:1
-// - codemirror.js:11 
+// - codemirror.js:11
 //   node_modules/codemirror/lib/codemirror.js:11:63
-// - codemirror.js:14 
+// - codemirror.js:14
 //   node_modules/codemirror/lib/codemirror.js:14:2
-// - markdown.js:6 
+// - markdown.js:6
 //   node_modules/codemirror/mode/markdown/markdown.js:6:9
-// - markdown.js:11 
+// - markdown.js:11
 //   node_modules/codemirror/mode/markdown/markdown.js:11:2
 if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
   require('codemirror/mode/markdown/markdown')
@@ -112,7 +112,6 @@ const ConnectedWrite = (props) => {
   // TODO: Do not save when opening
   const debouncedLive = useDebounce(live, 1000)
   useEffect(() => {
-    console.log('article.useEffect')
     if (!readOnly && !isLoading && !firstLoad) {
       sendVersion(true, false, 'Autosave')
     }
