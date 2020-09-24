@@ -1,13 +1,14 @@
-import React, {useRef, useMemo, useState, useEffect} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {connect} from 'react-redux'
+import {debounce} from "lodash"
 import env from '../../../helpers/env'
 
 import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
 import {getUserProfile} from '../../../helpers/userProfile'
 import bib2key from './CitationsFilter'
-import askGraphQL from '../../../helpers/graphQL';
-import {fetchBibliographyFromCollectionHref, fetchAllCollectionsPerLibrary} from '../../../helpers/zotero'
+import askGraphQL from '../../../helpers/graphQL'
+import {fetchAllCollectionsPerLibrary, fetchBibliographyFromCollectionHref} from '../../../helpers/zotero'
 import {toBibtex, validate} from '../../../helpers/bibtex'
 import ReferenceTypeIcon from '../../ReferenceTypeIcon.js'
 
@@ -28,7 +29,7 @@ const ConnectedBibliographe = (props) => {
   const [bib, setBib] = useState(props.bib)
   const [addCitation, setAddCitation] = useState('')
   const [citationValidationResult, setCitationValidationResult] = useState({valid: false})
-  const [isRawBibtexValid, setRawBibtexValid] = useState(false)
+  const [rawBibTeXValidationResult, setRawBibTeXValidationResult] = useState({valid: false})
   const [zoteroLink, setZoteroLink] = useState(props.article.zoteroLink || "")
   const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)
   const {zoteroToken} = props.activeUser
@@ -50,6 +51,11 @@ const ConnectedBibliographe = (props) => {
     setBib(bib + '\n' + addCitation)
     citationForm.current.reset()
   }
+
+  const delayedValidateCitation = useCallback(debounce(
+    (bibtex, setCitationValidationResult, next) => validateCitation(bibtex, setCitationValidationResult, next),
+    1000
+  ), [])
 
   const validateCitation = (bibtex, setCitationValidationResult, next) => {
     next(bibtex)
@@ -80,7 +86,7 @@ const ConnectedBibliographe = (props) => {
 
     // saveOnGraphQL
     if (props.article.zoteroLink !== zoteroLink) {
-      console.log("saving to graphQL", props.article.zoteroLink, zoteroLink)
+      console.log("Saving to graphQL", props.article.zoteroLink, zoteroLink)
       try {
         const query =`mutation($user:ID!,$article:ID!,$zotero:String!){zoteroArticle(article:$article,zotero:$zotero,user:$user){ _id zoteroLink}}`
         const variables = { zotero: zoteroLink, user: props.activeUser._id, article: props.article._id }
@@ -162,7 +168,7 @@ const ConnectedBibliographe = (props) => {
       </div>}
 
       {selector === 'citations' && <form ref={citationForm} onSubmit={(e) => e.preventDefault() && mergeCitations()} className={styles.citations}>
-        <textarea onChange={event => validateCitation(etv(event), setCitationValidationResult, setAddCitation)} placeholder="Paste here the BibTeX of the citation you want to add"/>
+        <textarea onChange={event => delayedValidateCitation(etv(event), setCitationValidationResult, setAddCitation)} placeholder="Paste here the BibTeX of the citation you want to add"/>
         {(citationValidationResult.messages) &&
         (<ul className={styles.citationMessages}>
           {citationValidationResult.messages.map(m => <li>{m}</li>)}
@@ -194,9 +200,13 @@ const ConnectedBibliographe = (props) => {
 
       {selector === 'raw' && <form onSubmit={(e) => e.preventDefault()}>
         <div className={styles.raw}>
-          <textarea defaultValue={bib} onChange={event => validateCitation(etv(event), setRawBibtexValid, setBib)} />
+          <textarea defaultValue={bib} onChange={event => delayedValidateCitation(etv(event), setRawBibTeXValidationResult, setBib)} />
         </div>
-        <button disabled={isRawBibtexValid !== true} onClick={()=>{success(bib); props.cancel()}} className={styles.primary}>Save</button>
+        {(rawBibTeXValidationResult.messages) &&
+        (<ul className={styles.citationMessages}>
+          {rawBibTeXValidationResult.messages.map(m => <li>{m}</li>)}
+        </ul>)}
+        <button disabled={rawBibTeXValidationResult.valid !== true} onClick={()=>{success(bib); props.cancel()}} className={styles.primary}>Save</button>
       </form>}
 
     </article>
