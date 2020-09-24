@@ -74,7 +74,7 @@ export default class YamlEditor extends Component {
 
     //load keywords if provided as an object
     if(props.keywords && typeof props.keywords == 'object'){
-      console.log("Updating keywords");
+      console.log('Updating keywords');
     }
     //load keywords if provided as URL
     if(props.keywords && typeof props.keywords == 'string'){
@@ -160,7 +160,7 @@ export default class YamlEditor extends Component {
 
   cleanOutput(object){
     let cleaning = JSON.parse(JSON.stringify(object))
-    for (var propName in cleaning) { 
+    for (var propName in cleaning) {
       if (cleaning[propName] === null || cleaning[propName] === undefined || cleaning[propName] === "") {
         delete cleaning[propName];
       }
@@ -237,13 +237,13 @@ export default class YamlEditor extends Component {
         });
       }
     }
-    
+
   render(){
     return(
       <section className={this.readOnly?"readOnly":""}>
 
         {this.props.editor && <ImportYaml state={this.state} updateState={this.updateState} />}
-        
+
         {this.props.editor && <TextInput target="id" title="ID" placeholder="XXXXX" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
         {this.props.editor && <TextInput target="url_article" title="URL of the article" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
         <TextInput target="title_f" alias={[{target:'title',prefix:'',suffix:'',filterMD:true}]} title="Title" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
@@ -253,24 +253,24 @@ export default class YamlEditor extends Component {
         <TextInput target="rights" title="Licence" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>
         <section>
           <h1>Bibliographie</h1>
-          
+
           {this.props.editor && <MultipleChoice target={"link-citations"} title="Citation Link" options={[{label:"yes",value:true},{label:"no link", value:false}]}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
-          
+
           <MultipleChoice target={"nocite"} title="Display" options={[{label:"All citations",value:"@*"},{label:"Only used", value:""}]}  state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
         </section>
-        
+
         <ArrayOfPeople target="authors" titre="Authors" action="author" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>
         <Resumes state={this.state.obj}  updateState={this.updateState}  readOnly={this.readOnly}/>
         <Keywords state={this.state} updateMisc={this.updateMisc} updateState={this.updateState} readOnly={this.readOnly}/>
         {this.props.editor && <ControlledKeywords state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
         {this.props.editor && <Rubriques state={this.state.misc} updateMisc={this.updateMisc} readOnly={this.readOnly} />}
-        
+
         {this.props.editor && <section>
           <h1>Diffusion</h1>
           {this.props.editor && <TextInput target="publisher" title="Publisher" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
           {this.props.editor && <TextInput target="journal" title="Journal" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
-          {this.props.editor && <ArrayOfPeople target="director" titre="Directors" action="director" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}  
-          {this.props.editor && <TextInput target="issnum" title="ISSN" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}  
+          {this.props.editor && <ArrayOfPeople target="director" titre="Directors" action="director" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
+          {this.props.editor && <TextInput target="issnum" title="ISSN" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
           {this.props.editor && <TextInput target="prod" title="Productor" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
           {this.props.editor && <TextInput target="prodnum" title="Prodnum" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
           {this.props.editor && <TextInput target="diffnum" title="Diffnum" state={this.state.obj} updateState={this.updateState}  readOnly={this.readOnly}/>}
@@ -279,13 +279,13 @@ export default class YamlEditor extends Component {
         </section>}
 
         {this.props.editor && <ArrayOfPeople target="reviewers" titre="Réviseurs" action="réviseur" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
-        
+
         {this.props.editor && <ArrayOfPeople target="translators" titre="Translators" action="translator" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
-        
+
         {this.props.editor && <TranslationOf state={this.state.obj}  updateState={this.updateState}  readOnly={this.readOnly}/>}
-        
+
         {this.props.editor && <ArrayOfPeople target="transcriber" titre="Transcribers" action="transcriber" state={this.state.obj} updateState={this.updateState} readOnly={this.readOnly}/>}
-      
+
       </section>
     )
   }
