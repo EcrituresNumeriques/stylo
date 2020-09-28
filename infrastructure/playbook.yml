@@ -21,6 +21,7 @@
           - pip==20.1
           - docker==4.2.0
           - docker-compose==1.25.5
+          - check-docker=2.2.2
 
     - name: Update NGINX settings
       become: yes
@@ -35,6 +36,12 @@
         src: ./docker-compose-stylo.service
         dest: /etc/systemd/system/docker-compose-stylo.service
       notify: start docker-compose-stylo
+
+    - name: Copy Nagios configuration
+      become: yes
+      copy:
+        src: ./nagios-nrpe-local.cfg
+        dest: /etc/nagios/nrpe_local.cfg
 
     - name: Checkout and update Stylo
       git:
