@@ -29,6 +29,14 @@
         dest: /etc/nginx/sites-enabled/{{ site }}.conf
       notify: reload nginx
 
+    - name: Update NGINX settings
+      become: yes
+      copy:
+        src: ./stylo.ecrituresnumeriques.ca.conf
+        dest: /etc/nginx/sites-enabled/stylo.ecrituresnumeriques.ca.conf
+      when: site == "stylo.huma-num.fr"
+      notify: reload nginx
+
     - name: Copy systemd service file
       become: yes
       copy:
