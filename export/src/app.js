@@ -21,6 +21,14 @@ exportRouter.get('/book/:id/zip', exportBookZip)
 exportRouter.get('/tag/:ids/zip', exportBatchTagZip)
 app.use('/export', exportRouter)
 
+// WARNING: the following routes are used by https://via.hypothes.is/ to annotate the page.
+// the URL is used as an unique identifier and should not be modified otherwise the annotations will be "lost"!
+// as a result, we are forced to keep these alias until we use an URL-independent identifier on Hypothesis.
+// see: https://web.hypothes.is/help/how-hypothesis-interacts-with-document-metadata/
+app.get('/api/v1/htmlVersion/:id', exportVersionHtml)
+app.get('/api/v1/htmlArticle/:id', exportArticleHtml)
+app.get('/htmlBook/:id', exportBookHtml)
+
 app.use((req, res, _) => {
   return res.redirect(302, redirect + req.originalUrl)
 })

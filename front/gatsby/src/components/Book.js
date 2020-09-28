@@ -42,7 +42,7 @@ export default (props) => {
         </Modal>}
         <nav>
 
-            <Bouton title="Preview" href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/export/book/${props._id}/html?preview=true`}>
+            <Bouton title="Preview" href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/htmlBook/${props._id}?preview=true`}>
                 <Icon.Eye />
             </Bouton>
             <Bouton title="Export" onClick={()=>setExporting(true)}>
