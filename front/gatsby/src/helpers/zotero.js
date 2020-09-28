@@ -1,4 +1,5 @@
 import LinkHeader from 'http-link-header'
+import {filter} from './bibtex.js'
 
 export const fetchBibliographyFromCollectionHref = async ({collectionHref, token: key = null}) => {
     const url = new URL(collectionHref + '/items')
@@ -31,7 +32,7 @@ export async function fetchZoteroFromUrl (url, agg = []) {
     const bib = await response.text()
 
     if (bib && bib.trim().length > 0) {
-        agg.push(bib)
+        agg.push(filter(bib))
     }
 
     const nextLink = getNextLink(headers)

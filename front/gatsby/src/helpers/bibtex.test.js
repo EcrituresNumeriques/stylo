@@ -1,4 +1,4 @@
-import {parse, validate, toBibtex} from './bibtex'
+import {validate, toBibtex, filter} from './bibtex'
 import bib2key from '../components/Write/bibliographe/CitationsFilter.js'
 
 describe('parse', () => {
@@ -120,5 +120,50 @@ describe('parse', () => {
 
     expect(toBibtex(entries)).toMatch('journaltitle = {L’atelier des savoirs}')
     expect(toBibtex(entries)).toMatch('file = {Snapshot:/home/antoine/Zotero/storage/VC32TEFF/Dehut - En finir avec Word ! Pour une analyse des enjeux r.html:text/html}')
+  })
+
+  test('it should remove empty citation from a raw bibtex', async () => {
+    const text = `
+@incollection{bonnet_rome_2013,
+\taddress = {Paris},
+\tseries = {Rencontres},
+\ttitle = {Rome, les {Romains} et l’art grec : {\\textless}/i{\\textgreater}translatio, interpretatio, imitatio, aemulatio....{\\textless}/i{\\textgreater}},
+\tisbn = {978-2-8124-1105-2},
+\turl = {https://halshs.archives-ouvertes.fr/halshs-00938998},
+\tlanguage = {fre},
+\tnumber = {52},
+\tbooktitle = {{\\textless}/i{\\textgreater}{Translatio}{\\textless}/i{\\textgreater} :  traduire et adapter les {Anciens}},
+\tpublisher = {Classiques Garnier},
+\tauthor = {Dardenay, Alexandra},
+\teditor = {Bonnet, Corinne and Bouchet, Florence},
+\tyear = {2013},
+\tnote = {ill. 23 cm. Textes des contributions présentées lors du séminaire transversal du Laboratoire PLH, Patrimoine, littérature, histoire, EA 4601, de l'Université Toulouse II-Le Mirail, 2008-2010. Bibliogr. p. 305-317. Notes bibliogr. Index.},
+\tkeywords = {Civilisation occidentale, Littérature antique}
+}
+
+@incollection{noauthor_notitle_nodate
+}
+
+@book{pollux_grammaticus_onomasticon_nodate,
+\ttitle = {Onomasticon},
+\tauthor = {Pollux grammaticus}
+}`
+
+    const resultBefore = await validate(text)
+    expect(resultBefore).toHaveProperty('success', 2)
+    expect(resultBefore).toHaveProperty('warnings', [])
+    expect(resultBefore).toHaveProperty('errors', ['missing_equal_sign at line 20'])
+
+    const filteredText = filter(text)
+
+    const resultAfter = await validate(filteredText)
+    expect(resultAfter).toHaveProperty('success', 2)
+    expect(resultAfter).toHaveProperty('warnings', [])
+    expect(resultAfter).toHaveProperty('errors', [])
+
+    const entries = bib2key(filteredText).map(({ entry }) => entry)
+    expect(entries).toHaveLength(2)
+    expect(entries[0].entry_key).toEqual('bonnet_rome_2013')
+    expect(entries[1].entry_key).toEqual('pollux_grammaticus_onomasticon_nodate')
   })
 })

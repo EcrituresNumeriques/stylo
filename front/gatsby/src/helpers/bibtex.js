@@ -37,6 +37,15 @@ export function validate(bibtex) {
   }))
 }
 
+/**
+ * Filter invalid citation from a raw BibTeX
+ * @param {string} bibtex
+ * @returns {string}
+ */
+export function filter(bibtex) {
+  return bibtex.replace(/^@[a-z]+{noauthor_notitle_nodate\n}/gm, "")
+}
+
 const IconNameMap = {
   article: 'journal-article',
   book: 'book',
