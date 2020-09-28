@@ -92,7 +92,7 @@ export default (props) => {
                 {v._id !== props.compareTo && <Link to={`/article/${props.article._id}/${props.selectedVersion?'version/'+props.selectedVersion+'/':''}compare/${v._id}`}>Compare</Link>}
                 {v._id === props.compareTo && <Link to={`/article/${props.article._id}/${props.selectedVersion?'version/'+props.selectedVersion:''}`}>Stop</Link>}
                 <p onClick={()=>{setExportVar({...exportVar,article:false,_id:v._id,versionId:v._id,version:v.version,    revision:v.revision});setExporting(true)}}>export</p>
-                <a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/export/version/${v._id}/html?preview=true`} target="_blank" rel="noopener noreferrer">preview</a>
+                <a href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/api/v1/htmlVersion/${v._id}?preview=true`} target="_blank" rel="noopener noreferrer">preview</a>
               </nav>
             </li>
           )}
