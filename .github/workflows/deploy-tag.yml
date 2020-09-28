@@ -35,4 +35,4 @@ jobs:
 
     - name: Run playbook
       working-directory: ./infrastructure
-      run: ansible-playbook -i inventories/prod --extra-vars "@vault-prod.yml" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml
+      run: ansible-playbook -i inventories/prod --extra-vars "@vault-prod.yml" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v
