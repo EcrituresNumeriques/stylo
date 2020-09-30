@@ -9,10 +9,6 @@ const Tag = require('../models/tag');
 const Article = require('../models/article');
 const Version = require('../models/version');
 
-
-const DataLoader = require('dataloader');
-
-
 /*
 ---------------------------------------------------------
 |                                                       |
@@ -45,39 +41,11 @@ const getUserById = async (userId) => {
         throw err;
     }
 };
+
 const getUsersByIds = async (usersIds,args) => {
-    //console.log("Entering getUsersByIds",usersIds,args);
-    try{
-        usersIds = paginate(usersIds,args.limit,args.page);
-        if(usersIds.length === 0){ return [] }
-        return usersIds.map((userId) => (getUsersByIdsLoader.load(userId)));
-    }
-    catch(err){
-        throw err
-    }
+    usersIds = paginate(usersIds,args.limit,args.page);
+    return usersIds.map((userId) => User.findById(userId).then(populateUser));
 };
-
-const getUsersByIdsNF = (usersIds) => {
-    const ids = usersIds
-    return User.find({ _id: { $in: usersIds } })
-    .then(users => users.map(populateUser))
-    .then(users => {
-        let byIdUsers = {}
-        for(let i = 0; i < users.length;i++){
-            byIdUsers[users[i]._id] = users[i]
-        }
-        return byIdUsers
-    })
-    .then(users => {
-        let response = []
-        for(let i = 0; i < ids.length;i++){
-            response.push(users[ids[i]] || null)
-        }
-        return response
-    })
-}
-
-const getUsersByIdsLoader = new DataLoader(getUsersByIdsNF);
 
 /*
 ---------------------------------------------------------
