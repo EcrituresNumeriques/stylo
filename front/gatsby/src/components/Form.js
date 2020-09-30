@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
+import {throttle} from "lodash"
 import Form from '@rjsf/core'
-import { categories } from './Write/yamleditor/default/categories.js'
 import { search as isidoreSearch } from '../helpers/isidore'
 import { set } from 'object-path-immutable'
 import yaml from 'js-yaml'
+import {useCombobox} from 'downshift'
 
 import styles from './form.module.scss'
 
@@ -59,14 +60,15 @@ const schema = {
     lang: { $ref: '#/definitions/lang' },
     license: { type: 'string' },
     'link-citations': {
-      type: 'string',
+      type: 'boolean',
       title: 'Citation Link',
-      enum: ['true', 'false'],
+      enumNames: ['yes', 'no'],
     },
     nocite: {
       type: 'string',
       title: 'Display',
       enum: ['@*', ''],
+      enumNames: ['All citations', 'Only used']
     },
     authors: {
       type: 'array',
@@ -126,6 +128,31 @@ const schema = {
       },
       uniqueItems: true,
     },
+    publisher: { type: 'string' },
+    journal: { type: 'string' },
+    dossier: {
+      type: 'array',
+      minItems: 1,
+      maxItems: 1,
+      items: {
+        type: 'object',
+        properties: {
+          title: { type: 'string' },
+          id: { type: 'string' }
+        }
+      },
+    },
+    translationOf: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          title: { type: 'string' },
+          url: { type: 'string' },
+          lang: { $ref: '#/definitions/lang' },
+        }
+      }
+    },
     reviewers: {
       type: 'array',
       items: { $ref: '#/definitions/person' },
@@ -165,6 +192,9 @@ const uiSchema = {
   subtitle: {
     'ui:title': 'Subtitle',
   },
+  'link-citations': {
+    'ui:widget': 'select'
+  },
   date: {
     'ui:title': 'Date',
     'ui:widget': 'date',
@@ -179,6 +209,13 @@ const uiSchema = {
   },
   authors: {
     'add-item-title': 'Ajouter un auteur',
+  },
+  translationOf: {
+    items: {
+      url: {
+        'ui:widget': 'uri'
+      }
+    }
   },
   abstract: {
     'add-item-title': 'Ajouter un résumé',
@@ -198,64 +235,72 @@ const uiSchema = {
   },
   referencedKeywords: {
     items: {
-      'ui:map-fn': el => ({
-        key: el.option['@value'],
-        value: el['@label']
-      }),
       'ui:to-value-fn': (el) => ({
         label: el['@label'],
         uriRameau: el.option['@value'],
         idRameau: ''
       }),
-      'ui:find-fn': (value) => (el) => el.option['@value'] === value,
       'ui:ObjectFieldTemplate': AutocompleteField,
     },
+  },
+  dossier: {
+    "ui:options": {
+      removable: false,
+      addable: false
+    }
   }
 }
 
 function AutocompleteField (props) {
+  const [inputItems, setInputItems] = useState([])
+  const {
+    isOpen,
+    //getToggleButtonProps,
+    //getLabelProps,
+    getMenuProps,
+    getInputProps,
+    getComboboxProps,
+    highlightedIndex,
+    getItemProps,
+  } = useCombobox({
+    items: inputItems,
+    onSelectedItemChange: ({selectedItem}) => {
+      if (selectedItem) {
+        const {$id: id} = props.idSchema
+        
+        props.formContext.partialUpdate({ id, value: toValueFn(selectedItem) })
+      }
+    },
+    onInputValueChange: ({inputValue}) => delayedSearch(inputValue),
+  })
+
+  const delayedSearch = useCallback(throttle(async (value) => {
+      const replies = await isidoreSearch(value)
+      setInputItems(replies)
+    }, 200, { trailing: true, leading: true }
+  ), [])
+
   const isEmpty = ObjectIsEmpty(props.formData)
-  //const autocompleteData = props.uiSchema['ui:examples'] ?? []
-  const mapFn = props.uiSchema['ui:map-fn'] ?? ((el) => el)
-  const findFn = props.uiSchema['ui:find-fn']
   const toValueFn = props.uiSchema['ui:to-value-fn'] ?? ((el) => el)
-  const [options, setOptions] = useState([])
 
-  return <>
-    {!isEmpty && <span>{props.formData.label}</span>}
-    {isEmpty && <><input
-      type="text"
-      id={props.id}
-      list={`${props.id}-list`}
-      className="field-autocomplete"
-      required={props.required}
-      value={props.value}
-      onKeyDown={async (event) => {
-        const replies = await isidoreSearch(event.target.value)
-        setOptions(replies)
-      }}
-      onChange={({ target }) => {
-        const {value} = target
-
-        if (!value) {
-          return
-        }
-
-        const category = options.find(findFn(value))
-        console.log({category, value})
-        if (category) {
-          const {$id: id} = props.idSchema
-          
-          props.formContext.partialUpdate({ id, value: toValueFn(category) })
-          target.value = ''
-        }
-      }}
-    />
-    <datalist id={`${props.id}-list`}>
-      {options.map(mapFn).map(({ key, value }) => <option key={key} value={key}>{value}</option>)}
-    </datalist>
-    </>}
-  </>;
+  return <div {...getComboboxProps()}>
+     {!isEmpty && <span>{props.formData.label}</span>}
+     <input {...getInputProps(!isEmpty ? { hidden: true } : {})} />
+     <ul {...getMenuProps()}>
+        {isOpen &&
+          inputItems.map((item, index) => (
+            <li
+              style={
+                highlightedIndex === index ? {backgroundColor: '#bde4ff'} : {}
+              }
+              key={`${item.option['@value']}${index}`}
+              {...getItemProps({item, index})}
+            >
+              {item['@label']}
+            </li>
+          ))}
+      </ul>
+    </div>
 }
 
 function ArrayFieldTemplate(props) {

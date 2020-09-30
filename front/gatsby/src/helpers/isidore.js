@@ -12,6 +12,7 @@ export async function search(searchValue) {
     const searchParams = url.searchParams
     searchParams.append('output', 'json')
     searchParams.append('q', searchValue)
+    console.log('fetch', searchValue)
     return fetch(url, { method: 'GET' })
       .then((response) => {
         return response.ok
@@ -21,7 +22,11 @@ export async function search(searchValue) {
       .then((json) => {
         console.log({json})
         if (json.response && json.response.replies && json.response.replies.reply) {
-          return json.response.replies.reply
+          if (Array.isArray(json.response.replies.reply)) {
+            return json.response.replies.reply
+          } else {
+            return [json.response.replies.reply]
+          }
         }
         return []
       })
