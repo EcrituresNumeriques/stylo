@@ -1,5 +1,29 @@
 # Journal de développement
 
+## Mercredi 30 septembre 2020
+
+### Ce que j'ai aimé/appris
+
+- j'ai bien aimé diagnostiquer la fuite mémoire, ça prouve que l'outillage qu'on a mis en place fait le travail
+- cool d'aller voir la lib `Dataloader` pour comprendre comment elle était à l'origine
+- chouette de monter en compétence sur du React avec le composant `Downshift` — très chouettes exemples tout prêt, faciles à rebrancher
+- la petite sieste de ce midi c'était bien
+- on a bien avancé, le composant est quasi fini en terme fonctionnel
+- chouette de virer une fuite mémoire en virant un truc utilisé une fois, et qui fait de l'optimisation
+- content de voir une preuve de démonstration de l'intégration avec Isidore
+- l'aspect progressif de l'amélioration par petite touche ce qui rend le truc tout doux
+- j'étais content de voir le résultat du monitoring arriver en live
+
+### Ce que j'ai trouvé difficile
+
+- ce matin j'avais mal au crâne donc j'étais un peu off
+- cette aprem j'étais un peu dans les vapes donc je t'ai suivi
+- quelques soucis sur le réseau mais c'était gérable
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- N/A
+
 ## Mercredi 16 septembre 2020
 
 ### Ce que j'ai aimé/appris
