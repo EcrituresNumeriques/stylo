@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Form from '@rjsf/core'
 import { categories } from './Write/yamleditor/default/categories.js'
+import { set } from 'object-path-immutable'
 
 import styles from './form.module.scss'
 
@@ -54,6 +55,7 @@ const schema = {
     subtitle: { type: 'string' },
     date: { type: 'string' },
     lang: { $ref: '#/definitions/lang' },
+    license: { type: 'string' },
     'link-citations': {
       type: 'string',
       title: 'Citation Link',
@@ -102,7 +104,7 @@ const schema = {
         properties: {
           label: { type: 'string' },
           idRameau: { type: 'string' },
-          urlRameau: { type: 'string' }
+          uriRameau: { type: 'string' }
         }
       },
       uniqueItems: true,
@@ -194,28 +196,53 @@ const uiSchema = {
   },
   referencedKeywords: {
     items: {
-      'ui:widget': (props) => {
-        return <>
-          <input
+      'ui:examples': categories,
+      'ui:examples-key-value': ({ uriRameau:key, label:value }) => ({ key, value }),
+      'ui:examples-find': (value) => (el) => el.uriRameau === value,
+      'ui:ObjectFieldTemplate': (props) => {
+        const hasData = Object.keys(props.formData).length !== 0
+        const autocompleteData = props.uiSchema['ui:examples']
+        const mapFn = props.uiSchema['ui:examples-key-value']
+        const findFn = props.uiSchema['ui:examples-find']
+        const options = autocompleteData.map(mapFn)
+        return (
+          <>
+          {hasData && <span>{props.formData.label}</span>}
+          {!hasData && <><input
             type="text"
             id={props.id}
             list={`${props.id}-list`}
             className="field-autocomplete"
             value={props.value}
             required={props.required}
-            onChange={(event) => props.onChange(event.target.value)}
+            onChange={({ target }) => {
+              const {value} = target
+
+              if (!value) {
+                return
+              }
+
+              const category = autocompleteData.find(findFn(value))
+              if (category) {
+                const path = props.idSchema.$id.replace('root_', '').replace('_', '.')
+                props.formContext.partialUpdate({ path, value: category })
+                target.value = ''
+              }
+            }}
           />
           <datalist id={`${props.id}-list`}>
-            {categories.map(({ uriRameau:key, label }) => <option key={key} value={key}>{label}</option>)}
+            {options.map(({ key, value }) => <option key={key} value={key}>{value}</option>)}
           </datalist>
-        </>
+          </>}
+          </>
+        );
       },
     },
-  },
-}
+  }
+  }
 
 function ArrayFieldTemplate(props) {
-  console.log(props.uiSchema)
+
   const addItemTitle = props.uiSchema['add-item-title'] || 'Ajouter'
   return (
     <div className={props.className} key={props.key}>
@@ -253,12 +280,18 @@ function ArrayFieldTemplate(props) {
 
 export default (props) => {
   const [formData, setFormData] = useState({})
+  const formContext = {
+    partialUpdate: ({ path, value}) => {
+      setFormData(state => set(state, path, value))
+    }
+  }
 
   return (
     <>
       <Form
         className={styles.form}
         ArrayFieldTemplate={ArrayFieldTemplate}
+        formContext={formContext}
         schema={schema}
         uiSchema={uiSchema}
         formData={formData}
