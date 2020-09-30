@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import Form from '@rjsf/core'
 import { categories } from './Write/yamleditor/default/categories.js'
+import { search as isidoreSearch } from '../helpers/isidore'
 import { set } from 'object-path-immutable'
+import yaml from 'js-yaml'
 
 import styles from './form.module.scss'
 
@@ -196,50 +198,65 @@ const uiSchema = {
   },
   referencedKeywords: {
     items: {
-      'ui:examples': categories,
-      'ui:examples-key-value': ({ uriRameau:key, label:value }) => ({ key, value }),
-      'ui:examples-find': (value) => (el) => el.uriRameau === value,
-      'ui:ObjectFieldTemplate': (props) => {
-        const hasData = Object.keys(props.formData).length !== 0
-        const autocompleteData = props.uiSchema['ui:examples']
-        const mapFn = props.uiSchema['ui:examples-key-value']
-        const findFn = props.uiSchema['ui:examples-find']
-        const options = autocompleteData.map(mapFn)
-        return (
-          <>
-          {hasData && <span>{props.formData.label}</span>}
-          {!hasData && <><input
-            type="text"
-            id={props.id}
-            list={`${props.id}-list`}
-            className="field-autocomplete"
-            value={props.value}
-            required={props.required}
-            onChange={({ target }) => {
-              const {value} = target
-
-              if (!value) {
-                return
-              }
-
-              const category = autocompleteData.find(findFn(value))
-              if (category) {
-                const path = props.idSchema.$id.replace('root_', '').replace('_', '.')
-                props.formContext.partialUpdate({ path, value: category })
-                target.value = ''
-              }
-            }}
-          />
-          <datalist id={`${props.id}-list`}>
-            {options.map(({ key, value }) => <option key={key} value={key}>{value}</option>)}
-          </datalist>
-          </>}
-          </>
-        );
-      },
+      'ui:map-fn': el => ({
+        key: el.option['@value'],
+        value: el['@label']
+      }),
+      'ui:to-value-fn': (el) => ({
+        label: el['@label'],
+        uriRameau: el.option['@value'],
+        idRameau: ''
+      }),
+      'ui:find-fn': (value) => (el) => el.option['@value'] === value,
+      'ui:ObjectFieldTemplate': AutocompleteField,
     },
   }
-  }
+}
+
+function AutocompleteField (props) {
+  const isEmpty = ObjectIsEmpty(props.formData)
+  //const autocompleteData = props.uiSchema['ui:examples'] ?? []
+  const mapFn = props.uiSchema['ui:map-fn'] ?? ((el) => el)
+  const findFn = props.uiSchema['ui:find-fn']
+  const toValueFn = props.uiSchema['ui:to-value-fn'] ?? ((el) => el)
+  const [options, setOptions] = useState([])
+
+  return <>
+    {!isEmpty && <span>{props.formData.label}</span>}
+    {isEmpty && <><input
+      type="text"
+      id={props.id}
+      list={`${props.id}-list`}
+      className="field-autocomplete"
+      required={props.required}
+      value={props.value}
+      onKeyDown={async (event) => {
+        const replies = await isidoreSearch(event.target.value)
+        setOptions(replies)
+      }}
+      onChange={({ target }) => {
+        const {value} = target
+
+        if (!value) {
+          return
+        }
+
+        const category = options.find(findFn(value))
+        console.log({category, value})
+        if (category) {
+          const {$id: id} = props.idSchema
+          
+          props.formContext.partialUpdate({ id, value: toValueFn(category) })
+          target.value = ''
+        }
+      }}
+    />
+    <datalist id={`${props.id}-list`}>
+      {options.map(mapFn).map(({ key, value }) => <option key={key} value={key}>{value}</option>)}
+    </datalist>
+    </>}
+  </>;
+}
 
 function ArrayFieldTemplate(props) {
 
@@ -278,13 +295,41 @@ function ArrayFieldTemplate(props) {
   )
 }
 
+export function cleanOutput (object){
+  let cleaning = JSON.parse(JSON.stringify(object))
+
+  if (ObjectIsEmpty(cleaning)) {
+    return ''
+  }
+
+  for (var propName in cleaning) { 
+    if (cleaning[propName] === null || cleaning[propName] === undefined || cleaning[propName] === "") {
+      delete cleaning[propName];
+    }
+    if(Array.isArray(cleaning[propName]) && cleaning[propName].length === 0){
+      delete cleaning[propName];
+    }
+    if(ObjectIsEmpty(cleaning[propName])) {
+      delete cleaning[propName];
+    }
+  }
+  return cleaning
+}
+
+export function ObjectIsEmpty (object) {
+  return typeof object === 'object' && Object.keys(object).length === 0
+}
+
 export default (props) => {
   const [formData, setFormData] = useState({})
   const formContext = {
-    partialUpdate: ({ path, value}) => {
+    partialUpdate: ({ id, value }) => {
+      const path = id.replace('root_', '').replace('_', '.')
       setFormData(state => set(state, path, value))
     }
   }
+
+  const yamlOutput = '---\n' + yaml.safeDump(cleanOutput(formData)) + '---'
 
   return (
     <>
@@ -300,7 +345,7 @@ export default (props) => {
         onError={(e) => console.log('errors', e)}
       />
       <output className={styles.output}>
-        <pre>{JSON.stringify(formData, null, 2)}</pre>
+        <pre>{yamlOutput}</pre>
       </output>
     </>
   )
