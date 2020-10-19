@@ -68,9 +68,11 @@ const IconNameMap = {
  * @returns {string}
  */
 export function iconName (bibtexType) {
-  const iconName = IconNameMap[bibtexType]
-  if (iconName) {
-    return iconName
+  if (bibtexType) {
+    const iconName = IconNameMap[bibtexType]
+    if (iconName) {
+      return iconName
+    }
   }
   return 'book'
 }

@@ -7,9 +7,12 @@ const compare = (a, b) => {
 }
 
 const flatten = (entryTitle) => {
-  return entryTitle
-    .map(({ text }) => text)
-    .join('')
+  if (entryTitle) {
+    return entryTitle
+      .map(({ text }) => text)
+      .join('')
+  }
+  return ''
 }
 
 /**
@@ -26,7 +29,7 @@ export default (input) => {
   const {entries} = parser.parse()
 
   return Object.entries(entries)
-    .map(([key, entry]) => ({
+    .map(([_, entry]) => ({
       title: flatten(entry.fields.title),
       type: entry.bib_type,
       key: entry.entry_key,
