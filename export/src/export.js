@@ -119,7 +119,7 @@ module.exports = {
       }
       const cleanedVersion = version._doc
 
-      exportZIP({ bib: req.params.id.bib, yaml: req.params.id.yaml, md: req.params.id.md, id: req.params.id._id, title: article._doc.title }, res, req)
+      exportZIP({ bib: cleanedVersion.bib, yaml: cleanedVersion.yaml, md: cleanedVersion.md, id: req.params.id, title: article._doc.title }, res, req)
 
     } catch (err) {
       res.status(404).send(err)
