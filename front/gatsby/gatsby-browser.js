@@ -1,3 +1,4 @@
+import 'whatwg-fetch'
 import wrapWithProvider, { store } from "./src/components/provider"
 import { getUserProfile } from "./src/helpers/userProfile";
 

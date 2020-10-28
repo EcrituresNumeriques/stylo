@@ -17,7 +17,7 @@
     "codemirror": "^5.57.0",
     "diff-match-patch": "^1.0.5",
     "downshift": "^6.0.6",
-    "gatsby": "^2.24.57",
+    "gatsby": "^2.24.91",
     "gatsby-plugin-react-helmet": "^3.3.10",
     "gatsby-plugin-sass": "^2.3.12",
     "http-link-header": "^1.0.2",
@@ -34,7 +34,8 @@
     "react-redux": "^7.1.0",
     "redux": "^4.0.5",
     "remove-markdown": "^0.3.0",
-    "stjs": "0.0.5"
+    "stjs": "0.0.5",
+    "whatwg-fetch": "^3.4.1"
   },
   "repository": {
     "type": "git",
