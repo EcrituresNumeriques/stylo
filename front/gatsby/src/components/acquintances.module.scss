@@ -1,49 +1,59 @@
 @import '../styles/defaults.scss';
 @import '../styles/variables.scss';
 
-.acquintances{
-  > nav{
-    display:flex;
-    width:100%;
-    margin-bottom:1rem;
-    border:1px solid $main-border-color;
+.acquintances {
+  > nav {
+    display: flex;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: 1px solid $main-border-color;
+
     > p {
-      flex:1 1 50%;
+      flex: 1 1 50%;
       @extend .clickable;
-      background-color:$main-background-color;
-      padding:0.5rem 1rem;
-      &.selected{
+      background-color: $main-background-color;
+      padding: 0.5rem 1rem;
+
+      &.selected {
         @extend .primary-button;
       }
     }
   }
-  h1{
-    font-size:1.4rem;
-    margin-bottom:1rem;
+
+  h1 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
   }
-  form{
-    margin-bottom:1rem;
-    input{
-      @extend .secondary-button;
-      display:inline-block;
-      min-width:22rem;
-      border:none;
+
+  form {
+    margin-bottom: 1rem;
+
+    input {
+      padding: 0.5rem 1rem;
+      display: inline-block;
+      min-width: 22rem;
+      border: none;
     }
-    button{
+
+    button {
       @extend .primary-button;
-      display:inline-block;
-      border:none;
+      display: inline-block;
+      border: none;
     }
   }
-  > p{
-    padding:0.5rem 1rem;
-    span{
+
+  > p {
+    padding: 0.5rem 1rem;
+
+    span {
       @extend .primary-button;
-      float:right;
+      float: right;
     }
   }
-  > p:nth-child(2n+1){
-    background-color:$extra-background-color;
+
+  > p:nth-child(2n+1) {
+    background-color: $extra-background-color;
   }
-  margin-bottom:1rem;
+
+  margin-bottom: 1rem;
 }
