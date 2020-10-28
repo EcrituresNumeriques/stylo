@@ -1,5 +1,4 @@
 import React from 'react'
-import { Redirect } from '@reach/router'
 
 import App from '../layouts/App'
 import PrivateRoute from '../components/PrivateRoute'
