@@ -1,0 +1,18 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+.form {
+  background-color: lightblue;
+}
+
+.addButton::after {
+  content: '+';
+}
+
+.removeButton::after {
+  content: '-';
+}
+
+.output {
+  color: gray;
+}

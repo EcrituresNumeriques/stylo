@@ -12,9 +12,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "@rjsf/core": "^2.4.0",
     "biblatex-csl-converter": "^1.9.5",
     "codemirror": "^5.57.0",
     "diff-match-patch": "^1.0.5",
+    "downshift": "^6.0.6",
     "gatsby": "^2.24.57",
     "gatsby-plugin-react-helmet": "^3.3.10",
     "gatsby-plugin-sass": "^2.3.12",
@@ -22,6 +24,7 @@
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.20",
     "node-sass": "^4.14.1",
+    "object-path-immutable": "^4.1.0",
     "react": "^16.13.1",
     "react-codemirror2": "^5.1.0",
     "react-copy-to-clipboard": "^5.0.2",
