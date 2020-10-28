@@ -1,6 +1,5 @@
 import React from 'react'
-import { navigate } from 'gatsby'
-import { Router, Location } from '@reach/router'
+import { Location, Router } from '@reach/router'
 import Write from '../components/Write/Write'
 import PrivateRoute from '../components/PrivateRoute'
 import App from '../layouts/App'
