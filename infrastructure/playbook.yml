@@ -54,7 +54,7 @@
     - name: Copy Nagios configuration
       become: yes
       copy:
-        src: ./nagios-nrpe-local.cfg
+        src: ./{{ env }}-nagios-nrpe-local.cfg
         dest: /etc/nagios/nrpe_local.cfg
 
     - name: Checkout and update Stylo
