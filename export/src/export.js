@@ -4,6 +4,8 @@ const archiver = require('archiver')
 const Article = require('./models/article')
 const Version = require('./models/version')
 const { normalize } = require('./helpers/filename')
+const { prepareMetadata } = require('./helpers/metadata')
+const { byTitle: sortByTitle } = require('./helpers/sort')
 const Tag = require('./models/tag')
 
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
@@ -26,31 +28,9 @@ const exportZIP = ({ bib, yaml, md, id, title }, res, _) => {
   // add files
   archive.append(Buffer.from(md), { name: `${id}.md` })
   archive.append(Buffer.from(bib), { name: `${id}.bib` })
-  archive.append(Buffer.from(prepareYAML(yaml, id)), { name: `${id}.yaml` })
+  archive.append(Buffer.from(prepareMetadata(yaml, id)), { name: `${id}.yaml` })
   // zip!
   archive.finalize()
-}
-
-const prepareYAML = (yaml, id) => {
-  // remove lines that contain "bibliography"
-  yaml = yaml.replace(/\n.*bibliography.*/gm, '')
-  // remove the end YAML delimiter (i.e. "---")
-  yaml = yaml.replace(/\n---\n*$/, '')
-  // add bibliography link
-  yaml = yaml.concat(`
-bibliography: ${id}.bib
----`)
-  return yaml
-}
-
-const alphaSort = (a, b) => {
-  if (a.title < b.title) {
-    return -1
-  }
-  if (a.title > b.title) {
-    return 1
-  }
-  return 0
 }
 
 const exportHTML = ({ bib, yaml, md, id, title }, res, req) => {
@@ -177,15 +157,14 @@ module.exports = {
       }
       const cleanedBook = book._doc
 
-      //Get the mashed md of all last version of all chapters
+      // get the mashed md of all last version of all chapters
       const chapters = await Article.find({ _id: { $in: cleanedBook.articles } }).populate('versions')
 
-      // ordonate chapters by alphabet ASC
-      const mds = chapters.sort(alphaSort).map(c => c.versions[c.versions.length - 1].md)
-
-      const bibs = chapters.sort(alphaSort).map(c => c.versions[c.versions.length - 1].bib)
-
-      const firstChapter = chapters.sort(alphaSort)[0]
+      // sort chapters in ascending alphabetical order
+      const chaptersSorted = chapters.sort(sortByTitle)
+      const mds = chaptersSorted.map(c => c.versions[c.versions.length - 1].md)
+      const bibs = chaptersSorted.map(c => c.versions[c.versions.length - 1].bib)
+      const firstChapter = chaptersSorted[0]
       const yaml = firstChapter.versions[firstChapter.versions.length - 1].yaml
 
       exportHTML({ bib: [cleanedBook.bib, ...bibs].join('\n'), yaml: yaml, md: mds.join('\n\n'), id: cleanedBook._id, title: cleanedBook.name }, res, req)
@@ -202,15 +181,14 @@ module.exports = {
       }
       const cleanedBook = book._doc
 
-      //Get the mashed md of all last version of all chapters
+      // get the mashed md of all last version of all chapters
       const chapters = await Article.find({ _id: { $in: cleanedBook.articles } }).populate('versions')
 
-      // ordonate chapters by alphabet ASC
-      const mds = chapters.sort(alphaSort).map(c => c.versions[c.versions.length - 1].md)
-
-      const bibs = chapters.sort(alphaSort).map(c => c.versions[c.versions.length - 1].bib)
-
-      const firstChapter = chapters.sort(alphaSort)[0]
+      // sort chapters in ascending alphabetical order
+      const chaptersSorted = chapters.sort(sortByTitle)
+      const mds = chaptersSorted.map(c => c.versions[c.versions.length - 1].md)
+      const bibs = chaptersSorted.map(c => c.versions[c.versions.length - 1].bib)
+      const firstChapter = chaptersSorted[0]
       const yaml = firstChapter.versions[firstChapter.versions.length - 1].yaml
 
       exportZIP({ bib: [cleanedBook.bib, ...bibs].join('\n'), yaml: yaml, md: mds.join('\n\n'), id: cleanedBook._id, title: cleanedBook.name }, res, req)
