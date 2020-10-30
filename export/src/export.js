@@ -50,9 +50,41 @@ ${YAML.safeDump(doc)}
   return yaml
 }
 
+function generatePandocCommand(
+  preview,
+  markdownFilePath,
+  bibliographyFilePath,
+  metadataFilePath
+) {
+  const templatesDirPath = path.join(__dirname, 'templates-stylo')
+  let templateArg = `--template=${path.join(
+    templatesDirPath,
+    'templateHtml5.html5'
+  )}`
+  if (preview) {
+    templateArg = `--template=${path.join(
+      templatesDirPath,
+      'templateHtml5-preview.html5'
+    )} -H ${path.join(templatesDirPath, 'preview.html')}`
+  }
+  const cslFilePath = path.join(templatesDirPath, 'chicagomodified.csl')
+  return `pandoc ${markdownFilePath} ${bibliographyFilePath} \
+--bibliography ${metadataFilePath} \
+--standalone \
+${templateArg} \
+--section-divs \
+--ascii \
+--toc \
+--csl=${cslFilePath} \
+-f markdown \
+-t html5`
+}
+
 const exportHTML = async ({ bib, yaml, md, id, title }, res, req) => {
+  const preview = req.query.preview
+  const originalUrl = req.originalUrl
   if (canonicalBaseUrl) {
-    yaml = addCanonicalUrl(yaml, req.originalUrl)
+    yaml = addCanonicalUrl(yaml, originalUrl)
   }
   let tmpDirectory
   try {
@@ -65,31 +97,15 @@ const exportHTML = async ({ bib, yaml, md, id, title }, res, req) => {
     await fs.writeFile(bibliographyFilePath, bib, 'utf8')
     await fs.writeFile(metadataFilePath, yaml, 'utf8')
     // pandoc command
-    const templatesDirPath = path.join(__dirname, 'templates-stylo')
-    let templateArg = `--template=${path.join(
-      templatesDirPath,
-      'templateHtml5.html5'
-    )}`
-    if (req.query.preview) {
-      templateArg = `--template=${path.join(
-        templatesDirPath,
-        'templateHtml5-preview.html5'
-      )} -H ${path.join(templatesDirPath, 'preview.html')}`
-    }
-    const cslFilePath = path.join(templatesDirPath, 'chicagomodified.csl')
-    const pandocCommand = `pandoc ${markdownFilePath} ${bibliographyFilePath} \
---bibliography ${metadataFilePath} \
---standalone \
-${templateArg} \
---section-divs \
---ascii \
---toc \
---csl=${cslFilePath} \
--f markdown \
--t html5`
+    const pandocCommand = generatePandocCommand(
+      preview,
+      markdownFilePath,
+      bibliographyFilePath,
+      metadataFilePath
+    )
     const { stdout, stderr } = await exec(pandocCommand)
     console.warn(stderr)
-    if (!req.query.preview) {
+    if (!preview) {
       res.attachment(`${normalize(title)}.html`)
     }
     let html5 = stdout
@@ -97,7 +113,7 @@ ${templateArg} \
       // HACK! we add the link tag in the head!
       html5 = html5.replace(
         /(<head>\s?)/gs,
-        `$1<link rel="canonical" href="${canonicalBaseUrl + req.originalUrl}">`
+        `$1<link rel="canonical" href="${canonicalBaseUrl + originalUrl}">`
       )
     }
     res.send(stdout)
