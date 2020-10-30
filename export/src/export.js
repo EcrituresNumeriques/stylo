@@ -1,21 +1,23 @@
-const rimraf = require('rimraf')
 const fs = require('fs').promises
 const path = require('path')
 const os = require('os')
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
+
+const rimraf = require('rimraf')
 const YAML = require('js-yaml')
 const archiver = require('archiver')
+
 const Article = require('./models/article')
 const Version = require('./models/version')
+const Tag = require('./models/tag')
 const { normalize } = require('./helpers/filename')
 const { prepareMetadata } = require('./helpers/metadata')
 const { byTitle: sortByTitle } = require('./helpers/sort')
-const Tag = require('./models/tag')
 
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 
-const exportZIP = ({ bib, yaml, md, id, title }, res, _) => {
+const exportZip = ({ bib, yaml, md, id, title }, res, _) => {
   const filename = `${normalize(title)}.zip`
   const archive = createZipArchive(filename, res)
   // add files
@@ -80,7 +82,7 @@ ${templateArg} \
 -t html5`
 }
 
-const exportHTML = async ({ bib, yaml, md, id, title }, res, req) => {
+const exportHtml = async ({ bib, yaml, md, id, title }, res, req) => {
   const preview = req.query.preview
   const originalUrl = req.originalUrl
   if (canonicalBaseUrl) {
@@ -221,7 +223,7 @@ module.exports = {
     try {
       const articleId = req.params.id
       const articleExportContext = await getArticleExportContext(articleId)
-      exportHTML(articleExportContext, res, req)
+      exportHtml(articleExportContext, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
@@ -230,7 +232,7 @@ module.exports = {
     try {
       const articleId = req.params.id
       const articleExportContext = await getArticleExportContext(articleId)
-      exportZIP(articleExportContext, res, req)
+      exportZip(articleExportContext, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
@@ -239,7 +241,7 @@ module.exports = {
     try {
       const version = await getVersionById(req.params.id)
       const { bib, yaml, md, _id: id } = version._doc
-      exportHTML({ bib, yaml, md, id, title: id }, res, req)
+      exportHtml({ bib, yaml, md, id, title: id }, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
@@ -248,7 +250,7 @@ module.exports = {
     try {
       const version = await getVersionById(req.params.id)
       const { bib, yaml, md, _id: id } = version._doc
-      exportZIP({ bib, yaml, md, id, title: id }, res, req)
+      exportZip({ bib, yaml, md, id, title: id }, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
@@ -257,7 +259,7 @@ module.exports = {
     try {
       const bookId = req.params.id
       const exportBookContext = await getBookExportContext(bookId)
-      exportHTML(exportBookContext, res, req)
+      exportHtml(exportBookContext, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
@@ -266,7 +268,7 @@ module.exports = {
     try {
       const bookId = req.params.id
       const exportBookContext = await getBookExportContext(bookId)
-      exportZIP(exportBookContext, res, req)
+      exportZip(exportBookContext, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
