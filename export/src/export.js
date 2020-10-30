@@ -118,7 +118,7 @@ const exportHtml = async ({ bib, yaml, md, id, title }, res, req) => {
         `$1<link rel="canonical" href="${canonicalBaseUrl + originalUrl}">`
       )
     }
-    res.send(stdout)
+    res.send(html5)
   } catch (err) {
     console.log({ err })
     res.status(500).send({ error: err })
@@ -223,7 +223,7 @@ module.exports = {
     try {
       const articleId = req.params.id
       const articleExportContext = await getArticleExportContext(articleId)
-      exportHtml(articleExportContext, res, req)
+      await exportHtml(articleExportContext, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
@@ -241,7 +241,7 @@ module.exports = {
     try {
       const version = await getVersionById(req.params.id)
       const { bib, yaml, md, _id: id } = version._doc
-      exportHtml({ bib, yaml, md, id, title: id }, res, req)
+      await exportHtml({ bib, yaml, md, id, title: id }, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
@@ -259,7 +259,7 @@ module.exports = {
     try {
       const bookId = req.params.id
       const exportBookContext = await getBookExportContext(bookId)
-      exportHtml(exportBookContext, res, req)
+      await exportHtml(exportBookContext, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
