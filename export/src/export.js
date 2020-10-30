@@ -1,4 +1,9 @@
-const shell = require('shelljs')
+const rimraf = require('rimraf')
+const fs = require('fs').promises
+const path = require('path')
+const os = require('os')
+const util = require('util')
+const exec = util.promisify(require('child_process').exec)
 const YAML = require('js-yaml')
 const archiver = require('archiver')
 const Article = require('./models/article')
@@ -21,61 +26,95 @@ const exportZIP = ({ bib, yaml, md, id, title }, res, _) => {
   archive.finalize()
 }
 
-const exportHTML = ({ bib, yaml, md, id, title }, res, req) => {
-  let template = '../templates-stylo/templateHtml5.html5'
-  if (req.query.preview) {
-    template =
-      '../templates-stylo/templateHtml5-preview.html5 -H ../templates-stylo/preview.html'
-  }
-
-  // add a canonical URL
-  if (canonicalBaseUrl) {
-    try {
-      // the YAML contains a single document enclosed in "---" to satisfy pandoc
-      // thereby, we need to use "load all":
-      const docs = YAML.safeLoadAll(yaml, 'utf8')
-      // add link-canonical to the first (and only) document
-      const doc = docs[0]
-      doc['link-canonical'] = canonicalBaseUrl + req.originalUrl
-      // dump the result enclosed in "---"
-      yaml = `---
+/**
+ * Add a canonical URL
+ * @param yaml
+ * @param originalUrl
+ */
+function addCanonicalUrl(yaml, originalUrl) {
+  try {
+    // the YAML contains a single document enclosed in "---" to satisfy pandoc
+    // thereby, we need to use "load all":
+    const docs = YAML.safeLoadAll(yaml, 'utf8')
+    // add link-canonical to the first (and only) document
+    const doc = docs[0]
+    doc['link-canonical'] = canonicalBaseUrl + originalUrl
+    // dump the result enclosed in "---"
+    yaml = `---
 ${YAML.safeDump(doc)}
 ---
 `
-    } catch (e) {
-      console.log('Unable to set the canonical URL', e)
+  } catch (e) {
+    console.log('Unable to set the canonical URL', e)
+  }
+  return yaml
+}
+
+const exportHTML = async ({ bib, yaml, md, id, title }, res, req) => {
+  if (canonicalBaseUrl) {
+    yaml = addCanonicalUrl(yaml, req.originalUrl)
+  }
+  let tmpDirectory
+  try {
+    tmpDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'stylo-'))
+    // write files into the temporary directory
+    const markdownFilePath = path.join(tmpDirectory, `${id}.md`)
+    const bibliographyFilePath = path.join(tmpDirectory, `${id}.bib`)
+    const metadataFilePath = path.join(tmpDirectory, `${id}.yaml`)
+    await fs.writeFile(markdownFilePath, md, 'utf8')
+    await fs.writeFile(bibliographyFilePath, bib, 'utf8')
+    await fs.writeFile(metadataFilePath, yaml, 'utf8')
+    // pandoc command
+    const templatesDirPath = path.join(__dirname, 'templates-stylo')
+    let templateArg = `--template=${path.join(
+      templatesDirPath,
+      'templateHtml5.html5'
+    )}`
+    if (req.query.preview) {
+      templateArg = `--template=${path.join(
+        templatesDirPath,
+        'templateHtml5-preview.html5'
+      )} -H ${path.join(templatesDirPath, 'preview.html')}`
+    }
+    const cslFilePath = path.join(templatesDirPath, 'chicagomodified.csl')
+    const pandocCommand = `pandoc ${markdownFilePath} ${bibliographyFilePath} \
+--bibliography ${metadataFilePath} \
+--standalone \
+${templateArg} \
+--section-divs \
+--ascii \
+--toc \
+--csl=${cslFilePath} \
+-f markdown \
+-t html5`
+    const { stdout, stderr } = await exec(pandocCommand)
+    console.warn(stderr)
+    if (!req.query.preview) {
+      res.attachment(`${normalize(title)}.html`)
+    }
+    let html5 = stdout
+    if (canonicalBaseUrl && !html5.includes('<link rel="canonical"')) {
+      // HACK! we add the link tag in the head!
+      html5 = html5.replace(
+        /(<head>\s?)/gs,
+        `$1<link rel="canonical" href="${canonicalBaseUrl + req.originalUrl}">`
+      )
+    }
+    res.send(stdout)
+  } catch (err) {
+    console.log({ err })
+    res.status(500).send({ error: err })
+  } finally {
+    if (tmpDirectory) {
+      rimraf(tmpDirectory, (err) => {
+        if (err) {
+          console.error(
+            `Unable to remove temporary directory: ${tmpDirectory} - error: ${err}`
+          )
+        }
+      })
     }
   }
-
-  shell.cd('src/data')
-  shell.exec(`rm ${id}*`)
-  shell.echo(md).to(`${id}.md`)
-  shell.echo(bib).to(`${id}.bib`)
-  shell.echo(yaml).to(`${id}.yaml`)
-  const pandoc = shell.exec(
-    `pandoc ${id}.md ${id}.yaml --bibliography ${id}.bib --standalone --template=${template} --section-divs --ascii --toc --csl=../templates-stylo/chicagomodified.csl -f markdown -t html5 -o ${id}.html`
-  ).code
-  if (pandoc !== 0) {
-    const html5 = shell.cat(`${id}.html`)
-    return res.status(500).send(`${html5}`)
-  }
-  if (!req.query.preview) {
-    res.set(
-      'Content-Disposition',
-      `attachment; filename="${normalize(title)}.html"`
-    )
-  }
-  let html5 = shell.cat(`${id}.html`)
-  if (canonicalBaseUrl && !html5.includes('<link rel="canonical"')) {
-    // HACK! we add the link tag in the head!
-    html5 = html5.replace(
-      /(<head>\s?)/gs,
-      `$1<link rel="canonical" href="${canonicalBaseUrl + req.originalUrl}">`
-    )
-  }
-
-  shell.cd('../../')
-  return res.send(`${html5}`)
 }
 
 class FindByIdNotFoundError extends Error {
