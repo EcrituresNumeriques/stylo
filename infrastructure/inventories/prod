@@ -1,4 +1,5 @@
 [stylo:vars]
+env=prod
 ansible_become_pass='{{ stylo_become_pass }}'
 site=stylo.huma-num.fr
 https=true
