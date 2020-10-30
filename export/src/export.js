@@ -209,6 +209,7 @@ module.exports = {
   },
   exportBookZip: async (req, res, _) => {
     try {
+      const bookId = req.params.id
       const exportBookContext = await getBookExportContext(bookId)
       exportZIP(exportBookContext, res, req)
     } catch (err) {
