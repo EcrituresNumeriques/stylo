@@ -1,15 +1,68 @@
 const shell = require('shelljs')
+const YAML = require('js-yaml')
+const archiver = require('archiver')
 const Article = require('./models/article')
 const Version = require('./models/version')
 const Tag = require('./models/tag')
-const YAML = require('js-yaml')
+
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 
 const filterAlphaNum = (string) => {
-  if (typeof (string) === 'object') {
+  if (typeof string === 'object') {
     string = string.toString()
   }
-  return string.replace(/\s/g, "_").replace(/[ÉéÈèÊêËë]/g, "e").replace(/[ÔôÖö]/g, "o").replace(/[ÂâÄäÀà]/g, "a").replace(/[Çç]/g, "c").replace(/[^A-Za-z0-9_]/g, "")
+  return string
+    .replace(/\s/g, "_")
+    .replace(/[ÉéÈèÊêËë]/g, "e")
+    .replace(/[ÔôÖö]/g, "o")
+    .replace(/[ÂâÄäÀà]/g, "a")
+    .replace(/[Çç]/g, "c")
+    .replace(/[^A-Za-z0-9_]/g, "")
+}
+
+const exportZIP = ({ bib, yaml, md, id, title }, res, _) => {
+  const filename = `${filterAlphaNum(title)}.zip`
+  const archive = archiver('zip', {
+    zlib: { level: 9 },
+  })
+  archive.on('error', function (err) {
+    res.status(500).send({ error: err.message })
+  })
+  archive.on('end', function () {
+    console.log(`Wrote %d bytes in ${filename}`, archive.pointer())
+  })
+  res.attachment(filename)
+
+  // pipe into the response
+  archive.pipe(res)
+  // add files
+  archive.append(Buffer.from(md), { name: `${id}.md` })
+  archive.append(Buffer.from(bib), { name: `${id}.bib` })
+  archive.append(Buffer.from(prepareYAML(yaml, id)), { name: `${id}.yaml` })
+  // zip!
+  archive.finalize()
+}
+
+const prepareYAML = (yaml, id) => {
+  // remove lines that contain "bibliography"
+  yaml = yaml.replace(/^.*bibliography.*$/g, '')
+  // remove the end YAML delimiter (i.e. "---")
+  yaml = yaml.replace(/\n---\n+$/, '')
+  // add bibliography link
+  yaml = yaml.concat(`
+bibliography: ${id}.bib
+---`)
+  return yaml
+}
+
+const alphaSort = (a, b) => {
+  if (a.title < b.title) {
+    return -1
+  }
+  if (a.title > b.title) {
+    return 1
+  }
+  return 0
 }
 
 const exportHTML = ({ bib, yaml, md, id, title }, res, req) => {
@@ -59,32 +112,6 @@ ${YAML.safeDump(doc)}
   shell.cd('../../')
   return res.send(`${html5}`)
 }
-
-const exportZIP = ({ bib, yaml, md, id, title }, res, req) => {
-  shell.cd('src/data')
-  shell.exec(`rm ${id}*`)
-  shell.echo(md).to(`${id}.md`)
-  shell.echo(bib).to(`${id}.bib`)
-  shell.echo(yaml).to(`${id}.yaml`)
-  shell.sed('-i', /^.*bibliography.*$/, '', `${id}.yaml`)
-  shell.exec(`sed -i '$ d' ${id}.yaml`)
-  shell.echo(`bibliography: ${id}.bib\n---`).toEnd(`${id}.yaml`)
-  shell.exec(`zip ${filterAlphaNum(title)}.zip ${id}.*`)
-  shell.cd('../../')
-  res.set('Content-Disposition', `attachment; filename="${filterAlphaNum(title)}.zip"`)
-  return res.download(`${process.env.PWD}/src/data/${filterAlphaNum(title)}.zip`)
-}
-
-const alphaSort = (a, b) => {
-  if (a.title < b.title) {
-    return -1
-  }
-  if (a.title > b.title) {
-    return 1
-  }
-  return 0
-}
-
 
 module.exports = {
   exportArticleHtml: async (req, res, next) => {
