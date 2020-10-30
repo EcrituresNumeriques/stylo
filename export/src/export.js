@@ -3,25 +3,13 @@ const YAML = require('js-yaml')
 const archiver = require('archiver')
 const Article = require('./models/article')
 const Version = require('./models/version')
+const { normalize } = require('./helpers/filename')
 const Tag = require('./models/tag')
 
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 
-const filterAlphaNum = (string) => {
-  if (typeof string === 'object') {
-    string = string.toString()
-  }
-  return string
-    .replace(/\s/g, "_")
-    .replace(/[ÉéÈèÊêËë]/g, "e")
-    .replace(/[ÔôÖö]/g, "o")
-    .replace(/[ÂâÄäÀà]/g, "a")
-    .replace(/[Çç]/g, "c")
-    .replace(/[^A-Za-z0-9_]/g, "")
-}
-
 const exportZIP = ({ bib, yaml, md, id, title }, res, _) => {
-  const filename = `${filterAlphaNum(title)}.zip`
+  const filename = `${normalize(title)}.zip`
   const archive = archiver('zip', {
     zlib: { level: 9 },
   })
@@ -47,7 +35,7 @@ const prepareYAML = (yaml, id) => {
   // remove lines that contain "bibliography"
   yaml = yaml.replace(/\n.*bibliography.*/gm, '')
   // remove the end YAML delimiter (i.e. "---")
-  yaml = yaml.replace(/\n---\n+$/, '')
+  yaml = yaml.replace(/\n---\n*$/, '')
   // add bibliography link
   yaml = yaml.concat(`
 bibliography: ${id}.bib
@@ -101,7 +89,7 @@ ${YAML.safeDump(doc)}
     return res.status(500).send(`${html5}`)
   }
   if (!req.query.preview) {
-    res.set('Content-Disposition', `attachment; filename="${filterAlphaNum(title)}.html"`)
+    res.set('Content-Disposition', `attachment; filename="${normalize(title)}.html"`)
   }
   let html5 = shell.cat(`${id}.html`)
   if (canonicalBaseUrl && !html5.includes('<link rel="canonical"')) {
@@ -240,14 +228,15 @@ module.exports = {
       const titles = articles.map(a => ({ title: a._doc.title, md: a._doc.versions[0].md, bib: a._doc.versions[0].bib, yaml: a._doc.versions[0].yaml }))
 
       shell.cd('src/data')
-      const dirName = returnTags.map(t => filterAlphaNum(t._doc.name)).join('-')
+      const dirName = returnTags.map(t => normalize(t._doc.name)).join('-')
       shell.exec(`rm -R ${dirName}`)
       shell.exec(`rm ${dirName}.zip`)
       shell.exec(`mkdir ${dirName}`)
       titles.forEach(a => {
-        shell.echo(a.md).to(`${dirName}/${filterAlphaNum(a.title)}.md`)
-        shell.echo(a.bib).to(`${dirName}/${filterAlphaNum(a.title)}.bib`)
-        shell.echo(a.yaml).to(`${dirName}/${filterAlphaNum(a.title)}.yaml`)
+        const filename = normalize(a.title)
+        shell.echo(a.md).to(`${dirName}/${filename}.md`)
+        shell.echo(a.bib).to(`${dirName}/${filename}.bib`)
+        shell.echo(a.yaml).to(`${dirName}/${filename}.yaml`)
       })
       const ls = shell.ls(dirName)
       shell.exec(`zip ${dirName}.zip ${dirName}/*`)
