@@ -45,7 +45,7 @@ const exportZIP = ({ bib, yaml, md, id, title }, res, _) => {
 
 const prepareYAML = (yaml, id) => {
   // remove lines that contain "bibliography"
-  yaml = yaml.replace(/^.*bibliography.*$/g, '')
+  yaml = yaml.replace(/\n.*bibliography.*/gm, '')
   // remove the end YAML delimiter (i.e. "---")
   yaml = yaml.replace(/\n---\n+$/, '')
   // add bibliography link
