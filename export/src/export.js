@@ -72,7 +72,7 @@ const exportHtml = async ({ bib, yaml, md, id, title }, res, req) => {
       doc['link-canonical'] = canonicalBaseUrl + originalUrl
     }
     // add a default title if missing
-    if (!'title' in doc) {
+    if (!('title' in doc)) {
       doc.title = 'untitled'
     }
     // dump the result enclosed in "---"
