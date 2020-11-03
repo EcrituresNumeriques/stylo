@@ -71,8 +71,9 @@ const exportHtml = async ({ bib, yaml, md, id, title }, res, req) => {
       // add link-canonical to the first (and only) document
       doc['link-canonical'] = canonicalBaseUrl + originalUrl
     }
-    // add a default title if missing
-    if (!('title' in doc)) {
+    // add a default title if missing or empty
+    const title = doc.title
+    if (!title || title.trim().length === 0) {
       doc.title = 'untitled'
     }
     // dump the result enclosed in "---"
@@ -101,7 +102,9 @@ ${YAML.safeDump(doc)}
       metadataFilePath
     )
     const { stdout, stderr } = await exec(pandocCommand)
-    console.warn(stderr)
+    if (stderr) {
+      console.warn(stderr)
+    }
     if (!preview) {
       res.attachment(`${normalize(title)}.html`)
     }
