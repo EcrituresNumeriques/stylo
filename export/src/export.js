@@ -28,30 +28,6 @@ const exportZip = ({ bib, yaml, md, id, title }, res, _) => {
   archive.finalize()
 }
 
-/**
- * Add a canonical URL
- * @param yaml
- * @param originalUrl
- */
-function addCanonicalUrl(yaml, originalUrl) {
-  try {
-    // the YAML contains a single document enclosed in "---" to satisfy pandoc
-    // thereby, we need to use "load all":
-    const docs = YAML.safeLoadAll(yaml, 'utf8')
-    // add link-canonical to the first (and only) document
-    const doc = docs[0]
-    doc['link-canonical'] = canonicalBaseUrl + originalUrl
-    // dump the result enclosed in "---"
-    yaml = `---
-${YAML.safeDump(doc)}
----
-`
-  } catch (e) {
-    console.log('Unable to set the canonical URL', e)
-  }
-  return yaml
-}
-
 function generatePandocCommand(
   preview,
   markdownFilePath,
@@ -85,8 +61,27 @@ ${templateArg} \
 const exportHtml = async ({ bib, yaml, md, id, title }, res, req) => {
   const preview = req.query.preview
   const originalUrl = req.originalUrl
-  if (canonicalBaseUrl) {
-    yaml = addCanonicalUrl(yaml, originalUrl)
+  try {
+    // the YAML contains a single document enclosed in "---" to satisfy pandoc
+    // thereby, we need to use "load all":
+    const docs = YAML.safeLoadAll(yaml, 'utf8')
+    // contains only a single document
+    const doc = docs[0]
+    if (canonicalBaseUrl) {
+      // add link-canonical to the first (and only) document
+      doc['link-canonical'] = canonicalBaseUrl + originalUrl
+    }
+    // add a default title if missing
+    if (!'title' in doc) {
+      doc.title = 'untitled'
+    }
+    // dump the result enclosed in "---"
+    yaml = `---
+${YAML.safeDump(doc)}
+---
+`
+  } catch (err) {
+    console.error('Unable to load and update metadata', err)
   }
   let tmpDirectory
   try {
