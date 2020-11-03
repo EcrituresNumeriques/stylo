@@ -183,8 +183,8 @@ const getArticleExportContext = async (articleId) => {
   const article = await getArticleById(articleId)
   const latestVersionId = article._doc.versions.pop()
   const latestVersion = await getVersionById(latestVersionId)
-  const { bib, yaml, md, _id: id } = latestVersion._doc
-  return { bib, yaml, md, id, title: article._doc.title }
+  const { bib, yaml, md } = latestVersion._doc
+  return { bib, yaml, md, id: articleId, title: article._doc.title }
 }
 
 const getBookExportContext = async (bookId) => {
