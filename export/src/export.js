@@ -12,7 +12,7 @@ const Article = require('./models/article')
 const Version = require('./models/version')
 const Tag = require('./models/tag')
 const { normalize } = require('./helpers/filename')
-const { prepareMetadata } = require('./helpers/metadata')
+const { prepare: prepareMetadata } = require('./helpers/metadata')
 const { byTitle: sortByTitle } = require('./helpers/sort')
 
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
@@ -28,7 +28,7 @@ const exportZip = ({ bib, yaml, md, id, title }, res, _) => {
   archive.finalize()
 }
 
-function generatePandocCommand(
+function generatePandocCommand (
   preview,
   markdownFilePath,
   bibliographyFilePath,
@@ -131,7 +131,7 @@ ${YAML.safeDump(doc)}
 }
 
 class FindByIdNotFoundError extends Error {
-  constructor(type, id) {
+  constructor (type, id) {
     super(`${type} with id: ${id} not found`)
     this.name = 'FindByIdNotFoundError'
   }
@@ -139,9 +139,19 @@ class FindByIdNotFoundError extends Error {
 
 const errorHandler = (err, res) => {
   if (err && err.name === 'FindByIdNotFoundError') {
-    res.status(404).send({ error: err.message })
+    res.status(404).send({ error: { message: err.message } })
   } else {
-    res.status(500).send({ error: err })
+    let error
+    if (err) {
+      error = {
+        name: err.name,
+        message: err.message,
+        stack: err.stack
+      }
+    } else {
+      error = {}
+    }
+    res.status(500).send({ error })
   }
 }
 
@@ -211,6 +221,7 @@ const createZipArchive = (filename, res) => {
   // pipe into the response
   archive.pipe(res)
   res.attachment(filename)
+  return archive
 }
 
 module.exports = {
