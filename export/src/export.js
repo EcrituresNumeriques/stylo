@@ -1,235 +1,307 @@
-const shell = require('shelljs')
+const fs = require('fs').promises
+const path = require('path')
+const os = require('os')
+const util = require('util')
+const exec = util.promisify(require('child_process').exec)
+
+const rimraf = require('rimraf')
+const YAML = require('js-yaml')
+const archiver = require('archiver')
+
 const Article = require('./models/article')
 const Version = require('./models/version')
 const Tag = require('./models/tag')
-const YAML = require('js-yaml')
+const { normalize } = require('./helpers/filename')
+const { prepare: prepareMetadata } = require('./helpers/metadata')
+const { byTitle: sortByTitle } = require('./helpers/sort')
+
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 
-const filterAlphaNum = (string) => {
-  if (typeof (string) === 'object') {
-    string = string.toString()
-  }
-  return string.replace(/\s/g, "_").replace(/[ÉéÈèÊêËë]/g, "e").replace(/[ÔôÖö]/g, "o").replace(/[ÂâÄäÀà]/g, "a").replace(/[Çç]/g, "c").replace(/[^A-Za-z0-9_]/g, "")
+const exportZip = ({ bib, yaml, md, id, title }, res, _) => {
+  const filename = `${normalize(title)}.zip`
+  const archive = createZipArchive(filename, res)
+  // add files
+  archive.append(Buffer.from(md), { name: `${id}.md` })
+  archive.append(Buffer.from(bib), { name: `${id}.bib` })
+  archive.append(Buffer.from(prepareMetadata(yaml, id)), { name: `${id}.yaml` })
+  // zip!
+  archive.finalize()
 }
 
-const exportHTML = ({ bib, yaml, md, id, title }, res, req) => {
-  let template = '../templates-stylo/templateHtml5.html5'
-  if (req.query.preview) {
-    template = '../templates-stylo/templateHtml5-preview.html5 -H ../templates-stylo/preview.html'
+function generatePandocCommand (
+  preview,
+  markdownFilePath,
+  bibliographyFilePath,
+  metadataFilePath
+) {
+  const templatesDirPath = path.join(__dirname, 'templates-stylo')
+  let templateArg = `--template=${path.join(
+    templatesDirPath,
+    'templateHtml5.html5'
+  )}`
+  if (preview) {
+    templateArg = `--template=${path.join(
+      templatesDirPath,
+      'templateHtml5-preview.html5'
+    )} -H ${path.join(templatesDirPath, 'preview.html')}`
   }
+  const cslFilePath = path.join(templatesDirPath, 'chicagomodified.csl')
+  return `pandoc ${markdownFilePath} ${metadataFilePath} \
+--bibliography ${bibliographyFilePath} \
+--standalone \
+${templateArg} \
+--section-divs \
+--ascii \
+--toc \
+--csl=${cslFilePath} \
+-f markdown \
+-t html5`
+}
 
-  // add a canonical URL
-  if (canonicalBaseUrl) {
-    try {
-      // the YAML contains a single document enclosed in "---" to satisfy pandoc
-      // thereby, we need to use "load all":
-      const docs = YAML.safeLoadAll(yaml, 'utf8')
+const exportHtml = async ({ bib, yaml, md, id, title }, res, req) => {
+  const preview = req.query.preview
+  const originalUrl = req.originalUrl
+  try {
+    // the YAML contains a single document enclosed in "---" to satisfy pandoc
+    // thereby, we need to use "load all":
+    const docs = YAML.safeLoadAll(yaml, 'utf8')
+    // contains only a single document
+    const doc = docs[0]
+    if (canonicalBaseUrl) {
       // add link-canonical to the first (and only) document
-      const doc = docs[0]
-      doc['link-canonical'] = canonicalBaseUrl + req.originalUrl
-      // dump the result enclosed in "---"
-      yaml = `---
+      doc['link-canonical'] = canonicalBaseUrl + originalUrl
+    }
+    // add a default title if missing
+    if (!('title' in doc)) {
+      doc.title = 'untitled'
+    }
+    // dump the result enclosed in "---"
+    yaml = `---
 ${YAML.safeDump(doc)}
 ---
 `
-    } catch (e) {
-      console.log('Unable to set the canonical URL', e)
+  } catch (err) {
+    console.error('Unable to load and update metadata', err)
+  }
+  let tmpDirectory
+  try {
+    tmpDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'stylo-'))
+    // write files into the temporary directory
+    const markdownFilePath = path.join(tmpDirectory, `${id}.md`)
+    const bibliographyFilePath = path.join(tmpDirectory, `${id}.bib`)
+    const metadataFilePath = path.join(tmpDirectory, `${id}.yaml`)
+    await fs.writeFile(markdownFilePath, md, 'utf8')
+    await fs.writeFile(bibliographyFilePath, bib, 'utf8')
+    await fs.writeFile(metadataFilePath, yaml, 'utf8')
+    // pandoc command
+    const pandocCommand = generatePandocCommand(
+      preview,
+      markdownFilePath,
+      bibliographyFilePath,
+      metadataFilePath
+    )
+    const { stdout, stderr } = await exec(pandocCommand)
+    console.warn(stderr)
+    if (!preview) {
+      res.attachment(`${normalize(title)}.html`)
+    }
+    let html5 = stdout
+    if (canonicalBaseUrl && !html5.includes('<link rel="canonical"')) {
+      // HACK! we add the link tag in the head!
+      html5 = html5.replace(
+        /(<head>\s?)/gs,
+        `$1<link rel="canonical" href="${canonicalBaseUrl + originalUrl}">`
+      )
+    }
+    res.send(html5)
+  } catch (err) {
+    console.log({ err })
+    res.status(500).send({ error: err })
+  } finally {
+    if (tmpDirectory) {
+      rimraf(tmpDirectory, (err) => {
+        if (err) {
+          console.error(
+            `Unable to remove temporary directory: ${tmpDirectory} - error: ${err}`
+          )
+        }
+      })
     }
   }
-
-  shell.cd('src/data')
-  shell.exec(`rm ${id}*`)
-  shell.echo(md).to(`${id}.md`)
-  shell.echo(bib).to(`${id}.bib`)
-  shell.echo(yaml).to(`${id}.yaml`)
-  const pandoc = shell.exec(`pandoc ${id}.md ${id}.yaml --bibliography ${id}.bib --standalone --template=${template} --section-divs --ascii --toc --csl=../templates-stylo/chicagomodified.csl -f markdown -t html5 -o ${id}.html`).code
-  if (pandoc !== 0) {
-    const html5 = shell.cat(`${id}.html`)
-    return res.status(500).send(`${html5}`)
-  }
-  if (!req.query.preview) {
-    res.set('Content-Disposition', `attachment; filename="${filterAlphaNum(title)}.html"`)
-  }
-  let html5 = shell.cat(`${id}.html`)
-  if (canonicalBaseUrl && !html5.includes('<link rel="canonical"')) {
-    // HACK! we add the link tag in the head!
-    html5 = html5.replace(/(<head>\s?)/gs, `$1<link rel="canonical" href="${canonicalBaseUrl + req.originalUrl}">`)
-  }
-
-  shell.cd('../../')
-  return res.send(`${html5}`)
 }
 
-const exportZIP = ({ bib, yaml, md, id, title }, res, req) => {
-  shell.cd('src/data')
-  shell.exec(`rm ${id}*`)
-  shell.echo(md).to(`${id}.md`)
-  shell.echo(bib).to(`${id}.bib`)
-  shell.echo(yaml).to(`${id}.yaml`)
-  shell.sed('-i', /^.*bibliography.*$/, '', `${id}.yaml`)
-  shell.exec(`sed -i '$ d' ${id}.yaml`)
-  shell.echo(`bibliography: ${id}.bib\n---`).toEnd(`${id}.yaml`)
-  shell.exec(`zip ${filterAlphaNum(title)}.zip ${id}.*`)
-  shell.cd('../../')
-  res.set('Content-Disposition', `attachment; filename="${filterAlphaNum(title)}.zip"`)
-  return res.download(`${process.env.PWD}/src/data/${filterAlphaNum(title)}.zip`)
+class FindByIdNotFoundError extends Error {
+  constructor (type, id) {
+    super(`${type} with id: ${id} not found`)
+    this.name = 'FindByIdNotFoundError'
+  }
 }
 
-const alphaSort = (a, b) => {
-  if (a.title < b.title) {
-    return -1
+const errorHandler = (err, res) => {
+  if (err && err.name === 'FindByIdNotFoundError') {
+    res.status(404).send({ error: { message: err.message } })
+  } else {
+    let error
+    if (err) {
+      error = {
+        name: err.name,
+        message: err.message,
+        stack: err.stack
+      }
+    } else {
+      error = {}
+    }
+    res.status(500).send({ error })
   }
-  if (a.title > b.title) {
-    return 1
-  }
-  return 0
 }
 
+const getArticleById = async (articleId) => {
+  const article = await Article.findById(articleId)
+  if (!article) {
+    throw new FindByIdNotFoundError('Article', articleId)
+  }
+  return article
+}
+
+const getVersionById = async (versionId) => {
+  const article = await Version.findById(versionId)
+  if (!article) {
+    throw new FindByIdNotFoundError('Version', versionId)
+  }
+  return article
+}
+
+const getBookById = async (bookId) => {
+  const book = await Tag.findById(bookId)
+  if (!book) {
+    throw new FindByIdNotFoundError('Book', bookId)
+  }
+  return book
+}
+
+const getArticleExportContext = async (articleId) => {
+  const article = await getArticleById(articleId)
+  const latestVersionId = article._doc.versions.pop()
+  const latestVersion = await getVersionById(latestVersionId)
+  const { bib, yaml, md } = latestVersion._doc
+  return { bib, yaml, md, id: articleId, title: article._doc.title }
+}
+
+const getBookExportContext = async (bookId) => {
+  const book = await getBookById(bookId)
+  const { articles, bib, _id: id, name: title } = book._doc
+  const chapters = await Article.find({
+    _id: { $in: articles },
+  }).populate('versions')
+  // sort chapters in ascending alphabetical order
+  const chaptersSorted = chapters.sort(sortByTitle)
+  const mds = chaptersSorted.map((c) => c.versions[c.versions.length - 1].md)
+  const bibs = chaptersSorted.map((c) => c.versions[c.versions.length - 1].bib)
+  const firstChapter = chaptersSorted[0]
+  const { yaml } = firstChapter.versions[firstChapter.versions.length - 1]
+  return {
+    bib: [bib, ...bibs].join('\n'),
+    yaml: yaml,
+    md: mds.join('\n\n'),
+    id,
+    title,
+  }
+}
+
+const createZipArchive = (filename, res) => {
+  const archive = archiver('zip', {
+    zlib: { level: 9 },
+  })
+  archive.on('error', function (err) {
+    res.status(500).send({ error: err.message })
+  })
+  archive.on('end', function () {
+    console.log(`Wrote %d bytes in ${filename}`, archive.pointer())
+  })
+  // pipe into the response
+  archive.pipe(res)
+  res.attachment(filename)
+  return archive
+}
 
 module.exports = {
-  exportArticleHtml: async (req, res, next) => {
+  exportArticleHtml: async (req, res, _) => {
     try {
-      const article = await Article.findById(req.params.id)
-      if (!article) {
-        throw new Error('Article Not found')
-      }
-      const versionID = article._doc.versions[article._doc.versions.length - 1]
-      const version = await Version.findById(versionID)
-      if (!version) {
-        throw new Error('Version not found')
-      }
-      const cleanedVersion = version._doc
-
-      exportHTML({ bib: cleanedVersion.bib, yaml: cleanedVersion.yaml, md: cleanedVersion.md, id: cleanedVersion._id, title: article._doc.title }, res, req)
-
+      const articleId = req.params.id
+      const articleExportContext = await getArticleExportContext(articleId)
+      await exportHtml(articleExportContext, res, req)
     } catch (err) {
-      res.status(404).send(err)
+      errorHandler(err, res)
     }
   },
-  exportArticleZip: async (req, res, next) => {
+  exportArticleZip: async (req, res, _) => {
     try {
-      const article = await Article.findById(req.params.id)
-      if (!article) {
-        throw new Error('Article Not found')
-      }
-      const versionID = article._doc.versions[article._doc.versions.length - 1]
-      const version = await Version.findById(versionID)
-      if (!version) {
-        throw new Error('Version not found')
-      }
-      const cleanedVersion = version._doc
-
-      exportZIP({ bib: cleanedVersion.bib, yaml: cleanedVersion.yaml, md: cleanedVersion.md, id: cleanedVersion._id, title: article._doc.title }, res, req)
-
+      const articleId = req.params.id
+      const articleExportContext = await getArticleExportContext(articleId)
+      exportZip(articleExportContext, res, req)
     } catch (err) {
-      res.status(404).send(err)
+      errorHandler(err, res)
     }
   },
-  exportVersionHtml: async (req, res, next) => {
+  exportVersionHtml: async (req, res, _) => {
     try {
-      const version = await Version.findById(req.params.id)
-      if (!version) {
-        throw new Error('Version not found')
-      }
-      const cleanedVersion = version._doc
-
-      exportHTML({ bib: cleanedVersion.bib, yaml: cleanedVersion.yaml, md: cleanedVersion.md, id: cleanedVersion._id, title: cleanedVersion._id }, res, req)
-
+      const version = await getVersionById(req.params.id)
+      const { bib, yaml, md, _id: id } = version._doc
+      await exportHtml({ bib, yaml, md, id, title: id }, res, req)
     } catch (err) {
-      res.status(404).send(err)
-    }
-
-  },
-  exportVersionZip: async (req, res, next) => {
-    try {
-      const version = await Version.findById(req.params.id)
-      if (!version) {
-        throw new Error('Version not found')
-      }
-      const cleanedVersion = version._doc
-
-      exportZIP({ bib: cleanedVersion.bib, yaml: cleanedVersion.yaml, md: cleanedVersion.md, id: cleanedVersion._id, title: cleanedVersion._id }, res, req)
-
-    } catch (err) {
-      res.status(404).send(err)
+      errorHandler(err, res)
     }
   },
-  exportBookHtml: async (req, res, next) => {
+  exportVersionZip: async (req, res, _) => {
     try {
-      const book = await Tag.findById(req.params.id)
-      if (!book) {
-        throw new Error('Book not found')
-      }
-      const cleanedBook = book._doc
-
-      //Get the mashed md of all last version of all chapters
-      const chapters = await Article.find({ _id: { $in: cleanedBook.articles } }).populate('versions')
-
-      // ordonate chapters by alphabet ASC
-      const mds = chapters.sort(alphaSort).map(c => c.versions[c.versions.length - 1].md)
-
-      const bibs = chapters.sort(alphaSort).map(c => c.versions[c.versions.length - 1].bib)
-
-      const firstChapter = chapters.sort(alphaSort)[0]
-      const yaml = firstChapter.versions[firstChapter.versions.length - 1].yaml
-
-      exportHTML({ bib: [cleanedBook.bib, ...bibs].join('\n'), yaml: yaml, md: mds.join('\n\n'), id: cleanedBook._id, title: cleanedBook.name }, res, req)
-
+      const version = await getVersionById(req.params.id)
+      const { bib, yaml, md, _id: id } = version._doc
+      exportZip({ bib, yaml, md, id, title: id }, res, req)
     } catch (err) {
-      res.status(404).send(err)
+      errorHandler(err, res)
     }
   },
-  exportBookZip: async (req, res, next) => {
+  exportBookHtml: async (req, res, _) => {
     try {
-      const book = await Tag.findById(req.params.id)
-      if (!book) {
-        throw new Error('Book not found')
-      }
-      const cleanedBook = book._doc
-
-      //Get the mashed md of all last version of all chapters
-      const chapters = await Article.find({ _id: { $in: cleanedBook.articles } }).populate('versions')
-
-      // ordonate chapters by alphabet ASC
-      const mds = chapters.sort(alphaSort).map(c => c.versions[c.versions.length - 1].md)
-
-      const bibs = chapters.sort(alphaSort).map(c => c.versions[c.versions.length - 1].bib)
-
-      const firstChapter = chapters.sort(alphaSort)[0]
-      const yaml = firstChapter.versions[firstChapter.versions.length - 1].yaml
-
-      exportZIP({ bib: [cleanedBook.bib, ...bibs].join('\n'), yaml: yaml, md: mds.join('\n\n'), id: cleanedBook._id, title: cleanedBook.name }, res, req)
-
+      const bookId = req.params.id
+      const exportBookContext = await getBookExportContext(bookId)
+      await exportHtml(exportBookContext, res, req)
     } catch (err) {
-      res.status(404).send(err)
+      errorHandler(err, res)
+    }
+  },
+  exportBookZip: async (req, res, _) => {
+    try {
+      const bookId = req.params.id
+      const exportBookContext = await getBookExportContext(bookId)
+      exportZip(exportBookContext, res, req)
+    } catch (err) {
+      errorHandler(err, res)
     }
   },
   exportBatchTagZip: async (req, res) => {
     try {
       const tags = req.params.ids.split(',')
       const returnTags = await Tag.find({ _id: { $in: tags } })
-
-      const articles = await Article.find({ tags: { $all: tags } }).populate({ path: 'versions', options: { limit: 1, sort: { updatedAt: -1 } } })
-      const titles = articles.map(a => ({ title: a._doc.title, md: a._doc.versions[0].md, bib: a._doc.versions[0].bib, yaml: a._doc.versions[0].yaml }))
-
-      shell.cd('src/data')
-      const dirName = returnTags.map(t => filterAlphaNum(t._doc.name)).join('-')
-      shell.exec(`rm -R ${dirName}`)
-      shell.exec(`rm ${dirName}.zip`)
-      shell.exec(`mkdir ${dirName}`)
-      titles.forEach(a => {
-        shell.echo(a.md).to(`${dirName}/${filterAlphaNum(a.title)}.md`)
-        shell.echo(a.bib).to(`${dirName}/${filterAlphaNum(a.title)}.bib`)
-        shell.echo(a.yaml).to(`${dirName}/${filterAlphaNum(a.title)}.yaml`)
+      const articles = await Article.find({ tags: { $all: tags } }).populate({
+        path: 'versions',
+        options: { limit: 1, sort: { updatedAt: -1 } },
       })
-      const ls = shell.ls(dirName)
-      shell.exec(`zip ${dirName}.zip ${dirName}/*`)
-      shell.exec(`rm -R ${dirName}`)
-      shell.cd('../../')
-      res.set('Content-Disposition', `attachment; filename="${dirName}.zip"`)
-      return res.download(`${process.env.PWD}/src/data/${dirName}.zip`)
+      const name = returnTags.map((t) => normalize(t._doc.name)).join('-')
+      const filename = `${name}.zip`
+      const archive = createZipArchive(filename, res)
+      // add files
+      articles.forEach((article) => {
+        const filename = normalize(article._doc.title)
+        const { md, bib, yaml } = article._doc.versions[0]
+        archive.append(Buffer.from(md), { name: `${filename}.md` })
+        archive.append(Buffer.from(bib), { name: `${filename}.bib` })
+        archive.append(Buffer.from(yaml), { name: `${filename}.yaml` })
+      })
+      // zip!
+      archive.finalize()
     } catch (err) {
-      res.status(404).send(err)
+      errorHandler(err, res)
     }
-  }
+  },
 }
