@@ -2,7 +2,7 @@
 
 **📢 Stylo changed server during May 2020, if you encounter any difficulties, do not hesitate to contact us [write](mailto:crc.ecrituresnumeriques@gmail.com)**.
 
-A helpdesk is open every Thursday from 11am to 12pm (Canadian time) to respond to questions, improve the use of Stylo, etc. : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Reach the helpdesk by videoconference</a>
+A helpdesk is open every Thursday from 11am to 12pm (Canadian time) to respond to questions, improve the use of Stylo, partager vos expériences utilisateur ou autres : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Reach the helpdesk by videoconference</a>
 
 ---
 
@@ -19,11 +19,13 @@ Stylo's work environment encompasses a complete editorial chain based on [pandoc
 - **An annotation tool**
 - **Sharing documents for collaborative editing**
 
-Stylo is developed by the [Canada Research Chair in Digital Textualities](https://ecrituresnumeriques.ca/en/) and [PiNinja](https://3.14159.ninja/) company, with the support of[Érudit](https://www.erudit.org/en/), under [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE) licence.
+Stylo is developed by the [Canada Research Chair in Digital Textualities](https://ecrituresnumeriques.ca/en/) and [PiNinja](https://3.14159.ninja/) company, with the support of[Érudit](https://www.erudit.org/en/) and of [Huma-Num](https://www.huma-num.fr/), under [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE) licence.
+
+Stylo is now connected to [HumanID](https://humanid.huma-num.fr/) and accessible to all users with an account at Huma-Num. [Read more about this](https://humanum.hypotheses.org/6311).
 
 ---
 
-<a class="btn btn-info" href="https://stylo.huma-num.fr" role="button">Test Stylo</a> <a class="btn btn-info" href="pages/firststeps.md" role="button">First steps</a> <a class="btn btn-info" href="pages/publications.md" role="button">Demo</a>
+<a class="btn btn-info" href="https://stylo.huma-num.fr" role="button">Test Stylo</a> <a class="btn btn-info" href="pages/firststeps.md" role="button">First steps</a> <a class="btn btn-info" href="https://ia601400.us.archive.org/16/items/stylo_202009/Stylo.mp4" role="button">Demo-video</a>
 
 ---
 
