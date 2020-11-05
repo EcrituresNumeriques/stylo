@@ -2,7 +2,7 @@
 
 **📢 Stylo a changé de serveur courant mai 2020, si vous rencontrez des difficultés, n'hésitez pas [à nous écrire](mailto:crc.ecrituresnumeriques@gmail.com).**
 
-Une permanence est ouverte tous les jeudis de 11h à 12h (heure canadienne) pour poser des questions, perfectionner l'utilisation de Stylo, etc.  : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Rejoignez la permanence en visioconférence</a>
+Une permanence est ouverte tous les jeudis de 11h à 12h (heure canadienne) pour poser des questions, perfectionner l'utilisation de Stylo, partager vos expériences utilisateur ou autres : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Rejoignez la permanence en visioconférence</a>
 
 ---
 
@@ -19,13 +19,13 @@ L'environnement de travail de Stylo intègre une chaîne éditoriale complète b
   - **un outil d'annotation**
   - **le partage des documents pour une édition collaborative**
 
-Stylo est développé par la [Chaire de recherche du Canada sur les écritures numériques](http://ecrituresnumeriques.ca/) et l'entreprise [PiNinja](https://3.14159.ninja/), avec le soutien d'[Érudit](http://erudit.org/), sous licence [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE).
+Stylo est développé par la [Chaire de recherche du Canada sur les écritures numériques](http://ecrituresnumeriques.ca/) et l'entreprise [PiNinja](https://3.14159.ninja/), avec le soutien d'[Érudit](http://erudit.org/) et d'[Huma-Num](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwiYouaYyOvsAhVpl3IEHeDcAIwQFjAAegQIARAD&url=https%3A%2F%2Fwww.huma-num.fr%2F&usg=AOvVaw38kFRXXxdbqSaOVHSsEY9t), sous licence [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE). 
 
-
+Stylo est désormais connecté à [HumanID](https://humanid.huma-num.fr/) et accessible à tous les utilisateurs et utilisatrices ayant un compte à Huma-Num. [Pour en savoir plus sur ce point](https://humanum.hypotheses.org/6311).
 
 ---
 
-<a class="btn btn-info" href="https://stylo.huma-num.fr" role="button">Tester Stylo</a> <a class="btn btn-info" href="pages/premierspas.md" role="button">Premiers pas</a> <a class="btn btn-info" href="pages/publications.md" role="button">Démo</a>
+<a class="btn btn-info" href="https://stylo.huma-num.fr" role="button">Tester Stylo</a> <a class="btn btn-info" href="pages/premierspas.md" role="button">Premiers pas</a> <a class="btn btn-info" href="https://ia601507.us.archive.org/24/items/stylo-doc-fr/StyloDocFR.mp4" role="button">Vidéo-Démo</a>
 
 ---
 
