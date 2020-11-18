@@ -1,0 +1,126 @@
+{
+  "ui:groups": [
+    {
+      "fields": ["id_sp", "url_article", "title", "subtitle", "date", "lang", "license"]
+    },
+    {
+      "title": "Bibliography",
+      "fields": ["link-citations", "nocite"]
+    },
+    {
+      "fields": ["authors", "abstract", "keywords", "referencedKeywords", "typeArticle"]
+    },
+    {
+      "title": "Diffusion",
+      "fields": ["publisher", "journal"]
+    },
+    {
+      "fields": ["issueDirectors", "issn", "productor", "prodnum", "diffnum", "dossier"]
+    },
+    {
+      "fields": ["issueDirectors", "reviewers", "translators", "translationOf", "transcribers"]
+    }
+  ],
+  "id_sp": {
+    "ui:title": "ID",
+    "ui:placeholder": "XXXX"
+  },
+  "url_article": {
+    "ui:title": "URL of the article",
+    "ui:placeholder": "URL of the article",
+    "ui:widget": "uri"
+  },
+  "title": {
+    "ui:title": "Title"
+  },
+  "subtitle": {
+    "ui:title": "Subtitle"
+  },
+  "link-citations": {
+    "ui:widget": "select"
+  },
+  "date": {
+    "ui:title": "Date",
+    "ui:widget": "date"
+  },
+  "lang": {
+    "ui:title": "Language",
+    "ui:placeholder": "Select language"
+  },
+  "license": {
+    "ui:title": "License",
+    "ui:placeholder": "License"
+  },
+  "authors": {
+    "ui:add-item-title": "Ajouter an author",
+    "ui:title": "Authors"
+  },
+  "translationOf": {
+    "ui:title": "Translation",
+    "items": {
+      "url": {
+        "ui:widget": "uri"
+      }
+    }
+  },
+  "publisher": {
+    "ui:title": "Publisher"
+  },
+  "journal": {
+    "ui:title": "Journal"
+  },
+  "abstract": {
+    "ui:title": "Résumés",
+    "ui:add-item-title": "Ajouter un résumé dans une autre langue",
+    "items": {
+      "text": {
+        "ui:title": "Résumé",
+        "ui:widget": "textarea"
+      },
+      "lang": {
+        "ui:title": "Language",
+        "ui:placeholder": "Select language"
+      }
+    }
+  },
+  "keywords": {
+    "ui:title": "Keywords"
+  },
+  "referencedKeywords": {
+    "ui:title": "Referenced Keywords"
+  },
+  "typeArticle": {
+    "ui:widget": "checkboxes",
+    "ui:title": "Categories"
+  },
+  "dossier": {
+    "ui:title": "Folder",
+    "ui:options": {
+      "removable": false,
+      "addable": false
+    },
+    "items": {
+      "title": {
+        "ui:title": "Title"
+      },
+      "id": {
+        "ui:title": "Id"
+      }
+    }
+  },
+  "issueDirectors": {
+    "ui:title": "Issue Directors"
+  },
+  "directors": {
+    "ui:title": "Directors"
+  },
+  "transcribers": {
+    "ui:title": "Transcribers"
+  },
+  "translators": {
+    "ui:title": "Translators"
+  },
+  "reviewers": {
+    "ui:title": "Reviewers"
+  }
+}

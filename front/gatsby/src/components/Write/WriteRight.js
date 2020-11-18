@@ -26,7 +26,7 @@ export default (props) => {
           </nav>
           {selector === "raw" && <>{error !== "" && <p className={styles.error}>{error}</p>}<textarea value={props.yaml} onChange={(e)=>props.handleYaml(etv(e))}/></>}
           {selector !== "raw" && props.readOnly && <YamlEditor yaml={props.yaml} editor={selector === "editor"} error={(reason)=>{setError(reason);if(reason !== ""){setSelector("raw")}}}/>}
-          {selector !== "raw" && !props.readOnly && <YamlEditor yaml={props.yaml} exportChange={(change)=>props.handleYaml(change)} editor={selector === "editor"} error={(reason)=>{setError(reason);if(reason !== ""){setSelector("raw")}}}/>}
+          {selector !== "raw" && !props.readOnly && <YamlEditor yaml={props.yaml} editor={selector === "editor"} error={(reason)=>{setError(reason);if(reason !== ""){setSelector("raw")}}} exportChange={(change)=>props.handleYaml(change)}/>}
 
         </div>
         </>}

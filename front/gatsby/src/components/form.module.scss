@@ -2,7 +2,31 @@
 @import '../styles/variables.scss';
 
 .form {
-  background-color: lightblue;
+
+  font-size: .9rem;
+
+  fieldset[id="root"] {
+    border: none;
+    padding: 0;
+  }
+
+  label {
+    padding-right: 0.25rem;
+  }
+
+  legend {
+    padding-top: 0.5rem;
+    font-weight: bold;
+  }
+
+  fieldset {
+    margin-bottom: 0.75rem;
+  }
+
+  textarea {
+    width: 100%;
+    height: 150px;
+  }
 }
 
 .addButton::after {
