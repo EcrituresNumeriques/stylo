@@ -12,8 +12,8 @@ import styles from './form.module.scss'
 
 function ArrayFieldTemplate (props) {
 
-  const addItemTitle = props.uiSchema['ui:add-item-title'] || 'Add'
-  const removeItemTitle = props.uiSchema['ui:remove-item-title'] || 'Remove'
+  const addItemTitle = props.uiSchema['ui:add-item-title'] || 'Ajouter'
+  const removeItemTitle = props.uiSchema['ui:remove-item-title'] || 'Supprimer'
   const title = props.uiSchema['ui:title']
 
   return (
