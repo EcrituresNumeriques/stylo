@@ -18,7 +18,7 @@
       "fields": ["issueDirectors", "issn", "productor", "prodnum", "diffnum", "dossier"]
     },
     {
-      "fields": ["issueDirectors", "reviewers", "translators", "translationOf", "transcribers"]
+      "fields": ["directors", "reviewers", "translators", "translationOf", "transcribers"]
     }
   ],
   "id_sp": {
@@ -37,7 +37,11 @@
     "ui:title": "Subtitle"
   },
   "link-citations": {
-    "ui:widget": "select"
+    "ui:widget": "select",
+    "ui:emptyValue": ""
+  },
+  "nocite": {
+    "ui:placeholder": "Only used"
   },
   "date": {
     "ui:title": "Date",
@@ -104,7 +108,7 @@
   },
   "typeArticle": {
     "ui:widget": "checkboxes",
-    "ui:title": "Categories"
+    "ui:title": "Catégories"
   },
   "dossier": {
     "ui:title": "Folder",

@@ -3,6 +3,7 @@ import Form from '@rjsf/core'
 import {set} from 'object-path-immutable'
 import basicUiSchema from '../schemas/ui-schema-basic-override.json'
 import uiSchema from '../schemas/ui-schema-editor.json'
+import staticKeywordsComponent from './Write/metadata/staticKeywords.js'
 import schema from '../schemas/data-schema.json'
 import {toYaml} from './Write/metadata/yaml.js'
 
@@ -85,10 +86,7 @@ function ObjectFieldTemplate (props) {
 }
 
 
-export default ({
-                  formData: initialFormData, basicMode, onChange = () => {
-  }
-                }) => {
+export default ({ formData: initialFormData, basicMode, onChange = () => {} }) => {
   const [formData, setFormData] = useState(initialFormData)
   const [errors, setErrors] = useState({})
   const formContext = {
@@ -100,8 +98,8 @@ export default ({
   }
 
   const effectiveUiSchema = useMemo(() => (basicMode ? { ...uiSchema, ...basicUiSchema } : uiSchema), [basicMode])
-
-  const yamlOutput = toYaml(formData)
+  // use static keywords component
+  effectiveUiSchema.referencedKeywords = { ...effectiveUiSchema.referencedKeywords, ...staticKeywordsComponent.uiSchema }
 
   return (
     <Form

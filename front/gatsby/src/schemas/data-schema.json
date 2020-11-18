@@ -133,7 +133,6 @@
     },
     "referencedKeywords": {
       "type": "array",
-      "title": "Mots clés contrôlés",
       "items": {
         "type": "object",
         "properties": {

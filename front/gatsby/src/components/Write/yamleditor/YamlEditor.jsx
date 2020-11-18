@@ -3,9 +3,6 @@ import Form from '../../Form.js'
 
 const YAML = require('js-yaml');
 
-require('./default/rubriques.json');
-require('./default/transformKeywords.json');
-
 export default ({ yaml, basicMode, onChange }) => {
   const [parsed] = YAML.safeLoadAll(yaml)
 
