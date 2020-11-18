@@ -1,7 +1,7 @@
 {
   "ui:groups": [
     {
-      "fields": ["id_sp", "url_article", "title", "subtitle", "date", "lang", "license"]
+      "fields": ["id_sp", "url_article", "title", "subtitle", "date", "lang", "rights"]
     },
     {
       "title": "Bibliography",
@@ -15,10 +15,14 @@
       "fields": ["publisher", "journal"]
     },
     {
-      "fields": ["issueDirectors", "issn", "productor", "prodnum", "diffnum", "dossier"]
+      "fields": [ "director" ]
     },
     {
-      "fields": ["directors", "reviewers", "translators", "translationOf", "transcribers"]
+      "title": "Production",
+      "fields": [ "issnnum", "prod" , "prodnum", "diffnum" ]
+    },
+    {
+      "fields": ["dossier", "issueDirectors", "reviewers", "translators", "translationOf", "transcribers"]
     }
   ],
   "id_sp": {
@@ -50,7 +54,7 @@
     "ui:title": "Language",
     "ui:placeholder": "Select language"
   },
-  "license": {
+  "rights": {
     "ui:title": "License",
     "ui:placeholder": "License"
   },
@@ -60,7 +64,7 @@
     "ui:title": "Authors"
   },
   "translationOf": {
-    "ui:title": "Translation",
+    "ui:title": "Traductions de",
     "items": {
       "url": {
         "ui:widget": "uri"
@@ -89,46 +93,51 @@
     }
   },
   "keywords": {
-    "ui:title": "Keywords",
+    "ui:title": "Mots-clés",
     "ui:add-item-title": "Ajouter une langue",
-    "ui:remove-item-title": "Supprimer",
+    "ui:remove-item-title": "Supprimer cette langue",
     "items": {
       "lang": {
         "ui:title": "Language"
       },
       "list": {
-        "ui:add-item-title": "Ajouter",
+        "classNames": "inline-field-string",
+        "ui:add-item-title": "Ajouter un mot-clé",
         "ui:remove-item-title": "Supprimer"
       }
     }
   },
   "referencedKeywords": {
-    "ui:title": "Referenced Keywords"
+    "classNames": "inline-field-string",
+    "ui:title": "Mots clés Contrôlés",
+    "ui:add-item-title": "Ajouter une mot-clé contrôlé"
   },
   "typeArticle": {
     "ui:widget": "checkboxes",
     "ui:title": "Catégories"
   },
   "dossier": {
-    "ui:title": "Folder",
+    "ui:title": "Dossier",
     "ui:options": {
       "removable": false,
       "addable": false
     },
     "items": {
       "title": {
-        "ui:title": "Title"
+        "ui:title": "Titre du dossier"
       },
       "id": {
-        "ui:title": "Id"
+        "ui:title": "Id du dossier"
       }
     }
   },
   "issueDirectors": {
-    "ui:title": "Issue Directors"
+    "ui:title": "Directeur du dossier"
   },
-  "directors": {
-    "ui:title": "Directors"
+  "director": {
+    "ui:title": "Directors",
+    "ui:add-item-title": "Ajouter un director",
+    "ui:remove-item-title": "Supprimer"
   },
   "transcribers": {
     "ui:title": "Transcribers"
@@ -137,6 +146,18 @@
     "ui:title": "Translators"
   },
   "reviewers": {
-    "ui:title": "Reviewers"
+    "ui:title": "Réviseurs"
+  },
+  "issnnum": {
+    "ui:title": "ISSN"
+  },
+  "prod": {
+    "ui:title": "Productor"
+  },
+  "prodnum": {
+    "ui:title": "Prodnum"
+  }, 
+  "diffnum": {
+    "ui:title": "Diffnum"
   }
 }

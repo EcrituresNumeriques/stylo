@@ -21,7 +21,7 @@ function ArrayFieldTemplate (props) {
       {title && <legend id={props.id}>{title}</legend>}
       {props.items &&
       props.items.map((element) => (
-        <div id={element.key} key={element.key} className={element.className}>
+        <div id={element.key} key={element.key} className={`${element.className} can-add-remove`}>
           {element.children}
           {element.hasRemove && (
             <button
@@ -53,12 +53,10 @@ function ArrayFieldTemplate (props) {
 function ObjectFieldTemplate (props) {
   if (props.uiSchema['ui:groups']) {
     const groups = props.uiSchema['ui:groups']
-
     const groupedElements = groups.map(({ fields, title }) => {
-      const elements = props.properties.filter((element) => fields
+      const elements = fields
         .filter((field) => (props.uiSchema[field] || {})['ui:widget'] !== 'hidden')
-        .includes(element.name)
-      )
+        .map((field) => props.properties.filter((element) => element.name === field)[0])
       if (elements && elements.length > 0) {
         return (
           <fieldset className={styles.fieldset} key={fields.join('-')}>
@@ -76,11 +74,11 @@ function ObjectFieldTemplate (props) {
 
   if (props) {
     return (
-      <div key={props.key}>
+      <Fragment key={props.key}>
         {props.title}
         {props.description}
-        {props.properties.map(element => <div className="property-wrapper" key={element.name}>{element.content}</div>)}
-      </div>
+        {props.properties.map(element => <Fragment key={element.name}>{element.content}</Fragment>)}
+      </Fragment>
     );
   }
 }
@@ -92,8 +90,11 @@ export default ({ formData: initialFormData, basicMode, onChange = () => {} }) =
   const formContext = {
     partialUpdate: ({ id, value }) => {
       const path = id.replace('root_', '').replace('_', '.')
-      setFormData(state => set(state, path, value))
-      // todo check if `Form.onChange` is called afterwards — to bubble up the new data state to the `Write` component
+      setFormData(state => {
+        const newFormData = set(state, path, value)
+        onChange(toYaml(newFormData))
+        return newFormData
+      })
     }
   }
 

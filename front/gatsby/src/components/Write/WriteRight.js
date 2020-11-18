@@ -6,8 +6,8 @@ import YamlEditor from './yamleditor/YamlEditor'
 const YAML = require('js-yaml');
 
 export default (props) => {
-  const [expanded, setExpanded] = useState(false)
-  const [selector, setSelector] = useState('basic')
+  const [expanded, setExpanded] = useState(true || false)
+  const [selector, setSelector] = useState('editor')
   const [rawYaml, setRawYaml] = useState(props.yaml)
   const [error, setError] = useState("")
 

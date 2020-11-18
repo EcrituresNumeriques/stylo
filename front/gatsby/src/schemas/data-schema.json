@@ -71,7 +71,7 @@
     "lang": {
       "$ref": "#/definitions/lang"
     },
-    "license": {
+    "rights": {
       "type": "string"
     },
     "link-citations": {
@@ -228,11 +228,23 @@
         "$ref": "#/definitions/person"
       }
     },
-    "directors": {
+    "director": {
       "type": "array",
       "items": {
         "$ref": "#/definitions/person"
       }
+    },
+    "issnnum": {
+      "type": "string"
+    },
+    "prod": {
+      "type": "string"
+    },
+    "prodnum": {
+      "type": "string"
+    }, 
+    "diffnum": {
+      "type": "string"
     }
   }
 }

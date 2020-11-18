@@ -29,7 +29,7 @@
   "issueDirectors": {
     "ui:widget": "hidden"
   },
-  "directors": {
+  "director": {
     "ui:widget": "hidden"
   },
   "transcribers": {
@@ -39,6 +39,18 @@
     "ui:widget": "hidden"
   },
   "reviewers": {
+    "ui:widget": "hidden"
+  },
+  "issnnum": {
+    "ui:widget": "hidden"
+  },
+  "prod": {
+    "ui:widget": "hidden"
+  },
+  "prodnum": {
+    "ui:widget": "hidden"
+  }, 
+  "diffnum": {
     "ui:widget": "hidden"
   }
 }
