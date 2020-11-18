@@ -3,7 +3,7 @@ import Form from '@rjsf/core'
 import { set } from 'object-path-immutable'
 import basicUiSchema from '../schemas/ui-schema-basic-override.json'
 import uiSchema from '../schemas/ui-schema-editor.json'
-import staticKeywordsComponent from './Write/metadata/staticKeywords'
+import staticKeywordsComponent from './Write/metadata/staticKeywords.js'
 import schema from '../schemas/data-schema.json'
 import { toYaml } from './Write/metadata/yaml'
 
@@ -20,9 +20,11 @@ const CustomSelect = function(props) {
       <SelectWidget {...props}/>
     </div>)
 }
-function ArrayFieldTemplate(props) {
-  const addItemTitle = props.uiSchema['ui:add-item-title'] || 'Ajouter'
-  const removeItemTitle = props.uiSchema['ui:remove-item-title'] || 'Supprimer'
+
+function ArrayFieldTemplate (props) {
+
+  const addItemTitle = props.uiSchema['ui:add-item-title'] || 'Add'
+  const removeItemTitle = props.uiSchema['ui:remove-item-title'] || 'Remove'
   const title = props.uiSchema['ui:title']
 
   const inlineRemoveButton = props.schema?.items?.type === 'string'
@@ -67,7 +69,7 @@ function ArrayFieldTemplate(props) {
   )
 }
 
-function ObjectFieldTemplate(props) {
+function ObjectFieldTemplate (props) {
   if (props.uiSchema['ui:groups']) {
     const groups = props.uiSchema['ui:groups']
     const groupedElements = groups.map(({ fields, title }) => {
@@ -110,6 +112,7 @@ function ObjectFieldTemplate(props) {
 export default ({
   formData: initialFormData,
   basicMode,
+  metadataModelName,
   onChange = () => {},
 }) => {
   const [formData, setFormData] = useState(initialFormData)
@@ -125,10 +128,15 @@ export default ({
     },
   }
 
-  const effectiveUiSchema = useMemo(
-    () => (basicMode ? { ...uiSchema, ...basicUiSchema } : uiSchema),
-    [basicMode]
+  const {basicUiSchema, uiSchema, schema} = schemas[metadataModelName]
+  const effectiveUiSchema = useMemo(() => {
+    return basicMode
+      ? basicUiSchema
+      : uiSchema
+    },
+    [basicMode, metadataModelName]
   )
+
   // use static keywords component
   effectiveUiSchema.controlledKeywords = {
     ...effectiveUiSchema.controlledKeywords,

@@ -29,7 +29,7 @@
       "fields": ["publisher", "journal"]
     },
     {
-      "fields": ["director"]
+      "fields": ["issueDirectors", "issn", "productor", "prodnum", "diffnum", "dossier"]
     },
     {
       "title": "Production",
@@ -62,8 +62,7 @@
     "ui:title": "Subtitle"
   },
   "link-citations": {
-    "ui:widget": "select",
-    "ui:emptyValue": ""
+    "ui:widget": "select"
   },
   "nocite": {
     "ui:widget": "select",
@@ -77,7 +76,7 @@
     "ui:title": "Language",
     "ui:placeholder": "Select language"
   },
-  "rights": {
+  "license": {
     "ui:title": "License",
     "ui:placeholder": "License"
   },
@@ -87,7 +86,7 @@
     "ui:title": "Authors"
   },
   "translationOf": {
-    "ui:title": "Traductions de",
+    "ui:title": "Translation",
     "items": {
       "url": {
         "ui:widget": "uri"
@@ -116,9 +115,9 @@
     }
   },
   "keywords": {
-    "ui:title": "Mots-clés",
+    "ui:title": "Keywords",
     "ui:add-item-title": "Ajouter une langue",
-    "ui:remove-item-title": "Supprimer cette langue",
+    "ui:remove-item-title": "Supprimer",
     "items": {
       "lang": {
         "ui:title": "Language"
@@ -137,10 +136,10 @@
   },
   "typeArticle": {
     "ui:widget": "checkboxes",
-    "ui:title": "Catégories"
+    "ui:title": "Categories"
   },
   "dossier": {
-    "ui:title": "Dossier",
+    "ui:title": "Folder",
     "ui:options": {
       "removable": false,
       "addable": false
@@ -150,17 +149,15 @@
         "ui:title": "Titre du dossier"
       },
       "id": {
-        "ui:title": "Id du dossier"
+        "ui:title": "Id"
       }
     }
   },
   "issueDirectors": {
-    "ui:title": "Directeur du dossier"
+    "ui:title": "Issue Directors"
   },
   "director": {
-    "ui:title": "Directors",
-    "ui:add-item-title": "Ajouter un director",
-    "ui:remove-item-title": "Supprimer"
+    "ui:title": "Directors"
   },
   "transcribers": {
     "ui:title": "Transcribers"
@@ -169,18 +166,6 @@
     "ui:title": "Translators"
   },
   "reviewers": {
-    "ui:title": "Réviseurs"
-  },
-  "issnnum": {
-    "ui:title": "ISSN"
-  },
-  "prod": {
-    "ui:title": "Productor"
-  },
-  "prodnum": {
-    "ui:title": "Prodnum"
-  },
-  "diffnum": {
-    "ui:title": "Diffnum"
+    "ui:title": "Reviewers"
   }
 }

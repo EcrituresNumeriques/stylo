@@ -1,14 +1,25 @@
 import React from 'react'
-import Form from '../../Form'
 import YAML from 'js-yaml'
 
+import Form from '../../Form.jsx'
+import Select from '../../Select.jsx'
+
 export default ({ yaml, basicMode, onChange }) => {
+  const [metadataModelName, setMetadataModelName] = useState('default')
   const [parsed] = YAML.loadAll(yaml)
 
   // we convert YYYY/MM/DD dates into ISO YYYY-MM-DD
-  if (parsed.date) {
+  if (parsed && parsed.date && typeof parsed.date === 'string') {
     parsed.date = parsed.date.replace(/\//g, '-')
   }
 
-  return <Form formData={parsed} basicMode={basicMode} onChange={onChange} />
+  <>
+    <Select value={metadataModelName} onChange={(e) => setMetadataModelName(e.target.value)}>
+      {Object.entries(schemas).map(([id, details]) => {
+        return <option key={id} value={ id }>{ details.title }</option>
+      })}
+    </Select>
+
+    <Form formData={parsed} basicMode={basicMode} metadataModelName={metadataModelName} onChange={onChange}/>
+  </>
 }
