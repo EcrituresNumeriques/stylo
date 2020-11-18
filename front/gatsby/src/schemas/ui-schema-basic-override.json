@@ -1,0 +1,44 @@
+{
+  "id_sp": {
+    "ui:widget": "hidden"
+  },
+  "url_article": {
+    "ui:widget": "hidden"
+  },
+  "link-citations": {
+    "ui:widget": "hidden"
+  },
+  "translationOf": {
+    "ui:widget": "hidden"
+  },
+  "publisher": {
+    "ui:widget": "hidden"
+  },
+  "journal": {
+    "ui:widget": "hidden"
+  },
+  "referencedKeywords": {
+    "ui:widget": "hidden"
+  },
+  "typeArticle": {
+    "ui:widget": "hidden"
+  },
+  "dossier": {
+    "ui:widget": "hidden"
+  },
+  "issueDirectors": {
+    "ui:widget": "hidden"
+  },
+  "directors": {
+    "ui:widget": "hidden"
+  },
+  "transcribers": {
+    "ui:widget": "hidden"
+  },
+  "translators": {
+    "ui:widget": "hidden"
+  },
+  "reviewers": {
+    "ui:widget": "hidden"
+  }
+}

@@ -52,7 +52,8 @@
     "ui:placeholder": "License"
   },
   "authors": {
-    "ui:add-item-title": "Ajouter an author",
+    "ui:add-item-title": "Ajouter un author",
+    "ui:remove-item-title": "Supprimer",
     "ui:title": "Authors"
   },
   "translationOf": {
@@ -72,6 +73,7 @@
   "abstract": {
     "ui:title": "Résumés",
     "ui:add-item-title": "Ajouter un résumé dans une autre langue",
+    "ui:remove-item-title": "Supprimer",
     "items": {
       "text": {
         "ui:title": "Résumé",
@@ -84,7 +86,18 @@
     }
   },
   "keywords": {
-    "ui:title": "Keywords"
+    "ui:title": "Keywords",
+    "ui:add-item-title": "Ajouter une langue",
+    "ui:remove-item-title": "Supprimer",
+    "items": {
+      "lang": {
+        "ui:title": "Language"
+      },
+      "list": {
+        "ui:add-item-title": "Ajouter",
+        "ui:remove-item-title": "Supprimer"
+      }
+    }
   },
   "referencedKeywords": {
     "ui:title": "Referenced Keywords"

@@ -2,25 +2,27 @@
 @import '../styles/variables.scss';
 
 .form {
-
-  font-size: .9rem;
-
-  fieldset[id="root"] {
+  fieldset {
     border: none;
+    margin-bottom: 0.75rem;
     padding: 0;
+
+    legend {
+      background: #f0f0f0;
+      border-top: 1px solid grey;
+      border-bottom: 1px solid grey;
+      display: block;
+      font-size: 1.15em;
+      font-weight: bold;
+      margin: 0;
+      padding: .5rem 1rem;
+      text-align: right;
+      width: 100%;
+    }
   }
 
   label {
     padding-right: 0.25rem;
-  }
-
-  legend {
-    padding-top: 0.5rem;
-    font-weight: bold;
-  }
-
-  fieldset {
-    margin-bottom: 0.75rem;
   }
 
   textarea {
@@ -29,12 +31,38 @@
   }
 }
 
-.addButton::after {
-  content: '+';
-}
+.fieldset {
+  > div {
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    margin-left: 0;
+    margin-right: 0;
 
-.removeButton::after {
-  content: '-';
+    fieldset {
+      flex: 1 0 auto;
+    }
+
+    > label {
+      flex: 0 0 150px;
+    }
+
+    select {
+      width: 100%;
+    }
+
+    input[type="email"],
+    input[type="text"],
+    input[type="url"] {
+      padding: .5em 1em;
+      display: block;
+      flex: 1 1 auto;
+      margin: 2px;
+      background-color: #fff;
+      text-align: left;
+      border: none;
+    }
+  }
 }
 
 .output {
