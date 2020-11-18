@@ -1,5 +1,26 @@
 # Journal de développement
 
+## Mercredi 18 novembre 2020
+
+### Ce que j'ai aimé/appris
+
+- j'ai appris qu'on pouvait appliquer des styles nested avec `styled-components` (via `:global`)
+- la librairie `react-jsonform` est vraiment chouette, sur le découpage donnée/apparences
+- travailler en synchro sur l'UI, quand on paire en mode "1 qui écrit, 1 qui pense/observe/dicte" marche bien
+- j'ai trouvé que l'implémentation des groupes a été rapide/facile… beaucoup plus que prévu
+- en combinant `uiSchema:classNames` + `:global` ça nous a permis de styler finement les groupes
+- l'intégration technique du formulaire s'est faite toute seule, le branchement au flux de données n'a pas posé de problème
+- j'ai trouvé ça chouette de virer un doublon de fonctionnalité (import YAML et Raw YAML) et ajouter une validation de syntaxe
+
+### Ce que j'ai trouvé difficile
+
+- pas mal de temps sur les aspects design, pour styler le formulaire comme il faut
+- quand on est deux à travailler sur l'UI, le live reload refresh l'interface et ralentit la progression
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- être en synchro sur le dév d'interface qui touche aux styles
+
 ## Mercredi 30 septembre 2020
 
 ### Ce que j'ai aimé/appris
