@@ -85,6 +85,7 @@
     "nocite": {
       "type": "string",
       "title": "Display",
+      "default": "",
       "enum": [
         "@*",
         ""
