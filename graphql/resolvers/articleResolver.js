@@ -1,7 +1,5 @@
 const { getArticleById } = require('./nestedModel')
 
-const defaultsData = require('../data/defaultsData')
-
 const Article = require('../models/article');
 const Version = require('../models/version');
 const User = require('../models/user');
@@ -26,8 +24,10 @@ module.exports = {
       if(!thisUser){throw new Error('This user does not exist')}
 
       //Add default article + default version
-      const newArticle = new Article({title:args.title || defaultsData.title});
-      const newVersion = new Version({md:defaultsData.md,yaml:thisUser.yaml || defaultsData.yaml,bib:'',sommaire:defaultsData.sommaire,message:defaultsData.message});
+      const { yaml } = thisUser
+      const { title } = args
+      const newArticle = new Article(title ? { title } : {})
+      const newVersion = new Version(yaml ? { yaml } : {})
       newArticle.versions.push(newVersion)
       newVersion.article = newArticle
 

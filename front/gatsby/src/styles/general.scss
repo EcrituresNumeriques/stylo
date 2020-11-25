@@ -38,13 +38,8 @@ textarea:not([rows]) {
   min-height: 8em;
 }
 
-html,
-body,
-#___gatsby,
-#___gatsby > div,
-#___gatsby > div > div,
-#___gatsby > div > div > main {
-  height: 100%;
+html,body,#___gatsby,#___gatsby > div, #___gatsby > div > div, #___gatsby > div > div > main{
+    height:100%;
 }
 
 body {
@@ -52,7 +47,7 @@ body {
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing:border-box;
 }
 
 a {
@@ -65,17 +60,9 @@ a {
   }
 }
 
-ul,
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-html,
-body {
-  margin: 0;
-  padding: 0;
+ul,p,h1,h2,h3,h4,h5,html,body {
+    margin:0;
+    padding:0;
 }
 
 li {

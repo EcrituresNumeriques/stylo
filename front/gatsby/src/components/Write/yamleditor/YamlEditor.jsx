@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useState} from 'react'
 import YAML from 'js-yaml'
 
 import Form from '../../Form.jsx'
 import Select from '../../Select.jsx'
+import schemas from '../../../schemas/index.js'
 
 export default ({ yaml, basicMode, onChange }) => {
   const [metadataModelName, setMetadataModelName] = useState('default')
