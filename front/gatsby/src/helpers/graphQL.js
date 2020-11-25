@@ -14,7 +14,6 @@ const askGraphQL = async (payload, action = 'fetching from the server', token = 
 
   if (!response.ok) {
     let res = await response.json()
-    console.log(res)
     if (res) {
       res = res.errors || [{ message: "problem" }]
     }
@@ -22,7 +21,6 @@ const askGraphQL = async (payload, action = 'fetching from the server', token = 
       res = res[0].message
     }
     //alert(`${JSON.stringify(res)}.\nSomething wrong happened during: ${action} =>  ${response.status}, ${response.statusText}.`);
-    console.error(`${JSON.stringify(res)}.\nSomething wrong happened during: ${action} =>  ${response.status}, ${response.statusText}.`)
     throw new Error(res)
   }
 

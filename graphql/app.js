@@ -50,20 +50,6 @@ const zoteroAuthScope = ['library_access=1', 'all_groups=read']
 
 const secure = process.env.HTTPS === 'true'
 
-function requiresAuthentication (req, res, next) {
-  if (!req.user) {
-    res.status(403)
-    res.json({
-      error: {
-        "code": 403,
-        "message": "Forbidden"
-      }
-    })
-  }
-
-  next()
-}
-
 const corsOptions = {
   origin: origin,
   optionsSuccessStatus: 200,
