@@ -111,7 +111,7 @@ module.exports = {
     return populateUser(returnedUser)
   },
   // Queries
-  
+
   //Only available for admins
   users: async (_,{req}) => {
     isAdmin(req);
@@ -120,6 +120,7 @@ module.exports = {
   },
   user: async (args,{req}) => {
     isUser(args,req)
+
     return getUserById(args.user)
-  }  
+  }
 }

@@ -9,6 +9,7 @@ const mapStateToProps = ({ logedIn }) => {
 }
 
 const PrivateRoute = ({ logedIn, redirectTo, children }) => {
+  console.log({logedIn, redirectTo})
   if (logedIn) {
     if (redirectTo) {
       navigate(redirectTo)
@@ -16,6 +17,7 @@ const PrivateRoute = ({ logedIn, redirectTo, children }) => {
     }
     return <>{children}</>
   }
+
   return <Login />
 }
 

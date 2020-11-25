@@ -202,18 +202,15 @@ module.exports = {
       throw err
     }
   },
-  article: async (args,{req}) => {
+  article: async (args, { req }) => {
+    const { article:articleId } = args
+    const article = await Article.findOne({ _id: articleId, owners: { $in: req.user.usersIds } })
 
-    // -------------------------------------------
-    // TODO: verify user has acces to this article
-    // -------------------------------------------
+    if (!article) {
+      throw new Error(`Unable to find this article : _id ${articleId} does not exist`)
+    }
 
-    try{
-      return await getArticleById(args.article)
-    }
-    catch(err){
-      throw err
-    }
+    return populateArticle(article)
   },
   articles: async (_,{req}) => {
     try{

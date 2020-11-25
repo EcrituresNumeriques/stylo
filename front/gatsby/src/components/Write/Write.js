@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { connect } from 'react-redux'
-import { Controlled as CodeMirror } from 'react-codemirror2'
+import React, {useEffect, useRef, useState} from 'react'
+import {connect} from 'react-redux'
+import {Controlled as CodeMirror} from 'react-codemirror2'
 
 import askGraphQL from '../../helpers/graphQL'
 import styles from './write.module.scss'
@@ -33,13 +33,52 @@ if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
 }
 
 const ConnectedWrite = (props) => {
-  const readOnly = props.version ? true : false
-  const query =
-    'query($article:ID!){article(article:$article){ _id title zoteroLink owners{ displayName } versions{ _id version revision message autosave updatedAt owner{ displayName }} '
-  const getLive = 'live{ md bib yaml message owner{ displayName }} } }'
-  const getVersion = `} version(version:"${props.version}"){ _id md bib yaml message revision version owner{ displayName }} }`
+  const readOnly = Boolean(props.version)
 
-  const fullQuery = props.version ? query + getVersion : query + getLive
+  const fullQuery = `query($article:ID!, $readOnly: Boolean!, $version:ID!) {
+    article(article:$article) {
+      _id
+      title
+      zoteroLink
+      owners {
+        displayName
+      }
+      versions {
+        _id
+        version
+        revision
+        message
+        autosave
+        updatedAt
+        owner {
+          displayName
+        }
+      }
+
+      live @skip (if: $readOnly) {
+        md
+        bib
+        yaml
+        message
+        owner {
+          displayName
+        }
+      }
+    }
+
+    version(version: $version) @include (if: $readOnly) {
+      _id
+      md
+      bib
+      yaml
+      message
+      revision
+      version
+      owner{
+        displayName
+      }
+    }
+  }`
 
   const instanceCM = useRef(null)
 
@@ -57,7 +96,11 @@ const ConnectedWrite = (props) => {
   const variables = {
     user: props.activeUser && props.activeUser._id,
     article: props.id,
+    version: props.version || '0123456789ab',
+    readOnly
   }
+
+  const [graphqlError, setError] = useState()
   const [isLoading, setIsLoading] = useState(true)
   const [live, setLive] = useState({})
   const [versions, setVersions] = useState([])
@@ -133,25 +176,40 @@ const ConnectedWrite = (props) => {
   }
 
   //Reload when version switching
-  useEffect(() => {
-    ;(async () => {
-      setIsLoading(true)
+  useEffect(async () => {
+      setIsLoading( true)
       const data = await askGraphQL(
         { query: fullQuery, variables },
         'fetching Live version',
         props.sessionToken
       )
-      setLive(props.version ? data.version : data.article.live)
-      setArticleInfos({
-        _id: data.article._id,
-        title: data.article.title,
-        zoteroLink: data.article.zoteroLink,
-        owners: data.article.owners.map((o) => o.displayName),
-      })
-      setVersions(data.article.versions)
+        .then(({ version, article }) => ({ version, article }))
+        .catch(error => {
+          setError(error)
+          return {}
+        })
+
+      if (data?.article) {
+        setLive(props.version ? data.version : data.article.live)
+        setArticleInfos({
+          _id: data.article._id,
+          title: data.article.title,
+          zoteroLink: data.article.zoteroLink,
+          owners: data.article.owners.map((o) => o.displayName),
+        })
+        setVersions(data.article.versions)
+      }
       setIsLoading(false)
-    })()
   }, [props.version])
+
+  if (graphqlError) {
+    return (<section className={styles.container}>
+      <article className={styles.error}>
+        <h2>Error</h2>
+        <p>{ graphqlError[0]?.message || 'Article not found.'}</p>
+      </article>
+    </section>)
+  }
 
   return (
     <section className={styles.container}>
@@ -169,7 +227,7 @@ const ConnectedWrite = (props) => {
         />
       )}
       {!isLoading && (
-        <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly} />
+        <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly}/>
       )}
 
       {props.compareTo && (
@@ -200,7 +258,7 @@ const ConnectedWrite = (props) => {
                 ref={instanceCM}
               />
             )}
-            {props.compareTo && <Compare {...props} live={live} />}
+            {props.compareTo && <Compare {...props} live={live}/>}
           </>
         )}
       </article>

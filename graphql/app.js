@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-const {graphqlHTTP: graphqlHttp} = require('express-graphql')
+const {graphqlHTTP} = require('express-graphql')
 const mongoose = require('mongoose')
 const cors = require('cors')
 
@@ -49,6 +49,20 @@ const zoteroAuthorizeEndpoint = process.env.ZOTERO_AUTHORIZE_ENDPOINT || 'https:
 const zoteroAuthScope = ['library_access=1', 'all_groups=read']
 
 const secure = process.env.HTTPS === 'true'
+
+function requiresAuthentication (req, res, next) {
+  if (!req.user) {
+    res.status(403)
+    res.json({
+      error: {
+        "code": 403,
+        "message": "Forbidden"
+      }
+    })
+  }
+
+  next()
+}
 
 const corsOptions = {
   origin: origin,
@@ -265,7 +279,7 @@ app.post('/login',
 
 app.use(
   '/graphql',
-  graphqlHttp((req, res) => ({
+  graphqlHTTP((req, res) => ({
     schema: graphQlSchema,
     rootValue: graphQlResolvers,
     graphiql: process.env.NODE_ENV === 'dev',
