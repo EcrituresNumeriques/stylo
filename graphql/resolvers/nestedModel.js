@@ -30,16 +30,11 @@ const populateUser =  (user) => {
 };
 
 const getUserById = async (userId) => {
-    try {
-        const user = await User.findById(userId);
-        if(!user){
-            throw new Error(`Unable to find this user : _id ${userId} does not exist`)
-        }
-        //console.log(populateUser(user))
-        return populateUser(user);
-    } catch (err) {
-        throw err;
+    const user = await User.findById(userId);
+    if(!user){
+        throw new Error(`Unable to find this user : _id ${userId} does not exist`)
     }
+    return populateUser(user);
 };
 
 const getUsersByIds = async (usersIds,args) => {
@@ -65,28 +60,18 @@ const populateVersion = (version) => {
 }
 
 const getVersionsByIds = async (versionsIds,args) => {
-    try{
-        versionsIds = paginate(versionsIds,args.limit,args.page);
-        if(versionsIds.length === 0){ return [] }
-        const versions = await Version.find({ _id: { $in: versionsIds } });
-        return versions.reverse().map(populateVersion);
-    }
-    catch(err){
-        throw err
-    }
+    versionsIds = paginate(versionsIds,args.limit,args.page);
+    if(versionsIds.length === 0){ return [] }
+    const versions = await Version.find({ _id: { $in: versionsIds } });
+    return versions.reverse().map(populateVersion);
 };
 
 const getVersionById = async (versionId) => {
-    try{
-        const version = await Version.findById(versionId);
-        if(!version){
-            throw new Error(`Version id ${versionId} does not exist`)
-        }
-        return populateVersion(version);
+    const version = await Version.findById(versionId);
+    if(!version){
+        throw new Error(`Version id ${versionId} does not exist`)
     }
-    catch(err){
-        throw err
-    }
+    return populateVersion(version);
 };
 
 /*
@@ -137,30 +122,25 @@ const populateArticle = (article) => {
     }
 }
 const getArticlesByIds = async (articlesIds,args) => {
-    try{
-        articlesIds = paginate(articlesIds,args.limit,args.page);
-        if(articlesIds.length === 0){ return [] }
-        const articles = await Article.find({ _id: { $in: articlesIds } });
-        if(!articles){
-            return []
-        }
-        //console.log(articles.map(populateArticle))
-        return articles.map(populateArticle);
+    articlesIds = paginate(articlesIds,args.limit,args.page);
+    if(articlesIds.length === 0){ return [] }
+    const articles = await Article.find({ _id: { $in: articlesIds } });
+
+    if(!articles){
+        return []
     }
-    catch(err){
-        throw err
-    }
+
+    //console.log(articles.map(populateArticle))
+    return articles.map(populateArticle);
 };
 const getArticleById = async (articleId) => {
-    try {
-        const article = await Article.findById(articleId);
-        if(!article){
-            throw new Error(`Unable to find this article : _id ${articleId} does not exist`)
-        }
-        return populateArticle(article);
-    } catch (err) {
-        throw err;
+    const article = await Article.findById(articleId);
+
+    if(!article){
+        throw new Error(`Unable to find this article : _id ${articleId} does not exist`)
     }
+
+    return populateArticle(article);
 };
 
 /*
@@ -182,15 +162,11 @@ const populateToken =  (token) => {
 };
 
 const getTokensByIds = async (tokensIds,args) => {
-    try{
-        tokensIds = paginate(tokensIds,args.limit,args.page);
-        if(tokensIds.length === 0){ return [] }
-        const tokens = await Token.find({ _id: { $in: tokensIds } });
-        return tokens.map(populateToken);
-    }
-    catch(err){
-        throw err
-    }
+    tokensIds = paginate(tokensIds,args.limit,args.page);
+    if(tokensIds.length === 0){ return [] }
+    const tokens = await Token.find({ _id: { $in: tokensIds } });
+
+    return tokens.map(populateToken);
 };
 
 /*
@@ -214,15 +190,10 @@ const populatePassword =  (password) => {
 };
 
 const getPasswordsByIds = async (passwordsIds,args) => {
-    try{
-        passwordsIds = paginate(passwordsIds,args.limit,args.page);
-        if(passwordsIds.length === 0){ return [] }
-        const passwords = await Password.find({ _id: { $in: passwordsIds } });
-        return passwords.map(populatePassword);
-    }
-    catch(err){
-        throw err
-    }
+    passwordsIds = paginate(passwordsIds,args.limit,args.page);
+    if(passwordsIds.length === 0){ return [] }
+    const passwords = await Password.find({ _id: { $in: passwordsIds } });
+    return passwords.map(populatePassword);
 };
 
 

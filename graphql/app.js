@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-const {graphqlHTTP: graphqlHttp} = require('express-graphql')
+const {graphqlHTTP} = require('express-graphql')
 const mongoose = require('mongoose')
 const cors = require('cors')
 
@@ -265,7 +265,7 @@ app.post('/login',
 
 app.use(
   '/graphql',
-  graphqlHttp((req, res) => ({
+  graphqlHTTP((req, res) => ({
     schema: graphQlSchema,
     rootValue: graphQlResolvers,
     graphiql: process.env.NODE_ENV === 'dev',
