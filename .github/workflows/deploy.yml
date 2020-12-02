@@ -62,12 +62,9 @@ jobs:
     - name: Compute target environment name
       id: target
       run: |
-        echo "${GITHUB_REF}"
         if [[ "${GITHUB_REF}" =~ "refs/tags/v" ]]; then
-          echo "prod!"
           echo ::set-output name=TARGET_ENV_NAME::prod
         else
-          echo "dev"
           echo ::set-output name=TARGET_ENV_NAME::dev
         fi
 
