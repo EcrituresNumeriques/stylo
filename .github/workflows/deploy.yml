@@ -1,4 +1,4 @@
-name: Build an deploy
+name: Build and deploy
 
 on:
   push:
@@ -28,25 +28,25 @@ jobs:
     # GCR_PAT requires 2 steps:
     # 1. Creating the token: https://github.com/settings/tokens/new?scopes=write:packages,read:packages,delete:packages&description=Stylo%20Container%20Deployment
     # 2. Setting it on: https://github.com/EcrituresNumeriques/settings/secrets/actions/new
-    - name: Build images
-      id: build
-      run: |
-        cp stylo-example.env stylo.env
-        docker-compose build
-        echo ${{ secrets.GCR_PAT }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-
-    - name: Publish images
-      id: publish
-      run: |
-        docker tag ghcr.io/ecrituresnumeriques/stylo-graphql ghcr.io/ecrituresnumeriques/stylo-graphql:${PUBLISH_TAG}
-        docker tag ghcr.io/ecrituresnumeriques/stylo-front ghcr.io/ecrituresnumeriques/stylo-front:${PUBLISH_TAG}
-        docker tag ghcr.io/ecrituresnumeriques/stylo-export ghcr.io/ecrituresnumeriques/stylo-export:${PUBLISH_TAG}
-
-        docker push ghcr.io/ecrituresnumeriques/stylo-graphql:${PUBLISH_TAG}
-        docker push ghcr.io/ecrituresnumeriques/stylo-front:${PUBLISH_TAG}
-        docker push ghcr.io/ecrituresnumeriques/stylo-export:${PUBLISH_TAG}
-      env:
-        PUBLISH_TAG: ${{ steps.branch.outputs.SOURCE_NAME }}
+#    - name: Build images
+#      id: build
+#      run: |
+#        cp stylo-example.env stylo.env
+#        docker-compose build
+#        echo ${{ secrets.GCR_PAT }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+#
+#    - name: Publish images
+#      id: publish
+#      run: |
+#        docker tag ghcr.io/ecrituresnumeriques/stylo-graphql ghcr.io/ecrituresnumeriques/stylo-graphql:${PUBLISH_TAG}
+#        docker tag ghcr.io/ecrituresnumeriques/stylo-front ghcr.io/ecrituresnumeriques/stylo-front:${PUBLISH_TAG}
+#        docker tag ghcr.io/ecrituresnumeriques/stylo-export ghcr.io/ecrituresnumeriques/stylo-export:${PUBLISH_TAG}
+#
+#        docker push ghcr.io/ecrituresnumeriques/stylo-graphql:${PUBLISH_TAG}
+#        docker push ghcr.io/ecrituresnumeriques/stylo-front:${PUBLISH_TAG}
+#        docker push ghcr.io/ecrituresnumeriques/stylo-export:${PUBLISH_TAG}
+#      env:
+#        PUBLISH_TAG: ${{ steps.branch.outputs.SOURCE_NAME }}
 
   deploy:
     runs-on: ubuntu-latest
