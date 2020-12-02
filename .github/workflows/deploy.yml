@@ -41,7 +41,7 @@ jobs:
         docker tag ghcr.io/ecrituresnumeriques/stylo-graphql ghcr.io/ecrituresnumeriques/stylo-graphql:${PUBLISH_TAG}
         docker tag ghcr.io/ecrituresnumeriques/stylo-front ghcr.io/ecrituresnumeriques/stylo-front:${PUBLISH_TAG}
         docker tag ghcr.io/ecrituresnumeriques/stylo-export ghcr.io/ecrituresnumeriques/stylo-export:${PUBLISH_TAG}
-        
+
         docker push ghcr.io/ecrituresnumeriques/stylo-graphql:${PUBLISH_TAG}
         docker push ghcr.io/ecrituresnumeriques/stylo-front:${PUBLISH_TAG}
         docker push ghcr.io/ecrituresnumeriques/stylo-export:${PUBLISH_TAG}
@@ -59,27 +59,11 @@ jobs:
       with:
         python-version: 3.7
 
-    - name: Ansible Vault Password (production)
-      if: github.ref == 'refs/heads/master'
-      id: secrets
+    - name: Compute target environment name
+      id: target
       run: |
-        echo ::set-output name=ANSIBLE_VAULT_PASSWORD::$ANSIBLE_VAULT_PASSWORD
-        echo ::set-output name=SSH_PRIVATE_KEY::$SSH_PRIVATE_KEY
-        echo ::set-output name=ANSIBLE_ENV::prod
-      env:
-        ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD_PROD }}
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_PROD }}
-
-    - name: Ansible Vault Password (test)
-      if: startsWith(github.ref, 'refs/tags/v')
-      id: secrets
-      run: |
-        echo ::set-output name=ANSIBLE_VAULT_PASSWORD::$VAULT_PASSWORD
-        echo ::set-output name=SSH_PRIVATE_KEY::$SSH_PRIVATE_KEY
-        echo ::set-output name=ANSIBLE_ENV::dev
-      env:
-        VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD_DEV }}
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
+        if [[ "${GITHUB_REF}" = "refs/heads/master" ]]; then echo ::set-output name=TARGET_ENV_NAME::dev; fi
+        if [[ "${GITHUB_REF}" =~ "refs/tags/v" ]]; then echo ::set-output name=TARGET_ENV_NAME::prod; fi
 
     - name: Install dependencies
       run: |
@@ -88,21 +72,22 @@ jobs:
 
     - name: Set Ansible config secrets
       run: |
-        echo "${ANSIBLE_VAULT_PASSWORD}" > infrastructure/.ansible-vault-password
+        if [[ "${TARGET_ENV_NAME}" = "dev" ]]; then echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_DEV }}" > infrastructure/.ansible-vault-password; fi
+        if [[ "${TARGET_ENV_NAME}" = "prod" ]]; then echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_PROD }}" > infrastructure/.ansible-vault-password; fi
       env:
-        ANSIBLE_VAULT_PASSWORD: ${{ steps.secrets.outputs.ANSIBLE_VAULT_PASSWORD }}
+        TARGET_ENV_NAME: ${{ steps.target.outputs.TARGET_ENV_NAME }}
 
     - name: Setup SSH
       run: |
         mkdir -p ~/.ssh
-        echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
+        if [[ "${TARGET_ENV_NAME}" = "dev" ]]; then echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_ed25519; fi
+        if [[ "${TARGET_ENV_NAME}" = "prod" ]]; then echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_ed25519; fi
         chmod 600 ~/.ssh/id_ed25519
       env:
-        ANSIBLE_VAULT_PASSWORD: ${{ steps.secrets.outputs.ANSIBLE_VAULT_PASSWORD }}
-        SSH_PRIVATE_KEY: ${{ steps.secrets.outputs.SSH_PRIVATE_KEY }}
+        TARGET_ENV_NAME: ${{ steps.target.outputs.TARGET_ENV_NAME }}
 
     - name: Run playbook
       working-directory: ./infrastructure
-      run: ansible-playbook -i inventories/${ANSIBLE_ENV} --extra-vars "@ansible-${ANSIBLE_ENV}.yml" --extra-vars "app_version=${GITHUB_REF#refs/*/}" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v
+      run: ansible-playbook -i "inventories/${TARGET_ENV_NAME}" --extra-vars "@vault-${TARGET_ENV_NAME}.yml" --extra-var "app_version=${GITHUB_REF#refs/*/}" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v
       env:
-        ANSIBLE_ENV: ${{ steps.secrets.outputs.ANSIBLE_ENV }}
+        TARGET_ENV_NAME: ${{ steps.target.outputs.TARGET_ENV_NAME }}
