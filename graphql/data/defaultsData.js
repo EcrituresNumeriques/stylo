@@ -55,7 +55,7 @@ keyword_fr: ''
 keyword_en: ''
 controlledKeywords: []
 link-citations: true
-nocite: ''
+nocite: '@*'
 ---`,
   title:'New article',
   sommaire:'',
@@ -322,7 +322,7 @@ typeArticle:
   - Essai
 bibliography: SP1234.bib
 link-citations: true
-nocite: '*'
+nocite: '@*'
 id_sp: SP1234
 controlledKeywords:
   - label: Édition
