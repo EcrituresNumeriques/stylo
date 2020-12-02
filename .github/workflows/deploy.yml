@@ -7,6 +7,7 @@ on:
     paths-ignore:
     - 'docs/**'
     - '*.md'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -38,4 +39,4 @@ jobs:
 
     - name: Run playbook
       working-directory: ./infrastructure
-      run: ansible-playbook -i inventories/dev --extra-vars "@vault-dev.yml" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v
+      run: ansible-playbook -i inventories/dev --extra-vars "@vault-dev.yml" --extra-vars "app_version=${GITHUB_REF#refs/*/}" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v

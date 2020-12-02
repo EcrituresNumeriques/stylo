@@ -57,12 +57,6 @@
         src: ./{{ env }}-nagios-nrpe-local.cfg
         dest: /etc/nagios/nrpe_local.cfg
 
-    - name: Checkout and update Stylo
-      git:
-        repo: 'https://github.com/EcrituresNumeriques/stylo.git'
-        dest: ~/stylo
-        version: 'master'
-
     - name: Copy environment config file
       template:
         src: "{{ item.src }}"
@@ -71,10 +65,24 @@
         - { src: './stylo.env', dest: '~/stylo/stylo.env' }
         - { src: './stylo.env', dest: '~/stylo/front/gatsby/.env.production' }
 
-    - name: Rebuild and restart Docker containers
+    - name: Copy docker-compose
+      become: yes
+      copy:
+        src: ../docker-compose.yaml
+        dest: ~/stylo/docker-compose.yaml
+
+    - name: Alias docker images
+      shell: |
+        docker pull ghcr.io/ecrituresnumeriques/stylo-{{ item }}:{{ app_version }}
+        docker tag --force ghcr.io/ecrituresnumeriques/stylo-{{ item }}:{{ app_version }} ghcr.io/ecrituresnumeriques/stylo-{{ item }}:latest
+      loop:
+        - graphql
+        - export
+        - front
+
+    - name: Restart Docker containers
       docker_compose:
         project_src: ~/stylo
-        build: yes
 
   handlers:
     - name: reload nginx

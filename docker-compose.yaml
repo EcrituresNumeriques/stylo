@@ -1,9 +1,8 @@
-version: '2.1'
+version: '3'
 
 services:
-  mongodb-stylo:
+  mongodb:
     image: mongo:4.2
-    container_name: "mongodb-stylo"
     environment:
       - MONGO_DATA_DIR=/data/db
       - MONGO_LOG_DIR=/dev/null
@@ -15,11 +14,12 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-  graphql-stylo:
+
+  graphql:
     build: ./graphql/
-    container_name: "graphql-stylo"
+    image: ghcr.io/ecrituresnumeriques/stylo-graphql
     depends_on:
-      mongodb-stylo:
+      mongodb:
         condition: service_healthy
     env_file:
       - ./stylo.env
@@ -28,11 +28,12 @@ services:
       - MONGO_SERVER_PORT=27017
     ports:
       - 3030:3030
-  export-stylo:
+
+  export:
     build: ./export/
-    container_name: "export-stylo"
+    image: ghcr.io/ecrituresnumeriques/stylo-export
     depends_on:
-      mongodb-stylo:
+      mongodb:
         condition: service_healthy
     env_file:
       - ./stylo.env
@@ -41,14 +42,15 @@ services:
       - MONGO_SERVER_PORT=27017
     ports:
       - 3060:3060
-  front-stylo:
+
+  front:
     build:
       context: ./front
       dockerfile: dockerfile
-    container_name: "front-stylo"
+    image: ghcr.io/ecrituresnumeriques/stylo-front
     env_file:
       - ./stylo.env
     ports:
       - 3000:3000
     depends_on:
-      - graphql-stylo
+      - graphql
