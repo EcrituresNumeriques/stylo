@@ -1,10 +1,12 @@
-name: Ansible deploy dev
+name: Build and deploy
 
 on:
   push:
     branches:
     - 'master'
     - 'issue-131-publish-docker'
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v2.1.3
     paths-ignore:
     - 'docs/**'
     - '*.md'
@@ -12,16 +14,72 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+
+    # via https://github.community/t/how-to-get-just-the-tag-name/16241/10
+    - name: Compute tag name
+      id: branch
+      run: |
+        echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
+
+    # GCR_PAT requires 2 steps:
+    # 1. Creating the token: https://github.com/settings/tokens/new?scopes=write:packages,read:packages,delete:packages&description=Stylo%20Container%20Deployment
+    # 2. Setting it on: https://github.com/EcrituresNumeriques/settings/secrets/actions/new
+    - name: Build images
+      id: build
+      run: |
+        cp stylo-example.env stylo.env
+        docker-compose build
+        echo ${{ secrets.GCR_PAT }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+
+    - name: Publish images
+      id: publish
+      run: |
+        docker tag ghcr.io/ecrituresnumeriques/stylo-graphql ghcr.io/ecrituresnumeriques/stylo-graphql:${PUBLISH_TAG}
+        docker tag ghcr.io/ecrituresnumeriques/stylo-front ghcr.io/ecrituresnumeriques/stylo-front:${PUBLISH_TAG}
+        docker tag ghcr.io/ecrituresnumeriques/stylo-export ghcr.io/ecrituresnumeriques/stylo-export:${PUBLISH_TAG}
+        
+        docker push ghcr.io/ecrituresnumeriques/stylo-graphql:${PUBLISH_TAG}
+        docker push ghcr.io/ecrituresnumeriques/stylo-front:${PUBLISH_TAG}
+        docker push ghcr.io/ecrituresnumeriques/stylo-export:${PUBLISH_TAG}
+      env:
+        PUBLISH_TAG: ${{ steps.branch.outputs.SOURCE_NAME }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+    - uses: actions/checkout@v2
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
+
+    - name: Ansible Vault Password (production)
+      if: github.ref == 'refs/heads/master'
+      id: secrets
+      run: |
+        echo ::set-output name=ANSIBLE_VAULT_PASSWORD::$ANSIBLE_VAULT_PASSWORD
+        echo ::set-output name=SSH_PRIVATE_KEY::$SSH_PRIVATE_KEY
+        echo ::set-output name=ANSIBLE_ENV::prod
+      env:
+        ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD_PROD }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_PROD }}
+
+    - name: Ansible Vault Password (test)
+      if: startsWith(github.ref, 'refs/tags/v')
+      id: secrets
+      run: |
+        echo ::set-output name=ANSIBLE_VAULT_PASSWORD::$VAULT_PASSWORD
+        echo ::set-output name=SSH_PRIVATE_KEY::$SSH_PRIVATE_KEY
+        echo ::set-output name=ANSIBLE_ENV::dev
+      env:
+        VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD_DEV }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
 
     - name: Install dependencies
       run: |
@@ -30,14 +88,20 @@ jobs:
 
     - name: Set Ansible config secrets
       run: |
-        echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_DEV }}" > infrastructure/.ansible-vault-password
+        echo "${{ ANSIBLE_VAULT_PASSWORD }}" > infrastructure/.ansible-vault-password
+      env:
+        ANSIBLE_VAULT_PASSWORD: ${{ steps.secrets.outputs.ANSIBLE_VAULT_PASSWORD }}
 
     - name: Setup SSH
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_ed25519
+        echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
+      env:
+        ANSIBLE_VAULT_PASSWORD: ${{ steps.secrets.outputs.ANSIBLE_VAULT_PASSWORD }}
 
     - name: Run playbook
       working-directory: ./infrastructure
-      run: ansible-playbook -i inventories/dev --extra-vars "@vault-dev.yml" --extra-vars "app_version=master" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v
+      run: ansible-playbook -i inventories/${ANSIBLE_ENV} --extra-vars "@ansible-${ANSIBLE_ENV}.yml" --extra-vars "app_version=${GITHUB_REF#refs/*/}" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v
+      env:
+        ANSIBLE_ENV: ${{ steps.secrets.outputs.ANSIBLE_ENV }}
