@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 
 const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 const passport = require('passport')
 const OidcStrategy = require('passport-openidconnect').Strategy
 const LocalStrategy = require('passport-local').Strategy
@@ -107,7 +108,8 @@ app.use(cookieParser())
 app.use(session({
   secret: sessionSecret,
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -273,12 +275,17 @@ app.use(
   }))
 )
 
+// fix deprecation warnings: https://mongoosejs.com/docs/deprecations.html
+mongoose.set('useNewUrlParser', true)
+mongoose.set('useUnifiedTopology', true)
+mongoose.set('useCreateIndex', true)
+
 mongoose
-  .connect(`mongodb://${mongoServer}:${mongoServerPort}/${mongoServerDB}`, { useNewUrlParser: true })
+  .connect(`mongodb://${mongoServer}:${mongoServerPort}/${mongoServerDB}`)
   .then(() => {
     console.log('Listening on port', listenPort)
     app.listen(listenPort)
   })
   .catch(err => {
-    console.log(err)
+    console.log('Unable to connect to MongoDB', err)
   })
