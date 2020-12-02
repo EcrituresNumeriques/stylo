@@ -62,8 +62,14 @@ jobs:
     - name: Compute target environment name
       id: target
       run: |
-        if [[ "${GITHUB_REF}" = "refs/heads/master" ]]; then echo ::set-output name=TARGET_ENV_NAME::dev; fi
-        if [[ "${GITHUB_REF}" =~ "refs/tags/v" ]]; then echo ::set-output name=TARGET_ENV_NAME::prod; fi
+        echo "${GITHUB_REF}"
+        if [[ "${GITHUB_REF}" =~ "refs/tags/v" ]]; then
+          echo "prod!"
+          echo ::set-output name=TARGET_ENV_NAME::prod
+        else
+          echo "dev"
+          echo ::set-output name=TARGET_ENV_NAME::dev
+        fi
 
     - name: Install dependencies
       run: |
@@ -72,16 +78,22 @@ jobs:
 
     - name: Set Ansible config secrets
       run: |
-        if [[ "${TARGET_ENV_NAME}" = "dev" ]]; then echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_DEV }}" > infrastructure/.ansible-vault-password; fi
-        if [[ "${TARGET_ENV_NAME}" = "prod" ]]; then echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_PROD }}" > infrastructure/.ansible-vault-password; fi
+        if [[ "${TARGET_ENV_NAME}" = "prod" ]]; then
+          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_PROD }}" > infrastructure/.ansible-vault-password
+        else
+          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_DEV }}" > infrastructure/.ansible-vault-password
+        fi
       env:
         TARGET_ENV_NAME: ${{ steps.target.outputs.TARGET_ENV_NAME }}
 
     - name: Setup SSH
       run: |
         mkdir -p ~/.ssh
-        if [[ "${TARGET_ENV_NAME}" = "dev" ]]; then echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_ed25519; fi
-        if [[ "${TARGET_ENV_NAME}" = "prod" ]]; then echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_ed25519; fi
+        if [[ "${TARGET_ENV_NAME}" = "prod" ]]; then
+          echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_ed25519
+        else
+          echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_ed25519
+        fi
         chmod 600 ~/.ssh/id_ed25519
       env:
         TARGET_ENV_NAME: ${{ steps.target.outputs.TARGET_ENV_NAME }}
