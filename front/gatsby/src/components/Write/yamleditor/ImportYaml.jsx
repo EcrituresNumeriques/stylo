@@ -49,7 +49,7 @@ prod: Sens Public
 prodnum: Sens Public
 diffnum: Érudit
 rights: Creative Commons Attribution-ShareAlike 4.0 International (CC-BY-SA 4.0)
-nocite: '*'
+nocite: '@*'
 ---`}/>}
         <p className="addToArray" onClick={()=>this.toggleImport()}><i className="fa fa-plus" aria-hidden="true"></i> Import YAML</p>
       </section>

@@ -33,7 +33,7 @@ transcriber: []
 translationOf: []
 bibliography: ""
 link-citations: true
-nocite: ""
+nocite: "@*"
 `
 export let init = {
   obj:{},
