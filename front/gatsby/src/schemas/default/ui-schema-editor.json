@@ -1,7 +1,7 @@
 {
   "ui:groups": [
     {
-      "fields": ["id_sp", "url_article", "title", "subtitle", "date", "lang", "rights"]
+      "fields": ["url_article", "title", "subtitle", "date", "lang", "rights", "rightsauthors"]
     },
     {
       "title": "Bibliography",
@@ -25,10 +25,6 @@
       "fields": ["dossier", "issueDirectors", "reviewers", "translators", "translationOf", "transcribers"]
     }
   ],
-  "id_sp": {
-    "ui:title": "ID",
-    "ui:placeholder": "XXXX"
-  },
   "url_article": {
     "ui:title": "URL of the article",
     "ui:placeholder": "URL of the article",
@@ -57,6 +53,9 @@
   "rights": {
     "ui:title": "License",
     "ui:placeholder": "License"
+  },
+  "rightsauthors": {
+    "ui:title": "Author(s) Rights"
   },
   "authors": {
     "ui:add-item-title": "Ajouter un author",

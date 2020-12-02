@@ -80,6 +80,9 @@
     "ui:title": "License",
     "ui:placeholder": "License"
   },
+  "rightsauthors": {
+    "ui:title": "Author(s) rights"
+  },
   "authors": {
     "ui:add-item-title": "Ajouter un author",
     "ui:remove-item-title": "Supprimer",

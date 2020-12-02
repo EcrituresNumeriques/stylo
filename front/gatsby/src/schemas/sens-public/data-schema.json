@@ -63,6 +63,9 @@
     "rights": {
       "type": "string"
     },
+    "rightsauthors": {
+      "type": "string"
+    },
     "link-citations": {
       "type": "boolean",
       "title": "Citation Link",
