@@ -73,7 +73,7 @@
     - name: Alias docker images
       shell: |
         docker pull ghcr.io/ecrituresnumeriques/stylo-{{ item }}:{{ app_version }}
-        docker tag ghcr.io/ecrituresnumeriques/stylo-{{ item }}:{{ app_version }} ghcr.io/ecrituresnumeriques/stylo-{{ item }}:latest
+        docker tag ghcr.io/ecrituresnumeriques/stylo-{{ item }}:{{ app_version }} ghcr.io/ecrituresnumeriques/stylo-{{ item }}
       loop:
         - graphql
         - export
