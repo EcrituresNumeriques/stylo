@@ -1,4 +1,4 @@
-name: Build and deploy
+name: Build an deploy
 
 on:
   push:
@@ -88,17 +88,18 @@ jobs:
 
     - name: Set Ansible config secrets
       run: |
-        echo "${{ ANSIBLE_VAULT_PASSWORD }}" > infrastructure/.ansible-vault-password
+        echo "${ANSIBLE_VAULT_PASSWORD}" > infrastructure/.ansible-vault-password
       env:
         ANSIBLE_VAULT_PASSWORD: ${{ steps.secrets.outputs.ANSIBLE_VAULT_PASSWORD }}
 
     - name: Setup SSH
       run: |
         mkdir -p ~/.ssh
-        echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+        echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
       env:
         ANSIBLE_VAULT_PASSWORD: ${{ steps.secrets.outputs.ANSIBLE_VAULT_PASSWORD }}
+        SSH_PRIVATE_KEY: ${{ steps.secrets.outputs.SSH_PRIVATE_KEY }}
 
     - name: Run playbook
       working-directory: ./infrastructure
