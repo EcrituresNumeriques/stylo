@@ -65,8 +65,7 @@
         - { src: './stylo.env', dest: '~/stylo/stylo.env' }
         - { src: './stylo.env', dest: '~/stylo/front/gatsby/.env.production' }
 
-    - name: Copy docker-compose
-      become: yes
+    - name: Copy docker-compose.yaml
       copy:
         src: ../docker-compose.yaml
         dest: ~/stylo/docker-compose.yaml
