@@ -1,6 +1,5 @@
 module.exports = {
   yaml:`---
-id_sp: ''
 bibliography: ''
 title: ''
 title_f: ''
