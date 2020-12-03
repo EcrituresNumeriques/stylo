@@ -75,6 +75,8 @@ Et voici le balisage correspondant :
 ![Logo du W3C composé de la lettre W en bleu, du chiffre 3 en bleu et de la lettre C en noir](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/W3C_icon.svg/212px-W3C_icon.svg.png)
 ```
 
+**Attention** les images doivent être au format PNG (`.png`), ce format est nécessaire pour l'export PDF.
+
 ## Liens
 Les liens se balisent en distinguant :
 

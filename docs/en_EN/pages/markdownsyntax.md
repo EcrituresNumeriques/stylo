@@ -75,6 +75,8 @@ And here is the corresponding markdown:
 ![W3C logo containing the letter W in blue, the digit 3 in blue and the letter C in black](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/W3C_icon.svg/212px-W3C_icon.svg.png)
 ```
 
+**Important**: images must be is PNG format (`.png`), this format is required for the PDF export.
+
 ## Links
 The links can be created by distinguishing:
 
