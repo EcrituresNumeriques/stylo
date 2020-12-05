@@ -24,7 +24,7 @@ Pour installer une instance Stylo, suivre la documentation [HOWTO.md](https://gi
 L'application se lance en combinant Docker (pour avoir une base de données MongoDB isolée) et des applications Node.js (v14+). Elles s'**installent** ainsi :
 
 ```bash
-docker-compose pull mongodb-stylo
+docker-compose pull mongodb
 npm install --prefix graphql
 npm install --prefix front/gatsby
 cp stylo-example.env stylo.env
@@ -34,7 +34,7 @@ Puis se **lancent** avec les commandes suivantes :
 
 ```bash
 # Onglet de terminal 1
-docker-compose run -p '127.0.0.1:27017:27017' mongodb-stylo
+docker-compose run -p '127.0.0.1:27017:27017' mongodb
 
 # Onglet de terminal 2
 sleep 10

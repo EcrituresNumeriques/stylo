@@ -54,14 +54,6 @@ cd ~
 git clone https://github.com/EcrituresNumeriques/stylo.git
 ```
 
-Update the submodule:
-
-```bash
-cd stylo
-git submodule init
-git submodule update
-```
-
 Copy the `stylo-example.env` file and edit the variables:
 
 ```bash
@@ -119,18 +111,18 @@ systemctl restart nginx
 ## Backup
 
 ```bash
-docker exec mongodb-stylo sh -c 'mongodump --archive --db stylo-prod' > stylo-prod.dump
+docker exec mongodb sh -c 'mongodump --archive --db stylo-prod' > stylo-prod.dump
 ```
 
 ## Restore
 
 ```bash
-docker exec -i mongodb-stylo sh -c 'mongorestore --archive' < stylo-prod.dump
-docker exec mongodb-stylo mongo --quiet --eval "db.adminCommand({listDatabases: 1}).databases.map(n => n.name)"
+docker exec -i mongodb sh -c 'mongorestore --archive' < stylo-prod.dump
+docker exec mongodb mongo --quiet --eval "db.adminCommand({listDatabases: 1}).databases.map(n => n.name)"
 # ['admin', 'config', 'local', 'stylo-prod']
 ```
 
 **NOTE**: If you need to rename the database during the import, you can use `--nsFrom` and `--nsTo`.
 For instance, if we want to rename the database from `stylo` to `stylo-prod`, we can use:
 
-    $ docker exec -i mongodb-stylo sh -c 'mongorestore --archive --nsFrom="stylo.*" --nsTo="stylo-prod.*"' < stylo-prod.dump
+    $ docker exec -i mongodb sh -c 'mongorestore --archive --nsFrom="stylo.*" --nsTo="stylo-prod.*"' < stylo-prod.dump

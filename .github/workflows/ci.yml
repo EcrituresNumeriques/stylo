@@ -26,6 +26,7 @@ jobs:
       run: npm run build --prefix front/gatsby
     - name: Test
       run: npm t --prefix front/gatsby
+
   build-export:
     runs-on: ubuntu-latest
     strategy:
@@ -41,11 +42,3 @@ jobs:
         run: npm ci --prefix export
       - name: Test
         run: npm t --prefix export
-  build-docker:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build docker images
-      run: |
-        cp stylo-example.env stylo.env
-        docker-compose build
