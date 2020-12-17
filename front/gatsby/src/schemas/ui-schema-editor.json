@@ -1,0 +1,163 @@
+{
+  "ui:groups": [
+    {
+      "fields": ["id_sp", "url_article", "title", "subtitle", "date", "lang", "rights"]
+    },
+    {
+      "title": "Bibliography",
+      "fields": ["link-citations", "nocite"]
+    },
+    {
+      "fields": ["authors", "abstract", "keywords", "referencedKeywords", "typeArticle"]
+    },
+    {
+      "title": "Diffusion",
+      "fields": ["publisher", "journal"]
+    },
+    {
+      "fields": [ "director" ]
+    },
+    {
+      "title": "Production",
+      "fields": [ "issnnum", "prod" , "prodnum", "diffnum" ]
+    },
+    {
+      "fields": ["dossier", "issueDirectors", "reviewers", "translators", "translationOf", "transcribers"]
+    }
+  ],
+  "id_sp": {
+    "ui:title": "ID",
+    "ui:placeholder": "XXXX"
+  },
+  "url_article": {
+    "ui:title": "URL of the article",
+    "ui:placeholder": "URL of the article",
+    "ui:widget": "uri"
+  },
+  "title": {
+    "ui:title": "Title"
+  },
+  "subtitle": {
+    "ui:title": "Subtitle"
+  },
+  "link-citations": {
+    "ui:widget": "select",
+    "ui:emptyValue": ""
+  },
+  "nocite": {
+  },
+  "date": {
+    "ui:title": "Date",
+    "ui:widget": "date"
+  },
+  "lang": {
+    "ui:title": "Language",
+    "ui:placeholder": "Select language"
+  },
+  "rights": {
+    "ui:title": "License",
+    "ui:placeholder": "License"
+  },
+  "authors": {
+    "ui:add-item-title": "Ajouter un author",
+    "ui:remove-item-title": "Supprimer",
+    "ui:title": "Authors"
+  },
+  "translationOf": {
+    "ui:title": "Traductions de",
+    "items": {
+      "url": {
+        "ui:widget": "uri"
+      }
+    }
+  },
+  "publisher": {
+    "ui:title": "Publisher"
+  },
+  "journal": {
+    "ui:title": "Journal"
+  },
+  "abstract": {
+    "ui:title": "Résumés",
+    "ui:add-item-title": "Ajouter un résumé dans une autre langue",
+    "ui:remove-item-title": "Supprimer",
+    "items": {
+      "text": {
+        "ui:title": "Résumé",
+        "ui:widget": "textarea"
+      },
+      "lang": {
+        "ui:title": "Language",
+        "ui:placeholder": "Select language"
+      }
+    }
+  },
+  "keywords": {
+    "ui:title": "Mots-clés",
+    "ui:add-item-title": "Ajouter une langue",
+    "ui:remove-item-title": "Supprimer cette langue",
+    "items": {
+      "lang": {
+        "ui:title": "Language"
+      },
+      "list": {
+        "classNames": "inline-field-string",
+        "ui:add-item-title": "Ajouter un mot-clé",
+        "ui:remove-item-title": "Supprimer"
+      }
+    }
+  },
+  "referencedKeywords": {
+    "classNames": "inline-field-string",
+    "ui:title": "Mots clés Contrôlés",
+    "ui:add-item-title": "Ajouter une mot-clé contrôlé"
+  },
+  "typeArticle": {
+    "ui:widget": "checkboxes",
+    "ui:title": "Catégories"
+  },
+  "dossier": {
+    "ui:title": "Dossier",
+    "ui:options": {
+      "removable": false,
+      "addable": false
+    },
+    "items": {
+      "title": {
+        "ui:title": "Titre du dossier"
+      },
+      "id": {
+        "ui:title": "Id du dossier"
+      }
+    }
+  },
+  "issueDirectors": {
+    "ui:title": "Directeur du dossier"
+  },
+  "director": {
+    "ui:title": "Directors",
+    "ui:add-item-title": "Ajouter un director",
+    "ui:remove-item-title": "Supprimer"
+  },
+  "transcribers": {
+    "ui:title": "Transcribers"
+  },
+  "translators": {
+    "ui:title": "Translators"
+  },
+  "reviewers": {
+    "ui:title": "Réviseurs"
+  },
+  "issnnum": {
+    "ui:title": "ISSN"
+  },
+  "prod": {
+    "ui:title": "Productor"
+  },
+  "prodnum": {
+    "ui:title": "Prodnum"
+  }, 
+  "diffnum": {
+    "ui:title": "Diffnum"
+  }
+}

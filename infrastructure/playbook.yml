@@ -61,7 +61,7 @@
       git:
         repo: 'https://github.com/EcrituresNumeriques/stylo.git'
         dest: ~/stylo
-        version: 'master'
+        version: "{{ deploy_branch | default('master') }}"
 
     - name: Copy environment config file
       template:

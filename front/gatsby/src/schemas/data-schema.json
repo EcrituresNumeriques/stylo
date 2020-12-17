@@ -1,0 +1,250 @@
+{
+  "type": "object",
+  "required": [
+    "title"
+  ],
+  "definitions": {
+    "lang": {
+      "type": "string",
+      "enum": [
+        "fr",
+        "en",
+        "it",
+        "es",
+        "pt",
+        "de",
+        "uk",
+        "ar"
+      ]
+    },
+    "person": {
+      "type": "object",
+      "properties": {
+        "forname": {
+          "type": "string",
+          "title": "First name"
+        },
+        "surname": {
+          "type": "string",
+          "title": "Last name"
+        },
+        "orcid": {
+          "type": "string",
+          "title": "ORCID"
+        },
+        "viaf": {
+          "type": "string",
+          "title": "VIAF"
+        },
+        "foaf": {
+          "type": "string",
+          "title": "FOAF"
+        },
+        "isni": {
+          "type": "string",
+          "title": "ISNI"
+        },
+        "wikidata": {
+          "type": "string",
+          "title": "Wikidata"
+        }
+      }
+    }
+  },
+  "properties": {
+    "id_sp": {
+      "type": "string"
+    },
+    "url_article": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "lang": {
+      "$ref": "#/definitions/lang"
+    },
+    "rights": {
+      "type": "string"
+    },
+    "link-citations": {
+      "type": "boolean",
+      "title": "Citation Link",
+      "enumNames": [
+        "yes",
+        "no"
+      ]
+    },
+    "nocite": {
+      "type": "string",
+      "title": "Display",
+      "default": "@*",
+      "enum": [
+        "@*",
+        ""
+      ],
+      "enumNames": [
+        "All citations",
+        "Only used"
+      ]
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    },
+    "abstract": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "$ref": "#/definitions/lang"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "keywords": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "$ref": "#/definitions/lang"
+          },
+          "list": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "referencedKeywords": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "idRameau": {
+            "type": "string"
+          },
+          "uriRameau": {
+            "type": "string"
+          }
+        }
+      },
+      "uniqueItems": true
+    },
+    "typeArticle": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Essai",
+          "Création",
+          "Lecture",
+          "Sommaire dossier",
+          "Entretien",
+          "Chronique"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "publisher": {
+      "type": "string"
+    },
+    "journal": {
+      "type": "string"
+    },
+    "dossier": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "translationOf": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "lang": {
+            "$ref": "#/definitions/lang"
+          }
+        }
+      }
+    },
+    "reviewers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    },
+    "issueDirectors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    },
+    "translators": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    },
+    "transcribers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    },
+    "director": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    },
+    "issnnum": {
+      "type": "string"
+    },
+    "prod": {
+      "type": "string"
+    },
+    "prodnum": {
+      "type": "string"
+    }, 
+    "diffnum": {
+      "type": "string"
+    }
+  }
+}

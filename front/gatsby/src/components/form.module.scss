@@ -2,15 +2,179 @@
 @import '../styles/variables.scss';
 
 .form {
-  background-color: lightblue;
+  :global {
+    fieldset {
+      border: none;
+      margin-bottom: 0.75rem;
+      padding: 0;
+
+      .field-array > label.control-label,
+      legend {
+        background: #f0f0f0;
+        border-top: 1px solid grey;
+        border-bottom: 1px solid grey;
+        display: block;
+        font-size: 1.15em;
+        font-weight: bold;
+        margin: 0;
+        padding: .5rem 1rem;
+        text-align: right;
+        width: 100%;
+      }
+    }
+  }
+
+  label {
+    padding-right: 0.25rem;
+  }
+
+  textarea {
+    width: 100%;
+    height: 150px;
+  }
 }
 
-.addButton::after {
-  content: '+';
-}
+.fieldset {
+  margin: 0;
 
-.removeButton::after {
-  content: '-';
+  :global {
+    [role="combobox"] {
+      position: relative;
+
+      [role="listbox"]:not(:empty) {
+        background: #fcfcfc;
+        border: 1px solid grey;
+        padding: .5rem;
+        position: absolute;
+        z-index: 10000;
+        width: 100%;
+        max-height: 250px;
+        overflow-y: auto;
+
+        > li {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .form-group {
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      padding: .5rem .5rem;
+
+      &.field-array {
+        border-bottom: none;
+        flex-direction: column;
+        padding: 0;
+
+        > * {
+          width: 100%;
+        }
+
+        > fieldset {
+          > button {
+            font-weight: bold;
+            margin: .5rem;
+          }
+        }
+   
+      }
+
+      &.inline-field-string {
+        border-bottom: none;
+        
+        .array-item {
+          display: flex;
+  
+          .field-string {
+            flex: 1;
+            border-bottom: none;
+            > input {
+              width: 100%;
+            }
+          }
+
+          button {
+            align-self: center;
+          }
+        }
+      }
+
+      &.field-object {
+        flex-direction: column;
+        flex: 1;
+
+        > * {
+          width: 100%;
+        }
+
+        input {
+          width: 100%;
+        }
+      }
+
+      &.field-string,
+      &.field-boolean {
+        label {
+          flex: 0 0 150px;
+        }
+      }
+
+      fieldset {
+        flex: 1 0 auto;
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      select {
+        width: 100%;
+      }
+
+      input[type="email"],
+      input[type="text"],
+      input[type="url"] {
+        border: 1px solid #f0f0f0;
+        padding: .5em 1em;
+        display: block;
+        flex: 1 1 auto;
+        margin: 2px;
+        background-color: #fff;
+        text-align: left;
+      }
+
+      /** Checkbox field */
+      .checkboxes {
+        padding-left: 10%;
+
+        .checkbox {
+          padding: .5rem 0;
+
+          label {
+            cursor: pointer;
+            display: block;
+          }
+
+          span {
+            display: flex;
+
+            input[type="checkbox"] + span {
+              flex: 1;
+            }
+          }
+        }
+      }
+
+      /** Array of objects field */
+      .array-item.can-add-remove {
+        padding: 0 0.5rem;
+
+        > .field-string {
+          display: unset;
+        }
+      }
+    }
+  }
 }
 
 .output {
