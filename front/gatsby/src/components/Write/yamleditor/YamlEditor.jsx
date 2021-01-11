@@ -1,7 +1,6 @@
 import React from 'react'
-import Form from '../../Form.js'
-
-const YAML = require('js-yaml')
+import Form from '../../Form'
+import YAML from 'js-yaml'
 
 export default ({ yaml, basicMode, onChange }) => {
   const [parsed] = YAML.safeLoadAll(yaml)
