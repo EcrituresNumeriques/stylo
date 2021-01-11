@@ -5,7 +5,6 @@
   background-color: red;
   color: white;
   padding: 1rem;
-
   button.delete {
     border: 1px solid white;
     background-color: red;
@@ -14,7 +13,6 @@
     padding: 0.5rem 1rem;
     @extend .clickable;
   }
-
   button.cancel {
     border: 1px solid white;
     color: red;
@@ -52,15 +50,12 @@
   padding: 1rem;
   border: 1px solid $main-border-color;
   background-color: $extra-background-color;
-
   > h1 {
     margin-bottom: 1rem;
   }
-
   > p {
     margin-bottom: 1rem;
   }
-
   > article {
     > form {
       span {
@@ -68,15 +63,12 @@
         margin-left: 0.5rem;
       }
     }
-
     padding: 1rem;
     position: relative;
-
     h1 {
       span {
         @extend .clickable;
       }
-
       span:first-child {
         display: inline-block;
         width: 1rem;
@@ -84,27 +76,22 @@
         font-weight: bold;
       }
     }
-
     > section {
       h2 {
         font-size: 1rem;
         font-weight: normal;
-
         span {
           font-weight: bold;
         }
       }
-
       ul {
         margin-top: 1rem;
       }
     }
-
     > nav {
       float: right;
     }
   }
-
   > article:nth-of-type(2n + 1) {
     background-color: $main-background-color;
   }
@@ -118,7 +105,6 @@
   background-color: $button-primary-background !important;
   color: $button-primary-color !important;
 }
-
 .buttonsec {
   @extend .clickable;
   display: inline-block;
@@ -150,7 +136,6 @@
   background-color: $main-background-color;
   border-bottom: 1px solid $main-border-color;
   padding: 1rem;
-
   form {
     input,
     textarea {
@@ -160,28 +145,24 @@
       margin-bottom: 1rem;
       border: none;
     }
-
     input[type='submit'] {
       width: auto;
       margin-top: 1rem;
       margin-bottom: 0;
       @extend .primary-button;
     }
-
     ul {
       li {
         @extend .secondary-button;
         display: inline-block;
         margin-right: 0.5rem;
       }
-
       li.selected {
         @extend .primary-button;
       }
     }
   }
 }
-
 #filter {
   display: block;
   width: 100%;

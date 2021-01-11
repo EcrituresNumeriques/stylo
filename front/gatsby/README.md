@@ -14,8 +14,16 @@ Install the dependencies using `npm`:
 
 ## Develop
 
-    $ npm run develop
+    $ npm start
 
-## Deploy
+## Build
 
-    $ npm run serve
+    $ npm run build
+
+## Serve
+
+    $ npm exec serve ./build
+
+Or, on prior npm versions: `$ npx serve ./build`
+
+Server will be available on localhost:5000.

@@ -1,17 +1,17 @@
 {
-  "name": "gatsby-stylo-front-end",
+  "name": "@ecrituresnumerique/stylo-front",
   "private": true,
   "description": "Stylo front-end, online text editor for scholars",
   "version": "0.1.0",
   "license": "MIT",
+  "type": "module",
   "scripts": {
-    "lint": "prettier --check .",
-    "lint:fix": "prettier --prettier .",
-    "build": "gatsby build",
-    "develop": "gatsby develop -p 3000 -H 0.0.0.0",
-    "start": "npm run develop",
-    "serve": "gatsby serve -p 3000 -H 0.0.0.0",
-    "test": "jest"
+    "lint": "prettier --check src",
+    "lint:fix": "prettier --write src",
+    "start": "snowpack dev",
+    "build": "snowpack build",
+    "develop": "npm run start",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "dependencies": {
     "@rjsf/core": "^2.4.0",
@@ -19,9 +19,6 @@
     "codemirror": "^5.57.0",
     "diff-match-patch": "^1.0.5",
     "downshift": "^6.0.6",
-    "gatsby": "^2.24.91",
-    "gatsby-plugin-react-helmet": "^3.3.10",
-    "gatsby-plugin-sass": "^2.3.12",
     "http-link-header": "^1.0.2",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.20",
@@ -34,6 +31,7 @@
     "react-feather": "^1.1.6",
     "react-helmet": "^5.2.1",
     "react-redux": "^7.1.0",
+    "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
     "whatwg-fetch": "^3.4.1"
   },
@@ -45,10 +43,11 @@
     "url": "https://github.com/ecrituresnumeriques/stylo/issues"
   },
   "devDependencies": {
-    "babel-jest": "^26.3.0",
-    "babel-preset-gatsby": "^0.5.9",
+    "@snowpack/plugin-dotenv": "^2.0.5",
+    "@snowpack/plugin-sass": "^1.2.0",
     "jest": "^26.4.2",
     "node-fetch": "^2.6.1",
-    "prettier": "2.2.1"
+    "prettier": "^2.2.1",
+    "snowpack": "^2.18.5"
   }
 }

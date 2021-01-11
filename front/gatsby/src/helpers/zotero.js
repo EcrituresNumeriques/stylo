@@ -1,5 +1,5 @@
 import LinkHeader from 'http-link-header'
-import { filter } from './bibtex.js'
+import { filter } from './bibtex'
 
 export const fetchBibliographyFromCollectionHref = async ({
   collectionHref,

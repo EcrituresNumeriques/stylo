@@ -1,22 +1,17 @@
-@import 'variables.scss';
-@import 'defaults.scss';
-@import '../../node_modules/codemirror/lib/codemirror.css';
-@import '../../node_modules/codemirror/theme/material.css';
+@import './defaults.scss';
+@import 'codemirror/lib/codemirror.css';
+@import 'codemirror/theme/material.css';
 
 @font-face {
   font-family: 'BellweatherSans-shownbsp';
-  src: url('/fonts/BellweatherSans-shownbsp.eot'); /* IE9 Compat Modes */
+  src: url('/fonts/BellweatherSans-shownbsp.eot');
   src: url('/fonts/BellweatherSans-shownbsp.eot?#iefix')
       format('embedded-opentype'),
-    /* IE6-IE8 */ url('/fonts/BellweatherSans-shownbsp.otf') format('opentype'),
-    /* Open Type Font */ url('/fonts/BellweatherSans-shownbsp.svg')
-      format('svg'),
-    /* Legacy iOS */ url('/fonts/BellweatherSans-shownbsp.ttf')
-      format('truetype'),
-    /* Safari, Android, iOS */ url('/fonts/BellweatherSans-shownbsp.woff')
-      format('woff'),
-    /* Modern Browsers */ url('/fonts/BellweatherSans-shownbsp.woff2')
-      format('woff2'); /* Modern Browsers */
+    url('/fonts/BellweatherSans-shownbsp.otf') format('opentype'),
+    url('/fonts/BellweatherSans-shownbsp.svg') format('svg'),
+    url('/fonts/BellweatherSans-shownbsp.ttf') format('truetype'),
+    url('/fonts/BellweatherSans-shownbsp.woff') format('woff'),
+    url('/fonts/BellweatherSans-shownbsp.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -45,6 +40,7 @@ body,
 #___gatsby > div > div > main {
   height: 100%;
 }
+
 body {
   overflow-y: scroll;
 }
@@ -71,6 +67,7 @@ body {
   margin: 0;
   padding: 0;
 }
+
 li {
   list-style: none;
 }
@@ -80,12 +77,15 @@ li {
     height: auto;
     font-family: 'BellweatherSans-shownbsp', monospace;
   }
+
   .CodeMirror-cursors {
     font-family: monospace;
   }
+
   .CodeMirror-scroll {
     min-height: 600px;
   }
+
   .CodeMirror-lines {
     padding: 1rem;
   }
