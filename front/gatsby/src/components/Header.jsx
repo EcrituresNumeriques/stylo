@@ -2,37 +2,37 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import env from '../helpers/env'
+
 import styles from './header.module.scss'
 
 // Gestionnaire d'état (quel user est enregistré, enregistré ou non, etc.)
-const mapStateToProps = ({ logedIn, activeUser, applicationConfig }) => {
-  return { logedIn, activeUser, applicationConfig }
+const mapStateToProps = ({ logedIn, activeUser }) => {
+  return { logedIn, activeUser }
 }
 
-const Header = (props) => {
-  let nav
-  if (props.logedIn) {
-    const backendEndpoint = props.applicationConfig.backendEndpoint
-    nav = (
-      <>
-        <Link to="/credentials">{props.activeUser.displayName}</Link>
-        <Link to="/books">Books</Link>
-        <Link to="/articles">Articles</Link>
-        <a href={backendEndpoint + '/logout'} className={styles.logoutAction}>
-          Log out
-        </a>
-      </>
-    )
-  } else {
-    nav = (
-      <>
-        <Link to="/">Login</Link>
-        <Link to="/register" className={styles.registerAction}>
-          Register
-        </Link>
-      </>
-    )
-  }
+const ConnectedHeader = (props) => {
+  const nav = props.logedIn ? (
+    <>
+      <Link to="/credentials">{props.activeUser.displayName}</Link>
+      <Link to="/books">Books</Link>
+      <Link to="/articles">Articles</Link>
+      <a
+        href={env.BACKEND_ENDPOINT + '/logout'}
+        className={styles.logoutAction}
+      >
+        Log out
+      </a>
+    </>
+  ) : (
+    <>
+      <Link to="/">Login</Link>
+      <Link to="/register" className={styles.registerAction}>
+        Register
+      </Link>
+    </>
+  )
+
   return (
     <header className={props.className}>
       <section className={styles.header}>
@@ -55,4 +55,5 @@ const Header = (props) => {
   )
 }
 
-export default connect(mapStateToProps)(Header)
+const Header = connect(mapStateToProps)(ConnectedHeader)
+export default Header
