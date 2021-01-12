@@ -6,7 +6,6 @@ import PrivateRoute from '../components/PrivateRoute'
 
 import '../styles/general.scss'
 
-
 export default () => {
   return (
     <App layout="wrapped" title="Stylo | Books">

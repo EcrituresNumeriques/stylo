@@ -1,2 +1,2 @@
-import wrapWithProvider from "./src/components/provider"
+import wrapWithProvider from './src/components/provider'
 export const wrapRootElement = wrapWithProvider

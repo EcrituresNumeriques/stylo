@@ -17,7 +17,7 @@
         font-size: 1.15em;
         font-weight: bold;
         margin: 0;
-        padding: .5rem 1rem;
+        padding: 0.5rem 1rem;
         text-align: right;
         width: 100%;
       }
@@ -38,13 +38,13 @@
   margin: 0;
 
   :global {
-    [role="combobox"] {
+    [role='combobox'] {
       position: relative;
 
-      [role="listbox"]:not(:empty) {
+      [role='listbox']:not(:empty) {
         background: #fcfcfc;
         border: 1px solid grey;
-        padding: .5rem;
+        padding: 0.5rem;
         position: absolute;
         z-index: 10000;
         width: 100%;
@@ -61,7 +61,7 @@
       border-bottom: 1px solid #f0f0f0;
       display: flex;
       align-items: center;
-      padding: .5rem .5rem;
+      padding: 0.5rem 0.5rem;
 
       &.field-array {
         border-bottom: none;
@@ -75,18 +75,17 @@
         > fieldset {
           > button {
             font-weight: bold;
-            margin: .5rem;
+            margin: 0.5rem;
           }
         }
-   
       }
 
       &.inline-field-string {
         border-bottom: none;
-        
+
         .array-item {
           display: flex;
-  
+
           .field-string {
             flex: 1;
             border-bottom: none;
@@ -131,11 +130,11 @@
         width: 100%;
       }
 
-      input[type="email"],
-      input[type="text"],
-      input[type="url"] {
+      input[type='email'],
+      input[type='text'],
+      input[type='url'] {
         border: 1px solid #f0f0f0;
-        padding: .5em 1em;
+        padding: 0.5em 1em;
         display: block;
         flex: 1 1 auto;
         margin: 2px;
@@ -148,7 +147,7 @@
         padding-left: 10%;
 
         .checkbox {
-          padding: .5rem 0;
+          padding: 0.5rem 0;
 
           label {
             cursor: pointer;
@@ -158,7 +157,7 @@
           span {
             display: flex;
 
-            input[type="checkbox"] + span {
+            input[type='checkbox'] + span {
               flex: 1;
             }
           }

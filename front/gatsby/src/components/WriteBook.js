@@ -1,3 +1,3 @@
 import React from 'react'
 
-export default (props) => (<p>Writing my book</p>)
+export default (props) => <p>Writing my book</p>

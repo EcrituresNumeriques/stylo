@@ -1,17 +1,15 @@
-import React, {Fragment, useMemo, useState} from 'react'
+import React, { Fragment, useMemo, useState } from 'react'
 import Form from '@rjsf/core'
-import {set} from 'object-path-immutable'
+import { set } from 'object-path-immutable'
 import basicUiSchema from '../schemas/ui-schema-basic-override.json'
 import uiSchema from '../schemas/ui-schema-editor.json'
 import staticKeywordsComponent from './Write/metadata/staticKeywords.js'
 import schema from '../schemas/data-schema.json'
-import {toYaml} from './Write/metadata/yaml.js'
+import { toYaml } from './Write/metadata/yaml.js'
 
 import styles from './form.module.scss'
 
-
-function ArrayFieldTemplate (props) {
-
+function ArrayFieldTemplate(props) {
   const addItemTitle = props.uiSchema['ui:add-item-title'] || 'Ajouter'
   const removeItemTitle = props.uiSchema['ui:remove-item-title'] || 'Supprimer'
   const title = props.uiSchema['ui:title']
@@ -20,22 +18,26 @@ function ArrayFieldTemplate (props) {
     <fieldset className={styles.fieldsetGroup} key={props.key}>
       {title && <legend id={props.id}>{title}</legend>}
       {props.items &&
-      props.items.map((element) => (
-        <div id={element.key} key={element.key} className={`${element.className} can-add-remove`}>
-          {element.children}
-          {element.hasRemove && (
-            <button
-              type="button"
-              className={styles.removeButton}
-              tabIndex={-1}
-              disabled={element.disabled || element.readonly}
-              onClick={element.onDropIndexClick(element.index)}
-            >
-              {removeItemTitle}
-            </button>
-          )}
-        </div>
-      ))}
+        props.items.map((element) => (
+          <div
+            id={element.key}
+            key={element.key}
+            className={`${element.className} can-add-remove`}
+          >
+            {element.children}
+            {element.hasRemove && (
+              <button
+                type="button"
+                className={styles.removeButton}
+                tabIndex={-1}
+                disabled={element.disabled || element.readonly}
+                onClick={element.onDropIndexClick(element.index)}
+              >
+                {removeItemTitle}
+              </button>
+            )}
+          </div>
+        ))}
       {props.canAdd && (
         <button
           type="button"
@@ -50,26 +52,31 @@ function ArrayFieldTemplate (props) {
   )
 }
 
-function ObjectFieldTemplate (props) {
+function ObjectFieldTemplate(props) {
   if (props.uiSchema['ui:groups']) {
     const groups = props.uiSchema['ui:groups']
     const groupedElements = groups.map(({ fields, title }) => {
       const elements = fields
-        .filter((field) => (props.uiSchema[field] || {})['ui:widget'] !== 'hidden')
-        .map((field) => props.properties.filter((element) => element.name === field)[0])
+        .filter(
+          (field) => (props.uiSchema[field] || {})['ui:widget'] !== 'hidden'
+        )
+        .map(
+          (field) =>
+            props.properties.filter((element) => element.name === field)[0]
+        )
       if (elements && elements.length > 0) {
         return (
           <fieldset className={styles.fieldset} key={fields.join('-')}>
             {title && <legend>{title}</legend>}
-            {elements.map(element => <Fragment key={element.name}>{element.content}</Fragment>)}
+            {elements.map((element) => (
+              <Fragment key={element.name}>{element.content}</Fragment>
+            ))}
           </fieldset>
         )
       }
     })
 
-    return (
-      <>{groupedElements}</>
-    )
+    return <>{groupedElements}</>
   }
 
   if (props) {
@@ -77,30 +84,41 @@ function ObjectFieldTemplate (props) {
       <Fragment key={props.key}>
         {props.title}
         {props.description}
-        {props.properties.map(element => <Fragment key={element.name}>{element.content}</Fragment>)}
+        {props.properties.map((element) => (
+          <Fragment key={element.name}>{element.content}</Fragment>
+        ))}
       </Fragment>
-    );
+    )
   }
 }
 
-
-export default ({ formData: initialFormData, basicMode, onChange = () => {} }) => {
+export default ({
+  formData: initialFormData,
+  basicMode,
+  onChange = () => {},
+}) => {
   const [formData, setFormData] = useState(initialFormData)
   const [errors, setErrors] = useState({})
   const formContext = {
     partialUpdate: ({ id, value }) => {
       const path = id.replace('root_', '').replace('_', '.')
-      setFormData(state => {
+      setFormData((state) => {
         const newFormData = set(state, path, value)
         onChange(toYaml(newFormData))
         return newFormData
       })
-    }
+    },
   }
 
-  const effectiveUiSchema = useMemo(() => (basicMode ? { ...uiSchema, ...basicUiSchema } : uiSchema), [basicMode])
+  const effectiveUiSchema = useMemo(
+    () => (basicMode ? { ...uiSchema, ...basicUiSchema } : uiSchema),
+    [basicMode]
+  )
   // use static keywords component
-  effectiveUiSchema.referencedKeywords = { ...effectiveUiSchema.referencedKeywords, ...staticKeywordsComponent.uiSchema }
+  effectiveUiSchema.referencedKeywords = {
+    ...effectiveUiSchema.referencedKeywords,
+    ...staticKeywordsComponent.uiSchema,
+  }
 
   return (
     <Form
@@ -112,12 +130,12 @@ export default ({ formData: initialFormData, basicMode, onChange = () => {} }) =
       uiSchema={effectiveUiSchema}
       formData={formData}
       onChange={(e) => {
-        setFormData(e.formData);
-        onChange(toYaml(e.formData));
+        setFormData(e.formData)
+        onChange(toYaml(e.formData))
       }}
       onError={setErrors}
     >
-      <hr hidden={true}/>
+      <hr hidden={true} />
     </Form>
   )
 }

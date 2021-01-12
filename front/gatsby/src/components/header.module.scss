@@ -2,54 +2,56 @@
 @import '../styles/variables.scss';
 
 .header {
-    @extend .wrapped-center;
-    display:flex;
+  @extend .wrapped-center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+
+  > h1 {
+    font-style: italic;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    padding:0.5rem 1rem;
 
-    > h1 {
-        font-style: italic;
+    a {
+      @extend .hoverable;
     }
 
-    nav {
-        display:flex;
-        flex-wrap: wrap;
-        align-items: center;
-
-        a {
-            @extend .hoverable;
-        }
-
-        a,p {
-            @extend .clickable;
-            display: block;
-            margin-left:1em;
-        }
+    a,
+    p {
+      @extend .clickable;
+      display: block;
+      margin-left: 1em;
     }
+  }
 }
 
 .logoutAction {
-    &::after {
-        content: ' ';
-        background-image: url('/images/logout.svg');
-        background-size: contain;
-        color: white;
-        display: inline-block;
-        height: 1em;
-        margin-left: .5em;
-        width: 1em;
-        vertical-align: middle;
-        align-self: center;
-    }
-    margin-right: 2em;
+  &::after {
+    content: ' ';
+    background-image: url('/images/logout.svg');
+    background-size: contain;
+    color: white;
+    display: inline-block;
+    height: 1em;
+    margin-left: 0.5em;
+    width: 1em;
+    vertical-align: middle;
+    align-self: center;
+  }
+
+  margin-right: 2em;
 }
 
 .documentationLink {
-    font-weight: 100;
-    font-size: .8em;
+  font-weight: 100;
+  font-size: 0.8em;
 }
 
 .registerAction {
-    margin-right: 2em;
+  margin-right: 2em;
 }

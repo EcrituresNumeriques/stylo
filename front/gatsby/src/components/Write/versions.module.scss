@@ -1,98 +1,97 @@
 @import '../../styles/defaults.scss';
 @import '../../styles/variables.scss';
 
-
-#section{
-  > ul{
-    > li{
+#section {
+  > ul {
+    > li {
       @extend .clickable;
-      padding:0.5rem 1rem 0.5rem 1rem;
-      > a:first-child{
-        display:block;
+      padding: 0.5rem 1rem 0.5rem 1rem;
+      > a:first-child {
+        display: block;
       }
-      nav{
+      nav {
         text-align: right;
         a {
-          display:inline-block;
-          margin-left:1rem;
+          display: inline-block;
+          margin-left: 1rem;
         }
-        p{
+        p {
           @extend .clickable;
-          display:inline-block;
-          margin-left:1rem;
+          display: inline-block;
+          margin-left: 1rem;
         }
       }
     }
-    > li:nth-child(2n){
+    > li:nth-child(2n) {
       background-color: $main-background-color;
     }
-    > li.selected{
+    > li.selected {
       background-color: $selected-background;
     }
-    > li.compareTo{
+    > li.compareTo {
       background-color: $beware-background;
     }
-    > p{
-      padding:0.5rem 1rem;
+    > p {
+      padding: 0.5rem 1rem;
     }
   }
 
-  > h1{
-    font-size:1.2rem;
+  > h1 {
+    font-size: 1.2rem;
     @extend .clickable;
-    border-top:1px solid $main-border-color;
-    border-bottom:1px solid $main-border-color;
-    padding:0.5rem 1rem;
-    background-color:$main-background-color;
+    border-top: 1px solid $main-border-color;
+    border-bottom: 1px solid $main-border-color;
+    padding: 0.5rem 1rem;
+    background-color: $main-background-color;
   }
 
-  .closed{
-    background-color:$main-color;
-    color:$main-background-color;
+  .closed {
+    background-color: $main-color;
+    color: $main-background-color;
   }
 
-  button.secondary{
+  button.secondary {
     @extend .secondary-button;
   }
-  button.primary{
+  button.primary {
     @extend .primary-button;
   }
 
-  .button{
+  .button {
     @extend .clickable;
-    padding:0.5rem 1rem;
-    display:inline-block;
+    padding: 0.5rem 1rem;
+    display: inline-block;
     font-weight: normal;
     text-align: center;
-    width:50%;
-    border-top:1px solid $main-border-color;
+    width: 50%;
+    border-top: 1px solid $main-border-color;
   }
-  p.button{
-    border-right:1px solid $main-border-color
+  p.button {
+    border-right: 1px solid $main-border-color;
   }
-  form.liveVersion{
-    input{
-      display:block;
-      width:100%;
-      padding:0.5rem 1rem;
-      border-top:1px solid $main-border-color;
-      border-bottom:1px solid $main-border-color;
-      border-right:none;
-      border-left:none;
-    }
-    > button{
-      border:none;
+  form.liveVersion {
+    input {
+      display: block;
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border-top: 1px solid $main-border-color;
       border-bottom: 1px solid $main-border-color;
-      width:50%;
+      border-right: none;
+      border-left: none;
     }
-    > button.secondary{
+    > button {
+      border: none;
+      border-bottom: 1px solid $main-border-color;
+      width: 50%;
+    }
+    > button.secondary {
       @extend .secondary-button;
     }
-    > button.primary{
+    > button.primary {
       @extend .primary-button;
     }
-    > button:first-of-type{
-      border-right:1px solid $main-border-color;
+    > button:first-of-type {
+      border-right: 1px solid $main-border-color;
     }
   }
 }

@@ -1,173 +1,190 @@
 @import '../styles/defaults.scss';
 @import '../styles/variables.scss';
 
+.alert {
+  background-color: red;
+  color: white;
+  padding: 1rem;
 
-
-.alert{
-    background-color:red;
-    color:white;
-    padding:1rem;
-    button.delete{
-        border:1px solid white;
-        background-color:red;
-        color:white;
-        margin-top:1rem;
-        padding:0.5rem 1rem;
-        @extend .clickable;
-    }
-    button.cancel{
-        border:1px solid white;
-        color:red;
-        background-color:white;
-        margin-right:1rem;
-        padding:0.5rem 1rem;
-        @extend .clickable;
-    }
-}
-
-.deleteMe{
-    position:absolute;
-    bottom:1rem;
-    right:1rem;
-}
-
-.clickMeOff{
+  button.delete {
+    border: 1px solid white;
+    background-color: red;
+    color: white;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
     @extend .clickable;
-    @extend .primary-button;
-    display:inline-block;
-    margin-right:0.5rem;
-    border:1px solid $main-border-color;
-}
+  }
 
-.clickMeOn{
+  button.cancel {
+    border: 1px solid white;
+    color: red;
+    background-color: white;
+    margin-right: 1rem;
+    padding: 0.5rem 1rem;
     @extend .clickable;
-    @extend .secondary-button;
-    display:inline-block;
-    margin-right:0.5rem;
-    border:1px solid $main-border-color;
+  }
 }
 
+.deleteMe {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.clickMeOff {
+  @extend .clickable;
+  @extend .primary-button;
+  display: inline-block;
+  margin-right: 0.5rem;
+  border: 1px solid $main-border-color;
+}
+
+.clickMeOn {
+  @extend .clickable;
+  @extend .secondary-button;
+  display: inline-block;
+  margin-right: 0.5rem;
+  border: 1px solid $main-border-color;
+}
 
 .section {
-    @extend .wrapped-center;
-    padding:1rem;
-    border:1px solid $main-border-color;
-    background-color:$extra-background-color;
-    > h1{
-        margin-bottom:1rem;
+  @extend .wrapped-center;
+  padding: 1rem;
+  border: 1px solid $main-border-color;
+  background-color: $extra-background-color;
+
+  > h1 {
+    margin-bottom: 1rem;
+  }
+
+  > p {
+    margin-bottom: 1rem;
+  }
+
+  > article {
+    > form {
+      span {
+        vertical-align: text-top;
+        margin-left: 0.5rem;
+      }
     }
-    > p {
-        margin-bottom:1rem;
+
+    padding: 1rem;
+    position: relative;
+
+    h1 {
+      span {
+        @extend .clickable;
+      }
+
+      span:first-child {
+        display: inline-block;
+        width: 1rem;
+        text-align: center;
+        font-weight: bold;
+      }
     }
-    > article {  
-        > form {   
-            span{
-                vertical-align: text-top;
-                margin-left:0.5rem;
-            }
+
+    > section {
+      h2 {
+        font-size: 1rem;
+        font-weight: normal;
+
+        span {
+          font-weight: bold;
         }
-        padding:1rem;
-        position:relative;
-        h1{
-            span{
-                @extend .clickable;
-            }
-            span:first-child {
-                display: inline-block;
-                width:1rem;
-                text-align: center;
-                font-weight: bold;
-            }
-        }
-        > section {
-            h2 {
-                font-size:1rem;
-                font-weight:normal;
-                span {
-                    font-weight:bold;
-                }
-            }
-            ul{
-                margin-top:1rem;
-            }
-        }
-        > nav {
-            float:right;
-        }
+      }
+
+      ul {
+        margin-top: 1rem;
+      }
     }
-    > article:nth-of-type(2n+1){
-        background-color:$main-background-color;
+
+    > nav {
+      float: right;
     }
+  }
+
+  > article:nth-of-type(2n + 1) {
+    background-color: $main-background-color;
+  }
 }
 
 .button {
-    @extend .clickable;
-    display:inline-block;
-    padding:0.5rem 1rem;
-    margin-right:0.5rem;
-    background-color: $button-primary-background !important;
-    color: $button-primary-color !important;
+  @extend .clickable;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  background-color: $button-primary-background !important;
+  color: $button-primary-color !important;
 }
+
 .buttonsec {
-    @extend .clickable;
-    display:inline-block;
-    padding:0.5rem 1rem;
-    margin-right:0.5rem;
-    border:1px solid $main-border-color;
-    }
+  @extend .clickable;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border: 1px solid $main-border-color;
+}
 
 .primary {
-    background-color: $button-primary-background !important;
-    color: $button-primary-color !important;
+  background-color: $button-primary-background !important;
+  color: $button-primary-color !important;
 }
 
-.tags{
-    @extend .clickable;
-    display:inline-block;
-    border:1px solid $main-border-color;
-    padding:0.5rem;
-    margin-right:0.5rem;
+.tags {
+  @extend .clickable;
+  display: inline-block;
+  border: 1px solid $main-border-color;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .selectedTags {
-    @extend .tags;
-    background-color: $button-primary-background !important;
-    color: $button-primary-color !important;
+  @extend .tags;
+  background-color: $button-primary-background !important;
+  color: $button-primary-color !important;
 }
 
-.create{
-    background-color:$main-background-color;
-    border-bottom:1px solid $main-border-color;
-    padding:1rem;
-    form {
-        input,textarea{
-            width:100%;
-            display:block;
-            padding:0.5rem 1rem;
-            margin-bottom:1rem;
-            border:none;
-        }
-        input[type=submit]{
-            width:auto;
-            margin-top:1rem;
-            margin-bottom:0;
-            @extend .primary-button;
-        }
-        ul {
-            li{
-                @extend .secondary-button;
-                display:inline-block;
-                margin-right:0.5rem;
-            }
-            li.selected{
-                @extend .primary-button;
-            }
-        }
+.create {
+  background-color: $main-background-color;
+  border-bottom: 1px solid $main-border-color;
+  padding: 1rem;
+
+  form {
+    input,
+    textarea {
+      width: 100%;
+      display: block;
+      padding: 0.5rem 1rem;
+      margin-bottom: 1rem;
+      border: none;
     }
+
+    input[type='submit'] {
+      width: auto;
+      margin-top: 1rem;
+      margin-bottom: 0;
+      @extend .primary-button;
+    }
+
+    ul {
+      li {
+        @extend .secondary-button;
+        display: inline-block;
+        margin-right: 0.5rem;
+      }
+
+      li.selected {
+        @extend .primary-button;
+      }
+    }
+  }
 }
-#filter{
-    display:block;
-    width:100%;
-    margin-bottom:1rem;
-    padding:0.5rem;
+
+#filter {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
 }

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { navigate } from 'gatsby'
 import { connect } from 'react-redux'
 
 import askGraphQL from '../helpers/graphQL'

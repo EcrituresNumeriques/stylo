@@ -1,6 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react'
-import {connect} from 'react-redux'
-import {Controlled as CodeMirror} from 'react-codemirror2'
+import React, { useEffect, useRef, useState } from 'react'
+import { connect } from 'react-redux'
+import { Controlled as CodeMirror } from 'react-codemirror2'
 
 import askGraphQL from '../../helpers/graphQL'
 import styles from './write.module.scss'
@@ -97,7 +97,7 @@ const ConnectedWrite = (props) => {
     user: props.activeUser && props.activeUser._id,
     article: props.id,
     version: props.version || '0123456789ab',
-    readOnly
+    readOnly,
   }
 
   const [graphqlError, setError] = useState()
@@ -177,38 +177,40 @@ const ConnectedWrite = (props) => {
 
   //Reload when version switching
   useEffect(async () => {
-      setIsLoading( true)
-      const data = await askGraphQL(
-        { query: fullQuery, variables },
-        'fetching Live version',
-        props.sessionToken
-      )
-        .then(({ version, article }) => ({ version, article }))
-        .catch(error => {
-          setError(error)
-          return {}
-        })
+    setIsLoading(true)
+    const data = await askGraphQL(
+      { query: fullQuery, variables },
+      'fetching Live version',
+      props.sessionToken
+    )
+      .then(({ version, article }) => ({ version, article }))
+      .catch((error) => {
+        setError(error)
+        return {}
+      })
 
-      if (data?.article) {
-        setLive(props.version ? data.version : data.article.live)
-        setArticleInfos({
-          _id: data.article._id,
-          title: data.article.title,
-          zoteroLink: data.article.zoteroLink,
-          owners: data.article.owners.map((o) => o.displayName),
-        })
-        setVersions(data.article.versions)
-      }
-      setIsLoading(false)
+    if (data?.article) {
+      setLive(props.version ? data.version : data.article.live)
+      setArticleInfos({
+        _id: data.article._id,
+        title: data.article.title,
+        zoteroLink: data.article.zoteroLink,
+        owners: data.article.owners.map((o) => o.displayName),
+      })
+      setVersions(data.article.versions)
+    }
+    setIsLoading(false)
   }, [props.version])
 
   if (graphqlError) {
-    return (<section className={styles.container}>
-      <article className={styles.error}>
-        <h2>Error</h2>
-        <p>{ graphqlError[0]?.message || 'Article not found.'}</p>
-      </article>
-    </section>)
+    return (
+      <section className={styles.container}>
+        <article className={styles.error}>
+          <h2>Error</h2>
+          <p>{graphqlError[0]?.message || 'Article not found.'}</p>
+        </article>
+      </section>
+    )
   }
 
   return (
@@ -227,7 +229,7 @@ const ConnectedWrite = (props) => {
         />
       )}
       {!isLoading && (
-        <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly}/>
+        <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly} />
       )}
 
       {props.compareTo && (
@@ -258,7 +260,7 @@ const ConnectedWrite = (props) => {
                 ref={instanceCM}
               />
             )}
-            {props.compareTo && <Compare {...props} live={live}/>}
+            {props.compareTo && <Compare {...props} live={live} />}
           </>
         )}
       </article>

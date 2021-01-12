@@ -1,9 +1,8 @@
 @import '../../styles/defaults.scss';
 @import '../../styles/variables.scss';
 
-
-.compare{
+.compare {
   @extend .wrapped-center;
-  background-color:$extra-background-color;
-  padding:1rem;
+  background-color: $extra-background-color;
+  padding: 1rem;
 }

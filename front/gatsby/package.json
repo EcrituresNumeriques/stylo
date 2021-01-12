@@ -5,6 +5,8 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
+    "lint": "prettier --check .",
+    "lint:fix": "prettier --prettier .",
     "build": "gatsby build",
     "develop": "gatsby develop -p 3000 -H 0.0.0.0",
     "start": "npm run develop",
@@ -46,6 +48,7 @@
     "babel-jest": "^26.3.0",
     "babel-preset-gatsby": "^0.5.9",
     "jest": "^26.4.2",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "prettier": "2.2.1"
   }
 }

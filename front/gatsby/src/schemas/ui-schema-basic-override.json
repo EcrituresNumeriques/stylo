@@ -49,7 +49,7 @@
   },
   "prodnum": {
     "ui:widget": "hidden"
-  }, 
+  },
   "diffnum": {
     "ui:widget": "hidden"
   }

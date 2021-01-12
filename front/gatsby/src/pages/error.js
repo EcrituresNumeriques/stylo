@@ -4,8 +4,8 @@ import App from '../layouts/App'
 import styles from '../components/Write/write.module.scss'
 
 export default () => {
-  let error = ""
-  let errorDescription = ""
+  let error = ''
+  let errorDescription = ''
 
   if (typeof window !== 'undefined') {
     // see https://www.oauth.com/oauth2-servers/authorization/the-authorization-response/
@@ -20,9 +20,12 @@ export default () => {
         <article className={styles.error}>
           <h2>Authentication Error</h2>
 
-          <p>The authentication process could not go through{!errorDescription && `, and it's not clear why`}.</p>
+          <p>
+            The authentication process could not go through
+            {!errorDescription && `, and it's not clear why`}.
+          </p>
 
-          {errorDescription && <p>{ errorDescription }</p>}
+          {errorDescription && <p>{errorDescription}</p>}
 
           {error && <code>{error}</code>}
         </article>

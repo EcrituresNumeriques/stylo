@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import {useCombobox} from 'downshift'
+import React, { useState } from 'react'
+import { useCombobox } from 'downshift'
 import keywords from './keywords.json'
 
 const uiSchema = {
@@ -8,7 +8,7 @@ const uiSchema = {
   },
 }
 
-function ObjectIsEmpty (object) {
+function ObjectIsEmpty(object) {
   return typeof object === 'object' && Object.keys(object).length === 0
 }
 
@@ -17,14 +17,16 @@ function ObjectIsEmpty (object) {
  * @param {string} searchValue
  * @returns {Array<Object>}
  */
-function search (searchValue) {
+function search(searchValue) {
   if (searchValue && searchValue.length > 0) {
-    return keywords.filter((keyword) => keyword.label.toLowerCase().includes(searchValue.toLowerCase()))
+    return keywords.filter((keyword) =>
+      keyword.label.toLowerCase().includes(searchValue.toLowerCase())
+    )
   }
   return []
 }
 
-function AutocompleteField (props) {
+function AutocompleteField(props) {
   const [inputItems, setInputItems] = useState([])
   const {
     isOpen,
@@ -50,24 +52,26 @@ function AutocompleteField (props) {
 
   const isEmpty = ObjectIsEmpty(props.formData)
 
-  return <div {...getComboboxProps()}>
-    {!isEmpty && <span>{props.formData.label}</span>}
-    <input {...getInputProps(!isEmpty ? { hidden: true } : {})} />
-    <ul {...getMenuProps()}>
-      {isOpen &&
-      inputItems.map((item, index) => (
-        <li
-          style={
-            highlightedIndex === index ? { backgroundColor: '#bde4ff' } : {}
-          }
-          key={`${item.label}${index}`}
-          {...getItemProps({ item, index })}
-        >
-          {item.label}
-        </li>
-      ))}
-    </ul>
-  </div>
+  return (
+    <div {...getComboboxProps()}>
+      {!isEmpty && <span>{props.formData.label}</span>}
+      <input {...getInputProps(!isEmpty ? { hidden: true } : {})} />
+      <ul {...getMenuProps()}>
+        {isOpen &&
+          inputItems.map((item, index) => (
+            <li
+              style={
+                highlightedIndex === index ? { backgroundColor: '#bde4ff' } : {}
+              }
+              key={`${item.label}${index}`}
+              {...getItemProps({ item, index })}
+            >
+              {item.label}
+            </li>
+          ))}
+      </ul>
+    </div>
+  )
 }
 
 export default {

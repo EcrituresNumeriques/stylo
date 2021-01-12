@@ -51,7 +51,7 @@
     }
   }
 
-  > p:nth-child(2n+1) {
+  > p:nth-child(2n + 1) {
     background-color: $extra-background-color;
   }
 

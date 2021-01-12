@@ -8,9 +8,7 @@ const compare = (a, b) => {
 
 const flatten = (entryTitle) => {
   if (entryTitle) {
-    return entryTitle
-      .map(({ text }) => text)
-      .join('')
+    return entryTitle.map(({ text }) => text).join('')
   }
   return ''
 }
@@ -23,17 +21,17 @@ export default (input) => {
   const parser = new BibLatexParser(input, {
     processUnexpected: true,
     processUnknown: true,
-    async: false
+    async: false,
   })
 
-  const {entries} = parser.parse()
+  const { entries } = parser.parse()
 
   return Object.entries(entries)
     .map(([_, entry]) => ({
       title: flatten(entry.fields.title),
       type: entry.bib_type,
       key: entry.entry_key,
-      entry
+      entry,
     }))
     .sort(compare)
 }

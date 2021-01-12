@@ -1,28 +1,49 @@
 {
   "ui:groups": [
     {
-      "fields": ["id_sp", "url_article", "title", "subtitle", "date", "lang", "rights"]
+      "fields": [
+        "id_sp",
+        "url_article",
+        "title",
+        "subtitle",
+        "date",
+        "lang",
+        "rights"
+      ]
     },
     {
       "title": "Bibliography",
       "fields": ["link-citations", "nocite"]
     },
     {
-      "fields": ["authors", "abstract", "keywords", "referencedKeywords", "typeArticle"]
+      "fields": [
+        "authors",
+        "abstract",
+        "keywords",
+        "referencedKeywords",
+        "typeArticle"
+      ]
     },
     {
       "title": "Diffusion",
       "fields": ["publisher", "journal"]
     },
     {
-      "fields": [ "director" ]
+      "fields": ["director"]
     },
     {
       "title": "Production",
-      "fields": [ "issnnum", "prod" , "prodnum", "diffnum" ]
+      "fields": ["issnnum", "prod", "prodnum", "diffnum"]
     },
     {
-      "fields": ["dossier", "issueDirectors", "reviewers", "translators", "translationOf", "transcribers"]
+      "fields": [
+        "dossier",
+        "issueDirectors",
+        "reviewers",
+        "translators",
+        "translationOf",
+        "transcribers"
+      ]
     }
   ],
   "id_sp": {
@@ -44,8 +65,7 @@
     "ui:widget": "select",
     "ui:emptyValue": ""
   },
-  "nocite": {
-  },
+  "nocite": {},
   "date": {
     "ui:title": "Date",
     "ui:widget": "date"
@@ -156,7 +176,7 @@
   },
   "prodnum": {
     "ui:title": "Prodnum"
-  }, 
+  },
   "diffnum": {
     "ui:title": "Diffnum"
   }

@@ -2,15 +2,15 @@
 @import '../styles/variables.scss';
 
 .button {
-  float:right;
+  float: right;
   @extend .primary-button;
-  margin-top:-0.5rem;
-  margin-right:-0.5rem;
+  margin-top: -0.5rem;
+  margin-right: -0.5rem;
 }
-.resetFloat{
-  clear:both;
-  padding:0.5rem;
-  &:nth-child(2n+1){
-    background-color:$main-lighter-color;
+.resetFloat {
+  clear: both;
+  padding: 0.5rem;
+  &:nth-child(2n + 1) {
+    background-color: $main-lighter-color;
   }
 }

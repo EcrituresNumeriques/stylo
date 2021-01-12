@@ -2,77 +2,80 @@
 @import '../../../styles/variables.scss';
 
 .title {
-  font-size:1.3rem;
+  font-size: 1.3rem;
 }
 
 .selector {
-  display:flex;
-  flex-wrap:no-wrap;
-  margin:1rem 0;
-  border-right:1px solid $main-border-color;
+  display: flex;
+  flex-wrap: no-wrap;
+  margin: 1rem 0;
+  border-right: 1px solid $main-border-color;
   > p {
-    flex:1 1 auto;
+    flex: 1 1 auto;
     @extend .clickable;
-    padding:0.5rem 1rem;
-    border-left:1px solid $main-border-color;
-    border-top:1px solid $main-border-color;
-    border-bottom:1px solid $main-border-color;
+    padding: 0.5rem 1rem;
+    border-left: 1px solid $main-border-color;
+    border-top: 1px solid $main-border-color;
+    border-bottom: 1px solid $main-border-color;
   }
   p.selected {
-    @extend .primary-button
+    @extend .primary-button;
   }
 }
-.raw,.citations,.zotero {
-  margin-bottom:1rem;
+.raw,
+.citations,
+.zotero {
+  margin-bottom: 1rem;
 }
 .zotero {
   > p {
-    margin-bottom:1rem;
+    margin-bottom: 1rem;
   }
   label {
-    display:block;
+    display: block;
   }
   input {
-    display:block;
-    width:100%;
+    display: block;
+    width: 100%;
   }
 }
 .raw {
   > textarea {
-    padding:1rem;
-    display:block;
-    width:100%;
-    height:50vh;
+    padding: 1rem;
+    display: block;
+    width: 100%;
+    height: 50vh;
   }
 }
 .citations {
   > textarea {
-    width:calc(100%);
-    padding:1rem;
-    height:5rem;
+    width: calc(100%);
+    padding: 1rem;
+    height: 5rem;
   }
   > button {
     @extend .clickable;
-    display:block;
-    width:100%;
-    padding:0.5rem 1rem;
-    margin-bottom:1rem;
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
   }
 
   .responsiveTable {
     max-height: 270px;
     overflow: auto;
-    margin-top: .5em;
-    margin-bottom: .5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
     border-top: 1px solid #bbbbbb;
-    padding-top: .25em;
+    padding-top: 0.25em;
   }
 
   .citationList {
     width: 100%;
     border-collapse: collapse;
 
-    td, th {
+    td,
+    th {
       padding: 5px;
     }
   }
@@ -90,7 +93,7 @@
     text-align: left;
     word-wrap: break-word;
     max-width: 1px;
-    font-size: .9em;
+    font-size: 0.9em;
   }
   .colActions {
     text-align: right;
@@ -101,13 +104,11 @@
     }
   }
 
-
-
   > p.citation {
-    padding:0.5rem 1rem;
+    padding: 0.5rem 1rem;
     > button {
-      float:right;
-      margin-left:1rem;
+      float: right;
+      margin-left: 1rem;
       @extend .clickable;
     }
   }
@@ -115,7 +116,7 @@
 
 .primary {
   @extend .primary-button;
-  float:right;
+  float: right;
 }
 
 .citationMessages {

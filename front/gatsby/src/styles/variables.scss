@@ -2,34 +2,32 @@
 // $main-background-color: #202020;
 // $main-color: #f0f0f0;
 // $main-color-links: #ffffff;
-$extra-background-color:#ffffff;
+$extra-background-color: #ffffff;
 $main-background-color: #f0f0f0;
 $main-color: #202020;
 $main-lighter-color: #505050;
 $extra-color: #000000;
 $main-color-links: #000000;
 
-$main-border-color:grey;
+$main-border-color: grey;
 
 $error-color: #b50707;
 
-$beware-background:#ffe6e6;
-$selected-background:#e6ffe6;
+$beware-background: #ffe6e6;
+$selected-background: #e6ffe6;
 
-$button-primary-background:$main-color;
-$button-primary-color:$main-background-color;
-$button-secondary-background:$extra-background-color;
-$button-secondary-color:$main-border-color;
+$button-primary-background: $main-color;
+$button-primary-color: $main-background-color;
+$button-secondary-background: $extra-background-color;
+$button-secondary-color: $main-border-color;
 
+$phone-width: 100%;
 
+$tablet-breakpoint: 1080px;
+$tablet-width: calc(1080px - 2rem);
 
-$phone-width:100%;
+$screen-breakpoint: 1400px;
+$screen-width: 1080px;
 
-$tablet-breakpoint:1080px;
-$tablet-width:calc(1080px - 2rem);
-
-$screen-breakpoint:1400px;
-$screen-width:1080px;
-
-$large-screen-breakpoint:2160px;
-$large-screen-width:1500px;
+$large-screen-breakpoint: 2160px;
+$large-screen-width: 1500px;

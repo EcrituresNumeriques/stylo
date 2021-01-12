@@ -1,9 +1,9 @@
-import {validate, toBibtex, filter} from './bibtex'
+import { validate, toBibtex, filter } from './bibtex'
 import bib2key from '../components/Write/bibliographe/CitationsFilter.js'
 
 describe('parse', () => {
-    test('it should return line errors on syntax error', () => {
-        const text = `@book{noauthor_test19_nodate,
+  test('it should return line errors on syntax error', () => {
+    const text = `@book{noauthor_test19_nodate,
             title = {test19
         }
         
@@ -11,13 +11,15 @@ describe('parse', () => {
             title = {test26}
         }`
 
-        return validate(text).then(result => {
-          expect(result.errors).toEqual(expect.arrayContaining(['token_mismatch at line 5']))
-        })
+    return validate(text).then((result) => {
+      expect(result.errors).toEqual(
+        expect.arrayContaining(['token_mismatch at line 5'])
+      )
     })
+  })
 
-    test('it should return an empty error array if syntax is correct', () => {
-        const text = `@book{noauthor_test19_nodate,
+  test('it should return an empty error array if syntax is correct', () => {
+    const text = `@book{noauthor_test19_nodate,
             title = {test19}
         }
         
@@ -25,48 +27,47 @@ describe('parse', () => {
             title = {test26}
         }`
 
-        return validate(text).then(result => {
-            expect(result).toHaveProperty('errors', [])
-            expect(result.success).toEqual(2)
-        })
+    return validate(text).then((result) => {
+      expect(result).toHaveProperty('errors', [])
+      expect(result.success).toEqual(2)
     })
+  })
 
-    test('it should return an empty entries', () => {
-      const text = ` abcd `
+  test('it should return an empty entries', () => {
+    const text = ` abcd `
 
-      return validate(text).then(result => {
-        expect(result).toHaveProperty('empty', false)
-        expect(result).toHaveProperty('success', 0)
-        expect(result).toHaveProperty('warnings', [])
-        expect(result).toHaveProperty('errors', [])
-      })
+    return validate(text).then((result) => {
+      expect(result).toHaveProperty('empty', false)
+      expect(result).toHaveProperty('success', 0)
+      expect(result).toHaveProperty('warnings', [])
+      expect(result).toHaveProperty('errors', [])
     })
+  })
 
-    test('it should be okay with an empty string', () => {
-      const text = ''
+  test('it should be okay with an empty string', () => {
+    const text = ''
 
-      return validate(text).then(result => {
-        expect(result).toHaveProperty('empty', true)
-        expect(result).toHaveProperty('success', 0)
-        expect(result).toHaveProperty('warnings', [])
-        expect(result).toHaveProperty('errors', [])
-      })
+    return validate(text).then((result) => {
+      expect(result).toHaveProperty('empty', true)
+      expect(result).toHaveProperty('success', 0)
+      expect(result).toHaveProperty('warnings', [])
+      expect(result).toHaveProperty('errors', [])
     })
+  })
 
+  test('it should be okay with a trimmable value', () => {
+    const text = '   '
 
-    test('it should be okay with a trimmable value', () => {
-      const text = '   '
-
-      return validate(text).then(result => {
-        expect(result).toHaveProperty('empty', true)
-        expect(result).toHaveProperty('success', 0)
-        expect(result).toHaveProperty('warnings', [])
-        expect(result).toHaveProperty('errors', [])
-      })
+    return validate(text).then((result) => {
+      expect(result).toHaveProperty('empty', true)
+      expect(result).toHaveProperty('success', 0)
+      expect(result).toHaveProperty('warnings', [])
+      expect(result).toHaveProperty('errors', [])
     })
+  })
 
-    test('it should produce a warning', () => {
-      const text = `@book{noauthor_test26_nodate,
+  test('it should produce a warning', () => {
+    const text = `@book{noauthor_test26_nodate,
         title = {test26}
       }
       
@@ -75,9 +76,11 @@ describe('parse', () => {
       @book {noauthor_test24_nodate,
         title = {test24}
       }`
-      return validate(text).then(result => {
-        expect(result).toHaveProperty('success', 1)
-        expect(result.warnings).toEqual(expect.arrayContaining(['unknown_type at line 7']))
+    return validate(text).then((result) => {
+      expect(result).toHaveProperty('success', 1)
+      expect(result.warnings).toEqual(
+        expect.arrayContaining(['unknown_type at line 7'])
+      )
     })
   })
   test('it should validate a given bibtex', () => {
@@ -95,7 +98,7 @@ describe('parse', () => {
       file = {Snapshot:/home/antoine/Zotero/storage/VC32TEFF/Dehut - En finir avec Word ! Pour une analyse des enjeux r.html:text/html}
     }`
 
-    return validate(text).then(result => {
+    return validate(text).then((result) => {
       expect(result.warnings).toEqual([])
       expect(result.errors).toEqual([])
     })
@@ -119,7 +122,9 @@ describe('parse', () => {
     const entries = bib2key(text).map(({ entry }) => entry)
 
     expect(toBibtex(entries)).toMatch('journaltitle = {L’atelier des savoirs}')
-    expect(toBibtex(entries)).toMatch('file = {Snapshot:/home/antoine/Zotero/storage/VC32TEFF/Dehut - En finir avec Word ! Pour une analyse des enjeux r.html:text/html}')
+    expect(toBibtex(entries)).toMatch(
+      'file = {Snapshot:/home/antoine/Zotero/storage/VC32TEFF/Dehut - En finir avec Word ! Pour une analyse des enjeux r.html:text/html}'
+    )
   })
 
   test('it should remove empty citation from a raw bibtex', async () => {
@@ -152,7 +157,9 @@ describe('parse', () => {
     const resultBefore = await validate(text)
     expect(resultBefore).toHaveProperty('success', 2)
     expect(resultBefore).toHaveProperty('warnings', [])
-    expect(resultBefore).toHaveProperty('errors', ['missing_equal_sign at line 20'])
+    expect(resultBefore).toHaveProperty('errors', [
+      'missing_equal_sign at line 20',
+    ])
 
     const filteredText = filter(text)
 
@@ -164,6 +171,8 @@ describe('parse', () => {
     const entries = bib2key(filteredText).map(({ entry }) => entry)
     expect(entries).toHaveLength(2)
     expect(entries[0].entry_key).toEqual('bonnet_rome_2013')
-    expect(entries[1].entry_key).toEqual('pollux_grammaticus_onomasticon_nodate')
+    expect(entries[1].entry_key).toEqual(
+      'pollux_grammaticus_onomasticon_nodate'
+    )
   })
 })

@@ -1,13 +1,17 @@
 import env from '../helpers/env'
 
-const askGraphQL = async (payload, action = 'fetching from the server', token = null) => {
+const askGraphQL = async (
+  payload,
+  action = 'fetching from the server',
+  token = null
+) => {
   const response = await fetch(env.GRAPHQL_ENDPOINT, {
-    method: "POST",
-    mode: "cors",
+    method: 'POST',
+    mode: 'cors',
     credentials: 'include',
     headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json"
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
     },
     body: JSON.stringify(payload),
   })
@@ -15,7 +19,7 @@ const askGraphQL = async (payload, action = 'fetching from the server', token = 
   if (!response.ok) {
     let res = await response.json()
     if (res) {
-      res = res.errors || [{ message: "problem" }]
+      res = res.errors || [{ message: 'problem' }]
     }
     if (res) {
       res = res[0].message

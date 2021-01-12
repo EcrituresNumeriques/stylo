@@ -1,6 +1,6 @@
-import React from "react"
-import { Provider } from "react-redux"
-import createStore from "../state/createStore"
+import React from 'react'
+import { Provider } from 'react-redux'
+import createStore from '../state/createStore'
 
 export const store = createStore()
 

@@ -1,22 +1,24 @@
-import {BibLatexParser, BibLatexExporter} from 'biblatex-csl-converter'
+import { BibLatexExporter, BibLatexParser } from 'biblatex-csl-converter'
 
-export async function parse (bibtex, options = { expectOutput: false }) {
-    const parser = new BibLatexParser(bibtex, {
-        processUnexpected: true,
-        processUnknown: true,
-        async: true
-    })
+export async function parse(bibtex, options = { expectOutput: false }) {
+  const parser = new BibLatexParser(bibtex, {
+    processUnexpected: true,
+    processUnknown: true,
+    async: true,
+  })
 
-    // {"entries":{},"errors":[],"warnings":[],"comments":[],"strings":{},"jabref":{"groups":false,"meta":{}}}
-    return parser.parse()
+  // {"entries":{},"errors":[],"warnings":[],"comments":[],"strings":{},"jabref":{"groups":false,"meta":{}}}
+  return parser.parse()
 }
 
-export function toBibtex (entries) {
+export function toBibtex(entries) {
   const bibDB = entries.reduce((db, entry, i) => {
     return Object.assign(db, { [String(i)]: entry })
   }, {})
 
-  return (new BibLatexExporter(bibDB, false, {exportUnexpectedFields: true})).parse()
+  return new BibLatexExporter(bibDB, false, {
+    exportUnexpectedFields: true,
+  }).parse()
 }
 
 /**
@@ -27,13 +29,16 @@ export function toBibtex (entries) {
  * @returns {Promise<{success: number,empty: boolean,warnings: Array.<string>,error: Array.<string>}>}
  */
 export function validate(bibtex) {
-  return parse(bibtex).then(result => ({
-      success: Object.keys(result.entries).length,
-      empty: String(bibtex).trim().length === 0,
-      errors: result.errors.map(error => error.type + ' at line ' + error.line),
-      warnings: result.warnings
-        .filter(error => error.type !== 'unexpected_field' && error.type !== 'unknown_field')
-        .map(error => error.type + ' at line ' + error.line)
+  return parse(bibtex).then((result) => ({
+    success: Object.keys(result.entries).length,
+    empty: String(bibtex).trim().length === 0,
+    errors: result.errors.map((error) => error.type + ' at line ' + error.line),
+    warnings: result.warnings
+      .filter(
+        (error) =>
+          error.type !== 'unexpected_field' && error.type !== 'unknown_field'
+      )
+      .map((error) => error.type + ' at line ' + error.line),
   }))
 }
 
@@ -43,7 +48,7 @@ export function validate(bibtex) {
  * @returns {string}
  */
 export function filter(bibtex) {
-  return bibtex.replace(/^@[a-z]+{noauthor_notitle_nodate\n}/gm, "")
+  return bibtex.replace(/^@[a-z]+{noauthor_notitle_nodate\n}/gm, '')
 }
 
 const IconNameMap = {
@@ -59,7 +64,7 @@ const IconNameMap = {
   phdthesis: 'thesis',
   proceedings: 'book',
   techreport: 'report',
-  unpublished: 'manuscript'
+  unpublished: 'manuscript',
 }
 
 /**
@@ -67,7 +72,7 @@ const IconNameMap = {
  * @param bibtexType
  * @returns {string}
  */
-export function iconName (bibtexType) {
+export function iconName(bibtexType) {
   if (bibtexType) {
     const iconName = IconNameMap[bibtexType]
     if (iconName) {

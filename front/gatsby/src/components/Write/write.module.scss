@@ -1,7 +1,6 @@
 @import '../../styles/defaults.scss';
 @import '../../styles/variables.scss';
 
-
 .article {
   @extend .wrapped-center;
   background-color: $extra-background-color;
@@ -18,7 +17,8 @@
     flex: 1 1 50%;
   }
 
-  > pre, > div > pre {
+  > pre,
+  > div > pre {
     margin-top: 0;
     padding: 1rem;
     width: 100%;
@@ -39,5 +39,3 @@
   position: relative;
   height: 100%;
 }
-
-

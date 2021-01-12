@@ -1,21 +1,10 @@
 {
   "type": "object",
-  "required": [
-    "title"
-  ],
+  "required": ["title"],
   "definitions": {
     "lang": {
       "type": "string",
-      "enum": [
-        "fr",
-        "en",
-        "it",
-        "es",
-        "pt",
-        "de",
-        "uk",
-        "ar"
-      ]
+      "enum": ["fr", "en", "it", "es", "pt", "de", "uk", "ar"]
     },
     "person": {
       "type": "object",
@@ -77,23 +66,14 @@
     "link-citations": {
       "type": "boolean",
       "title": "Citation Link",
-      "enumNames": [
-        "yes",
-        "no"
-      ]
+      "enumNames": ["yes", "no"]
     },
     "nocite": {
       "type": "string",
       "title": "Display",
       "default": "@*",
-      "enum": [
-        "@*",
-        ""
-      ],
-      "enumNames": [
-        "All citations",
-        "Only used"
-      ]
+      "enum": ["@*", ""],
+      "enumNames": ["All citations", "Only used"]
     },
     "authors": {
       "type": "array",
@@ -242,7 +222,7 @@
     },
     "prodnum": {
       "type": "string"
-    }, 
+    },
     "diffnum": {
       "type": "string"
     }

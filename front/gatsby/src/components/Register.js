@@ -17,8 +17,7 @@ const Register = (props) => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [institution, setInstitution] = useState('')
-  const query =
-    `mutation($email:String!, $username:String!, $password:String!, $displayName:String, $firstName:String, $lastName:String, $institution:String) {
+  const query = `mutation($email:String!, $username:String!, $password:String!, $displayName:String, $firstName:String, $lastName:String, $institution:String) {
        createUser(user: {
          email:$email,
          username:$username,

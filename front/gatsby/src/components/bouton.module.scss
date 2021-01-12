@@ -1,24 +1,24 @@
 @import '../styles/defaults.scss';
 @import '../styles/variables.scss';
 
-#bouton{
-  margin-top:-0.5rem;
-  margin-right:-0.5rem;
-  margin-left:1rem;
-  display:inline-block;
-  padding:0.25rem 0.5rem;
+#bouton {
+  margin-top: -0.5rem;
+  margin-right: -0.5rem;
+  margin-left: 1rem;
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
   @extend .clickable;
-  &.primary{
+  &.primary {
     @extend .primary-button;
   }
-  &.thin{
-    font-size:0.5rem;
-    opacity:0.9;
-    margin-left:-0.5rem;
-    padding:0.25rem 0rem;
+  &.thin {
+    font-size: 0.5rem;
+    opacity: 0.9;
+    margin-left: -0.5rem;
+    padding: 0.25rem 0rem;
     vertical-align: sub;
     svg {
-      height:0.7rem;
+      height: 0.7rem;
     }
   }
 }

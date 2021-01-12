@@ -9,7 +9,9 @@ const env = {
   GRAPHQL_ENDPOINT: graphqlEndpoint || 'http://localhost:3030/graphql',
   EXPORT_ENDPOINT: exportEndpoint || 'http://localhost:3060',
   PROCESS_ENDPOINT: processEndpoint || 'http://localhost:9090',
-  HUMAN_ID_REGISTER_ENDPOINT: humanIDRegisterEndpoint || 'https://auth-test.huma-num.fr/register?service=http://localhost:3030/authorization-code/callback'
+  HUMAN_ID_REGISTER_ENDPOINT:
+    humanIDRegisterEndpoint ||
+    'https://auth-test.huma-num.fr/register?service=http://localhost:3030/authorization-code/callback',
 }
 
-export default env;
+export default env
