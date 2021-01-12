@@ -1,3 +1,4 @@
+const pkg = require('./package.json')
 const jwt = require('jsonwebtoken')
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -51,10 +52,15 @@ const zoteroAuthScope = ['library_access=1', 'all_groups=read']
 
 const secure = process.env.HTTPS === 'true'
 
+const allowedOrigins = (origin ?? '').split(' ').filter(v => v).map(o => new RegExp('^' + o))
 const corsOptions = {
-  origin: origin,
   optionsSuccessStatus: 200,
   credentials: true,
+  // Access-Control-Allow-Origin header will be added only if the inbound Origin header matches one of the allowed origins
+  origin: (origin, callback) => {
+    const found = allowedOrigins.some(o => o.test(origin))
+    callback(null, found ? origin : false)
+  }
 }
 
 passport.use('zotero', new OAuthStrategy({
@@ -132,11 +138,17 @@ app.use(function (req, res, next) {
   return next()
 })
 
-app.get('/login', (req, res, _) => res.redirect(origin))
+app.get('/version', (req, res) => res.json({
+  name: pkg.name,
+  version: pkg.version,
+  origin: res.get('Access-Control-Allow-Origin')
+}))
+
+app.get('/login', (req, res, _) => res.redirect(res.get('Access-Control-Allow-Origin')))
 
 app.get(
   '/login/openid',
-  (req, res, next) => req.user ? res.redirect(origin) : next(),
+  (req, res, next) => req.user ? res.redirect(res.get('Access-Control-Allow-Origin')) : next(),
   passport.authenticate('oidc')
 )
 
@@ -180,11 +192,11 @@ app.use('/authorization-code/zotero/callback',
       catch (error) {
         console.error('error', error)
         res.statusCode = 401
-        res.redirect(origin)
+        res.redirect(res.get('Access-Control-Allow-Origin'))
       }
     } else {
       res.statusCode = 401
-      res.redirect(origin)
+      res.redirect(res.get('Access-Control-Allow-Origin'))
     }
   })
 
@@ -224,13 +236,13 @@ app.use('/authorization-code/callback',
       secure: secure
     })
 
-    res.redirect(origin)
+    res.redirect(res.get('Access-Control-Allow-Origin'))
   })
 
 app.get('/logout', (req, res) => {
   req.logout()
   res.clearCookie('graphQL-jwt')
-  res.redirect(origin)
+  res.redirect(res.get('Access-Control-Allow-Origin'))
 })
 
 app.post('/login',
