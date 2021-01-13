@@ -10,7 +10,9 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-  if (action.type === 'PROFILE') {
+  if (action.type === 'APPLICATION_CONFIG') {
+    return { ...state, applicationConfig: action.applicationConfig }
+  } else if (action.type === 'PROFILE') {
     if (!action.user) {
       return { ...state, hasBooted: true }
     }

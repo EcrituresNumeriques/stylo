@@ -1,0 +1,7 @@
+{
+  "backendEndpoint": "http://localhost:3030",
+  "graphqlEndpoint": "http://localhost:3030/graphql",
+  "exportEndpoint": "http://localhost:3060",
+  "processEndpoint": "http://localhost:9090",
+  "humanIdRegisterEndpoint": "https://auth-test.huma-num.fr/register?service=http://localhost:3030/authorization-code/callback"
+}

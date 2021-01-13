@@ -7,8 +7,8 @@ import etv from '../helpers/eventTargetValue'
 import styles from './userInfos.module.scss'
 import UserConnectedLogin from './UserAllowedLogin'
 
-const mapStateToProps = ({ password, activeUser, sessionToken }) => {
-  return { password, activeUser, sessionToken }
+const mapStateToProps = ({ password, activeUser, sessionToken, applicationConfig }) => {
+  return { password, activeUser, sessionToken, applicationConfig }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -50,7 +50,8 @@ const ConnectedUser = (props) => {
         const data = await askGraphQL(
           { query, variables },
           'fetching user',
-          props.sessionToken
+          props.sessionToken,
+          props.applicationConfig
         )
         //setDisplayNameH1(data.user.displayName)
         setDisplayName(data.user.displayName)
@@ -75,7 +76,8 @@ const ConnectedUser = (props) => {
     const data = await askGraphQL(
       { query, variables },
       'clear Zotero Token',
-      props.sessionToken
+      props.sessionToken,
+      props.applicationConfig
     )
     setUser(data.updateUser)
     clearZoteroToken()
@@ -98,7 +100,8 @@ const ConnectedUser = (props) => {
       const data = await askGraphQL(
         { query, variables },
         'updating user',
-        props.sessionToken
+        props.sessionToken,
+        props.applicationConfig
       )
       //setDisplayNameH1(data.updateUser.displayName)
       setDisplayName(data.updateUser.displayName)
@@ -132,7 +135,8 @@ const ConnectedUser = (props) => {
       const data = await askGraphQL(
         { query, variables },
         'Adding password to user',
-        props.sessionToken
+        props.sessionToken,
+        props.applicationConfig
       )
       setEmailLogin('')
       setPasswords(data.addCredential.passwords)
@@ -156,7 +160,8 @@ const ConnectedUser = (props) => {
       const data = await askGraphQL(
         { query, variables },
         'Removing password to user',
-        props.sessionToken
+        props.sessionToken,
+        props.applicationConfig
       )
       setPasswords(data.removeCredential.passwords)
 

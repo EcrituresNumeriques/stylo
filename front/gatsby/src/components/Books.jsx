@@ -6,8 +6,8 @@ import styles from './books.module.scss'
 
 import Book from './Book'
 
-const mapStateToProps = ({ activeUser, sessionToken }) => {
-  return { activeUser, sessionToken }
+const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
+  return { activeUser, sessionToken, applicationConfig }
 }
 
 const ConnectedBooks = (props) => {
@@ -27,7 +27,8 @@ const ConnectedBooks = (props) => {
           const data = await askGraphQL(
             { query, variables: user },
             'fetching articles',
-            props.sessionToken
+            props.sessionToken,
+            props.applicationConfig
           )
           //Need to sort by updatedAt desc
           setTags(data.user.tags.reverse())
@@ -55,8 +56,6 @@ const ConnectedBooks = (props) => {
             key={`book-${t._id}`}
             {...t}
             setNeedReload={() => setNeedReload(true)}
-            activeUser={props.activeUser}
-            sessionToken={props.sessionToken}
           />
         ))}
     </section>

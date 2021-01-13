@@ -5,8 +5,8 @@ import askGraphQL from '../helpers/graphQL'
 import styles from './credentials.module.scss'
 import CredentialsUserSelect from './CredentialsUserSelect'
 
-const mapStateToProps = ({ users, activeUser, sessionToken, password }) => {
-  return { users, activeUser, sessionToken, password }
+const mapStateToProps = ({ users, activeUser, sessionToken, password, applicationConfig }) => {
+  return { users, activeUser, sessionToken, password, applicationConfig }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -23,7 +23,8 @@ const Credentials = (props) => {
         const data = await askGraphQL(
           { query },
           'fetching user',
-          props.sessionToken
+          props.sessionToken,
+          props.applicationConfig
         )
         props.updateUser(data.refreshToken.users)
         setIsLoading(false)
@@ -53,7 +54,8 @@ const Credentials = (props) => {
       await askGraphQL(
         { query, variables },
         'update Password',
-        props.sessionToken
+        props.sessionToken,
+        props.applicationConfig
       )
       setPassword('')
       setPasswordO('')
@@ -72,7 +74,8 @@ const Credentials = (props) => {
       const data = await askGraphQL(
         { query, variables },
         'Set user as default',
-        props.sessionToken
+        props.sessionToken,
+        props.applicationConfig
       )
       setIsUpdating(false)
       props.updateUser(data.setPrimaryUser.users)

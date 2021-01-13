@@ -12,6 +12,7 @@ import 'whatwg-fetch'
 import App from './layouts/App'
 import createStore from './createReduxStore'
 import { getUserProfile } from './helpers/userProfile'
+import { getApplicationConfig } from './helpers/applicationConfig'
 
 import Books from './components/Books'
 import Articles from './components/Articles'
@@ -22,9 +23,15 @@ import Write from './components/Write/Write'
 
 const store = createStore()
 
-getUserProfile().then((response) =>
-  store.dispatch({ type: 'PROFILE', ...response })
-)
+;(async () => {
+  const applicationConfig = await getApplicationConfig().then((response) => {
+    store.dispatch({ type: 'APPLICATION_CONFIG', applicationConfig: response })
+    return response
+  })
+  getUserProfile(applicationConfig).then((response) =>
+    store.dispatch({ type: 'PROFILE', ...response })
+  )
+})()
 
 const ArticleID = (props) => {
   const { id, version, compareTo } = useParams()

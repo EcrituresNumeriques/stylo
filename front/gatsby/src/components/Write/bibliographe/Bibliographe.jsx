@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { connect } from 'react-redux'
 import { debounce } from 'lodash'
-import env from '../../../helpers/env'
 
 import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
@@ -15,18 +14,19 @@ import {
 import { toBibtex, validate } from '../../../helpers/bibtex'
 import ReferenceTypeIcon from '../../ReferenceTypeIcon'
 
-const mapStateToProps = ({ sessionToken, activeUser }) => {
-  return { sessionToken, activeUser }
+const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
+  return { sessionToken, activeUser, applicationConfig }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  refreshProfile: () =>
-    getUserProfile().then((response) =>
+  refreshProfile: (applicationConfig) =>
+    getUserProfile(applicationConfig).then((response) =>
       dispatch({ type: 'PROFILE', ...response })
     ),
 })
 
 const ConnectedBibliographe = (props) => {
+  const backendEndpoint = props.applicationConfig.BACKEND_ENDPOINT
   const defaultSuccess = (result) => console.log(result)
   const { refreshProfile } = props
   const success = props.success || defaultSuccess
@@ -115,7 +115,8 @@ const ConnectedBibliographe = (props) => {
         await askGraphQL(
           { query, variables },
           'updating zoteroLink',
-          props.sessionToken
+          props.sessionToken,
+          props.applicationConfig
         )
       } catch (err) {
         setSaving(false)
@@ -248,13 +249,13 @@ const ConnectedBibliographe = (props) => {
                 type="button"
                 onClick={() => {
                   const popup = window.open(
-                    `${env.BACKEND_ENDPOINT}/login/zotero`,
+                    `${backendEndpoint}/login/zotero`,
                     'openid',
                     'width=660&height=360&menubar=0&toolbar=0'
                   )
                   const intervalId = setInterval(() => {
                     if (popup.closed) {
-                      refreshProfile()
+                      refreshProfile(props.applicationConfig)
                       clearInterval(intervalId)
                     }
                   }, 1000)

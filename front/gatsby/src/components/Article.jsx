@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import styles from './Articles.module.scss'
-import env from '../helpers/env'
 
 import Modal from './Modal'
 import Export from './Export'
@@ -18,11 +17,12 @@ import askGraphQL from '../helpers/graphQL'
 import Bouton from './Bouton'
 import * as Icon from 'react-feather'
 
-const mapStateToProps = ({ activeUser, sessionToken }) => {
-  return { activeUser, sessionToken }
+const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
+  return { activeUser, sessionToken, applicationConfig }
 }
 
 const ConnectedArticle = (props) => {
+  const exportEndpoint = props.applicationConfig.exportEndpoint
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -44,7 +44,8 @@ const ConnectedArticle = (props) => {
       await askGraphQL(
         { query, variables },
         'forking Article',
-        props.sessionToken
+        props.sessionToken,
+        props.applicationConfig
       )
       props.setNeedReload()
     } catch (err) {
@@ -63,7 +64,8 @@ const ConnectedArticle = (props) => {
     await askGraphQL(
       { query, variables },
       'Renaming Article',
-      props.sessionToken
+      props.sessionToken,
+      props.applicationConfig
     )
     setTitle(tempTitle)
     setRenaming(false)
@@ -90,7 +92,7 @@ const ConnectedArticle = (props) => {
       <nav>
         <Bouton
           title="Preview"
-          href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/api/v1/htmlArticle/${props._id}?preview=true`}
+          href={`https://via.hypothes.is/${exportEndpoint}/api/v1/htmlArticle/${props._id}?preview=true`}
         >
           <Icon.Eye />
         </Bouton>

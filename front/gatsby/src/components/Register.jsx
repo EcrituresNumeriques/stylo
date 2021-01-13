@@ -7,6 +7,11 @@ import validateEmail from '../helpers/validationEmail'
 import askGraphQL from '../helpers/graphQL'
 
 import styles from './register.module.scss'
+import { connect } from 'react-redux'
+
+const mapStateToProps = ({ applicationConfig }) => {
+  return {  applicationConfig }
+}
 
 const Register = (props) => {
   const history = useHistory()
@@ -63,7 +68,7 @@ const Register = (props) => {
     }
 
     try {
-      await askGraphQL({ query, variables: user })
+      await askGraphQL({ query, variables: user }, 'Register new user', null, props.applicationConfig)
       // if no error thrown, we can navigate to /
       history.push('/')
     } catch (err) {
@@ -140,4 +145,4 @@ const Register = (props) => {
   )
 }
 
-export default Register
+export default connect(mapStateToProps)(Register)
