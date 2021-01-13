@@ -1,0 +1,29 @@
+# Reference docs: https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  base = "front/gatsby"
+  publish = "public"
+  command = "npm run build"
+
+  [build.environment]
+    # System env
+    NODE_VERSION = "12"
+    NODE_ENV = "development"
+
+    # App env (old)
+    GATSBY_EXPORT_ENDPOINT = "https://stylo-dev.huma-num.fr"
+    GATSBY_GRAPHQL_ENDPOINT = "https://stylo-dev.huma-num.fr/graphql"
+    GATSBY_HUMAN_ID_REGISTER_ENDPOINT = ""
+    GATSBY_PROCESS_ENDPOINT = "hhttps://stylo-export.ecrituresnumeriques.ca"
+    GATSBY_STYLO_BACKEND_ENDPOINT = "https://stylo-dev.huma-num.fr"
+
+    # App env (new Snowpack)
+    SNOWPACK_PUBLIC_BACKEND_ENDPOINT = "https://stylo-dev.huma-num.fr"
+    SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT = "https://stylo-dev.huma-num.fr/graphql"
+    HUMAN_ID_REGISTER_ENDPOINT = "https://auth-test.huma-num.fr/register?service=http://stylo-dev.huma-num.fr/authorization-code/callback&return_to=${DEPLOY_PRIME_URL}"
+
+
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
