@@ -1,3 +1,4 @@
+const pkg = require('./package.json')
 const jwt = require('jsonwebtoken')
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -49,12 +50,17 @@ const zoteroAccessTokenEndpoint = process.env.ZOTERO_ACCESS_TOKEN_ENDPOINT || 'h
 const zoteroAuthorizeEndpoint = process.env.ZOTERO_AUTHORIZE_ENDPOINT || 'https://www.zotero.org/oauth/authorize'
 const zoteroAuthScope = ['library_access=1', 'all_groups=read']
 
-const secure = process.env.HTTPS === 'true'
+const isCookieSecure = process.env.HTTPS === 'true'
 
+const allowedOrigins = (origin ?? '').split(' ').filter(v => v).map(o => new RegExp('^' + o))
 const corsOptions = {
-  origin: origin,
   optionsSuccessStatus: 200,
   credentials: true,
+  // Access-Control-Allow-Origin header will be added only if the inbound Origin header matches one of the allowed origins
+  origin: (origin, callback) => {
+    const found = allowedOrigins.some(o => o.test(origin))
+    callback(null, found ? origin : false)
+  }
 }
 
 passport.use('zotero', new OAuthStrategy({
@@ -109,7 +115,12 @@ app.use(session({
   secret: sessionSecret,
   resave: false,
   saveUninitialized: true,
-  store: new MongoStore({ mongooseConnection: mongoose.connection })
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  cookie: {
+    httpOnly: true,
+    secure: isCookieSecure,
+    sameSite: 'none'
+  }
 }))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -132,15 +143,39 @@ app.use(function (req, res, next) {
   return next()
 })
 
-app.get('/login', (req, res, _) => res.redirect(origin))
+app.get('/version', (req, res) => res.json({
+  name: pkg.name,
+  version: pkg.version,
+  origin: res.get(req.headers.referer)
+}))
+
+app.get('/login', (req, res, _) => {
+  res.redirect(req.headers.referer)
+})
 
 app.get(
   '/login/openid',
-  (req, res, next) => req.user ? res.redirect(origin) : next(),
+  (req, res, next) => {
+    if (req.user) {
+      res.redirect(req.headers.referer)
+    } else {
+      console.log(`GET /login/openid - request.headers: ${req.headers}`)
+      console.log(`set origin on session: ${req.headers.referer}`)
+      req.session.origin = req.headers.referer
+      next()
+    }
+  },
   passport.authenticate('oidc')
 )
 
-app.get('/login/zotero', passport.authenticate('zotero', { scope: zoteroAuthScope }))
+app.get(
+  '/login/zotero',
+  (req, res, next) => {
+    req.session.origin = req.headers.referer
+    next()
+  }, 
+  passport.authenticate('zotero', { scope: zoteroAuthScope })
+)
 
 app.get('/profile', async (req, res) => {
   if (req.user) {
@@ -180,16 +215,17 @@ app.use('/authorization-code/zotero/callback',
       catch (error) {
         console.error('error', error)
         res.statusCode = 401
-        res.redirect(origin)
+        res.redirect(req.session.origin)
       }
     } else {
       res.statusCode = 401
-      res.redirect(origin)
+      res.redirect(req.session.origin)
     }
   })
 
 app.use('/authorization-code/callback',
   passport.authenticate('oidc', { failureRedirect: '/error' }), async (req, res) => {
+    console.log(`/authorization-code/zotero/callback - origin in session? ${req.session.origin}`)
     const { email, given_name, family_name, name: displayName } = req.user._json
     let user = await User.findOne({ email })
 
@@ -221,16 +257,17 @@ app.use('/authorization-code/callback',
     res.cookie("graphQL-jwt", token, {
       expires: 0,
       httpOnly: true,
-      secure: secure
+      secure: isCookieSecure,
+      sameSite: 'none'
     })
 
-    res.redirect(origin)
+    res.redirect(req.session.origin)
   })
 
 app.get('/logout', (req, res) => {
   req.logout()
   res.clearCookie('graphQL-jwt')
-  res.redirect(origin)
+  res.redirect(req.headers.referer)
 })
 
 app.post('/login',
@@ -253,7 +290,8 @@ app.post('/login',
     res.cookie("graphQL-jwt", token, {
       expires: 0,
       httpOnly: true,
-      secure: secure
+      secure: isCookieSecure,
+      sameSite: 'none'
     })
 
     res.statusCode = 200
