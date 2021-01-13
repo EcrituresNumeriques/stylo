@@ -59,7 +59,7 @@ const secureCookie = process.env.HTTPS === 'true'
 // Reference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
 const allowedOrigins = (origin ?? '').split(' ').filter(v => v).map(o => new RegExp('^' + o))
 // Note that SameSite=none requires secure
-const sameSiteCookies = secureCookie && allowedOrigins.length === 1 ? 'strict' : 'none'
+const sameSiteCookies = allowedOrigins.length === 1 ? 'strict' : secureCookie ? 'none' : 'lax'
 if (sameSiteCookies === 'none') {
   console.warn('Cookies are configured with `sameSite: none`.')
 }

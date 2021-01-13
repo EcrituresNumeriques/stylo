@@ -7,7 +7,7 @@
         "MONGO_SERVER": "localhost",
         "MONGO_SERVER_PORT": 27017,
         "MONGO_SERVER_DB": "graphql",
-        "ALLOW_CORS_FRONTEND": "http://localhost:3000 https://deploy-preview-\\d+--stylo-dev\\.netlify\\.app",
+        "ALLOW_CORS_FRONTEND": "http://localhost:3000",
         "OPENID_CONNECT_NAME": "humanid",
         "OPENID_CONNECT_ISSUER": "https://auth-test.huma-num.fr",
         "OPENID_CONNECT_AUTH_URL": "https://auth-test.huma-num.fr/oauth2/authorize",
