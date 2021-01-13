@@ -50,7 +50,7 @@ const zoteroAccessTokenEndpoint = process.env.ZOTERO_ACCESS_TOKEN_ENDPOINT || 'h
 const zoteroAuthorizeEndpoint = process.env.ZOTERO_AUTHORIZE_ENDPOINT || 'https://www.zotero.org/oauth/authorize'
 const zoteroAuthScope = ['library_access=1', 'all_groups=read']
 
-const secure = process.env.HTTPS === 'true'
+const isCookieSecure = process.env.HTTPS === 'true'
 
 const allowedOrigins = (origin ?? '').split(' ').filter(v => v).map(o => new RegExp('^' + o))
 const corsOptions = {
@@ -115,7 +115,12 @@ app.use(session({
   secret: sessionSecret,
   resave: false,
   saveUninitialized: true,
-  store: new MongoStore({ mongooseConnection: mongoose.connection })
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  cookie: {
+    httpOnly: true,
+    secure: isCookieSecure,
+    sameSite: 'none'
+  }
 }))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -252,7 +257,8 @@ app.use('/authorization-code/callback',
     res.cookie("graphQL-jwt", token, {
       expires: 0,
       httpOnly: true,
-      secure: secure
+      secure: isCookieSecure,
+      sameSite: 'none'
     })
 
     res.redirect(req.session.origin)
@@ -284,7 +290,8 @@ app.post('/login',
     res.cookie("graphQL-jwt", token, {
       expires: 0,
       httpOnly: true,
-      secure: secure
+      secure: isCookieSecure,
+      sameSite: 'none'
     })
 
     res.statusCode = 200
