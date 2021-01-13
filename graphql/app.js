@@ -141,18 +141,36 @@ app.use(function (req, res, next) {
 app.get('/version', (req, res) => res.json({
   name: pkg.name,
   version: pkg.version,
-  origin: res.get('Access-Control-Allow-Origin')
+  origin: res.get(req.headers.referer)
 }))
 
-app.get('/login', (req, res, _) => res.redirect(res.get('Access-Control-Allow-Origin')))
+app.get('/login', (req, res, _) => {
+  res.redirect(req.headers.referer)
+})
 
 app.get(
   '/login/openid',
-  (req, res, next) => req.user ? res.redirect(res.get('Access-Control-Allow-Origin')) : next(),
+  (req, res, next) => {
+    if (req.user) {
+      res.redirect(req.headers.referer)
+    } else {
+      console.log(`GET /login/openid - request.headers: ${req.headers}`)
+      console.log(`set origin on session: ${req.headers.referer}`)
+      req.session.origin = req.headers.referer
+      next()
+    }
+  },
   passport.authenticate('oidc')
 )
 
-app.get('/login/zotero', passport.authenticate('zotero', { scope: zoteroAuthScope }))
+app.get(
+  '/login/zotero',
+  (req, res, next) => {
+    req.session.origin = req.headers.referer
+    next()
+  }, 
+  passport.authenticate('zotero', { scope: zoteroAuthScope })
+)
 
 app.get('/profile', async (req, res) => {
   if (req.user) {
@@ -192,16 +210,17 @@ app.use('/authorization-code/zotero/callback',
       catch (error) {
         console.error('error', error)
         res.statusCode = 401
-        res.redirect(res.get('Access-Control-Allow-Origin'))
+        res.redirect(req.session.origin)
       }
     } else {
       res.statusCode = 401
-      res.redirect(res.get('Access-Control-Allow-Origin'))
+      res.redirect(req.session.origin)
     }
   })
 
 app.use('/authorization-code/callback',
   passport.authenticate('oidc', { failureRedirect: '/error' }), async (req, res) => {
+    console.log(`/authorization-code/zotero/callback - origin in session? ${req.session.origin}`)
     const { email, given_name, family_name, name: displayName } = req.user._json
     let user = await User.findOne({ email })
 
@@ -236,13 +255,13 @@ app.use('/authorization-code/callback',
       secure: secure
     })
 
-    res.redirect(res.get('Access-Control-Allow-Origin'))
+    res.redirect(req.session.origin)
   })
 
 app.get('/logout', (req, res) => {
   req.logout()
   res.clearCookie('graphQL-jwt')
-  res.redirect(res.get('Access-Control-Allow-Origin'))
+  res.redirect(req.headers.referer)
 })
 
 app.post('/login',
