@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import askGraphQL from '../../helpers/graphQL'
-
+import { connect } from 'react-redux'
 import DiffMatchPatch from 'diff-match-patch'
 
-export default (props) => {
+import askGraphQL from '../../helpers/graphQL'
+
+const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
+  return { sessionToken, activeUser, applicationConfig }
+}
+
+const Compare = (props) => {
   const query = `query{ version(version:"${props.compareTo}"){ _id md } }`
   const [compareMD, setCompareMD] = useState('')
   const [loading, setLoading] = useState(true)
@@ -20,7 +25,8 @@ export default (props) => {
       const data = await askGraphQL(
         { query },
         'fetching version to compareTo',
-        props.sessionToken
+        props.sessionToken,
+        props.applicationConfig
       )
       setCompareMD(data.version.md)
       setLoading(false)
@@ -37,3 +43,5 @@ export default (props) => {
     ></div>
   )
 }
+
+export default connect(mapStateToProps)(Compare)

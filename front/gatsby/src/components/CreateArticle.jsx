@@ -6,8 +6,8 @@ import askGraphQL from '../helpers/graphQL'
 
 import styles from './Articles.module.scss'
 
-const mapStateToProps = ({ activeUser, sessionToken }) => {
-  return { activeUser, sessionToken }
+const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
+  return { activeUser, sessionToken, applicationConfig }
 }
 
 const ConnectedCreateArticle = (props) => {
@@ -38,7 +38,7 @@ const ConnectedCreateArticle = (props) => {
   const createTag = async (event, cb, query, variables, token) => {
     try {
       event.preventDefault()
-      await askGraphQL({ query, variables }, 'creating new Article', token)
+      await askGraphQL({ query, variables }, 'creating new Article', token, props.applicationConfig)
       cb()
     } catch (err) {
       alert(err)

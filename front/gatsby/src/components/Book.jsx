@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import env from '../helpers/env'
 import etv from '../helpers/eventTargetValue'
 
 import askGraphQL from '../helpers/graphQL'
@@ -11,6 +10,7 @@ import howLongAgo from '../helpers/howLongAgo'
 
 import Bouton from './Bouton'
 import * as Icon from 'react-feather'
+import { connect } from 'react-redux'
 
 const alphaSort = (a, b) => {
   if (a.title < b.title) {
@@ -22,7 +22,12 @@ const alphaSort = (a, b) => {
   return 0
 }
 
-export default (props) => {
+const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
+  return { sessionToken, activeUser, applicationConfig }
+}
+
+const Book = (props) => {
+  const exportEndpoint = props.applicationConfig.exportEndpoint
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [tempName, setTempName] = useState(props.name)
@@ -39,7 +44,8 @@ export default (props) => {
     const newTag = await askGraphQL(
       { query, variables },
       'Updating infos of the tag',
-      props.sessionToken
+      props.sessionToken,
+      props.applicationConfig
     )
     setName(newTag.updateTag.name)
     setIsRenaming(false)
@@ -49,18 +55,18 @@ export default (props) => {
     <article>
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
-          <Export {...props} book={true} bookId={props._id} />
+          <Export {...props} book={true} bookId={props._id}/>
         </Modal>
       )}
       <nav>
         <Bouton
           title="Preview"
-          href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/htmlBook/${props._id}?preview=true`}
+          href={`https://via.hypothes.is/${exportEndpoint}/htmlBook/${props._id}?preview=true`}
         >
-          <Icon.Eye />
+          <Icon.Eye/>
         </Bouton>
         <Bouton title="Export" onClick={() => setExporting(true)}>
-          <Icon.Printer />
+          <Icon.Printer/>
         </Bouton>
       </nav>
       {!isRenaming && (
@@ -74,7 +80,7 @@ export default (props) => {
       )}
       {isRenaming && (
         <p>
-          <input value={tempName} onChange={(e) => setTempName(etv(e))} />
+          <input value={tempName} onChange={(e) => setTempName(etv(e))}/>
           <button onClick={() => renameBook()}>Rename</button>
           <button
             onClick={() => {
@@ -103,3 +109,5 @@ export default (props) => {
     </article>
   )
 }
+
+export default connect(mapStateToProps)(Book)

@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import askGraphQL from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
 
-const mapStateToProps = ({ activeUser, sessionToken }) => {
-  return { activeUser, sessionToken }
+const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
+  return { activeUser, sessionToken, applicationConfig }
 }
 
 const ConnectedChapter = (props) => {
@@ -24,7 +24,8 @@ const ConnectedChapter = (props) => {
     await askGraphQL(
       { query, variables },
       'Renaming Article',
-      props.sessionToken
+      props.sessionToken,
+      props.applicationConfig
     )
     setTitle(tempTitle)
     setRenaming(false)

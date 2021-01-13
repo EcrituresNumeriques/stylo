@@ -10,8 +10,8 @@ import CreateArticle from './CreateArticle'
 import styles from './Articles.module.scss'
 import TagManagement from './TagManagement'
 
-const mapStateToProps = ({ activeUser, sessionToken }) => {
-  return { activeUser, sessionToken }
+const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
+  return { activeUser, sessionToken, applicationConfig }
 }
 
 const ConnectedArticles = (props) => {
@@ -63,7 +63,8 @@ const ConnectedArticles = (props) => {
           const data = await askGraphQL(
             { query, variables: user },
             'fetching articles',
-            props.sessionToken
+            props.sessionToken,
+            props.applicationConfig
           )
           //Need to sort by updatedAt desc
           setArticles(data.user.articles.reverse())

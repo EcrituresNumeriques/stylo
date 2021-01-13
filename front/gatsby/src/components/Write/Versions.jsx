@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom'
 
 import styles from './versions.module.scss'
 
-import env from '../../helpers/env'
-
 import Modal from '../Modal'
 import Export from '../Export'
+import { connect } from 'react-redux'
 
 Date.prototype.getUTCMinutesDoubleDigit = function () {
   if (this.getUTCMinutes() < 10) {
@@ -47,7 +46,11 @@ Date.prototype.formatMMDDYYYY = function () {
   )
 }
 
-export default (props) => {
+const mapStateToProps = ({ applicationConfig }) => {
+  return { applicationConfig }
+}
+
+const Versions = (props) => {
   //Default if live
   let expVar = {
     article: true,
@@ -152,7 +155,7 @@ export default (props) => {
                     export
                   </p>
                   <a
-                    href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/api/v1/htmlVersion/${v._id}?preview=true`}
+                    href={`https://via.hypothes.is/${props.applicationConfig.exportEndpoint}/api/v1/htmlVersion/${v._id}?preview=true`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -167,3 +170,5 @@ export default (props) => {
     </section>
   )
 }
+
+export default connect(mapStateToProps)(Versions)

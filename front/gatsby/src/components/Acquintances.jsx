@@ -5,8 +5,8 @@ import styles from './acquintances.module.scss'
 
 import askGraphQL from '../helpers/graphQL'
 
-const mapStateToProps = ({ sessionToken, activeUser }) => {
-  return { sessionToken, activeUser }
+const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
+  return { sessionToken, activeUser, applicationConfig }
 }
 
 const ConnectedAcquintances = (props) => {
@@ -22,7 +22,8 @@ const ConnectedAcquintances = (props) => {
     await askGraphQL(
       { query, variables },
       'Adding acquintances',
-      props.sessionToken
+      props.sessionToken,
+      props.applicationConfig
     )
     setContact('')
     setLoading(true)
@@ -43,7 +44,8 @@ const ConnectedAcquintances = (props) => {
       await askGraphQL(
         { query, variables },
         'Sharing Article',
-        props.sessionToken
+        props.sessionToken,
+        props.applicationConfig
       )
       props.setNeedReload()
       props.cancel()
@@ -68,7 +70,8 @@ const ConnectedAcquintances = (props) => {
         const data = await askGraphQL(
           { query, variables },
           'Fetching acquintances',
-          props.sessionToken
+          props.sessionToken,
+          props.applicationConfig
         )
         setLoading(false)
         setAcquintances(data.user.acquintances)

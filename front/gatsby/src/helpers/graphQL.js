@@ -1,11 +1,10 @@
-import env from '../helpers/env'
-
 const askGraphQL = async (
   payload,
   action = 'fetching from the server',
-  token = null
+  token = null,
+  applicationConfig
 ) => {
-  const response = await fetch(env.GRAPHQL_ENDPOINT, {
+  const response = await fetch(applicationConfig.graphqlEndpoint, {
     method: 'POST',
     mode: 'cors',
     credentials: 'include',
@@ -24,7 +23,7 @@ const askGraphQL = async (
     if (res) {
       res = res[0].message
     }
-    //alert(`${JSON.stringify(res)}.\nSomething wrong happened during: ${action} =>  ${response.status}, ${response.statusText}.`);
+    console.error(`${JSON.stringify(res)}.\nSomething wrong happened during: ${action} =>  ${response.status}, ${response.statusText}.`)
     throw new Error(res)
   }
 

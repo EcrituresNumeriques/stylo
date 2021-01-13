@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import styles from './Articles.module.scss'
 import askGraphQL from '../helpers/graphQL'
 
-const mapStateToProps = ({ sessionToken, activeUser }) => {
-  return { sessionToken, activeUser }
+const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
+  return { sessionToken, activeUser, applicationConfig }
 }
 
 const ConnectedArticleDelete = (props) => {
@@ -16,7 +16,8 @@ const ConnectedArticleDelete = (props) => {
       await askGraphQL(
         { query, variables },
         'Deleting Article',
-        props.sessionToken
+        props.sessionToken,
+        props.applicationConfig
       )
       props.setNeedReload()
     } catch (err) {

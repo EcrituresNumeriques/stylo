@@ -2,23 +2,22 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import env from '../helpers/env'
-
 import styles from './header.module.scss'
 
 // Gestionnaire d'état (quel user est enregistré, enregistré ou non, etc.)
-const mapStateToProps = ({ logedIn, activeUser }) => {
-  return { logedIn, activeUser }
+const mapStateToProps = ({ logedIn, activeUser, applicationConfig }) => {
+  return { logedIn, activeUser, applicationConfig }
 }
 
-const ConnectedHeader = (props) => {
+const Header = (props) => {
+  const backendEndpoint = props.applicationConfig.backendEndpoint
   const nav = props.logedIn ? (
     <>
       <Link to="/credentials">{props.activeUser.displayName}</Link>
       <Link to="/books">Books</Link>
       <Link to="/articles">Articles</Link>
       <a
-        href={env.BACKEND_ENDPOINT + '/logout'}
+        href={backendEndpoint + '/logout'}
         className={styles.logoutAction}
       >
         Log out
@@ -55,5 +54,4 @@ const ConnectedHeader = (props) => {
   )
 }
 
-const Header = connect(mapStateToProps)(ConnectedHeader)
-export default Header
+export default connect(mapStateToProps)(Header)

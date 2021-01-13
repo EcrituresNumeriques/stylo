@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-
-import env from '../helpers/env'
 import etv from '../helpers/eventTargetValue'
 
 import styles from './export.module.scss'
+import { connect } from 'react-redux'
 
 const filterAlphaNum = (string) => {
   return string
@@ -15,7 +14,13 @@ const filterAlphaNum = (string) => {
     .replace(/[^A-Za-z0-9_]/g, '')
 }
 
-export default (props) => {
+const mapStateToProps = ({ applicationConfig }) => {
+  return { applicationConfig }
+}
+
+const Export = (props) => {
+  const processEndpoint = props.applicationConfig.processEndpoint
+  const exportEndpoint = props.applicationConfig.exportEndpoint
   const [format, setFormat] = useState('html5')
   const [csl, setCsl] = useState('chicagomodified')
   const [toc, setToc] = useState('false')
@@ -27,11 +32,11 @@ export default (props) => {
       //For books
       window.open(
         `${
-          env.PROCESS_ENDPOINT
+          processEndpoint
         }/cgi-bin/exportBook/exec.cgi?id=${filterAlphaNum(props.name)}&book=${
           props.bookId
         }&processor=xelatex&source=${
-          env.EXPORT_ENDPOINT
+          exportEndpoint
         }/&format=${format}&bibstyle=${csl}&toc=${toc}&tld=${tld}&unnumbered=${unnumbered}`,
         '_blank'
       )
@@ -39,13 +44,13 @@ export default (props) => {
       //For articles/versions
       window.open(
         `${
-          env.PROCESS_ENDPOINT
+          processEndpoint
         }/cgi-bin/exportArticle/exec.cgi?id=${filterAlphaNum(props.title)}v${
           props.version
         }-${props.revision}&version=${
           props.versionId
         }&processor=xelatex&source=${
-          env.EXPORT_ENDPOINT
+          exportEndpoint
         }/&format=${format}&bibstyle=${csl}&toc=${toc}`,
         '_blank'
       )
@@ -100,3 +105,6 @@ export default (props) => {
     </section>
   )
 }
+
+
+export default connect(mapStateToProps)(Export)

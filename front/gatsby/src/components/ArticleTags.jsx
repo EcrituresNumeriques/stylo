@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import askGraphQL from '../helpers/graphQL'
 import styles from './Articles.module.scss'
 
-const mapStateToProps = ({ activeUser, sessionToken }) => {
-  return { activeUser, sessionToken }
+const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
+  return { activeUser, sessionToken, applicationConfig }
 }
 
 const ConnectedArticleTags = (props) => {
@@ -21,7 +21,8 @@ const ConnectedArticleTags = (props) => {
       await askGraphQL(
         { query, variables },
         'adding to tag',
-        props.sessionToken
+        props.sessionToken,
+        props.applicationConfig
       )
     } catch (err) {
       props.needReload()
@@ -40,7 +41,8 @@ const ConnectedArticleTags = (props) => {
       await askGraphQL(
         { query, variables },
         'removing from tag',
-        props.sessionToken
+        props.sessionToken,
+        props.applicationConfig
       )
     } catch (err) {
       props.needReload()

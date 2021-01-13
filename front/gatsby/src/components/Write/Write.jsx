@@ -13,8 +13,8 @@ import CompareSelect from './CompareSelect'
 
 import useDebounce from '../../hooks/debounce'
 
-const mapStateToProps = ({ sessionToken, activeUser }) => {
-  return { sessionToken, activeUser }
+const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
+  return { sessionToken, activeUser, applicationConfig }
 }
 
 const ConnectedWrite = (props) => {
@@ -119,7 +119,8 @@ const ConnectedWrite = (props) => {
           variables: { ...variables, ...live, autosave, major, message },
         },
         'saving new version',
-        props.sessionToken
+        props.sessionToken,
+        props.applicationConfig
       )
       if (versions[0]._id !== response.saveVersion._id) {
         setVersions([response.saveVersion, ...versions])
@@ -166,7 +167,8 @@ const ConnectedWrite = (props) => {
       const data = await askGraphQL(
         { query: fullQuery, variables },
         'fetching Live version',
-        props.sessionToken
+        props.sessionToken,
+        props.applicationConfig
       )
         .then(({ version, article }) => ({ version, article }))
         .catch((error) => {

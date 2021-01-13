@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import styles from './edit.module.scss'
 
 import etv from '../../helpers/eventTargetValue'
 import howLongAgo from '../../helpers/howLongAgo'
-import env from '../../helpers/env'
 
 import Modal from '../Modal'
 import Export from '../Export'
 
+const mapStateToProps = ({ applicationConfig }) => {
+  return { applicationConfig }
+}
+
 // composant minimum
-export default (props) => {
+const Edit = (props) => {
   //Default if live
   let expVar = {
     article: true,
@@ -100,7 +104,7 @@ export default (props) => {
                 Export
               </p>
               <a
-                href={`https://via.hypothes.is/${env.EXPORT_ENDPOINT}/api/v1/htmlArticle/${props.article._id}?preview=true`}
+                href={`https://via.hypothes.is/${props.applicationConfig.exportEndpoint}/api/v1/htmlArticle/${props.article._id}?preview=true`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.button}
@@ -131,3 +135,5 @@ export default (props) => {
     </section>
   )
 }
+
+export default connect(mapStateToProps)(Edit)

@@ -6,8 +6,8 @@ import etv from '../helpers/eventTargetValue'
 import Bouton from './Bouton'
 import * as Icon from 'react-feather'
 
-const mapStateToProps = ({ activeUser, sessionToken }) => {
-  return { activeUser, sessionToken }
+const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
+  return { activeUser, sessionToken, applicationConfig }
 }
 
 const findAndUpdateTag = (tags, id) => {
@@ -27,7 +27,7 @@ export default connect(mapStateToProps)((props) => {
   const deleteTag = async (id) => {
     const query = `mutation($user:ID!,$tag:ID!){deleteTag(user:$user,tag:$tag){ _id }}`
     const variables = { user: props.activeUser._id, tag: props.t._id }
-    await askGraphQL({ query, variables }, 'Deleting tag', props.sessionToken)
+    await askGraphQL({ query, variables }, 'Deleting tag', props.sessionToken, props.applicationConfig)
     props.setNeedReload()
   }
 
@@ -40,7 +40,7 @@ export default connect(mapStateToProps)((props) => {
       description: tempDescription,
       color: tempColor,
     }
-    await askGraphQL({ query, variables }, 'update tag', props.sessionToken)
+    await askGraphQL({ query, variables }, 'update tag', props.sessionToken, props.applicationConfig)
     props.setNeedReload()
     setEdit(false)
   }
