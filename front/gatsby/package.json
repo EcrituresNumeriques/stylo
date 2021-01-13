@@ -11,7 +11,7 @@
     "lint": "prettier --check src",
     "lint:fix": "prettier --write src",
     "start": "snowpack dev",
-    "build": "npm run prebuild && snowpack build",
+    "build": "snowpack build",
     "develop": "npm run start",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
