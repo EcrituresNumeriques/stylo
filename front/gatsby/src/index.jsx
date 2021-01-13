@@ -15,6 +15,7 @@ import Register from './components/Register'
 import PrivateRoute from './components/PrivateRoute'
 import Credentials from './components/Credentials'
 import Write from './components/Write/Write'
+import NotFound from './components/404'
 
 const store = createStore()
 
@@ -32,9 +33,7 @@ const ArticleID = (props) => {
   const { id, version, compareTo } = useParams()
   return (
     <App layout="fullPage">
-      <PrivateRoute>
-        <Write {...props} id={id} version={version} compareTo={compareTo} />
-      </PrivateRoute>
+      <Write {...props} id={id} version={version} compareTo={compareTo} />
     </App>
   )
 }
@@ -49,40 +48,57 @@ render(
               <Register />
             </App>
           </Route>
-          <PrivateRoute>
-            <Route path="/books">
+          <Route path="/books">
+            <PrivateRoute>
               <App layout="fullPage">
                 <Books />
               </App>
-            </Route>
-            <Route path="/articles">
+            </PrivateRoute>
+          </Route>
+          <Route path="/articles">
+            <PrivateRoute>
               <App layout="fullPage">
                 <Articles />
               </App>
-            </Route>
-            <Route path="/credentials">
+            </PrivateRoute>
+          </Route>
+          <Route path="/credentials">
+            <PrivateRoute>
               <App layout="wrapped">
                 <Credentials />
               </App>
-            </Route>
-            <Route path={`/article/:id/version/:version`}>
+            </PrivateRoute>
+          </Route>
+          <Route path={`/article/:id/version/:version/compare/:compareTo`}>
+            <PrivateRoute>
               <ArticleID />
-            </Route>
-            <Route path={`/article/:id`}>
+            </PrivateRoute>
+          </Route>
+          <Route path={`/article/:id/version/:version`}>
+            <PrivateRoute>
               <ArticleID />
-            </Route>
-            <Route path={`/article/:id/version/:version/compare/:compareTo`}>
+            </PrivateRoute>
+          </Route>
+          <Route path={`/article/:id/compare/:compareTo`}>
+            <PrivateRoute>
               <ArticleID />
-            </Route>
-            <Route path={`/article/:id/compare/:compareTo`}>
+            </PrivateRoute>
+          </Route>
+          <Route path={`/article/:id`}>
+            <PrivateRoute>
               <ArticleID />
-            </Route>
-            <Route path="/">
+            </PrivateRoute>
+          </Route>
+          <Route exact path="/">
+            <PrivateRoute>
               <App layout="fullPage">
                 <Articles />
               </App>
-            </Route>
-          </PrivateRoute>
+            </PrivateRoute>
+          </Route>
+          <Route path="*">
+            <NotFound />
+          </Route>
         </Switch>
       </Router>
     </Provider>
