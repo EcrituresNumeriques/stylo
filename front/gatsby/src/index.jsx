@@ -1,11 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  useParams,
-} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch, useParams, } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import 'whatwg-fetch'
 
@@ -54,9 +49,7 @@ render(
               <Register />
             </App>
           </Route>
-        </Switch>
-        <PrivateRoute>
-          <Switch>
+          <PrivateRoute>
             <Route path="/books">
               <App layout="fullPage">
                 <Books />
@@ -89,8 +82,8 @@ render(
                 <Articles />
               </App>
             </Route>
-          </Switch>
-        </PrivateRoute>
+          </PrivateRoute>
+        </Switch>
       </Router>
     </Provider>
   </React.StrictMode>,
