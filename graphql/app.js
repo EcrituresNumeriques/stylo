@@ -50,9 +50,21 @@ const zoteroAccessTokenEndpoint = process.env.ZOTERO_ACCESS_TOKEN_ENDPOINT || 'h
 const zoteroAuthorizeEndpoint = process.env.ZOTERO_AUTHORIZE_ENDPOINT || 'https://www.zotero.org/oauth/authorize'
 const zoteroAuthScope = ['library_access=1', 'all_groups=read']
 
-const isCookieSecure = process.env.HTTPS === 'true'
-
+//A Secure cookie is only sent to the server with an encrypted request over the HTTPS protocol.
+// Note that insecure sites (http:) can't set cookies with the Secure directive.
+const secureCookie = process.env.HTTPS === 'true'
+// When we have multiple origins (for instance, using deploy previews on different domains) then cookies `sameSite` attribute is permissive (using 'none' value).
+// When we have a single origin (most likely when running in a production environment) then we are using a secure/strict value for cookies `sameSite` attribute ('strict').
+// When using 'strict' value, cookies will not be sent along with requests initiated by third-party websites.
+// Reference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
 const allowedOrigins = (origin ?? '').split(' ').filter(v => v).map(o => new RegExp('^' + o))
+// Note that SameSite=none requires secure
+const sameSiteCookies = secureCookie && allowedOrigins.length === 1 ? 'strict' : 'none'
+if (sameSiteCookies === 'none') {
+  console.warn('Cookies are configured with `sameSite: none`.')
+}
+
+
 const corsOptions = {
   optionsSuccessStatus: 200,
   credentials: true,
@@ -118,8 +130,8 @@ app.use(session({
   store: new MongoStore({ mongooseConnection: mongoose.connection }),
   cookie: {
     httpOnly: true,
-    secure: isCookieSecure,
-    sameSite: 'none'
+    secure: secureCookie,
+    sameSite: sameSiteCookies
   }
 }))
 app.use(passport.initialize())
@@ -127,12 +139,9 @@ app.use(passport.session())
 
 app.use(function (req, res, next) {
   const jwtToken = req.cookies && req.cookies['graphQL-jwt']
-
   if (jwtToken) {
     try {
-      const user = jwt.verify(jwtToken, jwtSecret)
-
-      req.user = user
+      req.user = jwt.verify(jwtToken, jwtSecret)
       req.isAuth = true
     }
     catch (error) {
@@ -173,7 +182,7 @@ app.get(
   (req, res, next) => {
     req.session.origin = req.headers.referer
     next()
-  }, 
+  },
   passport.authenticate('zotero', { scope: zoteroAuthScope })
 )
 
@@ -196,15 +205,14 @@ app.use('/authorization-code/zotero/callback',
     if (jwtToken) {
       try {
         // reverts "req.user" with the user connected
-        const user = jwt.verify(jwtToken, jwtSecret)
-        req.user = user
+        req.user = jwt.verify(jwtToken, jwtSecret)
         req.isAuth = true
         const email = req.user.email
 
         // save the Zotero token
         const authenticatedUser = await User.findOne({ email })
         authenticatedUser.zoteroToken = zoteroToken
-        const result = await authenticatedUser.save()
+        await authenticatedUser.save()
 
         res.statusCode = 200
         res.set({
@@ -257,8 +265,8 @@ app.use('/authorization-code/callback',
     res.cookie("graphQL-jwt", token, {
       expires: 0,
       httpOnly: true,
-      secure: isCookieSecure,
-      sameSite: 'none'
+      secure: secureCookie,
+      sameSite: sameSiteCookies
     })
 
     res.redirect(req.session.origin)
@@ -272,7 +280,7 @@ app.get('/logout', (req, res) => {
 
 app.post('/login',
   passport.authenticate('local', { failWithError: true }),
-  function onSuccess(req, res, next) {
+  function onSuccess(req, res, _) {
     const userPassword = req.user
     const payload = {
       email: userPassword.email,
@@ -290,14 +298,14 @@ app.post('/login',
     res.cookie("graphQL-jwt", token, {
       expires: 0,
       httpOnly: true,
-      secure: isCookieSecure,
-      sameSite: 'none'
+      secure: secureCookie,
+      sameSite: sameSiteCookies
     })
 
     res.statusCode = 200
     res.json({password: userPassword, users: userPassword.users, token})
   },
-  function onFailure (error, req, res, next) {
+  function onFailure (error, req, res, _) {
     console.error('error', error)
     res.statusCode = 401
     res.json({ error })
