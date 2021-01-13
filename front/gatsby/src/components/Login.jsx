@@ -2,11 +2,10 @@ import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import env from '../helpers/env'
 import styles from './login.module.scss'
 
-const mapStateToProps = ({ activeUser }) => {
-  return { activeUser }
+const mapStateToProps = ({ activeUser, applicationConfig }) => {
+  return { activeUser, applicationConfig }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -16,16 +15,16 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const ConnectedLogin = ({ login }) => {
+const Login = ({ login, applicationConfig }) => {
   const usernameInput = useRef(null)
   const passwordInput = useRef(null)
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event, applicationConfig) => {
     event.preventDefault()
     const username = usernameInput.current.value
     const password = passwordInput.current.value
 
-    fetch(env.BACKEND_ENDPOINT + '/login', {
+    fetch(applicationConfig.backendEndpoint + '/login', {
       method: 'POST',
       // this parameter enables the cookie directive (set-cookie)
       credentials: 'include',
@@ -52,7 +51,7 @@ const ConnectedLogin = ({ login }) => {
       <section className={styles.disclaimer}>
         <p>
           Looking for technical and editing support?
-          <br />
+          <br/>
           Join the{' '}
           <a
             href="https://ecrituresnumeriques.ca/en/2019/10/25/Stylo-technical-and-editing-support"
@@ -64,9 +63,9 @@ const ConnectedLogin = ({ login }) => {
         </p>
       </section>
 
-      <section className={styles.box}>
+      {applicationConfig && <section className={styles.box}>
         <h1 className={styles.loginTitle}>Login</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(event) => handleSubmit(event, applicationConfig)}>
           <fieldset>
             <legend>
               Connect via Huma-Num <small>(recommended)</small>
@@ -74,13 +73,13 @@ const ConnectedLogin = ({ login }) => {
             <p>
               <a
                 className={styles.humaNumConnectBtn}
-                href={env.BACKEND_ENDPOINT + '/login/openid'}
+                href={applicationConfig.backendEndpoint + '/login/openid'}
               >
                 Connect with Huma-Num
               </a>
               <a
                 className={styles.humaNumCreateAccountBtn}
-                href={env.HUMAN_ID_REGISTER_ENDPOINT}
+                href={applicationConfig.humanIdRegisterEndpoint}
               >
                 Create a Huma-Num account
               </a>
@@ -91,7 +90,7 @@ const ConnectedLogin = ({ login }) => {
               account, the two accounts will be automatically merged.
             </p>
           </fieldset>
-          <hr />
+          <hr/>
           <fieldset>
             <legend>Connect with an existing Stylo account</legend>
             <div className={styles.fieldHorizontal}>
@@ -114,7 +113,7 @@ const ConnectedLogin = ({ login }) => {
               />
             </div>
             <div className={styles.fieldHorizontal}>
-              <label />
+              <label/>
               <button type="submit">Login</button>
             </div>
             <p className="note">
@@ -123,10 +122,9 @@ const ConnectedLogin = ({ login }) => {
           </fieldset>
         </form>
       </section>
+      }
     </>
   )
 }
 
-const Login = connect(mapStateToProps, mapDispatchToProps)(ConnectedLogin)
-
-export default Login
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

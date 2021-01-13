@@ -10,9 +10,10 @@ const mapStateToProps = ({ logedIn, activeUser, applicationConfig }) => {
 }
 
 const Header = (props) => {
-  const backendEndpoint = props.applicationConfig.backendEndpoint
-  const nav = props.logedIn ? (
-    <>
+  let nav
+  if (props.logedIn) {
+    const backendEndpoint = props.applicationConfig.backendEndpoint
+    nav = <>
       <Link to="/credentials">{props.activeUser.displayName}</Link>
       <Link to="/books">Books</Link>
       <Link to="/articles">Articles</Link>
@@ -23,15 +24,14 @@ const Header = (props) => {
         Log out
       </a>
     </>
-  ) : (
-    <>
+  } else {
+    nav = <>
       <Link to="/">Login</Link>
       <Link to="/register" className={styles.registerAction}>
         Register
       </Link>
     </>
-  )
-
+  }
   return (
     <header className={props.className}>
       <section className={styles.header}>
