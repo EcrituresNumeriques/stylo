@@ -5,7 +5,7 @@
 Install all dependencies
 
 ```sh
-npm install
+npm ci
 ```
 
 Run the server
