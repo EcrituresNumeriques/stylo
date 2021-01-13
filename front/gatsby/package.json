@@ -6,10 +6,12 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "prebuild": "node tasks/env.js",
+    "prestart": "node tasks/env.js",
     "lint": "prettier --check src",
     "lint:fix": "prettier --write src",
     "start": "snowpack dev",
-    "build": "snowpack build",
+    "build": "npm run prebuild && snowpack build",
     "develop": "npm run start",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
@@ -43,7 +45,6 @@
     "url": "https://github.com/ecrituresnumeriques/stylo/issues"
   },
   "devDependencies": {
-    "@snowpack/plugin-dotenv": "^2.0.5",
     "@snowpack/plugin-sass": "^1.2.0",
     "jest": "^26.4.2",
     "node-fetch": "^2.6.1",

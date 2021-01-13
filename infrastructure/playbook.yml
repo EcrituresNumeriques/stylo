@@ -69,7 +69,8 @@
         dest: "{{ item.dest }}"
       loop:
         - { src: './stylo.env', dest: '~/stylo/stylo.env' }
-        - { src: './stylo.env', dest: '~/stylo/front/gatsby/.env.production' }
+        # TODO: remove
+        #- { src: './stylo.env', dest: '~/stylo/front/gatsby/.env.production' }
 
     - name: Rebuild and restart Docker containers
       docker_compose:

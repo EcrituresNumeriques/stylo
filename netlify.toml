@@ -6,7 +6,7 @@
 
   [build.environment]
     # System env
-    NODE_VERSION = "12"
+    NODE_VERSION = "14"
     NODE_ENV = "development"
 
     # App env (old)
