@@ -1,8 +1,7 @@
 # Reference docs: https://docs.netlify.com/configure-builds/file-based-configuration/
-
 [build]
   base = "front/gatsby"
-  publish = "public"
+  publish = "build"
   command = "npm run build"
 
   [build.environment]
@@ -18,10 +17,11 @@
     GATSBY_STYLO_BACKEND_ENDPOINT = "https://stylo-dev.huma-num.fr"
 
     # App env (new Snowpack)
-    SNOWPACK_PUBLIC_BACKEND_ENDPOINT = "https://stylo-dev.huma-num.fr"
+    SNOWPACK_PUBLIC_EXPORT_ENDPOINT = "https://stylo-dev.huma-num.fr"
     SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT = "https://stylo-dev.huma-num.fr/graphql"
-    HUMAN_ID_REGISTER_ENDPOINT = "https://auth-test.huma-num.fr/register?service=http://stylo-dev.huma-num.fr/authorization-code/callback&return_to=${DEPLOY_PRIME_URL}"
-
+    SNOWPACK_PUBLIC_PROCESS_ENDPOINT = "hhttps://stylo-export.ecrituresnumeriques.ca"
+    SNOWPACK_PUBLIC_BACKEND_ENDPOINT = "https://stylo-dev.huma-num.fr"
+    SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT = "https://auth-test.huma-num.fr/register?service=http://stylo-dev.huma-num.fr/authorization-code/callback"
 
 [[redirects]]
   from = "/*"
