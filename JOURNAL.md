@@ -1,5 +1,33 @@
 # Journal de développement
 
+## Mercredi 13 janvier 2021
+
+### Ce que j'ai aimé/appris
+
+- Remplacer Gatsby/Webpack en 2h par Vanilla/Snowpack (et gagner en temps d'install, temps de build)
+- Moins de magie avec Snowpack
+- On commence à avoir des éléments d'UX qui arrivent (merci @maiwann !)
+- Réduction du stress sur la "magie" du démarrage de l'application (côté front)
+- Surprenants apprentissages sur les cookies (modes `Lax` et `Strict`), combiné à CORS
+- Meilleure compréhension de CORS et des cookies avec le branchement
+- Gagner en visibilité grâce aux "Deploy Preview" — top pour refacto ou ne pas casser `stylo-dev` à chaque merge de pull request
+- Déployer le front en 25Mo au lieu de 750Mo
+
+### Ce que j'ai trouvé difficile
+
+- Un peu galéré sur l'erreur "Password"… et la structure de base de données en général
+- Un peu en manque de jus
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- Prendre le temps de creuser Snowpack, pour mieux l'utiliser (notamment distinguer le build de production/dev, etc.)
+- Alterner pair et solo
+- Pairer : alterner qui écrit/regarde via le partage d'écran
+
+## Mercredi 2 décembre 2020
+
+N/A
+
 ## Mercredi 18 novembre 2020
 
 ### Ce que j'ai aimé/appris
