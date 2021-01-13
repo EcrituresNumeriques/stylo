@@ -10,7 +10,7 @@ export default (live, delay) => {
     return () => {
       clearTimeout(handler)
     }
-  }, [live])
+  }, [live, delay])
 
   return debouncedLive
 }
