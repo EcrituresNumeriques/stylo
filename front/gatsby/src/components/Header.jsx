@@ -13,24 +13,25 @@ const Header = (props) => {
   let nav
   if (props.logedIn) {
     const backendEndpoint = props.applicationConfig.backendEndpoint
-    nav = <>
-      <Link to="/credentials">{props.activeUser.displayName}</Link>
-      <Link to="/books">Books</Link>
-      <Link to="/articles">Articles</Link>
-      <a
-        href={backendEndpoint + '/logout'}
-        className={styles.logoutAction}
-      >
-        Log out
-      </a>
-    </>
+    nav = (
+      <>
+        <Link to="/credentials">{props.activeUser.displayName}</Link>
+        <Link to="/books">Books</Link>
+        <Link to="/articles">Articles</Link>
+        <a href={backendEndpoint + '/logout'} className={styles.logoutAction}>
+          Log out
+        </a>
+      </>
+    )
   } else {
-    nav = <>
-      <Link to="/">Login</Link>
-      <Link to="/register" className={styles.registerAction}>
-        Register
-      </Link>
-    </>
+    nav = (
+      <>
+        <Link to="/">Login</Link>
+        <Link to="/register" className={styles.registerAction}>
+          Register
+        </Link>
+      </>
+    )
   }
   return (
     <header className={props.className}>

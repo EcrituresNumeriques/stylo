@@ -23,7 +23,13 @@ const askGraphQL = async (
     if (res) {
       res = res[0].message
     }
-    console.error(`${JSON.stringify(res)}.\nSomething wrong happened during: ${action} =>  ${response.status}, ${response.statusText}.`)
+    console.error(
+      `${JSON.stringify(
+        res
+      )}.\nSomething wrong happened during: ${action} =>  ${response.status}, ${
+        response.statusText
+      }.`
+    )
     throw new Error(res)
   }
 

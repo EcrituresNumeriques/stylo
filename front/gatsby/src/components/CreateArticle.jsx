@@ -38,7 +38,12 @@ const ConnectedCreateArticle = (props) => {
   const createTag = async (event, cb, query, variables, token) => {
     try {
       event.preventDefault()
-      await askGraphQL({ query, variables }, 'creating new Article', token, props.applicationConfig)
+      await askGraphQL(
+        { query, variables },
+        'creating new Article',
+        token,
+        props.applicationConfig
+      )
       cb()
     } catch (err) {
       alert(err)

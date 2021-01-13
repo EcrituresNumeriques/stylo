@@ -10,7 +10,7 @@ import styles from './register.module.scss'
 import { connect } from 'react-redux'
 
 const mapStateToProps = ({ applicationConfig }) => {
-  return {  applicationConfig }
+  return { applicationConfig }
 }
 
 const Register = (props) => {
@@ -68,7 +68,12 @@ const Register = (props) => {
     }
 
     try {
-      await askGraphQL({ query, variables: user }, 'Register new user', null, props.applicationConfig)
+      await askGraphQL(
+        { query, variables: user },
+        'Register new user',
+        null,
+        props.applicationConfig
+      )
       // if no error thrown, we can navigate to /
       history.push('/')
     } catch (err) {

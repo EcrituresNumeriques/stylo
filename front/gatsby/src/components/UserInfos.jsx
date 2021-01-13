@@ -7,7 +7,12 @@ import etv from '../helpers/eventTargetValue'
 import styles from './userInfos.module.scss'
 import UserConnectedLogin from './UserAllowedLogin'
 
-const mapStateToProps = ({ password, activeUser, sessionToken, applicationConfig }) => {
+const mapStateToProps = ({
+  password,
+  activeUser,
+  sessionToken,
+  applicationConfig,
+}) => {
   return { password, activeUser, sessionToken, applicationConfig }
 }
 const mapDispatchToProps = (dispatch) => {

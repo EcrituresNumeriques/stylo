@@ -48,11 +48,13 @@ render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
-        <Route path="/register">
-          <App layout="centered">
-            <Register />
-          </App>
-        </Route>
+        <Switch>
+          <Route path="/register">
+            <App layout="centered">
+              <Register />
+            </App>
+          </Route>
+        </Switch>
         <PrivateRoute>
           <Switch>
             <Route path="/books">
