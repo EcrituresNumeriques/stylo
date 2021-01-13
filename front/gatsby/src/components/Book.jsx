@@ -55,7 +55,7 @@ const Book = (props) => {
     <article>
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
-          <Export {...props} book={true} bookId={props._id}/>
+          <Export {...props} book={true} bookId={props._id} />
         </Modal>
       )}
       <nav>
@@ -63,10 +63,10 @@ const Book = (props) => {
           title="Preview"
           href={`https://via.hypothes.is/${exportEndpoint}/htmlBook/${props._id}?preview=true`}
         >
-          <Icon.Eye/>
+          <Icon.Eye />
         </Bouton>
         <Bouton title="Export" onClick={() => setExporting(true)}>
-          <Icon.Printer/>
+          <Icon.Printer />
         </Bouton>
       </nav>
       {!isRenaming && (
@@ -80,7 +80,7 @@ const Book = (props) => {
       )}
       {isRenaming && (
         <p>
-          <input value={tempName} onChange={(e) => setTempName(etv(e))}/>
+          <input value={tempName} onChange={(e) => setTempName(etv(e))} />
           <button onClick={() => renameBook()}>Rename</button>
           <button
             onClick={() => {

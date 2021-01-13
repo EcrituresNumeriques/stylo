@@ -5,7 +5,13 @@ import askGraphQL from '../helpers/graphQL'
 import styles from './credentials.module.scss'
 import CredentialsUserSelect from './CredentialsUserSelect'
 
-const mapStateToProps = ({ users, activeUser, sessionToken, password, applicationConfig }) => {
+const mapStateToProps = ({
+  users,
+  activeUser,
+  sessionToken,
+  password,
+  applicationConfig,
+}) => {
   return { users, activeUser, sessionToken, password, applicationConfig }
 }
 const mapDispatchToProps = (dispatch) => {

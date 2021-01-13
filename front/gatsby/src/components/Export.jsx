@@ -31,27 +31,21 @@ const Export = (props) => {
     if (props.book) {
       //For books
       window.open(
-        `${
-          processEndpoint
-        }/cgi-bin/exportBook/exec.cgi?id=${filterAlphaNum(props.name)}&book=${
+        `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${filterAlphaNum(
+          props.name
+        )}&book=${
           props.bookId
-        }&processor=xelatex&source=${
-          exportEndpoint
-        }/&format=${format}&bibstyle=${csl}&toc=${toc}&tld=${tld}&unnumbered=${unnumbered}`,
+        }&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${toc}&tld=${tld}&unnumbered=${unnumbered}`,
         '_blank'
       )
     } else {
       //For articles/versions
       window.open(
-        `${
-          processEndpoint
-        }/cgi-bin/exportArticle/exec.cgi?id=${filterAlphaNum(props.title)}v${
-          props.version
-        }-${props.revision}&version=${
+        `${processEndpoint}/cgi-bin/exportArticle/exec.cgi?id=${filterAlphaNum(
+          props.title
+        )}v${props.version}-${props.revision}&version=${
           props.versionId
-        }&processor=xelatex&source=${
-          exportEndpoint
-        }/&format=${format}&bibstyle=${csl}&toc=${toc}`,
+        }&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${toc}`,
         '_blank'
       )
     }
@@ -105,6 +99,5 @@ const Export = (props) => {
     </section>
   )
 }
-
 
 export default connect(mapStateToProps)(Export)
