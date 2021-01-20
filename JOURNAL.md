@@ -1,5 +1,28 @@
 # Journal de développement
 
+## Mercredi 20 janvier 2021
+
+### Ce que j'ai aimé/appris
+
+- Quelques trucs sur le HTML sémantique (un seul `<main>` par page, par exemple)
+- Le `<input type="color">` ! Très pratique
+- Le module `@snowpack/plugin-react-refresh`
+- L'aspect composant poussé par l'UX
+- On rationalise pas mal de choses côté styles, ça semble moins fragile désormais… ça nous a permis de découvrir davantage d'écrans
+- Le redirect `/*` vers la page `index.html` avec Netlify
+- Chouette d'avoir pairé sur un seul ordi, en partage d'écran
+- Trouvé ça cool de faire une petite démo à Maïtané en début d'aprem
+- Je suis content que des boutons ressemblent à des boutons (on prend plus plaisir sur l'appli)
+
+### Ce que j'ai trouvé difficile
+
+- Un peu au début pour savoir pourquoi un style ne s'applique pas (Sass modules appliqués à React)
+- Partage d'écran sur le moniteur externe qui plombait les perfs de mon ordi (temps de compilation ultra lent, etc.)
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- Inviter Maïtané sur un bout de la session
+
 ## Mercredi 13 janvier 2021
 
 ### Ce que j'ai aimé/appris
