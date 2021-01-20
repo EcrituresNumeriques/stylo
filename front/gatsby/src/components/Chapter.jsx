@@ -1,8 +1,13 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Edit3 } from 'react-feather'
 
 import askGraphQL from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
+import Button from './Button'
+import buttonStyles from './button.module.scss'
+import styles from './chapter.module.scss'
 
 const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
@@ -32,13 +37,16 @@ const ConnectedChapter = (props) => {
     props.setNeedReload()
   }
 
+  const latestVersion = props.versions[0]
+  const articleTitle = `${title} (${latestVersion.version}.${latestVersion.revision}${latestVersion.message ? ` ${latestVersion.message}` : ''})`
   return (
     <>
       {!renaming && (
         <p>
-          {title} ({props.versions[0].version}.{props.versions[0].revision}{' '}
-          {props.versions[0].message})
-          <span onClick={() => setRenaming(true)}>(rename)</span>
+          <Link to={`/article/${props._id}/version/${latestVersion._id}`}>{articleTitle}</Link>
+          <Button className={[buttonStyles.icon, styles.renameButton].join(' ')} onClick={() => setRenaming(true)}>
+            <Edit3/>
+          </Button>
         </p>
       )}
       {renaming && renaming && (

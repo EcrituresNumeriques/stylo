@@ -47,7 +47,7 @@ const ConnectedBooks = (props) => {
       <h1>Books for {displayName}</h1>
       <p>
         Books are like super-tags, they are a collection of articles that you
-        can ordonnate and export all at once
+        can sort and export all at once
       </p>
       <p>Below are your tags eligible to be books:</p>
       {!isLoading &&

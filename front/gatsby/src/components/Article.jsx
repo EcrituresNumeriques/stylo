@@ -206,5 +206,4 @@ const ConnectedArticle = (props) => {
 }
 
 const Article = connect(mapStateToProps)(ConnectedArticle)
-
 export default Article
