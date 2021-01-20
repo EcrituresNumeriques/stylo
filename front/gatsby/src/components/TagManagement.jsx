@@ -32,10 +32,7 @@ export default (props) => {
         )}
         <Field className={styles.searchField} icon={Search} type="text" value={filter} onChange={(e) => setFilter(etv(e))} placeholder="Search tag"/>
         {props.tags
-          .filter((t) => {
-            const index = t.name.indexOf(filter)
-            return index !== -1
-          })
+          .filter((t) => t.name.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) > -1)
           .map((t) => (
             <TagManagementSolo
               {...props}
