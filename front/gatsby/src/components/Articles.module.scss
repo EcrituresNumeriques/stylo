@@ -9,7 +9,6 @@
     border: 1px solid white;
     background-color: red;
     color: white;
-    margin-top: 1rem;
     padding: 0.5rem 1rem;
     @extend .clickable;
   }
@@ -56,45 +55,51 @@
   > p {
     margin-bottom: 1rem;
   }
-  > article {
-    > form {
-      span {
-        vertical-align: text-top;
-        margin-left: 0.5rem;
-      }
-    }
-    padding: 1rem;
-    position: relative;
-    h1 {
-      span {
-        @extend .clickable;
-      }
-      span:first-child {
-        display: inline-block;
-        width: 1rem;
-        text-align: center;
-        font-weight: bold;
-      }
-    }
-    > section {
-      h2 {
-        font-size: 1rem;
-        font-weight: normal;
-        span {
-          font-weight: bold;
-        }
-      }
-      ul {
-        margin-top: 1rem;
-      }
-    }
-    > nav {
-      float: right;
-    }
-  }
+
   > article:nth-of-type(2n + 1) {
     background-color: $main-background-color;
   }
+}
+
+.article {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  padding: 1rem;
+  position: relative;
+
+  .editTitleButton {
+    padding: 0;
+    height: auto;
+    margin-left: 0.5em;
+    vertical-align: middle;
+  }
+
+  .title,
+  .renamingForm {
+    cursor: pointer;
+    flex: 1 1 60%;
+  }
+
+  .renamingForm {
+    display: flex;
+  }
+
+  .actionButtons {
+    flex: 1 1 40%;
+    text-align: right;
+  }
+
+  .metadata,
+  .deleteArticle {
+    width: 100%;
+  }
+}
+
+.momentsAgo {
+  opacity: .5;
+  margin-left: .5em;
 }
 
 .button {
@@ -136,6 +141,7 @@
   input {
     width: 100%;
   }
+
   margin-bottom: 1rem;
-  padding: 0.5rem;
+  padding: 0.5rem 0;
 }
