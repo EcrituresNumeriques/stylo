@@ -41,5 +41,8 @@ button.closeButton {
 }
 
 .searchField {
-  width: 100%;
+  input {
+    width: 100%;
+  }
+  margin: 0 0.35em 0.55em;
 }

@@ -95,7 +95,6 @@ export default connect(mapStateToProps)((props) => {
               onChange={(e) => setTempName(etv(e))}
             />
             <textarea
-              rows="5"
               value={tempDescription}
               onChange={(e) => setTempDescription(etv(e))}
             />
