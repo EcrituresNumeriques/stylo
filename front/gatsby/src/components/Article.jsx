@@ -15,8 +15,9 @@ import howLongAgo from '../helpers/howLongAgo'
 import etv from '../helpers/eventTargetValue'
 import askGraphQL from '../helpers/graphQL'
 
-import Bouton from './Bouton'
-import * as Icon from 'react-feather'
+import Field from './Field'
+import Button from './Button'
+import {Eye, Send, Check, Copy, Printer, Edit3, Trash, Save, X, ChevronDown, ChevronRight} from 'react-feather'
 
 const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
@@ -27,7 +28,6 @@ const ConnectedArticle = (props) => {
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [deleting, setDeleting] = useState(false)
-  const [editTags, setEditTags] = useState(false)
   const [tags, setTags] = useState(props.tags)
   const [renaming, setRenaming] = useState(false)
   const [title, setTitle] = useState(props.title)
@@ -73,7 +73,7 @@ const ConnectedArticle = (props) => {
   }
 
   return (
-    <article>
+    <article class={styles.article}>
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
           <Export
@@ -90,71 +90,96 @@ const ConnectedArticle = (props) => {
           <Acquintances {...props} cancel={() => setSharing(false)} />
         </Modal>
       )}
-      <nav>
-        <Bouton
-          title="Preview"
-          href={`https://via.hypothes.is/${exportEndpoint}/api/v1/htmlArticle/${props._id}?preview=true`}
-        >
-          <Icon.Eye />
-        </Bouton>
-        <Bouton title="Share" onClick={() => setSharing(true)}>
-          <Icon.Send />
-        </Bouton>
-        <Bouton title="Duplicate" onClick={() => fork()}>
-          <Icon.Copy />
-        </Bouton>
-        <Bouton title="Export" onClick={() => setExporting(true)}>
-          <Icon.Printer />
-        </Bouton>
-        <Bouton title="Edit" primary={true} href={`/article/${props._id}`}>
-          <Icon.Edit3 />
-        </Bouton>
-      </nav>
+
       {!renaming && (
-        <h1>
-          <span onClick={() => setExpanded(!expanded)}>
-            {expanded ? '-' : '+'}
-          </span>
-          <span onClick={() => setExpanded(!expanded)}> {title} </span>
-          <Bouton title="Edit" thin={true} onClick={() => setRenaming(true)}>
-            <Icon.Edit3 />
-          </Bouton>
+        <h1 className={styles.title} onClick={() => setExpanded(!expanded)}>
+          {expanded ? <ChevronDown/> : <ChevronRight/>}
+          {title}
+
+          <Button title="Edit" icon={true} className={styles.editTitleButton} onClick={(evt) => evt.stopPropagation() || setRenaming(true)}>
+            <Edit3 size="20" />
+          </Button>
         </h1>
       )}
       {renaming && (
-        <form onSubmit={(e) => rename(e)}>
-          <input value={tempTitle} onChange={(e) => setTempTitle(etv(e))} />
-          <Bouton title="Save" onClick={(e) => rename(e)}>
-            <Icon.Save />
-          </Bouton>
-          <Bouton title="Cancel" onClick={() => setRenaming(false)}>
-            <Icon.X />
-          </Bouton>
+        <form className={styles.renamingForm} onSubmit={(e) => rename(e)}>
+          <Field autofocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(etv(e))} placeholder="Article Title" />
+
+          <Button title="Save" primary={true} onClick={(e) => rename(e)}>
+            <Check /> Save
+          </Button>
+          <Button title="Cancel" onClick={() => setRenaming(false)}>
+            Cancel
+          </Button>
         </form>
       )}
-      <p style={{ paddingLeft: '1rem' }}>
-        {tags.map((t) => (
-          <span
-            key={'tagColor-' + t._id}
-            style={{
-              fontSize: '0.6rem',
-              backgroundColor: t.color || 'grey',
-              display: 'inline-block',
-              padding: '0.25rem',
-              marginRight: '0.5rem',
-              borderRadius: '100% 100%',
-            }}
-          ></span>
-        ))}
-        by <span>{props.owners.map((o) => o.displayName).join(', ')}</span>
-        <span style={{ fontSize: '0.7rem' }}>
-          ({howLongAgo(new Date() - new Date(props.updatedAt))})
-        </span>
-      </p>
-      {expanded && (
-        <section>
+
+      <aside className={styles.actionButtons}>
+        <Button title="Delete" icon={true} onClick={() => setDeleting(true)}>
+          <Trash />
+        </Button>
+
+        <a
+          title="Preview"
+          className={[buttonStyles.button, buttonStyles.icon].join(' ')}
+          href={`https://via.hypothes.is/${exportEndpoint}/api/v1/htmlArticle/${props._id}?preview=true`}
+        >
+          <Eye />
+        </a>
+        <Button title="Share" icon={true} onClick={() => setSharing(true)}>
+          <Send />
+        </Button>
+        <Button title="Duplicate" icon={true} onClick={() => fork()}>
+          <Copy />
+        </Button>
+        <Button title="Export" icon={true} onClick={() => setExporting(true)}>
+          <Printer />
+        </Button>
+        <Link title="Edit" className={[buttonStyles.button, buttonStyles.primary].join(' ')} to={`/article/${props._id}`}>
+          <Edit3 />
+        </Link>
+      </aside>
+
+      {deleting && (
+        <div className={[styles.alert, styles.deleteArticle].join(' ')}>
+          <p>
+            You are trying to delete this article, double click on the
+            "delete button" below to proceed
+          </p>
+          <Button className={styles.cancel} onClick={() => setDeleting(false)}>
+            Cancel
+          </Button>
+
+          <ArticleDelete {...props} />
+        </div>
+      )}
+
+      <section className={styles.metadata}>
+        <p>
+          {tags.map((t) => (
+            <span
+              key={'tagColor-' + t._id}
+              style={{
+                fontSize: '0.6rem',
+                backgroundColor: t.color || 'grey',
+                display: 'inline-block',
+                padding: '0.25rem',
+                marginRight: '0.5rem',
+                borderRadius: '100% 100%',
+              }}
+            ></span>
+          ))}
+          by <span className={styles.author}>{props.owners.map((o) => o.displayName).join(', ')}</span>
+
+          <span className={styles.momentsAgo}>
+            ({howLongAgo(new Date() - new Date(props.updatedAt))})
+          </span>
+        </p>
+
+        {expanded && (
+        <>
+          <p>Last versions:</p>
           <ul>
-            <p>Last versions:</p>
             {props.versions.map((v) => (
               <li key={`version-${v._id}`}>
                 <Link to={`/article/${props._id}/version/${v._id}`}>{`${
@@ -165,52 +190,17 @@ const ConnectedArticle = (props) => {
               </li>
             ))}
           </ul>
-          {!deleting && (
-            <p className={styles.deleteMe}>
-              <Bouton title="Delete" onClick={() => setDeleting(true)}>
-                <Icon.Trash />
-              </Bouton>
-            </p>
-          )}
-          <ul>
-            <p>
-              Tags (
-              <span
-                onClick={() => {
-                  if (editTags) {
-                    props.setNeedReload()
-                  }
-                  setEditTags(!editTags)
-                }}
-              >
-                {editTags ? 'finish' : 'edit'}
-              </span>
-              ):
-            </p>
+
+          <div className={styles.editTags}>
             <ArticleTags
-              editTags={editTags}
               {...props}
               stateTags={tags}
               setTags={(ts) => setTags(ts)}
             />
-          </ul>
-          {deleting && (
-            <div className={styles.alert}>
-              <p>
-                You are trying to delete this article, double click on the
-                "delete button" below to proceed
-              </p>
-              <button
-                className={styles.cancel}
-                onClick={() => setDeleting(false)}
-              >
-                Cancel
-              </button>
-              <ArticleDelete {...props} />
-            </div>
-          )}
-        </section>
+          </div>
+        </>
       )}
+      </section>
     </article>
   )
 }
