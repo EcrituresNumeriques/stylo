@@ -35,5 +35,4 @@ const ConnectedArticleDelete = (props) => {
 }
 
 const ArticleDelete = connect(mapStateToProps)(ConnectedArticleDelete)
-
 export default ArticleDelete
