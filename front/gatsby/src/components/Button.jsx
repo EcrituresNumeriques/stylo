@@ -10,5 +10,5 @@ export default (props) => {
   if (props.className) {
     classNames.push(props.className)
   }
-  return (<button className={classNames.join(' ')} title={props.title} onClick={props.onClick}>{props.children}</button>)
+  return (<button className={classNames.join(' ')} type={props.type} title={props.title} onClick={props.onClick}>{props.children}</button>)
 }
