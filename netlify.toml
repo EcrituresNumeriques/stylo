@@ -13,7 +13,7 @@
     GATSBY_EXPORT_ENDPOINT = "https://stylo-dev.huma-num.fr"
     GATSBY_GRAPHQL_ENDPOINT = "https://stylo-dev.huma-num.fr/graphql"
     GATSBY_HUMAN_ID_REGISTER_ENDPOINT = ""
-    GATSBY_PROCESS_ENDPOINT = "hhttps://stylo-export.ecrituresnumeriques.ca"
+    GATSBY_PROCESS_ENDPOINT = "https://stylo-export.ecrituresnumeriques.ca"
     GATSBY_STYLO_BACKEND_ENDPOINT = "https://stylo-dev.huma-num.fr"
 
     # App env (new Snowpack)
