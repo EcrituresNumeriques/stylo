@@ -14,39 +14,6 @@
   }
   > article {
     padding: 1rem;
-    h1 {
-      @extend .clickable;
-      span {
-        display: inline-block;
-        text-align: center;
-        font-weight: bold;
-      }
-    }
-    > section {
-      h2 {
-        font-size: 1rem;
-        font-weight: normal;
-        span {
-          font-weight: bold;
-        }
-      }
-      ul {
-        margin-top: 1rem;
-      }
-    }
-    nav {
-      float: right;
-      a,
-      p {
-        @extend .clickable;
-        display: inline-block;
-        padding: 0.5rem;
-        margin: -0.5rem 0.25rem;
-      }
-      a:last-child {
-        margin-right: -0.5rem;
-      }
-    }
   }
   > article:nth-of-type(2n + 1) {
     background-color: $main-background-color;
