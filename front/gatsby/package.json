@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@rjsf/core": "^2.4.0",
+    "@snowpack/plugin-react-refresh": "^2.4.0",
     "biblatex-csl-converter": "^1.9.5",
     "codemirror": "^5.57.0",
     "diff-match-patch": "^1.0.5",
