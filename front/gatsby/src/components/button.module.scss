@@ -37,3 +37,14 @@
 .secondary:hover {
   background-color: rgba(0, 0, 0, 0.2);
 }
+
+.icon {
+  background: none;
+  border: none;
+
+  &:hover,
+  &:focus {
+    background: none;
+    opacity: 0.5;
+  }
+}
