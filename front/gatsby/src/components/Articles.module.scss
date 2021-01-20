@@ -70,16 +70,28 @@
   position: relative;
 
   .editTitleButton {
-    padding: 0;
-    height: auto;
-    margin-left: 0.5em;
-    vertical-align: middle;
+    border: none;
+    background-color: transparent;
+    padding: 0 0 0 .25em;
+    margin: 0;
+    vertical-align: baseline;
+
+    > svg {
+      height: 0.75em;
+      margin: 0;
+      padding: 0;
+    }
   }
 
   .title,
   .renamingForm {
     cursor: pointer;
     flex: 1 1 60%;
+  }
+
+  .title {
+    display: inline-flex;
+    align-items: center;
   }
 
   .renamingForm {
@@ -94,6 +106,41 @@
   .metadata,
   .deleteArticle {
     width: 100%;
+  }
+
+  .metadata {
+    h4 {
+      margin-bottom: 0.25rem;
+    }
+    > p:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .versions {
+    margin-bottom: 1rem;
+  }
+
+  .tagChip {
+    font-size: 0.6rem;
+    display: inline-block;
+    padding: 0.25rem;
+    margin-right: 0.5rem;
+    border-radius: 100% 100%;
+  }
+
+  .author {
+    font-style: italic;
+  }
+
+  .editTags {
+    > ul {
+      display: flex;
+
+      > li:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
   }
 }
 

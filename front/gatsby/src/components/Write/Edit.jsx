@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import styles from './edit.module.scss'
 
 import etv from '../../helpers/eventTargetValue'
-import howLongAgo from '../../helpers/howLongAgo'
+import formatTimeAgo from '../../helpers/formatTimeAgo'
 
 import Modal from '../Modal'
 import Export from '../Export'
@@ -40,7 +40,7 @@ const Edit = (props) => {
   const [expand, setExpand] = useState(true)
   const [message, setMessage] = useState('')
   const [savedAgo, setSavedAgo] = useState(
-    howLongAgo(new Date() - new Date(props.versions[0].updatedAt))
+    formatTimeAgo(new Date(props.versions[0].updatedAt))
   )
   const [exporting, setExporting] = useState(false)
   const [exportVar, setExportVar] = useState(expVar)
@@ -61,8 +61,7 @@ const Edit = (props) => {
   }, [props.versions])
 
   function tick(date) {
-    const timeDifference = new Date() - new Date(date)
-    setSavedAgo(howLongAgo(timeDifference))
+    setSavedAgo(formatTimeAgo(new Date(date)))
   }
 
   return (

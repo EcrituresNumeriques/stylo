@@ -10,14 +10,14 @@ import Export from './Export'
 import ArticleDelete from './ArticleDelete'
 import Acquintances from './Acquintances'
 import ArticleTags from './ArticleTags'
-import howLongAgo from '../helpers/howLongAgo'
+import formatTimeAgo from '../helpers/formatTimeAgo'
 
 import etv from '../helpers/eventTargetValue'
 import askGraphQL from '../helpers/graphQL'
 
 import Field from './Field'
 import Button from './Button'
-import {Eye, Send, Check, Copy, Printer, Edit3, Trash, Save, X, ChevronDown, ChevronRight} from 'react-feather'
+import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Send, Trash } from 'react-feather'
 
 const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
@@ -73,7 +73,7 @@ const ConnectedArticle = (props) => {
   }
 
   return (
-    <article class={styles.article}>
+    <article className={styles.article}>
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
           <Export
@@ -104,7 +104,6 @@ const ConnectedArticle = (props) => {
       {renaming && (
         <form className={styles.renamingForm} onSubmit={(e) => rename(e)}>
           <Field autofocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(etv(e))} placeholder="Article Title" />
-
           <Button title="Save" primary={true} onClick={(e) => rename(e)}>
             <Check /> Save
           </Button>
@@ -157,29 +156,19 @@ const ConnectedArticle = (props) => {
       <section className={styles.metadata}>
         <p>
           {tags.map((t) => (
-            <span
-              key={'tagColor-' + t._id}
-              style={{
-                fontSize: '0.6rem',
-                backgroundColor: t.color || 'grey',
-                display: 'inline-block',
-                padding: '0.25rem',
-                marginRight: '0.5rem',
-                borderRadius: '100% 100%',
-              }}
-            ></span>
+            <span className={styles.tagChip} key={'tagColor-' + t._id} style={{ backgroundColor: t.color || 'grey' }} />
           ))}
           by <span className={styles.author}>{props.owners.map((o) => o.displayName).join(', ')}</span>
 
           <span className={styles.momentsAgo}>
-            ({howLongAgo(new Date() - new Date(props.updatedAt))})
+            ({formatTimeAgo(new Date(props.updatedAt))})
           </span>
         </p>
 
         {expanded && (
         <>
-          <p>Last versions:</p>
-          <ul>
+          <h4>Last versions</h4>
+          <ul className={styles.versions}>
             {props.versions.map((v) => (
               <li key={`version-${v._id}`}>
                 <Link to={`/article/${props._id}/version/${v._id}`}>{`${
@@ -191,10 +180,14 @@ const ConnectedArticle = (props) => {
             ))}
           </ul>
 
+          <h4>Tags</h4>
           <div className={styles.editTags}>
             <ArticleTags
               {...props}
-              stateTags={tags}
+              stateTags={tags.map((t) => {
+                t.selected = true
+                return t
+              })}
               setTags={(ts) => setTags(ts)}
             />
           </div>

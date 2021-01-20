@@ -6,14 +6,15 @@ import askGraphQL from '../helpers/graphQL'
 import Modal from './Modal'
 import Export from './Export'
 import Chapter from './Chapter'
-import howLongAgo from '../helpers/howLongAgo'
+import formatTimeAgo from '../helpers/formatTimeAgo'
 
 import styles from './book.module.scss'
 import * as Icon from 'react-feather'
-import { ChevronDown, ChevronRight } from 'react-feather'
+import { Check, ChevronDown, ChevronRight } from 'react-feather'
 import { connect } from 'react-redux'
 import Button from './Button'
 import buttonStyles from './button.module.scss'
+import Field from './Field'
 
 const alphaSort = (a, b) => {
   if (a.title < b.title) {
@@ -54,7 +55,7 @@ const Book = (props) => {
     setIsRenaming(false)
   }
 
-  const bookTitle = `${name} (${howLongAgo(new Date() - new Date(props.updatedAt))})`
+  const bookTitle = `${name} (${formatTimeAgo(new Date(props.updatedAt))})`
   return (
     <article>
       {exporting && (
@@ -73,20 +74,18 @@ const Book = (props) => {
             </Button>
           </h1>
         )}
-        {isRenaming && (
-          <p>
-            <input value={tempName} onChange={(e) => setTempName(etv(e))} />
-            <button onClick={() => renameBook()}>Rename</button>
-            <button
-              onClick={() => {
-                setIsRenaming(false)
-                setTempName(props.name)
-              }}
-            >
-              Cancel
-            </button>
-          </p>
-        )}
+        {isRenaming && (<form className={styles.renamingForm}>
+          <Field autofocus={true} type="text" value={tempName} onChange={(e) => setTempName(etv(e))} placeholder="Article Title" />
+          <Button title="Save" primary={true} type="button" onClick={(e) => renameBook(e)}>
+            <Check /> Save
+          </Button>
+          <Button title="Cancel" type="button" onClick={() => {
+            setIsRenaming(false)
+            setTempName(props.name)
+          }}>
+            Cancel
+          </Button>
+        </form>)}
         <ul className={styles.actions}>
           <li>
             <a

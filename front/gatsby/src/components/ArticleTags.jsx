@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import askGraphQL from '../helpers/graphQL'
-import styles from './Articles.module.scss'
 
 import Tag from './Tag'
 
@@ -82,5 +81,4 @@ const ConnectedArticleTags = (props) => {
 }
 
 const ArticleTags = connect(mapStateToProps)(ConnectedArticleTags)
-
 export default ArticleTags

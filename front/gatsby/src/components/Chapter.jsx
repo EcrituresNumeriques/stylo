@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Edit3 } from 'react-feather'
+import { Check, Edit3 } from 'react-feather'
 
 import askGraphQL from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
 import Button from './Button'
 import buttonStyles from './button.module.scss'
 import styles from './chapter.module.scss'
+import Field from './Field'
 
 const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
@@ -49,13 +50,18 @@ const ConnectedChapter = (props) => {
           </Button>
         </p>
       )}
-      {renaming && renaming && (
-        <form onSubmit={(e) => rename(e)}>
-          <input value={tempTitle} onChange={(e) => setTempTitle(etv(e))} />
-          <input type="submit" value="Rename" />
-          <span onClick={() => setRenaming(false)}>(cancel)</span>
-        </form>
-      )}
+      {renaming && renaming && (<form className={styles.renamingForm}>
+        <Field autofocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(etv(e))} placeholder="Book Title" />
+        <Button title="Save" primary={true} type="button" onClick={(e) => rename(e)}>
+          <Check /> Save
+        </Button>
+        <Button title="Cancel" type="button" onClick={() => {
+          setRenaming(false)
+          setTempTitle(props.name)
+        }}>
+          Cancel
+        </Button>
+      </form>)}
     </>
   )
 }
