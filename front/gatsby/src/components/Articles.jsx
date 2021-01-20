@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 import askGraphQL from '../helpers/graphQL'
@@ -9,6 +9,7 @@ import CreateArticle from './CreateArticle'
 
 import styles from './Articles.module.scss'
 import TagManagement from './TagManagement'
+import Button from './Button'
 
 const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
@@ -88,18 +89,16 @@ const ConnectedArticles = (props) => {
   return (
     <section className={styles.section}>
       <h1>Articles for {displayName}</h1>
-      <p
-        className={styles.button}
-        onClick={() => setCreatingArticle(!creatingArticle)}
-      >
-        {creatingArticle ? 'Cancel new Article' : 'Create new Article'}
-      </p>
-      <p
-        className={styles.buttonsec}
-        onClick={() => setTagManagement(!tagManagement)}
-      >
-        Manage tags
-      </p>
+      <ul className={styles.horizontalMenu}>
+        <li>
+          <Button primary={true} onClick={() => setCreatingArticle(!creatingArticle)}>
+            {creatingArticle ? 'Cancel new Article' : 'Create new Article'}
+          </Button>
+        </li>
+        <li>
+          <Button onClick={() => setTagManagement(!tagManagement)}>Manage tags</Button>
+        </li>
+      </ul>
       <TagManagement
         tags={tags}
         close={() => setTagManagement(false)}

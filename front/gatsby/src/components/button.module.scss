@@ -1,0 +1,39 @@
+.button {
+  border: none;
+  user-select: none;
+  margin: 0;
+  align-items: center;
+  box-shadow: none;
+  display: inline-flex;
+  font-size: 1rem;
+  height: 2.5em;
+  justify-content: flex-start;
+  line-height: 1.5;
+  padding: calc(.5em - 1px) calc(.8em - 1px);
+  position: relative;
+  vertical-align: top;
+  cursor: pointer;
+
+  > svg {
+    margin-right: 0.3em;
+  }
+}
+
+.primary {
+  background-color: #000;
+  color: #fff;
+}
+
+.primary:hover {
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+}
+
+.secondary {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+}
+.secondary:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}

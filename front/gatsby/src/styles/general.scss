@@ -18,7 +18,7 @@
 
 html {
   background-color: $main-background-color;
-  font-family: 'BellweatherSans-shownbsp';
+  font-family: 'BellweatherSans-shownbsp', serif;
   color: $main-color;
   font-size: 100%;
   @media screen and (min-width: $tablet-breakpoint) {
@@ -30,6 +30,10 @@ html {
   @media screen and (min-width: $large-screen-breakpoint) {
     font-size: 140%;
   }
+}
+
+button {
+  font-family: 'BellweatherSans-shownbsp', serif;
 }
 
 html,

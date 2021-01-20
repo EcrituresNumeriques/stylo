@@ -4,15 +4,23 @@ import styles from './tagManagement.module.scss'
 import CreateTag from './CreateTag'
 import TagManagementSolo from './TagManagementSolo'
 import etv from '../helpers/eventTargetValue'
+import Button from './Button'
+import Field from './Field'
+import { Search } from 'react-feather'
+
 export default (props) => {
   const [creatingTag, setCreatingTag] = useState(false)
   const [filter, setFilter] = useState('')
 
   return (
-    <nav className={props.focus ? styles.expandleft : styles.retractleft}>
-      <div>
-        <button onClick={props.close}>X</button>
-
+    <aside className={props.focus ? styles.expandleft : styles.retractleft}>
+      <header>
+        <Button primary={true} onClick={() => setCreatingTag(!creatingTag)}>
+          {creatingTag ? 'Cancel new Tag' : 'Create new Tag'}
+        </Button>
+        <Button className={styles.closeButton} onClick={props.close}>X</Button>
+      </header>
+      <main>
         {creatingTag && (
           <CreateTag
             articles={props.articles}
@@ -22,20 +30,7 @@ export default (props) => {
             }}
           />
         )}
-        <p
-          className={styles.button}
-          onClick={() => setCreatingTag(!creatingTag)}
-        >
-          {creatingTag ? 'Cancel new Tag' : 'Create new Tag'}
-        </p>
-
-        <input
-          type="text"
-          value={filter}
-          onChange={(e) => setFilter(etv(e))}
-          placeholder="Search tag"
-        />
-
+        <Field className={styles.searchField} icon={Search} type="text" value={filter} onChange={(e) => setFilter(etv(e))} placeholder="Search tag"/>
         {props.tags
           .filter((t) => {
             const index = t.name.indexOf(filter)
@@ -45,11 +40,10 @@ export default (props) => {
             <TagManagementSolo
               {...props}
               t={t}
-              styles={styles}
               key={'thistag' + t._id}
             />
           ))}
-      </div>
-    </nav>
+      </main>
+    </aside>
   )
 }

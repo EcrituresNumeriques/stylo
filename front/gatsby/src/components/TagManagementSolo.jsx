@@ -3,18 +3,14 @@ import { connect } from 'react-redux'
 import askGraphQL from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
 
-import Bouton from './Bouton'
-import * as Icon from 'react-feather'
+import { ChevronDown, ChevronRight, Edit3, Check, Trash } from 'react-feather'
+
+import styles from './tagManagementSolo.module.scss'
+import Button from './Button'
+import Field from './Field'
 
 const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
-}
-
-const findAndUpdateTag = (tags, id) => {
-  const immutableTags = JSON.parse(JSON.stringify(tags))
-  const tag = immutableTags.find((t) => t._id === id)
-  tag.selected = !tag.selected
-  return immutableTags
 }
 
 export default connect(mapStateToProps)((props) => {
@@ -65,63 +61,64 @@ export default connect(mapStateToProps)((props) => {
   return (
     <div
       className={
-        props.t.selected ? props.styles.selectedTags : props.styles.tags
+        props.t.selected ? styles.selectedTags : styles.tags
       }
       key={`tagy-${props.t._id}`}
     >
       {!edit && (
-        <section className={props.styles.reader}>
-          <p onClick={() => setExpanded(!expanded)}>{expanded ? '-' : '+'}</p>
-          <p
-            onClick={() =>
-              props.setTags(findAndUpdateTag(props.tags, props.t._id))
-            }
-          >
-            {props.t.name}
-          </p>
-          {expanded && <p>{props.t.description}</p>}
-          {expanded && (
-            <nav className={props.styles.action}>
-              <Bouton title="Edit" onClick={() => setEdit(true)}>
-                <Icon.Edit3 />
-              </Bouton>
-              <div className={props.styles.spacer}></div>
-              <Bouton title="Delete" onClick={() => deleteTag(props.t._id)}>
-                <Icon.Trash />
-              </Bouton>
-            </nav>
-          )}
-        </section>
+        <article className={styles.reader}>
+          <p onClick={() => setExpanded(!expanded)}>{expanded ? <ChevronDown/> : <ChevronRight/>} {props.t.name}</p>
+          {expanded && <div className={styles.tagContent}>
+            <p>{props.t.description}</p>
+            <ul className={styles.action}>
+              <li>
+                <Button title="Delete" onClick={() => deleteTag(props.t._id)}>
+                  <Trash />
+                  Delete
+                </Button>
+              </li>
+              <li>
+                <Button primary={true} title="Edit" onClick={() => setEdit(true)}>
+                  <Edit3 /> Edit
+                </Button>
+              </li>
+            </ul>
+          </div>}
+        </article>
       )}
       {edit && (
-        <section className={props.styles.writer}>
-          <form className={props.styles.editTag}>
-            <input
+        <article className={styles.writer}>
+          <form className={styles.editTag}>
+            <Field
               type="text"
               value={tempName}
               onChange={(e) => setTempName(etv(e))}
             />
             <textarea
+              rows="5"
               value={tempDescription}
               onChange={(e) => setTempDescription(etv(e))}
             />
-            <input
-              type="text"
+            <Field
+              type="color"
               value={tempColor}
               onChange={(e) => setTempColor(etv(e))}
             />
           </form>
-
-          <nav className={props.styles.action}>
-            <Bouton title="Validate" onClick={() => saveTag()}>
-              <Icon.Save />
-            </Bouton>
-            <div className={props.styles.spacer}></div>
-            <Bouton title="Cancel" onClick={() => cancelEdit()}>
-              <Icon.X />
-            </Bouton>
-          </nav>
-        </section>
+          <ul className={styles.action}>
+            <li>
+              <Button title="Cancel" onClick={() => cancelEdit()}>
+                Cancel
+              </Button>
+            </li>
+            <li>
+              <Button primary={true} title="Validate" onClick={() => saveTag()}>
+                <Check />
+                Save
+              </Button>
+            </li>
+          </ul>
+        </article>
       )}
     </div>
   )
