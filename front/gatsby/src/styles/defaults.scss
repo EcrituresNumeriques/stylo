@@ -93,3 +93,12 @@
     }
   }
 }
+
+.horizontalMenu {
+  display: flex;
+  margin-bottom: 1em;
+
+  > li:not(:last-child) {
+    margin-right: 0.5em;
+  }
+}

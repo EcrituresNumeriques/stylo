@@ -1,0 +1,58 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+.tags:nth-of-type(even) {
+  background-color: #f0f0f0;
+}
+
+.tags {
+  > .reader {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #d5d5d5;
+    padding: 0.5rem;
+
+    > p {
+      &:first-child {
+        @extend .clickable;
+        width: 100%;
+        display: flex;
+      }
+    }
+  }
+
+  > .writer {
+    padding: 0.5rem;
+  }
+}
+
+.selectedTags {
+  @extend .tags;
+  background-color: black;
+  color: white;
+}
+
+.tagContent {
+  margin: 0.5em;
+  width: 100%;
+}
+
+.action {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.75em;
+}
+
+.editTag {
+  input {
+    width: 100%;
+    margin-bottom: 0.5em;
+  }
+  textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-bottom: 1px solid $main-border-color;
+    margin-bottom: 0.5em;
+  }
+}

@@ -16,6 +16,9 @@ import PrivateRoute from './components/PrivateRoute'
 import Credentials from './components/Credentials'
 import Write from './components/Write/Write'
 import NotFound from './components/404'
+import Button from './components/Button'
+import Field from './components/Field'
+import { Check, Search } from 'react-feather'
 
 const store = createStore()
 
@@ -88,6 +91,20 @@ render(
             <PrivateRoute>
               <ArticleID />
             </PrivateRoute>
+          </Route>
+          <Route exact path="/ux">
+            <App layout="fullPage">
+              <h2>Buttons</h2>
+              <h4>Primary</h4>
+              <Button primary={true}>Create New Article</Button>
+              <h4>Secondary</h4>
+              <Button>Manage Tags</Button>
+              <h4>With Icon</h4>
+              <Button><Check/> Save</Button>
+              <h2>Fields</h2>
+              <h4>Search</h4>
+              <Field placeholder="Search" icon={Search}/>
+            </App>
           </Route>
           <Route exact path="/">
             <PrivateRoute>
