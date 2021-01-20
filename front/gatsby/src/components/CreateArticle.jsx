@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import { Check } from 'react-feather'
 
 import etv from '../helpers/eventTargetValue'
 import askGraphQL from '../helpers/graphQL'
@@ -69,17 +70,19 @@ const ConnectedCreateArticle = (props) => {
           type="text"
           placeholder="Article title"
           value={title}
+          autoFocus={true}
+          className={styles.articleTitle}
           onChange={(e) => setTitle(etv(e))}
         />
-        <fieldset>
+
+        <fieldset className={styles.fieldset}>
           <legend>Select tags</legend>
           <ul className={styles.tags}>
             {tagsSelected.map((t) => (
-              <li>
+              <li key={`selectTag-${t._id}`}>
                 <Tag
                   data={t}
-                  key={`selectTag-${t._id}`}
-                  className={t.selected ? styles.selectedTag : styles.selectableTag}
+                  name={`selectTag-${t._id}`}
                   onClick={() =>
                     setTagsSelected(findAndUpdateTag(tagsSelected, t._id))
                   }
@@ -93,7 +96,10 @@ const ConnectedCreateArticle = (props) => {
             <Button type="button" onClick={props.cancel}>Cancel</Button>
           </li>
           <li>
-            <Button primary={true} type="submit" title="Create Article">Create Article</Button>
+            <Button primary={true} type="submit" title="Create Article">
+              <Check />
+              Create this article
+            </Button>
           </li>
         </ul>
       </form>

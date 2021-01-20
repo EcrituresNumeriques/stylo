@@ -2,3 +2,17 @@
   padding: 1em;
   display: block;
 }
+
+.selectable {
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid #000;
+}
+
+.selected {
+  background-color: #000;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid #000;
+}
