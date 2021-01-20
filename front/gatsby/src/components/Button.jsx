@@ -1,11 +1,12 @@
 import React from 'react'
 import styles from './button.module.scss'
 
-export default (props) => {
+export default function Button (props) {
   const className = props.primary ? styles.primary : styles.secondary
   const classNames = [
+    className,
     styles.button,
-    className
+    props.icon === true ? styles.icon : null
   ]
   if (props.className) {
     classNames.push(props.className)
