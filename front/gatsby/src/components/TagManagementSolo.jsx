@@ -67,7 +67,7 @@ export default connect(mapStateToProps)((props) => {
     >
       {!edit && (
         <article className={styles.reader}>
-          <p onClick={() => setExpanded(!expanded)}>{expanded ? <ChevronDown/> : <ChevronRight/>} {props.t.name}</p>
+          <p tabIndex={0} onClick={() => setExpanded(!expanded)}>{expanded ? <ChevronDown/> : <ChevronRight/>} {props.t.name}</p>
           {expanded && <div className={styles.tagContent}>
             <p>{props.t.description}</p>
             <ul className={styles.action}>

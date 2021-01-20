@@ -11,7 +11,7 @@ export default (props) => {
   }
   return (<div className={styles.field}>
     <p className={`control${props.icon ? " has-icons-left" : ""}`}>
-      <input className={classNames.join(' ')} type={type} placeholder={props.placeholder} onChange={props.onChange} value={props.value}/>
+      <input className={classNames.join(' ')} autoFocus={props.autoFocus} type={type} placeholder={props.placeholder} onChange={props.onChange} value={props.value}/>
       {props.icon && <span className="icon is-small is-left">
         <props.icon/>
       </span>}

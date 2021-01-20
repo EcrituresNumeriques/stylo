@@ -1,31 +1,25 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+.create {
+  background-color: $main-background-color;
+  border-bottom: 1px solid $main-border-color;
+  padding: 1rem;
+  margin: 1rem 0 2rem;
+}
+
+.articleTitle {
+  width: 100%;
+}
+
+.fieldset {
+  margin: 1em 0;
+}
+
 .actions {
   display: flex;
   justify-content: space-between;
   margin-top: 0.75em;
-}
-
-span.selectableTag {
-  cursor: pointer;
-  user-select: none;
-  border: 1px solid #000;
-
-  &:before {
-    content: "[ ]";
-    display: inline-block;
-  }
-}
-
-span.selectedTag {
-  background-color: #000;
-  color: white;
-  cursor: pointer;
-  user-select: none;
-  border: 1px solid #000;
-
-  &:before {
-    content: "[x]";
-    display: inline-block;
-  }
 }
 
 .tags {

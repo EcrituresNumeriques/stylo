@@ -132,38 +132,6 @@
   color: $button-primary-color !important;
 }
 
-.create {
-  background-color: $main-background-color;
-  border-bottom: 1px solid $main-border-color;
-  padding: 1rem;
-  form {
-    input,
-    textarea {
-      width: 100%;
-      display: block;
-      padding: 0.5rem 1rem;
-      margin-bottom: 1rem;
-      border: none;
-    }
-    input[type='submit'] {
-      width: auto;
-      margin-top: 1rem;
-      margin-bottom: 0;
-      @extend .primary-button;
-    }
-    ul {
-      li {
-        @extend .secondary-button;
-        display: inline-block;
-        margin-right: 0.5rem;
-      }
-      li.selected {
-        @extend .primary-button;
-      }
-    }
-  }
-}
-
 .searchField {
   width: 100%;
   margin-bottom: 1rem;
