@@ -133,7 +133,9 @@
 }
 
 .searchField {
-  width: 100%;
+  input {
+    width: 100%;
+  }
   margin-bottom: 1rem;
   padding: 0.5rem;
 }

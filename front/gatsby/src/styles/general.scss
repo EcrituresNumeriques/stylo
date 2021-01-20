@@ -32,8 +32,22 @@ html {
   }
 }
 
-button {
+button, textarea {
   font-family: 'BellweatherSans-shownbsp', serif;
+}
+
+textarea {
+  display: block;
+  max-width: 100%;
+  min-width: 100%;
+  padding: calc(.75em - 1px);
+  resize: vertical;
+  font-size: .8em;
+}
+
+textarea:not([rows]) {
+  max-height: 40em;
+  min-height: 8em;
 }
 
 html,

@@ -16,7 +16,7 @@ export default (props) => {
     <aside className={props.focus ? styles.expandleft : styles.retractleft}>
       <header>
         <Button primary={true} onClick={() => setCreatingTag(!creatingTag)}>
-          {creatingTag ? 'Cancel new Tag' : 'Create new Tag'}
+          Create new Tag
         </Button>
         <Button className={styles.closeButton} onClick={props.close}>X</Button>
       </header>
@@ -24,6 +24,7 @@ export default (props) => {
         {creatingTag && (
           <CreateTag
             articles={props.articles}
+            cancel={() => setCreatingTag(false)}
             triggerReload={() => {
               setCreatingTag(false)
               props.setNeedReload()
