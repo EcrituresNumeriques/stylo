@@ -55,8 +55,12 @@ body {
 
 a {
   color: $main-color-links;
-  font-weight: bolder;
-  text-decoration: none;
+  text-decoration: underline;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
 }
 
 ul,

@@ -36,7 +36,7 @@ const ConnectedHeader = (props) => {
   return (
     <header className={props.className}>
       <section className={styles.header}>
-        <h1>
+        <h1 className={styles.logo}>
           <Link to="/">_Stylo_</Link>
         </h1>
         <nav>
