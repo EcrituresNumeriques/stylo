@@ -10,6 +10,8 @@ import CreateArticle from './CreateArticle'
 import styles from './Articles.module.scss'
 import TagManagement from './TagManagement'
 import Button from './Button'
+import Field from './Field'
+import { Search } from 'react-feather'
 
 const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
@@ -91,8 +93,8 @@ const ConnectedArticles = (props) => {
       <h1>Articles for {displayName}</h1>
       <ul className={styles.horizontalMenu}>
         <li>
-          <Button primary={true} onClick={() => setCreatingArticle(!creatingArticle)}>
-            {creatingArticle ? 'Cancel new Article' : 'Create new Article'}
+          <Button primary={true} onClick={() => setCreatingArticle(true)}>
+            Create new Article
           </Button>
         </li>
         <li>
@@ -112,19 +114,14 @@ const ConnectedArticles = (props) => {
           {creatingArticle && (
             <CreateArticle
               tags={tags}
+              cancel={() => setCreatingArticle(false)}
               triggerReload={() => {
                 setCreatingArticle(false)
                 setNeedReload(true)
               }}
             />
           )}
-          <input
-            id={styles.filter}
-            type="text"
-            value={filter}
-            placeholder="Search"
-            onChange={(e) => setFilter(etv(e))}
-          />
+          <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search" onChange={(e) => setFilter(etv(e))} />
           {articles
             .filter(filterByTagsSelected)
             .filter(

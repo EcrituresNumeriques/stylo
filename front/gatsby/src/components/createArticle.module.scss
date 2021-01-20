@@ -1,0 +1,37 @@
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.75em;
+}
+
+span.selectableTag {
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid #000;
+
+  &:before {
+    content: "[ ]";
+    display: inline-block;
+  }
+}
+
+span.selectedTag {
+  background-color: #000;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid #000;
+
+  &:before {
+    content: "[x]";
+    display: inline-block;
+  }
+}
+
+.tags {
+  display: flex;
+
+  > li:not(:last-child) {
+    margin-right: 1em;
+  }
+}
