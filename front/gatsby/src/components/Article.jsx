@@ -70,6 +70,9 @@ const ConnectedArticle = (props) => {
     )
     setTitle(tempTitle)
     setRenaming(false)
+    if (props.updateTitleHandler) {
+      props.updateTitleHandler(tempTitle)
+    }
   }
 
   return (
@@ -107,7 +110,10 @@ const ConnectedArticle = (props) => {
           <Button title="Save" primary={true} onClick={(e) => rename(e)}>
             <Check /> Save
           </Button>
-          <Button title="Cancel" onClick={() => setRenaming(false)}>
+          <Button title="Cancel" type="button" onClick={() => {
+            setRenaming(false)
+            setTempTitle(props.title)
+          }}>
             Cancel
           </Button>
         </form>
