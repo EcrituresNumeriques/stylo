@@ -1,18 +1,22 @@
 .tag {
-  padding: 1em;
-  display: block;
-}
-
-.selectable {
+  padding: .25em .5em;
   cursor: pointer;
   user-select: none;
-  border: 1px solid #000;
+  border: 1px solid #aaa;
+  display: flex;
+  align-items: center;
 }
 
 .selected {
   background-color: #000;
   color: white;
-  cursor: pointer;
-  user-select: none;
   border: 1px solid #000;
+}
+
+.chip {
+  height: .65em;
+  width: .65em;
+  display: inline-block;
+  border-radius: 100%;
+  margin-left: 0.5em;
 }

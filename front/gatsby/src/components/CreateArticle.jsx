@@ -17,7 +17,7 @@ const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
 const ConnectedCreateArticle = (props) => {
   const [title, setTitle] = useState('')
   const [tagsSelected, setTagsSelected] = useState(
-    props.tags.map((t) => ({ selected: false, name: t.name, _id: t._id }))
+    props.tags.map((t) => Object.assign(t, { selected: false }))
   )
 
   const findAndUpdateTag = (tags, id) => {

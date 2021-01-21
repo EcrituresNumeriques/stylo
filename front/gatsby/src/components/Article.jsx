@@ -188,7 +188,12 @@ const ConnectedArticle = (props) => {
                 t.selected = true
                 return t
               })}
-              setTags={(ts) => setTags(ts)}
+              setTags={(ts) => {
+                setTags(ts)
+                if (props.updateTagsHandler) {
+                  props.updateTagsHandler(ts)
+                }
+              }}
             />
           </div>
         </>
