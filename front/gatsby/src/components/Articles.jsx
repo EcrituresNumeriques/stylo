@@ -12,6 +12,7 @@ import TagManagement from './TagManagement'
 import Button from './Button'
 import Field from './Field'
 import { Search } from 'react-feather'
+import Tag from './Tag'
 
 const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
@@ -22,10 +23,23 @@ const ConnectedArticles = (props) => {
   const [filter, setFilter] = useState('')
   const [articles, setArticles] = useState([])
   const [tags, setTags] = useState([])
+  const [filterTags, setFilterTags] = useState([])
   const [displayName, setDisplayName] = useState(props.activeUser.displayName)
   const [creatingArticle, setCreatingArticle] = useState(false)
   const [needReload, setNeedReload] = useState(true)
   const [tagManagement, setTagManagement] = useState(false)
+
+  const findAndUpdateTag = (tags, id) => {
+    const tag = tags.find((t) => t._id === id)
+    tag.selected = !tag.selected
+    return tags
+  }
+
+  const findAndUpdateArticleTags = (articles, articleId, tags) => {
+    const article = articles.find((a) => a._id === articleId)
+    article.tags = tags
+    return articles
+  }
 
   const sortByUpdatedAt = (a, b) => {
     const da = new Date(a.updatedAt)
@@ -40,7 +54,7 @@ const ConnectedArticles = (props) => {
   }
 
   const filterByTagsSelected = (article) => {
-    const listOfTagsSelected = [...tags].filter((t) => t.selected)
+    const listOfTagsSelected = [...filterTags].filter((t) => t.selected)
     if (listOfTagsSelected.length === 0) {
       return true
     }
@@ -71,13 +85,14 @@ const ConnectedArticles = (props) => {
           )
           //Need to sort by updatedAt desc
           setArticles(data.user.articles.reverse())
-          setTags(
-            data.user.tags.map((t) => ({
-              ...t,
-              selected: false,
-              color: t.color || 'grey',
-            }))
-          )
+          const tags = data.user.tags.map((t) => ({
+            ...t,
+            selected: false,
+            color: t.color || 'grey',
+          }))
+          setTags(tags)
+          // deep copy of tags
+          setFilterTags(JSON.parse(JSON.stringify(tags)))
           setDisplayName(data.user.displayName)
           setIsLoading(false)
           setNeedReload(false)
@@ -107,7 +122,6 @@ const ConnectedArticles = (props) => {
         focus={tagManagement}
         articles={articles}
         setNeedReload={() => setNeedReload(true)}
-        setTags={setTags}
       />
       {!isLoading && (
         <>
@@ -122,6 +136,21 @@ const ConnectedArticles = (props) => {
             />
           )}
           <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search" onChange={(e) => setFilter(etv(e))} />
+          <h4>Filter by Tags</h4>
+          <ul className={styles.filterByTags}>
+            {filterTags.map((t) => (
+              <li key={`filterTag-${t._id}`}>
+                <Tag
+                  data={t}
+                  name={`filterTag-${t._id}`}
+                  onClick={() => {
+                    // shallow copy otherwise React won't render the components again
+                    setFilterTags([...findAndUpdateTag(filterTags, t._id)])
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
           {articles
             .filter(filterByTagsSelected)
             .filter(
@@ -134,6 +163,10 @@ const ConnectedArticles = (props) => {
                 masterTags={tags}
                 {...a}
                 setNeedReload={() => setNeedReload(true)}
+                updateTagsHandler={(articleTags) => {
+                  // shallow copy otherwise React won't render the components again
+                  setArticles([...findAndUpdateArticleTags(articles, a._id, articleTags)])
+                }}
               />
             ))}
         </>

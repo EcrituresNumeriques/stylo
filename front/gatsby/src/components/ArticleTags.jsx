@@ -26,7 +26,7 @@ const ConnectedArticleTags = (props) => {
         props.applicationConfig
       )
     } catch (err) {
-      props.needReload()
+      alert(err)
     }
   }
 
@@ -46,36 +46,36 @@ const ConnectedArticleTags = (props) => {
         props.applicationConfig
       )
     } catch (err) {
-      props.needReload()
+      alert(err)
     }
   }
 
   return (
     <ul>
       {props.stateTags.map((t) => (
+        <li
+          onClick={() => rmFromTags(t._id)}
+          key={`article-${props._id}-${t._id}`}
+        >
+          <Tag data={t}
+               name={`articleTag-${t._id}`}
+               onClick={() => rmFromTags(t._id)}
+          />
+        </li>
+      ))}
+
+      {props.masterTags
+        .filter((t) => !props.stateTags.map((u) => u._id).includes(t._id))
+        .map((t) => (
           <li
-            onClick={() => rmFromTags(t._id)}
             key={`article-${props._id}-${t._id}`}
           >
             <Tag data={t}
-                name={`articleTag-${t._id}`}
-                onClick={() => rmFromTags(t._id)}
-              />
+                 name={`articleTag-${t._id}`}
+                 onClick={() => addToTags({ _id: t._id, name: t.name, color: t.color })}
+            />
           </li>
         ))}
-
-      {props.masterTags
-          .filter((t) => !props.stateTags.map((u) => u._id).includes(t._id))
-          .map((t) => (
-            <li
-              key={`article-${props._id}-${t._id}`}
-            >
-              <Tag data={t}
-                name={`articleTag-${t._id}`}
-                onClick={() => addToTags({ _id: t._id, name: t.name, color: t.color })}
-              />
-            </li>
-          ))}
     </ul>
   )
 }
