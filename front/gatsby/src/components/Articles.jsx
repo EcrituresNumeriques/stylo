@@ -41,6 +41,12 @@ const ConnectedArticles = (props) => {
     return articles
   }
 
+  const findAndUpdateArticleTitle = (articles, articleId, title) => {
+    const article = articles.find((a) => a._id === articleId)
+    article.title = title
+    return articles
+  }
+
   const sortByUpdatedAt = (a, b) => {
     const da = new Date(a.updatedAt)
     const db = new Date(b.updatedAt)
@@ -166,6 +172,10 @@ const ConnectedArticles = (props) => {
                 updateTagsHandler={(articleTags) => {
                   // shallow copy otherwise React won't render the components again
                   setArticles([...findAndUpdateArticleTags(articles, a._id, articleTags)])
+                }}
+                updateTitleHandler={(articleTitle) => {
+                  // shallow copy otherwise React won't render the components again
+                  setArticles([...findAndUpdateArticleTitle(articles, a._id, articleTitle)])
                 }}
               />
             ))}
