@@ -5,6 +5,8 @@
   "version": "0.1.0",
   "license": "MIT",
   "type": "module",
+  "#browserlist#": "https://browserslist.dev/?q=bGFzdCAzIHZlcnNpb25zLCBzYWZhcmkgPj0gMTAsIG5vdCBleHBsb3JlciA8PSAxMSwgbm90IGV4cGxvcmVybW9iaWxlIDw9IDEx",
+  "browserslist": "last 3 versions, safari >= 10, not explorer <= 11, not explorermobile <= 11",
   "scripts": {
     "prebuild": "node tasks/env.js",
     "prestart": "node tasks/env.js",
@@ -50,6 +52,6 @@
     "jest": "^26.4.2",
     "node-fetch": "^2.6.1",
     "prettier": "^2.2.1",
-    "snowpack": "^2.18.5"
+    "snowpack": "^3.0.11"
   }
 }
