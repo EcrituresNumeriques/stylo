@@ -9,7 +9,7 @@ import Chapter from './Chapter'
 import formatTimeAgo from '../helpers/formatTimeAgo'
 
 import styles from './book.module.scss'
-import * as Icon from 'react-feather'
+import { Edit3, Eye, Printer } from 'react-feather'
 import { Check, ChevronDown, ChevronRight } from 'react-feather'
 import { connect } from 'react-redux'
 import Button from './Button'
@@ -70,7 +70,7 @@ const Book = (props) => {
               {expanded ? <ChevronDown /> : <ChevronRight />} {bookTitle}
             </span>
             <Button className={[buttonStyles.icon, styles.editTitleButton].join(' ')} onClick={() => setIsRenaming(true)}>
-              <Icon.Edit3 />
+              <Edit3 />
             </Button>
           </h1>
         )}
@@ -93,12 +93,12 @@ const Book = (props) => {
               title="Preview"
               href={`https://via.hypothes.is/${exportEndpoint}/htmlBook/${props._id}?preview=true`}
             >
-              <Icon.Eye />
+              <Eye />
             </a>
           </li>
           <li>
             <Button className={buttonStyles.icon} title="Export" onClick={() => setExporting(true)}>
-              <Icon.Printer />
+              <Printer />
             </Button>
           </li>
         </ul>
