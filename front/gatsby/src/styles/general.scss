@@ -4,14 +4,12 @@
 
 @font-face {
   font-family: 'BellweatherSans-shownbsp';
-  src: url('/fonts/BellweatherSans-shownbsp.eot');
-  src: url('/fonts/BellweatherSans-shownbsp.eot?#iefix')
-      format('embedded-opentype'),
-    url('/fonts/BellweatherSans-shownbsp.otf') format('opentype'),
-    url('/fonts/BellweatherSans-shownbsp.svg') format('svg'),
-    url('/fonts/BellweatherSans-shownbsp.ttf') format('truetype'),
+  src: url('/fonts/BellweatherSans-shownbsp.woff2') format('woff2'),
     url('/fonts/BellweatherSans-shownbsp.woff') format('woff'),
-    url('/fonts/BellweatherSans-shownbsp.woff2') format('woff2');
+    url('/fonts/BellweatherSans-shownbsp.ttf') format('truetype'),
+    url('/fonts/BellweatherSans-shownbsp.svg') format('svg'),
+    url('/fonts/BellweatherSans-shownbsp.eot');
+  font-display: swap;
   font-weight: normal;
   font-style: normal;
 }
