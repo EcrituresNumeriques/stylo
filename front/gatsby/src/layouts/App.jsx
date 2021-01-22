@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { connect } from 'react-redux'
 
 import Header from '../components/Header'
+import Loading from '../components/Loading'
 
 import centeredStyles from './centered.module.scss'
 import fullPageStyles from './fullpage.module.scss'
@@ -30,8 +31,10 @@ const App = (props) => {
     <div className={styles.grid}>
       <Header className={styles.header} />
       <main className={styles.main}>
-        {hasBooted && props.children}
-        {!hasBooted && <p>Loading…</p>}
+        <Suspense fallback={<Loading />}>
+          {hasBooted && props.children}
+          {!hasBooted && <Loading />}
+        </Suspense>
       </main>
     </div>
   )

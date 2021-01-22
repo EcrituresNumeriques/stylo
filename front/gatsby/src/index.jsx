@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter as Router, Route, Switch, useParams, } from 'react-router-dom'
 import { Provider } from 'react-redux'
@@ -9,16 +9,18 @@ import createStore from './createReduxStore'
 import { getUserProfile } from './helpers/userProfile'
 import { getApplicationConfig } from './helpers/applicationConfig'
 
-import Books from './components/Books'
-import Articles from './components/Articles'
 import Register from './components/Register'
 import PrivateRoute from './components/PrivateRoute'
-import Credentials from './components/Credentials'
-import Write from './components/Write/Write'
 import NotFound from './components/404'
 import Button from './components/Button'
 import Field from './components/Field'
 import { Check, Search } from 'react-feather'
+
+// lazy loaded routes
+const Books = lazy(() => import('./components/Books'))
+const Articles = lazy(() => import('./components/Articles'))
+const Credentials = lazy(() => import('./components/Credentials'))
+const Write = lazy(() => import('./components/Write/Write'))
 
 const store = createStore()
 
