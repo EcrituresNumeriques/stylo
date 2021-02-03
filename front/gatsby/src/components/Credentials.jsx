@@ -4,6 +4,9 @@ import { connect } from 'react-redux'
 import askGraphQL from '../helpers/graphQL'
 import styles from './credentials.module.scss'
 import CredentialsUserSelect from './CredentialsUserSelect'
+import Loading from "./Loading";
+import Button from "./Button";
+import Field from "./Field";
 
 const mapStateToProps = ({
   users,
@@ -90,27 +93,32 @@ const Credentials = (props) => {
     }
   }
 
-  return (
-    <section className={styles.section}>
-      <h1>Account selection</h1>
-      <p>
-        If your <strong>Credentials</strong> are associated with multiple{' '}
-        <strong>Accounts</strong>, you'll be able to set active account and
-        default active Account here ({isLoading ? 'fetching..' : 'up to date'})
-      </p>
-      <ul>
-        {props.users.map((u, i) => (
-          <CredentialsUserSelect
-            key={`user-${u._id}`}
-            {...props}
-            u={u}
-            setDefault={setDefault}
-          />
-        ))}
-      </ul>
+  if (isLoading) {
+    return <Loading />
+  }
 
+  return (
+    <>
+      <section className={styles.section}>
+        <h1>Account selection</h1>
+        <p>
+          If your <strong>Credentials</strong> are associated with multiple{' '}
+          <strong>Accounts</strong>, you'll be able to set active account and
+          default active Account here.
+        </p>
+        <ul>
+          {props.users.map((u, i) => (
+            <CredentialsUserSelect
+              key={`user-${u._id}`}
+              {...props}
+              u={u}
+              setDefault={setDefault}
+            />
+          ))}
+        </ul>
+      </section>
       {props.password && (
-        <>
+        <section className={styles.section}>
           <h2>Change password</h2>
           <p>
             This section is strictly private, changing your password will only
@@ -118,35 +126,35 @@ const Credentials = (props) => {
             having access to one or more of your available accounts won't be
             affected.
           </p>
-          <form onSubmit={(e) => changePassword(e)}>
-            <input
+          <form className={styles.passwordForm} onSubmit={(e) => changePassword(e)}>
+            <Field
               type="password"
               placeholder="Old password"
               value={passwordO}
               onChange={(e) => setPasswordO(e.target.value)}
             />
-            <input
+            <Field
               type="password"
               placeholder="New password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <input
+            <Field
               type="password"
               placeholder="Confirm new password"
               className={password === passwordC ? null : styles.beware}
               value={passwordC}
               onChange={(e) => setPasswordC(e.target.value)}
             />
-            <button
+            <Button
               disabled={!password || !passwordO || password !== passwordC}
             >
               {isUpdating ? 'Updating..' : 'Change'}
-            </button>
+            </Button>
           </form>
-        </>
+        </section>
       )}
-    </section>
+    </>
   )
 }
 

@@ -1,4 +1,12 @@
 .field {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  label {
+    margin-right: 1rem;
+    flex-basis: 10rem;
+    text-align: end;
+  }
   input {
     align-items: center;
     border: 1px solid #000000;
@@ -20,6 +28,7 @@
       font-size: 1rem;
       position: relative;
       text-align: inherit;
+      flex-basis: 50%;
     }
 
     .control.has-icons-left .input {

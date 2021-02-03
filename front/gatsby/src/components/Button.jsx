@@ -11,5 +11,11 @@ export default function Button (props) {
   if (props.className) {
     classNames.push(props.className)
   }
-  return (<button className={classNames.join(' ')} type={props.type} title={props.title} onClick={props.onClick} onDoubleClick={props.onDoubleClick}>{props.children}</button>)
+  return (<button className={classNames.join(' ')}
+                  type={props.type}
+                  title={props.title}
+                  onClick={props.onClick}
+                  onDoubleClick={props.onDoubleClick}
+                  disabled={props.disabled}
+  >{props.children}</button>)
 }
