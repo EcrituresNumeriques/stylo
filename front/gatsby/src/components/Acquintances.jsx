@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 import styles from './acquintances.module.scss'
+import formStyles from './field.module.scss'
 
 import askGraphQL from '../helpers/graphQL'
+import Button from './Button'
+import Field from './Field'
 
 const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
   return { sessionToken, activeUser, applicationConfig }
@@ -82,29 +85,30 @@ const ConnectedAcquintances = (props) => {
   return (
     <section className={styles.acquintances}>
       <nav>
-        <p
+        <button
           onClick={function () {
             setAction('share')
           }}
           className={action === 'share' ? styles.selected : null}
         >
           Share
-        </p>
-        <p
+        </button>
+        <button
           onClick={() => setAction('send')}
           className={action === 'send' ? styles.selected : null}
         >
           Send
-        </p>
+        </button>
       </nav>
-      <form onSubmit={(e) => addContact(e)}>
-        <input
-          type="text"
+      <form onSubmit={(e) => addContact(e)} className={formStyles.inlineFields}>
+        <Field
+          autofocus={true}
+          className={formStyles.fullWidth}
           placeholder="Email of the contact you want to add"
           value={contact}
           onChange={(e) => setContact(e.target.value)}
         />
-        <button>Add</button>
+        <Button>Add</Button>
       </form>
       {loading && <p>Loading...</p>}
       {!loading && acquintances.length === 0 && <p>No acquintances</p>}

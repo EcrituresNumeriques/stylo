@@ -29,7 +29,7 @@
       font-size: 1rem;
       position: relative;
       text-align: inherit;
-      flex-basis: 50%;
+      width: 100%;
     }
 
     .control.has-icons-left .input {
@@ -62,5 +62,15 @@
 
   > * {
     flex: 0 0 auto;
+  }
+}
+
+.fullWidth {
+  flex: 1 0 auto;
+
+  :global {
+    .input {
+      width: 100%;
+    }
   }
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from './Button'
 
 import styles from './modal.module.scss'
 
@@ -11,10 +12,10 @@ export default (props) => {
       <section className={styles.background} onClick={() => cancel()}></section>
       <article className={styles.modal}>
         {props.children}
-        <button className={styles.secondary} onClick={() => cancel()}>
-          {' '}
+
+        <Button className={styles.secondary} onClick={() => cancel()}>
           Cancel
-        </button>
+        </Button>
       </article>
     </>
   )
