@@ -14,6 +14,8 @@ import {
 } from '../../../helpers/zotero'
 import { toBibtex, validate } from '../../../helpers/bibtex'
 import ReferenceTypeIcon from '../../ReferenceTypeIcon'
+import Button from '../../Button'
+import Field from '../../Field'
 
 import {Check, Trash} from 'react-feather'
 
@@ -211,13 +213,12 @@ const ConnectedBibliographe = (props) => {
               <strong>[IDnumber]/collections/[IDcollection]</strong>
             </p>
             <label>https://www.zotero.org/groups/</label>
-            <input
-              type="text"
+            <Field
               placeholder="[IDnumber]/collections/[IDcollection]"
               value={zoteroLink}
               onChange={(e) => setZoteroLink(etv(e))}
             />
-            <button
+            <Button
               type="submit"
               primary={true}
               onClick={() => saveNewZotero()}
@@ -229,14 +230,14 @@ const ConnectedBibliographe = (props) => {
               {isSaving
                 ? 'Fetching…'
                 : 'Replace bibliography with this collection'}
-            </button>
+            </Button>
           </form>
           <hr />
           <h3>Import from my Zotero account</h3>
           <form disabled={isSaving} onSubmit={(e) => e.preventDefault()}>
             {zoteroToken && zoteroCollectionSelect}
             {zoteroToken && (
-              <button
+              <Button
                 type="submit"
                 disabled={!zoteroCollectionHref || isSaving}
                 onClick={() =>
@@ -249,10 +250,10 @@ const ConnectedBibliographe = (props) => {
                 {isSaving
                   ? 'Fetching…'
                   : 'Replace bibliography with this private collection'}
-              </button>
+              </Button>
             )}
             {!zoteroToken && (
-              <button
+              <Button
                 type="button"
                 onClick={() => {
                   const popup = window.open(

@@ -9,19 +9,8 @@
   display: flex;
   width: 100%;
   margin: 1rem 0;
+  border-right: 1px solid $main-border-color;
 
-  > button {
-    border: 1px solid #000;
-    flex: 1 1 50%;
-    @extend .clickable;
-    background-color: $button-secondary-background;
-    color: $button-secondary-color;
-    padding: 0.5rem 1rem;
-
-    &.selected {
-      @extend .primary-button;
-    }
-  }
 }
 
 .actions {
@@ -64,13 +53,6 @@
     padding: 1rem;
     height: 5rem;
   }
-  > button {
-    @extend .clickable;
-    display: block;
-    width: 100%;
-    padding: 0.5rem 1rem;
-    margin-bottom: 1rem;
-  }
 
   .responsiveTable {
     max-height: 270px;
@@ -109,25 +91,11 @@
   .colActions {
     text-align: right;
     width: 10%;
-
-    button {
-      cursor: pointer;
-    }
   }
 
   > p.citation {
     padding: 0.5rem 1rem;
-    > button {
-      float: right;
-      margin-left: 1rem;
-      @extend .clickable;
-    }
   }
-}
-
-.primary {
-  @extend .primary-button;
-  float: right;
 }
 
 .citationMessages {
