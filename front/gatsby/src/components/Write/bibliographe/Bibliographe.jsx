@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { debounce } from 'lodash'
 
 import styles from './bibliographe.module.scss'
+import buttonStyles from '../../button.module.scss'
 import etv from '../../../helpers/eventTargetValue'
 import { getUserProfile } from '../../../helpers/userProfile'
 import bib2key from './CitationsFilter'
@@ -13,6 +14,8 @@ import {
 } from '../../../helpers/zotero'
 import { toBibtex, validate } from '../../../helpers/bibtex'
 import ReferenceTypeIcon from '../../ReferenceTypeIcon'
+
+import {Check, Trash} from 'react-feather'
 
 const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
   return { sessionToken, activeUser, applicationConfig }
@@ -26,7 +29,7 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 const ConnectedBibliographe = (props) => {
-  const backendEndpoint = props.applicationConfig.BACKEND_ENDPOINT
+  const {backendEndpoint} = props.applicationConfig
   const defaultSuccess = (result) => console.log(result)
   const { refreshProfile } = props
   const success = props.success || defaultSuccess
@@ -155,7 +158,7 @@ const ConnectedBibliographe = (props) => {
   }
 
   const zoteroCollectionSelect = (
-    <select onChange={(event) => setZoteroCollectionHref(etv(event))}>
+    <select className={buttonStyles.select} onChange={(event) => setZoteroCollectionHref(etv(event))}>
       <option value="">
         {isSaving ? 'Fetching collections…' : 'Pick a collection'}
       </option>
@@ -178,27 +181,29 @@ const ConnectedBibliographe = (props) => {
     <article>
       <h1 className={styles.title}>Bibliography</h1>
       <nav className={styles.selector}>
-        <p
+        <button
           className={selector === 'zotero' ? styles.selected : null}
           onClick={() => setSelector('zotero')}
         >
           Zotero
-        </p>
-        <p
+        </button>
+        <button
           className={selector === 'citations' ? styles.selected : null}
           onClick={() => setSelector('citations')}
         >
           Citations
-        </p>
-        <p
+        </button>
+        <button
           className={selector === 'raw' ? styles.selected : null}
           onClick={() => setSelector('raw')}
         >
           Raw BibTeX
-        </p>
+        </button>
       </nav>
       {selector === 'zotero' && (
         <div className={styles.zotero}>
+          <h3>Import by URL</h3>
+
           <form onSubmit={(e) => e.preventDefault() && saveNewZotero()}>
             <p>
               Please paste the URL of your Zotero library, so that it looks like
@@ -214,6 +219,7 @@ const ConnectedBibliographe = (props) => {
             />
             <button
               type="submit"
+              primary={true}
               onClick={() => saveNewZotero()}
               disabled={
                 isSaving ||
@@ -226,8 +232,9 @@ const ConnectedBibliographe = (props) => {
             </button>
           </form>
           <hr />
+          <h3>Import from my Zotero account</h3>
           <form disabled={isSaving} onSubmit={(e) => e.preventDefault()}>
-            {zoteroCollectionSelect}
+            {zoteroToken && zoteroCollectionSelect}
             {zoteroToken && (
               <button
                 type="submit"
@@ -261,8 +268,8 @@ const ConnectedBibliographe = (props) => {
                   }, 1000)
                 }}
               >
-                Connect my Zotero account
-              </button>
+                Connect my account
+              </Button>
             )}
           </form>
         </div>
@@ -291,13 +298,20 @@ const ConnectedBibliographe = (props) => {
               ))}
             </ul>
           )}
-          <button
-            type="submit"
-            disabled={citationValidationResult.valid !== true}
-            onClick={() => mergeCitations()}
-          >
-            Add
-          </button>
+          <ul className={styles.actions}>
+            <li className={styles.actionsSubmit}>
+              <Button
+                primary={true}
+                type="submit"
+                disabled={citationValidationResult.valid !== true}
+                onClick={() => mergeCitations()}
+              >
+                Add
+              </Button>
+            </li>
+          </ul>
+
+
           <p>{citations.length} citations.</p>
 
           <div className={styles.responsiveTable}>
@@ -320,24 +334,31 @@ const ConnectedBibliographe = (props) => {
                       @{b.key}
                     </th>
                     <td className={styles.colActions}>
-                      <button onClick={() => removeCitation(citations, i)}>
-                        Remove
-                      </button>
+                      <Button icon={true} onClick={() => removeCitation(citations, i)}>
+                        <Trash />
+                      </Button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <button
-            onClick={() => {
-              success(bib)
-              props.cancel()
-            }}
-            className={styles.primary}
-          >
-            Save
-          </button>
+
+          <ul className={styles.actions}>
+            <li className={styles.actionsSubmit}>
+              <Button
+                primary={true}
+                onClick={() => {
+                  success(bib)
+                  props.cancel()
+                }}
+                className={styles.primary}
+              >
+                <Check />
+                Save
+              </Button>
+            </li>
+          </ul>
         </form>
       )}
 
@@ -362,16 +383,23 @@ const ConnectedBibliographe = (props) => {
               ))}
             </ul>
           )}
-          <button
-            disabled={rawBibTeXValidationResult.valid !== true}
-            onClick={() => {
-              success(bib)
-              props.cancel()
-            }}
-            className={styles.primary}
-          >
-            Save
-          </button>
+
+          <ul className={styles.actions}>
+            <li className={styles.actionsSubmit}>
+              <Button
+                primary={true}
+                disabled={rawBibTeXValidationResult.valid !== true}
+                onClick={() => {
+                  success(bib)
+                  props.cancel()
+                }}
+                className={styles.primary}
+              >
+                <Check />
+                Save
+              </Button>
+            </li>
+          </ul>
         </form>
       )}
     </article>

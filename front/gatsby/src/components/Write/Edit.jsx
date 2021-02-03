@@ -3,12 +3,19 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import styles from './edit.module.scss'
+import buttonStyles from './../button.module.scss'
+import formStyles from './../field.module.scss'
 
 import etv from '../../helpers/eventTargetValue'
 import formatTimeAgo from '../../helpers/formatTimeAgo'
 
 import Modal from '../Modal'
 import Export from '../Export'
+import Button from '../Button'
+import Field from '../Field'
+
+import { ChevronDown, ChevronRight } from 'react-feather'
+
 
 const mapStateToProps = ({ applicationConfig }) => {
   return { applicationConfig }
@@ -75,7 +82,7 @@ const Edit = (props) => {
         className={expand ? null : styles.closed}
         onClick={() => setExpand(!expand)}
       >
-        {expand ? '-' : '+'} Edition
+        {expand ? <ChevronDown/> : <ChevronRight/>} Edition
       </h1>
       {expand && (
         <>
@@ -86,7 +93,7 @@ const Edit = (props) => {
           )}
           {!props.readOnly && (
             <nav>
-              <p
+              <Button
                 onClick={() => {
                   setExportVar({
                     ...exportVar,
@@ -101,12 +108,12 @@ const Edit = (props) => {
                 className={styles.button}
               >
                 Export
-              </p>
+              </Button>
               <a
                 href={`https://via.hypothes.is/${props.applicationConfig.exportEndpoint}/api/v1/htmlArticle/${props.article._id}?preview=true`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={styles.button}
+                className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
               >
                 preview
               </a>
@@ -116,17 +123,16 @@ const Edit = (props) => {
 
           {!props.readOnly && (
             <form
-              className={styles.liveVersion}
+              className=""
               onSubmit={(e) => saveVersion(e, false)}
             >
-              <input
-                type="text"
+              <Field
                 placeholder="Label of the version"
                 value={message}
                 onChange={(e) => setMessage(etv(e))}
               />
-              <button onClick={(e) => saveVersion(e, false)}>Save Minor</button>
-              <button onClick={(e) => saveVersion(e, true)}>Save Major</button>
+              <Button onClick={(e) => saveVersion(e, false)}>Save Minor</Button>
+              <Button onClick={(e) => saveVersion(e, true)}>Save Major</Button>
             </form>
           )}
         </>

@@ -12,7 +12,7 @@ const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
   return { sessionToken, activeUser, applicationConfig }
 }
 
-const ConnectedAcquintances = (props) => {
+function ConnectedAcquintances (props) {
   const [acquintances, setAcquintances] = useState([])
   const [contact, setContact] = useState('')
   const [loading, setLoading] = useState(true)

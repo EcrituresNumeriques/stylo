@@ -1,4 +1,4 @@
-.button {
+.button, .select {
   border: none;
   user-select: none;
   margin: 0;
@@ -12,6 +12,7 @@
   padding: calc(.5em - 1px) calc(.8em - 1px);
   position: relative;
   vertical-align: top;
+  text-decoration: none;
   cursor: pointer;
 
   > svg {
@@ -29,7 +30,7 @@
   color: #fff;
 }
 
-.secondary {
+.secondary, .select {
   background-color: #fff;
   color: #000;
   border: 1px solid #000;
@@ -47,4 +48,8 @@
     background: none;
     opacity: 0.5;
   }
+}
+
+.select {
+  appearance: none;
 }

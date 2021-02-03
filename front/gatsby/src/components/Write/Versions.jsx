@@ -2,10 +2,15 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import styles from './versions.module.scss'
+import buttonStyles from '../button.module.scss'
 
 import Modal from '../Modal'
 import Export from '../Export'
 import { connect } from 'react-redux'
+
+import { ChevronDown, ChevronRight } from 'react-feather'
+import Button from '../Button'
+
 
 Date.prototype.getUTCMinutesDoubleDigit = function () {
   if (this.getUTCMinutes() < 10) {
@@ -82,7 +87,7 @@ const Versions = (props) => {
         className={expand ? null : styles.closed}
         onClick={() => setExpand(!expand)}
       >
-        {expand ? '-' : '+'} Versions
+        {expand ? <ChevronDown/> : <ChevronRight/>}  Versions
       </h1>
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
@@ -116,9 +121,11 @@ const Versions = (props) => {
                   )}
                   <span>at {new Date(v.updatedAt).formatMMDDYYYY()}</span>
                 </p>
+
                 <nav>
                   {v._id !== props.compareTo && (
                     <Link
+                      className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
                       to={`/article/${props.article._id}/${
                         props.selectedVersion
                           ? 'version/' + props.selectedVersion + '/'
@@ -130,6 +137,7 @@ const Versions = (props) => {
                   )}
                   {v._id === props.compareTo && (
                     <Link
+                      className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
                       to={`/article/${props.article._id}/${
                         props.selectedVersion
                           ? 'version/' + props.selectedVersion
@@ -139,7 +147,7 @@ const Versions = (props) => {
                       Stop
                     </Link>
                   )}
-                  <p
+                  <Button
                     onClick={() => {
                       setExportVar({
                         ...exportVar,
@@ -152,14 +160,15 @@ const Versions = (props) => {
                       setExporting(true)
                     }}
                   >
-                    export
-                  </p>
+                    Export
+                  </Button>
                   <a
                     href={`https://via.hypothes.is/${props.applicationConfig.exportEndpoint}/api/v1/htmlVersion/${v._id}?preview=true`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
                   >
-                    preview
+                    Preview
                   </a>
                 </nav>
               </li>
