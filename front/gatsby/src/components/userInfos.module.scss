@@ -2,4 +2,12 @@
 @import '../styles/variables.scss';
 
 .section {
+
+  &:not(:last-child) {
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    margin: 1rem 0 .5rem;
+  }
 }

@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'
 import askGraphQL from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
 import styles from './userInfos.module.scss'
+import formStyles from './field.module.scss'
 import UserConnectedLogin from './UserAllowedLogin'
 import Button from "./Button";
 import Field from "./Field";
@@ -188,7 +189,7 @@ const ConnectedUser = (props) => {
     return <Loading/>
   }
 
-  return (
+  return (<>
     <section className={styles.section}>
       <h2>Account information</h2>
       <form onSubmit={(e) => updateInfo(e)}>
@@ -253,8 +254,14 @@ const ConnectedUser = (props) => {
             placeholder=""
           />
         </Field>
-        <Button>Update</Button>
+
+        <div className={formStyles.footer}>
+          <Button primary={true}>Update</Button>
+        </div>
       </form>
+    </section>
+
+    <section className={styles.section}>
       <Field label="Account email">
         <>{user.email}</>
       </Field>
@@ -270,6 +277,7 @@ const ConnectedUser = (props) => {
       <Field label="Updated At">
         <time dateTime={user.updatedAt}>{formatTimeAgo(new Date(user.updatedAt))}</time>
       </Field>
+
       <h2>Allowed credentials</h2>
       <ul>
         {passwords.map((p) => (
@@ -281,17 +289,18 @@ const ConnectedUser = (props) => {
           />
         ))}
       </ul>
-      <form onSubmit={(e) => addNewLogin(e)} id={styles.newLogin}>
+
+      <h2>Grant access</h2>
+      <form onSubmit={(e) => addNewLogin(e)} className={formStyles.inlineFields}>
         <Field
           placeholder="Email of the login to allow"
           value={emailLogin}
           onChange={(e) => setEmailLogin(etv(e))}
         />
-        <div className={styles.rightAlign}>
-          <Button>Give full access</Button>
-        </div>
+        <Button primary={true}>Give full access</Button>
       </form>
     </section>
+  </>
   )
 }
 
