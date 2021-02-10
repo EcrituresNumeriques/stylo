@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ChevronDown, ChevronRight } from 'react-feather'
 
-import styles from './stats.module.scss'
+import menuStyles from './menu.module.scss'
 
 export default (props) => {
   const [expand, setExpand] = useState(true)
@@ -21,11 +21,8 @@ export default (props) => {
     value.replace(regex, '').replace(citation, ' ').split(' ').length - 1
 
   return (
-    <section id={styles.section}>
-      <h1
-        className={expand ? null : styles.closed}
-        onClick={() => setExpand(!expand)}
-      >
+    <section className={menuStyles.section}>
+      <h1 onClick={() => setExpand(!expand)}>
         {expand ? <ChevronDown/> : <ChevronRight/>} Stats
       </h1>
       {expand && (

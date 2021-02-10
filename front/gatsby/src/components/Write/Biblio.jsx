@@ -5,7 +5,7 @@ import Modal from '../Modal'
 import Reference from './Reference'
 import Bibliographe from './bibliographe/Bibliographe'
 
-import styles from './biblio.module.scss'
+import menuStyles from './menu.module.scss'
 import Button from '../Button'
 
 export default (props) => {
@@ -13,11 +13,8 @@ export default (props) => {
   const [modal, setModal] = useState(false)
 
   return (
-    <section id={styles.section}>
-      <h1
-        className={expand ? null : styles.closed}
-        onClick={() => setExpand(!expand)}
-      >
+    <section className={menuStyles.section}>
+      <h1 onClick={() => setExpand(!expand)}>
         {expand ? <ChevronDown/> : <ChevronRight/>} Bibliography
       </h1>
       {expand && (

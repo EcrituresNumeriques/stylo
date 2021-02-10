@@ -3,8 +3,9 @@ import React, { useState } from 'react'
 import { ChevronDown, ChevronRight } from 'react-feather'
 
 import styles from './sommaire.module.scss'
+import menuStyles from './menu.module.scss'
 
-export default (props) => {
+export default function Sommaire (props) {
   const [expand, setExpand] = useState(true)
   // eslint-disable-next-line
   const lines = props.md
@@ -24,11 +25,8 @@ export default (props) => {
   //23B8
 
   return (
-    <section id={styles.section}>
-      <h1
-        className={expand ? null : styles.closed}
-        onClick={() => setExpand(!expand)}
-      >
+    <section className={[styles.section, menuStyles.section].join(' ')}>
+      <h1 onClick={() => setExpand(!expand)}>
         {expand ? <ChevronDown/> : <ChevronRight/>} Table of contents
       </h1>
       {expand && (

@@ -1,7 +1,7 @@
 @import '../../styles/defaults.scss';
 @import '../../styles/variables.scss';
 
-#section {
+.section {
   > ul {
     > li {
       padding: 0.5rem 1rem 0.5rem 1rem;
@@ -22,18 +22,10 @@
       padding: 0.5rem 1rem;
     }
   }
+}
 
-  > h1 {
-    font-size: 1.2rem;
-    @extend .clickable;
-    border-top: 1px solid $main-border-color;
-    border-bottom: 1px solid $main-border-color;
-    padding: 0.5rem 1rem;
-    background-color: $main-background-color;
-
-    display: flex;
-    align-items: center;
-  }
+.versionsList {
+  font-size: 0.9em;
 }
 
 .actions {

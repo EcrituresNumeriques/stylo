@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import styles from './versions.module.scss'
+import menuStyles from './menu.module.scss'
 import buttonStyles from '../button.module.scss'
 
 import Modal from '../Modal'
@@ -101,7 +102,7 @@ const Versions = (props) => {
   const lastVersionId = props.versions[0]._id
 
   return (
-    <section id={styles.section}>
+    <section className={[styles.section, menuStyles.section].join(' ')}>
       <h1
         className={expand ? null : styles.closed}
         onClick={() => setExpand(!expand)}
@@ -115,7 +116,7 @@ const Versions = (props) => {
       )}
       {expand && (
         <>
-          <ul>
+          <ul className={styles.versionsList}>
             {props.readOnly && <li key={`showVersion-GoLive`}>
               <Link to={`/article/${props.article._id}`}>Back to edit mode</Link>
             </li>}
