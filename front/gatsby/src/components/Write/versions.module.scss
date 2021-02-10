@@ -4,14 +4,9 @@
 #section {
   > ul {
     > li {
-      @extend .clickable;
       padding: 0.5rem 1rem 0.5rem 1rem;
       > a:first-child {
         display: block;
-      }
-
-      nav {
-        text-align: right;
       }
     }
     > li:nth-child(2n) {
@@ -38,5 +33,33 @@
 
     display: flex;
     align-items: center;
+  }
+}
+
+.actions {
+  display: flex;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  justify-content: flex-end;
+  font-size: 0.9em;
+
+  > li:not(:last-child) {
+    margin-right: 0.5em;
+  }
+}
+
+.saveForm {
+  text-align: right;
+  margin: 1rem 0;
+  border-left: 5px solid #202020;
+  padding: 0.5rem 0 0.25rem 0.5rem;
+}
+
+.saveVersionInput {
+  width: 100%;
+  padding-bottom: 0.5rem;
+
+  input {
+    width: 100%;
   }
 }

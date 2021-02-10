@@ -5,7 +5,7 @@
   align-items: center;
   box-shadow: none;
   display: inline-flex;
-  font-size: 1rem;
+  font-size: 1em;
   height: 2.5em;
   justify-content: flex-start;
   line-height: 1.5;
@@ -56,4 +56,36 @@
 
 .select {
   appearance: none;
+  cursor: pointer;
+  display: block;
+  font-size: 1em;
+  max-width: 100%;
+  outline: 0;
+  padding-right: 2.5em;
+}
+
+.selectContainer {
+  display: inline-block;
+  max-width: 100%;
+  position: relative;
+  vertical-align: top;
+}
+
+.selectContainer:after {
+  right: 1.125em;
+  z-index: 4;
+  border: 3px solid #000;
+  border-radius: 2px;
+  border-right: 0;
+  border-top: 0;
+  content: " ";
+  display: block;
+  height: .625em;
+  margin-top: -0.55em;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: rotate(-45deg);
+  transform-origin: center;
+  width: .625em;
 }

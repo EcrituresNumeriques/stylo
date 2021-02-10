@@ -8,8 +8,11 @@ import Modal from '../Modal'
 import Export from '../Export'
 import { connect } from 'react-redux'
 
-import { ChevronDown, ChevronRight } from 'react-feather'
+import { ChevronDown, ChevronRight, Save } from 'react-feather'
 import Button from '../Button'
+import Field from '../Field'
+import etv from '../../helpers/eventTargetValue'
+import formatTimeAgo from '../../helpers/formatTimeAgo'
 
 
 Date.prototype.getUTCMinutesDoubleDigit = function () {
@@ -77,9 +80,25 @@ const Versions = (props) => {
     }
   }
 
+  const [message, setMessage] = useState('')
   const [expand, setExpand] = useState(true)
+  const [expandSaveForm, setExpandSaveForm] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [exportVar, setExportVar] = useState(expVar)
+  const [savedAgo, setSavedAgo] = useState(
+    formatTimeAgo(new Date(props.versions[0].updatedAt))
+  )
+
+  const saveVersion = async (e, major = false) => {
+    e.preventDefault()
+    await props.sendVersion(false, major, message)
+    //const newVersion = await props.sendVersion(false,major, message)
+    setMessage('')
+    //setVersions([newVersion.saveVersion,...versions])
+    setExpandSaveForm(false)
+  }
+
+  const lastVersionId = props.versions[0]._id
 
   return (
     <section id={styles.section}>
@@ -97,6 +116,9 @@ const Versions = (props) => {
       {expand && (
         <>
           <ul>
+            {props.readOnly && <li key={`showVersion-GoLive`}>
+              <Link to={`/article/${props.article._id}`}>Back to edit mode</Link>
+            </li>}
             {props.versions.map((v) => (
               <li
                 key={`showVersion-${v._id}`}
@@ -119,58 +141,89 @@ const Versions = (props) => {
                       by <strong>{v.owner.displayName}</strong>{' '}
                     </span>
                   )}
-                  <span>at {new Date(v.updatedAt).formatMMDDYYYY()}</span>
+                  {lastVersionId !== v._id && <span>at {new Date(v.updatedAt).formatMMDDYYYY()}</span>}
+                  {lastVersionId === v._id && <span>{savedAgo}</span>}
                 </p>
-
-                <nav>
-                  {v._id !== props.compareTo && (
-                    <Link
-                      className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
-                      to={`/article/${props.article._id}/${
-                        props.selectedVersion
-                          ? 'version/' + props.selectedVersion + '/'
-                          : ''
-                      }compare/${v._id}`}
-                    >
-                      Compare
-                    </Link>
+                <ul className={styles.actions}>
+                  {lastVersionId === v._id && !props.readOnly && (
+                    <li>
+                      <Button primary={true} onClick={_ => setExpandSaveForm(true)}><Save /> Save</Button>
+                    </li>
                   )}
-                  {v._id === props.compareTo && (
-                    <Link
-                      className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
-                      to={`/article/${props.article._id}/${
-                        props.selectedVersion
-                          ? 'version/' + props.selectedVersion
-                          : ''
-                      }`}
-                    >
-                      Stop
-                    </Link>
+                  {lastVersionId !== v._id && v._id !== props.compareTo && (
+                    <li>
+                      <Link
+                        className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
+                        to={`/article/${props.article._id}/${
+                          props.selectedVersion
+                            ? 'version/' + props.selectedVersion + '/'
+                            : ''
+                        }compare/${v._id}`}
+                      >
+                        Compare
+                      </Link>
+                    </li>
                   )}
-                  <Button
-                    onClick={() => {
-                      setExportVar({
-                        ...exportVar,
-                        article: false,
-                        _id: v._id,
-                        versionId: v._id,
-                        version: v.version,
-                        revision: v.revision,
-                      })
-                      setExporting(true)
-                    }}
+                  {lastVersionId !== v._id && v._id === props.compareTo && (
+                    <li>
+                      <Link
+                        className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
+                        to={`/article/${props.article._id}/${
+                          props.selectedVersion
+                            ? 'version/' + props.selectedVersion
+                            : ''
+                        }`}
+                      >
+                        Stop
+                      </Link>
+                    </li>
+                  )}
+                  <li>
+                    <Button
+                      onClick={() => {
+                        setExportVar({
+                          ...exportVar,
+                          article: false,
+                          _id: v._id,
+                          versionId: v._id,
+                          version: v.version,
+                          revision: v.revision,
+                        })
+                        setExporting(true)
+                      }}
+                    >
+                      Export
+                    </Button>
+                  </li>
+                  <li>
+                    <a
+                      href={`https://via.hypothes.is/${props.applicationConfig.exportEndpoint}/api/v1/htmlVersion/${v._id}?preview=true`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
+                    >
+                      Preview
+                    </a>
+                  </li>
+                </ul>
+                {lastVersionId === v._id && expandSaveForm && (
+                  <form
+                    className={styles.saveForm}
+                    onSubmit={(e) => saveVersion(e, false)}
                   >
-                    Export
-                  </Button>
-                  <a
-                    href={`https://via.hypothes.is/${props.applicationConfig.exportEndpoint}/api/v1/htmlVersion/${v._id}?preview=true`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
-                  >
-                    Preview
-                  </a>
-                </nav>
+                    <Field
+                      className={styles.saveVersionInput}
+                      placeholder="Label of the version"
+                      value={message}
+                      onChange={(e) => setMessage(etv(e))}
+                    />
+                    <ul className={styles.actions}>
+                      <li><Button icon={true} onClick={(e) => saveVersion(e, false)}>Close</Button></li>
+                      <li><Button onClick={(e) => saveVersion(e, false)}>Save Minor</Button></li>
+                      <li><Button onClick={(e) => saveVersion(e, true)}>Save Major</Button></li>
+                    </ul>
+                  </form>
+                )}
               </li>
             ))}
           </ul>

@@ -17,7 +17,8 @@ import ReferenceTypeIcon from '../../ReferenceTypeIcon'
 import Button from '../../Button'
 import Field from '../../Field'
 
-import {Check, Trash} from 'react-feather'
+import { Check, Plus, Trash } from 'react-feather'
+import Select from '../../Select'
 
 const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
   return { sessionToken, activeUser, applicationConfig }
@@ -160,7 +161,7 @@ const ConnectedBibliographe = (props) => {
   }
 
   const zoteroCollectionSelect = (
-    <select className={buttonStyles.select} onChange={(event) => setZoteroCollectionHref(etv(event))}>
+    <Select onChange={(event) => setZoteroCollectionHref(etv(event))}>
       <option value="">
         {isSaving ? 'Fetching collections…' : 'Pick a collection'}
       </option>
@@ -176,7 +177,7 @@ const ConnectedBibliographe = (props) => {
           ))}
         </optgroup>
       ))}
-    </select>
+    </Select>
   )
 
   return (
@@ -307,7 +308,7 @@ const ConnectedBibliographe = (props) => {
                 disabled={citationValidationResult.valid !== true}
                 onClick={() => mergeCitations()}
               >
-                Add
+                <Plus/> Add
               </Button>
             </li>
           </ul>

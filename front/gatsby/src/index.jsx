@@ -15,6 +15,9 @@ import NotFound from './components/404'
 import Button from './components/Button'
 import Field from './components/Field'
 import { Check, Search } from 'react-feather'
+import buttonStyles from './components/button.module.scss'
+import etv from './helpers/eventTargetValue'
+import Select from './components/Select'
 
 // lazy loaded routes
 const Books = lazy(() => import('./components/Books'))
@@ -106,6 +109,12 @@ render(
               <h2>Fields</h2>
               <h4>Search</h4>
               <Field placeholder="Search" icon={Search}/>
+              <h4>Select</h4>
+              <Select>
+                <option>Tome de Savoie</option>
+                <option>Reblochon</option>
+                <option>St Marcellin</option>
+              </Select>
             </App>
           </Route>
           <Route exact path="/">
