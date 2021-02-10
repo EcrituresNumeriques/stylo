@@ -102,6 +102,7 @@ a.button:not(.primary), a.icon:not(.primary) {
   background: none;
   border: none;
   transition: color 1s ease, background 1s ease;
+  color: currentColor;
 
   &:hover,
   &:focus {
