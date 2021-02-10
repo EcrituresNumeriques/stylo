@@ -1,5 +1,34 @@
 # Journal de développement
 
+## Mercredi 10 février 2021
+
+### Ce que j'ai aimé/appris
+
+- La matinée, avec Maïtané : prises de décision rapide, partage d'idées, etc.
+- J'ai appris les marges ! L'ordre (haut, droite, bas, gauche)
+- Sass a été pratique pour la réutilisation des styles
+- J'ai mieux la relation entre "styled components" et quels composants enfants ça impacte
+- J'ai aimé l'isolation des styles qu'on a introduit, avec une cascade limitée
+- On a (quasi) fini les formulaires, style homogène et plus sympa à utiliser (moins austère)
+- Factoriser le composant "Edit" / "Versions" à 3 été un chouette moment, et on a rendu le composant plus explicite
+- Revenir dans le générateur, m'a donné l'impression d'avoir mieux digéré son fonctionnement — le styler à parité sans surcharger les composants
+
+### Ce que j'ai trouvé difficile
+
+- Les styles, ça a pris des plombes — mutualiser, sans effet de bord
+- Y'a des composants bizarrement fichus qui donnent envie de les réécrire/simplifier la maintenance
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- davantage se préparer avec Maïtané sur l'objectif de groupe
+- les sidebars…
+- …et mémoriser les choix utilisateur·ices (sidebar ouverte/fermée, panneaux ouvert/fermés, etc.)
+- proposer une session test/review/validation avec Antoine histoire de mettre en prod
+
+## Mercredi 3 février 2021
+
+N/A
+
 ## Mercredi 20 janvier 2021
 
 ### Ce que j'ai aimé/appris
