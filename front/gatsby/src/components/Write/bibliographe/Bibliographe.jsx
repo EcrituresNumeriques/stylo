@@ -18,6 +18,7 @@ import Field from '../../Field'
 
 import { Check, Plus, Trash } from 'react-feather'
 import Select from '../../Select'
+import NavTag from '../../NavTab'
 
 const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
   return { sessionToken, activeUser, applicationConfig }
@@ -182,26 +183,21 @@ const ConnectedBibliographe = (props) => {
   return (
     <article>
       <h1 className={styles.title}>Bibliography</h1>
-      <nav className={styles.selector}>
-        <button
-          className={selector === 'zotero' ? styles.selected : null}
-          onClick={() => setSelector('zotero')}
-        >
-          Zotero
-        </button>
-        <button
-          className={selector === 'citations' ? styles.selected : null}
-          onClick={() => setSelector('citations')}
-        >
-          Citations
-        </button>
-        <button
-          className={selector === 'raw' ? styles.selected : null}
-          onClick={() => setSelector('raw')}
-        >
-          Raw BibTeX
-        </button>
-      </nav>
+      <NavTag defaultValue={selector} onChange={(value) => setSelector(value)} items={[
+        {
+          value: 'zotero',
+          name: 'Zotero'
+        },
+        {
+          value: 'citations',
+          name: 'Citations'
+        },
+        {
+          value: 'raw',
+          name: 'Raw BibTeX'
+        }
+      ]
+      }/>
       {selector === 'zotero' && (
         <div className={styles.zotero}>
           <h3>Import by URL</h3>

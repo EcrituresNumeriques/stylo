@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import styles from './writeRight.module.scss'
 import YamlEditor from './yamleditor/YamlEditor'
+import NavTag from '../NavTab'
 import YAML from 'js-yaml'
 
 export default (props) => {
@@ -24,30 +25,26 @@ export default (props) => {
             <header>
               <h1>Metadata</h1>
             </header>
-            <nav>
-              <p
-                className={selector === 'basic' ? styles.selected : null}
-                onClick={(e) => setSelector('basic')}
-              >
-                Basic Mode
-              </p>
-              <p
-                className={selector === 'editor' ? styles.selected : null}
-                onClick={(e) => setSelector('editor')}
-              >
-                Editor Mode
-              </p>
-              <p
-                className={selector === 'raw' ? styles.selected : null}
-                onClick={(e) => setSelector('raw')}
-              >
-                Raw Mode
-              </p>
-            </nav>
+            <NavTag defaultValue={selector} onChange={(value) => setSelector(value)} items={[
+              {
+                value: 'basic',
+                name: 'Basic Mode'
+              },
+              {
+                value: 'editor',
+                name: 'Editor Mode'
+              },
+              {
+                value: 'raw',
+                name: 'Raw Mode'
+              }
+              ]
+            }/>
             {selector === 'raw' && (
               <>
                 {error !== '' && <p className={styles.error}>{error}</p>}
                 <textarea
+                  className={styles.rawYamlTextArea}
                   value={rawYaml}
                   onChange={(event) => {
                     const component = event.target

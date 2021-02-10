@@ -6,17 +6,28 @@ import uiSchema from '../schemas/ui-schema-editor.json'
 import staticKeywordsComponent from './Write/metadata/staticKeywords'
 import schema from '../schemas/data-schema.json'
 import { toYaml } from './Write/metadata/yaml'
+
+// REMIND: use a custom SelectWidget to support "ui:emptyValue"
+// remove once fixed in https://github.com/rjsf-team/react-jsonschema-form/issues/1041
 import SelectWidget from './SelectWidget'
 
 import styles from './form.module.scss'
+import Button from './Button'
+import { Plus, Trash } from 'react-feather'
 
+const CustomSelect = function(props) {
+  return (<div className={styles.selectContainer}>
+      <SelectWidget {...props}/>
+    </div>)
+}
 function ArrayFieldTemplate(props) {
   const addItemTitle = props.uiSchema['ui:add-item-title'] || 'Ajouter'
   const removeItemTitle = props.uiSchema['ui:remove-item-title'] || 'Supprimer'
   const title = props.uiSchema['ui:title']
 
+  const inlineRemoveButton = props.schema?.items?.type === 'string'
   return (
-    <fieldset className={styles.fieldsetGroup} key={props.key}>
+    <fieldset className={styles.fieldset} key={props.key}>
       {title && <legend id={props.id}>{title}</legend>}
       {props.items &&
         props.items.map((element) => (
@@ -27,27 +38,30 @@ function ArrayFieldTemplate(props) {
           >
             {element.children}
             {element.hasRemove && (
-              <button
+              <Button
+                icon={inlineRemoveButton}
                 type="button"
-                className={styles.removeButton}
+                className={[styles.removeButton, inlineRemoveButton ? styles.inlineRemoveButton : ''].join(' ')}
                 tabIndex={-1}
                 disabled={element.disabled || element.readonly}
                 onClick={element.onDropIndexClick(element.index)}
               >
-                {removeItemTitle}
-              </button>
+                <Trash/>
+                {inlineRemoveButton ? '' : removeItemTitle}
+              </Button>
             )}
           </div>
         ))}
       {props.canAdd && (
-        <button
+        <Button
           type="button"
           className={styles.addButton}
           tabIndex={-1}
           onClick={props.onAddClick}
         >
+          <Plus/>
           {addItemTitle}
-        </button>
+        </Button>
       )}
     </fieldset>
   )
@@ -120,9 +134,11 @@ export default ({
     ...effectiveUiSchema.controlledKeywords,
     ...staticKeywordsComponent.uiSchema,
   }
-  // REMIND: use a custom SelectWidget to support "ui:emptyValue"
-  // remove once fixed in https://github.com/rjsf-team/react-jsonschema-form/issues/1041
-  const customWidgets = {SelectWidget}
+
+  const customWidgets = {
+    SelectWidget: CustomSelect
+  }
+
   return (
     <Form
       className={styles.form}

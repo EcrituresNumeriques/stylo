@@ -1,3 +1,18 @@
+@mixin inputField {
+  align-items: center;
+  border: 1px solid #000000;
+  box-shadow: none;
+  display: inline-flex;
+  font-size: 1rem;
+  height: 2.5em;
+  justify-content: flex-start;
+  line-height: 1.5;
+  padding: calc(.5em - 1px) calc(.75em - 1px);
+  position: relative;
+  vertical-align: top;
+  width: 100%;
+}
+
 .field {
   display: flex;
   align-items: center;
@@ -11,18 +26,7 @@
     text-align: end;
   }
   input {
-    align-items: center;
-    border: 1px solid #000000;
-    box-shadow: none;
-    display: inline-flex;
-    font-size: 1rem;
-    height: 2.5em;
-    justify-content: flex-start;
-    line-height: 1.5;
-    padding: calc(.5em - 1px) calc(.75em - 1px);
-    position: relative;
-    vertical-align: top;
-    width: 100%;
+    @include inputField;
   }
 
   :global {

@@ -12,6 +12,10 @@
   }
 }
 
+.rawYamlTextArea {
+  font-family: monospace;
+}
+
 .error {
   background-color: red;
   padding: 0.5rem;
@@ -24,7 +28,7 @@
   @extend .sliderright;
   right: -400px;
   background-color: rgba(255, 255, 255, 0);
-  border-right: 0px solid $main-border-color;
+  border-right: 0 solid $main-border-color;
   > nav {
     left: -130px;
     transition: left 0.5s ease;

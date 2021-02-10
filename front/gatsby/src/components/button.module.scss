@@ -1,7 +1,7 @@
 @import '../styles/defaults.scss';
 @import '../styles/variables.scss';
 
-.button, .select {
+@mixin actionField {
   border: none;
   user-select: none;
   margin: 0;
@@ -17,6 +17,58 @@
   vertical-align: top;
   text-decoration: none;
   cursor: pointer;
+}
+
+@mixin selectField {
+  appearance: none;
+  cursor: pointer;
+  display: block;
+  font-size: 1em;
+  max-width: 100%;
+  outline: 0;
+  padding-right: 2.5em;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+}
+
+@mixin selectFieldContainer {
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  vertical-align: top;
+
+  &:after {
+    right: 1.125em;
+    z-index: 4;
+    border: 3px solid #000;
+    border-radius: 2px;
+    border-right: 0;
+    border-top: 0;
+    content: " ";
+    display: block;
+    height: .625em;
+    margin-top: -0.55em;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: rotate(-45deg);
+    transform-origin: center;
+    width: .625em;
+  }
+}
+
+.select {
+  @include actionField;
+  @include selectField;
+}
+
+.selectContainer {
+  @include selectFieldContainer;
+}
+
+.button {
+  @include actionField;
 
   > svg {
     margin-right: 0.3em;
@@ -37,7 +89,7 @@ a.button:not(.primary), a.icon:not(.primary) {
   color: #fff;
 }
 
-.secondary, .select {
+.secondary {
   background-color: #fff;
   color: #000;
   border: 1px solid #000;
@@ -70,40 +122,4 @@ a.button:not(.primary), a.icon:not(.primary) {
 .textarea {
   border: 1px solid #000;
   padding: 1rem;
-}
-
-.select {
-  appearance: none;
-  cursor: pointer;
-  display: block;
-  font-size: 1em;
-  max-width: 100%;
-  outline: 0;
-  padding-right: 2.5em;
-}
-
-.selectContainer {
-  display: inline-block;
-  max-width: 100%;
-  position: relative;
-  vertical-align: top;
-}
-
-.selectContainer:after {
-  right: 1.125em;
-  z-index: 4;
-  border: 3px solid #000;
-  border-radius: 2px;
-  border-right: 0;
-  border-top: 0;
-  content: " ";
-  display: block;
-  height: .625em;
-  margin-top: -0.55em;
-  pointer-events: none;
-  position: absolute;
-  top: 50%;
-  transform: rotate(-45deg);
-  transform-origin: center;
-  width: .625em;
 }
