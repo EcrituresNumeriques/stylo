@@ -25,11 +25,4 @@
 
 .copyToClipboard {
   margin-left: auto;
-  transition: color 1s ease, background 1s ease;
-
-  &:active {
-    background-color: $main-color;
-    color: $extra-background-color;
-    transition: none;
-  }
 }

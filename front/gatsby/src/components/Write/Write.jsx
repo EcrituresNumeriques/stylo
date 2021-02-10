@@ -143,7 +143,7 @@ const ConnectedWrite = (props) => {
   const debouncedLive = useDebounce(live, 1000)
   useEffect(() => {
     if (!readOnly && !isLoading && !firstLoad) {
-      sendVersion(true, false, 'Autosave')
+      sendVersion(true, false, 'Current version')
     } else if (!readOnly && !isLoading) {
       setFirstLoad(false)
     } else {
