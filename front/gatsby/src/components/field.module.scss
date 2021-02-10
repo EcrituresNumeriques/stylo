@@ -1,9 +1,11 @@
 .field {
   display: flex;
   align-items: center;
+  margin-bottom: .5rem;
   flex-grow: 1;
 
   label {
+    cursor: pointer;
     margin-right: 1rem;
     flex-basis: 10rem;
     text-align: end;
@@ -20,6 +22,7 @@
     padding: calc(.5em - 1px) calc(.75em - 1px);
     position: relative;
     vertical-align: top;
+    width: 100%;
   }
 
   :global {

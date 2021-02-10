@@ -14,7 +14,7 @@ export default (props) => {
     <p className={`control${props.icon ? " has-icons-left" : ""}`}>
       {props.children && {...props.children}}
       {!props.children && <>
-        <input id={props.id} className="input" autoFocus={props.autoFocus} type={type} placeholder={props.placeholder} onChange={props.onChange} value={props.value}/>
+        <input {...props} className="input" type={type} />
           {props.icon && <span className="icon is-small is-left">
             <props.icon/>
           </span>}
