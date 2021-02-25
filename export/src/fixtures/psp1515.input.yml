@@ -1,0 +1,91 @@
+---
+abstract:
+  - lang: fr
+    text_f: "Le Groupe d’études sur le néolibéralisme et les alternatives (GENA) a organisé au Conservatoire national des Arts et Métiers (CNAM) un colloque franco-brésilien à Paris le mercredi\_20\_mars et le jeudi\_21\_mars 2019 intitulé «\_La crise de la démocratie et le néolibéralisme à la lumière de la situation brésilienne\_». C’est pour l’essentiel le contenu des contributions à ce colloque que vous allez lire dans ce dossier.\n"
+  - lang: en
+    text_f: >-
+      The Study Group on Neoliberalism and Alternatives (GENA) organized at the
+      Conservatoire national des Arts et Métiers (CNAM) a Franco-Brazilian
+      colloquium in Paris on Wednesday, March 20 and Thursday, March 21, 2019
+      entitled «The crisis of democracy and neoliberalism in light of the
+      Brazilian situation». It is essentially the content of the contributions
+      to this colloquium that this dossier is composed of.
+articleslies:
+  - auteur: ''
+    titre: ''
+    url: ''
+authors:
+  - forname: Pierre
+    orcid: 0000-0003-3445-1953
+    surname: Sauvêtre
+  - forname: Pierre
+    orcid: 0000-0002-0200-8888
+    surname: Dardot
+  - forname: Christian
+    orcid: 0000-0003-1806-8786
+    surname: Laval
+controlledKeywords:
+  - idRameau: FRBNF119316757
+    label: Brésil
+    uriRameau: 'http://catalogue.bnf.fr/ark:/12148/cb119316758'
+  - idRameau: FRBNF119758063
+    label: Politique et société
+    uriRameau: 'http://catalogue.bnf.fr/ark:/12148/cb11975806s'
+  - idRameau: FRBNF13318556
+    label: Démocratie
+    uriRameau: 'http://catalogue.bnf.fr/ark:/12148/cb133185567/'
+date: '2020-06-25'
+diffnum: Érudit
+director:
+  - forname: Gérard
+    gender: male
+    orcid: 0000-0002-6651-1650
+    surname: Wormser
+dossier:
+  - id: SP1515
+    title_f: Le néolibéralisme autoritaire au miroir du Brésil
+id: SP1515
+issnnum: 2104-3272
+issueDirectors:
+  - forname: Pierre
+    orcid: 0000-0003-3445-1953
+    surname: Sauvêtre
+  - forname: Pierre
+    orcid: 0000-0002-0200-8888
+    surname: Dardot
+  - forname: Christian
+    orcid: 0000-0003-1806-8786
+    surname: Laval
+journal: Sens public
+keywords:
+  - lang: fr
+    list_f:
+      - Néolibéralisme
+      - ' Autoritarisme'
+      - ' Brésil'
+      - ' Démocratie'
+  - lang: en
+    list_f:
+      - Neoliberalism
+      - ' Authoritarianism'
+      - ' Brazil'
+      - ' Democracy'
+lang: fr
+link-citations: true
+prod: Sens public
+prodnum: Sens public
+publisher: Département des littératures de langue française
+rights: Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+title_f: Le néolibéralisme autoritaire au miroir du Brésil
+translations:
+  - lang: ''
+    titre: ''
+    url: ''
+typeArticle:
+  - Sommaire dossier
+url_article: /articles/1515
+logocredits: >-
+  Sauf exception, les photographies accompagnant le dossier sont  de Gérard
+  Wormser, prises en décembre 2019 et février 2020
+
+---
