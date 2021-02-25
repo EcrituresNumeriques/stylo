@@ -3,7 +3,7 @@ import Form from '../../Form'
 import YAML from 'js-yaml'
 
 export default ({ yaml, basicMode, onChange }) => {
-  const [parsed] = YAML.safeLoadAll(yaml)
+  const [parsed] = YAML.loadAll(yaml)
 
   // we convert YYYY/MM/DD dates into ISO YYYY-MM-DD
   if (parsed.date) {
