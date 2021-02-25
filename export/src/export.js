@@ -64,7 +64,7 @@ const exportHtml = async ({ bib, yaml, md, id, title }, res, req) => {
   try {
     // the YAML contains a single document enclosed in "---" to satisfy pandoc
     // thereby, we need to use "load all":
-    const docs = YAML.safeLoadAll(yaml, 'utf8')
+    const docs = YAML.loadAll(yaml, 'utf8')
     // contains only a single document
     const doc = docs[0]
     if (canonicalBaseUrl) {
@@ -77,10 +77,7 @@ const exportHtml = async ({ bib, yaml, md, id, title }, res, req) => {
       doc.title = 'untitled'
     }
     // dump the result enclosed in "---"
-    yaml = `---
-${YAML.safeDump(doc)}
----
-`
+    yaml = '---\n' + yaml.dump(doc, { sortKeys: true }) + '\n---'
   } catch (err) {
     console.error('Unable to load and update metadata', err)
   }

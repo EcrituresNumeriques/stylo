@@ -6,6 +6,7 @@ import uiSchema from '../schemas/ui-schema-editor.json'
 import staticKeywordsComponent from './Write/metadata/staticKeywords.js'
 import schema from '../schemas/data-schema.json'
 import { toYaml } from './Write/metadata/yaml.js'
+import SelectWidget from './SelectWidget.js'
 
 import styles from './form.module.scss'
 
@@ -115,11 +116,13 @@ export default ({
     [basicMode]
   )
   // use static keywords component
-  effectiveUiSchema.referencedKeywords = {
-    ...effectiveUiSchema.referencedKeywords,
+  effectiveUiSchema.controlledKeywords = {
+    ...effectiveUiSchema.controlledKeywords,
     ...staticKeywordsComponent.uiSchema,
   }
-
+  // REMIND: use a custom SelectWidget to support "ui:emptyValue"
+  // remove once fixed in https://github.com/rjsf-team/react-jsonschema-form/issues/1041
+  const customWidgets = {SelectWidget}
   return (
     <Form
       className={styles.form}
@@ -127,6 +130,7 @@ export default ({
       ArrayFieldTemplate={ArrayFieldTemplate}
       formContext={formContext}
       schema={schema}
+      widgets={customWidgets}
       uiSchema={effectiveUiSchema}
       formData={formData}
       onChange={(e) => {
