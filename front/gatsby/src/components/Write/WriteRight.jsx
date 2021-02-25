@@ -44,8 +44,8 @@ export default (props) => {
               <>
                 {error !== '' && <p className={styles.error}>{error}</p>}
                 <textarea
-                  className={styles.rawYamlTextArea}
                   value={rawYaml}
+                  rows={20}
                   onChange={(event) => {
                     const component = event.target
                     const yaml = component.value
