@@ -1,6 +1,6 @@
 module.exports = {
   yaml:`---
-id_sp: ''
+id: ''
 bibliography: ''
 title: ''
 title_f: ''
@@ -12,8 +12,8 @@ day: ''
 date: ''
 url_article_sp: ''
 publisher: Département des littératures de langue française
-prod: Sens Public
-prodnum: Sens Public
+prod: Sens public
+prodnum: Sens public
 diffnum: Érudit
 rights: >-
   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC
@@ -31,7 +31,7 @@ director:
 abstract: []
 authors: []
 dossier:
-  - title: ''
+  - title_f: ''
     id: ''
 redacteurDossier: []
 typeArticle: []
@@ -323,7 +323,7 @@ typeArticle:
 bibliography: SP1234.bib
 link-citations: true
 nocite: '@*'
-id_sp: SP1234
+id: SP1234
 controlledKeywords:
   - label: Édition
     uriRameau: 'http://catalogue.bnf.fr/ark:/12148/cb13318593f'

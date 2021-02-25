@@ -115,8 +115,8 @@ export default ({
     [basicMode]
   )
   // use static keywords component
-  effectiveUiSchema.referencedKeywords = {
-    ...effectiveUiSchema.referencedKeywords,
+  effectiveUiSchema.controlledKeywords = {
+    ...effectiveUiSchema.controlledKeywords,
     ...staticKeywordsComponent.uiSchema,
   }
 

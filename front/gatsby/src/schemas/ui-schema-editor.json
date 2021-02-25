@@ -2,10 +2,10 @@
   "ui:groups": [
     {
       "fields": [
-        "id_sp",
+        "id",
         "url_article",
-        "title",
-        "subtitle",
+        "title_f",
+        "subtitle_f",
         "date",
         "lang",
         "rights"
@@ -20,7 +20,7 @@
         "authors",
         "abstract",
         "keywords",
-        "referencedKeywords",
+        "controlledKeywords",
         "typeArticle"
       ]
     },
@@ -40,13 +40,13 @@
         "dossier",
         "issueDirectors",
         "reviewers",
-        "translators",
+        "translator",
         "translationOf",
         "transcribers"
       ]
     }
   ],
-  "id_sp": {
+  "id": {
     "ui:title": "ID",
     "ui:placeholder": "XXXX"
   },
@@ -55,10 +55,10 @@
     "ui:placeholder": "URL of the article",
     "ui:widget": "uri"
   },
-  "title": {
+  "title_f": {
     "ui:title": "Title"
   },
-  "subtitle": {
+  "subtitle_f": {
     "ui:title": "Subtitle"
   },
   "link-citations": {
@@ -102,7 +102,7 @@
     "ui:add-item-title": "Ajouter un résumé dans une autre langue",
     "ui:remove-item-title": "Supprimer",
     "items": {
-      "text": {
+      "text_f": {
         "ui:title": "Résumé",
         "ui:widget": "textarea"
       },
@@ -120,14 +120,14 @@
       "lang": {
         "ui:title": "Language"
       },
-      "list": {
+      "list_f": {
         "classNames": "inline-field-string",
         "ui:add-item-title": "Ajouter un mot-clé",
         "ui:remove-item-title": "Supprimer"
       }
     }
   },
-  "referencedKeywords": {
+  "controlledKeywords": {
     "classNames": "inline-field-string",
     "ui:title": "Mots clés Contrôlés",
     "ui:add-item-title": "Ajouter une mot-clé contrôlé"
@@ -143,7 +143,7 @@
       "addable": false
     },
     "items": {
-      "title": {
+      "title_f": {
         "ui:title": "Titre du dossier"
       },
       "id": {
@@ -162,7 +162,7 @@
   "transcribers": {
     "ui:title": "Transcribers"
   },
-  "translators": {
+  "translator": {
     "ui:title": "Translators"
   },
   "reviewers": {
