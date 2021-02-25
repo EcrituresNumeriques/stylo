@@ -2,23 +2,36 @@
 @import '../../styles/variables.scss';
 
 #section {
-  > ul {
-    > li {
-      @extend .clickable;
-      padding: 0.5rem 1rem 0.5rem 1rem;
-      a:first-child {
-        display: block;
-      }
-      nav {
-        text-align: right;
-        p {
-          @extend .clickable;
-          display: inline-block;
-          margin-right: 1rem;
-        }
+  > h1 {
+    font-size: 1.2rem;
+    @extend .clickable;
+    border-top: 1px solid $main-border-color;
+    border-bottom: 1px solid $main-border-color;
+    padding: 0.5rem 1rem;
+    background-color: $main-background-color;
+
+    display: flex;
+    align-items: center;
+  }
+
+  .headlineItem {
+    @extend .clickable;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+
+    a:first-child {
+      display: block;
+    }
+
+    nav {
+      text-align: right;
+      p {
+        @extend .clickable;
+        display: inline-block;
+        margin-right: 1rem;
       }
     }
-    > li:nth-child(2n) {
+
+    &:nth-child(2n) {
       background-color: $main-background-color;
     }
   }

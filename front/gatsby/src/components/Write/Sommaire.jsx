@@ -29,23 +29,20 @@ export default function Sommaire (props) {
       <h1 onClick={() => setExpand(!expand)}>
         {expand ? <ChevronDown/> : <ChevronRight/>} Table of contents
       </h1>
-      {expand && (
-        <>
-          <ul>
-            {lines.map((l) => (
-              <li
-                key={`line-${l.line}-${l.payload}`}
-                onClick={() => props.setCodeMirrorCursor(l.line)}
-              >
-                {l.payload
-                  .replace(/##/, '')
-                  .replace(/#\s/g, '\u21B3')
-                  .replace(/#/g, '\u00B7\xa0')}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+      {expand && (<ul>
+        {lines.map((l) => (
+          <li
+            className={styles.headlineItem}
+            key={`line-${l.line}-${l.payload}`}
+            onClick={() => props.setCodeMirrorCursor(l.line)}
+          >
+            {l.payload
+              .replace(/##/, '')
+              .replace(/#\s/g, '\u21B3')
+              .replace(/#/g, '\u00B7\xa0')}
+          </li>
+        ))}
+      </ul>)}
     </section>
   )
 }
