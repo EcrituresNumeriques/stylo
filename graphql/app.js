@@ -120,12 +120,14 @@ passport.deserializeUser((obj, next) => {
   next(null, obj)
 })
 
+app.set('trust proxy', true)
 app.use(cors(corsOptions))
 app.use(bodyParser.json({ limit: '50mb' }))
 app.use(cookieParser())
 app.use(session({
   secret: sessionSecret,
   resave: false,
+  proxy: true,
   saveUninitialized: true,
   store: new MongoStore({ mongooseConnection: mongoose.connection }),
   cookie: {
