@@ -7,7 +7,7 @@ export function cleanOutput(object) {
     return ''
   }
 
-  for (var propName in cleaning) {
+  for (const propName in cleaning) {
     if (
       cleaning[propName] === null ||
       cleaning[propName] === undefined ||
