@@ -7,4 +7,4 @@ echo "{\
  \"humanIdRegisterEndpoint\": \"${SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT}\"\
  }" > /usr/share/nginx/html/config.json
 
-nginx -g daemon off;
+nginx -g "daemon off;"
