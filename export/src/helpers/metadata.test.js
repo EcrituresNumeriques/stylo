@@ -18,6 +18,7 @@ authors:
 bibliography: abcd1234.bib
 subtitle: A user friendly text editor for humanities scholars.
 title: Stylo
+title_f: untitled
 ---`
   )
 })
@@ -32,12 +33,13 @@ date: 2021/02/25
 day: '25'
 month: '02'
 title: Stylo
+title_f: untitled
 year: '2021'
 ---`
   )
 
   expect(prepare(`---
-title: Stylo
+title_f: Stylo
 date: '2021/02/25'
 ---
 `, {id: 'abcd1234'})).toBe(`---
@@ -45,7 +47,29 @@ date: 2021/02/25
 day: '25'
 month: '02'
 title: Stylo
+title_f: Stylo
 year: '2021'
 ---`
   )
+})
+
+test('replace XYZ_f fields by non-formatted XYZ field', () => {
+  expect(prepare(`---
+title_f: "**Stylo**"
+subtitle_f: "T'as pas _froid_ aux yeux ?"
+keywords:
+- lang: fr
+  list_f:
+    - "**Tomme de Savoie**"
+    - Comté
+---`, {id: 'abcd1234'})).toBe(`---
+keywords:
+  - lang: fr
+    list: Tomme de Savoie, Comté
+    list_f: '**Tomme de Savoie**, Comté'
+subtitle: T'as pas froid aux yeux ?
+subtitle_f: T'as pas _froid_ aux yeux ?
+title: Stylo
+title_f: '**Stylo**'
+---`)
 })

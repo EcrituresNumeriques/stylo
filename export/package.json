@@ -29,6 +29,7 @@
     "express": "^4.16.4",
     "js-yaml": "^4.0.0",
     "mongoose": "^5.9.26",
+    "remove-markdown": "^0.3.0",
     "rimraf": "^3.0.2",
     "shelljs": "^0.8.3"
   },
