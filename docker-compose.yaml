@@ -49,6 +49,6 @@ services:
     env_file:
       - ./stylo.env
     ports:
-      - 3000:3000
+      - 3000:80
     depends_on:
       - graphql-stylo
