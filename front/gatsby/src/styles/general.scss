@@ -18,16 +18,6 @@ html {
   background-color: $main-background-color;
   font-family: 'BellweatherSans-shownbsp', serif;
   color: $main-color;
-  font-size: 100%;
-  @media screen and (min-width: $tablet-breakpoint) {
-    font-size: 110%;
-  }
-  @media screen and (min-width: $screen-breakpoint) {
-    font-size: 120%;
-  }
-  @media screen and (min-width: $large-screen-breakpoint) {
-    font-size: 140%;
-  }
 }
 
 button, textarea {
