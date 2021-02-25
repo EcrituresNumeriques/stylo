@@ -2,14 +2,13 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import env from '../helpers/env'
 import styles from './login.module.scss'
 import Field from './Field'
 import Button from './Button'
 import { HelpCircle } from 'react-feather'
 
-const mapStateToProps = ({ activeUser }) => {
-  return { activeUser }
+const mapStateToProps = ({ activeUser, applicationConfig }) => {
+  return { activeUser, applicationConfig }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -23,10 +22,11 @@ function Login ({ login, applicationConfig }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
+  console.log(applicationConfig)
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    fetch(env.BACKEND_ENDPOINT + '/login', {
+    fetch(applicationConfig.backendEndpoint + '/login', {
       method: 'POST',
       // this parameter enables the cookie directive (set-cookie)
       credentials: 'include',

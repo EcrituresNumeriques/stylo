@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { debounce } from 'lodash'
 
 import styles from './bibliographe.module.scss'
-import buttonStyles from '../../button.module.scss'
 import etv from '../../../helpers/eventTargetValue'
 import { getUserProfile } from '../../../helpers/userProfile'
 import bib2key from './CitationsFilter'
