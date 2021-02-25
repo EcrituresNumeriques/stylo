@@ -1,5 +1,31 @@
 # Journal de développement
 
+## Jeudi 25 février 2021
+
+### Ce que j'ai aimé/appris
+
+- La finalisation de tous ces travaux engagés
+- Merger et déployer sur stylo-dev
+- Tout rassembler permet de déceler les petits cas à la marge, de peaufinage. Le dernier coup de pinceau. C'est agréable !
+- J'ai appris quelques trucs sur l'image Docker de Nginx
+- J'ai appris les moteurs de recherche sur Firefox
+- Le REPL Node !
+- C'est un peu magique, cette histoire de "Cookie Proxy" (mais solution rapidement trouvée)
+- J'ai aimé le côté distribué de Git : les commits que j'ai écrasé avec un force push étaient encore sur ta machine (merci `cherry-pick`)
+- Alterner tests/implémentation sur la transformation des données, c'était hyper adapté
+- J'ai aimé proposer un fix à react-jsonschema-form pour le bug des valeurs vides dans les select/enum
+- J'ai un peu peur de l'écriture de fonctions récursives, mais écrire l'usage, puis ensuite écrire l'implémentation
+- Notre premier jeudi ! (alors que d'hab on travaille les mercredi)
+
+### Ce que j'ai trouvé difficile
+
+- Non, aujourd'hui tranquille !
+- Un peu peu sur la partie "Cookies", mais avec un coup de Stackoverflow j'ai vite vu que c'était une histoire de Proxy
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- Proposer des rendez-vous à Antoine pour valider des PR critiques (typiquement les métadonnées) — genre si pas de retours d'Antoine la semaine prochaine
+
 ## Mercredi 10 février 2021
 
 ### Ce que j'ai aimé/appris
