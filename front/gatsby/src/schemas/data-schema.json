@@ -71,7 +71,7 @@
     "nocite": {
       "type": "string",
       "title": "Display",
-      "default": "@*",
+      "default": "",
       "enum": ["@*", ""],
       "enumNames": ["All citations", "Only used"]
     },

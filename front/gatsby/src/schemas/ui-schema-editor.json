@@ -65,7 +65,10 @@
     "ui:widget": "select",
     "ui:emptyValue": ""
   },
-  "nocite": {},
+  "nocite": {
+    "ui:widget": "select",
+    "ui:emptyValue": ""
+  },
   "date": {
     "ui:title": "Date",
     "ui:widget": "date"
