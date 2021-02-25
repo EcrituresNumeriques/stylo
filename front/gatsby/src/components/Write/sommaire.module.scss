@@ -13,26 +13,22 @@
     display: flex;
     align-items: center;
   }
+}
 
-  .headlineItem {
-    @extend .clickable;
-    padding: 0.5rem 1rem 0.5rem 1rem;
+.headlineItem {
+  @extend .clickable;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em 1em;
+  border-bottom: 1px solid transparent;
 
-    a:first-child {
-      display: block;
-    }
+  &:nth-child(2n) {
+    border-bottom-color: $main-background-color;
+    background-color: $main-background-color;
+  }
 
-    nav {
-      text-align: right;
-      p {
-        @extend .clickable;
-        display: inline-block;
-        margin-right: 1rem;
-      }
-    }
-
-    &:nth-child(2n) {
-      background-color: $main-background-color;
-    }
+  &:hover, &:focus {
+    color: $main-color-links;
+    border-bottom-color: $main-color-links;
   }
 }

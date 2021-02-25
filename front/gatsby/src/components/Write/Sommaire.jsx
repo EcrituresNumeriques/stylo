@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { ChevronDown, ChevronRight } from 'react-feather'
+import { ChevronDown, ChevronRight, Bookmark } from 'react-feather'
 
 import styles from './sommaire.module.scss'
 import menuStyles from './menu.module.scss'
