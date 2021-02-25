@@ -32,7 +32,7 @@ director:
 abstract: []
 authors: []
 dossier:
-  - title: ''
+  - title_f: ''
     id: ''
 redacteurDossier: []
 typeArticle: []

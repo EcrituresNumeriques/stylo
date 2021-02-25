@@ -1,5 +1,5 @@
 {
-  "id_sp": {
+  "id": {
     "ui:widget": "hidden"
   },
   "url_article": {
@@ -17,7 +17,7 @@
   "journal": {
     "ui:widget": "hidden"
   },
-  "referencedKeywords": {
+  "controlledKeywords": {
     "ui:widget": "hidden"
   },
   "typeArticle": {
@@ -35,7 +35,7 @@
   "transcribers": {
     "ui:widget": "hidden"
   },
-  "translators": {
+  "translator": {
     "ui:widget": "hidden"
   },
   "reviewers": {

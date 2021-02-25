@@ -1,6 +1,6 @@
 {
   "type": "object",
-  "required": ["title"],
+  "required": ["title_f"],
   "definitions": {
     "lang": {
       "type": "string",
@@ -9,13 +9,13 @@
     "person": {
       "type": "object",
       "properties": {
-        "forname": {
-          "type": "string",
-          "title": "First name"
-        },
         "surname": {
           "type": "string",
           "title": "Last name"
+        },
+        "forname": {
+          "type": "string",
+          "title": "First name"
         },
         "orcid": {
           "type": "string",
@@ -41,16 +41,16 @@
     }
   },
   "properties": {
-    "id_sp": {
+    "id": {
       "type": "string"
     },
     "url_article": {
       "type": "string"
     },
-    "title": {
+    "title_f": {
       "type": "string"
     },
-    "subtitle": {
+    "subtitle_f": {
       "type": "string"
     },
     "date": {
@@ -71,7 +71,7 @@
     "nocite": {
       "type": "string",
       "title": "Display",
-      "default": "@*",
+      "default": "",
       "enum": ["@*", ""],
       "enumNames": ["All citations", "Only used"]
     },
@@ -89,7 +89,7 @@
           "lang": {
             "$ref": "#/definitions/lang"
           },
-          "text": {
+          "text_f": {
             "type": "string"
           }
         }
@@ -103,7 +103,7 @@
           "lang": {
             "$ref": "#/definitions/lang"
           },
-          "list": {
+          "list_f": {
             "type": "array",
             "items": {
               "type": "string"
@@ -112,7 +112,7 @@
         }
       }
     },
-    "referencedKeywords": {
+    "controlledKeywords": {
       "type": "array",
       "items": {
         "type": "object",
@@ -158,7 +158,7 @@
       "items": {
         "type": "object",
         "properties": {
-          "title": {
+          "title_f": {
             "type": "string"
           },
           "id": {
@@ -172,7 +172,7 @@
       "items": {
         "type": "object",
         "properties": {
-          "title": {
+          "title_f": {
             "type": "string"
           },
           "url": {
@@ -196,7 +196,7 @@
         "$ref": "#/definitions/person"
       }
     },
-    "translators": {
+    "translator": {
       "type": "array",
       "items": {
         "$ref": "#/definitions/person"
