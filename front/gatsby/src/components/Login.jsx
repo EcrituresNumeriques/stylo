@@ -19,7 +19,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const Login = ({ login, applicationConfig }) => {
+function Login ({ login, applicationConfig }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -125,6 +125,6 @@ const Login = ({ login, applicationConfig }) => {
   )
 }
 
-const Login = connect(mapStateToProps, mapDispatchToProps)(ConnectedLogin)
+const ConnectedLogin = connect(mapStateToProps, mapDispatchToProps)(Login)
 
-export default Login
+export default ConnectedLogin
