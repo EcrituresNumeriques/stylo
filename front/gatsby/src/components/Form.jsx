@@ -6,7 +6,7 @@ import uiSchema from '../schemas/ui-schema-editor.json'
 import staticKeywordsComponent from './Write/metadata/staticKeywords'
 import schema from '../schemas/data-schema.json'
 import { toYaml } from './Write/metadata/yaml'
-import SelectWidget from './SelectWidget.js'
+import SelectWidget from './SelectWidget'
 
 import styles from './form.module.scss'
 
