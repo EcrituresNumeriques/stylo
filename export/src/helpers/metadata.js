@@ -69,6 +69,26 @@ const prepare = (yaml, {id, originalUrl, replaceBibliography = false}) => {
     }
   })
 
+  if (Array.isArray(doc.keywords)) {
+    doc.keywords = doc.keywords.map((obj, index) => {
+      const {list_f} = obj
+      const list_f_type = typeof list_f
+
+      if (Array.isArray(list_f)) {
+        obj.list_f = list_f.map(item => item.trim()).join(', ')
+        obj.list = list_f.map(item => removeMd(item.trim())).join(', ')
+      }
+      else if (list_f_type === 'string') {
+        obj.list = removeMd(list_f.trim())
+      }
+      else {
+        console.warn(`keywords[%d].list_f is of type %s. Cannot undo markdown. Skipping`, index, list_f_type)
+      }
+
+      return obj
+    })
+  }
+
   // dump the result enclosed in "---"
   return '---\n' + YAML.dump(doc, { sortKeys: true }) + '---'
 }

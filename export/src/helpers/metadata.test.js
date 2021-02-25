@@ -73,3 +73,19 @@ title: Stylo
 title_f: '**Stylo**'
 ---`)
 })
+
+test('old/string based keywords[x].list_f are unformatted', () => {
+  expect(prepare(`---
+title_f: "Stylo"
+keywords:
+- lang: fr
+  list_f: '**Tomme de Savoie**,Comté'
+---`, {id: 'abcd1234'})).toBe(`---
+keywords:
+  - lang: fr
+    list: Tomme de Savoie,Comté
+    list_f: '**Tomme de Savoie**,Comté'
+title: Stylo
+title_f: Stylo
+---`)
+})
