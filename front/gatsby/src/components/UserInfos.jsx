@@ -91,7 +91,7 @@ const ConnectedUser = (props) => {
     )
     setUser(data.updateUser)
     clearZoteroToken()
-    setIsLoading(true)
+    setIsLoading(false)
   }
 
   const updateInfo = async (e) => {
