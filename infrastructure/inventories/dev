@@ -17,12 +17,12 @@ openid_connect_callback_url='https://stylo-dev.huma-num.fr/authorization-code/ca
 openid_connect_client_id='{{ openid_connect_client_id }}'
 openid_connect_client_secret='{{ openid_connect_client_secret }}'
 allow_cors_frontend='https://stylo-dev.huma-num.fr https://deploy-preview-\\d+--stylo-dev\\.netlify\\.app'
-gatsby_stylo_backend_endpoint='https://stylo-dev.huma-num.fr'
-gatsby_graphql_endpoint='https://stylo-dev.huma-num.fr/graphql'
-gatsby_export_endpoint='https://stylo-dev.huma-num.fr'
+stylo_backend_endpoint='https://stylo-dev.huma-num.fr'
+graphql_endpoint='https://stylo-dev.huma-num.fr/graphql'
+export_endpoint='https://stylo-dev.huma-num.fr'
+process_endpoint='https://stylo-export.ecrituresnumeriques.ca'
+human_id_register_endpoint='https://auth-test.huma-num.fr/register?service=https://stylo-dev.huma-num.fr/authorization-code/callback'
 export_canonical_base_url='https://stylo-dev.huma-num.fr'
-gatsby_process_endpoint='https://stylo-export.ecrituresnumeriques.ca'
-gatsby_human_id_register_endpoint='https://auth-test.huma-num.fr/register?service=https://stylo-dev.huma-num.fr/authorization-code/callback'
 zotero_auth_callback_url='http://stylo-dev.huma-num.fr/authorization-code/zotero/callback'
 
 [stylo]

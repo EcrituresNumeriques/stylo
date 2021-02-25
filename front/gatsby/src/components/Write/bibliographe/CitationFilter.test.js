@@ -1,4 +1,4 @@
-import getEntries from './CitationsFilter.js'
+import getEntries from './CitationsFilter'
 
 describe('CitationFilter', () => {
   test('it should parse two item titles', () => {

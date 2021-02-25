@@ -1,18 +1,15 @@
-FROM node:14-alpine
-
-# Create app directory
-WORKDIR /usr/src/app
-
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# build environment
+FROM node:14-alpine as build
+WORKDIR /app
 COPY gatsby/package*.json ./
-
-RUN npm ci --only=production
-
-# Bundle app source
-COPY gatsby .
-
+RUN npm ci --silent
+COPY gatsby ./
 RUN npm run build
 
-EXPOSE 3000
-CMD [ "npm", "run", "serve" ]
+# production environment
+FROM nginx:mainline-alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+COPY start.sh ./
+RUN chmod +x /start.sh
+CMD ["/start.sh"]

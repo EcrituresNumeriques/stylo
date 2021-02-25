@@ -1,7 +1,5 @@
-import env from './env'
-
-export function getUserProfile() {
-  return fetch(`${env.BACKEND_ENDPOINT}/profile`, {
+export function getUserProfile(applicationConfig) {
+  return fetch(`${applicationConfig.backendEndpoint}/profile`, {
     method: 'GET',
     credentials: 'include',
     cors: true,
