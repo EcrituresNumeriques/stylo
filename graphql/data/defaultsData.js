@@ -1,6 +1,5 @@
 module.exports = {
   yaml:`---
-id: ''
 bibliography: ''
 title: ''
 title_f: ''
@@ -11,20 +10,22 @@ month: ''
 day: ''
 date: ''
 url_article_sp: ''
-publisher: Département des littératures de langue française
-prod: Sens public
-prodnum: Sens public
-diffnum: Érudit
+publisher: ''
+prod: ''
+prodnum: ''
+diffnum: ''
 rights: >-
   Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC
   BY-NC-SA 4.0)
-issnnum: 2104-3272
-journal: Sens public
+issnnum: ''
+journal: ''
+journalsubtitle: ''
+journalid: ''
 director:
-  - forname: Marcello
-    surname: Vitali-Rosati
-    gender: male
-    orcid: 0000-0001-6424-3229
+  - forname: ''
+    surname: ''
+    gender: ''
+    orcid: ''
     viaf: ''
     foaf: ''
     isni: ''
@@ -56,6 +57,8 @@ keyword_en: ''
 controlledKeywords: []
 link-citations: true
 nocite: '@*'
+issueid: ''
+ordseq: ''
 ---`,
   title:'New article',
   sommaire:'',
@@ -323,7 +326,6 @@ typeArticle:
 bibliography: SP1234.bib
 link-citations: true
 nocite: '@*'
-id: SP1234
 controlledKeywords:
   - label: Édition
     uriRameau: 'http://catalogue.bnf.fr/ark:/12148/cb13318593f'
