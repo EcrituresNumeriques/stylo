@@ -37,10 +37,10 @@ button, textarea {
 textarea {
   display: block;
   max-width: 100%;
-  min-width: 100%;
   padding: calc(.75em - 1px);
   resize: vertical;
   font-size: .8em;
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
 }
 
 textarea:not([rows]) {
