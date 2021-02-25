@@ -4,7 +4,10 @@ import { connect } from 'react-redux'
 import etv from '../helpers/eventTargetValue'
 import askGraphQL from '../helpers/graphQL'
 
-import styles from './Articles.module.scss'
+import styles from './createTag.module.scss'
+import Field from './Field'
+import Button from './Button'
+import { Check } from 'react-feather'
 
 const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
@@ -64,35 +67,31 @@ const ConnectedCreateTag = (props) => {
           )
         }}
       >
-        <input
+        <Field
           type="text"
           placeholder="Tag Name"
+          autoFocus={true}
+          className={styles.tagName}
           value={name}
           onChange={(e) => setName(etv(e))}
         />
-        <br />
         <textarea
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(etv(e))}
         />
-        <ul>
-          <li>Add articles to tag =></li>
-          {articlesSelected.map((a) => (
-            <li
-              key={`selectArticle-${a._id}`}
-              className={a.selected ? styles.selected : styles.unselected}
-              onClick={() =>
-                setArticlesSelected(
-                  findAndUpdateArticle(articlesSelected, a._id)
-                )
-              }
-            >
-              {a.title}
-            </li>
-          ))}
+
+        <ul className={styles.actions}>
+          <li>
+            <Button type="button" onClick={props.cancel}>Cancel</Button>
+          </li>
+          <li>
+            <Button primary={true} type="submit" title="Create Article">
+              <Check />
+              Create Tag
+            </Button>
+          </li>
         </ul>
-        <input type="submit" value="Create Tag" />
       </form>
     </section>
   )

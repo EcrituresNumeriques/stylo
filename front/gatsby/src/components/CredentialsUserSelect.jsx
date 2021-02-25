@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './credentialsUserSelect.module.scss'
 import UserInfos from './UserInfos'
+import Button from "./Button";
 
 export default (props) => {
   const isDefault = props.users[0]._id === props.u._id
@@ -11,26 +12,26 @@ export default (props) => {
       {isDefault && <span> [Default account]</span>}
       {isSelected && <span> [Active account]</span>}
       {!isSelected && (
-        <button onClick={() => props.switchUser(props.u)}>Use</button>
+        <Button onClick={() => props.switchUser(props.u)}>Use</Button>
       )}
       {!isDefault && !isSelected && (
-        <button
+        <Button
           onClick={() => {
             props.switchUser(props.u)
             props.setDefault(props.u._id)
           }}
         >
           Set as default and use
-        </button>
+        </Button>
       )}
       {!isDefault && isSelected && (
-        <button
+        <Button
           onClick={() => {
             props.setDefault(props.u._id)
           }}
         >
           Set as default
-        </button>
+        </Button>
       )}
       {isSelected && <UserInfos />}
     </li>

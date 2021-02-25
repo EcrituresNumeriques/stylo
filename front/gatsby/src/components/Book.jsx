@@ -6,11 +6,15 @@ import askGraphQL from '../helpers/graphQL'
 import Modal from './Modal'
 import Export from './Export'
 import Chapter from './Chapter'
-import howLongAgo from '../helpers/howLongAgo'
+import formatTimeAgo from '../helpers/formatTimeAgo'
 
-import Bouton from './Bouton'
-import * as Icon from 'react-feather'
+import styles from './book.module.scss'
+import { Edit3, Eye, Printer } from 'react-feather'
+import { Check, ChevronDown, ChevronRight } from 'react-feather'
 import { connect } from 'react-redux'
+import Button from './Button'
+import buttonStyles from './button.module.scss'
+import Field from './Field'
 
 const alphaSort = (a, b) => {
   if (a.title < b.title) {
@@ -51,6 +55,7 @@ const Book = (props) => {
     setIsRenaming(false)
   }
 
+  const bookTitle = `${name} (${formatTimeAgo(new Date(props.updatedAt))})`
   return (
     <article>
       {exporting && (
@@ -58,44 +63,50 @@ const Book = (props) => {
           <Export {...props} book={true} bookId={props._id} />
         </Modal>
       )}
-      <nav>
-        <Bouton
-          title="Preview"
-          href={`https://via.hypothes.is/${exportEndpoint}/htmlBook/${props._id}?preview=true`}
-        >
-          <Icon.Eye />
-        </Bouton>
-        <Bouton title="Export" onClick={() => setExporting(true)}>
-          <Icon.Printer />
-        </Bouton>
-      </nav>
-      {!isRenaming && (
-        <h1>
-          <span onClick={() => setExpanded(!expanded)}>
-            {expanded ? '-' : '+'} {name} (
-            {howLongAgo(new Date() - new Date(props.updatedAt))})
-          </span>{' '}
-          <span onClick={() => setIsRenaming(true)}>[rename]</span>
-        </h1>
-      )}
-      {isRenaming && (
-        <p>
-          <input value={tempName} onChange={(e) => setTempName(etv(e))} />
-          <button onClick={() => renameBook()}>Rename</button>
-          <button
-            onClick={() => {
-              setIsRenaming(false)
-              setTempName(props.name)
-            }}
-          >
+      <header>
+        {!isRenaming && (
+          <h1 className={styles.bookTitle}>
+            <span onClick={() => setExpanded(!expanded)}>
+              {expanded ? <ChevronDown /> : <ChevronRight />} {bookTitle}
+            </span>
+            <Button className={[buttonStyles.icon, styles.editTitleButton].join(' ')} onClick={() => setIsRenaming(true)}>
+              <Edit3 />
+            </Button>
+          </h1>
+        )}
+        {isRenaming && (<form className={styles.renamingForm} onSubmit={(e) => renameBook(e)}>
+          <Field autofocus={true} type="text" value={tempName} onChange={(e) => setTempName(etv(e))} placeholder="Article Title" />
+          <Button title="Save" primary={true} onClick={(e) => renameBook(e)}>
+            <Check /> Save
+          </Button>
+          <Button title="Cancel" type="button" onClick={() => {
+            setIsRenaming(false)
+            setTempName(props.name)
+          }}>
             Cancel
-          </button>
-        </p>
-      )}
+          </Button>
+        </form>)}
+        <ul className={styles.actions}>
+          <li>
+            <a
+              className={[buttonStyles.icon, buttonStyles.button].join(' ')}
+              title="Preview"
+              href={`https://via.hypothes.is/${exportEndpoint}/htmlBook/${props._id}?preview=true`}
+            >
+              <Eye />
+            </a>
+          </li>
+          <li>
+            <Button className={buttonStyles.icon} title="Export" onClick={() => setExporting(true)}>
+              <Printer />
+            </Button>
+          </li>
+        </ul>
+      </header>
       {expanded && (
         <section>
+          <h4>Chapters</h4>
           <ul>
-            <p>Chapters:</p>
             {props.articles.sort(alphaSort).map((a) => (
               <Chapter
                 key={`chapter-${props._id}-${a._id}`}

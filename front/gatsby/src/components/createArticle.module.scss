@@ -1,0 +1,33 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+.create {
+  background-color: $main-background-color;
+  border-bottom: 1px solid $main-border-color;
+  padding: 1rem;
+  margin: 1rem 0 2rem;
+}
+
+.articleTitle {
+  input {
+    width: 100%;
+  }
+}
+
+.fieldset {
+  margin: 1em 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.75em;
+}
+
+.tags {
+  display: flex;
+
+  > li:not(:last-child) {
+    margin-right: 1em;
+  }
+}

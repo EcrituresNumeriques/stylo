@@ -53,7 +53,7 @@ export default (props) => {
                     const component = event.target
                     const yaml = component.value
                     try {
-                      YAML.safeLoadAll(yaml)
+                      YAML.loadAll(yaml)
                       setError('')
                       props.handleYaml(yaml)
                     } catch (err) {

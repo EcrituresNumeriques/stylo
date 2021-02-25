@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import { ChevronDown, ChevronRight } from 'react-feather'
+
 import styles from './sommaire.module.scss'
 
 export default (props) => {
@@ -27,7 +29,7 @@ export default (props) => {
         className={expand ? null : styles.closed}
         onClick={() => setExpand(!expand)}
       >
-        {expand ? '-' : '+'} Table of contents
+        {expand ? <ChevronDown/> : <ChevronRight/>} Table of contents
       </h1>
       {expand && (
         <>

@@ -9,18 +9,12 @@
     border-bottom: 1px solid $main-border-color;
     padding: 0.5rem 1rem;
     background-color: $main-background-color;
+
+    display: flex;
+    align-items: center;
   }
 
-  .closed {
-    background-color: $main-color;
-    color: $main-background-color;
-  }
   > p {
-    padding: 0.5rem 1rem;
-  }
-  > button {
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    width: 100%;
+    padding: 0.5rem 0 .5rem 1rem;
   }
 }

@@ -1,0 +1,28 @@
+@import '../styles/defaults.scss';
+@import '../styles/variables.scss';
+
+.loading {
+  color: $main-lighter-color;
+  display: flex;
+  font-size: 2em;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+
+  svg {
+    display: block;
+    animation: rotation 2.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    margin-right: 10px;
+  }
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}

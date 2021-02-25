@@ -5,7 +5,12 @@ import { useHistory } from 'react-router-dom'
 import askGraphQL from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
 import styles from './userInfos.module.scss'
+import formStyles from './field.module.scss'
 import UserConnectedLogin from './UserAllowedLogin'
+import Button from "./Button";
+import Field from "./Field";
+import formatTimeAgo from '../helpers/formatTimeAgo';
+import Loading from "./Loading";
 
 const mapStateToProps = ({
   password,
@@ -63,7 +68,7 @@ const ConnectedUser = (props) => {
         setFirstName(data.user.firstName || '')
         setLastName(data.user.lastName || '')
         setInstitution(data.user.institution || '')
-        setYaml(data.user.yaml)
+        setYaml(data.user.yaml || '')
         setPasswords(data.user.passwords)
         //setTokens(data.user.tokens)
         setUser(data.user)
@@ -114,7 +119,7 @@ const ConnectedUser = (props) => {
       setFirstName(data.updateUser.firstName || '')
       setLastName(data.updateUser.lastName || '')
       setInstitution(data.updateUser.institution || '')
-      setYaml(data.updateUser.yaml)
+      setYaml(data.updateUser.yaml || '')
       setPasswords(data.updateUser.passwords)
       //setTokens(data.updateUser.tokens)
       setUser(data.updateUser)
@@ -180,100 +185,122 @@ const ConnectedUser = (props) => {
     }
   }
 
-  return (
+  if (isLoading) {
+    return <Loading/>
+  }
+
+  return (<>
     <section className={styles.section}>
       <h2>Account information</h2>
       <form onSubmit={(e) => updateInfo(e)}>
-        <label>Display name:</label>
-        <input
+        <Field
+          id="displayNameField"
+          label="Display name"
           type="text"
           value={displayName}
           onChange={(e) => setDisplayName(etv(e))}
           placeholder="Display name"
         />
-        <label>First Name:</label>
-        <input
+        <Field
+          id="firstNameField"
+          label="First Name"
           type="text"
           value={firstName}
           onChange={(e) => setFirstName(etv(e))}
           placeholder="First name"
         />
-        <label>Last name:</label>
-        <input
+        <Field
+          id="lastNameField"
+          label="Last Name"
           type="text"
           value={lastName}
           onChange={(e) => setLastName(etv(e))}
           placeholder="Last name"
         />
-        <label>Institution:</label>
-        <input
+        <Field
+          id="institutionField"
+          label="Institution"
           type="text"
           value={institution}
           onChange={(e) => setInstitution(etv(e))}
           placeholder="Institution name"
         />
-        <label>Zotero:</label>
-        <p>
-          {user.zoteroToken ? (
-            <span>
+        <Field
+          label="Zotero"
+        >
+          <>
+            {user.zoteroToken ? (
+              <span>
               Linked with <b>{user.zoteroToken}</b> account.
             </span>
-          ) : (
-            <span>No linked account.</span>
-          )}
-          {user.zoteroToken && (
-            <button
-              title="Unlink this Zotero account"
-              onClick={(e) => e.preventDefault() || unlinkZoteroAccount()}
-            >
-              Unlink
-            </button>
-          )}
-        </p>
-        <label>Default YAML:</label>
-        <textarea
-          value={yaml}
-          onChange={(e) => setYaml(etv(e))}
-          placeholder=""
-        />
-        <div className={styles.rightAlign}>
-          <button>Update</button>
+            ) : (
+              <span>No linked account.</span>
+            )}
+            {user.zoteroToken && (
+              <Button
+                title="Unlink this Zotero account"
+                onClick={(e) => e.preventDefault() || unlinkZoteroAccount()}
+              >
+                Unlink
+              </Button>
+            )}
+          </>
+        </Field>
+        <Field label="Default YAML">
+          <textarea
+            id="yamlField"
+            value={yaml}
+            onChange={(e) => setYaml(etv(e))}
+            placeholder=""
+          />
+        </Field>
+
+        <div className={formStyles.footer}>
+          <Button primary={true}>Update</Button>
         </div>
-        <label>Primary email:</label>
-        <p>{user.email}</p>
-        <label>ID:</label>
-        <p>{user._id}</p>
-        <label>Status:</label>
-        <p>{user.admin ? 'Admin' : 'Basic account'}</p>
-        <label>Created At:</label>
-        <p>{user.createdAt}</p>
-        <label>Updated At:</label>
-        <p>{user.updatedAt}</p>
       </form>
+    </section>
+
+    <section className={styles.section}>
+      <Field label="Account email">
+        <>{user.email}</>
+      </Field>
+      <Field label="ID">
+        <>{user._id}</>
+      </Field>
+      <Field label="Status">
+        <>{user.admin ? 'Admin' : 'Basic account'}</>
+      </Field>
+      <Field label="Created At">
+        <time dateTime={user.createdAt}>{formatTimeAgo(new Date(user.createdAt))}</time>
+      </Field>
+      <Field label="Updated At">
+        <time dateTime={user.updatedAt}>{formatTimeAgo(new Date(user.updatedAt))}</time>
+      </Field>
+
       <h2>Allowed credentials</h2>
       <ul>
-        {isLoading && <li>Fetching..</li>}
-        {!isLoading &&
-          passwords.map((p) => (
-            <UserConnectedLogin
-              key={`userLogin-${p._id}`}
-              {...p}
-              user={user.email}
-              removeLogin={removeLogin}
-            />
-          ))}
+        {passwords.map((p) => (
+          <UserConnectedLogin
+            key={`userLogin-${p._id}`}
+            {...p}
+            user={user.email}
+            removeLogin={removeLogin}
+          />
+        ))}
       </ul>
-      <form onSubmit={(e) => addNewLogin(e)} id={styles.newLogin}>
-        <input
+
+      <h2>Grant access</h2>
+      <form onSubmit={(e) => addNewLogin(e)} className={formStyles.inlineFields}>
+        <Field
           placeholder="Email of the login to allow"
           value={emailLogin}
           onChange={(e) => setEmailLogin(etv(e))}
         />
-        <div className={styles.rightAlign}>
-          <button>Give full access</button>
-        </div>
+        <Button primary={true}>Give full access</Button>
       </form>
     </section>
+  </>
   )
 }
 

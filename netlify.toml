@@ -22,8 +22,10 @@
     SNOWPACK_PUBLIC_PROCESS_ENDPOINT = "hhttps://stylo-export.ecrituresnumeriques.ca"
     SNOWPACK_PUBLIC_BACKEND_ENDPOINT = "https://stylo-dev.huma-num.fr"
     SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT = "https://auth-test.huma-num.fr/register?service=http://stylo-dev.huma-num.fr/authorization-code/callback"
+    ENABLE_SOURCEMAPS = "true"
 
 [[redirects]]
   from = "/*"
-  to = "/404.html"
-  status = 404
+  to = "/index.html"
+  force = false
+  status = 200

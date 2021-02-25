@@ -9,11 +9,9 @@
     border-bottom: 1px solid $main-border-color;
     padding: 0.5rem 1rem;
     background-color: $main-background-color;
-  }
 
-  .closed {
-    background-color: $main-color;
-    color: $main-background-color;
+    display: flex;
+    align-items: center;
   }
 
   > ul {

@@ -5,20 +5,13 @@
   @extend .slider;
   transition: left 0.5s ease, background 0.5s ease, border 0.5s ease;
   border-right: 1px solid $main-border-color;
-  > div {
-    overflow-y: auto;
-    > button {
-      @extend .clickable;
-      float: right;
-      background-color: transparent;
-      border: none;
-      padding: 0.5rem 1rem;
-    }
-    > input {
-      border: none;
-      display: block;
-      width: 100%;
-      padding: 0.5rem 1rem;
+
+  > header {
+    display: flex;
+    margin-bottom: 1em;
+
+    > .closeButton {
+      margin-left: auto;
     }
   }
 }
@@ -33,36 +26,7 @@
   @extend .sliderleft;
   left: -400px;
   background-color: rgba(255, 255, 255, 0);
-  border-right: 0px solid $main-border-color;
-}
-.tags {
-  border-top: 1px solid $main-border-color;
-  > .reader {
-    display: flex;
-    flex-wrap: wrap;
-    > p {
-      &:first-child {
-        @extend .clickable;
-        flex: 0 0 1rem;
-      }
-      &:nth-child(2) {
-        @extend .clickable;
-        flex: 0 0 calc(100% - 2rem);
-      }
-      &:nth-child(3) {
-        flex: 0 0 100%;
-      }
-      > button {
-        background-color: yellow;
-      }
-      padding: 0.5rem;
-    }
-  }
-}
-.selectedTags {
-  @extend .tags;
-  background-color: black;
-  color: white;
+  border-right: none;
 }
 
 .button {
@@ -71,31 +35,14 @@
   background-color: $main-background-color;
 }
 
-.action {
-  flex: 0 0 100%;
-  margin-top: 1rem;
-  padding-right: 1rem;
-  display: flex;
-  > span {
-    flex: 0 0 auto;
-  }
-  > .spacer {
-    flex: 1 1 auto;
-  }
+button.closeButton {
+  border: none;
+  background: none;
 }
 
-.writer {
-  border: 3px solid $main-lighter-color;
-  background-color: $main-background-color;
-}
-
-.editTag {
-  input,
-  textarea {
+.searchField {
+  input {
     width: 100%;
-    padding: 0.5rem;
-    border: none;
-    background-color: transparent;
-    border-bottom: 1px solid $main-border-color;
   }
+  margin: 0 0.35em 0.55em;
 }

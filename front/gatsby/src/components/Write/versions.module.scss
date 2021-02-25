@@ -4,22 +4,9 @@
 #section {
   > ul {
     > li {
-      @extend .clickable;
       padding: 0.5rem 1rem 0.5rem 1rem;
       > a:first-child {
         display: block;
-      }
-      nav {
-        text-align: right;
-        a {
-          display: inline-block;
-          margin-left: 1rem;
-        }
-        p {
-          @extend .clickable;
-          display: inline-block;
-          margin-left: 1rem;
-        }
       }
     }
     > li:nth-child(2n) {
@@ -43,55 +30,36 @@
     border-bottom: 1px solid $main-border-color;
     padding: 0.5rem 1rem;
     background-color: $main-background-color;
-  }
 
-  .closed {
-    background-color: $main-color;
-    color: $main-background-color;
+    display: flex;
+    align-items: center;
   }
+}
 
-  button.secondary {
-    @extend .secondary-button;
-  }
-  button.primary {
-    @extend .primary-button;
-  }
+.actions {
+  display: flex;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  justify-content: flex-end;
+  font-size: 0.9em;
 
-  .button {
-    @extend .clickable;
-    padding: 0.5rem 1rem;
-    display: inline-block;
-    font-weight: normal;
-    text-align: center;
-    width: 50%;
-    border-top: 1px solid $main-border-color;
+  > li:not(:last-child) {
+    margin-right: 0.5em;
   }
-  p.button {
-    border-right: 1px solid $main-border-color;
-  }
-  form.liveVersion {
-    input {
-      display: block;
-      width: 100%;
-      padding: 0.5rem 1rem;
-      border-top: 1px solid $main-border-color;
-      border-bottom: 1px solid $main-border-color;
-      border-right: none;
-      border-left: none;
-    }
-    > button {
-      border: none;
-      border-bottom: 1px solid $main-border-color;
-      width: 50%;
-    }
-    > button.secondary {
-      @extend .secondary-button;
-    }
-    > button.primary {
-      @extend .primary-button;
-    }
-    > button:first-of-type {
-      border-right: 1px solid $main-border-color;
-    }
+}
+
+.saveForm {
+  text-align: right;
+  margin: 1rem 0;
+  border-left: 5px solid #202020;
+  padding: 0.5rem 0 0.25rem 0.5rem;
+}
+
+.saveVersionInput {
+  width: 100%;
+  padding-bottom: 0.5rem;
+
+  input {
+    width: 100%;
   }
 }

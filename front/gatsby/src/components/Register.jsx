@@ -6,8 +6,11 @@ import validateEmail from '../helpers/validationEmail'
 
 import askGraphQL from '../helpers/graphQL'
 
-import styles from './register.module.scss'
+import styles from './login.module.scss'
 import { connect } from 'react-redux'
+import Field from './Field'
+import Button from './Button'
+import { ArrowLeftCircle, Check } from 'react-feather'
 
 const mapStateToProps = ({ applicationConfig }) => {
   return { applicationConfig }
@@ -89,62 +92,37 @@ const Register = (props) => {
           createUser(query, user)
         }}
       >
-        <h1>Required</h1>
-        <input
-          type="text"
-          placeholder="Email*"
-          className={validateEmail(email) ? null : styles.beware}
-          value={email}
-          onChange={(e) => setEmail(etv(e))}
-        />
-        <input
-          type="text"
-          placeholder="Username*"
-          value={username}
-          onChange={(e) => setUsername(etv(e))}
-        />
-        <input
-          type="password"
-          placeholder="Password*"
-          value={password}
-          onChange={(e) => setPassword(etv(e))}
-        />
-        <input
-          type="password"
-          placeholder="Confirm password*"
-          className={password === passwordC ? null : styles.beware}
-          value={passwordC}
-          onChange={(e) => setPasswordC(etv(e))}
-        />
-        <h1>Optional</h1>
-        <input
-          type="text"
-          placeholder="Display Name"
-          value={displayName}
-          onChange={(e) => setDisplayName(etv(e))}
-        />
-        <input
-          type="text"
-          placeholder="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(etv(e))}
-        />
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(etv(e))}
-        />
-        <input
-          type="text"
-          placeholder="Institution"
-          value={institution}
-          onChange={(e) => setInstitution(etv(e))}
-        />
-        <input type="submit" value="Create" />
-        <p className="note">
-          or <Link to="/">login</Link>
-        </p>
+
+        <h1>Create a Stylo account</h1>
+
+        <fieldset>
+          <legend>Required informations</legend>
+
+          <Field id="email" type="email" label="Email*" autoComplete="email" required={true} onChange={(e) => setEmail(etv(e))} />
+          <Field id="username" label="Username*" autoComplete="username" required={true} onChange={(e) => setUsername(etv(e))} />
+          <Field id="password" type="password" label="Password*" autoComplete="new-password" required={true} onChange={(e) => setPassword(etv(e))} />
+          <Field id="passwordc" type="password" label="Confirm Password*" autoComplete="new-password" required={true} onChange={(e) => setPasswordC(etv(e))} className={password === passwordC ? null : styles.beware} />
+        </fieldset>
+
+        <fieldset>
+          <legend>Optional details</legend>
+
+          <Field id="display-name" label="Display Name" onChange={(e) => setDisplayName(etv(e))} />
+          <Field id="first-name" label="First Name" onChange={(e) => setFirstName(etv(e))} />
+          <Field id="last-name" label="Last Name" onChange={(e) => setLastName(etv(e))} />
+          <Field id="institution" label="Organization" onChange={(e) => setInstitution(etv(e))} />
+        </fieldset>
+
+        <ul className={styles.actions}>
+          <li>
+            <Link to="/"><ArrowLeftCircle className={styles.inlineIcon} size={20} />Go back to Login</Link>
+          </li>
+          <li className={styles.actionsSubmit}>
+            <Button primary={true} type="submit">
+              <Check /> Create
+            </Button>
+          </li>
+        </ul>
       </form>
     </section>
   )

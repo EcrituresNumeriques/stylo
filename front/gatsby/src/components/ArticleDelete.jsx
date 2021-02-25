@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import Button from './Button'
+
 import styles from './Articles.module.scss'
 import askGraphQL from '../helpers/graphQL'
 
@@ -26,12 +28,11 @@ const ConnectedArticleDelete = (props) => {
   }
 
   return (
-    <button className={styles.delete} onDoubleClick={() => deleteArticle()}>
+    <Button className={styles.delete} onDoubleClick={() => deleteArticle()}>
       Delete
-    </button>
+    </Button>
   )
 }
 
 const ArticleDelete = connect(mapStateToProps)(ConnectedArticleDelete)
-
 export default ArticleDelete

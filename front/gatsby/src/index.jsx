@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter as Router, Route, Switch, useParams, } from 'react-router-dom'
 import { Provider } from 'react-redux'
@@ -9,13 +9,20 @@ import createStore from './createReduxStore'
 import { getUserProfile } from './helpers/userProfile'
 import { getApplicationConfig } from './helpers/applicationConfig'
 
-import Books from './components/Books'
-import Articles from './components/Articles'
 import Register from './components/Register'
 import PrivateRoute from './components/PrivateRoute'
-import Credentials from './components/Credentials'
-import Write from './components/Write/Write'
 import NotFound from './components/404'
+import Button from './components/Button'
+import Field from './components/Field'
+import { Check, Copy, Search } from 'react-feather'
+import buttonStyles from './components/button.module.scss'
+import Select from './components/Select'
+
+// lazy loaded routes
+const Books = lazy(() => import('./components/Books'))
+const Articles = lazy(() => import('./components/Articles'))
+const Credentials = lazy(() => import('./components/Credentials'))
+const Write = lazy(() => import('./components/Write/Write'))
 
 const store = createStore()
 
@@ -88,6 +95,34 @@ render(
             <PrivateRoute>
               <ArticleID />
             </PrivateRoute>
+          </Route>
+          <Route exact path="/ux">
+            <App layout="wrapped">
+              <h2>Buttons</h2>
+              <h4>Primary</h4>
+              <Button primary={true}>Create New Article</Button>
+              <h4>Secondary</h4>
+              <Button>Manage Tags</Button>
+              <h4>With Icon</h4>
+              <Button><Check/> Save</Button>
+              <h4>Icon Only</h4>
+              <Button icon={true}><Copy/></Button>
+              <h2>Fields</h2>
+              <h4>Search</h4>
+              <Field placeholder="Search" icon={Search}/>
+              <h4>Textarea</h4>
+              <div style={{'max-width': '50%'}}>
+                <textarea className={buttonStyles.textarea} rows="10">Du texte</textarea>
+              </div>
+              <h4>Select</h4>
+              <Select>
+                <option>Tome de Savoie</option>
+                <option>Reblochon</option>
+                <option>St Marcellin</option>
+              </Select>
+              <h4>Tabs</h4>
+              <h4>Form actions</h4>
+            </App>
           </Route>
           <Route exact path="/">
             <PrivateRoute>

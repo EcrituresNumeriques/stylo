@@ -5,18 +5,21 @@
   "version": "0.1.0",
   "license": "MIT",
   "type": "module",
+  "#browserlist#": "https://browserslist.dev/?q=bGFzdCAzIHZlcnNpb25zLCBzYWZhcmkgPj0gMTAsIG5vdCBleHBsb3JlciA8PSAxMSwgbm90IGV4cGxvcmVybW9iaWxlIDw9IDEx",
+  "browserslist": "last 3 versions, safari >= 10, not explorer <= 11, not explorermobile <= 11",
   "scripts": {
     "prebuild": "node tasks/env.js",
     "prestart": "node tasks/env.js",
     "lint": "prettier --check src",
     "lint:fix": "prettier --write src",
     "start": "snowpack dev",
-    "build": "snowpack build",
+    "build": "npm run prebuild && snowpack build",
     "develop": "npm run start",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "dependencies": {
     "@rjsf/core": "^2.4.0",
+    "@snowpack/plugin-react-refresh": "^2.4.0",
     "biblatex-csl-converter": "^1.9.5",
     "codemirror": "^5.59.4",
     "diff-match-patch": "^1.0.5",
@@ -27,11 +30,11 @@
     "node-sass": "^4.14.1",
     "object-path-immutable": "^4.1.0",
     "react": "^16.13.1",
-    "react-codemirror2": "^5.1.0",
+    "react-codemirror2": "^7.2.1",
     "react-copy-to-clipboard": "^5.0.3",
     "react-dom": "^16.13.1",
-    "react-feather": "^1.1.6",
-    "react-helmet": "^5.2.1",
+    "react-feather": "^2.0.9",
+    "react-helmet": "^6.1.0",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
@@ -49,6 +52,6 @@
     "jest": "^26.4.2",
     "node-fetch": "^2.6.1",
     "prettier": "^2.2.1",
-    "snowpack": "^2.18.5"
+    "snowpack": "^3.0.11"
   }
 }

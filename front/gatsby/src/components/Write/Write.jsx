@@ -10,6 +10,7 @@ import WriteLeft from './WriteLeft'
 import WriteRight from './WriteRight'
 import Compare from './Compare'
 import CompareSelect from './CompareSelect'
+import Loading from '../Loading'
 
 import useDebounce from '../../hooks/debounce'
 
@@ -142,7 +143,7 @@ const ConnectedWrite = (props) => {
   const debouncedLive = useDebounce(live, 1000)
   useEffect(() => {
     if (!readOnly && !isLoading && !firstLoad) {
-      sendVersion(true, false, 'Autosave')
+      sendVersion(true, false, 'Current version')
     } else if (!readOnly && !isLoading) {
       setFirstLoad(false)
     } else {
@@ -201,24 +202,25 @@ const ConnectedWrite = (props) => {
     )
   }
 
+  if (isLoading) {
+    return <Loading />
+  }
+
   return (
     <section className={styles.container}>
-      {!isLoading && (
-        <WriteLeft
-          article={articleInfos}
-          {...live}
-          compareTo={props.compareTo}
-          selectedVersion={props.version}
-          versions={versions}
-          readOnly={readOnly}
-          sendVersion={sendVersion}
-          handleBib={handleBib}
-          setCodeMirrorCursor={setCodeMirrorCursor}
-        />
-      )}
-      {!isLoading && (
-        <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly} />
-      )}
+      <WriteLeft
+        article={articleInfos}
+        {...live}
+        compareTo={props.compareTo}
+        selectedVersion={props.version}
+        versions={versions}
+        readOnly={readOnly}
+        sendVersion={sendVersion}
+        handleBib={handleBib}
+        setCodeMirrorCursor={setCodeMirrorCursor}
+      />
+
+      <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly} />
 
       {props.compareTo && (
         <CompareSelect
@@ -230,27 +232,25 @@ const ConnectedWrite = (props) => {
           selectedVersion={props.version}
         />
       )}
+
       <article className={styles.article}>
-        {isLoading && <p>Loading...</p>}
-        {!isLoading && (
-          <>
-            {readOnly && <pre>{live.md}</pre>}
-            {!readOnly && (
-              <CodeMirror
-                value={live.md}
-                cursor={{ line: 0, character: 0 }}
-                editorDidMount={(_) => {
-                  window.scrollTo(0, 0)
-                  //editor.scrollIntoView({ line: 0, ch: 0 })
-                }}
-                onBeforeChange={handleMDCM}
-                options={codeMirrorOptions}
-                ref={instanceCM}
-              />
-            )}
-            {props.compareTo && <Compare {...props} live={live} />}
-          </>
-        )}
+        <>
+          {readOnly && <pre>{live.md}</pre>}
+          {!readOnly && (
+            <CodeMirror
+              value={live.md}
+              cursor={{ line: 0, character: 0 }}
+              editorDidMount={(_) => {
+                window.scrollTo(0, 0)
+                //editor.scrollIntoView({ line: 0, ch: 0 })
+              }}
+              onBeforeChange={handleMDCM}
+              options={codeMirrorOptions}
+              ref={instanceCM}
+            />
+          )}
+          {props.compareTo && <Compare {...props} live={live} />}
+        </>
       </article>
     </section>
   )

@@ -6,9 +6,9 @@
     display: flex;
     width: 100%;
     margin-bottom: 1rem;
-    border: 1px solid $main-border-color;
 
-    > p {
+    > button {
+      border: 1px solid #000;
       flex: 1 1 50%;
       @extend .clickable;
       background-color: $main-background-color;
@@ -27,19 +27,6 @@
 
   form {
     margin-bottom: 1rem;
-
-    input {
-      padding: 0.5rem 1rem;
-      display: inline-block;
-      min-width: 22rem;
-      border: none;
-    }
-
-    button {
-      @extend .primary-button;
-      display: inline-block;
-      border: none;
-    }
   }
 
   > p {
@@ -57,3 +44,4 @@
 
   margin-bottom: 1rem;
 }
+

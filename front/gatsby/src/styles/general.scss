@@ -4,21 +4,19 @@
 
 @font-face {
   font-family: 'BellweatherSans-shownbsp';
-  src: url('/fonts/BellweatherSans-shownbsp.eot');
-  src: url('/fonts/BellweatherSans-shownbsp.eot?#iefix')
-      format('embedded-opentype'),
-    url('/fonts/BellweatherSans-shownbsp.otf') format('opentype'),
-    url('/fonts/BellweatherSans-shownbsp.svg') format('svg'),
-    url('/fonts/BellweatherSans-shownbsp.ttf') format('truetype'),
+  src: url('/fonts/BellweatherSans-shownbsp.woff2') format('woff2'),
     url('/fonts/BellweatherSans-shownbsp.woff') format('woff'),
-    url('/fonts/BellweatherSans-shownbsp.woff2') format('woff2');
+    url('/fonts/BellweatherSans-shownbsp.ttf') format('truetype'),
+    url('/fonts/BellweatherSans-shownbsp.svg') format('svg'),
+    url('/fonts/BellweatherSans-shownbsp.eot');
+  font-display: swap;
   font-weight: normal;
   font-style: normal;
 }
 
 html {
   background-color: $main-background-color;
-  font-family: 'BellweatherSans-shownbsp';
+  font-family: 'BellweatherSans-shownbsp', serif;
   color: $main-color;
   font-size: 100%;
   @media screen and (min-width: $tablet-breakpoint) {
@@ -30,6 +28,24 @@ html {
   @media screen and (min-width: $large-screen-breakpoint) {
     font-size: 140%;
   }
+}
+
+button, textarea {
+  font-family: 'BellweatherSans-shownbsp', serif;
+}
+
+textarea {
+  display: block;
+  max-width: 100%;
+  min-width: 100%;
+  padding: calc(.75em - 1px);
+  resize: vertical;
+  font-size: .8em;
+}
+
+textarea:not([rows]) {
+  max-height: 40em;
+  min-height: 8em;
 }
 
 html,
@@ -51,8 +67,12 @@ body {
 
 a {
   color: $main-color-links;
-  font-weight: bolder;
-  text-decoration: none;
+  text-decoration: underline;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
 }
 
 ul,

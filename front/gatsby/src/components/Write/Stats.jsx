@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { ChevronDown, ChevronRight } from 'react-feather'
 
 import styles from './stats.module.scss'
 
@@ -25,7 +26,7 @@ export default (props) => {
         className={expand ? null : styles.closed}
         onClick={() => setExpand(!expand)}
       >
-        {expand ? '-' : '+'} Stats
+        {expand ? <ChevronDown/> : <ChevronRight/>} Stats
       </h1>
       {expand && (
         <>

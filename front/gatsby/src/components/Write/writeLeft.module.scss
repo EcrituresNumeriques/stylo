@@ -5,9 +5,6 @@
   @extend .slider;
   transition: left 0.5s ease, background 0.5s ease, border 0.5s ease;
   border-right: 1px solid $main-border-color;
-  > nav {
-    text-align: right;
-  }
 }
 
 .expandleft {

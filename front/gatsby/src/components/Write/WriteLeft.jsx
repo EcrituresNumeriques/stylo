@@ -5,7 +5,6 @@ import Stats from './Stats'
 import Biblio from './Biblio'
 import Sommaire from './Sommaire'
 import Versions from './Versions'
-import Edit from './Edit'
 import bib2key from './bibliographe/CitationsFilter'
 
 export default (props) => {
@@ -28,7 +27,6 @@ export default (props) => {
               <h1>{props.article.title}</h1>
               <h2>by {props.article.owners.join(', ')}</h2>
             </header>
-            <Edit {...props} />
             <Versions {...props} />
             <Sommaire {...props} />
             <Biblio bibTeXEntries={bibTeXEntries} {...props} />
