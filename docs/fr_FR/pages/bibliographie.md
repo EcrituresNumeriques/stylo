@@ -12,14 +12,21 @@ Vous pouvez directement [structurer vos références en bibtex](http://www.andy-
 
 ## Synchroniser une collection Zotero
 
-Il est possible de synchroniser les références d'un article avec un sous-dossier (une collection) d'un groupe Zotero public, en renseignant l'identifiant du sous-dossier :
+Il est possible de synchroniser les références d'un article avec un sous-dossier (une collection) d'un groupe Zotero, qu'il soit public ou privé. Voici les étapes à suivre :
 
 1. dans le panneau de gauche sélectionnez "Bibliography" puis "Manage Bibliography"
-2. suivez les indications pour importer votre bibliographie depuis Zotero : indiquez l'identifiant du groupe suivi de `collections` puis de l'identifiant de la sous-collection. Exemple : `322999/collections/5MJ6MP6P`
-3. cliquez sur "Save zotero link and fetch"
-4. vos références bibliographiques devraient apparaître dans le panneau de gauche sous "Bibliography"
+2. connectez votre compte Zotero avec l'option "Connect my Zotero Account"
+3. une fenêtre s'ouvre, intitulée "New Private Key", pour vous demander de valider la connexion entre Stylo et Zotero : cliquez sur "Accept Defaults"
+4. vous pouvez désormais choisir une collection parmi vos groupes Zotero en cliquant sur "Pick a collection"
+5. choisissez "Replace bibliography with this private collection" pour importer les références d'une collection
+6. vos références apparaissent désormais dans le panneau latéral
 
-Quelques erreurs fréquentes à éviter : votre groupe doit être public, l'identifiant du groupe et l'identifiant de la sous-collection sont séparés par `/collections/`.
+**Voici quelques remarques importantes concernant la synchronisation avec une collection Zotero :**
+
+- cette fonction permet d'importer des collections provenant de groupes publics ou privés
+- vous ne pouvez pas importer plus qu'une collection
+- chaque synchronisation ou import écrase vos données bibliographiques. Si vous utilisez l'option de synchronisation nous vous conseillons de modifier vos références dans Zotero et de les ré-importer, et ainsi de suite jusqu'à obtenir le résultat attendu
+- il n'y a pas de synchronisation automatique, vous devez refaire la synchronisation à chaque modification
 
 ## Insérer une référence bibliographique
 
