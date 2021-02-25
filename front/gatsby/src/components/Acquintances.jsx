@@ -102,7 +102,7 @@ function ConnectedAcquintances (props) {
       </nav>
       <form onSubmit={(e) => addContact(e)} className={formStyles.inlineFields}>
         <Field
-          autofocus={true}
+          autoFocus={true}
           className={formStyles.fullWidth}
           placeholder="Email of the contact you want to add"
           value={contact}

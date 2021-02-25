@@ -31,7 +31,7 @@ export default (props) => {
             }}
           />
         )}
-        <Field className={styles.searchField} autofocus={true} icon={Search} type="text" value={filter} onChange={(e) => setFilter(etv(e))} placeholder="Search tag"/>
+        <Field className={styles.searchField} autoFocus={true} icon={Search} type="text" value={filter} onChange={(e) => setFilter(etv(e))} placeholder="Search tag"/>
         {props.tags
           .filter((t) => t.name.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) > -1)
           .map((t) => (

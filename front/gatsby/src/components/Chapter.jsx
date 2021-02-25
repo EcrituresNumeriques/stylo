@@ -51,7 +51,7 @@ const ConnectedChapter = (props) => {
         </p>
       )}
       {renaming && renaming && (<form className={styles.renamingForm} onSubmit={(e) => rename(e)}>
-        <Field autofocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(etv(e))} placeholder="Book Title" />
+        <Field autoFocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(etv(e))} placeholder="Book Title" />
         <Button title="Save" primary={true} onClick={(e) => rename(e)}>
           <Check /> Save
         </Button>

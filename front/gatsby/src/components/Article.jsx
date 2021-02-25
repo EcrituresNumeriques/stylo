@@ -106,7 +106,7 @@ const ConnectedArticle = (props) => {
       )}
       {renaming && (
         <form className={styles.renamingForm} onSubmit={(e) => rename(e)}>
-          <Field autofocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(etv(e))} placeholder="Article Title" />
+          <Field autoFocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(etv(e))} placeholder="Article Title" />
           <Button title="Save" primary={true} onClick={(e) => rename(e)}>
             <Check /> Save
           </Button>

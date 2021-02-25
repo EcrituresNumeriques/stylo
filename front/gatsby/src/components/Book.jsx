@@ -75,7 +75,7 @@ const Book = (props) => {
           </h1>
         )}
         {isRenaming && (<form className={styles.renamingForm} onSubmit={(e) => renameBook(e)}>
-          <Field autofocus={true} type="text" value={tempName} onChange={(e) => setTempName(etv(e))} placeholder="Article Title" />
+          <Field autoFocus={true} type="text" value={tempName} onChange={(e) => setTempName(etv(e))} placeholder="Article Title" />
           <Button title="Save" primary={true} onClick={(e) => renameBook(e)}>
             <Check /> Save
           </Button>
