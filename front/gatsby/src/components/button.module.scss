@@ -23,6 +23,10 @@
   }
 }
 
+a.button:not(.primary), a.icon:not(.primary) {
+  color: currentColor;
+}
+
 .primary {
   background-color: #000;
   color: #fff;
