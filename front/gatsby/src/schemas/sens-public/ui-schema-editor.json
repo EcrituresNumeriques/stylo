@@ -26,14 +26,28 @@
     },
     {
       "title": "Diffusion",
-      "fields": ["publisher", "journal"]
+      "fields": [
+        "publisher",
+        "journal"
+      ]
     },
     {
-      "fields": ["issueDirectors", "issn", "productor", "prodnum", "diffnum", "dossier"]
+      "fields": [
+        "issueDirectors",
+        "productor",
+        "prodnum",
+        "diffnum",
+        "dossier"
+      ]
     },
     {
       "title": "Production",
-      "fields": ["issnnum", "prod", "prodnum", "diffnum"]
+      "fields": [
+        "issnnum",
+        "prod",
+        "prodnum",
+        "diffnum"
+      ]
     },
     {
       "fields": [
@@ -48,7 +62,7 @@
   ],
   "id": {
     "ui:title": "ID",
-    "ui:placeholder": "XXXX"
+    "ui:placeholder": ""
   },
   "url_article": {
     "ui:title": "URL of the article",
@@ -62,7 +76,8 @@
     "ui:title": "Subtitle"
   },
   "link-citations": {
-    "ui:widget": "select"
+    "ui:widget": "select",
+    "ui:emptyValue": ""
   },
   "nocite": {
     "ui:widget": "select",
@@ -76,12 +91,12 @@
     "ui:title": "Language",
     "ui:placeholder": "Select language"
   },
-  "license": {
+  "rights": {
     "ui:title": "License",
     "ui:placeholder": "License"
   },
   "rightsauthors": {
-    "ui:title": "Author(s) rights"
+    "ui:title": "Author(s) Rights"
   },
   "authors": {
     "ui:add-item-title": "Ajouter un author",
@@ -89,7 +104,7 @@
     "ui:title": "Authors"
   },
   "translationOf": {
-    "ui:title": "Translation",
+    "ui:title": "Traductions de",
     "items": {
       "url": {
         "ui:widget": "uri"
@@ -120,7 +135,7 @@
   "keywords": {
     "ui:title": "Keywords",
     "ui:add-item-title": "Ajouter une langue",
-    "ui:remove-item-title": "Supprimer",
+    "ui:remove-item-title": "Supprimer cette langue",
     "items": {
       "lang": {
         "ui:title": "Language"
