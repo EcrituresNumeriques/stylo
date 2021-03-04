@@ -8,7 +8,11 @@ import styles from '../../form.module.scss'
 
 const toValueFn = (el) => ({
   label: el['@label'],
-  uriRameau: el.option.find(meta => meta['@key'] === 'uri')['@value'],
+  // when 'feed' is provided, 'option' is returned as an object
+  // when there are several values, 'option' is returned as an array of objects
+  uriRameau: Array.isArray(el.option)
+    ? el.option.find(meta => meta['@key'] === 'uri')['@value']
+    : el.option['@value'],
   idRameau: '',
 })
 

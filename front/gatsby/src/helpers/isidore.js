@@ -11,8 +11,9 @@ export async function search(searchValue) {
     const url = new URL('https://api.isidore.science/vocabulary/suggest')
     const searchParams = url.searchParams
     searchParams.append('output', 'json')
+    searchParams.append('feed', 'rameau')
     searchParams.append('q', searchValue)
-    console.log('fetch', searchValue)
+
     return fetch(url, { method: 'GET' })
       .then((response) => {
         return response.ok
@@ -25,7 +26,6 @@ export async function search(searchValue) {
             )
       })
       .then((json) => {
-        console.log({ json })
         if (
           json.response &&
           json.response.replies &&
