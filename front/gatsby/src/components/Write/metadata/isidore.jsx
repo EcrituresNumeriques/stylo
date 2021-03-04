@@ -34,7 +34,6 @@ export default function IsidoreAPIAutocompleteField(props) {
     onSelectedItemChange: ({ selectedItem }) => {
       if (selectedItem) {
         const { $id: id } = props.idSchema
-        console.log(selectedItem, toValueFn(selectedItem))
         props.formContext.partialUpdate({ id, value: toValueFn(selectedItem) })
       }
     },
@@ -58,7 +57,7 @@ export default function IsidoreAPIAutocompleteField(props) {
   return (
     <div {...getComboboxProps()}>
       {!isEmpty && <span className={styles.comboboxReadonlyField}>{props.formData.label}</span>}
-      {isEmpty && <Field {...getInputProps({ className: styles.autocompleteField})} />}
+      {isEmpty && <Field {...getInputProps({ className: styles.autocompleteField }, { suppressRefError: true })} />}
       <ul {...getMenuProps()}>
         {isOpen &&
           inputItems.map((item, index) => (
