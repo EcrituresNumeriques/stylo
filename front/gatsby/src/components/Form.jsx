@@ -3,13 +3,13 @@ import Form from '@rjsf/core'
 import { set } from 'object-path-immutable'
 import basicUiSchema from '../schemas/ui-schema-basic-override.json'
 import uiSchema from '../schemas/ui-schema-editor.json'
-import staticKeywordsComponent from './Write/metadata/staticKeywords'
 import schema from '../schemas/data-schema.json'
 import { toYaml } from './Write/metadata/yaml'
 
 // REMIND: use a custom SelectWidget to support "ui:emptyValue"
 // remove once fixed in https://github.com/rjsf-team/react-jsonschema-form/issues/1041
 import SelectWidget from './SelectWidget'
+import isidoreSearch from './Write/metadata/isidore'
 
 import styles from './form.module.scss'
 import Button from './Button'
@@ -130,13 +130,17 @@ export default ({
     [basicMode]
   )
   // use static keywords component
-  effectiveUiSchema.controlledKeywords = {
-    ...effectiveUiSchema.controlledKeywords,
-    ...staticKeywordsComponent.uiSchema,
-  }
+  // effectiveUiSchema.controlledKeywords = {
+  //   ...effectiveUiSchema.controlledKeywords,
+  //   ...staticKeywordsComponent.uiSchema,
+  // }
 
   const customWidgets = {
-    SelectWidget: CustomSelect
+    SelectWidget: CustomSelect,
+  }
+
+  const customFields = {
+    IsidoreSearch: isidoreSearch,
   }
 
   return (
@@ -147,6 +151,7 @@ export default ({
       formContext={formContext}
       schema={schema}
       widgets={customWidgets}
+      fields={customFields}
       uiSchema={effectiveUiSchema}
       formData={formData}
       onChange={(e) => {

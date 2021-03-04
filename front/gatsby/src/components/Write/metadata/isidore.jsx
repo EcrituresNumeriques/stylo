@@ -2,23 +2,21 @@ import React, { useCallback, useState } from 'react'
 import { throttle } from 'lodash'
 import { search as isidoreSearch } from '../../../helpers/isidore'
 import { useCombobox } from 'downshift'
+import Field from '../../Field'
 
-const uiSchema = {
-  items: {
-    'ui:to-value-fn': (el) => ({
-      label: el['@label'],
-      uriRameau: el.option['@value'],
-      idRameau: '',
-    }),
-    'ui:ObjectFieldTemplate': AutocompleteField,
-  },
-}
+import styles from '../../form.module.scss'
+
+const toValueFn = (el) => ({
+  label: el['@label'],
+  uriRameau: el.option.find(meta => meta['@key'] === 'uri')['@value'],
+  idRameau: '',
+})
 
 function ObjectIsEmpty(object) {
   return typeof object === 'object' && Object.keys(object).length === 0
 }
 
-function AutocompleteField(props) {
+export default function IsidoreAPIAutocompleteField(props) {
   const [inputItems, setInputItems] = useState([])
   const {
     isOpen,
@@ -32,7 +30,7 @@ function AutocompleteField(props) {
     onSelectedItemChange: ({ selectedItem }) => {
       if (selectedItem) {
         const { $id: id } = props.idSchema
-
+        console.log(selectedItem, toValueFn(selectedItem))
         props.formContext.partialUpdate({ id, value: toValueFn(selectedItem) })
       }
     },
@@ -52,12 +50,11 @@ function AutocompleteField(props) {
   )
 
   const isEmpty = ObjectIsEmpty(props.formData)
-  const toValueFn = props.uiSchema['ui:to-value-fn'] ?? ((el) => el)
 
   return (
     <div {...getComboboxProps()}>
-      {!isEmpty && <span>{props.formData.label}</span>}
-      <input {...getInputProps(!isEmpty ? { hidden: true } : {})} />
+      {!isEmpty && <span className={styles.comboboxReadonlyField}>{props.formData.label}</span>}
+      {isEmpty && <Field {...getInputProps({ className: styles.autocompleteField})} />}
       <ul {...getMenuProps()}>
         {isOpen &&
           inputItems.map((item, index) => (
@@ -76,6 +73,3 @@ function AutocompleteField(props) {
   )
 }
 
-export default {
-  uiSchema: uiSchema,
-}
