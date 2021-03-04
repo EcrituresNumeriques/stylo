@@ -3,6 +3,8 @@
 @import './field.module.scss';
 @import './button.module.scss';
 
+$default-padding: 0.5rem;
+
 @mixin legend {
   background: #f0f0f0;
   border-top: 1px solid grey;
@@ -43,6 +45,12 @@
   }
 }
 
+// useful for something outside of the form but that has to be align with it
+.schemaSelector {
+  padding: 0 $default-padding;
+  margin-bottom: 1rem;
+}
+
 .fieldset {
   border: none;
   margin: 0 0 0.75rem;
@@ -59,7 +67,7 @@
       [role='listbox']:not(:empty) {
         background: #fcfcfc;
         border: 1px solid grey;
-        padding: 0.5rem;
+        padding: $default-padding;
         position: absolute;
         z-index: 10000;
         width: 100%;
@@ -76,7 +84,7 @@
       border-bottom: 1px solid #f0f0f0;
       display: flex;
       align-items: center;
-      padding: 0.5rem 0.5rem;
+      padding: $default-padding;
 
       &.field-array {
         border-bottom: none;

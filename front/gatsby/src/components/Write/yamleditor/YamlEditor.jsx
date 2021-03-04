@@ -5,6 +5,8 @@ import Form from '../../Form'
 import Select from '../../Select'
 import schemas from '../../../schemas/index.js'
 
+import styles from './../../form.module.scss'
+
 export default function YamlEditor ({ yaml, basicMode, onChange }) {
   const [metadataModelName, setMetadataModelName] = useState('default')
   const [parsed] = YAML.loadAll(yaml)
@@ -15,7 +17,10 @@ export default function YamlEditor ({ yaml, basicMode, onChange }) {
   }
 
   return (<>
-    <Select label="Schéma de publication" value={metadataModelName} onChange={(e) => setMetadataModelName(e.target.value)}>
+    <Select label="Schéma de publication"
+      containerClassName={styles.schemaSelector}
+      value={metadataModelName}
+      onChange={(e) => setMetadataModelName(e.target.value)}>
       {Object.entries(schemas).map(([id, details]) => {
         return <option key={id} value={ id }>{ details.title }</option>
       })}
