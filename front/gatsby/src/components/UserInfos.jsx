@@ -194,7 +194,6 @@ const ConnectedUser = (props) => {
       <h2>Account information</h2>
       <form onSubmit={(e) => updateInfo(e)}>
         <Field
-          id="displayNameField"
           label="Display name"
           type="text"
           value={displayName}
@@ -202,7 +201,6 @@ const ConnectedUser = (props) => {
           placeholder="Display name"
         />
         <Field
-          id="firstNameField"
           label="First Name"
           type="text"
           value={firstName}
@@ -210,7 +208,6 @@ const ConnectedUser = (props) => {
           placeholder="First name"
         />
         <Field
-          id="lastNameField"
           label="Last Name"
           type="text"
           value={lastName}
@@ -218,7 +215,6 @@ const ConnectedUser = (props) => {
           placeholder="Last name"
         />
         <Field
-          id="institutionField"
           label="Institution"
           type="text"
           value={institution}
@@ -248,7 +244,6 @@ const ConnectedUser = (props) => {
         </Field>
         <Field label="Default YAML">
           <textarea
-            id="yamlField"
             value={yaml}
             onChange={(e) => setYaml(etv(e))}
             placeholder=""

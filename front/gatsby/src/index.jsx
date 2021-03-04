@@ -17,6 +17,7 @@ import Field from './components/Field'
 import { Check, Copy, Search } from 'react-feather'
 import buttonStyles from './components/button.module.scss'
 import Select from './components/Select'
+import NavTag from './components/NavTab'
 
 // lazy loaded routes
 const Books = lazy(() => import('./components/Books'))
@@ -108,6 +109,10 @@ render(
               <h4>Icon Only</h4>
               <Button icon={true}><Copy/></Button>
               <h2>Fields</h2>
+              <h4>Input</h4>
+              <Field />
+              <h4>Input (with label)</h4>
+              <Field label="Type your password" type="password" />
               <h4>Search</h4>
               <Field placeholder="Search" icon={Search}/>
               <h4>Textarea</h4>
@@ -120,7 +125,14 @@ render(
                 <option>Reblochon</option>
                 <option>St Marcellin</option>
               </Select>
+              <h4>Select (with label)</h4>
+              <Select label="Choisis ton fromton">
+                <option>Tome de Savoie</option>
+                <option>Reblochon</option>
+                <option>St Marcellin</option>
+              </Select>
               <h4>Tabs</h4>
+              <NavTag defaultValue={1} items={[{ value: 1, name: 'Un'}, { value: 2, name: 'Deux' }]} />
               <h4>Form actions</h4>
             </App>
           </Route>

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { throttle } from 'lodash'
+import throttle from 'lodash/throttle'
 import { search as isidoreSearch } from '../../../helpers/isidore'
 import { useCombobox } from 'downshift'
 

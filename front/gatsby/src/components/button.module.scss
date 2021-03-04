@@ -1,6 +1,8 @@
 @import '../styles/defaults.scss';
 @import '../styles/variables.scss';
 
+$fieldHeight: 2.5em;
+
 @mixin actionField {
   border: none;
   user-select: none;
@@ -9,7 +11,7 @@
   box-shadow: none;
   display: inline-flex;
   font-size: 1em;
-  height: 2.5em;
+  height: $fieldHeight;
   justify-content: flex-start;
   line-height: 1.5;
   padding: calc(.5em - 1px) calc(.8em - 1px);
@@ -26,7 +28,7 @@
   font-size: 1em;
   max-width: 100%;
   outline: 0;
-  padding-right: 2.5em;
+  padding-right: $fieldHeight;
   background-color: #fff;
   color: #000;
   border: 1px solid #000;
@@ -40,7 +42,7 @@
   vertical-align: top;
 
   &:after {
-    right: 1.125em;
+    right: $fieldHeight / 2;
     z-index: 4;
     border: 3px solid #000;
     border-radius: 2px;
@@ -52,7 +54,7 @@
     margin-top: -0.55em;
     pointer-events: none;
     position: absolute;
-    top: 50%;
+    bottom: $fieldHeight / 2.2;
     transform: rotate(-45deg);
     transform-origin: center;
     width: .625em;
@@ -66,6 +68,10 @@
 
 .selectContainer {
   @include selectFieldContainer;
+}
+
+.label {
+  cursor: pointer;
 }
 
 .button {
