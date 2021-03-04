@@ -84,7 +84,10 @@
   "authors": {
     "ui:add-item-title": "Ajouter un author",
     "ui:remove-item-title": "Supprimer",
-    "ui:title": "Authors"
+    "ui:title": "Authors",
+    "items": {
+      "ui:autocomplete": "IsidoreAuthorSearch"
+    }
   },
   "translationOf": {
     "ui:title": "Traductions de",
@@ -135,7 +138,7 @@
     "ui:title": "Mots clés Contrôlés",
     "ui:add-item-title": "Ajouter une mot-clé contrôlé",
     "items": {
-      "ui:field": "IsidoreSearch"
+      "ui:field": "IsidoreKeywordSearch"
     }
   },
   "typeArticle": {

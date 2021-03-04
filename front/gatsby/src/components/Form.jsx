@@ -9,11 +9,13 @@ import { toYaml } from './Write/metadata/yaml'
 // REMIND: use a custom SelectWidget to support "ui:emptyValue"
 // remove once fixed in https://github.com/rjsf-team/react-jsonschema-form/issues/1041
 import SelectWidget from './SelectWidget'
-import isidoreSearch from './Write/metadata/isidore'
+import isidoreKeywordSearch from './Write/metadata/isidoreKeyword'
+import isidoreAuthorSearch from './Write/metadata/isidoreAuthor'
 
 import styles from './form.module.scss'
 import Button from './Button'
 import { Plus, Trash } from 'react-feather'
+import IsidoreAuthorAPIAutocompleteField from './Write/metadata/isidoreAuthor'
 
 const CustomSelect = function(props) {
   return (<div className={styles.selectContainer}>
@@ -95,10 +97,12 @@ function ObjectFieldTemplate(props) {
   }
 
   if (props) {
+    const autocomplete = props.uiSchema['ui:autocomplete']
     return (
       <Fragment key={props.key}>
         {props.title}
         {props.description}
+        {autocomplete === "IsidoreAuthorSearch" && <IsidoreAuthorAPIAutocompleteField {...props}/>}
         {props.properties.map((element) => (
           <Fragment key={element.name}>{element.content}</Fragment>
         ))}
@@ -129,18 +133,14 @@ export default ({
     () => (basicMode ? { ...uiSchema, ...basicUiSchema } : uiSchema),
     [basicMode]
   )
-  // use static keywords component
-  // effectiveUiSchema.controlledKeywords = {
-  //   ...effectiveUiSchema.controlledKeywords,
-  //   ...staticKeywordsComponent.uiSchema,
-  // }
 
   const customWidgets = {
     SelectWidget: CustomSelect,
   }
 
   const customFields = {
-    IsidoreSearch: isidoreSearch,
+    IsidoreKeywordSearch: isidoreKeywordSearch,
+    IsidoreAuthorSearch: isidoreAuthorSearch,
   }
 
   return (

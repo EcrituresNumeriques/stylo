@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { throttle } from 'lodash'
-import { search as isidoreSearch } from '../../../helpers/isidore'
+import { searchKeyword as isidoreKeywordSearch } from '../../../helpers/isidore'
 import { useCombobox } from 'downshift'
 import Field from '../../Field'
 
@@ -43,7 +43,7 @@ export default function IsidoreAPIAutocompleteField(props) {
   const delayedSearch = useCallback(
     throttle(
       async (value) => {
-        const replies = await isidoreSearch(value)
+        const replies = await isidoreKeywordSearch(value)
         setInputItems(replies)
       },
       200,
@@ -75,4 +75,3 @@ export default function IsidoreAPIAutocompleteField(props) {
     </div>
   )
 }
-
