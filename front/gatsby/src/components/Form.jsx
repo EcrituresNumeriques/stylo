@@ -7,7 +7,7 @@ import { toYaml } from './Write/metadata/yaml'
 
 // REMIND: use a custom SelectWidget to support "ui:emptyValue"
 // remove once fixed in https://github.com/rjsf-team/react-jsonschema-form/issues/1041
-import SelectWidget from './SelectWidget.jsx'
+import SelectWidget from './SelectWidget'
 
 import styles from './form.module.scss'
 import Button from './Button'
@@ -72,6 +72,14 @@ function ObjectFieldTemplate (props) {
     const groups = props.uiSchema['ui:groups']
     const groupedElements = groups.map(({ fields, title }) => {
       const elements = fields
+        .filter((field) => {
+          const fieldExists = props.schema.properties.hasOwnProperty(field)
+          if (!fieldExists) {
+            console.error('Field %s is declared in ui:group, but does not exist in data schema', field)
+          }
+
+          return fieldExists
+        })
         .filter(
           (field) => (props.uiSchema[field] || {})['ui:widget'] !== 'hidden'
         )
@@ -107,12 +115,10 @@ function ObjectFieldTemplate (props) {
   }
 }
 
-export default ({
-  formData: initialFormData,
-  basicMode,
-  metadataModelName,
-  onChange = () => {},
-}) => {
+export default function MetadataForm (props) {
+  const { basicMode, metadataModelName } = props
+  const { formData: initialFormData, onChange = () => {} } = props
+
   const [formData, setFormData] = useState(initialFormData)
   const [errors, setErrors] = useState({})
   const formContext = {

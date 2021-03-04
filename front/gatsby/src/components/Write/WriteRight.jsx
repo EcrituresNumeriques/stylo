@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
 import styles from './writeRight.module.scss'
-import YamlEditor from './yamleditor/YamlEditor.jsx'
-import NavTag from '../NavTab.jsx'
+import YamlEditor from './yamleditor/YamlEditor'
+import NavTag from '../NavTab'
 import YAML from 'js-yaml'
 
-export default (props) => {
+export default function WriteRight (props) {
   const [expanded, setExpanded] = useState(false)
   const [selector, setSelector] = useState('basic')
   const [rawYaml, setRawYaml] = useState(props.yaml)
