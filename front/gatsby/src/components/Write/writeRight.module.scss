@@ -5,11 +5,27 @@
   @extend .sliderright;
   right: 0;
   background-color: rgba(255, 255, 255, 1);
-  > nav {
-    color: $main-color;
-    left: 0;
-    transition: right 0.5s ease;
-  }
+}
+
+.openCloseButton {
+  border: none;
+  background: none;
+  margin-top: 0.25rem;
+  position: absolute;
+  z-index: 1001;
+}
+
+.openCloseButtonExpand {
+  color: grey;
+  left: -130px;
+  transition: left 0.5s ease;
+}
+
+.openCloseButtonRetract {
+  background: $main-background-color;
+  color: $main-color;
+  left: 0;
+  transition: right 0.5s ease;
 }
 
 .error {
@@ -25,10 +41,7 @@
   right: -400px;
   background-color: rgba(255, 255, 255, 0);
   border-right: 0 solid $main-border-color;
-  > nav {
-    left: -130px;
-    transition: left 0.5s ease;
-  }
+
   .open {
     color: grey;
     background-color: rgba(0, 0, 0, 0);
@@ -39,21 +52,14 @@
   @extend .slider;
   transition: right 0.5s ease, background 0.5s ease, border 0.5s ease;
   border-left: 1px solid $main-border-color;
-  > nav {
-    text-align: left;
-  }
-  > div {
-    text-align: right;
-    > nav {
-      p {
-        @extend .clickable;
-      }
-    }
-    > textarea {
-      width: 100%;
-      height: calc(100% - 8rem);
-    }
-  }
+}
+
+.sidebarHeader {
+  background-color: #fff;
+  position: sticky;
+  text-align: right;
+  top: 0;
+  z-index: 1000;
 }
 
 .yamlEditor {

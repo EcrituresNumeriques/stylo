@@ -25,6 +25,8 @@
 }
 
 .form {
+  text-align: right;
+
   :global {
     .field-array > label.control-label {
       @include legend;

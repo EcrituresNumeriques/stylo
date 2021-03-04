@@ -4,6 +4,7 @@ import styles from './writeRight.module.scss'
 import YamlEditor from './yamleditor/YamlEditor'
 import NavTag from '../NavTab'
 import YAML from 'js-yaml'
+import Button from '../Button'
 
 export default function WriteRight (props) {
   const [expanded, setExpanded] = useState(false)
@@ -13,32 +14,34 @@ export default function WriteRight (props) {
 
   return (
     <nav className={`${expanded ? styles.expandRight : styles.retractRight}`}>
-      <nav
+      <Button
         onClick={() => setExpanded(!expanded)}
-        className={expanded ? styles.close : styles.open}
+        className={[styles.openCloseButton, expanded ? styles.openCloseButtonRetract : styles.openCloseButtonExpand].join(' ')}
       >
         {expanded ? 'close' : 'Metadata'}
-      </nav>
+      </Button>
       {expanded && (
         <div className={styles.yamlEditor}>
-          <header>
+          <header className={styles.sidebarHeader}>
             <h1>Metadata</h1>
+
+            <NavTag defaultValue={selector} onChange={(value) => setSelector(value)} items={[
+              {
+                value: 'basic',
+                name: 'Basic Mode'
+              },
+              {
+                value: 'editor',
+                name: 'Editor Mode'
+              },
+              {
+                value: 'raw',
+                name: 'Raw Mode'
+              }
+              ]
+            }/>
           </header>
-          <NavTag defaultValue={selector} onChange={(value) => setSelector(value)} items={[
-            {
-              value: 'basic',
-              name: 'Basic Mode'
-            },
-            {
-              value: 'editor',
-              name: 'Editor Mode'
-            },
-            {
-              value: 'raw',
-              name: 'Raw Mode'
-            }
-            ]
-          }/>
+
           {selector === 'raw' && (
             <>
               {error !== '' && <p className={styles.error}>{error}</p>}
