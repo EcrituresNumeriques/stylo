@@ -1,5 +1,25 @@
 # Journal de développement
 
+## Jeudi 4 mars 2021
+
+### Ce que j'ai aimé/appris
+
+- Aimé l'API Isidore, simple, répond rapidement et cohérente
+- Appris les petites subtilités sur json-reactschema-form… et j'aime qu'on arrive toujours à trouver une solution
+- Ne pas mutualiser tout de suite le code de l'autocomplétion, on a pu produire un résultat plus vite
+- Réutiliser le `PartialUpdate`, ça a fonctionné du premier coup
+- Matinée productive
+- Déclarer des fields custom, et les piloter depuis le schéma (robuste et statique)
+
+### Ce que j'ai trouvé difficile
+
+- Je me suis perdu dans les props passées aux composants de Downshift, en suivant la doc j'ai pas réussi… heureusement l'autocomplétion basée sur les types TypeScript nous a débloqué
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- Obtenir des retours
+- Mettre en prod
+
 ## Jeudi 25 février 2021
 
 ### Ce que j'ai aimé/appris
