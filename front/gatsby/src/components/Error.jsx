@@ -13,7 +13,7 @@ export default () => {
         <article className={styles.error}>
           <h2>Error</h2>
 
-          <p>Something wrong happened: <code>{message}</code>.</p>
+          <p>Something wrong happened: <code>{message}</code></p>
         </article>
       </section>
     </App>

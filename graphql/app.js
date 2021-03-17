@@ -243,6 +243,7 @@ app.use('/authorization-code/callback',
         console.error('error', err)
         res.redirect(`/error?message=${info.message}`)
       } else {
+        req.user = user
         next()
       }
     })(req, res, next)
