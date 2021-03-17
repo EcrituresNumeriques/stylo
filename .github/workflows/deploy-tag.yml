@@ -1,8 +1,6 @@
 name: Ansible deploy production
 
 on:
-  release:
-    types: [published]
   push:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v2.1.3
