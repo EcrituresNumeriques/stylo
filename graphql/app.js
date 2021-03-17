@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-const {graphqlHTTP} = require('express-graphql')
+const { graphqlHTTP } = require('express-graphql')
 const mongoose = require('mongoose')
 const cors = require('cors')
 
@@ -64,7 +64,6 @@ if (sameSiteCookies === 'none') {
   console.warn('Cookies are configured with `sameSite: none`.')
 }
 
-
 const corsOptions = {
   optionsSuccessStatus: 200,
   credentials: true,
@@ -84,7 +83,7 @@ passport.use('zotero', new OAuthStrategy({
     callbackURL: zoteroAuthCallbackUrl,
     sessionKey: 'oauth_token'
   },
-  function(zoteroToken, tokenSecret, profile, done) {
+  function (zoteroToken, tokenSecret, profile, done) {
     return done(null, { zoteroToken })
   }
 ))
@@ -105,7 +104,7 @@ passport.use('oidc', new OidcStrategy({
 
 passport.use(new LocalStrategy({ session: false },
   function (username, password, done) {
-    graphQlResolvers.verifCreds({username, password})
+    graphQlResolvers.verifCreds({ username, password })
       .then(userPassword => done(null, userPassword))
       .catch(e => done(e, false))
   }
@@ -145,8 +144,7 @@ app.use(function (req, res, next) {
     try {
       req.user = jwt.verify(jwtToken, jwtSecret)
       req.isAuth = true
-    }
-    catch (error) {
+    } catch (error) {
       return next(error)
     }
   }
@@ -170,8 +168,7 @@ app.get(
     if (req.user) {
       res.redirect(req.headers.referer)
     } else {
-      console.log(`GET /login/openid - request.headers: ${req.headers}`)
-      console.log(`set origin on session: ${req.headers.referer}`)
+      console.log(`GET /login/openid - req.headers.referer: ${req.headers.referer}`)
       req.session.origin = req.headers.referer
       next()
     }
@@ -221,8 +218,7 @@ app.use('/authorization-code/zotero/callback',
           'Content-Type': 'text/html'
         })
         res.end(`<script>window.close();</script>`)
-      }
-      catch (error) {
+      } catch (error) {
         console.error('error', error)
         res.statusCode = 401
         res.redirect(req.session.origin)
@@ -234,8 +230,25 @@ app.use('/authorization-code/zotero/callback',
   })
 
 app.use('/authorization-code/callback',
-  passport.authenticate('oidc', { failureRedirect: '/error' }), async (req, res) => {
-    console.log(`/authorization-code/zotero/callback - origin in session? ${req.session.origin}`)
+  (req, res, next) => {
+    return passport.authenticate('oidc', {
+      failureRedirect: '/error',
+      failureFlash: true
+    }, (err, user, info) => {
+      console.log('/authorization-code/callback - callback', err, user, info)
+      if (!user) {
+        console.error('Unable to authenticate', info.message)
+        res.redirect(`/error?message=${info.message}`)
+      } else if (err) {
+        console.error('error', err)
+        res.redirect(`/error?message=${info.message}`)
+      } else {
+        next()
+      }
+    })(req, res, next)
+  },
+  async (req, res) => {
+    console.log(`/authorization-code/callback - req.session.origin: ${req.session.origin}`)
     const { email, given_name, family_name, name: displayName } = req.user._json
     let user = await User.findOne({ email })
 
@@ -272,7 +285,8 @@ app.use('/authorization-code/callback',
     })
 
     res.redirect(req.session.origin)
-  })
+  }
+)
 
 app.get('/logout', (req, res) => {
   req.logout()
@@ -305,9 +319,9 @@ app.post('/login',
     })
 
     res.statusCode = 200
-    res.json({password: userPassword, users: userPassword.users, token})
+    res.json({ password: userPassword, users: userPassword.users, token })
   },
-  function onFailure (error, req, res, _) {
+  function onFailure(error, req, res, _) {
     console.error('error', error)
     res.statusCode = 401
     res.json({ error })

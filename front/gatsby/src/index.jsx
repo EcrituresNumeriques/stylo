@@ -12,6 +12,7 @@ import { getApplicationConfig } from './helpers/applicationConfig'
 import Register from './components/Register'
 import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/404'
+import Error from './components/Error'
 import Button from './components/Button'
 import Field from './components/Field'
 import { Check, Copy, Search } from 'react-feather'
@@ -130,6 +131,9 @@ render(
                 <Articles />
               </App>
             </PrivateRoute>
+          </Route>
+          <Route exact path="/error">
+            <Error />
           </Route>
           <Route path="*">
             <NotFound />
