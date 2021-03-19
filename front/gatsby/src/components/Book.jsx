@@ -91,6 +91,7 @@ const Book = (props) => {
             <a
               className={[buttonStyles.icon, buttonStyles.button].join(' ')}
               title="Preview"
+              target="_blank"
               href={`https://via.hypothes.is/${exportEndpoint}/htmlBook/${props._id}?preview=true`}
             >
               <Eye />

@@ -128,6 +128,7 @@ const ConnectedArticle = (props) => {
           title="Preview"
           className={[buttonStyles.button, buttonStyles.icon].join(' ')}
           href={`https://via.hypothes.is/${exportEndpoint}/api/v1/htmlArticle/${props._id}?preview=true`}
+          target="_blank"
         >
           <Eye />
         </a>
