@@ -9,7 +9,6 @@ const mongoServer = process.env.MONGO_SERVER || 'localhost'
 const mongoServerPort = process.env.MONGO_SERVER_PORT || 27017
 const mongoServerDB = process.env.MONGO_SERVER_DB || 'graphql'
 const listenPort = process.env.PORT || 3060
-const redirect = process.env.URL_FRONTEND || 'http://localhost:3000'
 
 const exportRouter = express.Router()
 exportRouter.get('/version/:id/html', exportVersionHtml)
@@ -29,10 +28,6 @@ app.get('/api/v1/htmlVersion/:id', exportVersionHtml)
 app.get('/api/v1/htmlArticle/:id', exportArticleHtml)
 app.get('/htmlBook/:id', exportBookHtml)
 
-app.use((req, res, _) => {
-  return res.redirect(302, redirect + req.originalUrl)
-})
-
 // fix deprecation warnings: https://mongoosejs.com/docs/deprecations.html
 mongoose.set('useNewUrlParser', true)
 mongoose.set('useUnifiedTopology', true)
@@ -40,6 +35,7 @@ mongoose.set('useUnifiedTopology', true)
 mongoose
   .connect(`mongodb://${mongoServer}:${mongoServerPort}/${mongoServerDB}`)
   .then(() => {
+    console.log('Listening on http://localhost:%s', listenPort)
     app.listen(listenPort)
   })
   .catch(err => {

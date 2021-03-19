@@ -345,7 +345,7 @@ mongoose.set('useCreateIndex', true)
 mongoose
   .connect(`mongodb://${mongoServer}:${mongoServerPort}/${mongoServerDB}`)
   .then(() => {
-    console.log('Listening on port', listenPort)
+    console.log('Listening on http://localhost:%s', listenPort)
     app.listen(listenPort)
   })
   .catch(err => {
