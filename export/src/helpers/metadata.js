@@ -75,8 +75,8 @@ const prepare = (yaml, {id, originalUrl, replaceBibliography = false}) => {
       const list_f_type = typeof list_f
 
       if (Array.isArray(list_f)) {
-        obj.list_f = list_f.map(item => item.trim()).join(', ')
-        obj.list = list_f.map(item => removeMd(item.trim())).join(', ')
+        obj.list_f = list_f.filter(d => d).map(item => item.trim()).join(', ')
+        obj.list = list_f.filter(d => d).map(item => removeMd(item.trim())).join(', ')
       }
       else if (list_f_type === 'string') {
         obj.list = removeMd(list_f.trim())

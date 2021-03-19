@@ -65,6 +65,7 @@ keywords:
   list_f:
     - "**Tomme de Savoie**"
     - Comté
+    - null
 ---`, {id: 'abcd1234'})).toBe(`---
 keywords:
   - lang: fr
