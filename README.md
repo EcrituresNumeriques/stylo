@@ -25,8 +25,8 @@ L'application se lance en combinant Docker (pour avoir une base de données Mong
 
 ```bash
 docker-compose pull mongodb-stylo
-npm install --prefix graphql
-npm install --prefix front/gatsby
+npm ci --prefix graphql
+npm ci --prefix front/gatsby
 cp stylo-example.env stylo.env
 ```
 

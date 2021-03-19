@@ -1,0 +1,189 @@
+{
+  "ui:groups": [
+    {
+      "fields": [
+        "id",
+        "url_article",
+        "title_f",
+        "subtitle_f",
+        "date",
+        "lang",
+        "rights"
+      ]
+    },
+    {
+      "title": "Bibliography",
+      "fields": ["link-citations", "nocite"]
+    },
+    {
+      "fields": [
+        "authors",
+        "abstract",
+        "keywords",
+        "controlledKeywords",
+        "typeArticle"
+      ]
+    },
+    {
+      "title": "Diffusion",
+      "fields": [
+        "publisher",
+        "journal"
+      ]
+    },
+    {
+      "fields": [
+        "issueDirectors",
+        "productor",
+        "prodnum",
+        "diffnum",
+        "dossier"
+      ]
+    },
+    {
+      "title": "Production",
+      "fields": [
+        "issnnum",
+        "prod",
+        "prodnum",
+        "diffnum"
+      ]
+    },
+    {
+      "fields": [
+        "dossier",
+        "issueDirectors",
+        "reviewers",
+        "translator",
+        "translationOf",
+        "transcribers"
+      ]
+    }
+  ],
+  "id": {
+    "ui:title": "ID",
+    "ui:placeholder": ""
+  },
+  "url_article": {
+    "ui:title": "URL of the article",
+    "ui:placeholder": "URL of the article",
+    "ui:widget": "uri"
+  },
+  "title_f": {
+    "ui:title": "Title"
+  },
+  "subtitle_f": {
+    "ui:title": "Subtitle"
+  },
+  "link-citations": {
+    "ui:widget": "select",
+    "ui:emptyValue": ""
+  },
+  "nocite": {
+    "ui:widget": "select",
+    "ui:emptyValue": ""
+  },
+  "date": {
+    "ui:title": "Date",
+    "ui:widget": "date"
+  },
+  "lang": {
+    "ui:title": "Language",
+    "ui:placeholder": "Select language"
+  },
+  "rights": {
+    "ui:title": "License",
+    "ui:placeholder": "License"
+  },
+  "rightsauthors": {
+    "ui:title": "Author(s) Rights"
+  },
+  "authors": {
+    "ui:add-item-title": "Ajouter un author",
+    "ui:remove-item-title": "Supprimer",
+    "ui:title": "Authors"
+  },
+  "translationOf": {
+    "ui:title": "Traductions de",
+    "items": {
+      "url": {
+        "ui:widget": "uri"
+      }
+    }
+  },
+  "publisher": {
+    "ui:title": "Publisher"
+  },
+  "journal": {
+    "ui:title": "Journal"
+  },
+  "abstract": {
+    "ui:title": "Résumés",
+    "ui:add-item-title": "Ajouter un résumé dans une autre langue",
+    "ui:remove-item-title": "Supprimer",
+    "items": {
+      "text_f": {
+        "ui:title": "Résumé",
+        "ui:widget": "textarea"
+      },
+      "lang": {
+        "ui:title": "Language",
+        "ui:placeholder": "Select language"
+      }
+    }
+  },
+  "keywords": {
+    "ui:title": "Keywords",
+    "ui:add-item-title": "Ajouter une langue",
+    "ui:remove-item-title": "Supprimer cette langue",
+    "items": {
+      "lang": {
+        "ui:title": "Language"
+      },
+      "list_f": {
+        "classNames": "inline-field-string",
+        "ui:add-item-title": "Ajouter un mot-clé",
+        "ui:remove-item-title": "Supprimer"
+      }
+    }
+  },
+  "controlledKeywords": {
+    "classNames": "inline-field-string",
+    "ui:title": "Mots clés Contrôlés",
+    "ui:add-item-title": "Ajouter une mot-clé contrôlé"
+  },
+  "typeArticle": {
+    "ui:widget": "checkboxes",
+    "ui:title": "Categories"
+  },
+  "dossier": {
+    "ui:title": "Folder",
+    "ui:options": {
+      "removable": false,
+      "addable": false
+    },
+    "items": {
+      "title_f": {
+        "ui:title": "Titre du dossier"
+      },
+      "id": {
+        "ui:title": "Id"
+      }
+    }
+  },
+  "issueDirectors": {
+    "ui:title": "Issue Directors"
+  },
+  "director": {
+    "ui:title": "Directors"
+  },
+  "transcribers": {
+    "ui:title": "Transcribers"
+  },
+  "translator": {
+    "ui:title": "Translators"
+  },
+  "reviewers": {
+    "ui:title": "Reviewers"
+  }
+}

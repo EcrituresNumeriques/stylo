@@ -1,10 +1,8 @@
 import React, { Fragment, useMemo, useState } from 'react'
 import Form from '@rjsf/core'
 import { set } from 'object-path-immutable'
-import basicUiSchema from '../schemas/ui-schema-basic-override.json'
-import uiSchema from '../schemas/ui-schema-editor.json'
-import staticKeywordsComponent from './Write/metadata/staticKeywords'
-import schema from '../schemas/data-schema.json'
+import staticKeywordsComponent from './Write/metadata/staticKeywords.js'
+import schemas from '../schemas/index.js' // { default: { uiSchema, schema }}
 import { toYaml } from './Write/metadata/yaml'
 
 // REMIND: use a custom SelectWidget to support "ui:emptyValue"
@@ -20,9 +18,11 @@ const CustomSelect = function(props) {
       <SelectWidget {...props}/>
     </div>)
 }
-function ArrayFieldTemplate(props) {
-  const addItemTitle = props.uiSchema['ui:add-item-title'] || 'Ajouter'
-  const removeItemTitle = props.uiSchema['ui:remove-item-title'] || 'Supprimer'
+
+function ArrayFieldTemplate (props) {
+
+  const addItemTitle = props.uiSchema['ui:add-item-title'] || 'Add'
+  const removeItemTitle = props.uiSchema['ui:remove-item-title'] || 'Remove'
   const title = props.uiSchema['ui:title']
 
   const inlineRemoveButton = props.schema?.items?.type === 'string'
@@ -67,11 +67,19 @@ function ArrayFieldTemplate(props) {
   )
 }
 
-function ObjectFieldTemplate(props) {
+function ObjectFieldTemplate (props) {
   if (props.uiSchema['ui:groups']) {
     const groups = props.uiSchema['ui:groups']
     const groupedElements = groups.map(({ fields, title }) => {
       const elements = fields
+        .filter((field) => {
+          const fieldExists = props.schema.properties.hasOwnProperty(field)
+          if (!fieldExists) {
+            console.error('Field %s is declared in ui:group, but does not exist in data schema', field)
+          }
+
+          return fieldExists
+        })
         .filter(
           (field) => (props.uiSchema[field] || {})['ui:widget'] !== 'hidden'
         )
@@ -107,11 +115,10 @@ function ObjectFieldTemplate(props) {
   }
 }
 
-export default ({
-  formData: initialFormData,
-  basicMode,
-  onChange = () => {},
-}) => {
+export default function MetadataForm (props) {
+  const { basicMode, metadataModelName } = props
+  const { formData: initialFormData, onChange = () => {} } = props
+
   const [formData, setFormData] = useState(initialFormData)
   const [errors, setErrors] = useState({})
   const formContext = {
@@ -125,10 +132,15 @@ export default ({
     },
   }
 
-  const effectiveUiSchema = useMemo(
-    () => (basicMode ? { ...uiSchema, ...basicUiSchema } : uiSchema),
-    [basicMode]
+  const {basicUiSchema, uiSchema, schema} = schemas[metadataModelName]
+  const effectiveUiSchema = useMemo(() => {
+    return basicMode
+      ? basicUiSchema
+      : uiSchema
+    },
+    [basicMode, metadataModelName]
   )
+
   // use static keywords component
   effectiveUiSchema.controlledKeywords = {
     ...effectiveUiSchema.controlledKeywords,

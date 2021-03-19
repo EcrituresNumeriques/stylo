@@ -98,19 +98,19 @@ const Register = (props) => {
         <fieldset>
           <legend>Required informations</legend>
 
-          <Field id="email" type="email" label="Email*" autoComplete="email" required={true} onChange={(e) => setEmail(etv(e))} />
-          <Field id="username" label="Username*" autoComplete="username" required={true} onChange={(e) => setUsername(etv(e))} />
-          <Field id="password" type="password" label="Password*" autoComplete="new-password" required={true} onChange={(e) => setPassword(etv(e))} />
-          <Field id="passwordc" type="password" label="Confirm Password*" autoComplete="new-password" required={true} onChange={(e) => setPasswordC(etv(e))} className={password === passwordC ? null : styles.beware} />
+          <Field type="email" label="Email*" autoComplete="email" required={true} onChange={(e) => setEmail(etv(e))} />
+          <Field label="Username*" autoComplete="username" required={true} onChange={(e) => setUsername(etv(e))} />
+          <Field type="password" label="Password*" autoComplete="new-password" required={true} onChange={(e) => setPassword(etv(e))} />
+          <Field type="password" label="Confirm Password*" autoComplete="new-password" required={true} onChange={(e) => setPasswordC(etv(e))} className={password === passwordC ? null : styles.beware} />
         </fieldset>
 
         <fieldset>
           <legend>Optional details</legend>
 
-          <Field id="display-name" label="Display Name" onChange={(e) => setDisplayName(etv(e))} />
-          <Field id="first-name" label="First Name" onChange={(e) => setFirstName(etv(e))} />
-          <Field id="last-name" label="Last Name" onChange={(e) => setLastName(etv(e))} />
-          <Field id="institution" label="Organization" onChange={(e) => setInstitution(etv(e))} />
+          <Field label="Display Name" onChange={(e) => setDisplayName(etv(e))} />
+          <Field label="First Name" onChange={(e) => setFirstName(etv(e))} />
+          <Field label="Last Name" onChange={(e) => setLastName(etv(e))} />
+          <Field label="Organization" onChange={(e) => setInstitution(etv(e))} />
         </fieldset>
 
         <ul className={styles.actions}>

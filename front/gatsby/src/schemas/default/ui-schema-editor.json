@@ -8,7 +8,8 @@
         "subtitle_f",
         "date",
         "lang",
-        "rights"
+        "rights",
+        "rightsauthors"
       ]
     },
     {
@@ -26,14 +27,24 @@
     },
     {
       "title": "Diffusion",
-      "fields": ["publisher", "journal"]
+      "fields": [
+        "publisher",
+         "journal"
+      ]
     },
     {
-      "fields": ["director"]
+      "fields": [
+        "director"
+      ]
     },
     {
       "title": "Production",
-      "fields": ["issnnum", "prod", "prodnum", "diffnum"]
+      "fields": [
+        "issnnum",
+        "prod",
+        "prodnum",
+        "diffnum"
+      ]
     },
     {
       "fields": [
@@ -81,6 +92,9 @@
     "ui:title": "License",
     "ui:placeholder": "License"
   },
+  "rightsauthors": {
+    "ui:title": "Author(s) Rights"
+  },
   "authors": {
     "ui:add-item-title": "Ajouter un author",
     "ui:remove-item-title": "Supprimer",
@@ -96,6 +110,18 @@
   },
   "publisher": {
     "ui:title": "Publisher"
+  },
+  "journalsubtitle_f": {
+    "ui:title": "Journal Subtitle"
+  },
+  "journalid": {
+    "ui:title": "Journal ID"
+  },
+  "issueid": {
+    "ui:title": "Issue ID"
+  },
+  "ordseq": {
+    "ui:title": "Ordseq?"
   },
   "journal": {
     "ui:title": "Journal"
@@ -136,7 +162,6 @@
     "ui:add-item-title": "Ajouter une mot-clé contrôlé"
   },
   "typeArticle": {
-    "ui:widget": "checkboxes",
     "ui:title": "Catégories"
   },
   "dossier": {
