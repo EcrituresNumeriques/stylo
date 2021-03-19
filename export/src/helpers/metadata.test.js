@@ -13,12 +13,12 @@ authors:
     surname: Vitali-Rosati
     orcid: 0000-0001-6424-3229
 ---
-`, {id: 'abcd1234', replaceBibliography: true})).toBe(`---
+`, {id: 'abcd1234', versionId: 'efgh5678', replaceBibliography: true})).toBe(`---
 authors:
   - forname: Marcello
     orcid: 0000-0001-6424-3229
     surname: Vitali-Rosati
-bibliography: abcd1234.bib
+bibliography: efgh5678.bib
 subtitle: A user friendly text editor for humanities scholars.
 title: Stylo
 title_f: untitled
@@ -31,7 +31,7 @@ test('year/month/day are derived from date', () => {
 title: Stylo
 date: '2021-02-25'
 ---
-`, {id: 'abcd1234'})).toBe(`---
+`, {id: 'abcd1234', versionId: 'efgh5678'})).toBe(`---
 date: 2021/02/25
 day: '25'
 month: '02'
@@ -45,7 +45,7 @@ year: '2021'
 title_f: Stylo
 date: '2021/02/25'
 ---
-`, {id: 'abcd1234'})).toBe(`---
+`, {id: 'abcd1234', versionId: 'efgh5678'})).toBe(`---
 date: 2021/02/25
 day: '25'
 month: '02'
@@ -65,7 +65,7 @@ keywords:
   list_f:
     - "**Tomme de Savoie**"
     - Comté
----`, {id: 'abcd1234'})).toBe(`---
+---`, {id: 'abcd1234', versionId: 'efgh5678'})).toBe(`---
 keywords:
   - lang: fr
     list: Tomme de Savoie, Comté
@@ -83,7 +83,7 @@ title_f: "Stylo"
 keywords:
 - lang: fr
   list_f: '**Tomme de Savoie**,Comté'
----`, {id: 'abcd1234'})).toBe(`---
+---`, {id: 'abcd1234', versionId: 'efgh5678'})).toBe(`---
 keywords:
   - lang: fr
     list: Tomme de Savoie,Comté
@@ -98,5 +98,5 @@ test('should be identical', async () => {
   const input = await fs.readFile(path.join(__dirname, '..', 'fixtures', 'psp1515.input.yml'), 'utf8')
   const expected = '---\n' + YAML.dump(YAML.load(expectedContent, 'utf8'), { sortKeys: true }) + '---'
   //console.log(expected)
-  expect(prepare(input, {id: 'abcd1234'})).toBe(expected)
+  expect(prepare(input, {id: 'abcd1234', versionId: 'efgh5678'})).toBe(expected)
 })

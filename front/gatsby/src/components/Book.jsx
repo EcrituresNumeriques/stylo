@@ -16,15 +16,7 @@ import Button from './Button'
 import buttonStyles from './button.module.scss'
 import Field from './Field'
 
-const alphaSort = (a, b) => {
-  if (a.title < b.title) {
-    return -1
-  }
-  if (a.title > b.title) {
-    return 1
-  }
-  return 0
-}
+const alphaSort = (a, b) => a.title.localeCompare(b.title)
 
 const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
   return { sessionToken, activeUser, applicationConfig }
@@ -91,6 +83,7 @@ const Book = (props) => {
             <a
               className={[buttonStyles.icon, buttonStyles.button].join(' ')}
               title="Preview"
+              target="_blank"
               href={`https://via.hypothes.is/${exportEndpoint}/htmlBook/${props._id}?preview=true`}
             >
               <Eye />

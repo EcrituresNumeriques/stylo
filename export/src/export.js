@@ -17,13 +17,13 @@ const { byTitle: sortByTitle } = require('./helpers/sort')
 
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 
-const exportZip = ({ bib, yaml, md, id, title }, res, _) => {
+const exportZip = ({ bib, yaml, md, id, title, versionId }, res, _) => {
   const filename = `${normalize(title)}.zip`
   const archive = createZipArchive(filename, res)
   // add files
   archive.append(Buffer.from(md), { name: `${id}.md` })
-  archive.append(Buffer.from(bib), { name: `${id}.bib` })
-  archive.append(Buffer.from(prepareMetadata(yaml, id)), { name: `${id}.yaml` })
+  archive.append(Buffer.from(bib), { name: `${versionId}.bib` })
+  archive.append(Buffer.from(prepareMetadata(yaml, {id, versionId, replaceBibliography: true})), { name: `${id}.yaml` })
   // zip!
   archive.finalize()
 }
@@ -184,7 +184,7 @@ const getArticleExportContext = async (articleId) => {
   const latestVersionId = article._doc.versions.pop()
   const latestVersion = await getVersionById(latestVersionId)
   const { bib, yaml, md } = latestVersion._doc
-  return { bib, yaml, md, id: articleId, title: article._doc.title }
+  return { bib, yaml, md, id: articleId, versionId: latestVersionId, title: article._doc.title }
 }
 
 const getBookExportContext = async (bookId) => {

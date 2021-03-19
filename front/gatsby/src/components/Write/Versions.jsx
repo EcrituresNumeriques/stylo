@@ -198,7 +198,7 @@ const Versions = (props) => {
                   </li>
                   <li>
                     <a
-                      href={`https://via.hypothes.is/${props.applicationConfig.exportEndpoint}/api/v1/htmlVersion/${v._id}?preview=true`}
+                      href={`https://via.hypothes.is/${props.applicationConfig.exportEndpoint}/api/v1/${lastVersionId === v._id ? `htmlArticle/${props.article._id}` : `htmlVersion/${v._id}`}?preview=true`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
