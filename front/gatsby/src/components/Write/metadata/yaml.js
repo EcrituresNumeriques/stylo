@@ -1,4 +1,4 @@
-import yaml from 'js-yaml'
+import YAML from 'js-yaml'
 
 export function cleanOutput(object) {
   let cleaning = JSON.parse(JSON.stringify(object))
@@ -30,5 +30,5 @@ export function ObjectIsEmpty(object) {
 }
 
 export function toYaml(formData) {
-  return '---\n' + yaml.dump(cleanOutput(formData), { sortKeys: true }) + '---'
+  return '---\n' + YAML.dump(cleanOutput(formData), { sortKeys: true }) + '---'
 }
