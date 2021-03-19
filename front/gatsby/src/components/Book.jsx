@@ -16,15 +16,7 @@ import Button from './Button'
 import buttonStyles from './button.module.scss'
 import Field from './Field'
 
-const alphaSort = (a, b) => {
-  if (a.title < b.title) {
-    return -1
-  }
-  if (a.title > b.title) {
-    return 1
-  }
-  return 0
-}
+const alphaSort = (a, b) => a.title.localeCompare(b.title)
 
 const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
   return { sessionToken, activeUser, applicationConfig }
