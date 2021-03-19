@@ -10,5 +10,16 @@ export default ({ yaml, basicMode, onChange }) => {
     parsed.date = parsed.date.replace(/\//g, '-')
   }
 
+  // we array-ify legacy string keywords
+  if (parsed.keywords) {
+    parsed.keywords = parsed.keywords.map(block => {
+      if (typeof block.list_f === 'string') {
+        block.list_f = block.list_f.split(',').map(word => word.trim())
+      }
+
+      return block
+    })
+  }
+
   return <Form formData={parsed} basicMode={basicMode} onChange={onChange} />
 }
