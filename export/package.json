@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon src/app.js",
-    "prod": "NODE_ENV=production node --heapsnapshot-signal=SIGUSR2 app.js"
+    "prod": "NODE_ENV=production node --heapsnapshot-signal=SIGUSR2 src/app.js"
   },
   "repository": {
     "type": "git",
