@@ -17,13 +17,13 @@ const { byTitle: sortByTitle } = require('./helpers/sort')
 
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 
-const exportZip = ({ bib, yaml, md, id, title, versionId }, res, _) => {
+const exportZip = ({ bib, yaml, md, id, versionId, title }, res, _) => {
   const filename = `${normalize(title)}.zip`
   const archive = createZipArchive(filename, res)
   // add files
   archive.append(Buffer.from(md), { name: `${id}.md` })
-  archive.append(Buffer.from(bib), { name: `${versionId}.bib` })
-  archive.append(Buffer.from(prepareMetadata(yaml, {id, versionId, replaceBibliography: true})), { name: `${id}.yaml` })
+  archive.append(Buffer.from(bib), { name: `${id}.bib` })
+  archive.append(Buffer.from(prepareMetadata(yaml, {id: versionId ?? id, replaceBibliography: true})), { name: `${id}.yaml` })
   // zip!
   archive.finalize()
 }
