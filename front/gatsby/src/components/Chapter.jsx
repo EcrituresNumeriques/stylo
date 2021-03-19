@@ -44,7 +44,7 @@ const ConnectedChapter = (props) => {
     <>
       {!renaming && (
         <p>
-          <Link to={`/article/${props._id}/version/${latestVersion._id}`}>{articleTitle}</Link>
+          <Link to={`/article/${props._id}`}>{articleTitle}</Link>
           <Button className={[buttonStyles.icon, styles.renameButton].join(' ')} onClick={() => setRenaming(true)}>
             <Edit3/>
           </Button>
