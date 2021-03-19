@@ -54,4 +54,4 @@ RUN npm ci --only=production
 COPY src src
 
 EXPOSE 3060
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "prod"]

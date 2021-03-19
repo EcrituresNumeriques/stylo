@@ -17,13 +17,13 @@ const { byTitle: sortByTitle } = require('./helpers/sort')
 
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 
-const exportZip = ({ bib, yaml, md, id, title, versionId }, res, _) => {
+const exportZip = ({ bib, yaml, md, id, versionId, title }, res, _) => {
   const filename = `${normalize(title)}.zip`
   const archive = createZipArchive(filename, res)
   // add files
   archive.append(Buffer.from(md), { name: `${id}.md` })
-  archive.append(Buffer.from(bib), { name: `${versionId}.bib` })
-  archive.append(Buffer.from(prepareMetadata(yaml, {id, versionId, replaceBibliography: true})), { name: `${id}.yaml` })
+  archive.append(Buffer.from(bib), { name: `${id}.bib` })
+  archive.append(Buffer.from(prepareMetadata(yaml, {id: versionId ?? id, replaceBibliography: true})), { name: `${id}.yaml` })
   // zip!
   archive.finalize()
 }
@@ -58,29 +58,10 @@ ${templateArg} \
 -t html5`
 }
 
-const exportHtml = async ({ bib, yaml, md, id, title }, res, req) => {
+const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => {
   const preview = req.query.preview
   const originalUrl = req.originalUrl
-  try {
-    // the YAML contains a single document enclosed in "---" to satisfy pandoc
-    // thereby, we need to use "load all":
-    const docs = YAML.loadAll(yaml, 'utf8')
-    // contains only a single document
-    const doc = docs[0]
-    if (canonicalBaseUrl) {
-      // add link-canonical to the first (and only) document
-      doc['link-canonical'] = canonicalBaseUrl + originalUrl
-    }
-    // add a default title if missing or empty
-    const title = doc.title
-    if (!title || title.trim().length === 0) {
-      doc.title = 'untitled'
-    }
-    // dump the result enclosed in "---"
-    yaml = '---\n' + yaml.dump(doc, { sortKeys: true }) + '\n---'
-  } catch (err) {
-    console.error('Unable to load and update metadata', err)
-  }
+
   let tmpDirectory
   try {
     tmpDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'stylo-'))
@@ -90,7 +71,7 @@ const exportHtml = async ({ bib, yaml, md, id, title }, res, req) => {
     const metadataFilePath = path.join(tmpDirectory, `${id}.yaml`)
     await fs.writeFile(markdownFilePath, md, 'utf8')
     await fs.writeFile(bibliographyFilePath, bib, 'utf8')
-    await fs.writeFile(metadataFilePath, yaml, 'utf8')
+    await fs.writeFile(metadataFilePath, prepareMetadata(yaml, { id: versionId ?? id }), 'utf8')
     // pandoc command
     const pandocCommand = generatePandocCommand(
       preview,
