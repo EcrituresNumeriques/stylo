@@ -17,7 +17,7 @@ function walkObject (obj, itemTransformFn) {
   return obj
 }
 
-const prepare = (yaml, {id, versionId, originalUrl, replaceBibliography = false}) => {
+const prepare = (yaml, {id, originalUrl, replaceBibliography = false}) => {
   // the YAML contains a single document enclosed in "---" to satisfy pandoc
   // thereby, we need to use "load all":
   const docs = YAML.loadAll(yaml, 'utf8')
@@ -30,7 +30,7 @@ const prepare = (yaml, {id, versionId, originalUrl, replaceBibliography = false}
   }
 
   if (replaceBibliography) {
-    doc.bibliography = `${versionId}.bib`
+    doc.bibliography = `${id}.bib`
   }
 
   if (doc.date) {
