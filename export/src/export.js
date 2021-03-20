@@ -46,8 +46,9 @@ function generatePandocCommand (
     )} -H ${path.join(templatesDirPath, 'preview.html')}`
   }
   const cslFilePath = path.join(templatesDirPath, 'chicagomodified.csl')
-  return `pandoc ${markdownFilePath} ${metadataFilePath} \
---bibliography ${bibliographyFilePath} \
+  return `pandoc ${markdownFilePath} \
+--metadata-file=${metadataFilePath} \
+--bibliography=${bibliographyFilePath} \
 --standalone \
 ${templateArg} \
 --section-divs \
