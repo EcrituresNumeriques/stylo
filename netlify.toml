@@ -28,6 +28,7 @@
 [context.production.environment]
   NODE_ENV = "production"
   ENABLE_SOURCEMAPS = "true"
+  command = "npm run build --production=false"
 
 
 [[redirects]]
