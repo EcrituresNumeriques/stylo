@@ -1,5 +1,5 @@
 const production = process.env.NODE_ENV === 'production'
-const sourcemaps = !production || process.env.ENABLE_SOURCEMAPS
+const sourcemaps = process.env.ENABLE_SOURCEMAPS || production === false
 
 module.exports = {
   mount: {
