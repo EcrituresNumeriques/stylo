@@ -37,8 +37,7 @@
     "react-helmet": "^6.1.0",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.2.0",
-    "redux": "^4.0.5",
-    "whatwg-fetch": "^3.6.1"
+    "redux": "^4.0.5"
   },
   "repository": {
     "type": "git",
@@ -52,6 +51,6 @@
     "jest": "^26.4.2",
     "node-fetch": "^2.6.1",
     "prettier": "^2.2.1",
-    "snowpack": "^3.0.11"
+    "snowpack": "^3.2.1"
   }
 }
