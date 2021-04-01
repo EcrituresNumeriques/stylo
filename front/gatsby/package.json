@@ -13,7 +13,7 @@
     "lint": "prettier --check src",
     "lint:fix": "prettier --write src",
     "start": "snowpack dev",
-    "build": "npm run prebuild && snowpack build",
+    "build": "snowpack build",
     "develop": "npm run start",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
@@ -47,10 +47,15 @@
     "url": "https://github.com/ecrituresnumeriques/stylo/issues"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-async-generator-functions": "^7.13.8",
+    "@babel/preset-env": "^7.13.12",
+    "@babel/preset-react": "^7.13.13",
+    "@snowpack/plugin-babel": "^2.1.7",
     "@snowpack/plugin-sass": "^1.2.0",
+    "@snowpack/plugin-webpack": "^2.3.1",
     "jest": "^26.4.2",
     "node-fetch": "^2.6.1",
     "prettier": "^2.2.1",
-    "snowpack": "^3.2.1"
+    "snowpack": "^3.0.13"
   }
 }

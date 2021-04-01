@@ -9,17 +9,23 @@ module.exports = {
   "optimize": {
     "bundle": true,
     "minify": production,
-    "sourcemaps": sourcemaps ? 'external' : false,
+    "sourcemap": sourcemaps,
     "splitting": true,
     "treeshake": true,
-    "target": "safari11"
   },
   routes: [
     {"match": "routes", "src": ".*", "dest": "/index.html"}
   ],
   plugins: [
     '@snowpack/plugin-sass',
-    '@snowpack/plugin-react-refresh'
+    '@snowpack/plugin-react-refresh',
+    '@snowpack/plugin-babel',
+    // [
+    //   '@snowpack/plugin-webpack',
+    //   {
+    //     sourceMap: sourcemaps
+    //   },
+    // ]
   ],
   devOptions: {
     port: 3000,
