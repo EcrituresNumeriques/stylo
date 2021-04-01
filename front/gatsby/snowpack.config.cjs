@@ -9,9 +9,10 @@ module.exports = {
   "optimize": {
     "bundle": true,
     "minify": production,
-    "sourcemaps": sourcemaps,
+    "sourcemaps": sourcemaps ? 'external' : false,
     "splitting": true,
-    "treeshake": true
+    "treeshake": true,
+    "target": "safari11"
   },
   routes: [
     {"match": "routes", "src": ".*", "dest": "/index.html"}
