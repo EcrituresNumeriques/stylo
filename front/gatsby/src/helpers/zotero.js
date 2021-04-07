@@ -53,24 +53,30 @@ async function fetchUserFromToken(token) {
   )
 }
 
+function fetchJSON(url) {
+  return fetch(url).then((response) => response.json())
+}
+
 async function fetchAllCollections({ userID, key }) {
-  let collections = []
-  const groups = await fetch(
-    `https://api.zotero.org/users/${userID}/groups?key=${key}`
-  ).then((response) => response.json())
-  for await (const group of groups) {
-    collections = collections.concat(
-      await fetch(
-        `${group.links.self.href}/collections?key=${key}`
-      ).then((response) => response.json())
-    )
-  }
-  collections = collections.concat(
-    await fetch(
-      `https://api.zotero.org/users/${userID}/collections?key=${key}`
-    ).then((response) => response.json())
+  // let collections = []
+  const groups = await fetchJSON(`https://api.zotero.org/users/${userID}/groups?key=${key}`)
+
+  const collections = await Promise.all(groups.map(group => {
+    return fetchJSON(`${group.links.self.href}/collections?key=${key}`)
+  }))
+
+  // snowpack@3.2 cannot transform this for Safari11
+  // for await (const group of groups) {
+  //   collections = collections.concat(
+  //     await fetchJSON(
+  //       `${group.links.self.href}/collections?key=${key}`
+  //     )
+  //   )
+  // }
+
+  return collections.concat(
+    await fetchJSON(`https://api.zotero.org/users/${userID}/collections?key=${key}`)
   )
-  return collections
 }
 
 export async function fetchAllCollectionsPerLibrary({ token }) {
@@ -89,7 +95,5 @@ export async function fetchAllCollectionsPerLibrary({ token }) {
 export async function fetchUserCollections({ token }) {
   const { userID, key } = await fetchUserFromToken(token)
 
-  return fetch(
-    `https://api.zotero.org/users/${userID}/collections?key=${key}`
-  ).then((response) => response.json())
+  return fetchJSON(`https://api.zotero.org/users/${userID}/collections?key=${key}`)
 }
