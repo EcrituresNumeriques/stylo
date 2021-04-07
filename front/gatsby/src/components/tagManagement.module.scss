@@ -32,17 +32,27 @@
 .button {
   @extend .clickable;
   padding: 0.5rem 1rem;
-  background-color: $main-background-color;
+}
+
+.headerTitle {
+  padding: 0.5rem;
+}
+
+.createAndFilter {
+  margin: 0 0.35em 0.55em;
 }
 
 button.closeButton {
   border: none;
   background: none;
+  color: grey;
+  background-color: $main-background-color;
 }
 
 .searchField {
+  margin: .5rem 0;
+
   input {
     width: 100%;
   }
-  margin: 0 0.35em 0.55em;
 }

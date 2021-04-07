@@ -26,8 +26,9 @@
 
 .tags {
   display: flex;
+  flex-wrap: wrap;
 
-  > li:not(:last-child) {
-    margin-right: 1em;
+  > li {
+    margin: 0 .5rem .5rem 0;
   }
 }
