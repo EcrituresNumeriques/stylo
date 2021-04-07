@@ -3,15 +3,16 @@ const sourcemaps = process.env.ENABLE_SOURCEMAPS || production === false
 
 module.exports = {
   mount: {
-    public: { url: '/', static: true },
+    public: { url: '/', static: true, resolve: false },
     src: { url: '/dist' },
   },
-  "optimize": {
-    "bundle": true,
-    "minify": production,
-    "sourcemap": sourcemaps,
-    "splitting": true,
-    "treeshake": true,
+  optimize: {
+    bundle: true,
+    minify: production,
+    sourcemap: sourcemaps,
+    splitting: true,
+    treeshake: true,
+    target: "safari11"
   },
   routes: [
     {"match": "routes", "src": ".*", "dest": "/index.html"}
@@ -19,13 +20,6 @@ module.exports = {
   plugins: [
     '@snowpack/plugin-sass',
     '@snowpack/plugin-react-refresh',
-    '@snowpack/plugin-babel',
-    // [
-    //   '@snowpack/plugin-webpack',
-    //   {
-    //     sourceMap: sourcemaps
-    //   },
-    // ]
   ],
   devOptions: {
     port: 3000,
