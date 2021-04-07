@@ -3,7 +3,7 @@ const sourcemaps = process.env.ENABLE_SOURCEMAPS || production === false
 
 module.exports = {
   mount: {
-    public: { url: '/', static: true, resolve: false },
+    public: { url: '/', static: true },
     src: { url: '/dist' },
   },
   optimize: {
