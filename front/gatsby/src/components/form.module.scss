@@ -4,15 +4,15 @@
 @import './button.module.scss';
 
 @mixin legend {
-  background: #f0f0f0;
-  border-top: 1px solid grey;
-  border-bottom: 1px solid grey;
+  background-color: $main-background-color;
+  border-top: 1px solid $main-border-color;
+  border-bottom: 1px solid $main-border-color;
   display: block;
   font-size: 1.15em;
   font-weight: bold;
   margin: 0;
   padding: 0.5rem 1rem;
-  text-align: right;
+  text-align: left;
   width: 100%;
 }
 
@@ -32,7 +32,7 @@
   }
 
   label {
-    padding-right: 0.25rem;
+    padding-right: 0.5rem;
   }
 
   textarea {
@@ -129,7 +129,7 @@
       &.field-string,
       &.field-boolean {
         label {
-          flex: 0 0 150px;
+          flex: 0 0 100px;
         }
       }
 
