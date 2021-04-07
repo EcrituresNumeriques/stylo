@@ -1,5 +1,20 @@
 # Journal de développement
 
+## Mercredi 7 avril 2021
+
+### Ce que j'ai aimé/appris
+
+- la propriété `gap` (et qu'on pouvait pas l'utiliser partout — cf. compat navigateur)
+
+### Ce que j'ai trouvé difficile
+
+- le formulaire (avec accordéons) qui explose parce qu'on n'affiche pas les mêmes champs
+- copier/coller les changements CSS à 3 endroits différents parce que c'est pareil, mais pas (encore) mutualisé
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- nan ça va
+
 ## Jeudi 4 mars 2021
 
 ### Ce que j'ai aimé/appris
