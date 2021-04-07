@@ -6,7 +6,7 @@ import TagManagementSolo from './TagManagementSolo'
 import etv from '../helpers/eventTargetValue'
 import Button from './Button'
 import Field from './Field'
-import { Search } from 'react-feather'
+import { Search, Plus } from 'react-feather'
 
 export default (props) => {
   const [creatingTag, setCreatingTag] = useState(false)
@@ -15,23 +15,32 @@ export default (props) => {
   return (
     <aside className={props.focus ? styles.expandleft : styles.retractleft}>
       <header>
-        <Button primary={true} onClick={() => setCreatingTag(!creatingTag)}>
-          Create new Tag
-        </Button>
-        <Button className={styles.closeButton} onClick={props.close}>X</Button>
+        <h1 className={styles.headerTitle}>Manage Tags</h1>
+
+        <Button className={styles.closeButton} onClick={props.close}>close</Button>
       </header>
       <main>
-        {creatingTag && (
-          <CreateTag
-            articles={props.articles}
-            cancel={() => setCreatingTag(false)}
-            triggerReload={() => {
-              setCreatingTag(false)
-              props.setNeedReload()
-            }}
-          />
-        )}
-        <Field className={styles.searchField} autoFocus={true} icon={Search} type="text" value={filter} onChange={(e) => setFilter(etv(e))} placeholder="Search tag"/>
+
+        <div className={styles.createAndFilter}>
+          <Button primary={true} onClick={() => setCreatingTag(!creatingTag)}>
+            <Plus />
+            Create new Tag
+          </Button>
+
+          {creatingTag && (
+            <CreateTag
+              articles={props.articles}
+              cancel={() => setCreatingTag(false)}
+              triggerReload={() => {
+                setCreatingTag(false)
+                props.setNeedReload()
+              }}
+            />
+          )}
+
+          <Field className={styles.searchField} autoFocus={true} icon={Search} type="text" value={filter} onChange={(e) => setFilter(etv(e))} placeholder="Filter on tags"/>
+        </div>
+
         {props.tags
           .filter((t) => t.name.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) > -1)
           .map((t) => (
