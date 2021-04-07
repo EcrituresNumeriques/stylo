@@ -32,3 +32,8 @@ $screen-width: 1080px;
 
 $large-screen-breakpoint: 2160px;
 $large-screen-width: 1500px;
+
+// TODO remove when https://github.com/snowpackjs/snowpack/issues/2967 is solved
+html {
+  font-size: inherit;
+}
