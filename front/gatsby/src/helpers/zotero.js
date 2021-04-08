@@ -47,10 +47,8 @@ export async function fetchZoteroFromUrl(url, agg = []) {
   return agg
 }
 
-async function fetchUserFromToken(token) {
-  return fetch(`https://api.zotero.org/keys/${token}`).then((response) =>
-    response.json()
-  )
+function fetchUserFromToken(token) {
+  return fetchJSON(`https://api.zotero.org/keys/${token}`)
 }
 
 function fetchJSON(url) {
@@ -63,7 +61,8 @@ async function fetchAllCollections({ userID, key }) {
 
   const collections = await Promise.all(groups.map(group => {
     return fetchJSON(`${group.links.self.href}/collections?key=${key}`)
-  }))
+  })).then(groups => [].concat(...groups))
+  // concat dissolves empty arrays (groups without collections)
 
   // snowpack@3.2 cannot transform this for Safari11
   // for await (const group of groups) {
