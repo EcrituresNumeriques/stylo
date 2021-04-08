@@ -8,8 +8,8 @@ module.exports = {
   },
   optimize: {
     bundle: true,
-    minify: production,
-    sourcemap: sourcemaps,
+    minify: false,
+    sourcemap: false,
     splitting: true,
     treeshake: true,
     target: "safari11"
