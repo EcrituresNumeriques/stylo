@@ -1,24 +1,26 @@
 import React, { useCallback, useState } from 'react'
 import { throttle } from 'lodash'
-import { search as isidoreSearch } from '../../../helpers/isidore'
+import { searchKeyword as isidoreKeywordSearch } from '../../../helpers/isidore'
 import { useCombobox } from 'downshift'
+import Field from '../../Field'
 
-const uiSchema = {
-  items: {
-    'ui:to-value-fn': (el) => ({
-      label: el['@label'],
-      uriRameau: el.option['@value'],
-      idRameau: '',
-    }),
-    'ui:ObjectFieldTemplate': AutocompleteField,
-  },
-}
+import styles from '../../form.module.scss'
+
+const toValueFn = (el) => ({
+  label: el['@label'],
+  // when 'feed' is provided, 'option' is returned as an object
+  // when there are several values, 'option' is returned as an array of objects
+  uriRameau: Array.isArray(el.option)
+    ? el.option.find(meta => meta['@key'] === 'uri')['@value']
+    : el.option['@value'],
+  idRameau: '',
+})
 
 function ObjectIsEmpty(object) {
   return typeof object === 'object' && Object.keys(object).length === 0
 }
 
-function AutocompleteField(props) {
+export default function IsidoreAPIAutocompleteField(props) {
   const [inputItems, setInputItems] = useState([])
   const {
     isOpen,
@@ -32,7 +34,6 @@ function AutocompleteField(props) {
     onSelectedItemChange: ({ selectedItem }) => {
       if (selectedItem) {
         const { $id: id } = props.idSchema
-
         props.formContext.partialUpdate({ id, value: toValueFn(selectedItem) })
       }
     },
@@ -42,7 +43,7 @@ function AutocompleteField(props) {
   const delayedSearch = useCallback(
     throttle(
       async (value) => {
-        const replies = await isidoreSearch(value)
+        const replies = await isidoreKeywordSearch(value)
         setInputItems(replies)
       },
       200,
@@ -52,12 +53,11 @@ function AutocompleteField(props) {
   )
 
   const isEmpty = ObjectIsEmpty(props.formData)
-  const toValueFn = props.uiSchema['ui:to-value-fn'] ?? ((el) => el)
 
   return (
     <div {...getComboboxProps()}>
-      {!isEmpty && <span>{props.formData.label}</span>}
-      <input {...getInputProps(!isEmpty ? { hidden: true } : {})} />
+      {!isEmpty && <span className={styles.comboboxReadonlyField}>{props.formData.label}</span>}
+      {isEmpty && <Field {...getInputProps({ className: styles.autocompleteField }, { suppressRefError: true })} />}
       <ul {...getMenuProps()}>
         {isOpen &&
           inputItems.map((item, index) => (
@@ -74,8 +74,4 @@ function AutocompleteField(props) {
       </ul>
     </div>
   )
-}
-
-export default {
-  uiSchema: uiSchema,
 }

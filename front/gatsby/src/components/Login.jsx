@@ -22,7 +22,6 @@ function Login ({ login, applicationConfig }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  console.log(applicationConfig)
   const handleSubmit = (event) => {
     event.preventDefault()
 

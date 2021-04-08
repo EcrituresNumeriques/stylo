@@ -363,6 +363,7 @@ const ConnectedBibliographe = (props) => {
         <form onSubmit={(e) => e.preventDefault()}>
           <div className={styles.raw}>
             <textarea
+              wrap="off"
               defaultValue={bib}
               onChange={(event) =>
                 delayedValidateCitation(
