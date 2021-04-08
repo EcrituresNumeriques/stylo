@@ -6,7 +6,6 @@ import styles from './login.module.scss'
 import Field from './Field'
 import Button from './Button'
 import { HelpCircle } from 'react-feather'
-import HumaNumLogo from '../../public/images/huma-num-logo.svg'
 
 const mapStateToProps = ({ activeUser, applicationConfig }) => {
   return { activeUser, applicationConfig }
