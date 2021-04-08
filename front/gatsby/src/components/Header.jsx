@@ -1,4 +1,5 @@
 import React from 'react'
+import { HelpCircle, LogOut } from 'react-feather'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -12,22 +13,23 @@ const mapStateToProps = ({ logedIn, activeUser, applicationConfig }) => {
 const ConnectedHeader = (props) => {
   const nav = props.logedIn ? (
     <>
-      <Link to="/credentials">{props.activeUser.displayName}</Link>
-      <Link to="/books">Books</Link>
-      <Link to="/articles">Articles</Link>
-      <a
+      <li><Link to="/credentials">{props.activeUser.displayName}</Link></li>
+      <li><Link to="/books">Books</Link></li>
+      <li><Link to="/articles">Articles</Link></li>
+      <li><a
         href={props.applicationConfig.backendEndpoint + '/logout'}
         className={styles.logoutAction}
       >
         Log out
-      </a>
+        <LogOut className={styles.linkIcon} size={14} />
+      </a></li>
     </>
   ) : (
     <>
-      <Link to="/">Login</Link>
-      <Link to="/register" className={styles.registerAction}>
+      <li><Link to="/">Login</Link></li>
+      <li><Link to="/register" className={styles.registerAction}>
         Register
-      </Link>
+      </Link></li>
     </>
   )
 
@@ -35,18 +37,20 @@ const ConnectedHeader = (props) => {
     <header className={props.className}>
       <section className={styles.header}>
         <h1 className={styles.logo}>
-          <Link to="/">_Stylo_</Link>
+          <Link to="/">Stylo</Link>
         </h1>
         <nav>
-          {nav}
-          <a
-            href="http://stylo-doc.ecrituresnumeriques.ca"
-            className={styles.documentationLink}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          <ul className={styles.menuLinks}>
+            {nav}
+            <li className={styles.documentationLink}><a
+              href="http://stylo-doc.ecrituresnumeriques.ca"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <HelpCircle className={styles.linkIcon}size={14} />
+              Documentation
+            </a></li>
+          </ul>
         </nav>
       </section>
     </header>

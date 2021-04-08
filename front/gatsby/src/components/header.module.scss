@@ -8,15 +8,11 @@
   justify-content: space-between;
   padding: 0.5rem 1rem;
 
-  nav {
+  .menuLinks {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
 
-    a,
-    p {
-      @extend .clickable;
-      display: block;
+    & > li {
       margin-left: 1em;
     }
   }
@@ -27,30 +23,23 @@
 
   a {
     text-decoration: none;
-  }
-}
 
-.logoutAction {
-  &::after {
-    content: ' ';
-    background-image: url('/images/logout.svg');
-    background-size: contain;
-    color: white;
-    display: inline-block;
-    height: 1em;
-    margin-left: 0.5em;
-    width: 1em;
-    vertical-align: middle;
-    align-self: center;
+    &:before,
+    &:after {
+      content: "_";
+    }
   }
-  margin-right: 2em;
-}
-
-.documentationLink {
-  font-weight: 100;
-  font-size: 0.8em;
 }
 
 .registerAction {
-  margin-right: 2em;
+  margin-right: 1.25em;
+}
+
+.logoutAction{
+  margin: 0 1.25em;
+}
+
+.linkIcon {
+  margin: 0 .2em;
+  vertical-align: middle;
 }
