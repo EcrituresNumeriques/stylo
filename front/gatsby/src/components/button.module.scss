@@ -85,7 +85,8 @@ a.button:not(.primary), a.icon:not(.primary) {
   color: #fff;
 }
 
-.primary:hover {
+.primary:hover,
+.primary:focus {
   background-color: rgba(0, 0, 0, 0.75);
   color: #fff;
 }
@@ -95,7 +96,8 @@ a.button:not(.primary), a.icon:not(.primary) {
   color: #000;
   border: 1px solid #000;
 }
-.secondary:hover {
+.secondary:hover,
+.secondary:focus {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
