@@ -6,6 +6,7 @@ import styles from './login.module.scss'
 import Field from './Field'
 import Button from './Button'
 import { HelpCircle } from 'react-feather'
+import HumaNumLogo from '../../public/images/huma-num-logo.svg'
 
 const mapStateToProps = ({ activeUser, applicationConfig }) => {
   return { activeUser, applicationConfig }
@@ -71,14 +72,15 @@ function Login ({ login, applicationConfig }) {
           <form onSubmit={(event) => handleSubmit(event, applicationConfig)}>
             <fieldset>
               <legend>
-                Connect via Huma-Num <small>(recommended)</small>
+                Connect with a Huma-Num account <small>(recommended)</small>
               </legend>
+
               <p className={styles.help}>
                 <HelpCircle size={18} className={styles.inlineIcon} />
-                <a href="https://humanum.hypotheses.org/5754#content">What is HumanID?</a>
+                <a href="https://humanum.hypotheses.org/5754#content">How does it work?</a>
               </p>
 
-              <p>
+              <p className={styles.authenticationProviderLinks}>
                 <a
                   className={styles.humaNumConnectBtn}
                   href={applicationConfig.backendEndpoint + '/login/openid'}
