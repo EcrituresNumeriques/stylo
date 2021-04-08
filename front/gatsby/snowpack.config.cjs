@@ -6,12 +6,13 @@ module.exports = {
     public: { url: '/', static: true },
     src: { url: '/dist' },
   },
-  "optimize": {
-    "bundle": true,
-    "minify": production,
-    "sourcemap": sourcemaps,
-    "splitting": true,
-    "treeshake": true,
+  optimize: {
+    bundle: true,
+    minify: false,
+    sourcemap: false,
+    splitting: true,
+    treeshake: true,
+    target: "safari11"
   },
   routes: [
     {"match": "routes", "src": ".*", "dest": "/index.html"}
@@ -19,13 +20,6 @@ module.exports = {
   plugins: [
     '@snowpack/plugin-sass',
     '@snowpack/plugin-react-refresh',
-    '@snowpack/plugin-babel',
-    // [
-    //   '@snowpack/plugin-webpack',
-    //   {
-    //     sourceMap: sourcemaps
-    //   },
-    // ]
   ],
   devOptions: {
     port: 3000,
