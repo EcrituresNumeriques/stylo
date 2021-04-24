@@ -68,6 +68,8 @@ Par exemple :
 |:--|:--|
 |`Des artistes conceptuels avaient cherché`<br/>`(apparemment sans grand succès ou`<br/>`sans grande conviction si l’on`<br/>`en croit Lucy Lippard [-@lippard_six_1973 ; -@lippard_get_1984])`<br/>`à contourner les règles du marché de l’art.` | `Des artistes conceptuels avaient cherché`<br/>`(apparemment sans grand succès ou`<br/>`sans grande conviction si l’on en croit Lucy Lippard (1973 ; 1984))`<br/>`à contourner les règles du marché de l’art.`|
 
+Attention, il ne faut pas utiliser de syntaxe Markdown en accompagnement d'une citation, il ne faut surtout pas utiliser un balisage de ce type : `[@shirky_here_2008, [lien vers une page web](https://sens-public.org)]`
+
 ## Quelques ressources
 
 - [Qu'est-ce que Zotero ?](http://editorialisation.org/ediwiki/index.php?title=Zotero)
