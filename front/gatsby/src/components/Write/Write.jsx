@@ -25,6 +25,7 @@ function ConnectedWrite (props) {
   const deriveArticleStructureAndStats = useCallback(
     throttle(({ md }) => {
       dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
+      dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
     }, 5000, { leading: false, trailing: true }),
     []
   )
@@ -198,7 +199,9 @@ function ConnectedWrite (props) {
         setVersions(data.article.versions)
 
         //
-        dispatch({ type: 'UPDATE_ARTICLE_STATS', md: props.version ? data.version.md : data.article.live.md })
+        const md = props.version ? data.version.md : data.article.live.md
+        dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
+        dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
       }
       setIsLoading(false)
     })()

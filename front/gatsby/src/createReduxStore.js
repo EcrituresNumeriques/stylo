@@ -11,7 +11,6 @@ function createReducer(initialState, handlers) {
 }
 
 // Définition du store Redux et de l'ensemble des actions
-
 const initialState = {
   logedIn: false,
   users: [],
@@ -22,7 +21,8 @@ const initialState = {
     charCountNoSpace: 0,
     charCountPlusSpace: 0,
     citationNb: 0,
-  }
+  },
+  articleStructure: []
 }
 
 const reducer = createReducer([], {
@@ -37,7 +37,8 @@ const reducer = createReducer([], {
   REMOVE_MYSELF_ALLOWED_LOGIN: removeMyselfAllowedLogin,
 
   // article reducers
-  UPDATE_ARTICLE_STATS: updateArticleStats
+  UPDATE_ARTICLE_STATS: updateArticleStats,
+  UPDATE_ARTICLE_STRUCTURE: updateArticleStructure
 })
 
 function setApplicationConfig (state, action) {
@@ -143,6 +144,25 @@ function updateArticleStats (state, { md }) {
     charCountPlusSpace,
     citationNb
   }}
+}
+
+function updateArticleStructure(state, { md }) {
+  const text = (md || '').trim()
+  const articleStructure = text
+    .split('\n')
+    .map((line, index) => ({ line, index }))
+    .filter((lineWithIndex) => lineWithIndex.line.match(/^##+\ /))
+    .map((lineWithIndex) => {
+      const title = lineWithIndex.line
+        .replace(/##/, '')
+        //arrow backspace (\u21B3)
+        .replace(/#\s/g, '\u21B3')
+        // middle dot (\u00B7) + non-breaking space (\xa0)
+        .replace(/#/g, '\u00B7\xa0')
+      return {...lineWithIndex, title}
+    })
+
+  return { ...state, articleStructure }
 }
 
 export default () => createStore(reducer, initialState)
