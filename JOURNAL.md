@@ -1,5 +1,31 @@
 # Journal de développement
 
+## Mercredi 28 avril 2021
+
+### Ce que j'ai aimé/appris
+
+- j'ai appris que `String.substr()` c'est pas pareil que `String.substring()` : petites surprises !
+- c'était plus simple que prévu de modifier le parseur Bibtex, pour ajouter les infos qui allaient bien
+- chouette de voir le merge de la pull request sur le parseur dans la journée
+- la dernière phase, où t'as bien déblayé le passage pour throttler la mise à jour du Sommaire
+- en repassant sur le code, on corrige 2-3 trucs (compter les citations)
+- `React.memo()` pour "cacher" le composant seulement si les props changent… même si je pensais que c'était fait nativement
+- Redux et `useDispatch()` vont bien nous aider pour dégager un peu les `useState()` + props en cascade + les handlers `handleXYZ()`
+- j'ai vu un écran d'ordinateur dont je rêvais
+- j'ai bien aimé la solution élégante pour supprimer les citations du Bibtex sans le retransformer (la cause du bug)
+- ça confirme une fois de plus qu'en prenant le temps de notre choix technique des librairies, on s'en sort comme il faut après
+- la découverte de fiduswriter.com
+
+### Ce que j'ai trouvé difficile
+
+- tracer la performance la lenteur avec les DevTools a été compliqué (difficile de voir exactement ce qui déconnait) — on ne décelait pas que c'était la fréquence/synchronicité du recalcul qui ralentissait l'interface
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- s'arrêter plus tôt à la pause déj
+- envie de tester l'éditeur temps-réel sur une page à part
+
+
 ## Mercredi 7 avril 2021
 
 ### Ce que j'ai aimé/appris
