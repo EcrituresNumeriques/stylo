@@ -1,4 +1,14 @@
-import { createStore as reduxCreateStore } from 'redux'
+import { createStore } from 'redux'
+
+function createReducer(initialState, handlers) {
+  return function reducer(state = initialState, action) {
+    if (handlers.hasOwnProperty(action.type)) {
+      return handlers[action.type](state, action)
+    } else {
+      return state
+    }
+  }
+}
 
 // Définition du store Redux et de l'ensemble des actions
 
@@ -9,79 +19,100 @@ const initialState = {
   sessionToken: undefined,
 }
 
-const reducer = (state = initialState, action) => {
-  if (action.type === 'APPLICATION_CONFIG') {
-    return { ...state, applicationConfig: action.applicationConfig }
-  } else if (action.type === 'PROFILE') {
-    if (!action.user) {
-      return { ...state, hasBooted: true }
-    }
+const reducer = createReducer([], {
+  APPLICATION_CONFIG: setApplicationConfig,
+  PROFILE: setProfile,
+  CLEAR_ZOTERO_TOKEN: clearZoteroToken,
+  LOGIN: loginUser,
+  UPDATE_ACTIVE_USER: updateActiveUser,
+  RELOAD_USERS: reloadUsers,
+  SWITCH: switchUser,
+  LOGOUT: logoutUser,
+  REMOVE_MYSELF_ALLOWED_LOGIN: removeMyselfAllowedLogin,
 
-    const { user: activeUser } = action
+  // article reducers
+  UPDATE_ARTICLE_STATS: updateArticleStats
+})
 
-    return Object.assign({}, state, {
-      hasBooted: true,
-      activeUser,
-      logedIn: true,
-      // it will allow password modification if logged with password,
-      // otherwise it means we use an external auth service
-      password:
-        activeUser.passwords.find((p) => p.email === activeUser.email) || {},
-      users: [activeUser._id],
-    })
-  } else if (action.type === 'CLEAR_ZOTERO_TOKEN') {
-    state.activeUser.zoteroToken = null
-    return state
-  } else if (action.type === 'LOGIN') {
-    const login = action.login
-    if (login.password && login.users && login.token) {
-      return Object.assign({}, state, {
-        logedIn: true,
-        users: login.users,
-        activeUser: login.users[0],
-        password: login.password,
-        sessionToken: login.token,
-      })
-    }
-  } else if (action.type === 'UPDATE_ACTIVE_USER') {
-    return Object.assign(
-      {},
-      state,
-      {
-        activeUser: { ...state.activeUser, displayName: action.payload },
-      },
-      {
-        users: [...state.users].map((u) => {
-          if (state.activeUser._id === u._id) {
-            u.displayName = action.payload
-          }
-          return u
-        }),
-      }
-    )
-  } else if (action.type === 'RELOAD_USERS') {
-    return Object.assign({}, state, {
-      users: action.payload,
-    })
-  } else if (action.type === 'SWITCH') {
-    if (state.users.map((u) => u._id).includes(action.payload._id)) {
-      return Object.assign({}, state, { activeUser: action.payload })
-    }
-  } else if (action.type === 'LOGOUT') {
-    return Object.assign({}, state, {
-      ...initialState,
-    })
-  } else if (action.type === 'REMOVE_MYSELF_ALLOWED_LOGIN') {
-    const remainingUsers = state.users.filter((u) => u._id !== action.payload)
-    return Object.assign({}, state, {
-      users: remainingUsers,
-      activeUser: remainingUsers[0],
-    })
-  }
-
-  return initialState
+function setApplicationConfig (state, action) {
+  return { ...state, applicationConfig: action.applicationConfig }
 }
 
-const createStore = () => reduxCreateStore(reducer, initialState)
+function setProfile (state, action) {
+  if (!action.user) {
+    return { ...state, hasBooted: true }
+  }
 
-export default createStore
+  const { user: activeUser } = action
+
+  return Object.assign({}, state, {
+    hasBooted: true,
+    activeUser,
+    logedIn: true,
+    // it will allow password modification if logged with password,
+    // otherwise it means we use an external auth service
+    password:
+      activeUser.passwords.find((p) => p.email === activeUser.email) || {},
+    users: [activeUser._id],
+  })
+}
+
+function clearZoteroToken (state) {
+  state.activeUser.zoteroToken = null
+
+  return state
+}
+
+function loginUser (state, {login}) {
+  if (login.password && login.users && login.token) {
+    return {
+      ...state,
+      logedIn: true,
+      users: login.users,
+      activeUser: login.users[0],
+      password: login.password,
+      sessionToken: login.token,
+    }
+  }
+
+  return state
+}
+
+function updateActiveUser (state, action) {
+  return {
+    ...state,
+    activeUser: { ...state.activeUser, displayName: action.payload },
+    users: [...state.users].map((u) => {
+      if (state.activeUser._id === u._id) {
+        u.displayName = action.payload
+      }
+      return u
+    })
+  }
+}
+
+function reloadUsers (state, {payload: users}) {
+  return { ...state, users }
+}
+function switchUser (state, {payload: activeUser}) {
+  if (state.users.map((u) => u._id).includes(activeUser._id)) {
+    return { ...state, activeUser }
+  }
+
+  return state
+}
+
+function logoutUser (state) {
+  return { ...state, ...initialState }
+}
+
+function removeMyselfAllowedLogin (state, {payload: userId}) {
+  const remainingUsers = state.users.filter((u) => u._id !== userId)
+
+  return { ...state,
+    users: remainingUsers,
+    activeUser: remainingUsers[0],
+  }
+}
+
+export default () => createStore(reducer, initialState)
