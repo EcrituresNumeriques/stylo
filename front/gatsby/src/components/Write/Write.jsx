@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
+import { connect, useDispatch } from 'react-redux'
 import 'codemirror/mode/markdown/markdown'
 import { Controlled as CodeMirror } from 'react-codemirror2'
+import throttle from 'lodash/throttle'
 
 import askGraphQL from '../../helpers/graphQL'
 import styles from './write.module.scss'
@@ -18,8 +19,15 @@ const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
   return { sessionToken, activeUser, applicationConfig }
 }
 
-const ConnectedWrite = (props) => {
+function ConnectedWrite (props) {
   const readOnly = Boolean(props.version)
+  const dispatch = useDispatch()
+  const deriveArticleStructureAndStats = useCallback(
+    throttle(({ md }) => {
+      dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
+    }, 5000, { leading: false, trailing: true }),
+    []
+  )
 
   const fullQuery = `query($article:ID!, $readOnly: Boolean!, $version:ID!) {
     article(article:$article) {
@@ -152,6 +160,8 @@ const ConnectedWrite = (props) => {
   }, [debouncedLive])
 
   const handleMDCM = async (___, __, md) => {
+    deriveArticleStructureAndStats({ md })
+
     await setLive({ ...live, md: md })
   }
   const handleYaml = async (yaml) => {
@@ -186,6 +196,9 @@ const ConnectedWrite = (props) => {
           owners: data.article.owners.map((o) => o.displayName),
         })
         setVersions(data.article.versions)
+
+        //
+        dispatch({ type: 'UPDATE_ARTICLE_STATS', md: props.version ? data.version.md : data.article.live.md })
       }
       setIsLoading(false)
     })()

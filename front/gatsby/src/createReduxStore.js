@@ -17,6 +17,12 @@ const initialState = {
   users: [],
   password: undefined,
   sessionToken: undefined,
+  articleStats: {
+    wordCount: 0,
+    charCountNoSpace: 0,
+    charCountPlusSpace: 0,
+    citationNb: 0,
+  }
 }
 
 const reducer = createReducer([], {
@@ -113,6 +119,30 @@ function removeMyselfAllowedLogin (state, {payload: userId}) {
     users: remainingUsers,
     activeUser: remainingUsers[0],
   }
+}
+
+const SPACE_RE = /\s+/gi
+const CITATION_RE = /(\[@[\w-]+)/gi
+const REMOVE_MARKDOWN_RE = /[#_*]+\s?/gi
+
+function updateArticleStats (state, { md }) {
+  const text = (md || '').trim()
+
+  const textWithoutMarkdown = text.replace(REMOVE_MARKDOWN_RE, '')
+  const wordCount = textWithoutMarkdown
+    .replace(SPACE_RE, ' ')
+    .split(' ').length
+
+  const charCountNoSpace = textWithoutMarkdown.replace(SPACE_RE, '').length
+  const charCountPlusSpace = textWithoutMarkdown.length
+  const citationNb = text.match(CITATION_RE)?.length || 0
+
+  return { ...state, articleStats: {
+    wordCount,
+    charCountNoSpace,
+    charCountPlusSpace,
+    citationNb
+  }}
 }
 
 export default () => createStore(reducer, initialState)

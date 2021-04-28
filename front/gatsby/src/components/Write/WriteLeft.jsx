@@ -11,6 +11,8 @@ const Biblio = memo(_Biblio, function areEqual(prevProps, nextProps) {
   return prevProps.bib === nextProps.bib
 })
 
+const mapStateToProps = ({ articleStats }) => ({ articleStats })
+
 function WriteLeft (props) {
   const [expanded, setExpanded] = useState(true)
 
@@ -30,9 +32,9 @@ function WriteLeft (props) {
               <h2>by {props.article.owners.join(', ')}</h2>
             </header>
             <Versions {...props} />
-            <Sommaire {...props} />
-            <Biblio bibTeXEntries={bibTeXEntries} {...props} />
-            <Stats md={props.md} />
+            <Sommaire md={props.md} setCodeMirrorCursor={props.setCodeMirrorCursor} />
+            <Biblio readOnly={props.readOnly} bib={props.bib} handleBib={props.handleBib} article={props.article} />
+            <Stats stats={props.articleStats} />
           </div>
         </>
       )}
