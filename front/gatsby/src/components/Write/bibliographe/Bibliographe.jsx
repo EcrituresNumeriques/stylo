@@ -5,10 +5,9 @@ import debounce from 'lodash/debounce'
 import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
 import { getUserProfile } from '../../../helpers/userProfile'
-import bib2key from './CitationsFilter'
 import askGraphQL from '../../../helpers/graphQL'
 import { fetchAllCollectionsPerLibrary, fetchBibliographyFromCollectionHref } from '../../../helpers/zotero'
-import { toBibtex, validate } from '../../../helpers/bibtex'
+import { toBibtex, toEntries, validate } from '../../../helpers/bibtex'
 import ReferenceTypeIcon from '../../ReferenceTypeIcon'
 import Button from '../../Button'
 import Field from '../../Field'
@@ -30,14 +29,12 @@ const mapDispatchToProps = (dispatch) => ({
     ),
 })
 
-function ConnectedBibliographe (props) {
-  const dispatch = useDispatch()
-  const { backendEndpoint } = props.applicationConfig
-  const { refreshProfile } = props
+function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, articleBibTeXEntries, activeUser, applicationConfig }) {
+  const { backendEndpoint } = applicationConfig
   const [selector, setSelector] = useState('zotero')
   const [isSaving, setSaving] = useState(false)
-  const [bib, setBib] = useState(props.articleBib)
-  const [bibTeXEntries, setBibTeXEntries] = useState(props.articleBibTeXEntries)
+  const [bib, setBib] = useState(articleBib)
+  const [bibTeXEntries, setBibTeXEntries] = useState(articleBibTeXEntries)
   const [addCitation, setAddCitation] = useState('')
   const [citationValidationResult, setCitationValidationResult] = useState({
     valid: false,
@@ -45,12 +42,13 @@ function ConnectedBibliographe (props) {
   const [rawBibTeXValidationResult, setRawBibTeXValidationResult] = useState({
     valid: false,
   })
-  const [zoteroLink, setZoteroLink] = useState(props.article.zoteroLink || '')
+  const [zoteroLink, setZoteroLink] = useState(article.zoteroLink || '')
   const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)
-  const { zoteroToken } = props.activeUser
+  const { zoteroToken } = activeUser
   const [zoteroCollections, setZoteroCollections] = useState({})
+  const bibliographyService = new BibliographyService(activeUser._id, article._id, applicationConfig)
   const citationForm = useRef()
-  const bibliographyService = new BibliographyService(props.activeUser._id, props.article._id, props.applicationConfig)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (zoteroToken) {
@@ -61,19 +59,10 @@ function ConnectedBibliographe (props) {
     }
   }, [zoteroToken])
 
-  const saveBibTeX = async (bib) => {
-    await bibliographyService.saveBibTeX(bib)
-    dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
-    props.cancel()
-  }
-
   const mergeCitations = () => {
-    const newBibTeX = addCitation + '\n' + bib
-    setBib(newBibTeX)
-
-    const newBibTeXEntries = bib2key(addCitation)
-    console.log({ newBibTeXEntries, bibTeXEntries })
-    setBibTeXEntries(newBibTeXEntries.concat(bibTeXEntries))
+    setBib(addCitation + '\n' + bib)
+    const newBibTeXEntries = toEntries(addCitation)
+    setBibTeXEntries([...newBibTeXEntries, ...bibTeXEntries])
     citationForm.current.reset()
   }
 
@@ -109,32 +98,39 @@ function ConnectedBibliographe (props) {
     }
   }
 
-  const removeCitation = (citations, indexToRemove) => {
-    const filteredEntries = citations.filter((entry, index) => index !== indexToRemove)
-    setBibTeXEntries(filteredEntries)
+  function handleRemove (indexToRemove) {
+    const newBibTeXEntries = [...bibTeXEntries.slice(0, indexToRemove), ...bibTeXEntries.slice(indexToRemove + 1)];
+    setBibTeXEntries(newBibTeXEntries)
+    setBib(toBibtex(newBibTeXEntries.map(({ entry }) => entry)))
+  }
 
-    // we reform the bibtex output based on what we were able to parse
-    setBib(toBibtex(filteredEntries.map(({ entry }) => entry)))
+  function saveBibTeXEntries (bibTeXEntries) {
+    saveBibTeX(toBibtex(bibTeXEntries.map(({ entry }) => entry)))
+  }
+
+  function saveBibTeX (bibTeX) {
+    bibliographyService.saveBibTeX(bibTeX)
+    dispatch({ type: 'UPDATE_ARTICLE_BIB', bib: bibTeX })
   }
 
   const saveNewZotero = async () => {
     setSaving(true)
 
     // saveOnGraphQL
-    if (props.article.zoteroLink !== zoteroLink) {
+    if (article.zoteroLink !== zoteroLink) {
       try {
         console.log('Saving to graphQL', props.article.zoteroLink, zoteroLink)
         const query = `mutation($user:ID!,$article:ID!,$zotero:String!){zoteroArticle(article:$article,zotero:$zotero,user:$user){ _id zoteroLink}}`
         const variables = {
           zotero: zoteroLink,
-          user: props.activeUser._id,
-          article: props.article._id,
+          user: activeUser._id,
+          article: article._id,
         }
         await askGraphQL(
           { query, variables },
           'updating zoteroLink',
           null,
-          props.applicationConfig
+          applicationConfig
         )
       } catch (err) {
         alert(err)
@@ -149,8 +145,8 @@ function ConnectedBibliographe (props) {
       try {
         const result = await fetchBibliographyFromCollectionHref({ collectionHref })
         const bib = result.join('\n')
-        setBib(bib)
-        await saveBibTeX(bib)
+        saveBibTeX(bib)
+        cancel()
       } catch (err) {
         console.error(`Something went wrong while fetching bibliography from Zotero: ${collectionHref}`, err)
       } finally {
@@ -167,8 +163,8 @@ function ConnectedBibliographe (props) {
     try {
       const result = await fetchBibliographyFromCollectionHref({ token, collectionHref })
       const bib = result.join('\n')
-      setBib(bib)
-      await saveBibTeX(bib)
+      saveBibTeX(bib)
+      cancel()
     } catch (err) {
       console.error(`Something went wrong while fetching bibliography from Zotero: ${collectionHref}`, err)
     } finally {
@@ -236,7 +232,7 @@ function ConnectedBibliographe (props) {
               onClick={() => saveNewZotero()}
               disabled={
                 isSaving ||
-                (!zoteroLink && zoteroLink === props.article.zoteroLink)
+                (!zoteroLink && zoteroLink === article.zoteroLink)
               }
             >
               {isSaving
@@ -275,7 +271,7 @@ function ConnectedBibliographe (props) {
                   )
                   const intervalId = setInterval(() => {
                     if (popup.closed) {
-                      refreshProfile(props.applicationConfig)
+                      refreshProfile(applicationConfig)
                       clearInterval(intervalId)
                     }
                   }, 1000)
@@ -337,9 +333,9 @@ function ConnectedBibliographe (props) {
                 <col className={styles.colActions}/>
               </colgroup>
               <tbody>
-              {bibTeXEntries.map((b, i) => (
+              {bibTeXEntries.map((b, index) => (
                 <tr
-                  key={`citation-${b.key}-${i}`}
+                  key={`citation-${b.key}-${index}`}
                   className={styles.citation}
                 >
                   <td className={`icon-${b.type} ${styles.colIcon}`}>
@@ -349,7 +345,7 @@ function ConnectedBibliographe (props) {
                     @{b.key}
                   </th>
                   <td className={styles.colActions}>
-                    <Button icon={true} onClick={() => removeCitation(bibTeXEntries, i)}>
+                    <Button icon={true} onClick={() => handleRemove(index)}>
                       <Trash/>
                     </Button>
                   </td>
@@ -363,8 +359,9 @@ function ConnectedBibliographe (props) {
             <li className={styles.actionsSubmit}>
               <Button
                 primary={true}
-                onClick={async () => {
-                  await saveBibTeX(bib)
+                onClick={() => {
+                  saveBibTeXEntries(bibTeXEntries)
+                  cancel()
                 }}
                 className={styles.primary}
               >
@@ -405,8 +402,9 @@ function ConnectedBibliographe (props) {
               <Button
                 primary={true}
                 disabled={rawBibTeXValidationResult.valid !== true}
-                onClick={async () => {
-                  await saveBibTeX(bib)
+                onClick={() => {
+                  saveBibTeX(bib)
+                  cancel()
                 }}
                 className={styles.primary}
               >
