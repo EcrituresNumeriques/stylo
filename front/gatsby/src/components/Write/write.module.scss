@@ -8,12 +8,10 @@
   display: flex;
 
   textarea {
-    padding: 1rem;
     width: 100%;
   }
 
   > div {
-    padding: 1rem;
     flex: 1 1 50%;
   }
 
@@ -24,6 +22,58 @@
     width: 100%;
     white-space: pre-wrap;
     flex: 1 1 50%;
+  }
+}
+
+:global {
+  .react-codemirror2 {
+    .CodeMirror {
+      height: auto;
+      font-family: 'BellweatherSans-shownbsp', monospace;
+    }
+
+    .CodeMirror-cursors {
+      font-family: monospace;
+    }
+
+    .CodeMirror-scroll {
+      min-height: 600px;
+    }
+
+    .CodeMirror-lines {
+      padding: 0;
+    }
+
+    .CodeMirror-line {
+      margin-left: 1em;
+    }
+
+    .CodeMirror-linenumber {
+      font-size: .8em;
+    }
+  }
+
+  .remote-caret {
+    position: absolute;
+    border-left: black;
+    border-left-style: solid;
+    border-left-width: 2px;
+    height: 1em;
+  }
+  .remote-caret > div {
+    position: relative;
+    top: -1.05em;
+    font-size: 13px;
+    background-color: rgb(250, 129, 0);
+    font-family: serif;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    user-select: none;
+    color: white;
+    padding-left: 2px;
+    padding-right: 2px;
+    z-index: 3;
   }
 }
 

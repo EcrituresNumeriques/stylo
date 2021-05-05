@@ -3,6 +3,7 @@ import { connect, useDispatch } from 'react-redux'
 import 'codemirror/mode/markdown/markdown'
 import { Controlled as CodeMirror } from 'react-codemirror2'
 import throttle from 'lodash/throttle'
+import { CodemirrorBinding } from 'y-codemirror'
 
 import askGraphQL from '../../helpers/graphQL'
 import styles from './write.module.scss'
@@ -108,13 +109,14 @@ function ConnectedWrite (props) {
     zoteroLink: '',
   })
   const [firstLoad, setFirstLoad] = useState(true)
+  const [realtime, setRealtime] = useState({})
 
   const codeMirrorOptions = {
-    mode: readOnly ? null : 'markdown',
+    mode: 'markdown',
     lineWrapping: true,
-    lineNumbers: false,
+    lineNumbers: true,
     autofocus: true,
-    readOnly: readOnly ? 'nocursor' : false,
+    readOnly: false,
     viewportMargin: Infinity,
     spellcheck: true,
     extraKeys: {
@@ -214,7 +216,7 @@ function ConnectedWrite (props) {
   }, [props.version])
 
   websocketEndpoint && useEffect(() => {
-    const {wsProvider, awareness} = collaborating.connect({
+    const {wsProvider, awareness, doc} = collaborating.connect({
       roomName: `article.${props.id}`,
       websocketEndpoint,
       user: {
@@ -230,10 +232,10 @@ function ConnectedWrite (props) {
           setReadOnly(true)
         }
       }
-    }, [websocketEndpoint])
+    })
 
-
-
+    // connect CodeMirror to Events
+    setRealtime({ doc, awareness })
 
     return () => {
       awareness.setLocalState(null)
@@ -297,9 +299,14 @@ function ConnectedWrite (props) {
       <article className={styles.article}>
         <CodeMirror
           value={live.md}
-          className={readOnly ? styles.editorReadonly : styles.editorWriteable}
+          className={styles.editorWriteable}
           cursor={{ line: 0, character: 0 }}
-          editorDidMount={(_) => {
+          editorDidMount={editor => {
+            const { doc, awareness } = realtime
+            const yText = doc.getText('codemirror')
+            yText.insert(0, live.md)
+            const binding = new CodemirrorBinding(yText, editor, awareness)
+
             window.scrollTo(0, 0)
             //editor.scrollIntoView({ line: 0, ch: 0 })
           }}

@@ -49,6 +49,7 @@ const reducer = createReducer([], {
   UPDATE_ARTICLE_WRITERS: updateArticleWriters,
 })
 
+
 function setApplicationConfig (state, action) {
   const applicationConfig = {
     ...action.applicationConfig,
@@ -154,11 +155,11 @@ function updateArticleStats (state, { md }) {
   const citationNb = text.match(CITATION_RE)?.length || 0
 
   return { ...state, articleStats: {
-    wordCount,
-    charCountNoSpace,
-    charCountPlusSpace,
-    citationNb
-  }}
+      wordCount,
+      charCountNoSpace,
+      charCountPlusSpace,
+      citationNb
+    }}
 }
 
 function updateArticleStructure(state, { md }) {
