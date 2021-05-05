@@ -16,13 +16,14 @@ const initialState = {
   users: [],
   password: undefined,
   sessionToken: undefined,
+  articleWriters: {},
+  articleStructure: [],
   articleStats: {
     wordCount: 0,
     charCountNoSpace: 0,
     charCountPlusSpace: 0,
     citationNb: 0,
   },
-  articleStructure: []
 }
 
 const reducer = createReducer([], {
@@ -95,6 +96,10 @@ function updateActiveUser (state, action) {
       }
       return u
     })
+
+  }else if (action.type === 'UPDATE_ARTICLE_WRITERS') {
+
+    return { ...state, articleWriters: action.articleWriters }
   }
 }
 

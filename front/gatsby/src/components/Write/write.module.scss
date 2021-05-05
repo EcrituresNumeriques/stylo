@@ -27,6 +27,30 @@
   }
 }
 
+.onlineWritersContainer {
+  @extend .wrapped-center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+
+  > ul {
+    display: inline-flex;
+    margin-left: .5rem;
+
+    li:not(:last-child)::after {
+      content: ", ";
+      margin-right: .5rem;
+    }
+  }
+}
+
+.editorReadonly {
+  border: 4px #ccc solid;
+}
+
+.editorWriteable {
+  border: 4px black solid;
+}
+
 .error {
   background-color: $extra-background-color;
   margin: 5em auto;

@@ -25,18 +25,16 @@ function WriteLeft (props) {
         {expanded ? 'close' : 'open'}
       </nav>
       {expanded && (
-        <>
-          <div>
-            <header>
-              <h1>{props.article.title}</h1>
-              <h2>by {props.article.owners.join(', ')}</h2>
-            </header>
-            <Versions {...props} />
-            <Sommaire md={props.md} setCodeMirrorCursor={props.setCodeMirrorCursor} />
-            <Biblio readOnly={props.readOnly} bib={props.bib} handleBib={props.handleBib} article={props.article} />
-            <Stats stats={props.articleStats} />
-          </div>
-        </>
+        <div>
+          <header>
+            <h1>{props.article.title}</h1>
+            <h2>by {props.article.owners.join(', ')}</h2>
+          </header>
+          <Versions {...props} />
+          <Sommaire md={props.md} setCodeMirrorCursor={props.setCodeMirrorCursor} />
+          <Biblio readOnly={props.readOnly} bib={props.bib} handleBib={props.handleBib} article={props.article} />
+          <Stats stats={props.articleStats} />
+        </div>
       )}
     </nav>
   )

@@ -15,12 +15,14 @@ import Loading from '../Loading'
 
 import useDebounce from '../../hooks/debounce'
 
-const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
-  return { sessionToken, activeUser, applicationConfig }
+import * as collaborating from './collaborating/index'
+
+const mapStateToProps = ({ sessionToken, activeUser, applicationConfig, articleWriters }) => {
+  return { sessionToken, activeUser, applicationConfig, articleWriters }
 }
 
 function ConnectedWrite (props) {
-  const readOnly = Boolean(props.version)
+  const [readOnly, setReadOnly] = useState(Boolean(props.version))
   const dispatch = useDispatch()
   const deriveArticleStructureAndStats = useCallback(
     throttle(({ md }) => {
@@ -111,6 +113,7 @@ function ConnectedWrite (props) {
     lineWrapping: true,
     lineNumbers: false,
     autofocus: true,
+    readOnly: readOnly ? 'nocursor' : false,
     viewportMargin: Infinity,
     spellcheck: true,
     extraKeys: {
@@ -196,6 +199,7 @@ function ConnectedWrite (props) {
           zoteroLink: data.article.zoteroLink,
           owners: data.article.owners.map((o) => o.displayName),
         })
+
         setVersions(data.article.versions)
 
         //
@@ -203,8 +207,36 @@ function ConnectedWrite (props) {
         dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
         dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
       }
+
       setIsLoading(false)
     })()
+  }, [props.version])
+
+  useEffect(() => {
+    const {wsProvider, awareness} = collaborating.connect({
+      roomName: 'my-room',
+      user: {
+        id: props.activeUser._id,
+        email: props.activeUser.email,
+        displayName: props.activeUser.displayName
+      },
+      onChange ({ states }) {
+        dispatch({ type: 'UPDATE_ARTICLE_WRITERS', articleWriters: Object.fromEntries(states) })
+      },
+      onConnection ({ states }) {
+        if (states.size > 1) {
+          setReadOnly(true)
+        }
+      }
+    })
+
+
+
+
+    return () => {
+      awareness.setLocalState(null)
+      wsProvider.destroy()
+    }
   }, [props.version])
 
   if (graphqlError) {
@@ -249,24 +281,32 @@ function ConnectedWrite (props) {
         />
       )}
 
+      {!props.compareTo && (
+        <header className={styles.onlineWritersContainer}>
+          Online Writers:
+          <ul>
+            {Object.entries(props.articleWriters).map(([id, {user}]) =>
+              <li key={id}>{ user.displayName }</li>
+            )}
+          </ul>
+        </header>
+      )}
+
       <article className={styles.article}>
-        <>
-          {readOnly && <pre>{live.md}</pre>}
-          {!readOnly && (
-            <CodeMirror
-              value={live.md}
-              cursor={{ line: 0, character: 0 }}
-              editorDidMount={(_) => {
-                window.scrollTo(0, 0)
-                //editor.scrollIntoView({ line: 0, ch: 0 })
-              }}
-              onBeforeChange={handleMDCM}
-              options={codeMirrorOptions}
-              ref={instanceCM}
-            />
-          )}
-          {props.compareTo && <Compare {...props} live={live} />}
-        </>
+        <CodeMirror
+          value={live.md}
+          className={readOnly ? styles.editorReadonly : styles.editorWriteable}
+          cursor={{ line: 0, character: 0 }}
+          editorDidMount={(_) => {
+            window.scrollTo(0, 0)
+            //editor.scrollIntoView({ line: 0, ch: 0 })
+          }}
+          onBeforeChange={handleMDCM}
+          options={codeMirrorOptions}
+          ref={instanceCM}
+        />
+
+        {props.compareTo && <Compare {...props} live={live} />}
       </article>
     </section>
   )
