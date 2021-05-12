@@ -14,7 +14,7 @@ export function connect({ roomName, websocketEndpoint, user, onChange = noop, on
     awareness: awareness
   })
 
-  awareness.on('change', (args) => {
+  awareness.on('change', (change, transactionOrigin) => {
     onChange({
       states: awareness.getStates(),
       // args
@@ -23,13 +23,11 @@ export function connect({ roomName, websocketEndpoint, user, onChange = noop, on
 
   awareness.setLocalState({ user })
 
-  wsProvider.once('status', event => {
-    if (event.status === 'connected') {
-      onConnection({
-        states: awareness.getStates(),
-      })
-    }
-  })
+  // this is used to know if we are the sole persons on the document on connection
+  // if people are already online, `sync` will happen after having fetched remote changes
+  wsProvider.once('sync', () => onConnection({
+    states: awareness.getStates(),
+  }))
 
   return {
     wsProvider,
