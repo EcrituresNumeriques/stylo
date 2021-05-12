@@ -63,7 +63,9 @@ const secureCookie = process.env.HTTPS === 'true'
 // When using 'strict' value, cookies will not be sent along with requests initiated by third-party websites.
 // Reference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
 const allowedOrigins = (origin ?? '').split(' ').filter(v => v).map(o => new RegExp('^' + o))
-const sameSiteCookies = 'lax'
+// SameSite should be None on cross-site response.
+// Please note that "SameSite=None" must also specify the Secure attribute (they require a secure context/HTTPS).
+const sameSiteCookies = allowedOrigins.length > 1 && secureCookie ? 'none' : 'lax'
 
 const corsOptions = {
   optionsSuccessStatus: 200,
