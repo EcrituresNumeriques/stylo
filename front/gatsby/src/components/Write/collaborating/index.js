@@ -7,6 +7,7 @@ const noop = () => {}
 export function connect({ roomName, websocketEndpoint, sessionToken, user, onChange = noop, onConnection = noop }) {
   const doc = new Y.Doc()
   const awareness = new awarenessProtocol.Awareness(doc);
+  const params = sessionToken ? { token: sessionToken } : {}
   const wsProvider = new WebsocketProvider(websocketEndpoint, roomName, doc, {
     // Set this to `false` if you want to connect manually using wsProvider.connect()
     connect: true,
