@@ -109,7 +109,7 @@ function ConnectedWrite (props) {
   const [firstLoad, setFirstLoad] = useState(true)
 
   const codeMirrorOptions = {
-    mode: 'markdown',
+    mode: readOnly ? null : 'markdown',
     lineWrapping: true,
     lineNumbers: false,
     autofocus: true,
@@ -214,7 +214,7 @@ function ConnectedWrite (props) {
 
   useEffect(() => {
     const {wsProvider, awareness} = collaborating.connect({
-      roomName: 'my-room',
+      roomName: `article.${props.id}.${props.version}`,
       user: {
         id: props.activeUser._id,
         email: props.activeUser.email,
