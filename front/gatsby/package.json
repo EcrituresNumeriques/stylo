@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@rjsf/core": "^2.4.0",
-    "biblatex-csl-converter": "^1.9.5",
+    "biblatex-csl-converter": "^1.11.0",
     "codemirror": "^5.59.4",
     "diff-match-patch": "^1.0.5",
     "downshift": "^6.0.6",

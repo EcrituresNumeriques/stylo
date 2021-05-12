@@ -2,6 +2,7 @@
 FROM node:14-alpine as app-builder
 WORKDIR /app
 COPY gatsby/package*.json ./
+RUN apk add --update-cache git
 RUN npm ci --silent
 COPY gatsby ./
 RUN npm run build
