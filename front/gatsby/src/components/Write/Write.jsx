@@ -217,7 +217,6 @@ function ConnectedWrite (props) {
     const {wsProvider, awareness} = collaborating.connect({
       roomName: `article.${props.id}`,
       websocketEndpoint,
-      sessionToken: props.sessionToken,
       user: {
         id: props.activeUser._id,
         email: props.activeUser.email,
