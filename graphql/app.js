@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+const { parse: cookieParse } = require('cookie')
 const { graphqlHTTP } = require('express-graphql')
 const mongoose = require('mongoose')
 const cors = require('cors')
@@ -364,24 +365,24 @@ mongoose
     const server = app.listen(listenPort)
     server.on('upgrade', (request, socket, head) => {
       wss.handleUpgrade(request, socket, head, function handleAuth(ws) {
-        console.log('websocket upgrade ' + request.url)
         // hack, preprend http://localhost, otherwise it cannot parse URL
         const jwtToken = new URL('http://localhost' + request.url).searchParams.get("token")
-        if (jwtToken) {
+        if (request.headers && request.headers.cookie) {
           try {
-            // check auth
-            console.log(jwtToken)
-            const user = jwt.verify(jwtToken, jwtSecret)
-            // TODO: we should check that the user can access the room (article id)
-            console.log({user})
-            wss.emit('connection', ws, request)
+            const jwtToken = cookieParse(request.headers.cookie)['graphQL-jwt']
+            if (jwtToken) {
+              // check auth
+              const user = jwt.verify(jwtToken, jwtSecret)
+              // TODO: we should check that the user can access the room (article id)
+              wss.emit('connection', ws, request)
+            } else {
+              ws.send(createAuthErrorMessage('No token!'))
+            }
           } catch (error) {
-            console.error('error', error)
             ws.send(createAuthErrorMessage(error.message))
           }
         } else {
-          console.error("No token, cannot connect to WebSocket!")
-          ws.send(createAuthErrorMessage('No token!'))
+          ws.send(createAuthErrorMessage('No cookie!'))
         }
       })
     })
