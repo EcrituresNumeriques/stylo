@@ -24,6 +24,7 @@ const mapStateToProps = ({ sessionToken, activeUser, applicationConfig, articleW
 function ConnectedWrite (props) {
   const [readOnly, setReadOnly] = useState(Boolean(props.version))
   const dispatch = useDispatch()
+  const { websocketEndpoint } = props.applicationConfig
   const deriveArticleStructureAndStats = useCallback(
     throttle(({ md }) => {
       dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
@@ -212,9 +213,11 @@ function ConnectedWrite (props) {
     })()
   }, [props.version])
 
-  useEffect(() => {
+  websocketEndpoint && useEffect(() => {
     const {wsProvider, awareness} = collaborating.connect({
-      roomName: `article.${props.id}.${props.version}`,
+      roomName: `article.${props.id}`,
+      websocketEndpoint,
+      sessionToken: props.sessionToken,
       user: {
         id: props.activeUser._id,
         email: props.activeUser.email,
@@ -228,7 +231,7 @@ function ConnectedWrite (props) {
           setReadOnly(true)
         }
       }
-    })
+    }, [websocketEndpoint])
 
 
 

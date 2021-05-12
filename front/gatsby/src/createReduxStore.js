@@ -10,6 +10,12 @@ function createReducer(initialState, handlers) {
   }
 }
 
+export function toWebsocketEndpoint (endpoint) {
+  return endpoint.replace(/^(https?):/, (_, scheme) => {
+    return `${scheme === 'https' ? 'wss' : 'ws'}:`
+  })
+}
+
 // Définition du store Redux et de l'ensemble des actions
 const initialState = {
   logedIn: false,
@@ -39,11 +45,17 @@ const reducer = createReducer([], {
 
   // article reducers
   UPDATE_ARTICLE_STATS: updateArticleStats,
-  UPDATE_ARTICLE_STRUCTURE: updateArticleStructure
+  UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
+  UPDATE_ARTICLE_WRITERS: updateArticleWriters,
 })
 
 function setApplicationConfig (state, action) {
-  return { ...state, applicationConfig: action.applicationConfig }
+  const applicationConfig = {
+    ...action.applicationConfig,
+    websocketEndpoint: toWebsocketEndpoint(action.applicationConfig.graphqlEndpoint)
+  }
+
+  return { ...state, applicationConfig }
 }
 
 function setProfile (state, action) {
@@ -97,9 +109,6 @@ function updateActiveUser (state, action) {
       return u
     })
 
-  }else if (action.type === 'UPDATE_ARTICLE_WRITERS') {
-
-    return { ...state, articleWriters: action.articleWriters }
   }
 }
 
@@ -170,4 +179,8 @@ function updateArticleStructure(state, { md }) {
   return { ...state, articleStructure }
 }
 
-export default () => createStore(reducer, initialState)
+function updateArticleWriters (state, { articleWriters }) {
+  return { ...state, articleWriters }
+}
+
+export default () => createStore(reducer, initialState, , window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
