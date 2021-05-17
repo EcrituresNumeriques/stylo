@@ -115,6 +115,7 @@ function updateActiveUser (state, action) {
 function reloadUsers (state, {payload: users}) {
   return { ...state, users }
 }
+
 function switchUser (state, {payload: activeUser}) {
   if (state.users.map((u) => u._id).includes(activeUser._id)) {
     return { ...state, activeUser }
