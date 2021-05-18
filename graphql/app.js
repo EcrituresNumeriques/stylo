@@ -345,7 +345,6 @@ app.use(
 // Collaborative Writing Websocket
 wss.on('connection', setupWSConnection)
 
-
 // fix deprecation warnings: https://mongoosejs.com/docs/deprecations.html
 mongoose.set('useNewUrlParser', true)
 mongoose.set('useUnifiedTopology', true)
