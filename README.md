@@ -11,9 +11,15 @@ L'environnement de travail de Stylo intègre une chaîne éditoriale complète b
 - l'annotation
 - le partage de document
 
-Stylo est disponible en bétatest [stylo.huma-num.fr](https://stylo.huma-num.fr)
+Stylo est disponible sur [stylo.huma-num.fr](https://stylo.huma-num.fr)
 
 Plus d'informations sur [la documentation](http://stylo-doc.ecrituresnumeriques.ca/).
+
+# Pré-requis
+
+- Node.js v14+
+- MongoDB
+- (optionnel) Pandoc, pour le [service d'export](./export)
 
 # Installation
 
@@ -21,7 +27,7 @@ Pour installer une instance Stylo, suivre la documentation [HOWTO.md](https://gi
 
 # Développement local
 
-L'application se lance en combinant Docker (pour avoir une base de données MongoDB isolée) et des applications Node.js (v14+). Elles s'**installent** ainsi :
+L'application se lance en combinant une base de données MongoDB, et des applications Node.js (v14+). Elles s'**installent** ainsi :
 
 ```bash
 docker-compose pull mongodb-stylo
@@ -37,7 +43,7 @@ sleep 5
 npm start
 ```
 
-L'application web tourne sur [localhost:3000](http://localhost:3000) tandis que l'API fonctionne sur [localhost:3030](http://localhost:3030/).
+L'[application web](./front) tourne sur [`localhost:3000`](http://localhost:3000), l'[API](./graphql) fonctionne sur [`localhost:3030`](http://localhost:3030/) et le [service d'export](./export) sur [`localhost:3060`](http://localhost:3060/).
 
 ---
 
