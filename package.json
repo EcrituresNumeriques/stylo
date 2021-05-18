@@ -1,0 +1,34 @@
+{
+  "name": "stylo",
+  "version": "1.0.0",
+  "description": "Stylo est un éditeur de textes pour articles scientifiques en sciences humaines et sociales.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "workspaces": [
+    "export",
+    "front/gatsby",
+    "graphql"
+  ],
+  "scripts": {
+    "start": "run-p 'start:*'",
+    "start:export": "npm run start --prefix export",
+    "start:front": "npm run start --prefix front/gatsby",
+    "start:graphql": "npm run start --prefix graphql"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EcrituresNumeriques/stylo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/EcrituresNumeriques/stylo/issues"
+  },
+  "homepage": "https://github.com/EcrituresNumeriques/stylo#readme",
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

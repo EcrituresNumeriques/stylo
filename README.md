@@ -25,23 +25,16 @@ L'application se lance en combinant Docker (pour avoir une base de données Mong
 
 ```bash
 docker-compose pull mongodb-stylo
-npm install --prefix graphql
-npm install --prefix front/gatsby
 cp stylo-example.env stylo.env
+npm clean-install
 ```
 
 Puis se **lancent** avec les commandes suivantes :
 
 ```bash
-# Onglet de terminal 1
-docker-compose run -p '127.0.0.1:27017:27017' mongodb-stylo
-
-# Onglet de terminal 2
-sleep 10
-npm start --prefix graphql
-
-# Onglet de terminal 3
-npm start --prefix front/gatsby
+docker-compose run --detach --publish='127.0.0.1:27017:27017' mongodb-stylo
+sleep 5
+npm start
 ```
 
 L'application web tourne sur [localhost:3000](http://localhost:3000) tandis que l'API fonctionne sur [localhost:3030](http://localhost:3030/).
