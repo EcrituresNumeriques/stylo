@@ -2,12 +2,12 @@
 
 Depending on your needs, you may want to install Stylo in different ways :
 
- - Development (suited for making changes to Stylo rapidly)
- - Production (suited to run securely as an end-user service)
+ - [With Docker](#run-with-docker) (suited to run Stylo rapidly)
+ - [Without Docker](#run-without-docker) (suited to tailor your Stylo setup)
 
+[Ansible playbooks](#deploy-with-ansible) enable you to deploy Stylo on a remote machine, accessible with the SSH protocol.
 
- In any case, you will need on your computer [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/).
- Development requires node.js and npm installed as well.
+You can find various pointers in our [GitHub Actions automations](./.github/workflows/deploy.yml), and in the [`./infrastructure` folder](./infrastructure).
 
 ## Clone git project
 
@@ -25,41 +25,42 @@ If you have an account with ssh enabled on framagit, you can pull all submodules
     $ git submodule update
 
 
-# Build on a development machine
+## Run with Docker
 
-Useful to edit the code and see direct changes in local.
+Useful to run a fully fledged Stylo in no time.
 
-**IMPORTANT: NOT SUITED FOR PROLONGED USE BY ACTUAL USERS**
+Run the following command:
 
-Copy the `docker-compose.yaml` file and configure the environment files:
-
-    $ cp example_docker-compose/docker-compose.yaml docker-compose.yaml
-    $ cp example_docker-compose/stylo-*.env .
-
-
-Then, run the following command:
-
-    $ docker-compose up -d --build
+    $ cp stylo-example.env stylo.env
+    $ docker-compose up
 
 **NOTE:** The first time, this command can take a few dozen minutes depending on your network speed and machine capabilities. Subsequent calls will be faster.
 
 This gives your access to:
 - Stylo (frontend): http://localhost:3000
-- GraphQL endpoint: http://localhost:3060
+- GraphQL endpoint: http://localhost:3030
+- Export endpoint: http://localhost:3060
 
-## Build for production
+## Run without Docker
 
-Deploying for production is really close, except it tweaks a few things to ensure a smooth run.
+**Note**: this section can be improved.
 
-We recommend you to host Stylo **behind a reverse proxy**. We provide a working configuration example below for the Nginx server.
+We recommend you to host Stylo **behind a reverse proxy**.
+We provide a working configuration example below for the Nginx server.
 
+### Install the pre-requisite
+
+    $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+    $ nvm install v14
+    $ sudo apt install mongodb-org pandoc
 
 ### Prepare the server
 
 After _cloning_ the repo, build the service and its dependencies:
 
     $ cp stylo-example.env stylo.env
-    $ docker-compose up -d --build
+    $ npm clean-install
+    $ npm start
 
 
 After the image is built, you should have a Stylo instance running on your server.
@@ -82,3 +83,15 @@ When you are done, enable the website and reload the configuration:
 
     $ ln -s /etc/nginx/sites-available/stylo.conf /etc/nginx/sites-enable/stylo.conf
     $ nginx reload
+
+## Deploy with Ansible
+
+**Note**: this section can be improved.
+
+    $ pip install ansible===2.9.7 requests
+    $ cd infrastructure
+    $ ansible-playbook -i inventories/prod playbook.yml
+
+## Next steps
+
+Once you have an up and running Stylo instance, read the [`SERVER.md` file](SERVER.md) to run daily and maintenance operations, such as database migrations and such.
