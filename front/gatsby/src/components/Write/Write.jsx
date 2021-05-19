@@ -222,7 +222,8 @@ function ConnectedWrite (props) {
       user: {
         id: props.activeUser._id,
         email: props.activeUser.email,
-        displayName: props.activeUser.displayName
+        displayName: props.activeUser.displayName,
+        name: props.activeUser.displayName
       },
       onChange ({ states }) {
         dispatch({ type: 'UPDATE_ARTICLE_WRITERS', articleWriters: Object.fromEntries(states) })
