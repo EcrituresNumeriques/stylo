@@ -8,12 +8,10 @@
   display: flex;
 
   textarea {
-    padding: 1rem;
     width: 100%;
   }
 
   > div {
-    padding: 1rem;
     flex: 1 1 50%;
   }
 
@@ -27,10 +25,93 @@
   }
 }
 
+:root {
+  --line-numbers-border-color: #ddd;
+  --line-numbers-border-width: 1px;
+  --line-numbers-background-color: #f7f7f7;
+  --line-number-color: #999;
+}
+
+:global {
+  .react-codemirror2 {
+    .CodeMirror {
+      height: 100%;
+      font-family: 'BellweatherSans-shownbsp', monospace;
+    }
+
+    .CodeMirror-cursors {
+      font-family: monospace;
+    }
+
+    .CodeMirror-scroll {
+      min-height: 600px;
+    }
+
+    .CodeMirror-lines {
+      padding: 1em 0;
+    }
+
+    .CodeMirror-line {
+      margin-left: 1em;
+    }
+
+    .CodeMirror-linenumber {
+      font-size: .8em;
+      color: var(--line-number-color)
+    }
+
+    .CodeMirror-gutters {
+      border-right-color: var(--line-numbers-border-color);
+      border-right-width: var(--line-numbers-border-width);
+      background-color: var(--line-numbers-background-color);
+    }
+
+    .CodeMirror pre.CodeMirror-line {
+      padding: 0 8px;
+    }
+  }
+
+  .remote-caret {
+    position: absolute;
+    border-left: black;
+    border-left-style: solid;
+    border-left-width: 2px;
+    height: 1em;
+  }
+  .remote-caret > div {
+    position: relative;
+    top: -1.05em;
+    font-size: 13px;
+    background-color: rgb(250, 129, 0);
+    font-family: serif;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    user-select: none;
+    color: white;
+    padding-left: 2px;
+    padding-right: 2px;
+    z-index: 3;
+  }
+}
+
+.admonitionReadonly {
+  @extend .wrapped-center;
+  border-color: #ffe08a;
+  color: #946c00;
+  border-style: solid;
+  border-width: 0 0 0 4px;
+  padding: 1.25em 1.5em;
+  background-color: #fffaeb;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
 .onlineWritersContainer {
   @extend .wrapped-center;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  display: flex;
 
   > ul {
     display: inline-flex;
@@ -40,15 +121,41 @@
       content: ", ";
       margin-right: .5rem;
     }
+
+    li {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    li > span {
+      height: 1em;
+      width: 1em;
+      display: block;
+      border-radius: 50%;
+      margin-right: 0.25em;
+    }
   }
 }
 
 .editorReadonly {
-  border: 4px #ccc solid;
+  //border: 1px #dddddd solid;
+  > div {
+    /*background: #f7f7f7;*/
+    color: #232323;
+  }
+
+  --line-number-color:  #946c00;
+  --line-numbers-border-color: #ffe08a;
+  --line-numbers-border-width: 2px;
+  --line-numbers-background-color: #fffaeb;
+
+  .CodeMirror-linenumber {
+    font-size: .8em;
+  }
 }
 
 .editorWriteable {
-  border: 4px black solid;
+  border: 1px #b1b1b1 solid;
 }
 
 .error {

@@ -30,6 +30,7 @@ export function connect({ roomName, websocketEndpoint, user, onChange = noop, on
   }))
 
   return {
+    doc,
     wsProvider,
     awareness
   }

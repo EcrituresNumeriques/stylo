@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { connect, useDispatch } from 'react-redux'
 import 'codemirror/mode/markdown/markdown'
 import { Controlled as CodeMirror } from 'react-codemirror2'
 import throttle from 'lodash/throttle'
+import { CodemirrorBinding } from 'y-codemirror'
 
 import askGraphQL from '../../helpers/graphQL'
 import styles from './write.module.scss'
@@ -108,11 +109,12 @@ function ConnectedWrite (props) {
     zoteroLink: '',
   })
   const [firstLoad, setFirstLoad] = useState(true)
+  const [realtime, setRealtime] = useState({})
 
   const codeMirrorOptions = {
-    mode: readOnly ? null : 'markdown',
+    mode: 'markdown',
     lineWrapping: true,
-    lineNumbers: false,
+    lineNumbers: true,
     autofocus: true,
     readOnly: readOnly ? 'nocursor' : false,
     viewportMargin: Infinity,
@@ -214,13 +216,50 @@ function ConnectedWrite (props) {
   }, [props.version])
 
   websocketEndpoint && useEffect(() => {
-    const {wsProvider, awareness} = collaborating.connect({
+    function getRandomColor() {
+      const colors = [
+        // navy
+        "#001f3f",
+        // blue
+        "#0074D9",
+        // aqua
+        "#7FDBFF",
+        // teal
+        "#39CCCC",
+        // olive
+        "#3D9970",
+        // green
+        "#2ECC40",
+        // yellow
+        "#FFDC00",
+        // orange
+        "#FF851B",
+        // red
+        "#FF4136",
+        // maroon
+        "#F012BE",
+        // fuchsia
+        "#F012BE",
+        // purple
+        "#B10DC9",
+        // black
+        "#111111",
+        // gray
+        "#AAAAAA",
+        // silver
+        "#DDDDDD",
+      ]
+      return colors[Math.floor(Math.random() * 14)]
+    }
+    const {wsProvider, awareness, doc} = collaborating.connect({
       roomName: `article.${props.id}`,
       websocketEndpoint,
       user: {
         id: props.activeUser._id,
         email: props.activeUser.email,
-        displayName: props.activeUser.displayName
+        displayName: props.activeUser.displayName,
+        name: props.activeUser.displayName,
+        color: getRandomColor()
       },
       onChange ({ states }) {
         dispatch({ type: 'UPDATE_ARTICLE_WRITERS', articleWriters: Object.fromEntries(states) })
@@ -230,10 +269,10 @@ function ConnectedWrite (props) {
           setReadOnly(true)
         }
       }
-    }, [websocketEndpoint])
+    })
 
-
-
+    // connect CodeMirror to Events
+    setRealtime({ doc, awareness })
 
     return () => {
       awareness.setLocalState(null)
@@ -284,13 +323,18 @@ function ConnectedWrite (props) {
       )}
 
       {!props.compareTo && (
-        <header className={styles.onlineWritersContainer}>
-          Online Writers:
-          <ul>
-            {Object.entries(props.articleWriters).map(([id, {user}]) =>
-              <li key={id}>{ user.displayName }</li>
-            )}
-          </ul>
+        <header>
+          <div className={styles.onlineWritersContainer}>
+            Online Writers:
+            <ul>
+              {Object.entries(props.articleWriters).map(([id, {user}]) =>
+                <li key={id}><span className="tag" style={{"background-color": user.color}}></span>{ user.displayName }{user.id === props.activeUser._id ? " (you)": ""}</li>
+              )}
+            </ul>
+          </div>
+          {readOnly && <div className={styles.admonitionReadonly}>
+            This article is in read-only mode because a user is currently editing it.
+          </div>}
         </header>
       )}
 
@@ -299,7 +343,13 @@ function ConnectedWrite (props) {
           value={live.md}
           className={readOnly ? styles.editorReadonly : styles.editorWriteable}
           cursor={{ line: 0, character: 0 }}
-          editorDidMount={(_) => {
+          editorDidMount={editor => {
+            const { doc, awareness } = realtime
+            const yText = doc.getText('codemirror')
+            yText.delete(0, yText.length)
+            yText.insert(0, live.md)
+            const binding = new CodemirrorBinding(yText, editor, awareness)
+
             window.scrollTo(0, 0)
             //editor.scrollIntoView({ line: 0, ch: 0 })
           }}
