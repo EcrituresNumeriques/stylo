@@ -28,7 +28,7 @@
 :global {
   .react-codemirror2 {
     .CodeMirror {
-      height: auto;
+      height: 100%;
       font-family: 'BellweatherSans-shownbsp', monospace;
     }
 
@@ -41,7 +41,7 @@
     }
 
     .CodeMirror-lines {
-      padding: 0;
+      padding: 1em 0;
     }
 
     .CodeMirror-line {
@@ -77,10 +77,23 @@
   }
 }
 
+.admonitionReadonly {
+  @extend .wrapped-center;
+  border-color: #ffe08a;
+  color: #946c00;
+  border-style: solid;
+  border-width: 0 0 0 4px;
+  padding: 1.25em 1.5em;
+  background-color: #fffaeb;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
 .onlineWritersContainer {
   @extend .wrapped-center;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  display: flex;
 
   > ul {
     display: inline-flex;
@@ -90,15 +103,32 @@
       content: ", ";
       margin-right: .5rem;
     }
+
+    li {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    li > span {
+      height: 1em;
+      width: 1em;
+      display: block;
+      border-radius: 50%;
+      margin-right: 0.25em;
+    }
   }
 }
 
 .editorReadonly {
-  border: 4px #ccc solid;
+  border: 1px #dddddd solid;
+  > div {
+    background: #f7f7f7;
+    color: #232323;
+  }
 }
 
 .editorWriteable {
-  border: 4px black solid;
+  border: 1px #b1b1b1 solid;
 }
 
 .error {

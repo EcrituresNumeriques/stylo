@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { connect, useDispatch } from 'react-redux'
 import 'codemirror/mode/markdown/markdown'
 import { Controlled as CodeMirror } from 'react-codemirror2'
@@ -112,11 +112,11 @@ function ConnectedWrite (props) {
   const [realtime, setRealtime] = useState({})
 
   const codeMirrorOptions = {
-    mode: 'markdown',
+    mode: readOnly ? null : 'markdown',
     lineWrapping: true,
     lineNumbers: true,
     autofocus: true,
-    readOnly: false,
+    readOnly: readOnly ? 'nocursor' : false,
     viewportMargin: Infinity,
     spellcheck: true,
     extraKeys: {
@@ -216,6 +216,41 @@ function ConnectedWrite (props) {
   }, [props.version])
 
   websocketEndpoint && useEffect(() => {
+    function getRandomColor() {
+      const colors = [
+        // navy
+        "#001f3f",
+        // blue
+        "#0074D9",
+        // aqua
+        "#7FDBFF",
+        // teal
+        "#39CCCC",
+        // olive
+        "#3D9970",
+        // green
+        "#2ECC40",
+        // yellow
+        "#FFDC00",
+        // orange
+        "#FF851B",
+        // red
+        "#FF4136",
+        // maroon
+        "#F012BE",
+        // fuchsia
+        "#F012BE",
+        // purple
+        "#B10DC9",
+        // black
+        "#111111",
+        // gray
+        "#AAAAAA",
+        // silver
+        "#DDDDDD",
+      ]
+      return colors[Math.floor(Math.random() * 14)]
+    }
     const {wsProvider, awareness, doc} = collaborating.connect({
       roomName: `article.${props.id}`,
       websocketEndpoint,
@@ -223,7 +258,8 @@ function ConnectedWrite (props) {
         id: props.activeUser._id,
         email: props.activeUser.email,
         displayName: props.activeUser.displayName,
-        name: props.activeUser.displayName
+        name: props.activeUser.displayName,
+        color: getRandomColor()
       },
       onChange ({ states }) {
         dispatch({ type: 'UPDATE_ARTICLE_WRITERS', articleWriters: Object.fromEntries(states) })
@@ -287,24 +323,30 @@ function ConnectedWrite (props) {
       )}
 
       {!props.compareTo && (
-        <header className={styles.onlineWritersContainer}>
-          Online Writers:
-          <ul>
-            {Object.entries(props.articleWriters).map(([id, {user}]) =>
-              <li key={id}>{ user.displayName }</li>
-            )}
-          </ul>
+        <header>
+          <div className={styles.onlineWritersContainer}>
+            Online Writers:
+            <ul>
+              {Object.entries(props.articleWriters).map(([id, {user}]) =>
+                <li key={id}><span className="tag" style={{"background-color": user.color}}></span>{ user.displayName }{user.id === props.activeUser._id ? " (you)": ""}</li>
+              )}
+            </ul>
+          </div>
+          {readOnly && <div className={styles.admonitionReadonly}>
+            This article is in read-only mode because a user is currently editing it.
+          </div>}
         </header>
       )}
 
       <article className={styles.article}>
         <CodeMirror
           value={live.md}
-          className={styles.editorWriteable}
+          className={readOnly ? styles.editorReadonly : styles.editorWriteable}
           cursor={{ line: 0, character: 0 }}
           editorDidMount={editor => {
             const { doc, awareness } = realtime
             const yText = doc.getText('codemirror')
+            yText.delete(0, yText.length)
             yText.insert(0, live.md)
             const binding = new CodemirrorBinding(yText, editor, awareness)
 
