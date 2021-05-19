@@ -25,6 +25,13 @@
   }
 }
 
+:root {
+  --line-numbers-border-color: #ddd;
+  --line-numbers-border-width: 1px;
+  --line-numbers-background-color: #f7f7f7;
+  --line-number-color: #999;
+}
+
 :global {
   .react-codemirror2 {
     .CodeMirror {
@@ -50,6 +57,17 @@
 
     .CodeMirror-linenumber {
       font-size: .8em;
+      color: var(--line-number-color)
+    }
+
+    .CodeMirror-gutters {
+      border-right-color: var(--line-numbers-border-color);
+      border-right-width: var(--line-numbers-border-width);
+      background-color: var(--line-numbers-background-color);
+    }
+
+    .CodeMirror pre.CodeMirror-line {
+      padding: 0 8px;
     }
   }
 
@@ -120,10 +138,19 @@
 }
 
 .editorReadonly {
-  border: 1px #dddddd solid;
+  //border: 1px #dddddd solid;
   > div {
-    background: #f7f7f7;
+    /*background: #f7f7f7;*/
     color: #232323;
+  }
+
+  --line-number-color:  #946c00;
+  --line-numbers-border-color: #ffe08a;
+  --line-numbers-border-width: 2px;
+  --line-numbers-background-color: #fffaeb;
+
+  .CodeMirror-linenumber {
+    font-size: .8em;
   }
 }
 

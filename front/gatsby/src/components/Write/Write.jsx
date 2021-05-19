@@ -112,7 +112,7 @@ function ConnectedWrite (props) {
   const [realtime, setRealtime] = useState({})
 
   const codeMirrorOptions = {
-    mode: readOnly ? null : 'markdown',
+    mode: 'markdown',
     lineWrapping: true,
     lineNumbers: true,
     autofocus: true,
