@@ -109,7 +109,6 @@ function ConnectedWrite (props) {
     zoteroLink: '',
   })
   const [firstLoad, setFirstLoad] = useState(true)
-  const [realtime, setRealtime] = useState({})
 
   const codeMirrorOptions = {
     mode: 'markdown',
@@ -271,9 +270,6 @@ function ConnectedWrite (props) {
       }
     })
 
-    // connect CodeMirror to Events
-    setRealtime({ doc, awareness })
-
     return () => {
       awareness.setLocalState(null)
       wsProvider.destroy()
@@ -343,13 +339,7 @@ function ConnectedWrite (props) {
           value={live.md}
           className={readOnly ? styles.editorReadonly : styles.editorWriteable}
           cursor={{ line: 0, character: 0 }}
-          editorDidMount={editor => {
-            const { doc, awareness } = realtime
-            const yText = doc.getText('codemirror')
-            yText.delete(0, yText.length)
-            yText.insert(0, live.md)
-            const binding = new CodemirrorBinding(yText, editor, awareness)
-
+          editorDidMount={(_) => {
             window.scrollTo(0, 0)
             //editor.scrollIntoView({ line: 0, ch: 0 })
           }}
