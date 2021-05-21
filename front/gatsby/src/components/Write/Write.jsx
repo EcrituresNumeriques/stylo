@@ -3,7 +3,6 @@ import { connect, useDispatch } from 'react-redux'
 import 'codemirror/mode/markdown/markdown'
 import { Controlled as CodeMirror } from 'react-codemirror2'
 import throttle from 'lodash/throttle'
-import { CodemirrorBinding } from 'y-codemirror'
 
 import askGraphQL from '../../helpers/graphQL'
 import styles from './write.module.scss'
