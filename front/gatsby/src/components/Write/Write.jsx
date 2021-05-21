@@ -314,6 +314,9 @@ function ConnectedWrite(props) {
     return <Loading />
   }
 
+  const articleWriterUsers = Object.entries(props.articleWriters).map(([yId, { user }]) => ({ yId, user }))
+  const hasOtherWriters = articleWriterUsers.filter(({ user }) => user.id !== props.activeUser._id).length > 0
+
   return (
     <section className={styles.container}>
       <WriteLeft
@@ -343,14 +346,14 @@ function ConnectedWrite(props) {
 
       {!props.compareTo && (
         <header>
-          <div className={styles.onlineWritersContainer}>
+          {hasOtherWriters && <div className={styles.onlineWritersContainer}>
             Online Writers:
             <ul>
-              {Object.entries(props.articleWriters).map(([id, { user }]) =>
-                <li key={id}><span className="tag" style={{ "backgroundColor": user.color }}></span>{user.displayName}{user.id === props.activeUser._id ? " (you)" : ""}</li>
+              {articleWriterUsers.map(({ yId, user }) =>
+                <li key={yId}><span className="tag" style={{ "backgroundColor": user.color }}></span>{user.displayName}}</li>
               )}
             </ul>
-          </div>
+          </div>}
           {readOnly && <div className={styles.admonitionReadonly}>
             This article is in read-only mode because a user is currently editing it.
           </div>}
