@@ -79,7 +79,8 @@ const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => 
       bibliographyFilePath,
       metadataFilePath
     )
-    const { stdout, stderr } = await exec(pandocCommand)
+    const FIFTEEN_MEGABYTES = 15 * 1024 * 1024
+    const { stdout, stderr } = await exec(pandocCommand, { maxBuffer: FIFTEEN_MEGABYTES })
     if (stderr) {
       console.warn(stderr)
     }
