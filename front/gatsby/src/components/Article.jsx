@@ -124,7 +124,7 @@ const ConnectedArticle = (props) => {
           <Trash />
         </Button>
 
-        <Link title="Preview"  className={[buttonStyles.button, buttonStyles.icon].join(' ')} to={`/article/${props._id}/preview`}>
+        <Link title="Preview" target="_blank" className={[buttonStyles.button, buttonStyles.icon].join(' ')} to={`/article/${props._id}/preview`}>
           <Eye />
         </Link>
         <Button title="Share" icon={true} onClick={() => setSharing(true)}>

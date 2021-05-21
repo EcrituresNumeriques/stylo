@@ -180,6 +180,16 @@ const Versions = (props) => {
                     </li>
                   )}
                   <li>
+                    <Link
+                      to={`${lastVersionId === v._id ? `/article/${props.article._id}` : `/article/${props.article._id}/version/${v._id}`}/preview`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
+                    >
+                      Preview
+                    </Link>
+                  </li>
+                  <li>
                     <Button
                       onClick={() => {
                         setExportVar({
@@ -195,16 +205,6 @@ const Versions = (props) => {
                     >
                       Export
                     </Button>
-                  </li>
-                  <li>
-                    <a
-                      href={`https://via.hypothes.is/${props.applicationConfig.exportEndpoint}/api/v1/${lastVersionId === v._id ? `htmlArticle/${props.article._id}` : `htmlVersion/${v._id}`}?preview=true`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
-                    >
-                      Preview
-                    </a>
                   </li>
                 </ul>
                 {lastVersionId === v._id && expandSaveForm && (
