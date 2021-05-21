@@ -21,8 +21,9 @@ const mapStateToProps = ({ sessionToken, activeUser, applicationConfig, articleW
   return { sessionToken, activeUser, applicationConfig, articleWriters }
 }
 
-function ConnectedWrite (props) {
-  const [readOnly, setReadOnly] = useState(Boolean(props.version))
+function ConnectedWrite(props) {
+  const { version: currentVersion } = props
+  const [readOnly, setReadOnly] = useState(Boolean(currentVersion))
   const dispatch = useDispatch()
   const { websocketEndpoint } = props.applicationConfig
   const deriveArticleStructureAndStats = useCallback(
@@ -33,7 +34,7 @@ function ConnectedWrite (props) {
     []
   )
 
-  const fullQuery = `query($article:ID!, $readOnly: Boolean!, $version:ID!) {
+  const fullQuery = `query($article:ID!, $hasVersion: Boolean!, $version:ID!) {
     article(article:$article) {
       _id
       title
@@ -53,7 +54,7 @@ function ConnectedWrite (props) {
         }
       }
 
-      live @skip (if: $readOnly) {
+      live @skip (if: $hasVersion) {
         md
         bib
         yaml
@@ -64,7 +65,7 @@ function ConnectedWrite (props) {
       }
     }
 
-    version(version: $version) @include (if: $readOnly) {
+    version(version: $version) @include (if: $hasVersion) {
       _id
       md
       bib
@@ -94,8 +95,8 @@ function ConnectedWrite (props) {
   const variables = {
     user: props.activeUser && props.activeUser._id,
     article: props.id,
-    version: props.version || '0123456789ab',
-    readOnly,
+    version: currentVersion || '0123456789ab',
+    hasVersion: typeof currentVersion === 'string'
   }
 
   const [graphqlError, setError] = useState()
@@ -179,39 +180,40 @@ function ConnectedWrite (props) {
   //Reload when version switching
   useEffect(() => {
     setIsLoading(true)
+    setReadOnly(currentVersion)
     ;(async () => {
       const data = await askGraphQL(
         { query: fullQuery, variables },
         'fetching Live version',
         props.sessionToken,
         props.applicationConfig
-      )
-        .then(({ version, article }) => ({ version, article }))
-        .catch((error) => {
-          setError(error)
-          return {}
-        })
+      ).then(({ version, article }) => ({ version, article })
+      ).catch((error) => {
+        setError(error)
+        return {}
+      })
 
       if (data?.article) {
-        setLive(props.version ? data.version : data.article.live)
+        const article = data.article
+        const version = currentVersion ? data.version : article.live
+        setLive(version)
         setArticleInfos({
-          _id: data.article._id,
-          title: data.article.title,
-          zoteroLink: data.article.zoteroLink,
-          owners: data.article.owners.map((o) => o.displayName),
+          _id: article._id,
+          title: article.title,
+          zoteroLink: article.zoteroLink,
+          owners: article.owners.map((o) => o.displayName),
         })
 
-        setVersions(data.article.versions)
+        setVersions(article.versions)
 
-        //
-        const md = props.version ? data.version.md : data.article.live.md
+        const md = version.md
         dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
         dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
       }
 
       setIsLoading(false)
     })()
-  }, [props.version])
+  }, [currentVersion])
 
   websocketEndpoint && useEffect(() => {
     function getRandomColor() {
@@ -249,7 +251,7 @@ function ConnectedWrite (props) {
       ]
       return colors[Math.floor(Math.random() * 14)]
     }
-    const {wsProvider, awareness, doc} = collaborating.connect({
+    const { wsProvider, awareness, doc } = collaborating.connect({
       roomName: `article.${props.id}`,
       websocketEndpoint,
       user: {
@@ -259,10 +261,10 @@ function ConnectedWrite (props) {
         name: props.activeUser.displayName,
         color: getRandomColor()
       },
-      onChange ({ states }) {
+      onChange({ states }) {
         dispatch({ type: 'UPDATE_ARTICLE_WRITERS', articleWriters: Object.fromEntries(states) })
       },
-      onConnection ({ states }) {
+      onConnection({ states }) {
         if (states.size > 1) {
           setReadOnly(true)
         }
@@ -273,7 +275,7 @@ function ConnectedWrite (props) {
       awareness.setLocalState(null)
       wsProvider.destroy()
     }
-  }, [props.version])
+  }, [currentVersion])
 
   if (graphqlError) {
     return (
@@ -296,7 +298,7 @@ function ConnectedWrite (props) {
         article={articleInfos}
         {...live}
         compareTo={props.compareTo}
-        selectedVersion={props.version}
+        selectedVersion={currentVersion}
         versions={versions}
         readOnly={readOnly}
         sendVersion={sendVersion}
@@ -313,7 +315,7 @@ function ConnectedWrite (props) {
           versions={versions}
           readOnly={readOnly}
           article={articleInfos}
-          selectedVersion={props.version}
+          selectedVersion={currentVersion}
         />
       )}
 
@@ -322,8 +324,8 @@ function ConnectedWrite (props) {
           <div className={styles.onlineWritersContainer}>
             Online Writers:
             <ul>
-              {Object.entries(props.articleWriters).map(([id, {user}]) =>
-                <li key={id}><span className="tag" style={{"background-color": user.color}}></span>{ user.displayName }{user.id === props.activeUser._id ? " (you)": ""}</li>
+              {Object.entries(props.articleWriters).map(([id, { user }]) =>
+                <li key={id}><span className="tag" style={{ "backgroundColor": user.color }}></span>{user.displayName}{user.id === props.activeUser._id ? " (you)" : ""}</li>
               )}
             </ul>
           </div>
