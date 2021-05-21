@@ -127,7 +127,29 @@ function ConnectedWrite(props) {
 
   const sendVersion = async (autosave = true, major = false, message = '') => {
     try {
-      const query = `mutation($user:ID!,$article:ID!,$md:String!,$bib:String!,$yaml:String!,$autosave:Boolean!,$major:Boolean!,$message:String){saveVersion(version:{article:$article,major:$major,auto:$autosave,md:$md,yaml:$yaml,bib:$bib,message:$message},user:$user){ _id version revision message autosave updatedAt owner{ displayName }} }`
+      const query = `mutation($user: ID!, $article: ID!, $md: String!, $bib: String!, $yaml: String!, $autosave: Boolean!, $major: Boolean!, $message: String) {
+  saveVersion(version: {
+      article: $article,
+      major: $major,
+      auto: $autosave,
+      md: $md,
+      yaml: $yaml,
+      bib: $bib,
+      message: $message
+    },
+    user: $user
+  ) { 
+    _id 
+    version
+    revision
+    message
+    autosave
+    updatedAt
+    owner { 
+      displayName
+    }
+  }
+}`
       const response = await askGraphQL(
         {
           query,
