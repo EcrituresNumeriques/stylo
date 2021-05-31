@@ -84,18 +84,14 @@ render(
             </PrivateRoute>
           </Route>
           <Route path={`/article/:id/preview`} render={(props) => {
-            return (<PrivateRoute>
-              <App layout="fullPage">
-                <ArticlePreview id={props.match.params.id} />
-              </App>
-            </PrivateRoute>)
+            return (<App layout="fullPage">
+              <ArticlePreview id={props.match.params.id} />
+            </App>)
           }} />
           <Route path={`/article/:id/version/:version/preview`} render={(props) => {
-            return (<PrivateRoute>
-              <App layout="fullPage">
-                <ArticlePreview id={props.match.params.id} version={props.match.params.version} />
-              </App>
-            </PrivateRoute>)
+            return (<App layout="fullPage">
+              <ArticlePreview id={props.match.params.id} version={props.match.params.version} />
+            </App>)
           }} />
           <Route path={`/article/:id/version/:version/compare/:compareTo`}>
             <PrivateRoute>
