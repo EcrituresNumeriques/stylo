@@ -3,9 +3,15 @@ const jwt = require('jsonwebtoken')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+const { parse: cookieParse } = require('cookie')
 const { graphqlHTTP } = require('express-graphql')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const { setupWSConnection } = require('y-websocket/bin/utils.js')
+const yEncoding = require('lib0/dist/encoding.cjs')
+const yEncoder = yEncoding.createEncoder()
+const WebSocket = require('ws')
+const wss = new WebSocket.Server({ noServer: true })
 
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
@@ -58,10 +64,9 @@ const secureCookie = process.env.HTTPS === 'true'
 // When using 'strict' value, cookies will not be sent along with requests initiated by third-party websites.
 // Reference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
 const allowedOrigins = (origin ?? '').split(' ').filter(v => v).map(o => new RegExp('^' + o))
-const sameSiteCookies = process.env.NODE_ENV === 'production' ? 'lax' : 'none'
-if (sameSiteCookies === 'none') {
-  console.warn('Cookies are configured with `sameSite: none`.')
-}
+// SameSite should be None on cross-site response.
+// Please note that "SameSite=None" must also specify the Secure attribute (they require a secure context/HTTPS).
+const sameSiteCookies = allowedOrigins.length > 1 && secureCookie ? 'none' : 'lax'
 
 const corsOptions = {
   optionsSuccessStatus: 200,
@@ -337,16 +342,50 @@ app.use(
   }))
 )
 
+// Collaborative Writing Websocket
+wss.on('connection', setupWSConnection)
+
+
 // fix deprecation warnings: https://mongoosejs.com/docs/deprecations.html
 mongoose.set('useNewUrlParser', true)
 mongoose.set('useUnifiedTopology', true)
 mongoose.set('useCreateIndex', true)
 
+function createAuthErrorMessage(message) {
+  yEncoding.writeVarUint(yEncoder, 2) // authMessage
+  yEncoding.writeVarUint(yEncoder, 0) // permission denied
+  yEncoding.writeVarString(yEncoder, message)
+  return yEncoding.toUint8Array(yEncoder)
+}
+
 mongoose
   .connect(`mongodb://${mongoServer}:${mongoServerPort}/${mongoServerDB}`)
   .then(() => {
     console.log('Listening on http://localhost:%s', listenPort)
-    app.listen(listenPort)
+    const server = app.listen(listenPort)
+    server.on('upgrade', (request, socket, head) => {
+      wss.handleUpgrade(request, socket, head, function handleAuth(ws) {
+        // hack, preprend http://localhost, otherwise it cannot parse URL
+        const jwtToken = new URL('http://localhost' + request.url).searchParams.get("token")
+        if (request.headers && request.headers.cookie) {
+          try {
+            const jwtToken = cookieParse(request.headers.cookie)['graphQL-jwt']
+            if (jwtToken) {
+              // check auth
+              const user = jwt.verify(jwtToken, jwtSecret)
+              // TODO: we should check that the user can access the room (article id)
+              wss.emit('connection', ws, request)
+            } else {
+              ws.send(createAuthErrorMessage('No token!'))
+            }
+          } catch (error) {
+            ws.send(createAuthErrorMessage(error.message))
+          }
+        } else {
+          ws.send(createAuthErrorMessage('No cookie!'))
+        }
+      })
+    })
   })
   .catch(err => {
     console.log('Unable to connect to MongoDB', err)
