@@ -1,9 +1,13 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 const { exportArticleHtml, exportArticleZip, exportBookHtml, exportBookZip, exportVersionHtml, exportVersionZip, exportBatchTagZip } = require('./export.js')
 
 const app = express()
+app.use(cors({
+  origin: '*'
+}))
 
 const mongoServer = process.env.MONGO_SERVER || 'localhost'
 const mongoServerPort = process.env.MONGO_SERVER_PORT || 27017

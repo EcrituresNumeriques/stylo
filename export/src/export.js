@@ -60,6 +60,7 @@ ${templateArg} \
 
 const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => {
   const preview = req.query.preview
+  const annotate = req.query.annotate
   const originalUrl = req.originalUrl
 
   let tmpDirectory
@@ -95,6 +96,19 @@ const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => 
         `$1<link rel="canonical" href="${canonicalBaseUrl + originalUrl}">`
       )
     }
+
+    if (annotate) {
+      html5 = html5.replace(/<\/body>/, () => {
+        return `<script type="application/json" class="js-hypothesis-config">
+      {
+        "openSidebar": true
+      }
+    </script>
+    <script src="https://hypothes.is/embed.js" async></script>
+    </body>`
+      })
+    }
+
     res.send(html5)
   } catch (err) {
     console.log({ err })

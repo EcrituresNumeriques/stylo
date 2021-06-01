@@ -27,6 +27,7 @@
   "homepage": "https://github.com/EcrituresNumeriques/stylo#readme",
   "dependencies": {
     "archiver": "^5.0.2",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
     "js-yaml": "^4.0.0",
     "mongoose": "^5.9.26",
