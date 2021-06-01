@@ -235,15 +235,18 @@ app.use('/authorization-code/callback',
       failureFlash: true
     }, (err, user, info) => {
       console.log('/authorization-code/callback - callback', err, user, info)
-      if (!user) {
-        console.error('Unable to authenticate', info.message)
-        res.redirect(`/error?message=${info.message}`)
-      } else if (err) {
-        console.error('error', err)
-        res.redirect(`/error?message=${info.message}`)
-      } else {
+      if (user) {
         req.user = user
         next()
+      } else {
+        const errorMessages = []
+        if (info && info.message) {
+          errorMessages.push(info.message)
+        }
+        if (err && err.message) {
+          errorMessages.push(err.message)
+        }
+        res.redirect(`/error?message=${errorMessages.join(' ')}`)
       }
     })(req, res, next)
   },
