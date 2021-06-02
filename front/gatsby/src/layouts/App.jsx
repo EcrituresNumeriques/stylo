@@ -15,12 +15,12 @@ const mapStateToProps = ({ hasBooted }) => {
 
 export default function StyloApp (props) {
   const hasBooted = useSelector(state => state.hasBooted)
-  const { layout } = props
+  const { layout, shell = true } = props
 
   let styles = centeredStyles
   if (layout === 'wrapped') {
     styles = wrappedStyles
-  } else if (layout === 'fullPage') {
+  } else if (!shell || layout === 'fullPage') {
     styles = fullPageStyles
   } else if (layout === 'centered') {
     styles = centeredStyles
@@ -28,7 +28,7 @@ export default function StyloApp (props) {
 
   return (
     <div className={styles.grid}>
-      <Header className={styles.header} />
+      {shell && <Header className={styles.header} />}
       <main className={styles.main}>
         <Suspense fallback={<Loading />}>
           {hasBooted && props.children}
