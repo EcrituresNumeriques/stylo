@@ -1,15 +1,19 @@
-import React, { useMemo, useState } from 'react'
+import React, { memo, useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 
 import styles from './writeLeft.module.scss'
 import Stats from './Stats'
-import Biblio from './Biblio'
+import _Biblio from './Biblio'
 import Sommaire from './Sommaire'
 import Versions from './Versions'
-import bib2key from './bibliographe/CitationsFilter'
 
-export default (props) => {
-  const bibTeXEntries = useMemo(() => bib2key(props.bib), [props.bib])
+const Biblio = memo(_Biblio, function areEqual(prevProps, nextProps) {
+  return prevProps.bib === nextProps.bib
+})
 
+const mapStateToProps = ({ articleStats }) => ({ articleStats })
+
+function WriteLeft (props) {
   const [expanded, setExpanded] = useState(true)
 
   return (
@@ -21,19 +25,20 @@ export default (props) => {
         {expanded ? 'close' : 'open'}
       </nav>
       {expanded && (
-        <>
-          <div>
-            <header>
-              <h1>{props.article.title}</h1>
-              <h2>by {props.article.owners.join(', ')}</h2>
-            </header>
-            <Versions {...props} />
-            <Sommaire {...props} />
-            <Biblio bibTeXEntries={bibTeXEntries} {...props} />
-            <Stats md={props.md} />
-          </div>
-        </>
+        <div>
+          <header>
+            <h1>{props.article.title}</h1>
+            <h2>by {props.article.owners.join(', ')}</h2>
+          </header>
+          <Versions {...props} />
+          <Sommaire md={props.md} setCodeMirrorCursor={props.setCodeMirrorCursor} />
+          <Biblio readOnly={props.readOnly} bib={props.bib} handleBib={props.handleBib} article={props.article} />
+          <Stats stats={props.articleStats} />
+        </div>
       )}
     </nav>
   )
 }
+
+export default connect(mapStateToProps)(WriteLeft)
+

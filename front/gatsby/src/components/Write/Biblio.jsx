@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { ChevronDown, ChevronRight } from 'react-feather'
 
 import Modal from '../Modal'
 import Reference from './Reference'
 import Bibliographe from './bibliographe/Bibliographe'
+import bib2key from './bibliographe/CitationsFilter'
 
 import menuStyles from './menu.module.scss'
 import Button from '../Button'
 
-export default (props) => {
+export default function Biblio ({ bib, article, handleBib, readOnly }) {
+  const bibTeXEntries = useMemo(() => bib2key(bib), [bib])
+
   const [expand, setExpand] = useState(true)
   const [modal, setModal] = useState(false)
 
@@ -19,10 +22,10 @@ export default (props) => {
       </h1>
       {expand && (
         <>
-          {!props.readOnly && (
+          {!readOnly && (
             <Button onClick={() => setModal(true)}>Manage Bibliography</Button>
           )}
-          {props.bibTeXEntries.map((entry, index) => (
+          {bibTeXEntries.map((entry, index) => (
             <Reference key={`ref-${entry.key}-${index}`} entry={entry} />
           ))}
         </>
@@ -30,10 +33,10 @@ export default (props) => {
       {modal && (
         <Modal cancel={() => setModal(false)}>
           <Bibliographe
-            bib={props.bib}
-            success={props.handleBib}
+            bib={bib}
+            success={handleBib}
             cancel={() => setModal(false)}
-            article={props.article}
+            article={article}
           />
         </Modal>
       )}

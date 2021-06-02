@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { connect, useDispatch } from 'react-redux'
 import 'codemirror/mode/markdown/markdown'
 import { Controlled as CodeMirror } from 'react-codemirror2'
+import throttle from 'lodash/throttle'
 
 import askGraphQL from '../../helpers/graphQL'
 import styles from './write.module.scss'
@@ -14,14 +15,26 @@ import Loading from '../Loading'
 
 import useDebounce from '../../hooks/debounce'
 
-const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
-  return { sessionToken, activeUser, applicationConfig }
+import * as collaborating from './collaborating/index'
+
+const mapStateToProps = ({ sessionToken, activeUser, applicationConfig, articleWriters }) => {
+  return { sessionToken, activeUser, applicationConfig, articleWriters }
 }
 
-const ConnectedWrite = (props) => {
-  const readOnly = Boolean(props.version)
+function ConnectedWrite(props) {
+  const { version: currentVersion } = props
+  const [readOnly, setReadOnly] = useState(Boolean(currentVersion))
+  const dispatch = useDispatch()
+  const { websocketEndpoint } = props.applicationConfig
+  const deriveArticleStructureAndStats = useCallback(
+    throttle(({ md }) => {
+      dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
+      dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
+    }, 1500, { leading: false, trailing: true }),
+    []
+  )
 
-  const fullQuery = `query($article:ID!, $readOnly: Boolean!, $version:ID!) {
+  const fullQuery = `query($article:ID!, $hasVersion: Boolean!, $version:ID!) {
     article(article:$article) {
       _id
       title
@@ -41,7 +54,7 @@ const ConnectedWrite = (props) => {
         }
       }
 
-      live @skip (if: $readOnly) {
+      live @skip (if: $hasVersion) {
         md
         bib
         yaml
@@ -52,7 +65,7 @@ const ConnectedWrite = (props) => {
       }
     }
 
-    version(version: $version) @include (if: $readOnly) {
+    version(version: $version) @include (if: $hasVersion) {
       _id
       md
       bib
@@ -82,8 +95,8 @@ const ConnectedWrite = (props) => {
   const variables = {
     user: props.activeUser && props.activeUser._id,
     article: props.id,
-    version: props.version || '0123456789ab',
-    readOnly,
+    version: currentVersion || '0123456789ab',
+    hasVersion: typeof currentVersion === 'string'
   }
 
   const [graphqlError, setError] = useState()
@@ -100,8 +113,9 @@ const ConnectedWrite = (props) => {
   const codeMirrorOptions = {
     mode: 'markdown',
     lineWrapping: true,
-    lineNumbers: false,
+    lineNumbers: true,
     autofocus: true,
+    readOnly: readOnly ? 'nocursor' : false,
     viewportMargin: Infinity,
     spellcheck: true,
     extraKeys: {
@@ -113,7 +127,29 @@ const ConnectedWrite = (props) => {
 
   const sendVersion = async (autosave = true, major = false, message = '') => {
     try {
-      const query = `mutation($user:ID!,$article:ID!,$md:String!,$bib:String!,$yaml:String!,$autosave:Boolean!,$major:Boolean!,$message:String){saveVersion(version:{article:$article,major:$major,auto:$autosave,md:$md,yaml:$yaml,bib:$bib,message:$message},user:$user){ _id version revision message autosave updatedAt owner{ displayName }} }`
+      const query = `mutation($user: ID!, $article: ID!, $md: String!, $bib: String!, $yaml: String!, $autosave: Boolean!, $major: Boolean!, $message: String) {
+  saveVersion(version: {
+      article: $article,
+      major: $major,
+      auto: $autosave,
+      md: $md,
+      yaml: $yaml,
+      bib: $bib,
+      message: $message
+    },
+    user: $user
+  ) { 
+    _id 
+    version
+    revision
+    message
+    autosave
+    updatedAt
+    owner { 
+      displayName
+    }
+  }
+}`
       const response = await askGraphQL(
         {
           query,
@@ -152,6 +188,8 @@ const ConnectedWrite = (props) => {
   }, [debouncedLive])
 
   const handleMDCM = async (___, __, md) => {
+    deriveArticleStructureAndStats({ md })
+
     await setLive({ ...live, md: md })
   }
   const handleYaml = async (yaml) => {
@@ -164,32 +202,102 @@ const ConnectedWrite = (props) => {
   //Reload when version switching
   useEffect(() => {
     setIsLoading(true)
+    setReadOnly(currentVersion)
     ;(async () => {
       const data = await askGraphQL(
         { query: fullQuery, variables },
         'fetching Live version',
         props.sessionToken,
         props.applicationConfig
-      )
-        .then(({ version, article }) => ({ version, article }))
-        .catch((error) => {
-          setError(error)
-          return {}
-        })
+      ).then(({ version, article }) => ({ version, article })
+      ).catch((error) => {
+        setError(error)
+        return {}
+      })
 
       if (data?.article) {
-        setLive(props.version ? data.version : data.article.live)
+        const article = data.article
+        const version = currentVersion ? data.version : article.live
+        setLive(version)
         setArticleInfos({
-          _id: data.article._id,
-          title: data.article.title,
-          zoteroLink: data.article.zoteroLink,
-          owners: data.article.owners.map((o) => o.displayName),
+          _id: article._id,
+          title: article.title,
+          zoteroLink: article.zoteroLink,
+          owners: article.owners.map((o) => o.displayName),
         })
-        setVersions(data.article.versions)
+
+        setVersions(article.versions)
+
+        const md = version.md
+        dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
+        dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
       }
+
       setIsLoading(false)
     })()
-  }, [props.version])
+  }, [currentVersion])
+
+  websocketEndpoint && useEffect(() => {
+    function getRandomColor() {
+      const colors = [
+        // navy
+        "#001f3f",
+        // blue
+        "#0074D9",
+        // aqua
+        "#7FDBFF",
+        // teal
+        "#39CCCC",
+        // olive
+        "#3D9970",
+        // green
+        "#2ECC40",
+        // yellow
+        "#FFDC00",
+        // orange
+        "#FF851B",
+        // red
+        "#FF4136",
+        // maroon
+        "#F012BE",
+        // fuchsia
+        "#F012BE",
+        // purple
+        "#B10DC9",
+        // black
+        "#111111",
+        // gray
+        "#AAAAAA",
+        // silver
+        "#DDDDDD",
+      ]
+      return colors[Math.floor(Math.random() * 14)]
+    }
+    const { wsProvider, awareness, doc } = collaborating.connect({
+      roomName: `article.${props.id}`,
+      websocketEndpoint,
+      user: {
+        id: props.activeUser._id,
+        email: props.activeUser.email,
+        displayName: props.activeUser.displayName,
+        name: props.activeUser.displayName,
+        color: getRandomColor()
+      },
+      onChange({ states }) {
+        dispatch({ type: 'UPDATE_ARTICLE_WRITERS', articleWriters: Object.fromEntries(states) })
+      },
+      onConnection({ states }) {
+        if (states.size > 1) {
+          setReadOnly(true)
+        }
+      }
+    })
+
+    return () => {
+      awareness.setLocalState(null)
+      wsProvider.destroy()
+    }
+  }, [currentVersion])
 
   if (graphqlError) {
     return (
@@ -206,13 +314,16 @@ const ConnectedWrite = (props) => {
     return <Loading />
   }
 
+  const articleWriterUsers = Object.entries(props.articleWriters).map(([yId, { user }]) => ({ yId, user }))
+  const hasOtherWriters = articleWriterUsers.filter(({ user }) => user.id !== props.activeUser._id).length > 0
+
   return (
     <section className={styles.container}>
       <WriteLeft
         article={articleInfos}
         {...live}
         compareTo={props.compareTo}
-        selectedVersion={props.version}
+        selectedVersion={currentVersion}
         versions={versions}
         readOnly={readOnly}
         sendVersion={sendVersion}
@@ -229,28 +340,41 @@ const ConnectedWrite = (props) => {
           versions={versions}
           readOnly={readOnly}
           article={articleInfos}
-          selectedVersion={props.version}
+          selectedVersion={currentVersion}
         />
       )}
 
+      {!props.compareTo && (
+        <header>
+          {hasOtherWriters && <div className={styles.onlineWritersContainer}>
+            Online Writers:
+            <ul>
+              {articleWriterUsers.map(({ yId, user }) =>
+                <li key={yId}><span className="tag" style={{ "backgroundColor": user.color }}></span>{user.displayName}}</li>
+              )}
+            </ul>
+          </div>}
+          {readOnly && <div className={styles.admonitionReadonly}>
+            This article is in read-only mode because a user is currently editing it.
+          </div>}
+        </header>
+      )}
+
       <article className={styles.article}>
-        <>
-          {readOnly && <pre>{live.md}</pre>}
-          {!readOnly && (
-            <CodeMirror
-              value={live.md}
-              cursor={{ line: 0, character: 0 }}
-              editorDidMount={(_) => {
-                window.scrollTo(0, 0)
-                //editor.scrollIntoView({ line: 0, ch: 0 })
-              }}
-              onBeforeChange={handleMDCM}
-              options={codeMirrorOptions}
-              ref={instanceCM}
-            />
-          )}
-          {props.compareTo && <Compare {...props} live={live} />}
-        </>
+        <CodeMirror
+          value={live.md}
+          className={readOnly ? styles.editorReadonly : styles.editorWriteable}
+          cursor={{ line: 0, character: 0 }}
+          editorDidMount={(_) => {
+            window.scrollTo(0, 0)
+            //editor.scrollIntoView({ line: 0, ch: 0 })
+          }}
+          onBeforeChange={handleMDCM}
+          options={codeMirrorOptions}
+          ref={instanceCM}
+        />
+
+        {props.compareTo && <Compare {...props} live={live} />}
       </article>
     </section>
   )

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { connect } from 'react-redux'
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 
 import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
@@ -31,7 +31,7 @@ const mapDispatchToProps = (dispatch) => ({
     ),
 })
 
-const ConnectedBibliographe = (props) => {
+function ConnectedBibliographe (props) {
   const {backendEndpoint} = props.applicationConfig
   const defaultSuccess = (result) => console.log(result)
   const { refreshProfile } = props

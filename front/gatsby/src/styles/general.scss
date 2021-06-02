@@ -82,21 +82,3 @@ li {
   list-style: none;
 }
 
-.react-codemirror2 {
-  .CodeMirror {
-    height: auto;
-    font-family: 'BellweatherSans-shownbsp', monospace;
-  }
-
-  .CodeMirror-cursors {
-    font-family: monospace;
-  }
-
-  .CodeMirror-scroll {
-    min-height: 600px;
-  }
-
-  .CodeMirror-lines {
-    padding: 1rem;
-  }
-}
