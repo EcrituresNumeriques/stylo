@@ -1,0 +1,36 @@
+.navbarItem {
+  display: flex;
+  align-items: center;
+  padding: 1em;
+  column-gap: 0.5em;
+  text-decoration: none;
+  color: #202020
+}
+
+.navbarItem:hover {
+  font-weight: bolder;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.navbarItemExpanded {
+  background-color: #202020;
+  color: white;
+  font-weight: bolder;
+  position: relative;
+}
+
+.menu {
+  width: 350px;
+  padding: 1rem 1rem 0 1rem;
+  box-shadow: -4px 0px 7px 0px #b2b2b2;
+  background-color: white;
+  min-height: calc(100vh - 50px);
+}

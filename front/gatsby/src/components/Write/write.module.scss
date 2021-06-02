@@ -2,10 +2,8 @@
 @use '../../styles/variables' as *;
 
 .article {
-  @extend .wrapped-center;
-  background-color: $extra-background-color;
-  height: 100%;
   display: flex;
+  flex: 1;
 
   textarea {
     padding: 1rem;
@@ -14,7 +12,7 @@
 
   > div {
     padding: 1rem;
-    flex: 1 1 50%;
+    flex: 1;
   }
 
   > pre,
@@ -23,7 +21,6 @@
     padding: 1rem;
     width: 100%;
     white-space: pre-wrap;
-    flex: 1 1 50%;
   }
 }
 
@@ -36,6 +33,10 @@
 }
 
 .container {
-  position: relative;
-  height: 100%;
+  display: flex;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
 }

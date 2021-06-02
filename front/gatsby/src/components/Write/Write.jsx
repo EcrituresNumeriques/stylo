@@ -15,6 +15,7 @@ import Loading from '../Loading'
 
 import useDebounce from '../../hooks/debounce'
 import 'codemirror/lib/codemirror.css'
+import SidePane from './SidePane'
 
 const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
   return { sessionToken, activeUser, applicationConfig }
@@ -251,6 +252,7 @@ function ConnectedWrite(props) {
 
   return (
     <section className={styles.container}>
+      {/*
       <WriteLeft
         article={articleInfos}
         {...live}
@@ -264,7 +266,7 @@ function ConnectedWrite(props) {
       />
 
       <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly} />
-
+      */}
       {props.compareTo && (
         <CompareSelect
           live={live}
@@ -275,6 +277,20 @@ function ConnectedWrite(props) {
           selectedVersion={currentVersion}
         />
       )}
+
+      <SidePane
+        articleInfos={articleInfos}
+        live={live}
+        compareTo={props.compareTo}
+        selectedVersion={props.version}
+        versions={versions}
+        readOnly={readOnly}
+        handleYaml={handleYaml}
+        sendVersion={sendVersion}
+        handleBib={handleBib}
+        setCodeMirrorCursor={setCodeMirrorCursor}
+        {...props}
+      />
 
       <article className={styles.article}>
         <>

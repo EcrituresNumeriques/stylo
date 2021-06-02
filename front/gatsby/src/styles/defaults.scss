@@ -75,21 +75,16 @@
     background-color: $main-background-color;
   }
 
-  > div {
-    overflow-y: auto;
-    height: 100%;
+  > header {
+    > h1 {
+      font-size: 1.5rem;
+      padding: 0.5rem 1rem 0 1rem;
+    }
 
-    > header {
-      > h1 {
-        font-size: 1.5rem;
-        padding: 0.5rem 1rem 0 1rem;
-      }
-
-      > h2 {
-        font-size: 1.2rem;
-        padding: 0 1rem 0.5rem 1rem;
-        font-weight: normal;
-      }
+    > h2 {
+      font-size: 1rem;
+      padding: 0 1rem 0.5rem 1rem;
+      font-weight: lighter;
     }
   }
 }
