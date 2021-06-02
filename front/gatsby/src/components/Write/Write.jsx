@@ -3,7 +3,6 @@ import { connect, useDispatch } from 'react-redux'
 import 'codemirror/mode/markdown/markdown'
 import { Controlled as CodeMirror } from 'react-codemirror2'
 import throttle from 'lodash/throttle'
-import { CodemirrorBinding } from 'y-codemirror'
 
 import askGraphQL from '../../helpers/graphQL'
 import styles from './write.module.scss'
@@ -110,7 +109,6 @@ function ConnectedWrite(props) {
     zoteroLink: '',
   })
   const [firstLoad, setFirstLoad] = useState(true)
-  const [realtime, setRealtime] = useState({})
 
   const codeMirrorOptions = {
     mode: 'markdown',
@@ -295,9 +293,6 @@ function ConnectedWrite(props) {
       }
     })
 
-    // connect CodeMirror to Events
-    setRealtime({ doc, awareness })
-
     return () => {
       awareness.setLocalState(null)
       wsProvider.destroy()
@@ -370,11 +365,9 @@ function ConnectedWrite(props) {
           value={live.md}
           className={readOnly ? styles.editorReadonly : styles.editorWriteable}
           cursor={{ line: 0, character: 0 }}
-          editorDidConfigure={editor => {
-            const { doc, awareness } = realtime
-            const yText = doc.getText('codemirror')
-            const binding = new CodemirrorBinding(yText, editor, awareness)
+          editorDidMount={(_) => {
             window.scrollTo(0, 0)
+            //editor.scrollIntoView({ line: 0, ch: 0 })
           }}
           onBeforeChange={handleMDCM}
           options={codeMirrorOptions}

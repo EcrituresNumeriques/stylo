@@ -14,7 +14,7 @@ const Biblio = memo(_Biblio, function areEqual(prevProps, nextProps) {
 const mapStateToProps = ({ articleStats }) => ({ articleStats })
 
 function WriteLeft (props) {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
 
   return (
     <nav className={`${expanded ? styles.expandleft : styles.retractleft}`}>
