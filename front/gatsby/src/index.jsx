@@ -18,6 +18,7 @@ import Field from './components/Field'
 import { Check, Copy, Search } from 'react-feather'
 import buttonStyles from './components/button.module.scss'
 import Select from './components/Select'
+import CollaborativeEditor from './components/CollaborativeEditor'
 
 // lazy loaded routes
 const Books = lazy(() => import('./components/Books'))
@@ -123,6 +124,11 @@ render(
               </Select>
               <h4>Tabs</h4>
               <h4>Form actions</h4>
+            </App>
+          </Route>
+          <Route exact path="/collaborative-editor/:slug">
+            <App layout="wrapped">
+              <CollaborativeEditor/>
             </App>
           </Route>
           <Route exact path="/">
