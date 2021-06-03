@@ -101,6 +101,11 @@ a.button:not(.primary), a.icon:not(.primary) {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
+.isDisabled {
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+
 .icon {
   background: none;
   border: none;
@@ -108,7 +113,8 @@ a.button:not(.primary), a.icon:not(.primary) {
   color: currentColor;
 
   &:hover,
-  &:focus {
+  &:focus,
+  &.isDisabled {
     background: none;
     opacity: 0.5;
   }
