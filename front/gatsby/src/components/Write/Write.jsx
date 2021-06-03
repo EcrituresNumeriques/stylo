@@ -13,6 +13,7 @@ import CompareSelect from './CompareSelect'
 import Loading from '../Loading'
 
 import useDebounce from '../../hooks/debounce'
+import 'codemirror/lib/codemirror.css'
 
 const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
   return { sessionToken, activeUser, applicationConfig }

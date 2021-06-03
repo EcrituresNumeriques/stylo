@@ -18,7 +18,14 @@ module.exports = {
     {"match": "routes", "src": ".*", "dest": "/index.html"}
   ],
   plugins: [
-    '@snowpack/plugin-sass',
+    [
+      '@snowpack/plugin-sass',
+      {
+         compilerOptions: {
+           loadPath: ['node_modules']
+         }
+      }
+    ],
     '@snowpack/plugin-react-refresh',
   ],
   devOptions: {
