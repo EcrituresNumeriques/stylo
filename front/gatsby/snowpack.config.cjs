@@ -7,8 +7,8 @@ module.exports = {
     src: { url: '/dist' },
   },
   optimize: {
-    bundle: true,
-    minify: false,
+    bundle: false,
+    minify: true,
     sourcemap: false,
     splitting: true,
     treeshake: true,
@@ -18,7 +18,14 @@ module.exports = {
     {"match": "routes", "src": ".*", "dest": "/index.html"}
   ],
   plugins: [
-    '@snowpack/plugin-sass',
+    [
+      '@snowpack/plugin-sass',
+      {
+         compilerOptions: {
+           loadPath: ['node_modules']
+         }
+      }
+    ],
     '@snowpack/plugin-react-refresh',
   ],
   devOptions: {
