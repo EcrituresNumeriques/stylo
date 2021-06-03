@@ -8,10 +8,11 @@ const mapStateToProps = ({ logedIn }) => {
   return { logedIn }
 }
 
-const PrivateRoute = ({ logedIn, children }) => {
+function PrivateRoute ({ logedIn, children }) {
   if (logedIn) {
     return <>{children}</>
   }
+
   return (
     <App layout="centered" header={false}>
       <Login />

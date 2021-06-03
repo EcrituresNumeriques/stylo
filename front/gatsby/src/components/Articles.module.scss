@@ -202,3 +202,22 @@
   }
   padding: 0.5rem 0;
 }
+
+.previewContainer {
+  border: none;
+  width: 100%;
+  height: 100vh;
+}
+
+.articlePreviewNav {
+  margin: 1em 20%;
+
+  svg {
+    vertical-align: sub;
+  }
+
+  a {
+    margin-left: .5em;
+    margin-right: .5em;
+  }
+}

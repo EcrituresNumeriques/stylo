@@ -24,6 +24,7 @@ const Books = lazy(() => import('./components/Books'))
 const Articles = lazy(() => import('./components/Articles'))
 const Credentials = lazy(() => import('./components/Credentials'))
 const Write = lazy(() => import('./components/Write/Write'))
+const ArticlePreview = lazy(() => import('./components/ArticlePreview'))
 
 const store = createStore()
 
@@ -77,17 +78,27 @@ render(
               </App>
             </PrivateRoute>
           </Route>
+          <Route path={`/article/:id/compare/:compareTo`}>
+            <PrivateRoute>
+              <ArticleID />
+            </PrivateRoute>
+          </Route>
+          <Route path={`/article/:id/preview`} render={(props) => {
+            return (<App shell={false}>
+              <ArticlePreview id={props.match.params.id} />
+            </App>)
+          }} />
+          <Route path={`/article/:id/version/:version/preview`} render={(props) => {
+            return (<App shell={false}>
+              <ArticlePreview id={props.match.params.id} version={props.match.params.version} />
+            </App>)
+          }} />
           <Route path={`/article/:id/version/:version/compare/:compareTo`}>
             <PrivateRoute>
               <ArticleID />
             </PrivateRoute>
           </Route>
           <Route path={`/article/:id/version/:version`}>
-            <PrivateRoute>
-              <ArticleID />
-            </PrivateRoute>
-          </Route>
-          <Route path={`/article/:id/compare/:compareTo`}>
             <PrivateRoute>
               <ArticleID />
             </PrivateRoute>

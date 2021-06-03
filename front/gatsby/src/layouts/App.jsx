@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import Header from '../components/Header'
 import Loading from '../components/Loading'
@@ -13,23 +13,22 @@ const mapStateToProps = ({ hasBooted }) => {
   return { hasBooted }
 }
 
-const App = (props) => {
-  const { layout, hasBooted } = props
+export default function StyloApp (props) {
+  const hasBooted = useSelector(state => state.hasBooted)
+  const { layout, shell = true } = props
 
-  let styles
+  let styles = centeredStyles
   if (layout === 'wrapped') {
     styles = wrappedStyles
-  } else if (layout === 'fullPage') {
+  } else if (!shell || layout === 'fullPage') {
     styles = fullPageStyles
   } else if (layout === 'centered') {
     styles = centeredStyles
-  } else {
-    // default
-    styles = centeredStyles
   }
+
   return (
     <div className={styles.grid}>
-      <Header className={styles.header} />
+      {shell && <Header className={styles.header} />}
       <main className={styles.main}>
         <Suspense fallback={<Loading />}>
           {hasBooted && props.children}
@@ -39,5 +38,3 @@ const App = (props) => {
     </div>
   )
 }
-
-export default connect(mapStateToProps)(App)
