@@ -1,5 +1,5 @@
-@import '../../styles/defaults.scss';
-@import '../../styles/variables.scss';
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
 
 .expandRight {
   @extend .sliderright;

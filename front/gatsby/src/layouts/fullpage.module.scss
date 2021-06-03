@@ -1,4 +1,5 @@
-@import '../styles/defaults.scss';
+@use '../styles/defaults' as *;
+@use '../styles/variables' as *;
 
 .grid {
   display: grid;

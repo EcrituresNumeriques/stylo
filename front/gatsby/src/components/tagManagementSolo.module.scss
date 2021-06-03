@@ -1,5 +1,5 @@
-@import '../styles/defaults.scss';
-@import '../styles/variables.scss';
+@use '../styles/defaults' as *;
+@use '../styles/variables' as *;
 
 .tags:nth-of-type(even) {
   background-color: #f0f0f0;

@@ -1,4 +1,4 @@
-@import './variables.scss';
+@use './variables' as *;
 
 .no-user-select {
   -webkit-user-select: none; /* Safari 3.1+ */

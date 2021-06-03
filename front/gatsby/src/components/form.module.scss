@@ -1,7 +1,7 @@
-@import '../styles/defaults.scss';
-@import '../styles/variables.scss';
-@import './field.module.scss';
-@import './button.module.scss';
+@use '../styles/defaults' as *;
+@use '../styles/variables' as *;
+@use './field.module' as *;
+@use './button.module' as *;
 
 @mixin legend {
   background-color: $main-background-color;

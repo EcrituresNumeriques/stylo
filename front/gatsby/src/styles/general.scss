@@ -1,4 +1,5 @@
-@import './defaults.scss';
+@use './defaults' as *;
+@use './variables' as *;
 
 @font-face {
   font-family: 'BellweatherSans-shownbsp';
