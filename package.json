@@ -2,7 +2,6 @@
   "name": "stylo",
   "version": "1.0.0",
   "description": "Stylo est un éditeur de textes pour articles scientifiques en sciences humaines et sociales.",
-  "main": "index.js",
   "directories": {
     "doc": "docs"
   },
