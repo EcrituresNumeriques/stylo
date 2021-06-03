@@ -52,6 +52,6 @@
     "jest": "^26.4.2",
     "node-fetch": "^2.6.1",
     "prettier": "^2.3.0",
-    "snowpack": "^3.5.4"
+    "snowpack": "^3.0.13"
   }
 }
