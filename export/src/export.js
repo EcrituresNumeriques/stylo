@@ -189,6 +189,12 @@ const getBookExportContext = async (bookId) => {
   const chapters = await Article.find({
     _id: { $in: articles },
   }).populate('versions')
+
+  // we can create empty books… but no need to preview them
+  if (chapters.length === 0) {
+    return null
+  }
+
   // sort chapters in ascending alphabetical order
   const chaptersSorted = chapters.sort(sortByTitle)
   const mds = chaptersSorted.map((c) => c.versions[c.versions.length - 1].md)
@@ -252,15 +258,17 @@ module.exports = {
     try {
       const version = await getVersionById(req.params.id)
       const { bib, yaml, md, _id: id } = version._doc
-      exportZip({ bib, yaml, md, id, title: id }, res, req)
+      await exportZip({ bib, yaml, md, id, title: id }, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
   },
   exportBookHtml: async (req, res, _) => {
     try {
-      const bookId = req.params.id
-      const exportBookContext = await getBookExportContext(bookId)
+      const exportBookContext = await getBookExportContext(req.params.id)
+      if (exportBookContext === null) {
+        return res.status(200).send('')
+      }
       await exportHtml(exportBookContext, res, req)
     } catch (err) {
       errorHandler(err, res)
@@ -270,7 +278,7 @@ module.exports = {
     try {
       const bookId = req.params.id
       const exportBookContext = await getBookExportContext(bookId)
-      exportZip(exportBookContext, res, req)
+      await exportZip(exportBookContext, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
