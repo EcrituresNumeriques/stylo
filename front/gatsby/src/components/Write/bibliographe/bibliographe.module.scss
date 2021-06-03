@@ -115,3 +115,16 @@
   margin: 0.5em 0 1em 0;
   color: $error-color;
 }
+
+.searchField {
+  input {
+    width: 100%;
+  }
+  padding: 1rem 0 0;
+}
+
+.resultFoundCount {
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: flex-end;
+}
