@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import etv from '../helpers/eventTargetValue'
 
 import askGraphQL from '../helpers/graphQL'
@@ -23,7 +24,6 @@ const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
 }
 
 const Book = (props) => {
-  const exportEndpoint = props.applicationConfig.exportEndpoint
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [tempName, setTempName] = useState(props.name)
@@ -80,14 +80,14 @@ const Book = (props) => {
         </form>)}
         <ul className={styles.actions}>
           <li>
-            <a
-              className={[buttonStyles.icon, buttonStyles.button].join(' ')}
+            <Link
+              className={[buttonStyles.icon, buttonStyles.button, props.articles.length === 0 ? buttonStyles.isDisabled : ''].filter(d => d).join(' ')}
               title="Preview"
               target="_blank"
-              href={`https://via.hypothes.is/${exportEndpoint}/htmlBook/${props._id}?preview=true`}
+              to={`/books/${props._id}/preview`}
             >
               <Eye />
-            </a>
+            </Link>
           </li>
           <li>
             <Button className={buttonStyles.icon} title="Export" onClick={() => setExporting(true)}>

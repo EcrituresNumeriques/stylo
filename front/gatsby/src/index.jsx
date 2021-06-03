@@ -57,21 +57,26 @@ render(
               <Register />
             </App>
           </Route>
-          <Route path="/books">
+          <Route path="/books" exact>
             <PrivateRoute>
               <App layout="fullPage">
                 <Books />
               </App>
             </PrivateRoute>
           </Route>
-          <Route path="/articles">
+          <Route path={`/books/:id/preview`} render={(props) => {
+            return (<App shell={false}>
+              <ArticlePreview bookId={props.match.params.id} />
+            </App>)
+          }} />
+          <Route path="/articles" exact>
             <PrivateRoute>
               <App layout="fullPage">
                 <Articles />
               </App>
             </PrivateRoute>
           </Route>
-          <Route path="/credentials">
+          <Route path="/credentials" exact>
             <PrivateRoute>
               <App layout="wrapped">
                 <Credentials />

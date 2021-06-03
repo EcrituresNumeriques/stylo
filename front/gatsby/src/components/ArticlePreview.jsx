@@ -4,15 +4,16 @@ import { useSelector } from 'react-redux'
 import styles from './Articles.module.scss'
 import Loading from './Loading'
 
-export default function ArticlePreview(props) {
-  const { id, version } = props
+export default function ArticlePreview({ id, version, bookId }) {
   const { exportEndpoint } = useSelector(state => state.applicationConfig)
   const [isLoaded, setLoaded] = useState(false)
   const previewFrame = useRef()
 
-  const url = version
-    ? `${exportEndpoint}/api/v1/htmlVersion/${version}?preview=true`
-    : `${exportEndpoint}/api/v1/htmlArticle/${id}?preview=true&annotate=true`
+  const url = bookId
+    ? (`${exportEndpoint}/api/v1/htmlBook/${bookId}?preview=true&annotate=true`)
+    : (version
+      ? `${exportEndpoint}/api/v1/htmlVersion/${version}?preview=true`
+      : `${exportEndpoint}/api/v1/htmlArticle/${id}?preview=true&annotate=true`)
 
   useEffect(() => {
     previewFrame.current.addEventListener('load', () => setLoaded(true))
