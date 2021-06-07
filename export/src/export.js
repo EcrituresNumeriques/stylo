@@ -60,7 +60,6 @@ ${templateArg} \
 
 const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => {
   const preview = req.query.preview
-  const annotate = req.query.annotate
   const originalUrl = req.originalUrl
 
   let tmpDirectory
@@ -97,7 +96,7 @@ const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => 
       )
     }
 
-    if (annotate) {
+    if (preview) {
       html5 = html5.replace(/<\/body>/, () => {
         return `<script type="application/json" class="js-hypothesis-config">
       {

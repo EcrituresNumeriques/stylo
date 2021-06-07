@@ -10,10 +10,10 @@ export default function ArticlePreview({ id, version, bookId }) {
   const previewFrame = useRef()
 
   const url = bookId
-    ? (`${exportEndpoint}/api/v1/htmlBook/${bookId}?preview=true&annotate=true`)
+    ? (`${exportEndpoint}/api/v1/htmlBook/${bookId}?preview=true`)
     : (version
       ? `${exportEndpoint}/api/v1/htmlVersion/${version}?preview=true`
-      : `${exportEndpoint}/api/v1/htmlArticle/${id}?preview=true&annotate=true`)
+      : `${exportEndpoint}/api/v1/htmlArticle/${id}?preview=true`)
 
   useEffect(() => {
     previewFrame.current.addEventListener('load', () => setLoaded(true))
