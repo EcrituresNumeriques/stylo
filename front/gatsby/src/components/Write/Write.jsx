@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { connect } from 'react-redux'
-import 'codemirror/mode/markdown/markdown'
-import { Controlled as CodeMirror } from 'react-codemirror2'
+import { useSelector } from 'react-redux'
+import { EditorView, basicSetup } from '@codemirror/basic-setup'
+import { EditorState } from '@codemirror/state'
+import { markdown } from '@codemirror/lang-markdown'
 
 import askGraphQL from '../../helpers/graphQL'
 import styles from './write.module.scss'
@@ -13,14 +14,20 @@ import CompareSelect from './CompareSelect'
 import Loading from '../Loading'
 
 import useDebounce from '../../hooks/debounce'
-import 'codemirror/lib/codemirror.css'
 
-const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
-  return { sessionToken, activeUser, applicationConfig }
-}
+const view = new EditorView({
+  state: EditorState.create({
+    extensions: [
+      basicSetup,
+      markdown()
+    ]
+  })
+})
 
-const ConnectedWrite = (props) => {
+export default function Write (props) {
   const readOnly = Boolean(props.version)
+  const { sessionToken, activeUser, applicationConfig } = useSelector(({ sessionToken, activeUser, applicationConfig }) => ({ sessionToken, activeUser, applicationConfig }))
+  const editorRef = useRef()
 
   const fullQuery = `query($article:ID!, $readOnly: Boolean!, $version:ID!) {
     article(article:$article) {
@@ -81,7 +88,7 @@ const ConnectedWrite = (props) => {
   }
 
   const variables = {
-    user: props.activeUser && props.activeUser._id,
+    user: activeUser && activeUser._id,
     article: props.id,
     version: props.version || '0123456789ab',
     readOnly,
@@ -97,6 +104,15 @@ const ConnectedWrite = (props) => {
     zoteroLink: '',
   })
   const [firstLoad, setFirstLoad] = useState(true)
+
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.appendChild(view.dom)
+      view.dispatch({
+        changes: {from: 0, insert: live.md}
+      })
+    }
+  }, [editorRef.current])
 
   const codeMirrorOptions = {
     mode: 'markdown',
@@ -121,8 +137,8 @@ const ConnectedWrite = (props) => {
           variables: { ...variables, ...live, autosave, major, message },
         },
         'saving new version',
-        props.sessionToken,
-        props.applicationConfig
+        sessionToken,
+        applicationConfig
       )
       if (versions[0]._id !== response.saveVersion._id) {
         setVersions([response.saveVersion, ...versions])
@@ -170,7 +186,7 @@ const ConnectedWrite = (props) => {
         { query: fullQuery, variables },
         'fetching Live version',
         props.sessionToken,
-        props.applicationConfig
+        applicationConfig
       )
         .then(({ version, article }) => ({ version, article }))
         .catch((error) => {
@@ -193,6 +209,7 @@ const ConnectedWrite = (props) => {
   }, [props.version])
 
   if (graphqlError) {
+    console.error(graphqlError)
     return (
       <section className={styles.container}>
         <article className={styles.error}>
@@ -235,28 +252,23 @@ const ConnectedWrite = (props) => {
       )}
 
       <article className={styles.article}>
-        <>
-          {readOnly && <pre>{live.md}</pre>}
-          {!readOnly && (
-            <CodeMirror
-              value={live.md}
-              cursor={{ line: 0, character: 0 }}
-              editorDidMount={(_) => {
-                window.scrollTo(0, 0)
-                //editor.scrollIntoView({ line: 0, ch: 0 })
-              }}
-              onBeforeChange={handleMDCM}
-              options={codeMirrorOptions}
-              ref={instanceCM}
-            />
-          )}
-          {props.compareTo && <Compare {...props} live={live} />}
-        </>
+        {readOnly && <pre>{live.md}</pre>}
+        {!readOnly && (
+          <div className={styles.mainEditor} ref={editorRef} />
+          // <CodeMirror
+          //   value={live.md}
+          //   cursor={{ line: 0, character: 0 }}
+          //   editorDidMount={(_) => {
+          //     window.scrollTo(0, 0)
+          //     //editor.scrollIntoView({ line: 0, ch: 0 })
+          //   }}
+          //   onBeforeChange={handleMDCM}
+          //   options={codeMirrorOptions}
+          //   ref={instanceCM}
+          // />
+        )}
+        {props.compareTo && <Compare {...props} className={styles.diffPanel} live={live} />}
       </article>
     </section>
   )
 }
-
-const Write = connect(mapStateToProps)(ConnectedWrite)
-
-export default Write
