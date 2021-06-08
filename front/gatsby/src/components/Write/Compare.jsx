@@ -35,6 +35,7 @@ const Compare = (props) => {
 
   return (
     <div
+      className={props.className}
       dangerouslySetInnerHTML={{
         __html: loading
           ? '<p>loading</p>'
