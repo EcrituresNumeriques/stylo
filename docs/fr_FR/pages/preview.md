@@ -15,7 +15,7 @@ Le lien de visualisation d'une version affiche toujours la version sauvegardée.
 
 ## Annotation
 
-Dans la page de prévisualisation d'un article Stylo, en haut à droite du navigateur se trouve l'outil d'annotation [*Hypothesis*](https://hypothes.is/u). Pour l'utiliser, il est nécessaire de créer un compte Hypothesis ([Sign up](https://web.hypothes.is/start/)).
+Dans la page de prévisualisation d'un article Stylo, en haut à droite du navigateur se trouve l'outil d'annotation [*Hypothesis*](https://web.hypothes.is/). Pour l'utiliser, il est nécessaire de créer un compte Hypothesis ([Sign up](https://web.hypothes.is/start/)).
 
 Pour annoter, sélectionnez la partie du texte à commenter ; une icône d'annotation apparaîtra. Veuillez sélectionner le mot en entier, le cas échéant, et pas seulement une lettre ou un signe typographique. Il vous est possible de le surligner (*Highlight*) ou d'annoter (*Annotate*). L'annotation peut être privée ("Post to Only me") ou publique ("Post to Public") et visible par d'autres utilisateurs d'Hypothesis ayant accès à l'URL preview de l'article en question.
 
