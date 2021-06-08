@@ -18,7 +18,7 @@ A version's view link always displays the saved version.
 
 ## Annotate
 
-On the preview page of a Stylo article at the top right of the browser, there is the [*Hypothesis*](https://hypothes.is/u) annotation tool. To use this, you must create a *Hypothes.is* account ([Sign up](https://web.hypothes.is/start/)).
+On the preview page of a Stylo article at the top right of the browser, there is the [*Hypothesis*](https://web.hypothes.is/) annotation tool. To use this, you must create a *Hypothes.is* account ([Sign up](https://web.hypothes.is/start/)).
 
 To annotate, select the section of text that you would like to comment; an annotation article will appear. Please select the entire word, as required, and not only the letter or typographic sign. You are able to *Highlight* and to *Annotate*. The annotation can be private ("Post only to me") or public ("Public post") and visible for other *Hypothes.is* users that have access to the preview URL in question.
 
