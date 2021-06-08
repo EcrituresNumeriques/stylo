@@ -1,18 +1,22 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import debounce from 'lodash/debounce'
+import { Check, Plus, Search, Trash } from 'react-feather'
 
-import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
 import { getUserProfile } from '../../../helpers/userProfile'
 import askGraphQL from '../../../helpers/graphQL'
 import { fetchAllCollectionsPerLibrary, fetchBibliographyFromCollectionHref, } from '../../../helpers/zotero'
 import { toBibtex, validate } from '../../../helpers/bibtex'
+
+import styles from './bibliographe.module.scss'
+
+import CitationTable from './CitationTable'
+import ManageCitation from './ManageCitation'
+
 import ReferenceTypeIcon from '../../ReferenceTypeIcon'
 import Button from '../../Button'
 import Field from '../../Field'
-
-import { Check, Plus, Search, Trash } from 'react-feather'
 import Select from '../../Select'
 import NavTag from '../../NavTab'
 
@@ -33,6 +37,7 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
   const [selector, setSelector] = useState('zotero')
   const [isSaving, setSaving] = useState(false)
   const [bib, setBib] = useState(articleBib)
+  const [bibTeXEntries, setBibTeXEntries] = useState(articleBibTeXEntries)
   const [addCitation, setAddCitation] = useState('')
   const [citationValidationResult, setCitationValidationResult] = useState({
     valid: false,
@@ -45,6 +50,7 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
   const { zoteroToken } = activeUser
   const [zoteroCollections, setZoteroCollections] = useState({})
   const citationForm = useRef()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (zoteroToken) {
@@ -57,6 +63,7 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
 
   const mergeCitations = () => {
     setBib(bib + '\n' + addCitation)
+    dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
     citationForm.current.reset()
   }
 
@@ -87,6 +94,7 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
   }
 
   const removeCitation = (citations, indexToRemove) => {
+    console.log('removeCitation', {citations, indexToRemove})
     const filteredEntries = citations
       .filter((entry, index) => index !== indexToRemove)
       .map(({ entry }) => entry)
@@ -94,7 +102,10 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
     const bibtex = toBibtex(filteredEntries)
 
     // we reform the bibtex output based on what we were able to parse
+
     setBib(bibtex)
+    setBibTeXEntries()
+    dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
   }
 
   const saveNewZotero = async () => {
@@ -172,8 +183,10 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
     </Select>
   )
 
-  const bibTeXFound = articleBibTeXEntries
+  const bibTeXFound = bibTeXEntries
     .filter((entry) => entry.key.toLowerCase().indexOf(filter.toLowerCase()) > -1)
+  const bibTeXResult = bibTeXFound
+    .slice(0, 10)
 
   return (
     <article>
@@ -267,94 +280,7 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
         </div>
       )}
 
-      {selector === 'citations' && (
-        <form
-          ref={citationForm}
-          onSubmit={(e) => e.preventDefault() && mergeCitations()}
-          className={styles.citations}
-        >
-          <textarea
-            onChange={(event) =>
-              delayedValidateCitation(
-                etv(event),
-                setCitationValidationResult,
-                setAddCitation
-              )
-            }
-            placeholder="Paste here the BibTeX of the citation you want to add"
-          />
-          {citationValidationResult.messages && (
-            <ul className={styles.citationMessages}>
-              {citationValidationResult.messages.map((m) => (
-                <li>{m}</li>
-              ))}
-            </ul>
-          )}
-          <ul className={styles.actions}>
-            <li className={styles.actionsSubmit}>
-              <Button
-                primary={true}
-                type="submit"
-                disabled={citationValidationResult.valid !== true}
-                onClick={() => mergeCitations()}
-              >
-                <Plus /> Add
-              </Button>
-            </li>
-          </ul>
-
-          <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search" onChange={(e) => setFilter(e.target.value)} />
-          <p className={styles.resultFoundCount}>{bibTeXFound.length} found</p>
-
-          <div className={styles.responsiveTable}>
-            <table className={styles.citationList}>
-              <colgroup>
-                <col className={styles.colIcon} />
-                <col className={styles.colKey} />
-                <col className={styles.colActions} />
-              </colgroup>
-              <tbody>
-              {bibTeXFound
-                .slice(0, 10)
-                .map((b, i) => (
-                <tr
-                  key={`citation-${b.key}-${i}`}
-                  className={styles.citation}
-                >
-                  <td className={`icon-${b.type} ${styles.colIcon}`}>
-                    <ReferenceTypeIcon type={b.type} />
-                  </td>
-                  <th className={styles.colKey} scope="row">
-                    @{b.key}
-                  </th>
-                  <td className={styles.colActions}>
-                    <Button icon={true} onClick={() => removeCitation(articleBibTeXEntries, i)}>
-                      <Trash />
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-              </tbody>
-            </table>
-          </div>
-
-          <ul className={styles.actions}>
-            <li className={styles.actionsSubmit}>
-              <Button
-                primary={true}
-                onClick={() => {
-                  dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
-                  cancel()
-                }}
-                className={styles.primary}
-              >
-                <Check />
-                Save
-              </Button>
-            </li>
-          </ul>
-        </form>
-      )}
+      {selector === 'citations' && <ManageCitation />}
 
       {selector === 'raw' && (
         <form onSubmit={(e) => e.preventDefault()}>

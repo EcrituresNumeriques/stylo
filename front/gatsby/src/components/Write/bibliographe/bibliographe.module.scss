@@ -38,18 +38,22 @@
 .zotero {
   margin-bottom: 1rem;
 }
+
 .zotero {
   > p {
     margin-bottom: 1rem;
   }
+
   label {
     display: block;
   }
+
   input {
     display: block;
     width: 100%;
   }
 }
+
 .raw {
   > textarea {
     padding: 1rem;
@@ -58,6 +62,7 @@
     height: 50vh;
   }
 }
+
 .citations {
   > textarea {
     width: calc(100%);
@@ -65,49 +70,52 @@
     height: 5rem;
     margin-bottom: 1rem;
   }
+}
 
-  .responsiveTable {
-    max-height: 270px;
-    overflow: auto;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    border-top: 1px solid #bbbbbb;
-    padding-top: 0.25em;
-  }
+.responsiveTable {
+  max-height: 270px;
+  overflow: auto;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  border-top: 1px solid #bbbbbb;
+  padding-top: 0.25em;
+}
 
-  .citationList {
-    width: 100%;
-    border-collapse: collapse;
+.citationList {
+  width: 100%;
+  border-collapse: collapse;
 
-    td,
-    th {
-      padding: 5px;
-    }
+  td,
+  th {
+    padding: 5px;
   }
+}
 
-  .colIcon {
-    width: 5%;
-    img {
-      width: 1em;
-      height: 1em;
-      margin: auto;
-      display: block;
-    }
-  }
-  .colKey {
-    text-align: left;
-    word-wrap: break-word;
-    max-width: 1px;
-    font-size: 0.9em;
-  }
-  .colActions {
-    text-align: right;
-    width: 10%;
-  }
+.colIcon {
+  width: 5%;
 
-  > p.citation {
-    padding: 0.5rem 1rem;
+  img {
+    width: 1em;
+    height: 1em;
+    margin: auto;
+    display: block;
   }
+}
+
+.colKey {
+  text-align: left;
+  word-wrap: break-word;
+  max-width: 1px;
+  font-size: 0.9em;
+}
+
+.colActions {
+  text-align: right;
+  width: 10%;
+}
+
+> p.citation {
+  padding: 0.5rem 1rem;
 }
 
 .citationMessages {
@@ -120,6 +128,7 @@
   input {
     width: 100%;
   }
+
   padding: 1rem 0 0;
 }
 

@@ -41,6 +41,7 @@ const reducer = createReducer([], {
   UPDATE_ARTICLE_STATS: updateArticleStats,
   UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
   UPDATE_ARTICLE_BIB: updateArticleBib,
+  UPDATE_ARTICLE_BIB_ENTRIES: updateArticleBibEntries
 })
 
 
@@ -179,6 +180,10 @@ function updateArticleBib(state, { bib }) {
   const articleBibTeXEntries = bib2key(bib)
   console.timeEnd('updateArticleBib#bib2key')
   return { ...state, articleBib: bib, articleBibTeXEntries }
+}
+
+function updateArticleBibEntries(state, { articleBibTeXEntries }) {
+  return { ...state, articleBib: toBibtex(articleBibTeXEntries), articleBibTeXEntries }
 }
 
 export default () => createStore(reducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
