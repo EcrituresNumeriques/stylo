@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import {Clipboard} from 'react-feather'
 import CopyToClipboard from 'react-copy-to-clipboard'
 
-import {Clipboard} from 'react-feather'
-import styles from './reference.module.scss'
-import ReferenceTypeIcon from '../ReferenceTypeIcon'
+import styles from './Citation.module.scss'
+import CitationTypeIcon from './CitationTypeIcon'
 import Button from '../Button'
 
-export default function BibliographyReference ({ entry }) {
+export default function Citation ({ entry }) {
   const { key, title, type } = entry
 
   return (
@@ -14,8 +14,8 @@ export default function BibliographyReference ({ entry }) {
       className={styles.reference}
       title={title}
     >
-      <ReferenceTypeIcon type={type} className={styles.referenceTypeIcon} />
-      <span className={styles.referenceName}>@{key}</span>
+      <CitationTypeIcon type={type} className={styles.citationTypeIcon} />
+      <span className={styles.citationName}>@{key}</span>
 
       <CopyToClipboard text={`[@${key}]`}>
         <Button title="Copy to clipboard" className={styles.copyToClipboard} icon={true}><Clipboard /></Button>

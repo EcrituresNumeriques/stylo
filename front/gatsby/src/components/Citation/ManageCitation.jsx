@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Check } from 'react-feather'
 
-import styles from './bibliographe.module.scss'
-import Button from '../../Button'
-import CitationTable from './CitationTable'
-import AddCitation from './AddCitation'
-import parseBibTeX from './CitationsFilter'
+import styles from './Citation.module.scss'
+import Button from '../Button'
+import ListCitation from './ListCitation'
+import CreateCitation from './CreateCitation'
+import { toEntries } from '../../helpers/bibtex'
 
 
 export default function ManageCitation() {
@@ -18,9 +18,9 @@ export default function ManageCitation() {
 
   }
 
-  function handleAdd(bibTeX, citationForm) {
-    console.log('handleAdd', {bibTeX, citationForm})
-    const newBibTeXEntries = parseBibTeX(bibTeX)
+  function handleCreate(bibTeX, citationForm) {
+    console.log('handleCreate', { bibTeX, citationForm })
+    const newBibTeXEntries = toEntries(bibTeX)
     setBibTeXEntries([...newBibTeXEntries, ...bibTeXEntries])
     citationForm.current.reset()
   }
@@ -31,8 +31,8 @@ export default function ManageCitation() {
 
   return (
     <>
-      <AddCitation onAdd={handleAdd}/>
-      <CitationTable bibTeXEntries={bibTeXEntries} onRemove={handleRemove}/>
+      <CreateCitation onCreate={handleCreate} />
+      <ListCitation bibTeXEntries={bibTeXEntries} onRemove={handleRemove} canRemove={true} />
       <Button primary={true} onClick={handleSave} className={styles.primary}><Check /> Save </Button>
     </>
   )

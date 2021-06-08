@@ -2,15 +2,15 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { ChevronDown, ChevronRight } from 'react-feather'
 
-import Modal from '../Modal'
-import Reference from './Reference'
-import Bibliographe from './bibliographe/Bibliographe'
-
 import menuStyles from './menu.module.scss'
 import styles from './biblio.module.scss'
+
+import Modal from '../Modal'
+import ListCitation from '../Citation/ListCitation'
+import Bibliographe from './bibliographe/Bibliographe'
 import Button from '../Button'
+
 import { getUserProfile } from '../../helpers/userProfile'
-import ReferenceList from './ReferenceList'
 
 function Biblio ({ article, readOnly, articleBibTeXEntries }) {
   const [expand, setExpand] = useState(true)
@@ -26,7 +26,7 @@ function Biblio ({ article, readOnly, articleBibTeXEntries }) {
           {!readOnly && (
             <Button className={styles.manageButton} onClick={() => setModal(true)}>Manage Bibliography</Button>
           )}
-          <ReferenceList />
+          <ListCitation bibTeXEntries={articleBibTeXEntries} canCopy={true}/>
         </>
       )}
       {modal && (

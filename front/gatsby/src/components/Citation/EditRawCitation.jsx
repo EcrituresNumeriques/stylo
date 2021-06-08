@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import debounce from 'lodash/debounce'
 import Editor from '@monaco-editor/react'
 
-import styles from './bibliographe.module.scss'
-import Button from '../../Button'
-import delayedValidateCitation from './CitationValidation'
+import styles from './Citation.module.scss'
+import Button from '../Button'
+import delayedValidateCitation from '../../helpers/citationValidation'
 
 
 export default function EditRawCitation({ onSave, onChange = () => {} }) {

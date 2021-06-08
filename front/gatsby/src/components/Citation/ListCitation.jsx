@@ -1,13 +1,13 @@
-import { Search, Trash } from 'react-feather'
+import { Clipboard, Search, Trash } from 'react-feather'
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
 
-import styles from './bibliographe.module.scss'
-import ReferenceTypeIcon from '../../ReferenceTypeIcon'
-import Button from '../../Button'
-import Field from '../../Field'
+import styles from './Citation.module.scss'
+import CitationTypeIcon from './CitationTypeIcon'
+import Button from '../Button'
+import Field from '../Field'
+import CopyToClipboard from 'react-copy-to-clipboard'
 
-export default function CitationTable({ bibTeXEntries, onRemove }) {
+export default function ListCitation({ bibTeXEntries, onRemove, canRemove = false, canCopy = false }) {
   const [filter, setFilter] = useState('')
 
   const bibTeXFound = bibTeXEntries
@@ -16,7 +16,6 @@ export default function CitationTable({ bibTeXEntries, onRemove }) {
   return (
     <>
       <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search" onChange={(e) => setFilter(e.target.value)} />
-      <p className={styles.resultFoundCount}>{bibTeXFound.length} found</p>
 
       <div className={styles.responsiveTable}>
         <table className={styles.citationList}>
@@ -27,7 +26,7 @@ export default function CitationTable({ bibTeXEntries, onRemove }) {
           </colgroup>
           <tbody>
           {bibTeXEntries
-            .map((entry, index) => ({entry, index}))
+            .map((entry, index) => ({ entry, index }))
             .filter(({ entry }) => entry.key.toLowerCase().indexOf(filter.toLowerCase()) > -1)
             .slice(0, 10)
             .map(({ entry, index }) => {
@@ -37,22 +36,31 @@ export default function CitationTable({ bibTeXEntries, onRemove }) {
                   className={styles.citation}
                 >
                   <td className={`icon-${entry.type} ${styles.colIcon}`}>
-                    <ReferenceTypeIcon type={entry.type} />
+                    <CitationTypeIcon type={entry.type} />
                   </td>
                   <th className={styles.colKey} scope="row">
                     @{entry.key}
                   </th>
                   <td className={styles.colActions}>
-                    <Button icon={true} onClick={() => onRemove(index)}>
+                    {canCopy && <CopyToClipboard text={`[@${entry.key}]`}>
+                      <Button title="Copy to clipboard" className={styles.copyToClipboard} icon={true}><Clipboard /></Button>
+                    </CopyToClipboard>}
+                    {canRemove && <Button icon={true} onClick={() => onRemove(index)}>
                       <Trash />
-                    </Button>
+                    </Button>}
                   </td>
                 </tr>
               )
             })
           }
-          {bibTeXFound.length > 10 && <tr className={styles.more}><td></td><td>&hellip;</td><td></td></tr>}
           </tbody>
+          {bibTeXFound.length > 10 && <tfoot>
+          <tr className={styles.more}>
+            <td></td>
+            <td>{bibTeXFound.length - 10} more &hellip;</td>
+            <td></td>
+          </tr>
+          </tfoot>}
         </table>
       </div>
     </>

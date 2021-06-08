@@ -1,11 +1,11 @@
 import React, { useCallback, useRef, useState } from 'react'
 import { Plus } from 'react-feather'
 
-import styles from './bibliographe.module.scss'
-import Button from '../../Button'
-import delayedValidateCitation from './CitationValidation'
+import styles from './Citation.module.scss'
+import Button from '../Button'
+import delayedValidateCitation from '../../helpers/citationValidation'
 
-export default function AddCitation({ onAdd }) {
+export default function CreateCitation({ onCreate }) {
   const citationForm = useRef()
   const [addCitation, setAddCitation] = useState('')
   const [citationValidationResult, setCitationValidationResult] = useState({
@@ -15,7 +15,7 @@ export default function AddCitation({ onAdd }) {
 
   return (<form
     ref={citationForm}
-    onSubmit={(event) => event.preventDefault() && onAdd(addCitation, citationForm)}
+    onSubmit={(event) => event.preventDefault() && onCreate(addCitation, citationForm)}
     className={styles.citations}
   >
       <textarea
@@ -41,7 +41,7 @@ export default function AddCitation({ onAdd }) {
           primary={true}
           type="submit"
           disabled={citationValidationResult.valid !== true}
-          onClick={() => onAdd(addCitation, citationForm)}
+          onClick={() => onCreate(addCitation, citationForm)}
         >
           <Plus /> Add
         </Button>

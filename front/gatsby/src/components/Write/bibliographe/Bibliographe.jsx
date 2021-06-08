@@ -1,21 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect, useDispatch } from 'react-redux'
-import debounce from 'lodash/debounce'
-import { Check, Plus, Search, Trash } from 'react-feather'
 
 import etv from '../../../helpers/eventTargetValue'
 import { getUserProfile } from '../../../helpers/userProfile'
 import askGraphQL from '../../../helpers/graphQL'
 import { fetchAllCollectionsPerLibrary, fetchBibliographyFromCollectionHref, } from '../../../helpers/zotero'
-import { toBibtex, validate } from '../../../helpers/bibtex'
 
 import styles from './bibliographe.module.scss'
 
-import CitationTable from './CitationTable'
-import ManageCitation from './ManageCitation'
-import EditRawCitation from './EditRawCitation'
+import ManageCitation from '../../Citation/ManageCitation'
+import EditRawCitation from '../../Citation/EditRawCitation'
 
-import ReferenceTypeIcon from '../../ReferenceTypeIcon'
 import Button from '../../Button'
 import Field from '../../Field'
 import Select from '../../Select'
@@ -34,23 +29,12 @@ const mapDispatchToProps = (dispatch) => ({
 
 function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, articleBibTeXEntries, activeUser, applicationConfig }) {
   const { backendEndpoint } = applicationConfig
-  const [filter, setFilter] = useState('')
   const [selector, setSelector] = useState('zotero')
   const [isSaving, setSaving] = useState(false)
-  const [bib, setBib] = useState(articleBib)
-  const [bibTeXEntries, setBibTeXEntries] = useState(articleBibTeXEntries)
-  const [addCitation, setAddCitation] = useState('')
-  const [citationValidationResult, setCitationValidationResult] = useState({
-    valid: false,
-  })
-  const [rawBibTeXValidationResult, setRawBibTeXValidationResult] = useState({
-    valid: false,
-  })
   const [zoteroLink, setZoteroLink] = useState(article.zoteroLink || '')
   const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)
   const { zoteroToken } = activeUser
   const [zoteroCollections, setZoteroCollections] = useState({})
-  const citationForm = useRef()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -61,53 +45,6 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
         .finally(() => setSaving(false))
     }
   }, [zoteroToken])
-
-  const mergeCitations = () => {
-    setBib(bib + '\n' + addCitation)
-    dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
-    citationForm.current.reset()
-  }
-
-  const delayedValidateCitation = useCallback(
-    debounce(
-      (bibtex, setCitationValidationResult, next) =>
-        validateCitation(bibtex, setCitationValidationResult, next),
-      1000
-    ),
-    []
-  )
-
-  const validateCitation = (bibtex, setCitationValidationResult, next) => {
-    next(bibtex)
-
-    validate(bibtex).then((result) => {
-      if (result.warnings.length || result.errors.length) {
-        setCitationValidationResult({
-          valid: false,
-          messages: [...result.errors, ...result.warnings],
-        })
-      } else {
-        setCitationValidationResult({
-          valid: result.empty || result.success !== 0,
-        })
-      }
-    })
-  }
-
-  const removeCitation = (citations, indexToRemove) => {
-    console.log('removeCitation', {citations, indexToRemove})
-    const filteredEntries = citations
-      .filter((entry, index) => index !== indexToRemove)
-      .map(({ entry }) => entry)
-
-    const bibtex = toBibtex(filteredEntries)
-
-    // we reform the bibtex output based on what we were able to parse
-
-    setBib(bibtex)
-    setBibTeXEntries()
-    dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
-  }
 
   const saveNewZotero = async () => {
     setSaving(true)
@@ -141,7 +78,6 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
       }).then((result) => {
         setSaving(false)
         const bib = result.join('\n')
-        setBib(bib)
         dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
         cancel()
       })
@@ -157,7 +93,6 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
       (result) => {
         setSaving(false)
         const bib = result.join('\n')
-        setBib(bib)
         dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
         cancel()
       }
@@ -183,11 +118,6 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
       ))}
     </Select>
   )
-
-  const bibTeXFound = bibTeXEntries
-    .filter((entry) => entry.key.toLowerCase().indexOf(filter.toLowerCase()) > -1)
-  const bibTeXResult = bibTeXFound
-    .slice(0, 10)
 
   return (
     <article>

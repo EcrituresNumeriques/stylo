@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce'
-import { validate } from '../../../helpers/bibtex'
+import { validate } from './bibtex'
 
 const delayedValidateCitation = debounce(
   (bibTeX, setCitationValidationResult, next) =>
