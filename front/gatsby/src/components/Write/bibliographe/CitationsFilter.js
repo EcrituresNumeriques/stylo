@@ -18,7 +18,6 @@ const flatten = (entryTitle) => {
  * @returns {Array.<{ title: string, key: string, type: string }}
  */
 export default (input) => {
-  console.log('bib2text')
   const parser = new BibLatexParser(input, {
     processUnexpected: true,
     processUnknown: true,

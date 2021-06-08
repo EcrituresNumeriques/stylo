@@ -3,50 +3,24 @@ import { Plus } from 'react-feather'
 
 import styles from './bibliographe.module.scss'
 import Button from '../../Button'
-import debounce from 'lodash/debounce'
-import { validate } from '../../../helpers/bibtex'
+import delayedValidateCitation from './CitationValidation'
 
 export default function AddCitation({ onAdd }) {
   const citationForm = useRef()
   const [addCitation, setAddCitation] = useState('')
   const [citationValidationResult, setCitationValidationResult] = useState({
-    valid: false,
+    valid: false
   })
-
-  const delayedValidateCitation = useCallback(
-    debounce(
-      (bibtex, setCitationValidationResult, next) =>
-        validateCitation(bibtex, setCitationValidationResult, next),
-      1000
-    ),
-    []
-  )
-
-  const validateCitation = (bibtex, setCitationValidationResult, next) => {
-    next(bibtex)
-
-    validate(bibtex).then((result) => {
-      if (result.warnings.length || result.errors.length) {
-        setCitationValidationResult({
-          valid: false,
-          messages: [...result.errors, ...result.warnings],
-        })
-      } else {
-        setCitationValidationResult({
-          valid: result.empty || result.success !== 0,
-        })
-      }
-    })
-  }
+  const validateCitation = useCallback(delayedValidateCitation, [])
 
   return (<form
     ref={citationForm}
-    onSubmit={(e) => e.preventDefault() && onAdd(citationForm)}
+    onSubmit={(event) => event.preventDefault() && onAdd(addCitation, citationForm)}
     className={styles.citations}
   >
       <textarea
         onChange={(event) =>
-          delayedValidateCitation(
+          validateCitation(
             event.target.value,
             setCitationValidationResult,
             setAddCitation
@@ -67,7 +41,7 @@ export default function AddCitation({ onAdd }) {
           primary={true}
           type="submit"
           disabled={citationValidationResult.valid !== true}
-          onClick={() => onAdd(citationForm)}
+          onClick={() => onAdd(addCitation, citationForm)}
         >
           <Plus /> Add
         </Button>

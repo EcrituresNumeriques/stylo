@@ -13,6 +13,7 @@ import styles from './bibliographe.module.scss'
 
 import CitationTable from './CitationTable'
 import ManageCitation from './ManageCitation'
+import EditRawCitation from './EditRawCitation'
 
 import ReferenceTypeIcon from '../../ReferenceTypeIcon'
 import Button from '../../Button'
@@ -281,48 +282,7 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
       )}
 
       {selector === 'citations' && <ManageCitation />}
-
-      {selector === 'raw' && (
-        <form onSubmit={(e) => e.preventDefault()}>
-          <div className={styles.raw}>
-            <textarea
-              wrap="off"
-              defaultValue={bib}
-              onChange={(event) =>
-                delayedValidateCitation(
-                  etv(event),
-                  setRawBibTeXValidationResult,
-                  setBib
-                )
-              }
-            />
-          </div>
-          {rawBibTeXValidationResult.messages && (
-            <ul className={styles.citationMessages}>
-              {rawBibTeXValidationResult.messages.map((m) => (
-                <li>{m}</li>
-              ))}
-            </ul>
-          )}
-
-          <ul className={styles.actions}>
-            <li className={styles.actionsSubmit}>
-              <Button
-                primary={true}
-                disabled={rawBibTeXValidationResult.valid !== true}
-                onClick={() => {
-                  dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
-                  cancel()
-                }}
-                className={styles.primary}
-              >
-                <Check />
-                Save
-              </Button>
-            </li>
-          </ul>
-        </form>
-      )}
+      {selector === 'raw' && <EditRawCitation />}
     </article>
   )
 }

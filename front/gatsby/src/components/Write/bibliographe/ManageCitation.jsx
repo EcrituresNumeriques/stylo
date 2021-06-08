@@ -6,6 +6,7 @@ import styles from './bibliographe.module.scss'
 import Button from '../../Button'
 import CitationTable from './CitationTable'
 import AddCitation from './AddCitation'
+import parseBibTeX from './CitationsFilter'
 
 
 export default function ManageCitation() {
@@ -17,8 +18,10 @@ export default function ManageCitation() {
 
   }
 
-  function handleAdd(newCitationText, citationForm) {
-    // TODO: parse newCitationText to entry, add entry to articleBibTeXEntries
+  function handleAdd(bibTeX, citationForm) {
+    console.log('handleAdd', {bibTeX, citationForm})
+    const newBibTeXEntries = parseBibTeX(bibTeX)
+    setBibTeXEntries([...newBibTeXEntries, ...bibTeXEntries])
     citationForm.current.reset()
   }
 
