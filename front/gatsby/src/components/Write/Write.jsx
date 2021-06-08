@@ -28,7 +28,7 @@ function ConnectedWrite(props) {
     throttle(({ md }) => {
       dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
       dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
-    }, 1500, { leading: false, trailing: true }),
+    }, 250, { leading: false, trailing: true }),
     []
   )
 
