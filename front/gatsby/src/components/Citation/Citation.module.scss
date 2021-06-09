@@ -96,3 +96,26 @@
 .icon {
   vertical-align: middle;
 }
+
+.actions {
+  display: flex;
+}
+
+.actionsSubmit {
+  margin-left: auto;
+}
+
+.footerActions {
+  position: sticky;
+  bottom: -1rem;
+  background-color: #f5f5f5;
+  margin-left: -1rem;
+  margin-right: -1rem;
+  padding-right: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-top: 1px solid #767676;
+  display: flex;
+  margin-top: 1rem;
+  margin-bottom: -1rem;
+}

@@ -25,6 +25,7 @@ export function toBibtex(entries) {
  */
 export function validate(bibtex) {
   return parse(bibtex).then((result) => ({
+    entries: result.entries,
     success: Object.keys(result.entries).length,
     empty: String(bibtex).trim().length === 0,
     errors: result.errors.map((error) => error.type + ' at line ' + error.line),
@@ -41,12 +42,12 @@ export function validate(bibtex) {
  * @param {string} Bibtex bibliography
  * @returns {Array.<{ title: string, key: string, type: string }}
  */
-export function toEntries(input) {
-  const { entries } = new BibLatexParser(input, {
+export async function toEntries(input) {
+  const { entries } = await new BibLatexParser(input, {
     processUnexpected: true,
     processUnknown: true,
     includeRawText: true,
-    async: false,
+    async: true,
   }).parse()
 
   return Object.entries(entries)

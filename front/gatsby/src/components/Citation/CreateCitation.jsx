@@ -5,7 +5,7 @@ import styles from './Citation.module.scss'
 import Button from '../Button'
 import delayedValidateCitation from '../../helpers/citationValidation'
 
-export default function CreateCitation({ onCreate }) {
+export default function CreateCitation ({ onCreate }) {
   const citationForm = useRef()
   const [addCitation, setAddCitation] = useState('')
   const [citationValidationResult, setCitationValidationResult] = useState({
@@ -37,13 +37,11 @@ export default function CreateCitation({ onCreate }) {
     )}
     <ul className={styles.actions}>
       <li className={styles.actionsSubmit}>
-        <Button
-          primary={true}
-          type="submit"
-          disabled={citationValidationResult.valid !== true}
-          onClick={() => onCreate(addCitation, citationForm)}
-        >
-          <Plus /> Add
+        <Button primary={true}
+                type="submit"
+                disabled={citationValidationResult.valid !== true}
+                onClick={() => onCreate(addCitation, citationForm)}>
+          <Plus/> Add
         </Button>
       </li>
     </ul>

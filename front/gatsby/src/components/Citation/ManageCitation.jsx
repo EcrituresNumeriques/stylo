@@ -9,31 +9,35 @@ import CreateCitation from './CreateCitation'
 import { toEntries } from '../../helpers/bibtex'
 
 
-export default function ManageCitation() {
+export default function ManageCitation () {
   const articleBibTeXEntries = useSelector(state => state.articleBibTeXEntries)
   const [bibTeXEntries, setBibTeXEntries] = useState(articleBibTeXEntries)
 
-  function handleSave() {
+  function handleSave () {
     // TODO
 
   }
 
-  function handleCreate(bibTeX, citationForm) {
+  function handleCreate (bibTeX, citationForm) {
     console.log('handleCreate', { bibTeX, citationForm })
     const newBibTeXEntries = toEntries(bibTeX)
     setBibTeXEntries([...newBibTeXEntries, ...bibTeXEntries])
     citationForm.current.reset()
   }
 
-  function handleRemove(indexToRemove) {
+  function handleRemove (indexToRemove) {
     setBibTeXEntries([...bibTeXEntries.slice(0, indexToRemove), ...bibTeXEntries.slice(indexToRemove + 1)])
   }
 
   return (
     <>
-      <CreateCitation onCreate={handleCreate} />
-      <ListCitation bibTeXEntries={bibTeXEntries} onRemove={handleRemove} canRemove={true} />
-      <Button primary={true} onClick={handleSave} className={styles.primary}><Check /> Save </Button>
+      <CreateCitation onCreate={handleCreate}/>
+      <ListCitation maxEntries={5} bibTeXEntries={bibTeXEntries} onRemove={handleRemove} canRemove={true}/>
+      <ul className={styles.footerActions}>
+        <li className={styles.actionsSubmit}>
+          <Button primary={true} onClick={handleSave} className={styles.primary}><Check/> Save </Button>
+        </li>
+      </ul>
     </>
   )
 }
