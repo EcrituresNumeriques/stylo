@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { iconName } from '../../helpers/bibtex'
-import styles from './CitationTypeIcon.module.scss'
+import styles from './Citation.module.scss'
 
 export default function CitationTypeIcon({ type, className }) {
   return <img
