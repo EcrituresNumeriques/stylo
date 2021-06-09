@@ -19,7 +19,6 @@ export default function ManageCitation () {
   }
 
   async function handleCreate (bibTeX, citationForm) {
-    console.log('handleCreate', { bibTeX, citationForm })
     const newBibTeXEntries = await toEntries(bibTeX)
     setBibTeXEntries([...newBibTeXEntries, ...bibTeXEntries])
     citationForm.current.reset()

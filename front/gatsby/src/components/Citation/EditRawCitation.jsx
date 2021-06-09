@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Check, Shield } from 'react-feather'
 import { useDispatch, useSelector } from 'react-redux'
 
 import styles from './Citation.module.scss'
 import Button from '../Button'
-import { validate } from "../../helpers/bibtex";
 import Editor from "@monaco-editor/react";
 
+const citationValidationWorker = new Worker(new URL('./CitationValidationWorker.js', import.meta.url), {
+  name: 'CitationValidationWorker',
+  type: 'module',
+})
 
 export default function EditRawCitation ({ onSave }) {
   const { articleBib, articleBibValidationResult, articleBibValidationStatus } = useSelector(state => ({
@@ -23,14 +26,15 @@ export default function EditRawCitation ({ onSave }) {
   const [rawBibTeXValidationResult, setRawBibTeXValidationResult] = useState({
     valid: false,
   })
+  citationValidationWorker.onmessage = function (e) {
+    dispatch({ type: 'SET_ARTICLE_BIB_VALIDATION_RESULT', articleBibValidationResult: e.data })
+  }
   const validateCitation = () => {
     dispatch({ type: 'SET_ARTICLE_BIB_VALIDATION_STATUS', articleBibValidationStatus: 'pending' })
   }
   useEffect(() => {
     if (articleBibValidationStatus === 'pending') {
-      validate(bibTeX).then((articleBibValidationResult) => {
-        dispatch({ type: 'SET_ARTICLE_BIB_VALIDATION_RESULT', articleBibValidationResult })
-      })
+      citationValidationWorker.postMessage(bibTeX)
     }
   })
 

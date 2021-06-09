@@ -15,7 +15,6 @@ const convertBibTeXToEntries = store => {
   return next => {
     return async (action) => {
       if (action.type === 'UPDATE_ARTICLE_BIB') {
-        console.log('UPDATE_ARTICLE_BIB???')
         const articleBibTeXEntries = await toEntries(action.bib)
         store.dispatch({ type: 'SET_ARTICLE_BIB_ENTRIES', articleBibTeXEntries })
         return next(action)

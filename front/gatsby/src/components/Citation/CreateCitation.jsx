@@ -18,7 +18,6 @@ export default function CreateCitation ({ onCreate }) {
     next(bibTeX)
 
     validate(bibTeX).then((result) => {
-      console.log({ result })
       if (result.warnings.length || result.errors.length) {
         setCitationValidationResult({
           valid: false,
