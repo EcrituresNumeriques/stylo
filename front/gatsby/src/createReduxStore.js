@@ -1,5 +1,5 @@
 import { applyMiddleware, createStore } from 'redux'
-import { toEntries, validate } from './helpers/bibtex'
+import { toEntries } from './helpers/bibtex'
 
 function createReducer (initialState, handlers) {
   return function reducer (state = initialState, action) {
@@ -15,22 +15,9 @@ const convertBibTeXToEntries = store => {
   return next => {
     return async (action) => {
       if (action.type === 'UPDATE_ARTICLE_BIB') {
+        console.log('UPDATE_ARTICLE_BIB???')
         const articleBibTeXEntries = await toEntries(action.bib)
         store.dispatch({ type: 'SET_ARTICLE_BIB_ENTRIES', articleBibTeXEntries })
-        return next(action)
-      } else {
-        return next(action)
-      }
-    }
-  }
-}
-
-const validateBibTeX = store => {
-  return next => {
-    return async (action) => {
-      if (action.type === 'VALIDATE_ARTICLE_BIB') {
-        const result = await validate(action.bib)
-        store.dispatch({ type: 'SET_ARTICLE_BIB_VALIDATION_RESULT', articleBibValidationResult: result })
         return next(action)
       } else {
         return next(action)
@@ -52,6 +39,7 @@ const initialState = {
     charCountPlusSpace: 0,
     citationNb: 0,
   },
+  articleBib: '',
   articleBibTeXEntries: [],
   articleBibValidationStatus: '',
   articleBibValidationResult: {}
@@ -76,6 +64,7 @@ const reducer = createReducer(initialState, {
   SET_ARTICLE_BIB_ENTRIES: setArticleBibEntries,
   VALIDATE_ARTICLE_BIB: validateArticleBib,
   SET_ARTICLE_BIB_VALIDATION_RESULT: setArticleBibValidationResult,
+  SET_ARTICLE_BIB_VALIDATION_STATUS: setArticleBibValidationStatus
 })
 
 
@@ -225,17 +214,22 @@ function setArticleBibEntries (state, { articleBibTeXEntries }) {
 }
 
 function setArticleBibValidationResult (state, { articleBibValidationResult }) {
-  console.log('setArticleBibValidationResult', { articleBibValidationResult })
-  return { ...state, articleBibValidationResult }
+  return { ...state, articleBibValidationResult, articleBibValidationStatus: 'completed' }
+}
+
+function setArticleBibValidationStatus (state, { articleBibValidationStatus }) {
+  if (articleBibValidationStatus === 'pending') {
+    return { ...state, articleBibValidationStatus, articleBibValidationResult: {} }
+  }
+  return { ...state, articleBibValidationStatus }
 }
 
 function validateArticleBib (state, { bib }) {
-  console.log('validateArticleBib...')
   return { ...state, articleBibValidationStatus: 'pending' }
 }
 
 export default () => createStore(
   reducer,
-  applyMiddleware(convertBibTeXToEntries, validateBibTeX),
+  applyMiddleware(convertBibTeXToEntries),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )

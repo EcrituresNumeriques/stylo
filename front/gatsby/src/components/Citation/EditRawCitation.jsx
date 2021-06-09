@@ -1,55 +1,59 @@
-import React, { useCallback, useRef, useState } from 'react'
-import { Check } from 'react-feather'
+import React, { useState, useEffect } from 'react'
+import { Check, Shield } from 'react-feather'
 import { useDispatch, useSelector } from 'react-redux'
-import debounce from 'lodash/debounce'
-import Editor from '@monaco-editor/react'
 
 import styles from './Citation.module.scss'
 import Button from '../Button'
+import { validate } from "../../helpers/bibtex";
+import Editor from "@monaco-editor/react";
 
 
 export default function EditRawCitation ({ onSave }) {
-  const articleBib = useSelector(state => state.articleBib)
+  const { articleBib, articleBibValidationResult, articleBibValidationStatus } = useSelector(state => ({
+    articleBib: state.articleBib,
+    articleBibValidationResult: state.articleBibValidationResult,
+    articleBibValidationStatus: state.articleBibValidationStatus
+  }))
+  const articleBibValidationResultErrors = articleBibValidationResult.errors || []
+  const articleBibValidationResultWarnings = articleBibValidationResult.warnings || []
+  const articleBibValidationResultMessages = [...articleBibValidationResultErrors, ...articleBibValidationResultWarnings]
   const [bibTeX, setBibTeX] = useState(articleBib)
   const [isDirty, setDirty] = useState(false)
   const dispatch = useDispatch()
   const [rawBibTeXValidationResult, setRawBibTeXValidationResult] = useState({
     valid: false,
   })
-  const monacoRef = useRef(null)
-
-  function handleEditorDidMount (editor, monaco) {
-    // here is another way to get monaco instance
-    // you can also store it in `useRef` for further usage
-    monacoRef.current = editor;
+  const validateCitation = () => {
+    dispatch({ type: 'SET_ARTICLE_BIB_VALIDATION_STATUS', articleBibValidationStatus: 'pending' })
   }
-
-  const validateBibTeX = useCallback(debounce((bibTeX) => {
-    dispatch({ type: 'VALIDATE_ARTICLE_BIB', bib: bibTeX })
-  }, 1000), [])
-
-  // TODO: add a validate button
+  useEffect(() => {
+    if (articleBibValidationStatus === 'pending') {
+      validate(bibTeX).then((articleBibValidationResult) => {
+        dispatch({ type: 'SET_ARTICLE_BIB_VALIDATION_RESULT', articleBibValidationResult })
+      })
+    }
+  })
 
   return (
     <>
       <form onSubmit={(e) => e.preventDefault()}>
-        <Editor
-          height="50vh"
-          defaultLanguage="plaintext"
-          defaultValue={bibTeX}
-          onChange={(value) => validateBibTeX(value)}
-          onMount={handleEditorDidMount}
-          options={{
-            minimap: {
-              enabled: false
-            }
-          }}
-        />
-
-        {rawBibTeXValidationResult.messages && (
+        <div className={styles.citationEditor}>
+          {<Editor
+            height="50vh"
+            defaultLanguage="plaintext"
+            defaultValue={bibTeX}
+            options={{
+              scrollBeyondLastLine: false,
+              minimap: {
+                enabled: false
+              }
+            }}
+          />}
+        </div>
+        {articleBibValidationResultMessages && (
           <ul className={styles.citationMessages}>
-            {rawBibTeXValidationResult.messages.map((message) => (
-              <li>{message}</li>
+            {articleBibValidationResultMessages.map((message) => (
+              <li key={message}>{message}</li>
             ))}
           </ul>
         )}
@@ -57,7 +61,13 @@ export default function EditRawCitation ({ onSave }) {
       <ul className={styles.footerActions}>
         <li className={styles.actionsSubmit}>
           <Button primary={true}
-                  disabled={rawBibTeXValidationResult.valid !== true}
+                  onClick={() => validateCitation()}
+                  className={styles.secondary}
+                  disabled={articleBibValidationStatus === 'pending'}>
+            <Shield/> Validate
+          </Button>
+          <Button primary={true}
+                  disabled={articleBibValidationResult.valid !== true}
                   onClick={onSave}
                   className={styles.primary}>
             <Check/> Save
