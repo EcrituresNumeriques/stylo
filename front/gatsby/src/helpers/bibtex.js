@@ -1,9 +1,10 @@
-import { BibLatexExporter, BibLatexParser } from 'biblatex-csl-converter'
+import { BibLatexParser } from 'biblatex-csl-converter'
 
 export async function parse(bibtex, options = { expectOutput: false }) {
   const parser = new BibLatexParser(bibtex, {
     processUnexpected: true,
     processUnknown: true,
+    includeRawText: true,
     async: true,
   })
 
@@ -12,13 +13,7 @@ export async function parse(bibtex, options = { expectOutput: false }) {
 }
 
 export function toBibtex(entries) {
-  const bibDB = entries.reduce((db, entry, i) => {
-    return Object.assign(db, { [String(i)]: entry })
-  }, {})
-
-  return new BibLatexExporter(bibDB, false, {
-    exportUnexpectedFields: true,
-  }).parse()
+  return entries.map((e) => e.raw_text).join('\n\n')
 }
 
 /**

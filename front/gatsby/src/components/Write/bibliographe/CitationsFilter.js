@@ -21,6 +21,7 @@ export default (input) => {
   const parser = new BibLatexParser(input, {
     processUnexpected: true,
     processUnknown: true,
+    includeRawText: true,
     async: false,
   })
 

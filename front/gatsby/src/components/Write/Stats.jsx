@@ -3,22 +3,8 @@ import { ChevronDown, ChevronRight } from 'react-feather'
 
 import menuStyles from './menu.module.scss'
 
-export default (props) => {
+export default ({ stats }) => {
   const [expand, setExpand] = useState(true)
-
-  let value = props.md || ''
-  let regex = /\s+/gi
-  let citation = /\[@[\w-]+/gi
-  let noMarkDown = /[#_*]+\s?/gi
-  let wordCount = value
-    .trim()
-    .replace(noMarkDown, '')
-    .replace(regex, ' ')
-    .split(' ').length
-  let charCountNoSpace = value.replace(noMarkDown, '').replace(regex, '').length
-  let charCountPlusSpace = value.replace(noMarkDown, '').length
-  let citationNb =
-    value.replace(regex, '').replace(citation, ' ').split(' ').length - 1
 
   return (
     <section className={menuStyles.section}>
@@ -27,10 +13,10 @@ export default (props) => {
       </h1>
       {expand && (
         <>
-          <p>Words : {wordCount}</p>
-          <p>Characters : {charCountNoSpace}</p>
-          <p>Characters (with spaces) : {charCountPlusSpace}</p>
-          <p>Citations : {citationNb}</p>
+          <p>Words : {stats.wordCount}</p>
+          <p>Characters : {stats.charCountNoSpace}</p>
+          <p>Characters (with spaces) : {stats.charCountPlusSpace}</p>
+          <p>Citations : {stats.citationNb}</p>
         </>
       )}
     </section>
