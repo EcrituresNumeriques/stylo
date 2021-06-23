@@ -6,11 +6,7 @@ export const fetchBibliographyFromCollectionHref = async ({
   token: key = null,
 }) => {
   const url = new URL(collectionHref + '/items')
-  url.searchParams.set('format', 'bibtex')
-  if (key) {
-    url.searchParams.set('key', key)
-  }
-  return fetchZoteroFromUrl(url, [])
+  return fetchZoteroFromUrl(url, key, [])
 }
 
 function getNextLink(headers) {
@@ -24,7 +20,11 @@ function getNextLink(headers) {
   return linkNext && linkNext.uri ? new URL(linkNext.uri) : null
 }
 
-export async function fetchZoteroFromUrl(url, agg = []) {
+export async function fetchZoteroFromUrl(url, key, agg = []) {
+  if (key) {
+    url.searchParams.set('key', key)
+  }
+  url.searchParams.set('format', 'bibtex')
   const response = await fetch(url.toString(), {
     method: 'GET',
     credentials: 'same-origin',
@@ -41,7 +41,7 @@ export async function fetchZoteroFromUrl(url, agg = []) {
   const nextLink = getNextLink(headers)
 
   if (nextLink) {
-    await fetchZoteroFromUrl(nextLink, agg)
+    await fetchZoteroFromUrl(nextLink, key, agg)
   }
 
   return agg
