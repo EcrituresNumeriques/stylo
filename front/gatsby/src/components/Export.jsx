@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import etv from '../helpers/eventTargetValue'
-
-import styles from './export.module.scss'
 import { connect } from 'react-redux'
 
-const filterAlphaNum = (string) => {
+import Select from './Select'
+import styles from './export.module.scss'
+
+function filterAlphaNum (string) {
   return string
     .replace(/\s/g, '_')
     .replace(/[ÉéÈèÊêËë]/g, 'e')
@@ -18,44 +18,22 @@ const mapStateToProps = ({ applicationConfig }) => {
   return { applicationConfig }
 }
 
-const Export = (props) => {
-  const processEndpoint = props.applicationConfig.processEndpoint
-  const exportEndpoint = props.applicationConfig.exportEndpoint
+const Export = ({ book, bookId, name, title, version, revision, versionId, applicationConfig }) => {
+  const { processEndpoint, exportEndpoint } = applicationConfig.processEndpoint
   const [format, setFormat] = useState('html5')
   const [csl, setCsl] = useState('chicagomodified')
   const [toc, setToc] = useState('false')
   const [unnumbered, setUnnumbered] = useState('false')
   const [tld, setTld] = useState('false')
-
-  const startExport = () => {
-    if (props.book) {
-      //For books
-      window.open(
-        `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${filterAlphaNum(
-          props.name
-        )}&book=${
-          props.bookId
-        }&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${toc}&tld=${tld}&unnumbered=${unnumbered}`,
-        '_blank'
-      )
-    } else {
-      //For articles/versions
-      window.open(
-        `${processEndpoint}/cgi-bin/exportArticle/exec.cgi?id=${filterAlphaNum(
-          props.title
-        )}v${props.version}-${props.revision}&version=${
-          props.versionId
-        }&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${toc}`,
-        '_blank'
-      )
-    }
-  }
+  const exportUrl = book ?
+    `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${filterAlphaNum(name)}&book=${bookId}&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${toc}&tld=${tld}&unnumbered=${unnumbered}` :
+    `${processEndpoint}/cgi-bin/exportArticle/exec.cgi?id=${filterAlphaNum(title)}v${version}-${revision}&version=${versionId}&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${toc}`
 
   return (
     <section className={styles.export}>
       <h1>export</h1>
       <form>
-        <select value={format} onChange={(e) => setFormat(etv(e))}>
+        <Select value={format} onChange={(e) => setFormat(e.target.value)}>
           <option value="html5">HTML5</option>
           <option value="zip">ZIP</option>
           <option value="pdf">PDF</option>
@@ -66,8 +44,8 @@ const Export = (props) => {
           <option value="epub">EPUB</option>
           <option value="tei">TEI</option>
           <option value="icml">ICML</option>
-        </select>
-        <select value={csl} onChange={(e) => setCsl(etv(e))}>
+        </Select>
+        <Select value={csl} onChange={(e) => setCsl(e.target.value)}>
           <option value="chicagomodified">chicagomodified</option>
           <option value="lettres-et-sciences-humaines-fr">
             lettres-et-sciences-humaines-fr
@@ -75,26 +53,26 @@ const Export = (props) => {
           <option value="chicago-fullnote-bibliography-fr">
             chicago-fullnote-bibliography-fr
           </option>
-        </select>
-        <select value={toc} onChange={(e) => setToc(etv(e))}>
+        </Select>
+        <Select value={toc} onChange={(e) => setToc(e.target.value)}>
           <option value={true}>Table of content</option>
           <option value={false}>No table of content</option>
-        </select>
-        {props.book && (
-          <select value={unnumbered} onChange={(e) => setUnnumbered(etv(e))}>
+        </Select>
+        {book && (
+          <Select value={unnumbered} onChange={(e) => setUnnumbered(e.target.value)}>
             <option value="false">Section and Chapters: numbered</option>
             <option value="true">Section and Chapters: unnumbered</option>
-          </select>
+          </Select>
         )}
-        {props.book && (
-          <select value={tld} onChange={(e) => setTld(etv(e))}>
+        {book && (
+          <Select value={tld} onChange={(e) => setTld(e.target.value)}>
             <option value="part">Book division: Part & chapters</option>
             <option value="chapter">Book division: Chapter only</option>
-          </select>
+          </Select>
         )}
       </form>
       <nav>
-        <p onClick={() => startExport()}>Export</p>
+        <p onClick={() => window.open(exportUrl, '_blank')}>Export</p>
       </nav>
     </section>
   )
