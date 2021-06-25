@@ -71,7 +71,7 @@ const ConnectedArticle = (props) => {
     setTitle(tempTitle)
     setRenaming(false)
     if (props.updateTitleHandler) {
-      props.updateTitleHandler(tempTitle)
+      props.updateTitleHandler(props._id, tempTitle)
     }
   }
 
@@ -190,10 +190,10 @@ const ConnectedArticle = (props) => {
                 t.selected = true
                 return t
               })}
-              setTags={(ts) => {
-                setTags(ts)
+              setTags={(tags) => {
+                setTags(tags)
                 if (props.updateTagsHandler) {
-                  props.updateTagsHandler(ts)
+                  props.updateTagsHandler(props._id, tags)
                 }
               }}
             />
