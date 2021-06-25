@@ -2,24 +2,6 @@
 @use '../styles/variables' as *;
 
 .acquintances {
-  > nav {
-    display: flex;
-    width: 100%;
-    margin-bottom: 1rem;
-
-    > button {
-      border: 1px solid #000;
-      flex: 1 1 50%;
-      @extend .clickable;
-      background-color: $main-background-color;
-      padding: 0.5rem 1rem;
-
-      &.selected {
-        @extend .primary-button;
-      }
-    }
-  }
-
   h1 {
     font-size: 1.4rem;
     margin-bottom: 1rem;
@@ -45,3 +27,13 @@
   margin-bottom: 1rem;
 }
 
+.acquintance {
+  display: flex;
+  justify-content: space-between;
+}
+
+.acquintanceActions {
+  display: flex;
+  column-gap: 0.5em;
+  align-items: center;
+}
