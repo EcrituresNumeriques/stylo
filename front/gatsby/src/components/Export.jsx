@@ -19,7 +19,7 @@ const mapStateToProps = ({ applicationConfig }) => {
 }
 
 const Export = ({ book, bookId, name, title, version, revision, versionId, applicationConfig }) => {
-  const { processEndpoint, exportEndpoint } = applicationConfig.processEndpoint
+  const { processEndpoint, exportEndpoint } = applicationConfig
   const [format, setFormat] = useState('html5')
   const [csl, setCsl] = useState('chicagomodified')
   const [toc, setToc] = useState('false')
