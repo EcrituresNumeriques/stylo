@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 import askGraphQL from '../helpers/graphQL'
@@ -28,6 +28,23 @@ const ConnectedArticles = (props) => {
   const [creatingArticle, setCreatingArticle] = useState(false)
   const [needReload, setNeedReload] = useState(true)
   const [tagManagement, setTagManagement] = useState(false)
+
+  const handleReload = useCallback(() => {
+    setNeedReload(true)
+  }, [])
+
+  const handleUpdateTags = useCallback((articleId, tags) => {
+    setArticles([...findAndUpdateArticleTags(articles, articleId, tags)])
+  }, [articles])
+
+  const handleUpdateTitle = useCallback((articleId, title) => {
+    // shallow copy otherwise React won't render the components again
+    setArticles([...findAndUpdateArticleTitle(articles, articleId, title)])
+  }, [articles])
+
+  const handleCloseTag = useCallback(() => {
+    setTagManagement(false)
+  }, [])
 
   const findAndUpdateTag = (tags, id) => {
     const tag = tags.find((t) => t._id === id)
@@ -124,10 +141,10 @@ const ConnectedArticles = (props) => {
       </ul>
       <TagManagement
         tags={tags}
-        close={() => setTagManagement(false)}
+        close={handleCloseTag}
         focus={tagManagement}
         articles={articles}
-        setNeedReload={() => setNeedReload(true)}
+        setNeedReload={handleReload}
       />
       {!isLoading && (
         <>
@@ -141,7 +158,7 @@ const ConnectedArticles = (props) => {
               }}
             />
           )}
-          <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search" onChange={(e) => setFilter(etv(e))} />
+          <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search" onChange={(e) => setFilter(etv(e))}/>
           <h4>Filter by Tags</h4>
           <ul className={styles.filterByTags}>
             {filterTags.map((t) => (
@@ -168,15 +185,9 @@ const ConnectedArticles = (props) => {
                 key={`article-${a._id}`}
                 masterTags={tags}
                 {...a}
-                setNeedReload={() => setNeedReload(true)}
-                updateTagsHandler={(articleTags) => {
-                  // shallow copy otherwise React won't render the components again
-                  setArticles([...findAndUpdateArticleTags(articles, a._id, articleTags)])
-                }}
-                updateTitleHandler={(articleTitle) => {
-                  // shallow copy otherwise React won't render the components again
-                  setArticles([...findAndUpdateArticleTitle(articles, a._id, articleTitle)])
-                }}
+                setNeedReload={handleReload}
+                updateTagsHandler={handleUpdateTags}
+                updateTitleHandler={handleUpdateTitle}
               />
             ))}
         </>
