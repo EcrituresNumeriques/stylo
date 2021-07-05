@@ -9,7 +9,7 @@ import Bibliographe from './bibliographe/Bibliographe'
 import menuStyles from './menu.module.scss'
 import Button from '../Button'
 
-function Biblio ({  bib, article, handleBib, readOnly, articleBibTeXEntries }) {
+function Biblio ({ bib, article, readOnly, articleBibTeXEntries }) {
   const [expand, setExpand] = useState(true)
   const [modal, setModal] = useState(false)
 
@@ -32,7 +32,6 @@ function Biblio ({  bib, article, handleBib, readOnly, articleBibTeXEntries }) {
         <Modal cancel={() => setModal(false)}>
           <Bibliographe
             bib={bib}
-            success={handleBib}
             cancel={() => setModal(false)}
             article={article}
           />

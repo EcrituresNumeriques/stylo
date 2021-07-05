@@ -33,9 +33,7 @@ const mapDispatchToProps = (dispatch) => ({
 function ConnectedBibliographe (props) {
   const dispatch = useDispatch()
   const { backendEndpoint } = props.applicationConfig
-  const defaultSuccess = (result) => console.log(result)
   const { refreshProfile } = props
-  const success = props.success || defaultSuccess
   const [selector, setSelector] = useState('zotero')
   const [isSaving, setSaving] = useState(false)
   const [bib, setBib] = useState(props.articleBib)
