@@ -68,7 +68,7 @@ const Export = ({ book, bookId, name, title, version, revision, versionId, appli
         )}
       </form>
       <nav>
-        <a href={exportUrl} target={'_blank'}>Export</a>
+        <a href={exportUrl} target="_blank">Export</a>
       </nav>
     </section>
   )
