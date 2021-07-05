@@ -8,9 +8,8 @@ import { connect } from 'react-redux'
 
 const mapStateToProps = ({ articleStructure }) => ({ articleStructure })
 
-function Sommaire (props) {
+function Sommaire ({ articleStructure, onTableOfContentClick }) {
   const [expand, setExpand] = useState(true)
-  const { articleStructure } = props
 
   return (
     <section className={[styles.section, menuStyles.section].join(' ')}>
@@ -22,7 +21,7 @@ function Sommaire (props) {
           <li
             className={styles.headlineItem}
             key={`line-${item.index}-${item.line}`}
-            onClick={() => props.setCodeMirrorCursor(item.index)}
+            onClick={() => onTableOfContentClick(item.index)}
           >
             {item.title}
           </li>
