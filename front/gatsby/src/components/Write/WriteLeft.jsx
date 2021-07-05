@@ -6,12 +6,10 @@ import Stats from './Stats'
 import Biblio from './Biblio'
 import Sommaire from './Sommaire'
 import Versions from './Versions'
-import bib2key from './bibliographe/CitationsFilter'
 
 const mapStateToProps = ({ articleStats }) => ({ articleStats })
 
 function WriteLeft (props) {
-  const bibTeXEntries = useMemo(() => bib2key(props.bib), [props.bib])
   const [expanded, setExpanded] = useState(true)
 
   return (
@@ -30,7 +28,7 @@ function WriteLeft (props) {
           </header>
           <Versions {...props} />
           <Sommaire md={props.md} setCodeMirrorCursor={props.setCodeMirrorCursor} />
-          <Biblio bibTeXEntries={bibTeXEntries} readOnly={props.readOnly} bib={props.bib} handleBib={props.handleBib} article={props.article} />
+          <Biblio readOnly={props.readOnly} bib={props.bib} handleBib={props.handleBib} article={props.article} />
           <Stats stats={props.articleStats} />
         </div>
       )}

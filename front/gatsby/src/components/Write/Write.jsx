@@ -226,8 +226,10 @@ function ConnectedWrite(props) {
         setVersions(article.versions)
 
         const md = version.md
+        const bib = version.bib
         dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
         dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
+        dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
       }
 
       setIsLoading(false)
