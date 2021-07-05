@@ -11,25 +11,22 @@
     margin-bottom: 1rem;
   }
 
-  > p {
-    padding: 0.5rem 1rem;
-
-    span {
-      @extend .primary-button;
-      float: right;
-    }
-  }
-
-  > p:nth-child(2n + 1) {
-    background-color: $extra-background-color;
-  }
-
   margin-bottom: 1rem;
 }
 
 .acquintance {
   display: flex;
   justify-content: space-between;
+  padding: 0.75rem 1rem;
+
+  &:nth-child(2n) {
+    background-color: $extra-background-color;
+  }
+}
+
+.acquintanceEmail {
+  display: block;
+  font-size: 0.9em;
 }
 
 .acquintanceActions {
