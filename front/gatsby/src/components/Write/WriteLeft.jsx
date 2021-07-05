@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
 import styles from './writeLeft.module.scss'
