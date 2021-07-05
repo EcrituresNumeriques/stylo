@@ -47,12 +47,8 @@ const Export = ({ book, bookId, name, title, version, revision, versionId, appli
         </Select>
         <Select value={csl} onChange={(e) => setCsl(e.target.value)}>
           <option value="chicagomodified">chicagomodified</option>
-          <option value="lettres-et-sciences-humaines-fr">
-            lettres-et-sciences-humaines-fr
-          </option>
-          <option value="chicago-fullnote-bibliography-fr">
-            chicago-fullnote-bibliography-fr
-          </option>
+          <option value="lettres-et-sciences-humaines-fr"> lettres-et-sciences-humaines-fr</option>
+          <option value="chicago-fullnote-bibliography-fr"> chicago-fullnote-bibliography-fr</option>
         </Select>
         <Select value={toc} onChange={(e) => setToc(e.target.value)}>
           <option value={true}>Table of content</option>
@@ -72,7 +68,7 @@ const Export = ({ book, bookId, name, title, version, revision, versionId, appli
         )}
       </form>
       <nav>
-        <p onClick={() => window.open(exportUrl, '_blank')}>Export</p>
+        <a href={exportUrl} target={'_blank'}>Export</a>
       </nav>
     </section>
   )
