@@ -32,7 +32,7 @@ const Export = ({ book, bookId, name, title, version, revision, versionId, appli
 
   return (
     <section className={styles.export}>
-      <h1>export</h1>
+      <h1>Export</h1>
       <form>
         <Select value={format} onChange={(e) => setFormat(e.target.value)}>
           <option value="html5">HTML5</option>
