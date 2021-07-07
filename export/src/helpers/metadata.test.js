@@ -10,6 +10,7 @@ nocite: '@*'
 subtitle: A user friendly text editor for humanities scholars.
 ---
 `, {id: 'abcd1234', replaceBibliography: true})).toBe(`---
+bibliography: abcd1234.bib
 subtitle: A user friendly text editor for humanities scholars.
 title: Stylo
 title_f: untitled
