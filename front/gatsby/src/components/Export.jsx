@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import Select from './Select'
 import styles from './export.module.scss'
+import buttonStyles from "./button.module.scss";
 
 function filterAlphaNum (string) {
   return string
@@ -68,7 +69,7 @@ const Export = ({ book, bookId, name, title, version, revision, versionId, appli
         )}
       </form>
       <nav>
-        <a href={exportUrl} target="_blank">Export</a>
+        <a className={[buttonStyles.button, buttonStyles.primary].join(' ')} href={exportUrl} target="_blank">Export</a>
       </nav>
     </section>
   )
