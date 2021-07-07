@@ -17,7 +17,7 @@
     text-align: right;
     margin-bottom: 1rem;
     float: right;
-    > p {
+    > a {
       display: inline-block;
       @extend .primary-button;
     }
