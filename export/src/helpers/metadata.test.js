@@ -3,6 +3,21 @@ const YAML = require('js-yaml')
 const fs = require('fs').promises
 const path = require('path')
 
+test('nocite always appears last', () => {
+  expect(prepare(`---
+title: Stylo
+nocite: '@*'
+subtitle: A user friendly text editor for humanities scholars.
+---
+`, {id: 'abcd1234', replaceBibliography: true})).toBe(`---
+subtitle: A user friendly text editor for humanities scholars.
+title: Stylo
+title_f: untitled
+nocite: '@*'
+---`
+  )
+})
+
 test('replace bibliography in YAML metadata', () => {
   expect(prepare(`---
 title: Stylo
