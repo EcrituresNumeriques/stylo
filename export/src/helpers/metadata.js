@@ -4,6 +4,10 @@ const removeMd = require('remove-markdown');
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 const FORMATTED_FIELD_RE = /_f$/
 
+/**
+ * This sorting ensures the `nocite` key is always the last one.
+ * @see https://github.com/EcrituresNumeriques/stylo/issues/425
+ */
 function sortYamlKeys (a, b) {
   if (a === 'nocite') return 1
   if (b === 'nocite') return -1
