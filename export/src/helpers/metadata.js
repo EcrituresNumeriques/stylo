@@ -4,8 +4,14 @@ const removeMd = require('remove-markdown');
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 const FORMATTED_FIELD_RE = /_f$/
 
-function walkObject (obj, itemTransformFn) {
+function sortYamlKeys (a, b) {
+  if (a === 'nocite') return 1
+  if (b === 'nocite') return -1
+  
+  return a.localeCompare(b)
+}
 
+function walkObject (obj, itemTransformFn) {
   Object.entries(obj).forEach(([key, value]) => {
     itemTransformFn(obj, key, value)
 
@@ -17,7 +23,7 @@ function walkObject (obj, itemTransformFn) {
   return obj
 }
 
-const prepare = (yaml, {id, originalUrl, replaceBibliography = false}) => {
+function prepare (yaml, {id, originalUrl, replaceBibliography = false}) {
   // the YAML contains a single document enclosed in "---" to satisfy pandoc
   // thereby, we need to use "load all":
   const docs = YAML.loadAll(yaml, 'utf8')
@@ -90,7 +96,7 @@ const prepare = (yaml, {id, originalUrl, replaceBibliography = false}) => {
   }
 
   // dump the result enclosed in "---"
-  return '---\n' + YAML.dump(doc, { sortKeys: true }) + '---'
+  return '---\n' + YAML.dump(doc, { sortKeys: sortYamlKeys }) + '---'
 }
 
 module.exports = {
