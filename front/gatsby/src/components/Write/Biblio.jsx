@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { ChevronDown, ChevronRight } from 'react-feather'
 
 import Modal from '../Modal'
 import Reference from './Reference'
@@ -12,21 +11,15 @@ export default function Biblio ({ bib, article, bibTeXEntries, handleBib, readOn
   const [expand, setExpand] = useState(true)
   const [modal, setModal] = useState(false)
 
+  console.log({ article })
   return (
     <section className={menuStyles.section}>
-      <h1 onClick={() => setExpand(!expand)}>
-        {expand ? <ChevronDown/> : <ChevronRight/>} Bibliography
-      </h1>
-      {expand && (
-        <>
-          {!readOnly && (
-            <Button onClick={() => setModal(true)}>Manage Bibliography</Button>
-          )}
-          {bibTeXEntries.map((entry, index) => (
-            <Reference key={`ref-${entry.key}-${index}`} entry={entry} />
-          ))}
-        </>
+      {!readOnly && (
+        <Button onClick={() => setModal(true)}>Manage Bibliography</Button>
       )}
+      {bibTeXEntries.map((entry, index) => (
+        <Reference key={`ref-${entry.key}-${index}`} entry={entry}/>
+      ))}
       {modal && (
         <Modal cancel={() => setModal(false)}>
           <Bibliographe

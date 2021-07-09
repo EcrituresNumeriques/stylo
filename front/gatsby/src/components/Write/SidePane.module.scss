@@ -1,7 +1,7 @@
 .navbarItem {
   display: flex;
   align-items: center;
-  padding: 1em;
+  padding: 0.5em 0.75em 0.5em 0.5em;
   column-gap: 0.5em;
   text-decoration: none;
   color: #202020
@@ -13,11 +13,25 @@
   text-decoration: underline;
 }
 
+.expandColapseAction {
+  border-top: 1px solid #d9d9d9;
+  padding-top: 0.5em;
+}
+
+.navbarColapseItem {
+  color: #979797
+}
+
+.navbarExpandItem {
+  color: #979797
+}
+
 .navigation {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   margin-top: 1rem;
+  font-size: 0.9em;
 }
 
 .navbarItemExpanded {
@@ -29,7 +43,7 @@
 
 .menu {
   width: 350px;
-  padding: 1rem 1rem 0 1rem;
+  padding: 0.5em 0 0;
   box-shadow: -4px 0px 7px 0px #b2b2b2;
   background-color: white;
   min-height: calc(100vh - 50px);
