@@ -17,17 +17,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-        cache: npm
     - name: Install dependencies
       run: npm ci --prefix front/gatsby
     - name: Build front
       run: npm run build --prefix front/gatsby
     - name: Test
       run: npm t --prefix front/gatsby
-
   build-export:
     runs-on: ubuntu-latest
     strategy:
@@ -36,15 +34,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
       - name: Install dependencies
         run: npm ci --prefix export
       - name: Test
         run: npm t --prefix export
-
   build-docker:
     runs-on: ubuntu-latest
     steps:
