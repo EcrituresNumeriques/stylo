@@ -83,10 +83,16 @@ a.button:not(.primary), a.icon:not(.primary) {
 .primary {
   background-color: #000;
   color: #fff;
+
+  &:disabled {
+    color: rgb(170, 170, 170);
+    background-color: rgba(239, 239, 239, 0.3);
+    border-color: rgba(118, 118, 118, 0.3);
+  }
 }
 
-.primary:hover,
-.primary:focus {
+.primary:hover:not([disabled]),
+.primary:focus:not([disabled]) {
   background-color: rgba(0, 0, 0, 0.75);
   color: #fff;
 }
@@ -95,9 +101,15 @@ a.button:not(.primary), a.icon:not(.primary) {
   background-color: #fff;
   color: #000;
   border: 1px solid #000;
+
+  &:disabled {
+    color: rgb(170, 170, 170);
+    background-color: rgba(239, 239, 239, 0.3);
+    border-color: rgba(118, 118, 118, 0.3);
+  }
 }
-.secondary:hover,
-.secondary:focus {
+.secondary:hover:not([disabled]),
+.secondary:focus:not([disabled]) {
   background-color: rgba(0, 0, 0, 0.2);
 }
 

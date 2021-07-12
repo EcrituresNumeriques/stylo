@@ -192,9 +192,6 @@ function ConnectedWrite(props) {
   const handleYaml = async (yaml) => {
     await setLive({ ...live, yaml: yaml })
   }
-  const handleBib = async (bib) => {
-    await setLive({ ...live, bib: bib })
-  }
 
   //Reload when version switching
   useEffect(() => {
@@ -226,8 +223,10 @@ function ConnectedWrite(props) {
         setVersions(article.versions)
 
         const md = version.md
+        const bib = version.bib
         dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
         dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
+        dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
       }
 
       setIsLoading(false)
@@ -259,7 +258,6 @@ function ConnectedWrite(props) {
         versions={versions}
         readOnly={readOnly}
         sendVersion={sendVersion}
-        handleBib={handleBib}
         setCodeMirrorCursor={setCodeMirrorCursor}
       />
 

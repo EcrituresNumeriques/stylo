@@ -1,7 +1,8 @@
 import { createStore } from 'redux'
+import bib2key from './components/Write/bibliographe/CitationsFilter'
 
-function createReducer(initialState, handlers) {
-  return function reducer(state = initialState, action) {
+function createReducer (initialState, handlers) {
+  return function reducer (state = initialState, action) {
     if (handlers.hasOwnProperty(action.type)) {
       return handlers[action.type](state, action)
     } else {
@@ -39,6 +40,7 @@ const reducer = createReducer([], {
   // article reducers
   UPDATE_ARTICLE_STATS: updateArticleStats,
   UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
+  UPDATE_ARTICLE_BIB: updateArticleBib,
 })
 
 
@@ -75,7 +77,7 @@ function clearZoteroToken (state) {
   return state
 }
 
-function loginUser (state, {login}) {
+function loginUser (state, { login }) {
   if (login.password && login.users && login.token) {
     return {
       ...state,
@@ -104,11 +106,11 @@ function updateActiveUser (state, action) {
   }
 }
 
-function reloadUsers (state, {payload: users}) {
+function reloadUsers (state, { payload: users }) {
   return { ...state, users }
 }
 
-function switchUser (state, {payload: activeUser}) {
+function switchUser (state, { payload: activeUser }) {
   if (state.users.map((u) => u._id).includes(activeUser._id)) {
     return { ...state, activeUser }
   }
@@ -120,10 +122,11 @@ function logoutUser (state) {
   return { ...state, ...initialState }
 }
 
-function removeMyselfAllowedLogin (state, {payload: userId}) {
+function removeMyselfAllowedLogin (state, { payload: userId }) {
   const remainingUsers = state.users.filter((u) => u._id !== userId)
 
-  return { ...state,
+  return {
+    ...state,
     users: remainingUsers,
     activeUser: remainingUsers[0],
   }
@@ -145,15 +148,17 @@ function updateArticleStats (state, { md }) {
   const charCountPlusSpace = textWithoutMarkdown.length
   const citationNb = text.match(CITATION_RE)?.length || 0
 
-  return { ...state, articleStats: {
+  return {
+    ...state, articleStats: {
       wordCount,
       charCountNoSpace,
       charCountPlusSpace,
       citationNb
-    }}
+    }
+  }
 }
 
-function updateArticleStructure(state, { md }) {
+function updateArticleStructure (state, { md }) {
   const text = (md || '').trim()
   const articleStructure = text
     .split('\n')
@@ -166,10 +171,16 @@ function updateArticleStructure(state, { md }) {
         .replace(/#\s/g, '\u21B3')
         // middle dot (\u00B7) + non-breaking space (\xa0)
         .replace(/#/g, '\u00B7\xa0')
-      return {...lineWithIndex, title}
+      return { ...lineWithIndex, title }
     })
 
   return { ...state, articleStructure }
+}
+
+function updateArticleBib (state, { bib }) {
+  const articleBibTeXEntries = bib2key(bib)
+  console.log('articleBibTeXEntries' + articleBibTeXEntries.length)
+  return { ...state, articleBib: bib, articleBibTeXEntries }
 }
 
 export default () => createStore(reducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
