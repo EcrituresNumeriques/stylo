@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 
-import { ChevronDown, ChevronRight } from 'react-feather'
-
 import styles from './sommaire.module.scss'
 import menuStyles from './menu.module.scss'
 import { connect } from 'react-redux'
@@ -12,12 +10,12 @@ function Sommaire (props) {
   const [expand, setExpand] = useState(true)
   const { articleStructure } = props
 
+  if (articleStructure.length === 0) {
+    return <></>
+  }
   return (
     <section className={[styles.section, menuStyles.section].join(' ')}>
-      <h1 onClick={() => setExpand(!expand)}>
-        {expand ? <ChevronDown/> : <ChevronRight/>} Table of contents
-      </h1>
-      {expand && (<ul>
+      <ul>
         {articleStructure.map((item) => (
           <li
             className={styles.headlineItem}
@@ -27,7 +25,7 @@ function Sommaire (props) {
             {item.title}
           </li>
         ))}
-      </ul>)}
+      </ul>
     </section>
   )
 }
