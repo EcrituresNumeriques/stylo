@@ -10,8 +10,8 @@ import bib2key from './bibliographe/CitationsFilter'
 
 const mapStateToProps = ({ articleStats }) => ({ articleStats })
 
-function WriteLeft (props) {
-  const bibTeXEntries = useMemo(() => bib2key(props.bib), [props.bib])
+function WriteLeft ({ bib, article, md, articleStats, readOnly, handleBib, versions, version, revision, compareTo, versionId, selectedVersion, sendVersion, onTableOfContentClick }) {
+  const bibTeXEntries = useMemo(() => bib2key(bib), [bib])
   const [expanded, setExpanded] = useState(true)
 
   return (
@@ -25,13 +25,23 @@ function WriteLeft (props) {
       {expanded && (
         <div>
           <header>
-            <h1>{props.article.title}</h1>
-            <h2>by {props.article.owners.join(', ')}</h2>
+            <h1>{article.title}</h1>
+            <h2>by {article.owners.join(', ')}</h2>
           </header>
-          <Versions {...props} />
-          <Sommaire md={props.md} setCodeMirrorCursor={props.setCodeMirrorCursor} />
-          <Biblio bibTeXEntries={bibTeXEntries} readOnly={props.readOnly} bib={props.bib} handleBib={props.handleBib} article={props.article} />
-          <Stats stats={props.articleStats} />
+          <Versions
+            article={article}
+            versions={versions}
+            readOnly={readOnly}
+            version={version}
+            revision={revision}
+            versionId={versionId}
+            sendVersion={sendVersion}
+            selectedVersion={selectedVersion}
+            compareTo={compareTo}
+          />
+          <Sommaire md={md} onTableOfContentClick={onTableOfContentClick} />
+          <Biblio bibTeXEntries={bibTeXEntries} readOnly={readOnly} bib={bib} handleBib={handleBib} article={article} />
+          <Stats stats={articleStats} />
         </div>
       )}
     </nav>

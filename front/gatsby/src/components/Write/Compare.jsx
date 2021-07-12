@@ -4,12 +4,12 @@ import DiffMatchPatch from 'diff-match-patch'
 
 import askGraphQL from '../../helpers/graphQL'
 
-const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
-  return { sessionToken, activeUser, applicationConfig }
+const mapStateToProps = ({ activeUser, applicationConfig }) => {
+  return { activeUser, applicationConfig }
 }
 
-const Compare = (props) => {
-  const query = `query{ version(version:"${props.compareTo}"){ _id md } }`
+const Compare = ({ compareTo, live, applicationConfig }) => {
+  const query = `query{ version(version:"${compareTo}"){ _id md } }`
   const [compareMD, setCompareMD] = useState('')
   const [loading, setLoading] = useState(true)
   const computeDiff = (text1, text2) => {
@@ -25,20 +25,20 @@ const Compare = (props) => {
       const data = await askGraphQL(
         { query },
         'fetching version to compareTo',
-        props.sessionToken,
-        props.applicationConfig
+        null,
+        applicationConfig
       )
       setCompareMD(data.version.md)
       setLoading(false)
     })()
-  }, [props.compareTo])
+  }, [compareTo])
 
   return (
     <div
       dangerouslySetInnerHTML={{
         __html: loading
           ? '<p>loading</p>'
-          : computeDiff(compareMD, props.live.md),
+          : computeDiff(compareMD, live.md),
       }}
     ></div>
   )
