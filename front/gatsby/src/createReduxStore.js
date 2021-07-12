@@ -1,11 +1,26 @@
-import { createStore } from 'redux'
+import { applyMiddleware, createStore } from 'redux'
+import { toEntries } from './helpers/bibtex'
 
-function createReducer(initialState, handlers) {
-  return function reducer(state = initialState, action) {
+function createReducer (initialState, handlers) {
+  return function reducer (state = initialState, action) {
     if (handlers.hasOwnProperty(action.type)) {
       return handlers[action.type](state, action)
     } else {
       return state
+    }
+  }
+}
+
+const convertBibTeXToEntries = store => {
+  return next => {
+    return async (action) => {
+      if (action.type === 'UPDATE_ARTICLE_BIB') {
+        const articleBibTeXEntries = await toEntries(action.bib)
+        store.dispatch({ type: 'SET_ARTICLE_BIB_ENTRIES', articleBibTeXEntries })
+        return next(action)
+      } else {
+        return next(action)
+      }
     }
   }
 }
@@ -23,9 +38,13 @@ const initialState = {
     charCountPlusSpace: 0,
     citationNb: 0,
   },
+  articleBib: '',
+  articleBibTeXEntries: [],
+  articleBibValidationStatus: '',
+  articleBibValidationResult: {}
 }
 
-const reducer = createReducer([], {
+const reducer = createReducer(initialState, {
   APPLICATION_CONFIG: setApplicationConfig,
   PROFILE: setProfile,
   CLEAR_ZOTERO_TOKEN: clearZoteroToken,
@@ -39,6 +58,12 @@ const reducer = createReducer([], {
   // article reducers
   UPDATE_ARTICLE_STATS: updateArticleStats,
   UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
+  UPDATE_ARTICLE_BIB: updateArticleBib,
+  UPDATE_ARTICLE_BIB_ENTRIES: updateArticleBibEntries,
+  SET_ARTICLE_BIB_ENTRIES: setArticleBibEntries,
+  VALIDATE_ARTICLE_BIB: validateArticleBib,
+  SET_ARTICLE_BIB_VALIDATION_RESULT: setArticleBibValidationResult,
+  SET_ARTICLE_BIB_VALIDATION_STATUS: setArticleBibValidationStatus
 })
 
 
@@ -75,7 +100,7 @@ function clearZoteroToken (state) {
   return state
 }
 
-function loginUser (state, {login}) {
+function loginUser (state, { login }) {
   if (login.password && login.users && login.token) {
     return {
       ...state,
@@ -104,11 +129,11 @@ function updateActiveUser (state, action) {
   }
 }
 
-function reloadUsers (state, {payload: users}) {
+function reloadUsers (state, { payload: users }) {
   return { ...state, users }
 }
 
-function switchUser (state, {payload: activeUser}) {
+function switchUser (state, { payload: activeUser }) {
   if (state.users.map((u) => u._id).includes(activeUser._id)) {
     return { ...state, activeUser }
   }
@@ -120,10 +145,11 @@ function logoutUser (state) {
   return { ...state, ...initialState }
 }
 
-function removeMyselfAllowedLogin (state, {payload: userId}) {
+function removeMyselfAllowedLogin (state, { payload: userId }) {
   const remainingUsers = state.users.filter((u) => u._id !== userId)
 
-  return { ...state,
+  return {
+    ...state,
     users: remainingUsers,
     activeUser: remainingUsers[0],
   }
@@ -145,15 +171,17 @@ function updateArticleStats (state, { md }) {
   const charCountPlusSpace = textWithoutMarkdown.length
   const citationNb = text.match(CITATION_RE)?.length || 0
 
-  return { ...state, articleStats: {
+  return {
+    ...state, articleStats: {
       wordCount,
       charCountNoSpace,
       charCountPlusSpace,
       citationNb
-    }}
+    }
+  }
 }
 
-function updateArticleStructure(state, { md }) {
+function updateArticleStructure (state, { md }) {
   const text = (md || '').trim()
   const articleStructure = text
     .split('\n')
@@ -166,10 +194,41 @@ function updateArticleStructure(state, { md }) {
         .replace(/#\s/g, '\u21B3')
         // middle dot (\u00B7) + non-breaking space (\xa0)
         .replace(/#/g, '\u00B7\xa0')
-      return {...lineWithIndex, title}
+      return { ...lineWithIndex, title }
     })
 
   return { ...state, articleStructure }
 }
 
-export default () => createStore(reducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+function updateArticleBib (state, { bib }) {
+  return { ...state, articleBib: bib }
+}
+
+function updateArticleBibEntries (state, { articleBibTeXEntries }) {
+  return { ...state, articleBib: toBibtex(articleBibTeXEntries), articleBibTeXEntries }
+}
+
+function setArticleBibEntries (state, { articleBibTeXEntries }) {
+  return { ...state, articleBibTeXEntries }
+}
+
+function setArticleBibValidationResult (state, { articleBibValidationResult }) {
+  return { ...state, articleBibValidationResult, articleBibValidationStatus: 'completed' }
+}
+
+function setArticleBibValidationStatus (state, { articleBibValidationStatus }) {
+  if (articleBibValidationStatus === 'pending') {
+    return { ...state, articleBibValidationStatus, articleBibValidationResult: {} }
+  }
+  return { ...state, articleBibValidationStatus }
+}
+
+function validateArticleBib (state, { bib }) {
+  return { ...state, articleBibValidationStatus: 'pending' }
+}
+
+export default () => createStore(
+  reducer,
+  applyMiddleware(convertBibTeXToEntries),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)

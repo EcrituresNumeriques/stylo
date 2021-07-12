@@ -80,24 +80,24 @@ a.button:not(.primary), a.icon:not(.primary) {
   color: currentColor;
 }
 
-.primary {
+.primary:not(:disabled) {
   background-color: #000;
   color: #fff;
 }
 
-.primary:hover,
-.primary:focus {
+.primary:not(:disabled):hover,
+.primary:not(:disabled):focus {
   background-color: rgba(0, 0, 0, 0.75);
   color: #fff;
 }
 
-.secondary {
+.secondary:not(:disabled) {
   background-color: #fff;
   color: #000;
   border: 1px solid #000;
 }
-.secondary:hover,
-.secondary:focus {
+.secondary:not(:disabled):hover,
+.secondary:not(:disabled):focus {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
@@ -106,7 +106,7 @@ a.button:not(.primary), a.icon:not(.primary) {
   pointer-events: none;
 }
 
-.icon {
+.icon:not(:disabled) {
   background: none;
   border: none;
   transition: color 1s ease, background 1s ease;

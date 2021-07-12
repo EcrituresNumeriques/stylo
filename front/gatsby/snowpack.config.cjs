@@ -12,7 +12,7 @@ module.exports = {
     sourcemap: false,
     splitting: true,
     treeshake: true,
-    target: "safari11"
+    target: "safari11.1"
   },
   routes: [
     {"match": "routes", "src": ".*", "dest": "/index.html"}

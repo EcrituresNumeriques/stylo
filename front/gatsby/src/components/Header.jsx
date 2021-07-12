@@ -47,7 +47,7 @@ const ConnectedHeader = (props) => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <HelpCircle className={styles.linkIcon}size={14} />
+              <HelpCircle className={styles.linkIcon} size={14} />
               Documentation
             </a></li>
           </ul>

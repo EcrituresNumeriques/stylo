@@ -1,5 +1,4 @@
-import { filter, toBibtex, validate } from './bibtex'
-import bib2key from '../components/Write/bibliographe/CitationsFilter'
+import { filter, toBibtex, toEntries, validate } from './bibtex'
 
 describe('parse', () => {
   test('it should return line errors on syntax error', () => {
@@ -104,7 +103,7 @@ describe('parse', () => {
     })
   })
 
-  test('it should validate a given bibtex', () => {
+  test('it should validate a given bibtex', async () => {
     const text = `@misc{dehut_en_2018,
       type = {Billet},
       title = {En finir avec {Word} ! {Pour} une analyse des enjeux relatifs aux traitements de texte et à leur utilisation},
@@ -119,7 +118,7 @@ describe('parse', () => {
       file = {Snapshot:/home/antoine/Zotero/storage/VC32TEFF/Dehut - En finir avec Word ! Pour une analyse des enjeux r.html:text/html}
     }`
 
-    const entries = bib2key(text).map(({ entry }) => entry)
+    const entries = toEntries(text).map(({ entry }) => entry)
 
     expect(toBibtex(entries)).toMatch('journaltitle = {L’atelier des savoirs}')
     expect(toBibtex(entries)).toMatch(
@@ -174,5 +173,48 @@ describe('parse', () => {
     expect(entries[1].entry_key).toEqual(
       'pollux_grammaticus_onomasticon_nodate'
     )
+  })
+})
+
+describe('toEntries', () => {
+  test('it should parse two item titles', () => {
+    const text = `@book{noauthor_test19_nodate,
+            title = {test19}
+        }
+
+        @book{noauthor_test26_nodate,
+            title = {test26}
+        }`
+
+    return expect(toEntries(text)).toMatchObject([
+      {
+        title: 'test19',
+        key: 'noauthor_test19_nodate',
+        type: 'book',
+        entry: {},
+      },
+      {
+        title: 'test26',
+        key: 'noauthor_test26_nodate',
+        type: 'book',
+        entry: {},
+      },
+    ])
+  })
+
+  test('it should parse a complex title', () => {
+    const text = `@book{dominik_org_2010,
+        title = {The {Org} {Mode} 7 {Reference} {Manual} - {Organize} your life with {GNU} {Emacs}}
+      }`
+
+    return expect(toEntries(text)).toMatchObject([
+      {
+        title:
+          'The Org Mode 7 Reference Manual - Organize your life with GNU Emacs',
+        key: 'dominik_org_2010',
+        type: 'book',
+        entry: {},
+      },
+    ])
   })
 })
