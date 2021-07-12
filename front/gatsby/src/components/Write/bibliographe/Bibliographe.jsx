@@ -1,27 +1,23 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 
 import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
 import { getUserProfile } from '../../../helpers/userProfile'
-import bib2key from './CitationsFilter'
 import askGraphQL from '../../../helpers/graphQL'
-import {
-  fetchAllCollectionsPerLibrary,
-  fetchBibliographyFromCollectionHref,
-} from '../../../helpers/zotero'
+import { fetchAllCollectionsPerLibrary, fetchBibliographyFromCollectionHref, } from '../../../helpers/zotero'
 import { toBibtex, validate } from '../../../helpers/bibtex'
 import ReferenceTypeIcon from '../../ReferenceTypeIcon'
 import Button from '../../Button'
 import Field from '../../Field'
 
-import { Check, Plus, Trash } from 'react-feather'
+import { Check, Plus, Search, Trash } from 'react-feather'
 import Select from '../../Select'
 import NavTag from '../../NavTab'
 
-const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
-  return { sessionToken, activeUser, applicationConfig }
+const mapStateToProps = ({ articleBib, articleBibTeXEntries, activeUser, applicationConfig }) => {
+  return { articleBib, articleBibTeXEntries, activeUser, applicationConfig }
 }
 
 const mapDispatchToProps = (dispatch) => ({
@@ -31,14 +27,12 @@ const mapDispatchToProps = (dispatch) => ({
     ),
 })
 
-function ConnectedBibliographe (props) {
-  const {backendEndpoint} = props.applicationConfig
-  const defaultSuccess = (result) => console.log(result)
-  const { refreshProfile } = props
-  const success = props.success || defaultSuccess
+function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, articleBibTeXEntries, activeUser, applicationConfig }) {
+  const { backendEndpoint } = applicationConfig
+  const [filter, setFilter] = useState('')
   const [selector, setSelector] = useState('zotero')
   const [isSaving, setSaving] = useState(false)
-  const [bib, setBib] = useState(props.bib)
+  const [bib, setBib] = useState(articleBib)
   const [addCitation, setAddCitation] = useState('')
   const [citationValidationResult, setCitationValidationResult] = useState({
     valid: false,
@@ -46,9 +40,9 @@ function ConnectedBibliographe (props) {
   const [rawBibTeXValidationResult, setRawBibTeXValidationResult] = useState({
     valid: false,
   })
-  const [zoteroLink, setZoteroLink] = useState(props.article.zoteroLink || '')
+  const [zoteroLink, setZoteroLink] = useState(article.zoteroLink || '')
   const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)
-  const { zoteroToken } = props.activeUser
+  const { zoteroToken } = activeUser
   const [zoteroCollections, setZoteroCollections] = useState({})
   const citationForm = useRef()
 
@@ -60,8 +54,6 @@ function ConnectedBibliographe (props) {
         .finally(() => setSaving(false))
     }
   }, [zoteroToken])
-
-  const citations = useMemo(() => bib2key(bib), [bib])
 
   const mergeCitations = () => {
     setBib(bib + '\n' + addCitation)
@@ -109,20 +101,20 @@ function ConnectedBibliographe (props) {
     setSaving(true)
 
     // saveOnGraphQL
-    if (props.article.zoteroLink !== zoteroLink) {
-      console.log('Saving to graphQL', props.article.zoteroLink, zoteroLink)
+    if (article.zoteroLink !== zoteroLink) {
+      console.log('Saving to graphQL', article.zoteroLink, zoteroLink)
       try {
         const query = `mutation($user:ID!,$article:ID!,$zotero:String!){zoteroArticle(article:$article,zotero:$zotero,user:$user){ _id zoteroLink}}`
         const variables = {
           zotero: zoteroLink,
-          user: props.activeUser._id,
-          article: props.article._id,
+          user: activeUser._id,
+          article: article._id,
         }
         await askGraphQL(
           { query, variables },
           'updating zoteroLink',
-          props.sessionToken,
-          props.applicationConfig
+          null,
+          applicationConfig
         )
       } catch (err) {
         setSaving(false)
@@ -138,8 +130,8 @@ function ConnectedBibliographe (props) {
         setSaving(false)
         const bib = result.join('\n')
         setBib(bib)
-        success(bib)
-        props.cancel()
+        dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
+        cancel()
       })
     } else {
       // previous value was empty, and we tried to save an empty value again
@@ -154,8 +146,8 @@ function ConnectedBibliographe (props) {
         setSaving(false)
         const bib = result.join('\n')
         setBib(bib)
-        success(bib)
-        props.cancel()
+        dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
+        cancel()
       }
     )
   }
@@ -180,6 +172,9 @@ function ConnectedBibliographe (props) {
     </Select>
   )
 
+  const bibTeXFound = articleBibTeXEntries
+    .filter((entry) => entry.key.toLowerCase().indexOf(filter.toLowerCase()) > -1)
+
   return (
     <article>
       <h1 className={styles.title}>Bibliography</h1>
@@ -197,7 +192,7 @@ function ConnectedBibliographe (props) {
           name: 'Raw BibTeX'
         }
       ]
-      }/>
+      } />
       {selector === 'zotero' && (
         <div className={styles.zotero}>
           <h3>Import by URL</h3>
@@ -220,7 +215,7 @@ function ConnectedBibliographe (props) {
               onClick={() => saveNewZotero()}
               disabled={
                 isSaving ||
-                (!zoteroLink && zoteroLink === props.article.zoteroLink)
+                (!zoteroLink && zoteroLink === article.zoteroLink)
               }
             >
               {isSaving
@@ -259,7 +254,7 @@ function ConnectedBibliographe (props) {
                   )
                   const intervalId = setInterval(() => {
                     if (popup.closed) {
-                      refreshProfile(props.applicationConfig)
+                      refreshProfile(applicationConfig)
                       clearInterval(intervalId)
                     }
                   }, 1000)
@@ -303,13 +298,13 @@ function ConnectedBibliographe (props) {
                 disabled={citationValidationResult.valid !== true}
                 onClick={() => mergeCitations()}
               >
-                <Plus/> Add
+                <Plus /> Add
               </Button>
             </li>
           </ul>
 
-
-          <p>{citations.length} citations.</p>
+          <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search" onChange={(e) => setFilter(e.target.value)} />
+          <p className={styles.resultFoundCount}>{bibTeXFound.length} found</p>
 
           <div className={styles.responsiveTable}>
             <table className={styles.citationList}>
@@ -319,24 +314,26 @@ function ConnectedBibliographe (props) {
                 <col className={styles.colActions} />
               </colgroup>
               <tbody>
-                {citations.map((b, i) => (
-                  <tr
-                    key={`citation-${b.key}-${i}`}
-                    className={styles.citation}
-                  >
-                    <td className={`icon-${b.type} ${styles.colIcon}`}>
-                      <ReferenceTypeIcon type={b.type} />
-                    </td>
-                    <th className={styles.colKey} scope="row">
-                      @{b.key}
-                    </th>
-                    <td className={styles.colActions}>
-                      <Button icon={true} onClick={() => removeCitation(citations, i)}>
-                        <Trash />
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
+              {bibTeXFound
+                .slice(0, 10)
+                .map((b, i) => (
+                <tr
+                  key={`citation-${b.key}-${i}`}
+                  className={styles.citation}
+                >
+                  <td className={`icon-${b.type} ${styles.colIcon}`}>
+                    <ReferenceTypeIcon type={b.type} />
+                  </td>
+                  <th className={styles.colKey} scope="row">
+                    @{b.key}
+                  </th>
+                  <td className={styles.colActions}>
+                    <Button icon={true} onClick={() => removeCitation(articleBibTeXEntries, i)}>
+                      <Trash />
+                    </Button>
+                  </td>
+                </tr>
+              ))}
               </tbody>
             </table>
           </div>
@@ -346,8 +343,8 @@ function ConnectedBibliographe (props) {
               <Button
                 primary={true}
                 onClick={() => {
-                  success(bib)
-                  props.cancel()
+                  dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
+                  cancel()
                 }}
                 className={styles.primary}
               >
@@ -388,8 +385,8 @@ function ConnectedBibliographe (props) {
                 primary={true}
                 disabled={rawBibTeXValidationResult.valid !== true}
                 onClick={() => {
-                  success(bib)
-                  props.cancel()
+                  dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
+                  cancel()
                 }}
                 className={styles.primary}
               >
@@ -404,9 +401,5 @@ function ConnectedBibliographe (props) {
   )
 }
 
-const Bibliographe = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ConnectedBibliographe)
-
+const Bibliographe = connect(mapStateToProps, mapDispatchToProps)(ConnectedBibliographe)
 export default Bibliographe
