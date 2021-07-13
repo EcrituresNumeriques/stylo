@@ -5,7 +5,7 @@ Stylo permet de créer des documents plus complexes que des articles comme des m
 
 ## Principes de base
 
-> Un mémoire est constitué de un ou plusieurs documents Stylo mis bout-à-bout.
+> Un mémoire est constitué d'un ou plusieurs documents Stylo mis bout à bout.
 
 - Ces documents peuvent être les chapitres ou les parties du mémoire.
 - Ils sont rassemblés ensemble dans un mémoire à l'aide d'un même label _[tag]_, qui doit être associé à chaque document Stylo.
@@ -20,20 +20,20 @@ Stylo permet de créer des documents plus complexes que des articles comme des m
 
 ### Niveaux de titre
 
-Votre mémoire ou thèse peut être structuré en parties et chapitres, ou en chapitres seuls. Les titres de **partie** doivent être des **titres de niveau 1** (exemple: `# Première Partie : mon titre de partie`) et les titres de **chapitre** seront alors des **titres de niveau 2**. Dans le cas d'un mémoire structuré en chapitres seuls, les titres de **chapitre** seront des **titres de niveau 1** (exemple: `# mon titre de chapitre`)
+Votre mémoire ou thèse peut être structuré en parties et chapitres ou en chapitres seuls. Les titres de **partie** doivent être des **titres de niveau 1** (exemple: `# Première Partie : mon titre de partie`) et les titres de **chapitre** seront alors des **titres de niveau 2**. Dans le cas d'un mémoire structuré en chapitres seuls, les titres de **chapitre** seront des **titres de niveau 1** (exemple: `# mon titre de chapitre`)
 
 Au moment de l'export, vous pourrez déclarer l'organisation de votre mémoire :
 
-1. **en parties et chapitres**
-2. **en chapitres seuls**
+1. **En parties et chapitres**
+2. **En chapitres seuls**
 
 
 ### Bibliographie
 Par défaut la bibliographie générée est celle de l'ensemble des références citées ou présentes dans les différents articles qui composent le mémoire.
 
-Mais il est également possible de structurer cette bibliographie : dans un mémoire ou une thèse, la bibliographie est souvent divisées en différentes sections. Stylo permet de créer une bibliographie organisée en sous-sections. Voici les deux étapes à suivre :
+Mais il est également possible de structurer cette bibliographie : dans un mémoire ou une thèse, la bibliographie est souvent divisée en différentes sections. Stylo permet de créer une bibliographie organisée en sous-sections. Voici les deux étapes à suivre :
 
-1. dans les métadonnées du mémoire, il faut déclarer les différentes sections de la bibliographie. Pour cela, passez les métadonnées en mode raw
+1. Dans les métadonnées du mémoire, il faut déclarer les différentes sections de la bibliographie. Pour cela, passez les métadonnées en mode raw
 
 ![rawmode](uploads/images/alpha_rawmode.png)
 
@@ -48,10 +48,10 @@ subbiblio:
 ```
 
 La structure est la suivante :
-- `key` est la "clé de section", autrement dit un tag qui sera utilisé à l'étape suivante
+- `key` est la "clé de section", autrement dit un tag qui sera utilisé à l'étape suivante.
 - `title` sera votre titre de section de bibliographie, tel qu'il sera affiché dans le mémoire.
 
-2. pour chacune des références bibliographiques concernées, ajoutez dans le champ `keywords` la clé de section (par exemple `pratique` ou `theorie`). Cette étape peut être faite soit dans Zotero, soit dans Stylo, en éditant le bibtex directement.
+2. Pour chacune des références bibliographiques concernées, ajoutez dans le champ `keywords` la clé de section (par exemple `pratique` ou `theorie`). Cette étape peut être faite soit dans Zotero, soit dans Stylo en éditant le bibtex directement.
 
 ### Métadonnées du mémoire
 _Dans une prochaine version, l'interface "My Books" proposera un éditeur de métadonnées pour les métadonnées du mémoire ou de la thèse._
@@ -67,11 +67,11 @@ D'autres templates (modèles) seront disponibles prochainement.
 
 Plusieurs options sont disponibles :
 
-1. format du document exporté
-2. style bibliographique
-3. table des matières
-4. numérotation (ou non) des sections et chapitres
-5. structure du mémoire : en parties et chapitres, ou en chapitres seuls.
+1. Format du document exporté
+2. Style bibliographique
+3. Table des matières
+4. Numérotation (ou non) des sections et chapitres
+5. Structure du mémoire : en parties et chapitres, ou en chapitres seuls
 
 ### Personnaliser l'export en pdf
 Il est possible d'insérer du code LaTeX dans les contenus Markdown (hors métadonnées).
