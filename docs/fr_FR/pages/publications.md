@@ -35,7 +35,7 @@ Stylo a été présenté lors de plusieurs événements scientifiques et profess
   - [Présentation](https://ecrituresnumeriques.github.io/s_StyloMedici/)
   - [Vidéo et démonstration](https://www.youtube.com/embed/qcwEqbcxBF8) (Nicolas Sauret et Marcello Vitali-Rosati)
 
-- Conférence DH Montréal 2017 ([lien](https://dh2017.adho.org/program-2/abstracts/))
+- Conférence DH Montréal, août 2017 ([lien](https://dh2017.adho.org/program-2/abstracts/))
   - [Poster (pdf)](uploads/pdf/poster_Stylo_DH2017.pdf)
   - [Résumé (en anglais)](https://dh2017.adho.org/abstracts/224/224.pdf)
 
