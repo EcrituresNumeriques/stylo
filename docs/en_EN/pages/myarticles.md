@@ -26,9 +26,9 @@ You must then enter the name of the document in the appropriate field:
 
 ![nommer un article](uploads/images/Title.png)
 
-and validate by once again clicking on the button:
+and validate by clicking on the button:
 
-![Nouvel article](uploads/images/Create.png).
+![Nouvel article](uploads/images/Create-Validation.png).
 
 While doing this, you can also add tags to the article by clicking on the button:
 
@@ -46,7 +46,7 @@ To create and edit your tags, click on "Manage tags". A left pain the appears:
 
 You can clock on the tag name to select from your list of articles, only the articles related to the tag in question.
 
-You can view the tag details but clicking on the "+", which is positioned beside the tag name:
+You can view the tag details but clicking on the rafter, which is positioned beside the tag name:
 
 ![TagDetail](uploads/images/TagDetail.png)
 
@@ -54,8 +54,8 @@ You then have access to the tag description in reading mode, but also to many ot
 
 |Button|Function|
 |:-:|:--|
-| ![Delete](uploads/images/Delete.png) | To delete the tag|
-| ![Edit](uploads/images/Edit.png) | To open the tag in editing|
+| ![Delete](uploads/images/DeleteTag.png) | To delete the tag|
+| ![Edit](uploads/images/EditTag.png) | To open the tag in editing|
 
 The tag editing mode looks like this:
 
@@ -65,7 +65,7 @@ This space allows you to:
 
 - Change the tag name
 - Change the tag description
-- Choose a tag colour by filling in the fields with the following options: "blue", "pink", "red", "green", "yellow", "black", "white", "brown", "cyan", "magenta" ...
+- Choose a tag colour
 
 Do not forget to save your changes once you have finished editing your tag.
 
@@ -90,14 +90,15 @@ another Stylo user which will be called: "[Copy]Article title"|
 | ![Duplicate](uploads/images/Duplicate.png) | To duplicate only the last version of the article|
 | ![Export](uploads/images/Export.png) | To print only the last version of the article|
 | ![Edit](uploads/images/Edit.png) | To open the article in editing mode|
+| ![Delete](uploads/images/Delete.png) | To delete the article.|
 
-You can also expand the article block by clicking on the "+" icon, positioned to the left of your article title. You will then have access to:
+You can also expand the article block by clicking on the rafter, positioned to the left of your article title. You will then have access to:
 
 |Button|Function|
 |:-:|:--|
 | ![Versions](uploads/images/Version.png) | To consult the history of saved versions|
-| ![Tag](uploads/images/Tag.png) | To fill in the article tags by clicking on "edit"|
-| ![Delete](uploads/images/Delete.png) | To delete the article.|
+| ![Tag](uploads/images/Tag.png) | To select the tags of the article|
+
 
 ## Rename an article
 
@@ -107,7 +108,7 @@ You can rename your article by clicking on the "Rename" button, positioned besid
 
 After having changed the article title to your liking, do not forget to save:
 
-![Renommer](uploads/images/Renmomage.png)
+![Renommer](uploads/images/Renommage.png)
 
 ## Preview an article
 
@@ -139,7 +140,7 @@ The [Send] option is not sharing the article; only the last version of the artic
 
 You can duplicate your article by clicking on the following icon:
 
-![Duplicate](uploads/images/Duplicate.png)|
+![Duplicate](uploads/images/Duplicate.png)
 
 A duplicate of the article will then be generated and will appear at the top of the list of your Stylo articles. This article will be automatically titled as follows: "[Copy] Article title". This duplicate is created from the current article version (the one that you are in the process of editing) and does not contain the version history.
 
@@ -182,7 +183,7 @@ For more information on using the templates, see this [tutoriel](https://framagi
 
 ## Expand other article functions
 
-To expand other article functions, you must click on the "+" icon, positioned to the left of the title of your article:
+To expand other article functions, you must click on the rafter, positioned to the left of the title of your article:
 
 ![Plus](uploads/images/plus.png)
 
@@ -190,23 +191,19 @@ To expand other article functions, you must click on the "+" icon, positioned to
 
 You then have access to the major and minor versions of the articles: clicking on the name of a version takes you to the page in \"Editing\" mode of the respective version.
 
-![Versions](uploads/images/Versions.png)
+![Versions](uploads/images/Version.png)
 
 **Careful**: the page version to which you have access, although it is in \"Editing\" mode, does not allow you to change the content of the article. This is just a reading mode page from which you can [export]() and [compare]().
 
 ### Tag an article
 
-You can also tag your articles: adding a keyword will allow you to organise your article in the lists. To add a tag to your article, you must click on the "edit" option:
+You can also assign tags to your article from the list of current tags, simply by clicking on the tag you wish to add.
 
 ![TagEdit](uploads/images/TagE.png)
 
-You are shown existing tags already offered in your pages:
+**Careful**: to create tags, you must refer to the [Manage tags] tool.
 
-![TagChoice](uploads/images/TagChoice.png)
-
-You must click on the desired tag and then click "finish" once the desired changes have been made.
-
-**Careful**: This function does not allow you to create tags. To do this, you must refer to the [Manage tags] tool.
+![BarreLaterale2](uploads/images/BarreLaterale2.png)
 
 ### Delete an article
 

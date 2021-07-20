@@ -24,9 +24,9 @@ Vous devez ensuite renseigner le nom du document dans le champ prévu à cet eff
 
 ![nommer un article](uploads/images/Title.png)
 
-et valider l'opération en cliquant une nouvelle fois sur le bouton
+et valider l'opération en cliquant sur le bouton
 
-![Nouvel article](uploads/images/Create.png).
+![Nouvel article](uploads/images/Create-Validation.png).
 
 Lors de cette opération, il vous est également possible d'ajouter des tags à l'article en cliquant sur le bouton
 
@@ -44,7 +44,7 @@ Pour créer et éditer vos tags, cliquez sur "Manage tags". Un volet de gauche a
 
 Il vous est possible en cliquant sur le nom du tag de sélectionner dans votre liste d'articles seulement les articles concernés par le tag en question.
 
-Vous pouvez visualiser les détails du tag en cliquant sur le "+" situé à côté du nom du tag :
+Vous pouvez visualiser les détails du tag en cliquant sur le chevron situé à côté du nom du tag :
 
 ![TagDetail](uploads/images/TagDetail.png)
 
@@ -52,8 +52,8 @@ Vous avez alors accès au descriptif du tag en lecture, mais également à plusi
 
 |bouton|fonction|
 |:-:|:--|
-| ![Delete](uploads/images/Delete.png) | pour supprimer le tag |
-| ![Edit](uploads/images/Edit.png) | pour ouvrir le tag en édition |
+| ![Delete](uploads/images/DeleteTag.png) | pour supprimer le tag |
+| ![Edit](uploads/images/EditTag.png) | pour ouvrir le tag en édition |
 
 Le mode édition du tag se présente ainsi :
 
@@ -63,7 +63,7 @@ Cet espace vous permet de :
 
 - modifier le nom du tag
 - modifier le descriptif du tag
-- choisir une couleur du tag en renseignant le champ avec les possibilités suivantes : "blue", "pink", "red", "green", "yellow", "black", "white", "brown", "cyan", "magenta", etc.
+- choisir une couleur pour le tag
 
 N'oubliez pas d'enregistrer vos modifications une fois votre édition du tag terminée.
 
@@ -87,14 +87,15 @@ Chaque article se présente comme un bloc dans votre liste. Cet espace dédié �
 | ![Duplicate](uploads/images/Duplicate.png) | pour dupliquer uniquement la dernière version de l'article |
 | ![Export](uploads/images/Export.png) | pour dupliquer uniquement la dernière version de l'article |
 | ![Edit](uploads/images/Edit.png) | pour ouvrir l'article en édition |
+| ![Delete](uploads/images/Delete.png) | pour supprimer l'article |
 
-Vous pouvez également développer le bloc de l'article en cliquant sur l'icône "+" située à gauche du titre de votre article. Vous avez alors accès à :
+Vous pouvez également développer le bloc de l'article en cliquant sur le chevron situé à gauche du titre de votre article. Vous avez alors accès à :
 
 |bouton|fonction|
 |:-:|:--|
 | ![Versions](uploads/images/Version.png) | pour consulter l'historique des versions enregistrées |
-| ![Tag](uploads/images/Tag.png) | pour renseigner les tags de l'article en cliquant sur "edit" |
-| ![Delete](uploads/images/Delete.png) | pour supprimer l'article |
+| ![Tag](uploads/images/Tag.png) | pour choisir les tags de l'article |
+
 
 ## Renommer un article
 
@@ -136,7 +137,7 @@ L'option [Send] n'est pas un partage d'article : seule la dernière version de l
 
 Vous pouvez dupliquer votre article en cliquant sur l'icône suivante :
 
-![Duplicate](uploads/images/Duplicate.png)|
+![Duplicate](uploads/images/Duplicate.png)
 
 Un doublon de l'article sera alors généré et apparaîtra en haut de la liste de vos articles Stylo. Cet article sera intitulé automatiquement comme suit : "[Copy]Titre de l'article". Ce doublon est créé à partir de la version actuelle (celle en cours d'édition) de l'article et ne comporte alors pas d'historique de versions.
 
@@ -179,7 +180,7 @@ Pour plus d'informations sur l'emploi des templates, voir ce [tutoriel](https://
 
 ## Développer les autres fonctionnalités de l'article
 
-Pour développer d'autres fonctions de l'article, il faut cliquer sur l'icône "+" située à gauche du titre de votre article :
+Pour développer d'autres fonctions de l'article, il faut cliquer sur le chevron situé à gauche du titre de votre article :
 
 ![Plus](uploads/images/plus.png)
 
@@ -187,23 +188,19 @@ Pour développer d'autres fonctions de l'article, il faut cliquer sur l'icône "
 
 Vous avez alors accès aux versions majeures et mineures de l'article : un clic sur le nom d'une version vous conduit à la page en mode "Édition" de la version en question.
 
-![Versions](uploads/images/versions.png)
+![Versions](uploads/images/version.png)
 
 **Attention** : la page de la version à laquelle vous avez accès, bien qu'elle soit dans le mode "Édition", ne vous permet pas d'effectuer des modifications sur le contenu de l'article. Il s'agit d'une page en mode lecture uniquement à partir de laquelle vous pouvez effectuer des [exports]() et des [comparaisons]().
 
 ### Tager un article
 
-Vous pouvez également tagger votre article : l'ajout d'un mot-clef vous permettra d'organiser vos articles dans la liste. Pour ajouter un tag à votre article, il vous faut cliquer sur l'option "edit" :
+Vous pouvez également associer des tags à votre article parmi la liste des tags existants, simplement en cochant le tag que vous souhaitez ajouter.
 
 ![TagEdit](uploads/images/TageE.png)
 
-Les tags existants déjà renseignés dans votre page vous sont proposés :
+**Attention** : pour créer des tags, il faut vous reporter à l'outil [Manage tags].
 
-![TagChoice](uploads/images/TagChoice.png)
-
-Il vous faut cliquer sur le tag souhaité et puis cliquer sur "finish" une fois les modifications voulues effectuées.
-
-**Attention** : cette fonctionnalité ne vous permet pas de créer des tags. Pour cela, il faut vous reporter à l'outil [Manage tags].
+![BarreLaterale2](uploads/images/BarreLaterale2.png)
 
 ### Supprimer un article
 
