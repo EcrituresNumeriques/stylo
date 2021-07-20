@@ -22,8 +22,8 @@ Pour chaque article, plusieurs actions sont possibles :
 | ![Rename](uploads/images/Rename.png) | pour renommer l'article|
 | ![Plus](uploads/images/plus.png) | pour développer d'autres fonctions de l'article :|
 || ![Versions](uploads/images/Version.png) pour consulter l'historique des versions enregistrées |
-|| ![Tag](uploads/images/Tag.png) pour renseigner les tags de l'article en cliquant sur "edit" |
-|| ![Delete](uploads/images/Delete.png) pour supprimer l'article |
+|| ![Tag](uploads/images/Tag.png) pour choisir les tags de l'article | <!-- nouvelle formulation, changer cette image -->
+| ![Delete](uploads/images/Delete.png) pour supprimer l'article |
 
 Note : le nom du document tel que visible sur Stylo ne correspond pas au titre de l'article qui sera généré.
 
@@ -73,9 +73,9 @@ Vous devez ensuite renseigner le nom du document dans le champ prévu à cet eff
 
 et valider l'opération en cliquant une nouvelle fois sur le bouton
 
-![Nouvel article](uploads/images/Create.png)
+![Nouvel article](uploads/images/Create-Validation.png)
 
-Lors de cette opération, il vous est également possible d'ajouter des tags à l'article en cliquant sur le bouton
+Lors de cette opération, il vous est également possible de choisir les tags associés à l'article 
 
 ![Add Tags](uploads/images/AddTag.png)
 

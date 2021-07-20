@@ -24,7 +24,7 @@ For each article, many actions are possible:
 | ![Rename](uploads/images/Rename.png) | To rename the article|
 | ![Plus](uploads/images/plus.png) | To expand other functions relating to the article|
 || ![Versions](uploads/images/Version.png) | To consult the history of saved versions|
-|| ![Tag](uploads/images/Tag.png) | To fill in the article tags by clicking on \"edit\"|
+|| ![Tag](uploads/images/Tag.png) | To choose the tags of the article|
 || ![Delete](uploads/images/Delete.png) | To delete the article|
 
 Note: The document name, as it is visible in Stylo, does not correspond to the title of the article that will be generated.
@@ -77,7 +77,7 @@ and validate the operation by once again clicking on the button
 
 ![Nouvel article](uploads/images/Create.png)
 
-During this process, you can also add tags to the article by clicking on the button
+During this process, you can also choose the tags related to the article
 
 ![Add Tags](uploads/images/AddTag.png)
 

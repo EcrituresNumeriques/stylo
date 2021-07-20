@@ -63,7 +63,8 @@ L'export du mémoire se fait à travers un template LaTeX dédié. Il correspond
 
 D'autres templates (modèles) seront disponibles prochainement.
 
-![exportbook](uploads/images/alpha_exportbook.png)
+<!-- à quoi correspond cette image ? en commentaire pour le moment -->
+<!-- ![exportbook](uploads/images/alpha_exportbook.png) -->
 
 Plusieurs options sont disponibles :
 
