@@ -10,39 +10,30 @@ La participation et le suivi de ces sessions est libre et disponible en ligne en
 
 Stylo a été présenté lors de plusieurs événements scientifiques et professionnels :
 
-- Humanistica 2021, mai 2021 ([lien](https://humanistica2021.sciencesconf.org))
- - Présentation « L’utilisation de l’outil Stylo dans le cadre de la revue *Sens public* » ([lien](https://humanistica2021.sciencesconf.org/340826))
- - Atelier « Écriture et édition scientifiques avec l’éditeur de texte Stylo » ([lien](https://humanistica2021.sciencesconf.org/340911))
+- [Humanistica 2021](https://humanistica2021.sciencesconf.org), « L’utilisation de l’outil Stylo dans le cadre de la revue *Sens public* », mai 2021 : [résumé](https://humanistica2021.sciencesconf.org/340826) de la présentation (Antoine Fauchié et Margot Mellet)
 
-- LundiNum « Stylo : un éditeur de texte pour les sciences humaines et sociales » ([lien](https://agenda.inha.fr/events/stylo-un-editeur-de-texte-pour-les-sciences-humaines-et-sociales))
-  - [Vidéo (youtube)](https://www.youtube.com/watch?v=ATvCk6NSpdQ&list=PLsl8NWzVv6T2CQFtBOfnlA_EKLFeCFSUG) (Nicolas Sauret)
+- [Humanistica 2021](https://humanistica2021.sciencesconf.org), « Écriture et édition scientifiques avec l’éditeur de texte Stylo », mai 2021 : [résumé](https://humanistica2021.sciencesconf.org/340911) de l’atelier (Antoine Fauchié et Margot Mellet)
 
-- Article de la rédaction d’Huma-Num à l’occasion de la connection de Stylo au portail HumanID, décembre 2020
- - « Stylo, un éditeur de texte pour les SHS disponible chez Huma-Num » [lien](https://humanum.hypotheses.org/6311)
+- [LundiNum](https://agenda.inha.fr/events/stylo-un-editeur-de-texte-pour-les-sciences-humaines-et-sociales), « Stylo : un éditeur de texte pour les sciences humaines et sociales », avril 2021 : [vidéo](https://www.youtube.com/watch?v=ATvCk6NSpdQ&list=PLsl8NWzVv6T2CQFtBOfnlA_EKLFeCFSUG) (Nicolas Sauret)
 
-- Conférence FOSDEM 2020 « Stylo: A User Friendly Text Editor for Humanities Scholars », février 2020 ([lien](https://archive.fosdem.org/2020/))
-  - [Vidéo (youtube)](https://youtu.be/OymvZQpkFAM)
+- Article de la rédaction d’Huma-Num à l’occasion de la connection de Stylo au portail HumanID, décembre 2020 : [« Stylo, un éditeur de texte pour les SHS disponible chez Huma-Num »](https://humanum.hypotheses.org/6311)
 
-- Colloque international Numerev, juin 2019 ([lien](https://numerev.com/agenda.id-9.html))
-  - [Vidéo (youtube)](https://youtu.be/-WHoTXw6Two?t=20878)
+- [Conférence FOSDEM 2020](https://archive.fosdem.org/2020/) « Stylo: A User Friendly Text Editor for Humanities Scholars », février 2020 : [vidéo](https://youtu.be/OymvZQpkFAM) (Antoine Fauchié)
 
-- Vitrine DH, CRIHN, février 2019 ([lien](https://crihn.openum.ca/nouvelles/2018/12/01/vitrine-hn-dh-showcase-2019/)) (Nicolas Sauret)
+- [Colloque Numerev 2019](https://numerev.com/agenda.id-9.html), juin 2019 : [vidéo](https://youtu.be/-WHoTXw6Two?t=20878) (Nicolas Sauret et Marcello Vitali-Rosati)
 
-- Colloque « Repenser les humanités numériques / Thinking the Digital Humanities Anew », CRIHN, octobre 2018 ([lien](https://www.crihn.org/colloque-2018/))
-  - [Vidéo](https://archive.org/embed/CRIHN2018NicolasSauretStyloUnditeurSmantiquePourLesHumanits) (Nicolas Sauret)
+- [Vitrine DH](https://crihn.openum.ca/nouvelles/2018/12/01/vitrine-hn-dh-showcase-2019/), février 2019 (Nicolas Sauret)
 
-- Journées « Vers l’édition scientifique 4.0 ? », Médici (Métiers de l'édition scientifique publique), septembre 2018 ([lien](https://medici2018.sciencesconf.org/))
-  - [Présentation](https://ecrituresnumeriques.github.io/s_StyloMedici/)
-  - [Vidéo et démonstration](https://www.youtube.com/embed/qcwEqbcxBF8) (Nicolas Sauret et Marcello Vitali-Rosati)
+- [Colloque CRIHN 2018](https://www.crihn.org/colloque-2018/) « Repenser les humanités numériques / Thinking the Digital Humanities Anew », octobre 2018 : [vidéo](https://archive.org/embed/CRIHN2018NicolasSauretStyloUnditeurSmantiquePourLesHumanits) (Nicolas Sauret)
 
-- Conférence DH Montréal, août 2017 ([lien](https://dh2017.adho.org/program-2/abstracts/))
-  - [Poster (pdf)](uploads/pdf/poster_Stylo_DH2017.pdf)
-  - [Résumé (en anglais)](https://dh2017.adho.org/abstracts/224/224.pdf)
+- [Journées Médici 2018](https://medici2018.sciencesconf.org/) (Métiers de l’édition scientifique publique), « Vers l’édition scientifique 4.0 ? »,  septembre 2018 : [présentation](https://ecrituresnumeriques.github.io/s_StyloMedici/) et [démonstration](https://www.youtube.com/embed/qcwEqbcxBF8) (Nicolas Sauret et Marcello Vitali-Rosati)
+
+- [Conférence DH Montréal](https://dh2017.adho.org/program-2/abstracts/), « Stylo : Repenser la chaîne éditoriale numérique pour les revues savantes en sciences humaines », août 2017 : [poster](uploads/pdf/poster_Stylo_DH2017.pdf) et [résumé](https://dh2017.adho.org/abstracts/224/224.pdf) (en anglais) (Emmanuel Château, Arthur Juchereau, Servanne Monjour, Nicolat Sauret, Michael Sinatra et Marcello Vitali-Rosati)
 
 ---
 
-# Vidéo de démonstration
+# Vidéos de démonstration
 
-<iframe width="560" height="315" src="https://ia601507.us.archive.org/24/items/stylo-doc-fr/StyloDocFR.mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="align:center;"></iframe>
+<iframe width="560" height="315" src="https://archive.org/embed/stylo-doc-fr" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="align:center;"></iframe>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/qcwEqbcxBF8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="align:center;"></iframe>
