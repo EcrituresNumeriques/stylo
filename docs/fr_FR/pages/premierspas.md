@@ -20,10 +20,10 @@ Pour chaque article, plusieurs actions sont possibles :
 | ![Share](uploads/images/Share.png) | pour partager l'article et son historique de versions avec un autre usager de Stylo qui s'intitulera ainsi : "[Copy]New article"|
 | ![Duplicate](uploads/images/Duplicate.png) | pour dupliquer uniquement la dernière version de l'article|
 | ![Rename](uploads/images/Rename.png) | pour renommer l'article|
-| ![Plus](uploads/images/plus.png) | pour développer d'autres fonctions de l'article :|
-|| ![Versions](uploads/images/Version.png) pour consulter l'historique des versions enregistrées |
-|| ![Tag](uploads/images/Tag.png) pour choisir les tags de l'article | <!-- nouvelle formulation, changer cette image -->
-| ![Delete](uploads/images/Delete.png) pour supprimer l'article |
+| ![Delete](uploads/images/Delete.png) | pour supprimer l'article |
+| ![Plus](uploads/images/plus.png) | pour développer d'autres fonctions de l'article :|
+| ![Versions](uploads/images/Version.png) | pour consulter l'historique des versions enregistrées |
+| ![Tag](uploads/images/Tag.png) | pour choisir les tags de l'article |
 
 Note : le nom du document tel que visible sur Stylo ne correspond pas au titre de l'article qui sera généré.
 
