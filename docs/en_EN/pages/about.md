@@ -45,6 +45,7 @@ Stylo is a tool that implements formats and existing conversion technologies. Th
 ## Contributors
 
 The researchers participating in the project are as follows:
+
 - [Antoine Fauchié](https://ecrituresnumeriques.ca/fr/Equipe/Antoine-Fauchie/)
 - [Arthur Juchereau](https://ecrituresnumeriques.ca/fr/Equipe/Arthur-Juchereau)
 - [Lena Krause](https://ecrituresnumeriques.ca/fr/Equipe/Lena-Krause)
@@ -52,3 +53,8 @@ The researchers participating in the project are as follows:
 - [Servanne Monjour](https://ecrituresnumeriques.ca/fr/Equipe/Servanne-Monjour-)
 - [Nicolas Sauret](https://ecrituresnumeriques.ca/fr/Equipe/Nicolas-Sauret)
 - [Marcello Vitali-Rosati](https://ecrituresnumeriques.ca/fr/Equipe/Marcello-Vitali-Rosati-)
+
+## Developers
+
+- [Guillaume Grossetie](https://github.com/Mogztter)
+- [Thomas Parisot](https://détour.studio)
