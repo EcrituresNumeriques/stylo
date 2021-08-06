@@ -45,9 +45,16 @@ Stylo is a tool that implements formats and existing conversion technologies. Th
 ## Contributors
 
 The researchers participating in the project are as follows:
-- [Arthur Juchereau](https://ecrituresnumeriques.ca/en/Team/Arthur-Juchereau)
-- [Marcello Vitali-Rosati](https://ecrituresnumeriques.ca/en/Team/Marcello-Vitali-Rosati)
-- [Servanne Monjour](https://ecrituresnumeriques.ca/en/Team/Servanne-Monjour)
-- [Nicolas Sauret](https://ecrituresnumeriques.ca/en/Team/Nicolas-Sauret)
-- [Margot Mellet](https://ecrituresnumeriques.ca/en/Team/Margot-Mellet)
-- [Lena Krause](https://ecrituresnumeriques.ca/en/Team/Lena-Krause)
+
+- [Antoine Fauchié](https://ecrituresnumeriques.ca/fr/Equipe/Antoine-Fauchie/)
+- [Arthur Juchereau](https://ecrituresnumeriques.ca/fr/Equipe/Arthur-Juchereau)
+- [Lena Krause](https://ecrituresnumeriques.ca/fr/Equipe/Lena-Krause)
+- [Margot Mellet](https://ecrituresnumeriques.ca/fr/Equipe/Margot-Mellet)
+- [Servanne Monjour](https://ecrituresnumeriques.ca/fr/Equipe/Servanne-Monjour-)
+- [Nicolas Sauret](https://ecrituresnumeriques.ca/fr/Equipe/Nicolas-Sauret)
+- [Marcello Vitali-Rosati](https://ecrituresnumeriques.ca/fr/Equipe/Marcello-Vitali-Rosati-)
+
+## Developers
+
+- [Guillaume Grossetie](https://github.com/Mogztter)
+- [Thomas Parisot](https://détour.studio)
