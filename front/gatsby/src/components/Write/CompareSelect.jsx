@@ -3,11 +3,13 @@ import { useHistory } from 'react-router-dom'
 
 import styles from './compareSelect.module.scss'
 
-export default ({ article, selectedVersion, live, readOnly, versions, compareTo }) => {
+export default function CompareSelect ({ article, selectedVersion, live, readOnly, versions, compareTo }) {
+  const [compareVersionId, setCompareVersionId] = useState(null)
   const history = useHistory()
-  const handleCompareSelect = (e) => {
+  const handleCompareSelect = useCallback((e) => {
     const articleId = article._id
     const compareVersionId = e.target.value
+    setCompareVersionId(compareVersionId)
     const parts = ['article', articleId]
     if (selectedVersion) {
       parts.push('version')
@@ -23,7 +25,7 @@ export default ({ article, selectedVersion, live, readOnly, versions, compareTo 
     // /article/$articleId/version/$selectedVersionId
     // /article/$articleId/version/$selectedVersionId/compare/$compareVersionId
     history.push(`/${parts.join('/')}`)
-  }
+  }, [compareVersionId])
 
   const liveVersionLabel = live.message || 'No label'
   const liveVersionTitle = `${liveVersionLabel} v${live.version}.${live.revision}`
