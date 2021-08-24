@@ -2,7 +2,7 @@
 
 The *Canada Research Chair in Digital Textualities* organises weekly sessions to monitor Stylo. During these sessions, it is possible to ask the team questions, perfect the use of Stylo and resolve any publishing issues.
 
-The sessions take place every Thursday morning from 11am to 12pm (Montreal time), starting Thursday 31 October 2019.
+The sessions take place every Thursday morning from 11am to 12pm (Montreal time).
 
 Participation in, and attendance to, these sessions are free and available online via videoconference: 
 
@@ -12,20 +12,25 @@ Participation in, and attendance to, these sessions are free and available onlin
 
 The *Canada Research Chair in Digital Textualities* has presented Stylo at various scientific and professional events:
 
-- [Article by Huma-Num's editorial team on the occasion of the connection of Stylo to the HumanID portal](https://humanum.hypotheses.org/6311).
-- Digital Culture class taught by Peppe Cavallari at the Collège universitaire de Science Po Paris: Stylo presentation to students by Nicolas Sauret
-  - [Presentation](http://nicolassauret.net/s_StyloCultNum/) (Nicolas Sauret)
+- Article by Huma-Num's editorial team on the occasion of the connection of Stylo to the HumanID portal, December 2020
+ - “Stylo, un éditeur de texte pour les SHS disponible chez Huma-Num” [link](https://humanum.hypotheses.org/6311)
+
+- FOSDEM 2020 symposium, “Stylo: A User Friendly Text Editor for Humanities Scholars”, February 2020 ([link](https://archive.fosdem.org/2020/))
+  - [Video (youtube)](https://youtu.be/OymvZQpkFAM)
+
 - Numerec international symposium, June 2019 ([link](https://numerev.com/agenda.id-9.html))
-  - [Presentation](http://nicolassauret.net/s_StyloNumerev/) (Nicolas Sauret)
   - [Video (Youtube)](https://youtu.be/-WHoTXw6Two?t=20878)
-- Vitrine DH, CRIHN, February 2019 ([link](https://crihn.openum.ca/nouvelles/2018/12/01/vitrine-hn-dh-showcase-2019/))
-  - [Presentation](http://nicolassauret.net/s_StyloVitrineDH/) (Nicolas Sauret)
-- Symposium "Repenser les humanités numériques / Thinking the Digital Humanities Anew", CRIHN, October 2019 ([link](https://www.crihn.org/colloque-2018/))
-  - [Presentation](http://nicolassauret.net/s_StyloCRIHN/) (Nicolas Sauret)
-- Conference day "Vers scientific publishing 4.0?", Médici (Métiers de l'édition scientifique publique), Avignon 18-20 September 2018 ([link](https://medici2018.sciencesconf.org/))
+
+- Vitrine DH, CRIHN, February 2019 ([link](https://crihn.openum.ca/nouvelles/2018/12/01/vitrine-hn-dh-showcase-2019/)) (Nicolas Sauret)
+
+- Symposium “Repenser les humanités numériques / Thinking the Digital Humanities Anew”, CRIHN, October 2019 ([link](https://www.crihn.org/colloque-2018/))
+  - [Video] (https://archive.org/embed/CRIHN2018NicolasSauretStyloUnditeurSmantiquePourLesHumanits) (Nicolas Sauret)
+
+- Conference day "Vers scientific publishing 4.0?", Médici (Métiers de l'édition scientifique publique), Avignon 18-20 September 2018 ([link](https://medici2018.sciencesconf.org/))
   - [Presentation](https://ecrituresnumeriques.github.io/s_StyloMedici/)
   - [Video et demonstration](https://www.youtube.com/embed/qcwEqbcxBF8) (Nicolas Sauret and Marcello Vitali-Rosati)
-- DH Conference in Montréal 2017
+
+- Montréal DH Conference Montréal, August 2017
   - [poster (pdf)](uploads/pdf/poster_Stylo_DH2017.pdf)
   - [abstract](https://dh2017.adho.org/abstracts/224/224.pdf)
 

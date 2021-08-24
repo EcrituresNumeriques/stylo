@@ -8,7 +8,7 @@ Le projet est dirigé par la [Chaire de Recherche du Canada sur les écritures n
 
 ## Le projet
 
-Stylo est actuellement un outil prototype en cours de développement, implémenté dans la chaîne éditoriale de la revue [Sens Public](http://sens-public.org) et de la maison [Les ateliers](https://ateliers.sens-public.org). Il est actuellement en phase de test pour d'autres revues dans le cadre notamment du projet partenariat [Revue2.0](http://revue20.org/). Cet outil est par ailleurs utilisé par différent·e·s auteur·e·s et étudiant·e·s à titre personnel pour leurs travaux scientifiques et/ou institutionnelles.
+Stylo est actuellement un outil prototype en cours de développement, implémenté dans la chaîne éditoriale de la revue [Sens Public](http://sens-public.org) et de la maison [Les ateliers](https://ateliers.sens-public.org). Il est actuellement en phase de test pour d'autres revues dans le cadre notamment du projet partenariat [Revue 2.0](http://revue20.org/). Cet outil est par ailleurs utilisé par différent·e·s auteur·e·s et étudiant·e·s à titre personnel pour leurs travaux scientifiques ou institutionnels.
 
 Stylo peut être utilisé en ligne à l'adresse [stylo.huma-num.fr](https://stylo.huma-num.fr). Cette instance de Stylo est déployée et maintenue par [Huma-Num](https://www.huma-num.fr), qui assure la sauvegarde et la sécurité des données.
 
@@ -25,9 +25,9 @@ Le code source de Stylo est disponible [sur Github](https://github.com/Ecritures
 
 ## La *Stylo*-sophie
 
-Éditeur de texte WYSIWYM pour les Sciences humaines, Stylo est conçu pour changer l’ensemble de la chaîne éditoriale numérique des revues savantes en Sciences Humaines et Sociales.
+Éditeur de texte WYSIWYM pour les sciences humaines, Stylo est conçu pour changer l’ensemble de la chaîne éditoriale numérique des revues savantes en sciences humaines et sociales.
 
-Bien que fondamentale en vue d’une diffusion numérique, la structuration des documents et leur balisage sont actuellement reportés à la fin du processus éditorial, quand en réalité ceux-ci devraient être envisagés dès la production (par l’auteur lui-même, dès la première révision des articles). À cet égard, il semble urgent et cohérent de réintégrer le travail de balisage et de structuration en début de chaîne éditoriale.
+Bien que fondamentale en vue d’une diffusion numérique, la structuration des documents et leur balisage sont actuellement reportés à la fin du processus éditorial, quand en réalité ceux-ci devraient être envisagés dès la production (par l’auteur·e, dès la première révision des articles). À cet égard, il semble urgent et cohérent de réintégrer le travail de balisage et de structuration en début de chaîne éditoriale.
 
 La philosophie de Stylo consiste à remettre dans les mains des chercheur·e·s la gestion du balisage en partant cette fois-ci de leurs compétences, qui relèvent davantage de compétences sémantiques que graphiques.
 
@@ -35,17 +35,24 @@ L'éditeur est basé sur la séparation entre le balisage sémantique et les aff
 
 Stylo propose une solution libre, basée sur des standards (markdown, yaml, bibtex) qui permet de :
 
-- produire des textes bien balisés avec des métadonnées riches et une bibliographie structurée
-- produire de multiples sorties (PDF, HTML, XML, ODT...) à partir d'un seul document
+- produire des textes bien balisés avec des métadonnées riches et une bibliographie structurée ;
+- produire de multiples sorties (PDF, HTML, XML, ODT...) à partir d'un seul document.
 
 Stylo est un outil qui implémente des formats et des technologies de conversion existantes et déjà utilisées par la communauté, ce qui permet une libre circulation des documents qui ne sont pas enfermés dans un format particulier.
 
 ## Contributeurs et contributrices
 
 Les chercheur·e·s participant à la réalisation de ce projet sont les suivants :
+
+- [Antoine Fauchié](https://ecrituresnumeriques.ca/fr/Equipe/Antoine-Fauchie/)
 - [Arthur Juchereau](https://ecrituresnumeriques.ca/fr/Equipe/Arthur-Juchereau)
-- [Marcello Vitali-Rosati](https://ecrituresnumeriques.ca/fr/Equipe/Marcello-Vitali-Rosati-)
+- [Lena Krause](https://ecrituresnumeriques.ca/fr/Equipe/Lena-Krause)
+- [Margot Mellet](https://ecrituresnumeriques.ca/fr/Equipe/Margot-Mellet)
 - [Servanne Monjour](https://ecrituresnumeriques.ca/fr/Equipe/Servanne-Monjour-)
 - [Nicolas Sauret](https://ecrituresnumeriques.ca/fr/Equipe/Nicolas-Sauret)
-- [Margot Mellet](https://ecrituresnumeriques.ca/fr/Equipe/Margot-Mellet)
-- [Lena Krause](https://ecrituresnumeriques.ca/fr/Equipe/Lena-Krause)
+- [Marcello Vitali-Rosati](https://ecrituresnumeriques.ca/fr/Equipe/Marcello-Vitali-Rosati-)
+
+## Développeurs
+
+- [Guillaume Grossetie](https://github.com/Mogztter)
+- [Thomas Parisot](https://détour.studio)

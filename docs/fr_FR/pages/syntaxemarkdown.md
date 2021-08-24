@@ -2,10 +2,10 @@
 
 ## Titres
 
-- Le titre de niveau 1 - à savoir le titre de l'article - doit être renseigné dans les métadonnées
-- Les titres de niveau 2 (titres de section) sont précédés par 2 `#`. Par exemple : `## Introduction`
-- Les titres de niveau 3 (sous-section) sont précédés par 3 `#`. Par exemple : `### Mon titre de sous-section`
-- Et ainsi de suite (niveau 4, 4 `#`, etc.)
+- Le titre de niveau 1 - à savoir le titre de l'article - doit être renseigné dans les métadonnées.
+- Les titres de niveau 2 (titres de section) sont précédés par 2 `#`. Par exemple : `## Introduction`.
+- Les titres de niveau 3 (sous-section) sont précédés par 3 `#`. Par exemple : `### Mon titre de sous-section`.
+- Et ainsi de suite (niveau 4, 4 `#`, etc.).
 
 ## Les notes
 
@@ -43,7 +43,7 @@ Voici mon texte <sup><a href="syntaxemarkdown.md#note-2" id="#note-2-b">2</a></s
 Voici un _mot_ en italique
 ```
 
-Donnera :
+donnera :
 
 Voici un _mot_ en italique
 
@@ -53,7 +53,7 @@ Voici un _mot_ en italique
 Voici un **mot** en gras
 ```
 
-Donnera :
+donnera :
 
 Voici un **mot** en gras
 
@@ -75,7 +75,7 @@ Et voici le balisage correspondant :
 ![Logo du W3C composé de la lettre W en bleu, du chiffre 3 en bleu et de la lettre C en noir](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/W3C_icon.svg/212px-W3C_icon.svg.png)
 ```
 
-**Attention** les images doivent être au format PNG (`.png`), ce format est nécessaire pour l'export PDF.
+**Attention :** les images doivent être au format PNG (`.png`), ce format est nécessaire pour l'export PDF.
 
 ## Liens
 Les liens se balisent en distinguant :
@@ -127,7 +127,7 @@ Le texte markdown suivant :
 Voici la [thèse fondamentale de l'article]{.these}.
 ```
 
-Donnera en HTML :
+donnera en HTML :
 
 ```html
 Voici la <span class="these">thèse fondamentale de l'article</span>
@@ -143,7 +143,7 @@ Mon paragraphe qui contient une thèse de l'article.
 :::
 ```
 
-Qui donnera en HTML :
+donnera en HTML :
 
 ```html
 <div class="these">
@@ -175,7 +175,7 @@ Il est possible de baliser un élément textuel avec plusieurs attributs. Par ex
 :::
 ```
 
-Donnera en HTML :
+donnera en HTML :
 
 ```html
 <div class="infogeo">
@@ -190,7 +190,7 @@ Il est également possible d'utiliser ce balisage sémantique pour structurer le
 Auteur du texte : [John Dewey]{property="dc:creator"}
 ```
 
-Donnera en HTML :
+donnera en HTML :
 
 ```html
 
@@ -205,7 +205,7 @@ John Dewey est né le [20 octobre 1859]{property="dc:date" content="1859-10-20"}
 
 ```
 
-Donnera en HTML :
+donnera en HTML :
 
 ```html
 
@@ -234,7 +234,7 @@ Par exemple, la syntaxe :
 |Gianna|Bienfaisant|9-10-2005|Florence|Marrons|
 ```
 
-Donnera :
+donnera :
 
 |Nom    |Prénom|Date de naissance|Lieu de naissance|Couleur des yeux|
 |:------ |:---|:-:|:-:|---:|

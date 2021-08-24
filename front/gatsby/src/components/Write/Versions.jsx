@@ -59,25 +59,25 @@ const mapStateToProps = ({ applicationConfig }) => {
   return { applicationConfig }
 }
 
-const Versions = (props) => {
+const Versions = ({ article, versions, readOnly, version, revision, versionId, sendVersion, selectedVersion, compareTo }) => {
   //Default if live
   let expVar = {
     article: true,
-    _id: props.article._id,
-    title: props.article.title,
-    versionId: props.versions[0]._id,
-    version: props.versions[0].version,
-    revision: props.versions[0].revision,
+    _id: article._id,
+    title: article.title,
+    versionId: versions[0]._id,
+    version: versions[0].version,
+    revision: versions[0].revision,
   }
   //if not live, set the export variable
-  if (props.readOnly) {
+  if (readOnly) {
     expVar = {
       ...expVar,
       article: false,
-      _id: props._id,
-      versionId: props._id,
-      version: props.version,
-      revision: props.revision,
+      _id: versionId,
+      versionId: versionId,
+      version: version,
+      revision: revision,
     }
   }
 
@@ -87,19 +87,17 @@ const Versions = (props) => {
   const [exporting, setExporting] = useState(false)
   const [exportVar, setExportVar] = useState(expVar)
   const [savedAgo, setSavedAgo] = useState(
-    formatTimeAgo(new Date(props.versions[0].updatedAt))
+    formatTimeAgo(new Date(versions[0].updatedAt))
   )
 
   const saveVersion = async (e, major = false) => {
     e.preventDefault()
-    await props.sendVersion(false, major, message)
-    //const newVersion = await props.sendVersion(false,major, message)
+    await sendVersion(false, major, message)
     setMessage('')
-    //setVersions([newVersion.saveVersion,...versions])
     setExpandSaveForm(false)
   }
 
-  const lastVersionId = props.versions[0]._id
+  const lastVersionId = versions[0]._id
 
   return (
     <section className={[styles.section, menuStyles.section].join(' ')}>
@@ -117,21 +115,21 @@ const Versions = (props) => {
       {expand && (
         <>
           <ul className={styles.versionsList}>
-            {props.readOnly && <li key={`showVersion-GoLive`}>
-              <Link to={`/article/${props.article._id}`}>Back to edit mode</Link>
+            {readOnly && <li key={`showVersion-GoLive`}>
+              <Link to={`/article/${article._id}`}>Back to edit mode</Link>
             </li>}
-            {props.versions.map((v) => (
+            {versions.map((v) => (
               <li
                 key={`showVersion-${v._id}`}
                 className={
-                  v._id === props.selectedVersion
+                  v._id === selectedVersion
                     ? styles.selected
-                    : v._id === props.compareTo
+                    : v._id === compareTo
                     ? styles.compareTo
                     : null
                 }
               >
-                <Link to={`/article/${props.article._id}/version/${v._id}`}>
+                <Link to={`/article/${article._id}/version/${v._id}`}>
                   {v.message ? v.message : 'No label'} (
                   {v.autosave ? 'autosaved ' : null}
                   {v.version}.{v.revision})
@@ -146,18 +144,18 @@ const Versions = (props) => {
                   {lastVersionId === v._id && <span>{savedAgo}</span>}
                 </p>
                 <ul className={styles.actions}>
-                  {lastVersionId === v._id && !props.readOnly && (
+                  {lastVersionId === v._id && !readOnly && (
                     <li>
                       <Button primary={true} onClick={_ => setExpandSaveForm(true)}><Save /> Save</Button>
                     </li>
                   )}
-                  {lastVersionId !== v._id && v._id !== props.compareTo && (
+                  {lastVersionId !== v._id && v._id !== compareTo && (
                     <li>
                       <Link
                         className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
-                        to={`/article/${props.article._id}/${
-                          props.selectedVersion
-                            ? 'version/' + props.selectedVersion + '/'
+                        to={`/article/${article._id}/${
+                          selectedVersion
+                            ? 'version/' + selectedVersion + '/'
                             : ''
                         }compare/${v._id}`}
                       >
@@ -165,13 +163,13 @@ const Versions = (props) => {
                       </Link>
                     </li>
                   )}
-                  {lastVersionId !== v._id && v._id === props.compareTo && (
+                  {lastVersionId !== v._id && v._id === compareTo && (
                     <li>
                       <Link
                         className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
-                        to={`/article/${props.article._id}/${
-                          props.selectedVersion
-                            ? 'version/' + props.selectedVersion
+                        to={`/article/${article._id}/${
+                          selectedVersion
+                            ? 'version/' + selectedVersion
                             : ''
                         }`}
                       >
@@ -181,7 +179,7 @@ const Versions = (props) => {
                   )}
                   <li>
                     <Link
-                      to={`${lastVersionId === v._id ? `/article/${props.article._id}` : `/article/${props.article._id}/version/${v._id}`}/preview`}
+                      to={`${lastVersionId === v._id ? `/article/${article._id}` : `/article/${article._id}/version/${v._id}`}/preview`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={[buttonStyles.button, buttonStyles.secondary].join(' ')}

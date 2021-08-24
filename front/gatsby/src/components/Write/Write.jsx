@@ -16,12 +16,11 @@ import Loading from '../Loading'
 import useDebounce from '../../hooks/debounce'
 import 'codemirror/lib/codemirror.css'
 
-const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
-  return { sessionToken, activeUser, applicationConfig }
+const mapStateToProps = ({ activeUser, applicationConfig }) => {
+  return { activeUser, applicationConfig }
 }
 
-function ConnectedWrite(props) {
-  const { version: currentVersion } = props
+function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, activeUser, applicationConfig }) {
   const [readOnly, setReadOnly] = useState(Boolean(currentVersion))
   const dispatch = useDispatch()
   const deriveArticleStructureAndStats = useCallback(
@@ -79,20 +78,24 @@ function ConnectedWrite(props) {
 
   const instanceCM = useRef(null)
 
-  const setCodeMirrorCursor = (line) => {
+  const handleReload = useCallback(() => {
+    setNeedReload(true)
+  }, [])
+
+  const handleUpdateCursorPosition = useCallback((line) => {
     try {
       const editor = instanceCM.current.editor
       editor.focus()
       editor.setCursor(line, 0)
       editor.execCommand('goLineEnd')
     } catch (err) {
-      console.log('Unable to update CodeMirror cursor position', err)
+      console.error('Unable to update CodeMirror cursor position', err)
     }
-  }
+  }, [instanceCM])
 
   const variables = {
-    user: props.activeUser && props.activeUser._id,
-    article: props.id,
+    user: activeUser && activeUser._id,
+    article: articleId,
     version: currentVersion || '0123456789ab',
     hasVersion: typeof currentVersion === 'string'
   }
@@ -122,10 +125,9 @@ function ConnectedWrite(props) {
     },
   }
 
-  const sendVersion = async (autosave = true, major = false, message = '') => {
-    try {
-      const query = `mutation($user: ID!, $article: ID!, $md: String!, $bib: String!, $yaml: String!, $autosave: Boolean!, $major: Boolean!, $message: String) {
-  saveVersion(version: {
+  const saveVersionQuery = `mutation($user: ID!, $article: ID!, $md: String!, $bib: String!, $yaml: String!, $autosave: Boolean!, $major: Boolean!, $message: String) {
+  saveVersion(
+    version: {
       article: $article,
       major: $major,
       auto: $autosave,
@@ -147,14 +149,21 @@ function ConnectedWrite(props) {
     }
   }
 }`
+
+  const handleSaveVersion = useCallback(async (autosave = true, major = false, message = '') => {
+    await sendVersion(autosave, major, message)
+  }, [live, versions, activeUser, articleId, currentVersion])
+
+  const sendVersion = async (autosave = true, major = false, message = '') => {
+    try {
       const response = await askGraphQL(
         {
-          query,
+          query: saveVersionQuery,
           variables: { ...variables, ...live, autosave, major, message },
         },
         'saving new version',
-        props.sessionToken,
-        props.applicationConfig
+        null,
+        applicationConfig
       )
       if (versions[0]._id !== response.saveVersion._id) {
         setVersions([response.saveVersion, ...versions])
@@ -167,6 +176,7 @@ function ConnectedWrite(props) {
       }
       return response
     } catch (err) {
+      console.error('Something went wrong while saving a new version', err)
       alert(err)
     }
   }
@@ -201,8 +211,8 @@ function ConnectedWrite(props) {
       const data = await askGraphQL(
         { query: fullQuery, variables },
         'fetching Live version',
-        props.sessionToken,
-        props.applicationConfig
+        null,
+        applicationConfig
       ).then(({ version, article }) => ({ version, article })
       ).catch((error) => {
         setError(error)
@@ -245,28 +255,30 @@ function ConnectedWrite(props) {
   }
 
   if (isLoading) {
-    return <Loading />
+    return <Loading/>
   }
 
   return (
     <section className={styles.container}>
       <WriteLeft
+        bib={live.bib}
         article={articleInfos}
-        {...live}
-        compareTo={props.compareTo}
+        md={live.md}
+        version={live.version}
+        revision={live.revision}
+        versionId={live._id}
+        compareTo={compareTo}
         selectedVersion={currentVersion}
         versions={versions}
         readOnly={readOnly}
-        sendVersion={sendVersion}
-        setCodeMirrorCursor={setCodeMirrorCursor}
+        sendVersion={handleSaveVersion}
+        onTableOfContentClick={handleUpdateCursorPosition}
       />
-
-      <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly} />
-
-      {props.compareTo && (
+      <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly}/>
+      {compareTo && (
         <CompareSelect
+          compareTo={compareTo}
           live={live}
-          {...props}
           versions={versions}
           readOnly={readOnly}
           article={articleInfos}
@@ -290,7 +302,7 @@ function ConnectedWrite(props) {
               ref={instanceCM}
             />
           )}
-          {props.compareTo && <Compare {...props} live={live} />}
+          {compareTo && <Compare compareTo={compareTo} live={live}/>}
         </>
       </article>
     </section>

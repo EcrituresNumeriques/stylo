@@ -4,7 +4,7 @@ La bibliographie liste les références bibliographiques que vous avez ajoutées
 
 1. **Zotero** : il vous est possible de synchroniser votre bibliographie à partir d'un dossier Zotero (dossier qui doit être public) en entrant l'url du dossier.
 2. **Citations** : il vous est possible de renseigner votre bibliographie manuellement sous format bibtex.
-3. **Raw bibtex** : pour éditer le bibtex
+3. **Raw bibtex** : il est possible de corriger directement le bibtex.
 
 Vous pouvez directement [structurer vos références en bibtex](http://www.andy-roberts.net/writing/latex/bibliographies), ou exporter vos références en bibtex grâce à votre outil de gestion de bibliographie :
 
@@ -14,19 +14,19 @@ Vous pouvez directement [structurer vos références en bibtex](http://www.andy-
 
 Il est possible de synchroniser les références d'un article avec un sous-dossier (une collection) d'un groupe Zotero, qu'il soit public ou privé. Voici les étapes à suivre :
 
-1. dans le panneau de gauche sélectionnez "Bibliography" puis "Manage Bibliography"
-2. connectez votre compte Zotero avec l'option "Connect my Zotero Account"
-3. une fenêtre s'ouvre, intitulée "New Private Key", pour vous demander de valider la connexion entre Stylo et Zotero : cliquez sur "Accept Defaults"
-4. vous pouvez désormais choisir une collection parmi vos groupes Zotero en cliquant sur "Pick a collection"
-5. choisissez "Replace bibliography with this private collection" pour importer les références d'une collection
-6. vos références apparaissent désormais dans le panneau latéral
+1. Dans le panneau de gauche sélectionnez "Bibliography" puis "Manage Bibliography".
+2. Connectez votre compte Zotero avec l'option "Connect my Zotero Account".
+3. Une fenêtre s'ouvre, intitulée "New Private Key", pour vous demander de valider la connexion entre Stylo et Zotero : cliquez sur "Accept Defaults".
+4. Vous pouvez désormais choisir une collection parmi vos groupes Zotero en cliquant sur "Pick a collection".
+5. Choisissez "Replace bibliography with this private collection" pour importer les références d'une collection.
+6. Vos références apparaissent désormais dans le panneau latéral.
 
 **Voici quelques remarques importantes concernant la synchronisation avec une collection Zotero :**
 
-- cette fonction permet d'importer des collections provenant de groupes publics ou privés
-- vous ne pouvez pas importer plus qu'une collection
-- chaque synchronisation ou import écrase vos données bibliographiques. Si vous utilisez l'option de synchronisation nous vous conseillons de modifier vos références dans Zotero et de les ré-importer, et ainsi de suite jusqu'à obtenir le résultat attendu
-- il n'y a pas de synchronisation automatique, vous devez refaire la synchronisation à chaque modification
+- Cette fonction permet d'importer des collections provenant de groupes publics ou privés.
+- Vous ne pouvez pas importer plus qu'une collection.
+- Chaque synchronisation ou import écrase vos données bibliographiques. Si vous utilisez l'option de synchronisation nous vous conseillons de modifier vos références dans Zotero et de les ré-importer, et ainsi de suite jusqu'à obtenir le résultat attendu.
+- Il n'y a pas de synchronisation automatique, vous devez refaire la synchronisation à chaque modification.
 
 ## Insérer une référence bibliographique
 
@@ -39,7 +39,6 @@ Insérer une clé bibtex dans le corps de texte a deux effets :
 
 
 ## Cas généraux
-
 
 La syntaxe Markdown permet de structurer finement vos références bibliographiques. En fonction des besoins, voici différents cas de figure pour produire l'appel de citation :
 - `[@shirky_here_2008]` produira : (Shirky 2008)
@@ -62,7 +61,6 @@ Par exemple :
 |`Clay @shirky_here_2008[p. 194] a suggéré que l’espace réel`<br/>`, celui de notre vie matérielle, et`<br/>`le cyberespace (qui n’est certes pas si complètement`<br/>`virtuel) ne devraient pas faire l’objet`<br/>`d’appellations séparées puisqu’ils s’interpénètrent `<br/>`de plus en plus fermement.` | `Clay Shirky (2008, 194), a suggéré que l’espace réel`<br/>`, celui de notre vie matérielle, et`<br/>`le cyberespace (qui n’est certes pas si complètement`<br/>`virtuel) ne devraient pas faire l’objet`<br/>`d’appellations séparées puisqu’ils s’interpénètrent`<br/>`de plus en plus fermement.`|
 
 - Afin d'éviter la répétition d'un nom, et indiquer seulement l'année, faire figurer un `-` devant la clé.
-
 
 |Dans l'éditeur | Dans la preview|
 |:--|:--|

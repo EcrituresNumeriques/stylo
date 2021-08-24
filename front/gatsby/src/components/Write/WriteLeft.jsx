@@ -9,7 +9,7 @@ import Versions from './Versions'
 
 const mapStateToProps = ({ articleStats }) => ({ articleStats })
 
-function WriteLeft (props) {
+function WriteLeft ({ bib, article, md, articleStats, readOnly, versions, version, revision, compareTo, versionId, selectedVersion, sendVersion, onTableOfContentClick }) {
   const [expanded, setExpanded] = useState(true)
 
   return (
@@ -23,13 +23,23 @@ function WriteLeft (props) {
       {expanded && (
         <div>
           <header>
-            <h1>{props.article.title}</h1>
-            <h2>by {props.article.owners.join(', ')}</h2>
+            <h1>{article.title}</h1>
+            <h2>by {article.owners.join(', ')}</h2>
           </header>
-          <Versions {...props} />
-          <Sommaire md={props.md} setCodeMirrorCursor={props.setCodeMirrorCursor} />
-          <Biblio readOnly={props.readOnly} bib={props.bib} handleBib={props.handleBib} article={props.article} />
-          <Stats stats={props.articleStats} />
+          <Versions
+            article={article}
+            versions={versions}
+            readOnly={readOnly}
+            version={version}
+            revision={revision}
+            versionId={versionId}
+            sendVersion={sendVersion}
+            selectedVersion={selectedVersion}
+            compareTo={compareTo}
+          />
+          <Sommaire md={md} onTableOfContentClick={onTableOfContentClick} />
+          <Biblio bibTeXEntries={bibTeXEntries} readOnly={readOnly} bib={bib} article={article} />
+          <Stats stats={articleStats} />
         </div>
       )}
     </nav>

@@ -14,20 +14,19 @@ En haut de cette page, vous sont proposées plusieurs fonctionnalités :
 
 ## Créer un nouvel article
 
-
 Cliquez sur le boutton “Create a new article” (vous devrez renseigner le titre de l’article dans la case prévue à cet effet, puis cliquer à nouveau sur le bouton “Create”).
 
 Pour créer un nouvel article, il suffit de cliquer sur le bouton :
 
 ![Nouvel article](uploads/images/Create.png).
 
-Vous devez ensuite renseigner le nom du document dans le champs prévu à cet effet
+Vous devez ensuite renseigner le nom du document dans le champ prévu à cet effet
 
 ![nommer un article](uploads/images/Title.png)
 
-et valider l'opération en cliquant une nouvelle fois sur le bouton
+et valider l'opération en cliquant sur le bouton
 
-![Nouvel article](uploads/images/Create.png).
+![Nouvel article](uploads/images/Create-Validation.png).
 
 Lors de cette opération, il vous est également possible d'ajouter des tags à l'article en cliquant sur le bouton
 
@@ -45,16 +44,16 @@ Pour créer et éditer vos tags, cliquez sur "Manage tags". Un volet de gauche a
 
 Il vous est possible en cliquant sur le nom du tag de sélectionner dans votre liste d'articles seulement les articles concernés par le tag en question.
 
-Vous pouvez visualiser les détails du tag en cliquant sur le "+" situé à côté du nom du tag :
+Vous pouvez visualiser les détails du tag en cliquant sur le chevron situé à côté du nom du tag :
 
 ![TagDetail](uploads/images/TagDetail.png)
 
-Vous avez alors accès au descriptif du tag en lecture, mais également à plusieurs fonctionnalités :
+Vous avez alors accès au descriptif du tag en lecture, mais également à plusieurs fonctionnalités :
 
 |bouton|fonction|
 |:-:|:--|
-| ![Delete](uploads/images/Delete.png) | pour supprimer le tag. |
-| ![Edit](uploads/images/Edit.png) | pour ouvrir le tag en édition|
+| ![Delete](uploads/images/DeleteTag.png) | pour supprimer le tag |
+| ![Edit](uploads/images/EditTag.png) | pour ouvrir le tag en édition |
 
 Le mode édition du tag se présente ainsi :
 
@@ -64,7 +63,7 @@ Cet espace vous permet de :
 
 - modifier le nom du tag
 - modifier le descriptif du tag
-- choisir une couleur du tag en renseignant le champs avec les possibilités suivantes : "blue", "pink", "red", "green", "yellow", "black", "white", "brown", "cyan", "magenta" ...
+- choisir une couleur pour le tag
 
 N'oubliez pas d'enregistrer vos modifications une fois votre édition du tag terminée.
 
@@ -74,7 +73,7 @@ Une barre latérale de recherche vous est proposée pour effectuer une recherche
 
 ## Pages articles de votre compte Stylo
 
-Sur votre page Article, vos article sont listés les uns en dessous les autres selon les modifications les plus récentes :
+Sur votre page Article, vos articles sont listés les uns en dessous les autres selon les modifications les plus récentes :
 
 ![Articles](uploads/images/Articles.png)
 
@@ -82,34 +81,35 @@ Chaque article se présente comme un bloc dans votre liste. Cet espace dédié �
 
 |bouton|fonction|
 |:-:|:--|
-| ![Rename](uploads/images/Rename.png) | pour renommer l'article|
-| ![See](uploads/images/See.png) |  pour prévisualiser l'article |
-| ![Share](uploads/images/Share.png) | pour partager l'article et son historique de versions avec un autre usager de Stylo qui s'intitulera ainsi : "[Copy]Titre de l'article"|
-| ![Duplicate](uploads/images/Duplicate.png) | pour dupliquer uniquement la dernière version de l'article|
-| ![Export](uploads/images/Export.png) | pour dupliquer uniquement la dernière version de l'article|
-| ![Edit](uploads/images/Edit.png) | pour ouvrir l'article en édition|
+| ![Rename](uploads/images/Rename.png) | pour renommer l'article |
+| ![See](uploads/images/See.png) | pour prévisualiser l'article |
+| ![Share](uploads/images/Share.png) | pour partager l'article et son historique de versions avec un autre usager de Stylo qui s'intitulera ainsi : "[Copy]Titre de l'article" |
+| ![Duplicate](uploads/images/Duplicate.png) | pour dupliquer uniquement la dernière version de l'article |
+| ![Export](uploads/images/Export.png) | pour dupliquer uniquement la dernière version de l'article |
+| ![Edit](uploads/images/Edit.png) | pour ouvrir l'article en édition |
+| ![Delete](uploads/images/Delete.png) | pour supprimer l'article |
 
-Vous pouvez également développer le bloc de l'article en cliquant sur l'icone "+" située à gauche du titre de votre article. Vous avez alors accès à :
+Vous pouvez également développer le bloc de l'article en cliquant sur le chevron situé à gauche du titre de votre article. Vous avez alors accès à :
 
 |bouton|fonction|
 |:-:|:--|
 | ![Versions](uploads/images/Version.png) | pour consulter l'historique des versions enregistrées |
-| ![Tag](uploads/images/Tag.png) | pour renseigner les tags de l'article en cliquant sur "edit" |
-| ![Delete](uploads/images/Delete.png) | pour supprimer l'article. |
+| ![Tag](uploads/images/Tag.png) | pour choisir les tags de l'article |
+
 
 ## Renommer un article
 
-Vous pouvez renommer votre article en cliquant sur le bouton "Rename" situé à côté du titre actuel de votre article et signifié par l'icone du crayon :
+Vous pouvez renommer votre article en cliquant sur le bouton "Rename" situé à côté du titre actuel de votre article et signifié par l'icône du crayon :
 
 ![AncienTitre](uploads/images/AncienTitre.png)
 
 Après avoir modifié le titre de l'article selon votre convenance, n'oubliez-pas d'enregistrer :
 
-![Renommer](uploads/images/Renmomage.png)
+![Renommer](uploads/images/Renommage.png)
 
 ## Prévisualiser un article
 
-Il vous est possible de prévisualiser votre article en cliquant sur l'icone suivante :
+Il vous est possible de prévisualiser votre article en cliquant sur l'icône suivante :
 
 ![See](uploads/images/See.png)
 
@@ -117,7 +117,7 @@ La prévisulisation vous permettra la lecture du contenu de l'article édité et
 
 ## Partager un article
 
-Vous pouvez également partager votre article avec d'autres utilisateurs Stylo en cliquant sur l'icone suivante :
+Vous pouvez également partager votre article avec d'autres utilisateurs Stylo en cliquant sur l'icône suivante :
 
 ![Share](uploads/images/Share.png)
 
@@ -125,19 +125,19 @@ Pour partager, vous devez renseigner l'adresse courriel de l'utilisateur Stylo :
 
 ![Share](uploads/images/Share2.png)
 
-La fonction [Share] permet à plusieurs utilisateurs Stylo de travailler sur le même article. Ces utilisateurs ont alors accès à tout l'historique. Les versions de l'article se synchronisent pour tous les utilisateurs au-fur-et à mesure des modifications effectuées sur le document.
+La fonction [Share] permet à plusieurs utilisateurs Stylo de travailler sur le même article. Ces utilisateurs ont alors accès à tout l'historique. Les versions de l'article se synchronisent pour tous les utilisateurs au fur et à mesure des modifications effectuées sur le document.
 
 Cette fonctionnalité vous permet également d'envoyer l'article avec le même système :
 
 ![Send](uploads/images/Send.png)
 
-L'option [Send] n'est pas un partage d'article, seulement la dernière version de l'article sera visible par l'utilisateur, et les modifications ne seront pas visibles par les deux utilisateurs. Dans le processus [Send], deux versions de l'article sont créées et les utilisateurs travaillent chacuns sur une version qui n'est pas visible par l'autre.
+L'option [Send] n'est pas un partage d'article : seule la dernière version de l'article sera visible par l'utilisateur et les modifications ne seront pas visibles par les deux utilisateurs. Dans le processus [Send], deux versions de l'article sont créées et les utilisateurs travaillent chacun sur une version qui n'est pas visible par l'autre.
 
 ## Dupliquer un article
 
-Vous pouvez dupliquer votre article en cliquant sur l'icone suivante :
+Vous pouvez dupliquer votre article en cliquant sur l'icône suivante :
 
-![Duplicate](uploads/images/Duplicate.png)|
+![Duplicate](uploads/images/Duplicate.png)
 
 Un doublon de l'article sera alors généré et apparaîtra en haut de la liste de vos articles Stylo. Cet article sera intitulé automatiquement comme suit : "[Copy]Titre de l'article". Ce doublon est créé à partir de la version actuelle (celle en cours d'édition) de l'article et ne comporte alors pas d'historique de versions.
 
@@ -147,11 +147,11 @@ Pour exporter un article, il faut cliquer sur le bouton "Export" depuis la page 
 
 ![Export](uploads/images/Export.png)
 
-Le menu d'export permets de choisir le format d'export, le style bibliographique et si l'on veut ou non intégrer une table de matières.
+Le menu d'export permet de choisir le format d'export, le style bibliographique et si l'on veut ou non intégrer une table de matières.
 
 ![Export](uploads/images/export2.png)
 
-Les formats supportés sont:
+Les formats supportés sont les suivants :
 
 - HTML5
 - PDF
@@ -164,51 +164,47 @@ Les formats supportés sont:
 - XML Erudit
 - ZIP (avec les fichiers source: markdown, yaml et bibtex)
 
-Il est possible de choisir parmi plusieurs styles bibliographiques dont certains intègrent la référence dans le texte (par exemple Chicago, qui insère la référence dans le corps du texte entre parenthèses) et d'autres ajoutent une note avec la référence.
+Il est possible de choisir parmi plusieurs styles bibliographiques : certains intègrent la référence dans le texte (par exemple Chicago, qui insère la référence dans le corps du texte entre parenthèses), d'autres ajoutent une note avec la référence.
 
 Le module d'export se charge de mettre en forme les références, d'ajouter ou d'enlever les espaces, d'insérer des "Ibid." en accord avec le style etc.
 
 Les exports sont produits grâce à l'outil de conversion [pandoc](https://pandoc.org/) sur la base de templates disponibles [ici](https://framagit.org/stylo-editeur/templates-stylo).
 
-L'export permet aussi de télécharger les fichiers-source de Stylo (.md, .bib, .yaml) - et les médias insérés dans l'article s'il y en a.
+L'export permet aussi de télécharger les fichiers source de Stylo (.md, .bib, .yaml) - et les médias insérés dans l'article s'il y en a.
 
 ### Personaliser son export
 
-À partir des fichiers-source, il est possible de produire des exports personalisés - mise en page, graphismes, métadonnées - en s'appuyant sur les fonctionnalités de l'outil de conversion [pandoc](https://pandoc.org/).
+À partir des fichiers source, il est possible de produire des exports personnalisés - mise en page, graphismes, métadonnées - en s'appuyant sur les fonctionnalités de l'outil de conversion [pandoc](https://pandoc.org/).
 
 Pour plus d'informations sur l'emploi des templates, voir ce [tutoriel](https://gitlab.huma-num.fr/ecrinum/manuels/tutoriel-markdown-pandoc)
 
 ## Développer les autres fonctionnalités de l'article
 
-Pour développer d'autres fonctions de l'article, il faut cliquer sur l'icone "+" située à gauche du titre de votre article :
+Pour développer d'autres fonctions de l'article, il faut cliquer sur le chevron situé à gauche du titre de votre article :
 
 ![Plus](uploads/images/plus.png)
 
-### Accèder aux versions de l'article
+### Accéder aux versions de l'article
 
-Vous avez alors accès aux versions majeures et mineures de l'articles : un clic sur le nom d'une version vous conduit à la page en mode "Édition" de la version en question.
+Vous avez alors accès aux versions majeures et mineures de l'article : un clic sur le nom d'une version vous conduit à la page en mode "Édition" de la version en question.
 
-![Versions](uploads/images/Versions.png)
+![Versions](uploads/images/version.png)
 
 **Attention** : la page de la version à laquelle vous avez accès, bien qu'elle soit dans le mode "Édition", ne vous permet pas d'effectuer des modifications sur le contenu de l'article. Il s'agit d'une page en mode lecture uniquement à partir de laquelle vous pouvez effectuer des [exports]() et des [comparaisons]().
 
 ### Tager un article
 
-Vous pouvez également tagger votre articles : l'ajout d'un mot-clef vous permettra d'organiser vos articles dans la listes. Pour ajouter un tag à votre article, il vous faut cliquer sur l'option "edit" :
+Vous pouvez également associer des tags à votre article parmi la liste des tags existants, simplement en cochant le tag que vous souhaitez ajouter.
 
-![TagEdit](uploads/images/TagE.png)
+![TagEdit](uploads/images/TageE.png)
 
-Les tags existants déjà renseignés dans votre pages vous sont proposés :
+**Attention** : pour créer des tags, il faut vous reporter à l'outil [Manage tags].
 
-![TagChoice](uploads/images/TagChoice.png)
-
-Il vous faut cliquer sur le tag souhaité et puis cliquer sur "finish" une fois les modifications voulues effectuées.
-
-**Attention** : Cette fonctionnalité ne vous permet pas de créer des tags. Pour cela, il faut vous reporter à l'outil [Manage tags].
+![BarreLaterale2](uploads/images/BarreLaterale2.png)
 
 ### Supprimer un article
 
-Pour supprimer un article de la liste de vos articles, il vous faut cliquer sur l'icone suivante :
+Pour supprimer un article de la liste de vos articles, il vous faut cliquer sur l'icône suivante :
 
 ![Delete](uploads/images/Delete.png)
 
