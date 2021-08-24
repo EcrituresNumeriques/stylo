@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
 import { ChevronDown, ChevronRight } from 'react-feather'
 
 import Modal from '../Modal'
@@ -8,7 +9,7 @@ import Bibliographe from './bibliographe/Bibliographe'
 import menuStyles from './menu.module.scss'
 import Button from '../Button'
 
-export default function Biblio ({ bib, article, bibTeXEntries, handleBib, readOnly }) {
+function Biblio ({ bib, article, readOnly, articleBibTeXEntries }) {
   const [expand, setExpand] = useState(true)
   const [modal, setModal] = useState(false)
 
@@ -22,7 +23,7 @@ export default function Biblio ({ bib, article, bibTeXEntries, handleBib, readOn
           {!readOnly && (
             <Button onClick={() => setModal(true)}>Manage Bibliography</Button>
           )}
-          {bibTeXEntries.map((entry, index) => (
+          {articleBibTeXEntries.map((entry, index) => (
             <Reference key={`ref-${entry.key}-${index}`} entry={entry} />
           ))}
         </>
@@ -31,7 +32,6 @@ export default function Biblio ({ bib, article, bibTeXEntries, handleBib, readOn
         <Modal cancel={() => setModal(false)}>
           <Bibliographe
             bib={bib}
-            success={handleBib}
             cancel={() => setModal(false)}
             article={article}
           />
@@ -40,3 +40,10 @@ export default function Biblio ({ bib, article, bibTeXEntries, handleBib, readOn
     </section>
   )
 }
+
+const mapStateToProps = ({ articleBibTeXEntries }) => {
+  return { articleBibTeXEntries }
+}
+
+const ConnectedBiblio = connect(mapStateToProps)(Biblio)
+export default ConnectedBiblio

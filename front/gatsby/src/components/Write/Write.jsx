@@ -202,9 +202,6 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
   const handleYaml = async (yaml) => {
     await setLive({ ...live, yaml: yaml })
   }
-  const handleBib = useCallback(async (bib) => {
-    await setLive({ ...live, bib: bib })
-  }, [live])
 
   //Reload when version switching
   useEffect(() => {
@@ -236,8 +233,10 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
         setVersions(article.versions)
 
         const md = version.md
+        const bib = version.bib
         dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
         dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
+        dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
       }
 
       setIsLoading(false)
@@ -273,7 +272,6 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
         versions={versions}
         readOnly={readOnly}
         sendVersion={handleSaveVersion}
-        handleBib={handleBib}
         onTableOfContentClick={handleUpdateCursorPosition}
       />
       <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly}/>
