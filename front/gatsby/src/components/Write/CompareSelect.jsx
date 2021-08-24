@@ -3,15 +3,17 @@ import { useHistory } from 'react-router-dom'
 
 import styles from './compareSelect.module.scss'
 
-export default (props) => {
+export default function CompareSelect ({ article, selectedVersion, live, readOnly, versions, compareTo }) {
+  const [compareVersionId, setCompareVersionId] = useState(null)
   const history = useHistory()
-  const handleCompareSelect = (e) => {
-    const articleId = props.article._id
+  const handleCompareSelect = useCallback((e) => {
+    const articleId = article._id
     const compareVersionId = e.target.value
+    setCompareVersionId(compareVersionId)
     const parts = ['article', articleId]
-    if (props.selectedVersion) {
+    if (selectedVersion) {
       parts.push('version')
-      parts.push(props.selectedVersion)
+      parts.push(selectedVersion)
     }
     if (compareVersionId !== 'false') {
       parts.push('compare')
@@ -23,22 +25,21 @@ export default (props) => {
     // /article/$articleId/version/$selectedVersionId
     // /article/$articleId/version/$selectedVersionId/compare/$compareVersionId
     history.push(`/${parts.join('/')}`)
-  }
+  }, [compareVersionId])
 
-  const liveVersionLabel = props.live.message || 'No label'
-  const liveVersionTitle = `${liveVersionLabel} v${props.live.version}.${props.live.revision}`
-  const versionTitle = props.readOnly ? liveVersionTitle : 'Editing mode'
+  const liveVersionLabel = live.message || 'No label'
+  const liveVersionTitle = `${liveVersionLabel} v${live.version}.${live.revision}`
+  const versionTitle = readOnly ? liveVersionTitle : 'Editing mode'
   const title = `Comparing ${versionTitle} with `
   return (
     <p className={styles.compare}>
       {title}
-      <select onChange={(e) => handleCompareSelect(e)}>
+      <select onChange={handleCompareSelect}>
         <option value={false}>Stop compare</option>
-        {props.versions.map((v) => (
+        {versions.map((v) => (
           <option
             value={v._id}
             key={`versionCompare-${v._id}`}
-            selected={props.compareTo === v._id}
           >
             {v.message || 'No label'} v{v.version}.{v.revision}
           </option>
