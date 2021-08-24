@@ -34,7 +34,7 @@ export default function CompareSelect ({ article, selectedVersion, live, readOnl
   return (
     <p className={styles.compare}>
       {title}
-      <select onChange={(e) => handleCompareSelect(e)}>
+      <select onChange={handleCompareSelect}>
         <option value={false}>Stop compare</option>
         {versions.map((v) => (
           <option
