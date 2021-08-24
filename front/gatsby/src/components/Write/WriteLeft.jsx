@@ -38,7 +38,7 @@ function WriteLeft ({ bib, article, md, articleStats, readOnly, versions, versio
             compareTo={compareTo}
           />
           <Sommaire md={md} onTableOfContentClick={onTableOfContentClick} />
-          <Biblio bibTeXEntries={bibTeXEntries} readOnly={readOnly} bib={bib} article={article} />
+          <Biblio readOnly={readOnly} bib={bib} article={article} />
           <Stats stats={articleStats} />
         </div>
       )}
