@@ -1,5 +1,5 @@
 # build environment
-FROM node:14-alpine as app-builder
+FROM node:16-alpine as app-builder
 WORKDIR /app
 COPY gatsby/package*.json ./
 RUN apk add --update-cache git

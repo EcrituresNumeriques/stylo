@@ -50,8 +50,8 @@ We provide a working configuration example below for the Nginx server.
 
 ### Install the pre-requisite
 
-    $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-    $ nvm install v14
+    $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+    $ nvm install v16
     $ sudo apt install mongodb-org pandoc
 
 ### Prepare the server
