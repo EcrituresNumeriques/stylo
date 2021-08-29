@@ -1,5 +1,5 @@
 {
-  "name": "stylo",
+  "name": "@EcrituresNumeriques/stylo",
   "version": "1.0.0",
   "description": "Stylo est un éditeur de textes pour articles scientifiques en sciences humaines et sociales.",
   "main": "index.js",
@@ -11,6 +11,10 @@
     "front/gatsby",
     "graphql"
   ],
+  "engines": {
+    "node": ">=16",
+    "npm": ">=8"
+  },
   "scripts": {
     "start": "npm exec --package=pm2@5 --yes pm2 start apps.config.js",
     "stop": "npm exec --package=pm2@5 --yes pm2 stop apps.config.js",
