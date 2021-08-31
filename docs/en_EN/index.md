@@ -4,8 +4,6 @@
 
 A helpdesk is open every Thursday from 11am to 12pm (Canadian time) to respond to questions, improve the use of Stylo, partager vos expériences utilisateur ou autres : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Reach the helpdesk by videoconference</a>
 
-**The helpdesk takes a vacation in August and will resume in September!**
-
 ---
 
 Welcome to Stylo resource information. Stylo is a text editor that simplifies writing and editing scientific articles in the Human and Social Sciences.
