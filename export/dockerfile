@@ -32,7 +32,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && dpkg -i /pandoc.deb \
     && rm /pandoc.deb
 
-    RUN git clone https://github.com/jgm/pandocfilters.git /pandocfilters \
+    RUN git clone --single-branch --branch 1.4.3 https://github.com/jgm/pandocfilters.git /pandocfilters \
     && cd /pandocfilters \
     && python setup.py install \
     && python3 setup.py install \
