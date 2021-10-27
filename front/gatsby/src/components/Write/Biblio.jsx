@@ -29,7 +29,7 @@ function Biblio ({ bib, article, readOnly, articleBibTeXEntries }) {
         </>
       )}
       {modal && (
-        <Modal cancel={() => setModal(false)}>
+        <Modal cancel={() => setModal(false)} withCancelButton={false}>
           <Bibliographe
             bib={bib}
             cancel={() => setModal(false)}
