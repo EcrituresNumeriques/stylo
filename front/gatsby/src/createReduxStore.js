@@ -1,5 +1,5 @@
-import { createStore } from 'redux'
-import bib2key from './components/Write/bibliographe/CitationsFilter'
+import { applyMiddleware, createStore } from 'redux'
+import { toEntries } from './helpers/bibtex'
 
 function createReducer (initialState, handlers) {
   return function reducer (state = initialState, action) {
@@ -177,9 +177,8 @@ function updateArticleStructure (state, { md }) {
   return { ...state, articleStructure }
 }
 
-function updateArticleBib (state, { bib }) {
-  const articleBibTeXEntries = bib2key(bib)
-  console.log('articleBibTeXEntries' + articleBibTeXEntries.length)
+function updateArticleBib(state, { bib }) {
+  const articleBibTeXEntries = toEntries(bib)
   return { ...state, articleBib: bib, articleBibTeXEntries }
 }
 

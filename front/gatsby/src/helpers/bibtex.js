@@ -1,6 +1,6 @@
 import { BibLatexParser } from 'biblatex-csl-converter'
 
-export async function parse(bibtex, options = { expectOutput: false }) {
+export async function parse(bibtex) {
   const parser = new BibLatexParser(bibtex, {
     processUnexpected: true,
     processUnknown: true,
@@ -25,6 +25,7 @@ export function toBibtex(entries) {
  */
 export function validate(bibtex) {
   return parse(bibtex).then((result) => ({
+    entries: result.entries,
     success: Object.keys(result.entries).length,
     empty: String(bibtex).trim().length === 0,
     errors: result.errors.map((error) => error.type + ' at line ' + error.line),
@@ -36,6 +37,29 @@ export function validate(bibtex) {
       .map((error) => error.type + ' at line ' + error.line),
   }))
 }
+
+/**
+ * @param {string} Bibtex bibliography
+ * @returns {Array.<{ title: string, key: string, type: string }}
+ */
+export function toEntries(input) {
+  const { entries } = new BibLatexParser(input, {
+    processUnexpected: true,
+    processUnknown: true,
+    includeRawText: true,
+    async: false,
+  }).parse()
+
+  return Object.entries(entries)
+    .map(([_, entry]) => ({
+      title: flatten(entry.fields.title),
+      type: entry.bib_type,
+      key: entry.entry_key,
+      entry,
+    }))
+    .sort(compare)
+}
+
 
 /**
  * Filter invalid citation from a raw BibTeX
@@ -75,4 +99,17 @@ export function iconName(bibtexType) {
     }
   }
   return 'book'
+}
+
+const compare = (a, b) => {
+  if (a.key < b.key) return -1
+  if (a.key > b.key) return 1
+  return 0
+}
+
+const flatten = (entryTitle) => {
+  if (entryTitle) {
+    return entryTitle.map(({ text }) => text).join('')
+  }
+  return ''
 }
