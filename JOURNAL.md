@@ -1,5 +1,46 @@
 # Journal de développement
 
+## Mercredi 10 novembre
+
+### Ce que j'ai aimé/appris
+
+- J'ai redécouvert le module `why-did-you-render`.
+- J'ai bien aimé cloturer des pull requests, me libérer l'esprit et avancer ! (_Marie Kondo style_)
+- J'aime repartir dans l'historique du chantier, comment ça a été fait.
+- C'est important qu'on maitrise le cycle éditeur -> rendu -> sauvegarde — un bon prérequis à l'édition collaborative.
+- C'était chouette de s'y remettre, ça faisait longtemps.
+- J'aime bien qu'on soit en train d'atteindre des questions d'architecture de données, à partir de nos enquêtes sur les performances applicatives
+- J'ai bien aimé découvrir qu'un fichier de test n'était plus lancé depuis 6 mois, merci la review !
+
+### Ce que j'ai trouvé difficile
+
+- J'ai du mal à cloisonner où démarre et où termine un changement (on cherche à modifer un petit truc, mais les répercutions secouent beaucoup l'application) — c'est dur d'avancer à petits pas.
+- Il m'a fallu un peu de temps pour retrouver mes marques sur le projet.
+- Le délai entre une pull request ouverte, et une pull request fusionnée, ça m'a ralenti.
+- Ça a été dur de rentrer dans l'enchevêtrement de logique et de workarounds de bugs — mais ça donne envie de les refuser/de les nettoyer.
+
+## Mercredi 5 mai 2021
+
+### Ce que j'ai aimé/appris
+
+- Que `SameCookie=Lax` est la valeur par défaut
+- J'aime bien `y.js`, facile à utiliser, bien architecturé (awareness), la doc est canon — bonnes explications, bons exemples, bonne API
+- Intégrer le websocket dans Express, c'était facile. Le branchement s'est fait en 2-2
+- Cool de voir les trames WebSocket dans les DevTools
+- Que fermer la fenêtre, ferme le websocket et dispatch la déconnexion de l'utilisateur
+- Pinger Maïtané pour la démo, et prendre rendez-vous pour pairer sur l'interface la semaine prochaine
+- C'était bien d'avoir déblayé la techno/la librairie en avance, les concepts étaient connus au moins d'une personne
+- Être côte/côte sur ce sujet, c'était pratique
+- Bon choix de lib !
+- La session de la semaine dernière nous avait préparé à nous remettre dans Redux/state global
+- On a bien bossé en une demi-journée !
+
+### Ce que j'ai trouvé difficile
+
+- On flaire les trucs compliqués sur le readonly/collaboratif avec les panneaux latéraux
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
 ## Mercredi 28 avril 2021
 
 ### Ce que j'ai aimé/appris
