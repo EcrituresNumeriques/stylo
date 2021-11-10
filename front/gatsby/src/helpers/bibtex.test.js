@@ -112,6 +112,7 @@ describe('parse', () => {
       language = {fr-FR},
       urldate = {2018-03-29},
       journal = {L’atelier des savoirs},
+      journaltitle = {L’atelier des savoirs},
       author = {Dehut, Julien},
       month = jan,
       year = {2018},
@@ -120,6 +121,7 @@ describe('parse', () => {
 
     const entries = toEntries(text).map(({ entry }) => entry)
 
+    expect(toBibtex(entries)).toMatch('journal = {L’atelier des savoirs}')
     expect(toBibtex(entries)).toMatch('journaltitle = {L’atelier des savoirs}')
     expect(toBibtex(entries)).toMatch(
       'file = {Snapshot:/home/antoine/Zotero/storage/VC32TEFF/Dehut - En finir avec Word ! Pour une analyse des enjeux r.html:text/html}'
