@@ -1,0 +1,15 @@
+name: Build and deploy Docker images
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: cp stylo-example.env stylo.env
+    - run: docker-compose build
