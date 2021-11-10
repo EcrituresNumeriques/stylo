@@ -7,26 +7,8 @@ import ReferenceTypeIcon from '../ReferenceTypeIcon'
 import Button from '../Button'
 
 export default function BibliographyReference ({ entry }) {
-  const { key, title, type } = entry
-  const author = entry.entry.fields?.author
-  const date = entry.entry.fields?.date
-  let authorName = ''
-  if (author) {
-    const { family, given, prefix, literal } = author?.[0]
-    if (literal) {
-      authorName = literal.map(o => o.text).join(' ')
-    } else {
-      const authorPrefix = prefix ? `${prefix.map(o => o.text).join(' ')} ` : ''
-      const authorNames = []
-      if (given) {
-        authorNames.push(given.map(o => o.text).join(' '))
-      }
-      if (family) {
-        authorNames.push(family.map(o => o.text).join(' '))
-      }
-      authorName = `${authorPrefix}${authorNames.join(', ')}`
-    }
-  }
+  const { key, title, type, date, authorName } = entry
+
   return (
     <div
       className={styles.reference}
