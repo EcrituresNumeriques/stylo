@@ -83,6 +83,7 @@ a.button:not(.primary), a.icon:not(.primary) {
 .primary {
   background-color: #000;
   color: #fff;
+  border: 1px solid #000;
 
   &:disabled {
     color: rgb(170, 170, 170);
