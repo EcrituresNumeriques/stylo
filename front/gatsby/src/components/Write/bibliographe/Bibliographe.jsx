@@ -119,7 +119,7 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
     // saveOnGraphQL
     if (article.zoteroLink !== zoteroLink) {
       try {
-        console.log('Saving to graphQL', props.article.zoteroLink, zoteroLink)
+        console.log('Saving to graphQL', article.zoteroLink, zoteroLink)
         const query = `mutation($user:ID!,$article:ID!,$zotero:String!){zoteroArticle(article:$article,zotero:$zotero,user:$user){ _id zoteroLink}}`
         const variables = {
           zotero: zoteroLink,
