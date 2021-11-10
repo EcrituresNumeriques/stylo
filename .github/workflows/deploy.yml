@@ -6,11 +6,13 @@ on:
     - master
     paths-ignore:
     - 'docs/**'
+    - 'project/**'
     - '*.md'
+    - '*.toml'
+    - '*.env'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:

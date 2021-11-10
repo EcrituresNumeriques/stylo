@@ -11,41 +11,64 @@ L'environnement de travail de Stylo intègre une chaîne éditoriale complète b
 - l'annotation
 - le partage de document
 
-Stylo est disponible en bétatest [stylo.huma-num.fr](https://stylo.huma-num.fr)
+Stylo est disponible sur [stylo.huma-num.fr](https://stylo.huma-num.fr)
 
 Plus d'informations sur [la documentation](http://stylo-doc.ecrituresnumeriques.ca/).
 
-# Installation
+# Pré-requis
 
-Pour installer une instance Stylo, suivre la documentation [HOWTO.md](https://github.com/EcrituresNumeriques/stylo/blob/master/HOWTO.md).
+- Node.js v16+
+- MongoDB
+- (optionnel) Pandoc, pour le [service d'export](./export)
+
+## Sous MacOS
+
+```bash
+brew tap mongodb/brew
+
+brew install pandoc mongodb-community nvm
+brew install --cask docker
+
+nvm install v16 --default
+```
 
 # Développement local
 
-L'application se lance en combinant Docker (pour avoir une base de données MongoDB isolée) et des applications Node.js (v14+). Elles s'**installent** ainsi :
+L'application se lance en combinant une base de données MongoDB, et des applications Node.js (v16+).
+
+**La première fois que vous installez le projet**, lancez ces commandes :
 
 ```bash
-docker-compose pull mongodb-stylo
-npm install --prefix graphql
-npm install --prefix front/gatsby
 cp stylo-example.env stylo.env
+npm clean-install
 ```
 
-Puis se **lancent** avec les commandes suivantes :
+## Avec Docker
+
+Ensuite, ainsi que le reste du temps :
 
 ```bash
-# Onglet de terminal 1
-docker-compose run -p '127.0.0.1:27017:27017' mongodb-stylo
-
-# Onglet de terminal 2
-sleep 10
-npm start --prefix graphql
-
-# Onglet de terminal 3
-npm start --prefix front/gatsby
+docker-compose run --detach --publish='127.0.0.1:27017:27017' mongodb-stylo
+npm start
 ```
 
-L'application web tourne sur [localhost:3000](http://localhost:3000) tandis que l'API fonctionne sur [localhost:3030](http://localhost:3030/).
+## Sans Docker
+
+Ensuite, ainsi que le reste du temps :
+
+```bash
+mongod --config /usr/local/etc/mongod.conf --fork
+npm start
+```
+
+L'[interface web de Stylo](./front) s'ouvre automatiquement dans votre navigateur web au bout de quelques secondes[^1] ([`localhost:3000`](http://localhost:3000)).<br>
+L'[API](./graphql) fonctionne sur [`localhost:3030`](http://localhost:3030/) et le [service d'export](./export) sur [`localhost:3060`](http://localhost:3060/).
+
+# Installation
+
+Pour installer une instance Stylo en tant que service à disposition d'utilisateur·ices, veuillez suivre la documentation dédiée dans le fichier [`HOWTO.md`](HOWTO.md).
 
 ---
 
+[^1]: ou quelques minutes lors du premier lancement, selon votre bande-bassante.
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)

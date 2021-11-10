@@ -1,8 +1,13 @@
 {
   "name": "stylo-export",
+  "private": true,
   "version": "1.0.0",
   "description": "Export logic for Stylo to HTML/zip + others",
   "main": "app.js",
+  "engines": {
+    "node": ">=16",
+    "npm": ">=8"
+  },
   "scripts": {
     "test": "jest",
     "start": "nodemon src/app.js",
