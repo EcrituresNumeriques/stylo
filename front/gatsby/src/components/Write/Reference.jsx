@@ -16,9 +16,9 @@ export default function BibliographyReference ({ entry }) {
       <ReferenceTypeIcon type={type} className={styles.referenceTypeIcon} />
       <div className={styles.referenceInfo}>
         <p className={styles.referencePrimaryInfo} title={authorName + " | " + title}>
-          {authorName && <div className={styles.referenceAuthor}>{authorName}</div>}
-          <div className={styles.referenceTitle} title={title}>{title}</div>
-          <div className={styles.referenceDate}>{date}</div>
+          {authorName && <span className={styles.referenceAuthor}>{authorName}</span>}
+          <span className={styles.referenceTitle} title={title}>{title}</span>
+          <span className={styles.referenceDate}>{date}</span>
         </p>
         <p className={styles.referenceSecondaryInfo}>
           <span className={styles.referenceKey} title={"@" + key}>@{key}</span>
