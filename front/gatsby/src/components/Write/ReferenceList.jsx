@@ -5,24 +5,34 @@ import { Search } from 'react-feather'
 import Reference from './Reference'
 import styles from './ReferenceList.module.scss'
 import Field from '../Field'
+import Button from "../Button";
 
 function ReferenceList({ articleBibTeXEntries }) {
+  // state showAll boolean (default false)
   const [filter, setFilter] = useState('')
-
-  const bibTeXFound = articleBibTeXEntries
-    .filter((entry) => entry.key.toLowerCase().indexOf(filter.toLowerCase()) > -1)
-
+  const [showAll, setShowAll] = useState(false)
+  let bibTeXFound
+  if (filter) {
+    bibTeXFound = articleBibTeXEntries
+      .filter((entry) => entry.key.toLowerCase().indexOf(filter.toLowerCase()) > -1)
+      //.slice(0, 10)
+  } else {
+    if (showAll) {
+      bibTeXFound = articleBibTeXEntries
+    } else {
+      bibTeXFound = articleBibTeXEntries.slice(0, 25)
+    }
+  }
   return (
     <>
       <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search" onChange={(e) => setFilter(e.target.value)} />
-      <span className={styles.resultFoundCount}>{bibTeXFound.length} found</span>
+      {filter && <span className={styles.resultFoundCount}>{bibTeXFound.length} found</span>}
       {bibTeXFound
-        .slice(0, 10)
         .map((entry, index) => (
           <Reference key={`ref-${entry.key}-${index}`} entry={entry} />
         ))
       }
-      {bibTeXFound.length > 10 && <span className={styles.more}>&hellip;</span>}
+      {!showAll && <Button className={styles.showAll} onClick={(e) => setShowAll(true)}>Show all {articleBibTeXEntries.length} references</Button>}
     </>
   )
 }
