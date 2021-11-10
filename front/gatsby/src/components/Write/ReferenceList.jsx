@@ -8,14 +8,12 @@ import Field from '../Field'
 import Button from "../Button";
 
 function ReferenceList({ articleBibTeXEntries }) {
-  // state showAll boolean (default false)
   const [filter, setFilter] = useState('')
   const [showAll, setShowAll] = useState(false)
   let bibTeXFound
   if (filter) {
     bibTeXFound = articleBibTeXEntries
       .filter((entry) => entry.key.toLowerCase().indexOf(filter.toLowerCase()) > -1)
-      //.slice(0, 10)
   } else {
     if (showAll) {
       bibTeXFound = articleBibTeXEntries
