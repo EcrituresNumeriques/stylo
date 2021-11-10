@@ -5,7 +5,7 @@ describe('parse', () => {
     const text = `@book{noauthor_test19_nodate,
             title = {test19
         }
-        
+
         @book{noauthor_test26_nodate,
             title = {test26}
         }`
@@ -21,7 +21,7 @@ describe('parse', () => {
     const text = `@book{noauthor_test19_nodate,
             title = {test19}
         }
-        
+
         @book{noauthor_test26_nodate,
             title = {test26}
         }`
@@ -69,7 +69,7 @@ describe('parse', () => {
     const text = `@book{noauthor_test26_nodate,
         title = {test26}
       }
-      
+
       @foo {
 
       @book {noauthor_test24_nodate,
@@ -112,6 +112,7 @@ describe('parse', () => {
       language = {fr-FR},
       urldate = {2018-03-29},
       journal = {L’atelier des savoirs},
+      journaltitle = {L’atelier des savoirs},
       author = {Dehut, Julien},
       month = jan,
       year = {2018},
@@ -120,6 +121,7 @@ describe('parse', () => {
 
     const entries = toEntries(text).map(({ entry }) => entry)
 
+    expect(toBibtex(entries)).toMatch('journal = {L’atelier des savoirs}')
     expect(toBibtex(entries)).toMatch('journaltitle = {L’atelier des savoirs}')
     expect(toBibtex(entries)).toMatch(
       'file = {Snapshot:/home/antoine/Zotero/storage/VC32TEFF/Dehut - En finir avec Word ! Pour une analyse des enjeux r.html:text/html}'
@@ -167,7 +169,7 @@ describe('parse', () => {
     expect(resultAfter).toHaveProperty('warnings', [])
     expect(resultAfter).toHaveProperty('errors', [])
 
-    const entries = bib2key(filteredText).map(({ entry }) => entry)
+    const entries = toEntries(filteredText).map(({ entry }) => entry)
     expect(entries).toHaveLength(2)
     expect(entries[0].entry_key).toEqual('bonnet_rome_2013')
     expect(entries[1].entry_key).toEqual(
@@ -192,12 +194,35 @@ describe('toEntries', () => {
         key: 'noauthor_test19_nodate',
         type: 'book',
         entry: {},
+        date: undefined,
+        authorName: ''
       },
       {
         title: 'test26',
         key: 'noauthor_test26_nodate',
         type: 'book',
         entry: {},
+        date: undefined,
+        authorName: ''
+      },
+    ])
+  })
+
+  test('it should derive an authorName', () => {
+    const text = `@book{gelzer_eikones_1980,
+	    title = {Eikones: {Studien} zum griechischen und römischen {Bildnis} : {Hans} {Jucker} zum sechzigsten {Geburtstag} {Gewidmet}},
+      author = {Gelzer, Thomas},
+    }`
+
+    return expect(toEntries(text)).toMatchObject([
+      {
+        title:
+          'Eikones: Studien zum griechischen und römischen Bildnis : Hans Jucker zum sechzigsten Geburtstag Gewidmet',
+        key: 'gelzer_eikones_1980',
+        type: 'book',
+        entry: {},
+        date: undefined,
+        authorName: 'Thomas, Gelzer'
       },
     ])
   })
@@ -214,6 +239,8 @@ describe('toEntries', () => {
         key: 'dominik_org_2010',
         type: 'book',
         entry: {},
+        date: undefined,
+        authorName: ''
       },
     ])
   })

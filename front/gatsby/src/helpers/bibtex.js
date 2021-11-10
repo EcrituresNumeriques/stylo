@@ -38,6 +38,32 @@ export function validate(bibtex) {
   }))
 }
 
+export function deriveAuthorNameAndDate(entry) {
+  const author = entry.fields?.author
+  const date = entry.fields?.date
+  let authorName = ''
+
+  if (author) {
+    const { family, given, prefix, literal } = author?.[0]
+    if (literal) {
+      authorName = literal.map(o => o.text).join(' ')
+    }
+    else {
+      const authorPrefix = prefix ? `${prefix.map(o => o.text).join(' ')} ` : ''
+      const authorNames = []
+      if (given) {
+        authorNames.push(given.map(o => o.text).join(' '))
+      }
+      if (family) {
+        authorNames.push(family.map(o => o.text).join(' '))
+      }
+      authorName = `${authorPrefix}${authorNames.join(', ')}`
+    }
+  }
+
+  return { date, authorName }
+}
+
 /**
  * @param {string} Bibtex bibliography
  * @returns {Array.<{ title: string, key: string, type: string }}
@@ -56,6 +82,7 @@ export function toEntries(input) {
       type: entry.bib_type,
       key: entry.entry_key,
       entry,
+      ...deriveAuthorNameAndDate(entry),
     }))
     .sort(compare)
 }

@@ -1,16 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import { Search } from 'react-feather'
 
 import Reference from './Reference'
+import styles from './ReferenceList.module.scss'
+import Field from '../Field'
+import Button from "../Button";
 
-function ReferenceList ({ articleBibTeXEntries }) {
+function ReferenceList({ articleBibTeXEntries }) {
+  const [filter, setFilter] = useState('')
+  const [showAll, setShowAll] = useState(false)
+  let bibTeXFound
+  if (filter) {
+    bibTeXFound = articleBibTeXEntries
+      .filter((entry) => entry.key.toLowerCase().indexOf(filter.toLowerCase()) > -1)
+  } else {
+    if (showAll) {
+      bibTeXFound = articleBibTeXEntries
+    } else {
+      bibTeXFound = articleBibTeXEntries.slice(0, 25)
+    }
+  }
   return (
     <>
-      {articleBibTeXEntries
+      <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search" onChange={(e) => setFilter(e.target.value)} />
+      {filter && <span className={styles.resultFoundCount}>{bibTeXFound.length} found</span>}
+      {bibTeXFound
         .map((entry, index) => (
-          <Reference key={`ref-${entry.key}-${index}`} entry={entry}/>
+          <Reference key={`ref-${entry.key}-${index}`} entry={entry} />
         ))
       }
+      {!showAll && <Button className={styles.showAll} onClick={(e) => setShowAll(true)}>Show all {articleBibTeXEntries.length} references</Button>}
     </>
   )
 }

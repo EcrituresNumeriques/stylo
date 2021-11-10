@@ -9,16 +9,59 @@
   &:nth-child(2n + 1) {
     background-color: $main-background-color;
   }
-
 }
 
 .referenceTypeIcon {
   width: 1em;
   height: 1em;
   margin-right: 0.35em;
+  margin-left: 0.35em;
 }
 
-.referenceName {
+.referenceInfo {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-left: 0.35em;
+  padding-right: 0.25em;
+  /* hack: takes the remaining space */
+  flex: 1;
+  width: 1px;
+}
+
+.referencePrimaryInfo {
+  display: flex;
+  gap: 0.35em;
+  font-size: 0.85em;
+}
+
+.referenceSecondaryInfo {
+  display: flex;
+  font-family: 'Operator Mono', 'Source Code Pro', Menlo, Monaco, Consolas, Courier New, monospace;
+  font-size: 0.7em;
+}
+
+.referenceAuthor {
+  white-space: nowrap;
+}
+
+.referenceAuthor:after {
+  content: " | ";
+}
+
+.referenceTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.referenceDate {
+  font-size: 0.8em;
+}
+
+.referenceKey {
   overflow-x: hidden;
   text-overflow: ellipsis;
 }

@@ -7,19 +7,26 @@ import ReferenceTypeIcon from '../ReferenceTypeIcon'
 import Button from '../Button'
 
 export default function BibliographyReference ({ entry }) {
-  const { key, title, type } = entry
+  const { key, title, type, date, authorName } = entry
 
   return (
-    <p
+    <div
       className={styles.reference}
-      title={title}
     >
       <ReferenceTypeIcon type={type} className={styles.referenceTypeIcon} />
-      <span className={styles.referenceName}>@{key}</span>
-
+      <div className={styles.referenceInfo}>
+        <p className={styles.referencePrimaryInfo} title={authorName + " | " + title}>
+          {authorName && <span className={styles.referenceAuthor}>{authorName}</span>}
+          <span className={styles.referenceTitle} title={title}>{title}</span>
+          <span className={styles.referenceDate}>{date}</span>
+        </p>
+        <p className={styles.referenceSecondaryInfo}>
+          <span className={styles.referenceKey} title={"@" + key}>@{key}</span>
+        </p>
+      </div>
       <CopyToClipboard text={`[@${key}]`}>
         <Button title="Copy to clipboard" className={styles.copyToClipboard} icon={true}><Clipboard /></Button>
       </CopyToClipboard>
-    </p>
+    </div>
   )
 }
