@@ -180,8 +180,8 @@ type RootMutation {
   "Create article for specified user [need to be authentificated as specified user]"
   createArticle(title:String!,user:ID!):Article!
 
-  "Update article title, bibliography, content or metadata [need to be authentificated as specified user]"
-  updateArticle(user:ID!,article:ID!,title:String,bib:String,md:String,yaml:String):Article!
+  "Update article bibliography, content or metadata [need to be authentificated as specified user]"
+  updateWorkingVersion(user:ID!,article:ID!,bib:String,md:String,yaml:String):Article!
 
   "Save a new version for article [need to be authentificated as specified user]"
   saveVersion(version:VersionInput!,user:ID!):Version!

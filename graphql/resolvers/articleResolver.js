@@ -48,8 +48,8 @@ module.exports = {
     }
   },
 
-  updateArticle: async (args, {req}) => {
-    const ALLOWED_PARAMS = ['title', 'bib', 'md', 'yaml']
+  updateWorkingVersion: async (args, {req}) => {
+    const ALLOWED_PARAMS = ['bib', 'md', 'yaml']
 
     args = populateArgs(args,req)
     isUser(args,req)
@@ -68,7 +68,7 @@ module.exports = {
 
     ALLOWED_PARAMS
       .filter(key => key in args)
-      .forEach(key => fetchedArticle[key] = args[key])
+      .forEach(key => fetchedArticle.workingVersion[key] = args[key])
 
     const returnArticle = await fetchedArticle.save()
 
