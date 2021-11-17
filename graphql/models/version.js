@@ -44,3 +44,4 @@ const versionSchema = new Schema({
 }, {timestamps:true});
 
 module.exports = mongoose.model('Version', versionSchema);
+module.exports.schema = versionSchema

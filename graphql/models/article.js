@@ -47,3 +47,4 @@ const articleSchema = new Schema({
 }, {timestamps: true});
 
 module.exports = mongoose.model('Article', articleSchema);
+module.exports.schema = articleSchema;
