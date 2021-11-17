@@ -1,7 +1,7 @@
 import askGraphQL from "../helpers/graphQL"
 
 const saveWorkingVersionMetadataQuery = `mutation($userId: ID!, $articleId: ID!, $metadata: String!) {
-  updateArticle(
+  updateWorkingVersion(
     article: $articleId,
     user: $userId,
     bib: $metadata
