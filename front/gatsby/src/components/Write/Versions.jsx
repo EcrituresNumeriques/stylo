@@ -65,7 +65,7 @@ const mapStateToProps = ({ applicationConfig }) => {
   return { applicationConfig }
 }
 
-const Versions = ({ article, versions, readOnly, version, revision, versionId, selectedVersion, compareTo }) => {
+const Versions = ({ article, versions, selectedVersion, compareTo }) => {
   const [message, setMessage] = useState('')
   const [expand, setExpand] = useState(true)
   const [exporting, setExporting] = useState(false)

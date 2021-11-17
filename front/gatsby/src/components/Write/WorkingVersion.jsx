@@ -28,7 +28,7 @@ const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersion
 
   const saveVersion = async (e, major = false) => {
     e.preventDefault()
-    await sendVersion(false, major, message)
+    await sendVersion(major, message)
     setMessage('')
     setExpandSaveForm(false)
   }
