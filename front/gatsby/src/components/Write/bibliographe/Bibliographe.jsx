@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { connect, useDispatch } from 'react-redux'
-import debounce from 'lodash/debounce'
+import debounce from 'lodash.debounce'
 
 import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
