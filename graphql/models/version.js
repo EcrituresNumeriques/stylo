@@ -10,10 +10,6 @@ const versionSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Article'
   },
-  autosave:{
-    type:Boolean,
-    default:true
-  },
   title:{
     type:String,
     default:''

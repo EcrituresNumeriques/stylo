@@ -42,18 +42,18 @@ module.exports = {
       if(args.version.bib){
         values = {...values, bib:args.version.bib}
       }
-      values.autosave = args.version.auto
 
       delete values.createdAt
       delete values.updatedAt
 
-      let returnedVersion;
-
-      if(lastVersion.autosave && lastVersion.owner == thisUser.id){
+      if(args.version.auto && lastVersion.owner == thisUser.id){
           //Updating last autosave
-          if(args.version.major){values.version++;values.revision=0}
-          returnedVersion = await Version.findOneAndUpdate({_id:values._id},{$set:{...values}})
-          returnedVersion._doc = {...returnedVersion._doc,...values}
+          await articleToSaveInto.update({
+            workingVersion: { $set:{...values} }
+          })
+
+          // we save data we already have on the client-side
+          return 201
       }
       else{
         //full save, add new record
@@ -63,12 +63,13 @@ module.exports = {
         if(args.version.major){values.version++;values.revision=0}
         else{values.revision++}
 
-        returnedVersion = await Version.create({...values})
+        const returnedVersion = await Version.create({...values})
         articleToSaveInto.versions.push(returnedVersion)
         await articleToSaveInto.save()
+        return populateVersion(returnedVersion)
       }
 
-      return populateVersion(returnedVersion)
+
     }
     catch(err){
       throw err
@@ -86,7 +87,7 @@ module.exports = {
   },
   version: async (args,{req}) => {
 
-    // TODO need to make sure user should have access to this version 
+    // TODO need to make sure user should have access to this version
 
     try{
       return await getVersionById(args.version)

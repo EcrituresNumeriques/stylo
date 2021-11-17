@@ -130,9 +130,8 @@ const Versions = ({ article, versions, readOnly, version, revision, versionId, s
                 }
               >
                 <Link to={`/article/${article._id}/version/${v._id}`}>
-                  {v.message ? v.message : 'No label'} (
-                  {v.autosave ? 'autosaved ' : null}
-                  {v.version}.{v.revision})
+                  {v.message ? v.message : 'No label'}
+                  ({v.version}.{v.revision})
                 </Link>
                 <p>
                   {v.owner && (
