@@ -109,7 +109,7 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
   }
 
   function saveBibTeX (bibTeX) {
-    bibliographyService.saveBibTeX(bibTeX)
+    bibliographyService.saveBibliography(bibTeX)
     dispatch({ type: 'UPDATE_ARTICLE_BIB', bib: bibTeX })
   }
 
