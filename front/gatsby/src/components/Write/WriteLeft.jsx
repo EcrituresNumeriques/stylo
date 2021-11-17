@@ -10,8 +10,10 @@ import WorkingVersion from './WorkingVersion'
 
 const mapStateToProps = ({ articleStats }) => ({ articleStats })
 
-function WriteLeft ({ bib, article, md, articleStats, readOnly, versions, version, revision, compareTo, versionId, selectedVersion, sendVersion, onTableOfContentClick }) {
+function WriteLeft ({ bib, article, articleStats, readOnly, versions, version, revision, compareTo, versionId, selectedVersion, sendVersion, onTableOfContentClick }) {
   const [expanded, setExpanded] = useState(true)
+
+  console.log({versions})
   const [workingVersion, ...otherVersions] = versions
   return (
     <nav className={`${expanded ? styles.expandleft : styles.retractleft}`}>
@@ -42,7 +44,7 @@ function WriteLeft ({ bib, article, md, articleStats, readOnly, versions, versio
             selectedVersion={selectedVersion}
             compareTo={compareTo}
           />
-          <Sommaire md={md} onTableOfContentClick={onTableOfContentClick} />
+          <Sommaire onTableOfContentClick={onTableOfContentClick} />
           <Biblio readOnly={readOnly} bib={bib} article={article} />
           <Stats stats={articleStats} />
         </div>
