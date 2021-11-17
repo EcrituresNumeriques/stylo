@@ -25,6 +25,7 @@ const mapStateToProps = ({ activeUser, applicationConfig }) => {
 }
 
 function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, activeUser, applicationConfig }) {
+  console.log('ConnectedWrite', { currentVersion, articleId, compareTo, activeUser, applicationConfig })
   const userId = activeUser && activeUser._id
   const [readOnly, setReadOnly] = useState(Boolean(currentVersion))
   const dispatch = useDispatch()
@@ -36,16 +37,16 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
     []
   )
   const updateWorkingArticleText = useCallback(
-    debounce(({ text }) => {
-      new ArticleService(userId, articleId, applicationConfig).saveText(text)
+    debounce(async ({ text }) => {
+      const { updateWorkingVersion } = await new ArticleService(userId, articleId, applicationConfig).saveText(text)
     }, 1000, { leading: false, trailing: true }),
-    []
+    [userId, articleId, applicationConfig]
   )
   const updateWorkingArticleMetadata = useCallback(
     debounce(({ metadata }) => {
       new MetadataService(userId, articleId, applicationConfig).saveMetadata(metadata)
     }, 1000, { leading: false, trailing: true }),
-    []
+    [userId, articleId, applicationConfig]
   )
 
   const fullQuery = `query($article:ID!, $hasVersion: Boolean!, $version:ID!) {
@@ -168,7 +169,7 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
   }, [live, versions, activeUser, articleId, currentVersion])
 
   const sendVersion = async (autosave = true, major = false, message = '') => {
-    console.log('sendVersion', {autosave, major, message})
+    console.log('sendVersion', { autosave, major, message })
     try {
       const response = await askGraphQL(
         {
@@ -251,13 +252,14 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
       if (data?.article) {
         const article = data.article
         const version = currentVersion ? data.version : article.workingVersion
-        console.log({version})
+        console.log({ version })
         setLive(version)
         setArticleInfos({
           _id: article._id,
           title: article.title,
           zoteroLink: article.zoteroLink,
           owners: article.owners.map((o) => o.displayName),
+          updatedAt: article.updatedAt
         })
 
         setVersions(article.versions)

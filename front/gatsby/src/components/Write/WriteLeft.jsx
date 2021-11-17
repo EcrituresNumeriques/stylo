@@ -13,8 +13,6 @@ const mapStateToProps = ({ articleStats }) => ({ articleStats })
 function WriteLeft ({ bib, article, articleStats, readOnly, versions, version, revision, compareTo, versionId, selectedVersion, sendVersion, onTableOfContentClick }) {
   const [expanded, setExpanded] = useState(true)
 
-  console.log({versions})
-  const [workingVersion, ...otherVersions] = versions
   return (
     <nav className={`${expanded ? styles.expandleft : styles.retractleft}`}>
       <nav
@@ -30,13 +28,13 @@ function WriteLeft ({ bib, article, articleStats, readOnly, versions, version, r
             articleOwners={article.owners}
             articleId={article._id}
             articleVersionId={versionId}
-            articleLastSavedAt={workingVersion.updatedAt}
+            articleLastSavedAt={article.updatedAt}
             readOnly={readOnly}
             sendVersion={sendVersion}
           />
           <Versions
             article={article}
-            versions={otherVersions}
+            versions={versions}
             readOnly={readOnly}
             version={version}
             revision={revision}
