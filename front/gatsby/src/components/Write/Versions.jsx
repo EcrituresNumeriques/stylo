@@ -61,11 +61,12 @@ Date.prototype.formatMMDDYYYY = function () {
   return `${monthName} ${this.getUTCDate()}, ${this.getFullYear()} at ${this.getUTCHoursDoubleDigit()}:${this.getUTCMinutesDoubleDigit()} (UTC)`
 }
 
-const mapStateToProps = ({ applicationConfig }) => {
-  return { applicationConfig }
+const mapStateToProps = ({ articleVersions }) => {
+  return { articleVersions }
 }
 
-const Versions = ({ article, versions, selectedVersion, compareTo }) => {
+const Versions = ({ article, articleVersions, selectedVersion, compareTo }) => {
+  const dispatch = useDispatch()
   const [message, setMessage] = useState('')
   const [expand, setExpand] = useState(true)
   const [exporting, setExporting] = useState(false)
@@ -87,7 +88,7 @@ const Versions = ({ article, versions, selectedVersion, compareTo }) => {
       {expand && (
         <>
           <ul className={styles.versionsList}>
-            {versions.map((v) => (
+            {articleVersions.map((v) => (
               <li
                 key={`showVersion-${v._id}`}
                 className={

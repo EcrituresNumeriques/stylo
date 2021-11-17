@@ -18,7 +18,7 @@ const mapStateToProps = ({ applicationConfig }) => {
   return { applicationConfig }
 }
 
-const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersionId, articleLastSavedAt, readOnly, sendVersion }) => {
+const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersionId, articleLastSavedAt, readOnly }) => {
   const [exporting, setExporting] = useState(false)
   const [message, setMessage] = useState('')
   const [expandSaveForm, setExpandSaveForm] = useState(false)
@@ -28,7 +28,7 @@ const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersion
 
   const saveVersion = async (e, major = false) => {
     e.preventDefault()
-    await sendVersion(major, message)
+    dispatch({ type: 'CREATE_NEW_ARTICLE_VERSION', articleId, message, major })
     setMessage('')
     setExpandSaveForm(false)
   }

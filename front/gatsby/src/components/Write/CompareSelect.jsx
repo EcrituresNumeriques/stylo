@@ -1,13 +1,18 @@
 import React, { useState, useCallback } from 'react'
+import { connect } from "react-redux"
 import { useHistory } from 'react-router-dom'
 
 import styles from './compareSelect.module.scss'
 
-export default function CompareSelect ({ article, selectedVersion, live, readOnly, versions, compareTo }) {
+const mapStateToProps = ({ articleVersions }) => {
+  return { articleVersions }
+}
+
+const CompareSelect = ({ articleId, articleVersions, selectedVersion, live, readOnly, compareTo }) => {
   const [compareVersionId, setCompareVersionId] = useState(null)
   const history = useHistory()
   const handleCompareSelect = useCallback((e) => {
-    const articleId = article._id
+    const articleId = articleId
     const compareVersionId = e.target.value
     setCompareVersionId(compareVersionId)
     const parts = ['article', articleId]
@@ -36,7 +41,7 @@ export default function CompareSelect ({ article, selectedVersion, live, readOnl
       {title}
       <select onChange={handleCompareSelect}>
         <option value={false}>Stop compare</option>
-        {versions.map((v) => (
+        {articleVersions.map((v) => (
           <option
             value={v._id}
             key={`versionCompare-${v._id}`}
@@ -48,3 +53,5 @@ export default function CompareSelect ({ article, selectedVersion, live, readOnl
     </p>
   )
 }
+
+export default connect(mapStateToProps)(CompareSelect)

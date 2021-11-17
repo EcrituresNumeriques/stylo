@@ -18,6 +18,7 @@ const initialState = {
   password: undefined,
   sessionToken: undefined,
   articleStructure: [],
+  articleVersions: [],
   articleStats: {
     wordCount: 0,
     charCountNoSpace: 0,
@@ -26,7 +27,7 @@ const initialState = {
   },
 }
 
-const reducer = createReducer([], {
+const reducer = createReducer(initialState, {
   APPLICATION_CONFIG: setApplicationConfig,
   PROFILE: setProfile,
   CLEAR_ZOTERO_TOKEN: clearZoteroToken,
@@ -41,8 +42,27 @@ const reducer = createReducer([], {
   UPDATE_ARTICLE_STATS: updateArticleStats,
   UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
   UPDATE_ARTICLE_BIB: updateArticleBib,
+
+  SET_ARTICLE_VERSIONS: setArticleVersions
 })
 
+const createNewArticleVersion  = store => {
+  return next => {
+    return async (action) => {
+      if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
+        const { articleVersions, activeUser, article, applicationConfig } = store.getState()
+        const userId = activeUser._id
+        const articleId = article._id
+        const { major, message } = action
+        const { yaml, bib } = article
+        const versionService = new VersionService(userId, articleId, applicationConfig)
+        const response = await versionService.createNewArticleVersion(major, message)
+        store.dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: [response.saveVersion, ...articleVersions] })
+        return next(action)
+      }
+    }
+  }
+}
 
 function setApplicationConfig (state, action) {
   const applicationConfig = {
@@ -182,4 +202,11 @@ function updateArticleBib(state, { bib }) {
   return { ...state, articleBib: bib, articleBibTeXEntries }
 }
 
-export default () => createStore(reducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+function setArticleVersions(state, { versions }) {
+  return { ...state, articleVersions: versions }
+}
+
+export default () => createStore(
+  reducer,
+  applyMiddleware(createNewArticleVersion),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
