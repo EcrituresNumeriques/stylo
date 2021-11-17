@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { connect, useDispatch } from 'react-redux'
+import { useSelector, shallowEqual, useDispatch, batch } from 'react-redux'
 import 'codemirror/mode/markdown/markdown'
 import { Controlled as CodeMirror } from 'react-codemirror2'
 import throttle from 'lodash.throttle'
@@ -16,12 +16,9 @@ import Compare from './Compare'
 import CompareSelect from './CompareSelect'
 import Loading from '../Loading'
 
-const mapStateToProps = ({ activeUser, applicationConfig }) => {
-  return { activeUser, applicationConfig }
-}
-
-function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, activeUser, applicationConfig }) {
-  const userId = activeUser && activeUser._id
+function Write ({ version: currentVersion, id: articleId, compareTo }) {
+  const userId = useSelector(state => state.activeUser._id)
+  const applicationConfig = useSelector(state => state.applicationConfig, shallowEqual)
   const [readOnly, setReadOnly] = useState(Boolean(currentVersion))
   const dispatch = useDispatch()
   const deriveArticleStructureAndStats = useCallback(
@@ -35,13 +32,13 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
     debounce(async ({ text }) => {
       dispatch({ type: 'UPDATE_WORKING_ARTICLE_TEXT', articleId, text })
     }, 1000, { leading: false, trailing: true }),
-    [userId, articleId, applicationConfig]
+    []
   )
   const updateWorkingArticleMetadata = useCallback(
     debounce(({ metadata }) => {
       dispatch({ type: 'UPDATE_WORKING_ARTICLE_METADATA', articleId, metadata })
     }, 1000, { leading: false, trailing: true }),
-    [userId, articleId, applicationConfig]
+    []
   )
 
   const fullQuery = `query($article:ID!, $hasVersion: Boolean!, $version:ID!) {
@@ -88,10 +85,6 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
   }`
 
   const instanceCM = useRef(null)
-
-  const handleReload = useCallback(() => {
-    setNeedReload(true)
-  }, [])
 
   const handleUpdateCursorPosition = useCallback((line) => {
     try {
@@ -176,13 +169,16 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
           owners: article.owners.map((o) => o.displayName),
           updatedAt: article.updatedAt
         })
-        const md = version.md
-        const bib = version.bib
-        dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: article.versions})
-        dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
-        dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
-        dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
-        dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: article.updatedAt })
+
+        const { md, bib } = version
+
+        batch(() => {
+          dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: article.versions})
+          dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
+          dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
+          dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
+          dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: article.updatedAt })
+        })
       }
 
       setIsLoading(false)
@@ -247,7 +243,5 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
     </section>
   )
 }
-
-const Write = connect(mapStateToProps)(ConnectedWrite)
 
 export default Write
