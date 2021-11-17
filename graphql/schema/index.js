@@ -31,6 +31,12 @@ type Tag{
   updatedAt:String
 }
 
+type WorkingVersion {
+  md:String
+  yaml:String
+  bib:String
+}
+
 type Version{
   _id: ID!
   version:Int
@@ -52,8 +58,8 @@ type Article {
   title: String
   zoteroLink: String
   owners(limit:Int,page:Int): [User!]!
+  workingVersion: WorkingVersion
   versions(limit:Int,page:Int): [Version!]!
-  live:Version!
   tags(limit:Int,page:Int):[Tag!]!
   createdAt:String
   updatedAt:String

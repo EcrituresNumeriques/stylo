@@ -112,7 +112,6 @@ const populateArticle = (article) => {
         zoteroLink:cleanedArticle.zoteroLink || "",
         owners:getUsersByIds.bind(this, cleanedArticle.owners || []),
         versions:getVersionsByIds.bind(this, cleanedArticle.versions || []),
-        live:getVersionById.bind(this, cleanedArticle.versions[cleanedArticle.versions.length-1] || []),
         tags:getTagsByIds.bind(this, cleanedArticle.tags || [])
     }
 }
