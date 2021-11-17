@@ -185,9 +185,6 @@ type RootMutation {
   "Save a new version for article [need to be authentificated as specified user]"
   saveVersion(version:VersionInput!,user:ID!):Version!
 
-  "Unlink a version from article [need to be authentificated as specified user]"
-  unlinkVersion(version:ID!,user:ID!):Version!
-
   "Create tag [need to be authentificated as specified user]"
   createTag(name:String!,description:String,user:ID!):Tag!
 
