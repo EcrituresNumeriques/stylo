@@ -17,9 +17,6 @@ import Compare from './Compare'
 import CompareSelect from './CompareSelect'
 import Loading from '../Loading'
 
-import ArticleService from "../../services/ArticleService"
-import MetadataService from "../../services/MetadataService"
-
 const mapStateToProps = ({ activeUser, applicationConfig }) => {
   return { activeUser, applicationConfig }
 }
@@ -37,13 +34,13 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
   )
   const updateWorkingArticleText = useCallback(
     debounce(async ({ text }) => {
-      const { updateWorkingVersion } = await new ArticleService(userId, articleId, applicationConfig).saveText(text)
+      dispatch({ type: 'UPDATE_WORKING_ARTICLE_TEXT', articleId, text })
     }, 1000, { leading: false, trailing: true }),
     [userId, articleId, applicationConfig]
   )
   const updateWorkingArticleMetadata = useCallback(
     debounce(({ metadata }) => {
-      new MetadataService(userId, articleId, applicationConfig).saveMetadata(metadata)
+      dispatch({ type: 'UPDATE_WORKING_ARTICLE_METADATA', articleId, metadata })
     }, 1000, { leading: false, trailing: true }),
     [userId, articleId, applicationConfig]
   )
@@ -206,6 +203,7 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
         dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
         dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
         dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
+        dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: article.updatedAt })
       }
 
       setIsLoading(false)

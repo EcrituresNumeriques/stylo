@@ -28,7 +28,6 @@ function WriteLeft ({ bib, article, articleStats, readOnly, compareTo, selectedV
             articleOwners={article.owners}
             articleId={article._id}
             articleVersionId="latest"
-            articleLastSavedAt={article.updatedAt}
             readOnly={readOnly}
           />
           <Versions

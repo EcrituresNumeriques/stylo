@@ -1,5 +1,8 @@
 import { applyMiddleware, createStore } from 'redux'
 import { toEntries } from './helpers/bibtex'
+import VersionService from './services/VersionService'
+import ArticleService from "./services/ArticleService"
+import MetadataService from "./services/MetadataService"
 
 function createReducer (initialState, handlers) {
   return function reducer (state = initialState, action) {
@@ -17,6 +20,8 @@ const initialState = {
   users: [],
   password: undefined,
   sessionToken: undefined,
+  workingArticle: {
+  },
   articleStructure: [],
   articleVersions: [],
   articleStats: {
@@ -43,23 +48,43 @@ const reducer = createReducer(initialState, {
   UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
   UPDATE_ARTICLE_BIB: updateArticleBib,
 
-  SET_ARTICLE_VERSIONS: setArticleVersions
+  SET_ARTICLE_VERSIONS: setArticleVersions,
+  SET_WORKING_ARTICLE_UPDATED_AT: setWorkingArticleUpdatedAt,
+  SET_WORKING_ARTICLE_TEXT: setWorkingArticleText,
+  SET_WORKING_ARTICLE_METADATA: setWorkingArticleMetadata,
 })
 
 const createNewArticleVersion  = store => {
   return next => {
     return async (action) => {
       if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
-        const { articleVersions, activeUser, article, applicationConfig } = store.getState()
+        const { articleVersions, activeUser, applicationConfig } = store.getState()
         const userId = activeUser._id
-        const articleId = article._id
-        const { major, message } = action
-        const { yaml, bib } = article
+        const { articleId, major, message } = action
         const versionService = new VersionService(userId, articleId, applicationConfig)
         const response = await versionService.createNewArticleVersion(major, message)
         store.dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: [response.saveVersion, ...articleVersions] })
         return next(action)
       }
+      if (action.type === 'UPDATE_WORKING_ARTICLE_TEXT') {
+        const { activeUser, applicationConfig } = store.getState()
+        const userId = activeUser._id
+        const { articleId, text } = action
+        const { updateWorkingVersion } = await new ArticleService(userId, articleId, applicationConfig).saveText(text)
+        store.dispatch({ type: 'SET_WORKING_ARTICLE_TEXT', text })
+        store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
+        return next(action)
+      }
+      if (action.type === 'UPDATE_WORKING_ARTICLE_METADATA') {
+        const { activeUser, applicationConfig } = store.getState()
+        const userId = activeUser._id
+        const { articleId, metadata } = action
+        const { updateWorkingVersion } =new MetadataService(userId, articleId, applicationConfig).saveMetadata(metadata)
+        store.dispatch({ type: 'SET_WORKING_ARTICLE_METADATA', metadata })
+        store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
+        return next(action)
+      }
+      return next(action)
     }
   }
 }
@@ -204,6 +229,22 @@ function updateArticleBib(state, { bib }) {
 
 function setArticleVersions(state, { versions }) {
   return { ...state, articleVersions: versions }
+}
+
+function setWorkingArticleUpdatedAt(state, { updatedAt }) {
+  const { workingArticle } = state
+  console.log('setWorkingArticleUpdatedAt')
+  return { ...state, workingArticle: { ...workingArticle, updatedAt } }
+}
+
+function setWorkingArticleText(state, { text }) {
+  const { workingArticle } = state
+  return { ...state, workingArticle: { ...workingArticle, text } }
+}
+
+function setWorkingArticleMetadata(state, { metadata }) {
+  const { workingArticle } = state
+  return { ...state, workingArticle: { ...workingArticle, metadata } }
 }
 
 export default () => createStore(
