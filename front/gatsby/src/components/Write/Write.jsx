@@ -36,29 +36,26 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
       _id
       title
       zoteroLink
+
       owners {
         displayName
       }
+
       versions {
         _id
         version
         revision
         message
-        autosave
         updatedAt
         owner {
           displayName
         }
       }
 
-      live @skip (if: $hasVersion) {
+      workingVersion @skip (if: $hasVersion) {
         md
         bib
         yaml
-        message
-        owner {
-          displayName
-        }
       }
     }
 
@@ -137,14 +134,14 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
       message: $message
     },
     user: $user
-  ) { 
-    _id 
+  ) {
+    _id
     version
     revision
     message
     autosave
     updatedAt
-    owner { 
+    owner {
       displayName
     }
   }
@@ -221,7 +218,7 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
 
       if (data?.article) {
         const article = data.article
-        const version = currentVersion ? data.version : article.live
+        const version = currentVersion ? data.version : article.workingVersion
         setLive(version)
         setArticleInfos({
           _id: article._id,

@@ -175,9 +175,7 @@ const ConnectedArticle = (props) => {
               <li key={`version-${v._id}`}>
                 <Link to={`/article/${props._id}/version/${v._id}`}>{`${
                   v.message ? v.message : 'no label'
-                } (${v.autosave ? 'autosaved' : ''} v${v.version}.${
-                  v.revision
-                })`}</Link>
+                } (v${v.version}.${v.revision})`}</Link>
               </li>
             ))}
           </ul>

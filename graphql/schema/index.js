@@ -46,7 +46,6 @@ type Version{
   yaml:String
   bib:String
   message:String
-  autosave:Boolean
   article:Article
   owner:User
   createdAt:String

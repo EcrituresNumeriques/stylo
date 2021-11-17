@@ -21,7 +21,7 @@ const ConnectedBooks = (props) => {
       //Self invoking async function
       ;(async () => {
         try {
-          const query = `query($user:ID!){user(user:$user){ displayName tags{ _id name updatedAt articles{ _id title updatedAt versions(limit:1){ _id version revision autosave message } } } } }`
+          const query = `query($user:ID!){user(user:$user){ displayName tags{ _id name updatedAt articles{ _id title updatedAt versions(limit:1){ _id version revision message } } } } }`
           const user = { user: props.activeUser._id }
           setIsLoading(true)
           const data = await askGraphQL(
