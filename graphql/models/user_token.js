@@ -27,3 +27,4 @@ const userTokenSchema = new Schema({
 }, {timestamps: true});
 
 module.exports = mongoose.model('Token', userTokenSchema);
+module.exports.schema = userTokenSchema;

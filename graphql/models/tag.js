@@ -25,3 +25,4 @@ const tagSchema = new Schema({
 }, {timestamps: true});
 
 module.exports = mongoose.model('Tag', tagSchema);
+module.exports.schema = tagSchema;

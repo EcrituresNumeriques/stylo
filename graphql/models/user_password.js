@@ -33,3 +33,4 @@ const userPasswordSchema = new Schema({
 }, {timestamps: true});
 
 module.exports = mongoose.model('Password', userPasswordSchema);
+module.exports.schema = userPasswordSchema;
