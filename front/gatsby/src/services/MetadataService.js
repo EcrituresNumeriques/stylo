@@ -1,6 +1,6 @@
 import askGraphQL from "../helpers/graphQL"
 
-const saveWorkingArticleMetadataQuery = `mutation($userId: ID!, $articleId: ID!, $metadata: String!) {
+const saveWorkingVersionMetadataQuery = `mutation($userId: ID!, $articleId: ID!, $metadata: String!) {
   updateArticle(
     article: $articleId,
     user: $userId,
@@ -21,7 +21,7 @@ export default class MetadataService {
   async saveMetadata (metadata) {
     return askGraphQL(
       {
-        query: saveWorkingArticleMetadataQuery,
+        query: saveWorkingVersionMetadataQuery,
         variables: {
           userId: this.userId,
           articleId: this.articleId,

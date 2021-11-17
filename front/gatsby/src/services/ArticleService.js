@@ -1,6 +1,6 @@
 import askGraphQL from "../helpers/graphQL"
 
-const saveWorkingArticleTextQuery = `mutation($userId: ID!, $articleId: ID!, $text: String!) {
+const saveWorkingVersionTextQuery = `mutation($userId: ID!, $articleId: ID!, $text: String!) {
   updateArticle(
     article: $articleId,
     user: $userId,
@@ -21,7 +21,7 @@ export default class ArticleService {
   async saveText (text) {
     return askGraphQL(
       {
-        query: saveWorkingArticleTextQuery,
+        query: saveWorkingVersionTextQuery,
         variables: {
           userId: this.userId,
           articleId: this.articleId,
