@@ -70,9 +70,9 @@ module.exports = {
       .filter(key => key in args)
       .forEach(key => fetchedArticle[key] = args[key])
 
-    await fetchedArticle.save()
+    const returnArticle = await fetchedArticle.save()
 
-    return populateArticle(fetchedArticle)
+    return populateArticle(returnArticle)
   },
 
   shareArticle: async (args,{req}) => {
