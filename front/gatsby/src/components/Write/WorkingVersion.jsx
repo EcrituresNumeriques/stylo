@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
-import { connect } from 'react-redux'
-
-import menuStyles from './menu.module.scss'
+import React, { useState, useEffect } from 'react'
+import { connect, useDispatch } from 'react-redux'
 import styles from './workingVersion.module.scss'
 import Field from "../Field";
 import Button from "../Button";
-import { Edit, Edit2, Edit3, Save } from "react-feather";
+import { Edit, Save } from "react-feather";
 import { Link } from "react-router-dom";
 import buttonStyles from "../button.module.scss";
 import Modal from "../Modal";
@@ -14,17 +12,25 @@ import formatTimeAgo from "../../helpers/formatTimeAgo";
 import { generateArticleExportId } from "../../helpers/identifier"
 
 
-const mapStateToProps = ({ applicationConfig }) => {
-  return { applicationConfig }
+const mapStateToProps = ({ workingArticle }) => {
+  return { workingArticle }
 }
 
-const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersionId, articleLastSavedAt, readOnly }) => {
+const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersionId, workingArticle, readOnly }) => {
+  const articleLastSavedAt = workingArticle.updatedAt
+  const dispatch = useDispatch()
   const [exporting, setExporting] = useState(false)
   const [message, setMessage] = useState('')
   const [expandSaveForm, setExpandSaveForm] = useState(false)
   const [savedAgo, setSavedAgo] = useState(
     formatTimeAgo(new Date(articleLastSavedAt))
   )
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSavedAgo(formatTimeAgo(new Date(articleLastSavedAt)))
+    }, 60000)
+  })
 
   const saveVersion = async (e, major = false) => {
     e.preventDefault()

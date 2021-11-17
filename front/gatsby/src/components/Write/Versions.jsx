@@ -66,7 +66,6 @@ const mapStateToProps = ({ articleVersions }) => {
 }
 
 const Versions = ({ article, articleVersions, selectedVersion, compareTo }) => {
-  const dispatch = useDispatch()
   const [message, setMessage] = useState('')
   const [expand, setExpand] = useState(true)
   const [exporting, setExporting] = useState(false)
