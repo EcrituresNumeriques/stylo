@@ -10,7 +10,7 @@ import WorkingVersion from './WorkingVersion'
 
 const mapStateToProps = ({ articleStats }) => ({ articleStats })
 
-function WriteLeft ({ bib, article, articleStats, readOnly, versions, compareTo, selectedVersion, sendVersion, onTableOfContentClick }) {
+function WriteLeft ({ bib, article, articleStats, readOnly, compareTo, selectedVersion, onTableOfContentClick }) {
   const [expanded, setExpanded] = useState(true)
 
   return (
@@ -30,11 +30,9 @@ function WriteLeft ({ bib, article, articleStats, readOnly, versions, compareTo,
             articleVersionId="latest"
             articleLastSavedAt={article.updatedAt}
             readOnly={readOnly}
-            sendVersion={sendVersion}
           />
           <Versions
             article={article}
-            versions={versions}
             selectedVersion={selectedVersion}
             compareTo={compareTo}
           />
