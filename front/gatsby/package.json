@@ -20,7 +20,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "develop": "npm run start",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "posttest": "eslint ./src"
   },
   "dependencies": {
     "@rjsf/core": "^2.5.1",
