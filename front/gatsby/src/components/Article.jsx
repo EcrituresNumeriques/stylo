@@ -10,14 +10,16 @@ import Export from './Export'
 import ArticleDelete from './ArticleDelete'
 import Acquintances from './Acquintances'
 import ArticleTags from './ArticleTags'
-import formatTimeAgo from '../helpers/formatTimeAgo'
 
+import formatTimeAgo from '../helpers/formatTimeAgo'
+import { generateArticleExportId } from "../helpers/identifier"
 import etv from '../helpers/eventTargetValue'
 import askGraphQL from '../helpers/graphQL'
 
 import Field from './Field'
 import Button from './Button'
 import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Send, Trash } from 'react-feather'
+
 
 const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
@@ -80,11 +82,8 @@ const ConnectedArticle = (props) => {
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
           <Export
-            {...props}
-            article={true}
-            versionId={props.versions[0]._id}
-            version={props.versions[0].version}
-            revision={props.versions[0].revision}
+            exportId={generateArticleExportId(props.title, props.versions[0].version, props.versions[0].revision)}
+            articleVersionId={props.versions[0]._id}
           />
         </Modal>
       )}
