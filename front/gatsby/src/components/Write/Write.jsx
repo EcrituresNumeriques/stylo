@@ -4,9 +4,12 @@ import 'codemirror/mode/markdown/markdown'
 import { Controlled as CodeMirror } from 'react-codemirror2'
 import throttle from 'lodash/throttle'
 import debounce from 'lodash/debounce'
+import 'codemirror/lib/codemirror.css'
+
+import styles from './write.module.scss'
 
 import askGraphQL from '../../helpers/graphQL'
-import styles from './write.module.scss'
+import useDebounce from '../../hooks/debounce'
 
 import WriteLeft from './WriteLeft'
 import WriteRight from './WriteRight'
@@ -14,10 +17,8 @@ import Compare from './Compare'
 import CompareSelect from './CompareSelect'
 import Loading from '../Loading'
 
-import useDebounce from '../../hooks/debounce'
-import 'codemirror/lib/codemirror.css'
-import ArticleService from "../../services/ArticleService";
-import MetadataService from "../../services/MetadataService";
+import ArticleService from "../../services/ArticleService"
+import MetadataService from "../../services/MetadataService"
 
 const mapStateToProps = ({ activeUser, applicationConfig }) => {
   return { activeUser, applicationConfig }
