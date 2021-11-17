@@ -88,7 +88,7 @@ const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersion
             onChange={(e) => setMessage(e.target.value)}
           />
           <ul className={styles.actions}>
-            <li><Button icon={true} onClick={(e) => saveVersion(e, false)}>Close</Button></li>
+            <li><Button icon={true} onClick={(e) => setExpandSaveForm(false)}>Close</Button></li>
             <li><Button onClick={(e) => saveVersion(e, false)}>Save Minor</Button></li>
             <li><Button onClick={(e) => saveVersion(e, true)}>Save Major</Button></li>
           </ul>
