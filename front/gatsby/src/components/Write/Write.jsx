@@ -226,8 +226,11 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
     setReadOnly(currentVersion)
     ;(async () => {
       const data = await askGraphQL(
-        { query: fullQuery, variables },
-        'fetching Live version',
+        {
+          query: fullQuery,
+          variables
+        },
+        'Fetching article',
         null,
         applicationConfig
       ).then(({ version, article }) => ({ version, article })
@@ -239,6 +242,7 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
       if (data?.article) {
         const article = data.article
         const version = currentVersion ? data.version : article.workingVersion
+        console.log({version})
         setLive(version)
         setArticleInfos({
           _id: article._id,
