@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore } from 'redux'
+import { applyMiddleware, createStore, compose } from 'redux'
 import { toEntries } from './helpers/bibtex'
 import VersionService from './services/VersionService'
 import ArticleService from "./services/ArticleService"
@@ -247,7 +247,9 @@ function setWorkingArticleMetadata(state, { metadata }) {
   return { ...state, workingArticle: { ...workingArticle, metadata } }
 }
 
-export default () => createStore(
-  reducer,
+const enhancers = compose(
   applyMiddleware(createNewArticleVersion),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
+
+export default () => createStore(reducer, undefined, enhancers)
