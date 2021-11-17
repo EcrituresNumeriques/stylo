@@ -43,8 +43,8 @@ export function deriveAuthorNameAndDate(entry) {
   const date = entry.fields?.date
   let authorName = ''
 
-  if (author) {
-    const { family, given, prefix, literal } = author?.[0]
+  if (Array.isArray(author) && author.length) {
+    const { family, given, prefix, literal } = author[0]
     if (literal) {
       authorName = literal.map(o => o.text).join(' ')
     }

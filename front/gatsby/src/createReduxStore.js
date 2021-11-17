@@ -6,7 +6,7 @@ import MetadataService from "./services/MetadataService"
 
 function createReducer (initialState, handlers) {
   return function reducer (state = initialState, action) {
-    if (handlers.hasOwnProperty(action.type)) {
+    if (Object.prototype.hasOwnProperty.call(handlers, action.type)) {
       return handlers[action.type](state, action)
     } else {
       return state
@@ -208,7 +208,7 @@ function updateArticleStructure (state, { md }) {
   const articleStructure = text
     .split('\n')
     .map((line, index) => ({ line, index }))
-    .filter((lineWithIndex) => lineWithIndex.line.match(/^##+\ /))
+    .filter((lineWithIndex) => lineWithIndex.line.match(/^##+ /))
     .map((lineWithIndex) => {
       const title = lineWithIndex.line
         .replace(/##/, '')

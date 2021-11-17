@@ -9,7 +9,6 @@ import 'codemirror/lib/codemirror.css'
 import styles from './write.module.scss'
 
 import askGraphQL from '../../helpers/graphQL'
-import useDebounce from '../../hooks/debounce'
 
 import WriteLeft from './WriteLeft'
 import WriteRight from './WriteRight'
@@ -134,26 +133,6 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
       },
     },
   }
-
-  const saveVersionQuery = `mutation($user: ID!, $article: ID!, $major: Boolean!, $message: String) {
-  saveVersion(
-    version: {
-      article: $article,
-      major: $major,
-      message: $message
-    },
-    user: $user
-  ) {
-    _id
-    version
-    revision
-    message
-    updatedAt
-    owner {
-      displayName
-    }
-  }
-}`
 
   const handleMDCM = async (___, __, text) => {
     deriveArticleStructureAndStats({ text })
