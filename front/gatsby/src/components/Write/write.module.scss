@@ -4,6 +4,7 @@
 .article {
   @extend .wrapped-center;
   background-color: $extra-background-color;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .3);
   height: 100%;
   display: flex;
 

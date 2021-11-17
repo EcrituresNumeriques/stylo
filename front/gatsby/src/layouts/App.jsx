@@ -9,22 +9,17 @@ import fullPageStyles from './fullpage.module.scss'
 import wrappedStyles from './wrapped.module.scss'
 import '../styles/general.scss'
 
-const mapStateToProps = ({ hasBooted }) => {
-  return { hasBooted }
+const allStyles = {
+  wrapped: wrappedStyles,
+  fullPage: fullPageStyles,
+  centered: centeredStyles,
 }
 
 export default function StyloApp (props) {
   const hasBooted = useSelector(state => state.hasBooted)
   const { layout, shell = true } = props
 
-  let styles = centeredStyles
-  if (layout === 'wrapped') {
-    styles = wrappedStyles
-  } else if (!shell || layout === 'fullPage') {
-    styles = fullPageStyles
-  } else if (layout === 'centered') {
-    styles = centeredStyles
-  }
+  let styles = shell === false ? allStyles.fullPage : allStyles[layout]
 
   return (
     <div className={styles.grid}>
