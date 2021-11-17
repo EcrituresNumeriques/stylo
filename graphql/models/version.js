@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const defaultsData = require('../data/defaultsData')
 const Schema = mongoose.Schema;
 
 const versionSchema = new Schema({
@@ -31,27 +30,12 @@ const versionSchema = new Schema({
     type:String,
     default:''
   },
-  md:{
-    type:String,
-    default:`## Section Title
-
-Add your text here, and the document title in the metadatas tool.
-
-1. Use only title of level 2 (\`##\`) for sections and more (level 1 is used for the article title)
-2. The text is automatically saved. You can version it with \`[Save as]\` button
-3. Check the documentation in the menu`
-  },
+  md: String,
+  yaml: String,
+  bib: String,
   sommaire:{
     type:String,
     default:'# titre'
-  },
-  yaml:{
-    type:String,
-    default:defaultsData.yaml
-  },
-  bib:{
-    type:String,
-    default:''
   },
   hidden:{
     type:Boolean,
