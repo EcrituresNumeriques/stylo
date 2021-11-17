@@ -4,12 +4,12 @@
 .versionsList {
   font-size: 0.9em;
   > li {
-    padding: 0.5rem 1rem 0.5rem 1rem;
+    padding: 0.5rem;
     > a:first-child {
       display: block;
     }
   }
-  > li:nth-child(2n) {
+  > li:nth-child(2n+1) {
     background-color: $main-background-color;
   }
   > li.selected {
@@ -23,6 +23,13 @@
   }
 }
 
+.createActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+}
+
 .actions {
   display: flex;
   margin-top: 0.5rem;
@@ -32,5 +39,26 @@
 
   > li:not(:last-child) {
     margin-right: 0.5em;
+  }
+}
+
+.create {
+  font-size: 0.9em;
+  margin: 0.5rem;
+}
+
+.saveForm {
+  text-align: right;
+  margin: 1rem 0;
+  border-left: 5px solid #202020;
+  padding: 0.5rem 0 0.25rem 0.5rem;
+}
+
+.saveVersionInput {
+  width: 100%;
+  padding-bottom: 0.5rem;
+
+  input {
+    width: 100%;
   }
 }

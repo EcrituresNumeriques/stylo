@@ -28,12 +28,12 @@ function WriteLeft ({ bib, article, articleStats, readOnly, compareTo, selectedV
             articleOwners={article.owners}
             articleId={article._id}
             articleVersionId="latest"
-            readOnly={readOnly}
           />
           <Versions
             article={article}
             selectedVersion={selectedVersion}
             compareTo={compareTo}
+            readOnly={readOnly}
           />
           <Sommaire onTableOfContentClick={onTableOfContentClick} />
           <Biblio readOnly={readOnly} bib={bib} article={article} />

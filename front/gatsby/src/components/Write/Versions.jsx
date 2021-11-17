@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { ChevronDown, ChevronRight } from 'react-feather'
+import { Check, ChevronDown, ChevronRight, Edit, Plus } from 'react-feather'
 
 import styles from './versions.module.scss'
 import menuStyles from './menu.module.scss'
 import buttonStyles from '../button.module.scss'
 
-import {generateArticleExportId} from '../../helpers/identifier'
+import { generateArticleExportId } from '../../helpers/identifier'
 
 import Modal from '../Modal'
 import Export from '../Export'
 import Button from '../Button'
+import Field from "../Field";
 
 const monthNames = {
   0: 'Jan',
@@ -65,11 +66,20 @@ const mapStateToProps = ({ articleVersions }) => {
   return { articleVersions }
 }
 
-const Versions = ({ article, articleVersions, selectedVersion, compareTo }) => {
-  const [message, setMessage] = useState('')
+const Versions = ({ article, articleVersions, selectedVersion, compareTo, readOnly }) => {
   const [expand, setExpand] = useState(true)
   const [exporting, setExporting] = useState(false)
   const [exportParams, setExportParams] = useState({ })
+  const [message, setMessage] = useState('')
+  const [expandSaveForm, setExpandSaveForm] = useState(false)
+  const articleId = article._id
+
+  const saveVersion = async (e, major = false) => {
+    e.preventDefault()
+    dispatch({ type: 'CREATE_NEW_ARTICLE_VERSION', articleId, message, major })
+    setMessage('')
+    setExpandSaveForm(false)
+  }
 
   return (
     <section className={[styles.section, menuStyles.section].join(' ')}>
@@ -86,6 +96,37 @@ const Versions = ({ article, articleVersions, selectedVersion, compareTo }) => {
       )}
       {expand && (
         <>
+          <section className={styles.create}>
+            {readOnly && <li key={`edit-working-version`}>
+              <Link className={[buttonStyles.button, buttonStyles.secondary].join(' ')} to={`/article/${articleId}`}><Edit/> Edit</Link>
+            </li>}
+            {!readOnly && (
+              <li>
+                <Button onClick={_ => setExpandSaveForm(true)}><Plus/> Create new Version</Button>
+              </li>
+            )}
+            {expandSaveForm && (
+              <form
+                className={styles.saveForm}
+                onSubmit={(e) => saveVersion(e, false)}
+              >
+                <Field
+                  className={styles.saveVersionInput}
+                  placeholder="Label of the version"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                />
+                <input id="majorVersion" name="majorVersion" type="checkbox" onChange={(e) => {
+                  console.log({ e })
+                }}/>
+                <label htmlFor="majorVersion">Major Version</label>
+                <ul className={styles.createActions}>
+                  <li><Button icon={true} onClick={(e) => setExpandSaveForm(false)}>Close</Button></li>
+                  <li><Button primary={true} onClick={(e) => saveVersion(e, false)}><Check/> Create</Button></li>
+                </ul>
+              </form>
+            )}
+          </section>
           <ul className={styles.versionsList}>
             {articleVersions.map((v) => (
               <li
@@ -98,7 +139,7 @@ const Versions = ({ article, articleVersions, selectedVersion, compareTo }) => {
                     : null
                 }
               >
-                <Link to={`/article/${article._id}/version/${v._id}`}>
+                <Link to={`/article/${articleId}/version/${v._id}`}>
                   {v.message ? v.message : 'No label'}
                   ({v.version}.{v.revision})
                 </Link>
@@ -115,7 +156,7 @@ const Versions = ({ article, articleVersions, selectedVersion, compareTo }) => {
                     <li>
                       <Link
                         className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
-                        to={`/article/${article._id}/${
+                        to={`/article/${articleId}/${
                           selectedVersion
                             ? 'version/' + selectedVersion + '/'
                             : ''
@@ -129,7 +170,7 @@ const Versions = ({ article, articleVersions, selectedVersion, compareTo }) => {
                     <li>
                       <Link
                         className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
-                        to={`/article/${article._id}/${
+                        to={`/article/${articleId}/${
                           selectedVersion
                             ? 'version/' + selectedVersion
                             : ''
@@ -141,7 +182,7 @@ const Versions = ({ article, articleVersions, selectedVersion, compareTo }) => {
                   )}
                   <li>
                     <Link
-                      to={`/article/${article._id}/version/${v._id}/preview`}
+                      to={`/article/${articleId}/version/${v._id}/preview`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={[buttonStyles.button, buttonStyles.secondary].join(' ')}

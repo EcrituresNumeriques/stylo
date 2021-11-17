@@ -16,11 +16,9 @@ const mapStateToProps = ({ workingArticle }) => {
   return { workingArticle }
 }
 
-const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersionId, workingArticle, readOnly }) => {
+const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersionId, workingArticle }) => {
   const dispatch = useDispatch()
   const [exporting, setExporting] = useState(false)
-  const [message, setMessage] = useState('')
-  const [expandSaveForm, setExpandSaveForm] = useState(false)
   const [savedAgo, setSavedAgo] = useState('')
 
   const articleLastSavedAt = workingArticle.updatedAt
@@ -31,13 +29,6 @@ const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersion
     }, 60000)
     return () => clearTimeout(timer)
   }, [articleLastSavedAt])
-
-  const saveVersion = async (e, major = false) => {
-    e.preventDefault()
-    dispatch({ type: 'CREATE_NEW_ARTICLE_VERSION', articleId, message, major })
-    setMessage('')
-    setExpandSaveForm(false)
-  }
 
   return (
     <section className={styles.section}>
@@ -59,15 +50,6 @@ const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersion
         </Modal>
       )}
       <ul className={styles.actions}>
-        {readOnly && <li key={`edit-working-version`}>
-          <Link className={[buttonStyles.button, buttonStyles.primary].join(' ')} to={`/article/${articleId}`}><Edit/> Edit</Link>
-        </li>}
-        {!readOnly && (
-          <li>
-            <Button primary={true} onClick={_ => setExpandSaveForm(true)}><Save/> Save</Button>
-          </li>
-        )}
-
         <li>
           <Link
             to={`/article/${articleId}/preview`}
@@ -82,24 +64,6 @@ const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersion
           <Button onClick={() => setExporting(true)}>Export</Button>
         </li>
       </ul>
-      {expandSaveForm && (
-        <form
-          className={styles.saveForm}
-          onSubmit={(e) => saveVersion(e, false)}
-        >
-          <Field
-            className={styles.saveVersionInput}
-            placeholder="Label of the version"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <ul className={styles.actions}>
-            <li><Button icon={true} onClick={(e) => setExpandSaveForm(false)}>Close</Button></li>
-            <li><Button onClick={(e) => saveVersion(e, false)}>Save Minor</Button></li>
-            <li><Button onClick={(e) => saveVersion(e, true)}>Save Major</Button></li>
-          </ul>
-        </form>
-      )}
     </section>
   )
 }
