@@ -17,20 +17,20 @@ const mapStateToProps = ({ workingArticle }) => {
 }
 
 const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersionId, workingArticle, readOnly }) => {
-  const articleLastSavedAt = workingArticle.updatedAt
   const dispatch = useDispatch()
   const [exporting, setExporting] = useState(false)
   const [message, setMessage] = useState('')
   const [expandSaveForm, setExpandSaveForm] = useState(false)
-  const [savedAgo, setSavedAgo] = useState(
-    formatTimeAgo(new Date(articleLastSavedAt))
-  )
+  const [savedAgo, setSavedAgo] = useState('')
 
+  const articleLastSavedAt = workingArticle.updatedAt
   useEffect(() => {
+    setSavedAgo(formatTimeAgo(new Date(articleLastSavedAt)))
     const timer = setTimeout(() => {
       setSavedAgo(formatTimeAgo(new Date(articleLastSavedAt)))
     }, 60000)
-  })
+    return () => clearTimeout(timer)
+  }, [articleLastSavedAt])
 
   const saveVersion = async (e, major = false) => {
     e.preventDefault()
