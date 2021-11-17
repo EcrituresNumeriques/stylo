@@ -15,8 +15,9 @@ const DIVISIONS = [
 export default (date) => {
   let duration = (date - new Date()) / 1000
 
-  if (duration < 60) {
-    return 'less than 1 minute ago'
+  console.log('duration', Math.abs(duration))
+  if (Math.abs(duration) < 60) {
+    return 'a few seconds ago'
   }
 
   for (let i = 0; i <= DIVISIONS.length; i++) {
