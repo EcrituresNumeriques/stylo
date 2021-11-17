@@ -1,20 +1,22 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import etv from '../helpers/eventTargetValue'
-
-import askGraphQL from '../helpers/graphQL'
+import { Edit3, Eye, Printer } from 'react-feather'
+import { connect } from 'react-redux'
+import { Check, ChevronDown, ChevronRight } from 'react-feather'
 
 import Modal from './Modal'
 import Export from './Export'
 import Chapter from './Chapter'
+
+import etv from '../helpers/eventTargetValue'
+import askGraphQL from '../helpers/graphQL'
 import formatTimeAgo from '../helpers/formatTimeAgo'
+import { generateBookExportId } from "../helpers/identifier"
 
 import styles from './book.module.scss'
-import { Edit3, Eye, Printer } from 'react-feather'
-import { Check, ChevronDown, ChevronRight } from 'react-feather'
-import { connect } from 'react-redux'
-import Button from './Button'
 import buttonStyles from './button.module.scss'
+
+import Button from './Button'
 import Field from './Field'
 
 const alphaSort = (a, b) => a.title.localeCompare(b.title)
@@ -52,7 +54,10 @@ const Book = (props) => {
     <article>
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
-          <Export {...props} book={true} bookId={props._id} />
+          <Export
+            exportId={generateBookExportId(props.name)}
+            bookId={props._id}
+          />
         </Modal>
       )}
       <header>
