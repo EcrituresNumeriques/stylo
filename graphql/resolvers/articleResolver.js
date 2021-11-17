@@ -46,8 +46,35 @@ module.exports = {
     catch(err){
       throw err
     }
-
   },
+
+  updateArticle: async (args, {req}) => {
+    const ALLOWED_PARAMS = ['title', 'bib', 'md', 'yaml']
+
+    args = populateArgs(args,req)
+    isUser(args,req)
+
+    //fetch user
+    const thisUser = await User.findOne({_id: args.user})
+    if(!thisUser){throw new Error('This user does not exist')}
+
+    //fetch article
+    const fetchedArticle = await Article.findOne({_id: args.article}).populate('owners');
+    if(!fetchedArticle){throw new Error('Wrong article ID')}
+
+    if(!fetchedArticle.owners.map(u => u.id).includes(thisUser.id)){
+      throw new Error('User has no right to push new version')
+    }
+
+    ALLOWED_PARAMS
+      .filter(key => key in args)
+      .forEach(key => fetchedArticle[key] = args[key])
+
+    await fetchedArticle.save()
+
+    return populateArticle(fetchedArticle)
+  },
+
   shareArticle: async (args,{req}) => {
     try{
       populateArgs(args,req)
