@@ -168,6 +168,7 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
   }, [live, versions, activeUser, articleId, currentVersion])
 
   const sendVersion = async (autosave = true, major = false, message = '') => {
+    console.log('sendVersion', {autosave, major, message})
     try {
       const response = await askGraphQL(
         {
@@ -202,7 +203,11 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
   const debouncedLive = useDebounce(live, 1000)
   useEffect(() => {
     if (!readOnly && !isLoading && !firstLoad) {
+
+
       //sendVersion(true, false, 'Current version')
+
+
     } else if (!readOnly && !isLoading) {
       setFirstLoad(false)
     } else {
@@ -213,10 +218,14 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
   const handleMDCM = async (___, __, text) => {
     deriveArticleStructureAndStats({ text })
     updateWorkingArticleText({ text })
+    // TODO: save working article with the updated text content (Markdown)
     await setLive({ ...live, md: text })
+
   }
   const handleYaml = async (metadata) => {
     updateWorkingArticleMetadata({ metadata })
+    // TODO: save working article with the updated metadata (YAML)
+
     await setLive({ ...live, yaml: metadata })
   }
 
@@ -284,7 +293,6 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
       <WriteLeft
         bib={live.bib}
         article={articleInfos}
-        md={live.md}
         version={live.version}
         revision={live.revision}
         versionId={live._id}
