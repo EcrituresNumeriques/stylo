@@ -1,7 +1,7 @@
 import askGraphQL from "../helpers/graphQL"
 
 const saveBibliographyQuery = `mutation($userId: ID!, $articleId: ID!, $bibliography: String!) {
-  updateArticle(
+  updateWorkingVersion(
     article: $articleId,
     user: $userId,
     bib: $bibliography,

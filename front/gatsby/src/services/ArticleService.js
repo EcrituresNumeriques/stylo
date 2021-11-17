@@ -1,7 +1,7 @@
 import askGraphQL from "../helpers/graphQL"
 
 const saveWorkingVersionTextQuery = `mutation($userId: ID!, $articleId: ID!, $text: String!) {
-  updateArticle(
+  updateWorkingVersion(
     article: $articleId,
     user: $userId,
     md: $text,
