@@ -26,20 +26,18 @@ module.exports = {
       if(!thisUser){throw new Error('This user does not exist')}
 
       //Add default article + default version
-      const newArticle = new Article({title:args.title || defaultsData.title});
-      const newVersion = new Version({md:defaultsData.md,yaml:thisUser.yaml || defaultsData.yaml,bib:'',sommaire:defaultsData.sommaire,message:defaultsData.message});
-      newArticle.versions.push(newVersion)
-      newVersion.article = newArticle
+      const newArticle = new Article({
+        title: args.title || defaultsData.title
+      });
 
       thisUser.articles.push(newArticle)
       newArticle.owners.push(thisUser)
 
       const createdArticle = await newArticle.save();
-      await newVersion.save();
       await thisUser.save();
 
       //Save the article and version ID in the req object, for other resolver to consum with "new" ID
-      req.created = {...req.created,article:createdArticle.id,version:newVersion.id}
+      req.created = {...req.created, article:createdArticle.id}
 
       // TODO: filter owners vers ID
       createdArticle.owners = createdArticle.owners.map(o => o.id)
@@ -90,23 +88,8 @@ module.exports = {
       const fetchedUser = await User.findOne({_id:args.to})
       if(!fetchedUser){throw new Error('Unable to find user')}
 
-      let fetchedVersion
-      if(args.version){
-        fetchedVersion = await Version.findOne({_id:args.version,article:args.article})
-      }
-      else {
-        fetchedVersion = await Version.findOne({_id:fetchedArticle.versions[fetchedArticle.versions.length-1].toString()})
-      }
       if(!fetchedArticle){throw new Error('Unable to fetch version')}
 
-      //clone version
-
-      let newVersion = new Version({
-        md:fetchedVersion.md,
-        sommaire:fetchedVersion.sommaire,
-        yaml:fetchedVersion.yaml,
-        bib:fetchedVersion.bib
-      });
       //All good, create new Article & merge version/article/user
       let prefix = '[Sent] '
       if(args.user === args.to){
@@ -115,14 +98,11 @@ module.exports = {
 
       let newArticle = new Article({title:prefix+fetchedArticle.title, zoteroLink:fetchedArticle.zoteroLink})
       newArticle.owners.push(fetchedUser.id)
-      newArticle.versions.push(newVersion)
       fetchedUser.articles.push(newArticle)
-      newVersion.owner = fetchedUser
 
       //Save the three objects
       const returnedArticle = await newArticle.save()
       await fetchedUser.save()
-      await newVersion.save()
 
       return populateArticle(returnedArticle)
 
