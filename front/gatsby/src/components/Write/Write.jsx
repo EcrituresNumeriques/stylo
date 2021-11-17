@@ -25,7 +25,6 @@ const mapStateToProps = ({ activeUser, applicationConfig }) => {
 }
 
 function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, activeUser, applicationConfig }) {
-  console.log('ConnectedWrite', { currentVersion, articleId, compareTo, activeUser, applicationConfig })
   const userId = activeUser && activeUser._id
   const [readOnly, setReadOnly] = useState(Boolean(currentVersion))
   const dispatch = useDispatch()
@@ -141,14 +140,11 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
     },
   }
 
-  const saveVersionQuery = `mutation($user: ID!, $article: ID!, $md: String!, $bib: String!, $yaml: String!, $major: Boolean!, $message: String) {
+  const saveVersionQuery = `mutation($user: ID!, $article: ID!, $major: Boolean!, $message: String) {
   saveVersion(
     version: {
       article: $article,
       major: $major,
-      md: $md,
-      yaml: $yaml,
-      bib: $bib,
       message: $message
     },
     user: $user
@@ -164,34 +160,27 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
   }
 }`
 
-  const handleSaveVersion = useCallback(async (autosave = true, major = false, message = '') => {
-    await sendVersion(autosave, major, message)
-  }, [live, versions, activeUser, articleId, currentVersion])
+  const handleSaveVersion = useCallback(async (major = false, message = '') => {
+    await sendVersion(major, message)
+  }, [versions, userId, articleId])
 
-  const sendVersion = async (autosave = true, major = false, message = '') => {
-    console.log('sendVersion', { autosave, major, message })
+  const sendVersion = async (major = false, message = '') => {
     try {
       const response = await askGraphQL(
         {
           query: saveVersionQuery,
-          variables: { ...variables, ...live, autosave, major, message },
+          variables: {
+            user: userId,
+            article: articleId,
+            major,
+            message
+          },
         },
         'saving new version',
         null,
         applicationConfig
       )
       setVersions([response.saveVersion, ...versions])
-      /*
-      if (versions[0]._id !== response.saveVersion._id) {
-        setVersions([response.saveVersion, ...versions])
-      } else {
-        //Last version had same _id, we gucchi to update!
-        const immutableV = [...versions]
-        //shift the first item of the array
-        const [_, ...rest] = immutableV
-        setVersions([response.saveVersion, ...rest])
-      }
-       */
       return response
     } catch (err) {
       console.error('Something went wrong while saving a new version', err)
@@ -204,11 +193,7 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
   const debouncedLive = useDebounce(live, 1000)
   useEffect(() => {
     if (!readOnly && !isLoading && !firstLoad) {
-
-
       //sendVersion(true, false, 'Current version')
-
-
     } else if (!readOnly && !isLoading) {
       setFirstLoad(false)
     } else {
@@ -295,9 +280,6 @@ function ConnectedWrite ({ version: currentVersion, id: articleId, compareTo, ac
       <WriteLeft
         bib={live.bib}
         article={articleInfos}
-        version={live.version}
-        revision={live.revision}
-        versionId={live._id}
         compareTo={compareTo}
         selectedVersion={currentVersion}
         versions={versions}
