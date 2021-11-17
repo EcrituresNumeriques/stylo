@@ -10,10 +10,6 @@ const versionSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Article'
   },
-  autosave:{
-    type:Boolean,
-    default:true
-  },
   title:{
     type:String,
     default:''
@@ -30,21 +26,12 @@ const versionSchema = new Schema({
     type:String,
     default:''
   },
-  md:{
-    type:String,
-    default:'# titre'
-  },
+  md: String,
+  yaml: String,
+  bib: String,
   sommaire:{
     type:String,
     default:'# titre'
-  },
-  yaml:{
-    type:String,
-    default:''
-  },
-  bib:{
-    type:String,
-    default:''
   },
 }, {timestamps:true});
 

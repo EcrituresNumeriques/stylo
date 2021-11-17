@@ -62,7 +62,14 @@ ordseq: ''
 ---`,
   title:'New article',
   sommaire:'',
-  md:'',
+  bib: '',
+  md: `## Section Title
+
+Add your text here, and the document title in the metadatas tool.
+
+1. Use only title of level 2 (\`##\`) for sections and more (level 1 is used for the article title)
+2. The text is automatically saved. You can version it with \`[Save as]\` button
+3. Check the documentation in the menu`,
   message:'Genesis',
   article: {
       title:'How to Stylo',
@@ -309,7 +316,7 @@ abstract:
       complète est accessible en cliquant sur le lien documentation.
     text_f: >-
       C'est article est un exemple d'article type édité sur _Stylo_. _Stylo_ est
-      un éditeur d'article scientifique dédié aux sciences humaines. 
+      un éditeur d'article scientifique dédié aux sciences humaines.
 
       Vous pouvez éditer cet article pour vous entraîner. Une documentation plus
       complète est accessible en cliquant sur le lien documentation.
