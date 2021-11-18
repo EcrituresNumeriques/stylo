@@ -6,6 +6,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: env.DEPLOY_PRIME_URL ?? '/',
   build: {
+    target: 'safari11',
     outDir: 'build',
     rollupOptions: {
       output: {
