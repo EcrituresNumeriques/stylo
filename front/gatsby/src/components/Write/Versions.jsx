@@ -13,53 +13,17 @@ import Modal from '../Modal'
 import Export from '../Export'
 import Button from '../Button'
 
-const monthNames = {
-  0: 'Jan',
-  1: 'Feb',
-  2: 'Mar',
-  3: 'Apr',
-  4: 'May',
-  5: 'Jun',
-  6: 'Jul',
-  7: 'Aug',
-  8: 'Sep',
-  9: 'Oct',
-  10: 'Nov',
-  11: 'Dec'
-}
+const date = new Intl.DateTimeFormat(['en', 'fr'], {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: 'numeric',
+  minute: 'numeric',
+  timeZone: 'UTC',
+  timeZoneName: 'short',
+})
 
-Date.prototype.getUTCMinutesDoubleDigit = function () {
-  if (this.getUTCMinutes() < 10) {
-    return '0' + this.getUTCMinutes()
-  }
-  return this.getUTCMinutes()
-}
-
-Date.prototype.getUTCHoursDoubleDigit = function () {
-  if (this.getUTCHours() < 10) {
-    return '0' + this.getUTCHours()
-  }
-  return this.getUTCHours()
-}
-
-Date.prototype.getUTCMonthDoubleDigit = function () {
-  if (this.getUTCMonth() + 1 < 9) {
-    return '0' + Number(this.getUTCMonth() + 1)
-  }
-  return Number(this.getUTCMonth() + 1)
-}
-
-Date.prototype.getUTCDateDoubleDigit = function () {
-  if (this.getUTCDate() < 10) {
-    return '0' + this.getUTCDate()
-  }
-  return this.getUTCDate()
-}
-
-Date.prototype.formatMMDDYYYY = function () {
-  const monthName = monthNames[this.getUTCMonth()]
-  return `${monthName} ${this.getUTCDate()}, ${this.getFullYear()} at ${this.getUTCHoursDoubleDigit()}:${this.getUTCMinutesDoubleDigit()} (UTC)`
-}
+const dateFormat = date.format.bind(date)
 
 const mapStateToProps = ({ articleVersions }) => {
   return { articleVersions }
@@ -108,7 +72,7 @@ const Versions = ({ article, articleVersions, selectedVersion, compareTo }) => {
                       by <strong>{v.owner.displayName}</strong>{' '}
                     </span>
                   )}
-                  {<span>on <time dateTime={v.updatedAt}>{new Date(v.updatedAt).formatMMDDYYYY()}</time></span>}
+                  {<span>on <time dateTime={v.updatedAt}>{dateFormat(new Date(v.updatedAt))}</time></span>}
                 </p>
                 <ul className={styles.actions}>
                   {v._id !== compareTo && (
