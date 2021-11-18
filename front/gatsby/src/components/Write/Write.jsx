@@ -203,7 +203,6 @@ function Write ({ version: currentVersion, id: articleId, compareTo }) {
   return (
     <section className={styles.container}>
       <WriteLeft
-        bib={live.bib}
         article={articleInfos}
         compareTo={compareTo}
         selectedVersion={currentVersion}

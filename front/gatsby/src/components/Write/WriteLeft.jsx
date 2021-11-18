@@ -10,7 +10,7 @@ import WorkingVersion from './WorkingVersion'
 
 const mapStateToProps = ({ articleStats }) => ({ articleStats })
 
-function WriteLeft ({ bib, article, articleStats, readOnly, compareTo, selectedVersion, onTableOfContentClick }) {
+function WriteLeft ({ article, articleStats, readOnly, compareTo, selectedVersion, onTableOfContentClick }) {
   const [expanded, setExpanded] = useState(true)
 
   return (
@@ -36,7 +36,7 @@ function WriteLeft ({ bib, article, articleStats, readOnly, compareTo, selectedV
             compareTo={compareTo}
           />
           <Sommaire onTableOfContentClick={onTableOfContentClick} />
-          <Biblio readOnly={readOnly} bib={bib} article={article} />
+          <Biblio readOnly={readOnly} article={article} />
           <Stats stats={articleStats} />
         </div>
       )}
