@@ -84,7 +84,10 @@ function ConnectedAcquintances ({ _id: articleId, activeUser, setNeedReload, can
       {!loading && acquintances.length === 0 && <p>No acquintances</p>}
       {acquintances.map((acquintance) => (
         <div key={`acquintance-${acquintance._id}`} className={styles.acquintance}>
-          {acquintance.displayName}<br/>({acquintance.email})
+          <div>
+            <span>{acquintance.displayName}</span>
+            <a href={"mailto:" + acquintance.email} className={styles.acquintanceEmail}>{acquintance.email}</a>
+          </div>
           <div className={styles.acquintanceActions}>
             <Button onClick={() => sendArticle(acquintance._id)} ><Send/> Send</Button>
             <Button onClick={() => shareArticle(acquintance._id)} ><Share/> Share</Button>
