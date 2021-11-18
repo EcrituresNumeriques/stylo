@@ -24,6 +24,12 @@ const initialState = {
   },
   articleStructure: [],
   articleVersions: [],
+  articlePreferences: {
+    expandSidebarLeft: true,
+    expandSidebarRight: false,
+    metadataFormMode: 'basic',
+    expandVersions: false,
+  },
   articleStats: {
     wordCount: 0,
     charCountNoSpace: 0,
@@ -52,6 +58,8 @@ const reducer = createReducer(initialState, {
   SET_WORKING_ARTICLE_UPDATED_AT: setWorkingArticleUpdatedAt,
   SET_WORKING_ARTICLE_TEXT: setWorkingArticleText,
   SET_WORKING_ARTICLE_METADATA: setWorkingArticleMetadata,
+
+  ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
 })
 
 const createNewArticleVersion  = store => {
@@ -84,6 +92,25 @@ const createNewArticleVersion  = store => {
         store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
         return next(action)
       }
+      return next(action)
+    }
+  }
+}
+
+function persisStateIntoLocalStorage ({ getState }) {
+  return (next) => {
+    return (action) => {
+      if (action.type === 'ARTICLE_PREFERENCES_TOGGLE') {
+        // we run the reducer first
+        next(action)
+        // we fetch the updated state
+        const { articlePreferences } = getState()
+        // we persist it for a later page reload
+        localStorage.setItem('articlePreferences', JSON.stringify(articlePreferences))
+
+        return
+      }
+
       return next(action)
     }
   }
@@ -247,9 +274,34 @@ function setWorkingArticleMetadata(state, { metadata }) {
   return { ...state, workingArticle: { ...workingArticle, metadata } }
 }
 
+function toggleArticlePreferences (state, { key, value }) {
+  const { articlePreferences } = state
+  console.log('toggleArticlePreferences from %b to %b', articlePreferences[key], !articlePreferences[key])
+  return {
+    ...state,
+    articlePreferences: {
+      ...articlePreferences,
+      [key]: value === undefined ? !articlePreferences[key] : value,
+    }
+  }
+}
+
+function loadStateFromLocalStorage () {
+  if (localStorage.getItem('articlePreferences')) {
+    return {
+      ...initialState,
+      articlePreferences: {
+        ...initialState.articlePreferences,
+        ...JSON.parse(localStorage.getItem('articlePreferences'))
+      }
+    }
+  }
+}
+
 const enhancers = compose(
   applyMiddleware(createNewArticleVersion),
+  applyMiddleware(persisStateIntoLocalStorage),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
-export default () => createStore(reducer, undefined, enhancers)
+export default () => createStore(reducer, loadStateFromLocalStorage(), enhancers)
