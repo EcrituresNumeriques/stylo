@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { ChevronDown, ChevronRight } from 'react-feather'
 
 import styles from './versions.module.scss'
@@ -25,21 +25,20 @@ const date = new Intl.DateTimeFormat(['en', 'fr'], {
 
 const dateFormat = date.format.bind(date)
 
-const mapStateToProps = ({ articleVersions }) => {
-  return { articleVersions }
-}
-
-const Versions = ({ article, articleVersions, selectedVersion, compareTo }) => {
-  const [message, setMessage] = useState('')
-  const [expand, setExpand] = useState(true)
+const Versions = ({ article, selectedVersion, compareTo }) => {
+  const articleVersions = useSelector(state => state.articleVersions, shallowEqual)
+  const expand = useSelector(state => state.articlePreferences.expandVersions)
+  const dispatch = useDispatch()
   const [exporting, setExporting] = useState(false)
   const [exportParams, setExportParams] = useState({ })
+
+  const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandVersions' }), [])
 
   return (
     <section className={[styles.section, menuStyles.section].join(' ')}>
       <h1
         className={expand ? null : styles.closed}
-        onClick={() => setExpand(!expand)}
+        onClick={toggleExpand}
       >
         {expand ? <ChevronDown/> : <ChevronRight/>}  Versions
       </h1>
@@ -136,4 +135,4 @@ const Versions = ({ article, articleVersions, selectedVersion, compareTo }) => {
   )
 }
 
-export default connect(mapStateToProps)(Versions)
+export default Versions
