@@ -55,6 +55,7 @@
     "@babel/preset-env": "^7.14.4",
     "@babel/preset-react": "^7.13.13",
     "@vitejs/plugin-react": "^1.0.9",
+    "@welldone-software/why-did-you-render": "^6.2.3",
     "eslint": "^8.2.0",
     "eslint-plugin-jest": "^25.2.4",
     "eslint-plugin-react": "^7.27.0",
