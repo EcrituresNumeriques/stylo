@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback } from 'react'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
 import styles from './writeLeft.module.scss'
 import Stats from './Stats'
@@ -8,15 +8,16 @@ import Sommaire from './Sommaire'
 import Versions from './Versions'
 import WorkingVersion from './WorkingVersion'
 
-const mapStateToProps = ({ articleStats }) => ({ articleStats })
-
-function WriteLeft ({ article, articleStats, readOnly, compareTo, selectedVersion, onTableOfContentClick }) {
-  const [expanded, setExpanded] = useState(true)
+function WriteLeft ({ article, readOnly, compareTo, selectedVersion, onTableOfContentClick }) {
+  const expanded = useSelector(state => state.articlePreferences.expandSidebarLeft)
+  const articleStats = useSelector(state => state.articleStats, shallowEqual)
+  const dispatch = useDispatch()
+  const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandSidebarLeft' }), [])
 
   return (
     <nav className={`${expanded ? styles.expandleft : styles.retractleft}`}>
       <nav
-        onClick={() => setExpanded(!expanded)}
+        onClick={toggleExpand}
         className={expanded ? styles.close : styles.open}
       >
         {expanded ? 'close' : 'open'}
@@ -44,4 +45,4 @@ function WriteLeft ({ article, articleStats, readOnly, compareTo, selectedVersio
   )
 }
 
-export default connect(mapStateToProps)(WriteLeft)
+export default WriteLeft
