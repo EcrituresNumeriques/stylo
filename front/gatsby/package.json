@@ -16,8 +16,9 @@
     "prestart": "node tasks/env.js",
     "lint": "prettier --check src",
     "lint:fix": "prettier --write src",
-    "start": "snowpack dev",
-    "build": "snowpack build",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "develop": "npm run start",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
@@ -51,11 +52,14 @@
     "@babel/plugin-proposal-async-generator-functions": "^7.14.2",
     "@babel/preset-env": "^7.14.4",
     "@babel/preset-react": "^7.13.13",
-    "@snowpack/plugin-react-refresh": "^2.5.0",
-    "@snowpack/plugin-sass": "^1.4.0",
+    "@vitejs/plugin-react": "^1.0.9",
+    "eslint": "^8.2.0",
+    "eslint-plugin-jest": "^25.2.4",
+    "eslint-plugin-react": "^7.27.0",
     "jest": "^26.4.2",
     "node-fetch": "^2.6.1",
     "prettier": "^2.3.0",
-    "snowpack": "^3.0.13"
+    "sass": "^1.43.4",
+    "vite": "^2.6.14"
   }
 }
