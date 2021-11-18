@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore, compose } from 'redux'
+import { applyMiddleware, createStore } from 'redux'
 import { toEntries } from './helpers/bibtex'
 import VersionService from './services/VersionService'
 import ArticleService from "./services/ArticleService"
@@ -24,7 +24,7 @@ const initialState = {
   },
   articleStructure: [],
   articleVersions: [],
-  articlePreferences: {
+  articlePreferences: localStorage.getItem('articlePreferences') || {
     expandSidebarLeft: true,
     expandSidebarRight: false,
     metadataFormMode: 'basic',
@@ -97,7 +97,7 @@ const createNewArticleVersion  = store => {
   }
 }
 
-function persisStateIntoLocalStorage ({ getState }) {
+function persistStateIntoLocalStorage ({ getState }) {
   return (next) => {
     return (action) => {
       if (action.type === 'ARTICLE_PREFERENCES_TOGGLE') {
@@ -260,7 +260,6 @@ function setArticleVersions(state, { versions }) {
 
 function setWorkingArticleUpdatedAt(state, { updatedAt }) {
   const { workingArticle } = state
-  console.log('setWorkingArticleUpdatedAt')
   return { ...state, workingArticle: { ...workingArticle, updatedAt } }
 }
 
@@ -276,7 +275,7 @@ function setWorkingArticleMetadata(state, { metadata }) {
 
 function toggleArticlePreferences (state, { key, value }) {
   const { articlePreferences } = state
-  console.log('toggleArticlePreferences from %b to %b', articlePreferences[key], !articlePreferences[key])
+  console.log('toggleArticlePreferences from %s to %s', articlePreferences[key], !articlePreferences[key])
   return {
     ...state,
     articlePreferences: {
@@ -286,22 +285,4 @@ function toggleArticlePreferences (state, { key, value }) {
   }
 }
 
-function loadStateFromLocalStorage () {
-  if (localStorage.getItem('articlePreferences')) {
-    return {
-      ...initialState,
-      articlePreferences: {
-        ...initialState.articlePreferences,
-        ...JSON.parse(localStorage.getItem('articlePreferences'))
-      }
-    }
-  }
-}
-
-const enhancers = compose(
-  applyMiddleware(createNewArticleVersion),
-  applyMiddleware(persisStateIntoLocalStorage),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-)
-
-export default () => createStore(reducer, loadStateFromLocalStorage(), enhancers)
+export default () => createStore(reducer, applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
