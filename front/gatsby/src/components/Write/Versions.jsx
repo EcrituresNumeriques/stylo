@@ -140,8 +140,8 @@ const Versions = ({ article, versions, readOnly, version, revision, versionId, s
                       by <strong>{v.owner.displayName}</strong>{' '}
                     </span>
                   )}
-                  {lastVersionId !== v._id && <span>at {new Date(v.updatedAt).formatMMDDYYYY()}</span>}
-                  {lastVersionId === v._id && <span>{savedAgo}</span>}
+                  {lastVersionId !== v._id && <time dateTime={v.updatedAt}>at {new Date(v.updatedAt).formatMMDDYYYY()}</time>}
+                  {lastVersionId === v._id && <time dateTime={versions[0].updatedAt}>{savedAgo}</time>}
                 </p>
                 <ul className={styles.actions}>
                   {lastVersionId === v._id && !readOnly && (
