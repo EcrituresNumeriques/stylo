@@ -12,7 +12,6 @@ const CompareSelect = ({ articleId, articleVersions, selectedVersion, live, read
   const [compareVersionId, setCompareVersionId] = useState(null)
   const history = useHistory()
   const handleCompareSelect = useCallback((e) => {
-    const articleId = articleId
     const compareVersionId = e.target.value
     setCompareVersionId(compareVersionId)
     const parts = ['article', articleId]
