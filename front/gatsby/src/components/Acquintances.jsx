@@ -22,15 +22,14 @@ function ConnectedAcquintances ({ _id: articleId, activeUser, setNeedReload, can
   const acquintanceService = new AcquintanceService(userId, applicationConfig)
 
   const addContact = async () => {
-    console.log('addContact', contact)
     try {
       await acquintanceService.addAcquintance(contact)
+      setContact('')
+      setLoading(true)
     } catch (err) {
       console.error(`Unable to add acquitance ${contact} (userId: ${userId})`, err)
       alert(err)
     }
-    setContact('')
-    setLoading(true)
   }
 
   const shareArticle = async (to) => {
