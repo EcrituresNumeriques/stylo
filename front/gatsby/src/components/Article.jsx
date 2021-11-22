@@ -89,7 +89,7 @@ const ConnectedArticle = (props) => {
         </Modal>
       )}
       {sharing && (
-        <Modal cancel={() => setSharing(false)}>
+        <Modal cancel={() => setSharing(false)} withCloseButton={false}>
           <Acquintances {...props} cancel={() => setSharing(false)} />
         </Modal>
       )}
