@@ -24,7 +24,7 @@ const initialState = {
   },
   articleStructure: [],
   articleVersions: [],
-  articlePreferences: localStorage.getItem('articlePreferences') || {
+  articlePreferences: localStorage.getItem('articlePreferences') ? JSON.parse(localStorage.getItem('articlePreferences')) : {
     expandSidebarLeft: true,
     expandSidebarRight: false,
     metadataFormMode: 'basic',
