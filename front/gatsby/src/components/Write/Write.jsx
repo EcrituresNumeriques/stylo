@@ -127,15 +127,15 @@ function Write ({ version: currentVersion, id: articleId, compareTo }) {
     },
   }
 
-  const handleMDCM = async (___, __, text) => {
+  const handleMDCM = (___, __, text) => {
     deriveArticleStructureAndStats({ text })
     updateWorkingArticleText({ text })
-    await setLive({ ...live, md: text })
+    return setLive({ ...live, md: text })
   }
 
-  const handleYaml = async (metadata) => {
+  const handleYaml = (metadata) => {
     updateWorkingArticleMetadata({ metadata })
-    await setLive({ ...live, yaml: metadata })
+    return setLive({ ...live, yaml: metadata })
   }
 
   // Reload when version switching
