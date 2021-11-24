@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { useSelector, shallowEqual, useDispatch, batch } from 'react-redux'
+import { batch, shallowEqual, useDispatch, useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
 import 'codemirror/mode/markdown/markdown'
 import { Controlled as CodeMirror } from 'react-codemirror2'
 import throttle from 'lodash.throttle'
@@ -16,28 +17,48 @@ import Compare from './Compare'
 import CompareSelect from './CompareSelect'
 import Loading from '../Loading'
 
-function Write ({ version: currentVersion, id: articleId, compareTo }) {
-  const userId = useSelector(state => state.activeUser._id)
-  const applicationConfig = useSelector(state => state.applicationConfig, shallowEqual)
+function Write({ version: currentVersion, id: articleId, compareTo }) {
+  console.log({articleId, currentVersion, compareTo})
+  const userId = useSelector((state) => state.activeUser._id)
+  const applicationConfig = useSelector(
+    (state) => state.applicationConfig,
+    shallowEqual
+  )
   const [readOnly, setReadOnly] = useState(Boolean(currentVersion))
   const dispatch = useDispatch()
   const deriveArticleStructureAndStats = useCallback(
-    throttle(({ text }) => {
-      dispatch({ type: 'UPDATE_ARTICLE_STATS', md: text })
-      dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md: text })
-    }, 250, { leading: false, trailing: true }),
+    throttle(
+      ({ text }) => {
+        dispatch({ type: 'UPDATE_ARTICLE_STATS', md: text })
+        dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md: text })
+      },
+      250,
+      { leading: false, trailing: true }
+    ),
     []
   )
   const updateWorkingArticleText = useCallback(
-    debounce(async ({ text }) => {
-      dispatch({ type: 'UPDATE_WORKING_ARTICLE_TEXT', articleId, text })
-    }, 1000, { leading: false, trailing: true }),
+    debounce(
+      async ({ text }) => {
+        dispatch({ type: 'UPDATE_WORKING_ARTICLE_TEXT', articleId, text })
+      },
+      1000,
+      { leading: false, trailing: true }
+    ),
     []
   )
   const updateWorkingArticleMetadata = useCallback(
-    debounce(({ metadata }) => {
-      dispatch({ type: 'UPDATE_WORKING_ARTICLE_METADATA', articleId, metadata })
-    }, 1000, { leading: false, trailing: true }),
+    debounce(
+      ({ metadata }) => {
+        dispatch({
+          type: 'UPDATE_WORKING_ARTICLE_METADATA',
+          articleId,
+          metadata,
+        })
+      },
+      1000,
+      { leading: false, trailing: true }
+    ),
     []
   )
 
@@ -86,22 +107,25 @@ function Write ({ version: currentVersion, id: articleId, compareTo }) {
 
   const instanceCM = useRef(null)
 
-  const handleUpdateCursorPosition = useCallback((line) => {
-    try {
-      const editor = instanceCM.current.editor
-      editor.focus()
-      editor.setCursor(line, 0)
-      editor.execCommand('goLineEnd')
-    } catch (err) {
-      console.error('Unable to update CodeMirror cursor position', err)
-    }
-  }, [instanceCM])
+  const handleUpdateCursorPosition = useCallback(
+    (line) => {
+      try {
+        const editor = instanceCM.current.editor
+        editor.focus()
+        editor.setCursor(line, 0)
+        editor.execCommand('goLineEnd')
+      } catch (err) {
+        console.error('Unable to update CodeMirror cursor position', err)
+      }
+    },
+    [instanceCM]
+  )
 
   const variables = {
     user: userId,
     article: articleId,
     version: currentVersion || '0123456789ab',
-    hasVersion: typeof currentVersion === 'string'
+    hasVersion: typeof currentVersion === 'string',
   }
 
   const [graphqlError, setError] = useState()
@@ -141,43 +165,60 @@ function Write ({ version: currentVersion, id: articleId, compareTo }) {
   // Reload when version switching
   useEffect(() => {
     setIsLoading(true)
-    setReadOnly(currentVersion)
+    setReadOnly(Boolean(currentVersion))
     ;(async () => {
       const data = await askGraphQL(
         {
           query: fullQuery,
-          variables
+          variables,
         },
         'Fetching article',
         null,
         applicationConfig
-      ).then(({ version, article }) => ({ version, article })
-      ).catch((error) => {
-        setError(error)
-        return {}
-      })
+      )
+        .then(({ version, article }) => ({ version, article }))
+        .catch((error) => {
+          setError(error)
+          return {}
+        })
 
       if (data?.article) {
         const article = data.article
-        const version = currentVersion ? data.version : article.workingVersion
-        console.log({ version })
-        setLive(version)
+        let currentArticle
+        if (currentVersion) {
+          currentArticle = {
+            bib: data.version.bib,
+            md: data.version.md,
+            yaml: data.version.yaml,
+            version: {
+              message: data.version.message,
+              major: data.version.version,
+              minor: data.version.revision,
+            },
+          }
+        } else {
+          currentArticle = article.workingVersion
+        }
+        setLive(currentArticle)
         setArticleInfos({
           _id: article._id,
           title: article.title,
           zoteroLink: article.zoteroLink,
           owners: article.owners.map((o) => o.displayName),
-          updatedAt: article.updatedAt
+          updatedAt: article.updatedAt,
         })
 
-        const { md, bib } = version
+        const { md, bib } = currentArticle
 
         batch(() => {
-          dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: article.versions})
+          dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: article.versions })
           dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
           dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
           dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
-          dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: article.updatedAt })
+          dispatch({
+            type: 'SET_WORKING_ARTICLE_UPDATED_AT',
+            updatedAt: article.updatedAt,
+          })
         })
       }
 
@@ -197,7 +238,7 @@ function Write ({ version: currentVersion, id: articleId, compareTo }) {
   }
 
   if (isLoading) {
-    return <Loading/>
+    return <Loading />
   }
 
   return (
@@ -209,14 +250,17 @@ function Write ({ version: currentVersion, id: articleId, compareTo }) {
         readOnly={readOnly}
         onTableOfContentClick={handleUpdateCursorPosition}
       />
-      <WriteRight {...live} handleYaml={handleYaml} readOnly={readOnly}/>
+      <WriteRight
+        yaml={live.yaml}
+        handleYaml={handleYaml}
+        readOnly={readOnly}
+      />
       {compareTo && (
         <CompareSelect
-          compareTo={compareTo}
-          live={live}
-          readOnly={readOnly}
           articleId={articleInfos._id}
           selectedVersion={currentVersion}
+          currentArticleVersion={live.version}
+          readOnly={readOnly}
         />
       )}
 
@@ -227,7 +271,7 @@ function Write ({ version: currentVersion, id: articleId, compareTo }) {
             <CodeMirror
               value={live.md}
               cursor={{ line: 0, character: 0 }}
-              editorDidMount={(_) => {
+              editorDidMount={() => {
                 window.scrollTo(0, 0)
                 //editor.scrollIntoView({ line: 0, ch: 0 })
               }}
@@ -236,11 +280,17 @@ function Write ({ version: currentVersion, id: articleId, compareTo }) {
               ref={instanceCM}
             />
           )}
-          {compareTo && <Compare compareTo={compareTo} live={live}/>}
+          {compareTo && <Compare compareTo={compareTo} md={live.md} />}
         </>
       </article>
     </section>
   )
+}
+
+Write.propTypes = {
+  version: PropTypes.string,
+  id: PropTypes.string,
+  compareTo: PropTypes.string
 }
 
 export default Write

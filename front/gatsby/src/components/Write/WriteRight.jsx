@@ -1,21 +1,41 @@
 import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
 
 import styles from './writeRight.module.scss'
 import YamlEditor from './yamleditor/YamlEditor'
 import NavTag from '../NavTab'
 import YAML from 'js-yaml'
 
-export default function WriteRight (props) {
+export default function WriteRight({ handleYaml, readOnly, yaml }) {
   const dispatch = useDispatch()
-  const expanded = useSelector(state => state.articlePreferences.expandSidebarRight)
-  const selector = useSelector(state => state.articlePreferences.metadataFormMode)
+  const expanded = useSelector(
+    (state) => state.articlePreferences.expandSidebarRight
+  )
+  const selector = useSelector(
+    (state) => state.articlePreferences.metadataFormMode
+  )
 
-  const [rawYaml, setRawYaml] = useState(props.yaml)
+  const [rawYaml, setRawYaml] = useState(yaml)
   const [error, setError] = useState('')
 
-  const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandSidebarRight' }), [])
-  const setSelector = useCallback((value) => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'metadataFormMode', value }), [])
+  const toggleExpand = useCallback(
+    () =>
+      dispatch({
+        type: 'ARTICLE_PREFERENCES_TOGGLE',
+        key: 'expandSidebarRight',
+      }),
+    []
+  )
+  const setSelector = useCallback(
+    (value) =>
+      dispatch({
+        type: 'ARTICLE_PREFERENCES_TOGGLE',
+        key: 'metadataFormMode',
+        value,
+      }),
+    []
+  )
 
   return (
     <nav className={`${expanded ? styles.expandRight : styles.retractRight}`}>
@@ -31,21 +51,24 @@ export default function WriteRight (props) {
             <header>
               <h1>Metadata</h1>
             </header>
-            <NavTag defaultValue={selector} onChange={setSelector} items={[
-              {
-                value: 'basic',
-                name: 'Basic Mode'
-              },
-              {
-                value: 'editor',
-                name: 'Editor Mode'
-              },
-              {
-                value: 'raw',
-                name: 'Raw Mode'
-              }
-              ]
-            }/>
+            <NavTag
+              defaultValue={selector}
+              onChange={setSelector}
+              items={[
+                {
+                  value: 'basic',
+                  name: 'Basic Mode',
+                },
+                {
+                  value: 'editor',
+                  name: 'Editor Mode',
+                },
+                {
+                  value: 'raw',
+                  name: 'Raw Mode',
+                },
+              ]}
+            />
             {selector === 'raw' && (
               <>
                 {error !== '' && <p className={styles.error}>{error}</p>}
@@ -60,7 +83,7 @@ export default function WriteRight (props) {
                     try {
                       YAML.loadAll(yaml)
                       setError('')
-                      props.handleYaml(yaml)
+                      handleYaml(yaml)
                     } catch (err) {
                       setError(err.message)
                     } finally {
@@ -70,9 +93,9 @@ export default function WriteRight (props) {
                 />
               </>
             )}
-            {selector !== 'raw' && props.readOnly && (
+            {selector !== 'raw' && readOnly && (
               <YamlEditor
-                yaml={props.yaml}
+                yaml={yaml}
                 basicMode={selector === 'basic'}
                 error={(reason) => {
                   setError(reason)
@@ -82,9 +105,9 @@ export default function WriteRight (props) {
                 }}
               />
             )}
-            {selector !== 'raw' && !props.readOnly && (
+            {selector !== 'raw' && !readOnly && (
               <YamlEditor
-                yaml={props.yaml}
+                yaml={yaml}
                 basicMode={selector === 'basic'}
                 error={(reason) => {
                   setError(reason)
@@ -94,7 +117,7 @@ export default function WriteRight (props) {
                 }}
                 onChange={(yaml) => {
                   setRawYaml(yaml)
-                  props.handleYaml(yaml)
+                  handleYaml(yaml)
                 }}
               />
             )}
@@ -103,4 +126,10 @@ export default function WriteRight (props) {
       )}
     </nav>
   )
+}
+
+WriteRight.propTypes = {
+  handleYaml: PropTypes.func,
+  readOnly: PropTypes.bool,
+  yaml: PropTypes.string,
 }

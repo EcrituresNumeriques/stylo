@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from 'react'
-import { connect } from "react-redux"
+import React, { useCallback, useState } from 'react'
+import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 import styles from './compareSelect.module.scss'
 
@@ -8,32 +9,46 @@ const mapStateToProps = ({ articleVersions }) => {
   return { articleVersions }
 }
 
-const CompareSelect = ({ articleId, articleVersions, selectedVersion, live, readOnly, compareTo }) => {
+const CompareSelect = ({
+  articleId,
+  selectedVersion,
+  currentArticleVersion,
+  readOnly,
+  articleVersions,
+}) => {
   const [compareVersionId, setCompareVersionId] = useState(null)
   const history = useHistory()
-  const handleCompareSelect = useCallback((e) => {
-    const compareVersionId = e.target.value
-    setCompareVersionId(compareVersionId)
-    const parts = ['article', articleId]
-    if (selectedVersion) {
-      parts.push('version')
-      parts.push(selectedVersion)
-    }
-    if (compareVersionId !== 'false') {
-      parts.push('compare')
-      parts.push(compareVersionId)
-    }
-    // Format:
-    // /article/$articleId
-    // /article/$articleId/compare/$compareVersionId
-    // /article/$articleId/version/$selectedVersionId
-    // /article/$articleId/version/$selectedVersionId/compare/$compareVersionId
-    history.push(`/${parts.join('/')}`)
-  }, [compareVersionId])
+  const handleCompareSelect = useCallback(
+    (e) => {
+      const compareVersionId = e.target.value
+      setCompareVersionId(compareVersionId)
+      const parts = ['article', articleId]
+      if (selectedVersion) {
+        parts.push('version')
+        parts.push(selectedVersion)
+      }
+      if (compareVersionId !== 'false') {
+        parts.push('compare')
+        parts.push(compareVersionId)
+      }
+      // Format:
+      // /article/$articleId
+      // /article/$articleId/compare/$compareVersionId
+      // /article/$articleId/version/$selectedVersionId
+      // /article/$articleId/version/$selectedVersionId/compare/$compareVersionId
+      history.push(`/${parts.join('/')}`)
+    },
+    [compareVersionId]
+  )
 
-  const liveVersionLabel = live.message || 'No label'
-  const liveVersionTitle = `${liveVersionLabel} v${live.version}.${live.revision}`
-  const versionTitle = readOnly ? liveVersionTitle : 'Editing mode'
+  const currentArticleVersionLabel = currentArticleVersion
+    ? currentArticleVersion.message || 'No label'
+    : ''
+  const currentVersionVersionNumber = currentArticleVersion
+    ? `v${currentArticleVersion.major}.${currentArticleVersion.minor}`
+    : 'latest'
+  const currentArticleVersionTitle = [currentArticleVersionLabel, currentVersionVersionNumber].join(' ')
+  const versionTitle = readOnly ? currentArticleVersionTitle : 'Editing mode'
   const title = `Comparing ${versionTitle} with `
   return (
     <p className={styles.compare}>
@@ -41,16 +56,21 @@ const CompareSelect = ({ articleId, articleVersions, selectedVersion, live, read
       <select onChange={handleCompareSelect}>
         <option value={false}>Stop compare</option>
         {articleVersions.map((v) => (
-          <option
-            value={v._id}
-            key={`versionCompare-${v._id}`}
-          >
+          <option value={v._id} key={`versionCompare-${v._id}`}>
             {v.message || 'No label'} v{v.version}.{v.revision}
           </option>
         ))}
       </select>
     </p>
   )
+}
+
+CompareSelect.propTypes = {
+  articleId: PropTypes.string,
+  articleVersions: PropTypes.array,
+  selectedVersion: PropTypes.string,
+  currentArticleVersion: PropTypes.object,
+  readOnly: PropTypes.bool,
 }
 
 export default connect(mapStateToProps)(CompareSelect)
