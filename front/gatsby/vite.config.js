@@ -7,6 +7,7 @@ export default defineConfig({
   base: env.DEPLOY_PRIME_URL ?? '/',
   build: {
     outDir: 'build',
+    sourcemap: Boolean(env.ENABLE_SOURCEMAPS),
     rollupOptions: {
       output: {
         manualChunks: {
