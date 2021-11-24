@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore } from 'redux'
+import { applyMiddleware, compose, createStore } from 'redux'
 import { toEntries } from './helpers/bibtex'
 import VersionService from './services/VersionService'
 import ArticleService from "./services/ArticleService"
@@ -285,4 +285,8 @@ function toggleArticlePreferences (state, { key, value }) {
   }
 }
 
-export default () => createStore(reducer, applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+export default () => createStore(reducer, composeEnhancers(
+  applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage)
+))
