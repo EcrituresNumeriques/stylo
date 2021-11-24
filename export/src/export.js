@@ -177,8 +177,10 @@ const getBookById = async (bookId) => {
 const getArticleExportContext = async (articleId) => {
   const article = await getArticleById(articleId)
   const latestVersionId = article._doc.versions.pop()
-  const latestVersion = await getVersionById(latestVersionId)
-  const { bib, yaml, md } = latestVersion._doc
+  const latestVersion = latestVersionId
+    ? (await getVersionById(latestVersionId))._doc
+    : article.workingVersion
+  const { bib, yaml, md } = latestVersion
   return { bib, yaml, md, id: articleId, versionId: latestVersionId, title: article._doc.title }
 }
 
@@ -296,7 +298,9 @@ module.exports = {
       // add files
       articles.forEach((article) => {
         const filename = normalize(article._doc.title)
-        const { md, bib, yaml } = article._doc.versions[0]
+        const { md, bib, yaml } = article._doc.versions.length > 0
+          ? article._doc.versions[0]
+          : article._doc.workingVersion
         archive.append(Buffer.from(md), { name: `${filename}.md` })
         archive.append(Buffer.from(bib), { name: `${filename}.bib` })
         archive.append(Buffer.from(yaml), { name: `${filename}.yaml` })
