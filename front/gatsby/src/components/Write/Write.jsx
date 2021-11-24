@@ -258,6 +258,7 @@ function Write({ version: currentVersion, id: articleId, compareTo }) {
         <CompareSelect
           articleId={articleInfos._id}
           selectedVersion={currentVersion}
+          compareTo={compareTo}
           currentArticleVersion={live.version}
           readOnly={readOnly}
         />

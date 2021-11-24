@@ -12,6 +12,7 @@ const mapStateToProps = ({ articleVersions }) => {
 const CompareSelect = ({
   articleId,
   selectedVersion,
+  compareTo,
   currentArticleVersion,
   readOnly,
   articleVersions,
@@ -48,12 +49,12 @@ const CompareSelect = ({
     ? `v${currentArticleVersion.major}.${currentArticleVersion.minor}`
     : 'latest'
   const currentArticleVersionTitle = [currentArticleVersionLabel, currentVersionVersionNumber].join(' ')
-  const versionTitle = readOnly ? currentArticleVersionTitle : 'Editing mode'
+  const versionTitle = readOnly ? currentArticleVersionTitle : 'working copy'
   const title = `Comparing ${versionTitle} with `
   return (
     <p className={styles.compare}>
       {title}
-      <select onChange={handleCompareSelect}>
+      <select onChange={handleCompareSelect} value={compareTo}>
         <option value={false}>Stop compare</option>
         {articleVersions.map((v) => (
           <option value={v._id} key={`versionCompare-${v._id}`}>
@@ -67,8 +68,9 @@ const CompareSelect = ({
 
 CompareSelect.propTypes = {
   articleId: PropTypes.string,
-  articleVersions: PropTypes.array,
   selectedVersion: PropTypes.string,
+  compareTo: PropTypes.string,
+  articleVersions: PropTypes.array,
   currentArticleVersion: PropTypes.object,
   readOnly: PropTypes.bool,
 }
