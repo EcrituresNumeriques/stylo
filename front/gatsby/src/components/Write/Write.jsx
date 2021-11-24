@@ -18,7 +18,6 @@ import CompareSelect from './CompareSelect'
 import Loading from '../Loading'
 
 function Write({ version: currentVersion, id: articleId, compareTo }) {
-  console.log({articleId, currentVersion, compareTo})
   const userId = useSelector((state) => state.activeUser._id)
   const applicationConfig = useSelector(
     (state) => state.applicationConfig,
