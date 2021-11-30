@@ -1,7 +1,7 @@
 import './wdyr.js'
 import React, { lazy } from 'react'
 import { render } from 'react-dom'
-import { BrowserRouter as Router, Route, Switch, useParams, } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch, useParams, useHistory } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import 'whatwg-fetch'
 
@@ -41,10 +41,36 @@ const store = createStore()
   )
 })()
 
+<<<<<<< HEAD
+=======
+const ArticleID = (props) => {
+  const { id, version, compareTo } = useParams()
+  return (
+    <App layout="fullPage">
+      <Write {...props} id={id} version={version} compareTo={compareTo} />
+    </App>
+  )
+}
+
+const TrackPageViews = () => {
+  const history = useHistory()
+
+  history.listen(({ pathname, search, state }, action) => {
+    /* global _paq */
+    _paq.push(['setCustomUrl', '/' + pathname])
+    //_paq.push(['setDocumentTitle', 'My New Title'])
+    _paq.push(['trackPageView'])
+  })
+
+  return null
+}
+
+>>>>>>> f10a6a4 (Track page views on router history change)
 render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
+        <TrackPageViews />
         <Header />
 
         <App>
