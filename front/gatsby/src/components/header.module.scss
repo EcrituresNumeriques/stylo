@@ -53,3 +53,27 @@
   margin: 0 .2em;
   vertical-align: middle;
 }
+
+.footerContainer {
+  margin: 1em 0;
+  text-align: center;
+}
+
+.footerList {
+  list-style: none;
+
+  > li {
+    display: inline;
+
+    &:not(:last-child):after {
+      content: "•";
+      margin: 0 .5em;
+    }
+  }
+}
+
+.consentLabel {
+  cursor: pointer;
+  font-size: .8em;
+  vertical-align: middle;
+}

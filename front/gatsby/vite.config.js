@@ -8,6 +8,7 @@ const { NODE_ENV, SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
 // https://vitejs.dev/config/
 export default defineConfig({
   base: env.DEPLOY_PRIME_URL ?? '/',
+  envPrefix: 'SNOWPACK_',
   build: {
     outDir: 'build',
     sourcemap: Boolean(env.ENABLE_SOURCEMAPS),

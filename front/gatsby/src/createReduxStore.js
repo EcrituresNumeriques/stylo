@@ -38,6 +38,9 @@ const initialState = {
     charCountPlusSpace: 0,
     citationNb: 0,
   },
+  userPreferences: {
+    trackingConsent: true /* default value should be false */
+  }
 }
 
 const reducer = createReducer(initialState, {
@@ -55,6 +58,9 @@ const reducer = createReducer(initialState, {
   UPDATE_ARTICLE_STATS: updateArticleStats,
   UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
   UPDATE_ARTICLE_BIB: updateArticleBib,
+
+  // user preferences reducers
+  USER_PREFERENCES_TOGGLE: toggleUserPreferences,
 
   SET_ARTICLE_VERSIONS: setArticleVersions,
   SET_WORKING_ARTICLE_UPDATED_AT: setWorkingArticleUpdatedAt,
@@ -283,6 +289,18 @@ function toggleArticlePreferences (state, { key, value }) {
     articlePreferences: {
       ...articlePreferences,
       [key]: value === undefined ? !articlePreferences[key] : value,
+    }
+  }
+}
+
+function toggleUserPreferences (state, { key }) {
+  const { userPreferences } = state
+
+  return {
+    ...state,
+    userPreferences: {
+      ...userPreferences,
+      [key]: !userPreferences[key]
     }
   }
 }
