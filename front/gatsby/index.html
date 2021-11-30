@@ -1,32 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="./favicon.ico" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta charset="utf-8">
+    <link rel="icon" href="./favicon.ico">
+    <link rel="preconnect" href="https://polyfill.io">
+    <link rel="preconnect" href="https://analyseweb.huma-num.fr">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title data-react-helmet="true">Stylo</title>
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
-    <meta name="description" content="Stylo, online text editor for scholars" />
-    <meta name="image" content="/favicon.ico" />
-    <meta property="og:title" content="Stylo" />
-    <meta
-      property="og:description"
-      content="Stylo, online text editor for scholars"
-    />
-    <meta property="og:image" content="/favicon.ico" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Stylo" />
-    <meta
-      name="twitter:description"
-      content="Stylo, online text editor for scholars"
-    />
-    <meta name="twitter:image" content="/favicon.ico" />
+    <meta name="description" content="Stylo, online text editor for scholars">
+    <meta name="image" content="/favicon.ico">
+    <meta property="og:title" content="Stylo">
+    <meta property="og:description" content="Stylo, online text editor for scholars">
+    <meta property="og:image" content="/favicon.ico">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Stylo">
+    <meta name="twitter:description" content="Stylo, online text editor for scholars">
+    <meta name="twitter:image" content="/favicon.ico">
     <script src="https://polyfill.io/v3/polyfill.min.js"></script>
+    <!-- Matomo -->
+    <script>
+      var _paq = window._paq = window._paq || [];
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(["setDoNotTrack", true]);
+      // _paq.push(['requireConsent']);
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="https://analyseweb.huma-num.fr/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', '286']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <!-- End Matomo Code -->
   </head>
   <body>
     <div id="root" aria-live></div>
