@@ -1,23 +1,19 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { Route } from 'react-router-dom'
 
 import Login from './Login'
-import App from '../layouts/App'
 
-const mapStateToProps = ({ logedIn }) => {
-  return { logedIn }
-}
-
-function PrivateRoute ({ logedIn, children }) {
-  if (logedIn) {
-    return <>{children}</>
-  }
+function PrivateRoute ({ children, ...rest }) {
+  const logedIn = useSelector(state => state.logedIn)
 
   return (
-    <App layout="centered" header={false}>
-      <Login />
-    </App>
+    <Route
+      {...rest}
+      render={({ location }) =>
+        logedIn ? (children) : (<Login from={location} />)
+      } />
   )
 }
 
-export default connect(mapStateToProps)(PrivateRoute)
+export default PrivateRoute
