@@ -17,11 +17,13 @@ function createReducer (initialState, handlers) {
 // Définition du store Redux et de l'ensemble des actions
 const initialState = {
   logedIn: false,
+  hasBooted: false,
   users: [],
   password: undefined,
   sessionToken: undefined,
-  workingArticle: {
-  },
+  workingArticle: {},
+  applicationConfig: {},
+  activeUser: {},
   articleStructure: [],
   articleVersions: [],
   articlePreferences: localStorage.getItem('articlePreferences') ? JSON.parse(localStorage.getItem('articlePreferences')) : {
