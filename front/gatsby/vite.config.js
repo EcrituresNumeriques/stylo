@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite'
 import { env } from 'process'
 import react from '@vitejs/plugin-react'
+import handlebars from 'vite-plugin-handlebars'
+
+const { NODE_ENV, SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,6 +21,14 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    handlebars({
+      context: {
+        NODE_ENV,
+        SNOWPACK_MATOMO: Boolean(SNOWPACK_MATOMO_URL) && Boolean(SNOWPACK_MATOMO_SITE_ID),
+        SNOWPACK_MATOMO_URL,
+        SNOWPACK_MATOMO_SITE_ID,
+      }
+    })
   ],
   define: {
     'process.env': {

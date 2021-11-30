@@ -38,5 +38,8 @@
   "homepage": "https://github.com/EcrituresNumeriques/stylo#readme",
   "dependencies": {
     "pm2": "^5.1.2"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0"
   }
 }

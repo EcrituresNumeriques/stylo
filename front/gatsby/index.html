@@ -20,6 +20,7 @@
     <meta name="twitter:description" content="Stylo, online text editor for scholars">
     <meta name="twitter:image" content="/favicon.ico">
     <script src="https://polyfill.io/v3/polyfill.min.js"></script>
+    {{#if SNOWPACK_MATOMO}}
     <!-- Matomo -->
     <script>
       var _paq = window._paq = window._paq || [];
@@ -29,14 +30,15 @@
       _paq.push(['trackPageView']);
       _paq.push(['enableLinkTracking']);
       (function() {
-        var u="https://analyseweb.huma-num.fr/";
+        var u="{{ SNOWPACK_MATOMO_URL }}";
         _paq.push(['setTrackerUrl', u+'piwik.php']);
-        _paq.push(['setSiteId', '286']);
+        _paq.push(['setSiteId', '{{ SNOWPACK_MATOMO_SITE_ID }}']);
         var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
         g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
       })();
     </script>
     <!-- End Matomo Code -->
+    {{/if}}
   </head>
   <body>
     <div id="root" aria-live></div>

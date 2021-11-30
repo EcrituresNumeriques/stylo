@@ -1,9 +1,12 @@
+const { parsed } = require('dotenv').config({ path: 'stylo.env'})
+
 module.exports = {
   apps: [
     {
       name: "front",
       script: "vite",
-      cwd: "./front/gatsby"
+      cwd: "./front/gatsby",
+      env: parsed
     },
     {
       name: "export",
