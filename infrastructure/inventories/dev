@@ -24,6 +24,8 @@ process_endpoint='https://stylo-export.ecrituresnumeriques.ca'
 human_id_register_endpoint='https://auth-test.huma-num.fr/register?service=https://stylo-dev.huma-num.fr/authorization-code/callback'
 export_canonical_base_url='https://stylo-dev.huma-num.fr'
 zotero_auth_callback_url='http://stylo-dev.huma-num.fr/authorization-code/zotero/callback'
+matomo_url='https://analyseweb.huma-num.fr/'
+matomo_site_id=286
 
 [stylo]
 node01 ansible_user=stylo ansible_host=cchum-kvm-stylo-dev.in2p3.fr
