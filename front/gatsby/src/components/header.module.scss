@@ -1,8 +1,18 @@
 @use '../styles/defaults' as *;
 @use '../styles/variables' as *;
 
+.headerContainer {
+  background-color: $main-color;
+  color: $main-background-color;
+
+  a {
+    color: $main-background-color;
+  }
+}
+
 .header {
   @extend .wrapped-center;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
