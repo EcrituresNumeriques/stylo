@@ -152,67 +152,10 @@ function Write() {
     },
   }
 
-<<<<<<< HEAD
   const handleMDCM = (___, __, text) => {
     deriveArticleStructureAndStats({ text })
     updateWorkingArticleText({ text })
     return setLive({ ...live, md: text })
-=======
-  const saveVersionQuery = `mutation($user: ID!, $article: ID!, $md: String!, $bib: String!, $yaml: String!, $autosave: Boolean!, $major: Boolean!, $message: String) {
-  saveVersion(
-    version: {
-      article: $article,
-      major: $major,
-      auto: $autosave,
-      md: $md,
-      yaml: $yaml,
-      bib: $bib,
-      message: $message
-    },
-    user: $user
-  ) {
-    _id
-    version
-    revision
-    message
-    autosave
-    updatedAt
-    owner {
-      displayName
-    }
-  }
-}`
-
-  const handleSaveVersion = useCallback(async (autosave = true, major = false, message = '') => {
-    await sendVersion(autosave, major, message)
-  }, [live, versions, activeUser, articleId, currentVersion])
-
-  const sendVersion = async (autosave = true, major = false, message = '') => {
-    try {
-      const response = await askGraphQL(
-        {
-          query: saveVersionQuery,
-          variables: { ...variables, ...live, autosave, major, message },
-        },
-        'saving new version',
-        null,
-        applicationConfig
-      )
-      if (versions[0]._id !== response.saveVersion._id) {
-        setVersions([response.saveVersion, ...versions])
-      } else {
-        //Last version had same _id, we gucchi to update!
-        const immutableV = [...versions]
-        //shift the first item of the array
-        const [_, ...rest] = immutableV
-        setVersions([response.saveVersion, ...rest])
-      }
-      return response
-    } catch (err) {
-      console.error('Something went wrong while saving a new version', err)
-      alert(err)
-    }
->>>>>>> ae1bbac (Rewrite the router with `<PrivateRoute>` components)
   }
 
   const handleYaml = (metadata) => {
