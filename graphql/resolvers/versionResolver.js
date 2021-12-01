@@ -10,7 +10,11 @@ const populateArgs = require('../helpers/populateArgs')
 
 module.exports = {
   saveVersion: async (args, { req }) => {
-    args = populateArgs(args, req)
+    /*
+          article: $articleId,
+      major: $major,
+      message: $message
+     */
     isUser(args, req)
 
     // fetch user
@@ -31,15 +35,21 @@ module.exports = {
       throw new Error('User has no right to push new version!')
     }
     const {bib, yaml, md} = articleToSaveInto.workingVersion
-    const lastVersion = articleToSaveInto.versions[articleToSaveInto.versions.length - 1]
-    let version = lastVersion.version
-    let revision = 0
+    let lastMajorVersion = 0
+    let lastMinorVersion = 0
+    if (articleToSaveInto.versions && articleToSaveInto.versions.length) {
+      const lastVersion = articleToSaveInto.versions[articleToSaveInto.versions.length - 1]
+      lastMajorVersion = lastVersion.version
+      lastMinorVersion = lastVersion.revision
+    }
     if (args.version.major) {
-      // majo
-      version = lastVersion.version + 1
+      // major
+      version = lastMajorVersion + 1
+      revision = 0
     } else {
       // minor
-      revision = lastVersion.revision + 1
+      version = lastMajorVersion
+      revision = lastMinorVersion + 1
     }
     const message = args.version.message
     const newVersion = {

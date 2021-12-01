@@ -108,13 +108,8 @@ input UserInput {
 input VersionInput {
   article:ID!
   major:Boolean
-  auto: Boolean
-  md: String
-  yaml: String
-  bib: String
   message: String
 }
-
 
 type RootQuery {
   "Fetch all articles [Reserved for admins]"
