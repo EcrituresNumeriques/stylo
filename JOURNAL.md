@@ -1,5 +1,35 @@
 # Journal de développement
 
+## Mercredi 1er décembre
+
+### Ce que j'ai aimé/appris
+
+- J'ai bien aimé la partie nettoyage — authentification. J'ai l'impression de mieux comprendre comment ça fonctionne (passport et les callbacks, qui utilise quoi)
+- J'ai aimé déployé en dev pas mal de choses
+- J'ai bien aimé les tests de Margot en direct 🙂 — elle a eu des remarques qui concernaient des endroits où on se posait des questions
+- Matomo, des stats, chouette !
+- J'aime le résultat de la réécriture du routeur, ça va dans le bon sens
+- Top les scripts de transaction MongoDB
+- Marrant de découvrir des versions/articles qui ne sont plus associées aux users (le fameux _soft delete_)
+- Le nettoyage du code m'a permis de monter en confiance dans l'écriture collaborative
+- Il est bien cool le store Redux, on fait davantage de choses avec et ça règle beaucoup de nos problèmes
+- Super "Vite", il est rapide, fonctionne du premier coup et le gain pour nous est important
+- Je suis content d'avoir utilisé Discord pour l'audio/vidéo, c'était utilisable en dev, même si un peu moins rapide que sans visio
+- J'aime beaucoup l'élégance du code grâce à Redux, et la porte que ça ouvre aux de recalculs gérées par le store
+- J'ai bien aimé la question à propos de l'API GraphQL, ça m'a redonné de la motivation car ça ouvre les usages de Stylo, en dehors de Stylo
+- On nettoie, ça me plait
+- Faire des petites PR de notre côté et mettre en commun, finaliser à deux, super
+- Idem pour la revue de code, s'expliquer les changements
+
+### Ce que j'ai trouvé difficile
+
+- La partie `git rebase`, on a dû y revenir à plusieurs fois
+- Coder avec le partage d'écran sur Jitsi, la plaie !
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- J'aimerais beaucoup bosser avec Maïtané, notamment sur la sidebar de gauche #408
+
 ## Mercredi 10 novembre
 
 ### Ce que j'ai aimé/appris
