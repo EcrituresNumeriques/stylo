@@ -169,7 +169,6 @@ app.get(
     if (req.user) {
       res.redirect(req.headers.referer)
     } else {
-      console.log(`GET /login/openid - req.headers.referer: ${req.headers.referer}`)
       req.session.origin = req.headers.referer
       next()
     }
@@ -231,61 +230,62 @@ app.use('/authorization-code/callback',
       failureFlash: true
     }, (err, user, info) => {
       if (user) {
-        req.user = user
-        next()
-      } else {
-        const errorMessages = []
-        if (info && info.message) {
-          errorMessages.push(info.message)
+        const { email, given_name, family_name, name: displayName } = user._json
+        let user = await User.findOne({ email })
+
+        // we create a new user if we could find one
+        if (!user) {
+          user = new User({
+            email,
+            displayName,
+            institution: '',
+            firstName: given_name || name || '',
+            lastName: family_name || ''
+          })
+
+          // add a "password" to allow the user to connect as himself!
+          // a user can have multiple "passwords" (ie. accounts) linked to it.
+          // this mecanism is used to share content between accounts.
+          const password = new Password({ email, username: displayName })
+          user.passwords.push(password)
+          password.users.push(user)
+          await password.save()
+
+          // we populate a user with initial content
+          await user.save().then(postCreate)
         }
-        if (err && err.message) {
-          errorMessages.push(err.message)
+
+        // generate a JWT token
+        // TODO: we should be able to remove it, keep it for now
+        const token = await createJWTToken({ email, jwtSecret })
+
+        res.cookie("graphQL-jwt", token, {
+          expires: 0,
+          httpOnly: true,
+          secure: secureCookie,
+          sameSite: sameSiteCookies
+        })
+
+        const userPassword = await Password.findOne({ email }).populate("users")
+        req.user = {
+          email,
+          usersIds: userPassword.users.map(user => user._id.toString()),
+          passwordId: userPassword.id,
+          admin: Boolean(user.admin),
         }
-        res.redirect(`/error?message=${errorMessages.join(' ')}`)
+
+        return res.redirect(req.session.origin)
       }
+
+      const errorMessages = []
+      if (info && info.message) {
+        errorMessages.push(info.message)
+      }
+      if (err && err.message) {
+        errorMessages.push(err.message)
+      }
+      res.redirect(`/error?message=${errorMessages.join(' ')}`)
     })(req, res, next)
-  },
-  async (req, res) => {
-    const { email, given_name, family_name, name: displayName } = req.user._json
-    let user = await User.findOne({ email })
-
-    // we create a new user if we could find one
-    if (!user) {
-      user = new User({
-        email,
-        displayName,
-        institution: '',
-        firstName: given_name || name || '',
-        lastName: family_name || '',
-      })
-      // add a "password" to allow the user to connect as himself!
-      // a user can have multiple "passwords" (ie. accounts) linked to it.
-      // this mecanism is used to share content between accounts.
-      const password = new Password({ email })
-      try {
-        user.passwords.push(password)
-        password.users.push(user)
-        await password.save()
-
-        // we populate a user with initial content
-        await user.save().then(postCreate)
-      } catch (err) {
-        console.error(`Unable to create a new user ${user} with password: ${password}, cause:`, err)
-        res.redirect(`/error?message=${err}`)
-      }
-    }
-
-    // generate a JWT token
-    const token = await createJWTToken({ email, jwtSecret })
-
-    res.cookie('graphQL-jwt', token, {
-      expires: 0,
-      httpOnly: true,
-      secure: secureCookie,
-      sameSite: sameSiteCookies,
-    })
-
-    res.redirect(req.session.origin)
   }
 )
 
