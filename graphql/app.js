@@ -228,7 +228,7 @@ app.use('/authorization-code/callback',
     return passport.authenticate('oidc', {
       failureRedirect: '/error',
       failureFlash: true
-    }, (err, user, info) => {
+    }, async (err, user, info) => {
       if (user) {
         const { email, given_name, family_name, name: displayName } = user._json
         let user = await User.findOne({ email })
@@ -239,7 +239,7 @@ app.use('/authorization-code/callback',
             email,
             displayName,
             institution: '',
-            firstName: given_name || name || '',
+            firstName: given_name || '',
             lastName: family_name || ''
           })
 
