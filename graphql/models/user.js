@@ -42,7 +42,6 @@ const userSchema = new Schema({
   ],
   displayName: {
     type: String,
-    required: false
   },
   admin: {
     type:Boolean,

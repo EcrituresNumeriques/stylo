@@ -40,12 +40,10 @@ const userSchema = new Schema({
   ],
   displayName: {
     type: String,
-    unique:true,
-    required: true
   },
   admin: {
     type:Boolean,
-    default:false
+    default: false
   },
   firstName: {
     type: String
