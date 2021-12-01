@@ -28,7 +28,6 @@ function WriteLeft ({ article, readOnly, compareTo, selectedVersion, onTableOfCo
             articleTitle={article.title}
             articleOwners={article.owners}
             articleId={article._id}
-            articleVersionId="latest"
             readOnly={readOnly}
           />
           <Versions

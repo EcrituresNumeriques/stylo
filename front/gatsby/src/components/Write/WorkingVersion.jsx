@@ -16,7 +16,7 @@ const mapStateToProps = ({ workingArticle }) => {
   return { workingArticle }
 }
 
-const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersionId, workingArticle, readOnly }) => {
+const WorkingVersion = ({ articleTitle, articleOwners, articleId, workingArticle, readOnly }) => {
   const dispatch = useDispatch()
   const [exporting, setExporting] = useState(false)
   const [message, setMessage] = useState('')
@@ -55,7 +55,7 @@ const WorkingVersion = ({ articleTitle, articleOwners, articleId, articleVersion
         <Modal cancel={() => setExporting(false)}>
           <Export
             exportId={generateArticleExportId(articleTitle)}
-            articleVersionId={articleVersionId}/>
+            articleVersionId={`${articleId}:latest`}/>
         </Modal>
       )}
       <ul className={styles.actions}>
