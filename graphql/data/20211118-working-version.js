@@ -1,36 +1,39 @@
 /* global print, Mongo */
+
 const conn = Mongo()
+const session = conn.startSession()
 const db = conn.getDB('stylo-prod')
 
-// @see https://mongoosejs.com/docs/transactions.html
-db.transaction(() => {
-  const cursor = db.articles.find({})
-  while (cursor.hasNext()) {
-    const article = cursor.next()
-    const latestVersionId = article.versions.slice(-1)[0]
-    if (typeof article.workingVersion === 'undefined') {
-      if (latestVersionId) {
-        const latestVersion = db.versions.findOne({ _id: latestVersionId })
-        db.articles.updateOne(
-          { _id: article._id },
-          {
-            $set: {
-              workingVersion: {
-                bib: latestVersion.bib,
-                md: latestVersion.md,
-                yaml: latestVersion.yaml,
-              },
+session.startTransaction()
+
+const cursor = db.articles.find({})
+while (cursor.hasNext()) {
+  const article = cursor.next()
+  const latestVersionId = article.versions.slice(-1)[0]
+  if (typeof article.workingVersion === 'undefined') {
+    if (latestVersionId) {
+      const latestVersion = db.versions.findOne({ _id: latestVersionId })
+      db.articles.updateOne(
+        { _id: article._id },
+        {
+          $set: {
+            workingVersion: {
+              bib: latestVersion.bib,
+              md: latestVersion.md,
+              yaml: latestVersion.yaml,
             },
           },
-          { upsert: false }
-        )
-        // if the latest version is "autosave", remove!
-        db.versions.remove({ _id: latestVersionId, autosave: true })
-      } else {
-        print(`Article ${article._id} has no version and no workingVersion!`)
-      }
+        },
+        { upsert: false }
+      )
+      // if the latest version is "autosave", remove!
+      db.versions.remove({ _id: latestVersionId, autosave: true })
     } else {
-      // article has already a workingVersion, skipping!
+      print(`Article ${article._id} has no version and no workingVersion!`)
     }
+  } else {
+    // article has already a workingVersion, skipping!
   }
-})
+}
+
+session.commitTransaction()
