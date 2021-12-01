@@ -228,9 +228,9 @@ app.use('/authorization-code/callback',
     return passport.authenticate('oidc', {
       failureRedirect: '/error',
       failureFlash: true
-    }, async (err, user, info) => {
-      if (user) {
-        const { email, given_name, family_name, name: displayName } = user._json
+    }, async (err, humanidUser, info) => {
+      if (humanidUser) {
+        const { email, given_name, family_name, name: displayName } = humanidUser._json
         let user = await User.findOne({ email })
 
         // we create a new user if we could find one
@@ -255,7 +255,7 @@ app.use('/authorization-code/callback',
             // we populate a user with initial content
             await user.save().then(postCreate)
           } catch (err) {
-            console.error(`Unable to create a new user ${user} with password: ${password}, cause:`, err)
+            console.error(`Unable to create a new user ${email}, cause:`, err)
             res.redirect(`/error?message=${err}`)
           }
         }
