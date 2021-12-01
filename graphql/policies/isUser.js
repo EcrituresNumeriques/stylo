@@ -1,18 +1,10 @@
-module.exports = (args,req) => {
-    try {
-        if (!req.user) {
-            throw new Error("Not authenticated")
-        }
-        if (req.user.admin === true){
-            return true
-        }
-        else if (!req.user.usersIds || !req.user.usersIds.includes(args.user)) {
-            throw new Error("Can't authenticate as declared user")
-        }
-        return true
+module.exports = (args, req) => {
+  if (req.user) {
+    if (req.user.admin === true || (req.user.usersIds || []).includes(args.user)) {
+      // user has access
+      return true
     }
-    catch (err) {
-        throw err
-    }
-
+    throw new Error("Forbidden")
+  }
+  throw new Error('Not Authenticated')
 }
