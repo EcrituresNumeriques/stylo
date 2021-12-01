@@ -246,13 +246,18 @@ app.use('/authorization-code/callback',
           // add a "password" to allow the user to connect as himself!
           // a user can have multiple "passwords" (ie. accounts) linked to it.
           // this mecanism is used to share content between accounts.
-          const password = new Password({ email, username: displayName })
-          user.passwords.push(password)
-          password.users.push(user)
-          await password.save()
+          const password = new Password({ email })
+          try {
+            user.passwords.push(password)
+            password.users.push(user)
+            await password.save()
 
-          // we populate a user with initial content
-          await user.save().then(postCreate)
+            // we populate a user with initial content
+            await user.save().then(postCreate)
+          } catch (err) {
+            console.error(`Unable to create a new user ${user} with password: ${password}, cause:`, err)
+            res.redirect(`/error?message=${err}`)
+          }
         }
 
         // generate a JWT token
