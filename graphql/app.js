@@ -332,15 +332,22 @@ app.post('/login',
     res.json({ error })
   })
 
-app.use(
-  '/graphql',
-  graphqlHTTP((req, res) => ({
+app.post('/graphql', graphqlHTTP((req, res) => ({
+  schema: graphQlSchema,
+  rootValue: graphQlResolvers,
+  graphiql: false,
+  context: { req, res }
+})))
+
+if (process.env.NODE_ENV === 'dev') {
+  app.get('/graphql', graphqlHTTP((req, res) => ({
     schema: graphQlSchema,
     rootValue: graphQlResolvers,
-    graphiql: process.env.NODE_ENV === 'dev',
+    graphiql: true,
     context: { req, res }
-  }))
-)
+  })))
+}
+
 
 // fix deprecation warnings: https://mongoosejs.com/docs/deprecations.html
 mongoose.set('useNewUrlParser', true)
