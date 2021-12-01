@@ -176,10 +176,9 @@ const getBookById = async (bookId) => {
 
 const getArticleExportContext = async (articleId) => {
   const article = await getArticleById(articleId)
-  const latestVersionId = article._doc.versions.pop()
-  const latestVersion = await getVersionById(latestVersionId)
-  const { bib, yaml, md } = latestVersion._doc
-  return { bib, yaml, md, id: articleId, versionId: latestVersionId, title: article._doc.title }
+  const latestVersion = article.workingVersion
+  const { bib, yaml, md } = latestVersion
+  return { bib, yaml, md, articleId, title: article._doc.title }
 }
 
 const getBookExportContext = async (bookId) => {
@@ -230,7 +229,7 @@ module.exports = {
     try {
       const articleId = req.params.id
       const articleExportContext = await getArticleExportContext(articleId)
-      await exportHtml(articleExportContext, res, req)
+      exportHtml({ ...articleExportContext, id: articleExportContext.articleId }, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
@@ -239,25 +238,53 @@ module.exports = {
     try {
       const articleId = req.params.id
       const articleExportContext = await getArticleExportContext(articleId)
-      exportZip(articleExportContext, res, req)
+      exportZip({ ...articleExportContext, id: articleExportContext.articleId }, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
   },
   exportVersionHtml: async (req, res, _) => {
     try {
-      const version = await getVersionById(req.params.id)
-      const { bib, yaml, md, _id: id } = version._doc
-      await exportHtml({ bib, yaml, md, id, title: id }, res, req)
+      const identifier = req.params.id
+      const [articleId, versionId] = identifier.includes(':')
+        ? identifier.split(':')
+        : [undefined, identifier]
+
+      if (versionId === 'latest' && articleId) {
+        const articleExportContext = await getArticleExportContext(articleId)
+        exportHtml(
+          { ...articleExportContext, id: articleExportContext.articleId },
+          res,
+          req
+        )
+      } else {
+        const version = await getVersionById(versionId)
+        const { bib, yaml, md, _id: id } = version._doc
+        exportHtml({ bib, yaml, md, id, title: id }, res, req)
+      }
     } catch (err) {
       errorHandler(err, res)
     }
   },
   exportVersionZip: async (req, res, _) => {
     try {
-      const version = await getVersionById(req.params.id)
-      const { bib, yaml, md, _id: id } = version._doc
-      await exportZip({ bib, yaml, md, id, title: id }, res, req)
+      const identifier = req.params.id
+      const [articleId, versionId] = identifier.includes(':')
+        ? identifier.split(':')
+        : [undefined, identifier]
+
+      if (versionId === 'latest' && articleId) {
+        const articleExportContext = await getArticleExportContext(articleId)
+        exportZip(
+          { ...articleExportContext, id: articleExportContext.articleId },
+          res,
+          req
+        )
+      } else {
+        const version = await getVersionById(req.params.id)
+        const { bib, yaml, md, _id: id } = version._doc
+        exportZip({ bib, yaml, md, id, title: id }, res, req)
+      }
     } catch (err) {
       errorHandler(err, res)
     }
@@ -268,7 +295,7 @@ module.exports = {
       if (exportBookContext === null) {
         return res.status(200).send('')
       }
-      await exportHtml(exportBookContext, res, req)
+      exportHtml(exportBookContext, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
@@ -277,7 +304,7 @@ module.exports = {
     try {
       const bookId = req.params.id
       const exportBookContext = await getBookExportContext(bookId)
-      await exportZip(exportBookContext, res, req)
+      exportZip(exportBookContext, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
@@ -296,7 +323,9 @@ module.exports = {
       // add files
       articles.forEach((article) => {
         const filename = normalize(article._doc.title)
-        const { md, bib, yaml } = article._doc.versions[0]
+        const { md, bib, yaml } = article._doc.versions.length > 0
+          ? article._doc.versions[0]
+          : article._doc.workingVersion
         archive.append(Buffer.from(md), { name: `${filename}.md` })
         archive.append(Buffer.from(bib), { name: `${filename}.bib` })
         archive.append(Buffer.from(yaml), { name: `${filename}.yaml` })

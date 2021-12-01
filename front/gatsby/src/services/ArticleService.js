@@ -1,16 +1,16 @@
 import askGraphQL from "../helpers/graphQL"
 
-const saveBibliographyQuery = `mutation($userId: ID!, $articleId: ID!, $bibliography: String!) {
+const saveWorkingVersionTextQuery = `mutation($userId: ID!, $articleId: ID!, $text: String!) {
   updateWorkingVersion(
     article: $articleId,
     user: $userId,
-    bib: $bibliography,
-  ) {
+    md: $text,
+  ) { 
     updatedAt
   }
 }`
 
-export default class BibliographyService {
+export default class ArticleService {
 
   constructor (userId, articleId, applicationConfig) {
     this.userId = userId
@@ -18,17 +18,17 @@ export default class BibliographyService {
     this.applicationConfig = applicationConfig
   }
 
-  async saveBibliography (bibliography) {
+  async saveText (text) {
     return askGraphQL(
       {
-        query: saveBibliographyQuery,
+        query: saveWorkingVersionTextQuery,
         variables: {
           userId: this.userId,
           articleId: this.articleId,
-          bibliography
+          text
         }
       },
-      `Saving bibliography on article id: ${this.articleId} (userId: ${this.userId})`,
+      `Saving text on article id: ${this.articleId} (userId: ${this.userId})`,
       '',
       this.applicationConfig
     )

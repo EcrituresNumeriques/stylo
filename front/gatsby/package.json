@@ -20,7 +20,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "develop": "npm run start",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "posttest": "eslint ./src"
   },
   "dependencies": {
     "@rjsf/core": "^2.5.1",
@@ -30,7 +31,8 @@
     "downshift": "^6.1.3",
     "http-link-header": "^1.0.2",
     "js-yaml": "^4.1.0",
-    "lodash": "^4.17.21",
+    "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
     "object-path-immutable": "^4.1.0",
     "react": "^16.13.1",
     "react-codemirror2": "^7.2.1",
@@ -53,6 +55,7 @@
     "@babel/preset-env": "^7.14.4",
     "@babel/preset-react": "^7.13.13",
     "@vitejs/plugin-react": "^1.0.9",
+    "@welldone-software/why-did-you-render": "^6.2.3",
     "eslint": "^8.2.0",
     "eslint-plugin-jest": "^25.2.4",
     "eslint-plugin-react": "^7.27.0",

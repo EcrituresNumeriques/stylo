@@ -1,9 +1,12 @@
-import { applyMiddleware, createStore } from 'redux'
+import { applyMiddleware, compose, createStore } from 'redux'
 import { toEntries } from './helpers/bibtex'
+import VersionService from './services/VersionService'
+import ArticleService from "./services/ArticleService"
+import MetadataService from "./services/MetadataService"
 
 function createReducer (initialState, handlers) {
   return function reducer (state = initialState, action) {
-    if (handlers.hasOwnProperty(action.type)) {
+    if (Object.prototype.hasOwnProperty.call(handlers, action.type)) {
       return handlers[action.type](state, action)
     } else {
       return state
@@ -17,7 +20,16 @@ const initialState = {
   users: [],
   password: undefined,
   sessionToken: undefined,
+  workingArticle: {
+  },
   articleStructure: [],
+  articleVersions: [],
+  articlePreferences: localStorage.getItem('articlePreferences') ? JSON.parse(localStorage.getItem('articlePreferences')) : {
+    expandSidebarLeft: true,
+    expandSidebarRight: false,
+    metadataFormMode: 'basic',
+    expandVersions: false,
+  },
   articleStats: {
     wordCount: 0,
     charCountNoSpace: 0,
@@ -26,7 +38,7 @@ const initialState = {
   },
 }
 
-const reducer = createReducer([], {
+const reducer = createReducer(initialState, {
   APPLICATION_CONFIG: setApplicationConfig,
   PROFILE: setProfile,
   CLEAR_ZOTERO_TOKEN: clearZoteroToken,
@@ -41,8 +53,68 @@ const reducer = createReducer([], {
   UPDATE_ARTICLE_STATS: updateArticleStats,
   UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
   UPDATE_ARTICLE_BIB: updateArticleBib,
+
+  SET_ARTICLE_VERSIONS: setArticleVersions,
+  SET_WORKING_ARTICLE_UPDATED_AT: setWorkingArticleUpdatedAt,
+  SET_WORKING_ARTICLE_TEXT: setWorkingArticleText,
+  SET_WORKING_ARTICLE_METADATA: setWorkingArticleMetadata,
+
+  ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
 })
 
+const createNewArticleVersion  = store => {
+  return next => {
+    return async (action) => {
+      if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
+        const { articleVersions, activeUser, applicationConfig } = store.getState()
+        const userId = activeUser._id
+        const { articleId, major, message } = action
+        const versionService = new VersionService(userId, articleId, applicationConfig)
+        const response = await versionService.createNewArticleVersion(major, message)
+        store.dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: [response.saveVersion, ...articleVersions] })
+        return next(action)
+      }
+      if (action.type === 'UPDATE_WORKING_ARTICLE_TEXT') {
+        const { activeUser, applicationConfig } = store.getState()
+        const userId = activeUser._id
+        const { articleId, text } = action
+        const { updateWorkingVersion } = await new ArticleService(userId, articleId, applicationConfig).saveText(text)
+        store.dispatch({ type: 'SET_WORKING_ARTICLE_TEXT', text })
+        store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
+        return next(action)
+      }
+      if (action.type === 'UPDATE_WORKING_ARTICLE_METADATA') {
+        const { activeUser, applicationConfig } = store.getState()
+        const userId = activeUser._id
+        const { articleId, metadata } = action
+        const { updateWorkingVersion } =new MetadataService(userId, articleId, applicationConfig).saveMetadata(metadata)
+        store.dispatch({ type: 'SET_WORKING_ARTICLE_METADATA', metadata })
+        store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
+        return next(action)
+      }
+      return next(action)
+    }
+  }
+}
+
+function persistStateIntoLocalStorage ({ getState }) {
+  return (next) => {
+    return (action) => {
+      if (action.type === 'ARTICLE_PREFERENCES_TOGGLE') {
+        // we run the reducer first
+        next(action)
+        // we fetch the updated state
+        const { articlePreferences } = getState()
+        // we persist it for a later page reload
+        localStorage.setItem('articlePreferences', JSON.stringify(articlePreferences))
+
+        return
+      }
+
+      return next(action)
+    }
+  }
+}
 
 function setApplicationConfig (state, action) {
   const applicationConfig = {
@@ -163,7 +235,7 @@ function updateArticleStructure (state, { md }) {
   const articleStructure = text
     .split('\n')
     .map((line, index) => ({ line, index }))
-    .filter((lineWithIndex) => lineWithIndex.line.match(/^##+\ /))
+    .filter((lineWithIndex) => lineWithIndex.line.match(/^##+ /))
     .map((lineWithIndex) => {
       const title = lineWithIndex.line
         .replace(/##/, '')
@@ -182,4 +254,39 @@ function updateArticleBib(state, { bib }) {
   return { ...state, articleBib: bib, articleBibTeXEntries }
 }
 
-export default () => createStore(reducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+function setArticleVersions(state, { versions }) {
+  return { ...state, articleVersions: versions }
+}
+
+function setWorkingArticleUpdatedAt(state, { updatedAt }) {
+  const { workingArticle } = state
+  return { ...state, workingArticle: { ...workingArticle, updatedAt } }
+}
+
+function setWorkingArticleText(state, { text }) {
+  const { workingArticle } = state
+  return { ...state, workingArticle: { ...workingArticle, text } }
+}
+
+function setWorkingArticleMetadata(state, { metadata }) {
+  const { workingArticle } = state
+  return { ...state, workingArticle: { ...workingArticle, metadata } }
+}
+
+function toggleArticlePreferences (state, { key, value }) {
+  const { articlePreferences } = state
+  console.log('toggleArticlePreferences from %s to %s', articlePreferences[key], !articlePreferences[key])
+  return {
+    ...state,
+    articlePreferences: {
+      ...articlePreferences,
+      [key]: value === undefined ? !articlePreferences[key] : value,
+    }
+  }
+}
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+export default () => createStore(reducer, composeEnhancers(
+  applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage)
+))

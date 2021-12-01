@@ -1,44 +1,42 @@
-import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback } from 'react'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
 import styles from './writeLeft.module.scss'
 import Stats from './Stats'
 import Biblio from './Biblio'
 import Sommaire from './Sommaire'
 import Versions from './Versions'
+import WorkingVersion from './WorkingVersion'
 
-const mapStateToProps = ({ articleStats }) => ({ articleStats })
-
-function WriteLeft ({ bib, article, md, articleStats, readOnly, versions, version, revision, compareTo, versionId, selectedVersion, sendVersion, onTableOfContentClick }) {
-  const [expanded, setExpanded] = useState(true)
+function WriteLeft ({ article, readOnly, compareTo, selectedVersion, onTableOfContentClick }) {
+  const expanded = useSelector(state => state.articlePreferences.expandSidebarLeft)
+  const articleStats = useSelector(state => state.articleStats, shallowEqual)
+  const dispatch = useDispatch()
+  const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandSidebarLeft' }), [])
 
   return (
     <nav className={`${expanded ? styles.expandleft : styles.retractleft}`}>
       <nav
-        onClick={() => setExpanded(!expanded)}
+        onClick={toggleExpand}
         className={expanded ? styles.close : styles.open}
       >
         {expanded ? 'close' : 'open'}
       </nav>
       {expanded && (
         <div>
-          <header>
-            <h1>{article.title}</h1>
-            <h2>by {article.owners.join(', ')}</h2>
-          </header>
+          <WorkingVersion
+            articleTitle={article.title}
+            articleOwners={article.owners}
+            articleId={article._id}
+            readOnly={readOnly}
+          />
           <Versions
             article={article}
-            versions={versions}
-            readOnly={readOnly}
-            version={version}
-            revision={revision}
-            versionId={versionId}
-            sendVersion={sendVersion}
             selectedVersion={selectedVersion}
             compareTo={compareTo}
           />
-          <Sommaire md={md} onTableOfContentClick={onTableOfContentClick} />
-          <Biblio readOnly={readOnly} bib={bib} article={article} />
+          <Sommaire onTableOfContentClick={onTableOfContentClick} />
+          <Biblio readOnly={readOnly} article={article} />
           <Stats stats={articleStats} />
         </div>
       )}
@@ -46,4 +44,4 @@ function WriteLeft ({ bib, article, md, articleStats, readOnly, versions, versio
   )
 }
 
-export default connect(mapStateToProps)(WriteLeft)
+export default WriteLeft

@@ -31,6 +31,12 @@ type Tag{
   updatedAt:String
 }
 
+type WorkingVersion {
+  md:String
+  yaml:String
+  bib:String
+}
+
 type Version{
   _id: ID!
   version:Int
@@ -40,7 +46,6 @@ type Version{
   yaml:String
   bib:String
   message:String
-  autosave:Boolean
   article:Article
   owner:User
   createdAt:String
@@ -52,8 +57,8 @@ type Article {
   title: String
   zoteroLink: String
   owners(limit:Int,page:Int): [User!]!
+  workingVersion: WorkingVersion
   versions(limit:Int,page:Int): [Version!]!
-  live:Version!
   tags(limit:Int,page:Int):[Tag!]!
   createdAt:String
   updatedAt:String
@@ -174,11 +179,11 @@ type RootMutation {
   "Create article for specified user [need to be authentificated as specified user]"
   createArticle(title:String!,user:ID!):Article!
 
+  "Update article bibliography, content or metadata [need to be authentificated as specified user]"
+  updateWorkingVersion(user:ID!,article:ID!,bib:String,md:String,yaml:String):Article!
+
   "Save a new version for article [need to be authentificated as specified user]"
   saveVersion(version:VersionInput!,user:ID!):Version!
-
-  "Unlink a version from article [need to be authentificated as specified user]"
-  unlinkVersion(version:ID!,user:ID!):Version!
 
   "Create tag [need to be authentificated as specified user]"
   createTag(name:String!,description:String,user:ID!):Tag!

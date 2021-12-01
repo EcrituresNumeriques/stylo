@@ -51,10 +51,7 @@ module.exports = {
 
     //Add default article + default version
     const defaultArticle = defaultsData.article
-    const newArticle = new Article({title:defaultArticle.title});
-    const newVersion = new Version({md:defaultArticle.md,yaml:defaultArticle.yaml,bib:defaultArticle.bib,sommaire:defaultArticle.sommaire});
-    newArticle.versions.push(newVersion)
-    newVersion.article = newArticle
+    const newArticle = new Article({ title:defaultArticle.title });
 
     newUser.articles.push(newArticle)
     newArticle.owners.push(newUser)
@@ -63,11 +60,9 @@ module.exports = {
     const createdUser = await newUser.save();
     await newPassword.save();
     await newArticle.save();
-    newVersion.owner = createdUser
-    await newVersion.save();
 
     //Save the user/article/version/password ID in the req object, for other resolver to consum with "new" ID
-    req.created = {...req.created,article:newArticle.id,user:createdUser.id,version:newVersion.id,password:newPassword.id}
+    req.created = {...req.created,article:newArticle.id,user:createdUser.id,password:newPassword.id}
 
     return populateUser(createdUser)
   },

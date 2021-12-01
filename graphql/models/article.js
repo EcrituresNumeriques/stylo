@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const { yaml: defaultYaml, md: defaultMd, bib: defaultBib } = require('../data/defaultsData.js')
 
 const articleSchema = new Schema({
   owners:[
@@ -11,11 +12,25 @@ const articleSchema = new Schema({
   title: {
     type:String,
     required:true,
-    default:"autocreated"
+    default: 'autocreated'
   },
   zoteroLink:{
     type:String,
-    default:""
+    default: ''
+  },
+  workingVersion: {
+    md: {
+      type: String,
+      default: defaultMd
+    },
+    yaml: {
+      type: String,
+      default: defaultYaml
+    },
+    bib: {
+      type: String,
+      default: defaultBib
+    },
   },
   versions:[
     {
@@ -32,3 +47,4 @@ const articleSchema = new Schema({
 }, {timestamps: true});
 
 module.exports = mongoose.model('Article', articleSchema);
+module.exports.schema = articleSchema;

@@ -1,0 +1,85 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+.section {
+  margin: 0.5em;
+}
+
+.title {
+  font-size: 1.65rem;
+  padding: 0;
+  margin: 0;
+}
+
+.owners {
+  font-size: 1rem;
+  padding: 0;
+  font-weight: normal;
+  font-weight: 600;
+}
+
+.meta {
+  display: flex;
+  margin-top: 0.25rem;
+  align-items: center;
+}
+
+.by {
+  background: #dbdbdb;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Noto Serif",serif;
+  font-style: italic;
+  border-radius: 100%;
+  font-size: 1.25rem;
+  margin-right: .5rem;
+  line-height: 2.75rem;
+}
+
+.byLine {
+  display: flex;
+  flex-direction: column;
+}
+
+.lastSaved {
+  color: #4a4a4a;
+  font-size: 0.9em;
+  font-weight: 400;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+time {
+  font-style: normal;
+}
+
+.actions {
+  display: flex;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9em;
+
+  > li:not(:last-child) {
+    margin-right: 0.5em;
+  }
+}
+
+.saveForm {
+  text-align: right;
+  margin: 1rem 0;
+  border-left: 5px solid #202020;
+  padding: 0.5rem 0 0.25rem 0.5rem;
+}
+
+.saveVersionInput {
+  width: 100%;
+  padding-bottom: 0.5rem;
+
+  input {
+    width: 100%;
+  }
+}

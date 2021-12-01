@@ -1,3 +1,4 @@
+import './wdyr.js'
 import React, { lazy } from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter as Router, Route, Switch, useParams, } from 'react-router-dom'

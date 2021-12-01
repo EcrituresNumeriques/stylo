@@ -1,9 +1,7 @@
-import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import React, { useState, useCallback } from 'react'
 import { ChevronDown, ChevronRight } from 'react-feather'
 
 import Modal from '../Modal'
-import Reference from './Reference'
 import Bibliographe from './bibliographe/Bibliographe'
 
 import menuStyles from './menu.module.scss'
@@ -11,9 +9,12 @@ import styles from './biblio.module.scss'
 import Button from '../Button'
 import ReferenceList from './ReferenceList'
 
-function Biblio ({ article, readOnly, articleBibTeXEntries }) {
+function Biblio ({ article, readOnly }) {
   const [expand, setExpand] = useState(true)
   const [modal, setModal] = useState(false)
+
+  const openModal = useCallback(() => setModal(true), [])
+  const closeModal = useCallback(() => setModal(false), [])
 
   return (
     <section className={[menuStyles.section, styles.section].join(' ')}>
@@ -23,26 +24,18 @@ function Biblio ({ article, readOnly, articleBibTeXEntries }) {
       {expand && (
         <>
           {!readOnly && (
-            <Button className={styles.manageButton} onClick={() => setModal(true)}>Manage Bibliography</Button>
+            <Button className={styles.manageButton} onClick={openModal}>Manage Bibliography</Button>
           )}
           <ReferenceList />
         </>
       )}
       {modal && (
-        <Modal cancel={() => setModal(false)} withCancelButton={false}>
-          <Bibliographe
-            cancel={() => setModal(false)}
-            article={article}
-          />
+        <Modal cancel={closeModal} withCancelButton={false}>
+          <Bibliographe cancel={closeModal} article={article} />
         </Modal>
       )}
     </section>
   )
 }
 
-const mapStateToProps = ({ articleBibTeXEntries }) => {
-  return { articleBibTeXEntries }
-}
-
-const ConnectedBiblio = connect(mapStateToProps)(Biblio)
-export default ConnectedBiblio
+export default Biblio

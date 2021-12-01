@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { connect, useDispatch } from 'react-redux'
-import debounce from 'lodash/debounce'
+import debounce from 'lodash.debounce'
 
 import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
@@ -109,7 +109,7 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
   }
 
   function saveBibTeX (bibTeX) {
-    bibliographyService.saveBibTeX(bibTeX)
+    bibliographyService.saveBibliography(bibTeX)
     dispatch({ type: 'UPDATE_ARTICLE_BIB', bib: bibTeX })
   }
 

@@ -91,15 +91,10 @@ const populateTag = (tag) => {
 }
 
 const getTagsByIds = async (tagsIds,args) => {
-    try{
-        tagsIds = paginate(tagsIds,args.limit,args.page);
-        if(tagsIds.length === 0){ return [] }
-        const tags = await Tag.find({ _id: { $in: tagsIds } });
-        return tags.map(populateTag);
-    }
-    catch(err){
-        throw err
-    }
+    tagsIds = paginate(tagsIds,args.limit,args.page);
+    if(tagsIds.length === 0){ return [] }
+    const tags = await Tag.find({ _id: { $in: tagsIds } });
+    return tags.map(populateTag);
 };
 
 /*
@@ -117,7 +112,6 @@ const populateArticle = (article) => {
         zoteroLink:cleanedArticle.zoteroLink || "",
         owners:getUsersByIds.bind(this, cleanedArticle.owners || []),
         versions:getVersionsByIds.bind(this, cleanedArticle.versions || []),
-        live:getVersionById.bind(this, cleanedArticle.versions[cleanedArticle.versions.length-1] || []),
         tags:getTagsByIds.bind(this, cleanedArticle.tags || [])
     }
 }

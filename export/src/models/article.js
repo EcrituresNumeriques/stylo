@@ -11,11 +11,25 @@ const articleSchema = new Schema({
   title: {
     type:String,
     required:true,
-    default:"autocreated"
+    default: 'autocreated'
   },
   zoteroLink:{
     type:String,
-    default:""
+    default: ''
+  },
+  workingVersion: {
+    md: {
+      type: String,
+      default: ''
+    },
+    yaml: {
+      type: String,
+      default: ''
+    },
+    bib: {
+      type: String,
+      default: ''
+    },
   },
   versions:[
     {
