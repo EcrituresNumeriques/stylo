@@ -37,42 +37,7 @@ const verifCreds = async ({ username, password }) => {
 }
 
 module.exports = {
-  verifCreds: verifCreds,
-  login: async (args, {_,res}) => {
-    try{
-      const fetchedPassword = await verifCreds(args);
-      const payload = {
-        usersIds:fetchedPassword.users.map(user => user._id.toString()),
-        passwordId:fetchedPassword.id,
-        admin:fetchedPassword.users.filter(user => user.admin).length > 0 ? true : false,
-        session:true
-      }
-
-      const token = jwt.sign(
-        payload,
-        process.env.JWT_SECRET_SESSION
-      )
-      const tokenCookie = jwt.sign(
-        payload,
-        process.env.JWT_SECRET_SESSION_COOKIE
-      )
-
-      //All query are async, can't channel req to another resolver
-      //req.user = payload;
-      //console.log("setting cookie:",tokenCookie,process.env.HTTPS);
-      res.cookie("graphQL-jwt",tokenCookie,{expires:0,httpOnly:true,secure:process.env.HTTPS === "true"})
-
-      return {
-        token:token,
-        token_cookie:tokenCookie,
-        password:populatePassword(fetchedPassword),
-        users:fetchedPassword.users.map(populateUser)
-      }
-    }
-    catch(err){
-      throw err
-    }
-  },
+  verifCreds,
   changePassword: async (args, {req}) => {
     try{
       populateArgs(args,req)
@@ -99,26 +64,20 @@ module.exports = {
     }
   },
   setPrimaryUser: async (args,{req}) => {
-    try{
-      populateArgs(args,req)
-      isUser(args,req)
+    populateArgs(args,req)
+    isUser(args,req)
 
-      //Recover password
-      const thisPassword = await Password.findOne({_id:args.password,users:args.user})
-      if(!thisPassword){throw new Error('Unable to fetch password')}
+    //Recover password
+    const thisPassword = await Password.findOne({_id:args.password,users:args.user})
+    if(!thisPassword){throw new Error('Unable to fetch password')}
 
-      //Extract user from thisPassword.users and push it first
-      thisPassword.users.pull(args.user)
-      thisPassword.users.unshift(args.user)
+    //Extract user from thisPassword.users and push it first
+    thisPassword.users.pull(args.user)
+    thisPassword.users.unshift(args.user)
 
-      const returnPassword = await thisPassword.save()
+    const returnPassword = await thisPassword.save()
 
-      return populatePassword(returnPassword)
-
-    }
-    catch(err){
-      throw err
-    }
+    return populatePassword(returnPassword)
   },
   addCredential: async (args,{req}) => {
     try{
