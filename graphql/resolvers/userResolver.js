@@ -26,7 +26,7 @@ module.exports = {
     }
 
     //Check for Unique for User
-    const existingUser = await User.findOne({$or:[{ email: userInput.email }]});
+    const existingUser = await User.findOne({ email: userInput.email });
     if (existingUser) {
       throw new Error('User with this email already exists!');
     }
