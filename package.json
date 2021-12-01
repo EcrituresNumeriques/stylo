@@ -1,5 +1,6 @@
 {
   "name": "@EcrituresNumeriques/stylo",
+  "private": true,
   "version": "1.0.0",
   "description": "Stylo est un éditeur de textes pour articles scientifiques en sciences humaines et sociales.",
   "main": "index.js",
@@ -16,11 +17,13 @@
     "npm": ">=8"
   },
   "scripts": {
-    "start": "npm exec --package=pm2@5 --yes pm2 start apps.config.js",
-    "stop": "npm exec --package=pm2@5 --yes pm2 stop apps.config.js",
-    "reload": "npm exec --package=pm2@5 --yes pm2 reload apps.config.js",
-    "list": "npm exec --package=pm2@5 --yes pm2 list",
-    "logs": "npm exec --package=pm2@5 --yes pm2 logs"
+    "dev": "pm2 start --watch",
+    "start": "pm2 start",
+    "stop": "pm2 stop all",
+    "reload": "pm2 reload all",
+    "list": "pm2 list",
+    "status": "pm2 list",
+    "logs": "pm2 logs"
   },
   "repository": {
     "type": "git",
@@ -32,5 +35,11 @@
   "bugs": {
     "url": "https://github.com/EcrituresNumeriques/stylo/issues"
   },
-  "homepage": "https://github.com/EcrituresNumeriques/stylo#readme"
+  "homepage": "https://github.com/EcrituresNumeriques/stylo#readme",
+  "dependencies": {
+    "pm2": "^5.1.2"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0"
+  }
 }

@@ -28,11 +28,16 @@
   }
 }
 
-.error {
+.simplePage {
   background-color: $extra-background-color;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .3);
   margin: 5em auto;
   padding: 10em 2em;
   width: 50%;
+}
+
+.error {
+  @extend .simplePage;
   color: $error-color;
 }
 

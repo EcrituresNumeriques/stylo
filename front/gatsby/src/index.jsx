@@ -1,7 +1,7 @@
 import './wdyr.js'
 import React, { lazy } from 'react'
 import { render } from 'react-dom'
-import { BrowserRouter as Router, Route, Switch, useParams, } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch, useParams, useHistory } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import 'whatwg-fetch'
 
@@ -12,6 +12,7 @@ import { getUserProfile } from './helpers/userProfile'
 import { getApplicationConfig } from './helpers/applicationConfig'
 
 import Header from './components/Header'
+import Footer from './components/Footer'
 import Register from './components/Register'
 import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/404'
@@ -28,6 +29,7 @@ const Articles = lazy(() => import('./components/Articles'))
 const Credentials = lazy(() => import('./components/Credentials'))
 const Write = lazy(() => import('./components/Write/Write'))
 const ArticlePreview = lazy(() => import('./components/ArticlePreview'))
+const Privacy = lazy(() => import('./components/Privacy'))
 
 const store = createStore()
 
@@ -41,10 +43,28 @@ const store = createStore()
   )
 })()
 
+const TrackPageViews = () => {
+  const history = useHistory()
+
+  history.listen(({ pathname, search, state }, action) => {
+    /* global _paq */
+
+    //@todo do this dynamically, based on a subscription to the store
+    //otherwise, we should use _paq.push(['forgetConsentGiven'])
+    _paq.push(['setConsentGiven'])
+    _paq.push(['setCustomUrl', '/' + pathname])
+    //_paq.push(['setDocumentTitle', 'My New Title'])
+    _paq.push(['trackPageView'])
+  })
+
+  return null
+}
+
 render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
+        <TrackPageViews />
         <Header />
 
         <App>
@@ -82,6 +102,9 @@ render(
             <PrivateRoute path={`/article/:id`}>
               <Write />
             </PrivateRoute>
+            <Route exact path="/privacy">
+              <Privacy />
+            </Route>
             <Route exact path="/ux">
               <h2>Buttons</h2>
               <h4>Primary</h4>
@@ -119,6 +142,8 @@ render(
             </Route>
           </Switch>
         </App>
+
+        <Footer />
       </Router>
     </Provider>
   </React.StrictMode>,
