@@ -112,15 +112,14 @@ input VersionInput {
 
 
 type RootQuery {
-  # admins only
-  "Reserved for admins"
+  "Fetch all articles [Reserved for admins]"
   articles:[Article!]!
-  "Reserved for admins"
+
+  "Fetch all users [Reserved for admins]"
   users:[User!]!
 
-
-  "Fetch user info [need to be authentificated as this user]"
-  user(user:ID!):User!
+  "Fetch authenticated user info"
+  user(user:ID):User!
 
   "Fetch bearer token based on your cookie graphQL-jwt [Need to be loged in previously and send the appropriate cookie]"
   refreshToken(expiration:String):AuthToken
@@ -130,7 +129,7 @@ type RootQuery {
 
   "Fetch version info"
   version(version:ID!):Version!
-  
+
   "Login using email/username and password, retrieve token+cookie"
   login(username:String,email:String,password:String!):AuthToken
 }
@@ -145,7 +144,7 @@ type RootMutation {
 
   "Add an email to your acquintances [need to be authentificated as user]"
   addAcquintance(email:String!,user:ID!):User!
-  
+
   "Change password"
   changePassword(password:ID!,old:String!,new:String!,user:ID!):Password!
 
@@ -171,7 +170,7 @@ type RootMutation {
 
   "Change default user when login in + for loginMutation"
   setPrimaryUser(password:ID!,user:ID!):Password!
-  
+
   "Create article for specified user [need to be authentificated as specified user]"
   createArticle(title:String!,user:ID!):Article!
 
@@ -180,13 +179,13 @@ type RootMutation {
 
   "Unlink a version from article [need to be authentificated as specified user]"
   unlinkVersion(version:ID!,user:ID!):Version!
-  
+
   "Create tag [need to be authentificated as specified user]"
   createTag(name:String!,description:String,user:ID!):Tag!
 
   "update name and description of a tag [need to be authentificated as specified user]"
   updateTag(name:String,description:String,color:String,tag:ID!,user:ID!):Tag!
-  
+
   "Delete tag and all articles carrying it"
   deleteTag(tag:ID!,user:ID!):User!
 
