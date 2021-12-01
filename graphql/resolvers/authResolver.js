@@ -28,22 +28,6 @@ const verifCreds = async ({ username, password }) => {
 
 module.exports = {
   verifCreds: verifCreds,
-  loginMutation: async (args,{req,_}) => {
-
-    //The resolver only logs the user + password in the req object
-    const fetchedPassword = await verifCreds(args);
-
-    //Add password to the req.created list + add users in the req.list
-    req.created = {...req.created, user:fetchedPassword.users[0].id, password:fetchedPassword.id}
-    req.user = {
-      usersIds:fetchedPassword.users.map(user => user._id.toString()),
-      passwordId:fetchedPassword.id,
-      admin:fetchedPassword.users.filter(user => user.admin).length > 0 ? true : false,
-    }
-    req.isAuth = true;
-
-    return populatePassword(fetchedPassword)
-  },
   login: async (args, {_,res}) => {
     try{
       const fetchedPassword = await verifCreds(args);

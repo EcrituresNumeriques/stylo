@@ -139,9 +139,6 @@ type RootMutation {
   "Create user + password + default article"
   createUser(user:UserInput!):User!
 
-  "Log in the request, store user and password to be used as 'new' in userID fields"
-  loginMutation(username:String,email:String,password:String!):Password!
-
   "Add an email to your acquintances [need to be authentificated as user]"
   addAcquintance(email:String!,user:ID!):User!
 
