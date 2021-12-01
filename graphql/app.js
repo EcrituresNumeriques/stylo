@@ -137,7 +137,10 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use(function (req, res, next) {
-  const jwtToken = req.cookies && req.cookies['graphQL-jwt']
+  const jwtToken = req.headers.authorization
+    ? req.headers.authorization.replace(/^Bearer /, '')
+    : req.cookies['graphQL-jwt']
+
   if (jwtToken) {
     try {
       req.user = jwt.verify(jwtToken, jwtSecret)
