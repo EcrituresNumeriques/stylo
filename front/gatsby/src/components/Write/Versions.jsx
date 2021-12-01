@@ -7,11 +7,12 @@ import styles from './versions.module.scss'
 import menuStyles from './menu.module.scss'
 import buttonStyles from '../button.module.scss'
 
-import {generateArticleExportId} from '../../helpers/identifier'
+import { generateArticleExportId } from '../../helpers/identifier'
 
 import Modal from '../Modal'
 import Export from '../Export'
 import Button from '../Button'
+import CreateVersion from './CreateVersion'
 
 const date = new Intl.DateTimeFormat(['en', 'fr'], {
   year: 'numeric',
@@ -25,7 +26,7 @@ const date = new Intl.DateTimeFormat(['en', 'fr'], {
 
 const dateFormat = date.format.bind(date)
 
-const Versions = ({ article, selectedVersion, compareTo }) => {
+const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
   const articleVersions = useSelector(state => state.articleVersions, shallowEqual)
   const expand = useSelector(state => state.articlePreferences.expandVersions)
   const dispatch = useDispatch()
@@ -49,6 +50,7 @@ const Versions = ({ article, selectedVersion, compareTo }) => {
       )}
       {expand && (
         <>
+          <CreateVersion articleId={article._id} readOnly={readOnly} />
           <ul className={styles.versionsList}>
             {articleVersions.map((v) => (
               <li

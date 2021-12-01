@@ -1,0 +1,35 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+
+.container {
+  padding: 0.5rem;
+}
+
+.createForm {
+  text-align: right;
+  margin: 1rem 0 0;
+  border-left: 5px solid #202020;
+  padding: 0.5rem 0 0.25rem 0.5rem;
+}
+
+.createVersionInput {
+  width: 100%;
+  padding-bottom: 0.5rem;
+
+  input {
+    width: 100%;
+  }
+}
+
+.actions {
+  display: flex;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  justify-content: flex-end;
+  font-size: 0.8em;
+
+  > li:not(:last-child) {
+    margin-right: 0.5em;
+  }
+}
