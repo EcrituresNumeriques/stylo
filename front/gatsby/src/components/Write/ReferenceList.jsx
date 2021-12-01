@@ -30,7 +30,7 @@ function ReferenceList({ articleBibTeXEntries }) {
           <Reference key={`ref-${entry.key}-${index}`} entry={entry} />
         ))
       }
-      {!showAll && <Button className={styles.showAll} onClick={(e) => setShowAll(true)}>Show all {articleBibTeXEntries.length} references</Button>}
+      {!showAll && articleBibTeXEntries.length > 25 && <Button className={styles.showAll} onClick={(e) => setShowAll(true)}>Show all {articleBibTeXEntries.length} references</Button>}
     </>
   )
 }
