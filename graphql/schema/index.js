@@ -129,9 +129,6 @@ type RootQuery {
 
   "Fetch version info"
   version(version:ID!):Version!
-
-  "Login using email/username and password, retrieve token+cookie"
-  login(username:String,email:String,password:String!):AuthToken
 }
 
 type RootMutation {
