@@ -26,14 +26,14 @@ module.exports = {
     }
 
     //Check for Unique for User
-    const existingUser = await User.findOne({$or:[{ email: userInput.email },{displayName: userInput.username}]});
+    const existingUser = await User.findOne({ email: userInput.email });
     if (existingUser) {
-      throw new Error('User with this email/username exists already.');
+      throw new Error('User with this email already exists!');
     }
     //Check for Unique for Password
     const existingPassword = await Password.findOne({$or:[{ email: userInput.email },{username: userInput.username}]});
     if (existingPassword) {
-      throw new Error('Password with this email/username exists already.');
+      throw new Error('User with this username already exists!');
     }
 
     //Create user then password

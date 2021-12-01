@@ -1,29 +1,39 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 
-const Password = require('../models/user_password');
-const User = require('../models/user');
-const Token = require('../models/user_token');
+const Password = require('../models/user_password')
+const User = require('../models/user')
+const Token = require('../models/user_token')
 
-const populateArgs = require('../helpers/populateArgs');
+const populateArgs = require('../helpers/populateArgs')
 
 const isUser = require('../policies/isUser')
 
-const { populateUser, populatePassword, populateToken } = require('./nestedModel')
+const {
+  populateUser,
+  populatePassword,
+  populateToken,
+} = require('./nestedModel')
 
 const verifCreds = async ({ username, password }) => {
-  let findProp = { $or: [{ username }, { email: username }] }
-  const fetchedPassword = await Password.findOne(findProp).populate("users")
+  if (!username || username.trim().length === 0) {
+    throw new Error('Username must not be empty!')
+  }
+  const account = await Password.findOne({
+    $or: [{ username }, { email: username }],
+  }).populate('users')
 
-  if (!fetchedPassword) {
-    throw new Error("Password not found")
+  if (!account) {
+    console.error(`[authentication] Account not found for username: ${username}`)
+    throw new Error('Unable to authenticate, please check your username and password!')
   }
 
-  if (!await bcrypt.compare(password,fetchedPassword.password)) {
-    throw new Error("Password is incorrect");
+  if (!(await bcrypt.compare(password, account.password))) {
+    console.error(`[authentication] Password is incorrect for username: ${username}`)
+    throw new Error('Unable to authenticate, please check your username and password!')
   }
 
-  return fetchedPassword
+  return account
 }
 
 module.exports = {
