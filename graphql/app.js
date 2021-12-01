@@ -198,36 +198,30 @@ app.get('/profile', async (req, res) => {
 })
 
 app.use('/authorization-code/zotero/callback',
-  passport.authenticate('zotero', { failureRedirect: '/error' }), async (req, res) => {
-    // passport overrides "req.user" (session) with the Zotero token
-    const { zoteroToken } = req.user
-    const jwtToken = req.cookies && req.cookies['graphQL-jwt']
-    if (jwtToken) {
-      try {
-        // reverts "req.user" with the user connected
-        req.user = jwt.verify(jwtToken, jwtSecret)
-        req.isAuth = true
-        const email = req.user.email
+  (req, res, next) => {
+    passport.authenticate('zotero', async (err, user, info, status) => {
+      if (err) {
+        console.error('error', err)
+        return next(err)
+      }
+      if (!user) {
+        return res.status(401).redirect(req.session.origin)
+      }
+      const { zoteroToken } = user
+      const email = req.user.email
 
-        // save the Zotero token
-        const authenticatedUser = await User.findOne({ email })
-        authenticatedUser.zoteroToken = zoteroToken
-        await authenticatedUser.save()
+      // save the Zotero token
+      const authenticatedUser = await User.findOne({ email })
+      authenticatedUser.zoteroToken = zoteroToken
+      await authenticatedUser.save()
 
-        res.statusCode = 200
-        res.set({
+      res.status(200)
+        .set({
           'Content-Type': 'text/html'
         })
-        res.end(`<script>window.close();</script>`)
-      } catch (error) {
-        console.error('error', error)
-        res.statusCode = 401
-        res.redirect(req.session.origin)
-      }
-    } else {
-      res.statusCode = 401
-      res.redirect(req.session.origin)
-    }
+        .end(`<script>window.close();</script>`)
+
+    })(req, res, next)
   })
 
 app.use('/authorization-code/callback',
