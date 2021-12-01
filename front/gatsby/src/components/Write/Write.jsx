@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { batch, shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import 'codemirror/mode/markdown/markdown'
 import { Controlled as CodeMirror } from 'react-codemirror2'
@@ -17,7 +18,8 @@ import Compare from './Compare'
 import CompareSelect from './CompareSelect'
 import Loading from '../Loading'
 
-function Write({ version: currentVersion, id: articleId, compareTo }) {
+function Write() {
+  const { version: currentVersion, id: articleId, compareTo } = useParams()
   const userId = useSelector((state) => state.activeUser._id)
   const applicationConfig = useSelector(
     (state) => state.applicationConfig,

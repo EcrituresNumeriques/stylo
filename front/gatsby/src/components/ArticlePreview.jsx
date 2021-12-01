@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 import styles from './Articles.module.scss'
 import Loading from './Loading'
 
-export default function ArticlePreview({ id, version, bookId }) {
+export default function ArticlePreview() {
+  const { id, version, bookId } = useParams()
   const { exportEndpoint } = useSelector(state => state.applicationConfig)
   const [isLoaded, setLoaded] = useState(false)
   const previewFrame = useRef()

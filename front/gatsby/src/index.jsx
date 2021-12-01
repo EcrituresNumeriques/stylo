@@ -5,11 +5,13 @@ import { BrowserRouter as Router, Route, Switch, useParams, } from 'react-router
 import { Provider } from 'react-redux'
 import 'whatwg-fetch'
 
+import './styles/general.scss'
 import App from './layouts/App'
 import createStore from './createReduxStore'
 import { getUserProfile } from './helpers/userProfile'
 import { getApplicationConfig } from './helpers/applicationConfig'
 
+import Header from './components/Header'
 import Register from './components/Register'
 import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/404'
@@ -39,83 +41,48 @@ const store = createStore()
   )
 })()
 
-const ArticleID = (props) => {
-  const { id, version, compareTo } = useParams()
-  return (
-    <App layout="fullPage">
-      <Write {...props} id={id} version={version} compareTo={compareTo} />
-    </App>
-  )
-}
-
 render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
-        <Switch>
-          <Route path="/register">
-            <App layout="centered">
+        <Header />
+
+        <App>
+          <Switch>
+            <Route path="/register" exact>
               <Register />
-            </App>
-          </Route>
-          <Route path="/books" exact>
-            <PrivateRoute>
-              <App layout="fullPage">
-                <Books />
-              </App>
+            </Route>
+            <PrivateRoute path="/books" exact>
+              <Books />
             </PrivateRoute>
-          </Route>
-          <Route path={`/books/:id/preview`} render={(props) => {
-            return (<App shell={false}>
-              <ArticlePreview bookId={props.match.params.id} />
-            </App>)
-          }} />
-          <Route path="/articles" exact>
-            <PrivateRoute>
-              <App layout="fullPage">
-                <Articles />
-              </App>
+            <Route path={`/books/:bookId/preview`}>
+              <ArticlePreview />
+            </Route>
+            <PrivateRoute path="/articles" exact>
+              <Articles />
             </PrivateRoute>
-          </Route>
-          <Route path="/credentials" exact>
-            <PrivateRoute>
-              <App layout="wrapped">
-                <Credentials />
-              </App>
+            <PrivateRoute path="/credentials" exact>
+              <Credentials />
             </PrivateRoute>
-          </Route>
-          <Route path={`/article/:id/compare/:compareTo`}>
-            <PrivateRoute>
-              <ArticleID />
+            <PrivateRoute path={`/article/:id/compare/:compareTo`}>
+              <Write />
             </PrivateRoute>
-          </Route>
-          <Route path={`/article/:id/preview`} render={(props) => {
-            return (<App shell={false}>
-              <ArticlePreview id={props.match.params.id} />
-            </App>)
-          }} />
-          <Route path={`/article/:id/version/:version/preview`} render={(props) => {
-            return (<App shell={false}>
-              <ArticlePreview id={props.match.params.id} version={props.match.params.version} />
-            </App>)
-          }} />
-          <Route path={`/article/:id/version/:version/compare/:compareTo`}>
-            <PrivateRoute>
-              <ArticleID />
+            <Route path={`/article/:id/preview`}>
+              <ArticlePreview />
+            </Route>
+            <Route path={`/article/:id/version/:version/preview`}>
+              <ArticlePreview />
+            </Route>
+            <PrivateRoute path={`/article/:id/version/:version/compare/:compareTo`}>
+              <Write />
             </PrivateRoute>
-          </Route>
-          <Route path={`/article/:id/version/:version`}>
-            <PrivateRoute>
-              <ArticleID />
+            <PrivateRoute path={`/article/:id/version/:version`}>
+              <Write />
             </PrivateRoute>
-          </Route>
-          <Route path={`/article/:id`}>
-            <PrivateRoute>
-              <ArticleID />
+            <PrivateRoute path={`/article/:id`}>
+              <Write />
             </PrivateRoute>
-          </Route>
-          <Route exact path="/ux">
-            <App layout="wrapped">
+            <Route exact path="/ux">
               <h2>Buttons</h2>
               <h4>Primary</h4>
               <Button primary={true}>Create New Article</Button>
@@ -140,22 +107,18 @@ render(
               </Select>
               <h4>Tabs</h4>
               <h4>Form actions</h4>
-            </App>
-          </Route>
-          <Route exact path="/">
-            <PrivateRoute>
-              <App layout="fullPage">
-                <Articles />
-              </App>
+            </Route>
+            <PrivateRoute exact path="/">
+              <Articles />
             </PrivateRoute>
-          </Route>
-          <Route exact path="/error">
-            <Error />
-          </Route>
-          <Route path="*">
-            <NotFound />
-          </Route>
-        </Switch>
+            <Route exact path="/error">
+              <Error />
+            </Route>
+            <Route path="*">
+              <NotFound />
+            </Route>
+          </Switch>
+        </App>
       </Router>
     </Provider>
   </React.StrictMode>,
