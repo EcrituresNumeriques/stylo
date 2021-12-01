@@ -55,7 +55,7 @@ const WorkingVersion = ({ articleTitle, articleOwners, articleId, workingArticle
         <Modal cancel={() => setExporting(false)}>
           <Export
             exportId={generateArticleExportId(articleTitle)}
-            articleVersionId={`${articleId}:latest`}/>
+            articleVersionId={articleId}/>
         </Modal>
       )}
       <ul className={styles.actions}>

@@ -246,21 +246,18 @@ module.exports = {
   exportVersionHtml: async (req, res, _) => {
     try {
       const identifier = req.params.id
-      const [articleId, versionId] = identifier.includes(':')
-        ? identifier.split(':')
-        : [undefined, identifier]
-
-      if (versionId === 'latest' && articleId) {
-        const articleExportContext = await getArticleExportContext(articleId)
-        exportHtml(
-          { ...articleExportContext, id: articleExportContext.articleId },
-          res,
-          req
-        )
-      } else {
-        const version = await getVersionById(versionId)
-        const { bib, yaml, md, _id: id } = version._doc
-        exportHtml({ bib, yaml, md, id, title: id }, res, req)
+      try {
+        const articleExportContext = await getArticleExportContext(identifier)
+        exportHtml({ ...articleExportContext, id: identifier }, res, req)
+      } catch (e) {
+        if (e instanceof FindByIdNotFoundError) {
+          // it might be a version!
+          const version = await getVersionById(identifier)
+          const { bib, yaml, md, _id: id } = version._doc
+          exportHtml({ bib, yaml, md, id, title: id }, res, req)
+        } else {
+          throw e
+        }
       }
     } catch (err) {
       errorHandler(err, res)
@@ -269,21 +266,18 @@ module.exports = {
   exportVersionZip: async (req, res, _) => {
     try {
       const identifier = req.params.id
-      const [articleId, versionId] = identifier.includes(':')
-        ? identifier.split(':')
-        : [undefined, identifier]
-
-      if (versionId === 'latest' && articleId) {
-        const articleExportContext = await getArticleExportContext(articleId)
-        exportZip(
-          { ...articleExportContext, id: articleExportContext.articleId },
-          res,
-          req
-        )
-      } else {
-        const version = await getVersionById(req.params.id)
-        const { bib, yaml, md, _id: id } = version._doc
-        exportZip({ bib, yaml, md, id, title: id }, res, req)
+      try {
+        const articleExportContext = await getArticleExportContext(identifier)
+        exportZip({ ...articleExportContext, id: identifier }, res, req)
+      } catch (e) {
+        if (e instanceof FindByIdNotFoundError) {
+          // it might be a version!
+          const version = await getVersionById(identifier)
+          const { bib, yaml, md, _id: id } = version._doc
+          exportZip({ bib, yaml, md, id, title: id }, res, req)
+        } else {
+          throw e
+        }
       }
     } catch (err) {
       errorHandler(err, res)
