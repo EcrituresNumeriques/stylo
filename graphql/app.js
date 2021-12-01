@@ -137,7 +137,10 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use(function (req, res, next) {
-  const jwtToken = req.cookies && req.cookies['graphQL-jwt']
+  const jwtToken = req.headers.authorization
+    ? req.headers.authorization.replace(/^Bearer /, '')
+    : req.cookies['graphQL-jwt']
+
   if (jwtToken) {
     try {
       req.user = jwt.verify(jwtToken, jwtSecret)
@@ -329,15 +332,22 @@ app.post('/login',
     res.json({ error })
   })
 
-app.use(
-  '/graphql',
-  graphqlHTTP((req, res) => ({
+app.post('/graphql', graphqlHTTP((req, res) => ({
+  schema: graphQlSchema,
+  rootValue: graphQlResolvers,
+  graphiql: false,
+  context: { req, res }
+})))
+
+if (process.env.NODE_ENV === 'dev') {
+  app.get('/graphql', graphqlHTTP((req, res) => ({
     schema: graphQlSchema,
     rootValue: graphQlResolvers,
-    graphiql: process.env.NODE_ENV === 'dev',
+    graphiql: true,
     context: { req, res }
-  }))
-)
+  })))
+}
+
 
 // fix deprecation warnings: https://mongoosejs.com/docs/deprecations.html
 mongoose.set('useNewUrlParser', true)

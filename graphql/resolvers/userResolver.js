@@ -118,8 +118,13 @@ module.exports = {
     const users = await User.find();
     return users.map(populateUser)
   },
-  user: async (args,{req}) => {
-    isUser(args,req)
+  user: async (args, {req}) => {
+    // if the userId is not provided, we take it from the auth token
+    if (('user' in args) === false) {
+      args.user = req.user.usersIds[0]
+    }
+
+    isUser(args, req)
 
     return getUserById(args.user)
   }
