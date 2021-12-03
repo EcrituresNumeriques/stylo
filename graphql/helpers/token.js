@@ -18,9 +18,7 @@ module.exports.createJWTToken = async function createJWTToken ({ email, jwtSecre
 
 module.exports.populateUserFromJWT = function populateUserFromJWT ({ jwtSecret }) {
   return function populateUserFromJWTMiddleware(req, res, next) {
-    const jwtToken = req.headers.authorization
-      ? req.headers.authorization.replace(/^Bearer /, '')
-      : req.cookies['graphQL-jwt']
+    const jwtToken = req.headers.authorization?.replace(/^Bearer /, '')
 
     if (typeof jwtToken === 'string') {
       try {
