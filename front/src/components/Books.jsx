@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-import askGraphQL from '../helpers/graphQL'
+import { useGraphQL } from '../helpers/graphQL'
 import styles from './books.module.scss'
 
 import Book from './Book'
 
-const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
-  return { activeUser, sessionToken, applicationConfig }
-}
-
-const ConnectedBooks = ({ activeUser, sessionToken, applicationConfig }) => {
+export default function Books () {
   const [isLoading, setIsLoading] = useState(true)
   const [tags, setTags] = useState([])
+  const displayName = useSelector(state => state.activeUser.displayName)
+  const userId = useSelector(state => state.activeUser._id)
+  const runQuery = useGraphQL()
 
   useEffect(() => {
     //Self invoking async function
@@ -37,14 +36,9 @@ const ConnectedBooks = ({ activeUser, sessionToken, applicationConfig }) => {
           }
         }`
 
-        const user = { user: activeUser._id }
+        const user = { user: userId }
         setIsLoading(true)
-        const data = await askGraphQL(
-          { query, variables: user },
-          'fetching articles',
-          sessionToken,
-          applicationConfig
-        )
+        const data = await runQuery({ query, variables: user })
         //Need to sort by updatedAt desc
         setTags(data.tags.reverse())
         setIsLoading(false)
@@ -56,7 +50,7 @@ const ConnectedBooks = ({ activeUser, sessionToken, applicationConfig }) => {
 
   return (
     <section className={styles.section}>
-      <h1>Books for {activeUser.displayName}</h1>
+      <h1>Books for {displayName}</h1>
       <p>
         Books are like super-tags, they are a collection of articles that you
         can sort and export all at once
@@ -72,6 +66,3 @@ const ConnectedBooks = ({ activeUser, sessionToken, applicationConfig }) => {
     </section>
   )
 }
-
-const Books = connect(mapStateToProps)(ConnectedBooks)
-export default Books

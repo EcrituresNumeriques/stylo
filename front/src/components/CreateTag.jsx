@@ -1,19 +1,15 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import etv from '../helpers/eventTargetValue'
-import askGraphQL from '../helpers/graphQL'
+import { useGraphQL } from '../helpers/graphQL'
 
 import styles from './createTag.module.scss'
 import Field from './Field'
 import Button from './Button'
 import { Check } from 'react-feather'
 
-const mapStateToProps = ({ sessionToken, applicationConfig }) => {
-  return { sessionToken, applicationConfig }
-}
-
-const ConnectedCreateTag = (props) => {
+export default function CreateTag (props) {
   const [articlesSelected, setArticlesSelected] = useState(
     props.articles.map((a) => ({ selected: false, _id: a._id, title: a.title }))
   )
@@ -21,12 +17,7 @@ const ConnectedCreateTag = (props) => {
   const [description, setDescription] = useState('')
   const [tempColor, setTempColor] = useState('')
 
-  const findAndUpdateArticle = (articles, id) => {
-    const immutableArticles = structuredClone(articles)
-    const article = immutableArticles.find((a) => a._id === id)
-    article.selected = !article.selected
-    return immutableArticles
-  }
+  const runQuery = useGraphQL()
 
   let baseQuery =
     'mutation($name:String!, $description:String, $user:ID!, $color:String!){ createTag(name:$name,description:$description,user:$user,color:$color){ _id name description color } '
@@ -43,19 +34,13 @@ const ConnectedCreateTag = (props) => {
     name,
     description,
     color: tempColor,
-
   }
 
-  const createTag = async (event, cb, query, variables, token) => {
+  const createTag = async (event, query, variables) => {
     try {
       event.preventDefault()
-      await askGraphQL(
-        { query, variables },
-        'creating new tag',
-        token,
-        props.applicationConfig
-      )
-      cb()
+      await runQuery({ query, variables })
+      props.triggerReload()
     } catch (err) {
       alert(err)
     }
@@ -67,10 +52,8 @@ const ConnectedCreateTag = (props) => {
         onSubmit={(event) => {
           createTag(
             event,
-            props.triggerReload,
             query,
             variables,
-            props.sessionToken
           )
         }}
       >
@@ -109,6 +92,3 @@ const ConnectedCreateTag = (props) => {
     </section>
   )
 }
-
-const CreateTag = connect(mapStateToProps)(ConnectedCreateTag)
-export default CreateTag

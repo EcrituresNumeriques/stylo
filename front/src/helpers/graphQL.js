@@ -28,7 +28,8 @@ export default async function askGraphQL (
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      Authorization: `Bearer ${sessionToken}`
+      // Authorization header is provided only when we have a token
+      ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {})
     },
     body: JSON.stringify(payload),
   })

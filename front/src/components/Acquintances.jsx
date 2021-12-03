@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Send, UserMinus, UserPlus } from 'react-feather'
 
 import styles from './acquintances.module.scss'
@@ -9,47 +9,44 @@ import AcquintanceAddForm from './AcquintanceAddForm'
 import Button from './Button'
 
 import AcquintanceService from '../services/AcquintanceService'
+import { useGraphQL } from '../helpers/graphQL'
 
-const mapStateToProps = ({ activeUser, applicationConfig }) => {
-  return { activeUser, applicationConfig }
-}
-
-function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, applicationConfig }) {
+export default function Acquintances  ({ article, setNeedReload, cancel }) {
   const [acquintances, setAcquintances] = useState([])
   const [loading, setLoading] = useState(true)
   const [contributors, setContributors] = useState(article.contributors)
-  const articleId = article._id
-  const userId = activeUser._id
-  const acquintanceService = new AcquintanceService(userId, applicationConfig)
+  const userId = useSelector(state => state.activeUser._id)
+  const runQuery = useGraphQL()
+  const acquintanceService = new AcquintanceService(userId, runQuery)
 
   const sharedAccountsIds = activeUser.permissions.map(({ user }) => user._id)
   const contributorsIds = contributors.map(({ user }) => user._id)
 
   const shareArticle = async (to) => {
     try {
-      const { shareArticle:article } = await acquintanceService.shareArticle(articleId, to)
+      const { shareArticle:article } = await acquintanceService.shareArticle(article._id, to)
       setContributors(article.contributors)
     } catch (err) {
-      console.error(`Unable to share article ${articleId} with ${to} (userId: ${userId})`, err)
+      console.error(`Unable to share article ${article._id} with ${to} (userId: ${userId})`, err)
       alert(err)
     }
   }
 
   const unshareArticle = async (to) => {
     try {
-      const { unshareArticle:article } = await acquintanceService.unshareArticle(articleId, to)
+      const { unshareArticle:article } = await acquintanceService.unshareArticle(article._id, to)
       setContributors(article.contributors)
     } catch (err) {
-      console.error(`Unable to unshare article ${articleId} with ${to} (userId: ${userId})`, err)
+      console.error(`Unable to unshare article ${article._id} with ${to} (userId: ${userId})`, err)
       alert(err)
     }
   }
 
   const duplicateArticle = async (to) => {
     try {
-      await acquintanceService.duplicateArticle(articleId, to)
+      await acquintanceService.duplicateArticle(article._id, to)
     } catch (err) {
-      console.error(`Unable to duplicate article ${articleId} with ${to} (userId: ${userId})`, err)
+      console.error(`Unable to duplicate article ${article._id} with ${to} (userId: ${userId})`, err)
       alert(err)
     }
     setNeedReload()

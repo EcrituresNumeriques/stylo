@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useProfile } from '../helpers/userProfile.js'
 
 import styles from './login.module.scss'
@@ -8,26 +8,19 @@ import Field from './Field'
 import Button from './Button'
 import { HelpCircle } from 'react-feather'
 
-const mapStateToProps = ({ activeUser, applicationConfig }) => {
-  return { activeUser, applicationConfig }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    login: (data) => dispatch({ type: 'LOGIN', login: data }),
-    logout: () => dispatch({ type: 'LOGOUT' }),
-  }
-}
-
-function Login ({ login, applicationConfig }) {
+export default function Login () {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
   const refreshProfile = useProfile()
 
-  const handleSubmit = (event) => {
+  const backendEndpoint = useSelector(state => state.applicationConfig.backendEndpoint)
+  const humanIdRegisterEndpoint = useSelector(state => state.applicationConfig.humanIdRegisterEndpoint)
+
+  const handleSubmit = useCallback((event) => {
     event.preventDefault()
 
-    fetch(applicationConfig.backendEndpoint + '/login', {
+    fetch(backendEndpoint + '/login', {
       method: 'POST',
       // this parameter enables the cookie directive (set-cookie)
       credentials: 'include',
@@ -42,13 +35,13 @@ function Login ({ login, applicationConfig }) {
           ? response.json()
           : Promise.reject(new Error('Email or password is incorrect'))
       })
-      .then(login)
+      .then((data) => dispatch({ type: 'LOGIN', ...data }))
       .then(refreshProfile)
       .catch((error) => {
         console.error(error)
         alert(error)
       })
-  }
+  }, [username, password])
 
   return (
     <>
@@ -67,67 +60,61 @@ function Login ({ login, applicationConfig }) {
         </p>
       </section>
 
-      {applicationConfig && (
-        <section className={styles.box}>
-          <h1 className={styles.loginTitle}>Welcome to Stylo!</h1>
-          <form onSubmit={(event) => handleSubmit(event, applicationConfig)}>
-            <fieldset>
-              <legend>
-                Connect with a Huma-Num account <small>(recommended)</small>
-              </legend>
+      <section className={styles.box}>
+        <h1 className={styles.loginTitle}>Welcome to Stylo!</h1>
+        <form onSubmit={handleSubmit}>
+          <fieldset>
+            <legend>
+              Connect with a Huma-Num account <small>(recommended)</small>
+            </legend>
 
-              <p className={styles.help}>
-                <HelpCircle size={18} className={styles.inlineIcon} />
-                <a href="https://humanum.hypotheses.org/5754#content">How does it work?</a>
-              </p>
+            <p className={styles.help}>
+              <HelpCircle size={18} className={styles.inlineIcon} />
+              <a href="https://humanum.hypotheses.org/5754#content">How does it work?</a>
+            </p>
 
-              <p className={styles.authenticationProviderLinks}>
-                <a
-                  className={styles.humaNumConnectBtn}
-                  href={applicationConfig.backendEndpoint + '/login/openid'}
-                >
-                  Connect with Huma-Num
-                </a>
-                <a
-                  className={styles.humaNumCreateAccountBtn}
-                  href={applicationConfig.humanIdRegisterEndpoint}
-                >
-                  Create a Huma-Num account
-                </a>
-              </p>
+            <p className={styles.authenticationProviderLinks}>
+              <a
+                className={styles.humaNumConnectBtn}
+                href={backendEndpoint + '/login/openid'}
+              >
+                Connect with Huma-Num
+              </a>
+              <a
+                className={styles.humaNumCreateAccountBtn}
+                href={humanIdRegisterEndpoint}
+              >
+                Create a Huma-Num account
+              </a>
+            </p>
 
-              <p className={styles.help}>
-                <HelpCircle size={18} className={styles.inlineIcon} />
-                If you use the same email address for your{' '}
-                <strong>existing</strong> Stylo account and for your Huma-Num
-                account, the two accounts will be automatically merged.
-              </p>
-            </fieldset>
+            <p className={styles.help}>
+              <HelpCircle size={18} className={styles.inlineIcon} />
+              If you use the same email address for your{' '}
+              <strong>existing</strong> Stylo account and for your Huma-Num
+              account, the two accounts will be automatically merged.
+            </p>
+          </fieldset>
 
-            <hr />
+          <hr />
 
-            <fieldset>
-              <legend>Connect with a local Stylo account</legend>
+          <fieldset>
+            <legend>Connect with a local Stylo account</legend>
 
               <Field label="Username" id="username" required={true} autoFocus={true} autoComplete="username" onChange={event => setUsername(event.target.value)} />
               <Field label="Password" id="password" required={true} type="password" autoComplete="current-password" onChange={event => setPassword(event.target.value)} />
 
-              <ul className={styles.actions}>
-                <li>
-                  <Link to="/register">Create an account</Link>
-                </li>
-                <li className={styles.actionsSubmit}>
-                  <Button primary={true} type="submit">Login</Button>
-                </li>
-              </ul>
-            </fieldset>
-          </form>
-        </section>
-      )}
+            <ul className={styles.actions}>
+              <li>
+                <Link to="/register">Create an account</Link>
+              </li>
+              <li className={styles.actionsSubmit}>
+                <Button primary={true} type="submit">Login</Button>
+              </li>
+            </ul>
+          </fieldset>
+        </form>
+      </section>
     </>
   )
 }
-
-const ConnectedLogin = connect(mapStateToProps, mapDispatchToProps)(Login)
-
-export default ConnectedLogin

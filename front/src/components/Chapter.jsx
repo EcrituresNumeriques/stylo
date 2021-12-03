@@ -1,23 +1,28 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Check, Edit3 } from 'react-feather'
 
-import askGraphQL from '../helpers/graphQL'
+import { useGraphQL } from '../helpers/graphQL'
 import Button from './Button'
 import buttonStyles from './button.module.scss'
 import styles from './chapter.module.scss'
 import Field from './Field'
 
-const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
-  return { activeUser, sessionToken, applicationConfig }
-}
+export default function Chapter ({ article }) {
+  const articleId = article._id
+  const latestVersion = article.versions && article.versions[0]
+  const latestArticleVersion = latestVersion && {
+    message: latestVersion.message,
+    major: latestVersion.version,
+    minor: latestVersion.revision
+  }
 
-const ConnectedChapter = ({ articleId, latestArticleVersion, articleTitle, activeUser, sessionToken, applicationConfig }) => {
   const [renaming, setRenaming] = useState(false)
-  const [title, setTitle] = useState(articleTitle)
-  const [tempTitle, setTempTitle] = useState(articleTitle)
-  const userId = activeUser._id
+  const [title, setTitle] = useState(article.title)
+  const [tempTitle, setTempTitle] = useState(article.title)
+  const userId = useSelector(state => state.activeUser._id)
+  const runQuery = useGraphQL()
 
   const rename = async (e) => {
     e.preventDefault()
@@ -31,12 +36,7 @@ const ConnectedChapter = ({ articleId, latestArticleVersion, articleTitle, activ
       article: articleId,
       title: tempTitle,
     }
-    await askGraphQL(
-      { query, variables },
-      'Renaming Article',
-      sessionToken,
-      applicationConfig
-    )
+    await runQuery({ query, variables })
     setTitle(tempTitle)
     setRenaming(false)
   }
@@ -64,7 +64,7 @@ const ConnectedChapter = ({ articleId, latestArticleVersion, articleTitle, activ
         </Button>
         <Button title="Cancel" type="button" onClick={() => {
           setRenaming(false)
-          setTempTitle(articleTitle)
+          setTempTitle(article.title)
         }}>
           Cancel
         </Button>
@@ -72,6 +72,3 @@ const ConnectedChapter = ({ articleId, latestArticleVersion, articleTitle, activ
     </>
   )
 }
-
-const Chapter = connect(mapStateToProps)(ConnectedChapter)
-export default Chapter

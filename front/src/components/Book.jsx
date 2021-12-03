@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Check, ChevronDown, ChevronRight, Edit3, Eye, Printer } from 'react-feather'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import Modal from './Modal'
 import Export from './Export'
 import Chapter from './Chapter'
 
 import etv from '../helpers/eventTargetValue'
-import askGraphQL from '../helpers/graphQL'
+import { useGraphQL } from '../helpers/graphQL'
 import formatTimeAgo from '../helpers/formatTimeAgo'
 import { generateBookExportId } from "../helpers/identifier"
 
@@ -20,43 +20,38 @@ import Field from './Field'
 
 const alphaSort = (a, b) => a.title.localeCompare(b.title)
 
-const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
-  return { sessionToken, activeUser, applicationConfig }
-}
+export default function Book ({ name: tagName, _id, updatedAt, articles }) {
+  const userId = useSelector(state => state.activeUser._id)
 
-const Book = (props) => {
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
-  const [tempName, setTempName] = useState(props.name)
-  const [name, setName] = useState(props.name)
+  const [tempName, setTempName] = useState(tagName)
+  const [name, setName] = useState(tagName)
   const [isRenaming, setIsRenaming] = useState(false)
+
+  const runQuery = useGraphQL()
 
   const renameBook = async (event) => {
     event.preventDefault()
     const query = `mutation($user:ID!,$tag:ID!,$name:String,$description:String){ updateTag(user:$user,tag:$tag,name:$name,description:$description){ _id name description } }`
     const variables = {
-      user: props.activeUser._id,
-      tag: props._id,
+      user: userId,
+      tag: _id,
       name: tempName,
     }
-    const newTag = await askGraphQL(
-      { query, variables },
-      'Updating infos of the tag',
-      props.sessionToken,
-      props.applicationConfig
-    )
+    const newTag = await runQuery({ query, variables })
     setName(newTag.updateTag.name)
     setIsRenaming(false)
   }
 
-  const bookTitle = `${name} (${formatTimeAgo(props.updatedAt)})`
+  const bookTitle = `${name} (${formatTimeAgo(updatedAt)})`
   return (
     <article>
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
           <Export
-            exportId={generateBookExportId(props.name)}
-            bookId={props._id}
+            exportId={generateBookExportId(name)}
+            bookId={_id}
           />
         </Modal>
       )}
@@ -78,7 +73,7 @@ const Book = (props) => {
           </Button>
           <Button title="Cancel" type="button" onClick={() => {
             setIsRenaming(false)
-            setTempName(props.name)
+            setTempName(name)
           }}>
             Cancel
           </Button>
@@ -86,10 +81,10 @@ const Book = (props) => {
         <ul className={styles.actions}>
           <li>
             <Link
-              className={[buttonStyles.icon, buttonStyles.button, props.articles.length === 0 ? buttonStyles.isDisabled : ''].filter(d => d).join(' ')}
+              className={[buttonStyles.icon, buttonStyles.button, articles.length === 0 ? buttonStyles.isDisabled : ''].filter(d => d).join(' ')}
               title="Preview"
               target="_blank"
-              to={`/books/${props._id}/preview`}
+              to={`/books/${_id}/preview`}
             >
               <Eye />
             </Link>
@@ -105,28 +100,15 @@ const Book = (props) => {
         <section>
           <h4>Chapters</h4>
           <ul>
-            {props.articles.sort(alphaSort).map((article) => {
-                const articleId = article._id
-                const latestVersion = article.versions && article.versions[0]
-                const latestArticleVersion = latestVersion && {
-                  message: latestVersion.message,
-                  major: latestVersion.version,
-                  minor: latestVersion.revision
-                }
-                return <Chapter
-                  key={`chapter-${props._id}-${articleId}`}
-                  articleId={articleId}
-                  articleTitle={article.title}
-                  latestArticleVersion={latestArticleVersion}
-                />
-              }
-            )
-            }
+            {articles.sort(alphaSort).map((article) => {
+              return <Chapter
+                key={`chapter-${_id}-${article._id}`}
+                article={article}
+              />
+            })}
           </ul>
         </section>
       )}
     </article>
   )
 }
-
-export default connect(mapStateToProps)(Book)

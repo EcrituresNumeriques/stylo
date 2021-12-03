@@ -227,15 +227,15 @@ function clearZoteroToken (state) {
   return state
 }
 
-function loginUser (state, { login, token:sessionToken }) {
+function loginUser (state, { user, token:sessionToken }) {
   if (sessionToken) {
     return {
       ...state,
       activeUser: {
-        ...login.user,
+        ...user,
         // dates are expected to be in timestamp string format (including milliseconds)
-        createdAt: String(new Date(login.user.createdAt).getTime()),
-        updatedAt: String(new Date(login.user.updatedAt).getTime()),
+        createdAt: String(new Date(user.createdAt).getTime()),
+        updatedAt: String(new Date(user.updatedAt).getTime()),
       },
       sessionToken,
     }

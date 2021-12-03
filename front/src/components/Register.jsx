@@ -4,19 +4,14 @@ import { Link, useHistory } from 'react-router-dom'
 import etv from '../helpers/eventTargetValue'
 import validateEmail from '../helpers/validationEmail'
 
-import askGraphQL from '../helpers/graphQL'
+import { useGraphQL } from '../helpers/graphQL'
 
 import styles from './login.module.scss'
-import { connect } from 'react-redux'
 import Field from './Field'
 import Button from './Button'
 import { ArrowLeftCircle, Check } from 'react-feather'
 
-const mapStateToProps = ({ applicationConfig }) => {
-  return { applicationConfig }
-}
-
-const Register = (props) => {
+function Register () {
   const history = useHistory()
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
@@ -26,6 +21,8 @@ const Register = (props) => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [institution, setInstitution] = useState('')
+  const runQuery = useGraphQL()
+
   const query = `mutation($email:String!, $username:String!, $password:String!, $displayName:String, $firstName:String, $lastName:String, $institution:String) {
        createUser(user: {
          email:$email,
@@ -71,12 +68,7 @@ const Register = (props) => {
     }
 
     try {
-      await askGraphQL(
-        { query, variables: user },
-        'Register new user',
-        null,
-        props.applicationConfig
-      )
+      await runQuery({ query, variables: user })
       // if no error thrown, we can navigate to /
       history.push('/')
     } catch (err) {
@@ -128,4 +120,4 @@ const Register = (props) => {
   )
 }
 
-export default connect(mapStateToProps)(Register)
+export default Register

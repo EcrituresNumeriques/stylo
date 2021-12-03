@@ -1,53 +1,40 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { connect, useDispatch } from 'react-redux'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import debounce from 'lodash.debounce'
+import { Check, Plus, Trash } from 'react-feather'
 
 import styles from './bibliographe.module.scss'
 import etv from '../../../helpers/eventTargetValue'
-import { getUserProfile } from '../../../helpers/userProfile'
-import askGraphQL from '../../../helpers/graphQL'
+import { useProfile } from '../../../helpers/userProfile'
+import { useGraphQL } from '../../../helpers/graphQL'
 import { fetchAllCollectionsPerLibrary, fetchBibliographyFromCollectionHref } from '../../../helpers/zotero'
 import { toBibtex, toEntries, validate } from '../../../helpers/bibtex'
 import ReferenceTypeIcon from '../../ReferenceTypeIcon'
 import Button from '../../Button'
 import Field from '../../Field'
 
-import { Check, Plus, Trash } from 'react-feather'
 import Select from '../../Select'
 import NavTag from '../../NavTab'
 
-import BibliographyService from '../../../services/BibliographyService'
-
-const mapStateToProps = ({ workingArticle, activeUser, applicationConfig }) => {
-  return { workingArticleBibliography: workingArticle.bibliography, activeUser, applicationConfig }
-}
-
-const mapDispatchToProps = (dispatch) => ({
-  refreshProfile: (applicationConfig) =>
-    getUserProfile(applicationConfig).then((response) =>
-      dispatch({ type: 'PROFILE', ...response })
-    ),
-})
-
-function ConnectedBibliographe({ article, cancel, refreshProfile, workingArticleBibliography, activeUser, applicationConfig }) {
-  const { backendEndpoint } = applicationConfig
+export default function Bibliographe({ article, cancel }) {
   const [selector, setSelector] = useState('zotero')
   const [isSaving, setSaving] = useState(false)
   const [bib, setBib] = useState(workingArticleBibliography.text)
   const [bibTeXEntries, setBibTeXEntries] = useState(workingArticleBibliography.entries)
   const [addCitation, setAddCitation] = useState('')
-  const [citationValidationResult, setCitationValidationResult] = useState({
-    valid: false,
-  })
-  const [rawBibTeXValidationResult, setRawBibTeXValidationResult] = useState({
-    valid: false,
-  })
+  const [citationValidationResult, setCitationValidationResult] = useState({ valid: false })
+  const [rawBibTeXValidationResult, setRawBibTeXValidationResult] = useState({ valid: false })
   const [zoteroLink, setZoteroLink] = useState(article.zoteroLink || '')
   const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)
-  const { zoteroToken } = activeUser
+  const workingArticleBibliography = useSelector(state => state.workingArticle.bibliography, shallowEqual)
+  const backendEndpoint = useSelector(state => state.applicationConfig.backendEndpoint)
+  const zoteroToken = useSelector(state => state.activeUser.zoteroToken)
+  const userId = useSelector(state => state.activeUser._id)
+  const runQuery = useGraphQL()
   const [zoteroCollections, setZoteroCollections] = useState({})
   const citationForm = useRef()
   const dispatch = useDispatch()
+  const refreshProfile = useProfile()
 
   useEffect(() => {
     if (zoteroToken) {
@@ -121,15 +108,10 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, workingArticle
         const query = `mutation($user:ID!,$article:ID!,$zotero:String!){zoteroArticle(article:$article,zotero:$zotero,user:$user){ _id zoteroLink}}`
         const variables = {
           zotero: zoteroLink,
-          user: activeUser._id,
+          user: userId,
           article: article._id,
         }
-        await askGraphQL(
-          { query, variables },
-          'updating zoteroLink',
-          null,
-          applicationConfig
-        )
+        await runQuery({ query, variables })
       } catch (err) {
         alert(err)
       } finally {
@@ -269,7 +251,7 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, workingArticle
                   )
                   const intervalId = setInterval(() => {
                     if (popup.closed) {
-                      refreshProfile(applicationConfig)
+                      refreshProfile()
                       clearInterval(intervalId)
                     }
                   }, 1000)
@@ -416,10 +398,3 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, workingArticle
     </article>
   )
 }
-
-const Bibliographe = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ConnectedBibliographe)
-
-export default Bibliographe

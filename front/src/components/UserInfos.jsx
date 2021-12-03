@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { connect, useDispatch, useSelector } from 'react-redux'
 import { Check, Loader } from 'react-feather'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 
-import askGraphQL from '../helpers/graphQL'
+import { useGraphQL } from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
 import styles from './credentials.module.scss'
 import formStyles from './field.module.scss'
@@ -11,42 +11,45 @@ import Field from "./Field";
 import formatTimeAgo from '../helpers/formatTimeAgo';
 import CheckboxWidget from "@rjsf/core/lib/components/widgets/CheckboxWidget";
 
-const mapStateToProps = ({
-  password,
-  activeUser,
-  sessionToken,
-  applicationConfig,
-}) => {
-  return { password, activeUser, sessionToken, applicationConfig }
-}
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateActiveUser: (displayName) =>
-      dispatch({ type: `UPDATE_ACTIVE_USER`, payload: displayName }),
-    clearZoteroToken: () => dispatch({ type: 'CLEAR_ZOTERO_TOKEN' }),
-  }
-}
-
-const ConnectedUser = (props) => {
-  const [displayName, setDisplayName] = useState(props.activeUser.displayName)
-  const [firstName, setFirstName] = useState(props.activeUser.firstName)
-  const [lastName, setLastName] = useState(props.activeUser.lastName)
-  const [institution, setInstitution] = useState(props.activeUser.institution)
-  const [yaml, setYaml] = useState(props.activeUser.yaml)
-  const [user, setUser] = useState(props.activeUser)
+export default function UserInfos () {
+  const dispatch = useDispatch()
+  const runQuery = useGraphQL()
+  const activeUser = useSelector(state => state.activeUser, shallowEqual)
+  const sessionToken = useSelector(state => state.sessionToken)
+  const userId = activeUser._id
+  const [displayName, setDisplayName] = useState(activeUser.displayName)
+  const [firstName, setFirstName] = useState(activeUser.firstName)
+  const [lastName, setLastName] = useState(activeUser.lastName)
+  const [institution, setInstitution] = useState(activeUser.institution)
+  const [yaml, setYaml] = useState(activeUser.yaml)
+  const [user, setUser] = useState(activeUser)
   const [isSaving, setIsSaving] = useState(false)
-  const { clearZoteroToken } = props
+
+  const updateActiveUser = useCallback((payload) => dispatch({ type: `UPDATE_ACTIVE_USER`, payload }), [])
+  const clearZoteroToken = useCallback(() => dispatch({ type: 'CLEAR_ZOTERO_TOKEN' }), [])
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const query = `query($user:ID!){user(user:$user){ displayName _id email admin createdAt updatedAt yaml firstName zoteroToken lastName institution passwords{ _id username email } tokens{ _id name active }}}`
+        const variables = { user: userId }
+        const data = await runQuery({ query, variables })
+        setDisplayName(data.user.displayName)
+        setFirstName(data.user.firstName || '')
+        setLastName(data.user.lastName || '')
+        setInstitution(data.user.institution || '')
+        setYaml(data.user.yaml || '')
+        setUser(data.user)
+      } catch (err) {
+        alert(`couldn't fetch user ${err}`)
+      }
+    })()
+  }, [])
 
   const unlinkZoteroAccount = async () => {
-    const query = `mutation($user:ID!,$zoteroToken:String){updateUser(user:$user, zoteroToken:$zoteroToken){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken }}`
-    const variables = { user: props.activeUser._id, zoteroToken: null }
-    setIsSaving(true)
-    const data = await askGraphQL(
-      { query, variables },
-      'clear Zotero Token',
-      props.sessionToken,
-      props.applicationConfig
-    )
+    const query = `mutation($user:ID!,$zoteroToken:String){updateUser(user:$user, zoteroToken:$zoteroToken){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken passwords{ _id username email } tokens{ _id name active } }}`
+    const variables = { user: userId, zoteroToken: null }
+    const data = await runQuery({ query, variables })
     setUser(data.updateUser)
     clearZoteroToken()
     setIsSaving(false)
@@ -58,22 +61,16 @@ const ConnectedUser = (props) => {
       setIsSaving(true)
       const query = `mutation($user:ID!,$displayName:String!,$firstName:String,$lastName:String, $institution:String,$yaml:String){updateUser(user:$user,displayName:$displayName,firstName:$firstName, lastName: $lastName, institution:$institution, yaml:$yaml){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken }}`
       const variables = {
-        user: props.activeUser._id,
+        user: userId,
         yaml,
         displayName,
         firstName,
         lastName,
         institution,
       }
-      const data = await askGraphQL(
-        { query, variables },
-        'updating user',
-        props.sessionToken,
-        props.applicationConfig
-      )
-      //setDisplayNameH1(data.updateUser.displayName)
+      const data = await runQuery({ query, variables })
       setDisplayName(data.updateUser.displayName)
-      props.updateActiveUser(displayName)
+      updateActiveUser(displayName)
       setFirstName(data.updateUser.firstName || '')
       setLastName(data.updateUser.lastName || '')
       setInstitution(data.updateUser.institution || '')
@@ -84,14 +81,13 @@ const ConnectedUser = (props) => {
       alert(`Couldn't update User: ${err}`)
     }
   }
-  const dispatch = useDispatch()
   const preferredEditorMonaco = useSelector(state => state.userPreferences.preferredEditorMonaco)
   const togglePreferredEditorMonaco = useCallback(() => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'preferredEditorMonaco' }), [])
 
   return (<>
     <section className={styles.section}>
       <h2>Account information</h2>
-      <form onSubmit={(e) => updateInfo(e)}>
+      <form onSubmit={updateInfo}>
         <Field
           id="displayNameField"
           label="Display name"
@@ -124,9 +120,7 @@ const ConnectedUser = (props) => {
           onChange={(e) => setInstitution(etv(e))}
           placeholder="Institution name"
         />
-        <Field
-          label="Zotero"
-        >
+        <Field  label="Zotero">
           <>
             {user.zoteroToken ? (
               <span>
@@ -177,7 +171,7 @@ const ConnectedUser = (props) => {
         <>{user.authType === 'oidc' ? 'External (OpenID)' : 'Local'}</>
       </Field>
       <Field label="API Key">
-        <code>{props.sessionToken}</code>
+        <code>{sessionToken}</code>
       </Field>
       <Field label="Identifier">
         <code>{user._id}</code>
@@ -195,7 +189,3 @@ const ConnectedUser = (props) => {
   </>
   )
 }
-
-const User = connect(mapStateToProps, mapDispatchToProps)(ConnectedUser)
-
-export default User
