@@ -1,5 +1,4 @@
 const pkg = require('./package.json')
-const jwt = require('jsonwebtoken')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
@@ -233,21 +232,6 @@ app.use('/authorization-code/zotero/callback',
 app.use('/authorization-code/callback',
   passport.authenticate('oidc', { failWithError: true }),
   async function onSuccess (req, res) {
-    const email = req.user.email
-
-    if (email) {
-      // generate a JWT token
-      // TODO: we should be able to remove it, keep it for now
-      const token = await createJWTToken({ email, jwtSecret })
-
-      res.cookie("graphQL-jwt", token, {
-        expires: 0,
-        httpOnly: true,
-        secure: secureCookie,
-        sameSite: sameSiteCookies
-      })
-    }
-
     return res.redirect(req.session.origin)
   },
   function onFailure (error, req, res) {
@@ -258,7 +242,6 @@ app.use('/authorization-code/callback',
 app.get('/logout', (req, res) => {
   req.logout()
   req.session.destroy()
-  res.clearCookie('graphQL-jwt')
   res.redirect(req.headers.referer)
 })
 
@@ -268,13 +251,6 @@ app.post('/login',
     const { email } = req.user
 
     const token = await createJWTToken({ email, jwtSecret })
-
-    res.cookie("graphQL-jwt", token, {
-      expires: 0,
-      httpOnly: true,
-      secure: secureCookie,
-      sameSite: sameSiteCookies
-    })
 
     res.statusCode = 200
     res.json({ user: req.user, token })
