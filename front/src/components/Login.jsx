@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { useProfile } from '../helpers/userProfile.js'
 
 import styles from './login.module.scss'
 import Field from './Field'
@@ -21,6 +22,7 @@ const mapDispatchToProps = (dispatch) => {
 function Login ({ login, applicationConfig }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const refreshProfile = useProfile()
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -41,6 +43,7 @@ function Login ({ login, applicationConfig }) {
           : Promise.reject(new Error('Email or password is incorrect'))
       })
       .then(login)
+      .then(refreshProfile)
       .catch((error) => {
         console.error(error)
         alert(error)

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 
-import askGraphQL from '../helpers/graphQL'
+import { useGraphQL } from '../helpers/graphQL'
 import styles from './credentials.module.scss'
 import Loading from "./Loading";
 import UserInfos from "./UserInfos";
@@ -9,20 +9,14 @@ import CredentialsAccountSharing from "./CredentialsAccountSharing";
 import Button from "./Button";
 import Field from "./Field";
 
-const mapStateToProps = ({
-  activeUser,
-  sessionToken,
-  applicationConfig,
-}) => {
-  return { activeUser, sessionToken, applicationConfig }
-}
-
-const Credentials = ({ activeUser, sessionToken, applicationConfig }) => {
+export default function Credentials () {
   const [password, setPassword] = useState('')
   const [passwordO, setPasswordO] = useState('')
   const [passwordC, setPasswordC] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
+  const userId = useSelector(state => state.activeUser._id)
+  const runQuery = useGraphQL()
 
   const changePassword = async (e) => {
     e.preventDefault()
@@ -32,14 +26,9 @@ const Credentials = ({ activeUser, sessionToken, applicationConfig }) => {
       const variables = {
         old: passwordO,
         new: password,
-        user: activeUser._id,
+        user: userId,
       }
-      await askGraphQL(
-        { query, variables },
-        'update Password',
-        sessionToken,
-        applicationConfig
-      )
+      await runQuery({ query, variables })
       setPassword('')
       setPasswordO('')
       setPasswordC('')
@@ -98,5 +87,3 @@ const Credentials = ({ activeUser, sessionToken, applicationConfig }) => {
     </>
   )
 }
-
-export default connect(mapStateToProps)(Credentials)

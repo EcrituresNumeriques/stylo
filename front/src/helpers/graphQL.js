@@ -1,4 +1,6 @@
-const getErrorResponse = async (response) => {
+import { shallowEqual, useSelector } from "react-redux"
+
+async function getErrorResponse (response) {
   try {
     return await response.clone().json()
   } catch (err) {
@@ -13,19 +15,20 @@ const getErrorResponse = async (response) => {
   }
 }
 
-const askGraphQL = async (
+export default async function askGraphQL (
   payload,
   action = 'fetching from the server',
-  token = null,
+  sessionToken = null,
   applicationConfig
-) => {
+) {
   const response = await fetch(applicationConfig.graphqlEndpoint, {
     method: 'POST',
     mode: 'cors',
-    credentials: 'include',
+    credentials: 'omit',
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
+      Authorization: `Bearer ${sessionToken}`
     },
     body: JSON.stringify(payload),
   })
@@ -44,4 +47,11 @@ const askGraphQL = async (
   return json.data
 }
 
-export default askGraphQL
+export function useGraphQL () {
+  const sessionToken = useSelector(state => state.sessionToken)
+  const graphqlEndpoint = useSelector(state => state.applicationConfig.graphqlEndpoint, shallowEqual)
+
+  return function callStyloGrapQLApi ({ query, variables }) {
+    return askGraphQL({ query, variables }, null, sessionToken, { graphqlEndpoint })
+  }
+}
