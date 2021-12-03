@@ -97,6 +97,7 @@ passport.use('oidc', new OidcStrategy({
   callbackURL: oicCallbackUrl,
   scope: oicScope
 }, async (issuer, oAuthProfile, done) => {
+  console.log({ issuer, oAuthProfile, done})
   const { email, given_name, family_name, name: displayName } = oAuthProfile._json
   let user = await User.findOne({ email })
 
