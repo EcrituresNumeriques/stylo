@@ -96,8 +96,40 @@ passport.use('oidc', new OidcStrategy({
   clientSecret: oicClientSecret,
   callbackURL: oicCallbackUrl,
   scope: oicScope
-}, (issuer, sub, profile, accessToken, refreshToken, done) => {
-  return done(null, profile)
+}, async (issuer, oAuthProfile, done) => {
+  const { email, given_name, family_name, name: displayName } = oAuthProfile._json
+  let user = await User.findOne({ email })
+
+  // we create a new user if we could find one
+  if (!user) {
+    user = new User({
+      email,
+      displayName,
+      institution: '',
+      firstName: given_name || '',
+      lastName: family_name || ''
+    })
+
+    // add a "password" to allow the user to connect as himself!
+    // a user can have multiple "passwords" (ie. accounts) linked to it.
+    // this mecanism is used to share content between accounts.
+    const password = new Password({ email })
+    try {
+      user.passwords.push(password)
+      password.users.push(user)
+      await password.save()
+
+      // we populate a user with initial content
+      await user.save().then(postCreate)
+    } catch (err) {
+      return done(`Unable to create a new user ${email}, cause:`, err)
+    }
+  }
+
+  const userPassword = await Password.findOne({ email })
+
+  // this, will be stored in session via `serializeUser()`
+  return done(null, userPassword)
 }))
 
 passport.use(new LocalStrategy({ session: false },
@@ -208,73 +240,24 @@ app.use('/authorization-code/zotero/callback',
   })
 
 app.use('/authorization-code/callback',
-  (req, res, next) => {
-    return passport.authenticate('oidc', {
-      failureRedirect: '/error',
-      failureFlash: true
-    }, async (err, humanidUser, info) => {
-      if (humanidUser) {
-        const { email, given_name, family_name, name: displayName } = humanidUser._json
-        let user = await User.findOne({ email })
+  passport.authenticate('oidc', { failureRedirect: '/error', failureFlash: true }),
+  async (req, res) => {
+    const email = req.user.email
 
-        // we create a new user if we could find one
-        if (!user) {
-          user = new User({
-            email,
-            displayName,
-            institution: '',
-            firstName: given_name || '',
-            lastName: family_name || ''
-          })
+    if (email) {
+      // generate a JWT token
+      // TODO: we should be able to remove it, keep it for now
+      const token = await createJWTToken({ email, jwtSecret })
 
-          // add a "password" to allow the user to connect as himself!
-          // a user can have multiple "passwords" (ie. accounts) linked to it.
-          // this mecanism is used to share content between accounts.
-          const password = new Password({ email })
-          try {
-            user.passwords.push(password)
-            password.users.push(user)
-            await password.save()
+      res.cookie("graphQL-jwt", token, {
+        expires: 0,
+        httpOnly: true,
+        secure: secureCookie,
+        sameSite: sameSiteCookies
+      })
+    }
 
-            // we populate a user with initial content
-            await user.save().then(postCreate)
-          } catch (err) {
-            console.error(`Unable to create a new user ${email}, cause:`, err)
-            res.redirect(`/error?message=${err}`)
-          }
-        }
-
-        // generate a JWT token
-        // TODO: we should be able to remove it, keep it for now
-        const token = await createJWTToken({ email, jwtSecret })
-
-        res.cookie("graphQL-jwt", token, {
-          expires: 0,
-          httpOnly: true,
-          secure: secureCookie,
-          sameSite: sameSiteCookies
-        })
-
-        const userPassword = await Password.findOne({ email }).populate("users")
-        req.user = {
-          email,
-          usersIds: userPassword.users.map(user => user._id.toString()),
-          passwordId: userPassword.id,
-          admin: Boolean(user.admin),
-        }
-
-        return res.redirect(req.session.origin)
-      }
-
-      const errorMessages = []
-      if (info && info.message) {
-        errorMessages.push(info.message)
-      }
-      if (err && err.message) {
-        errorMessages.push(err.message)
-      }
-      res.redirect(`/error?message=${errorMessages.join(' ')}`)
-    })(req, res, next)
+    return res.redirect(req.session.origin)
   }
 )
 
