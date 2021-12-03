@@ -22,9 +22,10 @@ const createNewArticleVersionQuery = `mutation($userId: ID!, $articleId: ID!, $m
 
 export default class VersionService {
 
-  constructor (userId, articleId, applicationConfig) {
+  constructor (userId, articleId, sessionToken, applicationConfig) {
     this.userId = userId
     this.articleId = articleId
+    this.sessionToken = sessionToken
     this.applicationConfig = applicationConfig
   }
 
@@ -41,7 +42,7 @@ export default class VersionService {
         }
       },
       `Creating a new version on article id: ${this.articleId} (userId: ${this.userId})`,
-      '',
+      this.sessionToken,
       this.applicationConfig
     )
   }
