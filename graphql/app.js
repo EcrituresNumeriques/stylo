@@ -17,7 +17,7 @@ const OAuthStrategy = require('passport-oauth').OAuthStrategy;
 const graphQlSchema = require('./schema/index')
 const graphQlResolvers = require('./resolvers/index')
 
-const { createJWTToken } = require('./helpers/token')
+const { createJWTToken, populateUserFromJWT } = require('./helpers/token')
 const User = require('./models/user')
 const Password = require('./models/user_password')
 const { postCreate } = User
@@ -109,12 +109,13 @@ passport.use(new LocalStrategy({ session: false },
 ))
 
 // mandatory
-passport.serializeUser((user, next) => {
-  next(null, user)
+passport.serializeUser((password, next) => {
+  next(null, password.id)
 })
 
-passport.deserializeUser((obj, next) => {
-  next(null, obj)
+passport.deserializeUser(async (id, next) => {
+  const {users} = await Password.findById(id).populate('users')
+  next(null, users[0])
 })
 
 app.set('trust proxy', true)
@@ -135,23 +136,6 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
-
-app.use(function (req, res, next) {
-  const jwtToken = req.headers.authorization
-    ? req.headers.authorization.replace(/^Bearer /, '')
-    : req.cookies['graphQL-jwt']
-
-  if (jwtToken) {
-    try {
-      req.user = jwt.verify(jwtToken, jwtSecret)
-      req.isAuth = true
-    } catch (error) {
-      return next(error)
-    }
-  }
-
-  return next()
-})
 
 app.get('/version', (req, res) => res.json({
   name: pkg.name,
@@ -333,7 +317,7 @@ app.post('/login',
     res.json({ error })
   })
 
-app.post('/graphql', graphqlHTTP((req, res) => ({
+app.post('/graphql', populateUserFromJWT({ jwtSecret }), graphqlHTTP((req, res) => ({
   schema: graphQlSchema,
   rootValue: graphQlResolvers,
   graphiql: false,
