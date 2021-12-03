@@ -97,7 +97,8 @@ passport.use('oidc', new OidcStrategy({
   callbackURL: oicCallbackUrl,
   scope: oicScope
 }, async (issuer, sub, oAuthProfile, accessToken, refreshToken, done) => {
-  console.log({ issuer, sub, oAuthProfile, accessToken, refreshToken })
+  // careful, function arity matters https://github.com/jaredhanson/passport-openidconnect/blob/6197df6adf878bb641fd605c55f1c92f67253a07/lib/strategy.js#L223-L252
+  // we should keep it as it is
   const { email, given_name, family_name, name: displayName } = oAuthProfile._json
   let user = await User.findOne({ email })
 
