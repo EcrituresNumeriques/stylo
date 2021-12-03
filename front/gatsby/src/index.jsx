@@ -48,6 +48,7 @@ const TrackPageViews = () => {
 
   history.listen(({ pathname, search, state }, action) => {
     /* global _paq */
+    const _paq = window._paq = window._paq || [];
 
     //@todo do this dynamically, based on a subscription to the store
     //otherwise, we should use _paq.push(['forgetConsentGiven'])
