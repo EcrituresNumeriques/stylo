@@ -95,7 +95,7 @@ const createNewArticleVersion  = store => {
         const { activeUser, applicationConfig } = store.getState()
         const userId = activeUser._id
         const { articleId, metadata } = action
-        const { updateWorkingVersion } =new MetadataService(userId, articleId, applicationConfig).saveMetadata(metadata)
+        const { updateWorkingVersion } = await new MetadataService(userId, articleId, applicationConfig).saveMetadata(metadata)
         store.dispatch({ type: 'SET_WORKING_ARTICLE_METADATA', metadata })
         store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
         return next(action)

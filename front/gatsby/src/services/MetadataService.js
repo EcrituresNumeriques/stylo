@@ -4,7 +4,7 @@ const saveWorkingVersionMetadataQuery = `mutation($userId: ID!, $articleId: ID!,
   updateWorkingVersion(
     article: $articleId,
     user: $userId,
-    bib: $metadata
+    yaml: $metadata
   ) {
     updatedAt
   }
