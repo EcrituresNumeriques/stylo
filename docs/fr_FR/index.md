@@ -1,8 +1,10 @@
 # Stylo - un éditeur de texte sémantique
 
-**📢 Stylo a changé de serveur courant mai 2020, si vous rencontrez des difficultés, n'hésitez pas [à nous écrire](mailto:crc.ecrituresnumeriques@gmail.com).**
+**📢 Si vous rencontrez des difficultés avec Stylo, n'hésitez pas [à nous écrire](mailto:crc.ecrituresnumeriques@gmail.com).**
 
 Une permanence est ouverte tous les jeudis de 11h à 12h (heure canadienne) pour poser des questions, perfectionner l'utilisation de Stylo, partager vos expériences utilisateur ou autres : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Rejoignez la permanence en visioconférence</a>
+
+**La permanence prend des vacances du 17 décembre au 3 janvier !**
 
 ---
 
