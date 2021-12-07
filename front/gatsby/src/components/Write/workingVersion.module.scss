@@ -79,6 +79,20 @@
   padding: 0.25em;
 }
 
+  .savingIndicator > svg {
+    animation: rotation 2.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+  
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
 .savedIndicator {
   background-color: #4a4a4a;
   color: #f5f5f5;
