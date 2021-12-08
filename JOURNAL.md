@@ -1,5 +1,30 @@
 # Journal de développement
 
+## Mercredi 8 décembre
+
+### Ce que j'ai aimé/appris
+
+- Le `gap` en CSS !
+- Et `flex-shrink: 0` pour éviter de 🙏 ("reste comme ça")
+- J'ai aimé voir les trucs qui bougent, faire des styles avec vous
+- On a nos premières stats !
+- On a mis en ligne ! Trop bien le nettoyage.
+- Le script de migration a bien marché.
+- Chouette de travailler à plusieurs sur l'interface, c'est productif. Ça évite les allers-retours.
+- J'ai beaucoup aimé tester toutes les variantes du changement d'état de la sauvegarde d'un article.
+- J'ai découvert la fonctionnalité de partage de comptes…
+- J'ai aimé utiliser l'application de bureau Jitsi Meet, avec l'option de désactivation de nuisance sonore (c'est utilisable avec le serveur de dev qui tourne)
+
+### Ce que j'ai trouvé difficile
+
+- Mon nez !! 🤧
+- J'ai aimé travailler avec vous, mais c'est encore difficile de travailler (revenir au boulot)
+- On n'a pas pu fusionner la pull request de nettoyage de cookies à cause de la fonctionnalité de bascule de compte
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+Nope !
+
 ## Mercredi 1er décembre
 
 ### Ce que j'ai aimé/appris
