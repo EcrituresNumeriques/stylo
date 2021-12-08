@@ -19,13 +19,13 @@ function Biblio ({ article, readOnly }) {
   return (
     <section className={[menuStyles.section, styles.section].join(' ')}>
       <h1 onClick={() => setExpand(!expand)}>
-        {expand ? <ChevronDown/> : <ChevronRight/>} Bibliography
+        {expand ? <ChevronDown/> : <ChevronRight/>} Bibliography {!readOnly && (
+          <Button className={styles.manageButton} onClick={openModal}>Manage</Button>
+        )}
       </h1>
       {expand && (
         <>
-          {!readOnly && (
-            <Button className={styles.manageButton} onClick={openModal}>Manage Bibliography</Button>
-          )}
+
           <ReferenceList />
         </>
       )}

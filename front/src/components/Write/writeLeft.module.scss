@@ -7,30 +7,83 @@
   border-right: 1px solid $main-border-color;
 }
 
-.expandleft {
-  @extend .sliderleft;
-  left: 0;
+.side {
+  display: flex;
+  flex-direction: column;
+  margin-left: -420px;
+  animation-duration: 0.25s;
+  animation-name: slideout;
+}
+
+.expanded {
+  animation-duration: 0.25s;
+  animation-name: slidein;
+  margin-left: 0;
+}
+
+@keyframes slideout {
+  from {
+    margin-left: 0;
+  }
+
+  to {
+    margin-left: -420px;
+  }
+}
+
+@keyframes slidein {
+  from {
+    margin-left: -420px;
+  }
+
+  to {
+    margin-left: 0;
+  }
+}
+
+.menu {
+  min-width: 400px;
   background-color: rgba(255, 255, 255, 1);
-
-  > nav {
-    color: $main-color;
-    right: 0;
-    transition: right 0.5s ease;
-    z-index: 90;
-  }
+  border-right: 1px solid $main-border-color;
+  min-height: calc(100vh - 49px);
+  max-height: calc(100vh - 49px);
+  overflow-y: scroll;
 }
 
-.retractleft {
-  @extend .sliderleft;
-  left: -400px;
-  background-color: rgba(255, 255, 255, 0);
-  border-right: 0px solid $main-border-color;
-  > nav {
-    right: -80px;
-    transition: left 0.5s ease;
-  }
-  .open {
-    color: grey;
-    background-color: rgba(0, 0, 0, 0);
-  }
+.actions {
+  display: flex;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9em;
+  justify-content: flex-end;
+  gap: 0.5em;
 }
+
+//
+//.expandleft {
+//  @extend .sliderleft;
+//  left: 0;
+//  background-color: rgba(255, 255, 255, 1);
+//
+//  > nav {
+//    color: $main-color;
+//    right: 0;
+//    transition: right 0.5s ease;
+//    z-index: 90;
+//  }
+//}
+//
+//.retractleft {
+//  @extend .sliderleft;
+//  left: -400px;
+//  background-color: rgba(255, 255, 255, 0);
+//  border-right: 0px solid $main-border-color;
+//  > nav {
+//    right: -80px;
+//    transition: left 0.5s ease;
+//  }
+//  .open {
+//    color: grey;
+//    background-color: rgba(0, 0, 0, 0);
+//  }
+//}

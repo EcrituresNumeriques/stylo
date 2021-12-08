@@ -1,6 +1,7 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
 
+/*
 .expandRight {
   @extend .sliderright;
   right: 0;
@@ -61,6 +62,148 @@
   flex-direction: column;
   overflow-y: scroll;
   overflow-x: hidden;
+  > nav {
+    margin: 1rem 0;
+    display: flex;
+    flex-wrap: nowrap;
+    > p {
+      flex: 1 1 calc(100% / 3);
+      text-align: center;
+      padding: 0.5rem 1rem;
+      background-color: $main-background-color;
+    }
+    > p.selected {
+      background-color: $main-color;
+      color: $main-background-color;
+    }
+  }
+  > section {
+    :global {
+      .addToArray {
+        margin: 0 0 1rem;
+        padding: 0.5rem 1rem;
+        background-color: #f0f0f0;
+        border-top: 1px solid $main-border-color;
+        border-bottom: 1px solid $main-border-color;
+        cursor: pointer;
+        color: $main-color;
+      }
+      .reactForm {
+        display: flex;
+        align-items: baseline;
+        label {
+          padding: 0.5em 1em;
+          display: block;
+          flex: 0 0 150px;
+          margin: 2px;
+          -webkit-box-shadow: 0 1px 1px #f0f0f0;
+          box-shadow: 0 1px 1px #f0f0f0;
+          background-color: #fff;
+          text-align: right;
+        }
+        .lcheckbox {
+          flex: 1 1 150px;
+          text-align: left;
+        }
+        input,
+        textarea,
+        select {
+          padding: 0.5em 1em;
+          display: block;
+          flex: 1 1 auto;
+          margin: 2px;
+          -webkit-box-shadow: 0 1px 1px #f0f0f0;
+          box-shadow: 0 1px 1px #f0f0f0;
+          background-color: #fff;
+          text-align: left;
+          border: none;
+        }
+      }
+      .group {
+        margin: 1em 0 0;
+        border: 1px solid #f0f0f0;
+        h1 {
+          font-size: 1.15em;
+          margin: 0;
+          padding: 0.5rem 1rem;
+          background-color: #f0f0f0;
+          border-top: 1px solid $main-border-color;
+          border-bottom: 1px solid $main-border-color;
+        }
+        .keywords {
+          display: flex;
+          align-items: baseline;
+          flex-wrap: wrap;
+          > input {
+            padding: 0.5em 1em;
+            display: block;
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            margin: 2px;
+            -webkit-box-shadow: 0 1px 1px #f0f0f0;
+            box-shadow: 0 1px 1px #f0f0f0;
+            background-color: #fff;
+            text-align: left;
+            border: none;
+          }
+          > p:not(.addToArray) {
+            margin-bottom: 1rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+          }
+        }
+        > p:not(.addToArray) {
+          margin-bottom: 1rem;
+          padding: 0.5rem 1rem;
+          cursor: pointer;
+        }
+        #modalWrapper {
+          > main {
+            h1 {
+              margin-bottom: 1rem;
+            }
+            p {
+              margin-bottom: 1rem;
+            }
+            textarea {
+              width: 100%;
+              padding: 0.5rem 1rem;
+              height: 7rem;
+            }
+            > nav {
+              margin-bottom: 1rem;
+              button {
+                display: inline-block;
+                width: 50%;
+              }
+            }
+          }
+        }
+      }
+      section:not(.group) {
+        h1 {
+          font-size: 1.15em;
+          margin: 0;
+          padding: 0.5rem 1rem;
+          background-color: #f0f0f0;
+          border-top: 1px solid $main-border-color;
+          border-bottom: 1px solid $main-border-color;
+        }
+      }
+    }
+  }
+}
+
+.rawYaml {
+  overflow: auto;
+}
+*/
+
+
+.yamlEditor {
+  display: flex;
+  flex-direction: column;
   > nav {
     margin: 1rem 0;
     display: flex;

@@ -4,6 +4,7 @@
 .section {
   > h1 {
     font-size: 1.2rem;
+    min-height: 3.25em;
     @extend .clickable;
     border-top: 1px solid $main-border-color;
     border-bottom: 1px solid $main-border-color;

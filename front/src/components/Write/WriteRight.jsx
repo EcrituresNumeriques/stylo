@@ -6,19 +6,25 @@ import styles from './writeRight.module.scss'
 import YamlEditor from './yamleditor/YamlEditor'
 import NavTag from '../NavTab'
 import YAML from 'js-yaml'
+import menuStyles from "./menu.module.scss";
+import { ChevronDown, ChevronRight } from "react-feather";
 
 export default function WriteRight({ handleYaml, readOnly, yaml }) {
   const dispatch = useDispatch()
+  /*
   const expanded = useSelector(
     (state) => state.articlePreferences.expandSidebarRight
   )
+   */
   const selector = useSelector(
     (state) => state.articlePreferences.metadataFormMode
   )
 
+  const [expand, setExpand] = useState(true)
   const [rawYaml, setRawYaml] = useState(yaml)
   const [error, setError] = useState('')
 
+  /*
   const toggleExpand = useCallback(
     () =>
       dispatch({
@@ -26,7 +32,7 @@ export default function WriteRight({ handleYaml, readOnly, yaml }) {
         key: 'expandSidebarRight',
       }),
     []
-  )
+  )*/
   const setSelector = useCallback(
     (value) =>
       dispatch({
@@ -38,19 +44,13 @@ export default function WriteRight({ handleYaml, readOnly, yaml }) {
   )
 
   return (
-    <nav className={`${expanded ? styles.expandRight : styles.retractRight}`}>
-      <nav
-        onClick={toggleExpand}
-        className={expanded ? styles.close : styles.open}
-      >
-        {expanded ? 'close' : 'Metadata'}
-      </nav>
-      {expanded && (
+    <section className={[styles.section, menuStyles.section].join(' ')}>
+      <h1 onClick={() => setExpand(!expand)}>
+        {expand ? <ChevronDown/> : <ChevronRight/>} Metadata
+      </h1>
+      {expand && (
         <>
           <div className={styles.yamlEditor}>
-            <header>
-              <h1>Metadata</h1>
-            </header>
             <NavTag
               defaultValue={selector}
               onChange={setSelector}
@@ -124,7 +124,7 @@ export default function WriteRight({ handleYaml, readOnly, yaml }) {
           </div>
         </>
       )}
-    </nav>
+    </section>
   )
 }
 

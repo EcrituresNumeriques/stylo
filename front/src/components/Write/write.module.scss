@@ -1,6 +1,32 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
 
+.article {
+  @extend .wrapped-center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  display: flex;
+
+  textarea {
+    padding: 1rem;
+    width: 100%;
+  }
+
+  > div {
+    flex: 1 1 50%;
+  }
+
+  > pre,
+  > div > pre {
+    margin-top: 0;
+    padding: 1rem;
+    width: 100%;
+    white-space: pre-wrap;
+    flex: 1 1 50%;
+  }
+}
+
 .simplePage {
   background-color: $extra-background-color;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, .3);
@@ -17,4 +43,19 @@
 .container {
   position: relative;
   height: 100%;
+  display: flex;
+}
+
+.stats {
+  display: flex;
+  margin: auto;
+  margin-top: 1em;
+  margin-bottom: 2em;
+  color: #4a4a4a;
+  font-size: 0.85rem;
+}
+
+.stats > li:not(:last-child)::after {
+  content: "•";
+  margin: 0 0.5em;
 }
