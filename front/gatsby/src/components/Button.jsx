@@ -12,7 +12,7 @@ export default function Button (props) {
     classNames.push(props.className)
   }
   return (<button className={classNames.join(' ')}
-                  type={props.type}
+                  type={props.type || props.primary ? 'submit' : 'button'}
                   title={props.title}
                   onClick={props.onClick}
                   onDoubleClick={props.onDoubleClick}
