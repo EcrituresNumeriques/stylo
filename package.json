@@ -17,8 +17,8 @@
     "npm": ">=8"
   },
   "scripts": {
-    "dev": "pm2 start --watch",
-    "start": "pm2 start",
+    "dev": "pm2 start --env development",
+    "start": "pm2 start --env production",
     "stop": "pm2 stop all",
     "reload": "pm2 reload all",
     "list": "pm2 list",
