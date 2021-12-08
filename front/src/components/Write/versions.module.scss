@@ -4,14 +4,13 @@
 .versionsList {
   font-size: 0.9em;
   margin-top: 0.75em;
-  padding-top: 0.25em;
   > li {
     padding: .5rem;
     > a:first-child {
       display: block;
     }
   }
-  > li:nth-child(2n + 1) {
+  > li:nth-child(2n) {
     background-color: $main-background-color;
   }
   > li.selected {
@@ -40,4 +39,10 @@
 .newVersion {
   font-size: 1rem;
   margin-left: auto;
+}
+
+.editMode {
+  font-size: 0.8rem;
+  margin-top: 0.75em;
+  margin-left: 0.5em;
 }
