@@ -34,10 +34,9 @@ const Privacy = lazy(() => import('./components/Privacy'))
 const store = createStore()
 
 ;(async () => {
-  const applicationConfig = await getApplicationConfig().then((response) => {
-    store.dispatch({ type: 'APPLICATION_CONFIG', applicationConfig: response })
-    return response
-  })
+  const applicationConfig = await getApplicationConfig(store.getState().applicationConfig)
+  store.dispatch({ type: 'APPLICATION_CONFIG', applicationConfig })
+
   getUserProfile(applicationConfig).then((response) =>
     store.dispatch({ type: 'PROFILE', ...response })
   )
