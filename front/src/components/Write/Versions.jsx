@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { ChevronDown, ChevronRight } from 'react-feather'
+import { ArrowLeft, ChevronDown, ChevronRight } from 'react-feather'
 
 import styles from './versions.module.scss'
 import menuStyles from './menu.module.scss'
@@ -68,6 +68,8 @@ const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
             <strong>All changes are automatically saved.</strong><br/>
             You should create a new version to record a specific set of changes.
           </p>)}
+
+          {readOnly && <Link className={[buttonStyles.button, buttonStyles.secondary, styles.editMode].join(' ')} to={`/article/${article._id}`}> <ArrowLeft/> Edit Mode</Link>}
 
           <ul className={styles.versionsList}>
             {articleVersions.map((v) => (
