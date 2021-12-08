@@ -49,7 +49,7 @@ Ensuite, ainsi que le reste du temps :
 
 ```bash
 docker-compose run --detach --publish='127.0.0.1:27017:27017' mongodb-stylo
-npm start
+npm run dev
 ```
 
 ## Sans Docker
@@ -58,10 +58,10 @@ Ensuite, ainsi que le reste du temps :
 
 ```bash
 mongod --config /usr/local/etc/mongod.conf --fork
-npm start
+npm run dev
 ```
 
-L'[interface web de Stylo](./front) s'ouvre automatiquement dans votre navigateur web au bout de quelques secondes[^1] ([`localhost:3000`](http://localhost:3000)).<br>
+L'[interface web de Stylo](./front) est alors disponible sur ([`localhost:3000`](http://localhost:3000)).<br>
 L'[API](./graphql) fonctionne sur [`localhost:3030`](http://localhost:3030/) et le [service d'export](./export) sur [`localhost:3060`](http://localhost:3060/).
 
 # Installation
@@ -70,5 +70,4 @@ Pour installer une instance Stylo en tant que service à disposition d'utilisate
 
 ---
 
-[^1]: ou quelques minutes lors du premier lancement, selon votre bande-bassante.
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
