@@ -16,7 +16,7 @@ const mapStateToProps = ({ workingArticle }) => {
 
 const stateUiProps = {
   saved: {
-    text: 'Saved',
+    text: 'Last saved',
     icon: <Check />,
     style: styles.savedIndicator
   },
@@ -65,9 +65,18 @@ const WorkingVersion = ({
           <div className={styles.byLine}>
             <span className={styles.owners}>{articleOwners.join(', ')}</span>
             <span className={styles.lastSaved}>
-              <span>
-                Last saved: <time>{savedAgo}</time>
+              <span className={stateUi.style}>
+                {state !== 'saved' && stateUi.icon}
+                {state !== 'saveFailure' && stateUi.text}
+                {state === 'saveFailure' && (<span>
+                  <strong>{stateUi.text}</strong>
+                  {workingArticle.stateMessage}
+                </span>)}
+
               </span>
+
+              {state === 'saved' && (<time dateTime={articleLastSavedAt}>{savedAgo}</time>)}
+
             </span>
           </div>
         </div>
@@ -81,9 +90,6 @@ const WorkingVersion = ({
         </Modal>
       )}
       <ul className={styles.actions}>
-        <li className={stateUi.style}>
-          {stateUi.icon} {stateUi.text}
-        </li>
         <li>
           <Link
             to={`/article/${articleId}/preview`}

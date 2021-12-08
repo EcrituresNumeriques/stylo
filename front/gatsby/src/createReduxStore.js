@@ -103,7 +103,7 @@ const createNewArticleVersion  = store => {
           store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
         } catch (err) {
           console.error(err)
-          store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saveFailure' })
+          store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saveFailure', message: err.message })
         }
         return next(action)
       }
@@ -303,9 +303,9 @@ function setWorkingArticleMetadata(state, { metadata }) {
   return { ...state, workingArticle: { ...workingArticle, metadata } }
 }
 
-function setWorkingArticleState(state, { workingArticleState }) {
+function setWorkingArticleState(state, { workingArticleState, message }) {
   const { workingArticle } = state
-  return { ...state, workingArticle: { ...workingArticle, state: workingArticleState } }
+  return { ...state, workingArticle: { ...workingArticle, state: workingArticleState, stateMessage: message } }
 }
 
 function toggleArticlePreferences (state, { key, value }) {

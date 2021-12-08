@@ -38,6 +38,7 @@
   font-size: 1.25rem;
   margin-right: .5rem;
   line-height: 2.75rem;
+  flex-shrink: 0;
 }
 
 .byLine {
@@ -50,10 +51,10 @@
   align-items: center;
   gap: 0.15em;
   color: #4a4a4a;
-  font-size: 0.95em;
+  flex: 1 0 3em;
+  font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.5;
-  font-style: italic;
   margin-right: auto;
 }
 
@@ -61,15 +62,10 @@
   align-items: center;
   border-radius: 0.375em;
   display: inline-flex;
-  font-size: .75rem;
-  height: 2em;
   justify-content: center;
   line-height: 1.5;
-  padding-left: 0.75em;
-  padding-right: 0.75em;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
-  white-space: nowrap;
   margin-right: auto;
 }
 
@@ -83,8 +79,9 @@
     animation: rotation 2.5s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
+    flex-shrink: 0;
   }
-  
+
   @keyframes rotation {
     from {
       transform: rotate(0deg);
@@ -93,19 +90,25 @@
       transform: rotate(359deg);
     }
   }
-.savedIndicator {
-  background-color: #4a4a4a;
-  color: #f5f5f5;
-}
-
+.savedIndicator,
 .savingIndicator {
-  background-color: #f5f5f5;
+  // background-color: #f5f5f5;
   color: #4a4a4a;
 }
 
 .failureIndicator {
   background-color: $beware-background;
   color: $error-color;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+
+  strong {
+    margin-right: .5em;
+  }
+
+  & > svg {
+    margin-right: 0.25rem;
+  }
 }
 
 time {
@@ -117,6 +120,6 @@ time {
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
   font-size: 0.9em;
-  align-items: center;
+  justify-content: flex-end;
   gap: 0.5em;
 }
