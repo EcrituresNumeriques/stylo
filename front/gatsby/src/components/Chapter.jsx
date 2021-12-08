@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { Check, Edit3 } from 'react-feather'
 
 import askGraphQL from '../helpers/graphQL'
-import etv from '../helpers/eventTargetValue'
 import Button from './Button'
 import buttonStyles from './button.module.scss'
 import styles from './chapter.module.scss'
@@ -14,50 +13,59 @@ const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
 }
 
-const ConnectedChapter = (props) => {
+const ConnectedChapter = ({ articleId, latestArticleVersion, articleTitle, setNeedReload, activeUser, sessionToken, applicationConfig }) => {
   const [renaming, setRenaming] = useState(false)
-  const [title, setTitle] = useState(props.title)
-  const [tempTitle, setTempTitle] = useState(props.title)
+  const [title, setTitle] = useState(articleTitle)
+  const [tempTitle, setTempTitle] = useState(articleTitle)
+  const userId = activeUser._id
 
   const rename = async (e) => {
     e.preventDefault()
-    const query = `mutation($article:ID!,$title:String!,$user:ID!){renameArticle(article:$article,title:$title,user:$user){title}}`
+    const query = `mutation($article:ID!, $title:String!, $user:ID!) {
+  renameArticle(article:$article, title:$title, user:$user) {
+    title
+  }
+}`
     const variables = {
-      user: props.activeUser._id,
-      article: props._id,
+      user: userId,
+      article: articleId,
       title: tempTitle,
     }
     await askGraphQL(
       { query, variables },
       'Renaming Article',
-      props.sessionToken,
-      props.applicationConfig
+      sessionToken,
+      applicationConfig
     )
     setTitle(tempTitle)
     setRenaming(false)
-    props.setNeedReload()
+    setNeedReload()
   }
-
-  const latestVersion = props.versions[0]
-  const articleTitle = `${title} (${latestVersion.version}.${latestVersion.revision}${latestVersion.message ? ` ${latestVersion.message}` : ''})`
+  const latestArticleVersionLabel = latestArticleVersion
+    ? latestArticleVersion.message || 'No label'
+    : ''
+  const latestVersionVersionNumber = latestArticleVersion
+    ? `v${latestArticleVersion.major}.${latestArticleVersion.minor}`
+    : 'latest'
+  const currentArticleVersionTitle = ` (${[latestArticleVersionLabel, latestVersionVersionNumber].filter(item => item).join(' ')})`
   return (
     <>
       {!renaming && (
         <p>
-          <Link to={`/article/${props._id}`}>{articleTitle}</Link>
+          <Link to={`/article/${articleId}`}>{title}{currentArticleVersionTitle}</Link>
           <Button className={[buttonStyles.icon, styles.renameButton].join(' ')} onClick={() => setRenaming(true)}>
             <Edit3/>
           </Button>
         </p>
       )}
       {renaming && renaming && (<form className={styles.renamingForm} onSubmit={(e) => rename(e)}>
-        <Field autoFocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(etv(e))} placeholder="Book Title" />
+        <Field autoFocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(e.target.value)} placeholder="Book Title" />
         <Button title="Save" primary={true} onClick={(e) => rename(e)}>
           <Check /> Save
         </Button>
         <Button title="Cancel" type="button" onClick={() => {
           setRenaming(false)
-          setTempTitle(props.name)
+          setTempTitle(articleTitle)
         }}>
           Cancel
         </Button>
