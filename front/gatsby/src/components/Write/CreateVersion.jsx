@@ -8,26 +8,20 @@ import buttonStyles from '../button.module.scss'
 import Button from '../Button'
 import Field from '../Field'
 
-const CreateVersion = ({ articleId, readOnly }) => {
+const CreateVersion = ({ articleId, readOnly, onClose }) => {
   const dispatch = useDispatch()
 
   // create a new version
-  const [expandCreateForm, setExpandCreateForm] = useState(false)
   const [message, setMessage] = useState('')
   const createVersion = async (e, major = false) => {
     e.preventDefault()
     dispatch({ type: 'CREATE_NEW_ARTICLE_VERSION', articleId, message, major })
     setMessage('')
-    setExpandCreateForm(false)
   }
 
   return (
     <div className={styles.container}>
-      {!readOnly && <Button disabled={readOnly} onClick={(_) => setExpandCreateForm(true)}>
-        Create new Version
-      </Button>}
       {readOnly && <Link className={[buttonStyles.button, buttonStyles.secondary].join(' ')} to={`/article/${articleId}`}> <ArrowLeft/> Edit Mode</Link>}
-      {expandCreateForm && (
         <form
           className={styles.createForm}
           onSubmit={(e) => createVersion(e, false)}
@@ -36,16 +30,17 @@ const CreateVersion = ({ articleId, readOnly }) => {
             className={styles.createVersionInput}
             placeholder="Label of the version"
             value={message}
+            autoFocus={true}
             onChange={(e) => setMessage(e.target.value)}
           />
           <ul className={styles.actions}>
-            <li>
-              <Button icon={true} onClick={(e) => setExpandCreateForm(false)}>
+            <li className={styles.closeButton}>
+              <Button icon={true} onClick={onClose}>
                 Close
               </Button>
             </li>
             <li>
-              <Button onClick={(e) => createVersion(e, false)}>
+              <Button primary={true}>
                 Create Minor
               </Button>
             </li>
@@ -56,7 +51,6 @@ const CreateVersion = ({ articleId, readOnly }) => {
             </li>
           </ul>
         </form>
-      )}
     </div>
   )
 }

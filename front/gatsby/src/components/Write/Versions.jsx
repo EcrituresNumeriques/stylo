@@ -32,8 +32,15 @@ const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
   const dispatch = useDispatch()
   const [exporting, setExporting] = useState(false)
   const [exportParams, setExportParams] = useState({ })
+  const [expandCreateForm, setExpandCreateForm] = useState(false)
 
   const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandVersions' }), [])
+  const closeNewVersion = useCallback(() => setExpandCreateForm(false), [])
+  const createNewVersion = useCallback((event) => {
+    event.preventDefault()
+    dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandVersions', value: false })
+    setExpandCreateForm(true)
+  }, [])
 
   return (
     <section className={[styles.section, menuStyles.section].join(' ')}>
@@ -41,7 +48,12 @@ const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
         className={expand ? null : styles.closed}
         onClick={toggleExpand}
       >
-        {expand ? <ChevronDown/> : <ChevronRight/>}  Versions
+        {expand ? <ChevronDown/> : <ChevronRight/>}
+        Versions
+
+        <Button className={styles.newVersion} disabled={readOnly} onClick={createNewVersion}>
+          New Version
+        </Button>
       </h1>
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
@@ -50,7 +62,13 @@ const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
       )}
       {expand && (
         <>
-          <CreateVersion articleId={article._id} readOnly={readOnly} />
+          {expandCreateForm && <CreateVersion articleId={article._id} readOnly={readOnly} onClose={closeNewVersion} />}
+
+          {articleVersions.length === 0 && (<p>
+            <strong>All changes are automatically saved.</strong><br/>
+            You should create a new version to record a specific set of changes.
+          </p>)}
+
           <ul className={styles.versionsList}>
             {articleVersions.map((v) => (
               <li

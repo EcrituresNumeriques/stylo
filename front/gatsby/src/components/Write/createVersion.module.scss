@@ -29,7 +29,12 @@
   justify-content: flex-end;
   font-size: 0.8em;
 
-  > li:not(:last-child) {
-    margin-right: 0.5em;
+  > li:not(:first-child) {
+    margin-left: 0.5em;
   }
+}
+
+
+.closeButton {
+  margin-right: auto;
 }
