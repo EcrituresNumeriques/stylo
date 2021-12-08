@@ -18,8 +18,8 @@ import NavTag from '../../NavTab'
 
 import BibliographyService from '../../../services/BibliographyService'
 
-const mapStateToProps = ({ articleBib, articleBibTeXEntries, activeUser, applicationConfig }) => {
-  return { articleBib, articleBibTeXEntries, activeUser, applicationConfig }
+const mapStateToProps = ({ workingArticle, activeUser, applicationConfig }) => {
+  return { workingArticleBibliography: workingArticle.bibliography, activeUser, applicationConfig }
 }
 
 const mapDispatchToProps = (dispatch) => ({
@@ -29,12 +29,12 @@ const mapDispatchToProps = (dispatch) => ({
     ),
 })
 
-function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, articleBibTeXEntries, activeUser, applicationConfig }) {
+function ConnectedBibliographe({ article, cancel, refreshProfile, workingArticleBibliography, activeUser, applicationConfig }) {
   const { backendEndpoint } = applicationConfig
   const [selector, setSelector] = useState('zotero')
   const [isSaving, setSaving] = useState(false)
-  const [bib, setBib] = useState(articleBib)
-  const [bibTeXEntries, setBibTeXEntries] = useState(articleBibTeXEntries)
+  const [bib, setBib] = useState(workingArticleBibliography.text)
+  const [bibTeXEntries, setBibTeXEntries] = useState(workingArticleBibliography.entries)
   const [addCitation, setAddCitation] = useState('')
   const [citationValidationResult, setCitationValidationResult] = useState({
     valid: false,
@@ -46,7 +46,6 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
   const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)
   const { zoteroToken } = activeUser
   const [zoteroCollections, setZoteroCollections] = useState({})
-  const bibliographyService = new BibliographyService(activeUser._id, article._id, applicationConfig)
   const citationForm = useRef()
   const dispatch = useDispatch()
 
@@ -109,8 +108,7 @@ function ConnectedBibliographe({ article, cancel, refreshProfile, articleBib, ar
   }
 
   function saveBibTeX (bibTeX) {
-    bibliographyService.saveBibliography(bibTeX)
-    dispatch({ type: 'UPDATE_ARTICLE_BIB', bib: bibTeX })
+    dispatch({ type: 'UPDATE_WORKING_ARTICLE_BIBLIOGRAPHY', articleId: article._id, bibliography: bibTeX })
   }
 
   const saveNewZotero = async () => {

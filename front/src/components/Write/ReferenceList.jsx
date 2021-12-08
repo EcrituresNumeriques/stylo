@@ -7,18 +7,19 @@ import styles from './ReferenceList.module.scss'
 import Field from '../Field'
 import Button from "../Button";
 
-function ReferenceList({ articleBibTeXEntries }) {
+function ReferenceList({ bibliography }) {
   const [filter, setFilter] = useState('')
   const [showAll, setShowAll] = useState(false)
+  const bibliographyEntries = bibliography.entries
   let bibTeXFound
   if (filter) {
-    bibTeXFound = articleBibTeXEntries
+    bibTeXFound = bibliographyEntries
       .filter((entry) => entry.key.toLowerCase().indexOf(filter.toLowerCase()) > -1)
   } else {
     if (showAll) {
-      bibTeXFound = articleBibTeXEntries
+      bibTeXFound = bibliographyEntries
     } else {
-      bibTeXFound = articleBibTeXEntries.slice(0, 25)
+      bibTeXFound = bibliographyEntries.slice(0, 25)
     }
   }
   return (
@@ -30,13 +31,13 @@ function ReferenceList({ articleBibTeXEntries }) {
           <Reference key={`ref-${entry.key}-${index}`} entry={entry} />
         ))
       }
-      {!showAll && articleBibTeXEntries.length > 25 && <Button className={styles.showAll} onClick={(e) => setShowAll(true)}>Show all {articleBibTeXEntries.length} references</Button>}
+      {!showAll && bibliographyEntries.length > 25 && <Button className={styles.showAll} onClick={(e) => setShowAll(true)}>Show all {bibliographyEntries.length} references</Button>}
     </>
   )
 }
 
-const mapStateToProps = ({ articleBibTeXEntries }) => {
-  return { articleBibTeXEntries }
+const mapStateToProps = ({ workingArticle }) => {
+  return { bibliography: workingArticle.bibliography }
 }
 
 const ConnectedReferenceList = connect(mapStateToProps)(ReferenceList)
