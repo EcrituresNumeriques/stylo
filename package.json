@@ -9,7 +9,7 @@
   },
   "workspaces": [
     "export",
-    "front/gatsby",
+    "front",
     "graphql"
   ],
   "engines": {
