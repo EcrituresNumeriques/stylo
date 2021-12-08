@@ -5,7 +5,7 @@ module.exports = {
     {
       name: "front",
       script: "vite",
-      cwd: "./front/gatsby",
+      cwd: "./front",
       env: parsed
     },
     {

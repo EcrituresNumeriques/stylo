@@ -1,6 +1,6 @@
 # Reference docs: https://docs.netlify.com/configure-builds/file-based-configuration/
 [build]
-  base = "front/gatsby"
+  base = "front"
   publish = "build"
   command = "npm run build"
 
@@ -8,13 +8,6 @@
     # System env
     NODE_VERSION = "14"
     NODE_ENV = "development"
-
-    # App env (old)
-    GATSBY_EXPORT_ENDPOINT = "https://stylo-dev.huma-num.fr"
-    GATSBY_GRAPHQL_ENDPOINT = "https://stylo-dev.huma-num.fr/graphql"
-    GATSBY_HUMAN_ID_REGISTER_ENDPOINT = ""
-    GATSBY_PROCESS_ENDPOINT = "https://stylo-export.ecrituresnumeriques.ca"
-    GATSBY_STYLO_BACKEND_ENDPOINT = "https://stylo-dev.huma-num.fr"
 
     # App env (new Snowpack)
     SNOWPACK_PUBLIC_EXPORT_ENDPOINT = "https://stylo-dev.huma-num.fr"
