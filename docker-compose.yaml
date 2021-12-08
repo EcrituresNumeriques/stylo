@@ -45,6 +45,9 @@ services:
     build:
       context: ./front
       dockerfile: dockerfile
+      args:
+        - SNOWPACK_MATOMO_URL
+        - SNOWPACK_MATOMO_SITE_ID
     container_name: "front-stylo"
     env_file:
       - ./stylo.env

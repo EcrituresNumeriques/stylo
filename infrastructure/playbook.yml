@@ -74,6 +74,9 @@
       docker_compose:
         project_src: ~/stylo
         build: yes
+      environment:
+        SNOWPACK_MATOMO_URL: "{{ matomo_url }}"
+        SNOWPACK_MATOMO_SITE_ID: "{{ matomo_site_id }}"
 
   handlers:
     - name: reload nginx
