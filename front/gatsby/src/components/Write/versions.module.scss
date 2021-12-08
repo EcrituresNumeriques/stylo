@@ -3,13 +3,15 @@
 
 .versionsList {
   font-size: 0.9em;
+  margin-top: 0.75em;
+  padding-top: 0.25em;
   > li {
-    padding: 0.5rem 1rem 0.5rem 1rem;
+    padding: .5rem;
     > a:first-child {
       display: block;
     }
   }
-  > li:nth-child(2n) {
+  > li:nth-child(2n + 1) {
     background-color: $main-background-color;
   }
   > li.selected {
@@ -33,4 +35,9 @@
   > li:not(:last-child) {
     margin-right: 0.5em;
   }
+}
+
+.newVersion {
+  font-size: 1rem;
+  margin-left: auto;
 }

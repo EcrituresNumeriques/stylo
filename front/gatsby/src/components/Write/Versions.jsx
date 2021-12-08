@@ -7,11 +7,12 @@ import styles from './versions.module.scss'
 import menuStyles from './menu.module.scss'
 import buttonStyles from '../button.module.scss'
 
-import {generateArticleExportId} from '../../helpers/identifier'
+import { generateArticleExportId } from '../../helpers/identifier'
 
 import Modal from '../Modal'
 import Export from '../Export'
 import Button from '../Button'
+import CreateVersion from './CreateVersion'
 
 const date = new Intl.DateTimeFormat(['en', 'fr'], {
   year: 'numeric',
@@ -25,14 +26,21 @@ const date = new Intl.DateTimeFormat(['en', 'fr'], {
 
 const dateFormat = date.format.bind(date)
 
-const Versions = ({ article, selectedVersion, compareTo }) => {
+const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
   const articleVersions = useSelector(state => state.articleVersions, shallowEqual)
   const expand = useSelector(state => state.articlePreferences.expandVersions)
   const dispatch = useDispatch()
   const [exporting, setExporting] = useState(false)
   const [exportParams, setExportParams] = useState({ })
+  const [expandCreateForm, setExpandCreateForm] = useState(false)
 
   const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandVersions' }), [])
+  const closeNewVersion = useCallback(() => setExpandCreateForm(false), [])
+  const createNewVersion = useCallback((event) => {
+    event.preventDefault()
+    dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandVersions', value: false })
+    setExpandCreateForm(true)
+  }, [])
 
   return (
     <section className={[styles.section, menuStyles.section].join(' ')}>
@@ -40,7 +48,12 @@ const Versions = ({ article, selectedVersion, compareTo }) => {
         className={expand ? null : styles.closed}
         onClick={toggleExpand}
       >
-        {expand ? <ChevronDown/> : <ChevronRight/>}  Versions
+        {expand ? <ChevronDown/> : <ChevronRight/>}
+        Versions
+
+        <Button className={styles.newVersion} disabled={readOnly} onClick={createNewVersion}>
+          New Version
+        </Button>
       </h1>
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
@@ -49,6 +62,13 @@ const Versions = ({ article, selectedVersion, compareTo }) => {
       )}
       {expand && (
         <>
+          {expandCreateForm && <CreateVersion articleId={article._id} readOnly={readOnly} onClose={closeNewVersion} />}
+
+          {articleVersions.length === 0 && (<p>
+            <strong>All changes are automatically saved.</strong><br/>
+            You should create a new version to record a specific set of changes.
+          </p>)}
+
           <ul className={styles.versionsList}>
             {articleVersions.map((v) => (
               <li

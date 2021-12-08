@@ -34,6 +34,7 @@ function WriteLeft ({ article, readOnly, compareTo, selectedVersion, onTableOfCo
             article={article}
             selectedVersion={selectedVersion}
             compareTo={compareTo}
+            readOnly={readOnly}
           />
           <Sommaire onTableOfContentClick={onTableOfContentClick} />
           <Biblio readOnly={readOnly} article={article} />

@@ -21,7 +21,9 @@ const initialState = {
   users: [],
   password: undefined,
   sessionToken: undefined,
-  workingArticle: {},
+  workingArticle: {
+    state: 'saved'
+  },
   applicationConfig: {
     backendEndpoint: import.meta.env.SNOWPACK_PUBLIC_BACKEND_ENDPOINT,
     graphqlEndpoint: import.meta.env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT,
@@ -72,6 +74,7 @@ const reducer = createReducer(initialState, {
   SET_WORKING_ARTICLE_UPDATED_AT: setWorkingArticleUpdatedAt,
   SET_WORKING_ARTICLE_TEXT: setWorkingArticleText,
   SET_WORKING_ARTICLE_METADATA: setWorkingArticleMetadata,
+  SET_WORKING_ARTICLE_STATE: setWorkingArticleState,
 
   ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
 })
@@ -92,18 +95,31 @@ const createNewArticleVersion  = store => {
         const { activeUser, applicationConfig } = store.getState()
         const userId = activeUser._id
         const { articleId, text } = action
-        const { updateWorkingVersion } = await new ArticleService(userId, articleId, applicationConfig).saveText(text)
-        store.dispatch({ type: 'SET_WORKING_ARTICLE_TEXT', text })
-        store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
+        store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saving' })
+        try {
+          const { updateWorkingVersion } = await new ArticleService(userId, articleId, applicationConfig).saveText(text)
+          store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saved' })
+          store.dispatch({ type: 'SET_WORKING_ARTICLE_TEXT', text })
+          store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
+        } catch (err) {
+          console.error(err)
+          store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saveFailure', message: err.message })
+        }
         return next(action)
       }
       if (action.type === 'UPDATE_WORKING_ARTICLE_METADATA') {
         const { activeUser, applicationConfig } = store.getState()
         const userId = activeUser._id
         const { articleId, metadata } = action
-        const { updateWorkingVersion } = await new MetadataService(userId, articleId, applicationConfig).saveMetadata(metadata)
-        store.dispatch({ type: 'SET_WORKING_ARTICLE_METADATA', metadata })
-        store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
+        try {
+          const { updateWorkingVersion } = await new MetadataService(userId, articleId, applicationConfig).saveMetadata(metadata)
+          store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saved' })
+          store.dispatch({ type: 'SET_WORKING_ARTICLE_METADATA', metadata })
+          store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
+        } catch (err) {
+          console.error(err)
+          store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saveFailure' })
+        }
         return next(action)
       }
       return next(action)
@@ -285,6 +301,11 @@ function setWorkingArticleText(state, { text }) {
 function setWorkingArticleMetadata(state, { metadata }) {
   const { workingArticle } = state
   return { ...state, workingArticle: { ...workingArticle, metadata } }
+}
+
+function setWorkingArticleState(state, { workingArticleState, message }) {
+  const { workingArticle } = state
+  return { ...state, workingArticle: { ...workingArticle, state: workingArticleState, stateMessage: message } }
 }
 
 function toggleArticlePreferences (state, { key, value }) {

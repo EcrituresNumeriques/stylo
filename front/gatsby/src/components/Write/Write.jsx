@@ -38,6 +38,16 @@ function Write() {
     ),
     []
   )
+  const setWorkingArticleDirty = useCallback(
+    debounce(
+      async () => {
+        dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saving' })
+      },
+      1000,
+      { leading: true, trailing: false }
+    ),
+    []
+  )
   const updateWorkingArticleText = useCallback(
     debounce(
       async ({ text }) => {
@@ -155,11 +165,13 @@ function Write() {
   const handleMDCM = (___, __, text) => {
     deriveArticleStructureAndStats({ text })
     updateWorkingArticleText({ text })
+    setWorkingArticleDirty()
     return setLive({ ...live, md: text })
   }
 
   const handleYaml = (metadata) => {
     updateWorkingArticleMetadata({ metadata })
+    setWorkingArticleDirty()
     return setLive({ ...live, yaml: metadata })
   }
 
