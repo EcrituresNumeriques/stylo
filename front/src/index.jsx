@@ -1,8 +1,8 @@
 import './wdyr.js'
-import React, { lazy } from 'react'
+import React, { lazy, useCallback } from 'react'
 import { render } from 'react-dom'
-import { BrowserRouter as Router, Route, Switch, useParams, useHistory } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
+import { Provider, useSelector } from 'react-redux'
 import 'whatwg-fetch'
 
 import './styles/general.scss'
@@ -42,20 +42,35 @@ const store = createStore()
   )
 })()
 
-const TrackPageViews = () => {
+let unlisten
+
+function TrackPageViews () {
   const history = useHistory()
+  const userHasConsent = useSelector(state => state.userPreferences.trackingConsent)
 
-  history.listen(({ pathname, search, state }, action) => {
-    /* global _paq */
-    const _paq = window._paq = window._paq || [];
+  const listen = useCallback((hasContent) => {
+    if (unlisten) {
+      unlisten()
+      unlisten = null
+    }
 
-    //@todo do this dynamically, based on a subscription to the store
-    //otherwise, we should use _paq.push(['forgetConsentGiven'])
-    _paq.push(['setConsentGiven'])
-    _paq.push(['setCustomUrl', '/' + pathname])
-    //_paq.push(['setDocumentTitle', 'My New Title'])
-    _paq.push(['trackPageView'])
-  })
+    return hasContent && history.listen(({ pathname, search, state }, action) => {
+      /* global _paq */
+      const _paq = window._paq = window._paq || [];
+      console.log('history.listen', pathname)
+
+      if (hasContent) {
+        _paq.push(['setConsentGiven'])
+        _paq.push(['setCustomUrl', pathname])
+        _paq.push(['trackPageView'])
+      }
+      else {
+        _paq.push(['forgetConsentGiven'])
+      }
+    })
+  }, [userHasConsent])
+
+  unlisten = listen(userHasConsent)
 
   return null
 }
