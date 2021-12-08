@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Edit3, Eye, Printer } from 'react-feather'
+import { Check, ChevronDown, ChevronRight, Edit3, Eye, Printer } from 'react-feather'
 import { connect } from 'react-redux'
-import { Check, ChevronDown, ChevronRight } from 'react-feather'
 
 import Modal from './Modal'
 import Export from './Export'
@@ -105,13 +104,24 @@ const Book = (props) => {
         <section>
           <h4>Chapters</h4>
           <ul>
-            {props.articles.sort(alphaSort).map((a) => (
-              <Chapter
-                key={`chapter-${props._id}-${a._id}`}
-                {...a}
-                setNeedReload={props.setNeedReload}
-              />
-            ))}
+            {props.articles.sort(alphaSort).map((article) => {
+                const articleId = article._id
+                const latestVersion = article.versions && article.versions[0]
+                const latestArticleVersion = latestVersion && {
+                  message: latestVersion.message,
+                  major: latestVersion.version,
+                  minor: latestVersion.revision
+                }
+                return <Chapter
+                  key={`chapter-${props._id}-${articleId}`}
+                  articleId={articleId}
+                  articleTitle={article.title}
+                  latestArticleVersion={latestArticleVersion}
+                  setNeedReload={props.setNeedReload}
+                />
+              }
+            )
+            }
           </ul>
         </section>
       )}
