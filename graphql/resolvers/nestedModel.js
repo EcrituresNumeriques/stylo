@@ -4,7 +4,6 @@ const paginate = require('../helpers/paginate');
 
 const User = require('../models/user');
 const Password = require('../models/user_password');
-const Token = require('../models/user_token');
 const Tag = require('../models/tag');
 const Article = require('../models/article');
 const Version = require('../models/version');
@@ -23,7 +22,6 @@ const populateUser =  (user) => {
         ...cleanedUser,
         tags: getTagsByIds.bind(this, cleanedUser.tags),
         articles: getArticlesByIds.bind(this, cleanedUser.articles || []),
-        tokens: getTokensByIds.bind(this, cleanedUser.tokens || []),
         passwords: getPasswordsByIds.bind(this, cleanedUser.passwords || []),
         acquintances: getUsersByIds.bind(this, cleanedUser.acquintances || []),
     }
@@ -140,32 +138,6 @@ const getArticleById = async (articleId) => {
 /*
 ---------------------------------------------------------
 |                                                       |
-|                       Tokens                          |
-|                                                       |
----------------------------------------------------------
-*/
-
-
-const populateToken =  (token) => {
-    const cleanedToken = prepRecord(token);
-    return {
-        ...cleanedToken,
-        user:getUserById.bind(this,cleanedToken.user || []),
-        expiresAt:cleanedToken.expiresAt? dateToString(cleanedToken.expiresAt) : null,
-    }
-};
-
-const getTokensByIds = async (tokensIds,args) => {
-    tokensIds = paginate(tokensIds,args.limit,args.page);
-    if(tokensIds.length === 0){ return [] }
-    const tokens = await Token.find({ _id: { $in: tokensIds } });
-
-    return tokens.map(populateToken);
-};
-
-/*
----------------------------------------------------------
-|                                                       |
 |                       Passwords                       |
 |                                                       |
 ---------------------------------------------------------
@@ -196,7 +168,6 @@ exports.populateVersion = populateVersion;
 exports.populateUser = populateUser;
 exports.getUserById = getUserById;
 exports.populatePassword = populatePassword;
-exports.populateToken = populateToken;
 exports.populateArticle = populateArticle;
 exports.getArticleById = getArticleById;
 exports.getVersionById = getVersionById;

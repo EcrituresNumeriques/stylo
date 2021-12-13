@@ -47,7 +47,6 @@ const ConnectedUser = (props) => {
     zoteroUsername: '',
   })
   const [passwords, setPasswords] = useState([])
-  //const [tokens, setTokens] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [emailLogin, setEmailLogin] = useState('')
   const { clearZoteroToken } = props
@@ -55,7 +54,7 @@ const ConnectedUser = (props) => {
   useEffect(() => {
     ;(async () => {
       try {
-        const query = `query($user:ID!){user(user:$user){ displayName _id email admin createdAt updatedAt yaml firstName zoteroToken lastName institution passwords{ _id username email } tokens{ _id name active }}}`
+        const query = `query($user:ID!){user(user:$user){ displayName _id email admin createdAt updatedAt yaml firstName zoteroToken lastName institution passwords{ _id username email } }}`
         const variables = { user: props.activeUser._id }
         const data = await askGraphQL(
           { query, variables },
@@ -70,7 +69,6 @@ const ConnectedUser = (props) => {
         setInstitution(data.user.institution || '')
         setYaml(data.user.yaml || '')
         setPasswords(data.user.passwords)
-        //setTokens(data.user.tokens)
         setUser(data.user)
         setIsLoading(false)
       } catch (err) {
@@ -80,7 +78,7 @@ const ConnectedUser = (props) => {
   }, [])
 
   const unlinkZoteroAccount = async () => {
-    const query = `mutation($user:ID!,$zoteroToken:String){updateUser(user:$user, zoteroToken:$zoteroToken){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken passwords{ _id username email } tokens{ _id name active } }}`
+    const query = `mutation($user:ID!,$zoteroToken:String){updateUser(user:$user, zoteroToken:$zoteroToken){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken passwords{ _id username email } }}`
     const variables = { user: props.activeUser._id, zoteroToken: null }
     setIsLoading(true)
     const data = await askGraphQL(
@@ -98,7 +96,7 @@ const ConnectedUser = (props) => {
     e.preventDefault()
     try {
       setIsLoading(true)
-      const query = `mutation($user:ID!,$displayName:String!,$firstName:String,$lastName:String, $institution:String,$yaml:String){updateUser(user:$user,displayName:$displayName,firstName:$firstName, lastName: $lastName, institution:$institution, yaml:$yaml){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken passwords{ _id username email } tokens{ _id name active }}}`
+      const query = `mutation($user:ID!,$displayName:String!,$firstName:String,$lastName:String, $institution:String,$yaml:String){updateUser(user:$user,displayName:$displayName,firstName:$firstName, lastName: $lastName, institution:$institution, yaml:$yaml){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken passwords{ _id username email } }}`
       const variables = {
         user: props.activeUser._id,
         yaml,
@@ -121,7 +119,6 @@ const ConnectedUser = (props) => {
       setInstitution(data.updateUser.institution || '')
       setYaml(data.updateUser.yaml || '')
       setPasswords(data.updateUser.passwords)
-      //setTokens(data.updateUser.tokens)
       setUser(data.updateUser)
       setIsLoading(false)
     } catch (err) {

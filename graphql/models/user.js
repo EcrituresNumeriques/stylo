@@ -28,12 +28,6 @@ const userSchema = new Schema({
       ref: 'Article'
     }
   ],
-  tokens: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Token'
-    }
-  ],
   passwords: [
     {
       type: Schema.Types.ObjectId,

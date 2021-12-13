@@ -12,7 +12,6 @@ type User {
   tags(limit:Int,page:Int):[Tag!]!
   acquintances(limit:Int,page:Int):[User!]!
   articles(limit:Int,page:Int):[Article!]!
-  tokens(limit:Int,page:Int):[Token!]!
   passwords(limit:Int,page:Int):[Password!]!
   admin:Boolean
   yaml:String
@@ -148,12 +147,6 @@ type RootMutation {
   #TODO
   #require Email provider
   #resetPassword(password:ID!,jwt:String!,new:String!):Password!
-
-  "Add new token for a user"
-  addToken(user:ID!,name:String!):Token!
-
-  "Delete token for user"
-  deleteToken(token:ID!,user:ID!):Token!
 
   "Give access to a user using a password's email"
   addCredential(email:String!,user:ID!):User!
