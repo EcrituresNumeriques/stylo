@@ -167,8 +167,7 @@ function setProfile (state, action) {
     logedIn: true,
     // it will allow password modification if logged with password,
     // otherwise it means we use an external auth service
-    password:
-      activeUser.passwords.find((p) => p.email === activeUser.email) || {},
+    password: null,
     users: [activeUser._id],
   })
 }

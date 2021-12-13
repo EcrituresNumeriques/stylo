@@ -1,9 +1,7 @@
 const prepRecord = require('../helpers/prepRecord');
-const dateToString = require('../helpers/dateToString');
 const paginate = require('../helpers/paginate');
 
 const User = require('../models/user');
-const Password = require('../models/user_password');
 const Tag = require('../models/tag');
 const Article = require('../models/article');
 const Version = require('../models/version');
@@ -22,7 +20,6 @@ const populateUser =  (user) => {
         ...cleanedUser,
         tags: getTagsByIds.bind(this, cleanedUser.tags),
         articles: getArticlesByIds.bind(this, cleanedUser.articles || []),
-        passwords: getPasswordsByIds.bind(this, cleanedUser.passwords || []),
         acquintances: getUsersByIds.bind(this, cleanedUser.acquintances || []),
     }
 };
@@ -135,39 +132,10 @@ const getArticleById = async (articleId) => {
     return populateArticle(article);
 };
 
-/*
----------------------------------------------------------
-|                                                       |
-|                       Passwords                       |
-|                                                       |
----------------------------------------------------------
-*/
-
-const populatePassword =  (password) => {
-    const cleanedPassword = prepRecord(password);
-    return {
-        ...cleanedPassword,
-        users:getUsersByIds.bind(this,cleanedPassword.users || []),
-        defaultUser:getUserById.bind(this,cleanedPassword.users[0]),
-        password:null,
-        unlock:dateToString(cleanedPassword.unlock),
-        expiresAt:cleanedPassword.expiresAt? dateToString(cleanedPassword.expiresAt) : null,
-    }
-};
-
-const getPasswordsByIds = async (passwordsIds,args) => {
-    passwordsIds = paginate(passwordsIds,args.limit,args.page);
-    if(passwordsIds.length === 0){ return [] }
-    const passwords = await Password.find({ _id: { $in: passwordsIds } });
-    return passwords.map(populatePassword);
-};
-
-
 exports.populateTag = populateTag;
 exports.populateVersion = populateVersion;
 exports.populateUser = populateUser;
 exports.getUserById = getUserById;
-exports.populatePassword = populatePassword;
 exports.populateArticle = populateArticle;
 exports.getArticleById = getArticleById;
 exports.getVersionById = getVersionById;

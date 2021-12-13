@@ -12,7 +12,6 @@ type User {
   tags(limit:Int,page:Int):[Tag!]!
   acquintances(limit:Int,page:Int):[User!]!
   articles(limit:Int,page:Int):[Article!]!
-  passwords(limit:Int,page:Int):[Password!]!
   admin:Boolean
   yaml:String
   zoteroToken:String
@@ -63,37 +62,6 @@ type Article {
   updatedAt:String
 }
 
-type Token {
-  _id: ID!
-  name:String
-  user:User!
-  token:String
-  expiresAt:String
-  active:Boolean
-  createdAt:String!
-  updatedAt:String!
-}
-
-type Password {
-  _id: ID!
-  email:String!
-  username:String
-  users(limit:Int,page:Int):[User!]!
-  defaultUser:User!
-  unlock:String
-  active:Boolean
-  expiresAt:String
-  createdAt:String!
-  updatedAt:String!
-}
-
-type AuthToken {
-  token:String
-  token_cookie:String
-  password:Password!
-  users:[User!]!
-}
-
 input UserInput {
   email: String!
   username: String
@@ -139,14 +107,10 @@ type RootMutation {
   addAcquintance(email:String!,user:ID!):User!
 
   "Change password"
-  changePassword(password:ID!,old:String!,new:String!,user:ID!):Password!
+  changePassword(old:String!,new:String!,user:ID!):User!
 
   "Change user information"
   updateUser(user:ID!,displayName:String,firstName:String,lastName:String,institution:String,zoteroToken:String,yaml:String):User!
-
-  #TODO
-  #require Email provider
-  #resetPassword(password:ID!,jwt:String!,new:String!):Password!
 
   "Give access to a user using a password's email"
   addCredential(email:String!,user:ID!):User!
@@ -154,9 +118,6 @@ type RootMutation {
 
   "Remove access to a user using a password's email (can't be the main email)"
   removeCredential(email:String!,user:ID!):User!
-
-  "Change default user when login in + for loginMutation"
-  setPrimaryUser(password:ID!,user:ID!):Password!
 
   "Create article for specified user [need to be authentificated as specified user]"
   createArticle(title:String!,user:ID!):Article!

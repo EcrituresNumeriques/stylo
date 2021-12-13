@@ -2,9 +2,7 @@ const bcrypt = require('bcryptjs');
 const Isemail = require('isemail');
 
 const User = require('../models/user');
-const Password = require('../models/user_password');
 const Article = require('../models/article');
-const Version = require('../models/version');
 
 const isUser = require('../policies/isUser')
 const isAdmin = require('../policies/isAdmin')
@@ -30,11 +28,6 @@ module.exports = {
     if (existingUser) {
       throw new Error('User with this email already exists!');
     }
-    //Check for Unique for Password
-    const existingPassword = await Password.findOne({$or:[{ email: userInput.email },{username: userInput.username}]});
-    if (existingPassword) {
-      throw new Error('User with this username already exists!');
-    }
 
     //Create user then password
     const newUser = new User({
@@ -44,10 +37,6 @@ module.exports = {
       firstName: userInput.firstName || null,
       lastName: userInput.lastName || null
     });
-    const newPassword = new Password({email:userInput.email,username:userInput.username, password:bcrypt.hashSync(userInput.password,10)})
-    newUser.passwords.push(newPassword)
-    newPassword.users.push(newUser)
-
 
     //Add default article + default version
     const defaultArticle = defaultsData.article
@@ -58,11 +47,14 @@ module.exports = {
 
 
     const createdUser = await newUser.save();
-    await newPassword.save();
     await newArticle.save();
 
     //Save the user/article/version/password ID in the req object, for other resolver to consum with "new" ID
-    req.created = {...req.created,article:newArticle.id,user:createdUser.id,password:newPassword.id}
+    req.created = {
+      ...req.created,
+      article: newArticle.id,
+      user:createdUser.id,
+    }
 
     return populateUser(createdUser)
   },

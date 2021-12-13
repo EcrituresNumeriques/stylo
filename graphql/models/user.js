@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const defaultsData = require('../data/defaultsData')
 
 const Article = require('./article');
+const Permission = require('./permission');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -28,12 +29,16 @@ const userSchema = new Schema({
       ref: 'Article'
     }
   ],
-  passwords: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Password'
-    }
-  ],
+  authType: {
+    type: String,
+    default: 'local',
+    enum: ['local', 'oidc']
+  },
+  password: {
+    type: String,
+    default: null
+  },
+  permissions: [ Permission ],
   displayName: {
     type: String,
   },
