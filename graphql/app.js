@@ -261,10 +261,10 @@ app.get('/logout', (req, res) => {
 app.post('/login',
   passport.authenticate('local', { failWithError: true }),
   function onSuccess(req, res, _) {
-    const { email, _id: userId, admin, authType } = req.user
+    const { email, _id, admin, authType } = req.user
     const payload = {
+      _id,
       email,
-      userId,
       admin,
       authType,
       session: true

@@ -14,21 +14,21 @@ const Version = require('../models/version');
 ---------------------------------------------------------
 */
 
-const populateUser =  (user) => {
-    const cleanedUser = prepRecord(user);
+const populateUser = (user) => {
     return {
-        ...cleanedUser,
-        tags: getTagsByIds.bind(this, cleanedUser.tags),
-        articles: getArticlesByIds.bind(this, cleanedUser.articles || []),
-        acquintances: getUsersByIds.bind(this, cleanedUser.acquintances || []),
+        ...user,
+        tags: getTagsByIds.bind(this, user.tags),
+        articles: getArticlesByIds.bind(this, user.articles || []),
+        acquintances: getUsersByIds.bind(this, user.acquintances || []),
     }
 };
 
 const getUserById = async (userId) => {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).lean();
     if(!user){
         throw new Error(`Unable to find this user : _id ${userId} does not exist`)
     }
+
     return populateUser(user);
 };
 
@@ -113,14 +113,14 @@ const populateArticle = (article) => {
 const getArticlesByIds = async (articlesIds,args) => {
     articlesIds = paginate(articlesIds,args.limit,args.page);
     if(articlesIds.length === 0){ return [] }
-    const articles = await Article.find({ _id: { $in: articlesIds } });
+    const articles = await Article.find({ _id: { $in: articlesIds } }).populate('owners versions tags');
 
     if(!articles){
         return []
     }
 
     //console.log(articles.map(populateArticle))
-    return articles.map(populateArticle);
+    return articles;
 };
 const getArticleById = async (articleId) => {
     const article = await Article.findById(articleId);

@@ -108,7 +108,7 @@ module.exports = {
   user: async (args, {req}) => {
     // if the userId is not provided, we take it from the auth token
     if (('user' in args) === false && req.user) {
-      args.user = req.user.usersIds[0]
+      args.user = req.user
     }
 
     isUser(args, req)

@@ -7,8 +7,6 @@ const populateArgs = require('../helpers/populateArgs')
 
 const isUser = require('../policies/isUser')
 
-const { populateUser } = require('./nestedModel')
-
 async function verifCreds ({ username, password }) {
   if (!username || username.trim().length === 0) {
     throw new Error('Username must not be empty!')
