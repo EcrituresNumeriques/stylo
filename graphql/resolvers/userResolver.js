@@ -9,7 +9,7 @@ const isAdmin = require('../policies/isAdmin')
 
 const defaultsData = require('../data/defaultsData')
 
-const { populateUser, getUserById } = require('./nestedModel')
+const { getUserById } = require('./nestedModel')
 
 const populateArgs = require('../helpers/populateArgs')
 
@@ -56,7 +56,7 @@ module.exports = {
       user:createdUser.id,
     }
 
-    return populateUser(createdUser)
+    return createdUser
   },
   addAcquintance: async (args,{req}) => {
     populateArgs(args,req)
@@ -76,9 +76,7 @@ module.exports = {
 
     //If all clear, add to acquintance
     thisUser.acquintances.push(thisAcquintance)
-    const returnUser = await thisUser.save();
-
-    return populateUser(returnUser)
+    return thisUser.save();
   },
   updateUser: async (args,{req}) => {
     populateArgs(args,req)
@@ -93,17 +91,16 @@ module.exports = {
     if('institution' in args){thisUser.institution = args.institution}
     if('yaml' in args){thisUser.yaml = args.yaml}
     if('zoteroToken' in args){thisUser.zoteroToken = args.zoteroToken}
-    const returnedUser = await thisUser.save()
 
-    return populateUser(returnedUser)
+    return thisUser.save()
   },
   // Queries
 
   //Only available for admins
   users: async (_,{req}) => {
     isAdmin(req);
-    const users = await User.find();
-    return users.map(populateUser)
+
+    return User.find().populate('tags articles acquintances');
   },
   user: async (args, {req}) => {
     // if the userId is not provided, we take it from the auth token
