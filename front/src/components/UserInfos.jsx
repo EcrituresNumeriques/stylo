@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 
 import askGraphQL from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
-import styles from './userInfos.module.scss'
+import styles from './credentials.module.scss'
 import formStyles from './field.module.scss'
-import UserConnectedLogin from './UserAllowedLogin'
 import Button from "./Button";
 import Field from "./Field";
 import formatTimeAgo from '../helpers/formatTimeAgo';
@@ -31,7 +29,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const ConnectedUser = (props) => {
-  const history = useHistory()
   const [displayName, setDisplayName] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -48,13 +45,12 @@ const ConnectedUser = (props) => {
   })
   const [passwords, setPasswords] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [emailLogin, setEmailLogin] = useState('')
   const { clearZoteroToken } = props
 
   useEffect(() => {
     ;(async () => {
       try {
-        const query = `query($user:ID!){user(user:$user){ displayName _id email admin createdAt updatedAt yaml firstName zoteroToken lastName institution passwords{ _id username email } }}`
+        const query = `query($user:ID!){user(user:$user){ displayName _id email authType admin createdAt updatedAt yaml firstName zoteroToken lastName institution }}`
         const variables = { user: props.activeUser._id }
         const data = await askGraphQL(
           { query, variables },
@@ -123,62 +119,6 @@ const ConnectedUser = (props) => {
       setIsLoading(false)
     } catch (err) {
       alert(`Couldn't update User: ${err}`)
-    }
-  }
-
-  const addNewLogin = async (e) => {
-    e.preventDefault()
-    try {
-      const query = `mutation($user:ID!,$email:String!){
-        addCredential(email:$email,user:$user){
-          passwords{
-            _id
-            email
-            username
-          }
-        }
-      }`
-      const variables = { email: emailLogin, user: props.activeUser._id }
-      const data = await askGraphQL(
-        { query, variables },
-        'Adding password to user',
-        props.sessionToken,
-        props.applicationConfig
-      )
-      setEmailLogin('')
-      setPasswords(data.addCredential.passwords)
-    } catch (err) {
-      alert(err)
-    }
-  }
-
-  const removeLogin = async (email, _id) => {
-    try {
-      const query = `mutation($user:ID!,$email:String!){
-        removeCredential(email:$email,user:$user){
-          passwords{
-            _id
-            email
-            username
-          }
-        }
-      }`
-      const variables = { email: email, user: props.activeUser._id }
-      const data = await askGraphQL(
-        { query, variables },
-        'Removing password to user',
-        props.sessionToken,
-        props.applicationConfig
-      )
-      setPasswords(data.removeCredential.passwords)
-
-      // User removed itself from allowedCredentials
-      if (props.password._id === _id) {
-        props.removedMyself(user._id)
-        history.push('/credentials')
-      }
-    } catch (err) {
-      alert(err)
     }
   }
 
@@ -262,8 +202,14 @@ const ConnectedUser = (props) => {
       <Field label="Account email">
         <>{user.email}</>
       </Field>
-      <Field label="ID">
-        <>{user._id}</>
+      <Field label="Account type">
+        <>{user.authType === 'oidc' ? 'External (OpenID)' : 'Local'}</>
+      </Field>
+      <Field label="API Key">
+        <code>{props.sessionToken}</code>
+      </Field>
+      <Field label="Identifier">
+        <code>{user._id}</code>
       </Field>
       <Field label="Status">
         <>{user.admin ? 'Admin' : 'Basic account'}</>
@@ -275,27 +221,6 @@ const ConnectedUser = (props) => {
         <time dateTime={user.updatedAt}>{formatTimeAgo(user.updatedAt)}</time>
       </Field>
 
-      <h2>Allowed credentials</h2>
-      <ul>
-        {passwords.map((p) => (
-          <UserConnectedLogin
-            key={`userLogin-${p._id}`}
-            {...p}
-            user={user.email}
-            removeLogin={removeLogin}
-          />
-        ))}
-      </ul>
-
-      <h2>Grant access</h2>
-      <form onSubmit={(e) => addNewLogin(e)} className={formStyles.inlineFields}>
-        <Field
-          placeholder="Email of the login to allow"
-          value={emailLogin}
-          onChange={(e) => setEmailLogin(etv(e))}
-        />
-        <Button primary={true}>Give full access</Button>
-      </form>
     </section>
   </>
   )

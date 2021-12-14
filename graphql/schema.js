@@ -5,6 +5,7 @@ module.exports = buildASTSchema(gql`
   type User {
     _id: ID!
     displayName: String!
+    authType: String!
     email: String!
     firstName: String
     lastName: String

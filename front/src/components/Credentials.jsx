@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
 import askGraphQL from '../helpers/graphQL'
 import styles from './credentials.module.scss'
-import CredentialsUserSelect from './CredentialsUserSelect'
 import Loading from "./Loading";
+import UserInfos from "./UserInfos";
 import Button from "./Button";
 import Field from "./Field";
 
@@ -25,28 +25,10 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const Credentials = (props) => {
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const query = 'query{ refreshToken{ users { _id displayName email } } }'
-        const data = await askGraphQL(
-          { query },
-          'fetching user',
-          props.sessionToken,
-          props.applicationConfig
-        )
-        props.updateUser(data.refreshToken.users)
-        setIsLoading(false)
-      } catch (err) {
-        alert(`couldn't fetch users ${err}`)
-      }
-    })()
-  }, [])
-
   const [password, setPassword] = useState('')
   const [passwordO, setPasswordO] = useState('')
   const [passwordC, setPasswordC] = useState('')
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
 
   const changePassword = async (e) => {
@@ -106,54 +88,45 @@ const Credentials = (props) => {
           <strong>Accounts</strong>, you'll be able to set active account and
           default active Account here.
         </p>
-        <ul>
-          {props.users.map((u, i) => (
-            <CredentialsUserSelect
-              key={`user-${u._id}`}
-              {...props}
-              u={u}
-              setDefault={setDefault}
-            />
-          ))}
-        </ul>
       </section>
-      {props.password && (
-        <section className={styles.section}>
-          <h2>Change password</h2>
-          <p>
-            This section is strictly private, changing your password will only
-            affect your combination of username/email and password. Other users
-            having access to one or more of your available accounts won't be
-            affected.
-          </p>
-          <form className={styles.passwordForm} onSubmit={(e) => changePassword(e)}>
-            <Field
-              type="password"
-              placeholder="Old password"
-              value={passwordO}
-              onChange={(e) => setPasswordO(e.target.value)}
-            />
-            <Field
-              type="password"
-              placeholder="New password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Field
-              type="password"
-              placeholder="Confirm new password"
-              className={password === passwordC ? null : styles.beware}
-              value={passwordC}
-              onChange={(e) => setPasswordC(e.target.value)}
-            />
-            <Button
-              disabled={!password || !passwordO || password !== passwordC}
-            >
-              {isUpdating ? 'Updating..' : 'Change'}
-            </Button>
-          </form>
-        </section>
-      )}
+
+      <UserInfos />
+
+      <section className={styles.section}>
+        <h2>Change password</h2>
+        <p>
+          This section is strictly private, changing your password will only
+          affect your combination of username/email and password. Other users
+          having access to one or more of your available accounts won't be
+          affected.
+        </p>
+        <form className={styles.passwordForm} onSubmit={(e) => changePassword(e)}>
+          <Field
+            type="password"
+            placeholder="Old password"
+            value={passwordO}
+            onChange={(e) => setPasswordO(e.target.value)}
+          />
+          <Field
+            type="password"
+            placeholder="New password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Field
+            type="password"
+            placeholder="Confirm new password"
+            className={password === passwordC ? null : styles.beware}
+            value={passwordC}
+            onChange={(e) => setPasswordC(e.target.value)}
+          />
+          <Button
+            disabled={!password || !passwordO || password !== passwordC}
+          >
+            {isUpdating ? 'Updating..' : 'Change'}
+          </Button>
+        </form>
+      </section>
     </>
   )
 }
