@@ -269,10 +269,10 @@ const ConnectedUser = (props) => {
         <>{user.admin ? 'Admin' : 'Basic account'}</>
       </Field>
       <Field label="Created At">
-        <time dateTime={user.createdAt}>{formatTimeAgo(new Date(user.createdAt))}</time>
+        <time dateTime={user.createdAt}>{formatTimeAgo(user.createdAt)}</time>
       </Field>
       <Field label="Updated At">
-        <time dateTime={user.updatedAt}>{formatTimeAgo(new Date(user.updatedAt))}</time>
+        <time dateTime={user.updatedAt}>{formatTimeAgo(user.updatedAt)}</time>
       </Field>
 
       <h2>Allowed credentials</h2>

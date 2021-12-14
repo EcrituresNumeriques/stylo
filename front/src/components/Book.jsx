@@ -48,7 +48,7 @@ const Book = (props) => {
     setIsRenaming(false)
   }
 
-  const bookTitle = `${name} (${formatTimeAgo(new Date(props.updatedAt))})`
+  const bookTitle = `${name} (${formatTimeAgo(props.updatedAt)})`
   return (
     <article>
       {exporting && (

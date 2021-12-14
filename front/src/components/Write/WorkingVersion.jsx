@@ -48,9 +48,9 @@ const WorkingVersion = ({
   const stateUi = stateUiProps[state]
 
   useEffect(() => {
-    setSavedAgo(formatTimeAgo(new Date(articleLastSavedAt)))
+    setSavedAgo(formatTimeAgo(articleLastSavedAt))
     const timer = setTimeout(() => {
-      setSavedAgo(formatTimeAgo(new Date(articleLastSavedAt)))
+      setSavedAgo(formatTimeAgo(articleLastSavedAt))
     }, 60000)
     return () => clearTimeout(timer)
   }, [articleLastSavedAt])

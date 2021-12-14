@@ -161,7 +161,7 @@ const ConnectedArticle = (props) => {
           by <span className={styles.author}>{props.owners.map((o) => o.displayName).join(', ')}</span>
 
           <time dateTime={props.updatedAt} className={styles.momentsAgo}>
-            ({formatTimeAgo(new Date(props.updatedAt))})
+            ({formatTimeAgo(props.updatedAt)})
           </time>
         </p>
 
