@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const defaultsData = require('../data/defaultsData')
 
 const Article = require('./article');
-const Permission = require('./permission');
+const { UserPermissionSchema } = require('./permission');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -38,7 +38,7 @@ const userSchema = new Schema({
     type: String,
     default: null
   },
-  permissions: [ Permission ],
+  permissions: [ UserPermissionSchema ],
   displayName: {
     type: String,
   },

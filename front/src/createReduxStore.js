@@ -179,13 +179,11 @@ function clearZoteroToken (state) {
 }
 
 function loginUser (state, { login }) {
-  if (login.password && login.users && login.token) {
+  if (login.user && login.token) {
     return {
       ...state,
       logedIn: true,
-      users: login.users,
-      activeUser: login.users[0],
-      password: login.password,
+      activeUser: login.user,
       sessionToken: login.token,
     }
   }

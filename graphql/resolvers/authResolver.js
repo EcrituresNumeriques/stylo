@@ -14,7 +14,7 @@ async function verifCreds ({ username, password }) {
     throw new Error('Username must not be empty!')
   }
   const user = await User.findOne({
-    $or: [{ username }, { email: username }],
+    $or: [{ displayName: username }, { email: username }],
   })
 
   if (!user) {

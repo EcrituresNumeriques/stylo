@@ -14,7 +14,7 @@ const OidcStrategy = require('passport-openidconnect').Strategy
 const LocalStrategy = require('passport-local').Strategy
 const OAuthStrategy = require('passport-oauth').OAuthStrategy;
 
-const graphQlSchema = require('./schema/index')
+const graphQlSchema = require('./schema')
 const graphQlResolvers = require('./resolvers/index')
 
 const { createJWTToken, populateUserFromJWT } = require('./helpers/token')
@@ -132,8 +132,8 @@ passport.use(new LocalStrategy({ session: false },
 ))
 
 // mandatory
-passport.serializeUser((password, next) => {
-  next(null, password.id)
+passport.serializeUser((user, next) => {
+  next(null, user.id)
 })
 
 passport.deserializeUser(async (id, next) => {
