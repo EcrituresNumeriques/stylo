@@ -19,7 +19,6 @@ const initialState = {
   logedIn: false,
   hasBooted: false,
   users: [],
-  password: undefined,
   sessionToken: undefined,
   workingArticle: {
     state: 'saved'
@@ -165,9 +164,6 @@ function setProfile (state, action) {
     hasBooted: true,
     activeUser,
     logedIn: true,
-    // it will allow password modification if logged with password,
-    // otherwise it means we use an external auth service
-    password: null,
     users: [activeUser._id],
   })
 }

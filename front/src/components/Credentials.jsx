@@ -5,6 +5,7 @@ import askGraphQL from '../helpers/graphQL'
 import styles from './credentials.module.scss'
 import Loading from "./Loading";
 import UserInfos from "./UserInfos";
+import CredentialsAccountSharing from "./CredentialsAccountSharing";
 import Button from "./Button";
 import Field from "./Field";
 
@@ -60,15 +61,6 @@ const Credentials = ({ activeUser, sessionToken, applicationConfig }) => {
 
   return (
     <>
-      <section className={styles.section}>
-        <h1>Account selection</h1>
-        <p>
-          If your <strong>Credentials</strong> are associated with multiple{' '}
-          <strong>Accounts</strong>, you'll be able to set active account and
-          default active Account here.
-        </p>
-      </section>
-
       <UserInfos />
 
       <section className={styles.section}>
@@ -103,10 +95,12 @@ const Credentials = ({ activeUser, sessionToken, applicationConfig }) => {
             disabled={!password || !passwordO || password !== passwordC}
             primary={true}
           >
-            {isUpdating ? 'Updating..' : 'Change'}
+            {isUpdating ? 'Updating…' : 'Change'}
           </Button>
         </form>
       </section>
+
+      <CredentialsAccountSharing />
     </>
   )
 }

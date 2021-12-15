@@ -26,6 +26,54 @@ const getAcquintancesQuery = `query($user: ID!) {
   }
 }`
 
+const getAcquintancesPermissionsQuery = `query($user: ID!) {
+  user(user: $user) {
+    permissions {
+      scope
+      user
+      roles
+    }
+
+    acquintances {
+      _id
+      displayName
+      email
+    }
+  }
+}`
+
+const grantAccountAccessQuery = `mutation($from: ID!, $to: ID!) {
+  grantAccountAccess(user: $from, to: $to) {
+    permissions {
+      scope
+      user
+      roles
+    }
+
+    acquintances {
+      _id
+      displayName
+      email
+    }
+  }
+}`
+
+const revokeAccountAccessQuery = `mutation($from: ID!, $to: ID!) {
+  revokeAccountAccess(user: $from, to: $to) {
+    permissions {
+      scope
+      user
+      roles
+    }
+
+    acquintances {
+      _id
+      displayName
+      email
+    }
+  }
+}`
+
 export default class AcquintanceService {
 
   constructor (userId, applicationConfig) {
@@ -42,10 +90,37 @@ export default class AcquintanceService {
     )
   }
 
+  async getAcquintancesAndPermissions () {
+    return askGraphQL(
+      { query: getAcquintancesPermissionsQuery, variables: { user: this.userId } },
+      'Fetching acquintances and permissions',
+      '',
+      this.applicationConfig
+    )
+  }
+
   async addAcquintance (contact) {
     return askGraphQL(
       { query: addAcquintanceQuery, variables: { user: this.userId, email: contact } },
       'Adding acquintances',
+      '',
+      this.applicationConfig
+    )
+  }
+
+  async grantAccountAccessTo ({ from, to }) {
+    return askGraphQL(
+      { query: grantAccountAccessQuery, variables: { from, to } },
+      'Grand account access',
+      '',
+      this.applicationConfig
+    )
+  }
+
+  async revokeAccountAccessTo ({ from, to }) {
+    return askGraphQL(
+      { query: revokeAccountAccessQuery, variables: { from, to } },
+      'Grand account access',
       '',
       this.applicationConfig
     )
