@@ -53,14 +53,16 @@ module.exports = {
       throw new Error('This user does not exist')
     }
 
+    const userIds = await User.findAccountAccessUserIds(args.user)
+
     //fetch article
-    const fetchedArticle = await Article.findOne({_id: args.article}).populate('owners');
+    const fetchedArticle = await Article.findOne({
+      _id: args.article,
+      owners: { $in: [args.user, ...userIds] }
+    });
+
     if(!fetchedArticle){
       throw new Error('Wrong article ID')
-    }
-
-    if(!fetchedArticle.owners.map(u => u.id).includes(thisUser.id)){
-      throw new Error('User has no right to push new version')
     }
 
     ALLOWED_PARAMS
