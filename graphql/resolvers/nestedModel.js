@@ -3,18 +3,31 @@ const Article = require('../models/article');
 const Version = require('../models/version');
 
 const getUserById = async (userId) => {
-    const user = await User.findById(userId)
-      .populate('tags acquintances')
-      // see https://mongoosejs.com/docs/api/document.html#document_Document-populate
-      // for subdocument population
-      .populate({ path: 'articles', populate: { path: 'owners versions tags' }})
-      .lean();
+  const user = await User.findById(userId)
+    .populate('tags acquintances')
+    // see https://mongoosejs.com/docs/api/document.html#document_Document-populate
+    // for subdocument population
+    .populate({ path: 'articles', populate: { path: 'owners versions tags' }})
+    .lean();
 
-    if(!user){
-        throw new Error(`Unable to find this user : _id ${userId} does not exist`)
-    }
+  if(!user){
+      throw new Error(`Unable to find this user : _id ${userId} does not exist`)
+  }
 
-    return user;
+  // Also, fetch its granted accounts, and documents
+  const users = await User
+    .find({ permissions: { $elemMatch: { user, scope: 'user', roles: { $in: 'read' } } } })
+    .populate({ path: 'articles', populate: { path: 'owners versions tags' }})
+
+  if (users.length) {
+    const extraArticles = users
+      .flatMap(({ articles }) => articles)
+      .filter(({ id }) => !user.articles.find(a => a._id == id))
+
+    user.articles.push(...extraArticles)
+  }
+
+  return user;
 };
 
 const getVersionById = async (versionId) => {
