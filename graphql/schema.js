@@ -163,6 +163,9 @@ module.exports = buildASTSchema(gql`
     "add a user to an article"
     shareArticle(article: ID!, to: ID!, user: ID!): Article!
 
+    "remove a user to an article"
+    unshareArticle(article: ID!, to: ID!, user: ID!): Article!
+
     "Send last version, or specified version, to an user"
     sendArticle(article: ID!, version: ID, to: ID!, user: ID!): Article! # this is a copy of last version OR specified version
     # fork is sendArticle to yourself

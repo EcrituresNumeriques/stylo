@@ -98,6 +98,31 @@ module.exports = {
 
     return returnArticle
   },
+
+  unshareArticle: async (args,{req}) => {
+    populateArgs(args,req)
+    isUser(args,req)
+
+    //Fetch article and user to send to
+    const fetchedArticle = await Article.findOne({ _id: args.article, owners: { $in: args.user } })
+    if(!fetchedArticle){
+      throw new Error('Unable to find article')
+    }
+
+    const fetchedUser = await User.findOne({_id:args.to})
+    if(!fetchedUser){
+      throw new Error('Unable to find user')
+    }
+
+    //Remove article from owner "user" etc.
+    fetchedArticle.owners.pull(args.to)
+    fetchedUser.articles.pull(args.article)
+
+    const returnArticle = await fetchedArticle.save()
+    await fetchedUser.save()
+
+    return returnArticle
+  },
   sendArticle: async (args,{req}) => {
     populateArgs(args,req)
     isUser(args,req)
