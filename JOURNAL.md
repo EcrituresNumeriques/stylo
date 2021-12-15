@@ -1,5 +1,26 @@
 # Journal de développement
 
+## Mercredi 15 décembre
+
+### Ce que j'ai aimé/appris
+
+- J'ai appris que je ne connaissais plus `animation`, `transform`, et `transition`
+- J'ai bien aimé apprendre les aggrégations MongoDB pour faire 2-3 stats sur Stylo
+- J'ai bien aimé ce que t'as fait sur le partage d'articles et de comptes
+- J'aime bien l'idée d'avoir une gestion des contacts (pour éviter d'avoir à ressaisir les emails) — la fonctionnalité commence à apparaitre
+- J'aime bien qu'on y voit de plus en plus clair dans l'interface, et qu'elle rame
+- Ça fait tellement de bien de supprimer du code
+- J'ai aimé découvrir des features de Mongoose/MongoDB plutôt que d'écrire du code qui refaisait la même chose
+- Toujours aussi cool de bosser design/code dans le navigateur avec Maïtané
+
+### Ce que j'ai trouvé difficile
+
+- Je suis un peu crevé, j'ai pas trop d'énergie, ça m'a ralenti
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- Des vacances 🎄
+
 ## Mercredi 8 décembre
 
 ### Ce que j'ai aimé/appris
