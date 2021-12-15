@@ -91,13 +91,13 @@ const ConnectedArticles = (props) => {
   }
 
   const query =
-    'query($user:ID!){user(user:$user){ displayName tags{ _id description color name } articles{ _id title updatedAt owners{ displayName } versions{ _id version revision message } tags{ name color _id }}}}'
+    'query($user:ID!){user(user:$user){ displayName tags{ _id description color name } articles{ _id title updatedAt owners{ _id displayName } versions{ _id version revision message } tags{ name color _id }}}}'
   const user = { user: props.activeUser._id }
 
   useEffect(() => {
     if (needReload) {
       //Self invoking async function
-      ;(async () => {
+      (async () => {
         try {
           setIsLoading(true)
           const data = await askGraphQL(
@@ -183,11 +183,11 @@ const ConnectedArticles = (props) => {
               (a) => a.title.toLowerCase().indexOf(filter.toLowerCase()) > -1
             )
             .sort(sortByUpdatedAt)
-            .map((a) => (
+            .map((article) => (
               <Article
-                key={`article-${a._id}`}
+                key={`article-${article._id}`}
                 masterTags={tags}
-                {...a}
+                article={article}
                 setNeedReload={handleReload}
                 updateTagsHandler={handleUpdateTags}
                 updateTitleHandler={handleUpdateTitle}

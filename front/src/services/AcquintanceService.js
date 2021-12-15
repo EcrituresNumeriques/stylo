@@ -8,6 +8,10 @@ const shareArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
   shareArticle(article: $article, to: $to, user: $user) { _id }
 }`
 
+const unshareArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
+  unshareArticle(article: $article, to: $to, user: $user) { _id }
+}`
+
 const sendArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
   sendArticle(article: $article, to: $to, user: $user) { _id }
 }`
@@ -74,6 +78,22 @@ export default class AcquintanceService {
         }
       },
       'Sharing article',
+      '',
+      this.applicationConfig
+    )
+  }
+
+  async unshareArticle (articleId, to) {
+    return askGraphQL(
+      {
+        query: unshareArticleQuery,
+        variables: {
+          user: this.userId,
+          to,
+          article: articleId,
+        }
+      },
+      'Unsharing article',
       '',
       this.applicationConfig
     )

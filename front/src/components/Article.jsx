@@ -25,31 +25,31 @@ const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
 }
 
-const ConnectedArticle = (props) => {
+const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken, setNeedReload, updateTitleHandler, updateTagsHandler, masterTags }) => {
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [deleting, setDeleting] = useState(false)
-  const [tags, setTags] = useState(props.tags)
+  const [tags, setTags] = useState(article.tags)
   const [renaming, setRenaming] = useState(false)
-  const [title, setTitle] = useState(props.title)
-  const [tempTitle, setTempTitle] = useState(props.title)
+  const [title, setTitle] = useState(article.title)
+  const [tempTitle, setTempTitle] = useState(article.title)
   const [sharing, setSharing] = useState(false)
 
   const fork = async () => {
     try {
       const query = `mutation($user:ID!,$article:ID!){sendArticle(article:$article,to:$user,user:$user){ _id }}`
       const variables = {
-        user: props.activeUser._id,
-        to: props.activeUser._id,
-        article: props._id,
+        user: activeUser._id,
+        to: activeUser._id,
+        article: article._id,
       }
       await askGraphQL(
         { query, variables },
         'forking Article',
-        props.sessionToken,
-        props.applicationConfig
+        sessionToken,
+        applicationConfig
       )
-      props.setNeedReload()
+      setNeedReload()
     } catch (err) {
       alert(err)
     }
@@ -59,20 +59,20 @@ const ConnectedArticle = (props) => {
     e.preventDefault()
     const query = `mutation($article:ID!,$title:String!,$user:ID!){renameArticle(article:$article,title:$title,user:$user){title}}`
     const variables = {
-      user: props.activeUser._id,
-      article: props._id,
+      user: activeUser._id,
+      article: article._id,
       title: tempTitle,
     }
     await askGraphQL(
       { query, variables },
       'Renaming Article',
-      props.sessionToken,
-      props.applicationConfig
+      sessionToken,
+      applicationConfig
     )
     setTitle(tempTitle)
     setRenaming(false)
-    if (props.updateTitleHandler) {
-      props.updateTitleHandler(props._id, tempTitle)
+    if (updateTitleHandler) {
+      updateTitleHandler(article._id, tempTitle)
     }
   }
 
@@ -81,14 +81,15 @@ const ConnectedArticle = (props) => {
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
           <Export
-            exportId={generateArticleExportId(props.title)}
-            articleVersionId={props._id}
+            exportId={generateArticleExportId(article.title)}
+            articleVersionId={article._id}
           />
         </Modal>
       )}
+
       {sharing && (
         <Modal cancel={() => setSharing(false)} withCloseButton={false}>
-          <Acquintances {...props} cancel={() => setSharing(false)} />
+          <Acquintances article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)} />
         </Modal>
       )}
 
@@ -110,7 +111,7 @@ const ConnectedArticle = (props) => {
           </Button>
           <Button title="Cancel" type="button" onClick={() => {
             setRenaming(false)
-            setTempTitle(props.title)
+            setTempTitle(article.title)
           }}>
             Cancel
           </Button>
@@ -122,7 +123,7 @@ const ConnectedArticle = (props) => {
           <Trash />
         </Button>
 
-        <Link title="Preview" target="_blank" className={[buttonStyles.button, buttonStyles.icon].join(' ')} to={`/article/${props._id}/preview`}>
+        <Link title="Preview" target="_blank" className={[buttonStyles.button, buttonStyles.icon].join(' ')} to={`/article/${article._id}/preview`}>
           <Eye />
         </Link>
         <Button title="Share" icon={true} onClick={() => setSharing(true)}>
@@ -134,7 +135,7 @@ const ConnectedArticle = (props) => {
         <Button title="Export" icon={true} onClick={() => setExporting(true)}>
           <Printer />
         </Button>
-        <Link title="Edit" className={[buttonStyles.button, buttonStyles.primary].join(' ')} to={`/article/${props._id}`}>
+        <Link title="Edit" className={[buttonStyles.button, buttonStyles.primary].join(' ')} to={`/article/${article._id}`}>
           <Edit3 />
         </Link>
       </aside>
@@ -143,13 +144,13 @@ const ConnectedArticle = (props) => {
         <div className={[styles.alert, styles.deleteArticle].join(' ')}>
           <p>
             You are trying to delete this article, double click on the
-            "delete button" below to proceed
+            &quot;delete button&quot; below to proceed
           </p>
           <Button className={styles.cancel} onClick={() => setDeleting(false)}>
             Cancel
           </Button>
 
-          <ArticleDelete {...props} />
+          <ArticleDelete article={article} setNeedReload={setNeedReload} />
         </div>
       )}
 
@@ -158,10 +159,10 @@ const ConnectedArticle = (props) => {
           {tags.map((t) => (
             <span className={styles.tagChip} key={'tagColor-' + t._id} style={{ backgroundColor: t.color || 'grey' }} />
           ))}
-          by <span className={styles.author}>{props.owners.map((o) => o.displayName).join(', ')}</span>
+          by <span className={styles.author}>{article.owners.map((o) => o.displayName).join(', ')}</span>
 
-          <time dateTime={props.updatedAt} className={styles.momentsAgo}>
-            ({formatTimeAgo(props.updatedAt)})
+          <time dateTime={article.updatedAt} className={styles.momentsAgo}>
+            ({formatTimeAgo(article.updatedAt)})
           </time>
         </p>
 
@@ -169,9 +170,9 @@ const ConnectedArticle = (props) => {
         <>
           <h4>Last versions</h4>
           <ul className={styles.versions}>
-            {props.versions.map((v) => (
+            {article.versions.map((v) => (
               <li key={`version-${v._id}`}>
-                <Link to={`/article/${props._id}/version/${v._id}`}>{`${
+                <Link to={`/article/${article._id}/version/${v._id}`}>{`${
                   v.message ? v.message : 'no label'
                 } (v${v.version}.${v.revision})`}</Link>
               </li>
@@ -181,15 +182,16 @@ const ConnectedArticle = (props) => {
           <h4>Tags</h4>
           <div className={styles.editTags}>
             <ArticleTags
-              {...props}
+              article={article}
+              masterTags={masterTags}
               stateTags={tags.map((t) => {
                 t.selected = true
                 return t
               })}
               setTags={(tags) => {
                 setTags(tags)
-                if (props.updateTagsHandler) {
-                  props.updateTagsHandler(props._id, tags)
+                if (updateTagsHandler) {
+                  updateTagsHandler(article._id, tags)
                 }
               }}
             />

@@ -10,18 +10,18 @@ const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {
   return { sessionToken, activeUser, applicationConfig }
 }
 
-const ConnectedArticleDelete = (props) => {
+const ConnectedArticleDelete = ({ activeUser, article, sessionToken, applicationConfig, setNeedReload }) => {
   const deleteArticle = async () => {
     try {
       const query = `mutation($user:ID!,$article:ID!){deleteArticle(article:$article,user:$user){ _id }}`
-      const variables = { user: props.activeUser._id, article: props._id }
+      const variables = { user: activeUser._id, article: article._id }
       await askGraphQL(
         { query, variables },
         'Deleting Article',
-        props.sessionToken,
-        props.applicationConfig
+        sessionToken,
+        applicationConfig
       )
-      props.setNeedReload()
+      setNeedReload()
     } catch (err) {
       alert(err)
     }
