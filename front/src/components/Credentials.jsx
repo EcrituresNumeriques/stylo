@@ -9,13 +9,11 @@ import Button from "./Button";
 import Field from "./Field";
 
 const mapStateToProps = ({
-  users,
   activeUser,
   sessionToken,
-  password,
   applicationConfig,
 }) => {
-  return { users, activeUser, sessionToken, password, applicationConfig }
+  return { activeUser, sessionToken, applicationConfig }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -24,7 +22,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const Credentials = (props) => {
+const Credentials = ({ activeUser, sessionToken, applicationConfig }) => {
   const [password, setPassword] = useState('')
   const [passwordO, setPasswordO] = useState('')
   const [passwordC, setPasswordC] = useState('')
@@ -35,41 +33,22 @@ const Credentials = (props) => {
     e.preventDefault()
     try {
       setIsUpdating(true)
-      const query = `mutation($password:ID!, $old:String!, $new:String!, $user:ID!){ changePassword(password:$password,old:$old,new:$new,user:$user){ _id } }`
+      const query = `mutation($old:String!, $new:String!, $user:ID!){ changePassword(old:$old, new:$new, user:$user){ _id } }`
       const variables = {
-        password: props.password._id,
         old: passwordO,
         new: password,
-        user: props.activeUser._id,
+        user: activeUser._id,
       }
       await askGraphQL(
         { query, variables },
         'update Password',
-        props.sessionToken,
-        props.applicationConfig
+        sessionToken,
+        applicationConfig
       )
       setPassword('')
       setPasswordO('')
       setPasswordC('')
       setIsUpdating(false)
-    } catch (err) {
-      alert(err)
-    }
-  }
-
-  const setDefault = async (user) => {
-    try {
-      setIsUpdating(true)
-      const query = `mutation($password:ID!, $user:ID!){ setPrimaryUser(password:$password,user:$user){ users { _id displayName email } } }`
-      const variables = { password: props.password._id, user: user }
-      const data = await askGraphQL(
-        { query, variables },
-        'Set user as default',
-        props.sessionToken,
-        props.applicationConfig
-      )
-      setIsUpdating(false)
-      props.updateUser(data.setPrimaryUser.users)
     } catch (err) {
       alert(err)
     }
@@ -122,6 +101,7 @@ const Credentials = (props) => {
           />
           <Button
             disabled={!password || !passwordO || password !== passwordC}
+            primary={true}
           >
             {isUpdating ? 'Updating..' : 'Change'}
           </Button>

@@ -36,6 +36,9 @@ module.exports = {
 
     //find User
     const user = await User.findOne({ _id: args.user })
+    if (!user) {
+      throw new Error("Could not find user");
+    }
 
     //check old password
     if(!await bcrypt.compare(args.old, user.password)){
