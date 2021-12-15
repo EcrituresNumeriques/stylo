@@ -77,7 +77,7 @@ function ConnectedAcquintances ({ _id: articleId, activeUser, setNeedReload, can
           value={contact}
           onChange={(e) => setContact(e.target.value)}
         />
-        <Button>Add</Button>
+        <Button type="submit">Add</Button>
       </form>
       {loading && <p>Loading...</p>}
       {!loading && acquintances.length === 0 && <p>No acquintances</p>}
