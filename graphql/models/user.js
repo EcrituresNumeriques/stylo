@@ -66,6 +66,21 @@ const userSchema = new Schema({
   }
 }, {timestamps: true});
 
+
+userSchema.statics.findAccountAccessUserIds = async function (userId, role = 'write') {
+  const users = await this
+    .find({ permissions: { $elemMatch: { user: userId, scope: 'user', roles: { $in: role } } } })
+    .lean()
+
+  return users.map(({ _id }) => _id)
+}
+
+userSchema.statics.findAccountAccessArticles = function (user, role = 'read') {
+  return this
+    .find({ permissions: { $elemMatch: { user, scope: 'user', roles: { $in: role } } } })
+    .populate({ path: 'articles', populate: { path: 'owners versions tags' }})
+}
+
 module.exports = mongoose.model('User', userSchema)
 module.exports.schema = userSchema
 

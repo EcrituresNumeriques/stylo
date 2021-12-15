@@ -15,9 +15,7 @@ const getUserById = async (userId) => {
   }
 
   // Also, fetch its granted accounts, and documents
-  const users = await User
-    .find({ permissions: { $elemMatch: { user, scope: 'user', roles: { $in: 'read' } } } })
-    .populate({ path: 'articles', populate: { path: 'owners versions tags' }})
+  const users = await User.findAccountAccessArticles(user)
 
   if (users.length) {
     const extraArticles = users
@@ -39,16 +37,6 @@ const getVersionById = async (versionId) => {
     return version;
 };
 
-const getArticleById = async (articleId) => {
-    const article = await Article.findById(articleId).populate('owners versions tags');
-
-    if(!article){
-        throw new Error(`Unable to find this article : _id ${articleId} does not exist`)
-    }
-
-    return article;
-};
 
 exports.getUserById = getUserById;
-exports.getArticleById = getArticleById;
 exports.getVersionById = getVersionById;
