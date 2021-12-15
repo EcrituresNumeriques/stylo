@@ -7,10 +7,12 @@ module.exports.UserPermissionSchema = new mongoose.Schema({
     default: 'user'
   },
 
-  userId: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
+
+  roles: [ String ]
 })
 
 module.exports.ArticlePermissionSchema = new mongoose.Schema({

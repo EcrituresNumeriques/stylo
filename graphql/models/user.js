@@ -38,7 +38,9 @@ const userSchema = new Schema({
     type: String,
     default: null
   },
-  permissions: [ UserPermissionSchema ],
+  permissions: [
+    UserPermissionSchema
+  ],
   displayName: {
     type: String,
   },

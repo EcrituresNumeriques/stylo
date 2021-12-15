@@ -11,6 +11,7 @@ module.exports = buildASTSchema(gql`
     lastName: String
     institution: String
     tags(limit: Int, page: Int): [Tag!]!
+    permissions: [UserPermission]!
     acquintances(limit: Int, page: Int): [User!]!
     articles(limit: Int, page: Int): [Article!]!
     admin: Boolean
@@ -18,6 +19,12 @@ module.exports = buildASTSchema(gql`
     zoteroToken: String
     createdAt: String
     updatedAt: String
+  }
+
+  type UserPermission {
+    scope: String!
+    user: ID!
+    roles: [String]
   }
 
   type Tag {
@@ -105,6 +112,12 @@ module.exports = buildASTSchema(gql`
 
     "Change password"
     changePassword(old: String!, new: String!, user: ID!): User!
+
+    "Grant account access"
+    grantAccountAccess(user: ID!, to: ID!): User!
+
+    "Revoke account access"
+    revokeAccountAccess(user: ID!, to: ID!): User!
 
     "Change user information"
     updateUser(

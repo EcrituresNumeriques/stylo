@@ -209,7 +209,7 @@ module.exports = {
   article: async (args, { req }) => {
     const { article:articleId } = args
     const article = await Article
-      .findOne({ _id: articleId, owners: { $in: req.user.userId } })
+      .findOne({ _id: articleId, owners: { $in: req.user._id } })
       .populate('owners versions tags')
       .lean()
 

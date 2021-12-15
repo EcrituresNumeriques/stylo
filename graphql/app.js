@@ -194,7 +194,7 @@ app.get(
 
 app.get('/profile', async (req, res) => {
   if (req.user) {
-    const user = await User.findOne({ email: req.user.email }).populate("passwords")
+    const user = await User.findOne({ email: req.user.email })
     res.status(200)
     res.json({ user })
   } else {

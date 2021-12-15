@@ -78,6 +78,45 @@ module.exports = {
     thisUser.acquintances.push(thisAcquintance)
     return thisUser.save();
   },
+  grantAccountAccess: async (args, {req}) => {
+    populateArgs(args,req)
+    isUser(args,req)
+
+    const thisUser = await User.findOne({ _id: args.user }).populate('acquintances')
+    const remoteUser = await User.findOne({ _id: args.to })
+
+    const existingsScope = thisUser.permissions.find(p => p.scope === 'user' && p.user == remoteUser.id)
+
+    if (existingsScope) {
+      throw new Error(`Account [id: ${args.to}] has already access to account [id: ${args.user}]`)
+    }
+
+    thisUser.permissions.push({
+      scope: 'user',
+      user: remoteUser.id,
+      roles: ['access', 'read', 'write']
+    })
+
+    return thisUser.save()
+  },
+  revokeAccountAccess: async (args, {req}) => {
+    populateArgs(args,req)
+    isUser(args,req)
+
+    const thisUser = await User.findOne({ _id: args.user }).populate('acquintances')
+    const remoteUser = await User.findOne({ _id: args.to })
+
+    const existingsScope = thisUser.permissions.find(p => p.scope === 'user' && p.user == remoteUser.id)
+
+    if (!existingsScope) {
+      throw new Error(`Account [id: ${args.to}] has no access to account [id: ${args.user}]`)
+    }
+
+    thisUser.permissions.pull(existingsScope)
+
+    return thisUser.save()
+  },
+
   updateUser: async (args,{req}) => {
     populateArgs(args,req)
     isUser(args,req)
@@ -105,7 +144,7 @@ module.exports = {
   user: async (args, {req}) => {
     // if the userId is not provided, we take it from the auth token
     if (('user' in args) === false && req.user) {
-      args.user = req.user.userId
+      args.user = req.user._id
     }
 
     isUser(args, req)
