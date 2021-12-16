@@ -13,7 +13,10 @@ module.exports = {
       script: "node",
       args: "./src/app.js",
       cwd: "./export",
-      watch: ['**/*.js']
+      watch: ['**/*.js'],
+      env: {
+        NODE_ENV: 'dev'
+      }
     },
     {
       name: "graphql",
@@ -21,6 +24,9 @@ module.exports = {
       args: "app.js",
       cwd: "./graphql",
       watch: ['**/*.js'],
+      env: {
+        NODE_ENV: 'dev'
+      }
     }
   ]
 }
