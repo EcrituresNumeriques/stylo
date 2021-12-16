@@ -37,9 +37,10 @@ const store = createStore()
   const applicationConfig = await getApplicationConfig(store.getState().applicationConfig)
   store.dispatch({ type: 'APPLICATION_CONFIG', applicationConfig })
 
-  getUserProfile(applicationConfig).then((response) =>
-    store.dispatch({ type: 'PROFILE', ...response })
-  )
+  getUserProfile(applicationConfig)
+    // user is likely not connected
+    .catch(() => {})
+    .then((response) => store.dispatch({ type: 'PROFILE', ...response }))
 })()
 
 const TrackPageViews = () => {

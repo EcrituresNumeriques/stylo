@@ -27,52 +27,19 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const ConnectedUser = (props) => {
-  const [displayName, setDisplayName] = useState('')
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [institution, setInstitution] = useState('')
-  const [yaml, setYaml] = useState('')
-  const [user, setUser] = useState({
-    email: '',
-    _id: '',
-    admin: false,
-    createdAt: '',
-    updatedAt: '',
-    zoteroToken: '',
-    zoteroUsername: '',
-  })
-  const [isLoading, setIsLoading] = useState(true)
+  const [displayName, setDisplayName] = useState(props.activeUser.displayName)
+  const [firstName, setFirstName] = useState(props.activeUser.firstName)
+  const [lastName, setLastName] = useState(props.activeUser.lastName)
+  const [institution, setInstitution] = useState(props.activeUser.institution)
+  const [yaml, setYaml] = useState(props.activeUser.yaml)
+  const [user, setUser] = useState(props.activeUser)
+  const [isSaving, setIsSaving] = useState(false)
   const { clearZoteroToken } = props
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const query = `query($user:ID!){user(user:$user){ displayName _id email authType admin createdAt updatedAt yaml firstName zoteroToken lastName institution }}`
-        const variables = { user: props.activeUser._id }
-        const data = await askGraphQL(
-          { query, variables },
-          'fetching user',
-          props.sessionToken,
-          props.applicationConfig
-        )
-        //setDisplayNameH1(data.user.displayName)
-        setDisplayName(data.user.displayName)
-        setFirstName(data.user.firstName || '')
-        setLastName(data.user.lastName || '')
-        setInstitution(data.user.institution || '')
-        setYaml(data.user.yaml || '')
-        setUser(data.user)
-        setIsLoading(false)
-      } catch (err) {
-        alert(`couldn't fetch user ${err}`)
-      }
-    })()
-  }, [])
 
   const unlinkZoteroAccount = async () => {
     const query = `mutation($user:ID!,$zoteroToken:String){updateUser(user:$user, zoteroToken:$zoteroToken){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken }}`
     const variables = { user: props.activeUser._id, zoteroToken: null }
-    setIsLoading(true)
+    setIsSaving(true)
     const data = await askGraphQL(
       { query, variables },
       'clear Zotero Token',
@@ -81,13 +48,13 @@ const ConnectedUser = (props) => {
     )
     setUser(data.updateUser)
     clearZoteroToken()
-    setIsLoading(false)
+    setIsSaving(false)
   }
 
   const updateInfo = async (e) => {
     e.preventDefault()
     try {
-      setIsLoading(true)
+      setIsSaving(true)
       const query = `mutation($user:ID!,$displayName:String!,$firstName:String,$lastName:String, $institution:String,$yaml:String){updateUser(user:$user,displayName:$displayName,firstName:$firstName, lastName: $lastName, institution:$institution, yaml:$yaml){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken }}`
       const variables = {
         user: props.activeUser._id,
@@ -111,7 +78,7 @@ const ConnectedUser = (props) => {
       setInstitution(data.updateUser.institution || '')
       setYaml(data.updateUser.yaml || '')
       setUser(data.updateUser)
-      setIsLoading(false)
+      setIsSaving(false)
     } catch (err) {
       alert(`Couldn't update User: ${err}`)
     }
@@ -184,8 +151,8 @@ const ConnectedUser = (props) => {
         </Field>
 
         <div className={formStyles.footer}>
-          <Button primary={true} disabled={isLoading}>
-            {isLoading ? <Loader /> : <Check />}
+          <Button primary={true} disabled={isSaving}>
+            {isSaving ? <Loader /> : <Check />}
             Save changes
           </Button>
         </div>

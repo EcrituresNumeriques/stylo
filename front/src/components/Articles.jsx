@@ -65,18 +65,6 @@ const ConnectedArticles = (props) => {
     return articles
   }
 
-  const sortByUpdatedAt = (a, b) => {
-    const da = new Date(a.updatedAt)
-    const db = new Date(b.updatedAt)
-    if (da > db) {
-      return -1
-    } else if (db > da) {
-      return 1
-    } else {
-      return 0
-    }
-  }
-
   const filterByTagsSelected = (article) => {
     const listOfTagsSelected = [...filterTags].filter((t) => t.selected)
     if (listOfTagsSelected.length === 0) {
@@ -221,7 +209,6 @@ const ConnectedArticles = (props) => {
             .filter(
               (a) => a.title.toLowerCase().indexOf(filter.toLowerCase()) > -1
             )
-            .sort(sortByUpdatedAt)
             .map((article) => (
               <Article
                 key={`article-${article._id}`}

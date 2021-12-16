@@ -192,17 +192,6 @@ app.get(
   passport.authenticate('zotero', { scope: zoteroAuthScope })
 )
 
-app.get('/profile', async (req, res) => {
-  if (req.user) {
-    const user = await User.findOne({ email: req.user.email })
-    res.status(200)
-    res.json({ user })
-  } else {
-    res.status(404)
-    res.json({})
-  }
-})
-
 app.use('/authorization-code/zotero/callback',
   (req, res, next) => {
     passport.authenticate('zotero', async (err, user, info, status) => {

@@ -106,7 +106,7 @@ function Login ({ login, applicationConfig }) {
             <fieldset>
               <legend>Connect with a local Stylo account</legend>
 
-              <Field label="Username" id="username" required={true} autoComplete="username" onChange={event => setUsername(event.target.value)} />
+              <Field label="Username" id="username" required={true} autoFocus={true} autoComplete="username" onChange={event => setUsername(event.target.value)} />
               <Field label="Password" id="password" required={true} type="password" autoComplete="current-password" onChange={event => setPassword(event.target.value)} />
 
               <ul className={styles.actions}>
