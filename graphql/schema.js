@@ -187,9 +187,8 @@ module.exports = buildASTSchema(gql`
     "remove a user to an article"
     unshareArticle(article: ID!, to: ID!, user: ID!): Article!
 
-    "Send last version, or specified version, to an user"
-    sendArticle(article: ID!, version: ID, to: ID!, user: ID!): Article! # this is a copy of last version OR specified version
-    # fork is sendArticle to yourself
+    "Duplicate the working version of an article, with someone, or yourself"
+    duplicateArticle(article: ID!, to: ID!, user: ID!): Article!
 
     "Rename an article you own"
     renameArticle(article: ID!, title: String!, user: ID!): Article!

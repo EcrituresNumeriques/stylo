@@ -20,6 +20,7 @@ import Field from './Field'
 import Button from './Button'
 import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Send, Trash } from 'react-feather'
 
+import AcquintanceService from '../services/AcquintanceService'
 
 const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
@@ -36,23 +37,14 @@ const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken
   const [sharing, setSharing] = useState(false)
 
   const isArticleOwner = activeUser._id === article.owners[0]._id
+  const acquintanceService = new AcquintanceService(activeUser._id, applicationConfig)
 
   const fork = async () => {
     try {
-      const query = `mutation($user:ID!,$article:ID!){sendArticle(article:$article,to:$user,user:$user){ _id }}`
-      const variables = {
-        user: activeUser._id,
-        to: activeUser._id,
-        article: article._id,
-      }
-      await askGraphQL(
-        { query, variables },
-        'forking Article',
-        sessionToken,
-        applicationConfig
-      )
+      await acquintanceService.duplicateArticle(article._id, activeUser._id)
       setNeedReload()
     } catch (err) {
+      console.error(`Unable to duplicate article ${article._id} with myself (userId: ${activeUser._id})`, err)
       alert(err)
     }
   }

@@ -125,16 +125,21 @@ module.exports = {
 
     return returnArticle
   },
-  sendArticle: async (args,{req}) => {
+  duplicateArticle: async (args,{req}) => {
     populateArgs(args,req)
     isUser(args,req)
 
     //Fetch article and user to send to
-    const fetchedArticle = await Article.findOne({_id:args.article,owners:args.user}).lean()
-    if(!fetchedArticle){throw new Error('Unable to find article')}
+    const userIds = await User.findAccountAccessUserIds(req.user._id)
+    const fetchedArticle = await Article.findOneByOwners(args.article, [req.user._id, userIds])
 
+    if(!fetchedArticle){
+      throw new Error('Unable to find article')
+    }
     const fetchedUser = await User.findOne({_id:args.to})
-    if(!fetchedUser){throw new Error('Unable to find user')}
+    if(!fetchedUser){
+      throw new Error('Unable to find user')
+    }
 
     //All good, create new Article & merge version/article/user
     const prefix = args.user === args.to ? '[Copy] ' : '[Sent] '

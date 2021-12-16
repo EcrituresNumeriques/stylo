@@ -12,8 +12,8 @@ const unshareArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
   unshareArticle(article: $article, to: $to, user: $user) { _id }
 }`
 
-const sendArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
-  sendArticle(article: $article, to: $to, user: $user) { _id }
+const duplicateArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
+  duplicateArticle(article: $article, to: $to, user: $user) { _id }
 }`
 
 const getAcquintancesQuery = `query($user: ID!) {
@@ -126,17 +126,17 @@ export default class AcquintanceService {
     )
   }
 
-  async sendArticle (articleId, to) {
+  async duplicateArticle (articleId, to) {
     return askGraphQL(
       {
-        query: sendArticleQuery,
+        query: duplicateArticleQuery,
         variables: {
           user: this.userId,
           to,
           article: articleId,
         }
       },
-      'Sending article',
+      'Duplicating article',
       '',
       this.applicationConfig
     )

@@ -144,7 +144,7 @@ const ConnectedArticles = (props) => {
             props.applicationConfig
           )
           //Need to sort by updatedAt desc
-          setArticles(data.user.articles.reverse())
+          setArticles(data.user.articles)
           const tags = data.user.tags.map((t) => ({
             ...t,
             selected: false,

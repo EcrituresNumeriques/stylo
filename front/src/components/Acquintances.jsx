@@ -54,11 +54,11 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
     }
   }
 
-  const sendArticle = async (to) => {
+  const duplicateArticle = async (to) => {
     try {
-      await acquintanceService.sendArticle(articleId, to)
+      await acquintanceService.duplicateArticle(articleId, to)
     } catch (err) {
-      console.error(`Unable to send article ${articleId} with ${to} (userId: ${userId})`, err)
+      console.error(`Unable to duplicate article ${articleId} with ${to} (userId: ${userId})`, err)
       alert(err)
     }
     setNeedReload()
@@ -99,7 +99,7 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
             <a href={"mailto:" + acquintance.email} className={styles.acquintanceEmail}>{acquintance.email}</a>
           </div>
           <div className={styles.acquintanceActions}>
-            <Button onClick={() => sendArticle(acquintance._id)} ><Send/> Send a Copy</Button>
+            <Button onClick={() => duplicateArticle(acquintance._id)} ><Send/> Send a Copy</Button>
             {!ownerIds.includes(acquintance._id) && <Button onClick={() => shareArticle(acquintance._id)} >
               <Share/> Share
             </Button>}

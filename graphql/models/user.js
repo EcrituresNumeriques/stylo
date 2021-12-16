@@ -91,6 +91,8 @@ userSchema.statics.findAllArticles = async function (userId) {
     user.articles.push(...extraArticles)
   }
 
+  user.articles.sort((a, b) => b.updatedAt - a.updatedAt)
+
   return user
 }
 
