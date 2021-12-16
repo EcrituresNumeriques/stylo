@@ -1,5 +1,4 @@
 const User = require('../models/user');
-const Article = require('../models/article');
 const Version = require('../models/version');
 
 const getUserById = async (userId) => {

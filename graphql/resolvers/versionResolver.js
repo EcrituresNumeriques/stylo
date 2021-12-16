@@ -4,7 +4,7 @@ const User = require('../models/user');
 
 const isUser = require('../policies/isUser')
 
-const { populateVersion, getVersionById } = require('./nestedModel')
+const { getVersionById } = require('./nestedModel')
 
 const populateArgs = require('../helpers/populateArgs')
 
@@ -17,23 +17,26 @@ module.exports = {
      */
     isUser(args, req)
 
+    let version, revision
+
     // fetch user
     const thisUser = await User.findOne({ _id: args.user })
     if (!thisUser) {
       throw new Error('This user does not exist!')
     }
 
+    const userIds = await User.findAccountAccessUserIds(args.user)
+
     // fetch article
     const articleToSaveInto = await Article.findOne({
       _id: args.version.article,
-    }).populate('versions owners')
+      owners: { $in: [args.user, ...userIds] }
+    }).populate('owners versions')
+
     if (!articleToSaveInto) {
       throw new Error('Wrong article ID!')
     }
 
-    if (!articleToSaveInto.owners.map((u) => u.id).includes(thisUser.id)) {
-      throw new Error('User has no right to push new version!')
-    }
     const {bib, yaml, md} = articleToSaveInto.workingVersion
     let lastMajorVersion = 0
     let lastMinorVersion = 0
@@ -61,14 +64,15 @@ module.exports = {
       message,
       sommaire: md
         .split('\n')
-        .filter((line) => line.match(/^#+\ /))
+        .filter((line) => line.match(/^#+ /))
         .join('\n'),
       owner: thisUser.id
     }
     const returnedVersion = await Version.create(newVersion)
     articleToSaveInto.versions.push(returnedVersion)
     await articleToSaveInto.save()
-    return populateVersion(returnedVersion)
+
+    return returnedVersion
   },
   unlinkVersion: async (args, { req }) => {
     try {
