@@ -1,5 +1,4 @@
 const express = require('express')
-const mongoose = require('mongoose')
 const cors = require('cors')
 
 const { exportArticleHtml, exportArticleZip, exportBookHtml, exportBookZip, exportVersionHtml, exportVersionZip, exportBatchTagZip } = require('./export.js')
@@ -9,9 +8,6 @@ app.use(cors({
   origin: '*'
 }))
 
-const mongoServer = process.env.MONGO_SERVER
-const mongoServerPort = process.env.MONGO_SERVER_PORT
-const mongoServerDB = process.env.MONGO_SERVER_DB
 const listenPort = process.env.PORT || 3060
 
 const exportRouter = express.Router()
@@ -33,16 +29,5 @@ app.get('/api/v1/htmlArticle/:id', exportArticleHtml)
 app.get('/htmlBook/:id', exportBookHtml)
 app.get('/api/v1/htmlBook/:id', exportBookHtml)
 
-// fix deprecation warnings: https://mongoosejs.com/docs/deprecations.html
-mongoose.set('useNewUrlParser', true)
-mongoose.set('useUnifiedTopology', true)
-
-mongoose
-  .connect(`mongodb://${mongoServer}:${mongoServerPort}/${mongoServerDB}`)
-  .then(() => {
-    console.log('Listening on http://localhost:%s', listenPort)
-    app.listen(listenPort)
-  })
-  .catch(err => {
-    console.log('Unable to connect to MongoDB', err)
-  })
+console.log('Listening on http://localhost:%s', listenPort)
+app.listen(listenPort)

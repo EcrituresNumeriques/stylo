@@ -8,12 +8,11 @@ const rimraf = require('rimraf')
 const YAML = require('js-yaml')
 const archiver = require('archiver')
 
-const Article = require('./models/article')
-const Version = require('./models/version')
-const Tag = require('./models/tag')
+const { FindByIdNotFoundError } = require('./helpers/errors')
 const { normalize } = require('./helpers/filename')
 const { prepare: prepareMetadata } = require('./helpers/metadata')
 const { byTitle: sortByTitle } = require('./helpers/sort')
+const { getArticleById, getVersionById, getBookById } = require('./graphql')
 
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 
@@ -125,13 +124,6 @@ const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => 
   }
 }
 
-class FindByIdNotFoundError extends Error {
-  constructor (type, id) {
-    super(`${type} with id: ${id} not found`)
-    this.name = 'FindByIdNotFoundError'
-  }
-}
-
 const errorHandler = (err, res) => {
   if (err && err.name === 'FindByIdNotFoundError') {
     res.status(404).send({ error: { message: err.message } })
@@ -150,35 +142,11 @@ const errorHandler = (err, res) => {
   }
 }
 
-const getArticleById = async (articleId) => {
-  const article = await Article.findById(articleId)
-  if (!article) {
-    throw new FindByIdNotFoundError('Article', articleId)
-  }
-  return article
-}
-
-const getVersionById = async (versionId) => {
-  const article = await Version.findById(versionId)
-  if (!article) {
-    throw new FindByIdNotFoundError('Version', versionId)
-  }
-  return article
-}
-
-const getBookById = async (bookId) => {
-  const book = await Tag.findById(bookId)
-  if (!book) {
-    throw new FindByIdNotFoundError('Book', bookId)
-  }
-  return book
-}
-
 const getArticleExportContext = async (articleId) => {
   const article = await getArticleById(articleId)
   const latestVersion = article.workingVersion
   const { bib, yaml, md } = latestVersion
-  return { bib, yaml, md, articleId, title: article._doc.title }
+  return { bib, yaml, md, articleId, title: article.title }
 }
 
 const getBookExportContext = async (bookId) => {
@@ -252,8 +220,7 @@ module.exports = {
       } catch (e) {
         if (e instanceof FindByIdNotFoundError) {
           // it might be a version!
-          const version = await getVersionById(identifier)
-          const { bib, yaml, md, _id: id } = version._doc
+          const { bib, yaml, md, _id: id } = await getVersionById(identifier)
           exportHtml({ bib, yaml, md, id, title: id }, res, req)
         } else {
           throw e
@@ -273,7 +240,7 @@ module.exports = {
         if (e instanceof FindByIdNotFoundError) {
           // it might be a version!
           const version = await getVersionById(identifier)
-          const { bib, yaml, md, _id: id } = version._doc
+          const { bib, yaml, md, _id: id } = version
           exportZip({ bib, yaml, md, id, title: id }, res, req)
         } else {
           throw e
