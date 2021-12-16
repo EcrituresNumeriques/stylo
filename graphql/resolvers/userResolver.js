@@ -1,4 +1,3 @@
-const bcrypt = require('bcryptjs');
 const Isemail = require('isemail');
 
 const User = require('../models/user');
@@ -8,8 +7,6 @@ const isUser = require('../policies/isUser')
 const isAdmin = require('../policies/isAdmin')
 
 const defaultsData = require('../data/defaultsData')
-
-const { getUserById } = require('./nestedModel')
 
 const populateArgs = require('../helpers/populateArgs')
 
@@ -149,6 +146,6 @@ module.exports = {
 
     isUser(args, req)
 
-    return getUserById(args.user)
+    return User.findAllArticles(args.user)
   }
 }

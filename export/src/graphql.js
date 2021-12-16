@@ -61,9 +61,30 @@ async function getVersionById (versionId) {
 }
 
 async function getBookById (bookId) {
-  // const book = await Tag.findById(bookId)
+  const query = gql`query ($bookId: ID!) {
+    tag (tag:$bookId) {
+      _id
+      name
 
-  if (!book) {
+      articles {
+        _id
+        versions (limit: 1) {
+          name
+
+          md
+          bib
+          yaml
+        }
+      }
+    }
+  }`
+
+  try {
+    const { tag: book } = await client.request(query, { bookId })
+    return book
+  }
+  catch (e) {
+    console.error(e)
     throw new FindByIdNotFoundError('Book', bookId)
   }
 

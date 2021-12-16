@@ -125,6 +125,21 @@ module.exports = {
     }
 
     return thisTag.save()
-  }
+  },
 
+  tag: async (args, {req}) => {
+    isUser(args,req)
+
+    return Tag
+      .findOne({ _id: args.tag })
+      .populate({ path: 'articles', populate: { path: 'versions' } })
+  },
+
+  tags: async (args, {req}) => {
+    isUser(args,req)
+
+    return Tag
+      .find({ owner: args.user })
+      .populate({ path: 'articles', populate: { path: 'versions' } })
+  },
 }

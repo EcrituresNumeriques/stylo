@@ -45,6 +45,7 @@ module.exports = buildASTSchema(gql`
 
   type Version {
     _id: ID!
+    name: String
     version: Int
     revision: Int
     md: String
@@ -95,6 +96,12 @@ module.exports = buildASTSchema(gql`
 
     "Fetch authenticated user info"
     user(user: ID): User!
+
+    "Fetch tagged articles for a given user"
+    tags(user: ID): [Tag]!
+
+    "Fetch tagged articles for a given user"
+    tag(tag: ID!): Tag!
 
     "Fetch article info [need to have acces to this article]"
     article(article: ID!): Article!

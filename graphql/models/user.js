@@ -67,6 +67,33 @@ const userSchema = new Schema({
 }, {timestamps: true});
 
 
+userSchema.statics.findAllArticles = async function (userId) {
+  const user = await this
+    .findById(userId)
+    .populate('tags acquintances')
+    // see https://mongoosejs.com/docs/api/document.html#document_Document-populate
+    // for subdocument population
+    .populate({ path: 'articles', populate: { path: 'owners versions tags' }})
+    .lean();
+
+  if (!user) {
+    return null
+  }
+
+  // Also, fetch its granted accounts, and documents
+  const users = await this.findAccountAccessArticles(user)
+
+  if (users.length) {
+    const extraArticles = users
+      .flatMap(({ articles }) => articles)
+      .filter(({ id }) => !user.articles.find(a => a._id == id))
+
+    user.articles.push(...extraArticles)
+  }
+
+  return user
+}
+
 userSchema.statics.findAccountAccessUserIds = async function (userId, role = 'write') {
   const users = await this
     .find({ permissions: { $elemMatch: { user: userId, scope: 'user', roles: { $in: role } } } })

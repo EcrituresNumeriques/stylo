@@ -151,10 +151,7 @@ const getArticleExportContext = async (articleId) => {
 
 const getBookExportContext = async (bookId) => {
   const book = await getBookById(bookId)
-  const { articles, bib, _id: id, name: title } = book._doc
-  const chapters = await Article.find({
-    _id: { $in: articles },
-  }).populate('versions')
+  const { articles: chapters, _id: id, name: title } = book
 
   // we can create empty books… but no need to preview them
   if (chapters.length === 0) {
@@ -168,7 +165,7 @@ const getBookExportContext = async (bookId) => {
   const firstChapter = chaptersSorted[0]
   const { yaml } = firstChapter.versions[firstChapter.versions.length - 1]
   return {
-    bib: [bib, ...bibs].join('\n'),
+    bib: [...bibs].join('\n'),
     yaml: yaml,
     md: mds.join('\n\n'),
     id,
