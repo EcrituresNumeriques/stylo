@@ -30,6 +30,7 @@ module.exports = buildASTSchema(gql`
   type Tag {
     _id: ID!
     name: String!
+    owner: ID!
     description: String
     color: String
     articles: [Article!]!

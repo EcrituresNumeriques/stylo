@@ -81,7 +81,8 @@ const ConnectedCreateArticle = (props) => {
             {tagsSelected.map((t) => (
               <li key={`selectTag-${t._id}`}>
                 <Tag
-                  data={t}
+                  tag={t}
+                  activeUser={props.activeUser}
                   name={`selectTag-${t._id}`}
                   onClick={() =>
                     setTagsSelected(findAndUpdateTag(tagsSelected, t._id))

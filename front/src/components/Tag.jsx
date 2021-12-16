@@ -1,16 +1,17 @@
 import React from 'react'
 import styles from './tag.module.scss'
 
-export default (props) => {
+export default function ArticleTag ({ tag, key, onClick, activeUser }) {
   const classNames = [
     styles.tag,
-    props.data.selected ? styles.selected : null
+    tag.selected ? styles.selected : null
   ].join(' ')
 
-  const color = props.data.color || 'grey'
-  return (<label className={classNames} title={props.title}>
-    <input name={props.key} type="checkbox" checked={props.data.selected} onChange={props.onClick} />
-    {props.data.name}
+  const color = tag.color || 'grey'
+
+  return (<label className={classNames}>
+    { activeUser._id === tag.owner && <input name={key} type="checkbox" checked={tag.selected} onChange={onClick} />}
+    {tag.name}
     <span className={styles.chip} style={{backgroundColor: color}}/>
   </label>)
 }

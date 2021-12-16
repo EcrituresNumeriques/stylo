@@ -12,13 +12,14 @@ const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
 const ConnectedArticleTags = ({ article, activeUser, masterTags, stateTags, setTags, sessionToken, applicationConfig }) => {
   const articleId = article._id
 
-  const addToTags = async ({ name, _id, color }) => {
-    setTags([...stateTags, { _id, name, color, selected: true }])
+  const addToTags = async (tag) => {
+    setTags([...stateTags, { ...tag, selected: true }])
+
     try {
       const query = `mutation($article:ID!,$tag:ID!,$user:ID!){addToTag(article:$article,tag:$tag,user:$user){ _id }}`
       const variables = {
         article: articleId,
-        tag: _id,
+        tag: tag._id,
         user: activeUser._id,
       }
       await askGraphQL(
@@ -54,27 +55,26 @@ const ConnectedArticleTags = ({ article, activeUser, masterTags, stateTags, setT
 
   return (
     <ul>
-      {stateTags.map((t) => (
-        <li
-          onClick={() => rmFromTags(t._id)}
-          key={`article-${articleId}-${t._id}`}
-        >
-          <Tag data={t}
-               name={`articleTag-${t._id}`}
-               onClick={() => rmFromTags(t._id)}
+      {stateTags.map((tag) => (
+        <li key={`article-${articleId}-${tag._id}`}>
+          <Tag tag={tag}
+               activeUser={activeUser}
+               name={`articleTag-${tag._id}`}
+               onClick={() => rmFromTags(tag._id)}
           />
         </li>
       ))}
 
       {masterTags
         .filter((t) => !stateTags.map((u) => u._id).includes(t._id))
-        .map((t) => (
+        .map((tag) => (
           <li
-            key={`article-${articleId}-${t._id}`}
+            key={`article-${articleId}-${tag._id}`}
           >
-            <Tag data={t}
-                 name={`articleTag-${t._id}`}
-                 onClick={() => addToTags({ _id: t._id, name: t.name, color: t.color })}
+            <Tag tag={tag}
+                 activeUser={activeUser}
+                 name={`articleTag-${tag._id}`}
+                 onClick={() => addToTags(tag)}
             />
           </li>
         ))}
