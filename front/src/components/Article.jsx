@@ -35,6 +35,8 @@ const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken
   const [tempTitle, setTempTitle] = useState(article.title)
   const [sharing, setSharing] = useState(false)
 
+  const isArticleOwner = activeUser._id === article.owners[0]._id
+
   const fork = async () => {
     try {
       const query = `mutation($user:ID!,$article:ID!){sendArticle(article:$article,to:$user,user:$user){ _id }}`
@@ -119,22 +121,26 @@ const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken
       )}
 
       <aside className={styles.actionButtons}>
-        <Button title="Delete" icon={true} onClick={() => setDeleting(true)}>
+        {isArticleOwner && <Button title="Delete" icon={true} onClick={() => setDeleting(true)}>
           <Trash />
-        </Button>
+        </Button>}
 
         <Link title="Preview" target="_blank" className={[buttonStyles.button, buttonStyles.icon].join(' ')} to={`/article/${article._id}/preview`}>
           <Eye />
         </Link>
-        <Button title="Share" icon={true} onClick={() => setSharing(true)}>
+
+        {isArticleOwner && <Button title="Share" icon={true} onClick={() => setSharing(true)}>
           <Send />
-        </Button>
+        </Button>}
+
         <Button title="Duplicate" icon={true} onClick={() => fork()}>
           <Copy />
         </Button>
+
         <Button title="Export" icon={true} onClick={() => setExporting(true)}>
           <Printer />
         </Button>
+
         <Link title="Edit" className={[buttonStyles.button, buttonStyles.primary].join(' ')} to={`/article/${article._id}`}>
           <Edit3 />
         </Link>
