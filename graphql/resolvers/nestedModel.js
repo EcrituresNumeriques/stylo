@@ -27,15 +27,4 @@ const getUserById = async (userId) => {
   return user;
 };
 
-const getVersionById = async (versionId) => {
-    const version = await Version.findById(versionId).populate('owner article');
-
-    if(!version){
-        throw new Error(`Version id ${versionId} does not exist`)
-    }
-    return version;
-};
-
-
 exports.getUserById = getUserById;
-exports.getVersionById = getVersionById;

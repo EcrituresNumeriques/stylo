@@ -31,12 +31,8 @@ const versionSchema = new Schema({
   bib: String,
   sommaire:{
     type:String,
-    default:'# titre'
+    default: ''
   },
-  hidden:{
-    type:Boolean,
-    default:false
-  }
 }, {timestamps:true});
 
 module.exports = mongoose.model('Version', versionSchema);

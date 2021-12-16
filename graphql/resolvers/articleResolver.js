@@ -211,12 +211,10 @@ module.exports = {
   article: async (args, { req }) => {
     const { article:articleId } = args
 
-    const userIds = await User.findAccountAccessUserIds(req.user._id)
+    isUser(args, req)
 
-    const article = await Article
-      .findOne({ _id: articleId, owners: { $in: [req.user._id, ...userIds] } })
-      .populate('owners versions tags')
-      .lean()
+    const userIds = await User.findAccountAccessUserIds(req.user._id)
+    const article = await Article.findOneByOwners(articleId, [req.user._id, userIds])
 
     if (!article) {
       throw new Error(`Unable to find this article : _id ${articleId} does not exist`)
@@ -225,7 +223,7 @@ module.exports = {
     return article
   },
   articles: async (_, {req}) => {
-    isAdmin(req);
+    isAdmin(req)
 
     return Article.find().populate('owners versions tags')
   },

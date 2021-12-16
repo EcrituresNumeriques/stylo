@@ -4,8 +4,6 @@ const User = require('../models/user');
 
 const isUser = require('../policies/isUser')
 
-const { getVersionById } = require('./nestedModel')
-
 const populateArgs = require('../helpers/populateArgs')
 
 module.exports = {
@@ -25,13 +23,9 @@ module.exports = {
       throw new Error('This user does not exist!')
     }
 
-    const userIds = await User.findAccountAccessUserIds(args.user)
-
     // fetch article
-    const articleToSaveInto = await Article.findOne({
-      _id: args.version.article,
-      owners: { $in: [args.user, ...userIds] }
-    }).populate('owners versions')
+    const userIds = await User.findAccountAccessUserIds(args.user)
+    const articleToSaveInto = await Article.findOneByOwners(args.version.article, [req.user._id, userIds])
 
     if (!articleToSaveInto) {
       throw new Error('Wrong article ID!')
@@ -75,20 +69,15 @@ module.exports = {
     return returnedVersion
   },
   unlinkVersion: async (args, { req }) => {
-    try {
-      args = populateArgs(args, req)
-      isUser(args, req)
-    } catch (err) {
-      throw err
-    }
+    args = populateArgs(args, req)
+    isUser(args, req)
   },
   version: async (args, { req }) => {
-    // TODO need to make sure user should have access to this version
+    isUser(args, req)
 
-    try {
-      return await getVersionById(args.version)
-    } catch (err) {
-      throw err
-    }
+    // TODO need to make sure user should have access to this version
+    const version = await Version.findById(args.version).populate('owner article')
+
+    return version
   },
 }
