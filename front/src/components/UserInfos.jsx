@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import { Check, Loader } from 'react-feather'
 
 import askGraphQL from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
@@ -8,7 +9,6 @@ import formStyles from './field.module.scss'
 import Button from "./Button";
 import Field from "./Field";
 import formatTimeAgo from '../helpers/formatTimeAgo';
-import Loading from "./Loading";
 
 const mapStateToProps = ({
   password,
@@ -22,8 +22,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateActiveUser: (displayName) =>
       dispatch({ type: `UPDATE_ACTIVE_USER`, payload: displayName }),
-    removedMyself: (_id) =>
-      dispatch({ type: 'REMOVE_MYSELF_ALLOWED_LOGIN', payload: _id }),
     clearZoteroToken: () => dispatch({ type: 'CLEAR_ZOTERO_TOKEN' }),
   }
 }
@@ -119,10 +117,6 @@ const ConnectedUser = (props) => {
     }
   }
 
-  if (isLoading) {
-    return <Loading/>
-  }
-
   return (<>
     <section className={styles.section}>
       <h2>Account information</h2>
@@ -190,7 +184,10 @@ const ConnectedUser = (props) => {
         </Field>
 
         <div className={formStyles.footer}>
-          <Button primary={true}>Update</Button>
+          <Button primary={true} disabled={isLoading}>
+            {isLoading ? <Loader /> : <Check />}
+            Save changes
+          </Button>
         </div>
       </form>
     </section>

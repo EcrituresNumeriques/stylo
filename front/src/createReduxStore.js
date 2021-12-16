@@ -18,7 +18,6 @@ function createReducer (initialState, handlers) {
 const initialState = {
   logedIn: false,
   hasBooted: false,
-  users: [],
   sessionToken: undefined,
   workingArticle: {
     state: 'saved'
@@ -56,10 +55,7 @@ const reducer = createReducer(initialState, {
   CLEAR_ZOTERO_TOKEN: clearZoteroToken,
   LOGIN: loginUser,
   UPDATE_ACTIVE_USER: updateActiveUser,
-  RELOAD_USERS: reloadUsers,
-  SWITCH: switchUser,
   LOGOUT: logoutUser,
-  REMOVE_MYSELF_ALLOWED_LOGIN: removeMyselfAllowedLogin,
 
   // article reducers
   UPDATE_ARTICLE_STATS: updateArticleStats,
@@ -164,7 +160,6 @@ function setProfile (state, action) {
     hasBooted: true,
     activeUser,
     logedIn: true,
-    users: [activeUser._id],
   })
 }
 
@@ -191,41 +186,13 @@ function updateActiveUser (state, action) {
   return {
     ...state,
     activeUser: { ...state.activeUser, displayName: action.payload },
-    users: [...state.users].map((u) => {
-      if (state.activeUser._id === u._id) {
-        u.displayName = action.payload
-      }
-      return u
-    })
-
   }
-}
-
-function reloadUsers (state, { payload: users }) {
-  return { ...state, users }
-}
-
-function switchUser (state, { payload: activeUser }) {
-  if (state.users.map((u) => u._id).includes(activeUser._id)) {
-    return { ...state, activeUser }
-  }
-
-  return state
 }
 
 function logoutUser (state) {
   return { ...state, ...initialState }
 }
 
-function removeMyselfAllowedLogin (state, { payload: userId }) {
-  const remainingUsers = state.users.filter((u) => u._id !== userId)
-
-  return {
-    ...state,
-    users: remainingUsers,
-    activeUser: remainingUsers[0],
-  }
-}
 
 const SPACE_RE = /\s+/gi
 const CITATION_RE = /(\[@[\w-]+)/gi

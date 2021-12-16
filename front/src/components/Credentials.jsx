@@ -16,12 +16,6 @@ const mapStateToProps = ({
 }) => {
   return { activeUser, sessionToken, applicationConfig }
 }
-const mapDispatchToProps = (dispatch) => {
-  return {
-    switchUser: (u) => dispatch({ type: `SWITCH`, payload: u }),
-    updateUser: (u) => dispatch({ type: 'RELOAD_USERS', payload: u }),
-  }
-}
 
 const Credentials = ({ activeUser, sessionToken, applicationConfig }) => {
   const [password, setPassword] = useState('')
@@ -68,7 +62,7 @@ const Credentials = ({ activeUser, sessionToken, applicationConfig }) => {
         <p>
           This section is strictly private, changing your password will only
           affect your combination of username/email and password. Other users
-          having access to one or more of your available accounts won't be
+          having access to one or more of your available accounts won&apos;t be
           affected.
         </p>
         <form className={styles.passwordForm} onSubmit={(e) => changePassword(e)}>
@@ -105,4 +99,4 @@ const Credentials = ({ activeUser, sessionToken, applicationConfig }) => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Credentials)
+export default connect(mapStateToProps)(Credentials)
