@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const Isemail = require('isemail');
 
 const User = require('../models/user');
@@ -32,7 +33,9 @@ module.exports = {
       displayName: userInput.displayName || userInput.username,
       institution: userInput.institution || null,
       firstName: userInput.firstName || null,
-      lastName: userInput.lastName || null
+      lastName: userInput.lastName || null,
+      password: bcrypt.hashSync(userInput.password, 10),
+      authType: 'local',
     });
 
     //Add default article + default version

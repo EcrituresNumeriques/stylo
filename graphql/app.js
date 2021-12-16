@@ -243,26 +243,17 @@ app.use('/authorization-code/callback',
 
 app.get('/logout', (req, res) => {
   req.logout()
+  req.session.destroy()
   res.clearCookie('graphQL-jwt')
   res.redirect(req.headers.referer)
 })
 
 app.post('/login',
   passport.authenticate('local', { failWithError: true }),
-  function onSuccess(req, res, _) {
-    const { email, _id, admin, authType } = req.user
-    const payload = {
-      _id,
-      email,
-      admin,
-      authType,
-      session: true
-    }
+  async function onSuccess(req, res) {
+    const { email } = req.user
 
-    const token = jwt.sign(
-      payload,
-      jwtSecret
-    )
+    const token = await createJWTToken({ email, jwtSecret })
 
     res.cookie("graphQL-jwt", token, {
       expires: 0,
@@ -274,7 +265,7 @@ app.post('/login',
     res.statusCode = 200
     res.json({ user: req.user, token })
   },
-  function onFailure(error, req, res, _) {
+  function onFailure(error, req, res) {
     console.error('error', error)
     res.statusCode = 401
     res.json({ error })
