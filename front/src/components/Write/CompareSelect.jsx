@@ -50,8 +50,7 @@ const CompareSelect = ({
     ? `v${currentArticleVersion.major}.${currentArticleVersion.minor}`
     : 'latest'
   const currentArticleVersionTitle = [currentArticleVersionLabel, currentVersionVersionNumber].join(' ')
-  const versionTitle = readOnly ? currentArticleVersionTitle : 'working copy'
-  const title = `Comparing ${versionTitle} with `
+  const versionTitle = readOnly ? currentArticleVersionTitle : 'Working Copy'
   return (
     <section className={styles.compareVersions}>
       <h2>Compare Versions</h2>
