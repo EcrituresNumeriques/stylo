@@ -2,11 +2,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { batch, shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import 'codemirror/mode/markdown/markdown'
-import { Controlled as CodeMirror } from 'react-codemirror2'
+import Editor from "@monaco-editor/react";
 import throttle from 'lodash.throttle'
 import debounce from 'lodash.debounce'
-import 'codemirror/lib/codemirror.css'
 
 import styles from './write.module.scss'
 
@@ -17,9 +15,11 @@ import WriteRight from './WriteRight'
 import Compare from './Compare'
 import CompareSelect from './CompareSelect'
 import Loading from '../Loading'
+import { registerBibliographyCompletion } from "../../helpers/monacoEditor";
 
 function Write() {
   const { version: currentVersion, id: articleId, compareTo } = useParams()
+  const articleBibTeXEntries = useSelector(state => state.articleBibTeXEntries)
   const userId = useSelector((state) => state.activeUser._id)
   const applicationConfig = useSelector(
     (state) => state.applicationConfig,
@@ -27,6 +27,14 @@ function Write() {
   )
   const [readOnly, setReadOnly] = useState(Boolean(currentVersion))
   const dispatch = useDispatch()
+
+  const monacoRef = useRef(null)
+
+  function handleEditorDidMount (editor, monaco) {
+    monacoRef.current = editor
+    registerBibliographyCompletion(monaco, articleBibTeXEntries)
+  }
+
   const deriveArticleStructureAndStats = useCallback(
     throttle(
       ({ text }) => {
@@ -122,20 +130,20 @@ function Write() {
     }
   }`
 
-  const instanceCM = useRef(null)
-
   const handleUpdateCursorPosition = useCallback(
     (line) => {
       try {
-        const editor = instanceCM.current.editor
-        editor.focus()
-        editor.setCursor(line, 0)
-        editor.execCommand('goLineEnd')
+        const editor = monacoRef.current
+        editor?.focus()
+        const model = editor?.getModel()
+        const endOfLineColumn = model.getLineMaxColumn(line + 1)
+        editor?.setPosition({lineNumber: line + 1, column: endOfLineColumn})
+        editor?.revealLine(line + 1, 1) // smooth
       } catch (err) {
-        console.error('Unable to update CodeMirror cursor position', err)
+        console.error('Unable to update Monaco cursor position', err)
       }
     },
-    [instanceCM]
+    [monacoRef]
   )
 
   const variables = {
@@ -155,21 +163,7 @@ function Write() {
     zoteroLink: '',
   })
 
-  const codeMirrorOptions = {
-    mode: 'markdown',
-    lineWrapping: true,
-    lineNumbers: false,
-    autofocus: true,
-    viewportMargin: Infinity,
-    spellcheck: true,
-    extraKeys: {
-      'Shift-Ctrl-Space': function (cm) {
-        cm.replaceSelection('\u00a0')
-      },
-    },
-  }
-
-  const handleMDCM = (___, __, text) => {
+  const handleUpdateWorkingArticleText = (text) => {
     deriveArticleStructureAndStats({ text })
     updateWorkingArticleText({ text })
     setWorkingArticleDirty()
@@ -276,33 +270,39 @@ function Write() {
         handleYaml={handleYaml}
         readOnly={readOnly}
       />
-      {compareTo && (
-        <CompareSelect
-          articleId={articleInfos._id}
-          selectedVersion={currentVersion}
-          compareTo={compareTo}
-          currentArticleVersion={live.version}
-          readOnly={readOnly}
-        />
-      )}
-
-      <article className={styles.article}>
+      <article>
         <>
-          {readOnly && <pre>{live.md}</pre>}
-          {!readOnly && (
-            <CodeMirror
-              value={live.md}
-              cursor={{ line: 0, character: 0 }}
-              editorDidMount={() => {
-                window.scrollTo(0, 0)
-                //editor.scrollIntoView({ line: 0, ch: 0 })
+          {!compareTo &&
+            <Editor
+              defaultValue={live.md}
+              height="calc(80vh - 49px)"
+              className={styles.editor}
+              defaultLanguage="markdown"
+              onChange={(value) => {
+                handleUpdateWorkingArticleText(value)
               }}
-              onBeforeChange={handleMDCM}
-              options={codeMirrorOptions}
-              ref={instanceCM}
+              options={{
+                readOnly: readOnly,
+                wordBasedSuggestions: false,
+                overviewRulerLanes: 0,
+                hideCursorInOverviewRuler: true,
+                overviewRulerBorder: false,
+                scrollBeyondLastLine: false,
+                minimap: {
+                  enabled: false
+                }
+              }}
+              onMount={handleEditorDidMount}
             />
-          )}
-          {compareTo && <Compare compareTo={compareTo} md={live.md} />}
+          }
+          {compareTo && <Compare
+            articleId={articleInfos._id}
+            selectedVersion={currentVersion}
+            compareTo={compareTo}
+            currentArticleVersion={live.version}
+            readOnly={readOnly}
+            md={live.md}
+          />}
         </>
       </article>
     </section>

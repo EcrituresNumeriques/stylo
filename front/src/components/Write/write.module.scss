@@ -1,31 +1,11 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
 
-.article {
+.editor {
   @extend .wrapped-center;
-  background-color: $extra-background-color;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, .3);
-  height: 100%;
-  display: flex;
-
-  textarea {
-    padding: 1rem;
-    width: 100%;
-  }
-
-  > div {
-    padding: 1rem;
-    flex: 1 1 50%;
-  }
-
-  > pre,
-  > div > pre {
-    margin-top: 0;
-    padding: 1rem;
-    width: 100%;
-    white-space: pre-wrap;
-    flex: 1 1 50%;
-  }
+  min-height: 500px;
+  height: calc(90vh - 49px);
 }
 
 .simplePage {

@@ -1,8 +1,18 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
 
-.compare {
+.compareVersions {
   @extend .wrapped-center;
-  background-color: $extra-background-color;
   padding: 1rem;
+
+  > h2 {
+    padding-bottom: 0.75em;
+    text-align: center;
+  }
+}
+
+.versions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

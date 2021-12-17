@@ -1,0 +1,8 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+.editor {
+  @extend .wrapped-center;
+  min-height: 500px;
+  height: calc(90vh - 49px);
+}

@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import styles from './compareSelect.module.scss'
+import Select from "../Select";
 
 const mapStateToProps = ({ articleVersions }) => {
   return { articleVersions }
@@ -52,17 +53,24 @@ const CompareSelect = ({
   const versionTitle = readOnly ? currentArticleVersionTitle : 'working copy'
   const title = `Comparing ${versionTitle} with `
   return (
-    <p className={styles.compare}>
-      {title}
-      <select onChange={handleCompareSelect} value={compareTo}>
-        <option value={false}>Stop compare</option>
-        {articleVersions.map((v) => (
-          <option value={v._id} key={`versionCompare-${v._id}`}>
-            {v.message || 'No label'} v{v.version}.{v.revision}
-          </option>
-        ))}
-      </select>
-    </p>
+    <section className={styles.compareVersions}>
+      <h2>Compare Versions</h2>
+      <div className={styles.versions}>
+        <div className={styles.originalVersion}>
+          {versionTitle}
+        </div>
+        <div className={styles.modifiedVersion}>
+          <Select onChange={handleCompareSelect} value={compareTo}>
+            <option value={false}>Stop compare</option>
+            {articleVersions.map((v) => (
+              <option value={v._id} key={`versionCompare-${v._id}`}>
+                {v.message || 'No label'} v{v.version}.{v.revision}
+              </option>
+            ))}
+          </Select>
+        </div>
+      </div>
+    </section>
   )
 }
 
