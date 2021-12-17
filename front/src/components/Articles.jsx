@@ -159,21 +159,24 @@ const ConnectedArticles = (props) => {
             />
           )}
           <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search" onChange={(e) => setFilter(etv(e))}/>
-          <h4>Filter by Tags</h4>
-          <ul className={styles.filterByTags}>
-            {filterTags.map((t) => (
-              <li key={`filterTag-${t._id}`}>
-                <Tag
-                  data={t}
-                  name={`filterTag-${t._id}`}
-                  onClick={() => {
-                    // shallow copy otherwise React won't render the components again
-                    setFilterTags([...findAndUpdateTag(filterTags, t._id)])
-                  }}
-                />
-              </li>
-            ))}
-          </ul>
+          {tags.length > 0 &&
+          <>
+            <h4>Filter by Tags</h4>
+            <ul className={styles.filterByTags}>
+              {filterTags.map((t) => (
+                  <li key={`filterTag-${t._id}`}>
+                    <Tag
+                        data={t}
+                        name={`filterTag-${t._id}`}
+                        onClick={() => {
+                          // shallow copy otherwise React won't render the components again
+                          setFilterTags([...findAndUpdateTag(filterTags, t._id)])
+                        }}
+                    />
+                  </li>
+              ))}
+            </ul>
+          </>}
           {articles
             .filter(filterByTagsSelected)
             .filter(

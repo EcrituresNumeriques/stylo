@@ -41,5 +41,8 @@
   },
   "devDependencies": {
     "dotenv": "^10.0.0"
+  },
+  "volta": {
+    "node": "16.13.1"
   }
 }
