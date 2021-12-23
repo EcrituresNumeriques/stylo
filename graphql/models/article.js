@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const { yaml: defaultYaml, md: defaultMd, bib: defaultBib } = require('../data/defaultsData.js')
 
 const articleSchema = new Schema({
   owners:[
@@ -21,15 +20,15 @@ const articleSchema = new Schema({
   workingVersion: {
     md: {
       type: String,
-      default: defaultMd
+      default: ''
     },
     yaml: {
       type: String,
-      default: defaultYaml
+      default: ''
     },
     bib: {
       type: String,
-      default: defaultBib
+      default: ''
     },
   },
   versions:[

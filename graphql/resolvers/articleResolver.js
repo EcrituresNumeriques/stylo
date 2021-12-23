@@ -27,7 +27,12 @@ module.exports = {
 
       //Add default article + default version
       const newArticle = new Article({
-        title: args.title || defaultsData.title
+        title: args.title || defaultsData.title,
+        workingVersion: {
+          md: defaultsData.md,
+          bib: defaultsData.bib,
+          yaml: defaultsData.yaml,
+        }
       });
 
       thisUser.articles.push(newArticle)
@@ -110,7 +115,7 @@ module.exports = {
       isUser(args,req)
 
       //Fetch article and user to send to
-      const fetchedArticle = await Article.findOne({_id:args.article,owners:args.user})
+      const fetchedArticle = await Article.findOne({_id:args.article,owners:args.user}).lean()
       if(!fetchedArticle){throw new Error('Unable to find article')}
       const fetchedUser = await User.findOne({_id:args.to})
       if(!fetchedUser){throw new Error('Unable to find user')}
@@ -131,7 +136,6 @@ module.exports = {
       })
 
       newArticle.isNew = true
-      newArticle.owners.push(fetchedUser.id)
       fetchedUser.articles.push(newArticle)
 
       //Save the three objects
