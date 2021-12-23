@@ -4,12 +4,12 @@ on:
   push:
     branches:
     - master
-    paths-ignore:
-    - 'docs/**'
-    - 'project/**'
-    - '*.md'
-    - '*.toml'
-    - '*.env'
+    paths:
+    - 'graphql/**'
+    - 'front/**'
+    - 'export/**'
+    - 'docker-compose.yaml'
+    - 'stylo-example.env'
 
 jobs:
   build:

@@ -73,7 +73,7 @@
     - name: Inject Git version in package.json files
       when: app_version != ""
       replace:
-        path: "{{ item }}"
+        path: "~/stylo/{{ item }}"
         regexp: '"version": "[^"]+"'
         replace: '"version": "{{ app_version }}"'
         before: '"scripts"'

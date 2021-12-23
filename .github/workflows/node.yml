@@ -3,8 +3,16 @@ name: Node applications
 on:
   push:
     branches:
-      - master
+    - master
+    paths:
+    - 'graphql/**'
+    - 'front/**'
+    - 'export/**'
   pull_request:
+    paths:
+    - 'graphql/**'
+    - 'front/**'
+    - 'export/**'
 
 jobs:
   build-front:
