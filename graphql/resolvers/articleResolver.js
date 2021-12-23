@@ -118,12 +118,19 @@ module.exports = {
       if(!fetchedArticle){throw new Error('Unable to fetch version')}
 
       //All good, create new Article & merge version/article/user
-      let prefix = '[Sent] '
-      if(args.user === args.to){
-        prefix = '[Copy] '
-      }
+      const prefix = args.user === args.to ? '[Copy] ' : '[Sent] '
 
-      let newArticle = new Article({title:prefix+fetchedArticle.title, zoteroLink:fetchedArticle.zoteroLink})
+      const newArticle = new Article({
+        ...fetchedArticle,
+        _id: undefined,
+        owners: [fetchedUser.id],
+        versions: [],
+        createdAt: null,
+        updatedAt: null,
+        title: prefix + fetchedArticle.title,
+      })
+
+      newArticle.isNew = true
       newArticle.owners.push(fetchedUser.id)
       fetchedUser.articles.push(newArticle)
 
