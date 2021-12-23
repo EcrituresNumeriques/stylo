@@ -1,7 +1,11 @@
 import { defineConfig } from 'vite'
 import { env } from 'process'
+import { createRequire } from 'module'
 import react from '@vitejs/plugin-react'
 import handlebars from 'vite-plugin-handlebars'
+
+const require = createRequire(import.meta.url)
+const { version } = require('./package.json')
 
 const { NODE_ENV, SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
 
@@ -32,6 +36,7 @@ export default defineConfig({
     })
   ],
   define: {
+    APP_VERSION: JSON.stringify(version),
     'process.env': {
       NODE_ENV: env.NODE_ENV
     },

@@ -70,6 +70,18 @@
       loop:
         - { src: './stylo.env', dest: '~/stylo/stylo.env' }
 
+    - name: Inject Git version in package.json files
+      when: app_version != ""
+      replace:
+        path: "{{ item }}"
+        regexp: '"version": "[^"]+"'
+        replace: '"version": "{{ app_version }}"'
+        before: '"scripts"'
+      loop:
+        - front/package.json
+        - graphql/package.json
+        - export/package.json
+
     - name: Rebuild and restart Docker containers
       docker_compose:
         project_src: ~/stylo

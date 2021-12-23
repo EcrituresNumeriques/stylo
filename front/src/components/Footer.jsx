@@ -14,7 +14,7 @@ function Footer () {
     <Route path="*">
       <footer className={styles.footerContainer}>
         <ul className={styles.footerList}>
-          <li>Stylo</li>
+          <li>Stylo {APP_VERSION}</li>
           <li>
             <a href="https://github.com/EcrituresNumeriques/stylo/releases" rel="noopener noreferrer" target="_blank">
               Changelog

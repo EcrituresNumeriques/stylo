@@ -33,6 +33,10 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
 
+    - name: Get the Tag version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+
     - name: Run playbook
       working-directory: ./infrastructure
-      run: ansible-playbook -i inventories/prod --extra-vars "@vault-prod.yml" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v
+      run: ansible-playbook -i inventories/prod --extra-vars "@vault-prod.yml" --extra-vars "app_version=${{ steps.get_version.outputs.VERSION }}" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v

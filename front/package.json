@@ -2,7 +2,7 @@
   "name": "@ecrituresnumerique/stylo-front",
   "private": true,
   "description": "Stylo front-end, online text editor for scholars",
-  "version": "0.1.0",
+  "version": "dev",
   "license": "MIT",
   "type": "module",
   "#browserlist#": "https://browserslist.dev/?q=bGFzdCAzIHZlcnNpb25zLCBzYWZhcmkgPj0gMTAsIG5vdCBleHBsb3JlciA8PSAxMSwgbm90IGV4cGxvcmVybW9iaWxlIDw9IDEx",
