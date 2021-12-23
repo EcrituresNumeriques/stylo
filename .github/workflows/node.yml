@@ -8,11 +8,13 @@ on:
     - 'graphql/**'
     - 'front/**'
     - 'export/**'
+    - '.github/workflows/node.yml'
   pull_request:
     paths:
     - 'graphql/**'
     - 'front/**'
     - 'export/**'
+    - '.github/workflows/node.yml'
 
 jobs:
   build-front:

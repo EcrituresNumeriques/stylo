@@ -8,6 +8,7 @@ on:
     - 'graphql/**'
     - 'front/**'
     - 'export/**'
+    - '.github/workflows/docker.yml'
     - 'docker-compose.yaml'
     - 'stylo-example.env'
   pull_request:
@@ -15,6 +16,7 @@ on:
     - 'graphql/**'
     - 'front/**'
     - 'export/**'
+    - '.github/workflows/docker.yml'
     - 'docker-compose.yaml'
     - 'stylo-example.env'
 

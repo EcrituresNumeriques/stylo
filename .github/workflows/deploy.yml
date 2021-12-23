@@ -8,6 +8,8 @@ on:
     - 'graphql/**'
     - 'front/**'
     - 'export/**'
+    - 'infrastructure/**'
+    - '.github/**'
     - 'docker-compose.yaml'
     - 'stylo-example.env'
 
