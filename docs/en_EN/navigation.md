@@ -32,6 +32,7 @@
   * [Preview and annotate an article](pages/preview.md)
   * [Manage my article](pages/myarticles.md)
   * [Solving problems](pages/problems.md)
+  * [Exports](pages/exports.md)
 
 [Ressources](pages/publications.md)
 
