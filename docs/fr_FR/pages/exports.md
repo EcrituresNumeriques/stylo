@@ -22,7 +22,7 @@ Trois modèles sont proposés :
 
 - Le modèle de L'École de bibliothéconomie et des sciences de l'information (EBSI)
 
-<iframe src="/pdf/test.pdf" title="testEBSI"></iframe> 
+<iframe src="uploads/pdf/test.pdf" title="testEBSI"></iframe> 
 
 
 ### Modèle DLLF
