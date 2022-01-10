@@ -22,8 +22,9 @@ Trois modèles sont proposés :
 
 - Le modèle de L'École de bibliothéconomie et des sciences de l'information (EBSI)
 
-![EBSI](uploads/pdf/test.pdf)
-<iframe src="http://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/pdf/test.pdf" title="testEBSI" style="height: 100%; width: 100%"></iframe> 
+<iframe src="http://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/pdf/test.pdf" title="testEBSI" width="100%" height="500" allowfullscreen></iframe> 
+
+![Ouvrir dans nouvelle page](uploads/pdf/test.pdf)
 
 
 ### Modèle DLLF
