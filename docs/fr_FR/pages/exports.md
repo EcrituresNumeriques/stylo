@@ -22,6 +22,7 @@ Trois modèles sont proposés :
 
 - Le modèle de L'École de bibliothéconomie et des sciences de l'information (EBSI)
 
+![EBSI](uploads/pdf/test.pdf)
 <iframe src="uploads/pdf/test.pdf" title="testEBSI"></iframe> 
 
 
