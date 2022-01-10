@@ -26,7 +26,6 @@ const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
 }
 
 const ConnectedArticle = (props) => {
-  const exportEndpoint = props.applicationConfig.exportEndpoint
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -82,8 +81,8 @@ const ConnectedArticle = (props) => {
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
           <Export
-            exportId={generateArticleExportId(props.title, props.versions[0].version, props.versions[0].revision)}
-            articleVersionId={props.versions[0]._id}
+            exportId={generateArticleExportId(props.title)}
+            articleVersionId={props._id}
           />
         </Modal>
       )}
