@@ -174,7 +174,12 @@ function loginUser (state, { login }) {
     return {
       ...state,
       logedIn: true,
-      activeUser: login.user,
+      activeUser: {
+        ...login.user,
+        // dates are expected to be in timestamp string format (including milliseconds)
+        createdAt: String(new Date(login.user.createdAt).getTime()),
+        updatedAt: String(new Date(login.user.updatedAt).getTime()),
+      },
       sessionToken: login.token,
     }
   }
