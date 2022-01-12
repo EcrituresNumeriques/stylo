@@ -73,7 +73,12 @@ userSchema.statics.findAllArticles = async function (userId) {
     .populate('tags acquintances')
     // see https://mongoosejs.com/docs/api/document.html#document_Document-populate
     // for subdocument population
-    .populate({ path: 'articles', populate: { path: 'owners versions tags' }})
+    .populate({
+      path: 'articles',
+      populate: {
+        path: 'owners owner contributors versions tags'
+      }
+    })
     .lean();
 
   if (!user) {
@@ -107,7 +112,7 @@ userSchema.statics.findAccountAccessUserIds = async function (userId, role = 'wr
 userSchema.statics.findAccountAccessArticles = function (user, role = 'read') {
   return this
     .find({ permissions: { $elemMatch: { user, scope: 'user', roles: { $in: role } } } })
-    .populate({ path: 'articles', populate: { path: 'owners versions tags' }})
+    .populate({ path: 'articles', populate: { path: 'owners owner contributors versions tags' }})
 }
 
 module.exports = mongoose.model('User', userSchema)

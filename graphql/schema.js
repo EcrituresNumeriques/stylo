@@ -65,11 +65,18 @@ module.exports = buildASTSchema(gql`
     title: String
     zoteroLink: String
     owners(limit: Int, page: Int): [User!]!
+    owner: User
+    contributors: [ArticleContributor]!
     workingVersion: WorkingVersion
     versions(limit: Int, page: Int): [Version!]!
     tags(limit: Int, page: Int): [Tag!]!
     createdAt: String
     updatedAt: String
+  }
+
+  type ArticleContributor {
+    user: User!
+    roles: [String]
   }
 
   input UserInput {

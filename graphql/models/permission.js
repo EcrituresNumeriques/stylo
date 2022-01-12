@@ -14,16 +14,3 @@ module.exports.UserPermissionSchema = new mongoose.Schema({
 
   roles: [ String ]
 })
-
-module.exports.ArticlePermissionSchema = new mongoose.Schema({
-  scope: {
-    type: String,
-    enum: ['article'],
-    default: 'article'
-  },
-
-  articleId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Article'
-  },
-})

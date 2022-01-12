@@ -1,6 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const ArticleContributorSchema = new Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Article'
+  },
+  roles: [ String ]
+})
+
 const articleSchema = new Schema({
   owners:[
     {
@@ -13,6 +21,11 @@ const articleSchema = new Schema({
     required:true,
     default: 'autocreated'
   },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  contributors: [ ArticleContributorSchema ],
   zoteroLink:{
     type:String,
     default: ''
@@ -51,7 +64,7 @@ articleSchema.statics.findOneByOwners = function findOneByOwners (articleId, use
 
   return this
     .findOne($in.length ? { _id: articleId, owners: { $in } } : { _id: articleId })
-    .populate('owners tags')
+    .populate('owners owner contributors tags')
     .populate({ path: 'versions', populate: { path: 'owner' } })
     .lean()
 }

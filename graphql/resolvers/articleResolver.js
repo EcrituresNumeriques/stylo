@@ -226,6 +226,6 @@ module.exports = {
   articles: async (_, {req}) => {
     isAdmin(req)
 
-    return Article.find().populate('owners versions tags')
+    return Article.find().populate('owners owner contributors versions tags')
   },
 }
