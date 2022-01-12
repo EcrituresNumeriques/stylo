@@ -19,6 +19,7 @@ module.exports = buildASTSchema(gql`
     zoteroToken: String
     createdAt: String
     updatedAt: String
+    apiToken: String
   }
 
   type UserPermission {

@@ -1,8 +1,10 @@
-const bcrypt = require('bcryptjs');
-const Isemail = require('isemail');
+const bcrypt = require('bcryptjs')
+const Isemail = require('isemail')
+const jwt = require("jsonwebtoken")
+const jwtSecret = process.env.JWT_SECRET_SESSION_COOKIE
 
-const User = require('../models/user');
-const Article = require('../models/article');
+const User = require('../models/user')
+const Article = require('../models/article')
 
 const isUser = require('../policies/isUser')
 const isAdmin = require('../policies/isAdmin')
@@ -149,6 +151,10 @@ module.exports = {
 
     isUser(args, req)
 
-    return User.findAllArticles(args.user)
+    const user = await User.findAllArticles(args.user)
+    const apiToken = req.user
+      ? { apiToken: jwt.sign(req.user, jwtSecret) }
+      : {}
+    return { ...user,  ...apiToken }
   }
 }

@@ -14,6 +14,7 @@ export function getUserProfile(applicationConfig) {
       admin
       createdAt
       updatedAt
+      apiToken
 
       acquintances {
         _id

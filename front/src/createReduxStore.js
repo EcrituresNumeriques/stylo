@@ -74,7 +74,7 @@ const reducer = createReducer(initialState, {
   ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
 })
 
-const createNewArticleVersion  = store => {
+const createNewArticleVersion = store => {
   return next => {
     return async (action) => {
       if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
@@ -98,7 +98,11 @@ const createNewArticleVersion  = store => {
           store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
         } catch (err) {
           console.error(err)
-          store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saveFailure', message: err.message })
+          store.dispatch({
+            type: 'SET_WORKING_ARTICLE_STATE',
+            workingArticleState: 'saveFailure',
+            message: err.message
+          })
         }
         return next(action)
       }
@@ -159,6 +163,7 @@ function setProfile (state, action) {
   return Object.assign({}, state, {
     hasBooted: true,
     activeUser,
+    sessionToken: activeUser.apiToken,
     logedIn: true,
   })
 }
@@ -244,31 +249,31 @@ function updateArticleStructure (state, { md }) {
   return { ...state, articleStructure }
 }
 
-function updateArticleBib(state, { bib }) {
+function updateArticleBib (state, { bib }) {
   const articleBibTeXEntries = toEntries(bib)
   return { ...state, articleBib: bib, articleBibTeXEntries }
 }
 
-function setArticleVersions(state, { versions }) {
+function setArticleVersions (state, { versions }) {
   return { ...state, articleVersions: versions }
 }
 
-function setWorkingArticleUpdatedAt(state, { updatedAt }) {
+function setWorkingArticleUpdatedAt (state, { updatedAt }) {
   const { workingArticle } = state
   return { ...state, workingArticle: { ...workingArticle, updatedAt } }
 }
 
-function setWorkingArticleText(state, { text }) {
+function setWorkingArticleText (state, { text }) {
   const { workingArticle } = state
   return { ...state, workingArticle: { ...workingArticle, text } }
 }
 
-function setWorkingArticleMetadata(state, { metadata }) {
+function setWorkingArticleMetadata (state, { metadata }) {
   const { workingArticle } = state
   return { ...state, workingArticle: { ...workingArticle, metadata } }
 }
 
-function setWorkingArticleState(state, { workingArticleState, message }) {
+function setWorkingArticleState (state, { workingArticleState, message }) {
   const { workingArticle } = state
   return { ...state, workingArticle: { ...workingArticle, state: workingArticleState, stateMessage: message } }
 }
