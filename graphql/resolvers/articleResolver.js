@@ -141,7 +141,7 @@ module.exports = {
     const prefix = args.user === args.to ? '[Copy] ' : '[Sent] '
 
     const newArticle = new Article({
-      ...fetchedArticle,
+      ...fetchedArticle.toObject(),
       _id: undefined,
       owners: [fetchedUser.id],
       versions: [],

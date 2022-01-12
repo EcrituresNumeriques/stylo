@@ -67,7 +67,6 @@ articleSchema.statics.findOneByOwners = function findOneByOwners (articleId, use
     .populate('owners owner tags')
     .populate({ path: 'versions', populate: { path: 'owner' } })
     .populate({ path: 'contributors', populate: { path: 'user' } })
-    .lean()
 }
 
 module.exports = mongoose.model('Article', articleSchema);
