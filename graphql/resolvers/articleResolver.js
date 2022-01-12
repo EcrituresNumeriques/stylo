@@ -73,7 +73,13 @@ module.exports = {
     isUser(args,req)
 
     //Fetch article and user to send to
-    const fetchedArticle = await Article.findOne({_id:args.article,owners:args.user})
+    const fetchedArticle = await Article
+      .findOne({_id:args.article,owners:args.user})
+      .populate({
+        path: 'contributors',
+        populate: 'user'
+      })
+
     if(!fetchedArticle){
       throw new Error('Unable to find article')
     }
@@ -83,16 +89,16 @@ module.exports = {
     }
 
     //Check if user is not already in array
-    if(fetchedArticle.owners.map(a => a.toString()).includes(fetchedUser.id)){
+    if(fetchedArticle.contributors.find(({ user }) => user.id === fetchedUser.id)){
       throw new Error('Article already shared with this user')
     }
 
     //Add user to list of owner
-    fetchedArticle.owners.push(fetchedUser)
+    fetchedArticle.contributors.push({ user: fetchedUser, roles: ['read', 'write']})
     fetchedUser.articles.push(fetchedArticle)
 
     const returnArticle = await fetchedArticle.save()
-    await fetchedUser.save()
+    await fetchedUser.save({ timestamps: false })
 
     return returnArticle
   },
@@ -102,7 +108,13 @@ module.exports = {
     isUser(args,req)
 
     //Fetch article and user to send to
-    const fetchedArticle = await Article.findOne({ _id: args.article, owners: { $in: args.user } })
+    const fetchedArticle = await Article
+      .findOne({ _id: args.article, owners: { $in: args.user } })
+      .populate({
+        path: 'contributors',
+        populate: 'user'
+      })
+
     if(!fetchedArticle){
       throw new Error('Unable to find article')
     }
@@ -113,11 +125,11 @@ module.exports = {
     }
 
     //Remove article from owner "user" etc.
-    fetchedArticle.owners.pull(args.to)
+    fetchedArticle.contributors = fetchedArticle.contributors.filter(({ user }) => user.id !== fetchedUser.id)
     fetchedUser.articles.pull(args.article)
 
     const returnArticle = await fetchedArticle.save()
-    await fetchedUser.save()
+    await fetchedUser.save({ timestamps: false })
 
     return returnArticle
   },
@@ -169,7 +181,7 @@ module.exports = {
 
     //If all good, change title
     fetchedArticle.title = args.title
-    return fetchedArticle.save()
+    return fetchedArticle.save({ timestamps: false })
   },
   zoteroArticle: async (args,{req}) => {
     populateArgs(args,req)
@@ -181,7 +193,7 @@ module.exports = {
 
     //If all good, change title
     fetchedArticle.zoteroLink = args.zotero
-    return fetchedArticle.save()
+    return fetchedArticle.save({ timestamps: false })
   },
   deleteArticle: async (args, {req}) => {
     populateArgs(args,req)

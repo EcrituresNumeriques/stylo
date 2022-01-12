@@ -5,11 +5,31 @@ const addAcquintanceQuery = `mutation($user: ID!, $email: String!) {
 }`
 
 const shareArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
-  shareArticle(article: $article, to: $to, user: $user) { _id }
+  shareArticle(article: $article, to: $to, user: $user) {
+    _id
+
+    contributors {
+      roles
+      user {
+        _id
+        displayName
+      }
+    }
+  }
 }`
 
 const unshareArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
-  unshareArticle(article: $article, to: $to, user: $user) { _id }
+  unshareArticle(article: $article, to: $to, user: $user) {
+    _id
+
+    contributors {
+      roles
+      user {
+        _id
+        displayName
+      }
+    }
+  }
 }`
 
 const duplicateArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {

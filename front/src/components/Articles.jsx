@@ -19,7 +19,7 @@ const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
 }
 
 const ConnectedArticles = (props) => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState('')
   const [articles, setArticles] = useState([])
   const [tags, setTags] = useState([])
@@ -131,7 +131,6 @@ const ConnectedArticles = (props) => {
       //Self invoking async function
       (async () => {
         try {
-          setIsLoading(true)
           const data = await askGraphQL(
             { query, variables: user },
             'fetching articles',

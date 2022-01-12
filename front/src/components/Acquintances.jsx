@@ -18,10 +18,12 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
   const [acquintances, setAcquintances] = useState([])
   const [contact, setContact] = useState('')
   const [loading, setLoading] = useState(true)
+  const [contributors, setContributors] = useState(article.contributors)
   const articleId = article._id
   const userId = activeUser._id
   const acquintanceService = new AcquintanceService(userId, applicationConfig)
-  const ownerIds = article.owners.map(({ _id }) => _id)
+
+  const contributorsIds = contributors.map(({ user }) => user._id)
 
   const addContact = async () => {
     try {
@@ -36,8 +38,8 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
 
   const shareArticle = async (to) => {
     try {
-      await acquintanceService.shareArticle(articleId, to)
-      setNeedReload()
+      const { shareArticle:article } = await acquintanceService.shareArticle(articleId, to)
+      setContributors(article.contributors)
     } catch (err) {
       console.error(`Unable to share article ${articleId} with ${to} (userId: ${userId})`, err)
       alert(err)
@@ -46,8 +48,8 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
 
   const unshareArticle = async (to) => {
     try {
-      await acquintanceService.unshareArticle(articleId, to)
-      setNeedReload()
+      const { unshareArticle:article } = await acquintanceService.unshareArticle(articleId, to)
+      setContributors(article.contributors)
     } catch (err) {
       console.error(`Unable to unshare article ${articleId} with ${to} (userId: ${userId})`, err)
       alert(err)
@@ -100,10 +102,10 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
           </div>
           <div className={styles.acquintanceActions}>
             <Button onClick={() => duplicateArticle(acquintance._id)} ><Send/> Send a Copy</Button>
-            {!ownerIds.includes(acquintance._id) && <Button onClick={() => shareArticle(acquintance._id)} >
+            {!contributorsIds.includes(acquintance._id) && <Button onClick={() => shareArticle(acquintance._id)} >
               <Share/> Share
             </Button>}
-            {ownerIds.includes(acquintance._id) && <Button onClick={() => unshareArticle(acquintance._id)} >
+            {contributorsIds.includes(acquintance._id) && <Button onClick={() => unshareArticle(acquintance._id)} >
               <XCircle/> Cancel sharing
             </Button>}
           </div>

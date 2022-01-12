@@ -82,7 +82,7 @@ const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken
       )}
 
       {sharing && (
-        <Modal cancel={() => setSharing(false)} withCloseButton={false}>
+        <Modal cancel={() => setNeedReload() || setSharing(false)} withCloseButton={false}>
           <Acquintances article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)} />
         </Modal>
       )}
