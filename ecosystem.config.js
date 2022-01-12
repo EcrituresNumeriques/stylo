@@ -11,8 +11,8 @@ module.exports = {
     {
       name: "export",
       script: "nodemon",
-      args: "./src/app.js",
-      cwd: "./export"
+      args: "--config nodemon.json ./src/app.js",
+      cwd: "./export",
     },
     {
       name: "graphql",
