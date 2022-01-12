@@ -68,10 +68,6 @@ module.exports = {
 
     return returnedVersion
   },
-  unlinkVersion: async (args, { req }) => {
-    args = populateArgs(args, req)
-    isUser(args, req)
-  },
   version: async (args, { req }) => {
     if (req.user) {
       const version = await Version.findById(args.version).populate('owner article')
