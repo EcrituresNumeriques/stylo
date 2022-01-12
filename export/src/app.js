@@ -9,9 +9,9 @@ app.use(cors({
   origin: '*'
 }))
 
-const mongoServer = process.env.MONGO_SERVER || 'localhost'
-const mongoServerPort = process.env.MONGO_SERVER_PORT || 27017
-const mongoServerDB = process.env.MONGO_SERVER_DB || 'graphql'
+const mongoServer = process.env.MONGO_SERVER
+const mongoServerPort = process.env.MONGO_SERVER_PORT
+const mongoServerDB = process.env.MONGO_SERVER_DB
 const listenPort = process.env.PORT || 3060
 
 const exportRouter = express.Router()
