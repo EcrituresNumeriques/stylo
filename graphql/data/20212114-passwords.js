@@ -16,6 +16,7 @@ while (cursor.hasNext()) {
       $set: {
         password: password.password,
         authType: 'local',
+        permissions: []
       }
     })
   }
@@ -24,6 +25,7 @@ while (cursor.hasNext()) {
       $set: {
         password: null,
         authType: 'oidc',
+        permissions: []
       }
     })
   }
