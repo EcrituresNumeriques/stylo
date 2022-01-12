@@ -11,7 +11,7 @@ const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
 
 const ConnectedArticleTags = ({ article, activeUser, masterTags, stateTags, setTags, sessionToken, applicationConfig }) => {
   const articleId = article._id
-  const isArticleOwner = activeUser._id === article.owners[0]._id
+  const isArticleOwner = activeUser._id === article.owner._id
 
   const addToTags = async (tag) => {
     setTags([...stateTags, { ...tag, selected: true }])

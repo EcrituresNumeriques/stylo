@@ -75,9 +75,15 @@ userSchema.statics.findAllArticles = async function (userId) {
     // for subdocument population
     .populate({
       path: 'articles',
-      populate: {
-        path: 'owners owner contributors versions tags'
-      }
+      populate: [
+        {
+          path: 'owners owner versions tags',
+        },
+        {
+          path: 'contributors',
+          populate: 'user'
+        }
+      ],
     })
     .lean();
 
@@ -112,7 +118,18 @@ userSchema.statics.findAccountAccessUserIds = async function (userId, role = 'wr
 userSchema.statics.findAccountAccessArticles = function (user, role = 'read') {
   return this
     .find({ permissions: { $elemMatch: { user, scope: 'user', roles: { $in: role } } } })
-    .populate({ path: 'articles', populate: { path: 'owners owner contributors versions tags' }})
+    .populate({
+      path: 'articles',
+      populate: [
+        {
+          path: 'owners owner versions tags',
+        },
+        {
+          path: 'contributors',
+          populate: 'user'
+        }
+      ],
+    })
 }
 
 module.exports = mongoose.model('User', userSchema)

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const ArticleContributorSchema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Article'
+    ref: 'User'
   },
   roles: [ String ]
 })
@@ -64,8 +64,9 @@ articleSchema.statics.findOneByOwners = function findOneByOwners (articleId, use
 
   return this
     .findOne($in.length ? { _id: articleId, owners: { $in } } : { _id: articleId })
-    .populate('owners owner contributors tags')
+    .populate('owners owner tags')
     .populate({ path: 'versions', populate: { path: 'owner' } })
+    .populate({ path: 'contributors', populate: { path: 'user' } })
     .lean()
 }
 

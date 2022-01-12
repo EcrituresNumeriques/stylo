@@ -36,7 +36,7 @@ const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken
   const [tempTitle, setTempTitle] = useState(article.title)
   const [sharing, setSharing] = useState(false)
 
-  const isArticleOwner = activeUser._id === article.owners[0]._id
+  const isArticleOwner = activeUser._id === article.owner._id
   const acquintanceService = new AcquintanceService(activeUser._id, applicationConfig)
 
   const fork = async () => {
@@ -157,7 +157,7 @@ const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken
           {tags.map((t) => (
             <span className={styles.tagChip} key={'tagColor-' + t._id} style={{ backgroundColor: t.color || 'grey' }} />
           ))}
-          by <span className={styles.author}>{article.owners.map((o) => o.displayName).join(', ')}</span>
+          by <span className={styles.author}>{[article.owner, ...article.contributors].map((o) => o.user?.displayName ?? o.displayName).join(', ')}</span>
 
           <time dateTime={article.updatedAt} className={styles.momentsAgo}>
             ({formatTimeAgo(article.updatedAt)})

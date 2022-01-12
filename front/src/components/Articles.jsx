@@ -95,9 +95,16 @@ const ConnectedArticles = (props) => {
         title
         updatedAt
 
-        owners{
+        owner {
           _id
           displayName
+        }
+
+        contributors {
+          user {
+            _id
+            displayName
+          }
         }
 
         versions{
