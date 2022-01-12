@@ -112,7 +112,7 @@ userSchema.statics.findAccountAccessUserIds = async function (userId, role = 'wr
     .find({ permissions: { $elemMatch: { user: userId, scope: 'user', roles: { $in: role } } } })
     .lean()
 
-  return users.map(({ _id }) => _id).push(userId)
+  return users.map(({ _id }) => _id).concat(userId)
 }
 
 userSchema.statics.findAccountAccessArticles = function (user, role = 'read') {
