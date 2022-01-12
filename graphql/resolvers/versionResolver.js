@@ -31,7 +31,7 @@ module.exports = {
       throw new Error('Wrong article ID!')
     }
 
-    const {bib, yaml, md} = articleToSaveInto.workingVersion
+    const { bib, yaml, md } = articleToSaveInto.workingVersion
     let lastMajorVersion = 0
     let lastMinorVersion = 0
     if (articleToSaveInto.versions && articleToSaveInto.versions.length) {
@@ -73,11 +73,20 @@ module.exports = {
     isUser(args, req)
   },
   version: async (args, { req }) => {
-    isUser(args, req)
-
-    // TODO need to make sure user should have access to this version
-    const version = await Version.findById(args.version).populate('owner article')
-
-    return version
+    if (req.user) {
+      const version = await Version.findById(args.version).populate('owner article')
+      if (req.user.admin === true) {
+        return version
+      }
+      const userId = req.user._id;
+      const accessUserIds = (await User.findAccountAccessUserIds(userId)).map((id) => id.toString())
+      const contributorUserIds = version.article.contributors.map((contributor) => contributor.user)
+      const userIds = [userId, ...accessUserIds]
+      if (userIds.includes(version.article.owner.toString()) || userIds.filter((id) => contributorUserIds.includes(id)).length) {
+        return version
+      }
+      throw new Error("Forbidden")
+    }
+    throw new Error('Not Authenticated')
   },
 }
