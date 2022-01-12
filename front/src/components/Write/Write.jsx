@@ -80,8 +80,14 @@ function Write() {
       zoteroLink
       updatedAt
 
-      owners {
+      owner {
         displayName
+      }
+
+      contributors {
+        user {
+          displayName
+        }
       }
 
       versions {
@@ -144,7 +150,8 @@ function Write() {
   const [live, setLive] = useState({})
   const [articleInfos, setArticleInfos] = useState({
     title: '',
-    owners: [],
+    owner: '',
+    contributors: [],
     zoteroLink: '',
   })
 
@@ -216,8 +223,9 @@ function Write() {
         setArticleInfos({
           _id: article._id,
           title: article.title,
+          owner: article.owner,
+          contributors: article.contributors,
           zoteroLink: article.zoteroLink,
-          owners: article.owners.map((o) => o.displayName),
           updatedAt: article.updatedAt,
         })
 
@@ -257,7 +265,7 @@ function Write() {
   return (
     <section className={styles.container}>
       <WriteLeft
-        article={articleInfos}
+        articleInfos={articleInfos}
         compareTo={compareTo}
         selectedVersion={currentVersion}
         readOnly={readOnly}

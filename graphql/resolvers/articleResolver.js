@@ -212,8 +212,6 @@ module.exports = {
   article: async (args, { req }) => {
     const { article:articleId } = args
 
-    isUser(args, req)
-
     const userIds = await User.findAccountAccessUserIds(req.user._id)
     const article = await Article.findOneByOwners(articleId, [req.user._id, userIds])
 
