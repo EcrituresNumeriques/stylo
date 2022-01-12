@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { connect, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import styles from './workingVersion.module.scss'
 import Button from '../Button'
 import { AlertCircle, Loader, Check } from 'react-feather'
@@ -42,7 +42,7 @@ const WorkingVersion = ({ articleInfos, workingArticle, readOnly }) => {
 
   const articleOwnerAndContributors = [
     articleInfos.owner.displayName,
-    ...articleInfos.contributors.map(({ contributor }) => contributor.user.displayName )
+    ...articleInfos.contributors.map(contributor => contributor.user.displayName )
   ]
 
   useEffect(() => {
