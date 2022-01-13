@@ -2,6 +2,8 @@
 
 **📢 Si vous rencontrez des difficultés avec Stylo, n'hésitez pas [à nous écrire](mailto:crc.ecrituresnumeriques@gmail.com).**
 
+Si vous rencontrez des difficultés pour vous connecter avec votre compte HumanID, merci de consulter [cette page](https://stylo-doc.ecrituresnumeriques.ca/docs/fr_FR/#!pages/compte-humanid-supprime.md).
+
 Une permanence est ouverte tous les jeudis de 11h à 12h (heure de Montréal) pour poser des questions, perfectionner l'utilisation de Stylo, partager vos expériences utilisateur ou autres : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Rejoignez la permanence en visioconférence</a>
 
 ---

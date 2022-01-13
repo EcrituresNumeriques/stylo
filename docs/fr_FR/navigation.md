@@ -34,6 +34,7 @@
   * [Résoudre des problèmes](pages/problemes.md)
   * [Mémoires et thèses](pages/memoires.md)
   * [Exports](pages/exports.md)
+  * [Impossible d'accéder à Stylo via HumanID ?](pages/compte-humanid-supprime.md)
 
 [Ressources](pages/publications.md)
 
