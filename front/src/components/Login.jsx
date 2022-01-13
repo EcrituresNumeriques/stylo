@@ -102,8 +102,8 @@ function Login ({ login, applicationConfig }) {
 
               <p className={styles.help}>
                 <HelpCircle size={18} className={styles.inlineIcon} />
-                If you are having trouble logging in with your HumanID account, please visit <a href="https://stylo-doc.ecrituresnumeriques.ca/docs/fr_FR/#!pages/compte-humanid-supprime.md"></a>this page</a>.<br>
-                Si vous rencontrez des difficultés pour vous connecter avec votre compte HumanID, merci de consulter <a href="https://stylo-doc.ecrituresnumeriques.ca/docs/fr_FR/#!pages/compte-humanid-supprime.md">cette page</a>.
+                If you are having trouble logging in with your HumanID account, please visit{' '} <a href="https://stylo-doc.ecrituresnumeriques.ca/docs/fr_FR/#!pages/compte-humanid-supprime.md">this page</a>.<br />
+                Si vous rencontrez des difficultés pour vous connecter avec votre compte HumanID, merci de consulter{' '} <a href="https://stylo-doc.ecrituresnumeriques.ca/docs/fr_FR/#!pages/compte-humanid-supprime.md">cette page</a>.
               </p>
             </fieldset>
 
