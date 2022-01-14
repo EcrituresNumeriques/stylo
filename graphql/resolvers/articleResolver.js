@@ -30,7 +30,7 @@ module.exports = {
       });
 
     thisUser.articles.push(newArticle)
-    newArticle.owners.push(thisUser)
+    newArticle.owner = thisUser
 
     const createdArticle = await newArticle.save();
     await thisUser.save();
@@ -55,7 +55,7 @@ module.exports = {
 
     //fetch article
     const userIds = await User.findAccountAccessUserIds(args.user)
-    const fetchedArticle = await Article.findOneByOwners(args.article, [req.user._id, userIds])
+    const fetchedArticle = await Article.findAndPopulateOneByOwners(args.article, [req.user._id, userIds])
 
     if(!fetchedArticle){
       throw new Error('Wrong article ID')
@@ -68,22 +68,19 @@ module.exports = {
     return fetchedArticle.save()
   },
 
-  shareArticle: async (args,{req}) => {
-    populateArgs(args,req)
-    isUser(args,req)
+  shareArticle: async (args, {req}) => {
+    populateArgs(args, req)
+    isUser(args, req)
 
     //Fetch article and user to send to
     const fetchedArticle = await Article
-      .findOne({_id:args.article,owners:args.user})
-      .populate({
-        path: 'contributors',
-        populate: 'user'
-      })
+      .findOne({ _id: args.article, owner: args.user })
+      .populate({ path: 'contributors', populate: 'user' })
 
     if(!fetchedArticle){
       throw new Error('Unable to find article')
     }
-    const fetchedUser = await User.findOne({_id:args.to})
+    const fetchedUser = await User.findOne({ _id: args.to })
     if(!fetchedUser){
       throw new Error('Unable to find user')
     }
@@ -108,12 +105,8 @@ module.exports = {
     isUser(args,req)
 
     //Fetch article and user to send to
-    const fetchedArticle = await Article
-      .findOne({ _id: args.article, owners: { $in: args.user } })
-      .populate({
-        path: 'contributors',
-        populate: 'user'
-      })
+    const { article: _id, user } = args
+    const fetchedArticle = await Article.findOneByOwner({ _id, user })
 
     if(!fetchedArticle){
       throw new Error('Unable to find article')
@@ -139,12 +132,12 @@ module.exports = {
 
     //Fetch article and user to send to
     const userIds = await User.findAccountAccessUserIds(req.user._id)
-    const fetchedArticle = await Article.findOneByOwners(args.article, [req.user._id, userIds])
+    const fetchedArticle = await Article.findAndPopulateOneByOwners(args.article, [req.user._id, userIds])
 
     if(!fetchedArticle){
       throw new Error('Unable to find article')
     }
-    const fetchedUser = await User.findOne({_id:args.to})
+    const fetchedUser = await User.findOne({ _id: args.to })
     if(!fetchedUser){
       throw new Error('Unable to find user')
     }
@@ -155,7 +148,7 @@ module.exports = {
     const newArticle = new Article({
       ...fetchedArticle.toObject(),
       _id: undefined,
-      owners: [fetchedUser.id],
+      owner: fetchedUser.id,
       versions: [],
       createdAt: null,
       updatedAt: null,
@@ -176,7 +169,8 @@ module.exports = {
     isUser(args,req)
 
     //Fetch Article
-    const fetchedArticle = await Article.findOne({_id:args.article,owners:args.user})
+    const { article: _id, user } = args
+    const fetchedArticle = await Article.findOneByOwner({ _id, user })
     if(!fetchedArticle){throw new Error('Unable to find article')}
 
     //If all good, change title
@@ -188,7 +182,8 @@ module.exports = {
     isUser(args,req)
 
     //Fetch Article
-    const fetchedArticle = await Article.findOne({_id:args.article,owners:args.user})
+    const { article: _id, user } = args
+    const fetchedArticle = await Article.findOneByOwner({ _id, user })
     if(!fetchedArticle){throw new Error('Unable to find article')}
 
     //If all good, change title
@@ -200,7 +195,8 @@ module.exports = {
     isUser(args,req)
 
     //Fetch article
-    let fetchedArticle = await Article.findOne({_id:args.article,owners:args.user})
+    const { article: _id, user } = args
+    const fetchedArticle = await Article.findOneByOwner({ _id, user })
     if(!fetchedArticle){throw new Error('Unable to find article')}
 
     //fetch User
@@ -209,7 +205,8 @@ module.exports = {
 
 
     //if all good remove user from owners
-    fetchedArticle.owners.pull(args.user)
+    fetchedArticle.owner = null
+    fetchedArticle.contributors = []
     fetchedUser.articles.pull(args.article)
 
     //Remove from all of user's tag
@@ -225,7 +222,7 @@ module.exports = {
     const { article:articleId } = args
 
     const userIds = await User.findAccountAccessUserIds(req.user._id)
-    const article = await Article.findOneByOwners(articleId, [req.user._id, userIds])
+    const article = await Article.findAndPopulateOneByOwners(articleId, [req.user._id, userIds])
 
     if (!article) {
       throw new Error(`Unable to find this article : _id ${articleId} does not exist`)
@@ -236,6 +233,8 @@ module.exports = {
   articles: async (_, {req}) => {
     isAdmin(req)
 
-    return Article.find().populate('owners owner contributors versions tags')
+    return Article.find()
+      .populate('owner versions tags')
+      .populate({ path: 'contributors', populate: 'user' })
   },
 }

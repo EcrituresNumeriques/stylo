@@ -77,7 +77,7 @@ userSchema.statics.findAllArticles = async function (userId) {
       path: 'articles',
       populate: [
         {
-          path: 'owners owner versions tags',
+          path: 'owner versions tags',
         },
         {
           path: 'contributors',
@@ -122,7 +122,7 @@ userSchema.statics.findAccountAccessArticles = function (user, role = 'read') {
       path: 'articles',
       populate: [
         {
-          path: 'owners owner versions tags',
+          path: 'owner versions tags',
         },
         {
           path: 'contributors',
@@ -143,7 +143,7 @@ module.exports.postCreate = function postCreate (newUser) {
   const newArticle = new Article({title: defaultArticle.title});
 
   newUser.articles.push(newArticle)
-  newArticle.owners.push(newUser)
+  newArticle.owner = newUser
 
   return Promise.all([
     newUser.save(),

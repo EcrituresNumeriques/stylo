@@ -25,7 +25,7 @@ module.exports = {
 
     // fetch article
     const userIds = await User.findAccountAccessUserIds(args.user)
-    const articleToSaveInto = await Article.findOneByOwners(args.version.article, [req.user._id, userIds])
+    const articleToSaveInto = await Article.findAndPopulateOneByOwners(args.version.article, [req.user._id, userIds])
 
     if (!articleToSaveInto) {
       throw new Error('Wrong article ID!')
@@ -62,9 +62,11 @@ module.exports = {
         .join('\n'),
       owner: thisUser.id
     }
-    const returnedVersion = await Version.create(newVersion)
+    const returnedVersion = await Version.create(newVersion).populate('owner')
     articleToSaveInto.versions.push(returnedVersion)
     await articleToSaveInto.save()
+
+    console.log(returnedVersion)
 
     return returnedVersion
   },

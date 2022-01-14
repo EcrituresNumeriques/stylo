@@ -45,7 +45,7 @@ module.exports = {
     const newArticle = new Article({ title:defaultArticle.title });
 
     newUser.articles.push(newArticle)
-    newArticle.owners.push(newUser)
+    newArticle.owner = newUser
 
 
     const createdUser = await newUser.save();

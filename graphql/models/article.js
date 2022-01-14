@@ -10,12 +10,6 @@ const ArticleContributorSchema = new Schema({
 })
 
 const articleSchema = new Schema({
-  owners:[
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    }
-  ],
   title: {
     type:String,
     required:true,
@@ -58,13 +52,41 @@ const articleSchema = new Schema({
   ]
 }, {timestamps: true});
 
-articleSchema.statics.findOneByOwners = function findOneByOwners (articleId, users) {
+
+/**
+ * Returns a single article for a given user
+ *
+ * @param {{ _id: String, user: String }}
+ * @returns Article
+ */
+ articleSchema.statics.findOneByOwner = function findOneByOwner ({ _id, user }) {
+  return this
+    .findOne({ _id, $or: [ { owner: { $in: user } }, { contributors: { $elemMatch: {user: { $in: user }} } } ]})
+    .populate({ path: 'contributors', populate: 'user' })
+}
+
+/**
+ * Returns a single article, fully populated for a given user, or a list of users with sharing permissions
+ *
+ * @param {String} articleId
+ * @param {Array<String>} users
+ * @returns Article
+ */
+articleSchema.statics.findAndPopulateOneByOwners = function findAndPopulateOneByOwners (articleId, users) {
   // if $in is empty, we are in a case where we have an admin token fetching the data
   const $in = users.flatMap(d => d).filter(d => d)
+  const _id = articleId
+
+  // We want to query an article with a given ID
+  // AND match it with a single owner
+  // OR match it with one of many contributors
+  const query = Array.isArray($in) && $in.length
+    ? { _id, $or: [ { owner: { $in } }, { contributors: { $elemMatch: {user: { $in }} } } ] }
+    : { _id }
 
   return this
-    .findOne($in.length ? { _id: articleId, owners: { $in } } : { _id: articleId })
-    .populate('owners owner tags')
+    .findOne(query)
+    .populate('owner tags')
     .populate({ path: 'versions', populate: { path: 'owner' } })
     .populate({ path: 'contributors', populate: { path: 'user' } })
 }

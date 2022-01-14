@@ -36,8 +36,9 @@ module.exports = {
     isUser(args,req)
 
     //load article and tag
-    const thisArticle = await Article.findOne({_id:args.article,owners:args.user})
-    if(!thisArticle){
+    const { article: _id, user } = args
+    const fetchedArticle = await Article.findOneByOwner({ _id, user })
+    if(!fetchedArticle){
       throw new Error('Unable to find article')
     }
     const thisTag = await Tag.findOne({_id:args.tag,owner:args.user})
@@ -46,15 +47,15 @@ module.exports = {
     }
 
     //Check if not already inside tag
-    if(thisArticle.tags.map(t => t.toString()).includes(thisTag.id)){throw new Error('Article already tagged')}
-    if(thisTag.articles.map(a => a.toString()).includes(thisArticle.id)){throw new Error('Tag already set for article')}
+    if(fetchedArticle.tags.map(t => t.toString()).includes(thisTag.id)){throw new Error('Article already tagged')}
+    if(thisTag.articles.map(a => a.toString()).includes(fetchedArticle.id)){throw new Error('Tag already set for article')}
 
     //if user owns tag + article, push each in the other
-    thisArticle.tags.push(thisTag)
-    thisTag.articles.push(thisArticle)
+    fetchedArticle.tags.push(thisTag)
+    thisTag.articles.push(fetchedArticle)
 
     //saving
-    const returnArticle = await thisArticle.save()
+    const returnArticle = await fetchedArticle.save()
     await thisTag.save()
 
     return returnArticle
@@ -64,23 +65,24 @@ module.exports = {
     isUser(args,req)
 
     //load article and tag
-    const thisArticle = await Article.findOne({_id:args.article,owners:args.user})
-    if(!thisArticle){throw new Error('Unable to find article')}
+    const { article: _id, user } = args
+    const fetchedArticle = await Article.findOneByOwner({ _id, user })
+
+    if(!fetchedArticle){throw new Error('Unable to find article')}
+
     const thisTag = await Tag.findOne({_id:args.tag,owner:args.user})
     if(!thisTag){throw new Error('Unable to find tag')}
 
     //Check if already inside tag
-    if(!thisArticle.tags.map(t => t.toString()).includes(thisTag.id)){throw new Error('Article not tagged')}
-    if(!thisTag.articles.map(a => a.toString()).includes(thisArticle.id)){throw new Error('Tag not set for article')}
+    if(!fetchedArticle.tags.map(t => t.toString()).includes(thisTag.id)){throw new Error('Article not tagged')}
+    if(!thisTag.articles.map(a => a.toString()).includes(fetchedArticle.id)){throw new Error('Tag not set for article')}
 
     //if user owns tag + article, push each in the other
-    //console.log(thisArticle)
-    //console.log(thisTag)
-    thisArticle.tags.pull(thisTag)
-    thisTag.articles.pull(thisArticle)
+    fetchedArticle.tags.pull(thisTag)
+    thisTag.articles.pull(fetchedArticle)
 
     //saving
-    const returnArticle = await thisArticle.save()
+    const returnArticle = await fetchedArticle.save()
     await thisTag.save()
 
     return returnArticle
