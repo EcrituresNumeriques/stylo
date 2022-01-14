@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { Edit, Save, Plus, PlusSquare, SkipBack, ArrowLeft } from 'react-feather'
+import { ArrowLeft } from 'react-feather'
 
 import styles from './createVersion.module.scss'
 import buttonStyles from '../button.module.scss'
