@@ -151,10 +151,6 @@ module.exports = {
 
     isUser(args, req)
 
-    const user = await User.findAllArticles(args.user)
-    const apiToken = req.user
-      ? { apiToken: jwt.sign(req.user, jwtSecret) }
-      : {}
-    return { ...user,  ...apiToken }
+    return User.findAllArticles(args.user)
   }
 }
