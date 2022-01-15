@@ -66,25 +66,10 @@ module.exports = {
     articleToSaveInto.versions.push(returnedVersion)
     await articleToSaveInto.save()
 
-    console.log(returnedVersion)
-
     return returnedVersion
   },
   version: async (args, { req }) => {
-    if (req.user) {
-      const version = await Version.findById(args.version).populate('owner article')
-      if (req.user.admin === true) {
-        return version
-      }
-      const userId = req.user._id;
-      const accessUserIds = (await User.findAccountAccessUserIds(userId)).map((id) => id.toString())
-      const contributorUserIds = version.article.contributors.map((contributor) => contributor.user)
-      const userIds = [userId, ...accessUserIds]
-      if (userIds.includes(version.article.owner.toString()) || userIds.filter((id) => contributorUserIds.includes(id)).length) {
-        return version
-      }
-      throw new Error("Forbidden")
-    }
-    throw new Error('Not Authenticated')
+    // TODO need to make sure user should have access to this version
+    return await Version.findById(args.version)
   },
 }
