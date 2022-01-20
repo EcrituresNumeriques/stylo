@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { Send, Share } from 'react-feather'
+import { Send, Share, XCircle } from 'react-feather'
 
 import styles from './acquintances.module.scss'
 import formStyles from './field.module.scss'
@@ -14,12 +14,16 @@ const mapStateToProps = ({ activeUser, applicationConfig }) => {
   return { activeUser, applicationConfig }
 }
 
-function ConnectedAcquintances ({ _id: articleId, activeUser, setNeedReload, cancel, applicationConfig }) {
+function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, applicationConfig }) {
   const [acquintances, setAcquintances] = useState([])
   const [contact, setContact] = useState('')
   const [loading, setLoading] = useState(true)
+  const [contributors, setContributors] = useState(article.contributors)
+  const articleId = article._id
   const userId = activeUser._id
   const acquintanceService = new AcquintanceService(userId, applicationConfig)
+
+  const contributorsIds = contributors.map(({ user }) => user._id)
 
   const addContact = async () => {
     try {
@@ -34,20 +38,29 @@ function ConnectedAcquintances ({ _id: articleId, activeUser, setNeedReload, can
 
   const shareArticle = async (to) => {
     try {
-      await acquintanceService.shareArticle(articleId, to)
+      const { shareArticle:article } = await acquintanceService.shareArticle(articleId, to)
+      setContributors(article.contributors)
     } catch (err) {
       console.error(`Unable to share article ${articleId} with ${to} (userId: ${userId})`, err)
       alert(err)
     }
-    setNeedReload()
-    cancel()
   }
 
-  const sendArticle = async (to) => {
+  const unshareArticle = async (to) => {
     try {
-      await acquintanceService.sendArticle(articleId, to)
+      const { unshareArticle:article } = await acquintanceService.unshareArticle(articleId, to)
+      setContributors(article.contributors)
     } catch (err) {
-      console.error(`Unable to send article ${articleId} with ${to} (userId: ${userId})`, err)
+      console.error(`Unable to unshare article ${articleId} with ${to} (userId: ${userId})`, err)
+      alert(err)
+    }
+  }
+
+  const duplicateArticle = async (to) => {
+    try {
+      await acquintanceService.duplicateArticle(articleId, to)
+    } catch (err) {
+      console.error(`Unable to duplicate article ${articleId} with ${to} (userId: ${userId})`, err)
       alert(err)
     }
     setNeedReload()
@@ -56,7 +69,7 @@ function ConnectedAcquintances ({ _id: articleId, activeUser, setNeedReload, can
 
   useEffect(() => {
     if (loading) {
-      ;(async () => {
+      (async () => {
         const data = await acquintanceService.getAcquintances()
         setLoading(false)
         setAcquintances(data.user.acquintances)
@@ -88,8 +101,13 @@ function ConnectedAcquintances ({ _id: articleId, activeUser, setNeedReload, can
             <a href={"mailto:" + acquintance.email} className={styles.acquintanceEmail}>{acquintance.email}</a>
           </div>
           <div className={styles.acquintanceActions}>
-            <Button onClick={() => sendArticle(acquintance._id)} ><Send/> Send</Button>
-            <Button onClick={() => shareArticle(acquintance._id)} ><Share/> Share</Button>
+            <Button onClick={() => duplicateArticle(acquintance._id)} ><Send/> Send a Copy</Button>
+            {!contributorsIds.includes(acquintance._id) && <Button onClick={() => shareArticle(acquintance._id)} >
+              <Share/> Share
+            </Button>}
+            {contributorsIds.includes(acquintance._id) && <Button onClick={() => unshareArticle(acquintance._id)} >
+              <XCircle/> Cancel sharing
+            </Button>}
           </div>
         </div>
       ))}

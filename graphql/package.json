@@ -11,7 +11,7 @@
   "scripts": {
     "test": "exit 0",
     "posttest": "eslint",
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "prod": "NODE_ENV=production node --heapsnapshot-signal=SIGUSR2 app.js"
   },
   "author": "",
@@ -27,6 +27,7 @@
     "express-graphql": "^0.11.0",
     "express-session": "^1.17.1",
     "graphql": "^15.4.0",
+    "graphql-tag": "^2.12.6",
     "isemail": "^3.2.0",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.11.1",
@@ -37,7 +38,6 @@
     "uid-generator": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.2.0",
-    "nodemon": "^2.0.6"
+    "eslint": "^8.2.0"
   }
 }

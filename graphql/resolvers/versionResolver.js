@@ -4,8 +4,6 @@ const User = require('../models/user');
 
 const isUser = require('../policies/isUser')
 
-const { populateVersion, getVersionById } = require('./nestedModel')
-
 const populateArgs = require('../helpers/populateArgs')
 
 module.exports = {
@@ -17,6 +15,8 @@ module.exports = {
      */
     isUser(args, req)
 
+    let version, revision
+
     // fetch user
     const thisUser = await User.findOne({ _id: args.user })
     if (!thisUser) {
@@ -24,17 +24,14 @@ module.exports = {
     }
 
     // fetch article
-    const articleToSaveInto = await Article.findOne({
-      _id: args.version.article,
-    }).populate('versions owners')
+    const userIds = await User.findAccountAccessUserIds(args.user)
+    const articleToSaveInto = await Article.findAndPopulateOneByOwners(args.version.article, [req.user._id, userIds])
+
     if (!articleToSaveInto) {
       throw new Error('Wrong article ID!')
     }
 
-    if (!articleToSaveInto.owners.map((u) => u.id).includes(thisUser.id)) {
-      throw new Error('User has no right to push new version!')
-    }
-    const {bib, yaml, md} = articleToSaveInto.workingVersion
+    const { bib, yaml, md } = articleToSaveInto.workingVersion
     let lastMajorVersion = 0
     let lastMinorVersion = 0
     if (articleToSaveInto.versions && articleToSaveInto.versions.length) {
@@ -61,30 +58,18 @@ module.exports = {
       message,
       sommaire: md
         .split('\n')
-        .filter((line) => line.match(/^#+\ /))
+        .filter((line) => line.match(/^#+ /))
         .join('\n'),
       owner: thisUser.id
     }
-    const returnedVersion = await Version.create(newVersion)
+    const returnedVersion = await Version.create(newVersion).populate('owner')
     articleToSaveInto.versions.push(returnedVersion)
     await articleToSaveInto.save()
-    return populateVersion(returnedVersion)
-  },
-  unlinkVersion: async (args, { req }) => {
-    try {
-      args = populateArgs(args, req)
-      isUser(args, req)
-    } catch (err) {
-      throw err
-    }
+
+    return returnedVersion
   },
   version: async (args, { req }) => {
     // TODO need to make sure user should have access to this version
-
-    try {
-      return await getVersionById(args.version)
-    } catch (err) {
-      throw err
-    }
+    return await Version.findById(args.version)
   },
 }

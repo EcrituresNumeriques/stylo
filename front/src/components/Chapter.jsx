@@ -13,7 +13,7 @@ const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
 }
 
-const ConnectedChapter = ({ articleId, latestArticleVersion, articleTitle, setNeedReload, activeUser, sessionToken, applicationConfig }) => {
+const ConnectedChapter = ({ articleId, latestArticleVersion, articleTitle, activeUser, sessionToken, applicationConfig }) => {
   const [renaming, setRenaming] = useState(false)
   const [title, setTitle] = useState(articleTitle)
   const [tempTitle, setTempTitle] = useState(articleTitle)
@@ -39,7 +39,6 @@ const ConnectedChapter = ({ articleId, latestArticleVersion, articleTitle, setNe
     )
     setTitle(tempTitle)
     setRenaming(false)
-    setNeedReload()
   }
   const latestArticleVersionLabel = latestArticleVersion
     ? latestArticleVersion.message || 'No label'

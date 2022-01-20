@@ -31,7 +31,8 @@ const Book = (props) => {
   const [name, setName] = useState(props.name)
   const [isRenaming, setIsRenaming] = useState(false)
 
-  const renameBook = async () => {
+  const renameBook = async (event) => {
+    event.preventDefault()
     const query = `mutation($user:ID!,$tag:ID!,$name:String,$description:String){ updateTag(user:$user,tag:$tag,name:$name,description:$description){ _id name description } }`
     const variables = {
       user: props.activeUser._id,
@@ -48,7 +49,7 @@ const Book = (props) => {
     setIsRenaming(false)
   }
 
-  const bookTitle = `${name} (${formatTimeAgo(new Date(props.updatedAt))})`
+  const bookTitle = `${name} (${formatTimeAgo(props.updatedAt)})`
   return (
     <article>
       {exporting && (
@@ -117,7 +118,6 @@ const Book = (props) => {
                   articleId={articleId}
                   articleTitle={article.title}
                   latestArticleVersion={latestArticleVersion}
-                  setNeedReload={props.setNeedReload}
                 />
               }
             )

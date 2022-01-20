@@ -10,15 +10,27 @@ module.exports = {
     },
     {
       name: "export",
-      script: "nodemon",
-      args: "--config nodemon.json ./src/app.js",
-      cwd: "./export",
+      script: "node",
+      args: "./src/app.js",
+      cwd: "export",
+      watch: ['app.js', 'export.js', 'graphql.js', 'src'],
+      ignore_watch: ['node_modules'],
+      env: {
+        NODE_ENV: 'dev',
+        CHOKIDAR_USEPOLLING: 1
+      }
     },
     {
       name: "graphql",
-      script: "nodemon",
-      args: "--config nodemon.json app.js",
-      cwd: "./graphql"
+      script: "node",
+      args: "app.js",
+      cwd: "graphql",
+      watch: ['schema.js', 'app.js', 'helpers', 'models', 'policies', 'resolvers'],
+      ignore_watch: ['node_modules'],
+      env: {
+        NODE_ENV: 'dev',
+        CHOKIDAR_USEPOLLING: 1
+      }
     }
   ]
 }

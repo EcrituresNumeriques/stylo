@@ -18,8 +18,6 @@ function createReducer (initialState, handlers) {
 const initialState = {
   logedIn: false,
   hasBooted: false,
-  users: [],
-  password: undefined,
   sessionToken: undefined,
   workingArticle: {
     state: 'saved'
@@ -57,10 +55,7 @@ const reducer = createReducer(initialState, {
   CLEAR_ZOTERO_TOKEN: clearZoteroToken,
   LOGIN: loginUser,
   UPDATE_ACTIVE_USER: updateActiveUser,
-  RELOAD_USERS: reloadUsers,
-  SWITCH: switchUser,
   LOGOUT: logoutUser,
-  REMOVE_MYSELF_ALLOWED_LOGIN: removeMyselfAllowedLogin,
 
   // article reducers
   UPDATE_ARTICLE_STATS: updateArticleStats,
@@ -79,7 +74,7 @@ const reducer = createReducer(initialState, {
   ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
 })
 
-const createNewArticleVersion  = store => {
+const createNewArticleVersion = store => {
   return next => {
     return async (action) => {
       if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
@@ -103,7 +98,11 @@ const createNewArticleVersion  = store => {
           store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
         } catch (err) {
           console.error(err)
-          store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saveFailure', message: err.message })
+          store.dispatch({
+            type: 'SET_WORKING_ARTICLE_STATE',
+            workingArticleState: 'saveFailure',
+            message: err.message
+          })
         }
         return next(action)
       }
@@ -164,12 +163,8 @@ function setProfile (state, action) {
   return Object.assign({}, state, {
     hasBooted: true,
     activeUser,
+    sessionToken: activeUser.apiToken,
     logedIn: true,
-    // it will allow password modification if logged with password,
-    // otherwise it means we use an external auth service
-    password:
-      activeUser.passwords.find((p) => p.email === activeUser.email) || {},
-    users: [activeUser._id],
   })
 }
 
@@ -180,13 +175,16 @@ function clearZoteroToken (state) {
 }
 
 function loginUser (state, { login }) {
-  if (login.password && login.users && login.token) {
+  if (login.user && login.token) {
     return {
       ...state,
       logedIn: true,
-      users: login.users,
-      activeUser: login.users[0],
-      password: login.password,
+      activeUser: {
+        ...login.user,
+        // dates are expected to be in timestamp string format (including milliseconds)
+        createdAt: String(new Date(login.user.createdAt).getTime()),
+        updatedAt: String(new Date(login.user.updatedAt).getTime()),
+      },
       sessionToken: login.token,
     }
   }
@@ -198,41 +196,13 @@ function updateActiveUser (state, action) {
   return {
     ...state,
     activeUser: { ...state.activeUser, displayName: action.payload },
-    users: [...state.users].map((u) => {
-      if (state.activeUser._id === u._id) {
-        u.displayName = action.payload
-      }
-      return u
-    })
-
   }
-}
-
-function reloadUsers (state, { payload: users }) {
-  return { ...state, users }
-}
-
-function switchUser (state, { payload: activeUser }) {
-  if (state.users.map((u) => u._id).includes(activeUser._id)) {
-    return { ...state, activeUser }
-  }
-
-  return state
 }
 
 function logoutUser (state) {
   return { ...state, ...initialState }
 }
 
-function removeMyselfAllowedLogin (state, { payload: userId }) {
-  const remainingUsers = state.users.filter((u) => u._id !== userId)
-
-  return {
-    ...state,
-    users: remainingUsers,
-    activeUser: remainingUsers[0],
-  }
-}
 
 const SPACE_RE = /\s+/gi
 const CITATION_RE = /(\[@[\w-]+)/gi
@@ -279,31 +249,31 @@ function updateArticleStructure (state, { md }) {
   return { ...state, articleStructure }
 }
 
-function updateArticleBib(state, { bib }) {
+function updateArticleBib (state, { bib }) {
   const articleBibTeXEntries = toEntries(bib)
   return { ...state, articleBib: bib, articleBibTeXEntries }
 }
 
-function setArticleVersions(state, { versions }) {
+function setArticleVersions (state, { versions }) {
   return { ...state, articleVersions: versions }
 }
 
-function setWorkingArticleUpdatedAt(state, { updatedAt }) {
+function setWorkingArticleUpdatedAt (state, { updatedAt }) {
   const { workingArticle } = state
   return { ...state, workingArticle: { ...workingArticle, updatedAt } }
 }
 
-function setWorkingArticleText(state, { text }) {
+function setWorkingArticleText (state, { text }) {
   const { workingArticle } = state
   return { ...state, workingArticle: { ...workingArticle, text } }
 }
 
-function setWorkingArticleMetadata(state, { metadata }) {
+function setWorkingArticleMetadata (state, { metadata }) {
   const { workingArticle } = state
   return { ...state, workingArticle: { ...workingArticle, metadata } }
 }
 
-function setWorkingArticleState(state, { workingArticleState, message }) {
+function setWorkingArticleState (state, { workingArticleState, message }) {
   const { workingArticle } = state
   return { ...state, workingArticle: { ...workingArticle, state: workingArticleState, stateMessage: message } }
 }

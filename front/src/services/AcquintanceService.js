@@ -5,15 +5,87 @@ const addAcquintanceQuery = `mutation($user: ID!, $email: String!) {
 }`
 
 const shareArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
-  shareArticle(article: $article, to: $to, user: $user) { _id }
+  shareArticle(article: $article, to: $to, user: $user) {
+    _id
+
+    contributors {
+      roles
+      user {
+        _id
+        displayName
+      }
+    }
+  }
 }`
 
-const sendArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
-  sendArticle(article: $article, to: $to, user: $user) { _id }
+const unshareArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
+  unshareArticle(article: $article, to: $to, user: $user) {
+    _id
+
+    contributors {
+      roles
+      user {
+        _id
+        displayName
+      }
+    }
+  }
+}`
+
+const duplicateArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
+  duplicateArticle(article: $article, to: $to, user: $user) { _id }
 }`
 
 const getAcquintancesQuery = `query($user: ID!) {
   user(user: $user) {
+    acquintances {
+      _id
+      displayName
+      email
+    }
+  }
+}`
+
+const getAcquintancesPermissionsQuery = `query($user: ID!) {
+  user(user: $user) {
+    permissions {
+      scope
+      user
+      roles
+    }
+
+    acquintances {
+      _id
+      displayName
+      email
+    }
+  }
+}`
+
+const grantAccountAccessQuery = `mutation($from: ID!, $to: ID!) {
+  grantAccountAccess(user: $from, to: $to) {
+    permissions {
+      scope
+      user
+      roles
+    }
+
+    acquintances {
+      _id
+      displayName
+      email
+    }
+  }
+}`
+
+const revokeAccountAccessQuery = `mutation($from: ID!, $to: ID!) {
+  revokeAccountAccess(user: $from, to: $to) {
+    permissions {
+      scope
+      user
+      roles
+    }
+
     acquintances {
       _id
       displayName
@@ -38,6 +110,15 @@ export default class AcquintanceService {
     )
   }
 
+  async getAcquintancesAndPermissions () {
+    return askGraphQL(
+      { query: getAcquintancesPermissionsQuery, variables: { user: this.userId } },
+      'Fetching acquintances and permissions',
+      '',
+      this.applicationConfig
+    )
+  }
+
   async addAcquintance (contact) {
     return askGraphQL(
       { query: addAcquintanceQuery, variables: { user: this.userId, email: contact } },
@@ -47,17 +128,35 @@ export default class AcquintanceService {
     )
   }
 
-  async sendArticle (articleId, to) {
+  async grantAccountAccessTo ({ from, to }) {
+    return askGraphQL(
+      { query: grantAccountAccessQuery, variables: { from, to } },
+      'Grand account access',
+      '',
+      this.applicationConfig
+    )
+  }
+
+  async revokeAccountAccessTo ({ from, to }) {
+    return askGraphQL(
+      { query: revokeAccountAccessQuery, variables: { from, to } },
+      'Grand account access',
+      '',
+      this.applicationConfig
+    )
+  }
+
+  async duplicateArticle (articleId, to) {
     return askGraphQL(
       {
-        query: sendArticleQuery,
+        query: duplicateArticleQuery,
         variables: {
           user: this.userId,
           to,
           article: articleId,
         }
       },
-      'Sending article',
+      'Duplicating article',
       '',
       this.applicationConfig
     )
@@ -74,6 +173,22 @@ export default class AcquintanceService {
         }
       },
       'Sharing article',
+      '',
+      this.applicationConfig
+    )
+  }
+
+  async unshareArticle (articleId, to) {
+    return askGraphQL(
+      {
+        query: unshareArticleQuery,
+        variables: {
+          user: this.userId,
+          to,
+          article: articleId,
+        }
+      },
+      'Unsharing article',
       '',
       this.applicationConfig
     )

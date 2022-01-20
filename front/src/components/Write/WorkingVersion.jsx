@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { connect, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import styles from './workingVersion.module.scss'
 import Button from '../Button'
 import { AlertCircle, Loader, Check } from 'react-feather'
@@ -32,14 +32,7 @@ const stateUiProps = {
   },
 }
 
-const WorkingVersion = ({
-  articleTitle,
-  articleOwners,
-  articleId,
-  workingArticle,
-  readOnly,
-}) => {
-  const dispatch = useDispatch()
+const WorkingVersion = ({ articleInfos, workingArticle, readOnly }) => {
   const [exporting, setExporting] = useState(false)
   const [savedAgo, setSavedAgo] = useState('')
 
@@ -47,10 +40,15 @@ const WorkingVersion = ({
   const state = workingArticle.state
   const stateUi = stateUiProps[state]
 
+  const articleOwnerAndContributors = [
+    articleInfos.owner.displayName,
+    ...articleInfos.contributors.map(contributor => contributor.user.displayName )
+  ]
+
   useEffect(() => {
-    setSavedAgo(formatTimeAgo(new Date(articleLastSavedAt)))
+    setSavedAgo(formatTimeAgo(articleLastSavedAt))
     const timer = setTimeout(() => {
-      setSavedAgo(formatTimeAgo(new Date(articleLastSavedAt)))
+      setSavedAgo(formatTimeAgo(articleLastSavedAt))
     }, 60000)
     return () => clearTimeout(timer)
   }, [articleLastSavedAt])
@@ -58,12 +56,12 @@ const WorkingVersion = ({
   return (
     <section className={styles.section}>
       <header>
-        <h1 className={styles.title}>{articleTitle}</h1>
+        <h1 className={styles.title}>{articleInfos.title}</h1>
 
         <div className={styles.meta}>
           <div className={styles.by}>by</div>
           <div className={styles.byLine}>
-            <span className={styles.owners}>{articleOwners.join(', ')}</span>
+            <span className={styles.owners}>{articleOwnerAndContributors.join(', ')}</span>
             <span className={styles.lastSaved}>
               <span className={stateUi.style}>
                 {state !== 'saved' && stateUi.icon}
@@ -84,15 +82,15 @@ const WorkingVersion = ({
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
           <Export
-            exportId={generateArticleExportId(articleTitle)}
-            articleVersionId={articleId}
+            exportId={generateArticleExportId(articleInfos.title)}
+            articleVersionId={articleInfos._id}
           />
         </Modal>
       )}
       <ul className={styles.actions}>
         <li>
           <Link
-            to={`/article/${articleId}/preview`}
+            to={`/article/${articleInfos._id}/preview`}
             target="_blank"
             rel="noopener noreferrer"
             className={[buttonStyles.button, buttonStyles.secondary].join(' ')}

@@ -6,10 +6,6 @@ const versionSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  article:{
-    type: Schema.Types.ObjectId,
-    ref: 'Article'
-  },
   title:{
     type:String,
     default:''
@@ -31,12 +27,8 @@ const versionSchema = new Schema({
   bib: String,
   sommaire:{
     type:String,
-    default:'# titre'
+    default: ''
   },
-  hidden:{
-    type:Boolean,
-    default:false
-  }
 }, {timestamps:true});
 
 module.exports = mongoose.model('Version', versionSchema);

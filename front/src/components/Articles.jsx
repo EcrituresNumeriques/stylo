@@ -19,15 +19,16 @@ const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
 }
 
 const ConnectedArticles = (props) => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState('')
   const [articles, setArticles] = useState([])
   const [tags, setTags] = useState([])
   const [filterTags, setFilterTags] = useState([])
-  const [displayName, setDisplayName] = useState(props.activeUser.displayName)
   const [creatingArticle, setCreatingArticle] = useState(false)
   const [needReload, setNeedReload] = useState(true)
   const [tagManagement, setTagManagement] = useState(false)
+
+  const { displayName } = props.activeUser
 
   const handleReload = useCallback(() => {
     setNeedReload(true)
@@ -64,18 +65,6 @@ const ConnectedArticles = (props) => {
     return articles
   }
 
-  const sortByUpdatedAt = (a, b) => {
-    const da = new Date(a.updatedAt)
-    const db = new Date(b.updatedAt)
-    if (da > db) {
-      return -1
-    } else if (db > da) {
-      return 1
-    } else {
-      return 0
-    }
-  }
-
   const filterByTagsSelected = (article) => {
     const listOfTagsSelected = [...filterTags].filter((t) => t.selected)
     if (listOfTagsSelected.length === 0) {
@@ -90,16 +79,58 @@ const ConnectedArticles = (props) => {
     return pass
   }
 
-  const query =
-    'query($user:ID!){user(user:$user){ displayName tags{ _id description color name } articles{ _id title updatedAt owners{ displayName } versions{ _id version revision message } tags{ name color _id }}}}'
+  const query = `query($user:ID!){
+    user(user:$user){
+      displayName
+      tags {
+        _id
+        owner
+        description
+        color
+        name
+      }
+
+      articles{
+        _id
+        title
+        updatedAt
+
+        owner {
+          _id
+          displayName
+        }
+
+        contributors {
+          user {
+            _id
+            displayName
+          }
+        }
+
+        versions{
+          _id
+          version
+          revision
+          message
+        }
+
+        tags{
+          name
+          owner
+          color
+          _id
+        }
+      }
+    }
+  }`
+
   const user = { user: props.activeUser._id }
 
   useEffect(() => {
     if (needReload) {
       //Self invoking async function
-      ;(async () => {
+      (async () => {
         try {
-          setIsLoading(true)
           const data = await askGraphQL(
             { query, variables: user },
             'fetching articles',
@@ -107,7 +138,7 @@ const ConnectedArticles = (props) => {
             props.applicationConfig
           )
           //Need to sort by updatedAt desc
-          setArticles(data.user.articles.reverse())
+          setArticles(data.user.articles)
           const tags = data.user.tags.map((t) => ({
             ...t,
             selected: false,
@@ -116,7 +147,6 @@ const ConnectedArticles = (props) => {
           setTags(tags)
           // deep copy of tags
           setFilterTags(JSON.parse(JSON.stringify(tags)))
-          setDisplayName(data.user.displayName)
           setIsLoading(false)
           setNeedReload(false)
         } catch (err) {
@@ -159,35 +189,37 @@ const ConnectedArticles = (props) => {
             />
           )}
           <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search" onChange={(e) => setFilter(etv(e))}/>
+
           {tags.length > 0 &&
           <>
             <h4>Filter by Tags</h4>
             <ul className={styles.filterByTags}>
               {filterTags.map((t) => (
-                  <li key={`filterTag-${t._id}`}>
-                    <Tag
-                        data={t}
-                        name={`filterTag-${t._id}`}
-                        onClick={() => {
-                          // shallow copy otherwise React won't render the components again
-                          setFilterTags([...findAndUpdateTag(filterTags, t._id)])
-                        }}
-                    />
-                  </li>
+                <li key={`filterTag-${t._id}`}>
+                  <Tag
+                    tag={t}
+                    activeUser={props.activeUser}
+                    name={`filterTag-${t._id}`}
+                    onClick={() => {
+                      // shallow copy otherwise React won't render the components again
+                      setFilterTags([...findAndUpdateTag(filterTags, t._id)])
+                    }}
+                  />
+                </li>
               ))}
             </ul>
           </>}
+
           {articles
             .filter(filterByTagsSelected)
             .filter(
               (a) => a.title.toLowerCase().indexOf(filter.toLowerCase()) > -1
             )
-            .sort(sortByUpdatedAt)
-            .map((a) => (
+            .map((article) => (
               <Article
-                key={`article-${a._id}`}
+                key={`article-${article._id}`}
                 masterTags={tags}
-                {...a}
+                article={article}
                 setNeedReload={handleReload}
                 updateTagsHandler={handleUpdateTags}
                 updateTitleHandler={handleUpdateTitle}

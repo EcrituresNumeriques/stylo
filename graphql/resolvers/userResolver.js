@@ -1,17 +1,15 @@
-const bcrypt = require('bcryptjs');
-const Isemail = require('isemail');
+const bcrypt = require('bcryptjs')
+const Isemail = require('isemail')
+const jwt = require("jsonwebtoken")
+const jwtSecret = process.env.JWT_SECRET_SESSION_COOKIE
 
-const User = require('../models/user');
-const Password = require('../models/user_password');
-const Article = require('../models/article');
-const Version = require('../models/version');
+const User = require('../models/user')
+const Article = require('../models/article')
 
 const isUser = require('../policies/isUser')
 const isAdmin = require('../policies/isAdmin')
 
 const defaultsData = require('../data/defaultsData')
-
-const { populateUser, getUserById } = require('./nestedModel')
 
 const populateArgs = require('../helpers/populateArgs')
 
@@ -30,11 +28,6 @@ module.exports = {
     if (existingUser) {
       throw new Error('User with this email already exists!');
     }
-    //Check for Unique for Password
-    const existingPassword = await Password.findOne({$or:[{ email: userInput.email },{username: userInput.username}]});
-    if (existingPassword) {
-      throw new Error('User with this username already exists!');
-    }
 
     //Create user then password
     const newUser = new User({
@@ -42,29 +35,30 @@ module.exports = {
       displayName: userInput.displayName || userInput.username,
       institution: userInput.institution || null,
       firstName: userInput.firstName || null,
-      lastName: userInput.lastName || null
+      lastName: userInput.lastName || null,
+      password: bcrypt.hashSync(userInput.password, 10),
+      authType: 'local',
     });
-    const newPassword = new Password({email:userInput.email,username:userInput.username, password:bcrypt.hashSync(userInput.password,10)})
-    newUser.passwords.push(newPassword)
-    newPassword.users.push(newUser)
-
 
     //Add default article + default version
     const defaultArticle = defaultsData.article
     const newArticle = new Article({ title:defaultArticle.title });
 
     newUser.articles.push(newArticle)
-    newArticle.owners.push(newUser)
+    newArticle.owner = newUser
 
 
     const createdUser = await newUser.save();
-    await newPassword.save();
     await newArticle.save();
 
     //Save the user/article/version/password ID in the req object, for other resolver to consum with "new" ID
-    req.created = {...req.created,article:newArticle.id,user:createdUser.id,password:newPassword.id}
+    req.created = {
+      ...req.created,
+      article: newArticle.id,
+      user:createdUser.id,
+    }
 
-    return populateUser(createdUser)
+    return createdUser
   },
   addAcquintance: async (args,{req}) => {
     populateArgs(args,req)
@@ -84,10 +78,47 @@ module.exports = {
 
     //If all clear, add to acquintance
     thisUser.acquintances.push(thisAcquintance)
-    const returnUser = await thisUser.save();
-
-    return populateUser(returnUser)
+    return thisUser.save();
   },
+  grantAccountAccess: async (args, {req}) => {
+    populateArgs(args,req)
+    isUser(args,req)
+
+    const thisUser = await User.findOne({ _id: args.user }).populate('acquintances')
+    const remoteUser = await User.findOne({ _id: args.to })
+
+    const existingsScope = thisUser.permissions.find(p => p.scope === 'user' && p.user == remoteUser.id)
+
+    if (existingsScope) {
+      throw new Error(`Account [id: ${args.to}] has already access to account [id: ${args.user}]`)
+    }
+
+    thisUser.permissions.push({
+      scope: 'user',
+      user: remoteUser.id,
+      roles: ['access', 'read', 'write']
+    })
+
+    return thisUser.save()
+  },
+  revokeAccountAccess: async (args, {req}) => {
+    populateArgs(args,req)
+    isUser(args,req)
+
+    const thisUser = await User.findOne({ _id: args.user }).populate('acquintances')
+    const remoteUser = await User.findOne({ _id: args.to })
+
+    const existingsScope = thisUser.permissions.find(p => p.scope === 'user' && p.user == remoteUser.id)
+
+    if (!existingsScope) {
+      throw new Error(`Account [id: ${args.to}] has no access to account [id: ${args.user}]`)
+    }
+
+    thisUser.permissions.pull(existingsScope)
+
+    return thisUser.save()
+  },
+
   updateUser: async (args,{req}) => {
     populateArgs(args,req)
     isUser(args,req)
@@ -101,26 +132,25 @@ module.exports = {
     if('institution' in args){thisUser.institution = args.institution}
     if('yaml' in args){thisUser.yaml = args.yaml}
     if('zoteroToken' in args){thisUser.zoteroToken = args.zoteroToken}
-    const returnedUser = await thisUser.save()
 
-    return populateUser(returnedUser)
+    return thisUser.save()
   },
   // Queries
 
   //Only available for admins
   users: async (_,{req}) => {
     isAdmin(req);
-    const users = await User.find();
-    return users.map(populateUser)
+
+    return User.find().populate('tags articles acquintances');
   },
   user: async (args, {req}) => {
     // if the userId is not provided, we take it from the auth token
     if (('user' in args) === false && req.user) {
-      args.user = req.user.usersIds[0]
+      args.user = req.user._id
     }
 
     isUser(args, req)
 
-    return getUserById(args.user)
+    return User.findAllArticles(args.user)
   }
 }

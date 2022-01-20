@@ -14,12 +14,11 @@ const OidcStrategy = require('passport-openidconnect').Strategy
 const LocalStrategy = require('passport-local').Strategy
 const OAuthStrategy = require('passport-oauth').OAuthStrategy;
 
-const graphQlSchema = require('./schema/index')
+const graphQlSchema = require('./schema')
 const graphQlResolvers = require('./resolvers/index')
 
 const { createJWTToken, populateUserFromJWT } = require('./helpers/token')
 const User = require('./models/user')
-const Password = require('./models/user_password')
 const { postCreate } = User
 
 const app = express()
@@ -112,15 +111,7 @@ passport.use('oidc', new OidcStrategy({
       lastName: family_name || ''
     })
 
-    // add a "password" to allow the user to connect as himself!
-    // a user can have multiple "passwords" (ie. accounts) linked to it.
-    // this mecanism is used to share content between accounts.
-    const password = new Password({ email })
     try {
-      user.passwords.push(password)
-      password.users.push(user)
-      await password.save()
-
       // we populate a user with initial content
       await user.save().then(postCreate)
     } catch (err) {
@@ -128,28 +119,26 @@ passport.use('oidc', new OidcStrategy({
     }
   }
 
-  const userPassword = await Password.findOne({ email })
-
   // this, will be stored in session via `serializeUser()`
-  return done(null, userPassword)
+  return done(null, user)
 }))
 
 passport.use(new LocalStrategy({ session: false },
   function (username, password, done) {
     graphQlResolvers.verifCreds({ username, password })
-      .then(userPassword => done(null, userPassword))
+      .then(user => done(null, user))
       .catch(e => done(e, false))
   }
 ))
 
 // mandatory
-passport.serializeUser((password, next) => {
-  next(null, password.id)
+passport.serializeUser((user, next) => {
+  next(null, user.id)
 })
 
 passport.deserializeUser(async (id, next) => {
-  const {users} = await Password.findById(id).populate('users')
-  next(null, users[0])
+  const user = await User.findById(id)
+  next(null, user)
 })
 
 app.set('trust proxy', true)
@@ -203,17 +192,6 @@ app.get(
   passport.authenticate('zotero', { scope: zoteroAuthScope })
 )
 
-app.get('/profile', async (req, res) => {
-  if (req.user) {
-    const user = await User.findOne({ email: req.user.email }).populate("passwords")
-    res.status(200)
-    res.json({ user })
-  } else {
-    res.status(404)
-    res.json({})
-  }
-})
-
 app.use('/authorization-code/zotero/callback',
   (req, res, next) => {
     passport.authenticate('zotero', async (err, user, info, status) => {
@@ -265,26 +243,17 @@ app.use('/authorization-code/callback',
 
 app.get('/logout', (req, res) => {
   req.logout()
+  req.session.destroy()
   res.clearCookie('graphQL-jwt')
   res.redirect(req.headers.referer)
 })
 
 app.post('/login',
   passport.authenticate('local', { failWithError: true }),
-  function onSuccess(req, res, _) {
-    const userPassword = req.user
-    const payload = {
-      email: userPassword.email,
-      usersIds: userPassword.users.map(user => user._id.toString()),
-      passwordId: userPassword._id,
-      admin: Boolean(userPassword.admin),
-      session: true
-    }
+  async function onSuccess(req, res) {
+    const { email } = req.user
 
-    const token = jwt.sign(
-      payload,
-      jwtSecret
-    )
+    const token = await createJWTToken({ email, jwtSecret })
 
     res.cookie("graphQL-jwt", token, {
       expires: 0,
@@ -294,9 +263,9 @@ app.post('/login',
     })
 
     res.statusCode = 200
-    res.json({ password: userPassword, users: userPassword.users, token })
+    res.json({ user: req.user, token })
   },
-  function onFailure(error, req, res, _) {
+  function onFailure(error, req, res) {
     console.error('error', error)
     res.statusCode = 401
     res.json({ error })

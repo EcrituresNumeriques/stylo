@@ -12,8 +12,8 @@ const DIVISIONS = [
   { amount: Number.POSITIVE_INFINITY, name: 'years' }
 ]
 
-export default (date) => {
-  let duration = (date - new Date()) / 1000
+export default (sDate) => {
+  let duration = (new Date(parseInt(sDate, 10)) - new Date()) / 1000
 
   if (Math.abs(duration) < 60) {
     return 'a few seconds ago'

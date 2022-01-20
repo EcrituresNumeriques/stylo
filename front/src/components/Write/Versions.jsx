@@ -93,7 +93,7 @@ const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
                       by <strong>{v.owner.displayName}</strong>{' '}
                     </span>
                   )}
-                  {<span>on <time dateTime={v.updatedAt}>{dateFormat(new Date(v.updatedAt))}</time></span>}
+                  {<span>on <time dateTime={v.updatedAt}>{dateFormat(v.updatedAt)}</time></span>}
                 </p>
                 <ul className={styles.actions}>
                   {v._id !== compareTo && (

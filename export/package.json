@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "nodemon src/app.js",
+    "start": "node src/app.js",
     "prod": "NODE_ENV=production node --heapsnapshot-signal=SIGUSR2 src/app.js"
   },
   "repository": {
@@ -34,14 +34,16 @@
     "archiver": "5.3.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "graphql": "^16.1.0",
+    "graphql-request": "^3.7.0",
+    "graphql-tag": "^2.12.6",
     "js-yaml": "^4.0.0",
-    "mongoose": "^5.9.26",
+    "jsonwebtoken": "^8.5.1",
     "remove-markdown": "^0.3.0",
     "rimraf": "^3.0.2"
   },
   "devDependencies": {
-    "jest": "^26.6.1",
-    "nodemon": "^2.0.7"
+    "jest": "^26.6.1"
   },
   "husky": {
     "hooks": {

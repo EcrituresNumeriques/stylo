@@ -9,21 +9,25 @@ const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
 }
 
-const ConnectedArticleTags = (props) => {
-  const addToTags = async ({ name, _id, color }) => {
-    props.setTags([...props.stateTags, { _id, name, color, selected: true }])
+const ConnectedArticleTags = ({ article, activeUser, masterTags, stateTags, setTags, sessionToken, applicationConfig }) => {
+  const articleId = article._id
+  const isArticleOwner = activeUser._id === article.owner._id
+
+  const addToTags = async (tag) => {
+    setTags([...stateTags, { ...tag, selected: true }])
+
     try {
       const query = `mutation($article:ID!,$tag:ID!,$user:ID!){addToTag(article:$article,tag:$tag,user:$user){ _id }}`
       const variables = {
-        article: props._id,
-        tag: _id,
-        user: props.activeUser._id,
+        article: articleId,
+        tag: tag._id,
+        user: activeUser._id,
       }
       await askGraphQL(
         { query, variables },
         'adding to tag',
-        props.sessionToken,
-        props.applicationConfig
+        sessionToken,
+        applicationConfig
       )
     } catch (err) {
       alert(err)
@@ -31,19 +35,19 @@ const ConnectedArticleTags = (props) => {
   }
 
   const rmFromTags = async (id) => {
-    props.setTags(props.stateTags.filter((t) => t._id !== id))
+    setTags(stateTags.filter((t) => t._id !== id))
     try {
       const query = `mutation($article:ID!,$tag:ID!,$user:ID!){removeFromTag(article:$article,tag:$tag,user:$user){ _id }}`
       const variables = {
-        article: props._id,
+        article: articleId,
         tag: id,
-        user: props.activeUser._id,
+        user: activeUser._id,
       }
       await askGraphQL(
         { query, variables },
         'removing from tag',
-        props.sessionToken,
-        props.applicationConfig
+        sessionToken,
+        applicationConfig
       )
     } catch (err) {
       alert(err)
@@ -52,27 +56,26 @@ const ConnectedArticleTags = (props) => {
 
   return (
     <ul>
-      {props.stateTags.map((t) => (
-        <li
-          onClick={() => rmFromTags(t._id)}
-          key={`article-${props._id}-${t._id}`}
-        >
-          <Tag data={t}
-               name={`articleTag-${t._id}`}
-               onClick={() => rmFromTags(t._id)}
+      {stateTags.map((tag) => (
+        <li key={`article-${articleId}-${tag._id}`}>
+          <Tag tag={tag}
+               activeUser={activeUser}
+               name={`articleTag-${tag._id}`}
+               onClick={() => rmFromTags(tag._id)}
           />
         </li>
       ))}
 
-      {props.masterTags
-        .filter((t) => !props.stateTags.map((u) => u._id).includes(t._id))
-        .map((t) => (
+      {isArticleOwner && masterTags
+        .filter((t) => !stateTags.map((u) => u._id).includes(t._id))
+        .map((tag) => (
           <li
-            key={`article-${props._id}-${t._id}`}
+            key={`article-${articleId}-${tag._id}`}
           >
-            <Tag data={t}
-                 name={`articleTag-${t._id}`}
-                 onClick={() => addToTags({ _id: t._id, name: t.name, color: t.color })}
+            <Tag tag={tag}
+                 activeUser={activeUser}
+                 name={`articleTag-${tag._id}`}
+                 onClick={() => addToTags(tag)}
             />
           </li>
         ))}

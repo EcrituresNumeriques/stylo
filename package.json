@@ -21,6 +21,7 @@
     "start": "pm2 start --env production",
     "stop": "pm2 stop all",
     "reload": "pm2 reload all",
+    "cleanup": "pm2 delete all && pm2 save",
     "list": "pm2 list",
     "status": "pm2 list",
     "logs": "pm2 logs"

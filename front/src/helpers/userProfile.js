@@ -1,7 +1,34 @@
+import askGraphQL from "../helpers/graphQL"
+
 export function getUserProfile(applicationConfig) {
-  return fetch(`${applicationConfig.backendEndpoint}/profile`, {
-    method: 'GET',
-    credentials: 'include',
-    cors: true,
-  }).then((res) => res.json())
+  const query = `query {
+    user {
+      _id
+      displayName
+      authType
+      firstName
+      lastName
+      institution
+      email
+      yaml
+      admin
+      createdAt
+      updatedAt
+      apiToken
+
+      acquintances {
+        _id
+        email
+        displayName
+      }
+
+      permissions {
+        scope
+        roles
+        user
+      }
+    }
+  }`
+
+  return askGraphQL({ query }, 'Fetch user profile', '', applicationConfig)
 }
