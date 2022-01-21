@@ -158,16 +158,28 @@ const getBookExportContext = async (bookId) => {
     return null
   }
 
+  return createBookExportContext(chapters, { id, title })
+}
+
+function createBookExportContext (chapters, { id, title }) {
   // sort chapters in ascending alphabetical order
   const chaptersSorted = chapters.sort(sortByTitle)
-  const mds = chaptersSorted.map((c) => c.versions[c.versions.length - 1].md)
-  const bibs = chaptersSorted.map((c) => c.versions[c.versions.length - 1].bib)
+  const chaptersData = chaptersSorted.reduce((acc, chapter) => {
+    const workingVersion = chapter.versions.length > 0
+      ? chapter.versions[chapter.versions.length - 1]
+      : chapter.workingVersion
+    acc.bib.push(workingVersion.bib)
+    acc.md.push(workingVersion.md)
+    return acc
+  }, { bib: [], md: [] })
   const firstChapter = chaptersSorted[0]
-  const { yaml } = firstChapter.versions[firstChapter.versions.length - 1]
+  const { yaml } = firstChapter.versions.length > 0
+    ? firstChapter.versions[firstChapter.versions.length - 1]
+    : firstChapter.workingVersion
   return {
-    bib: [...bibs].join('\n'),
+    bib: chaptersData.bib.join('\n'),
     yaml: yaml,
-    md: mds.join('\n\n'),
+    md: chaptersData.md.join('\n\n'),
     id,
     title,
   }
@@ -294,4 +306,5 @@ module.exports = {
       errorHandler(err, res)
     }
   },
+  _createBookExportContext: createBookExportContext
 }
