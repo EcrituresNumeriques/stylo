@@ -1,21 +1,25 @@
 const { gql, GraphQLClient } = require('graphql-request')
 const { FindByIdNotFoundError } = require('./helpers/errors')
-const jwt = require('jsonwebtoken')
 
-const graphqlEndpoint = process.env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT || 'http://localhost:3030/graphql'
-const jwtSecret = process.env.JWT_SECRET_SESSION_COOKIE
+let graphQLClient = null
 
-const passthroughToken = jwt.sign({
-  admin: true,
-  roles: ['read'],
-  readonly: true
-}, jwtSecret)
-
-const client = new GraphQLClient(graphqlEndpoint, {
-  headers: {
-    authorization: `Bearer ${passthroughToken}`,
-  },
-})
+function getGraphQLClient () {
+  if (graphQLClient) {
+    return graphQLClient
+  }
+  const graphqlEndpoint = process.env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT || 'http://localhost:3030/graphql'
+  const passthroughToken = require('jsonwebtoken').sign({
+    admin: true,
+    roles: ['read'],
+    readonly: true
+  }, process.env.JWT_SECRET_SESSION_COOKIE)
+  graphQLClient = new GraphQLClient(graphqlEndpoint, {
+    headers: {
+      authorization: `Bearer ${passthroughToken}`,
+    },
+  })
+  return graphQLClient
+}
 
 async function getArticleById (articleId) {
   const query = gql`query ($articleId: ID!) {
@@ -32,7 +36,7 @@ async function getArticleById (articleId) {
   }`
 
   try {
-    const { article } = await client.request(query, { articleId })
+    const { article } = await getGraphQLClient().request(query, { articleId })
     return article
   }
   catch (e) {
@@ -52,7 +56,7 @@ async function getVersionById (versionId) {
   }`
 
   try {
-    const { version } = await client.request(query, { versionId })
+    const { version } = await getGraphQLClient().request(query, { versionId })
     return version
   }
   catch (e) {
@@ -80,7 +84,7 @@ async function getBookById (bookId) {
   }`
 
   try {
-    const { tag: book } = await client.request(query, { bookId })
+    const { tag: book } = await getGraphQLClient().request(query, { bookId })
     return book
   }
   catch (e) {
