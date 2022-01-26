@@ -25,7 +25,10 @@ export function getUserProfile(applicationConfig) {
       permissions {
         scope
         roles
-        user
+        user {
+          _id
+          displayName
+        }
       }
     }
   }`

@@ -71,6 +71,7 @@ userSchema.statics.findAllArticles = async function (userId) {
   const user = await this
     .findById(userId)
     .populate('tags acquintances')
+    .populate({ path: 'permissions', populate: 'user' })
     // see https://mongoosejs.com/docs/api/document.html#document_Document-populate
     // for subdocument population
     .populate({

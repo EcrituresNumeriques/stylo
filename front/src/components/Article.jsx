@@ -39,6 +39,8 @@ const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken
   const isArticleOwner = activeUser._id === article.owner._id
   const acquintanceService = new AcquintanceService(activeUser._id, applicationConfig)
 
+  const contributors = [].concat(article.contributors, activeUser.permissions).filter(c => c.user._id !== article.owner._id)
+
   const fork = async () => {
     try {
       await acquintanceService.duplicateArticle(article._id, activeUser._id)
@@ -113,7 +115,7 @@ const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken
       )}
 
       <aside className={styles.actionButtons}>
-        {isArticleOwner && <Button title="Delete" icon={true} onClick={() => setDeleting(true)}>
+        {isArticleOwner && <Button title={contributors.length ? 'Remove all contributors in order to delete this article' : 'Delete'} disabled={contributors.length > 0} icon={true} onClick={() => setDeleting(true)}>
           <Trash />
         </Button>}
 
@@ -153,11 +155,14 @@ const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken
       )}
 
       <section className={styles.metadata}>
-        <p>
+        <p className={styles.metadataAuthoring}>
           {tags.map((t) => (
             <span className={styles.tagChip} key={'tagColor-' + t._id} style={{ backgroundColor: t.color || 'grey' }} />
           ))}
-          by <span className={styles.author}>{[article.owner, ...article.contributors].map((o) => o.user?.displayName ?? o.displayName).join(', ')}</span>
+          by <span className={styles.author}>{article.owner.displayName}</span>
+          {contributors.length > 0 && (<span className={styles.contributors}>
+            and shared with <span className={styles.author}>{contributors.map(c => c.user.displayName).join(', ')}</span>
+          </span>)}
 
           <time dateTime={article.updatedAt} className={styles.momentsAgo}>
             ({formatTimeAgo(article.updatedAt)})

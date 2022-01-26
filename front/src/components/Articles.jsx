@@ -158,7 +158,7 @@ const ConnectedArticles = (props) => {
 
   return (
     <section className={styles.section}>
-      <h1>Articles for {displayName}</h1>
+      <h1>{articles.length} articles for {displayName}</h1>
       <ul className={styles.horizontalMenu}>
         <li>
           <Button primary={true} onClick={() => setCreatingArticle(true)}>

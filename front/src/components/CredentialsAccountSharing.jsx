@@ -3,11 +3,10 @@ import { useSelector, shallowEqual } from 'react-redux'
 
 import styles from './credentials.module.scss'
 import acquintancesStyles from './acquintances.module.scss'
-import Loading from "./Loading";
 import Button from "./Button";
 
 import AcquintanceService from '../services/AcquintanceService'
-import { Lock, Unlock } from 'react-feather';
+import { UserMinus, UserPlus } from 'react-feather';
 import { useCallback } from 'react';
 
 export default function CredentialsAccountSharing () {
@@ -18,7 +17,7 @@ export default function CredentialsAccountSharing () {
   const applicationConfig = useSelector(state => state.applicationConfig, shallowEqual)
   const acquintanceService = new AcquintanceService(activeUser._id, applicationConfig)
 
-  const userPermissionsIds = permissions.filter(p => p.scope === 'user').map(({ user }) => user)
+  const userPermissionsIds = permissions.filter(p => p.scope === 'user').map(({ user }) => user._id)
 
   useEffect(() => {
     if (loading) {
@@ -62,13 +61,13 @@ export default function CredentialsAccountSharing () {
 
         {!userPermissionsIds.includes(acquintance._id) && <div className={acquintancesStyles.acquintanceActions}>
           <Button onClick={() => giveAccountAccess({ from: activeUser._id, to: acquintance._id })}>
-            <Unlock /> Give Access
+            <UserPlus /> Enable Sharing
           </Button>
         </div>}
 
         {userPermissionsIds.includes(acquintance._id) && <div className={acquintancesStyles.acquintanceActions}>
           <Button onClick={() => revokeAccountAccess({ from: activeUser._id, to: acquintance._id })}>
-            <Lock /> Revoke Access
+            <UserMinus /> Stop Sharing
           </Button>
         </div>}
       </li>)}
