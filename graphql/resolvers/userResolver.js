@@ -84,10 +84,13 @@ module.exports = {
     populateArgs(args,req)
     isUser(args,req)
 
-    const thisUser = await User.findOne({ _id: args.user }).populate('acquintances')
+    const thisUser = await User.findOne({ _id: args.user })
+      .populate('acquintances')
+      .populate({ path: 'permissions', populate: 'user' })
+
     const remoteUser = await User.findOne({ _id: args.to })
 
-    const existingsScope = thisUser.permissions.find(p => p.scope === 'user' && p.user == remoteUser.id)
+    const existingsScope = thisUser.permissions.find(p => p.scope === 'user' && p.user._id == remoteUser.id)
 
     if (existingsScope) {
       throw new Error(`Account [id: ${args.to}] has already access to account [id: ${args.user}]`)
@@ -99,16 +102,19 @@ module.exports = {
       roles: ['access', 'read', 'write']
     })
 
-    return thisUser.save()
+    return thisUser.save().then(u => u.populate({ path: 'permissions', populate: 'user' }).execPopulate())
   },
   revokeAccountAccess: async (args, {req}) => {
     populateArgs(args,req)
     isUser(args,req)
 
-    const thisUser = await User.findOne({ _id: args.user }).populate('acquintances')
+    const thisUser = await User.findOne({ _id: args.user })
+      .populate('acquintances')
+      .populate({ path: 'permissions', populate: 'user' })
+
     const remoteUser = await User.findOne({ _id: args.to })
 
-    const existingsScope = thisUser.permissions.find(p => p.scope === 'user' && p.user == remoteUser.id)
+    const existingsScope = thisUser.permissions.find(p => p.scope === 'user' && p.user._id == remoteUser.id)
 
     if (!existingsScope) {
       throw new Error(`Account [id: ${args.to}] has no access to account [id: ${args.user}]`)

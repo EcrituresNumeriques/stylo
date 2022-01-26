@@ -24,7 +24,7 @@ module.exports = buildASTSchema(gql`
 
   type UserPermission {
     scope: String!
-    user: ID!
+    user: User!
     roles: [String]
   }
 

@@ -18,7 +18,7 @@ export default function CredentialsAccountSharing () {
   const applicationConfig = useSelector(state => state.applicationConfig, shallowEqual)
   const acquintanceService = new AcquintanceService(activeUser._id, applicationConfig)
 
-  const userPermissionsIds = permissions.filter(p => p.scope === 'user').map(({ user }) => user)
+  const userPermissionsIds = permissions.filter(p => p.scope === 'user').map(({ user }) => user._id)
 
   useEffect(() => {
     if (loading) {

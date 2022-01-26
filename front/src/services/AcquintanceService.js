@@ -50,7 +50,11 @@ const getAcquintancesPermissionsQuery = `query($user: ID!) {
   user(user: $user) {
     permissions {
       scope
-      user
+      user {
+        _id
+        displayName
+        email
+      }
       roles
     }
 
@@ -66,7 +70,11 @@ const grantAccountAccessQuery = `mutation($from: ID!, $to: ID!) {
   grantAccountAccess(user: $from, to: $to) {
     permissions {
       scope
-      user
+      user {
+        _id
+        displayName
+        email
+      }
       roles
     }
 
@@ -82,7 +90,11 @@ const revokeAccountAccessQuery = `mutation($from: ID!, $to: ID!) {
   revokeAccountAccess(user: $from, to: $to) {
     permissions {
       scope
-      user
+      user {
+        _id
+        displayName
+        email
+      }
       roles
     }
 
