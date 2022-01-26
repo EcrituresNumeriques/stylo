@@ -24,9 +24,11 @@ const ConnectedArticles = (props) => {
   const [articles, setArticles] = useState([])
   const [tags, setTags] = useState([])
   const [filterTags, setFilterTags] = useState([])
+  const [filterOwners, setFilterOwners] = useState([])
   const [creatingArticle, setCreatingArticle] = useState(false)
   const [needReload, setNeedReload] = useState(true)
   const [tagManagement, setTagManagement] = useState(false)
+  const [owners, setOwners] = useState([])
 
   const { displayName } = props.activeUser
 
@@ -53,6 +55,12 @@ const ConnectedArticles = (props) => {
     return tags
   }
 
+  const findAndUpdateOwner = (owners, id) => {
+    const owner = owners.find((o) => o._id === id)
+    owner.selected = !owner.selected
+    return owners
+  }
+
   const findAndUpdateArticleTags = (articles, articleId, tags) => {
     const article = articles.find((a) => a._id === articleId)
     article.tags = tags
@@ -73,6 +81,20 @@ const ConnectedArticles = (props) => {
     let pass = true
     for (let i = 0; i < listOfTagsSelected.length; i++) {
       if (!article.tags.map((t) => t._id).includes(listOfTagsSelected[i]._id)) {
+        pass = false
+      }
+    }
+    return pass
+  }
+
+  const filterByOwnerSelected = (article) => {
+    const listOfOwnersSelected = [...filterOwners].filter((t) => t.selected)
+    if (listOfOwnersSelected.length === 0) {
+      return true
+    }
+    let pass = true
+    for (let i = 0; i < listOfOwnersSelected.length; i++) {
+      if (!listOfOwnersSelected.filter(o => o.selected).map(o => o._id).includes(article.owner._id)) {
         pass = false
       }
     }
@@ -144,6 +166,28 @@ const ConnectedArticles = (props) => {
             selected: false,
             color: t.color || 'grey',
           }))
+          const owners = [
+            ...new Map(
+              data.user.articles.map(a => {
+                if (a.owner._id === props.activeUser._id) {
+                  return [a.owner._id, { ...a.owner, ...{ displayName: 'me' } }]
+                } else {
+                  return [a.owner._id, a.owner]
+                }
+              })
+            ).values()
+          ].sort((a, b) => {
+            if (a._id === props.activeUser._id) {
+              return -1
+            }
+            if (b._id === props.activeUser._id) {
+              return 1
+            }
+            return a.displayName > b.displayName
+          })
+          setOwners(owners)
+          // deep copy of owners
+          setFilterOwners(JSON.parse(JSON.stringify(owners)))
           setTags(tags)
           // deep copy of tags
           setFilterTags(JSON.parse(JSON.stringify(tags)))
@@ -188,7 +232,8 @@ const ConnectedArticles = (props) => {
               }}
             />
           )}
-          <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search" onChange={(e) => setFilter(etv(e))}/>
+          <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search"
+                 onChange={(e) => setFilter(etv(e))}/>
 
           {tags.length > 0 &&
           <>
@@ -210,8 +255,27 @@ const ConnectedArticles = (props) => {
             </ul>
           </>}
 
+          {owners.length > 0 &&
+          <>
+            <h4>Filter by Owner</h4>
+            <ul className={styles.filterByOwner}>
+              {filterOwners.map((o) => (
+                <li key={`filterOwner-${o._id}`}>
+                  <label className={styles.filterByOwnerLabel}>
+                    <input type="checkbox" checked={o.selected} onChange={() => {
+                      // shallow copy otherwise React won't render the components again
+                      setFilterOwners([...findAndUpdateOwner(filterOwners, o._id)])
+                    }}/>
+                    {o.displayName}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </>}
+
           {articles
             .filter(filterByTagsSelected)
+            .filter(filterByOwnerSelected)
             .filter(
               (a) => a.title.toLowerCase().indexOf(filter.toLowerCase()) > -1
             )
