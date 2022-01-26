@@ -106,7 +106,7 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
               <Share/> Share
             </Button>}
             {contributorsIds.includes(acquintance._id) && <Button onClick={() => unshareArticle(acquintance._id)} >
-              <XCircle/> Cancel sharing
+              <XCircle/> Unshare
             </Button>}
           </div>
         </div>
