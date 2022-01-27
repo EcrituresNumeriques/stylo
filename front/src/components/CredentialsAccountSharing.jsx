@@ -42,11 +42,11 @@ export default function CredentialsAccountSharing () {
   }, [])
 
   return <section className={styles.section}>
-    <h2>Account Sharing</h2>
+    <h2>Grant Access</h2>
 
     <p>
-      Share your account with your Stylo contacts you trust, so they can <em>see all
-      your articles</em>, and to enable <em>modify them</em>.
+      <strong>Share your <em>articles</em> with Stylo contacts you trust</strong>.
+      They will <strong>see all</strong> your articles, granting them the ability to <strong>modify</strong> them.
       It applies to all future articles you will create as well.
     </p>
 
@@ -61,13 +61,13 @@ export default function CredentialsAccountSharing () {
 
         {!userPermissionsIds.includes(acquintance._id) && <div className={acquintancesStyles.acquintanceActions}>
           <Button onClick={() => giveAccountAccess({ from: activeUser._id, to: acquintance._id })}>
-            <UserPlus /> Enable Sharing
+            <UserPlus /> Give full access
           </Button>
         </div>}
 
         {userPermissionsIds.includes(acquintance._id) && <div className={acquintancesStyles.acquintanceActions}>
           <Button onClick={() => revokeAccountAccess({ from: activeUser._id, to: acquintance._id })}>
-            <UserMinus /> Stop Sharing
+            <UserMinus /> Revoke access
           </Button>
         </div>}
       </li>)}
