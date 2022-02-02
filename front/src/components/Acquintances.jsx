@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Send, UserMinus, UserPlus } from 'react-feather'
 
 import styles from './acquintances.module.scss'
-import formStyles from './field.module.scss'
 
+import AcquintanceAddForm from './AcquintanceAddForm'
 import Button from './Button'
-import Field from './Field'
 
 import AcquintanceService from '../services/AcquintanceService'
 
@@ -17,7 +16,6 @@ const mapStateToProps = ({ activeUser, applicationConfig }) => {
 
 function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, applicationConfig }) {
   const [acquintances, setAcquintances] = useState([])
-  const [contact, setContact] = useState('')
   const [loading, setLoading] = useState(true)
   const [contributors, setContributors] = useState(article.contributors)
   const articleId = article._id
@@ -26,17 +24,6 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
 
   const sharedAccountsIds = activeUser.permissions.map(({ user }) => user._id)
   const contributorsIds = contributors.map(({ user }) => user._id)
-
-  const addContact = async () => {
-    try {
-      await acquintanceService.addAcquintance(contact)
-      setContact('')
-      setLoading(true)
-    } catch (err) {
-      console.error(`Unable to add acquitance ${contact} (userId: ${userId})`, err)
-      alert(err)
-    }
-  }
 
   const shareArticle = async (to) => {
     try {
@@ -70,30 +57,17 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
   }
 
   useEffect(() => {
-    if (loading) {
-      (async () => {
-        const data = await acquintanceService.getAcquintances()
-        setLoading(false)
-        setAcquintances(data.user.acquintances)
-      })()
-    }
-  }, [loading])
+    acquintanceService.getAcquintances().then(data => {
+      setLoading(false)
+      setAcquintances(data.user.acquintances)
+    })
+  }, [])
+
+  const refreshContacts = useCallback((acquintances) => setAcquintances(acquintances), [])
 
   return (
     <section className={styles.acquintances}>
-      <form onSubmit={(event) => {
-        event.preventDefault()
-        addContact()
-      }} className={formStyles.inlineFields}>
-        <Field
-          autoFocus={true}
-          className={formStyles.fullWidth}
-          placeholder='Email of the contact you want to add'
-          value={contact}
-          onChange={(e) => setContact(e.target.value)}
-        />
-        <Button type="submit">Add</Button>
-      </form>
+      <AcquintanceAddForm onAdd={refreshContacts} />
       {loading && <p>Loading...</p>}
       {!loading && acquintances.length === 0 && <p>No acquintances</p>}
       {acquintances.map((acquintance) => (
