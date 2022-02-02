@@ -8,11 +8,6 @@ const populateArgs = require('../helpers/populateArgs')
 
 module.exports = {
   saveVersion: async (args, { req }) => {
-    /*
-          article: $articleId,
-      major: $major,
-      message: $message
-     */
     isUser(args, req)
 
     let version, revision
@@ -49,7 +44,7 @@ module.exports = {
       revision = lastMinorVersion + 1
     }
     const message = args.version.message
-    const newVersion = {
+    const createdVersion = await Version.create({
       md,
       yaml,
       bib,
@@ -61,12 +56,12 @@ module.exports = {
         .filter((line) => line.match(/^#+ /))
         .join('\n'),
       owner: thisUser.id
-    }
-    const returnedVersion = await Version.create(newVersion).populate('owner')
-    articleToSaveInto.versions.push(returnedVersion)
+    }).then(v => v.populate('owner').execPopulate())
+
+    articleToSaveInto.versions.push(createdVersion)
     await articleToSaveInto.save()
 
-    return returnedVersion
+    return createdVersion
   },
   version: async (args, { req }) => {
     // TODO need to make sure user should have access to this version
