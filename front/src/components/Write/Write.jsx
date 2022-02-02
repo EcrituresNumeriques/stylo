@@ -235,7 +235,7 @@ function Write() {
           dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: article.versions })
           dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
           dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
-          dispatch({ type: 'UPDATE_ARTICLE_BIB', bib })
+          dispatch({ type: 'SET_WORKING_ARTICLE_BIBLIOGRAPHY', bibliography: bib })
           dispatch({
             type: 'SET_WORKING_ARTICLE_UPDATED_AT',
             updatedAt: article.updatedAt,
