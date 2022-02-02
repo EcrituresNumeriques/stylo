@@ -23,7 +23,7 @@ function Footer () {
           <li><Link to="/privacy">Privacy</Link></li>
           { import.meta.env.SNOWPACK_MATOMO_URL && (<li>
             <label className={styles.consentLabel}>
-              <input type="checkbox" checked={userHasConsent} onChange={toggleConsent} disabled={true} />
+              <input type="checkbox" checked={userHasConsent} onChange={toggleConsent} />
               I accept to share my navigation stats
             </label>
           </li>) }
