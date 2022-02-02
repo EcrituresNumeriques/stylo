@@ -24,7 +24,7 @@
     "posttest": "eslint ./src"
   },
   "dependencies": {
-    "@rjsf/core": "^2.5.1",
+    "@rjsf/core": "^3.2.1",
     "biblatex-csl-converter": "^1.11.0",
     "codemirror": "^5.59.4",
     "diff-match-patch": "^1.0.5",
