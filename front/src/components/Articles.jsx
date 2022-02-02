@@ -187,10 +187,10 @@ const ConnectedArticles = (props) => {
           })
           setOwners(owners)
           // deep copy of owners
-          setFilterOwners(JSON.parse(JSON.stringify(owners)))
+          setFilterOwners(structuredClone(owners))
           setTags(tags)
           // deep copy of tags
-          setFilterTags(JSON.parse(JSON.stringify(tags)))
+          setFilterTags(structuredClone(tags))
           setIsLoading(false)
           setNeedReload(false)
         } catch (err) {

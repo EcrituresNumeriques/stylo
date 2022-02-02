@@ -1,4 +1,5 @@
 import './wdyr.js'
+import 'core-js/modules/web.structured-clone'
 import React, { lazy } from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter as Router, Route, Switch, useParams, useHistory } from 'react-router-dom'
