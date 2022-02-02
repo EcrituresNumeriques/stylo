@@ -61,6 +61,12 @@
   }
 }
 
+hr.horizontalSeparator {
+  border: 1px solid $main-border-color;
+  margin: 1rem auto;
+  max-width: 250px;
+}
+
 .article {
   display: flex;
   flex-direction: row;

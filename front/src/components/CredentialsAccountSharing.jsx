@@ -6,7 +6,7 @@ import acquintancesStyles from './acquintances.module.scss'
 import Button from "./Button";
 
 import AcquintanceService from '../services/AcquintanceService'
-import { UserMinus, UserPlus } from 'react-feather';
+import { AlertTriangle, UserMinus, UserPlus } from 'react-feather';
 import { useCallback } from 'react';
 
 export default function CredentialsAccountSharing () {
@@ -46,8 +46,14 @@ export default function CredentialsAccountSharing () {
 
     <p>
       <strong>Share your <em>articles</em> with Stylo contacts you trust</strong>.
-      They will <strong>see all</strong> your articles, granting them the ability to <strong>modify</strong> them.
-      It applies to all future articles you will create as well.
+    </p>
+
+    <p className={styles.warningMessage}>
+      <AlertTriangle color="orange" />
+      <span>
+        Granted users will <strong>see all</strong> your articles, granting them the ability to <strong>modify</strong> them.
+        It applies to all future articles you will create as well.
+      </span>
     </p>
 
     <ul>

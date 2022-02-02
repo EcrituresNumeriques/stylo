@@ -273,6 +273,8 @@ const ConnectedArticles = (props) => {
             </ul>
           </>}
 
+          <hr className={styles.horizontalSeparator} />
+
           {articles
             .filter(filterByTagsSelected)
             .filter(filterByOwnerSelected)

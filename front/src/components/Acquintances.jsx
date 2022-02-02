@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { Send, Share, XCircle } from 'react-feather'
+import { Send, Share, UserMinus, UserPlus, XCircle } from 'react-feather'
 
 import styles from './acquintances.module.scss'
 import formStyles from './field.module.scss'
@@ -103,10 +103,10 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
           <div className={styles.acquintanceActions}>
             <Button onClick={() => duplicateArticle(acquintance._id)} ><Send/> Send a Copy</Button>
             {!contributorsIds.includes(acquintance._id) && <Button onClick={() => shareArticle(acquintance._id)} >
-              <Share/> Share
+              <UserPlus /> Grant Access
             </Button>}
             {contributorsIds.includes(acquintance._id) && <Button onClick={() => unshareArticle(acquintance._id)} >
-              <XCircle/> Unshare
+              <UserMinus /> Revoke Access
             </Button>}
           </div>
         </div>
