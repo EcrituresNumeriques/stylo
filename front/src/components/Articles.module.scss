@@ -181,10 +181,12 @@
 
 .tags {
   @extend .clickable;
-  display: inline-block;
+  display: inline-flex;
   border: 1px solid $main-border-color;
   padding: 0.5rem;
   margin-right: 0.5rem;
+  align-items: center;
+  gap: 0.1em;
 }
 
 .filterByTags {
@@ -196,6 +198,27 @@
   }
   margin-top: 0.25rem;
   margin-bottom: 0.5rem;
+}
+
+.filterByOwner {
+  display: flex;
+  flex-wrap: wrap;
+  > li:not(:last-child) {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.filterByOwnerLabel {
+  @extend .clickable;
+  display: inline-flex;
+  border: 1px solid $main-border-color;
+  padding: 0.25rem;
+  margin-right: 0.25rem;
+  align-items: center;
+  gap: 0.1em;
 }
 
 .selectedTags {
