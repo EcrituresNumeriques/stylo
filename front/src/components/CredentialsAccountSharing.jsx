@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
+import { AlertTriangle, UserMinus, UserPlus } from 'react-feather';
 
 import styles from './credentials.module.scss'
 import acquintancesStyles from './acquintances.module.scss'
 import Button from "./Button";
 
 import AcquintanceService from '../services/AcquintanceService'
-import { AlertTriangle, UserMinus, UserPlus } from 'react-feather';
-import { useCallback } from 'react';
+import AcquintanceAddForm from './AcquintanceAddForm'
 
 export default function CredentialsAccountSharing () {
   const [loading, setLoading] = useState(true)
@@ -41,6 +41,8 @@ export default function CredentialsAccountSharing () {
     setAcquintances(data.revokeAccountAccess.acquintances)
   }, [])
 
+  const refreshContacts = useCallback((acquintances) => setAcquintances(acquintances), [])
+
   return <section className={styles.section}>
     <h2>Grant Access</h2>
 
@@ -55,6 +57,8 @@ export default function CredentialsAccountSharing () {
         It applies to all future articles you will create as well.
       </span>
     </p>
+
+    <AcquintanceAddForm onAdd={refreshContacts} />
 
     <ul>
       {acquintances.map(acquintance => <li key={acquintance._id} className={acquintancesStyles.acquintance}>
