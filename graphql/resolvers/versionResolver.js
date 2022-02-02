@@ -65,6 +65,6 @@ module.exports = {
   },
   version: async (args, { req }) => {
     // TODO need to make sure user should have access to this version
-    return await Version.findById(args.version)
+    return await Version.findById(args.version).populate('owner')
   },
 }
