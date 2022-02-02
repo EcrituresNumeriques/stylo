@@ -220,8 +220,8 @@ app.use('/authorization-code/zotero/callback',
   })
 
 app.use('/authorization-code/callback',
-  passport.authenticate('oidc', { failureRedirect: '/error', failureFlash: true }),
-  async (req, res) => {
+  passport.authenticate('oidc', { failWithError: true }),
+  async function onSuccess(req, res) {
     const email = req.user.email
 
     if (email) {
@@ -238,8 +238,11 @@ app.use('/authorization-code/callback',
     }
 
     return res.redirect(req.session.origin)
-  }
-)
+  },
+  function onFailure(error, req, res) {
+    console.error('error', error)
+    res.redirect(`/error?message=${error.message}`)
+  })
 
 app.get('/logout', (req, res) => {
   req.logout()
