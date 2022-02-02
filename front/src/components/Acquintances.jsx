@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Send, Share, UserMinus, UserPlus, XCircle } from 'react-feather'
+import { Send, UserMinus, UserPlus } from 'react-feather'
 
 import styles from './acquintances.module.scss'
 import formStyles from './field.module.scss'
@@ -23,6 +24,7 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
   const userId = activeUser._id
   const acquintanceService = new AcquintanceService(userId, applicationConfig)
 
+  const sharedAccountsIds = activeUser.permissions.map(({ user }) => user._id)
   const contributorsIds = contributors.map(({ user }) => user._id)
 
   const addContact = async () => {
@@ -101,13 +103,19 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
             <a href={"mailto:" + acquintance.email} className={styles.acquintanceEmail}>{acquintance.email}</a>
           </div>
           <div className={styles.acquintanceActions}>
-            <Button onClick={() => duplicateArticle(acquintance._id)} ><Send/> Send a Copy</Button>
-            {!contributorsIds.includes(acquintance._id) && <Button onClick={() => shareArticle(acquintance._id)} >
-              <UserPlus /> Grant Access
-            </Button>}
-            {contributorsIds.includes(acquintance._id) && <Button onClick={() => unshareArticle(acquintance._id)} >
-              <UserMinus /> Revoke Access
-            </Button>}
+            {sharedAccountsIds.includes(acquintance._id) === false && <>
+              <Button onClick={() => duplicateArticle(acquintance._id)} ><Send/> Send a Copy</Button>
+              {!contributorsIds.includes(acquintance._id) && <Button onClick={() => shareArticle(acquintance._id)} >
+                <UserPlus /> Grant Access
+              </Button>}
+              {contributorsIds.includes(acquintance._id) && <Button onClick={() => unshareArticle(acquintance._id)} >
+                <UserMinus /> Revoke Access
+              </Button>}
+            </>}
+
+            {sharedAccountsIds.includes(acquintance._id) === true && <small>
+              already shared via full access — <Link to="/credentials">manage</Link>
+            </small>}
           </div>
         </div>
       ))}
