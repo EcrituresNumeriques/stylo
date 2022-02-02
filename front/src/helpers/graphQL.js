@@ -16,21 +16,21 @@ const askGraphQL = async (
   })
 
   if (!response.ok) {
-    let res = await response.json()
-    if (res) {
-      res = res.errors || [{ message: 'problem' }]
+    try {
+      let responseJson = await response.json()
+      if (responseJson) {
+        responseJson = responseJson.errors || [{ message: 'Unexpected error!' }]
+      }
+      if (responseJson) {
+        responseJson = responseJson[0].message
+      }
+      console.error(`Something wrong happened during: ${action} => ${response.status}, ${response.statusText}: ${JSON.stringify(responseJson)}`)
+      throw new Error(responseJson)
+    } catch (err) {
+      const responseText = await response.text()
+      console.error(`Something wrong happened during: ${action} => ${response.status}, ${response.statusText}: ${responseText}`)
+      throw new Error(`${response.status} ${response.statusText}: ${responseText}`)
     }
-    if (res) {
-      res = res[0].message
-    }
-    console.error(
-      `${JSON.stringify(
-        res
-      )}.\nSomething wrong happened during: ${action} =>  ${response.status}, ${
-        response.statusText
-      }.`
-    )
-    throw new Error(res)
   }
 
   const json = await response.json()
