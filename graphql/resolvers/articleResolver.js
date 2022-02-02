@@ -148,6 +148,7 @@ module.exports = {
       ...fetchedArticle.toObject(),
       _id: undefined,
       owner: fetchedUser.id,
+      contributors: [],
       versions: [],
       createdAt: null,
       updatedAt: null,

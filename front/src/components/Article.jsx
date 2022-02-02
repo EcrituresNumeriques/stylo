@@ -18,7 +18,7 @@ import askGraphQL from '../helpers/graphQL'
 
 import Field from './Field'
 import Button from './Button'
-import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Send, Trash } from 'react-feather'
+import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Share2, Trash } from 'react-feather'
 
 import AcquintanceService from '../services/AcquintanceService'
 
@@ -124,7 +124,7 @@ const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken
         </Link>
 
         {isArticleOwner && <Button title="Share" icon={true} onClick={() => setSharing(true)}>
-          <Send />
+          <Share2 />
         </Button>}
 
         <Button title="Duplicate" icon={true} onClick={() => fork()}>
