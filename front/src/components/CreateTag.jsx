@@ -21,7 +21,7 @@ const ConnectedCreateTag = (props) => {
   const [description, setDescription] = useState('')
 
   const findAndUpdateArticle = (articles, id) => {
-    const immutableArticles = JSON.parse(JSON.stringify(articles))
+    const immutableArticles = structuredClone(articles)
     const article = immutableArticles.find((a) => a._id === id)
     article.selected = !article.selected
     return immutableArticles

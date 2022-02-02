@@ -1,7 +1,8 @@
+/* global structuredClone */
 import YAML from 'js-yaml'
 
 export function cleanOutput(object) {
-  let cleaning = JSON.parse(JSON.stringify(object))
+  let cleaning = structuredClone(object)
 
   if (ObjectIsEmpty(cleaning)) {
     return ''
