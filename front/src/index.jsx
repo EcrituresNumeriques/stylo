@@ -4,7 +4,6 @@ import React, { lazy } from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter as Router, Route, Switch, useParams, useHistory } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import 'whatwg-fetch'
 
 import './styles/general.scss'
 import App from './layouts/App'
