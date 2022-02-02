@@ -64,7 +64,7 @@ const Book = (props) => {
         {!isRenaming && (
           <h1 className={styles.bookTitle}>
             <span onClick={() => setExpanded(!expanded)}>
-              {expanded ? <ChevronDown /> : <ChevronRight />} {bookTitle}
+              {expanded ? <ChevronDown className={styles.expandIcon}/> : <ChevronRight className={styles.expandIcon}/>} {bookTitle}
             </span>
             <Button className={[buttonStyles.icon, styles.editTitleButton].join(' ')} onClick={() => setIsRenaming(true)}>
               <Edit3 />
