@@ -53,7 +53,7 @@ const TrackPageViews = () => {
     //@todo do this dynamically, based on a subscription to the store
     //otherwise, we should use _paq.push(['forgetConsentGiven'])
     _paq.push(['setConsentGiven'])
-    _paq.push(['setCustomUrl', '/' + pathname])
+    _paq.push(['setCustomUrl', pathname])
     //_paq.push(['setDocumentTitle', 'My New Title'])
     _paq.push(['trackPageView'])
   })
