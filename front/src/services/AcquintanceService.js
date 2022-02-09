@@ -3,15 +3,95 @@ const addAcquintanceQuery = `mutation($user: ID!, $email: String!) {
 }`
 
 const shareArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
-  shareArticle(article: $article, to: $to, user: $user) { _id }
+  shareArticle(article: $article, to: $to, user: $user) {
+    _id
+    contributors {
+      roles
+      user {
+        _id
+        displayName
+      }
+    }
+  }
 }`
 
-const sendArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
-  sendArticle(article: $article, to: $to, user: $user) { _id }
+const unshareArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
+  unshareArticle(article: $article, to: $to, user: $user) {
+    _id
+    contributors {
+      roles
+      user {
+        _id
+        displayName
+      }
+    }
+  }
+}`
+
+const duplicateArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
+  duplicateArticle(article: $article, to: $to, user: $user) { _id }
 }`
 
 const getAcquintancesQuery = `query($user: ID!) {
   user(user: $user) {
+    acquintances {
+      _id
+      displayName
+      email
+    }
+  }
+}`
+
+const getAcquintancesPermissionsQuery = `query($user: ID!) {
+  user(user: $user) {
+    permissions {
+      scope
+      user {
+        _id
+        displayName
+        email
+      }
+      roles
+    }
+    acquintances {
+      _id
+      displayName
+      email
+    }
+  }
+}`
+
+
+const grantAccountAccessQuery = `mutation($from: ID!, $to: ID!) {
+  grantAccountAccess(user: $from, to: $to) {
+    permissions {
+      scope
+      user {
+        _id
+        displayName
+        email
+      }
+      roles
+    }
+    acquintances {
+      _id
+      displayName
+      email
+    }
+  }
+}`
+
+const revokeAccountAccessQuery = `mutation($from: ID!, $to: ID!) {
+  revokeAccountAccess(user: $from, to: $to) {
+    permissions {
+      scope
+      user {
+        _id
+        displayName
+        email
+      }
+      roles
+    }
     acquintances {
       _id
       displayName
@@ -34,6 +114,13 @@ export default class AcquintanceService {
     })
   }
 
+  async getAcquintancesAndPermissions () {
+    return this.runQuery({
+      query: getAcquintancesPermissionsQuery,
+      variables: { user: this.userId }
+    })
+  }
+
   async addAcquintance (contact) {
     return this.runQuery({
       query: addAcquintanceQuery,
@@ -41,15 +128,29 @@ export default class AcquintanceService {
     })
   }
 
-  async sendArticle (articleId, to) {
+  async grantAccountAccessTo ({ from, to }) {
     return this.runQuery({
-        query: sendArticleQuery,
-        variables: {
-          user: this.userId,
-          to,
-          article: articleId,
-        }
-      })
+      query: grantAccountAccessQuery,
+      variables: { from, to }
+    })
+  }
+
+  async revokeAccountAccessTo ({ from, to }) {
+    return this.runQuery({
+      query: revokeAccountAccessQuery,
+      variables: { from, to }
+    })
+  }
+
+  async duplicateArticle (articleId, to) {
+    return this.runQuery({
+      query: duplicateArticleQuery,
+      variables: {
+        user: this.userId,
+        to,
+        article: articleId,
+      }
+    })
   }
 
   async shareArticle (articleId, to) {

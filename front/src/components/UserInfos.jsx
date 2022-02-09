@@ -31,7 +31,7 @@ export default function UserInfos () {
   useEffect(() => {
     ;(async () => {
       try {
-        const query = `query($user:ID!){user(user:$user){ displayName _id email admin createdAt updatedAt yaml firstName zoteroToken lastName institution passwords{ _id username email } tokens{ _id name active }}}`
+        const query = `query($user:ID!){user(user:$user){ displayName _id email admin createdAt updatedAt yaml firstName zoteroToken lastName institution }}`
         const variables = { user: userId }
         const data = await runQuery({ query, variables })
         setDisplayName(data.user.displayName)
@@ -47,7 +47,7 @@ export default function UserInfos () {
   }, [])
 
   const unlinkZoteroAccount = async () => {
-    const query = `mutation($user:ID!,$zoteroToken:String){updateUser(user:$user, zoteroToken:$zoteroToken){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken passwords{ _id username email } tokens{ _id name active } }}`
+    const query = `mutation($user:ID!,$zoteroToken:String){updateUser(user:$user, zoteroToken:$zoteroToken){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken }}`
     const variables = { user: userId, zoteroToken: null }
     const data = await runQuery({ query, variables })
     setUser(data.updateUser)

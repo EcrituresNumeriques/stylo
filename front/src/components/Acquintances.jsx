@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
 import { Send, UserMinus, UserPlus } from 'react-feather'
 
 import styles from './acquintances.module.scss'
@@ -15,7 +15,8 @@ export default function Acquintances ({ article, setNeedReload, cancel }) {
   const [acquintances, setAcquintances] = useState([])
   const [loading, setLoading] = useState(true)
   const [contributors, setContributors] = useState(article.contributors)
-  const userId = useSelector(state => state.activeUser._id)
+  const activeUser = useSelector(state => state.activeUser, shallowEqual)
+  const userId = activeUser._id
   const runQuery = useGraphQL()
   const acquintanceService = new AcquintanceService(userId, runQuery)
 
@@ -24,8 +25,8 @@ export default function Acquintances ({ article, setNeedReload, cancel }) {
 
   const shareArticle = async (to) => {
     try {
-      const { shareArticle:article } = await acquintanceService.shareArticle(article._id, to)
-      setContributors(article.contributors)
+      const { shareArticle } = await acquintanceService.shareArticle(article._id, to)
+      setContributors(shareArticle.contributors)
     } catch (err) {
       console.error(`Unable to share article ${article._id} with ${to} (userId: ${userId})`, err)
       alert(err)
@@ -34,8 +35,8 @@ export default function Acquintances ({ article, setNeedReload, cancel }) {
 
   const unshareArticle = async (to) => {
     try {
-      const { unshareArticle:article } = await acquintanceService.unshareArticle(article._id, to)
-      setContributors(article.contributors)
+      const { unshareArticle } = await acquintanceService.unshareArticle(article._id, to)
+      setContributors(unshareArticle.contributors)
     } catch (err) {
       console.error(`Unable to unshare article ${article._id} with ${to} (userId: ${userId})`, err)
       alert(err)
