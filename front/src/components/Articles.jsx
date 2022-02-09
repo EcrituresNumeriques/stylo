@@ -10,11 +10,10 @@ import CreateArticle from './CreateArticle'
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
 import TagManagement from './TagManagement'
-import ArticlesAccountSwitcher from './ArticlesAccountSwitcher'
 import Button from './Button'
 import Field from './Field'
 import Loading from './Loading'
-import { Search, Share2, SkipBack, Users } from 'react-feather'
+import { Search, Users } from 'react-feather'
 import ArticleTag from './Tag'
 import Select from "./Select";
 
@@ -23,7 +22,6 @@ export default function Articles () {
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
 
   const [isLoading, setIsLoading] = useState(true)
-  const [showSwitchAccountSelect, setShowSwitchAccountSelect] = useState(false)
   const [filter, setFilter] = useState('')
   const [articles, setArticles] = useState([])
   const [tags, setTags] = useState([])
@@ -31,9 +29,8 @@ export default function Articles () {
   const [creatingArticle, setCreatingArticle] = useState(false)
   const [needReload, setNeedReload] = useState(true)
   const [tagManagement, setTagManagement] = useState(false)
-  const [currentUser, setCurrentUser] = useState(props.activeUser)
+  const [currentUser, setCurrentUser] = useState(activeUser)
   const [userAccounts, setUserAccounts] = useState([])
-  const { displayName } = currentUser
 
   const currentUserId = useSelector(state => state.userPreferences.currentUser ?? state.activeUser._id)
   const setCurrentUserId = useCallback((userId) => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'currentUser', value: userId }), [])
@@ -172,7 +169,7 @@ export default function Articles () {
           // deep copy of tags
           setCurrentUser(data.user)
           setUserAccounts([
-            { _id: props.activeUser._id, displayName: props.activeUser.displayName },
+            { _id: activeUser._id, displayName: activeUser.displayName },
             ...data.userGrantedAccess
           ])
           setFilterTags(structuredClone(tags))

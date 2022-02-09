@@ -11,7 +11,7 @@ import Button from './Button'
 import AcquintanceService from '../services/AcquintanceService'
 import { useGraphQL } from '../helpers/graphQL'
 
-export default function Acquintances  ({ article, setNeedReload, cancel }) {
+export default function Acquintances ({ article, setNeedReload, cancel }) {
   const [acquintances, setAcquintances] = useState([])
   const [loading, setLoading] = useState(true)
   const [contributors, setContributors] = useState(article.contributors)
@@ -93,6 +93,3 @@ export default function Acquintances  ({ article, setNeedReload, cancel }) {
     </section>
   )
 }
-
-const Acquintances = connect(mapStateToProps)(ConnectedAcquintances)
-export default Acquintances

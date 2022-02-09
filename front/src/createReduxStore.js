@@ -121,7 +121,7 @@ const createNewArticleVersion = store => {
         const userId = activeUser._id
         const { articleId, metadata } = action
         try {
-          const { updateWorkingVersion } = await new MetadataService(userId, articleId, applicationConfig).saveMetadata(metadata)
+          const { updateWorkingVersion } = await new MetadataService(userId, articleId, sessionToken, applicationConfig).saveMetadata(metadata)
           store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saved' })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_METADATA', metadata })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
@@ -216,7 +216,6 @@ function setProfile (state, action) {
   return Object.assign({}, state, {
     hasBooted: true,
     activeUser,
-    sessionToken: activeUser.apiToken,
     logedIn: true,
   })
 }
@@ -231,13 +230,13 @@ function loginUser (state, { user, token:sessionToken }) {
   if (sessionToken) {
     return {
       ...state,
+      sessionToken,
       activeUser: {
         ...user,
         // dates are expected to be in timestamp string format (including milliseconds)
         createdAt: String(new Date(user.createdAt).getTime()),
         updatedAt: String(new Date(user.updatedAt).getTime()),
       },
-      sessionToken,
     }
   }
 

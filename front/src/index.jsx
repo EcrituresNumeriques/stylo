@@ -34,12 +34,11 @@ const Privacy = lazy(() => import('./components/Privacy'))
 const store = createStore()
 
 ;(async () => {
-  const applicationConfig = await getApplicationConfig(store.getState().applicationConfig)
+  const { applicationConfig: defaultApplicationConfig, sessionToken } = store.getState()
+  const applicationConfig = await getApplicationConfig(defaultApplicationConfig)
   store.dispatch({ type: 'APPLICATION_CONFIG', applicationConfig })
 
-  getUserProfile(applicationConfig)
-    // user is likely not connected
-    .catch(() => {})
+  getUserProfile({ applicationConfig, sessionToken })
     .then((response) => store.dispatch({ type: 'PROFILE', ...response }))
 })()
 
