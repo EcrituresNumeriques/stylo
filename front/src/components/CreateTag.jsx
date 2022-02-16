@@ -19,6 +19,7 @@ const ConnectedCreateTag = (props) => {
   )
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
+  const [tempColor, setTempColor] = useState('')
 
   const findAndUpdateArticle = (articles, id) => {
     const immutableArticles = structuredClone(articles)
@@ -28,7 +29,7 @@ const ConnectedCreateTag = (props) => {
   }
 
   let baseQuery =
-    'mutation($name:String!, $description:String, $user:ID!){ createTag(name:$name,description:$description,user:$user){ _id name } '
+    'mutation($name:String!, $description:String, $user:ID!, $color:String!){ createTag(name:$name,description:$description,user:$user,color:$color){ _id name description color } '
   let addToTag = articlesSelected
     .filter((a) => a.selected)
     .map(
@@ -37,7 +38,13 @@ const ConnectedCreateTag = (props) => {
     )
     .join(' ')
   const query = baseQuery + addToTag + '}'
-  const variables = { user: props.activeUser._id, name, description }
+  const variables = {
+    user: props.activeUser._id,
+    name,
+    description,
+    color: tempColor,
+
+  }
 
   const createTag = async (event, cb, query, variables, token) => {
     try {
@@ -80,6 +87,12 @@ const ConnectedCreateTag = (props) => {
           value={description}
           onChange={(e) => setDescription(etv(e))}
         />
+        
+        <Field
+              type="color"
+              value={tempColor}
+              onChange={(e) => setTempColor(etv(e))}
+            />
 
         <ul className={styles.actions}>
           <li>
