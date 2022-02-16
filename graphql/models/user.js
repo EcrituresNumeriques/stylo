@@ -93,12 +93,15 @@ userSchema.statics.findAllArticles = async function ({ userId, fromSharedUserId 
     .lean();
 }
 
-userSchema.statics.findAccountAccessUserIds = async function (userId, role = 'write') {
-  const users = await this
+userSchema.statics.findAccountAccessUsers = async function (userId, role = 'write') {
+  return this
     .find({ permissions: { $elemMatch: { user: userId, scope: 'user', roles: { $in: role } } } })
     .lean()
+}
 
-  return users.map(({ _id }) => _id).concat(userId)
+userSchema.statics.findAccountAccessUserIds = async function (userId, role = 'write') {
+  return this.findAccountAccessUsers(userId, role)
+    .then(users => users.map(({ _id }) => String(_id)).concat(String(userId)))
 }
 
 userSchema.statics.findAccountAccessArticles = function (user, role = 'read') {

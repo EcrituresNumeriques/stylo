@@ -9,8 +9,10 @@ import CreateArticle from './CreateArticle'
 
 import styles from './Articles.module.scss'
 import TagManagement from './TagManagement'
+import ArticlesAccountSwitcher from './ArticlesAccountSwitcher'
 import Button from './Button'
 import Field from './Field'
+import Loading from './Loading'
 import { Search } from 'react-feather'
 import Tag from './Tag'
 
@@ -24,13 +26,13 @@ const ConnectedArticles = (props) => {
   const [articles, setArticles] = useState([])
   const [tags, setTags] = useState([])
   const [filterTags, setFilterTags] = useState([])
-  const [filterOwners, setFilterOwners] = useState([])
   const [creatingArticle, setCreatingArticle] = useState(false)
   const [needReload, setNeedReload] = useState(true)
   const [tagManagement, setTagManagement] = useState(false)
-  const [owners, setOwners] = useState([])
+  const [currentUser, setCurrentUser] = useState(props.activeUser)
+  const [userAccounts, setUserAccounts] = useState([])
 
-  const { displayName } = props.activeUser
+  const { _id: currentUserId, displayName } = currentUser
 
   const handleReload = useCallback(() => {
     setNeedReload(true)
@@ -39,6 +41,12 @@ const ConnectedArticles = (props) => {
   const handleUpdateTags = useCallback((articleId, tags) => {
     setArticles([...findAndUpdateArticleTags(articles, articleId, tags)])
   }, [articles])
+
+  const handleCurrentUserChange = useCallback(({ selectedItem }) => {
+    setIsLoading(true)
+    setCurrentUser(selectedItem)
+    setNeedReload(true)
+  }, [currentUser._id])
 
   const handleUpdateTitle = useCallback((articleId, title) => {
     // shallow copy otherwise React won't render the components again
@@ -53,12 +61,6 @@ const ConnectedArticles = (props) => {
     const tag = tags.find((t) => t._id === id)
     tag.selected = !tag.selected
     return tags
-  }
-
-  const findAndUpdateOwner = (owners, id) => {
-    const owner = owners.find((o) => o._id === id)
-    owner.selected = !owner.selected
-    return owners
   }
 
   const findAndUpdateArticleTags = (articles, articleId, tags) => {
@@ -87,22 +89,9 @@ const ConnectedArticles = (props) => {
     return pass
   }
 
-  const filterByOwnerSelected = (article) => {
-    const listOfOwnersSelected = [...filterOwners].filter((t) => t.selected)
-    if (listOfOwnersSelected.length === 0) {
-      return true
-    }
-    let pass = true
-    for (let i = 0; i < listOfOwnersSelected.length; i++) {
-      if (!listOfOwnersSelected.filter(o => o.selected).map(o => o._id).includes(article.owner._id)) {
-        pass = false
-      }
-    }
-    return pass
-  }
-
   const query = `query($user:ID!){
     user(user:$user){
+      _id
       displayName
       tags {
         _id
@@ -144,17 +133,22 @@ const ConnectedArticles = (props) => {
         }
       }
     }
+
+    userGrantedAccess {
+      _id
+      displayName
+    }
   }`
 
-  const user = { user: props.activeUser._id }
-
   useEffect(() => {
+    const variables = { user: currentUserId }
+
     if (needReload) {
       //Self invoking async function
       (async () => {
         try {
           const data = await askGraphQL(
-            { query, variables: user },
+            { query, variables },
             'fetching articles',
             props.sessionToken,
             props.applicationConfig
@@ -166,30 +160,13 @@ const ConnectedArticles = (props) => {
             selected: false,
             color: t.color || 'grey',
           }))
-          const owners = [
-            ...new Map(
-              data.user.articles.map(a => {
-                if (a.owner._id === props.activeUser._id) {
-                  return [a.owner._id, { ...a.owner, ...{ displayName: 'me' } }]
-                } else {
-                  return [a.owner._id, a.owner]
-                }
-              })
-            ).values()
-          ].sort((a, b) => {
-            if (a._id === props.activeUser._id) {
-              return -1
-            }
-            if (b._id === props.activeUser._id) {
-              return 1
-            }
-            return a.displayName > b.displayName
-          })
-          setOwners(owners)
-          // deep copy of owners
-          setFilterOwners(structuredClone(owners))
           setTags(tags)
           // deep copy of tags
+          setCurrentUser(data.user)
+          setUserAccounts([
+            { _id: props.activeUser._id, displayName: 'me' },
+            ...data.userGrantedAccess
+          ])
           setFilterTags(structuredClone(tags))
           setIsLoading(false)
           setNeedReload(false)
@@ -198,7 +175,7 @@ const ConnectedArticles = (props) => {
         }
       })()
     }
-  }, [needReload])
+  }, [needReload, currentUserId])
 
   return (
     <section className={styles.section}>
@@ -220,79 +197,67 @@ const ConnectedArticles = (props) => {
         articles={articles}
         setNeedReload={handleReload}
       />
-      {!isLoading && (
-        <>
-          {creatingArticle && (
-            <CreateArticle
-              tags={tags}
-              cancel={() => setCreatingArticle(false)}
-              triggerReload={() => {
-                setCreatingArticle(false)
-                setNeedReload(true)
-              }}
-            />
-          )}
-          <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search"
-                 onChange={(e) => setFilter(etv(e))}/>
 
-          {tags.length > 0 &&
-          <>
-            <h4>Filter by Tags</h4>
-            <ul className={styles.filterByTags}>
-              {filterTags.map((t) => (
-                <li key={`filterTag-${t._id}`}>
-                  <Tag
-                    tag={t}
-                    activeUser={props.activeUser}
-                    name={`filterTag-${t._id}`}
-                    onClick={() => {
-                      // shallow copy otherwise React won't render the components again
-                      setFilterTags([...findAndUpdateTag(filterTags, t._id)])
-                    }}
-                  />
-                </li>
-              ))}
-            </ul>
-          </>}
+      <div className={styles.actions}>
+        {creatingArticle && (
+          <CreateArticle
+            tags={tags}
+            cancel={() => setCreatingArticle(false)}
+            triggerReload={() => {
+              setCreatingArticle(false)
+              setNeedReload(true)
+            }}
+          />
+        )}
+        <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search"
+                onChange={(e) => setFilter(etv(e))}/>
+      </div>
 
-          {owners.length > 0 &&
-          <>
-            <h4>Filter by Owner</h4>
-            <ul className={styles.filterByOwner}>
-              {filterOwners.map((o) => (
-                <li key={`filterOwner-${o._id}`}>
-                  <label className={styles.filterByOwnerLabel}>
-                    <input type="checkbox" checked={o.selected} onChange={() => {
-                      // shallow copy otherwise React won't render the components again
-                      setFilterOwners([...findAndUpdateOwner(filterOwners, o._id)])
-                    }}/>
-                    {o.displayName}
-                  </label>
-                </li>
-              ))}
-            </ul>
-          </>}
-
-          <hr className={styles.horizontalSeparator} />
-
-          {articles
-            .filter(filterByTagsSelected)
-            .filter(filterByOwnerSelected)
-            .filter(
-              (a) => a.title.toLowerCase().indexOf(filter.toLowerCase()) > -1
-            )
-            .map((article) => (
-              <Article
-                key={`article-${article._id}`}
-                masterTags={tags}
-                article={article}
-                setNeedReload={handleReload}
-                updateTagsHandler={handleUpdateTags}
-                updateTitleHandler={handleUpdateTitle}
-              />
+      <aside className={styles.filtersContainer}>
+        {tags.length > 0 && <div className={styles.filtersTags}>
+          <h4>Filter by Tags</h4>
+          <ul className={styles.filterByTags}>
+            {filterTags.map((t) => (
+              <li key={`filterTag-${t._id}`}>
+                <Tag
+                  tag={t}
+                  activeUser={props.activeUser}
+                  name={`filterTag-${t._id}`}
+                  onClick={() => {
+                    // shallow copy otherwise React won't render the components again
+                    setFilterTags([...findAndUpdateTag(filterTags, t._id)])
+                  }}
+                />
+              </li>
             ))}
-        </>
-      )}
+          </ul>
+        </div>}
+
+        <div className={styles.filtersOwners}>
+          <ArticlesAccountSwitcher
+            currentUserId={currentUserId}
+            accounts={userAccounts}
+            onChange={handleCurrentUserChange} />
+        </div>
+      </aside>
+
+      <hr className={styles.horizontalSeparator} />
+
+      {isLoading ? <Loading /> : articles
+        .filter(filterByTagsSelected)
+        .filter(
+          (a) => a.title.toLowerCase().indexOf(filter.toLowerCase()) > -1
+        )
+        .map((article) => (
+          <Article
+            key={`article-${article._id}`}
+            masterTags={tags}
+            article={article}
+            setNeedReload={handleReload}
+            updateTagsHandler={handleUpdateTags}
+            updateTitleHandler={handleUpdateTitle}
+          />
+        ))}
     </section>
   )
 }

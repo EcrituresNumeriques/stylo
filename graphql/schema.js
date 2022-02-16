@@ -105,6 +105,9 @@ module.exports = buildASTSchema(gql`
     "Fetch authenticated user info"
     user(user: ID): User
 
+    "Fetch accounts we have access to"
+    userGrantedAccess: [User]!
+
     "Fetch tagged articles for a given user"
     tags(user: ID): [Tag]!
 
