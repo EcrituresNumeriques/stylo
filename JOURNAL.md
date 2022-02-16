@@ -1,5 +1,30 @@
 # Journal de développement
 
+## Mercredi 16 février 2022
+
+### Ce que j'ai aimé/appris
+
+- J'ai bien aimé réfléchir à la structure du code — c'était différent de ce que j'imaginais
+- Regarder dans le navigateur avec les DevTools, et les DevTools React, pour comprendre ce qu'il se passait — c'est facile de voir quand il y a une erreur, et où (en tous cas, visuellement)
+- J'ai aimé commencer à modifier le formulaire pour changer la couleur
+- Binômer c'était cool, j'ai pu poser plein de questions dès qu'il y avait des concepts que je ne connaissais pas (toute seule j'aurais eu besoin de plus de temps)
+- Continuer à binomer en utilisant le téléphone pour la voix, et en partage d'écran en visio (+1)
+- J'ai aimé t'embarquer dans Stylo avec une visite guidée fonctionnelle, et avec du contexte projet
+- J'ai aimé découvrir un bug en te faisant une visite guidée de Stylo
+- J'ai aimé pouvoir réutiliser la librairie [Downshift](https://www.downshift-js.com/downshift)
+- J'ai aimé voir Guillaume se mettre à corriger l'aprem le bug débusqué le matin
+
+### Ce que j'ai trouvé difficile
+
+- J'ai manipulé plusieurs syntaxes différentes, mélangées… c'était dur de faire correspondre tous les concepts nouveaux en même temps
+- Bien adhérer aux règles de syntaxes, j'ai pas encore tout le vocabulaire pour faire "avoir des conversations en React"
+- Binomer avec une connexion Internet capricieuse
+- J'ai ramé à configurer le composant d'autocomplétion, parce que sa documentation est aride
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- S'il y a des concepts qui vont être ardus à utiliser, m'envoyer les noms des concepts qui vont être utiles
+
 ## Mercredi 15 décembre
 
 ### Ce que j'ai aimé/appris
