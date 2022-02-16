@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-import styles from './Articles.module.scss'
+import styles from './articles.module.scss'
 import Loading from './Loading'
 
 export default function ArticlePreview() {

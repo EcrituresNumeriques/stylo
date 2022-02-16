@@ -7,7 +7,7 @@ import etv from '../helpers/eventTargetValue'
 import Article from './Article'
 import CreateArticle from './CreateArticle'
 
-import styles from './Articles.module.scss'
+import styles from './articles.module.scss'
 import TagManagement from './TagManagement'
 import ArticlesAccountSwitcher from './ArticlesAccountSwitcher'
 import Button from './Button'
