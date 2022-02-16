@@ -17,7 +17,7 @@ const askGraphQL = async (
 
   if (!response.ok) {
     try {
-      let responseJson = await response.json()
+      let responseJson = await response.clone().json()
       if (responseJson) {
         responseJson = responseJson.errors || [{ message: 'Unexpected error!' }]
       }
@@ -27,7 +27,7 @@ const askGraphQL = async (
       console.error(`Something wrong happened during: ${action} => ${response.status}, ${response.statusText}: ${JSON.stringify(responseJson)}`)
       throw new Error(responseJson)
     } catch (err) {
-      const responseText = await response.text()
+      const responseText = await response.clone().text()
       console.error(`Something wrong happened during: ${action} => ${response.status}, ${response.statusText}: ${responseText}`)
       throw new Error(`${response.status} ${response.statusText}: ${responseText}`)
     }
