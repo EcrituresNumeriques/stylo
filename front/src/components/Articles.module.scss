@@ -61,6 +61,64 @@
   }
 }
 
+/**
+ * Filters
+ */
+.filtersContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.filtersTags {
+  flex-grow: 1;
+}
+
+.filtersOwners {
+  text-align: right;
+}
+
+.filtersOwnersSelector {
+  position: relative;
+
+  > label {
+    cursor: pointer;
+    font-weight: bold;
+  }
+}
+
+.filtersOwnersButtons {
+  position: absolute;
+  right: 0;
+  top: calc(1rem + 0.5rem + 0.2rem + 1px);
+}
+
+.filtersOwnersButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+.filtersOwnersCombobox,
+.filtersOwnersMenu {
+  text-align: left;
+}
+
+.filtersOwnersMenu:not(:empty) {
+  background-color: #fff;
+  border: 1px solid #aaa;
+  padding: .25em .5em;
+  position: absolute;
+  width: 100%;
+  z-index: 900;
+}
+
+/**
+ * Articles list
+ */
+
 hr.horizontalSeparator {
   border: 1px solid $main-border-color;
   margin: 1rem auto;
@@ -206,27 +264,6 @@ hr.horizontalSeparator {
   margin-bottom: 0.5rem;
 }
 
-.filterByOwner {
-  display: flex;
-  flex-wrap: wrap;
-  > li:not(:last-child) {
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-  margin-top: 0.25rem;
-  margin-bottom: 0.5rem;
-}
-
-.filterByOwnerLabel {
-  @extend .clickable;
-  display: inline-flex;
-  border: 1px solid $main-border-color;
-  padding: 0.25rem;
-  margin-right: 0.25rem;
-  align-items: center;
-  gap: 0.1em;
-}
-
 .selectedTags {
   @extend .tags;
   background-color: $button-primary-background !important;
@@ -245,17 +282,4 @@ hr.horizontalSeparator {
   width: 100%;
   height: 100vh;
   display: flex;
-}
-
-.articlePreviewNav {
-  margin: 1em 20%;
-
-  svg {
-    vertical-align: sub;
-  }
-
-  a {
-    margin-left: .5em;
-    margin-right: .5em;
-  }
 }
