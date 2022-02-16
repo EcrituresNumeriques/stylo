@@ -68,7 +68,11 @@ const userSchema = new Schema({
 
 
 userSchema.statics.findAllArticles = async function ({ userId, fromSharedUserId }) {
-  const user = await this
+  // if fromSharedUserId is provided
+  // we check if it allowed userId to look into their articles
+  // @todo
+
+  return this
     .findById(fromSharedUserId ?? userId)
     .populate('tags acquintances')
     .populate({ path: 'permissions', populate: 'user' })
@@ -87,25 +91,6 @@ userSchema.statics.findAllArticles = async function ({ userId, fromSharedUserId 
       ],
     })
     .lean();
-
-  if (!user) {
-    return null
-  }
-
-  // Also, fetch its granted accounts, and documents
-  const users = await this.findAccountAccessArticles(user)
-
-  if (users.length) {
-    const extraArticles = users
-      .flatMap(({ articles }) => articles)
-      .filter(({ id }) => !user.articles.find(a => a._id == id))
-
-    user.articles.push(...extraArticles)
-  }
-
-  user.articles.sort((a, b) => b.updatedAt - a.updatedAt)
-
-  return user
 }
 
 userSchema.statics.findAccountAccessUserIds = async function (userId, role = 'write') {
