@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useCombobox } from 'downshift'
-import { ChevronDown, XCircle, Search } from 'react-feather'
+import { ChevronDown, X, Search } from 'react-feather'
 import Field from './Field'
 import styles from './articles.module.scss'
 
@@ -17,6 +17,7 @@ export default function ArticlesAccountSwitcher ({ accounts, onChange }) {
     setInputValue,
     openMenu,
     getItemProps,
+    inputValue,
   } = useCombobox({
     items: inputItems,
     initialSelectedItem: accounts[0],
@@ -42,8 +43,9 @@ export default function ArticlesAccountSwitcher ({ accounts, onChange }) {
             aria-label="reset value"
             className={styles.filtersOwnersButton}
             onClick={() => setInputValue('') || openMenu()}
+            disabled={inputValue === ''}
           >
-            <XCircle />
+            <X />
           </button>
           <button
             type="button"
