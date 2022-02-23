@@ -4,7 +4,7 @@ import { ChevronDown, X, Search } from 'react-feather'
 import Field from './Field'
 import styles from './articles.module.scss'
 
-export default function ArticlesAccountSwitcher ({ accounts, onChange }) {
+export default function ArticlesAccountSwitcher ({ accounts, onChange, selectedItem }) {
   const [inputItems, setInputItems] = useState(accounts)
   const {
     isOpen,
@@ -20,7 +20,7 @@ export default function ArticlesAccountSwitcher ({ accounts, onChange }) {
     inputValue,
   } = useCombobox({
     items: inputItems,
-    initialSelectedItem: accounts[0],
+    selectedItem,
     itemToString: (user => user.displayName),
     onSelectedItemChange: onChange,
     onInputValueChange: ({ inputValue }) => {

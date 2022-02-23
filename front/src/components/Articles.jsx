@@ -34,9 +34,7 @@ const ConnectedArticles = (props) => {
 
   const { _id: currentUserId, displayName } = currentUser
 
-  const handleReload = useCallback(() => {
-    setNeedReload(true)
-  }, [])
+  const handleReload = useCallback(() => setNeedReload(true), [])
 
   const handleUpdateTags = useCallback((articleId, tags) => {
     setArticles([...findAndUpdateArticleTags(articles, articleId, tags)])
@@ -146,7 +144,7 @@ const ConnectedArticles = (props) => {
     if (needReload) {
       //Self invoking async function
       (async () => {
-        try {
+      try {
           const data = await askGraphQL(
             { query, variables },
             'fetching articles',
@@ -234,10 +232,10 @@ const ConnectedArticles = (props) => {
         </div>}
 
         <div className={styles.filtersOwners}>
-          <ArticlesAccountSwitcher
-            currentUserId={currentUserId}
+          {userAccounts.length && <ArticlesAccountSwitcher
+            selectedItem={currentUserId}
             accounts={userAccounts}
-            onChange={handleCurrentUserChange} />
+            onChange={handleCurrentUserChange} />}
         </div>
       </aside>
 
