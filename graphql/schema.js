@@ -168,7 +168,12 @@ module.exports = buildASTSchema(gql`
     saveVersion(version: VersionInput!, user: ID!): Version!
 
     "Create tag [need to be authentificated as specified user]"
-    createTag(name: String!, description: String, user: ID!): Tag!
+    createTag(
+      name: String!
+      description: String
+      user: ID!
+      color: String!
+    ): Tag!
 
     "update name and description of a tag [need to be authentificated as specified user]"
     updateTag(
