@@ -49,7 +49,8 @@ const initialState = {
     charCountPlusSpace: 0,
     citationNb: 0,
   },
-  userPreferences: {
+  userPreferences: localStorage.getItem('userPreferences') ? JSON.parse(localStorage.getItem('userPreferences')) : {
+    currentUser: null,
     trackingConsent: true /* default value should be false */
   }
 }
@@ -155,6 +156,16 @@ function persistStateIntoLocalStorage ({ getState }) {
         const { articlePreferences } = getState()
         // we persist it for a later page reload
         localStorage.setItem('articlePreferences', JSON.stringify(articlePreferences))
+
+        return
+      }
+      else if (action.type === 'USER_PREFERENCES_TOGGLE') {
+        // we run the reducer first
+        next(action)
+        // we fetch the updated state
+        const { userPreferences } = getState()
+        // we persist it for a later page reload
+        localStorage.setItem('userPreferences', JSON.stringify(userPreferences))
 
         return
       }
@@ -313,14 +324,14 @@ function toggleArticlePreferences (state, { key, value }) {
   }
 }
 
-function toggleUserPreferences (state, { key }) {
+function toggleUserPreferences (state, { key, value }) {
   const { userPreferences } = state
 
   return {
     ...state,
     userPreferences: {
       ...userPreferences,
-      [key]: !userPreferences[key]
+      [key]: value === undefined ? !userPreferences[key] : value,
     }
   }
 }

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector, useDispatch } from 'react-redux'
 
 import askGraphQL from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
@@ -21,6 +21,8 @@ const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
 }
 
 const ConnectedArticles = (props) => {
+  const dispatch = useDispatch()
+
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState('')
   const [articles, setArticles] = useState([])
@@ -31,20 +33,21 @@ const ConnectedArticles = (props) => {
   const [tagManagement, setTagManagement] = useState(false)
   const [currentUser, setCurrentUser] = useState(props.activeUser)
   const [userAccounts, setUserAccounts] = useState([])
+  const { displayName } = currentUser
 
-  const { _id: currentUserId, displayName } = currentUser
+  const currentUserId = useSelector(state => state.userPreferences.currentUser ?? state.activeUser._id)
+  const setCurrentUserId = useCallback((user) => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'currentUser', value: user._id }), [])
 
   const handleReload = useCallback(() => setNeedReload(true), [])
-
   const handleUpdateTags = useCallback((articleId, tags) => {
     setArticles([...findAndUpdateArticleTags(articles, articleId, tags)])
   }, [articles])
 
   const handleCurrentUserChange = useCallback(({ selectedItem }) => {
     setIsLoading(true)
-    setCurrentUser(selectedItem)
+    setCurrentUserId(selectedItem)
     setNeedReload(true)
-  }, [currentUser._id])
+  }, [currentUserId])
 
   const handleUpdateTitle = useCallback((articleId, title) => {
     // shallow copy otherwise React won't render the components again
