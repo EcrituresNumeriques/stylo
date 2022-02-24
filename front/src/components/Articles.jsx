@@ -45,7 +45,7 @@ const ConnectedArticles = (props) => {
 
   const handleCurrentUserChange = useCallback(({ selectedItem }) => {
     setIsLoading(true)
-    setCurrentUserId(selectedItem)
+    setCurrentUserId(selectedItem._id)
     setNeedReload(true)
   }, [currentUserId])
 

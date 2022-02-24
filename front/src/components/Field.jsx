@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import styles from './field.module.scss'
 
-export default function Field (props) {
+const Field = forwardRef((props, forwardedRef) => {
   const type = props.type ? props.type : 'text'
   const classNames = [
     styles.field
@@ -11,7 +11,7 @@ export default function Field (props) {
     classNames.push(props.className)
   }
 
-  return (<div className={classNames.join(' ')}>
+  return (<div className={classNames.join(' ')} ref={forwardedRef}>
     {props.label && <label htmlFor={props.id}>{props.label}</label>}
     <p className={`control${props.icon ? " has-icons-left" : ""}`}>
       {props.children && {...props.children}}
@@ -23,7 +23,8 @@ export default function Field (props) {
         </>}
     </p>
   </div>)
-}
+})
 
+Field.displayName = 'Field'
 
-
+export default Field

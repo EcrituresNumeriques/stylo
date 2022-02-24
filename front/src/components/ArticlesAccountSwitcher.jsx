@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, forwardRef } from 'react'
 import { useCombobox } from 'downshift'
 import { ChevronDown, X, Search } from 'react-feather'
 import Field from './Field'
 import styles from './articles.module.scss'
 
-export default function ArticlesAccountSwitcher ({ accounts, onChange, selectedItem }) {
+const ArticlesAccountSwitcher = forwardRef(({ accounts, onChange, selectedItem }, forwardedRef) => {
   const [inputItems, setInputItems] = useState(accounts)
   const {
     isOpen,
@@ -36,7 +36,7 @@ export default function ArticlesAccountSwitcher ({ accounts, onChange, selectedI
     <div className={styles.filtersOwnersSelector}>
       <label {...getLabelProps()}>Viewing articles as</label>
       <div {...getComboboxProps({ className: styles.filtersOwnersCombobox})}>
-        <Field {...getInputProps({ className: styles.autocompleteField, type: 'search', autoComplete: "disabled", icon: Search}, { suppressRefError: true })}/>
+        <Field {...getInputProps({ className: styles.autocompleteField, ref: forwardedRef, type: 'search', autoComplete: "disabled", icon: Search})}/>
         <span className={styles.filtersOwnersButtons}>
           <button
             type="button"
@@ -72,4 +72,8 @@ export default function ArticlesAccountSwitcher ({ accounts, onChange, selectedI
       </ul>
     </div>
   )
-}
+})
+
+ArticlesAccountSwitcher.displayName = 'ArticlesAccountSwitcher'
+
+export default ArticlesAccountSwitcher
