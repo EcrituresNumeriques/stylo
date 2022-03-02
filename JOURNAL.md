@@ -1,5 +1,27 @@
 # Journal de développement
 
+## Mercredi 2 mars 2022
+
+### Ce que j'ai aimé/appris
+
+- j'ai presque appris les… `ref`/`forwardRef`
+- j'ai aimé faire du ménage dans les issues, c'est apaisant/rassurant, voir ce qui est d'actualité ou qui ne l'est plus
+- j'ai aimé investiguer le bug d'Hypothesis et les doublons de commentaires
+- j'aime bien les déclarations de bugs avec vidéos de Margot
+- j'ai aimé simplifier la bascule de compte sur la page Articles
+
+### Ce que j'ai trouvé difficile
+
+- le dépôt `templates` un peu lointain où on a peu de visibilité sur les changements
+- les issues qui contiennent plusieurs problèmes différents, ou avec beaucoup d'éléments implicites
+- y'a des issues qui trainent de par leur caractère implicite, dont le suivi n'est pas fait et qui trainent dans les limbes
+- je ne suis toujours pas satisfait de la dénomination du "Account Access"
+- `forwardRef`, je comprends toujours pas
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- prioriser le backlog avec Antoine et Margot
+
 ## Mercredi 16 février 2022
 
 ### Ce que j'ai aimé/appris
