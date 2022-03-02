@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import styles from './button.module.scss'
 
-export default function Select (props) {
-  const classNames = [
-    styles.select
-  ]
-  if (props.className) {
-    classNames.push(props.className)
-  }
-  return (<div className={styles.selectContainer}><select className={classNames.join(' ')} {...props}>{props.children}</select></div>)
-}
+const Select = forwardRef((props, forwardedRef) => {
+  return (<div className={styles.selectContainer} ref={forwardedRef}>
+    <select className={props.className || styles.select} {...props}>{props.children}</select>
+  </div>)
+})
+
+Select.displayName = 'Select'
+
+export default Select

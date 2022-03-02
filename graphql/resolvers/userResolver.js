@@ -150,13 +150,31 @@ module.exports = {
     return User.find().populate('tags articles acquintances');
   },
   user: async (args, {req}) => {
-    // if the userId is not provided, we take it from the auth token
-    if (('user' in args) === false && req.user) {
-      args.user = req.user._id
+    // if the userId is not provided
+    // we assume it is the user from the token
+    // otherwise, it is expected we request articles from a shared account
+    args.user = ('user' in args) === false && req.user ? String(req.user._id) : args.user
+
+    const fromSharedUserId = args.user !== req.user._id ? args.user : null
+    const userId = req.user._id.toString()
+
+    console.log(fromSharedUserId, userId)
+
+    if (fromSharedUserId) {
+      const sharedUserIds = await User.findAccountAccessUserIds(req.user._id)
+
+      if (!sharedUserIds.includes(fromSharedUserId)) {
+        throw new Error("Forbidden")
+      }
+    }
+    else {
+      isUser(args, req)
     }
 
-    isUser(args, req)
+    return User.findAllArticles({ userId, fromSharedUserId })
+  },
 
-    return User.findAllArticles(args.user)
+  userGrantedAccess: (args, {req}) => {
+    return User.findAccountAccessUsers(req.user._id)
   }
 }

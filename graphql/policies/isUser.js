@@ -1,6 +1,6 @@
 module.exports = (args, req) => {
   if (req.user) {
-    if (req.user.admin === true || req.user._id === args.user) {
+    if (req.user.admin === true || String(req.user._id) === args.user) {
       // user has access
       return true
     }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import Button from './Button'
 
-import styles from './Articles.module.scss'
+import styles from './articles.module.scss'
 import askGraphQL from '../helpers/graphQL'
 
 const mapStateToProps = ({ sessionToken, activeUser, applicationConfig }) => {

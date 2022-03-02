@@ -67,9 +67,13 @@ const userSchema = new Schema({
 }, {timestamps: true});
 
 
-userSchema.statics.findAllArticles = async function (userId) {
-  const user = await this
-    .findById(userId)
+userSchema.statics.findAllArticles = async function ({ userId, fromSharedUserId }) {
+  // if fromSharedUserId is provided
+  // we check if it allowed userId to look into their articles
+  // @todo
+
+  return this
+    .findById(fromSharedUserId ?? userId)
     .populate('tags acquintances')
     .populate({ path: 'permissions', populate: 'user' })
     // see https://mongoosejs.com/docs/api/document.html#document_Document-populate
@@ -87,33 +91,17 @@ userSchema.statics.findAllArticles = async function (userId) {
       ],
     })
     .lean();
+}
 
-  if (!user) {
-    return null
-  }
-
-  // Also, fetch its granted accounts, and documents
-  const users = await this.findAccountAccessArticles(user)
-
-  if (users.length) {
-    const extraArticles = users
-      .flatMap(({ articles }) => articles)
-      .filter(({ id }) => !user.articles.find(a => a._id == id))
-
-    user.articles.push(...extraArticles)
-  }
-
-  user.articles.sort((a, b) => b.updatedAt - a.updatedAt)
-
-  return user
+userSchema.statics.findAccountAccessUsers = async function (userId, role = 'write') {
+  return this
+    .find({ permissions: { $elemMatch: { user: userId, scope: 'user', roles: { $in: role } } } })
+    .lean()
 }
 
 userSchema.statics.findAccountAccessUserIds = async function (userId, role = 'write') {
-  const users = await this
-    .find({ permissions: { $elemMatch: { user: userId, scope: 'user', roles: { $in: role } } } })
-    .lean()
-
-  return users.map(({ _id }) => _id).concat(userId)
+  return this.findAccountAccessUsers(userId, role)
+    .then(users => users.map(({ _id }) => String(_id)).concat(String(userId)))
 }
 
 userSchema.statics.findAccountAccessArticles = function (user, role = 'read') {
