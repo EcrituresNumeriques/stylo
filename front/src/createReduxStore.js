@@ -169,6 +169,10 @@ function persistStateIntoLocalStorage ({ getState }) {
 
         return
       }
+      else if (action.type === 'LOGOUT') {
+        localStorage.removeItem('articlePreferences')
+        localStorage.removeItem('userPreferences')
+      }
 
       return next(action)
     }
