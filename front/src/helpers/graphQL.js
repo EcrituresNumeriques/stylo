@@ -1,3 +1,18 @@
+const getErrorResponse = async (response) => {
+  try {
+    return await response.clone().json()
+  } catch (err) {
+    const responseText = await response.clone().text()
+    return {
+      errors: [
+        {
+          message: responseText
+        }
+      ]
+    }
+  }
+}
+
 const askGraphQL = async (
   payload,
   action = 'fetching from the server',
@@ -16,21 +31,10 @@ const askGraphQL = async (
   })
 
   if (!response.ok) {
-    try {
-      let responseJson = await response.json()
-      if (responseJson) {
-        responseJson = responseJson.errors || [{ message: 'Unexpected error!' }]
-      }
-      if (responseJson) {
-        responseJson = responseJson[0].message
-      }
-      console.error(`Something wrong happened during: ${action} => ${response.status}, ${response.statusText}: ${JSON.stringify(responseJson)}`)
-      throw new Error(responseJson)
-    } catch (err) {
-      const responseText = await response.text()
-      console.error(`Something wrong happened during: ${action} => ${response.status}, ${response.statusText}: ${responseText}`)
-      throw new Error(`${response.status} ${response.statusText}: ${responseText}`)
-    }
+    const errorResponse = await getErrorResponse(response)
+    console.error(`Something wrong happened during: ${action} => ${response.status}, ${response.statusText}: ${JSON.stringify(errorResponse)}`)
+    const errorMessage = errorResponse && errorResponse.errors && errorResponse.errors.length ? errorResponse.errors[0].message : 'Unexpected error!'
+    throw new Error(errorMessage)
   }
 
   const json = await response.json()
