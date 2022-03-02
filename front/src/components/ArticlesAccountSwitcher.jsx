@@ -1,11 +1,12 @@
 import React, { useState, forwardRef } from 'react'
 import { useCombobox } from 'downshift'
-import { ChevronDown, X, Search } from 'react-feather'
+import { ChevronDown, X, Search, User } from 'react-feather'
 import Field from './Field'
 import styles from './articles.module.scss'
 
-const ArticlesAccountSwitcher = forwardRef(({ accounts, onChange, selectedItem }, forwardedRef) => {
+const ArticlesAccountSwitcher = forwardRef(({ accounts, onChange, activeUser, selectedUserId }, forwardedRef) => {
   const [inputItems, setInputItems] = useState(accounts)
+  const selectedItem = accounts.find((user) => user._id === selectedUserId)
   const {
     isOpen,
     getToggleButtonProps,
@@ -21,7 +22,8 @@ const ArticlesAccountSwitcher = forwardRef(({ accounts, onChange, selectedItem }
   } = useCombobox({
     items: inputItems,
     selectedItem,
-    itemToString: (user => user.displayName),
+    initialSelectedItem: selectedItem,
+    itemToString: ((user) => user._id === activeUser._id ? `me` : user.displayName),
     onSelectedItemChange: onChange,
     onInputValueChange: ({ inputValue }) => {
       setInputItems(
@@ -36,7 +38,7 @@ const ArticlesAccountSwitcher = forwardRef(({ accounts, onChange, selectedItem }
     <div className={styles.filtersOwnersSelector}>
       <label {...getLabelProps()}>Viewing articles as</label>
       <div {...getComboboxProps({ className: styles.filtersOwnersCombobox})}>
-        <Field {...getInputProps({ className: styles.autocompleteField, ref: forwardedRef, type: 'search', autoComplete: "disabled", icon: Search})}/>
+        <Field {...getInputProps({ className: styles.autocompleteField, ref: forwardedRef, type: 'search', autoComplete: "disabled", icon: User})}/>
         <span className={styles.filtersOwnersButtons}>
           <button
             type="button"
@@ -66,7 +68,7 @@ const ArticlesAccountSwitcher = forwardRef(({ accounts, onChange, selectedItem }
               key={`${user._id}${index}`}
               {...getItemProps({item: user, index})}
             >
-              {user.displayName}
+              {user._id === activeUser._id ? 'me' : user.displayName}
             </li>
           ))}
       </ul>

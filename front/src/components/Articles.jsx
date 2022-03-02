@@ -36,7 +36,7 @@ const ConnectedArticles = (props) => {
   const { displayName } = currentUser
 
   const currentUserId = useSelector(state => state.userPreferences.currentUser ?? state.activeUser._id)
-  const setCurrentUserId = useCallback((user) => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'currentUser', value: user._id }), [])
+  const setCurrentUserId = useCallback((userId) => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'currentUser', value: userId }), [])
 
   const handleReload = useCallback(() => setNeedReload(true), [])
   const handleUpdateTags = useCallback((articleId, tags) => {
@@ -165,7 +165,7 @@ const ConnectedArticles = (props) => {
           // deep copy of tags
           setCurrentUser(data.user)
           setUserAccounts([
-            { _id: props.activeUser._id, displayName: 'me' },
+            { _id: props.activeUser._id, displayName: props.activeUser.displayName },
             ...data.userGrantedAccess
           ])
           setFilterTags(structuredClone(tags))
@@ -236,7 +236,8 @@ const ConnectedArticles = (props) => {
 
         <div className={styles.filtersOwners}>
           {userAccounts.length && <ArticlesAccountSwitcher
-            selectedItem={currentUserId}
+            activeUser={props.activeUser}
+            selectedUserId={currentUserId}
             accounts={userAccounts}
             onChange={handleCurrentUserChange} />}
         </div>
