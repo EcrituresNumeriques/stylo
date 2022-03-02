@@ -13,8 +13,9 @@ import ArticlesAccountSwitcher from './ArticlesAccountSwitcher'
 import Button from './Button'
 import Field from './Field'
 import Loading from './Loading'
-import { Search } from 'react-feather'
+import { Search, Share2, SkipBack, Users } from 'react-feather'
 import Tag from './Tag'
+import Select from "./Select";
 
 const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
   return { activeUser, sessionToken, applicationConfig }
@@ -24,6 +25,7 @@ const ConnectedArticles = (props) => {
   const dispatch = useDispatch()
 
   const [isLoading, setIsLoading] = useState(true)
+  const [showSwitchAccountSelect, setShowSwitchAccountSelect] = useState(false)
   const [filter, setFilter] = useState('')
   const [articles, setArticles] = useState([])
   const [tags, setTags] = useState([])
@@ -43,9 +45,10 @@ const ConnectedArticles = (props) => {
     setArticles([...findAndUpdateArticleTags(articles, articleId, tags)])
   }, [articles])
 
-  const handleCurrentUserChange = useCallback(({ selectedItem }) => {
+  const handleCurrentUserChange = useCallback((selectedItem) => {
+    console.log({selectedItem})
     setIsLoading(true)
-    setCurrentUserId(selectedItem._id)
+    setCurrentUserId(selectedItem)
     setNeedReload(true)
   }, [currentUserId])
 
@@ -180,7 +183,15 @@ const ConnectedArticles = (props) => {
 
   return (
     <section className={styles.section}>
-      <h1>{articles.length} articles for {displayName}</h1>
+      <header class={styles.articlesHeader}>
+        <h1>{articles.length} articles for</h1>
+        <div className={styles.switchAccount}>
+          <Users/>
+          <Select className={styles.accountSelect} value={currentUserId} onChange={(e) => e.target.value && handleCurrentUserChange(e.target.value)}>
+            {userAccounts.map((userAccount) => <option value={userAccount._id}>{userAccount.displayName}</option>)}
+          </Select>
+        </div>
+      </header>
       <ul className={styles.horizontalMenu}>
         <li>
           <Button primary={true} onClick={() => setCreatingArticle(true)}>
@@ -233,14 +244,6 @@ const ConnectedArticles = (props) => {
             ))}
           </ul>
         </div>}
-
-        <div className={styles.filtersOwners}>
-          {userAccounts.length && <ArticlesAccountSwitcher
-            activeUser={props.activeUser}
-            selectedUserId={currentUserId}
-            accounts={userAccounts}
-            onChange={handleCurrentUserChange} />}
-        </div>
       </aside>
 
       <hr className={styles.horizontalSeparator} />
