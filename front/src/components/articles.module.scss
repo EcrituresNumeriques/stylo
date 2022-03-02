@@ -78,10 +78,19 @@
   align-items: center;
   min-height: 2.5rem;
   column-gap: 0.5rem;
+  color: $button-secondary-color;
+
+  > div::after {
+    border: 2px solid $button-secondary-color;
+    border-right: 0;
+    border-top: 0;
+  }
 }
 
 .accountSelect {
-  border: 1px solid red;
+  border: 1px solid $button-secondary-color;
+  font-size: 1.125rem;
+  font-weight: bold;
 }
 
 

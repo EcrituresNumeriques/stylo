@@ -8,6 +8,7 @@ import Article from './Article'
 import CreateArticle from './CreateArticle'
 
 import styles from './articles.module.scss'
+import buttonStyles from './button.module.scss'
 import TagManagement from './TagManagement'
 import ArticlesAccountSwitcher from './ArticlesAccountSwitcher'
 import Button from './Button'
@@ -183,12 +184,12 @@ const ConnectedArticles = (props) => {
 
   return (
     <section className={styles.section}>
-      <header class={styles.articlesHeader}>
+      <header className={styles.articlesHeader}>
         <h1>{articles.length} articles for</h1>
         <div className={styles.switchAccount}>
           <Users/>
-          <Select className={styles.accountSelect} value={currentUserId} onChange={(e) => e.target.value && handleCurrentUserChange(e.target.value)}>
-            {userAccounts.map((userAccount) => <option value={userAccount._id}>{userAccount.displayName}</option>)}
+          <Select className={[styles.accountSelect, buttonStyles.select].join(' ')} value={currentUserId} onChange={(e) => e.target.value && handleCurrentUserChange(e.target.value)}>
+            {userAccounts.map((userAccount) => <option key={`userAccount_${userAccount._id}`} value={userAccount._id}>{userAccount.displayName}</option>)}
           </Select>
         </div>
       </header>
