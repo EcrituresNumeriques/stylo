@@ -259,6 +259,6 @@ module.exports = {
       isUser(args, req)
     }
 
-    return Article.findManyByOwner({ userId })
+    return Article.findManyByOwner({ userId, fromSharedUserId })
   },
 }

@@ -71,9 +71,10 @@ const articleSchema = new Schema({
  * @param {{ userId: String }}
  * @returns Article
  */
- articleSchema.statics.findManyByOwner = function findOneByOwner ({ userId }) {
+articleSchema.statics.findManyByOwner = function findOneByOwner ({ userId, fromSharedUserId }) {
+  const $in = fromSharedUserId ?? userId
   return this
-    .find({ $or: [ { owner: { $in: userId } }, { contributors: { $elemMatch: {user: { $in: userId }} } } ]})
+    .find({ $or: [{ owner: { $in } }, { contributors: { $elemMatch: { user: { $in } } } }] })
     .sort({ updatedAt: -1 })
     .populate([
       {
