@@ -105,37 +105,37 @@ const ConnectedArticles = (props) => {
         color
         name
       }
+    }
 
-      articles{
+    articles(user:$user){
+      _id
+      title
+      updatedAt
+
+      owner {
         _id
-        title
-        updatedAt
+        displayName
+      }
 
-        owner {
+      contributors {
+        user {
           _id
           displayName
         }
+      }
 
-        contributors {
-          user {
-            _id
-            displayName
-          }
-        }
+      versions{
+        _id
+        version
+        revision
+        message
+      }
 
-        versions{
-          _id
-          version
-          revision
-          message
-        }
-
-        tags{
-          name
-          owner
-          color
-          _id
-        }
+      tags{
+        name
+        owner
+        color
+        _id
       }
     }
 
@@ -158,8 +158,9 @@ const ConnectedArticles = (props) => {
             props.sessionToken,
             props.applicationConfig
           )
-          //Need to sort by updatedAt desc
-          setArticles(data.user.articles)
+
+          setArticles(data.articles)
+
           const tags = data.user.tags.map((t) => ({
             ...t,
             selected: false,
