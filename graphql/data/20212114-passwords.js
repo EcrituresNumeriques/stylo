@@ -2,23 +2,30 @@
 
 const conn = Mongo()
 const session = conn.startSession()
-const db = conn.getDB('graphql')
 
 session.startTransaction()
 
 // 0. Resets any permission to populate them via the Password collection
 db.users.updateMany({}, { $set: { permissions: [] } })
 
-const cursor = db.passwords.find({})
+const cursor = db.users.find({})
+
 while (cursor.hasNext()) {
-  const password = cursor.next()
-  const [ userId, ...sharedAccounts ] = password.users
+  const user = cursor.next()
+  const userId = user._id
+  if (typeof user.passwords === 'undefined') {
+    // new account, migration is not required
+    continue
+  }
+  const [ userPasswordId, ...otherPasswordIds ] = user.passwords
+  const userPassword = db.passwords.findOne({_id: userPasswordId})
+  const canAccessAcccountIds = userPassword.users.filter((id) => id.toString() !== userId.toString())
 
   // 1. Move credentials from password to the user collection
-  if (password.password) {
+  if (userPassword.password) {
     db.users.updateOne({ _id: userId }, {
       $set: {
-        password: password.password,
+        password: userPassword.password,
         authType: 'local',
         permissions: []
       }
@@ -34,16 +41,32 @@ while (cursor.hasNext()) {
     })
   }
 
-  // 2. Migrate the shared account thingy
-  sharedAccounts.forEach(sharedWithUserId => {
-    db.users.updateOne({ _id: sharedWithUserId }, {
+  // 2. current user can access other account
+  for (const canAccessAccountId of canAccessAcccountIds) {
+    db.users.updateOne({ _id: canAccessAccountId }, {
       $addToSet: {
         acquintances: userId,
         permissions: {
           scope: 'user',
           roles: ['access', 'read', 'write'],
-          // 'sharedWithUserId' account will have access to 'userId' account
+          // 'userId' account will have access to 'canAccessAccountId' account
           user: userId
+        }
+      }
+    })
+  }
+
+  // 3. other account can access current user
+  otherPasswordIds.forEach(otherPasswordId => {
+    const otherUser = db.users.findOne({"passwords.0": otherPasswordId })
+    db.users.updateOne({ _id: userId }, {
+      $addToSet: {
+        acquintances: otherUser._id,
+        permissions: {
+          scope: 'user',
+          roles: ['access', 'read', 'write'],
+          // 'otherUser._id' account will have access to 'userId' account
+          user: otherUser._id
         }
       }
     })
