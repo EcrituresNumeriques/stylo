@@ -66,6 +66,24 @@ const articleSchema = new Schema({
 }
 
 /**
+ * Returns a single article for a given user
+ *
+ * @param {{ userId: String }}
+ * @returns Article
+ */
+ articleSchema.statics.findManyByOwner = function findOneByOwner ({ userId }) {
+  return this
+    .find({ $or: [ { owner: { $in: userId } }, { contributors: { $elemMatch: {user: { $in: userId }} } } ]})
+    .sort({ updatedAt: -1 })
+    .populate([
+      {
+        path: 'owner versions tags',
+      },
+      { path: 'contributors', populate: 'user' }
+    ])
+}
+
+/**
  * Returns a single article, fully populated for a given user, or a list of users with sharing permissions
  *
  * @param {String} articleId

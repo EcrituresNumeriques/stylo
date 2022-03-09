@@ -96,9 +96,6 @@ module.exports = buildASTSchema(gql`
   }
 
   type RootQuery {
-    "Fetch all articles [Reserved for admins]"
-    articles: [Article!]!
-
     "Fetch all users [Reserved for admins]"
     users: [User!]!
 
@@ -113,6 +110,9 @@ module.exports = buildASTSchema(gql`
 
     "Fetch tagged articles for a given user"
     tag(tag: ID!): Tag!
+
+    "Fetch a given user articles"
+    articles (user: ID): [Article!]!
 
     "Fetch article info [need to have acces to this article]"
     article(article: ID!): Article!

@@ -168,7 +168,9 @@ module.exports = {
       isUser(args, req)
     }
 
-    return User.findAllArticles({ userId, fromSharedUserId })
+    return User.findById(fromSharedUserId ?? userId)
+      .populate('tags acquintances')
+      .populate({ path: 'permissions', populate: 'user' })
   },
 
   userGrantedAccess: (args, {req}) => {
