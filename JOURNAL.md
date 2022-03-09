@@ -1,5 +1,27 @@
 # Journal de développement
 
+## Mercredi 9 mars 2022
+
+### Ce que j'ai aimé/appris
+
+- j'ai bien aimé le déploiement automatisé — livrer rapidement en un claquement de doigts
+- j'ai appris les scripts magiques exécutés sur la base ciblée (`mongo <nom-de-base> script.js`)
+- je me suis un peu amusé avec les raccourcis clavier Monaco, les actions et les commandes — on peut les conditionner en fonction de l'état de l'éditeur
+- j'ai appris le `sort` dans le `populate()` de Mongoose — la surcouche fait bien le travail
+- j'ai aimé qu'on diagnostique rapidement les problèmes remontés, et les corriger au fil de l'eau (2 livraisons dans l'aprem)
+- j'ai aimé le binomage avec Margot, la précision de ses diagnostics et tester des solutions en temps réel (par écrit c'était la galère)
+- j'ai aimé qu'on ait à toucher à peu d'endroits pour corriger des trucs, tout est moins couplé
+- j'ai aimé les échanges sur Mattermost, la chasse aux bugs en live 🥷
+
+### Ce que j'ai trouvé difficile
+
+- la partie tests/livraison — on a l'impression de laisser le temps mais on découvre pas mal de choses en poussant en prod
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- pousser en prod régulièrement les p'tits bouts
+- autoriser un déploiement manuel sur un tag spécifique
+
 ## Mercredi 2 mars 2022
 
 ### Ce que j'ai aimé/appris
