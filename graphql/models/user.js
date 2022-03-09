@@ -80,6 +80,7 @@ userSchema.statics.findAllArticles = async function ({ userId, fromSharedUserId 
     // for subdocument population
     .populate({
       path: 'articles',
+      options: { sort: { 'updatedAt': -1 } },
       populate: [
         {
           path: 'owner versions tags',
