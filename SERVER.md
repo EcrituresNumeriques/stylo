@@ -134,3 +134,10 @@ docker exec mongodb-stylo mongo --quiet --eval "db.adminCommand({listDatabases: 
 For instance, if we want to rename the database from `stylo` to `stylo-prod`, we can use:
 
     $ docker exec -i mongodb-stylo sh -c 'mongorestore --archive --nsFrom="stylo.*" --nsTo="stylo-prod.*"' < stylo-prod.dump
+   
+## Apply migration script
+
+```bash
+docker cp migrate-data.js mongodb-stylo:/migrate-data.js
+docker-compose exec mongodb-stylo mongo stylo-prod /migrate-data.js
+```
