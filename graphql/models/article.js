@@ -77,8 +77,10 @@ articleSchema.statics.findManyByOwner = function findOneByOwner ({ userId, fromS
     .find({ $or: [{ owner: { $in } }, { contributors: { $elemMatch: { user: { $in } } } }] })
     .sort({ updatedAt: -1 })
     .populate([
+      { path: 'versions', options: { sort: { createdAt: -1 } } },
+      { path: 'tags', options: { sort: { createdAt: -1 } } },
       {
-        path: 'owner versions tags',
+        path: 'owner',
       },
       { path: 'contributors', populate: 'user' }
     ])
@@ -105,8 +107,13 @@ articleSchema.statics.findAndPopulateOneByOwners = function findAndPopulateOneBy
 
   return this
     .findOne(query)
-    .populate('owner tags')
-    .populate({ path: 'versions', populate: { path: 'owner' } })
+    .populate([
+      { path: 'tags', options: { sort: { createdAt: -1 } } },
+      {
+        path: 'owner',
+      }
+    ])
+    .populate({ path: 'versions', options: { sort: { createdAt: -1 } }, populate: { path: 'owner' } })
     .populate({ path: 'contributors', populate: { path: 'user' } })
 }
 
