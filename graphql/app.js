@@ -108,7 +108,8 @@ passport.use('oidc', new OidcStrategy({
       displayName,
       institution: '',
       firstName: given_name || '',
-      lastName: family_name || ''
+      lastName: family_name || '',
+      authType: 'oidc',
     })
 
     try {
