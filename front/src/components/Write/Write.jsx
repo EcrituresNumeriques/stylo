@@ -19,7 +19,7 @@ import { registerBibliographyCompletion } from "../../helpers/monacoEditor";
 
 function Write() {
   const { version: currentVersion, id: articleId, compareTo } = useParams()
-  const articleBibTeXEntries = useSelector(state => state.articleBibTeXEntries)
+  const articleBibTeXEntries = useSelector(state => state.workingArticle.bibliography.entries)
   const userId = useSelector((state) => state.activeUser._id)
   const applicationConfig = useSelector(
     (state) => state.applicationConfig,
