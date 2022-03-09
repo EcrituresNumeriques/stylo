@@ -170,8 +170,10 @@ function persistStateIntoLocalStorage ({ getState }) {
         return
       }
       else if (action.type === 'LOGOUT') {
+        const { applicationConfig } = getState()
         localStorage.removeItem('articlePreferences')
         localStorage.removeItem('userPreferences')
+        document.location.replace(applicationConfig.backendEndpoint + '/logout')
       }
 
       return next(action)
