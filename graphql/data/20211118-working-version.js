@@ -2,7 +2,6 @@
 
 const conn = Mongo()
 const session = conn.startSession()
-const db = conn.getDB('stylo-prod')
 
 session.startTransaction()
 
