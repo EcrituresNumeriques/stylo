@@ -1,4 +1,4 @@
-/* global print, Mongo */
+/* global Mongo, ObjectId, db */
 
 const conn = Mongo()
 const session = conn.startSession()
@@ -50,7 +50,8 @@ while (cursor.hasNext()) {
           scope: 'user',
           roles: ['access', 'read', 'write'],
           // 'userId' account will have access to 'canAccessAccountId' account
-          user: userId
+          user: userId,
+          _id: ObjectId()
         }
       }
     })
@@ -66,7 +67,8 @@ while (cursor.hasNext()) {
           scope: 'user',
           roles: ['access', 'read', 'write'],
           // 'otherUser._id' account will have access to 'userId' account
-          user: otherUser._id
+          user: otherUser._id,
+          _id: ObjectId()
         }
       }
     })
