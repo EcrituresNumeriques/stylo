@@ -221,6 +221,14 @@ module.exports = {
   article: async (args, { req }) => {
     const { article:articleId } = args
 
+    if (req.user.admin === true) {
+      return Article
+        .findById(articleId)
+        .populate('owner tags')
+        .populate({ path: 'versions', populate: { path: 'owner' } })
+        .populate({ path: 'contributors', populate: { path: 'user' } })
+    }
+
     const userIds = await User.findAccountAccessUserIds(req.user._id)
     const article = await Article.findAndPopulateOneByOwners(articleId, [req.user._id, userIds])
 
