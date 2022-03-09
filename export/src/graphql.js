@@ -79,6 +79,12 @@ async function getBookById (bookId) {
           bib
           yaml
         }
+
+        workingVersion {
+          md
+          bib
+          yaml
+        }
       }
     }
   }`
