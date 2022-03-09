@@ -66,12 +66,12 @@ const articleSchema = new Schema({
 }
 
 /**
- * Returns a single article for a given user
+ * Returns articles for a given user
  *
  * @param {{ userId: String }}
- * @returns Article
+ * @returns {Array<Article>}
  */
-articleSchema.statics.findManyByOwner = function findOneByOwner ({ userId, fromSharedUserId }) {
+articleSchema.statics.findManyByOwner = function findManyByOwner ({ userId, fromSharedUserId }) {
   const $in = fromSharedUserId ?? userId
   return this
     .find({ $or: [{ owner: { $in } }, { contributors: { $elemMatch: { user: { $in } } } }] })
