@@ -230,11 +230,27 @@ module.exports = {
 
     return article
   },
-  articles: async (_, {req}) => {
-    isAdmin(req)
 
-    return Article.find()
-      .populate('owner versions tags')
-      .populate({ path: 'contributors', populate: 'user' })
+  articles: async (args, {req}) => {
+    // if the userId is not provided
+    // we assume it is the user from the token
+    // otherwise, it is expected we request articles from a shared account
+    args.user = ('user' in args) === false && req.user ? String(req.user._id) : args.user
+
+    const fromSharedUserId = args.user !== req.user._id ? args.user : null
+    const userId = req.user._id.toString()
+
+    if (fromSharedUserId) {
+      const sharedUserIds = await User.findAccountAccessUserIds(req.user._id)
+
+      if (!sharedUserIds.includes(fromSharedUserId)) {
+        throw new Error("Forbidden")
+      }
+    }
+    else {
+      isUser(args, req)
+    }
+
+    return Article.findManyByOwner({ userId })
   },
 }
