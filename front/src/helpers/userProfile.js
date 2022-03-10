@@ -15,6 +15,7 @@ export function getUserProfile(applicationConfig) {
       createdAt
       updatedAt
       apiToken
+      zoteroToken
 
       acquintances {
         _id
