@@ -34,7 +34,6 @@ export default function Articles () {
 
   const currentUserId = useSelector(state => state.userPreferences.currentUser ?? state.activeUser._id)
   const setCurrentUserId = useCallback((userId) => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'currentUser', value: userId }), [])
-  const [owners, setOwners] = useState([])
   const runQuery = useGraphQL()
 
   const handleReload = useCallback(() => setNeedReload(true), [])
@@ -43,7 +42,6 @@ export default function Articles () {
   }, [articles])
 
   const handleCurrentUserChange = useCallback((selectedItem) => {
-    console.log({selectedItem})
     setIsLoading(true)
     setCurrentUserId(selectedItem)
     setNeedReload(true)
@@ -150,13 +148,11 @@ export default function Articles () {
   }`
 
   useEffect(() => {
-    const variables = { user: currentUserId }
-
     if (needReload) {
       //Self invoking async function
       (async () => {
         try {
-          const data = await runQuery({ query, variables: { user: activeUser._id } })
+          const data = await runQuery({ query, variables: { user: currentUserId } })
 
           //Need to sort by updatedAt desc
           setArticles(data.articles)

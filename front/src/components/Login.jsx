@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { useProfile } from '../helpers/userProfile.js'
 
 import styles from './login.module.scss'
 import Field from './Field'
@@ -12,7 +11,6 @@ export default function Login () {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
-  const refreshProfile = useProfile()
 
   const backendEndpoint = useSelector(state => state.applicationConfig.backendEndpoint)
   const humanIdRegisterEndpoint = useSelector(state => state.applicationConfig.humanIdRegisterEndpoint)
@@ -36,7 +34,6 @@ export default function Login () {
           : Promise.reject(new Error('Email or password is incorrect'))
       })
       .then((data) => dispatch({ type: 'LOGIN', ...data }))
-      .then(refreshProfile)
       .catch((error) => {
         console.error(error)
         alert(error)
