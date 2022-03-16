@@ -214,6 +214,7 @@ const ConnectedArticles = (props) => {
         tags={tags}
         close={handleCloseTag}
         focus={tagManagement}
+        currentUser={currentUser}
         articles={articles}
         setNeedReload={handleReload}
       />
