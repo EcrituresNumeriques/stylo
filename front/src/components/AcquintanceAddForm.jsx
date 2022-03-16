@@ -10,8 +10,8 @@ import AcquintanceService from '../services/AcquintanceService'
 export default function ConnectedAcquintances ({ onAdd }) {
   const [contact, setContact] = useState('')
   const userId = useSelector(state => state.activeUser._id)
-  const applicationConfig = useSelector(state => state.applicationConfig)
-  const acquintanceService = new AcquintanceService(userId, applicationConfig, shallowEqual)
+  const applicationConfig = useSelector(state => state.applicationConfig, shallowEqual)
+  const acquintanceService = new AcquintanceService(userId, applicationConfig)
 
   const addContact = useCallback(async (event) => {
     event.preventDefault()
