@@ -5,29 +5,39 @@ const User = require('../models/user');
 const Tag = require('../models/tag');
 
 const isUser = require('../policies/isUser')
-const isAdmin = require('../policies/isAdmin')
 
 const populateArgs = require('../helpers/populateArgs')
 
 module.exports = {
+  /**
+   * Create an article as the current user
+   *
+   * @param {*} args
+   * @param {*} param1
+   * @returns
+   */
   createArticle: async (args,{req}) => {
-  //filter bad requests
+    //filter bad requests
     args = populateArgs(args,req)
-    isUser(args,req)
+    const allowedIds = await User.findAccountAccessUserIds(req.user._id)
+    isUser(args, req, allowedIds)
 
     //fetch user
-    const thisUser = await User.findOne({_id:args.user})
-    if(!thisUser){throw new Error('This user does not exist')}
+    const thisUser = await User.findOne({ _id: args.user })
 
-      //Add default article + default version
-      const newArticle = new Article({
-        title: args.title || defaultsData.title,
-        workingVersion: {
-          md: defaultsData.md,
-          bib: defaultsData.bib,
-          yaml: defaultsData.yaml,
-        }
-      });
+    if(!thisUser){
+      throw new Error('This user does not exist')
+    }
+
+    //Add default article + default version
+    const newArticle = new Article({
+      title: args.title || defaultsData.title,
+      workingVersion: {
+        md: defaultsData.md,
+        bib: defaultsData.bib,
+        yaml: defaultsData.yaml,
+      }
+    });
 
     thisUser.articles.push(newArticle)
     newArticle.owner = thisUser
@@ -164,9 +174,17 @@ module.exports = {
 
     return returnedArticle
   },
+  /**
+   * Rename an article as the current user
+   *
+   * @param {*} args
+   * @param {*} param1
+   * @returns
+   */
   renameArticle: async (args,{req}) => {
     populateArgs(args,req)
-    isUser(args,req)
+    const allowedIds = await User.findAccountAccessUserIds(req.user._id)
+    isUser(args, req, allowedIds)
 
     //Fetch Article
     const { article: _id, user } = args
