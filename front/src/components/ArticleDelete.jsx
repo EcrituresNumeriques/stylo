@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 
 import Button from './Button'
 
-import styles from './Articles.module.scss'
+import styles from './articles.module.scss'
 import { useGraphQL } from '../helpers/graphQL'
 
 export default function ArticleDelete ({ setNeedReload, _id }) {
