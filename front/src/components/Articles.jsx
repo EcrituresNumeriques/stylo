@@ -221,6 +221,7 @@ const ConnectedArticles = (props) => {
       <div className={styles.actions}>
         {creatingArticle && (
           <CreateArticle
+            currentUser={currentUser}
             tags={tags}
             cancel={() => setCreatingArticle(false)}
             triggerReload={() => {
