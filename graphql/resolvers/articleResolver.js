@@ -51,6 +51,13 @@ module.exports = {
     return createdArticle
   },
 
+  /**
+   * Update article as the loggeed in user
+   *
+   * @param {*} args
+   * @param {*} param1
+   * @returns
+   */
   updateWorkingVersion: async (args, {req}) => {
     const ALLOWED_PARAMS = ['bib', 'md', 'yaml']
 
@@ -64,7 +71,7 @@ module.exports = {
     }
 
     //fetch article
-    const userIds = await User.findAccountAccessUserIds(args.user)
+    const userIds = await User.findAccountAccessUserIds(req.user._id)
     const fetchedArticle = await Article.findAndPopulateOneByOwners(args.article, [req.user._id, userIds])
 
     if(!fetchedArticle){
@@ -78,13 +85,21 @@ module.exports = {
     return fetchedArticle.save()
   },
 
+  /**
+   * Share an article as the current user
+   *
+   * @param {*} args
+   * @param {*} param1
+   * @returns
+   */
   shareArticle: async (args, {req}) => {
     populateArgs(args, req)
-    isUser(args, req)
+    const allowedIds = await User.findAccountAccessUserIds(req.user._id)
+    isUser(args, req, allowedIds)
 
     //Fetch article and user to send to
     const fetchedArticle = await Article
-      .findOne({ _id: args.article, owner: args.user })
+      .findOne({ _id: args.article, owner: { $in: allowedIds.concat([args.user]) } })
       .populate({ path: 'contributors', populate: 'user' })
 
     if(!fetchedArticle){
@@ -109,13 +124,22 @@ module.exports = {
     return returnArticle
   },
 
+  /**
+   * Unshare an article as the current user
+   *
+   * @param {*} args
+   * @param {*} param1
+   * @returns
+   */
   unshareArticle: async (args,{req}) => {
     populateArgs(args,req)
+    const allowedIds = await User.findAccountAccessUserIds(req.user._id)
     isUser(args,req)
 
     //Fetch article and user to send to
-    const { article: _id, user } = args
-    const fetchedArticle = await Article.findOneByOwner({ _id, user })
+    const fetchedArticle = await Article
+      .findOne({ _id: args.article, owner: { $in: allowedIds.concat([args.user]) } })
+      .populate({ path: 'contributors', populate: 'user' })
 
     if(!fetchedArticle){
       throw new Error('Unable to find article')
@@ -135,12 +159,19 @@ module.exports = {
 
     return returnArticle
   },
+  /**
+   * Duplicate an article as the current user
+   *
+   * @param {*} args
+   * @param {*} param1
+   * @returns
+   */
   duplicateArticle: async (args,{req}) => {
     populateArgs(args,req)
-    isUser(args,req)
+    const userIds = await User.findAccountAccessUserIds(req.user._id)
+    isUser(args, req, userIds)
 
     //Fetch article and user to send to
-    const userIds = await User.findAccountAccessUserIds(req.user._id)
     const fetchedArticle = await Article.findAndPopulateOneByOwners(args.article, [req.user._id, userIds])
 
     if(!fetchedArticle){
@@ -195,6 +226,14 @@ module.exports = {
     fetchedArticle.title = args.title
     return fetchedArticle.save({ timestamps: false })
   },
+  /**
+   * Link an article with the logged in user collection
+   * Warning: untested with the shared account system
+   *
+   * @param {*} args
+   * @param {*} param1
+   * @returns
+   */
   zoteroArticle: async (args,{req}) => {
     populateArgs(args,req)
     isUser(args,req)
@@ -208,6 +247,14 @@ module.exports = {
     fetchedArticle.zoteroLink = args.zotero
     return fetchedArticle.save({ timestamps: false })
   },
+  /**
+   * Delete an article as its owner (logged in user)
+   * For now, a shared user cannot delete another owner's article
+   *
+   * @param {*} args
+   * @param {*} param1
+   * @returns
+   */
   deleteArticle: async (args, {req}) => {
     populateArgs(args,req)
     isUser(args,req)
@@ -236,6 +283,14 @@ module.exports = {
 
     return returnedArticle
   },
+
+  /**
+   * Fetch an article as the current user
+   *
+   * @param {*} args
+   * @param {*} param1
+   * @returns
+   */
   article: async (args, { req }) => {
     const { article:articleId } = args
 
@@ -257,6 +312,13 @@ module.exports = {
     return article
   },
 
+  /**
+   * Fetch all the articles related to a user, given the logged in user has access to it
+   *
+   * @param {*} args
+   * @param {*} param1
+   * @returns
+   */
   articles: async (args, {req}) => {
     // if the userId is not provided
     // we assume it is the user from the token
