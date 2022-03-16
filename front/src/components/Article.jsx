@@ -184,6 +184,7 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
           <h4>Tags</h4>
           <div className={styles.editTags}>
             <ArticleTags
+              currentUser={activeUser}
               article={article}
               masterTags={masterTags}
               stateTags={tags.map((t) => {

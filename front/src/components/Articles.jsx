@@ -98,6 +98,7 @@ const ConnectedArticles = (props) => {
     user(user:$user){
       _id
       displayName
+
       tags {
         _id
         owner
@@ -105,6 +106,7 @@ const ConnectedArticles = (props) => {
         color
         name
       }
+
       permissions {
         user {
           _id
