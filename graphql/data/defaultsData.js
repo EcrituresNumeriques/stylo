@@ -127,7 +127,7 @@ La ligne ci-dessous n'apparaitra pas dans le document final.
 
 On peut insérer des images:
 
-![Titre de mon image](https://avatars2.githubusercontent.com/u/16691667?s=200&v=4)
+![Titre de mon image](https://github.com/ecrituresnumeriques.png)
 
 Notez que le «Titre de mon image» sera pris en compte comme légende de l'image dans l'article.
 
