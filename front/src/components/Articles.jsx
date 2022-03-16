@@ -105,6 +105,12 @@ const ConnectedArticles = (props) => {
         color
         name
       }
+      permissions {
+        user {
+          _id
+          displayName
+        }
+      }
     }
 
     articles(user:$user){
@@ -260,6 +266,7 @@ const ConnectedArticles = (props) => {
             key={`article-${article._id}`}
             masterTags={tags}
             article={article}
+            currentUser={currentUser}
             setNeedReload={handleReload}
             updateTagsHandler={handleUpdateTags}
             updateTitleHandler={handleUpdateTitle}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
 
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
@@ -22,11 +22,7 @@ import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Share2, Tr
 
 import AcquintanceService from '../services/AcquintanceService'
 
-const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
-  return { activeUser, sessionToken, applicationConfig }
-}
-
-const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken, setNeedReload, updateTitleHandler, updateTagsHandler, masterTags }) => {
+export default function Article ({ article, currentUser:activeUser, setNeedReload, updateTitleHandler, updateTagsHandler, masterTags }) {
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -35,6 +31,9 @@ const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken
   const [title, setTitle] = useState(article.title)
   const [tempTitle, setTempTitle] = useState(article.title)
   const [sharing, setSharing] = useState(false)
+
+  const applicationConfig = useSelector(state => state.applicationConfig, shallowEqual)
+  const sessionToken = useSelector(state => state.sessionToken)
 
   const isArticleOwner = activeUser._id === article.owner._id
   const acquintanceService = new AcquintanceService(activeUser._id, applicationConfig)
@@ -205,6 +204,3 @@ const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken
     </article>
   )
 }
-
-const Article = connect(mapStateToProps)(ConnectedArticle)
-export default Article
