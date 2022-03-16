@@ -39,7 +39,7 @@ const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken
   const isArticleOwner = activeUser._id === article.owner._id
   const acquintanceService = new AcquintanceService(activeUser._id, applicationConfig)
 
-  const contributors = [].concat(article.contributors, activeUser.permissions).filter(c => c.user._id !== article.owner._id)
+  const contributors = article.contributors.filter(c => c.user._id !== article.owner._id)
 
   const fork = async () => {
     try {
@@ -161,7 +161,7 @@ const ConnectedArticle = ({ article, applicationConfig, activeUser, sessionToken
           ))}
           by <span className={styles.author}>{article.owner.displayName}</span>
           {contributors.length > 0 && (<span className={styles.contributors}>
-            and shared with <span className={styles.author}>{contributors.map(c => c.user.displayName).join(', ')}</span>
+          , <span className={styles.author}>{contributors.map(c => c.user.displayName).join(', ')}</span>
           </span>)}
 
           <time dateTime={article.updatedAt} className={styles.momentsAgo}>
