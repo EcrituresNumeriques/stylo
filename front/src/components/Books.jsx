@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 import { useGraphQL } from '../helpers/graphQL'
-import styles from './books.module.scss'
+import styles from './articles.module.scss'
 
 import Book from './Book'
+import Loading from './Loading'
 
 export default function Books () {
   const [isLoading, setIsLoading] = useState(true)
@@ -36,9 +37,8 @@ export default function Books () {
           }
         }`
 
-        const user = { user: userId }
         setIsLoading(true)
-        const data = await runQuery({ query, variables: user })
+        const data = await runQuery({ query, variables: { user: userId } })
         //Need to sort by updatedAt desc
         setTags(data.tags.reverse())
         setIsLoading(false)
@@ -50,14 +50,19 @@ export default function Books () {
 
   return (
     <section className={styles.section}>
-      <h1>Books for {displayName}</h1>
+      <header className={styles.articlesHeader}>
+        <h1>{tags.length} books for {displayName}</h1>
+      </header>
+
       <p>
         Books are like super-tags, they are a collection of articles that you
-        can sort and export all at once
+        can sort and export all at once.<br />
+        Below are your tags eligible to be books.
       </p>
-      <p>Below are your tags eligible to be books:</p>
-      {!isLoading &&
-        tags.map((t) => (
+
+      <hr className={styles.horizontalSeparator} />
+
+      {isLoading ? <Loading /> : tags.map((t) => (
           <Book
             key={`book-${t._id}`}
             {...t}

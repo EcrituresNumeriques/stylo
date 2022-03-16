@@ -12,7 +12,7 @@ import { useGraphQL } from '../helpers/graphQL'
 import formatTimeAgo from '../helpers/formatTimeAgo'
 import { generateBookExportId } from "../helpers/identifier"
 
-import styles from './book.module.scss'
+import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
 
 import Button from './Button'
@@ -46,7 +46,7 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
 
   const bookTitle = `${name} (${formatTimeAgo(updatedAt)})`
   return (
-    <article>
+    <article className={styles.article}>
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
           <Export
@@ -55,60 +55,58 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
           />
         </Modal>
       )}
-      <header>
-        {!isRenaming && (
-          <h1 className={styles.bookTitle}>
-            <span onClick={() => setExpanded(!expanded)}>
-              {expanded ? <ChevronDown className={styles.expandIcon}/> : <ChevronRight className={styles.expandIcon}/>} {bookTitle}
-            </span>
-            <Button className={[buttonStyles.icon, styles.editTitleButton].join(' ')} onClick={() => setIsRenaming(true)}>
-              <Edit3 />
-            </Button>
-          </h1>
-        )}
-        {isRenaming && (<form className={styles.renamingForm} onSubmit={(e) => renameBook(e)}>
-          <Field autoFocus={true} type="text" value={tempName} onChange={(e) => setTempName(etv(e))} placeholder="Article Title" />
-          <Button title="Save" primary={true} onClick={(e) => renameBook(e)}>
-            <Check /> Save
+
+      {!isRenaming && (
+        <h1 className={styles.title} onClick={() => setExpanded(!expanded)}>
+          {expanded ? <ChevronDown/> : <ChevronRight/>}
+          {bookTitle}
+
+          <Button className={[buttonStyles.icon, styles.editTitleButton].join(' ')} onClick={(evt) => evt.stopPropagation() || setIsRenaming(true)}>
+            <Edit3 />
           </Button>
-          <Button title="Cancel" type="button" onClick={() => {
-            setIsRenaming(false)
-            setTempName(name)
-          }}>
-            Cancel
-          </Button>
-        </form>)}
-        <ul className={styles.actions}>
-          <li>
-            <Link
-              className={[buttonStyles.icon, buttonStyles.button, articles.length === 0 ? buttonStyles.isDisabled : ''].filter(d => d).join(' ')}
-              title="Preview"
-              target="_blank"
-              to={`/books/${_id}/preview`}
-            >
-              <Eye />
-            </Link>
-          </li>
-          <li>
-            <Button className={buttonStyles.icon} title="Export" onClick={() => setExporting(true)}>
-              <Printer />
-            </Button>
-          </li>
-        </ul>
-      </header>
-      {expanded && (
-        <section>
-          <h4>Chapters</h4>
-          <ul>
-            {articles.sort(alphaSort).map((article) => {
-              return <Chapter
-                key={`chapter-${_id}-${article._id}`}
-                article={article}
-              />
-            })}
-          </ul>
-        </section>
+        </h1>
       )}
+      {isRenaming && (<form className={styles.renamingForm} onSubmit={(e) => renameBook(e)}>
+        <Field autoFocus={true} type="text" value={tempName} onChange={(e) => setTempName(etv(e))} placeholder="Article Title" />
+        <Button title="Save" primary={true} onClick={(e) => renameBook(e)}>
+          <Check /> Save
+        </Button>
+        <Button title="Cancel" type="button" onClick={() => {
+          setIsRenaming(false)
+          setTempName(name)
+        }}>
+          Cancel
+        </Button>
+      </form>)}
+
+      <aside className={styles.actionButtons}>
+        <Link
+          className={[buttonStyles.icon, buttonStyles.button, articles.length === 0 ? buttonStyles.isDisabled : ''].filter(d => d).join(' ')}
+          title="Preview"
+          target="_blank"
+          to={`/books/${_id}/preview`}
+        >
+          <Eye />
+        </Link>
+        <Button className={buttonStyles.icon} title="Export" onClick={() => setExporting(true)}>
+          <Printer />
+        </Button>
+      </aside>
+
+      <section className={styles.metadata}>
+        {expanded && (
+          <>
+            <h4>Chapters</h4>
+            <ul className={styles.versions}>
+              {articles.sort(alphaSort).map((article) => {
+                return <li key={`chapter-${_id}-${article._id}`}>
+                  <Chapter article={article} />
+                </li>
+              })}
+            </ul>
+          </>
+        )}
+      </section>
     </article>
   )
 }
