@@ -8,7 +8,8 @@ const populateArgs = require('../helpers/populateArgs')
 
 module.exports = {
   createTag: async (args, { req }) => {
-    isUser(args, req)
+    const allowedIds = await User.findAccountAccessUserIds(req.user._id)
+    isUser(args, req, allowedIds)
 
     //fetch user
     const thisUser = await User.findOne({ _id: args.user })
@@ -36,7 +37,8 @@ module.exports = {
   },
   addToTag: async (args, { req }) => {
     args = populateArgs(args, req)
-    isUser(args, req)
+    const allowedIds = await User.findAccountAccessUserIds(req.user._id)
+    isUser(args, req, allowedIds)
 
     //load article and tag
     const { article: _id, user } = args
@@ -69,7 +71,8 @@ module.exports = {
   },
   removeFromTag: async (args, { req }) => {
     args = populateArgs(args, req)
-    isUser(args, req)
+    const allowedIds = await User.findAccountAccessUserIds(req.user._id)
+    isUser(args, req, allowedIds)
 
     //load article and tag
     const { article: _id, user } = args
@@ -106,7 +109,8 @@ module.exports = {
   },
   deleteTag: async (args, { req }) => {
     populateArgs(args, req)
-    isUser(args, req)
+    const allowedIds = await User.findAccountAccessUserIds(req.user._id)
+    isUser(args, req, allowedIds)
 
     //Recover tag, and all articles
     const thisTag = await Tag.findOne({ _id: args.tag, owner: args.user })
@@ -130,7 +134,8 @@ module.exports = {
   },
   updateTag: async (args, { req }) => {
     populateArgs(args, req)
-    isUser(args, req)
+    const allowedIds = await User.findAccountAccessUserIds(req.user._id)
+    isUser(args, req, allowedIds)
 
     const thisTag = await Tag.findOne({ _id: args.tag, owner: args.user })
     if (!thisTag) {
@@ -151,7 +156,8 @@ module.exports = {
   },
 
   tag: async (args, { req }) => {
-    isUser(args, req)
+    const allowedIds = await User.findAccountAccessUserIds(req.user._id)
+    isUser(args, req, allowedIds)
 
     return Tag.findOne({ _id: args.tag }).populate({
       path: 'articles',
@@ -160,7 +166,8 @@ module.exports = {
   },
 
   tags: async (args, { req }) => {
-    isUser(args, req)
+    const allowedIds = await User.findAccountAccessUserIds(req.user._id)
+    isUser(args, req, allowedIds)
 
     return Tag.find({ owner: args.user }).populate({
       path: 'articles',
