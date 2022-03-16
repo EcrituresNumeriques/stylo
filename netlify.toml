@@ -7,7 +7,7 @@
     # System env
     NODE_VERSION = "16"
     NODE_ENV = "development"
-    NPM_FLAGS = "--no-audit --no-fund"
+    NPM_FLAGS = "-w front --no-audit --no-fund"
 
     # App env (new Snowpack)
     SNOWPACK_PUBLIC_EXPORT_ENDPOINT = "https://stylo-dev.huma-num.fr"
@@ -21,7 +21,7 @@
 [context.production.environment]
   NODE_ENV = "production"
   ENABLE_SOURCEMAPS = "true"
-  NPM_FLAGS = "--production=false"
+  NPM_FLAGS = "-w front --no-audit --no-fund --production=false"
 
 
 [[redirects]]
