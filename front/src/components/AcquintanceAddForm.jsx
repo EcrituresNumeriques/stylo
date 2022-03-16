@@ -27,6 +27,8 @@ export default function ConnectedAcquintances ({ onAdd }) {
   return (<form onSubmit={addContact} className={formStyles.inlineFields}>
     <Field
       autoFocus={true}
+      required={true}
+      type="email"
       className={formStyles.fullWidth}
       placeholder='Email of the contact you want to add'
       value={contact}
