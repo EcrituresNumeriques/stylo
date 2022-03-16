@@ -9,8 +9,8 @@ import Field from './Field'
 import Button from './Button'
 import { Check } from 'react-feather'
 
-const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
-  return { activeUser, sessionToken, applicationConfig }
+const mapStateToProps = ({ sessionToken, applicationConfig }) => {
+  return { sessionToken, applicationConfig }
 }
 
 const ConnectedCreateTag = (props) => {
@@ -39,7 +39,7 @@ const ConnectedCreateTag = (props) => {
     .join(' ')
   const query = baseQuery + addToTag + '}'
   const variables = {
-    user: props.activeUser._id,
+    user: props.currentUser._id,
     name,
     description,
     color: tempColor,
@@ -87,7 +87,7 @@ const ConnectedCreateTag = (props) => {
           value={description}
           onChange={(e) => setDescription(etv(e))}
         />
-        
+
         <Field
               type="color"
               value={tempColor}

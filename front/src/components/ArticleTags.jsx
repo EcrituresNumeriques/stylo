@@ -5,13 +5,13 @@ import askGraphQL from '../helpers/graphQL'
 
 import Tag from './Tag'
 
-const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
-  return { activeUser, sessionToken, applicationConfig }
+const mapStateToProps = ({ sessionToken, applicationConfig }) => {
+  return { sessionToken, applicationConfig }
 }
 
-const ConnectedArticleTags = ({ article, activeUser, masterTags, stateTags, setTags, sessionToken, applicationConfig }) => {
+const ConnectedArticleTags = ({ article, currentUser, masterTags, stateTags, setTags, sessionToken, applicationConfig }) => {
   const articleId = article._id
-  const isArticleOwner = activeUser._id === article.owner._id
+  const isArticleOwner = currentUser._id === article.owner._id
 
   const addToTags = async (tag) => {
     setTags([...stateTags, { ...tag, selected: true }])
@@ -21,7 +21,7 @@ const ConnectedArticleTags = ({ article, activeUser, masterTags, stateTags, setT
       const variables = {
         article: articleId,
         tag: tag._id,
-        user: activeUser._id,
+        user: currentUser._id,
       }
       await askGraphQL(
         { query, variables },
@@ -41,7 +41,7 @@ const ConnectedArticleTags = ({ article, activeUser, masterTags, stateTags, setT
       const variables = {
         article: articleId,
         tag: id,
-        user: activeUser._id,
+        user: currentUser._id,
       }
       await askGraphQL(
         { query, variables },
@@ -59,7 +59,7 @@ const ConnectedArticleTags = ({ article, activeUser, masterTags, stateTags, setT
       {stateTags.map((tag) => (
         <li key={`article-${articleId}-${tag._id}`}>
           <Tag tag={tag}
-               activeUser={activeUser}
+               activeUser={currentUser}
                name={`articleTag-${tag._id}`}
                onClick={() => rmFromTags(tag._id)}
           />
@@ -73,7 +73,7 @@ const ConnectedArticleTags = ({ article, activeUser, masterTags, stateTags, setT
             key={`article-${articleId}-${tag._id}`}
           >
             <Tag tag={tag}
-                 activeUser={activeUser}
+                 activeUser={currentUser}
                  name={`articleTag-${tag._id}`}
                  onClick={() => addToTags(tag)}
             />

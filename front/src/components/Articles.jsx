@@ -98,12 +98,20 @@ const ConnectedArticles = (props) => {
     user(user:$user){
       _id
       displayName
+
       tags {
         _id
         owner
         description
         color
         name
+      }
+
+      permissions {
+        user {
+          _id
+          displayName
+        }
       }
     }
 
@@ -208,6 +216,7 @@ const ConnectedArticles = (props) => {
         tags={tags}
         close={handleCloseTag}
         focus={tagManagement}
+        currentUser={currentUser}
         articles={articles}
         setNeedReload={handleReload}
       />
@@ -215,6 +224,7 @@ const ConnectedArticles = (props) => {
       <div className={styles.actions}>
         {creatingArticle && (
           <CreateArticle
+            currentUser={currentUser}
             tags={tags}
             cancel={() => setCreatingArticle(false)}
             triggerReload={() => {
@@ -260,6 +270,7 @@ const ConnectedArticles = (props) => {
             key={`article-${article._id}`}
             masterTags={tags}
             article={article}
+            currentUser={currentUser}
             setNeedReload={handleReload}
             updateTagsHandler={handleUpdateTags}
             updateTitleHandler={handleUpdateTitle}

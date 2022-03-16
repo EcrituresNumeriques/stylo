@@ -38,6 +38,8 @@ const userSchema = new Schema({
     type: String,
     default: null
   },
+  // we store who a user has granted his account to
+  // each listed account can _switch into_ their account
   permissions: [
     UserPermissionSchema
   ],
@@ -94,12 +96,26 @@ userSchema.statics.findAllArticles = async function ({ userId, fromSharedUserId 
     .lean();
 }
 
+/**
+ * Find all the accounts a user can _switch to_
+ *
+ * @param {String} userId
+ * @param {String} role
+ * @returns {userSchema.model[]}
+ */
 userSchema.statics.findAccountAccessUsers = async function (userId, role = 'write') {
   return this
     .find({ permissions: { $elemMatch: { user: userId, scope: 'user', roles: { $in: role } } } })
     .lean()
 }
 
+/**
+ * Find all the account identifiers a user can _switch to_
+ *
+ * @param {String} userId
+ * @param {String} role
+ * @returns {String[]}
+ */
 userSchema.statics.findAccountAccessUserIds = async function (userId, role = 'write') {
   return this.findAccountAccessUsers(userId, role)
     .then(users => users.map(({ _id }) => String(_id)).concat(String(userId)))

@@ -10,8 +10,8 @@ import Button from './Button'
 import Field from './Field'
 import Tag from './Tag'
 
-const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
-  return { activeUser, sessionToken, applicationConfig }
+const mapStateToProps = ({ sessionToken, applicationConfig }) => {
+  return { sessionToken, applicationConfig }
 }
 
 const ConnectedCreateArticle = (props) => {
@@ -36,7 +36,7 @@ const ConnectedCreateArticle = (props) => {
     )
     .join(' ')
   const query = baseQuery + addToTag + '}'
-  const variables = { user: props.activeUser._id, title }
+  const variables = { user: props.currentUser._id, title }
 
   const createTag = async (event, cb, query, variables, token) => {
     try {
@@ -82,7 +82,7 @@ const ConnectedCreateArticle = (props) => {
               <li key={`selectTag-${t._id}`}>
                 <Tag
                   tag={t}
-                  activeUser={props.activeUser}
+                  activeUser={props.currentUser}
                   name={`selectTag-${t._id}`}
                   onClick={() =>
                     setTagsSelected(findAndUpdateTag(tagsSelected, t._id))
