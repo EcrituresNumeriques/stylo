@@ -12,6 +12,7 @@ const isAdmin = require('../policies/isAdmin')
 const defaultsData = require('../data/defaultsData')
 
 const populateArgs = require('../helpers/populateArgs')
+const { hasAccess } = require("../policies/hasAccess");
 
 module.exports = {
   // Mutations
@@ -149,26 +150,8 @@ module.exports = {
     return User.find().populate('tags articles acquintances');
   },
   user: async (args, {req}) => {
-    // if the userId is not provided
-    // we assume it is the user from the token
-    // otherwise, it is expected we request articles from a shared account
-    args.user = ('user' in args) === false && req.user ? String(req.user._id) : args.user
-
-    const fromSharedUserId = args.user !== req.user._id ? args.user : null
-    const userId = req.user._id.toString()
-
-    if (fromSharedUserId) {
-      const sharedUserIds = await User.findAccountAccessUserIds(req.user._id)
-
-      if (!sharedUserIds.includes(fromSharedUserId)) {
-        throw new Error("Forbidden")
-      }
-    }
-    else {
-      isUser(args, req)
-    }
-
-    return User.findById(fromSharedUserId ?? userId)
+    const userId = await hasAccess(req.user, args.user)
+    return User.findById(userId)
       .populate('tags acquintances')
       .populate({ path: 'permissions', populate: 'user' })
   },

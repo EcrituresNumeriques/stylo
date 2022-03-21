@@ -5,6 +5,7 @@ const User = require('../models/user');
 const Tag = require('../models/tag');
 
 const isUser = require('../policies/isUser')
+const { isAuthenticated, hasAccess } = require('../policies/hasAccess')
 
 const populateArgs = require('../helpers/populateArgs')
 
@@ -292,9 +293,12 @@ module.exports = {
    * @returns
    */
   article: async (args, { req }) => {
-    const { article:articleId } = args
+    const { article: articleId } = args
 
-    if (req.user.admin === true) {
+    const userFromRequest = req.user
+    isAuthenticated(userFromRequest)
+
+    if (userFromRequest.admin === true) {
       return Article
         .findById(articleId)
         .populate('owner tags')
@@ -302,11 +306,12 @@ module.exports = {
         .populate({ path: 'contributors', populate: { path: 'user' } })
     }
 
-    const userIds = await User.findAccountAccessUserIds(req.user._id)
-    const article = await Article.findAndPopulateOneByOwners(articleId, [req.user._id, userIds])
+    const userId = String(userFromRequest._id)
+    const userIds = await User.findAccountAccessUserIds(userId)
+    const article = await Article.findAndPopulateOneByOwners(articleId, [userId, userIds])
 
     if (!article) {
-      throw new Error(`Unable to find this article : _id ${articleId} does not exist`)
+      throw new Error(`Unable to get article with id ${articleId}, article does not exist.`)
     }
 
     return article
@@ -320,25 +325,7 @@ module.exports = {
    * @returns
    */
   articles: async (args, {req}) => {
-    // if the userId is not provided
-    // we assume it is the user from the token
-    // otherwise, it is expected we request articles from a shared account
-    args.user = ('user' in args) === false && req.user ? String(req.user._id) : args.user
-
-    const fromSharedUserId = args.user !== req.user._id ? args.user : null
-    const userId = req.user._id.toString()
-
-    if (fromSharedUserId) {
-      const sharedUserIds = await User.findAccountAccessUserIds(req.user._id)
-
-      if (!sharedUserIds.includes(fromSharedUserId)) {
-        throw new Error("Forbidden")
-      }
-    }
-    else {
-      isUser(args, req)
-    }
-
-    return Article.findManyByOwner({ userId, fromSharedUserId })
+    const userId = await hasAccess(req.user, args.user)
+    return Article.findManyByOwner({ userId })
   },
 }
