@@ -52,6 +52,10 @@ const initialState = {
   userPreferences: localStorage.getItem('userPreferences') ? JSON.parse(localStorage.getItem('userPreferences')) : {
     currentUser: null,
     trackingConsent: true /* default value should be false */
+  },
+  editorCursorPosition: {
+    lineNumber: 0,
+    column: 0
   }
 }
 
@@ -78,6 +82,8 @@ const reducer = createReducer(initialState, {
   SET_WORKING_ARTICLE_STATE: setWorkingArticleState,
 
   ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
+
+  UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
 })
 
 const createNewArticleVersion = store => {
@@ -320,7 +326,7 @@ function setWorkingArticleState (state, { workingArticleState, message }) {
 
 function toggleArticlePreferences (state, { key, value }) {
   const { articlePreferences } = state
-  console.log('toggleArticlePreferences from %s to %s', articlePreferences[key], !articlePreferences[key])
+
   return {
     ...state,
     articlePreferences: {
@@ -338,6 +344,16 @@ function toggleUserPreferences (state, { key, value }) {
     userPreferences: {
       ...userPreferences,
       [key]: value === undefined ? !userPreferences[key] : value,
+    }
+  }
+}
+
+function updateEditorCursorPosition(state, { lineNumber, column }) {
+  return {
+    ...state,
+    editorCursorPosition: {
+      lineNumber,
+      column
     }
   }
 }

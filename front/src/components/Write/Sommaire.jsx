@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { ChevronDown, ChevronRight } from 'react-feather'
 
 import styles from './sommaire.module.scss'
 import menuStyles from './menu.module.scss'
-import { connect } from 'react-redux'
 
-const mapStateToProps = ({ articleStructure }) => ({ articleStructure })
 
-function Sommaire ({ articleStructure, onTableOfContentClick }) {
+export default function Sommaire () {
+  const articleStructure = useSelector(state => state.articleStructure)
   const [expand, setExpand] = useState(true)
+  const dispatch = useDispatch()
 
   return (
     <section className={[styles.section, menuStyles.section].join(' ')}>
@@ -21,7 +22,7 @@ function Sommaire ({ articleStructure, onTableOfContentClick }) {
           <li
             className={styles.headlineItem}
             key={`line-${item.index}-${item.line}`}
-            onClick={() => onTableOfContentClick(item.index)}
+            onClick={() => dispatch({ type: 'UPDATE_EDITOR_CURSOR_POSITION', lineNumber: item.index, column: 0 })}
           >
             {item.title}
           </li>
@@ -30,5 +31,3 @@ function Sommaire ({ articleStructure, onTableOfContentClick }) {
     </section>
   )
 }
-
-export default connect(mapStateToProps)(Sommaire)
