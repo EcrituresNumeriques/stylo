@@ -298,7 +298,7 @@ module.exports = {
       return Article
         .findById(articleId)
         .populate('owner tags')
-        .populate({ path: 'versions', populate: { path: 'owner' } })
+        .populate({ path: 'versions', options: { sort: { createdAt: -1 } }, populate: { path: 'owner' } })
         .populate({ path: 'contributors', populate: { path: 'user' } })
     }
 

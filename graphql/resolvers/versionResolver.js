@@ -30,7 +30,7 @@ module.exports = {
     let lastMajorVersion = 0
     let lastMinorVersion = 0
     if (articleToSaveInto.versions && articleToSaveInto.versions.length) {
-      const lastVersion = articleToSaveInto.versions[articleToSaveInto.versions.length - 1]
+      const lastVersion = articleToSaveInto.versions[0]
       lastMajorVersion = lastVersion.version
       lastMinorVersion = lastVersion.revision
     }
