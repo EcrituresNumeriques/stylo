@@ -16,7 +16,7 @@ const { getArticleById, getVersionById, getBookById } = require('./graphql')
 
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 
-const exportZip = ({ bib, yaml, md, id, versionId, title }, res, _) => {
+const exportZip = async ({ bib, yaml, md, id, versionId, title }, res, _) => {
   const filename = `${normalize(title)}.zip`
   const archive = createZipArchive(filename, res)
   // add files
@@ -24,7 +24,7 @@ const exportZip = ({ bib, yaml, md, id, versionId, title }, res, _) => {
   archive.append(Buffer.from(bib), { name: `${id}.bib` })
   archive.append(Buffer.from(prepareMetadata(yaml, {id: versionId ?? id, replaceBibliography: true})), { name: `${id}.yaml` })
   // zip!
-  archive.finalize()
+  return archive.finalize()
 }
 
 function generatePandocCommand (
@@ -189,9 +189,6 @@ const createZipArchive = (filename, res) => {
   const archive = archiver('zip', {
     zlib: { level: 9 },
   })
-  archive.on('error', function (err) {
-    res.status(500).send({ error: err.message })
-  })
   archive.on('end', function () {
     console.log(`Wrote %d bytes in ${filename}`, archive.pointer())
   })
@@ -215,7 +212,7 @@ module.exports = {
     try {
       const articleId = req.params.id
       const articleExportContext = await getArticleExportContext(articleId)
-      exportZip({ ...articleExportContext, id: articleExportContext.articleId }, res, req)
+      await exportZip({ ...articleExportContext, id: articleExportContext.articleId }, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
@@ -244,13 +241,13 @@ module.exports = {
       const identifier = req.params.id
       try {
         const articleExportContext = await getArticleExportContext(identifier)
-        exportZip({ ...articleExportContext, id: identifier }, res, req)
+        await exportZip({ ...articleExportContext, id: identifier }, res, req)
       } catch (e) {
         if (e instanceof FindByIdNotFoundError) {
           // it might be a version!
           const version = await getVersionById(identifier)
           const { bib, yaml, md, _id: id } = version
-          exportZip({ bib, yaml, md, id, title: id }, res, req)
+          await exportZip({ bib, yaml, md, id, title: id }, res, req)
         } else {
           throw e
         }
@@ -274,7 +271,7 @@ module.exports = {
     try {
       const bookId = req.params.id
       const exportBookContext = await getBookExportContext(bookId)
-      exportZip(exportBookContext, res, req)
+      await exportZip(exportBookContext, res, req)
     } catch (err) {
       errorHandler(err, res)
     }
@@ -300,8 +297,7 @@ module.exports = {
         archive.append(Buffer.from(bib), { name: `${filename}.bib` })
         archive.append(Buffer.from(yaml), { name: `${filename}.yaml` })
       })
-      // zip!
-      archive.finalize()
+      return archive.finalize()
     } catch (err) {
       errorHandler(err, res)
     }
