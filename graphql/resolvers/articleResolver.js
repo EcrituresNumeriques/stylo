@@ -292,9 +292,9 @@ module.exports = {
    * @returns
    */
   article: async (args, { req }) => {
-    const { article:articleId } = args
+    const { article: articleId } = args
 
-    if (req.user.admin === true) {
+    if (req.user?.admin === true) {
       return Article
         .findById(articleId)
         .populate('owner tags')
@@ -302,8 +302,9 @@ module.exports = {
         .populate({ path: 'contributors', populate: { path: 'user' } })
     }
 
-    const userIds = await User.findAccountAccessUserIds(req.user._id)
-    const article = await Article.findAndPopulateOneByOwners(articleId, [req.user._id, userIds])
+    const userId = String(req.user?._id)
+    const userIds = await User.findAccountAccessUserIds(userId)
+    const article = await Article.findAndPopulateOneByOwners(articleId, [userId, userIds])
 
     if (!article) {
       throw new Error(`Unable to find this article : _id ${articleId} does not exist`)
@@ -325,11 +326,11 @@ module.exports = {
     // otherwise, it is expected we request articles from a shared account
     args.user = ('user' in args) === false && req.user ? String(req.user._id) : args.user
 
-    const fromSharedUserId = args.user !== req.user._id ? args.user : null
-    const userId = req.user._id.toString()
+    const fromSharedUserId = args.user !== req.user?._id ? args.user : null
+    const userId = String(req.user?._id)
 
     if (fromSharedUserId) {
-      const sharedUserIds = await User.findAccountAccessUserIds(req.user._id)
+      const sharedUserIds = await User.findAccountAccessUserIds(userId)
 
       if (!sharedUserIds.includes(fromSharedUserId)) {
         throw new Error("Forbidden")
