@@ -5,6 +5,7 @@ const Article = require('../models/article')
 const isUser = require('../policies/isUser')
 
 const populateArgs = require('../helpers/populateArgs')
+const { ApiError } = require("../helpers/errors");
 
 module.exports = {
   createTag: async (args, { req }) => {
@@ -156,13 +157,20 @@ module.exports = {
   },
 
   tag: async (args, { req }) => {
+    const tagId = args.tag
     const allowedIds = await User.findAccountAccessUserIds(req.user._id)
     isUser(args, req, allowedIds)
 
-    return Tag.findOne({ _id: args.tag }).populate({
+    const tag = Tag.findOne({ _id: tagId }).populate({
       path: 'articles',
       populate: { path: 'versions' },
     })
+
+    if (!tag) {
+      throw new ApiError('NOT_FOUND', `Unable to find tag with id ${tagId}`)
+    }
+
+    return tag
   },
 
   tags: async (args, { req }) => {

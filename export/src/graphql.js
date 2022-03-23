@@ -1,8 +1,17 @@
-const { gql, GraphQLClient } = require('graphql-request')
+const { gql, GraphQLClient, ClientError } = require('graphql-request')
 const { FindByIdNotFoundError } = require('./helpers/errors')
 const { logger } = require('./logger')
 
 let graphQLClient = null
+
+function isNotFoundError (err) {
+  if (err instanceof ClientError) {
+    if (err.response.errors) {
+      return err.response.errors[0]?.extensions?.type === 'NOT_FOUND'
+    }
+  }
+  return false
+}
 
 function getGraphQLClient () {
   if (graphQLClient) {
@@ -39,10 +48,12 @@ async function getArticleById (articleId) {
   try {
     const { article } = await getGraphQLClient().request(query, { articleId })
     return article
-  }
-  catch (e) {
-    logger.error(e)
-    throw new FindByIdNotFoundError('Article', articleId)
+  } catch (err) {
+    if (isNotFoundError(err)) {
+      throw new FindByIdNotFoundError('Article', articleId)
+    }
+    logger.error({ articleId, error: err }, 'Something went wrong while querying article by id using GraphQL client')
+    throw err
   }
 }
 
@@ -59,9 +70,12 @@ async function getVersionById (versionId) {
   try {
     const { version } = await getGraphQLClient().request(query, { versionId })
     return version
-  }
-  catch (e) {
-    throw new FindByIdNotFoundError('Version', versionId)
+  } catch (err) {
+    if (isNotFoundError(err)) {
+      throw new FindByIdNotFoundError('Version', versionId)
+    }
+    logger.error({ versionId, error: err }, 'Something went wrong while querying version by id using GraphQL client')
+    throw err
   }
 }
 
@@ -93,13 +107,13 @@ async function getBookById (bookId) {
   try {
     const { tag: book } = await getGraphQLClient().request(query, { bookId })
     return book
+  } catch (err) {
+    if (isNotFoundError(err)) {
+      throw new FindByIdNotFoundError('Book', bookId)
+    }
+    logger.error({ bookId, error: err }, 'Something went wrong while querying book by id using GraphQL client')
+    throw err
   }
-  catch (e) {
-    logger.error(e)
-    throw new FindByIdNotFoundError('Book', bookId)
-  }
-
-  return book
 }
 
 module.exports = {
