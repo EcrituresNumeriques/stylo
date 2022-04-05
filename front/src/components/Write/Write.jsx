@@ -245,6 +245,7 @@ function Write() {
       <WriteRight
         yaml={live.yaml}
         handleYaml={handleYaml}
+        articleInfos={articleInfos}
       />
       <article className={styles.article}>
         <WorkingVersion articleInfos={articleInfos} readOnly={readOnly} />
