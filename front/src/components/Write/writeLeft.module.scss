@@ -13,12 +13,25 @@
   margin-left: -420px;
   animation-duration: 0.25s;
   animation-name: slideout;
+  margin-top: -1rem; /* clip it to the header */
 }
 
 .expanded {
   animation-duration: 0.25s;
   animation-name: slidein;
   margin-left: 0;
+  flex: 0 0 400px;  /* sidebar takes the space, and has independant scrolling */
+
+  .menu {
+    position: fixed;
+  }
+}
+
+.focusMode {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0.25rem 0 0;
 }
 
 @keyframes slideout {
@@ -42,12 +55,12 @@
 }
 
 .menu {
-  min-width: 400px;
   background-color: rgba(255, 255, 255, 1);
   border-right: 1px solid $main-border-color;
   min-height: calc(100vh - 49px);
   max-height: calc(100vh - 49px);
   overflow-y: scroll;
+  width: 400px;
 }
 
 .actions {
@@ -56,7 +69,8 @@
   margin-bottom: 0.75rem;
   font-size: 0.9em;
   justify-content: flex-end;
-  gap: 0.5em;
+  gap: 1em;
+  padding: 0 0.5rem;
 }
 
 //

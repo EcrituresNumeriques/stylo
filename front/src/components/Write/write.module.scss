@@ -44,6 +44,10 @@
   position: relative;
   height: 100%;
   display: flex;
+
+
+  overflow-y: auto;
+  max-height: calc(100vh - 4.5rem);
 }
 
 .stats {

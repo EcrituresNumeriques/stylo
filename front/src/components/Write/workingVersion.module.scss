@@ -119,7 +119,7 @@ time {
 .focusButton {
   margin-left: 2em;
   border-radius: 2em;
-  border: none;
+  border: 1px solid currentColor;
 }
 
 .focusButton:hover:not([disabled]),
