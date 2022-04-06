@@ -56,11 +56,6 @@ const WorkingVersion = ({ articleInfos, workingArticle, readOnly }) => {
     return () => clearTimeout(timer)
   }, [articleLastSavedAt])
 
-
-  const toggleFocusMode = useCallback(() => {
-    dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'focusMode' })
-  }, [])
-
   return (
     <section className={styles.section}>
       <header className={styles.header}>
@@ -83,36 +78,6 @@ const WorkingVersion = ({ articleInfos, workingArticle, readOnly }) => {
           </ul>
         </div>
       </header>
-      {exporting && (
-        <Modal cancel={() => setExporting(false)}>
-          <Export
-            exportId={generateArticleExportId(articleInfos.title)}
-            articleVersionId={articleInfos._id}
-          />
-        </Modal>
-      )}
-      <ul className={styles.actions}>
-        {!focusMode && <>
-          <li>
-            <Link
-            to={`/article/${articleInfos._id}/preview`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
-            >
-              Preview
-            </Link>
-          </li>
-          <li>
-            <Button onClick={() => setExporting(true)}>Export</Button>
-          </li>
-        </>}
-        <li>
-          {focusMode}
-          <Button onClick={toggleFocusMode}
-                  className={[styles.focusButton, focusMode ? styles.focusActiveButton : ''].join(' ')}>{focusMode ? <ToggleRight/> : <ToggleLeft/>} Focus</Button>
-        </li>
-      </ul>
     </section>
   )
 }
