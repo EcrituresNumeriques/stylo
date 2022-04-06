@@ -1,18 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { connect, useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { shallowEqual, useSelector } from 'react-redux'
 import styles from './workingVersion.module.scss'
-import Button from '../Button'
-import { AlertCircle, Check, Loader, PenTool, ToggleLeft, ToggleRight } from 'react-feather'
-import { Link } from 'react-router-dom'
-import buttonStyles from '../button.module.scss'
-import Modal from '../Modal'
-import Export from '../Export'
-import formatTimeAgo from '../../helpers/formatTimeAgo'
-import { generateArticleExportId } from '../../helpers/identifier'
+import { AlertCircle, Check, Loader } from 'react-feather'
 
-const mapStateToProps = ({ workingArticle }) => {
-  return { workingArticle }
-}
+import formatTimeAgo from '../../helpers/formatTimeAgo'
 
 const stateUiProps = {
   saved: {
@@ -32,13 +23,10 @@ const stateUiProps = {
   },
 }
 
-const WorkingVersion = ({ articleInfos, workingArticle, readOnly }) => {
-  const dispatch = useDispatch()
-  const [exporting, setExporting] = useState(false)
+export default function WorkingVersion ({ articleInfos }) {
   const [savedAgo, setSavedAgo] = useState('')
 
-  const focusMode = useSelector(state => state.articlePreferences.focusMode)
-
+  const workingArticle = useSelector(state => state.workingArticle, shallowEqual)
   const articleLastSavedAt = workingArticle.updatedAt
   const state = workingArticle.state
   const stateUi = stateUiProps[state]
@@ -81,5 +69,3 @@ const WorkingVersion = ({ articleInfos, workingArticle, readOnly }) => {
     </section>
   )
 }
-
-export default connect(mapStateToProps)(WorkingVersion)
