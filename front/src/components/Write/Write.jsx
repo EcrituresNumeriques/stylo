@@ -10,7 +10,6 @@ import styles from './write.module.scss'
 import askGraphQL from '../../helpers/graphQL'
 
 import WriteLeft from './WriteLeft'
-import WriteRight from './WriteRight'
 import Loading from '../Loading'
 import WorkingVersion from './WorkingVersion'
 import CodeMirrorEditor from './providers/codemirror/Editor'
@@ -241,8 +240,6 @@ function Write() {
         compareTo={compareTo}
         selectedVersion={currentVersion}
         readOnly={readOnly}
-      />
-      <WriteRight
         yaml={live.yaml}
         handleYaml={handleYaml}
         articleInfos={articleInfos}
