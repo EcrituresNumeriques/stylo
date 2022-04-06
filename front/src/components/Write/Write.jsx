@@ -12,9 +12,13 @@ import askGraphQL from '../../helpers/graphQL'
 import WriteLeft from './WriteLeft'
 import WriteRight from './WriteRight'
 import Loading from '../Loading'
-import Editor from "./providers/codemirror/Editor";
+import CodeMirrorEditor from './providers/codemirror/Editor'
+import MonacoEditor from './providers/monaco/Editor'
 
 function Write() {
+  const preferredEditorMonaco = useSelector(state => state.userPreferences.preferredEditorMonaco)
+  const expanded = useSelector(state => state.articlePreferences.expandSidebarLeft)
+
   const { version: currentVersion, id: articleId, compareTo } = useParams()
   const userId = useSelector((state) => state.activeUser._id)
   const applicationConfig = useSelector(
@@ -242,7 +246,7 @@ function Write() {
         readOnly={readOnly}
       />
       <article>
-        <Editor
+        {preferredEditorMonaco && <MonacoEditor
           text={live.md}
           readOnly={readOnly}
           onTextUpdate={handleMDCM}
@@ -250,7 +254,16 @@ function Write() {
           selectedVersion={currentVersion}
           compareTo={compareTo}
           currentArticleVersion={live.version}
-        />
+        />}
+        {!preferredEditorMonaco && <CodeMirrorEditor
+          text={live.md}
+          readOnly={readOnly}
+          onTextUpdate={handleMDCM}
+          articleId={articleInfos._id}
+          selectedVersion={currentVersion}
+          compareTo={compareTo}
+          currentArticleVersion={live.version}
+        />}
       </article>
     </section>
   )

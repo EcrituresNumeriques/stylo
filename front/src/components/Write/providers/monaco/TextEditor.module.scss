@@ -1,0 +1,9 @@
+@use '../../../../styles/defaults' as *;
+@use '../../../../styles/variables' as *;
+
+.editor {
+  @extend .wrapped-center;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .3);
+  min-height: 500px;
+  height: calc(90vh - 49px);
+}

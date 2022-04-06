@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import React, { useState, useEffect, useCallback } from 'react'
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { Check, Loader } from 'react-feather'
 
 import askGraphQL from '../helpers/graphQL'
@@ -9,6 +9,7 @@ import formStyles from './field.module.scss'
 import Button from "./Button";
 import Field from "./Field";
 import formatTimeAgo from '../helpers/formatTimeAgo';
+import CheckboxWidget from "@rjsf/core/lib/components/widgets/CheckboxWidget";
 
 const mapStateToProps = ({
   password,
@@ -83,6 +84,9 @@ const ConnectedUser = (props) => {
       alert(`Couldn't update User: ${err}`)
     }
   }
+  const dispatch = useDispatch()
+  const preferredEditorMonaco = useSelector(state => state.userPreferences.preferredEditorMonaco)
+  const togglePreferredEditorMonaco = useCallback(() => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'preferredEditorMonaco' }), [])
 
   return (<>
     <section className={styles.section}>
@@ -144,7 +148,7 @@ const ConnectedUser = (props) => {
         <Field label="Default YAML">
           <textarea
             id="yamlField"
-            value={yaml}
+            value={yaml || ""}
             onChange={(e) => setYaml(etv(e))}
             placeholder=""
           />
@@ -158,6 +162,12 @@ const ConnectedUser = (props) => {
         </div>
       </form>
     </section>
+
+      <section className={styles.section}>
+        <h2>Preferences</h2>
+        <input type="checkbox" id="preferred-editor-monaco" onChange={() => togglePreferredEditorMonaco()} checked={preferredEditorMonaco}/>
+        <label htmlFor="preferred-editor-monaco">Use experimental text editor</label>
+      </section>
 
     <section className={styles.section}>
       <Field label="Account email">
@@ -181,7 +191,6 @@ const ConnectedUser = (props) => {
       <Field label="Updated At">
         <time dateTime={user.updatedAt}>{formatTimeAgo(user.updatedAt)}</time>
       </Field>
-
     </section>
   </>
   )
