@@ -8,7 +8,7 @@ import Sommaire from './Sommaire'
 import Versions from './Versions'
 import WorkingVersion from './WorkingVersion'
 
-function WriteLeft ({ articleInfos, readOnly, compareTo, selectedVersion, onTableOfContentClick }) {
+function WriteLeft ({ articleInfos, readOnly, compareTo, selectedVersion }) {
   const expanded = useSelector(state => state.articlePreferences.expandSidebarLeft)
   const articleStats = useSelector(state => state.articleStats, shallowEqual)
   const dispatch = useDispatch()
@@ -31,7 +31,7 @@ function WriteLeft ({ articleInfos, readOnly, compareTo, selectedVersion, onTabl
             compareTo={compareTo}
             readOnly={readOnly}
           />
-          <Sommaire onTableOfContentClick={onTableOfContentClick} />
+          <Sommaire />
           <Biblio readOnly={readOnly} article={articleInfos} />
           <Stats stats={articleStats} />
         </div>

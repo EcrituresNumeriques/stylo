@@ -1,8 +1,7 @@
 # Reference docs: https://docs.netlify.com/configure-builds/file-based-configuration/
 [build]
-  base = "front"
-  publish = "build"
-  command = "npm run build"
+  publish = "front/build"
+  command = "npm run build -w front"
 
   [build.environment]
     # System env

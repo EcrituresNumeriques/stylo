@@ -2,11 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { batch, shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import 'codemirror/mode/markdown/markdown'
-import { Controlled as CodeMirror } from 'react-codemirror2'
 import throttle from 'lodash.throttle'
 import debounce from 'lodash.debounce'
-import 'codemirror/lib/codemirror.css'
 
 import styles from './write.module.scss'
 
@@ -14,9 +11,8 @@ import askGraphQL from '../../helpers/graphQL'
 
 import WriteLeft from './WriteLeft'
 import WriteRight from './WriteRight'
-import Compare from './Compare'
-import CompareSelect from './CompareSelect'
 import Loading from '../Loading'
+import Editor from "./providers/codemirror/Editor";
 
 function Write() {
   const { version: currentVersion, id: articleId, compareTo } = useParams()
@@ -122,22 +118,6 @@ function Write() {
     }
   }`
 
-  const instanceCM = useRef(null)
-
-  const handleUpdateCursorPosition = useCallback(
-    (line) => {
-      try {
-        const editor = instanceCM.current.editor
-        editor.focus()
-        editor.setCursor(line, 0)
-        editor.execCommand('goLineEnd')
-      } catch (err) {
-        console.error('Unable to update CodeMirror cursor position', err)
-      }
-    },
-    [instanceCM]
-  )
-
   const variables = {
     user: userId,
     article: articleId,
@@ -154,20 +134,6 @@ function Write() {
     contributors: [],
     zoteroLink: '',
   })
-
-  const codeMirrorOptions = {
-    mode: 'markdown',
-    lineWrapping: true,
-    lineNumbers: false,
-    autofocus: true,
-    viewportMargin: Infinity,
-    spellcheck: true,
-    extraKeys: {
-      'Shift-Ctrl-Space': function (cm) {
-        cm.replaceSelection('\u00a0')
-      },
-    },
-  }
 
   const handleMDCM = (___, __, text) => {
     deriveArticleStructureAndStats({ text })
@@ -269,41 +235,22 @@ function Write() {
         compareTo={compareTo}
         selectedVersion={currentVersion}
         readOnly={readOnly}
-        onTableOfContentClick={handleUpdateCursorPosition}
       />
       <WriteRight
         yaml={live.yaml}
         handleYaml={handleYaml}
         readOnly={readOnly}
       />
-      {compareTo && (
-        <CompareSelect
+      <article>
+        <Editor
+          text={live.md}
+          readOnly={readOnly}
+          onTextUpdate={handleMDCM}
           articleId={articleInfos._id}
           selectedVersion={currentVersion}
           compareTo={compareTo}
           currentArticleVersion={live.version}
-          readOnly={readOnly}
         />
-      )}
-
-      <article className={styles.article}>
-        <>
-          {readOnly && <pre>{live.md}</pre>}
-          {!readOnly && (
-            <CodeMirror
-              value={live.md}
-              cursor={{ line: 0, character: 0 }}
-              editorDidMount={() => {
-                window.scrollTo(0, 0)
-                //editor.scrollIntoView({ line: 0, ch: 0 })
-              }}
-              onBeforeChange={handleMDCM}
-              options={codeMirrorOptions}
-              ref={instanceCM}
-            />
-          )}
-          {compareTo && <Compare compareTo={compareTo} md={live.md} />}
-        </>
       </article>
     </section>
   )
