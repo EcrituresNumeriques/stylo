@@ -9,23 +9,14 @@ import Versions from './Versions'
 import Button from "../Button";
 import { Link } from "react-router-dom";
 import buttonStyles from "../button.module.scss";
-import WriteRight from "./WriteRight";
+import Metadata from "./Metadata";
 import FocusMode from './FocusMode'
-
-<<<<<<< HEAD
-function WriteLeft ({ articleInfos, readOnly, compareTo, yaml, handleYaml, selectedVersion }) {
-  const dispatch = useDispatch()
-
-  const articleStats = useSelector(state => state.articleStats, shallowEqual)
-  const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandSidebarLeft' }), [])
-=======
-import Modal from '../Modal'
-import Export from '../Export'
->>>>>>> 8581a84 (Move Preview/Export/Focus to the left sidebar)
-
 import { generateArticleExportId } from '../../helpers/identifier'
 
-export default function WriteLeft ({ articleInfos, readOnly, compareTo, yaml, handleYaml, selectedVersion, onTableOfContentClick }) {
+import Modal from '../Modal'
+import Export from '../Export'
+
+export default function WriteLeft ({ articleInfos, readOnly, compareTo, yaml, handleYaml, selectedVersion }) {
   const [exporting, setExporting] = useState(false)
   const focusMode = useSelector(state => state.articlePreferences.focusMode)
 
@@ -73,7 +64,7 @@ export default function WriteLeft ({ articleInfos, readOnly, compareTo, yaml, ha
         />
         <Biblio readOnly={readOnly} article={articleInfos} />
         <Sommaire />
-        <WriteRight
+        <Metadata
           yaml={yaml}
           handleYaml={handleYaml}
           readOnly={readOnly}
