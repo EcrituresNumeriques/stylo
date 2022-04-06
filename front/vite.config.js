@@ -19,7 +19,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          codemirror: ['react-codemirror2', 'codemirror']
+          codemirror: ['react-codemirror2-react-17', 'codemirror']
         }
       }
     }

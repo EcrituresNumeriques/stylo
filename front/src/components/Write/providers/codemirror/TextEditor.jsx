@@ -1,6 +1,6 @@
 import 'codemirror/mode/markdown/markdown'
 import 'codemirror/lib/codemirror.css'
-import { Controlled as CodeMirror } from 'react-codemirror2'
+import { Controlled as CodeMirror } from 'react-codemirror2-react-17'
 import { useSelector } from 'react-redux'
 import { useRef, useEffect } from 'react'
 

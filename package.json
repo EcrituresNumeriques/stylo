@@ -38,7 +38,9 @@
   },
   "homepage": "https://github.com/EcrituresNumeriques/stylo#readme",
   "dependencies": {
-    "pm2": "^5.1.2"
+    "front": "^0.0.1",
+    "pm2": "^5.1.2",
+    "react-codemirror2-react-17": "^1.0.0"
   },
   "devDependencies": {
     "dotenv": "^10.0.0"
