@@ -1,5 +1,26 @@
 # Journal de développement
 
+## Mercredi 6 avril 2022
+
+### Ce que j'ai aimé/appris
+
+- De voir des chats !
+- D'enfin bosser sur Stylo en pair, et en physique
+- J'ai aimé prendre le temps
+- J'ai aimé venir à bout de la sidebar
+- J'ai appris que c'était galère de déplacer un bouton
+- J'ai appris que mixer `position: fixed` et un enfant avec `z-index` c'était galère (ne pas faire ça à la maison)
+
+### Ce que j'ai trouvé difficile
+
+- Les histoires de scrooooll
+- Déplacer le bouton, et lui trouver une place qui fasse sens
+
+### Ce qu'on pourrait améliorer la prochaine fois
+
+- Avoir plus de temps, encore plus de temps !
+- Ne pas être cas contact, ça impacte l'organisation de la journée
+
 ## Mercredi 9 mars 2022
 
 ### Ce que j'ai aimé/appris
