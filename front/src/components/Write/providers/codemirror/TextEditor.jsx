@@ -10,10 +10,13 @@ export default function TextEditor ({ text, className, readOnly, onTextUpdate })
   const editorRef = useRef(null)
 
   useEffect(() => {
-    const editor = editorRef.current.editor
-    editor.focus()
-    editor.setCursor(editorCursorPosition.lineNumber, editorCursorPosition.column)
-    editor.execCommand('goLineEnd')
+    const current = editorRef.current
+    if (current && current.editor) {
+      const editor = current.editor
+      editor.focus()
+      editor.setCursor(editorCursorPosition.lineNumber, editorCursorPosition.column)
+      editor.execCommand('goLineEnd')
+    }
   }, [editorRef, editorCursorPosition])
 
   const codeMirrorOptions = {
