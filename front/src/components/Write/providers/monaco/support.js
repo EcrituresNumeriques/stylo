@@ -19,7 +19,6 @@ export function registerBibliographyCompletion (monaco, bibTeXEntries) {
         endLineNumber: position.lineNumber,
         endColumn: position.column
       })
-      console.log({ textUntilPosition })
       var match = textUntilPosition.match(
         /\[@/
       )
