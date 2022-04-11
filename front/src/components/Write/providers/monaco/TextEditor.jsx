@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useCallback } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 
 import Editor from '@monaco-editor/react'
@@ -25,15 +25,14 @@ export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
     registerBibliographyCompletion(monaco, articleBibTeXEntries)
   }
 
+  const handleEditorChange = useCallback((value) => onTextUpdate(undefined, undefined, value), [])
   return (
     <Editor
       defaultValue={text}
       height="calc(80vh - 49px)"
       className={styles.editor}
       defaultLanguage="markdown"
-      onChange={(value) => {
-        onTextUpdate(undefined, undefined, value)
-      }}
+      onChange={handleEditorChange}
       options={{
         readOnly: readOnly,
         wordBasedSuggestions: false,
