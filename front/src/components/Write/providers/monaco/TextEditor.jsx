@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, shallowEqual } from 'react-redux'
 
 import Editor from '@monaco-editor/react'
 import { registerBibliographyCompletion } from './support'
@@ -7,8 +7,8 @@ import { registerBibliographyCompletion } from './support'
 import styles from './TextEditor.module.scss'
 
 export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
-  const articleBibTeXEntries = useSelector(state => state.workingArticle.bibliography.entries)
-  const editorCursorPosition = useSelector(state => state.editorCursorPosition)
+  const articleBibTeXEntries = useSelector(state => state.workingArticle.bibliography.entries, shallowEqual)
+  const editorCursorPosition = useSelector(state => state.editorCursorPosition, shallowEqual)
   const editorRef = useRef(null)
 
   useEffect(() => {
