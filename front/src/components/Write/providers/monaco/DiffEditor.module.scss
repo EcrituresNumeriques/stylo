@@ -1,0 +1,16 @@
+@use '../../../../styles/defaults' as *;
+@use '../../../../styles/variables' as *;
+
+.editor {
+  min-height: 500px;
+  height: calc(90vh - 180px);
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .3);
+
+  @media screen and (min-width: $tablet-breakpoint) {
+    margin: 0.5rem;
+  }
+  @media screen and (min-width: $screen-breakpoint) {
+    max-width: 90vw;
+    margin: 0 auto;
+  }
+}
