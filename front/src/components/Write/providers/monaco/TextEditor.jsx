@@ -40,6 +40,8 @@ export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
         hideCursorInOverviewRuler: true,
         overviewRulerBorder: false,
         scrollBeyondLastLine: false,
+        wordWrap: 'on',
+        wrappingIndent: 'none',
         minimap: {
           enabled: false
         }
