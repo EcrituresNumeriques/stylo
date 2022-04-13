@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { AlertCircle, Check, Eye, List, Loader, Printer } from 'react-feather'
+
+import Export from '../Export'
+import Button from '../Button'
+import Modal from '../Modal'
+import TableOfContents from './TableOfContents'
+
+import buttonStyles from '../button.module.scss'
 import styles from './workingVersion.module.scss'
-import { AlertCircle, Check, Eye, Loader, Printer } from 'react-feather'
 
 import formatTimeAgo from '../../helpers/formatTimeAgo'
-import { Link } from "react-router-dom";
-import buttonStyles from "../button.module.scss";
-import Button from "../Button";
-import Modal from "../Modal";
-import Export from "../Export";
-import { generateArticleExportId } from "../../helpers/identifier";
+import { generateArticleExportId } from '../../helpers/identifier'
 
 const stateUiProps = {
   saved: {
@@ -33,6 +36,9 @@ export default function WorkingVersion ({ articleInfos }) {
   const [savedAgo, setSavedAgo] = useState('')
 
   const [exporting, setExporting] = useState(false)
+  const [modal, setModal] = useState(false)
+  const openModal = useCallback(() => setModal(true), [])
+  const closeModal = useCallback(() => setModal(false), [])
   const workingArticle = useSelector(state => state.workingArticle, shallowEqual)
   const articleLastSavedAt = workingArticle.updatedAt
   const state = workingArticle.state
@@ -51,11 +57,36 @@ export default function WorkingVersion ({ articleInfos }) {
     return () => clearTimeout(timer)
   }, [articleLastSavedAt])
 
+  const handleKeyPress = useCallback((event) => {
+    if (event.key === 'Escape' && modal) {
+      closeModal()
+    }
+  }, [modal]);
+
+  useEffect(() => {
+    // attach the event listener
+    document.addEventListener('keydown', handleKeyPress)
+
+    // remove the event listener
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress)
+    }
+  }, [handleKeyPress]);
+
   return (
     <section className={styles.section}>
       <header className={styles.header}>
-        <h1 className={styles.title}>{articleInfos.title}</h1>
-
+        <h1 className={styles.title}>
+          <Button title="Table Of Contents" icon={true} className={styles.tableOfContentsButton} onClick={openModal}>
+            <List size="20" />
+          </Button>
+          {articleInfos.title}
+        </h1>
+        {modal && (
+          <Modal cancel={closeModal} withCancelButton={false} withCloseButton={false}>
+            <TableOfContents cancel={closeModal} />
+          </Modal>
+        )}
         <div className={styles.meta}>
           <ul className={styles.byLine}>
             <li className={styles.owners}>by {articleOwnerAndContributors.join(', ')}</li>

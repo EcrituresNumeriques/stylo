@@ -1,5 +1,5 @@
-import { useRef, useEffect, useCallback } from 'react'
-import { useSelector, shallowEqual } from 'react-redux'
+import { useCallback, useEffect, useRef } from 'react'
+import { shallowEqual, useSelector } from 'react-redux'
 
 import Editor from '@monaco-editor/react'
 import { registerBibliographyCompletion } from './support'
@@ -17,7 +17,7 @@ export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
     editor?.focus()
     const endOfLineColumn = editor?.getModel()?.getLineMaxColumn(line + 1)
     editor?.setPosition({lineNumber: line + 1, column: endOfLineColumn})
-    editor?.revealLine(line + 1, 1) // smooth
+    editor?.revealRangeAtTop({ startLineNumber: line + 1, endLineNumber: line + 1, endColumn: endOfLineColumn, startColumn: endOfLineColumn }, 1) // smooth
   }, [editorRef, editorCursorPosition])
 
   function handleEditorDidMount (editor, monaco) {

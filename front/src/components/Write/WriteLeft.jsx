@@ -31,7 +31,7 @@ export default function WriteLeft ({ articleInfos, readOnly, compareTo, yaml, ha
           readOnly={readOnly}
         />
         <Biblio readOnly={readOnly} article={articleInfos} />
-        <Sommaire />
+        {/*<Sommaire />*/}
         <Metadata
           yaml={yaml}
           handleYaml={handleYaml}
