@@ -3,6 +3,7 @@ import 'codemirror/lib/codemirror.css'
 import { Controlled as CodeMirror } from 'react-codemirror2-react-17'
 import { useSelector } from 'react-redux'
 import { useRef, useEffect } from 'react'
+import styles from './TextEditor.module.scss'
 
 
 export default function TextEditor ({ text, className, readOnly, onTextUpdate }) {
@@ -36,6 +37,7 @@ export default function TextEditor ({ text, className, readOnly, onTextUpdate })
     <div className={className}>
       {readOnly && <pre>{text}</pre>}
       {!readOnly && <CodeMirror
+        className={styles.codeMirror}
         value={text}
         cursor={{ line: 0, character: 0 }}
         editorDidMount={() => {
