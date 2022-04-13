@@ -17,45 +17,13 @@ import Modal from '../Modal'
 import Export from '../Export'
 
 export default function WriteLeft ({ articleInfos, readOnly, compareTo, yaml, handleYaml, selectedVersion }) {
-  const [exporting, setExporting] = useState(false)
   const focusMode = useSelector(state => state.articlePreferences.focusMode)
-
   const expanded = !focusMode
 
   return (
     <div className={[styles.side, expanded ? styles.expanded : ''].join(' ')}>
       <FocusMode className={styles.focusMode} />
-
-      {exporting && (
-          <Modal cancel={() => setExporting(false)}>
-            <Export
-              exportId={generateArticleExportId(articleInfos.title)}
-              articleVersionId={articleInfos._id}
-            />
-          </Modal>
-        )}
-
       <nav className={styles.menu}>
-        <ul className={styles.actions}>
-          {!focusMode && <>
-            <li>
-              <Link
-              to={`/article/${articleInfos._id}/preview`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
-              >
-                <Eye /> Preview
-              </Link>
-            </li>
-            <li>
-              <Button onClick={() => setExporting(true)}>
-                <Printer /> Export
-              </Button>
-            </li>
-          </>}
-        </ul>
-
         <Versions
           article={articleInfos}
           selectedVersion={selectedVersion}

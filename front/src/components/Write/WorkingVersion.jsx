@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import styles from './workingVersion.module.scss'
-import { AlertCircle, Check, Loader } from 'react-feather'
+import { AlertCircle, Check, Eye, Loader, Printer } from 'react-feather'
 
 import formatTimeAgo from '../../helpers/formatTimeAgo'
+import { Link } from "react-router-dom";
+import buttonStyles from "../button.module.scss";
+import Button from "../Button";
+import Modal from "../Modal";
+import Export from "../Export";
+import { generateArticleExportId } from "../../helpers/identifier";
 
 const stateUiProps = {
   saved: {
@@ -26,6 +32,7 @@ const stateUiProps = {
 export default function WorkingVersion ({ articleInfos }) {
   const [savedAgo, setSavedAgo] = useState('')
 
+  const [exporting, setExporting] = useState(false)
   const workingArticle = useSelector(state => state.workingArticle, shallowEqual)
   const articleLastSavedAt = workingArticle.updatedAt
   const state = workingArticle.state
@@ -66,6 +73,31 @@ export default function WorkingVersion ({ articleInfos }) {
           </ul>
         </div>
       </header>
+      {exporting && (
+        <Modal cancel={() => setExporting(false)}>
+          <Export
+            exportId={generateArticleExportId(articleInfos.title)}
+            articleVersionId={articleInfos._id}
+          />
+        </Modal>
+      )}
+      <ul className={styles.actions}>
+        <li>
+          <Link
+            to={`/article/${articleInfos._id}/preview`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
+          >
+            <Eye /> Preview
+          </Link>
+        </li>
+        <li>
+          <Button onClick={() => setExporting(true)}>
+            <Printer /> Export
+          </Button>
+        </li>
+      </ul>
     </section>
   )
 }
