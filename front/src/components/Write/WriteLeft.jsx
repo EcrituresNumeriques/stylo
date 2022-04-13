@@ -1,43 +1,43 @@
-import React, { useCallback } from 'react'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Eye, Printer } from 'react-feather'
 
 import styles from './writeLeft.module.scss'
-import Stats from './Stats'
 import Biblio from './Biblio'
 import Sommaire from './Sommaire'
 import Versions from './Versions'
-import WorkingVersion from './WorkingVersion'
+import Button from "../Button";
+import { Link } from "react-router-dom";
+import buttonStyles from "../button.module.scss";
+import Metadata from "./Metadata";
+import FocusMode from './FocusMode'
+import { generateArticleExportId } from '../../helpers/identifier'
 
-function WriteLeft ({ articleInfos, readOnly, compareTo, selectedVersion }) {
-  const expanded = useSelector(state => state.articlePreferences.expandSidebarLeft)
-  const articleStats = useSelector(state => state.articleStats, shallowEqual)
-  const dispatch = useDispatch()
-  const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandSidebarLeft' }), [])
+import Modal from '../Modal'
+import Export from '../Export'
+
+export default function WriteLeft ({ articleInfos, readOnly, compareTo, yaml, handleYaml, selectedVersion }) {
+  const focusMode = useSelector(state => state.articlePreferences.focusMode)
+  const expanded = !focusMode
 
   return (
-    <nav className={`${expanded ? styles.expandleft : styles.retractleft}`}>
-      <nav
-        onClick={toggleExpand}
-        className={expanded ? styles.close : styles.open}
-      >
-        {expanded ? 'close' : 'open'}
+    <div className={[styles.side, expanded ? styles.expanded : ''].join(' ')}>
+      <FocusMode className={styles.focusMode} />
+      <nav className={styles.menu}>
+        <Versions
+          article={articleInfos}
+          selectedVersion={selectedVersion}
+          compareTo={compareTo}
+          readOnly={readOnly}
+        />
+        <Biblio readOnly={readOnly} article={articleInfos} />
+        <Sommaire />
+        <Metadata
+          yaml={yaml}
+          handleYaml={handleYaml}
+          readOnly={readOnly}
+        />
       </nav>
-      {expanded && (
-        <div>
-          <WorkingVersion articleInfos={articleInfos} readOnly={readOnly} />
-          <Versions
-            article={articleInfos}
-            selectedVersion={selectedVersion}
-            compareTo={compareTo}
-            readOnly={readOnly}
-          />
-          <Sommaire />
-          <Biblio readOnly={readOnly} article={articleInfos} />
-          <Stats stats={articleStats} />
-        </div>
-      )}
-    </nav>
+    </div>
   )
 }
-
-export default WriteLeft

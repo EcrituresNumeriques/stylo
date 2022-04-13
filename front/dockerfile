@@ -5,7 +5,7 @@ COPY package*.json ./
 ARG SNOWPACK_MATOMO_URL
 ARG SNOWPACK_MATOMO_SITE_ID
 RUN apk add --update-cache git
-RUN npm ci --silent
+RUN npm ci --no-audit
 COPY . ./
 RUN npm run build
 

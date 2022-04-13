@@ -1,3 +1,19 @@
+export function registerReadOnlyTheme (monaco) {
+  monaco.editor.defineTheme('styloReadOnly', {
+    base: 'vs',
+    inherit: true,
+    rules: [{ background: 'EDF9FA' }],
+    colors: {
+      'editor.foreground': '#000000',
+      'editor.background': '#fafafa',
+      'editor.lineHighlightBackground': '#fafafa',
+      'editorLineNumber.foreground': '#7d7d7d',
+      'editor.selectionHighlightBackground': '#fafafa',
+      'editorLineNumber.activeForeground': '#7d7d7d',
+    }
+  })
+}
+
 export function registerBibliographyCompletion (monaco, bibTeXEntries) {
   function createBibliographyProposals (range) {
     return bibTeXEntries.map((entry) => ({

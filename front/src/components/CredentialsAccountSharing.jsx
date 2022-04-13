@@ -58,7 +58,7 @@ export default function CredentialsAccountSharing () {
       </span>
     </p>
 
-    <AcquintanceAddForm onAdd={refreshContacts} />
+    <AcquintanceAddForm onAdd={refreshContacts} autoFocus={false} />
 
     <ul>
       {acquintances.map(acquintance => <li key={acquintance._id} className={acquintancesStyles.acquintance}>
