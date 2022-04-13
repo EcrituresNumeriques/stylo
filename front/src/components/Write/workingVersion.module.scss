@@ -26,6 +26,19 @@
   margin: 0 0.5em;
 }
 
+.version:after {
+  content: "-";
+  margin: 0 0.5em;
+}
+
+.versionNumber:before {
+  content: '('
+}
+
+.versionNumber:after {
+  content: ')'
+}
+
 .meta {
   display: flex;
   align-items: center;

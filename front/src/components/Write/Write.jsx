@@ -199,6 +199,7 @@ function Write() {
           contributors: article.contributors,
           zoteroLink: article.zoteroLink,
           updatedAt: article.updatedAt,
+          version: currentArticle.version
         })
 
         const { md, bib } = currentArticle

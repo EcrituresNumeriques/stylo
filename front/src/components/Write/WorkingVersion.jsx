@@ -51,6 +51,10 @@ export default function WorkingVersion ({ articleInfos }) {
     return () => clearTimeout(timer)
   }, [articleLastSavedAt])
 
+  const articleVersion = articleInfos.version
+    ? <><span className={styles.versionLabel}>{articleInfos.version.message || 'No label'}</span> <span className={styles.versionNumber}>{articleInfos.version.major}.{articleInfos.version.minor}</span></>
+    : <span>working copy</span>
+
   return (
     <section className={styles.section}>
       <header className={styles.header}>
@@ -59,6 +63,7 @@ export default function WorkingVersion ({ articleInfos }) {
         <div className={styles.meta}>
           <ul className={styles.byLine}>
             <li className={styles.owners}>by {articleOwnerAndContributors.join(', ')}</li>
+            <li className={styles.version}>{articleVersion}</li>
             <li className={styles.lastSaved}>
               <span className={stateUi.style}>
                 {state !== 'saved' && stateUi.icon}
