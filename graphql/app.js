@@ -197,25 +197,30 @@ app.use('/authorization-code/zotero/callback',
   (req, res, next) => {
     passport.authenticate('zotero', async (err, user, info, status) => {
       if (err) {
-        console.error('error', err)
+        console.error('Unable to authenticate on Zotero, unexpected error:', err)
         return next(err)
       }
       if (!user) {
         return res.status(401).redirect(req.session.origin)
       }
       const { zoteroToken } = user
-      const email = req.user.email
+      if (req.user) {
+        const email = req.user.email
 
-      // save the Zotero token
-      const authenticatedUser = await User.findOne({ email })
-      authenticatedUser.zoteroToken = zoteroToken
-      await authenticatedUser.save()
+        // save the Zotero token
+        const authenticatedUser = await User.findOne({ email })
+        authenticatedUser.zoteroToken = zoteroToken
+        await authenticatedUser.save()
 
-      res.status(200)
-        .set({
-          'Content-Type': 'text/html'
-        })
-        .end(`<script>window.close();</script>`)
+        res.status(200)
+          .set({
+            'Content-Type': 'text/html'
+          })
+          .end(`<script>window.close();</script>`)
+      } else {
+        console.error('Unable to authenticate on Zotero, no user session found:', {err, user, info, status})
+        res.status(400).redirect(req.session.origin)
+      }
 
     })(req, res, next)
   })
