@@ -40,8 +40,6 @@ export default function MonacoDiffEditor ({ text, compareTo, articleId, selected
     hideCursorInOverviewRuler: true,
     overviewRulerBorder: false,
     scrollBeyondLastLine: false,
-    originalAriaLabel: "version 1.0",
-    modifiedAriaLabel: "version 2.0",
     renderIndicators: false,
     wordWrap: 'on',
     wrappingIndent: 'none',
