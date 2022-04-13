@@ -22,7 +22,8 @@ export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
 
   function handleEditorDidMount (editor, monaco) {
     editorRef.current = editor
-    registerBibliographyCompletion(monaco, articleBibTeXEntries)
+    const bibliographyCompletionProvider = registerBibliographyCompletion(monaco, articleBibTeXEntries)
+    editor.onDidDispose(() => bibliographyCompletionProvider.dispose())
   }
 
   const handleEditorChange = useCallback((value) => onTextUpdate(undefined, undefined, value), [])

@@ -9,7 +9,7 @@ export function registerBibliographyCompletion (monaco, bibTeXEntries) {
     }))
   }
 
-  monaco.languages.registerCompletionItemProvider('markdown', {
+  return monaco.languages.registerCompletionItemProvider('markdown', {
     triggerCharacters: '@',
     provideCompletionItems: function (model, position) {
       // find out if we are completing a property in the 'dependencies' object.
