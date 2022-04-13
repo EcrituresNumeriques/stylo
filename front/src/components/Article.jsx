@@ -122,7 +122,7 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
           <Eye />
         </Link>
 
-        {isArticleOwner && <Button title="Share" icon={true} onClick={() => setSharing(true)}>
+        {<Button title="Share" icon={true} onClick={() => setSharing(true)}>
           <Share2 />
         </Button>}
 
