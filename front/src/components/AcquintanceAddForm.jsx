@@ -7,7 +7,7 @@ import Field from './Field'
 
 import AcquintanceService from '../services/AcquintanceService'
 
-export default function ConnectedAcquintances ({ onAdd }) {
+export default function AcquintanceAddForm ({ onAdd, autoFocus = true }) {
   const [contact, setContact] = useState('')
   const userId = useSelector(state => state.activeUser._id)
   const applicationConfig = useSelector(state => state.applicationConfig, shallowEqual)
@@ -25,7 +25,7 @@ export default function ConnectedAcquintances ({ onAdd }) {
 
   return (<form onSubmit={addContact} className={formStyles.inlineFields}>
     <Field
-      autoFocus={true}
+      autoFocus={autoFocus}
       className={formStyles.fullWidth}
       placeholder='Email of the contact you want to add'
       value={contact}

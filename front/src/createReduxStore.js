@@ -39,9 +39,11 @@ const initialState = {
   articleVersions: [],
   articlePreferences: localStorage.getItem('articlePreferences') ? JSON.parse(localStorage.getItem('articlePreferences')) : {
     expandSidebarLeft: true,
-    expandSidebarRight: false,
     metadataFormMode: 'basic',
     expandVersions: false,
+    expandBibliography: false,
+    expandMetadata: false,
+    expandSommaire: false,
   },
   articleStats: {
     wordCount: 0,

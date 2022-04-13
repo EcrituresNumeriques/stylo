@@ -1,11 +1,14 @@
 import React from 'react'
+import { createPortal } from 'react-dom'
 import { X } from 'react-feather'
 import Button from './Button'
 
 import styles from './modal.module.scss'
 
-export default ({ children, cancel = () => {}, withCancelButton = true, withCloseButton = true }) => {
-  return (
+const modalRoot = window.document.querySelector('#modal-root')
+
+export default function Modal ({ children, cancel = () => {}, withCancelButton = true, withCloseButton = true }) {
+  return createPortal(
     <>
       <section className={styles.background} onClick={() => cancel()}></section>
       <article className={styles.modal}>
@@ -18,5 +21,5 @@ export default ({ children, cancel = () => {}, withCancelButton = true, withClos
         </Button>}
       </article>
     </>
-  )
+  , modalRoot)
 }

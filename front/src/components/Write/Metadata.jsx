@@ -2,32 +2,24 @@ import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import styles from './writeRight.module.scss'
+import styles from './metadata.module.scss'
 import YamlEditor from './yamleditor/YamlEditor'
 import NavTag from '../NavTab'
 import YAML from 'js-yaml'
+import menuStyles from "./menu.module.scss";
+import { ChevronDown, ChevronRight } from "react-feather";
 
-export default function WriteRight({ handleYaml, readOnly, yaml }) {
+export default function Metadata({ handleYaml, readOnly, yaml }) {
   const dispatch = useDispatch()
-  const expanded = useSelector(
-    (state) => state.articlePreferences.expandSidebarRight
-  )
-  const selector = useSelector(
-    (state) => state.articlePreferences.metadataFormMode
-  )
+
+  const metadataFormMode = useSelector(state => state.articlePreferences.metadataFormMode)
+  const expand = useSelector(state => state.articlePreferences.expandMetadata)
+  const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandMetadata' }), [])
 
   const [rawYaml, setRawYaml] = useState(yaml)
   const [error, setError] = useState('')
 
-  const toggleExpand = useCallback(
-    () =>
-      dispatch({
-        type: 'ARTICLE_PREFERENCES_TOGGLE',
-        key: 'expandSidebarRight',
-      }),
-    []
-  )
-  const setSelector = useCallback(
+  const setMetadataFormMode = useCallback(
     (value) =>
       dispatch({
         type: 'ARTICLE_PREFERENCES_TOGGLE',
@@ -38,22 +30,16 @@ export default function WriteRight({ handleYaml, readOnly, yaml }) {
   )
 
   return (
-    <nav className={`${expanded ? styles.expandRight : styles.retractRight}`}>
-      <nav
-        onClick={toggleExpand}
-        className={expanded ? styles.close : styles.open}
-      >
-        {expanded ? 'close' : 'Metadata'}
-      </nav>
-      {expanded && (
+    <section className={[styles.section, menuStyles.section].join(' ')}>
+      <h1 onClick={toggleExpand}>
+        {expand ? <ChevronDown/> : <ChevronRight/>} Metadata
+      </h1>
+      {expand && (
         <>
           <div className={styles.yamlEditor}>
-            <header>
-              <h1>Metadata</h1>
-            </header>
             <NavTag
-              defaultValue={selector}
-              onChange={setSelector}
+              defaultValue={metadataFormMode}
+              onChange={setMetadataFormMode}
               items={[
                 {
                   value: 'basic',
@@ -69,7 +55,7 @@ export default function WriteRight({ handleYaml, readOnly, yaml }) {
                 },
               ]}
             />
-            {selector === 'raw' && (
+            {metadataFormMode === 'raw' && (
               <>
                 {error !== '' && <p className={styles.error}>{error}</p>}
                 <textarea
@@ -93,26 +79,26 @@ export default function WriteRight({ handleYaml, readOnly, yaml }) {
                 />
               </>
             )}
-            {selector !== 'raw' && readOnly && (
+            {metadataFormMode !== 'raw' && readOnly && (
               <YamlEditor
                 yaml={yaml}
-                basicMode={selector === 'basic'}
+                basicMode={metadataFormMode === 'basic'}
                 error={(reason) => {
                   setError(reason)
                   if (reason !== '') {
-                    setSelector('raw')
+                    setMetadataFormMode('raw')
                   }
                 }}
               />
             )}
-            {selector !== 'raw' && !readOnly && (
+            {metadataFormMode !== 'raw' && !readOnly && (
               <YamlEditor
                 yaml={yaml}
-                basicMode={selector === 'basic'}
+                basicMode={metadataFormMode === 'basic'}
                 error={(reason) => {
                   setError(reason)
                   if (reason !== '') {
-                    setSelector('raw')
+                    setMetadataFormMode('raw')
                   }
                 }}
                 onChange={(yaml) => {
@@ -124,11 +110,11 @@ export default function WriteRight({ handleYaml, readOnly, yaml }) {
           </div>
         </>
       )}
-    </nav>
+    </section>
   )
 }
 
-WriteRight.propTypes = {
+Metadata.propTypes = {
   handleYaml: PropTypes.func,
   readOnly: PropTypes.bool,
   yaml: PropTypes.string,

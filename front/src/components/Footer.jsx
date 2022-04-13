@@ -11,6 +11,7 @@ function Footer () {
 
   return (<Switch>
     <Route path="*/preview" />
+    <Route path="*/article" />
     <Route path="*">
       <footer className={styles.footerContainer}>
         <ul className={styles.footerList}>

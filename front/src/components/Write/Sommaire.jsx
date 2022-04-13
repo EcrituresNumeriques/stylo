@@ -1,20 +1,21 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useCallback } from 'react'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 
 import { ChevronDown, ChevronRight } from 'react-feather'
 
 import styles from './sommaire.module.scss'
 import menuStyles from './menu.module.scss'
 
-
 export default function Sommaire () {
-  const articleStructure = useSelector(state => state.articleStructure)
-  const [expand, setExpand] = useState(true)
   const dispatch = useDispatch()
+
+  const articleStructure = useSelector(state => state.articleStructure, shallowEqual)
+  const expand = useSelector(state => state.articlePreferences.expandSommaire)
+  const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandSommaire' }), [])
 
   return (
     <section className={[styles.section, menuStyles.section].join(' ')}>
-      <h1 onClick={() => setExpand(!expand)}>
+      <h1 onClick={toggleExpand}>
         {expand ? <ChevronDown/> : <ChevronRight/>} Table of contents
       </h1>
       {expand && (<ul>
