@@ -2,7 +2,7 @@ import { useRef, useEffect, useCallback } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 
 import Editor from '@monaco-editor/react'
-import { registerBibliographyCompletion } from './support'
+import { registerBibliographyCompletion, registerReadOnlyTheme } from './support'
 
 import styles from './TextEditor.module.scss'
 
@@ -20,9 +20,13 @@ export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
     editor?.revealLine(line + 1, 1) // smooth
   }, [editorRef, editorCursorPosition])
 
+  const setTheme = useCallback((monaco) => monaco.editor.setTheme(readOnly ? 'styloReadOnly' : 'vs'), [readOnly])
+
   function handleEditorDidMount (editor, monaco) {
     editorRef.current = editor
     const bibliographyCompletionProvider = registerBibliographyCompletion(monaco, articleBibTeXEntries)
+    registerReadOnlyTheme(monaco)
+    setTheme(monaco)
     editor.onDidDispose(() => bibliographyCompletionProvider.dispose())
   }
 
@@ -30,12 +34,12 @@ export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
   return (
     <Editor
       defaultValue={text}
-      height="calc(80vh - 49px)"
       className={styles.editor}
       defaultLanguage="markdown"
       onChange={handleEditorChange}
       options={{
         readOnly: readOnly,
+        contextmenu: !readOnly,
         wordBasedSuggestions: false,
         overviewRulerLanes: 0,
         hideCursorInOverviewRuler: true,
