@@ -30,7 +30,6 @@ export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
   return (
     <Editor
       defaultValue={text}
-      height="calc(80vh - 49px)"
       className={styles.editor}
       defaultLanguage="markdown"
       onChange={handleEditorChange}
