@@ -16,17 +16,54 @@ The Pen Exports [University of Montreal Templates](https://stylo-export.ecriture
 Three templates are available: 
 
 - The Department of Littératures en Langue Française (DLLF) template
-  - with /or/ without table of contents 
+  - with /or/ without table of contents (coming soon)
 
-- The Course Outline template 
+- The Lesson template 
 
 - The École de bibliothéconomie et des sciences de l'information (EBSI) model
 
 ### DLLF model
 template (coming soon)
 
-### Course Outline Template
-(forthcoming)
+### Lesson Template
+
+1. Edit the following metadata in the metadata pane in "RAW" mode
+
+```
+---
+abstract:
+  - lang: en
+    text_f: This is my abstract.
+  - lang: fr
+    text_f: C'est mon joli résumé.
+authors:
+  - forname: Margot
+    surname: Mellet
+cours:
+  - id: Sigle
+    title: Titre du cours
+date: '2021-09-08'
+day: '05'
+lang: fr
+link-citations: true
+month: avril
+nocite: '@*'
+session: Été
+subtitle_f: Sous-titre
+teachers:
+  - email: margot.mellet@umontreal.ca
+    forname: Margot
+    surname: Mellet
+title_f: Titre
+typeTravail: TP2
+year: '2021'
+---
+```
+2. Register a Version (major or minor) and select it
+3. Select in the version url the version key (the last digits after "/version/")
+4. Copy the version key 
+5. In the Lesson Plan export page, paste the version key in the dedicated location
+6. Then enter a name for the export, select the Lesson Plan template and click on "Submit".
 
 ### EBSI template 
 
@@ -70,3 +107,5 @@ typeWork: TP2
 4. Copy the version key 
 5. In the EBSI export page, paste the version key in the dedicated location
 6. Then enter a name for the export, select the EBSI model and click on "Submit".
+
+**Warning**: do not forget to refresh the export page if you make several exports in a row. 
