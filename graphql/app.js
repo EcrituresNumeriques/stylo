@@ -13,6 +13,10 @@ const passport = require('passport')
 const OidcStrategy = require('passport-openidconnect').Strategy
 const LocalStrategy = require('passport-local').Strategy
 const OAuthStrategy = require('passport-oauth').OAuthStrategy;
+const { logger } = require('./logger')
+const pino = require('pino-http')({
+  logger
+})
 
 const graphQlSchema = require('./schema')
 const graphQlResolvers = require('./resolvers/index')
@@ -143,6 +147,7 @@ passport.deserializeUser(async (id, next) => {
 })
 
 app.set('trust proxy', true)
+app.use(pino)
 app.use(cors(corsOptions))
 app.use(bodyParser.json({ limit: '50mb' }))
 app.use(cookieParser())
@@ -197,7 +202,7 @@ app.use('/authorization-code/zotero/callback',
   (req, res, next) => {
     passport.authenticate('zotero', async (err, user, info, status) => {
       if (err) {
-        console.error('Unable to authenticate on Zotero, unexpected error:', err)
+        logger.error({ err }, 'Unable to authenticate on Zotero.')
         return next(err)
       }
       if (!user) {
@@ -218,7 +223,7 @@ app.use('/authorization-code/zotero/callback',
           })
           .end(`<script>window.close();</script>`)
       } else {
-        console.error('Unable to authenticate on Zotero, no user session found:', {err, user, info, status})
+        logger.error({ err, user, info, status }, 'Unable to authenticate on Zotero, no user session found.')
         res.status(400).redirect(req.session.origin)
       }
 
@@ -227,7 +232,7 @@ app.use('/authorization-code/zotero/callback',
 
 app.use('/authorization-code/callback',
   passport.authenticate('oidc', { failWithError: true }),
-  async function onSuccess(req, res) {
+  async function onSuccess (req, res) {
     const email = req.user.email
 
     if (email) {
@@ -245,8 +250,8 @@ app.use('/authorization-code/callback',
 
     return res.redirect(req.session.origin)
   },
-  function onFailure(error, req, res) {
-    console.error('error', error)
+  function onFailure (error, req, res) {
+    logger.error({ error }, 'Unexpected error.')
     res.redirect(`/error?message=${error.message}`)
   })
 
@@ -259,7 +264,7 @@ app.get('/logout', (req, res) => {
 
 app.post('/login',
   passport.authenticate('local', { failWithError: true }),
-  async function onSuccess(req, res) {
+  async function onSuccess (req, res) {
     const { email } = req.user
 
     const token = await createJWTToken({ email, jwtSecret })
@@ -274,8 +279,8 @@ app.post('/login',
     res.statusCode = 200
     res.json({ user: req.user, token })
   },
-  function onFailure(error, req, res) {
-    console.error('error', error)
+  function onFailure (error, req, res) {
+    logger.error({ error }, 'Unexpected error.')
     res.statusCode = 401
     res.json({ error })
   })
@@ -305,9 +310,9 @@ mongoose.set('useCreateIndex', true)
 mongoose
   .connect(`mongodb://${mongoServer}:${mongoServerPort}/${mongoServerDB}`)
   .then(() => {
-    console.log('Listening on http://localhost:%s', listenPort)
+    logger.info('Listening on http://localhost:%s', listenPort)
     app.listen(listenPort)
   })
   .catch(err => {
-    console.log('Unable to connect to MongoDB', err)
+    logger.error({ err }, 'Unable to connect to MongoDB.')
   })

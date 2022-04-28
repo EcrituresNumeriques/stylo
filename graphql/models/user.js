@@ -1,8 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 const defaultsData = require('../data/defaultsData')
 
-const Article = require('./article');
+const Article = require('./article')
 const { UserPermissionSchema } = require('./permission')
+const { logger } = require('../logger')
+
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -13,13 +15,13 @@ const userSchema = new Schema({
   },
   tags: [
     {
-      type:Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Tag'
     }
   ],
   acquintances: [
     {
-      type:Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'User'
     }
   ],
@@ -47,7 +49,7 @@ const userSchema = new Schema({
     type: String,
   },
   admin: {
-    type:Boolean,
+    type: Boolean,
     default: false
   },
   firstName: {
@@ -66,7 +68,7 @@ const userSchema = new Schema({
     type: String,
     defaults: defaultsData.yaml
   }
-}, {timestamps: true});
+}, { timestamps: true });
 
 
 userSchema.statics.findAllArticles = async function ({ userId, fromSharedUserId }) {
@@ -142,11 +144,11 @@ module.exports = mongoose.model('User', userSchema)
 module.exports.schema = userSchema
 
 module.exports.postCreate = function postCreate (newUser) {
-  console.log('%s has been saved', newUser._id);
+  logger.info({ userId: newUser._id }, 'User has been saved')
 
   // Create a new default article for each new user
   const defaultArticle = defaultsData.article
-  const newArticle = new Article({title: defaultArticle.title});
+  const newArticle = new Article({ title: defaultArticle.title })
 
   newUser.articles.push(newArticle)
   newArticle.owner = newUser
