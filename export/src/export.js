@@ -83,9 +83,6 @@ const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => 
     if (stderr) {
       console.warn(stderr)
     }
-    if (!preview) {
-      res.attachment(`${normalize(title)}.html`)
-    }
     let html5 = stdout
     if (canonicalBaseUrl && !html5.includes('<link rel="canonical"')) {
       // HACK! we add the link tag in the head!
@@ -105,12 +102,10 @@ const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => 
     <script src="https://hypothes.is/embed.js" async></script>
     </body>`
       })
+    } else {
+      res.attachment(`${normalize(title)}.html`)
     }
-
     res.send(html5)
-  } catch (err) {
-    console.log({ err })
-    res.status(500).send({ error: err })
   } finally {
     if (tmpDirectory) {
       rimraf(tmpDirectory, (err) => {
