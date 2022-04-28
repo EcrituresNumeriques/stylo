@@ -8,6 +8,7 @@ const rimraf = require('rimraf')
 const YAML = require('js-yaml')
 const archiver = require('archiver')
 
+const { logger } = require('./logger')
 const { FindByIdNotFoundError } = require('./helpers/errors')
 const { normalize } = require('./helpers/filename')
 const { prepare: prepareMetadata } = require('./helpers/metadata')
@@ -81,7 +82,7 @@ const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => 
     const FIFTEEN_MEGABYTES = 15 * 1024 * 1024
     const { stdout, stderr } = await exec(pandocCommand, { maxBuffer: FIFTEEN_MEGABYTES })
     if (stderr) {
-      console.warn(stderr)
+      logger.warn(stderr)
     }
     let html5 = stdout
     if (canonicalBaseUrl && !html5.includes('<link rel="canonical"')) {
@@ -110,9 +111,7 @@ const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => 
     if (tmpDirectory) {
       rimraf(tmpDirectory, (err) => {
         if (err) {
-          console.error(
-            `Unable to remove temporary directory: ${tmpDirectory} - error: ${err}`
-          )
+          logger.error({ err, tmpDirectory }, 'Unable to remove temporary directory.')
         }
       })
     }
@@ -185,7 +184,7 @@ const createZipArchive = (filename, res) => {
     zlib: { level: 9 },
   })
   archive.on('end', function () {
-    console.log(`Wrote %d bytes in ${filename}`, archive.pointer())
+    logger.info(`Wrote %d bytes in ${filename}`, archive.pointer())
   })
   // pipe into the response
   archive.pipe(res)
