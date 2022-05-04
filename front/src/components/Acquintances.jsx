@@ -20,6 +20,7 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
   const [contributors, setContributors] = useState(article.contributors)
   const articleId = article._id
   const userId = activeUser._id
+  const ownerId = article.owner._id
   const acquintanceService = new AcquintanceService(userId, applicationConfig)
 
   const sharedAccountsIds = activeUser.permissions.map(({ user }) => user._id)
@@ -77,7 +78,11 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
             <a href={"mailto:" + acquintance.email} className={styles.acquintanceEmail}>{acquintance.email}</a>
           </div>
           <div className={styles.acquintanceActions}>
-            {sharedAccountsIds.includes(acquintance._id) === false && <>
+            {ownerId === acquintance._id && <small>
+              article's owner
+            </small>}
+
+            {ownerId !== acquintance._id && sharedAccountsIds.includes(acquintance._id) === false && <>
               <Button onClick={() => duplicateArticle(acquintance._id)} ><Send/> Send a Copy</Button>
               {!contributorsIds.includes(acquintance._id) && <Button onClick={() => shareArticle(acquintance._id)} >
                 <UserPlus /> Grant Access
@@ -87,7 +92,7 @@ function ConnectedAcquintances ({ article, activeUser, setNeedReload, cancel, ap
               </Button>}
             </>}
 
-            {sharedAccountsIds.includes(acquintance._id) === true && <small>
+            {ownerId !== acquintance._id && sharedAccountsIds.includes(acquintance._id) === true && <small>
               already shared via full access — <Link to="/credentials">manage</Link>
             </small>}
           </div>
