@@ -5,8 +5,8 @@ const User = require('../models/user');
 const Tag = require('../models/tag');
 
 const isUser = require('../policies/isUser')
-
 const populateArgs = require('../helpers/populateArgs')
+const { ApiError } = require('../helpers/errors')
 
 module.exports = {
   /**
@@ -295,11 +295,17 @@ module.exports = {
     const { article: articleId } = args
 
     if (req.user?.admin === true) {
-      return Article
+      const article = await Article
         .findById(articleId)
         .populate('owner tags')
         .populate({ path: 'versions', options: { sort: { createdAt: -1 } }, populate: { path: 'owner' } })
-        .populate({ path: 'contributors', populate: { path: 'user' } })
+        .populate({ path: 'contributors', populate: { path: 'user' } });
+
+      if (!article) {
+        throw new ApiError('NOT_FOUND', `Unable to find article with id ${articleId}`)
+      }
+
+      return article
     }
 
     const userId = String(req.user?._id)
@@ -307,7 +313,7 @@ module.exports = {
     const article = await Article.findAndPopulateOneByOwners(articleId, [userId, userIds])
 
     if (!article) {
-      throw new Error(`Unable to find this article : _id ${articleId} does not exist`)
+      throw new ApiError('NOT_FOUND', `Unable to find article with id ${articleId}`)
     }
 
     return article

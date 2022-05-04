@@ -5,6 +5,7 @@ const User = require('../models/user');
 const isUser = require('../policies/isUser')
 
 const populateArgs = require('../helpers/populateArgs')
+const { ApiError } = require("../helpers/errors");
 
 module.exports = {
   saveVersion: async (args, { req }) => {
@@ -64,7 +65,12 @@ module.exports = {
     return createdVersion
   },
   version: async (args, { req }) => {
+    const versionId = args.version
     // TODO need to make sure user should have access to this version
-    return await Version.findById(args.version).populate('owner')
+    const version = await Version.findById(versionId).populate('owner')
+    if (!version) {
+      throw new ApiError('NOT_FOUND', `Unable to find version with id ${versionId}`)
+    }
+    return version
   },
 }
