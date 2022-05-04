@@ -2,10 +2,9 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
 const User = require('../models/user')
-
 const populateArgs = require('../helpers/populateArgs')
-
 const isUser = require('../policies/isUser')
+const { logger } = require('../logger')
 
 async function verifCreds ({ username, password }) {
   if (!username || username.trim().length === 0) {
@@ -16,12 +15,12 @@ async function verifCreds ({ username, password }) {
   })
 
   if (!user) {
-    console.error(`[authentication] Account not found for username: ${username}`)
+    logger.error({ module: 'authentication', username }, 'Account not found for username')
     throw new Error('Unable to authenticate, please check your username and password!')
   }
 
   if (!(await bcrypt.compare(password, user.password))) {
-    console.error(`[authentication] Password is incorrect for username: ${username}`)
+    logger.error({ module: 'authentication', username }, 'Password is incorrect for username')
     throw new Error('Unable to authenticate, please check your username and password!')
   }
 

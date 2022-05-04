@@ -114,6 +114,5 @@ test('should be identical', async () => {
   const expectedContent = await fs.readFile(path.join(__dirname, '..', 'fixtures', 'psp1515.expected.yml'), 'utf8')
   const input = await fs.readFile(path.join(__dirname, '..', 'fixtures', 'psp1515.input.yml'), 'utf8')
   const expected = '---\n' + YAML.dump(YAML.load(expectedContent, 'utf8'), { sortKeys: true }) + '---'
-  //console.log(expected)
   expect(prepare(input, {id: 'abcd1234'})).toBe(expected)
 })

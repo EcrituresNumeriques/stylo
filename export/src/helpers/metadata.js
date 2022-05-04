@@ -1,5 +1,6 @@
 const YAML = require('js-yaml')
-const removeMd = require('remove-markdown');
+const removeMd = require('remove-markdown')
+const { logger } = require('../logger')
 
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 const FORMATTED_FIELD_RE = /_f$/
@@ -74,7 +75,7 @@ function prepare (yaml, {id, originalUrl, replaceBibliography = false}) {
         node[unsuffixedKey] = removeMd(value)
       }
       else {
-        console.warn(`node[%s] is of type %s. Cannot undo markdown. Skipping`, key, value_type)
+        logger.warn(`node[%s] is of type %s. Cannot undo markdown. Skipping`, key, value_type)
       }
     }
   })
@@ -92,7 +93,7 @@ function prepare (yaml, {id, originalUrl, replaceBibliography = false}) {
         obj.list = removeMd(list_f.trim())
       }
       else {
-        console.warn(`keywords[%d].list_f is of type %s. Cannot undo markdown. Skipping`, index, list_f_type)
+        logger.warn(`keywords[%d].list_f is of type %s. Cannot undo markdown. Skipping`, index, list_f_type)
       }
 
       return obj

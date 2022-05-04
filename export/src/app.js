@@ -1,9 +1,14 @@
 const express = require('express')
 const cors = require('cors')
+const { logger } = require('./logger')
+const pino = require('pino-http')({
+  logger
+})
 
 const { exportArticleHtml, exportArticleZip, exportBookHtml, exportBookZip, exportVersionHtml, exportVersionZip, exportBatchTagZip } = require('./export.js')
 
 const app = express()
+app.use(pino)
 app.use(cors({
   origin: '*'
 }))
@@ -29,5 +34,5 @@ app.get('/api/v1/htmlArticle/:id', exportArticleHtml)
 app.get('/htmlBook/:id', exportBookHtml)
 app.get('/api/v1/htmlBook/:id', exportBookHtml)
 
-console.log('Listening on http://localhost:%s', listenPort)
+logger.info('Listening on http://localhost:%s', listenPort)
 app.listen(listenPort)

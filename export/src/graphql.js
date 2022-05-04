@@ -1,5 +1,6 @@
 const { gql, GraphQLClient } = require('graphql-request')
 const { FindByIdNotFoundError } = require('./helpers/errors')
+const { logger } = require('./logger')
 
 let graphQLClient = null
 
@@ -40,7 +41,7 @@ async function getArticleById (articleId) {
     return article
   }
   catch (e) {
-    console.error(e)
+    logger.error(e)
     throw new FindByIdNotFoundError('Article', articleId)
   }
 }
@@ -94,7 +95,7 @@ async function getBookById (bookId) {
     return book
   }
   catch (e) {
-    console.error(e)
+    logger.error(e)
     throw new FindByIdNotFoundError('Book', bookId)
   }
 
