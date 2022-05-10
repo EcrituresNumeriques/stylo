@@ -132,6 +132,7 @@ const errorHandler = (err, res) => {
     } else {
       error = {}
     }
+    logger.error({ cause: err }, 'Something went wrong!')
     res.status(500).send({ error })
   }
 }
