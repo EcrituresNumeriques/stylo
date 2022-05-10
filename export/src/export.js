@@ -4,7 +4,6 @@ const os = require('os')
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
 
-const rimraf = require('rimraf')
 const YAML = require('js-yaml')
 const archiver = require('archiver')
 
@@ -65,13 +64,18 @@ const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => 
   let tmpDirectory
   try {
     tmpDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'stylo-'))
+
     // write files into the temporary directory
     const markdownFilePath = path.join(tmpDirectory, `${id}.md`)
     const bibliographyFilePath = path.join(tmpDirectory, `${id}.bib`)
     const metadataFilePath = path.join(tmpDirectory, `${id}.yaml`)
-    await fs.writeFile(markdownFilePath, md, 'utf8')
-    await fs.writeFile(bibliographyFilePath, bib, 'utf8')
-    await fs.writeFile(metadataFilePath, prepareMetadata(yaml, { id: versionId ?? id }), 'utf8')
+
+    await Promise.all([
+      fs.writeFile(markdownFilePath, md, 'utf8'),
+      fs.writeFile(bibliographyFilePath, bib, 'utf8'),
+      fs.writeFile(metadataFilePath, prepareMetadata(yaml, { id: versionId ?? id }), 'utf8'),
+    ])
+
     // pandoc command
     const pandocCommand = generatePandocCommand(
       preview,
@@ -106,34 +110,12 @@ const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => 
     } else {
       res.attachment(`${normalize(title)}.html`)
     }
+
     res.send(html5)
   } finally {
     if (tmpDirectory) {
-      rimraf(tmpDirectory, (err) => {
-        if (err) {
-          logger.error({ err, tmpDirectory }, 'Unable to remove temporary directory.')
-        }
-      })
+      await fs.rm(tmpDirectory, { recursive: true, maxRetries: 3 })
     }
-  }
-}
-
-const errorHandler = (err, res) => {
-  if (err && err.name === 'FindByIdNotFoundError') {
-    res.status(404).send({ error: { message: err.message } })
-  } else {
-    let error
-    if (err) {
-      error = {
-        name: err.name,
-        message: err.message,
-        stack: err.stack
-      }
-    } else {
-      error = {}
-    }
-    logger.error({ cause: err }, 'Something went wrong!')
-    res.status(500).send({ error })
   }
 }
 
@@ -171,6 +153,7 @@ function createBookExportContext (chapters, { id, title }) {
   const { yaml } = firstChapter.versions.length > 0
     ? firstChapter.versions[firstChapter.versions.length - 1]
     : firstChapter.workingVersion
+
   return {
     bib: chaptersData.bib.join('\n'),
     yaml: yaml,
@@ -184,118 +167,101 @@ const createZipArchive = (filename, res) => {
   const archive = archiver('zip', {
     zlib: { level: 9 },
   })
+
   archive.on('end', function () {
     logger.info(`Wrote %d bytes in ${filename}`, archive.pointer())
   })
+
   // pipe into the response
   archive.pipe(res)
   res.attachment(filename)
+
   return archive
 }
 
 module.exports = {
   exportArticleHtml: async (req, res, _) => {
-    try {
-      const articleId = req.params.id
-      const articleExportContext = await getArticleExportContext(articleId)
-      exportHtml({ ...articleExportContext, id: articleExportContext.articleId }, res, req)
-    } catch (err) {
-      errorHandler(err, res)
-    }
+    const articleId = req.params.id
+    const articleExportContext = await getArticleExportContext(articleId)
+    return exportHtml({ ...articleExportContext, id: articleExportContext.articleId }, res, req)
   },
+
   exportArticleZip: async (req, res, _) => {
-    try {
-      const articleId = req.params.id
-      const articleExportContext = await getArticleExportContext(articleId)
-      await exportZip({ ...articleExportContext, id: articleExportContext.articleId }, res, req)
-    } catch (err) {
-      errorHandler(err, res)
-    }
+    const articleId = req.params.id
+    const articleExportContext = await getArticleExportContext(articleId)
+    return exportZip({ ...articleExportContext, id: articleExportContext.articleId }, res, req)
   },
+
   exportVersionHtml: async (req, res, _) => {
+    const identifier = req.params.id
     try {
-      const identifier = req.params.id
-      try {
-        const articleExportContext = await getArticleExportContext(identifier)
-        exportHtml({ ...articleExportContext, id: identifier }, res, req)
-      } catch (e) {
-        if (e instanceof FindByIdNotFoundError) {
-          // it might be a version!
-          const { bib, yaml, md, _id: id } = await getVersionById(identifier)
-          exportHtml({ bib, yaml, md, id, title: id }, res, req)
-        } else {
-          throw e
-        }
+      const articleExportContext = await getArticleExportContext(identifier)
+      exportHtml({ ...articleExportContext, id: identifier }, res, req)
+    } catch (e) {
+      if (e instanceof FindByIdNotFoundError) {
+        // it might be a version!
+        const { bib, yaml, md, _id: id } = await getVersionById(identifier)
+        return exportHtml({ bib, yaml, md, id, title: id }, res, req)
+      } else {
+        throw e
       }
-    } catch (err) {
-      errorHandler(err, res)
     }
   },
+
   exportVersionZip: async (req, res, _) => {
+    const identifier = req.params.id
+
     try {
-      const identifier = req.params.id
-      try {
-        const articleExportContext = await getArticleExportContext(identifier)
-        await exportZip({ ...articleExportContext, id: identifier }, res, req)
-      } catch (e) {
-        if (e instanceof FindByIdNotFoundError) {
-          // it might be a version!
-          const version = await getVersionById(identifier)
-          const { bib, yaml, md, _id: id } = version
-          await exportZip({ bib, yaml, md, id, title: id }, res, req)
-        } else {
-          throw e
-        }
+      const articleExportContext = await getArticleExportContext(identifier)
+      await exportZip({ ...articleExportContext, id: identifier }, res, req)
+    } catch (e) {
+      if (e instanceof FindByIdNotFoundError) {
+        // it might be a version!
+        const version = await getVersionById(identifier)
+        const { bib, yaml, md, _id: id } = version
+        return exportZip({ bib, yaml, md, id, title: id }, res, req)
+      } else {
+        throw e
       }
-    } catch (err) {
-      errorHandler(err, res)
     }
   },
+
   exportBookHtml: async (req, res, _) => {
-    try {
-      const exportBookContext = await getBookExportContext(req.params.id)
-      if (exportBookContext === null) {
-        return res.status(200).send('')
-      }
-      exportHtml(exportBookContext, res, req)
-    } catch (err) {
-      errorHandler(err, res)
+    const exportBookContext = await getBookExportContext(req.params.id)
+    if (exportBookContext === null) {
+      return res.status(200).send('')
     }
+
+    return exportHtml(exportBookContext, res, req)
   },
+
   exportBookZip: async (req, res, _) => {
-    try {
-      const bookId = req.params.id
-      const exportBookContext = await getBookExportContext(bookId)
-      await exportZip(exportBookContext, res, req)
-    } catch (err) {
-      errorHandler(err, res)
-    }
+    const bookId = req.params.id
+    const exportBookContext = await getBookExportContext(bookId)
+    return exportZip(exportBookContext, res, req)
   },
+
   exportBatchTagZip: async (req, res) => {
-    try {
-      const tags = req.params.ids.split(',')
-      const returnTags = await Tag.find({ _id: { $in: tags } })
-      const articles = await Article.find({ tags: { $all: tags } }).populate({
-        path: 'versions',
-        options: { limit: 1, sort: { updatedAt: -1 } },
-      })
-      const name = returnTags.map((t) => normalize(t._doc.name)).join('-')
-      const filename = `${name}.zip`
-      const archive = createZipArchive(filename, res)
-      // add files
-      articles.forEach((article) => {
-        const filename = normalize(article._doc.title)
-        const { md, bib, yaml } = article._doc.versions.length > 0
-          ? article._doc.versions[0]
-          : article._doc.workingVersion
-        archive.append(Buffer.from(md), { name: `${filename}.md` })
-        archive.append(Buffer.from(bib), { name: `${filename}.bib` })
-        archive.append(Buffer.from(yaml), { name: `${filename}.yaml` })
-      })
-      return archive.finalize()
-    } catch (err) {
-      errorHandler(err, res)
-    }
+    const tags = req.params.ids.split(',')
+    const returnTags = await Tag.find({ _id: { $in: tags } })
+    const articles = await Article.find({ tags: { $all: tags } }).populate({
+      path: 'versions',
+      options: { limit: 1, sort: { updatedAt: -1 } },
+    })
+    const name = returnTags.map((t) => normalize(t._doc.name)).join('-')
+    const filename = `${name}.zip`
+    const archive = createZipArchive(filename, res)
+    // add files
+    articles.forEach((article) => {
+      const filename = normalize(article._doc.title)
+      const { md, bib, yaml } = article._doc.versions.length > 0
+        ? article._doc.versions[0]
+        : article._doc.workingVersion
+      archive.append(Buffer.from(md), { name: `${filename}.md` })
+      archive.append(Buffer.from(bib), { name: `${filename}.bib` })
+      archive.append(Buffer.from(yaml), { name: `${filename}.yaml` })
+    })
+    return archive.finalize()
   },
   _createBookExportContext: createBookExportContext
 }

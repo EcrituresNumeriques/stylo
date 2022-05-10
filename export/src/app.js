@@ -34,5 +34,18 @@ app.get('/api/v1/htmlArticle/:id', exportArticleHtml)
 app.get('/htmlBook/:id', exportBookHtml)
 app.get('/api/v1/htmlBook/:id', exportBookHtml)
 
+app.use(function errorHandler (error, req, res, next) {
+  if (!error) {
+    return next()
+  }
+
+  if (error.name === 'FindByIdNotFoundError') {
+    return res.status(404).send({ error: { message: error.message } })
+  }
+
+  logger.error({ cause: error }, 'Something went wrong!')
+  return res.status(500).send({ error })
+})
+
 logger.info('Listening on http://localhost:%s', listenPort)
 app.listen(listenPort)
