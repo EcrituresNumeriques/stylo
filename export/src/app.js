@@ -43,7 +43,7 @@ app.use(function errorHandler (error, req, res, next) {
     return res.status(404).send({ error: { message: error.message } })
   }
 
-  logger.error({ cause: error }, 'Something went wrong!')
+  logger.error({ cause: error, typeOf: (typeof error), causeString: String(error) }, 'Something went wrong!')
   return res.status(500).send({ error })
 })
 
