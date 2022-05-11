@@ -1,7 +1,7 @@
 {
   "name": "stylo-export",
   "private": true,
-  "version": "dev",
+  "version": "1.0.0-dev",
   "description": "Export logic for Stylo to HTML/zip + others",
   "main": "app.js",
   "engines": {
@@ -11,6 +11,7 @@
   "scripts": {
     "test": "jest",
     "start": "node src/app.js",
+    "dev": "npx dotenv -e ../stylo.env npm run start",
     "prod": "NODE_ENV=production node --heapsnapshot-signal=SIGUSR2 src/app.js"
   },
   "repository": {
@@ -44,6 +45,8 @@
     "remove-markdown": "^0.3.0"
   },
   "devDependencies": {
+    "dotenv": "^16.0.1",
+    "dotenv-cli": "^5.1.0",
     "jest": "^26.6.1"
   },
   "husky": {
