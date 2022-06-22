@@ -8,7 +8,7 @@ import askGraphQL from '../helpers/graphQL'
 import styles from './createArticle.module.scss'
 import Button from './Button'
 import Field from './Field'
-import Tag from './Tag'
+import ArticleTag from './Tag'
 
 const mapStateToProps = ({ sessionToken, applicationConfig }) => {
   return { sessionToken, applicationConfig }
@@ -80,13 +80,13 @@ const ConnectedCreateArticle = (props) => {
           <ul className={styles.tags}>
             {tagsSelected.map((t) => (
               <li key={`selectTag-${t._id}`}>
-                <Tag
+                <ArticleTag
                   tag={t}
-                  activeUser={props.currentUser}
                   name={`selectTag-${t._id}`}
                   onClick={() =>
                     setTagsSelected(findAndUpdateTag(tagsSelected, t._id))
                   }
+                  disableAction={false}
                 />
               </li>
             ))}

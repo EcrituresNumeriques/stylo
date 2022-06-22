@@ -1,9 +1,9 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 
 import askGraphQL from '../helpers/graphQL'
 
-import Tag from './Tag'
+import ArticleTag from './Tag'
 
 const mapStateToProps = ({ sessionToken, applicationConfig }) => {
   return { sessionToken, applicationConfig }
@@ -12,6 +12,7 @@ const mapStateToProps = ({ sessionToken, applicationConfig }) => {
 const ConnectedArticleTags = ({ article, currentUser, masterTags, stateTags, setTags, sessionToken, applicationConfig }) => {
   const articleId = article._id
   const isArticleOwner = currentUser._id === article.owner._id
+  const activeUser = useSelector(state => state.activeUser)
 
   const addToTags = async (tag) => {
     setTags([...stateTags, { ...tag, selected: true }])
@@ -58,10 +59,10 @@ const ConnectedArticleTags = ({ article, currentUser, masterTags, stateTags, set
     <ul>
       {stateTags.map((tag) => (
         <li key={`article-${articleId}-${tag._id}`}>
-          <Tag tag={tag}
-               activeUser={currentUser}
+          <ArticleTag tag={tag}
                name={`articleTag-${tag._id}`}
                onClick={() => rmFromTags(tag._id)}
+               disableAction={activeUser._id !== tag.owner}
           />
         </li>
       ))}
@@ -72,10 +73,10 @@ const ConnectedArticleTags = ({ article, currentUser, masterTags, stateTags, set
           <li
             key={`article-${articleId}-${tag._id}`}
           >
-            <Tag tag={tag}
-                 activeUser={currentUser}
+            <ArticleTag tag={tag}
                  name={`articleTag-${tag._id}`}
                  onClick={() => addToTags(tag)}
+                 disableAction={activeUser._id !== tag.owner}
             />
           </li>
         ))}

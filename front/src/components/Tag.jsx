@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './tag.module.scss'
 
-export default function ArticleTag ({ tag, key, onClick, activeUser }) {
+export default function ArticleTag ({ tag, key, onClick, disableAction }) {
   const classNames = [
     styles.tag,
     tag.selected ? styles.selected : null
@@ -9,8 +9,9 @@ export default function ArticleTag ({ tag, key, onClick, activeUser }) {
 
   const color = tag.color || 'grey'
 
+  console.log('disableAction', disableAction)
   return (<label className={classNames}>
-    { activeUser._id === tag.owner && <input name={key} type="checkbox" checked={tag.selected} onChange={onClick} />}
+    { !disableAction && <input name={key} type="checkbox" checked={tag.selected} onChange={onClick} />}
     {tag.name}
     <span className={styles.chip} style={{backgroundColor: color}}/>
   </label>)

@@ -15,7 +15,7 @@ import Button from './Button'
 import Field from './Field'
 import Loading from './Loading'
 import { Search, Share2, SkipBack, Users } from 'react-feather'
-import Tag from './Tag'
+import ArticleTag from './Tag'
 import Select from "./Select";
 
 const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
@@ -243,14 +243,14 @@ const ConnectedArticles = (props) => {
           <ul className={styles.filterByTags}>
             {filterTags.map((t) => (
               <li key={`filterTag-${t._id}`}>
-                <Tag
+                <ArticleTag
                   tag={t}
-                  activeUser={props.activeUser}
                   name={`filterTag-${t._id}`}
                   onClick={() => {
                     // shallow copy otherwise React won't render the components again
                     setFilterTags([...findAndUpdateTag(filterTags, t._id)])
                   }}
+                  disableAction={false}
                 />
               </li>
             ))}
