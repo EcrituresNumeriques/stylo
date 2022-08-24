@@ -1,0 +1,238 @@
+{
+    "ui:groups": [
+      {
+        "fields": [
+          "id",
+          "url_article",
+          "title_f",
+          "subtitle_f",
+          "date",
+          "numero_revue",
+          "periode_publication",
+          "lang",
+          "rights",
+          "order"
+        ]
+      },
+      {
+        "title": "Bibliography",
+        "fields": ["link-citations", "nocite"]
+      },
+      {
+        "fields": [
+          "authors",
+          "biography",
+          "abstract",
+          "dedicace",
+          "keywords",
+          "controlledKeywords",
+          "typeArticle"
+        ]
+      },
+      {
+        "title": "Diffusion",
+        "fields": ["publisher", "journal"]
+      },
+      {
+        "fields": ["director"]
+      },
+      {
+        "title": "Production",
+        "fields": ["issnnum", "prod", "prodnum", "diffnum"]
+      },
+      {
+        "fields": [
+          "numero",
+          "dossier",
+          "issueDirectors",
+          "reviewers",
+          "translator",
+          "translationOf",
+          "transcribers"
+        ]
+      }
+    ],
+    "id": {
+      "ui:title": "ID",
+      "ui:placeholder": "XXXX"
+    },
+    "url_article": {
+      "ui:title": "URL of the article",
+      "ui:placeholder": "URL of the article",
+      "ui:widget": "uri"
+    },
+    "title_f": {
+      "ui:title": "Title"
+    },
+    "subtitle_f": {
+      "ui:title": "Subtitle"
+    },
+    "link-citations": {
+      "ui:widget": "select",
+      "ui:emptyValue": ""
+    },
+    "nocite": {
+      "ui:widget": "select",
+      "ui:emptyValue": ""
+    },
+    "date": {
+      "ui:title": "Date",
+      "ui:widget": "date"
+    },
+    "numero_revue": {
+        "ui:title": "Journal issue"
+    },
+    "periode_publication": {
+        "ui:title": "Publication period"
+    },
+    "lang": {
+      "ui:title": "Language",
+      "ui:placeholder": "Select language"
+    },
+    "rights": {
+      "ui:title": "License",
+      "ui:placeholder": "License"
+    },
+    "order": {
+      "ui:title": "Order",
+      "ui:placeholder": "Order of the article"
+    },
+    "authors": {
+      "ui:add-item-title": "Ajouter un author",
+      "ui:remove-item-title": "Supprimer",
+      "ui:title": "Authors",
+      "items": {
+        "ui:autocomplete": "IsidoreAuthorSearch"
+      }
+    },
+    "translationOf": {
+      "ui:title": "Traductions de",
+      "items": {
+        "url": {
+          "ui:widget": "uri"
+        }
+      }
+    },
+    "publisher": {
+      "ui:title": "Publisher"
+    },
+    "journal": {
+      "ui:title": "Journal"
+    },
+    "abstract": {
+      "ui:title": "Résumés",
+      "ui:add-item-title": "Ajouter un résumé dans une autre langue",
+      "ui:remove-item-title": "Supprimer",
+      "items": {
+        "text_f": {
+          "ui:title": "Résumé",
+          "ui:widget": "textarea"
+        },
+        "lang": {
+          "ui:title": "Language",
+          "ui:placeholder": "Select language"
+        }
+      }
+    },
+    "biography": {
+        "ui:title": "Biographies",
+        "ui:add-item-title": "Ajouter une biographie dans une autre langue",
+        "ui:remove-item-title": "Supprimer",
+        "items": {
+          "text_f": {
+            "ui:title": "Biography",
+            "ui:widget": "textarea"
+          },
+          "lang": {
+            "ui:title": "Language",
+            "ui:placeholder": "Select language"
+          }
+        }
+    },
+    "dedicace": {
+        "ui:title": "Dédicaces",
+        "ui:add-item-title": "Ajouter une dédicace dans une autre langue",
+        "ui:remove-item-title": "Supprimer",
+        "items": {
+          "text_f": {
+            "ui:title": "Dédicace",
+            "ui:widget": "textarea"
+          },
+          "lang": {
+            "ui:title": "Language",
+            "ui:placeholder": "Select language"
+          }
+        }
+    },
+    "keywords": {
+      "ui:title": "Mots-clés",
+      "ui:add-item-title": "Ajouter une langue",
+      "ui:remove-item-title": "Supprimer cette langue",
+      "items": {
+        "lang": {
+          "ui:title": "Language"
+        },
+        "list_f": {
+          "classNames": "inline-field-string",
+          "ui:add-item-title": "Ajouter un mot-clé",
+          "ui:remove-item-title": "Supprimer"
+        }
+      }
+    },
+    "controlledKeywords": {
+      "classNames": "inline-field-string",
+      "ui:title": "Mots clés Contrôlés",
+      "ui:add-item-title": "Ajouter une mot-clé contrôlé",
+      "items": {
+        "ui:field": "IsidoreKeywordSearch"
+      }
+    },
+    "typeArticle": {
+      "ui:widget": "checkboxes",
+      "ui:title": "Catégories"
+    },
+    "dossier": {
+      "ui:title": "Dossier",
+      "ui:options": {
+        "removable": false,
+        "addable": false
+      },
+      "items": {
+        "title_f": {
+          "ui:title": "Titre du dossier"
+        },
+        "id": {
+          "ui:title": "Id du dossier"
+        }
+      }
+    },
+    "issueDirectors": {
+      "ui:title": "Directeur du dossier"
+    },
+    "director": {
+      "ui:title": "Directors",
+      "ui:add-item-title": "Ajouter un director",
+      "ui:remove-item-title": "Supprimer"
+    },
+    "transcribers": {
+      "ui:title": "Transcribers"
+    },
+    "translator": {
+      "ui:title": "Translators"
+    },
+    "reviewers": {
+      "ui:title": "Réviseurs"
+    },
+    "issnnum": {
+      "ui:title": "ISSN"
+    },
+    "prod": {
+      "ui:title": "Productor"
+    },
+    "prodnum": {
+      "ui:title": "Prodnum"
+    },
+    "diffnum": {
+      "ui:title": "Diffnum"
+    }
+  }
