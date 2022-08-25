@@ -82,8 +82,17 @@
     "numero_revue": {
         "ui:title": "Journal issue"
     },
+    "numero": {
+      "ui:title": "Issue number"
+    },
     "periode_publication": {
         "ui:title": "Publication period"
+    },
+    "gender": {
+      "ui:title": "Gender"
+    },
+    "affiliation": {
+      "ui:title": "Affiliation"
     },
     "lang": {
       "ui:title": "Language",
