@@ -62,8 +62,12 @@ app.use(function errorHandler (error, req, res, next) {
   if (error.name === 'FindByIdNotFoundError') {
     return res.status(404).send({ error: { message: error.message } })
   }
-
   logger.error({ cause: error, typeOf: (typeof error), causeString: String(error) }, 'Something went wrong!')
+  if (res.headersSent) {
+    // no-op
+    logger.warn('Headers already sent, aborting.')
+    return res.status(500)
+  }
   const message = error.message
   const stack = error.stack
   const type = error.constructor && error.constructor.name
