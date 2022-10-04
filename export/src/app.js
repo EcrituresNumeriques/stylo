@@ -5,7 +5,15 @@ const pino = require('pino-http')({
   logger
 })
 
-const { exportArticleHtml, exportArticleZip, exportBookHtml, exportBookZip, exportVersionHtml, exportVersionZip, exportBatchTagZip } = require('./export.js')
+const {
+  exportArticleHtml,
+  exportArticleZip,
+  exportBookHtml,
+  exportBookZip,
+  exportVersionHtml,
+  exportVersionZip,
+  exportBatchTagZip
+} = require('./export.js')
 
 // inspired by: https://github.com/Abazhenov/express-async-handler/blob/master/index.js
 const asyncHandler = fn =>
@@ -56,7 +64,15 @@ app.use(function errorHandler (error, req, res, next) {
   }
 
   logger.error({ cause: error, typeOf: (typeof error), causeString: String(error) }, 'Something went wrong!')
-  return res.status(500).send({ error })
+  const message = error.message
+  const stack = error.stack
+  const type = error.constructor && error.constructor.name
+  const errorInfo = {
+    type,
+    message,
+    stack
+  }
+  return res.status(500).send({ error: errorInfo })
 })
 
 logger.info('Listening on http://localhost:%s', listenPort)

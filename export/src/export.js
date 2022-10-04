@@ -70,10 +70,11 @@ const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => 
     const bibliographyFilePath = path.join(tmpDirectory, `${id}.bib`)
     const metadataFilePath = path.join(tmpDirectory, `${id}.yaml`)
 
+    const completeYaml = prepareMetadata(yaml, { id: versionId ?? id });
     await Promise.all([
       fs.writeFile(markdownFilePath, md, 'utf8'),
       fs.writeFile(bibliographyFilePath, bib, 'utf8'),
-      fs.writeFile(metadataFilePath, prepareMetadata(yaml, { id: versionId ?? id }), 'utf8'),
+      fs.writeFile(metadataFilePath, completeYaml, 'utf8'),
     ])
 
     // pandoc command

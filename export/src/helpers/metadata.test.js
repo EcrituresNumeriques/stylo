@@ -110,6 +110,29 @@ title_f: Stylo
 ---`)
 })
 
+test('should return empty if YAML is empty', () => {
+  expect(prepare('', {id: 'abcd1234'})).toBe('')
+})
+
+
+test('should return empty if YAML is blank', () => {
+  expect(prepare(' ', {id: 'abcd1234'})).toBe('')
+})
+
+test('should return empty if YAML is undefined', () => {
+  expect(prepare(undefined, {id: 'abcd1234'})).toBe('')
+})
+
+test('should return empty if YAML is null', () => {
+  expect(prepare(null, {id: 'abcd1234'})).toBe('')
+})
+
+test('should return empty if YAML is invalid', () => {
+  expect(prepare(`---
+\ foo:---
+\- bar:;`, {id: 'abcd1234'})).toBe('')
+})
+
 test('should be identical', async () => {
   const expectedContent = await fs.readFile(path.join(__dirname, '..', 'fixtures', 'psp1515.expected.yml'), 'utf8')
   const input = await fs.readFile(path.join(__dirname, '..', 'fixtures', 'psp1515.input.yml'), 'utf8')
