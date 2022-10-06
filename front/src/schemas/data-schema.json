@@ -21,6 +21,10 @@
           "type": "string",
           "title": "Affiliations"
         },
+        "biography": {
+          "type": "string",
+          "title": "Biography"
+        },
         "orcid": {
           "type": "string",
           "title": "ORCID"

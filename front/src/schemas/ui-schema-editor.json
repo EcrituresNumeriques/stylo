@@ -8,7 +8,8 @@
         "subtitle_f",
         "date",
         "lang",
-        "rights"
+        "rights",
+        "journal_issue"
       ]
     },
     {
@@ -81,6 +82,10 @@
   "rights": {
     "ui:title": "License",
     "ui:placeholder": "License"
+  },
+  "journal_issue": {
+    "ui:title": "Journal issue",
+    "ui:placeholder": "Journal issue"
   },
   "authors": {
     "ui:add-item-title": "Ajouter un author",
