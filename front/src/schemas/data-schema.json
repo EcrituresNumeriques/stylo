@@ -17,9 +17,9 @@
           "type": "string",
           "title": "First name"
         },
-        "affiliation": {
+        "affiliations": {
           "type": "string",
-          "title": "Affiliation"
+          "title": "Affiliations"
         },
         "orcid": {
           "type": "string",
