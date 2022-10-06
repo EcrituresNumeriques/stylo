@@ -71,6 +71,9 @@
     "rights": {
       "type": "string"
     },
+    "journal_issue": {
+      "type": "string"
+    },
     "link-citations": {
       "type": "boolean",
       "title": "Citation Link",
