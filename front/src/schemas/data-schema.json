@@ -206,6 +206,9 @@
         "$ref": "#/definitions/person"
       }
     },
+    "acknowledgements": {
+      "type": "string"
+    },
     "transcribers": {
       "type": "array",
       "items": {
