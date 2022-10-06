@@ -42,7 +42,8 @@
         "reviewers",
         "translator",
         "translationOf",
-        "transcribers"
+        "transcribers",
+        "acknowledgements"
       ]
     }
   ],
