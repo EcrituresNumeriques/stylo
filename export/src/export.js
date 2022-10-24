@@ -197,7 +197,7 @@ module.exports = {
     const identifier = req.params.id
     try {
       const articleExportContext = await getArticleExportContext(identifier)
-      exportHtml({ ...articleExportContext, id: identifier }, res, req)
+      return exportHtml({ ...articleExportContext, id: identifier }, res, req)
     } catch (e) {
       if (e instanceof FindByIdNotFoundError) {
         // it might be a version!
@@ -214,7 +214,7 @@ module.exports = {
 
     try {
       const articleExportContext = await getArticleExportContext(identifier)
-      await exportZip({ ...articleExportContext, id: identifier }, res, req)
+      return exportZip({ ...articleExportContext, id: identifier }, res, req)
     } catch (e) {
       if (e instanceof FindByIdNotFoundError) {
         // it might be a version!
