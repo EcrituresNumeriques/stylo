@@ -17,6 +17,14 @@
           "type": "string",
           "title": "First name"
         },
+        "affiliations": {
+          "type": "string",
+          "title": "Affiliations"
+        },
+        "biography": {
+          "type": "string",
+          "title": "Biography"
+        },
         "orcid": {
           "type": "string",
           "title": "ORCID"
@@ -61,6 +69,9 @@
       "$ref": "#/definitions/lang"
     },
     "rights": {
+      "type": "string"
+    },
+    "journal_issue": {
       "type": "string"
     },
     "link-citations": {
@@ -201,6 +212,9 @@
       "items": {
         "$ref": "#/definitions/person"
       }
+    },
+    "acknowledgements": {
+      "type": "string"
     },
     "transcribers": {
       "type": "array",

@@ -8,7 +8,8 @@
         "subtitle_f",
         "date",
         "lang",
-        "rights"
+        "rights",
+        "journal_issue"
       ]
     },
     {
@@ -42,7 +43,8 @@
         "reviewers",
         "translator",
         "translationOf",
-        "transcribers"
+        "transcribers",
+        "acknowledgements"
       ]
     }
   ],
@@ -80,6 +82,10 @@
   "rights": {
     "ui:title": "License",
     "ui:placeholder": "License"
+  },
+  "journal_issue": {
+    "ui:title": "Journal issue",
+    "ui:placeholder": "Journal issue"
   },
   "authors": {
     "ui:add-item-title": "Ajouter un author",
@@ -173,6 +179,9 @@
   },
   "translator": {
     "ui:title": "Translators"
+  },
+  "acknowledgements": {
+    "ui:title": "Acknowledgements"
   },
   "reviewers": {
     "ui:title": "Réviseurs"
