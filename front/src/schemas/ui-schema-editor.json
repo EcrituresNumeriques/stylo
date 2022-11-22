@@ -37,6 +37,10 @@
       "fields": ["issnnum", "prod", "prodnum", "diffnum"]
     },
     {
+      "title": "Funder",
+      "fields": ["funder_name", "funder_id"]
+    },
+    {
       "fields": [
         "dossier",
         "issueDirectors",
@@ -48,6 +52,7 @@
       ]
     }
   ],
+
   "id": {
     "ui:title": "ID",
     "ui:placeholder": "XXXX"
@@ -59,6 +64,9 @@
   },
   "title_f": {
     "ui:title": "Title"
+  },
+  "surtitle": {
+    "ui:title": "Surtitle"
   },
   "subtitle_f": {
     "ui:title": "Subtitle"
@@ -191,6 +199,15 @@
   },
   "prod": {
     "ui:title": "Productor"
+  },
+  "funder": {
+    "ui:title": "Funder"
+  },
+  "funder_name": {
+    "ui:title": "Funder organisation"
+  },
+  "funder_id": {
+    "ui:title": "Funder ID"
   },
   "prodnum": {
     "ui:title": "Prodnum"
