@@ -170,9 +170,9 @@
     "ui:title": "Directeur du dossier"
   },
   "director": {
-    "ui:title": "Directors",
-    "ui:add-item-title": "Ajouter un director",
-    "ui:remove-item-title": "Supprimer"
+    "ui:title": "Journal Directors",
+    "ui:add-item-title": "Add a director",
+    "ui:remove-item-title": "Delete"
   },
   "transcribers": {
     "ui:title": "Transcribers"
