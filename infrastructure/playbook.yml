@@ -32,8 +32,12 @@
     - name: Update NGINX settings
       become: yes
       copy:
-        src: ./{{ site }}.conf
-        dest: /etc/nginx/sites-enabled/{{ site }}.conf
+        src: ./{{ item.name }}.conf
+        dest: /etc/nginx/sites-enabled/{{ item.name }}.conf
+      with-items:
+        - { name: "{{ site }}" }
+        - { name: "pandoc-api.{{ site }}" }
+        - { name: "export.{{ site }}" }
       notify: reload nginx
 
     - name: Update NGINX settings

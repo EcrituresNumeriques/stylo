@@ -54,3 +54,16 @@ services:
       - 127.0.0.1:3000:80
     depends_on:
       - graphql-stylo
+  export-gateway:
+    image: "davidbgk/stylo-export:0.0.3"
+    environment:
+      - SE_PANDOC_API_BASE_URL=http://pandoc-api:3090
+    ports:
+      - 127.0.0.1:3080:8000
+  pandoc-api:
+    image: "davidbgk/pandoc-api:0.0.5"
+    environment:
+      - 'TEXINPUTS=.:/usr/pandoc-api/tmp/:'
+    ports:
+      - 127.0.0.1:3090:8000
+
