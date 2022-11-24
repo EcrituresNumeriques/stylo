@@ -34,7 +34,7 @@
       copy:
         src: ./{{ item.name }}.conf
         dest: /etc/nginx/sites-enabled/{{ item.name }}.conf
-      with-items:
+      with_items:
         - { name: "{{ site }}" }
         - { name: "pandoc-api.{{ site }}" }
         - { name: "export.{{ site }}" }
