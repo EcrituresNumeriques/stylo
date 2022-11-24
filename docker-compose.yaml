@@ -57,9 +57,9 @@ services:
   export-gateway:
     image: "davidbgk/stylo-export:0.0.3"
     environment:
-      - SE_PANDOC_API_BASE_URL=http://pandoc-api:3090
+      - SE_PANDOC_API_BASE_URL=http://pandoc-api:8000
     ports:
-      - 127.0.0.1:3080:8000
+      - 127.0.0.1:3080:8001
   pandoc-api:
     image: "davidbgk/pandoc-api:0.0.5"
     environment:
