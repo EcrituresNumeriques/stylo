@@ -61,9 +61,7 @@ services:
     ports:
       - 127.0.0.1:3080:8001
   pandoc-api:
-    image: "davidbgk/pandoc-api:0.0.5"
-    environment:
-      - 'TEXINPUTS=.:/usr/pandoc-api/tmp/:'
+    image: "davidbgk/pandoc-api:0.0.6"
     ports:
       - 127.0.0.1:3090:8000
 
