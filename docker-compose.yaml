@@ -58,6 +58,7 @@ services:
     image: "davidbgk/stylo-export:0.0.3"
     environment:
       - SE_PANDOC_API_BASE_URL=http://pandoc-api:8000/latest/
+      - SE_ALLOWED_INSTANCE_DOMAINS=["stylo.huma-num.fr", "stylo-dev.huma-num.fr"]
     ports:
       - 127.0.0.1:3080:8001
   pandoc-api:
