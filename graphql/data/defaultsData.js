@@ -33,7 +33,6 @@ director:
     foaf: ''
     isni: ''
 abstract: []
-translatedTitle: []
 authors: []
 dossier:
   - title_f: ''

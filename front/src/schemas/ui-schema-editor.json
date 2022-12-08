@@ -45,10 +45,6 @@
       "fields": ["funder_name", "funder_id"]
     },
     {
-      "title": "Translated title",
-      "fields": ["translatedTitle"]
-    },
-    {
       "fields": [
         "dossier",
         "issueDirectors",
@@ -191,21 +187,6 @@
   },
   "transcribers": {
     "ui:title": "Transcribers"
-  },
-  "translatedTitle": {
-    "ui:title": "Translated title",
-    "ui:add-item-title": "Add a title in another language",
-    "ui:remove-item-title": "Supprimer",
-    "items": {
-      "text_f": {
-        "ui:title": "Title",
-        "ui:widget": "textarea"
-      },
-      "lang": {
-        "ui:title": "Language",
-        "ui:placeholder": "Select language"
-      }
-    }
   },
   "translator": {
     "ui:title": "Translators"
