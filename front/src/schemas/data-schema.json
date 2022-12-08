@@ -256,16 +256,18 @@
       "type": "string"
     },
     "funder": {
-      "type": "object",
-      "properties": {
-        "funder_name": {
-          "type": "string",
-          "title": "Organisation name"
-        },
-        "funder_id": {
-          "type": "string",
-          "title": "ID"
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "funder_name": {
+            "type": "string"
+          },
+          "funder_id": {
+            "type": "string"
+          }
         }
+      }
     },
     "prodnum": {
       "type": "string"
@@ -274,4 +276,4 @@
       "type": "string"
     }
   }
-}}
+}
