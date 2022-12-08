@@ -34,6 +34,7 @@
       "fields": ["publisher", "journal"]
     },
     {
+      "title": "Journal Directors",
       "fields": ["director"]
     },
     {
