@@ -3,6 +3,7 @@ module.exports = {
 bibliography: ''
 title: ''
 title_f: ''
+surtitle: ''
 subtitle: ''
 subtitle_f: ''
 year: ''
@@ -12,6 +13,8 @@ date: ''
 url_article_sp: ''
 publisher: ''
 prod: ''
+funder_name: ''
+funder_id: ''
 prodnum: ''
 diffnum: ''
 rights: >-
@@ -30,6 +33,7 @@ director:
     foaf: ''
     isni: ''
 abstract: []
+translatedTitle: []
 authors: []
 dossier:
   - title_f: ''

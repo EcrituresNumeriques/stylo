@@ -13,6 +13,10 @@
       ]
     },
     {
+      "title": "Acknowledgements",
+      "fields": ["acknowledgements"]
+    },
+    {
       "title": "Bibliography",
       "fields": ["link-citations", "nocite"]
     },
@@ -37,17 +41,25 @@
       "fields": ["issnnum", "prod", "prodnum", "diffnum"]
     },
     {
+      "title": "Funder",
+      "fields": ["funder_name", "funder_id"]
+    },
+    {
+      "title": "Translated title",
+      "fields": ["translatedTitle"]
+    },
+    {
       "fields": [
         "dossier",
         "issueDirectors",
         "reviewers",
         "translator",
         "translationOf",
-        "transcribers",
-        "acknowledgements"
+        "transcribers"
       ]
     }
   ],
+
   "id": {
     "ui:title": "ID",
     "ui:placeholder": "XXXX"
@@ -59,6 +71,9 @@
   },
   "title_f": {
     "ui:title": "Title"
+  },
+  "surtitle": {
+    "ui:title": "Surtitle"
   },
   "subtitle_f": {
     "ui:title": "Subtitle"
@@ -170,12 +185,27 @@
     "ui:title": "Directeur du dossier"
   },
   "director": {
-    "ui:title": "Directors",
-    "ui:add-item-title": "Ajouter un director",
-    "ui:remove-item-title": "Supprimer"
+    "ui:title": "Journal Directors",
+    "ui:add-item-title": "Add a director",
+    "ui:remove-item-title": "Delete"
   },
   "transcribers": {
     "ui:title": "Transcribers"
+  },
+  "translatedTitle": {
+    "ui:title": "Translated title",
+    "ui:add-item-title": "Add a title in another language",
+    "ui:remove-item-title": "Supprimer",
+    "items": {
+      "text_f": {
+        "ui:title": "Title",
+        "ui:widget": "textarea"
+      },
+      "lang": {
+        "ui:title": "Language",
+        "ui:placeholder": "Select language"
+      }
+    }
   },
   "translator": {
     "ui:title": "Translators"
@@ -191,6 +221,15 @@
   },
   "prod": {
     "ui:title": "Productor"
+  },
+  "funder": {
+    "ui:title": "Funder"
+  },
+  "funder_name": {
+    "ui:title": "Funder organisation"
+  },
+  "funder_id": {
+    "ui:title": "Funder ID"
   },
   "prodnum": {
     "ui:title": "Prodnum"

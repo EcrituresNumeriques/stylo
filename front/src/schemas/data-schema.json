@@ -25,6 +25,10 @@
           "type": "string",
           "title": "Biography"
         },
+        "email": {
+          "type": "string",
+          "title": "Email"
+        },
         "orcid": {
           "type": "string",
           "title": "ORCID"
@@ -56,6 +60,9 @@
       "type": "string"
     },
     "title_f": {
+      "type": "string"
+    },
+    "surtitle": {
       "type": "string"
     },
     "subtitle_f": {
@@ -178,6 +185,20 @@
         }
       }
     },
+    "translatedTitle": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "$ref": "#/definitions/lang"
+          },
+          "text_f": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "translationOf": {
       "type": "array",
       "items": {
@@ -234,6 +255,18 @@
     "prod": {
       "type": "string"
     },
+    "funder": {
+      "type": "object",
+      "properties": {
+        "funder_name": {
+          "type": "string",
+          "title": "Organisation name"
+        },
+        "funder_id": {
+          "type": "string",
+          "title": "ID"
+        }
+    },
     "prodnum": {
       "type": "string"
     },
@@ -241,4 +274,4 @@
       "type": "string"
     }
   }
-}
+}}
