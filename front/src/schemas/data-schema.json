@@ -185,6 +185,20 @@
         }
       }
     },
+    "translatedTitle": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "$ref": "#/definitions/lang"
+          },
+          "text_f": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "translationOf": {
       "type": "array",
       "items": {
