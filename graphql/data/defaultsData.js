@@ -63,6 +63,7 @@ link-citations: true
 nocite: '@*'
 issueid: ''
 ordseq: ''
+acknowledgements: ''
 ---`,
   title:'New article',
   sommaire:'',
