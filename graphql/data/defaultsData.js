@@ -295,7 +295,7 @@ subtitle: Un article type
 authors:
   - forname: Marcello
     surname: Vitali-Rosati
-    affiliation: ''
+    affiliations: ''
     orcid: 0000-0001-6424-3229
     viaf: ''
     foaf: ''
@@ -303,7 +303,7 @@ authors:
     wikidata: ''
   - forname: Nicolas
     surname: Sauret
-    affiliation: ''
+    affiliations: ''
     orcid: 0000-0001-7516-3427
     viaf: ''
     foaf: ''
