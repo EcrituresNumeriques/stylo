@@ -45,6 +45,10 @@
       "fields": ["funder_name", "funder_id"]
     },
     {
+      "title": "Translated title",
+      "fields": ["translatedTitle"]
+    },
+    {
       "fields": [
         "dossier",
         "issueDirectors",
@@ -156,6 +160,21 @@
     "ui:add-item-title": "Ajouter une mot-clé contrôlé",
     "items": {
       "ui:field": "IsidoreKeywordSearch"
+    }
+  },
+  "translatedTitle": {
+    "ui:title": "Translated title",
+    "ui-add-item-title": "Add a title in another language",
+    "ui-remove-item-title": "Delete",
+    "items": {
+      "title_f": {
+        "ui:title": "Title",
+        "ui-widget": "textarea"
+      },
+      "lang":{
+        "ui:title": "Language",
+        "ui-placeholder": "Select language"
+      }
     }
   },
   "typeArticle": {

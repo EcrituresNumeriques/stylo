@@ -63,6 +63,7 @@ nocite: '@*'
 issueid: ''
 ordseq: ''
 acknowledgements: ''
+translatedTitle: []
 ---`,
   title:'New article',
   sommaire:'',
