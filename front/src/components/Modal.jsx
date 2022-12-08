@@ -1,22 +1,36 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
 import { X } from 'react-feather'
 import Button from './Button'
 
 import styles from './modal.module.scss'
 
-export default ({ children, cancel = () => {}, withCancelButton = true, withCloseButton = true }) => {
+const noop = () => {}
+
+export default function Modal ({ children, cancel = noop}) {
+  const ref = useRef()
+  useEffect(() => ref.current.showModal(), [])
+
   return (
-    <>
-      <section className={styles.background} onClick={() => cancel()}></section>
-      <article className={styles.modal}>
-        {withCloseButton && <Button icon={true} className={[styles.secondary, styles.closeButton].join(' ')} onClick={() => cancel()}>
-          <X/>
-        </Button>}
-        {children}
-        {withCancelButton && <Button className={styles.secondary} onClick={() => cancel()}>
-          Cancel
-        </Button>}
-      </article>
-    </>
+    <dialog open={false} className={styles.modal} ref={ref} onClose={cancel}>
+      <Button
+        aria-label="Close modal"
+        icon={true}
+        className={[styles.secondary, styles.closeButton].join(' ')}
+        onClick={cancel}
+      >
+        <X aria-hidden />
+      </Button>
+
+      {children}
+    </dialog>
   )
+}
+
+Modal.propTypes = {
+  cancel: PropTypes.func,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired,
 }

@@ -82,7 +82,7 @@ const WorkingVersion = ({ articleInfos, workingArticle, readOnly }) => {
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
           <Export
-            exportId={generateArticleExportId(articleInfos.title)}
+            articleId={articleInfos._id}
             articleVersionId={articleInfos._id}
           />
         </Modal>

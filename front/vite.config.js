@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite'
-import { env } from 'process'
+import { defineConfig, loadEnv } from 'vite'
 import { createRequire } from 'module'
+import process from 'node:process'
 import react from '@vitejs/plugin-react'
 import legacy from '@vitejs/plugin-legacy'
 import handlebars from 'vite-plugin-handlebars'
@@ -8,49 +8,51 @@ import handlebars from 'vite-plugin-handlebars'
 const require = createRequire(import.meta.url)
 const { version, browserlist: target } = require('./package.json')
 
-const { NODE_ENV, SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
-
 // https://vitejs.dev/config/
-export default defineConfig({
-  base: env.DEPLOY_PRIME_URL ?? '/',
-  envPrefix: 'SNOWPACK_',
-  build: {
-    outDir: 'build',
-    sourcemap: Boolean(env.ENABLE_SOURCEMAPS),
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          writer: ['@monaco-editor/react', '@rjsf/core']
+export default defineConfig(async ({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), 'SNOWPACK_')
+  const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID, SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT } = env
+
+  return {
+    base: env.DEPLOY_PRIME_URL ?? '/',
+    envPrefix: 'SNOWPACK_',
+    build: {
+      outDir: 'build',
+      sourcemap: Boolean(env.ENABLE_SOURCEMAPS),
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            writer: ['@monaco-editor/react', '@rjsf/core']
+          }
         }
       }
-    }
-  },
-  plugins: [
-    react({
-      jsxImportSource: NODE_ENV === 'development' ? '@welldone-software/why-did-you-render' : 'react'
-    }),
-    legacy({ target }),
-    handlebars({
-      context: {
-        NODE_ENV,
-        SNOWPACK_MATOMO: Boolean(SNOWPACK_MATOMO_URL) && Boolean(SNOWPACK_MATOMO_SITE_ID),
-        SNOWPACK_MATOMO_URL,
-        SNOWPACK_MATOMO_SITE_ID,
+    },
+    plugins: [
+      react({
+        jsxImportSource: mode === 'development' ? '@welldone-software/why-did-you-render' : 'react'
+      }),
+      legacy({ target }),
+      handlebars({
+        context: {
+          SNOWPACK_MATOMO: Boolean(SNOWPACK_MATOMO_URL) && Boolean(SNOWPACK_MATOMO_SITE_ID),
+          SNOWPACK_MATOMO_URL,
+          SNOWPACK_MATOMO_SITE_ID,
+        }
+      })
+    ],
+    define: {
+      APP_VERSION: JSON.stringify(version),
+    },
+    resolve: {
+      alias: {
+        'react-redux': mode === 'development' ? 'react-redux/lib' : 'react-redux'
       }
-    })
-  ],
-  define: {
-    APP_VERSION: JSON.stringify(version),
-    'process.env': {
-      NODE_ENV: env.NODE_ENV
+    },
+    server: {
+      port: 3000,
+      proxy: {
+        '/api': SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT
+      }
     }
-  },
-  resolve: {
-    alias: {
-      'react-redux': NODE_ENV === 'development' ? 'react-redux/lib' : 'react-redux'
-    }
-  },
-  server: {
-    port: 3000
   }
 })

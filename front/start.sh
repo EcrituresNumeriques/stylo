@@ -4,6 +4,7 @@ echo "{\
  \"graphqlEndpoint\": \"${SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT}\",\
  \"exportEndpoint\": \"${SNOWPACK_PUBLIC_EXPORT_ENDPOINT}\",\
  \"processEndpoint\": \"${SNOWPACK_PUBLIC_PROCESS_ENDPOINT}\",\
+ \"pandocExportEndpoint\": \"${SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT}\",\
  \"humanIdRegisterEndpoint\": \"${SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT}\"\
  }" > /usr/share/nginx/html/config.json
 

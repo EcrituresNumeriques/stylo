@@ -114,6 +114,16 @@ a.button:not(.primary), a.icon:not(.primary) {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
+.tertiary {
+  background-color: transparent;
+  text-decoration: underline;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}
+
 .isDisabled {
   cursor: not-allowed !important;
   pointer-events: none;
