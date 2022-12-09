@@ -295,6 +295,8 @@ authors:
   - forname: Marcello
     surname: Vitali-Rosati
     affiliations: ''
+    biography: ''
+    email: ''
     orcid: 0000-0001-6424-3229
     viaf: ''
     foaf: ''
@@ -303,6 +305,8 @@ authors:
   - forname: Nicolas
     surname: Sauret
     affiliations: ''
+    biography: ''
+    email: ''
     orcid: 0000-0001-7516-3427
     viaf: ''
     foaf: ''
