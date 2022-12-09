@@ -1,6 +1,68 @@
 module.exports = {
   yaml:`---
-
+bibliography: ''
+title: ''
+title_f: ''
+surtitle: ''
+subtitle: ''
+subtitle_f: ''
+year: ''
+month: ''
+day: ''
+date: ''
+url_article_sp: ''
+publisher: ''
+prod: ''
+funder_name: ''
+funder_id: ''
+prodnum: ''
+diffnum: ''
+rights: >-
+  Creative Commons Attribution-ShareAlike 4.0 International (CC
+  BY-SA 4.0)
+issnnum: ''
+journal: ''
+journalsubtitle: ''
+journalid: ''
+director:
+  - forname: ''
+    surname: ''
+    gender: ''
+    orcid: ''
+    viaf: ''
+    foaf: ''
+    isni: ''
+abstract: []
+authors: []
+dossier:
+  - title_f: ''
+    id: ''
+redacteurDossier: []
+typeArticle: []
+translator:
+  - forname: ''
+    surname: ''
+lang: fr
+orig_lang: ''
+translations:
+  - lang: ''
+    titre: ''
+    url: ''
+articleslies:
+  - url: ''
+    titre: ''
+    auteur: ''
+reviewers: []
+keyword_fr_f: ''
+keyword_en_f: ''
+keyword_fr: ''
+keyword_en: ''
+controlledKeywords: []
+link-citations: true
+nocite: '@*'
+issueid: ''
+ordseq: ''
+acknowledgements: ''
 ---`,
   title:'New article',
   sommaire:'',
