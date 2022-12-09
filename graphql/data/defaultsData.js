@@ -13,8 +13,7 @@ date: ''
 url_article_sp: ''
 publisher: ''
 prod: ''
-funder_name: ''
-funder_id: ''
+funder: []
 prodnum: ''
 diffnum: ''
 rights: >-
