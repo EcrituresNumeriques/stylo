@@ -7,13 +7,15 @@ import defaultsData from '../../../graphql/data/defaultsData.js'
 
 describe('schemas', () => {
   test('dataSchema and uiSchema are validated', () => {
-    const FormComponent = new Form.default({ schema, uiSchema })
+    const formData = { title_f: 'Test' }
+    const FormComponent = new Form.default({ schema, uiSchema, formData })
 
     expect(FormComponent.validate()).toHaveProperty('errors', [])
   })
 
   test('dataSchema and uiSchema and formData work well together', () => {
-    const [formData] = YAML.loadAll(defaultsData.yaml)
+    const [baseFormData] = YAML.loadAll(defaultsData.yaml)
+    const formData = { ...baseFormData, title_f : 'Test' }
     const FormComponent = new Form.default({ schema, uiSchema, formData })
 
     expect(FormComponent.validate()).toHaveProperty('errors', [])
