@@ -4,7 +4,7 @@ module.exports = {
     ['@babel/preset-react', {
       runtime: 'automatic',
       development: process.env.NODE_ENV === 'development',
-      importSource: '@welldone-software/why-did-you-render',
+      importSource: process.env.NODE_ENV !== 'test' ? '@welldone-software/why-did-you-render' : 'react',
     }],
     [
       '@babel/preset-env', {

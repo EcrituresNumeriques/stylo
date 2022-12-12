@@ -13,8 +13,7 @@ date: ''
 url_article_sp: ''
 publisher: ''
 prod: ''
-funder_name: ''
-funder_id: ''
+funder: []
 prodnum: ''
 diffnum: ''
 rights: >-
@@ -33,7 +32,6 @@ director:
     foaf: ''
     isni: ''
 abstract: []
-translatedTitle: []
 authors: []
 dossier:
   - title_f: ''
@@ -63,6 +61,7 @@ link-citations: true
 nocite: '@*'
 issueid: ''
 ordseq: ''
+acknowledgements: ''
 ---`,
   title:'New article',
   sommaire:'',
@@ -294,7 +293,9 @@ subtitle: Un article type
 authors:
   - forname: Marcello
     surname: Vitali-Rosati
-    affiliation: ''
+    affiliations: ''
+    biography: ''
+    email: ''
     orcid: 0000-0001-6424-3229
     viaf: ''
     foaf: ''
@@ -302,7 +303,9 @@ authors:
     wikidata: ''
   - forname: Nicolas
     surname: Sauret
-    affiliation: ''
+    affiliations: ''
+    biography: ''
+    email: ''
     orcid: 0000-0001-7516-3427
     viaf: ''
     foaf: ''
