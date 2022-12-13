@@ -63,6 +63,7 @@ const reducer = createReducer(initialState, {
   PROFILE: setProfile,
   CLEAR_ZOTERO_TOKEN: clearZoteroToken,
   LOGIN: loginUser,
+  UPDATE_SESSION_TOKEN: setSessionToken,
   UPDATE_ACTIVE_USER: updateActiveUser,
   LOGOUT: logoutUser,
 
@@ -181,7 +182,7 @@ function persistStateIntoLocalStorage ({ getState }) {
         document.location.replace(applicationConfig.backendEndpoint + '/logout')
       }
 
-      if (action.type === 'LOGIN') {
+      if (action.type === 'LOGIN' || action.type === 'UPDATE_SESSION_TOKEN') {
         next(action)
         const { sessionToken } = getState()
         localStorage.setItem('sessionToken', sessionToken)
@@ -224,6 +225,13 @@ function clearZoteroToken (state) {
   state.activeUser.zoteroToken = null
 
   return state
+}
+
+function setSessionToken (state, { token: sessionToken }) {
+  return {
+    ...state,
+    sessionToken
+  }
 }
 
 function loginUser (state, { user, token:sessionToken }) {
