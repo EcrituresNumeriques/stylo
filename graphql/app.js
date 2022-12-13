@@ -177,9 +177,11 @@ app.get('/login', (req, res, _) => {
 
 app.get(
   '/login/openid',
-  (req, res, next) => {
+  async (req, res, next) => {
     if (req.user) {
-      res.redirect(req.headers.referer)
+      const { email } = req.user
+      const token = await createJWTToken({ email, jwtSecret })
+      res.redirect(`${req.headers.referer}#auth-token=${token}`)
     } else {
       req.session.origin = req.headers.referer
       next()
@@ -232,7 +234,9 @@ app.use('/authorization-code/zotero/callback',
 app.use('/authorization-code/callback',
   passport.authenticate('oidc', { failWithError: true }),
   async function onSuccess (req, res) {
-    return res.redirect(req.session.origin)
+    const { email } = req.user
+    const token = await createJWTToken({ email, jwtSecret })
+    return res.redirect(`${req.session.origin}#auth-token=${token}`)
   },
   function onFailure (error, req, res) {
     logger.error({ error }, 'Unexpected error.')
