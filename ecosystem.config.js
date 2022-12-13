@@ -4,7 +4,8 @@ module.exports = {
   apps: [
     {
       name: "front",
-      script: "vite",
+      script: "npm",
+      args: "start",
       cwd: "./front",
       env: parsed
     },
@@ -17,7 +18,8 @@ module.exports = {
       ignore_watch: ['node_modules'],
       env: {
         NODE_ENV: 'dev',
-        CHOKIDAR_USEPOLLING: 1
+        CHOKIDAR_USEPOLLING: 1,
+        ...parsed
       }
     },
     {
@@ -29,7 +31,8 @@ module.exports = {
       ignore_watch: ['node_modules'],
       env: {
         NODE_ENV: 'dev',
-        CHOKIDAR_USEPOLLING: 1
+        CHOKIDAR_USEPOLLING: 1,
+        ...parsed
       }
     }
   ]
