@@ -20,7 +20,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          codemirror: ['react-codemirror2', 'codemirror']
+          writer: ['@monaco-editor/react', '@rjsf/core']
         }
       }
     }
@@ -43,8 +43,7 @@ export default defineConfig({
     APP_VERSION: JSON.stringify(version),
     'process.env': {
       NODE_ENV: env.NODE_ENV
-    },
-    'global.PREVENT_CODEMIRROR_RENDER': false,
+    }
   },
   server: {
     port: 3000
