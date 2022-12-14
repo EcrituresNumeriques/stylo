@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { connect, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { useGraphQL } from '../helpers/graphQL'
 import styles from './credentials.module.scss'
