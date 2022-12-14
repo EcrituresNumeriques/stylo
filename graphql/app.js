@@ -2,7 +2,7 @@ const pkg = require('./package.json')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-const { graphqlHTTP } = require('express-graphql')
+const { createHandler } = require('graphql-http/lib/use/express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 
@@ -261,22 +261,10 @@ app.post('/login/local',
     res.json({ error })
   })
 
-app.post('/graphql', populateUserFromJWT({ jwtSecret }), graphqlHTTP((req, res) => ({
-  schema: graphQlSchema,
-  rootValue: graphQlResolvers,
-  graphiql: false,
-  context: { req, res }
-})))
-
-if (process.env.NODE_ENV === 'dev') {
-  app.get('/graphql', graphqlHTTP((req, res) => ({
-    schema: graphQlSchema,
-    rootValue: graphQlResolvers,
-    graphiql: true,
-    context: { req, res }
-  })))
-}
-
+app.post('/graphql', populateUserFromJWT({ jwtSecret }), createHandler({
+  schema,
+  context: async (req) => ({ req }),
+}))
 
 // fix deprecation warnings: https://mongoosejs.com/docs/deprecations.html
 mongoose.set('useNewUrlParser', true)
