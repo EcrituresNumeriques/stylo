@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-import askGraphQL from '../helpers/graphQL'
-import styles from './books.module.scss'
+import { useGraphQL } from '../helpers/graphQL'
+import styles from './articles.module.scss'
 
 import Book from './Book'
+import Loading from './Loading'
 
-const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
-  return { activeUser, sessionToken, applicationConfig }
-}
-
-const ConnectedBooks = ({ activeUser, sessionToken, applicationConfig }) => {
+export default function Books () {
   const [isLoading, setIsLoading] = useState(true)
   const [tags, setTags] = useState([])
+  const displayName = useSelector(state => state.activeUser.displayName)
+  const userId = useSelector(state => state.activeUser._id)
+  const runQuery = useGraphQL()
 
   useEffect(() => {
     //Self invoking async function
@@ -37,14 +37,8 @@ const ConnectedBooks = ({ activeUser, sessionToken, applicationConfig }) => {
           }
         }`
 
-        const user = { user: activeUser._id }
         setIsLoading(true)
-        const data = await askGraphQL(
-          { query, variables: user },
-          'fetching articles',
-          sessionToken,
-          applicationConfig
-        )
+        const data = await runQuery({ query, variables: { user: userId } })
         //Need to sort by updatedAt desc
         setTags(data.tags.reverse())
         setIsLoading(false)
@@ -56,14 +50,19 @@ const ConnectedBooks = ({ activeUser, sessionToken, applicationConfig }) => {
 
   return (
     <section className={styles.section}>
-      <h1>Books for {activeUser.displayName}</h1>
+      <header className={styles.articlesHeader}>
+        <h1>{tags.length} books for {displayName}</h1>
+      </header>
+
       <p>
         Books are like super-tags, they are a collection of articles that you
-        can sort and export all at once
+        can sort and export all at once.<br />
+        Below are your tags eligible to be books.
       </p>
-      <p>Below are your tags eligible to be books:</p>
-      {!isLoading &&
-        tags.map((t) => (
+
+      <hr className={styles.horizontalSeparator} />
+
+      {isLoading ? <Loading /> : tags.map((t) => (
           <Book
             key={`book-${t._id}`}
             {...t}
@@ -72,6 +71,3 @@ const ConnectedBooks = ({ activeUser, sessionToken, applicationConfig }) => {
     </section>
   )
 }
-
-const Books = connect(mapStateToProps)(ConnectedBooks)
-export default Books

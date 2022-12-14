@@ -8,14 +8,15 @@ import Button from "./Button";
 
 import AcquintanceService from '../services/AcquintanceService'
 import AcquintanceAddForm from './AcquintanceAddForm'
+import { useGraphQL } from '../helpers/graphQL';
 
 export default function CredentialsAccountSharing () {
   const [loading, setLoading] = useState(true)
   const [permissions, setPermissions] = useState([])
   const [acquintances, setAcquintances] = useState([])
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
-  const applicationConfig = useSelector(state => state.applicationConfig, shallowEqual)
-  const acquintanceService = new AcquintanceService(activeUser._id, applicationConfig)
+  const runQuery = useGraphQL()
+  const acquintanceService = new AcquintanceService(activeUser._id, runQuery)
 
   const userPermissionsIds = permissions.filter(p => p.scope === 'user').map(({ user }) => user._id)
 

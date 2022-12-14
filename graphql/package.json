@@ -21,7 +21,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "connect-mongo": "^3.2.0",
-    "cookie-parser": "^1.4.3",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-graphql": "^0.11.0",

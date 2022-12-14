@@ -2,7 +2,7 @@ import './wdyr.js'
 import 'core-js/modules/web.structured-clone'
 import React, { lazy } from 'react'
 import { render } from 'react-dom'
-import { BrowserRouter as Router, Route, Switch, useParams, useHistory } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
 import './styles/general.scss'
@@ -22,6 +22,7 @@ import Field from './components/Field'
 import { Check, Copy, Search } from 'react-feather'
 import buttonStyles from './components/button.module.scss'
 import Select from './components/Select'
+import Login from './components/Login.jsx'
 
 // lazy loaded routes
 const Books = lazy(() => import('./components/Books'))
@@ -34,13 +35,31 @@ const Privacy = lazy(() => import('./components/Privacy'))
 const store = createStore()
 
 ;(async () => {
-  const applicationConfig = await getApplicationConfig(store.getState().applicationConfig)
+  let { applicationConfig: defaultApplicationConfig, sessionToken } = store.getState()
+  const applicationConfig = await getApplicationConfig(defaultApplicationConfig)
   store.dispatch({ type: 'APPLICATION_CONFIG', applicationConfig })
 
-  getUserProfile(applicationConfig)
-    // user is likely not connected
-    .catch(() => {})
-    .then((response) => store.dispatch({ type: 'PROFILE', ...response }))
+  try {
+    const { user, token } = await getUserProfile({ applicationConfig, sessionToken })
+    store.dispatch({ type: 'PROFILE', user, token })
+  }
+  catch (error) {
+    console.log('User seemingly not authenticated: %s', error.message)
+    store.dispatch({ type: 'PROFILE' })
+  }
+
+  // refresh session profile whenever something happens to the session token
+  // maybe there is a better way to do this
+  store.subscribe(() => {
+    const previousValue = sessionToken
+    const { sessionToken:currentValue } = store.getState()
+
+    if (currentValue !== previousValue) {
+      sessionToken = currentValue
+      getUserProfile({ applicationConfig, sessionToken })
+        .then((response) => store.dispatch({ type: 'PROFILE', ...response }))
+    }
+  })
 })()
 
 const TrackPageViews = () => {
@@ -72,6 +91,9 @@ render(
           <Switch>
             <Route path="/register" exact>
               <Register />
+            </Route>
+            <Route path="/login" exact>
+              <Login />
             </Route>
             <PrivateRoute path="/books" exact>
               <Books />

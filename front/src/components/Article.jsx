@@ -14,13 +14,13 @@ import ArticleTags from './ArticleTags'
 import formatTimeAgo from '../helpers/formatTimeAgo'
 import { generateArticleExportId } from "../helpers/identifier"
 import etv from '../helpers/eventTargetValue'
-import askGraphQL from '../helpers/graphQL'
 
 import Field from './Field'
 import Button from './Button'
 import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Share2, Trash } from 'react-feather'
 
 import AcquintanceService from '../services/AcquintanceService'
+import { useGraphQL } from '../helpers/graphQL'
 
 export default function Article ({ article, currentUser:activeUser, setNeedReload, updateTitleHandler, updateTagsHandler, masterTags }) {
   const [expanded, setExpanded] = useState(false)
@@ -31,12 +31,10 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
   const [title, setTitle] = useState(article.title)
   const [tempTitle, setTempTitle] = useState(article.title)
   const [sharing, setSharing] = useState(false)
-
-  const applicationConfig = useSelector(state => state.applicationConfig, shallowEqual)
-  const sessionToken = useSelector(state => state.sessionToken)
+  const runQuery = useGraphQL()
 
   const isArticleOwner = activeUser._id === article.owner._id
-  const acquintanceService = new AcquintanceService(activeUser._id, applicationConfig)
+  const acquintanceService = new AcquintanceService(activeUser._id, runQuery)
 
   const contributors = article.contributors.filter(c => c.user._id !== article.owner._id)
 
@@ -58,12 +56,7 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
       article: article._id,
       title: tempTitle,
     }
-    await askGraphQL(
-      { query, variables },
-      'Renaming Article',
-      sessionToken,
-      applicationConfig
-    )
+    await runQuery({ query, variables })
     setTitle(tempTitle)
     setRenaming(false)
     if (updateTitleHandler) {

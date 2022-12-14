@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { batch, shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { batch, useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import throttle from 'lodash.throttle'
@@ -7,7 +7,7 @@ import debounce from 'lodash.debounce'
 
 import styles from './write.module.scss'
 
-import askGraphQL from '../../helpers/graphQL'
+import { useGraphQL } from '../../helpers/graphQL'
 
 import WriteLeft from './WriteLeft'
 import WriteRight from './WriteRight'
@@ -21,12 +21,9 @@ function Write() {
 
   const { version: currentVersion, id: articleId, compareTo } = useParams()
   const userId = useSelector((state) => state.activeUser._id)
-  const applicationConfig = useSelector(
-    (state) => state.applicationConfig,
-    shallowEqual
-  )
   const [readOnly, setReadOnly] = useState(Boolean(currentVersion))
   const dispatch = useDispatch()
+  const runQuery = useGraphQL()
   const deriveArticleStructureAndStats = useCallback(
     throttle(
       ({ text }) => {
@@ -157,15 +154,7 @@ function Write() {
     setIsLoading(true)
     setReadOnly(Boolean(currentVersion))
     ;(async () => {
-      const data = await askGraphQL(
-        {
-          query: fullQuery,
-          variables,
-        },
-        'Fetching article',
-        null,
-        applicationConfig
-      )
+      const data = await runQuery({ query: fullQuery, variables })
         .then(({ version, article }) => ({ version, article }))
         .catch((error) => {
           setError(error)

@@ -5,6 +5,8 @@ import ArticleService from "./services/ArticleService"
 import MetadataService from "./services/MetadataService"
 import BibliographyService from "./services/BibliographyService";
 
+const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName='sessionToken' } = import.meta.env
+
 function createReducer (initialState, handlers) {
   return function reducer (state = initialState, action) {
     if (Object.prototype.hasOwnProperty.call(handlers, action.type)) {
@@ -17,9 +19,8 @@ function createReducer (initialState, handlers) {
 
 // Définition du store Redux et de l'ensemble des actions
 const initialState = {
-  logedIn: false,
   hasBooted: false,
-  sessionToken: undefined,
+  sessionToken: localStorage.getItem(sessionTokenName),
   workingArticle: {
     state: 'saved',
     bibliography: {
@@ -64,6 +65,7 @@ const reducer = createReducer(initialState, {
   PROFILE: setProfile,
   CLEAR_ZOTERO_TOKEN: clearZoteroToken,
   LOGIN: loginUser,
+  UPDATE_SESSION_TOKEN: setSessionToken,
   UPDATE_ACTIVE_USER: updateActiveUser,
   LOGOUT: logoutUser,
 
@@ -90,20 +92,20 @@ const createNewArticleVersion = store => {
   return next => {
     return async (action) => {
       if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
-        const { articleVersions, activeUser, applicationConfig } = store.getState()
+        const { articleVersions, activeUser, sessionToken, applicationConfig } = store.getState()
         const userId = activeUser._id
         const { articleId, major, message } = action
-        const versionService = new VersionService(userId, articleId, applicationConfig)
+        const versionService = new VersionService(userId, articleId, sessionToken, applicationConfig)
         const response = await versionService.createNewArticleVersion(major, message)
         store.dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: [response.saveVersion, ...articleVersions] })
         return next(action)
       }
       if (action.type === 'UPDATE_WORKING_ARTICLE_TEXT') {
-        const { activeUser, applicationConfig } = store.getState()
+        const { activeUser, sessionToken, applicationConfig } = store.getState()
         const userId = activeUser._id
         const { articleId, text } = action
         try {
-          const { updateWorkingVersion } = await new ArticleService(userId, articleId, applicationConfig).saveText(text)
+          const { updateWorkingVersion } = await new ArticleService(userId, articleId, sessionToken, applicationConfig).saveText(text)
           store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saved' })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_TEXT', text })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
@@ -118,11 +120,11 @@ const createNewArticleVersion = store => {
         return next(action)
       }
       if (action.type === 'UPDATE_WORKING_ARTICLE_METADATA') {
-        const { activeUser, applicationConfig } = store.getState()
+        const { activeUser, sessionToken, applicationConfig } = store.getState()
         const userId = activeUser._id
         const { articleId, metadata } = action
         try {
-          const { updateWorkingVersion } = await new MetadataService(userId, articleId, applicationConfig).saveMetadata(metadata)
+          const { updateWorkingVersion } = await new MetadataService(userId, articleId, sessionToken, applicationConfig).saveMetadata(metadata)
           store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saved' })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_METADATA', metadata })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
@@ -182,6 +184,18 @@ function persistStateIntoLocalStorage ({ getState }) {
         document.location.replace(applicationConfig.backendEndpoint + '/logout')
       }
 
+      if (action.type === 'LOGIN' || action.type === 'UPDATE_SESSION_TOKEN') {
+        next(action)
+        const { sessionToken } = getState()
+        localStorage.setItem(sessionTokenName, sessionToken)
+        return
+      }
+
+      if (action.type === 'LOGOUT') {
+        localStorage.removeItem(sessionTokenName)
+        return next(action)
+      }
+
       return next(action)
     }
   }
@@ -205,7 +219,6 @@ function setProfile (state, action) {
   return Object.assign({}, state, {
     hasBooted: true,
     activeUser,
-    sessionToken: activeUser.apiToken,
     logedIn: true,
   })
 }
@@ -216,18 +229,24 @@ function clearZoteroToken (state) {
   return state
 }
 
-function loginUser (state, { login }) {
-  if (login.user && login.token) {
+function setSessionToken (state, { token: sessionToken }) {
+  return {
+    ...state,
+    sessionToken
+  }
+}
+
+function loginUser (state, { user, token:sessionToken }) {
+  if (sessionToken) {
     return {
       ...state,
-      logedIn: true,
+      sessionToken,
       activeUser: {
-        ...login.user,
+        ...user,
         // dates are expected to be in timestamp string format (including milliseconds)
-        createdAt: String(new Date(login.user.createdAt).getTime()),
-        updatedAt: String(new Date(login.user.updatedAt).getTime()),
+        createdAt: String(new Date(user.createdAt).getTime()),
+        updatedAt: String(new Date(user.updatedAt).getTime()),
       },
-      sessionToken: login.token,
     }
   }
 

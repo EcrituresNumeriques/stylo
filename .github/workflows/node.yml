@@ -29,7 +29,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install and test
-      run: npm clean-install-test --prefix front
+      run: npm clean-install-test --prefix front --no-audit --no-fund
     - name: Build front
       run: npm run build --prefix front
 
@@ -45,7 +45,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install
-      run: npm clean-install --prefix graphql
+      run: npm clean-install --prefix graphql --no-audit --no-fund
 
   build-export:
     runs-on: ubuntu-latest
@@ -59,4 +59,4 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install and test
-        run: npm clean-install-test --prefix export
+        run: npm clean-install-test --prefix export --no-audit --no-fund

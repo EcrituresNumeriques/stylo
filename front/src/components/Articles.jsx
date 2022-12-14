@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { connect, useSelector, useDispatch } from 'react-redux'
+import { shallowEqual, useSelector, useDispatch } from 'react-redux'
 
-import askGraphQL from '../helpers/graphQL'
+import { useGraphQL } from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
 
 import Article from './Article'
@@ -10,23 +10,18 @@ import CreateArticle from './CreateArticle'
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
 import TagManagement from './TagManagement'
-import ArticlesAccountSwitcher from './ArticlesAccountSwitcher'
 import Button from './Button'
 import Field from './Field'
 import Loading from './Loading'
-import { Search, Share2, SkipBack, Users } from 'react-feather'
+import { Search, Users } from 'react-feather'
 import ArticleTag from './Tag'
 import Select from "./Select";
 
-const mapStateToProps = ({ activeUser, sessionToken, applicationConfig }) => {
-  return { activeUser, sessionToken, applicationConfig }
-}
-
-const ConnectedArticles = (props) => {
+export default function Articles () {
   const dispatch = useDispatch()
+  const activeUser = useSelector(state => state.activeUser, shallowEqual)
 
   const [isLoading, setIsLoading] = useState(true)
-  const [showSwitchAccountSelect, setShowSwitchAccountSelect] = useState(false)
   const [filter, setFilter] = useState('')
   const [articles, setArticles] = useState([])
   const [tags, setTags] = useState([])
@@ -34,12 +29,12 @@ const ConnectedArticles = (props) => {
   const [creatingArticle, setCreatingArticle] = useState(false)
   const [needReload, setNeedReload] = useState(true)
   const [tagManagement, setTagManagement] = useState(false)
-  const [currentUser, setCurrentUser] = useState(props.activeUser)
+  const [currentUser, setCurrentUser] = useState(activeUser)
   const [userAccounts, setUserAccounts] = useState([])
-  const { displayName } = currentUser
 
   const currentUserId = useSelector(state => state.userPreferences.currentUser ?? state.activeUser._id)
   const setCurrentUserId = useCallback((userId) => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'currentUser', value: userId }), [])
+  const runQuery = useGraphQL()
 
   const handleReload = useCallback(() => setNeedReload(true), [])
   const handleUpdateTags = useCallback((articleId, tags) => {
@@ -47,7 +42,6 @@ const ConnectedArticles = (props) => {
   }, [articles])
 
   const handleCurrentUserChange = useCallback((selectedItem) => {
-    console.log({selectedItem})
     setIsLoading(true)
     setCurrentUserId(selectedItem)
     setNeedReload(true)
@@ -154,21 +148,14 @@ const ConnectedArticles = (props) => {
   }`
 
   useEffect(() => {
-    const variables = { user: currentUserId }
-
     if (needReload) {
       //Self invoking async function
       (async () => {
-      try {
-          const data = await askGraphQL(
-            { query, variables },
-            'fetching articles',
-            props.sessionToken,
-            props.applicationConfig
-          )
+        try {
+          const data = await runQuery({ query, variables: { user: currentUserId } })
 
+          //Need to sort by updatedAt desc
           setArticles(data.articles)
-
           const tags = data.user.tags.map((t) => ({
             ...t,
             selected: false,
@@ -178,7 +165,7 @@ const ConnectedArticles = (props) => {
           // deep copy of tags
           setCurrentUser(data.user)
           setUserAccounts([
-            { _id: props.activeUser._id, displayName: props.activeUser.displayName },
+            { _id: activeUser._id, displayName: activeUser.displayName },
             ...data.userGrantedAccess
           ])
           setFilterTags(structuredClone(tags))
@@ -279,6 +266,3 @@ const ConnectedArticles = (props) => {
     </section>
   )
 }
-
-const Articles = connect(mapStateToProps)(ConnectedArticles)
-export default Articles

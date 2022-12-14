@@ -1,7 +1,5 @@
 const bcrypt = require('bcryptjs')
 const Isemail = require('isemail')
-const jwt = require("jsonwebtoken")
-const jwtSecret = process.env.JWT_SECRET_SESSION_COOKIE
 
 const User = require('../models/user')
 const Article = require('../models/article')
@@ -155,10 +153,10 @@ module.exports = {
     args.user = ('user' in args) === false && req.user ? String(req.user._id) : args.user
 
     const fromSharedUserId = args.user !== req.user?._id ? args.user : null
-    const userId = String(req.user?._id)
+    const userId = req.user?._id.toString()
 
     if (fromSharedUserId) {
-      const sharedUserIds = await User.findAccountAccessUserIds(userId)
+      const sharedUserIds = await User.findAccountAccessUserIds(req.user?._id)
 
       if (!sharedUserIds.includes(fromSharedUserId)) {
         throw new Error("Forbidden")

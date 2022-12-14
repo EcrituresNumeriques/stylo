@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
-import { shallowEqual, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import formStyles from './field.module.scss'
+import { useGraphQL } from '../helpers/graphQL.js'
 
 import Button from './Button'
 import Field from './Field'
@@ -10,8 +11,8 @@ import AcquintanceService from '../services/AcquintanceService'
 export default function ConnectedAcquintances ({ onAdd }) {
   const [contact, setContact] = useState('')
   const userId = useSelector(state => state.activeUser._id)
-  const applicationConfig = useSelector(state => state.applicationConfig, shallowEqual)
-  const acquintanceService = new AcquintanceService(userId, applicationConfig)
+  const runQuery = useGraphQL()
+  const acquintanceService = new AcquintanceService(userId, runQuery)
 
   const addContact = useCallback(async (event) => {
     event.preventDefault()
@@ -26,6 +27,8 @@ export default function ConnectedAcquintances ({ onAdd }) {
   return (<form onSubmit={addContact} className={formStyles.inlineFields}>
     <Field
       autoFocus={true}
+      required={true}
+      type="email"
       className={formStyles.fullWidth}
       placeholder='Email of the contact you want to add'
       value={contact}

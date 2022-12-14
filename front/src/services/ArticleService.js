@@ -5,16 +5,17 @@ const saveWorkingVersionTextQuery = `mutation($userId: ID!, $articleId: ID!, $te
     article: $articleId,
     user: $userId,
     md: $text,
-  ) { 
+  ) {
     updatedAt
   }
 }`
 
 export default class ArticleService {
 
-  constructor (userId, articleId, applicationConfig) {
+  constructor (userId, articleId, sessionToken, applicationConfig) {
     this.userId = userId
     this.articleId = articleId
+    this.sessionToken = sessionToken
     this.applicationConfig = applicationConfig
   }
 
@@ -29,7 +30,7 @@ export default class ArticleService {
         }
       },
       `Saving text on article id: ${this.articleId} (userId: ${this.userId})`,
-      '',
+      this.sessionToken,
       this.applicationConfig
     )
   }

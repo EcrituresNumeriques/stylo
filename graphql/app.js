@@ -1,5 +1,4 @@
 const pkg = require('./package.json')
-const jwt = require('jsonwebtoken')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
@@ -172,15 +171,13 @@ app.get('/version', (req, res) => res.json({
   origin: res.get(req.headers.referer)
 }))
 
-app.get('/login', (req, res, _) => {
-  res.redirect(req.headers.referer)
-})
-
 app.get(
   '/login/openid',
-  (req, res, next) => {
+  async (req, res, next) => {
     if (req.user) {
-      res.redirect(req.headers.referer)
+      const { email } = req.user
+      const token = await createJWTToken({ email, jwtSecret })
+      res.redirect(`${req.headers.referer}/login#auth-token=${token}`)
     } else {
       req.session.origin = req.headers.referer
       next()
@@ -233,22 +230,9 @@ app.use('/authorization-code/zotero/callback',
 app.use('/authorization-code/callback',
   passport.authenticate('oidc', { failWithError: true }),
   async function onSuccess (req, res) {
-    const email = req.user.email
-
-    if (email) {
-      // generate a JWT token
-      // TODO: we should be able to remove it, keep it for now
-      const token = await createJWTToken({ email, jwtSecret })
-
-      res.cookie("graphQL-jwt", token, {
-        expires: 0,
-        httpOnly: true,
-        secure: secureCookie,
-        sameSite: sameSiteCookies
-      })
-    }
-
-    return res.redirect(req.session.origin)
+    const { email } = req.user
+    const token = await createJWTToken({ email, jwtSecret })
+    return res.redirect(`${req.session.origin}/login#auth-token=${token}`)
   },
   function onFailure (error, req, res) {
     logger.error({ error }, 'Unexpected error.')
@@ -258,23 +242,15 @@ app.use('/authorization-code/callback',
 app.get('/logout', (req, res) => {
   req.logout()
   req.session.destroy()
-  res.clearCookie('graphQL-jwt')
   res.redirect(req.headers.referer)
 })
 
-app.post('/login',
+app.post('/login/local',
   passport.authenticate('local', { failWithError: true }),
   async function onSuccess (req, res) {
     const { email } = req.user
 
     const token = await createJWTToken({ email, jwtSecret })
-
-    res.cookie("graphQL-jwt", token, {
-      expires: 0,
-      httpOnly: true,
-      secure: secureCookie,
-      sameSite: sameSiteCookies
-    })
 
     res.statusCode = 200
     res.json({ user: req.user, token })

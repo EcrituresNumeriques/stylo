@@ -1,5 +1,3 @@
-import askGraphQL from "../helpers/graphQL";
-
 const addAcquintanceQuery = `mutation($user: ID!, $email: String!) {
   addAcquintance(email: $email, user: $user) { _id }
 }`
@@ -7,7 +5,6 @@ const addAcquintanceQuery = `mutation($user: ID!, $email: String!) {
 const shareArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
   shareArticle(article: $article, to: $to, user: $user) {
     _id
-
     contributors {
       roles
       user {
@@ -21,7 +18,6 @@ const shareArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
 const unshareArticleQuery = `mutation($user: ID!, $article: ID!, $to: ID!) {
   unshareArticle(article: $article, to: $to, user: $user) {
     _id
-
     contributors {
       roles
       user {
@@ -57,7 +53,6 @@ const getAcquintancesPermissionsQuery = `query($user: ID!) {
       }
       roles
     }
-
     acquintances {
       _id
       displayName
@@ -65,6 +60,7 @@ const getAcquintancesPermissionsQuery = `query($user: ID!) {
     }
   }
 }`
+
 
 const grantAccountAccessQuery = `mutation($from: ID!, $to: ID!) {
   grantAccountAccess(user: $from, to: $to) {
@@ -77,7 +73,6 @@ const grantAccountAccessQuery = `mutation($from: ID!, $to: ID!) {
       }
       roles
     }
-
     acquintances {
       _id
       displayName
@@ -97,7 +92,6 @@ const revokeAccountAccessQuery = `mutation($from: ID!, $to: ID!) {
       }
       roles
     }
-
     acquintances {
       _id
       displayName
@@ -108,101 +102,76 @@ const revokeAccountAccessQuery = `mutation($from: ID!, $to: ID!) {
 
 export default class AcquintanceService {
 
-  constructor (userId, applicationConfig) {
+  constructor (userId, runQuery) {
     this.userId = userId
-    this.applicationConfig = applicationConfig
+    this.runQuery = runQuery
   }
 
   async getAcquintances () {
-    return askGraphQL(
-      { query: getAcquintancesQuery, variables: { user: this.userId } },
-      'Fetching acquintances',
-      '',
-      this.applicationConfig
-    )
+    return this.runQuery({
+      query: getAcquintancesQuery,
+      variables: { user: this.userId }
+    })
   }
 
   async getAcquintancesAndPermissions () {
-    return askGraphQL(
-      { query: getAcquintancesPermissionsQuery, variables: { user: this.userId } },
-      'Fetching acquintances and permissions',
-      '',
-      this.applicationConfig
-    )
+    return this.runQuery({
+      query: getAcquintancesPermissionsQuery,
+      variables: { user: this.userId }
+    })
   }
 
   async addAcquintance (contact) {
-    return askGraphQL(
-      { query: addAcquintanceQuery, variables: { user: this.userId, email: contact } },
-      'Adding acquintances',
-      '',
-      this.applicationConfig
-    )
+    return this.runQuery({
+      query: addAcquintanceQuery,
+      variables: { user: this.userId, email: contact }
+    })
   }
 
   async grantAccountAccessTo ({ from, to }) {
-    return askGraphQL(
-      { query: grantAccountAccessQuery, variables: { from, to } },
-      'Grand account access',
-      '',
-      this.applicationConfig
-    )
+    return this.runQuery({
+      query: grantAccountAccessQuery,
+      variables: { from, to }
+    })
   }
 
   async revokeAccountAccessTo ({ from, to }) {
-    return askGraphQL(
-      { query: revokeAccountAccessQuery, variables: { from, to } },
-      'Grand account access',
-      '',
-      this.applicationConfig
-    )
+    return this.runQuery({
+      query: revokeAccountAccessQuery,
+      variables: { from, to }
+    })
   }
 
   async duplicateArticle (articleId, to) {
-    return askGraphQL(
-      {
-        query: duplicateArticleQuery,
-        variables: {
-          user: this.userId,
-          to,
-          article: articleId,
-        }
-      },
-      'Duplicating article',
-      '',
-      this.applicationConfig
-    )
+    return this.runQuery({
+      query: duplicateArticleQuery,
+      variables: {
+        user: this.userId,
+        to,
+        article: articleId,
+      }
+    })
   }
 
   async shareArticle (articleId, to) {
-    return askGraphQL(
-      {
+    return this.runQuery({
         query: shareArticleQuery,
         variables: {
           user: this.userId,
           to,
           article: articleId,
         }
-      },
-      'Sharing article',
-      '',
-      this.applicationConfig
-    )
+      })
   }
 
   async unshareArticle (articleId, to) {
-    return askGraphQL(
-      {
-        query: unshareArticleQuery,
-        variables: {
-          user: this.userId,
-          to,
-          article: articleId,
-        }
-      },
-      'Unsharing article',
-      '',
-      this.applicationConfig
-    )
+    return this.runQuery({
+      query: unshareArticleQuery,
+      variables: {
+        user: this.userId,
+        to,
+        article: articleId,
+      }
+    })
   }
 }
