@@ -5,6 +5,8 @@ import ArticleService from "./services/ArticleService"
 import MetadataService from "./services/MetadataService"
 import BibliographyService from "./services/BibliographyService";
 
+const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName='sessionToken' } = import.meta.env
+
 function createReducer (initialState, handlers) {
   return function reducer (state = initialState, action) {
     if (Object.prototype.hasOwnProperty.call(handlers, action.type)) {
@@ -18,7 +20,7 @@ function createReducer (initialState, handlers) {
 // Définition du store Redux et de l'ensemble des actions
 const initialState = {
   hasBooted: false,
-  sessionToken: localStorage.getItem('sessionToken'),
+  sessionToken: localStorage.getItem(sessionTokenName),
   workingArticle: {
     state: 'saved',
     bibliography: {
@@ -185,12 +187,12 @@ function persistStateIntoLocalStorage ({ getState }) {
       if (action.type === 'LOGIN' || action.type === 'UPDATE_SESSION_TOKEN') {
         next(action)
         const { sessionToken } = getState()
-        localStorage.setItem('sessionToken', sessionToken)
+        localStorage.setItem(sessionTokenName, sessionToken)
         return
       }
 
       if (action.type === 'LOGOUT') {
-        localStorage.removeItem('sessionToken')
+        localStorage.removeItem(sessionTokenName)
         return next(action)
       }
 

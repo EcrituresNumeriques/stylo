@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useCallback, useState, useEffect } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
 import styles from './login.module.scss'
@@ -11,14 +11,24 @@ export default function Login () {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
+  const { replace, location } = useHistory()
+  const setSessionToken = useCallback((token) => dispatch({ type: 'UPDATE_SESSION_TOKEN', token }), [])
+  const authToken = new URLSearchParams(location.hash).get('#auth-token')
 
   const backendEndpoint = useSelector(state => state.applicationConfig.backendEndpoint)
   const humanIdRegisterEndpoint = useSelector(state => state.applicationConfig.humanIdRegisterEndpoint)
 
+  useEffect(() => {
+    if (authToken) {
+      setSessionToken(authToken)
+      replace(location.pathname)
+    }
+  }, [authToken])
+
   const handleSubmit = useCallback((event) => {
     event.preventDefault()
 
-    fetch(backendEndpoint + '/login', {
+    fetch(backendEndpoint + '/login/local', {
       method: 'POST',
       // this parameter enables the cookie directive (set-cookie)
       credentials: 'include',

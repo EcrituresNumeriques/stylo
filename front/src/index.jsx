@@ -22,6 +22,7 @@ import Field from './components/Field'
 import { Check, Copy, Search } from 'react-feather'
 import buttonStyles from './components/button.module.scss'
 import Select from './components/Select'
+import Login from './components/Login.jsx'
 
 // lazy loaded routes
 const Books = lazy(() => import('./components/Books'))
@@ -90,6 +91,9 @@ render(
           <Switch>
             <Route path="/register" exact>
               <Register />
+            </Route>
+            <Route path="/login" exact>
+              <Login />
             </Route>
             <PrivateRoute path="/books" exact>
               <Books />

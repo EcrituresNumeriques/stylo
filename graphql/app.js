@@ -171,17 +171,13 @@ app.get('/version', (req, res) => res.json({
   origin: res.get(req.headers.referer)
 }))
 
-app.get('/login', (req, res, _) => {
-  res.redirect(req.headers.referer)
-})
-
 app.get(
   '/login/openid',
   async (req, res, next) => {
     if (req.user) {
       const { email } = req.user
       const token = await createJWTToken({ email, jwtSecret })
-      res.redirect(`${req.headers.referer}#auth-token=${token}`)
+      res.redirect(`${req.headers.referer}/login#auth-token=${token}`)
     } else {
       req.session.origin = req.headers.referer
       next()
@@ -236,7 +232,7 @@ app.use('/authorization-code/callback',
   async function onSuccess (req, res) {
     const { email } = req.user
     const token = await createJWTToken({ email, jwtSecret })
-    return res.redirect(`${req.session.origin}#auth-token=${token}`)
+    return res.redirect(`${req.session.origin}/login#auth-token=${token}`)
   },
   function onFailure (error, req, res) {
     logger.error({ error }, 'Unexpected error.')
@@ -249,7 +245,7 @@ app.get('/logout', (req, res) => {
   res.redirect(req.headers.referer)
 })
 
-app.post('/login',
+app.post('/login/local',
   passport.authenticate('local', { failWithError: true }),
   async function onSuccess (req, res) {
     const { email } = req.user
