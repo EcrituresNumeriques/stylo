@@ -17,14 +17,16 @@
     "npm": ">=8"
   },
   "scripts": {
-    "dev": "pm2 start --env development",
-    "start": "pm2 start --env production",
-    "stop": "pm2 stop all",
-    "reload": "pm2 reload all",
-    "cleanup": "pm2 delete all && pm2 save",
-    "list": "pm2 list",
-    "status": "pm2 list",
-    "logs": "pm2 logs"
+    "dev": "DOTENV_CONFIG_PATH=stylo.env node -r dotenv/config ./node_modules/.bin/concurrently 'npm:dev:*'",
+    "predev:front": "node ./front/tasks/env.js",
+    "dev:front": "./front/node_modules/.bin/vite ./front",
+    "dev:graphql": "node --watch ./graphql/app.js --watch",
+    "dev:export": "node  --watch ./export/src/app.js --watch",
+    "start": "DOTENV_CONFIG_PATH=stylo.env node -r dotenv/config ./node_modules/.bin/concurrently 'npm:start:*'",
+    "prestart:front": "node ./front/tasks/env.js",
+    "start:front": "./front/node_modules/.bin/vite build ./front",
+    "start:graphql": "node --watch ./graphql/app.js",
+    "start:export": "node  --watch ./export/src/app.js"
   },
   "repository": {
     "type": "git",
@@ -37,10 +39,8 @@
     "url": "https://github.com/EcrituresNumeriques/stylo/issues"
   },
   "homepage": "https://github.com/EcrituresNumeriques/stylo#readme",
-  "dependencies": {
-    "pm2": "^5.1.2"
-  },
   "devDependencies": {
+    "concurrently": "^7.6.0",
     "dotenv": "^10.0.0"
   },
   "volta": {
