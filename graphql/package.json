@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@graphql-tools/schema": "^9.0.12",
     "atob": "^2.1.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
@@ -25,8 +26,6 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-session": "^1.17.1",
-    "graphql": "^15.4.0",
-    "graphql-tag": "^2.12.6",
     "graphql-http": "^1.9.0",
     "isemail": "^3.2.0",
     "jsonwebtoken": "^8.4.0",

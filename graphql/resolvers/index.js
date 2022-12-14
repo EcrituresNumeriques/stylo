@@ -1,15 +1,25 @@
-const userResolver = require('./userResolver');
-const articleResolver = require('./articleResolver')
-const tagResolver = require('./tagResolver')
-const versionResolver = require('./versionResolver')
-const authResolver = require('./authResolver')
+const { User, Query: UserQuery, Mutation: UserMutation } = require('./userResolver');
+const { Article, Query: ArticleQuery, Mutation: ArticleMutation } = require('./articleResolver')
+const { Tag, Query: TagQuery, Mutation: TagMutation } = require('./tagResolver')
+const { Version, Query: VersionQuery, Mutation: VersionMutation } = require('./versionResolver')
+const { Mutation: AuthMutation } = require('./authResolver')
 
-const rootResolver = {
-  ...userResolver,
-  ...articleResolver,
-  ...tagResolver,
-  ...versionResolver,
-  ...authResolver
-};
-
-module.exports = rootResolver
+module.exports = {
+  User,
+  Article,
+  Tag,
+  Version,
+  Query: {
+    ...UserQuery,
+    ...ArticleQuery,
+    ...TagQuery,
+    ...VersionQuery,
+  },
+  Mutation: {
+    ...UserMutation,
+    ...ArticleMutation,
+    ...TagMutation,
+    ...VersionMutation,
+    ...AuthMutation,
+  }
+}
