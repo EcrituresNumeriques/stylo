@@ -5,7 +5,7 @@
 
   [build.environment]
     # System env
-    NODE_VERSION = "16"
+    NODE_VERSION = "18"
     NODE_ENV = "development"
     NPM_FLAGS = "-w front --no-audit --no-fund"
 
