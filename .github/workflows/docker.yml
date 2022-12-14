@@ -23,7 +23,14 @@ on:
 jobs:
   main:
     runs-on: ubuntu-latest
+
+    env:
+      TAG: ${{ (github.ref_type == 'tag') && github.ref_name || 'latest' }}
+
     steps:
     - uses: actions/checkout@v3
     - run: cp stylo-example.env stylo.env
-    - run: docker-compose build
+    - run: docker compose build
+    - run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+    - run: docker compose push graphql-stylo export-stylo front-stylo
+      # if: ${{ github.ref_type == 'tag' || github.ref_name == 'master' || github.ref_name == 'main' }}
