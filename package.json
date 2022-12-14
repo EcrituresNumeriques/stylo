@@ -7,11 +7,6 @@
   "directories": {
     "doc": "docs"
   },
-  "workspaces": [
-    "export",
-    "front",
-    "graphql"
-  ],
   "engines": {
     "node": ">=18",
     "npm": ">=8"
