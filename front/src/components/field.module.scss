@@ -21,6 +21,7 @@
 
   label {
     cursor: pointer;
+    flex-shrink: 0;
     margin-right: 1rem;
     flex-basis: 10rem;
     text-align: end;

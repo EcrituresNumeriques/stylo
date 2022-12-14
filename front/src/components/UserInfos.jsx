@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { Check, Loader } from 'react-feather'
+import { Check, Clipboard, Loader } from 'react-feather'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import { useGraphQL } from '../helpers/graphQL'
 import etv from '../helpers/eventTargetValue'
@@ -9,7 +10,6 @@ import formStyles from './field.module.scss'
 import Button from "./Button";
 import Field from "./Field";
 import formatTimeAgo from '../helpers/formatTimeAgo';
-import CheckboxWidget from "@rjsf/core/lib/components/widgets/CheckboxWidget";
 
 export default function UserInfos () {
   const dispatch = useDispatch()
@@ -163,7 +163,14 @@ export default function UserInfos () {
         <>{user.authType === 'oidc' ? 'External (OpenID)' : 'Local'}</>
       </Field>
       <Field label="API Key">
-        <code>{sessionToken}</code>
+        <>
+          <code className={styles.apiKey} title={`API Key value is ${sessionToken}`}>{sessionToken}</code>
+          <CopyToClipboard text={sessionToken}>
+            <Button title="Copy API Key value to clipboard" icon={true}>
+              <Clipboard />
+            </Button>
+          </CopyToClipboard>
+        </>
       </Field>
       <Field label="Identifier">
         <code>{user._id}</code>
