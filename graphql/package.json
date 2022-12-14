@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "exit 0",
-    "posttest": "eslint",
+    "posttest": "eslint '**/*.js'",
     "start": "node app.js",
     "prod": "NODE_ENV=production node --heapsnapshot-signal=SIGUSR2 app.js"
   },
@@ -39,6 +39,7 @@
     "uid-generator": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.2.0"
+    "eslint": "^8.2.0",
+    "eslint-plugin-security": "^1.5.0"
   }
 }

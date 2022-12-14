@@ -70,7 +70,7 @@ module.exports = {
   },
 
   Query: {
-    async version (_, { version: versionId }, { user }) {
+    async version (_, { version: versionId }) {
       // TODO need to make sure user should have access to this version
       const version = await Version.findById(versionId).populate('owner')
       if (!version) {

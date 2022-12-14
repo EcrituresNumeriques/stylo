@@ -1,5 +1,3 @@
-/* global print, Mongo */
-
 const conn = Mongo()
 const session = conn.startSession()
 
