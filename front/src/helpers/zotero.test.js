@@ -1,9 +1,4 @@
 import { fetchBibliographyFromCollectionHref } from './zotero'
-import fetch from 'node-fetch'
-
-if (!globalThis.fetch) {
-  globalThis.fetch = fetch
-}
 
 describe('fetchBibliographyFromCollection', () => {
   test('fetches a paginated collection of more than 25 elements', () => {

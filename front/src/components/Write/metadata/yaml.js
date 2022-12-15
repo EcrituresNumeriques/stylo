@@ -1,4 +1,3 @@
-/* global structuredClone */
 import YAML from 'js-yaml'
 
 export function cleanOutput(object) {
