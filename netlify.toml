@@ -1,14 +1,17 @@
 # Reference docs: https://docs.netlify.com/configure-builds/file-based-configuration/
 [build]
-  publish = "front/build"
-  command = "npm run build --prefix front"
+  # Because https://docs.netlify.com/configure-builds/troubleshooting-tips/#command-not-found
+  # See also https://docs.netlify.com/configure-builds/monorepos/
+  # npm 8.5 does some weird shenanigans when multiple package.json coexist within a directory tree
+  base = "front"
+  publish = "build"
+  command = "npm run build"
 
   [build.environment]
     # System env
     NODE_VERSION = "18"
     NODE_ENV = "development"
-    NPM_CONFIG_PRODUCTION = "false"
-    NPM_FLAGS = "--prefix front --no-audit --no-fund"
+    NPM_FLAGS = "--no-audit --no-fund"
 
     # App env (new Snowpack)
     SNOWPACK_PUBLIC_EXPORT_ENDPOINT = "https://stylo-dev.huma-num.fr"
@@ -22,7 +25,7 @@
 [context.production.environment]
   NODE_ENV = "production"
   ENABLE_SOURCEMAPS = "true"
-  NPM_FLAGS = "--prefix front --no-audit --no-fund --production=false"
+  NPM_FLAGS = "--no-audit --no-fund --production=false"
 
 
 [[redirects]]
