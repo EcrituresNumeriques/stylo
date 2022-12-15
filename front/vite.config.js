@@ -41,5 +41,8 @@ export default defineConfig({
       NODE_ENV: env.NODE_ENV
     },
     'global.PREVENT_CODEMIRROR_RENDER': false,
+  },
+  server: {
+    port: 3000
   }
 })
