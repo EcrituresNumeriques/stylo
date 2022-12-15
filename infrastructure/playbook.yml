@@ -90,12 +90,14 @@
     - name: Rebuild and restart Docker containers
       docker_compose:
         project_src: ~/stylo
-        build: yes
+        build: false
+        pull: true
       environment:
         SNOWPACK_MATOMO_URL: "{{ matomo_url }}"
         SNOWPACK_MATOMO_SITE_ID: "{{ matomo_site_id }}"
         npm_config_audit: "false"
         npm_config_fund: "false"
+        TAG: "latest"
 
   handlers:
     - name: reload nginx
