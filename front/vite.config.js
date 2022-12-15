@@ -18,10 +18,6 @@ export default defineConfig({
     outDir: 'build',
     sourcemap: Boolean(env.ENABLE_SOURCEMAPS),
     rollupOptions: {
-
-      external: [
-        '@welldone-software/why-did-you-render'
-      ],
       output: {
         manualChunks: {
           writer: ['@monaco-editor/react', '@rjsf/core']
