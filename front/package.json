@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "module",
   "#browserlist#": "https://browserslist.dev/?q=bGFzdCAzIHZlcnNpb25zLCBzYWZhcmkgPj0gMTAsIG5vdCBleHBsb3JlciA8PSAxMSwgbm90IGV4cGxvcmVybW9iaWxlIDw9IDEx",
-  "browserslist": "last 3 versions, safari >= 10, not explorer <= 11, not explorermobile <= 11",
+  "browserslist": "defaults, last 2 versions, not dead, > 0.2%",
   "engines": {
     "node": ">=18",
     "npm": ">=8"
