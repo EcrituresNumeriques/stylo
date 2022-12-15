@@ -7,6 +7,7 @@
     # System env
     NODE_VERSION = "18"
     NODE_ENV = "development"
+    NPM_CONFIG_PRODUCTION = "false"
     NPM_FLAGS = "--prefix front --no-audit --no-fund"
 
     # App env (new Snowpack)
