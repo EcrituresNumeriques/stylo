@@ -1,14 +1,20 @@
 name: Ansible deploy production
 
 on:
-  push:
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v2.1.3
+  workflow_run:
+    workflows:
+      - "Build and deploy Docker images"
+    branches:
+      - main
+      - master
+    types:
+      - completed
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
+    if: ${{ github.event.workflow_run.conclusion == 'success' &&  }}
 
     steps:
     - uses: actions/checkout@v3
@@ -39,4 +45,4 @@ jobs:
 
     - name: Run playbook
       working-directory: ./infrastructure
-      run: ansible-playbook -i inventories/prod --extra-vars "@vault-prod.yml" --extra-vars "app_version=${{ steps.get_version.outputs.VERSION }}" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v
+      run: ansible-playbook -i inventories/prod --extra-vars "@vault-prod.yml" --extra-vars "app_version=${{ github.ref_name }}" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v
