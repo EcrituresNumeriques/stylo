@@ -6,7 +6,7 @@ import legacy from '@vitejs/plugin-legacy'
 import handlebars from 'vite-plugin-handlebars'
 
 const require = createRequire(import.meta.url)
-const { version } = require('./package.json')
+const { version, browserlist: target } = require('./package.json')
 
 const { NODE_ENV, SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
 
@@ -26,8 +26,10 @@ export default defineConfig({
     }
   },
   plugins: [
-    react(),
-    legacy(),
+    react({
+      jsxImportSource: NODE_ENV === 'development' ? '@welldone-software/why-did-you-render' : 'react'
+    }),
+    legacy({ target }),
     handlebars({
       context: {
         NODE_ENV,

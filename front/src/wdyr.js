@@ -1,8 +1,8 @@
-import React from 'react';
+import * as React from 'react'
+import * as ReactRedux from 'react-redux'
+import whyDidYouRender from '@welldone-software/why-did-you-render'
 
 if (import.meta.env.DEV) {
-  const {default: whyDidYouRender} = await import('@welldone-software/why-did-you-render');
-  const ReactRedux = await import('react-redux/lib')
 
   whyDidYouRender(React, {
     trackAllPureComponents: true,
