@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { batch, useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -12,13 +12,9 @@ import { useGraphQL } from '../../helpers/graphQL'
 import WriteLeft from './WriteLeft'
 import WriteRight from './WriteRight'
 import Loading from '../Loading'
-import CodeMirrorEditor from './providers/codemirror/Editor'
 import MonacoEditor from './providers/monaco/Editor'
 
 function Write() {
-  const preferredEditorMonaco = useSelector(state => state.userPreferences.preferredEditorMonaco)
-  const expanded = useSelector(state => state.articlePreferences.expandSidebarLeft)
-
   const { version: currentVersion, id: articleId, compareTo } = useParams()
   const userId = useSelector((state) => state.activeUser._id)
   const [readOnly, setReadOnly] = useState(Boolean(currentVersion))
@@ -235,7 +231,7 @@ function Write() {
         readOnly={readOnly}
       />
       <article>
-        {preferredEditorMonaco && <MonacoEditor
+        <MonacoEditor
           text={live.md}
           readOnly={readOnly}
           onTextUpdate={handleMDCM}
@@ -243,16 +239,7 @@ function Write() {
           selectedVersion={currentVersion}
           compareTo={compareTo}
           currentArticleVersion={live.version}
-        />}
-        {!preferredEditorMonaco && <CodeMirrorEditor
-          text={live.md}
-          readOnly={readOnly}
-          onTextUpdate={handleMDCM}
-          articleId={articleInfos._id}
-          selectedVersion={currentVersion}
-          compareTo={compareTo}
-          currentArticleVersion={live.version}
-        />}
+        />
       </article>
     </section>
   )

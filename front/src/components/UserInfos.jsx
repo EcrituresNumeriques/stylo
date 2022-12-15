@@ -81,8 +81,6 @@ export default function UserInfos () {
       alert(`Couldn't update User: ${err}`)
     }
   }
-  const preferredEditorMonaco = useSelector(state => state.userPreferences.preferredEditorMonaco)
-  const togglePreferredEditorMonaco = useCallback(() => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'preferredEditorMonaco' }), [])
 
   return (<>
     <section className={styles.section}>
@@ -156,12 +154,6 @@ export default function UserInfos () {
         </div>
       </form>
     </section>
-
-      <section className={styles.section}>
-        <h2>Preferences</h2>
-        <input type="checkbox" id="preferred-editor-monaco" onChange={() => togglePreferredEditorMonaco()} checked={preferredEditorMonaco}/>
-        <label htmlFor="preferred-editor-monaco">Use experimental text editor</label>
-      </section>
 
     <section className={styles.section}>
       <Field label="Account email">
