@@ -2,6 +2,8 @@ name: Build and deploy Docker images
 
 on:
   push:
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v2.1.3
     branches:
     - master
     paths:
@@ -23,7 +25,26 @@ on:
 jobs:
   main:
     runs-on: ubuntu-latest
+
+    # A couple of things need to be done to perform an automated push of Stylo Docker images on GitHub
+    # 1. For each Stylo "Package" in EcrituresNumeriques, add People or Teams and set their access (Read, Write or Admin)
+    # 2. Each Package needs to be "linked" to a GitHub Repository
+    # 3. Each Actions need to explictely request Permissions (see below) so as the GITHUB_TOKEN is granted permissions to write/push in GitHub Container Registry (ghcr.io)
+    #
+    # Read more in this in-depth explainer: https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#upgrading-a-workflow-that-accesses-ghcrio
+    # And this conversation too https://github.com/orgs/community/discussions/26274#discussioncomment-3251137
+    permissions:
+      contents: read
+      packages: write
+
+    env:
+      TAG: ${{ (github.ref_type == 'tag') && github.ref_name || 'latest' }}
+
     steps:
     - uses: actions/checkout@v3
+    - uses: docker/setup-buildx-action@v2
     - run: cp stylo-example.env stylo.env
-    - run: docker-compose build
+    - run: docker compose build
+    - run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+    - run: docker compose push graphql-stylo export-stylo front-stylo
+      if: ${{ github.ref_type == 'tag' || github.ref_name == 'master' || github.ref_name == 'main' }}

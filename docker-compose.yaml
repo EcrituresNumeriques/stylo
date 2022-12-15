@@ -16,8 +16,13 @@ services:
       timeout: 5s
     ports:
       - 127.0.0.1:27017:27017
+
   graphql-stylo:
-    build: ./graphql/
+    build:
+      context: ./graphql/
+      labels:
+        - org.opencontainers.image.source=https://github.com/EcrituresNumeriques/stylo
+    image: "ghcr.io/ecrituresnumeriques/stylo-graphql:${TAG:-master}"
     container_name: "graphql-stylo"
     depends_on:
       mongodb-stylo:
@@ -29,9 +34,14 @@ services:
       - MONGO_SERVER_PORT=27017
     ports:
       - 127.0.0.1:3030:3030
+
   export-stylo:
-    build: ./export/
+    build:
+      context: ./export/
+      labels:
+        - org.opencontainers.image.source=https://github.com/EcrituresNumeriques/stylo
     container_name: "export-stylo"
+    image: "ghcr.io/ecrituresnumeriques/stylo-export:${TAG:-master}"
     depends_on:
       mongodb-stylo:
         condition: service_healthy
@@ -42,13 +52,17 @@ services:
       - MONGO_SERVER_PORT=27017
     ports:
       - 127.0.0.1:3060:3060
+
   front-stylo:
     build:
       context: ./front
       dockerfile: dockerfile
+      labels:
+        - org.opencontainers.image.source=https://github.com/EcrituresNumeriques/stylo
       args:
         - SNOWPACK_MATOMO_URL
         - SNOWPACK_MATOMO_SITE_ID
+    image: "ghcr.io/ecrituresnumeriques/stylo-front:${TAG:-master}"
     container_name: "front-stylo"
     env_file:
       - ./stylo.env
@@ -56,12 +70,14 @@ services:
       - 127.0.0.1:3000:80
     depends_on:
       - graphql-stylo
+
   export-gateway:
     image: "davidbgk/stylo-export:0.0.5"
     environment:
       - SE_PANDOC_API_BASE_URL=http://pandoc-api:8000/latest/
     ports:
       - 127.0.0.1:3080:8001
+
   pandoc-api:
     image: "davidbgk/pandoc-api:0.0.9"
     ports:
