@@ -18,6 +18,10 @@ export default defineConfig({
     outDir: 'build',
     sourcemap: Boolean(env.ENABLE_SOURCEMAPS),
     rollupOptions: {
+
+      external: [
+        '@welldone-software/why-did-you-render'
+      ],
       output: {
         manualChunks: {
           writer: ['@monaco-editor/react', '@rjsf/core']
@@ -43,6 +47,11 @@ export default defineConfig({
     APP_VERSION: JSON.stringify(version),
     'process.env': {
       NODE_ENV: env.NODE_ENV
+    }
+  },
+  resolve: {
+    alias: {
+      'react-redux': NODE_ENV === 'development' ? 'react-redux/lib' : 'react-redux'
     }
   },
   server: {
