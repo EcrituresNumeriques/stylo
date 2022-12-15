@@ -1,5 +1,3 @@
-/* global Mongo, ObjectId, db */
-
 const conn = Mongo()
 const session = conn.startSession()
 

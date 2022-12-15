@@ -77,7 +77,7 @@ export function toEntries(input) {
   }).parse()
 
   return Object.entries(entries)
-    .map(([_, entry]) => ({
+    .map(([, entry]) => ({
       title: flatten(entry.fields.title),
       type: entry.bib_type,
       key: entry.entry_key,

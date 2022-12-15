@@ -10,13 +10,14 @@
   },
   "scripts": {
     "test": "exit 0",
-    "posttest": "eslint",
+    "posttest": "eslint '**/*.js'",
     "start": "node app.js",
     "prod": "NODE_ENV=production node --heapsnapshot-signal=SIGUSR2 app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@graphql-tools/schema": "^9.0.12",
     "atob": "^2.1.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
@@ -24,10 +25,8 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.16.4",
-    "express-graphql": "^0.11.0",
     "express-session": "^1.17.1",
-    "graphql": "^15.4.0",
-    "graphql-tag": "^2.12.6",
+    "graphql-http": "^1.9.0",
     "isemail": "^3.2.0",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.11.1",
@@ -40,6 +39,7 @@
     "uid-generator": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.2.0"
+    "eslint": "^8.2.0",
+    "eslint-plugin-security": "^1.5.0"
   }
 }

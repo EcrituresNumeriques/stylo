@@ -2,7 +2,7 @@ const pkg = require('./package.json')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-const { graphqlHTTP } = require('express-graphql')
+const { createHandler } = require('graphql-http/lib/use/express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 
@@ -17,8 +17,8 @@ const pino = require('pino-http')({
   logger
 })
 
-const graphQlSchema = require('./schema')
-const graphQlResolvers = require('./resolvers/index')
+const schema = require('./schema')
+const { verifCreds } = require('./resolvers/authResolver')
 
 const { createJWTToken, populateUserFromJWT } = require('./helpers/token')
 const User = require('./models/user')
@@ -129,7 +129,7 @@ passport.use('oidc', new OidcStrategy({
 
 passport.use(new LocalStrategy({ session: false },
   function (username, password, done) {
-    graphQlResolvers.verifCreds({ username, password })
+    verifCreds({ username, password })
       .then(user => done(null, user))
       .catch(e => done(e, false))
   }
@@ -261,22 +261,10 @@ app.post('/login/local',
     res.json({ error })
   })
 
-app.post('/graphql', populateUserFromJWT({ jwtSecret }), graphqlHTTP((req, res) => ({
-  schema: graphQlSchema,
-  rootValue: graphQlResolvers,
-  graphiql: false,
-  context: { req, res }
-})))
-
-if (process.env.NODE_ENV === 'dev') {
-  app.get('/graphql', graphqlHTTP((req, res) => ({
-    schema: graphQlSchema,
-    rootValue: graphQlResolvers,
-    graphiql: true,
-    context: { req, res }
-  })))
-}
-
+app.post('/graphql', populateUserFromJWT({ jwtSecret }), createHandler({
+  schema,
+  context: async (req) => ({ user: req.raw.user }),
+}))
 
 // fix deprecation warnings: https://mongoosejs.com/docs/deprecations.html
 mongoose.set('useNewUrlParser', true)

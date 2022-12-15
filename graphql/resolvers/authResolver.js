@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs')
 
 const User = require('../models/user')
-const populateArgs = require('../helpers/populateArgs')
 const isUser = require('../policies/isUser')
 const { logger } = require('../logger')
 
@@ -28,25 +27,26 @@ async function verifCreds ({ username, password }) {
 
 module.exports = {
   verifCreds,
-  changePassword: async (args, {req}) => {
-    populateArgs(args,req)
-    isUser(args,req)
+  Mutation: {
+    async changePassword (_, args, context) {
+      isUser(args, context)
 
-    //find User
-    const user = await User.findOne({ _id: args.user })
-    if (!user) {
-      throw new Error("Could not find user");
+      //find User
+      const user = await User.findOne({ _id: args.user })
+      if (!user) {
+        throw new Error("Could not find user");
+      }
+
+      //check old password
+      if(!await bcrypt.compare(args.old, user.password)){
+        throw new Error("Old password is incorrect");
+      }
+
+      //Set new password
+      user.password = bcrypt.hashSync(args.new, 10)
+      await user.save()
+
+      return user
     }
-
-    //check old password
-    if(!await bcrypt.compare(args.old, user.password)){
-      throw new Error("Old password is incorrect");
-    }
-
-    //Set new password
-    user.password = bcrypt.hashSync(args.new, 10)
-    await user.save()
-
-    return user
-  },
+  }
 }

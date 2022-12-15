@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import CopyToClipboard from 'react-copy-to-clipboard'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import {Clipboard} from 'react-feather'
 import styles from './reference.module.scss'
