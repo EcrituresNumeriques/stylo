@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import { env } from 'process'
 import { createRequire } from 'module'
 import react from '@vitejs/plugin-react'
+import legacy from '@vitejs/plugin-legacy'
 import handlebars from 'vite-plugin-handlebars'
 
 const require = createRequire(import.meta.url)
@@ -26,6 +27,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    legacy(),
     handlebars({
       context: {
         NODE_ENV,
