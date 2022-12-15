@@ -17,7 +17,7 @@ Plus d'informations sur [la documentation](http://stylo-doc.ecrituresnumeriques.
 
 # Pré-requis
 
-- Node.js v16+
+- Node.js v18+
 - MongoDB
 - (optionnel) Pandoc, pour le [service d'export](./export)
 
@@ -29,18 +29,21 @@ brew tap mongodb/brew
 brew install pandoc mongodb-community nvm
 brew install --cask docker
 
-nvm install v16 --default
+nvm install v18 --default
 ```
 
 # Développement local
 
-L'application se lance en combinant une base de données MongoDB, et des applications Node.js (v16+).
+L'application se lance en combinant une base de données MongoDB, et des applications Node.js (v18+).
 
 **La première fois que vous installez le projet**, lancez ces commandes :
 
 ```bash
 cp stylo-example.env stylo.env
 npm clean-install
+npm --prefix front clean-install
+npm --prefix export clean-install
+npm --prefix graphql clean-install
 ```
 
 ## Avec Docker

@@ -4,7 +4,7 @@ Frontend for the site hosted at https://stylo.huma-num.fr
 
 ## Prerequisite
 
-You will need Node.js (v16+) and npm on your machine.
+You will need Node.js (v18+) and npm on your machine.
 
 ## Install
 

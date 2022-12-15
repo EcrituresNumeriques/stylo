@@ -1,5 +1,5 @@
 # build environment
-FROM node:16-alpine as app-builder
+FROM node:18-alpine as app-builder
 WORKDIR /app
 COPY package*.json ./
 ARG SNOWPACK_MATOMO_URL

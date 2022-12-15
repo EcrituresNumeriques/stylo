@@ -1,4 +1,4 @@
-FROM node:16-stretch
+FROM node:18-bullseye
 
 WORKDIR /usr/src/app
 
@@ -18,7 +18,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
               imagemagick \
               inotify-tools \
               make \
-              python-pygraphviz \
+              python3-pygraphviz \
               python3 \
               wget \
     && apt-get clean -y \
@@ -34,7 +34,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
     RUN git clone --single-branch --branch 1.4.3 https://github.com/jgm/pandocfilters.git /pandocfilters \
     && cd /pandocfilters \
-    && python setup.py install \
     && python3 setup.py install \
     && cp examples/*.py /usr/bin \
     && ls examples/*.py > /installed-pandocfilters.txt \

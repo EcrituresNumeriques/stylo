@@ -1,13 +1,13 @@
 # Reference docs: https://docs.netlify.com/configure-builds/file-based-configuration/
 [build]
   publish = "front/build"
-  command = "npm run build -w front"
+  command = "npm run build --prefix front"
 
   [build.environment]
     # System env
-    NODE_VERSION = "16"
+    NODE_VERSION = "18"
     NODE_ENV = "development"
-    NPM_FLAGS = "-w front --no-audit --no-fund"
+    NPM_FLAGS = "--prefix front --no-audit --no-fund"
 
     # App env (new Snowpack)
     SNOWPACK_PUBLIC_EXPORT_ENDPOINT = "https://stylo-dev.huma-num.fr"
@@ -21,7 +21,7 @@
 [context.production.environment]
   NODE_ENV = "production"
   ENABLE_SOURCEMAPS = "true"
-  NPM_FLAGS = "-w front --no-audit --no-fund --production=false"
+  NPM_FLAGS = "--prefix front --no-audit --no-fund --production=false"
 
 
 [[redirects]]
