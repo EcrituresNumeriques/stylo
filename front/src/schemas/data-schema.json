@@ -266,6 +266,7 @@
           "type": "string",
           "title": "ID"
         }
+      }
     },
     "prodnum": {
       "type": "string"
@@ -274,4 +275,4 @@
       "type": "string"
     }
   }
-}}
+}
