@@ -18,13 +18,13 @@
           "title": "First name"
         },
         "gender": {
-            "type": "string",
-            "title": "Gender",
-            "enumNames": ["male", "female","others"]
+          "type": "string",
+          "title": "Gender",
+          "enumNames": ["male", "female", "others"]
         },
         "affiliation": {
-            "type": "string",
-            "title": "Affiliation"
+          "type": "string",
+          "title": "Affiliation"
         },
         "orcid": {
           "type": "string",
@@ -44,38 +44,39 @@
         },
         "wikidata": {
           "type": "string",
-          "title": "Wikidata"  
+          "title": "Wikidata"
         }
       }
     },
     "biography": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "lang": {
-              "$ref": "#/definitions/lang"
-            },
-            "text_f": {
-              "type": "string"
-            }
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "$ref": "#/definitions/lang"
+          },
+          "text_f": {
+            "type": "string"
           }
         }
+      }
     },
     "dedicace": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "lang": {
-              "$ref": "#/definitions/lang"
-            },
-            "text_f": {
-              "type": "string"
-            }
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "$ref": "#/definitions/lang"
+          },
+          "text_f": {
+            "type": "string"
           }
         }
-    },
+      }
+    }
+  },
   "properties": {
     "id": {
       "type": "string"
@@ -87,8 +88,8 @@
       "type": "string"
     },
     "order": {
-        "type": "string"
-      },
+      "type": "string"
+    },
     "subtitle_f": {
       "type": "string"
     },
@@ -97,15 +98,18 @@
       "format": "date"
     },
     "numero_revue": {
-        "type": "string"
+      "type": "string"
     },
     "periode_publication": {
-        "type": "string"
+      "type": "string"
     },
     "lang": {
       "$ref": "#/definitions/lang"
     },
     "rights": {
+      "type": "string"
+    },
+    "journal_issue": {
       "type": "string"
     },
     "link-citations": {
@@ -197,20 +201,20 @@
       "type": "string"
     },
     "dossier": {
-        "type": "array",
-        "minItems": 1,
-        "maxItems": 1,
-        "items": {
-          "type": "object",
-          "properties": {
-            "title_f": {
-              "type": "string"
-            },
-            "id": {
-              "type": "string"
-            }
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "title_f": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
           }
         }
+      }
     },
     "numero": {
       "type": "array",
@@ -223,6 +227,20 @@
             "type": "string"
           },
           "id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "translatedTitle": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "$ref": "#/definitions/lang"
+          },
+          "text_f": {
             "type": "string"
           }
         }
@@ -263,6 +281,9 @@
         "$ref": "#/definitions/person"
       }
     },
+    "acknowledgements": {
+      "type": "string"
+    },
     "transcribers": {
       "type": "array",
       "items": {
@@ -281,6 +302,20 @@
     "prod": {
       "type": "string"
     },
+    "funder": {
+      "type": "object",
+      "title": "",
+      "properties": {
+        "funder_name": {
+          "type": "string",
+          "title": "Funder organisation"
+        },
+        "funder_id": {
+          "type": "string",
+          "title": "Funder ID"
+        }
+      }
+    },
     "prodnum": {
       "type": "string"
     },
@@ -288,5 +323,4 @@
       "type": "string"
     }
   }
-}
 }
