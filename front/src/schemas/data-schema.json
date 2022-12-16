@@ -257,14 +257,15 @@
     },
     "funder": {
       "type": "object",
+      "title": "",
       "properties": {
         "funder_name": {
           "type": "string",
-          "title": "Organisation name"
+          "title": "Funder organisation"
         },
         "funder_id": {
           "type": "string",
-          "title": "ID"
+          "title": "Funder ID"
         }
       }
     },

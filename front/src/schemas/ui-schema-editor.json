@@ -42,7 +42,7 @@
     },
     {
       "title": "Funder",
-      "fields": ["funder_name", "funder_id"]
+      "fields": ["funder"]
     },
     {
       "title": "Translated title",
@@ -221,15 +221,6 @@
   },
   "prod": {
     "ui:title": "Productor"
-  },
-  "funder": {
-    "ui:title": "Funder"
-  },
-  "funder_name": {
-    "ui:title": "Funder organisation"
-  },
-  "funder_id": {
-    "ui:title": "Funder ID"
   },
   "prodnum": {
     "ui:title": "Prodnum"
