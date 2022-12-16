@@ -77,20 +77,31 @@ function ObjectFieldTemplate(props) {
         .filter(
           (field) => (props.uiSchema[field] || {})['ui:widget'] !== 'hidden'
         )
-        .map(
-          (field) =>
-            props.properties.filter((element) => element.name === field)[0]
-        )
-      if (elements && elements.length > 0) {
-        return (
-          <fieldset className={styles.fieldset} key={fields.join('-')}>
-            {title && <legend>{title}</legend>}
-            {elements.map((element) => (
-              <Fragment key={element.name}>{element.content}</Fragment>
-            ))}
-          </fieldset>
-        )
-      }
+        .map((field) => {
+          const element = props.properties.find((element) => element.name === field)
+
+          if (!element) {
+            console.error('Field configuration not found for "%s" in \'ui:groups\' "%s" — part of %o', field, title, fields)
+          }
+
+          return [field, element]
+        })
+
+        if (elements && elements.length > 0) {
+          return (
+            <fieldset className={styles.fieldset} key={fields.join('-')}>
+              {title && <legend>{title}</legend>}
+              {elements.map(([field, element]) => (
+                element
+                  ? <Fragment key={field}>{element.content}</Fragment>
+                  : <p key={field} className={styles.fieldHasNoElementError}>
+                      Field <code>{field}</code> defined in <code>ui:groups</code> is not an
+                      entry of <code>data-schema.json[properties]</code> object.
+                    </p>
+              ))}
+            </fieldset>
+          )
+        }
     })
 
     return <>{groupedElements}</>
@@ -111,11 +122,11 @@ function ObjectFieldTemplate(props) {
   }
 }
 
-export default ({
+export default function SchemaForm ({
   formData: initialFormData,
   basicMode,
   onChange = () => {},
-}) => {
+}) {
   const [formData, setFormData] = useState(initialFormData)
   const [errors, setErrors] = useState({})
   const formContext = {
