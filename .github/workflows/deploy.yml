@@ -31,7 +31,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install .github/workflows/deploy-requirements.txt
+        python -m pip install -r .github/workflows/deploy-requirements.txt
 
     - name: Set Ansible config secrets
       run: |

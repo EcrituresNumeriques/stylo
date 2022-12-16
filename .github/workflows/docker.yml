@@ -11,6 +11,7 @@ on:
     - 'front/**'
     - 'export/**'
     - '.github/workflows/docker.yml'
+    - '.github/workflows/deploy*.yml'
     - 'docker-compose.yaml'
     - 'stylo-example.env'
   pull_request:
