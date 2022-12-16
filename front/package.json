@@ -63,6 +63,7 @@
     "@welldone-software/why-did-you-render": "^6.2.3",
     "eslint": "^8.2.0",
     "eslint-plugin-jest": "^25.2.4",
+    "eslint-plugin-jsonc": "^2.5.0",
     "eslint-plugin-react": "^7.27.0",
     "jest": "^29.3.1",
     "prettier": "^2.3.0"
