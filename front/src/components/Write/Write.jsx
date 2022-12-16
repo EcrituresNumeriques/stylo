@@ -14,7 +14,7 @@ import WriteRight from './WriteRight'
 import Loading from '../Loading'
 import MonacoEditor from './providers/monaco/Editor'
 
-function Write() {
+export default function Write() {
   const { version: currentVersion, id: articleId, compareTo } = useParams()
   const userId = useSelector((state) => state.activeUser._id)
   const [readOnly, setReadOnly] = useState(Boolean(currentVersion))
@@ -250,5 +250,3 @@ Write.propTypes = {
   id: PropTypes.string,
   compareTo: PropTypes.string
 }
-
-export default Write
