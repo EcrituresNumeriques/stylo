@@ -45,7 +45,36 @@ jobs:
     - uses: actions/checkout@v3
     - uses: docker/setup-buildx-action@v2
     - run: cp stylo-example.env stylo.env
-    - run: docker compose build
-    - run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-    - run: docker compose push graphql-stylo export-stylo front-stylo
-      if: ${{ github.ref_type == 'tag' || github.ref_name == 'master' || github.ref_name == 'main' }}
+
+    - name: Login to GitHub Container Registry ghcr.io
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+    # Needed to expose ACTIONS_CACHE_URL and ACTIONS_RUNTIME_URL variables
+    # Which are unreachable outside of an action context
+    - uses: crazy-max/ghaction-github-runtime@v2
+
+    # https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-from
+    # https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-to
+    # https://docs.docker.com/build/ci/github-actions/examples/#github-cache
+    # https://docs.docker.com/build/bake/compose-file/
+    # buildx bake `--cache-from=type=gha` somewhat assumes Docker Hub is the registry, even though the image name tells it otherwise
+    # hence the repeated `--set` flags
+    # it could be better by factoring `--set` options
+    - name: Build images
+      run: |
+        docker buildx bake -f docker-compose.yaml \
+          --set '*.platform=linux/amd64' \
+          --set 'graphql-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache' --set 'graphql-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache' \
+          --set 'export-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache' --set 'export-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache' \
+          --set 'front-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache' --set 'front-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache' \
+          --load graphql-stylo export-stylo front-stylo
+
+    - if: ${{ github.ref_type == 'tag' || github.ref_name == 'master' || github.ref_name == 'main' }}
+      name: Push images (on tag, or default branch)
+      run: |
+        docker buildx bake -f docker-compose.yaml \
+          --set '*.platform=linux/amd64' \
+          --set 'graphql-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache' --set 'graphql-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache' \
+          --set 'export-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache' --set 'export-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache' \
+          --set 'front-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache' --set 'front-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache' \
+          --push graphql-stylo export-stylo front-stylo
