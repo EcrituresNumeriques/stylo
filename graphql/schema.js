@@ -6,6 +6,10 @@ scalar EmailAddress
 scalar JWT
 scalar DateTime
 scalar HexColorCode
+scalar String
+scalar ID
+scalar Int
+scalar Boolean
 
 type User {
   _id: ID
@@ -90,6 +94,7 @@ type Article {
   setStylesheet(css: String): Article
   setZoteroLink(zotero: String!): Boolean
   updateWorkingVersion(content: WorkingVersionInput!): Article
+  workspaces: [Workspace!]
 }
 
 type ArticleContributor {
@@ -162,6 +167,49 @@ input UserProfileInput {
   zoteroToken: String
 }
 
+type WorkspaceArticle {
+  workspace: Workspace!
+  article: Article
+  
+  # mutation
+  remove: Workspace!
+}
+
+type WorkspaceMember {
+  workspace: Workspace!
+  user: User
+
+  # mutation
+  remove: Workspace!
+}
+
+type Workspace {
+  _id: String!
+  name: String!
+  color: HexColorCode!
+  role: String
+  bibliographyStyle: String
+  members: [User!]!
+  articles: [Article!]!
+  creator: User!
+  createdAt: String
+  updatedAt: String
+
+  article(articleId: ID!): WorkspaceArticle
+  member(userId: ID!): WorkspaceMember
+
+  # mutations
+  leave: Workspace
+  inviteMember(userId: ID!, role: String): Workspace
+  addArticle(articleId: ID!): Workspace
+}
+
+"Input to create a new workspace"
+input CreateWorkspaceInput {
+  name: String!
+  color: String!
+}
+
 type Query {
   "Fetch all users [Reserved for admins]"
   users: [User]
@@ -189,6 +237,12 @@ type Query {
 
   "Fetch instance stats"
   stats: InstanceUsageStats
+
+  "Get a given workspace"
+  workspace(workspaceId: ID!): Workspace
+
+  "Fetch workspaces for the authenticated user"
+  workspaces: [Workspace!]
 }
 
 type Mutation {
@@ -251,6 +305,12 @@ type Mutation {
 
   "Duplicate the working version of an article, with someone, or yourself"
   duplicateArticle(article: ID!, to: ID!, user: ID!): Article
+
+  "Create a new workspace"
+  createWorkspace(createWorkspaceInput: CreateWorkspaceInput!): Workspace
+
+  "Get a workspace for mutation"
+  workspace(workspaceId: ID!): Workspace
 }`
 
 module.exports = makeExecutableSchema({ typeDefs, resolvers })

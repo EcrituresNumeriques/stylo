@@ -267,10 +267,15 @@ app.post('/graphql', populateUserFromJWT({ jwtSecret }), createHandler({
    * @param {express.Request} req
    * @returns {{token: DecodedJWT, user: User}}
    */
-  context: (req) => ({
-    token: req.raw.token ?? {},
-    user: req.raw.user ?? null
-  }),
+  context: (req) => {
+    const token = req.raw.token ?? {}
+    const user = req.raw.user ?? null
+    return {
+      token,
+      user,
+      userId: user?.id.toString() || token._id
+    }
+  },
 }))
 
 // fix deprecation warnings: https://mongoosejs.com/docs/deprecations.html

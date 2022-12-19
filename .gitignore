@@ -6,3 +6,4 @@ sails/.tmp
 /stylo.env
 nodemon.dev.json
 /.idea/
+/.run/
