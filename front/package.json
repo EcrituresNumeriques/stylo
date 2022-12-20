@@ -49,6 +49,7 @@
     "react-router-dom": "^5.2.0",
     "redux": "^4.1.0",
     "sass": "^1.56.2",
+    "swr": "^2.0.0",
     "terser": "^5.16.1",
     "vite": "^4.0.1",
     "vite-plugin-handlebars": "^1.6.0"
