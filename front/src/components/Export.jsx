@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
-import { useFetch } from '../helpers/graphQL.js'
+import useStyloExport from '../hooks/stylo-export.js'
 
 import Select from './Select'
 import Loading from './Loading'
@@ -17,21 +17,23 @@ export default function Export ({ bookId, exportId, articleVersionId, articleId 
   const [toc, setToc] = useState('0')
   const [unnumbered, setUnnumbered] = useState('false')
   const [tld, setTld] = useState('false')
-  const [exportFormats = [], isLoadingExportFormats] = useFetch(`${pandocExportEndpoint}/api/available_exports`)
+  const { exportFormats, exportStyles, exportStylesPreview, isLoading } = useStyloExport(csl)
   const { host } = window.location
+
+  console.log({ csl })
 
   const exportUrl = bookId
     ? `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${exportId}&book=${bookId}&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${Boolean(toc)}&tld=${tld}&unnumbered=${unnumbered}`
     // https://export.stylo-dev.huma-num.fr/generique/export/stylo-dev.huma-num.fr/60084903587dae0019eaf0d5/60084903587dae0019eaf0d5/?with_toc=1&with_ascii=0&formats=originals&formats=images&formats=html
-    : `${pandocExportEndpoint}/generique/export/${host}/${articleId}/${articleVersionId}/?with_toc=${toc}&with_ascii=0&csl=${csl}&formats=originals&formats=images&formats=${format}`
+    : `${pandocExportEndpoint}/generique/export/${host}/${articleId}/${articleVersionId}/?with_toc=${toc}&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=images&formats=${format}`
 
   return (
     <section className={styles.export}>
       <h1>Export</h1>
 
       <form className={clsx(formStyles.form, formStyles.verticalForm)}>
-      {(articleId && isLoadingExportFormats) && <Loading inline size="24" />}
-      {(articleId && !isLoadingExportFormats) && <Select id="export-formats" label="Formats" value={format} onChange={(e) => setFormat(e.target.value)}>
+      {(articleId && !exportFormats.length) && <Loading inline size="24" />}
+      {(articleId && exportFormats.length) && <Select id="export-formats" label="Formats" value={format} onChange={(e) => setFormat(e.target.value)}>
         {exportFormats.map(({ key, name }) => <option value={key} key={key}>{ name }</option>)}
         </Select>}
         {bookId && <Select id="export-formats" label="Formats" value={format} onChange={(e) => setFormat(e.target.value)}>
@@ -46,10 +48,15 @@ export default function Export ({ bookId, exportId, articleVersionId, articleId 
           <option value="tei">TEI</option>
           <option value="icml">ICML</option>
         </Select>}
-        {articleVersionId && <Select id="export-styles" label="Bibliography style" value={csl} onChange={(e) => setCsl(e.target.value)}>
-          <option value="chicagomodified">chicagomodified</option>
+        {(articleId && !exportStyles.length) && <Loading inline size="24" />}
+        {(articleId && exportStyles.length) && <Select id="export-styles" label="Bibliography style" value={format} onChange={(e) => setCsl(e.target.value)}>
+          {exportStyles.map(({ title, name }) => <option value={name} key={name}>{ title }</option>)}
         </Select>}
-        {bookId && <Select id="export-styles" label="Bibliography style" value={csl} onChange={(e) => setCsl(e.target.value)}>
+        <div className={styles.bibliographyPreview}>
+          {isLoading && <Loading inline size="24" />}
+          {!isLoading && <div dangerouslySetInnerHTML={{ __html: exportStylesPreview }} />}
+        </div>
+        {bookId && <Select id="export-styles" label="Bibliography style" value={csl} setCsl={(e) => setCsl(e.target.value)}>
           <option value="chicagomodified">chicagomodified</option>
           <option value="lettres-et-sciences-humaines-fr"> lettres-et-sciences-humaines-fr</option>
           <option value="chicago-fullnote-bibliography-fr"> chicago-fullnote-bibliography-fr</option>
