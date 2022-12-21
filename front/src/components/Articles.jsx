@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { shallowEqual, useSelector, useDispatch } from 'react-redux'
 
 import { useGraphQL } from '../helpers/graphQL'
+import query from './Articles.graphql'
 import etv from '../helpers/eventTargetValue'
 
 import Article from './Article'
@@ -88,65 +89,6 @@ export default function Articles () {
     return pass
   }
 
-  const query = `query($user:ID!){
-    user(user:$user){
-      _id
-      displayName
-
-      tags {
-        _id
-        owner
-        description
-        color
-        name
-      }
-
-      permissions {
-        user {
-          _id
-          displayName
-        }
-      }
-    }
-
-    articles(user:$user){
-      _id
-      title
-      updatedAt
-
-      owner {
-        _id
-        displayName
-      }
-
-      contributors {
-        user {
-          _id
-          displayName
-        }
-      }
-
-      versions{
-        _id
-        version
-        revision
-        message
-      }
-
-      tags{
-        name
-        owner
-        color
-        _id
-      }
-    }
-
-    userGrantedAccess {
-      _id
-      displayName
-    }
-  }`
-
   useEffect(() => {
     if (needReload) {
       //Self invoking async function
@@ -156,7 +98,7 @@ export default function Articles () {
 
           //Need to sort by updatedAt desc
           setArticles(data.articles)
-          const tags = data.user.tags.map((t) => ({
+          const tags = data.tags.map((t) => ({
             ...t,
             selected: false,
             color: t.color || 'grey',
