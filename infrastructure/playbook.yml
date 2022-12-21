@@ -95,9 +95,10 @@
       environment:
         SNOWPACK_MATOMO_URL: "{{ matomo_url }}"
         SNOWPACK_MATOMO_SITE_ID: "{{ matomo_site_id }}"
+        SE_ALLOWED_INSTANCE_DOMAINS: "{{ site }}"
+        TAG: "latest"
         npm_config_audit: "false"
         npm_config_fund: "false"
-        TAG: "latest"
 
   handlers:
     - name: reload nginx
