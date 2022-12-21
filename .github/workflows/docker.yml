@@ -43,6 +43,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: true
     - uses: docker/setup-buildx-action@v2
     - run: cp stylo-example.env stylo.env
 
