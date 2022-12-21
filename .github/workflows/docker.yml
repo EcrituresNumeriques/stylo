@@ -67,9 +67,9 @@ jobs:
       run: |
         docker buildx bake -f docker-compose.yaml \
           --set '*.platform=linux/amd64' \
-          --set 'graphql-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache' --set 'graphql-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache' \
-          --set 'export-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache' --set 'export-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache' \
-          --set 'front-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache' --set 'front-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache' \
+          --set 'graphql-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache' --set 'graphql-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache,scope=global-graphql-stylo' \
+          --set 'export-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache' --set 'export-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache,scope=global-export-stylo' \
+          --set 'front-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache' --set 'front-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache,scope=global-front-stylo' \
           --load graphql-stylo export-stylo front-stylo
 
     - if: ${{ github.ref_type == 'tag' || github.ref_name == 'master' || github.ref_name == 'main' }}
@@ -77,7 +77,7 @@ jobs:
       run: |
         docker buildx bake -f docker-compose.yaml \
           --set '*.platform=linux/amd64' \
-          --set 'graphql-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache' --set 'graphql-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache' \
-          --set 'export-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache' --set 'export-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache' \
-          --set 'front-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache' --set 'front-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache' \
+          --set 'graphql-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache' --set 'graphql-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache,scope=global-graphql-stylo' \
+          --set 'export-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache' --set 'export-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache,scope=global-export-stylo' \
+          --set 'front-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache' --set 'front-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache,scope=global-front-stylo' \
           --push graphql-stylo export-stylo front-stylo
