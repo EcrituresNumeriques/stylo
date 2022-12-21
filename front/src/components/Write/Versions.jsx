@@ -138,7 +138,7 @@ const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
                     <Button
                       onClick={() => {
                         setExportParams({
-                          exportId: generateArticleExportId(article.title, v.version, v.revision),
+                          articleId: article._id,
                           articleVersionId: v._id
                         })
                         setExporting(true)

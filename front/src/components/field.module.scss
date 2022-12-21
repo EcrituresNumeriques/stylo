@@ -15,14 +15,14 @@
 
 .field {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: .5rem;
-  flex-grow: 1;
 
   label {
     cursor: pointer;
     flex-shrink: 0;
     margin-right: 1rem;
+    padding: calc(0.5em - 1px) 0;
     flex-basis: 10rem;
     text-align: end;
   }
@@ -32,6 +32,7 @@
 
   :global {
     .control {
+      align-self: center;
       box-sizing: border-box;
       clear: both;
       font-size: 1rem;

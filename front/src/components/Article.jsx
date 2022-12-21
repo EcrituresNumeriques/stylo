@@ -69,14 +69,14 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
           <Export
-            exportId={generateArticleExportId(article.title)}
             articleVersionId={article._id}
+            articleId={article._id}
           />
         </Modal>
       )}
 
       {sharing && (
-        <Modal cancel={() => setNeedReload() || setSharing(false)} withCloseButton={false}>
+        <Modal cancel={() => setNeedReload() || setSharing(false)}>
           <Acquintances article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)} />
         </Modal>
       )}

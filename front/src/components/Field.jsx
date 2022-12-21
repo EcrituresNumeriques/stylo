@@ -1,19 +1,21 @@
+import clsx from 'clsx'
 import React, { forwardRef } from 'react'
 import styles from './field.module.scss'
 
 const Field = forwardRef((props, forwardedRef) => {
   const type = props.type ? props.type : 'text'
   const classNames = [
-    styles.field
+    styles.field,
+    'control-field'
   ]
 
   if (props.className) {
     classNames.push(props.className)
   }
 
-  return (<div className={classNames.join(' ')} ref={forwardedRef}>
+  return (<div className={clsx(classNames)} ref={forwardedRef}>
     {props.label && <label htmlFor={props.id}>{props.label}</label>}
-    <p className={`control${props.icon ? " has-icons-left" : ""}`}>
+    <p className={clsx('control', props.icon && "has-icons-left")}>
       {props.children && {...props.children}}
       {!props.children && <>
         <input {...props} className="input" type={type} />

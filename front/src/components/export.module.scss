@@ -6,14 +6,11 @@
     font-size: 1.4rem;
     margin-bottom: 1rem;
   }
-  > form {
-    margin-bottom: 1rem;
-    select {
-      display: block;
-      width: 100%;
-    }
-  }
-  > nav {
-    float: right;
-  }
+}
+
+.bibliographyPreview {
+  background-color: $main-background-color;
+  margin-bottom: 1em;
+  min-height: 5em;
+  padding: 1em;
 }

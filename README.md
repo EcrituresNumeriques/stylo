@@ -51,7 +51,7 @@ npm --prefix graphql clean-install
 Ensuite, ainsi que le reste du temps :
 
 ```bash
-docker-compose run --detach --publish='127.0.0.1:27017:27017' mongodb-stylo
+docker compose up mongodb-stylo export-gateway pandoc-api
 npm run dev
 ```
 

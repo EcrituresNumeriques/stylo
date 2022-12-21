@@ -18,6 +18,12 @@
   }
 }
 
+.inline {
+  font-size: 1em;
+  justify-content: flex-start;
+  padding: 0;
+}
+
 @keyframes rotation {
   from {
     transform: rotate(0deg);

@@ -41,6 +41,19 @@
   }
 }
 
+.verticalForm {
+  :global {
+    .control-field {
+      flex-direction: column;
+      margin-bottom: 1rem;
+
+      label {
+        flex-basis: 1em;
+      }
+    }
+  }
+}
+
 .fieldset {
   border: none;
   margin: 0 0 0.75rem;
