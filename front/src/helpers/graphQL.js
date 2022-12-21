@@ -1,5 +1,9 @@
 import { shallowEqual, useSelector } from "react-redux"
 
+/**
+ * @typedef {import('graphql/language/ast').DocumentNode} DocumentNode
+ */
+
 async function getErrorResponse (response) {
   try {
     return await response.clone().json()
@@ -52,7 +56,12 @@ export function useGraphQL () {
   const sessionToken = useSelector(state => state.sessionToken)
   const graphqlEndpoint = useSelector(state => state.applicationConfig.graphqlEndpoint, shallowEqual)
 
-  return function callStyloGrapQLApi ({ query, variables }) {
+  /**
+   * @param {{ query: {DocumentNode|string}, variables: {Object}}}
+   */
+  return function callStyloGrapQLApi ({ query: queryOrAST, variables }) {
+    const query = 'loc' in queryOrAST ? queryOrAST.loc.source.body : queryOrAST
+
     return askGraphQL({ query, variables }, null, sessionToken, { graphqlEndpoint })
   }
 }
