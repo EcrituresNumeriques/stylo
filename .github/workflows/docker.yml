@@ -10,6 +10,7 @@ on:
     - 'graphql/**'
     - 'front/**'
     - 'export/**'
+    - 'infrastructure/**'
     - '.github/workflows/docker.yml'
     - '.github/workflows/deploy*.yml'
     - 'docker-compose.yaml'
