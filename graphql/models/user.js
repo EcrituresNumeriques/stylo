@@ -107,7 +107,12 @@ userSchema.statics.findAllArticles = async function ({ userId, fromSharedUserId 
  */
 userSchema.statics.findAccountAccessUsers = async function (userId, role = 'write') {
   return this
-    .find({ permissions: { $elemMatch: { user: userId, scope: 'user', roles: { $in: role } } } })
+    .find({
+      $or: [
+        { _id: userId },
+        { permissions: { $elemMatch: { user: userId, scope: 'user', roles: { $in: role } } } }
+      ]
+    })
     .lean()
 }
 
