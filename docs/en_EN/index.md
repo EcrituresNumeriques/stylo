@@ -2,6 +2,8 @@
 
 **📢If you encounter any difficulties with Stylo, do not hesitate to contact us [write](mailto:crc.ecrituresnumeriques@gmail.com)**.
 
+❗ Please note that there will be no videoconferences on december 22nd, 29th and january 5th during the holidays 🎄 We will be back on january 12th ❗
+
 A helpdesk is open every Thursday from 11am to 12pm (Montreal time) to respond to questions, improve the use of Stylo, share user experience or any concern or comment : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Reach the helpdesk by videoconference</a>
 
 ---
