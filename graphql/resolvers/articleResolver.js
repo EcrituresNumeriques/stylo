@@ -332,9 +332,15 @@ module.exports = {
     },
 
     async addTags (article, { tags }) {
-      await article.addTag(...tags)
+      await article.addTags(...tags)
 
       return article.tags
-    }
+    },
+
+    async removeTags (article, { tags }) {
+      await article.removeTags(...tags)
+
+      return article.tags
+    },
   }
 }
