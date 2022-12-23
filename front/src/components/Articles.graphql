@@ -89,3 +89,15 @@ query addTags ($article: ID!, $user: ID!, $tags: [ID]!) {
     }
   }
 }
+
+query removeTags ($article: ID!, $user: ID!, $tags: [ID]!) {
+  user (user: $user) {
+    article (id: $article) {
+      removeTags (tags: $tags) {
+        _id
+        name
+        color
+      }
+    }
+  }
+}
