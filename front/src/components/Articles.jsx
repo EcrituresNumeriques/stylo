@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { shallowEqual, useSelector, useDispatch } from 'react-redux'
 
 import { useGraphQL } from '../helpers/graphQL'
-import query from './Articles.graphql'
+import { getUserArticles as query } from './Articles.graphql'
 import etv from '../helpers/eventTargetValue'
 
 import Article from './Article'

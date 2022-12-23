@@ -1,5 +1,5 @@
-query ($user: ID!) {
-  user (user: $user) {
+query getUserArticles($user: ID!) {
+  user(user: $user) {
     _id
     displayName
 
@@ -11,7 +11,7 @@ query ($user: ID!) {
     }
   }
 
-  tags (user: $user) {
+  tags(user: $user) {
     _id
     owner
     description
@@ -19,7 +19,7 @@ query ($user: ID!) {
     name
   }
 
-  articles (user: $user) {
+  articles(user: $user) {
     _id
     title
     updatedAt
@@ -36,14 +36,14 @@ query ($user: ID!) {
       }
     }
 
-    versions{
+    versions {
       _id
       version
       revision
       message
     }
 
-    tags{
+    tags {
       name
       owner
       color

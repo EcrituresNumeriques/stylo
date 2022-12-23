@@ -1,4 +1,5 @@
 import { shallowEqual, useSelector } from "react-redux"
+import { print } from 'graphql/language/printer'
 
 /**
  * @typedef {import('graphql/language/ast').DocumentNode} DocumentNode
@@ -60,7 +61,7 @@ export function useGraphQL () {
    * @param {{ query: {DocumentNode|string}, variables: {Object}}}
    */
   return function callStyloGrapQLApi ({ query: queryOrAST, variables }) {
-    const query = 'loc' in queryOrAST ? queryOrAST.loc.source.body : queryOrAST
+    const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
 
     return askGraphQL({ query, variables }, null, sessionToken, { graphqlEndpoint })
   }
