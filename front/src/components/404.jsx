@@ -4,7 +4,7 @@ import App from '../layouts/App'
 
 import styles from '../components/Write/write.module.scss'
 
-export default () => {
+export default function PageNotFound () {
   const location = useLocation()
   return (
     <App layout="fullPage">
