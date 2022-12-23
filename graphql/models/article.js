@@ -117,5 +117,27 @@ articleSchema.statics.findAndPopulateOneByOwners = function findAndPopulateOneBy
     .populate({ path: 'contributors', populate: { path: 'user' } })
 }
 
+articleSchema.pre('remove', async function () {
+  await this.populate('owner').execPopulate()
+
+  const session = await this.db.startSession()
+
+  await session.withTransaction(async () => {
+    // remove article from nested owner articles
+    this.owner.articles.pull(this.id)
+    await this.owner.save()
+
+    // remove articles from tags owned by this user
+    await this.model('Tag').updateMany(
+      { owner: this.owner.id },
+      { $pull: { articles: this.id } },
+      { safe: true }
+    )
+  })
+
+  await session.commitTransaction()
+  return session.endSession()
+})
+
 module.exports = mongoose.model('Article', articleSchema);
 module.exports.schema = articleSchema;

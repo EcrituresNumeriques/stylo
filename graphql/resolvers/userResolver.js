@@ -204,5 +204,11 @@ module.exports = {
 
       return user.articles
     },
+
+    async article (user, { id: _id }) {
+      await user.populate({ path: 'articles', match: { _id }}).execPopulate()
+
+      return user.articles[0]
+    }
   },
 }
