@@ -153,7 +153,7 @@ export default function Articles () {
       <div className={styles.actions}>
         {creatingArticle && (
           <CreateArticle
-            currentUser={currentUser}
+            currentUserId={currentUserId}
             tags={tags}
             cancel={() => setCreatingArticle(false)}
             triggerReload={() => {

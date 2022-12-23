@@ -64,3 +64,28 @@ query deleteArticle ($user: ID!, $article: ID!) {
     }
   }
 }
+
+mutation createArticle ($title: String!, $user: ID!, $tags: [ID]!) {
+  createArticle(title: $title, user:$user) {
+    _id
+    title
+
+    addTags (tags: $tags) {
+      _id
+      name
+      color
+    }
+  }
+}
+
+query addTags ($article: ID!, $user: ID!, $tags: [ID]!) {
+  user (user: $user) {
+    article (id: $article) {
+      addTags (tags: $tags) {
+        _id
+        name
+        color
+      }
+    }
+  }
+}
