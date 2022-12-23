@@ -126,12 +126,12 @@ const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
                   )}
                   <li>
                     <Link
-                      to={`/article/${article._id}/version/${v._id}/preview`}
+                      to={`/article/${article._id}/version/${v._id}/annotate`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
                     >
-                      Preview
+                      Annotate
                     </Link>
                   </li>
                   <li>

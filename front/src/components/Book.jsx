@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Check, ChevronDown, ChevronRight, Edit3, Eye, Printer } from 'react-feather'
+import { Check, ChevronDown, ChevronRight, Edit3, MessageSquare, Printer } from 'react-feather'
 import { useSelector } from 'react-redux'
 
 import Modal from './Modal'
@@ -84,9 +84,9 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
           className={[buttonStyles.icon, buttonStyles.button, articles.length === 0 ? buttonStyles.isDisabled : ''].filter(d => d).join(' ')}
           title="Preview"
           target="_blank"
-          to={`/books/${_id}/preview`}
+          to={`/books/${_id}/annotate`}
         >
-          <Eye />
+          <MessageSquare />
         </Link>
         <Button className={buttonStyles.icon} title="Export" onClick={() => setExporting(true)}>
           <Printer />

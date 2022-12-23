@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
+import clsx from 'clsx'
 
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
@@ -15,7 +16,7 @@ import etv from '../helpers/eventTargetValue'
 
 import Field from './Field'
 import Button from './Button'
-import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Share2, Trash } from 'react-feather'
+import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, MessageSquare, Printer, Share2, Trash } from 'react-feather'
 
 import { duplicateArticle } from './Acquintances.graphql'
 import { renameArticle } from './Article.graphql'
@@ -116,29 +117,29 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
           <Trash />
         </Button>}
 
-        <Link title="Preview" target="_blank" className={[buttonStyles.button, buttonStyles.icon].join(' ')} to={`/article/${article._id}/preview`}>
-          <Eye />
-        </Link>
-
-        {<Button title="Share" icon={true} onClick={() => setSharing(true)}>
-          <Share2 />
-        </Button>}
-
         <Button title="Duplicate" icon={true} onClick={() => fork()}>
           <Copy />
         </Button>
 
-        <Button title="Export" icon={true} onClick={() => setExporting(true)}>
+        <Link title="Annotate with Stylo users and other people (open a new window)" target="_blank" className={clsx(buttonStyles.button, buttonStyles.icon)} to={`/article/${article._id}/annotate`}>
+          <MessageSquare />
+        </Link>
+
+        {<Button title="Share with Stylo users" icon={true} onClick={() => setSharing(true)}>
+          <Share2 />
+        </Button>}
+
+        <Button title="Download a printable version" icon={true} onClick={() => setExporting(true)}>
           <Printer />
         </Button>
 
-        <Link title="Edit" className={[buttonStyles.button, buttonStyles.primary].join(' ')} to={`/article/${article._id}`}>
+        <Link title="Edit article" className={clsx(buttonStyles.button, buttonStyles.primary)} to={`/article/${article._id}`}>
           <Edit3 />
         </Link>
       </aside>
 
       {deleting && (
-        <div className={[styles.alert, styles.deleteArticle].join(' ')}>
+        <div className={clsx(styles.alert, styles.deleteArticle)}>
           <p>
             You are trying to delete this article, double click on the
             &quot;delete button&quot; below to proceed

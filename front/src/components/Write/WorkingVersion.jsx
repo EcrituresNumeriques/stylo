@@ -90,12 +90,12 @@ const WorkingVersion = ({ articleInfos, workingArticle, readOnly }) => {
       <ul className={styles.actions}>
         <li>
           <Link
-            to={`/article/${articleInfos._id}/preview`}
+            to={`/article/${articleInfos._id}/annotate`}
             target="_blank"
             rel="noopener noreferrer"
             className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
           >
-            Preview
+            Annotate
           </Link>
         </li>
         <li>
