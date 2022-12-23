@@ -2,7 +2,6 @@ const defaultsData = require('../data/defaultsData')
 
 const Article = require('../models/article');
 const User = require('../models/user');
-const Tag = require('../models/tag');
 
 const isUser = require('../policies/isUser')
 const { ApiError } = require('../helpers/errors');
@@ -237,41 +236,6 @@ module.exports = {
       fetchedArticle.zoteroLink = args.zotero
       return fetchedArticle.save({ timestamps: false })
     },
-    /**
-     * Delete an article as its owner (logged in user)
-     * For now, a shared user cannot delete another owner's article
-     *
-     * @param {*} args
-     * @param {*} param1
-     * @returns
-     */
-    async deleteArticle (_, args, context) {
-      isUser(args, context)
-
-      //Fetch article
-      const { article: _id, user } = args
-      const fetchedArticle = await Article.findOneByOwner({ _id, user })
-      if(!fetchedArticle){throw new Error('Unable to find article')}
-
-      //fetch User
-      const fetchedUser = await User.findOne({_id: args.user})
-      if(!fetchedUser){throw new Error('Unable to find user')}
-
-
-      //if all good remove user from owners
-      fetchedArticle.owner = null
-      fetchedArticle.contributors = []
-      fetchedUser.articles.pull(args.article)
-
-      //Remove from all of user's tag
-      await Tag.updateMany({owner:fetchedUser.id},{$pull: {articles:fetchedArticle.id}},{safe:true})
-
-      //save
-      const returnedArticle = await fetchedArticle.save()
-      await fetchedUser.save()
-
-      return returnedArticle
-    },
   },
 
   Query: {
@@ -353,6 +317,18 @@ module.exports = {
         .execPopulate()
 
       return article.versions
+    },
+
+    /**
+     * Delete an article a user has access to
+     *
+     * @param {import('mongoose').Document} article
+     * @returns
+     */
+    async delete (article) {
+      await article.remove()
+
+      return article.$isDeleted()
     }
   }
 }

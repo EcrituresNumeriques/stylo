@@ -20,6 +20,8 @@ type User {
   createdAt: String
   updatedAt: String
   apiToken: String
+
+  article(id: ID!): Article
 }
 
 type UserPermission {
@@ -72,6 +74,8 @@ type Article {
   tags(limit: Int, page: Int): [Tag!]!
   createdAt: String
   updatedAt: String
+
+  delete(dryRun: Boolean): Boolean
 }
 
 type ArticleContributor {
@@ -210,9 +214,6 @@ type Mutation {
 
   "Change the zoteroLink to an article"
   zoteroArticle(article: ID!, zotero: String!, user: ID!): Article
-
-  "Remove from owners"
-  deleteArticle(article: ID!, user: ID!): Article
 }`
 
 module.exports = makeExecutableSchema({ typeDefs, resolvers })
