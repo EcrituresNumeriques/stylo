@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 
 import styles from './articles.module.scss'
@@ -36,7 +36,13 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
 
   const contributors = article.contributors.filter(c => c.user._id !== article.owner._id)
 
-  const fork = async () => {
+  const toggleExpansion = useCallback((event) => {
+    if (!event.key || [' ', 'Enter'].includes(event.key)) {
+      setExpanded(!expanded)
+    }
+  }, [expanded])
+
+  const fork = useCallback(async () => {
     try {
       await runQuery({
         query: duplicateArticle,
@@ -47,9 +53,9 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
       console.error(`Unable to duplicate article ${article._id} with myself (userId: ${activeUser._id})`, err)
       alert(err)
     }
-  }
+  }, [])
 
-  const rename = async (e) => {
+  const rename = useCallback(async (e) => {
     e.preventDefault()
     const variables = {
       user: activeUser._id,
@@ -62,16 +68,13 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
     if (updateTitleHandler) {
       updateTitleHandler(article._id, tempTitle)
     }
-  }
+  }, [article.title])
 
   return (
     <article className={styles.article}>
       {exporting && (
         <Modal cancel={() => setExporting(false)}>
-          <Export
-            articleVersionId={article._id}
-            articleId={article._id}
-          />
+          <Export articleVersionId={article._id} articleId={article._id} />
         </Modal>
       )}
 
@@ -82,8 +85,10 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
       )}
 
       {!renaming && (
-        <h1 className={styles.title} onClick={() => setExpanded(!expanded)}>
-          {expanded ? <ChevronDown/> : <ChevronRight/>}
+        <h1 className={styles.title} onClick={toggleExpansion}>
+          <span tabIndex={0} onKeyUp={toggleExpansion}>
+            {expanded ? <ChevronDown/> : <ChevronRight/>}
+          </span>
           {title}
 
           <Button title="Edit" icon={true} className={styles.editTitleButton} onClick={(evt) => evt.stopPropagation() || setRenaming(true)}>
