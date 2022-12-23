@@ -329,6 +329,12 @@ module.exports = {
       await article.remove()
 
       return article.$isDeleted()
+    },
+
+    async addTags (article, { tags }) {
+      await article.addTag(...tags)
+
+      return article.tags
     }
   }
 }

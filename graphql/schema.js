@@ -76,6 +76,7 @@ type Article {
   updatedAt: String
 
   delete(dryRun: Boolean): Boolean
+  addTags(tags: [ID]!): [Tag]
 }
 
 type ArticleContributor {
@@ -160,7 +161,7 @@ type Mutation {
   removeCredential(email: String!, user: ID!): User
 
   "Create article for specified user [need to be authentificated as specified user]"
-  createArticle(title: String!, user: ID!): Article
+  createArticle(title: String!, user: ID!, tags: [ID]): Article
 
   "Update article bibliography, content or metadata [need to be authentificated as specified user]"
   updateWorkingVersion(

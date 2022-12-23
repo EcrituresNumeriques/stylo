@@ -117,6 +117,23 @@ articleSchema.statics.findAndPopulateOneByOwners = function findAndPopulateOneBy
     .populate({ path: 'contributors', populate: { path: 'user' } })
 }
 
+articleSchema.methods.addTag = async function addTag (...tagIds) {
+  // Step 1 : add tags to article
+  this.tags.push(...tagIds)
+
+  // Step 2 : populate article tags
+  await this.populate('tags').execPopulate()
+
+  // now, add the article reference in these tags
+  await this.model('Tag').updateMany(
+    { _id: { $in: tagIds } },
+    { $push: { articles: this.id } },
+    { safe: true }
+  )
+
+  return this.save()
+}
+
 articleSchema.pre('remove', async function () {
   await this.populate('owner').execPopulate()
 
