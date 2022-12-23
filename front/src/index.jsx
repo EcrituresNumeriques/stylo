@@ -98,7 +98,7 @@ render(
             <PrivateRoute path="/books" exact>
               <Books />
             </PrivateRoute>
-            <Route path={`/books/:bookId/preview`}>
+            <Route path={`/books/:bookId/annotate`}>
               <ArticlePreview />
             </Route>
             <PrivateRoute path="/articles" exact>
@@ -110,10 +110,10 @@ render(
             <PrivateRoute path={`/article/:id/compare/:compareTo`}>
               <Write />
             </PrivateRoute>
-            <Route path={`/article/:id/preview`}>
+            <Route path={`/article/:id/annotate`}>
               <ArticlePreview />
             </Route>
-            <Route path={`/article/:id/version/:version/preview`}>
+            <Route path={`/article/:id/version/:version/annotate`}>
               <ArticlePreview />
             </Route>
             <PrivateRoute path={`/article/:id/version/:version/compare/:compareTo`}>
