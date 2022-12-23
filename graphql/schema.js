@@ -196,12 +196,6 @@ type Mutation {
   "Delete tag and all articles carrying it"
   deleteTag(tag: ID!, user: ID!): User
 
-  "Add article to a specified tag [Need to be authenficated as owner of the tag]"
-  addToTag(article: ID!, tag: ID!, user: ID!): Article
-
-  "Remove article from a specified tag [Need to be authenficated as owner of the tag]"
-  removeFromTag(article: ID!, tag: ID!, user: ID!): Article
-
   "add a user to an article"
   shareArticle(article: ID!, to: ID!, user: ID!): Article
 
