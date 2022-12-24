@@ -136,6 +136,10 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
         <Link title="Edit article" className={clsx(buttonStyles.button, buttonStyles.primary)} to={`/article/${article._id}`}>
           <Edit3 />
         </Link>
+
+        <Link title="Preview article" className={buttonStyles.button} to={`/article/${article._id}/preview`}>
+          <Eye />
+        </Link>
       </aside>
 
       {deleting && (

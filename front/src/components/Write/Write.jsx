@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import { Switch, Route } from 'react-router-dom'
 import { batch, useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -12,6 +13,7 @@ import { useGraphQL } from '../../helpers/graphQL'
 import WriteLeft from './WriteLeft'
 import WriteRight from './WriteRight'
 import WorkingVersion from './WorkingVersion'
+import Preview from './Preview'
 import Loading from '../Loading'
 import MonacoEditor from './providers/monaco/Editor'
 
@@ -185,12 +187,14 @@ export default function Write() {
           updatedAt: article.updatedAt,
         })
 
-        const { md, bib } = currentArticle
+        const { md, bib, yaml } = currentArticle
 
         batch(() => {
           dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: article.versions })
           dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
           dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
+          dispatch({ type: 'SET_WORKING_ARTICLE_TEXT', text: md })
+          dispatch({ type: 'SET_WORKING_ARTICLE_METADATA', metadata: yaml })
           dispatch({ type: 'SET_WORKING_ARTICLE_BIBLIOGRAPHY', bibliography: bib })
           dispatch({
             type: 'SET_WORKING_ARTICLE_UPDATED_AT',
@@ -231,18 +235,28 @@ export default function Write() {
         handleYaml={handleYaml}
         readOnly={readOnly}
       />
-      <article>
-        <WorkingVersion articleInfos={articleInfos} selectedVersion={currentVersion} />
-        <MonacoEditor
-          text={live.md}
-          readOnly={readOnly}
-          onTextUpdate={handleMDCM}
-          articleId={articleInfos._id}
-          selectedVersion={currentVersion}
-          compareTo={compareTo}
-          currentArticleVersion={live.version}
-        />
+
+      <article className={styles.article}>
+        <WorkingVersion articleInfos={articleInfos} selectedVersion={currentVersion} readOnly={readOnly} />
+
+        <Switch>
+          <Route path="*/preview" exact>
+            <Preview />
+          </Route>
+          <Route path="*">
+            <MonacoEditor
+              text={live.md}
+              readOnly={readOnly}
+              onTextUpdate={handleMDCM}
+              articleId={articleInfos._id}
+              selectedVersion={currentVersion}
+              compareTo={compareTo}
+              currentArticleVersion={live.version} />
+          </Route>
+        </Switch>
       </article>
+
+
     </section>
   )
 }
