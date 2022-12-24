@@ -21,6 +21,7 @@ import { linkToZotero as query } from '../../Article.graphql'
 export default function Bibliographe({ article, cancel }) {
   const [selector, setSelector] = useState('zotero')
   const [isSaving, setSaving] = useState(false)
+  const workingArticleBibliography = useSelector(state => state.workingArticle.bibliography, shallowEqual)
   const [bib, setBib] = useState(workingArticleBibliography.text)
   const [bibTeXEntries, setBibTeXEntries] = useState(workingArticleBibliography.entries)
   const [addCitation, setAddCitation] = useState('')
@@ -28,7 +29,6 @@ export default function Bibliographe({ article, cancel }) {
   const [rawBibTeXValidationResult, setRawBibTeXValidationResult] = useState({ valid: false })
   const [zoteroLink, setZoteroLink] = useState(article.zoteroLink || '')
   const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)
-  const workingArticleBibliography = useSelector(state => state.workingArticle.bibliography, shallowEqual)
   const backendEndpoint = useSelector(state => state.applicationConfig.backendEndpoint)
   const zoteroToken = useSelector(state => state.activeUser.zoteroToken)
   const userId = useSelector(state => state.activeUser._id)
