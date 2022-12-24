@@ -9,6 +9,7 @@ import debounce from 'lodash.debounce'
 import styles from './write.module.scss'
 
 import { useGraphQL } from '../../helpers/graphQL'
+import { getEditableArticle as query } from './Write.graphql'
 
 import WriteLeft from './WriteLeft'
 import WriteRight from './WriteRight'
@@ -69,55 +70,6 @@ export default function Write() {
     []
   )
 
-  const fullQuery = `query($article:ID!, $hasVersion: Boolean!, $version:ID!) {
-    article(article:$article) {
-      _id
-      title
-      zoteroLink
-      updatedAt
-
-      owner {
-        displayName
-      }
-
-      contributors {
-        user {
-          displayName
-        }
-      }
-
-      versions {
-        _id
-        version
-        revision
-        message
-        updatedAt
-        owner {
-          displayName
-        }
-      }
-
-      workingVersion @skip (if: $hasVersion) {
-        md
-        bib
-        yaml
-      }
-    }
-
-    version(version: $version) @include (if: $hasVersion) {
-      _id
-      md
-      bib
-      yaml
-      message
-      revision
-      version
-      owner{
-        displayName
-      }
-    }
-  }`
-
   const variables = {
     user: userId,
     article: articleId,
@@ -153,7 +105,7 @@ export default function Write() {
     setIsLoading(true)
     setReadOnly(Boolean(currentVersion))
     ;(async () => {
-      const data = await runQuery({ query: fullQuery, variables })
+      const data = await runQuery({ query, variables })
         .then(({ version, article }) => ({ version, article }))
         .catch((error) => {
           setError(error)
