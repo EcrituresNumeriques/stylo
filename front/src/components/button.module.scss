@@ -81,6 +81,8 @@ a.button:not(.primary), a.icon:not(.primary) {
 }
 
 .primary {
+  @extend .button;
+
   background-color: #000;
   color: #fff;
   border: 1px solid #000;
@@ -99,6 +101,8 @@ a.button:not(.primary), a.icon:not(.primary) {
 }
 
 .secondary {
+  @extend .button;
+
   background-color: #fff;
   color: #000;
   border: 1px solid #000;
@@ -115,6 +119,8 @@ a.button:not(.primary), a.icon:not(.primary) {
 }
 
 .tertiary {
+  @extend .button;
+
   background-color: transparent;
   text-decoration: underline;
 
@@ -129,7 +135,14 @@ a.button:not(.primary), a.icon:not(.primary) {
   pointer-events: none;
 }
 
+.primaryDisabled {
+  @extend .primary;
+  @extend .isDisabled;
+}
+
 .icon {
+  @extend .button;
+
   background: none;
   border: none;
   transition: color 1s ease, background 1s ease;
