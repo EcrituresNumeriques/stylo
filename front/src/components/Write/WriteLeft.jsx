@@ -8,7 +8,7 @@ import Sommaire from './Sommaire'
 import Versions from './Versions'
 import WorkingVersion from './WorkingVersion'
 
-function WriteLeft ({ articleInfos, readOnly, compareTo, selectedVersion }) {
+export default function WriteLeft ({ articleInfos, readOnly, compareTo, selectedVersion }) {
   const expanded = useSelector(state => state.articlePreferences.expandSidebarLeft)
   const articleStats = useSelector(state => state.articleStats, shallowEqual)
   const dispatch = useDispatch()
@@ -16,15 +16,11 @@ function WriteLeft ({ articleInfos, readOnly, compareTo, selectedVersion }) {
 
   return (
     <nav className={`${expanded ? styles.expandleft : styles.retractleft}`}>
-      <nav
-        onClick={toggleExpand}
-        className={expanded ? styles.close : styles.open}
-      >
+      <nav onClick={toggleExpand} className={expanded ? styles.close : styles.open}>
         {expanded ? 'close' : 'open'}
       </nav>
       {expanded && (
         <div>
-          <WorkingVersion articleInfos={articleInfos} readOnly={readOnly} />
           <Versions
             article={articleInfos}
             selectedVersion={selectedVersion}
@@ -39,5 +35,3 @@ function WriteLeft ({ articleInfos, readOnly, compareTo, selectedVersion }) {
     </nav>
   )
 }
-
-export default WriteLeft
