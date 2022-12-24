@@ -115,15 +115,15 @@ render(
               <ArticlePreview />
             </Route>
             {/* Write and Compare */}
-            <PrivateRoute path={[`/article/:id/compare/:compareTo`, `/article/:id/version/:version/compare/:compareTo`]}>
+            <PrivateRoute path={[`/article/:id/compare/:compareTo`, `/article/:id/version/:version/compare/:compareTo`]} exact>
               <Write />
             </PrivateRoute>
             {/* Write with a given version */}
-            <PrivateRoute path={`/article/:id/version/:version`}>
+            <PrivateRoute path={`/article/:id/version/:version`} exact>
               <Write />
             </PrivateRoute>
             {/* Write and/or Preview */}
-            <PrivateRoute path={[`/article/:id`, `/article/:id/preview`]}>
+            <PrivateRoute path={[`/article/:id/preview`, `/article/:id`]} exact>
               <Write />
             </PrivateRoute>
             <Route exact path="/privacy">

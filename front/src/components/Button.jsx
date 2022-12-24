@@ -4,7 +4,6 @@ import styles from './button.module.scss'
 
 export default function Button (props) {
   const classNames = clsx({
-    [styles.button]: true,
     [styles.primary]: props.primary,
     [styles.secondary]: props.secondary || (!props.primary && !props.tertiary),
     [styles.tertiary]: props.tertiary,
