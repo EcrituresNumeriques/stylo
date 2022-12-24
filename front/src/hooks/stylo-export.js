@@ -28,3 +28,17 @@ export default function useStyloExport (bibStyle) {
 
   return { exportFormats, exportStyles, exportStylesPreview, isLoading }
 }
+
+export function useStyloExportPreview ({ md_content, bib_content, yaml_content }) {
+  const pandocExportEndpoint = useSelector(state => state.applicationConfig.pandocExportEndpoint)
+  const previewArgs = {
+    bibliography_style: 'chicagomodified',
+    md_content,
+    yaml_content,
+    bib_content
+  }
+
+  const { data: html, isLoading } = useSWR([`${pandocExportEndpoint}/api/article_preview`, previewArgs], postFetcher, { fallbackData: '' })
+
+  return { html, isLoading }
+}
