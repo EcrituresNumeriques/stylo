@@ -11,6 +11,7 @@ import { useGraphQL } from '../../helpers/graphQL'
 
 import WriteLeft from './WriteLeft'
 import WriteRight from './WriteRight'
+import WorkingVersion from './WorkingVersion'
 import Loading from '../Loading'
 import MonacoEditor from './providers/monaco/Editor'
 
@@ -231,6 +232,7 @@ export default function Write() {
         readOnly={readOnly}
       />
       <article>
+        <WorkingVersion articleInfos={articleInfos} selectedVersion={currentVersion} />
         <MonacoEditor
           text={live.md}
           readOnly={readOnly}
