@@ -4,3 +4,52 @@ query compareVersion ($to: ID!) {
     md
   }
 }
+
+query getEditableArticle ($article: ID!, $hasVersion: Boolean!, $version: ID!) {
+  article(article: $article) {
+    _id
+    title
+    zoteroLink
+    updatedAt
+
+    owner {
+      displayName
+    }
+
+    contributors {
+      user {
+        displayName
+      }
+    }
+
+    versions {
+      _id
+      version
+      revision
+      message
+      updatedAt
+      owner {
+        displayName
+      }
+    }
+
+    workingVersion @skip(if: $hasVersion) {
+      md
+      bib
+      yaml
+    }
+  }
+
+  version(version: $version) @include(if: $hasVersion) {
+    _id
+    md
+    bib
+    yaml
+    message
+    revision
+    version
+    owner {
+      displayName
+    }
+  }
+}
