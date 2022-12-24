@@ -133,11 +133,11 @@ const createNewArticleVersion = store => {
         return next(action)
       }
       if (action.type === 'UPDATE_WORKING_ARTICLE_BIBLIOGRAPHY') {
-        const { activeUser, applicationConfig } = store.getState()
+        const { activeUser, sessionToken, applicationConfig } = store.getState()
         const userId = activeUser._id
         const { articleId, bibliography } = action
         try {
-          const { updateWorkingVersion } = await new ArticleService(userId, articleId, applicationConfig).saveBibliography(bibliography)
+          const { updateWorkingVersion } = await new ArticleService(userId, articleId, sessionToken, applicationConfig).saveBibliography(bibliography)
           store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saved' })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_BIBLIOGRAPHY', bibliography })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
