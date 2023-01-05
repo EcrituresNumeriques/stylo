@@ -1,0 +1,108 @@
+mutation addAcquintance($user: ID!, $email: String!) {
+  addAcquintance(email: $email, user: $user) {
+    acquintances {
+      _id
+      displayName
+      email
+    }
+  }
+}
+
+mutation shareArticle($user: ID!, $article: ID!, $to: ID!) {
+  shareArticle(article: $article, to: $to, user: $user) {
+    _id
+    contributors {
+      roles
+      user {
+        _id
+        displayName
+      }
+    }
+  }
+}
+
+mutation unshareArticle($user: ID!, $article: ID!, $to: ID!) {
+  unshareArticle(article: $article, to: $to, user: $user) {
+    _id
+    contributors {
+      roles
+      user {
+        _id
+        displayName
+      }
+    }
+  }
+}
+
+mutation duplicateArticle($user: ID!, $article: ID!, $to: ID!) {
+  duplicateArticle(article: $article, to: $to, user: $user) {
+    _id
+  }
+}
+
+query getAcquintances($user: ID!) {
+  user(user: $user) {
+    acquintances {
+      _id
+      displayName
+      email
+    }
+  }
+}
+
+query getAcquintancesPermissions($user: ID!) {
+  user(user: $user) {
+    permissions {
+      scope
+      user {
+        _id
+        displayName
+        email
+      }
+      roles
+    }
+    acquintances {
+      _id
+      displayName
+      email
+    }
+  }
+}
+
+mutation grantAccountAccess($from: ID!, $to: ID!) {
+  grantAccountAccess(user: $from, to: $to) {
+    permissions {
+      scope
+      user {
+        _id
+        displayName
+        email
+      }
+      roles
+    }
+    acquintances {
+      _id
+      displayName
+      email
+    }
+  }
+}
+
+mutation revokeAccountAccess($from: ID!, $to: ID!) {
+  revokeAccountAccess(user: $from, to: $to) {
+    permissions {
+      scope
+      user {
+        _id
+        displayName
+        email
+      }
+      roles
+    }
+    acquintances {
+      _id
+      displayName
+      email
+    }
+  }
+}

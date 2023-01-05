@@ -74,7 +74,8 @@ module.exports = {
 
       //If all clear, add to acquintance
       thisUser.acquintances.push(thisAcquintance)
-      return thisUser.save()
+      await thisUser.save()
+      return thisUser.populate('acquintances').execPopulate()
     },
     async grantAccountAccess (_, args, { user }) {
       isUser(args, { user })
