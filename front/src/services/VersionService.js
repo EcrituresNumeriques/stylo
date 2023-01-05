@@ -1,24 +1,6 @@
-import askGraphQL from "../helpers/graphQL"
+import { runQuery } from '../helpers/graphQL.js'
 
-const createNewArticleVersionQuery = `mutation($userId: ID!, $articleId: ID!, $major: Boolean!, $message: String) {
-  saveVersion(
-    version: {
-      article: $articleId,
-      major: $major,
-      message: $message
-    },
-    user: $userId
-  ) {
-    _id
-    version
-    revision
-    message
-    updatedAt
-    owner {
-      displayName
-    }
-  }
-}`
+import { saveVersion } from './ArticleService.graphql'
 
 export default class VersionService {
 
@@ -30,20 +12,16 @@ export default class VersionService {
   }
 
   async createNewArticleVersion (major = false, message = '') {
-    console.log(`Creating a new version on article id: ${this.articleId} (userId: ${this.userId})...`)
-    return await askGraphQL(
-      {
-        query: createNewArticleVersionQuery,
-        variables: {
-          userId: this.userId,
-          articleId: this.articleId,
-          major,
-          message
-        }
-      },
-      `Creating a new version on article id: ${this.articleId} (userId: ${this.userId})`,
-      this.sessionToken,
-      this.applicationConfig
-    )
+    const { sessionToken, graphqlEndpoint } = this
+
+    return await runQuery({ sessionToken, graphqlEndpoint }, {
+      query: saveVersion,
+      variables: {
+        userId: this.userId,
+        articleId: this.articleId,
+        major,
+        message
+      }
+    })
   }
 }
