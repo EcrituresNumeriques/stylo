@@ -3,11 +3,14 @@ const { Article, Query: ArticleQuery, Mutation: ArticleMutation } = require('./a
 const { Tag, Query: TagQuery, Mutation: TagMutation } = require('./tagResolver')
 const { Version, Query: VersionQuery, Mutation: VersionMutation } = require('./versionResolver')
 const { Mutation: AuthMutation } = require('./authResolver')
-const { EmailAddressResolver } = require('graphql-scalars')
+const { EmailAddressResolver, JWTResolver, HexColorCodeResolver, DateTimeResolver } = require('graphql-scalars')
 
 module.exports = {
   // Custom Scalars
   EmailAddress: EmailAddressResolver,
+  JWT: JWTResolver,
+  HexColorCode: HexColorCodeResolver,
+  DateTime: DateTimeResolver,
 
   // Types and Nested queries/mutations
   User,
