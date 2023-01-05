@@ -16,6 +16,8 @@ import Field from '../../Field'
 import Select from '../../Select'
 import NavTag from '../../NavTab'
 
+import { linkToZotero as query } from '../../Article.graphql'
+
 export default function Bibliographe({ article, cancel }) {
   const [selector, setSelector] = useState('zotero')
   const [isSaving, setSaving] = useState(false)
@@ -105,7 +107,6 @@ export default function Bibliographe({ article, cancel }) {
     if (article.zoteroLink !== zoteroLink) {
       try {
         console.log('Saving to graphQL', article.zoteroLink, zoteroLink)
-        const query = `mutation($user:ID!,$article:ID!,$zotero:String!){zoteroArticle(article:$article,zotero:$zotero,user:$user){ _id zoteroLink}}`
         const variables = {
           zotero: zoteroLink,
           user: userId,
