@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { useGraphQL } from '../helpers/graphQL'
+import { changePassword as query } from './Credentials.graphql'
 import styles from './credentials.module.scss'
 import Loading from "./Loading";
 import UserInfos from "./UserInfos";
@@ -22,7 +23,6 @@ export default function Credentials () {
     e.preventDefault()
     try {
       setIsUpdating(true)
-      const query = `mutation($old:String!, $new:String!, $user:ID!){ changePassword(old:$old, new:$new, user:$user){ _id } }`
       const variables = {
         old: passwordO,
         new: password,
