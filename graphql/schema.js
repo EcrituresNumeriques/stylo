@@ -3,6 +3,9 @@ const resolvers = require('./resolvers/index.js')
 
 const typeDefs = `#graphql
 scalar EmailAddress
+scalar JWT
+scalar DateTime
+scalar HexColorCode
 
 type User {
   _id: ID
@@ -19,9 +22,9 @@ type User {
   admin: Boolean
   yaml: String
   zoteroToken: String
-  createdAt: String
-  updatedAt: String
-  apiToken: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  apiToken: JWT
 
   article(id: ID!): Article
 }
@@ -39,8 +42,8 @@ type Tag {
   description: String
   color: String
   articles: [Article]
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 type WorkingVersion {
@@ -61,8 +64,8 @@ type Version {
   message: String
   article: Article
   owner: User
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 type Article {
@@ -74,8 +77,8 @@ type Article {
   workingVersion: WorkingVersion
   versions(limit: Int, page: Int): [Version!]!
   tags(limit: Int, page: Int): [Tag!]!
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime
+  updatedAt: DateTime
 
   delete(dryRun: Boolean): Boolean
   addTags(tags: [ID]!): [Tag]
@@ -191,7 +194,7 @@ type Mutation {
   updateTag(
     name: String
     description: String
-    color: String
+    color: HexColorCode
     tag: ID!
     user: ID!
   ): Tag
