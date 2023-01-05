@@ -3,6 +3,7 @@ import DiffMatchPatch from 'diff-match-patch'
 import PropTypes from 'prop-types'
 
 import { useGraphQL } from '../../helpers/graphQL'
+import { compareVersion as query } from '../Write.graphql'
 
 const computeDiff = (text1, text2) => {
   let dmp = new DiffMatchPatch()
@@ -12,16 +13,14 @@ const computeDiff = (text1, text2) => {
 }
 
 export default function Compare ({ compareTo, md }) {
-  const query = `query{ version(version:"${compareTo}"){ _id md } }`
   const [compareMD, setCompareMD] = useState('')
   const [loading, setLoading] = useState(true)
   const runQuery = useGraphQL()
 
-
   useEffect(() => {
     (async () => {
       setLoading(true)
-      const data = await runQuery({ query })
+      const data = await runQuery({ query, variables: { to: compareTo } })
       setCompareMD(data.version.md)
       setLoading(false)
     })()
