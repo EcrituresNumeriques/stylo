@@ -6,7 +6,7 @@ export default function Button (props) {
   const classNames = clsx({
     [styles.button]: true,
     [styles.primary]: props.primary,
-    [styles.secondary]: props.secondary,
+    [styles.secondary]: props.secondary || (!props.primary && !props.tertiary),
     [styles.tertiary]: props.tertiary,
     [styles.icon]: props.icon === true,
     [props.className]: Boolean(props.className)
