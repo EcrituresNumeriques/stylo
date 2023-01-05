@@ -4,15 +4,15 @@ import { useSelector } from 'react-redux'
 import CompareSelect from "./CompareSelect";
 import styles from "./DiffEditor.module.scss";
 import { DiffEditor } from '@monaco-editor/react'
-import askGraphQL from '../../../../helpers/graphQL'
+import { useGraphQL } from '../../../../helpers/graphQL'
+import { compareVersion as query } from '../../Write.graphql'
 import { defineFlippedDiffTheme } from './support'
 
 export default function MonacoDiffEditor ({ text, compareTo, articleId, selectedVersion, currentArticleVersion, readOnly, onTextUpdate }) {
-  const query = `query{ version(version:"${compareTo}"){ _id md } }`
   const [modifiedText, setModifiedText] = useState('')
   const [loading, setLoading] = useState(true)
-  const applicationConfig = useSelector(state => state.applicationConfig)
   const monacoRef = useRef(null)
+  const runQuery = useGraphQL()
 
   function handleEditorDidMount (editor, monaco) {
     defineFlippedDiffTheme(monaco)
@@ -21,12 +21,7 @@ export default function MonacoDiffEditor ({ text, compareTo, articleId, selected
   useEffect(() => {
     (async () => {
       setLoading(true)
-      const data = await askGraphQL(
-        { query },
-        'fetching version to compareTo',
-        null,
-        applicationConfig
-      )
+      const data = await runQuery({ query, variables: { to: compareTo } })
       setModifiedText(data.version.md)
       setLoading(false)
     })()

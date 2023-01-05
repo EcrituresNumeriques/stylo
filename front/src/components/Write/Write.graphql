@@ -1,0 +1,6 @@
+query compareVersion ($to: ID!) {
+  version(version: $to) {
+    _id
+    md
+  }
+}
