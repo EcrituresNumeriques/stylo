@@ -1,41 +1,10 @@
 import { useDispatch, useSelector } from "react-redux"
-import askGraphQL from "../helpers/graphQL"
+import { runQuery } from "./graphQL.js"
+import { getFullUserProfile as query } from '../components/Credentials.graphql'
 
 export function getUserProfile({ applicationConfig, sessionToken }) {
-  const query = `query {
-    user {
-      _id
-      displayName
-      authType
-      firstName
-      lastName
-      institution
-      email
-      yaml
-      admin
-      createdAt
-      updatedAt
-      apiToken
-      zoteroToken
-
-      acquintances {
-        _id
-        email
-        displayName
-      }
-
-      permissions {
-        scope
-        roles
-        user {
-          _id
-          displayName
-        }
-      }
-    }
-  }`
-
-  return askGraphQL({ query }, 'userProfile', sessionToken, applicationConfig)
+  const { graphqlEndpoint } = applicationConfig
+  return runQuery({ graphqlEndpoint, sessionToken }, { query })
 }
 
 export function useProfile () {
