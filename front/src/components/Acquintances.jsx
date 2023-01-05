@@ -8,7 +8,7 @@ import styles from './acquintances.module.scss'
 import AcquintanceAddForm from './AcquintanceAddForm'
 import Button from './Button'
 
-import AcquintanceService from '../services/AcquintanceService'
+import * as queries from './Acquintances.graphql'
 import { useGraphQL } from '../helpers/graphQL'
 
 export default function Acquintances ({ article, setNeedReload, cancel }) {
@@ -18,14 +18,16 @@ export default function Acquintances ({ article, setNeedReload, cancel }) {
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
   const userId = activeUser._id
   const runQuery = useGraphQL()
-  const acquintanceService = new AcquintanceService(userId, runQuery)
 
   const sharedAccountsIds = activeUser.permissions.map(({ user }) => user._id)
   const contributorsIds = contributors.map(({ user }) => user._id)
 
   const shareArticle = async (to) => {
     try {
-      const { shareArticle } = await acquintanceService.shareArticle(article._id, to)
+      const { shareArticle } = await runQuery({
+        query: queries.shareArticle,
+        variables: { to, article: article._id, user: userId }
+      })
       setContributors(shareArticle.contributors)
     } catch (err) {
       console.error(`Unable to share article ${article._id} with ${to} (userId: ${userId})`, err)
@@ -35,7 +37,10 @@ export default function Acquintances ({ article, setNeedReload, cancel }) {
 
   const unshareArticle = async (to) => {
     try {
-      const { unshareArticle } = await acquintanceService.unshareArticle(article._id, to)
+      const { unshareArticle } = await runQuery({
+        query: queries.unshareArticle,
+        variables: { article: article._id, user: userId, to }
+      })
       setContributors(unshareArticle.contributors)
     } catch (err) {
       console.error(`Unable to unshare article ${article._id} with ${to} (userId: ${userId})`, err)
@@ -45,7 +50,10 @@ export default function Acquintances ({ article, setNeedReload, cancel }) {
 
   const duplicateArticle = async (to) => {
     try {
-      await acquintanceService.duplicateArticle(article._id, to)
+      await runQuery({
+        query: queries.duplicateArticle,
+        variables: { article: article._id, user: userId, to }
+      })
     } catch (err) {
       console.error(`Unable to duplicate article ${article._id} with ${to} (userId: ${userId})`, err)
       alert(err)
@@ -55,10 +63,11 @@ export default function Acquintances ({ article, setNeedReload, cancel }) {
   }
 
   useEffect(() => {
-    acquintanceService.getAcquintances().then(data => {
-      setLoading(false)
-      setAcquintances(data.user.acquintances)
-    })
+    runQuery({ query: queries.getAcquintances, variables: { user: userId } })
+      .then(({ user }) => {
+        setLoading(false)
+        setAcquintances(user.acquintances)
+      })
   }, [])
 
   const refreshContacts = useCallback((acquintances) => setAcquintances(acquintances), [])

@@ -1,43 +1,48 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { useSelector, shallowEqual } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { AlertTriangle, UserMinus, UserPlus } from 'react-feather';
 
 import styles from './credentials.module.scss'
 import acquintancesStyles from './acquintances.module.scss'
 import Button from "./Button";
 
-import AcquintanceService from '../services/AcquintanceService'
 import AcquintanceAddForm from './AcquintanceAddForm'
 import { useGraphQL } from '../helpers/graphQL';
+import * as queries from './Acquintances.graphql'
 
 export default function CredentialsAccountSharing () {
   const [loading, setLoading] = useState(true)
   const [permissions, setPermissions] = useState([])
   const [acquintances, setAcquintances] = useState([])
-  const activeUser = useSelector(state => state.activeUser, shallowEqual)
+  const activeUserId = useSelector(state => state.activeUser._id)
   const runQuery = useGraphQL()
-  const acquintanceService = new AcquintanceService(activeUser._id, runQuery)
 
   const userPermissionsIds = permissions.filter(p => p.scope === 'user').map(({ user }) => user._id)
 
   useEffect(() => {
     if (loading) {
-      acquintanceService.getAcquintancesAndPermissions().then(data => {
+      runQuery({ query: queries.getAcquintancesPermissions, variables: { user: activeUserId } }).then(({ user }) => {
         setLoading(false)
-        setPermissions(data.user.permissions)
-        setAcquintances(data.user.acquintances)
+        setPermissions(user.permissions)
+        setAcquintances(user.acquintances)
       })
     }
   }, [loading])
 
   const giveAccountAccess = useCallback(async ({ from, to }) => {
-    const data = await acquintanceService.grantAccountAccessTo({ from, to })
+    const data = await runQuery({
+      query: queries.grantAccountAccess,
+      variables: { user: activeUserId, from, to }
+    })
     setPermissions(data.grantAccountAccess.permissions)
     setAcquintances(data.grantAccountAccess.acquintances)
   }, [])
 
   const revokeAccountAccess = useCallback(async ({ from, to }) => {
-    const data = await acquintanceService.revokeAccountAccessTo({ from, to })
+    const data = await runQuery({
+      query: queries.revokeAccountAccess,
+      variables: { user: activeUserId, from, to }
+    })
     setPermissions(data.revokeAccountAccess.permissions)
     setAcquintances(data.revokeAccountAccess.acquintances)
   }, [])
@@ -71,13 +76,13 @@ export default function CredentialsAccountSharing () {
         </div>
 
         {!userPermissionsIds.includes(acquintance._id) && <div className={acquintancesStyles.acquintanceActions}>
-          <Button onClick={() => giveAccountAccess({ from: activeUser._id, to: acquintance._id })}>
+          <Button onClick={() => giveAccountAccess({ from: activeUserId, to: acquintance._id })}>
             <UserPlus /> Give full access
           </Button>
         </div>}
 
         {userPermissionsIds.includes(acquintance._id) && <div className={acquintancesStyles.acquintanceActions}>
-          <Button onClick={() => revokeAccountAccess({ from: activeUser._id, to: acquintance._id })}>
+          <Button onClick={() => revokeAccountAccess({ from: activeUserId, to: acquintance._id })}>
             <UserMinus /> Revoke access
           </Button>
         </div>}

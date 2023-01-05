@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { shallowEqual, useSelector } from 'react-redux'
 
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
@@ -12,14 +11,14 @@ import Acquintances from './Acquintances'
 import ArticleTags from './ArticleTags'
 
 import formatTimeAgo from '../helpers/formatTimeAgo'
-import { generateArticleExportId } from "../helpers/identifier"
 import etv from '../helpers/eventTargetValue'
 
 import Field from './Field'
 import Button from './Button'
 import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Share2, Trash } from 'react-feather'
 
-import AcquintanceService from '../services/AcquintanceService'
+import { duplicateArticle } from './Acquintances.graphql'
+import { renameArticle } from './Article.graphql'
 import { useGraphQL } from '../helpers/graphQL'
 
 export default function Article ({ article, currentUser:activeUser, setNeedReload, updateTitleHandler, updateTagsHandler, masterTags }) {
@@ -34,13 +33,15 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
   const runQuery = useGraphQL()
 
   const isArticleOwner = activeUser._id === article.owner._id
-  const acquintanceService = new AcquintanceService(activeUser._id, runQuery)
 
   const contributors = article.contributors.filter(c => c.user._id !== article.owner._id)
 
   const fork = async () => {
     try {
-      await acquintanceService.duplicateArticle(article._id, activeUser._id)
+      await runQuery({
+        query: duplicateArticle,
+        variables: { article: article._id, user: activeUser._id, to: activeUser._id }
+      })
       setNeedReload()
     } catch (err) {
       console.error(`Unable to duplicate article ${article._id} with myself (userId: ${activeUser._id})`, err)
@@ -50,13 +51,12 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
 
   const rename = async (e) => {
     e.preventDefault()
-    const query = `mutation($article:ID!,$title:String!,$user:ID!){renameArticle(article:$article,title:$title,user:$user){title}}`
     const variables = {
       user: activeUser._id,
       article: article._id,
       title: tempTitle,
     }
-    await runQuery({ query, variables })
+    await runQuery({ query: renameArticle, variables })
     setTitle(tempTitle)
     setRenaming(false)
     if (updateTitleHandler) {

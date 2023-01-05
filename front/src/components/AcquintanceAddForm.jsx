@@ -6,22 +6,22 @@ import { useGraphQL } from '../helpers/graphQL.js'
 import Button from './Button'
 import Field from './Field'
 
-import AcquintanceService from '../services/AcquintanceService'
+import { addAcquintance } from './Acquintances.graphql'
 
 export default function ConnectedAcquintances ({ onAdd }) {
   const [contact, setContact] = useState('')
   const userId = useSelector(state => state.activeUser._id)
   const runQuery = useGraphQL()
-  const acquintanceService = new AcquintanceService(userId, runQuery)
 
   const addContact = useCallback(async (event) => {
     event.preventDefault()
 
-    await acquintanceService.addAcquintance(contact)
+    const { addAcquintance: user } = await runQuery({
+      query: addAcquintance,
+      variables: { email: contact, user: userId }
+    })
     setContact('')
-
-    const data = await acquintanceService.getAcquintances()
-    onAdd(data.user.acquintances)
+    onAdd(user.acquintances)
   }, [contact])
 
   return (<form onSubmit={addContact} className={formStyles.inlineFields}>
