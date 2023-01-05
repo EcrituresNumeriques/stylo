@@ -1,0 +1,26 @@
+mutation updateTag($user: ID!, $tag: ID!, $name: String, $description: String) {
+  updateTag(user: $user, tag: $tag, name: $name, description: $description) {
+    _id
+    name
+    description
+  }
+}
+
+query getTags($user: ID!) {
+  tags(user: $user) {
+    _id
+    name
+    updatedAt
+    articles {
+      _id
+      title
+      updatedAt
+      versions(limit: 1) {
+        _id
+        version
+        revision
+        message
+      }
+    }
+  }
+}

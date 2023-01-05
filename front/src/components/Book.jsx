@@ -9,6 +9,7 @@ import Chapter from './Chapter'
 
 import etv from '../helpers/eventTargetValue'
 import { useGraphQL } from '../helpers/graphQL'
+import { updateTag as query } from './Books.graphql'
 import formatTimeAgo from '../helpers/formatTimeAgo'
 import { generateBookExportId } from "../helpers/identifier"
 
@@ -33,7 +34,6 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
 
   const renameBook = async (event) => {
     event.preventDefault()
-    const query = `mutation($user:ID!,$tag:ID!,$name:String,$description:String){ updateTag(user:$user,tag:$tag,name:$name,description:$description){ _id name description } }`
     const variables = {
       user: userId,
       tag: _id,
