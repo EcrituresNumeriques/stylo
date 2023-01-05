@@ -3,17 +3,17 @@ const resolvers = require('./resolvers/index.js')
 
 const typeDefs = `#graphql
 type User {
-  _id: ID!
-  displayName: String!
-  authType: String!
-  email: String!
+  _id: ID
+  displayName: String
+  authType: String
+  email: String
   firstName: String
   lastName: String
   institution: String
-  tags(limit: Int, page: Int): [Tag!]!
-  permissions: [UserPermission]!
-  acquintances(limit: Int, page: Int): [User!]!
-  articles(limit: Int, page: Int): [Article!]!
+  tags(limit: Int, page: Int): [Tag]
+  permissions: [UserPermission]
+  acquintances(limit: Int, page: Int): [User]
+  articles(limit: Int, page: Int): [Article]
   admin: Boolean
   yaml: String
   zoteroToken: String
@@ -78,6 +78,7 @@ type Article {
   delete(dryRun: Boolean): Boolean
   addTags(tags: [ID]!): [Tag]
   removeTags(tags: [ID]!): [Tag]
+  updateWorkingVersion(content: WorkingVersionInput!): WorkingVersion
 }
 
 type ArticleContributor {
@@ -99,6 +100,13 @@ input VersionInput {
   article: ID!
   major: Boolean
   message: String
+}
+
+# input WorkingVersionInput @oneOf {
+input WorkingVersionInput {
+  bib: String,
+  md: String,
+  yaml: String,
 }
 
 type Query {
@@ -163,15 +171,6 @@ type Mutation {
 
   "Create article for specified user [need to be authentificated as specified user]"
   createArticle(title: String!, user: ID!, tags: [ID]): Article
-
-  "Update article bibliography, content or metadata [need to be authentificated as specified user]"
-  updateWorkingVersion(
-    user: ID!
-    article: ID!
-    bib: String
-    md: String
-    yaml: String
-  ): Article
 
   "Save a new version for article [need to be authentificated as specified user]"
   saveVersion(version: VersionInput!, user: ID!): Version

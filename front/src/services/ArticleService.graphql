@@ -1,0 +1,14 @@
+
+query updateWorkingVersion ($userId: ID!, $articleId: ID!, $content: WorkingVersionInput!) {
+  article (article: $articleId) {
+    updatedAt
+
+    updateWorkingVersion (content: $content) {
+      workingVersion {
+        md
+        bib
+        yaml
+      }
+    }
+  }
+}

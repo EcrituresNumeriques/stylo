@@ -47,39 +47,6 @@ module.exports = {
     },
 
     /**
-     * Update article as the loggeed in user
-     *
-     * @param {*} args
-     * @param {*} param1
-     * @returns
-     */
-    async updateWorkingVersion (_, args, { user }) {
-      const ALLOWED_PARAMS = ['bib', 'md', 'yaml']
-
-      isUser(args, { user })
-
-      //fetch user
-      const thisUser = await User.findOne({_id: args.user})
-      if(!thisUser){
-        throw new Error('This user does not exist')
-      }
-
-      //fetch article
-      const userIds = await User.findAccountAccessUserIds(user._id)
-      const fetchedArticle = await Article.findAndPopulateOneByOwners(args.article, [user._id, userIds])
-
-      if(!fetchedArticle){
-        throw new Error('Wrong article ID')
-      }
-
-      ALLOWED_PARAMS
-        .filter(key => key in args)
-        .forEach(key => fetchedArticle.workingVersion[key] = args[key])
-
-      return fetchedArticle.save()
-    },
-
-    /**
      * Share an article as the current user
      *
      * @param {*} args
@@ -342,5 +309,14 @@ module.exports = {
 
       return article.tags
     },
+
+    async updateWorkingVersion (article, { content }) {
+      Object.entries(content)
+        .forEach(([key, value]) => article.workingVersion[key] = value)
+
+      await article.save()
+
+      return article.workingVersion
+    }
   }
 }
