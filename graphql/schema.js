@@ -2,11 +2,13 @@ const { makeExecutableSchema } = require('@graphql-tools/schema')
 const resolvers = require('./resolvers/index.js')
 
 const typeDefs = `#graphql
+scalar EmailAddress
+
 type User {
   _id: ID
   displayName: String
   authType: String
-  email: String
+  email: EmailAddress
   firstName: String
   lastName: String
   institution: String
@@ -86,16 +88,6 @@ type ArticleContributor {
   roles: [String]
 }
 
-input UserInput {
-  email: String!
-  username: String
-  password: String!
-  displayName: String
-  firstName: String
-  lastName: String
-  institution: String
-}
-
 input VersionInput {
   article: ID!
   major: Boolean
@@ -107,6 +99,26 @@ input WorkingVersionInput {
   bib: String,
   md: String,
   yaml: String,
+}
+
+input NewUserInput {
+  email: EmailAddress!
+  username: String!
+  password: String!
+  passwordC: String!
+  displayName: String
+  firstName: String
+  lastName: String
+  institution: String
+}
+
+input UserProfileInput {
+  displayName: String!
+  firstName: String
+  lastName: String
+  institution: String
+  yaml: String
+  zoteroToken: String
 }
 
 type Query {
@@ -137,10 +149,10 @@ type Query {
 
 type Mutation {
   "Create user + password + default article"
-  createUser(user: UserInput!): User!
+  createUser(details: NewUserInput!): User!
 
   "Add an email to your acquintances [need to be authentificated as user]"
-  addAcquintance(email: String!, user: ID!): User
+  addAcquintance(email: EmailAddress!, user: ID!): User
 
   "Change password"
   changePassword(old: String!, new: String!, user: ID!): User
@@ -152,22 +164,14 @@ type Mutation {
   revokeAccountAccess(user: ID!, to: ID!): User
 
   "Change user information"
-  updateUser(
-    user: ID!
-    displayName: String
-    firstName: String
-    lastName: String
-    institution: String
-    zoteroToken: String
-    yaml: String
-  ): User
+  updateUser(user: ID!, details: UserProfileInput!): User
 
   "Give access to a user using a password's email"
-  addCredential(email: String!, user: ID!): User
+  addCredential(email: EmailAddress!, user: ID!): User
   # If need to create new user: createUser + addCredential
 
   "Remove access to a user using a password's email (can't be the main email)"
-  removeCredential(email: String!, user: ID!): User
+  removeCredential(email: EmailAddress!, user: ID!): User
 
   "Create article for specified user [need to be authentificated as specified user]"
   createArticle(title: String!, user: ID!, tags: [ID]): Article
