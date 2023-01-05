@@ -11,13 +11,8 @@ const defaultsData = require('../data/defaultsData')
 
 module.exports = {
   Mutation: {
-    async createUser (_, { user: userInput }) {
-      //Todo check if email is really an email
-      if (!Isemail.validate(userInput.email)) {
-        throw new Error('Email is not correctly formated.')
-      }
-
-      //Check for Unique for User
+    async createUser (_, { details: userInput }) {
+      //Check for User uniqueness
       const existingUser = await User.findOne({ email: userInput.email })
       if (existingUser) {
         throw new Error('User with this email already exists!')
@@ -134,30 +129,18 @@ module.exports = {
 
     async updateUser (_, args, { user }) {
       isUser(args, { user })
+      const { user: _id, details } = args
 
-      let thisUser = await User.findOne({ _id: args.user })
+      let thisUser = await User.findOne({ _id })
       if (!thisUser) {
         throw new Error('Unable to find user')
       }
 
-      if ('displayName' in args) {
-        thisUser.displayName = args.displayName
-      }
-      if ('firstName' in args) {
-        thisUser.firstName = args.firstName
-      }
-      if ('lastName' in args) {
-        thisUser.lastName = args.lastName
-      }
-      if ('institution' in args) {
-        thisUser.institution = args.institution
-      }
-      if ('yaml' in args) {
-        thisUser.yaml = args.yaml
-      }
-      if ('zoteroToken' in args) {
-        thisUser.zoteroToken = args.zoteroToken
-      }
+      ['displayName', 'firstName', 'lastName', 'institution', 'yaml', 'zoteroToken'].forEach(field => {
+        if (field in details) {
+          thisUser[field] = details[field]
+        }
+      })
 
       return thisUser.save()
     },
