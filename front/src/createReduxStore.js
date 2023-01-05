@@ -2,8 +2,6 @@ import { applyMiddleware, compose, createStore } from 'redux'
 import { toEntries } from './helpers/bibtex'
 import VersionService from './services/VersionService'
 import ArticleService from "./services/ArticleService"
-import MetadataService from "./services/MetadataService"
-import BibliographyService from "./services/BibliographyService";
 
 const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName='sessionToken' } = import.meta.env
 
@@ -125,7 +123,7 @@ const createNewArticleVersion = store => {
         const userId = activeUser._id
         const { articleId, metadata } = action
         try {
-          const { updateWorkingVersion } = await new MetadataService(userId, articleId, sessionToken, applicationConfig).saveMetadata(metadata)
+          const { updateWorkingVersion } = await new ArticleService(userId, articleId, sessionToken, applicationConfig).saveMetadata(metadata)
           store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saved' })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_METADATA', metadata })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
@@ -140,7 +138,7 @@ const createNewArticleVersion = store => {
         const userId = activeUser._id
         const { articleId, bibliography } = action
         try {
-          const { updateWorkingVersion } = await new BibliographyService(userId, articleId, applicationConfig).saveBibliography(bibliography)
+          const { updateWorkingVersion } = await new ArticleService(userId, articleId, applicationConfig).saveBibliography(bibliography)
           store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saved' })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_BIBLIOGRAPHY', bibliography })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
