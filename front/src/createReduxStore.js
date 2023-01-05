@@ -1,6 +1,5 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import { toEntries } from './helpers/bibtex'
-import VersionService from './services/VersionService'
 import ArticleService from "./services/ArticleService"
 
 const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName='sessionToken' } = import.meta.env
@@ -94,8 +93,8 @@ const createNewArticleVersion = store => {
         const { articleVersions, activeUser, sessionToken, applicationConfig } = store.getState()
         const userId = activeUser._id
         const { articleId, major, message } = action
-        const versionService = new VersionService(userId, articleId, sessionToken, applicationConfig)
-        const response = await versionService.createNewArticleVersion(major, message)
+        const articleService = new ArticleService(userId, articleId, sessionToken, applicationConfig)
+        const response = await articleService.createNewVersion(major, message)
         store.dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: [response.saveVersion, ...articleVersions] })
         return next(action)
       }

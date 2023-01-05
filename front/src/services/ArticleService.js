@@ -1,6 +1,6 @@
 import { runQuery } from '../helpers/graphQL.js'
 
-import { updateWorkingVersion } from './ArticleService.graphql'
+import { updateWorkingVersion, saveVersion } from './ArticleService.graphql'
 
 export default class ArticleService {
   constructor (userId, articleId, sessionToken, applicationConfig) {
@@ -45,6 +45,20 @@ export default class ArticleService {
         userId: this.userId,
         articleId: this.articleId,
         content: { yaml }
+      }
+    })
+  }
+
+  async createNewVersion (major = false, message = '') {
+    const { sessionToken, graphqlEndpoint } = this
+
+    return await runQuery({ sessionToken, graphqlEndpoint }, {
+      query: saveVersion,
+      variables: {
+        userId: this.userId,
+        articleId: this.articleId,
+        major,
+        message
       }
     })
   }
