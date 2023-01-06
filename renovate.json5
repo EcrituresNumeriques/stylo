@@ -18,6 +18,10 @@
       "matchManagers": ["npm"],
       "groupName": "Node dependencies"
     },
+    {
+      "matchManagers": ["pip_requirements"],
+      "groupName": "Ansible dependencies"
+    },
   ],
   "lockFileMaintenance": {
     "enabled": true
