@@ -7,7 +7,7 @@ export default class ArticleService {
     this.userId = userId
     this.articleId = articleId
     this.sessionToken = sessionToken
-    this.applicationConfig = applicationConfig
+    this.graphqlEndpoint = applicationConfig.graphqlEndpoint
   }
 
   async saveText (md) {

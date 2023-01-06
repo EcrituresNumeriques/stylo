@@ -103,10 +103,10 @@ const createNewArticleVersion = store => {
         const userId = activeUser._id
         const { articleId, text } = action
         try {
-          const { updateWorkingVersion } = await new ArticleService(userId, articleId, sessionToken, applicationConfig).saveText(text)
+          const { article } = await new ArticleService(userId, articleId, sessionToken, applicationConfig).saveText(text)
           store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saved' })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_TEXT', text })
-          store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
+          store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: article.updatedAt })
         } catch (err) {
           console.error(err)
           store.dispatch({
@@ -122,10 +122,10 @@ const createNewArticleVersion = store => {
         const userId = activeUser._id
         const { articleId, metadata } = action
         try {
-          const { updateWorkingVersion } = await new ArticleService(userId, articleId, sessionToken, applicationConfig).saveMetadata(metadata)
+          const { article } = await new ArticleService(userId, articleId, sessionToken, applicationConfig).saveMetadata(metadata)
           store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saved' })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_METADATA', metadata })
-          store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
+          store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: article.updatedAt })
         } catch (err) {
           console.error(err)
           store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saveFailure' })
@@ -137,10 +137,10 @@ const createNewArticleVersion = store => {
         const userId = activeUser._id
         const { articleId, bibliography } = action
         try {
-          const { updateWorkingVersion } = await new ArticleService(userId, articleId, sessionToken, applicationConfig).saveBibliography(bibliography)
+          const { article } = await new ArticleService(userId, articleId, sessionToken, applicationConfig).saveBibliography(bibliography)
           store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saved' })
           store.dispatch({ type: 'SET_WORKING_ARTICLE_BIBLIOGRAPHY', bibliography })
-          store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: updateWorkingVersion.updatedAt })
+          store.dispatch({ type: 'SET_WORKING_ARTICLE_UPDATED_AT', updatedAt: article.updatedAt })
         } catch (err) {
           console.error(err)
           store.dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saveFailure' })
