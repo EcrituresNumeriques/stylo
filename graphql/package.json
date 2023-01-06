@@ -9,8 +9,8 @@
     "npm": ">=8"
   },
   "scripts": {
-    "generate-service-token": "node -p \"require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year')\"",
-    "test": "exit 0",
+    "generate-service-token": "node -p \"require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year' })\"",
+    "test": "jest",
     "posttest": "eslint '**/*.js'",
     "start": "node app.js",
     "prod": "NODE_ENV=production node --heapsnapshot-signal=SIGUSR2 app.js"
@@ -41,6 +41,8 @@
   },
   "devDependencies": {
     "eslint": "^8.2.0",
-    "eslint-plugin-security": "^1.5.0"
+    "eslint-plugin-jest": "^27.2.0",
+    "eslint-plugin-security": "^1.5.0",
+    "jest": "^29.3.1"
   }
 }

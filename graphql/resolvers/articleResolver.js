@@ -246,14 +246,8 @@ module.exports = {
      * @param {*} param1
      * @returns
      */
-    async articles (_, args, { user }) {
-      // if the userId is not provided
-      // we assume it is the user from the token
-      // otherwise, it is expected we request articles from a shared account
-      args.user = ('user' in args) === false && user ? String(user._id) : args.user
-
-      const fromSharedUserId = args.user !== user?._id ? args.user : null
-      const userId = String(user?._id)
+    async articles (_, args, context) {
+      const { userId, fromSharedUserId } = isUser(args, context)
 
       if (fromSharedUserId) {
         const sharedUserIds = await User.findAccountAccessUserIds(userId)
@@ -261,9 +255,6 @@ module.exports = {
         if (!sharedUserIds.includes(fromSharedUserId)) {
           throw new Error("Forbidden")
         }
-      }
-      else {
-        isUser(args, { user })
       }
 
       return Article.findManyByOwner({ userId, fromSharedUserId })

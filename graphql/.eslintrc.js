@@ -13,4 +13,13 @@ module.exports = {
   },
   plugins: ['security'],
   rules: {},
+  overrides: [
+    {
+      files: '**/*.test.js',
+      plugins: ['jest'],
+      env: {
+        'jest/globals': true
+      }
+    }
+  ],
 }
