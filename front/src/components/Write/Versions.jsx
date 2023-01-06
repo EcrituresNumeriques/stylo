@@ -56,7 +56,7 @@ const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
         </Button>
       </h1>
       {exporting && (
-        <Modal cancel={() => setExporting(false)}>
+        <Modal title="Export" cancel={() => setExporting(false)}>
           <Export {...exportParams} />
         </Modal>
       )}

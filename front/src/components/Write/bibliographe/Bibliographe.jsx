@@ -175,7 +175,6 @@ export default function Bibliographe({ article, cancel }) {
 
   return (
     <article>
-      <h1 className={styles.title}>Bibliography</h1>
       <NavTag defaultValue={selector} onChange={(value) => setSelector(value)} items={[
         {
           value: 'zotero',

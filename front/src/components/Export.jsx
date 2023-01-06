@@ -20,8 +20,6 @@ export default function Export ({ bookId, exportId, articleVersionId, articleId 
   const { exportFormats, exportStyles, exportStylesPreview, isLoading } = useStyloExport(csl)
   const { host } = window.location
 
-  console.log({ csl })
-
   const exportUrl = bookId
     ? `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${exportId}&book=${bookId}&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${Boolean(toc)}&tld=${tld}&unnumbered=${unnumbered}`
     // https://export.stylo-dev.huma-num.fr/generique/export/stylo-dev.huma-num.fr/60084903587dae0019eaf0d5/60084903587dae0019eaf0d5/?with_toc=1&with_ascii=0&formats=originals&formats=images&formats=html
@@ -29,8 +27,6 @@ export default function Export ({ bookId, exportId, articleVersionId, articleId 
 
   return (
     <section className={styles.export}>
-      <h1>Export</h1>
-
       <form className={clsx(formStyles.form, formStyles.verticalForm)}>
       {(articleId && !exportFormats.length) && <Loading inline size="24" />}
       {(articleId && exportFormats.length) && <Select id="export-formats" label="Formats" value={format} onChange={(e) => setFormat(e.target.value)}>

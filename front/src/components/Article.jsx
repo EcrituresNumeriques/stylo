@@ -74,13 +74,13 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
   return (
     <article className={styles.article}>
       {exporting && (
-        <Modal cancel={() => setExporting(false)}>
+        <Modal title="Export" cancel={() => setExporting(false)}>
           <Export articleVersionId={article._id} articleId={article._id} />
         </Modal>
       )}
 
       {sharing && (
-        <Modal cancel={() => setNeedReload() || setSharing(false)}>
+        <Modal title="Share with Stylo users" cancel={() => setNeedReload() || setSharing(false)}>
           <Acquintances article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)} />
         </Modal>
       )}

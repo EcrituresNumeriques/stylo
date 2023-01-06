@@ -7,12 +7,20 @@ import styles from './modal.module.scss'
 
 const noop = () => {}
 
-export default function Modal ({ children, cancel = noop}) {
+export default function Modal ({ title, children, cancel = noop}) {
   const ref = useRef()
-  useEffect(() => ref.current.showModal(), [])
+
+  useEffect(() => {
+    ref.current.showModal()
+    document.body.setAttribute('data-scrolling', false)
+
+    return function cleanup () {
+      document.body.removeAttribute('data-scrolling')
+    }
+  }, [])
 
   return (
-    <dialog open={false} className={styles.modal} ref={ref} onClose={cancel}>
+    <dialog open={false} className={styles.modal} ref={ref} onClose={cancel} aria-labelledby="modal-title">
       <Button
         aria-label="Close modal"
         icon={true}
@@ -22,12 +30,15 @@ export default function Modal ({ children, cancel = noop}) {
         <X aria-hidden />
       </Button>
 
-      {children}
+      <h1 id="modal-title" className={styles.title}>{title}</h1>
+
+      <div className={styles.modalBody}>{children}</div>
     </dialog>
   )
 }
 
 Modal.propTypes = {
+  title: PropTypes.string.isRequired,
   cancel: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
