@@ -4,10 +4,10 @@ mutation deleteTag($user: ID!, $tag: ID!) {
   }
 }
 
-mutation updateTag (
+mutation updateTag(
   $user: ID!
   $tag: ID!
-  $color: String!
+  $color: HexColorCode!
   $name: String!
   $description: String!
 ) {
@@ -16,6 +16,20 @@ mutation updateTag (
     tag: $tag
     name: $name
     description: $description
+    color: $color
+  ) {
+    _id
+    name
+    description
+    color
+  }
+}
+
+mutation createTag ($name: String!, $description: String, $user: ID!, $color: HexColorCode!) {
+  createTag(
+    name: $name
+    description: $description
+    user: $user
     color: $color
   ) {
     _id

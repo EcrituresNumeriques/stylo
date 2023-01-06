@@ -40,7 +40,7 @@ type Tag {
   name: String!
   owner: ID
   description: String
-  color: String
+  color: HexColorCode
   articles: [Article]
   createdAt: DateTime
   updatedAt: DateTime
@@ -187,7 +187,7 @@ type Mutation {
     name: String!
     description: String
     user: ID!
-    color: String!
+    color: HexColorCode!
   ): Tag
 
   "update name and description of a tag [need to be authentificated as specified user]"

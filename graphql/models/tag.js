@@ -14,7 +14,8 @@ const tagSchema = new Schema({
       ref: 'User'
   },
   color: {
-    type: String
+    type: String,
+    get: color => color || '#ccc'
   },
   articles:[
     {
