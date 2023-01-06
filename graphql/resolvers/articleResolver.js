@@ -78,7 +78,7 @@ module.exports = {
       //Add user to list of owner
       fetchedArticle.contributors.push({ user: fetchedUser, roles: ['read', 'write']})
 
-      const returnArticle = await fetchedArticle.save()
+      const returnArticle = await fetchedArticle.save({ timestamps: false })
       await fetchedUser.save({ timestamps: false })
 
       return returnArticle
@@ -113,7 +113,7 @@ module.exports = {
       fetchedArticle.contributors = fetchedArticle.contributors.filter(({ user }) => user.id !== fetchedUser.id)
       fetchedUser.articles.pull(args.article)
 
-      const returnArticle = await fetchedArticle.save()
+      const returnArticle = await fetchedArticle.save({ timestamps: false })
       await fetchedUser.save({ timestamps: false })
 
       return returnArticle

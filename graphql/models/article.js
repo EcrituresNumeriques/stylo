@@ -131,7 +131,7 @@ articleSchema.methods.addTags = async function addTags (...tagIds) {
     { safe: true }
   )
 
-  return this.save()
+  return this.save({ timestamps: false })
 }
 
 articleSchema.methods.removeTags = async function removeTags (...tagIds) {
@@ -148,7 +148,7 @@ articleSchema.methods.removeTags = async function removeTags (...tagIds) {
     { safe: true }
   )
 
-  return this.save()
+  return this.save({ timestamps: false })
 }
 
 articleSchema.pre('remove', async function () {
