@@ -49,7 +49,7 @@ export function ArticleSaveState ({ state, updatedAt, stateMessage }) {
 
   const [savedAgo, isoString] = useMemo(() => ([
     formatTimeAgo(updatedAt),
-    new Date(parseInt(updatedAt, 10)).toISOString()
+    new Date(updatedAt).toISOString()
   ]), [lastRefreshedAt])
 
   useEffect(() => {

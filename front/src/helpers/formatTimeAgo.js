@@ -13,7 +13,7 @@ const DIVISIONS = [
 ]
 
 export default (sDate) => {
-  let duration = (new Date(parseInt(sDate, 10)) - new Date()) / 1000
+  let duration = (new Date(sDate) - new Date()) / 1000
 
   if (Math.abs(duration) < 60) {
     return 'a few seconds ago'
