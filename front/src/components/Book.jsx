@@ -48,7 +48,7 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
   return (
     <article className={styles.article}>
       {exporting && (
-        <Modal cancel={() => setExporting(false)}>
+        <Modal title="Export" cancel={() => setExporting(false)}>
           <Export
             exportId={generateBookExportId(name)}
             bookId={_id}

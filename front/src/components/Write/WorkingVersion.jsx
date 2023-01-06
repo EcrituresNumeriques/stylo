@@ -105,7 +105,7 @@ export default function WorkingVersion ({ articleInfos, selectedVersion }) {
         </div>
       </header>
       {exporting && (
-        <Modal cancel={cancelExport}>
+        <Modal title="Export" cancel={cancelExport}>
           <Export articleVersionId={selectedVersion} articleId={articleInfos._id} />
         </Modal>
       )}
