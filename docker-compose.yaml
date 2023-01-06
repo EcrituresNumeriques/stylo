@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   mongodb-stylo:
-    image: mongo:4.2
+    image: mongo:4.4
     container_name: "mongodb-stylo"
     environment:
       - MONGO_DATA_DIR=/data/db
