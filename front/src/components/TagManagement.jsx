@@ -8,7 +8,7 @@ import Button from './Button'
 import Field from './Field'
 import { Search, Plus } from 'react-feather'
 
-export default (props) => {
+export default function TagManagement (props) {
   const [creatingTag, setCreatingTag] = useState(false)
   const [filter, setFilter] = useState('')
 
