@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from 'react'
+import { useRef, useEffect, useMemo, useCallback } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 
 import Editor from '@monaco-editor/react'
@@ -10,6 +10,20 @@ export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
   const articleBibTeXEntries = useSelector(state => state.workingArticle.bibliography.entries, shallowEqual)
   const editorCursorPosition = useSelector(state => state.editorCursorPosition, shallowEqual)
   const editorRef = useRef(null)
+  const options = useMemo(() => ({
+    readOnly: readOnly,
+    contextmenu: !readOnly,
+    wordBasedSuggestions: false,
+    overviewRulerLanes: 0,
+    hideCursorInOverviewRuler: true,
+    overviewRulerBorder: false,
+    scrollBeyondLastLine: false,
+    wordWrap: 'on',
+    wrappingIndent: 'none',
+    minimap: {
+      enabled: false
+    }
+  }), [readOnly])
 
   useEffect(() => {
     const line = editorCursorPosition.lineNumber
@@ -22,13 +36,13 @@ export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
 
   const setTheme = useCallback((monaco) => monaco.editor.setTheme(readOnly ? 'styloReadOnly' : 'vs'), [readOnly])
 
-  function handleEditorDidMount (editor, monaco) {
+  const handleEditorDidMount = useCallback((editor, monaco) => {
     editorRef.current = editor
     const bibliographyCompletionProvider = registerBibliographyCompletion(monaco, articleBibTeXEntries)
     registerReadOnlyTheme(monaco)
     setTheme(monaco)
     editor.onDidDispose(() => bibliographyCompletionProvider.dispose())
-  }
+  }, [])
 
   const handleEditorChange = useCallback((value) => onTextUpdate(undefined, undefined, value), [])
   return (
@@ -37,20 +51,7 @@ export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
       className={styles.editor}
       defaultLanguage="markdown"
       onChange={handleEditorChange}
-      options={{
-        readOnly: readOnly,
-        contextmenu: !readOnly,
-        wordBasedSuggestions: false,
-        overviewRulerLanes: 0,
-        hideCursorInOverviewRuler: true,
-        overviewRulerBorder: false,
-        scrollBeyondLastLine: false,
-        wordWrap: 'on',
-        wrappingIndent: 'none',
-        minimap: {
-          enabled: false
-        }
-      }}
+      options={options}
       onMount={handleEditorDidMount}
     />
   )
