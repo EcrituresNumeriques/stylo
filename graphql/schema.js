@@ -83,7 +83,7 @@ type Article {
   delete(dryRun: Boolean): Boolean
   addTags(tags: [ID]!): [Tag]
   removeTags(tags: [ID]!): [Tag]
-  updateWorkingVersion(content: WorkingVersionInput!): WorkingVersion
+  updateWorkingVersion(content: WorkingVersionInput!): Boolean
 }
 
 type ArticleContributor {

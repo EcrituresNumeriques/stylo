@@ -314,9 +314,9 @@ module.exports = {
       Object.entries(content)
         .forEach(([key, value]) => article.workingVersion[key] = value)
 
-      await article.save()
+      const result = await article.save()
 
-      return article.workingVersion
+      return result === article
     }
   }
 }
