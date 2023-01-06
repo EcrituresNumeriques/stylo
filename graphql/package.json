@@ -9,6 +9,7 @@
     "npm": ">=8"
   },
   "scripts": {
+    "generate-service-token": "node -p \"require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year')\"",
     "test": "exit 0",
     "posttest": "eslint '**/*.js'",
     "start": "node app.js",
