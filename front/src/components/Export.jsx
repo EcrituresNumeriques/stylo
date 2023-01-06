@@ -49,7 +49,7 @@ export default function Export ({ bookId, exportId, articleVersionId, articleId 
           <option value="icml">ICML</option>
         </Select>}
         {(articleId && !exportStyles.length) && <Loading inline size="24" />}
-        {(articleId && exportStyles.length) && <Select id="export-styles" label="Bibliography style" value={format} onChange={(e) => setCsl(e.target.value)}>
+        {(articleId && exportStyles.length) && <Select id="export-styles" label="Bibliography style" value={csl} onChange={(e) => setCsl(e.target.value)}>
           {exportStyles.map(({ title, name }) => <option value={name} key={name}>{ title }</option>)}
         </Select>}
         <div className={styles.bibliographyPreview}>

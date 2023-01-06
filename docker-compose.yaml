@@ -72,7 +72,7 @@ services:
       - graphql-stylo
 
   export-gateway:
-    image: "davidbgk/stylo-export:0.0.9"
+    image: "davidbgk/stylo-export:0.0.10"
     environment:
       - SE_PANDOC_API_BASE_URL=${SE_PANDOC_API_BASE_URL:-http://pandoc-api:8000/latest/}
       - SE_ALLOWED_INSTANCE_DOMAINS=${SE_ALLOWED_INSTANCE_DOMAINS:-localhost:3000,localhost:3030}
