@@ -16,7 +16,7 @@ export default function CreateArticle ({ currentUserId, tags, cancel, triggerRel
   const runQuery = useGraphQL()
 
 
-  const createTag = useCallback(async (event) => {
+  const handleSubmit = useCallback(async (event) => {
     const variables = { user: currentUserId, title, tags: selectedTagIds }
 
     event.preventDefault()
@@ -34,7 +34,7 @@ export default function CreateArticle ({ currentUserId, tags, cancel, triggerRel
 
   return (
     <section className={styles.create}>
-      <form onSubmit={createTag}>
+      <form onSubmit={handleSubmit}>
         <Field
           type="text"
           placeholder="Article title"

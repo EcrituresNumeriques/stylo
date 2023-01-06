@@ -29,8 +29,7 @@ export default function TagManagement (props) {
 
           {creatingTag && (
             <CreateTag
-              articles={props.articles}
-              currentUser={props.currentUser}
+              currentUserId={props.currentUser._id}
               cancel={() => setCreatingTag(false)}
               triggerReload={() => {
                 setCreatingTag(false)
