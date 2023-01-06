@@ -61,21 +61,7 @@
   flex-direction: column;
   overflow-y: scroll;
   overflow-x: hidden;
-  > nav {
-    margin: 1rem 0;
-    display: flex;
-    flex-wrap: nowrap;
-    > p {
-      flex: 1 1 calc(100% / 3);
-      text-align: center;
-      padding: 0.5rem 1rem;
-      background-color: $main-background-color;
-    }
-    > p.selected {
-      background-color: $main-color;
-      color: $main-background-color;
-    }
-  }
+
   > section {
     :global {
       .addToArray {
