@@ -46,83 +46,81 @@ export default function WriteRight({ handleYaml, readOnly, yaml }) {
         {expanded ? 'close' : 'Metadata'}
       </nav>
       {expanded && (
-        <>
-          <div className={styles.yamlEditor}>
-            <header>
-              <h1>Metadata</h1>
-            </header>
-            <NavTag
-              defaultValue={selector}
-              onChange={setSelector}
-              items={[
-                {
-                  value: 'basic',
-                  name: 'Basic Mode',
-                },
-                {
-                  value: 'editor',
-                  name: 'Editor Mode',
-                },
-                {
-                  value: 'raw',
-                  name: 'Raw Mode',
-                },
-              ]}
+        <div className={styles.yamlEditor}>
+          <header>
+            <h1>Metadata</h1>
+          </header>
+          <NavTag
+            defaultValue={selector}
+            onChange={setSelector}
+            items={[
+              {
+                value: 'basic',
+                name: 'Basic Mode',
+              },
+              {
+                value: 'editor',
+                name: 'Editor Mode',
+              },
+              {
+                value: 'raw',
+                name: 'Raw Mode',
+              },
+            ]}
+          />
+          {selector === 'raw' && (
+            <>
+              {error !== '' && <p className={styles.error}>{error}</p>}
+              <textarea
+                className={styles.rawYaml}
+                value={rawYaml}
+                wrap="off"
+                rows={20}
+                onChange={(event) => {
+                  const component = event.target
+                  const yaml = component.value
+                  try {
+                    YAML.loadAll(yaml)
+                    setError('')
+                    handleYaml(yaml)
+                  } catch (err) {
+                    setError(err.message)
+                  } finally {
+                    setRawYaml(yaml)
+                  }
+                }}
+              />
+            </>
+          )}
+          {selector !== 'raw' && readOnly && (
+            <YamlEditor
+              yaml={yaml}
+              basicMode={selector === 'basic'}
+              error={(reason) => {
+                setError(reason)
+                if (reason !== '') {
+                  setSelector('raw')
+                }
+              }}
             />
-            {selector === 'raw' && (
-              <>
-                {error !== '' && <p className={styles.error}>{error}</p>}
-                <textarea
-                  className={styles.rawYaml}
-                  value={rawYaml}
-                  wrap="off"
-                  rows={20}
-                  onChange={(event) => {
-                    const component = event.target
-                    const yaml = component.value
-                    try {
-                      YAML.loadAll(yaml)
-                      setError('')
-                      handleYaml(yaml)
-                    } catch (err) {
-                      setError(err.message)
-                    } finally {
-                      setRawYaml(yaml)
-                    }
-                  }}
-                />
-              </>
-            )}
-            {selector !== 'raw' && readOnly && (
-              <YamlEditor
-                yaml={yaml}
-                basicMode={selector === 'basic'}
-                error={(reason) => {
-                  setError(reason)
-                  if (reason !== '') {
-                    setSelector('raw')
-                  }
-                }}
-              />
-            )}
-            {selector !== 'raw' && !readOnly && (
-              <YamlEditor
-                yaml={yaml}
-                basicMode={selector === 'basic'}
-                error={(reason) => {
-                  setError(reason)
-                  if (reason !== '') {
-                    setSelector('raw')
-                  }
-                }}
-                onChange={(yaml) => {
-                  setRawYaml(yaml)
-                  handleYaml(yaml)
-                }}
-              />
-            )}
-          </div>
-        </>
+          )}
+          {selector !== 'raw' && !readOnly && (
+            <YamlEditor
+              yaml={yaml}
+              basicMode={selector === 'basic'}
+              error={(reason) => {
+                setError(reason)
+                if (reason !== '') {
+                  setSelector('raw')
+                }
+              }}
+              onChange={(yaml) => {
+                setRawYaml(yaml)
+                handleYaml(yaml)
+              }}
+            />
+          )}
+        </div>
       )}
     </nav>
   )

@@ -6,7 +6,6 @@ import Stats from './Stats'
 import Biblio from './Biblio'
 import Sommaire from './Sommaire'
 import Versions from './Versions'
-import WorkingVersion from './WorkingVersion'
 
 export default function WriteLeft ({ articleInfos, readOnly, compareTo, selectedVersion }) {
   const expanded = useSelector(state => state.articlePreferences.expandSidebarLeft)
@@ -19,19 +18,20 @@ export default function WriteLeft ({ articleInfos, readOnly, compareTo, selected
       <nav onClick={toggleExpand} className={expanded ? styles.close : styles.open}>
         {expanded ? 'close' : 'open'}
       </nav>
-      {expanded && (
-        <div>
-          <Versions
-            article={articleInfos}
-            selectedVersion={selectedVersion}
-            compareTo={compareTo}
-            readOnly={readOnly}
-          />
-          <Sommaire />
-          <Biblio readOnly={readOnly} article={articleInfos} />
-          <Stats stats={articleStats} />
-        </div>
-      )}
+      {expanded && (<div>
+        <header>
+          <h1>Summary</h1>
+        </header>
+        <Versions
+          article={articleInfos}
+          selectedVersion={selectedVersion}
+          compareTo={compareTo}
+          readOnly={readOnly}
+        />
+        <Sommaire />
+        <Biblio readOnly={readOnly} article={articleInfos} />
+        <Stats stats={articleStats} />
+      </div>)}
     </nav>
   )
 }
