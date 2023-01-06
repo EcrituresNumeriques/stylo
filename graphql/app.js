@@ -141,7 +141,7 @@ passport.serializeUser((user, next) => {
 })
 
 passport.deserializeUser(async (id, next) => {
-  const user = await User.findById(id)
+  const user = await User.findById(id).populate({ path: 'permissions' })
   next(null, user)
 })
 
@@ -263,7 +263,14 @@ app.post('/login/local',
 
 app.post('/graphql', populateUserFromJWT({ jwtSecret }), createHandler({
   schema,
-  context: async (req) => ({ user: req.raw.user }),
+  /**
+   * @param {express.Request} req
+   * @returns {{token: DecodedJWT, user: User}}
+   */
+  context: (req) => ({
+    token: req.raw.token ?? {},
+    user: req.raw.user ?? null
+  }),
 }))
 
 // fix deprecation warnings: https://mongoosejs.com/docs/deprecations.html

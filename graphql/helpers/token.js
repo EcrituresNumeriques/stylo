@@ -17,17 +17,24 @@ module.exports.createJWTToken = async function createJWTToken ({ email, jwtSecre
 }
 
 module.exports.populateUserFromJWT = function populateUserFromJWT ({ jwtSecret }) {
-  return function populateUserFromJWTMiddleware(req, res, next) {
+  return async function populateUserFromJWTMiddleware(req, res, next) {
     const jwtToken = req.headers.authorization?.replace(/^Bearer /, '')
 
-    if (typeof jwtToken === 'string') {
-      try {
-        // this overrides the `passport.deserializeUser()` user session object
-        // so use it in a stateless environment, like the GraphQL API
-        req.user = jwt.verify(jwtToken, jwtSecret)
-      } catch (error) {
-        return next(error)
-      }
+    if (!jwtToken) {
+      return next()
+    }
+
+    // 1. Decode Token
+    try {
+      req.token = jwt.verify(jwtToken, jwtSecret)
+    } catch (error) {
+      res.status(400)
+      return next(error)
+    }
+
+    // 2. Fetch associated user, only if not populated by Passport Session before
+    if (req.token._id && !req.user) {
+      req.user = await User.findById(req.token._id).populate({ path: 'permissions' })
     }
 
     return next()
