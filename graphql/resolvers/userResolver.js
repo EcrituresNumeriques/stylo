@@ -1,5 +1,4 @@
 const bcrypt = require('bcryptjs')
-const Isemail = require('isemail')
 
 const User = require('../models/user')
 const Article = require('../models/article')
