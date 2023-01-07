@@ -83,7 +83,7 @@
     - name: Generate Shared GraphQL Token
       register: graphql_token
       shell:
-        cmd: "docker-compose run --rm graphql-stylo npm run generate-service-token --silent"
+        cmd: "docker-compose run --no-deps --rm graphql-stylo npm run generate-service-token --silent"
         chdir: ~/stylo
 
     - name: Start containers
