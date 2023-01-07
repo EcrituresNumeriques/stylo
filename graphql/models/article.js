@@ -174,7 +174,7 @@ articleSchema.pre('remove', async function () {
 })
 
 articleSchema.post('remove', async function () {
-  const result = await this.model('User').updateOne(
+  await this.model('User').updateOne(
     { _id: this.owner?.id || this.owner },
     { $pull: { articles: this.id } },
     { safe: true }

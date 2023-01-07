@@ -101,7 +101,7 @@ module.exports = {
         )
     },
     async revokeAccountAccess (_, args, context) {
-      const { userId } = isUser(args, context)
+      const { userId } = isUser(args, context)
 
       const thisUser = await User.findById(userId)
         .populate('acquintances')
@@ -134,8 +134,9 @@ module.exports = {
       }
 
       ['displayName', 'firstName', 'lastName', 'institution', 'yaml', 'zoteroToken'].forEach(field => {
-        if (field in details) {
-          thisUser[field] = details[field]
+        if (Object.hasOwn(details, field)) {
+          // eslint-disable-next-line security/detect-object-injection
+          thisUser.set(field, details[field])
         }
       })
 

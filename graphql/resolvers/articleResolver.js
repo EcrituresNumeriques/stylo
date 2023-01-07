@@ -279,7 +279,7 @@ module.exports = {
 
     async updateWorkingVersion (article, { content }) {
       Object.entries(content)
-        .forEach(([key, value]) => article.workingVersion[key] = value)
+        .forEach(([key, value]) => article.workingVersion.set(key, value))
 
       const result = await article.save()
 
