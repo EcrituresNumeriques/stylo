@@ -177,7 +177,7 @@ app.get(
     if (req.user) {
       const { email } = req.user
       const token = await createJWTToken({ email, jwtSecret })
-      res.redirect(`${req.headers.referer}/login#auth-token=${token}`)
+      res.redirect(`${req.headers.referer.replace(/\/$/)}/login#auth-token=${token}`)
     } else {
       req.session.origin = req.headers.referer
       next()
