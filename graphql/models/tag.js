@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const colornames = require('colornames')
 const Schema = mongoose.Schema;
 
 const tagSchema = new Schema({
@@ -15,7 +16,7 @@ const tagSchema = new Schema({
   },
   color: {
     type: String,
-    get: color => color || '#ccc'
+    get: color => colornames(color) || color || '#ccc'
   },
   articles:[
     {
