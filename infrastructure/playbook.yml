@@ -75,27 +75,27 @@
       loop:
         - { src: './stylo.env', dest: '~/stylo/stylo.env' }
 
-    - name: Inject Git version in package.json files
-      when: app_version != ""
-      replace:
-        path: "~/stylo/{{ item }}"
-        regexp: '"version": "[^"]+"'
-        replace: '"version": "{{ app_version }}"'
-        before: '"scripts"'
-      loop:
-        - front/package.json
-        - graphql/package.json
-        - export/package.json
+    - name: Pull Docker containers
+      shell:
+        cmd: "docker-compose pull"
+        chdir: ~/stylo
 
-    - name: Rebuild and restart Docker containers
+    - name: Generate Shared GraphQL Token
+      register: graphql_token
+      shell:
+        cmd: "docker-compose run --rm graphql-stylo npm run generate-service-token --silent"
+        chdir: ~/stylo
+
+    - name: Start containers
       docker_compose:
         project_src: ~/stylo
         build: false
-        pull: true
+        pull: false
       environment:
         SNOWPACK_MATOMO_URL: "{{ matomo_url }}"
         SNOWPACK_MATOMO_SITE_ID: "{{ matomo_site_id }}"
         SE_ALLOWED_INSTANCE_DOMAINS: "{{ site }}"
+        SE_GRAPHQL_TOKEN: "{{ graphql_token.stdout}}"
         TAG: "latest"
         npm_config_audit: "false"
         npm_config_fund: "false"
