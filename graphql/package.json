@@ -9,7 +9,8 @@
     "npm": ">=8"
   },
   "scripts": {
-    "test": "exit 0",
+    "generate-service-token": "node -p \"require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year' })\"",
+    "test": "jest",
     "posttest": "eslint '**/*.js'",
     "start": "node app.js",
     "prod": "NODE_ENV=production node --heapsnapshot-signal=SIGUSR2 app.js"
@@ -27,7 +28,7 @@
     "express": "^4.16.4",
     "express-session": "^1.17.1",
     "graphql-http": "^1.9.0",
-    "isemail": "^3.2.0",
+    "graphql-scalars": "^1.20.1",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.11.1",
     "passport": "^0.4.1",
@@ -40,6 +41,8 @@
   },
   "devDependencies": {
     "eslint": "^8.2.0",
-    "eslint-plugin-security": "^1.5.0"
+    "eslint-plugin-jest": "^27.2.0",
+    "eslint-plugin-security": "^1.5.0",
+    "jest": "^29.3.1"
   }
 }

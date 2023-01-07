@@ -1,0 +1,28 @@
+
+query updateWorkingVersion ($articleId: ID!, $content: WorkingVersionInput!) {
+  article (article: $articleId) {
+    updatedAt
+
+    updateWorkingVersion (content: $content)
+  }
+}
+
+mutation saveVersion ($userId: ID!, $articleId: ID!, $major: Boolean!, $message: String) {
+  saveVersion(
+    version: {
+      article: $articleId,
+      major: $major,
+      message: $message
+    },
+    user: $userId
+  ) {
+    _id
+    version
+    revision
+    message
+    updatedAt
+    owner {
+      displayName
+    }
+  }
+}

@@ -1,36 +1,24 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
 
 import etv from '../helpers/eventTargetValue'
 import { useGraphQL } from '../helpers/graphQL'
+import { createTag as query } from './Tag.graphql'
 
 import styles from './createTag.module.scss'
 import Field from './Field'
 import Button from './Button'
 import { Check } from 'react-feather'
 
-export default function CreateTag (props) {
-  const [articlesSelected, setArticlesSelected] = useState(
-    props.articles.map((a) => ({ selected: false, _id: a._id, title: a.title }))
-  )
+export default function CreateTag ({ currentUserId, cancel, triggerReload }) {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-  const [tempColor, setTempColor] = useState('')
+  const [tempColor, setTempColor] = useState('#ccc')
 
   const runQuery = useGraphQL()
 
-  let baseQuery =
-    'mutation($name:String!, $description:String, $user:ID!, $color:String!){ createTag(name:$name,description:$description,user:$user,color:$color){ _id name description color } '
-  let addToTag = articlesSelected
-    .filter((a) => a.selected)
-    .map(
-      (a, i) =>
-        `addToTag${i}: addToTag(article:"${a._id}",tag:"new",user:$user){ _id }`
-    )
-    .join(' ')
-  const query = baseQuery + addToTag + '}'
   const variables = {
-    user: props.currentUser._id,
+    user: currentUserId,
     name,
     description,
     color: tempColor,
@@ -40,7 +28,7 @@ export default function CreateTag (props) {
     try {
       event.preventDefault()
       await runQuery({ query, variables })
-      props.triggerReload()
+      triggerReload()
     } catch (err) {
       alert(err)
     }
@@ -79,7 +67,7 @@ export default function CreateTag (props) {
 
         <ul className={styles.actions}>
           <li>
-            <Button type="button" onClick={props.cancel}>Cancel</Button>
+            <Button type="button" onClick={cancel}>Cancel</Button>
           </li>
           <li>
             <Button primary={true} type="submit" title="Create Article">
@@ -91,4 +79,10 @@ export default function CreateTag (props) {
       </form>
     </section>
   )
+}
+
+CreateTag.propTypes = {
+  cancel: PropTypes.func.isRequired,
+  currentUserId: PropTypes.string.isRequired,
+  triggerReload: PropTypes.func.isRequired
 }

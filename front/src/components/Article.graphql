@@ -1,0 +1,11 @@
+mutation renameArticle($article: ID!, $title: String!, $user: ID!) {
+  article(article: $article, user: $user) {
+    rename(title: $title)
+  }
+}
+
+mutation linkToZotero($user: ID!, $article: ID!, $zotero: String!) {
+  article(article: $article, user: $user) {
+    setZoteroLink(zotero: $zotero)
+  }
+}

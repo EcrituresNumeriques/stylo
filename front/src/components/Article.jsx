@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { shallowEqual, useSelector } from 'react-redux'
+import clsx from 'clsx'
 
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
@@ -12,14 +12,14 @@ import Acquintances from './Acquintances'
 import ArticleTags from './ArticleTags'
 
 import formatTimeAgo from '../helpers/formatTimeAgo'
-import { generateArticleExportId } from "../helpers/identifier"
 import etv from '../helpers/eventTargetValue'
 
 import Field from './Field'
 import Button from './Button'
-import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Share2, Trash } from 'react-feather'
+import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, MessageSquare, Printer, Share2, Trash } from 'react-feather'
 
-import AcquintanceService from '../services/AcquintanceService'
+import { duplicateArticle } from './Acquintances.graphql'
+import { renameArticle } from './Article.graphql'
 import { useGraphQL } from '../helpers/graphQL'
 
 export default function Article ({ article, currentUser:activeUser, setNeedReload, updateTitleHandler, updateTagsHandler, masterTags }) {
@@ -34,56 +34,62 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
   const runQuery = useGraphQL()
 
   const isArticleOwner = activeUser._id === article.owner._id
-  const acquintanceService = new AcquintanceService(activeUser._id, runQuery)
 
   const contributors = article.contributors.filter(c => c.user._id !== article.owner._id)
 
-  const fork = async () => {
+  const toggleExpansion = useCallback((event) => {
+    if (!event.key || [' ', 'Enter'].includes(event.key)) {
+      setExpanded(!expanded)
+    }
+  }, [expanded])
+
+  const fork = useCallback(async () => {
     try {
-      await acquintanceService.duplicateArticle(article._id, activeUser._id)
+      await runQuery({
+        query: duplicateArticle,
+        variables: { article: article._id, user: activeUser._id, to: activeUser._id }
+      })
       setNeedReload()
     } catch (err) {
       console.error(`Unable to duplicate article ${article._id} with myself (userId: ${activeUser._id})`, err)
       alert(err)
     }
-  }
+  }, [])
 
-  const rename = async (e) => {
+  const rename = useCallback(async (e) => {
     e.preventDefault()
-    const query = `mutation($article:ID!,$title:String!,$user:ID!){renameArticle(article:$article,title:$title,user:$user){title}}`
     const variables = {
       user: activeUser._id,
       article: article._id,
       title: tempTitle,
     }
-    await runQuery({ query, variables })
+    await runQuery({ query: renameArticle, variables })
     setTitle(tempTitle)
     setRenaming(false)
     if (updateTitleHandler) {
       updateTitleHandler(article._id, tempTitle)
     }
-  }
+  }, [article.title])
 
   return (
     <article className={styles.article}>
       {exporting && (
-        <Modal cancel={() => setExporting(false)}>
-          <Export
-            articleVersionId={article._id}
-            articleId={article._id}
-          />
+        <Modal title="Export" cancel={() => setExporting(false)}>
+          <Export articleId={article._id} />
         </Modal>
       )}
 
       {sharing && (
-        <Modal cancel={() => setNeedReload() || setSharing(false)}>
+        <Modal title="Share with Stylo users" cancel={() => setNeedReload() || setSharing(false)}>
           <Acquintances article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)} />
         </Modal>
       )}
 
       {!renaming && (
-        <h1 className={styles.title} onClick={() => setExpanded(!expanded)}>
-          {expanded ? <ChevronDown/> : <ChevronRight/>}
+        <h1 className={styles.title} onClick={toggleExpansion}>
+          <span tabIndex={0} onKeyUp={toggleExpansion}>
+            {expanded ? <ChevronDown/> : <ChevronRight/>}
+          </span>
           {title}
 
           <Button title="Edit" icon={true} className={styles.editTitleButton} onClick={(evt) => evt.stopPropagation() || setRenaming(true)}>
@@ -111,29 +117,33 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
           <Trash />
         </Button>}
 
-        <Link title="Preview" target="_blank" className={[buttonStyles.button, buttonStyles.icon].join(' ')} to={`/article/${article._id}/preview`}>
-          <Eye />
-        </Link>
-
-        {<Button title="Share" icon={true} onClick={() => setSharing(true)}>
-          <Share2 />
-        </Button>}
-
         <Button title="Duplicate" icon={true} onClick={() => fork()}>
           <Copy />
         </Button>
 
-        <Button title="Export" icon={true} onClick={() => setExporting(true)}>
+        <Link title="Annotate with Stylo users and other people (open a new window)" target="_blank" className={buttonStyles.icon} to={`/article/${article._id}/annotate`}>
+          <MessageSquare />
+        </Link>
+
+        {<Button title="Share with Stylo users" icon={true} onClick={() => setSharing(true)}>
+          <Share2 />
+        </Button>}
+
+        <Button title="Download a printable version" icon={true} onClick={() => setExporting(true)}>
           <Printer />
         </Button>
 
-        <Link title="Edit" className={[buttonStyles.button, buttonStyles.primary].join(' ')} to={`/article/${article._id}`}>
+        <Link title="Edit article" className={buttonStyles.primary} to={`/article/${article._id}`}>
           <Edit3 />
+        </Link>
+
+        <Link title="Preview article" className={buttonStyles.icon} to={`/article/${article._id}/preview`}>
+          <Eye />
         </Link>
       </aside>
 
       {deleting && (
-        <div className={[styles.alert, styles.deleteArticle].join(' ')}>
+        <div className={clsx(styles.alert, styles.deleteArticle)}>
           <p>
             You are trying to delete this article, double click on the
             &quot;delete button&quot; below to proceed

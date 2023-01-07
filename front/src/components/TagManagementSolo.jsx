@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useGraphQL } from '../helpers/graphQL'
-import etv from '../helpers/eventTargetValue'
-
+import * as queries from './Tag.graphql'
 import { ChevronDown, ChevronRight, Edit3, Check, Trash } from 'react-feather'
 
+import etv from '../helpers/eventTargetValue'
 import styles from './tagManagementSolo.module.scss'
 import Button from './Button'
 import Field from './Field'
@@ -17,14 +17,12 @@ export default function tagManagementSolo (props) {
   const runQuery = useGraphQL()
 
   const deleteTag = async (id) => {
-    const query = `mutation($user:ID!,$tag:ID!){deleteTag(user:$user,tag:$tag){ _id }}`
     const variables = { user: props.currentUser._id, tag: id }
-    await runQuery({ query, variables })
+    await runQuery({ query: queries.deleteTag, variables })
     props.setNeedReload()
   }
 
   const saveTag = async () => {
-    const query = `mutation($user:ID!,$tag:ID!,$color:String!,$name:String!,$description:String!){updateTag(user:$user,tag:$tag,name:$name,description:$description,color:$color){ _id name description color }}`
     const variables = {
       user: props.currentUser._id,
       tag: props.t._id,
@@ -32,7 +30,7 @@ export default function tagManagementSolo (props) {
       description: tempDescription,
       color: tempColor,
     }
-    await runQuery({ query, variables })
+    await runQuery({ query: queries.updateTag, variables })
     props.setNeedReload()
     setEdit(false)
   }

@@ -25,8 +25,13 @@ on:
     - 'stylo-example.env'
 
 jobs:
-  main:
+  build-and-push:
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        app: [front-stylo, graphql-stylo, export-stylo]
 
     # A couple of things need to be done to perform an automated push of Stylo Docker images on GitHub
     # 1. For each Stylo "Package" in EcrituresNumeriques, add People or Teams and set their access (Read, Write or Admin)
@@ -49,9 +54,6 @@ jobs:
     - uses: docker/setup-buildx-action@v2
     - run: cp stylo-example.env stylo.env
 
-    - name: Login to GitHub Container Registry ghcr.io
-      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
     # Needed to expose ACTIONS_CACHE_URL and ACTIONS_RUNTIME_URL variables
     # Which are unreachable outside of an action context
     - uses: crazy-max/ghaction-github-runtime@v2
@@ -67,17 +69,16 @@ jobs:
       run: |
         docker buildx bake -f docker-compose.yaml \
           --set '*.platform=linux/amd64' \
-          --set 'graphql-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache' --set 'graphql-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache,scope=global-graphql-stylo' \
-          --set 'export-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache' --set 'export-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache,scope=global-export-stylo' \
-          --set 'front-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache' --set 'front-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache,scope=global-front-stylo' \
-          --load graphql-stylo export-stylo front-stylo
+          --set '${{ matrix.app }}.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/${{ matrix.app }}:cache' --set '${{ matrix.app }}.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache,scope=global-graphql-stylo' \
+          --load ${{ matrix.app }}
+
+    - name: Login to GitHub Container Registry ghcr.io
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
     - if: ${{ github.ref_type == 'tag' || github.ref_name == 'master' || github.ref_name == 'main' }}
       name: Push images (on tag, or default branch)
       run: |
         docker buildx bake -f docker-compose.yaml \
           --set '*.platform=linux/amd64' \
-          --set 'graphql-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache' --set 'graphql-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache,scope=global-graphql-stylo' \
-          --set 'export-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache' --set 'export-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/export-stylo:cache,scope=global-export-stylo' \
-          --set 'front-stylo.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache' --set 'front-stylo.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/front-stylo:cache,scope=global-front-stylo' \
-          --push graphql-stylo export-stylo front-stylo
+          --set '${{ matrix.app }}.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/${{ matrix.app }}:cache' --set '${{ matrix.app }}.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/${{ matrix.app }}:cache,scope=global-${{ matrix.app }}' \
+          --push ${{ matrix.app }}

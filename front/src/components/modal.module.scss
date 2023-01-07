@@ -5,8 +5,22 @@ dialog::backdrop {
   background-color: rgba(0, 0, 0, 0.7);
 }
 
+:global {
+  body[data-scrolling="false"] {
+    overflow: hidden;
+  }
+}
+
+:root {
+  --spacing: 1rem;
+}
+
+.title {
+  font-size: 1.3rem;
+}
+
 .modal {
-  padding: 1rem;
+  padding: var(--spacing);
   width: 90vw;
   max-width: 750px;
   max-height: 90vh;
@@ -14,8 +28,12 @@ dialog::backdrop {
   background-color: $extra-background-color;
 
   footer {
-    margin-top: 1.5rem;
+    margin-top: calc(var(--spacing) * 1.5);
   }
+}
+
+.modalBody {
+  margin: var(--spacing) 0;
 }
 
 .closeButton {

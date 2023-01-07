@@ -2,24 +2,31 @@ const { makeExecutableSchema } = require('@graphql-tools/schema')
 const resolvers = require('./resolvers/index.js')
 
 const typeDefs = `#graphql
+scalar EmailAddress
+scalar JWT
+scalar DateTime
+scalar HexColorCode
+
 type User {
-  _id: ID!
-  displayName: String!
-  authType: String!
-  email: String!
+  _id: ID
+  displayName: String
+  authType: String
+  email: EmailAddress
   firstName: String
   lastName: String
   institution: String
-  tags(limit: Int, page: Int): [Tag!]!
-  permissions: [UserPermission]!
-  acquintances(limit: Int, page: Int): [User!]!
-  articles(limit: Int, page: Int): [Article!]!
+  tags(limit: Int, page: Int): [Tag]
+  permissions: [UserPermission]
+  acquintances(limit: Int, page: Int): [User]
+  articles(limit: Int, page: Int): [Article]
   admin: Boolean
   yaml: String
   zoteroToken: String
-  createdAt: String
-  updatedAt: String
-  apiToken: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  apiToken: JWT
+
+  article(id: ID!): Article
 }
 
 type UserPermission {
@@ -33,10 +40,10 @@ type Tag {
   name: String!
   owner: ID
   description: String
-  color: String
+  color: HexColorCode
   articles: [Article]
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 type WorkingVersion {
@@ -57,8 +64,8 @@ type Version {
   message: String
   article: Article
   owner: User
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 type Article {
@@ -70,8 +77,15 @@ type Article {
   workingVersion: WorkingVersion
   versions(limit: Int, page: Int): [Version!]!
   tags(limit: Int, page: Int): [Tag!]!
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime
+  updatedAt: DateTime
+
+  addTags(tags: [ID]!): [Tag]
+  delete(dryRun: Boolean): Boolean
+  removeTags(tags: [ID]!): [Tag]
+  rename(title: String!): Boolean
+  setZoteroLink(zotero: String!): Boolean
+  updateWorkingVersion(content: WorkingVersionInput!): Boolean
 }
 
 type ArticleContributor {
@@ -79,20 +93,37 @@ type ArticleContributor {
   roles: [String]
 }
 
-input UserInput {
-  email: String!
-  username: String
+input VersionInput {
+  article: ID!
+  major: Boolean
+  message: String
+}
+
+# input WorkingVersionInput @oneOf {
+input WorkingVersionInput {
+  bib: String,
+  md: String,
+  yaml: String,
+}
+
+input NewUserInput {
+  email: EmailAddress!
+  username: String!
   password: String!
+  passwordC: String!
   displayName: String
   firstName: String
   lastName: String
   institution: String
 }
 
-input VersionInput {
-  article: ID!
-  major: Boolean
-  message: String
+input UserProfileInput {
+  displayName: String!
+  firstName: String
+  lastName: String
+  institution: String
+  yaml: String
+  zoteroToken: String
 }
 
 type Query {
@@ -123,10 +154,10 @@ type Query {
 
 type Mutation {
   "Create user + password + default article"
-  createUser(user: UserInput!): User!
+  createUser(details: NewUserInput!): User!
 
   "Add an email to your acquintances [need to be authentificated as user]"
-  addAcquintance(email: String!, user: ID!): User
+  addAcquintance(email: EmailAddress!, user: ID!): User
 
   "Change password"
   changePassword(old: String!, new: String!, user: ID!): User
@@ -138,34 +169,17 @@ type Mutation {
   revokeAccountAccess(user: ID!, to: ID!): User
 
   "Change user information"
-  updateUser(
-    user: ID!
-    displayName: String
-    firstName: String
-    lastName: String
-    institution: String
-    zoteroToken: String
-    yaml: String
-  ): User
+  updateUser(user: ID!, details: UserProfileInput!): User
 
   "Give access to a user using a password's email"
-  addCredential(email: String!, user: ID!): User
+  addCredential(email: EmailAddress!, user: ID!): User
   # If need to create new user: createUser + addCredential
 
   "Remove access to a user using a password's email (can't be the main email)"
-  removeCredential(email: String!, user: ID!): User
+  removeCredential(email: EmailAddress!, user: ID!): User
 
   "Create article for specified user [need to be authentificated as specified user]"
-  createArticle(title: String!, user: ID!): Article
-
-  "Update article bibliography, content or metadata [need to be authentificated as specified user]"
-  updateWorkingVersion(
-    user: ID!
-    article: ID!
-    bib: String
-    md: String
-    yaml: String
-  ): Article
+  createArticle(title: String!, user: ID!, tags: [ID]): Article
 
   "Save a new version for article [need to be authentificated as specified user]"
   saveVersion(version: VersionInput!, user: ID!): Version
@@ -175,26 +189,20 @@ type Mutation {
     name: String!
     description: String
     user: ID!
-    color: String!
+    color: HexColorCode!
   ): Tag
 
   "update name and description of a tag [need to be authentificated as specified user]"
   updateTag(
     name: String
     description: String
-    color: String
+    color: HexColorCode
     tag: ID!
     user: ID!
   ): Tag
 
-  "Delete tag and all articles carrying it"
-  deleteTag(tag: ID!, user: ID!): User
-
-  "Add article to a specified tag [Need to be authenficated as owner of the tag]"
-  addToTag(article: ID!, tag: ID!, user: ID!): Article
-
-  "Remove article from a specified tag [Need to be authenficated as owner of the tag]"
-  removeFromTag(article: ID!, tag: ID!, user: ID!): Article
+  "Delete tag, and remove it from all related articles"
+  deleteTag(tag: ID!, user: ID!): Boolean
 
   "add a user to an article"
   shareArticle(article: ID!, to: ID!, user: ID!): Article
@@ -204,15 +212,6 @@ type Mutation {
 
   "Duplicate the working version of an article, with someone, or yourself"
   duplicateArticle(article: ID!, to: ID!, user: ID!): Article
-
-  "Rename an article you own"
-  renameArticle(article: ID!, title: String!, user: ID!): Article
-
-  "Change the zoteroLink to an article"
-  zoteroArticle(article: ID!, zotero: String!, user: ID!): Article
-
-  "Remove from owners"
-  deleteArticle(article: ID!, user: ID!): Article
 }`
 
 module.exports = makeExecutableSchema({ typeDefs, resolvers })

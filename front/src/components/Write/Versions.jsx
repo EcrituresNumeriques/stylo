@@ -26,12 +26,11 @@ const date = new Intl.DateTimeFormat(['en', 'fr'], {
 
 const dateFormat = date.format.bind(date)
 
-const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
+export default function Versions ({ article, selectedVersion, compareTo, readOnly }) {
   const articleVersions = useSelector(state => state.articleVersions, shallowEqual)
   const expand = useSelector(state => state.articlePreferences.expandVersions)
   const dispatch = useDispatch()
-  const [exporting, setExporting] = useState(false)
-  const [exportParams, setExportParams] = useState({ })
+  const [exportParams, setExportParams] = useState({})
   const [expandCreateForm, setExpandCreateForm] = useState(false)
 
   const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandVersions' }), [])
@@ -55,9 +54,9 @@ const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
           New Version
         </Button>
       </h1>
-      {exporting && (
-        <Modal cancel={() => setExporting(false)}>
-          <Export {...exportParams} />
+      {exportParams.articleId && (
+        <Modal title="Export" cancel={() => setExportParams({})}>
+          <Export articleId={exportParams.articleId} articleVersionId={exportParams.articleVersionId} />
         </Modal>
       )}
       {expand && (
@@ -126,12 +125,12 @@ const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
                   )}
                   <li>
                     <Link
-                      to={`/article/${article._id}/version/${v._id}/preview`}
+                      to={`/article/${article._id}/version/${v._id}/annotate`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
                     >
-                      Preview
+                      Annotate
                     </Link>
                   </li>
                   <li>
@@ -141,7 +140,6 @@ const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
                           articleId: article._id,
                           articleVersionId: v._id
                         })
-                        setExporting(true)
                       }}
                     >
                       Export
@@ -156,5 +154,3 @@ const Versions = ({ article, selectedVersion, compareTo, readOnly }) => {
     </section>
   )
 }
-
-export default Versions

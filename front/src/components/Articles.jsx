@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { shallowEqual, useSelector, useDispatch } from 'react-redux'
 
 import { useGraphQL } from '../helpers/graphQL'
+import { getUserArticles as query } from './Articles.graphql'
 import etv from '../helpers/eventTargetValue'
 
 import Article from './Article'
@@ -20,12 +21,12 @@ import Select from "./Select";
 export default function Articles () {
   const dispatch = useDispatch()
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
+  const [selectedTagIds, setSelectedTagIds] = useState([])
 
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState('')
   const [articles, setArticles] = useState([])
   const [tags, setTags] = useState([])
-  const [filterTags, setFilterTags] = useState([])
   const [creatingArticle, setCreatingArticle] = useState(false)
   const [needReload, setNeedReload] = useState(true)
   const [tagManagement, setTagManagement] = useState(false)
@@ -41,6 +42,15 @@ export default function Articles () {
     setArticles([...findAndUpdateArticleTags(articles, articleId, tags)])
   }, [articles])
 
+  const handleCloseTag = useCallback(() => setTagManagement(false), [])
+  const toggleFilterTags = useCallback((event) => {
+    const { id } = event.target.dataset
+    selectedTagIds.includes(id)
+      ? setSelectedTagIds(selectedTagIds.filter(tagId => tagId !== id))
+      : setSelectedTagIds([...selectedTagIds, id])
+  }, [currentUserId, selectedTagIds])
+
+
   const handleCurrentUserChange = useCallback((selectedItem) => {
     setIsLoading(true)
     setCurrentUserId(selectedItem)
@@ -51,16 +61,6 @@ export default function Articles () {
     // shallow copy otherwise React won't render the components again
     setArticles([...findAndUpdateArticleTitle(articles, articleId, title)])
   }, [articles])
-
-  const handleCloseTag = useCallback(() => {
-    setTagManagement(false)
-  }, [])
-
-  const findAndUpdateTag = (tags, id) => {
-    const tag = tags.find((t) => t._id === id)
-    tag.selected = !tag.selected
-    return tags
-  }
 
   const findAndUpdateArticleTags = (articles, articleId, tags) => {
     const article = articles.find((a) => a._id === articleId)
@@ -74,78 +74,18 @@ export default function Articles () {
     return articles
   }
 
-  const filterByTagsSelected = (article) => {
-    const listOfTagsSelected = [...filterTags].filter((t) => t.selected)
+  const filterByTagsSelected = useCallback((article) => {
+    const listOfTagsSelected = tags.filter(({ _id }) => selectedTagIds.includes(_id))
+
     if (listOfTagsSelected.length === 0) {
       return true
     }
-    let pass = true
-    for (let i = 0; i < listOfTagsSelected.length; i++) {
-      if (!article.tags.map((t) => t._id).includes(listOfTagsSelected[i]._id)) {
-        pass = false
-      }
-    }
-    return pass
-  }
 
-  const query = `query($user:ID!){
-    user(user:$user){
-      _id
-      displayName
-
-      tags {
-        _id
-        owner
-        description
-        color
-        name
-      }
-
-      permissions {
-        user {
-          _id
-          displayName
-        }
-      }
-    }
-
-    articles(user:$user){
-      _id
-      title
-      updatedAt
-
-      owner {
-        _id
-        displayName
-      }
-
-      contributors {
-        user {
-          _id
-          displayName
-        }
-      }
-
-      versions{
-        _id
-        version
-        revision
-        message
-      }
-
-      tags{
-        name
-        owner
-        color
-        _id
-      }
-    }
-
-    userGrantedAccess {
-      _id
-      displayName
-    }
-  }`
+    // if we find at least one matching tag in the selected list, we keep the article
+    return listOfTagsSelected.some(tag => {
+      return article.tags.find(({ _id }) => _id === tag._id)
+    })
+  }, [currentUserId, selectedTagIds])
 
   useEffect(() => {
     if (needReload) {
@@ -156,19 +96,9 @@ export default function Articles () {
 
           //Need to sort by updatedAt desc
           setArticles(data.articles)
-          const tags = data.user.tags.map((t) => ({
-            ...t,
-            selected: false,
-            color: t.color || 'grey',
-          }))
-          setTags(tags)
-          // deep copy of tags
+          setTags(data.tags)
           setCurrentUser(data.user)
-          setUserAccounts([
-            { _id: activeUser._id, displayName: activeUser.displayName },
-            ...data.userGrantedAccess
-          ])
-          setFilterTags(structuredClone(tags))
+          setUserAccounts(data.userGrantedAccess)
           setIsLoading(false)
           setNeedReload(false)
         } catch (err) {
@@ -211,7 +141,7 @@ export default function Articles () {
       <div className={styles.actions}>
         {creatingArticle && (
           <CreateArticle
-            currentUser={currentUser}
+            currentUserId={currentUserId}
             tags={tags}
             cancel={() => setCreatingArticle(false)}
             triggerReload={() => {
@@ -228,15 +158,12 @@ export default function Articles () {
         {tags.length > 0 && <div className={styles.filtersTags}>
           <h4>Filter by Tags</h4>
           <ul className={styles.filterByTags}>
-            {filterTags.map((t) => (
+            {tags.map((t) => (
               <li key={`filterTag-${t._id}`}>
                 <ArticleTag
                   tag={t}
                   name={`filterTag-${t._id}`}
-                  onClick={() => {
-                    // shallow copy otherwise React won't render the components again
-                    setFilterTags([...findAndUpdateTag(filterTags, t._id)])
-                  }}
+                  onClick={toggleFilterTags}
                   disableAction={false}
                 />
               </li>

@@ -4,6 +4,7 @@ import process from 'node:process'
 import react from '@vitejs/plugin-react'
 import legacy from '@vitejs/plugin-legacy'
 import handlebars from 'vite-plugin-handlebars'
+import graphql from '@rollup/plugin-graphql'
 
 const require = createRequire(import.meta.url)
 const { version, browserlist: target } = require('./package.json')
@@ -28,6 +29,7 @@ export default defineConfig(async ({ mode }) => {
       }
     },
     plugins: [
+      graphql(),
       react({
         jsxImportSource: mode === 'development' ? '@welldone-software/why-did-you-render' : 'react'
       }),

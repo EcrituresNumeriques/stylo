@@ -95,34 +95,35 @@ render(
             <Route path="/login" exact>
               <Login />
             </Route>
+            {/* Articles index */}
+            <PrivateRoute path={['/articles', '/']} exact>
+              <Articles />
+            </PrivateRoute>
+            {/* Books index */}
             <PrivateRoute path="/books" exact>
               <Books />
-            </PrivateRoute>
-            <Route path={`/books/:bookId/preview`}>
-              <ArticlePreview />
-            </Route>
-            <PrivateRoute path="/articles" exact>
-              <Articles />
             </PrivateRoute>
             <PrivateRoute path="/credentials" exact>
               <Credentials />
             </PrivateRoute>
-            <PrivateRoute path={`/article/:id/compare/:compareTo`}>
-              <Write />
-            </PrivateRoute>
-            <Route path={`/article/:id/preview`}>
+            {/* Annotate a Book */}
+            <Route path={[`/books/:bookId/annotate`]} exact>
               <ArticlePreview />
             </Route>
-            <Route path={`/article/:id/version/:version/preview`}>
+            {/* Annotate an article or its version */}
+            <Route path={[`/article/:id/version/:version/annotate`, `/article/:id/annotate`]} exact>
               <ArticlePreview />
             </Route>
-            <PrivateRoute path={`/article/:id/version/:version/compare/:compareTo`}>
+            {/* Write and Compare */}
+            <PrivateRoute path={[`/article/:id/compare/:compareTo`, `/article/:id/version/:version/compare/:compareTo`]} exact>
               <Write />
             </PrivateRoute>
-            <PrivateRoute path={`/article/:id/version/:version`}>
+            {/* Write with a given version */}
+            <PrivateRoute path={`/article/:id/version/:version`} exact>
               <Write />
             </PrivateRoute>
-            <PrivateRoute path={`/article/:id`}>
+            {/* Write and/or Preview */}
+            <PrivateRoute path={[`/article/:id/preview`, `/article/:id`]} exact>
               <Write />
             </PrivateRoute>
             <Route exact path="/privacy">
@@ -154,9 +155,6 @@ render(
               <h4>Tabs</h4>
               <h4>Form actions</h4>
             </Route>
-            <PrivateRoute exact path="/">
-              <Articles />
-            </PrivateRoute>
             <Route exact path="/error">
               <Error />
             </Route>

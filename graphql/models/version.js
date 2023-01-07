@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const { deriveToc } = require('../helpers/markdown.js')
+
 const versionSchema = new Schema({
   owner:{
     type: Schema.Types.ObjectId,
@@ -22,11 +24,17 @@ const versionSchema = new Schema({
     type:String,
     default:''
   },
-  md: String,
+  md: {
+    type: String,
+    set: function (md) {
+      this.sommaire = deriveToc(md)
+      return md
+    }
+  },
   yaml: String,
   bib: String,
   sommaire:{
-    type:String,
+    type: String,
     default: ''
   },
 }, {timestamps:true});

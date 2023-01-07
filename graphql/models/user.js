@@ -1,9 +1,8 @@
 const mongoose = require('mongoose')
-const defaultsData = require('../data/defaultsData')
+const bcrypt = require('bcryptjs')
 
-const Article = require('./article')
+const { article: defaultArticle, yaml: defaultUserYaml } = require('../data/defaultsData')
 const { UserPermissionSchema } = require('./permission')
-const { logger } = require('../logger')
 
 const Schema = mongoose.Schema;
 
@@ -38,7 +37,10 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    default: null
+    default: null,
+    set: (password) => {
+      return bcrypt.hashSync(password, 10)
+    }
   },
   // we store who a user has granted his account to
   // each listed account can _switch into_ their account
@@ -66,10 +68,28 @@ const userSchema = new Schema({
   },
   yaml: {
     type: String,
-    defaults: defaultsData.yaml
+    defaults: defaultUserYaml
   }
 }, { timestamps: true });
 
+userSchema.methods.comparePassword = function (password) {
+  return bcrypt.compare(password, this.password)
+}
+
+userSchema.methods.createDefaultArticle = async function createDefaultArticle () {
+  const newArticle = await this.model('Article').create({
+    title: defaultArticle.title,
+    owner: this,
+    workingVersion: {
+      yaml: newArticle.yaml,
+      bib: newArticle.bib,
+      md: newArticle.md
+    },
+  })
+
+  this.articles.push(newArticle)
+  return this.save()
+}
 
 userSchema.statics.findAllArticles = async function ({ userId, fromSharedUserId }) {
   // if fromSharedUserId is provided
@@ -107,7 +127,14 @@ userSchema.statics.findAllArticles = async function ({ userId, fromSharedUserId 
  */
 userSchema.statics.findAccountAccessUsers = async function (userId, role = 'write') {
   return this
-    .find({ permissions: { $elemMatch: { user: userId, scope: 'user', roles: { $in: role } } } })
+    .find({
+      $or: [
+        { _id: userId },
+        { permissions: {
+          $elemMatch: { user: userId, scope: 'user', roles: { $in: role } }
+        } }
+      ]
+    })
     .lean()
 }
 
@@ -142,19 +169,3 @@ userSchema.statics.findAccountAccessArticles = function (user, role = 'read') {
 
 module.exports = mongoose.model('User', userSchema)
 module.exports.schema = userSchema
-
-module.exports.postCreate = function postCreate (newUser) {
-  logger.info({ userId: newUser._id }, 'User has been saved')
-
-  // Create a new default article for each new user
-  const defaultArticle = defaultsData.article
-  const newArticle = new Article({ title: defaultArticle.title })
-
-  newUser.articles.push(newArticle)
-  newArticle.owner = newUser
-
-  return Promise.all([
-    newUser.save(),
-    newArticle.save(),
-  ])
-}

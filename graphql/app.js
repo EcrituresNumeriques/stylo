@@ -22,7 +22,6 @@ const { verifCreds } = require('./resolvers/authResolver')
 
 const { createJWTToken, populateUserFromJWT } = require('./helpers/token')
 const User = require('./models/user')
-const { postCreate } = User
 
 const app = express()
 
@@ -117,7 +116,8 @@ passport.use('oidc', new OidcStrategy({
 
     try {
       // we populate a user with initial content
-      await user.save().then(postCreate)
+      await user.save()
+      await user.createDefaultArticle()
     } catch (err) {
       return done(`Unable to create a new user ${email}, cause:`, err)
     }
@@ -141,7 +141,7 @@ passport.serializeUser((user, next) => {
 })
 
 passport.deserializeUser(async (id, next) => {
-  const user = await User.findById(id)
+  const user = await User.findById(id).populate({ path: 'permissions' })
   next(null, user)
 })
 
@@ -177,7 +177,7 @@ app.get(
     if (req.user) {
       const { email } = req.user
       const token = await createJWTToken({ email, jwtSecret })
-      res.redirect(`${req.headers.referer}/login#auth-token=${token}`)
+      res.redirect(`${req.headers.referer.replace(/\/$/)}/login#auth-token=${token}`)
     } else {
       req.session.origin = req.headers.referer
       next()
@@ -263,7 +263,14 @@ app.post('/login/local',
 
 app.post('/graphql', populateUserFromJWT({ jwtSecret }), createHandler({
   schema,
-  context: async (req) => ({ user: req.raw.user }),
+  /**
+   * @param {express.Request} req
+   * @returns {{token: DecodedJWT, user: User}}
+   */
+  context: (req) => ({
+    token: req.raw.token ?? {},
+    user: req.raw.user ?? null
+  }),
 }))
 
 // fix deprecation warnings: https://mongoosejs.com/docs/deprecations.html

@@ -1,109 +1,136 @@
-import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
-import styles from './workingVersion.module.scss'
-import Button from '../Button'
-import { AlertCircle, Loader, Check } from 'react-feather'
-import { Link } from 'react-router-dom'
-import buttonStyles from '../button.module.scss'
-import Modal from '../Modal'
-import Export from '../Export'
-import formatTimeAgo from '../../helpers/formatTimeAgo'
-import { generateArticleExportId } from '../../helpers/identifier'
+import React, { useEffect, useMemo, useState, useCallback } from 'react'
+import { shallowEqual, useSelector } from 'react-redux'
+import { Link, useRouteMatch } from "react-router-dom";
+import { AlertCircle, AlignLeft, Check, Edit3, Eye, Loader, MessageSquare, Printer } from 'react-feather'
 
-const mapStateToProps = ({ workingArticle }) => {
-  return { workingArticle }
-}
+import styles from './workingVersion.module.scss'
+import formatTimeAgo from '../../helpers/formatTimeAgo'
+import buttonStyles from "../button.module.scss";
+import Button from "../Button";
+import Modal from "../Modal";
+import Export from "../Export";
+
+const ONE_MINUTE = 60000
 
 const stateUiProps = {
   saved: {
     text: 'Last saved',
-    icon: <Check />,
+    icon: <Check/>,
     style: styles.savedIndicator
   },
   saving: {
     text: 'Saving',
-    icon: <Loader />,
+    icon: <Loader/>,
     style: styles.savingIndicator
   },
   saveFailure: {
     text: 'Error',
-    icon: <AlertCircle />,
+    icon: <AlertCircle/>,
     style: styles.failureIndicator
   },
 }
 
-const WorkingVersion = ({ articleInfos, workingArticle, readOnly }) => {
-  const [exporting, setExporting] = useState(false)
-  const [savedAgo, setSavedAgo] = useState('')
+const MODES_EDIT = 'edit'
+const MODES_PREVIEW = 'preview'
 
-  const articleLastSavedAt = workingArticle.updatedAt
-  const state = workingArticle.state
+export function ArticleVersion ({ version }) {
+  return <span>
+    {!version && <>working copy</>}
+    {version && <>
+      <span className={styles.versionLabel}>{version.message || 'No label'}</span>
+      <span className={styles.versionNumber}>{version.major}.{version.minor}</span>
+    </>}
+  </span>
+}
+
+export function ArticleSaveState ({ state, updatedAt, stateMessage }) {
+  const [lastRefreshedAt, setLastRefresh] = useState(Date.now())
   const stateUi = stateUiProps[state]
+
+  const [savedAgo, isoString] = useMemo(() => ([
+    formatTimeAgo(updatedAt),
+    new Date(updatedAt).toISOString()
+  ]), [lastRefreshedAt])
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLastRefresh(Date.now() * 1000), ONE_MINUTE)
+    return () => clearTimeout(timer)
+  }, [])
+
+  return (<>
+    <span className={stateUi.style}>
+      {state !== 'saved' && stateUi.icon}
+      {state !== 'saveFailure' && stateUi.text}
+      {state === 'saveFailure' && (<span>
+        <strong>{stateUi.text}</strong>
+        {stateMessage}
+      </span>)}
+    </span>
+
+    {state === 'saved' && (<time dateTime={isoString}>{savedAgo}</time>)}
+  </>)
+}
+
+export default function WorkingVersion ({ articleInfos, selectedVersion }) {
+  const [exporting, setExporting] = useState(false)
+  const routeMatch = useRouteMatch()
+  const workingArticle = useSelector(state => state.workingArticle, shallowEqual)
+  const cancelExport = useCallback(() => setExporting(false), [])
+  const openExport = useCallback(() => setExporting(true), [])
+  const mode = routeMatch.path === '/article/:id/preview' ? MODES_PREVIEW : MODES_EDIT
 
   const articleOwnerAndContributors = [
     articleInfos.owner.displayName,
     ...articleInfos.contributors.map(contributor => contributor.user.displayName )
   ]
 
-  useEffect(() => {
-    setSavedAgo(formatTimeAgo(articleLastSavedAt))
-    const timer = setTimeout(() => {
-      setSavedAgo(formatTimeAgo(articleLastSavedAt))
-    }, 60000)
-    return () => clearTimeout(timer)
-  }, [articleLastSavedAt])
-
   return (
     <section className={styles.section}>
-      <header>
-        <h1 className={styles.title}>{articleInfos.title}</h1>
+      <header className={styles.header}>
+        <h1 className={styles.title}>
+          <AlignLeft />
+          {articleInfos.title}
+        </h1>
 
         <div className={styles.meta}>
-          <div className={styles.by}>by</div>
-          <div className={styles.byLine}>
-            <span className={styles.owners}>{articleOwnerAndContributors.join(', ')}</span>
-            <span className={styles.lastSaved}>
-              <span className={stateUi.style}>
-                {state !== 'saved' && stateUi.icon}
-                {state !== 'saveFailure' && stateUi.text}
-                {state === 'saveFailure' && (<span>
-                  <strong>{stateUi.text}</strong>
-                  {workingArticle.stateMessage}
-                </span>)}
-
-              </span>
-
-              {state === 'saved' && (<time dateTime={articleLastSavedAt}>{savedAgo}</time>)}
-
-            </span>
-          </div>
+          <ul className={styles.byLine}>
+            <li className={styles.owners}>by {articleOwnerAndContributors.join(', ')}</li>
+            <li className={styles.version}>
+              <ArticleVersion version={selectedVersion} />
+            </li>
+            <li className={styles.lastSaved}>
+              <ArticleSaveState state={workingArticle.state} updatedAt={workingArticle.updatedAt} stateMessage={workingArticle.stateMessage} />
+            </li>
+          </ul>
         </div>
       </header>
       {exporting && (
-        <Modal cancel={() => setExporting(false)}>
-          <Export
-            articleId={articleInfos._id}
-            articleVersionId={articleInfos._id}
-          />
+        <Modal title="Export" cancel={cancelExport}>
+          <Export articleVersionId={selectedVersion} articleId={articleInfos._id} />
         </Modal>
       )}
       <ul className={styles.actions}>
         <li>
-          <Link
-            to={`/article/${articleInfos._id}/preview`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
-          >
-            Preview
+          <Link to={`/article/${articleInfos._id}`} className={mode === MODES_EDIT ? buttonStyles.primaryDisabled : buttonStyles.secondary} title="Edit article">
+            <Edit3 /> Edit
           </Link>
         </li>
         <li>
-          <Button onClick={() => setExporting(true)}>Export</Button>
+          <Link to={`/article/${articleInfos._id}/preview`} className={mode === MODES_PREVIEW ? buttonStyles.primaryDisabled : buttonStyles.secondary} title="Preview article">
+            <Eye /> <abbr title="HyperText Markup Language">HTML</abbr>&#160;Preview
+          </Link>
+        </li>
+        <li>
+          <Button icon title="Download a printable version" onClick={openExport}>
+            <Printer />
+          </Button>
+        </li>
+        <li>
+          <Link to={`/article/${articleInfos._id}/annotate`} title="Annotate with Stylo users and other people (open a new window)" target="_blank" rel="noopener noreferrer" className={buttonStyles.icon}>
+            <MessageSquare />
+          </Link>
         </li>
       </ul>
     </section>
   )
 }
-
-export default connect(mapStateToProps)(WorkingVersion)

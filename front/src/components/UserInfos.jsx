@@ -4,6 +4,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import { useGraphQL } from '../helpers/graphQL'
+import { getUserDetails, updateUser } from './Credentials.graphql'
 import etv from '../helpers/eventTargetValue'
 import styles from './credentials.module.scss'
 import formStyles from './field.module.scss'
@@ -31,9 +32,8 @@ export default function UserInfos () {
   useEffect(() => {
     ;(async () => {
       try {
-        const query = `query($user:ID!){user(user:$user){ displayName _id email admin createdAt updatedAt yaml firstName zoteroToken lastName institution }}`
         const variables = { user: userId }
-        const data = await runQuery({ query, variables })
+        const data = await runQuery({ query: getUserDetails, variables })
         setDisplayName(data.user.displayName)
         setFirstName(data.user.firstName || '')
         setLastName(data.user.lastName || '')
@@ -47,9 +47,8 @@ export default function UserInfos () {
   }, [])
 
   const unlinkZoteroAccount = async () => {
-    const query = `mutation($user:ID!,$zoteroToken:String){updateUser(user:$user, zoteroToken:$zoteroToken){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken }}`
-    const variables = { user: userId, zoteroToken: null }
-    const data = await runQuery({ query, variables })
+    const variables = { user: userId, details: { zoteroToken: null } }
+    const data = await runQuery({ query: updateUser, variables })
     setUser(data.updateUser)
     clearZoteroToken()
     setIsSaving(false)
@@ -59,16 +58,11 @@ export default function UserInfos () {
     e.preventDefault()
     try {
       setIsSaving(true)
-      const query = `mutation($user:ID!,$displayName:String!,$firstName:String,$lastName:String, $institution:String,$yaml:String){updateUser(user:$user,displayName:$displayName,firstName:$firstName, lastName: $lastName, institution:$institution, yaml:$yaml){ displayName _id email admin createdAt updatedAt yaml firstName lastName institution zoteroToken }}`
       const variables = {
         user: userId,
-        yaml,
-        displayName,
-        firstName,
-        lastName,
-        institution,
+        details: { yaml, displayName, firstName, lastName, institution },
       }
-      const data = await runQuery({ query, variables })
+      const data = await runQuery({ query: updateUser, variables })
       setDisplayName(data.updateUser.displayName)
       updateActiveUser(displayName)
       setFirstName(data.updateUser.firstName || '')
@@ -118,15 +112,19 @@ export default function UserInfos () {
           onChange={(e) => setInstitution(etv(e))}
           placeholder="Institution name"
         />
+        <Field id="yamlField" label="Default YAML">
+          <textarea
+            id="yamlField"
+            wrap="off"
+            value={yaml || ""}
+            onChange={(e) => setYaml(etv(e))}
+            placeholder=""
+          />
+        </Field>
         <Field  label="Zotero">
           <>
-            {user.zoteroToken ? (
-              <span>
-              Linked with <b>{user.zoteroToken}</b> account.
-            </span>
-            ) : (
-              <span>No linked account.</span>
-            )}
+            {user.zoteroToken && <span>Linked with <b>{user.zoteroToken}</b> account.</span>}
+            {!user.zoteroToken && <span>No linked account.</span>}
             {user.zoteroToken && (
               <Button
                 title="Unlink this Zotero account"
@@ -136,14 +134,6 @@ export default function UserInfos () {
               </Button>
             )}
           </>
-        </Field>
-        <Field label="Default YAML">
-          <textarea
-            id="yamlField"
-            value={yaml || ""}
-            onChange={(e) => setYaml(etv(e))}
-            placeholder=""
-          />
         </Field>
 
         <div className={formStyles.footer}>

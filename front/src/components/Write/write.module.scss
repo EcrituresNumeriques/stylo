@@ -9,6 +9,49 @@
   width: 50%;
 }
 
+.previewPage {
+  @extend .wrapped-center;
+  background-color: $extra-background-color;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .3);
+  min-height: 200px;
+  padding: 2rem;
+
+  :global {
+    header:first-of-type,
+    hr#startArticle {
+      display: none;
+    }
+
+    [role="doc-bibliography"] {
+      margin-top: 3em;
+    }
+    [role="doc-biblioentry"]:not(:last-of-type) {
+      margin-bottom: 0.5em;
+    }
+  }
+}
+
+.article {
+  @extend .wrapped-center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  textarea {
+    padding: 1rem;
+    width: 100%;
+  }
+
+  > pre,
+  > div > pre {
+    margin-top: 0;
+    padding: 1rem;
+    width: 100%;
+    white-space: pre-wrap;
+    flex: 1 1 50%;
+  }
+}
+
 .error {
   @extend .simplePage;
   color: $error-color;

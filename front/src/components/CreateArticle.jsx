@@ -1,73 +1,59 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState, useCallback } from 'react'
 import { Check } from 'react-feather'
 
 import etv from '../helpers/eventTargetValue'
 import { useGraphQL } from '../helpers/graphQL'
+import { createArticle as query } from './Articles.graphql'
 
 import styles from './createArticle.module.scss'
 import Button from './Button'
 import Field from './Field'
 import ArticleTag from './Tag'
 
-export default function CreateArticle (props) {
+export default function CreateArticle ({ currentUserId, tags, cancel, triggerReload }) {
   const [title, setTitle] = useState('')
-  const [tagsSelected, setTagsSelected] = useState(
-    props.tags.map((t) => Object.assign(t, { selected: false }))
-  )
+  const [selectedTagIds, setSelectedtagIds] = useState([])
   const runQuery = useGraphQL()
 
-  const findAndUpdateTag = (tags, id) => {
-    const immutableTags = structuredClone(tags)
-    const tag = immutableTags.find((t) => t._id === id)
-    tag.selected = !tag.selected
-    return immutableTags
-  }
 
-  const baseQuery = 'mutation($title:String!, $user:ID!){ createArticle(title:$title,user:$user){ _id title }'
-  const addToTag = tagsSelected
-    .filter((t) => t.selected)
-    .map(
-      (t, i) =>
-        `addToTag${i}: addToTag(article:"new",tag:"${t._id}",user:$user){ _id }`
-    )
-    .join(' ')
-  const query = baseQuery + addToTag + '}'
-  const variables = { user: props.currentUser._id, title }
+  const handleSubmit = useCallback(async (event) => {
+    const variables = { user: currentUserId, title, tags: selectedTagIds }
 
-  const createTag = async (event, query, variables) => {
-    try {
-      event.preventDefault()
-      await runQuery({ query, variables })
-      props.triggerReload()
-    } catch (err) {
-      alert(err)
-    }
-  }
+    event.preventDefault()
+    await runQuery({ query, variables })
+    triggerReload()
+  }, [title, selectedTagIds])
+
+  const handleTitleChange = useCallback(event => setTitle(etv(event)), [])
+  const toggleCheckedTags = useCallback(event => {
+    const _id = etv(event)
+    selectedTagIds.includes(_id)
+      ? setSelectedtagIds(selectedTagIds.filter(tagId => tagId !== _id))
+      : setSelectedtagIds([...selectedTagIds, _id])
+  }, [selectedTagIds])
 
   return (
     <section className={styles.create}>
-      <form onSubmit={(event) => createTag(event, query, variables)}>
+      <form onSubmit={handleSubmit}>
         <Field
           type="text"
           placeholder="Article title"
           value={title}
           autoFocus={true}
           className={styles.articleTitle}
-          onChange={(e) => setTitle(etv(e))}
+          onChange={handleTitleChange}
         />
 
         <fieldset className={styles.fieldset}>
           <legend>Select tags</legend>
           <ul className={styles.tags}>
-            {tagsSelected.map((t) => (
+            {tags.map((t) => (
               <li key={`selectTag-${t._id}`}>
                 <ArticleTag
                   tag={t}
+                  checked={selectedTagIds.includes(t._id)}
                   name={`selectTag-${t._id}`}
-                  onClick={() =>
-                    setTagsSelected(findAndUpdateTag(tagsSelected, t._id))
-                  }
+                  onClick={toggleCheckedTags}
                   disableAction={false}
                 />
               </li>
@@ -76,7 +62,7 @@ export default function CreateArticle (props) {
         </fieldset>
         <ul className={styles.actions}>
           <li>
-            <Button type="button" onClick={props.cancel}>Cancel</Button>
+            <Button type="button" onClick={cancel}>Cancel</Button>
           </li>
           <li>
             <Button primary={true} type="submit" title="Create Article">

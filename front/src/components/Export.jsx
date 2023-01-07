@@ -20,17 +20,13 @@ export default function Export ({ bookId, exportId, articleVersionId, articleId 
   const { exportFormats, exportStyles, exportStylesPreview, isLoading } = useStyloExport(csl)
   const { host } = window.location
 
-  console.log({ csl })
-
   const exportUrl = bookId
     ? `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${exportId}&book=${bookId}&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${Boolean(toc)}&tld=${tld}&unnumbered=${unnumbered}`
     // https://export.stylo-dev.huma-num.fr/generique/export/stylo-dev.huma-num.fr/60084903587dae0019eaf0d5/60084903587dae0019eaf0d5/?with_toc=1&with_ascii=0&formats=originals&formats=images&formats=html
-    : `${pandocExportEndpoint}/generique/export/${host}/${articleId}/${articleVersionId}/?with_toc=${toc}&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=images&formats=${format}`
+    : `${pandocExportEndpoint}/generique/export/${host}/${articleId}/${articleVersionId ?? articleId}/?with_toc=${toc}&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=images&formats=${format}`
 
   return (
     <section className={styles.export}>
-      <h1>Export</h1>
-
       <form className={clsx(formStyles.form, formStyles.verticalForm)}>
       {(articleId && !exportFormats.length) && <Loading inline size="24" />}
       {(articleId && exportFormats.length) && <Select id="export-formats" label="Formats" value={format} onChange={(e) => setFormat(e.target.value)}>
@@ -49,7 +45,7 @@ export default function Export ({ bookId, exportId, articleVersionId, articleId 
           <option value="icml">ICML</option>
         </Select>}
         {(articleId && !exportStyles.length) && <Loading inline size="24" />}
-        {(articleId && exportStyles.length) && <Select id="export-styles" label="Bibliography style" value={format} onChange={(e) => setCsl(e.target.value)}>
+        {(articleId && exportStyles.length) && <Select id="export-styles" label="Bibliography style" value={csl} onChange={(e) => setCsl(e.target.value)}>
           {exportStyles.map(({ title, name }) => <option value={name} key={name}>{ title }</option>)}
         </Select>}
         <div className={styles.bibliographyPreview}>

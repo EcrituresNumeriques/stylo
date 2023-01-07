@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 import { useGraphQL } from '../helpers/graphQL'
+import { getTags as query } from './Books.graphql'
 import styles from './articles.module.scss'
 
 import Book from './Book'
@@ -18,25 +19,6 @@ export default function Books () {
     //Self invoking async function
     (async () => {
       try {
-        const query = `query($user:ID!){
-          tags(user:$user){
-            _id
-            name
-            updatedAt
-            articles {
-              _id
-              title
-              updatedAt
-              versions (limit:1) {
-                _id
-                version
-                revision
-                message
-              }
-            }
-          }
-        }`
-
         setIsLoading(true)
         const data = await runQuery({ query, variables: { user: userId } })
         //Need to sort by updatedAt desc

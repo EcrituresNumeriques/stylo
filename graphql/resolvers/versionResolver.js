@@ -8,62 +8,31 @@ const { ApiError } = require('../helpers/errors')
 
 module.exports = {
   Mutation: {
-    async saveVersion (_, args, { user }) {
-      isUser(args, { user })
-
-      let version, revision
+    async saveVersion (_, args, context) {
+      const { userId } = isUser(args, context)
 
       // fetch user
-      const thisUser = await User.findOne({ _id: args.user })
+      const thisUser = await User.findById(userId)
       if (!thisUser) {
         throw new Error('This user does not exist!')
       }
 
       // fetch article
-      const userIds = await User.findAccountAccessUserIds(args.user)
-      const articleToSaveInto = await Article.findAndPopulateOneByOwners(
+      const userIds = await User.findAccountAccessUserIds(userId)
+      const article = await Article.findAndPopulateOneByOwners(
         args.version.article,
-        [user._id, userIds]
+        [userId, userIds]
       )
 
-      if (!articleToSaveInto) {
+      if (!article) {
         throw new Error('Wrong article ID!')
       }
 
-      const { bib, yaml, md } = articleToSaveInto.workingVersion
-      let lastMajorVersion = 0
-      let lastMinorVersion = 0
-      if (articleToSaveInto.versions && articleToSaveInto.versions.length) {
-        const lastVersion = articleToSaveInto.versions[0]
-        lastMajorVersion = lastVersion.version
-        lastMinorVersion = lastVersion.revision
-      }
-      if (args.version.major) {
-        // major
-        version = lastMajorVersion + 1
-        revision = 0
-      } else {
-        // minor
-        version = lastMajorVersion
-        revision = lastMinorVersion + 1
-      }
-      const message = args.version.message
-      const createdVersion = await Version.create({
-        md,
-        yaml,
-        bib,
-        version,
-        revision,
-        message,
-        sommaire: md
-          .split('\n')
-          .filter((line) => line.match(/^#+ /))
-          .join('\n'),
-        owner: thisUser.id,
-      }).then((v) => v.populate('owner').execPopulate())
-
-      articleToSaveInto.versions.push(createdVersion)
-      await articleToSaveInto.save()
+      const createdVersion = await article.createNewVersion({
+        mode: args.version.major ? 'MAJOR' : 'MINOR',
+        message: args.version.message,
+        user: thisUser
+      })
 
       return createdVersion
     },

@@ -14,7 +14,8 @@ const tagSchema = new Schema({
       ref: 'User'
   },
   color: {
-    type: String
+    type: String,
+    get: color => color || '#ccc'
   },
   articles:[
     {
@@ -23,6 +24,18 @@ const tagSchema = new Schema({
     }
   ]
 }, {timestamps: true});
+
+tagSchema.post('remove', async function () {
+  await this.model('User').updateOne(
+    { _id: this.owner },
+    { $pull: { tags: this.id }}
+  )
+
+  await this.model('Article').updateMany(
+    { tags: this.id },
+    { $pull: { tags: this.id } }
+  )
+})
 
 module.exports = mongoose.model('Tag', tagSchema);
 module.exports.schema = tagSchema;

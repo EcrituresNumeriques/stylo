@@ -5,6 +5,7 @@ import etv from '../helpers/eventTargetValue'
 import validateEmail from '../helpers/validationEmail'
 
 import { useGraphQL } from '../helpers/graphQL'
+import * as queries from './Credentials.graphql'
 
 import styles from './login.module.scss'
 import Field from './Field'
@@ -23,18 +24,7 @@ function Register () {
   const [institution, setInstitution] = useState('')
   const runQuery = useGraphQL()
 
-  const query = `mutation($email:String!, $username:String!, $password:String!, $displayName:String, $firstName:String, $lastName:String, $institution:String) {
-       createUser(user: {
-         email:$email,
-         username:$username,
-         password:$password,
-         displayName:$displayName,
-         firstName:$firstName,
-         lastName:$lastName,
-         institution:$institution
-       }) { _id }
-    }`
-  let user = {
+  const details = {
     email,
     username,
     password,
@@ -45,30 +35,30 @@ function Register () {
     institution,
   }
 
-  const createUser = async (query, user) => {
-    if (user.password !== user.passwordC) {
+  const createUser = async (details) => {
+    if (details.password !== details.passwordC) {
       alert('Password and Password confirm mismatch')
       return false
     }
-    if (user.password === '') {
+    if (details.password === '') {
       alert('password is empty')
       return false
     }
-    if (user.username === '') {
+    if (details.username === '') {
       alert('Username is empty')
       return false
     }
-    if (user.email === '') {
+    if (details.email === '') {
       alert('Email is empty')
       return false
     }
-    if (!validateEmail(user.email)) {
+    if (!validateEmail(details.email)) {
       alert('Email appears to be malformed')
       return false
     }
 
     try {
-      await runQuery({ query, variables: user })
+      await runQuery({ query: queries.createUser, variables: { details } })
       // if no error thrown, we can navigate to /
       history.push('/')
     } catch (err) {
@@ -81,7 +71,7 @@ function Register () {
       <form
         onSubmit={(event) => {
           event.preventDefault()
-          createUser(query, user)
+          createUser(details)
         }}
       >
 

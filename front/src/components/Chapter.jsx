@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Check, Edit3 } from 'react-feather'
 
 import { useGraphQL } from '../helpers/graphQL'
+import { renameArticle as query } from './Article.graphql'
 import Button from './Button'
 import buttonStyles from './button.module.scss'
 import styles from './chapter.module.scss'
@@ -26,11 +27,6 @@ export default function Chapter ({ article }) {
 
   const rename = async (e) => {
     e.preventDefault()
-    const query = `mutation($article:ID!, $title:String!, $user:ID!) {
-  renameArticle(article:$article, title:$title, user:$user) {
-    title
-  }
-}`
     const variables = {
       user: userId,
       article: articleId,

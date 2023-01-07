@@ -46,21 +46,34 @@ npm --prefix export clean-install
 npm --prefix graphql clean-install
 ```
 
-## Avec Docker
-
-Ensuite, ainsi que le reste du temps :
-
-```bash
-docker compose up mongodb-stylo export-gateway pandoc-api
-npm run dev
-```
 
 ## Sans Docker
+
+Avant un premier lancement, la variable `SE_GRAPHQL_TOKEN` doit être renseignée dans `stylo.env` à l'aide de la valeur produite par cette commande :
+
+```bash
+DOTENV_CONFIG_PATH=stylo.env NODE_OPTIONS="--require dotenv/config" npm run --prefix graphql generate-service-token --silent
+```
 
 Ensuite, ainsi que le reste du temps :
 
 ```bash
 mongod --config /usr/local/etc/mongod.conf --fork
+npm run dev
+```
+
+## Avec Docker
+
+Avant un premier lancement, la variable `SE_GRAPHQL_TOKEN` doit être renseignée dans `stylo.env` à l'aide de la valeur produite par cette commande :
+
+```bash
+docker compose run -ti --build --rm graphql-stylo npm run generate-service-token --silent
+```
+
+Ensuite, ainsi que le reste du temps :
+
+```bash
+docker compose up mongodb-stylo export-gateway pandoc-api
 npm run dev
 ```
 

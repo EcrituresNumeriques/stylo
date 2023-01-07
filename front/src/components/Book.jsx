@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Check, ChevronDown, ChevronRight, Edit3, Eye, Printer } from 'react-feather'
+import { Check, ChevronDown, ChevronRight, Edit3, MessageSquare, Printer } from 'react-feather'
 import { useSelector } from 'react-redux'
 
 import Modal from './Modal'
@@ -9,6 +9,7 @@ import Chapter from './Chapter'
 
 import etv from '../helpers/eventTargetValue'
 import { useGraphQL } from '../helpers/graphQL'
+import { updateTag as query } from './Books.graphql'
 import formatTimeAgo from '../helpers/formatTimeAgo'
 import { generateBookExportId } from "../helpers/identifier"
 
@@ -33,7 +34,6 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
 
   const renameBook = async (event) => {
     event.preventDefault()
-    const query = `mutation($user:ID!,$tag:ID!,$name:String,$description:String){ updateTag(user:$user,tag:$tag,name:$name,description:$description){ _id name description } }`
     const variables = {
       user: userId,
       tag: _id,
@@ -48,7 +48,7 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
   return (
     <article className={styles.article}>
       {exporting && (
-        <Modal cancel={() => setExporting(false)}>
+        <Modal title="Export" cancel={() => setExporting(false)}>
           <Export
             exportId={generateBookExportId(name)}
             bookId={_id}
@@ -84,9 +84,9 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
           className={[buttonStyles.icon, buttonStyles.button, articles.length === 0 ? buttonStyles.isDisabled : ''].filter(d => d).join(' ')}
           title="Preview"
           target="_blank"
-          to={`/books/${_id}/preview`}
+          to={`/books/${_id}/annotate`}
         >
-          <Eye />
+          <MessageSquare />
         </Link>
         <Button className={buttonStyles.icon} title="Export" onClick={() => setExporting(true)}>
           <Printer />

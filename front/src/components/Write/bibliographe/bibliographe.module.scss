@@ -1,29 +1,6 @@
 @use '../../../styles/defaults' as *;
 @use '../../../styles/variables' as *;
 
-.title {
-  font-size: 1.3rem;
-}
-
-.selector {
-  display: flex;
-  width: 100%;
-  margin: 1rem 0;
-  border-right: 1px solid $main-border-color;
-
-  > button {
-    border: 1px solid #000;
-    flex: 1 1 50%;
-    @extend .clickable;
-    background-color: $main-background-color;
-    padding: 0.5rem 1rem;
-
-    &.selected {
-      @extend .primary-button;
-    }
-  }
-}
-
 .actions {
   display: flex;
 }

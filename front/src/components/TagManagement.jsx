@@ -8,7 +8,7 @@ import Button from './Button'
 import Field from './Field'
 import { Search, Plus } from 'react-feather'
 
-export default (props) => {
+export default function TagManagement (props) {
   const [creatingTag, setCreatingTag] = useState(false)
   const [filter, setFilter] = useState('')
 
@@ -29,8 +29,7 @@ export default (props) => {
 
           {creatingTag && (
             <CreateTag
-              articles={props.articles}
-              currentUser={props.currentUser}
+              currentUserId={props.currentUser._id}
               cancel={() => setCreatingTag(false)}
               triggerReload={() => {
                 setCreatingTag(false)
