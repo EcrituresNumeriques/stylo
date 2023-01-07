@@ -32,7 +32,9 @@ jobs:
         cache: npm
 
     - name: Install and test
-      run: npm clean-install-test --prefix ${{ matrix.app }} --no-audit --no-fund
+      working-directory: ${{ matrix.app }}
+      run: npm clean-install-test --no-audit --no-fund
 
     - name: Build (if necessary)
-      run: npm run build --prefix ${{ matrix.app }} --if-present
+      working-directory: ${{ matrix.app }}
+      run: npm run build --if-present

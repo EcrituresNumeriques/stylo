@@ -61,20 +61,6 @@
         src: ./{{ env }}-nagios-nrpe-local.cfg
         dest: /etc/nagios/nrpe_local.cfg
 
-    - name: Checkout and update Stylo
-      git:
-        repo: 'https://github.com/EcrituresNumeriques/stylo.git'
-        dest: ~/stylo
-        force: yes
-        version: "{{ deploy_branch | default('master') }}"
-
-    - name: Copy environment config file
-      template:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
-      loop:
-        - { src: './stylo.env', dest: '~/stylo/stylo.env' }
-
     - name: Pull Docker containers
       shell:
         cmd: "docker-compose pull"
@@ -86,6 +72,18 @@
         cmd: "docker-compose run --no-deps --rm graphql-stylo npm run generate-service-token --silent"
         chdir: ~/stylo
 
+    - name: Register Shared GraphQL Token as a dynamic Ansible Fact
+      set_fact:
+        shared_graphql_token: {{ graphql_token.stdout }}
+
+    - name: Copy environment config file
+      template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+      loop:
+        - { src: './stylo.env', dest: '~/stylo/stylo.env' }
+        - { src: '../docker-compose.yml', dest: '~/stylo/docker-compose.yml' }
+
     - name: Start containers
       docker_compose:
         project_src: ~/stylo
@@ -95,10 +93,6 @@
         SNOWPACK_MATOMO_URL: "{{ matomo_url }}"
         SNOWPACK_MATOMO_SITE_ID: "{{ matomo_site_id }}"
         SE_ALLOWED_INSTANCE_DOMAINS: "{{ site }}"
-        SE_GRAPHQL_TOKEN: "{{ graphql_token.stdout}}"
-        TAG: "latest"
-        npm_config_audit: "false"
-        npm_config_fund: "false"
 
   handlers:
     - name: reload nginx
