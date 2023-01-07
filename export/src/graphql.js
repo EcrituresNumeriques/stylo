@@ -18,11 +18,7 @@ function getGraphQLClient () {
     return graphQLClient
   }
   const graphqlEndpoint = process.env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT || 'http://localhost:3030/graphql'
-  const passthroughToken = require('jsonwebtoken').sign({
-    admin: true,
-    roles: ['read'],
-    readonly: true
-  }, process.env.JWT_SECRET_SESSION_COOKIE)
+  const passthroughToken = process.env.SE_GRAPHQL_TOKEN
   graphQLClient = new GraphQLClient(graphqlEndpoint, {
     headers: {
       authorization: `Bearer ${passthroughToken}`,
