@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions.js')
+
 const ArticleContributorSchema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -173,6 +175,28 @@ articleSchema.methods.unshareWith = async function shareWith(user) {
     this.save({ timestamps: false }),
     user.save({ timestamps: false })
   ])
+}
+
+articleSchema.methods.createNewVersion = async function createNewVersion ({ mode, message, user }) {
+  const { bib, yaml, md } = this.workingVersion
+  const mostRecentVersion = this.version.at(0)
+
+  const { revision, version } = mode === 'MAJOR'
+    ? computeMajorVersion(mostRecentVersion)
+    : computeMinorVersion(mostRecentVersion)
+
+  const createdVersion = await this.model('Version').create({
+    md,
+    yaml,
+    bib,
+    version,
+    revision,
+    message,
+    owner: user.id,
+  }).then((v) => v.populate('owner').execPopulate())
+
+  this.versions.push(createdVersion)
+  await this.save()
 }
 
 articleSchema.pre('remove', async function () {
