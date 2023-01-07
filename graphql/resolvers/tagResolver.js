@@ -18,15 +18,14 @@ module.exports = {
       }
 
       //Add default article + default version
-      const newTag = Tag.create({
+      const newTag = await Tag.create({
         name: args.name,
         description: args.description,
         color: args.color,
+        owner: thisUser
       })
 
       thisUser.tags.push(newTag)
-      newTag.owner = thisUser
-
       await thisUser.save()
 
       return newTag
@@ -55,15 +54,12 @@ module.exports = {
         throw new Error('Unable to find tag')
       }
 
-      if (args.name) {
-        thisTag.name = args.name
-      }
-      if (args.description) {
-        thisTag.description = args.description
-      }
-      if (args.color) {
-        thisTag.color = args.color
-      }
+      ['name', 'description', 'color'].forEach(field => {
+        if (Object.hasOwn(args, field)) {
+          /* eslint-disable security/detect-object-injection */
+          thisTag.set(field, args[field])
+        }
+      })
 
       return thisTag.save()
     },
