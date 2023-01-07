@@ -1,6 +1,5 @@
 const User = require('../models/user')
 const Tag = require('../models/tag')
-const Article = require('../models/article')
 
 const isUser = require('../policies/isUser')
 
@@ -37,27 +36,15 @@ module.exports = {
       const { userId } = isUser(args, context, allowedIds)
 
       //Recover tag, and all articles
-      const thisTag = await Tag.findOne({ _id: args.tag, owner: userId })
-      if (!thisTag) {
+      const tag = await Tag.findOne({ _id: args.tag, owner: userId })
+      if (!tag) {
         throw new Error('Unable to find tag')
       }
 
-      //fetch user
-      const thisUser = await User.findById(userId)
-      if (!thisUser) {
-        throw new Error('This user does not exist')
-      }
-
       //pull tags from user and article + remove tag
-      thisUser.tags.pull(args.tag)
-      await Article.updateMany(
-        { tags: args.tag },
-        { $pull: { tags: args.tag } }
-      )
-      await Tag.findOneAndRemove({ _id: args.tag })
-      const returnUser = await thisUser.save()
+      await tag.remove()
 
-      return returnUser
+      return tag.$isDeleted()
     },
     async updateTag (_, args, context) {
       const allowedIds = await User.findAccountAccessUserIds(context.token._id)

@@ -201,8 +201,8 @@ type Mutation {
     user: ID!
   ): Tag
 
-  "Delete tag and all articles carrying it"
-  deleteTag(tag: ID!, user: ID!): User
+  "Delete tag, and remove it from all related articles"
+  deleteTag(tag: ID!, user: ID!): Boolean
 
   "add a user to an article"
   shareArticle(article: ID!, to: ID!, user: ID!): Article
