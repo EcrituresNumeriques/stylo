@@ -8,22 +8,22 @@ const { ApiError } = require('../helpers/errors')
 
 module.exports = {
   Mutation: {
-    async saveVersion (_, args, { user }) {
-      isUser(args, { user })
+    async saveVersion (_, args, context) {
+      const { findById } = isUser(args, context)
 
       let version, revision
 
       // fetch user
-      const thisUser = await User.findOne({ _id: args.user })
+      const thisUser = await User.findById(findById)
       if (!thisUser) {
         throw new Error('This user does not exist!')
       }
 
       // fetch article
-      const userIds = await User.findAccountAccessUserIds(args.user)
+      const userIds = await User.findAccountAccessUserIds(findById)
       const articleToSaveInto = await Article.findAndPopulateOneByOwners(
         args.version.article,
-        [user._id, userIds]
+        [findById, userIds]
       )
 
       if (!articleToSaveInto) {

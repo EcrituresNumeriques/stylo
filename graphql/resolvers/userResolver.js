@@ -1,5 +1,3 @@
-const bcrypt = require('bcryptjs')
-
 const User = require('../models/user')
 const Article = require('../models/article')
 
@@ -24,7 +22,7 @@ module.exports = {
         institution: userInput.institution || null,
         firstName: userInput.firstName || null,
         lastName: userInput.lastName || null,
-        password: bcrypt.hashSync(userInput.password, 10),
+        password: userInput.password,
         authType: 'local',
       })
 
@@ -40,20 +38,20 @@ module.exports = {
 
       return createdUser
     },
-    async addAcquintance (_, args, { user }) {
-      isUser(args, { user })
+    async addAcquintance (_, args, context) {
+      const { userId } = isUser(args, context)
 
       let thisAcquintance = await User.findOne({ email: args.email })
       if (!thisAcquintance) {
         throw new Error('No user found with this email')
       }
-      let thisUser = await User.findOne({ _id: args.user })
+      let thisUser = await User.findById(userId)
       if (!thisUser) {
         throw new Error('Unable to find user')
       }
 
       //Check if acquintance is the user itself
-      if (thisAcquintance.id === args.user) {
+      if (thisAcquintance.id === userId) {
         throw new Error('Can not add yourself to acquintance')
       }
 
@@ -71,14 +69,14 @@ module.exports = {
       await thisUser.save()
       return thisUser.populate('acquintances').execPopulate()
     },
-    async grantAccountAccess (_, args, { user }) {
-      isUser(args, { user })
+    async grantAccountAccess (_, args, context) {
+      const { userId } = isUser(args, context)
 
-      const thisUser = await User.findOne({ _id: args.user })
+      const thisUser = await User.findById(userId)
         .populate('acquintances')
         .populate({ path: 'permissions', populate: 'user' })
 
-      const remoteUser = await User.findOne({ _id: args.to })
+      const remoteUser = await User.findById(args.to)
 
       const existingsScope = thisUser.permissions.find(
         (p) => p.scope === 'user' && p.user._id == remoteUser.id
@@ -102,14 +100,14 @@ module.exports = {
           u.populate({ path: 'permissions', populate: 'user' }).execPopulate()
         )
     },
-    async revokeAccountAccess (_, args, { user }) {
-      isUser(args, { user })
+    async revokeAccountAccess (_, args, context) {
+      const { userId } = isUser(args, context)
 
-      const thisUser = await User.findOne({ _id: args.user })
+      const thisUser = await User.findById(userId)
         .populate('acquintances')
         .populate({ path: 'permissions', populate: 'user' })
 
-      const remoteUser = await User.findOne({ _id: args.to })
+      const remoteUser = await User.findById(args.to)
 
       const existingsScope = thisUser.permissions.find(
         (p) => p.scope === 'user' && p.user._id == remoteUser.id
@@ -126,11 +124,11 @@ module.exports = {
       return thisUser.save()
     },
 
-    async updateUser (_, args, { user }) {
-      isUser(args, { user })
-      const { user: _id, details } = args
+    async updateUser (_, args, context) {
+      const { userId } = isUser(args, context)
+      const { details } = args
 
-      let thisUser = await User.findOne({ _id })
+      let thisUser = await User.findById(userId)
       if (!thisUser) {
         throw new Error('Unable to find user')
       }
@@ -151,24 +149,15 @@ module.exports = {
 
       return User.find().populate('tags articles acquintances')
     },
-    async user (_, args, { user }) {
-      // if the userId is not provided
-      // we assume it is the user from the token
-      // otherwise, it is expected we request articles from a shared account
-      args.user =
-        'user' in args === false && user ? String(user._id) : args.user
-
-      const fromSharedUserId = args.user !== user?._id ? args.user : null
-      const userId = user?._id.toString()
+    async user (_, args, context) {
+      const { userId, fromSharedUserId } = isUser(args, context)
 
       if (fromSharedUserId) {
-        const sharedUserIds = await User.findAccountAccessUserIds(user?._id)
+        const sharedUserIds = await User.findAccountAccessUserIds(context.token._id)
 
         if (!sharedUserIds.includes(fromSharedUserId)) {
           throw new Error('Forbidden')
         }
-      } else {
-        isUser(args, { user })
       }
 
       return User.findById(fromSharedUserId ?? userId)
@@ -176,8 +165,10 @@ module.exports = {
         .populate({ path: 'permissions', populate: 'user' })
     },
 
-    userGrantedAccess(_, args, { user }) {
-      return User.findAccountAccessUsers(user?._id)
+    userGrantedAccess(_, args, context) {
+      isUser(args, context)
+
+      return User.findAccountAccessUsers(context.token._id)
     },
   },
 

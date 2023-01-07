@@ -173,5 +173,13 @@ articleSchema.pre('remove', async function () {
   return session.endSession()
 })
 
+articleSchema.post('remove', async function () {
+  const result = await this.model('User').updateOne(
+    { _id: this.owner?.id || this.owner },
+    { $pull: { articles: this.id } },
+    { safe: true }
+  )
+})
+
 module.exports = mongoose.model('Article', articleSchema);
 module.exports.schema = articleSchema;

@@ -8,12 +8,12 @@ const { ApiError } = require('../helpers/errors')
 
 module.exports = {
   Mutation: {
-    async createTag (_, args, { user }){
-      const allowedIds = await User.findAccountAccessUserIds(user._id)
-      isUser(args, { user }, allowedIds)
+    async createTag (_, args, context){
+      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
+      const { userId } = isUser(args, context, allowedIds)
 
       //fetch user
-      const thisUser = await User.findOne({ _id: args.user })
+      const thisUser = await User.findById(userId)
       if (!thisUser) {
         throw new Error('This user does not exist')
       }
@@ -34,17 +34,17 @@ module.exports = {
       return createdTag
     },
     async deleteTag (_, args, context) {
-      const allowedIds = await User.findAccountAccessUserIds(context.user._id)
-      isUser(args, context, allowedIds)
+      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
+      const { userId } = isUser(args, context, allowedIds)
 
       //Recover tag, and all articles
-      const thisTag = await Tag.findOne({ _id: args.tag, owner: args.user })
+      const thisTag = await Tag.findOne({ _id: args.tag, owner: userId })
       if (!thisTag) {
         throw new Error('Unable to find tag')
       }
 
       //fetch user
-      const thisUser = await User.findOne({ _id: args.user })
+      const thisUser = await User.findById(userId)
       if (!thisUser) {
         throw new Error('This user does not exist')
       }
@@ -61,10 +61,10 @@ module.exports = {
       return returnUser
     },
     async updateTag (_, args, context) {
-      const allowedIds = await User.findAccountAccessUserIds(context.user._id)
-      isUser(args, context, allowedIds)
+      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
+      const { userId } = isUser(args, context, allowedIds)
 
-      const thisTag = await Tag.findOne({ _id: args.tag, owner: args.user })
+      const thisTag = await Tag.findOne({ _id: args.tag, owner: userId })
       if (!thisTag) {
         throw new Error('Unable to find tag')
       }
@@ -84,29 +84,27 @@ module.exports = {
   },
 
   Query: {
-    async tag (_, args, { user }) {
-      const tagId = args.tag
-      const allowedIds = await User.findAccountAccessUserIds(user._id)
-      console.log({ args, user, allowedIds })
-      isUser(args, { user }, allowedIds)
+    async tag (_, args, context) {
+      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
+      const { userId } = isUser(args, context, allowedIds)
 
-      const tag = Tag.findOne({ _id: tagId }).populate({
+      const tag = Tag.findOne({ _id: args.tag, owner: userId }).populate({
         path: 'articles',
         populate: { path: 'versions' },
       })
 
       if (!tag) {
-        throw new ApiError('NOT_FOUND', `Unable to find tag with id ${tagId}`)
+        throw new ApiError('NOT_FOUND', `Unable to find tag with id ${args.tag}`)
       }
 
       return tag
     },
 
-    async tags (_, args, { user }) {
-      const allowedIds = await User.findAccountAccessUserIds(user._id)
-      isUser(args, { user }, allowedIds)
+    async tags (_, args, context) {
+      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
+      const { userId } = isUser(args, context, allowedIds)
 
-      return Tag.find({ owner: args.user }).populate({
+      return Tag.find({ owner: userId }).populate({
         path: 'articles',
         populate: { path: 'versions' },
       })

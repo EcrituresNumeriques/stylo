@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs')
+
 const defaultsData = require('../data/defaultsData')
 
 const Article = require('./article')
@@ -38,7 +40,10 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    default: null
+    default: null,
+    set: (password) => {
+      return bcrypt.hashSync(password, 10)
+    }
   },
   // we store who a user has granted his account to
   // each listed account can _switch into_ their account
@@ -70,6 +75,9 @@ const userSchema = new Schema({
   }
 }, { timestamps: true });
 
+userSchema.methods.comparePassword = function (password) {
+  return bcrypt.compare(password, this.password)
+}
 
 userSchema.statics.findAllArticles = async function ({ userId, fromSharedUserId }) {
   // if fromSharedUserId is provided

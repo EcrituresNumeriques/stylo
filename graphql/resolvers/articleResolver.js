@@ -15,21 +15,22 @@ module.exports = {
      * @param {*} param1
      * @returns
      */
-    async createArticle (_, args, { user }) {
+    async createArticle (_, args, context) {
       //filter bad requests
-      const allowedIds = await User.findAccountAccessUserIds(user._id)
-      isUser(args, { user }, allowedIds)
+      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
+      const { userId } = isUser(args, context, allowedIds)
 
       //fetch user
-      const thisUser = await User.findOne({ _id: args.user })
+      const user = await User.findById(userId)
 
-      if(!thisUser){
+      if(!user){
         throw new Error('This user does not exist')
       }
 
       //Add default article + default version
       const newArticle = new Article({
         title: args.title || defaultsData.title,
+        owner: user,
         workingVersion: {
           md: defaultsData.md,
           bib: defaultsData.bib,
@@ -37,13 +38,12 @@ module.exports = {
         }
       });
 
-      thisUser.articles.push(newArticle)
-      newArticle.owner = thisUser
+      await newArticle.save()
 
-      const createdArticle = await newArticle.save();
-      await thisUser.save();
+      user.articles.push(newArticle)
+      await user.save()
 
-      return createdArticle
+      return newArticle
     },
 
     /**
@@ -53,19 +53,19 @@ module.exports = {
      * @param {*} param1
      * @returns
      */
-    async shareArticle (_, args, { user }) {
-      const allowedIds = await User.findAccountAccessUserIds(user._id)
-      isUser(args, { user }, allowedIds)
+    async shareArticle (_, args, context) {
+      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
+      const { userId } = isUser(args, context, allowedIds)
 
       //Fetch article and user to send to
       const fetchedArticle = await Article
-        .findOne({ _id: args.article, owner: { $in: allowedIds.concat([args.user]) } })
+        .findOne({ _id: args.article, owner: { $in: allowedIds.concat([userId]) } })
         .populate({ path: 'contributors', populate: 'user' })
 
       if(!fetchedArticle){
         throw new Error('Unable to find article')
       }
-      const fetchedUser = await User.findOne({ _id: args.to })
+      const fetchedUser = await User.findById(args.to)
       if(!fetchedUser){
         throw new Error('Unable to find user')
       }
@@ -78,8 +78,10 @@ module.exports = {
       //Add user to list of owner
       fetchedArticle.contributors.push({ user: fetchedUser, roles: ['read', 'write']})
 
-      const returnArticle = await fetchedArticle.save({ timestamps: false })
-      await fetchedUser.save({ timestamps: false })
+      const [ returnArticle ] = await Promise.all([
+        fetchedArticle.save({ timestamps: false }),
+        fetchedUser.save({ timestamps: false })
+      ])
 
       return returnArticle
     },
@@ -91,20 +93,20 @@ module.exports = {
      * @param {*} param1
      * @returns
      */
-    async unshareArticle (_, args, { user }) {
-      const allowedIds = await User.findAccountAccessUserIds(user._id)
-      isUser(args, { user })
+    async unshareArticle (_, args, context) {
+      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
+      const { userId } = isUser(args, context)
 
       //Fetch article and user to send to
       const fetchedArticle = await Article
-        .findOne({ _id: args.article, owner: { $in: allowedIds.concat([args.user]) } })
+        .findOne({ _id: args.article, owner: { $in: allowedIds.concat([userId]) } })
         .populate({ path: 'contributors', populate: 'user' })
 
       if(!fetchedArticle){
         throw new Error('Unable to find article')
       }
 
-      const fetchedUser = await User.findOne({_id:args.to})
+      const fetchedUser = await User.findById(args.to)
       if(!fetchedUser){
         throw new Error('Unable to find user')
       }
@@ -126,22 +128,22 @@ module.exports = {
      * @returns
      */
     async duplicateArticle (_, args, context) {
-      const userIds = await User.findAccountAccessUserIds(context.user._id)
-      isUser(args, context, userIds)
+      const userIds = await User.findAccountAccessUserIds(context.token._id)
+      const { userId } = isUser(args, context, userIds)
 
       //Fetch article and user to send to
-      const fetchedArticle = await Article.findAndPopulateOneByOwners(args.article, [context.user._id, userIds])
+      const fetchedArticle = await Article.findAndPopulateOneByOwners(args.article, [userId, userIds])
 
       if(!fetchedArticle){
         throw new Error('Unable to find article')
       }
-      const fetchedUser = await User.findOne({ _id: args.to })
+      const fetchedUser = await User.findById(args.to)
       if(!fetchedUser){
         throw new Error('Unable to find user')
       }
 
       //All good, create new Article & merge version/article/user
-      const prefix = args.user === args.to ? '[Copy] ' : '[Sent] '
+      const prefix = userId === args.to ? '[Copy] ' : '[Sent] '
 
       const newArticle = new Article({
         ...fetchedArticle.toObject(),
@@ -158,7 +160,7 @@ module.exports = {
       fetchedUser.articles.push(newArticle)
 
       //Save the three objects
-      const returnedArticle = await newArticle.save()
+      await newArticle.save()
       await fetchedUser.save()
 
       return newArticle
@@ -173,27 +175,27 @@ module.exports = {
      * @param {*} param1
      * @returns
      */
-    async article (_, { article: articleId }, { user }) {
-      if (user?.admin === true) {
+    async article (_, args, context) {
+      const { userId } = isUser(args, context)
+      if (context.token.admin === true) {
         const article = await Article
-          .findById(articleId)
+          .findById(args.article)
           .populate('owner tags')
           .populate({ path: 'versions', options: { sort: { createdAt: -1 } }, populate: { path: 'owner' } })
           .populate({ path: 'contributors', populate: { path: 'user' } });
 
         if (!article) {
-          throw new ApiError('NOT_FOUND', `Unable to find article with id ${articleId}`)
+          throw new ApiError('NOT_FOUND', `Unable to find article with id ${args.article}`)
         }
 
         return article
       }
 
-      const userId = String(user?._id)
-      const userIds = await User.findAccountAccessUserIds(userId)
-      const article = await Article.findAndPopulateOneByOwners(articleId, [userId, userIds])
+      const userIds = await User.findAccountAccessUserIds(context.token._id)
+      const article = await Article.findAndPopulateOneByOwners(args.article, [userId, userIds])
 
       if (!article) {
-        throw new ApiError('NOT_FOUND', `Unable to find article with id ${articleId}`)
+        throw new ApiError('NOT_FOUND', `Unable to find article with id ${args.article}`)
       }
 
       return article
