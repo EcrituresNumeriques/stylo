@@ -151,6 +151,30 @@ articleSchema.methods.removeTags = async function removeTags (...tagIds) {
   return this.save({ timestamps: false })
 }
 
+articleSchema.methods.shareWith = async function shareWith(user) {
+  this.contributors.push({ user, roles: ['read', 'write'] })
+
+  return Promise.all([
+    this.save({ timestamps: false }),
+    user.save({ timestamps: false })
+  ])
+}
+
+articleSchema.methods.unshareWith = async function shareWith(user) {
+  // we keep only contributors who are not the one we unshare with
+  // @see https://mongoosejs.com/docs/api.html#document_Document-equals
+  this.contributors = this.contributors.filter(({ user: u }) => u.equals(user) === false)
+
+  // we keep it for legacy sake
+  // because technically, we do not push the article in the user's list
+  user.articles.pull(this)
+
+  return Promise.all([
+    this.save({ timestamps: false }),
+    user.save({ timestamps: false })
+  ])
+}
+
 articleSchema.pre('remove', async function () {
   await this.populate('owner').execPopulate()
 

@@ -73,15 +73,9 @@ module.exports = {
         throw new Error('Article already shared with this user')
       }
 
-      //Add user to list of owner
-      fetchedArticle.contributors.push({ user: fetchedUser, roles: ['read', 'write']})
+      await fetchedArticle.shareWith(fetchedUser)
 
-      const [ returnArticle ] = await Promise.all([
-        fetchedArticle.save({ timestamps: false }),
-        fetchedUser.save({ timestamps: false })
-      ])
-
-      return returnArticle
+      return fetchedArticle
     },
 
     /**
@@ -109,14 +103,9 @@ module.exports = {
         throw new Error('Unable to find user')
       }
 
-      //Remove article from owner "user" etc.
-      fetchedArticle.contributors = fetchedArticle.contributors.filter(({ user }) => user.id !== fetchedUser.id)
-      fetchedUser.articles.pull(args.article)
+      await fetchedArticle.unshareWith(fetchedUser)
 
-      const returnArticle = await fetchedArticle.save({ timestamps: false })
-      await fetchedUser.save({ timestamps: false })
-
-      return returnArticle
+      return fetchedArticle
     },
     /**
      * Duplicate an article as the current user
@@ -158,8 +147,10 @@ module.exports = {
       fetchedUser.articles.push(newArticle)
 
       //Save the three objects
-      await newArticle.save()
-      await fetchedUser.save()
+      await Promise.all([
+        newArticle.save(),
+        fetchedUser.save()
+      ])
 
       return newArticle
     },
@@ -250,14 +241,14 @@ module.exports = {
     },
 
     async rename (article, { title }) {
-      article.title = title
+      article.set('title', title)
       const result = await article.save({ timestamps: false })
 
       return result === article
     },
 
     async setZoteroLink (article, { zotero }) {
-      article.zoteroLink = zotero
+      article.set('zoteroLink', zotero)
       const result = await article.save({ timestamps: false })
 
       return result === article

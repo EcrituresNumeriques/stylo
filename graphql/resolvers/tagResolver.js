@@ -19,7 +19,7 @@ module.exports = {
       }
 
       //Add default article + default version
-      const newTag = new Tag({
+      const newTag = Tag.create({
         name: args.name,
         description: args.description,
         color: args.color,
@@ -28,10 +28,9 @@ module.exports = {
       thisUser.tags.push(newTag)
       newTag.owner = thisUser
 
-      const createdTag = await newTag.save()
       await thisUser.save()
 
-      return createdTag
+      return newTag
     },
     async deleteTag (_, args, context) {
       const allowedIds = await User.findAccountAccessUserIds(context.token._id)

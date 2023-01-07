@@ -42,7 +42,7 @@ module.exports = {
       }
 
       //Set new password
-      user.password = args.new
+      user.set('password', args.new)
       await user.save()
 
       return user
