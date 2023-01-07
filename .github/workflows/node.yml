@@ -17,46 +17,21 @@ on:
     - '.github/workflows/node.yml'
 
 jobs:
-  build-front:
+  build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: true
       matrix:
-        node-version: [18.x]
+        app: [front, graphql, export]
+
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+    - uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version-file: .nvmrc
+
     - name: Install and test
-      run: npm clean-install-test --prefix front --no-audit --no-fund
-    - name: Build front
-      run: npm run build --prefix front
+      run: npm clean-install-test --prefix ${{ matrix.app }} --no-audit --no-fund
 
-  build-api:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install
-      run: npm clean-install --prefix graphql --no-audit --no-fund
-
-  build-export:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install and test
-        run: npm clean-install-test --prefix export --no-audit --no-fund
+    - name: Build (if necessary)
+      run: npm run build --prefix ${{ matrix.app }} --if-present
