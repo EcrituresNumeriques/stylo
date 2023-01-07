@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const colornames = require('colornames')
+const toHex = require('colornames')
 const Schema = mongoose.Schema;
 
 const tagSchema = new Schema({
@@ -16,7 +16,7 @@ const tagSchema = new Schema({
   },
   color: {
     type: String,
-    get: color => colornames(color) || color || '#ccc'
+    get: color => toHex(color) || color || '#ccc'
   },
   articles:[
     {
