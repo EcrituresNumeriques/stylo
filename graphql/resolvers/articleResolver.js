@@ -28,7 +28,7 @@ module.exports = {
       }
 
       //Add default article + default version
-      const newArticle = Article.create({
+      const newArticle = await Article.create({
         title: args.title || defaultsData.title,
         owner: user,
         workingVersion: {

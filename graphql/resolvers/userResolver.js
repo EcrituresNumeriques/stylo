@@ -13,7 +13,7 @@ module.exports = {
       }
 
       //Create user then password
-      const newUser = User.create({
+      const newUser = await User.create({
         email: userInput.email,
         displayName: userInput.displayName || userInput.username,
         institution: userInput.institution || null,
@@ -124,7 +124,7 @@ module.exports = {
 
       ['displayName', 'firstName', 'lastName', 'institution', 'yaml', 'zoteroToken'].forEach(field => {
         if (Object.hasOwn(details, field)) {
-          // eslint-disable-next-line security/detect-object-injection
+          /* eslint-disable security/detect-object-injection */
           thisUser.set(field, details[field])
         }
       })
