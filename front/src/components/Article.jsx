@@ -75,7 +75,7 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
     <article className={styles.article}>
       {exporting && (
         <Modal title="Export" cancel={() => setExporting(false)}>
-          <Export articleVersionId={article._id} articleId={article._id} />
+          <Export articleId={article._id} />
         </Modal>
       )}
 
