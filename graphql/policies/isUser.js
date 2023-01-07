@@ -18,11 +18,8 @@ module.exports = function resolveUserIdFromContext (args, { token, user } = {}, 
   }
 
   // If admin, go ahead
+  // Although, we do not guarantee any userId (it's the resolver's responsability)
   if (isAdmin) {
-    if (!resolvedUserId) {
-      throw new Error(format('User cannot be resolved [context %s]', context))
-    }
-
     return { userId: resolvedUserId }
   }
 

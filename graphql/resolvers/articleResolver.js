@@ -166,6 +166,7 @@ module.exports = {
      */
     async article (_, args, context) {
       const { userId } = isUser(args, context)
+
       if (context.token.admin === true) {
         const article = await Article
           .findById(args.article)

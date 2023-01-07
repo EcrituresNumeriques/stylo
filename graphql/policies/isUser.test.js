@@ -24,11 +24,11 @@ describe('isUser', () => {
   })
 
   test('with admin token, no args.user', () => {
-    expect(() => isUser({ }, { token: adminToken })).toThrow(/User cannot be resolved/)
+    expect(isUser({}, { token: adminToken })).toEqual({ userId: null })
   })
 
   test('with token, implicit user is token user', () => {
-    expect(isUser({ }, { token: sameUserToken, user: sameUserObject })).toEqual({ userId: sameUserToken._id })
+    expect(isUser({}, { token: sameUserToken, user: sameUserObject })).toEqual({ userId: sameUserToken._id })
   })
 
   test('with token, explicit user is same as user token', () => {
