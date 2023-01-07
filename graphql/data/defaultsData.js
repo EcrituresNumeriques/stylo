@@ -77,26 +77,6 @@ Add your text here, and the document title in the metadatas tool.
   message:'Genesis',
   article: {
       title:'How to Stylo',
-      sommaire:`## Introduction
-## Les titres
-### Titres de niveau 3
-## Syntaxe minimale
-### Gras et italique
-### Commentaire
-### Images
-### Listes
-## Appareil critique
-### Notes à bas de page
-### Les références
-### Les citations
-## Versions et export
-### Métadonnées
-### Preview et annotation
-### Export
-## Annotations sémantiques
-### Annotation dans un paragraphe
-### Annotation de plusieurs paragraphes
-## Bibliographie`,
       md: `## Introduction
 
 Stylo est un éditeur de texte scientifique. Pour faire vos premiers pas sur Stylo, commencez par éditer cet article.

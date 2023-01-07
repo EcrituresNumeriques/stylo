@@ -1,10 +1,7 @@
 const User = require('../models/user')
-const Article = require('../models/article')
 
 const isUser = require('../policies/isUser')
 const isAdmin = require('../policies/isAdmin')
-
-const defaultsData = require('../data/defaultsData')
 
 module.exports = {
   Mutation: {
@@ -16,7 +13,7 @@ module.exports = {
       }
 
       //Create user then password
-      const newUser = new User({
+      const newUser = User.create({
         email: userInput.email,
         displayName: userInput.displayName || userInput.username,
         institution: userInput.institution || null,
@@ -26,17 +23,9 @@ module.exports = {
         authType: 'local',
       })
 
-      //Add default article + default version
-      const defaultArticle = defaultsData.article
-      const newArticle = new Article({ title: defaultArticle.title })
+      await newUser.createDefaultArticle()
 
-      newUser.articles.push(newArticle)
-      newArticle.owner = newUser
-
-      const createdUser = await newUser.save()
-      await newArticle.save()
-
-      return createdUser
+      return newUser
     },
     async addAcquintance (_, args, context) {
       const { userId } = isUser(args, context)

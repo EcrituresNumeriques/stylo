@@ -28,7 +28,7 @@ module.exports = {
       }
 
       //Add default article + default version
-      const newArticle = new Article({
+      const newArticle = Article.create({
         title: args.title || defaultsData.title,
         owner: user,
         workingVersion: {
@@ -37,8 +37,6 @@ module.exports = {
           yaml: defaultsData.yaml,
         }
       });
-
-      await newArticle.save()
 
       user.articles.push(newArticle)
       await user.save()

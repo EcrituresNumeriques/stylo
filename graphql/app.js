@@ -22,7 +22,6 @@ const { verifCreds } = require('./resolvers/authResolver')
 
 const { createJWTToken, populateUserFromJWT } = require('./helpers/token')
 const User = require('./models/user')
-const { postCreate } = User
 
 const app = express()
 
@@ -117,7 +116,8 @@ passport.use('oidc', new OidcStrategy({
 
     try {
       // we populate a user with initial content
-      await user.save().then(postCreate)
+      await user.save()
+      await user.createDefaultArticle()
     } catch (err) {
       return done(`Unable to create a new user ${email}, cause:`, err)
     }
