@@ -80,9 +80,11 @@ type Article {
   createdAt: DateTime
   updatedAt: DateTime
 
-  delete(dryRun: Boolean): Boolean
   addTags(tags: [ID]!): [Tag]
+  delete(dryRun: Boolean): Boolean
   removeTags(tags: [ID]!): [Tag]
+  rename(title: String!): Boolean
+  setZoteroLink(zotero: String!): Boolean
   updateWorkingVersion(content: WorkingVersionInput!): Boolean
 }
 
@@ -210,12 +212,6 @@ type Mutation {
 
   "Duplicate the working version of an article, with someone, or yourself"
   duplicateArticle(article: ID!, to: ID!, user: ID!): Article
-
-  "Rename an article you own"
-  renameArticle(article: ID!, title: String!, user: ID!): Article
-
-  "Change the zoteroLink to an article"
-  zoteroArticle(article: ID!, zotero: String!, user: ID!): Article
 }`
 
 module.exports = makeExecutableSchema({ typeDefs, resolvers })

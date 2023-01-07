@@ -1,12 +1,11 @@
 mutation renameArticle($article: ID!, $title: String!, $user: ID!) {
-  renameArticle(article: $article, title: $title, user: $user) {
-    title
+  article(article: $article, user: $user) {
+    rename(title: $title)
   }
 }
 
 mutation linkToZotero($user: ID!, $article: ID!, $zotero: String!) {
-  zoteroArticle(article: $article, zotero: $zotero, user: $user) {
-    _id
-    zoteroLink
+  article(article: $article, user: $user) {
+    setZoteroLink(zotero: $zotero)
   }
 }

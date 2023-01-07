@@ -161,47 +161,7 @@ module.exports = {
       const returnedArticle = await newArticle.save()
       await fetchedUser.save()
 
-      return returnedArticle
-    },
-    /**
-     * Rename an article as the current user
-     *
-     * @param {*} args
-     * @param {*} param1
-     * @returns
-     */
-    async renameArticle (_, args, context) {
-      const allowedIds = await User.findAccountAccessUserIds(context.user._id)
-      isUser(args, context, allowedIds)
-
-      //Fetch Article
-      const { article: _id, user } = args
-      const fetchedArticle = await Article.findOneByOwner({ _id, user })
-      if(!fetchedArticle){throw new Error('Unable to find article')}
-
-      //If all good, change title
-      fetchedArticle.title = args.title
-      return fetchedArticle.save({ timestamps: false })
-    },
-    /**
-     * Link an article with the logged in user collection
-     * Warning: untested with the shared account system
-     *
-     * @param {*} args
-     * @param {*} param1
-     * @returns
-     */
-    async zoteroArticle (_, args, context) {
-      isUser(args, context)
-
-      //Fetch Article
-      const { article: _id, user } = args
-      const fetchedArticle = await Article.findOneByOwner({ _id, user })
-      if(!fetchedArticle){throw new Error('Unable to find article')}
-
-      //If all good, change title
-      fetchedArticle.zoteroLink = args.zotero
-      return fetchedArticle.save({ timestamps: false })
+      return newArticle
     },
   },
 
@@ -287,6 +247,20 @@ module.exports = {
       await article.remove()
 
       return article.$isDeleted()
+    },
+
+    async rename (article, { title }) {
+      article.title = title
+      const result = await article.save({ timestamps: false })
+
+      return result === article
+    },
+
+    async setZoteroLink (article, { zotero }) {
+      article.zoteroLink = zotero
+      const result = await article.save({ timestamps: false })
+
+      return result === article
     },
 
     async addTags (article, { tags }) {
