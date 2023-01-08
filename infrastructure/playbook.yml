@@ -74,15 +74,15 @@
 
     - name: Register Shared GraphQL Token as a dynamic Ansible Fact
       set_fact:
-        shared_graphql_token: {{ graphql_token.stdout }}
+        shared_graphql_token: "{{ graphql_token.stdout }}"
 
     - name: Copy environment config file
       template:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
       loop:
-        - { src: './stylo.env', dest: '~/stylo/stylo.env' }
-        - { src: '../docker-compose.yml', dest: '~/stylo/docker-compose.yml' }
+        - { src: "./stylo.env", dest: "~/stylo/stylo.env" }
+        - { src: "../docker-compose.yml", dest: "~/stylo/docker-compose.yml" }
 
     - name: Start containers
       docker_compose:
