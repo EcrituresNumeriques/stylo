@@ -76,6 +76,13 @@
       set_fact:
         shared_graphql_token: "{{ graphql_token.stdout }}"
 
+    - name: Checkout and update Stylo
+      git:
+        repo: 'https://github.com/EcrituresNumeriques/stylo.git'
+        dest: ~/stylo
+        force: yes
+        version: "{{ deploy_branch | default('master') }}"
+
     - name: Interpolate environment config file
       template:
         src: "{{ item.src }}"
@@ -84,10 +91,10 @@
         - { src: "./stylo.env", dest: "~/stylo/stylo.env" }
 
     # this avoids cloning the entire repository
-    - name: Copy docker-compose.yml
-      copy:
-        src: "../../docker-compose.yml"
-        dest: "~/stylo/docker-compose.yml"
+    # - name: Copy docker-compose.yml
+    #   copy:
+    #     src: "../../docker-compose.yml"
+    #     dest: "~/stylo/docker-compose.yml"
 
     - name: Start containers
       docker_compose:
