@@ -3,6 +3,7 @@ const { Article, Query: ArticleQuery, Mutation: ArticleMutation } = require('./a
 const { Tag, Query: TagQuery, Mutation: TagMutation } = require('./tagResolver')
 const { Version, Query: VersionQuery, Mutation: VersionMutation } = require('./versionResolver')
 const { Mutation: AuthMutation } = require('./authResolver')
+const { InstanceUsageStats, Query: StatsQuery } = require('./statsResolver')
 const { EmailAddressResolver, JWTResolver, HexColorCodeResolver, DateTimeResolver } = require('graphql-scalars')
 
 module.exports = {
@@ -17,12 +18,14 @@ module.exports = {
   Article,
   Tag,
   Version,
+  InstanceUsageStats,
   // Root queries & mutations
   Query: {
     ...UserQuery,
     ...ArticleQuery,
     ...TagQuery,
     ...VersionQuery,
+    ...StatsQuery,
   },
   Mutation: {
     ...UserMutation,
