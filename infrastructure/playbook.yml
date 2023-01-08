@@ -62,19 +62,22 @@
         dest: /etc/nagios/nrpe_local.cfg
 
     - name: Pull Docker containers
-      shell:
+      ansible.builtin.shell:
         cmd: "docker-compose pull"
         chdir: ~/stylo
 
     - name: Generate Shared GraphQL Token
       register: graphql_token
-      shell:
+      ansible.builtin.shell:
         cmd: "docker-compose run --no-deps --rm graphql-stylo npm run generate-service-token --silent"
         chdir: ~/stylo
+      run_once: true
+      no_log: true
 
     - name: Register Shared GraphQL Token as a dynamic Ansible Fact
       set_fact:
         shared_graphql_token: "{{ graphql_token.stdout }}"
+      run_once: true
 
     - name: Checkout and update Stylo
       git:
