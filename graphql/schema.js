@@ -93,6 +93,38 @@ type ArticleContributor {
   roles: [String]
 }
 
+type InstanceUsageStats {
+  version: String
+  users: InstanceUserStats
+  articles: InstanceArticleStats
+}
+
+interface InstanceObjectUsageStats {
+  total: Int!
+  # currentYear: Int!
+  years: [InstanceObjectUsageYearlyStats]
+}
+
+type InstanceObjectUsageYearlyStats {
+  year: Int
+  count: Int
+  # variation: Int
+}
+
+type InstanceUserStats implements InstanceObjectUsageStats {
+  total: Int!
+  # currentYear: Int!
+  local: Int
+  openid: Int
+  years: [InstanceObjectUsageYearlyStats]
+}
+
+type InstanceArticleStats implements InstanceObjectUsageStats {
+  total: Int!
+  # currentYear: Int!
+  years: [InstanceObjectUsageYearlyStats]
+}
+
 input VersionInput {
   article: ID!
   major: Boolean
@@ -150,6 +182,9 @@ type Query {
 
   "Fetch version info"
   version(version: ID!): Version
+
+  "Fetch instance stats"
+  stats: InstanceUsageStats
 }
 
 type Mutation {
