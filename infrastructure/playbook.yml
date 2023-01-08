@@ -82,7 +82,7 @@
         dest: "{{ item.dest }}"
       loop:
         - { src: "./stylo.env", dest: "~/stylo/stylo.env" }
-        - { src: "../docker-compose.yml", dest: "~/stylo/docker-compose.yml" }
+        - { src: "{{ playbook_dir }}/../docker-compose.yml", dest: "~/stylo/docker-compose.yml" }
 
     - name: Start containers
       docker_compose:
