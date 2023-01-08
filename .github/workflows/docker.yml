@@ -69,7 +69,7 @@ jobs:
       run: |
         docker buildx bake -f docker-compose.yaml \
           --set '*.platform=linux/amd64' \
-          --set 'type=registry,ref=ghcr.io/EcrituresNumeriques/${{ matrix.app }}' \
+          --set '${{ matrix.app }}.cache-from=type=registry,ref=ghcr.io/EcrituresNumeriques/${{ matrix.app }}' \
           --load ${{ matrix.app }}
 
     - name: Login to GitHub Container Registry ghcr.io
