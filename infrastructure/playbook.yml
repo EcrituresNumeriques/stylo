@@ -76,13 +76,18 @@
       set_fact:
         shared_graphql_token: "{{ graphql_token.stdout }}"
 
-    - name: Copy environment config file
+    - name: Interpolate environment config file
       template:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
       loop:
         - { src: "./stylo.env", dest: "~/stylo/stylo.env" }
-        - { src: "{{ playbook_dir }}/../docker-compose.yml", dest: "~/stylo/docker-compose.yml" }
+
+    # this avoids cloning the entire repository
+    - name: Copy docker-compose.yml
+      copy:
+        src: "{{ playbook_dir }}/../docker-compose.yml"
+        dest: "~/stylo/docker-compose.yml"
 
     - name: Start containers
       docker_compose:
