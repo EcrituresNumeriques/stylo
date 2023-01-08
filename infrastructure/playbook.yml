@@ -86,7 +86,7 @@
     # this avoids cloning the entire repository
     - name: Copy docker-compose.yml
       copy:
-        src: "{{ playbook_dir }}/../docker-compose.yml"
+        src: "../../docker-compose.yml"
         dest: "~/stylo/docker-compose.yml"
 
     - name: Start containers
