@@ -69,7 +69,7 @@ jobs:
       run: |
         docker buildx bake -f docker-compose.yaml \
           --set '*.platform=linux/amd64' \
-          --set '${{ matrix.app }}.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/${{ matrix.app }}:cache' --set '${{ matrix.app }}.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/graphql-stylo:cache,scope=global-graphql-stylo' \
+          --set 'type=registry,ref=ghcr.io/EcrituresNumeriques/${{ matrix.app }}' \
           --load ${{ matrix.app }}
 
     - name: Login to GitHub Container Registry ghcr.io
@@ -77,8 +77,4 @@ jobs:
 
     - if: ${{ github.ref_type == 'tag' || github.ref_name == 'master' || github.ref_name == 'main' }}
       name: Push images (on tag, or default branch)
-      run: |
-        docker buildx bake -f docker-compose.yaml \
-          --set '*.platform=linux/amd64' \
-          --set '${{ matrix.app }}.cache-from=type=gha,ref=ghcr.io/EcrituresNumeriques/${{ matrix.app }}:cache' --set '${{ matrix.app }}.cache-to=type=gha,ref=ghcr.io/EcrituresNumeriques/${{ matrix.app }}:cache,scope=global-${{ matrix.app }}' \
-          --push ${{ matrix.app }}
+      run: docker buildx bake -f docker-compose.yaml --push ${{ matrix.app }}
