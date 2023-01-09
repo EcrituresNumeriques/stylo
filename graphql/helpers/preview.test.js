@@ -1,4 +1,4 @@
-const { prefixRulesWith } = require('./css.js')
+const { prefixRulesWith, sanitizeTemplate } = require('./preview.js')
 
 describe('prefixRulesWith', () => {
   const sample = `@page {
@@ -79,5 +79,24 @@ section { break-before: right; }
 
   test('substitute body with selectorName', () => {
     expect(transformedCss).toMatch('}.stylo-pagedjs-container{font:Stix,sans-serif}')
+  })
+})
+
+describe('sanitizeTemplate', () => {
+  const html = `<html>
+  <head>
+    <link rel="stylesheet" href="print-interface.css">
+    <script src="https://unpkg.com/pagedjs@0.3.5/dist/paged.polyfill.js"></script>
+  </head>
+  <body>
+    <h1 onclick="javascript:void">Coucou</h1>
+    <h2>Sous-titre</h2>
+  </body>
+</html>`
+
+  test('returns the body innerHTML with sanitized tags', () => {
+    const safeHtml = sanitizeTemplate(html)
+
+    expect(safeHtml).toMatch(/^\s+<h1>Coucou<\/h1>\n\s+<h2>Sous-titre<\/h2>/)
   })
 })

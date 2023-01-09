@@ -271,8 +271,8 @@ module.exports = {
       return article.tags
     },
 
-    async setStylesheet (article, { css }) {
-      await article.set('css', css).save()
+    async setPreviewSettings (article, { settings }) {
+      await article.set('preview', settings, { merge: true }).save()
 
       return article
     },

@@ -19,11 +19,10 @@ export default function Preview ({ userStyles }) {
     }
   }, [__html])
 
-  return userStyles
-    ? (<section className={clsx(styles.cssPreviewContainer, 'stylo-pagedjs-container')} ref={renderRef}>
-        <style type="text/css">{ userStyles }</style>
-        <template data-ref="pagedjs-content" />
-
-      </section>)
-    : (<section className={styles.previewPage} dangerouslySetInnerHTML={{ __html }} />)
+  return <>
+    <Loading label="Processing paginated preview…" hidden={!isLoading} />
+    <section className={clsx(styles.pagedContainer, 'stylo-pagedjs-container')} ref={renderRef}>
+      <template data-ref="pagedjs-content" />
+    </section>
+  </>
 }

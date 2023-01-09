@@ -14,7 +14,8 @@ import { getEditableArticle as query } from './Write.graphql'
 import WriteLeft from './WriteLeft'
 import WriteRight from './WriteRight'
 import WorkingVersion from './WorkingVersion'
-import Preview from './Preview'
+import PreviewHtml from './PreviewHtml'
+import PreviewPaged from './PreviewPaged'
 import Loading from '../Loading'
 import MonacoEditor from './providers/monaco/Editor'
 import clsx from 'clsx'
@@ -104,13 +105,6 @@ export default function Write() {
     []
   )
 
-  const variables = {
-    user: userId,
-    article: articleId,
-    version: currentVersion || '0123456789ab',
-    hasVersion: typeof currentVersion === 'string',
-    isPreview: mode === MODES_PREVIEW
-  }
 
   const handleMDCM = (___, __, text) => {
     deriveArticleStructureAndStats({ text })
@@ -127,10 +121,17 @@ export default function Write() {
 
   // Reload when version switching
   useEffect(() => {
+    const variables = {
+      user: userId,
+      article: articleId,
+      version: currentVersion || 'latest',
+      hasVersion: typeof currentVersion === 'string',
+      isPreview: mode === MODES_PREVIEW
+    }
+
     setIsLoading(true)
     ;(async () => {
       const data = await runQuery({ query, variables })
-        .then(({ version, article }) => ({ version, article }))
         .catch((error) => {
           setError(error)
           return {}

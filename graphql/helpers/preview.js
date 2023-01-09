@@ -1,4 +1,6 @@
 const { parse, walk, generate } = require('css-tree')
+const DOMPurify = require('dompurify')
+const { JSDOM } = require('jsdom')
 
 function shouldBePrefixed ({ node, selectorName }) {
   return (
@@ -52,4 +54,18 @@ function prefixRulesWith(selectorName, css) {
   return generate(ast)
 }
 
-module.exports = { prefixRulesWith }
+function sanitizeTemplate (html) {
+  const window = new JSDOM('').window
+  const purify = DOMPurify(window);
+
+  return purify.sanitize(html, {
+    KEEP_CONTENT: false,
+    USE_PROFILES: {
+      html: true,
+      svg: true,
+      mathMl: true
+    }
+  })
+}
+
+module.exports = { prefixRulesWith, sanitizeTemplate }

@@ -2,11 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions.js')
-<<<<<<< HEAD
 const { reformat } = require('../helpers/metadata.js')
-=======
-const { prefixRulesWith } = require('../helpers/css.js')
->>>>>>> 5d92d70 (Autoprefix CSS input)
+const { prefixRulesWith, sanitizeTemplate } = require('../helpers/preview.js')
 
 const ArticleContributorSchema = new Schema({
   user: {
@@ -57,10 +54,17 @@ const articleSchema = new Schema({
       ref: 'Tag'
     }
   ],
-  css: {
-    type: String,
-    default: '',
-    set: prefixRulesWith.bind(null, 'stylo-pagedjs-container')
+  preview: {
+    stylesheet: {
+      type: String,
+      default: '',
+      set: prefixRulesWith.bind(null, 'stylo-pagedjs-container')
+    },
+    template: {
+      type: String,
+      default: '',
+      set: sanitizeTemplate
+    }
   }
 }, {timestamps: true});
 
