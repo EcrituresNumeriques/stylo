@@ -15,7 +15,10 @@ query getEditableArticle ($article: ID!, $hasVersion: Boolean!, $version: ID!) {
     # actually, as we do not request new article data when switching from WRITE to PREVIEW
     # we skip this data fetching optimization for now
     # css @include(if: $isPreview)
-    css
+    preview {
+      stylesheet
+      template
+    }
 
     owner {
       displayName

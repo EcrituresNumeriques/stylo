@@ -112,7 +112,9 @@ export default function WorkingVersion ({ articleInfos, selectedVersion, mode })
         </li>
         <li>
           <Link to={`/article/${articleInfos._id}/preview`} className={mode === 'preview' ? buttonStyles.primaryDisabled : buttonStyles.secondary} title="Preview article">
-            <Eye /> <abbr title="HyperText Markup Language">HTML</abbr>&#160;Preview
+            <Eye />
+            {articleInfos.preview.stylesheet ? 'Paged.js' : <abbr title="HyperText Markup Language">HTML</abbr>}
+            &nbsp;Preview
           </Link>
         </li>
         <li>

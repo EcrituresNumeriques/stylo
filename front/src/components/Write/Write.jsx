@@ -17,6 +17,7 @@ import WorkingVersion from './WorkingVersion'
 import Preview from './Preview'
 import Loading from '../Loading'
 import MonacoEditor from './providers/monaco/Editor'
+import clsx from 'clsx'
 
 const MODES_PREVIEW = 'preview'
 const MODES_READONLY = 'readonly'
@@ -49,7 +50,13 @@ export default function Write() {
     owner: '',
     contributors: [],
     zoteroLink: '',
+    preview: {},
   })
+
+  const PreviewComponent = useMemo(
+    () => articleInfos.preview.stylesheet ? PreviewPaged : PreviewHtml,
+    [articleInfos.preview.stylesheet, currentVersion]
+  )
 
   const deriveArticleStructureAndStats = useCallback(
     throttle(
@@ -153,6 +160,7 @@ export default function Write() {
           owner: article.owner,
           contributors: article.contributors,
           zoteroLink: article.zoteroLink,
+          preview: article.preview,
           updatedAt: article.updatedAt,
         })
 
@@ -207,10 +215,10 @@ export default function Write() {
 
       <WorkingVersion articleInfos={articleInfos} selectedVersion={currentVersion} mode={mode} />
 
-      <article className={styles.article}>
+      <article className={clsx({[styles.article]: mode !== MODES_PREVIEW})}>
         <Switch>
           <Route path="*/preview" exact>
-            <Preview />
+            <PreviewComponent preview={articleInfos.preview} yaml={live.yaml} />
           </Route>
           <Route path="*">
             <MonacoEditor
