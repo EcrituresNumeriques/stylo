@@ -2,7 +2,8 @@
 @use '../../styles/variables' as *;
 
 .section {
-  margin: 0 .5em 0.5em;
+  @extend .wrapped-center;
+  margin-bottom: 0.5em;
   display: flex;
   flex-direction: row;
 }

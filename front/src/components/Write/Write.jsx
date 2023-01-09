@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { Switch, Route } from 'react-router-dom'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import { batch, useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -18,12 +18,39 @@ import Preview from './Preview'
 import Loading from '../Loading'
 import MonacoEditor from './providers/monaco/Editor'
 
+const MODES_PREVIEW = 'preview'
+const MODES_READONLY = 'readonly'
+const MODES_WRITE = 'write'
+
+export function deriveModeFrom ({ path, currentVersion }) {
+  if (path === '/article/:id/preview') {
+    return MODES_PREVIEW
+  }
+
+  else if (currentVersion) {
+    return MODES_READONLY
+  }
+
+  return MODES_WRITE
+}
+
 export default function Write() {
   const { version: currentVersion, id: articleId, compareTo } = useParams()
   const userId = useSelector((state) => state.activeUser._id)
-  const [readOnly, setReadOnly] = useState(Boolean(currentVersion))
   const dispatch = useDispatch()
   const runQuery = useGraphQL()
+  const routeMatch = useRouteMatch()
+  const mode = useMemo(() => deriveModeFrom({ currentVersion, path: routeMatch.path}), [currentVersion, routeMatch.path])
+  const [graphqlError, setError] = useState()
+  const [isLoading, setIsLoading] = useState(true)
+  const [live, setLive] = useState({})
+  const [articleInfos, setArticleInfos] = useState({
+    title: '',
+    owner: '',
+    contributors: [],
+    zoteroLink: '',
+  })
+
   const deriveArticleStructureAndStats = useCallback(
     throttle(
       ({ text }) => {
@@ -75,17 +102,8 @@ export default function Write() {
     article: articleId,
     version: currentVersion || '0123456789ab',
     hasVersion: typeof currentVersion === 'string',
+    isPreview: mode === MODES_PREVIEW
   }
-
-  const [graphqlError, setError] = useState()
-  const [isLoading, setIsLoading] = useState(true)
-  const [live, setLive] = useState({})
-  const [articleInfos, setArticleInfos] = useState({
-    title: '',
-    owner: '',
-    contributors: [],
-    zoteroLink: '',
-  })
 
   const handleMDCM = (___, __, text) => {
     deriveArticleStructureAndStats({ text })
@@ -103,7 +121,6 @@ export default function Write() {
   // Reload when version switching
   useEffect(() => {
     setIsLoading(true)
-    setReadOnly(Boolean(currentVersion))
     ;(async () => {
       const data = await runQuery({ query, variables })
         .then(({ version, article }) => ({ version, article }))
@@ -180,17 +197,17 @@ export default function Write() {
         articleInfos={articleInfos}
         compareTo={compareTo}
         selectedVersion={currentVersion}
-        readOnly={readOnly}
+        readOnly={mode === MODES_READONLY}
       />
       <WriteRight
         yaml={live.yaml}
         handleYaml={handleYaml}
-        readOnly={readOnly}
+        readOnly={mode === MODES_READONLY}
       />
 
-      <article className={styles.article}>
-        <WorkingVersion articleInfos={articleInfos} selectedVersion={currentVersion} readOnly={readOnly} />
+      <WorkingVersion articleInfos={articleInfos} selectedVersion={currentVersion} mode={mode} />
 
+      <article className={styles.article}>
         <Switch>
           <Route path="*/preview" exact>
             <Preview />
@@ -198,7 +215,7 @@ export default function Write() {
           <Route path="*">
             <MonacoEditor
               text={live.md}
-              readOnly={readOnly}
+              readOnly={mode === MODES_READONLY}
               onTextUpdate={handleMDCM}
               articleId={articleInfos._id}
               selectedVersion={currentVersion}

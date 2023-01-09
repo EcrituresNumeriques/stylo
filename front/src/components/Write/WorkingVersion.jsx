@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AlertCircle, AlignLeft, Check, Edit3, Eye, Loader, MessageSquare, Printer } from 'react-feather'
 
 import styles from './workingVersion.module.scss'
@@ -29,9 +29,6 @@ const stateUiProps = {
     style: styles.failureIndicator
   },
 }
-
-const MODES_EDIT = 'edit'
-const MODES_PREVIEW = 'preview'
 
 export function ArticleVersion ({ version }) {
   return <span>
@@ -71,13 +68,11 @@ export function ArticleSaveState ({ state, updatedAt, stateMessage }) {
   </>)
 }
 
-export default function WorkingVersion ({ articleInfos, selectedVersion }) {
+export default function WorkingVersion ({ articleInfos, selectedVersion, mode }) {
   const [exporting, setExporting] = useState(false)
-  const routeMatch = useRouteMatch()
   const workingArticle = useSelector(state => state.workingArticle, shallowEqual)
   const cancelExport = useCallback(() => setExporting(false), [])
   const openExport = useCallback(() => setExporting(true), [])
-  const mode = routeMatch.path === '/article/:id/preview' ? MODES_PREVIEW : MODES_EDIT
 
   const articleOwnerAndContributors = [
     articleInfos.owner.displayName,
@@ -110,6 +105,16 @@ export default function WorkingVersion ({ articleInfos, selectedVersion }) {
         </Modal>
       )}
       <ul className={styles.actions}>
+        <li>
+          <Link to={`/article/${articleInfos._id}`} className={mode === 'write' ? buttonStyles.primaryDisabled : buttonStyles.secondary} title="Edit article">
+            <Edit3 /> Edit
+          </Link>
+        </li>
+        <li>
+          <Link to={`/article/${articleInfos._id}/preview`} className={mode === 'preview' ? buttonStyles.primaryDisabled : buttonStyles.secondary} title="Preview article">
+            <Eye /> <abbr title="HyperText Markup Language">HTML</abbr>&#160;Preview
+          </Link>
+        </li>
         <li>
           <Button icon title="Download a printable version" onClick={openExport}>
             <Printer />
