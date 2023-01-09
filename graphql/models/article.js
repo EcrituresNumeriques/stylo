@@ -51,7 +51,11 @@ const articleSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Tag'
     }
-  ]
+  ],
+  css: {
+    type: String,
+    default: ''
+  }
 }, {timestamps: true});
 
 

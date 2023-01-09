@@ -5,12 +5,17 @@ query compareVersion ($to: ID!) {
   }
 }
 
+# query getEditableArticle ($article: ID!, $hasVersion: Boolean!, $version: ID!, $isPreview: Boolean = false) {
 query getEditableArticle ($article: ID!, $hasVersion: Boolean!, $version: ID!) {
   article(article: $article) {
     _id
     title
     zoteroLink
     updatedAt
+    # actually, as we do not request new article data when switching from WRITE to PREVIEW
+    # we skip this data fetching optimization for now
+    # css @include(if: $isPreview)
+    css
 
     owner {
       displayName

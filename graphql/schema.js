@@ -77,6 +77,7 @@ type Article {
   workingVersion: WorkingVersion
   versions(limit: Int, page: Int): [Version!]!
   tags(limit: Int, page: Int): [Tag!]!
+  css: String,
   createdAt: DateTime
   updatedAt: DateTime
 
@@ -84,6 +85,7 @@ type Article {
   delete(dryRun: Boolean): Boolean
   removeTags(tags: [ID]!): [Tag]
   rename(title: String!): Boolean
+  setStylesheet(css: String): Article
   setZoteroLink(zotero: String!): Boolean
   updateWorkingVersion(content: WorkingVersionInput!): Article
 }
