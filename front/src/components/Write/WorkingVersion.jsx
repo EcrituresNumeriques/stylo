@@ -50,7 +50,7 @@ export function ArticleSaveState ({ state, updatedAt, stateMessage }) {
   const [savedAgo, isoString] = useMemo(() => ([
     formatTimeAgo(updatedAt),
     new Date(updatedAt).toISOString()
-  ]), [lastRefreshedAt])
+  ]), [updatedAt, lastRefreshedAt])
 
   useEffect(() => {
     const timer = setTimeout(() => setLastRefresh(Date.now() * 1000), ONE_MINUTE)

@@ -1,9 +1,9 @@
 
 query updateWorkingVersion ($articleId: ID!, $content: WorkingVersionInput!) {
   article (article: $articleId) {
-    updatedAt
-
-    updateWorkingVersion (content: $content)
+    updateWorkingVersion (content: $content) {
+      updatedAt
+    }
   }
 }
 

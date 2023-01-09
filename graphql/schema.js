@@ -85,7 +85,7 @@ type Article {
   removeTags(tags: [ID]!): [Tag]
   rename(title: String!): Boolean
   setZoteroLink(zotero: String!): Boolean
-  updateWorkingVersion(content: WorkingVersionInput!): Boolean
+  updateWorkingVersion(content: WorkingVersionInput!): Article
 }
 
 type ArticleContributor {

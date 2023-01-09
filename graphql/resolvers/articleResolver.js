@@ -267,13 +267,21 @@ module.exports = {
       return article.tags
     },
 
+    async setStylesheet (article, { css }) {
+      await article.set('css', css).save()
+
+      return article
+    },
+
     async updateWorkingVersion (article, { content }) {
       Object.entries(content)
-        .forEach(([key, value]) => article.workingVersion.set(key, value))
+        .forEach(([key, value]) => article.set({
+          workingVersion: {
+            [key]: value
+          }
+        }))
 
-      const result = await article.save()
-
-      return result === article
+      return article.save()
     }
   }
 }
