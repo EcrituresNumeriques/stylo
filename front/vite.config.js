@@ -33,7 +33,7 @@ export default defineConfig(async ({ mode }) => {
       react({
         jsxImportSource: mode === 'development' ? '@welldone-software/why-did-you-render' : 'react'
       }),
-      legacy({ target }),
+      // legacy({ target }),
       handlebars({
         context: {
           SNOWPACK_MATOMO: Boolean(SNOWPACK_MATOMO_URL) && Boolean(SNOWPACK_MATOMO_SITE_ID),
