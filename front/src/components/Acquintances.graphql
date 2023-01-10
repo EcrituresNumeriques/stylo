@@ -1,4 +1,4 @@
-mutation addAcquintance($user: ID!, $email: String!) {
+mutation addAcquintance($user: ID!, $email: EmailAddress!) {
   addAcquintance(email: $email, user: $user) {
     acquintances {
       _id
