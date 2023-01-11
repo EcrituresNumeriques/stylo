@@ -42,6 +42,10 @@ body {
   height: 100%;
 }
 
+[hidden]:not([hidden="false"]) {
+  display: none;
+}
+
 * {
   box-sizing: border-box;
 }
