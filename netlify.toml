@@ -5,12 +5,12 @@
   # npm 8.5 does some weird shenanigans when multiple package.json coexist within a directory tree
   base = "front"
   publish = "build"
-  command = "npm run build"
+  command = "npm run build -- --mode production"
 
   [build.environment]
     # System env
     NODE_VERSION = "18"
-    NODE_ENV = "development"
+    ENABLE_SOURCEMAPS = "true"
     NPM_FLAGS = "--no-audit --no-fund"
 
     # App env (new Snowpack)
@@ -20,13 +20,6 @@
     SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT = "https://export.stylo-dev.huma-num.fr"
     SNOWPACK_PUBLIC_BACKEND_ENDPOINT = "https://stylo-dev.huma-num.fr"
     SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT = "https://auth-test.huma-num.fr/register?service=http://stylo-dev.huma-num.fr/authorization-code/callback"
-    ENABLE_SOURCEMAPS = "true"
-
-# We retain source maps in "production-like" deploy
-[context.production.environment]
-  NODE_ENV = "production"
-  ENABLE_SOURCEMAPS = "true"
-  NPM_FLAGS = "--no-audit --no-fund --production=false"
 
 
 [[redirects]]
