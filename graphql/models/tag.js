@@ -16,7 +16,9 @@ const tagSchema = new Schema({
   },
   color: {
     type: String,
-    get: color => toHex(color) || color || '#ccc'
+    get: color => {
+      return toHex((color ?? '').replace('grey', 'gray')) || color || '#ccc'
+    }
   },
   articles:[
     {
