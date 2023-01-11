@@ -158,6 +158,12 @@ articleSchema.methods.removeTags = async function removeTags (...tagIds) {
 }
 
 articleSchema.methods.shareWith = async function shareWith(user) {
+  const isAlreadyShared = this.contributors.find(({ user: u }) => u.equals(user))
+
+  if (isAlreadyShared) {
+    return
+  }
+
   this.contributors.push({ user, roles: ['read', 'write'] })
 
   return Promise.all([
