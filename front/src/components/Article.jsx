@@ -8,8 +8,8 @@ import buttonStyles from './button.module.scss'
 import Modal from './Modal'
 import Export from './Export'
 import ArticleDelete from './ArticleDelete'
-import Acquintances from './Acquintances'
 import ArticleTags from './ArticleTags'
+import Share from './Share'
 
 import formatTimeAgo from '../helpers/formatTimeAgo'
 import etv from '../helpers/eventTargetValue'
@@ -81,7 +81,7 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
 
       {sharing && (
         <Modal title="Share with Stylo users" cancel={() => setNeedReload() || setSharing(false)}>
-          <Acquintances article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)} />
+          <Share article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)} />
         </Modal>
       )}
 

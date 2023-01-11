@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { AlertTriangle, UserMinus, UserPlus } from 'react-feather';
 
 import styles from './credentials.module.scss'
-import acquintancesStyles from './acquintances.module.scss'
+import acquintancesStyles from './Share.module.scss'
 import Button from "./Button";
 
 import AcquintanceAddForm from './AcquintanceAddForm'
