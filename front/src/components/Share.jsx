@@ -83,8 +83,12 @@ export default function ArticleShare ({ article, setNeedReload, cancel }) {
       {allContributors.map((user) => (
         <div key={`acquintance-${user._id}`} className={styles.acquintance}>
           <div>
-            <span>{user.displayName}</span>
-            <a href={"mailto:" + user.email} className={styles.acquintanceEmail}>{user.email}</a>
+            <span>
+              {user.displayName}
+              {' '}
+              {userId === user._id && <small className={styles.sameAccount}>(this account)</small>}
+            </span>
+            {user.email && <a href={"mailto:" + user.email} className={styles.acquintanceEmail}>{user.email}</a>}
           </div>
           <div className={styles.acquintanceActions}>
             {sharedAccountsIds.includes(user._id) === false && <>
@@ -97,7 +101,7 @@ export default function ArticleShare ({ article, setNeedReload, cancel }) {
               </Button>}
             </>}
 
-            {sharedAccountsIds.includes(user._id) === true && <small>
+            {sharedAccountsIds.includes(user._id) && <small>
               already shared via full access — <Link to="/credentials">manage</Link>
             </small>}
           </div>
