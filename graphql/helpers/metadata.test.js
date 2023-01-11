@@ -1,10 +1,13 @@
-const { prepare } = require('./metadata')
+const { reformat } = require('./metadata')
 const YAML = require('js-yaml')
-const fs = require('fs').promises
+const fs = require('node:fs/promises')
 const path = require('path')
 
+const expectedContentFilename = path.join(__dirname, '__fixtures__', 'psp1515.expected.yml')
+const inputFilename = path.join(__dirname, '__fixtures__', 'psp1515.input.yml')
+
 test('nocite always appears last', () => {
-  expect(prepare(`---
+  expect(reformat(`---
 title: Stylo
 nocite: '@*'
 subtitle: A user friendly text editor for humanities scholars.
@@ -20,7 +23,7 @@ nocite: '@*'
 })
 
 test('replace bibliography in YAML metadata', () => {
-  expect(prepare(`---
+  expect(reformat(`---
 title: Stylo
 bibliography: foo.bib
 subtitle: A user friendly text editor for humanities scholars.
@@ -43,7 +46,7 @@ title_f: untitled
 })
 
 test('year/month/day are derived from date', () => {
-  expect(prepare(`---
+  expect(reformat(`---
 title: Stylo
 date: '2021-02-25'
 ---
@@ -57,7 +60,7 @@ year: '2021'
 ---`
   )
 
-  expect(prepare(`---
+  expect(reformat(`---
 title_f: Stylo
 date: '2021/02/25'
 ---
@@ -73,7 +76,7 @@ year: '2021'
 })
 
 test('replace XYZ_f fields by non-formatted XYZ field', () => {
-  expect(prepare(`---
+  expect(reformat(`---
 title_f: "**Stylo**"
 subtitle_f: "T'as pas _froid_ aux yeux ?"
 keywords:
@@ -95,7 +98,7 @@ title_f: '**Stylo**'
 })
 
 test('old/string based keywords[x].list_f are unformatted', () => {
-  expect(prepare(`---
+  expect(reformat(`---
 title_f: "Stylo"
 keywords:
 - lang: fr
@@ -111,31 +114,32 @@ title_f: Stylo
 })
 
 test('should return empty if YAML is empty', () => {
-  expect(prepare('', {id: 'abcd1234'})).toBe('')
+  expect(reformat('', {id: 'abcd1234'})).toBe('')
 })
 
 
 test('should return empty if YAML is blank', () => {
-  expect(prepare(' ', {id: 'abcd1234'})).toBe('')
+  expect(reformat(' ', {id: 'abcd1234'})).toBe('')
 })
 
 test('should return empty if YAML is undefined', () => {
-  expect(prepare(undefined, {id: 'abcd1234'})).toBe('')
+  expect(reformat(undefined, {id: 'abcd1234'})).toBe('')
 })
 
 test('should return empty if YAML is null', () => {
-  expect(prepare(null, {id: 'abcd1234'})).toBe('')
+  expect(reformat(null, {id: 'abcd1234'})).toBe('')
 })
 
 test('should return empty if YAML is invalid', () => {
-  expect(prepare(`---
-\ foo:---
-\- bar:;`, {id: 'abcd1234'})).toBe('')
+  expect(reformat(`---
+\foo:---
+- bar:;`, {id: 'abcd1234'})).toBe('')
 })
 
 test('should be identical', async () => {
-  const expectedContent = await fs.readFile(path.join(__dirname, '..', 'fixtures', 'psp1515.expected.yml'), 'utf8')
-  const input = await fs.readFile(path.join(__dirname, '..', 'fixtures', 'psp1515.input.yml'), 'utf8')
+  const expectedContent = await fs.readFile(expectedContentFilename, 'utf8')
+  const input = await fs.readFile(inputFilename, 'utf8')
+
   const expected = '---\n' + YAML.dump(YAML.load(expectedContent, 'utf8'), { sortKeys: true }) + '---'
-  expect(prepare(input, {id: 'abcd1234'})).toBe(expected)
+  expect(reformat(input, {id: 'abcd1234'})).toBe(expected)
 })

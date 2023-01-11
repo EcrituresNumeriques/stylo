@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const { deriveToc } = require('../helpers/markdown.js')
+const { reformat } = require('../helpers/metadata.js')
 
 const versionSchema = new Schema({
   owner:{
@@ -31,13 +32,20 @@ const versionSchema = new Schema({
       return md
     }
   },
-  yaml: String,
+  yaml: {
+    type: String,
+    default: ''
+  },
   bib: String,
   sommaire:{
     type: String,
     default: ''
   },
 }, {timestamps:true});
+
+versionSchema.virtual('yamlReformated').get(function () {
+  return reformat(this.yaml, { replaceBibliography: false })
+})
 
 module.exports = mongoose.model('Version', versionSchema);
 module.exports.schema = versionSchema

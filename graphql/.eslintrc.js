@@ -19,6 +19,10 @@ module.exports = {
       plugins: ['jest'],
       env: {
         'jest/globals': true
+      },
+      rules: {
+        'security/detect-object-injection': ['off'],
+        'security/detect-non-literal-fs-filename': ['off'],
       }
     }
   ],
