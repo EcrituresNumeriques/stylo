@@ -81,9 +81,9 @@ userSchema.methods.createDefaultArticle = async function createDefaultArticle ()
     title: defaultArticle.title,
     owner: this,
     workingVersion: {
-      yaml: newArticle.yaml,
-      bib: newArticle.bib,
-      md: newArticle.md
+      yaml: defaultArticle.yaml,
+      bib: defaultArticle.bib,
+      md: defaultArticle.md
     },
   })
 
