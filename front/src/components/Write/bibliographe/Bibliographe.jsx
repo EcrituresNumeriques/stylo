@@ -17,6 +17,7 @@ import Select from '../../Select'
 import NavTag from '../../NavTab'
 
 import { linkToZotero as query } from '../../Article.graphql'
+import MonacoBibtexEditor from '../providers/monaco/BibtexEditor'
 
 export default function Bibliographe({ article, cancel }) {
   const [selector, setSelector] = useState('zotero')
@@ -46,6 +47,10 @@ export default function Bibliographe({ article, cancel }) {
         .finally(() => setSaving(false))
     }
   }, [zoteroToken])
+
+  const handleTabChange = useCallback((value) => setSelector(value), [])
+  const handleCollectionChange = useCallback((event) => setZoteroCollectionHref(etv(event)), [])
+  const handleZoteroLinkChange = useCallback((event) => setZoteroLink(etv(event)), [])
 
   const mergeCitations = () => {
     setBib(addCitation + '\n' + bib)
@@ -154,7 +159,7 @@ export default function Bibliographe({ article, cancel }) {
   }
 
   const zoteroCollectionSelect = (
-    <Select onChange={(event) => setZoteroCollectionHref(etv(event))}>
+    <Select onChange={handleCollectionChange}>
       <option value="">
         {isSaving ? 'Fetching collections…' : 'Pick a collection'}
       </option>
@@ -175,7 +180,7 @@ export default function Bibliographe({ article, cancel }) {
 
   return (
     <article>
-      <NavTag defaultValue={selector} onChange={(value) => setSelector(value)} items={[
+      <NavTag defaultValue={selector} onChange={handleTabChange} items={[
         {
           value: 'zotero',
           name: 'Zotero'
@@ -204,12 +209,12 @@ export default function Bibliographe({ article, cancel }) {
             <Field
               placeholder="[IDnumber]/collections/[IDcollection]"
               value={zoteroLink}
-              onChange={(e) => setZoteroLink(etv(e))}
+              onChange={handleZoteroLinkChange}
             />
             <Button
               type="submit"
               primary={true}
-              onClick={() => saveNewZotero()}
+              onClick={saveNewZotero}
               disabled={
                 isSaving ||
                 (!zoteroLink && zoteroLink === article.zoteroLink)
@@ -270,18 +275,16 @@ export default function Bibliographe({ article, cancel }) {
           onSubmit={(e) => e.preventDefault() && mergeCitations()}
           className={styles.citations}
         >
-          <textarea
-            onChange={(event) => {
-              setCitationValidationResult({
-                valid: false
-              })
+          <MonacoBibtexEditor
+            height="150px"
+            onTextUpdate={(bibtex) => {
+              setCitationValidationResult({ valid: false })
               delayedValidateCitation(
-                etv(event),
+                bibtex,
                 setCitationValidationResult,
                 setAddCitation
               )
             }}
-            placeholder="Paste here the BibTeX of the citation you want to add"
           />
           {citationValidationResult.messages && (
             <ul className={styles.citationMessages}>
@@ -356,13 +359,12 @@ export default function Bibliographe({ article, cancel }) {
       {selector === 'raw' && (
         <form onSubmit={(e) => e.preventDefault()}>
           <div className={styles.raw}>
-            <textarea
-              wrap="off"
-              defaultValue={bib}
-              onChange={(event) => {
+            <MonacoBibtexEditor
+              text={bib}
+              onTextUpdate={(bibtex) => {
                 setRawBibTeXValidationResult({ valid: false })
                 delayedValidateCitation(
-                  etv(event),
+                  bibtex,
                   setRawBibTeXValidationResult,
                   setBib
                 )
