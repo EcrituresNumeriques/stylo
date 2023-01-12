@@ -183,7 +183,7 @@ articleSchema.methods.unshareWith = async function shareWith(user) {
 
 articleSchema.methods.createNewVersion = async function createNewVersion ({ mode, message, user }) {
   const { bib, yaml, md } = this.workingVersion
-  const mostRecentVersion = this.version.at(0)
+  const mostRecentVersion = this.versions.at(0)
 
   const { revision, version } = mode === 'MAJOR'
     ? computeMajorVersion(mostRecentVersion)

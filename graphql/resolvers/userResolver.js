@@ -164,13 +164,21 @@ module.exports = {
 
   User: {
     async articles(user, { limit }) {
-      await user.populate({ path: 'articles', options: { limit } }).execPopulate()
+      await user.populate({
+        path: 'articles',
+        options: { limit },
+        populate: { path: 'owner tags' }
+      }).execPopulate()
 
       return user.articles
     },
 
     async article (user, { id: _id }) {
-      await user.populate({ path: 'articles', match: { _id }}).execPopulate()
+      await user.populate({
+        path: 'articles',
+        match: { _id },
+        populate: { path: 'owner tags' }
+      }).execPopulate()
 
       return user.articles[0]
     }

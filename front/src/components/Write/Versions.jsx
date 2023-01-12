@@ -7,24 +7,11 @@ import styles from './versions.module.scss'
 import menuStyles from './menu.module.scss'
 import buttonStyles from '../button.module.scss'
 
-import { generateArticleExportId } from '../../helpers/identifier'
-
 import Modal from '../Modal'
 import Export from '../Export'
 import Button from '../Button'
 import CreateVersion from './CreateVersion'
-
-const date = new Intl.DateTimeFormat(['en', 'fr'], {
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-  hour: 'numeric',
-  minute: 'numeric',
-  timeZone: 'UTC',
-  timeZoneName: 'short',
-})
-
-const dateFormat = date.format.bind(date)
+import formatTimeAgo from '../../helpers/formatTimeAgo.js'
 
 export default function Versions ({ article, selectedVersion, compareTo, readOnly }) {
   const articleVersions = useSelector(state => state.articleVersions, shallowEqual)
@@ -89,10 +76,12 @@ export default function Versions ({ article, selectedVersion, compareTo, readOnl
                 <p>
                   {v.owner && (
                     <span>
-                      by <strong>{v.owner.displayName}</strong>{' '}
+                      by <strong>{v.owner.displayName}</strong>{', '}
                     </span>
                   )}
-                  {<span>on <time dateTime={v.updatedAt}>{dateFormat(v.updatedAt)}</time></span>}
+                  <span>
+                    <time dateTime={v.updatedAt}>{formatTimeAgo(v.updatedAt)}</time>
+                  </span>
                 </p>
                 <ul className={styles.actions}>
                   {v._id !== compareTo && (
