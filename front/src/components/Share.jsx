@@ -1,17 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { shallowEqual, useSelector } from 'react-redux'
 import { Send, UserMinus, UserPlus } from 'react-feather'
 
-import styles from './acquintances.module.scss'
+import styles from './Share.module.scss'
 
 import AcquintanceAddForm from './AcquintanceAddForm'
 import Button from './Button'
 
 import * as queries from './Acquintances.graphql'
 import { useGraphQL } from '../helpers/graphQL'
+import { merge } from '../helpers/acquintances.js'
 
-export default function Acquintances ({ article, setNeedReload, cancel }) {
+export default function ArticleShare ({ article, setNeedReload, cancel }) {
   const [acquintances, setAcquintances] = useState([])
   const [loading, setLoading] = useState(true)
   const [contributors, setContributors] = useState(article.contributors)
@@ -21,6 +22,8 @@ export default function Acquintances ({ article, setNeedReload, cancel }) {
 
   const sharedAccountsIds = activeUser.permissions.map(({ user }) => user._id)
   const contributorsIds = contributors.map(({ user }) => user._id)
+
+  const allContributors = useMemo(() => merge(contributors, acquintances), [acquintances, contributors])
 
   const shareArticle = async (to) => {
     try {
@@ -76,25 +79,29 @@ export default function Acquintances ({ article, setNeedReload, cancel }) {
     <section className={styles.acquintances}>
       <AcquintanceAddForm onAdd={refreshContacts} />
       {loading && <p>Loading...</p>}
-      {!loading && acquintances.length === 0 && <p>No acquintances</p>}
-      {acquintances.map((acquintance) => (
-        <div key={`acquintance-${acquintance._id}`} className={styles.acquintance}>
+      {!loading && allContributors.length === 0 && <p>No acquintances</p>}
+      {allContributors.map((user) => (
+        <div key={`acquintance-${user._id}`} className={styles.acquintance}>
           <div>
-            <span>{acquintance.displayName}</span>
-            <a href={"mailto:" + acquintance.email} className={styles.acquintanceEmail}>{acquintance.email}</a>
+            <span>
+              {user.displayName}
+              {' '}
+              {userId === user._id && <small className={styles.sameAccount}>(this account)</small>}
+            </span>
+            {user.email && <a href={"mailto:" + user.email} className={styles.acquintanceEmail}>{user.email}</a>}
           </div>
           <div className={styles.acquintanceActions}>
-            {sharedAccountsIds.includes(acquintance._id) === false && <>
-              <Button onClick={() => duplicateArticle(acquintance._id)} ><Send/> Send a Copy</Button>
-              {!contributorsIds.includes(acquintance._id) && <Button onClick={() => shareArticle(acquintance._id)} >
+            {sharedAccountsIds.includes(user._id) === false && <>
+              <Button onClick={() => duplicateArticle(user._id)} ><Send/> Send a Copy</Button>
+              {!contributorsIds.includes(user._id) && <Button onClick={() => shareArticle(user._id)} >
                 <UserPlus /> Grant Access
               </Button>}
-              {contributorsIds.includes(acquintance._id) && <Button onClick={() => unshareArticle(acquintance._id)} >
+              {contributorsIds.includes(user._id) && <Button onClick={() => unshareArticle(user._id)} >
                 <UserMinus /> Revoke Access
               </Button>}
             </>}
 
-            {sharedAccountsIds.includes(acquintance._id) === true && <small>
+            {sharedAccountsIds.includes(user._id) && <small>
               already shared via full access — <Link to="/credentials">manage</Link>
             </small>}
           </div>

@@ -56,11 +56,9 @@ module.exports = {
       const { userId } = isUser(args, context, allowedIds)
 
       //Fetch article and user to send to
-      const fetchedArticle = await Article
-        .findOne({ _id: args.article, owner: { $in: allowedIds.concat([userId]) } })
-        .populate({ path: 'contributors', populate: 'user' })
+      const article = await Article.findOneByOwner({ _id: args.article, user: userId })
 
-      if(!fetchedArticle){
+      if(!article){
         throw new Error('Unable to find article')
       }
       const fetchedUser = await User.findById(args.to)
@@ -68,14 +66,9 @@ module.exports = {
         throw new Error('Unable to find user')
       }
 
-      //Check if user is not already in array
-      if(fetchedArticle.contributors.find(({ user }) => user.id === fetchedUser.id)){
-        throw new Error('Article already shared with this user')
-      }
+      await article.shareWith(fetchedUser)
 
-      await fetchedArticle.shareWith(fetchedUser)
-
-      return fetchedArticle
+      return article
     },
 
     /**
@@ -87,14 +80,12 @@ module.exports = {
      */
     async unshareArticle (_, args, context) {
       const allowedIds = await User.findAccountAccessUserIds(context.token._id)
-      const { userId } = isUser(args, context)
+      const { userId } = isUser(args, context, allowedIds)
 
       //Fetch article and user to send to
-      const fetchedArticle = await Article
-        .findOne({ _id: args.article, owner: { $in: allowedIds.concat([userId]) } })
-        .populate({ path: 'contributors', populate: 'user' })
+      const article = await Article.findOneByOwner({ _id: args.article, user: userId })
 
-      if(!fetchedArticle){
+      if(!article){
         throw new Error('Unable to find article')
       }
 
@@ -103,9 +94,9 @@ module.exports = {
         throw new Error('Unable to find user')
       }
 
-      await fetchedArticle.unshareWith(fetchedUser)
+      await article.unshareWith(fetchedUser)
 
-      return fetchedArticle
+      return article
     },
     /**
      * Duplicate an article as the current user
