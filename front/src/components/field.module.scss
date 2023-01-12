@@ -66,6 +66,14 @@
   }
 }
 
+.textEditor {
+  border: 1px solid #000000;
+
+  .margin-view-overlays {
+    display: none;
+  }
+}
+
 .footer {
   margin: 1rem 0 0;
   padding-left: calc(10rem + 1rem);

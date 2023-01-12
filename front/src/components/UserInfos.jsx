@@ -11,6 +11,7 @@ import formStyles from './field.module.scss'
 import Button from "./Button";
 import Field from "./Field";
 import formatTimeAgo from '../helpers/formatTimeAgo';
+import MonacoYamlEditor from './Write/providers/monaco/YamlEditor'
 
 export default function UserInfos () {
   const dispatch = useDispatch()
@@ -86,12 +87,10 @@ export default function UserInfos () {
           placeholder="Institution name"
         />
         <Field id="yamlField" label="Default YAML">
-          <textarea
+          <MonacoYamlEditor
             id="yamlField"
-            wrap="off"
-            value={yaml || ""}
-            onChange={(e) => setYaml(etv(e))}
-            placeholder=""
+            text={activeUser.yaml}
+            onTextUpdate={handleYamlUpdate}
           />
         </Field>
         <Field  label="Zotero">
