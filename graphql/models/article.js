@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions.js')
+const { reformat } = require('../helpers/metadata.js')
 
 const ArticleContributorSchema = new Schema({
   user: {
@@ -57,6 +58,10 @@ const articleSchema = new Schema({
     default: ''
   }
 }, {timestamps: true});
+
+articleSchema.virtual('yamlReformated').get(function () {
+  return reformat(this.workingVersion.yaml, { replaceBibliography: false })
+})
 
 
 /**

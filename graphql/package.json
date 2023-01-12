@@ -38,6 +38,7 @@
     "passport-openidconnect": "0.0.2",
     "pino": "^7.11.0",
     "pino-http": "^7.0.0",
+    "remove-markdown": "^0.5.0",
     "uid-generator": "^2.0.0"
   },
   "devDependencies": {

@@ -4,25 +4,23 @@ const os = require('os')
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
 
-const YAML = require('js-yaml')
 const archiver = require('archiver')
 
 const { logger } = require('./logger')
 const { FindByIdNotFoundError } = require('./helpers/errors')
 const { normalize } = require('./helpers/filename')
-const { prepare: prepareMetadata } = require('./helpers/metadata')
 const { byTitle: sortByTitle } = require('./helpers/sort')
 const { getArticleById, getVersionById, getBookById } = require('./graphql')
 
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 
-const exportZip = async ({ bib, yaml, md, id, versionId, title }, res, _) => {
+const exportZip = async ({ bib, yamlReformated, md, id, versionId, title }, res, _) => {
   const filename = `${normalize(title)}.zip`
   const archive = createZipArchive(filename, res)
   // add files
   archive.append(Buffer.from(md), { name: `${id}.md` })
   archive.append(Buffer.from(bib), { name: `${id}.bib` })
-  archive.append(Buffer.from(prepareMetadata(yaml, {id: versionId ?? id, replaceBibliography: true})), { name: `${id}.yaml` })
+  archive.append(Buffer.from(yamlReformated), { name: `${id}.yaml` })
   // zip!
   return archive.finalize()
 }
@@ -57,7 +55,7 @@ ${templateArg} \
 -t html5`
 }
 
-const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => {
+const exportHtml = async ({ bib, yamlReformated, md, id, versionId, title }, res, req) => {
   const preview = req.query.preview
   const originalUrl = req.originalUrl
 
@@ -70,11 +68,10 @@ const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => 
     const bibliographyFilePath = path.join(tmpDirectory, `${id}.bib`)
     const metadataFilePath = path.join(tmpDirectory, `${id}.yaml`)
 
-    const completeYaml = prepareMetadata(yaml, { id: versionId ?? id });
     await Promise.all([
       fs.writeFile(markdownFilePath, md, 'utf8'),
       fs.writeFile(bibliographyFilePath, bib, 'utf8'),
-      fs.writeFile(metadataFilePath, completeYaml, 'utf8'),
+      fs.writeFile(metadataFilePath, yamlReformated, 'utf8'),
     ])
 
     // pandoc command
@@ -123,8 +120,8 @@ const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => 
 const getArticleExportContext = async (articleId) => {
   const article = await getArticleById(articleId)
   const latestVersion = article.workingVersion
-  const { bib, yaml, md } = latestVersion
-  return { bib, yaml, md, articleId, title: article.title }
+  const { bib, yamlReformated, md } = latestVersion
+  return { bib, yamlReformated, md, articleId, title: article.title }
 }
 
 const getBookExportContext = async (bookId) => {
@@ -151,13 +148,13 @@ function createBookExportContext (chapters, { id, title }) {
     return acc
   }, { bib: [], md: [] })
   const firstChapter = chaptersSorted[0]
-  const { yaml } = firstChapter.versions.length > 0
+  const { yamlReformated } = firstChapter.versions.length > 0
     ? firstChapter.versions[firstChapter.versions.length - 1]
     : firstChapter.workingVersion
 
   return {
     bib: chaptersData.bib.join('\n'),
-    yaml: yaml,
+    yamlReformated: yamlReformated,
     md: chaptersData.md.join('\n\n'),
     id,
     title,
@@ -181,6 +178,8 @@ const createZipArchive = (filename, res) => {
 }
 
 module.exports = {
+  createBookExportContext,
+
   exportArticleHtml: async (req, res, _) => {
     const articleId = req.params.id
     const articleExportContext = await getArticleExportContext(articleId)
@@ -201,8 +200,8 @@ module.exports = {
     } catch (e) {
       if (e instanceof FindByIdNotFoundError) {
         // it might be a version!
-        const { bib, yaml, md, _id: id } = await getVersionById(identifier)
-        return exportHtml({ bib, yaml, md, id, title: id }, res, req)
+        const { bib, yamlReformated, md, _id: id } = await getVersionById(identifier)
+        return exportHtml({ bib, yamlReformated, md, id, title: id }, res, req)
       } else {
         throw e
       }
@@ -219,8 +218,8 @@ module.exports = {
       if (e instanceof FindByIdNotFoundError) {
         // it might be a version!
         const version = await getVersionById(identifier)
-        const { bib, yaml, md, _id: id } = version
-        return exportZip({ bib, yaml, md, id, title: id }, res, req)
+        const { bib, yamlReformated, md, _id: id } = version
+        return exportZip({ bib, yamlReformated, md, id, title: id }, res, req)
       } else {
         throw e
       }
@@ -255,14 +254,13 @@ module.exports = {
     // add files
     articles.forEach((article) => {
       const filename = normalize(article._doc.title)
-      const { md, bib, yaml } = article._doc.versions.length > 0
+      const { md, bib, yamlReformated } = article._doc.versions.length > 0
         ? article._doc.versions[0]
         : article._doc.workingVersion
       archive.append(Buffer.from(md), { name: `${filename}.md` })
       archive.append(Buffer.from(bib), { name: `${filename}.bib` })
-      archive.append(Buffer.from(yaml), { name: `${filename}.yaml` })
+      archive.append(Buffer.from(yamlReformated), { name: `${filename}.yaml` })
     })
     return archive.finalize()
-  },
-  _createBookExportContext: createBookExportContext
+  }
 }

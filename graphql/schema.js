@@ -47,9 +47,10 @@ type Tag {
 }
 
 type WorkingVersion {
+  bib: String
   md: String
   yaml: String
-  bib: String
+  yamlReformated: String
 }
 
 type Version {
@@ -60,6 +61,7 @@ type Version {
   md: String
   sommaire: String
   yaml: String
+  yamlReformated: String
   bib: String
   message: String
   article: Article

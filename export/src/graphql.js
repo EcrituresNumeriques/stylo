@@ -35,7 +35,7 @@ async function getArticleById (articleId) {
 
       workingVersion {
         bib
-        yaml
+        yamlReformated
         md
       }
     }
@@ -58,7 +58,7 @@ async function getVersionById (versionId) {
     version (version:$versionId) {
       _id
       bib
-      yaml
+      yamlReformated
       md
     }
   }`
@@ -88,13 +88,13 @@ async function getBookById (bookId) {
 
           md
           bib
-          yaml
+          yamlReformated
         }
 
         workingVersion {
           md
           bib
-          yaml
+          yamlReformated
         }
       }
     }
