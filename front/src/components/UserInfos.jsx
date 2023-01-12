@@ -4,7 +4,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import { useGraphQL } from '../helpers/graphQL'
-import { getUserDetails, updateUser } from './Credentials.graphql'
+import { updateUser } from './Credentials.graphql'
 import etv from '../helpers/eventTargetValue'
 import styles from './credentials.module.scss'
 import formStyles from './field.module.scss'
@@ -17,64 +17,37 @@ export default function UserInfos () {
   const runQuery = useGraphQL()
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
   const sessionToken = useSelector(state => state.sessionToken)
-  const userId = activeUser._id
   const [displayName, setDisplayName] = useState(activeUser.displayName)
   const [firstName, setFirstName] = useState(activeUser.firstName)
   const [lastName, setLastName] = useState(activeUser.lastName)
   const [institution, setInstitution] = useState(activeUser.institution)
   const [yaml, setYaml] = useState(activeUser.yaml)
-  const [user, setUser] = useState(activeUser)
   const [isSaving, setIsSaving] = useState(false)
 
-  const updateActiveUser = useCallback((payload) => dispatch({ type: `UPDATE_ACTIVE_USER`, payload }), [])
+  const updateActiveUserDetails = useCallback((payload) => dispatch({ type: `UPDATE_ACTIVE_USER_DETAILS`, payload }), [])
   const clearZoteroToken = useCallback(() => dispatch({ type: 'CLEAR_ZOTERO_TOKEN' }), [])
+  const handleYamlUpdate = useCallback((yaml) => setYaml(yaml), [])
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const variables = { user: userId }
-        const data = await runQuery({ query: getUserDetails, variables })
-        setDisplayName(data.user.displayName)
-        setFirstName(data.user.firstName || '')
-        setLastName(data.user.lastName || '')
-        setInstitution(data.user.institution || '')
-        setYaml(data.user.yaml || '')
-        setUser(data.user)
-      } catch (err) {
-        alert(`couldn't fetch user ${err}`)
-      }
-    })()
-  }, [])
+  const unlinkZoteroAccount = useCallback(async (event) => {
+    event.preventDefault()
 
-  const unlinkZoteroAccount = async () => {
-    const variables = { user: userId, details: { zoteroToken: null } }
-    const data = await runQuery({ query: updateUser, variables })
-    setUser(data.updateUser)
+    const variables = { user: activeUser._id, details: { zoteroToken: null } }
+    await runQuery({ query: updateUser, variables })
     clearZoteroToken()
     setIsSaving(false)
-  }
+  }, [])
 
-  const updateInfo = async (e) => {
+  const updateInfo = useCallback(async (e) => {
     e.preventDefault()
-    try {
-      setIsSaving(true)
-      const variables = {
-        user: userId,
-        details: { yaml, displayName, firstName, lastName, institution },
-      }
-      const data = await runQuery({ query: updateUser, variables })
-      setDisplayName(data.updateUser.displayName)
-      updateActiveUser(displayName)
-      setFirstName(data.updateUser.firstName || '')
-      setLastName(data.updateUser.lastName || '')
-      setInstitution(data.updateUser.institution || '')
-      setYaml(data.updateUser.yaml || '')
-      setUser(data.updateUser)
-      setIsSaving(false)
-    } catch (err) {
-      alert(`Couldn't update User: ${err}`)
+    setIsSaving(true)
+    const variables = {
+      user: activeUser._id,
+      details: { yaml, displayName, firstName, lastName, institution },
     }
-  }
+    const { updateUser: userDetails } = await runQuery({ query: updateUser, variables })
+    updateActiveUserDetails(userDetails)
+    setIsSaving(false)
+  }, [activeUser._id, yaml, displayName, firstName, lastName, institution])
 
   return (<>
     <section className={styles.section}>
@@ -123,12 +96,12 @@ export default function UserInfos () {
         </Field>
         <Field  label="Zotero">
           <>
-            {user.zoteroToken && <span>Linked with <b>{user.zoteroToken}</b> account.</span>}
-            {!user.zoteroToken && <span>No linked account.</span>}
-            {user.zoteroToken && (
+            {activeUser.zoteroToken && <span>Linked with <b>{activeUser.zoteroToken}</b> account.</span>}
+            {!activeUser.zoteroToken && <span>No linked account.</span>}
+            {activeUser.zoteroToken && (
               <Button
                 title="Unlink this Zotero account"
-                onClick={(e) => e.preventDefault() || unlinkZoteroAccount()}
+                onClick={unlinkZoteroAccount}
               >
                 Unlink
               </Button>
@@ -147,10 +120,10 @@ export default function UserInfos () {
 
     <section className={styles.section}>
       <Field label="Account email">
-        <>{user.email}</>
+        <>{activeUser.email}</>
       </Field>
       <Field label="Account type">
-        <>{user.authType === 'oidc' ? 'External (OpenID)' : 'Local'}</>
+        <>{activeUser.authType === 'oidc' ? 'External (OpenID)' : 'Local'}</>
       </Field>
       <Field label="API Key">
         <>
@@ -163,16 +136,16 @@ export default function UserInfos () {
         </>
       </Field>
       <Field label="Identifier">
-        <code>{user._id}</code>
+        <code>{activeUser._id}</code>
       </Field>
       <Field label="Status">
-        <>{user.admin ? 'Admin' : 'Basic account'}</>
+        <>{activeUser.admin ? 'Admin' : 'Basic account'}</>
       </Field>
       <Field label="Created At">
-        <time dateTime={user.createdAt}>{formatTimeAgo(user.createdAt)}</time>
+        <time dateTime={activeUser.createdAt}>{formatTimeAgo(activeUser.createdAt)}</time>
       </Field>
       <Field label="Updated At">
-        <time dateTime={user.updatedAt}>{formatTimeAgo(user.updatedAt)}</time>
+        <time dateTime={activeUser.updatedAt}>{formatTimeAgo(activeUser.updatedAt)}</time>
       </Field>
     </section>
   </>
