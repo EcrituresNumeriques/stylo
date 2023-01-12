@@ -14,8 +14,9 @@ export default function MonacoYamlEditor ({ text, onTextUpdate, height = "300px"
     overviewRulerBorder: false,
     renderLineHighlight: false,
     scrollBeyondLastLine: false,
+    showFoldingControls: 'always',
     wordWrap: 'off',
-    wrappingIndent: 'none',
+    wrappingIndent: 'same',
     minimap: {
       enabled: false
     }
