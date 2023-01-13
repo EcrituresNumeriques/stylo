@@ -18,7 +18,7 @@ const pino = require('pino-http')({
 })
 
 const schema = require('./schema')
-const { verifCreds } = require('./resolvers/authResolver')
+const { checkCredentials } = require('./resolvers/authResolver')
 
 const { createJWTToken, populateUserFromJWT } = require('./helpers/token')
 const User = require('./models/user')
@@ -129,7 +129,7 @@ passport.use('oidc', new OidcStrategy({
 
 passport.use(new LocalStrategy({ session: false },
   function (username, password, done) {
-    verifCreds({ username, password })
+    checkCredentials({ username, password })
       .then(user => done(null, user))
       .catch(e => done(e, false))
   }
