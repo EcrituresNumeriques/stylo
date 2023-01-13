@@ -13,9 +13,9 @@ function Header () {
 
   const nav = logedIn ? (
     <>
-      <li><Link to="/credentials">{displayName}</Link></li>
-      <li><Link to="/books">Books</Link></li>
       <li><Link to="/articles">Articles</Link></li>
+      <li><Link to="/books">Books</Link></li>
+      <li><Link to="/credentials">My Account</Link></li>
       <li>
         <a onClick={logout} className={styles.logoutAction}>
           Log out
