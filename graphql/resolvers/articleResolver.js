@@ -1,10 +1,11 @@
 const defaultsData = require('../data/defaultsData')
 
-const Article = require('../models/article');
-const User = require('../models/user');
+const Article = require('../models/article')
+const User = require('../models/user')
+const Workspace = require('../models/workspace')
 
 const isUser = require('../policies/isUser')
-const { ApiError } = require('../helpers/errors');
+const { ApiError } = require('../helpers/errors')
 
 module.exports = {
   Mutation: {
@@ -205,6 +206,18 @@ module.exports = {
   },
 
   Article: {
+    async workspaces (article, { user }) {
+      if (user.admin) {
+        return Workspace.find({ articles: article._id })
+      }
+      return Workspace.find({
+        $and: [
+          { articles: article._id },
+          { 'members.user': user._id }
+        ]
+      })
+    },
+
     async versions (article, { limit }) {
       await article
         .populate({

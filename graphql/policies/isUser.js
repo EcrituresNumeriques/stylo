@@ -18,7 +18,7 @@ module.exports = function resolveUserIdFromContext (args, { token, user } = {}, 
   }
 
   // If admin, go ahead
-  // Although, we do not guarantee any userId (it's the resolver's responsability)
+  // Although, we do not guarantee any userId (it's the resolver's responsibility)
   if (isAdmin) {
     return { userId: resolvedUserId }
   }
