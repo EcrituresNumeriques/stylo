@@ -7,6 +7,7 @@ export default function Button (props) {
     [styles.primary]: props.primary,
     [styles.secondary]: props.secondary || (!props.primary && !props.tertiary),
     [styles.tertiary]: props.tertiary,
+    [styles.small]: props.small,
     [styles.icon]: props.icon === true,
     [props.className]: Boolean(props.className)
   })

@@ -80,6 +80,10 @@ a.button:not(.primary), a.icon:not(.primary) {
   color: currentColor;
 }
 
+.small {
+  font-size: .8rem;
+}
+
 .primary {
   @extend .button;
 

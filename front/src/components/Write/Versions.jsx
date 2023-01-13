@@ -37,7 +37,7 @@ export default function Versions ({ article, selectedVersion, compareTo, readOnl
         {expand ? <ChevronDown/> : <ChevronRight/>}
         Versions
 
-        <Button className={styles.newVersion} disabled={readOnly} onClick={createNewVersion}>
+        <Button className={styles.newVersion} small={true} disabled={readOnly} onClick={createNewVersion}>
           New Version
         </Button>
       </h1>
