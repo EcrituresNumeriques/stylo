@@ -2,10 +2,11 @@ import clsx from 'clsx'
 import React, { forwardRef } from 'react'
 import styles from './field.module.scss'
 
-const Field = forwardRef((props, forwardedRef) => {
+export default forwardRef(function Field (props, forwardedRef) {
   const type = props.type ? props.type : 'text'
   const classNames = [
     styles.field,
+    props.prefix && styles.withPrefix,
     'control-field'
   ]
 
@@ -13,20 +14,19 @@ const Field = forwardRef((props, forwardedRef) => {
     classNames.push(props.className)
   }
 
-  return (<div className={clsx(classNames)} ref={forwardedRef}>
+  const computedStyles = {'--chars-count': props.prefix?.length}
+
+  return (<div className={clsx(classNames)}>
     {props.label && <label htmlFor={props.id}>{props.label}</label>}
-    <p className={clsx('control', props.icon && "has-icons-left")}>
+    <div className={clsx('control', props.icon && "has-icons-left")} style={computedStyles}>
       {props.children && {...props.children}}
       {!props.children && <>
-        <input {...props} className="input" type={type} />
+        {props.prefix && <span className={styles.prefix}>{props.prefix}</span>}
+        <input {...props} className="input" type={type} ref={forwardedRef} />
           {props.icon && <span className="icon is-small is-left">
             <props.icon/>
           </span>}
         </>}
-    </p>
+    </div>
   </div>)
 })
-
-Field.displayName = 'Field'
-
-export default Field
