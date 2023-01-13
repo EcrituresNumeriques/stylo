@@ -3,10 +3,17 @@
 
 .actions {
   display: flex;
+  align-items: center;
+  margin: .5em 0;
 }
 
 .actionsSubmit {
   margin-left: auto;
+}
+
+.actionsHelp svg {
+  margin-right: .25em;
+  vertical-align: middle;
 }
 
 
@@ -14,9 +21,20 @@
 .citations,
 .zotero {
   margin-bottom: 1rem;
+
+  h3 > svg {
+    max-height: fit-content;
+    margin-right: .3rem;
+    vertical-align: sub;
+  }
 }
+
 .zotero {
-  > p {
+  .section > h3 {
+    margin-bottom: .5rem;
+  }
+
+  .section > p {
     margin-bottom: 1rem;
   }
   label {
@@ -34,6 +52,9 @@
     width: 100%;
     height: 50vh;
   }
+}
+.citationsPasteArea {
+  margin-bottom: 3em;
 }
 .citations {
   > textarea {
@@ -91,4 +112,8 @@
   font-size: 0.8rem;
   margin: 0.5em 0 1em 0;
   color: $error-color;
+}
+
+.section:not(:last-child) {
+  margin-bottom: 3rem;
 }

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import Editor from '@monaco-editor/react'
 
 import styles from '../../../field.module.scss'
@@ -6,7 +6,7 @@ import styles from '../../../field.module.scss'
 // Taken from https://github.com/koka-lang/madoko/blob/master/styles/lang/bibtex.json
 import languageDefinition from './lang/bibtex.json'
 
-export default function MonacoBibtexEditor ({ text, onTextUpdate, height = "300px" }) {
+export default React.forwardRef(function MonacoBibtexEditor ({ text, onTextUpdate, height = "300px" }, ref) {
   const options = useMemo(() => ({
     contextmenu: true,
     wordBasedSuggestions: false,
@@ -28,7 +28,12 @@ export default function MonacoBibtexEditor ({ text, onTextUpdate, height = "300p
   const registerLanguage = useCallback((monaco) => {
     monaco.languages.register({ id: 'bibtex' })
     monaco.languages.setMonarchTokensProvider('bibtex', languageDefinition)
-    console.log('registerLanguage', languageDefinition)
+  }, [])
+
+  const handleEditorDidMount = useCallback((monaco) => {
+    if (ref) {
+      ref.current = monaco
+    }
   }, [])
 
   return (
@@ -40,6 +45,7 @@ export default function MonacoBibtexEditor ({ text, onTextUpdate, height = "300p
       onChange={onTextUpdate}
       options={options}
       beforeMount={registerLanguage}
+      onMount={handleEditorDidMount}
     />
   )
-}
+})

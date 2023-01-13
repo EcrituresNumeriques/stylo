@@ -34,7 +34,7 @@ function Biblio ({ article, readOnly }) {
         </>
       )}
       {modal && (
-        <Modal title="Bibliography" cancel={closeModal}>
+        <Modal title="Bibliography Manager" cancel={closeModal}>
           <Bibliographe cancel={closeModal} article={article} />
         </Modal>
       )}
