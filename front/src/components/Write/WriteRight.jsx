@@ -7,6 +7,7 @@ import YamlEditor from './yamleditor/YamlEditor'
 import NavTag from '../NavTab'
 import YAML from 'js-yaml'
 import MonacoYamlEditor from './providers/monaco/YamlEditor'
+import { Sidebar } from 'react-feather'
 
 export default function WriteRight({ handleYaml, readOnly, yaml }) {
   const dispatch = useDispatch()
@@ -52,12 +53,12 @@ export default function WriteRight({ handleYaml, readOnly, yaml }) {
 
   return (
     <nav className={`${expanded ? styles.expandRight : styles.retractRight}`}>
-      <nav
+      <button
         onClick={toggleExpand}
         className={expanded ? styles.close : styles.open}
       >
-        {expanded ? 'close' : 'Metadata'}
-      </nav>
+        <Sidebar /> {expanded ? 'close' : 'Metadata'}
+      </button>
       {expanded && (
         <div className={styles.yamlEditor}>
           <header>
