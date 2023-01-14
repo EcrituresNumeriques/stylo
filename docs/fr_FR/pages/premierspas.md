@@ -235,7 +235,7 @@ Il y a deux possibilités d'annotation :
 1. Annoter une version
 2. Annoter l'article
 
-Pour annoter une version, cliquez sur le numéro de la version que vous voulez annoter et ensuite cliquez sur **[preview]**. Une prévisualisation de l'article en html s'ouvrira avec l'outil d'annotation hyothes.is sur la droite.
+Pour annoter une version, cliquez sur le numéro de la version que vous voulez annoter et ensuite cliquez sur **[preview]**. Une prévisualisation de l'article en html s'ouvrira avec l'outil d'annotation hypothes.is sur la droite.
 
 ![Hypothes.is](uploads/images/Hypothesis.png)
 
