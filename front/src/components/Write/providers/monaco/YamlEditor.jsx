@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 import Editor from '@monaco-editor/react'
 
-import styles from '../../../field.module.scss'
+import styles from './YamlEditor.module.scss'
 
-export default function MonacoYamlEditor ({ text, onTextUpdate, height = "300px" }) {
+export default function MonacoYamlEditor ({ text, onTextUpdate }) {
   const options = useMemo(() => ({
     contextmenu: true,
     wordBasedSuggestions: false,
@@ -24,9 +24,8 @@ export default function MonacoYamlEditor ({ text, onTextUpdate, height = "300px"
 
   return (
     <Editor
-      height={height}
+      className={styles.editor}
       defaultValue={text}
-      className={styles.textEditor}
       defaultLanguage="yaml"
       onChange={onTextUpdate}
       options={options}

@@ -2,14 +2,14 @@ import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import styles from './writeRight.module.scss'
+import styles from './articleEditorMetadata.module.scss'
 import YamlEditor from './yamleditor/YamlEditor'
 import NavTag from '../NavTab'
 import YAML from 'js-yaml'
 import MonacoYamlEditor from './providers/monaco/YamlEditor'
 import { Sidebar } from 'react-feather'
 
-export default function WriteRight({ handleYaml, readOnly, yaml }) {
+export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
   const dispatch = useDispatch()
   const expanded = useSelector(
     (state) => state.articlePreferences.expandSidebarRight
@@ -61,9 +61,6 @@ export default function WriteRight({ handleYaml, readOnly, yaml }) {
       </button>
       {expanded && (
         <div className={styles.yamlEditor}>
-          <header>
-            <h1>Metadata</h1>
-          </header>
           <NavTag
             defaultValue={selector}
             onChange={setSelector}
@@ -126,7 +123,7 @@ export default function WriteRight({ handleYaml, readOnly, yaml }) {
   )
 }
 
-WriteRight.propTypes = {
+ArticleEditorMetadata.propTypes = {
   handleYaml: PropTypes.func,
   readOnly: PropTypes.bool,
   yaml: PropTypes.string,

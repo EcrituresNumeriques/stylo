@@ -76,58 +76,61 @@ export default function WorkingVersion ({ articleInfos, selectedVersion, mode })
 
   const articleOwnerAndContributors = [
     articleInfos.owner.displayName,
-    ...articleInfos.contributors.map(contributor => contributor.user.displayName )
+    ...articleInfos.contributors.map(contributor => contributor.user.displayName)
   ]
 
   return (
-    <section className={styles.section}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>
-          <AlignLeft />
-          {articleInfos.title}
-        </h1>
-
+    <>
+      <section className={styles.section}>
+        <header className={styles.header}>
+          <h1 className={styles.title}>
+            <AlignLeft/>
+            {articleInfos.title}
+          </h1>
+        </header>
+        {exporting && (
+          <Modal title="Export" cancel={cancelExport}>
+            <Export articleVersionId={selectedVersion} articleId={articleInfos._id}/>
+          </Modal>
+        )}
+        <ul className={styles.actions}>
+          {articleInfos.preview.stylesheet && (<><li>
+            <Link to={`/article/${articleInfos._id}`} className={mode === 'write' ? buttonStyles.primaryDisabled : buttonStyles.secondary} title="Edit article">
+              <Edit3/> Edit
+            </Link>
+          </li>
+          <li>
+            <Link to={`/article/${articleInfos._id}/preview`} className={mode === 'preview' ? buttonStyles.primaryDisabled : buttonStyles.secondary} title="Preview article">
+              <Eye/>{articleInfos.preview.stylesheet ? 'Paged.js' : <abbr title="HyperText Markup Language">HTML</abbr>}
+            &nbsp;Preview
+            </Link>
+          </li></>)}
+          <li>
+            <Button icon title="Download a printable version" onClick={openExport}>
+              <Printer/>
+            </Button>
+          </li>
+          <li>
+            <Link to={`/article/${articleInfos._id}/annotate`} title="Annotate with Stylo users and other people (open a new window)" target="_blank" rel="noopener noreferrer"
+                  className={buttonStyles.icon}>
+              <MessageSquare/>
+            </Link>
+          </li>
+        </ul>
+      </section>
+      <section>
         <div className={styles.meta}>
           <ul className={styles.byLine}>
             <li className={styles.owners}>by {articleOwnerAndContributors.join(', ')}</li>
             <li className={styles.version}>
-              <ArticleVersion version={selectedVersion} />
+              <ArticleVersion version={selectedVersion}/>
             </li>
             <li className={styles.lastSaved}>
-              <ArticleSaveState state={workingArticle.state} updatedAt={workingArticle.updatedAt} stateMessage={workingArticle.stateMessage} />
+              <ArticleSaveState state={workingArticle.state} updatedAt={workingArticle.updatedAt} stateMessage={workingArticle.stateMessage}/>
             </li>
           </ul>
         </div>
-      </header>
-      {exporting && (
-        <Modal title="Export" cancel={cancelExport}>
-          <Export articleVersionId={selectedVersion} articleId={articleInfos._id} />
-        </Modal>
-      )}
-      <ul className={styles.actions}>
-        {articleInfos.preview.stylesheet && (<><li>
-          <Link to={`/article/${articleInfos._id}`} className={mode === 'write' ? buttonStyles.primaryDisabled : buttonStyles.secondary} title="Edit article">
-            <Edit3 /> Edit
-          </Link>
-        </li>
-        <li>
-          <Link to={`/article/${articleInfos._id}/preview`} className={mode === 'preview' ? buttonStyles.primaryDisabled : buttonStyles.secondary} title="Preview article">
-            <Eye />
-            {articleInfos.preview.stylesheet ? 'Paged.js' : <abbr title="HyperText Markup Language">HTML</abbr>}
-            &nbsp;Preview
-          </Link>
-        </li></>)}
-        <li>
-          <Button icon title="Download a printable version" onClick={openExport}>
-            <Printer />
-          </Button>
-        </li>
-        <li>
-          <Link to={`/article/${articleInfos._id}/annotate`} title="Annotate with Stylo users and other people (open a new window)" target="_blank" rel="noopener noreferrer" className={buttonStyles.icon}>
-            <MessageSquare />
-          </Link>
-        </li>
-      </ul>
-    </section>
+      </section>
+    </>
   )
 }

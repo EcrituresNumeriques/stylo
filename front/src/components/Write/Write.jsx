@@ -11,8 +11,8 @@ import styles from './write.module.scss'
 import { useGraphQL } from '../../helpers/graphQL'
 import { getEditableArticle as query } from './Write.graphql'
 
-import WriteLeft from './WriteLeft'
-import WriteRight from './WriteRight'
+import ArticleEditorMenu from './ArticleEditorMenu.jsx'
+import ArticleEditorMetadata from './ArticleEditorMetadata.jsx'
 import WorkingVersion from './WorkingVersion'
 import PreviewHtml from './PreviewHtml'
 import PreviewPaged from './PreviewPaged'
@@ -202,21 +202,15 @@ export default function Write() {
 
   return (
     <section className={styles.container}>
-      <WriteLeft
+      <ArticleEditorMenu
         articleInfos={articleInfos}
         compareTo={compareTo}
         selectedVersion={currentVersion}
         readOnly={mode === MODES_READONLY}
       />
-      <WriteRight
-        yaml={live.yaml}
-        handleYaml={handleYaml}
-        readOnly={mode === MODES_READONLY}
-      />
-
-      <WorkingVersion articleInfos={articleInfos} selectedVersion={currentVersion} mode={mode} />
-
       <article className={clsx({[styles.article]: mode !== MODES_PREVIEW})}>
+        <WorkingVersion articleInfos={articleInfos} selectedVersion={currentVersion} mode={mode} />
+
         <Switch>
           <Route path="*/preview" exact>
             <PreviewComponent preview={articleInfos.preview} yaml={live.yaml} />
@@ -233,8 +227,11 @@ export default function Write() {
           </Route>
         </Switch>
       </article>
-
-
+      <ArticleEditorMetadata
+        yaml={live.yaml}
+        handleYaml={handleYaml}
+        readOnly={mode === MODES_READONLY}
+      />
     </section>
   )
 }

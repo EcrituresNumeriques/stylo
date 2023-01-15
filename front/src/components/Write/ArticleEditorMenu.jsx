@@ -1,14 +1,14 @@
 import React, { useCallback } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
-import styles from './writeLeft.module.scss'
+import styles from './articleEditorMenu.module.scss'
 import Stats from './Stats'
 import Biblio from './Biblio'
 import Sommaire from './Sommaire'
 import Versions from './Versions'
 import { Sidebar } from 'react-feather'
 
-export default function WriteLeft ({ articleInfos, readOnly, compareTo, selectedVersion }) {
+export default function ArticleEditorMenu ({ articleInfos, readOnly, compareTo, selectedVersion }) {
   const expanded = useSelector(state => state.articlePreferences.expandSidebarLeft)
   const articleStats = useSelector(state => state.articleStats, shallowEqual)
   const dispatch = useDispatch()
@@ -20,9 +20,6 @@ export default function WriteLeft ({ articleInfos, readOnly, compareTo, selected
         <Sidebar /> {expanded ? 'close' : 'Bibliography & co'}
       </button>
       {expanded && (<div>
-        <header>
-          <h1>Summary</h1>
-        </header>
         <Versions
           article={articleInfos}
           selectedVersion={selectedVersion}

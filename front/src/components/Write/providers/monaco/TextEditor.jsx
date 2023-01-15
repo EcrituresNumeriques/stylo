@@ -11,6 +11,7 @@ export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
   const editorCursorPosition = useSelector(state => state.editorCursorPosition, shallowEqual)
   const editorRef = useRef(null)
   const options = useMemo(() => ({
+    automaticLayout: true,
     readOnly: readOnly,
     contextmenu: !readOnly,
     wordBasedSuggestions: false,

@@ -2,13 +2,22 @@
 @use '../../styles/variables' as *;
 
 .expandRight {
-  @extend .sliderright;
-  right: 0;
-  background-color: rgba(255, 255, 255, 1);
+  @extend .details;
+  box-shadow: 0 5px 5px 5px rgba(0,0,0,0.1);
+  margin-top: -1em;
+  padding-top: 1em;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+  padding-left: 0.75em;
+  padding-right: 0.5em;
   > button {
     color: $main-color;
     left: .5rem;
-    transition: right 0.5s ease;
+    margin-right: auto;
+    margin-bottom: 1em;
   }
 }
 
@@ -21,24 +30,24 @@
 }
 
 .retractRight {
-  @extend .sliderright;
-  right: -400px;
-  background-color: rgba(255, 255, 255, 0);
-  border-right: 0 solid $main-border-color;
+  @extend .details;
+  margin-top: -1em;
+  padding-top: 1em;
+  display: flex;
+  flex-direction: column;
   > button {
-    left: -130px;
-    transition: left 0.5s ease;
+    margin-left: 1em;
+    margin-right: 1em;
   }
   .open {
     color: grey;
     background-color: rgba(0, 0, 0, 0);
+    white-space: nowrap;
   }
 }
 
 .sliderright {
   @extend .slider;
-  transition: right 0.5s ease, background 0.5s ease, border 0.5s ease;
-  border-left: 1px solid $main-border-color;
   > nav {
     text-align: left;
   }
@@ -59,8 +68,6 @@
 .yamlEditor {
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
-  overflow-x: hidden;
 
   > section {
     :global {
