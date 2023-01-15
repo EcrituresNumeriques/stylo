@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'
 import { ChevronDown, ChevronRight } from 'react-feather'
@@ -10,9 +10,10 @@ import menuStyles from './menu.module.scss'
 
 export default function Sommaire () {
   const articleStructure = useSelector(state => state.articleStructure)
-  const [expand, setExpand] = useState(true)
+  const expand = useSelector(state => state.articlePreferences.expandSommaire)
   const dispatch = useDispatch()
   const routeMatch = useRouteMatch()
+  const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandSommaire' }), [])
   const getAnchor = usePandocAnchoring()
   const hasHtmlAnchors = routeMatch.path === '/article/:id/preview'
   const handleTableEntryClick = useCallback(({ target }) => {
@@ -23,7 +24,7 @@ export default function Sommaire () {
 
   return (
     <section className={[styles.section, menuStyles.section].join(' ')}>
-      <h1 onClick={() => setExpand(!expand)}>
+      <h1 onClick={toggleExpand}>
         {expand ? <ChevronDown/> : <ChevronRight/>} Table of contents
       </h1>
       {expand && (<ul>

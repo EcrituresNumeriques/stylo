@@ -5,8 +5,10 @@ import styles from './button.module.scss'
 export default function Button (props) {
   const classNames = clsx({
     [styles.primary]: props.primary,
-    [styles.secondary]: props.secondary || (!props.primary && !props.tertiary),
+    [styles.secondary]: props.secondary || (!props.primary && !props.tertiary && !props.link),
     [styles.tertiary]: props.tertiary,
+    [styles.small]: props.small,
+    [styles.link]: props.link,
     [styles.icon]: props.icon === true,
     [props.className]: Boolean(props.className)
   })

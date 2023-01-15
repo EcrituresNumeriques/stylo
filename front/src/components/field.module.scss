@@ -17,6 +17,7 @@
   display: flex;
   align-items: flex-start;
   margin-bottom: .5rem;
+  margin-top: .5rem;
 
   label {
     flex-shrink: 0;
@@ -63,6 +64,28 @@
       display: inline-flex;
       justify-content: center;
     }
+  }
+}
+
+.withPrefix {
+  input, textarea {
+    padding-left: calc(var(--chars-count) * 0.55em);
+  }
+}
+
+.prefix {
+  opacity: .4;
+  padding: calc(.5em + 1px) 0 calc(.5em + 1px) calc(.75em + 1px);
+  position: absolute;
+  z-index: 10;
+  user-select: none;
+}
+
+.textEditor {
+  border: 1px solid #000000;
+
+  .margin-view-overlays {
+    display: none;
   }
 }
 

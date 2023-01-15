@@ -80,6 +80,23 @@ a.button:not(.primary), a.icon:not(.primary) {
   color: currentColor;
 }
 
+.link {
+  background-color: transparent;
+  border: none;
+  color: currentColor;
+  cursor: pointer;
+  font-size: inherit;
+  text-decoration: underline;
+
+  &:hover, &:focus {
+    text-decoration: none;
+  }
+}
+
+.small {
+  font-size: .8rem;
+}
+
 .primary {
   @extend .button;
 

@@ -1,4 +1,4 @@
-import { filter, toBibtex, toEntries, validate } from './bibtex'
+import { filter, toBibtex, toEntries, validate, getValidationResults } from './bibtex'
 
 describe('parse', () => {
   test('it should return line errors on syntax error', () => {
@@ -175,6 +175,31 @@ describe('parse', () => {
     expect(entries[1].entry_key).toEqual(
       'pollux_grammaticus_onomasticon_nodate'
     )
+  })
+})
+
+describe('getValidationResults', () => {
+  test('it should be valid when empty', async () => {
+    expect(await getValidationResults('')).toEqual({ valid: true, messages: []})
+  })
+
+  test('it should return errors with issues', async () => {
+    expect(await getValidationResults('@[][][][][]')).toEqual({
+      valid: false,
+      messages: ["runaway_key at line 1"]
+    })
+    expect(await getValidationResults('abcd')).toEqual({
+      valid: false,
+      messages: []
+    })
+  })
+
+  test('it should be valid', async () => {
+    const bib = `@book{noauthor_test19_nodate,
+      title = {test19}
+    }`
+
+    expect(await getValidationResults(bib)).toEqual({ valid: true, messages: []})
   })
 })
 

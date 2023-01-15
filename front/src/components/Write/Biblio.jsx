@@ -1,4 +1,6 @@
 import React, { useState, useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
 import { ChevronDown, ChevronRight } from 'react-feather'
 
 import Modal from '../Modal'
@@ -10,15 +12,17 @@ import Button from '../Button'
 import ReferenceList from './ReferenceList'
 
 function Biblio ({ article, readOnly }) {
-  const [expand, setExpand] = useState(true)
-  const [modal, setModal] = useState(false)
+  const expand = useSelector(state => state.articlePreferences.expandBiblio)
+  const dispatch = useDispatch()
+  const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandBiblio' }), [])
 
+  const [modal, setModal] = useState(false)
   const openModal = useCallback(() => setModal(true), [])
   const closeModal = useCallback(() => setModal(false), [])
 
   return (
     <section className={[menuStyles.section, styles.section].join(' ')}>
-      <h1 onClick={() => setExpand(!expand)}>
+      <h1 onClick={toggleExpand}>
         {expand ? <ChevronDown/> : <ChevronRight/>} Bibliography
       </h1>
       {expand && (
@@ -30,7 +34,7 @@ function Biblio ({ article, readOnly }) {
         </>
       )}
       {modal && (
-        <Modal title="Bibliography" cancel={closeModal}>
+        <Modal title="Bibliography Manager" cancel={closeModal}>
           <Bibliographe cancel={closeModal} article={article} />
         </Modal>
       )}

@@ -63,16 +63,34 @@
   width: 400px;
   overflow-x: visible;
 
-  > nav {
+  > button {
     @extend .clickable;
+    border: none;
     position: absolute;
-    top: 0;
-    padding: 0.75rem 1rem;
+    top: .25rem;
+    padding: .5rem 0.75rem;
     transition: background-color 0.5s ease;
+    border:solid 1px currentColor;
+    border-radius: 26px;
+
+    &.open:hover, &.open:focus {
+      color: #fff;
+    }
+
+    svg {
+      height: 1.5em;
+      vertical-align: bottom;
+      width: 1.5em;
+    }
   }
 
   .close {
     background-color: $main-background-color;
+    top: .5rem;
+
+    svg {
+      display: none;
+    }
   }
 
   > div {

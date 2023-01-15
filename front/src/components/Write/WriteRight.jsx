@@ -6,6 +6,8 @@ import styles from './writeRight.module.scss'
 import YamlEditor from './yamleditor/YamlEditor'
 import NavTag from '../NavTab'
 import YAML from 'js-yaml'
+import MonacoYamlEditor from './providers/monaco/YamlEditor'
+import { Sidebar } from 'react-feather'
 
 export default function WriteRight({ handleYaml, readOnly, yaml }) {
   const dispatch = useDispatch()
@@ -37,14 +39,26 @@ export default function WriteRight({ handleYaml, readOnly, yaml }) {
     []
   )
 
+  const handleRawYamlChange = useCallback((yaml) => {
+    try {
+      YAML.loadAll(yaml)
+      setError('')
+      handleYaml(yaml)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setRawYaml(yaml)
+    }
+  }, [yaml])
+
   return (
     <nav className={`${expanded ? styles.expandRight : styles.retractRight}`}>
-      <nav
+      <button
         onClick={toggleExpand}
         className={expanded ? styles.close : styles.open}
       >
-        {expanded ? 'close' : 'Metadata'}
-      </nav>
+        <Sidebar /> {expanded ? 'close' : 'Metadata'}
+      </button>
       {expanded && (
         <div className={styles.yamlEditor}>
           <header>
@@ -71,24 +85,10 @@ export default function WriteRight({ handleYaml, readOnly, yaml }) {
           {selector === 'raw' && (
             <>
               {error !== '' && <p className={styles.error}>{error}</p>}
-              <textarea
-                className={styles.rawYaml}
-                value={rawYaml}
-                wrap="off"
-                rows={20}
-                onChange={(event) => {
-                  const component = event.target
-                  const yaml = component.value
-                  try {
-                    YAML.loadAll(yaml)
-                    setError('')
-                    handleYaml(yaml)
-                  } catch (err) {
-                    setError(err.message)
-                  } finally {
-                    setRawYaml(yaml)
-                  }
-                }}
+              <MonacoYamlEditor
+                height="100%"
+                text={rawYaml}
+                onTextUpdate={handleRawYamlChange}
               />
             </>
           )}

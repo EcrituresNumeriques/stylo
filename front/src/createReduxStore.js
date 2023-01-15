@@ -64,7 +64,7 @@ const reducer = createReducer(initialState, {
   CLEAR_ZOTERO_TOKEN: clearZoteroToken,
   LOGIN: loginUser,
   UPDATE_SESSION_TOKEN: setSessionToken,
-  UPDATE_ACTIVE_USER: updateActiveUser,
+  UPDATE_ACTIVE_USER_DETAILS: updateActiveUserDetails,
   LOGOUT: logoutUser,
 
   // article reducers
@@ -251,10 +251,10 @@ function loginUser (state, { user, token:sessionToken }) {
   return state
 }
 
-function updateActiveUser (state, action) {
+function updateActiveUserDetails (state, action) {
   return {
     ...state,
-    activeUser: { ...state.activeUser, displayName: action.payload },
+    activeUser: { ...state.activeUser, ...action.payload },
   }
 }
 

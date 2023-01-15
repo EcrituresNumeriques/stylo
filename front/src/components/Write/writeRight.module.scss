@@ -5,9 +5,9 @@
   @extend .sliderright;
   right: 0;
   background-color: rgba(255, 255, 255, 1);
-  > nav {
+  > button {
     color: $main-color;
-    left: 0;
+    left: .5rem;
     transition: right 0.5s ease;
   }
 }
@@ -25,7 +25,7 @@
   right: -400px;
   background-color: rgba(255, 255, 255, 0);
   border-right: 0 solid $main-border-color;
-  > nav {
+  > button {
     left: -130px;
     transition: left 0.5s ease;
   }

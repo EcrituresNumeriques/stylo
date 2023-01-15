@@ -12,9 +12,9 @@
   left: 0;
   background-color: rgba(255, 255, 255, 1);
 
-  > nav {
+  > button {
     color: $main-color;
-    right: 0;
+    right: 1rem;
     transition: right 0.5s ease;
     z-index: 90;
   }
@@ -25,8 +25,8 @@
   left: -400px;
   background-color: rgba(255, 255, 255, 0);
   border-right: 0px solid $main-border-color;
-  > nav {
-    right: -80px;
+  > button {
+    right: -170px;
     transition: left 0.5s ease;
   }
   .open {

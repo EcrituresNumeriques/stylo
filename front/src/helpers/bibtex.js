@@ -38,6 +38,25 @@ export function validate(bibtex) {
   }))
 }
 
+export async function getValidationResults (bibtex) {
+  const result = { valid: false, messages: [] }
+
+  if (bibtex.trim() === '') {
+    result.valid = true
+  }
+  else {
+    const validationResult = await validate(bibtex)
+
+    if (validationResult.warnings.length || validationResult.errors.length) {
+      result.messages = [...validationResult.errors, ...validationResult.warnings]
+    } else {
+      result.valid = validationResult.empty || validationResult.success !== 0
+    }
+  }
+
+  return result
+}
+
 export function deriveAuthorNameAndDate(entry) {
   const author = entry.fields?.author
   const date = entry.fields?.date

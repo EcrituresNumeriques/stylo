@@ -6,6 +6,7 @@ import Stats from './Stats'
 import Biblio from './Biblio'
 import Sommaire from './Sommaire'
 import Versions from './Versions'
+import { Sidebar } from 'react-feather'
 
 export default function WriteLeft ({ articleInfos, readOnly, compareTo, selectedVersion }) {
   const expanded = useSelector(state => state.articlePreferences.expandSidebarLeft)
@@ -15,9 +16,9 @@ export default function WriteLeft ({ articleInfos, readOnly, compareTo, selected
 
   return (
     <nav className={`${expanded ? styles.expandleft : styles.retractleft}`}>
-      <nav onClick={toggleExpand} className={expanded ? styles.close : styles.open}>
-        {expanded ? 'close' : 'open'}
-      </nav>
+      <button onClick={toggleExpand} className={expanded ? styles.close : styles.open}>
+        <Sidebar /> {expanded ? 'close' : 'Bibliography & co'}
+      </button>
       {expanded && (<div>
         <header>
           <h1>Summary</h1>
