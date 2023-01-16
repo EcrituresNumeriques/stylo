@@ -28,13 +28,11 @@ module.exports = {
         throw new Error('Wrong article ID!')
       }
 
-      const createdVersion = await article.createNewVersion({
+      return article.createNewVersion({
         mode: args.version.major ? 'MAJOR' : 'MINOR',
         message: args.version.message,
         user: thisUser
       })
-
-      return createdVersion
     },
   },
 

@@ -212,6 +212,8 @@ articleSchema.methods.createNewVersion = async function createNewVersion ({ mode
 
   this.versions.push(createdVersion)
   await this.save()
+
+  return createdVersion
 }
 
 articleSchema.pre('remove', async function () {
