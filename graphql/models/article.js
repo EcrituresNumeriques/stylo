@@ -59,7 +59,7 @@ const articleSchema = new Schema({
   }
 }, {timestamps: true});
 
-articleSchema.virtual('yamlReformated').get(function () {
+articleSchema.virtual('workingVersion.yamlReformated').get(function () {
   return reformat(this.workingVersion.yaml, { replaceBibliography: false })
 })
 
