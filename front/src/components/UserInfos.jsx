@@ -19,9 +19,9 @@ export default function UserInfos () {
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
   const sessionToken = useSelector(state => state.sessionToken)
   const [displayName, setDisplayName] = useState(activeUser.displayName)
-  const [firstName, setFirstName] = useState(activeUser.firstName)
-  const [lastName, setLastName] = useState(activeUser.lastName)
-  const [institution, setInstitution] = useState(activeUser.institution)
+  const [firstName, setFirstName] = useState(activeUser.firstName || '')
+  const [lastName, setLastName] = useState(activeUser.lastName || '')
+  const [institution, setInstitution] = useState(activeUser.institution || '')
   const [yaml, setYaml] = useState(activeUser.yaml)
   const [isSaving, setIsSaving] = useState(false)
 

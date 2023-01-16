@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { shallowEqual, useSelector, useDispatch } from 'react-redux'
 
 import { useGraphQL } from '../helpers/graphQL'
@@ -21,17 +20,6 @@ import Select from './Select'
 
 export default function Articles () {
   const dispatch = useDispatch()
-  const { replace, location } = useHistory()
-  const setSessionToken = useCallback((token) => dispatch({ type: 'UPDATE_SESSION_TOKEN', token }), [])
-  const authToken = new URLSearchParams(location.hash).get('#auth-token')
-
-  useEffect(() => {
-    if (authToken) {
-      setSessionToken(authToken)
-      replace(location.pathname)
-    }
-  }, [authToken])
-
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
   const [selectedTagIds, setSelectedTagIds] = useState([])
 
