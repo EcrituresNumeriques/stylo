@@ -177,7 +177,7 @@ app.get(
     if (req.user) {
       const { email } = req.user
       const token = await createJWTToken({ email, jwtSecret })
-      res.redirect(`${req.headers.referer}/login#auth-token=${token}`)
+      res.redirect(`${req.headers.referer}#auth-token=${token}`)
     } else {
       req.session.origin = req.headers.referer
       next()
@@ -232,7 +232,7 @@ app.use('/authorization-code/callback',
   async function onSuccess (req, res) {
     const { email } = req.user
     const token = await createJWTToken({ email, jwtSecret })
-    return res.redirect(`${req.session.origin}/login#auth-token=${token}`)
+    return res.redirect(`${req.session.origin}#auth-token=${token}`)
   },
   function onFailure (error, req, res) {
     logger.error({ error }, 'Unexpected error.')
