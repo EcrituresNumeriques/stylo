@@ -111,16 +111,6 @@ export default function WorkingVersion ({ articleInfos, selectedVersion }) {
       )}
       <ul className={styles.actions}>
         <li>
-          <Link to={`/article/${articleInfos._id}`} className={mode === MODES_EDIT ? buttonStyles.primaryDisabled : buttonStyles.secondary} title="Edit article">
-            <Edit3 /> Edit
-          </Link>
-        </li>
-        <li>
-          <Link to={`/article/${articleInfos._id}/preview`} className={mode === MODES_PREVIEW ? buttonStyles.primaryDisabled : buttonStyles.secondary} title="Preview article">
-            <Eye /> <abbr title="HyperText Markup Language">HTML</abbr>&#160;Preview
-          </Link>
-        </li>
-        <li>
           <Button icon title="Download a printable version" onClick={openExport}>
             <Printer />
           </Button>

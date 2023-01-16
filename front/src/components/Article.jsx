@@ -136,10 +136,6 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
         <Link title="Edit article" className={buttonStyles.primary} to={`/article/${article._id}`}>
           <Edit3 />
         </Link>
-
-        <Link title="Preview article" className={buttonStyles.icon} to={`/article/${article._id}/preview`}>
-          <Eye />
-        </Link>
       </aside>
 
       {deleting && (
