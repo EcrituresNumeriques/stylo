@@ -6,6 +6,13 @@
   color: $main-background-color;
   margin-bottom: 1rem;
 
+  @media print {
+    & {
+      display: none;
+    }
+  }
+
+
   a {
     color: $main-background-color;
   }
@@ -59,6 +66,12 @@
 .footerContainer {
   margin: 1em 0;
   text-align: center;
+
+  @media print {
+    & {
+      display: none;
+    }
+  }
 }
 
 .footerList {

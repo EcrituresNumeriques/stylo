@@ -6,6 +6,12 @@
   margin-bottom: 0.5em;
   display: flex;
   flex-direction: row;
+
+  @media print {
+    & {
+      display: none;
+    }
+  }
 }
 
 .header {
