@@ -20,7 +20,7 @@ class InMemoryMongoDBEnvironment extends NodeEnvironment {
   }
 
   async handleTestEvent (event) {
-    if (event.name === 'test_start') {
+    if (event.name === 'test_fn_start') {
       const mongod = await MongoMemoryServer.create()
       this.mongod = mongod
       const uri = mongod.getUri()
@@ -37,7 +37,7 @@ class InMemoryMongoDBEnvironment extends NodeEnvironment {
             reject(err)
           })
       }))
-    } else if (event.name === 'test_done') {
+    } else if (event.name === 'test_fn_success' || event.name === 'test_fn_failure') {
       // The Server can be stopped again with
       if (this.mongod !== undefined) {
         await this.global.mongoose.disconnect()

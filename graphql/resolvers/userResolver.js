@@ -6,15 +6,15 @@ const isAdmin = require('../policies/isAdmin')
 module.exports = {
   Mutation: {
     async createUser (_, { details: userInput }) {
-      //Check for User uniqueness
+      // check for user uniqueness
       const existingUser = await User.findOne({ email: userInput.email })
       if (existingUser) {
         throw new Error('User with this email already exists!')
       }
-
-      //Create user then password
+      // create a user
       const newUser = await User.create({
         email: userInput.email,
+        username: userInput.username,
         displayName: userInput.displayName || userInput.username,
         institution: userInput.institution || null,
         firstName: userInput.firstName || null,
@@ -22,9 +22,7 @@ module.exports = {
         password: userInput.password,
         authType: 'local',
       })
-
       await newUser.createDefaultArticle()
-
       return newUser
     },
     async addAcquintance (_, args, context) {

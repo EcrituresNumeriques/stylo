@@ -12,6 +12,10 @@ const userSchema = new Schema({
     unique: true,
     required: true
   },
+  username: {
+    type: String,
+    // unique but not required, we need to create a sparse index manually
+  },
   tags: [
     {
       type: Schema.Types.ObjectId,
