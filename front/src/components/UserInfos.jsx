@@ -118,11 +118,12 @@ export default function UserInfos () {
     </section>
 
     <section className={styles.section}>
-      <Field label="Account email">
+      <Field label="Email">
         <>{activeUser.email}</>
       </Field>
-      <Field label="Account type">
-        <>{activeUser.authType === 'oidc' ? 'External (OpenID)' : 'Local'}</>
+      {user.username && <Field label="Username"><>{user.username}</></Field>}
+      <Field label="Authentication">
+        <>{activeUser.authType === 'oidc' ? 'OpenID (External)' : 'Password'}</>
       </Field>
       <Field label="API Key">
         <>
@@ -137,13 +138,11 @@ export default function UserInfos () {
       <Field label="Identifier">
         <code>{activeUser._id}</code>
       </Field>
-      <Field label="Status">
-        <>{activeUser.admin ? 'Admin' : 'Basic account'}</>
-      </Field>
-      <Field label="Created At">
+      {activeUser.admin && <Field label="Admin">✔️</Field>}
+      <Field label="Created">
         <time dateTime={activeUser.createdAt}>{formatTimeAgo(activeUser.createdAt)}</time>
       </Field>
-      <Field label="Updated At">
+      <Field label="Updated">
         <time dateTime={activeUser.updatedAt}>{formatTimeAgo(activeUser.updatedAt)}</time>
       </Field>
     </section>

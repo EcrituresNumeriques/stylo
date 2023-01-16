@@ -8,7 +8,7 @@ import Field from './Field'
 
 import { addAcquintance } from './Acquintances.graphql'
 
-export default function ConnectedAcquintances ({ onAdd }) {
+export default function ConnectedAcquintances ({ onAdd, autoFocus = true }) {
   const [contact, setContact] = useState('')
   const userId = useSelector(state => state.activeUser._id)
   const runQuery = useGraphQL()
@@ -26,6 +26,7 @@ export default function ConnectedAcquintances ({ onAdd }) {
 
   return (<form onSubmit={addContact} className={formStyles.inlineFields}>
     <Field
+      autoFocus={autoFocus}
       required={true}
       type="email"
       className={formStyles.fullWidth}
