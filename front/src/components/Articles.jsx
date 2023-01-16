@@ -16,7 +16,7 @@ import Field from './Field'
 import Loading from './Loading'
 import { Search, Users } from 'react-feather'
 import ArticleTag from './Tag'
-import Select from "./Select";
+import Select from './Select'
 
 export default function Articles () {
   const dispatch = useDispatch()

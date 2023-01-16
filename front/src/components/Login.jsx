@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 
 import styles from './login.module.scss'
 import Field from './Field'
