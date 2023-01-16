@@ -121,7 +121,7 @@ export default function UserInfos () {
       <Field label="Email">
         <>{activeUser.email}</>
       </Field>
-      {user.username && <Field label="Username"><>{user.username}</></Field>}
+      {activeUser.username && <Field label="Username"><>{activeUser.username}</></Field>}
       <Field label="Authentication">
         <>{activeUser.authType === 'oidc' ? 'OpenID (External)' : 'Password'}</>
       </Field>
