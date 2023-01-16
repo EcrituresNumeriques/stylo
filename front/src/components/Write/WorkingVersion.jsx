@@ -105,7 +105,7 @@ export default function WorkingVersion ({ articleInfos, selectedVersion, mode })
         </Modal>
       )}
       <ul className={styles.actions}>
-        <li>
+        {articleInfos.preview.stylesheet && (<><li>
           <Link to={`/article/${articleInfos._id}`} className={mode === 'write' ? buttonStyles.primaryDisabled : buttonStyles.secondary} title="Edit article">
             <Edit3 /> Edit
           </Link>
@@ -116,7 +116,7 @@ export default function WorkingVersion ({ articleInfos, selectedVersion, mode })
             {articleInfos.preview.stylesheet ? 'Paged.js' : <abbr title="HyperText Markup Language">HTML</abbr>}
             &nbsp;Preview
           </Link>
-        </li>
+        </li></>)}
         <li>
           <Button icon title="Download a printable version" onClick={openExport}>
             <Printer />
