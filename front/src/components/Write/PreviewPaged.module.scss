@@ -1,0 +1,75 @@
+.pagedContainer {
+  --color-mbox : rgba(0,0,0,0.2);
+  --margin: calc(var(--pagedjs-margin-left) / 2);
+
+  /* reinstate browser styles for aggressively styles written in general.scss */
+  li, ul, p {
+    list-style: revert;
+    margin: revert;
+    padding: revert;
+  }
+
+  :global {
+    @media screen {
+      .pagedjs_page {
+        background-color: #fdfdfd;
+        flex: none;
+        box-shadow: 0 0 0 1px var(--color-mbox);
+      }
+
+      .pagedjs_pages {
+        display: flex;
+        gap: var(--margin);
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        transform-origin: 0 0;
+        margin: var(--margin) auto;
+      }
+
+      /* roughly 2 portrait A4 next to each other */
+      @media screen and (min-width: 1600px) {
+        .pagedjs_pages {
+          width: calc((var(--pagedjs-width) * 2) + var(--margin));
+        }
+      }
+
+      .pagedjs_page {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      // .pagedjs_first_page {
+      //   margin-left: calc(50% + var(--margin));
+      // }
+    }
+
+    @media screen {
+      .debug .pagedjs_margin-top .pagedjs_margin-top-left-corner,
+      .debug .pagedjs_margin-top .pagedjs_margin-top-right-corner {
+        box-shadow: 0 0 0 1px inset var(--color-mbox);
+      }
+
+      .debug .pagedjs_margin-top > div {
+        box-shadow: 0 0 0 1px inset var(--color-mbox);
+      }
+
+      .debug .pagedjs_margin-right > div {
+        box-shadow: 0 0 0 1px inset var(--color-mbox);
+      }
+
+      .debug .pagedjs_margin-bottom .pagedjs_margin-bottom-left-corner,
+      .debug .pagedjs_margin-bottom .pagedjs_margin-bottom-right-corner {
+        box-shadow: 0 0 0 1px inset var(--color-mbox);
+      }
+
+      .debug .pagedjs_margin-bottom > div {
+        box-shadow: 0 0 0 1px inset var(--color-mbox);
+      }
+
+      .debug .pagedjs_margin-left > div {
+        box-shadow: 0 0 0 1px inset var(--color-mbox);
+      }
+    }
+  }
+}

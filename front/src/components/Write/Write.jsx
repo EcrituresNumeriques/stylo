@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { Switch, Route } from 'react-router-dom'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import { batch, useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -14,16 +14,51 @@ import { getEditableArticle as query } from './Write.graphql'
 import WriteLeft from './WriteLeft'
 import WriteRight from './WriteRight'
 import WorkingVersion from './WorkingVersion'
-import Preview from './Preview'
+import PreviewHtml from './PreviewHtml'
+import PreviewPaged from './PreviewPaged'
 import Loading from '../Loading'
 import MonacoEditor from './providers/monaco/Editor'
+import clsx from 'clsx'
+
+const MODES_PREVIEW = 'preview'
+const MODES_READONLY = 'readonly'
+const MODES_WRITE = 'write'
+
+export function deriveModeFrom ({ path, currentVersion }) {
+  if (path === '/article/:id/preview') {
+    return MODES_PREVIEW
+  }
+
+  else if (currentVersion) {
+    return MODES_READONLY
+  }
+
+  return MODES_WRITE
+}
 
 export default function Write() {
   const { version: currentVersion, id: articleId, compareTo } = useParams()
   const userId = useSelector((state) => state.activeUser._id)
-  const [readOnly, setReadOnly] = useState(Boolean(currentVersion))
   const dispatch = useDispatch()
   const runQuery = useGraphQL()
+  const routeMatch = useRouteMatch()
+  const mode = useMemo(() => deriveModeFrom({ currentVersion, path: routeMatch.path}), [currentVersion, routeMatch.path])
+  const [graphqlError, setError] = useState()
+  const [isLoading, setIsLoading] = useState(true)
+  const [live, setLive] = useState({})
+  const [articleInfos, setArticleInfos] = useState({
+    title: '',
+    owner: '',
+    contributors: [],
+    zoteroLink: '',
+    preview: {},
+  })
+
+  const PreviewComponent = useMemo(
+    () => articleInfos.preview.stylesheet ? PreviewPaged : PreviewHtml,
+    [articleInfos.preview.stylesheet, currentVersion]
+  )
+
   const deriveArticleStructureAndStats = useCallback(
     throttle(
       ({ text }) => {
@@ -70,22 +105,6 @@ export default function Write() {
     []
   )
 
-  const variables = {
-    user: userId,
-    article: articleId,
-    version: currentVersion || '0123456789ab',
-    hasVersion: typeof currentVersion === 'string',
-  }
-
-  const [graphqlError, setError] = useState()
-  const [isLoading, setIsLoading] = useState(true)
-  const [live, setLive] = useState({})
-  const [articleInfos, setArticleInfos] = useState({
-    title: '',
-    owner: '',
-    contributors: [],
-    zoteroLink: '',
-  })
 
   const handleMDCM = (___, __, text) => {
     deriveArticleStructureAndStats({ text })
@@ -102,11 +121,17 @@ export default function Write() {
 
   // Reload when version switching
   useEffect(() => {
+    const variables = {
+      user: userId,
+      article: articleId,
+      version: currentVersion || 'latest',
+      hasVersion: typeof currentVersion === 'string',
+      isPreview: mode === MODES_PREVIEW
+    }
+
     setIsLoading(true)
-    setReadOnly(Boolean(currentVersion))
     ;(async () => {
       const data = await runQuery({ query, variables })
-        .then(({ version, article }) => ({ version, article }))
         .catch((error) => {
           setError(error)
           return {}
@@ -136,6 +161,7 @@ export default function Write() {
           owner: article.owner,
           contributors: article.contributors,
           zoteroLink: article.zoteroLink,
+          preview: article.preview,
           updatedAt: article.updatedAt,
         })
 
@@ -180,25 +206,25 @@ export default function Write() {
         articleInfos={articleInfos}
         compareTo={compareTo}
         selectedVersion={currentVersion}
-        readOnly={readOnly}
+        readOnly={mode === MODES_READONLY}
       />
       <WriteRight
         yaml={live.yaml}
         handleYaml={handleYaml}
-        readOnly={readOnly}
+        readOnly={mode === MODES_READONLY}
       />
 
-      <article className={styles.article}>
-        <WorkingVersion articleInfos={articleInfos} selectedVersion={currentVersion} readOnly={readOnly} />
+      <WorkingVersion articleInfos={articleInfos} selectedVersion={currentVersion} mode={mode} />
 
+      <article className={clsx({[styles.article]: mode !== MODES_PREVIEW})}>
         <Switch>
           <Route path="*/preview" exact>
-            <Preview />
+            <PreviewComponent preview={articleInfos.preview} yaml={live.yaml} />
           </Route>
           <Route path="*">
             <MonacoEditor
               text={live.md}
-              readOnly={readOnly}
+              readOnly={mode === MODES_READONLY}
               onTextUpdate={handleMDCM}
               articleId={articleInfos._id}
               selectedVersion={currentVersion}

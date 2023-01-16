@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions.js')
 const { reformat } = require('../helpers/metadata.js')
+const { prefixRulesWith, sanitizeTemplate } = require('../helpers/preview.js')
 
 const ArticleContributorSchema = new Schema({
   user: {
@@ -53,9 +54,17 @@ const articleSchema = new Schema({
       ref: 'Tag'
     }
   ],
-  css: {
-    type: String,
-    default: ''
+  preview: {
+    stylesheet: {
+      type: String,
+      default: '',
+      set: prefixRulesWith.bind(null, 'stylo-pagedjs-container')
+    },
+    template: {
+      type: String,
+      default: '',
+      set: sanitizeTemplate
+    }
   }
 }, {timestamps: true});
 

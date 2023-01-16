@@ -63,6 +63,12 @@
   width: 400px;
   overflow-x: visible;
 
+  @media print {
+    & {
+      display: none;
+    }
+  }
+
   > button {
     @extend .clickable;
     border: none;
