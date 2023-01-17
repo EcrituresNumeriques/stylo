@@ -1,9 +1,9 @@
 import './wdyr.js'
 import 'core-js/modules/web.structured-clone'
-import React, { lazy } from 'react'
+import React, { lazy, useCallback, useEffect } from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import { Provider, useDispatch } from 'react-redux'
 
 import './styles/general.scss'
 import App from './layouts/App'
@@ -35,6 +35,12 @@ const store = createStore()
 
 ;(async () => {
   let { applicationConfig: defaultApplicationConfig, sessionToken } = store.getState()
+  const authToken = new URLSearchParams(location.hash).get('#auth-token')
+  if (authToken) {
+    store.dispatch({ type: 'UPDATE_SESSION_TOKEN', token:  authToken})
+    sessionToken = authToken
+    useHistory().replace(location.pathname)
+  }
   const applicationConfig = await getApplicationConfig(defaultApplicationConfig)
   store.dispatch({ type: 'APPLICATION_CONFIG', applicationConfig })
 
