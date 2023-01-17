@@ -8,8 +8,7 @@ const { ApiError } = require('../helpers/errors')
 module.exports = {
   Mutation: {
     async createTag (_, args, context){
-      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
-      const { userId } = isUser(args, context, allowedIds)
+      const { userId } = isUser(args, context)
 
       //fetch user
       const thisUser = await User.findById(userId)
@@ -31,8 +30,7 @@ module.exports = {
       return newTag
     },
     async deleteTag (_, args, context) {
-      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
-      const { userId } = isUser(args, context, allowedIds)
+      const { userId } = isUser(args, context)
 
       //Recover tag, and all articles
       const tag = await Tag.findOne({ _id: args.tag, owner: userId })
@@ -46,8 +44,7 @@ module.exports = {
       return tag.$isDeleted()
     },
     async updateTag (_, args, context) {
-      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
-      const { userId } = isUser(args, context, allowedIds)
+      const { userId } = isUser(args, context)
 
       const thisTag = await Tag.findOne({ _id: args.tag, owner: userId })
       if (!thisTag) {
@@ -67,8 +64,7 @@ module.exports = {
 
   Query: {
     async tag (_, args, context) {
-      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
-      const { userId } = isUser(args, context, allowedIds)
+      const { userId } = isUser(args, context)
 
       const tag = Tag.findOne({ _id: args.tag, owner: userId }).populate({
         path: 'articles',
@@ -83,8 +79,7 @@ module.exports = {
     },
 
     async tags (_, args, context) {
-      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
-      const { userId } = isUser(args, context, allowedIds)
+      const { userId } = isUser(args, context)
 
       return Tag.find({ owner: userId }).populate({
         path: 'articles',

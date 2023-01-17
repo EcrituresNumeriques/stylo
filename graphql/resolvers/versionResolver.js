@@ -18,10 +18,9 @@ module.exports = {
       }
 
       // fetch article
-      const userIds = await User.findAccountAccessUserIds(userId)
       const article = await Article.findAndPopulateOneByOwners(
         args.version.article,
-        [userId, userIds]
+        context.user
       )
 
       if (!article) {

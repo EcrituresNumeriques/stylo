@@ -114,6 +114,15 @@ userSchema.methods.createDefaultArticle = async function createDefaultArticle ()
   return this.save()
 }
 
+/**
+ * Builds a `$in` clause with the user and its grantees
+ * @returns {String[]}
+ */
+userSchema.methods.$inFromGrantees = function $inFromGrantees () {
+  return [String(this._id)]
+    .concat(this.grantees.flat(2).map(({ _id }) => String(_id)))
+}
+
 userSchema.statics.findAllArticles = async function ({ userId, fromSharedUserId }) {
   // if fromSharedUserId is provided
   // we check if it allowed userId to look into their articles

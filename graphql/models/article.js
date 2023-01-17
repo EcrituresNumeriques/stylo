@@ -109,12 +109,13 @@ articleSchema.statics.findManyByOwner = function findManyByOwner ({ userId }) {
  * Returns a single article, fully populated for a given user, or a list of users with sharing permissions
  *
  * @param {String} articleId
- * @param {Array<String>} users
+ * @param {String} userId active user
+ * @param {User[]} grantees list of accounts in which we can request this article for
  * @returns Article
  */
-articleSchema.statics.findAndPopulateOneByOwners = function findAndPopulateOneByOwners (articleId, users) {
+articleSchema.statics.findAndPopulateOneByOwners = function findAndPopulateOneByOwners (articleId, user) {
   // if $in is empty, we are in a case where we have an admin token fetching the data
-  const $in = users.flatMap(d => d).filter(d => d)
+  const $in = user.$inFromGrantees()
   const _id = articleId
 
   // We want to query an article with a given ID

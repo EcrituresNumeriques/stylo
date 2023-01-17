@@ -107,11 +107,10 @@ module.exports = {
      * @returns
      */
     async duplicateArticle (_, args, context) {
-      const userIds = await User.findAccountAccessUserIds(context.token._id)
-      const { userId } = isUser(args, context, userIds)
+      const { userId } = isUser(args, context)
 
       //Fetch article and user to send to
-      const fetchedArticle = await Article.findAndPopulateOneByOwners(args.article, [userId, userIds])
+      const fetchedArticle = await Article.findAndPopulateOneByOwners(args.article, context.user)
 
       if(!fetchedArticle){
         throw new Error('Unable to find article')
@@ -157,7 +156,7 @@ module.exports = {
      * @returns
      */
     async article (_, args, context) {
-      const { userId } = isUser(args, context)
+      isUser(args, context)
 
       if (context.token.admin === true) {
         const article = await Article
@@ -173,8 +172,7 @@ module.exports = {
         return article
       }
 
-      const userIds = await User.findAccountAccessUserIds(context.token._id)
-      const article = await Article.findAndPopulateOneByOwners(args.article, [userId, userIds])
+      const article = await Article.findAndPopulateOneByOwners(args.article, context.user)
 
       if (!article) {
         throw new ApiError('NOT_FOUND', `Unable to find article with id ${args.article}`)
