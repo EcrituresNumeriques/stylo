@@ -17,6 +17,7 @@ import Button from './Button'
 import Field from './Field'
 import Loading from './Loading'
 import ArticleTag from './Tag'
+import { useActiveUserId } from '../hooks/user'
 
 export default function Articles () {
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
@@ -32,7 +33,7 @@ export default function Articles () {
   const [currentUser, setCurrentUser] = useState(activeUser)
   const [userAccounts, setUserAccounts] = useState([])
 
-  const currentUserId = useSelector(state => state.userPreferences.currentUser ?? state.activeUser._id)
+  const currentUserId = useActiveUserId()
   const runQuery = useGraphQL()
 
   const handleReload = useCallback(() => setNeedReload(true), [])

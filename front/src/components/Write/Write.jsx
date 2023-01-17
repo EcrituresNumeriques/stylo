@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
-import { batch, useDispatch, useSelector } from 'react-redux'
+import { batch, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import throttle from 'lodash.throttle'
@@ -8,6 +8,7 @@ import debounce from 'lodash.debounce'
 
 import styles from './write.module.scss'
 
+import { useActiveUserId } from '../../hooks/user'
 import { useGraphQL } from '../../helpers/graphQL'
 import { getEditableArticle as query } from './Write.graphql'
 
@@ -38,7 +39,7 @@ export function deriveModeFrom ({ path, currentVersion }) {
 
 export default function Write() {
   const { version: currentVersion, id: articleId, compareTo } = useParams()
-  const userId = useSelector((state) => state.activeUser._id)
+  const userId = useActiveUserId()
   const dispatch = useDispatch()
   const runQuery = useGraphQL()
   const routeMatch = useRouteMatch()

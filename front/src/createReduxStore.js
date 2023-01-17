@@ -92,8 +92,8 @@ const createNewArticleVersion = store => {
   return next => {
     return async (action) => {
       if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
-        const { articleVersions, activeUser, sessionToken, applicationConfig } = store.getState()
-        const userId = activeUser._id
+        const { articleVersions, activeUser, sessionToken, applicationConfig, userPreferences } = store.getState()
+        const userId = userPreferences.currentUser ?? activeUser._id
         const { articleId, major, message } = action
         const articleService = new ArticleService(userId, articleId, sessionToken, applicationConfig)
         const response = await articleService.createNewVersion(major, message)
@@ -101,8 +101,8 @@ const createNewArticleVersion = store => {
         return next(action)
       }
       if (action.type === 'UPDATE_WORKING_ARTICLE_TEXT') {
-        const { activeUser, sessionToken, applicationConfig } = store.getState()
-        const userId = activeUser._id
+        const { activeUser, sessionToken, applicationConfig, userPreferences } = store.getState()
+        const userId = userPreferences.currentUser ?? activeUser._id
         const { articleId, text } = action
         try {
           const { article } = await new ArticleService(userId, articleId, sessionToken, applicationConfig).saveText(text)
@@ -120,8 +120,8 @@ const createNewArticleVersion = store => {
         return next(action)
       }
       if (action.type === 'UPDATE_WORKING_ARTICLE_METADATA') {
-        const { activeUser, sessionToken, applicationConfig } = store.getState()
-        const userId = activeUser._id
+        const { activeUser, sessionToken, applicationConfig, userPreferences } = store.getState()
+        const userId = userPreferences.currentUser ?? activeUser._id
         const { articleId, metadata } = action
         try {
           const { article } = await new ArticleService(userId, articleId, sessionToken, applicationConfig).saveMetadata(metadata)
@@ -135,8 +135,8 @@ const createNewArticleVersion = store => {
         return next(action)
       }
       if (action.type === 'UPDATE_WORKING_ARTICLE_BIBLIOGRAPHY') {
-        const { activeUser, sessionToken, applicationConfig } = store.getState()
-        const userId = activeUser._id
+        const { activeUser, sessionToken, applicationConfig, userPreferences } = store.getState()
+        const userId = userPreferences.currentUser ?? activeUser._id
         const { articleId, bibliography } = action
         try {
           const { article } = await new ArticleService(userId, articleId, sessionToken, applicationConfig).saveBibliography(bibliography)
