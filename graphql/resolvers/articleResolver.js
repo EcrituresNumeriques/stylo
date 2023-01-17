@@ -18,8 +18,7 @@ module.exports = {
      */
     async createArticle (_, args, context) {
       //filter bad requests
-      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
-      const { userId } = isUser(args, context, allowedIds)
+      const { userId } = isUser(args, context)
 
       //fetch user
       const user = await User.findById(userId)
@@ -53,8 +52,7 @@ module.exports = {
      * @returns
      */
     async shareArticle (_, args, context) {
-      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
-      const { userId } = isUser(args, context, allowedIds)
+      const { userId } = isUser(args, context)
 
       //Fetch article and user to send to
       const article = await Article.findOneByOwner({ _id: args.article, user: userId })
@@ -80,8 +78,7 @@ module.exports = {
      * @returns
      */
     async unshareArticle (_, args, context) {
-      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
-      const { userId } = isUser(args, context, allowedIds)
+      const { userId } = isUser(args, context)
 
       //Fetch article and user to send to
       const article = await Article.findOneByOwner({ _id: args.article, user: userId })
@@ -107,11 +104,10 @@ module.exports = {
      * @returns
      */
     async duplicateArticle (_, args, context) {
-      const userIds = await User.findAccountAccessUserIds(context.token._id)
-      const { userId } = isUser(args, context, userIds)
+      const { userId } = isUser(args, context)
 
       //Fetch article and user to send to
-      const fetchedArticle = await Article.findAndPopulateOneByOwners(args.article, [userId, userIds])
+      const fetchedArticle = await Article.findAndPopulateOneByOwners(args.article, context.user)
 
       if(!fetchedArticle){
         throw new Error('Unable to find article')
@@ -157,7 +153,7 @@ module.exports = {
      * @returns
      */
     async article (_, args, context) {
-      const { userId } = isUser(args, context)
+      isUser(args, context)
 
       if (context.token.admin === true) {
         const article = await Article
@@ -173,8 +169,7 @@ module.exports = {
         return article
       }
 
-      const userIds = await User.findAccountAccessUserIds(context.token._id)
-      const article = await Article.findAndPopulateOneByOwners(args.article, [userId, userIds])
+      const article = await Article.findAndPopulateOneByOwners(args.article, context.user)
 
       if (!article) {
         throw new ApiError('NOT_FOUND', `Unable to find article with id ${args.article}`)
@@ -184,22 +179,22 @@ module.exports = {
     },
 
     /**
-     * Fetch all the articles related to a user, given the logged in user has access to it
+     * Fetch all the articles related to a user:
+     * - one stated by the JWT token (context.user), a User object
+     * - one we are supposedly able ot impersonate (args.user), an ID
      *
-     * @param {*} args
-     * @param {*} param1
-     * @returns
+     * We list:
+     * - their articles
+     * - their directly shared articles
+     * - BUT not the granted account shared articles — we switch into their view for this
+     *
+     * @param {null} _
+     * @param {{ user?: String }} args
+     * @param {{ user: User, token: Object, userId: String }} context
+     * @returns {Promise<Article[]>}
      */
     async articles (_, args, context) {
       const { userId, fromSharedUserId } = isUser(args, context)
-
-      if (fromSharedUserId) {
-        const sharedUserIds = await User.findAccountAccessUserIds(userId)
-
-        if (!sharedUserIds.includes(fromSharedUserId)) {
-          throw new Error("Forbidden")
-        }
-      }
 
       return Article.findManyByOwner({ userId, fromSharedUserId })
     },

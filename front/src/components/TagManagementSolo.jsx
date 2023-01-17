@@ -7,6 +7,7 @@ import etv from '../helpers/eventTargetValue'
 import styles from './tagManagementSolo.module.scss'
 import Button from './Button'
 import Field from './Field'
+import { useCurrentUser } from '../contexts/CurrentUser'
 
 export default function tagManagementSolo (props) {
   const [expanded, setExpanded] = useState(false)
@@ -15,16 +16,17 @@ export default function tagManagementSolo (props) {
   const [tempDescription, setTempDescription] = useState(props.t.description)
   const [tempColor, setTempColor] = useState(props.t.color)
   const runQuery = useGraphQL()
+  const activeUser = useCurrentUser()
 
   const deleteTag = async (id) => {
-    const variables = { user: props.currentUser._id, tag: id }
+    const variables = { user: activeUser._id, tag: id }
     await runQuery({ query: queries.deleteTag, variables })
     props.setNeedReload()
   }
 
   const saveTag = async () => {
     const variables = {
-      user: props.currentUser._id,
+      user: activeUser._id,
       tag: props.t._id,
       name: tempName,
       description: tempDescription,

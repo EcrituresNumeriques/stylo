@@ -9,16 +9,18 @@ import styles from './createTag.module.scss'
 import Field from './Field'
 import Button from './Button'
 import { Check } from 'react-feather'
+import { useCurrentUser } from '../contexts/CurrentUser'
 
-export default function CreateTag ({ currentUserId, cancel, triggerReload }) {
+export default function CreateTag ({ cancel, triggerReload }) {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [tempColor, setTempColor] = useState('#ccc')
+  const activeUser = useCurrentUser()
 
   const runQuery = useGraphQL()
 
   const variables = {
-    user: currentUserId,
+    user: activeUser._id,
     name,
     description,
     color: tempColor,
@@ -83,6 +85,5 @@ export default function CreateTag ({ currentUserId, cancel, triggerReload }) {
 
 CreateTag.propTypes = {
   cancel: PropTypes.func.isRequired,
-  currentUserId: PropTypes.string.isRequired,
   triggerReload: PropTypes.func.isRequired
 }

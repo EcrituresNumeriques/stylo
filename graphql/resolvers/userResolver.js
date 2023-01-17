@@ -138,18 +138,14 @@ module.exports = {
       return User.find().populate('tags articles acquintances')
     },
     async user (_, args, context) {
-      const { userId, fromSharedUserId } = isUser(args, context)
+      const { userId } = isUser(args, context)
 
-      if (fromSharedUserId) {
-        const sharedUserIds = await User.findAccountAccessUserIds(context.token._id)
-
-        if (!sharedUserIds.includes(fromSharedUserId)) {
-          throw new Error('Forbidden')
-        }
+      if (!context.user.isGrantedBy(userId)) {
+        throw new Error('Forbidden')
       }
 
-      return User.findById(fromSharedUserId ?? userId)
-        .populate('tags acquintances')
+      return User.findById(userId)
+        .populate('tags acquintances grantees')
         .populate({ path: 'permissions', populate: 'user' })
     },
 
@@ -171,14 +167,8 @@ module.exports = {
       return user.articles
     },
 
-    async article (user, { id: _id }) {
-      await user.populate({
-        path: 'articles',
-        match: { _id },
-        populate: { path: 'owner tags' }
-      }).execPopulate()
-
-      return user.articles[0]
+    async article (user, { id }) {
+      return User.model('Article').findAndPopulateOneByOwners(id, user)
     }
   },
 }

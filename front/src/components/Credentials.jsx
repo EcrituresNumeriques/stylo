@@ -4,11 +4,13 @@ import { useSelector } from 'react-redux'
 import { useGraphQL } from '../helpers/graphQL'
 import { changePassword as query } from './Credentials.graphql'
 import styles from './credentials.module.scss'
+import fieldStyles from './field.module.scss'
 import Loading from "./Loading";
 import UserInfos from "./UserInfos";
 import CredentialsAccountSharing from "./CredentialsAccountSharing";
 import Button from "./Button";
 import Field from "./Field";
+import clsx from 'clsx'
 
 export default function Credentials () {
   const [password, setPassword] = useState('')
@@ -54,7 +56,7 @@ export default function Credentials () {
           having access to one or more of your available accounts won&apos;t be
           affected.
         </p>
-        <form className={styles.passwordForm} onSubmit={(e) => changePassword(e)}>
+        <form className={clsx(styles.passwordForm, fieldStyles.inlineFields)} onSubmit={(e) => changePassword(e)}>
           <Field
             type="password"
             placeholder="Old password"

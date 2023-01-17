@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
+import { CurrentUserContext } from '../contexts/CurrentUser'
 
 import { useGraphQL } from '../helpers/graphQL'
 import { getTags as query } from './Books.graphql'
@@ -7,12 +8,16 @@ import styles from './articles.module.scss'
 
 import Book from './Book'
 import Loading from './Loading'
+import SelectUser from './SelectUser'
 
 export default function Books () {
+  const activeUser = useSelector(state => state.activeUser, shallowEqual)
   const [isLoading, setIsLoading] = useState(true)
   const [tags, setTags] = useState([])
-  const displayName = useSelector(state => state.activeUser.displayName)
-  const userId = useSelector(state => state.activeUser._id)
+  const [currentUser, setCurrentUser] = useState(activeUser)
+  const [userAccounts, setUserAccounts] = useState([])
+  const currentUserId = useSelector(state => state.userPreferences.currentUser ?? state.activeUser._id)
+
   const runQuery = useGraphQL()
 
   useEffect(() => {
@@ -20,20 +25,23 @@ export default function Books () {
     (async () => {
       try {
         setIsLoading(true)
-        const data = await runQuery({ query, variables: { user: userId } })
+        const data = await runQuery({ query, variables: { user: currentUserId } })
         //Need to sort by updatedAt desc
         setTags(data.tags.reverse())
+        setCurrentUser(data.user)
+        setUserAccounts(data.userGrantedAccess)
         setIsLoading(false)
       } catch (err) {
         alert(err)
       }
     })()
-  }, [])
+  }, [currentUserId])
 
-  return (
+  return (<CurrentUserContext.Provider value={currentUser}>
     <section className={styles.section}>
       <header className={styles.articlesHeader}>
-        <h1>{tags.length} books for {displayName}</h1>
+        <h1>{tags.length} books for </h1>
+        <SelectUser accounts={userAccounts} />
       </header>
 
       <p>
@@ -45,11 +53,8 @@ export default function Books () {
       <hr className={styles.horizontalSeparator} />
 
       {isLoading ? <Loading /> : tags.map((t) => (
-          <Book
-            key={`book-${t._id}`}
-            {...t}
-          />
+          <Book key={`book-${t._id}`} {...t} />
         ))}
     </section>
-  )
+  </CurrentUserContext.Provider>)
 }

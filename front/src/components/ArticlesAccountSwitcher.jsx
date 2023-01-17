@@ -1,10 +1,10 @@
 import React, { useState, forwardRef } from 'react'
 import { useCombobox } from 'downshift'
-import { ChevronDown, X, Search, User } from 'react-feather'
+import { ChevronDown, X, User } from 'react-feather'
 import Field from './Field'
 import styles from './articles.module.scss'
 
-const ArticlesAccountSwitcher = forwardRef(({ accounts, onChange, activeUser, selectedUserId }, forwardedRef) => {
+export default forwardRef(function ArticlesAccountSwitcher ({ accounts, onChange, activeUser, selectedUserId }, forwardedRef) {
   const [inputItems, setInputItems] = useState(accounts)
   const selectedItem = accounts.find((user) => user._id === selectedUserId)
   const {
@@ -75,7 +75,3 @@ const ArticlesAccountSwitcher = forwardRef(({ accounts, onChange, activeUser, se
     </div>
   )
 })
-
-ArticlesAccountSwitcher.displayName = 'ArticlesAccountSwitcher'
-
-export default ArticlesAccountSwitcher

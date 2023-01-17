@@ -33,7 +33,6 @@ const initialState = {
     pandocExportEndpoint: import.meta.env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT,
     humanIdRegisterEndpoint: import.meta.env.SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT,
   },
-  activeUser: {},
   articleStructure: [],
   articleVersions: [],
   articlePreferences: localStorage.getItem('articlePreferences') ? JSON.parse(localStorage.getItem('articlePreferences')) : {
@@ -48,7 +47,10 @@ const initialState = {
     charCountPlusSpace: 0,
     citationNb: 0,
   },
+  // Logged in user — we use their token
+  activeUser: {},
   userPreferences: localStorage.getItem('userPreferences') ? JSON.parse(localStorage.getItem('userPreferences')) : {
+    // The user we impersonate
     currentUser: null,
     trackingConsent: true /* default value should be false */
   },

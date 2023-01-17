@@ -9,6 +9,7 @@ import Button from './Button'
 import buttonStyles from './button.module.scss'
 import styles from './chapter.module.scss'
 import Field from './Field'
+import { useCurrentUser } from '../contexts/CurrentUser'
 
 export default function Chapter ({ article }) {
   const articleId = article._id
@@ -22,13 +23,13 @@ export default function Chapter ({ article }) {
   const [renaming, setRenaming] = useState(false)
   const [title, setTitle] = useState(article.title)
   const [tempTitle, setTempTitle] = useState(article.title)
-  const userId = useSelector(state => state.activeUser._id)
+  const activeUser = useCurrentUser()
   const runQuery = useGraphQL()
 
   const rename = async (e) => {
     e.preventDefault()
     const variables = {
-      user: userId,
+      user: activeUser._id,
       article: articleId,
       title: tempTitle,
     }

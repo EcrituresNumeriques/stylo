@@ -34,7 +34,7 @@ module.exports.populateUserFromJWT = function populateUserFromJWT ({ jwtSecret }
 
     // 2. Fetch associated user, only if not populated by Passport Session before
     if (req.token._id && !req.user) {
-      req.user = await User.findById(req.token._id).populate({ path: 'permissions' })
+      req.user = await User.findById(req.token._id).populate({ path: 'permissions grantees' })
       // question: should we throw an error is the user does not exist?
     }
 

@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { shallowEqual, useSelector, useDispatch } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
+import { CurrentUserContext } from '../contexts/CurrentUser'
+import { Search } from 'react-feather'
 
 import { useGraphQL } from '../helpers/graphQL'
 import { getUserArticles as query } from './Articles.graphql'
@@ -9,17 +11,14 @@ import Article from './Article'
 import CreateArticle from './CreateArticle'
 
 import styles from './articles.module.scss'
-import buttonStyles from './button.module.scss'
 import TagManagement from './TagManagement'
+import SelectUser from './SelectUser'
 import Button from './Button'
 import Field from './Field'
 import Loading from './Loading'
-import { Search, Users } from 'react-feather'
 import ArticleTag from './Tag'
-import Select from './Select'
 
 export default function Articles () {
-  const dispatch = useDispatch()
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
   const [selectedTagIds, setSelectedTagIds] = useState([])
 
@@ -34,7 +33,6 @@ export default function Articles () {
   const [userAccounts, setUserAccounts] = useState([])
 
   const currentUserId = useSelector(state => state.userPreferences.currentUser ?? state.activeUser._id)
-  const setCurrentUserId = useCallback((userId) => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'currentUser', value: userId }), [])
   const runQuery = useGraphQL()
 
   const handleReload = useCallback(() => setNeedReload(true), [])
@@ -49,13 +47,6 @@ export default function Articles () {
       ? setSelectedTagIds(selectedTagIds.filter(tagId => tagId !== id))
       : setSelectedTagIds([...selectedTagIds, id])
   }, [currentUserId, selectedTagIds])
-
-
-  const handleCurrentUserChange = useCallback((selectedItem) => {
-    setIsLoading(true)
-    setCurrentUserId(selectedItem)
-    setNeedReload(true)
-  }, [currentUserId])
 
   const handleUpdateTitle = useCallback((articleId, title) => {
     // shallow copy otherwise React won't render the components again
@@ -108,16 +99,11 @@ export default function Articles () {
     }
   }, [needReload, currentUserId])
 
-  return (
+  return (<CurrentUserContext.Provider value={currentUser}>
     <section className={styles.section}>
       <header className={styles.articlesHeader}>
         <h1>{articles.length} articles for</h1>
-        <div className={styles.switchAccount}>
-          <Users/>
-          <Select className={[styles.accountSelect, buttonStyles.select].join(' ')} value={currentUserId} onChange={(e) => e.target.value && handleCurrentUserChange(e.target.value)}>
-            {userAccounts.map((userAccount) => <option key={`userAccount_${userAccount._id}`} value={userAccount._id}>{userAccount.displayName}</option>)}
-          </Select>
-        </div>
+        <SelectUser accounts={userAccounts} />
       </header>
       <ul className={styles.horizontalMenu}>
         <li>
@@ -133,7 +119,6 @@ export default function Articles () {
         tags={tags}
         close={handleCloseTag}
         focus={tagManagement}
-        currentUser={currentUser}
         articles={articles}
         setNeedReload={handleReload}
       />
@@ -141,7 +126,6 @@ export default function Articles () {
       <div className={styles.actions}>
         {creatingArticle && (
           <CreateArticle
-            currentUserId={currentUserId}
             tags={tags}
             cancel={() => setCreatingArticle(false)}
             triggerReload={() => {
@@ -184,12 +168,11 @@ export default function Articles () {
             key={`article-${article._id}`}
             masterTags={tags}
             article={article}
-            currentUser={currentUser}
             setNeedReload={handleReload}
             updateTagsHandler={handleUpdateTags}
             updateTitleHandler={handleUpdateTitle}
           />
         ))}
     </section>
-  )
+  </CurrentUserContext.Provider>)
 }

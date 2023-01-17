@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Check, ChevronDown, ChevronRight, Edit3, MessageSquare, Printer } from 'react-feather'
-import { useSelector } from 'react-redux'
 
 import Modal from './Modal'
 import Export from './Export'
@@ -15,14 +14,17 @@ import { generateBookExportId } from "../helpers/identifier"
 
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
+import fieldStyles from './field.module.scss'
 
 import Button from './Button'
 import Field from './Field'
+import { useCurrentUser } from '../contexts/CurrentUser'
+import clsx from 'clsx'
 
 const alphaSort = (a, b) => a.title.localeCompare(b.title)
 
 export default function Book ({ name: tagName, _id, updatedAt, articles }) {
-  const userId = useSelector(state => state.activeUser._id)
+  const activeUser = useCurrentUser()
 
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
@@ -32,19 +34,20 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
 
   const runQuery = useGraphQL()
 
-  const renameBook = async (event) => {
+  const renameBook = useCallback(async (event) => {
     event.preventDefault()
     const variables = {
-      user: userId,
+      user: activeUser._id,
       tag: _id,
       name: tempName,
     }
     const newTag = await runQuery({ query, variables })
     setName(newTag.updateTag.name)
     setIsRenaming(false)
-  }
+  }, [tempName])
 
   const bookTitle = `${name} (${formatTimeAgo(updatedAt)})`
+
   return (
     <article className={styles.article}>
       {exporting && (
@@ -61,14 +64,14 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
           {expanded ? <ChevronDown/> : <ChevronRight/>}
           {bookTitle}
 
-          <Button className={[buttonStyles.icon, styles.editTitleButton].join(' ')} onClick={(evt) => evt.stopPropagation() || setIsRenaming(true)}>
+          <Button className={clsx(buttonStyles.icon, styles.editTitleButton)} onClick={(evt) => evt.stopPropagation() || setIsRenaming(true)}>
             <Edit3 />
           </Button>
         </h1>
       )}
-      {isRenaming && (<form className={styles.renamingForm} onSubmit={(e) => renameBook(e)}>
+      {isRenaming && (<form className={clsx(styles.renamingForm, fieldStyles.inlineFields)} onSubmit={renameBook}>
         <Field autoFocus={true} type="text" value={tempName} onChange={(e) => setTempName(etv(e))} placeholder="Article Title" />
-        <Button title="Save" primary={true} onClick={(e) => renameBook(e)}>
+        <Button title="Save" primary={true} onClick={renameBook}>
           <Check /> Save
         </Button>
         <Button title="Cancel" type="button" onClick={() => {

@@ -7,6 +7,18 @@ mutation updateTag($user: ID!, $tag: ID!, $name: String, $description: String) {
 }
 
 query getTags($user: ID!) {
+  user(user: $user) {
+    _id
+    displayName
+
+    permissions {
+      user {
+        _id
+        displayName
+      }
+    }
+  }
+
   tags(user: $user) {
     _id
     name
@@ -22,5 +34,10 @@ query getTags($user: ID!) {
         message
       }
     }
+  }
+
+  userGrantedAccess {
+    _id
+    displayName
   }
 }

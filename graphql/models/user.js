@@ -80,6 +80,25 @@ userSchema.methods.comparePassword = function (password) {
   return bcrypt.compare(password, this.password)
 }
 
+/**
+ * Returns a lean list of user accounts which granted access to this current one
+ */
+userSchema.virtual('grantees', {
+  ref: 'User',
+  localField: '_id',
+  foreignField: 'permissions.user',
+})
+
+/**
+ * Checks wether the requested userId has granded access to the current user object
+ *
+ * @param {String} remoteUserId
+ * @returns {Boolean}
+ */
+userSchema.methods.isGrantedBy = function isGrantedBy (remoteUserId) {
+  return this.id === remoteUserId || this.grantees.find((user) => String(user._id) === remoteUserId)
+}
+
 userSchema.methods.createDefaultArticle = async function createDefaultArticle () {
   const newArticle = await this.model('Article').create({
     title: defaultArticle.title,
@@ -93,6 +112,15 @@ userSchema.methods.createDefaultArticle = async function createDefaultArticle ()
 
   this.articles.push(newArticle)
   return this.save()
+}
+
+/**
+ * Builds a `$in` clause with the user and its grantees
+ * @returns {String[]}
+ */
+userSchema.methods.$inFromGrantees = function $inFromGrantees () {
+  return [String(this._id)]
+    .concat(this.grantees.flat(2).map(({ _id }) => String(_id)))
 }
 
 userSchema.statics.findAllArticles = async function ({ userId, fromSharedUserId }) {
@@ -140,18 +168,6 @@ userSchema.statics.findAccountAccessUsers = async function (userId, role = 'writ
       ]
     })
     .lean()
-}
-
-/**
- * Find all the account identifiers a user can _switch to_
- *
- * @param {String} userId
- * @param {String} role
- * @returns {String[]}
- */
-userSchema.statics.findAccountAccessUserIds = async function (userId, role = 'write') {
-  return this.findAccountAccessUsers(userId, role)
-    .then(users => users.map(({ _id }) => String(_id)).concat(String(userId)))
 }
 
 userSchema.statics.findAccountAccessArticles = function (user, role = 'read') {
