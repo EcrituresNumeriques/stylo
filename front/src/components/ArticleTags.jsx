@@ -1,23 +1,23 @@
 import React, { useCallback } from 'react'
-import { shallowEqual, useSelector } from 'react-redux'
 import { useGraphQL } from '../helpers/graphQL'
 
 import ArticleTag from './Tag'
 
 import { addTags, removeTags } from './Articles.graphql'
+import { useCurrentUser } from '../contexts/CurrentUser'
 
-export default function ArticleTags ({ article, currentUser, masterTags, stateTags, setTags }) {
+export default function ArticleTags ({ article, masterTags, stateTags, setTags }) {
   const runQuery = useGraphQL()
   const articleId = article._id
-  const isArticleOwner = currentUser._id === article.owner._id
-  const activeUser = useSelector(state => state.activeUser, shallowEqual)
+  const activeUser = useCurrentUser()
+  const isArticleOwner = activeUser._id === article.owner._id
 
   const addToTags = useCallback(async (tag) => {
     setTags([...stateTags, { ...tag, selected: true }])
     const variables = {
       article: articleId,
       tags: [tag._id],
-      user: currentUser._id,
+      user: activeUser._id,
     }
     await runQuery({ query: addTags, variables })
   }, [stateTags])
@@ -27,7 +27,7 @@ export default function ArticleTags ({ article, currentUser, masterTags, stateTa
     const variables = {
       article: articleId,
       tags: [id],
-      user: currentUser._id,
+      user: activeUser._id,
     }
     await runQuery({ query: removeTags, variables })
   }, [stateTags])

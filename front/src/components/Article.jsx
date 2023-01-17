@@ -4,6 +4,7 @@ import clsx from 'clsx'
 
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
+import fieldStyles from './field.module.scss'
 
 import Modal from './Modal'
 import Export from './Export'
@@ -16,13 +17,14 @@ import etv from '../helpers/eventTargetValue'
 
 import Field from './Field'
 import Button from './Button'
-import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, MessageSquare, Printer, Share2, Trash } from 'react-feather'
+import { Check, ChevronDown, ChevronRight, Copy, Edit3, MessageSquare, Printer, Share2, Trash } from 'react-feather'
 
 import { duplicateArticle } from './Acquintances.graphql'
 import { renameArticle } from './Article.graphql'
 import { useGraphQL } from '../helpers/graphQL'
+import { useCurrentUser } from '../contexts/CurrentUser'
 
-export default function Article ({ article, currentUser:activeUser, setNeedReload, updateTitleHandler, updateTagsHandler, masterTags }) {
+export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, masterTags }) {
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -32,6 +34,7 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
   const [tempTitle, setTempTitle] = useState(article.title)
   const [sharing, setSharing] = useState(false)
   const runQuery = useGraphQL()
+  const activeUser = useCurrentUser()
 
   const isArticleOwner = activeUser._id === article.owner._id
 
@@ -98,7 +101,7 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
         </h1>
       )}
       {renaming && (
-        <form className={styles.renamingForm} onSubmit={(e) => rename(e)}>
+        <form className={clsx(styles.renamingForm, fieldStyles.inlineFields)} onSubmit={(e) => rename(e)}>
           <Field autoFocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(etv(e))} placeholder="Article Title" />
           <Button title="Save" primary={true} onClick={(e) => rename(e)}>
             <Check /> Save
@@ -183,7 +186,6 @@ export default function Article ({ article, currentUser:activeUser, setNeedReloa
           <h4>Tags</h4>
           <div className={styles.editTags}>
             <ArticleTags
-              currentUser={activeUser}
               article={article}
               masterTags={masterTags}
               stateTags={tags.map((t) => {

@@ -11,12 +11,13 @@ import Button from './Button'
 import * as queries from './Acquintances.graphql'
 import { useGraphQL } from '../helpers/graphQL'
 import { merge } from '../helpers/acquintances.js'
+import { useCurrentUser } from '../contexts/CurrentUser'
 
 export default function ArticleShare ({ article, setNeedReload, cancel }) {
   const [acquintances, setAcquintances] = useState([])
   const [loading, setLoading] = useState(true)
   const [contributors, setContributors] = useState(article.contributors)
-  const activeUser = useSelector(state => state.activeUser, shallowEqual)
+  const activeUser = useCurrentUser()
   const userId = activeUser._id
   const runQuery = useGraphQL()
 

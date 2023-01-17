@@ -29,7 +29,6 @@ export default function TagManagement (props) {
 
           {creatingTag && (
             <CreateTag
-              currentUserId={props.currentUser._id}
               cancel={() => setCreatingTag(false)}
               triggerReload={() => {
                 setCreatingTag(false)
@@ -45,7 +44,6 @@ export default function TagManagement (props) {
           .filter((t) => t.name.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) > -1)
           .map((t) => (
             <TagManagementSolo
-              currentUser={props.currentUser}
               {...props}
               t={t}
               key={'thistag' + t._id}

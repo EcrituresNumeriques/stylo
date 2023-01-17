@@ -9,15 +9,17 @@ import styles from './createArticle.module.scss'
 import Button from './Button'
 import Field from './Field'
 import ArticleTag from './Tag'
+import { useCurrentUser } from '../contexts/CurrentUser'
 
-export default function CreateArticle ({ currentUserId, tags, cancel, triggerReload }) {
+export default function CreateArticle ({ tags, cancel, triggerReload }) {
   const [title, setTitle] = useState('')
   const [selectedTagIds, setSelectedtagIds] = useState([])
   const runQuery = useGraphQL()
+  const activeUser = useCurrentUser()
 
 
   const handleSubmit = useCallback(async (event) => {
-    const variables = { user: currentUserId, title, tags: selectedTagIds }
+    const variables = { user: activeUser._id, title, tags: selectedTagIds }
 
     event.preventDefault()
     await runQuery({ query, variables })

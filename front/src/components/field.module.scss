@@ -17,7 +17,7 @@
   display: flex;
   align-items: flex-start;
 
-  &, & + button {
+  &, & ~ button {
     margin-bottom: .5rem;
     margin-top: .5rem;
   }

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { shallowEqual, useSelector, useDispatch } from 'react-redux'
+import { CurrentUserContext } from '../contexts/CurrentUser'
 
 import { useGraphQL } from '../helpers/graphQL'
 import { getUserArticles as query } from './Articles.graphql'
@@ -108,7 +109,7 @@ export default function Articles () {
     }
   }, [needReload, currentUserId])
 
-  return (
+  return (<CurrentUserContext.Provider value={currentUser}>
     <section className={styles.section}>
       <header className={styles.articlesHeader}>
         <h1>{articles.length} articles for</h1>
@@ -133,7 +134,6 @@ export default function Articles () {
         tags={tags}
         close={handleCloseTag}
         focus={tagManagement}
-        currentUser={currentUser}
         articles={articles}
         setNeedReload={handleReload}
       />
@@ -141,7 +141,6 @@ export default function Articles () {
       <div className={styles.actions}>
         {creatingArticle && (
           <CreateArticle
-            currentUserId={currentUserId}
             tags={tags}
             cancel={() => setCreatingArticle(false)}
             triggerReload={() => {
@@ -184,12 +183,11 @@ export default function Articles () {
             key={`article-${article._id}`}
             masterTags={tags}
             article={article}
-            currentUser={currentUser}
             setNeedReload={handleReload}
             updateTagsHandler={handleUpdateTags}
             updateTitleHandler={handleUpdateTitle}
           />
         ))}
     </section>
-  )
+  </CurrentUserContext.Provider>)
 }
