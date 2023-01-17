@@ -72,7 +72,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
     if (updateTitleHandler) {
       updateTitleHandler(article._id, tempTitle)
     }
-  }, [article.title])
+  }, [tempTitle])
 
   return (
     <article className={styles.article}>
