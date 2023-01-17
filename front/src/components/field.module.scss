@@ -16,8 +16,11 @@
 .field {
   display: flex;
   align-items: flex-start;
-  margin-bottom: .5rem;
-  margin-top: .5rem;
+
+  &, & + button {
+    margin-bottom: .5rem;
+    margin-top: .5rem;
+  }
 
   label {
     flex-shrink: 0;
@@ -96,6 +99,7 @@
 
 .inlineFields {
   display: flex;
+  gap: .5rem;
 
   > * {
     flex: 0 0 auto;
