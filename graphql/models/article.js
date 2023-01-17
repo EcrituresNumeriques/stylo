@@ -91,10 +91,9 @@ articleSchema.virtual('workingVersion.yamlReformated').get(function () {
  * @param {{ userId: String }}
  * @returns {Array<Article>}
  */
-articleSchema.statics.findManyByOwner = function findManyByOwner ({ userId, fromSharedUserId }) {
-  const $in = fromSharedUserId ?? userId
+articleSchema.statics.findManyByOwner = function findManyByOwner ({ userId }) {
   return this
-    .find({ $or: [{ owner: { $in } }, { contributors: { $elemMatch: { user: { $in } } } }] })
+    .find({ $or: [{ owner: userId }, { contributors: { $elemMatch: { user: userId } } }] })
     .sort({ updatedAt: -1 })
     .populate([
       { path: 'versions', options: { sort: { createdAt: -1 } } },

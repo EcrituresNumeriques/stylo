@@ -184,22 +184,22 @@ module.exports = {
     },
 
     /**
-     * Fetch all the articles related to a user, given the logged in user has access to it
+     * Fetch all the articles related to a user:
+     * - one stated by the JWT token (context.user), a User object
+     * - one we are supposedly able ot impersonate (args.user), an ID
      *
-     * @param {*} args
-     * @param {*} param1
-     * @returns
+     * We list:
+     * - their articles
+     * - their directly shared articles
+     * - BUT not the granted account shared articles — we switch into their view for this
+     *
+     * @param {null} _
+     * @param {{ user?: String }} args
+     * @param {{ user: User, token: Object, userId: String }} context
+     * @returns {Promise<Article[]>}
      */
     async articles (_, args, context) {
       const { userId, fromSharedUserId } = isUser(args, context)
-
-      if (fromSharedUserId) {
-        const sharedUserIds = await User.findAccountAccessUserIds(userId)
-
-        if (!sharedUserIds.includes(fromSharedUserId)) {
-          throw new Error("Forbidden")
-        }
-      }
 
       return Article.findManyByOwner({ userId, fromSharedUserId })
     },
