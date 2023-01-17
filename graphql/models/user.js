@@ -80,6 +80,25 @@ userSchema.methods.comparePassword = function (password) {
   return bcrypt.compare(password, this.password)
 }
 
+/**
+ * Returns a lean list of user accounts which granted access to this current one
+ */
+userSchema.virtual('grantees', {
+  ref: 'User',
+  localField: '_id',
+  foreignField: 'permissions.user',
+})
+
+/**
+ * Checks wether the requested userId has granded access to the current user object
+ *
+ * @param {String} remoteUserId
+ * @returns {Boolean}
+ */
+userSchema.methods.isGrantedBy = function isGrantedBy (remoteUserId) {
+  return this.id === remoteUserId || this.grantees.find((user) => String(user._id) === remoteUserId)
+}
+
 userSchema.methods.createDefaultArticle = async function createDefaultArticle () {
   const newArticle = await this.model('Article').create({
     title: defaultArticle.title,

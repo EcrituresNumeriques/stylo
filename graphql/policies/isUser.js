@@ -2,7 +2,9 @@ const { format } = require('util')
 
 module.exports = function resolveUserIdFromContext (args, { token, user } = {}, allowedIds = []) {
   const isAdmin = token.admin || user?.admin || false
+  // This is the user we ask the data for
   const resolvedUserId = args.user || user?.id.toString() || token._id || null
+  // This is the user asking the data (the grantee)
   const fromSharedUserId = !isAdmin && args.user !== token._id ? token._id : null
 
   const context = [
@@ -32,9 +34,7 @@ module.exports = function resolveUserIdFromContext (args, { token, user } = {}, 
     }
 
     // A user requests something for someone else, and is not admin:
-    // - allowedIds contains the list of userIds it can impersonate
-    // @TODO resolve the permissions at object level (like user.isGrantedAccessBy(args.user) or workspace.isSharedWith(user) or article.isSharedWith(user))
-    if (Array.isArray(allowedIds) && allowedIds.includes(token._id)) {
+    if (user.isGrantedBy(resolvedUserId)) {
       return { userId: resolvedUserId, fromSharedUserId }
     }
 
