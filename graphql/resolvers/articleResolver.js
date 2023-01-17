@@ -18,8 +18,7 @@ module.exports = {
      */
     async createArticle (_, args, context) {
       //filter bad requests
-      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
-      const { userId } = isUser(args, context, allowedIds)
+      const { userId } = isUser(args, context)
 
       //fetch user
       const user = await User.findById(userId)
@@ -53,8 +52,7 @@ module.exports = {
      * @returns
      */
     async shareArticle (_, args, context) {
-      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
-      const { userId } = isUser(args, context, allowedIds)
+      const { userId } = isUser(args, context)
 
       //Fetch article and user to send to
       const article = await Article.findOneByOwner({ _id: args.article, user: userId })
@@ -80,8 +78,7 @@ module.exports = {
      * @returns
      */
     async unshareArticle (_, args, context) {
-      const allowedIds = await User.findAccountAccessUserIds(context.token._id)
-      const { userId } = isUser(args, context, allowedIds)
+      const { userId } = isUser(args, context)
 
       //Fetch article and user to send to
       const article = await Article.findOneByOwner({ _id: args.article, user: userId })

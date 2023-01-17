@@ -145,7 +145,7 @@ module.exports = {
       }
 
       return User.findById(userId)
-        .populate('tags acquintances')
+        .populate('tags acquintances grantees')
         .populate({ path: 'permissions', populate: 'user' })
     },
 
@@ -167,14 +167,8 @@ module.exports = {
       return user.articles
     },
 
-    async article (user, { id: _id }) {
-      await user.populate({
-        path: 'articles',
-        match: { _id },
-        populate: { path: 'owner tags' }
-      }).execPopulate()
-
-      return user.articles[0]
+    async article (user, { id }) {
+      return User.model('Article').findAndPopulateOneByOwners(id, user)
     }
   },
 }

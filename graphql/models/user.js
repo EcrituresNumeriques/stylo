@@ -170,18 +170,6 @@ userSchema.statics.findAccountAccessUsers = async function (userId, role = 'writ
     .lean()
 }
 
-/**
- * Find all the account identifiers a user can _switch to_
- *
- * @param {String} userId
- * @param {String} role
- * @returns {String[]}
- */
-userSchema.statics.findAccountAccessUserIds = async function (userId, role = 'write') {
-  return this.findAccountAccessUsers(userId, role)
-    .then(users => users.map(({ _id }) => String(_id)).concat(String(userId)))
-}
-
 userSchema.statics.findAccountAccessArticles = function (user, role = 'read') {
   return this
     .find({ permissions: { $elemMatch: { user, scope: 'user', roles: { $in: role } } } })
