@@ -1,9 +1,9 @@
 import './wdyr.js'
 import 'core-js/modules/web.structured-clone'
-import React, { lazy, useCallback, useEffect } from 'react'
+import React, { lazy } from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
-import { Provider, useDispatch } from 'react-redux'
+import { Provider } from 'react-redux'
 
 import './styles/general.scss'
 import App from './layouts/App'
