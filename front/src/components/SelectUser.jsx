@@ -7,11 +7,12 @@ import Select from './Select'
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
 import clsx from 'clsx'
+import { useActiveUserId } from '../hooks/user'
 
 export default function SelectUser ({ accounts }) {
   const dispatch = useDispatch()
 
-  const currentUserId = useSelector(state => state.userPreferences.currentUser ?? state.activeUser._id)
+  const currentUserId = useActiveUserId()
   const setCurrentUserId = useCallback((userId) => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'currentUser', value: userId }), [])
 
   const handleCurrentUserChange = useCallback((event) => {

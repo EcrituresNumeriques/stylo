@@ -9,6 +9,7 @@ import styles from './articles.module.scss'
 import Book from './Book'
 import Loading from './Loading'
 import SelectUser from './SelectUser'
+import { useActiveUserId } from '../hooks/user'
 
 export default function Books () {
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
@@ -16,7 +17,7 @@ export default function Books () {
   const [tags, setTags] = useState([])
   const [currentUser, setCurrentUser] = useState(activeUser)
   const [userAccounts, setUserAccounts] = useState([])
-  const currentUserId = useSelector(state => state.userPreferences.currentUser ?? state.activeUser._id)
+  const currentUserId = useActiveUserId()
 
   const runQuery = useGraphQL()
 
