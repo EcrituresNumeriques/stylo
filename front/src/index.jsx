@@ -39,7 +39,7 @@ const store = createStore()
   if (authToken) {
     store.dispatch({ type: 'UPDATE_SESSION_TOKEN', token:  authToken})
     sessionToken = authToken
-    useHistory().replace(location.pathname)
+    window.history.replaceState({}, '', location.pathname)
   }
   const applicationConfig = await getApplicationConfig(defaultApplicationConfig)
   store.dispatch({ type: 'APPLICATION_CONFIG', applicationConfig })
