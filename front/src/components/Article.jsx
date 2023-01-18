@@ -93,6 +93,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
           <span tabIndex={0} onKeyUp={toggleExpansion}>
             {expanded ? <ChevronDown/> : <ChevronRight/>}
           </span>
+
           {title}
 
           <Button title="Edit" icon={true} className={styles.editTitleButton} onClick={(evt) => evt.stopPropagation() || setRenaming(true)}>

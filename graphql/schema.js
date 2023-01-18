@@ -72,6 +72,8 @@ type Version {
   owner: User
   createdAt: DateTime
   updatedAt: DateTime
+
+  rename(name: String): Boolean
 }
 
 type Article {
@@ -180,7 +182,7 @@ input UserProfileInput {
 type WorkspaceArticle {
   workspace: Workspace!
   article: Article
-  
+
   # mutation
   remove: Workspace!
 }

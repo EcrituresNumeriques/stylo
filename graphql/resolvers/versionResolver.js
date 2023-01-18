@@ -48,5 +48,13 @@ module.exports = {
       return version
     },
   },
-  Version: {},
+
+  Version: {
+    async rename (version, { name }) {
+      version.set('message', name)
+      const result = await version.save({ timestamps: false })
+
+      return result === version
+    }
+  },
 }
