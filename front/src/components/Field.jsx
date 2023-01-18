@@ -13,6 +13,9 @@ export default forwardRef(function Field (props, forwardedRef) {
   if (props.className) {
     classNames.push(props.className)
   }
+  if (props.hasError) {
+    classNames.push(styles.error)
+  }
 
   const computedStyles = {'--chars-count': props.prefix?.length}
 

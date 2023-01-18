@@ -37,14 +37,10 @@
 }
 
 .logo {
-  font-style: italic;
-
   a {
     text-decoration: none;
-
-    &:before,
-    &:after {
-      content: "_";
+    img {
+      height: 1em;
     }
   }
 }

@@ -1,0 +1,28 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+.inlineAlert {
+  border-left: 3px solid $error-color;
+  padding: 0.5em;
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+  color: #1a1a1a;
+  background-color: #ffe6e6;
+  font-size: 0.85em;
+}
+
+.header {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  color: #242424;
+
+  > svg {
+    stroke: $error-color;
+  }
+}
+
+.message {
+  font-weight: 300;
+}
