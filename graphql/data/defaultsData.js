@@ -258,7 +258,7 @@ Pour plus d'informations, consultez la documentation.
 [^2]: Voici une note déclarée en fin de document
 [^notePage]: Voici une note avec un label textuel.
 `,
-      /* eslint-ignore-next no-useless-escape */
+      /* eslint-disable no-useless-escape */
       bib: `
 @book{petit_sue-_1999,
 	title = {*{Sue}- en grec ancien: la famille du pronom réfléchi : linguistique grecque et comparaison indo-européenne},
