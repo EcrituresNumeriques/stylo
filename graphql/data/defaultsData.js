@@ -258,6 +258,7 @@ Pour plus d'informations, consultez la documentation.
 [^2]: Voici une note déclarée en fin de document
 [^notePage]: Voici une note avec un label textuel.
 `,
+      /* eslint-ignore-next no-useless-escape */
       bib: `
 @book{petit_sue-_1999,
 	title = {*{Sue}- en grec ancien: la famille du pronom réfléchi : linguistique grecque et comparaison indo-européenne},
@@ -272,7 +273,7 @@ Pour plus d'informations, consultez la documentation.
 }
 @incollection{pitavy_au_2006,
 	address = {Saint-Étienne},
-	series = {Mémoires / {Centre} {Jean}-{Palerne}},
+	series = {Mémoires / {Centre} {Jean}-{Palerne}},
 	title = {Au sujet du pronom sujet: ἐγώ et la liberté du locuteur en grec},
 	volume = {numéro hors-série},
 	shorttitle = {Au sujet du pronom sujet},
