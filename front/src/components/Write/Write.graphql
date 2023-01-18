@@ -5,6 +5,12 @@ query compareVersion ($to: ID!) {
   }
 }
 
+query renameVersion ($version: ID!, $name: String) {
+  version(version: $version) {
+    rename(name: $name)
+  }
+}
+
 # query getEditableArticle ($article: ID!, $hasVersion: Boolean!, $version: ID!, $isPreview: Boolean = false) {
 query getEditableArticle ($article: ID!, $hasVersion: Boolean!, $version: ID!) {
   article(article: $article) {

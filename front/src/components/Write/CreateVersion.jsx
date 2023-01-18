@@ -28,7 +28,7 @@ const CreateVersion = ({ articleId, readOnly, onClose }) => {
         >
           <Field
             className={styles.createVersionInput}
-            placeholder="Label of the version"
+            placeholder="Label of the version (optional)"
             value={message}
             autoFocus={true}
             onChange={(e) => setMessage(e.target.value)}

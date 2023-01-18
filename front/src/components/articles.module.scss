@@ -175,20 +175,6 @@ hr.horizontalSeparator {
   padding: 1rem;
   position: relative;
 
-  .editTitleButton {
-    border: none;
-    background-color: transparent;
-    padding: 0 0 0 .25em;
-    margin: 0;
-    vertical-align: baseline;
-
-    > svg {
-      height: 0.75em;
-      margin: 0;
-      padding: 0;
-    }
-  }
-
   .title,
   .renamingForm {
     cursor: pointer;
@@ -257,6 +243,20 @@ hr.horizontalSeparator {
         margin: 0 .5rem .5rem 0;
       }
     }
+  }
+}
+
+.editTitleButton {
+  border: none;
+  background-color: transparent;
+  padding: 0 0 0 .25em;
+  margin: 0;
+  vertical-align: baseline;
+
+  > svg {
+    height: 0.75em;
+    margin: 0;
+    padding: 0;
   }
 }
 

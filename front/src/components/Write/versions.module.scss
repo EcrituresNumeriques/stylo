@@ -1,14 +1,11 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
+@use '../articles.module.scss' as article;
 
 .versionsList {
   font-size: 0.9em;
-  margin-top: 0.75em;
   > li {
     padding: .5rem;
-    > a:first-child {
-      display: block;
-    }
   }
   > li:nth-child(2n + 1) {
     background-color: $main-background-color;
@@ -24,16 +21,33 @@
   }
 }
 
+.editTitleButton {
+  @extend article, .editTitleButton;
+  height: auto;
+  padding: .4em .25em;
+}
+
+.momentAgo {
+  @extend article, .momentsAgo;
+}
+
+.versionNumber {
+  margin-left: .25em;
+  &::after {
+    content: ")";
+  }
+  &::before {
+    content: "(";
+  }
+}
+
 .actions {
   display: flex;
+  gap: 0.5em;
   margin-top: 0.5rem;
   margin-bottom: 0.25rem;
   justify-content: flex-end;
   font-size: 0.9em;
-
-  > li:not(:last-child) {
-    margin-right: 0.5em;
-  }
 }
 
 .newVersion {

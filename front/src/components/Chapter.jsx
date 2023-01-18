@@ -8,8 +8,10 @@ import { renameArticle as query } from './Article.graphql'
 import Button from './Button'
 import buttonStyles from './button.module.scss'
 import styles from './chapter.module.scss'
+import fieldStyles from './field.module.scss'
 import Field from './Field'
 import { useCurrentUser } from '../contexts/CurrentUser'
+import clsx from 'clsx'
 
 export default function Chapter ({ article }) {
   const articleId = article._id
@@ -54,7 +56,7 @@ export default function Chapter ({ article }) {
           </Button>
         </p>
       )}
-      {renaming && renaming && (<form className={styles.renamingForm} onSubmit={(e) => rename(e)}>
+      {renaming && renaming && (<form className={clsx(styles.renamingForm, fieldStyles.inlineFields)} onSubmit={(e) => rename(e)}>
         <Field autoFocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(e.target.value)} placeholder="Book Title" />
         <Button title="Save" primary={true} onClick={(e) => rename(e)}>
           <Check /> Save
