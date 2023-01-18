@@ -154,16 +154,16 @@ Une note de bas de page peut aussi être écrite dans le corps du texte, en sort
 
 Un article scientifique utilise des références. Vous pouvez soit importer un fichier [bibtex](http://www.bib.umontreal.ca/lgb/BibTeX/default.htm) généré par votre logiciel de gestion bibliographique (conseillé), ou bien créer manuellement les références au format bibtex.
 
-Les références sont ensuite insérées dans le texte grâce à leur _clé bibtex_. Pour récupérer la clé bibtex d'une référence, il suffit de cliquer sur la référence souhaitée dans la liste des référence ci-contre. La clé est alors ajouté à votre presse-papier, il suffit ensuite de la coller dans le texte [@goody_raison_1979].
+Les références sont ensuite insérées dans le texte grâce à leur _clé bibtex_. Pour récupérer la clé bibtex d'une référence, il suffit de cliquer sur la référence souhaitée dans la liste des référence ci-contre. La clé est alors ajouté à votre presse-papier, il suffit ensuite de la coller dans le texte [@petit_sue-_1999, @pitavy_au_2006].
 
 Pour résumer :
 
   1. clic sur la référence: copier la clé
-  2. coller ou CTRL+V : colle la clé dans le texte où est positionné le curseur [@goody_raison_1979].
+  2. coller ou CTRL+V : colle la clé dans le texte où est positionné le curseur [@petit_sue-_1999, @pitavy_au_2006].
 
-Il est également possible d'ajouter une référence ainsi : « Comme le dit @goody_raison_1979, le geste ... »
+Il est également possible d'ajouter une référence ainsi : « Comme le dit @petit_sue-_1999, le pronom réfléchi ... »
 
-La clé peut aussi être accompagnée de précision comme ici [@goody_raison_1979, pp.115].
+La clé peut aussi être accompagnée de précision comme ici [@pitavy_au_2006, pp.230].
 
 Les références citées se retrouveront ensuite à la fin du texte dans la section \`## Bibliographie\`
 
@@ -258,14 +258,33 @@ Pour plus d'informations, consultez la documentation.
 [^2]: Voici une note déclarée en fin de document
 [^notePage]: Voici une note avec un label textuel.
 `,
+      /* eslint-disable no-useless-escape */
       bib: `
-@book{goody_raison_1979,
-  series = {Le sens commun},
-  title = {La {Raison} graphique. {La} domestication de la pensée sauvage.},
-  publisher = {Les Editions de Minuit},
-  author = {Goody, Jack},
-  year = {1979},
-}`,
+@book{petit_sue-_1999,
+	title = {*{Sue}- en grec ancien: la famille du pronom réfléchi : linguistique grecque et comparaison indo-européenne},
+	isbn = {978-90-429-0776-8},
+	shorttitle = {*{Sue}- en grec ancien},
+	abstract = {Dans la plupart des langues indo-europeennes, la notion de reflexivite est exprimee a traves de differentes formes pronominales qui paraissent pouvoir toutes proceder d'un theme "sue-. L'ouvrage etudie les representants de ce theme en grec ancien, notamment le pronom reflechi du grec archaique, dont Homere fournit un paradigme complet. Ces formes du pronom reflechi se trouvent placees en grec au centre d'une contradiction: d'un point de vue morphologique, elles peuvent apparaitre proches des pronoms personnels, tandis que, par la nature de leur reference, elles leur sont etrangeres et se rapprochent plus des anaphoriques et des demonstratifs. Le present travail s'est efforce de resoudre cette contradiction en etudiant de maniere systematique les convergences et les divergences entre reflechi et pronoms personnels, non seulement en grec archaique, mais aussi de maniere plus generale dans les langues indo-europeennes. Differents criteres sont envisages: accent, structure du theme, formation des adjectifs possessifs, expression du nombre et de la personne. L'ouvrage etudie successivement les donnees de la philologie grecque et celles de la grammaire comparee. Il s'attache a rendre compte des structures etymologiques dans lesquelles apparait le pronom reflechi de l'indo-europeen, mais aussi de la diversite typologique de ses representants dans les langues historiques.},
+	language = {fr},
+	publisher = {Peeters Publishers},
+	author = {Petit, Daniel},
+	year = {1999},
+	keywords = {Language Arts \& Disciplines / Linguistics / General},
+}
+@incollection{pitavy_au_2006,
+	address = {Saint-Étienne},
+	series = {Mémoires / {Centre} {Jean}-{Palerne}},
+	title = {Au sujet du pronom sujet: ἐγώ et la liberté du locuteur en grec},
+	volume = {numéro hors-série},
+	shorttitle = {Au sujet du pronom sujet},
+	abstract = {Étudie les emplois du pronom personnel sujet de la première personne en grec, à partir de deux niveaux d'opposition : informationnel (thème vs rhème) et pragmatique (non focalisé vs focalisé) ; dans presque tous les cas, cet emploi correspond au terme fort de chaque opposition (rhème ou focalisé)},
+	booktitle = {« Ἐν κοινωνίᾳ πᾶσα φιλία »: mélanges offerts à {Bernard} {Jacquinod}},
+	publisher = {Publications de l’Université de Saint-Étienne},
+	author = {Pitavy, Jean-Christophe},
+	editor = {Breuil, Jean-Luc},
+	year = {2006},
+	pages = {227--242},
+}`,  
       yaml: `---
 title_f: Stylo
 title: Stylo
