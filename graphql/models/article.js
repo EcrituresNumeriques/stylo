@@ -25,7 +25,7 @@ const articleSchema = new Schema({
   },
   contributors: [ ArticleContributorSchema ],
   zoteroLink:{
-    type:String,
+    type: String,
     default: ''
   },
   workingVersion: {

@@ -102,6 +102,7 @@ userSchema.methods.isGrantedBy = function isGrantedBy (remoteUserId) {
 userSchema.methods.createDefaultArticle = async function createDefaultArticle () {
   const newArticle = await this.model('Article').create({
     title: defaultArticle.title,
+    zoteroLink: defaultArticle.zoteroLink,
     owner: this,
     workingVersion: {
       yaml: defaultArticle.yaml,
@@ -109,6 +110,8 @@ userSchema.methods.createDefaultArticle = async function createDefaultArticle ()
       md: defaultArticle.md
     },
   })
+
+  await newArticle.createNewVersion({ mode: 'MINOR', user: this })
 
   this.articles.push(newArticle)
   return this.save()
