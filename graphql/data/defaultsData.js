@@ -74,9 +74,11 @@ Add your text here, and the document title in the metadatas tool.
 1. Use only title of level 2 (\`##\`) for sections and more (level 1 is used for the article title)
 2. The text is automatically saved. You can version it with \`[Save as]\` button
 3. Check the documentation in the menu`,
-  message:'Genesis',
+  message: 'Genesis',
   article: {
       title:'How to Stylo',
+      // https://www.zotero.org/groups/2464757/collections/PLXDF42M
+      zoteroLink: '2464757/collections/PLXDF42M',
       md: `## Introduction
 
 Stylo est un éditeur de texte scientifique. Pour faire vos premiers pas sur Stylo, commencez par éditer cet article.
