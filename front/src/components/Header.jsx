@@ -6,6 +6,7 @@ import { Link, Route, Switch } from 'react-router-dom'
 import Button from './Button'
 
 import styles from './header.module.scss'
+import { iconName } from "../helpers/bibtex.js";
 
 function Header () {
   const dispatch = useDispatch()
@@ -40,7 +41,7 @@ function Header () {
       <header className={styles.headerContainer}>
         <section className={styles.header}>
           <h1 className={styles.logo}>
-            <Link to="/">Stylo</Link>
+            <Link to="/"><img src={`/images/logo.svg`} alt="Stylo" title="Stylo"/></Link>
           </h1>
           <nav>
             <ul className={styles.menuLinks}>

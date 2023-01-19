@@ -1,3 +1,5 @@
+@use '../styles/variables' as *;
+
 @mixin inputField {
   align-items: center;
   border: 1px solid #000000;
@@ -11,6 +13,16 @@
   position: relative;
   vertical-align: top;
   width: 100%;
+}
+
+.error {
+
+  label {
+    color: $error-color
+  }
+  input {
+    border: 1px solid $error-color !important;
+  }
 }
 
 .field {

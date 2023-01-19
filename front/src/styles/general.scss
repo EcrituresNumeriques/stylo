@@ -2,15 +2,10 @@
 @use './variables' as *;
 
 @font-face {
-  font-family: 'BellweatherSans-shownbsp';
-  src: url('/fonts/BellweatherSans-shownbsp.woff2') format('woff2'),
-    url('/fonts/BellweatherSans-shownbsp.woff') format('woff'),
-    url('/fonts/BellweatherSans-shownbsp.ttf') format('truetype'),
-    url('/fonts/BellweatherSans-shownbsp.svg') format('svg'),
-    url('/fonts/BellweatherSans-shownbsp.eot');
+  font-family: 'Inter';
+  src: url('/fonts/Inter-VariableFont_slnt,wght.ttf') format('truetype');
   font-display: swap;
-  font-weight: normal;
-  font-style: normal;
+  font-weight: 100 1000;
 }
 
 * {
@@ -24,12 +19,12 @@
 @media screen {
   html {
     background-color: $main-background-color;
-    font-family: 'BellweatherSans-shownbsp', serif;
+    font-family: 'Inter', serif;
     color: $main-color;
   }
 
   button, textarea {
-    font-family: 'BellweatherSans-shownbsp', serif;
+    font-family: 'Inter', serif;
   }
 
 
