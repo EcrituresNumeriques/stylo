@@ -49,7 +49,7 @@ export default function CompareSelect ({
     <section className={styles.compareVersions}>
       <h2>Compare Versions</h2>
       <div className={styles.versions}>
-        <div className={styles.originalVersion}>
+        <div>
           {versionTitle}
         </div>
         <div className={styles.modifiedVersion}>

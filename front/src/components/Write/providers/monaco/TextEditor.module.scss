@@ -2,9 +2,9 @@
 @use '../../../../styles/variables' as *;
 
 .editor {
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, .3);
+  border: 1px solid $main-border-color;
   min-height: 200px;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 221px);
 
   :global {
     .monaco-editor {

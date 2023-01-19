@@ -3,16 +3,16 @@
 
 .expandRight {
   @extend .details;
-  box-shadow: 0 5px 5px 5px rgba(0,0,0,0.1);
+  border-left: 1px solid $main-border-color;
+  border-bottom: 1px solid $main-border-color;
   margin-top: -1em;
-  padding-top: 1em;
   display: flex;
   flex-direction: column;
   min-width: 300px;
   max-height: calc(100vh - 64px);
   overflow-y: auto;
-  padding-left: 0.75em;
-  padding-right: 0.5em;
+  padding: 1em 0.5em 2em 0.75em;
+
   > button {
     color: $main-color;
     left: .5rem;
@@ -35,10 +35,12 @@
   padding-top: 1em;
   display: flex;
   flex-direction: column;
+
   > button {
     margin-left: 1em;
     margin-right: 1em;
   }
+
   .open {
     color: grey;
     background-color: rgba(0, 0, 0, 0);
@@ -48,16 +50,20 @@
 
 .sliderright {
   @extend .slider;
+
   > nav {
     text-align: left;
   }
+
   > div {
     text-align: right;
+
     > nav {
       p {
         @extend .clickable;
       }
     }
+
     > textarea {
       width: 100%;
       height: calc(100% - 8rem);
@@ -80,9 +86,11 @@
         cursor: pointer;
         color: $main-color;
       }
+
       .reactForm {
         display: flex;
         align-items: baseline;
+
         label {
           padding: 0.5em 1em;
           display: block;
@@ -93,10 +101,12 @@
           background-color: #fff;
           text-align: right;
         }
+
         .lcheckbox {
           flex: 1 1 150px;
           text-align: left;
         }
+
         input,
         textarea,
         select {
@@ -111,9 +121,11 @@
           border: none;
         }
       }
+
       .group {
         margin: 1em 0 0;
         border: 1px solid #f0f0f0;
+
         h1 {
           font-size: 1.15em;
           margin: 0;
@@ -122,10 +134,12 @@
           border-top: 1px solid $main-border-color;
           border-bottom: 1px solid $main-border-color;
         }
+
         .keywords {
           display: flex;
           align-items: baseline;
           flex-wrap: wrap;
+
           > input {
             padding: 0.5em 1em;
             display: block;
@@ -139,32 +153,39 @@
             text-align: left;
             border: none;
           }
+
           > p:not(.addToArray) {
             margin-bottom: 1rem;
             padding: 0.5rem 1rem;
             cursor: pointer;
           }
         }
+
         > p:not(.addToArray) {
           margin-bottom: 1rem;
           padding: 0.5rem 1rem;
           cursor: pointer;
         }
+
         #modalWrapper {
           > main {
             h1 {
               margin-bottom: 1rem;
             }
+
             p {
               margin-bottom: 1rem;
             }
+
             textarea {
               width: 100%;
               padding: 0.5rem 1rem;
               height: 7rem;
             }
+
             > nav {
               margin-bottom: 1rem;
+
               button {
                 display: inline-block;
                 width: 50%;
@@ -173,6 +194,7 @@
           }
         }
       }
+
       section:not(.group) {
         h1 {
           font-size: 1.15em;

@@ -2,19 +2,16 @@
 @use '../../../../styles/variables' as *;
 
 .compareVersions {
-  padding: 1rem;
-
-  @media screen and (min-width: $tablet-breakpoint) {
-    margin: 0.5rem;
-  }
-  @media screen and (min-width: $screen-breakpoint) {
-    max-width: 90vw;
-    margin: 0 auto;
-  }
-
   > h2 {
-    padding-bottom: 0.75em;
+    padding-top: 0.5em;
     text-align: center;
+    font-size: 1.15em;
+  }
+}
+
+.modifiedVersion {
+  > div {
+    margin: 0;
   }
 }
 
@@ -22,8 +19,5 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.originalVersion {
-  font-size: 1.1em;
+  font-size: 0.9em;
 }

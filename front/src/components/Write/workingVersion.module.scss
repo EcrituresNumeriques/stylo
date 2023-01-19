@@ -3,9 +3,9 @@
 
 .section {
   @extend .wrapped-center;
-  margin-bottom: 0.5em;
   display: flex;
   flex-direction: row;
+  align-items: center;
 
   @media print {
     & {
@@ -140,8 +140,6 @@ time {
 
 .actions {
   display: flex;
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
   font-size: 0.9em;
   justify-content: flex-end;
   gap: 0.5em;
