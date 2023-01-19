@@ -146,6 +146,7 @@ export default function Write() {
             bib: data.version.bib,
             md: data.version.md,
             yaml: data.version.yaml,
+            bibPreview: data.version.bibPreview,
             version: {
               message: data.version.message,
               major: data.version.version,
@@ -210,7 +211,7 @@ export default function Write() {
         readOnly={mode === MODES_READONLY}
       />
       <article className={clsx({[styles.article]: mode !== MODES_PREVIEW})}>
-        <WorkingVersion articleInfos={articleInfos} selectedVersion={currentVersion} mode={mode} />
+        <WorkingVersion articleInfos={articleInfos} live={live} selectedVersion={currentVersion} mode={mode} />
 
         <Switch>
           <Route path="*/preview" exact>

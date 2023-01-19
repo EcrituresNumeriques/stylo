@@ -84,6 +84,7 @@ module.exports = {
       return Tag.find({ owner: userId }).populate({
         path: 'articles',
         populate: { path: 'versions' },
+        sort: { title: 'asc' }
       })
     },
   },

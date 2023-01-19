@@ -32,7 +32,7 @@ function Version ({ articleId, compareTo, onExport, readOnly, selectedVersion, v
   const runQuery = useGraphQL()
   const [renaming, setRenaming] = useState(false)
   const [title, setTitle] = useState(v.message)
-  const setExportParams = useCallback(() => onExport({ articleId, articleVersionId }), [])
+  const setExportParams = useCallback(() => onExport({ articleId, articleVersionId, bibPreview: v.bibPreview }), [])
   const startRenaming = useCallback((event) => event.preventDefault() || setRenaming(true), [])
   const cancelRenaming = useCallback(() => setTitle(v.message) || setRenaming(false), [])
 
@@ -144,7 +144,7 @@ export default function Versions ({ article, selectedVersion, compareTo, readOnl
     dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandVersions', value: false })
     setExpandCreateForm(true)
   }, [])
-  const handleVersionExport = useCallback(({ articleId, articleVersionId }) => setExportParams({ articleId, articleVersionId }), [])
+  const handleVersionExport = useCallback(({ articleId, articleVersionId, bibPreview }) => setExportParams({ articleId, articleVersionId, bibPreview }), [])
   const cancelExport = useCallback(() => setExportParams({}), [])
 
   return (
@@ -159,7 +159,7 @@ export default function Versions ({ article, selectedVersion, compareTo, readOnl
       </h1>
       {exportParams.articleId && (
         <Modal title="Export" cancel={cancelExport}>
-          <Export articleId={exportParams.articleId} articleVersionId={exportParams.articleVersionId} />
+          <Export articleId={exportParams.articleId} articleVersionId={exportParams.articleVersionId} bib={exportParams.bibPreview} />
         </Modal>
       )}
       {expand && (

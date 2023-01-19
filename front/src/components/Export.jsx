@@ -10,14 +10,14 @@ import styles from './export.module.scss'
 import buttonStyles from "./button.module.scss";
 import formStyles from "./form.module.scss";
 
-export default function Export ({ bookId, exportId, articleVersionId, articleId }) {
+export default function Export ({ bookId, exportId, articleVersionId, articleId, bib }) {
   const { processEndpoint, exportEndpoint, pandocExportEndpoint } = useSelector(state => state.applicationConfig, shallowEqual)
   const [format, setFormat] = useState(bookId ? 'html5' : 'html')
   const [csl, setCsl] = useState('chicagomodified')
   const [toc, setToc] = useState('0')
   const [unnumbered, setUnnumbered] = useState('false')
   const [tld, setTld] = useState('false')
-  const { exportFormats, exportStyles, exportStylesPreview, isLoading } = useStyloExport(csl)
+  const { exportFormats, exportStyles, exportStylesPreview, isLoading } = useStyloExport({ csl, bib })
   const { host } = window.location
 
   const exportUrl = bookId
@@ -44,19 +44,22 @@ export default function Export ({ bookId, exportId, articleVersionId, articleId 
           <option value="tei">TEI</option>
           <option value="icml">ICML</option>
         </Select>}
-        {(articleId && !exportStyles.length) && <Loading inline size="24" />}
-        {(articleId && exportStyles.length) && <Select id="export-styles" label="Bibliography style" value={csl} onChange={(e) => setCsl(e.target.value)}>
+
+        {(articleId && bib && !exportStyles.length) && <Loading inline size="24" />}
+        {(articleId && bib && exportStyles.length) && <Select id="export-styles" label="Bibliography style" value={csl} onChange={(e) => setCsl(e.target.value)}>
           {exportStyles.map(({ title, name }) => <option value={name} key={name}>{ title }</option>)}
         </Select>}
-        <div className={styles.bibliographyPreview}>
+        {bib && <div className={styles.bibliographyPreview}>
           {isLoading && <Loading inline size="24" />}
           {!isLoading && <div dangerouslySetInnerHTML={{ __html: exportStylesPreview }} />}
-        </div>
-        {bookId && <Select id="export-styles" label="Bibliography style" value={csl} setCsl={(e) => setCsl(e.target.value)}>
+        </div>}
+
+        {bookId && bib && <Select id="export-styles" label="Bibliography style" value={csl} setCsl={(e) => setCsl(e.target.value)}>
           <option value="chicagomodified">chicagomodified</option>
           <option value="lettres-et-sciences-humaines-fr"> lettres-et-sciences-humaines-fr</option>
           <option value="chicago-fullnote-bibliography-fr"> chicago-fullnote-bibliography-fr</option>
         </Select>}
+
         <Select id="export-toc" label="Additional options" value={toc} onChange={(e) => setToc(parseInt(e.target.value, 10))}>
           <option value="1">Table of content</option>
           <option value="0">No table of content</option>

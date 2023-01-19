@@ -23,15 +23,19 @@ query getTags($user: ID!) {
     _id
     name
     updatedAt
+
     articles {
       _id
       title
       updatedAt
+
       versions(limit: 1) {
         _id
         version
         revision
         message
+
+        bibPreview
       }
     }
   }

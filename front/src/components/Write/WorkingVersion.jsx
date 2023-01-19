@@ -68,7 +68,7 @@ export function ArticleSaveState ({ state, updatedAt, stateMessage }) {
   </>)
 }
 
-export default function WorkingVersion ({ articleInfos, selectedVersion, mode }) {
+export default function WorkingVersion ({ articleInfos, live, selectedVersion, mode }) {
   const [exporting, setExporting] = useState(false)
   const workingArticle = useSelector(state => state.workingArticle, shallowEqual)
   const cancelExport = useCallback(() => setExporting(false), [])
@@ -90,7 +90,7 @@ export default function WorkingVersion ({ articleInfos, selectedVersion, mode })
         </header>
         {exporting && (
           <Modal title="Export" cancel={cancelExport}>
-            <Export articleVersionId={selectedVersion} articleId={articleInfos._id}/>
+            <Export articleVersionId={selectedVersion} articleId={articleInfos._id} bib={live.bibPreview}/>
           </Modal>
         )}
         <ul className={styles.actions}>
