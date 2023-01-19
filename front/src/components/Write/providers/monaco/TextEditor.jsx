@@ -1,4 +1,4 @@
-import { useRef, useEffect, useMemo, useCallback } from 'react'
+import React, { useRef, useEffect, useMemo, useCallback } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 
 import Editor from '@monaco-editor/react'
@@ -45,7 +45,8 @@ export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
     editor.onDidDispose(() => bibliographyCompletionProvider.dispose())
   }, [])
 
-  const handleEditorChange = useCallback((value) => onTextUpdate(undefined, undefined, value), [])
+  const handleEditorChange = useCallback((value) => onTextUpdate(value), [])
+
   return (
     <Editor
       defaultValue={text}

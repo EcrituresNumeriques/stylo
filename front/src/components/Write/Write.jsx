@@ -107,7 +107,7 @@ export default function Write() {
   )
 
 
-  const handleMDCM = (___, __, text) => {
+  const handleMDCM = (text) => {
     deriveArticleStructureAndStats({ text })
     updateWorkingArticleText({ text })
     setWorkingArticleDirty()
