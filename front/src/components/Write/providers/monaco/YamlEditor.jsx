@@ -3,7 +3,7 @@ import Editor from '@monaco-editor/react'
 
 import styles from './YamlEditor.module.scss'
 
-export default function MonacoYamlEditor ({ text, onTextUpdate }) {
+export default function MonacoYamlEditor ({ text, height, onTextUpdate }) {
   const options = useMemo(() => ({
     contextmenu: true,
     wordBasedSuggestions: false,
@@ -19,12 +19,13 @@ export default function MonacoYamlEditor ({ text, onTextUpdate }) {
     wrappingIndent: 'same',
     minimap: {
       enabled: false
-    }
+    },
   }), [])
 
   return (
     <Editor
       className={styles.editor}
+      height={height}
       defaultValue={text}
       defaultLanguage="yaml"
       onChange={onTextUpdate}

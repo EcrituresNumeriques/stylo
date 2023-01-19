@@ -3,7 +3,7 @@
 
 .editor {
   min-height: 200px;
-  height: calc(100vh - 250px);
+  border: 1px solid $main-border-color;
 
   :global {
     .monaco-editor {
