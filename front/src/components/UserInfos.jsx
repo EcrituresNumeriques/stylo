@@ -17,6 +17,7 @@ export default function UserInfos () {
   const dispatch = useDispatch()
   const runQuery = useGraphQL()
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
+  const zoteroToken = useSelector(state => state.activeUser.zoteroToken)
   const sessionToken = useSelector(state => state.sessionToken)
   const [displayName, setDisplayName] = useState(activeUser.displayName)
   const [firstName, setFirstName] = useState(activeUser.firstName || '')
@@ -95,13 +96,10 @@ export default function UserInfos () {
         </Field>
         <Field  label="Zotero">
           <>
-            {activeUser.zoteroToken && <span>Linked with <b>{activeUser.zoteroToken}</b> account.</span>}
-            {!activeUser.zoteroToken && <span>No linked account.</span>}
-            {activeUser.zoteroToken && (
-              <Button
-                title="Unlink this Zotero account"
-                onClick={unlinkZoteroAccount}
-              >
+            {zoteroToken && <span>Linked with <b>{zoteroToken}</b> account.</span>}
+            {!zoteroToken && <span>No linked account.</span>}
+            {zoteroToken && (
+              <Button title="Unlink this Zotero account" onClick={unlinkZoteroAccount}>
                 Unlink
               </Button>
             )}

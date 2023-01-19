@@ -48,7 +48,9 @@ const initialState = {
     citationNb: 0,
   },
   // Logged in user — we use their token
-  activeUser: {},
+  activeUser: {
+    zoteroToken: null
+  },
   userPreferences: localStorage.getItem('userPreferences') ? JSON.parse(localStorage.getItem('userPreferences')) : {
     // The user we impersonate
     currentUser: null,
@@ -224,9 +226,13 @@ function setProfile (state, action) {
 }
 
 function clearZoteroToken (state) {
-  state.activeUser.zoteroToken = null
-
-  return state
+  return {
+    ...state,
+    activeUser: {
+      ...state.activeUser,
+      zoteroToken: null
+    }
+  }
 }
 
 function setSessionToken (state, { token: sessionToken }) {
