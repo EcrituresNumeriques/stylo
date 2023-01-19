@@ -52,6 +52,7 @@ type Tag {
 
 type WorkingVersion {
   bib: String
+  bibPreview: String
   md: String
   yaml: String
   yamlReformated: String
@@ -67,6 +68,7 @@ type Version {
   yaml: String
   yamlReformated: String
   bib: String
+  bibPreview: String
   message: String
   article: Article
   owner: User
