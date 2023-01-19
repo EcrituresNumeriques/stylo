@@ -9,6 +9,11 @@ dialog::backdrop {
   body[data-scrolling="false"] {
     overflow: hidden;
   }
+
+  #root {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 :root {

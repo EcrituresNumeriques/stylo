@@ -17,7 +17,7 @@
   &:focus {
     text-decoration: underline;
     text-decoration-skip-ink: all;
-    text-decoration-thickness: 2;
+    text-decoration-thickness: 2px;
   }
 }
 
@@ -55,6 +55,34 @@
   }
 }
 
+.details {
+  > button {
+    @extend .clickable;
+    padding: .5rem 0.75rem;
+    transition: background-color 0.5s ease;
+    border:solid 1px currentColor;
+    border-radius: 26px;
+
+    &.open:hover, &.open:focus {
+      color: #232323;
+    }
+
+    svg {
+      height: 1.5em;
+      vertical-align: bottom;
+      width: 1.5em;
+    }
+  }
+
+  .close {
+    background-color: $main-background-color;
+    margin-bottom: 1.75em;
+    svg {
+      display: none;
+    }
+  }
+}
+
 .slider {
   position: fixed;
   z-index: 10;
@@ -71,7 +99,6 @@
 
   > button {
     @extend .clickable;
-    border: none;
     position: absolute;
     top: .25rem;
     padding: .5rem 0.75rem;

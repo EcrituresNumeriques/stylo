@@ -1,0 +1,39 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+
+.expandleft {
+  @extend .details;
+  border-right: 1px solid $main-border-color;
+  padding-bottom: 1em;
+  border-bottom: 1px solid $main-border-color;
+  margin-top: -1em;
+  padding-top: 1em;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+  > button {
+    color: $main-color;
+    margin-left: auto;
+    margin-right: 1em;
+  }
+}
+
+.retractleft {
+  @extend .details;
+  margin-top: -1em;
+  padding-top: 1em;
+  display: flex;
+  flex-direction: column;
+  > button {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+  .open {
+    color: grey;
+    background-color: rgba(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+}
