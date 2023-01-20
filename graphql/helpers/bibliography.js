@@ -9,7 +9,7 @@ function previewEntries (bibtex, count = 2) {
   let STATE = ''
   let obj = { kind: '', entry: '' }
 
-  return Array.from((bibtex?.trim() ?? '')
+  const entries = Array.from((bibtex?.trim() ?? '')
     .split(/^(\s*@(?<kind>[^{]+)\s*\{\s*[\w]+,)\s*$/gm))
     .reduce((all, part) => {
       const trimmedPart = part.trim()
@@ -36,6 +36,12 @@ function previewEntries (bibtex, count = 2) {
         return all.concat([ [obj.kind, obj.entry ]])
       }
     }, [])
+
+  if (!Array.isArray(entries) || entries.length === 0) {
+    return ''
+  }
+
+  return entries
     .sort((a, b) => a[0].localeCompare(b[0]))
     .filter(([kind], index, array) => {
       return array.slice(0, index).some((d) => d[0] === kind) === false
