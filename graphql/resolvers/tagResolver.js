@@ -65,8 +65,11 @@ module.exports = {
   Query: {
     async tag (_, args, context) {
       const { userId } = isUser(args, context)
+      const query = context.token.admin
+        ? { _id: args.tag }
+        : { _id: args.tag, owner: userId }
 
-      const tag = Tag.findOne({ _id: args.tag, owner: userId }).populate({
+      const tag = Tag.findOne(query).populate({
         path: 'articles',
         populate: { path: 'versions' },
       })
