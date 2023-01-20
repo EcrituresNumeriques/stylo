@@ -1,4 +1,18 @@
-import { usePandocAnchoring } from './pandoc.js'
+import { usePandocAnchoring, slugify } from './pandoc.js'
+
+describe('slugify', () => {
+  test('should match pandoc anchoring', () => {
+    // echo '# Coucou, comment ça va ?' | pandoc -f markdown -t html
+    expect(slugify('Coucou, comment ça va ?')).toEqual('coucou-comment-ça-va')
+    // echo '# [SHARED] How To Stylo?' | pandoc -f markdown -t html
+    expect(slugify('[SHARED] How To Stylo?')).toEqual('shared-how-to-stylo')
+  })
+
+  test('should match legacy export expectations', () => {
+    // echo '# Coucou, comment ça va ?' | pandoc -f markdown -t html
+    expect(slugify('Coucou, comment ça va ?', { diacritics: false })).toEqual('coucou-comment-ca-va')
+  })
+})
 
 describe('usePandocAnchoring()', () => {
   test('generate expected anchors', () => {
