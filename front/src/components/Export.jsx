@@ -46,15 +46,15 @@ export default function Export ({ bookId, exportId, articleVersionId, articleId,
         </Select>}
 
         {(articleId && bib && !exportStyles.length) && <Loading inline size="24" />}
-        {(articleId && bib && exportStyles.length) && <Select id="export-styles" label="Bibliography style" value={csl} onChange={(e) => setCsl(e.target.value)}>
+        {(articleId && bib && exportStyles.length) && <Select id="export-styles" label="Bibliography style" value={csl} onChange={setCsl}>
           {exportStyles.map(({ title, name }) => <option value={name} key={name}>{ title }</option>)}
         </Select>}
-        {bib && <div className={styles.bibliographyPreview}>
+        {articleId && bib && <div className={styles.bibliographyPreview}>
           {isLoading && <Loading inline size="24" />}
           {!isLoading && <div dangerouslySetInnerHTML={{ __html: exportStylesPreview }} />}
         </div>}
 
-        {bookId && bib && <Select id="export-styles" label="Bibliography style" value={csl} setCsl={(e) => setCsl(e.target.value)}>
+        {bookId && bib && <Select id="export-styles" label="Bibliography style" value={csl} setCsl={setCsl}>
           <option value="chicagomodified">chicagomodified</option>
           <option value="lettres-et-sciences-humaines-fr"> lettres-et-sciences-humaines-fr</option>
           <option value="chicago-fullnote-bibliography-fr"> chicago-fullnote-bibliography-fr</option>

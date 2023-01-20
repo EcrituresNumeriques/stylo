@@ -53,7 +53,7 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
           <Export
             exportId={generateBookExportId(name)}
             bookId={_id}
-            bib={articles.at(0)?.version.at(0).bibPreview}
+            bib={articles.at(0)?.versions.at(0).bibPreview}
           />
         </Modal>
       )}
