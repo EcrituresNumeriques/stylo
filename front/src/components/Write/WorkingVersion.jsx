@@ -90,7 +90,7 @@ export default function WorkingVersion ({ articleInfos, live, selectedVersion, m
         </header>
         {exporting && (
           <Modal title="Export" cancel={cancelExport}>
-            <Export articleVersionId={selectedVersion} articleId={articleInfos._id} bib={live.bibPreview}/>
+            <Export articleVersionId={selectedVersion} articleId={articleInfos._id} bib={live.bibPreview} name={articleInfos.title} />
           </Modal>
         )}
         <ul className={styles.actions}>

@@ -19,7 +19,7 @@ import CreateVersion from './CreateVersion'
 import formatTimeAgo from '../../helpers/formatTimeAgo.js'
 import clsx from 'clsx'
 
-function Version ({ articleId, compareTo, onExport, readOnly, selectedVersion, v }) {
+function Version ({ articleId, articleName: name, compareTo, onExport, readOnly, selectedVersion, v }) {
   const className = clsx({
     [styles.selected]: v._id === selectedVersion,
     [styles.compareTo]: v._id === compareTo
@@ -32,7 +32,7 @@ function Version ({ articleId, compareTo, onExport, readOnly, selectedVersion, v
   const runQuery = useGraphQL()
   const [renaming, setRenaming] = useState(false)
   const [title, setTitle] = useState(v.message)
-  const setExportParams = useCallback(() => onExport({ articleId, articleVersionId, bibPreview: v.bibPreview }), [])
+  const setExportParams = useCallback(() => onExport({ articleId, articleVersionId, bib: v.bibPreview, name }), [])
   const startRenaming = useCallback((event) => event.preventDefault() || setRenaming(true), [])
   const cancelRenaming = useCallback(() => setTitle(v.message) || setRenaming(false), [])
 
@@ -123,6 +123,7 @@ function Version ({ articleId, compareTo, onExport, readOnly, selectedVersion, v
 
 Version.propTypes = {
   articleId: PropTypes.string.isRequired,
+  articleName: PropTypes.string.isRequired,
   v: PropTypes.object.isRequired,
   selectedVersion: PropTypes.string,
   compareTo: PropTypes.string,
@@ -144,7 +145,7 @@ export default function Versions ({ article, selectedVersion, compareTo, readOnl
     dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandVersions', value: false })
     setExpandCreateForm(true)
   }, [])
-  const handleVersionExport = useCallback(({ articleId, articleVersionId, bibPreview }) => setExportParams({ articleId, articleVersionId, bibPreview }), [])
+  const handleVersionExport = useCallback(({ articleId, articleVersionId, bib, name }) => setExportParams({ articleId, articleVersionId, bib, name }), [])
   const cancelExport = useCallback(() => setExportParams({}), [])
 
   return (
@@ -159,7 +160,7 @@ export default function Versions ({ article, selectedVersion, compareTo, readOnl
       </h1>
       {exportParams.articleId && (
         <Modal title="Export" cancel={cancelExport}>
-          <Export articleId={exportParams.articleId} articleVersionId={exportParams.articleVersionId} bib={exportParams.bibPreview} />
+          <Export {...exportParams} />
         </Modal>
       )}
       {expand && (
@@ -177,6 +178,7 @@ export default function Versions ({ article, selectedVersion, compareTo, readOnl
             {articleVersions.map((v) => (
               <Version key={`showVersion-${v._id}`}
                 articleId={article._id}
+                articleName={article.title}
                 selectedVersion={selectedVersion}
                 compareTo={compareTo}
                 onExport={handleVersionExport}

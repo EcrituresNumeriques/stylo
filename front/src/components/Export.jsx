@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import useStyloExport from '../hooks/stylo-export.js'
+import { slugify } from '../hooks/pandoc.js'
 
 import Select from './Select'
 import Loading from './Loading'
@@ -10,7 +11,7 @@ import styles from './export.module.scss'
 import buttonStyles from "./button.module.scss";
 import formStyles from "./form.module.scss";
 
-export default function Export ({ bookId, exportId, articleVersionId, articleId, bib }) {
+export default function Export ({ bookId, articleVersionId, articleId, bib, name }) {
   const { processEndpoint, exportEndpoint, pandocExportEndpoint } = useSelector(state => state.applicationConfig, shallowEqual)
   const [format, setFormat] = useState(bookId ? 'html5' : 'html')
   const [csl, setCsl] = useState('chicagomodified')
@@ -19,11 +20,12 @@ export default function Export ({ bookId, exportId, articleVersionId, articleId,
   const [tld, setTld] = useState('false')
   const { exportFormats, exportStyles, exportStylesPreview, isLoading } = useStyloExport({ csl, bib })
   const { host } = window.location
+  const exportId = useMemo(() => slugify(name, { diacritics: false }) || (articleVersionId ?? articleId ?? bookId), [name])
 
   const exportUrl = bookId
     ? `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${exportId}&book=${bookId}&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${Boolean(toc)}&tld=${tld}&unnumbered=${unnumbered}`
     // https://export.stylo-dev.huma-num.fr/generique/export/stylo-dev.huma-num.fr/60084903587dae0019eaf0d5/60084903587dae0019eaf0d5/?with_toc=1&with_ascii=0&formats=originals&formats=images&formats=html
-    : `${pandocExportEndpoint}/generique/export/${host}/${articleId}/${articleVersionId ?? articleId}/?with_toc=${toc}&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=images&formats=${format}`
+    : `${pandocExportEndpoint}/generique/export/${host}/${articleId}/${exportId}/?with_toc=${toc}&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=images&formats=${format}`
 
   return (
     <section className={styles.export}>
@@ -92,6 +94,5 @@ Export.propTypes = {
   bookId: PropTypes.string,
   articleVersionId: PropTypes.string,
   articleId: PropTypes.string,
-  // deprecated, will be gone with Legacy Export phased out
-  exportId: PropTypes.string
+  name: PropTypes.string.isRequired,
 }

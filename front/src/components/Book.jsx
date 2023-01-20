@@ -10,7 +10,6 @@ import etv from '../helpers/eventTargetValue'
 import { useGraphQL } from '../helpers/graphQL'
 import { updateTag as query } from './Books.graphql'
 import formatTimeAgo from '../helpers/formatTimeAgo'
-import { generateBookExportId } from "../helpers/identifier"
 
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
@@ -50,11 +49,7 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
     <article className={styles.article}>
       {exporting && (
         <Modal title="Export" cancel={() => setExporting(false)}>
-          <Export
-            exportId={generateBookExportId(name)}
-            bookId={_id}
-            bib={articles.at(0)?.versions.at(0).bibPreview}
-          />
+          <Export bookId={_id} name={name} bib={articles.at(0)?.versions.at(0).bibPreview} />
         </Modal>
       )}
 
