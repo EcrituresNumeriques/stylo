@@ -173,7 +173,7 @@ input NewUserInput {
 }
 
 input UserProfileInput {
-  displayName: String!
+  displayName: String
   firstName: String
   lastName: String
   institution: String

@@ -1,7 +1,6 @@
 const pkg = require('./package.json')
 const express = require('express')
 const bodyParser = require('body-parser')
-const cookieParser = require('cookie-parser')
 const { createHandler } = require('graphql-http/lib/use/express')
 const mongoose = require('mongoose')
 const cors = require('cors')
@@ -97,7 +96,7 @@ passport.use('oidc', new OidcStrategy({
   clientSecret: oicClientSecret,
   callbackURL: oicCallbackUrl,
   scope: oicScope
-}, async (issuer, sub, oAuthProfile, accessToken, refreshToken, done) => {
+}, async (issuer, sub, oAuthProfile, done) => {
   // careful, function arity matters https://github.com/jaredhanson/passport-openidconnect/blob/6197df6adf878bb641fd605c55f1c92f67253a07/lib/strategy.js#L223-L252
   // we should keep it as it is
   const { email, given_name, family_name, name: displayName } = oAuthProfile._json
@@ -135,21 +134,18 @@ passport.use(new LocalStrategy({ session: false },
   }
 ))
 
-// mandatory
-passport.serializeUser((user, next) => {
-  next(null, user.id)
-})
-
+// mandatory for passport-login/logout
+passport.serializeUser((user, next) => next(null, user.id))
 passport.deserializeUser(async (id, next) => {
   const user = await User.findById(id).populate({ path: 'permissions' })
   next(null, user)
 })
 
 app.set('trust proxy', true)
+app.set('x-powered-by', false)
 app.use(pino)
 app.use(cors(corsOptions))
 app.use(bodyParser.json({ limit: '50mb' }))
-app.use(cookieParser())
 app.use(session({
   secret: sessionSecret,
   resave: false,
@@ -167,8 +163,7 @@ app.use(passport.session())
 
 app.get('/version', (req, res) => res.json({
   name: pkg.name,
-  version: pkg.version,
-  origin: res.get(req.headers.referer)
+  version: pkg.version
 }))
 
 app.get(

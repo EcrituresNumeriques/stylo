@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
 import { fetchAllCollectionsPerLibrary, fetchBibliographyFromCollectionHref } from '../../../helpers/zotero'
@@ -13,8 +14,8 @@ import Select from '../../Select'
 import styles from './bibliographe.module.scss'
 import { Rss, Clipboard } from 'react-feather'
 
-function CollectionSelect ({ isSaving, collections }) {
-  return <Select name="collectionHref">
+function CollectionSelect ({ isSaving, collections, onChange }) {
+  return <Select name="collectionHref" onChange={onChange}>
     <option value="">
       {isSaving ? 'Fetching collections…' : 'Pick a collection'}
     </option>
@@ -34,6 +35,12 @@ function CollectionSelect ({ isSaving, collections }) {
   </Select>
 }
 
+CollectionSelect.propTypes = {
+  isSaving: PropTypes.bool,
+  collections: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired
+}
+
 export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink, onChange }) {
   const zoteroToken = useSelector(state => state.activeUser.zoteroToken)
   const userId = useSelector(state => state.activeUser._id)
@@ -48,6 +55,8 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
   const refreshProfile = useProfile()
 
   const handleZoteroLinkChange = useCallback((event) => setZoteroLink(event.target.value), [])
+  const handleZoteroCollectionChange = useCallback((event) => setZoteroCollectionHref(event.target.value), [])
+  const hasLinkChanged = useMemo(() => initialZoteroLink || initialZoteroLink !== zoteroLink, [zoteroLink])
 
   const persistZoteroLink = useCallback(async (zoteroLink) => {
     if (!zoteroLink === initialZoteroLink) {
@@ -141,12 +150,12 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
   return <div className={styles.zotero}>
     <form className={styles.section} disabled={isSaving} onSubmit={handleCollectionFormSubmission}>
       <h3><Rss />Import a collection from my account</h3>
-      {zoteroToken && <CollectionSelect isSaving={isSaving} collections={zoteroCollections} />}
+      {zoteroToken && <CollectionSelect isSaving={isSaving} collections={zoteroCollections} onChange={handleZoteroCollectionChange} />}
       {zoteroToken && (
-        <Button type="submit" disabled={!zoteroCollectionHref || isSaving}>
+        <Button type="submit" primary disabled={!zoteroCollectionHref || isSaving}>
           {isSaving
             ? 'Fetching…'
-            : 'Replace bibliography with this private collection'}
+            : 'Replace bibliography with this account collection'}
         </Button>
       )}
 
@@ -177,7 +186,7 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
       <Button
         type="submit"
         primary={true}
-        disabled={isSaving}
+        disabled={isSaving || !hasLinkChanged}
       >
         {isSaving
           ? 'Fetching…'
