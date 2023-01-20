@@ -12,7 +12,7 @@ const { version, browserlist: target } = require('./package.json')
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'SNOWPACK_')
-  const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID, SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT } = env
+  const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
 
   return {
     base: env.DEPLOY_PRIME_URL ?? '/',
@@ -53,7 +53,14 @@ export default defineConfig(async ({ mode }) => {
     server: {
       port: 3000,
       proxy: {
-        '/api': SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT
+        '/graphql': {
+          target: 'http://127.0.0.1:3030',
+          prependPath: false
+        },
+        // as in infrastructure/files/stylo.huma-num.fr.conf
+        '^/(login/openid|login/local|login/zotero|logout|authorization-code)': {
+          target: 'http://127.0.0.1:3030'
+        }
       }
     }
   }
