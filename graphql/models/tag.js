@@ -12,7 +12,7 @@ const tagSchema = new Schema({
   },
   owner: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
   },
   color: {
     type: String,

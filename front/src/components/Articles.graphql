@@ -24,6 +24,10 @@ query getUserArticles($user: ID!) {
     title
     updatedAt
 
+    workingVersion {
+      bibPreview
+    }
+
     owner {
       _id
       displayName

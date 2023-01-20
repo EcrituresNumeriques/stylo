@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions.js')
 const { reformat } = require('../helpers/metadata.js')
+const { previewEntries } = require('../helpers/bibliography.js')
 const { prefixRulesWith, sanitizeTemplate } = require('../helpers/preview.js')
 
 const ArticleContributorSchema = new Schema({
@@ -70,6 +71,10 @@ const articleSchema = new Schema({
 
 articleSchema.virtual('workingVersion.yamlReformated').get(function () {
   return reformat(this.workingVersion.yaml, { replaceBibliography: false })
+})
+
+articleSchema.virtual('workingVersion.bibPreview').get(function () {
+  return previewEntries(this.workingVersion.bib)
 })
 
 

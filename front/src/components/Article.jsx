@@ -78,7 +78,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
     <article className={styles.article}>
       {exporting && (
         <Modal title="Export" cancel={() => setExporting(false)}>
-          <Export articleId={article._id} />
+          <Export articleId={article._id} bib={article.workingVersion.bibPreview} />
         </Modal>
       )}
 

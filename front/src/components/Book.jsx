@@ -21,8 +21,6 @@ import Field from './Field'
 import { useCurrentUser } from '../contexts/CurrentUser'
 import clsx from 'clsx'
 
-const alphaSort = (a, b) => a.title.localeCompare(b.title)
-
 export default function Book ({ name: tagName, _id, updatedAt, articles }) {
   const activeUser = useCurrentUser()
 
@@ -55,6 +53,7 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
           <Export
             exportId={generateBookExportId(name)}
             bookId={_id}
+            bib={articles.at(0)?.versions.at(0).bibPreview}
           />
         </Modal>
       )}
@@ -101,7 +100,7 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
           <>
             <h4>Chapters</h4>
             <ul className={styles.versions}>
-              {articles.sort(alphaSort).map((article) => {
+              {articles.map((article) => {
                 return <li key={`chapter-${_id}-${article._id}`}>
                   <Chapter article={article} />
                 </li>

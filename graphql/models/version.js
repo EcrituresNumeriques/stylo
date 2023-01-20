@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const { deriveToc } = require('../helpers/markdown.js')
 const { reformat } = require('../helpers/metadata.js')
+const { previewEntries } = require('../helpers/bibliography.js')
 
 const versionSchema = new Schema({
   owner:{
@@ -45,6 +46,10 @@ const versionSchema = new Schema({
 
 versionSchema.virtual('yamlReformated').get(function () {
   return reformat(this.yaml, { replaceBibliography: false })
+})
+
+versionSchema.virtual('bibPreview').get(function () {
+  return previewEntries(this.bib)
 })
 
 module.exports = mongoose.model('Version', versionSchema);

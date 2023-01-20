@@ -11,20 +11,12 @@ const postFetcher = ([url, formData]) => {
     .then(response => response.text())
 }
 
-const bib = `@book{goody_raison_1979,
-series = {Le sens commun},
-title = {La {Raison} graphique. {La} domestication de la pensée sauvage.},
-publisher = {Les Editions de Minuit},
-author = {Goody, Jack},
-year = {1979},
-}`
-
-export default function useStyloExport (bibStyle) {
+export default function useStyloExport ({ csl: bibliography_style, bib: excerpt }) {
   const pandocExportEndpoint = useSelector(state => state.applicationConfig.pandocExportEndpoint)
 
   const { data: exportFormats } = useSWR(`${pandocExportEndpoint}/api/available_exports`, fetcher, { fallbackData: [] })
   const { data: exportStyles } = useSWR(`${pandocExportEndpoint}/api/available_bibliographic_styles`, fetcher, { fallbackData: [] })
-  const { data: exportStylesPreview, isLoading } = useSWR([`${pandocExportEndpoint}/api/bibliography_preview`, { excerpt: bib , bibliography_style: bibStyle}], postFetcher, { fallbackData: '' })
+  const { data: exportStylesPreview, isLoading } = useSWR([`${pandocExportEndpoint}/api/bibliography_preview`, { excerpt , bibliography_style}], postFetcher, { fallbackData: '' })
 
   return { exportFormats, exportStyles, exportStylesPreview, isLoading }
 }
