@@ -234,10 +234,14 @@ app.use('/authorization-code/callback',
     res.redirect(`/error?message=${error.message}`)
   })
 
-app.get('/logout', (req, res) => {
-  req.logout()
-  req.session.destroy()
-  res.redirect(req.headers.referer)
+app.get('/logout', (req, res, next) => {
+  req.logout(function(err) {
+    if (err) {
+      return next(err)
+    }
+    req.session.destroy()
+    res.redirect(req.headers.referer)
+  })
 })
 
 app.post('/login/local',
