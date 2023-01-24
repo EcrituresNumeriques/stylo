@@ -124,7 +124,7 @@ async function fetchAllCollections ({ userID, key }) {
   // }
   const userCollections = (await fetchAllJSON(new URL(`https://api.zotero.org/users/${userID}/collections`), key)).flat()
 
-  return groupCollections.concat(userCollections)
+  return userCollections.concat(groupCollections)
 }
 
 /**
