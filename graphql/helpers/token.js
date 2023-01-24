@@ -18,7 +18,7 @@ module.exports.createJWTToken = async function createJWTToken ({ email, jwtSecre
 
 module.exports.populateUserFromJWT = function populateUserFromJWT ({ jwtSecret }) {
   return async function populateUserFromJWTMiddleware(req, res, next) {
-    const jwtToken = req.headers.authorization?.replace(/^Bearer /, '')
+    const jwtToken = req.headers.authorization?.replace(/^Bearer\s+/, '')
 
     if (!jwtToken) {
       return next()
@@ -29,7 +29,7 @@ module.exports.populateUserFromJWT = function populateUserFromJWT ({ jwtSecret }
       req.token = jwt.verify(jwtToken, jwtSecret)
     } catch (error) {
       res.status(400)
-      return next(error)
+      return res.json(error)
     }
 
     // 2. Fetch associated user, only if not populated by Passport Session before
