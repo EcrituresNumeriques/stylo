@@ -13,6 +13,7 @@
   },
   "scripts": {
     "dev": "DOTENV_CONFIG_PATH=stylo.env node -r dotenv/config ./node_modules/.bin/concurrently 'npm:dev:*'",
+    "predev:front": "node -e \"require('fs/promises').rm('front/public/config.json', {force: true})\"",
     "dev:front": "./front/node_modules/.bin/vite ./front",
     "dev:graphql": "node --watch ./graphql/app.js --watch",
     "dev:export": "node  --watch ./export/src/app.js --watch",
