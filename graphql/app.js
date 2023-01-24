@@ -21,6 +21,7 @@ const { checkCredentials } = require('./resolvers/authResolver')
 
 const { createJWTToken, populateUserFromJWT } = require('./helpers/token')
 const User = require('./models/user')
+const { ApiError } = require('./helpers/errors')
 
 const app = express()
 
@@ -95,11 +96,19 @@ passport.use('oidc', new OidcStrategy({
   clientID: oicClientId,
   clientSecret: oicClientSecret,
   callbackURL: oicCallbackUrl,
+  skipUserProfile: false,
   scope: oicScope
-}, async (issuer, sub, oAuthProfile, done) => {
+}, async (iss, profile, done) => {
   // careful, function arity matters https://github.com/jaredhanson/passport-openidconnect/blob/6197df6adf878bb641fd605c55f1c92f67253a07/lib/strategy.js#L223-L252
-  // we should keep it as it is
-  const { email, given_name, family_name, name: displayName } = oAuthProfile._json
+  // profile has this shape https://www.passportjs.org/reference/normalized-profile/
+  // when 'skipUserProfile' is set to false (aka: give us profile data)
+  const { name, displayName } = profile
+  const { value: email } = profile.emails[0] || {}
+
+  if (!email) {
+    throw new ApiError('Cannot find or create a user without email address.')
+  }
+
   let user = await User.findOne({ email })
 
   // we create a new user if we could find one
@@ -108,8 +117,8 @@ passport.use('oidc', new OidcStrategy({
       email,
       displayName,
       institution: '',
-      firstName: given_name || '',
-      lastName: family_name || '',
+      firstName: name.givenName || '',
+      lastName: name.familyName || '',
       authType: 'oidc',
     })
 
@@ -166,16 +175,14 @@ app.get('/version', (req, res) => res.json({
   version: pkg.version
 }))
 
-app.get(
-  '/login/openid',
-  async (req, res, next) => {
+app.get('/login/openid', async (req, res, next) => {
     if (req.user) {
       const { email } = req.user
       const token = await createJWTToken({ email, jwtSecret })
-      res.redirect(`${req.headers.referer}#auth-token=${token}`)
+      res.redirect(`${req.headers.referer ?? '/'}#auth-token=${token}`)
     } else {
       req.session.origin = req.headers.referer
-      next()
+      req.session.save(next)
     }
   },
   passport.authenticate('oidc')
@@ -227,7 +234,7 @@ app.use('/authorization-code/callback',
   async function onSuccess (req, res) {
     const { email } = req.user
     const token = await createJWTToken({ email, jwtSecret })
-    return res.redirect(`${req.session.origin}#auth-token=${token}`)
+    return res.redirect(`${req.session.origin ?? '/'}#auth-token=${token}`)
   },
   function onFailure (error, req, res) {
     logger.error({ error }, 'Unexpected error.')
