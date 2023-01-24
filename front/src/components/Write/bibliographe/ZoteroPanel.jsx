@@ -20,7 +20,7 @@ function CollectionSelect ({ isSaving, collections, onChange }) {
       {isSaving ? 'Fetching collections…' : 'Pick a collection'}
     </option>
 
-    {Object.entries(collections).map(([_, collections]) => (
+    {Object.entries(collections).map(([, collections]) => (
       <optgroup
         key={collections[0].key}
         label={`${collections[0].library.name} (${collections[0].library.type})`}
