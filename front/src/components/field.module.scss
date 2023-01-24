@@ -127,3 +127,34 @@
     }
   }
 }
+
+.combobox {
+  position: relative;
+
+  > label {
+    cursor: pointer;
+  }
+}
+
+.comboboxControllerActions {
+  position: absolute;
+  right: 0;
+  top: calc(1rem + 0.5rem + 0.2rem + 1px);
+}
+
+.comboboxResults:not(:empty) {
+  background-color: #fff;
+  border: 1px solid black;
+  padding: 0;
+  position: absolute;
+  margin-top: calc(-1rem + 1px); /* same as form .field + border-bottom-width */
+  width: 100%;
+  z-index: 900;
+}
+  .comboboxItem {
+    cursor: pointer;
+    padding: .5em 1em;
+  }
+  .comboboxHighlightedItem {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
