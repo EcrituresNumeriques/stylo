@@ -24,15 +24,10 @@ function Biblio ({ article, readOnly }) {
     <section className={[menuStyles.section, styles.section].join(' ')}>
       <h1 onClick={toggleExpand}>
         {expand ? <ChevronDown/> : <ChevronRight/>} Bibliography
+
+        <Button className={styles.headingAction} small={true} disabled={readOnly} onClick={openModal}>Manage</Button>
       </h1>
-      {expand && (
-        <>
-          {!readOnly && (
-            <Button className={styles.manageButton} onClick={openModal}>Manage Bibliography</Button>
-          )}
-          <ReferenceList />
-        </>
-      )}
+      {expand && <ReferenceList />}
       {modal && (
         <Modal title="Bibliography Manager" cancel={closeModal}>
           <Bibliographe cancel={closeModal} article={article} />

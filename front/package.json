@@ -12,8 +12,7 @@
     "npm": ">=8"
   },
   "scripts": {
-    "prebuild": "node tasks/env.js",
-    "prestart": "node tasks/env.js",
+    "prebuild": "node ./bin/create-config.js",
     "lint": "prettier --check src",
     "lint:fix": "prettier --write src",
     "start": "vite",

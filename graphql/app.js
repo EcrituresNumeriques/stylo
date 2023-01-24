@@ -150,7 +150,7 @@ app.use(session({
   secret: sessionSecret,
   resave: false,
   proxy: true,
-  saveUninitialized: true,
+  saveUninitialized: false,
   store: new MongoStore({ mongooseConnection: mongoose.connection }),
   cookie: {
     httpOnly: true,
