@@ -6,6 +6,7 @@ const Workspace = require('../models/workspace')
 
 const isUser = require('../policies/isUser')
 const { ApiError } = require('../helpers/errors')
+const { reformat } = require('../helpers/metadata.js')
 
 module.exports = {
   Mutation: {
@@ -282,5 +283,13 @@ module.exports = {
 
       return article.save()
     }
-  }
+  },
+
+  WorkingVersion: {
+    yaml ({ yaml }, { options }) {
+      return options?.strip_markdown
+        ? reformat(yaml, { replaceBibliography: false })
+        : yaml
+    }
+  },
 }

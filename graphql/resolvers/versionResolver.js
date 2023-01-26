@@ -5,6 +5,7 @@ const User = require('../models/user')
 const isUser = require('../policies/isUser')
 
 const { ApiError } = require('../helpers/errors')
+const { reformat } = require('../helpers/metadata.js')
 
 module.exports = {
   Mutation: {
@@ -55,6 +56,12 @@ module.exports = {
       const result = await version.save({ timestamps: false })
 
       return result === version
+    },
+
+    yaml ({ yaml }, { options }) {
+      return options?.strip_markdown
+        ? reformat(yaml, { replaceBibliography: false })
+        : yaml
     }
-  },
+  }
 }
