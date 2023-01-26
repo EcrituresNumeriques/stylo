@@ -35,6 +35,8 @@ function previewEntries (bibtex, count = 2) {
         obj.entry += part.trimEnd()
         return all.concat([ [obj.kind, obj.entry ]])
       }
+
+      return all
     }, [])
 
   if (!Array.isArray(entries) || entries.length === 0) {
