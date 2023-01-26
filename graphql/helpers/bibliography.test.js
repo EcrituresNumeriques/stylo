@@ -6,6 +6,21 @@ describe('previewEntries', () => {
     expect(previewEntries(null)).toEqual('')
   })
 
+  test('ignore invalid parts', () => {
+    const bib = `An error occurred
+    @misc{dehut_en_2018,
+      type = {Billet},
+      title = {En finir avec {Word} ! {Pour} une analyse des enjeux relatifs aux traitements de texte et à leur utilisation}
+    }`
+
+    const expected = `    @misc{dehut_en_2018,
+      type = {Billet},
+      title = {En finir avec {Word} ! {Pour} une analyse des enjeux relatifs aux traitements de texte et à leur utilisation}
+    }`
+
+    expect(previewEntries(bib)).toEqual(expected)
+  })
+
   test('returns 2 different kinds when available', () => {
     const bib = `@article{noauthor_dibutade_nodate,
       title = {Dibutade},
