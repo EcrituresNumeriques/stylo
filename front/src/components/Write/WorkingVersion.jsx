@@ -32,11 +32,14 @@ const stateUiProps = {
 
 export function ArticleVersion ({ version }) {
   return <span>
-    {!version && <>working copy</>}
-    {version && <>
-      <span className={styles.versionLabel}>{version.message || 'No label'}</span>
-      <span className={styles.versionNumber}>{version.major}.{version.minor}</span>
-    </>}
+    {!version && <span>working copy</span>}
+    {version && version.message && <span>
+      <span className={styles.versionLabel}>{version.message}</span>
+      <span className={styles.versionNumber}>v{version.major}.{version.minor}</span>
+    </span>}
+    {version && !version.message && <span>
+      <span className={styles.versionNumber}>v{version.major}.{version.minor}</span>
+    </span>}
   </span>
 }
 
@@ -123,11 +126,11 @@ export default function WorkingVersion ({ articleInfos, live, selectedVersion, m
           <ul className={styles.byLine}>
             <li className={styles.owners}>by {articleOwnerAndContributors.join(', ')}</li>
             <li className={styles.version}>
-              <ArticleVersion version={selectedVersion}/>
+              <ArticleVersion version={live.version}/>
             </li>
-            <li className={styles.lastSaved}>
+            {!live.version && <li className={styles.lastSaved}>
               <ArticleSaveState state={workingArticle.state} updatedAt={workingArticle.updatedAt} stateMessage={workingArticle.stateMessage}/>
-            </li>
+            </li>}
           </ul>
         </div>
       </section>
