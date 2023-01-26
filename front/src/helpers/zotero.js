@@ -2,6 +2,45 @@ import LinkHeader from 'http-link-header'
 import { filter } from './bibtex'
 
 /**
+ * @typedef ZoteroCollection
+ * @property {ZoteroCollectionData} data
+ * @property {String} key
+ * @property {ZoteroLibrary} library
+ * @property {Object.<string, HTMLLink>} links
+ * @property {ZoteroMeta} meta
+ * @property {Number} version
+ */
+
+/**
+ * @typedef ZoteroCollectionData
+ * @property {String} key
+ * @property {String} name Name of the collection
+ * @property {String} parentCollection Parent collection key
+ * @property {Number} version
+ */
+
+/**
+ * @typedef ZoteroLibrary
+ * @property {Number} id
+ * @property {Object.<string, HTMLLink>} links
+ * @property {String} name Name of the library
+ * @property {String} type Enum of 'user' or 'group' (whom it belongs)
+ */
+
+/**
+ * @typedef ZoteroMeta
+ * @property {Number} numCollections
+ * @property {Number} numItems
+ */
+
+/**
+ * @typedef HTMLLink
+ * @property {String} href
+ * @property {String} type Mime-Type of the link
+ */
+
+
+/**
  * Get the next link from headers.
  * @param headers HTTP headers (from a response)
  * @returns {URL|null}
@@ -19,10 +58,10 @@ function getNextLink (headers) {
 
 /**
  *
- * @param url
- * @param key Zotero API key
- * @param agg
- * @returns {Promise<string[]>} - a list of JSON responses
+ * @param {URL} url
+ * @param {String} key Zotero API key
+ * @param {Object[]} agg
+ * @returns {Promise<string[]>} a list of JSON responses
  */
 async function fetchAllJSON (url, key, agg = []) {
   if (key) {
@@ -84,7 +123,7 @@ async function fetchAllBibTeX (url, key, agg = []) {
 }
 
 /**
- * @param url
+ * @param {String} url
  * @returns {Promise<string>} - a JSON response
  */
 function fetchJSON (url) {
@@ -92,7 +131,7 @@ function fetchJSON (url) {
 }
 
 /**
- * @param token Zotero API token
+ * @param {String} token Zotero API token
  * @returns {Promise<object>} - a JSON response (contains userID and key)
  */
 function fetchUserFromToken (token) {
@@ -100,9 +139,9 @@ function fetchUserFromToken (token) {
 }
 
 /**
- * @param userID
- * @param key Zotero API key
- * @returns {Promise<object[]>} - a list of Zotero collections
+ * @param {String} userID
+ * @param {String} key Zotero API key
+ * @returns {Promise<ZoteroCollection[]>} - a list of Zotero collections
  */
 async function fetchAllCollections ({ userID, key }) {
   // let collections = []
@@ -122,38 +161,29 @@ async function fetchAllCollections ({ userID, key }) {
   //     )
   //   )
   // }
-  const userCollections = (await fetchAllJSON(new URL(`https://api.zotero.org/users/${userID}/collections`), key)).flat()
+  const userCollections = await fetchUserCollections({ userID, key })
 
   return userCollections.concat(groupCollections)
 }
 
 /**
- * @param token
- * @returns {Promise<{}>}
+ * @param {String} token
+ * @returns {Promise<ZoteroCollection[]>}
  */
 export async function fetchAllCollectionsPerLibrary ({ token }) {
   const { userID, key } = await fetchUserFromToken(token)
-  const collections = await fetchAllCollections({ userID, key })
-  const result = {}
-  for (const collection of collections) {
-    const key = collection.library.type + '-' + collection.library.name
-    const lib = result[key] || []
-    lib.push(collection)
-    result[key] = lib
-  }
 
-  return result
+  return fetchAllCollections({ userID, key })
 }
 
 /**
  *
  * @param token
- * @returns {Promise<string>}
+ * @returns {Promise<ZoteroCollection[]>}
  */
-export async function fetchUserCollections ({ token }) {
-  const { userID, key } = await fetchUserFromToken(token)
-
-  return (await fetchAllJSON(new URL(`https://api.zotero.org/users/${userID}/collections`), key)).flat()
+export async function fetchUserCollections ({ userID, key }) {
+  return fetchAllJSON(new URL(`https://api.zotero.org/users/${userID}/collections`), key)
+    .then((all) => all.flat())
 }
 
 /**

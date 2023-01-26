@@ -1,17 +1,30 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styles from './field.module.scss'
 import buttonStyles from './button.module.scss'
 import { useCombobox } from 'downshift'
 import PropTypes from 'prop-types'
 import { ChevronDown, X } from 'react-feather'
 
-
 import Field from './Field.jsx'
 import clsx from 'clsx'
+import { groupItems } from './SelectCombobox.js'
+
+/**
+ * @typedef ComboboxItem
+ *
+ * @property {String} key
+ * @property {String} name
+ * @property {numbered} index
+ * @property {String=} section
+ */
 
 export default function Combobox ({ id, label, items, value: initialSelectedItem, onChange }) {
-  const [inputItems, setInputItems] = useState(items)
-  const selectedItem = items.find(({ key }) => key === initialSelectedItem)
+  const [inputItems, setInputItems] = useState([])
+  const selectedItem = useMemo(() => items.find(({ key }) => key === initialSelectedItem), [initialSelectedItem])
+  const groupedItems = useMemo(() => groupItems(inputItems), [inputItems])
+
+  // Refresh the items list if loading is async
+  useEffect(() => setInputItems(items), [items])
 
   const {
     isOpen,
@@ -26,7 +39,7 @@ export default function Combobox ({ id, label, items, value: initialSelectedItem
     getItemProps,
     inputValue,
   } = useCombobox({
-    items: inputItems,
+    items,
     initialSelectedItem: selectedItem,
     itemToString: ({ name }) => name,
     onSelectedItemChange: ({ selectedItem }) => onChange(selectedItem.key),
@@ -40,8 +53,6 @@ export default function Combobox ({ id, label, items, value: initialSelectedItem
         )
     },
   })
-
-  console.log({ inputValue })
 
   return (
     <div className={styles.combobox}>
@@ -69,15 +80,18 @@ export default function Combobox ({ id, label, items, value: initialSelectedItem
         </span>
       </div>
       <ul {...getMenuProps()} className={styles.comboboxResults}>
-        {isOpen &&
-          inputItems.map((item, index) => (
-            <li className={clsx(styles.comboboxItem, highlightedIndex === index && styles.comboboxHighlightedItem)}
-              key={item.key}
-              {...getItemProps({item, index})}
-            >
-              {item.name}
-            </li>
-          ))}
+        {isOpen && groupedItems.map(([section, items]) => (
+          <ul className={styles.comboboxGroup} data-label={section} key={section}>
+            {items.map((item) => (
+              <li className={clsx(styles.comboboxItem, highlightedIndex === item.index && styles.comboboxHighlightedItem)}
+                key={item.key}
+                {...getItemProps({item, index: item.index})}
+              >
+                {item.name}
+              </li>
+            ))}
+          </ul>
+        ))}
       </ul>
     </div>
   )
