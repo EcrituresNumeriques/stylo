@@ -1,5 +1,5 @@
 const { User, Query: UserQuery, Mutation: UserMutation } = require('./userResolver');
-const { Article, Query: ArticleQuery, Mutation: ArticleMutation } = require('./articleResolver')
+const { Article, WorkingVersion, Query: ArticleQuery, Mutation: ArticleMutation } = require('./articleResolver')
 const { Tag, Query: TagQuery, Mutation: TagMutation } = require('./tagResolver')
 const { Version, Query: VersionQuery, Mutation: VersionMutation } = require('./versionResolver')
 const { Workspace, Query: WorkspaceQuery, Mutation: WorkspaceMutation } = require('./workspaceResolver')
@@ -20,6 +20,7 @@ module.exports = {
   Tag,
   Version,
   InstanceUsageStats,
+  WorkingVersion,
   Workspace,
   // Root queries & mutations
   Query: {

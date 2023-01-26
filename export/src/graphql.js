@@ -35,7 +35,7 @@ async function getArticleById (articleId) {
 
       workingVersion {
         bib
-        yamlReformated
+        yaml ({ strip_markdown: true })
         md
       }
     }
@@ -58,7 +58,7 @@ async function getVersionById (versionId) {
     version (version:$versionId) {
       _id
       bib
-      yamlReformated
+      yaml ({ strip_markdown: true })
       md
     }
   }`
@@ -88,13 +88,13 @@ async function getBookById (bookId) {
 
           md
           bib
-          yamlReformated
+          yaml ({ strip_markdown: true })
         }
 
         workingVersion {
           md
           bib
-          yamlReformated
+          yaml ({ strip_markdown: true })
         }
       }
     }

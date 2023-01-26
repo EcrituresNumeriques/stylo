@@ -19,13 +19,13 @@ test('should create a book export context', () => {
         {
           bib: 'Bibliography of chapter 1, first version',
           md: 'Content of chapter 1, first version',
-          yamlReformated: 'metadata: "Metadata of chapter 1, first version"'
+          yaml: 'metadata: "Metadata of chapter 1, first version"'
         },
       ],
       workingVersion: {
         bib: 'Bibliography of chapter 1, working version',
         md: 'Content of chapter 1, working version',
-        yamlReformated: 'metadata: "Metadata of chapter 1, working version"'
+        yaml: 'metadata: "Metadata of chapter 1, working version"'
       }
     },
     {
@@ -57,7 +57,7 @@ test('should create a book export context', () => {
   expect(bookExportContext).toStrictEqual({
     bib: 'Bibliography of chapter 1, first version\nBibliography of chapter 2, second version\nBibliography of chapter 3, working version\nBibliography of the poem, working version',
     md: 'Content of chapter 1, first version\n\nContent of chapter 2, second version\n\nContent of chapter 3, working version\n\nContent of the poem, working version',
-    yamlReformated: 'metadata: "Metadata of chapter 1, first version"',
+    yaml: 'metadata: "Metadata of chapter 1, first version"',
     id: '1234',
     title: 'Alice\'s Adventures in Wonderland'
   })

@@ -54,8 +54,7 @@ type WorkingVersion {
   bib: String
   bibPreview: String
   md: String
-  yaml: String
-  yamlReformated: String
+  yaml (options: YamlFormattingInput): String
 }
 
 type Version {
@@ -65,8 +64,7 @@ type Version {
   revision: Int
   md: String
   sommaire: String
-  yaml: String
-  yamlReformated: String
+  yaml (options: YamlFormattingInput): String
   bib: String
   bibPreview: String
   message: String
@@ -159,6 +157,10 @@ input WorkingVersionInput {
   bib: String,
   md: String,
   yaml: String,
+}
+
+input YamlFormattingInput {
+  strip_markdown: Boolean
 }
 
 input NewUserInput {
