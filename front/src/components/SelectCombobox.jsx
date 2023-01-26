@@ -47,7 +47,7 @@ export default function Combobox ({ id, label, items, value: initialSelectedItem
     <div className={styles.combobox}>
       <label {...getLabelProps()}>{label}</label>
       <div {...getComboboxProps()} className={styles.comboboxController}>
-        <Field {...getInputProps({ type: 'search', autoComplete: "disabled" })} className={styles.autocompleteField} />
+        <Field {...getInputProps({ type: 'search', autoComplete: "disabled", onFocus: () => !isOpen && openMenu() })} className={styles.autocompleteField} />
         <span className={styles.comboboxControllerActions}>
           <button
             type="button"
