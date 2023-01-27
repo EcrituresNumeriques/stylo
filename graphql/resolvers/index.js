@@ -3,6 +3,7 @@ const { Article, WorkingVersion, Query: ArticleQuery, Mutation: ArticleMutation 
 const { Tag, Query: TagQuery, Mutation: TagMutation } = require('./tagResolver')
 const { Version, Query: VersionQuery, Mutation: VersionMutation } = require('./versionResolver')
 const { Workspace, Query: WorkspaceQuery, Mutation: WorkspaceMutation } = require('./workspaceResolver')
+const { Query: CorpusQuery, Mutation: CorpusMutation } = require('./corpusResolver')
 const { Mutation: AuthMutation } = require('./authResolver')
 const { InstanceUsageStats, Query: StatsQuery } = require('./statsResolver')
 const { EmailAddressResolver, JWTResolver, HexColorCodeResolver, DateTimeResolver } = require('graphql-scalars')
@@ -30,6 +31,7 @@ module.exports = {
     ...VersionQuery,
     ...StatsQuery,
     ...WorkspaceQuery,
+    ...CorpusQuery,
   },
   Mutation: {
     ...UserMutation,
@@ -38,5 +40,6 @@ module.exports = {
     ...VersionMutation,
     ...AuthMutation,
     ...WorkspaceMutation,
+    ...CorpusMutation,
   }
 }

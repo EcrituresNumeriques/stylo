@@ -29,7 +29,7 @@ class WorkspaceArticle {
     this.article = article
   }
 
-  remove () {
+  async remove () {
     if (this.article) {
       this.workspace.articles.pull({ _id: this.article._id })
       return this.workspace.save()
@@ -45,7 +45,7 @@ class WorkspaceMember {
     this.member = member
   }
 
-  remove () {
+  async remove () {
     if (this.member) {
       this.workspace.members.pull({ _id: this.member._id })
       return this.workspace.save()
@@ -97,7 +97,7 @@ module.exports = {
 
   Workspace: {
     async article (workspace, { articleId }) {
-      const article = workspace.articles.find((id) => String(id) === articleId)
+      const article = workspace.articles.find((a) => String(a._id) === articleId)
       return new WorkspaceArticle(workspace, article)
     },
 
