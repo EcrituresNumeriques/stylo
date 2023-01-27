@@ -17,7 +17,11 @@ function Biblio ({ article, readOnly }) {
   const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandBiblio' }), [])
 
   const [modal, setModal] = useState(false)
-  const openModal = useCallback(() => setModal(true), [])
+  const openModal = useCallback((event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setModal(true)
+  }, [])
   const closeModal = useCallback(() => setModal(false), [])
 
   return (

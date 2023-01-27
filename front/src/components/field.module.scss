@@ -127,3 +127,67 @@
     }
   }
 }
+
+.combobox {
+  position: relative;
+
+  > label {
+    cursor: pointer;
+  }
+}
+
+.comboboxControllerActions {
+  position: absolute;
+  right: 0;
+  /* (with label) .field label font-size + .field label margin-bottom + .field padding-top + .field border-top-width */
+  top: calc(1rem + 0.5rem + 0.2rem + 1px);
+}
+  /* (without label) .field border-top-width  */
+  .combobox > label:empty ~ * .comboboxControllerActions {
+    top: 1px;
+  }
+
+.comboboxGroup {
+  /*
+    because we cannot add padding on generated content,
+    we add to the container (padding-top) and the first child (margin-top)
+  */
+  &[data-label]:not([data-label=""]) {
+    padding-top: 1em;
+
+    &:before {
+      content: attr(data-label);
+      height: 2em;
+      font-weight: bold;
+      padding: 0 .5em;
+    }
+
+    > li {
+      &:first-of-type {
+        margin-top: .5em;
+      }
+
+      padding-left: 1.5em;
+    }
+  }
+}
+
+.comboboxResults:not(:empty) {
+  background-color: #fff;
+  border: 1px solid black;
+  padding: 0;
+  position: absolute;
+  margin-top: calc(-1rem + 1px); /* (with label) same as form .field + border-bottom-width */
+  width: 100%;
+  z-index: 900;
+}
+  .combobox > label:empty ~ .comboboxResults:not(:empty) {
+    margin-top: calc(-0.5rem + 1px); /* (no label) same as .field margin-bottom + border-bottom-width */
+  }
+  .comboboxItem {
+    cursor: pointer;
+    padding: .5em 1em;
+  }
+  .comboboxHighlightedItem {
+    background-color: rgba(0, 0, 0, 0.2);
+  }

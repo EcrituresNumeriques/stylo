@@ -6,6 +6,7 @@ import useStyloExport from '../hooks/stylo-export.js'
 import { slugify } from '../hooks/pandoc.js'
 
 import Select from './Select'
+import Combobox from './SelectCombobox.jsx'
 import Loading from './Loading'
 import styles from './export.module.scss'
 import buttonStyles from "./button.module.scss";
@@ -47,9 +48,7 @@ export default function Export ({ bookId, articleVersionId, articleId, bib, name
         </Select>}
 
         {(articleId && bib && !exportStyles.length) && <Loading inline size="24" />}
-        {(articleId && bib && exportStyles.length) && <Select id="export-styles" label="Bibliography style" value={csl} onChange={setCsl}>
-          {exportStyles.map(({ title, name }) => <option value={name} key={name}>{ title }</option>)}
-        </Select>}
+        {(articleId && bib && exportStyles.length) && <Combobox id="export-styles" label="Bibliography style" items={exportStyles} value={csl} onChange={setCsl} />}
         {articleId && bib && <div className={styles.bibliographyPreview}>
           {isLoading && <Loading inline size="24" />}
           {!isLoading && <div dangerouslySetInnerHTML={{ __html: exportStylesPreview }} />}

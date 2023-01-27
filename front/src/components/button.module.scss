@@ -31,6 +31,10 @@
   color: #000;
   border: 1px solid #000;
   width: 100%;
+
+  &:disabled {
+    @extend .isDisabled;
+  }
 }
 
 @mixin selectFieldContainer {
@@ -150,6 +154,8 @@ a.button:not(.primary), a.icon:not(.primary) {
 .isDisabled {
   cursor: not-allowed !important;
   pointer-events: none;
+
+  color: rgb(170, 170, 170);
 }
 
 .primaryDisabled {

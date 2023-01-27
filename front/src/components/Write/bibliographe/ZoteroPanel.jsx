@@ -9,37 +9,15 @@ import { linkToZotero as query } from '../../Article.graphql'
 
 import Button from '../../Button'
 import Field from '../../Field'
-import Select from '../../Select'
+import Combobox from '../../SelectCombobox.jsx'
 
 import styles from './bibliographe.module.scss'
 import { Rss, Clipboard } from 'react-feather'
 
-function CollectionSelect ({ isSaving, collections, onChange }) {
-  return <Select name="collectionHref" onChange={onChange}>
-    <option value="">
-      {isSaving ? 'Fetching collections…' : 'Pick a collection'}
-    </option>
-
-    {Object.entries(collections).map(([, collections]) => (
-      <optgroup
-        key={collections[0].key}
-        label={`${collections[0].library.name} (${collections[0].library.type})`}
-      >
-        {collections.map(({ data, meta, links }) => (
-          <option key={data.key} value={links.self.href}>
-            {data.name} ({meta.numItems} items)
-          </option>
-        ))}
-      </optgroup>
-    ))}
-  </Select>
-}
-
-CollectionSelect.propTypes = {
-  isSaving: PropTypes.bool,
-  collections: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired
-}
+/**
+ * @typedef {import('../../SelectCombobox').ComboboxItem} ComboboxItem
+ * @typedef {import('../../../helpers/zotero').ZoteroCollection} ZoteroCollection
+ */
 
 export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink, onChange }) {
   const zoteroToken = useSelector(state => state.activeUser.zoteroToken)
@@ -48,15 +26,26 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
 
   const [zoteroLink, setZoteroLink] = useState(initialZoteroLink)
   const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)
-  const [zoteroCollections, setZoteroCollections] = useState({})
+  /**
+   * @type {Array.<ZoteroCollection[], function(ZoteroCollection[]): undefined>}
+   */
+  const [zoteroCollections, setZoteroCollections] = useState([])
 
   const [isSaving, setSaving] = useState(false)
   const runQuery = useGraphQL()
   const refreshProfile = useProfile()
 
   const handleZoteroLinkChange = useCallback((event) => setZoteroLink(event.target.value), [])
-  const handleZoteroCollectionChange = useCallback((event) => setZoteroCollectionHref(event.target.value), [])
+  const handleZoteroCollectionChange = useCallback((href) => setZoteroCollectionHref(href), [])
   const hasLinkChanged = useMemo(() => initialZoteroLink || initialZoteroLink !== zoteroLink, [zoteroLink])
+  const groupedZoteroCollections = useMemo(() => {
+    /** @type {ComboboxValue[]} */
+    return zoteroCollections.map(({ data, meta, library, links }) => ({
+      key: links.self.href,
+      name: `${data.name} (${meta.numItems} items)`,
+      section: `${library.name} (${library.type})`
+    }))
+  }, [zoteroCollections])
 
   const persistZoteroLink = useCallback(async (zoteroLink) => {
     if (!zoteroLink === initialZoteroLink) {
@@ -101,16 +90,15 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
 
   const handleCollectionFormSubmission = useCallback(async (event) => {
     event.preventDefault()
-    const collectionHref = (new FormData(event.target)).get('collectionHref')
     setSaving(true)
 
     await importCollection({
       token: zoteroToken,
-      collectionHref,
+      collectionHref: zoteroCollectionHref,
     })
 
     setSaving(false)
-  }, [])
+  }, [zoteroCollectionHref])
 
   const importCollection = useCallback(async ({ token, collectionHref }) => {
     setSaving(true)
@@ -150,7 +138,7 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
   return <div className={styles.zotero}>
     <form className={styles.section} disabled={isSaving} onSubmit={handleCollectionFormSubmission}>
       <h3><Rss />Import a collection from my account</h3>
-      {zoteroToken && <CollectionSelect isSaving={isSaving} collections={zoteroCollections} onChange={handleZoteroCollectionChange} />}
+      {zoteroToken && <Combobox label="" items={groupedZoteroCollections} value={zoteroCollectionHref} onChange={handleZoteroCollectionChange} />}
       {zoteroToken && (
         <Button type="submit" primary disabled={!zoteroCollectionHref || isSaving}>
           {isSaving

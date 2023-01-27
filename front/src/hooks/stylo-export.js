@@ -18,7 +18,7 @@ export default function useStyloExport ({ csl: bibliography_style, bib: excerpt 
   const { data: exportStyles } = useSWR(`${pandocExportEndpoint}/api/available_bibliographic_styles`, fetcher, { fallbackData: [] })
   const { data: exportStylesPreview, isLoading } = useSWR([`${pandocExportEndpoint}/api/bibliography_preview`, { excerpt , bibliography_style}], postFetcher, { fallbackData: '' })
 
-  return { exportFormats, exportStyles, exportStylesPreview, isLoading }
+  return { exportFormats, exportStyles: exportStyles.map(({ title: name, name: key }) => ({ key, name })), exportStylesPreview, isLoading }
 }
 
 export function useStyloExportPreview ({ md_content, bib_content, yaml_content }) {
