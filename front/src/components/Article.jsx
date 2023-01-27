@@ -24,7 +24,7 @@ import { renameArticle } from './Article.graphql'
 import { useGraphQL } from '../helpers/graphQL'
 import { useCurrentUser } from '../contexts/CurrentUser'
 
-export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, masterTags }) {
+export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, tags: userTags }) {
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -37,8 +37,8 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
   const activeUser = useCurrentUser()
 
   const isArticleOwner = activeUser._id === article.owner._id
-
   const contributors = article.contributors.filter(c => c.user._id !== article.owner._id)
+  const handleTagUpdate = useCallback(tags => setTags(tags), [])
 
   const toggleExpansion = useCallback((event) => {
     if (!event.key || [' ', 'Enter'].includes(event.key)) {
@@ -186,20 +186,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
 
           <h4>Tags</h4>
           <div className={styles.editTags}>
-            <ArticleTags
-              article={article}
-              masterTags={masterTags}
-              stateTags={tags.map((t) => {
-                t.selected = true
-                return t
-              })}
-              setTags={(tags) => {
-                setTags(tags)
-                if (updateTagsHandler) {
-                  updateTagsHandler(article._id, tags)
-                }
-              }}
-            />
+            <ArticleTags articleId={article._id} tags={tags} userTags={userTags} onChange={handleTagUpdate} />
           </div>
         </>
       )}

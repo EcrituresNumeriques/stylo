@@ -167,7 +167,7 @@ export default function Articles () {
         .map((article) => (
           <Article
             key={`article-${article._id}`}
-            masterTags={tags}
+            tags={tags}
             article={article}
             setNeedReload={handleReload}
             updateTagsHandler={handleUpdateTags}

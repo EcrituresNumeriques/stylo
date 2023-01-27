@@ -1,59 +1,47 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useGraphQL } from '../helpers/graphQL'
 
 import ArticleTag from './Tag'
 
 import { addTags, removeTags } from './Articles.graphql'
 import { useCurrentUser } from '../contexts/CurrentUser'
+import { useMemo } from 'react'
 
-export default function ArticleTags ({ article, masterTags, stateTags, setTags }) {
+export default function ArticleTags ({ articleId, onChange, tags, userTags }) {
   const runQuery = useGraphQL()
-  const articleId = article._id
   const activeUser = useCurrentUser()
-  const isArticleOwner = activeUser._id === article.owner._id
+  const selectedTags = tags.map(({ _id }) => _id)
 
-  const addToTags = useCallback(async (tag) => {
-    setTags([...stateTags, { ...tag, selected: true }])
-    const variables = {
-      article: articleId,
-      tags: [tag._id],
-      user: activeUser._id,
-    }
-    await runQuery({ query: addTags, variables })
-  }, [stateTags])
+  const userTagsIds = useMemo(() => userTags.map(({ _id }) => _id), [userTags])
+  const remoteTags = useMemo(() => tags.filter(({ _id }) => userTagsIds.includes(_id) === false), [tags])
+  const handleClick = useCallback(async (event) => {
+    const [id, checked] = [event.target.value, event.target.checked]
+    const variables = { article: articleId, tags: [id], user: activeUser._id }
 
-  const rmFromTags = useCallback(async (id) => {
-    setTags(stateTags.filter((t) => t._id !== id))
-    const variables = {
-      article: articleId,
-      tags: [id],
-      user: activeUser._id,
-    }
-    await runQuery({ query: removeTags, variables })
-  }, [stateTags])
+    const [query, updatedSelectedTags] = checked
+      ? [addTags, [...selectedTags, id]]
+      : [removeTags, selectedTags.filter(v => v !== id)]
+
+    await runQuery({ query, variables })
+    const allTags = [].concat(tags, userTags)
+
+    // Bubble up article Tag objects replacements
+    onChange(updatedSelectedTags.map(id => allTags.find(({ _id }) => _id === id)))
+  }, [selectedTags])
 
   return (
     <ul>
-      {stateTags.map((tag) => (
+      {userTags.map((tag) => (
         <li key={`article-${articleId}-${tag._id}`}>
-          <ArticleTag tag={tag}
-               name={`articleTag-${tag._id}`}
-               onClick={() => rmFromTags(tag._id)}
-               disableAction={activeUser._id !== tag.owner}
-          />
+          <ArticleTag tag={tag} selected={selectedTags.includes(tag._id)} onClick={handleClick} />
         </li>
       ))}
 
-      {isArticleOwner && masterTags
-        .filter((t) => !stateTags.map((u) => u._id).includes(t._id))
+      {remoteTags
         .map((tag) => (
-          <li
-            key={`article-${articleId}-${tag._id}`}
-          >
-            <ArticleTag tag={tag}
-                 name={`articleTag-${tag._id}`}
-                 onClick={() => addToTags(tag)}
-                 disableAction={activeUser._id !== tag.owner}
+          <li key={`article-${articleId}-${tag._id}`}>
+            <ArticleTag tag={tag} selected={selectedTags.includes(tag._id)}
+              disableAction={true}
             />
           </li>
         ))}
