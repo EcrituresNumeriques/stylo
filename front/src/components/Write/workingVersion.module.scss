@@ -41,16 +41,20 @@
   margin: 0 0.5em;
 }
 
-.version:after {
+.version:not(:last-child):after {
   content: "-";
   margin: 0 0.5em;
 }
 
-.versionNumber:before {
+.versionLabel {
+  margin-right: .25em;
+}
+
+.versionLabel + .versionNumber:before {
   content: '('
 }
 
-.versionNumber:after {
+.versionLabel + .versionNumber:after {
   content: ')'
 }
 
@@ -60,7 +64,7 @@
   color: #4a4a4a;
   font-size: 0.75rem;
   margin-right: 0.5rem;
-  margin-left: 1rem;
+  margin-left: calc(24px + (0.3 * 1.65rem)); /* .icon width + (.title font-size * icon margin-right) */
   margin-bottom: 0.75em;
 }
 

@@ -1,3 +1,4 @@
+import React from 'react'
 import MonacoTextEditor from './TextEditor'
 import MonacoDiffEditor from './DiffEditor'
 

@@ -2,11 +2,11 @@ import React from 'react'
 import { HelpCircle, LogOut } from 'react-feather'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Route, Switch } from 'react-router-dom'
+import logoContent from '../../public/images/logo.svg?inline'
 
 import Button from './Button'
 
 import styles from './header.module.scss'
-import { iconName } from "../helpers/bibtex.js";
 
 function Header () {
   const dispatch = useDispatch()
@@ -41,7 +41,7 @@ function Header () {
       <header className={styles.headerContainer}>
         <section className={styles.header}>
           <h1 className={styles.logo}>
-            <Link to="/"><img src={`/images/logo.svg`} alt="Stylo" title="Stylo"/></Link>
+            <Link to="/"><img src={logoContent} alt="Stylo" title="Stylo"/></Link>
           </h1>
           <nav>
             <ul className={styles.menuLinks}>
