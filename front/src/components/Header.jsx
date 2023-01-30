@@ -36,7 +36,7 @@ function Header () {
   )
 
   return (<Switch>
-    <Route path="*/annotate" />
+    <Route path="*/preview" />
     <Route path="*">
       <header className={styles.headerContainer}>
         <section className={styles.header}>

@@ -81,7 +81,7 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
           className={[buttonStyles.icon, buttonStyles.button, articles.length === 0 ? buttonStyles.isDisabled : ''].filter(d => d).join(' ')}
           title="Preview"
           target="_blank"
-          to={`/books/${_id}/annotate`}
+          to={`/books/${_id}/preview`}
         >
           <MessageSquare />
         </Link>

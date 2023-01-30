@@ -110,11 +110,11 @@ render(
               <Credentials />
             </PrivateRoute>
             {/* Annotate a Book */}
-            <Route path={[`/books/:bookId/annotate`]} exact>
+            <Route path={[`/books/:bookId/preview`]} exact>
               <ArticlePreview />
             </Route>
             {/* Annotate an article or its version */}
-            <Route path={[`/article/:id/version/:version/annotate`, `/article/:id/annotate`]} exact>
+            <Route path={[`/article/:id/version/:version/preview`, `/article/:id/preview`]} exact>
               <ArticlePreview />
             </Route>
             {/* Write and Compare */}

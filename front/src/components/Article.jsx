@@ -137,7 +137,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
           <Edit3 />
         </Link>
 
-        <Link title="Annotate with Stylo users and other people (open a new window)" target="_blank" className={buttonStyles.icon} to={`/article/${article._id}/annotate`}>
+        <Link title="Preview (open a new window)" target="_blank" className={buttonStyles.icon} to={`/article/${article._id}/preview`}>
           <Eye />
         </Link>
       </aside>

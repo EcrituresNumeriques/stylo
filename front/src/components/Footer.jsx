@@ -10,7 +10,7 @@ function Footer () {
   const toggleConsent = useCallback(() => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'trackingConsent' }), [])
 
   return (<Switch>
-    <Route path="*/annotate" />
+    <Route path="*/preview" />
     <Route path="*">
       <footer className={styles.footerContainer}>
         <ul className={styles.footerList}>

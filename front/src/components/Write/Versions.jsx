@@ -104,12 +104,12 @@ function Version ({ articleId, articleName: name, compareTo, onExport, readOnly,
       )}
       <li>
         <Link
-          to={`/article/${articleId}/version/${v._id}/annotate`}
+          to={`/article/${articleId}/version/${v._id}/preview`}
           target="_blank"
           rel="noopener noreferrer"
           className={clsx(buttonStyles.button, buttonStyles.secondary)}
         >
-          Annotate
+          Preview
         </Link>
       </li>
       <li>

@@ -114,7 +114,7 @@ export default function WorkingVersion ({ articleInfos, live, selectedVersion, m
             </Button>
           </li>
           <li>
-            <Link to={`/article/${articleInfos._id}/annotate`} title="Annotate with Stylo users and other people (open a new window)" target="_blank" rel="noopener noreferrer"
+            <Link to={`/article/${articleInfos._id}/preview`} title="Preview (open a new window)" target="_blank" rel="noopener noreferrer"
                   className={buttonStyles.icon}>
               <Eye/>
             </Link>
