@@ -10,20 +10,28 @@ export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
   const articleBibTeXEntries = useSelector(state => state.workingArticle.bibliography.entries, shallowEqual)
   const editorCursorPosition = useSelector(state => state.editorCursorPosition, shallowEqual)
   const editorRef = useRef(null)
+  /* https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.IStandaloneEditorConstructionOptions.html */
   const options = useMemo(() => ({
     automaticLayout: true,
-    readOnly: readOnly,
     contextmenu: !readOnly,
-    wordBasedSuggestions: false,
-    overviewRulerLanes: 0,
     hideCursorInOverviewRuler: true,
-    overviewRulerBorder: false,
-    scrollBeyondLastLine: false,
-    wordWrap: 'on',
-    wrappingIndent: 'none',
+    // inlayHints: {
+    //   enabled: false
+    // },
     minimap: {
       enabled: false
-    }
+    },
+    overviewRulerBorder: false,
+    overviewRulerLanes: 0,
+    readOnly: readOnly,
+    scrollBeyondLastLine: false,
+    unicodeHighlight: {
+      ambiguousCharacters: false,
+      invisibleCharacters: true,
+    },
+    wordBasedSuggestions: false,
+    wordWrap: 'on',
+    wrappingIndent: 'none'
   }), [readOnly])
 
   useEffect(() => {
