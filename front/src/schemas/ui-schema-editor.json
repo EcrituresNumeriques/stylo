@@ -45,10 +45,6 @@
       "fields": ["funder"]
     },
     {
-      "title": "Translated title",
-      "fields": ["translatedTitle"]
-    },
-    {
       "fields": [
         "dossier",
         "issueDirectors",
