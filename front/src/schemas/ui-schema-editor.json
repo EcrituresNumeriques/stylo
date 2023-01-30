@@ -45,6 +45,10 @@
       "fields": ["funder"]
     },
     {
+      "title": "Translated title",
+      "fields": ["translatedTitle"]
+    },
+    {
       "fields": [
         "dossier",
         "issueDirectors",
@@ -189,7 +193,6 @@
     "ui:title": "Transcribers"
   },
   "translatedTitle": {
-    "ui:title": "Translated title",
     "ui:add-item-title": "Add a title in another language",
     "ui:remove-item-title": "Supprimer",
     "items": {
