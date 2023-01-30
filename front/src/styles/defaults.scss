@@ -58,6 +58,9 @@
 .details {
   > button {
     @extend .clickable;
+    display: flex;
+    align-items: center;
+    gap: .25rem;
     padding: .5rem 0.75rem;
     transition: background-color 0.5s ease;
     border:solid 1px currentColor;
@@ -69,7 +72,6 @@
 
     svg {
       height: 1.5em;
-      vertical-align: bottom;
       width: 1.5em;
     }
   }
