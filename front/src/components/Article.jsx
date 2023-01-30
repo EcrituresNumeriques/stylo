@@ -17,7 +17,7 @@ import etv from '../helpers/eventTargetValue'
 
 import Field from './Field'
 import Button from './Button'
-import { Check, ChevronDown, ChevronRight, Copy, Edit3, MessageSquare, Printer, Share2, Trash } from 'react-feather'
+import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Share2, Trash } from 'react-feather'
 
 import { duplicateArticle } from './Acquintances.graphql'
 import { renameArticle } from './Article.graphql'
@@ -125,10 +125,6 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
           <Copy />
         </Button>
 
-        <Link title="Annotate with Stylo users and other people (open a new window)" target="_blank" className={buttonStyles.icon} to={`/article/${article._id}/annotate`}>
-          <MessageSquare />
-        </Link>
-
         {<Button title="Share with Stylo users" icon={true} onClick={() => setSharing(true)}>
           <Share2 />
         </Button>}
@@ -139,6 +135,10 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
 
         <Link title="Edit article" className={buttonStyles.primary} to={`/article/${article._id}`}>
           <Edit3 />
+        </Link>
+
+        <Link title="Annotate with Stylo users and other people (open a new window)" target="_blank" className={buttonStyles.icon} to={`/article/${article._id}/annotate`}>
+          <Eye />
         </Link>
       </aside>
 

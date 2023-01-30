@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
-import { AlertCircle, AlignLeft, Check, Edit3, Eye, Loader, MessageSquare, Printer } from 'react-feather'
+import { AlertCircle, AlignLeft, Check, Edit3, Eye, Loader, Printer } from 'react-feather'
 
 import styles from './workingVersion.module.scss'
 import formatTimeAgo from '../../helpers/formatTimeAgo'
@@ -116,7 +116,7 @@ export default function WorkingVersion ({ articleInfos, live, selectedVersion, m
           <li>
             <Link to={`/article/${articleInfos._id}/annotate`} title="Annotate with Stylo users and other people (open a new window)" target="_blank" rel="noopener noreferrer"
                   className={buttonStyles.icon}>
-              <MessageSquare/>
+              <Eye/>
             </Link>
           </li>
         </ul>
