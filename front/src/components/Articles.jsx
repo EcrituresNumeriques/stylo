@@ -80,24 +80,22 @@ export default function Articles () {
   }, [currentUserId, selectedTagIds])
 
   useEffect(() => {
-    if (needReload) {
-      //Self invoking async function
-      (async () => {
-        try {
-          const data = await runQuery({ query, variables: { user: currentUserId } })
+    //Self invoking async function
+    (async () => {
+      try {
+        const data = await runQuery({ query, variables: { user: currentUserId } })
 
-          //Need to sort by updatedAt desc
-          setArticles(data.articles)
-          setTags(data.tags)
-          setCurrentUser(data.user)
-          setUserAccounts(data.userGrantedAccess)
-          setIsLoading(false)
-          setNeedReload(false)
-        } catch (err) {
-          alert(err)
-        }
-      })()
-    }
+        //Need to sort by updatedAt desc
+        setArticles(data.articles)
+        setTags(data.tags)
+        setCurrentUser(data.user)
+        setUserAccounts(data.userGrantedAccess)
+        setIsLoading(false)
+        setNeedReload(false)
+      } catch (err) {
+        alert(err)
+      }
+    })()
   }, [needReload, currentUserId])
 
   return (<CurrentUserContext.Provider value={currentUser}>
