@@ -237,16 +237,16 @@ type Query {
   userGrantedAccess: [User]
 
   "Fetch tagged articles for a given user"
-  tags(user: ID!): [Tag]
+  tags(user: ID): [Tag]
 
   "Fetch tagged articles for a given user"
-  tag(tag: ID!): Tag
+  tag(user: ID, tag: ID!): Tag
 
   "Fetch a given user articles"
-  articles (user: ID!): [Article]
+  articles (user: ID): [Article]
 
   "Fetch article info [need to have acces to this article]"
-  article(article: ID!): Article
+  article(user: ID, article: ID!): Article
 
   "Fetch version info"
   version(version: ID!): Version
@@ -266,38 +266,38 @@ type Mutation {
   createUser(details: NewUserInput!): User!
 
   "Add an email to your acquintances [need to be authentificated as user]"
-  addAcquintance(email: EmailAddress!, user: ID!): User
+  addAcquintance(email: EmailAddress!, user: ID): User
 
   "Change password"
-  changePassword(old: String!, new: String!, user: ID!): User
+  changePassword(old: String!, new: String!, user: ID): User
 
   "Grant account access"
-  grantAccountAccess(user: ID!, to: ID!): User
+  grantAccountAccess(user: ID, to: ID!): User
 
   "Revoke account access"
-  revokeAccountAccess(user: ID!, to: ID!): User
+  revokeAccountAccess(user: ID, to: ID!): User
 
   "Change user information"
-  updateUser(user: ID!, details: UserProfileInput!): User
+  updateUser(user: ID, details: UserProfileInput!): User
 
   "Give access to a user using a password's email"
-  addCredential(email: EmailAddress!, user: ID!): User
+  addCredential(email: EmailAddress!, user: ID): User
   # If need to create new user: createUser + addCredential
 
   "Remove access to a user using a password's email (can't be the main email)"
-  removeCredential(email: EmailAddress!, user: ID!): User
+  removeCredential(email: EmailAddress!, user: ID): User
 
   "Create article for specified user [need to be authentificated as specified user]"
-  createArticle(title: String!, user: ID!, tags: [ID]): Article
+  createArticle(title: String!, user: ID, tags: [ID]): Article
 
   "Save a new version for article [need to be authentificated as specified user]"
-  saveVersion(version: VersionInput!, user: ID!): Version
+  saveVersion(version: VersionInput!, user: ID): Version
 
   "Create tag [need to be authentificated as specified user]"
   createTag(
     name: String!
     description: String
-    user: ID!
+    user: ID
     color: HexColorCode!
   ): Tag
 
@@ -307,20 +307,20 @@ type Mutation {
     description: String
     color: HexColorCode
     tag: ID!
-    user: ID!
+    user: ID
   ): Tag
 
   "Delete tag, and remove it from all related articles"
-  deleteTag(tag: ID!, user: ID!): Boolean
+  deleteTag(tag: ID!, user: ID): Boolean
 
   "add a user to an article"
-  shareArticle(article: ID!, to: ID!, user: ID!): Article
+  shareArticle(article: ID!, to: ID!, user: ID): Article
 
   "remove a user to an article"
-  unshareArticle(article: ID!, to: ID!, user: ID!): Article
+  unshareArticle(article: ID!, to: ID!, user: ID): Article
 
   "Duplicate the working version of an article, with someone, or yourself"
-  duplicateArticle(article: ID!, to: ID!, user: ID!): Article
+  duplicateArticle(article: ID!, to: ID!, user: ID): Article
 
   "Create a new workspace"
   createWorkspace(createWorkspaceInput: CreateWorkspaceInput!): Workspace
