@@ -29,13 +29,13 @@ function getGraphQLClient () {
 
 async function getArticleById (articleId) {
   const query = gql`query ($articleId: ID!) {
-    article (article:$articleId) {
+    article (article: $articleId) {
       _id
       title
 
       workingVersion {
         bib
-        yaml ({ strip_markdown: true })
+        yaml (options: { strip_markdown: true })
         md
       }
     }
@@ -58,7 +58,7 @@ async function getVersionById (versionId) {
     version (version:$versionId) {
       _id
       bib
-      yaml ({ strip_markdown: true })
+      yaml (options: { strip_markdown: true })
       md
     }
   }`
@@ -88,13 +88,13 @@ async function getBookById (bookId) {
 
           md
           bib
-          yaml ({ strip_markdown: true })
+          yaml (options: { strip_markdown: true })
         }
 
         workingVersion {
           md
           bib
-          yaml ({ strip_markdown: true })
+          yaml (options: { strip_markdown: true })
         }
       }
     }
