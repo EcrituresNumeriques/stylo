@@ -26,6 +26,7 @@ pandoc_export_endpoint='https://export.stylo.huma-num.fr'
 human_id_register_endpoint='https://humanid.huma-num.fr/register?service=https://stylo.huma-num.fr/authorization-code/callback'
 # Désactive l'URL canonical vers stylo.huma-num.fr car Hypthesis ne sait pas faire le lien
 export_canonical_base_url=''
+export_allowed_instance_base_urls='https://stylo.huma-num.fr'
 zotero_auth_callback_url='http://stylo.huma-num.fr/authorization-code/zotero/callback'
 # Configuration des analytics
 matomo_url='https://analyseweb.huma-num.fr/'

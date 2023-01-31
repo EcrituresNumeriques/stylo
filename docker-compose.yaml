@@ -72,14 +72,16 @@ services:
       - graphql-stylo
 
   export-gateway:
-    image: "davidbgk/stylo-export:0.0.15"
+    image: "davidbgk/stylo-export:0.0.16"
     env_file:
       - stylo.env
     environment:
       - SE_PANDOC_API_BASE_URL=${SE_PANDOC_API_BASE_URL:-http://pandoc-api:8000/latest/}
-      - SE_ALLOWED_INSTANCE_DOMAINS=${SE_ALLOWED_INSTANCE_DOMAINS:-localhost:3000,localhost:3030}
+      - SE_ALLOWED_INSTANCE_BASE_URLS=${SE_ALLOWED_INSTANCE_BASE_URLS:-http://localhost:3000 http://localhost:3030 http://host.docker.internal:3030}
     ports:
       - 127.0.0.1:3080:8001
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
 
   pandoc-api:
     image: "davidbgk/pandoc-api:0.0.12"
