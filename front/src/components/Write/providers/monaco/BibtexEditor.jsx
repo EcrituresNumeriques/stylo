@@ -1,7 +1,9 @@
 import React, { useCallback, useMemo } from 'react'
-import Editor from '@monaco-editor/react'
+import * as monaco from 'monaco-editor'
+import Editor, { loader } from '@monaco-editor/react'
 
 import styles from '../../../field.module.scss'
+loader.config({ monaco })
 
 // Taken from https://github.com/koka-lang/madoko/blob/master/styles/lang/bibtex.json
 import languageDefinition from './lang/bibtex.json'

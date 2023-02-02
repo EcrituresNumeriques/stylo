@@ -1,13 +1,22 @@
 import React, { useRef, useEffect, useMemo, useCallback } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 
-import Editor from '@monaco-editor/react'
+import * as monaco from 'monaco-editor'
+import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+import Editor, { loader } from '@monaco-editor/react'
 import { BibliographyCompletionProvider, registerReadOnlyTheme } from './support'
 
 import styles from './TextEditor.module.scss'
 
+self.MonacoEnvironment = {
+  getWorker(_, label) {
+    return new editorWorker()
+  }
+}
 
-export function MonacoTextEditorForwardRef(props, ref) {
+loader.config({ monaco })
+
+export function MonacoTextEditorForwardRef (props, ref) {
   return React.forwardRef((props, ref) => {
 
     const handleEditorDidMount = useCallback((editor) => {

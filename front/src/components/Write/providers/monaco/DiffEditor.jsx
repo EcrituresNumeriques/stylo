@@ -1,12 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import CompareSelect from "./CompareSelect";
 import styles from "./DiffEditor.module.scss";
-import { DiffEditor } from '@monaco-editor/react'
+import * as monaco from 'monaco-editor'
+import { DiffEditor, loader } from '@monaco-editor/react'
 import { useGraphQL } from '../../../../helpers/graphQL'
 import { compareVersion as query } from '../../Write.graphql'
 import { defineFlippedDiffTheme } from './support'
-import { useMemo } from 'react';
+loader.config({ monaco })
 
 export default function MonacoDiffEditor ({ text, compareTo, articleId, selectedVersion, currentArticleVersion, readOnly, onTextUpdate }) {
   const [modifiedText, setModifiedText] = useState('')
