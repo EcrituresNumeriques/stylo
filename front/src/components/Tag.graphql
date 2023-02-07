@@ -1,7 +1,5 @@
 mutation deleteTag($user: ID!, $tag: ID!) {
-  deleteTag(user: $user, tag: $tag) {
-    _id
-  }
+  deleteTag(user: $user, tag: $tag)
 }
 
 mutation updateTag(
