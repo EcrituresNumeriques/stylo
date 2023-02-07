@@ -84,6 +84,7 @@ export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
               {error !== '' && <p className={styles.error}>{error}</p>}
               <MonacoYamlEditor
                 height="calc(100vh - 280px)"
+                fontSize="14"
                 text={rawYaml}
                 onTextUpdate={handleRawYamlChange}
               />
