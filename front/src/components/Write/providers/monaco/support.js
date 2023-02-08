@@ -15,12 +15,13 @@ export function registerReadOnlyTheme (monaco) {
 }
 
 export function registerBibliographyCompletion (monaco, bibTeXEntries) {
-  function createBibliographyProposals (range, endCharacter) {
+  function createBibliographyProposals (range, ctx) {
+    const { startsWithSquareBracket, endCharacter } = ctx
     return bibTeXEntries.map((entry) => ({
       label: entry.key,
       kind: monaco.languages.CompletionItemKind.Reference,
       documentation: entry.title,
-      insertText: endCharacter === ']' ? `${entry.key} ` : `${entry.key}] `,
+      insertText: startsWithSquareBracket && endCharacter !== ']' ? `${entry.key}] ` : `${entry.key} `,
       range: range
     }))
   }
@@ -28,21 +29,18 @@ export function registerBibliographyCompletion (monaco, bibTeXEntries) {
   return monaco.languages.registerCompletionItemProvider('markdown', {
     triggerCharacters: '@',
     provideCompletionItems: function (model, position) {
-      var textUntilPosition = model.getValueInRange({
+      const textUntilPosition = model.getValueInRange({
         startLineNumber: position.lineNumber,
         endLineNumber: position.lineNumber,
         startColumn: 1,
         endColumn: position.column
       })
-      var match = textUntilPosition.match(
-        /(^|\W|\[)@[^{},~#%\s\\]*$/
-      )
-      console.log({match, textUntilPosition})
+      const match = textUntilPosition.match(/(?:^|\W)(?<square_bracket>\[?)@[^{},~#%\s\\]*$/)
       if (!match) {
         return { suggestions: [] }
       }
-      var word = model.getWordUntilPosition(position)
-      var range = {
+      const word = model.getWordUntilPosition(position)
+      const range = {
         startLineNumber: position.lineNumber,
         endLineNumber: position.lineNumber,
         startColumn: word.startColumn,
@@ -54,8 +52,9 @@ export function registerBibliographyCompletion (monaco, bibTeXEntries) {
         startColumn: position.column,
         endColumn: position.column + 1
       })
+      const startsWithSquareBracket = match.groups.square_bracket === '['
       return {
-        suggestions: createBibliographyProposals(range, endCharacter)
+        suggestions: createBibliographyProposals(range, { startsWithSquareBracket, endCharacter })
       }
     }
   })
