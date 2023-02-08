@@ -14,6 +14,7 @@ export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
     automaticLayout: true,
     readOnly: readOnly,
     contextmenu: !readOnly,
+    autoClosingBrackets: 'never',
     wordBasedSuggestions: false,
     overviewRulerLanes: 0,
     hideCursorInOverviewRuler: true,

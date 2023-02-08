@@ -15,12 +15,12 @@ export function registerReadOnlyTheme (monaco) {
 }
 
 export function registerBibliographyCompletion (monaco, bibTeXEntries) {
-  function createBibliographyProposals (range) {
+  function createBibliographyProposals (range, endCharacter) {
     return bibTeXEntries.map((entry) => ({
       label: entry.key,
       kind: monaco.languages.CompletionItemKind.Reference,
       documentation: entry.title,
-      insertText: entry.key,
+      insertText: endCharacter === ']' ? `${entry.key} ` : `${entry.key}] `,
       range: range
     }))
   }
@@ -28,16 +28,16 @@ export function registerBibliographyCompletion (monaco, bibTeXEntries) {
   return monaco.languages.registerCompletionItemProvider('markdown', {
     triggerCharacters: '@',
     provideCompletionItems: function (model, position) {
-      // find out if we are completing a property in the 'dependencies' object.
       var textUntilPosition = model.getValueInRange({
-        startLineNumber: 1,
-        startColumn: 1,
+        startLineNumber: position.lineNumber,
         endLineNumber: position.lineNumber,
+        startColumn: 1,
         endColumn: position.column
       })
       var match = textUntilPosition.match(
-        /\[@/
+        /(^|\W|\[)@[^{},~#%\s\\]*$/
       )
+      console.log({match, textUntilPosition})
       if (!match) {
         return { suggestions: [] }
       }
@@ -48,9 +48,14 @@ export function registerBibliographyCompletion (monaco, bibTeXEntries) {
         startColumn: word.startColumn,
         endColumn: word.endColumn
       }
-
+      const endCharacter = model.getValueInRange({
+        startLineNumber: position.lineNumber,
+        endLineNumber: position.lineNumber,
+        startColumn: position.column,
+        endColumn: position.column + 1
+      })
       return {
-        suggestions: createBibliographyProposals(range)
+        suggestions: createBibliographyProposals(range, endCharacter)
       }
     }
   })
