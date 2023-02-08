@@ -1,0 +1,74 @@
+.container {
+  position: relative;
+}
+
+.link {
+  display: flex;
+  cursor: pointer;
+  gap: 0.5em;
+}
+
+.documentationLink {
+  display: flex;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #606060;
+  margin-bottom: 1em;
+  font-weight: normal;
+  gap: 0.5em;
+  align-items: center;
+}
+
+.menu {
+  position: absolute;
+  top: 36px;
+  right: -16px;
+  background-color: black;
+  padding: 1em 1.25em;
+  z-index: 99;
+}
+
+.persona {
+  background: #e5e5e5;
+  border-radius: 50%;
+  width: 2em;
+  height: 2em;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userBlock {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.userCard {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  cursor: pointer;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  font-weight: normal;
+}
+
+.username {
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+.email {
+  font-weight: 200;
+  font-size: 0.85em;
+}
+
+.logoutButton {
+  height: 2em;
+  width: 2em;
+  display: flex;
+  align-items: center;
+}
