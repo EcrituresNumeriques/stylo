@@ -226,6 +226,39 @@ input CreateWorkspaceInput {
   color: String!
 }
 
+type CorpusArticle {
+  corpus: Corpus!
+  article: Article
+
+  # mutation
+  remove: Corpus!
+  move(order: Int): Corpus
+}
+
+type Corpus {
+  _id: String!
+  name: String!
+  metadata: String
+  workspace: String
+  articles: [Article!]!
+  creator: User!
+  createdAt: String
+  updatedAt: String
+
+  article(articleId: ID!): CorpusArticle
+  
+  # mutations
+  addArticle(articleId: ID!): Corpus
+  rename(name: String!): Corpus
+  updateMetadata(metadata: String!): Corpus
+}
+
+input CreateCorpusInput {
+  name: String!
+  metadata: String
+  workspace: String
+}
+
 type Query {
   "Fetch all users [Reserved for admins]"
   users: [User]
@@ -257,8 +290,11 @@ type Query {
   "Get a given workspace"
   workspace(workspaceId: ID!): Workspace
 
-  "Fetch workspaces for the authenticated user"
+  "Get a list of workspaces for the authenticated user"
   workspaces: [Workspace!]
+
+  "Get a list of corpus for the authenticated user"
+  corpus: [Corpus!]
 }
 
 type Mutation {
@@ -327,6 +363,9 @@ type Mutation {
 
   "Get a workspace for mutation"
   workspace(workspaceId: ID!): Workspace
+  
+  "Create a new corpus"
+  createCorpus(createCorpusInput: CreateCorpusInput!): Corpus
 }`
 
 module.exports = makeExecutableSchema({ typeDefs, resolvers })
