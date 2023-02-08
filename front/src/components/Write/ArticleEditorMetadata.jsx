@@ -92,7 +92,7 @@ export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
           )}
           {selector !== 'raw' && readOnly && (
             <YamlEditor
-              yaml={yaml}
+              yaml={rawYaml}
               basicMode={selector === 'basic'}
               error={(reason) => {
                 setError(reason)
@@ -104,7 +104,7 @@ export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
           )}
           {selector !== 'raw' && !readOnly && (
             <YamlEditor
-              yaml={yaml}
+              yaml={rawYaml}
               basicMode={selector === 'basic'}
               error={(reason) => {
                 setError(reason)
