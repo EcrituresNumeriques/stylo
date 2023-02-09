@@ -244,3 +244,4 @@ donnera :
 
 1. <span id="note-1">Une note de bas de page avec appel et renvoi. <a href="syntaxemarkdown.md#note-1-b">↩</a></span>
 2. <span id="note-2">Une note de bas de page inline. <a href="syntaxemarkdown.md#note-2-b">↩</a></span>
+
