@@ -30,7 +30,7 @@ Il est possible de synchroniser les références d'un article avec un sous-dossi
 
 ## Insérer une référence bibliographique
 
-Pour ajouter une référence à l'article, il suffit de cliquer sur la référence, puis de coller (Ctrl+V) la référence dans le texte à l'endroit souhaité. Elle apparaitra alors ainsi `[shirky_here_2008]`. Pour bien comprendre, un clic revient à "copier" la clé bibtex de la référence dans le presse-papier. ![biblioex](uploads/images/biblioex.png)
+Pour ajouter une référence à l'article, il suffit de cliquer sur la référence, puis de coller (Ctrl+V) la référence dans le texte à l'endroit souhaité. Elle apparaitra alors ainsi `[shirky_here_2008]`. Pour bien comprendre, un clic revient à "copier" la clé bibtex de la référence dans le presse-papier. ![Bibliographie exemple](uploads/images/Bibliographie-Exemple-V2.png)
 
 Insérer une clé bibtex dans le corps de texte a deux effets :
 
