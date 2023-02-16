@@ -1,5 +1,9 @@
 # Stylo - un éditeur de texte sémantique
 
+**📢 À l'attention des utilisatrices et des utilisateurs de Stylo : Une mise à jour du logiciel vient d'être lancée. Pour voir les nouvelles fonctionnalités, veuillez vous rendre sur la page "[Nouvelles fonctionnalités !](pages/messagev2.md)".**
+
+---
+
 **📢 Si vous rencontrez des difficultés avec Stylo, n'hésitez pas [à nous écrire](mailto:crc.ecrituresnumeriques@gmail.com).**
 
 Une permanence est ouverte tous les jeudis de 11h à 12h (heure de Montréal) pour poser des questions, perfectionner l'utilisation de Stylo, partager vos expériences utilisateur ou autres : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Rejoignez la permanence en visioconférence</a>

@@ -80,4 +80,6 @@
   -->
 
 
+[Nouvelles fonctionnalités !](pages/messagev2.md)
+
 [gimmick:theme](readable)
