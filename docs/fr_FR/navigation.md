@@ -26,12 +26,12 @@
 
 [Documentation]()
 
-  * [Premiers pas](pages/premierspas.md)
-  * [Écrire en markdown](pages/syntaxemarkdown.md)
+  * [Premiers pas dans Stylo](pages/premierspas.md)
+  * [Syntaxe markdown](pages/syntaxemarkdown.md)
   * [Structurer la bibliographie](pages/bibliographie.md)
   * [Prévisualiser et annoter un article](pages/preview.md)
-  * [Gérer vos articles](pages/mesarticles.md)
-  * [Résoudre des problèmes](pages/problemes.md)
+  * [Gérer les articles](pages/mesarticles.md)
+  * [Résoudre les problèmes](pages/problemes.md)
   * [Mémoires et thèses](pages/memoires.md)
   * [Exports](pages/exports.md)
 
