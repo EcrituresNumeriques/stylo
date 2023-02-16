@@ -1,7 +1,7 @@
 {
   "name": "@EcrituresNumeriques/stylo",
   "private": true,
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Stylo est un éditeur de textes pour articles scientifiques en sciences humaines et sociales.",
   "main": "index.js",
   "directories": {
