@@ -137,13 +137,19 @@ Pour approfondir vos connaissances en syntaxe Markdown, vous pouvez consulter la
 
 ## Versions
 
-Une version du document correspond à une sauvegarde de votre travail. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. Ainsi, en chargeant une ancienne version, ce sont ces trois éléments qui sont mis à jour. ![active](uploads/images/Nom-Version-V2.png)
+Une version du document correspond à une sauvegarde de votre travail. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. En chargeant une ancienne version, ce sont donc ces trois éléments qui sont mis à jour. ![active](uploads/images/Nom-Version-V2.png)
 
-Votre travail est automatiquement sauvegardé sur Stylo, vous pouvez cependant - et cela est conseillé - utiliser les fonctions de sauvegarde pour enregistrer des versions mineures (**[Save Minor]**) ou majeures (**[Save Major]**) en nommant ces différentes versions. Une version mineure correspond à des modifications mineures, tandis qu'une version majeure acte l'établissement d'une version dont les modifications sont importantes. 
+Votre travail est par défaut automatiquement sauvegardé sur Stylo. Vous pouvez cependant - et cela est conseillé - utiliser la fonction de sauvegarde [New Version] qui permet de générer une nouvelle version du travail :
 
-Ainsi, lorsque vous êtes parvenu·e·s à une version que vous jugez satisfaisante, vous pouvez nommer votre version dans le champ *Label of the version* avant de l'enregistrer en tant que version mineure ou majeure.
+![New-Version](uploads/images/New-Version-V2.png)
 
-À tout moment, vous pouvez visualiser votre travail, la version actuelle que vous êtes en train d'éditer et les versions précédentes, en cliquant sur le bouton **[preview]** :
+Ainsi, lorsque vous êtes parvenu·e·s à une version que vous jugez satisfaisante, il vous est possible de nommer votre version dans le champ *Label of the version* avant de l'enregistrer en tant que version mineure (**[Create Minor]**) ou majeure (**[Create Major]**). 
+
+![Label Version](uploads/images/Label-Version-V2.png)
+
+Une version mineure correspond à des modifications mineures, tandis qu'une version majeure acte l'établissement d'une version dont les modifications sont importantes. 
+
+À tout moment, vous pouvez visualiser votre travail, qu'il s'agisse de la version actuelle que vous êtes en train d'éditer ou des versions précédentes. Il suffit de cliquer sur le bouton **[preview]** :
 
 ![Preview](uploads/images/Preview-Bouton-V2.png)
 
@@ -153,8 +159,8 @@ Chaque version comporte plusieurs fonctionnalités :
 
 |Bouton|Fonction|
 |:-:|:--|
-| ![Save Major](uploads/images/Major.png) | pour sauvegarder une version majeure de votre travail |
-| ![Save Minor](uploads/images/Minor.png) | pour sauvegarder une version mineure de votre travail |
+| ![Create Major](uploads/images/Create-Major-V2.png) | pour sauvegarder une version majeure de votre travail |
+| ![Create Minor](uploads/images/Create-Minor-V2.png) | pour sauvegarder une version mineure de votre travail |
 | ![Export](uploads/images/Export-V2.png) | pour exporter et télécharger la version dans différents formats |
 | ![Preview](uploads/images/Preview-Bouton-V2.png) | pour accéder à la prévisualisation de votre travail et l'annoter |
 
