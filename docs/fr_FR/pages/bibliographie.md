@@ -1,4 +1,4 @@
-# Gestion de références
+# Structurer la bibliographie
 
 La bibliographie liste les références bibliographiques que vous avez ajoutées. Les références bibliographiques peuvent être ajoutées une par une, ou groupées. Pour ajouter vos références, vous devez cliquer sur **[Manage Bibliography]** dans le volet de gauche : l'outil *Bibliographie* s'ouvre alors et vous propose plusieurs possibilités :
 
