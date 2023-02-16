@@ -1,4 +1,4 @@
-# Gérer mes articles
+# Gérer les articles
 
 Vos articles sont disponibles dans la page _Articles_ clicable via la barre latérale de votre compte Stylo :
 
