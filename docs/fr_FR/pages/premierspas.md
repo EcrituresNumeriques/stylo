@@ -137,7 +137,9 @@ Pour approfondir vos connaissances en syntaxe Markdown, vous pouvez consulter la
 
 ## Versions
 
-Une version du document correspond à une sauvegarde de votre travail. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. En chargeant une ancienne version, ce sont donc ces trois éléments qui sont mis à jour. ![active](uploads/images/Nom-Version-V2.png)
+![active](uploads/images/Nom-Version-V2.png)
+
+Une version du document correspond à une sauvegarde de votre travail. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. En chargeant une ancienne version, ce sont donc ces trois éléments qui sont mis à jour. 
 
 Votre travail est par défaut automatiquement sauvegardé sur Stylo. Vous pouvez cependant - et cela est conseillé - utiliser la fonction de sauvegarde [New Version] qui permet de générer une nouvelle version du travail :
 
