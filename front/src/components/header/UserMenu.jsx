@@ -25,14 +25,6 @@ function UserMenu () {
         {/* todo: show current workspace */}
       </div>
       {isComponentVisible && <div className={styles.menu}>
-        <a className={styles.documentationLink}
-           href="http://stylo-doc.ecrituresnumeriques.ca"
-           target="_blank"
-           rel="noopener noreferrer"
-        >
-          <LifeBuoy size={16}/>
-          Documentation
-        </a>
         <div className={styles.footer}>
           <div className={styles.userBlock}>
             <Link to="/credentials" onClick={() => setIsComponentVisible(false)} className={styles.userCard}>
@@ -48,6 +40,14 @@ function UserMenu () {
           </div>
         </div>
       </div>}
+      <a className={styles.documentationLink}
+         href="http://stylo-doc.ecrituresnumeriques.ca"
+         target="_blank"
+         rel="noopener noreferrer"
+      >
+        <LifeBuoy size={16}/>
+        Documentation
+      </a>
     </div>
   )
 }

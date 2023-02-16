@@ -1,21 +1,29 @@
 .container {
   position: relative;
+  display: flex;
+  gap: 1em;
 }
 
 .link {
   display: flex;
   cursor: pointer;
   gap: 0.5em;
+  align-items: center;
 }
 
 .documentationLink {
   display: flex;
-  padding-bottom: 1em;
-  border-bottom: 1px solid #606060;
-  margin-bottom: 1em;
   font-weight: normal;
-  gap: 0.5em;
+  gap: 0.35em;
   align-items: center;
+  font-size: 0.9rem;
+  text-decoration: none;
+  align-items: center;
+}
+
+.documentationLink::after {
+  content: "🡕";
+  display: "block";
 }
 
 .menu {
