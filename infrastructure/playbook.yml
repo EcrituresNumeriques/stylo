@@ -41,7 +41,6 @@
       become: yes
       apt:
         name:
-          - docker-ce
           - docker-ce-cli
           - containerd.io
           - docker-buildx-plugin
