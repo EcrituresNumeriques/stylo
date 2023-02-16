@@ -1,6 +1,6 @@
-# Alpine 3.17 uses OpenSSL 3.0 but humanid.huma-num.fr does not yet support this version
-# if you want to upgrade to Alpine 3.17 make sure that humanid.huma-num.fr supports OpenSSL 3.0 otherwise OAuth won't work!
-FROM node:18.14-alpine3.16
+# Alpine 3.17 and Node 18 uses OpenSSL 3.0 but humanid.huma-num.fr does not yet support this version
+# if you want to upgrade to Alpine 3.17 or Node 18 make sure that humanid.huma-num.fr supports OpenSSL 3.0 otherwise OAuth won't work!
+FROM node:16.19-alpine3.16
 
 WORKDIR /usr/src/app
 
