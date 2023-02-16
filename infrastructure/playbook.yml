@@ -66,6 +66,13 @@
         src: ./{{ env }}-nagios-nrpe-local.cfg
         dest: /etc/nagios/nrpe_local.cfg
 
+    - name: Checkout and update Stylo
+      git:
+        repo: 'https://github.com/EcrituresNumeriques/stylo.git'
+        dest: ~/stylo
+        force: yes
+        version: "{{ app_version | default('master') }}"
+
     - name: Pull Docker containers
       ansible.builtin.shell:
         cmd: "docker-compose pull"
@@ -83,13 +90,6 @@
       set_fact:
         shared_graphql_token: "{{ graphql_token.stdout }}"
       run_once: true
-
-    - name: Checkout and update Stylo
-      git:
-        repo: 'https://github.com/EcrituresNumeriques/stylo.git'
-        dest: ~/stylo
-        force: yes
-        version: "{{ deploy_branch | default('master') }}"
 
     - name: Interpolate environment config file
       template:
