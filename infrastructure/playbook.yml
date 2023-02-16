@@ -1,6 +1,11 @@
 ---
 
 - hosts: stylo
+
+  environment:
+    # Used to set the correct docker-compose images tags
+    TAG: "{{ app_version | default('latest') }}"
+
   tasks:
     - name: Use python3
       become: yes
