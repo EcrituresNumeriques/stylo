@@ -1,0 +1,74 @@
+version: '2.1'
+
+services:
+  mongodb-stylo:
+    image: mongo:4.4
+    container_name: "mongodb-stylo"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ./data/db:/data/db
+    command: mongod --logpath=/dev/null
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "\"db.adminCommand('ping')\""]
+      interval: 30s
+      timeout: 5s
+    ports:
+      - 127.0.0.1:27017:27017
+
+  graphql-stylo:
+    image: "ghcr.io/ecrituresnumeriques/stylo-graphql:${TAG:-latest}"
+    container_name: "graphql-stylo"
+    depends_on:
+      mongodb-stylo:
+        condition: service_healthy
+    env_file:
+      - ./stylo.env
+    environment:
+      - MONGO_SERVER=mongodb-stylo
+      - MONGO_SERVER_PORT=27017
+    ports:
+      - 127.0.0.1:3030:3030
+
+  export-stylo:
+    container_name: "export-stylo"
+    image: "ghcr.io/ecrituresnumeriques/stylo-export:${TAG:-latest}"
+    depends_on:
+      mongodb-stylo:
+        condition: service_healthy
+    env_file:
+      - ./stylo.env
+    environment:
+      - MONGO_SERVER=mongodb-stylo
+      - MONGO_SERVER_PORT=27017
+    ports:
+      - 127.0.0.1:3060:3060
+
+  front-stylo:
+    image: "ghcr.io/ecrituresnumeriques/stylo-front:${TAG:-latest}"
+    container_name: "front-stylo"
+    env_file:
+      - ./stylo.env
+    ports:
+      - 127.0.0.1:3000:80
+    depends_on:
+      - graphql-stylo
+
+  export-gateway:
+    image: "davidbgk/stylo-export:0.0.20"
+    env_file:
+      - stylo.env
+    environment:
+      - SE_PANDOC_API_BASE_URL=${SE_PANDOC_API_BASE_URL:-http://pandoc-api:8000/latest/}
+      - SE_ALLOWED_INSTANCE_BASE_URLS=${SE_ALLOWED_INSTANCE_BASE_URLS:-http://localhost:3000 http://localhost:3030 http://host.docker.internal:3030}
+    ports:
+      - 127.0.0.1:3080:8001
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
+
+  pandoc-api:
+    image: "davidbgk/pandoc-api:0.0.13"
+    ports:
+      - 127.0.0.1:3090:8000
+

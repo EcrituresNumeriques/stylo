@@ -71,6 +71,13 @@
         src: "../docker-compose.yaml"
         dest: "~/stylo/docker-compose.yaml"
 
+    - name: Interpolate environment config file
+      template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+      loop:
+        - { src: "./stylo.env", dest: "~/stylo/stylo.env" }
+
     - name: Pull Docker containers
       ansible.builtin.shell:
         cmd: "docker-compose pull"
@@ -88,13 +95,6 @@
       set_fact:
         shared_graphql_token: "{{ graphql_token.stdout }}"
       run_once: true
-
-    - name: Interpolate environment config file
-      template:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
-      loop:
-        - { src: "./stylo.env", dest: "~/stylo/stylo.env" }
 
     - name: Start containers
       docker_compose:
