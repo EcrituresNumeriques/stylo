@@ -4,9 +4,6 @@ on:
   workflow_run:
     workflows:
       - "Build and deploy Docker images"
-    branches:
-      - main
-      - master
     types:
       - completed
   workflow_dispatch:
