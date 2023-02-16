@@ -8,28 +8,33 @@
 
   tasks:
     - name: Install aptitude
+      become: yes
       apt:
         name: aptitude
         state: latest
         update_cache: true
 
     - name: Install required system packages
+      become: yes
       apt:
         name: ca-certificates curl gnupg lsb-release
         state: latest
         update_cache: true
 
     - name: Add Docker GPG apt Key
+      become: yes
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
 
     - name: Add Docker Repository
+      become: yes
       apt_repository:
         repo: deb https://download.docker.com/linux/ubuntu bionic stable
         state: present
 
     - name: Update apt and install docker-ce
+      become: yes
       apt:
         name: docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
         state: latest
