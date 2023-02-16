@@ -4,7 +4,7 @@
 
 Chères utilisatrices, chers utilisateurs de Stylo,
 
-Pour ce début d'année, nous vous avons concoté une nouvelle mouture de Stylo et de nouvelles fonctionnalités pour continuer à se rapprocher de vos pratiques d'écriture savante et de vos besoins en la matière !
+Pour ce début d'année, nous vous avons concocté une nouvelle mouture de Stylo comportant de nouvelles fonctionnalités pour continuer à se rapprocher de vos pratiques d'écriture/édition savante et de vos besoins en la matière !
 
 Quoi de neuf dans Stylo 2.0 ? Ci-dessous un tour d'horizon des modifications apportées :
 
@@ -21,7 +21,7 @@ Voici quelques détails sur ces modifications :
 
 ## Interface graphique
 
-Quelques changements graphiques ont été fait pour rafraîchir un peu l'interface :
+Quelques changements graphiques ont été apportés pour rafraîchir un peu l'interface :
 
 - les colonnes gestionnaires (édition et métadonnées) ont été légèrement retouchées ;
 - les boutons de *preview* et d'export ont été déplacés : ils ne sont plus à l'intérieur du volet de gestion à gauche mais dans la partie centrale de l'écran, au-dessus de l'éditeur de texte.
@@ -35,7 +35,7 @@ Quelques changements graphiques ont été fait pour rafraîchir un peu l'interfa
 
 L'éditeur de texte, pièce centrale de Stylo, a été complètement refondu ! Nous avons intégré un nouvel éditeur : [Monaco](https://microsoft.github.io/monaco-editor/index.html). De nouvelles fonctionnalités sont maintenant disponibles : 
 
-- des fonctions de recherche et de remplacement disponible, via les raccourcis `CTRL+F` et `CTRL+H` ;
+- des fonctions de recherche et de remplacement disponible, via les raccourcis `CTRL/Cmd+F` et `CTRL/Cmd+H` ;
 - l'utilisation d'expressions régulières ;
 - un comportement plus précis de la fonctionnalité de comparaison entre différentes versions d'un même document (fonctionnement ligne à ligne).
 
@@ -57,7 +57,7 @@ Fort de notre expérience en matière de chaîne basée sur le concept de *singl
 
 ## Service web Pandoc
 
-Le cœur technologique du module d'export de Stylo repose sur le logiciel de conversion [Pandoc](https://pandoc.org/). Dans un souci d'être au plus proche des besoins des utilisateurs, nous avons décidé de décentraliser Pandoc dans une interface web indépendante de Stylo. Ainsi Pandoc devient accessible via une interface graphique et offre la possibilité de customiser à souhait les documents que l'on souhaite transformer ! Ce service repose sur une API que nous utilisons pour notre module d'export Stylo.
+Le cœur technologique du module d'export de Stylo repose sur le logiciel de conversion [Pandoc](https://pandoc.org/). Dans un souci d'être au plus proche des besoins des utilisateurs et utilisatrices, nous avons décidé de décentraliser Pandoc dans une interface web indépendante de Stylo. Ainsi Pandoc devient accessible via une interface graphique et offre la possibilité de customiser à souhait les documents que l'on souhaite transformer ! Ce service repose sur une API que nous utilisons pour notre module d'export Stylo.
 
 ## API GraphQL
 
