@@ -66,12 +66,10 @@
         src: ./{{ env }}-nagios-nrpe-local.cfg
         dest: /etc/nagios/nrpe_local.cfg
 
-    - name: Checkout and update Stylo
-      git:
-        repo: 'https://github.com/EcrituresNumeriques/stylo.git'
-        dest: ~/stylo
-        force: yes
-        version: "{{ app_version | default('master') }}"
+    - name: Copy docker-compose.yml
+      copy:
+        src: "../../docker-compose.yml"
+        dest: "~/stylo/docker-compose.yml"
 
     - name: Pull Docker containers
       ansible.builtin.shell:
@@ -97,12 +95,6 @@
         dest: "{{ item.dest }}"
       loop:
         - { src: "./stylo.env", dest: "~/stylo/stylo.env" }
-
-    # this avoids cloning the entire repository
-    # - name: Copy docker-compose.yml
-    #   copy:
-    #     src: "../../docker-compose.yml"
-    #     dest: "~/stylo/docker-compose.yml"
 
     - name: Start containers
       docker_compose:
