@@ -32,8 +32,8 @@ services:
       - 127.0.0.1:3030:3030
 
   export-stylo:
-    container_name: "export-stylo"
     image: "ghcr.io/ecrituresnumeriques/stylo-export:${TAG:-latest}"
+    container_name: "export-stylo"
     depends_on:
       mongodb-stylo:
         condition: service_healthy

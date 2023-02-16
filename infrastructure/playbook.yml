@@ -7,32 +7,33 @@
     TAG: "{{ app_version | default('latest') }}"
 
   tasks:
-    - name: Use python3
-      become: yes
-      alternatives:
-        link: /usr/bin/python
-        name: python
-        path: /usr/bin/python3.6
-
-    - name: Install pip
-      become: yes
+    - name: Install aptitude
       apt:
-        name: python3-pip
+        name: aptitude
+        state: latest
+        update_cache: true
+
+    - name: Install required system packages
+      apt:
+        name: ca-certificates curl gnupg lsb-release
+        state: latest
+        update_cache: true
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
         state: present
 
-    - name: Install Python dependencies
-      pip:
-        name:
-          - pip==20.1
-          - docker==4.2.0
-          - docker-compose==1.25.5
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
 
-    - name: Install Python monitoring tools
-      become: yes
-      pip:
-        name:
-          - check-docker==2.2.2
-        umask: "0022"
+    - name: Update apt and install docker-ce
+      apt:
+        name: docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+        state: latest
+        update_cache: true
 
     - name: Update NGINX settings
       become: yes
@@ -68,7 +69,7 @@
 
     - name: Copy docker-compose.yaml
       copy:
-        src: "../docker-compose.yaml"
+        src: "docker-compose.yaml"
         dest: "~/stylo/docker-compose.yaml"
 
     - name: Interpolate environment config file
