@@ -68,7 +68,7 @@
 
     - name: Copy docker-compose.yml
       copy:
-        src: "../../docker-compose.yml"
+        src: "../docker-compose.yml"
         dest: "~/stylo/docker-compose.yml"
 
     - name: Pull Docker containers
