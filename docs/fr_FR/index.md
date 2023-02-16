@@ -1,6 +1,6 @@
 # Stylo - un éditeur de texte sémantique
 
-**📢 À l'attention des utilisatrices et des utilisateurs de Stylo : Une mise à jour du logiciel vient d'être lancée. Pour voir les nouvelles fonctionnalités, veuillez vous rendre sur la page "[Nouvelles fonctionnalités !](pages/messagev2.md)".**
+**📢 À l'attention des utilisatrices et des utilisateurs de Stylo : une mise à jour de l'éditeur de texte sémantique vient d'être lancée. Pour découvrir les nouvelles fonctionnalités en détail voici la page d'information : [Nouvelles fonctionnalités !](pages/messagev2.md).**
 
 ---
 
