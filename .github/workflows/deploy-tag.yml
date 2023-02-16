@@ -15,7 +15,7 @@ jobs:
       name: production
       url: https://stylo.huma-num.fr
 
-    if: ${{ (github.event.workflow_run.conclusion == 'success' && github.ref_type == 'tag') || github.event_name == 'workflow_dispatch' }}
+    if: ${{ (github.event.workflow_run.conclusion == 'success' && (github.ref_type == 'tag' || github.ref_type == 'release')) || github.event_name == 'workflow_dispatch' }}
 
     steps:
     - uses: actions/checkout@v3
