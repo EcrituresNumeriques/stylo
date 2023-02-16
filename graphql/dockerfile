@@ -1,4 +1,7 @@
-FROM node:18-alpine
+FROM node:18.14-alpine3.17
+
+# compatibility with OpenSSL 1.1 for passport/openidconnect (humanid.huma-num.fr)
+RUN apk add --update --no-cache openssl1.1-compat
 
 WORKDIR /usr/src/app
 
