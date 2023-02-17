@@ -18,11 +18,7 @@ services:
       - 127.0.0.1:27017:27017
 
   graphql-stylo:
-    build:
-      context: ./graphql/
-      labels:
-        - org.opencontainers.image.source=https://github.com/EcrituresNumeriques/stylo
-    image: "ghcr.io/ecrituresnumeriques/stylo-graphql:${TAG:-latest}"
+    image: "ghcr.io/ecrituresnumeriques/stylo-graphql:{{app_version}}"
     container_name: "graphql-stylo"
     depends_on:
       mongodb-stylo:
@@ -36,12 +32,8 @@ services:
       - 127.0.0.1:3030:3030
 
   export-stylo:
-    build:
-      context: ./export/
-      labels:
-        - org.opencontainers.image.source=https://github.com/EcrituresNumeriques/stylo
+    image: "ghcr.io/ecrituresnumeriques/stylo-export:{{app_version}}"
     container_name: "export-stylo"
-    image: "ghcr.io/ecrituresnumeriques/stylo-export:${TAG:-latest}"
     depends_on:
       mongodb-stylo:
         condition: service_healthy
@@ -54,15 +46,7 @@ services:
       - 127.0.0.1:3060:3060
 
   front-stylo:
-    build:
-      context: ./front
-      dockerfile: dockerfile
-      labels:
-        - org.opencontainers.image.source=https://github.com/EcrituresNumeriques/stylo
-      args:
-        - SNOWPACK_MATOMO_URL
-        - SNOWPACK_MATOMO_SITE_ID
-    image: "ghcr.io/ecrituresnumeriques/stylo-front:${TAG:-latest}"
+    image: "ghcr.io/ecrituresnumeriques/stylo-front:{{app_version}}"
     container_name: "front-stylo"
     env_file:
       - ./stylo.env

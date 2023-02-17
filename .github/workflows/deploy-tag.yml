@@ -1,27 +1,41 @@
 name: Ansible deploy production
 
 on:
-  push:
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v2.1.3
+#  workflow_run:
+#    workflows:
+#      - "Build and deploy Docker images"
+#    types:
+#      - completed
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Git tag to deploy against
+        required: true
 
 jobs:
-  build:
-
+  deployment:
     runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://stylo.huma-num.fr
+
+    if: ${{ (github.event.workflow_run.conclusion == 'success' && github.ref_type == 'tag') || github.event_name == 'workflow_dispatch' }}
 
     steps:
-    - uses: actions/checkout@v1
-
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
+    - uses: actions/checkout@v3
       with:
-        python-version: 3.7
+        ref: ${{ inputs.tag }}
+
+    - name: Set up Python 3.10 (w/ cache)
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+        cache-dependency-path: '**/deploy-requirements.txt'
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install ansible==2.9.7 requests
+        python -m pip install -r .github/workflows/deploy-requirements.txt
 
     - name: Set Ansible config secrets
       run: |
@@ -33,10 +47,6 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
 
-    - name: Get the Tag version
-      id: get_version
-      run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
-
     - name: Run playbook
       working-directory: ./infrastructure
-      run: ansible-playbook -i inventories/prod --extra-vars "@vault-prod.yml" --extra-vars "app_version=${{ steps.get_version.outputs.VERSION }}" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v
+      run: ansible-playbook -i inventories/prod --extra-vars "@vault-prod.yml" --extra-vars "app_version=${{ inputs.tag }}" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v

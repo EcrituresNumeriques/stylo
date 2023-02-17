@@ -16,15 +16,17 @@ openid_connect_user_info_url='https://humanid.huma-num.fr/oauth2/userinfo'
 openid_connect_callback_url='https://stylo.huma-num.fr/authorization-code/callback'
 openid_connect_client_id='{{ openid_connect_client_id }}'
 openid_connect_client_secret='{{ openid_connect_client_secret }}'
-allow_cors_frontend='https://stylo.huma-num.fr'
+allow_cors_frontend='https://stylo.huma-num.fr https://export.stylo.huma-num.fr/'
 stylo_backend_endpoint='https://stylo.huma-num.fr'
 graphql_endpoint='https://stylo.huma-num.fr/graphql'
 # Conserve stylo.ecrituresnumeriques.ca car les annotations hypothes.is sont liées à ce nom de domaine
 export_endpoint='https://stylo.ecrituresnumeriques.ca'
 process_endpoint='https://stylo-export.ecrituresnumeriques.ca'
+pandoc_export_endpoint='https://export.stylo.huma-num.fr'
 human_id_register_endpoint='https://humanid.huma-num.fr/register?service=https://stylo.huma-num.fr/authorization-code/callback'
 # Désactive l'URL canonical vers stylo.huma-num.fr car Hypthesis ne sait pas faire le lien
 export_canonical_base_url=''
+export_allowed_instance_base_urls='https://stylo.huma-num.fr'
 zotero_auth_callback_url='http://stylo.huma-num.fr/authorization-code/zotero/callback'
 # Configuration des analytics
 matomo_url='https://analyseweb.huma-num.fr/'

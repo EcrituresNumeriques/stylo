@@ -1,44 +1,66 @@
 ---
 
 - hosts: stylo
-  tasks:
-    - name: Use python3
-      become: yes
-      alternatives:
-        link: /usr/bin/python
-        name: python
-        path: /usr/bin/python3.6
 
-    - name: Install pip
+  tasks:
+    - name: Set application version
+      ansible.builtin.set_fact: app_version="{{ app_version | default('latest') }}"
+
+    - name: Install aptitude
       become: yes
-      apt:
-        name: python3-pip
+      ansible.builtin.apt:
+        name: aptitude
+        state: latest
+        update_cache: true
+
+    - name: Install required system packages
+      become: yes
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: latest
+        update_cache: true
+
+    - name: Add Docker GPG apt Key
+      become: yes
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
         state: present
 
-    - name: Install Python dependencies
-      pip:
-        name:
-          - pip==20.1
-          - docker==4.2.0
-          - docker-compose==1.25.5
-
-    - name: Install Python monitoring tools
+    - name: Add Docker Repository
       become: yes
-      pip:
+      ansible.builtin.apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      become: yes
+      ansible.builtin.apt:
         name:
-          - check-docker==2.2.2
-        umask: "0022"
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: latest
+        update_cache: true
 
     - name: Update NGINX settings
       become: yes
-      copy:
-        src: ./{{ site }}.conf
-        dest: /etc/nginx/sites-enabled/{{ site }}.conf
+      ansible.builtin.copy:
+        src: ./{{ item.name }}.conf
+        dest: /etc/nginx/sites-enabled/{{ item.name }}.conf
+      with_items:
+        - { name: "{{ site }}" }
+        - { name: "pandoc-api.{{ site }}" }
+        - { name: "export.{{ site }}" }
       notify: reload nginx
 
     - name: Update NGINX settings
       become: yes
-      copy:
+      ansible.builtin.copy:
         src: ./stylo.ecrituresnumeriques.ca.conf
         dest: /etc/nginx/sites-enabled/stylo.ecrituresnumeriques.ca.conf
       when: site == "stylo.huma-num.fr"
@@ -46,50 +68,38 @@
 
     - name: Copy systemd service file
       become: yes
-      copy:
+      ansible.builtin.copy:
         src: ./docker-compose-stylo.service
         dest: /etc/systemd/system/docker-compose-stylo.service
       notify: start docker-compose-stylo
 
     - name: Copy Nagios configuration
       become: yes
-      copy:
+      ansible.builtin.copy:
         src: ./{{ env }}-nagios-nrpe-local.cfg
         dest: /etc/nagios/nrpe_local.cfg
 
-    - name: Checkout and update Stylo
-      git:
-        repo: 'https://github.com/EcrituresNumeriques/stylo.git'
-        dest: ~/stylo
-        force: yes
-        version: "{{ deploy_branch | default('master') }}"
-
-    - name: Copy environment config file
-      template:
+    - name: Copy config files
+      ansible.builtin.template:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
       loop:
-        - { src: './stylo.env', dest: '~/stylo/stylo.env' }
+        - { src: "./stylo.env", dest: "~/stylo/stylo.env" }
+        - { src: "./docker-compose.yaml", dest: "~/stylo/docker-compose.yaml" }
 
-    - name: Inject Git version in package.json files
-      when: app_version != ""
-      replace:
-        path: "~/stylo/{{ item }}"
-        regexp: '"version": "[^"]+"'
-        replace: '"version": "{{ app_version }}"'
-        before: '"scripts"'
-      loop:
-        - front/package.json
-        - graphql/package.json
-        - export/package.json
+    - name: Pull Docker containers
+      ansible.builtin.shell:
+        cmd: "docker-compose pull"
+        chdir: ~/stylo
 
-    - name: Rebuild and restart Docker containers
-      docker_compose:
-        project_src: ~/stylo
-        build: yes
+    - name: Start containers
+      ansible.builtin.shell:
+        cmd: "docker-compose up --no-build --pull never --detach"
+        chdir: ~/stylo
       environment:
         SNOWPACK_MATOMO_URL: "{{ matomo_url }}"
         SNOWPACK_MATOMO_SITE_ID: "{{ matomo_site_id }}"
+        SE_ALLOWED_INSTANCE_BASE_URLS: "{{ export_allowed_instance_base_urls }}"
 
   handlers:
     - name: reload nginx
