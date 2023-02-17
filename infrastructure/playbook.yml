@@ -2,11 +2,10 @@
 
 - hosts: stylo
 
-  environment:
-    # Used to set the correct docker-compose images tags
-    TAG: "{{ app_version | default('latest') }}"
-
   tasks:
+    - name: Set application version
+      ansible.builtin.set_fact: app_version="{{ app_version | default('latest') }}"
+
     - name: Install aptitude
       become: yes
       apt:
