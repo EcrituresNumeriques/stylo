@@ -8,14 +8,14 @@
 
     - name: Install aptitude
       become: yes
-      apt:
+      ansible.builtin.apt:
         name: aptitude
         state: latest
         update_cache: true
 
     - name: Install required system packages
       become: yes
-      apt:
+      ansible.builtin.apt:
         name:
           - ca-certificates
           - curl
@@ -26,19 +26,19 @@
 
     - name: Add Docker GPG apt Key
       become: yes
-      apt_key:
+      ansible.builtin.apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
 
     - name: Add Docker Repository
       become: yes
-      apt_repository:
+      ansible.builtin.apt_repository:
         repo: deb https://download.docker.com/linux/ubuntu bionic stable
         state: present
 
     - name: Update apt and install docker-ce
       become: yes
-      apt:
+      ansible.builtin.apt:
         name:
           - docker-ce-cli
           - containerd.io
@@ -49,7 +49,7 @@
 
     - name: Update NGINX settings
       become: yes
-      copy:
+      ansible.builtin.copy:
         src: ./{{ item.name }}.conf
         dest: /etc/nginx/sites-enabled/{{ item.name }}.conf
       with_items:
@@ -60,7 +60,7 @@
 
     - name: Update NGINX settings
       become: yes
-      copy:
+      ansible.builtin.copy:
         src: ./stylo.ecrituresnumeriques.ca.conf
         dest: /etc/nginx/sites-enabled/stylo.ecrituresnumeriques.ca.conf
       when: site == "stylo.huma-num.fr"
@@ -68,19 +68,19 @@
 
     - name: Copy systemd service file
       become: yes
-      copy:
+      ansible.builtin.copy:
         src: ./docker-compose-stylo.service
         dest: /etc/systemd/system/docker-compose-stylo.service
       notify: start docker-compose-stylo
 
     - name: Copy Nagios configuration
       become: yes
-      copy:
+      ansible.builtin.copy:
         src: ./{{ env }}-nagios-nrpe-local.cfg
         dest: /etc/nagios/nrpe_local.cfg
 
     - name: Copy config files
-      template:
+      ansible.builtin.template:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
       loop:
@@ -89,32 +89,26 @@
 
     - name: Pull Docker containers
       ansible.builtin.shell:
-        cmd: "/usr/local/bin/docker-compose pull"
+        cmd: "docker-compose pull"
         chdir: ~/stylo
 
     - name: Generate Shared GraphQL Token
       register: graphql_token
       ansible.builtin.shell:
-        cmd: "/usr/local/bin/docker-compose run --no-deps --rm graphql-stylo npm run generate-service-token --silent"
+        cmd: "docker-compose run --no-deps --rm graphql-stylo npm run generate-service-token --silent"
         chdir: ~/stylo
       run_once: true
       no_log: true
 
-    - name: Ensure SE_GRAPHQL_TOKEN is set
-      ansible.builtin.lineinfile:
-        path: ~/stylo/stylo.env
-        regexp: '^SE_GRAPHQL_TOKEN='
-        line: "SE_GRAPHQL_TOKEN=\"{{ graphql_token.stdout }}\""
-
     - name: Start containers
-      docker_compose:
-        project_src: ~/stylo
-        build: false
-        pull: false
+      ansible.builtin.shell:
+        cmd: "docker-compose up --no-build --pull never --detach"
+        chdir: ~/stylo
       environment:
         SNOWPACK_MATOMO_URL: "{{ matomo_url }}"
         SNOWPACK_MATOMO_SITE_ID: "{{ matomo_site_id }}"
         SE_ALLOWED_INSTANCE_BASE_URLS: "{{ export_allowed_instance_base_urls }}"
+        SE_GRAPHQL_TOKEN: "{{ graphql_token.stdout }}"
 
   handlers:
     - name: reload nginx
