@@ -10,10 +10,7 @@ on:
     - 'graphql/**'
     - 'front/**'
     - 'export/**'
-    - 'infrastructure/**'
-    - '.github/workflows/deploy-requirements.txt'
     - '.github/workflows/docker.yml'
-    - '.github/workflows/deploy*.yml'
     - 'docker-compose.yaml'
     - 'stylo-example.env'
   pull_request:
