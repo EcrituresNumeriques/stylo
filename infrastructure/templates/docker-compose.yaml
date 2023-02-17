@@ -18,7 +18,7 @@ services:
       - 127.0.0.1:27017:27017
 
   graphql-stylo:
-    image: "ghcr.io/ecrituresnumeriques/stylo-graphql:${TAG:-latest}"
+    image: "ghcr.io/ecrituresnumeriques/stylo-graphql:{{app_version}}"
     container_name: "graphql-stylo"
     depends_on:
       mongodb-stylo:
@@ -32,7 +32,7 @@ services:
       - 127.0.0.1:3030:3030
 
   export-stylo:
-    image: "ghcr.io/ecrituresnumeriques/stylo-export:${TAG:-latest}"
+    image: "ghcr.io/ecrituresnumeriques/stylo-export:{{app_version}}"
     container_name: "export-stylo"
     depends_on:
       mongodb-stylo:
@@ -46,7 +46,7 @@ services:
       - 127.0.0.1:3060:3060
 
   front-stylo:
-    image: "ghcr.io/ecrituresnumeriques/stylo-front:${TAG:-latest}"
+    image: "ghcr.io/ecrituresnumeriques/stylo-front:{{app_version}}"
     container_name: "front-stylo"
     env_file:
       - ./stylo.env

@@ -80,17 +80,13 @@
         src: ./{{ env }}-nagios-nrpe-local.cfg
         dest: /etc/nagios/nrpe_local.cfg
 
-    - name: Copy docker-compose.yaml
-      copy:
-        src: "docker-compose.yaml"
-        dest: "~/stylo/docker-compose.yaml"
-
-    - name: Interpolate environment config file
+    - name: Copy config files
       template:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
       loop:
         - { src: "./stylo.env", dest: "~/stylo/stylo.env" }
+        - { src: "./docker-compose.yaml", dest: "~/stylo/docker-compose.yaml" }
 
     - name: Pull Docker containers
       ansible.builtin.shell:
