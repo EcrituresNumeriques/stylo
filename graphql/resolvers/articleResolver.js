@@ -7,6 +7,7 @@ const Workspace = require('../models/workspace')
 const isUser = require('../policies/isUser')
 const { ApiError } = require('../helpers/errors')
 const { reformat } = require('../helpers/metadata.js')
+const { logElapsedTime } = require('../helpers/performance')
 
 module.exports = {
   Mutation: {
@@ -194,15 +195,8 @@ module.exports = {
      * @returns {Promise<Article[]>}
      */
     async articles (_, args, context) {
-      const t0 = performance.now();
       const { userId, fromSharedUserId } = isUser(args, context)
-      const t1 = performance.now();
-      console.log(`Call to isUser took ${t1 - t0} milliseconds.`);
-      const t2 = performance.now();
-      const articles = await Article.findManyByOwner({ userId, fromSharedUserId })
-      const t3 = performance.now();
-      console.log(`Call to findManyByOwner took ${t3 - t2} milliseconds.`);
-      return articles
+      return logElapsedTime(() => Article.findManyByOwner({ userId, fromSharedUserId }), 'findManyByOwner')
     },
   },
 

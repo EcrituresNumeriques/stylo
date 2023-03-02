@@ -23,7 +23,6 @@ import { duplicateArticle } from './Acquintances.graphql'
 import { renameArticle, getArticleVersions } from './Article.graphql'
 import { useGraphQL } from '../helpers/graphQL'
 import { useCurrentUser } from '../contexts/CurrentUser'
-import * as queries from './Acquintances.graphql'
 
 export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, tags: userTags }) {
   const [expanded, setExpanded] = useState(false)
