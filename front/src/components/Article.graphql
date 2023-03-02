@@ -9,3 +9,14 @@ query linkToZotero($article: ID!, $zotero: String!) {
     setZoteroLink(zotero: $zotero)
   }
 }
+
+query getArticleVersions($articleId: ID!) {
+  article(article: $articleId) {
+    versions {
+      _id
+      message
+      revision
+      version
+    }
+  }
+}

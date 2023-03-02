@@ -160,7 +160,6 @@ module.exports = {
         const article = await Article
           .findById(args.article)
           .populate('owner tags')
-          .populate({ path: 'versions', options: { sort: { createdAt: -1 } }, populate: { path: 'owner' } })
           .populate({ path: 'contributors', populate: { path: 'user' } });
 
         if (!article) {
@@ -195,9 +194,15 @@ module.exports = {
      * @returns {Promise<Article[]>}
      */
     async articles (_, args, context) {
+      const t0 = performance.now();
       const { userId, fromSharedUserId } = isUser(args, context)
-
-      return Article.findManyByOwner({ userId, fromSharedUserId })
+      const t1 = performance.now();
+      console.log(`Call to isUser took ${t1 - t0} milliseconds.`);
+      const t2 = performance.now();
+      const articles = await Article.findManyByOwner({ userId, fromSharedUserId })
+      const t3 = performance.now();
+      console.log(`Call to findManyByOwner took ${t3 - t2} milliseconds.`);
+      return articles
     },
   },
 
@@ -215,6 +220,7 @@ module.exports = {
     },
 
     async versions (article, { limit }) {
+      const t0 = performance.now();
       await article
         .populate({
           path: 'versions',
@@ -225,7 +231,8 @@ module.exports = {
           }
         })
         .execPopulate()
-
+      const t1 = performance.now();
+      console.log(`Call article.versions took ${t1 - t0} milliseconds.`);
       return article.versions
     },
 

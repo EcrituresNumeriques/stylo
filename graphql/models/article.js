@@ -96,11 +96,8 @@ articleSchema.statics.findManyByOwner = function findManyByOwner ({ userId }) {
     .find({ $or: [{ owner: userId }, { contributors: { $elemMatch: { user: userId } } }] })
     .sort({ updatedAt: -1 })
     .populate([
-      { path: 'versions', options: { sort: { createdAt: -1 } } },
       { path: 'tags', options: { sort: { createdAt: -1 } } },
-      {
-        path: 'owner',
-      },
+      { path: 'owner', },
       { path: 'contributors', populate: 'user' }
     ])
 }

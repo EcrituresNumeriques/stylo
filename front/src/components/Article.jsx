@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 
@@ -20,9 +20,10 @@ import Button from './Button'
 import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Share2, Trash } from 'react-feather'
 
 import { duplicateArticle } from './Acquintances.graphql'
-import { renameArticle } from './Article.graphql'
+import { renameArticle, getArticleVersions } from './Article.graphql'
 import { useGraphQL } from '../helpers/graphQL'
 import { useCurrentUser } from '../contexts/CurrentUser'
+import * as queries from './Acquintances.graphql'
 
 export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, tags: userTags }) {
   const [expanded, setExpanded] = useState(false)
@@ -31,6 +32,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
   const [tags, setTags] = useState(article.tags)
   const [renaming, setRenaming] = useState(false)
   const [title, setTitle] = useState(article.title)
+  const [versions, setVersions] = useState(article.versions || [])
   const [tempTitle, setTempTitle] = useState(article.title)
   const [sharing, setSharing] = useState(false)
   const runQuery = useGraphQL()
@@ -39,6 +41,19 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
   const isArticleOwner = activeUser._id === article.owner._id
   const contributors = article.contributors.filter(c => c.user._id !== article.owner._id)
   const handleTagUpdate = useCallback(tags => setTags(tags), [])
+
+  useEffect(() => {
+    (async () => {
+      if (expanded) {
+        try {
+          const data = await runQuery({ query: getArticleVersions, variables: { articleId: article._id } })
+          setVersions(data.article.versions)
+        } catch (err) {
+          alert(err)
+        }
+      }
+    })()
+  }, [expanded])
 
   const toggleExpansion = useCallback((event) => {
     if (!event.key || [' ', 'Enter'].includes(event.key)) {
@@ -78,13 +93,13 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
     <article className={styles.article}>
       {exporting && (
         <Modal title="Export" cancel={() => setExporting(false)}>
-          <Export articleId={article._id} bib={article.workingVersion.bibPreview} name={article.title} />
+          <Export articleId={article._id} bib={article.workingVersion.bibPreview} name={article.title}/>
         </Modal>
       )}
 
       {sharing && (
         <Modal title="Share with Stylo users" cancel={() => setNeedReload() || setSharing(false)}>
-          <Share article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)} />
+          <Share article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)}/>
         </Modal>
       )}
 
@@ -96,16 +111,18 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
 
           {title}
 
-          <Button title="Edit" icon={true} className={styles.editTitleButton} onClick={(evt) => evt.stopPropagation() || setRenaming(true)}>
-            <Edit3 size="20" />
+          <Button title="Edit" icon={true} className={styles.editTitleButton}
+                  onClick={(evt) => evt.stopPropagation() || setRenaming(true)}>
+            <Edit3 size="20"/>
           </Button>
         </h1>
       )}
       {renaming && (
         <form className={clsx(styles.renamingForm, fieldStyles.inlineFields)} onSubmit={(e) => rename(e)}>
-          <Field autoFocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(etv(e))} placeholder="Article Title" />
+          <Field autoFocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(etv(e))}
+                 placeholder="Article Title"/>
           <Button title="Save" primary={true} onClick={(e) => rename(e)}>
-            <Check /> Save
+            <Check/> Save
           </Button>
           <Button title="Cancel" type="button" onClick={() => {
             setRenaming(false)
@@ -117,28 +134,31 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
       )}
 
       <aside className={styles.actionButtons}>
-        {isArticleOwner && <Button title={contributors.length ? 'Remove all contributors in order to delete this article' : 'Delete'} disabled={contributors.length > 0} icon={true} onClick={() => setDeleting(true)}>
-          <Trash />
-        </Button>}
+        {isArticleOwner &&
+          <Button title={contributors.length ? 'Remove all contributors in order to delete this article' : 'Delete'}
+                  disabled={contributors.length > 0} icon={true} onClick={() => setDeleting(true)}>
+            <Trash/>
+          </Button>}
 
         <Button title="Duplicate" icon={true} onClick={() => fork()}>
-          <Copy />
+          <Copy/>
         </Button>
 
         {<Button title="Share with Stylo users" icon={true} onClick={() => setSharing(true)}>
-          <Share2 />
+          <Share2/>
         </Button>}
 
         <Button title="Download a printable version" icon={true} onClick={() => setExporting(true)}>
-          <Printer />
+          <Printer/>
         </Button>
 
         <Link title="Edit article" className={buttonStyles.primary} to={`/article/${article._id}`}>
-          <Edit3 />
+          <Edit3/>
         </Link>
 
-        <Link title="Preview (open a new window)" target="_blank" className={buttonStyles.icon} to={`/article/${article._id}/preview`}>
-          <Eye />
+        <Link title="Preview (open a new window)" target="_blank" className={buttonStyles.icon}
+              to={`/article/${article._id}/preview`}>
+          <Eye/>
         </Link>
       </aside>
 
@@ -152,14 +172,14 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
             Cancel
           </Button>
 
-          <ArticleDelete article={article} setNeedReload={setNeedReload} />
+          <ArticleDelete article={article} setNeedReload={setNeedReload}/>
         </div>
       )}
 
       <section className={styles.metadata}>
         <p className={styles.metadataAuthoring}>
           {tags.map((t) => (
-            <span className={styles.tagChip} key={'tagColor-' + t._id} style={{ backgroundColor: t.color || 'grey' }} />
+            <span className={styles.tagChip} key={'tagColor-' + t._id} style={{ backgroundColor: t.color || 'grey' }}/>
           ))}
           by <span className={styles.author}>{article.owner.displayName}</span>
           {contributors.length > 0 && (<span className={styles.contributors}>
@@ -172,24 +192,24 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
         </p>
 
         {expanded && (
-        <>
-          <h4>Last versions</h4>
-          <ul className={styles.versions}>
-            {article.versions.map((v) => (
-              <li key={`version-${v._id}`}>
-                <Link to={`/article/${article._id}/version/${v._id}`}>{`${
-                  v.message ? v.message : 'no label'
-                } (v${v.version}.${v.revision})`}</Link>
-              </li>
-            ))}
-          </ul>
+          <>
+            <h4>Last versions</h4>
+            <ul className={styles.versions}>
+              {versions.map((v) => (
+                <li key={`version-${v._id}`}>
+                  <Link to={`/article/${article._id}/version/${v._id}`}>{`${
+                    v.message ? v.message : 'no label'
+                  } (v${v.version}.${v.revision})`}</Link>
+                </li>
+              ))}
+            </ul>
 
-          <h4>Tags</h4>
-          <div className={styles.editTags}>
-            <ArticleTags articleId={article._id} tags={tags} userTags={userTags} onChange={handleTagUpdate} />
-          </div>
-        </>
-      )}
+            <h4>Tags</h4>
+            <div className={styles.editTags}>
+              <ArticleTags articleId={article._id} tags={tags} userTags={userTags} onChange={handleTagUpdate}/>
+            </div>
+          </>
+        )}
       </section>
     </article>
   )

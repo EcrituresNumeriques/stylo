@@ -28,7 +28,7 @@ export default function Articles () {
   const [articles, setArticles] = useState([])
   const [tags, setTags] = useState([])
   const [creatingArticle, setCreatingArticle] = useState(false)
-  const [needReload, setNeedReload] = useState(true)
+  const [needReload, setNeedReload] = useState(false)
   const [tagManagement, setTagManagement] = useState(false)
   const [currentUser, setCurrentUser] = useState(activeUser)
   const [userAccounts, setUserAccounts] = useState([])

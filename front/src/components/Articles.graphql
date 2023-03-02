@@ -40,13 +40,6 @@ query getUserArticles($user: ID!) {
       }
     }
 
-    versions {
-      _id
-      version
-      revision
-      message
-    }
-
     tags {
       name
       owner
