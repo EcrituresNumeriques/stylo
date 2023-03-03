@@ -214,7 +214,6 @@ module.exports = {
     },
 
     async versions (article, { limit }) {
-      const t0 = performance.now();
       await article
         .populate({
           path: 'versions',
@@ -225,8 +224,6 @@ module.exports = {
           }
         })
         .execPopulate()
-      const t1 = performance.now();
-      console.log(`Call article.versions took ${t1 - t0} milliseconds.`);
       return article.versions
     },
 
