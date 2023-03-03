@@ -83,12 +83,7 @@ module.exports = {
 
     async tags (_, args, context) {
       const { userId } = isUser(args, context)
-
-      return Tag.find({ owner: userId }).populate({
-        path: 'articles',
-        populate: { path: 'versions' },
-        sort: { title: 'asc' }
-      })
+      return Tag.find({ owner: userId })
     },
   },
 
