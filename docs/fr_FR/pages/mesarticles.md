@@ -2,7 +2,7 @@
 
 Vos articles sont disponibles dans la page _Articles_ cliquable via la barre latérale de votre compte Stylo :
 
-![BarreLaterale](uploads/images/BarreLaterale.png)
+![BarreLaterale](uploads/images/BarreLateraleStyloNoire-V2.png)
 
 En haut de cette page, vous sont proposées plusieurs fonctionnalités :
 
