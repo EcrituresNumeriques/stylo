@@ -42,11 +42,11 @@ Stylo propose une interface intégrée pour éditer chacun de ces éléments, do
 ## L'interface d'édition
 L'interface d'édition d'un article présente plusieurs modules :
 
-  - un **corps de texte** : espace d'édition du corps de texte de l'article;;
+  - un **corps de texte** : espace d'édition du corps de texte de l'article;
   - un **gestionnaire de métadonnées** : espace d'édition des informations concernant l'article (résumé, auteur, mot-clés, date de publication, etc.);
-  - un **gestionnaire de versions** : espace permettant d'enregistrer et de nommer des versions mineures (*Save Minor*) ou majeures (*Save Major*), d'accéder aux versions successives pour les consulter, les exporter ou les comparer avec d'autres versions;
-  - un **gestionnaire de bibliographie** : espace d'édition des références (citées ou non dans le corps du texte);
+  - un **gestionnaire de versions** : espace permettant d'enregistrer et de nommer des versions mineures (*Create Minor*) ou majeures (*Create Major*), d'accéder aux versions successives pour les consulter, les exporter ou les comparer avec d'autres versions;
   - une **table des matières** : présentant automatiquement le sommaire de l'article, à partir des titres du corps de texte;
+  - un **gestionnaire de bibliographie** : espace d'édition des références (citées ou non dans le corps du texte);
   - un outil de **statistiques** : présentant les informations statistiques de l'article (nombre de mots, de caractères, etc.).
 
 ![Schéma de l'interface d'édition de Stylo](uploads/images/Structure.png)
@@ -75,7 +75,7 @@ Lors de cette opération, il vous est également possible de choisir les tags as
 
 ![Add Tags](uploads/images/Tag-Select-V2.png)
 
-L’article apparait désormais dans votre liste d’articles.
+L’article apparaît désormais dans votre liste d’articles.
 
 Cliquez sur le bouton
 
@@ -98,7 +98,7 @@ L'environnement d'édition est composé de cinq modules :
 - au centre : l'espace d'écriture consacré au corps de texte de l'article;
 - à droite : le bouton **[Metadata]** ouvre l'éditeur de métadonnées;
 - à gauche :
-  - l'historique des versions du document pour naviguer et agir sur les différentes versions enregistrées;
+  - l'historique des versions du document (*Versions*) pour naviguer et agir sur les différentes versions enregistrées;
   - le sommaire (*Table of content*) de l'article liste les titres de niveau 2, 3 et suivants;
   - la bibliographie (*Bibliography*) liste les références bibliographiques;
   - les statistiques (*Stats*) offrent quelques données quantitatives sur l'article.
@@ -107,17 +107,17 @@ L'environnement d'édition est composé de cinq modules :
 
 L'article dans Stylo doit être écrit en langage Markdown, un langage de balisage simple à prendre en main.
 
-Le langage Markdown permet une syntaxe simple d'usage autant en lecture qu'écriture. Voici ici les principales règles d'écriture en Markdown :
+Le langage Markdown permet une syntaxe simple d'usage autant en lecture qu'en écriture. Voici les principales règles d'écriture en Markdown :
 
-- Titre : les niveaux de titre (titre de niveau 1 pour le titre de l'article, de niveau 2 pour les titres de section, etc.) sont renseignés avec un ```#```, ainsi :
+- **Titre** : les niveaux de titre (titre de niveau 1 pour le titre de l'article, de niveau 2 pour les titres de section, etc.) sont renseignés avec un ```#```, ainsi :
 	- ```# Titre d'article```, ```## Introduction```, etc.
 
-**Attention** : le corps de texte de l'article ne supporte pas les titres de niveau 1, le titre de niveau 1 est uniquement réservé au champ *Title* dans les métadonnées.
+**Attention** : le corps de texte de l'article ne supporte pas les titres de niveau 1, le titre de niveau 1 étant uniquement réservé au champ *Title* dans les métadonnées.
 
-- Italique : l'italique se balise dans le texte de deux manières : ```_mot_``` ou ```*mot*```
-- Gras : le gras se balise dans le texte ainsi : ```**mot**```
-- Citation longue : les citations longues dans le texte sont balisées ainsi : ```> citation longue```
-- Note : une note dans le texte se balise selon qu'elle est avec ou sans appel de note :
+- **Italique** : l'italique se balise dans le texte de deux manières : ```_mot_``` ou ```*mot*```
+- **Gras** : le gras se balise dans le texte ainsi : ```**mot**```
+- **Citation longue** : les citations longues dans le texte sont balisées ainsi : ```> citation longue```
+- **Note** : une note dans le texte se balise selon qu'elle est avec ou sans appel de note :
 
 avec appel de note :
 
@@ -168,7 +168,7 @@ Chaque version comporte plusieurs fonctionnalités :
 
 - Pour une version antérieure :
 	- **[Compare]** pour comparer les différentes versions (une version antérieure et la version actuelle ou deux versions antérieures). Pour davantage d'informations sur la fonction **[Compare]**, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/interface.md);
-	- ![Export](uploads/images/Export-V2.png) : pour exporter et de télécharger le document dans différents formats : HTML5, xml erudit, etc.;
+	- **[Export]** : pour exporter et de télécharger le document dans différents formats : HTML5, xml erudit, etc.;
 	- **[preview]** pour accéder à la prévisualisation de votre travail et l'annoter. Pour davantage d'informations sur la fonction **[preview]**, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/preview.md).
 
 Pour visualiser une ancienne version, il vous suffit de cliquer sur son titre. Pour retourner à la version éditable, il vous faut cliquer sur le bouton **[Edit]**.
