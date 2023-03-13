@@ -12,11 +12,11 @@ Pour ajouter vos références, vous devez cliquer sur **[Manage]** dans le volet
 
 ![Bibliographie-Citations](uploads/images/BibliographieCitations-V2.png)
 
-5. **Raw bibtex** : il est possible de corriger directement le bibtex.
+5. **Raw BibTeX** : il est possible de corriger directement le BibTeX.
 
 ![Bibliographie-Raw BibTeX](uploads/images/BibliographieRawBibTeX-V2.png)
 
-Vous pouvez directement [structurer vos références en bibtex](http://www.andy-roberts.net/writing/latex/bibliographies) ou exporter vos références en bibtex grâce à votre outil de gestion de bibliographie :
+Vous pouvez directement [structurer vos références en BibTeX](http://www.andy-roberts.net/writing/latex/bibliographies) ou exporter vos références en BibTeX grâce à votre outil de gestion de bibliographie :
 
 - voir tutoriels : <a class="btn btn-info" href="http://archive.sens-public.org/IMG/pdf/Utiliser_Zotero.pdf" role="button">Zotero</a> <a class="btn btn-info" href="https://libguides.usask.ca/c.php?g=218034&p=1446316" role="button">Mendeley</a>
 
