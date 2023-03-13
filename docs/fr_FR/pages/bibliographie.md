@@ -26,7 +26,7 @@ Il est possible de synchroniser les références d'un article avec une collectio
 
 1. Dans le volet latéral de gauche, à l’onglet *Bibliography*, cliquez sur **[Manage]**;
 2. Connectez votre compte Zotero avec l'option "Connect my Zotero Account";
-3. Une fenêtre s'ouvre, intitulée "New Private Key", pour vous demander de valider la connexion entre Stylo et Zotero : cliquez sur "Accept Defaults";
+3. Une fenêtre s'ouvre, intitulée "New Private Key", vous demandant de valider la connexion entre Stylo et Zotero : cliquez sur "Accept Defaults";
 4. En activant la liste déroulante, vous pouvez désormais choisir une collection (ou une sous-collection) de votre compte Zotero;
 5. Cliquez sur le bouton **[Replace bibliography with this account collection]** afin d'importer les références bibliographiques (celles-ci apparaîtront dans le volet latéral de gauche, sous l'onglet *Bibliography*).
 
