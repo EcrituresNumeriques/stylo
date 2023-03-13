@@ -22,7 +22,7 @@ Pour chaque article, plusieurs actions sont possibles :
 | ![Rename](uploads/images/Rename-V2.png) | pour renommer l'article|
 | ![Delete](uploads/images/Delete-V2.png) | pour supprimer l'article |
 | ![Plus](uploads/images/Plus-V2.png) | pour développer d'autres fonctions de l'article :|
-| ![Versions](uploads/images/Version-V2.png) | pour consulter l'historique des versions enregistrées |
+| ![Versions](uploads/images/Version-V2.PNG) | pour consulter l'historique des versions enregistrées |
 | ![Tag](uploads/images/Tag-V2.png) | pour choisir les tags de l'article |
 
 Note : le nom du document tel que visible sur Stylo ne correspond pas au titre de l'article qui sera généré.
@@ -65,7 +65,7 @@ Pour créer un nouvel article, il suffit de cliquer sur le bouton :
 
 Vous devez ensuite renseigner le nom du document dans le champ prévu à cet effet
 
-![Nommer un article](uploads/images/Title-V2.png)
+![Nommer un article](uploads/images/Title-V2.PNG)
 
 et valider l'opération en cliquant une nouvelle fois sur le bouton
 
@@ -73,7 +73,7 @@ et valider l'opération en cliquant une nouvelle fois sur le bouton
 
 Lors de cette opération, il vous est également possible de choisir les tags associés à l'article :
 
-![Add Tags](uploads/images/Tag-Select-V2.png)
+![Add Tags](uploads/images/Tag-Select-V2.PNG)
 
 L’article apparaît désormais dans votre liste d’articles.
 
@@ -137,23 +137,23 @@ Pour approfondir vos connaissances en syntaxe Markdown, vous pouvez consulter la
 
 ## Versions
 
-![active](uploads/images/Nom-Version-V2.png)
+![active](uploads/images/Nom-Version-V2.PNG)
 
 Une version du document correspond à une sauvegarde de votre travail. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. En chargeant une ancienne version, ce sont donc ces trois éléments qui sont mis à jour. 
 
 Votre travail est par défaut automatiquement sauvegardé sur Stylo, mais vous devez créer vous-mêmes les versions. Pour ce faire, vous pouvez donc - et cela est conseillé - utiliser la fonction de sauvegarde [New Version] qui permet de générer une nouvelle version du travail :
 
-![New-Version](uploads/images/New-Version-V2.png)
+![New-Version](uploads/images/New-Version-V2.PNG)
 
 Ainsi, lorsque vous êtes parvenu·e·s à une version que vous jugez satisfaisante, il vous est possible de nommer votre version dans le champ *Label of the version* avant de l'enregistrer en tant que version mineure (**[Create Minor]**) ou majeure (**[Create Major]**). 
 
-![Label Version](uploads/images/Label-Version-V2.png)
+![Label Version](uploads/images/Label-Version-V2.PNG)
 
 Une version mineure correspond à des modifications mineures, tandis qu'une version majeure acte l'établissement d'une version dont les modifications sont importantes. 
 
 À tout moment, vous pouvez visualiser votre travail, qu'il s'agisse de la version actuelle que vous êtes en train d'éditer ou des versions précédentes. Il suffit de cliquer sur le bouton **[preview]** :
 
-![Preview](uploads/images/Preview-Bouton-V2.png)
+![Preview](uploads/images/Preview-Bouton-V2.PNG)
 
 Chaque version comporte plusieurs fonctionnalités :
 
@@ -161,10 +161,10 @@ Chaque version comporte plusieurs fonctionnalités :
 
 |Bouton|Fonction|
 |:-:|:--|
-| ![Create Major](uploads/images/Create-Major-V2.png) | pour sauvegarder une version majeure de votre travail |
-| ![Create Minor](uploads/images/Create-Minor-V2.png) | pour sauvegarder une version mineure de votre travail |
-| ![Export](uploads/images/Export-V2.png) | pour exporter et télécharger la version dans différents formats |
-| ![Preview](uploads/images/Preview-Bouton-V2.png) | pour accéder à la prévisualisation de votre travail et l'annoter |
+| ![Create Major](uploads/images/Create-Major-V2.PNG) | pour sauvegarder une version majeure de votre travail |
+| ![Create Minor](uploads/images/Create-Minor-V2.PNG) | pour sauvegarder une version mineure de votre travail |
+| ![Export](uploads/images/Export-V2.PNG) | pour exporter et télécharger la version dans différents formats |
+| ![Preview](uploads/images/Preview-Bouton-V2.PNG) | pour accéder à la prévisualisation de votre travail et l'annoter |
 
 - Pour une version antérieure :
 	- **[Compare]** pour comparer les différentes versions (une version antérieure et la version actuelle ou deux versions antérieures). Pour davantage d'informations sur la fonction **[Compare]**, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/interface.md);
@@ -180,7 +180,7 @@ Pour davantage d'informations sur l'export Stylo, vous pouvez consulter la [page
 
 ## Sommaire
 
-![Sommaire](uploads/images/Sommaire-V2.png)
+![Sommaire](uploads/images/Sommaire-V2.PNG)
 
 Le sommaire affiche une liste des titres de niveau 1, 2 et suivants. Ces titres sont cliquables pour accéder rapidement à la partie du texte correspondante.
 
@@ -198,15 +198,15 @@ Vous pouvez directement [structurer vos références en bibtex](http://www.andy-
 
 Pour ajouter une référence à l'article, il suffit de cliquer sur la référence, puis de coller (Ctrl+V) la référence dans le texte à l'endroit souhaité. Ainsi, un clic revient à "copier" la clé de la référence dans le presse-papiers. Il ne reste plus qu'à la coller dans le corps de texte.
 
-![Bibliographie exemple](uploads/images/Bibliographie-Exemple-V2.png)
+![Bibliographie exemple](uploads/images/Bibliographie-Exemple-V2.PNG)
 
 Pour davantage d'informations sur la gestion de la bibliographie, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/bibliographie.md).
 
 ## Métadonnées
 
-![Metadata-Bouton](uploads/images/Metadata-Bouton-V2.png)
+![Metadata-Bouton](uploads/images/Metadata-Bouton-V2.PNG)
 
-![Metadata-Edition](uploads/images/Metadata-Edition-V2.png)
+![Metadata-Edition](uploads/images/Metadata-Edition-V2.PNG)
 
 Le bouton [Metadata] permet d'ouvrir le volet des métadonnées. Trois modes d'édition sont disponibles :
 
@@ -220,11 +220,11 @@ Pour davantage d'informations sur l'édition des métadonnées, vous pouvez cons
 
 **Attention** : dans le volet des métadonnées se trouve la division sur la "Bibliographie" dont l'option *Display* permet de choisir la visualisation de la bibliographie dans son entièreté ("All citations") ou uniquement des références qui ont été citées dans le corps de l'article ("Only used"). 
 
-![Bibliography-Display](uploads/images/Bibliography-Display-V2.png)
+![Bibliography-Display](uploads/images/Bibliography-Display-V2.PNG)
 
 ## Statistiques
 
-![Statistiques](uploads/images/Statistiques-V2.png)
+![Statistiques](uploads/images/Statistiques-V2.PNG)
 
 Le menu *Stats* donne des informations sur :
 
