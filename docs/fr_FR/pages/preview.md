@@ -5,12 +5,20 @@ Il est possible de prévisualiser un article Stylo en HTML avec une mise en page
 
 Pour prévisualiser un article, il est possible :
 
-- De cliquer sur le bouton "Preview" depuis la page "Mes articles"
-- De cliquer sur le bouton "Preview" depuis la page d'édition de l'article, en haut de la colonne de droite.
+- De cliquer sur le bouton "Preview" depuis la page "Mes articles", à droite de l'icône "Edit" :
+
+![Preview](uploads/images/PreviewPageArticles.PNG)
+
+- De cliquer sur le bouton "Preview" depuis la page d'édition de l'article, en haut à droite du corps de texte : 
+
+![Preview](uploads/images/PreviewPageEdition-V2.PNG)
 
 La prévisualisation est disponible via un permalien qui reste le même pour toute la vie de l'article. Si l'article est modifié, le lien de prévisualisation montrera la dernière version de l'article.
 
-Il est possible aussi de prévisualiser une version particulière de l'article. Pour ce faire, il faut cliquer sur le bouton "Preview" dans la page d'édition de l'article, dans la colonne de droite, à l'intérieur du sous-menu "Versions".
+Il est possible aussi de prévisualiser une version particulière de l'article. Pour ce faire, il faut cliquer sur le bouton "Preview" dans la page d'édition de l'article, dans la colonne de gauche, à l'intérieur du sous-menu "Versions".
+
+![Preview](uploads/images/PreviewSousMenuVersions-V2.PNG)
+
 Le lien de visualisation d'une version affiche toujours la version sauvegardée.
 
 ## Annotation
