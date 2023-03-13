@@ -8,11 +8,11 @@ Pour ajouter vos références, vous devez cliquer sur **[Manage]** dans le volet
 
 ![Bibliographie-Zotero](uploads/images/BibliographieZotero-V2.png)
 
-3. **Citations** : il vous est possible de renseigner votre bibliographie manuellement sous format BibTeX.
+2. **Citations** : il vous est possible de renseigner votre bibliographie manuellement sous format BibTeX.
 
 ![Bibliographie-Citations](uploads/images/BibliographieCitations-V2.png)
 
-5. **Raw BibTeX** : il est possible de corriger directement le BibTeX.
+3. **Raw BibTeX** : il est possible de corriger directement le BibTeX.
 
 ![Bibliographie-Raw BibTeX](uploads/images/BibliographieRawBibTeX-V2.png)
 
