@@ -1,12 +1,22 @@
 # Structurer la bibliographie
 
-La bibliographie liste les références bibliographiques que vous avez ajoutées. Les références bibliographiques peuvent être ajoutées une par une, ou groupées. Pour ajouter vos références, vous devez cliquer sur **[Manage Bibliography]** dans le volet de gauche : l'outil *Bibliographie* s'ouvre alors et vous propose plusieurs possibilités :
+La bibliographie liste les références bibliographiques que vous avez ajoutées à votre article. Celles-ci peuvent être ajoutées une par une, ou groupées. 
+
+Pour ajouter vos références, vous devez cliquer sur **[Manage]** dans le volet de gauche, à droite de l’onglet *Bibliography*. L'outil *Bibliography Manager* s'ouvre alors et vous propose plusieurs possibilités :
 
 1. **Zotero** : il vous est possible de synchroniser votre bibliographie à partir d'un dossier Zotero (dossier qui doit être public) en entrant l'url du dossier.
-2. **Citations** : il vous est possible de renseigner votre bibliographie manuellement sous format bibtex.
-3. **Raw bibtex** : il est possible de corriger directement le bibtex.
 
-Vous pouvez directement [structurer vos références en bibtex](http://www.andy-roberts.net/writing/latex/bibliographies), ou exporter vos références en bibtex grâce à votre outil de gestion de bibliographie :
+![Bibliographie-Zotero](uploads/images/BibliographieZotero-V2.png)
+
+3. **Citations** : il vous est possible de renseigner votre bibliographie manuellement sous format bibtex.
+
+![Bibliographie-Citations](uploads/images/BibliographieCitations-V2.png)
+
+5. **Raw bibtex** : il est possible de corriger directement le bibtex.
+
+![Bibliographie-Raw BibTeX](uploads/images/BibliographieRawBibTeX-V2.png)
+
+Vous pouvez directement [structurer vos références en bibtex](http://www.andy-roberts.net/writing/latex/bibliographies) ou exporter vos références en bibtex grâce à votre outil de gestion de bibliographie :
 
 - voir tutoriels : <a class="btn btn-info" href="http://archive.sens-public.org/IMG/pdf/Utiliser_Zotero.pdf" role="button">Zotero</a> <a class="btn btn-info" href="https://libguides.usask.ca/c.php?g=218034&p=1446316" role="button">Mendeley</a>
 
