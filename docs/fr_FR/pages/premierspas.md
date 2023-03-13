@@ -161,8 +161,8 @@ Chaque version comporte plusieurs fonctionnalités :
 
 |Bouton|Fonction|
 |:-:|:--|
-| ![Create Major](uploads/images/Create-Major.PNG) | pour sauvegarder une version majeure de votre travail |
-| ![Create Minor](uploads/images/Create-Minor.PNG) | pour sauvegarder une version mineure de votre travail |
+| ![Create Major](uploads/images/Create-Major-V2.PNG) | pour sauvegarder une version majeure de votre travail |
+| ![Create Minor](uploads/images/Create-Minor-V2.PNG) | pour sauvegarder une version mineure de votre travail |
 | ![Export](uploads/images/Export-V2.PNG) | pour exporter et télécharger la version dans différents formats |
 | ![Preview](uploads/images/Preview-Bouton-V2.PNG) | pour accéder à la prévisualisation de votre travail et l'annoter |
 
