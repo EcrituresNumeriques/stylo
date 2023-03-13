@@ -49,7 +49,7 @@ L'interface d'édition d'un article présente plusieurs modules :
   - un **gestionnaire de bibliographie** : espace d'édition des références (citées ou non dans le corps du texte);
   - un outil de **statistiques** : présentant les informations statistiques de l'article (nombre de mots, de caractères, etc.).
 
-![Schéma de l'interface d'édition de Stylo](uploads/images/SchémaInterdace.PNG)
+![Schéma de l'interface d'édition de Stylo](uploads/images/SchémaInterface.PNG)
 
 ![Schéma de l'interface d'édition de Stylo](uploads/images/Structure.png)
 
