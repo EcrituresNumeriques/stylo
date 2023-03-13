@@ -51,8 +51,6 @@ L'interface d'édition d'un article présente plusieurs modules :
 
 ![Schéma de l'interface d'édition de Stylo](uploads/images/SchémaInterface.PNG)
 
-![Schéma de l'interface d'édition de Stylo](uploads/images/Structure.png)
-
 ## L'option Share
 
 La fonction **[Share]** permet d'inviter des co-auteur·rice·s à travailler sur le même article. Ces utilisateurs ont alors accès à tout l'historique. Les versions de l'article se synchronisent pour tous les utilisateurs au fur et à mesure des modifications effectuées sur le document.
