@@ -39,9 +39,9 @@ Il est possible de synchroniser les références d'un article avec une collectio
 
 ## Insérer une référence bibliographique
 
-Pour ajouter une référence à l'article, il suffit de cliquer sur la référence, puis de coller (Ctrl+V) la référence dans le texte à l'endroit souhaité. Elle apparaîtra alors ainsi `[@shirky_here_2008]`. Pour bien comprendre, un clic consiste à "copier" la clé BibTeX de la référence dans le presse-papier. ![Bibliographie exemple](uploads/images/Bibliographie-Exemple-V2.png)
+Pour ajouter une référence à l'article, il suffit de cliquer sur la référence, puis de la coller (Ctrl+V) dans le texte à l'endroit souhaité. Elle apparaîtra alors ainsi `[@shirky_here_2008]`. Pour bien comprendre, un clic consiste à "copier" la clé BibTeX de la référence dans le presse-papier. ![Bibliographie exemple](uploads/images/Bibliographie-Exemple-V2.png)
 
-Une fonction d'autocomplétion est également implémentée. Il vous suffit de commencer à écrire `[@` ou simplement `@` pour que l’éditeur de texte vous propose toutes vos références associés à l’article. Si vous souhaitez affiner l’autocomplétion, il suffira d’ajouter la première lettre du nom de l’auteur pour réduire les propositions faites : `[@b`.
+Une fonction d'autocomplétion est également implémentée. Il vous suffit de commencer à écrire `[@` ou simplement `@` pour que l’éditeur de texte vous propose toutes vos références associées à l’article. Si vous souhaitez affiner l’autocomplétion, il suffira d’ajouter la première lettre du nom de l’auteur pour réduire les propositions faites : `[@b`.
 
 ![Bibliographie-Autocomplétion](uploads/images/BibliographieAutocompletion-V2.png)
 
