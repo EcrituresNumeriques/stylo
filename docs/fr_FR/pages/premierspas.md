@@ -3,7 +3,7 @@
 ## Création d'un compte
 Afin d'éditer dans Stylo, la création d'un compte utilisateur via Huma-Num est nécessaire. Pour créer un compte, veuillez cliquer [ici](https://stylo.huma-num.fr/register) et fournir les informations obligatoires :
 
-![Register](uploads/images/Register.png)
+![Register](uploads/images/Login-Huma-Num-V2.PNG)
 
 Si vous possédez déjà un compte, connectez-vous [ici](https://stylo.huma-num.fr).
 
