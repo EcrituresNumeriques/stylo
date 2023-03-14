@@ -22,7 +22,7 @@
           "title": "Affiliations"
         },
         "biography": {
-          "type": "string",
+          "type": "array",
           "title": "Biography"
         },
         "email": {
