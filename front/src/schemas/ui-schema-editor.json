@@ -31,7 +31,7 @@
     },
     {
       "title": "Diffusion",
-      "fields": ["publisher", "journal"]
+      "fields": ["publisher", "journal", "journal_email"]
     },
     {
       "fields": ["director"]
@@ -123,6 +123,9 @@
   },
   "journal": {
     "ui:title": "Journal"
+  },
+  "journal_email": {
+    "ui:title": "Email's Journal"
   },
   "abstract": {
     "ui:title": "Résumés",
