@@ -102,6 +102,9 @@
     "ui:title": "Journal issue",
     "ui:placeholder": "Journal issue"
   },
+  "biography": {
+    "ui:widget": "textarea"
+  },
   "authors": {
     "ui:add-item-title": "Ajouter un author",
     "ui:remove-item-title": "Supprimer",
