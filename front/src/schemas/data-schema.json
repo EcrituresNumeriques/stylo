@@ -171,7 +171,7 @@
     },
     "journal_email": {
       "type": "string"
-    }
+    },
     "dossier": {
       "type": "array",
       "minItems": 1,
