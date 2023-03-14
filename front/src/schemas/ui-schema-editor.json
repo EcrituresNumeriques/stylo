@@ -197,8 +197,7 @@
     "ui:remove-item-title": "Supprimer",
     "items": {
       "text_f": {
-        "ui:title": "Title",
-        "ui:widget": "textarea"
+        "ui:title": "Title"
       },
       "lang": {
         "ui:title": "Language",
