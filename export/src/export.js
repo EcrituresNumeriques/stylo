@@ -54,6 +54,7 @@ ${templateArg} \
 --ascii \
 --toc \
 --csl=${cslFilePath} \
+--citeproc \
 -f markdown \
 -t html5 \
 ${markdownFilePath}`
