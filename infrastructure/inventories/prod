@@ -31,6 +31,7 @@ zotero_auth_callback_url='http://stylo.huma-num.fr/authorization-code/zotero/cal
 # Configuration des analytics
 matomo_url='https://analyseweb.huma-num.fr/'
 matomo_site_id=286
+se_graphql_token=
 
 [stylo]
 node01 ansible_user=stylo ansible_host=cchum-kvm-stylo.in2p3.fr

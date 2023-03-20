@@ -28,6 +28,7 @@ export_allowed_instance_base_urls='https://stylo-dev.huma-num.fr'
 zotero_auth_callback_url='http://stylo-dev.huma-num.fr/authorization-code/zotero/callback'
 matomo_url='https://analyseweb.huma-num.fr/'
 matomo_site_id=286
+se_graphql_token=
 
 [stylo]
 node01 ansible_user=stylo ansible_host=cchum-kvm-stylo-dev.in2p3.fr
