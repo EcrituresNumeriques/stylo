@@ -100,6 +100,14 @@
       run_once: true
       no_log: true
 
+    - set_fact:
+        "se_graphql_token": "{{ graphql_token.stdout }}"
+
+    - name: Update config files
+      ansible.builtin.template:
+        src: "./stylo.env"
+        dest: "~/stylo/stylo.env"
+
     - name: Start containers
       ansible.builtin.shell:
         cmd: "docker-compose up --no-build --pull never --detach"
@@ -108,7 +116,6 @@
         SNOWPACK_MATOMO_URL: "{{ matomo_url }}"
         SNOWPACK_MATOMO_SITE_ID: "{{ matomo_site_id }}"
         SE_ALLOWED_INSTANCE_BASE_URLS: "{{ export_allowed_instance_base_urls }}"
-        SE_GRAPHQL_TOKEN: "{{ graphql_token.stdout }}"
 
   handlers:
     - name: reload nginx
