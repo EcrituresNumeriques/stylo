@@ -43,7 +43,10 @@ function generatePandocCommand (
     )} -H ${path.join(templatesDirPath, 'preview.html')}`
   }
   const cslFilePath = path.join(templatesDirPath, 'chicagomodified.csl')
-  return `pandoc ${metadataFilePath} ${markdownFilePath} \
+  // https://github.com/jgm/pandoc/blob/main/MANUAL.txt
+  // `pandoc` [*options*] [*input-file*]...
+  return `pandoc \
+--metadata-file=${metadataFilePath} \
 --bibliography=${bibliographyFilePath} \
 --standalone \
 ${templateArg} \
@@ -52,7 +55,8 @@ ${templateArg} \
 --toc \
 --csl=${cslFilePath} \
 -f markdown \
--t html5`
+-t html5 \
+${markdownFilePath}`
 }
 
 const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => {
