@@ -13,7 +13,7 @@
     "test": "jest",
     "posttest": "eslint '**/*.js'",
     "start": "node app.js",
-    "prod": "NODE_ENV=production node --heapsnapshot-signal=SIGUSR2 app.js"
+    "prod": "NODE_ENV=production node --tls-max-v1.2 --heapsnapshot-signal=SIGUSR2 app.js"
   },
   "author": "",
   "license": "ISC",
