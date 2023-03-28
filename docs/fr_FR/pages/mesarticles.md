@@ -85,7 +85,7 @@ Chaque article se présente comme un bloc dans votre liste. Cet espace dédié �
 | ![See](uploads/images/Preview-V2.png) | pour prévisualiser l'article |
 | ![Share](uploads/images/Share-V2.png) | pour partager l'article et son historique de versions avec un autre usager de Stylo qui s'intitulera ainsi : "[Copy]Titre de l'article" |
 | ![Duplicate](uploads/images/Duplicate-V2.png) | pour dupliquer uniquement la dernière version de l'article |
-| ![Export](uploads/images/Download.png) | pour dupliquer uniquement la dernière version de l'article |
+| ![Export](uploads/images/Download.png) | pour exporter l'article |
 | ![Edit](uploads/images/Edit-V2.png) | pour ouvrir l'article en édition |
 | ![Delete](uploads/images/Delete-V2.png) | pour supprimer l'article |
 
@@ -157,24 +157,24 @@ Les formats supportés sont les suivants :
 - HTML5
 - LaTex
 - PDF
-- ODT (Open Office)
-- DOCX (Word)
-- ICML (Impress)
+- ODT (LibreOffice)
+- DOCX (Microsoft Word)
+- ICML (InDesign)
 - XML-TEI
 - XML-Erudit
-- XML-TEI Métopes
+- XML-TEI Commons Publishing (Métopes et OpenEdition)
 
 Il est possible de choisir parmi plusieurs styles bibliographiques : certains intègrent la référence dans le texte (par exemple Chicago, qui insère la référence dans le corps du texte entre parenthèses), d'autres ajoutent une note avec la référence.
 
 Le module d'export se charge de mettre en forme les références, d'ajouter ou d'enlever les espaces, d'insérer des "Ibid." en accord avec le style, etc.
 
-Les exports sont produits grâce à l'outil de conversion [pandoc](https://pandoc.org/) sur la base de templates disponibles [ici](https://framagit.org/stylo-editeur/templates-stylo).
+Les exports sont produits grâce à l'outil de conversion [Pandoc](https://pandoc.org/) sur la base de templates disponibles [ici](https://framagit.org/stylo-editeur/templates-stylo).
 
 L'export permet aussi de télécharger les fichiers source de Stylo (.md, .bib, .yaml) et les médias insérés dans l'article s'il y en a.
 
 ### Personaliser son export
 
-À partir des fichiers source, il est possible de produire des exports personnalisés (mise en page, graphismes, métadonnées) en s'appuyant sur les fonctionnalités de l'outil de conversion [pandoc](https://pandoc.org/).
+À partir des fichiers source, il est possible de produire des exports personnalisés (mise en page, graphismes, métadonnées) en s'appuyant sur les fonctionnalités de l'outil de conversion [Pandoc](https://pandoc.org/).
 
 Pour plus d'informations sur l'emploi des templates, voir ce [tutoriel](https://gitlab.huma-num.fr/ecrinum/manuels/tutoriel-markdown-pandoc).
 

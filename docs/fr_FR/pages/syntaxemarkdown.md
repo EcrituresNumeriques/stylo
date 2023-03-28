@@ -37,7 +37,7 @@ Voici mon texte <sup><a href="syntaxemarkdown.md#note-2" id="#note-2-b">2</a></s
 
 ## Italiques et gras
 
-- L'italique se balise avec des ```_``` avant et après le mot ou l'expression en italique. Par exemple :
+- L'italique se balise avec des `_` avant et après le mot ou l'expression en italique. Par exemple :
 
 ```
 Voici un _mot_ en italique
@@ -48,7 +48,7 @@ donnera :
 Voici un _mot_ en italique
 
 
-- Le gras se balise avec deux ```**``` avant et après le mot ou l'expression en italique. Par exemple :
+- Le gras se balise avec deux `**` avant et après le mot ou l'expression en italique. Par exemple :
 ```
 Voici un **mot** en gras
 ```
@@ -109,7 +109,7 @@ Les espaces insécables sont représentés par un point discret : `·`. Exemple 
 
 Il est aussi possible d'utiliser l'espace insécable en ASCII `&nbsp;`.
 
-À noter que si votre source markdown provient de la conversion pandoc docx (ou odt) vers markdown, les espaces insécables seront conservés et présentés dans Stylo sous forme de point médian.
+À noter que si votre source markdown provient de la conversion Pandoc DOCX (ou ODT) vers markdown, les espaces insécables seront conservés et présentés dans Stylo sous forme de point médian.
 
 ## Balisage sémantique
 

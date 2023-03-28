@@ -1,8 +1,10 @@
 # Exports
 
-## Page Export 
+## Page Export
 
-La [page export](https://stylo-export.ecrituresnumeriques.ca/) liste les exports personnalisés de Stylo dont : 
+La version actuelle du module d'export de Stylo ([https://export.stylo.huma-num.fr](https://export.stylo.huma-num.fr/)) propose un export générique, un export pour une intégration dans la chaîne d'édition de Métopes (schéma XML-TEI Commons Publishing pour Métopes ou OpenEdition) et enfin un export spécifique pour la revue _Sens public_.
+
+La version _legacy_ de l'export de Stylo ([https://stylo-export.ecrituresnumeriques.ca](https://stylo-export.ecrituresnumeriques.ca/)) liste d'autres exports personnalisés de Stylo dont : 
 
 - les exports pour les revues qui utilisent Stylo dans leurs chaînes éditoriales : 
      - [Sens public](http://sens-public.org/)
@@ -120,4 +122,5 @@ typeTravail: TP2
 5. Dans la page d'export de l'EBSI, coller la clef de version à l'emplacement dédié;
 6. Puis attribuer un nom à l'export, sélectionner le modèle de l'EBSI et cliquer sur "Submit".
 
-**Attention** : n'oubliez pas de rafraîchir la page d'export si vous faites plusieurs exports consécutifs. 
+**Attention** : n'oubliez pas de rafraîchir la page d'export si vous faites plusieurs exports consécutifs.
+
