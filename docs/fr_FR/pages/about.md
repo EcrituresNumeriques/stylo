@@ -1,4 +1,4 @@
-# À propos de ***_Stylo_***
+# À propos de **_Stylo_**
 
 Le projet est dirigé par la [Chaire de Recherche du Canada sur les écritures numériques](http://ecrituresnumeriques.ca) et a été réalisé par l'entreprise [PiNinja](https://3.14159.ninja/), avec le soutien d'[Érudit](http://erudit.org/), sous licence [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE).
 
@@ -33,7 +33,7 @@ La philosophie de Stylo consiste à remettre dans les mains des chercheur·e·s 
 
 L'éditeur est basé sur la séparation entre le balisage sémantique et les affichages graphiques, ce qui permet à l'auteur·e de se consacrer au sens du texte plutôt que sur sa mise en forme.
 
-Stylo propose une solution libre, basée sur des standards (markdown, yaml, bibtex) qui permet de :
+Stylo propose une solution libre, basée sur des standards (Markdown, YAML, BibTeX) qui permet de :
 
 - produire des textes bien balisés avec des métadonnées riches et une bibliographie structurée ;
 - produire de multiples sorties (PDF, HTML, XML, ODT...) à partir d'un seul document.

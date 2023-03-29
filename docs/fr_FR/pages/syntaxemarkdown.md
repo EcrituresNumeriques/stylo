@@ -109,13 +109,13 @@ Les espaces insécables sont représentés par un point discret : `·`. Exemple 
 
 Il est aussi possible d'utiliser l'espace insécable en ASCII `&nbsp;`.
 
-À noter que si votre source markdown provient de la conversion Pandoc DOCX (ou ODT) vers markdown, les espaces insécables seront conservés et présentés dans Stylo sous forme de point médian.
+À noter que si votre source markdown provient de la conversion Pandoc DOCX (ou ODT) vers Markdown, les espaces insécables seront conservés et présentés dans Stylo sous forme de point médian.
 
 ## Balisage sémantique
 
 Le balisage sémantique permet de spécifier la fonction d'un mot, d'une expression ou d'un paragraphe.
 
-Stylo permet un balisage sémantique libre : chaque auteur peut définir sa propre sémantique en fonction de ses besoins particuliers. Elle pourra ensuite être implémentée dans les templates d'export ou les feuilles de style personnalisées (voir la section [Personnaliser son export](pages/mesarticles.md)).
+Stylo permet un balisage sémantique libre : chaque auteur·e peut définir sa propre sémantique en fonction de ses besoins particuliers. Elle pourra ensuite être implémentée dans les templates d'export ou les feuilles de style personnalisées (voir la section [Personnaliser son export](pages/mesarticles.md)).
 
 La syntaxe markdown de balisage sémantique est la suivante : `[terme à baliser]{.categorie}`.
 

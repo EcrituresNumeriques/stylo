@@ -7,7 +7,7 @@ Vos articles sont disponibles dans la page _Articles_ cliquable via la barre lat
 En haut de cette page, vous sont proposées plusieurs fonctionnalités :
 
 - la création d'un nouvel article;
-- l'éditon et la gestion des tags;
+- l'édition et la gestion des tags;
 - la recherche d'un article.
 
 ![BarreLaterale2](uploads/images/BarreLaterale-V2.PNG)
@@ -83,10 +83,10 @@ Chaque article se présente comme un bloc dans votre liste. Cet espace dédié �
 |:-:|:--|
 | ![Rename](uploads/images/Rename-V2.png) | pour renommer l'article |
 | ![See](uploads/images/Preview-V2.png) | pour prévisualiser l'article |
-| ![Share](uploads/images/Share-V2.png) | pour partager l'article et son historique de versions avec un autre usager de Stylo qui s'intitulera ainsi : "[Copy]Titre de l'article" |
-| ![Duplicate](uploads/images/Duplicate-V2.png) | pour dupliquer uniquement la dernière version de l'article |
+| ![Share](uploads/images/Share-V2.png) | pour partager l'article et son historique de versions avec un autre usager de Stylo |
+| ![Duplicate](uploads/images/Duplicate-V2.png) | pour dupliquer uniquement la dernière version de l'article. La copie s'intitulera ainsi : "[Copy] Titre de l'article" |
 | ![Export](uploads/images/Download.png) | pour exporter l'article |
-| ![Edit](uploads/images/Edit-V2.png) | pour ouvrir l'article en édition |
+| ![Edit](uploads/images/Edit-V2.png) | pour ouvrir l'article en mode édition |
 | ![Delete](uploads/images/Delete-V2.png) | pour supprimer l'article |
 
 Vous pouvez également développer le bloc de l'article en cliquant sur le chevron situé à gauche du titre de votre article. Vous avez alors accès à :
@@ -168,11 +168,11 @@ Il est possible de choisir parmi plusieurs styles bibliographiques : certains i
 
 Le module d'export se charge de mettre en forme les références, d'ajouter ou d'enlever les espaces, d'insérer des "Ibid." en accord avec le style, etc.
 
-Les exports sont produits grâce à l'outil de conversion [Pandoc](https://pandoc.org/) sur la base de templates disponibles [ici](https://framagit.org/stylo-editeur/templates-stylo).
+Les exports sont produits grâce à l'outil de conversion [Pandoc](https://pandoc.org/) sur la base des templates disponibles [ici](https://framagit.org/stylo-editeur/templates-stylo).
 
 L'export permet aussi de télécharger les fichiers source de Stylo (.md, .bib, .yaml) et les médias insérés dans l'article s'il y en a.
 
-### Personaliser son export
+### Personnaliser son export
 
 À partir des fichiers source, il est possible de produire des exports personnalisés (mise en page, graphismes, métadonnées) en s'appuyant sur les fonctionnalités de l'outil de conversion [Pandoc](https://pandoc.org/).
 
@@ -186,11 +186,11 @@ Pour développer d'autres fonctions de l'article, il faut cliquer sur le chevron
 
 ### Accéder aux versions de l'article
 
-Vous avez alors accès aux versions majeures et mineures de l'article : un clic sur le nom d'une version vous conduit à la page en mode "Édition" de la version en question.
+Vous avez alors accès aux versions majeures et mineures de l'article : un clic sur le nom d'une version vous conduit à la page en mode édition de la version en question.
 
 ![Versions](uploads/images/AccesVersion-V2.PNG)
 
-**Attention** : la page de la version à laquelle vous avez accès, bien qu'elle soit dans le mode "Édition", ne vous permet pas d'effectuer des modifications sur le contenu de l'article. Il s'agit d'une page en mode lecture uniquement à partir de laquelle vous pouvez effectuer des [exports]() et des [comparaisons]().
+**Attention** : la page de la version à laquelle vous avez accès, bien qu'elle soit dans le mode édition, ne vous permet pas d'effectuer des modifications sur le contenu de l'article. Il s'agit d'une page en mode lecture uniquement à partir de laquelle vous pouvez effectuer des [exports]() et des [comparaisons]().
 
 ### Tager un article
 
@@ -208,8 +208,8 @@ Pour supprimer un article de la liste de vos articles, il vous faut cliquer sur 
 
 ![Delete](uploads/images/Delete-V2.png)
 
-Un onglet rouge apparaîtra automatiquement vous informant du processus de suppression :
+Un onglet rouge apparaîtra automatiquement vous informant du processus de suppression : 
 
 ![Delete2](uploads/images/DeleteRouge-V2.PNG)
 
-Pour supprimer définitivement votre article, il vous faut double-cliquer sur "Delete".
+Pour supprimer définitivement votre article, il vous faudra double-cliquer sur "Delete".

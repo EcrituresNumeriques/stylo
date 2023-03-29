@@ -23,7 +23,7 @@ Pour chaque article, plusieurs actions sont possibles :
 | ![Delete](uploads/images/Delete-V2.png) | pour supprimer l'article |
 | ![Plus](uploads/images/Plus-V2.png) | pour développer d'autres fonctions de l'article :|
 | ![Versions](uploads/images/Version-V2.PNG) | pour consulter l'historique des versions enregistrées |
-| ![Tag](uploads/images/Tag-V2.png) | pour choisir les tags de l'article |
+| ![Tags](uploads/images/Tag-V2.png) | pour choisir les tags de l'article |
 
 Note : le nom du document tel que visible sur Stylo ne correspond pas au titre de l'article qui sera généré. Le titre doit être renseigné dans les métadonnées (volet de droite sur l'article) pour apparaître sur la prévisualisation ou les exports.
 
@@ -151,7 +151,7 @@ Ainsi, lorsque vous êtes parvenu·e·s à une version que vous jugez satisfaisa
 
 Une version mineure correspond à des modifications mineures, tandis qu'une version majeure acte l'établissement d'une version dont les modifications sont importantes. 
 
-À tout moment, vous pouvez visualiser votre travail, qu'il s'agisse de la version actuelle que vous êtes en train d'éditer ou des versions précédentes. Il suffit de cliquer sur le bouton **[preview]** :
+À tout moment, vous pouvez visualiser votre travail, qu'il s'agisse de la version actuelle que vous êtes en train d'éditer ou des versions précédentes. Il suffit de cliquer sur le bouton **[Preview]** :
 
 ![Preview](uploads/images/Preview-Bouton-V2.PNG)
 
@@ -169,9 +169,9 @@ Chaque version comporte plusieurs fonctionnalités :
 - Pour une version antérieure :
 	- **[Compare]** pour comparer les différentes versions (une version antérieure et la version actuelle ou deux versions antérieures). Pour davantage d'informations sur la fonction **[Compare]**, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/interface.md);
 	- **[Export]** : pour exporter et de télécharger le document dans différents formats : HTML, PDF, XML, etc.;
-	- **[preview]** pour accéder à la prévisualisation de votre travail et l'annoter. Pour davantage d'informations sur la fonction **[preview]**, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/preview.md).
+	- **[Preview]** pour accéder à la prévisualisation de votre travail et l'annoter. Pour davantage d'informations sur la fonction **[Preview]**, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/preview.md).
 
-Pour visualiser une ancienne version, il vous suffit de cliquer sur son titre. Pour retourner à la version éditable, il vous faut cliquer sur le bouton **[Edit]**.
+Pour visualiser une ancienne version, il vous suffit de cliquer sur son titre. Pour retourner à la version éditable, il vous faut cliquer sur le bouton **[Edit Mode]**.
 
 ## Export
 Le module d'export offre plusieurs formats (HTML, XML, PDF, etc.). Il permet de choisir un style bibliographique et la présence ou non d'une table des matières.
@@ -193,7 +193,7 @@ La bibliographie liste les références bibliographiques que vous avez ajoutées
 3. **Citations** : il vous est possible de renseigner votre bibliographie manuellement au format BibTeX ;
 4. **Raw bibtex** : il est possible de corriger directement le BibTeX.
 
-Vous pouvez directement [structurer vos références en BibTeX](http://www.andy-roberts.net/writing/latex/bibliographies) ou exporter vos références en bibtex grâce à votre outil de gestion de bibliographie :
+Vous pouvez directement [structurer vos références en BibTeX](http://www.andy-roberts.net/writing/latex/bibliographies) ou exporter vos références en BibTex grâce à votre outil de gestion de bibliographie :
 
 - voir tutoriels : <a class="btn btn-info" href="http://sens-public.org/IMG/pdf/Utiliser_Zotero.pdf" role="button">Zotero</a> <a class="btn btn-info" href="https://libguides.usask.ca/c.php?g=218034&p=1446316" role="button">Mendeley</a>
 
@@ -216,7 +216,7 @@ Le bouton [Metadata] permet d'ouvrir le volet des métadonnées. Trois modes d'�
 2. **Editor Mode** : permet d'éditer l'ensemble des métadonnées relatives à une revue savante : identifiant d'un article, informations de dossier, informations sur l'évaluation, catégories et mots-clés de la revue, etc. ;
 3. **Raw Mode** : espace d'édition pour utilisateur avancé qui permet de modifier les champs d'entrées directement dans la structure du format YAML.
 
-**Important** : afin d'exporter un article, les champs "titre" et "nom de l'auteur·e" doivent obligatoirement être renseignés.
+**Important** : afin d'exporter un article, les champs "Title" et "Authors" doivent obligatoirement être renseignés.
 
 **Attention** : dans le volet des métadonnées se trouve la division sur la "Bibliographie" dont l'option *Display* permet de choisir la visualisation de la bibliographie dans son entièreté ("All citations") ou uniquement des références qui ont été citées dans le corps de l'article ("Only used"). 
 
@@ -240,11 +240,11 @@ Il y a deux possibilités d'annotation :
 1. Annoter une version ;
 2. Annoter l'article.
 
-Pour annoter une version, cliquez sur le numéro de la version que vous voulez annoter et ensuite cliquez sur **[preview]**. Une prévisualisation de l'article en html s'ouvrira avec l'outil d'annotation hypothes.is sur la droite.
+Pour annoter une version, cliquez sur le numéro de la version que vous voulez annoter et ensuite cliquez sur **[Preview]**. Une prévisualisation de l'article en html s'ouvrira avec l'outil d'annotation hypothes.is sur la droite.
 
 ![Hypothes.is](uploads/images/Hypothesis.png)
 
 **Important** : si vous annotez une version, vos annotations ne seront pas visibles sur les autres versions.
 
-Pour annoter l'article, cliquez sur **[Edit]** et ensuite sur **[preview]**. Les annotations concerneront l'article. Cependant, puisque la version éditable est sujette à des changements, les annotations pourront ne plus être ancrées aux bonnes parties du texte (qui pourraient avoir été supprimées ou déplacées).
+Pour annoter l'article, cliquez sur **[Preview (open a new window)]**. Les annotations concerneront l'article. Cependant, puisque la version éditable est sujette à des changements, les annotations pourront ne plus être ancrées aux bonnes parties du texte (qui pourraient avoir été supprimées ou déplacées).
 

@@ -31,11 +31,11 @@ Il y a deux possibilités d'annotation :
 
 - Annoter une version de l'article : les annotations seront attachées à cette version uniquement et ne seront pas visibles dans la preview d'autres versions. 
 
-Pour annoter une version, cliquez sur le numéro de la version que vous voulez annoter et ensuite cliquez sur "**preview**". Une prévisualisation de l'article en html s'ouvrira avec l'outil d'annotation Hypothes.is sur la droite.
+    Pour annoter une version, cliquez sur le numéro de la version que vous voulez annoter et ensuite cliquez sur "**Preview**". Une prévisualisation de l'article en html s'ouvrira avec l'outil d'annotation Hypothesis sur la droite.
 
 - Annoter l'edit de l'article : les annotations seront visibles.
 
-Pour annoter l'article, cliquez sur "**Edit**" et ensuite sur "**preview**". Les annotations concerneront l'article : elles seront visbles dans chaque version éditable. Cependant, puisque l'article est sujet à des changements, il peut arriver que les annotations perdent leurs ancrages (suite à la suppression des portions de textes auxquelles elles étaient liées) et se retrouvent déplacées ailleurs dans l'article ou orphelines. 
+    Pour annoter l'article, cliquez sur "**Edit**" et ensuite sur "**preview**". Les annotations concerneront l'article : elles seront visbles dans chaque version éditable. Cependant, puisque l'article est sujet à des changements, il peut arriver que les annotations perdent leurs ancrages (suite à la suppression des portions de textes auxquelles elles étaient liées) et se retrouvent déplacées ailleurs dans l'article ou orphelines. 
 
 ### Documentation supplémentaire 
 Pour en savoir plus, voir cette [vidéo explicative](https://youtu.be/zdQRv9wndcE).

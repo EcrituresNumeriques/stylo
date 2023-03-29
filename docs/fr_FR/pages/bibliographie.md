@@ -2,7 +2,7 @@
 
 La bibliographie liste les références bibliographiques que vous avez ajoutées à votre article. Pour ajouter vos références, vous devez cliquer sur **[Manage]** dans le volet latéral de gauche, à droite de l’onglet *Bibliography*. L'outil *Bibliography Manager* s'ouvre alors et vous propose plusieurs possibilités :
 
-- **Zotero** : il vous est possible de synchroniser une bibliographie en connectant Stylo à votre compte Zotero (groupes/collections privées ou publiques). C'est l'usage que nous vous recommandons ! Voir plus bas pour des détails.
+- **Zotero** : il vous est possible de synchroniser une bibliographie en connectant Stylo à votre compte Zotero (groupes/collections privées ou publiques). C'est l'usage que nous vous recommandons ! Voir plus bas pour plus des détails.
 
 ![Bibliographie-Zotero](uploads/images/BibliographieZotero-V2.png)
 
@@ -39,11 +39,11 @@ Il est possible de synchroniser les références d'un article avec une collectio
 
 ## Insérer une référence bibliographique
 
-Une fonction d'autocomplétion est implémentée. Il vous suffit de commencer à écrire `[@` ou simplement `@` pour que l’éditeur de texte vous propose toutes vos références associées à l’article. Si vous souhaitez affiner l’autocomplétion, il suffira d’ajouter la première lettre du nom de l’auteur pour réduire les propositions faites : `[@b`.
+Une fonction d'autocomplétion est implémentée. Il vous suffit de commencer à écrire `[@` ou simplement `@` pour que l’éditeur de texte vous propose toutes vos références associées à l’article. Si vous souhaitez affiner l’autocomplétion, il suffira d’ajouter la première lettre du nom de l’auteur pour réduire les propositions fournies : `[@b`.
 
 ![Bibliographie-Autocomplétion](uploads/images/BibliographieAutocompletion-V2.png)
 
-Vous pouvez aussi cliquer sur la référence dans le volet de gauche, puis la coller (Ctrl+V) dans le texte à l'endroit souhaité. Elle apparaîtra alors ainsi `[@shirky_here_2008]`. Pour bien comprendre, un clic consiste à "copier" la clé BibTeX de la référence dans le presse-papier. 
+Vous pouvez aussi cliquer sur l'icône associée à la référence dans le volet de gauche, puis la coller (Ctrl+V) dans le texte à l'endroit souhaité. Elle apparaîtra alors ainsi `[@shirky_here_2008]`. Pour bien comprendre, un clic consiste à "copier" la clé BibTeX de la référence dans le presse-papier. 
 
 ![Bibliographie exemple](uploads/images/Bibliographie-Exemple-V2.PNG)
 
