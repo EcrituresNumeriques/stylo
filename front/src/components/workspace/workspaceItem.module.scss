@@ -1,0 +1,22 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+.container {
+  background-color: #F0F0F0;
+  padding: 1.25em 2em;
+  margin-bottom: 1em;
+}
+
+.chip {
+  display: inline-block;
+  height: 1.35em;
+  width: 1.35em;
+  border-radius: 4px;
+  margin-right: 0.75em;
+}
+
+.title {
+  font-size: 1.35em;
+  display: flex;
+  padding-bottom: 0.5em;
+}

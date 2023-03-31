@@ -23,6 +23,7 @@ type User {
   permissions: [UserPermission]
   acquintances(limit: Int, page: Int): [User]
   articles(limit: Int, page: Int): [Article]
+  workspaces: [Workspace!]
   admin: Boolean
   yaml: String
   zoteroToken: String

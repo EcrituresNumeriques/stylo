@@ -1,6 +1,7 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import { toEntries } from './helpers/bibtex'
 import ArticleService from "./services/ArticleService"
+import WorkspaceService from './services/WorkspaceService.js'
 
 const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName='sessionToken' } = import.meta.env
 
@@ -35,6 +36,7 @@ const initialState = {
   },
   articleStructure: [],
   articleVersions: [],
+  workspaces: [],
   articlePreferences: localStorage.getItem('articlePreferences') ? JSON.parse(localStorage.getItem('articlePreferences')) : {
     expandSidebarLeft: true,
     expandSidebarRight: false,
@@ -88,11 +90,22 @@ const reducer = createReducer(initialState, {
   ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
 
   UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
+
+  SET_WORKSPACES: setWorkspaces,
 })
 
 const createNewArticleVersion = store => {
   return next => {
     return async (action) => {
+      if (action.type === 'CREATE_WORKSPACE') {
+        const { workspaces, sessionToken, applicationConfig } = store.getState()
+        const workspaceService = new WorkspaceService(sessionToken, applicationConfig)
+        console.log('CREATE WORKSPACE', { action })
+        const response = await workspaceService.create(action.data)
+        console.log('RESULT', { r: response.createWorkspace })
+        store.dispatch({ type: 'SET_WORKSPACES', workspaces: [response.createWorkspace, ...workspaces] })
+        return next(action)
+      }
       if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
         const { articleVersions, activeUser, sessionToken, applicationConfig, userPreferences } = store.getState()
         const userId = userPreferences.currentUser ?? activeUser._id
@@ -381,6 +394,12 @@ function updateEditorCursorPosition(state, { lineNumber, column }) {
       column
     }
   }
+}
+
+function setWorkspaces (state, { workspaces }) {
+  console.log('RESULT', { state: state })
+  console.log('RESULT', { workspaces: workspaces })
+  return { ...state, workspaces }
 }
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

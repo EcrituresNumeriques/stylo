@@ -87,11 +87,11 @@ module.exports = {
     /**
      *
      */
-    async workspaces (_, { user }) {
+    async workspaces (_, __, { user }) {
       if (user?.admin === true) {
         return Workspace.find()
       }
-      return Workspace.find({ 'members.user': user?._id }).lean()
+      return Workspace.find({ 'members.user': user?._id }).sort([['updatedAt', -1]])
     },
   },
 
@@ -102,6 +102,7 @@ module.exports = {
     },
 
     async articles (workspace, { limit }) {
+      console.log({workspace})
       await workspace.populate({ path: 'articles', limit }).execPopulate()
       return workspace.articles
     },

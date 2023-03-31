@@ -2,6 +2,7 @@ const User = require('../models/user')
 
 const isUser = require('../policies/isUser')
 const isAdmin = require('../policies/isAdmin')
+const Workspace = require('../models/workspace')
 
 module.exports = {
   Mutation: {
@@ -165,6 +166,13 @@ module.exports = {
       }).execPopulate()
 
       return user.articles
+    },
+
+    async workspaces(user) {
+      if (user?.admin === true) {
+        return Workspace.find()
+      }
+      return Workspace.find({ 'members.user': user?._id })
     },
 
     async article (user, { id }) {
