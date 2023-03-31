@@ -4,11 +4,23 @@
 .container {
   margin-top: 0.5em;
   background-color: #F0F0F0;
-  padding: 2em;
+  padding: 1.25em 1em;
 }
 
 .actions {
   display: flex;
   justify-content: space-between;
   margin-top: 0.75em;
+}
+
+.fields {
+  display: flex;
+}
+
+.color {
+  width: 3em;
+}
+
+.name {
+  flex: 1;
 }

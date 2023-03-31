@@ -20,18 +20,22 @@ export default function CreateWorkspace({onCancel = () => {}}) {
         event.preventDefault()
         createWorkspace()
       }}>
-        <Field
-          type="text"
-          placeholder="Nom de l’espace"
-          autoFocus={true}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <Field
-          type="color"
-          value={color}
-          onChange={(e) => setColor(e.target.value)}
-        />
+        <div className={styles.fields}>
+          <Field
+            className={styles.color}
+            type="color"
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+          />
+          <Field
+            className={styles.name}
+            type="text"
+            placeholder="Nom de l’espace"
+            autoFocus={true}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
         <ul className={styles.actions}>
           <li>
             <Button type="button" onClick={onCancel}>Annuler</Button>
