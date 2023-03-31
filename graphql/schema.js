@@ -194,6 +194,7 @@ type WorkspaceArticle {
 type WorkspaceMember {
   workspace: Workspace!
   user: User
+  role: String
 
   # mutation
   remove: Workspace!
@@ -203,7 +204,6 @@ type Workspace {
   _id: String!
   name: String!
   color: HexColorCode!
-  role: String
   bibliographyStyle: String
   members: [User!]!
   articles: [Article!]!
@@ -278,7 +278,7 @@ type Query {
   "Fetch a given user articles"
   articles (user: ID): [Article]
 
-  "Fetch article info [need to have acces to this article]"
+  "Fetch article info [need to have access to this article]"
   article(user: ID, article: ID!): Article
 
   "Fetch version info"

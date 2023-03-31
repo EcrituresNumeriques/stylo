@@ -1,0 +1,27 @@
+query getWorkspaces {
+  workspaces {
+    _id
+    name
+    color
+    bibliographyStyle
+    createdAt
+    updatedAt
+    members {
+      _id
+      displayName
+      email
+    }
+    articles {
+      _id
+    }
+  }
+}
+
+query getArticles {
+  user {
+    articles {
+      _id
+    }
+  }
+}
+

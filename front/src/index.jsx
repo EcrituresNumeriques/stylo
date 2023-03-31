@@ -26,6 +26,7 @@ import Select from './components/Select'
 // lazy loaded routes
 const Books = lazy(() => import('./components/Books'))
 const Articles = lazy(() => import('./components/Articles'))
+const Workspaces = lazy(() => import('./pages/Workspaces'))
 const Credentials = lazy(() => import('./components/Credentials'))
 const Write = lazy(() => import('./components/Write/Write'))
 const ArticlePreview = lazy(() => import('./components/ArticlePreview'))
@@ -105,6 +106,10 @@ render(
             {/* Books index */}
             <PrivateRoute path="/books" exact>
               <Books />
+            </PrivateRoute>
+            {/* Workspaces index */}
+            <PrivateRoute path={['/workspaces', '/']} exact>
+              <Workspaces />
             </PrivateRoute>
             <PrivateRoute path="/credentials" exact>
               <Credentials />
