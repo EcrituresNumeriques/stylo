@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { HelpCircle, LifeBuoy, LogOut, User } from 'react-feather'
+import {ArrowRight, ChevronRight, Layers, LifeBuoy, LogOut, User} from 'react-feather'
+import clsx from 'clsx'
 
 import useComponentVisible from '../../hooks/componentVisible'
 import styles from './UserMenu.module.scss'
@@ -25,6 +26,15 @@ function UserMenu () {
         {/* todo: show current workspace */}
       </div>
       {isComponentVisible && <div className={styles.menu}>
+        <div className={styles.workspaces}>
+          <h4>Espaces de travail</h4>
+          <ul>
+            <li className={clsx(styles.workspaceItem, styles.workspaceSelected)}><span className={styles.chip} style={{backgroundColor: "#D9D9D9"}}/> <span className={styles.workspaceName}>Mon espace</span> <ChevronRight className={styles.chevron}/></li>
+            <li className={clsx(styles.workspaceItem)}><span className={styles.chip} style={{backgroundColor: "#D9D9D9"}}/> <span className={styles.workspaceName}>Sens public</span> <ChevronRight className={styles.chevron}/></li>
+            <li className={styles.workspaceItem}><span className={styles.chip} style={{backgroundColor: "#D9D9D9"}}/><span className={styles.workspaceName}>Chaire de l&rsquo;université</span> <ChevronRight className={styles.chevron}/></li>
+            <li className={styles.workspacesLink}><a><Layers/> Tous les espaces</a></li>
+          </ul>
+        </div>
         <div className={styles.footer}>
           <div className={styles.userBlock}>
             <Link to="/credentials" onClick={() => setIsComponentVisible(false)} className={styles.userCard}>
