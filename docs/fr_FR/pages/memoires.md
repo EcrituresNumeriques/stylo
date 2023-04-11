@@ -1,5 +1,5 @@
 # Mémoires et thèses
-Stylo permet de créer des documents plus complexes que des articles comme des mémoires ou des thèses, cette fonctionnalité s'appelle **Books**.
+Stylo permet de créer des documents plus complexes que de simples articles, tels que des mémoires ou des thèses ; cette fonctionnalité s'appelle **Books**.
 
 **Attention : cette option n'est pas totalement fonctionnelle, nous vous recommandons de patienter jusqu'aux prochaines mises à jour avant de l'utiliser comme rendu final.**
 
@@ -8,7 +8,7 @@ Stylo permet de créer des documents plus complexes que des articles comme des m
 > Un mémoire est constitué d'un ou plusieurs documents Stylo mis bout à bout.
 
 - Ces documents peuvent être les chapitres ou les parties du mémoire.
-- Ils sont rassemblés ensemble dans un mémoire à l'aide d'un même label _[tag]_, qui doit être associé à chaque document Stylo.
+- Ils sont rassemblés dans un mémoire à l'aide d'un même label _[tag]_, qui doit être associé à chaque document Stylo.
 - Chaque chapitre ou partie fonctionne donc comme un document Stylo :
   - il possède ses propres métadonnées et sa propre bibliographie.
   - il peut être partagé en tant que tel (annotation, preview, etc.). C'est au moment de l'export du mémoire que les différentes parties sont éditées ensemble.
@@ -33,7 +33,7 @@ Par défaut la bibliographie générée est celle de l'ensemble des références
 
 Mais il est également possible de structurer cette bibliographie : dans un mémoire ou une thèse, la bibliographie est souvent divisée en différentes sections. Stylo permet de créer une bibliographie organisée en sous-sections. Voici les deux étapes à suivre :
 
-1. Dans les métadonnées du mémoire, il faut déclarer les différentes sections de la bibliographie. Pour cela, passez les métadonnées en mode raw
+1. Dans les métadonnées du mémoire, il faut déclarer les différentes sections de la bibliographie. Pour cela, passez les métadonnées en mode _raw_
 
 ![rawmode](uploads/images/alpha_rawmode.png)
 
@@ -51,12 +51,12 @@ La structure est la suivante :
 - `key` est la "clé de section", autrement dit un tag qui sera utilisé à l'étape suivante.
 - `title` sera votre titre de section de bibliographie, tel qu'il sera affiché dans le mémoire.
 
-2. Pour chacune des références bibliographiques concernées, ajoutez dans le champ `keywords` la clé de section (par exemple `pratique` ou `theorie`). Cette étape peut être faite soit dans Zotero, soit dans Stylo en éditant le bibtex directement.
+2. Pour chacune des références bibliographiques concernées, ajoutez dans le champ `keywords` la clé de section (par exemple `pratique` ou `théorie`). Cette étape peut être faite soit dans Zotero, soit dans Stylo en éditant le BibTeX directement.
 
 ### Métadonnées du mémoire
-_Dans une prochaine version, l'interface "My Books" proposera un éditeur de métadonnées pour les métadonnées du mémoire ou de la thèse._
+_Dans une prochaine version, l'interface "Books" proposera un éditeur de métadonnées pour les métadonnées du mémoire ou de la thèse._
 
-Dans cette version de Stylo les métadonnées du mémoire seront celles du premier document déclaré. Les autres métadonnées sont ignorées. **Les sous-divisions de la bibliographie** doivent donc être déclarées dans le premier document du mémoire.
+Dans cette version de Stylo les métadonnées du mémoire seront celles du premier document déclaré. Les autres métadonnées seront ignorées. **Les sous-divisions de la bibliographie** doivent donc être déclarées dans le premier document du mémoire.
 
 ### Export
 L'export du mémoire se fait à travers un template LaTeX dédié. Il correspond au template de mémoire et de thèse de l'Université de Montréal.

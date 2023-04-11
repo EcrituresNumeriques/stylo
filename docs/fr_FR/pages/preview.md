@@ -5,12 +5,20 @@ Il est possible de prévisualiser un article Stylo en HTML avec une mise en page
 
 Pour prévisualiser un article, il est possible :
 
-- De cliquer sur le bouton "Preview" depuis la page "Mes articles"
-- De cliquer sur le bouton "Preview" depuis la page d'édition de l'article, en haut de la colonne de droite.
+- De cliquer sur le bouton "Preview" depuis la page "Mes articles", à droite de l'icône "Edit" :
 
-La prévisualisation est disponible via un permalien qui reste le même pour toute la vie de l'article. Si l'article est modifié, le lien de prévisualisation montrera la dernière version de l'article.
+![Preview](uploads/images/PreviewPageArticles.PNG)
 
-Il est possible aussi de prévisualiser une version particulière de l'article. Pour ce faire, il faut cliquer sur le bouton "Preview" dans la page d'édition de l'article, dans la colonne de droite, à l'intérieur du sous-menu "Versions".
+- De cliquer sur le bouton "Preview" depuis la page d'édition de l'article, en haut à droite du corps de texte : 
+
+![Preview](uploads/images/PreviewPageEdition-V2.PNG)
+
+La prévisualisation est disponible via un permalien qui reste le même pour toute la vie de l'article. Si l'article est modifié, le lien de prévisualisation montrera la dernière version de l'article (pensez à rafraîchir la page pour voir les modifications).
+
+Il est possible aussi de prévisualiser une version particulière de l'article. Pour ce faire, il faut cliquer sur le bouton "Preview" dans la page d'édition de l'article, dans la colonne de gauche, à l'intérieur du sous-menu "Versions".
+
+![Preview](uploads/images/PreviewSousMenuVersions-V2.PNG)
+
 Le lien de visualisation d'une version affiche toujours la version sauvegardée.
 
 ## Annotation
@@ -23,11 +31,11 @@ Il y a deux possibilités d'annotation :
 
 - Annoter une version de l'article : les annotations seront attachées à cette version uniquement et ne seront pas visibles dans la preview d'autres versions. 
 
-Pour annoter une version, cliquez sur le numéro de la version que vous voulez annoter et ensuite cliquez sur "**preview**". Une prévisualisation de l'article en html s'ouvrira avec l'outil d'annotation Hypothes.is sur la droite.
+    Pour annoter une version, cliquez sur le numéro de la version que vous voulez annoter et ensuite cliquez sur "**Preview**". Une prévisualisation de l'article en html s'ouvrira avec l'outil d'annotation Hypothesis sur la droite.
 
 - Annoter l'edit de l'article : les annotations seront visibles.
 
-Pour annoter l'article, cliquez sur "**Edit**" et ensuite sur "**preview**". Les annotations concerneront l'article : elles seront visbles dans chaque version éditable. Cependant, puisque l'article est sujet à des changements, il peut arriver que les annotations perdent leurs ancrages (suite à la suppression des portions de textes auxquelles elles étaient liées) et se retrouvent déplacées ailleurs dans l'article ou orphelines. 
+    Pour annoter l'article, cliquez sur "**Edit**" et ensuite sur "**preview**". Les annotations concerneront l'article : elles seront visbles dans chaque version éditable. Cependant, puisque l'article est sujet à des changements, il peut arriver que les annotations perdent leurs ancrages (suite à la suppression des portions de textes auxquelles elles étaient liées) et se retrouvent déplacées ailleurs dans l'article ou orphelines. 
 
 ### Documentation supplémentaire 
 Pour en savoir plus, voir cette [vidéo explicative](https://youtu.be/zdQRv9wndcE).

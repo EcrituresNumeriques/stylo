@@ -1,7 +1,7 @@
 # Liste de tâches pour l'édition numérique sur Stylo
 
 Ce document est une liste de tâches à réaliser ou à vérifier pour l'édition d'articles scientifiques avec l'éditeur de texte Stylo pour la production de documents HTML, XML (schéma Érudit) et PDF.
-Ce document ne remplace pas la documentation de Stylo, une relecture rapide de cette documentation est conseillée avant l'édition des articles.
+Ce document ne remplace pas la documentation de Stylo ; une relecture rapide de cette documentation est conseillée avant l'édition des articles.
 
 ## Circuit/ordre des vérifications
 
@@ -10,7 +10,7 @@ Ce document ne remplace pas la documentation de Stylo, une relecture rapide de c
 3. export PDF pour vérifications éditoriales par l'équipe éditoriale, chaque article doit être validé
 4. l'équipe éditoriale prévient la CRCEN que les tâches ont été effectuées, les contenus et métadonnées ne devraient plus être modifiés
 5. vérifications techniques et génération des XMLs par la CRCEN
-6. la CRCEN prévient l'équipe éditoriale que les vérifications ont été faites. Si des corrections sont nécessaires retour à l'étape 2
+6. la CRCEN prévient l'équipe éditoriale que les vérifications ont été faites. Si des corrections sont nécessaires, retour à l'étape 2
 7. envoi des XMLs et des PDFs par la CRCEN à Érudit. **À ce stade plus aucune modification n'est possible**
 8. l'équipe éditoriale peut générer les autres formats souhaités (HTML pour le site web)
 
@@ -20,10 +20,10 @@ L'outil suivant permet de convertir des documents au format DOCX vers le format 
 
 https://stylo-export.ecrituresnumeriques.ca/importdocx.html
 
-Une fois les documents convertis, il y a un certain nombre de vérifications nécessaires, à réaliser dans Stylo ou dans un éditeur de texte :
+Une fois les documents convertis, il y a un certain nombre de vérifications nécessaires, à réaliser dans Stylo ou dans un autre éditeur de texte :
 
 - vérifier visuellement que le résultat correspond au fichier de départ
-- supprimer les balisages inutiles, exemple : remplacer `_du texte_ _en italique_` par `_du texte en italique_`
+- supprimer les balisages inutiles, par exemple : remplacer `_du texte_ _en italique_` par `_du texte en italique_`
 
 **Important** : un balisage lisible permet de réduire les erreurs possibles par la suite, il est donc opportun de _nettoyer_ autant que possible le balisage produit par l'import automatique.
 
@@ -43,10 +43,10 @@ Il faut renseigner un certain nombre de métadonnées pour que les articles soie
 - vérifier que les mots-clés sont tous les mêmes d'un article à un autre pour un même numéro : il faut absolument éviter les _faux doublons_ comme par exemple `Cinéma québécois` et `Cinéma Québécois`
 - idéalement les dates de publication des articles d'un même numéro doivent être les mêmes
 - résumé : le résumé doit être un seul bloc de texte (un seul paragraphe), sans mise en forme (pas de gras ni d'italique, pas de note de bas de page, pas de référence bibliographique, pas de saut de ligne)
-- Diffusion : indiquer le Publisher (structure qui porte la revue) et le Journal (nom de la revue). Attention si le nom de la revue change il faut modifier chaque article et le champ Journal
-- Directors : indiquer les directeurs·rices de la revue
-- Dossier : attention le Titre du dossier doit être attribué de la même façon à tous les articles d'un même dossier. Attention aux _faux doublons_ comme `Mauvais genres` et `Mauvais genres ` (espace de trop dans le deuxième). Attention si un article est _hors dossier_ il doit porter la mention `Varia`
-- Directeur du dossier : quand un article fait partie d'un dossier, il faut indiquer le ou les directeurs·rices du dossier
+- diffusion : indiquer le Publisher (structure qui porte la revue) et le Journal (nom de la revue). Attention si le nom de la revue change il faut modifier chaque article et le champ Journal
+- directors : indiquer les directeurs·rices de la revue
+- dossier : attention le Titre du dossier doit être attribué de la même façon à tous les articles d'un même dossier. Attention aux _faux doublons_ comme `Mauvais genres` et `Mauvais genres ` (espace de trop dans le deuxième). Attention si un article est _hors dossier_ il doit porter la mention `Varia`
+- directeur du dossier : quand un article fait partie d'un dossier, il faut indiquer le ou les directeurs·rices du dossier
 - ISSN
 
 
