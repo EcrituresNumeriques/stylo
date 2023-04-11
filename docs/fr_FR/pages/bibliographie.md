@@ -2,7 +2,7 @@
 
 La bibliographie liste les références bibliographiques que vous avez ajoutées à votre article. Pour ajouter vos références, vous devez cliquer sur **[Manage]** dans le volet latéral de gauche, à droite de l’onglet *Bibliography*. L'outil *Bibliography Manager* s'ouvre alors et vous propose plusieurs possibilités :
 
-- **Zotero** : il vous est possible de synchroniser une bibliographie en connectant Stylo à votre compte Zotero (groupes/collections privées ou publiques). C'est l'usage que nous vous recommandons ! Voir plus bas pour plus des détails.
+- **Zotero** : il vous est possible de synchroniser une bibliographie en connectant Stylo à votre compte Zotero (groupes/collections privées ou publiques). C'est l'usage que nous vous recommandons ! Voir plus bas pour plus de détails.
 
 ![Bibliographie-Zotero](uploads/images/BibliographieZotero-V2.png)
 
