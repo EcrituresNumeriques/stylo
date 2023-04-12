@@ -17,8 +17,8 @@ export default function UserMenuLink ({ username, activeWorkspace }) {
 
 UserMenuLink.propTypes = {
   username: PropTypes.string.isRequired,
-  activeWorkspace: {
+  activeWorkspace: PropTypes.shape({
     color: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-  }
+  })
 }

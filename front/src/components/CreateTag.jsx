@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useEffect, createRef, useState, forwardRef, useCallback } from 'react'
 
+import { randomColor } from '../helpers/colors.js'
 import etv from '../helpers/eventTargetValue'
 import { useGraphQL } from '../helpers/graphQL'
 import { createTag as query } from './Tag.graphql'
@@ -8,82 +8,74 @@ import { createTag as query } from './Tag.graphql'
 import styles from './createTag.module.scss'
 import Field from './Field'
 import Button from './Button'
-import { Check } from 'react-feather'
 import { useCurrentUser } from '../contexts/CurrentUser'
+import { useDispatch } from 'react-redux'
 
-export default function CreateTag ({ cancel, triggerReload }) {
+
+const CreateTag = forwardRef((_, forwardedRef) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-  const [tempColor, setTempColor] = useState('#ccc')
+  const [color, setColor] = useState(randomColor())
   const activeUser = useCurrentUser()
-
   const runQuery = useGraphQL()
+  const dispatch = useDispatch()
 
   const variables = {
     user: activeUser._id,
     name,
     description,
-    color: tempColor,
+    color,
   }
 
-  const createTag = async (event, query, variables) => {
-    try {
-      event.preventDefault()
-      await runQuery({ query, variables })
-      triggerReload()
-    } catch (err) {
-      alert(err)
-    }
-  }
+  const handleCreateTag = useCallback((event) => {
+    event.preventDefault()
+    ;(async () => {
+      try {
+        const { createTag } = await runQuery({
+          query,
+          variables
+        })
+        dispatch({ type: 'TAG_CREATED', tag: createTag })
+      } catch (err) {
+        alert(err)
+      }
+    })()
+  }, [variables])
 
   return (
     <section className={styles.create}>
-      <form
-        onSubmit={(event) => {
-          createTag(
-            event,
-            query,
-            variables,
-          )
-        }}
-      >
+      <form onSubmit={handleCreateTag}>
         <Field
+          label="Name"
           type="text"
-          placeholder="Tag Name"
           autoFocus={true}
-          className={styles.tagName}
           value={name}
           onChange={(e) => setName(etv(e))}
+          ref={forwardedRef}
         />
-        <textarea
-          placeholder="Description"
+        <Field
+          label="Description"
+          type="text"
           value={description}
           onChange={(e) => setDescription(etv(e))}
         />
-
         <Field
-              type="color"
-              value={tempColor}
-              onChange={(e) => setTempColor(etv(e))}
-            />
-
+          label="Color"
+          type="color"
+          value={color}
+          onChange={(e) => setColor(etv(e))}
+        />
         <ul className={styles.actions}>
           <li>
-            <Button type="button" onClick={cancel}>Cancel</Button>
-          </li>
-          <li>
-            <Button primary={true} type="submit" title="Create Article">
-              <Check />
-              Create Tag
+            <Button primary={true} type="submit" title="Create a new tag">
+              Create a new tag
             </Button>
           </li>
         </ul>
       </form>
     </section>
   )
-}
+})
 
-CreateTag.propTypes = {
-  cancel: PropTypes.func.isRequired,
-  triggerReload: PropTypes.func.isRequired
-}
+CreateTag.displayName = 'CreateTag'
+export default CreateTag

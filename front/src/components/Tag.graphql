@@ -1,38 +1,48 @@
+query getTags {
+    user {
+        tags {
+            name
+            color
+            _id
+        }
+    }
+}
+
 mutation deleteTag($user: ID!, $tag: ID!) {
-  deleteTag(user: $user, tag: $tag)
+    deleteTag(user: $user, tag: $tag)
 }
 
 mutation updateTag(
-  $user: ID!
-  $tag: ID!
-  $color: HexColorCode!
-  $name: String!
-  $description: String!
+    $user: ID!
+    $tag: ID!
+    $color: HexColorCode!
+    $name: String!
+    $description: String!
 ) {
-  updateTag(
-    user: $user
-    tag: $tag
-    name: $name
-    description: $description
-    color: $color
-  ) {
-    _id
-    name
-    description
-    color
-  }
+    updateTag(
+        user: $user
+        tag: $tag
+        name: $name
+        description: $description
+        color: $color
+    ) {
+        _id
+        name
+        description
+        color
+    }
 }
 
 mutation createTag ($name: String!, $description: String, $user: ID!, $color: HexColorCode!) {
-  createTag(
-    name: $name
-    description: $description
-    user: $user
-    color: $color
-  ) {
-    _id
-    name
-    description
-    color
-  }
+    createTag(
+        name: $name
+        description: $description
+        user: $user
+        color: $color
+    ) {
+        _id
+        name
+        description
+        color
+    }
 }

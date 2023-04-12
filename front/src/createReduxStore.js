@@ -49,10 +49,12 @@ const initialState = {
     charCountPlusSpace: 0,
     citationNb: 0,
   },
-  // Logged in user — we use their token
+  // Active user (authenticated)
   activeUser: {
-    zoteroToken: null
+    zoteroToken: null,
+    selectedTagIds: []
   },
+  latestTagCreated: null,
   userPreferences: localStorage.getItem('userPreferences') ? JSON.parse(localStorage.getItem('userPreferences')) : {
     // The user we impersonate
     currentUser: null,
@@ -93,6 +95,9 @@ const reducer = createReducer(initialState, {
 
   SET_WORKSPACES: setWorkspaces,
   SET_ACTIVE_WORKSPACE: setActiveWorkspace,
+
+  UPDATE_SELECTED_TAG: updateSelectedTag,
+  TAG_CREATED: tagCreated,
 })
 
 const createNewArticleVersion = store => {
@@ -224,17 +229,19 @@ function setApplicationConfig (state, action) {
 }
 
 function setProfile (state, action) {
-  if (!action.user) {
-    return { ...state, hasBooted: true }
+  const { user } = action
+  if (!user) {
+    return { ...state, activeUser: undefined, hasBooted: true }
   }
-
-  const { user: activeUser } = action
-
-  return Object.assign({}, state, {
+  return {
+    ...state,
     hasBooted: true,
-    activeUser,
     logedIn: true,
-  })
+    activeUser: {
+      ...state.activeUser,
+      ...user
+    }
+  }
 }
 
 function clearZoteroToken (state) {
@@ -405,6 +412,25 @@ function setActiveWorkspace (state, { workspaceId }) {
       ...state.activeUser,
       activeWorkspaceId: workspaceId
     }
+  }
+}
+
+function updateSelectedTag (state, { tagId }) {
+  const { selectedTagIds } = state.activeUser
+  return {
+    ...state, activeUser: {
+      ...state.activeUser,
+      selectedTagIds: selectedTagIds.includes(tagId)
+        ? selectedTagIds.filter(tagId => tagId !== tagId)
+        : [...selectedTagIds, tagId]
+    }
+  }
+}
+
+function tagCreated(state, { tag }) {
+  return {
+    ...state,
+    latestTagCreated: tag
   }
 }
 

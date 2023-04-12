@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Layers, LifeBuoy, LogOut, User } from 'react-feather'
+import { Layers, LogOut, User } from 'react-feather'
 
 import useComponentVisible from '../../hooks/componentVisible'
 import styles from './UserMenu.module.scss'
@@ -10,7 +10,7 @@ import WorkspaceMenuItem from './WorkspaceMenuItem.jsx'
 import UserMenuLink from './UserMenuLink.jsx'
 
 
-function UserMenu () {
+export default function UserMenu () {
   const dispatch = useDispatch()
   const logout = () => {
     setIsComponentVisible(false)
@@ -56,5 +56,3 @@ function UserMenu () {
     </div>
   )
 }
-
-export default UserMenu

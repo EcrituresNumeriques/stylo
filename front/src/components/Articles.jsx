@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { createRef, useCallback, useEffect, useState } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import { CurrentUserContext } from '../contexts/CurrentUser'
 import { Search } from 'react-feather'
@@ -11,26 +11,33 @@ import Article from './Article'
 import CreateArticle from './CreateArticle'
 
 import styles from './articles.module.scss'
-import TagManagement from './TagManagement'
 import Button from './Button'
 import Field from './Field'
 import Loading from './Loading'
-import ArticleTag from './Tag'
 import { useActiveUserId } from '../hooks/user'
 import WorkspaceLabel from './header/WorkspaceLabel.jsx'
 import { useActiveWorkspace } from '../hooks/workspace.js'
+import TagsList from './tag/TagsList.jsx'
+import Modal from './Modal.jsx'
 
 export default function Articles () {
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
-  const [selectedTagIds, setSelectedTagIds] = useState([])
+  const selectedTagIds = useSelector((state) => state.activeUser.selectedTagIds)
+  const [creatingArticle, setCreatingArticle] = useState(false)
+
+  const articleTitleField = createRef()
+  useEffect(() => {
+    if (articleTitleField.current) {
+      articleTitleField.current.focus() // give focus to the first form input
+    }
+  }, [articleTitleField])
 
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState('')
   const [articles, setArticles] = useState([])
-  const [tags, setTags] = useState([])
-  const [creatingArticle, setCreatingArticle] = useState(false)
+
   const [needReload, setNeedReload] = useState(false)
-  const [tagManagement, setTagManagement] = useState(false)
+
   const [currentUser, setCurrentUser] = useState(activeUser)
 
   const activeUserId = useActiveUserId()
@@ -38,18 +45,13 @@ export default function Articles () {
   const activeWorkspaceId = activeWorkspace?._id
   const runQuery = useGraphQL()
 
+  const handleCloseCreatingArticle = useCallback(() => setCreatingArticle(false), [])
+
   const handleReload = useCallback(() => setNeedReload(true), [])
   const handleUpdateTags = useCallback((articleId, tags) => {
     setArticles([...findAndUpdateArticleTags(articles, articleId, tags)])
   }, [articles])
 
-  const handleCloseTag = useCallback(() => setTagManagement(false), [])
-  const toggleFilterTags = useCallback((event) => {
-    const { id } = event.target.dataset
-    selectedTagIds.includes(id)
-      ? setSelectedTagIds(selectedTagIds.filter(tagId => tagId !== id))
-      : setSelectedTagIds([...selectedTagIds, id])
-  }, [activeUserId, selectedTagIds])
 
   const handleUpdateTitle = useCallback((articleId, title) => {
     // shallow copy otherwise React won't render the components again
@@ -69,7 +71,7 @@ export default function Articles () {
   }
 
   const filterByTagsSelected = useCallback((article) => {
-    const listOfTagsSelected = tags.filter(({ _id }) => selectedTagIds.includes(_id))
+    const listOfTagsSelected = selectedTagIds
 
     if (listOfTagsSelected.length === 0) {
       return true
@@ -94,7 +96,6 @@ export default function Articles () {
           const data = await runQuery({ query: getUserArticles, variables: { user: activeUserId } })
           // Need to sort by updatedAt desc
           setArticles(data.articles)
-          setTags(data.tags)
           setCurrentUser(data.user)
           setIsLoading(false)
           setNeedReload(false)
@@ -111,62 +112,35 @@ export default function Articles () {
         <h1>Articles</h1>
         {activeWorkspace && <WorkspaceLabel color={activeWorkspace.color} name={activeWorkspace.name}/>}
       </header>
-      <ul className={styles.horizontalMenu}>
-        <li>
-          <Button primary={true} onClick={() => setCreatingArticle(true)}>
-            Create new Article
-          </Button>
-        </li>
-        <li>
-          <Button onClick={() => setTagManagement(!tagManagement)}>Manage tags</Button>
-        </li>
-      </ul>
-      <TagManagement
-        tags={tags}
-        close={handleCloseTag}
-        focus={tagManagement}
-        articles={articles}
-        setNeedReload={handleReload}
-      />
-
       <div className={styles.actions}>
-        {creatingArticle && (
-          <CreateArticle
-            tags={tags}
-            cancel={() => setCreatingArticle(false)}
-            triggerReload={() => {
-              setCreatingArticle(false)
-              setNeedReload(true)
-            }}
-          />
-        )}
-        <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search"
-                onChange={(e) => setFilter(etv(e))}/>
+        <Field className={styles.searchField}
+               type="text"
+               icon={Search}
+               value={filter}
+               laceholder="Search"
+               onChange={(e) => setFilter(etv(e))}
+        />
       </div>
 
       <aside className={styles.filtersContainer}>
-        {tags.length > 0 && <div className={styles.filtersTags}>
-          <h4>Filter by Tags</h4>
-          <ul className={styles.filterByTags}>
-            {tags.map((t) => (
-              <li key={`filterTag-${t._id}`}>
-                <ArticleTag
-                  tag={t}
-                  name={`filterTag-${t._id}`}
-                  onClick={toggleFilterTags}
-                  disableAction={false}
-                />
-              </li>
-            ))}
-          </ul>
-        </div>}
+        <div className={styles.filtersTags}>
+          <h4>Tags</h4>
+          <TagsList/>
+        </div>
       </aside>
 
-      <hr className={styles.horizontalSeparator} />
-
-      <div className={styles.articleCounter}>{articles.length} article{articles.length > 1 ? "s" : ""}</div>
-
-      {isLoading ? <Loading /> : articles
+      <div className={styles.articlesTableHeader}>
+        <Button primary={true} onClick={() => setCreatingArticle(true)}>
+          Create a new article
+        </Button>
+        <div className={styles.articleCounter}>{articles.length} article{articles.length > 1 ? 's' : ''}</div>
+      </div>
+      {creatingArticle && (
+        <Modal title="New article" cancel={handleCloseCreatingArticle}>
+          <CreateArticle ref={articleTitleField}/>
+        </Modal>
+      )}
+      {isLoading ? <Loading/> : articles
         .filter(filterByTagsSelected)
         .filter(
           (a) => a.title.toLowerCase().indexOf(filter.toLowerCase()) > -1
@@ -174,7 +148,7 @@ export default function Articles () {
         .map((article) => (
           <Article
             key={`article-${article._id}`}
-            tags={tags}
+            tags={[]}
             article={article}
             setNeedReload={handleReload}
             updateTagsHandler={handleUpdateTags}
