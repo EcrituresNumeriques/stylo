@@ -54,6 +54,39 @@ query getUserArticles($user: ID!) {
   }
 }
 
+query getWorkspaceArticles ($workspaceId: ID!) {
+  workspace(workspaceId: $workspaceId) {
+    articles {
+      _id
+      title
+      updatedAt
+
+      workingVersion {
+        bibPreview
+      }
+
+      owner {
+        _id
+        displayName
+      }
+
+      contributors {
+        user {
+          _id
+          displayName
+        }
+      }
+
+      tags {
+        name
+        owner
+        color
+        _id
+      }
+    }
+  }
+}
+
 query deleteArticle ($user: ID!, $article: ID!) {
   user (user: $user) {
     article (id: $article) {

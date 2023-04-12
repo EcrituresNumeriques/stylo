@@ -4,7 +4,7 @@ import { CurrentUserContext } from '../contexts/CurrentUser'
 import { Search } from 'react-feather'
 
 import { useGraphQL } from '../helpers/graphQL'
-import { getUserArticles as query } from './Articles.graphql'
+import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
 import etv from '../helpers/eventTargetValue'
 
 import Article from './Article'
@@ -12,12 +12,13 @@ import CreateArticle from './CreateArticle'
 
 import styles from './articles.module.scss'
 import TagManagement from './TagManagement'
-import SelectUser from './SelectUser'
 import Button from './Button'
 import Field from './Field'
 import Loading from './Loading'
 import ArticleTag from './Tag'
 import { useActiveUserId } from '../hooks/user'
+import WorkspaceLabel from './header/WorkspaceLabel.jsx'
+import { useActiveWorkspace } from '../hooks/workspace.js'
 
 export default function Articles () {
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
@@ -31,9 +32,10 @@ export default function Articles () {
   const [needReload, setNeedReload] = useState(false)
   const [tagManagement, setTagManagement] = useState(false)
   const [currentUser, setCurrentUser] = useState(activeUser)
-  const [userAccounts, setUserAccounts] = useState([])
 
-  const currentUserId = useActiveUserId()
+  const activeUserId = useActiveUserId()
+  const activeWorkspace = useActiveWorkspace()
+  const activeWorkspaceId = activeWorkspace?._id
   const runQuery = useGraphQL()
 
   const handleReload = useCallback(() => setNeedReload(true), [])
@@ -47,7 +49,7 @@ export default function Articles () {
     selectedTagIds.includes(id)
       ? setSelectedTagIds(selectedTagIds.filter(tagId => tagId !== id))
       : setSelectedTagIds([...selectedTagIds, id])
-  }, [currentUserId, selectedTagIds])
+  }, [activeUserId, selectedTagIds])
 
   const handleUpdateTitle = useCallback((articleId, title) => {
     // shallow copy otherwise React won't render the components again
@@ -77,32 +79,37 @@ export default function Articles () {
     return listOfTagsSelected.some(tag => {
       return article.tags.find(({ _id }) => _id === tag._id)
     })
-  }, [currentUserId, selectedTagIds])
+  }, [activeUserId, selectedTagIds])
 
   useEffect(() => {
     //Self invoking async function
     (async () => {
       try {
-        const data = await runQuery({ query, variables: { user: currentUserId } })
-
-        //Need to sort by updatedAt desc
-        setArticles(data.articles)
-        setTags(data.tags)
-        setCurrentUser(data.user)
-        setUserAccounts(data.userGrantedAccess)
-        setIsLoading(false)
-        setNeedReload(false)
+        if (activeWorkspaceId) {
+          const data = await runQuery({ query: getWorkspaceArticles, variables: { workspaceId: activeWorkspaceId } })
+          setArticles(data.workspace.articles)
+          setIsLoading(false)
+          setNeedReload(false)
+        } else {
+          const data = await runQuery({ query: getUserArticles, variables: { user: activeUserId } })
+          // Need to sort by updatedAt desc
+          setArticles(data.articles)
+          setTags(data.tags)
+          setCurrentUser(data.user)
+          setIsLoading(false)
+          setNeedReload(false)
+        }
       } catch (err) {
         alert(err)
       }
     })()
-  }, [needReload, currentUserId])
+  }, [needReload, activeUserId, activeWorkspaceId])
 
   return (<CurrentUserContext.Provider value={currentUser}>
     <section className={styles.section}>
       <header className={styles.articlesHeader}>
-        <h1>{articles.length} articles for</h1>
-        <SelectUser accounts={userAccounts} />
+        <h1>Articles</h1>
+        {activeWorkspace && <WorkspaceLabel color={activeWorkspace.color} name={activeWorkspace.name}/>}
       </header>
       <ul className={styles.horizontalMenu}>
         <li>
@@ -156,6 +163,8 @@ export default function Articles () {
       </aside>
 
       <hr className={styles.horizontalSeparator} />
+
+      <div className={styles.articleCounter}>{articles.length} article{articles.length > 1 ? "s" : ""}</div>
 
       {isLoading ? <Loading /> : articles
         .filter(filterByTagsSelected)

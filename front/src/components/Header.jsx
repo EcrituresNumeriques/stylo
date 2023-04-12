@@ -1,17 +1,15 @@
 import React from 'react'
-import { User } from 'react-feather'
+import { LifeBuoy } from 'react-feather'
 import { useSelector } from 'react-redux'
 import { Link, Route, Switch } from 'react-router-dom'
+
 import logoContent from '../../public/images/logo.svg?inline'
 
-import Button from './Button'
-
 import styles from './header.module.scss'
-import UserMenu from "./header/UserMenu.jsx";
+import UserMenu from './header/UserMenu.jsx'
 
 function Header () {
-  const logedIn = useSelector(state => state.logedIn)
-  const displayName = useSelector(state => state.activeUser.displayName)
+  const connected = useSelector(state => state.logedIn)
 
   return (<Switch>
     <Route path="*/preview"/>
@@ -21,7 +19,7 @@ function Header () {
           <h1 className={styles.logo}>
             <Link to="/"><img src={logoContent} alt="Stylo" title="Stylo"/></Link>
           </h1>
-          {logedIn &&
+          {connected &&
             <>
               <nav>
                 <ul className={styles.menuLinks}>
@@ -29,14 +27,20 @@ function Header () {
                   <li><Link to="/books">Books</Link></li>
                 </ul>
               </nav>
-              <nav>
-                <ul className={styles.menuLinks}>
-                  <li><UserMenu/></li>
-                </ul>
+              <nav className={styles.secondaryNav}>
+                <UserMenu/>
+                <a className={styles.documentationLink}
+                   href="https://stylo-doc.ecrituresnumeriques.ca"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                >
+                  <LifeBuoy size={16}/>
+                  Documentation
+                </a>
               </nav>
             </>
           }
-          {!logedIn &&
+          {!connected &&
             <nav>
               <ul className={styles.menuLinks}>
                 <li><Link to="/">Login</Link></li>

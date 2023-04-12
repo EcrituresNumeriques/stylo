@@ -1,6 +1,13 @@
 @use '../styles/defaults' as *;
 @use '../styles/variables' as *;
 
+.articleCounter {
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75em;
+}
+
 .alert {
   background-color: red;
   color: white;

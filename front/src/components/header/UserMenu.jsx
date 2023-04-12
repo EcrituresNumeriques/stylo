@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import {ArrowRight, ChevronRight, Layers, LifeBuoy, LogOut, User} from 'react-feather'
-import clsx from 'clsx'
+import { Layers, LifeBuoy, LogOut, User } from 'react-feather'
 
 import useComponentVisible from '../../hooks/componentVisible'
 import styles from './UserMenu.module.scss'
 import Button from '../Button.jsx'
+import WorkspaceMenuItem from './WorkspaceMenuItem.jsx'
+import UserMenuLink from './UserMenuLink.jsx'
 
 
 function UserMenu () {
@@ -17,22 +18,24 @@ function UserMenu () {
   }
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false)
   const activeUser = useSelector(state => state.activeUser)
+  const activeWorkspace = activeUser.workspaces.find((workspace) => workspace._id === activeUser.activeWorkspaceId)
+
+  useEffect(() => {
+    setIsComponentVisible(false)
+  }, [activeUser.activeWorkspaceId])
 
   return (
     <div ref={ref} className={styles.container}>
-      <div className={styles.link} onClick={() => setIsComponentVisible(!isComponentVisible)}>
-        <User className={styles.linkIcon} size={20}/>
-        {activeUser.displayName}
-        {/* todo: show current workspace */}
+      <div className={styles.userMenuLink} onClick={() => setIsComponentVisible(!isComponentVisible)}>
+        <UserMenuLink username={activeUser.displayName} activeWorkspace={activeWorkspace}/>
       </div>
       {isComponentVisible && <div className={styles.menu}>
         <div className={styles.workspaces}>
           <h4>Espaces de travail</h4>
           <ul>
-            <li className={clsx(styles.workspaceItem, styles.workspaceSelected)}><span className={styles.chip} style={{backgroundColor: "#D9D9D9"}}/> <span className={styles.workspaceName}>Mon espace</span> <ChevronRight className={styles.chevron}/></li>
-            <li className={clsx(styles.workspaceItem)}><span className={styles.chip} style={{backgroundColor: "#D9D9D9"}}/> <span className={styles.workspaceName}>Sens public</span> <ChevronRight className={styles.chevron}/></li>
-            <li className={styles.workspaceItem}><span className={styles.chip} style={{backgroundColor: "#D9D9D9"}}/><span className={styles.workspaceName}>Chaire de l&rsquo;université</span> <ChevronRight className={styles.chevron}/></li>
-            <li className={styles.workspacesLink}><a><Layers/> Tous les espaces</a></li>
+            <WorkspaceMenuItem color="#D9D9D9" name="Mon espace"/>
+            {activeUser.workspaces.map((workspace) => <WorkspaceMenuItem id={workspace._id} key={workspace._id} color={workspace.color} name={workspace.name} />)}
+            <li className={styles.workspacesLink}><Link to="/workspaces" onClick={() => setIsComponentVisible(false)}><Layers/> Tous les espaces</Link></li>
           </ul>
         </div>
         <div className={styles.footer}>
@@ -45,19 +48,11 @@ function UserMenu () {
               </div>
             </Link>
             <Button className={styles.logoutButton} onClick={logout} link>
-              <LogOut className={styles.linkIcon} size={22}/>
+              <LogOut size={22}/>
             </Button>
           </div>
         </div>
       </div>}
-      <a className={styles.documentationLink}
-         href="http://stylo-doc.ecrituresnumeriques.ca"
-         target="_blank"
-         rel="noopener noreferrer"
-      >
-        <LifeBuoy size={16}/>
-        Documentation
-      </a>
     </div>
   )
 }

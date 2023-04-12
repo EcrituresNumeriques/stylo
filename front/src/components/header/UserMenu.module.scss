@@ -6,40 +6,6 @@
     padding-bottom: 0.65em;
   }
 }
-.workspaceItem {
-  font-size: 0.9em;
-  font-weight: 400;
-  padding: 0.5em 1em 0.35em;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.workspaceSelected {
-  background-color: #4a4a4a;
-  border-radius: 6px;
-
-  > svg {
-    color: #eeeeee;
-  }
-}
-
-.workspaceName {
-  flex: 1;
-}
-
-.chip {
-  display: block;
-  height: 1.35em;
-  width: 1.35em;
-  border-radius: 4px;
-  margin-right: 0.75em;
-}
-
-.chevron {
-  margin-left: 0.5em;
-  color: #505050;
-}
 
 .workspacesLink {
   padding-left: 1em;
@@ -65,36 +31,22 @@
 }
 
 .container {
-  position: relative;
   display: flex;
-  gap: 1em;
+  gap: 2em;
 }
 
-.link {
+.userMenuLink {
   display: flex;
   cursor: pointer;
   gap: 0.5em;
   align-items: center;
 }
 
-.documentationLink {
-  display: flex;
-  font-weight: normal;
-  gap: 0.35em;
-  align-items: center;
-  font-size: 0.9rem;
-  text-decoration: none;
-}
-
-.documentationLink::after {
-  content: "\2197";
-}
-
 .menu {
   position: absolute;
-  top: 36px;
-  right: -16px;
-  background-color: black;
+  top: 66px;
+  left: 0.5em;
+  background-color: #202020;
   padding: 1em 1.25em;
   z-index: 99;
 }
@@ -104,7 +56,7 @@
   border-radius: 50%;
   width: 2em;
   height: 2em;
-  color: black;
+  color: #202020;
   display: flex;
   align-items: center;
   justify-content: center;

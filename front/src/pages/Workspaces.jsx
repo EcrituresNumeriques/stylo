@@ -37,7 +37,6 @@ export default function Workspaces() {
       try {
         const getArticlesResponse = await runQuery({query: getArticles})
         const getWorkspacesResponse = await runQuery({query: getWorkspaces})
-        console.log({getWorkspacesResponse})
         const workspaces = getWorkspacesResponse.workspaces
         personalWorkspace.articles = getArticlesResponse.user.articles
         setWorkspaces([personalWorkspace, ...workspaces])

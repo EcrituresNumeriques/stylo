@@ -1,9 +1,9 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import { toEntries } from './helpers/bibtex'
-import ArticleService from "./services/ArticleService"
+import ArticleService from './services/ArticleService'
 import WorkspaceService from './services/WorkspaceService.js'
 
-const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName='sessionToken' } = import.meta.env
+const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName = 'sessionToken' } = import.meta.env
 
 function createReducer (initialState, handlers) {
   return function reducer (state = initialState, action) {
@@ -92,6 +92,7 @@ const reducer = createReducer(initialState, {
   UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
 
   SET_WORKSPACES: setWorkspaces,
+  SET_ACTIVE_WORKSPACE: setActiveWorkspace,
 })
 
 const createNewArticleVersion = store => {
@@ -181,8 +182,7 @@ function persistStateIntoLocalStorage ({ getState }) {
         localStorage.setItem('articlePreferences', JSON.stringify(articlePreferences))
 
         return
-      }
-      else if (action.type === 'USER_PREFERENCES_TOGGLE') {
+      } else if (action.type === 'USER_PREFERENCES_TOGGLE') {
         // we run the reducer first
         next(action)
         // we fetch the updated state
@@ -191,8 +191,7 @@ function persistStateIntoLocalStorage ({ getState }) {
         localStorage.setItem('userPreferences', JSON.stringify(userPreferences))
 
         return
-      }
-      else if (action.type === 'LOGOUT') {
+      } else if (action.type === 'LOGOUT') {
         const { applicationConfig } = getState()
         localStorage.removeItem('articlePreferences')
         localStorage.removeItem('userPreferences')
@@ -255,7 +254,7 @@ function setSessionToken (state, { token: sessionToken }) {
   }
 }
 
-function loginUser (state, { user, token:sessionToken }) {
+function loginUser (state, { user, token: sessionToken }) {
   if (sessionToken) {
     return {
       ...state,
@@ -348,7 +347,7 @@ function setWorkingArticleMetadata (state, { metadata }) {
   return { ...state, workingArticle: { ...workingArticle, metadata } }
 }
 
-function setWorkingArticleBibliography(state, { bibliography }) {
+function setWorkingArticleBibliography (state, { bibliography }) {
   const bibTeXEntries = toEntries(bibliography)
   const { workingArticle } = state
   return {
@@ -386,7 +385,7 @@ function toggleUserPreferences (state, { key, value }) {
   }
 }
 
-function updateEditorCursorPosition(state, { lineNumber, column }) {
+function updateEditorCursorPosition (state, { lineNumber, column }) {
   return {
     ...state,
     editorCursorPosition: {
@@ -397,12 +396,19 @@ function updateEditorCursorPosition(state, { lineNumber, column }) {
 }
 
 function setWorkspaces (state, { workspaces }) {
-  console.log('RESULT', { state: state })
-  console.log('RESULT', { workspaces: workspaces })
   return { ...state, workspaces }
 }
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+function setActiveWorkspace (state, { workspaceId }) {
+  return {
+    ...state, activeUser: {
+      ...state.activeUser,
+      activeWorkspaceId: workspaceId
+    }
+  }
+}
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export default () => createStore(reducer, composeEnhancers(
   applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage)

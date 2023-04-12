@@ -20,11 +20,14 @@
 
 .header {
   @extend .wrapped-center;
+  height: 65px;
+  position: relative;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 
   .menuLinks {
     display: flex;
@@ -36,6 +39,26 @@
       font-size: 1.1rem;
     }
   }
+}
+
+.documentationLink {
+  display: flex;
+  font-weight: normal;
+  gap: 0.35em;
+  align-items: center;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.documentationLink::after {
+  content: "\2197";
+}
+
+.secondaryNav {
+  height: 100%;
+  display: flex;
+  gap: 2em;
+  position: relative;
 }
 
 .logo {
