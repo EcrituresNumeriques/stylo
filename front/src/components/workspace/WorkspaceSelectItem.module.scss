@@ -1,4 +1,4 @@
-.tag {
+.workspace {
   padding: .25em .5em;
   cursor: pointer;
   user-select: none;
@@ -8,11 +8,11 @@
   transition: box-shadow 90ms ease-in;
 }
 
-.tag:hover {
+.workspace:hover {
   box-shadow: 0 0 0 1px #484848;
 }
 
-.tag.selected {
+.workspace.selected {
   box-shadow: 0 0 0 1px #484848;
   border-color: #484848;
 }
@@ -21,6 +21,6 @@
   height: .65em;
   width: .65em;
   display: inline-block;
-  border-radius: 100%;
+  border-radius: 2px;
   margin-left: 0.5em;
 }

@@ -201,7 +201,7 @@ module.exports = {
   },
 
   Article: {
-    async workspaces (article, { user }) {
+    async workspaces (article, _, { user }) {
       if (user.admin) {
         return Workspace.find({ articles: article._id })
       }
@@ -211,6 +211,14 @@ module.exports = {
           { 'members.user': user._id }
         ]
       })
+    },
+
+    async tags(article) {
+      if (article.populated('tags')) {
+        return article.tags
+      }
+      await article.populate('tags').execPopulate()
+      return article.tags
     },
 
     async versions (article, { limit }) {

@@ -20,3 +20,13 @@ query getArticleVersions($articleId: ID!) {
     }
   }
 }
+
+query getArticleWorkspaces($articleId: ID!) {
+  article(article: $articleId) {
+    workspaces {
+      _id
+      color
+      name
+    }
+  }
+}

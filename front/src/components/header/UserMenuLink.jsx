@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import WorkspaceLabel from './WorkspaceLabel.jsx'
+import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
 import styles from './UserMenuLink.module.scss'
 import { User } from 'react-feather'
 

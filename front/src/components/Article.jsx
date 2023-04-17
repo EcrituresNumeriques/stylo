@@ -20,11 +20,13 @@ import Button from './Button'
 import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Share2, Trash } from 'react-feather'
 
 import { duplicateArticle } from './Acquintances.graphql'
-import { renameArticle, getArticleVersions } from './Article.graphql'
+import { renameArticle, getArticleVersions, getArticleWorkspaces } from './Article.graphql'
 import { useGraphQL } from '../helpers/graphQL'
-import { useCurrentUser } from '../contexts/CurrentUser'
+import WorkspaceSelectItem from './workspace/WorkspaceSelectItem.jsx'
+import { useSelector } from 'react-redux'
 
 export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, userTags }) {
+  const activeUser = useSelector(state => state.activeUser)
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -32,10 +34,10 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
   const [renaming, setRenaming] = useState(false)
   const [title, setTitle] = useState(article.title)
   const [versions, setVersions] = useState(article.versions || [])
+  const [workspaces, setWorkspaces] = useState(article.workspaces || [])
   const [tempTitle, setTempTitle] = useState(article.title)
   const [sharing, setSharing] = useState(false)
   const runQuery = useGraphQL()
-  const activeUser = useCurrentUser()
 
   const isArticleOwner = activeUser._id === article.owner._id
   const contributors = article.contributors.filter(c => c.user._id !== article.owner._id)
@@ -44,12 +46,29 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
     updateTagsHandler(article._id, tags)
   }, [])
 
+  const handleWorkspaceUpdate = useCallback(workspaceIds => {
+    setWorkspaces(workspaceIds.map(id => activeUser.workspaces.find(({ _id }) => _id === id)))
+  }, [])
+
   useEffect(() => {
     (async () => {
       if (expanded) {
         try {
           const data = await runQuery({ query: getArticleVersions, variables: { articleId: article._id } })
           setVersions(data.article.versions)
+        } catch (err) {
+          alert(err)
+        }
+      }
+    })()
+  }, [expanded])
+
+  useEffect(() => {
+    (async () => {
+      if (expanded) {
+        try {
+          const data = await runQuery({ query: getArticleWorkspaces, variables: { articleId: article._id } })
+          setWorkspaces(data.article.workspaces)
         } catch (err) {
           alert(err)
         }
@@ -210,6 +229,18 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
             <div className={styles.editTags}>
               <ArticleTags articleId={article._id} tags={tags} userTags={userTags} onChange={handleTagUpdate}/>
             </div>
+
+            <h4>Workspaces</h4>
+            <ul className={styles.workspaces}>
+              {activeUser.workspaces.map((workspace) => <WorkspaceSelectItem
+                key={workspace._id}
+                id={workspace._id}
+                color={workspace.color}
+                name={workspace.name}
+                articleId={article._id}
+                workspaceIds={workspaces.map(({_id}) => _id)}
+                onChange={handleWorkspaceUpdate}/>)}
+            </ul>
           </>
         )}
       </section>

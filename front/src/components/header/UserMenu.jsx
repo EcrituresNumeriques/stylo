@@ -6,7 +6,7 @@ import { Layers, LogOut, User } from 'react-feather'
 import useComponentVisible from '../../hooks/componentVisible'
 import styles from './UserMenu.module.scss'
 import Button from '../Button.jsx'
-import WorkspaceMenuItem from './WorkspaceMenuItem.jsx'
+import WorkspaceMenuItem from '../workspace/WorkspaceMenuItem.jsx'
 import UserMenuLink from './UserMenuLink.jsx'
 
 

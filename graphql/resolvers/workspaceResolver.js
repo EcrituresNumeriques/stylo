@@ -102,7 +102,6 @@ module.exports = {
     },
 
     async articles (workspace, { limit }) {
-      console.log({workspace})
       await workspace.populate({ path: 'articles', limit }).execPopulate()
       return workspace.articles
     },

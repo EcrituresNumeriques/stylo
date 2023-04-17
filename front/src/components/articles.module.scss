@@ -362,5 +362,12 @@ hr.horizontalSeparator {
   padding: 0.25em 1.25em;
   line-height: inherit;
   color: $main-lighter-color;
+}
 
+.workspaces {
+  display: flex;
+  flex-wrap: wrap;
+  > li:not(:last-child) {
+    margin-right: 0.5em;
+  }
 }
