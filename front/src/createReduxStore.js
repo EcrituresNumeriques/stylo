@@ -43,6 +43,10 @@ const initialState = {
     metadataFormMode: 'basic',
     expandVersions: false,
   },
+  articleFilters: {
+    tagIds: [],
+    text: '',
+  },
   articleStats: {
     wordCount: 0,
     charCountNoSpace: 0,
@@ -97,7 +101,7 @@ const reducer = createReducer(initialState, {
   SET_ACTIVE_WORKSPACE: setActiveWorkspace,
 
   UPDATE_SELECTED_TAG: updateSelectedTag,
-  TAG_CREATED: tagCreated,
+  TAG_CREATED: tagCreated
 })
 
 const createNewArticleVersion = store => {

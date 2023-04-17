@@ -55,6 +55,14 @@ query getUserArticles($user: ID!) {
 }
 
 query getWorkspaceArticles ($workspaceId: ID!) {
+  tags {
+    _id
+    owner
+    description
+    color
+    name
+  }
+
   workspace(workspaceId: $workspaceId) {
     articles {
       _id

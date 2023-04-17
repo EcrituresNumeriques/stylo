@@ -24,7 +24,7 @@ import { renameArticle, getArticleVersions } from './Article.graphql'
 import { useGraphQL } from '../helpers/graphQL'
 import { useCurrentUser } from '../contexts/CurrentUser'
 
-export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, tags: userTags }) {
+export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, userTags }) {
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -39,7 +39,10 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
 
   const isArticleOwner = activeUser._id === article.owner._id
   const contributors = article.contributors.filter(c => c.user._id !== article.owner._id)
-  const handleTagUpdate = useCallback(tags => setTags(tags), [])
+  const handleTagUpdate = useCallback(tags => {
+    setTags(tags)
+    updateTagsHandler(article._id, tags)
+  }, [])
 
   useEffect(() => {
     (async () => {
@@ -104,7 +107,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
 
       {!renaming && (
         <h1 className={styles.title} onClick={toggleExpansion}>
-          <span tabIndex={0} onKeyUp={toggleExpansion}>
+          <span tabIndex={0} onKeyUp={toggleExpansion} className={styles.icon}>
             {expanded ? <ChevronDown/> : <ChevronRight/>}
           </span>
 

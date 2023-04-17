@@ -25,6 +25,8 @@ export default function Articles () {
   const selectedTagIds = useSelector((state) => state.activeUser.selectedTagIds)
   const [creatingArticle, setCreatingArticle] = useState(false)
 
+  const latestTagCreated = useSelector((state) => state.latestTagCreated)
+
   const articleTitleField = createRef()
   useEffect(() => {
     if (articleTitleField.current) {
@@ -35,6 +37,13 @@ export default function Articles () {
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState('')
   const [articles, setArticles] = useState([])
+  const [userTags, setUserTags] = useState([])
+
+  useEffect(() => {
+    if (latestTagCreated) {
+      setUserTags([].concat(...userTags, latestTagCreated))
+    }
+  }, [latestTagCreated])
 
   const [needReload, setNeedReload] = useState(false)
 
@@ -78,8 +87,8 @@ export default function Articles () {
     }
 
     // if we find at least one matching tag in the selected list, we keep the article
-    return listOfTagsSelected.some(tag => {
-      return article.tags.find(({ _id }) => _id === tag._id)
+    return listOfTagsSelected.some(tagId => {
+      return article.tags.find(({ _id }) => _id === tagId)
     })
   }, [activeUserId, selectedTagIds])
 
@@ -90,6 +99,7 @@ export default function Articles () {
         if (activeWorkspaceId) {
           const data = await runQuery({ query: getWorkspaceArticles, variables: { workspaceId: activeWorkspaceId } })
           setArticles(data.workspace.articles)
+          setUserTags(data.tags)
           setIsLoading(false)
           setNeedReload(false)
         } else {
@@ -97,6 +107,7 @@ export default function Articles () {
           // Need to sort by updatedAt desc
           setArticles(data.articles)
           setCurrentUser(data.user)
+          setUserTags(data.tags)
           setIsLoading(false)
           setNeedReload(false)
         }
@@ -105,6 +116,12 @@ export default function Articles () {
       }
     })()
   }, [needReload, activeUserId, activeWorkspaceId])
+
+  const filteredArticles = articles
+    .filter(filterByTagsSelected)
+    .filter(
+      (a) => a.title.toLowerCase().indexOf(filter.toLowerCase()) > -1
+    )
 
   return (<CurrentUserContext.Provider value={currentUser}>
     <section className={styles.section}>
@@ -133,22 +150,18 @@ export default function Articles () {
         <Button primary={true} onClick={() => setCreatingArticle(true)}>
           Create a new article
         </Button>
-        <div className={styles.articleCounter}>{articles.length} article{articles.length > 1 ? 's' : ''}</div>
+        <div className={styles.articleCounter}>{filteredArticles.length} article{filteredArticles.length > 1 ? 's' : ''}</div>
       </div>
       {creatingArticle && (
         <Modal title="New article" cancel={handleCloseCreatingArticle}>
           <CreateArticle ref={articleTitleField}/>
         </Modal>
       )}
-      {isLoading ? <Loading/> : articles
-        .filter(filterByTagsSelected)
-        .filter(
-          (a) => a.title.toLowerCase().indexOf(filter.toLowerCase()) > -1
-        )
+      {isLoading ? <Loading/> : filteredArticles
         .map((article) => (
           <Article
             key={`article-${article._id}`}
-            tags={[]}
+            userTags={userTags}
             article={article}
             setNeedReload={handleReload}
             updateTagsHandler={handleUpdateTags}

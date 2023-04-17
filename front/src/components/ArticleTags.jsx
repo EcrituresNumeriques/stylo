@@ -1,19 +1,18 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { useGraphQL } from '../helpers/graphQL'
 
 import ArticleTag from './Tag'
 
 import { addTags, removeTags } from './Articles.graphql'
 import { useCurrentUser } from '../contexts/CurrentUser'
-import { useMemo } from 'react'
 
 export default function ArticleTags ({ articleId, onChange, tags, userTags }) {
+
   const runQuery = useGraphQL()
   const activeUser = useCurrentUser()
+
   const selectedTags = tags.map(({ _id }) => _id)
 
-  const userTagsIds = useMemo(() => userTags.map(({ _id }) => _id), [userTags])
-  const remoteTags = useMemo(() => tags.filter(({ _id }) => userTagsIds.includes(_id) === false), [tags])
   const handleClick = useCallback(async (event) => {
     const [id, checked] = [event.target.value, event.target.checked]
     const variables = { article: articleId, tags: [id], user: activeUser._id }
@@ -36,15 +35,6 @@ export default function ArticleTags ({ articleId, onChange, tags, userTags }) {
           <ArticleTag tag={tag} selected={selectedTags.includes(tag._id)} onClick={handleClick} />
         </li>
       ))}
-
-      {remoteTags
-        .map((tag) => (
-          <li key={`article-${articleId}-${tag._id}`}>
-            <ArticleTag tag={tag} selected={selectedTags.includes(tag._id)}
-              disableAction={true}
-            />
-          </li>
-        ))}
     </ul>
   )
 }

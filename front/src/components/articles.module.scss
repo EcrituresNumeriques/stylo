@@ -8,6 +8,10 @@
   padding-left: 0.75em;
 }
 
+.icon {
+  display: flex;
+}
+
 .alert {
   background-color: red;
   color: white;
@@ -204,6 +208,7 @@ hr.horizontalSeparator {
   .metadata,
   .deleteArticle {
     width: 100%;
+    margin-left: 0.5em;
   }
 
   .metadata {
