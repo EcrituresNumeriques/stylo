@@ -7,7 +7,6 @@ import styles from './credentials.module.scss'
 import fieldStyles from './field.module.scss'
 import Loading from "./Loading";
 import UserInfos from "./UserInfos";
-import CredentialsAccountSharing from "./CredentialsAccountSharing";
 import Button from "./Button";
 import Field from "./Field";
 import clsx from 'clsx'
@@ -16,7 +15,6 @@ export default function Credentials () {
   const [password, setPassword] = useState('')
   const [passwordO, setPasswordO] = useState('')
   const [passwordC, setPasswordC] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
   const userId = useSelector(state => state.activeUser._id)
   const runQuery = useGraphQL()
@@ -38,10 +36,6 @@ export default function Credentials () {
     } catch (err) {
       alert(err)
     }
-  }
-
-  if (isLoading) {
-    return <Loading />
   }
 
   return (
@@ -84,8 +78,6 @@ export default function Credentials () {
           </Button>
         </form>
       </section>
-
-      <CredentialsAccountSharing />
     </>
   )
 }

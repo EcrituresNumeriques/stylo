@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { shallowEqual, useSelector } from 'react-redux'
 import { Send, UserMinus, UserPlus } from 'react-feather'
 
 import styles from './Share.module.scss'

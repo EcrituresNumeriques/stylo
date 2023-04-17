@@ -1,19 +1,19 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import {shallowEqual, useSelector} from 'react-redux'
-import {Search} from 'react-feather'
+import React, { useCallback, useEffect, useState } from 'react'
+import { shallowEqual, useSelector } from 'react-redux'
+import { Search } from 'react-feather'
 
-import {CurrentUserContext} from '../contexts/CurrentUser'
+import { CurrentUserContext } from '../contexts/CurrentUser'
 
 import styles from './workspaces.module.scss'
 import Field from '../components/Field.jsx'
 
 import Button from '../components/Button.jsx'
 import WorkspaceItem from '../components/workspace/WorkspaceItem.jsx'
-import {useGraphQL} from '../helpers/graphQL.js'
-import {getWorkspaces,getArticles} from './Workspaces.graphql'
+import { useGraphQL } from '../helpers/graphQL.js'
+import { getWorkspaces, getArticles } from './Workspaces.graphql'
 import CreateWorkspace from '../components/workspace/CreateWorkspace.jsx'
 
-export default function Workspaces() {
+export default function Workspaces () {
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
   const [filter, setFilter] = useState('')
   const [creating, setCreating] = useState(false)
@@ -35,8 +35,8 @@ export default function Workspaces() {
   useEffect(() => {
     (async () => {
       try {
-        const getArticlesResponse = await runQuery({query: getArticles})
-        const getWorkspacesResponse = await runQuery({query: getWorkspaces})
+        const getArticlesResponse = await runQuery({ query: getArticles })
+        const getWorkspacesResponse = await runQuery({ query: getWorkspaces })
         const workspaces = getWorkspacesResponse.workspaces
         personalWorkspace.articles = getArticlesResponse.user.articles
         setWorkspaces([personalWorkspace, ...workspaces])
@@ -61,7 +61,7 @@ export default function Workspaces() {
       {creating && <CreateWorkspace onCancel={handleCreateCancel}/>}
       <ul className={styles.workspacesList}>
         {workspaces.map((workspace) => (
-          <li key={`article-${workspace._id}`}>
+          <li key={`workspace-${workspace._id}`}>
             <WorkspaceItem workspace={workspace}/>
           </li>
         ))}

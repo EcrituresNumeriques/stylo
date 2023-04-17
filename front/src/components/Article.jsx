@@ -17,13 +17,26 @@ import etv from '../helpers/eventTargetValue'
 
 import Field from './Field'
 import Button from './Button'
-import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Share2, Trash } from 'react-feather'
+import {
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Copy,
+  Edit3,
+  Eye,
+  Printer, Send,
+  Share2,
+  Trash,
+  UserMinus,
+  UserPlus
+} from 'react-feather'
 
 import { duplicateArticle } from './Acquintances.graphql'
 import { renameArticle, getArticleVersions, getArticleWorkspaces } from './Article.graphql'
 import { useGraphQL } from '../helpers/graphQL'
 import WorkspaceSelectItem from './workspace/WorkspaceSelectItem.jsx'
 import { useSelector } from 'react-redux'
+import ContributorItem from './ContributorItem.jsx'
 
 export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, userTags }) {
   const activeUser = useSelector(state => state.activeUser)
@@ -166,7 +179,11 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
         </Button>
 
         {<Button title="Share with Stylo users" icon={true} onClick={() => setSharing(true)}>
-          <Share2/>
+          <Send/>
+        </Button>}
+
+        {<Button title="Share with Stylo users" icon={true} onClick={() => setSharing(true)}>
+          <UserPlus/>
         </Button>}
 
         <Button title="Download a printable version" icon={true} onClick={() => setExporting(true)}>
@@ -202,10 +219,11 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
           {tags.map((t) => (
             <span className={styles.tagChip} key={'tagColor-' + t._id} style={{ backgroundColor: t.color || 'grey' }}/>
           ))}
-          by <span className={styles.author}>{article.owner.displayName}</span>
-          {contributors.length > 0 && (<span className={styles.contributors}>
-          , <span className={styles.author}>{contributors.map(c => c.user.displayName).join(', ')}</span>
-          </span>)}
+          {/*by <span className={styles.author}>{article.owner.displayName}</span>*/}
+          <span className={styles.by}>by</span> <span className={styles.author}>ggrossetie, </span><span className={styles.contrib}>Revue Fémur, </span><span className={styles.contrib}>margotmothes, </span><span className={styles.contrib}>Antoine</span>
+          {/*{contributors.length > 0 && (<span className={styles.contributors}>*/}
+          {/*, <span className={styles.author}>{contributors.map(c => c.user.displayName).join(', ')}</span>*/}
+          {/*</span>)}*/}
 
           <time dateTime={article.updatedAt} className={styles.momentsAgo}>
             ({formatTimeAgo(article.updatedAt)})
@@ -214,7 +232,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
 
         {expanded && (
           <>
-            <h4>Last versions</h4>
+            <h4>Versions</h4>
             <ul className={styles.versions}>
               {versions.map((v) => (
                 <li key={`version-${v._id}`}>
@@ -225,12 +243,12 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
               ))}
             </ul>
 
-            <h4>Tags</h4>
+            <h4>Étiquettes</h4>
             <div className={styles.editTags}>
               <ArticleTags articleId={article._id} tags={tags} userTags={userTags} onChange={handleTagUpdate}/>
             </div>
 
-            <h4>Workspaces</h4>
+            <h4>Espaces de travail</h4>
             <ul className={styles.workspaces}>
               {activeUser.workspaces.map((workspace) => <WorkspaceSelectItem
                 key={workspace._id}
@@ -240,6 +258,18 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
                 articleId={article._id}
                 workspaceIds={workspaces.map(({_id}) => _id)}
                 onChange={handleWorkspaceUpdate}/>)}
+            </ul>
+
+            <h4>Contributeurs</h4>
+            <div className={styles.contributorsAction}>
+              {/*<Button small={true} >*/}
+              {/*  <UserPlus /> Partager l'article*/}
+              {/*</Button>*/}
+            </div>
+            <ul className={styles.contributors}>
+              <ContributorItem name="Revue Fémur"></ContributorItem>
+              <ContributorItem name="margotmothes" email="margotmths@gmail.com"></ContributorItem>
+              <ContributorItem name="Antoine"></ContributorItem>
             </ul>
           </>
         )}

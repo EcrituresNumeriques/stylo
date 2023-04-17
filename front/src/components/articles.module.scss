@@ -226,7 +226,7 @@ hr.horizontalSeparator {
   }
 
   .versions {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .tagChip {
@@ -241,6 +241,7 @@ hr.horizontalSeparator {
     font-style: italic;
   }
 
+
   .contributors {
     padding-left: .5em;
   }
@@ -254,6 +255,8 @@ hr.horizontalSeparator {
         margin: 0 .5rem .5rem 0;
       }
     }
+    margin-top:0.5rem;
+    margin-bottom: 1rem;
   }
 }
 
@@ -370,4 +373,64 @@ hr.horizontalSeparator {
   > li:not(:last-child) {
     margin-right: 0.5em;
   }
+  margin-top:0.5rem;
+  margin-bottom: 1rem;
 }
+
+.sharing {
+  margin-top:0.5rem;
+  margin-bottom: 1rem;
+}
+
+.contributors {
+  margin-right: 0.75rem;
+  margin-top: 0.5rem;
+  padding-left: 0 !important;
+
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.contributor {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.35em 0.5em;
+  margin-bottom: 0.25em;
+  border: 1px solid grey;
+  margin-right: 0.5rem;
+}
+
+.contributorInfo {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  min-height: 2.5em;
+  margin-right: 1em;
+}
+
+.contributorName {
+  font-weight: 500;
+}
+
+.contributorEmail {
+  font-size: 0.95em;
+  font-weight: 400;
+  padding-bottom: 0.25em;
+}
+
+.contributorsAction {
+  margin-top: 0.5em;
+}
+
+.contributorActions {
+  display: flex;
+  gap: 0.5em;
+  margin: auto;
+}
+
+.contributorRevoke {
+  display: flex;
+  gap: 0.35em;
+}
+
