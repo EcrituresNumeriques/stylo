@@ -37,6 +37,7 @@ import { useGraphQL } from '../helpers/graphQL'
 import WorkspaceSelectItem from './workspace/WorkspaceSelectItem.jsx'
 import { useSelector } from 'react-redux'
 import ContributorItem from './ContributorItem.jsx'
+import ArticleContributorAdd from './ArticleContributorAdd.jsx'
 
 export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, userTags }) {
   const activeUser = useSelector(state => state.activeUser)
@@ -132,8 +133,8 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
       )}
 
       {sharing && (
-        <Modal title="Share with Stylo users" cancel={() => setNeedReload() || setSharing(false)}>
-          <Share article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)}/>
+        <Modal title="Partager l'article avec un contact" cancel={() => setNeedReload() || setSharing(false)}>
+          <ArticleContributorAdd article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)}/>
         </Modal>
       )}
 

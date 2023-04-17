@@ -11,6 +11,18 @@ scalar ID
 scalar Int
 scalar Boolean
 
+type UserSearch {
+  _id: ID
+  displayName: String
+  email: EmailAddress
+  firstName: String
+  lastName: String
+}
+
+input UserFilter {
+  email: String!
+}
+
 type User {
   _id: ID
   displayName: String
@@ -266,6 +278,8 @@ type Query {
 
   "Fetch authenticated user info"
   user(user: ID): User
+
+  getUser(filter: UserFilter): User
 
   "Fetch accounts we have access to"
   userGrantedAccess: [User]

@@ -150,6 +150,11 @@ module.exports = {
         .populate({ path: 'permissions', populate: 'user' })
     },
 
+    async getUser (_, { filter }, context) {
+      isUser({ }, context)
+      return User.findOne({ email: filter.email })
+    },
+
     userGrantedAccess(_, args, context) {
       isUser(args, context)
 

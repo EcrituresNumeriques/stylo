@@ -40,6 +40,14 @@ mutation duplicateArticle($user: ID!, $article: ID!, $to: ID!) {
   }
 }
 
+query getUserByEmail($userEmail: String!) {
+  getUser(filter: {email: $userEmail}) {
+    _id
+    displayName
+    email
+  }
+}
+
 query getAcquintances($user: ID!) {
   user(user: $user) {
     acquintances {
