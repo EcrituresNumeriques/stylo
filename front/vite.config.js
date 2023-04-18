@@ -6,7 +6,7 @@ import handlebars from 'vite-plugin-handlebars'
 import graphql from '@rollup/plugin-graphql'
 
 const require = createRequire(import.meta.url)
-const { version } = require('../package.json')
+const { version } = require('./package.json')
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
