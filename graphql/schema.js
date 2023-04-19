@@ -26,6 +26,7 @@ input UserFilter {
 type User {
   _id: ID
   displayName: String
+  username: String
   authType: String
   email: EmailAddress
   firstName: String
@@ -44,6 +45,9 @@ type User {
   apiToken: JWT
 
   article(id: ID!): Article
+  
+  addContact(userId: ID!): User
+  removeContact(userId: ID!): User
 }
 
 type UserPermission {
@@ -110,6 +114,9 @@ type Article {
   setZoteroLink(zotero: String!): Boolean
   updateWorkingVersion(content: WorkingVersionInput!): Article
   workspaces: [Workspace!]
+  
+  addContributor(userId: ID!): Article
+  removeContributor(userId: ID!): Article
 }
 
 type ArticlePreviewSettings {

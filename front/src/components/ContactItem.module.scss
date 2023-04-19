@@ -1,0 +1,42 @@
+@use '../styles/defaults' as *;
+@use '../styles/variables' as *;
+
+.contact {
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  min-height: 4rem;
+  gap: 1em;
+  border: 1px solid $main-lighter-color;
+}
+
+.muted {
+  color: $muted-color;
+}
+
+.contact:not(:first-child) {
+  border-top: none;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.status {
+  flex: 1;
+}
+
+.active svg {
+  stroke-width: 3;
+  color: $main-color-links;
+}
+
+.inactive svg {
+}
+
+.select .secondary:focus:not([disabled]) {
+  background-color: transparent;
+}

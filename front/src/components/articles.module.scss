@@ -391,6 +391,10 @@ hr.horizontalSeparator {
   flex-wrap: wrap;
 }
 
+.contributorNames {
+  display: inline-flex;
+}
+
 .contributor {
   display: flex;
   flex-direction: column;

@@ -55,6 +55,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
 
   const isArticleOwner = activeUser._id === article.owner._id
   const contributors = article.contributors.filter(c => c.user._id !== article.owner._id)
+
   const handleTagUpdate = useCallback(tags => {
     setTags(tags)
     updateTagsHandler(article._id, tags)
@@ -220,12 +221,8 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
           {tags.map((t) => (
             <span className={styles.tagChip} key={'tagColor-' + t._id} style={{ backgroundColor: t.color || 'grey' }}/>
           ))}
-          {/*by <span className={styles.author}>{article.owner.displayName}</span>*/}
-          <span className={styles.by}>by</span> <span className={styles.author}>ggrossetie, </span><span className={styles.contrib}>Revue Fémur, </span><span className={styles.contrib}>margotmothes, </span><span className={styles.contrib}>Antoine</span>
-          {/*{contributors.length > 0 && (<span className={styles.contributors}>*/}
-          {/*, <span className={styles.author}>{contributors.map(c => c.user.displayName).join(', ')}</span>*/}
-          {/*</span>)}*/}
-
+          <span className={styles.by}>by</span> <span className={styles.author}>{article.owner.displayName}</span>
+          {contributors.length > 0 && (<span className={styles.contributorNames}><span>, {contributors.map(c => c.user.displayName || c.user.username).join(', ')}</span></span>)}
           <time dateTime={article.updatedAt} className={styles.momentsAgo}>
             ({formatTimeAgo(article.updatedAt)})
           </time>

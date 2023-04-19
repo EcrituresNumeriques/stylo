@@ -110,9 +110,7 @@ const createNewArticleVersion = store => {
       if (action.type === 'CREATE_WORKSPACE') {
         const { workspaces, sessionToken, applicationConfig } = store.getState()
         const workspaceService = new WorkspaceService(sessionToken, applicationConfig)
-        console.log('CREATE WORKSPACE', { action })
         const response = await workspaceService.create(action.data)
-        console.log('RESULT', { r: response.createWorkspace })
         store.dispatch({ type: 'SET_WORKSPACES', workspaces: [response.createWorkspace, ...workspaces] })
         return next(action)
       }

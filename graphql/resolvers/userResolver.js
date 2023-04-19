@@ -182,6 +182,34 @@ module.exports = {
 
     async article (user, { id }) {
       return User.model('Article').findAndPopulateOneByOwners(id, user)
+    },
+
+    async addContact (user, { userId }) {
+      const contact = await User.findById(userId)
+      if (user.id === userId) {
+        throw new Error('You cannot add yourself as a contact!')
+      }
+      if (!contact) {
+        throw new Error(`No user found with this id: ${userId}`)
+      }
+      console.log(user.acquintances)
+      const userAlreadyExistsAsContact = user.acquintances.find((u) => u.equals(contact))
+      if (userAlreadyExistsAsContact) {
+        return // nothing to do!
+      }
+      user.acquintances.push(contact)
+      await user.save()
+      return user.populate('acquintances').execPopulate()
+    },
+
+    async removeContact (user, { userId }) {
+      const contact = await User.findById(userId)
+      if (!contact) {
+        throw new Error(`No user found with this id: ${userId}`)
+      }
+      user.acquintances = user.acquintances.filter((u) => !u.equals(contact))
+      await user.save()
+      return user.populate('acquintances').execPopulate()
     }
   },
 }

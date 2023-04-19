@@ -31,12 +31,15 @@ query getUserArticles($user: ID!) {
     owner {
       _id
       displayName
+      username
     }
 
     contributors {
       user {
         _id
         displayName
+        username
+        email
       }
     }
 
@@ -76,12 +79,15 @@ query getWorkspaceArticles ($workspaceId: ID!) {
       owner {
         _id
         displayName
+        username
       }
 
       contributors {
         user {
           _id
           displayName
+          username
+          email
         }
       }
 

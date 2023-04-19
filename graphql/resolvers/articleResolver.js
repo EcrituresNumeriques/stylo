@@ -213,6 +213,24 @@ module.exports = {
       })
     },
 
+    async removeContributor (article, { userId }) {
+      const contributorUser = await User.findById(userId)
+      if (!contributorUser) {
+        throw new Error(`Unable to find user with id: ${userId}`)
+      }
+      await article.unshareWith(contributorUser)
+      return article
+    },
+
+    async addContributor (article, { userId }) {
+      const contributorUser = await User.findById(userId)
+      if (!contributorUser) {
+        throw new Error(`Unable to find user with id: ${userId}`)
+      }
+      await article.shareWith(contributorUser)
+      return article
+    },
+
     async tags(article) {
       if (article.populated('tags')) {
         return article.tags
