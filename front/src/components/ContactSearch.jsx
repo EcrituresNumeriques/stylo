@@ -1,4 +1,4 @@
-import { Search } from 'react-feather'
+import { CheckSquare, Search, Square } from 'react-feather'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -11,7 +11,15 @@ import { addContact, removeContact } from './Contacts.graphql'
 import debounce from 'lodash.debounce'
 import ContactItem from './ContactItem.jsx'
 
-export default function ContactSearch ({ members = [], onUserUpdated = (_) => {} }) {
+export default function ContactSearch (
+  {
+    members = [],
+    onUserUpdated = (_) => {
+    },
+    selectedIcon = <CheckSquare/>,
+    unselectedIcon = <Square/>
+  }
+) {
   const runQuery = useGraphQL()
   const activeUserId = useSelector(state => state.activeUser._id)
   const [filter, setFilter] = useState('')
@@ -27,13 +35,26 @@ export default function ContactSearch ({ members = [], onUserUpdated = (_) => {}
   }, {})
 
   const handleContactUpdate = useCallback(async (event) => {
+    const { _id: userId } = event.user
+    if (event.action === 'select' || event.action === 'active') {
+      // maviro@digitaltextualities.ca
+      const contactsFound = contacts.find((c) => c._id === userId)
+      if (!contactsFound) {
+        setContacts([{
+          ...event.user,
+          active: event.action === 'active' ? true : event.user.action,
+          selected: event.action === 'select' ? true : event.user.selected,
+        }, ...contacts])
+        setUserFound(null)
+      }
+    }
     if (event.action === 'active') {
-      await runQuery({query: addContact, variables: {userId: activeUserId, contactId: event.userId }})
+      await runQuery({ query: addContact, variables: { userId: activeUserId, contactId: userId } })
     } else if (event.action === 'inactive') {
-        await runQuery({query: removeContact, variables: {userId: activeUserId, contactId: event.userId }})
+      await runQuery({ query: removeContact, variables: { userId: activeUserId, contactId: userId } })
     }
     onUserUpdated(event)
-  }, [activeUserId])
+  }, [activeUserId, contacts])
 
   useEffect(() => {
     (async () => {
@@ -82,13 +103,12 @@ export default function ContactSearch ({ members = [], onUserUpdated = (_) => {}
   }, [])
 
   const inactiveUser = contactsFound.length === 0 && !userFound
-    ? {_id: 'inactive', displayName: filter, state: 'inactive'}
+    ? { _id: 'inactive', displayName: filter, state: 'inactive' }
     : undefined
 
   return (
     <>
       <div className={styles.header}>
-        <h3>Liste des contacts</h3>
         <Field className={styles.searchField}
                type="text"
                icon={Search}
@@ -98,9 +118,36 @@ export default function ContactSearch ({ members = [], onUserUpdated = (_) => {}
         />
       </div>
       <div className={styles.contacts}>
-        {contactsFound.map((user) => <ContactItem key={user._id} user={user} selected={user.selected} active={user.active} onUserUpdated={handleContactUpdate}/>)}
-        {userFound && <ContactItem key={userFound._id} user={userFound} hideName={true} onUserUpdated={handleContactUpdate}/>}
-        {inactiveUser && <ContactItem key='inactive' user={inactiveUser} muted={true} onUserUpdated={handleContactUpdate}/>}
+        {contactsFound.map((user) => <ContactItem
+          key={user._id}
+          user={user}
+          selected={user.selected}
+          active={user.active}
+          onUserUpdated={handleContactUpdate}
+          selectedIcon={selectedIcon}
+          unselectedIcon={unselectedIcon}
+        />)
+        }
+        {userFound &&
+          <ContactItem
+            key={userFound._id}
+            user={userFound}
+            hideName={true}
+            selectedIcon={selectedIcon}
+            unselectedIcon={unselectedIcon}
+            onUserUpdated={handleContactUpdate}
+          />
+        }
+        {inactiveUser &&
+          <ContactItem
+            key="inactive"
+            user={inactiveUser}
+            muted={true}
+            selectedIcon={selectedIcon}
+            unselectedIcon={unselectedIcon}
+            onUserUpdated={handleContactUpdate}
+          />
+        }
       </div>
     </>
   )

@@ -3,22 +3,21 @@ import React, { useCallback } from 'react'
 import styles from './Share.module.scss'
 import ContactSearch from './ContactSearch.jsx'
 import { useGraphQL } from '../helpers/graphQL.js'
-import { addContributor , removeContributor } from './ArticleContributors.graphql'
+import { addContributor, removeContributor } from './ArticleContributors.graphql'
 
-export default function ArticleContributorAdd ({ article }) {
+export default function ArticleContributors ({ article }) {
   const runQuery = useGraphQL()
 
-  const handleUserUpdated = useCallback(async ({userId, action}) => {
+  const handleUserUpdated = useCallback(async ({ user, action }) => {
+    const { _id: userId } = user
     if (action === 'select') {
       // add contributor
       const data = await runQuery({ query: addContributor, variables: { userId, articleId: article._id } })
+      // QUESTION: show notification? what about errors?
     } else if (action === 'unselect') {
       // remove contributor
       const data = await runQuery({ query: removeContributor, variables: { userId, articleId: article._id } })
-    } else if (action === 'active') {
-      // add user to contacts
-    } else if (action === 'inactive') {
-      // remove user from contacts
+      // QUESTION: show notification?  what about errors?
     }
   }, [article._id])
 

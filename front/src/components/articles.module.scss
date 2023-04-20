@@ -417,6 +417,16 @@ hr.horizontalSeparator {
   font-weight: 500;
 }
 
+.sendText,
+.sendIcon {
+  vertical-align: middle;
+}
+
+.sendIcon {
+  height: 1em;
+  width: 1em;
+}
+
 .contributorEmail {
   font-size: 0.95em;
   font-weight: 400;

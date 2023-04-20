@@ -11,6 +11,8 @@ export default function ContactItem (
     muted = false,
     active = false,
     selected = false,
+    selectedIcon = <CheckSquare/>,
+    unselectedIcon = <Square/>,
     onUserUpdated = () => {
     }
   }
@@ -19,16 +21,16 @@ export default function ContactItem (
   const [activeState, setActiveState] = useState(active)
   const [selectedState, setSelectedState] = useState(selected)
 
-  const handleSelect = useCallback((userId) => {
+  const handleSelect = useCallback((user) => {
     const value = !selectedState
     setSelectedState(value)
-    onUserUpdated({ userId, action: value ? 'select' : 'unselect' })
+    onUserUpdated({ user, action: value ? 'select' : 'unselect' })
   }, [selectedState])
 
-  const handleActive = useCallback((userId) => {
+  const handleActive = useCallback((user) => {
     const value = !activeState
     setActiveState(value)
-    onUserUpdated({ userId, action: value ? 'active' : 'inactive' })
+    onUserUpdated({ user, action: value ? 'active' : 'inactive' })
   }, [activeState])
 
   const displayName = user.displayName || user.username
@@ -41,13 +43,13 @@ export default function ContactItem (
         {user.email && <a href={'mailto:' + user.email} className={styles.contactEmail}>{user.email}</a>}
       </div>
       <div className={clsx(styles.status, activeState ? styles.active : styles.inactive)}>
-        <Button toggle={true} disabled={muted} onClick={() => handleActive(user._id)} icon={true}>
+        <Button toggle={true} disabled={muted} onClick={() => handleActive(user)} icon={true}>
           {activeState ? <UserCheck/> : <User/>}
         </Button>
       </div>
       <div className={styles.select}>
-        <Button toggle={true} disabled={muted} onClick={() => handleSelect(user._id)} icon={true}>
-          {selectedState ? <CheckSquare/> : <Square/>}
+        <Button toggle={true} disabled={muted} onClick={() => handleSelect(user)} icon={true}>
+          {selectedState ? selectedIcon : unselectedIcon}
         </Button>
       </div>
     </div>

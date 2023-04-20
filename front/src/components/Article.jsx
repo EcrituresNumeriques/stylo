@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
+import { Modal as GeistModal } from '@geist-ui/core'
 
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
@@ -37,7 +38,8 @@ import { useGraphQL } from '../helpers/graphQL'
 import WorkspaceSelectItem from './workspace/WorkspaceSelectItem.jsx'
 import { useSelector } from 'react-redux'
 import ContributorItem from './ContributorItem.jsx'
-import ArticleContributorAdd from './ArticleContributorAdd.jsx'
+import ArticleContributors from './ArticleContributors.jsx'
+import ArticleSendCopy from './ArticleSendCopy.jsx'
 
 export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, userTags }) {
   const activeUser = useSelector(state => state.activeUser)
@@ -51,6 +53,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
   const [workspaces, setWorkspaces] = useState(article.workspaces || [])
   const [tempTitle, setTempTitle] = useState(article.title)
   const [sharing, setSharing] = useState(false)
+  const [sending, setSending] = useState(false)
   const runQuery = useGraphQL()
 
   const isArticleOwner = activeUser._id === article.owner._id
@@ -125,6 +128,10 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
     }
   }, [tempTitle])
 
+
+    const closeHandler = (event) => {
+      setSending(false)
+    }
   return (
     <article className={styles.article}>
       {exporting && (
@@ -135,9 +142,21 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
 
       {sharing && (
         <Modal title="Partager l'article avec un contact" cancel={() => setNeedReload() || setSharing(false)}>
-          <ArticleContributorAdd article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)}/>
+          <ArticleContributors article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)}/>
         </Modal>
       )}
+
+      <GeistModal visible={sending} onClose={closeHandler}>
+        <h2>Envoyer une copie de l'article</h2>
+        <span className={styles.sendSubtitle}>
+          <span className={styles.sendText}>Permet d'envoyer une copie de l'article à l'un de vos contacts en cliquant sur l'icône{' '}</span>
+          <span><Send className={styles.sendIcon}/></span>
+        </span>
+        <GeistModal.Content>
+          <ArticleSendCopy article={article} setNeedReload={setNeedReload} cancel={() => setSending(false)}/>
+        </GeistModal.Content>
+        <GeistModal.Action passive onClick={() => setSending(false)}>Fermer</GeistModal.Action>
+      </GeistModal>
 
       {!renaming && (
         <h1 className={styles.title} onClick={toggleExpansion}>
@@ -180,11 +199,11 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
           <Copy/>
         </Button>
 
-        {<Button title="Share with Stylo users" icon={true} onClick={() => setSharing(true)}>
+        {<Button title="Send a copy" icon={true} onClick={() => setSending(true)}>
           <Send/>
         </Button>}
 
-        {<Button title="Share with Stylo users" icon={true} onClick={() => setSharing(true)}>
+        {<Button title="Share article" icon={true} onClick={() => setSharing(true)}>
           <UserPlus/>
         </Button>}
 
