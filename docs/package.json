@@ -1,0 +1,16 @@
+{
+  "name": "stylo-doc",
+  "version": "0.1.0",
+  "description": "Ce dépôt rassemble les pages de la documentation de l'éditeur de texte sémantique _Stylo_ : [https://stylo-doc.ecrituresnumeriques.ca](https://stylo-doc.ecrituresnumeriques.ca)",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Chaire de recherche du Canada sur les écritures numériques",
+  "license": "CC BY-SA 4.0",
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "@11ty/eleventy-plugin-webc": "^0.11.0"
+  }
+}

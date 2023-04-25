@@ -1,3 +1,7 @@
+# 11ty
+_site
+node_modules
+
 ## =============================================================================
 ##                !!! STOP. DO NOT MODIFY BELOW THIS LINE. !!!
 ## =============================================================================
@@ -10,7 +14,8 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*

@@ -1,0 +1,17 @@
+<script webc:setup>
+//  const title = 'Documentation'
+</script>
+
+<!doctype html>
+<html webc:root webc:keep :lang="lang">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title @raw="title"></title>
+  </head>
+  <body webc:keep style="color: blue">
+    <h1 @html="title"></h1>
+    <div class="content" @html="content"></div>
+  </body>
+</html>
+
