@@ -10,7 +10,7 @@ module.exports = function(eleventyConfig) {
 
   // Copy `uploads/` to `_site/uploads`
   eleventyConfig.addPassthroughCopy("uploads");
-  
+
   return {
     dir: {
       input: 'src',

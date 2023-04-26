@@ -1,3 +1,4 @@
 {
-  "layout": "page.webc"
+  "layout": "page.webc",
+  "useSideMenu": true
 }

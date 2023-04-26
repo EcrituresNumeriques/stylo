@@ -1,5 +1,6 @@
 ---
 title: "Stylo - un éditeur de texte sémantique"
+useSideMenu: false
 ---
 
 **📢 À l'attention des utilisatrices et des utilisateurs de Stylo : une mise à jour de l'éditeur de texte sémantique Stylo vient d'être lancée. Pour découvrir les nouvelles fonctionnalités en détail voici la page d'information : [Nouvelles fonctionnalités !](/fr/messagev2/).**

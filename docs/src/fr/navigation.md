@@ -1,22 +1,4 @@
-<!--
-  -- Name of your wiki
-  -- Do NOT remove the leading `#` character.
-  -->
-
 # Stylo - Documentation
-
-<!--
-  -- Default theme
-  -- (Read: http://dynalon.github.io/mdwiki/#!customizing.md#Theme_chooser)
-  -->
-
-[gimmick:theme](spacelab)
-
-
-<!--
-  -- Navigation
-  -- (Read: http://dynalon.github.io/mdwiki/#!quickstart.md#Adding_a_navigation)
-  -->
 
 [Projet]()
 

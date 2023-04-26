@@ -1,3 +1,35 @@
 {
-  "lang": "fr"
+  "siteTitle": "Stylo - Documentation",
+  "lang": "fr",
+  "nav": [
+    {
+      "label": "Projet",
+      "url": "",
+      "children": [
+        {
+          "label": "À propos",
+          "Sources": "/fr/about"
+        },
+        {
+          "label": "Sources",
+          "Sources": "/fr/sources"
+        },
+        {
+          "label": "Contact",
+          "Sources": "/fr/contacts"
+        }
+      ]
+    },
+
+    {
+      "label": "Documentation",
+      "url": "",
+      "children": [
+        {
+          "label": "Premiers pas dans Stylo",
+          "Sources": "/fr/premierspas"
+        }
+      ]
+    }
+  ]
 }
