@@ -112,10 +112,6 @@
       ansible.builtin.shell:
         cmd: "docker-compose up --no-build --pull never --detach"
         chdir: ~/stylo
-      environment:
-        SNOWPACK_MATOMO_URL: "{{ matomo_url }}"
-        SNOWPACK_MATOMO_SITE_ID: "{{ matomo_site_id }}"
-        SE_ALLOWED_INSTANCE_BASE_URLS: "{{ export_allowed_instance_base_urls }}"
 
   handlers:
     - name: reload nginx
