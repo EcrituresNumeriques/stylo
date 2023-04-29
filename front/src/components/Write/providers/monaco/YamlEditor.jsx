@@ -1,7 +1,9 @@
 import { useMemo } from 'react'
-import Editor from '@monaco-editor/react'
+import * as monaco from 'monaco-editor'
+import Editor, { loader } from '@monaco-editor/react'
 
 import styles from './YamlEditor.module.scss'
+loader.config({ monaco })
 
 export default function MonacoYamlEditor ({ text, height, onTextUpdate, fontSize = 16 }) {
   const options = useMemo(() => ({

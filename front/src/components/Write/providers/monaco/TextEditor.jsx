@@ -1,10 +1,12 @@
 import React, { useRef, useEffect, useMemo, useCallback } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 
-import Editor from '@monaco-editor/react'
+import * as monaco from 'monaco-editor'
+import Editor, { loader } from '@monaco-editor/react'
 import { registerBibliographyCompletion, registerReadOnlyTheme } from './support'
 
 import styles from './TextEditor.module.scss'
+loader.config({ monaco })
 
 export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
   const articleBibTeXEntries = useSelector(state => state.workingArticle.bibliography.entries, shallowEqual)
