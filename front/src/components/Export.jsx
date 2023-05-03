@@ -25,7 +25,7 @@ export default function Export ({ bookId, articleVersionId, articleId, bib, name
 
   const exportUrl = bookId
     ? `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${exportId}&book=${bookId}&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${Boolean(toc)}&tld=${tld}&unnumbered=${unnumbered}`
-    : `${pandocExportEndpoint}/generique/export/${host}/${articleId}/${exportId}/?with_toc=${toc}&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=${format}&version=${articleVersionId}`
+    : `${pandocExportEndpoint}/generique/export/${host}/${articleId}/${exportId}/?with_toc=${toc}&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=${format}&version=${articleVersionId ?? ''}`
 
   return (
     <section className={styles.export}>
