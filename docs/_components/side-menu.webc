@@ -1,7 +1,1 @@
-<nav class="side-menu">
-  <a webc:for="item of nav"
-     @href="item.url"
-     @text="item.label"
-     webc:keep
-     ></a>
-</nav>
+<h1>Menu latéral</h1>

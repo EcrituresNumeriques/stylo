@@ -1,12 +1,12 @@
 <!doctype html>
-<html webc:root
-      webc:keep
+<html webc:keep
       :lang="lang"
 >
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title @raw="title"></title>
+    <style webc:keep @raw="getCss(page.url)"></style>
   </head>
   <body>
     <slot name="header">
@@ -15,7 +15,8 @@
 
     <main>
       <h1 @html="title"></h1>
-      <div class="content" @html="content" webc:nokeep></div>
+
+      <template webc:nokeep @raw="content"></template>
 
       <!-- default slot -->
       <slot></slot>
@@ -35,7 +36,7 @@
 </html>
 
 <style>
-  :host body {
+  :host main {
     color: blue;
   }
 </style>
