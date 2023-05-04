@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { CheckSquare, Square, User, UserCheck } from 'react-feather'
 
 import styles from './ContactItem.module.scss'
@@ -9,8 +9,8 @@ export default function ContactItem (
   {
     user,
     muted = false,
-    active = false,
-    selected = false,
+    active,
+    selected,
     selectedIcon = <CheckSquare/>,
     unselectedIcon = <Square/>,
     onUserUpdated = () => {
@@ -18,8 +18,16 @@ export default function ContactItem (
   }
 ) {
 
-  const [activeState, setActiveState] = useState(active)
-  const [selectedState, setSelectedState] = useState(selected)
+  const [activeState, setActiveState] = useState(false)
+  const [selectedState, setSelectedState] = useState(false)
+
+  useEffect(() => {
+    setActiveState(active)
+  }, [active])
+
+  useEffect(() => {
+    setSelectedState(selected)
+  }, [selected])
 
   const handleSelect = useCallback((user) => {
     const value = !selectedState
@@ -34,7 +42,6 @@ export default function ContactItem (
   }, [activeState])
 
   const displayName = user.displayName || user.username
-
   return (
     <div key={`contact-${user._id}`} className={clsx(styles.contact, muted ? styles.muted : '')} aria-disabled={muted}
          title={muted ? 'Aucun utilisateur trouvé pour cette adresse email' : displayName}>

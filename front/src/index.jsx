@@ -27,7 +27,7 @@ import Select from './components/Select'
 // lazy loaded routes
 const Books = lazy(() => import('./components/Books'))
 const Articles = lazy(() => import('./components/Articles'))
-const Workspaces = lazy(() => import('./pages/Workspaces'))
+const Workspaces = lazy(() => import('./components/workspace/Workspaces'))
 const Credentials = lazy(() => import('./components/Credentials'))
 const Write = lazy(() => import('./components/Write/Write'))
 const ArticlePreview = lazy(() => import('./components/ArticlePreview'))

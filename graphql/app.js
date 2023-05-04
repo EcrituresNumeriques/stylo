@@ -22,6 +22,7 @@ const { checkCredentials } = require('./resolvers/authResolver')
 const { createJWTToken, populateUserFromJWT } = require('./helpers/token')
 const User = require('./models/user')
 const { ApiError } = require('./helpers/errors')
+const { createTagLoader, createUserLoader, createArticleLoader, createVersionLoader } = require('./loaders')
 
 const app = express()
 
@@ -265,7 +266,17 @@ app.post('/login/local',
     logger.error({ error }, 'Unexpected error.')
     res.statusCode = 401
     res.json({ error })
-  })
+  }
+)
+
+function createLoaders() {
+  return {
+    tags: createTagLoader(),
+    users: createUserLoader(),
+    articles: createArticleLoader(),
+    versions: createVersionLoader(),
+  }
+}
 
 app.post('/graphql', populateUserFromJWT({ jwtSecret }), createHandler({
   schema,
@@ -279,7 +290,8 @@ app.post('/graphql', populateUserFromJWT({ jwtSecret }), createHandler({
     return {
       token,
       user,
-      userId: user?.id.toString() || token._id
+      userId: user?.id.toString() || token._id,
+      loaders: createLoaders()
     }
   },
 }))

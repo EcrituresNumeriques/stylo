@@ -2,16 +2,16 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import { Search } from 'react-feather'
 
-import { CurrentUserContext } from '../contexts/CurrentUser'
+import { CurrentUserContext } from '../../contexts/CurrentUser'
 
 import styles from './workspaces.module.scss'
-import Field from '../components/Field.jsx'
+import Field from '../../components/Field.jsx'
 
-import Button from '../components/Button.jsx'
-import WorkspaceItem from '../components/workspace/WorkspaceItem.jsx'
-import { useGraphQL } from '../helpers/graphQL.js'
+import Button from '../../components/Button.jsx'
+import WorkspaceItem from '../../components/workspace/WorkspaceItem.jsx'
+import { useGraphQL } from '../../helpers/graphQL.js'
 import { getWorkspaces, getArticles } from './Workspaces.graphql'
-import CreateWorkspace from '../components/workspace/CreateWorkspace.jsx'
+import CreateWorkspace from '../../components/workspace/CreateWorkspace.jsx'
 
 export default function Workspaces () {
   const activeUser = useSelector(state => state.activeUser, shallowEqual)

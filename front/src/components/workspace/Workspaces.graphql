@@ -1,0 +1,66 @@
+query getWorkspaces {
+  workspaces {
+    _id
+    name
+    color
+    bibliographyStyle
+    createdAt
+    updatedAt
+    stats {
+      membersCount
+      articlesCount
+    }
+  }
+}
+
+query getWorkspace($workspaceId: ID!) {
+  workspace(workspaceId: $workspaceId) {
+    _id
+    name
+    color
+    bibliographyStyle
+    createdAt
+    updatedAt
+    stats {
+      membersCount
+      articlesCount
+    }
+  }
+}
+
+query getArticles {
+  user {
+    articles {
+      _id
+    }
+  }
+}
+
+query getWorkspaceMembers($workspaceId: ID!) {
+  workspace(workspaceId: $workspaceId) {
+    members {
+      _id
+      displayName
+      username
+      email
+    }
+  }
+}
+
+mutation inviteMember($workspaceId: ID!, $userId: ID!, $role: String) {
+  workspace(workspaceId: $workspaceId) {
+    inviteMember(userId: $userId, role: $role) {
+      _id
+    }
+  }
+}
+
+mutation removeMember($workspaceId: ID!, $userId: ID!) {
+  workspace(workspaceId: $workspaceId) {
+    member(userId: $userId) {
+      remove {
+        _id
+      }
+    }
+  }
+}

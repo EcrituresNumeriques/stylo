@@ -1,6 +1,7 @@
+const { ObjectId } = require('mongoose').Types
 const { ApiError } = require('../helpers/errors')
 const Workspace = require('../models/workspace')
-
+const Article = require('../models/article')
 
 async function workspace (_, { workspaceId }, { user }) {
   if (user?.admin === true) {
@@ -95,15 +96,30 @@ module.exports = {
     },
   },
 
+  WorkspaceArticle: {
+    async article (workspaceArticle, { articleId }) {
+      const article = workspace.articles.find((a) => String(a._id) === articleId)
+      return new WorkspaceArticle(workspace, article)
+    },
+  },
+
   Workspace: {
     async article (workspace, { articleId }) {
       const article = workspace.articles.find((a) => String(a._id) === articleId)
       return new WorkspaceArticle(workspace, article)
     },
 
-    async articles (workspace, { limit }) {
-      await workspace.populate({ path: 'articles', limit }).execPopulate()
-      return workspace.articles
+    /**
+     *
+     * @param workspace
+     * @param _args
+     * @param {{ loaders: { articles } }} context
+     * @returns {Promise<*>}
+     */
+    async articles (workspace, _args, context) {
+      const articles = await Promise.all(workspace.articles.map((articleId) => context.loaders.articles.load(articleId)))
+      articles.sort((a, b) => a.createdAt > b.createdAt ? -1 : 1)
+      return Article.complete(articles, context.loaders)
     },
 
     async member (workspace, { userId }) {
@@ -113,7 +129,14 @@ module.exports = {
 
     async members (workspace, { limit }) {
       await workspace.populate({ path: 'members', populate: 'user', limit }).execPopulate()
-      return workspace.members
+      return workspace.members.map((m) => m.user)
+    },
+
+    async stats (workspace) {
+      return {
+        articlesCount: workspace.articles.length,
+        membersCount: workspace.members.length,
+      }
     },
 
     // mutations

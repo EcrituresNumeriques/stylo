@@ -21,6 +21,33 @@
   padding-bottom: 0.5em;
 }
 
-.actionButtons {
+.button {
+  text-transform: none !important;
+}
 
+.field {
+  margin: 0;
+  padding: 0;
+}
+
+.field > label {
+  font-weight: 600;
+  padding: 0.25em;
+}
+
+.actionButtons {
+  margin-top: 1.5em;
+  display: flex;
+  gap: 1em;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.workspaceLabel {
+  padding-top: 0;
+  padding-bottom: 1em;
+  font-size: 0.9em;
+  width: max-content;
+  margin: auto;
+  align-items: baseline;
 }

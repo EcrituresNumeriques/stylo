@@ -220,6 +220,11 @@ type WorkspaceMember {
   remove: Workspace!
 }
 
+type WorkspaceStats {
+  articlesCount: Int
+  membersCount: Int
+}
+
 type Workspace {
   _id: String!
   name: String!
@@ -228,11 +233,13 @@ type Workspace {
   members: [User!]!
   articles: [Article!]!
   creator: User!
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime
+  updatedAt: DateTime
 
   article(articleId: ID!): WorkspaceArticle
   member(userId: ID!): WorkspaceMember
+  
+  stats: WorkspaceStats
 
   # mutations
   leave: Workspace

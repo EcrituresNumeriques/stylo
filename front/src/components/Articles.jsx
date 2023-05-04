@@ -21,7 +21,7 @@ import TagsList from './tag/TagsList.jsx'
 import Modal from './Modal.jsx'
 
 export default function Articles () {
-  const activeUser = useSelector(state => state.activeUser, shallowEqual)
+  const currentUser = useSelector(state => state.activeUser, shallowEqual)
   const selectedTagIds = useSelector((state) => state.activeUser.selectedTagIds)
   const [creatingArticle, setCreatingArticle] = useState(false)
 
@@ -46,8 +46,6 @@ export default function Articles () {
   }, [latestTagCreated])
 
   const [needReload, setNeedReload] = useState(false)
-
-  const [currentUser, setCurrentUser] = useState(activeUser)
 
   const activeUserId = useActiveUserId()
   const activeWorkspace = useActiveWorkspace()
@@ -106,7 +104,6 @@ export default function Articles () {
           const data = await runQuery({ query: getUserArticles, variables: { user: activeUserId } })
           // Need to sort by updatedAt desc
           setArticles(data.articles)
-          setCurrentUser(data.user)
           setUserTags(data.tags)
           setIsLoading(false)
           setNeedReload(false)

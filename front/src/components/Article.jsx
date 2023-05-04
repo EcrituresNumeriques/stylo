@@ -11,7 +11,6 @@ import Modal from './Modal'
 import Export from './Export'
 import ArticleDelete from './ArticleDelete'
 import ArticleTags from './ArticleTags'
-import Share from './Share'
 
 import formatTimeAgo from '../helpers/formatTimeAgo'
 import etv from '../helpers/eventTargetValue'
@@ -19,16 +18,14 @@ import etv from '../helpers/eventTargetValue'
 import Field from './Field'
 import Button from './Button'
 import {
-  Check,
+  Check, CheckSquare,
   ChevronDown,
   ChevronRight,
   Copy,
   Edit3,
   Eye,
-  Printer, Send,
-  Share2,
+  Printer, Send, Square,
   Trash,
-  UserMinus,
   UserPlus
 } from 'react-feather'
 
@@ -129,9 +126,14 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
   }, [tempTitle])
 
 
-    const closeHandler = (event) => {
-      setSending(false)
-    }
+  const closeSendingModal =  useCallback(() => {
+    setSending(false)
+  }, [])
+
+  const closeSharingModal =  useCallback(() => {
+    setSharing(false)
+  }, [])
+
   return (
     <article className={styles.article}>
       {exporting && (
@@ -140,22 +142,27 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
         </Modal>
       )}
 
-      {sharing && (
-        <Modal title="Partager l'article avec un contact" cancel={() => setNeedReload() || setSharing(false)}>
-          <ArticleContributors article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)}/>
-        </Modal>
-      )}
+      <GeistModal width='30rem' visible={sharing} onClose={closeSharingModal}>
+        <h2>Partager l'article avec un contact</h2>
+        <span className={styles.sendSubtitle}>
+          <span className={styles.sendText}>Permet de partager un article avec l'un de vos contacts</span>
+        </span>
+        <GeistModal.Content>
+          <ArticleContributors article={article} setNeedReload={setNeedReload} cancel={closeSharingModal}/>
+        </GeistModal.Content>
+        <GeistModal.Action passive onClick={closeSharingModal}>Fermer</GeistModal.Action>
+      </GeistModal>
 
-      <GeistModal visible={sending} onClose={closeHandler}>
+      <GeistModal width='25rem' visible={sending} onClose={closeSendingModal}>
         <h2>Envoyer une copie de l'article</h2>
         <span className={styles.sendSubtitle}>
           <span className={styles.sendText}>Permet d'envoyer une copie de l'article à l'un de vos contacts en cliquant sur l'icône{' '}</span>
           <span><Send className={styles.sendIcon}/></span>
         </span>
         <GeistModal.Content>
-          <ArticleSendCopy article={article} setNeedReload={setNeedReload} cancel={() => setSending(false)}/>
+          <ArticleSendCopy article={article} setNeedReload={setNeedReload} cancel={closeSendingModal}/>
         </GeistModal.Content>
-        <GeistModal.Action passive onClick={() => setSending(false)}>Fermer</GeistModal.Action>
+        <GeistModal.Action passive onClick={closeSendingModal}>Fermer</GeistModal.Action>
       </GeistModal>
 
       {!renaming && (

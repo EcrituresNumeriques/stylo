@@ -1,6 +1,7 @@
 import { CheckSquare, Search, Square } from 'react-feather'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import debounce from 'lodash.debounce'
 
 import styles from './ContactSearch.module.scss'
 import Field from './Field.jsx'
@@ -8,7 +9,6 @@ import Field from './Field.jsx'
 import { useGraphQL } from '../helpers/graphQL.js'
 import { getAcquintances as getContacts, getUserByEmail } from './Acquintances.graphql'
 import { addContact, removeContact } from './Contacts.graphql'
-import debounce from 'lodash.debounce'
 import ContactItem from './ContactItem.jsx'
 
 export default function ContactSearch (
@@ -20,6 +20,7 @@ export default function ContactSearch (
     unselectedIcon = <Square/>
   }
 ) {
+
   const runQuery = useGraphQL()
   const activeUserId = useSelector(state => state.activeUser._id)
   const [filter, setFilter] = useState('')
@@ -29,15 +30,10 @@ export default function ContactSearch (
     return contact._id !== activeUserId && contact.email.toLowerCase().includes(filter.toLowerCase())
   }, [filter])
   const contactsFound = contacts.filter(filterByEmail)
-  const membersById = members.reduce((agg, m) => {
-    agg[m._id] = m
-    return agg
-  }, {})
 
   const handleContactUpdate = useCallback(async (event) => {
     const { _id: userId } = event.user
     if (event.action === 'select' || event.action === 'active') {
-      // maviro@digitaltextualities.ca
       const contactsFound = contacts.find((c) => c._id === userId)
       if (!contactsFound) {
         setContacts([{
@@ -60,6 +56,10 @@ export default function ContactSearch (
     (async () => {
       const data = await runQuery({ query: getContacts, variables: { user: activeUserId } })
       const contacts = data.user.acquintances
+      const membersById = members.reduce((agg, m) => {
+        agg[m._id] = m
+        return agg
+      }, {})
       const contactsById = contacts.reduce((agg, contact) => {
         if (membersById[contact._id]) {
           // contact is a member
@@ -82,14 +82,18 @@ export default function ContactSearch (
       const distantMembers = members.filter((m) => !contactIds.includes(m._id)).map((m) => ({ ...m, selected: true }))
       setContacts([...Object.values(contactsById), ...distantMembers])
     })()
-  }, [activeUserId])
+  }, [activeUserId, members])
 
   const searchUserByEmail = useCallback(debounce(
     async ({ email }) => {
       const contactsFound = contacts.filter((c) => c._id !== activeUserId && c.email.toLowerCase().includes(email.toLowerCase()))
       if (contactsFound.length === 0) {
         const data = await runQuery({ query: getUserByEmail, variables: { userEmail: email } })
-        setUserFound(data.getUser)
+        if (data.getUser._id === activeUserId) {
+          setUserFound(null)
+        } else {
+          setUserFound(data.getUser)
+        }
       }
     },
     1000,
@@ -103,7 +107,7 @@ export default function ContactSearch (
   }, [])
 
   const inactiveUser = contactsFound.length === 0 && !userFound
-    ? { _id: 'inactive', displayName: filter, state: 'inactive' }
+    ? { _id: 'inactive', email: filter, state: 'inactive' }
     : undefined
 
   return (

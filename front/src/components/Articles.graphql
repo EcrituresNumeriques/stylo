@@ -50,11 +50,6 @@ query getUserArticles($user: ID!) {
       _id
     }
   }
-
-  userGrantedAccess {
-    _id
-    displayName
-  }
 }
 
 query getWorkspaceArticles ($workspaceId: ID!) {

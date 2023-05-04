@@ -1,5 +1,5 @@
-@use '../styles/defaults' as *;
-@use '../styles/variables' as *;
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
 
 .section {
   @extend .wrapped-center;
