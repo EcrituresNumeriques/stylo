@@ -108,7 +108,7 @@ export default function ContactSearch (
     searchUserByEmail({ email })
   }, [])
 
-  const inactiveUser = contactsFound.length === 0 && !userFound
+  const inactiveUser = filter.length > 0 && contactsFound.length === 0 && !userFound
     ? { _id: 'inactive', email: filter, state: 'inactive' }
     : undefined
 
