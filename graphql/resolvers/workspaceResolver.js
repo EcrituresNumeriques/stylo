@@ -88,7 +88,7 @@ module.exports = {
     /**
      *
      */
-    async workspaces (_, __, { user }) {
+    async workspaces (_root, _args, { user }) {
       if (user?.admin === true) {
         return Workspace.find()
       }
