@@ -1,11 +1,10 @@
 @use '../styles/defaults' as *;
 @use '../styles/variables' as *;
 
-.create {
-  margin: 2rem 0 1rem;
-}
-
-.articleTitle {
+.titleField {
+  label {
+    flex-basis: 5rem;
+  }
   input {
     width: 100%;
   }
@@ -35,7 +34,7 @@
     flex-shrink: 0;
     margin-right: 1rem;
     padding: calc(0.5em - 1px) 0;
-    flex-basis: 10rem;
+    flex-basis: 5rem;
     text-align: end;
   }
 }

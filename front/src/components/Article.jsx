@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
-import { Modal as GeistModal } from '@geist-ui/core'
+import { Modal as GeistModal, Note, Spacer, Text, useModal, useToasts } from '@geist-ui/core'
 
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
@@ -9,7 +10,6 @@ import fieldStyles from './field.module.scss'
 
 import Modal from './Modal'
 import Export from './Export'
-import ArticleDelete from './ArticleDelete'
 import ArticleTags from './ArticleTags'
 
 import etv from '../helpers/eventTargetValue'
@@ -30,7 +30,7 @@ import {
 } from 'react-feather'
 
 import { duplicateArticle } from './Acquintances.graphql'
-import { renameArticle, getArticleVersions, getArticleWorkspaces } from './Article.graphql'
+import { renameArticle, getArticleVersions, getArticleWorkspaces, deleteArticle } from './Article.graphql'
 import { useGraphQL } from '../helpers/graphQL'
 import TimeAgo from './TimeAgo.jsx'
 import WorkspaceSelectItem from './workspace/WorkspaceSelectItem.jsx'
@@ -40,10 +40,16 @@ import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
 
 export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, userTags }) {
+  const { t } = useTranslation()
+  const { setToast } = useToasts()
+  const {
+    visible: deleteArticleVisible,
+    setVisible: setDeleteArticleVisible,
+    bindings: deleteArticleModalBinding
+  } = useModal()
   const activeUser = useSelector(state => state.activeUser)
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
-  const [deleting, setDeleting] = useState(false)
   const [tags, setTags] = useState(article.tags)
   const [renaming, setRenaming] = useState(false)
   const [title, setTitle] = useState(article.title)
@@ -106,8 +112,10 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
       })
       setNeedReload()
     } catch (err) {
-      console.error(`Unable to duplicate article ${article._id} with myself (userId: ${activeUser._id})`, err)
-      alert(err)
+      setToast({
+        text: `Unable to duplicate article ${article.title}: ${err}`,
+        type: 'error'
+      })
     }
   }, [])
 
@@ -126,12 +134,28 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
     }
   }, [tempTitle])
 
+  const handleDeleteArticle = useCallback(async () => {
+    try {
+      await runQuery({ query: deleteArticle, variables: { user: activeUser._id, article: article._id } })
+      setNeedReload()
+      setToast({
+        text: t('article.delete.toastSuccess'),
+        type: 'default'
+      })
+    } catch (err) {
+      setToast({
+        text: `Unable to delete article ${article.title}: ${err}`,
+        type: 'error'
+      })
+    }
+  }, [article])
 
-  const closeSendingModal =  useCallback(() => {
+
+  const closeSendingModal = useCallback(() => {
     setSending(false)
   }, [])
 
-  const closeSharingModal =  useCallback(() => {
+  const closeSharingModal = useCallback(() => {
     setSharing(false)
   }, [])
 
@@ -143,7 +167,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
         </Modal>
       )}
 
-      <GeistModal width='30rem' visible={sharing} onClose={closeSharingModal}>
+      <GeistModal width="30rem" visible={sharing} onClose={closeSharingModal}>
         <h2>Partager l'article avec un contact</h2>
         <span className={styles.sendSubtitle}>
           <span className={styles.sendText}>Permet de partager un article avec l'un de vos contacts</span>
@@ -154,7 +178,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
         <GeistModal.Action passive onClick={closeSharingModal}>Fermer</GeistModal.Action>
       </GeistModal>
 
-      <GeistModal width='25rem' visible={sending} onClose={closeSendingModal}>
+      <GeistModal width="25rem" visible={sending} onClose={closeSendingModal}>
         <h2>Envoyer une copie de l'article</h2>
         <span className={styles.sendSubtitle}>
           <span className={styles.sendText}>Permet d'envoyer une copie de l'article à l'un de vos contacts en cliquant sur l'icône{' '}</span>
@@ -197,11 +221,24 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
       )}
 
       <aside className={styles.actionButtons}>
+
         {isArticleOwner &&
-          <Button title={contributors.length ? 'Remove all contributors in order to delete this article' : 'Delete'}
-                  disabled={contributors.length > 0} icon={true} onClick={() => setDeleting(true)}>
+          <Button title="Delete" icon={true} onClick={() => setDeleteArticleVisible(true)}>
             <Trash/>
           </Button>}
+
+        <GeistModal visible={deleteArticleVisible} {...deleteArticleModalBinding}>
+          <h2>{t('article.deleteModal.title')}</h2>
+          <GeistModal.Content>
+            {t('article.deleteModal.confirmMessage')}
+            {contributors.length > 0 && (<>
+              <Spacer h={1}/>
+              <Note label="Important" type="error">{t('article.deleteModal.contributorsRemovalNote')}</Note>
+            </>)}
+          </GeistModal.Content>
+          <GeistModal.Action passive onClick={() => setDeleteArticleVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
+          <GeistModal.Action onClick={handleDeleteArticle}>{t('modal.confirmButton.text')}</GeistModal.Action>
+        </GeistModal>
 
         <Button title="Duplicate" icon={true} onClick={() => fork()}>
           <Copy/>
@@ -229,33 +266,21 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
         </Link>
       </aside>
 
-      {deleting && (
-        <div className={clsx(styles.alert, styles.deleteArticle)}>
-          <p>
-            You are trying to delete this article, double click on the
-            &quot;delete button&quot; below to proceed
-          </p>
-          <Button className={styles.cancel} onClick={() => setDeleting(false)}>
-            Cancel
-          </Button>
-
-          <ArticleDelete article={article} setNeedReload={setNeedReload}/>
-        </div>
-      )}
-
       <section className={styles.metadata}>
         <p className={styles.metadataAuthoring}>
           {tags.map((t) => (
             <span className={styles.tagChip} key={'tagColor-' + t._id} style={{ backgroundColor: t.color || 'grey' }}/>
           ))}
-          <span className={styles.by}>by</span> <span className={styles.author}>{article.owner.displayName}</span>
-          {contributors.length > 0 && (<span className={styles.contributorNames}><span>, {contributors.map(c => c.user.displayName || c.user.username).join(', ')}</span></span>)}
+          <span className={styles.by}>{t('article.by.text')}</span> <span
+          className={styles.author}>{article.owner.displayName}</span>
+          {contributors.length > 0 && (<span
+            className={styles.contributorNames}><span>, {contributors.map(c => c.user.displayName || c.user.username).join(', ')}</span></span>)}
           <TimeAgo date={article.updatedAt} className={styles.momentsAgo}/>
         </p>
 
         {expanded && (
           <>
-            <h4>Versions</h4>
+            <h4>{t('article.versions.title')}</h4>
             <ul className={styles.versions}>
               {versions.map((v) => (
                 <li key={`version-${v._id}`}>
@@ -266,12 +291,12 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
               ))}
             </ul>
 
-            <h4>Étiquettes</h4>
+            <h4>{t('article.tags.title')}</h4>
             <div className={styles.editTags}>
               <ArticleTags articleId={article._id} tags={tags} userTags={userTags} onChange={handleTagUpdate}/>
             </div>
 
-            <h4>Espaces de travail</h4>
+            <h4>{t('article.workspaces.title')}</h4>
             <ul className={styles.workspaces}>
               {activeUser.workspaces.map((workspace) => <WorkspaceSelectItem
                 key={workspace._id}
@@ -279,11 +304,11 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
                 color={workspace.color}
                 name={workspace.name}
                 articleId={article._id}
-                workspaceIds={workspaces.map(({_id}) => _id)}
+                workspaceIds={workspaces.map(({ _id }) => _id)}
                 onChange={handleWorkspaceUpdate}/>)}
             </ul>
 
-            <h4>Contributeurs</h4>
+            <h4>{t('article.contributors.title')}</h4>
             <div className={styles.contributorsAction}>
               {/*<Button small={true} >*/}
               {/*  <UserPlus /> Partager l'article*/}

@@ -1,25 +1,30 @@
-import React, { createRef, useCallback, useEffect, useState } from 'react'
+import { Modal as GeistModal, useModal } from '@geist-ui/core'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import ArticleCreate from '../ArticleCreate.jsx'
 
 import styles from '../articles.module.scss'
 import ArticleTag from '../Tag.jsx'
 import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
-import CreateTag from '../CreateTag.jsx'
+import TagCreate from '../TagCreate.jsx'
 import { getTags } from '../Tag.graphql'
 import { useGraphQL } from '../../helpers/graphQL.js'
 
 export default function TagsList () {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
-  const [creatingTag, setCreatingTag] = useState(false)
-  const handleCloseCreatingTag = useCallback(() => setCreatingTag(false), [])
   const [tags, setTags] = useState([])
   const selectedTagIds = useSelector(state => state.activeUser.selectedTagIds)
   const latestTagCreated = useSelector(state => state.latestTagCreated)
   const runQuery = useGraphQL()
 
+  const { visible: createTagVisible, setVisible: setCreateTagVisible, bindings: createTagModalBinding } = useModal()
+
+
   useEffect(() => {
-    setCreatingTag(false)
+    setCreateTagVisible(false)
     // Self invoking async function
     ;(async () => {
       try {
@@ -30,13 +35,6 @@ export default function TagsList () {
       }
     })()
   }, [latestTagCreated])
-
-  const tagNameField = createRef()
-  useEffect(() => {
-    if (tagNameField.current) {
-      tagNameField.current.focus() // give focus to the first form input
-    }
-  }, [tagNameField])
 
   const handleTagSelected = useCallback((event) => {
     const { id } = event.target.dataset
@@ -56,13 +54,15 @@ export default function TagsList () {
         </li>
       ))}
       <li>
-        <Button className={styles.createTagButton} onClick={() => setCreatingTag(true)}>add more tags&hellip;</Button>
+        <Button className={styles.createTagButton} onClick={() => setCreateTagVisible(true)}>{t('tag.createAction.buttonText')}</Button>
       </li>
     </ul>
-    {creatingTag && (
-      <Modal title="New tag" cancel={handleCloseCreatingTag}>
-        <CreateTag ref={tagNameField}/>
-      </Modal>
-    )}
+
+    <GeistModal width='40rem' visible={createTagVisible} {...createTagModalBinding}>
+      <h2>{t('tag.createForm.title')}</h2>
+      <GeistModal.Content>
+        <TagCreate/>
+      </GeistModal.Content>
+    </GeistModal>
   </>)
 }

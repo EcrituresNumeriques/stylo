@@ -9,7 +9,6 @@ export default function ArticleSendCopy ({ article }) {
   const { setToast } = useToasts()
 
   const handleUserUpdated = useCallback(async ({ user, action }) => {
-    const { _id: userId } = user
     if (action === 'select' || action === 'unselect') {
       setToast({
         text: `Copie de l'article envoyée à ${user.displayName || user.username}.`,
@@ -24,6 +23,7 @@ export default function ArticleSendCopy ({ article }) {
         selectedIcon={<Send/>}
         unselectedIcon={<Send/>}
         onUserUpdated={handleUserUpdated}
+        members={[]}
       />
     </section>
   )

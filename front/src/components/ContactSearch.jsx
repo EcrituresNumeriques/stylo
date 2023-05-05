@@ -13,7 +13,7 @@ import ContactItem from './ContactItem.jsx'
 
 export default function ContactSearch (
   {
-    members = [],
+    members,
     onUserUpdated = (_) => {
     },
     selectedIcon = <CheckSquare/>,

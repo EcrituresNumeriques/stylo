@@ -1,21 +1,23 @@
-import React, { useEffect, createRef, useState, forwardRef, useCallback } from 'react'
+import { Button, useInput } from '@geist-ui/core'
+import React, { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { randomColor } from '../helpers/colors.js'
-import etv from '../helpers/eventTargetValue'
 import { useGraphQL } from '../helpers/graphQL'
 import { createTag as query } from './Tag.graphql'
 
-import styles from './createTag.module.scss'
+import styles from './TagCreate.module.scss'
 import Field from './Field'
-import Button from './Button'
 import { useCurrentUser } from '../contexts/CurrentUser'
 import { useDispatch } from 'react-redux'
 
 
-const CreateTag = forwardRef((_, forwardedRef) => {
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
-  const [color, setColor] = useState(randomColor())
+export default function TagCreate () {
+  const { t } = useTranslation()
+  const { state: name, bindings: nameBindings } = useInput('')
+  const { state: description, bindings: descriptionBindings } = useInput('')
+  const { state: color, bindings: colorBindings } = useInput(randomColor())
+
   const activeUser = useCurrentUser()
   const runQuery = useGraphQL()
   const dispatch = useDispatch()
@@ -46,36 +48,29 @@ const CreateTag = forwardRef((_, forwardedRef) => {
     <section className={styles.create}>
       <form onSubmit={handleCreateTag}>
         <Field
-          label="Name"
+          label={t('tag.createForm.nameField')}
           type="text"
-          autoFocus={true}
-          value={name}
-          onChange={(e) => setName(etv(e))}
-          ref={forwardedRef}
+          {...nameBindings}
         />
         <Field
-          label="Description"
+          label={t('tag.createForm.descriptionField')}
           type="text"
-          value={description}
-          onChange={(e) => setDescription(etv(e))}
+          {...descriptionBindings}
         />
         <Field
-          label="Color"
+          label={t('tag.createForm.colorField')}
           type="color"
-          value={color}
-          onChange={(e) => setColor(etv(e))}
+          {...colorBindings}
         />
         <ul className={styles.actions}>
           <li>
-            <Button primary={true} type="submit" title="Create a new tag">
-              Create a new tag
+            <Button  onClick={handleCreateTag} type="secondary" title={t('tag.createForm.buttonTitle')}>
+              {t('tag.createForm.buttonText')}
             </Button>
           </li>
         </ul>
       </form>
     </section>
   )
-})
+}
 
-CreateTag.displayName = 'CreateTag'
-export default CreateTag

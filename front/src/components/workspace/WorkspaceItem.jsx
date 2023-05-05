@@ -117,8 +117,8 @@ export default function WorkspaceItem ({ workspace }) {
           </>)
           }
         </GeistModal.Content>
-        <GeistModal.Action passive onClick={handleCloseLeaving}>Annuler</GeistModal.Action>
-        <GeistModal.Action onClick={handleLeavingWorkspace}>Confirmer</GeistModal.Action>
+        <GeistModal.Action passive onClick={handleCloseLeaving}>{t('modal.cancelButton.text')}</GeistModal.Action>
+        <GeistModal.Action onClick={handleLeavingWorkspace}>{t('modal.confirmButton.text')}</GeistModal.Action>
       </GeistModal>
       <GeistModal width="35rem" visible={managingMembers} onClose={handleCloseManagingMembers}>
         <WorkspaceLabel className={styles.workspaceLabel} color={workspace.color} name={workspace.name}/>

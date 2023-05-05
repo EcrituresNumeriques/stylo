@@ -21,6 +21,10 @@
   }
 }
 
+.button {
+  text-transform: none !important;
+}
+
 .primary-button {
   @extend .clickable;
   background-color: $button-primary-background;

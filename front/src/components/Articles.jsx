@@ -1,4 +1,6 @@
-import React, { createRef, useCallback, useEffect, useState } from 'react'
+import { Modal as GeistModal, useModal } from '@geist-ui/core'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
 import { CurrentUserContext } from '../contexts/CurrentUser'
 import { Search } from 'react-feather'
@@ -8,7 +10,7 @@ import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
 import etv from '../helpers/eventTargetValue'
 
 import Article from './Article'
-import CreateArticle from './CreateArticle'
+import ArticleCreate from './ArticleCreate.jsx'
 
 import styles from './articles.module.scss'
 import Button from './Button'
@@ -18,21 +20,14 @@ import { useActiveUserId } from '../hooks/user'
 import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
 import { useActiveWorkspace } from '../hooks/workspace.js'
 import TagsList from './tag/TagsList.jsx'
-import Modal from './Modal.jsx'
 
 export default function Articles () {
+  const { t } = useTranslation()
   const currentUser = useSelector(state => state.activeUser, shallowEqual)
   const selectedTagIds = useSelector((state) => state.activeUser.selectedTagIds || [])
-  const [creatingArticle, setCreatingArticle] = useState(false)
+  const { visible: createArticleVisible, setVisible: setCreateArticleVisible, bindings: createArticleModalBinding } = useModal()
 
   const latestTagCreated = useSelector((state) => state.latestTagCreated)
-
-  const articleTitleField = createRef()
-  useEffect(() => {
-    if (articleTitleField.current) {
-      articleTitleField.current.focus() // give focus to the first form input
-    }
-  }, [articleTitleField])
 
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState('')
@@ -52,13 +47,15 @@ export default function Articles () {
   const activeWorkspaceId = activeWorkspace?._id
   const runQuery = useGraphQL()
 
-  const handleCloseCreatingArticle = useCallback(() => setCreatingArticle(false), [])
-
   const handleReload = useCallback(() => setNeedReload(true), [])
   const handleUpdateTags = useCallback((articleId, tags) => {
     setArticles([...findAndUpdateArticleTags(articles, articleId, tags)])
   }, [articles])
 
+  const handleCreateNewArticle = useCallback(() => {
+    setNeedReload(true)
+    setCreateArticleVisible(false)
+  }, [])
 
   const handleUpdateTitle = useCallback((articleId, title) => {
     // shallow copy otherwise React won't render the components again
@@ -131,29 +128,32 @@ export default function Articles () {
                type="text"
                icon={Search}
                value={filter}
-               laceholder="Search"
+               placeholder={t('article.search.placeholder')}
                onChange={(e) => setFilter(etv(e))}
         />
       </div>
 
       <aside className={styles.filtersContainer}>
         <div className={styles.filtersTags}>
-          <h4>Tags</h4>
+          <h4>{t('tag.list.title')}</h4>
           <TagsList/>
         </div>
       </aside>
 
       <div className={styles.articlesTableHeader}>
-        <Button primary={true} onClick={() => setCreatingArticle(true)}>
-          Create a new article
+        <Button primary={true} onClick={() => setCreateArticleVisible(true)}>
+          {t('article.createAction.buttonText')}
         </Button>
         <div className={styles.articleCounter}>{filteredArticles.length} article{filteredArticles.length > 1 ? 's' : ''}</div>
       </div>
-      {creatingArticle && (
-        <Modal title="New article" cancel={handleCloseCreatingArticle}>
-          <CreateArticle ref={articleTitleField}/>
-        </Modal>
-      )}
+
+      <GeistModal width='40rem' visible={createArticleVisible} {...createArticleModalBinding}>
+        <h2>{t('article.createModal.title')}</h2>
+        <GeistModal.Content>
+          <ArticleCreate onSubmit={handleCreateNewArticle} />
+        </GeistModal.Content>
+      </GeistModal>
+
       {isLoading ? <Loading/> : filteredArticles
         .map((article) => (
           <Article

@@ -30,3 +30,11 @@ query getArticleWorkspaces($articleId: ID!) {
     }
   }
 }
+
+query deleteArticle ($user: ID!, $article: ID!) {
+  user (user: $user) {
+    article (id: $article) {
+      delete (dryRun: false)
+    }
+  }
+}

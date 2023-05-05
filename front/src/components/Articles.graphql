@@ -96,14 +96,6 @@ query getWorkspaceArticles ($workspaceId: ID!) {
   }
 }
 
-query deleteArticle ($user: ID!, $article: ID!) {
-  user (user: $user) {
-    article (id: $article) {
-      delete (dryRun: false)
-    }
-  }
-}
-
 mutation createArticle ($title: String!, $user: ID!, $tags: [ID]!) {
   createArticle(title: $title, user:$user) {
     _id
