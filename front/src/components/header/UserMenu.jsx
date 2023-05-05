@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Layers, LogOut, User } from 'react-feather'
 
 import useComponentVisible from '../../hooks/componentVisible'
+import LanguageSelect from '../LanguageSelect.jsx'
 import styles from './UserMenu.module.scss'
 import Button from '../Button.jsx'
 import WorkspaceMenuItem from '../workspace/WorkspaceMenuItem.jsx'
@@ -11,6 +13,7 @@ import UserMenuLink from './UserMenuLink.jsx'
 
 
 export default function UserMenu () {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const logout = () => {
     setIsComponentVisible(false)
@@ -31,11 +34,11 @@ export default function UserMenu () {
       </div>
       {isComponentVisible && <div className={styles.menu}>
         <div className={styles.workspaces}>
-          <h4>Espaces de travail</h4>
+          <h4>{t('workspace.menu.title')}</h4>
           <ul>
-            <WorkspaceMenuItem color="#D9D9D9" name="Mon espace"/>
+            <WorkspaceMenuItem color="#D9D9D9" name={t('workspace.myspace')}/>
             {activeUser.workspaces.map((workspace) => <WorkspaceMenuItem id={workspace._id} key={workspace._id} color={workspace.color} name={workspace.name} />)}
-            <li className={styles.workspacesLink}><Link to="/workspaces" onClick={() => setIsComponentVisible(false)}><Layers/> Tous les espaces</Link></li>
+            <li className={styles.workspacesLink}><Link to="/workspaces" onClick={() => setIsComponentVisible(false)}><Layers/>{t('workspace.all')}</Link></li>
           </ul>
         </div>
         <div className={styles.footer}>
@@ -50,6 +53,9 @@ export default function UserMenu () {
             <Button className={styles.logoutButton} onClick={logout} link>
               <LogOut size={22}/>
             </Button>
+          </div>
+          <div className={styles.languageBlock}>
+            <LanguageSelect/>
           </div>
         </div>
       </div>}

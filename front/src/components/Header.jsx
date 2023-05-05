@@ -24,7 +24,7 @@ function Header () {
               <nav>
                 <ul className={styles.menuLinks}>
                   <li><Link to="/articles">Articles</Link></li>
-                  <li><Link to="/books">Books</Link></li>
+                  <li><Link to="/books">Corpus</Link></li>
                 </ul>
               </nav>
               <nav className={styles.secondaryNav}>

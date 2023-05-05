@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useState, useCallback } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
 import { AlertCircle, AlignLeft, Check, Edit3, Eye, Loader, Printer } from 'react-feather'
+import TimeAgo from '../TimeAgo.jsx'
 
 import styles from './workingVersion.module.scss'
-import formatTimeAgo from '../../helpers/formatTimeAgo'
 import buttonStyles from "../button.module.scss";
 import Button from "../Button";
 import Modal from "../Modal";
@@ -47,10 +47,7 @@ export function ArticleSaveState ({ state, updatedAt, stateMessage }) {
   const [lastRefreshedAt, setLastRefresh] = useState(Date.now())
   const stateUi = stateUiProps[state]
 
-  const [savedAgo, isoString] = useMemo(() => ([
-    formatTimeAgo(updatedAt),
-    new Date(updatedAt).toISOString()
-  ]), [updatedAt, lastRefreshedAt])
+  const isoString = useMemo(() => new Date(updatedAt).toISOString(), [updatedAt, lastRefreshedAt])
 
   useEffect(() => {
     const timer = setTimeout(() => setLastRefresh(Date.now() * 1000), ONE_MINUTE)
@@ -67,7 +64,7 @@ export function ArticleSaveState ({ state, updatedAt, stateMessage }) {
       </span>)}
     </span>
 
-    {state === 'saved' && (<time dateTime={isoString}>{savedAgo}</time>)}
+    {state === 'saved' && (<TimeAgo date={isoString}/>)}
   </>)
 }
 

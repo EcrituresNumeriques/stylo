@@ -1,0 +1,17 @@
+{
+  "workspace.myspace": "Mon espace",
+  "workspace.createdAt.label": "Crée",
+  "workspace.updatedAt.label": "Mise à jour",
+  "workspace.membersCount.label": "Membres",
+  "workspace.articlesCount.label": "Articles",
+  "workspace.manageMember.button": "Gérer les members",
+  "workspace.manageMember.title": "Gérer les members",
+  "workspace.leave.button": "Quitter lʼespace",
+  "workspace.leave.title": "Quitter lʼespace",
+  "workspace.all": "Tous les espaces",
+  "workspace.menu.title": "Espaces de travail",
+  "workspace.title": "Espaces de travail",
+  "workspace.createNew.button": "Créer un nouvel espace",
+  "time.fewSecondsAgo": "à l'instant",
+  "search.placeholder": "Recherche"
+}

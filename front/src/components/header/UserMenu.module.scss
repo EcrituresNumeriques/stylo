@@ -24,6 +24,12 @@
   }
 }
 
+.language {
+  margin-top: 1.5em;
+  padding-top: 0.75em;
+  border-top: 1px solid #606060;
+}
+
 .footer {
   margin-top: 1.5em;
   padding-top: 0.75em;
@@ -67,6 +73,7 @@
   align-items: center;
   gap: 1em;
 }
+
 .userCard {
   display: flex;
   align-items: center;
@@ -95,4 +102,11 @@
   width: 2em;
   display: flex;
   align-items: center;
+}
+
+.languageBlock {
+  background-color: #303030;
+  padding: 0.75em 1em 1.25rem;
+  margin: 2em -1.25rem -1rem -1rem;
+  border-top: 2px solid #2b2b2b;
 }

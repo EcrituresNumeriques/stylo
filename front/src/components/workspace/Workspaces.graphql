@@ -64,3 +64,11 @@ mutation removeMember($workspaceId: ID!, $userId: ID!) {
     }
   }
 }
+
+mutation leave($workspaceId: ID!) {
+  workspace(workspaceId: $workspaceId) {
+    leave {
+      _id
+    }
+  }
+}

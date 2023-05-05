@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router
 import { Provider } from 'react-redux'
 import { GeistProvider } from '@geist-ui/core'
 
+import './i18n.js'
+import './styles/general.scss'
 import './styles/general.scss'
 import App from './layouts/App'
 import createStore from './createReduxStore'
@@ -69,6 +71,7 @@ const store = createStore()
   })
 })()
 
+
 const TrackPageViews = () => {
   const history = useHistory()
 
@@ -94,7 +97,6 @@ render(
         <Router>
           <TrackPageViews/>
           <Header/>
-
           <App>
             <Switch>
               <Route path="/register" exact>

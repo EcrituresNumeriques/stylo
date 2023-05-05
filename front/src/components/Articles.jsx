@@ -22,7 +22,7 @@ import Modal from './Modal.jsx'
 
 export default function Articles () {
   const currentUser = useSelector(state => state.activeUser, shallowEqual)
-  const selectedTagIds = useSelector((state) => state.activeUser.selectedTagIds)
+  const selectedTagIds = useSelector((state) => state.activeUser.selectedTagIds || [])
   const [creatingArticle, setCreatingArticle] = useState(false)
 
   const latestTagCreated = useSelector((state) => state.latestTagCreated)

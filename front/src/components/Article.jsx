@@ -12,19 +12,19 @@ import Export from './Export'
 import ArticleDelete from './ArticleDelete'
 import ArticleTags from './ArticleTags'
 
-import formatTimeAgo from '../helpers/formatTimeAgo'
 import etv from '../helpers/eventTargetValue'
 
 import Field from './Field'
 import Button from './Button'
 import {
-  Check, CheckSquare,
+  Check,
   ChevronDown,
   ChevronRight,
   Copy,
   Edit3,
   Eye,
-  Printer, Send, Square,
+  Printer,
+  Send,
   Trash,
   UserPlus
 } from 'react-feather'
@@ -32,6 +32,7 @@ import {
 import { duplicateArticle } from './Acquintances.graphql'
 import { renameArticle, getArticleVersions, getArticleWorkspaces } from './Article.graphql'
 import { useGraphQL } from '../helpers/graphQL'
+import TimeAgo from './TimeAgo.jsx'
 import WorkspaceSelectItem from './workspace/WorkspaceSelectItem.jsx'
 import { useSelector } from 'react-redux'
 import ContributorItem from './ContributorItem.jsx'
@@ -249,9 +250,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
           ))}
           <span className={styles.by}>by</span> <span className={styles.author}>{article.owner.displayName}</span>
           {contributors.length > 0 && (<span className={styles.contributorNames}><span>, {contributors.map(c => c.user.displayName || c.user.username).join(', ')}</span></span>)}
-          <time dateTime={article.updatedAt} className={styles.momentsAgo}>
-            ({formatTimeAgo(article.updatedAt)})
-          </time>
+          <TimeAgo date={article.updatedAt} className={styles.momentsAgo}/>
         </p>
 
         {expanded && (

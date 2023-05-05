@@ -300,6 +300,7 @@ app.post('/graphql', populateUserFromJWT({ jwtSecret }), createHandler({
 mongoose.set('useNewUrlParser', true)
 mongoose.set('useUnifiedTopology', true)
 mongoose.set('useCreateIndex', true)
+mongoose.set('useFindAndModify', false)
 
 mongoose
   .connect(`mongodb://${mongoServer}:${mongoServerPort}/${mongoServerDB}`)

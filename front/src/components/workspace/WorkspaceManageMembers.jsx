@@ -43,8 +43,8 @@ export default function WorkspaceManageMembers ({ workspace }) {
         })
       } catch (err) {
         setToast({
-          text: err,
-          type: 'error',
+          text: String(err),
+          type: 'error'
         })
       }
     } else if (action === 'unselect') {
@@ -59,8 +59,8 @@ export default function WorkspaceManageMembers ({ workspace }) {
         })
       } catch (err) {
         setToast({
-          text: err,
-          type: 'error',
+          text: String(err),
+          type: 'error'
         })
       }
     }

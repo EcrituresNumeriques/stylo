@@ -145,8 +145,13 @@ module.exports = {
       if (!user) {
         throw new ApiError('UNAUTHENTICATED', 'Unable to leave a workspace as an unauthenticated user')
       }
-      workspace.members.pull({ user: user.id })
-      return workspace.save()
+
+      // TODO: remove workspace if there's no member left!
+      return Workspace.findOneAndUpdate(
+        {_id: ObjectId(workspace._id) },
+        { $pull: { members: { user: ObjectId(user.id) } } },
+        { lean: true }
+      )
     },
 
     async addArticle (workspace, { articleId }) {

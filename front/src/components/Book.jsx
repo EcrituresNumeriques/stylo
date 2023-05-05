@@ -9,7 +9,6 @@ import Chapter from './Chapter'
 import etv from '../helpers/eventTargetValue'
 import { useGraphQL } from '../helpers/graphQL'
 import { updateTag as query } from './Books.graphql'
-import formatTimeAgo from '../helpers/formatTimeAgo'
 
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
@@ -19,6 +18,7 @@ import Button from './Button'
 import Field from './Field'
 import { useCurrentUser } from '../contexts/CurrentUser'
 import clsx from 'clsx'
+import TimeAgo from './TimeAgo.jsx'
 
 export default function Book ({ name: tagName, _id, updatedAt, articles }) {
   const activeUser = useCurrentUser()
@@ -43,8 +43,6 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
     setIsRenaming(false)
   }, [tempName])
 
-  const bookTitle = `${name} (${formatTimeAgo(updatedAt)})`
-
   return (
     <article className={styles.article}>
       {exporting && (
@@ -56,7 +54,7 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
       {!isRenaming && (
         <h1 className={styles.title} onClick={() => setExpanded(!expanded)}>
           {expanded ? <ChevronDown/> : <ChevronRight/>}
-          {bookTitle}
+          {name} <TimeAgo date={updatedAt} />
 
           <Button className={clsx(buttonStyles.icon, styles.editTitleButton)} onClick={(evt) => evt.stopPropagation() || setIsRenaming(true)}>
             <Edit3 />

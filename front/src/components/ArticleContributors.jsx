@@ -22,8 +22,8 @@ export default function ArticleContributors ({ article }) {
         })
       } catch (err) {
         setToast({
-          text: err,
-          type: 'error',
+          text: String(err),
+          type: 'error'
         })
       }
     } else if (action === 'unselect') {
@@ -35,8 +35,8 @@ export default function ArticleContributors ({ article }) {
         })
       } catch (err) {
         setToast({
-          text: err,
-          type: 'error',
+          text: String(err),
+          type: 'error'
         })
       }
     }
