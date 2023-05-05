@@ -3,6 +3,7 @@ const User = require('../models/user')
 const isUser = require('../policies/isUser')
 const isAdmin = require('../policies/isAdmin')
 const Workspace = require('../models/workspace')
+const Article = require('../models/article')
 
 module.exports = {
   Mutation: {
@@ -131,6 +132,7 @@ module.exports = {
       return thisUser.save()
     },
   },
+
   Query: {
     //Only available for admins
     async users (_, args, { user }) {
@@ -210,6 +212,14 @@ module.exports = {
       user.acquintances = user.acquintances.filter((u) => !u.equals(contact))
       await user.save()
       return user.populate('acquintances').execPopulate()
+    },
+
+    async stats (user) {
+      const contributedArticlesCount = (await Article.find({ contributors: { $elemMatch: { user: user._id } } })).length
+      return {
+        myArticlesCount: user.articles.length,
+        contributedArticlesCount
+      }
     }
   },
 }

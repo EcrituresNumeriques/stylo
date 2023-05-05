@@ -23,6 +23,11 @@ input UserFilter {
   email: String!
 }
 
+type UserStats {
+  myArticlesCount: Int
+  contributedArticlesCount: Int
+}
+
 type User {
   _id: ID
   displayName: String
@@ -48,6 +53,8 @@ type User {
   
   addContact(userId: ID!): User
   removeContact(userId: ID!): User
+
+  stats: UserStats
 }
 
 type UserPermission {

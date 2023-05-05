@@ -11,7 +11,7 @@ import Field from '../../components/Field.jsx'
 import Button from '../../components/Button.jsx'
 import WorkspaceItem from '../../components/workspace/WorkspaceItem.jsx'
 import { useGraphQL } from '../../helpers/graphQL.js'
-import { getWorkspaces, getArticles } from './Workspaces.graphql'
+import { getWorkspaces, getUserStats } from './Workspaces.graphql'
 import CreateWorkspace from '../../components/workspace/CreateWorkspace.jsx'
 
 export default function Workspaces () {
@@ -24,7 +24,6 @@ export default function Workspaces () {
     _id: activeUser._id,
     personal: true,
     members: [],
-    articles: []
   })
   const currentWorkspaces = useSelector((state) => state.workspaces)
   const handleCreateCancel = useCallback(() => setCreating(false), [creating])
@@ -33,7 +32,8 @@ export default function Workspaces () {
   useEffect(() => {
     (async () => {
       try {
-        const getArticlesResponse = await runQuery({ query: getArticles })
+        const getUserStatsResponse = await runQuery({ query: getUserStats })
+        const userStats = getUserStatsResponse.user.stats
         setPersonalWorkspace({
           _id: activeUser._id,
           personal: true,
@@ -42,7 +42,7 @@ export default function Workspaces () {
           createdAt: activeUser.createdAt,
           updatedAt: activeUser.updatedAt,
           members: [],
-          articles: getArticlesResponse.user.articles
+          articlesCount: userStats.myArticlesCount + userStats.contributedArticlesCount
         })
       } catch (err) {
         alert(err)

@@ -28,10 +28,11 @@ query getWorkspace($workspaceId: ID!) {
   }
 }
 
-query getArticles {
+query getUserStats {
   user {
-    articles {
-      _id
+    stats {
+      myArticlesCount
+      contributedArticlesCount
     }
   }
 }

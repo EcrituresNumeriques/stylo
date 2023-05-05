@@ -72,7 +72,7 @@ export default function WorkspaceItem ({ workspace }) {
     {workspaceTitle}
     {workspace.personal && <>
       <Field className={styles.field} label="Articles">
-        <span>{workspace.articles.length}</span>
+        <span>{workspace.articlesCount}</span>
       </Field>
     </>}
     {!workspace.personal && <>
