@@ -297,7 +297,11 @@ type Query {
   "Fetch all users [Reserved for admins]"
   users: [User]
 
-  "Fetch authenticated user info"
+  """
+  Get authenticated user info.
+
+  DEPRECATION: user parameter is ignored and will be removed in the future!
+  """
   user(user: ID): User
 
   getUser(filter: UserFilter): User

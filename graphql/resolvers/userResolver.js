@@ -4,6 +4,7 @@ const isUser = require('../policies/isUser')
 const isAdmin = require('../policies/isAdmin')
 const Workspace = require('../models/workspace')
 const Article = require('../models/article')
+const Tag = require('../models/tag')
 
 module.exports = {
   Mutation: {
@@ -134,22 +135,15 @@ module.exports = {
   },
 
   Query: {
-    //Only available for admins
+    // only available for admins
     async users (_, args, { user }) {
       isAdmin({ user })
 
-      return User.find().populate('tags articles acquintances')
+      return User.find()
     },
-    async user (_, args, context) {
-      const { userId } = isUser(args, context)
 
-      if (!context.user.isGrantedBy(userId)) {
-        throw new Error('Forbidden')
-      }
-
-      return User.findById(userId)
-        .populate('tags acquintances grantees')
-        .populate({ path: 'permissions', populate: 'user' })
+    async user (_root, _args, context) {
+      return User.findById(context.user._id)
     },
 
     async getUser (_, { filter }, context) {
@@ -175,6 +169,18 @@ module.exports = {
       return user.articles
     },
 
+    async acquintances(user, args, context) {
+      return Promise.all(user.acquintances.map((contactId) => context.loaders.users.load(contactId)))
+    },
+
+    /**
+     * @param user
+     * @returns {Promise<void>}
+     */
+    async tags(user){
+      return Tag.find({ owner: user._id }).lean()
+    },
+
     async workspaces(user) {
       if (user?.admin === true) {
         return Workspace.find()
@@ -187,21 +193,18 @@ module.exports = {
     },
 
     async addContact (user, { userId }) {
-      const contact = await User.findById(userId)
       if (user.id === userId) {
         throw new Error('You cannot add yourself as a contact!')
       }
+      const contact = await User.findById(userId)
       if (!contact) {
         throw new Error(`No user found with this id: ${userId}`)
       }
-      console.log(user.acquintances)
-      const userAlreadyExistsAsContact = user.acquintances.find((u) => u.equals(contact))
-      if (userAlreadyExistsAsContact) {
-        return // nothing to do!
-      }
-      user.acquintances.push(contact)
-      await user.save()
-      return user.populate('acquintances').execPopulate()
+      return User.findOneAndUpdate(
+        { _id: user._id },
+        { $push: { acquintances: contact._id } },
+        { lean: true }
+      )
     },
 
     async removeContact (user, { userId }) {
@@ -209,9 +212,11 @@ module.exports = {
       if (!contact) {
         throw new Error(`No user found with this id: ${userId}`)
       }
-      user.acquintances = user.acquintances.filter((u) => !u.equals(contact))
-      await user.save()
-      return user.populate('acquintances').execPopulate()
+      return User.findOneAndUpdate(
+        { _id: user._id },
+        { $pull: { acquintances: contact._id } },
+        { lean: true }
+      )
     },
 
     async stats (user) {
