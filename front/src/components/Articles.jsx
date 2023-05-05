@@ -141,9 +141,10 @@ export default function Articles () {
       </aside>
 
       <div className={styles.articlesTableHeader}>
-        <Button primary={true} onClick={() => setCreateArticleVisible(true)}>
+        {!activeWorkspaceId && <Button primary={true} onClick={() => setCreateArticleVisible(true)}>
           {t('article.createAction.buttonText')}
         </Button>
+        }
         <div className={styles.articleCounter}>{filteredArticles.length} article{filteredArticles.length > 1 ? 's' : ''}</div>
       </div>
 

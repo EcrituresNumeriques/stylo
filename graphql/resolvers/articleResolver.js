@@ -149,32 +149,64 @@ module.exports = {
     /**
      * Fetch an article as the current user
      *
+     * @param {*} _root
      * @param {*} args
-     * @param {*} param1
+     * @param {{ loaders: { article }, user, token }} context
      * @returns
      */
-    async article (_, args, context) {
+    async article (_root, args, context) {
       isUser(args, context)
+
+      const articleId = args.article
+      const userId = context.user._id
 
       if (context.token.admin === true) {
         const article = await Article
-          .findById(args.article)
+          .findById(articleId)
           .populate('owner tags')
           .populate({ path: 'contributors', populate: { path: 'user' } })
 
         if (!article) {
           throw new ApiError('NOT_FOUND', `Unable to find article with id ${args.article}`)
         }
-
         return article
       }
 
-      const article = await Article.findAndPopulateOneByOwners(args.article, context.user)
+      const userWorkspace = await Workspace.findOne({
+        'members.user': userId,
+        'articles': articleId
+      })
+
+      if (userWorkspace) {
+        // article found in one of user's workspaces
+        const article = await  Article
+          .findById(articleId)
+          .populate('owner tags')
+          .populate({ path: 'contributors', populate: { path: 'user' } })
+
+        if (!article) {
+          throw new ApiError('NOT_FOUND', `Unable to find article with id ${args.article}`)
+        }
+        return article
+      }
+
+      // find article by owner or contributors
+      const article = await Article
+        .findOne(
+          {
+            _id: articleId,
+            $or: [
+              { owner: userId },
+              { contributors: { $elemMatch: { user: userId } } }
+            ]
+          }
+        )
+        .populate('owner tags')
+        .populate({ path: 'contributors', populate: { path: 'user' } })
 
       if (!article) {
         throw new ApiError('NOT_FOUND', `Unable to find article with id ${args.article}`)
       }
-
       return article
     },
 
