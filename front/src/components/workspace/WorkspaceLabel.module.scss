@@ -1,0 +1,19 @@
+.name {
+  flex: 1;
+}
+
+.chip {
+  display: block;
+  height: 0.5em;
+  width: 0.5em;
+  border-radius: 1px;
+  margin-right: 0.5em;
+}
+
+.container {
+  font-size: 0.8em;
+  font-weight: 400;
+  padding-top: 0.5em;
+  display: flex;
+  align-items: center;
+}

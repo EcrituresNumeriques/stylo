@@ -31,12 +31,15 @@ query getUserArticles($user: ID!) {
     owner {
       _id
       displayName
+      username
     }
 
     contributors {
       user {
         _id
         displayName
+        username
+        email
       }
     }
 
@@ -47,17 +50,48 @@ query getUserArticles($user: ID!) {
       _id
     }
   }
-
-  userGrantedAccess {
-    _id
-    displayName
-  }
 }
 
-query deleteArticle ($user: ID!, $article: ID!) {
-  user (user: $user) {
-    article (id: $article) {
-      delete (dryRun: false)
+query getWorkspaceArticles ($workspaceId: ID!) {
+  tags {
+    _id
+    owner
+    description
+    color
+    name
+  }
+
+  workspace(workspaceId: $workspaceId) {
+    articles {
+      _id
+      title
+      updatedAt
+
+      workingVersion {
+        bibPreview
+      }
+
+      owner {
+        _id
+        displayName
+        username
+      }
+
+      contributors {
+        user {
+          _id
+          displayName
+          username
+          email
+        }
+      }
+
+      tags {
+        name
+        owner
+        color
+        _id
+      }
     }
   }
 }

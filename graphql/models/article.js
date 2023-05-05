@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions.js')
 const { previewEntries } = require('../helpers/bibliography.js')
@@ -10,21 +10,21 @@ const ArticleContributorSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  roles: [ String ]
+  roles: [String]
 })
 
 const articleSchema = new Schema({
   title: {
-    type:String,
-    required:true,
+    type: String,
+    required: true,
     default: 'autocreated'
   },
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  contributors: [ ArticleContributorSchema ],
-  zoteroLink:{
+  contributors: [ArticleContributorSchema],
+  zoteroLink: {
     type: String,
     default: ''
   },
@@ -42,13 +42,13 @@ const articleSchema = new Schema({
       default: ''
     },
   },
-  versions:[
+  versions: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Version'
     }
   ],
-  tags:[
+  tags: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Tag'
@@ -66,7 +66,7 @@ const articleSchema = new Schema({
       set: sanitizeTemplate
     }
   }
-}, {timestamps: true});
+}, { timestamps: true })
 
 articleSchema.virtual('workingVersion.bibPreview').get(function () {
   return previewEntries(this.workingVersion.bib)
@@ -79,9 +79,9 @@ articleSchema.virtual('workingVersion.bibPreview').get(function () {
  * @param {{ _id: String, user: String }}
  * @returns Article
  */
- articleSchema.statics.findOneByOwner = function findOneByOwner ({ _id, user }) {
+articleSchema.statics.findOneByOwner = function findOneByOwner ({ _id, user }) {
   return this
-    .findOne({ _id, $or: [ { owner: { $in: user } }, { contributors: { $elemMatch: {user: { $in: user }} } } ]})
+    .findOne({ _id, $or: [{ owner: { $in: user } }, { contributors: { $elemMatch: { user: { $in: user } } } }] })
     .populate({ path: 'contributors', populate: 'user' })
 }
 
@@ -103,6 +103,37 @@ articleSchema.statics.findManyByOwner = function findManyByOwner ({ userId }) {
 }
 
 /**
+ * Load associated data on a list of articles using data loaders.
+ * @param articles a list of lean articles
+ * @param {{ users, tags }} loaders
+ * @returns {Promise<Article[]>}
+ */
+articleSchema.statics.complete = async function populate (articles, loaders) {
+  return Promise.all(articles.map(async (article) => {
+    article.tags = await Promise.all(article.tags.map(async (tagId) => await loaders.tags.load(tagId)))
+    article.owner = await loaders.users.load(article.owner)
+    article.contributors = await Promise.all(article.contributors.map(async (contributor) => {
+      contributor.user = await loaders.users.load(contributor.user)
+      return contributor
+    }))
+    return article
+  }))
+}
+
+/**
+ * Get populated articles.
+ * @param {{ filter: {}, loaders: { users, tags } }} context
+ * @returns {Promise<Article[]>}
+ */
+articleSchema.statics.getArticles = async function getArticles ({ filter, loaders }) {
+  const articles = await this
+    .find(filter)
+    .sort({ updatedAt: -1 })
+    .lean()
+  return this.complete(articles, loaders)
+}
+
+/**
  * Returns a single article, fully populated for a given user, or a list of users with sharing permissions
  *
  * @param {String} articleId
@@ -119,7 +150,7 @@ articleSchema.statics.findAndPopulateOneByOwners = function findAndPopulateOneBy
   // AND match it with a single owner
   // OR match it with one of many contributors
   const query = Array.isArray($in) && $in.length
-    ? { _id, $or: [ { owner: { $in } }, { contributors: { $elemMatch: {user: { $in }} } } ] }
+    ? { _id, $or: [{ owner: { $in } }, { contributors: { $elemMatch: { user: { $in } } } }] }
     : { _id }
 
   return this
@@ -168,7 +199,7 @@ articleSchema.methods.removeTags = async function removeTags (...tagIds) {
   return this.save({ timestamps: false })
 }
 
-articleSchema.methods.shareWith = async function shareWith(user) {
+articleSchema.methods.shareWith = async function shareWith (user) {
   const isAlreadyShared = this.contributors.find(({ user: u }) => u.equals(user))
 
   if (isAlreadyShared) {
@@ -183,7 +214,7 @@ articleSchema.methods.shareWith = async function shareWith(user) {
   ])
 }
 
-articleSchema.methods.unshareWith = async function shareWith(user) {
+articleSchema.methods.unshareWith = async function shareWith (user) {
   // we keep only contributors who are not the one we unshare with
   // @see https://mongoosejs.com/docs/api.html#document_Document-equals
   this.contributors = this.contributors.filter(({ user: u }) => u.equals(user) === false)
@@ -252,5 +283,5 @@ articleSchema.post('remove', async function () {
   )
 })
 
-module.exports = mongoose.model('Article', articleSchema);
-module.exports.schema = articleSchema;
+module.exports = mongoose.model('Article', articleSchema)
+module.exports.schema = articleSchema

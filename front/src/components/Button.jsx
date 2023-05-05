@@ -10,6 +10,7 @@ export default function Button (props) {
     [styles.small]: props.small,
     [styles.link]: props.link,
     [styles.icon]: props.icon === true,
+    [styles.toggle]: props.toggle === true,
     [props.className]: Boolean(props.className)
   })
 

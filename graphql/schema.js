@@ -11,9 +11,22 @@ scalar ID
 scalar Int
 scalar Boolean
 
+type UserSearch {
+  _id: ID
+  displayName: String
+  email: EmailAddress
+  firstName: String
+  lastName: String
+}
+
+input UserFilter {
+  email: String!
+}
+
 type User {
   _id: ID
   displayName: String
+  username: String
   authType: String
   email: EmailAddress
   firstName: String
@@ -23,6 +36,7 @@ type User {
   permissions: [UserPermission]
   acquintances(limit: Int, page: Int): [User]
   articles(limit: Int, page: Int): [Article]
+  workspaces: [Workspace!]
   admin: Boolean
   yaml: String
   zoteroToken: String
@@ -31,6 +45,9 @@ type User {
   apiToken: JWT
 
   article(id: ID!): Article
+  
+  addContact(userId: ID!): User
+  removeContact(userId: ID!): User
 }
 
 type UserPermission {
@@ -97,6 +114,9 @@ type Article {
   setZoteroLink(zotero: String!): Boolean
   updateWorkingVersion(content: WorkingVersionInput!): Article
   workspaces: [Workspace!]
+  
+  addContributor(userId: ID!): Article
+  removeContributor(userId: ID!): Article
 }
 
 type ArticlePreviewSettings {
@@ -194,25 +214,32 @@ type WorkspaceArticle {
 type WorkspaceMember {
   workspace: Workspace!
   user: User
+  role: String
 
   # mutation
   remove: Workspace!
+}
+
+type WorkspaceStats {
+  articlesCount: Int
+  membersCount: Int
 }
 
 type Workspace {
   _id: String!
   name: String!
   color: HexColorCode!
-  role: String
   bibliographyStyle: String
   members: [User!]!
   articles: [Article!]!
   creator: User!
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime
+  updatedAt: DateTime
 
   article(articleId: ID!): WorkspaceArticle
   member(userId: ID!): WorkspaceMember
+  
+  stats: WorkspaceStats
 
   # mutations
   leave: Workspace
@@ -266,6 +293,8 @@ type Query {
   "Fetch authenticated user info"
   user(user: ID): User
 
+  getUser(filter: UserFilter): User
+
   "Fetch accounts we have access to"
   userGrantedAccess: [User]
 
@@ -278,7 +307,7 @@ type Query {
   "Fetch a given user articles"
   articles (user: ID): [Article]
 
-  "Fetch article info [need to have acces to this article]"
+  "Fetch article info [need to have access to this article]"
   article(user: ID, article: ID!): Article
 
   "Fetch version info"

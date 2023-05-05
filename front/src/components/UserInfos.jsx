@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Check, Clipboard, Loader } from 'react-feather'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -8,9 +8,9 @@ import { updateUser } from './Credentials.graphql'
 import etv from '../helpers/eventTargetValue'
 import styles from './credentials.module.scss'
 import formStyles from './field.module.scss'
-import Button from "./Button";
-import Field from "./Field";
-import formatTimeAgo from '../helpers/formatTimeAgo';
+import Button from './Button'
+import Field from './Field'
+import TimeAgo from './TimeAgo.jsx'
 import MonacoYamlEditor from './Write/providers/monaco/YamlEditor'
 
 export default function UserInfos () {
@@ -138,10 +138,10 @@ export default function UserInfos () {
       </Field>
       {activeUser.admin && <Field label="Admin">✔️</Field>}
       <Field label="Created">
-        <time dateTime={activeUser.createdAt}>{formatTimeAgo(activeUser.createdAt)}</time>
+        <TimeAgo date={activeUser.createdAt}/>
       </Field>
       <Field label="Updated">
-        <time dateTime={activeUser.updatedAt}>{formatTimeAgo(activeUser.updatedAt)}</time>
+        <TimeAgo date={activeUser.updatedAt}/>
       </Field>
     </section>
   </>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { ArrowLeft, Check, ChevronDown, ChevronRight, Edit3 } from 'react-feather'
+import TimeAgo from '../TimeAgo.jsx'
 
 import styles from './versions.module.scss'
 import menuStyles from './menu.module.scss'
@@ -16,7 +17,6 @@ import Export from '../Export'
 import Button from '../Button'
 import Field from '../Field'
 import CreateVersion from './CreateVersion'
-import formatTimeAgo from '../../helpers/formatTimeAgo.js'
 import clsx from 'clsx'
 
 function Version ({ articleId, articleName: name, compareTo, onExport, readOnly, selectedVersion, v }) {
@@ -77,7 +77,7 @@ function Version ({ articleId, articleName: name, compareTo, onExport, readOnly,
         </span>
       )}
       <span className={styles.momentsAgo}>
-        <time dateTime={v.updatedAt}>{formatTimeAgo(v.updatedAt)}</time>
+         <TimeAgo date={v.updatedAt} />
       </span>
     </p>}
 

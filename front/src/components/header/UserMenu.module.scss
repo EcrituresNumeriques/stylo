@@ -1,35 +1,58 @@
-.container {
-  position: relative;
-  display: flex;
-  gap: 1em;
+.workspaces {
+  > h4 {
+    text-transform: uppercase;
+    font-size: 0.95em;
+    font-weight: 600;
+    padding-bottom: 0.65em;
+  }
 }
 
-.link {
+.workspacesLink {
+  padding-left: 1em;
+  padding-top: 0.75em;
+  font-size: 0.9em;
+  font-weight: 300;
+  cursor: pointer;
+  > a {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    text-decoration: none;
+    > svg {
+      stroke-width: 1;
+    }
+  }
+}
+
+.language {
+  margin-top: 1.5em;
+  padding-top: 0.75em;
+  border-top: 1px solid #606060;
+}
+
+.footer {
+  margin-top: 1.5em;
+  padding-top: 0.75em;
+  border-top: 1px solid #606060;
+}
+
+.container {
+  display: flex;
+  gap: 2em;
+}
+
+.userMenuLink {
   display: flex;
   cursor: pointer;
   gap: 0.5em;
   align-items: center;
 }
 
-.documentationLink {
-  display: flex;
-  font-weight: normal;
-  gap: 0.35em;
-  align-items: center;
-  font-size: 0.9rem;
-  text-decoration: none;
-  align-items: center;
-}
-
-.documentationLink::after {
-  content: "\2197";
-}
-
 .menu {
   position: absolute;
-  top: 36px;
-  right: -16px;
-  background-color: black;
+  top: 66px;
+  left: 0.5em;
+  background-color: #202020;
   padding: 1em 1.25em;
   z-index: 99;
 }
@@ -39,7 +62,7 @@
   border-radius: 50%;
   width: 2em;
   height: 2em;
-  color: black;
+  color: #202020;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,6 +73,7 @@
   align-items: center;
   gap: 1em;
 }
+
 .userCard {
   display: flex;
   align-items: center;
@@ -78,4 +102,11 @@
   width: 2em;
   display: flex;
   align-items: center;
+}
+
+.languageBlock {
+  background-color: #303030;
+  padding: 0.75em 1em 1.25rem;
+  margin: 2em -1.25rem -1rem -1rem;
+  border-top: 2px solid #2b2b2b;
 }

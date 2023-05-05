@@ -1,7 +1,6 @@
 // copied from https://github.com/rjsf-team/react-jsonschema-form/blob/b78d9ef280eddf5bda0f97e5a3445c6a1fd35c99/packages/core/src/components/widgets/SelectWidget.js
 // workaround https://github.com/rjsf-team/react-jsonschema-form/issues/1041
 import React from "react";
-import PropTypes from "prop-types";
 
 //import { asNumber, guessType } from "../../utils";
 

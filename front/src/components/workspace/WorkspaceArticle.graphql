@@ -1,0 +1,17 @@
+mutation addArticle($workspaceId: ID!, $articleId: ID!) {
+  workspace(workspaceId: $workspaceId) {
+    addArticle(articleId: $articleId) {
+      _id
+    }
+  }
+}
+
+mutation removeArticle($workspaceId: ID!, $articleId: ID!) {
+  workspace(workspaceId: $workspaceId) {
+    article(articleId: $articleId) {
+      remove {
+        _id
+      }
+    }
+  }
+}

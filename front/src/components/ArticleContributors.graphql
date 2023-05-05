@@ -1,0 +1,31 @@
+query addContributor($userId: ID!, $articleId: ID!) {
+    article(article: $articleId) {
+        addContributor(userId: $userId) {
+            _id
+            contributors {
+                roles
+                user {
+                    _id
+                    displayName
+                    username
+                }
+            }
+        }
+    }
+}
+
+query removeContributor($userId: ID!, $articleId: ID!) {
+    article(article: $articleId) {
+        removeContributor(userId: $userId) {
+            _id
+            contributors {
+                roles
+                user {
+                    _id
+                    displayName
+                    username
+                }
+            }
+        }
+    }
+}

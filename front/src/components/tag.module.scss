@@ -5,12 +5,16 @@
   border: 1px solid #aaa;
   display: flex;
   align-items: center;
+  transition: box-shadow 90ms ease-in;
 }
 
-.selected {
-  background-color: #000;
-  color: white;
-  border: 1px solid #000;
+.tag:hover {
+  box-shadow: 0 0 0 1px #484848;
+}
+
+.tag.selected {
+  box-shadow: 0 0 0 1px #484848;
+  border-color: #484848;
 }
 
 .chip {

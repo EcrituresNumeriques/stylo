@@ -116,7 +116,7 @@ a.button:not(.primary), a.icon:not(.primary) {
 }
 
 .primary:hover:not([disabled]),
-.primary:focus:not([disabled]) {
+.primary:focus-visible:not([disabled]) {
   background-color: rgba(0, 0, 0, 0.75);
   color: #fff;
 }
@@ -134,8 +134,9 @@ a.button:not(.primary), a.icon:not(.primary) {
     border-color: rgba(118, 118, 118, 0.3);
   }
 }
+
 .secondary:hover:not([disabled]),
-.secondary:focus:not([disabled]) {
+.secondary:focus-visible:not([disabled]) {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
@@ -171,20 +172,38 @@ a.button:not(.primary), a.icon:not(.primary) {
   transition: color 1s ease, background 1s ease;
   color: currentColor;
 
-  &:hover,
-  &:focus,
+  &:hover:not([disabled]),
+  &:focus-visible:not([disabled]),
   &.isDisabled {
     background: none;
     opacity: 0.5;
   }
-  &:active {
+  &:active:not([disabled]) {
     background-color: $button-primary-background;
     color: $button-primary-color;
     transition: none;
   }
 
+  &:disabled {
+    background: none;
+    cursor: not-allowed !important;
+    pointer-events: none;
+  }
+
   > svg {
     margin: 0;
+  }
+}
+
+.toggle {
+  transition: none;
+  &:active:not([disabled]) {
+    background: none;
+  }
+  &:hover:not([disabled]),
+  &:focus-visible:not([disabled]) {
+    opacity: 1;
+    background-color: rgba(239, 239, 239, 0.8);
   }
 }
 

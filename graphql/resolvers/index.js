@@ -1,4 +1,4 @@
-const { User, Query: UserQuery, Mutation: UserMutation } = require('./userResolver');
+const { User, Query: UserQuery, Mutation: UserMutation } = require('./userResolver')
 const { Article, WorkingVersion, Query: ArticleQuery, Mutation: ArticleMutation } = require('./articleResolver')
 const { Tag, Query: TagQuery, Mutation: TagMutation } = require('./tagResolver')
 const { Version, Query: VersionQuery, Mutation: VersionMutation } = require('./versionResolver')
