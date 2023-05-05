@@ -16,6 +16,10 @@
   color: $muted-color;
 }
 
+.disabled {
+  color: $muted-color;
+}
+
 .contact:not(:first-child) {
   border-top: none;
 }

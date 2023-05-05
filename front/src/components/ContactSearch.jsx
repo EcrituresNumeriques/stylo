@@ -17,12 +17,14 @@ export default function ContactSearch (
     onUserUpdated = (_) => {
     },
     selectedIcon = <CheckSquare/>,
-    unselectedIcon = <Square/>
+    unselectedIcon = <Square/>,
+    showActiveUser,
   }
 ) {
 
   const runQuery = useGraphQL()
-  const activeUserId = useSelector(state => state.activeUser._id)
+  const activeUser = useSelector(state => state.activeUser)
+  const activeUserId = activeUser._id
   const [filter, setFilter] = useState('')
   const [contacts, setContacts] = useState([])
   const [userFound, setUserFound] = useState(null)
@@ -122,6 +124,17 @@ export default function ContactSearch (
         />
       </div>
       <div className={styles.contacts}>
+        {showActiveUser &&
+          <ContactItem
+            key={activeUserId}
+            user={activeUser}
+            selected
+            active={false}
+            disabled
+            selectedIcon={selectedIcon}
+            unselectedIcon={unselectedIcon}
+          />
+        }
         {contactsFound.map((user) => <ContactItem
           key={user._id}
           user={user}

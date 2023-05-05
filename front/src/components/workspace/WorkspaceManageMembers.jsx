@@ -71,6 +71,7 @@ export default function WorkspaceManageMembers ({ workspace }) {
       <ContactSearch
         onUserUpdated={handleUserUpdated}
         members={members}
+        showActiveUser
       />
     </section>
   )
