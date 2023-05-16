@@ -1,1 +1,96 @@
-<h1>Menu latéral</h1>
+<!--
+Menu principal
+Destiné à être affiché sur le côté sur des écrans de moyennes et grandes tailles.
+
+@prop {array} menu
+-->
+
+<nav class="side-menu__inner">
+  <header
+    class="side-menu__header"
+  >
+    <slot name="header"></slot>
+  </header>
+
+  <ul class="side-menu__list">
+    <li webc:for="item of menu"
+        class="side-menu__item"
+    >
+      <span
+        webc:if="item.children"
+        @text="item.label"
+        class="side-menu__item-label"
+      ></span>
+      <a
+        webc:else
+        :href="item.url"
+        :target="item.target"
+        @text="item.label"
+        :title="item.title"
+        :lang="item.lang"
+        class="side-menu__link"
+      ></a>
+
+      <ul
+        webc:if="item.children?.length"
+        class="side-menu__item__list"
+      >
+        <li
+          webc:for="child of item.children"
+          class="side-menu__item__list-item"
+        >
+          <a
+            :href="child.url"
+            @text="child.label"
+            :target="child.target"
+            :title="child.title"
+            class="side-menu__link"
+            ></a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+<style webc:scoped>
+  :host {
+    --side-menu-padding-x: .5rem;
+    --side-menu-padding-y: .5rem;
+    --side-menu-link-color: #555;
+    --side-menu-link-color-highlight: #111;
+
+    background-color: #eee;
+  }
+
+  :host .side-menu__header {
+    padding: 1rem var(--side-menu-padding-x);
+  }
+
+  :host .side-menu__item-label {
+    font-weight: bold;
+    display: flex;
+    padding: var(--side-menu-padding-y) var(--side-menu-padding-x);
+  }
+
+  :host .side-menu__link {
+    display: flex;
+    padding: var(--side-menu-padding-y) var(--side-menu-padding-x);
+    color: var(--side-menu-link-color);
+    text-decoration: none;
+  }
+  :host .side-menu__link:hover {
+    color: var(--side-menu-link-color-highlight);
+  }
+
+  :host .side-menu__list {
+    list-style: none outside none;
+    padding: 0;
+    margin: 0;
+  }
+
+  :host .side-menu__item__list {
+    list-style: none outside none;
+    padding: 0 0 0 1.25rem;
+    margin: 0;
+  }
+</style>

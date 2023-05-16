@@ -1,3 +1,43 @@
 {
-  "lang": "en"
+  "siteTitle": "Stylo - Documentation",
+  "lang": "en",
+
+  "menu": [
+    {
+      "label": "Project",
+      "children": [
+        {
+          "label": "About",
+          "url": "/fr/about"
+        },
+        {
+          "label": "Sources",
+          "url": "/en/sources"
+        },
+        {
+          "label": "Contact",
+          "url": "/en/contacts"
+        }
+      ]
+    },
+
+    {
+      "label": "Documentation",
+      "children": [
+        { "label": "First steps", "url": "/en/firststeps" },
+        { "label": "Writing in Markdown", "url": "/en/markdownsyntax" },
+        { "label": "Manage my bibliography", "url": "/en/managingref" },
+        { "label": "Preview and annotate an article", "url": "/en/preview" },
+        { "label": "Manage my article", "url": "/en/myarticles" },
+        { "label": "Solving problems", "url": "/en/problems" },
+        { "label": "Exports", "url": "/en/exports" }
+      ]
+    },
+
+    {
+      "label": "Français",
+      "url": "/fr",
+      "lang": "fr"
+    }
+  ]
 }

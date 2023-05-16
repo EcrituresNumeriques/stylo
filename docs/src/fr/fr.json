@@ -2,35 +2,66 @@
   "siteTitle": "Stylo - Documentation",
   "lang": "fr",
 
-  "nav": [
+  "menu": [
     {
       "label": "Projet",
-      "url": "",
       "children": [
         {
           "label": "À propos",
-          "Sources": "/fr/about"
+          "url": "/fr/about"
         },
         {
           "label": "Sources",
-          "Sources": "/fr/sources"
+          "url": "/fr/sources"
         },
         {
           "label": "Contact",
-          "Sources": "/fr/contacts"
+          "url": "/fr/contacts"
         }
       ]
     },
 
     {
       "label": "Documentation",
-      "url": "",
       "children": [
         {
           "label": "Premiers pas dans Stylo",
-          "Sources": "/fr/premierspas"
+          "url": "/fr/premierspas"
+        },
+        {
+          "label": "Syntaxe markdown",
+          "url": "/fr/syntaxemarkdown"
+        },
+        {
+          "label": "Structurer la bibliographie",
+          "url": "/fr/bibliographie"
+        },
+        {
+          "label": "Prévisualiser et annoter un article",
+          "url": "/fr/preview"
+        },
+        {
+          "label": "Gérer les articles",
+          "url": "/fr/mesarticles"
+        },
+        {
+          "label": "Résoudre les problèmes",
+          "url": "/fr/problemes"
+        },
+        {
+          "label": "Mémoires et thèses",
+          "url": "/fr/memoires"
+        },
+        {
+          "label": "Exports",
+          "url": "/fr/exports"
         }
       ]
+    },
+    {
+      "label": "English",
+      "url": "/en",
+      "lang": "en"
     }
   ]
 }

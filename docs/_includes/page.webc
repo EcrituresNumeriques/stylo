@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title @raw="title"></title>
+    <link rel="stylesheet" href="./_general/modern-normalize.css" />
     <style webc:keep @raw="getCss(page.url)"></style>
   </head>
   <body>
@@ -13,21 +14,38 @@
       <header></header>
     </slot>
 
-    <main>
-      <h1 @html="title"></h1>
+    <main class="main-layout">
+      <div class="main-layout__center">
 
-      <template webc:nokeep @raw="content"></template>
+        <article class="article-principal">
+          <h1
+            class="main-"
+            @html="title"
+          ></h1>
 
-      <!-- default slot -->
-      <slot></slot>
+          <!-- default slot -- content -->
+          <template webc:nokeep @raw="content"></template>
+          <slot></slot>
+        </article>
+      </div>
+
+      <div
+        class="main-layout__side"
+        webc:if="useSideMenu"
+      >
+        <!-- 1 seul élément enfant -->
+          <side-menu
+            :@menu="menu"
+          >
+            <span slot="header">
+              <a
+                :href="'/:lang/'"
+                @text="siteTitle"
+              ></a>
+          </side-menu>
+        </slot>
+      </div>
     </main>
-
-    <slot
-      webc:if="useSideMenu"
-      name="sideMenu"
-    >
-      <side-menu></side-menu>
-    </slot>
 
     <slot name="footer">
       <footer></footer>
@@ -35,8 +53,51 @@
   </body>
 </html>
 
-<style>
-  :host main {
-    color: blue;
+<style webc:scoped>
+  /* Avec `webc:scoped`, les styles sont propres à ce composant */
+  .main-layout {
+    --side-menu-width: 16rem;
+    --article-max-width: 40rem;
+  }
+  @media (min-width: 48rem) {
+    .main-layout {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+    }
+
+    .main-layout__side {
+      flex-basis: var(--side-menu-width);
+      flex-shrink: 0;
+      order: 1;
+    }
+
+    .main-layout__center {
+      order: 2;
+      flex-basis: auto;
+      flex-grow: 1;
+      height: 100%;
+      overflow: auto;
+      position: relative; /* Pour un éventuel élément sticky */
+    }
+
+    .main-layout__side {
+      height: 100%;
+    }
+  }
+
+  .main-layout__center {
+    padding: .75rem;
+  }
+
+  .main-layout__side {
+    display: grid;
+    align-items: stretch;
+    justify-content: stretch;
+    overflow: auto;
+  }
+
+  .article-principal {
+    max-width: var(--article-max-width);
   }
 </style>
