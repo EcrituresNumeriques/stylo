@@ -12,13 +12,11 @@ module.exports = {
   Mutation: {
     /**
      * Create an article as the current user
-     *
+     * @param {null} _root
      * @param {*} args
-     * @param {*} param1
-     * @returns
+     * @param {{ userId, token }} context
      */
-    async createArticle (_, args, context) {
-      //filter bad requests
+    async createArticle (_root, args, context) {
       const { userId } = isUser(args, context)
 
       //fetch user
@@ -48,11 +46,12 @@ module.exports = {
     /**
      * Share an article as the current user
      *
+     * @param {*} _root
      * @param {*} args
-     * @param {*} param1
+     * @param {{ userId, token }} context
      * @returns
      */
-    async shareArticle (_, args, context) {
+    async shareArticle (_root, args, context) {
       const { userId } = isUser(args, context)
 
       //Fetch article and user to send to
@@ -74,11 +73,12 @@ module.exports = {
     /**
      * Unshare an article as the current user
      *
+     * @param {null} _root
      * @param {*} args
-     * @param {*} param1
+     * @param {{ userId, token }} context
      * @returns
      */
-    async unshareArticle (_, args, context) {
+    async unshareArticle (_root, args, context) {
       const { userId } = isUser(args, context)
 
       //Fetch article and user to send to
@@ -100,11 +100,12 @@ module.exports = {
     /**
      * Duplicate an article as the current user
      *
+     * @param {null} _root
      * @param {*} args
-     * @param {*} param1
+     * @param {{ userId, token }} context
      * @returns
      */
-    async duplicateArticle (_, args, context) {
+    async duplicateArticle (_root, args, context) {
       const { userId } = isUser(args, context)
 
       //Fetch article and user to send to
@@ -149,17 +150,14 @@ module.exports = {
     /**
      * Fetch an article as the current user
      *
-     * @param {*} _root
+     * @param {null} _root
      * @param {*} args
-     * @param {{ loaders: { article }, user, token }} context
+     * @param {{ loaders: { article }, userId, token }} context
      * @returns
      */
     async article (_root, args, context) {
-      isUser(args, context)
-
+      // article attribute is mandatory
       const articleId = args.article
-      const userId = context.user._id
-
       if (context.token.admin === true) {
         const article = await Article
           .findById(articleId)
@@ -170,6 +168,10 @@ module.exports = {
           throw new ApiError('NOT_FOUND', `Unable to find article with id ${args.article}`)
         }
         return article
+      }
+      const userId = context.userId
+      if (!userId) {
+        throw new ApiError('UNAUTHENTICATED', `Unable to find an authentication context: ${context}`)
       }
 
       const userWorkspace = await Workspace.findOne({

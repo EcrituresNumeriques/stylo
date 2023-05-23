@@ -1,10 +1,10 @@
 const User = require('../models/user')
 
 const isUser = require('../policies/isUser')
-const isAdmin = require('../policies/isAdmin')
 const Workspace = require('../models/workspace')
 const Article = require('../models/article')
 const Tag = require('../models/tag')
+const { ApiError } = require('../helpers/errors')
 
 module.exports = {
   Mutation: {
@@ -28,6 +28,7 @@ module.exports = {
       await newUser.createDefaultArticle()
       return newUser
     },
+
     async addAcquintance (_, args, context) {
       const { userId } = isUser(args, context)
 
@@ -59,6 +60,7 @@ module.exports = {
       await thisUser.save()
       return thisUser.populate('acquintances').execPopulate()
     },
+
     async grantAccountAccess (_, args, context) {
       const { userId } = isUser(args, context)
 
@@ -110,7 +112,6 @@ module.exports = {
       }
 
       thisUser.permissions.pull(existingsScope)
-
       return thisUser.save()
     },
 
@@ -136,14 +137,25 @@ module.exports = {
 
   Query: {
     // only available for admins
-    async users (_, args, { user }) {
-      isAdmin({ user })
+    async users (_root, args, context) {
+      if (context.token.admin) {
+        return User.find()
+      }
+      throw new ApiError('FORBIDDEN', 'Token must have administrative rights to execute this query!')
 
-      return User.find()
     },
 
-    async user (_root, _args, context) {
-      return User.findById(context.user._id)
+    async user (_root, args, context) {
+      let userId
+      if (context.token.admin) {
+        userId = args.user
+        if (!userId) {
+          throw new ApiError('UNAUTHENTICATED', `Unable to find an authentication context: ${context}`)
+        }
+      } else {
+        userId = context.userId
+      }
+      return User.findById(userId)
     },
 
     async getUser (_, { filter }, context) {
@@ -153,7 +165,6 @@ module.exports = {
 
     userGrantedAccess(_, args, context) {
       isUser(args, context)
-
       return User.findAccountAccessUsers(context.token._id)
     },
   },
@@ -165,7 +176,6 @@ module.exports = {
         options: { limit },
         populate: { path: 'owner tags' }
       }).execPopulate()
-
       return user.articles
     },
 

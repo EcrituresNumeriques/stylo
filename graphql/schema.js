@@ -299,8 +299,6 @@ type Query {
 
   """
   Get authenticated user info.
-
-  DEPRECATION: user parameter is ignored and will be removed in the future!
   """
   user(user: ID): User
 

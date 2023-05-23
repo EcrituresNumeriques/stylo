@@ -290,7 +290,7 @@ app.post('/graphql', populateUserFromJWT({ jwtSecret }), createHandler({
     return {
       token,
       user,
-      userId: user?.id.toString() || token._id,
+      userId: user?.id.toString() || token?._id,
       loaders: createLoaders()
     }
   },
