@@ -363,13 +363,13 @@ type Mutation {
   "Remove access to a user using a password's email (can't be the main email)"
   removeCredential(email: EmailAddress!, user: ID): User
 
-  "Create article for specified user [need to be authentificated as specified user]"
+  "Create article for specified user [need to be authenticated as specified user]"
   createArticle(title: String!, user: ID, tags: [ID]): Article
 
-  "Save a new version for article [need to be authentificated as specified user]"
+  "Save a new version for article [need to be authenticated as specified user]"
   saveVersion(version: VersionInput!, user: ID): Version
 
-  "Create tag [need to be authentificated as specified user]"
+  "Create tag [need to be authenticated as specified user]"
   createTag(
     name: String!
     description: String
@@ -377,7 +377,7 @@ type Mutation {
     color: HexColorCode!
   ): Tag
 
-  "update name and description of a tag [need to be authentificated as specified user]"
+  "update name and description of a tag [need to be authenticated as specified user]"
   updateTag(
     name: String
     description: String
