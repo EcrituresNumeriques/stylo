@@ -1,0 +1,4 @@
+[build]
+  command = "npm run build"
+  publish = "_site"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF ."
