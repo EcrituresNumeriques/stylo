@@ -108,7 +108,7 @@ articleSchema.statics.findManyByOwner = function findManyByOwner ({ userId }) {
  * @param {{ users, tags }} loaders
  * @returns {Promise<Article[]>}
  */
-articleSchema.statics.complete = async function populate (articles, loaders) {
+articleSchema.statics.complete = async function complete (articles, loaders) {
   return Promise.all(articles.map(async (article) => {
     article.tags = await Promise.all(article.tags.map(async (tagId) => await loaders.tags.load(tagId)))
     article.owner = await loaders.users.load(article.owner)
@@ -134,34 +134,18 @@ articleSchema.statics.getArticles = async function getArticles ({ filter, loader
 }
 
 /**
- * Returns a single article, fully populated for a given user, or a list of users with sharing permissions
+ * Returns a single article, fully populated
  *
  * @param {String} articleId
- * @param {String} userId active user
- * @param {User[]} grantees list of accounts in which we can request this article for
  * @returns Article
  */
-articleSchema.statics.findAndPopulateOneByOwners = function findAndPopulateOneByOwners (articleId, user) {
-  // if $in is empty, we are in a case where we have an admin token fetching the data
-  const $in = user.$inFromGrantees()
-  const _id = articleId
-
-  // We want to query an article with a given ID
-  // AND match it with a single owner
-  // OR match it with one of many contributors
-  const query = Array.isArray($in) && $in.length
-    ? { _id, $or: [{ owner: { $in } }, { contributors: { $elemMatch: { user: { $in } } } }] }
-    : { _id }
-
+articleSchema.statics.findAndPopulateOne = function findAndPopulateOne (articleId) {
   return this
-    .findOne(query)
+    .findOne({  _id: articleId })
     .populate([
       { path: 'tags', options: { sort: { createdAt: -1 } } },
-      {
-        path: 'owner',
-      }
+      { path: 'owner', }
     ])
-    .populate({ path: 'versions', options: { sort: { createdAt: -1 } }, populate: { path: 'owner' } })
     .populate({ path: 'contributors', populate: { path: 'user' } })
 }
 

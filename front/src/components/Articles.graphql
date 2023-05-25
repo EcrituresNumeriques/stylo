@@ -109,26 +109,22 @@ mutation createArticle ($title: String!, $user: ID!, $tags: [ID]!) {
   }
 }
 
-query addTags ($article: ID!, $user: ID!, $tags: [ID]!) {
-  user (user: $user) {
-    article (id: $article) {
-      addTags (tags: $tags) {
-        _id
-        name
-        color
-      }
+query addTags ($article: ID!, $tags: [ID]!) {
+  article (article: $article) {
+    addTags (tags: $tags) {
+      _id
+      name
+      color
     }
   }
 }
 
-query removeTags ($article: ID!, $user: ID!, $tags: [ID]!) {
-  user (user: $user) {
-    article (id: $article) {
-      removeTags (tags: $tags) {
-        _id
-        name
-        color
-      }
+query removeTags ($article: ID!, $tags: [ID]!) {
+  article (article: $article) {
+    removeTags (tags: $tags) {
+      _id
+      name
+      color
     }
   }
 }

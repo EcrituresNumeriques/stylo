@@ -198,10 +198,6 @@ module.exports = {
       return Workspace.find({ 'members.user': user?._id })
     },
 
-    async article (user, { id }) {
-      return User.model('Article').findAndPopulateOneByOwners(id, user)
-    },
-
     async addContact (user, { userId }) {
       if (user.id === userId) {
         throw new Error('You cannot add yourself as a contact!')

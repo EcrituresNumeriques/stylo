@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import { Modal as GeistModal, Note, Spacer, Text, useModal, useToasts } from '@geist-ui/core'
@@ -136,7 +136,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
 
   const handleDeleteArticle = useCallback(async () => {
     try {
-      await runQuery({ query: deleteArticle, variables: { user: activeUser._id, article: article._id } })
+      await runQuery({ query: deleteArticle, variables: { article: article._id } })
       setNeedReload()
       setToast({
         text: t('article.delete.toastSuccess'),

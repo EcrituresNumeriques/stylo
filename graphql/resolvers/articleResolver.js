@@ -8,6 +8,77 @@ const isUser = require('../policies/isUser')
 const { ApiError } = require('../helpers/errors')
 const { reformat } = require('../helpers/metadata.js')
 
+
+async function getUser(userId) {
+  const user = await User.findById(userId)
+  if (!user) {
+    throw new ApiError('NOT_FOUND', `Unable to find user with id ${userId}`)
+  }
+  return user
+}
+
+async function getArticleByContext(articleId, context) {
+  if (context.token.admin === true) {
+    return await getArticle(articleId)
+  }
+  const userId = context.userId
+  if (!userId) {
+    throw new ApiError('UNAUTHENTICATED', `Unable to find an authentication context: ${context}`)
+  }
+  return await getArticleByUser(articleId, userId)
+}
+
+async function getArticle(articleId) {
+  const article = await Article
+    .findById(articleId)
+    .populate('owner tags')
+    .populate({ path: 'contributors', populate: { path: 'user' } })
+
+  if (!article) {
+    throw new ApiError('NOT_FOUND', `Unable to find article with id ${articleId}`)
+  }
+  return article
+}
+
+async function getArticleByUser(articleId, userId) {
+  const userWorkspace = await Workspace.findOne({
+    'members.user': userId,
+    'articles': articleId
+  })
+
+  if (userWorkspace) {
+    // article found in one of user's workspaces
+    const article = await  Article
+      .findById(articleId)
+      .populate('owner tags')
+      .populate({ path: 'contributors', populate: { path: 'user' } })
+
+    if (!article) {
+      throw new ApiError('NOT_FOUND', `Unable to find article with id ${articleId}`)
+    }
+    return article
+  }
+
+  // find article by owner or contributors
+  const article = await Article
+    .findOne(
+      {
+        _id: articleId,
+        $or: [
+          { owner: userId },
+          { contributors: { $elemMatch: { user: userId } } }
+        ]
+      }
+    )
+    .populate('owner tags')
+    .populate({ path: 'contributors', populate: { path: 'user' } })
+
+  if (!article) {
+    throw new ApiError('NOT_FOUND', `Unable to find article with id ${articleId}`)
+  }
+  return article
+}
+
 module.exports = {
   Mutation: {
     /**
@@ -17,15 +88,7 @@ module.exports = {
      * @param {{ userId, token }} context
      */
     async createArticle (_root, args, context) {
-      const { userId } = isUser(args, context)
-
-      //fetch user
-      const user = await User.findById(userId)
-
-      if (!user) {
-        throw new Error('This user does not exist')
-      }
-
+      const user = await getUser(context.userId)
       //Add default article + default version
       const newArticle = await Article.create({
         title: args.title || defaultsData.title,
@@ -52,21 +115,9 @@ module.exports = {
      * @returns
      */
     async shareArticle (_root, args, context) {
-      const { userId } = isUser(args, context)
-
-      //Fetch article and user to send to
-      const article = await Article.findOneByOwner({ _id: args.article, user: userId })
-
-      if (!article) {
-        throw new Error('Unable to find article')
-      }
-      const fetchedUser = await User.findById(args.to)
-      if (!fetchedUser) {
-        throw new Error('Unable to find user')
-      }
-
-      await article.shareWith(fetchedUser)
-
+      const withUser = await getUser(args.to)
+      const article = await getArticleByContext(args.article, context)
+      await article.shareWith(withUser)
       return article
     },
 
@@ -79,24 +130,12 @@ module.exports = {
      * @returns
      */
     async unshareArticle (_root, args, context) {
-      const { userId } = isUser(args, context)
-
-      //Fetch article and user to send to
-      const article = await Article.findOneByOwner({ _id: args.article, user: userId })
-
-      if (!article) {
-        throw new Error('Unable to find article')
-      }
-
-      const fetchedUser = await User.findById(args.to)
-      if (!fetchedUser) {
-        throw new Error('Unable to find user')
-      }
-
-      await article.unshareWith(fetchedUser)
-
+      const withUser = await getUser(args.to)
+      const article = await getArticleByContext(args.article, context)
+      await article.unshareWith(withUser)
       return article
     },
+
     /**
      * Duplicate an article as the current user
      *
@@ -106,40 +145,29 @@ module.exports = {
      * @returns
      */
     async duplicateArticle (_root, args, context) {
-      const { userId } = isUser(args, context)
-
-      //Fetch article and user to send to
-      const fetchedArticle = await Article.findAndPopulateOneByOwners(args.article, context.user)
-
-      if (!fetchedArticle) {
-        throw new Error('Unable to find article')
-      }
-      const fetchedUser = await User.findById(args.to)
-      if (!fetchedUser) {
-        throw new Error('Unable to find user')
-      }
-
-      //All good, create new Article & merge version/article/user
+      const withUser = await getUser(args.to)
+      const article = await getArticleByContext(args.article, context)
+      const userId = context.userId
       const prefix = userId === args.to ? '[Copy] ' : '[Sent] '
 
       const newArticle = new Article({
-        ...fetchedArticle.toObject(),
+        ...article.toObject(),
         _id: undefined,
-        owner: fetchedUser.id,
+        owner: withUser.id,
         contributors: [],
         versions: [],
         createdAt: null,
         updatedAt: null,
-        title: prefix + fetchedArticle.title,
+        title: prefix + article.title,
       })
 
       newArticle.isNew = true
-      fetchedUser.articles.push(newArticle)
+      withUser.articles.push(newArticle)
 
       //Save the three objects
       await Promise.all([
         newArticle.save(),
-        fetchedUser.save()
+        withUser.save()
       ])
 
       return newArticle
@@ -156,60 +184,7 @@ module.exports = {
      * @returns
      */
     async article (_root, args, context) {
-      // article attribute is mandatory
-      const articleId = args.article
-      if (context.token.admin === true) {
-        const article = await Article
-          .findById(articleId)
-          .populate('owner tags')
-          .populate({ path: 'contributors', populate: { path: 'user' } })
-
-        if (!article) {
-          throw new ApiError('NOT_FOUND', `Unable to find article with id ${args.article}`)
-        }
-        return article
-      }
-      const userId = context.userId
-      if (!userId) {
-        throw new ApiError('UNAUTHENTICATED', `Unable to find an authentication context: ${context}`)
-      }
-
-      const userWorkspace = await Workspace.findOne({
-        'members.user': userId,
-        'articles': articleId
-      })
-
-      if (userWorkspace) {
-        // article found in one of user's workspaces
-        const article = await  Article
-          .findById(articleId)
-          .populate('owner tags')
-          .populate({ path: 'contributors', populate: { path: 'user' } })
-
-        if (!article) {
-          throw new ApiError('NOT_FOUND', `Unable to find article with id ${args.article}`)
-        }
-        return article
-      }
-
-      // find article by owner or contributors
-      const article = await Article
-        .findOne(
-          {
-            _id: articleId,
-            $or: [
-              { owner: userId },
-              { contributors: { $elemMatch: { user: userId } } }
-            ]
-          }
-        )
-        .populate('owner tags')
-        .populate({ path: 'contributors', populate: { path: 'user' } })
-
-      if (!article) {
-        throw new ApiError('NOT_FOUND', `Unable to find article with id ${args.article}`)
-      }
-      return article
+      return await getArticleByContext(args.article, context)
     },
 
     /**
@@ -251,10 +226,7 @@ module.exports = {
     },
 
     async removeContributor (article, { userId }) {
-      const contributorUser = await User.findById(userId)
-      if (!contributorUser) {
-        throw new Error(`Unable to find user with id: ${userId}`)
-      }
+      const contributorUser = await getUser(userId)
       await article.unshareWith(contributorUser)
       return article
     },

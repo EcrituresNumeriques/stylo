@@ -2,7 +2,7 @@ const isUser = require('./isUser.js')
 const UserModel = require('../models/user.js')
 
 const user = '63977de2f83aa77c5f92cb1c'
-const sameUserObject = new UserModel({ _id: user, grantees: [] })
+const sameUserObject = new UserModel({ _id: user })
 const sameUserToken = { _id: user, email: 'test@example.com', admin: false, session: true, authType: 'oidc' }
 
 const differentUserObject = new UserModel({ _id: '00000de2f83aa77c5f92dc2f'})

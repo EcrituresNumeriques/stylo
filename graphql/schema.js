@@ -48,8 +48,6 @@ type User {
   createdAt: DateTime
   updatedAt: DateTime
   apiToken: JWT
-
-  article(id: ID!): Article
   
   addContact(userId: ID!): User
   removeContact(userId: ID!): User

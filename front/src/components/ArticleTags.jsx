@@ -4,24 +4,19 @@ import { useGraphQL } from '../helpers/graphQL'
 import ArticleTag from './Tag'
 
 import { addTags, removeTags } from './Articles.graphql'
-import { useCurrentUser } from '../contexts/CurrentUser'
 
 export default function ArticleTags ({ articleId, onChange, tags, userTags }) {
-
   const runQuery = useGraphQL()
-  const activeUser = useCurrentUser()
-
   const selectedTags = tags.map(({ _id }) => _id)
 
   const handleClick = useCallback(async (event) => {
     const [id, checked] = [event.target.value, event.target.checked]
-    const variables = { article: articleId, tags: [id], user: activeUser._id }
 
     const [query, updatedSelectedTags] = checked
       ? [addTags, [...selectedTags, id]]
       : [removeTags, selectedTags.filter(v => v !== id)]
 
-    await runQuery({ query, variables })
+    await runQuery({ query, variables: { article: articleId, tags: [id] } })
     const allTags = [].concat(tags, userTags)
 
     // Bubble up article Tag objects replacements
