@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
-import { Modal as GeistModal, Note, Spacer, Text, useModal, useToasts } from '@geist-ui/core'
+import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-ui/core'
 
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
@@ -50,7 +50,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
   const activeUser = useSelector(state => state.activeUser)
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
-  const [tags, setTags] = useState(article.tags)
+  const [tags, setTags] = useState(article.tags || [])
   const [renaming, setRenaming] = useState(false)
   const [title, setTitle] = useState(article.title)
   const [versions, setVersions] = useState(article.versions || [])
@@ -279,7 +279,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
         </p>
 
         {expanded && (
-          <>
+          <div>
             <h4>{t('article.versions.title')}</h4>
             <ul className={styles.versions}>
               {versions.map((v) => (
@@ -291,10 +291,13 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
               ))}
             </ul>
 
-            <h4>{t('article.tags.title')}</h4>
-            <div className={styles.editTags}>
-              <ArticleTags articleId={article._id} tags={tags} userTags={userTags} onChange={handleTagUpdate}/>
-            </div>
+            {tags.length > 0 && <>
+              <h4>{t('article.tags.title')}</h4>
+              <div className={styles.editTags}>
+                <ArticleTags articleId={article._id} tags={tags} userTags={userTags} onChange={handleTagUpdate}/>
+              </div>
+            </>
+            }
 
             <h4>{t('article.workspaces.title')}</h4>
             <ul className={styles.workspaces}>
@@ -307,19 +310,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
                 workspaceIds={workspaces.map(({ _id }) => _id)}
                 onChange={handleWorkspaceUpdate}/>)}
             </ul>
-
-            <h4>{t('article.contributors.title')}</h4>
-            <div className={styles.contributorsAction}>
-              {/*<Button small={true} >*/}
-              {/*  <UserPlus /> Partager l'article*/}
-              {/*</Button>*/}
-            </div>
-            <ul className={styles.contributors}>
-              <ContributorItem name="Revue Fémur"></ContributorItem>
-              <ContributorItem name="margotmothes" email="margotmths@gmail.com"></ContributorItem>
-              <ContributorItem name="Antoine"></ContributorItem>
-            </ul>
-          </>
+          </div>
         )}
       </section>
     </article>

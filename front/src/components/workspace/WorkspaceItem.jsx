@@ -15,7 +15,6 @@ import Field from '../Field.jsx'
 
 export default function WorkspaceItem ({ workspace }) {
   const { t } = useTranslation()
-  const { setToast } = useToasts()
   const runQuery = useGraphQL()
   const dispatch = useDispatch()
   const [managingMembers, setManagingMembers] = useState(false)

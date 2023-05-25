@@ -144,7 +144,7 @@ articleSchema.statics.findAndPopulateOne = function findAndPopulateOne (articleI
     .findOne({  _id: articleId })
     .populate([
       { path: 'tags', options: { sort: { createdAt: -1 } } },
-      { path: 'owner', }
+      { path: 'owner' }
     ])
     .populate({ path: 'contributors', populate: { path: 'user' } })
 }

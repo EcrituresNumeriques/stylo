@@ -33,12 +33,21 @@
   "article.versions.title": "Versions",
   "article.workspaces.title": "Espaces de travail",
   "article.tags.title": "Étiquettes",
-  "article.contributors.title": "Contributeurs",
   "article.by.text": "par",
   "article.deleteModal.title": "Supprimer un article",
   "article.deleteModal.confirmMessage": "Êtes-vous sûr de vouloir supprimer cet article ?",
   "article.deleteModal.contributorsRemovalNote": "Si vous supprimez cet article, les contributeurs ne pourront plus accéder à celui-ci.",
   "modal.cancelButton.text": "Annuler",
   "modal.confirmButton.text": "Confirmer",
-  "modal.close.text": "Fermer"
+  "modal.close.text": "Fermer",
+  "corpus.createForm.titleField": "Titre",
+  "corpus.createForm.descriptionField": "Description",
+  "corpus.createModal.title": "Créer un corpus",
+  "corpus.createForm.descriptionPlaceholder": "",
+  "corpus.createAction.buttonText": "Créer un corpus",
+  "corpus.createForm.buttonText": "Créer",
+  "corpus.by.text": "par",
+  "corpus.parts.label": "Chapitres",
+  "corpus.deleteModal.title": "Supprimer un corpus",
+  "corpus.deleteModal.confirmMessage": "Êtes-vous sûr de vouloir supprimer ce corpus ?"
 }

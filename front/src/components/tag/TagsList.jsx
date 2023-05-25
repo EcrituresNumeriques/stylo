@@ -20,7 +20,6 @@ export default function TagsList () {
 
   const { visible: createTagVisible, setVisible: setCreateTagVisible, bindings: createTagModalBinding } = useModal()
 
-
   useEffect(() => {
     setCreateTagVisible(false)
     // Self invoking async function
