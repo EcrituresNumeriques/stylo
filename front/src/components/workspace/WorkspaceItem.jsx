@@ -129,7 +129,7 @@ export default function WorkspaceItem ({ workspace }) {
         <GeistModal.Content>
           <WorkspaceManageMembers workspace={workspace}/>
         </GeistModal.Content>
-        <GeistModal.Action passive onClick={handleCloseManagingMembers}>Fermer</GeistModal.Action>
+        <GeistModal.Action passive onClick={handleCloseManagingMembers}>{t('modal.close.text')}</GeistModal.Action>
       </GeistModal>
     </>}
   </div>)

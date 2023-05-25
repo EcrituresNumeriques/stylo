@@ -39,5 +39,6 @@
   "article.deleteModal.confirmMessage": "Êtes-vous sûr de vouloir supprimer cet article ?",
   "article.deleteModal.contributorsRemovalNote": "Si vous supprimez cet article, les contributeurs ne pourront plus accéder à celui-ci.",
   "modal.cancelButton.text": "Annuler",
-  "modal.confirmButton.text": "Confirmer"
+  "modal.confirmButton.text": "Confirmer",
+  "modal.close.text": "Fermer"
 }

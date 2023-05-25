@@ -2,12 +2,10 @@ import { Modal as GeistModal, useModal } from '@geist-ui/core'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import ArticleCreate from '../ArticleCreate.jsx'
 
 import styles from '../articles.module.scss'
 import ArticleTag from '../Tag.jsx'
 import Button from '../Button.jsx'
-import Modal from '../Modal.jsx'
 import TagCreate from '../TagCreate.jsx'
 import { getTags } from '../Tag.graphql'
 import { useGraphQL } from '../../helpers/graphQL.js'
@@ -63,6 +61,7 @@ export default function TagsList () {
       <GeistModal.Content>
         <TagCreate/>
       </GeistModal.Content>
+      <GeistModal.Action passive onClick={() => setCreateTagVisible(false)}>{t('modal.close.text')}</GeistModal.Action>
     </GeistModal>
   </>)
 }
