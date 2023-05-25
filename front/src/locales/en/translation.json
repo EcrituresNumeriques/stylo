@@ -39,5 +39,6 @@
   "article.deleteModal.confirmMessage": "Are you sure you want to delete this article?",
   "article.deleteModal.contributorsRemovalNote": "If you delete this article, contributors won't have access to this article anymore.",
   "modal.cancelButton.text": "Cancel",
-  "modal.confirmButton.text": "Confirm"
+  "modal.confirmButton.text": "Confirm",
+  "modal.close.text": "Close"
 }

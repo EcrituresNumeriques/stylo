@@ -175,7 +175,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
         <GeistModal.Content>
           <ArticleContributors article={article} setNeedReload={setNeedReload} cancel={closeSharingModal}/>
         </GeistModal.Content>
-        <GeistModal.Action passive onClick={closeSharingModal}>Fermer</GeistModal.Action>
+        <GeistModal.Action passive onClick={closeSharingModal}>{t('modal.close.text')}</GeistModal.Action>
       </GeistModal>
 
       <GeistModal width="25rem" visible={sending} onClose={closeSendingModal}>
@@ -187,7 +187,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
         <GeistModal.Content>
           <ArticleSendCopy article={article} setNeedReload={setNeedReload} cancel={closeSendingModal}/>
         </GeistModal.Content>
-        <GeistModal.Action passive onClick={closeSendingModal}>Fermer</GeistModal.Action>
+        <GeistModal.Action passive onClick={closeSendingModal}>{t('modal.close.text')}</GeistModal.Action>
       </GeistModal>
 
       {!renaming && (

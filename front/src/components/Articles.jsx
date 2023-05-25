@@ -153,6 +153,7 @@ export default function Articles () {
         <GeistModal.Content>
           <ArticleCreate onSubmit={handleCreateNewArticle} />
         </GeistModal.Content>
+        <GeistModal.Action passive onClick={() => setCreateArticleVisible(false)}>{t('modal.close.text')}</GeistModal.Action>
       </GeistModal>
 
       {isLoading ? <Loading/> : filteredArticles

@@ -79,7 +79,7 @@ export default function ArticleCreate ( { onSubmit }) {
           type="text"
           className={styles.titleField}
         />
-        <div className={styles.field}>
+        {tags.length > 0 && <div className={styles.field}>
           <label>{t('article.createForm.tagsField')}</label>
           <ul className={styles.tags}>
             {tags.map((t) => (
@@ -94,7 +94,7 @@ export default function ArticleCreate ( { onSubmit }) {
               </li>
             ))}
           </ul>
-        </div>
+        </div>}
         <ul className={styles.actions}>
           <li>
             <Button type="secondary"
