@@ -63,9 +63,6 @@ mutation createCorpus($createCorpusInput: CreateCorpusInput!) {
         }
         createdAt
         updatedAt
-        articles {
-            _id
-        }
         workspace
     }
 }
