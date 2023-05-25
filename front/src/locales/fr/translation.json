@@ -50,5 +50,6 @@
   "corpus.parts.label": "Chapitres",
   "corpus.deleteModal.title": "Supprimer un corpus",
   "corpus.deleteModal.confirmMessage": "Êtes-vous sûr de vouloir supprimer ce corpus ?",
-  "article.corpus.title": "Corpus"
+  "article.corpus.title": "Corpus",
+  "corpus.delete.toastSuccess": "Corpus supprimé avec succès."
 }

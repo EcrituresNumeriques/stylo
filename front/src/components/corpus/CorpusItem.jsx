@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import { ChevronDown, ChevronRight, Edit3, Eye, Printer, Trash } from 'react-feather'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useGraphQL } from '../../helpers/graphQL.js'
 import Button from '../Button.jsx'
@@ -15,6 +16,7 @@ import styles from './corpusItem.module.scss'
 export default function CorpusItem ({ corpus }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
+  const dispatch = useDispatch()
   const {
     visible: deleteCorpusVisible,
     setVisible: setDeleteCorpusVisible,
@@ -23,9 +25,11 @@ export default function CorpusItem ({ corpus }) {
 
   const runQuery = useGraphQL()
 
+  const corpusId = corpus._id
   const handleDeleteCorpus = useCallback(async () => {
     try {
-      await runQuery({ query: deleteCorpus, variables: { corpusId: corpus._id } })
+      await runQuery({ query: deleteCorpus, variables: { corpusId } })
+      dispatch({ type: 'SET_LATEST_CORPUS_DELETED', data: { corpusId } })
       setToast({
         text: t('corpus.delete.toastSuccess'),
         type: 'default'
@@ -36,7 +40,7 @@ export default function CorpusItem ({ corpus }) {
         type: 'error'
       })
     }
-  }, [corpus._id])
+  }, [corpusId])
 
   const [expanded, setExpanded] = useState(false)
   const toggleExpansion = useCallback((event) => {

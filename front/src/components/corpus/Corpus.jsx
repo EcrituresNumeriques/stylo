@@ -19,6 +19,8 @@ import CorpusItem from './CorpusItem.jsx'
 export default function Corpus () {
   const { t } = useTranslation()
   const currentUser = useSelector(state => state.activeUser, shallowEqual)
+  const latestCorpusCreated = useSelector(state => state.latestCorpusCreated, shallowEqual)
+  const latestCorpusDeleted = useSelector(state => state.latestCorpusDeleted, shallowEqual)
   const [isLoading, setIsLoading] = useState(true)
   const [corpus, setCorpus] = useState([])
   const activeUserId = useActiveUserId()
@@ -53,7 +55,7 @@ export default function Corpus () {
         alert(err)
       }
     })()
-  }, [activeUserId, activeWorkspaceId])
+  }, [activeUserId, activeWorkspaceId, latestCorpusCreated, latestCorpusDeleted])
 
   useEffect(() => {
     //Self invoking async function

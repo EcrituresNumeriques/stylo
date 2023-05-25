@@ -1,6 +1,7 @@
 import { Button, Textarea, useInput, useToasts } from '@geist-ui/core'
 import React, { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import { useGraphQL } from '../../helpers/graphQL.js'
 import { useActiveWorkspace } from '../../hooks/workspace.js'
 
@@ -11,9 +12,10 @@ import styles from './corpusCreate.module.scss'
 import { createCorpus } from "./Corpus.graphql"
 
 
-export default function CorpusCreate ({ onSubmit }) {
+export default function CorpusCreate ({onSubmit}) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
+  const dispatch = useDispatch()
   const { state: title, bindings: titleBindings } = useInput('')
   const { state: description, bindings: descriptionBindings } = useInput('')
   const titleInputRef = useRef()
@@ -30,7 +32,7 @@ export default function CorpusCreate ({ onSubmit }) {
   const handleSubmit = useCallback(async (event) => {
     try {
       event.preventDefault()
-      await runQuery({
+      const response = await runQuery({
         query: createCorpus, variables: {
           createCorpusInput: {
             name: title,
@@ -40,6 +42,7 @@ export default function CorpusCreate ({ onSubmit }) {
           }
         }
       })
+      dispatch({ type: 'SET_LATEST_CORPUS_CREATED', data: { corpusId: response.createCorpus._id } })
       onSubmit()
       setToast({
         text: `New corpus created`,

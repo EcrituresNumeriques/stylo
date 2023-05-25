@@ -60,6 +60,8 @@ const initialState = {
     activeWorkspaceId: null
   },
   latestTagCreated: null,
+  latestCorpusCreated: null,
+  latestCorpusDeleted: null,
   userPreferences: localStorage.getItem('userPreferences') ? JSON.parse(localStorage.getItem('userPreferences')) : {
     // The user we impersonate
     currentUser: null,
@@ -102,7 +104,10 @@ const reducer = createReducer(initialState, {
   SET_ACTIVE_WORKSPACE: setActiveWorkspace,
 
   UPDATE_SELECTED_TAG: updateSelectedTag,
-  TAG_CREATED: tagCreated
+  TAG_CREATED: tagCreated,
+
+  SET_LATEST_CORPUS_DELETED: setLatestCorpusDeleted,
+  SET_LATEST_CORPUS_CREATED: setLatestCorpusCreated
 })
 
 const createNewArticleVersion = store => {
@@ -452,6 +457,20 @@ function tagCreated (state, { tag }) {
   return {
     ...state,
     latestTagCreated: tag
+  }
+}
+
+function setLatestCorpusDeleted(state, { data }) {
+  return {
+    ...state,
+    latestCorpusDeleted: data
+  }
+}
+
+function setLatestCorpusCreated(state, { data }) {
+  return {
+    ...state,
+    latestCorpusCreated: data
   }
 }
 
