@@ -55,7 +55,6 @@ export default function Corpus () {
     })()
   }, [activeUserId, activeWorkspaceId])
 
-
   useEffect(() => {
     //Self invoking async function
     (async () => {

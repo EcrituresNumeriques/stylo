@@ -46,24 +46,32 @@ async function getCorpusByUser (corpusId, userId) {
 
 class CorpusArticle {
 
+  get article () {
+    return this._article
+  }
+
+  get order () {
+    return this._article.order
+  }
+
   constructor (corpus, article) {
     this.corpus = corpus
-    this.article = article
+    this._article = article
   }
 
   async remove () {
-    if (this.article) {
-      this.corpus.articles.pull({ _id: this.article._id })
+    if (this._article) {
+      this.corpus.articles.pull({ _id: this._article._id })
       return this.corpus.save()
     }
     return this.corpus
   }
 
   async move (order) {
-    if (this.article) {
+    if (this._article) {
       const articles = this.corpus.articles
       const map = new Map(articles.map((obj) => [obj.order, obj]))
-      const currentOrder = this.article.order
+      const currentOrder = this._article.order
       if (order < currentOrder) {
         for (let i = order; i < currentOrder; i++) {
           const article = map.get(i)
@@ -79,7 +87,7 @@ class CorpusArticle {
           }
         }
       }
-      this.article.order = order
+      this._article.order = order
       return this.corpus.save()
     }
     return this.corpus
@@ -146,8 +154,23 @@ module.exports = {
   },
 
   Corpus: {
+    async articles (corpus, _args, context) {
+      const promises = corpus.articles
+        .map(async (article) => {
+          const articleLoaded = await context.loaders.articles.load(article.article)
+          return {
+            ...article,
+            article: articleLoaded
+          }
+
+        })
+      const articles = await Promise.all(promises)
+      articles.sort((a, b) => a.order > b.order ? -1 : 1)
+      return articles
+    },
+
     async article (corpus, { articleId }) {
-      const article = corpus.articles.find(({ article }) => article.id === articleId)
+      const article = corpus.articles.find(({ article }) => article.equals(articleId))
       return new CorpusArticle(corpus, article)
     },
 

@@ -262,6 +262,7 @@ input CreateWorkspaceInput {
 type CorpusArticle {
   corpus: Corpus!
   article: Article
+  order: Int
 
   # mutation
   remove: Corpus!
@@ -274,7 +275,7 @@ type Corpus {
   description: String
   metadata: String
   workspace: String
-  articles: [Article!]!
+  articles: [CorpusArticle!]!
   creator: User!
   createdAt: DateTime
   updatedAt: DateTime

@@ -2,11 +2,14 @@ query getUserArticles($user: ID!) {
   user(user: $user) {
     _id
     displayName
+  }
 
-    permissions {
-      user {
+  corpus {
+    _id
+    name
+    articles {
+      article {
         _id
-        displayName
       }
     }
   }
@@ -62,6 +65,16 @@ query getWorkspaceArticles ($workspaceId: ID!) {
   }
 
   workspace(workspaceId: $workspaceId) {
+    corpus {
+      _id
+      name
+      articles {
+        article {
+          _id
+        }
+      }
+    }
+
     articles {
       _id
       title

@@ -12,7 +12,11 @@ query getUserCorpus {
         createdAt
         updatedAt
         articles {
-            _id
+            article {
+                _id
+                title
+            }
+            order
         }
         workspace
     }
@@ -33,7 +37,11 @@ query getWorkspaceCorpus($workspaceId: ID!) {
             createdAt
             updatedAt
             articles {
-                _id
+                article {
+                    _id
+                    title
+                }
+                order
             }
             workspace
         }
@@ -65,6 +73,24 @@ mutation createCorpus($createCorpusInput: CreateCorpusInput!) {
 mutation deleteCorpus($corpusId: ID!) {
     corpus(corpusId: $corpusId) {
         delete {
+            _id
+        }
+    }
+}
+
+mutation removeArticleFromCorpus($corpusId: ID!, $articleId: ID!) {
+    corpus(corpusId: $corpusId) {
+        article(articleId: $articleId) {
+            remove {
+                _id
+            }
+        }
+    }
+}
+
+mutation addArticleToCorpus($corpusId: ID!, $articleId: ID!) {
+    corpus(corpusId: $corpusId) {
+        addArticle(articleId: $articleId) {
             _id
         }
     }

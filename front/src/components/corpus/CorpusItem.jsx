@@ -1,4 +1,4 @@
-import { Modal as GeistModal, useModal, useToasts } from '@geist-ui/core'
+import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-ui/core'
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
 import { ChevronDown, ChevronRight, Edit3, Eye, Printer, Trash } from 'react-feather'
@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useGraphQL } from '../../helpers/graphQL.js'
 import Button from '../Button.jsx'
-import buttonStyles from '../button.module.scss'
 import TimeAgo from '../TimeAgo.jsx'
 
 import { deleteCorpus } from './Corpus.graphql'
@@ -39,7 +38,6 @@ export default function CorpusItem ({ corpus }) {
     }
   }, [corpus._id])
 
-  const [articles, setArticles] = useState(null)
   const [expanded, setExpanded] = useState(false)
   const toggleExpansion = useCallback((event) => {
     if (!event.key || [' ', 'Enter'].includes(event.key)) {
@@ -82,12 +80,20 @@ export default function CorpusItem ({ corpus }) {
       {expanded && <div className={styles.detail}>
         {corpus.description && <p>{corpus.description}</p>}
         <h5 className={styles.partsTitle}>{t('corpus.parts.label')}</h5>
-        {articles && articles.length > 0 && <div>
-          <span>{articles.map((a) => a.title)}</span>
-        </div>}
-        {(articles && articles.length === 0) &&
-          <p>Pour ajouter un nouveau chapitre, aller sur la page des articles et sélectionner les articles que vous
-            souhaitez ajouter en tant que chapitre.</p>}
+        {corpus.articles && corpus.articles.length > 0 && <ul>
+          {corpus.articles.map((a) => (
+            <li key={a._id}><Link to={`/article/${a.article._id}`}>{a.article.title}</Link></li>
+          ))}
+        </ul>}
+        {(corpus.articles && corpus.articles.length === 0) &&
+          <>
+            <Spacer/>
+            <Note type="secondary">
+              Pour ajouter un nouveau chapitre,
+              aller sur la page des articles et dans le détail d'un article sélectionner ce corpus.
+            </Note>
+          </>
+        }
       </div>}
 
       <GeistModal visible={deleteCorpusVisible} {...deleteCorpusModalBinding}>
@@ -95,8 +101,7 @@ export default function CorpusItem ({ corpus }) {
         <GeistModal.Content>
           {t('corpus.deleteModal.confirmMessage')}
         </GeistModal.Content>
-        <GeistModal.Action passive
-                           onClick={() => setDeleteCorpusVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
+        <GeistModal.Action passive onClick={() => setDeleteCorpusVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
         <GeistModal.Action onClick={handleDeleteCorpus}>{t('modal.confirmButton.text')}</GeistModal.Action>
       </GeistModal>
     </div>
