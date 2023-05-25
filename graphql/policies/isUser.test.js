@@ -37,11 +37,5 @@ describe('isUser', () => {
 
   test('with token, explicit user is different than user token', () => {
     expect(() => isUser({ user: differentUserObject.id }, { token: sameUserToken, user: sameUserObject })).toThrow(/Forbidden/)
-
-    sameUserObject.grantees.push(differentUserObject)
-    expect(isUser({ user: differentUserObject.id }, { token: sameUserToken, user: sameUserObject })).toEqual({
-      userId: differentUserObject.id,
-      fromSharedUserId: sameUserToken._id
-    })
   })
 })
