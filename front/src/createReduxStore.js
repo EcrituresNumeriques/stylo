@@ -36,7 +36,6 @@ const initialState = {
   },
   articleStructure: [],
   articleVersions: [],
-  workspaces: [],
   articlePreferences: localStorage.getItem('articlePreferences') ? JSON.parse(localStorage.getItem('articlePreferences')) : {
     expandSidebarLeft: true,
     expandSidebarRight: false,
@@ -56,7 +55,9 @@ const initialState = {
   // Active user (authenticated)
   activeUser: {
     zoteroToken: null,
-    selectedTagIds: []
+    selectedTagIds: [],
+    workspaces: [],
+    activeWorkspaceId: null
   },
   latestTagCreated: null,
   userPreferences: localStorage.getItem('userPreferences') ? JSON.parse(localStorage.getItem('userPreferences')) : {
@@ -108,10 +109,20 @@ const createNewArticleVersion = store => {
   return next => {
     return async (action) => {
       if (action.type === 'CREATE_WORKSPACE') {
-        const { workspaces, sessionToken, applicationConfig } = store.getState()
+        const { activeUser, sessionToken, applicationConfig } = store.getState()
+        const workspaces = activeUser.workspaces
         const workspaceService = new WorkspaceService(sessionToken, applicationConfig)
         const response = await workspaceService.create(action.data)
         store.dispatch({ type: 'SET_WORKSPACES', workspaces: [response.createWorkspace, ...workspaces] })
+        return next(action)
+      }
+      if (action.type === 'LEAVE_WORKSPACE') {
+        const { activeUser, sessionToken, applicationConfig } = store.getState()
+        const workspaces = activeUser.workspaces
+        const workspaceService = new WorkspaceService(sessionToken, applicationConfig)
+        const workspaceId = action.data.workspaceId
+        await workspaceService.leave(workspaceId)
+        store.dispatch({ type: 'SET_WORKSPACES', workspaces: workspaces.filter((w) => w._id !== workspaceId) })
         return next(action)
       }
       if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
@@ -405,12 +416,19 @@ function updateEditorCursorPosition (state, { lineNumber, column }) {
 }
 
 function setWorkspaces (state, { workspaces }) {
-  return { ...state, workspaces }
+  return {
+    ...state,
+    activeUser: {
+      ...state.activeUser,
+      workspaces
+    }
+  }
 }
 
 function setActiveWorkspace (state, { workspaceId }) {
   return {
-    ...state, activeUser: {
+    ...state,
+    activeUser: {
       ...state.activeUser,
       activeWorkspaceId: workspaceId
     }
@@ -420,7 +438,8 @@ function setActiveWorkspace (state, { workspaceId }) {
 function updateSelectedTag (state, { tagId }) {
   const { selectedTagIds } = state.activeUser
   return {
-    ...state, activeUser: {
+    ...state,
+    activeUser: {
       ...state.activeUser,
       selectedTagIds: selectedTagIds.includes(tagId)
         ? selectedTagIds.filter(tagId => tagId !== tagId)
@@ -429,7 +448,7 @@ function updateSelectedTag (state, { tagId }) {
   }
 }
 
-function tagCreated(state, { tag }) {
+function tagCreated (state, { tag }) {
   return {
     ...state,
     latestTagCreated: tag

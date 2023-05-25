@@ -302,9 +302,6 @@ type Query {
 
   getUser(filter: UserFilter): User
 
-  "Fetch accounts we have access to"
-  userGrantedAccess: [User]
-
   "Fetch tagged articles for a given user"
   tags(user: ID): [Tag]
 
@@ -342,12 +339,6 @@ type Mutation {
 
   "Change password"
   changePassword(old: String!, new: String!, user: ID): User
-
-  "Grant account access"
-  grantAccountAccess(user: ID, to: ID!): User
-
-  "Revoke account access"
-  revokeAccountAccess(user: ID, to: ID!): User
 
   "Change user information"
   updateUser(user: ID, details: UserProfileInput!): User

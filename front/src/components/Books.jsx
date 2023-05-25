@@ -1,61 +1,71 @@
-import React, { useState, useEffect } from 'react'
+import { Button, Modal as GeistModal, useModal } from '@geist-ui/core'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
 import { CurrentUserContext } from '../contexts/CurrentUser'
 
 import { useGraphQL } from '../helpers/graphQL'
-import { getTags as query } from './Books.graphql'
+import { useActiveWorkspace } from '../hooks/workspace.js'
+import ArticleCreate from './ArticleCreate.jsx'
 import styles from './articles.module.scss'
+import CorpusCreate from './corpus/CorpusCreate.jsx'
 
-import Book from './Book'
 import Loading from './Loading'
-import SelectUser from './SelectUser'
 import { useActiveUserId } from '../hooks/user'
+import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
 
 export default function Books () {
-  const activeUser = useSelector(state => state.activeUser, shallowEqual)
+
+  const { t } = useTranslation()
+  const currentUser = useSelector(state => state.activeUser, shallowEqual)
   const [isLoading, setIsLoading] = useState(true)
-  const [tags, setTags] = useState([])
-  const [currentUser, setCurrentUser] = useState(activeUser)
-  const [userAccounts, setUserAccounts] = useState([])
-  const currentUserId = useActiveUserId()
+  const activeUserId = useActiveUserId()
+  const activeWorkspace = useActiveWorkspace()
+  const activeWorkspaceId = activeWorkspace?._id
+  const { visible: createCorpusVisible, setVisible: setCreateCorpusVisible, bindings: createCorpusModalBinding } = useModal()
 
   const runQuery = useGraphQL()
+
+  const handleCreateNewCorpus = useCallback(() => {
+    setCreateCorpusVisible(false)
+  }, [])
 
   useEffect(() => {
     //Self invoking async function
     (async () => {
       try {
         setIsLoading(true)
-        const data = await runQuery({ query, variables: { user: currentUserId } })
-        //Need to sort by updatedAt desc
-        setTags(data.tags.reverse())
-        setCurrentUser(data.user)
-        setUserAccounts(data.userGrantedAccess)
+        //const data = await runQuery({ query, variables: { user: activeUserId } })
         setIsLoading(false)
       } catch (err) {
         alert(err)
       }
     })()
-  }, [currentUserId])
+  }, [activeUserId, activeWorkspaceId])
 
   return (<CurrentUserContext.Provider value={currentUser}>
+
     <section className={styles.section}>
       <header className={styles.articlesHeader}>
-        <h1>{tags.length} books for </h1>
-        <SelectUser accounts={userAccounts} />
+        <h1>Corpus</h1>
+        {activeWorkspace && <WorkspaceLabel color={activeWorkspace.color} name={activeWorkspace.name}/>}
       </header>
-
       <p>
-        Books are like super-tags, they are a collection of articles that you
-        can sort and export all at once.<br />
-        Below are your tags eligible to be books.
+        A corpus is a collection of articles that you can sort and export all at once.
       </p>
 
-      <hr className={styles.horizontalSeparator} />
+      <hr className={styles.horizontalSeparator}/>
 
-      {isLoading ? <Loading /> : tags.map((t) => (
-          <Book key={`book-${t._id}`} {...t} />
-        ))}
+      <Button onClick={() => setCreateCorpusVisible(true)}>{t('corpus.createAction.buttonText')}</Button>
+
+      <GeistModal width='40rem' visible={createCorpusVisible} {...createCorpusModalBinding}>
+        <h2>{t('corpus.createModal.title')}</h2>
+        <GeistModal.Content>
+          <CorpusCreate onSubmit={handleCreateNewCorpus} />
+        </GeistModal.Content>
+      </GeistModal>
+
+      {isLoading ? <Loading/> : <></>}
     </section>
   </CurrentUserContext.Provider>)
 }
