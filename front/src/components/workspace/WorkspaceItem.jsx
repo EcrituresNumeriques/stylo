@@ -2,10 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Slash, Users } from 'react-feather'
 import { Modal as GeistModal, Button, Note, Text, Spacer, useToasts } from '@geist-ui/core'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import TimeAgo from '../TimeAgo.jsx'
 
 import styles from './workspaceItem.module.scss'
-import { getWorkspace, leave } from './Workspaces.graphql'
+import { getWorkspace } from './Workspaces.graphql'
 import WorkspaceLabel from './WorkspaceLabel.jsx'
 import WorkspaceManageMembers from './WorkspaceManageMembers.jsx'
 import { useGraphQL } from '../../helpers/graphQL.js'
@@ -16,9 +17,9 @@ export default function WorkspaceItem ({ workspace }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const runQuery = useGraphQL()
+  const dispatch = useDispatch()
   const [managingMembers, setManagingMembers] = useState(false)
   const [leaving, setLeaving] = useState(false)
-  const [hidden, setHidden] = useState(false)
   const [membersCount, setMembersCount] = useState(0)
 
   const handleCloseManagingMembers = useCallback(async () => {
@@ -39,27 +40,11 @@ export default function WorkspaceItem ({ workspace }) {
     setLeaving(false)
   }, [workspace._id])
 
-  const handleLeavingWorkspace = useCallback(async () => {
-    try {
-      await runQuery({ query: leave, variables: { workspaceId: workspace._id } })
-      setHidden(true)
-    } catch (err) {
-      setToast({
-        text: String(err),
-        type: 'error'
-      })
-    } finally {
-      setLeaving(false)
-    }
-  }, [workspace._id])
+  const handleLeavingWorkspace = useCallback(() => dispatch({type: 'LEAVE_WORKSPACE', data: {workspaceId: workspace._id}}), [workspace._id])
 
   useEffect(() => {
     setMembersCount(workspace.stats?.membersCount || 0)
   }, [workspace.stats])
-
-  if (hidden) {
-    return <></>
-  }
 
   const workspaceTitle = (<>
     <h5 className={styles.title}>

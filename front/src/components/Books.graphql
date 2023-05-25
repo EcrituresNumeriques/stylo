@@ -39,9 +39,4 @@ query getTags($user: ID!) {
       }
     }
   }
-
-  userGrantedAccess {
-    _id
-    displayName
-  }
 }

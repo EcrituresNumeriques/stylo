@@ -25,7 +25,7 @@ export default function Workspaces () {
     personal: true,
     members: [],
   })
-  const currentWorkspaces = useSelector((state) => state.workspaces)
+  const currentWorkspaces = activeUser.workspaces
   const handleCreateCancel = useCallback(() => setCreating(false), [creating])
   const runQuery = useGraphQL()
 

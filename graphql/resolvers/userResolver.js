@@ -61,60 +61,6 @@ module.exports = {
       return thisUser.populate('acquintances').execPopulate()
     },
 
-    async grantAccountAccess (_, args, context) {
-      const { userId } = isUser(args, context)
-
-      const thisUser = await User.findById(userId)
-        .populate('acquintances')
-        .populate({ path: 'permissions', populate: 'user' })
-
-      const remoteUser = await User.findById(args.to)
-
-      const existingsScope = thisUser.permissions.find(
-        (p) => p.scope === 'user' && p.user._id == remoteUser.id
-      )
-
-      if (existingsScope) {
-        throw new Error(
-          `Account [id: ${args.to}] has already access to account [id: ${args.user}]`
-        )
-      }
-
-      thisUser.permissions.push({
-        scope: 'user',
-        user: remoteUser.id,
-        roles: ['access', 'read', 'write'],
-      })
-
-      return thisUser
-        .save()
-        .then((u) =>
-          u.populate({ path: 'permissions', populate: 'user' }).execPopulate()
-        )
-    },
-    async revokeAccountAccess (_, args, context) {
-      const { userId } = isUser(args, context)
-
-      const thisUser = await User.findById(userId)
-        .populate('acquintances')
-        .populate({ path: 'permissions', populate: 'user' })
-
-      const remoteUser = await User.findById(args.to)
-
-      const existingsScope = thisUser.permissions.find(
-        (p) => p.scope === 'user' && p.user._id == remoteUser.id
-      )
-
-      if (!existingsScope) {
-        throw new Error(
-          `Account [id: ${args.to}] has no access to account [id: ${args.user}]`
-        )
-      }
-
-      thisUser.permissions.pull(existingsScope)
-      return thisUser.save()
-    },
-
     async updateUser (_, args, context) {
       const { userId } = isUser(args, context)
       const { details } = args
@@ -161,11 +107,6 @@ module.exports = {
     async getUser (_, { filter }, context) {
       isUser({ }, context)
       return User.findOne({ email: filter.email })
-    },
-
-    userGrantedAccess(_, args, context) {
-      isUser(args, context)
-      return User.findAccountAccessUsers(context.token._id)
     },
   },
 

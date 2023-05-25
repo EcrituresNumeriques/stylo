@@ -1,4 +1,4 @@
-import { create } from './WorkspaceService.graphql'
+import { create, leave } from './WorkspaceService.graphql'
 import {runQuery} from '../helpers/graphQL.js'
 
 export default class WorkspaceService {
@@ -14,6 +14,17 @@ export default class WorkspaceService {
       query: create,
       variables: {
         data
+      }
+    })
+  }
+
+  async leave (workspaceId) {
+    const { sessionToken, graphqlEndpoint } = this
+
+    return runQuery({ sessionToken, graphqlEndpoint }, {
+      query: leave,
+      variables: {
+        workspaceId
       }
     })
   }
