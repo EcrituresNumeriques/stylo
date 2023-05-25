@@ -1,0 +1,97 @@
+query getUserCorpus {
+    corpus {
+        _id
+        name
+        description
+        creator {
+            _id
+            displayName
+            username
+            email
+        }
+        createdAt
+        updatedAt
+        articles {
+            article {
+                _id
+                title
+            }
+            order
+        }
+        workspace
+    }
+}
+
+query getWorkspaceCorpus($workspaceId: ID!) {
+    workspace(workspaceId: $workspaceId) {
+        corpus {
+            _id
+            name
+            description
+            creator {
+                _id
+                displayName
+                username
+                email
+            }
+            createdAt
+            updatedAt
+            articles {
+                article {
+                    _id
+                    title
+                }
+                order
+            }
+            workspace
+        }
+    }
+}
+
+# mutations
+
+mutation createCorpus($createCorpusInput: CreateCorpusInput!) {
+    createCorpus(createCorpusInput: $createCorpusInput) {
+        _id
+        name
+        description
+        creator {
+            _id
+            displayName
+            username
+            email
+        }
+        createdAt
+        updatedAt
+        articles {
+            _id
+        }
+        workspace
+    }
+}
+
+mutation deleteCorpus($corpusId: ID!) {
+    corpus(corpusId: $corpusId) {
+        delete {
+            _id
+        }
+    }
+}
+
+mutation removeArticleFromCorpus($corpusId: ID!, $articleId: ID!) {
+    corpus(corpusId: $corpusId) {
+        article(articleId: $articleId) {
+            remove {
+                _id
+            }
+        }
+    }
+}
+
+mutation addArticleToCorpus($corpusId: ID!, $articleId: ID!) {
+    corpus(corpusId: $corpusId) {
+        addArticle(articleId: $articleId) {
+            _id
+        }
+    }
+}

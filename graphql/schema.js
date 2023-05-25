@@ -237,6 +237,7 @@ type Workspace {
   bibliographyStyle: String
   members: [User!]!
   articles: [Article!]!
+  corpus: [Corpus!]!
   creator: User!
   createdAt: DateTime
   updatedAt: DateTime
@@ -261,6 +262,7 @@ input CreateWorkspaceInput {
 type CorpusArticle {
   corpus: Corpus!
   article: Article
+  order: Int
 
   # mutation
   remove: Corpus!
@@ -270,12 +272,13 @@ type CorpusArticle {
 type Corpus {
   _id: String!
   name: String!
+  description: String
   metadata: String
   workspace: String
-  articles: [Article!]!
+  articles: [CorpusArticle!]!
   creator: User!
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime
+  updatedAt: DateTime
 
   article(articleId: ID!): CorpusArticle
   
@@ -283,10 +286,12 @@ type Corpus {
   addArticle(articleId: ID!): Corpus
   rename(name: String!): Corpus
   updateMetadata(metadata: String!): Corpus
+  delete: Corpus!
 }
 
 input CreateCorpusInput {
   name: String!
+  description: String
   metadata: String
   workspace: String
 }
@@ -390,6 +395,12 @@ type Mutation {
 
   "Get a workspace for mutation"
   workspace(workspaceId: ID!): Workspace
+
+  """
+  Get a corpus for a given id.
+  Returns an error if the corpus does not exist or cannot be accessed.
+  """
+  corpus(corpusId: ID!): Corpus
   
   "Create a new corpus"
   createCorpus(createCorpusInput: CreateCorpusInput!): Corpus

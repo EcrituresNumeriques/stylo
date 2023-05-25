@@ -15,6 +15,10 @@ const corpusSchema = new Schema({
     required: true,
   },
   articles: [CorpusArticleSchema],
+  description: {
+    type: String,
+    default: ''
+  },
   metadata: {
     type: String,
     default: ''

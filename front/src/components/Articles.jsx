@@ -33,6 +33,7 @@ export default function Articles () {
   const [filter, setFilter] = useState('')
   const [articles, setArticles] = useState([])
   const [userTags, setUserTags] = useState([])
+  const [corpus, setCorpus] = useState([])
 
   useEffect(() => {
     if (latestTagCreated) {
@@ -95,6 +96,7 @@ export default function Articles () {
           const data = await runQuery({ query: getWorkspaceArticles, variables: { workspaceId: activeWorkspaceId } })
           setArticles(data.workspace.articles)
           setUserTags(data.tags)
+          setCorpus(data.workspace.corpus)
           setIsLoading(false)
           setNeedReload(false)
         } else {
@@ -102,6 +104,7 @@ export default function Articles () {
           // Need to sort by updatedAt desc
           setArticles(data.articles)
           setUserTags(data.tags)
+          setCorpus(data.corpus)
           setIsLoading(false)
           setNeedReload(false)
         }
@@ -161,6 +164,7 @@ export default function Articles () {
           <Article
             key={`article-${article._id}`}
             userTags={userTags}
+            corpus={corpus}
             article={article}
             setNeedReload={handleReload}
             updateTagsHandler={handleUpdateTags}

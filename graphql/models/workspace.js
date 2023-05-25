@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const toHex = require("colornames");
+const toHex = require('colornames')
 const Schema = mongoose.Schema
 
 const WorkspaceMemberSchema = new Schema({

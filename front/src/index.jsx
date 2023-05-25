@@ -27,7 +27,7 @@ import buttonStyles from './components/button.module.scss'
 import Select from './components/Select'
 
 // lazy loaded routes
-const Books = lazy(() => import('./components/Books'))
+const Corpus = lazy(() => import('./components/corpus/Corpus'))
 const Articles = lazy(() => import('./components/Articles'))
 const Workspaces = lazy(() => import('./components/workspace/Workspaces'))
 const Credentials = lazy(() => import('./components/Credentials'))
@@ -108,7 +108,7 @@ render(
               </PrivateRoute>
               {/* Books index */}
               <PrivateRoute path="/books" exact>
-                <Books/>
+                <Corpus/>
               </PrivateRoute>
               {/* Workspaces index */}
               <PrivateRoute path={['/workspaces', '/']} exact>

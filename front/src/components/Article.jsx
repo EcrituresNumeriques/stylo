@@ -2,10 +2,11 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
-import { Modal as GeistModal, Note, Spacer, Text, useModal, useToasts } from '@geist-ui/core'
+import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-ui/core'
 
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
+import CorpusSelectItem from './corpus/CorpusSelectItem.jsx'
 import fieldStyles from './field.module.scss'
 
 import Modal from './Modal'
@@ -35,11 +36,10 @@ import { useGraphQL } from '../helpers/graphQL'
 import TimeAgo from './TimeAgo.jsx'
 import WorkspaceSelectItem from './workspace/WorkspaceSelectItem.jsx'
 import { useSelector } from 'react-redux'
-import ContributorItem from './ContributorItem.jsx'
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
 
-export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, userTags }) {
+export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, userTags, corpus }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const {
@@ -50,11 +50,12 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
   const activeUser = useSelector(state => state.activeUser)
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
-  const [tags, setTags] = useState(article.tags)
+  const [tags, setTags] = useState(article.tags || [])
   const [renaming, setRenaming] = useState(false)
   const [title, setTitle] = useState(article.title)
   const [versions, setVersions] = useState(article.versions || [])
   const [workspaces, setWorkspaces] = useState(article.workspaces || [])
+  const [corpusArticleIds, setCorpusArticleIds] = useState({})
   const [tempTitle, setTempTitle] = useState(article.title)
   const [sharing, setSharing] = useState(false)
   const [sending, setSending] = useState(false)
@@ -71,6 +72,21 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
   const handleWorkspaceUpdate = useCallback(workspaceIds => {
     setWorkspaces(workspaceIds.map(id => activeUser.workspaces.find(({ _id }) => _id === id)))
   }, [])
+
+  const handleCorpusUpdate = useCallback(({ corpusId, corpusArticleIds }) => {
+    setCorpusArticleIds({
+      ...corpusArticleIds,
+      [corpusId]: corpusArticleIds
+    })
+  }, [corpusArticleIds])
+
+  useEffect(() => {
+    setCorpusArticleIds(corpus.reduce((acc, item) => {
+      acc[item._id] = item.articles.map((corpusArticle) => corpusArticle.article._id)
+      return acc
+
+    }, {}))
+  }, [corpus])
 
   useEffect(() => {
     (async () => {
@@ -279,7 +295,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
         </p>
 
         {expanded && (
-          <>
+          <div>
             <h4>{t('article.versions.title')}</h4>
             <ul className={styles.versions}>
               {versions.map((v) => (
@@ -291,10 +307,13 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
               ))}
             </ul>
 
-            <h4>{t('article.tags.title')}</h4>
-            <div className={styles.editTags}>
-              <ArticleTags articleId={article._id} tags={tags} userTags={userTags} onChange={handleTagUpdate}/>
-            </div>
+            {tags.length > 0 && <>
+              <h4>{t('article.tags.title')}</h4>
+              <div className={styles.editTags}>
+                <ArticleTags articleId={article._id} tags={tags} userTags={userTags} onChange={handleTagUpdate}/>
+              </div>
+            </>
+            }
 
             <h4>{t('article.workspaces.title')}</h4>
             <ul className={styles.workspaces}>
@@ -308,18 +327,17 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
                 onChange={handleWorkspaceUpdate}/>)}
             </ul>
 
-            <h4>{t('article.contributors.title')}</h4>
-            <div className={styles.contributorsAction}>
-              {/*<Button small={true} >*/}
-              {/*  <UserPlus /> Partager l'article*/}
-              {/*</Button>*/}
-            </div>
-            <ul className={styles.contributors}>
-              <ContributorItem name="Revue Fémur"></ContributorItem>
-              <ContributorItem name="margotmothes" email="margotmths@gmail.com"></ContributorItem>
-              <ContributorItem name="Antoine"></ContributorItem>
+            <h4>{t('article.corpus.title')}</h4>
+            <ul className={styles.corpusList}>
+              {corpus.map((c) => <CorpusSelectItem
+                key={c._id}
+                id={c._id}
+                name={c.name}
+                articleId={article._id}
+                articleIds={corpusArticleIds[c._id] || []}
+                onChange={handleCorpusUpdate}/>)}
             </ul>
-          </>
+          </div>
         )}
       </section>
     </article>

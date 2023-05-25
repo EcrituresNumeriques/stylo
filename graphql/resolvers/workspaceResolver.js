@@ -2,6 +2,7 @@ const { ObjectId } = require('mongoose').Types
 const { ApiError } = require('../helpers/errors')
 const Workspace = require('../models/workspace')
 const Article = require('../models/article')
+const Corpus = require('../models/corpus')
 
 async function workspace (_, { workspaceId }, { user }) {
   if (user?.admin === true) {
@@ -120,6 +121,10 @@ module.exports = {
       const articles = await Promise.all(workspace.articles.map((articleId) => context.loaders.articles.load(articleId)))
       articles.sort((a, b) => a.createdAt > b.createdAt ? -1 : 1)
       return Article.complete(articles, context.loaders)
+    },
+
+    async corpus(workspace) {
+      return Corpus.find({ 'workspace': workspace._id }).sort([['updatedAt', -1]])
     },
 
     async member (workspace, { userId }) {

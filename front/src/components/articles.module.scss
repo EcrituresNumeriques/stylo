@@ -379,6 +379,16 @@ hr.horizontalSeparator {
   margin-bottom: 1rem;
 }
 
+.corpusList {
+  display: flex;
+  flex-wrap: wrap;
+  > li:not(:last-child) {
+    margin-right: 0.5em;
+  }
+  margin-top:0.5rem;
+  margin-bottom: 1rem;
+}
+
 .sharing {
   margin-top:0.5rem;
   margin-bottom: 1rem;
