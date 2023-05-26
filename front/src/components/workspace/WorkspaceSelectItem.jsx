@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 
@@ -8,7 +8,6 @@ import styles from './WorkspaceSelectItem.module.scss'
 import { useGraphQL } from '../../helpers/graphQL.js'
 
 export default function WorkspaceSelectItem ({ articleId, color, name, id, workspaceIds, onChange }) {
-  const dispatch = useDispatch()
   const runQuery = useGraphQL()
   const activeUser = useSelector(state => state.activeUser)
   const isSelected = workspaceIds.includes(id)

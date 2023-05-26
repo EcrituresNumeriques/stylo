@@ -25,3 +25,24 @@ query removeContact($userId: ID!, $contactId: ID!) {
         }
     }
 }
+
+query getUserByEmail($userEmail: String!) {
+    getUser(filter: {email: $userEmail}) {
+        _id
+        displayName
+        username
+        email
+    }
+}
+
+query getContacts($userId: ID!) {
+    user(user: $userId) {
+        acquintances {
+            _id
+            displayName
+            username
+            email
+        }
+    }
+}
+

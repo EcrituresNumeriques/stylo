@@ -51,5 +51,9 @@
   "corpus.deleteModal.title": "Delete a corpus",
   "corpus.deleteModal.confirmMessage": "Are you sure you want to delete this corpus?",
   "article.corpus.title": "Corpus",
-  "corpus.delete.toastSuccess": "Corpus successfully deleted."
+  "corpus.delete.toastSuccess": "Corpus successfully deleted.",
+  "article.shareModal.title": "Share the article with a contact",
+  "article.shareModal.description": "Allows you to share an article with one of your contacts.",
+  "article.sendCopyModal.title": "Send a copy of the article",
+  "article.sendCopyModal.description": "Allows you to send a copy of the article to one of your contacts by clicking on the icon"
 }

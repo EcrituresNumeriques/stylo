@@ -1,18 +1,20 @@
-import { Button, useInput } from '@geist-ui/core'
+import { Button, useInput, useToasts } from '@geist-ui/core'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { randomColor } from '../helpers/colors.js'
 import { useGraphQL } from '../helpers/graphQL'
-import { createTag as query } from './Tag.graphql'
+import { useMutate } from '../hooks/graphql'
+import { createTag, getTags } from './Tag.graphql'
 
 import styles from './TagCreate.module.scss'
 import Field from './Field'
 import { useCurrentUser } from '../contexts/CurrentUser'
-import { useDispatch } from 'react-redux'
 
 
 export default function TagCreate () {
+  const { setToast } = useToasts()
+  const { data, mutate } = useMutate({ query: getTags, variables: {} })
   const { t } = useTranslation()
   const { state: name, bindings: nameBindings } = useInput('')
   const { state: description, bindings: descriptionBindings } = useInput('')
@@ -20,7 +22,6 @@ export default function TagCreate () {
 
   const activeUser = useCurrentUser()
   const runQuery = useGraphQL()
-  const dispatch = useDispatch()
 
   const variables = {
     user: activeUser._id,
@@ -33,13 +34,20 @@ export default function TagCreate () {
     event.preventDefault()
     ;(async () => {
       try {
-        const { createTag } = await runQuery({
-          query,
+        const result = await runQuery({
+          query: createTag,
           variables
         })
-        dispatch({ type: 'TAG_CREATED', tag: createTag })
+        await mutate({
+          user: {
+            tags: [...data.user.tags, result.createTag]
+          }
+        }, { revalidate: false })
       } catch (err) {
-        alert(err)
+        setToast({
+          type: 'error',
+          text: `Unable to create a new tag: ${err.message}`
+        })
       }
     })()
   }, [variables])
@@ -64,7 +72,7 @@ export default function TagCreate () {
         />
         <ul className={styles.actions}>
           <li>
-            <Button  onClick={handleCreateTag} type="secondary" title={t('tag.createForm.buttonTitle')}>
+            <Button onClick={handleCreateTag} type="secondary" title={t('tag.createForm.buttonTitle')}>
               {t('tag.createForm.buttonText')}
             </Button>
           </li>

@@ -66,7 +66,6 @@ export class BibliographyCompletionProvider {
   }
 
   createBibliographyProposals (range, ctx, monaco) {
-    console.log('createBibliographyProposals', this._bibTeXEntries)
     const { startsWithSquareBracket, endCharacter } = ctx
     return this._bibTeXEntries.map((entry) => ({
       label: entry.key,

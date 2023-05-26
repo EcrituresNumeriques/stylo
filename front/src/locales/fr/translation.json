@@ -12,7 +12,7 @@
   "workspace.menu.title": "Espaces de travail",
   "workspace.title": "Espaces de travail",
   "workspace.createNew.button": "Créer un nouvel espace",
-  "time.fewSecondsAgo": "à l'instant",
+  "time.fewSecondsAgo": "à lʼinstant",
   "search.placeholder": "Recherche",
   "article.createModal.title": "Créer un article",
   "article.createAction.buttonText": "Créer un article",
@@ -51,5 +51,9 @@
   "corpus.deleteModal.title": "Supprimer un corpus",
   "corpus.deleteModal.confirmMessage": "Êtes-vous sûr de vouloir supprimer ce corpus ?",
   "article.corpus.title": "Corpus",
-  "corpus.delete.toastSuccess": "Corpus supprimé avec succès."
+  "corpus.delete.toastSuccess": "Corpus supprimé avec succès.",
+  "article.shareModal.title": "Partager lʼarticle avec un contact",
+  "article.shareModal.description": "Permet de partager un article avec lʼun de vos contacts.",
+  "article.sendCopyModal.title": "Envoyer une copie de lʼarticle",
+  "article.sendCopyModal.description": "Permet dʼenvoyer une copie de lʼarticle à lʼun de vos contacts en cliquant sur lʼicône"
 }

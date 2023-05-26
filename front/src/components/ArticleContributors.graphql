@@ -8,6 +8,7 @@ query addContributor($userId: ID!, $articleId: ID!) {
                     _id
                     displayName
                     username
+                    email
                 }
             }
         }
@@ -24,6 +25,7 @@ query removeContributor($userId: ID!, $articleId: ID!) {
                     _id
                     displayName
                     username
+                    email
                 }
             }
         }

@@ -49,7 +49,7 @@ export default function ContactItem (
          aria-disabled={muted || disabled}
          title={muted ? 'Aucun utilisateur trouvé pour cette adresse email' : displayName}>
       <div className={styles.info}>
-        {!muted && <span>{displayName}</span>}
+        {!muted && <span className={styles.contactName}>{displayName}</span>}
         {(!disabled && user.email) && <a href={'mailto:' + user.email} className={styles.contactEmail}>{user.email}</a>}
       </div>
       {!disabled &&

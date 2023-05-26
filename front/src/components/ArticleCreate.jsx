@@ -13,7 +13,7 @@ import ArticleTag from './Tag'
 import { useCurrentUser } from '../contexts/CurrentUser'
 
 
-export default function ArticleCreate ( { onSubmit }) {
+export default function ArticleCreate ({ onSubmit }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const { state: title, bindings: titleBindings } = useInput('')
@@ -46,10 +46,14 @@ export default function ArticleCreate ( { onSubmit }) {
 
   const handleSubmit = useCallback(async (event) => {
     try {
-      const variables = { user: activeUser._id, title, tags: selectedTagIds }
       event.preventDefault()
-      await runQuery({ query: createArticle, variables })
-      onSubmit()
+      const result = await runQuery({ query: createArticle, variables: { user: activeUser._id, title, tags: selectedTagIds } })
+      const createdArticle = {
+        ...result.createArticle,
+        tags: result.createArticle.addTags
+      }
+      delete createdArticle.addTags
+      onSubmit(createdArticle)
       setToast({
         text: `New article created`,
         type: 'default'
