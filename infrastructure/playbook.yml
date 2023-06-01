@@ -89,13 +89,13 @@
 
     - name: Pull Docker containers
       ansible.builtin.shell:
-        cmd: "docker-compose pull"
+        cmd: "docker compose pull"
         chdir: ~/stylo
 
     - name: Generate Shared GraphQL Token
       register: graphql_token
       ansible.builtin.shell:
-        cmd: "docker-compose run --no-deps --rm graphql-stylo npm run generate-service-token --silent"
+        cmd: "docker compose run --no-deps --rm graphql-stylo npm run generate-service-token --silent"
         chdir: ~/stylo
       run_once: true
       no_log: true
@@ -110,7 +110,7 @@
 
     - name: Start containers
       ansible.builtin.shell:
-        cmd: "docker-compose up --no-build --pull never --detach"
+        cmd: "docker compose up --no-build --pull never --detach"
         chdir: ~/stylo
 
   handlers:
