@@ -39,7 +39,10 @@ export default function WorkspaceItem ({ workspace }) {
     setLeaving(false)
   }, [workspace._id])
 
-  const handleLeavingWorkspace = useCallback(() => dispatch({type: 'LEAVE_WORKSPACE', data: {workspaceId: workspace._id}}), [workspace._id])
+  const handleLeavingWorkspace = useCallback(() => dispatch({
+    type: 'LEAVE_WORKSPACE',
+    data: { workspaceId: workspace._id }
+  }), [workspace._id])
 
   useEffect(() => {
     setMembersCount(workspace.stats?.membersCount || 0)
@@ -61,8 +64,17 @@ export default function WorkspaceItem ({ workspace }) {
     </>}
     {!workspace.personal && <>
       <div>
+        {workspace.description && <Field className={styles.field} label={t('workspace.description.label')}>
+          <span>{workspace.description}</span>
+        </Field>}
         <Field className={styles.field} label={t('workspace.createdAt.label')}>
-          <TimeAgo date={workspace.createdAt}/>
+          <>
+            <TimeAgo date={workspace.createdAt}/>
+            {workspace.creator && <>{' '}
+              <span>{t('workspace.createdBy.label')}</span>{' '}
+              <span className={styles.creator}>{workspace.creator.displayName || workspace.creator.username}</span>
+            </>}
+          </>
         </Field>
         <Field className={styles.field} label={t('workspace.updatedAt.label')}>
           <TimeAgo date={workspace.updatedAt}/>

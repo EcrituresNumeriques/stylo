@@ -14,5 +14,5 @@ if (import.meta.env.DEV) {
       [ReactRedux, 'useSelector'],
       [ReactRedux, 'useDispatch'],
     ]
-  });
+  })
 }

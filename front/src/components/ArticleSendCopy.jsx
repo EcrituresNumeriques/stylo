@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import styles from './Share.module.scss'
+import styles from './articleSendCopy.module.scss'
 import ContactSearch from './ContactSearch.jsx'
 import { useToasts } from '@geist-ui/core'
 import { Send } from 'react-feather'

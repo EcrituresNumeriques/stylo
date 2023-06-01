@@ -105,13 +105,13 @@ module.exports = {
     },
 
     async getUser (_, { filter }, context) {
-      isUser({ }, context)
+      isUser({}, context)
       return User.findOne({ email: filter.email })
     },
   },
 
   User: {
-    async articles(user, { limit }) {
+    async articles (user, { limit }) {
       await user.populate({
         path: 'articles',
         options: { limit },
@@ -120,7 +120,7 @@ module.exports = {
       return user.articles
     },
 
-    async acquintances(user, args, context) {
+    async acquintances (user, args, context) {
       return Promise.all(user.acquintances.map((contactId) => context.loaders.users.load(contactId)))
     },
 
@@ -128,11 +128,11 @@ module.exports = {
      * @param user
      * @returns {Promise<void>}
      */
-    async tags(user){
+    async tags (user) {
       return Tag.find({ owner: user._id }).lean()
     },
 
-    async workspaces(user) {
+    async workspaces (user) {
       if (user?.admin === true) {
         return Workspace.find()
       }
@@ -140,7 +140,7 @@ module.exports = {
     },
 
     async addContact (user, { userId }) {
-      if (user.id === userId) {
+      if (user._id === userId) {
         throw new Error('You cannot add yourself as a contact!')
       }
       const contact = await User.findById(userId)
@@ -150,7 +150,7 @@ module.exports = {
       return User.findOneAndUpdate(
         { _id: user._id },
         { $push: { acquintances: contact._id } },
-        { lean: true }
+        { new: true }
       )
     },
 
@@ -162,7 +162,7 @@ module.exports = {
       return User.findOneAndUpdate(
         { _id: user._id },
         { $pull: { acquintances: contact._id } },
-        { lean: true }
+        { new: true }
       )
     },
 

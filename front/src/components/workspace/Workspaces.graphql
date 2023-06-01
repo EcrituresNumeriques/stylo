@@ -2,10 +2,15 @@ query getWorkspaces {
   workspaces {
     _id
     name
+    description
     color
     bibliographyStyle
     createdAt
     updatedAt
+    creator {
+      username
+      displayName
+    }
     stats {
       membersCount
       articlesCount
@@ -17,10 +22,15 @@ query getWorkspace($workspaceId: ID!) {
   workspace(workspaceId: $workspaceId) {
     _id
     name
+    description
     color
     bibliographyStyle
     createdAt
     updatedAt
+    creator {
+      username
+      displayName
+    }
     stats {
       membersCount
       articlesCount

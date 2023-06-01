@@ -21,7 +21,8 @@ describe('workspace resolver', () => {
     await RootMutation.createWorkspace({}, {
       createWorkspaceInput: {
         name: 'Workspace A',
-        color: '#49ffe0'
+        color: '#49ffe0',
+        description: 'Description'
       }
     }, context)
     workspaces = await Query.workspaces({}, {}, context)

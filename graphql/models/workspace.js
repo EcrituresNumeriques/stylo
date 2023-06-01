@@ -20,7 +20,7 @@ const workspaceSchema = new Schema({
     required: true,
     get: color => toHex(color) || color || '#ccc'
   },
-  role: {
+  description: {
     type: String
   },
   bibliographyStyle: {

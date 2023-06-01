@@ -1,15 +1,9 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
 
-.container {
-  margin-top: 0.5em;
-  background-color: #F0F0F0;
-  padding: 1.25em 1em;
-}
-
 .actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   margin-top: 0.75em;
 }
 

@@ -233,6 +233,7 @@ type WorkspaceStats {
 type Workspace {
   _id: String!
   name: String!
+  description: String
   color: HexColorCode!
   bibliographyStyle: String
   members: [User!]!
@@ -257,6 +258,7 @@ type Workspace {
 input CreateWorkspaceInput {
   name: String!
   color: String!
+  description: String
 }
 
 type CorpusArticle {

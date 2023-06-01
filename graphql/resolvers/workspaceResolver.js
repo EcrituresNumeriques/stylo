@@ -67,6 +67,7 @@ module.exports = {
       const newWorkspace = new Workspace({
         name: createWorkspaceInput.name,
         color: createWorkspaceInput.color,
+        description: createWorkspaceInput.description,
         members: [{ user: user._id }],
         articles: [],
         creator: user._id,
@@ -142,6 +143,10 @@ module.exports = {
         articlesCount: workspace.articles.length,
         membersCount: workspace.members.length,
       }
+    },
+
+    async creator (workspace, _args, context) {
+      return await context.loaders.users.load(workspace.creator)
     },
 
     // mutations

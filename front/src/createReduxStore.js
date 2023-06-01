@@ -447,7 +447,7 @@ function updateSelectedTag (state, { tagId }) {
     activeUser: {
       ...state.activeUser,
       selectedTagIds: selectedTagIds.includes(tagId)
-        ? selectedTagIds.filter(tagId => tagId !== tagId)
+        ? selectedTagIds.filter(selectedTagId => selectedTagId !== tagId)
         : [...selectedTagIds, tagId]
     }
   }
