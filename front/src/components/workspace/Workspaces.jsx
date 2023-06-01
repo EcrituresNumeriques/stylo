@@ -1,3 +1,4 @@
+import { Button, Modal as GeistModal } from '@geist-ui/core'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
@@ -8,7 +9,6 @@ import { CurrentUserContext } from '../../contexts/CurrentUser'
 import styles from './workspaces.module.scss'
 import Field from '../../components/Field.jsx'
 
-import Button from '../../components/Button.jsx'
 import WorkspaceItem from '../../components/workspace/WorkspaceItem.jsx'
 import { useGraphQL } from '../../helpers/graphQL.js'
 import { getWorkspaces, getUserStats } from './Workspaces.graphql'
@@ -26,7 +26,9 @@ export default function Workspaces () {
     members: [],
   })
   const currentWorkspaces = activeUser.workspaces
-  const handleCreateCancel = useCallback(() => setCreating(false), [creating])
+  const handleCloseCreate = useCallback(() => {
+    setCreating(false)
+  }, [])
   const runQuery = useGraphQL()
 
   useEffect(() => {
@@ -38,6 +40,7 @@ export default function Workspaces () {
           _id: activeUser._id,
           personal: true,
           name: t('workspace.myspace'),
+          description: '',
           color: '#D9D9D9',
           createdAt: activeUser.createdAt,
           updatedAt: activeUser.updatedAt,
@@ -73,8 +76,16 @@ export default function Workspaces () {
                placeholder={t('search.placeholder')}
                onChange={(e) => setFilter(e.target.value)}/>
       </div>
-      <Button primary={true} onClick={() => setCreating(true)}>{t('workspace.createNew.button')}</Button>
-      {creating && <CreateWorkspace onCancel={handleCreateCancel}/>}
+      <Button type="secondary" className={styles.button} onClick={() => setCreating(true)}>{t('workspace.createNew.button')}</Button>
+
+      <GeistModal width="45rem" visible={creating} onClose={handleCloseCreate}>
+        <h2>{t('workspace.createModal.title')}</h2>
+        <GeistModal.Content>
+          <CreateWorkspace/>
+        </GeistModal.Content>
+        <GeistModal.Action passive onClick={handleCloseCreate}>{t('modal.close.text')}</GeistModal.Action>
+      </GeistModal>
+
       <ul className={styles.workspacesList}>
         {[personalWorkspace, ...workspaces].map((workspace) => (
           <li key={`workspace-${workspace._id}`}>

@@ -1,5 +1,6 @@
 {
   "workspace.myspace": "My space",
+  "workspace.description.label": "Description",
   "workspace.createdAt.label": "Created",
   "workspace.updatedAt.label": "Updated",
   "workspace.membersCount.label": "Members",
@@ -11,7 +12,7 @@
   "workspace.all": "All workspaces",
   "workspace.menu.title": "Workspaces",
   "workspace.title": "Workspaces",
-  "workspace.createNew.button": "Create a new workspace",
+  "workspace.createNew.button": "Create a workspace",
   "time.fewSecondsAgo": "a few seconds ago",
   "search.placeholder": "Search",
   "article.createModal.title": "Create an article",
@@ -55,5 +56,11 @@
   "article.shareModal.title": "Share the article with a contact",
   "article.shareModal.description": "Allows you to share an article with one of your contacts.",
   "article.sendCopyModal.title": "Send a copy of the article",
-  "article.sendCopyModal.description": "Allows you to send a copy of the article to one of your contacts by clicking on the icon"
+  "article.sendCopyModal.description": "Allows you to send a copy of the article to one of your contacts by clicking on the icon",
+  "workspace.createModal.title": "Create a workspace",
+  "workspace.createForm.nameField": "Name",
+  "workspace.createForm.descriptionField": "Description",
+  "workspace.createForm.colorField": "Color",
+  "workspace.createForm.buttonTitle": "Create a new workspace",
+  "workspace.createForm.buttonText": "Create"
 }

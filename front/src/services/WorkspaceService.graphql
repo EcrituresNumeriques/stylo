@@ -2,6 +2,7 @@ mutation create($data: CreateWorkspaceInput!) {
   createWorkspace(createWorkspaceInput: $data) {
     _id
     name
+    description
     color
     bibliographyStyle
     createdAt

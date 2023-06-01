@@ -2,6 +2,7 @@ query getWorkspaces {
   workspaces {
     _id
     name
+    description
     color
     bibliographyStyle
     createdAt
@@ -17,6 +18,7 @@ query getWorkspace($workspaceId: ID!) {
   workspace(workspaceId: $workspaceId) {
     _id
     name
+    description
     color
     bibliographyStyle
     createdAt

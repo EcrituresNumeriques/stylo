@@ -67,6 +67,7 @@ module.exports = {
       const newWorkspace = new Workspace({
         name: createWorkspaceInput.name,
         color: createWorkspaceInput.color,
+        description: createWorkspaceInput.description,
         members: [{ user: user._id }],
         articles: [],
         creator: user._id,

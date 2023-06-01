@@ -1,48 +1,51 @@
-import React, {useCallback, useState} from 'react'
-import {useDispatch} from 'react-redux'
-import {Check} from 'react-feather'
+import { Button, useInput } from '@geist-ui/core'
+import React, { useCallback, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 
 import Field from '../Field.jsx'
-import Button from '../Button.jsx'
 
 import styles from './createWorkspace.module.scss'
-import {randomColor} from '../../helpers/colors.js'
+import { randomColor } from '../../helpers/colors.js'
 
-export default function CreateWorkspace({onCancel = () => {}}) {
+export default function CreateWorkspace () {
   const dispatch = useDispatch()
-  const [name, setName] = useState('')
-  const [color, setColor] = useState(randomColor())
-  const createWorkspace = useCallback(() => dispatch({type: 'CREATE_WORKSPACE', data: {name, color}}), [name, color])
+  const { t } = useTranslation()
+  const { state: name, bindings: nameBindings } = useInput('')
+  const { state: description, bindings: descriptionBindings } = useInput('')
+  const { state: color, bindings: colorBindings } = useInput(randomColor())
+  const nameInputRef = useRef()
+
+  const handleSubmit = useCallback(async () => {
+    dispatch({type: 'CREATE_WORKSPACE', data: {name, color, description}})
+  }, [name, color, description])
 
   return (
-    <section className={styles.container}>
-      <form onSubmit={(event) => {
-        event.preventDefault()
-        createWorkspace()
-      }}>
-        <div className={styles.fields}>
-          <Field
-            className={styles.color}
-            type="color"
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-          />
-          <Field
-            className={styles.name}
-            type="text"
-            placeholder="Nom de l’espace"
-            autoFocus={true}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
+    <section>
+      <form onSubmit={handleSubmit}>
+        <Field
+          ref={nameInputRef}
+          {...nameBindings}
+          label={t('workspace.createForm.nameField')}
+          type="text"
+          className={styles.nameField}
+        />
+        <Field
+          label={t('workspace.createForm.descriptionField')}
+          type="text"
+          {...descriptionBindings}
+        />
+        <Field
+          label={t('workspace.createForm.colorField')}
+          type="color"
+          {...colorBindings}
+        />
         <ul className={styles.actions}>
           <li>
-            <Button type="button" onClick={onCancel}>Annuler</Button>
-          </li>
-          <li>
-            <Button primary={true} type="submit" title="Créer l'espace">
-              <Check/> Créer l’espace
+            <Button type="secondary"
+                    className={styles.button}
+                    title={t('workspace.createForm.buttonTitle')}
+                    onClick={handleSubmit}>{t('workspace.createForm.buttonText')}
             </Button>
           </li>
         </ul>

@@ -1,5 +1,6 @@
 {
   "workspace.myspace": "Mon espace",
+  "workspace.description.label": "Description",
   "workspace.createdAt.label": "Crée",
   "workspace.updatedAt.label": "Mise à jour",
   "workspace.membersCount.label": "Membres",
@@ -11,7 +12,7 @@
   "workspace.all": "Tous les espaces",
   "workspace.menu.title": "Espaces de travail",
   "workspace.title": "Espaces de travail",
-  "workspace.createNew.button": "Créer un nouvel espace",
+  "workspace.createNew.button": "Créer un espace de travail",
   "time.fewSecondsAgo": "à lʼinstant",
   "search.placeholder": "Recherche",
   "article.createModal.title": "Créer un article",
@@ -55,5 +56,11 @@
   "article.shareModal.title": "Partager lʼarticle avec un contact",
   "article.shareModal.description": "Permet de partager un article avec lʼun de vos contacts.",
   "article.sendCopyModal.title": "Envoyer une copie de lʼarticle",
-  "article.sendCopyModal.description": "Permet dʼenvoyer une copie de lʼarticle à lʼun de vos contacts en cliquant sur lʼicône"
+  "article.sendCopyModal.description": "Permet dʼenvoyer une copie de lʼarticle à lʼun de vos contacts en cliquant sur lʼicône",
+  "workspace.createModal.title": "Créer un espace de travail",
+  "workspace.createForm.nameField": "Nom",
+  "workspace.createForm.descriptionField": "Description",
+  "workspace.createForm.colorField": "Couleur",
+  "workspace.createForm.buttonTitle": "Créer un nouvel espace de travail",
+  "workspace.createForm.buttonText": "Créer"
 }

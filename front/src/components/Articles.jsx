@@ -1,4 +1,4 @@
-import { Loading, Modal as GeistModal, useModal } from '@geist-ui/core'
+import { Loading, Modal as GeistModal, useModal, Button as GeistButton } from '@geist-ui/core'
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
@@ -135,9 +135,9 @@ export default function Articles () {
       </aside>
 
       <div className={styles.articlesTableHeader}>
-        {!activeWorkspaceId && <Button primary={true} onClick={() => setCreateArticleVisible(true)}>
+        {!activeWorkspaceId && <GeistButton type="secondary" className={styles.button} onClick={() => setCreateArticleVisible(true)}>
           {t('article.createAction.buttonText')}
-        </Button>
+        </GeistButton>
         }
         <div
           className={styles.articleCounter}>{keepArticles.length} article{keepArticles.length > 1 ? 's' : ''}</div>
