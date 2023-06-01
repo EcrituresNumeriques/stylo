@@ -110,7 +110,7 @@
 
     - name: Start containers
       ansible.builtin.shell:
-        cmd: "docker compose up --no-build --pull never --detach"
+        cmd: "docker compose up -d"
         chdir: ~/stylo
 
   handlers:
