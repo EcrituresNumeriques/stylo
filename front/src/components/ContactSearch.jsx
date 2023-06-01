@@ -33,14 +33,14 @@ export default function ContactSearch (
   )
   const mutation = useMutation()
   const userContacts = userContactsQueryData?.user?.acquintances || []
-  console.log({userContacts})
   const [filter, setFilter] = useState('')
   const [contacts, setContacts] = useState([])
   const [userFound, setUserFound] = useState(null)
-  const filterByEmail = useCallback((contact) => {
-    return contact._id !== activeUserId && contact.email.toLowerCase().includes(filter.toLowerCase())
+  const filterContact = useCallback((contact) => {
+    const contactName = contact.displayName || contact.username
+    return contact._id !== activeUserId && (contact.email.toLowerCase().includes(filter.toLowerCase()) || contactName.toLowerCase().includes(filter.toLowerCase()))
   }, [filter])
-  const contactsFound = contacts.filter(filterByEmail)
+  const contactsFound = contacts.filter(filterContact)
 
   const handleContactUpdate = useCallback(async (event) => {
     const { _id: userId } = event.user
@@ -62,7 +62,6 @@ export default function ContactSearch (
           acquintances:  response.user.addContact.acquintances
         }
       }
-      console.log({updatedContacts})
       await mutateUserContacts(updatedContacts, { revalidate: false })
     } else if (event.action === 'inactive') {
       const response = await mutation({ query: removeContact, variables: { userId: activeUserId, contactId: userId } })
@@ -71,7 +70,6 @@ export default function ContactSearch (
           acquintances:  response.user.removeContact.acquintances
         }
       }
-      console.log({updatedContacts})
       await mutateUserContacts(updatedContacts, { revalidate: false })
     }
     onUserUpdated(event)

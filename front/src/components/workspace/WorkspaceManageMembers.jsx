@@ -1,42 +1,40 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback } from 'react'
 import { useToasts } from '@geist-ui/core'
+import useGraphQL, { useMutation } from '../../hooks/graphql.js'
 
 import { getWorkspaceMembers, inviteMember, removeMember } from './Workspaces.graphql'
-import { useGraphQL } from '../../helpers/graphQL.js'
 import ContactSearch from '../ContactSearch.jsx'
 
 
 export default function WorkspaceManageMembers ({ workspace }) {
+  const workspaceId = workspace._id
+  const mutation = useMutation()
   const { setToast } = useToasts()
-  const runQuery = useGraphQL()
-  const [members, setMembers] = useState([])
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const getWorkspaceMembersResponse = await runQuery({
-          query: getWorkspaceMembers,
-          variables: { workspaceId: workspace._id }
-        })
-        const members = getWorkspaceMembersResponse.workspace.members
-        setMembers(members.map((member) => ({
-          ...member,
-          selected: true
-        })))
-      } catch (err) {
-        alert(err)
-      }
-    })()
-  }, [workspace._id])
+  const { data, mutate } = useGraphQL({ query: getWorkspaceMembers, variables: { workspaceId } }, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
+  })
+  const members = data?.workspace?.members?.map((member) => ({
+    ...member,
+    selected: true
+  })) || []
 
   const handleUserUpdated = useCallback(async ({ user, action }) => {
     const { _id: userId } = user
     if (action === 'select') {
       try {
-        await runQuery({
+       const response =  await mutation({
           query: inviteMember,
-          variables: { workspaceId: workspace._id, userId, role: '' }
+          variables: { workspaceId, userId, role: '' }
         })
+        await mutate({
+          workspace: {
+            members: response.workspace.inviteMember.members.map((member) => ({
+              ...member,
+              selected: true
+            }))
+          }
+        }, { revalidate: false })
         setToast({
           text: `Utilisateur ${user.displayName || user.username} invité en tant que membre.`,
           type: 'default',
@@ -49,10 +47,18 @@ export default function WorkspaceManageMembers ({ workspace }) {
       }
     } else if (action === 'unselect') {
       try {
-        await runQuery({
+        const response = await mutation({
           query: removeMember,
-          variables: { workspaceId: workspace._id, userId }
+          variables: { workspaceId, userId }
         })
+        await mutate({
+          workspace: {
+            members: response.workspace.member.remove.members.map((member) => ({
+              ...member,
+              selected: true
+            }))
+          }
+        }, { revalidate: false })
         setToast({
           text: `Utilisateur ${user.displayName || user.username} supprimé des membres.`,
           type: 'warning',
@@ -64,7 +70,7 @@ export default function WorkspaceManageMembers ({ workspace }) {
         })
       }
     }
-  }, [workspace._id])
+  }, [workspaceId])
 
   return (
     <section>

@@ -3,19 +3,28 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ChevronRight } from 'react-feather'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
+import { useLocation, useHistory } from 'react-router-dom'
 
 import styles from './WorkspaceMenuItem.module.scss'
 
-export default function WorkspaceMenuItem ({ color, name, id  }) {
+export default function WorkspaceMenuItem ({ color, name, id }) {
   const dispatch = useDispatch()
+  const history = useHistory()
+  const location = useLocation()
   const setActiveWorkspace = (workspaceId) => {
+    const path = location.pathname
+    if (!['/', '/articles', '/books'].includes(path)) {
+      history.push('/articles')
+    }
     dispatch({ type: 'SET_ACTIVE_WORKSPACE', workspaceId })
   }
+
   const activeUser = useSelector(state => state.activeUser)
 
   return (
     <>
-      <li onClick={() => setActiveWorkspace(id)} className={activeUser.activeWorkspaceId === id ? clsx(styles.item, styles.selected) : styles.item}>
+      <li onClick={() => setActiveWorkspace(id)}
+          className={activeUser.activeWorkspaceId === id ? clsx(styles.item, styles.selected) : styles.item}>
         <span className={styles.chip} style={{ backgroundColor: color }}/>
         <span className={styles.name}>{name}</span>
         <ChevronRight className={styles.chevron}/>

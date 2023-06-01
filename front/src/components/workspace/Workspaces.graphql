@@ -62,6 +62,12 @@ mutation inviteMember($workspaceId: ID!, $userId: ID!, $role: String) {
   workspace(workspaceId: $workspaceId) {
     inviteMember(userId: $userId, role: $role) {
       _id
+      members {
+        _id
+        displayName
+        username
+        email
+      }
     }
   }
 }
@@ -71,6 +77,12 @@ mutation removeMember($workspaceId: ID!, $userId: ID!) {
     member(userId: $userId) {
       remove {
         _id
+        members {
+          _id
+          displayName
+          username
+          email
+        }
       }
     }
   }
