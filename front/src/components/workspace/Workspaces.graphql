@@ -7,6 +7,10 @@ query getWorkspaces {
     bibliographyStyle
     createdAt
     updatedAt
+    creator {
+      username
+      displayName
+    }
     stats {
       membersCount
       articlesCount
@@ -23,6 +27,10 @@ query getWorkspace($workspaceId: ID!) {
     bibliographyStyle
     createdAt
     updatedAt
+    creator {
+      username
+      displayName
+    }
     stats {
       membersCount
       articlesCount

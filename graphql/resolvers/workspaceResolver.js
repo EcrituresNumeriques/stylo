@@ -145,6 +145,10 @@ module.exports = {
       }
     },
 
+    async creator (workspace, _args, context) {
+      return await context.loaders.users.load(workspace.creator)
+    },
+
     // mutations
 
     async leave (workspace, args, { user }) {

@@ -1,6 +1,7 @@
 {
   "workspace.myspace": "My space",
   "workspace.description.label": "Description",
+  "workspace.createdBy.label": "by",
   "workspace.createdAt.label": "Created",
   "workspace.updatedAt.label": "Updated",
   "workspace.membersCount.label": "Members",
