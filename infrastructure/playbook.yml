@@ -108,10 +108,11 @@
         src: "./stylo.env"
         dest: "~/stylo/stylo.env"
 
-    - name: Start containers
-      ansible.builtin.shell:
-        cmd: "docker compose up -d"
-        chdir: ~/stylo
+    - name: Restart containers
+      become: true
+      ansible.builtin.systemd:
+        state: restarted
+        daemon_reload: true
 
   handlers:
     - name: reload nginx
@@ -121,7 +122,7 @@
         state: reloaded
     - name: start docker-compose-stylo
       become: true
-      systemd:
+      ansible.builtin.systemd:
         name: docker-compose-stylo
         state: started
         enabled: yes
