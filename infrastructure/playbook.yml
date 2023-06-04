@@ -111,6 +111,7 @@
     - name: Restart containers
       become: true
       ansible.builtin.systemd:
+        name: docker-compose-stylo
         state: restarted
         daemon_reload: true
 
