@@ -56,6 +56,8 @@ Destiné à être affiché sur le côté sur des écrans de moyennes et grandes 
     --side-menu-padding-y: .45rem;
     --side-menu-item-padding-x: .65rem;
     --side-menu-item-padding-y: .65rem;
+    --side-menu-font-size: .875rem;
+    --side-menu-letter-spacing: .0125em;
     --side-menu-link-color: var(--fond-marin-200);
     --side-menu-link-color-highlight: var(--fond-marin-300);
     --side-menu-background-color: var(--couleur-fond-2);
@@ -70,40 +72,42 @@ Destiné à être affiché sur le côté sur des écrans de moyennes et grandes 
     }
   }
 
-  :host .side-menu__header {
+  .side-menu__header {
     padding: 1rem var(--side-menu-padding-x);
     color: inherit;
   }
-  :host .side-menu__header:empty {
+  .side-menu__header:empty {
     display: none;
   }
 
-  :host .side-menu__item-label {
+  .side-menu__item-label {
     font-weight: bold;
     display: flex;
     padding: var(--side-menu-padding-y) var(--side-menu-padding-x);
   }
 
-  :host .side-menu__link {
+  .side-menu__link {
     display: flex;
     padding: var(--side-menu-item-padding-y) var(--side-menu-item-padding-x);
     color: var(--side-menu-link-color);
     text-decoration: none;
     border-radius: 5px;
     margin-bottom: 1px;
+    font-size: var(--side-menu-font-size);
+    letter-spacing: var(--side-menu-letter-spacing);
   }
-  :host .side-menu__link:hover {
+  .side-menu__link:hover {
     color: var(--side-menu-link-color-highlight);
     background-color: var(--side-menu-link-background-highlight);
   }
 
-  :host .side-menu__list {
+  .side-menu__list {
     list-style: none outside none;
     padding: 0;
     margin: var(--side-menu-padding-y) var(--side-menu-padding-y);
   }
 
-  :host .side-menu__item__list {
+  .side-menu__item__list {
     list-style: none outside none;
     padding: 0 0 0 .75rem;
     margin: 0;

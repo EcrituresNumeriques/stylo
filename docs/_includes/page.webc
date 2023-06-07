@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title @raw="title"></title>
+    <title @raw="title" :@title="title" webc:is="document-title"></title>
     <link rel="stylesheet" href="./_general/modern-normalize.css" />
     <link rel="stylesheet" href="./_general/variables.css" />
     <style webc:keep @raw="getCss(page.url)"></style>
@@ -45,7 +45,7 @@
           <div
             class="article-principal__contenu"
             :@content="content"
-            webc:is="prose-etc"
+            webc:is="prose-block"
           >
             <slot></slot>
           </div>
@@ -84,6 +84,11 @@
     color: var(--couleur-police);
     background-color: var(--couleur-fond);
   }
+  .main-layout__center {
+    /* Signaler graphiquement la fin du contenu */
+    padding-bottom: 3rem;
+  }
+
   @media (min-width: 48rem) {
     .main-layout {
       --center-padding: 1.25rem;
@@ -119,25 +124,21 @@
       grid-row-start: 2;
       height: 100%;
       overflow: auto;
-      position: relative; /* Pour un éventuel élément sticky */
     }
   }
 
   @media (min-width: 60rem) {
     .main-layout__center {
       display: grid;
-      grid-template-columns: 1fr var(--content-sidebar-width);
+      grid-template-columns: calc(100% - var(--content-sidebar-width)) 1fr;
       grid-template-rows: auto 1fr;
       grid-template-areas:
       "center-header    center-sidebar"
       "center-content   center-sidebar"
     ;
-      /* pour le sidebar en `position: sticky` */
-      position: relative;
-    }
 
-    .main-layout__center-sidebar {
-      grid-area: center-side;
+      /* Pour un éventuel élément sticky */
+      position: relative;
     }
 
     .grid-area--page-header {
@@ -150,6 +151,15 @@
 
     .grid-area--page-sidebar {
       grid-area: center-sidebar;
+
+      border-left: 1px solid var(--couleur-fond-accent);
+
+      /* Éviter que l’élément prenne la pleine hauteur */
+      align-self: start;
+
+      /* Sticky */
+      /*position: sticky;*/
+      /*top: 1rem;*/
     }
   }
 
@@ -163,6 +173,8 @@
     align-items: stretch;
     justify-content: stretch;
     overflow: auto;
+
+    background-color: var(--couleur-fond-2);
   }
 
   .main-layout__site-title {

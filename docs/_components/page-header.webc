@@ -3,31 +3,51 @@
     class="page-header__title"
     @text="title"
   ></h1>
+
+  <dl class="page-header__meta">
+    <dt class="page-header__meta__term">
+      Dernière modification&nbsp;:
+    </dt>
+    <dd class="page-header__meta__val">
+      2023-05-31
+    </dd>
+
+    <dt class="page-header__meta__term">
+      Version&nbsp;:
+    </dt>
+    <dd class="page-header__meta__val">
+      2.0.1
+    </dd>
+    
+  </dl>
 </header>
 
 <style webc:scoped>
   .page-header {
     --page-header-title-size: 1.5rem;
+    --title-decoration-size: 1rem;
+    --title-decoration-spacing: 1.25rem;
+
+
+    position: relative;
+
+    padding: calc(var(--title-decoration-size) + var(--title-decoration-spacing)) 0;
   }
 
   @media (min-width: 48rem) {
     .page-header {
-      /*--page-header-title-size: 2.25rem;*/
+      --page-header-title-size: 2.5rem;
     }
   }
 
   .page-header__title {
-    --title-decoration-size: 1rem;
-    --title-decoration-spacing: 1rem;
 
     font-size: var(--page-header-title-size);
     margin: 0 0 .5rem;
-    position: relative;
-    padding: calc(var(--title-decoration-size) + var(--title-decoration-spacing)) 0;
 
-    text-align: center;
-    font-weight: normal;
-    font-family: 'Input Mono Narrow', 'Courier New', Courier, monospace;
+    text-align: left;
+    font-weight: 600;
+    font-family: 'Input Serif Condensed', 'Courier New', Courier, monospace;
 
     /*
     Pour contrôler la visibilité de notre décoration
@@ -35,26 +55,46 @@
     */
     overflow: hidden;
   }
-  .page-header__title::before,
-  .page-header__title::after {
+  .page-header::before,
+  .page-header::after {
     /* Front-matter style */
-    content: '==============================================================================';
+    content: '---';
     white-space: nowrap;
     position: absolute;
     font-size: var(--title-decoration-size);
-    opacity: .35;
+    opacity: .25;
     display: block;
     width: 100%;
   }
-  .page-header__title::before {
+  .page-header::before {
     left: 0;
     top: 0;
   }
-  .page-header__title::after {
+  .page-header::after {
     white-space: nowrap;
     position: absolute;
     bottom: 0;
     left: 0;
+  }
 
+  .page-header__meta {
+    margin: 1rem 0 0;
+    font-size: 0.75rem;
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .35rem .75rem;
+  }
+  .page-header__meta__term {
+    margin: 0;
+    grid-column: 1 / span 1;
+
+    opacity: .5;
+  }
+  .page-header__meta__val {
+    margin: 0;
+    grid-column: 2 / span 1;
+
+    opacity: .75;
   }
 </style>

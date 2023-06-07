@@ -1,0 +1,20 @@
+<!--
+  Utilisation:
+
+  <title webc:is="document-title"></title>
+-->
+
+<script webc:type="js" webc:is="template">
+  let metaTitle;
+  let separator = '|';
+
+  if (title) {
+    // If the current page has a title, put it before the site title
+    metaTitle = `${title} ${separator} ${$data.siteTitle}`;
+  } else {
+    // If the current page has no title, just put the site title
+    metaTitle = $data.siteTitle;
+  }
+
+  `<title>${metaTitle}</title>`;
+</script>

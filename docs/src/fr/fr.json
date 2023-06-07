@@ -1,5 +1,5 @@
 {
-  "siteTitle": "Stylo - Documentation",
+  "siteTitle": "Stylo",
   "lang": "fr",
 
   "menu": [
@@ -22,7 +22,7 @@
     },
 
     {
-      "label": "Documentation",
+      "label": "Guide",
       "children": [
         {
           "label": "Premiers pas dans Stylo",
