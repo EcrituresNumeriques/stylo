@@ -1,0 +1,175 @@
+:root {
+
+  /*******************************************
+   * Couleurs
+   *******************************************/
+  /* Axe monochrome principal */
+  --bleu-abyssal: #0B0B2D;
+  --fond-marin: #0B0A3A;
+  --neutre: #6E6DB3;
+  --surface: #D4D4E8;
+  --ecume: #E1E1EF;
+  /* Accents */
+  --accent-sombre: #464582;
+  --accent-clair: #9797C8;
+  --accent: rgba(110, 109, 179, 0.35);
+
+  /* Palette claire */
+  --peche: #F8CECD;
+  --mer-de-montagne: #34C7F8;
+  --mandarine: #FF9865;
+  --pensee: #EA92E0;
+  --vert-pale: #77EC97;
+  --taxi: #FCBB52;
+  --framboise: #E5767C;
+  /* Palette sombre */
+  --bois-rose-1: #D0999C;
+  --bois-rose-2: #BB696F;
+  --bois-rose: var(--bois-rose-2);
+  --azur-aoste: #2B90E8;
+  --orange: #FB691B;
+  --violette: #871A7A;
+  --mousse: #108643;
+  --dijon: #855F19;
+  --cerise: #85191E;
+
+  /* Palette avancée */
+  /*
+  fond marin
+  https://www.tailwindshades.com/#color=241.24999999999997%2C70.58823529411765%2C13.333333333333334&step-up=12&step-down=4&hue-shift=0&name=violet&base-stop=7&v=1&overrides=e30%3D
+  */
+  --fond-marin-50: #DAD9F8;
+  --fond-marin-100: #C0BFF4;
+  --fond-marin-200: #8D8BEB;
+  --fond-marin-300: #5A57E2;
+  --fond-marin-400: #2925D7;
+  --fond-marin-500: #1F1CA2;
+  --fond-marin-600: #15136E;
+  --fond-marin-700: #0B0A3A; /* base */
+  --fond-marin-800: #080729;
+  --fond-marin-900: #040417;
+
+  /*
+  mer de montagne
+  */
+  --mer-de-montagne-50: #BEEDFD;
+  --mer-de-montagne-100: #AAE8FC;
+  --mer-de-montagne-200: #83DDFB;
+  --mer-de-montagne-300: #5BD2F9;
+  --mer-de-montagne-400: #34C7F8; /* base */
+  --mer-de-montagne-500: #08B3EC;
+  --mer-de-montagne-600: #068AB6;
+  --mer-de-montagne-700: #04617F;
+  --mer-de-montagne-800: #033749;
+  --mer-de-montagne-900: #010E13;
+
+  /*
+  azur d’aoste
+  */
+  --azur-aoste-50: #BCDCF8;
+  --azur-aoste-100: #A7D1F5;
+  --azur-aoste-200: #7EBBF1;
+  --azur-aoste-300: #54A6EC;
+  --azur-aoste-400: #2B90E8; /* base */
+  --azur-aoste-500: #1676CA;
+  --azur-aoste-600: #115B9C;
+  --azur-aoste-700: #0C406E;
+  --azur-aoste-800: #072540;
+  --azur-aoste-900: #020B12;
+  /*
+  vert pâle
+  */
+  --vert-pale-50: #DCFAE4;
+  --vert-pale-100: #C8F7D5;
+  --vert-pale-200: #9FF2B6;
+  --vert-pale-300: #77EC97; /* base */
+  --vert-pale-400: #41E46E;
+  --vert-pale-500: #1DCC4D;
+  --vert-pale-600: #159638;
+  --vert-pale-700: #0E6124;
+  --vert-pale-800: #062B10;
+  --vert-pale-900: #000000;
+
+  /*
+  mousse
+  */
+  --mousse-50: #76EFAA;
+  --mousse-100: #61EC9D;
+  --mousse-200: #38E784;
+  --mousse-300: #1AD86C;
+  --mousse-400: #15AF58;
+  --mousse-500: #108643; /* base */
+  --mousse-600: #0B5D2E;
+  --mousse-700: #06341A;
+  --mousse-800: #010B05;
+  --mousse-900: #000000;
+
+  /*
+  peche
+  */
+  --peche-50: #FEFAFA;
+  --peche-100: #FDF1F1;
+  --peche-200: #FBDFDF;
+  --peche-300: #F8CECD; /* base */
+  --peche-400: #F2AAA5;
+  --peche-500: #ED887C;
+  --peche-600: #E76954;
+  --peche-700: #E14D2C;
+  --peche-800: #C4411B;
+  --peche-900: #9C3916;
+
+  /*
+  framboise
+  */
+  --framboise-50: #FFFDFD;
+  --framboise-100: #FCEEEF;
+  --framboise-200: #F6D0D2;
+  --framboise-300: #F0B2B5;
+  --framboise-400: #EB9499;
+  --framboise-500: #E5767C; /* base */
+  --framboise-600: #DE4F57;
+  --framboise-700: #D62932;
+  --framboise-800: #B02129;
+  --framboise-900: #891A20;
+
+  /*
+  cerise
+  */
+  --cerise-50: #EB9498;
+  --cerise-100: #E88287;
+  --cerise-200: #E16066;
+  --cerise-300: #DB3E45;
+  --cerise-400: #CA262D;
+  --cerise-500: #A71F26;
+  --cerise-600: #85191E; /* base */
+  --cerise-700: #5E1215;
+  --cerise-800: #380A0D;
+  --cerise-900: #110304;
+
+  /* Mappage de couleurs */
+  --couleur-fond: var(--fond-marin);
+  --couleur-fond-2: #242371;
+  --couleur-fond-accent: var(--accent-sombre);
+  --couleur-fond-accent-inverse: var(--bleu-abyssal);
+  --couleur-police: var(--surface);
+  --couleur-fond-bouton: var(--peche);
+  --couleur-police-bouton: var(--couleur-police);
+  --couleur-lien: var(--vert-pale-400);
+  --couleur-lien-accent: var(--vert-pale-500);
+  --couleur-code: var(--azur-aoste);
+  --couleur-fond-code: var(--couleur-fond-accent-inverse);
+
+}
+
+/* Variantes écran clair */
+@media (prefers-color-scheme: light) {
+  :root {
+    --couleur-fond: #fff;
+    --couleur-fond-2: #E4E4F3;
+    --couleur-police: var(--fond-marin);
+    --couleur-fond-accent: var(--accent-clair);
+    --couleur-fond-accent-inverse: var(--ecume);
+    --couleur-lien: var(--azur-aoste-500);
+    --couleur-lien-accent: var(--azur-aoste-600);
+  }
+}

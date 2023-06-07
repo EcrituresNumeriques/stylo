@@ -1,0 +1,38 @@
+<template webc:nokeep>
+  <div class="top-bar__brand">
+    <slot name="brand">
+      <a href=".">•</a>
+    </slot>
+  </div>
+
+  <slot></slot>
+</template>
+
+<style webc:scoped>
+  :host {
+    --top-bar-background-color: var(--couleur-fond-2);
+    --top-bar-text-color: var(--couleur-police);
+    --top-bar-link-color: var(--top-bar-text-color);
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--top-bar-background-color);
+    color: var(--couleur-police);
+    font-size: .875rem;
+  }
+
+  /* Liens */
+  :host a {
+    color: var(--top-bar-link-color);
+    text-decoration: none;
+    display: inline-flex;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :host {
+    }
+  }
+</style>

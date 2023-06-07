@@ -1,0 +1,60 @@
+<header class="page-header" webc:keep>
+  <h1
+    class="page-header__title"
+    @text="title"
+  ></h1>
+</header>
+
+<style webc:scoped>
+  .page-header {
+    --page-header-title-size: 1.5rem;
+  }
+
+  @media (min-width: 48rem) {
+    .page-header {
+      /*--page-header-title-size: 2.25rem;*/
+    }
+  }
+
+  .page-header__title {
+    --title-decoration-size: 1rem;
+    --title-decoration-spacing: 1rem;
+
+    font-size: var(--page-header-title-size);
+    margin: 0 0 .5rem;
+    position: relative;
+    padding: calc(var(--title-decoration-size) + var(--title-decoration-spacing)) 0;
+
+    text-align: center;
+    font-weight: normal;
+    font-family: 'Input Mono Narrow', 'Courier New', Courier, monospace;
+
+    /*
+    Pour contrôler la visibilité de notre décoration
+    (utiliser `whitespace: nowrap` sur les pseudos-éléments pour éviter un retour à la ligne)
+    */
+    overflow: hidden;
+  }
+  .page-header__title::before,
+  .page-header__title::after {
+    /* Front-matter style */
+    content: '==============================================================================';
+    white-space: nowrap;
+    position: absolute;
+    font-size: var(--title-decoration-size);
+    opacity: .35;
+    display: block;
+    width: 100%;
+  }
+  .page-header__title::before {
+    left: 0;
+    top: 0;
+  }
+  .page-header__title::after {
+    white-space: nowrap;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+  }
+</style>

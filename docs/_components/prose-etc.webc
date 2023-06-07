@@ -1,0 +1,80 @@
+<template webc:nokeep @html="content">
+
+</template>
+
+<style webc:scoped>
+  /* Ici nous faisons les réglages typographiques pour le contenu HTML
+     (qui peut avoir été écrit en markdown par exemple).
+   */
+  :host {
+    line-height: var(--interlignage, 150%);
+  }
+
+  /* paragraphes */
+
+  /* ancres */
+  :host a {
+    color: var(--couleur-lien, inherit);
+    text-decoration: underline;
+  }
+  :host a:hover {
+    text-decoration: none;
+  }
+
+  /* intertitres */
+  :host h1,
+  :host h2,
+  :host h3,
+  :host h4,
+  :host h5,
+  :host h6 {
+    font-family: var(--police-entetes, inherit);
+    font-weight: var(--graisse-entetes, bold);
+    line-height: var(--interlignage-entetes, inherit);
+  }
+
+  /* code et texte préformaté*/
+  code {
+    --code-background-color: var(--couleur-fond-code);
+    --code-text-color: var(--couleur-code);
+    --code-padding-x: .45rem;
+    --code-padding-y: .15rem;
+
+    padding: var(--code-padding-y) var(--code-padding-x);
+    border-radius: 5px;
+
+    background-color: var(--code-background-color);
+    color: var(--code-text-color);
+
+    /* éviter les lignes interminables */
+    word-break: break-word;
+    white-space: pre-wrap;
+
+    /* les polices à chasse fixe prennent généralement plus de place; réduisons */
+    font-size: 95%;
+  }
+  pre code {
+    --code-background-color: transparent;
+    --code-padding-x: var(--pre-padding-x);
+    --code-padding-y: 0;
+    --code-text-color: inherit;
+
+    white-space: nowrap;
+  }
+  pre {
+    --pre-background-color: var(--couleur-fond-code);
+    --pre-text-color: var(--couleur-police);
+    --pre-padding-x: .9375rem; /* réglé sur élément <code> */
+    --pre-padding-y: .9375rem;
+
+    background-color: var(--pre-background-color);
+    color: var(--pre-text-color);
+    padding: var(--pre-padding-y) 0;
+
+    border-radius: 5px;
+
+    /* défilement si le texte déborde */
+    overflow-x: auto;
+  }
+
+</style>

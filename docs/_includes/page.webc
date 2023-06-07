@@ -7,45 +7,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title @raw="title"></title>
     <link rel="stylesheet" href="./_general/modern-normalize.css" />
+    <link rel="stylesheet" href="./_general/variables.css" />
     <style webc:keep @raw="getCss(page.url)"></style>
   </head>
   <body>
-    <slot name="header">
-      <header></header>
-    </slot>
-
-    <main class="main-layout">
-      <div class="main-layout__center">
-
-        <article class="article-principal">
-          <h1
-            class="main-"
-            @html="title"
-          ></h1>
-
-          <!-- default slot -- content -->
-          <template webc:nokeep @raw="content"></template>
-          <slot></slot>
-        </article>
-      </div>
-
-      <div
-        class="main-layout__side"
-        webc:if="useSideMenu"
-      >
-        <!-- 1 seul élément enfant -->
-          <side-menu
-            :@menu="menu"
-          >
-            <span slot="header">
-              <a
-                :href="'/:lang/'"
-                @text="siteTitle"
-              ></a>
-          </side-menu>
+    <div class="main-layout">
+      <div class="main-layout__top">
+        <slot name="header">
+          <header webc:is="top-bar">
+            <a
+              :href="`/${lang}`"
+              @text="siteTitle"
+              slot="brand"
+              class="main-layout__site-title"
+            ></a>
+          </header>
         </slot>
       </div>
-    </main>
+
+
+      <main class="main-layout__center">
+        <div class="main-layout__center-wrapper | grid-area--page-header">
+          <!-- En-tête -->
+          <page-header
+            :@title="title"
+          ></page-header>
+        </div>
+
+        <div class="main-layout__center-wrapper | grid-area--page-sidebar">
+          <nav class="main-layout__center-sidebar">
+            <!-- TOC? -->
+          </nav>
+        </div>
+
+        <div class="main-layout__center-wrapper | grid-area--page-content">
+        <!-- default slot -- content -->
+          <div
+            class="article-principal__contenu"
+            :@content="content"
+            webc:is="prose-etc"
+          >
+            <slot></slot>
+          </div>
+        </div>
+      </main>
+
+      <div
+        class="main-layout__navigation"
+        webc:if="useSideMenu"
+      >
+        <!-- 1 seul élément enfant (voir CSS) -->
+          <main-navigation
+            :@menu="menu"
+          >
+          </main-navigation>
+        </slot>
+      </div>
+    </div>
 
     <slot name="footer">
       <footer></footer>
@@ -56,48 +74,137 @@
 <style webc:scoped>
   /* Avec `webc:scoped`, les styles sont propres à ce composant */
   .main-layout {
-    --side-menu-width: 16rem;
-    --article-max-width: 40rem;
+    --side-menu-width: 18rem;
+    --content-sidebar-width: 14rem;
+    --article-max-width: 42rem;
+    --center-padding: .75rem;
+    --menu-toggle-display: inline-flex;
+
+    /* couleurs */
+    color: var(--couleur-police);
+    background-color: var(--couleur-fond);
   }
   @media (min-width: 48rem) {
     .main-layout {
-      display: flex;
-      flex-direction: row;
+      --center-padding: 1.25rem;
+      --menu-toggle-display: none;
+
+      display: grid;
+      grid-template-areas:
+        "top  top"
+        "nav  center"
+      ;
+      /* grid-template-columns:
+         - barre latérale
+         - `1fr` pour occuper l’espace restant
+      */
+      grid-template-columns: var(--side-menu-width) 1fr;
+      /* grid-template-row:
+         - `auto` pour éviter que la 1re rangée prenne de l’expansion
+         - `1fr` pour occuper l’espace restant
+      */
+      grid-template-rows: auto 1fr;
       height: 100vh;
     }
 
-    .main-layout__side {
-      flex-basis: var(--side-menu-width);
-      flex-shrink: 0;
-      order: 1;
+    .main-layout__navigation {
+      grid-column-start: nav;
+      grid-row-start: 2;
+      height: 100%;
+      border-inline-end: 1px solid var(--couleur-fond-accent);
     }
 
     .main-layout__center {
-      order: 2;
-      flex-basis: auto;
-      flex-grow: 1;
+      grid-column-start: center;
+      grid-row-start: 2;
       height: 100%;
       overflow: auto;
       position: relative; /* Pour un éventuel élément sticky */
     }
+  }
 
-    .main-layout__side {
-      height: 100%;
+  @media (min-width: 60rem) {
+    .main-layout__center {
+      display: grid;
+      grid-template-columns: 1fr var(--content-sidebar-width);
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+      "center-header    center-sidebar"
+      "center-content   center-sidebar"
+    ;
+      /* pour le sidebar en `position: sticky` */
+      position: relative;
+    }
+
+    .main-layout__center-sidebar {
+      grid-area: center-side;
+    }
+
+    .grid-area--page-header {
+      grid-area: center-header;
+    }
+
+    .grid-area--page-content {
+      grid-area: center-content;
+    }
+
+    .grid-area--page-sidebar {
+      grid-area: center-sidebar;
     }
   }
 
-  .main-layout__center {
-    padding: .75rem;
+  .main-layout__top {
+    grid-area: top;
+    border-bottom: 1px solid var(--couleur-fond-accent);
   }
 
-  .main-layout__side {
+  .main-layout__navigation {
     display: grid;
     align-items: stretch;
     justify-content: stretch;
     overflow: auto;
   }
 
-  .article-principal {
-    max-width: var(--article-max-width);
+  .main-layout__site-title {
+    --title-background-color: var(--azur-aoste);
+    --title-text-color: #fff;
+
+    /* Positionnement du titre dans la barre */
+    /*margin: .35rem .75rem;*/
+    padding: .35rem .75rem;
+    position: relative;
+    background-color: var(--title-background-color);
+    color: var(--title-text-color);
+
+    /* Typographie */
+    font-weight: bold;
+  }
+
+  /* Pour compléter la en forme angulaire */
+  .main-layout__site-title::after {
+    content: '';
+    position: absolute;
+    background-color: var(--title-background-color);
+    height: 100%;
+    width: .85rem;
+    top: 0;
+    left: 100%;
+    /* Triangle clip-path */
+    clip-path: polygon(0% 0%,
+                       50% 50%,
+                       0% 100%);
+  }
+
+  .main-layout__center-wrapper {
+    margin: var(--center-padding);
+  }
+
+  .main-layout__center-sidebar {
+    align-self: flex-start;
+
+    /* sticky sur défilement */
+    position: sticky;
+    top: 0;
+    right: 0;
   }
 </style>
