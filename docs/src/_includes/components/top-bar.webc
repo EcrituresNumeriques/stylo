@@ -1,7 +1,5 @@
 <template webc:nokeep>
-  <div class="top-bar__btn">
-    <slot name="button"></slot>
-  </div>
+  <slot name="button"></slot>
 
   <div class="top-bar__brand">
     <slot name="brand">
@@ -26,7 +24,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     background-color: var(--top-bar-background-color);
     color: var(--couleur-police);
     font-size: .875rem;

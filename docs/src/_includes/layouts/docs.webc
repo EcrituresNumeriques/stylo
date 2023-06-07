@@ -6,8 +6,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title @raw="title" :@title="title" webc:is="document-title"></title>
-    <link rel="stylesheet" href="./_general/modern-normalize.css" />
-    <link rel="stylesheet" href="./_general/variables.css" />
+    <meta name="description" :description="description" />
+    <link rel="stylesheet" href="../styles/modern-normalize.css" />
+    <link rel="stylesheet" href="../styles/variables.css" />
     <style webc:keep @raw="getCss(page.url)"></style>
   </head>
 
@@ -19,7 +20,9 @@
             <button
               slot="button"
               class="docs-layout__menu-btn"
-            >Menu</button>
+            >
+              <menu-icon size="20"></menu-icon>
+            </button>
 
             <a
               :href="`/${lang}`"
@@ -199,6 +202,7 @@
     /* Positionnement du titre dans la barre */
     /*margin: .35rem .75rem;*/
     padding: .35rem .75rem;
+    font-size: .75rem;
     position: relative;
     background-color: var(--title-background-color);
     color: var(--title-text-color);
@@ -208,15 +212,22 @@
     font-weight: bold;
   }
 
-  .docs-layout__site-breadcrumb {
-    padding: .35rem .75rem;
+  .docs-layout__site-section {
+    padding: .35rem .25rem;
+    font-size: .75rem
+  }
+  .docs-layout__site-section:hover {
+    text-decoration: underline;
   }
 
   .docs-layout__menu-btn {
     display: var(--menu-toggle-display);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
 
-    /* Match items */
-    padding: .35rem .75rem;
+    padding: 0 .35rem;
 
     /* Reset btn styles*/
     border: none;
@@ -244,7 +255,8 @@
   }
 
   .docs-layout__center-wrapper {
-    margin: var(--center-padding);
+    /* Marge régulière autour, mais pas en bas */
+    margin: var(--center-padding) var(--center-padding) 0;
   }
 
   .docs-layout__center-sidebar {
