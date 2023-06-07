@@ -55,13 +55,17 @@ Destiné à être affiché sur le côté sur des écrans de moyennes et grandes 
     --side-menu-padding-x: .45rem;
     --side-menu-padding-y: .45rem;
     --side-menu-item-padding-x: .65rem;
+    --side-menu-item-padding-x-extra: 1.5rem;
     --side-menu-item-padding-y: .65rem;
     --side-menu-font-size: .875rem;
     --side-menu-letter-spacing: .0125em;
+    --side-menu-item-border-width: 0;
+    --side-menu-item-border-color: transparent;
     --side-menu-link-color: var(--fond-marin-200);
-    --side-menu-link-color-highlight: var(--fond-marin-300);
-    --side-menu-background-color: var(--couleur-fond-2);
+    --side-menu-link-background-color: transparent;
+    --side-menu-link-color-highlight: var(--fond-marin-200);
     --side-menu-link-background-highlight: var(--couleur-fond);
+    --side-menu-background-color: var(--couleur-fond-2);
 
     background-color: var(--side-menu-background-color);
   }
@@ -90,26 +94,31 @@ Destiné à être affiché sur le côté sur des écrans de moyennes et grandes 
     display: flex;
     padding: var(--side-menu-item-padding-y) var(--side-menu-item-padding-x);
     color: var(--side-menu-link-color);
+    background-color: var(--side-menu-link-background-color);
     text-decoration: none;
-    border-radius: 5px;
-    margin-bottom: 1px;
     font-size: var(--side-menu-font-size);
     letter-spacing: var(--side-menu-letter-spacing);
+
+    border-left: var(--side-menu-item-border-width) solid var(--side-menu-item-border-color);
   }
-  .side-menu__link:hover {
-    color: var(--side-menu-link-color-highlight);
-    background-color: var(--side-menu-link-background-highlight);
+  .side-menu__link:hover,
+  .side-menu__link--current {
+    --side-menu-link-color: var(--side-menu-link-color-highlight);
+    --side-menu-link-background-color: var(--side-menu-link-background-highlight);
   }
 
   .side-menu__list {
     list-style: none outside none;
     padding: 0;
-    margin: var(--side-menu-padding-y) var(--side-menu-padding-y);
+    margin: 0;
   }
 
   .side-menu__item__list {
     list-style: none outside none;
-    padding: 0 0 0 .75rem;
     margin: 0;
+    padding: 0;
+  }
+  .side-menu__item__list .side-menu__link {
+    padding-inline-start: var(--side-menu-item-padding-x-extra);
   }
 </style>

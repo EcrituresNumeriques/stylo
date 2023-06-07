@@ -10,37 +10,51 @@
     <link rel="stylesheet" href="./_general/variables.css" />
     <style webc:keep @raw="getCss(page.url)"></style>
   </head>
+
   <body>
-    <div class="main-layout">
-      <div class="main-layout__top">
+    <div class="docs-layout">
+      <div class="docs-layout__top">
         <slot name="header">
           <header webc:is="top-bar">
+            <button
+              slot="button"
+              class="docs-layout__menu-btn"
+            >Menu</button>
+
             <a
               :href="`/${lang}`"
               @text="siteTitle"
               slot="brand"
-              class="main-layout__site-title"
+              class="docs-layout__site-title"
             ></a>
+
+            <!-- Todo breadcrumbs -->
+            <a
+              :href="`/${lang}`"
+              @text="'Documentation'"
+              slot="breadcrumb"
+              class="docs-layout__site-section"
+            ><!-- Todo i18n --></a>
           </header>
         </slot>
       </div>
 
 
-      <main class="main-layout__center">
-        <div class="main-layout__center-wrapper | grid-area--page-header">
+      <main class="docs-layout__center">
+        <div class="docs-layout__center-wrapper | grid-area--page-header">
           <!-- En-tête -->
           <page-header
             :@title="title"
           ></page-header>
         </div>
 
-        <div class="main-layout__center-wrapper | grid-area--page-sidebar">
-          <nav class="main-layout__center-sidebar">
+        <div class="docs-layout__center-wrapper | grid-area--page-sidebar">
+          <nav class="docs-layout__center-sidebar">
             <!-- TOC? -->
           </nav>
         </div>
 
-        <div class="main-layout__center-wrapper | grid-area--page-content">
+        <div class="docs-layout__center-wrapper | grid-area--page-content">
         <!-- default slot -- content -->
           <div
             class="article-principal__contenu"
@@ -53,7 +67,7 @@
       </main>
 
       <div
-        class="main-layout__navigation"
+        class="docs-layout__navigation"
         webc:if="useSideMenu"
       >
         <!-- 1 seul élément enfant (voir CSS) -->
@@ -73,7 +87,7 @@
 
 <style webc:scoped>
   /* Avec `webc:scoped`, les styles sont propres à ce composant */
-  .main-layout {
+  .docs-layout {
     --side-menu-width: 18rem;
     --content-sidebar-width: 14rem;
     --article-max-width: 42rem;
@@ -84,13 +98,13 @@
     color: var(--couleur-police);
     background-color: var(--couleur-fond);
   }
-  .main-layout__center {
+  .docs-layout__center {
     /* Signaler graphiquement la fin du contenu */
     padding-bottom: 3rem;
   }
 
   @media (min-width: 48rem) {
-    .main-layout {
+    .docs-layout {
       --center-padding: 1.25rem;
       --menu-toggle-display: none;
 
@@ -112,14 +126,14 @@
       height: 100vh;
     }
 
-    .main-layout__navigation {
+    .docs-layout__navigation {
       grid-column-start: nav;
       grid-row-start: 2;
       height: 100%;
       border-inline-end: 1px solid var(--couleur-fond-accent);
     }
 
-    .main-layout__center {
+    .docs-layout__center {
       grid-column-start: center;
       grid-row-start: 2;
       height: 100%;
@@ -128,7 +142,7 @@
   }
 
   @media (min-width: 60rem) {
-    .main-layout__center {
+    .docs-layout__center {
       display: grid;
       grid-template-columns: calc(100% - var(--content-sidebar-width)) 1fr;
       grid-template-rows: auto 1fr;
@@ -163,12 +177,12 @@
     }
   }
 
-  .main-layout__top {
+  .docs-layout__top {
     grid-area: top;
     border-bottom: 1px solid var(--couleur-fond-accent);
   }
 
-  .main-layout__navigation {
+  .docs-layout__navigation {
     display: grid;
     align-items: stretch;
     justify-content: stretch;
@@ -177,9 +191,10 @@
     background-color: var(--couleur-fond-2);
   }
 
-  .main-layout__site-title {
+  .docs-layout__site-title {
     --title-background-color: var(--azur-aoste);
     --title-text-color: #fff;
+    --title-triangle-size: .85rem;
 
     /* Positionnement du titre dans la barre */
     /*margin: .35rem .75rem;*/
@@ -187,18 +202,39 @@
     position: relative;
     background-color: var(--title-background-color);
     color: var(--title-text-color);
+    margin-inline-end: var(--title-triangle-size);
 
     /* Typographie */
     font-weight: bold;
   }
 
+  .docs-layout__site-breadcrumb {
+    padding: .35rem .75rem;
+  }
+
+  .docs-layout__menu-btn {
+    display: var(--menu-toggle-display);
+
+    /* Match items */
+    padding: .35rem .75rem;
+
+    /* Reset btn styles*/
+    border: none;
+    appearance: none;
+    cursor: pointer;
+
+    /* Match main title element? */
+    background-color: var(--azur-aoste);
+    color: #fff;
+  }
+
   /* Pour compléter la en forme angulaire */
-  .main-layout__site-title::after {
+  .docs-layout__site-title::after {
     content: '';
     position: absolute;
     background-color: var(--title-background-color);
     height: 100%;
-    width: .85rem;
+    width: var(--title-triangle-size);
     top: 0;
     left: 100%;
     /* Triangle clip-path */
@@ -207,11 +243,11 @@
                        0% 100%);
   }
 
-  .main-layout__center-wrapper {
+  .docs-layout__center-wrapper {
     margin: var(--center-padding);
   }
 
-  .main-layout__center-sidebar {
+  .docs-layout__center-sidebar {
     align-self: flex-start;
 
     /* sticky sur défilement */

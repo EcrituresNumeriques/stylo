@@ -8,16 +8,18 @@
     <dt class="page-header__meta__term">
       Dernière modification&nbsp;:
     </dt>
-    <dd class="page-header__meta__val">
-      2023-05-31
-    </dd>
+    <dd
+      class="page-header__meta__val"
+      @text="$data.page.date.toLocaleString($data.lang, { year: 'numeric', month: 'numeric', day: 'numeric' })"
+    ></dd>
 
     <dt class="page-header__meta__term">
       Version&nbsp;:
     </dt>
-    <dd class="page-header__meta__val">
-      2.0.1
-    </dd>
+    <dd
+      class="page-header__meta__val"
+      @text="$data.version"
+    ></dd>
 
   </dl>
 </header>

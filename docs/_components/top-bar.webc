@@ -1,10 +1,18 @@
 <template webc:nokeep>
+  <div class="top-bar__btn">
+    <slot name="button"></slot>
+  </div>
+
   <div class="top-bar__brand">
     <slot name="brand">
       <a href=".">•</a>
     </slot>
+
   </div>
 
+  <div class="top-bar__breadcrumb">
+    <slot name="breadcrumb"></slot>
+  </div>
   <slot></slot>
 </template>
 
@@ -34,5 +42,9 @@
   @media (prefers-color-scheme: light) {
     :host {
     }
+  }
+
+  .top-bar__breadcrumb {
+    margin-inline-end: auto;
   }
 </style>
