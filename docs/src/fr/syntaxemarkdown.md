@@ -1,6 +1,5 @@
 ---
 title: Syntaxe markdown
-layout: page.webc
 ---
 
 ## Titres
