@@ -1,0 +1,77 @@
+<aside
+  :class="`alert-block alert-block--${type}`"
+>
+  <header
+    class="alert-block__heading"
+    webc:if="heading"
+    @html="heading"
+  ></header>
+  <slot></slot>
+</aside>
+
+
+<style webc:scoped>
+  .alert-block {
+    --alert-spacing: .75rem;
+    --alert-background-color: var(--peche);
+    --alert-text-color: var(--fond-marin);
+    --alert-heading-border-color: var(--peche-400);
+
+    display: block;
+
+    padding-bottom: var(--alert-spacing);
+    margin: 2rem 0;
+
+    background-color: var(--alert-background-color);
+    color: var(--alert-text-color);
+    border-radius: 5px;
+    overflow: hidden; /* clip to border-radius */
+  }
+
+  .alert-block__heading {
+    padding: var(--alert-spacing);
+    margin: 0 0 var(--alert-spacing);
+    border-bottom: 2px dashed var(--alert-heading-border-color);
+
+    /* Typographie */
+    font-weight: bold;
+    font-size: 1.125rem;
+
+  }
+
+  .alert-block > *:not(.alert-block__heading) {
+    margin: var(--alert-spacing) var(--alert-spacing) 0;
+  }
+
+  /* Ancres */
+  .alert-block a {
+    /* Harmoniser couleurs */
+    color: inherit;
+    text-decoration: underline;
+  }
+  .alert-block a:hover {
+    text-decoration: none;
+  }
+
+  /* Variantes */
+  .alert-block--neutral {
+    --alert-background-color: var(--neutre);
+    --alert-text-color: var(--couleur-fond);
+    --alert-heading-border-color: var(--couleur-fond-accent-inverse);
+  }
+  .alert-block--success {
+    --alert-background-color: var(--vert-pale);
+    --alert-text-color: var(--fond-marin);
+    --alert-heading-border-color: var(--vert-pale-500);
+  }
+  .alert-block--warning {
+    --alert-background-color: var(--taxi);
+    --alert-text-color: #000; /* maximum contrast */
+    --alert-heading-border-color: var(--dijon);
+  }
+  .alert-block--error {
+    --alert-background-color: var(--cerise-500);
+    --alert-text-color: var(--ecume);
+    --alert-heading-border-color: var(--cerise-600);
+  }
+</style>

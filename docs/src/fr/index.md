@@ -3,11 +3,15 @@ title: "Stylo - un éditeur de texte sémantique"
 useSideMenu: true
 ---
 
-**📢 À l'attention des utilisatrices et des utilisateurs de Stylo : une mise à jour de l'éditeur de texte sémantique Stylo vient d'être lancée. Pour découvrir les nouvelles fonctionnalités en détail voici la page d'information : [Nouvelles fonctionnalités !](/fr/messagev2/).**
+<alert-block heading="📢 Nouvelle mise à jour">
+
+À l'attention des utilisatrices et des utilisateurs de Stylo : une mise à jour de l'éditeur de texte sémantique Stylo vient d'être lancée. Pour découvrir les nouvelles fonctionnalités en détail voici la page d'information : [Nouvelles fonctionnalités !](/fr/messagev2/).
+
+</alert-block> 
 
 ---
 
-**📢 Si vous rencontrez des difficultés avec Stylo, n'hésitez pas [à nous écrire](mailto:crc.ecrituresnumeriques@gmail.com).**
+**Si vous rencontrez des difficultés avec Stylo, n'hésitez pas [à nous écrire](mailto:crc.ecrituresnumeriques@gmail.com).**
 
 Une permanence est ouverte tous les jeudis de 11h à 12h (heure de Montréal) pour poser des questions, perfectionner l'utilisation de Stylo, partager vos expériences utilisateur ou autres : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Rejoignez la permanence en visioconférence</a>
 

@@ -5,13 +5,13 @@
     <slot name="brand">
       <a href=".">•</a>
     </slot>
-
   </div>
 
-  <div class="top-bar__breadcrumb">
-    <slot name="breadcrumb"></slot>
+  <div class="top-bar__fluid-container">
+    <div class="top-bar__fluid-content">
+      <slot></slot>
+    </div>
   </div>
-  <slot></slot>
 </template>
 
 <style webc:scoped>
@@ -22,8 +22,8 @@
 
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
     align-items: stretch;
     background-color: var(--top-bar-background-color);
     color: var(--couleur-police);
@@ -42,7 +42,23 @@
     }
   }
 
-  .top-bar__breadcrumb {
-    margin-inline-end: auto;
+  /*
+  Horizontal overflow scroll with flex
+  See https://stackoverflow.com/questions/21515042/scrolling-a-flexbox-with-overflowing-content
+  */
+  .top-bar__fluid-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    /* Horizontal scrollbar */
+    overflow-x: auto;
+  }
+  .top-bar__fluid-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    /* The key here is `min-with: max-content` (may require vendor prefixes) */
+    min-width: max-content;
   }
 </style>

@@ -1,8 +1,8 @@
-<!--
+<!----
   Utilisation:
 
   <title webc:is="document-title"></title>
--->
+---->
 
 <script webc:type="js" webc:is="template">
   let metaTitle;

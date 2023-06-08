@@ -1,5 +1,4 @@
 <template webc:nokeep @html="content">
-
 </template>
 
 <style webc:scoped>
@@ -7,30 +6,65 @@
      (qui peut avoir été écrit en markdown par exemple).
    */
   :host {
-    line-height: var(--interlignage, 150%);
+    line-height: var(--interlignage-corps, 150%);
   }
 
-  /* paragraphes */
+  /* Paragraphes */
+  p {
+    margin-bottom: 1.5rem;
+    line-height: var(--interlignage-corps, 150%);
+    font-family: var(--police-corps, inherit);
+  }
 
-  /* ancres */
-  :host a {
+  /* Blocs de citation */
+  blockquote {
+    --blockquote-line-height: var(--interlignage-corps, 150%);
+    --blockquote-spacing-before: 1.5rem;
+    --blockquote-vertical-margin: 2rem;
+    --blockquote-text-color: var(--neutre);
+    --blockquote-border-color: var(--neutre);
+    --blockquote-font-size: 87.5%;
+
+    line-height: var(--blockquote-line-height);
+    padding-inline-start: var(--blockquote-spacing-before);
+    margin: var(--blockquote-vertical-margin) 0;
+    border-left: 1px solid var(--blockquote-border-color);
+    color: var(--blockquote-text-color);
+    font-size: var(--blockquote-font-size);
+  }
+
+  /* Ancres */
+  a {
     color: var(--couleur-lien, inherit);
     text-decoration: underline;
   }
-  :host a:hover {
+  a:hover {
     text-decoration: none;
   }
 
-  /* intertitres */
-  :host h1,
-  :host h2,
-  :host h3,
-  :host h4,
-  :host h5,
-  :host h6 {
+  /* Intertitres */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    /* Typographie */
     font-family: var(--police-entetes, inherit);
     font-weight: var(--graisse-entetes, bold);
     line-height: var(--interlignage-entetes, inherit);
+  }
+
+  /* Ne pas ajouter d’espace avant lorsque l’en-tête est le premier élément */
+  h1:not(:first-child),
+  h2:not(:first-child),
+  h3:not(:first-child),
+  h4:not(:first-child),
+  h5:not(:first-child),
+  h6:not(:first-child) {
+    /* Espacement proportionnel */
+    margin-top: calc(.25rem + 1.25em);
+
   }
 
   /* code et texte préformaté*/
@@ -59,7 +93,9 @@
     --code-padding-y: 0;
     --code-text-color: inherit;
 
-    white-space: nowrap;
+    white-space: pre;
+    word-break: keep-all;
+    display: block;
   }
   pre {
     --pre-background-color: var(--couleur-fond-code);
@@ -75,6 +111,46 @@
 
     /* défilement si le texte déborde */
     overflow-x: auto;
+  }
+
+  /* Tableaux */
+  table {
+    --table-padding: .25rem;
+    --table-vertical-margin: 2rem;
+    --table-border-color: var(--couleur-fond-accent);
+    --table-border-width: 1px;
+    --table-font-size: calc(75% + .1vw);
+    --table-line-height: 130%;
+
+    /* Disposition */
+    margin: var(--table-vertical-margin) auto;
+    width: 100%;
+
+    /* Table resets */
+    border-collapse: separate;
+    border-spacing: 0;
+
+    /* Bordure à gauche, droite, haut, mais pas en bas */
+    border-left: var(--table-border-width) solid var(--table-border-color);
+    border-right: var(--table-border-width) solid var(--table-border-color);
+    border-top: var(--table-border-width) solid var(--table-border-color);
+
+    /* Typographie */
+    font-size: var(--table-font-size);
+    line-height: var(--table-line-height);
+  }
+  td, th {
+    padding: var(--table-padding);
+
+    /* Bordure à gauche (sauf premier élément d’une ligne) et en bas */
+    border-left: var(--table-border-width) solid var(--table-border-color);
+    border-bottom: var(--table-border-width) solid var(--table-border-color);
+    border-right: 0;
+    border-top: 0;
+  }
+  td:first-child,
+  th:first-child {
+    border-left: 0;
   }
 
 </style>

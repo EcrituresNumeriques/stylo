@@ -1,27 +1,56 @@
 <!doctype html>
-<html webc:keep
-      :lang="lang"
->
+<html :lang="lang">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Métadonnées -->
     <title @raw="title" :@title="title" webc:is="document-title"></title>
     <meta name="description" :description="description" />
+    <meta name="generator" :content="eleventy.generator " />
+
+    <!-- Styles -->
     <link rel="stylesheet" href="../styles/modern-normalize.css" />
     <link rel="stylesheet" href="../styles/variables.css" />
-    <style webc:keep @raw="getCss(page.url)"></style>
+    <!---- CSS bundle ---->
+    <style @raw="getBundle('css')" webc:keep></style>
+    <script @raw="getBundle('js')" webc:keep defer></script>
+
+
+    <!-- Scripts -->
+    <!---- JS bundle ---->
+    <script :src="getBundleFileUrl('js')"></script>
+
+
   </head>
 
   <body>
-    <div class="docs-layout">
-      <div class="docs-layout__top">
+    <!---- Docs Layout ---->
+    <div
+      class="docs-layout"
+      aria-owns="navigation"
+    >
+      <!---- 1. Top ---->
+      <header class="docs-layout__top">
         <slot name="header">
+          <!---- Exploitation du composant <top-bar> ---->
           <header webc:is="top-bar">
+
             <button
               slot="button"
               class="docs-layout__menu-btn"
+              aria-expanded="false"
+              aria-controls="navigation"
             >
-              <menu-icon size="20"></menu-icon>
+              <span class="docs-layout__menu-btn-inner is-closed">
+                <menu-icon size="20"></menu-icon>
+                <span aria-hidden="true"><!-- Todo: i18n -->Menu</span>
+              </span>
+
+              <span class="docs-layout__menu-btn-inner is-open">
+                <close-icon size="20"></close-icon>
+                <span aria-hidden="true"><!-- Todo: i18n -->Menu</span>
+              </span>
             </button>
 
             <a
@@ -35,14 +64,37 @@
             <a
               :href="`/${lang}`"
               @text="'Documentation'"
-              slot="breadcrumb"
               class="docs-layout__site-section"
             ><!-- Todo i18n --></a>
+
           </header>
         </slot>
-      </div>
+      </header>
 
+      <!---- Navigation menu interaction ---->
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const menuToggleBtn = document.querySelector('[aria-controls="navigation"]');
+          const parentContainer = document.querySelector('[aria-owns="navigation"]');
 
+          menuToggleBtn.addEventListener('click', () => {
+            parentContainer.classList.toggle('navigation-open');
+            let isOpen = parentContainer.classList.contains('navigation-open');
+
+            if (isOpen) {
+              menuToggleBtn.setAttribute('aria-expanded', String(isOpen));
+              parentContainer.setAttribute('aria-expanded', String(isOpen));
+            } else {
+              menuToggleBtn.setAttribute('aria-expanded', String(isOpen));
+              parentContainer.setAttribute('aria-expanded', String(isOpen));
+            }
+
+            console.log('isOpen?', isOpen)
+          });
+        })
+      </script>
+
+      <!---- 2. Center ---->
       <main class="docs-layout__center">
         <div class="docs-layout__center-wrapper | grid-area--page-header">
           <!-- En-tête -->
@@ -58,7 +110,7 @@
         </div>
 
         <div class="docs-layout__center-wrapper | grid-area--page-content">
-        <!-- default slot -- content -->
+          <!---- Default slot: content ---->
           <div
             class="article-principal__contenu"
             :@content="content"
@@ -67,24 +119,27 @@
             <slot></slot>
           </div>
         </div>
+
+        <div class="docs-layout__center-wrapper | grid-area--page-footer">
+          <page-footer></page-footer>
+        </div>
       </main>
 
-      <div
+
+      <!---- 3. Nav (side or stacked) ---->
+      <aside
         class="docs-layout__navigation"
+        id="navigation"
         webc:if="useSideMenu"
       >
-        <!-- 1 seul élément enfant (voir CSS) -->
+        <!---- 1 seul élément enfant (voir CSS) ---->
           <main-navigation
             :@menu="menu"
-          >
-          </main-navigation>
+          ></main-navigation>
         </slot>
-      </div>
+      </aside>
     </div>
 
-    <slot name="footer">
-      <footer></footer>
-    </slot>
   </body>
 </html>
 
@@ -100,10 +155,12 @@
     /* couleurs */
     color: var(--couleur-police);
     background-color: var(--couleur-fond);
+    display: flex;
+    flex-direction: column;
   }
   .docs-layout__center {
-    /* Signaler graphiquement la fin du contenu */
-    padding-bottom: 3rem;
+    /* Après menu sur petits écrans */
+    order: 2;
   }
 
   @media (min-width: 48rem) {
@@ -135,6 +192,9 @@
       height: 100%;
       border-inline-end: 1px solid var(--couleur-fond-accent);
     }
+    #navigation {
+      display: grid;
+    }
 
     .docs-layout__center {
       grid-column-start: center;
@@ -152,6 +212,7 @@
       grid-template-areas:
       "center-header    center-sidebar"
       "center-content   center-sidebar"
+      "center-footer    center-footer"
     ;
 
       /* Pour un éventuel élément sticky */
@@ -178,9 +239,16 @@
       /*position: sticky;*/
       /*top: 1rem;*/
     }
+
+    .grid-area--page-footer {
+      grid-area: center-footer;
+    }
   }
 
   .docs-layout__top {
+    /* Flex -- always at top */
+    order: 0;
+
     grid-area: top;
     border-bottom: 1px solid var(--couleur-fond-accent);
   }
@@ -193,6 +261,15 @@
 
     background-color: var(--couleur-fond-2);
   }
+  @media (max-width: 48rem) {
+    #navigation {
+      display: none;
+      order: 1;
+    }
+    .navigation-open #navigation {
+      display: grid;
+    }
+  }
 
   .docs-layout__site-title {
     --title-background-color: var(--azur-aoste);
@@ -201,7 +278,7 @@
 
     /* Positionnement du titre dans la barre */
     /*margin: .35rem .75rem;*/
-    padding: .35rem .75rem;
+    padding: .35rem .5rem;
     font-size: .75rem;
     position: relative;
     background-color: var(--title-background-color);
@@ -220,6 +297,7 @@
     text-decoration: underline;
   }
 
+  /* Navigation toggle btn */
   .docs-layout__menu-btn {
     display: var(--menu-toggle-display);
     flex-direction: column;
@@ -238,6 +316,17 @@
     background-color: var(--azur-aoste);
     color: #fff;
   }
+  .docs-layout__menu-btn-inner {
+    display: none;
+  }
+  .docs-layout__menu-btn[aria-expanded="true"] .is-open {
+    display: contents;
+  }
+  .docs-layout__menu-btn[aria-expanded="false"] .is-closed {
+    display: contents;
+  }
+  /* Appliquer le comportement de l’attribut `hidden` */
+  [aria-hidden] { display: none; }
 
   /* Pour compléter la en forme angulaire */
   .docs-layout__site-title::after {
@@ -254,6 +343,14 @@
                        0% 100%);
   }
 
+  .article-principal__contenu {
+    /* S’assurer du rendu en `block` lors de la transclusion WebC */
+    display: block;
+
+    /* Signaler graphiquement la fin du contenu */
+    padding-bottom: 3rem;
+  }
+
   .docs-layout__center-wrapper {
     /* Marge régulière autour, mais pas en bas */
     margin: var(--center-padding) var(--center-padding) 0;
@@ -262,7 +359,7 @@
   .docs-layout__center-sidebar {
     align-self: flex-start;
 
-    /* sticky sur défilement */
+    /* `sticky` sur défilement */
     position: sticky;
     top: 0;
     right: 0;
