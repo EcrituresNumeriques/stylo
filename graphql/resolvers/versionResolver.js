@@ -19,9 +19,8 @@ module.exports = {
       }
 
       // fetch article
-      const article = await Article.findAndPopulateOneByOwners(
-        args.version.article,
-        context.user
+      const article = await Article.findAndPopulateOne(
+        args.version.article
       )
 
       if (!article) {

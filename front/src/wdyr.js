@@ -6,9 +6,13 @@ if (import.meta.env.DEV) {
 
   whyDidYouRender(React, {
     trackAllPureComponents: true,
+    exclude: [
+      // ref: https://github.com/geist-org/geist-ui/issues/843
+      /^Geist.*/ // external lib
+    ],
     trackExtraHooks: [
       [ReactRedux, 'useSelector'],
       [ReactRedux, 'useDispatch'],
     ]
-  });
+  })
 }

@@ -1,8 +1,9 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import { toEntries } from './helpers/bibtex'
-import ArticleService from "./services/ArticleService"
+import ArticleService from './services/ArticleService'
+import WorkspaceService from './services/WorkspaceService.js'
 
-const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName='sessionToken' } = import.meta.env
+const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName = 'sessionToken' } = import.meta.env
 
 function createReducer (initialState, handlers) {
   return function reducer (state = initialState, action) {
@@ -41,16 +42,26 @@ const initialState = {
     metadataFormMode: 'basic',
     expandVersions: false,
   },
+  articleFilters: {
+    tagIds: [],
+    text: '',
+  },
   articleStats: {
     wordCount: 0,
     charCountNoSpace: 0,
     charCountPlusSpace: 0,
     citationNb: 0,
   },
-  // Logged in user — we use their token
+  // Active user (authenticated)
   activeUser: {
-    zoteroToken: null
+    zoteroToken: null,
+    selectedTagIds: [],
+    workspaces: [],
+    activeWorkspaceId: null
   },
+  latestTagCreated: null,
+  latestCorpusCreated: null,
+  latestCorpusDeleted: null,
   userPreferences: localStorage.getItem('userPreferences') ? JSON.parse(localStorage.getItem('userPreferences')) : {
     // The user we impersonate
     currentUser: null,
@@ -88,11 +99,37 @@ const reducer = createReducer(initialState, {
   ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
 
   UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
+
+  SET_WORKSPACES: setWorkspaces,
+  SET_ACTIVE_WORKSPACE: setActiveWorkspace,
+
+  UPDATE_SELECTED_TAG: updateSelectedTag,
+  TAG_CREATED: tagCreated,
+
+  SET_LATEST_CORPUS_DELETED: setLatestCorpusDeleted,
+  SET_LATEST_CORPUS_CREATED: setLatestCorpusCreated
 })
 
 const createNewArticleVersion = store => {
   return next => {
     return async (action) => {
+      if (action.type === 'CREATE_WORKSPACE') {
+        const { activeUser, sessionToken, applicationConfig } = store.getState()
+        const workspaces = activeUser.workspaces
+        const workspaceService = new WorkspaceService(sessionToken, applicationConfig)
+        const response = await workspaceService.create(action.data)
+        store.dispatch({ type: 'SET_WORKSPACES', workspaces: [response.createWorkspace, ...workspaces] })
+        return next(action)
+      }
+      if (action.type === 'LEAVE_WORKSPACE') {
+        const { activeUser, sessionToken, applicationConfig } = store.getState()
+        const workspaces = activeUser.workspaces
+        const workspaceService = new WorkspaceService(sessionToken, applicationConfig)
+        const workspaceId = action.data.workspaceId
+        await workspaceService.leave(workspaceId)
+        store.dispatch({ type: 'SET_WORKSPACES', workspaces: workspaces.filter((w) => w._id !== workspaceId) })
+        return next(action)
+      }
       if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
         const { articleVersions, activeUser, sessionToken, applicationConfig, userPreferences } = store.getState()
         const userId = userPreferences.currentUser ?? activeUser._id
@@ -168,8 +205,7 @@ function persistStateIntoLocalStorage ({ getState }) {
         localStorage.setItem('articlePreferences', JSON.stringify(articlePreferences))
 
         return
-      }
-      else if (action.type === 'USER_PREFERENCES_TOGGLE') {
+      } else if (action.type === 'USER_PREFERENCES_TOGGLE') {
         // we run the reducer first
         next(action)
         // we fetch the updated state
@@ -178,8 +214,7 @@ function persistStateIntoLocalStorage ({ getState }) {
         localStorage.setItem('userPreferences', JSON.stringify(userPreferences))
 
         return
-      }
-      else if (action.type === 'LOGOUT') {
+      } else if (action.type === 'LOGOUT') {
         const { applicationConfig } = getState()
         localStorage.removeItem('articlePreferences')
         localStorage.removeItem('userPreferences')
@@ -212,17 +247,19 @@ function setApplicationConfig (state, action) {
 }
 
 function setProfile (state, action) {
-  if (!action.user) {
-    return { ...state, hasBooted: true }
+  const { user } = action
+  if (!user) {
+    return { ...state, activeUser: undefined, hasBooted: true }
   }
-
-  const { user: activeUser } = action
-
-  return Object.assign({}, state, {
+  return {
+    ...state,
     hasBooted: true,
-    activeUser,
     logedIn: true,
-  })
+    activeUser: {
+      ...state.activeUser,
+      ...user
+    }
+  }
 }
 
 function clearZoteroToken (state) {
@@ -242,7 +279,7 @@ function setSessionToken (state, { token: sessionToken }) {
   }
 }
 
-function loginUser (state, { user, token:sessionToken }) {
+function loginUser (state, { user, token: sessionToken }) {
   if (sessionToken) {
     return {
       ...state,
@@ -335,7 +372,7 @@ function setWorkingArticleMetadata (state, { metadata }) {
   return { ...state, workingArticle: { ...workingArticle, metadata } }
 }
 
-function setWorkingArticleBibliography(state, { bibliography }) {
+function setWorkingArticleBibliography (state, { bibliography }) {
   const bibTeXEntries = toEntries(bibliography)
   const { workingArticle } = state
   return {
@@ -373,7 +410,7 @@ function toggleUserPreferences (state, { key, value }) {
   }
 }
 
-function updateEditorCursorPosition(state, { lineNumber, column }) {
+function updateEditorCursorPosition (state, { lineNumber, column }) {
   return {
     ...state,
     editorCursorPosition: {
@@ -383,7 +420,61 @@ function updateEditorCursorPosition(state, { lineNumber, column }) {
   }
 }
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+function setWorkspaces (state, { workspaces }) {
+  return {
+    ...state,
+    activeUser: {
+      ...state.activeUser,
+      workspaces
+    }
+  }
+}
+
+function setActiveWorkspace (state, { workspaceId }) {
+  return {
+    ...state,
+    activeUser: {
+      ...state.activeUser,
+      activeWorkspaceId: workspaceId
+    }
+  }
+}
+
+function updateSelectedTag (state, { tagId }) {
+  const { selectedTagIds } = state.activeUser
+  return {
+    ...state,
+    activeUser: {
+      ...state.activeUser,
+      selectedTagIds: selectedTagIds.includes(tagId)
+        ? selectedTagIds.filter(selectedTagId => selectedTagId !== tagId)
+        : [...selectedTagIds, tagId]
+    }
+  }
+}
+
+function tagCreated (state, { tag }) {
+  return {
+    ...state,
+    latestTagCreated: tag
+  }
+}
+
+function setLatestCorpusDeleted(state, { data }) {
+  return {
+    ...state,
+    latestCorpusDeleted: data
+  }
+}
+
+function setLatestCorpusCreated(state, { data }) {
+  return {
+    ...state,
+    latestCorpusCreated: data
+  }
+}
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export default () => createStore(reducer, composeEnhancers(
   applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage)

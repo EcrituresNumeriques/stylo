@@ -1,0 +1,18 @@
+.corpus {
+  padding: .25em .5em;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid #aaa;
+  display: flex;
+  align-items: center;
+  transition: box-shadow 90ms ease-in;
+}
+
+.corpus:hover {
+  box-shadow: 0 0 0 1px #484848;
+}
+
+.corpus.selected {
+  box-shadow: 0 0 0 1px #484848;
+  border-color: #484848;
+}

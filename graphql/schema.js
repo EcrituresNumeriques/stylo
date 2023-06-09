@@ -11,9 +11,27 @@ scalar ID
 scalar Int
 scalar Boolean
 
+type UserSearch {
+  _id: ID
+  displayName: String
+  email: EmailAddress
+  firstName: String
+  lastName: String
+}
+
+input UserFilter {
+  email: String!
+}
+
+type UserStats {
+  myArticlesCount: Int
+  contributedArticlesCount: Int
+}
+
 type User {
   _id: ID
   displayName: String
+  username: String
   authType: String
   email: EmailAddress
   firstName: String
@@ -23,14 +41,18 @@ type User {
   permissions: [UserPermission]
   acquintances(limit: Int, page: Int): [User]
   articles(limit: Int, page: Int): [Article]
+  workspaces: [Workspace!]
   admin: Boolean
   yaml: String
   zoteroToken: String
   createdAt: DateTime
   updatedAt: DateTime
   apiToken: JWT
+  
+  addContact(userId: ID!): User
+  removeContact(userId: ID!): User
 
-  article(id: ID!): Article
+  stats: UserStats
 }
 
 type UserPermission {
@@ -97,6 +119,9 @@ type Article {
   setZoteroLink(zotero: String!): Boolean
   updateWorkingVersion(content: WorkingVersionInput!): Article
   workspaces: [Workspace!]
+  
+  addContributor(userId: ID!): Article
+  removeContributor(userId: ID!): Article
 }
 
 type ArticlePreviewSettings {
@@ -194,25 +219,34 @@ type WorkspaceArticle {
 type WorkspaceMember {
   workspace: Workspace!
   user: User
+  role: String
 
   # mutation
   remove: Workspace!
 }
 
+type WorkspaceStats {
+  articlesCount: Int
+  membersCount: Int
+}
+
 type Workspace {
   _id: String!
   name: String!
+  description: String
   color: HexColorCode!
-  role: String
   bibliographyStyle: String
   members: [User!]!
   articles: [Article!]!
+  corpus: [Corpus!]!
   creator: User!
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime
+  updatedAt: DateTime
 
   article(articleId: ID!): WorkspaceArticle
   member(userId: ID!): WorkspaceMember
+  
+  stats: WorkspaceStats
 
   # mutations
   leave: Workspace
@@ -224,11 +258,13 @@ type Workspace {
 input CreateWorkspaceInput {
   name: String!
   color: String!
+  description: String
 }
 
 type CorpusArticle {
   corpus: Corpus!
   article: Article
+  order: Int
 
   # mutation
   remove: Corpus!
@@ -238,12 +274,13 @@ type CorpusArticle {
 type Corpus {
   _id: String!
   name: String!
+  description: String
   metadata: String
   workspace: String
-  articles: [Article!]!
+  articles: [CorpusArticle!]!
   creator: User!
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime
+  updatedAt: DateTime
 
   article(articleId: ID!): CorpusArticle
   
@@ -251,10 +288,12 @@ type Corpus {
   addArticle(articleId: ID!): Corpus
   rename(name: String!): Corpus
   updateMetadata(metadata: String!): Corpus
+  delete: Corpus!
 }
 
 input CreateCorpusInput {
   name: String!
+  description: String
   metadata: String
   workspace: String
 }
@@ -263,11 +302,12 @@ type Query {
   "Fetch all users [Reserved for admins]"
   users: [User]
 
-  "Fetch authenticated user info"
+  """
+  Get authenticated user info.
+  """
   user(user: ID): User
 
-  "Fetch accounts we have access to"
-  userGrantedAccess: [User]
+  getUser(filter: UserFilter): User
 
   "Fetch tagged articles for a given user"
   tags(user: ID): [Tag]
@@ -278,7 +318,7 @@ type Query {
   "Fetch a given user articles"
   articles (user: ID): [Article]
 
-  "Fetch article info [need to have acces to this article]"
+  "Fetch article info [need to have access to this article]"
   article(user: ID, article: ID!): Article
 
   "Fetch version info"
@@ -307,12 +347,6 @@ type Mutation {
   "Change password"
   changePassword(old: String!, new: String!, user: ID): User
 
-  "Grant account access"
-  grantAccountAccess(user: ID, to: ID!): User
-
-  "Revoke account access"
-  revokeAccountAccess(user: ID, to: ID!): User
-
   "Change user information"
   updateUser(user: ID, details: UserProfileInput!): User
 
@@ -323,13 +357,13 @@ type Mutation {
   "Remove access to a user using a password's email (can't be the main email)"
   removeCredential(email: EmailAddress!, user: ID): User
 
-  "Create article for specified user [need to be authentificated as specified user]"
+  "Create article for specified user [need to be authenticated as specified user]"
   createArticle(title: String!, user: ID, tags: [ID]): Article
 
-  "Save a new version for article [need to be authentificated as specified user]"
+  "Save a new version for article [need to be authenticated as specified user]"
   saveVersion(version: VersionInput!, user: ID): Version
 
-  "Create tag [need to be authentificated as specified user]"
+  "Create tag [need to be authenticated as specified user]"
   createTag(
     name: String!
     description: String
@@ -337,7 +371,7 @@ type Mutation {
     color: HexColorCode!
   ): Tag
 
-  "update name and description of a tag [need to be authentificated as specified user]"
+  "update name and description of a tag [need to be authenticated as specified user]"
   updateTag(
     name: String
     description: String
@@ -363,6 +397,12 @@ type Mutation {
 
   "Get a workspace for mutation"
   workspace(workspaceId: ID!): Workspace
+
+  """
+  Get a corpus for a given id.
+  Returns an error if the corpus does not exist or cannot be accessed.
+  """
+  corpus(corpusId: ID!): Corpus
   
   "Create a new corpus"
   createCorpus(createCorpusInput: CreateCorpusInput!): Corpus

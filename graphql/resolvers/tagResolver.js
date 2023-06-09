@@ -81,7 +81,7 @@ module.exports = {
       return tag
     },
 
-    async tags (_, args, context) {
+    async tags (_root, args, context) {
       const { userId } = isUser(args, context)
       return Tag.find({ owner: userId })
     },

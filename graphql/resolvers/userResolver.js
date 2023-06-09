@@ -1,7 +1,10 @@
 const User = require('../models/user')
 
 const isUser = require('../policies/isUser')
-const isAdmin = require('../policies/isAdmin')
+const Workspace = require('../models/workspace')
+const Article = require('../models/article')
+const Tag = require('../models/tag')
+const { ApiError } = require('../helpers/errors')
 
 module.exports = {
   Mutation: {
@@ -25,6 +28,7 @@ module.exports = {
       await newUser.createDefaultArticle()
       return newUser
     },
+
     async addAcquintance (_, args, context) {
       const { userId } = isUser(args, context)
 
@@ -56,60 +60,6 @@ module.exports = {
       await thisUser.save()
       return thisUser.populate('acquintances').execPopulate()
     },
-    async grantAccountAccess (_, args, context) {
-      const { userId } = isUser(args, context)
-
-      const thisUser = await User.findById(userId)
-        .populate('acquintances')
-        .populate({ path: 'permissions', populate: 'user' })
-
-      const remoteUser = await User.findById(args.to)
-
-      const existingsScope = thisUser.permissions.find(
-        (p) => p.scope === 'user' && p.user._id == remoteUser.id
-      )
-
-      if (existingsScope) {
-        throw new Error(
-          `Account [id: ${args.to}] has already access to account [id: ${args.user}]`
-        )
-      }
-
-      thisUser.permissions.push({
-        scope: 'user',
-        user: remoteUser.id,
-        roles: ['access', 'read', 'write'],
-      })
-
-      return thisUser
-        .save()
-        .then((u) =>
-          u.populate({ path: 'permissions', populate: 'user' }).execPopulate()
-        )
-    },
-    async revokeAccountAccess (_, args, context) {
-      const { userId } = isUser(args, context)
-
-      const thisUser = await User.findById(userId)
-        .populate('acquintances')
-        .populate({ path: 'permissions', populate: 'user' })
-
-      const remoteUser = await User.findById(args.to)
-
-      const existingsScope = thisUser.permissions.find(
-        (p) => p.scope === 'user' && p.user._id == remoteUser.id
-      )
-
-      if (!existingsScope) {
-        throw new Error(
-          `Account [id: ${args.to}] has no access to account [id: ${args.user}]`
-        )
-      }
-
-      thisUser.permissions.pull(existingsScope)
-
-      return thisUser.save()
-    },
 
     async updateUser (_, args, context) {
       const { userId } = isUser(args, context)
@@ -130,45 +80,98 @@ module.exports = {
       return thisUser.save()
     },
   },
+
   Query: {
-    //Only available for admins
-    async users (_, args, { user }) {
-      isAdmin({ user })
-
-      return User.find().populate('tags articles acquintances')
-    },
-    async user (_, args, context) {
-      const { userId } = isUser(args, context)
-
-      if (!context.user.isGrantedBy(userId)) {
-        throw new Error('Forbidden')
+    // only available for admins
+    async users (_root, args, context) {
+      if (context.token.admin) {
+        return User.find()
       }
+      throw new ApiError('FORBIDDEN', 'Token must have administrative rights to execute this query!')
 
-      return User.findById(userId)
-        .populate('tags acquintances grantees')
-        .populate({ path: 'permissions', populate: 'user' })
     },
 
-    userGrantedAccess(_, args, context) {
-      isUser(args, context)
+    async user (_root, args, context) {
+      let userId
+      if (context.token.admin) {
+        userId = args.user
+        if (!userId) {
+          throw new ApiError('UNAUTHENTICATED', `Unable to find an authentication context: ${context}`)
+        }
+      } else {
+        userId = context.userId
+      }
+      return User.findById(userId)
+    },
 
-      return User.findAccountAccessUsers(context.token._id)
+    async getUser (_, { filter }, context) {
+      isUser({}, context)
+      return User.findOne({ email: filter.email })
     },
   },
 
   User: {
-    async articles(user, { limit }) {
+    async articles (user, { limit }) {
       await user.populate({
         path: 'articles',
         options: { limit },
         populate: { path: 'owner tags' }
       }).execPopulate()
-
       return user.articles
     },
 
-    async article (user, { id }) {
-      return User.model('Article').findAndPopulateOneByOwners(id, user)
+    async acquintances (user, args, context) {
+      return Promise.all(user.acquintances.map((contactId) => context.loaders.users.load(contactId)))
+    },
+
+    /**
+     * @param user
+     * @returns {Promise<void>}
+     */
+    async tags (user) {
+      return Tag.find({ owner: user._id }).lean()
+    },
+
+    async workspaces (user) {
+      if (user?.admin === true) {
+        return Workspace.find()
+      }
+      return Workspace.find({ 'members.user': user?._id })
+    },
+
+    async addContact (user, { userId }) {
+      if (user._id === userId) {
+        throw new Error('You cannot add yourself as a contact!')
+      }
+      const contact = await User.findById(userId)
+      if (!contact) {
+        throw new Error(`No user found with this id: ${userId}`)
+      }
+      return User.findOneAndUpdate(
+        { _id: user._id },
+        { $push: { acquintances: contact._id } },
+        { new: true }
+      )
+    },
+
+    async removeContact (user, { userId }) {
+      const contact = await User.findById(userId)
+      if (!contact) {
+        throw new Error(`No user found with this id: ${userId}`)
+      }
+      return User.findOneAndUpdate(
+        { _id: user._id },
+        { $pull: { acquintances: contact._id } },
+        { new: true }
+      )
+    },
+
+    async stats (user) {
+      const contributedArticlesCount = (await Article.find({ contributors: { $elemMatch: { user: user._id } } })).length
+      return {
+        myArticlesCount: user.articles.length,
+        contributedArticlesCount
+      }
     }
   },
 }

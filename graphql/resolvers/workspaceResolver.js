@@ -1,6 +1,8 @@
+const { ObjectId } = require('mongoose').Types
 const { ApiError } = require('../helpers/errors')
 const Workspace = require('../models/workspace')
-
+const Article = require('../models/article')
+const Corpus = require('../models/corpus')
 
 async function workspace (_, { workspaceId }, { user }) {
   if (user?.admin === true) {
@@ -65,6 +67,7 @@ module.exports = {
       const newWorkspace = new Workspace({
         name: createWorkspaceInput.name,
         color: createWorkspaceInput.color,
+        description: createWorkspaceInput.description,
         members: [{ user: user._id }],
         articles: [],
         creator: user._id,
@@ -87,11 +90,18 @@ module.exports = {
     /**
      *
      */
-    async workspaces (_, { user }) {
+    async workspaces (_root, _args, { user }) {
       if (user?.admin === true) {
         return Workspace.find()
       }
-      return Workspace.find({ 'members.user': user?._id }).lean()
+      return Workspace.find({ 'members.user': user?._id }).sort([['updatedAt', -1]])
+    },
+  },
+
+  WorkspaceArticle: {
+    async article (workspaceArticle, { articleId }) {
+      const article = workspace.articles.find((a) => String(a._id) === articleId)
+      return new WorkspaceArticle(workspace, article)
     },
   },
 
@@ -101,9 +111,21 @@ module.exports = {
       return new WorkspaceArticle(workspace, article)
     },
 
-    async articles (workspace, { limit }) {
-      await workspace.populate({ path: 'articles', limit }).execPopulate()
-      return workspace.articles
+    /**
+     *
+     * @param workspace
+     * @param _args
+     * @param {{ loaders: { articles } }} context
+     * @returns {Promise<*>}
+     */
+    async articles (workspace, _args, context) {
+      const articles = await Promise.all(workspace.articles.map((articleId) => context.loaders.articles.load(articleId)))
+      articles.sort((a, b) => a.createdAt > b.createdAt ? -1 : 1)
+      return Article.complete(articles, context.loaders)
+    },
+
+    async corpus(workspace) {
+      return Corpus.find({ 'workspace': workspace._id }).sort([['updatedAt', -1]])
     },
 
     async member (workspace, { userId }) {
@@ -113,7 +135,18 @@ module.exports = {
 
     async members (workspace, { limit }) {
       await workspace.populate({ path: 'members', populate: 'user', limit }).execPopulate()
-      return workspace.members
+      return workspace.members.map((m) => m.user)
+    },
+
+    async stats (workspace) {
+      return {
+        articlesCount: workspace.articles.length,
+        membersCount: workspace.members.length,
+      }
+    },
+
+    async creator (workspace, _args, context) {
+      return await context.loaders.users.load(workspace.creator)
     },
 
     // mutations
@@ -122,8 +155,13 @@ module.exports = {
       if (!user) {
         throw new ApiError('UNAUTHENTICATED', 'Unable to leave a workspace as an unauthenticated user')
       }
-      workspace.members.pull({ user: user.id })
-      return workspace.save()
+
+      // TODO: remove workspace if there's no member left!
+      return Workspace.findOneAndUpdate(
+        {_id: ObjectId(workspace._id) },
+        { $pull: { members: { user: ObjectId(user.id) } } },
+        { lean: true }
+      )
     },
 
     async addArticle (workspace, { articleId }) {

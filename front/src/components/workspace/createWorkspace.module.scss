@@ -1,0 +1,20 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+.actions {
+  display: flex;
+  justify-content: end;
+  margin-top: 0.75em;
+}
+
+.fields {
+  display: flex;
+}
+
+.color {
+  width: 3em;
+}
+
+.name {
+  flex: 1;
+}

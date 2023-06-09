@@ -20,3 +20,72 @@ query getArticleVersions($articleId: ID!) {
     }
   }
 }
+
+query getArticleWorkspaces($articleId: ID!) {
+  article(article: $articleId) {
+    workspaces {
+      _id
+      color
+      name
+    }
+  }
+}
+
+query getArticleContributors($articleId: ID!) {
+  article(article: $articleId) {
+    contributors {
+      user {
+        _id
+        email
+        username
+        displayName
+      }
+    }
+  }
+}
+
+query deleteArticle ($article: ID!) {
+  article (article: $article) {
+    delete (dryRun: false)
+  }
+}
+
+mutation duplicateArticle($user: ID!, $article: ID!, $to: ID!) {
+  duplicateArticle(article: $article, to: $to, user: $user) {
+    _id
+    title
+    createdAt
+    updatedAt
+  }
+}
+
+query addTags ($article: ID!, $tags: [ID]!) {
+  article (article: $article) {
+    addTags (tags: $tags) {
+      _id
+      name
+      color
+    }
+  }
+}
+
+query removeTags ($article: ID!, $tags: [ID]!) {
+  article (article: $article) {
+    removeTags (tags: $tags) {
+      _id
+      name
+      color
+    }
+  }
+}
+
+query getArticleTags($articleId: ID!) {
+  article (article: $articleId) {
+    tags {
+      _id
+      name
+      color
+    }
+  }
+}
+

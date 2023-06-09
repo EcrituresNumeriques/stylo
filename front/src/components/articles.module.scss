@@ -1,6 +1,19 @@
 @use '../styles/defaults' as *;
 @use '../styles/variables' as *;
 
+.articleCounter {
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75em;
+  padding-right: 0.5em;
+  margin-left: auto;
+}
+
+.icon {
+  display: flex;
+}
+
 .alert {
   background-color: red;
   color: white;
@@ -69,7 +82,6 @@
   display: flex;
   column-gap: 1rem;
   align-items: center;
-  margin-bottom: 0.75rem;
 }
 
 .switchAccount {
@@ -198,6 +210,7 @@ hr.horizontalSeparator {
   .metadata,
   .deleteArticle {
     width: 100%;
+    margin-left: 0.5em;
   }
 
   .metadata {
@@ -215,7 +228,7 @@ hr.horizontalSeparator {
   }
 
   .versions {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .tagChip {
@@ -230,6 +243,7 @@ hr.horizontalSeparator {
     font-style: italic;
   }
 
+
   .contributors {
     padding-left: .5em;
   }
@@ -243,6 +257,8 @@ hr.horizontalSeparator {
         margin: 0 .5rem .5rem 0;
       }
     }
+    margin-top:0.5rem;
+    margin-bottom: 1rem;
   }
 }
 
@@ -301,9 +317,12 @@ hr.horizontalSeparator {
   display: flex;
   flex-wrap: wrap;
 
+  > li {
+    display: flex;
+    margin-bottom: 0.5rem;
+  }
   > li:not(:last-child) {
     margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
   }
 
   margin-top: 0.25rem;
@@ -330,3 +349,114 @@ hr.horizontalSeparator {
   height: 100vh;
   display: flex;
 }
+
+.articlesTableHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5em;
+}
+
+.createTagButton {
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid #aaa;
+  display: flex;
+  align-items: center;
+  font-size: 0.8em;
+  padding: 0.25em 1.25em;
+  line-height: inherit;
+  color: $main-lighter-color;
+}
+
+.workspaces {
+  display: flex;
+  flex-wrap: wrap;
+  > li:not(:last-child) {
+    margin-right: 0.5em;
+  }
+  margin-top:0.5rem;
+  margin-bottom: 1rem;
+}
+
+.corpusList {
+  display: flex;
+  flex-wrap: wrap;
+  > li:not(:last-child) {
+    margin-right: 0.5em;
+  }
+  margin-top:0.5rem;
+  margin-bottom: 1rem;
+}
+
+.sharing {
+  margin-top:0.5rem;
+  margin-bottom: 1rem;
+}
+
+.contributors {
+  margin-right: 0.75rem;
+  margin-top: 0.5rem;
+  padding-left: 0 !important;
+
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.contributorNames {
+  display: inline-flex;
+}
+
+.contributor {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.35em 0.5em;
+  margin-bottom: 0.25em;
+  border: 1px solid grey;
+  margin-right: 0.5rem;
+}
+
+.contributorInfo {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  min-height: 2.5em;
+  margin-right: 1em;
+}
+
+.contributorName {
+  font-weight: 500;
+}
+
+.sendText,
+.sendIcon {
+  vertical-align: middle;
+}
+
+.sendIcon {
+  height: 1em;
+  width: 1em;
+}
+
+.contributorEmail {
+  font-size: 0.95em;
+  font-weight: 400;
+  padding-bottom: 0.25em;
+}
+
+.contributorsAction {
+  margin-top: 0.5em;
+}
+
+.contributorActions {
+  display: flex;
+  gap: 0.5em;
+  margin: auto;
+}
+
+.contributorRevoke {
+  display: flex;
+  gap: 0.35em;
+}
+

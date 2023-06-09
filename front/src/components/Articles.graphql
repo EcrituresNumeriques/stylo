@@ -2,11 +2,14 @@ query getUserArticles($user: ID!) {
   user(user: $user) {
     _id
     displayName
+  }
 
-    permissions {
-      user {
+  corpus {
+    _id
+    name
+    articles {
+      article {
         _id
-        displayName
       }
     }
   }
@@ -31,12 +34,15 @@ query getUserArticles($user: ID!) {
     owner {
       _id
       displayName
+      username
     }
 
     contributors {
       user {
         _id
         displayName
+        username
+        email
       }
     }
 
@@ -47,17 +53,58 @@ query getUserArticles($user: ID!) {
       _id
     }
   }
-
-  userGrantedAccess {
-    _id
-    displayName
-  }
 }
 
-query deleteArticle ($user: ID!, $article: ID!) {
-  user (user: $user) {
-    article (id: $article) {
-      delete (dryRun: false)
+query getWorkspaceArticles ($workspaceId: ID!) {
+  tags {
+    _id
+    owner
+    description
+    color
+    name
+  }
+
+  workspace(workspaceId: $workspaceId) {
+    corpus {
+      _id
+      name
+      articles {
+        article {
+          _id
+        }
+      }
+    }
+
+    articles {
+      _id
+      title
+      updatedAt
+
+      workingVersion {
+        bibPreview
+      }
+
+      owner {
+        _id
+        displayName
+        username
+      }
+
+      contributors {
+        user {
+          _id
+          displayName
+          username
+          email
+        }
+      }
+
+      tags {
+        name
+        owner
+        color
+        _id
+      }
     }
   }
 }
@@ -66,35 +113,25 @@ mutation createArticle ($title: String!, $user: ID!, $tags: [ID]!) {
   createArticle(title: $title, user:$user) {
     _id
     title
+    updatedAt
+
+    owner {
+      _id
+      displayName
+      username
+    }
+
+    tags {
+      name
+      owner
+      color
+      _id
+    }
 
     addTags (tags: $tags) {
       _id
       name
       color
-    }
-  }
-}
-
-query addTags ($article: ID!, $user: ID!, $tags: [ID]!) {
-  user (user: $user) {
-    article (id: $article) {
-      addTags (tags: $tags) {
-        _id
-        name
-        color
-      }
-    }
-  }
-}
-
-query removeTags ($article: ID!, $user: ID!, $tags: [ID]!) {
-  user (user: $user) {
-    article (id: $article) {
-      removeTags (tags: $tags) {
-        _id
-        name
-        color
-      }
     }
   }
 }

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const toHex = require("colornames");
+const toHex = require('colornames')
 const Schema = mongoose.Schema
 
 const WorkspaceMemberSchema = new Schema({
@@ -20,7 +20,7 @@ const workspaceSchema = new Schema({
     required: true,
     get: color => toHex(color) || color || '#ccc'
   },
-  role: {
+  description: {
     type: String
   },
   bibliographyStyle: {

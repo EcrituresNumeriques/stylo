@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 
 const { article: defaultArticle, yaml: defaultUserYaml } = require('../data/defaultsData')
-const { UserPermissionSchema } = require('./permission')
 
 const Schema = mongoose.Schema;
 
@@ -46,11 +45,6 @@ const userSchema = new Schema({
       return bcrypt.hashSync(password, 10)
     }
   },
-  // we store who a user has granted his account to
-  // each listed account can _switch into_ their account
-  permissions: [
-    UserPermissionSchema
-  ],
   displayName: {
     type: String,
   },
@@ -80,25 +74,6 @@ userSchema.methods.comparePassword = function (password) {
   return bcrypt.compare(password, this.password)
 }
 
-/**
- * Returns a lean list of user accounts which granted access to this current one
- */
-userSchema.virtual('grantees', {
-  ref: 'User',
-  localField: '_id',
-  foreignField: 'permissions.user',
-})
-
-/**
- * Checks wether the requested userId has granded access to the current user object
- *
- * @param {String} remoteUserId
- * @returns {Boolean}
- */
-userSchema.methods.isGrantedBy = function isGrantedBy (remoteUserId) {
-  return this.id === remoteUserId || this.grantees.find((user) => String(user._id) === remoteUserId)
-}
-
 userSchema.methods.createDefaultArticle = async function createDefaultArticle () {
   const newArticle = await this.model('Article').create({
     title: defaultArticle.title,
@@ -115,79 +90,6 @@ userSchema.methods.createDefaultArticle = async function createDefaultArticle ()
 
   this.articles.push(newArticle)
   return this.save()
-}
-
-/**
- * Builds a `$in` clause with the user and its grantees
- * @returns {String[]}
- */
-userSchema.methods.$inFromGrantees = function $inFromGrantees () {
-  return [String(this._id)]
-    .concat(this.grantees.flat(2).map(({ _id }) => String(_id)))
-}
-
-userSchema.statics.findAllArticles = async function ({ userId, fromSharedUserId }) {
-  // if fromSharedUserId is provided
-  // we check if it allowed userId to look into their articles
-  // @todo
-
-  return this
-    .findById(fromSharedUserId ?? userId)
-    .populate('tags acquintances')
-    .populate({ path: 'permissions', populate: 'user' })
-    // see https://mongoosejs.com/docs/api/document.html#document_Document-populate
-    // for subdocument population
-    .populate({
-      path: 'articles',
-      options: { sort: { 'updatedAt': -1 } },
-      populate: [
-        {
-          path: 'owner versions tags',
-        },
-        {
-          path: 'contributors',
-          populate: 'user'
-        }
-      ],
-    })
-    .lean();
-}
-
-/**
- * Find all the accounts a user can _switch to_
- *
- * @param {String} userId
- * @param {String} role
- * @returns {userSchema.model[]}
- */
-userSchema.statics.findAccountAccessUsers = async function (userId, role = 'write') {
-  return this
-    .find({
-      $or: [
-        { _id: userId },
-        { permissions: {
-          $elemMatch: { user: userId, scope: 'user', roles: { $in: role } }
-        } }
-      ]
-    })
-    .lean()
-}
-
-userSchema.statics.findAccountAccessArticles = function (user, role = 'read') {
-  return this
-    .find({ permissions: { $elemMatch: { user, scope: 'user', roles: { $in: role } } } })
-    .populate({
-      path: 'articles',
-      populate: [
-        {
-          path: 'owner versions tags',
-        },
-        {
-          path: 'contributors',
-          populate: 'user'
-        }
-      ],
-    })
 }
 
 module.exports = mongoose.model('User', userSchema)

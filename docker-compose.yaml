@@ -72,7 +72,7 @@ services:
       - graphql-stylo
 
   export-gateway:
-    image: "davidbgk/stylo-export:0.0.24"
+    image: "davidbgk/stylo-export:0.0.30"
     env_file:
       - stylo.env
     environment:
@@ -84,7 +84,7 @@ services:
     - "host.docker.internal:host-gateway"
 
   pandoc-api:
-    image: "davidbgk/pandoc-api:0.0.14"
+    image: "davidbgk/pandoc-api:0.0.17"
     ports:
       - 127.0.0.1:3090:8000
 

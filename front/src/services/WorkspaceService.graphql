@@ -1,0 +1,24 @@
+mutation create($data: CreateWorkspaceInput!) {
+  createWorkspace(createWorkspaceInput: $data) {
+    _id
+    name
+    description
+    color
+    bibliographyStyle
+    createdAt
+    updatedAt
+    stats {
+      membersCount
+      articlesCount
+    }
+  }
+}
+
+mutation leave($workspaceId: ID!) {
+  workspace(workspaceId: $workspaceId) {
+    leave {
+      _id
+    }
+  }
+}
+

@@ -4,8 +4,6 @@ module.exports = function resolveUserIdFromContext (args, { token, user } = {}) 
   const isAdmin = token.admin || user?.admin || false
   // This is the user we ask the data for
   const resolvedUserId = args.user || user?.id.toString() || token._id || null
-  // This is the user asking the data (the grantee)
-  const fromSharedUserId = !isAdmin && args.user !== token._id ? token._id : null
 
   const context = [
     token.admin ? 'token.admin' : '',
@@ -31,11 +29,6 @@ module.exports = function resolveUserIdFromContext (args, { token, user } = {}) 
     // - Explicit user must match token/resolved user
     if ((args.user === token._id) || (!args.user && resolvedUserId)) {
       return { userId: resolvedUserId }
-    }
-
-    // A user requests something for someone else, and is not admin:
-    if (user.isGrantedBy(resolvedUserId)) {
-      return { userId: resolvedUserId, fromSharedUserId }
     }
 
     throw new Error(format("Forbidden [context %s]", context))

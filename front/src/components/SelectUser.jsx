@@ -16,7 +16,6 @@ export default function SelectUser ({ accounts }) {
   const setCurrentUserId = useCallback((userId) => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'currentUser', value: userId }), [])
 
   const handleCurrentUserChange = useCallback((event) => {
-    console.log('handleCurrentUserChange', event.target.value)
     setCurrentUserId(event.target.value)
   }, [currentUserId])
 

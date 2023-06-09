@@ -89,13 +89,13 @@
 
     - name: Pull Docker containers
       ansible.builtin.shell:
-        cmd: "docker-compose pull"
+        cmd: "docker compose pull"
         chdir: ~/stylo
 
     - name: Generate Shared GraphQL Token
       register: graphql_token
       ansible.builtin.shell:
-        cmd: "docker-compose run --no-deps --rm graphql-stylo npm run generate-service-token --silent"
+        cmd: "docker compose run --no-deps --rm graphql-stylo npm run generate-service-token --silent"
         chdir: ~/stylo
       run_once: true
       no_log: true
@@ -108,14 +108,12 @@
         src: "./stylo.env"
         dest: "~/stylo/stylo.env"
 
-    - name: Start containers
-      ansible.builtin.shell:
-        cmd: "docker-compose up --no-build --pull never --detach"
-        chdir: ~/stylo
-      environment:
-        SNOWPACK_MATOMO_URL: "{{ matomo_url }}"
-        SNOWPACK_MATOMO_SITE_ID: "{{ matomo_site_id }}"
-        SE_ALLOWED_INSTANCE_BASE_URLS: "{{ export_allowed_instance_base_urls }}"
+    - name: Restart containers
+      become: true
+      ansible.builtin.systemd:
+        name: docker-compose-stylo
+        state: restarted
+        daemon_reload: true
 
   handlers:
     - name: reload nginx
@@ -125,7 +123,7 @@
         state: reloaded
     - name: start docker-compose-stylo
       become: true
-      systemd:
+      ansible.builtin.systemd:
         name: docker-compose-stylo
         state: started
         enabled: yes

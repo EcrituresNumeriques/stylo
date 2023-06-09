@@ -14,7 +14,7 @@ beforeAll(() => {
 describe('article resolver', () => {
   test('get workspaces', async () => {
     const userId = new ObjectId()
-    const user = {
+    const context = {
       user: {
         email: 'bob@huma-num.fr',
         admin: false,
@@ -26,23 +26,23 @@ describe('article resolver', () => {
       title: 'My thesis',
       owner: [userId],
       contributors: [],
-      versions:[],
-      tags:[]
+      versions: [],
+      tags: []
     })
     await Workspace.create({
       name: 'Workspace A',
       color: '#f4a261',
       members: [
         {
-          user:   new ObjectId(),
+          user: new ObjectId(),
           role: 'editor'
         },
         {
-          user:   new ObjectId(),
+          user: new ObjectId(),
           role: 'translator'
         },
         {
-          user:  userId,
+          user: userId,
           role: 'contributor'
         },
       ],
@@ -54,7 +54,7 @@ describe('article resolver', () => {
       color: '#e9c46a',
       members: [
         {
-          user:   new ObjectId(),
+          user: new ObjectId(),
           role: 'editor'
         },
       ],
@@ -66,21 +66,21 @@ describe('article resolver', () => {
       color: '#2a9d8f',
       members: [
         {
-          user:  userId,
+          user: userId,
           role: 'editor'
         },
       ],
       articles: [article._id],
       creator: new ObjectId(),
     })
-    let workspaces = await ArticleMutation.workspaces(article, user)
+    let workspaces = await ArticleMutation.workspaces(article, {}, context)
     expect(workspaces.map(w => w.toObject())).toMatchObject([
       { name: 'Workspace A' },
       //  should not contain Workspace B because user is not invited in this workspace
       { name: 'Workspace C' }
     ])
-    const adminUser = { user : { ...user, admin: true } }
-    workspaces = await ArticleMutation.workspaces(article, adminUser)
+    const contextWithAdminUser = { user: { ...context.user, admin: true } }
+    workspaces = await ArticleMutation.workspaces(article, {}, contextWithAdminUser)
     expect(workspaces.map(w => w.toObject())).toMatchObject([
       { name: 'Workspace A' },
       { name: 'Workspace B' }, // admin user can see all workspaces that includes a given article

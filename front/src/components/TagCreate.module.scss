@@ -1,0 +1,24 @@
+.actions {
+  display: flex;
+  justify-content: end;
+  margin-top: 0.75em;
+}
+
+.tagName {
+  input {
+    width: 100%;
+  }
+  margin-bottom: 1em;
+}
+
+textarea {
+  width: 100%;
+}
+
+fieldset {
+  margin: 1em 0;
+}
+
+.create {
+  margin: 2rem 0 1rem;
+}
