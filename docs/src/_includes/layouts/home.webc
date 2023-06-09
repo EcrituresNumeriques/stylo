@@ -1,7 +1,10 @@
+<!---- Disposition potentielle pour une page d’accueil (à peu près vide pour l’instant) ---->
+
 <!doctype html>
 <html webc:keep
       :lang="lang"
 >
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">

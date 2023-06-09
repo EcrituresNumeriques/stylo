@@ -1,3 +1,11 @@
+<!---- Gabarit pour les éléments `<my-icon></my-icon>` ---->
+<!----
+Usage:
+  <base-icon :size="size">
+     <svg>...</svg>
+  </base-icon>
+---->
+
 <span
   class="icon"
   :data-size="size"

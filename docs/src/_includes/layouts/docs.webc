@@ -1,3 +1,4 @@
+<!---- Disposition pour la documentation ---->
 <!doctype html>
 <html :lang="lang">
   <head>
@@ -16,21 +17,45 @@
     <style @raw="getBundle('css')" webc:keep></style>
     <script @raw="getBundle('js')" webc:keep defer></script>
 
-
     <!-- Scripts -->
     <!---- JS bundle ---->
     <script :src="getBundleFileUrl('js')"></script>
-
-
   </head>
 
   <body>
     <!---- Docs Layout ---->
+    <!----
+      HTML structure, in order of appearance in the markup:
+      1) Top    (header)
+      2) Center (main)
+      3) Side   (navigation)
+
+
+      Desktop
+      +===========(1)==+
+      |(3) |(2)        |
+      |    |           |
+      |    |           |
+      |____|___________|
+
+      Mobile
+      +====(1)==+
+      |(3)      |
+      |_________|
+      |(2)      |
+      |         |
+      |         |
+      |         |
+      |_________|
+
+      The layout controls how the side (#navigation) panel will be displayed.
+      On mobile, it will be stacked above the main panel.
+    ---->
     <div
       class="docs-layout"
       aria-owns="navigation"
     >
-      <!---- 1. Top ---->
+      <!---- (1) Top ---->
       <header class="docs-layout__top">
         <slot name="header">
           <!---- Exploitation du composant <top-bar> ---->
@@ -53,19 +78,29 @@
               </span>
             </button>
 
-            <a
-              :href="`/${lang}`"
-              @text="siteTitle"
+            <top-bar-brand
+              :@href="`/${lang}`"
+              :@text="siteTitle"
               slot="brand"
-              class="docs-layout__site-title"
-            ></a>
+            ></top-bar-brand>
 
-            <!-- Todo breadcrumbs -->
-            <a
-              :href="`/${lang}`"
-              @text="'Documentation'"
-              class="docs-layout__site-section"
-            ><!-- Todo i18n --></a>
+            <!---- Breadcrumbs - this part assumes a multilingual site with the `lang` variable ---->
+            <top-bar-link
+              :@href="`/${lang}`"
+            ><template webc:nokeep @text="sectionTitle"></template></top-bar-link>
+
+            <!---- Display page in top bar (except for home, variable `isHome` is manually set in front-matter) ---->
+            <template
+              webc:nokeep
+              webc:if="!isHome"
+            >
+              <top-bar-hierarchy-separator webc:if="title"></top-bar-hierarchy-separator>
+
+              <top-bar-link
+                :@href="page.url"
+                webc:if="title"
+              ><template webc:nokeep @text="title"></template></top-bar-link>
+            </template>
 
           </header>
         </slot>
@@ -94,10 +129,39 @@
         })
       </script>
 
-      <!---- 2. Center ---->
+      <!---- (2) Center ---->
+      <!----
+        The center (main) panel has its own nested grid on desktop viewports:
+
+        a) Page header     (title, metadata)
+        b) Content         (content)
+        c) Page footer     (colophon)
+        d) Content sidebar (TOC, etc.?)
+
+        Desktop
+        ._________.____.
+        |(a)      |(d) |
+        |         |    |
+        |(b)      |    |
+        |         |    |
+        |         |    |
+        |         |    |
+        |=(c)==========|
+
+
+        Mobile
+        ._________.
+        |(a)      |
+        |(d)      |
+        |(b)      |
+        |         |
+        |         |
+        |         |
+        |=(c)=====|
+      ---->
       <main class="docs-layout__center">
         <div class="docs-layout__center-wrapper | grid-area--page-header">
-          <!-- En-tête -->
+          <!---- En-tête ---->
           <page-header
             :@title="title"
           ></page-header>
@@ -105,6 +169,7 @@
 
         <div class="docs-layout__center-wrapper | grid-area--page-sidebar">
           <nav class="docs-layout__center-sidebar">
+            <!---- Todo fill sidebar ---->
             <!-- TOC? -->
           </nav>
         </div>
@@ -126,7 +191,7 @@
       </main>
 
 
-      <!---- 3. Nav (side or stacked) ---->
+      <!---- (3) Side (nav) ---->
       <aside
         class="docs-layout__navigation"
         id="navigation"
@@ -152,11 +217,16 @@
     --center-padding: .75rem;
     --menu-toggle-display: inline-flex;
 
+    /* Disposition */
+    display: flex;
+    flex-direction: column;
+
+    /* Pour accueillir la barre transversale */
+    position: relative;
+
     /* couleurs */
     color: var(--couleur-police);
     background-color: var(--couleur-fond);
-    display: flex;
-    flex-direction: column;
   }
   .docs-layout__center {
     /* Après menu sur petits écrans */
@@ -194,6 +264,10 @@
     }
     #navigation {
       display: grid;
+    }
+
+    .docs-layout__top {
+      grid-area: top;
     }
 
     .docs-layout__center {
@@ -249,52 +323,13 @@
     /* Flex -- always at top */
     order: 0;
 
-    grid-area: top;
+    /* Coller en haut */
+    position: sticky;
+    top: 0;
+    z-index: 30; /* Attention au contenu qui peut avoir un z-index plus élevé… */
+
+    /* Division graphique */
     border-bottom: 1px solid var(--couleur-fond-accent);
-  }
-
-  .docs-layout__navigation {
-    display: grid;
-    align-items: stretch;
-    justify-content: stretch;
-    overflow: auto;
-
-    background-color: var(--couleur-fond-2);
-  }
-  @media (max-width: 48rem) {
-    #navigation {
-      display: none;
-      order: 1;
-    }
-    .navigation-open #navigation {
-      display: grid;
-    }
-  }
-
-  .docs-layout__site-title {
-    --title-background-color: var(--azur-aoste);
-    --title-text-color: #fff;
-    --title-triangle-size: .85rem;
-
-    /* Positionnement du titre dans la barre */
-    /*margin: .35rem .75rem;*/
-    padding: .35rem .5rem;
-    font-size: .75rem;
-    position: relative;
-    background-color: var(--title-background-color);
-    color: var(--title-text-color);
-    margin-inline-end: var(--title-triangle-size);
-
-    /* Typographie */
-    font-weight: bold;
-  }
-
-  .docs-layout__site-section {
-    padding: .35rem .25rem;
-    font-size: .75rem
-  }
-  .docs-layout__site-section:hover {
-    text-decoration: underline;
   }
 
   /* Navigation toggle btn */
@@ -316,6 +351,25 @@
     background-color: var(--azur-aoste);
     color: #fff;
   }
+
+  .docs-layout__navigation {
+    display: grid;
+    align-items: stretch;
+    justify-content: stretch;
+    overflow: auto;
+
+    background-color: var(--couleur-fond-2);
+  }
+  @media (max-width: 48rem) {
+    #navigation {
+      display: none;
+      order: 1;
+    }
+    .navigation-open #navigation {
+      display: grid;
+    }
+  }
+
   .docs-layout__menu-btn-inner {
     display: none;
   }
@@ -327,21 +381,6 @@
   }
   /* Appliquer le comportement de l’attribut `hidden` */
   [aria-hidden] { display: none; }
-
-  /* Pour compléter la en forme angulaire */
-  .docs-layout__site-title::after {
-    content: '';
-    position: absolute;
-    background-color: var(--title-background-color);
-    height: 100%;
-    width: var(--title-triangle-size);
-    top: 0;
-    left: 100%;
-    /* Triangle clip-path */
-    clip-path: polygon(0% 0%,
-                       50% 50%,
-                       0% 100%);
-  }
 
   .article-principal__contenu {
     /* S’assurer du rendu en `block` lors de la transclusion WebC */

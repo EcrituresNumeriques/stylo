@@ -1,9 +1,10 @@
-<!--
-Menu principal
+<!---- Menu principal ---->
+<!----
 Destiné à être affiché sur le côté sur des écrans de moyennes et grandes tailles.
 
-@prop {array} menu
--->
+Doc:
+  @prop {array} menu
+---->
 
 <nav class="side-menu__inner">
   <header

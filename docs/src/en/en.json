@@ -1,6 +1,10 @@
 {
   "siteTitle": "Stylo",
   "lang": "en",
+  "description": "Stylo is a text editor that simplifies writing and editing scientific articles in the Human and Social Sciences.",
+  "rights": "Licence Creative Commons [CC BY-SA 4.0] – Canada Research Chair on digital textualities",
+
+  "sectionTitle": "Documentation",
 
   "menu": [
     {

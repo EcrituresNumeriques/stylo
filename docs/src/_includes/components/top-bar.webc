@@ -1,3 +1,40 @@
+<!---- Barre transversale ---->
+<!----
+À combiner avec d’autres composantes (top-bar-brand, top-bar-link, top-bar-separator, ...).
+Voir le dossier components.
+
+Note: cette barre ne se préoccupe pas de son propre positionnement dans une disposition (layout) sur la page;
+elle est insérée telle quelle et s’adaptera à la largeur de son contenant.
+
+Slots:
+  * button
+  * brand
+  * [default] débordement horizontal fluide
+
+Usage:
+  <top-bar-brand>
+    <top-bar-link></top-bar-link>
+    <top-bar-link></top-bar-link>
+    <top-bar-link></top-bar-link>
+  </top-bar-brand>
+
+
+  <top-bar-brand>
+    <button
+      slot="button"
+    >Menu</button>
+
+    <h1
+      slot="brand"
+    ></h1>
+
+    <top-bar-link></top-bar-link>
+    <top-bar-link></top-bar-link>
+    <top-bar-link></top-bar-link>
+  </top-bar-brand>
+
+---->
+
 <template webc:nokeep>
   <slot name="button"></slot>
 

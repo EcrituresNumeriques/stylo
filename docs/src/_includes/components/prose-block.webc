@@ -1,3 +1,16 @@
+<!---- Prose Block ---->
+<!----
+Rendu typographique homogène des contenus entrés par l’utilisateur (ex. HTML provenant du markdown).
+
+Usage:
+
+  <prose-block>
+    <h2>Chapitre 1</h2>
+
+    <p>Blah blah blah</p>
+  </prose-block>
+---->
+
 <template webc:nokeep @html="content">
 </template>
 
@@ -14,6 +27,9 @@
     margin-bottom: 1.5rem;
     line-height: var(--interlignage-corps, 150%);
     font-family: var(--police-corps, inherit);
+
+    /* L’attribut `lang` doit être spécifié dans le document pour que les césures fonctionnent */
+    hyphens: auto;
   }
 
   /* Blocs de citation */
@@ -52,7 +68,7 @@
     /* Typographie */
     font-family: var(--police-entetes, inherit);
     font-weight: var(--graisse-entetes, bold);
-    line-height: var(--interlignage-entetes, inherit);
+    line-height: var(--interlignage-entetes, 115%);
   }
 
   /* Ne pas ajouter d’espace avant lorsque l’en-tête est le premier élément */
@@ -111,6 +127,12 @@
 
     /* défilement si le texte déborde */
     overflow-x: auto;
+  }
+
+  /* Images */
+  img {
+    max-width: 100%;
+    height: auto;
   }
 
   /* Tableaux */

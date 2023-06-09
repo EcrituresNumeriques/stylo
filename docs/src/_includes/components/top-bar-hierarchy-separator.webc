@@ -1,0 +1,39 @@
+<!---- Séparateur de hiérarchie (avec un chevron) ---->
+<!----
+
+Usage:
+
+  <top-bar-link></top-bar-link>
+  <top-bar-hierarchy-separator></top-bar-hierarchy-separator>
+  <top-bar-link></top-bar-link>
+---->
+
+<template webc:nokeep webc:root>
+  <chevron-right-icon size="13"></chevron-right-icon>
+</template>
+
+<style webc:scoped>
+  :host {
+    --separator-width: 1px;
+    --separator-height: .5rem;
+
+    /* Reset `display` property on webc element */
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 0;
+
+    /* Assumes flex child */
+    align-self: center;
+
+    /* Horizontal spacing */
+    margin: auto .25rem;
+
+    /* Color */
+    color: var(--neutre);
+
+    /* No cursor interaction */
+    user-select: none;
+  }
+</style>

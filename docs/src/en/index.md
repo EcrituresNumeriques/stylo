@@ -1,3 +1,7 @@
+---
+isHome: true
+---
+
 # Stylo - a semantic text editor
 
 **📢If you encounter any difficulties with Stylo, do not hesitate to contact us : [write here](mailto:crc.ecrituresnumeriques@gmail.com)**.

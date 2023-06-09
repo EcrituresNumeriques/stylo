@@ -1,5 +1,10 @@
+<!---- Document Title ---->
 <!----
-  Utilisation:
+Les éléments WebC ne peuvent pas être inclus tels quels dans le <head>.
+Il faut donc utiliser la directive `webc:is`.
+https://www.11ty.dev/docs/languages/webc/#components
+
+Usage:
 
   <title webc:is="document-title"></title>
 ---->

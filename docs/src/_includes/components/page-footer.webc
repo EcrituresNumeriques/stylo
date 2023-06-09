@@ -1,3 +1,13 @@
+<!---- Pied de page ---->
+<!----
+Pied de page partagé par les documents.
+Exploite la variable globale `rights`.
+
+Usage:
+
+  <document-footer></footer>
+---->
+
 <div class="document-footer">
   <div
     class="document-footer__rights"

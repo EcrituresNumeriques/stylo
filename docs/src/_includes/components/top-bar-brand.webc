@@ -1,0 +1,60 @@
+<!---- Ancre principale de la barre transversale ---->
+<!----
+
+Docs:
+  @prop href {String}
+  @prop text {String}
+
+Usage:
+  <top-bar-brand
+    @href="/mon-url"
+    @text="Nom du truc"
+  ></top-bar-brand>
+
+
+  <top-bar-brand
+    :@href="siteUrl"
+    :@text="siteTitle"
+  ></top-bar-brand>
+---->
+
+<a
+  :href="href"
+  @text="text"
+  class="top-bar-brand"
+></a>
+
+<style webc:scoped>
+  .top-bar-brand {
+    --brand-background-color: var(--azur-aoste);
+    --brand-text-color: #fff;
+    --brand-triangle-size: .85rem;
+
+    /* Positionnement du titre dans la barre */
+    /*margin: .35rem .75rem;*/
+    padding: .35rem .5rem;
+    font-size: .75rem;
+    position: relative;
+    background-color: var(--brand-background-color);
+    color: var(--brand-text-color);
+    margin-inline-end: var(--brand-triangle-size);
+
+    /* Typographie */
+    font-weight: bold;
+  }
+
+  /* Pour compléter la en forme angulaire */
+  .top-bar-brand::after {
+    content: '';
+    position: absolute;
+    background-color: var(--brand-background-color);
+    height: 100%;
+    width: var(--brand-triangle-size);
+    top: 0;
+    left: 100%;
+    /* Triangle clip-path */
+    clip-path: polygon(0% 0%,
+    50% 50%,
+    0% 100%);
+  }
+</style>
