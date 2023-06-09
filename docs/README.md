@@ -26,27 +26,44 @@ la documentation de chaque langue se trouve dans le sous-dossier respectif (`fr/
 └── uploads/             # fichiers statiques, qui seront copiés tels quels dans la destination
 ```
 
-## Pour contribuer au site
+<details>
+<summary>Métadonnées d’une page de documentation</summary>
 
-Prérequis :
+- `title` : le titre doit figurer dans les métadonnées (préambule `front-matter`)
+- `date` : on voudra généralement afficher la date de dernière modification. Avec Eleventy, qui est en mesure de récupérer la date du dernier commit du fichier (ou de lire sa date de création), il s’agit d’utiliser la valeur `"Last Modified"`. Il est aussi possible d’insérer une date fixe manuellement, ex. `2023-05-01`.
+- `isHome` : s’il s’agit de la page d’accueil, on ajoutera la propriété `isHome` avec la valeur booléenne `true`.
+- `useSideMenu` : pour masquer la barre latérale sur la page, on peut insérer la valeur booléenne `false`.
+
+Exemple :
+```yaml
+---
+title: "Titre de la page"
+date: Last Modified
+---
+```
+</details>
+
+## Pour contribuer au site (avec installation locale)
+
+Prérequis :
 
 * [NodeJS](https://nodejs.org/fr) (environnement de programmation JavaScript)
 * `npm` ou [`pnpm`](https://pnpm.io/) (gestionnaire de dépendances pour NodeJS)
 * Un terminal (interface en ligne de commande)
 
-Installer les dépendances (listées dans le fichier `package.json`) :
+Installer les dépendances (listées dans le fichier `package.json`) :
 
 ```shell
 npm install # (ou pnpm)
 ```
 
-Pour lancer un serveur de développement en local à l’adresse http://localhost:8080 :
+Pour lancer un serveur de développement en local à l’adresse http://localhost:8080 :
 
 ```shell
 npm start
 ```
 
-Pour construire le site dans le dossier `_site` :
+Pour construire le site dans le dossier `_site` :
 
 ```shell
 npm build
