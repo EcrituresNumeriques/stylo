@@ -1,9 +1,8 @@
-<!---- Disposition potentielle pour une page d’accueil (à peu près vide pour l’instant) ---->
-
 <!doctype html>
 <html webc:keep
       :lang="lang"
 >
+  <!---- Disposition potentielle pour une page d’accueil (à peu près vide pour l’instant) ---->
 
 <head>
   <meta charset="utf-8">

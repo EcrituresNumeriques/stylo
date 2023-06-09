@@ -1,6 +1,6 @@
-<!---- Disposition pour la documentation ---->
 <!doctype html>
 <html :lang="lang">
+  <!---- Disposition pour la documentation ---->
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
