@@ -304,7 +304,10 @@
     .grid-area--page-sidebar {
       grid-area: center-sidebar;
 
-      border-left: 1px solid var(--couleur-fond-accent);
+      /* Espace pour bordure */
+      padding-inline-start: var(--center-padding);
+      margin-inline-start: 0;
+      border-inline-start: 1px solid var(--couleur-fond-accent);
 
       /* Éviter que l’élément prenne la pleine hauteur */
       align-self: start;

@@ -2,6 +2,7 @@
 title: "Stylo - un éditeur de texte sémantique"
 useSideMenu: true
 isHome: true
+date: Last Modified
 ---
 
 <alert-block heading="📢 Nouvelle mise à jour">
