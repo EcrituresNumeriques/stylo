@@ -135,6 +135,17 @@ Usage:
     height: auto;
   }
 
+  /* Règles horizontales */
+  hr {
+    --hr-border-color: var(--couleur-fond-accent);
+    --hr-border-width: 1px;
+    --hr-vertical-margin: 2.5rem;
+
+    border: 0;
+    border-top: var(--hr-border-width) solid var(--hr-border-color);
+    margin: var(--hr-vertical-margin) 0;
+  }
+
   /* Tableaux */
   table {
     --table-padding: .25rem;
