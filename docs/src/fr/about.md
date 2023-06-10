@@ -1,7 +1,6 @@
 ---
 title: À propos de **_Stylo_**
 useSideMenu: true
-date: Last Modified
 ---
 
 
