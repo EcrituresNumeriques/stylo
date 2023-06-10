@@ -30,7 +30,7 @@ Quelques changements graphiques ont été apportés pour rafraîchir un peu l'in
 
 ![](/uploads/images/stylo-v2-interface.png)
 
-![](uploads/images/stylo-v2-voletsOuverts.png)
+![](/uploads/images/stylo-v2-voletsOuverts.png)
 
 
 ## Un nouvel éditeur de texte
@@ -41,8 +41,8 @@ L'éditeur de texte, pièce centrale de Stylo, a été complètement refondu ! N
 - l'utilisation d'expressions régulières ;
 - un comportement plus précis de la fonctionnalité de comparaison entre différentes versions d'un même document (fonctionnement ligne à ligne).
 
-![](uploads/images/stylo-v2-regex.png)
-![](uploads/images/stylo-v2-diff.png)
+![](/uploads/images/stylo-v2-regex.png)
+![](/uploads/images/stylo-v2-diff.png)
 
 
 ## Autocomplétion
@@ -54,7 +54,7 @@ Grâce au nouvel éditeur de texte, nous pouvons automatiser certains aspects de
 
 Fort de notre expérience en matière de chaîne basée sur le concept de *single source publishing* (génération de plusieurs formats de sortie à partir d'une seule source), nous sommes repartis de zéro pour vous proposer un nouveau module d'export plus stable, plus beau et plus performant. Contrairement au module *legacy* (l'ancien export), le nouveau module d'export permet dorénavant un export au format XML-TEI Commons Publishing, schéma partagé par l'infrastructure [Métopes](http://www.metopes.fr/) et [OpenEdition](https://www.openedition.org/) !
 
-![](uploads/images/stylo-v2-export.png)
+![](/uploads/images/stylo-v2-export.png)
 
 
 ## Service web Pandoc

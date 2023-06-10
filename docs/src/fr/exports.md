@@ -28,14 +28,14 @@ Trois modèles sont proposés :
 
 <iframe src="http://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/pdf/testPlanCours.pdf" title="testPlanCours" width="100%" height="500" allowfullscreen></iframe>
 
-![Ouvrir dans nouvelle page](uploads/pdf/testPlanCours.pdf)
+![Ouvrir dans nouvelle page](/uploads/pdf/testPlanCours.pdf)
 
 
 - Le modèle de L'École de bibliothéconomie et des sciences de l'information (EBSI)
 
 <iframe src="http://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/pdf/test.pdf" title="testEBSI" width="100%" height="500" allowfullscreen></iframe> 
 
-![Ouvrir dans nouvelle page](uploads/pdf/test.pdf)
+![Ouvrir dans nouvelle page](/uploads/pdf/test.pdf)
 
 
 ### Modèle DLLF

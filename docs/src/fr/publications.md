@@ -6,7 +6,9 @@ La CRCEN organise des sessions de permanence hebdomadaire pour le suivi de l'éd
 
 Les sessions ont lieu chaque jeudi matin de 11h à 12h (heure de Montréal).
 
-La participation et le suivi de ces sessions est libre et disponible en ligne en visioconférence : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Rejoignez la permanence en visioconférence</a>
+La participation et le suivi de ces sessions est libre et disponible en ligne en visioconférence :
+
+<link-button href="https://meet.jit.si/stylo" color="hyperlink">Rejoignez la permanence en visioconférence</link-button>
 
 # Publications
 
@@ -30,7 +32,7 @@ Stylo a été présenté lors de plusieurs événements scientifiques et profess
 
 - [Journées Médici 2018](https://medici2018.sciencesconf.org/) (Métiers de l’édition scientifique publique), « Vers l’édition scientifique 4.0 ? »,  septembre 2018 : [présentation](https://ecrituresnumeriques.github.io/s_StyloMedici/) et [démonstration](https://www.youtube.com/embed/qcwEqbcxBF8) (Nicolas Sauret et Marcello Vitali-Rosati)
 
-- [Conférence DH Montréal](https://dh2017.adho.org/program-2/abstracts/), « Stylo : Repenser la chaîne éditoriale numérique pour les revues savantes en sciences humaines », août 2017 : [poster](uploads/pdf/poster_Stylo_DH2017.pdf) et [résumé](https://dh2017.adho.org/abstracts/224/224.pdf) (en anglais) (Emmanuel Château, Arthur Juchereau, Servanne Monjour, Nicolat Sauret, Michael Sinatra et Marcello Vitali-Rosati)
+- [Conférence DH Montréal](https://dh2017.adho.org/program-2/abstracts/), « Stylo : Repenser la chaîne éditoriale numérique pour les revues savantes en sciences humaines », août 2017 : [poster](/uploads/pdf/poster_Stylo_DH2017.pdf) et [résumé](https://dh2017.adho.org/abstracts/224/224.pdf) (en anglais) (Emmanuel Château, Arthur Juchereau, Servanne Monjour, Nicolat Sauret, Michael Sinatra et Marcello Vitali-Rosati)
 
 ---
 

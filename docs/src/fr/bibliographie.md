@@ -47,7 +47,7 @@ Une fonction d'autocomplétion est implémentée. Il vous suffit de commencer à
 
 Vous pouvez aussi cliquer sur l'icône associée à la référence dans le volet de gauche, puis la coller (Ctrl+V) dans le texte à l'endroit souhaité. Elle apparaîtra alors ainsi `[@shirky_here_2008]`. Pour bien comprendre, un clic consiste à "copier" la clé BibTeX de la référence dans le presse-papier. 
 
-![Bibliographie exemple](uploads/images/Bibliographie-Exemple-V2.PNG)
+![Bibliographie exemple](/uploads/images/Bibliographie-Exemple-V2.PNG)
 
 Insérer une clé BibTeX dans le corps de texte a deux effets :
 

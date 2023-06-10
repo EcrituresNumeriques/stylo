@@ -164,7 +164,7 @@ Each version contains many functions:
 
 - For a previous version :
 	- **[Compare]** to compare different versions (a previous version and the current version or two previous versions). For more information of the **[Compare]** function, you can consult this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/interface.md)
-	- ![Export](uploads/images/ExportE.png) : to export and download the document in different formats: HTML5, XML érudit, etc.
+	- ![Export](/uploads/images/ExportE.png) : to export and download the document in different formats: HTML5, XML érudit, etc.
 	- **[preview]** to access a preview of your work and to annotate it. For more information on the **[preview]** function, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/preview.md)
 
 To view a previous version, you must click on its title. To return to the editable version, you must click on the **[Edit]** button.
@@ -176,7 +176,7 @@ For more information on Stylo exporting, you can see this [page](http://stylo-do
 
 ## Summary
 
-![sommaire](uploads/images/sommaire.png)
+![sommaire](/uploads/images/sommaire.png)
 
 The summary appears in a list of titles at levels 1, 2, and so on. These titles are clickable, for quick access to that part of the corresponding text.
 
@@ -195,13 +195,13 @@ You can directly [structure your references in BibTex](http://www.andy-roberts.n
 
 To add a reference to the article, you just need to click on the reference, then paste (Ctrl+V) the reference in the desired place of the text. This way, a click is the same as "copying" the reference key to the clipboard. Then, you just need to paste it into the text body.
 
-![biblioex](uploads/images/biblioex.png)
+![biblioex](/uploads/images/biblioex.png)
 
 For more information on managing the bibliography, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/bibliographie.md)
 
 ## Metadata
 
-![metadata](uploads/images/metadata.png)
+![metadata](/uploads/images/metadata.png)
 
 The [Metadata] button allows you to open the metadata pane. Three editing modes are available:
 
@@ -218,11 +218,11 @@ For more information on metadata editing, you can see this [page](http://stylo-d
 
 **Careful**: in the metadata pane is the "Bibliography" division, including the *Display* option, which allows you to choose to view the bibliography either in its entirety ("All citations"), or just the references which have been cited in the body of the article ("Only used"). 
 
-![All citation](uploads/images/allCitation.png)
+![All citation](/uploads/images/allCitation.png)
 
 ## Statistics
 
-![statistiques](uploads/images/statistiques.png)
+![statistiques](/uploads/images/statistiques.png)
 
 The *Stats* menu provides information on:
 
@@ -240,7 +240,7 @@ There are two annotation possibilities:
 
 To annotate a version, click on the version number you want to annotate and then click **[preview]**. A preview of the article in HTML will open with the annotation tool *Hypothes.is* on the right.
 
-![Hypothes.is](uploads/images/Hypothesis.png)
+![Hypothes.is](/uploads/images/Hypothesis.png)
 
 **Important**: If you annotate a version, your annotation will not be visible on the other version.
 

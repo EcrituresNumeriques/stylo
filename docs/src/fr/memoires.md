@@ -38,7 +38,7 @@ Mais il est également possible de structurer cette bibliographie : dans un mém
 
 1. Dans les métadonnées du mémoire, il faut déclarer les différentes sections de la bibliographie. Pour cela, passez les métadonnées en mode _raw_
 
-![rawmode](uploads/images/alpha_rawmode.png)
+![rawmode](/uploads/images/alpha_rawmode.png)
 
 Puis à la fin, avant `---`, ajoutez les lignes suivantes :
 
@@ -67,7 +67,7 @@ L'export du mémoire se fait à travers un template LaTeX dédié. Il correspond
 D'autres templates (modèles) seront disponibles prochainement.
 
 <!-- à quoi correspond cette image ? en commentaire pour le moment -->
-<!-- ![exportbook](uploads/images/alpha_exportbook.png) -->
+<!-- ![exportbook](/uploads/images/alpha_exportbook.png) -->
 
 Plusieurs options sont disponibles :
 

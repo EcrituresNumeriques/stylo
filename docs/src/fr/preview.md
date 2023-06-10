@@ -10,17 +10,17 @@ Pour prévisualiser un article, il est possible :
 
 - De cliquer sur le bouton "Preview" depuis la page "Mes articles", à droite de l'icône "Edit" :
 
-![Preview](uploads/images/PreviewPageArticles.PNG)
+![Preview](/uploads/images/PreviewPageArticles.PNG)
 
 - De cliquer sur le bouton "Preview" depuis la page d'édition de l'article, en haut à droite du corps de texte : 
 
-![Preview](uploads/images/PreviewPageEdition-V2.PNG)
+![Preview](/uploads/images/PreviewPageEdition-V2.PNG)
 
 La prévisualisation est disponible via un permalien qui reste le même pour toute la vie de l'article. Si l'article est modifié, le lien de prévisualisation montrera la dernière version de l'article (pensez à rafraîchir la page pour voir les modifications).
 
 Il est possible aussi de prévisualiser une version particulière de l'article. Pour ce faire, il faut cliquer sur le bouton "Preview" dans la page d'édition de l'article, dans la colonne de gauche, à l'intérieur du sous-menu "Versions".
 
-![Preview](uploads/images/PreviewSousMenuVersions-V2.PNG)
+![Preview](/uploads/images/PreviewSousMenuVersions-V2.PNG)
 
 Le lien de visualisation d'une version affiche toujours la version sauvegardée.
 

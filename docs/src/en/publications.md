@@ -8,7 +8,8 @@ The sessions take place every Thursday morning from 11am to 12pm (Montreal time)
 
 Participation in, and attendance to, these sessions are free and available online via videoconference: 
 
-<a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Reach the helpdesk by videoconference</a> 
+<link-button href="https://meet.jit.si/stylo" color="hyperlink">Reach the helpdesk
+by videoconference</link-button>
 
 # Resources - Publications
 
@@ -32,7 +33,7 @@ The *Canada Research Chair in Digital Textualities* has presented Stylo at vario
 
 - [Médici Conference](https://medici2018.sciencesconf.org/), “Vers scientific publishing 4.0?”, September 2018: [Presentation](https://ecrituresnumeriques.github.io/s_StyloMedici/) and [video](https://www.youtube.com/embed/qcwEqbcxBF8) (Nicolas Sauret and Marcello Vitali-Rosati)
 
-- [Montréal DH Conference](https://dh2017.adho.org/program-2/abstracts/), « Stylo : Repenser la chaîne éditoriale numérique pour les revues savantes en sciences humaines », August 2017: [Poster](uploads/pdf/poster_Stylo_DH2017.pdf) and [abstract](https://dh2017.adho.org/abstracts/224/224.pdf) (Emmanuel Château, Arthur Juchereau, Servanne Monjour, Nicolat Sauret, Michael Sinatra et Marcello Vitali-Rosati)
+- [Montréal DH Conference](https://dh2017.adho.org/program-2/abstracts/), « Stylo : Repenser la chaîne éditoriale numérique pour les revues savantes en sciences humaines », August 2017: [Poster](/uploads/pdf/poster_Stylo_DH2017.pdf) and [abstract](https://dh2017.adho.org/abstracts/224/224.pdf) (Emmanuel Château, Arthur Juchereau, Servanne Monjour, Nicolat Sauret, Michael Sinatra et Marcello Vitali-Rosati)
 
 ---
 

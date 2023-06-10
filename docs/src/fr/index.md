@@ -37,7 +37,9 @@ Stylo est désormais connecté à [HumanID](https://humanid.huma-num.fr/) et acc
 
 ---
 
-<a class="btn btn-info" href="https://stylo.huma-num.fr" role="button">Tester Stylo</a> <a class="btn btn-info" href="/fr/premierspas" role="button">Premiers pas</a> <a class="btn btn-info" href="https://ia803205.us.archive.org/13/items/stylo-doc-fr/StyloDocFR.mp4" role="button">Vidéo-Démo</a>
+<link-button href="https://stylo.huma-num.fr" size="small" color="default">Tester Stylo</link-button> &nbsp;
+<link-button href="/fr/premierspas" size="small" color="default">Premiers pas</link-button> &nbsp;
+<link-button href="https://ia803205.us.archive.org/13/items/stylo-doc-fr/StyloDocFR.mp4" size="small" color="default">Vidéo-Démo</link-button>
 
 ---
 
