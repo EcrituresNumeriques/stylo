@@ -19,6 +19,9 @@ Usage:
      (qui peut avoir été écrit en markdown par exemple).
    */
   :host {
+    /* Fixons la largeur maximale que peut atteindre le contenu (éviter les lignes trop longues) */
+    max-width: 60ch; /* ch = character unit -- https://caniuse.com/ch-unit */
+
     line-height: var(--interlignage-corps, 150%);
   }
 
