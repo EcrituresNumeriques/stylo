@@ -124,6 +124,34 @@ Ce bloc permet d’afficher graphiquement un message important, selon les besoin
 ```
 </details>
 
+
+<details>
+<summary>&lt;link-button&gt;</summary>
+
+Il est possible d’utiliser un style « bouton » pour donner une affordance particulière aux ancres (hyperliens).
+
+Trois tailles sont disponibles&nbsp;:
+ 
+- normal (vide, par défaut)
+- `small`
+- `large`
+
+Quelques couleurs sont disponibles&nbsp;:
+
+- (vide, par défaut)
+- `hyperlink`
+- `danger`
+
+```html
+<link-button href="/mon-url">Mon lien</link-button>
+```
+
+```html
+<link-button href="/mon-url" size="small" color="hyperlink">Mon petit lien</link-button>
+```
+</details>
+
+
 ### Fichiers statiques (images, etc.)
 
 Les fichiers statiques, tels que des images, peuvent être placés dans le dossier `uploads/` figurant à la racine de la documentation. Tous les fichiers de ce répertoire seront copiés tels quels et doivent être référencés avec un chemin absolu (avec une barre oblique `/` au début). Par exemple&nbsp;: `/uploads/images/<mon-fichier.ext>`.
