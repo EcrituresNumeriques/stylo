@@ -169,7 +169,6 @@ La prévisualisation Stylo implémente l'affichage des classes sémantiques suiv
 Il est possible de baliser un élément textuel avec plusieurs attributs. Par exemple :
 
 ```markdown
-
 ::: {.infogeo}
 
 [Athènes]{.ville id="https://www.wikidata.org/wiki/Q1524" gps="37.58.46N, 23.42.58E"} est la capitale de la Grèce.
@@ -188,21 +187,18 @@ donnera en HTML :
 Il est également possible d'utiliser ce balisage sémantique pour structurer les données en RDFa, voici deux exemples :
 
 ```markdown
-
 Auteur du texte : [John Dewey]{property="dc:creator"}
 ```
 
 donnera en HTML :
 
 ```html
-
 <p>Auteur du texte : <span data-property="dc:creator">John Dewey</span></p>
 ```
 
 Deuxième exemple :
 
 ```markdown
-
 John Dewey est né le [20 octobre 1859]{property="dc:date" content="1859-10-20"}.
 
 ```
@@ -210,7 +206,6 @@ John Dewey est né le [20 octobre 1859]{property="dc:date" content="1859-10-20"}
 donnera en HTML :
 
 ```html
-
 <p>John Dewey est né le <span property="dc:date" content="1859-10-20">20 octobre 1859</span></p>
 
 ```
@@ -238,11 +233,11 @@ Par exemple, la syntaxe :
 
 donnera :
 
-|Nom    |Prénom|Date de naissance|Lieu de naissance|Couleur des yeux|
-|:------ |:---|:-:|:-:|---:|
-|Bianchini|Francesco|3-1-1920|Scandicci|Bleux|
-|Dupont|Pierre|7-9-1989|Chicoutimi|Verts|
-|Gianna|Bienfaisant|9-10-2005  |Florence|Marrons   |
+| Nom        | Prénom      | Date de naissance | Lieu de naissance | Couleur des yeux |
+|:-----------|:------------|:-----------------:|:-----------------:|-----------------:|
+| Bianchini  | Francesco   |     3-1-1920      |    Scandicci      |            Bleux |
+| Dupont     | Pierre      |     7-9-1989      |    Chicoutimi     |            Verts |
+| Gianna     | Bienfaisant |     9-10-2005     |     Florence      |          Marrons |
 
-1. <span id="note-1">Une note de bas de page avec appel et renvoi. <a href="syntaxemarkdown.md#note-1-b">↩</a></span>
-2. <span id="note-2">Une note de bas de page inline. <a href="syntaxemarkdown.md#note-2-b">↩</a></span>
+1. <span id="note-1">Une note de bas de page avec appel et renvoi. <a href="#note-1-b">↩</a></span>
+2. <span id="note-2">Une note de bas de page inline. <a href="#note-2-b">↩</a></span>

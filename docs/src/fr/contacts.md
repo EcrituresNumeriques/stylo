@@ -1,4 +1,6 @@
-# Contact
+---
+title: Contact
+---
 
 Stylo est développé par l'équipe de la [Chaire de recherche du Canada sur les écritures numériques](https://ecrituresnumeriques.ca/fr/Equipe) et par l'entreprise PiNinja.
 

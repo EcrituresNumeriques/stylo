@@ -1,8 +1,9 @@
-# Preview and annotate an article
-
+---
+title: Preview and annotate an article
 ---
 
 ## Preview
+
 It is possible to preview a Stylo article in HTML with a default layout.
 
 To preview an article, it is possible:

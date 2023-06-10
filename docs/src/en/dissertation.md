@@ -1,4 +1,7 @@
-# Dissertations and theses
+---
+title: Dissertations and theses
+---
+
 Stylo can be used to create more complex documents than articles, such as dissertations or theses, this feature is called **Books**.
 
 **Warning: this option is not fully functional, we recommend that you wait for future updates before using it as a final rendering.
@@ -35,7 +38,7 @@ But it is also possible to structure this bibliography: in a dissertation or a t
 
 1. In the metadata of the dissertation, you must declare the different sections of the bibliography. To do this, switch the metadata to raw mode
 
-![rawmode](uploads/images/alpha_rawmode.png)
+![rawmode](/uploads/images/alpha_rawmode.png)
 
 Then at the end, before `---`, add the following lines:
 

@@ -1,10 +1,10 @@
-# Manage my articles
-
+---
+title: Manage my articles
 ---
 
 Your articles are available on the page *Articles*, clickable via the sidebar of your Stylo account:
 
-![BarreLaterale](uploads/images/BarreLaterale.png)
+![BarreLaterale](/uploads/images/BarreLaterale.png)
 
 At the top of this page, there are a number of functions:
 
@@ -12,7 +12,7 @@ At the top of this page, there are a number of functions:
 - Edit and manage tags
 - Search for an article
 
-![BarreLaterale2](uploads/images/BarreLaterale2.png)
+![BarreLaterale2](/uploads/images/BarreLaterale2.png)
 
 ## Create a new article
 
@@ -20,19 +20,19 @@ Click on the button "Create a new article" (you must enter the title of the arti
 
 To create a new article, just click on the button:
 
-![Nouvel article](uploads/images/Create.png).
+![Nouvel article](/uploads/images/Create.png).
 
 You must then enter the name of the document in the appropriate field:
 
-![nommer un article](uploads/images/Title.png)
+![nommer un article](/uploads/images/Title.png)
 
 and validate by clicking on the button:
 
-![Nouvel article](uploads/images/Create-Validation.png).
+![Nouvel article](/uploads/images/Create-Validation.png).
 
 While doing this, you can also add tags to the article by clicking on the button:
 
-![Add Tags](uploads/images/AddTag.png)
+![Add Tags](/uploads/images/AddTag.png)
 
 **Careful**: you can only add tags that are already edited in your Stylo account.
 
@@ -42,24 +42,24 @@ The article will now appear in your list of articles.
 
 To create and edit your tags, click on "Manage tags". A left pain the appears:
 
-![TagManage](uploads/images/TagManage.png)
+![TagManage](/uploads/images/TagManage.png)
 
 You can clock on the tag name to select from your list of articles, only the articles related to the tag in question.
 
 You can view the tag details but clicking on the rafter, which is positioned beside the tag name:
 
-![TagDetail](uploads/images/TagDetail.png)
+![TagDetail](/uploads/images/TagDetail.png)
 
 You then have access to the tag description in reading mode, but also to many other functions:
 
 |Button|Function|
 |:-:|:--|
-| ![Delete](uploads/images/DeleteTag.png) | To delete the tag|
-| ![Edit](uploads/images/EditTag.png) | To open the tag in editing|
+| ![Delete](/uploads/images/DeleteTag.png) | To delete the tag|
+| ![Edit](/uploads/images/EditTag.png) | To open the tag in editing|
 
 The tag editing mode looks like this:
 
-![TagDetail2](uploads/images/TagDetail2.png)
+![TagDetail2](/uploads/images/TagDetail2.png)
 
 This space allows you to:
 
@@ -77,44 +77,44 @@ A search sidebar appears to allow searching within your articles.
 
 On your Article page, your articles are listed one below the other according to your most recent changes:
 
-![Articles](uploads/images/Articles.png)
+![Articles](/uploads/images/Articles.png)
 
 Each article appears as a block in your list. This space is designed for just one article, and only allows you to perform a number of immediate operations:
 
 |Button|Function|
 |:-:|:--|
-| ![Rename](uploads/images/Rename.png) | To rename the article|
-| ![See](uploads/images/See.png) |  To preview the article|
-| ![Share](uploads/images/Share.png) | To share the article and its version history with
+| ![Rename](/uploads/images/Rename.png) | To rename the article|
+| ![See](/uploads/images/See.png) |  To preview the article|
+| ![Share](/uploads/images/Share.png) | To share the article and its version history with
 another Stylo user which will be called: "[Copy]Article title"|
-| ![Duplicate](uploads/images/Duplicate.png) | To duplicate only the last version of the article|
-| ![Export](uploads/images/Export.png) | To print only the last version of the article|
-| ![Edit](uploads/images/Edit.png) | To open the article in editing mode|
-| ![Delete](uploads/images/Delete.png) | To delete the article.|
+| ![Duplicate](/uploads/images/Duplicate.png) | To duplicate only the last version of the article|
+| ![Export](/uploads/images/Export.png) | To print only the last version of the article|
+| ![Edit](/uploads/images/Edit.png) | To open the article in editing mode|
+| ![Delete](/uploads/images/Delete.png) | To delete the article.|
 
 You can also expand the article block by clicking on the rafter, positioned to the left of your article title. You will then have access to:
 
 |Button|Function|
 |:-:|:--|
-| ![Versions](uploads/images/Version.png) | To consult the history of saved versions|
-| ![Tag](uploads/images/Tag.png) | To select the tags of the article|
+| ![Versions](/uploads/images/Version.png) | To consult the history of saved versions|
+| ![Tag](/uploads/images/Tag.png) | To select the tags of the article|
 
 
 ## Rename an article
 
 You can rename your article by clicking on the "Rename" button, positioned beside you're your article\'s current title and shown with a pencil icon:
 
-![AncienTitre](uploads/images/AncienTitre.png)
+![AncienTitre](/uploads/images/AncienTitre.png)
 
 After having changed the article title to your liking, do not forget to save:
 
-![Renommer](uploads/images/Renommage.png)
+![Renommer](/uploads/images/Renommage.png)
 
 ## Preview an article
 
 You can preview your article by clicking on the following icon:
 
-![See](uploads/images/See.png)
+![See](/uploads/images/See.png)
 
 Previewing allows you to read the content of the article and the [annotation](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/preview.md).
 
@@ -122,17 +122,17 @@ Previewing allows you to read the content of the article and the [annotation](ht
 
 You can also share your article with other Stylo users by clicking on the following icon:
 
-![Share](uploads/images/Share.png)
+![Share](/uploads/images/Share.png)
 
 To share, you must enter the email address of the Stylo user: it must be the address that the user entered to create the Stylo account. Once the address is entered, you must add to the list of users by clicking the button "Add".
 
-![Share](uploads/images/Share2.png)
+![Share](/uploads/images/Share2.png)
 
 The [Share] function allows many Stylo users to work on the same article. These users therefore have access to the entire history. The article versions will synchronise for all the users as changes are made to the document.
 
 This function also allows you to send the article with the same system:
 
-![Send](uploads/images/Send.png)
+![Send](/uploads/images/Send.png)
 
 The [Send] option is not sharing the article; only the last version of the article will be visible for the user, and the changes will not be visible to other users. In the [Send] process, two versions of the article are created and the users each work on a version that is not visible for the other.
 
@@ -140,7 +140,7 @@ The [Send] option is not sharing the article; only the last version of the artic
 
 You can duplicate your article by clicking on the following icon:
 
-![Duplicate](uploads/images/Duplicate.png)
+![Duplicate](/uploads/images/Duplicate.png)
 
 A duplicate of the article will then be generated and will appear at the top of the list of your Stylo articles. This article will be automatically titled as follows: "[Copy] Article title". This duplicate is created from the current article version (the one that you are in the process of editing) and does not contain the version history.
 
@@ -148,11 +148,11 @@ A duplicate of the article will then be generated and will appear at the top of 
 
 To export an article, you must click on the "Export" button, then the page "My articles", or from the article editing page:
 
-![Export](uploads/images/Export.png)
+![Export](/uploads/images/Export.png)
 
 The export menu allows you to choose the export format, the bibliographical style and whether or not to integrate the contents table.
 
-![Export](uploads/images/export2.png)
+![Export](/uploads/images/export2.png)
 
 Supported formats are:
 
@@ -185,13 +185,13 @@ For more information on using the templates, see this [tutoriel](https://framagi
 
 To expand other article functions, you must click on the rafter, positioned to the left of the title of your article:
 
-![Plus](uploads/images/plus.png)
+![Plus](/uploads/images/plus.png)
 
 ### Access versions of the article
 
 You then have access to the major and minor versions of the articles: clicking on the name of a version takes you to the page in \"Editing\" mode of the respective version.
 
-![Versions](uploads/images/Version.png)
+![Versions](/uploads/images/Version.png)
 
 **Careful**: the page version to which you have access, although it is in \"Editing\" mode, does not allow you to change the content of the article. This is just a reading mode page from which you can [export]() and [compare]().
 
@@ -199,20 +199,20 @@ You then have access to the major and minor versions of the articles: clicking o
 
 You can also assign tags to your article from the list of current tags, simply by clicking on the tag you wish to add.
 
-![TagEdit](uploads/images/TagE.png)
+![TagEdit](/uploads/images/TagE.png)
 
 **Careful**: to create tags, you must refer to the [Manage tags] tool.
 
-![BarreLaterale2](uploads/images/BarreLaterale2.png)
+![BarreLaterale2](/uploads/images/BarreLaterale2.png)
 
 ### Delete an article
 
 To delete an article in your list of articles, click on the following icon:
 
-![Delete](uploads/images/Delete.png)
+![Delete](/uploads/images/Delete.png)
 
 A red tab will automatically open, informing you that your file will be deleted:
 
-![Delete2](uploads/images/Delete2.png)
+![Delete2](/uploads/images/Delete2.png)
 
 To permanently delete your article, you must double click on "Delete".

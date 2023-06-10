@@ -1,11 +1,11 @@
-# First steps with Stylo
-
+---
+title: First steps with Stylo
 ---
 
 ## Creating an account
 To use Stylo, creating a user account is necessary. To create an account, please click [here](https://stylo.huma-num.fr/register) and fill in the mandatory fields
 
-![Register](uploads/images/Register.png)
+![Register](/uploads/images/Register.png)
 
 If you already have an account, sign-in [here](https://stylo.huma-num.fr).
 
@@ -18,14 +18,14 @@ For each article, many actions are possible:
 
 |Button|Function|
 |:-:|:--|
-| ![Edit](uploads/images/Edit.png) | To open the article and edit|
-| ![Share](uploads/images/Share.png) | To share the article and its version history with another Stylo user. It will be called: "[Copy]New article"|
-| ![Duplicate](uploads/images/Duplicate.png) | To duplicate only the last version of the article|
-| ![Rename](uploads/images/Rename.png) | To rename the article|
-| ![Plus](uploads/images/plus.png) | To expand other functions relating to the article|
-|| ![Versions](uploads/images/Version.png) | To consult the history of saved versions|
-|| ![Tag](uploads/images/Tag.png) | To choose the tags of the article|
-|| ![Delete](uploads/images/Delete.png) | To delete the article|
+| ![Edit](/uploads/images/Edit.png) | To open the article and edit|
+| ![Share](/uploads/images/Share.png) | To share the article and its version history with another Stylo user. It will be called: "[Copy]New article"|
+| ![Duplicate](/uploads/images/Duplicate.png) | To duplicate only the last version of the article|
+| ![Rename](/uploads/images/Rename.png) | To rename the article|
+| ![Plus](/uploads/images/plus.png) | To expand other functions relating to the article|
+|| ![Versions](/uploads/images/Version.png) | To consult the history of saved versions|
+|| ![Tag](/uploads/images/Tag.png) | To choose the tags of the article|
+|| ![Delete](/uploads/images/Delete.png) | To delete the article|
 
 Note: The document name, as it is visible in Stylo, does not correspond to the title of the article that will be generated.
 
@@ -52,7 +52,7 @@ The article editing interface offers many modules:
   - A statistic tool: presenting statistical information on the article (word and character count, etc.).
 
 
-![Schéma de l'interface d'édition de Stylo](uploads/images/Structure.png)
+![Schéma de l'interface d'édition de Stylo](/uploads/images/Structure.png)
 
 
 ## Share option
@@ -67,23 +67,23 @@ Click on the "Create a new article" button (you must enter the title of the arti
 
 To create a new article, you must click on the button:
 
-![Nouvel article](uploads/images/Create.png)
+![Nouvel article](/uploads/images/Create.png)
 
 You must then enter the name of the document in the field provided for this purpose
 
-![nommer un article](uploads/images/Title.png)
+![nommer un article](/uploads/images/Title.png)
 
 and validate the operation by once again clicking on the button
 
-![Nouvel article](uploads/images/Create.png)
+![Nouvel article](/uploads/images/Create.png)
 
 During this process, you can also choose the tags related to the article
 
-![Add Tags](uploads/images/AddTag.png)
+![Add Tags](/uploads/images/AddTag.png)
 
 The article will then appear in your list of articles. Click on the button
 
-![edit](uploads/images/Edit.png)
+![edit](/uploads/images/Edit.png)
 
 to access the editing space and begin to work on your article.
 
@@ -91,7 +91,7 @@ to access the editing space and begin to work on your article.
 
 If the content that you intended to edit is already structured in another format, in another space, it is possible to transfer it into the Stylo editing space. Stylo essentially edits Markdown language (extension .md): to import content currently in DOC format (extension .doc) or DOCX (extension .docx), we have put in place an [online converter](https://stylo-export.ecrituresnumeriques.ca/importdocx.html), which allows you to convert a docx document to md. The procedure is detailed in the conversion page.
 
-![Import](uploads/images/Import.png)
+![Import](/uploads/images/Import.png)
 
 Once you have converted, an md. document is generated: open it with a text editor (Atom, GeDit), and copy/paste the document content into the space of your Stylo article.
 
@@ -140,7 +140,7 @@ To improve your knowledge in Markdown syntax, you can see this [page](http://sty
 
 ## Versions
 
-![active](uploads/images/NomVersion.png)
+![active](/uploads/images/NomVersion.png)
 A document version corresponds to saving your work. A version always contains the following article elements: metadata, bibliography, text body. Therefore, in changing the old version, each of these three elements are updated.
 
 Your work is automatically saved by Stylo. However, you can -- and we do advise this -- use the saving functions to **[Save Minor]** or **[Save Major]** versions by naming each. A minor version corresponds to minor changes, whereas a major version creates a version with the most important changes.
@@ -149,7 +149,7 @@ This way, when you have created a version that you are satisfied with, you can m
 
 At all times, you can view your work. That is, you can view both the current version that you are in the process of working on and the preceding version, by clicking on the **[preview]** button:
 
-![Preview](uploads/images/Preview.png)
+![Preview](/uploads/images/Preview.png)
 
 Each version contains many functions:
 
@@ -157,10 +157,10 @@ Each version contains many functions:
 
 |Button|Function|
 |:-:|:--|
-| ![Save Major](uploads/images/Major.png) | To save a major version of your work |
-| ![Save Minor](uploads/images/Minor.png) | To save a minor version of your work |
-| ![Export](uploads/images/ExportE.png) | To export and save the version in different formats |
-| ![Preview](uploads/images/Preview.png) | To access the preview of your work and annotate it |
+| ![Save Major](/uploads/images/Major.png) | To save a major version of your work |
+| ![Save Minor](/uploads/images/Minor.png) | To save a minor version of your work |
+| ![Export](/uploads/images/ExportE.png) | To export and save the version in different formats |
+| ![Preview](/uploads/images/Preview.png) | To access the preview of your work and annotate it |
 
 - For a previous version :
 	- **[Compare]** to compare different versions (a previous version and the current version or two previous versions). For more information of the **[Compare]** function, you can consult this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/interface.md)

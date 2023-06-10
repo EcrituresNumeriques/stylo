@@ -1,4 +1,6 @@
-# Liste de tâches pour l'édition numérique sur Stylo
+---
+title: Liste de tâches pour l'édition numérique sur Stylo
+---
 
 Ce document est une liste de tâches à réaliser ou à vérifier pour l'édition d'articles scientifiques avec l'éditeur de texte Stylo pour la production de documents HTML, XML (schéma Érudit) et PDF.
 Ce document ne remplace pas la documentation de Stylo ; une relecture rapide de cette documentation est conseillée avant l'édition des articles.
@@ -115,4 +117,3 @@ Ces modifications sont effectuées par des personnes ayant les connaissances tec
 - ajouter un `<volume/>` ? Si oui, modifier la feuille XSLT
 - ajouter `<nonumero>21</nonumero>` ? Si oui, modifier la feuille XSLT
 - vérifier que les articles hors dossier sont indiqués comme tels dans le sommaire
-

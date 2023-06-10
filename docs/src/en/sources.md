@@ -1,4 +1,6 @@
-## Stylo Source
+---
+title:  Stylo Source
+---
 
 It is possible to report problems and bugs on the [project's GitHub repository](https://github.com/EcrituresNumeriques/stylo/issues).
 
@@ -8,6 +10,4 @@ All other feedback and comments can be sent [by email](crc.ecrituresnumeriques@g
 
 ## Resource information source
 
-You can enrich and modify this resource on the [GitHub repository](https://github.com/EcrituresNumeriques/stylo-doc/tree/gh-pages/fr_FR).
-
-<a class="btn btn-info" href="https://github.com/EcrituresNumeriques/stylo-doc/tree/gh-pages/fr_FR" role="button">Edit sources</a>
+You can enrich and modify this resource on the [GitHub repository](https://github.com/EcrituresNumeriques/stylo/tree/master/docs).

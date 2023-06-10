@@ -1,20 +1,22 @@
-# Structurer la bibliographie
+---
+title: Structurer la bibliographie
+---
 
 La bibliographie liste les références bibliographiques que vous avez ajoutées à votre article. Pour ajouter vos références, vous devez cliquer sur **[Manage]** dans le volet latéral de gauche, à droite de l’onglet *Bibliography*. L'outil *Bibliography Manager* s'ouvre alors et vous propose plusieurs possibilités :
 
 - **Zotero** : il vous est possible de synchroniser une bibliographie en connectant Stylo à votre compte Zotero (groupes/collections privées ou publiques). C'est l'usage que nous vous recommandons ! Voir plus bas pour plus de détails.
 
-![Bibliographie-Zotero](uploads/images/BibliographieZotero-V2.png)
+![Bibliographie-Zotero](/uploads/images/BibliographieZotero-V2.png)
 
 - **Zotero** : il vous est possible d'importer votre bibliographie à partir d'une collection Zotero d'un groupe public en entrant l'URL de cette collection.
 
 - **Citations** : il vous est possible de renseigner votre bibliographie manuellement au format BibTeX.
 
-![Bibliographie-Citations](uploads/images/BibliographieCitations-V2.png)
+![Bibliographie-Citations](/uploads/images/BibliographieCitations-V2.png)
 
 - **Raw BibTeX** : il est possible de corriger directement le BibTeX.
 
-![Bibliographie-Raw BibTeX](uploads/images/BibliographieRawBibTeX-V2.png)
+![Bibliographie-Raw BibTeX](/uploads/images/BibliographieRawBibTeX-V2.png)
 
 Vous pouvez directement [structurer vos références en BibTeX](http://www.andy-roberts.net/writing/latex/bibliographies) ou exporter vos références en BibTeX grâce à votre outil de gestion de bibliographie :
 
@@ -41,7 +43,7 @@ Il est possible de synchroniser les références d'un article avec une collectio
 
 Une fonction d'autocomplétion est implémentée. Il vous suffit de commencer à écrire `[@` ou simplement `@` pour que l’éditeur de texte vous propose toutes vos références associées à l’article. Si vous souhaitez affiner l’autocomplétion, il suffira d’ajouter la première lettre du nom de l’auteur pour réduire les propositions fournies : `[@b`.
 
-![Bibliographie-Autocomplétion](uploads/images/BibliographieAutocompletion-V2.png)
+![Bibliographie-Autocomplétion](/uploads/images/BibliographieAutocompletion-V2.png)
 
 Vous pouvez aussi cliquer sur l'icône associée à la référence dans le volet de gauche, puis la coller (Ctrl+V) dans le texte à l'endroit souhaité. Elle apparaîtra alors ainsi `[@shirky_here_2008]`. Pour bien comprendre, un clic consiste à "copier" la clé BibTeX de la référence dans le presse-papier. 
 

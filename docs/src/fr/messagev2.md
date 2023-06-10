@@ -1,4 +1,6 @@
-# Stylo v2.0 : une nouvelle version, de nouvelles fonctionnalités
+---
+title: "Stylo v2.0 : une nouvelle version, de nouvelles fonctionnalités"
+---
 
 **Stylo fait peau neuve !**
 
@@ -26,7 +28,7 @@ Quelques changements graphiques ont été apportés pour rafraîchir un peu l'in
 - les colonnes gestionnaires (édition et métadonnées) ont été légèrement retouchées ;
 - les boutons de *preview* et d'export ont été déplacés : ils ne sont plus à l'intérieur du volet de gestion à gauche mais dans la partie centrale de l'écran, au-dessus de l'éditeur de texte.
 
-![](uploads/images/stylo-v2-interface.png)
+![](/uploads/images/stylo-v2-interface.png)
 
 ![](uploads/images/stylo-v2-voletsOuverts.png)
 

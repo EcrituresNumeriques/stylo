@@ -1,5 +1,5 @@
-# Markdown syntax
-
+---
+title: Markdown syntax
 ---
 
 ## Titles
@@ -242,5 +242,5 @@ Gives:
 |Dupont|Pierre|7-9-1989|Chicoutimi|Green|
 |Gianna|Bienfaisant|9-10-2005|Florence|Brown|
 
-1. <span id="note-1">A footnote with a number and reference. <a href="syntaxemarkdown.md#note-1-b">â†©</a></span>
-2. <span id="note-2">An inline footnote.<a href="syntaxemarkdown.md#note-2-b">â†©</a></span>
+1. <span id="note-1">A footnote with a number and reference. <a href="#note-1-b">â†©</a></span>
+2. <span id="note-2">An inline footnote.<a href="#note-2-b">â†©</a></span>

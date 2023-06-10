@@ -1,4 +1,6 @@
-# Résoudre les problèmes connus
+---
+title: Résoudre les problèmes connus
+---
 
 ## Si la Preview ne s'affiche pas ou s'affiche comme page blanche
 

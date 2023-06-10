@@ -1,6 +1,9 @@
-# Prévisualiser et annoter un article
+---
+title: Prévisualiser et annoter un article
+---
 
 ## Prévisualisation
+
 Il est possible de prévisualiser un article Stylo en HTML avec une mise en page par défaut.
 
 Pour prévisualiser un article, il est possible :
@@ -38,5 +41,5 @@ Il y a deux possibilités d'annotation :
     Pour annoter l'article, cliquez sur "**Edit**" et ensuite sur "**preview**". Les annotations concerneront l'article : elles seront visbles dans chaque version éditable. Cependant, puisque l'article est sujet à des changements, il peut arriver que les annotations perdent leurs ancrages (suite à la suppression des portions de textes auxquelles elles étaient liées) et se retrouvent déplacées ailleurs dans l'article ou orphelines. 
 
 ### Documentation supplémentaire 
-Pour en savoir plus, voir cette [vidéo explicative](https://youtu.be/zdQRv9wndcE).
 
+Pour en savoir plus, voir cette [vidéo explicative](https://youtu.be/zdQRv9wndcE).

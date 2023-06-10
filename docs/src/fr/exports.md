@@ -1,4 +1,6 @@
-# Exports
+---
+title: Exports
+---
 
 ## Page Export
 
@@ -123,4 +125,3 @@ typeTravail: TP2
 6. Puis attribuer un nom à l'export, sélectionner le modèle de l'EBSI et cliquer sur "Submit".
 
 **Attention** : n'oubliez pas de rafraîchir la page d'export si vous faites plusieurs exports consécutifs.
-

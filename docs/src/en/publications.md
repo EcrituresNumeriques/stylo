@@ -1,4 +1,6 @@
-# Resources - Helpdesk
+---
+title: Resources - Helpdesk
+---
 
 The *Canada Research Chair in Digital Textualities* organises weekly sessions to monitor Stylo. During these sessions, it is possible to ask the team questions, perfect the use of Stylo and resolve any publishing issues.
 

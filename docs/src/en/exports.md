@@ -1,4 +1,6 @@
-## Export Page 
+---
+title: Export Page 
+---
 
 The [export page](https://stylo-export.ecrituresnumeriques.ca/) lists custom exports from Stylo including : 
 

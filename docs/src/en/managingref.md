@@ -23,7 +23,7 @@ Some common mistakes to avoid: your group must be public, the group ID and the s
 
 ## Insert a bibliographic reference
 
-To add a reference to the article, simply click on the reference, then paste (Ctrl+V) the reference into the text at the desired location. It will then appear as `[shirky_here_2008]`. To understand, one click is equivalent to "copying" the bibtex key of the reference in the clipboard ![biblioex](uploads/images/biblioex.png)
+To add a reference to the article, simply click on the reference, then paste (Ctrl+V) the reference into the text at the desired location. It will then appear as `[shirky_here_2008]`. To understand, one click is equivalent to "copying" the bibtex key of the reference in the clipboard ![biblioex](/uploads/images/biblioex.png)
 
 Inserting a bibtex key in the body text has two effects:
 

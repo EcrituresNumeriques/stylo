@@ -1,4 +1,6 @@
-# Permanences
+---
+title: Permanences
+---
 
 La CRCEN organise des sessions de permanence hebdomadaire pour le suivi de l'édition dans Stylo. Lors de ces sessions, il est possible de poser des questions à l'équipe présente, pour perfectionner l'utilisation de Stylo, régler d'éventuels problèmes d'édition.
 

@@ -1,29 +1,33 @@
-# Premiers pas dans Stylo
+---
+title: Premiers pas dans Stylo
+---
 
 ## Création d'un compte
+
 Afin d'éditer dans Stylo, la création d'un compte utilisateur via Huma-Num est recommandée. Pour créer un compte, rendez-vous sur Stylo : [https://stylo.huma-num.fr](https://stylo.huma-num.fr) et choisissez le type de compte (nous vous recommandons de créer un compte Huma-Num ou de vous connecter si en avez déjà un) :
 
-![Register](uploads/images/Login-Huma-Num-V2.PNG)
+![Register](/uploads/images/Login-Huma-Num-V2.PNG)
 
 Si vous possédez déjà un compte Stylo ou Huma-Num, connectez-vous [ici](https://stylo.huma-num.fr).
 
 ## Page d'utilisateur
+
 La page d'accueil de votre compte Stylo liste vos articles personnels ainsi que ceux qui ont été partagés avec vous par d'autres utilisateurs de Stylo.
 
 Par défaut, un premier article “How to Stylo” est présent sur la plateforme et détaille chaque étape de la rédaction d’un article. N’hésitez pas à vous y référer si vous souhaitez directement écrire votre article dans Stylo ou si vous avez des questions sur des articles à traitement particulier (illustrations, etc.).
 
 Pour chaque article, plusieurs actions sont possibles :
 
-|Bouton|Fonction|
-|:-:|:--|
-| ![Edit](uploads/images/Edit-V2.png) | pour ouvrir l'article en édition|
-| ![Share](uploads/images/Share-V2.png) | pour partager l'article et son historique de versions avec un autre usager de Stylo qui s'intitulera ainsi : "[Copy]New article"|
-| ![Duplicate](uploads/images/Duplicate-V2.png) | pour dupliquer uniquement la dernière version de l'article|
-| ![Rename](uploads/images/Rename-V2.png) | pour renommer l'article|
-| ![Delete](uploads/images/Delete-V2.png) | pour supprimer l'article |
-| ![Plus](uploads/images/Plus-V2.png) | pour développer d'autres fonctions de l'article :|
-| ![Versions](uploads/images/Version-V2.PNG) | pour consulter l'historique des versions enregistrées |
-| ![Tags](uploads/images/Tag-V2.png) | pour choisir les tags de l'article |
+|                     Bouton                     |Fonction|
+|:----------------------------------------------:|:--|
+|      ![Edit](/uploads/images/Edit-V2.png)      | pour ouvrir l'article en édition|
+|     ![Share](/uploads/images/Share-V2.png)     | pour partager l'article et son historique de versions avec un autre usager de Stylo qui s'intitulera ainsi : "[Copy]New article"|
+| ![Duplicate](/uploads/images/Duplicate-V2.png) | pour dupliquer uniquement la dernière version de l'article|
+|    ![Rename](/uploads/images/Rename-V2.png)    | pour renommer l'article|
+|    ![Delete](/uploads/images/Delete-V2.png)    | pour supprimer l'article |
+|      ![Plus](/uploads/images/Plus-V2.png)      | pour développer d'autres fonctions de l'article :|
+|  ![Versions](/uploads/images/Version-V2.PNG)   | pour consulter l'historique des versions enregistrées |
+|      ![Tags](/uploads/images/Tag-V2.png)       | pour choisir les tags de l'article |
 
 Note : le nom du document tel que visible sur Stylo ne correspond pas au titre de l'article qui sera généré. Le titre doit être renseigné dans les métadonnées (volet de droite sur l'article) pour apparaître sur la prévisualisation ou les exports.
 
@@ -40,6 +44,7 @@ Un article dans Stylo est composé à partir de trois éléments distincts :
 Stylo propose une interface intégrée pour éditer chacun de ces éléments, dont les sources sont accessibles à tout moment via [le module d'export](premierspas.md#Export).
 
 ## L'interface d'édition
+
 L'interface d'édition d'un article présente plusieurs modules :
 
   - un **corps de texte** : espace d'édition du corps de texte de l'article ;
@@ -49,7 +54,7 @@ L'interface d'édition d'un article présente plusieurs modules :
   - un **gestionnaire de bibliographie** : espace d'édition des références (citées ou non dans le corps du texte) ;
   - un outil de **statistiques** : présentant les informations statistiques de l'article (nombre de mots, de caractères, etc.).
 
-![Schéma de l'interface d'édition de Stylo](uploads/images/SchémaInterface.PNG)
+![Schéma de l'interface d'édition de Stylo](/uploads/images/SchémaInterface.PNG)
 
 ## L'option Share
 
@@ -61,25 +66,25 @@ La fonction **[Share]** permet d'inviter des co-auteur·rice·s à travailler su
 
 Pour créer un nouvel article, il suffit de cliquer sur le bouton :
 
-![Nouvel article](uploads/images/Create-V2.png)
+![Nouvel article](/uploads/images/Create-V2.png)
 
 Vous devez ensuite renseigner le nom du document dans le champ prévu à cet effet
 
-![Nommer un article](uploads/images/Title-V2.PNG)
+![Nommer un article](/uploads/images/Title-V2.PNG)
 
 et valider l'opération en cliquant une nouvelle fois sur le bouton
 
-![Valider nouvel article](uploads/images/Create-Validation.png)
+![Valider nouvel article](/uploads/images/Create-Validation.png)
 
 Lors de cette opération, il vous est également possible de choisir les tags associés à l'article :
 
-![Add Tags](uploads/images/Tag-Select-V2.PNG)
+![Add Tags](/uploads/images/Tag-Select-V2.PNG)
 
 L’article apparaît désormais dans votre liste d’articles.
 
 Cliquez sur le bouton
 
-![Edit](uploads/images/Edit-V2.png)
+![Edit](/uploads/images/Edit-V2.png)
 
 pour accéder à l’environnement d’édition et commencer à éditer votre article.
 
@@ -87,7 +92,7 @@ pour accéder à l’environnement d’édition et commencer à éditer votre ar
 
 Si le contenu destiné à être édité est déjà structuré dans un autre format, dans un autre environnement, il est possible de le transférer dans l'espace d'édition de Stylo. Stylo gère essentiellement du langage Markdown (extension .md) : pour importer un contenu actuellement en format DOC (extension .doc) ou DOCX (extension .docx), nous avons mis en place un [convertisseur en ligne](https://stylo-export.ecrituresnumeriques.ca/importdocx.html) permettant de convertir un document docx vers md. La procédure à adopter est détaillée sur la page de conversion. 
 
-![Import](uploads/images/Import.png)
+![Import](/uploads/images/Import.png)
 
 Une fois la conversion effectuée, un document .md est généré : ouvrez-le avec un éditeur de texte (Atom, GeDit), puis copier-coller le contenu du document dans l'espace de votre article en Stylo. 
 
@@ -137,34 +142,34 @@ Pour approfondir vos connaissances en syntaxe Markdown, vous pouvez consulter la
 
 ## Versions
 
-![active](uploads/images/Nom-Version-V2.PNG)
+![active](/uploads/images/Nom-Version-V2.PNG)
 
 Une version du document correspond à une sauvegarde de votre travail. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. En chargeant une ancienne version, ce sont donc ces trois éléments qui sont mis à jour. 
 
 Votre travail est par défaut automatiquement sauvegardé sur Stylo, mais vous devez créer vous-mêmes les versions. Pour ce faire, vous pouvez donc - et cela est conseillé - utiliser la fonction de sauvegarde [New Version] qui permet de générer une nouvelle version du travail :
 
-![New-Version](uploads/images/New-Version-V2.PNG)
+![New-Version](/uploads/images/New-Version-V2.PNG)
 
 Ainsi, lorsque vous êtes parvenu·e·s à une version que vous jugez satisfaisante, il vous est possible de nommer votre version dans le champ *Label of the version* avant de l'enregistrer en tant que version mineure (**[Create Minor]**) ou majeure (**[Create Major]**). 
 
-![Label Version](uploads/images/Label-Version-V2.PNG)
+![Label Version](/uploads/images/Label-Version-V2.PNG)
 
 Une version mineure correspond à des modifications mineures, tandis qu'une version majeure acte l'établissement d'une version dont les modifications sont importantes. 
 
 À tout moment, vous pouvez visualiser votre travail, qu'il s'agisse de la version actuelle que vous êtes en train d'éditer ou des versions précédentes. Il suffit de cliquer sur le bouton **[Preview]** :
 
-![Preview](uploads/images/Preview-Bouton-V2.PNG)
+![Preview](/uploads/images/Preview-Bouton-V2.PNG)
 
 Chaque version comporte plusieurs fonctionnalités :
 
 - Pour la version éditable (*Edition*) :
 
-|Bouton|Fonction|
-|:-:|:--|
-| ![Create Major](uploads/images/Create-Major-V2.PNG) | pour sauvegarder une version majeure de votre travail |
-| ![Create Minor](uploads/images/Create-Minor-V2.PNG) | pour sauvegarder une version mineure de votre travail |
-| ![Export](uploads/images/Export-V2.PNG) | pour exporter et télécharger la version dans différents formats |
-| ![Preview](uploads/images/Preview-Bouton-V2.PNG) | pour accéder à la prévisualisation de votre travail et l'annoter |
+|                        Bouton                        |Fonction|
+|:----------------------------------------------------:|:--|
+| ![Create Major](/uploads/images/Create-Major-V2.PNG) | pour sauvegarder une version majeure de votre travail |
+| ![Create Minor](/uploads/images/Create-Minor-V2.PNG) | pour sauvegarder une version mineure de votre travail |
+|       ![Export](/uploads/images/Export-V2.PNG)       | pour exporter et télécharger la version dans différents formats |
+|  ![Preview](/uploads/images/Preview-Bouton-V2.PNG)   | pour accéder à la prévisualisation de votre travail et l'annoter |
 
 - Pour une version antérieure :
 	- **[Compare]** pour comparer les différentes versions (une version antérieure et la version actuelle ou deux versions antérieures). Pour davantage d'informations sur la fonction **[Compare]**, vous pouvez consulter la [page suivante](/fr/interface);
@@ -174,13 +179,14 @@ Chaque version comporte plusieurs fonctionnalités :
 Pour visualiser une ancienne version, il vous suffit de cliquer sur son titre. Pour retourner à la version éditable, il vous faut cliquer sur le bouton **[Edit Mode]**.
 
 ## Export
+
 Le module d'export offre plusieurs formats (HTML, XML, PDF, etc.). Il permet de choisir un style bibliographique et la présence ou non d'une table des matières.
 
 Pour davantage d'informations sur l'export Stylo, vous pouvez consulter la [page suivante](/fr/mesarticles/#Exporter_un_article).
 
 ## Sommaire
 
-![Sommaire](uploads/images/Sommaire-V2.PNG)
+![Sommaire](/uploads/images/Sommaire-V2.PNG)
 
 Le sommaire affiche une liste des titres de niveau 2, 3 et suivants. Ces titres sont cliquables pour accéder rapidement à la partie du texte correspondante.
 
@@ -200,15 +206,15 @@ Vous pouvez directement [structurer vos références en BibTeX](http://www.andy-
 Pour ajouter une référence à l'article, il suffit de cliquer sur la référence, puis de coller (Ctrl+V) la référence dans le texte à l'endroit souhaité. Ainsi, un clic revient à "copier" la clé de la référence dans le presse-papiers. Il ne reste plus qu'à la coller dans le corps de texte.
 Un système d'autocomplétion vous permet aussi d'afficher les références disponible en tapant `[@` ou `@` suivi ou non des premières lettres de l'identifiant de la référence.
 
-![Bibliographie exemple](uploads/images/Bibliographie-Exemple-V2.PNG)
+![Bibliographie exemple](/uploads/images/Bibliographie-Exemple-V2.PNG)
 
 Pour davantage d'informations sur la gestion de la bibliographie, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!/fr/bibliographie).
 
 ## Métadonnées
 
-![Metadata-Bouton](uploads/images/Metadata-Bouton-V2.PNG)
+![Metadata-Bouton](/uploads/images/Metadata-Bouton-V2.PNG)
 
-![Metadata-Edition](uploads/images/Metadata-Edition-V2.PNG)
+![Metadata-Edition](/uploads/images/Metadata-Edition-V2.PNG)
 
 Le bouton [Metadata] permet d'ouvrir le volet des métadonnées. Trois modes d'édition sont disponibles :
 
@@ -220,11 +226,11 @@ Le bouton [Metadata] permet d'ouvrir le volet des métadonnées. Trois modes d'�
 
 **Attention** : dans le volet des métadonnées se trouve la division sur la "Bibliographie" dont l'option *Display* permet de choisir la visualisation de la bibliographie dans son entièreté ("All citations") ou uniquement des références qui ont été citées dans le corps de l'article ("Only used"). 
 
-![Bibliography-Display](uploads/images/Bibliography-Display-V2.PNG)
+![Bibliography-Display](/uploads/images/Bibliography-Display-V2.PNG)
 
 ## Statistiques
 
-![Statistiques](uploads/images/Statistiques-V2.PNG)
+![Statistiques](/uploads/images/Statistiques-V2.PNG)
 
 Le menu *Stats* donne des informations sur :
 
@@ -242,7 +248,7 @@ Il y a deux possibilités d'annotation :
 
 Pour annoter une version, cliquez sur le numéro de la version que vous voulez annoter et ensuite cliquez sur **[Preview]**. Une prévisualisation de l'article en html s'ouvrira avec l'outil d'annotation hypothes.is sur la droite.
 
-![Hypothes.is](uploads/images/Hypothesis.png)
+![Hypothes.is](/uploads/images/Hypothesis.png)
 
 **Important** : si vous annotez une version, vos annotations ne seront pas visibles sur les autres versions.
 

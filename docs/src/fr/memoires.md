@@ -1,4 +1,7 @@
-# Mémoires et thèses
+---
+title: Mémoires et thèses
+---
+
 Stylo permet de créer des documents plus complexes que de simples articles, tels que des mémoires ou des thèses ; cette fonctionnalité s'appelle **Books**.
 
 **Attention : cette option n'est pas totalement fonctionnelle, nous vous recommandons de patienter jusqu'aux prochaines mises à jour avant de l'utiliser comme rendu final.**
