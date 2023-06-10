@@ -7,7 +7,9 @@
  Usage:
 
   <alert-block>
+
    **Contenu** (avec style par défaut)
+
   </alert-block>
 
 
@@ -15,7 +17,9 @@
     type="success"
     heading="Hourra!"
   >
+
    Vous avez réussi! <a href="/">Retourner à l’accueil</a>.
+
   </alert-block>
 ---->
 

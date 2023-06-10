@@ -186,7 +186,7 @@
           <page-footer></page-footer>
         </div>
       </main>
-      
+
       <!---- (3) Side (nav) ---->
       <aside
         class="docs-layout__navigation"
