@@ -186,8 +186,7 @@
           <page-footer></page-footer>
         </div>
       </main>
-
-
+      
       <!---- (3) Side (nav) ---->
       <aside
         class="docs-layout__navigation"
@@ -213,6 +212,8 @@
     --article-max-width: 42rem;
     --center-padding: .75rem;
     --menu-toggle-display: inline-flex;
+    /* Si la barre transversale est remodelée, cette valeur devra être ajustée! */
+    --topbar-height: 1.625rem;
 
     /* Disposition */
     display: flex;
@@ -364,14 +365,18 @@
 
     background-color: var(--couleur-fond-2);
   }
-  @media (max-width: 48rem) {
+  /* Styles spécifiques à une disposition inférieure, mais non égale à, 48rem de largeur */
+  @media (max-width: 47.999rem) {
     #navigation {
       display: none;
       order: 1;
       position: absolute;
       width: 100%;
       z-index: 20;
-      padding-top: 2rem;
+      max-height: 100%; /* Se conformer à la disposition du parent */
+
+      /* Espacement vertical pour menu transversal */
+      padding-top: var(--topbar-height);
     }
     .navigation-open #navigation {
       display: grid;
