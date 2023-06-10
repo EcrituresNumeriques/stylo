@@ -15,11 +15,10 @@
     <link rel="stylesheet" href="../styles/variables.css" />
     <!---- CSS bundle ---->
     <style @raw="getBundle('css')" webc:keep></style>
-    <script @raw="getBundle('js')" webc:keep defer></script>
 
     <!-- Scripts -->
     <!---- JS bundle ---->
-    <script :src="getBundleFileUrl('js')"></script>
+    <script @raw="getBundle('js')" webc:keep defer></script>
   </head>
 
   <body>
@@ -123,8 +122,6 @@
               menuToggleBtn.setAttribute('aria-expanded', String(isOpen));
               parentContainer.setAttribute('aria-expanded', String(isOpen));
             }
-
-            console.log('isOpen?', isOpen)
           });
         })
       </script>
@@ -139,14 +136,14 @@
         d) Content sidebar (TOC, etc.?)
 
         Desktop
-        ._________.____.
-        |(a)      |(d) |
-        |         |    |
-        |(b)      |    |
-        |         |    |
-        |         |    |
-        |         |    |
-        |=(c)==========|
+        ._____________.____.
+        |(a)          |(d) |
+        |             |    |
+        |(b)          |    |
+        |             |    |
+        |             |    |
+        |             |    |
+        |=(c)==============|
 
 
         Mobile
@@ -220,6 +217,8 @@
     /* Disposition */
     display: flex;
     flex-direction: column;
+    height: 100vh; /* Au cas où l’unité `dvh` n’est pas supportée */
+    height: 100dvh; /* Préférable */
 
     /* Pour accueillir la barre transversale */
     position: relative;
@@ -231,6 +230,9 @@
   .docs-layout__center {
     /* Après menu sur petits écrans */
     order: 2;
+
+    /* Le défilement du contenu se fait principalement sur cet élément */
+    overflow: auto;
   }
 
   @media (min-width: 48rem) {
@@ -274,7 +276,6 @@
       grid-column-start: center;
       grid-row-start: 2;
       height: 100%;
-      overflow: auto;
     }
   }
 
@@ -367,6 +368,10 @@
     #navigation {
       display: none;
       order: 1;
+      position: absolute;
+      width: 100%;
+      z-index: 20;
+      padding-top: 2rem;
     }
     .navigation-open #navigation {
       display: grid;
