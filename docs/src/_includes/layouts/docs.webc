@@ -91,7 +91,7 @@
 
             <!---- Breadcrumbs - this part assumes a multilingual site with the `lang` variable ---->
             <top-bar-link
-              :@href="`/${lang}`"
+              :@href="sectionUrl"
             ><template webc:nokeep @text="sectionTitle"></template></top-bar-link>
 
             <!---- Display page in top bar (except for home, variable `isHome` is manually set in front-matter) ---->
