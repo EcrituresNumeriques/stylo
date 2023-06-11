@@ -159,6 +159,18 @@
   --couleur-code: var(--azur-aoste);
   --couleur-fond-code: var(--couleur-fond-accent-inverse);
 
+
+  /*******************************************
+   * Typographie
+   *******************************************/
+  --police-corps: inherit; /* voir modern-normalize.css */
+  --police-entetes: var(--police-corps);
+  --police-titre: 'Bitter', 'Input Serif Condensed', 'Courier New', Courier, monospace;
+  --graisse-titre: 700;
+  --interlignage-corps: 1.5;
+  --interlignage-entetes: 1.15;
+  --graisse-corps: inherit;
+  --graisse-entetes: bold;
 }
 
 /* Variantes écran clair */

@@ -26,10 +26,10 @@
 
 <style webc:scoped>
   .page-header {
+    --page-header-font-family: var(--police-titre);
     --page-header-title-size: 1.5rem;
     --title-decoration-size: 1rem;
     --title-decoration-spacing: 1.25rem;
-
 
     position: relative;
 
@@ -43,13 +43,12 @@
   }
 
   .page-header__title {
-
     font-size: var(--page-header-title-size);
     margin: 0 0 .5rem;
 
     text-align: left;
     font-weight: 600;
-    font-family: 'Input Serif Condensed', 'Courier New', Courier, monospace;
+    font-family: var(--page-header-font-family);
 
     /*
     Pour contrôler la visibilité de notre décoration
