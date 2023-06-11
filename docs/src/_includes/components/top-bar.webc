@@ -111,7 +111,27 @@ Usage:
 
     /* Horizontal scrollbar */
     overflow-x: auto;
+
+    /* Pour accueillir le pseudo-élément  */
+    position: relative;
   }
+  /* Le pseudo-élément affiche un dégradé pour masquer le contenu qui déborde */
+  .top-bar__fluid-container::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    height: 100%;
+    width: .5rem;
+
+    /* Le dégradé, suivant la couleur de fond la barre */
+    background-image: linear-gradient(to right, transparent, var(--top-bar-background-color));
+
+    z-index: 2;
+  }
+
   .top-bar__fluid-content {
     display: flex;
     flex-direction: row;
