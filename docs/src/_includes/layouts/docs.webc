@@ -22,7 +22,7 @@
 
     <!-- Theme -->
     <meta name="theme-color" content="#0B0A3A" />
-    <meta name="theme-color" content="#D4D4E8" media="prefers-color-scheme: light" />
+    <meta name="theme-color" content="#D4D4E8" media="(prefers-color-scheme: light)" />
   </head>
 
   <body>
