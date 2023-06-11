@@ -36,11 +36,10 @@ Usage:
 ---->
 
 <template webc:nokeep>
-  <slot name="button"></slot>
 
-  <div class="top-bar__brand">
-    <slot name="brand">
-      <a href=".">•</a>
+  <div class="top-bar__title">
+    <slot name="title">
+      <top-bar-brand text="." href="."></top-bar-brand>
     </slot>
   </div>
 
@@ -48,6 +47,10 @@ Usage:
     <div class="top-bar__fluid-content">
       <slot></slot>
     </div>
+  </div>
+
+  <div class="top-bar__btn-container">
+    <slot name="button"></slot>
   </div>
 </template>
 
@@ -57,14 +60,27 @@ Usage:
     --top-bar-text-color: var(--couleur-police);
     --top-bar-link-color: var(--top-bar-text-color);
 
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    display: grid;
+      /* Grille 2 x 2 */
+    grid-template-columns: [title] auto [content] 1fr  [button] auto;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "title   .       button"
+      "content content button";
     justify-content: flex-start;
-    align-items: stretch;
+    align-items: flex-start;
     background-color: var(--top-bar-background-color);
     color: var(--couleur-police);
     font-size: .875rem;
+  }
+  @media (min-width: 48rem) {
+    :host {
+      /* Grille 3 x 1 */
+      grid-template-columns: [title] auto [content] 1fr;
+      grid-template-rows: auto;
+      grid-template-areas:
+        "title  content   button";
+    }
   }
 
   /* Liens */
@@ -79,11 +95,16 @@ Usage:
     }
   }
 
+  .top-bar__title {
+    grid-area: title;
+  }
   /*
   Horizontal overflow scroll with flex
   See https://stackoverflow.com/questions/21515042/scrolling-a-flexbox-with-overflowing-content
   */
   .top-bar__fluid-container {
+    grid-area: content;
+
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -97,5 +118,16 @@ Usage:
     flex-wrap: nowrap;
     /* The key here is `min-with: max-content` (may require vendor prefixes) */
     min-width: max-content;
+  }
+
+  .top-bar__btn-container {
+    grid-area: button;
+
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+    aspect-ratio: 1;
   }
 </style>

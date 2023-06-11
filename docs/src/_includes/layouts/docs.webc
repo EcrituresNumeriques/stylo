@@ -19,6 +19,10 @@
     <!-- Scripts -->
     <!---- JS bundle ---->
     <script @raw="getBundle('js')" webc:keep defer></script>
+
+    <!-- Theme -->
+    <meta name="theme-color" content="#0B0A3A" />
+    <meta name="theme-color" content="#D4D4E8" media="prefers-color-scheme: light" />
   </head>
 
   <body>
@@ -67,12 +71,12 @@
               aria-controls="navigation"
             >
               <span class="docs-layout__menu-btn-inner is-closed">
-                <menu-icon size="20"></menu-icon>
+                <menu-icon size="28"></menu-icon>
                 <span aria-hidden="true"><!-- Todo: i18n -->Menu</span>
               </span>
 
               <span class="docs-layout__menu-btn-inner is-open">
-                <close-icon size="20"></close-icon>
+                <close-icon size="28"></close-icon>
                 <span aria-hidden="true"><!-- Todo: i18n -->Menu</span>
               </span>
             </button>
@@ -80,7 +84,7 @@
             <top-bar-brand
               :@href="`/${lang}`"
               :@text="siteTitle"
-              slot="brand"
+              slot="title"
             ></top-bar-brand>
 
             <!---- Breadcrumbs - this part assumes a multilingual site with the `lang` variable ---->
@@ -205,6 +209,11 @@
 </html>
 
 <style webc:scoped>
+  html {
+    background-color: var(--couleur-fond);
+    color: var(--couleur-police);
+  }
+
   /* Avec `webc:scoped`, les styles sont propres à ce composant */
   .docs-layout {
     --side-menu-width: 18rem;
@@ -212,14 +221,10 @@
     --article-max-width: 42rem;
     --center-padding: .75rem;
     --menu-toggle-display: inline-flex;
-    /* Si la barre transversale est remodelée, cette valeur devra être ajustée! */
-    --topbar-height: 1.625rem;
 
     /* Disposition */
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Au cas où l’unité `dvh` n’est pas supportée */
-    height: 100dvh; /* Préférable */
 
     /* Pour accueillir la barre transversale */
     position: relative;
@@ -231,9 +236,6 @@
   .docs-layout__center {
     /* Après menu sur petits écrans */
     order: 2;
-
-    /* Le défilement du contenu se fait principalement sur cet élément */
-    overflow: auto;
   }
 
   @media (min-width: 48rem) {
@@ -277,6 +279,9 @@
       grid-column-start: center;
       grid-row-start: 2;
       height: 100%;
+
+      /* Le défilement du contenu se fait principalement sur cet élément */
+      overflow: auto;
     }
   }
 
@@ -328,10 +333,7 @@
     /* Flex -- always at top */
     order: 0;
 
-    /* Coller en haut */
-    position: sticky;
-    top: 0;
-    z-index: 30; /* Attention au contenu qui peut avoir un z-index plus élevé… */
+    z-index: 10; /* Attention au contenu qui peut avoir un z-index plus élevé… */
 
     /* Division graphique */
     border-bottom: 1px solid var(--couleur-fond-accent);
@@ -345,7 +347,7 @@
     align-items: center;
     align-self: stretch;
 
-    padding: 0 .35rem;
+    padding: .75rem;
 
     /* Reset btn styles*/
     border: none;
@@ -370,13 +372,8 @@
     #navigation {
       display: none;
       order: 1;
-      position: absolute;
       width: 100%;
-      z-index: 20;
-      max-height: 100%; /* Se conformer à la disposition du parent */
-
-      /* Espacement vertical pour menu transversal */
-      padding-top: var(--topbar-height);
+      z-index: 10;
     }
     .navigation-open #navigation {
       display: grid;
