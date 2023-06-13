@@ -5,19 +5,29 @@
   ></h1>
 
   <dl class="page-header__meta">
-    <dt class="page-header__meta__term">
+    <dt
+      class="page-header__meta__term"
+      webc:if="$data.version"
+    >
+      <!-- TODO: i18n -->
       Dernière modification&nbsp;:
     </dt>
     <dd
       class="page-header__meta__val"
+      webc:if="$data.version"
       @text="$data.page.date.toLocaleString($data.lang, { year: 'numeric', month: '2-digit', day: '2-digit' })"
     ></dd>
 
-    <dt class="page-header__meta__term">
+    <dt
+      class="page-header__meta__term"
+      webc:if="$data.version"
+    >
+      <!-- TODO: i18n -->
       Version&nbsp;:
     </dt>
     <dd
       class="page-header__meta__val"
+      webc:if="$data.version"
       @text="$data.version"
     ></dd>
 
