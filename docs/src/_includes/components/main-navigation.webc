@@ -11,6 +11,15 @@ Doc:
     class="side-menu__header"
   ><slot name="header"></slot></header>
 
+  <div class="side-menu__item">
+    <!-- Todo i18n -->
+    <inline-search
+      :@action="`/${$data.lang}/search/`"
+      @method="get"
+      @placeholder="Rechercher"
+    ></inline-search>
+  </div>
+
   <ul class="side-menu__list">
     <li webc:for="item of menu"
         class="side-menu__item"

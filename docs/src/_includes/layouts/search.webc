@@ -1,0 +1,18 @@
+---
+layout: docs
+useSideMenu: false
+---
+
+<!---- Disposition pour la recherche ---->
+
+<template
+  webc:nokeep
+  :@content="content"
+></template>
+<slot></slot>
+
+<div
+  webc:for="page of collections[`docs__${$data.lang}`]"
+  @text="page.data.title"
+>
+</div>

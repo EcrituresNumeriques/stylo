@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+dependencies:
+  elasticlunr:
+    specifier: ^0.9.5
+    version: 0.9.5
+
 devDependencies:
   '@11ty/eleventy':
     specifier: ^2.0.1
@@ -525,6 +530,10 @@ packages:
     dependencies:
       jake: 10.8.5
     dev: true
+
+  /elasticlunr@0.9.5:
+    resolution: {integrity: sha512-5YM9LFQgVYfuLNEoqMqVWIBuF2UNCA+xu/jz1TyryLN/wmBcQSb+GNAwvLKvEpGESwgGN8XA1nbLAt6rKlyHYQ==}
+    dev: false
 
   /encodeurl@1.0.2:
     resolution: {integrity: sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w==}

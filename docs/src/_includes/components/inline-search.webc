@@ -1,0 +1,123 @@
+<!---- Inline-search ---->
+<!----
+Docs:
+  @prop action {String} URL de destination de l’action
+  @prop method {String} Verbe HTTP  get|post
+  @prop placeholder {String} Texte par défaut dans l’input
+  @prop lang {String} Pour filtrer les résultats dans la bonne langue
+
+Usage:
+
+<inline-search
+  @action="action"
+  @method="method"
+  placehoder="Rechercher..."
+></inline-search>
+---->
+
+<form
+  class="inline-search"
+  :action="action"
+  :method="method"
+>
+  <div class="inline-search__input-wrapper">
+    <div class="inline-search__icon-slot">
+      <search-icon size="14"></search-icon>
+    </div>
+
+    <input
+      class="inline-search__input"
+      name="q"
+      :placeholder="placeholder"
+    >
+  </div>
+</form>
+
+<style webc:scoped>
+  .inline-search {
+    --search-background-color: var(--couleur-fond);
+    --search-text-color: var(--couleur-police);
+    --search-font-family: var(--police-corps);
+    --search-font-size: .75rem;
+    --search-spacing: .5rem;
+  }
+
+  .inline-search__icon-slot {
+    pointer-events: none;
+    color: var(--search-text-color);
+  }
+
+  .inline-search__input-wrapper {
+    display: grid;
+    grid-template-columns: [icon] auto [input] 1fr;
+    align-items: center;
+    gap: .25rem;
+    margin: .25rem;
+    padding: var(--search-spacing);
+
+    background-color: var(--search-background-color);
+    color: var(--search-text-color);
+    border-radius: 5px;
+
+    /* Typographie */
+    font-size: var(--search-font-size);
+
+    cursor: text;
+  }
+
+  .inline-search__input-wrapper.is-focused {
+    outline: 2px solid var(--couleur-lien);
+  }
+
+  .inline-search__input {
+    /* Le style se fait plutôt sur le wrapper (qui englobe l’icône également) */
+    width: auto;
+    display: block;
+    appearance: none;
+    border: 0;
+    background-color: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+  }
+  .inline-search__input:focus {
+    outline: none;
+  }
+</style>
+
+<!---- Nous utilisons `webc:keep` pour éviter que ce script soit déplacé hors de son contexte ---->
+<!---- 11ty docs:
+  “You can also use webc:keep to opt-out of asset bundling for individual
+   elements inside of a component definition”
+
+   — https://www.11ty.dev/docs/languages/webc/#webckeep
+ ---->
+<script webc:keep>
+  /** @type {HTML DOMElement} */
+  const wrapper = document.querySelector('.inline-search__input-wrapper');
+  /** @type {HTML DOMElement} */
+  const searchInput = document.querySelector('.inline-search__input');
+  /** @type {String|null} */
+  const currentSearch = new URL(window.location.href).searchParams.get('q');
+
+  // Nous reportons la requête dans la boîte de recherche, pour fins de cohérence
+  // aux yeux de l’utilisateur·trice
+  if (currentSearch?.length) {
+    searchInput.value = currentSearch;
+  }
+
+  // focuser sur l’input (camouflé) lorsque l’utilisateur clique sur le conteneur
+  wrapper.addEventListener('click', () => {
+    searchInput.focus();
+  }, true);
+
+  // classe appliquée sur le conteneur parent, selon l’état `focus`
+  searchInput.addEventListener('focus', () => {
+    // focus
+    wrapper.classList.add('is-focused');
+  });
+  searchInput.addEventListener('blur', () => {
+    // retrait du focus
+    wrapper.classList.remove('is-focused');
+  });
+</script>
