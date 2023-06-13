@@ -31,7 +31,7 @@ Usage:
     margin: auto .25rem;
 
     /* Color */
-    color: var(--neutre);
+    color: var(--couleur-neutre);
 
     /* No cursor interaction */
     user-select: none;

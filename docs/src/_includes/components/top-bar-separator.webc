@@ -24,6 +24,6 @@ Usage:
     height: var(--separator-height);
 
     /* Color */
-    background-color: var(--neutre);
+    background-color: var(--couleur-neutre);
   }
 </style>

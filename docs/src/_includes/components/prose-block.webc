@@ -40,8 +40,8 @@ Usage:
     --blockquote-line-height: var(--interlignage-corps, 150%);
     --blockquote-spacing-before: 1.5rem;
     --blockquote-vertical-margin: 2rem;
-    --blockquote-text-color: var(--neutre);
-    --blockquote-border-color: var(--neutre);
+    --blockquote-text-color: var(--couleur-neutre);
+    --blockquote-border-color: var(--blockquote-text-color);
     --blockquote-font-size: 87.5%;
 
     line-height: var(--blockquote-line-height);

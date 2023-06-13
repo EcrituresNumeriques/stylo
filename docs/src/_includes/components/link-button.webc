@@ -19,13 +19,13 @@ Doc:
 ---->
 <a
   :href="href"
-  class="button-link"
+  class="link-button"
   :data-size="size"
   :data-color="color"
 ><slot></slot></a>
 
 <style webc:scoped>
-  .button-link {
+  .link-button {
     --button-spacing-x: 1em;
     --button-spacing-y: .5333em;
     --button-font-size: .875rem;
@@ -72,13 +72,13 @@ Doc:
   }
 
   [data-color="danger"] {
-    --button-background-color: var(--framboise);
-    --button-text-color: var(--fond-marin);
+    --button-background-color: var(--cerise);
+    --button-text-color: var(--surface);
   }
-  @media (prefers-color-scheme: light) {
+  @media (prefers-color-scheme: dark) {
     [data-color="danger"] {
-      --button-background-color: var(--cerise);
-      --button-text-color: var(--surface);
+      --button-background-color: var(--framboise);
+      --button-text-color: var(--fond-marin);
     }
   }
 </style>

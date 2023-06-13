@@ -62,18 +62,18 @@ Doc:
     --side-menu-letter-spacing: .0125em;
     --side-menu-item-border-width: 0;
     --side-menu-item-border-color: transparent;
-    --side-menu-link-color: var(--fond-marin-200);
+
+    --side-menu-link-color: var(--couleur-police);
     --side-menu-link-background-color: transparent;
-    --side-menu-link-color-highlight: var(--fond-marin-200);
+    --side-menu-link-color-highlight: var(--couleur-lien-accent);
     --side-menu-link-background-highlight: var(--couleur-fond);
     --side-menu-background-color: var(--couleur-fond-2);
 
     background-color: var(--side-menu-background-color);
   }
-  @media (prefers-color-scheme: light) {
+  @media (prefers-color-scheme: dark) {
     :host {
-      --side-menu-link-color: var(--fond-marin-800);
-      --side-menu-link-color-highlight: var(--fond-marin-900);
+      --side-menu-link-color: var(--couleur-police);
     }
   }
 

@@ -90,11 +90,6 @@ Usage:
     display: inline-flex;
   }
 
-  @media (prefers-color-scheme: light) {
-    :host {
-    }
-  }
-
   .top-bar__title {
     grid-area: title;
   }

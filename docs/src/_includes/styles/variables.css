@@ -3,6 +3,9 @@
   /*******************************************
    * Couleurs
    *******************************************/
+
+  /* Ces couleurs proviennent du nouveau langage visuel de la CRCÉN (à venir) */
+
   /* Axe monochrome principal */
   --bleu-abyssal: #0B0B2D;
   --fond-marin: #0B0A3A;
@@ -34,6 +37,22 @@
   --cerise: #85191E;
 
   /* Palette avancée */
+  /*
+  neutral
+  via https://tailwindcss.com/docs/customizing-colors#default-color-palette
+  */
+  --neutral-50:  #fafafa;
+  --neutral-100: #f5f5f5;
+  --neutral-200: #e5e5e5;
+  --neutral-300: #d4d4d4;
+  --neutral-400: #a3a3a3;
+  --neutral-500: #737373;
+  --neutral-600: #525252;
+  --neutral-700: #404040;
+  --neutral-800: #262626;
+  --neutral-900: #171717;
+  --neutral-950: #0a0a0a;
+
   /*
   fond marin
   https://www.tailwindshades.com/#color=241.24999999999997%2C70.58823529411765%2C13.333333333333334&step-up=12&step-down=4&hue-shift=0&name=violet&base-stop=7&v=1&overrides=e30%3D
@@ -147,15 +166,19 @@
   --cerise-900: #110304;
 
   /* Mappage de couleurs */
-  --couleur-fond: var(--fond-marin);
-  --couleur-fond-2: #242371;
-  --couleur-fond-accent: var(--accent-sombre);
-  --couleur-fond-accent-inverse: var(--bleu-abyssal);
-  --couleur-police: var(--surface);
+
+  --couleur-fond: #fff;
+  --couleur-fond-2: #E4E4F3;
+  --couleur-police: var(--fond-marin);
+  --couleur-fond-accent: var(--accent-clair);
+  --couleur-fond-accent-inverse: var(--ecume);
+  --couleur-neutre: var(--neutre);
+  --couleur-lien: var(--azur-aoste-500);
+  --anticouleur-lien: #fff;
+  --couleur-lien-accent: var(--azur-aoste-600);
+
   --couleur-fond-bouton: var(--peche);
   --couleur-police-bouton: var(--couleur-police);
-  --couleur-lien: var(--vert-pale-400);
-  --couleur-lien-accent: var(--vert-pale-500);
   --couleur-code: var(--azur-aoste);
   --couleur-fond-code: var(--couleur-fond-accent-inverse);
 
@@ -173,15 +196,20 @@
   --graisse-entetes: bold;
 }
 
-/* Variantes écran clair */
-@media (prefers-color-scheme: light) {
+/* Variantes sombre */
+@media (prefers-color-scheme: dark) {
   :root {
-    --couleur-fond: #fff;
-    --couleur-fond-2: #E4E4F3;
-    --couleur-police: var(--fond-marin);
-    --couleur-fond-accent: var(--accent-clair);
-    --couleur-fond-accent-inverse: var(--ecume);
+
+    --couleur-fond: var(--neutral-900);
+    --couleur-fond-2: var(--neutral-800);
+    --couleur-police: var(--neutral-400);
+    --couleur-fond-accent: var(--neutral-700);
+    --couleur-fond-accent-inverse: var(--neutral-950);
+
+    --couleur-neutre: var(--neutral-500);
+
     --couleur-lien: var(--azur-aoste-500);
-    --couleur-lien-accent: var(--azur-aoste-600);
+    --anticouleur-lien: #fff;
+    --couleur-lien-accent: var(--neutral-100);
   }
 }
