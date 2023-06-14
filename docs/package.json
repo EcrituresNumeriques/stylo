@@ -16,6 +16,7 @@
     "@11ty/eleventy-plugin-webc": "^0.11.0"
   },
   "dependencies": {
-    "elasticlunr": "^0.9.5"
+    "elasticlunr": "^0.9.5",
+    "striptags": "^3.2.0"
   }
 }

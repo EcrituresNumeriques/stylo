@@ -28,8 +28,18 @@ Usage:
     <input
       class="inline-search__input"
       name="q"
+      type="search"
+      autocomplete="off"
       :placeholder="placeholder"
     >
+  </div>
+
+  <div class="inline-search__results-container">
+
+    <ul class="inline-search__results-list"></ul>
+
+    <!-- TODO: i18n -->
+    <div class="inline-search__no-results">Aucun résultat</div>
   </div>
 </form>
 
@@ -40,11 +50,17 @@ Usage:
     --search-font-family: var(--police-corps);
     --search-font-size: .75rem;
     --search-spacing: .5rem;
+
+    /* Pour accueillir une éventuelle boîte avec `position: absolute` */
+    position: relative;
   }
 
   .inline-search__icon-slot {
     pointer-events: none;
     color: var(--search-text-color);
+  }
+  .inline-search__input-wrapper.is-focused .inline-search__icon-slot {
+    color: var(--couleur-lien);
   }
 
   .inline-search__input-wrapper {
@@ -52,7 +68,7 @@ Usage:
     grid-template-columns: [icon] auto [input] 1fr;
     align-items: center;
     gap: .25rem;
-    margin: .25rem;
+    margin: .5rem;
     padding: var(--search-spacing);
 
     background-color: var(--search-background-color);
@@ -83,7 +99,98 @@ Usage:
   .inline-search__input:focus {
     outline: none;
   }
+
+  .inline-search__results-container {
+    /* Caché par défaut */
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+
+    margin: .25rem;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    max-height: 67vh;
+    z-index: 1;
+
+    background-color: var(--couleur-fond);
+    border-radius: 5px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, .15);
+
+    overflow: auto;
+
+    transition: .15s opacity 0s, 0s visibility .15s;
+  }
+  .inline-search.is-searching .inline-search__results-container {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: all;
+
+    transition: .15s opacity 0s, 0s visibility 0s;
+  }
+
+  .inline-search__results-label {
+    font-size: 0.6875rem; /* 13px */
+    color: var(--couleur-neutre);
+    text-decoration: underline;
+    padding: .25rem;
+  }
+
+  .inline-search__results-list {
+    margin: 0;
+    padding: 0;
+  }
+  .inline-search__results-item {
+    /* Espacement de base */
+    padding: .5rem;
+
+    /* Pour superposer le lien */
+    position: relative;
+
+    font-size: .75rem;
+  }
+  .inline-search__results-item:hover,
+  .inline-search__results-item:focus {
+    color: var(--couleur-lien);
+  }
+  .inline-search__results-item:not(:last-of-type) {
+    border-bottom: 1px solid var(--couleur-fond-2);
+  }
+  .inline-search__results-link {
+    color: inherit;
+    text-decoration: inherit;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+  }
+  .inline-search__results-title {
+    font-size: .875rem;
+    margin: 0;
+    margin-block-end: .25rem;
+    font-weight: bold;
+  }
+  .inline-search__results-excerpt {
+    opacity: .67;
+  }
+
+  .inline-search__no-results {
+    /* Afficher dynamiquement avec JS après une recherche infructueuse*/
+    display: none;
+
+    padding: 2rem 1rem;
+    color: var(--couleur-neutre);
+    letter-spacing: .025em;
+    font-size: .75rem;
+    text-align: center;
+  }
 </style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js" webc:keep></script>
 
 <!---- Nous utilisons `webc:keep` pour éviter que ce script soit déplacé hors de son contexte ---->
 <!---- 11ty docs:
@@ -93,31 +200,122 @@ Usage:
    — https://www.11ty.dev/docs/languages/webc/#webckeep
  ---->
 <script webc:keep>
-  /** @type {HTML DOMElement} */
-  const wrapper = document.querySelector('.inline-search__input-wrapper');
-  /** @type {HTML DOMElement} */
-  const searchInput = document.querySelector('.inline-search__input');
-  /** @type {String|null} */
-  const currentSearch = new URL(window.location.href).searchParams.get('q');
+  (function (window, document) {
+    "use strict";
 
-  // Nous reportons la requête dans la boîte de recherche, pour fins de cohérence
-  // aux yeux de l’utilisateur·trice
-  if (currentSearch?.length) {
-    searchInput.value = currentSearch;
-  }
+    /** @type {HTMLElement} */
+    const componentRootElem = document.querySelector('.inline-search');
+    /** @type {HTML DOMElement} */
+    const wrapper = document.querySelector('.inline-search__input-wrapper');
+    /** @type {HTML DOMElement} */
+    const searchInput = document.querySelector('.inline-search__input');
+    /** @type {HTMLElement} */
+    const resultsElem = document.querySelector('.inline-search__results-list');
+    /** @type {HTMLElement} */
+    const noResultsElem = document.querySelector('.inline-search__no-results');
+    /** @type {String|null} */
+    const currentSearch = new URL(window.location.href).searchParams.get('q');
 
-  // focuser sur l’input (camouflé) lorsque l’utilisateur clique sur le conteneur
-  wrapper.addEventListener('click', () => {
-    searchInput.focus();
-  }, true);
+    // Nous reportons la requête dans la boîte de recherche, pour fins de cohérence
+    // aux yeux de l’utilisateur·trice
+    if (currentSearch?.length) {
+      searchInput.value = currentSearch;
+    }
 
-  // classe appliquée sur le conteneur parent, selon l’état `focus`
-  searchInput.addEventListener('focus', () => {
-    // focus
-    wrapper.classList.add('is-focused');
-  });
-  searchInput.addEventListener('blur', () => {
-    // retrait du focus
-    wrapper.classList.remove('is-focused');
-  });
+    // on intercepte une tentative de 'soumission' du formulaire
+    // (peut-être à réactiver plus tard avec une page recherche fonctionnelle)
+    componentRootElem.addEventListener('submit', ev => {
+      ev.preventDefault();
+    });
+
+    // focuser sur l’input (camouflé) lorsque l’utilisateur clique sur le conteneur
+    wrapper.addEventListener('click', () => {
+      searchInput.focus();
+    }, true);
+
+    // classe appliquée sur le conteneur parent, selon l’état `focus`
+    searchInput.addEventListener('focus', ev => {
+      // focus
+      wrapper.classList.add('is-focused');
+
+      searchInput.addEventListener('keyup', listenForEscape, false);
+
+      if (searchInput.value?.length) {
+        // lancer la recherche si la boîte est déjà remplie
+        search(ev);
+      }
+    });
+    searchInput.addEventListener('blur', () => {
+      // retrait du focus
+      wrapper.classList.remove('is-focused');
+      searchInput.removeEventListener('keyup', listenForEscape, false);
+    });
+
+    /**
+     * Écouteur d’événement, à déclencher lorsque la touche 'ESC' est utilisée
+     * @param ev {Event}
+     */
+    function listenForEscape(ev) {
+      if (ev.keyCode === 27) {
+        componentRootElem.classList.remove('is-searching');
+        searchInput.blur();
+      }
+    }
+
+    const search = (e) => {
+      /** @type {String} */
+      let searchValue = e.target.value;
+      /** @type {Array} */
+      const results = window.searchIndex.search(searchValue, {
+        bool: 'OR',
+        expand: true,
+      });
+
+      componentRootElem.classList.add('is-searching');
+
+      if (!searchValue.length) {
+        componentRootElem.classList.remove('is-searching');
+        return;
+      }
+
+      // reset results
+      resultsElem.innerHTML = '';
+
+      if (results?.length) {
+        noResultsElem.style.display = 'none';
+
+        results.map((r) => {
+          const { id, title, excerpt, lang } = r.doc;
+          const el = document.createElement('li');
+          resultsElem.appendChild(el);
+          el.classList.add('inline-search__results-item');
+          el.setAttribute('tabindex', '0');
+
+          const a = document.createElement('a');
+          a.setAttribute('href', id);
+          el.appendChild(a);
+          a.classList.add('inline-search__results-link');
+
+          const h3 = document.createElement('h3');
+          h3.textContent = title;
+          el.appendChild(h3);
+          h3.classList.add('inline-search__results-title');
+
+          const excerptElem = document.createElement('div');
+          excerptElem.textContent = excerpt;
+          el.appendChild(excerptElem);
+          excerptElem.classList.add('inline-search__results-excerpt');
+        });
+      } else {
+        noResultsElem.style.display = 'block';
+      }
+    };
+
+    fetch("/fr/search-index.json").then((response) =>
+      response.json().then((rawIndex) => {
+        window.searchIndex = elasticlunr.Index.load(rawIndex);
+        document.querySelector('.inline-search__input').addEventListener('input', search);
+      })
+    )
+  })(window, document);
 </script>
