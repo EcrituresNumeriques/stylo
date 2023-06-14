@@ -4,6 +4,7 @@ Destiné à être affiché sur le côté sur des écrans de moyennes et grandes 
 
 Doc:
   @prop {Array} menu
+  @prop {Boolean} disableSearch (default: undefined)
   @prop {String} searchIndexUrl
 ---->
 
@@ -12,7 +13,7 @@ Doc:
     class="side-menu__header"
   ><slot name="header"></slot></header>
 
-  <div class="side-menu__item">
+  <div webc:if="!disableSearch">
     <!-- Todo i18n -->
     <inline-search
       :@search-index-url="searchIndexUrl"

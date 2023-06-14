@@ -50,11 +50,16 @@ Usage:
     --search-background-color: var(--couleur-fond);
     --search-text-color: var(--couleur-police);
     --search-font-family: var(--police-corps);
-    --search-font-size: .75rem;
+    --search-input-font-size: 1rem; /* 16px for iOS, avoids zoom https://stackoverflow.com/questions/2989263/disable-auto-zoom-in-input-text-tag-safari-on-iphone */
     --search-spacing: .5rem;
 
     /* Pour accueillir une éventuelle boîte avec `position: absolute` */
     position: relative;
+  }
+  @media (min-width: 48rem) {
+    .inline-search {
+      --search-input-font-size: .75rem;
+    }
   }
 
   .inline-search__icon-slot {
@@ -78,7 +83,7 @@ Usage:
     border-radius: 5px;
 
     /* Typographie */
-    font-size: var(--search-font-size);
+    font-size: var(--search-input-font-size);
 
     cursor: text;
   }

@@ -19,7 +19,7 @@ module.exports = function (collection) {
   collection.forEach((page) => {
     const text = striptags(page.content);
     const excerpt = text
-      .substring(0, 90) // couper le texte
+      .substring(0, 91) // tronquer pour avoir uniquement un court extrait
       .replace(/^\\s+|\\s+$|\\s+(?=\\s)/g, '') // enlever les espaces inutiles
       .trim() // enlever les espaces au début et à la fin
       .concat('…'); // ajouter une ellipse à la fin

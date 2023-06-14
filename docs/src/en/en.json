@@ -7,6 +7,7 @@
   "sectionTitle": "Documentation",
   "sectionUrl": "/en",
 
+  "disableSearch": false,
   "searchIndexUrl": "/en/search-index.json",
   "menu": [
     {

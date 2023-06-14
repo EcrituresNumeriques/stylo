@@ -203,6 +203,7 @@
           <main-navigation
             :@menu="menu"
             :@search-index-url="searchIndexUrl"
+            :@disable-search="disableSearch"
           >
           </main-navigation>
         </slot>
