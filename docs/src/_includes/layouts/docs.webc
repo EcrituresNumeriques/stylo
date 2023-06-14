@@ -202,7 +202,9 @@
         <!---- 1 seul élément enfant (voir CSS) ---->
           <main-navigation
             :@menu="menu"
-          ></main-navigation>
+            :@search-index-url="searchIndexUrl"
+          >
+          </main-navigation>
         </slot>
       </aside>
     </div>

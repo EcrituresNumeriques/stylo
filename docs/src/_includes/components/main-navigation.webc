@@ -3,7 +3,8 @@
 Destiné à être affiché sur le côté sur des écrans de moyennes et grandes tailles.
 
 Doc:
-  @prop {array} menu
+  @prop {Array} menu
+  @prop {String} searchIndexUrl
 ---->
 
 <nav class="side-menu__inner">
@@ -14,6 +15,7 @@ Doc:
   <div class="side-menu__item">
     <!-- Todo i18n -->
     <inline-search
+      :@search-index-url="searchIndexUrl"
       :@action="`/${$data.lang}/search/`"
       @method="get"
       @placeholder="Rechercher"

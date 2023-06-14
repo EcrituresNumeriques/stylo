@@ -3,14 +3,15 @@
 Docs:
   @prop action {String} URL de destination de l’action
   @prop method {String} Verbe HTTP  get|post
+  @prop searchIndexUrl {String} URL vers la page JSON d’index
   @prop placeholder {String} Texte par défaut dans l’input
-  @prop lang {String} Pour filtrer les résultats dans la bonne langue
 
 Usage:
 
 <inline-search
   @action="action"
   @method="method"
+  @searchIndexUrl="/lang/search-index.json"
   placehoder="Rechercher..."
 ></inline-search>
 ---->
@@ -19,6 +20,7 @@ Usage:
   class="inline-search"
   :action="action"
   :method="method"
+  :data-search-index-url="searchIndexUrl"
 >
   <div class="inline-search__input-wrapper">
     <div class="inline-search__icon-slot">
@@ -215,6 +217,13 @@ Usage:
     const noResultsElem = document.querySelector('.inline-search__no-results');
     /** @type {String|null} */
     const currentSearch = new URL(window.location.href).searchParams.get('q');
+    const searchIndexUrl = componentRootElem.getAttribute('data-search-index-url');
+
+    if (!searchIndexUrl) {
+      console.warn('Search not configured, please specify the "searchIndexUrl".');
+      // on arrête tout ici
+      return;
+    }
 
     // Nous reportons la requête dans la boîte de recherche, pour fins de cohérence
     // aux yeux de l’utilisateur·trice
@@ -311,7 +320,7 @@ Usage:
       }
     };
 
-    fetch("/fr/search-index.json").then((response) =>
+    fetch(searchIndexUrl).then((response) =>
       response.json().then((rawIndex) => {
         window.searchIndex = elasticlunr.Index.load(rawIndex);
         document.querySelector('.inline-search__input').addEventListener('input', search);
