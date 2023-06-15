@@ -1,8 +1,6 @@
 const { ApiError } = require('../helpers/errors')
 const Corpus = require('../models/corpus')
 const Workspace = require('../models/workspace')
-const mongoose = require('mongoose')
-const { ObjectId } = mongoose.Types
 
 async function getCorpusByContext (corpusId, context) {
   if (context.token?.admin === true || context.user?.admin) {
