@@ -1,15 +1,18 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { LifeBuoy } from 'react-feather'
-import { useSelector } from 'react-redux'
-import { Link, Route, Switch } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, Route, Switch, useParams } from 'react-router-dom'
 
 import logoContent from '../../public/images/logo.svg?inline'
+import { useActiveWorkspace } from '../hooks/workspace.js'
 
 import styles from './header.module.scss'
 import UserMenu from './header/UserMenu.jsx'
 
 function Header () {
-  const connected = useSelector(state => state.logedIn)
+  const activeWorkspace = useActiveWorkspace()
+  const activeWorkspaceId = useMemo(() => activeWorkspace?._id, [activeWorkspace])
+  const connected = useSelector(state => state.loggedIn)
 
   return (<Switch>
     <Route path="*/preview"/>
@@ -23,8 +26,8 @@ function Header () {
             <>
               <nav>
                 <ul className={styles.menuLinks}>
-                  <li><Link to="/articles">Articles</Link></li>
-                  <li><Link to="/books">Corpus</Link></li>
+                  <li><Link to={activeWorkspaceId ? `/workspaces/${activeWorkspaceId}/articles` : '/articles'}>Articles</Link></li>
+                  <li><Link to={activeWorkspaceId ? `/workspaces/${activeWorkspaceId}/books` : '/books'}>Corpus</Link></li>
                 </ul>
               </nav>
               <nav className={styles.secondaryNav}>

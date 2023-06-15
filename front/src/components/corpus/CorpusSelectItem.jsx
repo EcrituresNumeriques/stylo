@@ -6,25 +6,20 @@ import { removeArticleFromCorpus, addArticleToCorpus } from './Corpus.graphql'
 import styles from './CorpusSelectItem.module.scss'
 import { useGraphQL } from '../../helpers/graphQL.js'
 
-export default function CorpusSelectItem ({ articleId, name, id, articleIds, onChange }) {
+export default function CorpusSelectItem ({ selected, name, id, articleId, onChange }) {
   const runQuery = useGraphQL()
-  const isSelected = articleIds.includes(articleId)
   const toggleCorpusArticle = useCallback(async (event) => {
     event.preventDefault()
     const [corpusId, checked] = [event.target.value, event.target.checked]
     const query = checked ? addArticleToCorpus : removeArticleFromCorpus
-    const corpusArticleIds = checked
-      ? [...articleIds, articleId]
-      : articleIds.filter((id) => id !== articleId)
     await runQuery({ query, variables: { articleId: articleId, corpusId: corpusId } })
-    onChange({corpusId, corpusArticleIds})
-  }, [articleId, id])
+    onChange({corpusId})
+  }, [articleId, id, onChange])
   return (
     <>
       <li>
-        <label className={clsx(styles.corpus, isSelected && styles.selected)}>
-          <input name={id} value={id} data-id={id} type="checkbox" checked={isSelected}
-                 onChange={toggleCorpusArticle}/>
+        <label className={clsx(styles.corpus, selected && styles.selected)}>
+          <input name={id} value={id} data-id={id} type="checkbox" checked={selected} onChange={toggleCorpusArticle}/>
           <span>{name}</span>
         </label>
       </li>
@@ -35,7 +30,7 @@ export default function CorpusSelectItem ({ articleId, name, id, articleIds, onC
 CorpusSelectItem.propTypes = {
   name: PropTypes.string.isRequired,
   id: PropTypes.string,
-  articleIds: PropTypes.array,
   articleId: PropTypes.string.isRequired,
+  selected: PropTypes.bool.isRequired,
   onChange: PropTypes.func,
 }

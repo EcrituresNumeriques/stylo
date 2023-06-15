@@ -1,8 +1,8 @@
 import { applyMiddleware, compose, createStore } from 'redux'
+import { useParams } from 'react-router-dom'
 import { toEntries } from './helpers/bibtex'
 import ArticleService from './services/ArticleService'
 import WorkspaceService from './services/WorkspaceService.js'
-
 const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName = 'sessionToken' } = import.meta.env
 
 function createReducer (initialState, handlers) {
@@ -254,9 +254,10 @@ function setProfile (state, action) {
   return {
     ...state,
     hasBooted: true,
-    logedIn: true,
+    loggedIn: true,
     activeUser: {
       ...state.activeUser,
+      activeWorkspaceId: action.activeWorkspaceId,
       ...user
     }
   }

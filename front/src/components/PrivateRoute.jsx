@@ -5,13 +5,13 @@ import { Route } from 'react-router-dom'
 import Login from './Login'
 
 function PrivateRoute ({ children, ...rest }) {
-  const logedIn = useSelector(state => state.logedIn)
+  const loggedIn = useSelector(state => state.loggedIn)
 
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        logedIn ? (children) : (<Login from={location} />)
+        loggedIn ? (children) : (<Login from={location} />)
       } />
   )
 }

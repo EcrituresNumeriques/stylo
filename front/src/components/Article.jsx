@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -8,6 +8,7 @@ import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-u
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
 import CorpusSelectItem from './corpus/CorpusSelectItem.jsx'
+import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
 import fieldStyles from './field.module.scss'
 
 import Modal from './Modal'
@@ -45,14 +46,15 @@ import {
 
 import useGraphQL, { useMutation } from '../hooks/graphql'
 import TimeAgo from './TimeAgo.jsx'
+import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
 import WorkspaceSelectItem from './workspace/WorkspaceSelectItem.jsx'
 import { useSelector } from 'react-redux'
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
 
-export default function Article ({ article, corpus, onArticleUpdated, onArticleDeleted, onArticleCreated }) {
+export default function Article ({ article, onArticleUpdated, onArticleDeleted, onArticleCreated }) {
   const activeUser = useSelector(state => state.activeUser)
-  const articleId = article._id
+  const articleId = useMemo(() => article._id, [article])
   const {
     data: contributorsQueryData,
     error: contributorsError,
@@ -80,7 +82,10 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
     revalidateOnReconnect: false
   })
   const tags = (articleTagsQueryData?.article?.tags || [])
-  const { data: articleVersionsQueryData, mutate: mutateArticleVersions } = useGraphQL({ query: getArticleVersions, variables: { articleId } }, {
+  const { data: articleVersionsQueryData, mutate: mutateArticleVersions } = useGraphQL({
+    query: getArticleVersions,
+    variables: { articleId }
+  }, {
     fallbackData: {
       article
     },
@@ -89,7 +94,10 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
     revalidateOnReconnect: false
   })
   const versions = (articleVersionsQueryData?.article?.versions || [])
-  const { data: articleWorkspacesQueryData, mutate: mutateArticleWorkspaces } = useGraphQL({ query: getArticleWorkspaces, variables: { articleId } }, {
+  const {
+    data: articleWorkspacesQueryData,
+    mutate: mutateArticleWorkspaces
+  } = useGraphQL({ query: getArticleWorkspaces, variables: { articleId } }, {
     fallbackData: {
       article
     },
@@ -97,7 +105,7 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
     revalidateOnFocus: false,
     revalidateOnReconnect: false
   })
-  const workspaces = (articleWorkspacesQueryData?.article?.workspaces || [])
+  const workspaces = useMemo(() => articleWorkspacesQueryData?.article?.workspaces || [], [articleWorkspacesQueryData])
 
   const { t } = useTranslation()
   const { setToast } = useToasts()
@@ -113,7 +121,6 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
   const [renaming, setRenaming] = useState(false)
 
   const [newTitle, setNewTitle] = useState(article.title)
-  const [corpusArticleIds, setCorpusArticleIds] = useState({})
 
   const [sharing, setSharing] = useState(false)
   const [sending, setSending] = useState(false)
@@ -121,15 +128,8 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
   const isArticleOwner = activeUser._id === article.owner._id
 
   const handleWorkspaceUpdate = useCallback(() => {
-    mutateArticleWorkspaces(articleWorkspacesQueryData, { revalidate: true })
-  }, [])
-
-  const handleCorpusUpdate = useCallback(({ corpusId, corpusArticleIds }) => {
-    setCorpusArticleIds({
-      ...corpusArticleIds,
-      [corpusId]: corpusArticleIds
-    })
-  }, [corpusArticleIds])
+    mutateArticleWorkspaces()
+  }, [mutateArticleWorkspaces])
 
   useEffect(() => {
     if (contributorsError) {
@@ -141,27 +141,23 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
   }, [contributorsError])
 
   useEffect(() => {
-    setCorpusArticleIds(corpus.reduce((acc, item) => {
-      acc[item._id] = item.articles.map((corpusArticle) => corpusArticle.article._id)
-      return acc
-    }, {}))
-  }, [corpus])
-
-  useEffect(() => {
     if (expanded) {
-      mutateArticleWorkspaces(article, { revalidate: true})
+      mutateArticleWorkspaces(article, { revalidate: true })
       mutateArticleVersions(article, { revalidate: true })
     }
-  }, [expanded])
+  }, [mutateArticleWorkspaces, mutateArticleVersions, expanded])
 
   const toggleExpansion = useCallback((event) => {
     if (!event.key || [' ', 'Enter'].includes(event.key)) {
       setExpanded(!expanded)
     }
-  }, [expanded])
+  }, [setExpanded, expanded])
 
   const duplicate = async () => {
-    const duplicatedArticleQuery = await mutation({query: duplicateArticle, variables: { user: activeUser._id, to: activeUser._id, article: articleId }})
+    const duplicatedArticleQuery = await mutation({
+      query: duplicateArticle,
+      variables: { user: activeUser._id, to: activeUser._id, article: articleId }
+    })
     onArticleCreated({
       ...article,
       ...duplicatedArticleQuery.duplicateArticle,
@@ -198,18 +194,18 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
 
   const closeSendingModal = useCallback(() => {
     setSending(false)
-  }, [])
+  }, [setSending])
 
   const closeSharingModal = useCallback(() => {
     setSharing(false)
-  }, [])
+  }, [setSharing])
 
   const handleArticleTagsUpdated = useCallback((event) => {
     onArticleUpdated({
       ...article,
       tags: event.updatedTags
     })
-  }, [articleId])
+  }, [article])
 
   return (
     <article className={styles.article}>
@@ -364,25 +360,12 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
 
             <h4>{t('article.workspaces.title')}</h4>
             <ul className={styles.workspaces}>
-              {activeUser.workspaces.map((workspace) => <WorkspaceSelectItem
-                key={workspace._id}
-                id={workspace._id}
-                color={workspace.color}
-                name={workspace.name}
-                articleId={article._id}
-                workspaceIds={workspaces.map(({ _id }) => _id)}
-                onChange={handleWorkspaceUpdate}/>)}
+              <WorkspaceSelectionItems articleId={articleId}/>
             </ul>
 
             <h4>{t('article.corpus.title')}</h4>
             <ul className={styles.corpusList}>
-              {corpus.map((c) => <CorpusSelectItem
-                key={c._id}
-                id={c._id}
-                name={c.name}
-                articleId={article._id}
-                articleIds={corpusArticleIds[c._id] || []}
-                onChange={handleCorpusUpdate}/>)}
+              <CorpusSelectItems articleId={articleId}/>
             </ul>
           </div>
         )}

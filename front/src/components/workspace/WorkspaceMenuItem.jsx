@@ -13,8 +13,18 @@ export default function WorkspaceMenuItem ({ color, name, id }) {
   const location = useLocation()
   const setActiveWorkspace = (workspaceId) => {
     const path = location.pathname
-    if (!['/', '/articles', '/books'].includes(path)) {
-      history.push('/articles')
+    if (path.endsWith('/books')) {
+      if (id) {
+        history.push(`/workspaces/${id}/books`)
+      } else {
+        history.push(`/books`)
+      }
+    } else {
+      if (id) {
+        history.push(`/workspaces/${id}/articles`)
+      } else {
+        history.push(`/articles`)
+      }
     }
     dispatch({ type: 'SET_ACTIVE_WORKSPACE', workspaceId })
   }
