@@ -2,8 +2,8 @@ import React, { useMemo, useState } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
+import slugify from 'slugify'
 import useStyloExport from '../hooks/stylo-export.js'
-import { slugify } from '../hooks/pandoc.js'
 
 import Select from './Select'
 import Combobox from './SelectCombobox.jsx'
@@ -21,7 +21,7 @@ export default function Export ({ bookId, articleVersionId, articleId, bib, name
   const [tld, setTld] = useState('false')
   const { exportFormats, exportStyles, exportStylesPreview, isLoading } = useStyloExport({ csl, bib })
   const { host } = window.location
-  const exportId = useMemo(() => slugify(name, { diacritics: false }) || (articleVersionId ?? articleId ?? bookId), [name])
+  const exportId = useMemo(() => slugify(name, { strict: true }) || (articleVersionId ?? articleId ?? bookId), [name])
 
   const exportUrl = bookId
     ? `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${exportId}&book=${bookId}&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${Boolean(toc)}&tld=${tld}&unnumbered=${unnumbered}`
