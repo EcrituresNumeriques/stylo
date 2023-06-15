@@ -1,4 +1,4 @@
-import { usePandocAnchoring, slugify } from './pandoc.js'
+import { usePandocAnchoring } from './pandoc.js'
 
 describe('slugify', () => {
   test('should match pandoc anchoring', () => {
