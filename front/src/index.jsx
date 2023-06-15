@@ -2,7 +2,7 @@ import './wdyr.js'
 import 'core-js/modules/web.structured-clone'
 import React, { lazy, Suspense } from 'react'
 import { render } from 'react-dom'
-import { BrowserRouter as Router, Route, Switch, useHistory, useParams } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { GeistProvider, Loading } from '@geist-ui/core'
 

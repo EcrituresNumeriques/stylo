@@ -1,15 +1,17 @@
 import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-ui/core'
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import { ChevronDown, ChevronRight, Edit3, Eye, Printer, Trash } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { useGraphQL } from '../../helpers/graphQL.js'
 import Button from '../Button.jsx'
 import TimeAgo from '../TimeAgo.jsx'
 
 import { deleteCorpus } from './Corpus.graphql'
+import CorpusArticleItems from './CorpusArticleItems.jsx'
 
 import styles from './corpusItem.module.scss'
 
@@ -85,9 +87,9 @@ export default function CorpusItem ({ corpus }) {
         {corpus.description && <p>{corpus.description}</p>}
         <h5 className={styles.partsTitle}>{t('corpus.parts.label')}</h5>
         {corpus.articles && corpus.articles.length > 0 && <ul>
-          {corpus.articles.map((a) => (
-            <li key={a._id}><Link to={`/article/${a.article._id}`}>{a.article.title}</Link></li>
-          ))}
+          <DndProvider backend={HTML5Backend}>
+            <CorpusArticleItems articles={corpus.articles} />
+          </DndProvider>
         </ul>}
         {(corpus.articles && corpus.articles.length === 0) &&
           <>
@@ -114,12 +116,17 @@ export default function CorpusItem ({ corpus }) {
 
 CorpusItem.propTypes = {
   corpus: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
     name: PropTypes.string,
     description: PropTypes.string,
     creator: PropTypes.shape({
       displayName: PropTypes.string,
       username: PropTypes.string
     }),
+    articles: PropTypes.arrayOf(PropTypes.shape({
+      _id: PropTypes.string,
+      title: PropTypes.string,
+    })),
     updatedAt: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
   })

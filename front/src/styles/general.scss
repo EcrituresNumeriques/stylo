@@ -42,6 +42,10 @@
     min-height: 8em;
   }
 
+  body {
+    overflow-y: scroll;
+  }
+
   html,
   body {
     height: 100%;

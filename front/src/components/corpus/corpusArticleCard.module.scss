@@ -1,0 +1,16 @@
+.card {
+  border: 1px solid #e1e1e1;
+  padding: 0.5rem 1rem;
+  margin-bottom: .5rem;
+  background-color: white;
+  cursor: move;
+  display: flex;
+  align-items: center;
+  color: #323333;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding-left: 0.5em;
+}
