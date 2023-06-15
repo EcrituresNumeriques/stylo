@@ -21,7 +21,7 @@ export default function Export ({ bookId, articleVersionId, articleId, bib, name
   const [tld, setTld] = useState('false')
   const { exportFormats, exportStyles, exportStylesPreview, isLoading } = useStyloExport({ csl, bib })
   const { host } = window.location
-  const exportId = useMemo(() => slugify(name, { strict: true }) || (articleVersionId ?? articleId ?? bookId), [name])
+  const exportId = useMemo(() => slugify(name, { strict: true, lower: true }) || (articleVersionId ?? articleId ?? bookId), [name])
 
   const exportUrl = bookId
     ? `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${exportId}&book=${bookId}&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${Boolean(toc)}&tld=${tld}&unnumbered=${unnumbered}`
