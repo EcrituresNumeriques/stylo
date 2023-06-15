@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types'
 import { CheckSquare, Search, Square } from 'react-feather'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import debounce from 'lodash.debounce'
 import useGraphQL, { useMutation } from '../hooks/graphql.js'
@@ -10,11 +11,19 @@ import Field from './Field.jsx'
 import { addContact, removeContact, getUserByEmail, getContacts } from './Contacts.graphql'
 import ContactItem from './ContactItem.jsx'
 
+/**
+ * @param members
+ * @param onUserUpdated
+ * @param selectedIcon
+ * @param unselectedIcon
+ * @param showActiveUser
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export default function ContactSearch (
   {
     members,
-    onUserUpdated = (_) => {
-    },
+    onUserUpdated,
     selectedIcon = <CheckSquare/>,
     unselectedIcon = <Square/>,
     showActiveUser,
@@ -25,14 +34,14 @@ export default function ContactSearch (
   const {
     data: userContactsQueryData,
     mutate: mutateUserContacts
-  } = useGraphQL({query: getContacts, variables: { userId: activeUserId } }, {
+  } = useGraphQL({ query: getContacts, variables: { userId: activeUserId } }, {
       revalidateIfStale: false,
       revalidateOnFocus: false,
       revalidateOnReconnect: false
     }
   )
   const mutation = useMutation()
-  const userContacts = userContactsQueryData?.user?.acquintances || []
+  const userContacts = useMemo(() => userContactsQueryData?.user?.acquintances || [], [userContactsQueryData])
   const [filter, setFilter] = useState('')
   const [contacts, setContacts] = useState([])
   const [userFound, setUserFound] = useState(null)
@@ -40,8 +49,7 @@ export default function ContactSearch (
     const contactName = contact.displayName || contact.username
     return contact._id !== activeUserId && (contact.email.toLowerCase().includes(filter.toLowerCase()) || contactName.toLowerCase().includes(filter.toLowerCase()))
   }, [filter])
-  const contactsFound = contacts.filter(filterContact)
-
+  const contactsFound = useMemo(() => contacts.filter(filterContact), [contacts, filterContact])
   const handleContactUpdate = useCallback(async (event) => {
     const { _id: userId } = event.user
     if (event.action === 'select' || event.action === 'active') {
@@ -59,7 +67,7 @@ export default function ContactSearch (
       const response = await mutation({ query: addContact, variables: { userId: activeUserId, contactId: userId } })
       const updatedContacts = {
         user: {
-          acquintances:  response.user.addContact.acquintances
+          acquintances: response.user.addContact.acquintances
         }
       }
       await mutateUserContacts(updatedContacts, { revalidate: false })
@@ -67,12 +75,12 @@ export default function ContactSearch (
       const response = await mutation({ query: removeContact, variables: { userId: activeUserId, contactId: userId } })
       const updatedContacts = {
         user: {
-          acquintances:  response.user.removeContact.acquintances
+          acquintances: response.user.removeContact.acquintances
         }
       }
       await mutateUserContacts(updatedContacts, { revalidate: false })
     }
-    onUserUpdated(event)
+    onUserUpdated && onUserUpdated(event)
   }, [activeUserId, contacts])
 
   useEffect(() => {
@@ -191,4 +199,13 @@ export default function ContactSearch (
       </div>
     </>
   )
+}
+
+ContactSearch.propTypes = {
+  members: PropTypes.array,
+  className: PropTypes.string,
+  onUserUpdated: PropTypes.func,
+  selectedIcon: PropTypes.element,
+  unselectedIcon: PropTypes.element,
+  showActiveUser: PropTypes.bool
 }
