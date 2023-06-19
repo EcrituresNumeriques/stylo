@@ -59,7 +59,7 @@
   "corpus.editForm.buttonText": "Update",
   "corpus.editForm.buttonTitle": "Update this corpus",
   "corpus.update.toastSuccess": "Corpus successfully updated.",
-  "corpus.update.toastFailure":  "Unable to update corpus: {{errorMessage}}",
+  "corpus.update.toastFailure": "Unable to update corpus: {{errorMessage}}",
   "article.corpus.title": "Corpus",
   "corpus.delete.toastSuccess": "Corpus successfully deleted.",
   "article.shareModal.title": "Share the article with a contact",
