@@ -183,6 +183,9 @@ hr.horizontalSeparator {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  
+  column-gap: 2em;
+  row-gap: 0.15em;
 
   padding: 1rem;
   position: relative;
@@ -194,7 +197,7 @@ hr.horizontalSeparator {
   }
 
   .inlineField {
-    width: 100%;
+    flex: 1;
   }
 
   .title {
@@ -208,7 +211,7 @@ hr.horizontalSeparator {
   }
 
   .actionButtons {
-    flex: 195px 1;
+    flex-shrink: 1;
     text-align: right;
   }
 
