@@ -125,7 +125,10 @@ module.exports = {
     },
 
     async corpus(workspace) {
-      return Corpus.find({ 'workspace': workspace._id }).sort([['updatedAt', -1]])
+      return Corpus
+        .find({ 'workspace': workspace._id })
+        .populate([{ path: 'creator' }])
+        .sort([['updatedAt', -1]])
     },
 
     async member (workspace, { userId }) {

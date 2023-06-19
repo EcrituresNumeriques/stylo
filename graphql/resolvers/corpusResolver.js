@@ -146,7 +146,7 @@ module.exports = {
       if (!user) {
         throw new ApiError('UNAUTHENTICATED', 'Unable to get a list of corpus as an unauthenticated user')
       }
-      return Corpus.find({ 'creator': user?._id })
+      return Corpus.find({ 'creator': user?._id, 'workspace': null })
         .populate([{ path: 'creator' }])
         .sort([['updatedAt', -1]])
     },
