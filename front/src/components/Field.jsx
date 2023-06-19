@@ -2,32 +2,31 @@ import clsx from 'clsx'
 import React, { forwardRef } from 'react'
 import styles from './field.module.scss'
 
-export default forwardRef(function Field (props, forwardedRef) {
-  const type = props.type ? props.type : 'text'
+export default forwardRef(function Field ({hasError, className, prefix, children, label, icon, id, type, ...otherProps}, forwardedRef) {
   const classNames = [
     styles.field,
-    props.prefix && styles.withPrefix,
+    prefix && styles.withPrefix,
     'control-field'
   ]
 
-  if (props.className) {
-    classNames.push(props.className)
+  if (className) {
+    classNames.push(className)
   }
-  if (props.hasError) {
+  if (hasError) {
     classNames.push(styles.error)
   }
 
-  const computedStyles = {'--chars-count': props.prefix?.length}
+  const computedStyles = {'--chars-count': prefix?.length}
 
   return (<div className={clsx(classNames)}>
-    {props.label && <label htmlFor={props.id}>{props.label}</label>}
-    <div className={clsx('control', props.icon && "has-icons-left")} style={computedStyles}>
-      {props.children && {...props.children}}
-      {!props.children && <>
-        {props.prefix && <span className={styles.prefix}>{props.prefix}</span>}
-        <input {...props} className="input" type={type} ref={forwardedRef} />
-          {props.icon && <span className="icon is-small is-left">
-            <props.icon/>
+    {label && <label htmlFor={id}>{label}</label>}
+    <div className={clsx('control', icon && "has-icons-left")} style={computedStyles}>
+      {children && {...children}}
+      {!children && <>
+        {prefix && <span className={styles.prefix}>{prefix}</span>}
+        <input {...otherProps} className="input" type={type || 'text'} ref={forwardedRef} />
+          {icon && <span className="icon is-small is-left">
+            <icon/>
           </span>}
         </>}
     </div>
