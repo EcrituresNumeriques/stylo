@@ -143,7 +143,6 @@ const getBookExportContext = async (bookId) => {
 
 function createBookExportContext (chapters, { id, title }) {
   // sort chapters in ascending alphabetical order
-  console.log({ chapters })
   const chaptersSorted = chapters.sort((a, b) => a.order - b.order).map((c) => c.article)
   const chaptersData = chaptersSorted.reduce((acc, chapter) => {
     const workingVersion = chapter.versions.length > 0
