@@ -3,13 +3,15 @@ const defaultsData = require('../data/defaultsData')
 const Article = require('../models/article')
 const User = require('../models/user')
 const Workspace = require('../models/workspace')
+const Version = require('../models/version')
 
 const isUser = require('../policies/isUser')
 const { ApiError } = require('../helpers/errors')
 const { reformat } = require('../helpers/metadata.js')
+const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions')
 
 
-async function getUser(userId) {
+async function getUser (userId) {
   const user = await User.findById(userId)
   if (!user) {
     throw new ApiError('NOT_FOUND', `Unable to find user with id ${userId}`)
@@ -17,7 +19,7 @@ async function getUser(userId) {
   return user
 }
 
-async function getArticleByContext(articleId, context) {
+async function getArticleByContext (articleId, context) {
   if (context.token.admin === true) {
     return await getArticle(articleId)
   }
@@ -28,7 +30,7 @@ async function getArticleByContext(articleId, context) {
   return await getArticleByUser(articleId, userId)
 }
 
-async function getArticle(articleId) {
+async function getArticle (articleId) {
   const article = await Article
     .findById(articleId)
     .populate('owner tags')
@@ -40,7 +42,7 @@ async function getArticle(articleId) {
   return article
 }
 
-async function getArticleByUser(articleId, userId) {
+async function getArticleByUser (articleId, userId) {
   const userWorkspace = await Workspace.findOne({
     'members.user': userId,
     'articles': articleId
@@ -48,7 +50,7 @@ async function getArticleByUser(articleId, userId) {
 
   if (userWorkspace) {
     // article found in one of user's workspaces
-    const article = await  Article
+    const article = await Article
       .findById(articleId)
       .populate('owner tags')
       .populate({ path: 'contributors', populate: { path: 'user' } })
@@ -102,8 +104,11 @@ module.exports = {
 
       user.articles.push(newArticle)
       await user.save()
-
       return newArticle
+    },
+
+    async article (_root, { articleId }, context) {
+      return getArticleByContext(articleId, context)
     },
 
     /**
@@ -240,22 +245,13 @@ module.exports = {
       return article
     },
 
-    async versions (article, { limit }) {
-      await article
-        .populate({
-          path: 'versions',
-          populate: { path: 'owner' },
-          options: {
-            limit,
-            sort: { createdAt: -1 }
-          }
-        })
-        .execPopulate()
-      return article.versions
-      /*
-      console.log({versions: article.versions})
-      article.versions = await Promise.all(article.versions.map(async (versionId) => await loaders.versions.load(versionId)))
-      return article*/
+    async versions (article, _args, context) {
+      if (article.populated('versions')) {
+        return article.versions
+      }
+      const versions = await Promise.all(article.versions.map(async (versionId) => await context.loaders.versions.load(versionId)))
+      versions.sort((a, b) => b.createdAt - a.createdAt)
+      return versions
     },
 
     /**
@@ -266,39 +262,33 @@ module.exports = {
      */
     async delete (article) {
       await article.remove()
-
       return article.$isDeleted()
     },
 
     async rename (article, { title }) {
       article.set('title', title)
       const result = await article.save({ timestamps: false })
-
       return result === article
     },
 
     async setZoteroLink (article, { zotero }) {
       article.set('zoteroLink', zotero)
       const result = await article.save({ timestamps: false })
-
       return result === article
     },
 
     async addTags (article, { tags }) {
       await article.addTags(...tags)
-
       return article.tags
     },
 
     async removeTags (article, { tags }) {
       await article.removeTags(...tags)
-
       return article.tags
     },
 
     async setPreviewSettings (article, { settings }) {
       await article.set('preview', settings, { merge: true }).save()
-
       return article
     },
 
@@ -311,6 +301,40 @@ module.exports = {
         }))
 
       return article.save()
+    },
+
+    async createVersion (article, { articleVersionInput }) {
+      const { bib, yaml, md } = article.workingVersion
+
+      /** @type {Query<Array<Article>>|Array<Article>} */
+      const latestVersions = await Version.find({ _id: { $in: article.versions.map((a) => a._id) } })
+        .sort({ createdAt: -1 })
+        .limit(1)
+
+      let mostRecentVersion = { version: 0, revision: 0 }
+      if (latestVersions?.length > 0 ) {
+        mostRecentVersion = {
+          version: latestVersions[0].version,
+          revision: latestVersions[0].revision,
+        }
+      }
+      const { revision, version } = articleVersionInput.major
+        ? computeMajorVersion(mostRecentVersion)
+        : computeMinorVersion(mostRecentVersion)
+
+      const createdVersion = await Version.create({
+        md,
+        yaml,
+        bib,
+        version,
+        revision,
+        message: articleVersionInput.message,
+        owner: articleVersionInput.userId,
+      }).then((v) => v.populate('owner').execPopulate())
+
+      article.versions.unshift(createdVersion)
+      await article.save()
+      return article
     }
   },
 

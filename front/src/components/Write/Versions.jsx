@@ -73,7 +73,7 @@ function Version ({ articleId, articleName: name, compareTo, onExport, readOnly,
     {!renaming && <p>
       {v.owner && (
         <span className={styles.author}>
-          by <strong>{v.owner.displayName}</strong>
+          by <strong>{v.owner.displayName || v.owner.username}</strong>
         </span>
       )}
       <span className={styles.momentsAgo}>

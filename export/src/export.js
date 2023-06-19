@@ -10,7 +10,7 @@ const { logger } = require('./logger')
 const { FindByIdNotFoundError } = require('./helpers/errors')
 const { normalize } = require('./helpers/filename')
 const { byTitle: sortByTitle } = require('./helpers/sort')
-const { getArticleById, getVersionById, getBookById } = require('./graphql')
+const { getArticleById, getVersionById, getCorpusById } = require('./graphql')
 
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
 
@@ -130,7 +130,7 @@ const getArticleExportContext = async (articleId) => {
 }
 
 const getBookExportContext = async (bookId) => {
-  const book = await getBookById(bookId)
+  const book = await getCorpusById(bookId)
   const { articles: chapters, _id: id, name: title } = book
 
   // we can create empty books… but no need to preview them
@@ -143,7 +143,8 @@ const getBookExportContext = async (bookId) => {
 
 function createBookExportContext (chapters, { id, title }) {
   // sort chapters in ascending alphabetical order
-  const chaptersSorted = chapters.sort(sortByTitle)
+  console.log({ chapters })
+  const chaptersSorted = chapters.sort((a, b) => a.order - b.order).map((c) => c.article)
   const chaptersData = chaptersSorted.reduce((acc, chapter) => {
     const workingVersion = chapter.versions.length > 0
       ? chapter.versions[chapter.versions.length - 1]
@@ -152,6 +153,7 @@ function createBookExportContext (chapters, { id, title }) {
     acc.md.push(workingVersion.md)
     return acc
   }, { bib: [], md: [] })
+
   const firstChapter = chaptersSorted[0]
   const { yaml } = firstChapter.versions.length > 0
     ? firstChapter.versions[firstChapter.versions.length - 1]

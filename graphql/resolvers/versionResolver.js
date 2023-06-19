@@ -1,40 +1,10 @@
 const Version = require('../models/version')
-const Article = require('../models/article')
-const User = require('../models/user')
-
-const isUser = require('../policies/isUser')
+const mongoose = require('mongoose')
 
 const { ApiError } = require('../helpers/errors')
 const { reformat } = require('../helpers/metadata.js')
 
 module.exports = {
-  Mutation: {
-    async saveVersion (_, args, context) {
-      const { userId } = isUser(args, context)
-
-      // fetch user
-      const thisUser = await User.findById(userId)
-      if (!thisUser) {
-        throw new Error('This user does not exist!')
-      }
-
-      // fetch article
-      const article = await Article.findAndPopulateOne(
-        args.version.article
-      )
-
-      if (!article) {
-        throw new Error('Wrong article ID!')
-      }
-
-      return article.createNewVersion({
-        mode: args.version.major ? 'MAJOR' : 'MINOR',
-        message: args.version.message,
-        user: thisUser
-      })
-    },
-  },
-
   Query: {
     async version (_, { version: versionId }) {
       // TODO need to make sure user should have access to this version
@@ -50,6 +20,13 @@ module.exports = {
   },
 
   Version: {
+    async owner (version, _args, context) {
+      if (version instanceof mongoose.Document && version.populated('owner')) {
+        return version.owner
+      }
+      return context.loaders.users.load(version.owner._id)
+    },
+
     async rename (version, { name }) {
       version.set('message', name)
       const result = await version.save({ timestamps: false })

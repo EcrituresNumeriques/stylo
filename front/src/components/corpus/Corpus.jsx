@@ -21,6 +21,7 @@ export default function Corpus () {
   const currentUser = useSelector(state => state.activeUser, shallowEqual)
   const latestCorpusCreated = useSelector(state => state.latestCorpusCreated, shallowEqual)
   const latestCorpusDeleted = useSelector(state => state.latestCorpusDeleted, shallowEqual)
+  const latestCorpusUpdated = useSelector(state => state.latestCorpusUpdated, shallowEqual)
   const [isLoading, setIsLoading] = useState(true)
   const [corpus, setCorpus] = useState([])
   const activeUserId = useActiveUserId()
@@ -55,7 +56,7 @@ export default function Corpus () {
         alert(err)
       }
     })()
-  }, [activeUserId, activeWorkspaceId, latestCorpusCreated, latestCorpusDeleted])
+  }, [activeUserId, activeWorkspaceId, latestCorpusCreated, latestCorpusDeleted, latestCorpusUpdated])
 
   useEffect(() => {
     //Self invoking async function

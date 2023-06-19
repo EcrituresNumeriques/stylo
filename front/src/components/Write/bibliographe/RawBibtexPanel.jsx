@@ -3,7 +3,6 @@ import { shallowEqual, useSelector } from 'react-redux'
 import debounce from 'lodash.debounce'
 
 import { Check } from 'react-feather'
-import { toBibtex, getValidationResults } from '../../../helpers/bibtex'
 
 import MonacoBibtexEditor from '../providers/monaco/BibtexEditor'
 import Button from '../../Button'

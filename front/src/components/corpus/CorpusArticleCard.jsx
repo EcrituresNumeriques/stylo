@@ -49,7 +49,7 @@ export default function CorpusArticleCard ({ id, article, index, moveCard }) {
       // but it's good here for the sake of performance
       // to avoid expensive index searches.
       item.index = hoverIndex
-    },
+    }
   })
   const [{ isDragging }, drag] = useDrag({
     type: 'card',
@@ -60,7 +60,6 @@ export default function CorpusArticleCard ({ id, article, index, moveCard }) {
       isDragging: monitor.isDragging(),
     }),
   })
-  console.log({article})
   const opacity = isDragging ? 0 : 1
   drag(drop(ref))
   return (

@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { LifeBuoy } from 'react-feather'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, Route, Switch, useParams } from 'react-router-dom'
+import {  useSelector } from 'react-redux'
+import { Link, Route, Switch } from 'react-router-dom'
 
 import logoContent from '../../public/images/logo.svg?inline'
 import { useActiveWorkspace } from '../hooks/workspace.js'

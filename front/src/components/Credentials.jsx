@@ -5,7 +5,6 @@ import { useGraphQL } from '../helpers/graphQL'
 import { changePassword as query } from './Credentials.graphql'
 import styles from './credentials.module.scss'
 import fieldStyles from './field.module.scss'
-import Loading from "./Loading";
 import UserInfos from "./UserInfos";
 import Button from "./Button";
 import Field from "./Field";

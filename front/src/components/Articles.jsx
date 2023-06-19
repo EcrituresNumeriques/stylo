@@ -40,10 +40,7 @@ export default function Articles () {
     revalidateOnReconnect: false
   })
   const articles = useMemo(() => (activeWorkspaceId ? data?.workspace?.articles : data?.articles) || [], [activeWorkspaceId, data])
-  const corpus = useMemo(() => (activeWorkspaceId ? data?.workspace?.corpus : data?.corpus) || [], [activeWorkspaceId, data])
 
-  console.log(corpus)
-  console.log(data)
   const handleArticleUpdated = useCallback(async (updatedArticle) => {
     const updatedArticles = articles.map((article) => article._id === updatedArticle._id ? updatedArticle : article)
     if (activeWorkspaceId) {

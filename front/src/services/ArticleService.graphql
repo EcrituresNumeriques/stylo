@@ -7,22 +7,20 @@ query updateWorkingVersion ($articleId: ID!, $content: WorkingVersionInput!) {
   }
 }
 
-mutation saveVersion ($userId: ID!, $articleId: ID!, $major: Boolean!, $message: String) {
-  saveVersion(
-    version: {
-      article: $articleId,
-      major: $major,
-      message: $message
-    },
-    user: $userId
-  ) {
-    _id
-    version
-    revision
-    message
-    updatedAt
-    owner {
-      displayName
+mutation createVersion ($articleId: ID!, $userId: ID!, $major: Boolean!, $message: String) {
+  article (articleId: $articleId) {
+    createVersion(articleVersionInput: { major: $major, message: $message, userId: $userId }) {
+      versions {
+        _id
+        version
+        revision
+        message
+        updatedAt
+        owner {
+          displayName
+          username
+        }
+      }
     }
   }
 }

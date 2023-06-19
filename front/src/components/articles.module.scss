@@ -190,12 +190,17 @@ hr.horizontalSeparator {
   .title,
   .renamingForm {
     cursor: pointer;
-    flex: 1 1 60%;
+    flex: 250px 1;
+  }
+
+  .inlineField {
+    width: 100%;
   }
 
   .title {
     display: inline-flex;
     align-items: center;
+    text-wrap: balance;
   }
 
   .renamingForm {
@@ -203,7 +208,7 @@ hr.horizontalSeparator {
   }
 
   .actionButtons {
-    flex: 1 1 40%;
+    flex: 195px 1;
     text-align: right;
   }
 
@@ -263,6 +268,7 @@ hr.horizontalSeparator {
 }
 
 .editTitleButton {
+  height: 1.75em;
   border: none;
   background-color: transparent;
   padding: 0 0 0 .25em;

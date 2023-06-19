@@ -78,7 +78,7 @@ export default function Export ({ bookId, articleVersionId, articleId, bib, name
         )}
       </form>
 
-      <nav>
+      <nav className={styles.actions}>
         <a className={clsx(buttonStyles.button, buttonStyles.primary)} href={exportUrl} rel="noreferrer noopener" target="_blank" role="button">
           Export with these settings
         </a>

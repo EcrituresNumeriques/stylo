@@ -1,0 +1,369 @@
+# This file was generated. Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+interface InstanceObjectUsageStats {
+    total: Int!
+    years: [InstanceObjectUsageYearlyStats]
+}
+
+type Article {
+    _id: ID!
+    addContributor(userId: ID!): Article
+    addTags(tags: [ID]!): [Tag]
+    contributors: [ArticleContributor]!
+    createVersion(articleVersionInput: ArticleVersionInput!): Article
+    createdAt: DateTime
+    delete(dryRun: Boolean): Boolean
+    owner: User
+    preview: ArticlePreviewSettings
+    removeContributor(userId: ID!): Article
+    removeTags(tags: [ID]!): [Tag]
+    rename(title: String!): Boolean
+    setPreviewSettings(settings: ArticlePreviewInput!): Article
+    setZoteroLink(zotero: String!): Boolean
+    tags(limit: Int, page: Int): [Tag!]!
+    title: String
+    updateWorkingVersion(content: WorkingVersionInput!): Article
+    updatedAt: DateTime
+    versions(limit: Int, page: Int): [Version!]!
+    workingVersion: WorkingVersion
+    workspaces: [Workspace!]
+    zoteroLink: String
+}
+
+type ArticleContributor {
+    roles: [String]
+    user: User!
+}
+
+type ArticlePreviewSettings {
+    stylesheet: String!
+    template: String
+}
+
+type Corpus {
+    _id: String!
+    addArticle(articleId: ID!): Corpus
+    article(articleId: ID!): CorpusArticle
+    articles: [CorpusArticle!]!
+    createdAt: DateTime
+    creator: User!
+    delete: Corpus!
+    description: String
+    metadata: String
+    name: String!
+    rename(name: String!): Corpus
+    update(updateCorpusInput: UpdateCorpusInput!): Corpus!
+    updateArticlesOrder(articlesOrderInput: [ArticleOrder!]!): Corpus
+    updateMetadata(metadata: String!): Corpus
+    updatedAt: DateTime
+    workspace: String
+}
+
+type CorpusArticle {
+    article: Article
+    corpus: Corpus!
+    move(order: Int): Corpus
+    order: Int
+    remove: Corpus!
+}
+
+type InstanceArticleStats implements InstanceObjectUsageStats {
+    total: Int!
+    years: [InstanceObjectUsageYearlyStats]
+}
+
+type InstanceObjectUsageYearlyStats {
+    count: Int
+    year: Int
+}
+
+type InstanceUsageStats {
+    articles: InstanceArticleStats
+    users: InstanceUserStats
+    version: String
+}
+
+type InstanceUserStats implements InstanceObjectUsageStats {
+    local: Int
+    openid: Int
+    total: Int!
+    years: [InstanceObjectUsageYearlyStats]
+}
+
+type Mutation {
+    "Add an email to your acquintances [need to be authentificated as user]"
+    addAcquintance(email: EmailAddress!, user: ID): User
+    "Give access to a user using a password's email"
+    addCredential(email: EmailAddress!, user: ID): User
+    """
+
+    Get an article for a given id.
+    Returns an error if the corpus does not exist or cannot be accessed.
+    """
+    article(articleId: ID!): Article
+    "Change password"
+    changePassword(new: String!, old: String!, user: ID): User
+    """
+
+    Get a corpus for a given id.
+    Returns an error if the corpus does not exist or cannot be accessed.
+    """
+    corpus(corpusId: ID!): Corpus
+    "Create article for specified user [need to be authenticated as specified user]"
+    createArticle(tags: [ID], title: String!, user: ID): Article
+    "Create a new corpus"
+    createCorpus(createCorpusInput: CreateCorpusInput!): Corpus
+    "Create tag [need to be authenticated as specified user]"
+    createTag(color: HexColorCode!, description: String, name: String!, user: ID): Tag
+    "Create user + password + default article"
+    createUser(details: NewUserInput!): User!
+    "Create a new workspace"
+    createWorkspace(createWorkspaceInput: CreateWorkspaceInput!): Workspace
+    "Delete tag, and remove it from all related articles"
+    deleteTag(tag: ID!, user: ID): Boolean
+    "Duplicate the working version of an article, with someone, or yourself"
+    duplicateArticle(article: ID!, to: ID!, user: ID): Article
+    "Remove access to a user using a password's email (can't be the main email)"
+    removeCredential(email: EmailAddress!, user: ID): User
+    "add a user to an article"
+    shareArticle(article: ID!, to: ID!, user: ID): Article
+    "remove a user to an article"
+    unshareArticle(article: ID!, to: ID!, user: ID): Article
+    "update name and description of a tag [need to be authenticated as specified user]"
+    updateTag(color: HexColorCode, description: String, name: String, tag: ID!, user: ID): Tag
+    "Change user information"
+    updateUser(details: UserProfileInput!, user: ID): User
+    "Get a workspace for mutation"
+    workspace(workspaceId: ID!): Workspace
+}
+
+type Query {
+    "Fetch article info [need to have access to this article]"
+    article(article: ID!, user: ID): Article
+    "Fetch a given user articles"
+    articles(user: ID): [Article]
+    "Get a list of corpus for the authenticated user"
+    corpus: [Corpus!]
+    getUser(filter: UserFilter): User
+    "Fetch instance stats"
+    stats: InstanceUsageStats
+    "Fetch tagged articles for a given user"
+    tag(tag: ID!, user: ID): Tag
+    "Fetch tagged articles for a given user"
+    tags(user: ID): [Tag]
+    "Get authenticated user info."
+    user(user: ID): User
+    "Fetch all users [Reserved for admins]"
+    users: [User]
+    "Fetch version info"
+    version(version: ID!): Version
+    "Get a given workspace"
+    workspace(workspaceId: ID!): Workspace
+    "Get a list of workspaces for the authenticated user"
+    workspaces: [Workspace!]
+}
+
+type Tag {
+    _id: ID!
+    articles: [Article]
+    color: HexColorCode
+    createdAt: DateTime
+    description: String
+    name: String!
+    owner: ID
+    updatedAt: DateTime
+}
+
+type User {
+    _id: ID
+    acquintances(limit: Int, page: Int): [User]
+    addContact(userId: ID!): User
+    admin: Boolean
+    apiToken: JWT
+    articles(limit: Int, page: Int): [Article]
+    authType: String
+    createdAt: DateTime
+    displayName: String
+    email: EmailAddress
+    firstName: String
+    institution: String
+    lastName: String
+    permissions: [UserPermission]
+    removeContact(userId: ID!): User
+    stats: UserStats
+    tags(limit: Int, page: Int): [Tag]
+    updatedAt: DateTime
+    username: String
+    workspaces: [Workspace!]
+    yaml: String
+    zoteroToken: String
+}
+
+type UserPermission {
+    roles: [String]
+    scope: String!
+    user: User!
+}
+
+type UserSearch {
+    _id: ID
+    displayName: String
+    email: EmailAddress
+    firstName: String
+    lastName: String
+}
+
+type UserStats {
+    contributedArticlesCount: Int
+    myArticlesCount: Int
+}
+
+type Version {
+    _id: ID!
+    article: Article
+    bib: String
+    bibPreview: String
+    createdAt: DateTime
+    md: String
+    message: String
+    name: String
+    owner: User
+    rename(name: String): Boolean
+    revision: Int
+    sommaire: String
+    updatedAt: DateTime
+    version: Int
+    yaml(options: YamlFormattingInput): String
+}
+
+type WorkingVersion {
+    bib: String
+    bibPreview: String
+    md: String
+    yaml(options: YamlFormattingInput): String
+}
+
+type Workspace {
+    _id: String!
+    addArticle(articleId: ID!): Workspace
+    article(articleId: ID!): WorkspaceArticle
+    articles: [Article!]!
+    bibliographyStyle: String
+    color: HexColorCode!
+    corpus: [Corpus!]!
+    createdAt: DateTime
+    creator: User!
+    description: String
+    inviteMember(role: String, userId: ID!): Workspace
+    leave: Workspace
+    member(userId: ID!): WorkspaceMember
+    members: [User!]!
+    name: String!
+    stats: WorkspaceStats
+    updatedAt: DateTime
+}
+
+type WorkspaceArticle {
+    article: Article
+    remove: Workspace!
+    workspace: Workspace!
+}
+
+type WorkspaceMember {
+    remove: Workspace!
+    role: String
+    user: User
+    workspace: Workspace!
+}
+
+type WorkspaceStats {
+    articlesCount: Int
+    membersCount: Int
+}
+
+"A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
+scalar DateTime
+
+"A field whose value conforms to the standard internet email address format as specified in RFC822: https://www.w3.org/Protocols/rfc822/."
+scalar EmailAddress
+
+"A field whose value is a hex color code: https://en.wikipedia.org/wiki/Web_colors."
+scalar HexColorCode
+
+"A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction."
+scalar JWT
+
+input ArticleOrder {
+    articleId: ID!
+    order: Int!
+}
+
+input ArticlePreviewInput {
+    stylesheet: String
+    template: String
+}
+
+input ArticleVersionInput {
+    major: Boolean
+    message: String
+    userId: ID!
+}
+
+input CreateCorpusInput {
+    description: String
+    metadata: String
+    name: String!
+    workspace: String
+}
+
+"Input to create a new workspace"
+input CreateWorkspaceInput {
+    color: String!
+    description: String
+    name: String!
+}
+
+input NewUserInput {
+    displayName: String
+    email: EmailAddress!
+    firstName: String
+    institution: String
+    lastName: String
+    password: String!
+    passwordC: String!
+    username: String!
+}
+
+input UpdateCorpusInput {
+    description: String
+    metadata: String
+    name: String!
+}
+
+input UserFilter {
+    email: String!
+}
+
+input UserProfileInput {
+    displayName: String
+    firstName: String
+    institution: String
+    lastName: String
+    yaml: String
+    zoteroToken: String
+}
+
+input WorkingVersionInput {
+    bib: String
+    md: String
+    yaml: String
+}
+
+input YamlFormattingInput {
+    strip_markdown: Boolean
+}

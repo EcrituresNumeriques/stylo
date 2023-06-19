@@ -7,7 +7,6 @@ import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-u
 
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
-import CorpusSelectItem from './corpus/CorpusSelectItem.jsx'
 import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
 import fieldStyles from './field.module.scss'
 
@@ -34,7 +33,6 @@ import {
   duplicateArticle,
   renameArticle,
   getArticleVersions,
-  getArticleWorkspaces,
   deleteArticle,
   getArticleTags,
   getArticleContributors
@@ -47,7 +45,6 @@ import {
 import useGraphQL, { useMutation } from '../hooks/graphql'
 import TimeAgo from './TimeAgo.jsx'
 import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
-import WorkspaceSelectItem from './workspace/WorkspaceSelectItem.jsx'
 import { useSelector } from 'react-redux'
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
@@ -82,31 +79,17 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
     revalidateOnReconnect: false
   })
   const tags = (articleTagsQueryData?.article?.tags || [])
-  const { data: articleVersionsQueryData, mutate: mutateArticleVersions } = useGraphQL({
+  const { data: articleVersionsQueryData } = useGraphQL({
     query: getArticleVersions,
     variables: { articleId }
   }, {
     fallbackData: {
       article
     },
-    revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false
   })
   const versions = (articleVersionsQueryData?.article?.versions || [])
-  const {
-    data: articleWorkspacesQueryData,
-    mutate: mutateArticleWorkspaces
-  } = useGraphQL({ query: getArticleWorkspaces, variables: { articleId } }, {
-    fallbackData: {
-      article
-    },
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  })
-  const workspaces = useMemo(() => articleWorkspacesQueryData?.article?.workspaces || [], [articleWorkspacesQueryData])
-
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const {
@@ -127,10 +110,6 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
   const isArticleOwner = activeUser._id === article.owner._id
 
-  const handleWorkspaceUpdate = useCallback(() => {
-    mutateArticleWorkspaces()
-  }, [mutateArticleWorkspaces])
-
   useEffect(() => {
     if (contributorsError) {
       setToast({
@@ -139,13 +118,6 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
       })
     }
   }, [contributorsError])
-
-  useEffect(() => {
-    if (expanded) {
-      mutateArticleWorkspaces(article, { revalidate: true })
-      mutateArticleVersions(article, { revalidate: true })
-    }
-  }, [mutateArticleWorkspaces, mutateArticleVersions, expanded])
 
   const toggleExpansion = useCallback((event) => {
     if (!event.key || [' ', 'Enter'].includes(event.key)) {
@@ -247,18 +219,19 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
             {expanded ? <ChevronDown/> : <ChevronRight/>}
           </span>
 
-          {article.title}
-
-          <Button title="Edit" icon={true} className={styles.editTitleButton}
-                  onClick={(evt) => evt.stopPropagation() || setRenaming(true)}>
+          <span className={styles.titleText}>
+            {article.title}
+            <Button title="Edit" icon={true} className={styles.editTitleButton} onClick={(evt) =>
+              evt.stopPropagation() || setRenaming(true)
+            }>
             <Edit3 size="20"/>
           </Button>
+          </span>
         </h1>
       )}
       {renaming && (
         <form className={clsx(styles.renamingForm, fieldStyles.inlineFields)} onSubmit={(e) => rename(e)}>
-          <Field autoFocus={true} type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)}
-                 placeholder="Article Title"/>
+          <Field className={styles.inlineField} autoFocus={true} type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="Article Title"/>
           <Button title="Save" primary={true} onClick={(e) => rename(e)}>
             <Check/> Save
           </Button>
@@ -336,16 +309,20 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
         {expanded && (
           <div>
-            <h4>{t('article.versions.title')}</h4>
-            <ul className={styles.versions}>
-              {versions.map((v) => (
-                <li key={`version-${v._id}`}>
-                  <Link to={`/article/${article._id}/version/${v._id}`}>{`${
-                    v.message ? v.message : 'no label'
-                  } (v${v.version}.${v.revision})`}</Link>
-                </li>
-              ))}
-            </ul>
+            {versions.length > 0 &&
+              <>
+                <h4>{t('article.versions.title')}</h4>
+                <ul className={styles.versions}>
+                  {versions.map((v) => (
+                    <li key={`version-${v._id}`}>
+                      <Link to={`/article/${article._id}/version/${v._id}`}>{`${
+                        v.message ? v.message : 'no label'
+                      } (v${v.version}.${v.revision})`}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            }
 
             {userTags.length > 0 && <>
               <h4>{t('article.tags.title')}</h4>

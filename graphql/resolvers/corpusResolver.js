@@ -154,17 +154,16 @@ module.exports = {
 
   Corpus: {
     async articles (corpus, _args, context) {
-      const promises = corpus.articles
+      const articles = await Promise.all(corpus.articles
         .map(async (article) => {
           const articleLoaded = await context.loaders.articles.load(article.article)
           return {
-            ...article,
+            _id: article._id,
+            order: article.order,
             article: articleLoaded
           }
-
-        })
-      const articles = await Promise.all(promises)
-      articles.sort((a, b) => a.order > b.order ? -1 : 1)
+        }))
+      articles.sort((a, b) => a.order < b.order ? -1 : 1)
       return articles
     },
 
@@ -198,6 +197,28 @@ module.exports = {
         return corpus
       }
       throw new ApiError('ERROR', `Unable to delete the corpus ${corpus._id}`)
+    },
+
+    async update (corpus, { updateCorpusInput }) {
+      corpus.name = updateCorpusInput.name
+      corpus.description = updateCorpusInput.description
+      corpus.metadata = updateCorpusInput.metadata
+      return await corpus.save()
+    },
+
+    async updateArticlesOrder(corpus, { articlesOrderInput }) {
+      const articlesOrderMap = articlesOrderInput.reduce((acc, item) => {
+        acc[item.articleId] = item.order
+        return acc
+      }, {})
+      corpus.articles = corpus.articles.map((corpusArticle) => {
+        const order = articlesOrderMap[corpusArticle.article._id]
+        return {
+          article: corpusArticle.article,
+          order,
+        }
+      })
+      return corpus.save()
     }
   },
 }

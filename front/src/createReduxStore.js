@@ -1,5 +1,4 @@
 import { applyMiddleware, compose, createStore } from 'redux'
-import { useParams } from 'react-router-dom'
 import { toEntries } from './helpers/bibtex'
 import ArticleService from './services/ArticleService'
 import WorkspaceService from './services/WorkspaceService.js'
@@ -107,7 +106,8 @@ const reducer = createReducer(initialState, {
   TAG_CREATED: tagCreated,
 
   SET_LATEST_CORPUS_DELETED: setLatestCorpusDeleted,
-  SET_LATEST_CORPUS_CREATED: setLatestCorpusCreated
+  SET_LATEST_CORPUS_CREATED: setLatestCorpusCreated,
+  SET_LATEST_CORPUS_UPDATED: setLatestCorpusUpdated,
 })
 
 const createNewArticleVersion = store => {
@@ -131,12 +131,12 @@ const createNewArticleVersion = store => {
         return next(action)
       }
       if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
-        const { articleVersions, activeUser, sessionToken, applicationConfig, userPreferences } = store.getState()
+        const { activeUser, sessionToken, applicationConfig, userPreferences } = store.getState()
         const userId = userPreferences.currentUser ?? activeUser._id
         const { articleId, major, message } = action
         const articleService = new ArticleService(userId, articleId, sessionToken, applicationConfig)
         const response = await articleService.createNewVersion(major, message)
-        store.dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: [response.saveVersion, ...articleVersions] })
+        store.dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: response.article.createVersion.versions })
         return next(action)
       }
       if (action.type === 'UPDATE_WORKING_ARTICLE_TEXT') {
@@ -472,6 +472,13 @@ function setLatestCorpusCreated(state, { data }) {
   return {
     ...state,
     latestCorpusCreated: data
+  }
+}
+
+function setLatestCorpusUpdated (state, { data }) {
+  return {
+    ...state,
+    latestCorpusUpdated: data
   }
 }
 

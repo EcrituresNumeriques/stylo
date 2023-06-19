@@ -6,7 +6,12 @@
   "license": "MIT",
   "type": "module",
   "#browserlist#": "https://browserslist.dev/?q=ZGVmYXVsdHMsIGxhc3QgMiB2ZXJzaW9ucywgbm90IGRlYWQsID4gMC4yJQ%3D%3D",
-  "browserslist": "defaults, last 2 versions, not dead, > 0.2%",
+  "browserslist": [
+    "defaults",
+    "last 2 versions",
+    "not dead",
+    "> 0.2%"
+  ],
   "engines": {
     "node": ">=18",
     "npm": ">=8"

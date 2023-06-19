@@ -75,6 +75,14 @@ mutation deleteCorpus($corpusId: ID!) {
     }
 }
 
+mutation updateCorpus($corpusId: ID!, $updateCorpusInput: UpdateCorpusInput!) {
+    corpus(corpusId: $corpusId) {
+        update(updateCorpusInput: $updateCorpusInput) {
+            _id
+        }
+    }
+}
+
 mutation removeArticleFromCorpus($corpusId: ID!, $articleId: ID!) {
     corpus(corpusId: $corpusId) {
         article(articleId: $articleId) {
@@ -88,6 +96,14 @@ mutation removeArticleFromCorpus($corpusId: ID!, $articleId: ID!) {
 mutation addArticleToCorpus($corpusId: ID!, $articleId: ID!) {
     corpus(corpusId: $corpusId) {
         addArticle(articleId: $articleId) {
+            _id
+        }
+    }
+}
+
+mutation updateArticlesOrder($corpusId: ID!, $articlesOrderInput: [ArticleOrder!]!) {
+    corpus(corpusId: $corpusId) {
+        updateArticlesOrder(articlesOrderInput: $articlesOrderInput) {
             _id
         }
     }

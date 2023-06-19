@@ -98,6 +98,13 @@ type Version {
   rename(name: String): Boolean
 }
 
+input ArticleVersionInput {
+  userId: ID!
+  major: Boolean
+  message: String
+}
+
+
 type Article {
   _id: ID!
   title: String
@@ -122,6 +129,7 @@ type Article {
   
   addContributor(userId: ID!): Article
   removeContributor(userId: ID!): Article
+  createVersion(articleVersionInput: ArticleVersionInput!): Article
 }
 
 type ArticlePreviewSettings {
@@ -171,13 +179,6 @@ type InstanceArticleStats implements InstanceObjectUsageStats {
   years: [InstanceObjectUsageYearlyStats]
 }
 
-input VersionInput {
-  article: ID!
-  major: Boolean
-  message: String
-}
-
-# input WorkingVersionInput @oneOf {
 input WorkingVersionInput {
   bib: String,
   md: String,
@@ -271,6 +272,17 @@ type CorpusArticle {
   move(order: Int): Corpus
 }
 
+input ArticleOrder {
+  articleId: ID!
+  order: Int!
+}
+
+input UpdateCorpusInput {
+  name: String!
+  description: String
+  metadata: String
+}
+
 type Corpus {
   _id: String!
   name: String!
@@ -288,7 +300,9 @@ type Corpus {
   addArticle(articleId: ID!): Corpus
   rename(name: String!): Corpus
   updateMetadata(metadata: String!): Corpus
+  updateArticlesOrder(articlesOrderInput: [ArticleOrder!]!): Corpus
   delete: Corpus!
+  update(updateCorpusInput: UpdateCorpusInput!): Corpus!
 }
 
 input CreateCorpusInput {
@@ -360,9 +374,6 @@ type Mutation {
   "Create article for specified user [need to be authenticated as specified user]"
   createArticle(title: String!, user: ID, tags: [ID]): Article
 
-  "Save a new version for article [need to be authenticated as specified user]"
-  saveVersion(version: VersionInput!, user: ID): Version
-
   "Create tag [need to be authenticated as specified user]"
   createTag(
     name: String!
@@ -398,6 +409,12 @@ type Mutation {
   "Get a workspace for mutation"
   workspace(workspaceId: ID!): Workspace
 
+  """
+  Get an article for a given id.
+  Returns an error if the corpus does not exist or cannot be accessed.
+  """
+  article(articleId: ID!): Article
+  
   """
   Get a corpus for a given id.
   Returns an error if the corpus does not exist or cannot be accessed.
