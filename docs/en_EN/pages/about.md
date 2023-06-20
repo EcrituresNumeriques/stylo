@@ -8,7 +8,7 @@ Stylo is developed by the [Canada Research Chair in Digital Textualities](https:
 
 <img src="uploads/images/erudit-logotype-rouge.png" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:150px">
 
-## The project
+## The project!
 
 Stylo is currently a prototype tool undergoing development, implemented in the respective editorial chains of the journal [Sens Public](http://sens-public.org)and the publishing house [Les ateliers](https://ateliers.sens-public.org). It is currently in the testing phase for other journals, in particular for the partnership project, [Revue2.0](http://revue20.org/). This tool is also used by various authors and students for their personal scientific and institutional work.
 
