@@ -247,9 +247,6 @@ module.exports = {
     },
 
     async versions (article, _args, context) {
-      if (article instanceof mongoose.Document && article.populated('versions')) {
-        return article.versions
-      }
       const versions = await Promise.all(article.versions.map(async (versionId) => await context.loaders.versions.load(versionId)))
       versions.sort((a, b) => b.createdAt - a.createdAt)
       return versions
