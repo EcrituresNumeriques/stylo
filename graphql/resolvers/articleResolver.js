@@ -9,6 +9,7 @@ const isUser = require('../policies/isUser')
 const { ApiError } = require('../helpers/errors')
 const { reformat } = require('../helpers/metadata.js')
 const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions')
+const mongoose = require('mongoose')
 
 
 async function getUser (userId) {
@@ -246,7 +247,7 @@ module.exports = {
     },
 
     async versions (article, _args, context) {
-      if (article.populated('versions')) {
+      if (article instanceof mongoose.Document && article.populated('versions')) {
         return article.versions
       }
       const versions = await Promise.all(article.versions.map(async (versionId) => await context.loaders.versions.load(versionId)))
