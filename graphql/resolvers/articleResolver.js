@@ -9,7 +9,6 @@ const isUser = require('../policies/isUser')
 const { ApiError } = require('../helpers/errors')
 const { reformat } = require('../helpers/metadata.js')
 const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions')
-const mongoose = require('mongoose')
 
 
 async function getUser (userId) {
