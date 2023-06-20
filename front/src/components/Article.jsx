@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-ui/core'
 
 import styles from './articles.module.scss'
+import ArticleVersionLinks from './ArticleVersionLinks.jsx'
 import buttonStyles from './button.module.scss'
 import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
 import fieldStyles from './field.module.scss'
@@ -79,17 +80,6 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
     revalidateOnReconnect: false
   })
   const tags = (articleTagsQueryData?.article?.tags || [])
-  const { data: articleVersionsQueryData } = useGraphQL({
-    query: getArticleVersions,
-    variables: { articleId }
-  }, {
-    fallbackData: {
-      article
-    },
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  })
-  const versions = (articleVersionsQueryData?.article?.versions || [])
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const {
@@ -309,20 +299,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
         {expanded && (
           <div>
-            {versions.length > 0 &&
-              <>
-                <h4>{t('article.versions.title')}</h4>
-                <ul className={styles.versions}>
-                  {versions.map((v) => (
-                    <li key={`version-${v._id}`}>
-                      <Link to={`/article/${article._id}/version/${v._id}`}>{`${
-                        v.message ? v.message : 'no label'
-                      } (v${v.version}.${v.revision})`}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            }
+            <ArticleVersionLinks article={article} articleId={articleId} />
 
             {userTags.length > 0 && <>
               <h4>{t('article.tags.title')}</h4>

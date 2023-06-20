@@ -1,7 +1,7 @@
-import { useToasts } from '@geist-ui/core'
+import { Loading, useToasts } from '@geist-ui/core'
 import debounce from 'lodash.debounce'
 import PropTypes from 'prop-types'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from '../../hooks/graphql.js'
 import CorpusArticleCard from './CorpusArticleCard.jsx'
@@ -11,11 +11,18 @@ import { updateArticlesOrder } from './Corpus.graphql'
 import styles from './corpusArticleItems.module.scss'
 
 export default function CorpusArticleItems ({ corpusId, articles, onUpdate }) {
-  const [articleCards, setArticleCards] = useState(articles.map((a) => a.article))
+  const [isLoading, setLoading] = useState(true)
+  const [articleCards, setArticleCards] = useState([])
+  useEffect(() => {
+    try {
+      setArticleCards(articles.map((a) => a.article))
+    } finally {
+      setLoading(false)
+    }
+  }, [articles])
   const mutation = useMutation()
   const { setToast } = useToasts()
   const { t } = useTranslation()
-
   const updateArticleOrder = useCallback(debounce(
     async (orderedArticles) => {
       const articlesOrderInput = orderedArticles.map((item, index) => ({ articleId: item._id, order: index }))
@@ -36,7 +43,6 @@ export default function CorpusArticleItems ({ corpusId, articles, onUpdate }) {
     750,
     { leading: false, trailing: true }
   ), [])
-
   const moveArticleCard = useCallback((dragIndex, hoverIndex) => {
     setArticleCards((prevCards) => {
       const length = prevCards.length
@@ -67,6 +73,9 @@ export default function CorpusArticleItems ({ corpusId, articles, onUpdate }) {
       />
     )
   }, [])
+  if (isLoading) {
+    return <Loading/>
+  }
   return <div className={styles.container}>{articleCards.map((card, i) => renderCard(card, i))}</div>
 }
 

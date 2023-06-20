@@ -23,6 +23,7 @@ export default function CorpusSelectItems ({ articleId }) {
     mutate()
   }, [mutate])
 
+
   if (isLoading) {
     return <Loading/>
   }

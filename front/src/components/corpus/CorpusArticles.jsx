@@ -21,7 +21,7 @@ export default function CorpusArticles ({ corpusId }) {
     revalidateOnFocus: false,
     revalidateOnReconnect: false
   })
-  const corpusArticles = useMemo(() => data?.corpus?.[0]?.articles, [data])
+  const corpusArticles = useMemo(() => data?.corpus?.[0]?.articles || [], [data])
 
   const handleUpdate = useCallback(() => {
     mutate()
@@ -31,12 +31,12 @@ export default function CorpusArticles ({ corpusId }) {
     <>
       <h5 className={styles.partsTitle}>{t('corpus.parts.label')}</h5>
       {isLoading && <Loading/>}
-      {!isLoading && corpusArticles && corpusArticles.length > 0 && <ul>
+      {!isLoading && corpusArticles.length > 0 && <ul>
         <DndProvider backend={HTML5Backend}>
           <CorpusArticleItems corpusId={corpusId} articles={corpusArticles} onUpdate={handleUpdate}/>
         </DndProvider>
       </ul>}
-      {!isLoading && corpusArticles && corpusArticles.length === 0 &&
+      {!isLoading && corpusArticles.length === 0 &&
         <>
           <Spacer/>
           <Note className={styles.noteWithIcon} type="secondary" label={false}>
