@@ -1,15 +1,14 @@
-const fs = require('fs').promises
-const path = require('path')
-const os = require('os')
-const util = require('util')
-const exec = util.promisify(require('child_process').exec)
+const fs = require('node:fs').promises
+const path = require('node:path')
+const os = require('node:os')
+const util = require('node:util')
+const exec = util.promisify(require('node:child_process').exec)
 
 const archiver = require('archiver')
 
 const { logger } = require('./logger')
 const { FindByIdNotFoundError } = require('./helpers/errors')
 const { normalize } = require('./helpers/filename')
-const { byTitle: sortByTitle } = require('./helpers/sort')
 const { getArticleById, getVersionById, getCorpusById } = require('./graphql')
 
 const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
@@ -131,6 +130,7 @@ const getArticleExportContext = async (articleId) => {
 
 const getBookExportContext = async (bookId) => {
   const book = await getCorpusById(bookId)
+  console.log({book})
   const { articles: chapters, _id: id, name: title } = book
 
   // we can create empty books… but no need to preview them

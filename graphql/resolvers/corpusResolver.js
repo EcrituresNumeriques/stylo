@@ -168,7 +168,6 @@ module.exports = {
 
   Corpus: {
     async articles (corpus, _args, context) {
-      console.log(corpus.articles)
       const articles = await Promise.all(corpus.articles
         .map(async (article) => {
           const articleLoaded = await context.loaders.articles.load(article.article)
@@ -179,6 +178,7 @@ module.exports = {
           }
         }))
       articles.sort((a, b) => a.order < b.order ? -1 : 1)
+      console.log('Corpus.articles', {articles: corpus.articles})
       return articles
     },
 
