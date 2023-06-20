@@ -1,5 +1,5 @@
-query getUserCorpus {
-    corpus {
+query getCorpus($filter: FilterCorpusInput, $includeArticles: Boolean = false) {
+    corpus(filter: $filter) {
         _id
         name
         description
@@ -9,46 +9,16 @@ query getUserCorpus {
             username
             email
         }
-        createdAt
-        updatedAt
-        articles {
+        articles @include(if: $includeArticles) {
             article {
                 _id
                 title
             }
-            order
         }
-        workspace
+        createdAt
+        updatedAt
     }
 }
-
-query getWorkspaceCorpus($workspaceId: ID!) {
-    workspace(workspaceId: $workspaceId) {
-        corpus {
-            _id
-            name
-            description
-            creator {
-                _id
-                displayName
-                username
-                email
-            }
-            createdAt
-            updatedAt
-            articles {
-                article {
-                    _id
-                    title
-                }
-                order
-            }
-            workspace
-        }
-    }
-}
-
-# mutations
 
 mutation createCorpus($createCorpusInput: CreateCorpusInput!) {
     createCorpus(createCorpusInput: $createCorpusInput) {

@@ -1,8 +1,6 @@
-import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-ui/core'
-import React, { useCallback, useState } from 'react'
+import { Modal as GeistModal, useModal, useToasts } from '@geist-ui/core'
+import React, { useCallback, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 import { ChevronDown, ChevronRight, Eye, Printer, Settings, Trash } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -13,11 +11,12 @@ import buttonStyles from '../button.module.scss'
 import Export from '../Export.jsx'
 import TimeAgo from '../TimeAgo.jsx'
 
-import { deleteCorpus } from './Corpus.graphql'
-import CorpusArticleItems from './CorpusArticleItems.jsx'
-
-import styles from './corpusItem.module.scss'
+import CorpusArticles from './CorpusArticles.jsx'
 import CorpusUpdate from './CorpusUpdate.jsx'
+
+import { deleteCorpus } from './Corpus.graphql'
+import styles from './corpusItem.module.scss'
+
 
 export default function CorpusItem ({ corpus }) {
   const { t } = useTranslation()
@@ -42,13 +41,13 @@ export default function CorpusItem ({ corpus }) {
   } = useModal()
 
   const runQuery = useGraphQL()
-
-  const corpusId = corpus._id
+  const corpusId = useMemo(() => corpus._id, [corpus])
 
   const handleCorpusUpdated = useCallback(() => {
     setEditCorpusVisible(false)
     dispatch({ type: 'SET_LATEST_CORPUS_UPDATED', data: { corpusId, date: new Date() } })
   }, [corpusId])
+
   const handleDeleteCorpus = useCallback(async () => {
     try {
       await runQuery({ query: deleteCorpus, variables: { corpusId } })
@@ -108,20 +107,7 @@ export default function CorpusItem ({ corpus }) {
       </div>
       {expanded && <div className={styles.detail}>
         {corpus.description && <p>{corpus.description}</p>}
-        <h5 className={styles.partsTitle}>{t('corpus.parts.label')}</h5>
-        {corpus.articles && corpus.articles.length > 0 && <ul>
-          <DndProvider backend={HTML5Backend}>
-            <CorpusArticleItems corpusId={corpus._id} articles={corpus.articles} />
-          </DndProvider>
-        </ul>}
-        {(corpus.articles && corpus.articles.length === 0) &&
-          <>
-            <Spacer/>
-            <Note type="secondary">
-              Pour ajouter un nouveau chapitre, aller sur la page des articles et dans le détail d'un article sélectionner ce corpus.
-            </Note>
-          </>
-        }
+        <CorpusArticles corpusId={corpusId} />
       </div>}
 
       <GeistModal visible={deleteCorpusVisible} {...deleteCorpusModalBinding}>

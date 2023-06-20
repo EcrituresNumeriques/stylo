@@ -147,8 +147,8 @@ type Query {
     article(article: ID!, user: ID): Article
     "Fetch a given user articles"
     articles(user: ID): [Article]
-    "Get a list of corpus for the authenticated user"
-    corpus: [Corpus!]
+    "Get a list of corpus with an optional filter"
+    corpus(filter: FilterCorpusInput): [Corpus!]
     getUser(filter: UserFilter): User
     "Fetch instance stats"
     stats: InstanceUsageStats
@@ -326,6 +326,11 @@ input CreateWorkspaceInput {
     color: String!
     description: String
     name: String!
+}
+
+input FilterCorpusInput {
+    corpusId: ID
+    workspaceId: String
 }
 
 input NewUserInput {

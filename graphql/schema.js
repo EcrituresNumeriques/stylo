@@ -312,6 +312,11 @@ input CreateCorpusInput {
   workspace: String
 }
 
+input FilterCorpusInput {
+  workspaceId: String
+  corpusId: ID
+}
+
 type Query {
   "Fetch all users [Reserved for admins]"
   users: [User]
@@ -347,8 +352,10 @@ type Query {
   "Get a list of workspaces for the authenticated user"
   workspaces: [Workspace!]
 
-  "Get a list of corpus for the authenticated user"
-  corpus: [Corpus!]
+  """
+  Get a list of corpus with an optional filter
+  """
+  corpus(filter: FilterCorpusInput): [Corpus!]
 }
 
 type Mutation {

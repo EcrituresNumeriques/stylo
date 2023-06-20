@@ -135,16 +135,30 @@ module.exports = {
 
   Query: {
     /**
-     * Get a list of corpus created by the authenticated user
+     * Get a list of corpus.
      *
      * @param _
      * @param args
-     * @param user
+     * @param context
      * @returns {Promise<[Corpus]>}
      */
-    async corpus (_, args, { user }) {
+    async corpus (_, args, context) {
+      const { user } = context
       if (!user) {
         throw new ApiError('UNAUTHENTICATED', 'Unable to get a list of corpus as an unauthenticated user')
+      }
+      if ('filter' in args) {
+        const filter = args.filter
+        if ('corpusId' in filter) {
+          return [await getCorpusByContext(filter.corpusId, context)]
+        }
+        if ('workspaceId' in filter) {
+          // check that the user can access the workspace
+          await Workspace.getWorkspaceById(filter.workspaceId, user)
+          return Corpus.find({ 'workspace': filter.workspaceId })
+            .populate([{ path: 'creator' }])
+            .sort([['updatedAt', -1]])
+        }
       }
       return Corpus.find({ 'creator': user?._id, 'workspace': null })
         .populate([{ path: 'creator' }])
@@ -154,6 +168,7 @@ module.exports = {
 
   Corpus: {
     async articles (corpus, _args, context) {
+      console.log(corpus.articles)
       const articles = await Promise.all(corpus.articles
         .map(async (article) => {
           const articleLoaded = await context.loaders.articles.load(article.article)

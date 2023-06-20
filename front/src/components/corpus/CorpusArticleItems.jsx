@@ -10,7 +10,7 @@ import { updateArticlesOrder } from './Corpus.graphql'
 
 import styles from './corpusArticleItems.module.scss'
 
-export default function CorpusArticleItems ({ corpusId, articles }) {
+export default function CorpusArticleItems ({ corpusId, articles, onUpdate }) {
   const [articleCards, setArticleCards] = useState(articles.map((a) => a.article))
   const mutation = useMutation()
   const { setToast } = useToasts()
@@ -21,6 +21,7 @@ export default function CorpusArticleItems ({ corpusId, articles }) {
       const articlesOrderInput = orderedArticles.map((item, index) => ({ articleId: item._id, order: index }))
       try {
         await mutation({ query: updateArticlesOrder, variables: { corpusId, articlesOrderInput } })
+        onUpdate()
         setToast({
           type: 'default',
           text: t('corpus.articlesOrder.toastSuccess')
