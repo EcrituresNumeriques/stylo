@@ -155,7 +155,27 @@ while (cursor.hasNext()) {
       { _id: tag._id },
       {
         $set: {
-          color: colours[tag.color] || '#eee',
+          color: colours[tag.color] || '#eeeeee',
+        },
+      },
+      { upsert: false }
+    )
+  } else if (tag.color && tag.color.length < 7) {
+    db.tags.updateOne(
+      { _id: tag._id },
+      {
+        $set: {
+          color: '#cccccc',
+        },
+      },
+      { upsert: false }
+    )
+  } else if (!tag.color) {
+    db.tags.updateOne(
+      { _id: tag._id },
+      {
+        $set: {
+          color: '#eeeeee',
         },
       },
       { upsert: false }
