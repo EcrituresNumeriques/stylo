@@ -1,6 +1,6 @@
 # Resources - Helpdesk
 
-The *Canada Research Chair in Digital Textualities* organises weekly sessions to monitor Stylo. During these sessions, it is possible to ask the team questions, perfect the use of Stylo and resolve any publishing issues.
+The *Canada Research Chair in Digital Textualities* organises weekly sessions to monitor Stylo. During these sessions, you can ask the team questions, perfect your use of Stylo, and resolve any publishing issues.
 
 The sessions take place every Thursday morning from 11am to 12pm (Montreal time).
 
@@ -10,7 +10,7 @@ Participation in, and attendance to, these sessions are free and available onlin
 
 # Resources - Publications
 
-The *Canada Research Chair in Digital Textualities* has presented Stylo at various scientific and professional events:
+Stylo has been presented at various scientific and professional events:
 
 - [Humanistica 2021](https://humanistica2021.sciencesconf.org), « L’utilisation de l’outil Stylo dans le cadre de la revue *Sens public* », May 2021: [Abstract](https://humanistica2021.sciencesconf.org/340826) (Antoine Fauchié et Margot Mellet)
 
