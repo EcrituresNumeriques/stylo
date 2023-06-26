@@ -1,6 +1,6 @@
 ## Stylo Source
 
-It is possible to report problems and bugs on the [project's GitHub repository](https://github.com/EcrituresNumeriques/stylo/issues).
+Report problems and bugs on the [project's GitHub repository](https://github.com/EcrituresNumeriques/stylo/issues).
 
 <a class="btn btn-info" href="https://github.com/EcrituresNumeriques/stylo/issues/new" role="button">Report a bug</a>
 
