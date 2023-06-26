@@ -1,6 +1,16 @@
 ## Export Page 
 
-The [export page](https://stylo-export.ecrituresnumeriques.ca/) lists custom exports from Stylo including : 
+<!--- 
+The current version of the Stylo export module (https://export.stylo.huma-num.fr/) supports generic export and integrated export into the editorial cheange of Métopes (SML-TEI Commons Publisihing schema for Métopes or OpenEdition). 
+
+Stylo's *old* export module (https://stylo-export.ecrituresnumeriques.ca) lists the other custom exports from Stylo, including:
+
+DELTE THE PRECEDING PARAGRAPH 
+--->
+
+
+
+The [export page](https://stylo-export.ecrituresnumeriques.ca/) lists custom exports from Stylo, including: 
 
 - exports for journals that use Stylo in their editorial chains: 
      - [Sens public](http://sens-public.org/)
@@ -11,11 +21,11 @@ The [export page](https://stylo-export.ecrituresnumeriques.ca/) lists custom exp
 
 ## University of Montreal Template Exports 
 
-The Pen Exports [University of Montreal Templates](https://stylo-export.ecrituresnumeriques.ca/exportudem.html) page was created to allow students at the University of Montreal to produce their renderings directly with the regulatory formatting. 
+The Stylo exports page for [University of Montreal Templates](https://stylo-export.ecrituresnumeriques.ca/exportudem.html) was created to allow students at the University of Montreal to produce their renderings directly with the regulatory formatting. 
 
 Three templates are available: 
 
-- The Department of Littératures en Langue Française (DLLF) template
+- The Département des littératures de langue fraçaise (DLLF) template
   - with /or/ without table of contents (coming soon)
 
 - The Lesson template 
@@ -59,15 +69,15 @@ typeTravail: TP2
 year: '2021'
 ---
 ```
-2. Register a Version (major or minor) and select it
+2. Register a version (major or minor) and select it
 3. Select in the version url the version key (the last digits after "/version/")
 4. Copy the version key 
 5. In the Lesson Plan export page, paste the version key in the dedicated location
-6. Then enter a name for the export, select the Lesson Plan template and click on "Submit".
+6. Then enter a name for the export, select the Lesson Plan template and click on "Submit"
 
 ### EBSI template 
 
-To export your document according to the EBSI template, you need to : 
+To export your document according to the EBSI template, you need to: 
 
 1. Edit the following metadata in the metadata pane in "RAW" mode
 
@@ -102,10 +112,10 @@ typeWork: TP2
 ---
 ```
 
-2. Save a Version (major or minor) and select it
+2. Save a version (major or minor) and select it
 3. Select in the version url the version key (i.e. the last digits after "/version/")
 4. Copy the version key 
 5. In the EBSI export page, paste the version key in the dedicated location
-6. Then enter a name for the export, select the EBSI model and click on "Submit".
+6. Then enter a name for the export, select the EBSI model and click on "Submit"
 
 **Warning**: do not forget to refresh the export page if you make several exports in a row. 
