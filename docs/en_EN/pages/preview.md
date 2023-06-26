@@ -5,14 +5,21 @@
 ## Preview
 It is possible to preview a Stylo article in HTML with a default layout.
 
-To preview an article, it is possible:
+To preview an article there are the following options:
 
-- To click on the "Preview" button from the "My articles" page
-- To click on the \"Preview\" button from the article editing page, at the top of the right column.
+- Click on the "Preview" button from the "My articles" page, to the right of the "Edit" icon:
 
-The preview is available at a permalink which remains the same for the article's entire life. If the article is changed, the preview link will show the article's latest version.
+![Preview](uploads/images/PreviewPageArticles.PNG)
+
+- Click on the \"Preview\" button from the article editing page, at the top right of the body text:
+
+![Preview](uploads/images/PreviewPageEdition-V2.PNG)
+
+The preview is available at a permalink which remains the same for the article's entire life. If the article is changed, the preview link will show the article's latest version (remember to refresh the page to see the changes).
 
 It is also possible to preview a particular version of the article. To do this, you must click on the "Preview" button in the article editing page, in the right column, inside the "Versions" submenu.
+
+![Preview](uploads/images/PreviewSousMenuVersions-V2.PNG)
 
 A version's view link always displays the saved version.
 
@@ -22,7 +29,7 @@ On the preview page of a Stylo article at the top right of the browser, there is
 
 To annotate, select the section of text that you would like to comment; an annotation article will appear. Please select the entire word, as required, and not only the letter or typographic sign. You are able to *Highlight* and to *Annotate*. The annotation can be private ("Post only to me") or public ("Public post") and visible for other *Hypothes.is* users that have access to the preview URL in question.
 
-There are two annotation possibilities:
+There are two annotation options:
 
 - Annotate a version of the article: annotations will be attached only to this version and will not be visible on other version previews.
 
