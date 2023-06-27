@@ -1,16 +1,8 @@
 ## Export Page 
 
-<!--- 
 The current version of the Stylo export module (https://export.stylo.huma-num.fr/) supports generic export and integrated export into the editorial cheange of Métopes (SML-TEI Commons Publisihing schema for Métopes or OpenEdition). 
 
 Stylo's *old* export module (https://stylo-export.ecrituresnumeriques.ca) lists the other custom exports from Stylo, including:
-
-DELTE THE PRECEDING PARAGRAPH 
---->
-
-
-
-The [export page](https://stylo-export.ecrituresnumeriques.ca/) lists custom exports from Stylo, including: 
 
 - exports for journals that use Stylo in their editorial chains: 
      - [Sens public](http://sens-public.org/)
