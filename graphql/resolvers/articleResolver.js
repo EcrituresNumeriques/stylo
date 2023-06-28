@@ -9,6 +9,7 @@ const isUser = require('../policies/isUser')
 const { ApiError } = require('../helpers/errors')
 const { reformat } = require('../helpers/metadata.js')
 const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions')
+const { previewEntries } = require('../helpers/bibliography')
 
 
 async function getUser (userId) {
@@ -248,7 +249,6 @@ module.exports = {
     async versions (article, _args, context) {
       const versions = await Promise.all(article.versions.map(async (versionId) => await context.loaders.versions.load(versionId)))
       versions.sort((a, b) => b.createdAt - a.createdAt)
-      console.log('Article.versions', {versions})
       return versions
     },
 
@@ -337,6 +337,9 @@ module.exports = {
   },
 
   WorkingVersion: {
+    bibPreview({ bib }) {
+      return previewEntries(bib)
+    },
     yaml ({ yaml }, { options }) {
       return options?.strip_markdown
         ? reformat(yaml, { replaceBibliography: false })

@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 
 const { ApiError } = require('../helpers/errors')
 const { reformat } = require('../helpers/metadata.js')
+const { previewEntries } = require('../helpers/bibliography')
 
 module.exports = {
   Query: {
@@ -32,6 +33,10 @@ module.exports = {
       const result = await version.save({ timestamps: false })
 
       return result === version
+    },
+
+    bibPreview({ bib }) {
+      return previewEntries(bib)
     },
 
     yaml ({ yaml }, { options }) {

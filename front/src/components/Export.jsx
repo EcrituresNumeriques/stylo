@@ -93,4 +93,5 @@ Export.propTypes = {
   articleVersionId: PropTypes.string,
   articleId: PropTypes.string,
   name: PropTypes.string.isRequired,
+  bib: PropTypes.string,
 }

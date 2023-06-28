@@ -100,6 +100,8 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
   const isArticleOwner = activeUser._id === article.owner._id
 
+  console.log({article})
+
   useEffect(() => {
     if (contributorsError) {
       setToast({
