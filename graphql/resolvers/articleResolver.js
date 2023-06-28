@@ -1,3 +1,6 @@
+const mongoose = require('mongoose')
+const { ObjectId } = mongoose.Types
+const { getYDoc } = require('y-websocket/bin/utils')
 const defaultsData = require('../data/defaultsData')
 
 const Article = require('../models/article')
@@ -333,7 +336,36 @@ module.exports = {
       article.versions.unshift(createdVersion)
       await article.save()
       return article
-    }
+    },
+
+    async startCollaborativeSession(article) {
+      if (article.collaborativeSessionId) {
+        return article.collaborativeSessionId
+      }
+      const collaborativeSessionId = new ObjectId()
+      article.collaborativeSessionId = collaborativeSessionId
+      await article.save()
+      const yDoc = getYDoc(collaborativeSessionId.toString())
+      const yText = yDoc.getText('main')
+      yText.insert(0, article.workingVersion.md)
+      return collaborativeSessionId
+    },
+
+    async stopCollaborativeSession(article) {
+      if (article.collaborativeSessionId) {
+        const yDoc = getYDoc(article.collaborativeSessionId.toString())
+        const yStatus = yDoc.getText('status')
+        yStatus.delete(0, yStatus.length)
+        yStatus.insert(0, 'ended')
+
+        const yText = yDoc.getText('main')
+        article.workingVersion.md = yText.toString()
+        article.collaborativeSessionId = null
+        await article.save()
+        return article
+      }
+      return article
+    },
   },
 
   WorkingVersion: {

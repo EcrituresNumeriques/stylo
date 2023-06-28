@@ -130,6 +130,8 @@ type Article {
   addContributor(userId: ID!): Article
   removeContributor(userId: ID!): Article
   createVersion(articleVersionInput: ArticleVersionInput!): Article
+  startCollaborativeSession: ID!
+  stopCollaborativeSession: Article
 }
 
 type ArticlePreviewSettings {

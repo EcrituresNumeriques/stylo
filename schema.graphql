@@ -25,11 +25,13 @@ type Article {
     rename(title: String!): Boolean
     setPreviewSettings(settings: ArticlePreviewInput!): Article
     setZoteroLink(zotero: String!): Boolean
+    startCollaborativeSession: ID!
+    stopCollaborativeSession: Article
     tags(limit: Int, page: Int): [Tag!]!
     title: String
     updateWorkingVersion(content: WorkingVersionInput!): Article
     updatedAt: DateTime
-    versions(limit: Int, page: Int): [Version!]
+    versions(limit: Int, page: Int): [Version!]!
     workingVersion: WorkingVersion
     workspaces: [Workspace!]
     zoteroLink: String

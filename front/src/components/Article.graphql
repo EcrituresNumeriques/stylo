@@ -89,3 +89,16 @@ query getArticleTags($articleId: ID!) {
   }
 }
 
+mutation startCollaborativeSession($articleId: ID!) {
+  article (articleId: $articleId) {
+    startCollaborativeSession
+  }
+}
+
+mutation stopCollaborativeSession($articleId: ID!) {
+  article (articleId: $articleId) {
+    stopCollaborativeSession {
+      _id
+    }
+  }
+}

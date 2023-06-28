@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import clsx from 'clsx'
 import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-ui/core'
 
@@ -27,16 +27,16 @@ import {
   Printer,
   Send,
   Trash,
-  UserPlus
+  UserPlus, Users
 } from 'react-feather'
 
 import {
   duplicateArticle,
   renameArticle,
-  getArticleVersions,
   deleteArticle,
   getArticleTags,
-  getArticleContributors
+  getArticleContributors,
+  startCollaborativeSession
 } from './Article.graphql'
 
 import {
@@ -51,6 +51,7 @@ import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
 
 export default function Article ({ article, onArticleUpdated, onArticleDeleted, onArticleCreated }) {
+  const history = useHistory()
   const activeUser = useSelector(state => state.activeUser)
   const articleId = useMemo(() => article._id, [article])
   const {
@@ -88,6 +89,12 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
     bindings: deleteArticleModalBinding
   } = useModal()
 
+  const {
+    visible: collaborativeEditingVisible,
+    setVisible: setCollaborativeEditingVisible,
+    bindings: collaborativeEditingBinding
+  } = useModal()
+
   const mutation = useMutation()
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
@@ -99,8 +106,6 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
   const [sending, setSending] = useState(false)
 
   const isArticleOwner = activeUser._id === article.owner._id
-
-  console.log({article})
 
   useEffect(() => {
     if (contributorsError) {
@@ -138,6 +143,15 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
       title: newTitle
     })
     setRenaming(false)
+  }
+
+  const handleStartCollaborativeEditing = async () => {
+    // try to start a collaborative editing
+    // TODO: check that there's no collaborative editing in progress.
+    // TODO: generate a sessionId
+    const data = await mutation({ query: startCollaborativeSession, variables: { articleId } })
+    history.push(`/article/${articleId}/session/${data.article.startCollaborativeSession}`)
+    setCollaborativeEditingVisible(false)
   }
 
   const handleDeleteArticle = async () => {
@@ -178,6 +192,20 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
           <Export articleId={article._id} bib={article.workingVersion.bibPreview} name={article.title}/>
         </Modal>
       )}
+
+      <GeistModal width="30rem" visible={sharing} onClose={closeSharingModal}>
+        <h2>{t('article.shareModal.title')}</h2>
+        <span className={styles.sendSubtitle}>
+          <span className={styles.sendText}>{t('article.shareModal.description')}</span>
+        </span>
+        <GeistModal.Content>
+          <ArticleContributors
+            article={article}
+            contributors={contributors}
+          />
+        </GeistModal.Content>
+        <GeistModal.Action passive onClick={closeSharingModal}>{t('modal.close.text')}</GeistModal.Action>
+      </GeistModal>
 
       <GeistModal width="30rem" visible={sharing} onClose={closeSharingModal}>
         <h2>{t('article.shareModal.title')}</h2>
@@ -276,6 +304,25 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
         <Button title="Download a printable version" icon={true} onClick={() => setExporting(true)}>
           <Printer/>
         </Button>
+
+
+        <Button title="Collaborative editing" icon={true} onClick={() => setCollaborativeEditingVisible(true)}>
+          <Users/>
+        </Button>
+
+        <GeistModal width="35rem" visible={collaborativeEditingVisible} {...collaborativeEditingBinding}>
+          <h2>{t('article.collaborativeEditing.title')}</h2>
+          <GeistModal.Content>
+            {t('article.collaborativeEditing.confirmMessage')}
+          </GeistModal.Content>
+          <GeistModal.Action
+            passive
+            onClick={() => setCollaborativeEditingVisible(false)}
+          >
+            {t('modal.cancelButton.text')}
+          </GeistModal.Action>
+          <GeistModal.Action onClick={handleStartCollaborativeEditing}>{t('modal.confirmButton.text')}</GeistModal.Action>
+        </GeistModal>
 
         <Link title="Edit article" className={buttonStyles.primary} to={`/article/${article._id}`}>
           <Edit3/>

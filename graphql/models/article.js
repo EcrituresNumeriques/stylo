@@ -64,7 +64,10 @@ const articleSchema = new Schema({
       default: '',
       set: sanitizeTemplate
     }
-  }
+  },
+  collaborativeSessionId: {
+    type: Schema.Types.ObjectId,
+  },
 }, { timestamps: true })
 
 

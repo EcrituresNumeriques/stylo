@@ -24,6 +24,10 @@ const User = require('./models/user')
 const { ApiError } = require('./helpers/errors')
 const { createTagLoader, createUserLoader, createArticleLoader, createVersionLoader } = require('./loaders')
 
+const { setupWSConnection } = require('y-websocket/bin/utils')
+const WebSocket = require('ws')
+const wss = new WebSocket.Server({ noServer: true })
+
 const app = express()
 
 const mongoServer = process.env.MONGO_SERVER
@@ -296,6 +300,9 @@ app.post('/graphql', populateUserFromJWT({ jwtSecret }), createHandler({
   },
 }))
 
+// Collaborative Writing Websocket
+wss.on('connection', setupWSConnection)
+
 // fix deprecation warnings: https://mongoosejs.com/docs/deprecations.html
 mongoose.set('useNewUrlParser', true)
 mongoose.set('useUnifiedTopology', true)
@@ -306,7 +313,14 @@ mongoose
   .connect(`mongodb://${mongoServer}:${mongoServerPort}/${mongoServerDB}`)
   .then(() => {
     logger.info('Listening on http://localhost:%s', listenPort)
-    app.listen(listenPort)
+    const server = app.listen(listenPort)
+    server.on('upgrade', (request, socket, head) => {
+      wss.handleUpgrade(request, socket, head, function handleAuth(ws) {
+        // const jwtToken = new URL('http://localhost' + request.url).searchParams.get("token")
+        // TODO: check token and permissions
+        wss.emit('connection', ws, request)
+      })
+    })
   })
   .catch(err => {
     logger.error({ err }, 'Unable to connect to MongoDB.')
