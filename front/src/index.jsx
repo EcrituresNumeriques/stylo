@@ -9,7 +9,7 @@ import { GeistProvider, Loading } from '@geist-ui/core'
 import './i18n.js'
 import './styles/general.scss'
 import './styles/general.scss'
-import CollaborativeEditingEditor from './components/collaborative/CollaborativeEditingEditor.jsx'
+import CollaborativeEditor from './components/collaborative/CollaborativeEditor.jsx'
 import App from './layouts/App'
 import createStore from './createReduxStore'
 import { getUserProfile } from './helpers/userProfile'
@@ -148,7 +148,7 @@ render(
               </PrivateRoute>
               {/* Collaborative editing */}
               <PrivateRoute path={[`/article/:articleId/session/:sessionId`]} exact>
-                <CollaborativeEditingEditor/>
+                <CollaborativeEditor/>
               </PrivateRoute>
               <Route exact path="/privacy">
                 <Privacy/>

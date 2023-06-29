@@ -52,6 +52,14 @@ query getUserArticles($user: ID!) {
       color
       _id
     }
+
+    collaborativeSession {
+      id
+      creator {
+        _id
+      }
+      createdAt
+    }
   }
 }
 
@@ -97,6 +105,14 @@ query getWorkspaceArticles ($workspaceId: ID!) {
           username
           email
         }
+      }
+
+      collaborativeSession {
+        id
+        creator {
+          _id
+        }
+        createdAt
       }
 
       tags {

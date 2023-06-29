@@ -1,13 +1,14 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { Link, useHistory } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import clsx from 'clsx'
 import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-ui/core'
 
 import styles from './articles.module.scss'
 import ArticleVersionLinks from './ArticleVersionLinks.jsx'
 import buttonStyles from './button.module.scss'
+import CollaborativeSessionAction from './collaborative/CollaborativeSessionAction.jsx'
 import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
 import fieldStyles from './field.module.scss'
 
@@ -27,7 +28,7 @@ import {
   Printer,
   Send,
   Trash,
-  UserPlus, Users
+  UserPlus
 } from 'react-feather'
 
 import {
@@ -36,12 +37,9 @@ import {
   deleteArticle,
   getArticleTags,
   getArticleContributors,
-  startCollaborativeSession
 } from './Article.graphql'
 
-import {
-  getTags
-} from './Tag.graphql'
+import { getTags } from './Tag.graphql'
 
 import useGraphQL, { useMutation } from '../hooks/graphql'
 import TimeAgo from './TimeAgo.jsx'
@@ -51,9 +49,9 @@ import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
 
 export default function Article ({ article, onArticleUpdated, onArticleDeleted, onArticleCreated }) {
-  const history = useHistory()
   const activeUser = useSelector(state => state.activeUser)
   const articleId = useMemo(() => article._id, [article])
+
   const {
     data: contributorsQueryData,
     error: contributorsError,
@@ -87,12 +85,6 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
     visible: deleteArticleVisible,
     setVisible: setDeleteArticleVisible,
     bindings: deleteArticleModalBinding
-  } = useModal()
-
-  const {
-    visible: collaborativeEditingVisible,
-    setVisible: setCollaborativeEditingVisible,
-    bindings: collaborativeEditingBinding
   } = useModal()
 
   const mutation = useMutation()
@@ -143,15 +135,6 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
       title: newTitle
     })
     setRenaming(false)
-  }
-
-  const handleStartCollaborativeEditing = async () => {
-    // try to start a collaborative editing
-    // TODO: check that there's no collaborative editing in progress.
-    // TODO: generate a sessionId
-    const data = await mutation({ query: startCollaborativeSession, variables: { articleId } })
-    history.push(`/article/${articleId}/session/${data.article.startCollaborativeSession}`)
-    setCollaborativeEditingVisible(false)
   }
 
   const handleDeleteArticle = async () => {
@@ -251,7 +234,8 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
       )}
       {renaming && (
         <form className={clsx(styles.renamingForm, fieldStyles.inlineFields)} onSubmit={(e) => rename(e)}>
-          <Field className={styles.inlineField} autoFocus={true} type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="Article Title"/>
+          <Field className={styles.inlineField} autoFocus={true} type="text" value={newTitle}
+                 onChange={(e) => setNewTitle(e.target.value)} placeholder="Article Title"/>
           <Button title="Save" primary={true} onClick={(e) => rename(e)}>
             <Check/> Save
           </Button>
@@ -280,10 +264,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
               <Note label="Important" type="error">{t('article.deleteModal.contributorsRemovalNote')}</Note>
             </>)}
           </GeistModal.Content>
-          <GeistModal.Action
-            passive
-            onClick={() => setDeleteArticleVisible(false)}
-          >
+          <GeistModal.Action passive onClick={() => setDeleteArticleVisible(false)}>
             {t('modal.cancelButton.text')}
           </GeistModal.Action>
           <GeistModal.Action onClick={handleDeleteArticle}>{t('modal.confirmButton.text')}</GeistModal.Action>
@@ -305,28 +286,12 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
           <Printer/>
         </Button>
 
+        <CollaborativeSessionAction collaborativeSession={article.collaborativeSession} articleId={articleId}/>
 
-        <Button title="Collaborative editing" icon={true} onClick={() => setCollaborativeEditingVisible(true)}>
-          <Users/>
-        </Button>
-
-        <GeistModal width="35rem" visible={collaborativeEditingVisible} {...collaborativeEditingBinding}>
-          <h2>{t('article.collaborativeEditing.title')}</h2>
-          <GeistModal.Content>
-            {t('article.collaborativeEditing.confirmMessage')}
-          </GeistModal.Content>
-          <GeistModal.Action
-            passive
-            onClick={() => setCollaborativeEditingVisible(false)}
-          >
-            {t('modal.cancelButton.text')}
-          </GeistModal.Action>
-          <GeistModal.Action onClick={handleStartCollaborativeEditing}>{t('modal.confirmButton.text')}</GeistModal.Action>
-        </GeistModal>
-
-        <Link title="Edit article" className={buttonStyles.primary} to={`/article/${article._id}`}>
-          <Edit3/>
-        </Link>
+        {article.collaborativeSession === null &&
+          <Link title="Edit article" className={buttonStyles.primary} to={`/article/${article._id}`}>
+            <Edit3/>
+          </Link>}
 
         <Link title="Preview (open a new window)" target="_blank" className={buttonStyles.icon}
               to={`/article/${article._id}/preview`}>
@@ -348,7 +313,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
         {expanded && (
           <div>
-            <ArticleVersionLinks article={article} articleId={articleId} />
+            <ArticleVersionLinks article={article} articleId={articleId}/>
 
             {userTags.length > 0 && <>
               <h4>{t('article.tags.title')}</h4>
@@ -378,7 +343,13 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 }
 
 Article.propTypes = {
-  handleYaml: PropTypes.func,
-  readOnly: PropTypes.bool,
-  yaml: PropTypes.string,
+  article: PropTypes.shape({
+    title: PropTypes.string,
+    owner: PropTypes.shape({
+      displayName: PropTypes.string
+    }),
+    collaborativeSession: PropTypes.object,
+    updatedAt: PropTypes.string,
+    _id: PropTypes.string
+  })
 }

@@ -1,0 +1,36 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+.container {
+  max-width: 1280px;
+  margin: auto;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.errorContainer {
+  height: calc(100vh - 200px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: auto;
+  margin-top: 5em;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 1em;
+}
+
+.button {
+  > div {
+    display: flex;
+    gap: 0.5em;
+
+    > svg {
+      stroke-width: 1.25;
+    }
+
+  }
+}

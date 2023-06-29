@@ -14,6 +14,7 @@ type Article {
     _id: ID!
     addContributor(userId: ID!): Article
     addTags(tags: [ID]!): [Tag]
+    collaborativeSession: CollaborativeSession
     contributors: [ArticleContributor]!
     createVersion(articleVersionInput: ArticleVersionInput!): Article
     createdAt: DateTime
@@ -25,7 +26,7 @@ type Article {
     rename(title: String!): Boolean
     setPreviewSettings(settings: ArticlePreviewInput!): Article
     setZoteroLink(zotero: String!): Boolean
-    startCollaborativeSession: ID!
+    startCollaborativeSession: CollaborativeSession!
     stopCollaborativeSession: Article
     tags(limit: Int, page: Int): [Tag!]!
     title: String
@@ -45,6 +46,12 @@ type ArticleContributor {
 type ArticlePreviewSettings {
     stylesheet: String!
     template: String
+}
+
+type CollaborativeSession {
+    createdAt: DateTime!
+    creator: User!
+    id: ID!
 }
 
 type Corpus {

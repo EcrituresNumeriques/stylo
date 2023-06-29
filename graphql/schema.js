@@ -104,6 +104,11 @@ input ArticleVersionInput {
   message: String
 }
 
+type CollaborativeSession {
+  id: ID
+  creator: User
+  createdAt: DateTime
+}
 
 type Article {
   _id: ID!
@@ -115,6 +120,7 @@ type Article {
   versions(limit: Int, page: Int): [Version!]!
   tags(limit: Int, page: Int): [Tag!]!
   preview: ArticlePreviewSettings
+  collaborativeSession: CollaborativeSession
   createdAt: DateTime
   updatedAt: DateTime
 
@@ -130,7 +136,7 @@ type Article {
   addContributor(userId: ID!): Article
   removeContributor(userId: ID!): Article
   createVersion(articleVersionInput: ArticleVersionInput!): Article
-  startCollaborativeSession: ID!
+  startCollaborativeSession: CollaborativeSession!
   stopCollaborativeSession: Article
 }
 

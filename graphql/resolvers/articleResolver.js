@@ -294,6 +294,9 @@ module.exports = {
     },
 
     async updateWorkingVersion (article, { content }) {
+      if (article.collaborativeSession && article.collaborativeSession.id) {
+        throw new ApiError('COLLABORATIVE_SESSION_CONFLICT', `Active collaborative session, cannot update the working copy.`)
+      }
       Object.entries(content)
         .forEach(([key, value]) => article.set({
           workingVersion: {
@@ -338,29 +341,34 @@ module.exports = {
       return article
     },
 
-    async startCollaborativeSession(article) {
-      if (article.collaborativeSessionId) {
-        return article.collaborativeSessionId
+    async startCollaborativeSession(article, _, { user }) {
+      if (article.collaborativeSession && article.collaborativeSession.id) {
+        return article.collaborativeSession
       }
       const collaborativeSessionId = new ObjectId()
-      article.collaborativeSessionId = collaborativeSessionId
-      await article.save()
+      const collaborativeSession = {
+        id: collaborativeSessionId,
+        creator: user._id,
+        createdAt: new Date()
+      }
+      article.collaborativeSession = collaborativeSession
       const yDoc = getYDoc(collaborativeSessionId.toString())
       const yText = yDoc.getText('main')
       yText.insert(0, article.workingVersion.md)
-      return collaborativeSessionId
+      await article.save()
+      return collaborativeSession
     },
 
     async stopCollaborativeSession(article) {
-      if (article.collaborativeSessionId) {
-        const yDoc = getYDoc(article.collaborativeSessionId.toString())
+      if (article.collaborativeSession && article.collaborativeSession.id) {
+        const yDoc = getYDoc(article.collaborativeSession.id.toString())
         const yStatus = yDoc.getText('status')
         yStatus.delete(0, yStatus.length)
         yStatus.insert(0, 'ended')
 
         const yText = yDoc.getText('main')
         article.workingVersion.md = yText.toString()
-        article.collaborativeSessionId = null
+        article.collaborativeSession = null
         await article.save()
         return article
       }
