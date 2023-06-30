@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import useGraphQL, { useMutation } from '../../hooks/graphql.js'
+import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 
 import { stopCollaborativeSession, getCollaborativeSession } from './CollaborativeSession.graphql'
 

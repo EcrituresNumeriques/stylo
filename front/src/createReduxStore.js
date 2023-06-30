@@ -18,9 +18,9 @@ function toWebsocketEndpoint (endpoint) {
   if (endpoint) {
     const endpointUrl = new URL(endpoint)
     const protocol = endpointUrl.protocol
-    return `${protocol === 'https:' ? 'wss' : 'ws'}://${endpointUrl.hostname}:${endpointUrl.port}`
+    return `${protocol === 'https:' ? 'wss' : 'ws'}://${endpointUrl.hostname}:${endpointUrl.port}/ws`
   }
-  return `ws://127.0.0.1:3030`
+  return `ws://127.0.0.1:3030/ws`
 }
 
 // Définition du store Redux et de l'ensemble des actions

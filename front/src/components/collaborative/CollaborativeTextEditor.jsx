@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
 import * as collaborating from './collaborating.js'
+import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 import CollaborativeEditorWriters from './CollaborativeEditorWriters.jsx'
 
 import styles from './CollaborativeTextEditor.module.scss'
@@ -44,6 +45,7 @@ const colors = [
 export default function CollaborativeTextEditor ({ collaborativeSessionId }) {
   const connectingRef = useRef(false)
   const [dynamicStyles, setDynamicStyles] = useState('')
+  const [ websocketStatus, setWebsocketStatus] = useState('')
   const [yStatus, setYStatus] = useState()
   const [yText, setYText] = useState()
   const [awareness, setAwareness] = useState()
@@ -60,8 +62,8 @@ export default function CollaborativeTextEditor ({ collaborativeSessionId }) {
 
   const options = useMemo(() => ({
     automaticLayout: true,
-    readOnly: false,
-    contextmenu: true,
+    readOnly: websocketStatus !== 'connected',
+    contextmenu: websocketStatus === 'connected',
     autoClosingBrackets: 'never',
     wordBasedSuggestions: false,
     overviewRulerLanes: 0,
@@ -73,7 +75,7 @@ export default function CollaborativeTextEditor ({ collaborativeSessionId }) {
     minimap: {
       enabled: false
     }
-  }), [])
+  }), [websocketStatus])
 
   const handleUpdateArticleStructureAndStats = throttle(({ text }) => {
       dispatch({ type: 'UPDATE_ARTICLE_STATS', md: text })
@@ -114,6 +116,9 @@ export default function CollaborativeTextEditor ({ collaborativeSessionId }) {
 }`
         }).join('\n'))
       },
+      onStatusUpdated: (status) => {
+        setWebsocketStatus(status)
+      }
     })
     const yText = yDocument.getText('main')
     const yStatus= yDocument.getText('status')
@@ -154,8 +159,13 @@ export default function CollaborativeTextEditor ({ collaborativeSessionId }) {
     <style>
       {dynamicStyles}
     </style>
-    <div className={styles.writers}>
-      <CollaborativeEditorWriters/>
+    <div className={styles.row}>
+      <div className={styles.writers}>
+        <CollaborativeEditorWriters/>
+      </div>
+      <div className={styles.status}>
+        <CollaborativeEditorWebSocketStatus status={websocketStatus}/>
+      </div>
     </div>
     <Editor
       options={options}

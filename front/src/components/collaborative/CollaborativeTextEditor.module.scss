@@ -14,6 +14,16 @@
 }
 
 .writers {
-  margin-bottom: 1em;
   margin-left: 1em;
+  flex: 1;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.status {
+  font-weight: 300;
 }
