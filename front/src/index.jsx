@@ -9,6 +9,7 @@ import { GeistProvider, Loading } from '@geist-ui/core'
 import './i18n.js'
 import './styles/general.scss'
 import './styles/general.scss'
+import CollaborativeEditor from './components/collaborative/CollaborativeEditor.jsx'
 import App from './layouts/App'
 import createStore from './createReduxStore'
 import { getUserProfile } from './helpers/userProfile'
@@ -134,8 +135,7 @@ render(
                 <ArticlePreview/>
               </Route>
               {/* Write and Compare */}
-              <PrivateRoute
-                path={[`/article/:id/compare/:compareTo`, `/article/:id/version/:version/compare/:compareTo`]} exact>
+              <PrivateRoute path={[`/article/:id/compare/:compareTo`, `/article/:id/version/:version/compare/:compareTo`]} exact>
                 <Write/>
               </PrivateRoute>
               {/* Write with a given version */}
@@ -145,6 +145,10 @@ render(
               {/* Write and/or Preview */}
               <PrivateRoute path={[`/article/:id/preview`, `/article/:id`]} exact>
                 <Write/>
+              </PrivateRoute>
+              {/* Collaborative editing */}
+              <PrivateRoute path={[`/article/:articleId/session/:sessionId`]} exact>
+                <CollaborativeEditor/>
               </PrivateRoute>
               <Route exact path="/privacy">
                 <Privacy/>

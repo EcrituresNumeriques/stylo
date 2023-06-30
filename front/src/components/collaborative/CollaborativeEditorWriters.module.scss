@@ -1,0 +1,14 @@
+.avatar {
+  display: flex;
+  position: relative;
+}
+
+.dot {
+  height: 0.5em;
+  width: 0.5em;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 99;
+}

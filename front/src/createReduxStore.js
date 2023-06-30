@@ -14,6 +14,15 @@ function createReducer (initialState, handlers) {
   }
 }
 
+function toWebsocketEndpoint (endpoint) {
+  if (endpoint) {
+    const endpointUrl = new URL(endpoint)
+    const scheme = endpointUrl.scheme
+    return `${scheme === 'https' ? 'wss' : 'ws'}://${endpointUrl.hostname}:${endpointUrl.port}`
+  }
+  return `ws://127.0.0.1:3030`
+}
+
 // Définition du store Redux et de l'ensemble des actions
 const initialState = {
   hasBooted: false,
@@ -35,6 +44,7 @@ const initialState = {
   },
   articleStructure: [],
   articleVersions: [],
+  articleWriters: [],
   articlePreferences: localStorage.getItem('articlePreferences') ? JSON.parse(localStorage.getItem('articlePreferences')) : {
     expandSidebarLeft: true,
     expandSidebarRight: false,
@@ -84,6 +94,7 @@ const reducer = createReducer(initialState, {
   // article reducers
   UPDATE_ARTICLE_STATS: updateArticleStats,
   UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
+  UPDATE_ARTICLE_WRITERS: updateArticleWriters,
 
   // user preferences reducers
   USER_PREFERENCES_TOGGLE: toggleUserPreferences,
@@ -240,7 +251,8 @@ function persistStateIntoLocalStorage ({ getState }) {
 
 function setApplicationConfig (state, action) {
   const applicationConfig = {
-    ...action.applicationConfig
+    ...action.applicationConfig,
+    websocketEndpoint: toWebsocketEndpoint(action.applicationConfig.backendEndpoint)
   }
 
   return { ...state, applicationConfig }
@@ -352,6 +364,10 @@ function updateArticleStructure (state, { md }) {
     })
 
   return { ...state, articleStructure }
+}
+
+function updateArticleWriters (state, { articleWriters }) {
+  return { ...state, articleWriters }
 }
 
 function setArticleVersions (state, { versions }) {

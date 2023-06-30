@@ -64,7 +64,31 @@ const articleSchema = new Schema({
       default: '',
       set: sanitizeTemplate
     }
-  }
+  },
+  collaborativeSession: {
+    id: {
+      type: Schema.Types.ObjectId,
+    },
+    creator: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    createdAt: {
+      type: Schema.Types.Date
+    }
+  },
+  soloSession: {
+    id: {
+      type: Schema.Types.ObjectId,
+    },
+    creator: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    createdAt: {
+      type: Schema.Types.Date
+    }
+  },
 }, { timestamps: true })
 
 

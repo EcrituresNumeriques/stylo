@@ -6,10 +6,31 @@ import { BibliographyCompletionProvider, registerReadOnlyTheme } from './support
 
 import styles from './TextEditor.module.scss'
 
+
+export function MonacoTextEditorForwardRef(props, ref) {
+  return React.forwardRef((props, ref) => {
+
+    const handleEditorDidMount = useCallback((editor) => {
+      ref.current = editor
+    }, [])
+
+
+    return <Editor
+      defaultValue={text}
+      className={styles.editor}
+      defaultLanguage="markdown"
+      onChange={handleEditorChange}
+      options={options}
+      onMount={handleEditorDidMount}
+    />
+  })
+}
+
+
 export default function MonacoTextEditor ({ text, readOnly, onTextUpdate }) {
   const articleBibTeXEntries = useSelector(state => state.workingArticle.bibliography.entries, shallowEqual)
   const editorCursorPosition = useSelector(state => state.editorCursorPosition, shallowEqual)
-  const editorRef = useRef(null)
+  const editorRef = useRef()
   const bibliographyCompletionProviderRef = useRef(new BibliographyCompletionProvider(articleBibTeXEntries))
   const options = useMemo(() => ({
     automaticLayout: true,

@@ -79,6 +79,12 @@ query removeTags ($article: ID!, $tags: [ID]!) {
   }
 }
 
+query getArticleInfo($articleId: ID!) {
+  article (article: $articleId) {
+    title
+  }
+}
+
 query getArticleTags($articleId: ID!) {
   article (article: $articleId) {
     tags {
@@ -89,3 +95,10 @@ query getArticleTags($articleId: ID!) {
   }
 }
 
+mutation startCollaborativeSession($articleId: ID!) {
+  article (articleId: $articleId) {
+    startCollaborativeSession {
+      id
+    }
+  }
+}

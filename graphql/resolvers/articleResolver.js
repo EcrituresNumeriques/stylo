@@ -1,3 +1,6 @@
+const mongoose = require('mongoose')
+const { ObjectId } = mongoose.Types
+const { getYDoc } = require('y-websocket/bin/utils')
 const defaultsData = require('../data/defaultsData')
 
 const Article = require('../models/article')
@@ -290,7 +293,15 @@ module.exports = {
       return article
     },
 
-    async updateWorkingVersion (article, { content }) {
+    async updateWorkingVersion (article, { content }, { user }) {
+      if (article.collaborativeSession && article.collaborativeSession.id) {
+        throw new ApiError('COLLABORATIVE_SESSION_CONFLICT', `Active collaborative session, cannot update the working copy.`)
+      }
+      if (article.soloSession && article.soloSession.id) {
+        if (!article.soloSession.creator._id.equals(user._id)) {
+          throw new ApiError('SOLO_SESSION_CONFLICT', `Active solo session by ${article.soloSession.creator}, cannot update the working copy.`)
+        }
+      }
       Object.entries(content)
         .forEach(([key, value]) => article.set({
           workingVersion: {
@@ -333,7 +344,71 @@ module.exports = {
       article.versions.unshift(createdVersion)
       await article.save()
       return article
-    }
+    },
+
+    async startCollaborativeSession(article, _, { user }) {
+      if (article.collaborativeSession && article.collaborativeSession.id) {
+        return article.collaborativeSession
+      }
+      const collaborativeSessionId = new ObjectId()
+      const collaborativeSession = {
+        id: collaborativeSessionId,
+        creator: user._id,
+        createdAt: new Date()
+      }
+      article.collaborativeSession = collaborativeSession
+      const yDoc = getYDoc(collaborativeSessionId.toString())
+      const yText = yDoc.getText('main')
+      yText.insert(0, article.workingVersion.md)
+      await article.save()
+      return collaborativeSession
+    },
+
+    async stopCollaborativeSession(article) {
+      if (article.collaborativeSession && article.collaborativeSession.id) {
+        const yDoc = getYDoc(article.collaborativeSession.id.toString())
+        const yStatus = yDoc.getText('status')
+        yStatus.delete(0, yStatus.length)
+        yStatus.insert(0, 'ended')
+
+        const yText = yDoc.getText('main')
+        article.workingVersion.md = yText.toString()
+        article.collaborativeSession = null
+        await article.save()
+        return article
+      }
+      return article
+    },
+
+    async startSoloSession(article, _, { user }) {
+      if (article.soloSession && article.soloSession.id) {
+        if (article.soloSession.creator._id.equals(user._id)) {
+          return article.soloSession
+        }
+        throw new ApiError('UNAUTHORIZED_SOLO_SESSION_ACTIVE', `A solo session is already active!`)
+      }
+      const soloSessionId = new ObjectId()
+      const soloSession = {
+        id: soloSessionId,
+        creator: user._id,
+        createdAt: new Date()
+      }
+      article.soloSession = soloSession
+      await article.save()
+      return soloSession
+    },
+
+    async stopSoloSession(article, _, { user }) {
+      if (article.soloSession && article.soloSession.id) {
+        if (article.soloSession.creator._id.equals(user._id)) {
+          article.soloSession = null
+          await article.save()
+        }
+        throw new ApiError('UNAUTHORIZED', `Solo session ${article.soloSession.id} can only be ended by its creator ${article.soloSession.creator}.`)
+      }
+      //  no solo session to stop (ignore)
+      return article
+    },
   },
 
   WorkingVersion: {

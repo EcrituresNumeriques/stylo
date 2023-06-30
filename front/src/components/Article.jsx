@@ -1,13 +1,14 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import clsx from 'clsx'
 import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-ui/core'
 
 import styles from './articles.module.scss'
 import ArticleVersionLinks from './ArticleVersionLinks.jsx'
 import buttonStyles from './button.module.scss'
+import CollaborativeSessionAction from './collaborative/CollaborativeSessionAction.jsx'
 import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
 import fieldStyles from './field.module.scss'
 
@@ -33,15 +34,13 @@ import {
 import {
   duplicateArticle,
   renameArticle,
-  getArticleVersions,
   deleteArticle,
   getArticleTags,
-  getArticleContributors
+  getArticleContributors,
 } from './Article.graphql'
+import SoloSessionAction from './solo/SoloSessionAction.jsx'
 
-import {
-  getTags
-} from './Tag.graphql'
+import { getTags } from './Tag.graphql'
 
 import useGraphQL, { useMutation } from '../hooks/graphql'
 import TimeAgo from './TimeAgo.jsx'
@@ -53,6 +52,7 @@ import ArticleSendCopy from './ArticleSendCopy.jsx'
 export default function Article ({ article, onArticleUpdated, onArticleDeleted, onArticleCreated }) {
   const activeUser = useSelector(state => state.activeUser)
   const articleId = useMemo(() => article._id, [article])
+
   const {
     data: contributorsQueryData,
     error: contributorsError,
@@ -99,8 +99,6 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
   const [sending, setSending] = useState(false)
 
   const isArticleOwner = activeUser._id === article.owner._id
-
-  console.log({article})
 
   useEffect(() => {
     if (contributorsError) {
@@ -193,6 +191,20 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
         <GeistModal.Action passive onClick={closeSharingModal}>{t('modal.close.text')}</GeistModal.Action>
       </GeistModal>
 
+      <GeistModal width="30rem" visible={sharing} onClose={closeSharingModal}>
+        <h2>{t('article.shareModal.title')}</h2>
+        <span className={styles.sendSubtitle}>
+          <span className={styles.sendText}>{t('article.shareModal.description')}</span>
+        </span>
+        <GeistModal.Content>
+          <ArticleContributors
+            article={article}
+            contributors={contributors}
+          />
+        </GeistModal.Content>
+        <GeistModal.Action passive onClick={closeSharingModal}>{t('modal.close.text')}</GeistModal.Action>
+      </GeistModal>
+
       <GeistModal width="25rem" visible={sending} onClose={closeSendingModal}>
         <h2>{t('article.sendCopyModal.title')}</h2>
         <span className={styles.sendSubtitle}>
@@ -223,7 +235,8 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
       )}
       {renaming && (
         <form className={clsx(styles.renamingForm, fieldStyles.inlineFields)} onSubmit={(e) => rename(e)}>
-          <Field className={styles.inlineField} autoFocus={true} type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="Article Title"/>
+          <Field className={styles.inlineField} autoFocus={true} type="text" value={newTitle}
+                 onChange={(e) => setNewTitle(e.target.value)} placeholder="Article Title"/>
           <Button title="Save" primary={true} onClick={(e) => rename(e)}>
             <Check/> Save
           </Button>
@@ -252,10 +265,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
               <Note label="Important" type="error">{t('article.deleteModal.contributorsRemovalNote')}</Note>
             </>)}
           </GeistModal.Content>
-          <GeistModal.Action
-            passive
-            onClick={() => setDeleteArticleVisible(false)}
-          >
+          <GeistModal.Action passive onClick={() => setDeleteArticleVisible(false)}>
             {t('modal.cancelButton.text')}
           </GeistModal.Action>
           <GeistModal.Action onClick={handleDeleteArticle}>{t('modal.confirmButton.text')}</GeistModal.Action>
@@ -277,9 +287,9 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
           <Printer/>
         </Button>
 
-        <Link title="Edit article" className={buttonStyles.primary} to={`/article/${article._id}`}>
-          <Edit3/>
-        </Link>
+        <CollaborativeSessionAction collaborativeSession={article.collaborativeSession} articleId={articleId}/>
+
+        <SoloSessionAction collaborativeSession={article.collaborativeSession} soloSession={article.soloSession} articleId={articleId}/>
 
         <Link title="Preview (open a new window)" target="_blank" className={buttonStyles.icon}
               to={`/article/${article._id}/preview`}>
@@ -301,7 +311,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
         {expanded && (
           <div>
-            <ArticleVersionLinks article={article} articleId={articleId} />
+            <ArticleVersionLinks article={article} articleId={articleId}/>
 
             {userTags.length > 0 && <>
               <h4>{t('article.tags.title')}</h4>
@@ -331,7 +341,14 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 }
 
 Article.propTypes = {
-  handleYaml: PropTypes.func,
-  readOnly: PropTypes.bool,
-  yaml: PropTypes.string,
+  article: PropTypes.shape({
+    title: PropTypes.string,
+    owner: PropTypes.shape({
+      displayName: PropTypes.string
+    }),
+    collaborativeSession: PropTypes.object,
+    soloSession: PropTypes.object,
+    updatedAt: PropTypes.string,
+    _id: PropTypes.string
+  })
 }
