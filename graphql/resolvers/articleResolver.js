@@ -293,9 +293,14 @@ module.exports = {
       return article
     },
 
-    async updateWorkingVersion (article, { content }) {
+    async updateWorkingVersion (article, { content }, { user }) {
       if (article.collaborativeSession && article.collaborativeSession.id) {
         throw new ApiError('COLLABORATIVE_SESSION_CONFLICT', `Active collaborative session, cannot update the working copy.`)
+      }
+      if (article.soloSession && article.soloSession.id) {
+        if (!article.soloSession.creator._id.equals(user._id)) {
+          throw new ApiError('SOLO_SESSION_CONFLICT', `Active solo session by ${article.soloSession.creator}, cannot update the working copy.`)
+        }
       }
       Object.entries(content)
         .forEach(([key, value]) => article.set({
