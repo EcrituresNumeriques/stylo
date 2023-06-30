@@ -17,8 +17,8 @@ function createReducer (initialState, handlers) {
 function toWebsocketEndpoint (endpoint) {
   if (endpoint) {
     const endpointUrl = new URL(endpoint)
-    const scheme = endpointUrl.scheme
-    return `${scheme === 'https' ? 'wss' : 'ws'}://${endpointUrl.hostname}:${endpointUrl.port}`
+    const protocol = endpointUrl.protocol
+    return `${protocol === 'https:' ? 'wss' : 'ws'}://${endpointUrl.hostname}:${endpointUrl.port}`
   }
   return `ws://127.0.0.1:3030`
 }
