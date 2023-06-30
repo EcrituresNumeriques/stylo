@@ -49,6 +49,8 @@
   "article.collaborativeSessionEnd.confirmMessage": "Souhaitez-vous terminer la session collaborative ?",
   "article.collaborativeSessionActive.title": "Session collaborative en cours",
   "article.collaborativeSessionActive.message": "Cet article est en lecture seule car une session collaborative est en cours. Si vous souhaitez modifier cet article, merci de rejoindre la session collaborative.",
+  "article.soloSessionActive.title": "Session solo en cours",
+  "article.soloSessionActive.message": "Cet article est en lecture seule car il est en cours d'édition. Si vous souhaitez modifier cet article, merci de créer une session collaborative.",
   "modal.cancelButton.text": "Annuler",
   "modal.confirmButton.text": "Confirmer",
   "modal.close.text": "Fermer",

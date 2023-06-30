@@ -49,6 +49,8 @@
   "article.collaborativeSessionEnd.confirmMessage": "Are you sure you want to end this collaborative session?",
   "article.collaborativeSessionActive.title": "Active collaborative session",
   "article.collaborativeSessionActive.message": "This article is read-only since there's an active collaborative session. If you want to edit this article, please join the collaborative session.",
+  "article.soloSessionActive.title": "Active solo session",
+  "article.soloSessionActive.message": "This article is read-only because someone is already editing. If you want to edit this article, please start a collaborative session.",
   "modal.cancelButton.text": "Cancel",
   "modal.confirmButton.text": "Confirm",
   "modal.close.text": "Close",

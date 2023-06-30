@@ -60,6 +60,14 @@ query getUserArticles($user: ID!) {
       }
       createdAt
     }
+
+    soloSession {
+      id
+      creator {
+        _id
+      }
+      createdAt
+    }
   }
 }
 
@@ -108,6 +116,14 @@ query getWorkspaceArticles ($workspaceId: ID!) {
       }
 
       collaborativeSession {
+        id
+        creator {
+          _id
+        }
+        createdAt
+      }
+
+      soloSession {
         id
         creator {
           _id

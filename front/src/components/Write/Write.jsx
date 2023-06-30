@@ -7,13 +7,14 @@ import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import throttle from 'lodash.throttle'
 import debounce from 'lodash.debounce'
+import { useMutation } from '../../hooks/graphql.js'
 import ErrorMessageCard from '../ErrorMessageCard.jsx'
 
 import styles from './write.module.scss'
 
 import { useActiveUserId } from '../../hooks/user'
 import { useGraphQL } from '../../helpers/graphQL'
-import { getEditableArticle as query } from './Write.graphql'
+import { getEditableArticle as query, stopSoloSession } from './Write.graphql'
 
 import ArticleEditorMenu from './ArticleEditorMenu.jsx'
 import ArticleEditorMetadata from './ArticleEditorMetadata.jsx'
@@ -49,12 +50,13 @@ export default function Write() {
   const runQuery = useGraphQL()
   const routeMatch = useRouteMatch()
   const [collaborativeSessionActive, setCollaborativeSessionActive] = useState(false)
+  const [soloSessionActive, setSoloSessionActive] = useState(false)
   const mode = useMemo(() => {
-    if (collaborativeSessionActive)  {
+    if (collaborativeSessionActive || soloSessionActive)  {
       return MODES_READONLY
     }
     return deriveModeFrom({ currentVersion, path: routeMatch.path})
-  }, [currentVersion, routeMatch.path, collaborativeSessionActive])
+  }, [currentVersion, routeMatch.path, collaborativeSessionActive, soloSessionActive])
   const [graphQLError, setGraphQLError] = useState()
   const [isLoading, setIsLoading] = useState(true)
   const [live, setLive] = useState({})
@@ -66,10 +68,18 @@ export default function Write() {
     preview: {},
   })
 
+  const mutation = useMutation()
+
   const {
     visible: collaborativeSessionActiveVisible,
     setVisible: setCollaborativeSessionActiveVisible,
     bindings: collaborativeSessionActiveBinding
+  } = useModal()
+
+  const {
+    visible: soloSessionActiveVisible,
+    setVisible: setSoloSessionActiveVisible,
+    bindings: soloSessionActiveBinding
   } = useModal()
 
   const PreviewComponent = useMemo(
@@ -163,6 +173,12 @@ export default function Write() {
         })
 
       if (data?.article) {
+        if (data.article.soloSession && data.article.soloSession.id) {
+          if (userId !== data.article.soloSession.creator._id) {
+            setSoloSessionActive(true)
+            setSoloSessionActiveVisible(true)
+          }
+        }
         setCollaborativeSessionActive(data.article.collaborativeSession && data.article.collaborativeSession.id)
         setCollaborativeSessionActiveVisible(data.article.collaborativeSession && data.article.collaborativeSession.id)
         const article = data.article
@@ -211,6 +227,10 @@ export default function Write() {
 
       setIsLoading(false)
     })()
+
+    return async () => {
+      await mutation({ query: stopSoloSession, variables: { articleId } })
+    }
   }, [currentVersion])
 
   if (graphQLError) {
@@ -236,6 +256,15 @@ export default function Write() {
         </GeistModal.Content>
         <GeistModal.Action onClick={() => setCollaborativeSessionActiveVisible(false)}>{t('modal.confirmButton.text')}</GeistModal.Action>
       </GeistModal>
+
+      <GeistModal width="40rem" visible={soloSessionActiveVisible} {...soloSessionActiveBinding}>
+        <h2>{t('article.soloSessionActive.title')}</h2>
+        <GeistModal.Content>
+          {t('article.soloSessionActive.message')}
+        </GeistModal.Content>
+        <GeistModal.Action onClick={() => setSoloSessionActiveVisible(false)}>{t('modal.confirmButton.text')}</GeistModal.Action>
+      </GeistModal>
+
       <ArticleEditorMenu
         articleInfos={articleInfos}
         compareTo={compareTo}

@@ -374,6 +374,36 @@ module.exports = {
       }
       return article
     },
+
+    async startSoloSession(article, _, { user }) {
+      if (article.soloSession && article.soloSession.id) {
+        if (article.soloSession.creator._id.equals(user._id)) {
+          return article.soloSession
+        }
+        throw new ApiError('UNAUTHORIZED_SOLO_SESSION_ACTIVE', `A solo session is already active!`)
+      }
+      const soloSessionId = new ObjectId()
+      const soloSession = {
+        id: soloSessionId,
+        creator: user._id,
+        createdAt: new Date()
+      }
+      article.soloSession = soloSession
+      await article.save()
+      return soloSession
+    },
+
+    async stopSoloSession(article, _, { user }) {
+      if (article.soloSession && article.soloSession.id) {
+        if (article.soloSession.creator._id.equals(user._id)) {
+          article.soloSession = null
+          await article.save()
+        }
+        throw new ApiError('UNAUTHORIZED', `Solo session ${article.soloSession.id} can only be ended by its creator ${article.soloSession.creator}.`)
+      }
+      //  no solo session to stop (ignore)
+      return article
+    },
   },
 
   WorkingVersion: {

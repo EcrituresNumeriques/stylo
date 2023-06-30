@@ -1,4 +1,8 @@
 const pkg = require('./package.json')
+const ospath = require('node:path')
+const process = require('node:process')
+process.env.YPERSISTENCE = ospath.join(__dirname, 'ydata')
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const { createHandler } = require('graphql-http/lib/use/express')

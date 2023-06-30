@@ -38,6 +38,7 @@ import {
   getArticleTags,
   getArticleContributors,
 } from './Article.graphql'
+import SoloSessionAction from './solo/SoloSessionAction.jsx'
 
 import { getTags } from './Tag.graphql'
 
@@ -288,10 +289,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
         <CollaborativeSessionAction collaborativeSession={article.collaborativeSession} articleId={articleId}/>
 
-        {article.collaborativeSession === null &&
-          <Link title="Edit article" className={buttonStyles.primary} to={`/article/${article._id}`}>
-            <Edit3/>
-          </Link>}
+        <SoloSessionAction collaborativeSession={article.collaborativeSession} soloSession={article.soloSession} articleId={articleId}/>
 
         <Link title="Preview (open a new window)" target="_blank" className={buttonStyles.icon}
               to={`/article/${article._id}/preview`}>
@@ -349,6 +347,7 @@ Article.propTypes = {
       displayName: PropTypes.string
     }),
     collaborativeSession: PropTypes.object,
+    soloSession: PropTypes.object,
     updatedAt: PropTypes.string,
     _id: PropTypes.string
   })

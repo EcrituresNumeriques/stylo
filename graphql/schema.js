@@ -110,6 +110,12 @@ type CollaborativeSession {
   createdAt: DateTime
 }
 
+type SoloSession {
+  id: ID
+  creator: User
+  createdAt: DateTime
+}
+
 type Article {
   _id: ID!
   title: String
@@ -121,6 +127,7 @@ type Article {
   tags(limit: Int, page: Int): [Tag!]!
   preview: ArticlePreviewSettings
   collaborativeSession: CollaborativeSession
+  soloSession: SoloSession
   createdAt: DateTime
   updatedAt: DateTime
 
@@ -137,7 +144,9 @@ type Article {
   removeContributor(userId: ID!): Article
   createVersion(articleVersionInput: ArticleVersionInput!): Article
   startCollaborativeSession: CollaborativeSession!
+  startSoloSession: SoloSession!
   stopCollaborativeSession: Article
+  stopSoloSession: Article
 }
 
 type ArticlePreviewSettings {
