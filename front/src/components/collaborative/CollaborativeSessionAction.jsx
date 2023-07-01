@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { Badge, Modal as GeistModal, useModal } from '@geist-ui/core'
 import { Users } from 'react-feather'
@@ -43,6 +43,12 @@ export default function CollaborativeSessionAction ({ collaborativeSession, arti
         ? t('article.collaborativeEditingJoin.confirmMessage')
         : t('article.collaborativeEditingStart.confirmMessage')
     , [collaborativeSession])
+
+  useEffect(() => {
+    return () => {
+      setCollaborativeEditingVisible(false)
+    }
+  }, [])
 
   return (
     <>

@@ -400,11 +400,11 @@ module.exports = {
 
     async stopSoloSession(article, _, { user }) {
       if (article.soloSession && article.soloSession.id) {
-        if (article.soloSession.creator._id.equals(user._id)) {
-          article.soloSession = null
-          await article.save()
+        if (!article.soloSession.creator._id.equals(user._id)) {
+          throw new ApiError('UNAUTHORIZED', `Solo session ${article.soloSession.id} can only be ended by its creator ${article.soloSession.creator}.`)
         }
-        throw new ApiError('UNAUTHORIZED', `Solo session ${article.soloSession.id} can only be ended by its creator ${article.soloSession.creator}.`)
+        article.soloSession = null
+        await article.save()
       }
       //  no solo session to stop (ignore)
       return article

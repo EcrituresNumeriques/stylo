@@ -45,10 +45,10 @@ const colors = [
 export default function CollaborativeTextEditor ({ collaborativeSessionId }) {
   const connectingRef = useRef(false)
   const [dynamicStyles, setDynamicStyles] = useState('')
-  const [ websocketStatus, setWebsocketStatus] = useState('')
-  const [yStatus, setYStatus] = useState()
-  const [yText, setYText] = useState()
-  const [awareness, setAwareness] = useState()
+  const [websocketStatus, setWebsocketStatus] = useState('')
+  const [yStatus, setYStatus] = useState(null)
+  const [yText, setYText] = useState(null)
+  const [awareness, setAwareness] = useState(null)
   const { websocketEndpoint } = useSelector(state => state.applicationConfig, shallowEqual)
   const activeUser = useSelector(state => ({
     _id: state.activeUser._id,
@@ -93,19 +93,12 @@ export default function CollaborativeTextEditor ({ collaborativeSessionId }) {
     color: colors[Math.floor(Math.random() * 14)]
   }), [activeUser])
 
-  useEffect(() => {
-    if (connectingRef.current) return
-    connectingRef.current = true
-    const { awareness, doc: yDocument, wsProvider } = collaborating.connect({
-      roomName: collaborativeSessionId,
-      websocketEndpoint,
-      user: writerInfo,
-      onChange ({ states }) {
-        const writers = Object.fromEntries(states)
-        dispatch({ type: 'UPDATE_ARTICLE_WRITERS', articleWriters: writers })
-        setDynamicStyles(Object.entries(writers).map(([key, writer]) => {
-          const color = writer.user.color
-          return `
+  const handleWritersUpdated = useCallback(({ states }) => {
+    const writers = Object.fromEntries(states)
+    dispatch({ type: 'UPDATE_ARTICLE_WRITERS', articleWriters: writers })
+    setDynamicStyles(Object.entries(writers).map(([key, writer]) => {
+      const color = writer.user.color
+      return `
 .yRemoteSelection-${key} {
   background-color: ${color};
 }
@@ -114,14 +107,25 @@ export default function CollaborativeTextEditor ({ collaborativeSessionId }) {
   border-top: ${color} solid 2px;
   border-bottom: ${color} solid 2px;
 }`
-        }).join('\n'))
-      },
-      onStatusUpdated: (status) => {
-        setWebsocketStatus(status)
-      }
+    }).join('\n'))
+  }, [setDynamicStyles])
+
+  const handleWebsocketStatusUpdated = useCallback((status) => {
+    setWebsocketStatus(status)
+  }, [setWebsocketStatus])
+
+  useEffect(() => {
+    if (connectingRef.current) return
+    connectingRef.current = true
+    const { awareness, doc: yDocument, wsProvider } = collaborating.connect({
+      roomName: collaborativeSessionId,
+      websocketEndpoint,
+      user: writerInfo,
+      onChange: handleWritersUpdated,
+      onStatusUpdated: handleWebsocketStatusUpdated
     })
     const yText = yDocument.getText('main')
-    const yStatus= yDocument.getText('status')
+    const yStatus = yDocument.getText('status')
     yText.observe(function () {
       handleUpdateArticleStructureAndStats({ text: yText.toString() })
     })
@@ -130,7 +134,9 @@ export default function CollaborativeTextEditor ({ collaborativeSessionId }) {
     setYStatus(yStatus)
     return () => {
       try {
+        awareness.destroy()
         wsProvider.disconnect()
+        wsProvider.destroy()
       } catch (err) {
         // try to disconnect..
       }
@@ -152,7 +158,7 @@ export default function CollaborativeTextEditor ({ collaborativeSessionId }) {
   }, [editorRef, editorCursorPosition])
 
   if (!yStatus || !yText) {
-    return  <Loading/>
+    return <Loading/>
   }
 
   return (<>

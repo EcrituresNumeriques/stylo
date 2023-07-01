@@ -1,4 +1,4 @@
-import { Code, Modal as GeistModal, Text, useModal } from '@geist-ui/core'
+import { Code, Modal as GeistModal, Text, useModal, useToasts } from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
@@ -42,6 +42,7 @@ export function deriveModeFrom ({ path, currentVersion }) {
 }
 
 export default function Write() {
+  const { setToast } = useToasts()
   const { t } = useTranslation()
   const { version: currentVersion, id: articleId, compareTo } = useParams()
   const workingArticle = useSelector(state => state.workingArticle, shallowEqual)
@@ -229,9 +230,20 @@ export default function Write() {
     })()
 
     return async () => {
-      await mutation({ query: stopSoloSession, variables: { articleId } })
+      try {
+        await mutation({ query: stopSoloSession, variables: { articleId } })
+      } catch (err) {
+        if (err && err.messages && err.messages.length > 0 && err.messages[0].extensions && err.messages[0].extensions.type === 'UNAUTHORIZED') {
+          // cannot end solo session... ignoring
+        } else {
+          setToast({
+            type: 'error',
+            text: `Unable to end solo session: ${err.toString()}`
+          })
+        }
+      }
     }
-  }, [currentVersion])
+  }, [currentVersion, articleId])
 
   if (graphQLError) {
     return (
