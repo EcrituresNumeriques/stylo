@@ -35,7 +35,7 @@ type Article {
     title: String
     updateWorkingVersion(content: WorkingVersionInput!): Article
     updatedAt: DateTime
-    versions(limit: Int, page: Int): [Version!]!
+    versions(limit: Int, page: Int): [Version!]
     workingVersion: WorkingVersion
     workspaces: [Workspace!]
     zoteroLink: String

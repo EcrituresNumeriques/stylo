@@ -123,7 +123,7 @@ type Article {
   owner: User
   contributors: [ArticleContributor]!
   workingVersion: WorkingVersion
-  versions(limit: Int, page: Int): [Version!]!
+  versions(limit: Int, page: Int): [Version!]
   tags(limit: Int, page: Int): [Tag!]!
   preview: ArticlePreviewSettings
   collaborativeSession: CollaborativeSession
