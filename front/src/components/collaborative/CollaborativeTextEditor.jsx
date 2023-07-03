@@ -42,11 +42,10 @@ const colors = [
   '#DDDDDD',
 ]
 
-export default function CollaborativeTextEditor ({ collaborativeSessionId }) {
+export default function CollaborativeTextEditor ({ collaborativeSessionId, onCollaborativeSessionStateUpdated }) {
   const connectingRef = useRef(false)
   const [dynamicStyles, setDynamicStyles] = useState('')
   const [websocketStatus, setWebsocketStatus] = useState('')
-  const [yStatus, setYStatus] = useState(null)
   const [yText, setYText] = useState(null)
   const [awareness, setAwareness] = useState(null)
   const { websocketEndpoint } = useSelector(state => state.applicationConfig, shallowEqual)
@@ -125,13 +124,15 @@ export default function CollaborativeTextEditor ({ collaborativeSessionId }) {
       onStatusUpdated: handleWebsocketStatusUpdated
     })
     const yText = yDocument.getText('main')
-    const yStatus = yDocument.getText('status')
+    const yState = yDocument.getText('state')
     yText.observe(function () {
       handleUpdateArticleStructureAndStats({ text: yText.toString() })
     })
+    yState.observe(function () {
+      onCollaborativeSessionStateUpdated({ state: yState.toString() })
+    })
     setAwareness(awareness)
     setYText(yText)
-    setYStatus(yStatus)
     return () => {
       try {
         awareness.destroy()
@@ -157,7 +158,7 @@ export default function CollaborativeTextEditor ({ collaborativeSessionId }) {
     editor?.revealLine(line + 1, 1) // smooth
   }, [editorRef, editorCursorPosition])
 
-  if (!yStatus || !yText) {
+  if (!yText) {
     return <Loading/>
   }
 
@@ -183,5 +184,6 @@ export default function CollaborativeTextEditor ({ collaborativeSessionId }) {
 }
 
 CollaborativeTextEditor.propTypes = {
-  collaborativeSessionId: PropTypes.string.isRequired
+  collaborativeSessionId: PropTypes.string.isRequired,
+  onCollaborativeSessionStateUpdated: PropTypes.func
 }

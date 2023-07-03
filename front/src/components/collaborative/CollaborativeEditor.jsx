@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import useGraphQL, { useMutation } from '../../hooks/graphql.js'
-import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 
 import { stopCollaborativeSession, getCollaborativeSession } from './CollaborativeSession.graphql'
 
@@ -28,6 +27,7 @@ export default function CollaborativeEditor () {
   const {
     data: collaborativeSessionData,
     isLoading: collaborativeSessionLoading,
+    mutate: mutateCollaborativeSession,
   } = useGraphQL({ query: getCollaborativeSession, variables: { articleId } })
 
   const {
@@ -56,6 +56,12 @@ export default function CollaborativeEditor () {
     }
   }, [mutation])
 
+  const handleCollaborativeSessionStateUpdated = useCallback(({ state }) => {
+    if (state === 'ended') {
+      mutateCollaborativeSession()
+    }
+  }, [])
+
   if (collaborativeSessionLoading) {
     return <Loading/>
   }
@@ -83,7 +89,7 @@ export default function CollaborativeEditor () {
       </GeistModal>
 
       <CollaborativeEditorArticleHeader articleId={articleId}/>
-      <CollaborativeTextEditor collaborativeSessionId={collaborativeSessionId}/>
+      <CollaborativeTextEditor collaborativeSessionId={collaborativeSessionId} onCollaborativeSessionStateUpdated={handleCollaborativeSessionStateUpdated}/>
       <CollaborativeEditorArticleStats/>
     </div>)
 }

@@ -360,6 +360,11 @@ module.exports = {
       const yDoc = getYDoc(`ws/${collaborativeSessionId.toString()}`)
       const yText = yDoc.getText('main')
       yText.insert(0, article.workingVersion.md)
+
+      const yState = yDoc.getText('state')
+      yState.delete(0, yState.length)
+      yState.insert(0, 'started')
+
       await article.save()
       return collaborativeSession
     },
@@ -367,9 +372,9 @@ module.exports = {
     async stopCollaborativeSession(article) {
       if (article.collaborativeSession && article.collaborativeSession.id) {
         const yDoc = getYDoc(`ws/${article.collaborativeSession.id.toString()}`)
-        const yStatus = yDoc.getText('status')
-        yStatus.delete(0, yStatus.length)
-        yStatus.insert(0, 'ended')
+        const yState = yDoc.getText('state')
+        yState.delete(0, yState.length)
+        yState.insert(0, 'ended')
 
         const yText = yDoc.getText('main')
         article.workingVersion.md = yText.toString()
