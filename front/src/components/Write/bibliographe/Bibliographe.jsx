@@ -26,7 +26,7 @@ export default function Bibliographe({ article, cancel }) {
   return (<article>
     <NavTag defaultValue={selector} onChange={handleTabChange} items={tabItems}/>
     {selector === 'zotero' && <ZoteroPanel articleId={article._id} onChange={onChange} zoteroLink={article.zoteroLink} />}
-    {selector === 'citations' && <CitationsPanel articleId={article._id} onChange={onChange} />}
+    {selector === 'citations' && <CitationsPanel onChange={onChange} />}
     {selector === 'raw' && <RawBibtexPanel onChange={onChange} />}
   </article>)
 }
