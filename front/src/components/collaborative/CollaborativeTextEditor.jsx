@@ -6,8 +6,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
 import * as collaborating from './collaborating.js'
-import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
-import CollaborativeEditorWriters from './CollaborativeEditorWriters.jsx'
+import CollaborativeEditorStatus from './CollaborativeEditorStatus.jsx'
 
 import styles from './CollaborativeTextEditor.module.scss'
 
@@ -42,7 +41,7 @@ const colors = [
   '#DDDDDD',
 ]
 
-export default function CollaborativeTextEditor ({ collaborativeSessionId, onCollaborativeSessionStateUpdated }) {
+export default function CollaborativeTextEditor ({ articleId, collaborativeSessionCreatorId, collaborativeSessionId, onCollaborativeSessionStateUpdated }) {
   const connectingRef = useRef(false)
   const [dynamicStyles, setDynamicStyles] = useState('')
   const [websocketStatus, setWebsocketStatus] = useState('')
@@ -163,17 +162,12 @@ export default function CollaborativeTextEditor ({ collaborativeSessionId, onCol
   }
 
   return (<>
-    <style>
-      {dynamicStyles}
-    </style>
-    <div className={styles.row}>
-      <div className={styles.writers}>
-        <CollaborativeEditorWriters/>
-      </div>
-      <div className={styles.status}>
-        <CollaborativeEditorWebSocketStatus status={websocketStatus}/>
-      </div>
-    </div>
+    <style>{dynamicStyles}</style>
+    <CollaborativeEditorStatus
+      articleId={articleId}
+      websocketStatus={websocketStatus}
+      collaborativeSessionCreatorId={collaborativeSessionCreatorId}
+    />
     <Editor
       options={options}
       className={styles.editor}
@@ -184,6 +178,8 @@ export default function CollaborativeTextEditor ({ collaborativeSessionId, onCol
 }
 
 CollaborativeTextEditor.propTypes = {
+  articleId: PropTypes.string.isRequired,
   collaborativeSessionId: PropTypes.string.isRequired,
+  collaborativeSessionCreatorId: PropTypes.string.isRequired,
   onCollaborativeSessionStateUpdated: PropTypes.func
 }

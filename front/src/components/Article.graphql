@@ -82,6 +82,10 @@ query removeTags ($article: ID!, $tags: [ID]!) {
 query getArticleInfo($articleId: ID!) {
   article (article: $articleId) {
     title
+
+    workingVersion {
+      bibPreview
+    }
   }
 }
 

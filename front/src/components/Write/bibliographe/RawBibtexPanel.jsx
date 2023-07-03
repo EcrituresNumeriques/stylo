@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import debounce from 'lodash.debounce'
+import { getValidationResults } from '../../../helpers/bibtex.js'
 
 import { Check } from 'react-feather'
 
@@ -9,7 +10,7 @@ import Button from '../../Button'
 
 import styles from './bibliographe.module.scss'
 
-export default function RawBibtexPanel ({ articleId, onChange }) {
+export default function RawBibtexPanel ({ onChange }) {
   const workingArticleBibliography = useSelector(state => state.workingArticle.bibliography, shallowEqual)
   const [bib, setBib] = useState(workingArticleBibliography.text)
   const [citationValidationResult, setCitationValidationResult] = useState({ valid: false })
