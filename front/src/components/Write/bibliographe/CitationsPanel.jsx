@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import debounce from 'lodash.debounce'
 import { Check, HelpCircle, Plus, Trash } from 'react-feather'
+import { useToasts } from '@geist-ui/core'
 
 import { toBibtex, toEntries, getValidationResults } from '../../../helpers/bibtex'
 
@@ -11,7 +12,8 @@ import Button from '../../Button'
 
 import styles from './bibliographe.module.scss'
 
-export default function CitationsPanel ({ articleId, onChange }) {
+export default function CitationsPanel ({ onChange }) {
+  const {setToast} = useToasts()
   const editorRef = useRef(null)
   const workingArticleBibliography = useSelector(state => state.workingArticle.bibliography, shallowEqual)
   const [bib, setBib] = useState(workingArticleBibliography.text)
@@ -20,7 +22,7 @@ export default function CitationsPanel ({ articleId, onChange }) {
   const [citationValidationResult, setCitationValidationResult] = useState({ valid: false })
 
   const isValid = useMemo(() => citationValidationResult.valid, [citationValidationResult.valid])
-  const isEmpty = useMemo(() => bib.trim(), [bib])
+  const isEmpty = useMemo(() => addCitation.trim().length === 0, [addCitation])
   const hasChanged = useMemo(() => bib !== workingArticleBibliography.text, [bib, workingArticleBibliography.text])
 
   // Merged citations are not yet saved
@@ -33,8 +35,16 @@ export default function CitationsPanel ({ articleId, onChange }) {
 
   const handleTextUpdate = useCallback(debounce((bibtex) => {
     setAddCitation(bibtex)
-    getValidationResults(bibtex).then(setCitationValidationResult)
-  }, 700), [])
+    getValidationResults(bibtex)
+      .then((result) => setCitationValidationResult(result))
+      .catch((err) => {
+        setToast({
+          type: 'error',
+          text: `Unable to validate BibTex: ${err.toString()}`
+
+        })
+      })
+  }, 700), [getValidationResults, setAddCitation])
 
   const handleRemove = useCallback((indexToRemove) => {
     const newBibTeXEntries = [...bibTeXEntries.slice(0, indexToRemove), ...bibTeXEntries.slice(indexToRemove + 1)];

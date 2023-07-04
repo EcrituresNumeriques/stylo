@@ -6,10 +6,11 @@ import { Check } from 'react-feather'
 
 import MonacoBibtexEditor from '../providers/monaco/BibtexEditor'
 import Button from '../../Button'
+import { getValidationResults } from '../../../helpers/bibtex.js'
 
 import styles from './bibliographe.module.scss'
 
-export default function RawBibtexPanel ({ articleId, onChange }) {
+export default function RawBibtexPanel ({ onChange }) {
   const workingArticleBibliography = useSelector(state => state.workingArticle.bibliography, shallowEqual)
   const [bib, setBib] = useState(workingArticleBibliography.text)
   const [citationValidationResult, setCitationValidationResult] = useState({ valid: false })
