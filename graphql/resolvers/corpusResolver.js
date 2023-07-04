@@ -178,7 +178,6 @@ module.exports = {
           }
         }))
       articles.sort((a, b) => a.order < b.order ? -1 : 1)
-      console.log('Corpus.articles', {articles: corpus.articles})
       return articles
     },
 

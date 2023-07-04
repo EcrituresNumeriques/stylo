@@ -183,7 +183,7 @@ hr.horizontalSeparator {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  
+
   column-gap: 2em;
   row-gap: 0.15em;
 
@@ -369,7 +369,7 @@ hr.horizontalSeparator {
 .createTagButton {
   cursor: pointer;
   user-select: none;
-  border: 1px solid #aaa;
+  border: 1px solid #868e96;
   display: flex;
   align-items: center;
   font-size: 0.8em;
@@ -422,7 +422,7 @@ hr.horizontalSeparator {
   align-items: flex-start;
   padding: 0.35em 0.5em;
   margin-bottom: 0.25em;
-  border: 1px solid grey;
+  border: 1px solid #868e96;
   margin-right: 0.5rem;
 }
 
@@ -468,4 +468,3 @@ hr.horizontalSeparator {
   display: flex;
   gap: 0.35em;
 }
-

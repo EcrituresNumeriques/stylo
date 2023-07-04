@@ -33,15 +33,12 @@ import {
 import {
   duplicateArticle,
   renameArticle,
-  getArticleVersions,
   deleteArticle,
   getArticleTags,
-  getArticleContributors
+  getArticleContributors,
 } from './Article.graphql'
 
-import {
-  getTags
-} from './Tag.graphql'
+import { getTags } from './Tag.graphql'
 
 import useGraphQL, { useMutation } from '../hooks/graphql'
 import TimeAgo from './TimeAgo.jsx'
@@ -53,6 +50,7 @@ import ArticleSendCopy from './ArticleSendCopy.jsx'
 export default function Article ({ article, onArticleUpdated, onArticleDeleted, onArticleCreated }) {
   const activeUser = useSelector(state => state.activeUser)
   const articleId = useMemo(() => article._id, [article])
+
   const {
     data: contributorsQueryData,
     error: contributorsError,
@@ -99,8 +97,6 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
   const [sending, setSending] = useState(false)
 
   const isArticleOwner = activeUser._id === article.owner._id
-
-  console.log({article})
 
   useEffect(() => {
     if (contributorsError) {

@@ -1,3 +1,4 @@
+import { Code, Text } from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import { batch, useDispatch } from 'react-redux'
@@ -5,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import throttle from 'lodash.throttle'
 import debounce from 'lodash.debounce'
+import ErrorMessageCard from '../ErrorMessageCard.jsx'
 
 import styles from './write.module.scss'
 
@@ -44,7 +46,7 @@ export default function Write() {
   const runQuery = useGraphQL()
   const routeMatch = useRouteMatch()
   const mode = useMemo(() => deriveModeFrom({ currentVersion, path: routeMatch.path}), [currentVersion, routeMatch.path])
-  const [graphqlError, setError] = useState()
+  const [graphQLError, setGraphQLError] = useState()
   const [isLoading, setIsLoading] = useState(true)
   const [live, setLive] = useState({})
   const [articleInfos, setArticleInfos] = useState({
@@ -106,7 +108,6 @@ export default function Write() {
     []
   )
 
-
   const handleMDCM = (text) => {
     deriveArticleStructureAndStats({ text })
     updateWorkingArticleText({ text })
@@ -134,7 +135,7 @@ export default function Write() {
     ;(async () => {
       const data = await runQuery({ query, variables })
         .catch((error) => {
-          setError(error)
+          setGraphQLError(error)
           return {}
         })
 
@@ -187,13 +188,12 @@ export default function Write() {
     })()
   }, [currentVersion])
 
-  if (graphqlError) {
+  if (graphQLError) {
     return (
-      <section className={styles.container}>
-        <article className={styles.error}>
-          <h2>Error</h2>
-          <p>{graphqlError[0]?.message || 'Article not found.'}</p>
-        </article>
+      <section className={styles.errorContainer}>
+        <ErrorMessageCard title="Error">
+          <Text><Code>{graphQLError?.message || graphQLError.toString()}</Code></Text>
+        </ErrorMessageCard>
       </section>
     )
   }

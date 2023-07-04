@@ -40,10 +40,10 @@ async function request ({ query, variables, sessionToken, graphqlEndpoint, type 
 }
 
 /**
- * @param queryOrAST
- * @param variables
- * @param {SWRConfiguration} options
- * @returns {SWRResponse<{data: {}, errors: *[]}, any>}
+ * @param queryOrAST GraphQL query
+ * @param variables query arguments
+ * @param {SWRConfiguration} [options] - optional SWR options
+ * @returns {SWRResponse}
  */
 export default function useGraphQL ({ query: queryOrAST, variables }, options) {
   const sessionToken = useSelector(state => state.sessionToken)
