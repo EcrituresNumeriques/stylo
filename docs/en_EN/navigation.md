@@ -33,6 +33,7 @@
   * [Manage my article](pages/myarticles.md)
   * [Solving problems](pages/problems.md)
   * [Exports](pages/exports.md)
+  * [New Features](pages/newfeatures.md)
 
 [Ressources](pages/publications.md)
 
