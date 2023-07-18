@@ -8,6 +8,8 @@
 
 Une permanence est ouverte tous les jeudis de 11h à 12h (heure de Montréal) pour poser des questions, perfectionner l'utilisation de Stylo, partager vos expériences utilisateur ou autres : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Rejoignez la permanence en visioconférence</a>
 
+❗Veuillez prendre note que la permanence Stylo fait relâche à partir du 1^er^ août à l'occasion des vacances d'été ☀️ Nous serons de retour le 7 septembre❗
+
 ---
 
 Bienvenue sur la documentation de Stylo. Stylo est un éditeur de texte simplifiant la rédaction et l'édition d'articles scientifiques en Sciences Humaines et Sociales.
