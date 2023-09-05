@@ -168,17 +168,20 @@
   /* Mappage de couleurs */
 
   --couleur-fond: #fff;
-  --couleur-fond-2: #E4E4F3;
-  --couleur-police: var(--fond-marin);
-  --couleur-fond-accent: var(--accent-clair);
-  --couleur-fond-accent-inverse: var(--ecume);
-  --couleur-neutre: var(--neutre);
+  --couleur-fond-2: var(--neutral-100);
+  --couleur-police: var(--neutral-900);
+  --couleur-fond-accent: var(--neutral-300);
+  --couleur-fond-accent-inverse: var(--neutral-50);
+  --couleur-neutre: var(--neutral-500);
   --couleur-lien: var(--azur-aoste-500);
   --anticouleur-lien: #fff;
   --couleur-lien-accent: var(--azur-aoste-600);
 
-  --couleur-fond-bouton: var(--peche);
-  --couleur-police-bouton: var(--couleur-police);
+  --couleur-marque: var(--neutral-900);
+  --anticouleur-marque: #fff; /* couleur inverse, ex. pour le texte */
+
+  --couleur-fond-bouton: var(--couleur-marque);
+  --couleur-police-bouton: #fff; /* couleur inverse, ex. pour le texte */
   --couleur-code: var(--azur-aoste);
   --couleur-fond-code: var(--couleur-fond-accent-inverse);
 
@@ -207,6 +210,10 @@
     --couleur-fond-accent-inverse: var(--neutral-950);
 
     --couleur-neutre: var(--neutral-500);
+
+
+    --couleur-marque: var(--couleur-lien);
+    --anticouleur-marque: var(--neutral-50); /* couleur inverse, ex. pour le texte */
 
     --couleur-lien: var(--azur-aoste-500);
     --anticouleur-lien: #fff;

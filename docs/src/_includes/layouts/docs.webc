@@ -360,7 +360,7 @@
     cursor: pointer;
 
     /* Match main title element? */
-    background-color: var(--azur-aoste);
+    background-color: var(--couleur-marque);
     color: #fff;
   }
 

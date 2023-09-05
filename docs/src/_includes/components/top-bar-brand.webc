@@ -26,8 +26,8 @@ Usage:
 
 <style webc:scoped>
   .top-bar-brand {
-    --brand-background-color: var(--couleur-lien);
-    --brand-text-color: var(--anticouleur-lien);
+    --brand-background-color: var(--couleur-marque);
+    --brand-text-color: var(--anticouleur-marque);
     --brand-triangle-size: .85rem;
 
     /* Positionnement du titre dans la barre */
