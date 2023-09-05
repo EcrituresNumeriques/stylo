@@ -57,5 +57,5 @@ The researchers participating in the project are as follows:
 
 ## Developers
 
-- [Guillaume Grossetie](https://github.com/Mogztter)
+- [Guillaume Grossetie](https://github.com/ggrossetie)
 - [Thomas Parisot](https://détour.studio)

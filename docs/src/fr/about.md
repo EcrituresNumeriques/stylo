@@ -57,5 +57,5 @@ Les chercheur·e·s participant à la réalisation de ce projet sont les suivant
 
 ## Développeurs
 
-- [Guillaume Grossetie](https://github.com/Mogztter)
+- [Guillaume Grossetie](https://github.com/ggrossetie)
 - [Thomas Parisot](https://détour.studio)
