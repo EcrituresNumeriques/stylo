@@ -18,7 +18,7 @@ Usage:
 <style webc:scoped>
   .document-footer {
     /* espace supplémentaire dessous pour signaler la fin du contenu */
-    padding: 1rem 0 2rem;
+    padding: 1rem 0;
 
     border-top: 1px solid var(--couleur-fond-accent);
     color: var(--couleur-fond-accent);
