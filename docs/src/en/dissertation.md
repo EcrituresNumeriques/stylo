@@ -4,7 +4,7 @@ title: Dissertations and theses
 
 Stylo can be used to create more complex documents than articles, such as dissertations or theses, this feature is called **Books**.
 
-**Warning: this option is not fully functional, we recommend that you wait for future updates before using it as a final rendering.
+**Warning: this option is not fully functional, we recommend that you wait for future updates before using it as a final rendering.**
 
 ## General principles
 
@@ -17,7 +17,7 @@ Stylo can be used to create more complex documents than articles, such as disser
   - it can be shared as such (annotation, preview, etc.). It is at the time of exporting the dissertation that the different parts are edited together.
 - The metadata of the complete dissertation are those of the first document.
 
-**The documents in a dissertation are classified in alphabetical order, the simplest solution to control the order is to place a number at the beginning of the name of each document concerned (the name of the document must not be confused with the title of the document entered in the metadata).**
+**The documents in a dissertation are classified in alphabetical order. The simplest solution to control the order is to place a number at the beginning of the name of each document concerned (the name of the document must not be confused with the title of the document entered in the metadata).**
 
 ## Special characteristics
 
@@ -54,12 +54,12 @@ The structure is as follows:
 - `key`  is the “section key”, or in other words a tag that will be used in the next step.
 - `title` will be your bibliography section title, as it will be displayed in the thesis.
 
-2. For each of the bibliographic references concerned, add in the `keywords` field the section key (for example `practice` or `theory`). This step can be done either in Zotero or in Stylo by editing the bibtex directly
+2. For each of the relevant bibliographic references, add in the `keywords` field the section key (for example `practice` or `theory`). This step can be done either in Zotero or in Stylo by editing the bibtex directly
 
 ### Dissertation metadata
 _In a future version, the “My Books” interface will offer a metadata editor for thesis metadata._
 
-In this version of Stylo the metadata of the dissertation will be those of the first declared document. The other metadata are ignored. **The subdivisions of the bibliography** must therefore be declared in the first document of the dissertation.
+In this version of Stylo the metadata of the dissertation will be those of the first declared document. The other metadata is ignored. **The subdivisions of the bibliography** must therefore be declared in the first document of the dissertation.
 
 ### Export
 The export of the thesis is done through a dedicated LaTeX template. It corresponds to the thesis template of the University of Montreal.

@@ -61,8 +61,10 @@ export function useGraphQL () {
 }
 
 /**
- * @param {{ sessionToken: {string}, graphqlEndpoint: {string}}}}
- * @param {{ query: {DocumentNode|string}, variables: {Object}}}
+ * @param {string}sessionToken
+ * @param {string} graphqlEndpoint
+ * @param {DocumentNode|string} queryOrAST
+ * @param {{[string: key]: value}} variables
  * @return {Promise<string|object>}
  */
 export function runQuery({ sessionToken, graphqlEndpoint }, { query: queryOrAST, variables }) {

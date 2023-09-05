@@ -11,12 +11,12 @@ title: Markdown syntax
 
 ## Footnotes
 
-The footnotes can be in the body of the text (inline) or with a footnote number that refers to the bottom of the article.
+Footnotes can be in the body of the text (inline) or use a footnote number that refers to the bottom of the article.
 
 Examples:
 
 ```
-Here is my text^[An inline footnote.\].
+Here is my text^[An inline footnote.].
 ```
 
 Will give:
@@ -63,7 +63,7 @@ An image can be integrated into a document written in the Markdown markup langua
 
 - An exclamation mark `!` ;
 - Followed by square brackets `[]` containing the image description ;
-- Then brackets `()` containing the image path or address. 
+- Then parentheses `()` containing the image path or address. 
 
 Here is an image, in this case the logo for W3C (World Wide Web Consortium) :
 
@@ -78,10 +78,10 @@ And here is the corresponding markdown:
 **Important**: images must be is PNG format (`.png`), this format is required for the PDF export.
 
 ## Links
-The links can be created by distinguishing:
+The links can be created by using the following model:
 
 - The link, that is, the word or expression indicated as a link, with square brackets `[]`;
-- And the target, the destination URL, with brackets `()`.
+- And the target, the destination URL, with parentheses `()`.
 
 Here is [a link to a Wikipedia page](https://en.wikipedia.org/wiki/Hyperlink), and the corresponding markers:
 
@@ -108,16 +108,16 @@ Unbreakable spaces are represented by a midpoint: `·`. Example: `How are you·?
 
 It is also possible to use an unbreakable space in ASCII `&nbsp;`.
 
-Note that if your markdown source comes from the pandoc docx (or odt) conversion to markdown, unbreakable spaces will be conserved and presented in Stylo in the form of a midpoint.
+Note that if your markdown source comes from the Pandoc DOCX (or ODT) conversion to markdown, unbreakable spaces will be conserved and presented in Stylo in the form of a midpoint.
 
 ## Semantic Markup
 
-Semantic markup allows specifying the function of a word, an expression or a paragraph.
+Semantic markup allows specifying the function of a word, an expression, or a paragraph.
 
 Stylo allows free semantic markup: each author can define their own semantic structure according to their particular needs. It can then be implemented in export templates or custom style sheets (see the section
 [Personalise your export](pages/mesarticles.md).
 
-The markdown syntax for semantic markup is as follows: `[term to markup\] {.category}`.
+The markdown syntax for semantic markup is as follows: `[term to markup] {.category}`.
 
 For example: `We can consider this [rupture]{.concept} emblematic of...` identifies the term `rupture` as a `concept`.
 
@@ -158,6 +158,7 @@ Stylo preview implements the display of the following semantic classes:
 - Example
 - Concept
 - Definition
+- Question
 - Epigraph
 - Dedication
 - Credits
@@ -218,7 +219,7 @@ Gives in HTML:
 Tables are created as follows
 
 - `|` Separates columns
-- A single line break separates the links
+- A single line break separates the lines
 - A second line defines the column alignment:
   - `:--` aligns column to the right
   - `:-:` aligns column to the centre

@@ -98,6 +98,24 @@ type Version {
   rename(name: String): Boolean
 }
 
+input ArticleVersionInput {
+  userId: ID!
+  major: Boolean
+  message: String
+}
+
+type CollaborativeSession {
+  id: ID
+  creator: User
+  createdAt: DateTime
+}
+
+type SoloSession {
+  id: ID
+  creator: User
+  createdAt: DateTime
+}
+
 type Article {
   _id: ID!
   title: String
@@ -105,9 +123,11 @@ type Article {
   owner: User
   contributors: [ArticleContributor]!
   workingVersion: WorkingVersion
-  versions(limit: Int, page: Int): [Version!]!
+  versions(limit: Int, page: Int): [Version!]
   tags(limit: Int, page: Int): [Tag!]!
   preview: ArticlePreviewSettings
+  collaborativeSession: CollaborativeSession
+  soloSession: SoloSession
   createdAt: DateTime
   updatedAt: DateTime
 
@@ -122,6 +142,11 @@ type Article {
   
   addContributor(userId: ID!): Article
   removeContributor(userId: ID!): Article
+  createVersion(articleVersionInput: ArticleVersionInput!): Article
+  startCollaborativeSession: CollaborativeSession!
+  startSoloSession: SoloSession!
+  stopCollaborativeSession: Article
+  stopSoloSession: Article
 }
 
 type ArticlePreviewSettings {
@@ -171,13 +196,6 @@ type InstanceArticleStats implements InstanceObjectUsageStats {
   years: [InstanceObjectUsageYearlyStats]
 }
 
-input VersionInput {
-  article: ID!
-  major: Boolean
-  message: String
-}
-
-# input WorkingVersionInput @oneOf {
 input WorkingVersionInput {
   bib: String,
   md: String,
@@ -271,6 +289,17 @@ type CorpusArticle {
   move(order: Int): Corpus
 }
 
+input ArticleOrder {
+  articleId: ID!
+  order: Int!
+}
+
+input UpdateCorpusInput {
+  name: String!
+  description: String
+  metadata: String
+}
+
 type Corpus {
   _id: String!
   name: String!
@@ -288,7 +317,9 @@ type Corpus {
   addArticle(articleId: ID!): Corpus
   rename(name: String!): Corpus
   updateMetadata(metadata: String!): Corpus
+  updateArticlesOrder(articlesOrderInput: [ArticleOrder!]!): Corpus
   delete: Corpus!
+  update(updateCorpusInput: UpdateCorpusInput!): Corpus!
 }
 
 input CreateCorpusInput {
@@ -296,6 +327,11 @@ input CreateCorpusInput {
   description: String
   metadata: String
   workspace: String
+}
+
+input FilterCorpusInput {
+  workspaceId: String
+  corpusId: ID
 }
 
 type Query {
@@ -333,8 +369,10 @@ type Query {
   "Get a list of workspaces for the authenticated user"
   workspaces: [Workspace!]
 
-  "Get a list of corpus for the authenticated user"
-  corpus: [Corpus!]
+  """
+  Get a list of corpus with an optional filter
+  """
+  corpus(filter: FilterCorpusInput): [Corpus!]
 }
 
 type Mutation {
@@ -359,9 +397,6 @@ type Mutation {
 
   "Create article for specified user [need to be authenticated as specified user]"
   createArticle(title: String!, user: ID, tags: [ID]): Article
-
-  "Save a new version for article [need to be authenticated as specified user]"
-  saveVersion(version: VersionInput!, user: ID): Version
 
   "Create tag [need to be authenticated as specified user]"
   createTag(
@@ -398,6 +433,12 @@ type Mutation {
   "Get a workspace for mutation"
   workspace(workspaceId: ID!): Workspace
 
+  """
+  Get an article for a given id.
+  Returns an error if the corpus does not exist or cannot be accessed.
+  """
+  article(articleId: ID!): Article
+  
   """
   Get a corpus for a given id.
   Returns an error if the corpus does not exist or cannot be accessed.

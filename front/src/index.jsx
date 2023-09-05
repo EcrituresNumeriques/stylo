@@ -1,14 +1,15 @@
 import './wdyr.js'
 import 'core-js/modules/web.structured-clone'
-import React, { lazy } from 'react'
+import React, { lazy, Suspense } from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { GeistProvider } from '@geist-ui/core'
+import { GeistProvider, Loading } from '@geist-ui/core'
 
 import './i18n.js'
 import './styles/general.scss'
 import './styles/general.scss'
+import CollaborativeEditor from './components/collaborative/CollaborativeEditor.jsx'
 import App from './layouts/App'
 import createStore from './createReduxStore'
 import { getUserProfile } from './helpers/userProfile'
@@ -36,6 +37,7 @@ const ArticlePreview = lazy(() => import('./components/ArticlePreview'))
 const Privacy = lazy(() => import('./components/Privacy'))
 
 const store = createStore()
+const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
 
 ;(async () => {
   let { applicationConfig: defaultApplicationConfig, sessionToken } = store.getState()
@@ -51,7 +53,13 @@ const store = createStore()
 
   try {
     const { user, token } = await getUserProfile({ applicationConfig, sessionToken })
-    store.dispatch({ type: 'PROFILE', user, token })
+    const pathname = location.pathname
+    const workspacePathRxResult =    pathname.match(workspacePathsRx)
+    let activeWorkspaceId
+    if (workspacePathRxResult) {
+      activeWorkspaceId = workspacePathRxResult.groups.id
+    }
+    store.dispatch({ type: 'PROFILE', user, token, activeWorkspaceId })
   } catch (error) {
     console.log('User seemingly not authenticated: %s', error.message)
     store.dispatch({ type: 'PROFILE' })
@@ -94,7 +102,8 @@ render(
   <React.StrictMode>
     <GeistProvider>
       <Provider store={store}>
-        <Router>
+        <Suspense fallback={<Loading/>}>
+          <Router>
           <TrackPageViews/>
           <Header/>
           <App>
@@ -103,15 +112,15 @@ render(
                 <Register/>
               </Route>
               {/* Articles index */}
-              <PrivateRoute path={['/articles', '/']} exact>
+              <PrivateRoute path={['/articles', '/', '/workspaces/:workspaceId/articles']} exact>
                 <Articles/>
               </PrivateRoute>
               {/* Books index */}
-              <PrivateRoute path="/books" exact>
+              <PrivateRoute path={['/books', '/workspaces/:workspaceId/books']} exact>
                 <Corpus/>
               </PrivateRoute>
               {/* Workspaces index */}
-              <PrivateRoute path={['/workspaces', '/']} exact>
+              <PrivateRoute path={['/workspaces']} exact>
                 <Workspaces/>
               </PrivateRoute>
               <PrivateRoute path="/credentials" exact>
@@ -126,8 +135,7 @@ render(
                 <ArticlePreview/>
               </Route>
               {/* Write and Compare */}
-              <PrivateRoute
-                path={[`/article/:id/compare/:compareTo`, `/article/:id/version/:version/compare/:compareTo`]} exact>
+              <PrivateRoute path={[`/article/:id/compare/:compareTo`, `/article/:id/version/:version/compare/:compareTo`]} exact>
                 <Write/>
               </PrivateRoute>
               {/* Write with a given version */}
@@ -137,6 +145,10 @@ render(
               {/* Write and/or Preview */}
               <PrivateRoute path={[`/article/:id/preview`, `/article/:id`]} exact>
                 <Write/>
+              </PrivateRoute>
+              {/* Collaborative editing */}
+              <PrivateRoute path={[`/article/:articleId/session/:sessionId`]} exact>
+                <CollaborativeEditor/>
               </PrivateRoute>
               <Route exact path="/privacy">
                 <Privacy/>
@@ -178,6 +190,7 @@ render(
 
           <Footer/>
         </Router>
+        </Suspense>
       </Provider>
     </GeistProvider>
   </React.StrictMode>,

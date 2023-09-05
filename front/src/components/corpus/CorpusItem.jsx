@@ -1,17 +1,22 @@
-import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-ui/core'
-import React, { useCallback, useState } from 'react'
+import { Modal as GeistModal, useModal, useToasts } from '@geist-ui/core'
+import React, { useCallback, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
-import { ChevronDown, ChevronRight, Edit3, Eye, Printer, Trash } from 'react-feather'
+import { ChevronDown, ChevronRight, Eye, Printer, Settings, Trash } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useGraphQL } from '../../helpers/graphQL.js'
 import Button from '../Button.jsx'
+import buttonStyles from '../button.module.scss'
+import Export from '../Export.jsx'
 import TimeAgo from '../TimeAgo.jsx'
 
-import { deleteCorpus } from './Corpus.graphql'
+import CorpusArticles from './CorpusArticles.jsx'
+import CorpusUpdate from './CorpusUpdate.jsx'
 
+import { deleteCorpus } from './Corpus.graphql'
 import styles from './corpusItem.module.scss'
+
 
 export default function CorpusItem ({ corpus }) {
   const { t } = useTranslation()
@@ -23,9 +28,26 @@ export default function CorpusItem ({ corpus }) {
     bindings: deleteCorpusModalBinding
   } = useModal()
 
-  const runQuery = useGraphQL()
+  const {
+    visible: exportCorpusVisible,
+    setVisible: setExportCorpusVisible,
+    bindings: exportCorpusBindings,
+  } = useModal()
 
-  const corpusId = corpus._id
+  const {
+    visible: editCorpusVisible,
+    setVisible: setEditCorpusVisible,
+    bindings: editCorpusBindings,
+  } = useModal()
+
+  const runQuery = useGraphQL()
+  const corpusId = useMemo(() => corpus._id, [corpus])
+
+  const handleCorpusUpdated = useCallback(() => {
+    setEditCorpusVisible(false)
+    dispatch({ type: 'SET_LATEST_CORPUS_UPDATED', data: { corpusId, date: new Date() } })
+  }, [corpusId])
+
   const handleDeleteCorpus = useCallback(async () => {
     try {
       await runQuery({ query: deleteCorpus, variables: { corpusId } })
@@ -64,40 +86,28 @@ export default function CorpusItem ({ corpus }) {
           </p>
         </div>
         <aside className={styles.actionButtons}>
+          <Button title="Edit" icon={true}  onClick={() => setEditCorpusVisible(true)}>
+            <Settings/>
+          </Button>
+
           <Button title="Delete" icon={true} onClick={(event) => {
             event.preventDefault()
             setDeleteCorpusVisible(true)
           }}>
             <Trash/>
           </Button>
-          <Button title="Download a printable version" icon={true}>
+          <Button title="Download a printable version" icon={true}  onClick={() => setExportCorpusVisible(true)}>
             <Printer/>
           </Button>
-          <Button title="Edit article" icon={true}>
-            <Edit3/>
-          </Button>
-          <Button title="Preview (open a new window)" icon={true}>
+
+          <Link title="Preview (open a new window)" target="_blank" className={buttonStyles.icon} to={`/books/${corpus._id}/preview`}>
             <Eye/>
-          </Button>
+          </Link>
         </aside>
       </div>
       {expanded && <div className={styles.detail}>
         {corpus.description && <p>{corpus.description}</p>}
-        <h5 className={styles.partsTitle}>{t('corpus.parts.label')}</h5>
-        {corpus.articles && corpus.articles.length > 0 && <ul>
-          {corpus.articles.map((a) => (
-            <li key={a._id}><Link to={`/article/${a.article._id}`}>{a.article.title}</Link></li>
-          ))}
-        </ul>}
-        {(corpus.articles && corpus.articles.length === 0) &&
-          <>
-            <Spacer/>
-            <Note type="secondary">
-              Pour ajouter un nouveau chapitre,
-              aller sur la page des articles et dans le détail d'un article sélectionner ce corpus.
-            </Note>
-          </>
-        }
+        <CorpusArticles corpusId={corpusId} />
       </div>}
 
       <GeistModal visible={deleteCorpusVisible} {...deleteCorpusModalBinding}>
@@ -108,18 +118,39 @@ export default function CorpusItem ({ corpus }) {
         <GeistModal.Action passive onClick={() => setDeleteCorpusVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
         <GeistModal.Action onClick={handleDeleteCorpus}>{t('modal.confirmButton.text')}</GeistModal.Action>
       </GeistModal>
+
+      <GeistModal visible={exportCorpusVisible} {...exportCorpusBindings}>
+        <h2>{t('corpus.exportModal.title')}</h2>
+        <GeistModal.Content>
+          <Export bookId={corpusId} name={corpus.name} />
+        </GeistModal.Content>
+        <GeistModal.Action passive onClick={() => setExportCorpusVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
+      </GeistModal>
+
+      <GeistModal width="40rem" visible={editCorpusVisible} {...editCorpusBindings}>
+        <h2>{t('corpus.editModal.title')}</h2>
+        <GeistModal.Content>
+          <CorpusUpdate corpus={corpus} onSubmit={handleCorpusUpdated}/>
+        </GeistModal.Content>
+        <GeistModal.Action passive onClick={() => setEditCorpusVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
+      </GeistModal>
     </div>
   )
 }
 
 CorpusItem.propTypes = {
   corpus: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
     name: PropTypes.string,
     description: PropTypes.string,
     creator: PropTypes.shape({
       displayName: PropTypes.string,
       username: PropTypes.string
     }),
+    articles: PropTypes.arrayOf(PropTypes.shape({
+      _id: PropTypes.string,
+      title: PropTypes.string,
+    })),
     updatedAt: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
   })

@@ -184,18 +184,26 @@ hr.horizontalSeparator {
   flex-direction: row;
   flex-wrap: wrap;
 
+  column-gap: 2em;
+  row-gap: 0.15em;
+
   padding: 1rem;
   position: relative;
 
   .title,
   .renamingForm {
     cursor: pointer;
-    flex: 1 1 60%;
+    flex: 250px 1;
+  }
+
+  .inlineField {
+    flex: 1;
   }
 
   .title {
     display: inline-flex;
     align-items: center;
+    text-wrap: balance;
   }
 
   .renamingForm {
@@ -203,7 +211,7 @@ hr.horizontalSeparator {
   }
 
   .actionButtons {
-    flex: 1 1 40%;
+    flex-shrink: 1;
     text-align: right;
   }
 
@@ -263,6 +271,7 @@ hr.horizontalSeparator {
 }
 
 .editTitleButton {
+  height: 1.75em;
   border: none;
   background-color: transparent;
   padding: 0 0 0 .25em;
@@ -360,7 +369,7 @@ hr.horizontalSeparator {
 .createTagButton {
   cursor: pointer;
   user-select: none;
-  border: 1px solid #aaa;
+  border: 1px solid #868e96;
   display: flex;
   align-items: center;
   font-size: 0.8em;
@@ -413,7 +422,7 @@ hr.horizontalSeparator {
   align-items: flex-start;
   padding: 0.35em 0.5em;
   margin-bottom: 0.25em;
-  border: 1px solid grey;
+  border: 1px solid #868e96;
   margin-right: 0.5rem;
 }
 
@@ -459,4 +468,3 @@ hr.horizontalSeparator {
   display: flex;
   gap: 0.35em;
 }
-

@@ -45,11 +45,14 @@
   "devDependencies": {
     "dotenv": "^16.0.1",
     "dotenv-cli": "^5.1.0",
-    "jest": "^26.6.1"
+    "jest": "^29.5.0"
   },
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "volta": {
+    "node": "18.16.0"
   }
 }

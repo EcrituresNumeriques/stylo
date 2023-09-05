@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Slash, Users } from 'react-feather'
-import { Modal as GeistModal, Button, Note, Text, Spacer, useToasts } from '@geist-ui/core'
+import { Modal as GeistModal, Button, Note, Text, Spacer } from '@geist-ui/core'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import TimeAgo from '../TimeAgo.jsx'

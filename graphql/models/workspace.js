@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const toHex = require('colornames')
+const { ApiError } = require('../helpers/errors')
 const Schema = mongoose.Schema
 
 const WorkspaceMemberSchema = new Schema({
@@ -46,6 +47,26 @@ workspaceSchema.methods.findMembersByArticle = async function findMembersByArtic
     { $lookup: { from: 'users', localField: 'memberIds', foreignField: '_id', as: 'members' } }
   ])
   return result[0].members
+}
+
+workspaceSchema.statics.getWorkspaceById  = async function getWorkspaceById(workspaceId, user) {
+  if (user?.admin === true) {
+    const workspace = await this.findById(workspaceId)
+    if (!workspace) {
+      throw new ApiError('NOT_FOUND', `Unable to find workspace with id ${workspaceId}`)
+    }
+    return workspace
+  }
+  const workspace = await this.findOne({
+    $and: [
+      { _id: workspaceId },
+      { 'members.user': user?._id }
+    ]
+  })
+  if (!workspace) {
+    throw new ApiError('NOT_FOUND', `Unable to find workspace with id ${workspaceId} for user with id ${user?._id}`)
+  }
+  return workspace
 }
 
 module.exports = mongoose.model('Workspace', workspaceSchema)

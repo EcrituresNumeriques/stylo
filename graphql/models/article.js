@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions.js')
-const { previewEntries } = require('../helpers/bibliography.js')
 const { prefixRulesWith, sanitizeTemplate } = require('../helpers/preview.js')
 
 const ArticleContributorSchema = new Schema({
@@ -65,12 +64,32 @@ const articleSchema = new Schema({
       default: '',
       set: sanitizeTemplate
     }
-  }
+  },
+  collaborativeSession: {
+    id: {
+      type: Schema.Types.ObjectId,
+    },
+    creator: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    createdAt: {
+      type: Schema.Types.Date
+    }
+  },
+  soloSession: {
+    id: {
+      type: Schema.Types.ObjectId,
+    },
+    creator: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    createdAt: {
+      type: Schema.Types.Date
+    }
+  },
 }, { timestamps: true })
-
-articleSchema.virtual('workingVersion.bibPreview').get(function () {
-  return previewEntries(this.workingVersion.bib)
-})
 
 
 /**

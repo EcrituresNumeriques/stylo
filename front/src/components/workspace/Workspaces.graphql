@@ -38,6 +38,16 @@ query getWorkspace($workspaceId: ID!) {
   }
 }
 
+query getArticleWorkspaces($articleId: ID!) {
+  article(article: $articleId) {
+    workspaces {
+      _id
+      color
+      name
+    }
+  }
+}
+
 query getUserStats {
   user {
     stats {

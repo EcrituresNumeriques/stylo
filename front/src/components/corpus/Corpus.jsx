@@ -1,4 +1,4 @@
-import { Button, Modal as GeistModal, useModal } from '@geist-ui/core'
+import { Button, Modal as GeistModal, useModal, useToasts } from '@geist-ui/core'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
@@ -13,14 +13,16 @@ import Loading from '../Loading'
 import { useActiveUserId } from '../../hooks/user'
 import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
 
-import { getWorkspaceCorpus, getUserCorpus } from './Corpus.graphql'
+import { getCorpus } from './Corpus.graphql'
 import CorpusItem from './CorpusItem.jsx'
 
 export default function Corpus () {
   const { t } = useTranslation()
+  const { setToast } = useToasts()
   const currentUser = useSelector(state => state.activeUser, shallowEqual)
   const latestCorpusCreated = useSelector(state => state.latestCorpusCreated, shallowEqual)
   const latestCorpusDeleted = useSelector(state => state.latestCorpusDeleted, shallowEqual)
+  const latestCorpusUpdated = useSelector(state => state.latestCorpusUpdated, shallowEqual)
   const [isLoading, setIsLoading] = useState(true)
   const [corpus, setCorpus] = useState([])
   const activeUserId = useActiveUserId()
@@ -39,36 +41,22 @@ export default function Corpus () {
   }, [])
 
   useEffect(() => {
-    //Self invoking async function
     (async () => {
       try {
-        if (activeWorkspaceId) {
-          const data = await runQuery({ query: getWorkspaceCorpus, variables: { workspaceId: activeWorkspaceId } })
-          setCorpus(data.workspace.corpus)
-          setIsLoading(false)
-        } else {
-          const data = await runQuery({ query: getUserCorpus })
-          setCorpus(data.corpus)
-          setIsLoading(false)
-        }
-      } catch (err) {
-        alert(err)
-      }
-    })()
-  }, [activeUserId, activeWorkspaceId, latestCorpusCreated, latestCorpusDeleted])
-
-  useEffect(() => {
-    //Self invoking async function
-    (async () => {
-      try {
-        setIsLoading(true)
-        //const data = await runQuery({ query, variables: { user: activeUserId } })
+        const variables = activeWorkspaceId
+          ? { filter: { workspaceId: activeWorkspaceId } }
+          : {}
+        const data = await runQuery({ query: getCorpus, variables })
+        setCorpus(data.corpus)
         setIsLoading(false)
       } catch (err) {
-        alert(err)
+        setToast({
+          type: 'error',
+          text: t('corpus.load.toastFailure', {errorMessage: err.toString()})
+        })
       }
     })()
-  }, [activeUserId, activeWorkspaceId])
+  }, [activeUserId, activeWorkspaceId, latestCorpusCreated, latestCorpusDeleted, latestCorpusUpdated])
 
   return (<CurrentUserContext.Provider value={currentUser}>
     <section className={styles.section}>

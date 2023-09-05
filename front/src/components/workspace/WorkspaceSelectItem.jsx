@@ -7,31 +7,21 @@ import { removeArticle, addArticle } from './WorkspaceArticle.graphql'
 import styles from './WorkspaceSelectItem.module.scss'
 import { useGraphQL } from '../../helpers/graphQL.js'
 
-export default function WorkspaceSelectItem ({ articleId, color, name, id, workspaceIds, onChange }) {
+export default function WorkspaceSelectItem ({ articleId, selected, id, color, name, onChange }) {
   const runQuery = useGraphQL()
   const activeUser = useSelector(state => state.activeUser)
-  const isSelected = workspaceIds.includes(id)
   const toggleWorkspaceArticle = useCallback(async (event) => {
     event.preventDefault()
     const [id, checked] = [event.target.value, event.target.checked]
-    const [query, updatedWorkspaceIds] = checked
-      ? [addArticle, [...workspaceIds, id]]
-      : [removeArticle, workspaceIds.filter(v => v !== id)]
+    const query = checked ? addArticle : removeArticle
     await runQuery({ query, variables: { articleId: articleId, workspaceId: id } })
-    if (isSelected) {
-      // remove
-      if (activeUser.activeWorkspaceId === id) {
-        // article removed from active workspace!
-        // dispatch()
-      }
-    }
-    onChange(updatedWorkspaceIds)
-  },[articleId, id, workspaceIds])
+    onChange({workspaceId: id})
+  },[articleId, id])
   return (
     <>
       <li className={activeUser.activeWorkspaceId === id ? clsx(styles.active) : ''}>
-        <label className={clsx(styles.workspace, isSelected && styles.selected)}>
-          <input name={id} value={id} data-id={id} type="checkbox" checked={isSelected} onChange={toggleWorkspaceArticle}/>
+        <label className={clsx(styles.workspace, selected && styles.selected)}>
+          <input name={id} value={id} data-id={id} type="checkbox" checked={selected} onChange={toggleWorkspaceArticle}/>
           <span>{name}</span>
           <span className={styles.chip} style={{ backgroundColor: color }}/>
         </label>
@@ -44,7 +34,7 @@ WorkspaceSelectItem.propTypes = {
   name: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
   id: PropTypes.string,
-  workspaceIds: PropTypes.array,
+  selected: PropTypes.bool,
   articleId: PropTypes.string.isRequired,
   onChange: PropTypes.func,
 }

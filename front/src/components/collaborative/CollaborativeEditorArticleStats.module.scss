@@ -1,0 +1,12 @@
+.stats {
+  display: flex;
+  justify-content: center;
+  margin: 1em auto 2em;
+  color: #4a4a4a;
+  font-size: 0.85rem;
+}
+
+.stats > li:not(:last-child)::after {
+  content: "•";
+  margin: 0 0.5em;
+}

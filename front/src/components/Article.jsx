@@ -1,13 +1,15 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import clsx from 'clsx'
 import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-ui/core'
 
 import styles from './articles.module.scss'
+import ArticleVersionLinks from './ArticleVersionLinks.jsx'
 import buttonStyles from './button.module.scss'
-import CorpusSelectItem from './corpus/CorpusSelectItem.jsx'
+import CollaborativeSessionAction from './collaborative/CollaborativeSessionAction.jsx'
+import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
 import fieldStyles from './field.module.scss'
 
 import Modal from './Modal'
@@ -32,27 +34,25 @@ import {
 import {
   duplicateArticle,
   renameArticle,
-  getArticleVersions,
-  getArticleWorkspaces,
   deleteArticle,
   getArticleTags,
-  getArticleContributors
+  getArticleContributors,
 } from './Article.graphql'
+import SoloSessionAction from './solo/SoloSessionAction.jsx'
 
-import {
-  getTags
-} from './Tag.graphql'
+import { getTags } from './Tag.graphql'
 
 import useGraphQL, { useMutation } from '../hooks/graphql'
 import TimeAgo from './TimeAgo.jsx'
-import WorkspaceSelectItem from './workspace/WorkspaceSelectItem.jsx'
+import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
 import { useSelector } from 'react-redux'
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
 
-export default function Article ({ article, corpus, onArticleUpdated, onArticleDeleted, onArticleCreated }) {
+export default function Article ({ article, onArticleUpdated, onArticleDeleted, onArticleCreated }) {
   const activeUser = useSelector(state => state.activeUser)
-  const articleId = article._id
+  const articleId = useMemo(() => article._id, [article])
+
   const {
     data: contributorsQueryData,
     error: contributorsError,
@@ -80,25 +80,6 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
     revalidateOnReconnect: false
   })
   const tags = (articleTagsQueryData?.article?.tags || [])
-  const { data: articleVersionsQueryData, mutate: mutateArticleVersions } = useGraphQL({ query: getArticleVersions, variables: { articleId } }, {
-    fallbackData: {
-      article
-    },
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  })
-  const versions = (articleVersionsQueryData?.article?.versions || [])
-  const { data: articleWorkspacesQueryData, mutate: mutateArticleWorkspaces } = useGraphQL({ query: getArticleWorkspaces, variables: { articleId } }, {
-    fallbackData: {
-      article
-    },
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  })
-  const workspaces = (articleWorkspacesQueryData?.article?.workspaces || [])
-
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const {
@@ -113,23 +94,11 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
   const [renaming, setRenaming] = useState(false)
 
   const [newTitle, setNewTitle] = useState(article.title)
-  const [corpusArticleIds, setCorpusArticleIds] = useState({})
 
   const [sharing, setSharing] = useState(false)
   const [sending, setSending] = useState(false)
 
   const isArticleOwner = activeUser._id === article.owner._id
-
-  const handleWorkspaceUpdate = useCallback(() => {
-    mutateArticleWorkspaces(articleWorkspacesQueryData, { revalidate: true })
-  }, [])
-
-  const handleCorpusUpdate = useCallback(({ corpusId, corpusArticleIds }) => {
-    setCorpusArticleIds({
-      ...corpusArticleIds,
-      [corpusId]: corpusArticleIds
-    })
-  }, [corpusArticleIds])
 
   useEffect(() => {
     if (contributorsError) {
@@ -140,28 +109,17 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
     }
   }, [contributorsError])
 
-  useEffect(() => {
-    setCorpusArticleIds(corpus.reduce((acc, item) => {
-      acc[item._id] = item.articles.map((corpusArticle) => corpusArticle.article._id)
-      return acc
-    }, {}))
-  }, [corpus])
-
-  useEffect(() => {
-    if (expanded) {
-      mutateArticleWorkspaces(article, { revalidate: true})
-      mutateArticleVersions(article, { revalidate: true })
-    }
-  }, [expanded])
-
   const toggleExpansion = useCallback((event) => {
     if (!event.key || [' ', 'Enter'].includes(event.key)) {
       setExpanded(!expanded)
     }
-  }, [expanded])
+  }, [setExpanded, expanded])
 
   const duplicate = async () => {
-    const duplicatedArticleQuery = await mutation({query: duplicateArticle, variables: { user: activeUser._id, to: activeUser._id, article: articleId }})
+    const duplicatedArticleQuery = await mutation({
+      query: duplicateArticle,
+      variables: { user: activeUser._id, to: activeUser._id, article: articleId }
+    })
     onArticleCreated({
       ...article,
       ...duplicatedArticleQuery.duplicateArticle,
@@ -198,18 +156,18 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
 
   const closeSendingModal = useCallback(() => {
     setSending(false)
-  }, [])
+  }, [setSending])
 
   const closeSharingModal = useCallback(() => {
     setSharing(false)
-  }, [])
+  }, [setSharing])
 
   const handleArticleTagsUpdated = useCallback((event) => {
     onArticleUpdated({
       ...article,
       tags: event.updatedTags
     })
-  }, [articleId])
+  }, [article])
 
   return (
     <article className={styles.article}>
@@ -218,6 +176,20 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
           <Export articleId={article._id} bib={article.workingVersion.bibPreview} name={article.title}/>
         </Modal>
       )}
+
+      <GeistModal width="30rem" visible={sharing} onClose={closeSharingModal}>
+        <h2>{t('article.shareModal.title')}</h2>
+        <span className={styles.sendSubtitle}>
+          <span className={styles.sendText}>{t('article.shareModal.description')}</span>
+        </span>
+        <GeistModal.Content>
+          <ArticleContributors
+            article={article}
+            contributors={contributors}
+          />
+        </GeistModal.Content>
+        <GeistModal.Action passive onClick={closeSharingModal}>{t('modal.close.text')}</GeistModal.Action>
+      </GeistModal>
 
       <GeistModal width="30rem" visible={sharing} onClose={closeSharingModal}>
         <h2>{t('article.shareModal.title')}</h2>
@@ -251,18 +223,20 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
             {expanded ? <ChevronDown/> : <ChevronRight/>}
           </span>
 
-          {article.title}
-
-          <Button title="Edit" icon={true} className={styles.editTitleButton}
-                  onClick={(evt) => evt.stopPropagation() || setRenaming(true)}>
+          <span className={styles.titleText}>
+            {article.title}
+            <Button title="Edit" icon={true} className={styles.editTitleButton} onClick={(evt) =>
+              evt.stopPropagation() || setRenaming(true)
+            }>
             <Edit3 size="20"/>
           </Button>
+          </span>
         </h1>
       )}
       {renaming && (
         <form className={clsx(styles.renamingForm, fieldStyles.inlineFields)} onSubmit={(e) => rename(e)}>
-          <Field autoFocus={true} type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)}
-                 placeholder="Article Title"/>
+          <Field className={styles.inlineField} autoFocus={true} type="text" value={newTitle}
+                 onChange={(e) => setNewTitle(e.target.value)} placeholder="Article Title"/>
           <Button title="Save" primary={true} onClick={(e) => rename(e)}>
             <Check/> Save
           </Button>
@@ -291,10 +265,7 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
               <Note label="Important" type="error">{t('article.deleteModal.contributorsRemovalNote')}</Note>
             </>)}
           </GeistModal.Content>
-          <GeistModal.Action
-            passive
-            onClick={() => setDeleteArticleVisible(false)}
-          >
+          <GeistModal.Action passive onClick={() => setDeleteArticleVisible(false)}>
             {t('modal.cancelButton.text')}
           </GeistModal.Action>
           <GeistModal.Action onClick={handleDeleteArticle}>{t('modal.confirmButton.text')}</GeistModal.Action>
@@ -316,9 +287,9 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
           <Printer/>
         </Button>
 
-        <Link title="Edit article" className={buttonStyles.primary} to={`/article/${article._id}`}>
-          <Edit3/>
-        </Link>
+        <CollaborativeSessionAction collaborativeSession={article.collaborativeSession} articleId={articleId}/>
+
+        <SoloSessionAction collaborativeSession={article.collaborativeSession} soloSession={article.soloSession} articleId={articleId}/>
 
         <Link title="Preview (open a new window)" target="_blank" className={buttonStyles.icon}
               to={`/article/${article._id}/preview`}>
@@ -340,16 +311,7 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
 
         {expanded && (
           <div>
-            <h4>{t('article.versions.title')}</h4>
-            <ul className={styles.versions}>
-              {versions.map((v) => (
-                <li key={`version-${v._id}`}>
-                  <Link to={`/article/${article._id}/version/${v._id}`}>{`${
-                    v.message ? v.message : 'no label'
-                  } (v${v.version}.${v.revision})`}</Link>
-                </li>
-              ))}
-            </ul>
+            <ArticleVersionLinks article={article} articleId={articleId}/>
 
             {userTags.length > 0 && <>
               <h4>{t('article.tags.title')}</h4>
@@ -364,25 +326,12 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
 
             <h4>{t('article.workspaces.title')}</h4>
             <ul className={styles.workspaces}>
-              {activeUser.workspaces.map((workspace) => <WorkspaceSelectItem
-                key={workspace._id}
-                id={workspace._id}
-                color={workspace.color}
-                name={workspace.name}
-                articleId={article._id}
-                workspaceIds={workspaces.map(({ _id }) => _id)}
-                onChange={handleWorkspaceUpdate}/>)}
+              <WorkspaceSelectionItems articleId={articleId}/>
             </ul>
 
             <h4>{t('article.corpus.title')}</h4>
             <ul className={styles.corpusList}>
-              {corpus.map((c) => <CorpusSelectItem
-                key={c._id}
-                id={c._id}
-                name={c.name}
-                articleId={article._id}
-                articleIds={corpusArticleIds[c._id] || []}
-                onChange={handleCorpusUpdate}/>)}
+              <CorpusSelectItems articleId={articleId}/>
             </ul>
           </div>
         )}
@@ -392,7 +341,14 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
 }
 
 Article.propTypes = {
-  handleYaml: PropTypes.func,
-  readOnly: PropTypes.bool,
-  yaml: PropTypes.string,
+  article: PropTypes.shape({
+    title: PropTypes.string,
+    owner: PropTypes.shape({
+      displayName: PropTypes.string
+    }),
+    collaborativeSession: PropTypes.object,
+    soloSession: PropTypes.object,
+    updatedAt: PropTypes.string,
+    _id: PropTypes.string
+  })
 }

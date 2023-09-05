@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import Editor from '@monaco-editor/react'
 
 import styles from './YamlEditor.module.scss'

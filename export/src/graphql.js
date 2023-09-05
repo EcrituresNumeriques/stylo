@@ -18,6 +18,7 @@ function getGraphQLClient () {
     return graphQLClient
   }
   const graphqlEndpoint = process.env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT || 'http://localhost:3030/graphql'
+  console.log()
   const passthroughToken = process.env.SE_GRAPHQL_TOKEN
   graphQLClient = new GraphQLClient(graphqlEndpoint, {
     headers: {
@@ -75,45 +76,45 @@ async function getVersionById (versionId) {
   }
 }
 
-async function getBookById (bookId) {
-  const query = gql`query ($bookId: ID!) {
-    tag (tag:$bookId) {
+async function getCorpusById (corpusId) {
+  const query = gql`mutation ($corpusId: ID!) {
+    corpus(corpusId: $corpusId) {
       _id
       name
-
       articles {
-        _id
-        versions (limit: 1) {
-          name
-
-          md
-          bib
-          yaml (options: { strip_markdown: true })
-        }
-
-        workingVersion {
-          md
-          bib
-          yaml (options: { strip_markdown: true })
+        order
+        article {
+          _id
+          versions (limit: 1) {
+            name
+            md
+            bib
+            yaml (options: { strip_markdown: true })
+          }
+          workingVersion {
+            md
+            bib
+            yaml (options: { strip_markdown: true })
+          }
         }
       }
     }
   }`
 
   try {
-    const { tag: book } = await getGraphQLClient().request(query, { bookId })
-    return book
+    const { corpus } = await getGraphQLClient().request(query, { corpusId })
+    return corpus
   } catch (err) {
     if (isNotFoundError(err)) {
-      throw new FindByIdNotFoundError('Book', bookId)
+      throw new FindByIdNotFoundError('Corpus', corpusId)
     }
-    logger.error({ bookId, error: err }, 'Something went wrong while querying book by id using GraphQL client')
+    logger.error({ corpusId, error: err }, 'Something went wrong while querying a corpus by id using GraphQL client')
     throw err
   }
 }
 
 module.exports = {
   getArticleById,
-  getBookById,
+  getCorpusById,
   getVersionById,
 }

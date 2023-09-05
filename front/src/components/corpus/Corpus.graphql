@@ -1,5 +1,5 @@
-query getUserCorpus {
-    corpus {
+query getCorpus($filter: FilterCorpusInput, $includeArticles: Boolean = false) {
+    corpus(filter: $filter) {
         _id
         name
         description
@@ -9,46 +9,16 @@ query getUserCorpus {
             username
             email
         }
-        createdAt
-        updatedAt
-        articles {
+        articles @include(if: $includeArticles) {
             article {
                 _id
                 title
             }
-            order
         }
-        workspace
+        createdAt
+        updatedAt
     }
 }
-
-query getWorkspaceCorpus($workspaceId: ID!) {
-    workspace(workspaceId: $workspaceId) {
-        corpus {
-            _id
-            name
-            description
-            creator {
-                _id
-                displayName
-                username
-                email
-            }
-            createdAt
-            updatedAt
-            articles {
-                article {
-                    _id
-                    title
-                }
-                order
-            }
-            workspace
-        }
-    }
-}
-
-# mutations
 
 mutation createCorpus($createCorpusInput: CreateCorpusInput!) {
     createCorpus(createCorpusInput: $createCorpusInput) {
@@ -75,6 +45,14 @@ mutation deleteCorpus($corpusId: ID!) {
     }
 }
 
+mutation updateCorpus($corpusId: ID!, $updateCorpusInput: UpdateCorpusInput!) {
+    corpus(corpusId: $corpusId) {
+        update(updateCorpusInput: $updateCorpusInput) {
+            _id
+        }
+    }
+}
+
 mutation removeArticleFromCorpus($corpusId: ID!, $articleId: ID!) {
     corpus(corpusId: $corpusId) {
         article(articleId: $articleId) {
@@ -88,6 +66,14 @@ mutation removeArticleFromCorpus($corpusId: ID!, $articleId: ID!) {
 mutation addArticleToCorpus($corpusId: ID!, $articleId: ID!) {
     corpus(corpusId: $corpusId) {
         addArticle(articleId: $articleId) {
+            _id
+        }
+    }
+}
+
+mutation updateArticlesOrder($corpusId: ID!, $articlesOrderInput: [ArticleOrder!]!) {
+    corpus(corpusId: $corpusId) {
+        updateArticlesOrder(articlesOrderInput: $articlesOrderInput) {
             _id
         }
     }

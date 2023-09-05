@@ -2,7 +2,6 @@ import { applyMiddleware, compose, createStore } from 'redux'
 import { toEntries } from './helpers/bibtex'
 import ArticleService from './services/ArticleService'
 import WorkspaceService from './services/WorkspaceService.js'
-
 const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName = 'sessionToken' } = import.meta.env
 
 function createReducer (initialState, handlers) {
@@ -13,6 +12,15 @@ function createReducer (initialState, handlers) {
       return state
     }
   }
+}
+
+function toWebsocketEndpoint (endpoint) {
+  if (endpoint) {
+    const endpointUrl = new URL(endpoint)
+    const protocol = endpointUrl.protocol
+    return `${protocol === 'https:' ? 'wss' : 'ws'}://${endpointUrl.hostname}:${endpointUrl.port}/ws`
+  }
+  return `ws://127.0.0.1:3030/ws`
 }
 
 // Définition du store Redux et de l'ensemble des actions
@@ -36,6 +44,7 @@ const initialState = {
   },
   articleStructure: [],
   articleVersions: [],
+  articleWriters: [],
   articlePreferences: localStorage.getItem('articlePreferences') ? JSON.parse(localStorage.getItem('articlePreferences')) : {
     expandSidebarLeft: true,
     expandSidebarRight: false,
@@ -85,6 +94,7 @@ const reducer = createReducer(initialState, {
   // article reducers
   UPDATE_ARTICLE_STATS: updateArticleStats,
   UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
+  UPDATE_ARTICLE_WRITERS: updateArticleWriters,
 
   // user preferences reducers
   USER_PREFERENCES_TOGGLE: toggleUserPreferences,
@@ -107,7 +117,8 @@ const reducer = createReducer(initialState, {
   TAG_CREATED: tagCreated,
 
   SET_LATEST_CORPUS_DELETED: setLatestCorpusDeleted,
-  SET_LATEST_CORPUS_CREATED: setLatestCorpusCreated
+  SET_LATEST_CORPUS_CREATED: setLatestCorpusCreated,
+  SET_LATEST_CORPUS_UPDATED: setLatestCorpusUpdated,
 })
 
 const createNewArticleVersion = store => {
@@ -131,12 +142,12 @@ const createNewArticleVersion = store => {
         return next(action)
       }
       if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
-        const { articleVersions, activeUser, sessionToken, applicationConfig, userPreferences } = store.getState()
+        const { activeUser, sessionToken, applicationConfig, userPreferences } = store.getState()
         const userId = userPreferences.currentUser ?? activeUser._id
         const { articleId, major, message } = action
         const articleService = new ArticleService(userId, articleId, sessionToken, applicationConfig)
         const response = await articleService.createNewVersion(major, message)
-        store.dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: [response.saveVersion, ...articleVersions] })
+        store.dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: response.article.createVersion.versions })
         return next(action)
       }
       if (action.type === 'UPDATE_WORKING_ARTICLE_TEXT') {
@@ -240,7 +251,8 @@ function persistStateIntoLocalStorage ({ getState }) {
 
 function setApplicationConfig (state, action) {
   const applicationConfig = {
-    ...action.applicationConfig
+    ...action.applicationConfig,
+    websocketEndpoint: toWebsocketEndpoint(action.applicationConfig.backendEndpoint)
   }
 
   return { ...state, applicationConfig }
@@ -254,9 +266,10 @@ function setProfile (state, action) {
   return {
     ...state,
     hasBooted: true,
-    logedIn: true,
+    loggedIn: true,
     activeUser: {
       ...state.activeUser,
+      activeWorkspaceId: action.activeWorkspaceId,
       ...user
     }
   }
@@ -351,6 +364,10 @@ function updateArticleStructure (state, { md }) {
     })
 
   return { ...state, articleStructure }
+}
+
+function updateArticleWriters (state, { articleWriters }) {
+  return { ...state, articleWriters }
 }
 
 function setArticleVersions (state, { versions }) {
@@ -471,6 +488,13 @@ function setLatestCorpusCreated(state, { data }) {
   return {
     ...state,
     latestCorpusCreated: data
+  }
+}
+
+function setLatestCorpusUpdated (state, { data }) {
+  return {
+    ...state,
+    latestCorpusUpdated: data
   }
 }
 

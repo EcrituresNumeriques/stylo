@@ -1,0 +1,18 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+.container {
+  max-width: 1280px;
+  margin: auto;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.errorContainer {
+  height: calc(100vh - 200px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: auto;
+  margin-top: 5em;
+}

@@ -1,7 +1,7 @@
+import { Loading } from '@geist-ui/core'
 import React, { Suspense } from 'react'
 import { useSelector } from 'react-redux'
 
-import Loading from '../components/Loading'
 
 export default function StyloApp ({ children }) {
   const hasBooted = useSelector(state => state.hasBooted)

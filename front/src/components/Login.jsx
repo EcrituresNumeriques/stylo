@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { useSelector, useDispatch, shallowEqual } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import styles from './login.module.scss'
 import Field from './Field'
@@ -61,7 +61,7 @@ export default function Login () {
           Join the{' '}
           <a
             href="https://ecrituresnumeriques.ca/en/2019/10/25/Stylo-technical-and-editing-support"
-            target="_blank"
+            target="_blank" rel="noreferrer"
           >
             weekly session
           </a>{' '}

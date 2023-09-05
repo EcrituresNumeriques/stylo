@@ -1,5 +1,5 @@
 import { Loading, Modal as GeistModal, useModal, Button as GeistButton } from '@geist-ui/core'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
 import { CurrentUserContext } from '../contexts/CurrentUser'
@@ -13,7 +13,6 @@ import Article from './Article'
 import ArticleCreate from './ArticleCreate.jsx'
 
 import styles from './articles.module.scss'
-import Button from './Button'
 import Field from './Field'
 import { useActiveUserId } from '../hooks/user'
 import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
@@ -32,20 +31,15 @@ export default function Articles () {
   const activeUserId = useActiveUserId()
   const [filter, setFilter] = useState('')
   const activeWorkspace = useActiveWorkspace()
-  const activeWorkspaceId = activeWorkspace?._id
+  const activeWorkspaceId = useMemo(() => activeWorkspace?._id, [activeWorkspace])
 
-  const query = activeWorkspaceId
-    ? getWorkspaceArticles
-    : getUserArticles
-  const variables = activeWorkspaceId
-    ? { workspaceId: activeWorkspaceId }
-    : { user: activeUserId }
+  const query = useMemo(() => activeWorkspaceId ? getWorkspaceArticles : getUserArticles, [activeWorkspaceId])
+  const variables = useMemo(() => activeWorkspaceId ? { workspaceId: activeWorkspaceId } : { user: activeUserId }, [activeWorkspaceId])
   const { data, isLoading, mutate } = useGraphQL({ query, variables }, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false
   })
-  const articles = (activeWorkspaceId ? data?.workspace?.articles : data?.articles) || []
-  const corpus = (activeWorkspaceId ? data?.workspace?.corpus : data?.corpus) || []
+  const articles = useMemo(() => (activeWorkspaceId ? data?.workspace?.articles : data?.articles) || [], [activeWorkspaceId, data])
 
   const handleArticleUpdated = useCallback(async (updatedArticle) => {
     const updatedArticles = articles.map((article) => article._id === updatedArticle._id ? updatedArticle : article)
@@ -96,20 +90,18 @@ export default function Articles () {
     }
   }, [articles])
 
-  const keepArticles = articles
-    .filter((article) => {
-      const listOfTagsSelected = selectedTagIds
+  const keepArticles = useMemo(() => articles
+      .filter((article) => {
+        if (selectedTagIds.length === 0) {
+          return true
+        }
 
-      if (listOfTagsSelected.length === 0) {
-        return true
-      }
-
-      // if we find at least one matching tag in the selected list, we keep the article
-      return listOfTagsSelected.some(tagId => {
-        return article.tags.find(({ _id }) => _id === tagId)
+        // if we find at least one matching tag in the selected list, we keep the article
+        return selectedTagIds.some((tagId) => article.tags.find(({ _id }) => _id === tagId))
       })
-    })
-    .filter((article) => article.title.toLowerCase().indexOf(filter.toLowerCase()) > -1)
+      .filter((article) => article.title.toLowerCase().indexOf(filter.toLowerCase()) > -1),
+    [filter, articles, selectedTagIds]
+  )
 
   return (<CurrentUserContext.Provider value={currentUser}>
     <section className={styles.section}>
@@ -135,9 +127,10 @@ export default function Articles () {
       </aside>
 
       <div className={styles.articlesTableHeader}>
-        {!activeWorkspaceId && <GeistButton type="secondary" className={styles.button} onClick={() => setCreateArticleVisible(true)}>
-          {t('article.createAction.buttonText')}
-        </GeistButton>
+        {!activeWorkspaceId &&
+          <GeistButton type="secondary" className={styles.button} onClick={() => setCreateArticleVisible(true)}>
+            {t('article.createAction.buttonText')}
+          </GeistButton>
         }
         <div
           className={styles.articleCounter}>{keepArticles.length} article{keepArticles.length > 1 ? 's' : ''}</div>
@@ -156,7 +149,6 @@ export default function Articles () {
         .map((article) => (
           <Article
             key={`article-${article._id}`}
-            corpus={corpus}
             article={article}
             onArticleUpdated={handleArticleUpdated}
             onArticleDeleted={handleArticleDeleted}

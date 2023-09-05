@@ -1,15 +1,21 @@
+const mongoose = require('mongoose')
+const { ObjectId } = mongoose.Types
+const { getYDoc } = require('y-websocket/bin/utils')
 const defaultsData = require('../data/defaultsData')
 
 const Article = require('../models/article')
 const User = require('../models/user')
 const Workspace = require('../models/workspace')
+const Version = require('../models/version')
 
 const isUser = require('../policies/isUser')
 const { ApiError } = require('../helpers/errors')
 const { reformat } = require('../helpers/metadata.js')
+const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions')
+const { previewEntries } = require('../helpers/bibliography')
 
 
-async function getUser(userId) {
+async function getUser (userId) {
   const user = await User.findById(userId)
   if (!user) {
     throw new ApiError('NOT_FOUND', `Unable to find user with id ${userId}`)
@@ -17,7 +23,7 @@ async function getUser(userId) {
   return user
 }
 
-async function getArticleByContext(articleId, context) {
+async function getArticleByContext (articleId, context) {
   if (context.token.admin === true) {
     return await getArticle(articleId)
   }
@@ -28,7 +34,7 @@ async function getArticleByContext(articleId, context) {
   return await getArticleByUser(articleId, userId)
 }
 
-async function getArticle(articleId) {
+async function getArticle (articleId) {
   const article = await Article
     .findById(articleId)
     .populate('owner tags')
@@ -40,7 +46,7 @@ async function getArticle(articleId) {
   return article
 }
 
-async function getArticleByUser(articleId, userId) {
+async function getArticleByUser (articleId, userId) {
   const userWorkspace = await Workspace.findOne({
     'members.user': userId,
     'articles': articleId
@@ -48,7 +54,7 @@ async function getArticleByUser(articleId, userId) {
 
   if (userWorkspace) {
     // article found in one of user's workspaces
-    const article = await  Article
+    const article = await Article
       .findById(articleId)
       .populate('owner tags')
       .populate({ path: 'contributors', populate: { path: 'user' } })
@@ -102,8 +108,11 @@ module.exports = {
 
       user.articles.push(newArticle)
       await user.save()
-
       return newArticle
+    },
+
+    async article (_root, { articleId }, context) {
+      return getArticleByContext(articleId, context)
     },
 
     /**
@@ -240,22 +249,13 @@ module.exports = {
       return article
     },
 
-    async versions (article, { limit }) {
-      await article
-        .populate({
-          path: 'versions',
-          populate: { path: 'owner' },
-          options: {
-            limit,
-            sort: { createdAt: -1 }
-          }
-        })
-        .execPopulate()
-      return article.versions
-      /*
-      console.log({versions: article.versions})
-      article.versions = await Promise.all(article.versions.map(async (versionId) => await loaders.versions.load(versionId)))
-      return article*/
+    async versions (article, _args, context) {
+      const versions = (await Promise.all(
+          article.versions.map(async (versionId) => await context.loaders.versions.load(versionId))
+        )
+      ).filter((v) => v) // ignore unresolved versions
+      versions.sort((a, b) => b.createdAt - a.createdAt)
+      return versions
     },
 
     /**
@@ -266,43 +266,45 @@ module.exports = {
      */
     async delete (article) {
       await article.remove()
-
       return article.$isDeleted()
     },
 
     async rename (article, { title }) {
       article.set('title', title)
       const result = await article.save({ timestamps: false })
-
       return result === article
     },
 
     async setZoteroLink (article, { zotero }) {
       article.set('zoteroLink', zotero)
       const result = await article.save({ timestamps: false })
-
       return result === article
     },
 
     async addTags (article, { tags }) {
       await article.addTags(...tags)
-
       return article.tags
     },
 
     async removeTags (article, { tags }) {
       await article.removeTags(...tags)
-
       return article.tags
     },
 
     async setPreviewSettings (article, { settings }) {
       await article.set('preview', settings, { merge: true }).save()
-
       return article
     },
 
-    async updateWorkingVersion (article, { content }) {
+    async updateWorkingVersion (article, { content }, { user }) {
+      if (article.collaborativeSession && article.collaborativeSession.id) {
+        throw new ApiError('COLLABORATIVE_SESSION_CONFLICT', `Active collaborative session, cannot update the working copy.`)
+      }
+      if (article.soloSession && article.soloSession.id) {
+        if (!article.soloSession.creator._id.equals(user._id)) {
+          throw new ApiError('SOLO_SESSION_CONFLICT', `Active solo session by ${article.soloSession.creator}, cannot update the working copy.`)
+        }
+      }
       Object.entries(content)
         .forEach(([key, value]) => article.set({
           workingVersion: {
@@ -311,10 +313,116 @@ module.exports = {
         }))
 
       return article.save()
-    }
+    },
+
+    async createVersion (article, { articleVersionInput }) {
+      const { bib, yaml, md } = article.workingVersion
+
+      /** @type {Query<Array<Article>>|Array<Article>} */
+      const latestVersions = await Version.find({ _id: { $in: article.versions.map((a) => a._id) } })
+        .sort({ createdAt: -1 })
+        .limit(1)
+
+      let mostRecentVersion = { version: 0, revision: 0 }
+      if (latestVersions?.length > 0 ) {
+        mostRecentVersion = {
+          version: latestVersions[0].version,
+          revision: latestVersions[0].revision,
+        }
+      }
+      const { revision, version } = articleVersionInput.major
+        ? computeMajorVersion(mostRecentVersion)
+        : computeMinorVersion(mostRecentVersion)
+
+      const createdVersion = await Version.create({
+        md,
+        yaml,
+        bib,
+        version,
+        revision,
+        message: articleVersionInput.message,
+        owner: articleVersionInput.userId,
+      }).then((v) => v.populate('owner').execPopulate())
+
+      article.versions.unshift(createdVersion)
+      await article.save()
+      return article
+    },
+
+    async startCollaborativeSession(article, _, { user }) {
+      if (article.collaborativeSession && article.collaborativeSession.id) {
+        return article.collaborativeSession
+      }
+      const collaborativeSessionId = new ObjectId()
+      const collaborativeSession = {
+        id: collaborativeSessionId,
+        creator: user._id,
+        createdAt: new Date()
+      }
+      article.collaborativeSession = collaborativeSession
+      const yDoc = getYDoc(`ws/${collaborativeSessionId.toString()}`)
+      const yText = yDoc.getText('main')
+      yText.insert(0, article.workingVersion.md)
+
+      const yState = yDoc.getText('state')
+      yState.delete(0, yState.length)
+      yState.insert(0, 'started')
+
+      await article.save()
+      return collaborativeSession
+    },
+
+    async stopCollaborativeSession(article) {
+      if (article.collaborativeSession && article.collaborativeSession.id) {
+        const yDoc = getYDoc(`ws/${article.collaborativeSession.id.toString()}`)
+        const yState = yDoc.getText('state')
+        yState.delete(0, yState.length)
+        yState.insert(0, 'ended')
+
+        const yText = yDoc.getText('main')
+        article.workingVersion.md = yText.toString()
+        article.collaborativeSession = null
+        await article.save()
+        return article
+      }
+      return article
+    },
+
+    async startSoloSession(article, _, { user }) {
+      if (article.soloSession && article.soloSession.id) {
+        if (article.soloSession.creator._id.equals(user._id)) {
+          return article.soloSession
+        }
+        throw new ApiError('UNAUTHORIZED_SOLO_SESSION_ACTIVE', `A solo session is already active!`)
+      }
+      const soloSessionId = new ObjectId()
+      const soloSession = {
+        id: soloSessionId,
+        creator: user._id,
+        createdAt: new Date()
+      }
+      article.soloSession = soloSession
+      await article.save()
+      return soloSession
+    },
+
+    async stopSoloSession(article, _, { user }) {
+      if (article.soloSession && article.soloSession.id) {
+        if (!article.soloSession.creator._id.equals(user._id)) {
+          throw new ApiError('UNAUTHORIZED', `Solo session ${article.soloSession.id} can only be ended by its creator ${article.soloSession.creator}.`)
+        }
+        article.soloSession = null
+        await article.save()
+      }
+      //  no solo session to stop (ignore)
+      return article
+    },
   },
 
   WorkingVersion: {
+    bibPreview({ bib }) {
+      return previewEntries(bib)
+    },
     yaml ({ yaml }, { options }) {
       return options?.strip_markdown
         ? reformat(yaml, { replaceBibliography: false })

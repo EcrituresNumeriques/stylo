@@ -3,11 +3,11 @@ title: First steps with Stylo
 ---
 
 ## Creating an account
-To use Stylo, creating a user account is necessary. To create an account, please click [here](https://stylo.huma-num.fr/register) and fill in the mandatory fields
+To use Stylo, creating a Huma-Num account is recommended. To create an account, go to Stylo: https://stylo.huma-num.fr and choose the account type (we recommend creating a Huma-Num account or login if you already have one):
 
-![Register](/uploads/images/Register.png)
+![Register](uploads/images/Login-Huma-Num-V2.PNG)
 
-If you already have an account, sign-in [here](https://stylo.huma-num.fr).
+If you already have a Stylo or Huma-Num account, sign-in [here](https://stylo.huma-num.fr).
 
 ## User page
 The home page for your Stylo account lists your personal articles as well as those that have been shared with you by other Stylo users.
@@ -18,16 +18,16 @@ For each article, many actions are possible:
 
 |Button|Function|
 |:-:|:--|
-| ![Edit](/uploads/images/Edit.png) | To open the article and edit|
-| ![Share](/uploads/images/Share.png) | To share the article and its version history with another Stylo user. It will be called: "[Copy]New article"|
-| ![Duplicate](/uploads/images/Duplicate.png) | To duplicate only the last version of the article|
-| ![Rename](/uploads/images/Rename.png) | To rename the article|
-| ![Plus](/uploads/images/plus.png) | To expand other functions relating to the article|
-|| ![Versions](/uploads/images/Version.png) | To consult the history of saved versions|
-|| ![Tag](/uploads/images/Tag.png) | To choose the tags of the article|
-|| ![Delete](/uploads/images/Delete.png) | To delete the article|
+| ![Edit](uploads/images/Edit.png) | To open the article and edit|
+| ![Share](uploads/images/Share-V2.png) | To share the article and its version history with another Stylo user. It will be called: "[Copy]New article"|
+| ![Duplicate](uploads/images/Duplicate.png) | To duplicate only the last version of the article|
+| ![Rename](uploads/images/Rename.png) | To rename the article|
+| ![Delete](uploads/images/Delete.png) | To delete the article|
+| ![Plus](uploads/images/plus.png) | To expand other functions relating to the article|
+| ![Versions](uploads/images/Version.png) | To consult the history of saved versions|
+| ![Tag](uploads/images/Tag.png) | To choose the tags of the article|
 
-Note: The document name, as it is visible in Stylo, does not correspond to the title of the article that will be generated.
+Note: The document name, as it is visible in Stylo, does not correspond to the title of the article that will be generated. The title must be entered into the metadata(in the right pane of the article) to appear in the preview or export. 
 
 **Careful :** Deleting an article is irreversible. If the article is shared with another user, it will remain available for this user even after it is deleted.
 
@@ -36,7 +36,7 @@ Note: The document name, as it is visible in Stylo, does not correspond to the t
 An article in Stylo is made up of the following three separate elements:
 
   - The text body
-  - Metadate
+  - Metadata
   - A bibliography
 
 Stylo offers an integrated interface to edit each of these elements, whose sources are accessible at any time via [the export module](premierspas.md#Export).
@@ -44,12 +44,12 @@ Stylo offers an integrated interface to edit each of these elements, whose sourc
 ## Editing interface
 The article editing interface offers many modules:
 
-  - A text body: a space to edit the body of the article's text.
-  - A metadata manager: a space to edit information concerning the article (summary, author, key words, publication date, etc.).
-  - A version manager: a space that saves and renames minor and major versions (*Save Minor* and *Save Major*), that accesses successive versions to consult, export and compare them with other versions.
-  - A bibliography manager: a space to edit references (cited and not cited in the text body).
-  - A content table: automatically presenting a summary of the article, based on the titles within the text body).
-  - A statistic tool: presenting statistical information on the article (word and character count, etc.).
+  - A text body: a space to edit the body of the article's text
+  - A metadata manager: a space to edit information concerning the article (summary, author, key words, publication date, etc.)
+  - A version manager: a space that saves and names minor and major versions (*Create Minor* and *Create Major*), that accesses successive versions to consult, export and compare them with other versions
+  - A table of contents: automatically presents a table of contents for the article, based on the titles within the text body
+ - A bibliography manager: a space to edit references (cited and not cited in the text body)
+  - A statistics tool: presenting statistical information on the article (word and character count, etc.).
 
 
 ![Schéma de l'interface d'édition de Stylo](/uploads/images/Structure.png)
@@ -62,8 +62,6 @@ The **[Share]** function allows you to invite co-authors to work on the same art
 **Careful** : Sharing an article with another user is possible only by entering the email address that the other user entered to create their Stylo account.
 
 ## New article
-
-Click on the "Create a new article" button (you must enter the title of the article in the appropriate field, then click again on the "Create" button).
 
 To create a new article, you must click on the button:
 
@@ -81,7 +79,9 @@ During this process, you can also choose the tags related to the article
 
 ![Add Tags](/uploads/images/AddTag.png)
 
-The article will then appear in your list of articles. Click on the button
+The article will then appear in your list of articles. 
+
+Click on the button
 
 ![edit](/uploads/images/Edit.png)
 
@@ -93,7 +93,7 @@ If the content that you intended to edit is already structured in another format
 
 ![Import](/uploads/images/Import.png)
 
-Once you have converted, an md. document is generated: open it with a text editor (Atom, GeDit), and copy/paste the document content into the space of your Stylo article.
+Once you have converted, a .md document is generated: open it with a text editor (Atom, GeDit), and copy/paste the document content into the space of your Stylo article.
 
 ## Editing
 
@@ -140,81 +140,87 @@ To improve your knowledge in Markdown syntax, you can see this [page](http://sty
 
 ## Versions
 
-![active](/uploads/images/NomVersion.png)
-A document version corresponds to saving your work. A version always contains the following article elements: metadata, bibliography, text body. Therefore, in changing the old version, each of these three elements are updated.
+![active](uploads/images/NomVersion.png)
 
-Your work is automatically saved by Stylo. However, you can -- and we do advise this -- use the saving functions to **[Save Minor]** or **[Save Major]** versions by naming each. A minor version corresponds to minor changes, whereas a major version creates a version with the most important changes.
+A document version corresponds to saving your work. A version always contains the following three article elements: metadata, bibliography, text body. Therefore, in changing the old version, each of these three elements are updated.
 
-This way, when you have created a version that you are satisfied with, you can make a title of your version in the field *Version label* before saving it as a minor or major version.
+Your work is automaticcaly saved by default by Stylo, but you must create your own versions. To do so, you can - and should - use the the save function \[New Version\] which generates a new version of the work. 
 
-At all times, you can view your work. That is, you can view both the current version that you are in the process of working on and the preceding version, by clicking on the **[preview]** button:
+![versions](https://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/images/New-Version-V2.PNG)
 
-![Preview](/uploads/images/Preview.png)
+When you have arrived at a version you are satisfied with, you can name it in the field *Label of the version* before saving it as a minor version (\[Create Minor\]) or major version (\[Create Major\]).
 
-Each version contains many functions:
+![label of the version](https://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/images/Label-Version-V2.PNG)
 
-- For the editable version (*Edition*):
+A minor version correspnds to minor modifications while a major version creates a version with important cahnges. 
 
-|Button|Function|
-|:-:|:--|
-| ![Save Major](/uploads/images/Major.png) | To save a major version of your work |
-| ![Save Minor](/uploads/images/Minor.png) | To save a minor version of your work |
-| ![Export](/uploads/images/ExportE.png) | To export and save the version in different formats |
-| ![Preview](/uploads/images/Preview.png) | To access the preview of your work and annotate it |
+At any time, you can viusalize your work, whether it is the current version that you are editing or an earlier version. Click on the button \[Preview\]: 
+
+![preview](https://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/images/Preview-Bouton-V2.PNG)
+
+Each version contains many functions: 
+
+For the editable version (*Edition*):
+
+
+| **Button**| **Function** |
+| -------- | -------- |
+|![create major](https://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/images/Create-Major-V2.PNG)|To save a major version of your work|
+|![create minor](https://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/images/Create-Minor-V2.PNG)| To save a minor version of your work|
+|![export](https://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/images/Export-V2.PNG)| To export and download the version in different formats|
+|![preview](https://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/images/Preview-Bouton-V2.PNG) |To access the preview of your work and annotate it|
 
 - For a previous version :
-	- **[Compare]** to compare different versions (a previous version and the current version or two previous versions). For more information of the **[Compare]** function, you can consult this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/interface.md)
-	- ![Export](/uploads/images/ExportE.png) : to export and download the document in different formats: HTML5, XML érudit, etc.
-	- **[preview]** to access a preview of your work and to annotate it. For more information on the **[preview]** function, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/preview.md)
+	- **[Compare]** to compare different versions (a previous version and the current version or two previous versions). For more information on the **[Compare]** function, you can consult this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/interface.md)
+	- **[Export]** to export and download the document in different formats: HTML, PDF, XML, etc.
+	- **[Preview]** to access a preview of your work and to annotate it. For more information on the **[preview]** function, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/preview.md)
 
-To view a previous version, you must click on its title. To return to the editable version, you must click on the **[Edit]** button.
+To view a previous version, you must click on its title. To return to the editable version, you must click on the **[Edit Mode]** button.
 
 ## Export
-The export module offers many formats (HTML5, XML, PDF, etc.), allowing you to choose a bibliographic style, and the inclusion or not of a content table.
+The export module offers many formats (HTML, XML, PDF, etc.), allowing you to choose a bibliographic style, and the inclusion or not of a content table.
 
 For more information on Stylo exporting, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/export.md)
 
-## Summary
+## Table of Contents
 
 ![sommaire](/uploads/images/sommaire.png)
 
-The summary appears in a list of titles at levels 1, 2, and so on. These titles are clickable, for quick access to that part of the corresponding text.
+The table of contents appears in a list of titles at levels 2, 3, and so on. These titles are clickable, for quick access to that part of the corresponding text.
 
 ## Bibliography
 
 The bibliography lists the bibliographic references that you have added. The bibliographic references can be added either one by one, or grouped. To add your reference, you must click on **[Manage Bibliography]** in the
 left pane: the *Bibliography* tool then opens and offers you a number of possibilities:
 
-1. **Zotero** : you can synchronise your bibliography using a Zotero folder (the folder must be public) by entering the folder URL.
-2. **Citations** : you can manually fill in your bibliography using BibTex format.
-3. **Raw bibtex** : to edit the bibtex
+1. **Zotero** : you can sychroize a bibliography by connecting Stylo to your Zotero account (private groups/collections or public)
+3. You can also provide the URL of a public Zotero group's collection.
+4. **Citations** : you can manually fill in your bibliography using BibTeX format.
+5. **Raw bibtex** : you can correct the BibTeX directly.
 
-You can directly [structure your references in BibTex](http://www.andy-roberts.net/writing/latex/bibliographies), or export your references in BibTex thanks to your bibliography management tools:
+You can directly [structure your references in BibTex](http://www.andy-roberts.net/writing/latex/bibliographies) or export your references in BibTex thanks to your bibliography management tools:
 
 - See tutorials : <a class="btn btn-info" href="http://sens-public.org/IMG/pdf/Utiliser_Zotero.pdf" role="button">Zotero</a> <a class="btn btn-info" href="https://libguides.usask.ca/c.php?g=218034&p=1446316" role="button">Mendeley</a>
 
-To add a reference to the article, you just need to click on the reference, then paste (Ctrl+V) the reference in the desired place of the text. This way, a click is the same as "copying" the reference key to the clipboard. Then, you just need to paste it into the text body.
+To add a reference to the article, you just need to click on the reference, then paste (Ctrl+V) the reference in the desired place of the text. This way, a click is the same as "copying" the reference key to the clipboard. An autocomplete system allows you to display the available references by typing `[@` or `@` followed or not by the first letters of the reference identifier. 
 
-![biblioex](/uploads/images/biblioex.png)
+![biblioex](uploads/images/Bibliographie-Exemple-V2.PNG)
 
-For more information on managing the bibliography, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/bibliographie.md)
+For more information on managing the bibliography, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/bibliographie.md).
 
 ## Metadata
 
-![metadata](/uploads/images/metadata.png)
+![metadata button](uploads/images/Metadata-Bouton-V2.PNG)
+
+![metadata edition](uploads/images/Metadata-Edition-V2.PNG)
 
 The [Metadata] button allows you to open the metadata pane. Three editing modes are available:
 
-1. **Basic Mode** : allows editing the basic metadata: Title, subtitle, summaries, authors and keywords.
+1. **Basic Mode** : allows editing the basic metadata: title, subtitle, summaries, authors and keywords.
 2. **Editor Mode** : allows editing all metadata relating to a scholarly journal: identifying an article, folder information, evaluation information, journal categories, journal keywords, etc.
 2. **Raw Mode** : an editing space for an advanced user, where you can modify fields directly in yaml structure.
 
-**Important :** in order to export an article, these fields must be filled in:
-
-- A title
-- An author name
-
-For more information on metadata editing, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/bibliographie.md)
+**Important :** in order to export an article, the "Title" and "Authors" fields must be filled in.
 
 **Careful**: in the metadata pane is the "Bibliography" division, including the *Display* option, which allows you to choose to view the bibliography either in its entirety ("All citations"), or just the references which have been cited in the body of the article ("Only used"). 
 
@@ -244,4 +250,4 @@ To annotate a version, click on the version number you want to annotate and then
 
 **Important**: If you annotate a version, your annotation will not be visible on the other version.
 
-To annotate the article, click **[Edit]** and then **[Preview]** The annotations will relate to the article. However, given that the editable version is subject to changes, annotations can no longer be anchored in the correct parts of the text (which could have been deleted or moved).
+To annotate the article, click **[Preview (open a new window)]** The annotations will relate to the article. However, given that the editable version is subject to changes, annotations could no longer be anchored in the correct parts of the text (which could have been deleted or moved).

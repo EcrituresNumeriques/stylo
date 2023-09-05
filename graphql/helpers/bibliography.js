@@ -10,7 +10,7 @@ function previewEntries (bibtex, count = 2) {
   let obj = { kind: '', entry: '' }
 
   const entries = Array.from((bibtex?.trim() ?? '')
-    .split(/^(\s*@(?<kind>[^{]+)\s*\{\s*[\w]+,)\s*$/gm))
+    .split(/^(\s*@(?<kind>[^{]+)\s*\{\s*[^,]+,)\s*$/gm))
     .reduce((all, part) => {
       const trimmedPart = part.trim()
 

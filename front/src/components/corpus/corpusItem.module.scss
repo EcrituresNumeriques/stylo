@@ -62,3 +62,13 @@
 .partsTitle {
   font-size: 0.95em;
 }
+
+.noteWithIcon {
+  display: flex;
+  gap: 0.25em;
+  align-items: stretch;
+
+  svg {
+    margin-right: 0.35em;
+  }
+}

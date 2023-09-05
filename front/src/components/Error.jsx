@@ -1,10 +1,9 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
 import App from '../layouts/App'
 
 import styles from '../components/Write/write.module.scss'
 
-export default () => {
+export default function Error() {
   const urlSearchParams = new URLSearchParams(window.location.search)
   const message = urlSearchParams.get('message') || ''
   return (

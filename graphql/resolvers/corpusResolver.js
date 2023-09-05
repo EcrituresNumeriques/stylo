@@ -2,7 +2,6 @@ const { ApiError } = require('../helpers/errors')
 const Corpus = require('../models/corpus')
 const Workspace = require('../models/workspace')
 
-
 async function getCorpusByContext (corpusId, context) {
   if (context.token?.admin === true || context.user?.admin) {
     return getCorpus(corpusId)
@@ -115,7 +114,7 @@ module.exports = {
         description: createCorpusInput.description,
         articles: [],
         metadata: createCorpusInput.metadata,
-        workspace: createCorpusInput.workspaceId,
+        workspace: createCorpusInput.workspace,
         creator: user._id,
       })
       return newCorpus.save()
@@ -136,18 +135,32 @@ module.exports = {
 
   Query: {
     /**
-     * Get a list of corpus created by the authenticated user
+     * Get a list of corpus.
      *
      * @param _
      * @param args
-     * @param user
+     * @param context
      * @returns {Promise<[Corpus]>}
      */
-    async corpus (_, args, { user }) {
+    async corpus (_, args, context) {
+      const { user } = context
       if (!user) {
         throw new ApiError('UNAUTHENTICATED', 'Unable to get a list of corpus as an unauthenticated user')
       }
-      return Corpus.find({ 'creator': user?._id })
+      if ('filter' in args) {
+        const filter = args.filter
+        if ('corpusId' in filter) {
+          return [await getCorpusByContext(filter.corpusId, context)]
+        }
+        if ('workspaceId' in filter) {
+          // check that the user can access the workspace
+          await Workspace.getWorkspaceById(filter.workspaceId, user)
+          return Corpus.find({ 'workspace': filter.workspaceId })
+            .populate([{ path: 'creator' }])
+            .sort([['updatedAt', -1]])
+        }
+      }
+      return Corpus.find({ 'creator': user?._id, 'workspace': null })
         .populate([{ path: 'creator' }])
         .sort([['updatedAt', -1]])
     },
@@ -155,17 +168,16 @@ module.exports = {
 
   Corpus: {
     async articles (corpus, _args, context) {
-      const promises = corpus.articles
+      const articles = await Promise.all(corpus.articles
         .map(async (article) => {
           const articleLoaded = await context.loaders.articles.load(article.article)
           return {
-            ...article,
+            _id: article._id,
+            order: article.order,
             article: articleLoaded
           }
-
-        })
-      const articles = await Promise.all(promises)
-      articles.sort((a, b) => a.order > b.order ? -1 : 1)
+        }))
+      articles.sort((a, b) => a.order < b.order ? -1 : 1)
       return articles
     },
 
@@ -199,6 +211,28 @@ module.exports = {
         return corpus
       }
       throw new ApiError('ERROR', `Unable to delete the corpus ${corpus._id}`)
+    },
+
+    async update (corpus, { updateCorpusInput }) {
+      corpus.name = updateCorpusInput.name
+      corpus.description = updateCorpusInput.description
+      corpus.metadata = updateCorpusInput.metadata
+      return await corpus.save()
+    },
+
+    async updateArticlesOrder(corpus, { articlesOrderInput }) {
+      const articlesOrderMap = articlesOrderInput.reduce((acc, item) => {
+        acc[item.articleId] = item.order
+        return acc
+      }, {})
+      corpus.articles = corpus.articles.map((corpusArticle) => {
+        const order = articlesOrderMap[corpusArticle.article._id]
+        return {
+          article: corpusArticle.article,
+          order,
+        }
+      })
+      return corpus.save()
     }
   },
 }
