@@ -1,0 +1,50 @@
+{
+  "siteTitle": "Stylo",
+  "lang": "en",
+  "description": "Stylo is a text editor that simplifies writing and editing scientific articles in the Human and Social Sciences.",
+  "rights": "Licence Creative Commons [CC BY-SA 4.0] – Canada Research Chair on digital textualities",
+
+  "sectionTitle": "Documentation",
+  "sectionUrl": "/en",
+
+  "disableSearch": false,
+  "searchIndexUrl": "/en/search-index.json",
+  "menu": [
+    {
+      "label": "Project",
+      "children": [
+        {
+          "label": "About",
+          "url": "/en/about"
+        },
+        {
+          "label": "Sources",
+          "url": "/en/sources"
+        },
+        {
+          "label": "Contact",
+          "url": "/en/contacts"
+        }
+      ]
+    },
+
+    {
+      "label": "Documentation",
+      "children": [
+        { "label": "First steps", "url": "/en/firststeps" },
+        { "label": "Writing in Markdown", "url": "/en/markdownsyntax" },
+        { "label": "Manage my bibliography", "url": "/en/managingref" },
+        { "label": "Preview and annotate an article", "url": "/en/preview" },
+        { "label": "Manage my article", "url": "/en/myarticles" },
+        { "label": "Solving problems", "url": "/en/problems" },
+        { "label": "Exports", "url": "/en/exports" }
+      ]
+    },
+
+    {
+      "label": "Français",
+      "url": "/fr",
+      "lang": "fr"
+    }
+  ]
+}

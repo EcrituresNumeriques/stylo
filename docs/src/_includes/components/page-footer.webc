@@ -1,0 +1,40 @@
+<!---- Pied de page ---->
+<!----
+Pied de page partagé par les documents.
+Exploite la variable globale `rights`.
+
+Usage:
+
+  <document-footer></footer>
+---->
+
+<div class="document-footer">
+  <div
+    class="document-footer__rights"
+    @html="$data.rights"
+  ></div>
+</div>
+
+<style webc:scoped>
+  .document-footer {
+    /* espace supplémentaire dessous pour signaler la fin du contenu */
+    padding: 1rem 0;
+
+    border-top: 1px solid var(--couleur-fond-accent);
+    color: var(--couleur-fond-accent);
+    font-size: .875rem;
+  }
+
+  .document-footer__rights {
+    line-height: var(--interlignage, 125%);
+  }
+
+  /* Liens */
+  .document-footer a {
+    text-decoration: underline;
+    color: inherit;
+  }
+  .document-footer a:hover {
+    color: var(--couleur-lien);
+  }
+</style>

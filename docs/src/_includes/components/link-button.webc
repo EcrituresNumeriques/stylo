@@ -1,0 +1,84 @@
+<!---- Link Button ---->
+<!----
+Un hyperlien avec une apparence de bouton
+
+Doc:
+  @prop href    {String} url
+  @prop size    {String} (optional)  |small|large
+  @prop color   {String} (optional)  |hyperlink|danger
+
+ Usage:
+
+  <link-button href="/mon-url">Mon lien</link-button>
+
+
+  <link-button href="/mon-url" size="small" color="hyperlink">Mon petit lien</link-button>
+
+
+  <link-button href="/mon-url" size="large" color="danger">Vivre dangereusement</link-button>
+---->
+<a
+  :href="href"
+  class="link-button"
+  :data-size="size"
+  :data-color="color"
+><slot></slot></a>
+
+<style webc:scoped>
+  .link-button {
+    --button-spacing-x: 1em;
+    --button-spacing-y: .5333em;
+    --button-font-size: .875rem;
+    --button-background-color: var(--peche);
+    --button-text-color: var(--fond-marin);
+    --button-line-height: 1;
+    --button-font-family: inherit;
+
+    /* Disposition */
+    display: inline-flex;
+    flex-direction: row;
+    align-items: baseline;
+    text-decoration: none;
+    padding: var(--button-spacing-y) var(--button-spacing-x);
+
+    /* Couleurs */
+    color: var(--button-text-color);
+    background-color: var(--button-background-color);
+
+    /* Typographie */
+    font-size: var(--button-font-size);
+    font-family: var(--button-font-family);
+    line-height: var(--button-line-height);
+  }
+
+  /* Variantes */
+  /* Tailles */
+  [data-size="small"] {
+    --button-spacing-x: 0.909em;
+    --button-spacing-y: 0.3636em;
+    --button-font-size: .8125rem;
+
+  }
+  [data-size="large"] {
+    --button-spacing-x: 0.909em;
+    --button-spacing-y: 0.3636em;
+    --button-font-size: 1.5rem;
+  }
+
+  /* Couleurs */
+  [data-color="hyperlink"] {
+    --button-background-color: var(--couleur-lien);
+    --button-text-color: var(--couleur-fond);
+  }
+
+  [data-color="danger"] {
+    --button-background-color: var(--cerise);
+    --button-text-color: var(--surface);
+  }
+  @media (prefers-color-scheme: dark) {
+    [data-color="danger"] {
+      --button-background-color: var(--framboise);
+      --button-text-color: var(--fond-marin);
+    }
+  }
+</style>

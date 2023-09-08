@@ -1,0 +1,421 @@
+<!doctype html>
+<html :lang="lang">
+  <!---- Disposition pour la documentation ---->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Métadonnées -->
+    <title @raw="title" :@title="title" webc:is="document-title"></title>
+    <meta name="description" :description="description" />
+    <meta name="generator" :content="eleventy.generator " />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styles/modern-normalize.css" />
+    <link rel="stylesheet" href="../styles/variables.css" />
+    <link rel="stylesheet" href="../styles/fonts/bitter.css" />
+    <!---- CSS bundle ---->
+    <style @raw="getBundle('css')" webc:keep></style>
+
+    <!-- Scripts -->
+    <!---- JS bundle ---->
+    <script @raw="getBundle('js')" webc:keep defer></script>
+
+    <!-- Theme -->
+    <link rel="icon" href="/uploads/images/favicon.svg" />
+    <meta name="theme-color" content="#0B0A3A" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#D4D4E8" media="(prefers-color-scheme: light)" />
+  </head>
+
+  <body>
+    <!---- Docs Layout ---->
+    <!----
+      HTML structure, in order of appearance in the markup:
+      1) Top    (header)
+      2) Center (main)
+      3) Side   (navigation)
+
+
+      Desktop
+      +===========(1)==+
+      |(3) |(2)        |
+      |    |           |
+      |    |           |
+      |____|___________|
+
+      Mobile
+      +====(1)==+
+      |(3)      |
+      |_________|
+      |(2)      |
+      |         |
+      |         |
+      |         |
+      |_________|
+
+      The layout controls how the side (#navigation) panel will be displayed.
+      On mobile, it will be stacked above the main panel.
+    ---->
+    <div
+      class="docs-layout"
+      aria-owns="navigation"
+    >
+      <!---- (1) Top ---->
+      <header class="docs-layout__top">
+        <slot name="header">
+          <!---- Exploitation du composant <top-bar> ---->
+          <header webc:is="top-bar">
+
+            <button
+              slot="button"
+              class="docs-layout__menu-btn"
+              aria-expanded="false"
+              aria-controls="navigation"
+            >
+              <span class="docs-layout__menu-btn-inner is-closed">
+                <menu-icon size="28"></menu-icon>
+                <span aria-hidden="true"><!-- Todo: i18n -->Menu</span>
+              </span>
+
+              <span class="docs-layout__menu-btn-inner is-open">
+                <close-icon size="28"></close-icon>
+                <span aria-hidden="true"><!-- Todo: i18n -->Menu</span>
+              </span>
+            </button>
+
+            <top-bar-brand
+              :@href="`/${lang}`"
+              :@text="siteTitle"
+              slot="title"
+            ></top-bar-brand>
+
+            <!---- Breadcrumbs - this part assumes a multilingual site with the `lang` variable ---->
+            <top-bar-link
+              :@href="sectionUrl"
+            ><template webc:nokeep @text="sectionTitle"></template></top-bar-link>
+
+            <!---- Display page in top bar (except for home, variable `isHome` is manually set in front-matter) ---->
+            <template
+              webc:nokeep
+              webc:if="!isHome"
+            >
+              <top-bar-hierarchy-separator webc:if="title"></top-bar-hierarchy-separator>
+
+              <top-bar-link
+                :@href="page.url"
+                webc:if="title"
+              ><template webc:nokeep @text="title"></template></top-bar-link>
+            </template>
+
+          </header>
+        </slot>
+      </header>
+
+      <!---- Navigation menu interaction ---->
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const menuToggleBtn = document.querySelector('[aria-controls="navigation"]');
+          const parentContainer = document.querySelector('[aria-owns="navigation"]');
+
+          menuToggleBtn.addEventListener('click', () => {
+            parentContainer.classList.toggle('navigation-open');
+            let isOpen = parentContainer.classList.contains('navigation-open');
+
+            if (isOpen) {
+              menuToggleBtn.setAttribute('aria-expanded', String(isOpen));
+              parentContainer.setAttribute('aria-expanded', String(isOpen));
+            } else {
+              menuToggleBtn.setAttribute('aria-expanded', String(isOpen));
+              parentContainer.setAttribute('aria-expanded', String(isOpen));
+            }
+          });
+        })
+      </script>
+
+      <!---- (2) Center ---->
+      <!----
+        The center (main) panel has its own nested grid on desktop viewports:
+
+        a) Page header     (title, metadata)
+        b) Content         (content)
+        c) Page footer     (colophon)
+        d) Content sidebar (TOC, etc.?)
+
+        Desktop
+        ._____________.____.
+        |(a)          |(d) |
+        |             |    |
+        |(b)          |    |
+        |             |    |
+        |             |    |
+        |             |    |
+        |=(c)==============|
+
+
+        Mobile
+        ._________.
+        |(a)      |
+        |(d)      |
+        |(b)      |
+        |         |
+        |         |
+        |         |
+        |=(c)=====|
+      ---->
+      <main class="docs-layout__center">
+        <div class="docs-layout__center-wrapper | grid-area--page-header">
+          <!---- En-tête ---->
+          <page-header
+            :@title="title"
+          ></page-header>
+        </div>
+
+        <div class="docs-layout__center-wrapper | grid-area--page-sidebar">
+          <nav class="docs-layout__center-sidebar">
+            <!---- Todo fill sidebar ---->
+            <!-- TOC? -->
+          </nav>
+        </div>
+
+        <div class="docs-layout__center-wrapper | grid-area--page-content">
+          <!---- Default slot: content ---->
+          <div
+            class="article-principal__contenu"
+            :@content="content"
+            webc:is="prose-block"
+          >
+            <slot></slot>
+          </div>
+        </div>
+
+        <div class="docs-layout__center-wrapper | grid-area--page-footer">
+          <page-footer></page-footer>
+        </div>
+      </main>
+
+      <!---- (3) Side (nav) ---->
+      <aside
+        class="docs-layout__navigation"
+        id="navigation"
+        webc:if="useSideMenu"
+      >
+        <!---- 1 seul élément enfant (voir CSS) ---->
+          <main-navigation
+            :@menu="menu"
+            :@search-index-url="searchIndexUrl"
+            :@disable-search="disableSearch"
+          >
+          </main-navigation>
+        </slot>
+      </aside>
+    </div>
+
+  </body>
+</html>
+
+<style webc:scoped>
+  html {
+    background-color: var(--couleur-fond);
+    color: var(--couleur-police);
+  }
+
+  /* Avec `webc:scoped`, les styles sont propres à ce composant */
+  .docs-layout {
+    --side-menu-width: 18rem;
+    --content-sidebar-width: 14rem;
+    --article-max-width: 42rem;
+    --center-padding: .75rem;
+    --menu-toggle-display: inline-flex;
+
+    /* Disposition */
+    display: flex;
+    flex-direction: column;
+
+    /* Pour accueillir la barre transversale */
+    position: relative;
+
+    /* couleurs */
+    color: var(--couleur-police);
+    background-color: var(--couleur-fond);
+  }
+  .docs-layout__center {
+    /* Après menu sur petits écrans */
+    order: 2;
+  }
+
+  @media (min-width: 48rem) {
+    .docs-layout {
+      --center-padding: 1.25rem;
+      --menu-toggle-display: none;
+
+      display: grid;
+      grid-template-areas:
+        "top  top"
+        "nav  center"
+      ;
+      /* grid-template-columns:
+         - barre latérale
+         - `1fr` pour occuper l’espace restant
+      */
+      grid-template-columns: var(--side-menu-width) 1fr;
+      /* grid-template-row:
+         - `auto` pour éviter que la 1re rangée prenne de l’expansion
+         - `1fr` pour occuper l’espace restant
+      */
+      grid-template-rows: auto 1fr;
+      height: 100vh;
+    }
+
+    .docs-layout__navigation {
+      grid-column-start: nav;
+      grid-row-start: 2;
+      height: 100%;
+      border-inline-end: 1px solid var(--couleur-fond-accent);
+    }
+    #navigation {
+      display: grid;
+    }
+
+    .docs-layout__top {
+      grid-area: top;
+    }
+
+    .docs-layout__center {
+      grid-column-start: center;
+      grid-row-start: 2;
+      height: 100%;
+
+      /* Le défilement du contenu se fait principalement sur cet élément */
+      overflow: auto;
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .docs-layout__center {
+      display: grid;
+      grid-template-columns: calc(100% - var(--content-sidebar-width)) 1fr;
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+      "center-header    center-sidebar"
+      "center-content   center-sidebar"
+      "center-footer    center-footer"
+    ;
+
+      /* Pour un éventuel élément sticky */
+      position: relative;
+    }
+
+    .grid-area--page-header {
+      grid-area: center-header;
+    }
+
+    .grid-area--page-content {
+      grid-area: center-content;
+    }
+
+    .grid-area--page-sidebar {
+      grid-area: center-sidebar;
+
+      /* Espace pour bordure */
+      padding-inline-start: var(--center-padding);
+      margin-inline-start: 0;
+      border-inline-start: 1px solid var(--couleur-fond-accent);
+
+      /* Éviter que l’élément prenne la pleine hauteur */
+      align-self: start;
+
+      /* Sticky */
+      /*position: sticky;*/
+      /*top: 1rem;*/
+    }
+
+    .grid-area--page-footer {
+      grid-area: center-footer;
+    }
+  }
+
+  .docs-layout__top {
+    /* Flex -- always at top */
+    order: 0;
+
+    z-index: 10; /* Attention au contenu qui peut avoir un z-index plus élevé… */
+
+    /* Division graphique */
+    border-bottom: 1px solid var(--couleur-fond-accent);
+  }
+
+  /* Navigation toggle btn */
+  .docs-layout__menu-btn {
+    display: var(--menu-toggle-display);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+
+    padding: .75rem;
+
+    /* Reset btn styles*/
+    border: none;
+    appearance: none;
+    cursor: pointer;
+
+    /* Match main title element? */
+    background-color: var(--couleur-marque);
+    color: #fff;
+  }
+
+  .docs-layout__navigation {
+    display: grid;
+    align-items: stretch;
+    justify-content: stretch;
+    overflow: auto;
+
+    background-color: var(--couleur-fond-2);
+  }
+  /* Styles spécifiques à une disposition inférieure, mais non égale à, 48rem de largeur */
+  @media (max-width: 47.999rem) {
+    #navigation {
+      display: none;
+      order: 1;
+      width: 100%;
+      z-index: 10;
+    }
+    .navigation-open #navigation {
+      display: grid;
+    }
+  }
+
+  .docs-layout__menu-btn-inner {
+    display: none;
+  }
+  .docs-layout__menu-btn[aria-expanded="true"] .is-open {
+    display: contents;
+  }
+  .docs-layout__menu-btn[aria-expanded="false"] .is-closed {
+    display: contents;
+  }
+  /* Appliquer le comportement de l’attribut `hidden` */
+  [aria-hidden] { display: none; }
+
+  .article-principal__contenu {
+    /* S’assurer du rendu en `block` lors de la transclusion WebC */
+    display: block;
+
+    /* Signaler graphiquement la fin du contenu */
+    padding-bottom: 3rem;
+  }
+
+  .docs-layout__center-wrapper {
+    /* Marge régulière autour, mais pas en bas */
+    margin: var(--center-padding) var(--center-padding) 0;
+  }
+
+  .docs-layout__center-sidebar {
+    align-self: flex-start;
+
+    /* `sticky` sur défilement */
+    position: sticky;
+    top: 0;
+    right: 0;
+  }
+</style>

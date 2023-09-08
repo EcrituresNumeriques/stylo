@@ -1,0 +1,29 @@
+<!---- Séparateur vertical ---->
+<!----
+
+Usage:
+
+  <top-bar-separator></top-bar-separator>
+---->
+
+<div class="top-bar-separator" webc:root="override"></div>
+
+<style>
+  .top-bar-separator {
+    --separator-width: 1px;
+    --separator-height: .5rem;
+
+    /* Assumes flex child */
+    align-self: center;
+
+    /* Horizontal spacing */
+    margin: auto .5rem;
+
+    /* Element size */
+    width: var(--separator-width);
+    height: var(--separator-height);
+
+    /* Color */
+    background-color: var(--couleur-neutre);
+  }
+</style>

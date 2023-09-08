@@ -1,0 +1,111 @@
+<header class="page-header" webc:keep>
+  <h1
+    class="page-header__title"
+    @text="title"
+  ></h1>
+
+  <dl class="page-header__meta">
+    <dt
+      class="page-header__meta__term"
+      webc:if="$data.version"
+    >
+      <!-- TODO: i18n -->
+      Dernière modification&nbsp;:
+    </dt>
+    <dd
+      class="page-header__meta__val"
+      webc:if="$data.version"
+      @text="$data.page.date.toLocaleString($data.lang, { year: 'numeric', month: '2-digit', day: '2-digit' })"
+    ></dd>
+
+    <dt
+      class="page-header__meta__term"
+      webc:if="$data.version"
+    >
+      <!-- TODO: i18n -->
+      Version&nbsp;:
+    </dt>
+    <dd
+      class="page-header__meta__val"
+      webc:if="$data.version"
+      @text="$data.version"
+    ></dd>
+
+  </dl>
+</header>
+
+<style webc:scoped>
+  .page-header {
+    --page-header-font-family: var(--police-titre);
+    --page-header-title-size: 1.5rem;
+    --title-decoration-size: 1rem;
+    --title-decoration-spacing: 1.25rem;
+
+    position: relative;
+
+    padding: calc(var(--title-decoration-size) + var(--title-decoration-spacing)) 0;
+  }
+
+  @media (min-width: 48rem) {
+    .page-header {
+      --page-header-title-size: 2.5rem;
+    }
+  }
+
+  .page-header__title {
+    font-size: var(--page-header-title-size);
+    margin: 0 0 .5rem;
+
+    text-align: left;
+    font-weight: 600;
+    font-family: var(--page-header-font-family);
+
+    /*
+    Pour contrôler la visibilité de notre décoration
+    (utiliser `whitespace: nowrap` sur les pseudos-éléments pour éviter un retour à la ligne)
+    */
+    overflow: hidden;
+  }
+  .page-header::before,
+  .page-header::after {
+    /* Front-matter style */
+    content: '---';
+    white-space: nowrap;
+    position: absolute;
+    font-size: var(--title-decoration-size);
+    opacity: .25;
+    display: block;
+    width: 100%;
+  }
+  .page-header::before {
+    left: 0;
+    top: 0;
+  }
+  .page-header::after {
+    white-space: nowrap;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+
+  .page-header__meta {
+    margin: 1rem 0 0;
+    font-size: 0.75rem;
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .35rem .75rem;
+  }
+  .page-header__meta__term {
+    margin: 0;
+    grid-column: 1 / span 1;
+
+    opacity: .5;
+  }
+  .page-header__meta__val {
+    margin: 0;
+    grid-column: 2 / span 1;
+
+    opacity: .75;
+  }
+</style>

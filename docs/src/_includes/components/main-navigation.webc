@@ -1,0 +1,137 @@
+<!---- Menu principal ---->
+<!----
+Destiné à être affiché sur le côté sur des écrans de moyennes et grandes tailles.
+
+Doc:
+  @prop {Array} menu
+  @prop {Boolean} disableSearch (default: undefined)
+  @prop {String} searchIndexUrl
+---->
+
+<nav class="side-menu__inner">
+  <header
+    class="side-menu__header"
+  ><slot name="header"></slot></header>
+
+  <div webc:if="!disableSearch">
+    <!-- Todo i18n -->
+    <inline-search
+      :@search-index-url="searchIndexUrl"
+      :@action="`/${$data.lang}/search/`"
+      @method="get"
+      @placeholder="Rechercher"
+    ></inline-search>
+  </div>
+
+  <ul class="side-menu__list">
+    <li webc:for="item of menu"
+        class="side-menu__item"
+    >
+      <span
+        webc:if="item.children"
+        @text="item.label"
+        class="side-menu__item-label"
+      ></span>
+      <a
+        webc:else
+        :href="item.url"
+        :target="item.target"
+        @text="item.label"
+        :title="item.title"
+        :lang="item.lang"
+        class="side-menu__link"
+      ></a>
+
+      <ul
+        webc:if="item.children?.length"
+        class="side-menu__item__list"
+      >
+        <li
+          webc:for="child of item.children"
+          class="side-menu__item__list-item"
+        >
+          <a
+            :href="child.url"
+            @text="child.label"
+            :target="child.target"
+            :title="child.title"
+            class="side-menu__link"
+            ></a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+<style webc:scoped>
+  :host {
+    --side-menu-padding-x: .5rem;
+    --side-menu-padding-y: .5rem;
+    --side-menu-item-padding-x: .75rem;
+    --side-menu-item-padding-x-extra: 1.5rem;
+    --side-menu-item-padding-y: .65rem;
+    --side-menu-font-size: .875rem;
+    --side-menu-letter-spacing: .0125em;
+    --side-menu-item-border-width: 0;
+    --side-menu-item-border-color: transparent;
+
+    --side-menu-link-color: var(--couleur-police);
+    --side-menu-link-background-color: transparent;
+    --side-menu-link-color-highlight: inherit;
+    --side-menu-link-background-highlight: var(--neutral-200);
+    --side-menu-background-color: var(--couleur-fond-2);
+
+    background-color: var(--side-menu-background-color);
+  }
+  @media (prefers-color-scheme: dark) {
+    :host {
+      --side-menu-link-background-highlight: var(--neutral-700);
+    }
+  }
+
+  .side-menu__header {
+    padding: 1rem var(--side-menu-padding-x);
+    color: inherit;
+  }
+  .side-menu__header:empty {
+    display: none;
+  }
+
+  .side-menu__item-label {
+    font-weight: bold;
+    display: flex;
+    padding: var(--side-menu-padding-y) var(--side-menu-padding-x);
+  }
+
+  .side-menu__link {
+    display: flex;
+    padding: var(--side-menu-item-padding-y) var(--side-menu-item-padding-x);
+    color: var(--side-menu-link-color);
+    background-color: var(--side-menu-link-background-color);
+    text-decoration: none;
+    font-size: var(--side-menu-font-size);
+    letter-spacing: var(--side-menu-letter-spacing);
+
+    border-left: var(--side-menu-item-border-width) solid var(--side-menu-item-border-color);
+  }
+  .side-menu__link:hover,
+  .side-menu__link--current {
+    --side-menu-link-color: var(--side-menu-link-color-highlight);
+    --side-menu-link-background-color: var(--side-menu-link-background-highlight);
+  }
+
+  .side-menu__list {
+    list-style: none outside none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .side-menu__item__list {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+  }
+  .side-menu__item__list .side-menu__link {
+    padding-inline-start: var(--side-menu-item-padding-x-extra);
+  }
+</style>

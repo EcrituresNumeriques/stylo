@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
+     style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+
+  <rect id="Fond" x="0" y="0" width="64" height="64"/>
+
+  <path id="Logo" d="M22.139,40.046l-5.139,-0l0,11.242c0,-0 6.488,2.569 13.233,2.569c8.994,0 16.767,-4.432 16.767,-14.068c0,-14.454 -23.126,-10.728 -23.126,-20.493c-0,-3.212 2.762,-6.231 8.544,-6.231c3.533,-0 6.809,1.156 6.809,1.156l2.184,6.874l4.176,-0l0.321,-10.921c-0,0 -7.452,-2.57 -13.555,-2.57c-8.03,0 -15.225,3.791 -15.225,12.784c0,15.354 23.191,11.242 23.191,21.135c0,4.561 -5.139,6.874 -9.829,6.874c-4.175,-0 -7.066,-1.606 -7.066,-1.606l-1.285,-6.745Z" style="fill-rule:nonzero;"/>
+
+  <style>
+    #Fond {
+      fill: #e5e5e5;
+    }
+    #Logo {
+      fill: #0a0a0a;
+    }
+    @media (prefers-color-scheme: dark) {
+      #Fond {
+        fill: #171717;
+      }
+      #Logo {
+        fill: #e5e5e5;
+      }
+    }
+  </style>
+</svg>

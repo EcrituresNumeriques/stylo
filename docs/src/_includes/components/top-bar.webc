@@ -1,0 +1,148 @@
+<!---- Barre transversale ---->
+<!----
+À combiner avec d’autres composantes (top-bar-brand, top-bar-link, top-bar-separator, ...).
+Voir le dossier components.
+
+Note: cette barre ne se préoccupe pas de son propre positionnement dans une disposition (layout) sur la page;
+elle est insérée telle quelle et s’adaptera à la largeur de son contenant.
+
+Slots:
+  * button
+  * brand
+  * [default] débordement horizontal fluide
+
+Usage:
+  <top-bar-brand>
+    <top-bar-link></top-bar-link>
+    <top-bar-link></top-bar-link>
+    <top-bar-link></top-bar-link>
+  </top-bar-brand>
+
+
+  <top-bar-brand>
+    <button
+      slot="button"
+    >Menu</button>
+
+    <h1
+      slot="brand"
+    ></h1>
+
+    <top-bar-link></top-bar-link>
+    <top-bar-link></top-bar-link>
+    <top-bar-link></top-bar-link>
+  </top-bar-brand>
+
+---->
+
+<template webc:nokeep>
+
+  <div class="top-bar__title">
+    <slot name="title">
+      <top-bar-brand text="." href="."></top-bar-brand>
+    </slot>
+  </div>
+
+  <div class="top-bar__fluid-container">
+    <div class="top-bar__fluid-content">
+      <slot></slot>
+    </div>
+  </div>
+
+  <div class="top-bar__btn-container">
+    <slot name="button"></slot>
+  </div>
+</template>
+
+<style webc:scoped>
+  :host {
+    --top-bar-background-color: var(--couleur-fond-2);
+    --top-bar-text-color: var(--couleur-police);
+    --top-bar-link-color: var(--top-bar-text-color);
+
+    display: grid;
+      /* Grille 2 x 2 */
+    grid-template-columns: [title] auto [content] 1fr  [button] auto;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "title   .       button"
+      "content content button";
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: var(--top-bar-background-color);
+    color: var(--couleur-police);
+    font-size: .875rem;
+  }
+  @media (min-width: 48rem) {
+    :host {
+      /* Grille 3 x 1 */
+      grid-template-columns: [title] auto [content] 1fr;
+      grid-template-rows: auto;
+      grid-template-areas:
+        "title  content   button";
+    }
+  }
+
+  /* Liens */
+  :host a {
+    color: var(--top-bar-link-color);
+    text-decoration: none;
+    display: inline-flex;
+  }
+
+  .top-bar__title {
+    grid-area: title;
+  }
+  /*
+  Horizontal overflow scroll with flex
+  See https://stackoverflow.com/questions/21515042/scrolling-a-flexbox-with-overflowing-content
+  */
+  .top-bar__fluid-container {
+    grid-area: content;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    /* Horizontal scrollbar */
+    overflow-x: auto;
+
+    /* Pour accueillir le pseudo-élément  */
+    position: relative;
+  }
+  /* Le pseudo-élément affiche un dégradé pour masquer le contenu qui déborde */
+  .top-bar__fluid-container::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    height: 100%;
+    width: .5rem;
+
+    /* Le dégradé, suivant la couleur de fond la barre */
+    background-image: linear-gradient(to right, transparent, var(--top-bar-background-color));
+
+    z-index: 2;
+  }
+
+  .top-bar__fluid-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    /* The key here is `min-with: max-content` (may require vendor prefixes) */
+    min-width: max-content;
+  }
+
+  .top-bar__btn-container {
+    grid-area: button;
+
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+    aspect-ratio: 1;
+  }
+</style>

@@ -1,0 +1,36 @@
+<!---- Gabarit pour les éléments `<my-icon></my-icon>` ---->
+<!----
+Usage:
+  <base-icon :size="size">
+     <svg>...</svg>
+  </base-icon>
+---->
+
+<span
+  class="icon"
+  :data-size="size"
+  :style="`--icon-size: ${size || 16}px;`"
+>
+  <slot><!-- SVG goes here --></slot>
+</span>
+
+<style webc:scoped>
+  :host {
+    display: contents;
+  }
+  .icon {
+    height: var(--icon-size);
+    width: var(--icon-size);
+
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    line-height: 1;
+  }
+  .icon > svg {
+    width: 100%;
+    height: auto;
+  }
+</style>

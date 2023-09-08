@@ -1,3 +1,7 @@
+# 11ty
+_site
+node_modules
+
 ## =============================================================================
 ##                !!! STOP. DO NOT MODIFY BELOW THIS LINE. !!!
 ## =============================================================================
@@ -10,7 +14,8 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -89,6 +94,9 @@ $RECYCLE.BIN/
 
 # workspace files are user-specific
 *.sublime-workspace
+
+# IDE config
+.idea
 
 # project files should be checked into the repository, unless a significant
 # proportion of contributors will probably not be using SublimeText

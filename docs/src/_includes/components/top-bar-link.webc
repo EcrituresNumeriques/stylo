@@ -1,0 +1,27 @@
+<!---- Lien dans la barre transversale ---->
+<!----
+
+Usage:
+
+<top-bar-link
+  @href="String"
+  @title="String (optional)"
+>**Contenu**</top-bar-link>
+---->
+
+<a
+  :href="href"
+  :title="title"
+  class="top-bar-link"
+><slot></slot></a>
+
+<style webc:scoped>
+  .top-bar-link {
+    padding: .35rem .25rem;
+    font-size: .75rem;
+    color: inherit;
+  }
+  .top-bar-link:hover {
+    text-decoration: underline;
+  }
+</style>

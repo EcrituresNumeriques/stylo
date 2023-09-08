@@ -1,0 +1,109 @@
+<!---- Alert Block ---->
+<!----
+ Doc:
+  @prop heading (optional) String
+  @prop type    (optional) String |neutral|success|warning|error
+
+ Usage:
+
+  <alert-block>
+
+   **Contenu** (avec style par défaut)
+
+  </alert-block>
+
+
+  <alert-block
+    type="success"
+    heading="Hourra!"
+  >
+
+   Vous avez réussi! <a href="/">Retourner à l’accueil</a>.
+
+  </alert-block>
+---->
+
+<aside
+  :class="`alert-block alert-block--${type}`"
+>
+  <header
+    class="alert-block__heading"
+    webc:if="heading"
+    @html="heading"
+  ></header>
+  <slot></slot>
+</aside>
+
+<style webc:scoped>
+  .alert-block {
+    --alert-vertical-margin: 2rem;
+    --alert-spacing: .75rem;
+    --alert-background-color: var(--peche);
+    --alert-text-color: var(--fond-marin);
+    --alert-heading-border-color: var(--peche-400);
+
+    display: block;
+
+    padding-bottom: var(--alert-spacing);
+    margin: var(--alert-vertical-margin) 0;
+
+    background-color: var(--alert-background-color);
+    color: var(--alert-text-color);
+    border-radius: 5px;
+    overflow: hidden; /* clip to border-radius */
+  }
+
+  .alert-block__heading {
+    padding: var(--alert-spacing);
+    margin: 0 0 var(--alert-spacing);
+    border-bottom: 2px dashed var(--alert-heading-border-color);
+
+    /* Typographie */
+    font-weight: bold;
+    font-size: 1.125rem;
+
+  }
+
+  .alert-block > *:not(.alert-block__heading) {
+    margin: var(--alert-spacing) var(--alert-spacing) 0;
+  }
+
+  /* Ancres */
+  .alert-block a {
+    /* Harmoniser couleurs */
+    color: inherit;
+    text-decoration: underline;
+  }
+  .alert-block a:hover {
+    text-decoration: none;
+  }
+
+  /* Variantes */
+  .alert-block--neutral {
+    --alert-background-color: var(--neutral-300);
+    --alert-text-color: var(--couleur-police);
+    --alert-heading-border-color: var(--neutral-400);
+  }
+  @media (prefers-color-scheme: dark) {
+    .alert-block--neutral {
+      --alert-background-color: var(--neutral-700);
+      --alert-text-color: var(--couleur-police);
+      --alert-heading-border-color: var(--couleur-police);
+    }
+  }
+  .alert-block--success {
+    --alert-background-color: var(--vert-pale);
+    --alert-text-color: var(--fond-marin);
+    --alert-heading-border-color: var(--vert-pale-500);
+  }
+  .alert-block--warning {
+    --alert-background-color: var(--taxi);
+    --alert-text-color: #000; /* maximum contrast */
+    --alert-heading-border-color: var(--dijon);
+  }
+  .alert-block--error {
+    --alert-background-color: var(--cerise-500);
+    --alert-text-color: var(--ecume);
+    --alert-heading-border-color: var(--cerise-600);
+  }
+</style>
