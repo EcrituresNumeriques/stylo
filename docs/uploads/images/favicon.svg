@@ -10,17 +10,17 @@
 
   <style>
     #Fond {
-      fill: #E4E4F3;
+      fill: #e5e5e5;
     }
     #Logo {
-      fill: #040417;
+      fill: #0a0a0a;
     }
     @media (prefers-color-scheme: dark) {
       #Fond {
         fill: #171717;
       }
       #Logo {
-        fill: #ffffff;
+        fill: #e5e5e5;
       }
     }
   </style>
