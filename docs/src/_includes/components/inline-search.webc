@@ -48,6 +48,7 @@ Usage:
 <style webc:scoped>
   .inline-search {
     --search-background-color: var(--couleur-fond);
+    --search-background-color-highlight: var(--couleur-fond-2);
     --search-text-color: var(--couleur-police);
     --search-font-family: var(--police-corps);
     --search-input-font-size: 1rem; /* 16px for iOS, avoids zoom https://stackoverflow.com/questions/2989263/disable-auto-zoom-in-input-text-tag-safari-on-iphone */
@@ -59,6 +60,11 @@ Usage:
   @media (min-width: 48rem) {
     .inline-search {
       --search-input-font-size: .75rem;
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    .inline-search {
+      --search-background-color-highlight: var(--neutral-900);
     }
   }
 
@@ -129,6 +135,11 @@ Usage:
 
     transition: .15s opacity 0s, 0s visibility .15s;
   }
+  @media (prefers-color-scheme: dark) {
+    .inline-search__results-container {
+      box-shadow: 0 20px 30px rgba(100, 100, 100, .2);
+    }
+  }
   .inline-search.is-searching .inline-search__results-container {
     visibility: visible;
     opacity: 1;
@@ -160,6 +171,7 @@ Usage:
   .inline-search__results-item:hover,
   .inline-search__results-item:focus {
     color: var(--couleur-lien);
+    background-color: var(--search-background-color-highlight);
   }
   .inline-search__results-item:not(:last-of-type) {
     border-bottom: 1px solid var(--couleur-fond-2);
