@@ -80,9 +80,16 @@
 
   /* Variantes */
   .alert-block--neutral {
-    --alert-background-color: var(--couleur-neutre);
-    --alert-text-color: var(--couleur-fond);
-    --alert-heading-border-color: var(--couleur-fond-accent-inverse);
+    --alert-background-color: var(--neutral-300);
+    --alert-text-color: var(--couleur-police);
+    --alert-heading-border-color: var(--neutral-400);
+  }
+  @media (prefers-color-scheme: dark) {
+    .alert-block--neutral {
+      --alert-background-color: var(--neutral-700);
+      --alert-text-color: var(--couleur-police);
+      --alert-heading-border-color: var(--couleur-police);
+    }
   }
   .alert-block--success {
     --alert-background-color: var(--vert-pale);
