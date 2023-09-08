@@ -77,15 +77,15 @@ Doc:
 
     --side-menu-link-color: var(--couleur-police);
     --side-menu-link-background-color: transparent;
-    --side-menu-link-color-highlight: var(--couleur-lien-accent);
-    --side-menu-link-background-highlight: var(--couleur-fond);
+    --side-menu-link-color-highlight: inherit;
+    --side-menu-link-background-highlight: var(--neutral-200);
     --side-menu-background-color: var(--couleur-fond-2);
 
     background-color: var(--side-menu-background-color);
   }
   @media (prefers-color-scheme: dark) {
     :host {
-      --side-menu-link-color: var(--couleur-police);
+      --side-menu-link-background-highlight: var(--neutral-700);
     }
   }
 
