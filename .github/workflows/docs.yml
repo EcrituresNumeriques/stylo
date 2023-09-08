@@ -54,8 +54,8 @@ jobs:
         uses: actions/configure-pages@v2
       - name: Restore cache
         uses: actions/cache@v3
+        working-directory: ./docs
         with:
-          working-directory: ./docs
           path: |
             .eleventy/cache
           # Generate a new cache whenever packages or source files change.
@@ -64,16 +64,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-eleventy-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install dependencies
-        working-directory: ./docs
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        working-directory: ./docs
       - name: Build
-        working-directory: ./docs
         run: ${{ steps.detect-package-manager.outputs.manager }} run build
-      - name: Upload artifact
         working-directory: ./docs
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./_site
+          path: ./docs/_site
 
   # Deployment job
   deploy:
