@@ -3,7 +3,7 @@ title: Guide de style
 lang: fr
 sectionTitle: Guide de style
 isHome: true
-sectionUrl: /styleguide
+sectionUrl: /fr/styleguide
 siteTitle: Stylo
 ---
 
