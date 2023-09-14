@@ -6,6 +6,11 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: [$default-branch]
+  # When PR is merged
+  # https://stackoverflow.com/questions/60710209/trigger-github-actions-only-when-pr-is-merged
+  pull_request:
+    types:
+      - closed
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
