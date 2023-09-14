@@ -6,6 +6,10 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: [$default-branch]
+  # When PR is merged
+  pull_request:
+    types:
+      - closed
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
