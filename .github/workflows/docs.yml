@@ -7,6 +7,7 @@ on:
   push:
     branches: [$default-branch]
   # When PR is merged
+  # https://stackoverflow.com/questions/60710209/trigger-github-actions-only-when-pr-is-merged
   pull_request:
     types:
       - closed
