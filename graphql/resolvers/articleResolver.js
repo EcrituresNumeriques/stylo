@@ -168,6 +168,8 @@ module.exports = {
         createdAt: null,
         updatedAt: null,
         title: prefix + article.title,
+        collaborativeSession: undefined,
+        soloSession: undefined
       })
 
       newArticle.isNew = true
