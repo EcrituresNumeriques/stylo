@@ -50,7 +50,7 @@ query deleteArticle ($article: ID!) {
   }
 }
 
-mutation duplicateArticle($user: ID!, $article: ID!, $to: ID!) {
+mutation duplicateArticle($user: ID, $article: ID!, $to: ID!) {
   duplicateArticle(article: $article, to: $to, user: $user) {
     _id
     title
