@@ -157,7 +157,7 @@ Les formats supportés sont les suivants :
 
 - Fichiers originaux (markdown, yaml et bibtex)
 - HTML5
-- LaTex
+- LaTeX
 - PDF
 - ODT (LibreOffice)
 - DOCX (Microsoft Word)
@@ -193,6 +193,8 @@ Vous avez alors accès aux versions majeures et mineures de l'article : un clic 
 ![Versions](/uploads/images/AccesVersion-V2.PNG)
 
 **Attention** : la page de la version à laquelle vous avez accès, bien qu'elle soit dans le mode édition, ne vous permet pas d'effectuer des modifications sur le contenu de l'article. Il s'agit d'une page en mode lecture uniquement à partir de laquelle vous pouvez effectuer des [exports]() et des [comparaisons]().
+
+![ManageTags](uploads/images/CreateNewTag-V2.PNG)
 
 ### Tager un article
 

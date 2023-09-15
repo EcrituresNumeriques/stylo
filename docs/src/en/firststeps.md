@@ -5,7 +5,7 @@ title: First steps with Stylo
 ## Creating an account
 In order to edit in Stylo, creating a user account via Huma-Num is recommended. To create an account, go to Stylo: https://stylo.huma-num.fr and choose the type of account (we recommend that you create a Huma-Num account or log in if you already have one):
 
-![Register](uploads/images/Login-Huma-Num-V2.PNG)
+![Register](/uploads/images/Login-Huma-Num-V2.PNG)
 
 If you already have a Stylo or Huma-Num account, log in [here](https://stylo.huma-num.fr).
 
@@ -18,14 +18,14 @@ For each article, many actions are possible:
 
 |Button|Function|
 |:-:|:--|
-| ![Edit](uploads/images/Edit.png) | To open the article and edit|
-| ![Share](uploads/images/Share-V2.png) | To share the article and its version history with another Stylo user. It will be called: "[Copy]New article"|
-| ![Duplicate](uploads/images/Duplicate.png) | To duplicate only the last version of the article|
-| ![Rename](uploads/images/Rename.png) | To rename the article|
-| ![Delete](uploads/images/Delete.png) | To delete the article|
-| ![Plus](uploads/images/plus.png) | To expand other functions relating to the article|
-| ![Versions](uploads/images/Version.png) | To consult the history of saved versions|
-| ![Tag](uploads/images/Tag.png) | To choose the tags of the article|
+| ![Edit](/uploads/images/Edit.png) | To open the article and edit|
+| ![Share](/uploads/images/Share-V2.png) | To share the article and its version history with another Stylo user. It will be called: "[Copy]New article"|
+| ![Duplicate](/uploads/images/Duplicate.png) | To duplicate only the last version of the article|
+| ![Rename](/uploads/images/Rename.png) | To rename the article|
+| ![Delete](/uploads/images/Delete.png) | To delete the article|
+| ![Plus](/uploads/images/plus.png) | To expand other functions relating to the article|
+| ![Versions](/uploads/images/Version.png) | To consult the history of saved versions|
+| ![Tag](/uploads/images/Tag.png) | To choose the tags of the article|
 
 Note: The document name, as it visible in Stylo, does not correspond to the title of the article that will be generated. The title must be filled in the metadata (right pane on the article) to appear on the preview or the exports.
 
@@ -39,7 +39,7 @@ An article in Stylo is made up of the following three separate elements:
   - Metadata;
   - A bibliography.
 
-Stylo offers an integrated interface to edit each of these elements, whose sources are accessible at any time via [the export module](premierspas.md#Export).
+Stylo offers an integrated interface to edit each of these elements, whose sources are accessible at any time via [the export module](firststeps.md#Export).
 
 ## Editing interface
 The article editing interface offers many modules:
@@ -64,11 +64,11 @@ The **[Share]** function allows you to invite co-authors to work on the same art
 
 To create a new article, simply click on the button:
 
-![Nouvel article](/uploads/images/Create.png)
+![New article](/uploads/images/Create.png)
 
 You must then enter the name of the document in the field provided for this purpose
 
-![nommer un article](/uploads/images/Title.png)
+![name an article](/uploads/images/Title.png)
 
 and validate the operation by once again clicking on the button
 
@@ -82,7 +82,7 @@ The article will then appear in your list of articles.
 
 Click on the button
 
-![edit](/uploads/images/Edit.png)
+![Edit](/uploads/images/Edit.png)
 
 to access the editing environment and begin to work on your article.
 
@@ -135,11 +135,12 @@ Here is my text[^1]
 Here is my text^[inline footnote.]
 ```
 
-To improve your knowledge in Markdown syntax, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/syntaxemarkdown.md).
+To improve your knowledge in Markdown syntax, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/en/markdownsyntax/).
 
 ## Versions
 
-![active](uploads/images/NomVersion.png)
+![Active](/uploads/images/Nom-Version-V2.PNG)
+
 A document version corresponds to a backup of your work. A version always contains the following article elements: metadata, bibliography, body text. Therefore, in loading an old version, each of these three elements are updated.
 
 Your work is automatically saved on Stylo by default, but you must create the versions yourself. To do this, you can - and it is recommended - use the save function [New Version] which allows you to generate a new version of the work:
@@ -154,17 +155,17 @@ At any time, you can view your work, whether it is the current version you are e
 
 Your work is automaticcaly saved by default by Stylo, but you must create your own versions. To do so, you can - and should - use the the save function \[New Version\] which generates a new version of the work. 
 
-![versions](https://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/images/New-Version-V2.PNG)
+![Versions](/uploads/images/New-Version-V2.PNG)
 
 When you have arrived at a version you are satisfied with, you can name it in the field *Label of the version* before saving it as a minor version (\[Create Minor\]) or major version (\[Create Major\]).
 
-![label of the version](https://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/images/Label-Version-V2.PNG)
+![Label of the version](/uploads/images/Label-Version-V2.PNG)
 
 A minor version correspnds to minor modifications while a major version creates a version with important cahnges. 
 
 At any time, you can viusalize your work, whether it is the current version that you are editing or an earlier version. Click on the button \[Preview\]: 
 
-![preview](https://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/images/Preview-Bouton-V2.PNG)
+![Preview](/uploads/images/Preview-Bouton-V2.PNG)
 
 Each version contains many functions: 
 
@@ -173,15 +174,15 @@ For the editable version (*Edition*):
 
 | **Button**| **Function** |
 | -------- | -------- |
-|![create major](https://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/images/Create-Major-V2.PNG)|To save a major version of your work|
-|![create minor](https://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/images/Create-Minor-V2.PNG)| To save a minor version of your work|
-|![export](https://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/images/Export-V2.PNG)| To export and download the version in different formats|
-|![preview](https://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/images/Preview-Bouton-V2.PNG) |To access the preview of your work and annotate it|
+|![Create Major](/uploads/images/Create-Major-V2.PNG)|To save a major version of your work|
+|![Create Minor](/uploads/images/Create-Minor-V2.PNG)| To save a minor version of your work|
+|![Export](/uploads/images/Export-V2.PNG)| To export and download the version in different formats|
+|![Preview](/uploads/images/Preview-Bouton-V2.PNG) |To access the preview of your work and annotate it|
 
 - For a previous version :
 	- **[Compare]** to compare different versions (a previous version and the current version or two previous versions). For more information about the **[Compare]** function, you can consult the following [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/interface.md)
 	- **[Export]** to export and download the document in different formats: HTML5, PDF, XML, etc.
-	- **[preview]** to access a preview of your work and to annotate it. For more information on the **[preview]** function, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/preview.md)
+	- **[preview]** to access a preview of your work and to annotate it. For more information on the **[preview]** function, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/en/preview/)
 
 To view a previous version, simply click on its title. To return to the editable version, you must click on the **[Edit]** button.
 
@@ -189,11 +190,11 @@ To view a previous version, simply click on its title. To return to the editable
 
 The export module offers many formats (HTML, XML, PDF, etc.), allowing you to choose a bibliographic style, and the inclusion or not of a table of contents.
 
-For more information on Stylo exporting, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/export.md)
+For more information on Stylo exporting, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/en/exports/)
 
 ## Table of Contents
 
-![sommaire](/uploads/images/sommaire.png)
+![Sommaire](/uploads/images/sommaire.png)
 
 The table of contents appears in a list of titles at levels 2, 3, and so on. These titles are clickable, for quick access to that part of the corresponding text.
 
@@ -213,15 +214,15 @@ To add a reference to the article, you just need to click on the reference, then
 
 An autocomplete system also allows you to display the available references by typing [@ or @ followed or not by the first letters of the reference identifier.
 
-![biblioex](uploads/images/Bibliographie-Exemple-V2.PNG)
+![biblioex](/uploads/images/Bibliographie-Exemple-V2.PNG)
 
-For more information on managing the bibliography, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/bibliographie.md).
+For more information on managing the bibliography, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/en/managingref/).
 
 ## Metadata
 
-![metadata button](uploads/images/Metadata-Bouton-V2.PNG)
+![Metadata-Button](/uploads/images/Metadata-Bouton-V2.PNG)
 
-![metadata edition](uploads/images/Metadata-Edition-V2.PNG)
+![Metadata-Edition](/uploads/images/Metadata-Edition-V2.PNG)
 
 The [Metadata] button opens the metadata pane. Three editing modes are available:
 
@@ -234,7 +235,7 @@ The [Metadata] button opens the metadata pane. Three editing modes are available
 - A title;
 - An author name.
 
-For more information on metadata editing, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/bibliographie.md)
+For more information on metadata editing, you can see this [page]().
 
 **Careful**: In the metadata pane is the "Bibliography" division, including the *Display* option, which allows you to choose to view the bibliography either in its entirety ("All citations"), or just the references which have been cited in the body of the article ("Only used"). 
 
@@ -242,7 +243,7 @@ For more information on metadata editing, you can see this [page](http://stylo-d
 
 ## Statistics
 
-![statistiques](/uploads/images/statistiques.png)
+![Statistics](/uploads/images/statistiques.png)
 
 The *Stats* menu provides information on:
 

@@ -15,7 +15,7 @@ Stylo is currently a prototype tool undergoing development, implemented in the r
 
 Stylo can be used online through the address [stylo.huma-num.fr](https://stylo.huma-num.fr/). This version of Stylo is deployed and maintained by [Huma-Num](https://www.huma-num.fr/), who provides data backup and security.
 
-Stylo\'s source code is available [on Github](https://github.com/EcrituresNumeriques/stylo/).
+Stylo\'s source code is available on [Github](https://github.com/EcrituresNumeriques/stylo/).
 
 ## Roadmap
 
@@ -54,8 +54,11 @@ The researchers participating in the project are as follows:
 - [Servanne Monjour](https://ecrituresnumeriques.ca/fr/Equipe/Servanne-Monjour-)
 - [Nicolas Sauret](https://ecrituresnumeriques.ca/fr/Equipe/Nicolas-Sauret)
 - [Marcello Vitali-Rosati](https://ecrituresnumeriques.ca/fr/Equipe/Marcello-Vitali-Rosati-)
+- [Roch Delannay](https://ecrituresnumeriques.ca/en/Equipe/Roch-Delannay)
+- [Louis-Olivier Brassard]()
 
 ## Developers
 
 - [Guillaume Grossetie](https://github.com/ggrossetie)
 - [Thomas Parisot](https://détour.studio)
+- [David Larlet](http://larlet.com/)

@@ -1,19 +1,21 @@
-# Managing references
+---
+title: Managing references
+---
 
 The bibliography lists the bibliographic references that you have added to your article. To add your references, click on **\[Manage\]** in the left side panel, to the right of the *Bibliography* tab. The *Bibliography Manager* tool opens and offers you several options:
 
 - **Zotero**: you can synchronize a bibliography by connecting Stylo to your Zotero account (public or private groups/collections). We reccomend this method. See below for more details.
 
-![Bibliography manger](uploads/images/BibliographieZotero-V2.png)
+![Bibliography manger](/uploads/images/BibliographieZotero-V2.png)
 
 - **Zotero**: you can import your bibliography from a Zotero collection of a public gropu by entering the collection's URL.
 - **Citations** : you can fill in your bibliography manually in BibTeX format.
 
-![Bibliography citations](uploads/images/BibliographieCitations-V2.png)
+![Bibliography citations](/uploads/images/BibliographieCitations-V2.png)
 
 - **Raw bibtex** : you can correct the BibTeX directly.
 
-![Bibliographie Raw](uploads/images/BibliographieRawBibTeX-V2.png)
+![Bibliographie Raw](/uploads/images/BibliographieRawBibTeX-V2.png)
 
 You can directly [structure your references in BibTeX](http://www.andy-roberts.net/writing/latex/bibliographies), or export your references in bibtex thanks to your bibliography management tool:
 
@@ -38,11 +40,11 @@ It is possible to synchronize the references of an article with a collection or 
 ## Insert a bibliographic reference
 An autocomplete feature has been added. Just start by typing `[@` or simply `@` and the text editor will suggest all of your references assocaited with the article. If you wish to refine the autocompletioon, just add the first letter of the author name to reduce suggestions provided: `[@b`. 
 
-![Bibliographie-Autocomplétion](uploads/images/BibliographieAutocompletion-V2.png)
+![Bibliographie-Autocomplétion](/uploads/images/BibliographieAutocompletion-V2.png)
 
 You can also click on the icon associated with the reference in the left pane, then paste (Ctrl+V) the reference into the text at the desired location. It will then appear as `[shirky_here_2008]`. To explain, one click is equivalent to "copying" the bibtex key of the reference in the clipboard.
 
-![Bibliographie exemple](uploads/images/Bibliographie-Exemple-V2.PNG)
+![Bibliographie exemple](/uploads/images/Bibliographie-Exemple-V2.PNG)
 
 Inserting a bibtex key in the body text has two effects:
 

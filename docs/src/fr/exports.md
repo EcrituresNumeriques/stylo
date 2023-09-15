@@ -4,14 +4,14 @@ title: Exports
 
 ## Page Export
 
-La version actuelle du module d'export de Stylo ([https://export.stylo.huma-num.fr/](https://export.stylo.huma-num.fr/)) propose un export générique et un export pour une intégration dans la chaîne d'édition de Métopes (schéma XML-TEI Commons Publishing pour Métopes ou OpenEdition).<!-- et enfin un export spécifique pour la revue _Sens public_.-->
+La version actuelle du module d'export de Stylo ([https://export.stylo.huma-num.fr/](https://export.stylo.huma-num.fr/)) propose un export générique et un export pour une intégration dans la chaîne d'édition de Métopes (schéma XML-TEI Commons Publishing pour Métopes ou OpenEdition).
 
 La version _legacy_ de l'export de Stylo ([https://stylo-export.ecrituresnumeriques.ca](https://stylo-export.ecrituresnumeriques.ca/)) liste d'autres exports personnalisés de Stylo dont : 
 
 - les exports pour les revues qui utilisent Stylo dans leurs chaînes éditoriales : 
-     - [Sens public](http://sens-public.org/)
-     - [Scriptura](https://www.facebook.com/RevueScriptura/)
-     - [Nouvelles Vues](https://nouvellesvues.org/presentation-de-la-revue/)
+  - [Sens public](http://sens-public.org/)
+  - [Scriptura](https://www.facebook.com/RevueScriptura/)
+  - [Nouvelles Vues](https://nouvellesvues.org/presentation-de-la-revue/)
 - les exports selon les Modèles de l'Université de Montréal;
 - la conversion d'un document du format DOCX vers le format Markdown.
 

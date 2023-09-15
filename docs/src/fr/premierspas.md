@@ -37,9 +37,9 @@ Note : le nom du document tel que visible sur Stylo ne correspond pas au titre 
 
 Un article dans Stylo est composé à partir de trois éléments distincts :
 
-  - un corps de texte ;
-  - des métadonnées ;
-  - une bibliographie.
+- un corps de texte ;
+- des métadonnées ;
+- une bibliographie.
 
 Stylo propose une interface intégrée pour éditer chacun de ces éléments, dont les sources sont accessibles à tout moment via [le module d'export](premierspas.md#Export).
 
@@ -138,11 +138,11 @@ sans appel de note :
 Voici mon texte^[Une note de bas de page inline.]
 ```
 
-Pour approfondir vos connaissances en syntaxe Markdown, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!/fr/syntaxemarkdown).
+Pour approfondir vos connaissances en syntaxe Markdown, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr/syntaxemarkdown/).
 
 ## Versions
 
-![active](/uploads/images/Nom-Version-V2.PNG)
+![Active](/uploads/images/Nom-Version-V2.PNG)
 
 Une version du document correspond à une sauvegarde de votre travail. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. En chargeant une ancienne version, ce sont donc ces trois éléments qui sont mis à jour. 
 
@@ -166,15 +166,15 @@ Chaque version comporte plusieurs fonctionnalités :
 
 |                        Bouton                        |Fonction|
 |:----------------------------------------------------:|:--|
-| ![Create Major](/uploads/images/Create-Major-V2.PNG) | pour sauvegarder une version majeure de votre travail |
-| ![Create Minor](/uploads/images/Create-Minor-V2.PNG) | pour sauvegarder une version mineure de votre travail |
+| ![Majeure](/uploads/images/Create-Major-V2.PNG) | pour sauvegarder une version majeure de votre travail |
+| ![Mineure](/uploads/images/Create-Minor-V2.PNG) | pour sauvegarder une version mineure de votre travail |
 |       ![Export](/uploads/images/Export-V2.PNG)       | pour exporter et télécharger la version dans différents formats |
-|  ![Preview](/uploads/images/Preview-Bouton-V2.PNG)   | pour accéder à la prévisualisation de votre travail et l'annoter |
+|  ![Prévisualisation](/uploads/images/Preview-Bouton-V2.PNG)   | pour accéder à la prévisualisation de votre travail et l'annoter |
 
 - Pour une version antérieure :
-	- **[Compare]** pour comparer les différentes versions (une version antérieure et la version actuelle ou deux versions antérieures). Pour davantage d'informations sur la fonction **[Compare]**, vous pouvez consulter la [page suivante](/fr/interface);
-	- **[Export]** : pour exporter et de télécharger le document dans différents formats : HTML, PDF, XML, etc.;
-	- **[Preview]** pour accéder à la prévisualisation de votre travail et l'annoter. Pour davantage d'informations sur la fonction **[Preview]**, vous pouvez consulter la [page suivante](/fr/preview).
+	- **[Comparer]** pour comparer les différentes versions (une version antérieure et la version actuelle ou deux versions antérieures). Pour davantage d'informations sur la fonction **[Compare]**, vous pouvez consulter la [page suivante](/fr/interface);
+	- **[Exporter]** : pour exporter et de télécharger le document dans différents formats : HTML, PDF, XML, etc.;
+	- **[Prévisualiser]** pour accéder à la prévisualisation de votre travail et l'annoter. Pour davantage d'informations sur la fonction **[Preview]**, vous pouvez consulter la [page suivante](/fr/preview).
 
 Pour visualiser une ancienne version, il vous suffit de cliquer sur son titre. Pour retourner à la version éditable, il vous faut cliquer sur le bouton **[Edit Mode]**.
 
@@ -208,7 +208,7 @@ Un système d'autocomplétion vous permet aussi d'afficher les références disp
 
 ![Bibliographie exemple](/uploads/images/Bibliographie-Exemple-V2.PNG)
 
-Pour davantage d'informations sur la gestion de la bibliographie, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!/fr/bibliographie).
+Pour davantage d'informations sur la gestion de la bibliographie, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr/bibliographie/).
 
 ## Métadonnées
 

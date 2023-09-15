@@ -2,7 +2,7 @@
 title: Mémoires et thèses
 ---
 
-Stylo permet de créer des documents plus complexes que de simples articles, tels que des mémoires ou des thèses ; cette fonctionnalité s'appelle **Books**.
+Stylo permet de créer des documents plus complexes que de simples articles, tels que des mémoires ou des thèses ; cette fonctionnalité s'appelle **Corpus**.
 
 **Attention : cette option n'est pas totalement fonctionnelle, nous vous recommandons de patienter jusqu'aux prochaines mises à jour avant de l'utiliser comme rendu final.**
 
@@ -38,7 +38,7 @@ Mais il est également possible de structurer cette bibliographie : dans un mém
 
 1. Dans les métadonnées du mémoire, il faut déclarer les différentes sections de la bibliographie. Pour cela, passez les métadonnées en mode _raw_
 
-![rawmode](/uploads/images/alpha_rawmode.png)
+![Rawmode](/uploads/images/alpha_rawmode.png)
 
 Puis à la fin, avant `---`, ajoutez les lignes suivantes :
 
