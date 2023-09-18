@@ -12,6 +12,14 @@ Les corpus sont implémentés dans l'espace personnel et dans les espaces de tra
 Ainsi un corpus n'appartient pas forcément à un utilisateur unique mais peut également être partagé à l'intérieur d'un espace de travail.
 Pour plus de renseignements sur les espaces de travail, voir la [section dédiée](/fr/espace-de-travail).
 
+<alert-block heading="Important">
+
+La page dédiée à la gestion des corpus ne donne pas accès aux articles.
+Il n'est pas possible de les modifier depuis cet espace-là.
+Le gestionnaire des corpus ne permet que la création, la lecture, la modification ou la suppression de données relatives aux corpus.
+
+</alert-block>
+
 ## Créer un corpus
 
 Pour créer un corpus, il faut tout d'abord sur la page de gestion des corpus en cliquant sur le bouton \[Corpus\] dans le bandeau noir en haut de l'interface
@@ -57,4 +65,40 @@ Puis, en respectant le fonctionnement du gestionnaire des articles, il faut dép
 
 ## Éditer un corpus
 
+<!-- Mettre l'image de la roue crantée pour éditer le corpus  -->
+
+Les informations du corpus (titre et description) peuvent être mises à jour en cliquant sur l'icône d'engrenage d'un corpus (dans le gestionnaire de corpus).
+
+Une fenêtre pop-up contenant un formulaire va s'ouvrir et permettre de modifier les données concernées. 
+
+<!-- Mettre l'image de la fenêtre pop-up -->
+
 ## Exporter un corpus
+
+<!-- Mettre l'image de la petite imprimante de l'export visible depuis le gestionnaire des corpus -->
+
+L'export d'un corpus se réalise de la même manière que pour un article.
+
+Pour exporter un corpus il faut se rendre sur la page de gestion des corpus et cliquer sur le bouton d'export (icône imprimante).
+
+Note : à la différence des articles, il n'y pas d'accès à la fonctionnalité d'export depuis l'interface d'édition des documents puisque le corpus exporte plusieurs articles en même temps.
+
+Une fenêtre s'ouvre et propose plusieurs options d'export :
+
+- le format à produire :
+    - HTML5 ;
+    - ZIP ;
+    - PDF ;
+    - LATEX ;
+    - XML (ÉRUDIT) ;
+    - ODT ;
+    - DOCX ;
+    - EPUB ;
+    - XML TEI ;
+    - ICML.
+- des options additionnelles :
+    - présence ou non d'une table des matières ;
+    - la numérotation ou non des chapitres et sections ;
+    - le type de division des contenus.
+
+<!-- Mettre une image du formulaire d'export d'un corpus -->

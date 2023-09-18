@@ -145,40 +145,7 @@ Un doublon de l'article sera alors généré et apparaîtra en haut de la liste 
 
 ## Exporter un article
 
-Pour exporter un article, il faut cliquer sur le bouton "Export" depuis la page "Articles" ou depuis la page d'édition de l'article :
-
-![Export](/uploads/images/Download.png)
-
-Le menu d'export permet de choisir le format d'export. Il contient également l'option d'intégrer ou non une table des matières.
-
-![Export](/uploads/images/ExportConfig-V2.PNG)
-
-Les formats supportés sont les suivants :
-
-- Fichiers originaux (markdown, yaml et bibtex)
-- HTML5
-- LaTeX
-- PDF
-- ODT (LibreOffice)
-- DOCX (Microsoft Word)
-- ICML (InDesign)
-- XML-TEI
-- XML-Erudit
-- XML-TEI Commons Publishing (Métopes et OpenEdition)
-
-Il est possible de choisir parmi plusieurs styles bibliographiques : certains intègrent la référence dans le texte (par exemple Chicago, qui insère la référence dans le corps du texte entre parenthèses), d'autres ajoutent une note avec la référence.
-
-Le module d'export se charge de mettre en forme les références, d'ajouter ou d'enlever les espaces, d'insérer des "Ibid." en accord avec le style, etc.
-
-Les exports sont produits grâce à l'outil de conversion [Pandoc](https://pandoc.org/) sur la base des templates disponibles [ici](https://framagit.org/stylo-editeur/templates-stylo).
-
-L'export permet aussi de télécharger les fichiers source de Stylo (.md, .bib, .yaml) et les médias insérés dans l'article s'il y en a.
-
-### Personnaliser son export
-
-À partir des fichiers source, il est possible de produire des exports personnalisés (mise en page, graphismes, métadonnées) en s'appuyant sur les fonctionnalités de l'outil de conversion [Pandoc](https://pandoc.org/).
-
-Pour plus d'informations sur l'emploi des templates, voir ce [tutoriel](https://gitlab.huma-num.fr/ecrinum/manuels/tutoriel-markdown-pandoc).
+Les informations liées à cette section se trouvent sur une [page dédiée](/fr/exports) à cette fonctionnalité
 
 ## Développer les autres fonctionnalités de l'article
 
