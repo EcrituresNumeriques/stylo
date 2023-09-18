@@ -1,0 +1,3 @@
+---
+title: L'édition collaborative
+---

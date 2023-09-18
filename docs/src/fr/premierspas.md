@@ -88,13 +88,13 @@ Cliquez sur le bouton
 
 pour accéder à l’environnement d’édition et commencer à éditer votre article.
 
-## Importer
+<!-- ## Importer
 
 Si le contenu destiné à être édité est déjà structuré dans un autre format, dans un autre environnement, il est possible de le transférer dans l'espace d'édition de Stylo. Stylo gère essentiellement du langage Markdown (extension .md) : pour importer un contenu actuellement en format DOC (extension .doc) ou DOCX (extension .docx), nous avons mis en place un [convertisseur en ligne](https://stylo-export.ecrituresnumeriques.ca/importdocx.html) permettant de convertir un document docx vers md. La procédure à adopter est détaillée sur la page de conversion. 
 
 ![Import](/uploads/images/Import.png)
 
-Une fois la conversion effectuée, un document .md est généré : ouvrez-le avec un éditeur de texte (Atom, GeDit), puis copier-coller le contenu du document dans l'espace de votre article en Stylo. 
+Une fois la conversion effectuée, un document .md est généré : ouvrez-le avec un éditeur de texte (Atom, GeDit), puis copier-coller le contenu du document dans l'espace de votre article en Stylo. --> 
 
 ## Édition
 

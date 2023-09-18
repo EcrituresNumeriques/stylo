@@ -43,9 +43,19 @@
     },
 
     {
-      "label": "Français",
-      "url": "/fr",
-      "lang": "fr"
+      "label": "Langue",
+      "children": [
+        {
+          "label": "English",
+          "url": "/en",
+          "lang": "en"
+        },
+        {
+          "label": "Français",
+          "url": "/fr",
+          "lang": "fr"
+        }
+      ]
     }
   ]
 }

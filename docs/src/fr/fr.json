@@ -24,12 +24,16 @@
         {
           "label": "Contact",
           "url": "/fr/contacts"
+        },
+        {
+          "label": "Publications",
+          "url": "/fr/publications"
         }
       ]
     },
 
     {
-      "label": "Guide",
+      "label": "Guide d'écriture",
       "children": [
         {
           "label": "Premiers pas dans Stylo",
@@ -40,35 +44,87 @@
           "url": "/fr/syntaxemarkdown"
         },
         {
+          "label": "Syntaxe BibTeX",
+          "url": "/fr/syntaxe-bibtex"
+        },
+        {
+          "label": "Syntaxe YAML",
+          "url": "/fr/syntaxe-yaml"
+        }
+      ]
+    },
+    {
+      "label": "La gestion des articles",
+      "children": [
+        {
+          "label": "Création et gestion",
+          "url": "/fr/mesarticles"
+        },
+        {
           "label": "Structurer la bibliographie",
           "url": "/fr/bibliographie"
         },
         {
-          "label": "Prévisualiser et annoter un article",
+          "label": "Prévisualiser et annoter",
           "url": "/fr/preview"
         },
         {
-          "label": "Gérer les articles",
-          "url": "/fr/mesarticles"
+          "label": "Versionner",
+          "url": "/fr/versionner"
         },
         {
-          "label": "Résoudre les problèmes",
-          "url": "/fr/problemes"
+          "label": "Gérer les métadonnées",
+          "url": "/fr/metadata"
+        }
+      ]
+    },
+    {
+      "label": "Fonctionnalités de Stylo",
+      "children": [
+        {
+          "label": "Corpus",
+          "url": "/fr/corpus"
+        },
+        {
+          "label": "Les espaces de travail",
+          "url": "/fr/espace-de-travail"
+        },
+        {
+          "label": "Écriture collaborative",
+          "url": "/fr/edition-collaborative"
+        },
+        {
+          "label": "API GraphQL",
+          "url": "/fr/api-graphql"
+        },
+        {
+          "label": "Exports",
+          "url": "/fr/exports"
         },
         {
           "label": "Mémoires et thèses",
           "url": "/fr/memoires"
         },
         {
-          "label": "Exports",
-          "url": "/fr/exports"
+          "label": "Résoudre les problèmes",
+          "url": "/fr/problemes"
         }
       ]
-    },
+    },    
     {
-      "label": "English",
-      "url": "/en",
-      "lang": "en"
+      "label": "Langue",
+      "children": [
+        {
+          "label": "English",
+          "url": "/en",
+          "lang": "en"
+        },
+        {
+          "label": "Français",
+          "url": "/fr",
+          "lang": "fr"
+        }
+      ]
     }
   ]
 }
