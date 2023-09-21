@@ -94,6 +94,10 @@
           "url": "/fr/edition-collaborative"
         },
         {
+          "label": "Éditeur de texte Monaco",
+          "url": "/fr/editeur-monaco"
+        },
+        {
           "label": "API GraphQL",
           "url": "/fr/api-graphql"
         },
