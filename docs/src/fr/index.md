@@ -4,11 +4,24 @@ useSideMenu: true
 isHome: true
 ---
 
+
 <alert-block heading="📢 Nouvelle mise à jour">
 
-À l'attention des utilisatrices et des utilisateurs de Stylo : une mise à jour de l'éditeur de texte sémantique Stylo vient d'être lancée. Pour découvrir les nouvelles fonctionnalités en détail voici la page d'information : [Nouvelles fonctionnalités !](/fr/messagev2/).
+À l'attention des utilisatrices et des utilisateurs de Stylo : La tant attendue fonctionnalité d'écriture collaborative synchrone est maintenant disponible dans Stylo ! Pour en savoir plus, rendez-vous sur la [page de la documentation](/fr/edition-collaborative) qui y est consacrée !
 
 </alert-block> 
+
+
+<alert-block heading="📢 Nouvelle mise à jour">
+
+À l'attention des utilisatrices et des utilisateurs de Stylo : la documentation de Stylo a été mise à jour ! Elle obtient une nouvelle interface et une nouvelle structuration de ses données !  
+
+</alert-block> 
+
+
+---
+
+Pour faire un tour rapide de certaines nouvelles fonctionnalités de 2023 voici une page d'information : [Nouvelles fonctionnalités !](/fr/messagev2/).
 
 ---
 
