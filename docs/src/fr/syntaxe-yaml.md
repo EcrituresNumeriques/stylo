@@ -4,7 +4,7 @@ title: Sérialiser ses métadonnées en YAML
 
 ## Introduction au YAML
 
-YAML Ain't Markup Language est une langage de sérialisation de données très populaire.
+YAML Ain't Markup Language est une langage de sérialisation (et de stockage) de données très populaire.
 Ce format _plein text_ est souvent utilisé pour décrire les métadonnées d'un document ou encore pour créer des fichiers de configuration.
 
 La syntaxe YAML est très légère, c'est l'une des forces de ce format contrairement à d'autres comme JSON qui peuvent être plus verbeux.
@@ -78,7 +78,7 @@ Or nous souhaiterions décrire formellement qu'un auteur à un nom et un prénom
 ```yaml
 
 auteur:
-    nom: "Wayne"
+    - nom: "Wayne"
     prenom: "Bruce"
 
 ```
@@ -106,12 +106,49 @@ Comme dans la plupart des langages de programmations, il existe plusieurs types 
 
 Les bonnes pratiques d'écriture en YAML recommandent de bien spécifier les chaînes de caractères avec les `" "` même si les logiciels savent les reconnaître sans ces symboles pour éviter tout conflit avec les autres types de données : `"6"` et `6` sont différents.
 
+Ces différents types de données ne sont pas les seuls objets qui peuvent être affectés à une clef YAML.
+Le format YAML prend également en charge des objets plus complexes : des tableaux, des listes ou des dictionnaires.
+
+Nous avons déjà vu les listes dans le dernier exemple.
+Elles reposent sur l'indentation et l'utilisation des tirets `-` pour annoncer une nouvelle entrée dans la liste.
+
+Les tableaux quant à eux sont délimités avec des crochets `\[\]`, et les éléments qu'ils contiennent sont séparés par des virgules `,`.
+
+```yaml
+
+prenoms: ["Bruce", "John", "Céline"]
+
+chiffres: [1, 4, 8, 3, 55]
+
+
+```
+
+Enfin les dictionnaires YAML prennent la même forme que les dictionnaires que l'on trouve dans le langage de programmation Python.
+Ils sont délimités par des crochets `\{\}` et les éléments qu'ils contiennent sont séparés par des virgules `,`.
+Les objets décrits dans un dictionnaire sont basés sur le même principe de `clef:valeur` que nous avons décrit précédemment.
+
+Ainsi un dictionnaire en YAML prend la forme suivante : 
+
+```yaml
+
+monDictionnaire: {clef1:"valeur1", clef2:"valeur2", clef3:"valeur3", clef4:"valeur4", clef5:8}
+
+
+```
+
+Ces objets plus complexes peuvent contenir tous les types de données que nous avons mentionnés : des nombres entiers, des chaînes de caractères, des booléens et des décimaux.
+
 
 ## Les données dans Stylo
 
-Lorsque l'on crée un nouvel article dans Stylo et que l'on passe en mode écriture, le volet de droite de l'interface permet de gérer les métadonnées du document.
+La structuration des données dans Stylo est déjà réalisée.
+En tant qu'utilisateur il n'y a pas besoin de modifier cette structure.
 
-Le troisième mode, le mode `raw` offre quant à lui une visualisation de la structure des métadonnées associée à un article : 
+Pour clore cette page de présentation du langage YAML, il est intéressant de voir une implémentation de ce dernier dans une application.
+Pour un article dans Stylo, en mode écriture, le volet à droite de l'interface permet de gérer les métadonnées du document.
+
+Le troisième mode, le mode `raw` offre quant à lui une visualisation de la structure des métadonnées associée à un article.
+Si l'on ne prend que les métadonnées en mode `raw` d'un nouvel article, nous pouvons observer la structure suivante :
 
 ```yaml 
 
