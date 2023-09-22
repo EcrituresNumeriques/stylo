@@ -4,6 +4,10 @@ title: Publications
 
 Stylo a été présenté lors de plusieurs événements scientifiques et professionnels :
 
+- [Humanistica 2023](https://humanistica2023.sciencesconf.org/), « Stylo en 2023 : de nouvelles fonctionnalités pour l'écriture et l'édition scientifique », juin 2023 : [résumé](https://hal.science/HUMANISTICA-2023/hal-04126432v1) de la présentation (Roch Delannay, Antoine Fauchié et Marcello Vitali-Rosati)
+
+- [DH2022](https://dh2022.adho.org/), « Scholarly writing and editing with the text editor Stylo », juillet 2022 : [résumé](https://dh2022.adho.org/workshops-and-tutorials/wt-06) de la présentation (Roch Delannay et Antoine Fauchié)
+
 - [Humanistica 2021](https://humanistica2021.sciencesconf.org), « L’utilisation de l’outil Stylo dans le cadre de la revue *Sens public* », mai 2021 : [résumé](https://humanistica2021.sciencesconf.org/340826) de la présentation (Antoine Fauchié et Margot Mellet)
 
 - [Humanistica 2021](https://humanistica2021.sciencesconf.org), « Écriture et édition scientifiques avec l’éditeur de texte Stylo », mai 2021 : [résumé](https://humanistica2021.sciencesconf.org/340911) de l’atelier (Antoine Fauchié et Margot Mellet)

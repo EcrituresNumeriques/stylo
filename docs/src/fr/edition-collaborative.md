@@ -11,16 +11,16 @@ Contrairement à ces applications où le partage d'une simple URL suffit à acco
 
 Les informations relatives à l'authentification se trouvent sur la page [Premiers pas dans Stylo](/fr/premierpas/#creation-d-un-compte).
 
-Ensuite, les utilisateurs qui souhaitent écirre sur un article Stylo lors d'une session collaborative doivent avoir accès à l'article. 
+Ensuite, les utilisateurs qui souhaitent écrire sur un article Stylo lors d'une session collaborative doivent avoir accès à l'article à éditer. 
 Pour avoir les droits d'accès à un article 3 solutions sont mises à disposition : 
 
 - [créer un article](/fr/mesarticles/#creer-un-nouvel-article) 
 - [partager un article](/fr/#partager-un-article)
 - accéder à un article dans un [espace de travail](/fr/espace-de-travail).
 
-## Initialiser une sessio d'écriture synchrone
+## Initialiser une session d'écriture synchrone
 
-L'écriture synchrone dans Stylo n'est pas un mode par defaut pour tous les articles. 
+L'écriture synchrone dans Stylo n'est pas un mode par défaut pour tous les articles. 
 C'est un mode qu'il faut initialiser en appuyant sur l'icône \[*Collaborative editing*\] dans la page de gestion des articles, qu'il s'agisse de l'espace personnel ou d'un espace de travail.
 
 <!-- Mettre une image du bouton pour la session synchrone -->
@@ -46,3 +46,10 @@ Si une session collaborative n'est pas fermée correctement, l'article concerné
 </alert-block> 
 
 <!-- Mettre une image d'un article bloqué en écriture simple -->
+
+Un article ouvert en mode collaboratif est signalé par un point rouge à côté du pictogramme de la session collaborative dans la page de gestion des articles.
+De la même façon, lorqu'un utilisateur est dans une session d'écriture en solitaire, et que l'article est partagé avec d'autres utilisateurs, un point rouge apparaît à côté du pictogramme d'édition pour signaler que cet article ne sera pas accessible en écriture, mais seulement en lecture.
+
+<!-- Mettre une image du picto en cours d'édition collab -->
+
+<!-- Mettre une image du picto en cours d'édition solo -->
