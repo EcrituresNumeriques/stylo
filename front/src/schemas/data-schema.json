@@ -205,13 +205,16 @@
         "type": "object",
         "properties": {
           "title_f": {
-            "type": "string"
+            "type": "string",
+            "title": "Title"
           },
           "url": {
-            "type": "string"
+            "type": "string",
+            "title": "Article URL"
           },
           "lang": {
             "$ref": "#/definitions/lang"
+            "title": "Language"
           }
         }
       }

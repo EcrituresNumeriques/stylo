@@ -111,7 +111,7 @@
     }
   },
   "translationOf": {
-    "ui:title": "Traductions de",
+    "ui:title": "Translation of",
     "items": {
       "url": {
         "ui:widget": "uri"

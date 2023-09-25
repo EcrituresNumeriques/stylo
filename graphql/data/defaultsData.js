@@ -47,11 +47,11 @@ lang: fr
 orig_lang: ''
 translations:
   - lang: ''
-    titre: ''
+    title: ''
     url: ''
 articleslies:
   - url: ''
-    titre: ''
+    title: ''
     auteur: ''
 reviewers: []
 keyword_fr_f: ''
