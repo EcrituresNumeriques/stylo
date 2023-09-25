@@ -213,7 +213,7 @@
             "title": "Article URL"
           },
           "lang": {
-            "$ref": "#/definitions/lang"
+            "$ref": "#/definitions/lang",
             "title": "Language"
           }
         }
