@@ -23,7 +23,6 @@ Pour chaque article, plusieurs actions sont possibles :
 
 |                     Bouton                     |Fonction|
 |:----------------------------------------------:|:--|
-
 |    ![Delete](/uploads/images/Delete-V2.png)    | pour supprimer l'article |
 | ![Duplicate](/uploads/images/Duplicate-V2.png) | pour dupliquer uniquement la dernière version de l'article|
 | ![Send](/uploads/images/send.png) | pour partager une copie de l'article et son historique de versions avec un autre usager de Stylo qui s'intitulera ainsi : "[Copy]New article"|

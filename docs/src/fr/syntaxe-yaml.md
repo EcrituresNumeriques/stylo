@@ -112,7 +112,7 @@ Le format YAML prend également en charge des objets plus complexes : des tablea
 Nous avons déjà vu les listes dans le dernier exemple.
 Elles reposent sur l'indentation et l'utilisation des tirets `-` pour annoncer une nouvelle entrée dans la liste.
 
-Les tableaux quant à eux sont délimités avec des crochets `\[\]`, et les éléments qu'ils contiennent sont séparés par des virgules `,`.
+Les tableaux quant à eux sont délimités avec des crochets `[]`, et les éléments qu'ils contiennent sont séparés par des virgules `,`.
 
 ```yaml
 
@@ -124,7 +124,7 @@ chiffres: [1, 4, 8, 3, 55]
 ```
 
 Enfin les dictionnaires YAML prennent la même forme que les dictionnaires que l'on trouve dans le langage de programmation Python.
-Ils sont délimités par des crochets `\{\}` et les éléments qu'ils contiennent sont séparés par des virgules `,`.
+Ils sont délimités par des crochets `{}` et les éléments qu'ils contiennent sont séparés par des virgules `,`.
 Les objets décrits dans un dictionnaire sont basés sur le même principe de `clef:valeur` que nous avons décrit précédemment.
 
 Ainsi un dictionnaire en YAML prend la forme suivante : 

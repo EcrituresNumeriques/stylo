@@ -27,15 +27,8 @@ Un clic droit dans l'éditeur de texte ouvrira un menu donnant accès à plusieu
 
 ## Autocomplétion
 
-Une fonction d'autocomplétion est implémentée. Il vous suffit de commencer à écrire `[@` ou simplement `@` pour que l’éditeur de texte vous propose toutes vos références associées à l’article. Si vous souhaitez affiner l’autocomplétion, il suffira d’ajouter la première lettre du nom de l’auteur pour réduire les propositions fournies : `[@b`.
+Une fonction d'autocomplétion est implémentée dans l'éditeur de texte Monaco.
+Pour l'instant, l'autcomplétion ne concerne que les références bibliographiques.
+Il vous suffit de commencer à écrire `[@` ou simplement `@` pour que l’éditeur de texte vous propose toutes vos références associées à l’article. Si vous souhaitez affiner l’autocomplétion, il suffira d’ajouter la première lettre du nom de l’auteur pour réduire les propositions fournies : `[@b`.
 
 ![Bibliographie-Autocomplétion](/uploads/images/BibliographieAutocompletion-V2.png)
-
-Vous pouvez aussi cliquer sur l'icône associée à la référence dans le volet de gauche, puis la coller (Ctrl+V) dans le texte à l'endroit souhaité. Elle apparaîtra alors ainsi `[@shirky_here_2008]`. Pour bien comprendre, un clic consiste à "copier" la clé BibTeX de la référence dans le presse-papier. 
-
-![Bibliographie exemple](/uploads/images/Bibliographie-Exemple-V2.PNG)
-
-Insérer une clé BibTeX dans le corps de texte a deux effets :
-
-1. La clé est remplacée automatiquement par l'appel de citation au bon format dans le corps de texte, par exemple : (Shirky 2008);
-2. La référence bibliographique complète est ajoutée automatiquement en fin de document.

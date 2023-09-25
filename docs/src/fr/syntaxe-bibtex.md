@@ -20,7 +20,7 @@ Sa forme générale ressemble à ceci :
 
 À l'intérieur du gestionnaire de références bibliographiques de Stylo, nous avons accès à un mode brut qui nous permet de visualiser et d'éditer les données des références en BibTeX.
 
-![Exemple référence en BibTeX](docs/uploads/images/BibliographieRawBibTeX-V2.png)
+![Exemple référence en BibTeX](/uploads/images/BibliographieRawBibTeX-V2.png)
 
 La déclaration de cette structure comprend plusieurs éléments. 
 Le premier éléments à indiquer est le type de document que l'on souhaite indexer, il en existe 17 différents.
