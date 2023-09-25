@@ -8,6 +8,8 @@ Stylo a été présenté lors de plusieurs événements scientifiques et profess
 
 - [DH2022](https://dh2022.adho.org/), « Scholarly writing and editing with the text editor Stylo », juillet 2022 : [résumé](https://dh2022.adho.org/workshops-and-tutorials/wt-06) de la présentation (Roch Delannay et Antoine Fauchié)
 
+- [DH Unbound 2022](https://dhunbound2022.ach.org/), « The Stylo Workflow : Writing and editing with the text editor Stylo », mai 2022 :  présenté par  Margot Lise Mellet, Antoine Fauchié, Marcello Vitali-Rosati, Eugénie Matthey-Jonais, Roch Delannay, Giulia Ferretti
+
 - [Humanistica 2021](https://humanistica2021.sciencesconf.org), « L’utilisation de l’outil Stylo dans le cadre de la revue *Sens public* », mai 2021 : [résumé](https://humanistica2021.sciencesconf.org/340826) de la présentation (Antoine Fauchié et Margot Mellet)
 
 - [Humanistica 2021](https://humanistica2021.sciencesconf.org), « Écriture et édition scientifiques avec l’éditeur de texte Stylo », mai 2021 : [résumé](https://humanistica2021.sciencesconf.org/340911) de l’atelier (Antoine Fauchié et Margot Mellet)

@@ -22,7 +22,7 @@ Chaque article restera attaché au compte utilisateur qui l'a créé.
 
 L'accès à cette fonctionnalité se fait depuis le menu déroulant accessible en cliquant sur le non utilisateur en haut de la page.
 
-<!-- Mettre une image du menu déroulant -->
+![Menu pour accéder aux espaces de travail](/uploads/images/menu-espace-de-travail.png)
 
 Ensuite il faut cliquer sur \[Tous les espaces\] pour accéder au gestionnaire des espaces de travail.
 
@@ -53,12 +53,19 @@ L'affichage des articles ne se passe donc pas dans le gestionnaire des espaces d
 
 Ensuite, il faut cliquer sur son \[Nom d'utilisateur\] et sélectionner dans le menu déroulant l'espace de travail dans lequel on souhaite travailler.
 
-<!-- Mettre une image de l'espace personnel sur la page article -->
+L'espace dans lequel se situe l'utilisateur est indiqué à deux endroits différents :
 
-<!-- Mettre une image du menu déroulant et de la sélection des espaces de travail -->
+1. dans le menu en haut de la page (bandeau noir), si rien n'est indiqué sous le nom d'utilisateur, on se trouve dans l'espace personnel ;
 
-<!-- Mettre une image de l'espace des articles apres selection de l'espace de travail -->
+![Indication de l'espace dans lequel on travaille](/uploads/images/BarreLateraleStyloNoire-V2.PNG)
 
+sinon, le nom de l'espace de travail dans lequel on se trouve est indiqué sous le nom d'utilisateur ;
+
+![](/uploads/images/indication-espace-de-travail-dans-menu.png)
+
+2. le nom de l'espace de travail est aussi indiqué en haut de la liste des articles.
+
+![](/uploads/images/affichage-espace-de-travail-dans-gestionnaire-articles.png)
 
 Les articles partagés dans l'espace de travail apparaissent à la place des articles personnels.
 Ils sont accessibles avec les mêmes fonctionnalités que dans un espace personnel.

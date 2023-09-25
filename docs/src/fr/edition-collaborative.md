@@ -23,7 +23,7 @@ Pour avoir les droits d'accès à un article 3 solutions sont mises à dispositi
 L'écriture synchrone dans Stylo n'est pas un mode par défaut pour tous les articles. 
 C'est un mode qu'il faut initialiser en appuyant sur l'icône \[*Collaborative editing*\] dans la page de gestion des articles, qu'il s'agisse de l'espace personnel ou d'un espace de travail.
 
-<!-- Mettre une image du bouton pour la session synchrone -->
+![Collaborative editing button](/uploads/images/collaborative-editing.png)
 
 Le premier utilisateur à appuyer sur ce bouton devient le modérateur de la session d'écriture collaborative.
 Pour rejoindre une session collaborative, les autres utilisateurs devront eux aussi cliquer sur ce bouton dans leur interface.
@@ -32,12 +32,12 @@ Une session d'écriture collaborative est un mode particulier qui ne correspond 
 Dans ce mode collaboratif, seul le texte en Markdown est accessible en écriture.
 Les autres informations ne sont pas accessibles (les volets à gauche et à droite de l'éditeur de texte).
 
-<!-- Mettre une image de l'interface en mode édition collaboratif -->
+![Collaborative editing interface](/uploads/images/collaborative-editing-interface.png)
 
 Afin de respecter le bon fonctionnement de l'application, la fin d'une session collaborative doit être marquée par une fermeture du mode synchrone.
 Seul le modérateur de la session peut effectuer cette action en appuyant sur le bouton de fin de session qui se trouve en haut à droite de l'écran, au-dessus de l'éditeur Monaco.
 
-<!-- Mettre une image du bouton de fermeture de session -->
+![End Collaborative Session](/uploads/images/collaborative-editing-end-session.png)
 
 <alert-block heading="📢">
 
@@ -45,11 +45,11 @@ Si une session collaborative n'est pas fermée correctement, l'article concerné
 
 </alert-block> 
 
-<!-- Mettre une image d'un article bloqué en écriture simple -->
+![Article en lecture seule](/uploads/images/article-en-lecture-seule.png)
 
-Un article ouvert en mode collaboratif est signalé par un point rouge à côté du pictogramme de la session collaborative dans la page de gestion des articles.
+Un article ouvert en mode collaboratif est signalé par un pictogramme rouge « _Live_ » à côté du pictogramme de la session collaborative dans la page de gestion des articles.
 De la même façon, lorqu'un utilisateur est dans une session d'écriture en solitaire, et que l'article est partagé avec d'autres utilisateurs, un point rouge apparaît à côté du pictogramme d'édition pour signaler que cet article ne sera pas accessible en écriture, mais seulement en lecture.
 
-<!-- Mettre une image du picto en cours d'édition collab -->
+![Session collaborative en cours](/uploads/images/session-collaborative-en-cours.png)
 
-<!-- Mettre une image du picto en cours d'édition solo -->
+![Session solo en cours](/uploads/images/session-solo-en-cours.png)

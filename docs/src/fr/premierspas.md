@@ -18,16 +18,31 @@ Par défaut, un premier article “How to Stylo” est présent sur la plateform
 
 Pour chaque article, plusieurs actions sont possibles :
 
+![](/uploads/images/fonctions-article.png)
+
+
 |                     Bouton                     |Fonction|
 |:----------------------------------------------:|:--|
-|      ![Edit](/uploads/images/Edit-V2.png)      | pour ouvrir l'article en édition|
-|     ![Share](/uploads/images/Share-V2.png)     | pour partager l'article et son historique de versions avec un autre usager de Stylo qui s'intitulera ainsi : "[Copy]New article"|
-| ![Duplicate](/uploads/images/Duplicate-V2.png) | pour dupliquer uniquement la dernière version de l'article|
-|    ![Rename](/uploads/images/Rename-V2.png)    | pour renommer l'article|
+
 |    ![Delete](/uploads/images/Delete-V2.png)    | pour supprimer l'article |
+| ![Duplicate](/uploads/images/Duplicate-V2.png) | pour dupliquer uniquement la dernière version de l'article|
+| ![Send](/uploads/images/send.png) | pour partager une copie de l'article et son historique de versions avec un autre usager de Stylo qui s'intitulera ainsi : "[Copy]New article"|
+|     ![Share](/uploads/images/Share-V2.png)     | pour partager l'article et son historique de versions avec un autre usager de Stylo |
+|      ![Export](/uploads/images/Export.png)      | pour exporter la dernière version de l'article|
+|      ![Collaborative editing](/uploads/images/collaborative-editing.png)      | pour ouvrir l'article en édition |
+|      ![Edit](/uploads/images/Edit-V2.png)      | pour ouvrir l'article en édition (mode seul)|
+|      ![Preview](/uploads/images/Preview-V2.png)      | pour prévisualiser l'article dans une nouvele fenêtre (HTML)|
+
+
+
+|                     Bouton                     |Fonction|
+|:----------------------------------------------:|:--|
+|    ![Rename](/uploads/images/Rename-V2.png)    | pour renommer l'article|
 |      ![Plus](/uploads/images/Plus-V2.png)      | pour développer d'autres fonctions de l'article :|
 |  ![Versions](/uploads/images/Version-V2.PNG)   | pour consulter l'historique des versions enregistrées |
 |      ![Tags](/uploads/images/Tag-V2.png)       | pour choisir les tags de l'article |
+| ![Ajouter aux espaces de travail](/uploads/images/ajout-dans-espace-de-travail.png) | pour ajouter un article dans un espace de travail |
+| ![Ajouter aux corpus](/uploads/images/add-to-corpus.png) | pour ajouter à un corpus |
 
 Note : le nom du document tel que visible sur Stylo ne correspond pas au titre de l'article qui sera généré. Le titre doit être renseigné dans les métadonnées (volet de droite sur l'article) pour apparaître sur la prévisualisation ou les exports.
 

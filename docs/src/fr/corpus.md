@@ -24,13 +24,13 @@ Le gestionnaire des corpus ne permet que la création, la lecture, la modificati
 
 Pour créer un corpus, il faut tout d'abord sur la page de gestion des corpus en cliquant sur le bouton \[Corpus\] dans le bandeau noir en haut de l'interface
 
-<!-- Ajouter l'image du bandeau noir avec corpus -->
+![](/uploads/images/BarreLateraleStyloNoire-V2.PNG)
 
 Ensuite, le bouton \[Créer un corpus\] affiche un formulaire dans une fenêtre pop-up.
 Ce formulaire contient deux champs : titre et description.
 Le premier (titre) est obligatoire, et le second (description) est optionnel.
 
-<!-- Ajouter l'image du formulaire de création de corpus -->
+![Créer un corpus](/uploads/images/creer-un-corpus.png)
 
 Une fois créé, le corpus apparaît dans le gestionnaire de corpus et offre 4 nouvelles fonctionnalités :
 
@@ -39,7 +39,7 @@ Une fois créé, le corpus apparaît dans le gestionnaire de corpus et offre 4 n
 - Exporter le corpus ;
 - Prévisualiser le corpus.
 
-<!-- Ajouter l'image du gestionnaire de corpus -->
+![Interface du gestionnaire de corpus](/uploads/images/interface-gestionnaire-corpus.png)
 
 Nous reviendrons à ces fonctionnalités plus tard.
 Maintenant, il nous faut ajouter des articles dans notre corpus.
@@ -50,7 +50,7 @@ Pour ajouter des articles à un corpus, il faut retourner sur la page \[Articles
 
 De la même façon que pour les étiquettes que l'on associe à un article, il faut ouvrir la fenêtre d'informations de l'article pour pouvoir l'ajouter à un corpus en cochant sur la case du corpus correspondant.
 
-<!-- Mettre l'image des données de l'article avec la case du corpus créé pour le test cochée -->
+![Ajouter un article dans un corpus](/uploads/images/add-to-corpus.png)
 
 ## Ordonner un corpus
 
@@ -59,23 +59,25 @@ Pour ce faire, il faut retourner dans le gestionnaire des corpus en cliquant sur
 
 Puis, en respectant le fonctionnement du gestionnaire des articles, il faut déplier la fenêtre d'informations du corpus et ordonner les articles grâce à un glisser-déposer (maintenir le clic gauche enfoncé et déplacer le curseur pour positionner l'article à la bonne place, puis relâcher).
 
-<!-- Mettre une image d'un corpus désordonné -->
+![Corpus désordonné](/uploads/images/corpus-desordonne.png)
 
-<!-- Mettre une image d'un corpus ordonné -->
+![Corpus ordonné](/uploads/images/corpus-ordonne.png)
+
+
 
 ## Éditer un corpus
 
-<!-- Mettre l'image de la roue crantée pour éditer le corpus  -->
+![Éditer les informations du corpus](/uploads/images/pictogramme-engrenage.png)
 
 Les informations du corpus (titre et description) peuvent être mises à jour en cliquant sur l'icône d'engrenage d'un corpus (dans le gestionnaire de corpus).
 
 Une fenêtre pop-up contenant un formulaire va s'ouvrir et permettre de modifier les données concernées. 
 
-<!-- Mettre l'image de la fenêtre pop-up -->
+![Formulaire d'édition des informations du corpus](/uploads/images/formulaire-edition-informations-corpus.png)
 
 ## Exporter un corpus
 
-<!-- Mettre l'image de la petite imprimante de l'export visible depuis le gestionnaire des corpus -->
+![Exporter un corpus](/uploads/images/Export.png)
 
 L'export d'un corpus se réalise de la même manière que pour un article.
 
@@ -101,4 +103,4 @@ Une fenêtre s'ouvre et propose plusieurs options d'export :
     - la numérotation ou non des chapitres et sections ;
     - le type de division des contenus.
 
-<!-- Mettre une image du formulaire d'export d'un corpus -->
+![Formulaire d'export d'un corpus](/uploads/images/corpus-formulaire-export.png)
