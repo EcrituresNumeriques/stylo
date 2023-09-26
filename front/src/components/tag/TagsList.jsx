@@ -42,6 +42,7 @@ export default function TagsList () {
             name={`filterTag-${t._id}`}
             onClick={handleTagSelected}
             disableAction={false}
+            selected={selectedTagIds.includes(t._id)}
           />
         </li>
       ))}

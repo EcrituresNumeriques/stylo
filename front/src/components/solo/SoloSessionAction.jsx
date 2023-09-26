@@ -36,7 +36,7 @@ export default function SoloSessionAction ({ collaborativeSession, soloSession, 
         }
       }
     }
-  }, [collaborativeSession])
+  }, [soloSession])
 
   if (collaborativeSession) {
     return <></>
