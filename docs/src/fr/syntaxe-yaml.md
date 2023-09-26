@@ -79,7 +79,7 @@ Or nous souhaiterions décrire formellement qu'un auteur à un nom et un prénom
 
 auteur:
     - nom: "Wayne"
-    prenom: "Bruce"
+      prenom: "Bruce"
 
 ```
 

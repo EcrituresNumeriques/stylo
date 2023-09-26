@@ -5,16 +5,16 @@ isHome: true
 ---
 
 
-<alert-block heading="📢 Nouvelle mise à jour">
+<alert-block heading="📢 Mise à jour des fonctionnalités" type="success">
 
-À l'attention des utilisatrices et des utilisateurs de Stylo : La tant attendue fonctionnalité d'écriture collaborative synchrone est maintenant disponible dans Stylo ! Pour en savoir plus, rendez-vous sur la [page de la documentation](/fr/edition-collaborative) qui y est consacrée !
+À l'attention des utilisatrices et des utilisateurs de Stylo : La tant attendue fonctionnalité d'écriture collaborative synchrone est maintenant disponible ! Pour en savoir plus, rendez-vous sur la [page de la documentation](/fr/edition-collaborative) qui y est consacrée !
 
 </alert-block> 
 
 
-<alert-block heading="📢 Nouvelle mise à jour">
+<alert-block heading="📢 Mise à jour de la documentation" type="neutral">
 
-À l'attention des utilisatrices et des utilisateurs de Stylo : la documentation de Stylo a été mise à jour ! Elle obtient une nouvelle interface et une nouvelle structuration de ses données !  
+À l'attention des utilisatrices et des utilisateurs de Stylo : la documentation de Stylo a été mise à jour ! Elle se dote d'une nouvelle interface et d'une nouvelle structuration de ses données !  
 
 </alert-block> 
 
