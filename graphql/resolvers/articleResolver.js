@@ -13,6 +13,7 @@ const { ApiError } = require('../helpers/errors')
 const { reformat } = require('../helpers/metadata.js')
 const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions')
 const { previewEntries } = require('../helpers/bibliography')
+const { notifyArticleStatusChange } = require('../events')
 
 
 async function getUser (userId) {
@@ -405,6 +406,7 @@ module.exports = {
       }
       article.soloSession = soloSession
       await article.save()
+      notifyArticleStatusChange(article)
       return soloSession
     },
 
@@ -415,6 +417,7 @@ module.exports = {
         }
         article.soloSession = null
         await article.save()
+        notifyArticleStatusChange(article)
       }
       //  no solo session to stop (ignore)
       return article

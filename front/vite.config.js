@@ -57,7 +57,7 @@ export default defineConfig(async ({ mode }) => {
           prependPath: false
         },
         // as in infrastructure/files/stylo.huma-num.fr.conf
-        '^/(login/openid|login/local|login/zotero|logout|authorization-code)': {
+        '^/(login/openid|login/local|login/zotero|logout|authorization-code|events)': {
           target: 'http://127.0.0.1:3030'
         }
       }

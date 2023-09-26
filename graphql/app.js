@@ -14,7 +14,7 @@ const MongoStore = require('connect-mongo')(session)
 const passport = require('passport')
 const OidcStrategy = require('passport-openidconnect').Strategy
 const LocalStrategy = require('passport-local').Strategy
-const OAuthStrategy = require('passport-oauth').OAuthStrategy;
+const OAuthStrategy = require('passport-oauth').OAuthStrategy
 const { logger } = require('./logger')
 const pino = require('pino-http')({
   logger
@@ -30,6 +30,7 @@ const { createTagLoader, createUserLoader, createArticleLoader, createVersionLoa
 
 const { setupWSConnection } = require('y-websocket/bin/utils')
 const WebSocket = require('ws')
+const { handleEvents } = require('./events')
 const wss = new WebSocket.Server({ noServer: true })
 
 const app = express()
@@ -184,6 +185,8 @@ app.get('/version', (req, res) => res.json({
   version: pkg.version
 }))
 
+app.get('/events', handleEvents)
+
 app.get('/login/openid', async (req, res, next) => {
     if (req.user) {
       const { email } = req.user
@@ -251,7 +254,7 @@ app.use('/authorization-code/callback',
   })
 
 app.get('/logout', (req, res, next) => {
-  req.logout(function(err) {
+  req.logout(function (err) {
     if (err) {
       return next(err)
     }
@@ -277,7 +280,7 @@ app.post('/login/local',
   }
 )
 
-function createLoaders() {
+function createLoaders () {
   return {
     tags: createTagLoader(),
     users: createUserLoader(),
@@ -319,7 +322,7 @@ mongoose
     logger.info('Listening on http://localhost:%s', listenPort)
     const server = app.listen(listenPort)
     server.on('upgrade', (request, socket, head) => {
-      wss.handleUpgrade(request, socket, head, function handleAuth(ws) {
+      wss.handleUpgrade(request, socket, head, function handleAuth (ws) {
         // const jwtToken = new URL('http://localhost' + request.url).searchParams.get("token")
         // TODO: check token and permissions
         wss.emit('connection', ws, request)

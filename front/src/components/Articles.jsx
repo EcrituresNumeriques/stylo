@@ -1,5 +1,5 @@
 import { Loading, Modal as GeistModal, useModal, Button as GeistButton } from '@geist-ui/core'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
 import { CurrentUserContext } from '../contexts/CurrentUser'
@@ -21,6 +21,7 @@ import TagsList from './tag/TagsList.jsx'
 
 export default function Articles () {
   const { t } = useTranslation()
+  const backendEndpoint = useSelector(state => state.applicationConfig.backendEndpoint)
   const currentUser = useSelector(state => state.activeUser, shallowEqual)
   const selectedTagIds = useSelector((state) => state.activeUser.selectedTagIds || [])
   const {
@@ -90,12 +91,55 @@ export default function Articles () {
     }
   }, [articles])
 
+  const handleStateUpdated = useCallback((event) => {
+    const parsedData = JSON.parse(event.data)
+    if (parsedData.articleStateUpdated) {
+      const articleStateUpdated = parsedData.articleStateUpdated
+      const updatedArticles = articles.map((article) => {
+        if (article._id === articleStateUpdated._id) {
+          return {
+            ...article,
+            soloSession: articleStateUpdated.soloSession,
+            collaborativeSession: articleStateUpdated.collaborativeSession,
+          }
+        }
+        return article
+      })
+      if (activeWorkspaceId) {
+        mutate({
+          workspace: {
+            ...data.workspace,
+            articles: updatedArticles
+          }
+        }, { revalidate: false })
+      } else {
+        mutate({
+          articles: updatedArticles
+        }, { revalidate: false })
+      }
+    }
+  }, [articles])
+
+  useEffect(() => {
+    let events
+    if (!isLoading) {
+      events = new EventSource(`${backendEndpoint}/events`)
+      events.onmessage = (event) => {
+        handleStateUpdated(event)
+      }
+    }
+    return () => {
+      if (events) {
+        events.close()
+      }
+    }
+  }, [isLoading, handleStateUpdated])
+
   const keepArticles = useMemo(() => articles
       .filter((article) => {
         if (selectedTagIds.length === 0) {
           return true
         }
-
         // if we find at least one matching tag in the selected list, we keep the article
         return selectedTagIds.some((tagId) => article.tags.find(({ _id }) => _id === tagId))
       })
