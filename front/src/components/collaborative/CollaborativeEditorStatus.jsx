@@ -61,13 +61,13 @@ export default function CollaborativeEditorStatus ({ articleId, websocketStatus,
       <div className={styles.status}>
         <CollaborativeEditorWebSocketStatus status={websocketStatus}/>
       </div>
-      {collaborativeSessionCreatorId === activeUser?._id && <Button
+      <Button
         className={clsx(styles.button)}
         type="error"
         ghost
         auto
         scale={0.4} onClick={handleConfirmCollaborativeSessionEnd}
-      ><StopCircle/> End collaborative session</Button>}
+      ><StopCircle/> End collaborative session</Button>
     </div>
     <GeistModal width="35rem" visible={collaborativeSessionEndVisible} {...collaborativeSessionEndBinding} onClose={handleEndCollaborativeSession}>
       <h2>{t('article.collaborativeSessionEnd.title')}</h2>
