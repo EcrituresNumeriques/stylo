@@ -1,4 +1,6 @@
 {
+    "layout": "docs",
+    "useSideMenu": true,
     "siteTitle": "Stylo",
     "lang": "fr",
     "description": "Stylo est un éditeur de texte simplifiant la rédaction et l'édition d'articles scientifiques en Sciences Humaines et Sociales.",
@@ -7,4 +9,6 @@
     "sectionUrl": "/fr/actualites",
     "disableSearch": false,
     "searchIndexUrl": "/fr/search-index.json"
-  }
+}
+
+  

@@ -1,5 +1,5 @@
 ---
-title : "Actualités"
+title: "Actualités"
 ---
 
-Test
+Test 
