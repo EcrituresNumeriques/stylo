@@ -96,7 +96,7 @@ async function createSoloSession (article, user, force = false) {
       await createVersion(article, {
           major: false,
           message: '',
-          userId: user._id,
+          userId: article.soloSession.creator._id,
           type: 'editingSessionEnded'
         }
       )
