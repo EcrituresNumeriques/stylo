@@ -9,7 +9,7 @@
   "searchIndexUrl": "/fr/search-index.json",
   "menu": [
     {
-      "label": "Actualités",
+      "label": "Actualités",
       "url": "/fr/actualites"
     },
     {
