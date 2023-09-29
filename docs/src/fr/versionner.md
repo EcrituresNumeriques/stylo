@@ -7,6 +7,7 @@ title: Versionner ses documents
 Versionner un document n'est pas un geste anodin.
 Réaliser cette action peut souvent être assimilé à la création d'une sauvegarde, pourtant les deux notions diffèrent légèrement.
 Là où la sauvegarde permet de créer une archive des documents à un instant donné, le versionnement crée une arborescence dans laquelle sont enregistrées les évolutions apportées aux documents.
+
 Chacune de ces évolutions fait l'objet d'une version créée explicitement par l'utilisateur.
 Cette version peut ensuite être rappelée à tout moment, c'est-à-dire que l'on peut remettre le fichier de travail dans un état antérieur grâce au principe de versionnement.
 Alors que dans le cas de la sauvegarde, pour revenir à un état antérieur, il faudrait naviguer dans des archives pour retrouver l'état souhaité et ouvrir un autre document pour ensuite éditer les informations contenues dans cet état antérieur.

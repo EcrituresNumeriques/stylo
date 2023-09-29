@@ -1,5 +1,5 @@
 ---
-title: Premiers pas dans Stylo
+title: Pour commencer avec Stylo
 ---
 
 ## Création d'un compte
@@ -194,7 +194,32 @@ Pour visualiser une ancienne version, il vous suffit de cliquer sur son titre. P
 
 ## Export
 
-Le module d'export offre plusieurs formats (HTML, XML, PDF, etc.). Il permet de choisir un style bibliographique et la présence ou non d'une table des matières.
+Pour exporter un article, il faut cliquer sur le bouton "Export" depuis la page "Articles" ou depuis la page d'édition de l'article :
+
+![Export](/uploads/images/Download.png)
+
+Le menu d'export permet de choisir le format d'export. Il contient également l'option d'intégrer ou non une table des matières.
+
+![Export](/uploads/images/ExportConfig-V2.PNG)
+
+Les formats supportés sont les suivants :
+
+- Fichiers originaux (markdown, yaml et bibtex)
+- HTML5
+- LaTeX
+- PDF
+- ODT (LibreOffice)
+- DOCX (Microsoft Word)
+- ICML (InDesign)
+- XML-TEI
+- XML-Erudit
+- XML-TEI Commons Publishing (Métopes et OpenEdition)
+
+Il est possible de choisir parmi plusieurs styles bibliographiques : certains intègrent la référence dans le texte (par exemple Chicago, qui insère la référence dans le corps du texte entre parenthèses), d'autres ajoutent une note avec la référence.
+
+Le module d'export se charge de mettre en forme les références, d'ajouter ou d'enlever les espaces, d'insérer des "Ibid." en accord avec le style, etc.
+
+Les exports sont produits grâce à l'outil de conversion [Pandoc](https://pandoc.org/) sur la base des templates disponibles [ici](https://framagit.org/stylo-editeur/templates-stylo).
 
 Pour davantage d'informations sur l'export Stylo, vous pouvez consulter la [page dédiée](/fr/exports).
 

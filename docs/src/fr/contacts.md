@@ -12,4 +12,10 @@ Pour répondre aux questions et échanger sur Stylo, une permanence est ouverte 
 
 Nous prendrons en considération des demandes spécifiques d'adaptation de Stylo à des chaînes éditoriales particulières – par exemple d'une revue.
 
-Il est possible de signaler des problèmes et des bugs [sur le dépôt GitHub](https://github.com/EcrituresNumeriques/stylo/issues) du projet.
+## Signaler un bug
+
+Les bugs ou les problèmes techniques peuvent être signalés sur le [dépôt GitHub du projet](https://github.com/EcrituresNumeriques/stylo/issues).
+
+<link-button href="https://github.com/EcrituresNumeriques/stylo/issues/new" color="hyperlink">Signaler un bug</hyperlink>
+
+Tout autre retour ou commentaire peut être envoyé [par courriel](crc.ecrituresnumeriques@gmail.com).
