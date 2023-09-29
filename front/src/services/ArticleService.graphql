@@ -20,6 +20,7 @@ mutation createVersion ($articleId: ID!, $userId: ID!, $major: Boolean!, $messag
           displayName
           username
         }
+        type
       }
     }
   }

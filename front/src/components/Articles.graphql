@@ -66,6 +66,7 @@ query getUserArticles($user: ID!) {
       creator {
         _id
       }
+      creatorUsername
       createdAt
     }
   }
@@ -128,6 +129,7 @@ query getWorkspaceArticles ($workspaceId: ID!) {
         creator {
           _id
         }
+        creatorUsername
         createdAt
       }
 

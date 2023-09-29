@@ -1,23 +1,30 @@
-import { Dot, useToasts } from '@geist-ui/core'
+import { Dot, Modal as GeistModal, useModal, useToasts } from '@geist-ui/core'
 import PropTypes from 'prop-types'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Edit3 } from 'react-feather'
+import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { useMutation } from '../../hooks/graphql.js'
 import Button from '../Button.jsx'
 
-import { startSoloSession } from './SoloSession.graphql'
+import { startSoloSession, takeOverSoloSession } from './SoloSession.graphql'
 
 export default function SoloSessionAction ({ collaborativeSession, soloSession, articleId }) {
+  const { t } = useTranslation()
   const { setToast } = useToasts()
   const history = useHistory()
+  const [activeSoloSessionCreator, setActiveSoloSessionCreator] = useState('')
   const mutation = useMutation()
-
+  const {
+    visible: takeOverModalVisible,
+    setVisible: setTakeOverModalVisible,
+    bindings: takeOverModalBinding
+  } = useModal()
   const handleStartSoloEditing = useCallback(async () => {
-    // try to start a collaborative editing
+    console.log({soloSession})
     if (soloSession && soloSession.id) {
-      // join existing solo session
-      history.push(`/article/${articleId}`)
+      setActiveSoloSessionCreator(soloSession.creatorUsername)
+      setTakeOverModalVisible(true)
     } else {
       // start a new solo session
       try {
@@ -36,7 +43,20 @@ export default function SoloSessionAction ({ collaborativeSession, soloSession, 
         }
       }
     }
-  }, [soloSession])
+  }, [soloSession, setTakeOverModalVisible])
+  const handleTakeOver = useCallback(async () => {
+    try {
+      await mutation({ query: takeOverSoloSession, variables: { articleId } })
+      setTakeOverModalVisible(false)
+      history.push(`/article/${articleId}`)
+    } catch (err) {
+      setToast({
+          type: 'error',
+          text: `Unable to take over this solo session: ${err.toString()}`
+        }
+      )
+    }
+  }, [setTakeOverModalVisible])
 
   if (collaborativeSession) {
     return <></>
@@ -44,6 +64,14 @@ export default function SoloSessionAction ({ collaborativeSession, soloSession, 
 
   return (
     <>
+      <GeistModal width="30rem" visible={takeOverModalVisible} {...takeOverModalBinding}>
+        <h2>Take over</h2>
+        <GeistModal.Content>
+          Would you like to take over the editing session from {activeSoloSessionCreator}?
+        </GeistModal.Content>
+        <GeistModal.Action passive onClick={() => setTakeOverModalVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
+        <GeistModal.Action onClick={() => handleTakeOver()}>{t('modal.confirmButton.text')}</GeistModal.Action>
+      </GeistModal>
       <Button title="Edit article" primary={true} onClick={handleStartSoloEditing}>
         <Edit3/>
         {soloSession && <Dot type="error"/>}
@@ -55,7 +83,8 @@ export default function SoloSessionAction ({ collaborativeSession, soloSession, 
 SoloSessionAction.propTypes = {
   articleId: PropTypes.string.isRequired,
   soloSession: PropTypes.shape({
-    id: PropTypes.string
+    id: PropTypes.string,
+    creatorUsername: PropTypes.string
   }),
   collaborativeSession: PropTypes.shape({
     id: PropTypes.string

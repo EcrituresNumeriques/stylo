@@ -14,6 +14,7 @@ const { reformat } = require('../helpers/metadata.js')
 const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions')
 const { previewEntries } = require('../helpers/bibliography')
 const { notifyArticleStatusChange } = require('../events')
+const { logger } = require('../logger')
 
 
 async function getUser (userId) {
@@ -84,6 +85,77 @@ async function getArticleByUser (articleId, userId) {
     throw new ApiError('NOT_FOUND', `Unable to find article with id ${articleId}`)
   }
   return article
+}
+
+async function createSoloSession (article, user, force = false) {
+  if (article.soloSession && article.soloSession.id) {
+    if (article.soloSession.creator._id.equals(user._id)) {
+      return article.soloSession
+    }
+    if (!force) {
+      throw new ApiError('UNAUTHORIZED_SOLO_SESSION_ACTIVE', `A solo session is already active!`)
+    }
+  }
+  const soloSessionId = new ObjectId()
+  const soloSession = {
+    id: soloSessionId,
+    creator: user._id,
+    creatorUsername: user.username,
+    createdAt: new Date()
+  }
+  article.soloSession = soloSession
+  await article.save()
+  notifyArticleStatusChange(article)
+  return soloSession
+}
+
+async function createVersion (article, { major, message, userId, type }) {
+  const { bib, yaml, md } = article.workingVersion
+
+  /** @type {Query<Array<Article>>|Array<Article>} */
+  const latestVersions = await Version.find({ _id: { $in: article.versions.map((a) => a._id) } })
+    .sort({ createdAt: -1 })
+    .limit(1)
+
+  if (type !== 'userAction') {
+    if (latestVersions?.length > 0) {
+      const latestVersion = latestVersions[0]
+      if (bib === latestVersion.bib && yaml === latestVersion.yaml && md === latestVersion.md) {
+        logger.info("Won't create a new version since there's no change", {
+          action: "createVersion",
+          articleId: article._id
+        })
+        return false
+      }
+    }
+  }
+
+  let mostRecentVersion = { version: 0, revision: 0 }
+  const latestUserVersions = latestVersions?.filter(v => v.type === undefined || v.type === 'userAction')
+  if (latestUserVersions?.length > 0) {
+    const latestVersion = latestVersions[0]
+    mostRecentVersion = {
+      version: latestVersion.version,
+      revision: latestVersion.revision,
+    }
+  }
+  const { revision, version } = major
+    ? computeMajorVersion(mostRecentVersion)
+    : computeMinorVersion(mostRecentVersion)
+
+  const createdVersion = await Version.create({
+    md,
+    yaml,
+    bib,
+    version,
+    revision,
+    message: message,
+    owner: userId,
+    type: type || 'userAction'
+  })
+  await createdVersion.populate('owner').execPopulate()
+  article.versions.unshift(createdVersion)
+  return true
 }
 
 module.exports = {
@@ -319,35 +391,7 @@ module.exports = {
     },
 
     async createVersion (article, { articleVersionInput }) {
-      const { bib, yaml, md } = article.workingVersion
-
-      /** @type {Query<Array<Article>>|Array<Article>} */
-      const latestVersions = await Version.find({ _id: { $in: article.versions.map((a) => a._id) } })
-        .sort({ createdAt: -1 })
-        .limit(1)
-
-      let mostRecentVersion = { version: 0, revision: 0 }
-      if (latestVersions?.length > 0 ) {
-        mostRecentVersion = {
-          version: latestVersions[0].version,
-          revision: latestVersions[0].revision,
-        }
-      }
-      const { revision, version } = articleVersionInput.major
-        ? computeMajorVersion(mostRecentVersion)
-        : computeMinorVersion(mostRecentVersion)
-
-      const createdVersion = await Version.create({
-        md,
-        yaml,
-        bib,
-        version,
-        revision,
-        message: articleVersionInput.message,
-        owner: articleVersionInput.userId,
-      }).then((v) => v.populate('owner').execPopulate())
-
-      article.versions.unshift(createdVersion)
+      await createVersion(article, articleVersionInput)
       await article.save()
       return article
     },
@@ -372,10 +416,11 @@ module.exports = {
       yState.insert(0, 'started')
 
       await article.save()
+      notifyArticleStatusChange(article)
       return collaborativeSession
     },
 
-    async stopCollaborativeSession(article) {
+    async stopCollaborativeSession(article, _, { user }) {
       if (article.collaborativeSession && article.collaborativeSession.id) {
         const yDoc = getYDoc(`ws/${article.collaborativeSession.id.toString()}`)
         const yState = yDoc.getText('state')
@@ -385,29 +430,27 @@ module.exports = {
         const yText = yDoc.getText('main')
         article.workingVersion.md = yText.toString()
         article.collaborativeSession = null
+        await createVersion(article, {
+          major: false,
+          message: '',
+          userId: user._id,
+          type: 'collaborativeSessionEnded'
+        })
         await article.save()
+        notifyArticleStatusChange(article)
         return article
       }
       return article
     },
 
     async startSoloSession(article, _, { user }) {
-      if (article.soloSession && article.soloSession.id) {
-        if (article.soloSession.creator._id.equals(user._id)) {
-          return article.soloSession
-        }
-        throw new ApiError('UNAUTHORIZED_SOLO_SESSION_ACTIVE', `A solo session is already active!`)
-      }
-      const soloSessionId = new ObjectId()
-      const soloSession = {
-        id: soloSessionId,
-        creator: user._id,
-        createdAt: new Date()
-      }
-      article.soloSession = soloSession
-      await article.save()
-      notifyArticleStatusChange(article)
-      return soloSession
+      return createSoloSession(article, user, false)
+    },
+
+    async takeOverSoloSession(article, _, { user }) {
+      // force!
+      // TODO: take over should save a new version of the article!
+      return createSoloSession(article, user, true)
     },
 
     async stopSoloSession(article, _, { user }) {
@@ -416,6 +459,12 @@ module.exports = {
           throw new ApiError('UNAUTHORIZED', `Solo session ${article.soloSession.id} can only be ended by its creator ${article.soloSession.creator}.`)
         }
         article.soloSession = null
+        await createVersion(article, {
+          major: false,
+          message: '',
+          userId: user._id,
+          type: 'editingSessionEnded'
+        })
         await article.save()
         notifyArticleStatusChange(article)
       }

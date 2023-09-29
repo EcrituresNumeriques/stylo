@@ -77,6 +77,10 @@ export default function WorkingVersion ({ articleInfos, live, selectedVersion, m
   const cancelExport = useCallback(() => setExporting(false), [])
   const openExport = useCallback(() => setExporting(true), [])
 
+
+  const previewUrl = selectedVersion
+    ? `/article/${articleInfos._id}/version/${selectedVersion}/preview`
+    : `/article/${articleInfos._id}/preview`
   const articleOwnerAndContributors = [
     articleInfos.owner.displayName,
     ...articleInfos.contributors.map(contributor => contributor.user.displayName)
@@ -114,7 +118,7 @@ export default function WorkingVersion ({ articleInfos, live, selectedVersion, m
             </Button>
           </li>
           <li>
-            <Link to={`/article/${articleInfos._id}/preview`} title="Preview (open a new window)" target="_blank" rel="noopener noreferrer"
+            <Link to={previewUrl} title="Preview (open a new window)" target="_blank" rel="noopener noreferrer"
                   className={buttonStyles.icon}>
               <Eye/>
             </Link>

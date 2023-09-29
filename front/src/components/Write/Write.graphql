@@ -48,6 +48,7 @@ query getEditableArticle ($article: ID!, $hasVersion: Boolean!, $version: ID!) {
         displayName
         username
       }
+      type
     }
 
     workingVersion @skip(if: $hasVersion) {

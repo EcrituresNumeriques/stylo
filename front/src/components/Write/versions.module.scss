@@ -4,11 +4,9 @@
 
 .versionsList {
   font-size: 0.9em;
+  padding-bottom: 1em;
   > li {
     padding: .5rem;
-  }
-  > li:nth-child(2n + 1) {
-    background-color: $main-background-color;
   }
   > li.selected {
     background-color: $selected-background;
@@ -24,30 +22,78 @@
 .editTitleButton {
   @extend article, .editTitleButton;
   height: auto;
-  padding: .4em .25em;
+  padding: 0 .25em;
 }
 
 .momentAgo {
   @extend article, .momentsAgo;
 }
 
+.version {
+  border-left: 4px solid #cecece;
+  margin-bottom: 0.25em;
+  margin-left: 0.5rem;
+  margin-right: 0.25em;
+  cursor: pointer;
+  display: flex;
+}
+
+.versionLink {
+  color: inherit;
+  text-decoration: none;
+  flex-grow: 1;
+
+  > header {
+    max-width: 265px;
+    white-space: nowrap;
+    display: flex;
+  }
+}
+
+.versionLinkCompare {
+  max-width: 200px;
+}
+
+.manualVersion {
+  border-left: 4px solid #202020;
+}
+
+.automaticVersion {
+  border-left: 4px solid #bebebe;
+  color: #858585;
+}
+
+.versionLabel {
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.15em;
+}
+
 .versionNumber {
-  margin-left: .25em;
-  &::after {
-    content: ")";
-  }
-  &::before {
-    content: "(";
-  }
+}
+
+.automaticVersion > header {
+  font-style: italic;
 }
 
 .actions {
   display: flex;
   gap: 0.5em;
-  margin-top: 0.5rem;
+  margin-top: 0.15rem;
   margin-bottom: 0.25rem;
   justify-content: flex-end;
-  font-size: 0.9em;
+  font-size: 0.75em;
+}
+
+.action {
+  background-color: transparent;
+  border: none;
+  text-decoration: underline;
+}
+
+.action:hover {
+  text-decoration: underline;
 }
 
 .headingAction {
@@ -56,6 +102,5 @@
 
 .editMode {
   font-size: 0.8rem;
-  margin-top: 0.75em;
-  margin-left: 0.5em;
+  margin-left: auto;
 }

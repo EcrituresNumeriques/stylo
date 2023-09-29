@@ -1,3 +1,4 @@
+const crypto = require('node:crypto')
 let clients = []
 
 const handleEvents = (request, response) => {
@@ -7,7 +8,7 @@ const handleEvents = (request, response) => {
     'Cache-Control': 'no-cache'
   }
   response.writeHead(200, headers)
-  const clientId = Date.now()
+  const clientId = crypto.randomUUID()
   const newClient = {
     id: clientId,
     response

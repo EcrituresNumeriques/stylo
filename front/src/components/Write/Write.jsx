@@ -43,6 +43,7 @@ export function deriveModeFrom ({ path, currentVersion }) {
 
 export default function Write() {
   const { setToast } = useToasts()
+  const backendEndpoint = useSelector(state => state.applicationConfig.backendEndpoint)
   const { t } = useTranslation()
   const { version: currentVersion, id: articleId, compareTo } = useParams()
   const workingArticle = useSelector(state => state.workingArticle, shallowEqual)
@@ -61,6 +62,7 @@ export default function Write() {
   const [graphQLError, setGraphQLError] = useState()
   const [isLoading, setIsLoading] = useState(true)
   const [live, setLive] = useState({})
+  const [soloSessionTakenOverBy, setSoloSessionTakenOverBy] = useState('')
   const [articleInfos, setArticleInfos] = useState({
     title: '',
     owner: '',
@@ -81,6 +83,12 @@ export default function Write() {
     visible: soloSessionActiveVisible,
     setVisible: setSoloSessionActiveVisible,
     bindings: soloSessionActiveBinding
+  } = useModal()
+
+  const {
+    visible: soloSessionTakeOverModalVisible,
+    setVisible: setSoloSessionTakeOverModalVisible,
+    bindings: soloSessionTakeOverModalBinding
   } = useModal()
 
   const PreviewComponent = useMemo(
@@ -146,6 +154,25 @@ export default function Write() {
     setWorkingArticleDirty()
     return setLive({ ...live, yaml: metadata })
   }
+
+  const handleStateUpdated = useCallback((event) => {
+    const parsedData = JSON.parse(event.data)
+    if (parsedData.articleStateUpdated) {
+      const articleStateUpdated = parsedData.articleStateUpdated
+      if (articleId === articleStateUpdated._id) {
+        if (articleStateUpdated.soloSession && articleStateUpdated.soloSession.id) {
+          if (userId !== articleStateUpdated.soloSession.creator._id) {
+            setSoloSessionTakenOverBy(articleStateUpdated.soloSession.creatorUsername)
+            setSoloSessionActive(true)
+            setSoloSessionTakeOverModalVisible(true)
+          }
+        } else if (articleStateUpdated.collaborativeSession) {
+          setCollaborativeSessionActiveVisible(true)
+          setCollaborativeSessionActive(true)
+        }
+      }
+    }
+  }, [articleId])
 
   useEffect(() => {
     // FIXME: should retrieve extensions.type 'COLLABORATIVE_SESSION_CONFLICT'
@@ -245,6 +272,21 @@ export default function Write() {
     }
   }, [currentVersion, articleId])
 
+  useEffect(() => {
+    let events
+    if (!isLoading) {
+      events = new EventSource(`${backendEndpoint}/events?userId=${userId}`)
+      events.onmessage = (event) => {
+        handleStateUpdated(event)
+      }
+    }
+    return () => {
+      if (events) {
+        events.close()
+      }
+    }
+  }, [isLoading, handleStateUpdated])
+
   if (graphQLError) {
     return (
       <section className={styles.errorContainer}>
@@ -275,6 +317,14 @@ export default function Write() {
           {t('article.soloSessionActive.message')}
         </GeistModal.Content>
         <GeistModal.Action onClick={() => setSoloSessionActiveVisible(false)}>{t('modal.confirmButton.text')}</GeistModal.Action>
+      </GeistModal>
+
+      <GeistModal width="40rem" visible={soloSessionTakeOverModalVisible} {...soloSessionTakeOverModalBinding}>
+        <h2>{t('article.soloSessionTakeOver.title')}</h2>
+        <GeistModal.Content>
+          {t('article.soloSessionTakeOver.message', { username: soloSessionTakenOverBy })}
+        </GeistModal.Content>
+        <GeistModal.Action onClick={() => setSoloSessionTakeOverModalVisible(false)}>{t('modal.confirmButton.text')}</GeistModal.Action>
       </GeistModal>
 
       <ArticleEditorMenu

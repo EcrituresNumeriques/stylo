@@ -13,7 +13,7 @@ import useGraphQL from '../../hooks/graphql'
 export default function TagsList () {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const selectedTagIds = useSelector(state => state.activeUser.selectedTagIds)
+  const selectedTagIds = useSelector(state => state.activeUser.selectedTagIds || [])
   const { visible: createTagVisible, setVisible: setCreateTagVisible, bindings: createTagModalBinding } = useModal()
   const { data, isLoading } = useGraphQL({ query: getTags, variables: {} }, {
     revalidateOnFocus: false,

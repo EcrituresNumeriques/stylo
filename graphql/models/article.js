@@ -85,6 +85,10 @@ const articleSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'User'
     },
+    creatorUsername: {
+      type: String,
+      default: ''
+    },
     createdAt: {
       type: Schema.Types.Date
     }

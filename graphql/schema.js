@@ -86,6 +86,7 @@ type Version {
   revision: Int
   md: String
   sommaire: String
+  type: String
   yaml (options: YamlFormattingInput): String
   bib: String
   bibPreview: String
@@ -113,6 +114,7 @@ type CollaborativeSession {
 type SoloSession {
   id: ID
   creator: User
+  creatorUsername: String
   createdAt: DateTime
 }
 
@@ -145,6 +147,7 @@ type Article {
   createVersion(articleVersionInput: ArticleVersionInput!): Article
   startCollaborativeSession: CollaborativeSession!
   startSoloSession: SoloSession!
+  takeOverSoloSession: SoloSession! 
   stopCollaborativeSession: Article
   stopSoloSession: Article
 }

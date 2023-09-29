@@ -17,6 +17,8 @@ query getArticleVersions($articleId: ID!) {
       message
       revision
       version
+      type
+      createdAt
     }
   }
 }

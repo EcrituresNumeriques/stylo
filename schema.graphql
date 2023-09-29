@@ -32,6 +32,7 @@ type Article {
     stopCollaborativeSession: Article
     stopSoloSession: Article
     tags(limit: Int, page: Int): [Tag!]!
+    takeOverSoloSession: SoloSession!
     title: String
     updateWorkingVersion(content: WorkingVersionInput!): Article
     updatedAt: DateTime
@@ -183,6 +184,7 @@ type Query {
 type SoloSession {
     createdAt: DateTime
     creator: User
+    creatorUsername: String
     id: ID
 }
 
@@ -254,6 +256,7 @@ type Version {
     rename(name: String): Boolean
     revision: Int
     sommaire: String
+    type: String
     updatedAt: DateTime
     version: Int
     yaml(options: YamlFormattingInput): String
