@@ -92,7 +92,15 @@ async function createSoloSession (article, user, force = false) {
     if (article.soloSession.creator._id.equals(user._id)) {
       return article.soloSession
     }
-    if (!force) {
+    if (force) {
+      await createVersion(article, {
+          major: false,
+          message: '',
+          userId: user._id,
+          type: 'editingSessionEnded'
+        }
+      )
+    } else {
       throw new ApiError('UNAUTHORIZED_SOLO_SESSION_ACTIVE', `A solo session is already active!`)
     }
   }
@@ -448,8 +456,6 @@ module.exports = {
     },
 
     async takeOverSoloSession(article, _, { user }) {
-      // force!
-      // TODO: take over should save a new version of the article!
       return createSoloSession(article, user, true)
     },
 
