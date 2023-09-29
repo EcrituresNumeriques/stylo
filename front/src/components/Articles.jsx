@@ -123,7 +123,7 @@ export default function Articles () {
   useEffect(() => {
     let events
     if (!isLoading) {
-      events = new EventSource(`${backendEndpoint}/events`)
+      events = new EventSource(`${backendEndpoint}/events?userId=${activeUserId}`)
       events.onmessage = (event) => {
         handleStateUpdated(event)
       }

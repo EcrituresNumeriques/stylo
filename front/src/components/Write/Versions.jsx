@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { ArrowLeft, Check, ChevronDown, ChevronRight, Edit3 } from 'react-feather'
@@ -19,7 +20,8 @@ import Field from '../Field'
 import CreateVersion from './CreateVersion'
 import clsx from 'clsx'
 
-function Version ({ articleId, articleName: name, compareTo, onExport, readOnly, selectedVersion, v }) {
+function Version ({ articleId, compareTo, readOnly, selectedVersion, v }) {
+  const { t } = useTranslation()
   const className = clsx({
     [styles.selected]: v._id === selectedVersion,
     [styles.compareTo]: v._id === compareTo
@@ -27,12 +29,13 @@ function Version ({ articleId, articleName: name, compareTo, onExport, readOnly,
 
   const articleVersionId = v._id
   const versionPart = selectedVersion ? `version/${selectedVersion}/` : ''
-  const compareLink  = `/article/${articleId}/${versionPart}compare/${v._id}`
+  const compareLink = `/article/${articleId}/${versionPart}compare/${v._id}`
 
   const runQuery = useGraphQL()
   const [renaming, setRenaming] = useState(false)
   const [title, setTitle] = useState(v.message)
-  const setExportParams = useCallback(() => onExport({ articleId, articleVersionId, bib: v.bibPreview, name }), [])
+  const versionType = v.type || 'userAction'
+  const manualVersion = versionType === 'userAction'
   const startRenaming = useCallback((event) => event.preventDefault() || setRenaming(true), [])
   const cancelRenaming = useCallback(() => setTitle(v.message) || setRenaming(false), [])
 
@@ -44,24 +47,15 @@ function Version ({ articleId, articleName: name, compareTo, onExport, readOnly,
     setRenaming(false)
   }, [title])
 
-  return <li className={className}>
-    {!renaming && <header>
-      <Link to={`/article/${articleId}/version/${v._id}`}>
-        <span className={styles.versionLabel}>{title || 'no label'}</span>
-        <span className={styles.versionNumber}>v{v.version}.{v.revision}</span>
-      </Link>
-
-      {!readOnly && <Button title="Edit" icon={true} className={styles.editTitleButton} onClick={startRenaming}>
-        <Edit3 size="20" />
-      </Button>}
-    </header>}
-
+  return <li
+    className={clsx(className, styles.version, manualVersion ? styles.manualVersion : styles.automaticVersion)}>
     {renaming && (
       <form className={styles.renamingForm} onSubmit={handleRename}>
-        <Field autoFocus={true} type="text" value={title} onChange={(event) => setTitle(event.target.value)} />
+        <Field autoFocus={true} type="text" value={title} onChange={(event) => setTitle(event.target.value)}
+               placeholder={'Label of the version'}/>
         <div className={styles.actions}>
           <Button title="Save" primary={true}>
-            <Check /> Save
+            <Check/> Save
           </Button>
           <Button title="Cancel" type="button" onClick={cancelRenaming}>
             Cancel
@@ -69,23 +63,40 @@ function Version ({ articleId, articleName: name, compareTo, onExport, readOnly,
         </div>
       </form>
     )}
+    <Link to={`/article/${articleId}/version/${v._id}`} className={clsx(styles.versionLink, selectedVersion && styles.versionLinkCompare)}>
+      {!renaming && versionType === 'editingSessionEnded' && <header>
+        {t('version.editingSessionEnded.text')}
+      </header>}
 
-    {!renaming && <p>
-      {v.owner && (
-        <span className={styles.author}>
+      {!renaming && versionType === 'collaborativeSessionEnded' && <header>
+        {t('version.collaborativeSessionEnded.text')}
+      </header>}
+
+      {!renaming && versionType === 'userAction' && <header>
+        <span className={styles.versionLabel}>
+          v{v.version}.{v.revision}{' '}{title || ''}
+        </span>
+        {!readOnly && <Button title="Edit" icon={true} className={styles.editTitleButton} onClick={startRenaming}>
+          <Edit3 size="20"/>
+        </Button>}
+      </header>}
+
+      {!renaming && <p>
+        {v.owner && (
+          <span className={styles.author}>
           by <strong>{v.owner.displayName || v.owner.username}</strong>
         </span>
-      )}
-      <span className={styles.momentsAgo}>
-         <TimeAgo date={v.updatedAt} />
+        )}
+        <span className={styles.momentsAgo}>
+         <TimeAgo date={v.updatedAt}/>
       </span>
-    </p>}
-
-    {!renaming && <ul className={styles.actions}>
+      </p>}
+    </Link>
+    {!renaming && selectedVersion && <ul className={styles.actions}>
       {![compareTo, selectedVersion].includes(v._id) && (
         <li>
           <Link
-            className={clsx(buttonStyles.button, buttonStyles.secondary)}
+            className={clsx(buttonStyles.button, buttonStyles.secondary, styles.action)}
             to={compareLink}
           >
             Compare
@@ -95,40 +106,23 @@ function Version ({ articleId, articleName: name, compareTo, onExport, readOnly,
       {v._id === compareTo && (
         <li>
           <Link
-            className={clsx(buttonStyles.button, buttonStyles.secondary)}
+            className={clsx(buttonStyles.button, buttonStyles.secondary, styles.action)}
             to={`/article/${articleId}/${versionPart}`}
           >
             Stop
           </Link>
         </li>
       )}
-      <li>
-        <Link
-          to={`/article/${articleId}/version/${v._id}/preview`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={clsx(buttonStyles.button, buttonStyles.secondary)}
-        >
-          Preview
-        </Link>
-      </li>
-      <li>
-        <Button onClick={setExportParams}>
-          Export
-        </Button>
-      </li>
     </ul>}
   </li>
 }
 
 Version.propTypes = {
   articleId: PropTypes.string.isRequired,
-  articleName: PropTypes.string.isRequired,
   v: PropTypes.object.isRequired,
   selectedVersion: PropTypes.string,
   compareTo: PropTypes.string,
   readOnly: PropTypes.bool,
-  onExport: PropTypes.func.isRequired
 }
 
 export default function Versions ({ article, selectedVersion, compareTo, readOnly }) {
@@ -145,7 +139,6 @@ export default function Versions ({ article, selectedVersion, compareTo, readOnl
     dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandVersions', value: false })
     setExpandCreateForm(true)
   }, [])
-  const handleVersionExport = useCallback(({ articleId, articleVersionId, bib, name }) => setExportParams({ articleId, articleVersionId, bib, name }), [])
   const cancelExport = useCallback(() => setExportParams({}), [])
 
   return (
@@ -154,9 +147,10 @@ export default function Versions ({ article, selectedVersion, compareTo, readOnl
         {expand ? <ChevronDown/> : <ChevronRight/>}
         Versions
 
-        <Button className={styles.headingAction} small={true} disabled={readOnly} onClick={createNewVersion}>
+        {!readOnly && <Button className={styles.headingAction} small={true} disabled={readOnly} onClick={createNewVersion}>
           New Version
-        </Button>
+        </Button>}
+        {readOnly && <Link className={clsx(buttonStyles.button, buttonStyles.secondary, styles.editMode, styles.headingAction)} to={`/article/${article._id}`}> <ArrowLeft/> Edit Mode</Link>}
       </h1>
       {exportParams.articleId && (
         <Modal title="Export" cancel={cancelExport}>
@@ -165,25 +159,21 @@ export default function Versions ({ article, selectedVersion, compareTo, readOnl
       )}
       {expand && (
         <>
-          {expandCreateForm && <CreateVersion articleId={article._id} readOnly={readOnly} onClose={closeNewVersion} />}
+          {expandCreateForm && <CreateVersion articleId={article._id} readOnly={readOnly} onClose={closeNewVersion}/>}
 
           {articleVersions.length === 0 && (<p>
             <strong>All changes are automatically saved.</strong><br/>
             Create a new version to keep track of particular changes.
           </p>)}
 
-          {readOnly && <Link className={clsx(buttonStyles.button, buttonStyles.secondary, styles.editMode)} to={`/article/${article._id}`}> <ArrowLeft/> Edit Mode</Link>}
-
           <ul className={styles.versionsList}>
             {articleVersions.map((v) => (
               <Version key={`showVersion-${v._id}`}
-                articleId={article._id}
-                articleName={article.title}
-                selectedVersion={selectedVersion}
-                compareTo={compareTo}
-                onExport={handleVersionExport}
-                readOnly={readOnly}
-                v={v} />
+                       articleId={article._id}
+                       selectedVersion={selectedVersion}
+                       compareTo={compareTo}
+                       readOnly={readOnly}
+                       v={v}/>
             ))}
           </ul>
         </>

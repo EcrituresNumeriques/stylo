@@ -5,6 +5,7 @@ query getSoloSession($articleId: ID!) {
             creator {
                 _id
             }
+            creatorUsername
             createdAt
         }
     }
@@ -13,6 +14,14 @@ query getSoloSession($articleId: ID!) {
 mutation startSoloSession($articleId: ID!) {
     article (articleId: $articleId) {
         startSoloSession {
+            id
+        }
+    }
+}
+
+mutation takeOverSoloSession($articleId: ID!) {
+    article (articleId: $articleId) {
+        takeOverSoloSession {
             id
         }
     }

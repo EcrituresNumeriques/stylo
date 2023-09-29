@@ -65,7 +65,6 @@ issueid: ''
 ordseq: ''
 ---`,
   title:'New article',
-  sommaire:'',
   bib: '',
   md: `## Section Title
 
