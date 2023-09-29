@@ -100,7 +100,7 @@ async function createSoloSession (article, user, force = false) {
   const soloSession = {
     id: soloSessionId,
     creator: user._id,
-    creatorUsername: user.username,
+    creatorUsername: user.displayName || user.username || user.email,
     createdAt: new Date()
   }
   article.soloSession = soloSession
