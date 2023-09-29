@@ -171,10 +171,10 @@
         </div>
 
         <div class="docs-layout__center-wrapper | grid-area--page-sidebar">
-          <nav class="docs-layout__center-sidebar">
+          <div class="docs-layout__center-sidebar">
             <!---- Todo fill sidebar ---->
-            <!-- TOC? -->
-          </nav>
+            <!-- TOC? par defaut le plugin-toc wrappe le toc dans des balises nav-->
+          </div>
         </div>
 
         <div class="docs-layout__center-wrapper | grid-area--page-content">

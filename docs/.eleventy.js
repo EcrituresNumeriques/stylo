@@ -5,10 +5,31 @@
 
 const pluginWebc = require("@11ty/eleventy-plugin-webc");
 const searchFilter = require("./src/filters/search");
+const pluginTOC = require('eleventy-plugin-toc');
+const markdownIt = require('markdown-it');
+const markdownItAnchor = require('markdown-it-anchor');
+
+
+// constante pour les ancres dans les titres
+const mdAnchorOpts = {
+  permalink: true,
+  permalinkClass: 'anchor-link',
+  permalinkSymbol: '#',
+  level: [1, 2, 3, 4]
+};
 
 module.exports = function(eleventyConfig) {
 
+  //Markdown : ajout des ancres sur les titres et la classe 'anchor-link'
+  eleventyConfig.setLibrary(
+    'md',
+    markdownIt()
+      .use(markdownItAnchor, mdAnchorOpts)
+  )
+
+  //Plugins
   eleventyConfig.addFilter("search", searchFilter);
+  eleventyConfig.addPlugin(pluginTOC);
 
   eleventyConfig.addPlugin(pluginWebc, {
     // WebC Components
