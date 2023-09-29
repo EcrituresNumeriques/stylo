@@ -5,7 +5,7 @@ title: "About **_Stylo_**"
 
 Stylo is developed by the [Canada Research Chair in Digital Textualities](https://ecrituresnumeriques.ca/en/) and [PiNinja](https://3.14159.ninja/) company, with the support of [Érudit](https://www.erudit.org/en/), under [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE) licence.
 
-<img src="/uploads/images/logo-crc-ecrinum.png" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:250px">
+<img src="/uploads/images/logo-crc-ecrinum.svg" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:250px">
 
 <img src="/uploads/images/erudit-logotype-rouge.png" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:150px">
 

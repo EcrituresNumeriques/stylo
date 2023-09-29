@@ -5,7 +5,7 @@ useSideMenu: true
 
 Le projet est dirigé par la [Chaire de Recherche du Canada sur les écritures numériques](http://ecrituresnumeriques.ca) et a été réalisé par l'entreprise [PiNinja](https://3.14159.ninja/), avec le soutien d'[Érudit](http://erudit.org/), sous licence [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE).
 
-<img src="/uploads/images/logo-crc-ecrinum.png" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:250px">
+<img src="/uploads/images/logo-crc-ecrinum.svg" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:250px">
 
 <img src="/uploads/images/erudit-logotype-rouge.png" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:150px">
 
