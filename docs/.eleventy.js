@@ -9,6 +9,13 @@ const pluginTOC = require('eleventy-plugin-toc');
 const markdownIt = require('markdown-it');
 const markdownItAnchor = require('markdown-it-anchor');
 
+// des options pour le rendu avec markdown-it
+const mdOptions = {
+  html: true,
+  breaks: false,
+  linkify: true,
+  typographer: true
+}
 
 // constante pour les ancres dans les titres
 const mdAnchorOpts = {
@@ -23,7 +30,7 @@ module.exports = function(eleventyConfig) {
   //Markdown : ajout des ancres sur les titres et la classe 'anchor-link'
   eleventyConfig.setLibrary(
     'md',
-    markdownIt()
+    markdownIt(mdOptions)
       .use(markdownItAnchor, mdAnchorOpts)
   )
 
@@ -62,6 +69,31 @@ module.exports = function(eleventyConfig) {
 
   // Nous pourrions ajouter d’autres collections
   // ex. pour les annonces, ou sous /blog
+
+
+  // Les shortcodes vont ici
+  // shortcode sert pour créer le composant bouton
+  eleventyConfig.addPairedShortcode("link-button", function (content, href, color, size) { 
+    if (size != undefined) {
+      size = size;
+    } else {
+      size = "small";
+    }
+    return `
+  <link-button href="${href}" color="${color}" size="${size}">${content}</link-button>`; 
+});
+
+
+  // shortcode pour les alert-block
+  eleventyConfig.addPairedShortcode("alert-block", function (content, heading, type) {
+    if (type != undefined) {
+      type = type;
+    } else {
+      type = "neutral";
+    }
+    return `
+    <alert-block type="${type}" heading="${heading}">${content}</alert-block>`
+  });
 
   // Copier les contenus du dossier `uploads/` tels quels
   // (sans le dossier `uploads/` dans le chemin de destination)

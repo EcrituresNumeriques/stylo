@@ -19,6 +19,8 @@ isHome: true
 </alert-block> 
 
 
+{% alert-block "📢 Mise à jour des fonctionnalités" "success" %}À l'attention des utilisatrices et des utilisateurs de Stylo : La tant attendue fonctionnalité d'écriture collaborative synchrone est maintenant disponible ! Pour en savoir plus, rendez-vous sur la [page de la documentation](/fr/edition-collaborative) qui y est consacrée !{% endalert-block %}
+
 ---
 
 Pour faire un tour rapide de certaines nouvelles fonctionnalités de 2023 voici une page d'information : [Nouvelles fonctionnalités !](/fr/messagev2/).
