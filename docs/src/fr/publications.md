@@ -18,7 +18,7 @@ Stylo a été présenté lors de plusieurs événements scientifiques et profess
 
 - Article de la rédaction d’Huma-Num à l’occasion de la connection de Stylo au portail HumanID, décembre 2020 : [« Stylo, un éditeur de texte pour les SHS disponible chez Huma-Num »](https://humanum.hypotheses.org/6311)
 
-- Vitali-Rosati, M., Sauret, N., Fauchié, A, & Mellet, M. (2020). Write SHS in a digital environment. The Stylo text editor. *Digital Intelligibility Review* , 1|2020. [Online]  https://doi.org/10.34745/numerev_1697
+- Article publié dans la revue *Digital Intelligibility Review*, 2020 : [« Write SHS in a digital environment. The Stylo text editor. »](https://doi.org/10.34745/numerev_1697) (Marcello Vitali-Rosati, Nicolas Sauret, Antoine Fauchié & Margot Mellet).
 
 - [Conférence FOSDEM 2020](https://archive.fosdem.org/2020/) « Stylo: A User Friendly Text Editor for Humanities Scholars », février 2020 : [vidéo](https://youtu.be/OymvZQpkFAM) (Antoine Fauchié)
 
@@ -30,7 +30,7 @@ Stylo a été présenté lors de plusieurs événements scientifiques et profess
 
 - [Journées Médici 2018](https://medici2018.sciencesconf.org/) (Métiers de l’édition scientifique publique), « Vers l’édition scientifique 4.0 ? »,  septembre 2018 : [présentation](https://ecrituresnumeriques.github.io/s_StyloMedici/) et [démonstration](https://www.youtube.com/embed/qcwEqbcxBF8) (Nicolas Sauret et Marcello Vitali-Rosati)
 
-- [Conférence DH Montréal](https://dh2017.adho.org/program-2/abstracts/), « Stylo : Repenser la chaîne éditoriale numérique pour les revues savantes en sciences humaines », août 2017 : [poster](/uploads/pdf/poster_Stylo_DH2017.pdf) et [résumé](https://dh2017.adho.org/abstracts/224/224.pdf) (en anglais) (Emmanuel Château, Arthur Juchereau, Servanne Monjour, Nicolat Sauret, Michael Sinatra et Marcello Vitali-Rosati)
+- [Conférence DH Montréal](https://dh2017.adho.org/program-2/abstracts/), « Stylo : Repenser la chaîne éditoriale numérique pour les revues savantes en sciences humaines », août 2017 : [poster](/uploads/pdf/poster_Stylo_DH2017.pdf) et [résumé](https://dh2017.adho.org/abstracts/224/224.pdf) (en anglais) (Emmanuel Château-Dutier, Arthur Juchereau, Servanne Monjour, Nicolat Sauret, Michael Sinatra et Marcello Vitali-Rosati)
 
 ---
 
