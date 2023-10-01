@@ -20,6 +20,8 @@ Pour avoir les droits d'accès à un article 3 solutions sont mises à dispositi
 
 ## Initialiser une session d'écriture synchrone
 
+{% figure "/uploads/gif/edition-collaborative.gif", "Session d'édition collaborative" %}
+
 L'écriture synchrone dans Stylo n'est pas un mode par défaut pour tous les articles. 
 C'est un mode qu'il faut initialiser en appuyant sur l'icône \[*Collaborative editing*\] dans la page de gestion des articles, qu'il s'agisse de l'espace personnel ou d'un espace de travail.
 
@@ -39,7 +41,7 @@ Seul le modérateur de la session peut effectuer cette action en appuyant sur le
 
 ![End Collaborative Session](/uploads/images/collaborative-editing-end-session.png)
 
-<alert-block heading="📢">
+<alert-block>
 
 Si une session collaborative n'est pas fermée correctement, l'article concerné ne sera plus accessible en édition simple.
 

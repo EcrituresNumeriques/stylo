@@ -119,6 +119,8 @@ La prévisualisation vous permettra la lecture du contenu de l'article édité e
 
 ## Partager un article
 
+{% figure "/uploads/gif/how-to-share.gif", "Partager un article" %}
+
 Vous pouvez également partager votre article avec d'autres utilisateurs Stylo en cliquant sur l'icône suivante :
 
 ![Share](/uploads/images/Share-V2.png)

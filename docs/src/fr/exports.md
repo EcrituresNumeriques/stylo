@@ -33,6 +33,8 @@ Les exports sont produits grâce à l'outil de conversion [Pandoc](https://pando
 
 L'export permet aussi de télécharger les fichiers source de Stylo (.md, .bib, .yaml) et les médias insérés dans l'article s'il y en a.
 
+{% figure "/uploads/gif/exporter-un-article.gif", "Exporter un article" %}
+
 ### Personnaliser son export
 
 À partir des fichiers source, il est possible de produire des exports personnalisés (mise en page, graphismes, métadonnées) en s'appuyant sur les fonctionnalités de l'outil de conversion [Pandoc](https://pandoc.org/).

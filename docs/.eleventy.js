@@ -95,6 +95,21 @@ module.exports = function(eleventyConfig) {
     <alert-block type="${type}" heading="${heading}">${content}</alert-block>`
   });
 
+  // shortcode pour rendre l'image cliquable
+  eleventyConfig.addShortcode("figure", function (src, caption, alt) {
+    let figcaption_html = (caption != "") ? `<figcaption>${caption}</figcaption>` : '';
+    return `
+<figure>
+  <a href="#${src}" id="_${src}">
+    <img lazy="true" src="${src}" alt="${alt ? alt : (caption ? caption : '')}" />
+  </a>
+  <a href="#_${src}" class="overlay" id="${src}">
+    <img src="${src}" alt="${alt ? alt : (caption ? caption : '')}" />
+  </a>
+  ${figcaption_html}
+</figure>`;
+  });
+
   // Copier les contenus du dossier `uploads/` tels quels
   // (sans le dossier `uploads/` dans le chemin de destination)
   eleventyConfig.addPassthroughCopy("uploads");

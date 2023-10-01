@@ -59,11 +59,7 @@ Pour ce faire, il faut retourner dans le gestionnaire des corpus en cliquant sur
 
 Puis, en respectant le fonctionnement du gestionnaire des articles, il faut déplier la fenêtre d'informations du corpus et ordonner les articles grâce à un glisser-déposer (maintenir le clic gauche enfoncé et déplacer le curseur pour positionner l'article à la bonne place, puis relâcher).
 
-![Corpus désordonné](/uploads/images/corpus-desordonne.png)
-
-![Corpus ordonné](/uploads/images/corpus-ordonne.png)
-
-
+{% figure "/uploads/gif/corpus.gif", "Gérer son corpus" %}
 
 ## Éditer un corpus
 

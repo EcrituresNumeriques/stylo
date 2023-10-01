@@ -44,6 +44,10 @@ Il incombe à chacun la responsabilité de la gestion des informations et des dy
 
 </alert-block> 
 
+{% figure "/uploads/gif/espace-de-travail.gif", "Création d'un espace de travail" %}
+
+{% figure "/uploads/gif/ajout-utilisateur-workspace.gif", "Ajouter un utilisateur Stylo à l'espace de travail" %}
+
 ## Afficher un espace de travail
 
 Un espace de travail est une configuration qui permet d'afficher uniquement les documents qui y sont liés dans l'interface de Stylo.
