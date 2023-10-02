@@ -58,7 +58,7 @@
       "label": "La gestion des articles",
       "children": [
         {
-          "label": "Création et gestion",
+          "label": "Gestion des articles",
           "url": "/fr/mesarticles"
         },
         {

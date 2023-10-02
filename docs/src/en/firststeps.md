@@ -51,7 +51,7 @@ The article editing interface offers many modules:
   - A bibliography manager: a space for editing references (quoted or not in the body text);
   - A statistics tool: presenting statistical information about the article (words and characters count, etc.).
 
-![Schéma de l'interface d'édition de Stylo](/uploads/images/Structure.png)
+![Schéma de l'interface d'édition de Stylo](/uploads/images/SchémaInterface.PNG)
 
 
 ## Share option
@@ -64,7 +64,7 @@ The **[Share]** function allows you to invite co-authors to work on the same art
 
 To create a new article, simply click on the button:
 
-![New article](/uploads/images/Create.png)
+![New article](/uploads/images/CreateNewArticle-V2.PNG)
 
 You must then enter the name of the document in the field provided for this purpose
 
@@ -72,7 +72,7 @@ You must then enter the name of the document in the field provided for this purp
 
 and validate the operation by once again clicking on the button
 
-![Nouvel article](/uploads/images/Create.png)
+![Nouvel article](/uploads/images/CreateThisArticle-V2.PNG)
 
 During this operation, you can also choose the tags related to the article:
 
@@ -194,7 +194,7 @@ For more information on Stylo exporting, you can see this [page](http://stylo-do
 
 ## Table of Contents
 
-![Sommaire](/uploads/images/sommaire.png)
+![Sommaire](/uploads/images/Sommaire-V2.PNG)
 
 The table of contents appears in a list of titles at levels 2, 3, and so on. These titles are clickable, for quick access to that part of the corresponding text.
 

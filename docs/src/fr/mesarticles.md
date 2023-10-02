@@ -1,5 +1,5 @@
 ---
-title: Gérer les articles
+title: Gestion des articles
 ---
 
 Vos articles sont disponibles dans la page _Articles_ cliquable via la barre latérale de votre compte Stylo :

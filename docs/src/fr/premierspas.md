@@ -80,7 +80,7 @@ La fonction **[Share]** permet d'inviter des co-auteur·rice·s à travailler su
 
 Pour créer un nouvel article, il suffit de cliquer sur le bouton :
 
-![Nouvel article](/uploads/images/Create-V2.png)
+![Nouvel article](/uploads/images/CreateNewArticle-V2.PNG)
 
 Vous devez ensuite renseigner le nom du document dans le champ prévu à cet effet
 
@@ -88,7 +88,7 @@ Vous devez ensuite renseigner le nom du document dans le champ prévu à cet eff
 
 et valider l'opération en cliquant une nouvelle fois sur le bouton.
 
-![Valider nouvel article](/uploads/images/Create-Validation.png)
+![Valider nouvel article](/uploads/images/CreateThisArticle-V2.PNG)
 
 Lors de cette opération, il vous est également possible de choisir les tags associés à l'article :
 
