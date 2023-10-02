@@ -77,19 +77,21 @@ Une barre latérale de recherche vous est proposée pour effectuer une recherche
 
 Sur votre page Articles, ceux-ci sont listés les uns à la suite des autres selon les modifications les plus récentes :
 
-![Articles](/uploads/images/PageArticles.PNG)
+![Articles](/uploads/images/PageArticles.png)
 
 Chaque article se présente comme un bloc dans votre liste. Cet espace dédié à un article seulement vous permet d'effectuer plusieurs opérations immédiates :
 
 |Bouton|Fonction|
 |:-:|:--|
 | ![Rename](/uploads/images/Rename-V2.png) | pour renommer l'article |
-| ![See](/uploads/images/Preview-V2.png) | pour prévisualiser l'article |
-| ![Share](/uploads/images/Share-V2.png) | pour partager l'article et son historique de versions avec un autre usager de Stylo |
-| ![Duplicate](/uploads/images/Duplicate-V2.png) | pour dupliquer uniquement la dernière version de l'article. La copie s'intitulera ainsi : "[Copy] Titre de l'article" |
-| ![Export](/uploads/images/Download.png) | pour exporter l'article |
-| ![Edit](/uploads/images/Edit-V2.png) | pour ouvrir l'article en mode édition |
 | ![Delete](/uploads/images/Delete-V2.png) | pour supprimer l'article |
+| ![Duplicate](/uploads/images/Duplicate-V2.png) | pour dupliquer uniquement la dernière version de l'article. La copie s'intitulera ainsi : "[Copy] Titre de l'article" |
+| ![Send](/uploads/images/send.png) | pour envoyer une copie de l'article |
+| ![Share](/uploads/images/Share-V2.png) | pour partager l'article et son historique de versions avec un autre usager de Stylo |
+| ![Export](/uploads/images/Download.png) | pour exporter l'article |
+| ![Collaborative editing](/uploads/images/collaborative-editing.png) | pour ouvrir l'article en édition |
+| ![Edit](/uploads/images/Edit-V2.png) | pour ouvrir l'article en mode édition |
+| ![See](/uploads/images/Preview-V2.png) | pour prévisualiser l'article |
 
 Vous pouvez également développer le bloc de l'article en cliquant sur le chevron situé à gauche du titre de votre article. Vous avez alors accès à :
 
@@ -117,25 +119,26 @@ Il vous est possible de prévisualiser votre article en cliquant sur l'icône su
 
 La prévisualisation vous permettra la lecture du contenu de l'article édité et l'[annotation](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!/fr/preview).
 
-## Partager un article
 
-{% figure "/uploads/gif/how-to-share.gif", "Partager un article" %}
+## Envoyer un article
+
+Vous avez la possibilité d'envoyer une copie de votre article à un autre utilisateur Stylo en cliquant sur le bouton ![Send](/uploads/images/send.png).
+
+L'option [Send a Copy] n'est pas un partage d'article : seule la dernière version de l'article sera visible par l'utilisateur et les modifications ne seront pas visibles par les deux utilisateurs. Dans le processus [Send a Copy], deux versions de l'article sont créées et les utilisateurs travaillent chacun sur une version qui n'est pas visible par l'autre.
+
+{% figure "/uploads/gif/how-to-send-copy.gif", "Envoyer une copie d'un article" %}
+
+## Partager un article
 
 Vous pouvez également partager votre article avec d'autres utilisateurs Stylo en cliquant sur l'icône suivante :
 
 ![Share](/uploads/images/Share-V2.png)
 
-Pour partager, vous devez renseigner l'adresse courriel de l'utilisateur Stylo : il s'agit de l'adresse courriel avec laquelle l'utilisateur a créé son compte Stylo. Une fois l'adresse renseignée, il vous faut l'ajouter en cliquant sur le bouton "Add".
+{% figure "/uploads/gif/how-to-share.gif", "Partager un article" %}
 
-![Share](/uploads/images/ShareContact-V2.PNG)
+Pour partager, vous devez renseigner l'adresse courriel de l'utilisateur Stylo : il s'agit de l'adresse courriel avec laquelle l'utilisateur a créé son compte Stylo. Une fois l'adresse renseignée, il vous faut l'ajouter en cliquant sur la case pour la cocher.
 
-![Share](/uploads/images/SendCopy_GrantAccess-V2.PNG)
-
-La fonction [Grant Access] permet à plusieurs utilisateurs Stylo de travailler sur le même article. Ces utilisateurs ont alors accès à tout l'historique. Les versions de l'article se synchronisent pour tous les utilisateurs au fur et à mesure des modifications effectuées sur le document.
-
-Cette fonctionnalité vous permet également d'envoyer une copie de l'article.
-
-L'option [Send a Copy] n'est pas un partage d'article : seule la dernière version de l'article sera visible par l'utilisateur et les modifications ne seront pas visibles par les deux utilisateurs. Dans le processus [Send a Copy], deux versions de l'article sont créées et les utilisateurs travaillent chacun sur une version qui n'est pas visible par l'autre.
+![Share](/uploads/images/share-form.png)
 
 ## Dupliquer un article
 

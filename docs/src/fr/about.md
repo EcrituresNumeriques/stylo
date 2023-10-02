@@ -55,7 +55,7 @@ Les chercheur·e·s participant à la réalisation de ce projet sont les suivant
 - [Nicolas Sauret](https://ecrituresnumeriques.ca/fr/Equipe/Nicolas-Sauret)
 - [Marcello Vitali-Rosati](https://ecrituresnumeriques.ca/fr/Equipe/Marcello-Vitali-Rosati-)
 - [Roch Delannay](https://ecrituresnumeriques.ca/fr/Equipe/Roch-Delannay)
-- [Louis-Olivier Brassard]()
+- [Louis-Olivier Brassard](https://www.loupbrun.ca)
 
 ## Développeurs
 

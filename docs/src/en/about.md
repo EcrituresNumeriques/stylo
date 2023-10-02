@@ -55,7 +55,7 @@ The researchers participating in the project are as follows:
 - [Nicolas Sauret](https://ecrituresnumeriques.ca/fr/Equipe/Nicolas-Sauret)
 - [Marcello Vitali-Rosati](https://ecrituresnumeriques.ca/fr/Equipe/Marcello-Vitali-Rosati-)
 - [Roch Delannay](https://ecrituresnumeriques.ca/en/Equipe/Roch-Delannay)
-- [Louis-Olivier Brassard]()
+- [Louis-Olivier Brassard](https://www.loupbrun.ca)
 
 ## Developers
 
