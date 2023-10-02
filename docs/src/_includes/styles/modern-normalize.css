@@ -300,6 +300,8 @@ Overlay images
   transition: transform .3s;
   max-height: 40vh;
   object-fit: unset;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .overlay:target {
@@ -310,5 +312,5 @@ Overlay images
 }
 
 .overlay:target img {
-    transform: scale(1);
+    transform: scale(1.5);
 }
