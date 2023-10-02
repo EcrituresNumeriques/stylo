@@ -117,9 +117,7 @@ Les tableaux quant à eux sont délimités avec des crochets `[]`, et les élém
 ```yaml
 
 prenoms: ["Bruce", "John", "Céline"]
-
 chiffres: [1, 4, 8, 3, 55]
-
 
 ```
 
@@ -132,7 +130,6 @@ Ainsi un dictionnaire en YAML prend la forme suivante : 
 ```yaml
 
 monDictionnaire: {clef1:"valeur1", clef2:"valeur2", clef3:"valeur3", clef4:"valeur4", clef5:8}
-
 
 ```
 
