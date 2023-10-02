@@ -120,31 +120,29 @@ async function createSoloSession (article, user, force = false) {
 async function createVersion (article, { major, message, userId, type }) {
   const { bib, yaml, md } = article.workingVersion
 
+  console.log(article.versions)
   /** @type {Query<Array<Article>>|Array<Article>} */
   const latestVersions = await Version.find({ _id: { $in: article.versions.map((a) => a._id) } })
     .sort({ createdAt: -1 })
-    .limit(1)
 
-  if (type !== 'userAction') {
-    if (latestVersions?.length > 0) {
-      const latestVersion = latestVersions[0]
-      if (bib === latestVersion.bib && yaml === latestVersion.yaml && md === latestVersion.md) {
-        logger.info("Won't create a new version since there's no change", {
-          action: "createVersion",
-          articleId: article._id
-        })
-        return false
-      }
+  if (latestVersions?.length > 0) {
+    const latestVersion = latestVersions[0]
+    if (bib === latestVersion.bib && yaml === latestVersion.yaml && md === latestVersion.md) {
+      logger.info('Won\'t create a new version since there\'s no change', {
+        action: 'createVersion',
+        articleId: article._id
+      })
+      return false
     }
   }
 
   let mostRecentVersion = { version: 0, revision: 0 }
-  const latestUserVersions = latestVersions?.filter(v => v.type === undefined || v.type === 'userAction')
+  const latestUserVersions = latestVersions?.filter(v => !v.type || v.type === 'userAction')
   if (latestUserVersions?.length > 0) {
-    const latestVersion = latestVersions[0]
+    const latestUserVersion = latestUserVersions[0]
     mostRecentVersion = {
-      version: latestVersion.version,
-      revision: latestVersion.revision,
+      version: latestUserVersion.version,
+      revision: latestUserVersion.revision,
     }
   }
   const { revision, version } = major
@@ -399,12 +397,15 @@ module.exports = {
     },
 
     async createVersion (article, { articleVersionInput }) {
-      await createVersion(article, articleVersionInput)
+      const result = await createVersion(article, { ...articleVersionInput, type: 'userAction' })
+      if (result === false) {
+        throw new ApiError('ILLEGAL_STATE', 'Unable to create a new version since there\'s no change')
+      }
       await article.save()
       return article
     },
 
-    async startCollaborativeSession(article, _, { user }) {
+    async startCollaborativeSession (article, _, { user }) {
       if (article.collaborativeSession && article.collaborativeSession.id) {
         return article.collaborativeSession
       }
@@ -428,7 +429,7 @@ module.exports = {
       return collaborativeSession
     },
 
-    async stopCollaborativeSession(article, _, { user }) {
+    async stopCollaborativeSession (article, _, { user }) {
       if (article.collaborativeSession && article.collaborativeSession.id) {
         const yDoc = getYDoc(`ws/${article.collaborativeSession.id.toString()}`)
         const yState = yDoc.getText('state')
@@ -451,15 +452,15 @@ module.exports = {
       return article
     },
 
-    async startSoloSession(article, _, { user }) {
+    async startSoloSession (article, _, { user }) {
       return createSoloSession(article, user, false)
     },
 
-    async takeOverSoloSession(article, _, { user }) {
+    async takeOverSoloSession (article, _, { user }) {
       return createSoloSession(article, user, true)
     },
 
-    async stopSoloSession(article, _, { user }) {
+    async stopSoloSession (article, _, { user }) {
       if (article.soloSession && article.soloSession.id) {
         if (!article.soloSession.creator._id.equals(user._id)) {
           throw new ApiError('UNAUTHORIZED', `Solo session ${article.soloSession.id} can only be ended by its creator ${article.soloSession.creator}.`)
@@ -480,7 +481,7 @@ module.exports = {
   },
 
   WorkingVersion: {
-    bibPreview({ bib }) {
+    bibPreview ({ bib }) {
       return previewEntries(bib)
     },
     yaml ({ yaml }, { options }) {

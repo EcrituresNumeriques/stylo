@@ -54,7 +54,7 @@ export default function CollaborativeSessionAction ({ collaborativeSession, arti
     <>
       <Button title="Collaborative editing" icon={true} onClick={() => setCollaborativeEditingVisible(true)}>
         <Users/>
-        {collaborativeSession && <Badge type="error">Live</Badge>}
+        {collaborativeSession && collaborativeSession.id && <Badge type="error">Live</Badge>}
       </Button>
       <GeistModal width="35rem" visible={collaborativeEditingVisible} {...collaborativeEditingBinding}>
         <h2>{collaborativeSessionDialogTitle}</h2>

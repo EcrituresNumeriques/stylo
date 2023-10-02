@@ -1,7 +1,12 @@
-import React, { useState } from 'react'
+import { useToasts } from '@geist-ui/core'
+import PropTypes from 'prop-types'
+import React, { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ArrowLeft } from 'react-feather'
+import { createVersion } from '../../services/ArticleService.graphql'
+
+import { useMutation } from '../../hooks/graphql.js'
 
 import styles from './createVersion.module.scss'
 import buttonStyles from '../button.module.scss'
@@ -9,22 +14,45 @@ import Button from '../Button'
 import Field from '../Field'
 
 const CreateVersion = ({ articleId, readOnly, onClose }) => {
+  const { setToast } = useToasts()
+  const mutation = useMutation()
+  const activeUser = useSelector(state => state.activeUser)
   const dispatch = useDispatch()
-
-  // create a new version
   const [message, setMessage] = useState('')
-  const createVersion = async (e, major = false) => {
+  const handleCreateVersion = useCallback(async (e, major = false) => {
     e.preventDefault()
-    dispatch({ type: 'CREATE_NEW_ARTICLE_VERSION', articleId, message, major })
-    setMessage('')
-  }
+    try {
+      const response = await mutation({
+        query: createVersion,
+        variables: {
+          userId: activeUser._id,
+          articleId,
+          major,
+          message
+        }
+      })
+      dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: response.article.createVersion.versions })
+      setToast({
+        text: `Nouvelle version créée.`,
+        type: 'default',
+      })
+    } catch (err) {
+      const errorMessage = err.messages && err.messages.length
+      ? err.messages[0].message
+        : err.message
+      setToast({
+        type: 'error',
+        text: errorMessage
+      })
+    }
+  }, [message, activeUser])
 
   return (
     <div className={styles.container}>
       {readOnly && <Link className={[buttonStyles.button, buttonStyles.secondary].join(' ')} to={`/article/${articleId}`}> <ArrowLeft/> Edit Mode</Link>}
         <form
           className={styles.createForm}
-          onSubmit={(e) => createVersion(e, false)}
+          onSubmit={(e) => handleCreateVersion(e, false)}
         >
           <Field
             className={styles.createVersionInput}
@@ -45,7 +73,7 @@ const CreateVersion = ({ articleId, readOnly, onClose }) => {
               </Button>
             </li>
             <li>
-              <Button onClick={(e) => createVersion(e, true)}>
+              <Button onClick={(e) => handleCreateVersion(e, true)}>
                 Create Major
               </Button>
             </li>
@@ -56,3 +84,9 @@ const CreateVersion = ({ articleId, readOnly, onClose }) => {
 }
 
 export default CreateVersion
+
+CreateVersion.propTypes = {
+  articleId: PropTypes.string,
+  readOnly: PropTypes.bool,
+  onClose: PropTypes.func,
+}

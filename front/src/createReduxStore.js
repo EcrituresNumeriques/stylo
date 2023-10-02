@@ -44,6 +44,7 @@ const initialState = {
   },
   articleStructure: [],
   articleVersions: [],
+  createArticleVersionError: null,
   articleWriters: [],
   articlePreferences: localStorage.getItem('articlePreferences') ? JSON.parse(localStorage.getItem('articlePreferences')) : {
     expandSidebarLeft: true,
@@ -105,6 +106,7 @@ const reducer = createReducer(initialState, {
   SET_WORKING_ARTICLE_METADATA: setWorkingArticleMetadata,
   SET_WORKING_ARTICLE_BIBLIOGRAPHY: setWorkingArticleBibliography,
   SET_WORKING_ARTICLE_STATE: setWorkingArticleState,
+  SET_CREATE_ARTICLE_VERSION_ERROR: setCreateArticleVersionError,
 
   ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
 
@@ -146,8 +148,12 @@ const createNewArticleVersion = store => {
         const userId = userPreferences.currentUser ?? activeUser._id
         const { articleId, major, message } = action
         const articleService = new ArticleService(userId, articleId, sessionToken, applicationConfig)
-        const response = await articleService.createNewVersion(major, message)
-        store.dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: response.article.createVersion.versions })
+        try {
+          const response = await articleService.createNewVersion(major, message)
+          store.dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: response.article.createVersion.versions })
+        } catch (err) {
+          store.dispatch({ type: 'SET_CREATE_ARTICLE_VERSION_ERROR', err: err })
+        }
         return next(action)
       }
       if (action.type === 'UPDATE_WORKING_ARTICLE_TEXT') {
@@ -372,6 +378,10 @@ function updateArticleWriters (state, { articleWriters }) {
 
 function setArticleVersions (state, { versions }) {
   return { ...state, articleVersions: versions }
+}
+
+function setCreateArticleVersionError (state, { err }) {
+  return  { ...state, createArticleVersionError: err }
 }
 
 function setWorkingArticleUpdatedAt (state, { updatedAt }) {
