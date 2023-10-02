@@ -9,10 +9,12 @@
     padding: .5rem;
   }
   > li.selected {
-    background-color: $selected-background;
+    background-color: hsl(120deg 68% 90%);
+    border-left-color: hsl(120deg 68% 45%);
   }
   > li.compareTo {
-    background-color: $beware-background;
+    background-color: hsl(0deg 100% 90%);
+    border-left-color: hsl(0deg 100% 45%);
   }
   > p {
     padding: 0.5rem 1rem;
@@ -30,7 +32,8 @@
 }
 
 .version {
-  border-left: 4px solid #cecece;
+  border: 1px solid transparent;
+  border-left: 4px solid;
   margin-bottom: 0.25em;
   margin-left: 0.5rem;
   margin-right: 0.25em;
@@ -42,6 +45,7 @@
   color: inherit;
   text-decoration: none;
   flex-grow: 1;
+  background-color: transparent;
 
   > header {
     max-width: 265px;
@@ -50,17 +54,26 @@
   }
 }
 
-.versionLinkCompare {
-  max-width: 200px;
-}
-
 .manualVersion {
-  border-left: 4px solid #202020;
+  border-left-color: hsl(0 0% 10% / 1);
+  color: hsl(0 0% 10% / 1);
 }
 
 .automaticVersion {
-  border-left: 4px solid #bebebe;
-  color: #858585;
+  border-left-color: hsl(0 0% 40%);
+  color: hsl(0 0% 40% / 1);
+}
+
+.version:hover {
+  border-bottom-color: hsl(0 0% 10%);
+  border-top-color: hsl(0 0% 10%);
+  border-right-color: hsl(0 0% 10%);
+  color: hsl(0 0% 10% / 1);
+  background-color: hsl(0 0% 90% / 1);
+}
+
+.versionLinkCompare {
+  max-width: 200px;
 }
 
 .versionLabel {
