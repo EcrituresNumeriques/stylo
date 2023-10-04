@@ -173,7 +173,10 @@
         <div class="docs-layout__center-wrapper | grid-area--page-sidebar">
           <div class="docs-layout__center-sidebar">
             <!---- Todo fill sidebar ---->
-            <!-- TOC? par defaut le plugin-toc wrappe le toc dans des balises nav-->
+            <div 
+            webc:is="toc"
+            :@content="content"
+            ></div>
           </div>
         </div>
 
@@ -184,7 +187,6 @@
             :@content="content"
             webc:is="prose-block"
           >
-            <slot></slot>
           </div>
         </div>
 
@@ -417,5 +419,22 @@
     position: sticky;
     top: 0;
     right: 0;
+  }
+
+  .toc {
+    position: fixed;
+  }
+
+  .toc ul {
+    list-style: none;
+  }
+
+  .toc a:link, a:visited {
+    text-decoration: none;
+    color: var(--couleur-police);
+  }
+
+  .toc ul > li > a:hover, a:active {
+    color: var(--couleur-lien, inherit);
   }
 </style>

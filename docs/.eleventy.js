@@ -36,7 +36,9 @@ module.exports = function(eleventyConfig) {
 
   //Plugins
   eleventyConfig.addFilter("search", searchFilter);
-  eleventyConfig.addPlugin(pluginTOC);
+  eleventyConfig.addPlugin(pluginTOC, {
+    ul: true,
+  });
 
   eleventyConfig.addPlugin(pluginWebc, {
     // WebC Components
