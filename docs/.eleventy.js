@@ -38,6 +38,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addFilter("search", searchFilter);
   eleventyConfig.addPlugin(pluginTOC, {
     ul: true,
+    tags: ['h2', 'h3'],
   });
 
   eleventyConfig.addPlugin(pluginWebc, {
