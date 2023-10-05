@@ -1,5 +1,5 @@
 ---
-title: First steps with Stylo
+title: Getting started with Stylo
 ---
 
 ## Creating an account
@@ -16,16 +16,29 @@ By default, a first article, called "How to Stylo", appears on the platform, and
 
 For each article, many actions are possible:
 
-|Button|Function|
-|:-:|:--|
-| ![Edit](/uploads/images/Edit.png) | To open the article and edit|
-| ![Share](/uploads/images/Share-V2.png) | To share the article and its version history with another Stylo user. It will be called: "[Copy]New article"|
-| ![Duplicate](/uploads/images/Duplicate.png) | To duplicate only the last version of the article|
-| ![Rename](/uploads/images/Rename.png) | To rename the article|
-| ![Delete](/uploads/images/Delete.png) | To delete the article|
-| ![Plus](/uploads/images/plus.png) | To expand other functions relating to the article|
-| ![Versions](/uploads/images/Version.png) | To consult the history of saved versions|
-| ![Tag](/uploads/images/Tag.png) | To choose the tags of the article|
+![](/uploads/images/fonctions-article.png)
+
+|                     Button                     |Function|
+|:----------------------------------------------:|:--|
+|    ![Delete](/uploads/images/Delete-V2.png)    | to delete the article |
+| ![Duplicate](/uploads/images/Duplicate-V2.png) | to duplicate only the last version of the article|
+| ![Send](/uploads/images/send.png) | to send a copy of the article and its version history with another Stylo user, who will be titled : "[Copy]New article"|
+|     ![Share](/uploads/images/Share-V2.png)     | to share the article and its version history with another Stylo user |
+|      ![Export](/uploads/images/Export.png)      | to export the last version of an article |
+|      ![Collaborative editing](/uploads/images/collaborative-editing.png)      | to launch en collaborative session |
+|      ![Edit](/uploads/images/Edit-V2.png)      | to open an article and edit|
+|      ![Preview](/uploads/images/Preview-V2.png)      | to preview the article in a new window (HTML)|
+
+![Extend functionnalities relating to the article](/uploads/images/article-extend-functionnalities.png)
+
+|                     Button                     |Function|
+|:----------------------------------------------:|:--|
+|    ![Rename](/uploads/images/Rename-V2.png)    | to rename the article |
+|      ![Plus](/uploads/images/Plus-V2.png)      | to expand other functions relating to the article:|
+|  ![Versions](/uploads/images/Version-V2.PNG)   | to consult the history of saved versions |
+|      ![Tags](/uploads/images/Tag-V2.png)       | to choose the tags of the article |
+| ![Ajouter aux espaces de travail](/uploads/images/ajout-dans-espace-de-travail.png) | to add an article to a workspace |
+| ![Ajouter aux corpus](/uploads/images/add-to-corpus.png) | to add an article to a corpus |
 
 Note: The document name, as it visible in Stylo, does not correspond to the title of the article that will be generated. The title must be filled in the metadata (right pane on the article) to appear on the preview or the exports.
 
@@ -35,21 +48,21 @@ Note: The document name, as it visible in Stylo, does not correspond to the titl
 
 An article in Stylo is made up of the following three separate elements:
 
-  - The text body;
-  - Metadata;
-  - A bibliography.
+  - the text body;
+  - metadata;
+  - a bibliography.
 
-Stylo offers an integrated interface to edit each of these elements, whose sources are accessible at any time via [the export module](firststeps.md#Export).
+Stylo offers an integrated interface to edit each of these elements, whose sources are accessible at any time via [the export module](#export).
 
 ## Editing interface
 The article editing interface offers many modules:
 
-  - A body text: a space for editing the body text of the article;
-  - A metadata manager: a space for editing information about the article (summary, author, keywords, publication date, etc.);
-  - A version manager: a space for saving and renaming minor (*Create Minor*) and major (*Create Major*) versions, that accesses successive versions to consult, export and compare them with other versions;
-  - A table of contents: automatically presenting a summary of the article, based on the titles within body text;
-  - A bibliography manager: a space for editing references (quoted or not in the body text);
-  - A statistics tool: presenting statistical information about the article (words and characters count, etc.).
+  - A **body text**: a space for editing the body text of the article;
+  - A **metadata manager**: a space for editing information about the article (summary, author, keywords, publication date, etc.);
+  - A **versions manager**: a space for saving and renaming minor (*Create Minor*) and major (*Create Major*) versions, that accesses successive versions to consult, export and compare them with other versions;
+  - A **table of contents**: automatically presenting a summary of the article, based on the titles within body text;
+  - A **bibliography manager**: a space for editing references (quoted or not in the body text);
+  - A **statistics** tool: presenting statistical information about the article (words and characters count, etc.).
 
 ![Schéma de l'interface d'édition de Stylo](/uploads/images/SchémaInterface.PNG)
 
@@ -85,14 +98,6 @@ Click on the button
 ![Edit](/uploads/images/Edit.png)
 
 to access the editing environment and begin to work on your article.
-
-## Import
-
-If the content that you intended to edit is already structured in another format, in another environment, it is possible to transfer it into the Stylo editing space. Stylo essentially edits Markdown language (extension .md): to import content currently in DOC format (extension .doc) or DOCX (extension .docx), we have set up an [online converter](https://stylo-export.ecrituresnumeriques.ca/importdocx.html), which allows you to convert a docx document to md. The procedure is detailed on the conversion page.
-
-![Import](/uploads/images/Import.png)
-
-Once you have converted, a .md document is generated: open it with a text editor (Atom, GeDit), and copy/paste the document content into the space of your Stylo article.
 
 ## Editing
 
@@ -145,52 +150,38 @@ A document version corresponds to a backup of your work. A version always contai
 
 Your work is automatically saved on Stylo by default, but you must create the versions yourself. To do this, you can - and it is recommended - use the save function [New Version] which allows you to generate a new version of the work:
 
-
-
-Thus, when you have created a version that you are satisfied with, you can name your version in the *Version label* field before saving it as a minor ([Create Minor]) or major ([Create Major]) version.
-
-A minor release is a release with minor changes, while a major release is a release with significant changes.
-
-At any time, you can view your work, whether it is the current version you are editing or previous versions. Just click on the [Preview] button:
-
-Your work is automaticcaly saved by default by Stylo, but you must create your own versions. To do so, you can - and should - use the the save function \[New Version\] which generates a new version of the work. 
-
-![Versions](/uploads/images/New-Version-V2.PNG)
-
-When you have arrived at a version you are satisfied with, you can name it in the field *Label of the version* before saving it as a minor version (\[Create Minor\]) or major version (\[Create Major\]).
-
-![Label of the version](/uploads/images/Label-Version-V2.PNG)
-
-A minor version correspnds to minor modifications while a major version creates a version with important cahnges. 
-
-At any time, you can viusalize your work, whether it is the current version that you are editing or an earlier version. Click on the button \[Preview\]: 
-
-![Preview](/uploads/images/Preview-Bouton-V2.PNG)
-
-Each version contains many functions: 
-
-For the editable version (*Edition*):
-
-
-| **Button**| **Function** |
-| -------- | -------- |
-|![Create Major](/uploads/images/Create-Major-V2.PNG)|To save a major version of your work|
-|![Create Minor](/uploads/images/Create-Minor-V2.PNG)| To save a minor version of your work|
-|![Export](/uploads/images/Export-V2.PNG)| To export and download the version in different formats|
-|![Preview](/uploads/images/Preview-Bouton-V2.PNG) |To access the preview of your work and annotate it|
-
-- For a previous version :
-	- **[Compare]** to compare different versions (a previous version and the current version or two previous versions). For more information about the **[Compare]** function, you can consult the following [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/interface.md)
-	- **[Export]** to export and download the document in different formats: HTML5, PDF, XML, etc.
-	- **[preview]** to access a preview of your work and to annotate it. For more information on the **[preview]** function, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/en/preview/)
-
-To view a previous version, simply click on its title. To return to the editable version, you must click on the **[Edit]** button.
+For more information on versions in Stylo, please visit the [dedicated page](/en/versioning/).
 
 ## Export
 
-The export module offers many formats (HTML, XML, PDF, etc.), allowing you to choose a bibliographic style, and the inclusion or not of a table of contents.
+To export an article, click on the "Export" button from the "Articles" page or from the article edit page:
 
-For more information on Stylo exporting, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/en/exports/)
+![Export](/uploads/images/Download.png)
+
+The export menu allows you to choose the export format. It also contains the option of including or not including a table of contents.
+
+![Export](/uploads/images/ExportConfig-V2.PNG)
+
+The following formats are supported:
+
+- Fichiers originaux (Markdown, YAML et BibTeX)
+- HTML5
+- LaTeX
+- PDF
+- ODT (LibreOffice)
+- DOCX (Microsoft Word)
+- ICML (InDesign)
+- XML-TEI
+- XML-Erudit
+- XML-TEI Commons Publishing (Métopes et OpenEdition)
+
+It is possible to choose from several bibliographic styles: some embed the reference in the text (e.g. Chicago, which inserts the reference in the body of the text in parentheses), others add a note with the reference.
+
+The export module takes care of formatting references, adding or removing spaces, inserting "Ibids." according to the style, etc.
+
+Exports are produced using the conversion tool [Pandoc](https://pandoc.org/) based on the templates available [here](https://framagit.org/stylo-editor/templates-stylo).
+
+For more information on Stylo exporting, you can see this [page](/en/exports/)
 
 ## Table of Contents
 
@@ -212,11 +203,11 @@ You can directly [structure your references in BibTex](http://www.andy-roberts.n
 
 To add a reference to the article, you just need to click on the reference, then paste (Ctrl+V) the reference in the desired place of the text. This way, a click is the same as "copying" the reference key to the clipboard. Then, you just need to paste it into the body text.
 
-An autocomplete system also allows you to display the available references by typing [@ or @ followed or not by the first letters of the reference identifier.
+An autocomplete system also allows you to display the available references by typing \[@ or @ followed or not by the first letters of the reference identifier.
 
 ![biblioex](/uploads/images/Bibliographie-Exemple-V2.PNG)
 
-For more information on managing the bibliography, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/en/managingref/).
+For more information on managing the bibliography, you can see this [page](/en/managingref/).
 
 ## Metadata
 

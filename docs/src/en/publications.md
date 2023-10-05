@@ -1,19 +1,14 @@
 ---
-title: Resources - Helpdesk
+title: Publications
 ---
 
-The *Canada Research Chair in Digital Textualities* organises weekly sessions to monitor Stylo. During these sessions, you can ask the team questions, perfect your use of Stylo, and resolve any publishing issues.
-
-The sessions take place every Thursday morning from 11am to 12pm (Montreal time).
-
-Participation in, and attendance to, these sessions are free and available online via videoconference: 
-
-<link-button href="https://meet.jit.si/stylo" color="hyperlink">Reach the helpdesk
-by videoconference</link-button>
-
-# Resources - Publications
-
 Stylo has been presented at various scientific and professional events:
+
+- [Humanistica 2023](https://humanistica2023.sciencesconf.org/), « Stylo en 2023 : de nouvelles fonctionnalités pour l'écriture et l'édition scientifique », juin 2023 : [abstract](https://hal.science/HUMANISTICA-2023/hal-04126432v1) de la présentation (Roch Delannay, Antoine Fauchié et Marcello Vitali-Rosati)
+
+- [DH2022](https://dh2022.adho.org/), « Scholarly writing and editing with the text editor Stylo », juillet 2022 : [abstract](https://dh2022.adho.org/workshops-and-tutorials/wt-06) de la présentation (Roch Delannay et Antoine Fauchié)
+
+- [DH Unbound 2022](https://dhunbound2022.ach.org/), « The Stylo Workflow : Writing and editing with the text editor Stylo », mai 2022 :  présenté par  Margot Lise Mellet, Antoine Fauchié, Marcello Vitali-Rosati, Eugénie Matthey-Jonais, Roch Delannay, Giulia Ferretti
 
 - [Humanistica 2021](https://humanistica2021.sciencesconf.org), « L’utilisation de l’outil Stylo dans le cadre de la revue *Sens public* », May 2021: [Abstract](https://humanistica2021.sciencesconf.org/340826) (Antoine Fauchié et Margot Mellet)
 
@@ -22,6 +17,8 @@ Stylo has been presented at various scientific and professional events:
 - [LundiNum](https://agenda.inha.fr/events/stylo-un-editeur-de-texte-pour-les-sciences-humaines-et-sociales), « Stylo : un éditeur de texte pour les sciences humaines et sociales », April 2021: [Video](https://www.youtube.com/watch?v=ATvCk6NSpdQ&list=PLsl8NWzVv6T2CQFtBOfnlA_EKLFeCFSUG) (Nicolas Sauret)
 
 - Article by Huma-Num's editorial team on the occasion of the connection of Stylo to the HumanID portal, December 2020: [“Stylo, un éditeur de texte pour les SHS disponible chez Huma-Num”](https://humanum.hypotheses.org/6311)
+
+- Article published in *Digital Intelligibility Review*, 2020 : [« Write SHS in a digital environment. The Stylo text editor. »](https://doi.org/10.34745/numerev_1697) (Marcello Vitali-Rosati, Nicolas Sauret, Antoine Fauchié & Margot Mellet).
 
 - [FOSDEM 2020 Symposium](https://archive.fosdem.org/2020/), “Stylo: A User Friendly Text Editor for Humanities Scholars”, February 2020: [Video](https://youtu.be/OymvZQpkFAM) (Antoine Fauchié)
 
