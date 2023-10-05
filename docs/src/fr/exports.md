@@ -35,7 +35,7 @@ L'export permet aussi de télécharger les fichiers source de Stylo (.md, .bib, 
 
 {% figure "/uploads/gif/exporter-un-article.gif", "Exporter un article" %}
 
-### Personnaliser son export
+## Personnaliser son export
 
 À partir des fichiers source, il est possible de produire des exports personnalisés (mise en page, graphismes, métadonnées) en s'appuyant sur les fonctionnalités de l'outil de conversion [Pandoc](https://pandoc.org/).
 
@@ -67,17 +67,11 @@ Trois modèles sont proposés :
 
 - Le modèle du Plan de cours 
 
-<iframe src="http://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/pdf/testPlanCours.pdf" title="testPlanCours" width="100%" height="500" allowfullscreen></iframe>
-
-![Ouvrir dans nouvelle page](/uploads/pdf/testPlanCours.pdf)
-
+<iframe src="http://stylo-doc.ecrituresnumeriques.ca/uploads/pdf/testPlanCours.pdf" title="testPlanCours" width="100%" height="500" allowfullscreen></iframe>
 
 - Le modèle de L'École de bibliothéconomie et des sciences de l'information (EBSI)
 
-<iframe src="http://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/pdf/test.pdf" title="testEBSI" width="100%" height="500" allowfullscreen></iframe> 
-
-![Ouvrir dans nouvelle page](/uploads/pdf/test.pdf)
-
+<iframe src="http://stylo-doc.ecrituresnumeriques.ca/uploads/pdf/test.pdf" title="testEBSI" width="100%" height="500" allowfullscreen></iframe> 
 
 #### Modèle DLLF
 (à venir)

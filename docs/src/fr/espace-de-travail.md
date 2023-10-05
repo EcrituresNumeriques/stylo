@@ -2,6 +2,8 @@
 title: Les espaces de travail
 ---
 
+## Fonctionnement
+
 Les espaces de travail répondent au besoin de partage des articles Stylo entre plusieurs utilisateurs.
 Cette implémentation permet de distinguer plusieurs espaces à l'intérieur de Stylo.
 Il y a tout d'abord l'espace le plus couramment utilisé, l'espace personnel : c'est dans cet espace que chaque utilisateur arrive par défaut.
@@ -26,7 +28,6 @@ L'accès à cette fonctionnalité se fait depuis le menu déroulant accessible e
 
 Ensuite il faut cliquer sur \[Tous les espaces\] pour accéder au gestionnaire des espaces de travail.
 
-
 ## Gérer ses espaces de travail
 
 Le gestionnaire des espaces de travail comporte quatre fonctionnalités :
@@ -34,7 +35,6 @@ Le gestionnaire des espaces de travail comporte quatre fonctionnalités :
 - la création d'un espace de travail en cliquant sur le bouton correspondant \[Créer un espace de travail\]. Celui-ci ouvre un formulaire composé de trois champs que sont le \[Nom\], la \[Description\] et le choix d'une \[Couleur\].
 - la possibilité de quitter un espace de travail. Pour cela il faut cliquer sur le bouton \[Quitter l'espace\]. (_Note : En cliquant sur ce bouton, si les étoiles le souhaitent, vous pourrez vivre une aventure inédite, jusqu'alors inconnue des mémoires humaines..._)
 - administrer les membres d'un espace de travail depuis le formulaire \[Gérer les membres\] visible dans les informations de chacun des espaces de travail créé.
-
 
 <alert-block heading="📢 Attention">
 

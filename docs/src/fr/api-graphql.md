@@ -13,12 +13,9 @@ Par exemple, l'API vous permet de récupérer vos articles et de les intégrer d
 Pour exécuter une requête, vous devez tout d'abord récupérer votre *APIkeys* dans les paramètres de votre compte Stylo.
 Les paramètres de votre compte utilisateur se trouvent dans le menu déroulant qui apparaît lorsque vous cliquez sur votre nom d'utilisateur en haut de l'interface.
 
-<!-- Mettre une image du menu dans le bandeau -->
 
 La clef utilisateur pour la configuration de l'API se trouve dans la deuxième section des paramètres du compte sous l'entrée `API Key`.
 Un bouton permet de copier l'intégralité de la clef dans le presse-papier.
-
-<!-- Mettre une image de l'API Key dans les paramètres utilisateurs -->
 
 Ensuite, vous pouvez écrire votre requête dans votre environnement préféré (ex: [GraphQL Playground](https://github.com/graphql/graphql-playground)) et commencer à jouer avec vos données Stylo.
 Si vous utilisez GraphQL Playground, l'API s'auto-documente directement dans votre interface.
@@ -27,7 +24,6 @@ Vous accéderez à l'ensemble des requêtes et paramètres utilisables en seulem
 Voici un exemple de requête pour récupérer tous vos articles : 
 
 ```graphql
-
 query tousMesArticles {
   user {
     _id
@@ -39,7 +35,6 @@ query tousMesArticles {
     }
   }
 }
-
 ```
 
 ## Exemples et applications

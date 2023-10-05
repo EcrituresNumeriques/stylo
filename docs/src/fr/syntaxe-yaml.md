@@ -15,22 +15,16 @@ Cette syntaxe permet de marquer et délimiter les données YAML dans un document
 On peut retrouver cette syntaxe soit dans un document qui ne contient exclusivement que du YAML (avec l'extension `.yaml`) mais aussi dans d'autres formats tels que Markdown à l'intérieur duquel on délimite les données sérialisées.
 
 ```yaml
-
 ---
-
 # toutes les données vont entre les séparateurs
 title: "Lettre à John"
 author: "Bruce Wayne"
 date: 1990-01-12
-
 ---
-
-
 ```
 
 
 ```md
-
 ---
 title: "Lettre à John"
 author: Bruce Wayne
@@ -41,7 +35,6 @@ date: 1990-01-12
 ## Titre en markdown
 
 Bruce Wayne a écrit ces mots. 
-
 
 ```
 
@@ -59,13 +52,11 @@ Ainsi :
 
 ```yaml
 author: "Bruce Wayne"
-
 ```
 est exactement la même chose que :
 
 ```yaml
 auteur: "Bruce Wayne"
-
 ```
 
 Jusqu'à présent, nous n'avons pas hiérarchisé les données montrées en exemple.
@@ -76,24 +67,20 @@ Si nous reprenons l'exemple de l'auteur, nous avons simplement affecté une cha�
 Or nous souhaiterions décrire formellement qu'un auteur à un nom et un prénom.
 
 ```yaml
-
 auteur:
     - nom: "Wayne"
       prenom: "Bruce"
-
 ```
 
 En suivant ce principe, nous déclarer plusieurs auteurs pour un même document.
 Le point important de cette syntaxe est de bien vérifier les indentations entre les informations puisque ce sont elles qui définissent les niveaux de profondeur et la hiérarchie entre les différentes clefs. 
 
 ```yaml
-
 auteurs: 
     - nom : "Wayne"
       prenom : "Bruce" 
     - nom : "Wayne"
       prenom : "John"
-
 ```
 
 Les informations déclarées dans les documents YAML ne relévent pas forcément du texte (au sens d'une chaîne de caractères).
@@ -101,7 +88,7 @@ Comme dans la plupart des langages de programmations, il existe plusieurs types 
 
 - les chaînes de caractères que l'on encapsule entre des `" "` ;
 - les nombres entiers, par exemple : `6` ;
-- les booléen : `true` ou `false` ;
+- les booléens : `true` ou `false` ;
 - les décimaux : `6.2`.
 
 Les bonnes pratiques d'écriture en YAML recommandent de bien spécifier les chaînes de caractères avec les `" "` même si les logiciels savent les reconnaître sans ces symboles pour éviter tout conflit avec les autres types de données : `"6"` et `6` sont différents.
@@ -115,10 +102,8 @@ Elles reposent sur l'indentation et l'utilisation des tirets `-` pour annoncer u
 Les tableaux quant à eux sont délimités avec des crochets `[]`, et les éléments qu'ils contiennent sont séparés par des virgules `,`.
 
 ```yaml
-
 prenoms: ["Bruce", "John", "Céline"]
 chiffres: [1, 4, 8, 3, 55]
-
 ```
 
 Enfin les dictionnaires YAML prennent la même forme que les dictionnaires que l'on trouve dans le langage de programmation Python.
@@ -128,15 +113,13 @@ Les objets décrits dans un dictionnaire sont basés sur le même principe de `c
 Ainsi un dictionnaire en YAML prend la forme suivante : 
 
 ```yaml
-
-monDictionnaire: {clef1:"valeur1", clef2:"valeur2", clef3:"valeur3", clef4:"valeur4", clef5:8}
-
+monDictionnaire: {clef1: "valeur1", clef2: "valeur2", clef3: "valeur3", clef4: "valeur4", clef5: 8}
 ```
 
 Ces objets plus complexes peuvent contenir tous les types de données que nous avons mentionnés : des nombres entiers, des chaînes de caractères, des booléens et des décimaux.
 
 
-## Les données dans Stylo
+## Les métadonnées dans Stylo
 
 La structuration des données dans Stylo est déjà réalisée.
 En tant qu'utilisateur il n'y a pas besoin de modifier cette structure.
@@ -148,7 +131,6 @@ Le troisième mode, le mode `raw` offre quant à lui une visualisation de la str
 Si l'on ne prend que les métadonnées en mode `raw` d'un nouvel article, nous pouvons observer la structure suivante :
 
 ```yaml 
-
 ---
 bibliography: ''
 title: ''
@@ -214,7 +196,6 @@ nocite: '@*'
 issueid: ''
 ordseq: ''
 ---
-
 ```
 
 _Note : cette liste n'est valide que pour un article dont aucune métadonnée n'a été renseignée._

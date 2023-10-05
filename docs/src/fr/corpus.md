@@ -22,7 +22,7 @@ Le gestionnaire des corpus ne permet que la création, la lecture, la modificati
 
 ## Créer un corpus
 
-Pour créer un corpus, il faut tout d'abord sur la page de gestion des corpus en cliquant sur le bouton \[Corpus\] dans le bandeau noir en haut de l'interface
+Pour créer un corpus, il faut tout d'abord sur la page de gestion des corpus en cliquant sur le bouton \[Corpus\] dans le bandeau noir en haut de l'interface.
 
 ![](/uploads/images/BarreLateraleStyloNoire-V2.PNG)
 
@@ -40,9 +40,6 @@ Une fois créé, le corpus apparaît dans le gestionnaire de corpus et offre 4 n
 - Prévisualiser le corpus.
 
 ![Interface du gestionnaire de corpus](/uploads/images/interface-gestionnaire-corpus.png)
-
-Nous reviendrons à ces fonctionnalités plus tard.
-Maintenant, il nous faut ajouter des articles dans notre corpus.
 
 ## Ajouter des articles à un corpus
 

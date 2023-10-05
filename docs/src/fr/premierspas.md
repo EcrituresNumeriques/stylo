@@ -25,14 +25,15 @@ Pour chaque article, plusieurs actions sont possibles :
 |:----------------------------------------------:|:--|
 |    ![Delete](/uploads/images/Delete-V2.png)    | pour supprimer l'article |
 | ![Duplicate](/uploads/images/Duplicate-V2.png) | pour dupliquer uniquement la dernière version de l'article|
-| ![Send](/uploads/images/send.png) | pour partager une copie de l'article et son historique de versions avec un autre usager de Stylo qui s'intitulera ainsi : "[Copy]New article"|
+| ![Send](/uploads/images/send.png) | pour envoyer une copie de l'article et son historique de versions avec un autre usager de Stylo qui s'intitulera ainsi : "[Copy]New article"|
 |     ![Share](/uploads/images/Share-V2.png)     | pour partager l'article et son historique de versions avec un autre usager de Stylo |
 |      ![Export](/uploads/images/Export.png)      | pour exporter la dernière version de l'article|
-|      ![Collaborative editing](/uploads/images/collaborative-editing.png)      | pour ouvrir l'article en édition |
+|      ![Collaborative editing](/uploads/images/collaborative-editing.png)      | pour ouvrir une session collaborative |
 |      ![Edit](/uploads/images/Edit-V2.png)      | pour ouvrir l'article en édition (mode seul)|
 |      ![Preview](/uploads/images/Preview-V2.png)      | pour prévisualiser l'article dans une nouvele fenêtre (HTML)|
 
 
+![Fonctionnalités étendues de gestion des articles](/uploads/images/article-extend-functionnalities.png)
 
 |                     Bouton                     |Fonction|
 |:----------------------------------------------:|:--|
@@ -152,37 +153,9 @@ Pour approfondir vos connaissances en syntaxe Markdown, vous pouvez consulter la
 
 Une version du document correspond à une sauvegarde de votre travail. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. En chargeant une ancienne version, ce sont donc ces trois éléments qui sont mis à jour. 
 
-Votre travail est par défaut automatiquement sauvegardé sur Stylo, mais vous devez créer vous-mêmes les versions. Pour ce faire, vous pouvez donc -- et cela est conseillé -- utiliser la fonction de sauvegarde [New Version] qui permet de générer une nouvelle version du travail :
+Votre travail est par défaut automatiquement sauvegardé sur Stylo, mais vous devez créer vous-mêmes les versions. Pour ce faire, vous pouvez donc -- et cela est conseillé -- utiliser la fonction de sauvegarde [New Version] qui permet de générer une nouvelle version du travail.
 
-![New-Version](/uploads/images/New-Version-V2.PNG)
-
-Ainsi, lorsque vous êtes parvenu·e·s à une version que vous jugez satisfaisante, il vous est possible de nommer votre version dans le champ *Label of the version* avant de l'enregistrer en tant que version mineure (**[Create Minor]**) ou majeure (**[Create Major]**). 
-
-![Label Version](/uploads/images/Label-Version-V2.PNG)
-
-Une version mineure correspond à des modifications mineures, tandis qu'une version majeure acte des modifications sont importantes. 
-
-À tout moment, vous pouvez visualiser votre travail, qu'il s'agisse de la version actuelle que vous êtes en train d'éditer ou des versions précédentes. Il suffit de cliquer sur le bouton **[Preview]** :
-
-![Preview](/uploads/images/Preview-Bouton-V2.PNG)
-
-Chaque version comporte plusieurs fonctionnalités :
-
-- Pour la version éditable (*Edition*) :
-
-|                        Bouton                        |Fonction|
-|:----------------------------------------------------:|:--|
-| ![Majeure](/uploads/images/Create-Major-V2.PNG) | pour sauvegarder une version majeure de votre travail |
-| ![Mineure](/uploads/images/Create-Minor-V2.PNG) | pour sauvegarder une version mineure de votre travail |
-|       ![Export](/uploads/images/Export-V2.PNG)       | pour exporter et télécharger la version dans différents formats |
-|  ![Prévisualisation](/uploads/images/Preview-Bouton-V2.PNG)   | pour accéder à la prévisualisation de votre travail et l'annoter |
-
-- Pour une version antérieure :
-	- **[Comparer]** pour comparer les différentes versions (une version antérieure et la version actuelle ou deux versions antérieures). Pour davantage d'informations sur la fonction **[Compare]**, vous pouvez consulter la [page suivante](/fr/interface) ;
-	- **[Exporter]** : pour exporter et télécharger le document dans différents formats : HTML, PDF, XML, etc. ;
-	- **[Prévisualiser]** pour accéder à la prévisualisation de votre travail et l'annoter. Pour davantage d'informations sur la fonction **[Preview]**, vous pouvez consulter la [page suivante](/fr/preview).
-
-Pour visualiser une ancienne version, il vous suffit de cliquer sur son titre. Pour retourner à la version éditable, il vous faut cliquer sur le bouton **[Edit Mode]**.
+Pour plus d'informations sur les versions dans Stylo, veuillez vous rendre sur la [page dédiée](/fr/versionner/) à cette fonctionnalité.
 
 ## Export
 
@@ -239,7 +212,7 @@ Un système d'autocomplétion vous permet aussi d'afficher les références disp
 
 ![Bibliographie exemple](/uploads/images/Bibliographie-Exemple-V2.PNG)
 
-Pour davantage d'informations sur la gestion de la bibliographie, vous pouvez consulter la [page suivante](http://stylo-doc.ecrituresnumeriques.ca/fr/bibliographie/).
+Pour davantage d'informations sur la gestion de la bibliographie, vous pouvez consulter la [page suivante](/fr/bibliographie/).
 
 ## Métadonnées
 

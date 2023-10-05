@@ -9,7 +9,6 @@ La bibliographie liste les références bibliographiques que vous avez ajoutées
 ![Bibliographie-Zotero](/uploads/images/BibliographieZotero-V2.png)
 
 - **Zotero** : il vous est possible d'importer votre bibliographie à partir d'une collection Zotero d'un groupe public en entrant l'URL de cette collection.
-
 - **Citations** : il vous est possible de renseigner votre bibliographie manuellement au format BibTeX.
 
 ![Bibliographie-Citations](/uploads/images/BibliographieCitations-V2.png)

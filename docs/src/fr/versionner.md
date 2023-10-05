@@ -2,6 +2,8 @@
 title: Versionner ses documents
 ---
 
+## Introduction
+
 ![Active](/uploads/images/Nom-Version-V2.PNG)
 
 Versionner un document n'est pas un geste anodin.
@@ -15,9 +17,19 @@ L'arborescence des versions permet d'empiler l'historique des modifications d'un
 
 Dans le cadre d'un travail collaboratif, le système de versionnement permet également la mise en place d'une dynamique d'écriture asynchrone, où chacun peut versionner ses modifications et les rendre facilement accessibles aux autres personnes qui travaillent sur ce document.
 
+## Fonctionnement dans Stylo
+
 Dans Stylo, une version d'un document contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. En chargeant une ancienne version, ce sont donc ces trois éléments qui sont mis à jour. 
 
-Votre travail est par défaut automatiquement sauvegardé sur Stylo, mais vous devez créer vous-mêmes les versions. Pour ce faire, vous pouvez donc - et cela est conseillé - utiliser la fonction de sauvegarde [New Version] qui permet de générer une nouvelle version du travail :
+Votre travail est par défaut automatiquement sauvegardé sur Stylo, dans ce que l'on nomme une `working copy`.
+
+**Cette `working copy` n'est pas une version de votre travail, vous devez les créer manuellement.**
+
+Pour ce faire, vous pouvez donc - et cela est conseillé - utiliser la fonction de sauvegarde [New Version] qui permet de générer une nouvelle version du travail.
+
+### Créer une nouvelle version
+
+{% figure "/uploads/gif/create-new-version.gif", "Créer une nouvelle version d'un document" %}
 
 ![New-Version](/uploads/images/New-Version-V2.PNG)
 
@@ -27,10 +39,6 @@ Ainsi, lorsque vous êtes parvenu·e·s à une version que vous jugez satisfaisa
 
 Une version mineure correspond à des modifications mineures, tandis qu'une version majeure acte l'établissement d'une version dont les modifications sont importantes. 
 
-À tout moment, vous pouvez visualiser votre travail, qu'il s'agisse de la version actuelle que vous êtes en train d'éditer ou des versions précédentes. Il suffit de cliquer sur le bouton **[Preview]** :
-
-![Preview](/uploads/images/Preview-Bouton-V2.PNG)
-
 Chaque version comporte plusieurs fonctionnalités :
 
 - Pour la version éditable (*Edition*) :
@@ -39,12 +47,19 @@ Chaque version comporte plusieurs fonctionnalités :
 |:----------------------------------------------------:|:--|
 | ![Majeure](/uploads/images/Create-Major-V2.PNG) | pour sauvegarder une version majeure de votre travail |
 | ![Mineure](/uploads/images/Create-Minor-V2.PNG) | pour sauvegarder une version mineure de votre travail |
-|       ![Export](/uploads/images/Export-V2.PNG)       | pour exporter et télécharger la version dans différents formats |
-|  ![Prévisualisation](/uploads/images/Preview-Bouton-V2.PNG)   | pour accéder à la prévisualisation de votre travail et l'annoter |
 
-- Pour une version antérieure :
-	- **[Comparer]** pour comparer les différentes versions (une version antérieure et la version actuelle ou deux versions antérieures). Pour davantage d'informations sur la fonction **[Compare]**, vous pouvez consulter la [page suivante](/fr/interface);
-	- **[Exporter]** : pour exporter et de télécharger le document dans différents formats : HTML, PDF, XML, etc.;
-	- **[Prévisualiser]** pour accéder à la prévisualisation de votre travail et l'annoter. Pour davantage d'informations sur la fonction **[Preview]**, vous pouvez consulter la [page suivante](/fr/preview).
+
+## Comparer les versions
+
+Pour une version antérieure, la fonctionnalité de comparaison entre différentes versions devient disponible.
+
+Comparer différentes versions entre elles permet de rapidement observer les modifications apportées à un article Stylo.
+C'est une fonctionnalité très pratique qui offre un visuel repide de l'historique des modifications version par version.
+
+**[Comparer]** pour comparer les différentes versions (une version antérieure et la version actuelle ou deux versions antérieures).
 
 Pour visualiser une ancienne version, il vous suffit de cliquer sur son titre. Pour retourner à la version éditable, il vous faut cliquer sur le bouton **[Edit Mode]**.
+
+Lorsque vous vous trouvez sur une version antérieure de votre document, vous avez la possibilité de l'exporter ou de la prévisualiser en cliquant sur les boutons au-dessus de l'éditeur de texte.
+
+{% figure "/uploads/gif/comparer-versions.gif", "Comparer les différentes versions d'un document" %}

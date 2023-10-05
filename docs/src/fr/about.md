@@ -17,15 +17,6 @@ Stylo peut être utilisé en ligne à l'adresse [stylo.huma-num.fr](https://styl
 
 Le code source de Stylo est disponible sur [GitHub](https://github.com/EcrituresNumeriques/stylo/).
 
-## Roadmap
-
-- Amélioration de l'ergonomie générale et du graphisme
-- Fonctionnalités éditeur de texte WYSIWYM et raccourcis clavier
-- Enrichissement sémantique
-- Développement de connecteurs pour éditeurs off-line
-- Écriture collaborative en modification synchrone
-- Documentation en anglais
-
 ## La *Stylo*-sophie
 
 Éditeur de texte WYSIWYM pour les sciences humaines, Stylo est conçu pour changer l’ensemble de la chaîne éditoriale numérique des revues savantes en sciences humaines et sociales.

@@ -9,12 +9,12 @@ C'est une fonctionnalité similaire à celle que l'on peut rencontrer dans d'aut
 
 Contrairement à ces applications où le partage d'une simple URL suffit à accorder les droits en écriture sur un document, Stylo nécessite l'authentification des usagers pour obtenir ce droit.
 
-Les informations relatives à l'authentification se trouvent sur la page [Premiers pas dans Stylo](/fr/premierpas/#creation-d-un-compte).
+Les informations relatives à l'authentification se trouvent sur la page [Pour commencer avec Stylo](/fr/premierpas/#création-d'un-compte).
 
 Ensuite, les utilisateurs qui souhaitent écrire sur un article Stylo lors d'une session collaborative doivent avoir accès à l'article à éditer. 
 Pour avoir les droits d'accès à un article 3 solutions sont mises à disposition : 
 
-- [créer un article](/fr/mesarticles/#creer-un-nouvel-article) 
+- [créer un article](/fr/mesarticles/#créer-un-nouvel-article) 
 - [partager un article](/fr/#partager-un-article)
 - accéder à un article dans un [espace de travail](/fr/espace-de-travail).
 
@@ -41,7 +41,7 @@ Seul le modérateur de la session peut effectuer cette action en appuyant sur le
 
 ![End Collaborative Session](/uploads/images/collaborative-editing-end-session.png)
 
-<alert-block>
+<alert-block heading="Important">
 
 Si une session collaborative n'est pas fermée correctement, l'article concerné ne sera plus accessible en édition simple.
 

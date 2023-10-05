@@ -13,9 +13,7 @@ Sa forme générale ressemble à ceci :
 @type-d-entree{clef-de-citation,
     champs-requis,
     [champs-optionnels],
-
 }
-
 ```
 
 À l'intérieur du gestionnaire de références bibliographiques de Stylo, nous avons accès à un mode brut qui nous permet de visualiser et d'éditer les données des références en BibTeX.
@@ -50,4 +48,3 @@ Type d'entrée | Document concerné | Champs requis | Champs optionnels
 @techreport | Rapport technique | author, title, insitution, year | language, howpublished, address, number, type, month, note, url
 @unpublished | Document non publié | author, title, note | language, month, year, url
 @misc | Tout autre type de document | - | author, title, language, howpublished, organization, address, pages, month, year, note, url
-
