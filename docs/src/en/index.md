@@ -3,12 +3,22 @@ title: Stylo - a semantic text editor
 isHome: true
 ---
 
+<alert-block heading="📢 Feature Update" type="success">
 
-<alert-block heading="📢 New update!">
-
-Attention Stylo users: the semantic text editor Stylo has just been updated. To discover the new features in detail, please visit the information page: [New features!](/en/newfeatures/).
+To Stylo users: The long-awaited synchronous collaborative writing feature is now available! To find out more, go to the [documentation page](/fr/edition-collaborative) which is dedicated to it!
 
 </alert-block>
+
+
+<alert-block heading="📢 Documentation update" type="neutral">
+
+To the attention of Stylo users: the Stylo documentation has been updated! It has a new interface and a new structuring of its data!
+
+</alert-block>
+
+---
+
+Attention Stylo users: the semantic text editor Stylo has just been updated. To discover the new features in detail, please visit the information page: [New features!](/en/newfeatures/).
 
 ---
 

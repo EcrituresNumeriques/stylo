@@ -46,7 +46,7 @@ L'intérêt d'intégrer les références bibliographiques au format BibTeX rési
 Plus d'informations sur le format BibTeX [ici](/fr/syntaxe-bibtex).
 
 Dans cette configuration, une syntaxe particulière est nécessaire pour indiquer une référence dans le texte que l'on nomme une clef de citation dont la forme est la suivante : `[@clef-de-citation]`.
-Une clef de citation est encadrée par des crochets `\[\]`, puis est appelée avec le symbole `@`.
+Une clef de citation est encadrée par des crochets `[ ]`, puis est appelée avec le symbole `@`.
 
 Ce sont ces clefs qui ensuite seront transformés lors de l'export selon les normes souhaitées.
 
