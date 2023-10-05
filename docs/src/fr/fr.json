@@ -3,13 +3,15 @@
   "lang": "fr",
   "description": "Stylo est un éditeur de texte simplifiant la rédaction et l'édition d'articles scientifiques en Sciences Humaines et Sociales.",
   "rights": "Licence <a href=\"https://creativecommons.org/licenses/by-sa/4.0/\">Creative Commons [CC BY-SA 4.0]</a> – Chaire de recherche du Canada sur les écritures numériques",
-
   "sectionTitle": "Documentation",
   "sectionUrl": "/fr",
-
   "disableSearch": false,
   "searchIndexUrl": "/fr/search-index.json",
   "menu": [
+    {
+      "label": "Actualités",
+      "url": "/fr/actualites"
+    },
     {
       "label": "Projet",
       "children": [
@@ -24,51 +26,110 @@
         {
           "label": "Contact",
           "url": "/fr/contacts"
+        },
+        {
+          "label": "Publications",
+          "url": "/fr/publications"
         }
       ]
     },
-
     {
-      "label": "Guide",
+      "label": "Guide d'écriture",
       "children": [
         {
-          "label": "Premiers pas dans Stylo",
+          "label": "Pour commencer avec Stylo",
           "url": "/fr/premierspas"
         },
         {
-          "label": "Syntaxe markdown",
+          "label": "Syntaxe Markdown",
           "url": "/fr/syntaxemarkdown"
+        },
+        {
+          "label": "Syntaxe BibTeX",
+          "url": "/fr/syntaxe-bibtex"
+        },
+        {
+          "label": "Syntaxe YAML",
+          "url": "/fr/syntaxe-yaml"
+        }
+      ]
+    },
+    {
+      "label": "La gestion des articles",
+      "children": [
+        {
+          "label": "Gestion des articles",
+          "url": "/fr/mesarticles"
         },
         {
           "label": "Structurer la bibliographie",
           "url": "/fr/bibliographie"
         },
         {
-          "label": "Prévisualiser et annoter un article",
+          "label": "Prévisualiser et annoter",
           "url": "/fr/preview"
         },
         {
-          "label": "Gérer les articles",
-          "url": "/fr/mesarticles"
+          "label": "Versionner",
+          "url": "/fr/versionner"
         },
         {
-          "label": "Résoudre les problèmes",
-          "url": "/fr/problemes"
+          "label": "Gérer les métadonnées",
+          "url": "/fr/metadata"
+        }
+      ]
+    },
+    {
+      "label": "Fonctionnalités de Stylo",
+      "children": [
+        {
+          "label": "Corpus",
+          "url": "/fr/corpus"
+        },
+        {
+          "label": "Les espaces de travail",
+          "url": "/fr/espace-de-travail"
+        },
+        {
+          "label": "Écriture collaborative",
+          "url": "/fr/edition-collaborative"
+        },
+        {
+          "label": "Éditeur de texte Monaco",
+          "url": "/fr/editeur-monaco"
+        },
+        {
+          "label": "API GraphQL",
+          "url": "/fr/api-graphql"
+        },
+        {
+          "label": "Exports",
+          "url": "/fr/exports"
         },
         {
           "label": "Mémoires et thèses",
           "url": "/fr/memoires"
         },
         {
-          "label": "Exports",
-          "url": "/fr/exports"
+          "label": "Résoudre les problèmes",
+          "url": "/fr/problemes"
         }
       ]
     },
     {
-      "label": "English",
-      "url": "/en",
-      "lang": "en"
+      "label": "Langue",
+      "children": [
+        {
+          "label": "English",
+          "url": "/en",
+          "lang": "en"
+        },
+        {
+          "label": "Français",
+          "url": "/fr",
+          "lang": "fr"
+        }
+      ]
     }
   ]
 }

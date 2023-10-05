@@ -1,19 +1,21 @@
-# Managing references
+---
+title: Managing references
+---
 
 The bibliography lists the bibliographic references that you have added to your article. To add your references, click on **\[Manage\]** in the left side panel, to the right of the *Bibliography* tab. The *Bibliography Manager* tool opens and offers you several options:
 
 - **Zotero**: you can synchronize a bibliography by connecting Stylo to your Zotero account (public or private groups/collections). We reccomend this method. See below for more details.
 
-![Bibliography manger](uploads/images/BibliographieZotero-V2.png)
+![Bibliography manger](/uploads/images/BibliographieZotero-V2.png)
 
 - **Zotero**: you can import your bibliography from a Zotero collection of a public gropu by entering the collection's URL.
 - **Citations** : you can fill in your bibliography manually in BibTeX format.
 
-![Bibliography citations](uploads/images/BibliographieCitations-V2.png)
+![Bibliography citations](/uploads/images/BibliographieCitations-V2.png)
 
 - **Raw bibtex** : you can correct the BibTeX directly.
 
-![Bibliographie Raw](uploads/images/BibliographieRawBibTeX-V2.png)
+![Bibliographie Raw](/uploads/images/BibliographieRawBibTeX-V2.png)
 
 You can directly [structure your references in BibTeX](http://www.andy-roberts.net/writing/latex/bibliographies), or export your references in bibtex thanks to your bibliography management tool:
 
@@ -30,19 +32,32 @@ It is possible to synchronize the references of an article with a collection or 
 5. Click on the button **\[Replace bibliography with this account collection\]** so that the bibliographic references (these will appear in the left side panel under the bibliography tab)
 
 **Here are some important remarks concerning synchronization with a Zotero collection:**
-- This feature also allows for the importation of collections from public or priavte groups.
+- This feature also allows for the importation of collections from public or private groups.
 - You cannot import more than one collection.
 - Each synchronization or import overwrites your bibliographic data. If you use the synchronization option, we advise that you change your references in Zotero and then re-import them, and so on until you obtain the expected result.
 - There is no automatic synchronization. You must re-import each change made in Zotero. 
 
 ## Insert a bibliographic reference
+
+The insertion of bibliographic references in the text in Markdown must respect a precise syntax to be dynamic.
+The advantage of integrating bibliographic references in the BibTeX format lies in the possibility of generating dynamic bibliographies and managing several parameters to obtain renderings in line with the editorial line to be adopted.
+
+More information on the BibTeX format [here](/en/bibtexsyntax).
+
+In this configuration, a particular syntax is necessary to indicate a reference in the text which we call a citation key whose form is the following: `[@citation-key]`.
+A citation key is surrounded by brackets `[ ]`, then is called with the symbol `@`.
+
+These are the keys which will then be transformed during export according to the desired standards.
+
+There are several methods for quickly writing these citation keys in Stylo:
+
 An autocomplete feature has been added. Just start by typing `[@` or simply `@` and the text editor will suggest all of your references assocaited with the article. If you wish to refine the autocompletioon, just add the first letter of the author name to reduce suggestions provided: `[@b`. 
 
-![Bibliographie-Autocomplétion](uploads/images/BibliographieAutocompletion-V2.png)
+{% figure "/uploads/gif/add-reference-bib.gif", "Add a reference" %}
 
-You can also click on the icon associated with the reference in the left pane, then paste (Ctrl+V) the reference into the text at the desired location. It will then appear as `[shirky_here_2008]`. To explain, one click is equivalent to "copying" the bibtex key of the reference in the clipboard.
+- You can also click on the icon associated with the reference in the left pane, then paste (Ctrl+V) the reference into the text at the desired location. It will then appear as `[shirky_here_2008]`. To explain, one click is equivalent to "copying" the bibtex key of the reference in the clipboard.
 
-![Bibliographie exemple](uploads/images/Bibliographie-Exemple-V2.PNG)
+![Bibliographie exemple](/uploads/images/Bibliographie-Exemple-V2.PNG)
 
 Inserting a bibtex key in the body text has two effects:
 

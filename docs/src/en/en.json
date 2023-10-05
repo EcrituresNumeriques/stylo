@@ -11,6 +11,10 @@
   "searchIndexUrl": "/en/search-index.json",
   "menu": [
     {
+      "label": "News",
+      "url": "/en/news"
+    },
+    {
       "label": "Project",
       "children": [
         {
@@ -24,27 +28,62 @@
         {
           "label": "Contact",
           "url": "/en/contacts"
+        },
+        {
+          "label": "Publications",
+          "url": "/en/publications"
         }
       ]
     },
 
     {
-      "label": "Documentation",
+      "label": "Writing guide",
       "children": [
-        { "label": "First steps", "url": "/en/firststeps" },
+        { "label": "Getting started with Stylo", "url": "/en/firststeps" },
         { "label": "Writing in Markdown", "url": "/en/markdownsyntax" },
-        { "label": "Manage my bibliography", "url": "/en/managingref" },
-        { "label": "Preview and annotate an article", "url": "/en/preview" },
-        { "label": "Manage my article", "url": "/en/myarticles" },
-        { "label": "Solving problems", "url": "/en/problems" },
-        { "label": "Exports", "url": "/en/exports" }
+        { "label": "Writing in BibTeX", "url": "/en/bibtexsyntax" },
+        { "label": "Writing in YAML", "url": "/en/yamlsyntax" }
       ]
     },
 
     {
-      "label": "Français",
-      "url": "/fr",
-      "lang": "fr"
+      "label": "Article management",
+      "children": [
+        { "label": "Manage my article", "url": "/en/myarticles" },
+        { "label": "Manage my bibliography", "url": "/en/managingref" },
+        { "label": "Preview and annotate an article", "url": "/en/preview" },
+        { "label": "Versioning content", "url": "/en/versioning" },
+        { "label": "Manage my metadata", "url": "/en/metadata" }
+      ]
+    },
+    {
+      "label": "Stylo features",
+      "children": [
+        { "label": "Corpus", "url": "/en/corpus" },
+        { "label": "Workspaces", "url": "/en/workspaces" },
+        { "label": "Collaborative writing", "url": "/en/collaborative-writing" },
+        { "label": "Monaco text editor", "url": "/en/monaco-editor" },
+        { "label": "API GraphQL", "url": "/en/api-graphql" },
+        { "label": "Exports", "url": "/en/exports" },
+        { "label": "Dissertation and theses", "url": "/en/dissertation" },
+        { "label": "Solving problems", "url": "/en/problems" }
+      ]
+    },
+
+    {
+      "label": "Language",
+      "children": [
+        {
+          "label": "English",
+          "url": "/en",
+          "lang": "en"
+        },
+        {
+          "label": "Français",
+          "url": "/fr",
+          "lang": "fr"
+        }
+      ]
     }
   ]
 }

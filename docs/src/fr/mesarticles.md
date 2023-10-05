@@ -1,5 +1,5 @@
 ---
-title: Gérer les articles
+title: Gestion des articles
 ---
 
 Vos articles sont disponibles dans la page _Articles_ cliquable via la barre latérale de votre compte Stylo :
@@ -77,19 +77,21 @@ Une barre latérale de recherche vous est proposée pour effectuer une recherche
 
 Sur votre page Articles, ceux-ci sont listés les uns à la suite des autres selon les modifications les plus récentes :
 
-![Articles](/uploads/images/PageArticles.PNG)
+![Articles](/uploads/images/PageArticles.png)
 
 Chaque article se présente comme un bloc dans votre liste. Cet espace dédié à un article seulement vous permet d'effectuer plusieurs opérations immédiates :
 
 |Bouton|Fonction|
 |:-:|:--|
 | ![Rename](/uploads/images/Rename-V2.png) | pour renommer l'article |
-| ![See](/uploads/images/Preview-V2.png) | pour prévisualiser l'article |
-| ![Share](/uploads/images/Share-V2.png) | pour partager l'article et son historique de versions avec un autre usager de Stylo |
-| ![Duplicate](/uploads/images/Duplicate-V2.png) | pour dupliquer uniquement la dernière version de l'article. La copie s'intitulera ainsi : "[Copy] Titre de l'article" |
-| ![Export](/uploads/images/Download.png) | pour exporter l'article |
-| ![Edit](/uploads/images/Edit-V2.png) | pour ouvrir l'article en mode édition |
 | ![Delete](/uploads/images/Delete-V2.png) | pour supprimer l'article |
+| ![Duplicate](/uploads/images/Duplicate-V2.png) | pour dupliquer uniquement la dernière version de l'article. La copie s'intitulera ainsi : "[Copy] Titre de l'article" |
+| ![Send](/uploads/images/send.png) | pour envoyer une copie de l'article |
+| ![Share](/uploads/images/Share-V2.png) | pour partager l'article et son historique de versions avec un autre usager de Stylo |
+| ![Export](/uploads/images/Download.png) | pour exporter l'article |
+| ![Collaborative editing](/uploads/images/collaborative-editing.png) | pour ouvrir l'article en édition |
+| ![Edit](/uploads/images/Edit-V2.png) | pour ouvrir l'article en mode édition |
+| ![See](/uploads/images/Preview-V2.png) | pour prévisualiser l'article |
 
 Vous pouvez également développer le bloc de l'article en cliquant sur le chevron situé à gauche du titre de votre article. Vous avez alors accès à :
 
@@ -117,23 +119,26 @@ Il vous est possible de prévisualiser votre article en cliquant sur l'icône su
 
 La prévisualisation vous permettra la lecture du contenu de l'article édité et l'[annotation](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!/fr/preview).
 
+
+## Envoyer un article
+
+Vous avez la possibilité d'envoyer une copie de votre article à un autre utilisateur Stylo en cliquant sur le bouton ![Send](/uploads/images/send.png).
+
+L'option [Send a Copy] n'est pas un partage d'article : seule la dernière version de l'article sera visible par l'utilisateur et les modifications ne seront pas visibles par les deux utilisateurs. Dans le processus [Send a Copy], deux versions de l'article sont créées et les utilisateurs travaillent chacun sur une version qui n'est pas visible par l'autre.
+
+{% figure "/uploads/gif/how-to-send-copy.gif", "Envoyer une copie d'un article" %}
+
 ## Partager un article
 
 Vous pouvez également partager votre article avec d'autres utilisateurs Stylo en cliquant sur l'icône suivante :
 
 ![Share](/uploads/images/Share-V2.png)
 
-Pour partager, vous devez renseigner l'adresse courriel de l'utilisateur Stylo : il s'agit de l'adresse courriel avec laquelle l'utilisateur a créé son compte Stylo. Une fois l'adresse renseignée, il vous faut l'ajouter en cliquant sur le bouton "Add".
+{% figure "/uploads/gif/how-to-share.gif", "Partager un article" %}
 
-![Share](/uploads/images/ShareContact-V2.PNG)
+Pour partager, vous devez renseigner l'adresse courriel de l'utilisateur Stylo : il s'agit de l'adresse courriel avec laquelle l'utilisateur a créé son compte Stylo. Une fois l'adresse renseignée, il vous faut l'ajouter en cliquant sur la case pour la cocher.
 
-![Share](/uploads/images/SendCopy_GrantAccess-V2.PNG)
-
-La fonction [Grant Access] permet à plusieurs utilisateurs Stylo de travailler sur le même article. Ces utilisateurs ont alors accès à tout l'historique. Les versions de l'article se synchronisent pour tous les utilisateurs au fur et à mesure des modifications effectuées sur le document.
-
-Cette fonctionnalité vous permet également d'envoyer une copie de l'article.
-
-L'option [Send a Copy] n'est pas un partage d'article : seule la dernière version de l'article sera visible par l'utilisateur et les modifications ne seront pas visibles par les deux utilisateurs. Dans le processus [Send a Copy], deux versions de l'article sont créées et les utilisateurs travaillent chacun sur une version qui n'est pas visible par l'autre.
+![Share](/uploads/images/share-form.png)
 
 ## Dupliquer un article
 
@@ -145,40 +150,7 @@ Un doublon de l'article sera alors généré et apparaîtra en haut de la liste 
 
 ## Exporter un article
 
-Pour exporter un article, il faut cliquer sur le bouton "Export" depuis la page "Articles" ou depuis la page d'édition de l'article :
-
-![Export](/uploads/images/Download.png)
-
-Le menu d'export permet de choisir le format d'export. Il contient également l'option d'intégrer ou non une table des matières.
-
-![Export](/uploads/images/ExportConfig-V2.PNG)
-
-Les formats supportés sont les suivants :
-
-- Fichiers originaux (markdown, yaml et bibtex)
-- HTML5
-- LaTex
-- PDF
-- ODT (LibreOffice)
-- DOCX (Microsoft Word)
-- ICML (InDesign)
-- XML-TEI
-- XML-Erudit
-- XML-TEI Commons Publishing (Métopes et OpenEdition)
-
-Il est possible de choisir parmi plusieurs styles bibliographiques : certains intègrent la référence dans le texte (par exemple Chicago, qui insère la référence dans le corps du texte entre parenthèses), d'autres ajoutent une note avec la référence.
-
-Le module d'export se charge de mettre en forme les références, d'ajouter ou d'enlever les espaces, d'insérer des "Ibid." en accord avec le style, etc.
-
-Les exports sont produits grâce à l'outil de conversion [Pandoc](https://pandoc.org/) sur la base des templates disponibles [ici](https://framagit.org/stylo-editeur/templates-stylo).
-
-L'export permet aussi de télécharger les fichiers source de Stylo (.md, .bib, .yaml) et les médias insérés dans l'article s'il y en a.
-
-### Personnaliser son export
-
-À partir des fichiers source, il est possible de produire des exports personnalisés (mise en page, graphismes, métadonnées) en s'appuyant sur les fonctionnalités de l'outil de conversion [Pandoc](https://pandoc.org/).
-
-Pour plus d'informations sur l'emploi des templates, voir ce [tutoriel](https://gitlab.huma-num.fr/ecrinum/manuels/tutoriel-markdown-pandoc).
+Les informations liées à cette section se trouvent sur une [page dédiée](/fr/exports) à cette fonctionnalité
 
 ## Développer les autres fonctionnalités de l'article
 
@@ -193,6 +165,8 @@ Vous avez alors accès aux versions majeures et mineures de l'article : un clic 
 ![Versions](/uploads/images/AccesVersion-V2.PNG)
 
 **Attention** : la page de la version à laquelle vous avez accès, bien qu'elle soit dans le mode édition, ne vous permet pas d'effectuer des modifications sur le contenu de l'article. Il s'agit d'une page en mode lecture uniquement à partir de laquelle vous pouvez effectuer des [exports]() et des [comparaisons]().
+
+![ManageTags](uploads/images/CreateNewTag-V2.PNG)
 
 ### Tager un article
 

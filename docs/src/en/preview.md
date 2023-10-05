@@ -10,17 +10,17 @@ To preview an article there are the following options:
 
 - Click on the "Preview" button from the "My articles" page, to the right of the "Edit" icon:
 
-![Preview](uploads/images/PreviewPageArticles.PNG)
+![Preview](/uploads/images/PreviewPageArticles.PNG)
 
 - Click on the \"Preview\" button from the article editing page, at the top right of the body text:
 
-![Preview](uploads/images/PreviewPageEdition-V2.PNG)
+![Preview](/uploads/images/PreviewPageEdition-V2.PNG)
 
 The preview is available at a permalink which remains the same for the article's entire life. If the article is changed, the preview link will show the article's latest version (remember to refresh the page to see the changes).
 
 It is also possible to preview a particular version of the article. To do this, you must click on the "Preview" button in the article editing page, in the right column, inside the "Versions" submenu.
 
-![Preview](uploads/images/PreviewSousMenuVersions-V2.PNG)
+![Preview](/uploads/images/PreviewSousMenuVersions-V2.PNG)
 
 A version's view link always displays the saved version.
 

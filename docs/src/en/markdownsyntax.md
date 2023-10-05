@@ -115,7 +115,7 @@ Note that if your markdown source comes from the Pandoc DOCX (or ODT) conversion
 Semantic markup allows specifying the function of a word, an expression, or a paragraph.
 
 Stylo allows free semantic markup: each author can define their own semantic structure according to their particular needs. It can then be implemented in export templates or custom style sheets (see the section
-[Personalise your export](pages/mesarticles.md).
+[Personalise your export](/en/myarticles)).
 
 The markdown syntax for semantic markup is as follows: `[term to markup] {.category}`.
 

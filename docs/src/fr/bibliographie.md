@@ -2,14 +2,13 @@
 title: Structurer la bibliographie
 ---
 
-La bibliographie liste les références bibliographiques que vous avez ajoutées à votre article. Pour ajouter vos références, vous devez cliquer sur **[Manage]** dans le volet latéral de gauche, à droite de l’onglet *Bibliography*. L'outil *Bibliography Manager* s'ouvre alors et vous propose plusieurs possibilités :
+La bibliographie liste les références bibliographiques que vous avez ajoutées à votre article. Pour ajouter vos références, vous devez cliquer sur **\[Manage\]** dans le volet latéral de gauche, à droite de l’onglet *Bibliography*. L'outil *Bibliography Manager* s'ouvre alors et vous propose plusieurs possibilités :
 
 - **Zotero** : il vous est possible de synchroniser une bibliographie en connectant Stylo à votre compte Zotero (groupes/collections privées ou publiques). C'est l'usage que nous vous recommandons ! Voir plus bas pour plus de détails.
 
 ![Bibliographie-Zotero](/uploads/images/BibliographieZotero-V2.png)
 
 - **Zotero** : il vous est possible d'importer votre bibliographie à partir d'une collection Zotero d'un groupe public en entrant l'URL de cette collection.
-
 - **Citations** : il vous est possible de renseigner votre bibliographie manuellement au format BibTeX.
 
 ![Bibliographie-Citations](/uploads/images/BibliographieCitations-V2.png)
@@ -41,11 +40,23 @@ Il est possible de synchroniser les références d'un article avec une collectio
 
 ## Insérer une référence bibliographique
 
-Une fonction d'autocomplétion est implémentée. Il vous suffit de commencer à écrire `[@` ou simplement `@` pour que l’éditeur de texte vous propose toutes vos références associées à l’article. Si vous souhaitez affiner l’autocomplétion, il suffira d’ajouter la première lettre du nom de l’auteur pour réduire les propositions fournies : `[@b`.
+L'insertion de références bibliographiques dans le texte en Markdown doit respecter une syntaxe précise pour être dynamique.
+L'intérêt d'intégrer les références bibliographiques au format BibTeX réside dans la possibilité de générer des bibliographies dynamiques et de gérer plusieurs paramètres pour obtenir des rendus en adéquation avec la ligne éditoriale à adopter.
 
-![Bibliographie-Autocomplétion](/uploads/images/BibliographieAutocompletion-V2.png)
+Plus d'informations sur le format BibTeX [ici](/fr/syntaxe-bibtex).
 
-Vous pouvez aussi cliquer sur l'icône associée à la référence dans le volet de gauche, puis la coller (Ctrl+V) dans le texte à l'endroit souhaité. Elle apparaîtra alors ainsi `[@shirky_here_2008]`. Pour bien comprendre, un clic consiste à "copier" la clé BibTeX de la référence dans le presse-papier. 
+Dans cette configuration, une syntaxe particulière est nécessaire pour indiquer une référence dans le texte que l'on nomme une clef de citation dont la forme est la suivante : `[@clef-de-citation]`.
+Une clef de citation est encadrée par des crochets `[ ]`, puis est appelée avec le symbole `@`.
+
+Ce sont ces clefs qui ensuite seront transformés lors de l'export selon les normes souhaitées.
+
+Il existe plusieurs méthodes pour écrire rapidement ces clefs de citations dans Stylo :
+
+- Une fonction d'autocomplétion est implémentée dans l'éditeur de texte (la partie centrale de l'interface dans laquelle on saisit le Markdown). Il vous suffit de commencer à écrire `[@` ou simplement `@` pour que l’éditeur de texte vous propose toutes vos références associées à l’article. Si vous souhaitez affiner l’autocomplétion, il suffira d’ajouter la première lettre du nom de l’auteur pour réduire les propositions fournies : `[@b`.
+
+{% figure "/uploads/gif/add-reference-bib.gif", "Ajouter une référence bibliographique" %}
+
+- Vous pouvez aussi cliquer sur l'icône associée à la référence dans le volet de gauche, puis la coller (Ctrl+V) dans le texte à l'endroit souhaité. Elle apparaîtra alors ainsi `[@shirky_here_2008]`. Pour bien comprendre, un clic consiste à "copier" la clé BibTeX de la référence dans le presse-papier. 
 
 ![Bibliographie exemple](/uploads/images/Bibliographie-Exemple-V2.PNG)
 

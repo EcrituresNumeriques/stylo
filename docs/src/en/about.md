@@ -1,30 +1,21 @@
 ---
-title: "About **_Stylo_**"
+title: "About _Stylo_"
 ---
 
 
 Stylo is developed by the [Canada Research Chair in Digital Textualities](https://ecrituresnumeriques.ca/en/) and [PiNinja](https://3.14159.ninja/) company, with the support of [Érudit](https://www.erudit.org/en/), under [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE) licence.
 
-<img src="/uploads/images/logo-crc-ecrinum.png" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:250px">
+<img src="/uploads/images/logo-crc-ecrinum.svg" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:250px">
 
 <img src="/uploads/images/erudit-logotype-rouge.png" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:150px">
 
 ## The project
 
-Stylo is currently a prototype tool undergoing development, implemented in the respective editorial chains of the journal [Sens Public](http://sens-public.org) and the publishing house [Les Ateliers](https://ateliers.sens-public.org). It is currently in the testing phase for other journals, in particular for the partnership project, [Revue2.0](http://revue20.org/). This tool is also used by various authors and students for their personal scientific and institutional work.
+Stylo is currently a prototype tool undergoing development, implemented in the respective editorial chains of the journal [Sens Public](http://sens-public.org) and the publishing house [Les Ateliers [sens public]](https://ateliers.sens-public.org). It is currently in the testing phase for other journals, in particular for the partnership project, [Revue2.0](http://revue20.org/). This tool is also used by various authors and students for their personal scientific and institutional work.
 
 Stylo can be used online through the address [stylo.huma-num.fr](https://stylo.huma-num.fr/). This version of Stylo is deployed and maintained by [Huma-Num](https://www.huma-num.fr/), who provides data backup and security.
 
-Stylo\'s source code is available [on Github](https://github.com/EcrituresNumeriques/stylo/).
-
-## Roadmap
-
-- Improvement of the general ergonomics and graphics
-- WYSIWYM text editor features and keyboard shortcuts
-- Semantic enrichment
-- Development of connectors for offline publishers
-- Collaborative writing through simultaneous changes
-- Resource information in English
+Stylo\'s source code is available on [Github](https://github.com/EcrituresNumeriques/stylo/).
 
 ## Stylo-sophy
 
@@ -54,8 +45,11 @@ The researchers participating in the project are as follows:
 - [Servanne Monjour](https://ecrituresnumeriques.ca/fr/Equipe/Servanne-Monjour-)
 - [Nicolas Sauret](https://ecrituresnumeriques.ca/fr/Equipe/Nicolas-Sauret)
 - [Marcello Vitali-Rosati](https://ecrituresnumeriques.ca/fr/Equipe/Marcello-Vitali-Rosati-)
+- [Roch Delannay](https://ecrituresnumeriques.ca/en/Equipe/Roch-Delannay)
+- [Louis-Olivier Brassard](https://www.loupbrun.ca)
 
 ## Developers
 
 - [Guillaume Grossetie](https://github.com/ggrossetie)
 - [Thomas Parisot](https://détour.studio)
+- [David Larlet](http://larlet.com/)
