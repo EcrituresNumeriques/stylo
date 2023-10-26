@@ -279,11 +279,11 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
           <Send/>
         </Button>}
 
-        {<Button title="Share article" icon={true} onClick={() => setSharing(true)}>
+        {<Button title={t('article.button.share')} icon={true} onClick={() => setSharing(true)}>
           <UserPlus/>
         </Button>}
 
-        <Button title="Download a printable version" icon={true} onClick={() => setExporting(true)}>
+        <Button title={t('article.button.download')}={true} onClick={() => setExporting(true)}>
           <Printer/>
         </Button>
 
