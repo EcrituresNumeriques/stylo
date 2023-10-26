@@ -37,7 +37,7 @@ export default function ArticleCreate ({ onSubmit }) {
         setTags(tags)
       } catch (err) {
         setToast({
-          text: {t("articleCreate.notification.errorTags")}`: ${err}`,
+          text: {t('articleCreate.notification.errorTags')}`: ${err}`,
           type: 'error'
         })
       }
