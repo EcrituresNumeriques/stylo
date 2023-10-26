@@ -283,7 +283,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
           <UserPlus/>
         </Button>}
 
-        <Button title={t('article.button.download')}={true} onClick={() => setExporting(true)}>
+        <Button title={t('article.button.download')} icon={true} onClick={() => setExporting(true)}>
           <Printer/>
         </Button>
 
