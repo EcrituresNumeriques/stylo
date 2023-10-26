@@ -97,5 +97,6 @@
   "workspace.createForm.descriptionField": "Description",
   "workspace.createForm.colorField": "Couleur",
   "workspace.createForm.buttonTitle": "Créer un nouvel espace de travail",
-  "workspace.createForm.buttonText": "Créer"
+  "workspace.createForm.buttonText": "Créer",
+  "contactItem.modal.error": "Aucun utilisateur à cette adresse courriel"
 }

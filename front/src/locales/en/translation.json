@@ -99,5 +99,6 @@
   "workspace.createForm.descriptionField": "Description",
   "workspace.createForm.colorField": "Color",
   "workspace.createForm.buttonTitle": "Create a new workspace",
-  "workspace.createForm.buttonText": "Create"
+  "workspace.createForm.buttonText": "Create",
+  "contactItem.modal.error": "No user found for this email adress"
 }
