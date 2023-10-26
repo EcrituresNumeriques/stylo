@@ -24,6 +24,8 @@
   "article.createForm.titleField": "Titre",
   "article.search.placeholder": "Recherche",
   "article.button.delete": "Supprimer",
+  "article.button.duplicate": "Dupliquer",
+  "article.button.sendCopy": "Envoyer une copie",
   "tag.list.title": "Étiquettes",
   "tag.createAction.buttonText": "ajouter des étiquettes…",
   "tag.createForm.title": "Créer une étiquette",

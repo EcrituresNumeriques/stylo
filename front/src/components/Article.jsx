@@ -271,11 +271,11 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
           <GeistModal.Action onClick={handleDeleteArticle}>{t('modal.confirmButton.text')}</GeistModal.Action>
         </GeistModal>
 
-        <Button title="Duplicate" icon={true} onClick={() => duplicate()}>
+        <Button title={t('article.button.duplicate')} icon={true} onClick={() => duplicate()}>
           <Copy/>
         </Button>
 
-        {<Button title="Send a copy" icon={true} onClick={() => setSending(true)}>
+        {<Button title={t('article.button.sendCopy')} icon={true} onClick={() => setSending(true)}>
           <Send/>
         </Button>}
 

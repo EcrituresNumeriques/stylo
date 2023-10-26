@@ -24,6 +24,8 @@
   "article.createForm.titleField": "Title",
   "article.search.placeholder": "Search",
   "article.button.delete": "Delete",
+  "article.button.duplicate": "Duplicate",
+  "article.button.sendCopy": "Send a copy",
   "tag.list.title": "Tags",
   "tag.createAction.buttonText": "add more tags…",
   "tag.createForm.title": "Create a tag",
