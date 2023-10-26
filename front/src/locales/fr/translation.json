@@ -85,6 +85,8 @@
   "corpus.editForm.buttonText": "Mettre à jour",
   "corpus.editForm.buttonTitle": "Mettre à jour ce corpus",
   "article.corpus.title": "Corpus",
+  "corpus.button.preview": "Prévisualiser",
+  "corpus.button.export": "Exporter",
   "corpus.delete.toastSuccess": "Corpus supprimé avec succès.",
   "article.shareModal.title": "Partager lʼarticle avec un contact",
   "article.shareModal.description": "Permet de partager un article avec lʼun de vos contacts.",

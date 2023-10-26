@@ -86,6 +86,8 @@
   "corpus.update.toastFailure": "Unable to update corpus: {{errorMessage}}",
   "corpus.load.toastFailure": "Unable to load corpus: {{errorMessage}}",
   "article.corpus.title": "Corpus",
+  "corpus.button.preview": "Preview",
+  "corpus.button.export": "Export",
   "corpus.addPart.note": "To add a new chapter, go to the <1>articles page</1> and select this corpus.",
   "corpus.delete.toastSuccess": "Corpus successfully deleted.",
   "article.shareModal.title": "Share the article with a contact",

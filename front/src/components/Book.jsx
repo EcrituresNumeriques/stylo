@@ -77,13 +77,13 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
       <aside className={styles.actionButtons}>
         <Link
           className={[buttonStyles.icon, buttonStyles.button, articles.length === 0 ? buttonStyles.isDisabled : ''].filter(d => d).join(' ')}
-          title="Preview"
+          title={t('corpus.button.preview')}
           target="_blank"
           to={`/books/${_id}/preview`}
         >
           <MessageSquare />
         </Link>
-        <Button className={buttonStyles.icon} title="Export" onClick={() => setExporting(true)}>
+        <Button className={buttonStyles.icon} title={t('corpus.button.export')} onClick={() => setExporting(true)}>
           <Printer />
         </Button>
       </aside>
