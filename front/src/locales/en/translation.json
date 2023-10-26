@@ -23,6 +23,7 @@
   "article.createForm.tagsField": "Tags",
   "article.createForm.titleField": "Title",
   "article.search.placeholder": "Search",
+  "article.button.delete": "Delete",
   "tag.list.title": "Tags",
   "tag.createAction.buttonText": "add more tags…",
   "tag.createForm.title": "Create a tag",

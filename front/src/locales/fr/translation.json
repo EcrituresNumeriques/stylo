@@ -23,6 +23,7 @@
   "article.createForm.tagsField": "Étiquettes",
   "article.createForm.titleField": "Titre",
   "article.search.placeholder": "Recherche",
+  "article.button.delete": "Supprimer",
   "tag.list.title": "Étiquettes",
   "tag.createAction.buttonText": "ajouter des étiquettes…",
   "tag.createForm.title": "Créer une étiquette",

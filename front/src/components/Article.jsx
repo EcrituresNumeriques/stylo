@@ -252,7 +252,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
       <aside className={styles.actionButtons}>
 
         {isArticleOwner &&
-          <Button title="Delete" icon={true} onClick={() => setDeleteArticleVisible(true)}>
+          <Button title={t('article.button.delete')} icon={true} onClick={() => setDeleteArticleVisible(true)}>
             <Trash/>
           </Button>}
 
