@@ -37,7 +37,7 @@ export default function ArticleCreate ({ onSubmit }) {
         setTags(tags)
       } catch (err) {
         setToast({
-          text: {t('articleCreate.notification.errorTags')}`: ${err}`,
+          text: t('articleCreate.notification.errorTags')`: ${err}`,
           type: 'error'
         })
       }
@@ -55,12 +55,12 @@ export default function ArticleCreate ({ onSubmit }) {
       delete createdArticle.addTags
       onSubmit(createdArticle)
       setToast({
-        text: {t('articleCreate.notification.newArticle')},
+        text: t('articleCreate.notification.newArticle'),
         type: 'default'
       })
     } catch (err) {
       setToast({
-        text: {t('articleCreate.notification.error')}`: ${err}`,
+        text: t('articleCreate.notification.error')`: ${err}`,
         type: 'error'
       })
     }
