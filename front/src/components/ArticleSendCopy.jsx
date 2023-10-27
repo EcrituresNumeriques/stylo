@@ -23,13 +23,13 @@ export default function ArticleSendCopy ({ article }) {
           variables: {user: null, to: user._id, article: article._id}
         })
         setToast({
-          text: `Copie de l'article envoyée à ${user.displayName || user.username}.`,
+          text: t('article.sendCopy.success') ` ${user.displayName || user.username}.`,
           type: 'success',
         })
       } catch (err) {
         setToast({
           type: 'error',
-          text: `Unable to send a copy of the article: ${err.message}`
+          text: t('article.sendCopy.error')` ${err.message}`
         })
       }
     }

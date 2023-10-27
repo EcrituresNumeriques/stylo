@@ -42,29 +42,26 @@ export default function Credentials () {
       <UserInfos />
 
       <section className={styles.section}>
-        <h2>Change password</h2>
+        <h2>{t('credentials.changePassword.title')}</h2>
         <p>
-          This section is strictly private, changing your password will only
-          affect your combination of username/email and password. Other users
-          having access to one or more of your available accounts won&apos;t be
-          affected.
+          {t('credentials.changePassword.para')}
         </p>
         <form className={clsx(styles.passwordForm, fieldStyles.inlineFields)} onSubmit={(e) => changePassword(e)}>
           <Field
             type="password"
-            placeholder="Old password"
+            placeholder= {t('credentials.oldPassword.placeholder')}
             value={passwordO}
             onChange={(e) => setPasswordO(e.target.value)}
           />
           <Field
             type="password"
-            placeholder="New password"
+            placeholder= {t('credentials.newPassword.placeholder')}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <Field
             type="password"
-            placeholder="Confirm new password"
+            placeholder= {t('credentials.confirmNewPassword.placeholder')}
             className={password === passwordC ? null : styles.beware}
             value={passwordC}
             onChange={(e) => setPasswordC(e.target.value)}

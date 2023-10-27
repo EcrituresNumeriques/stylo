@@ -47,7 +47,7 @@ export default function ContactItem (
     <div key={`contact-${user._id}`}
          className={clsx(styles.contact, muted ? styles.muted : '', disabled ? styles.disabled : '')}
          aria-disabled={muted || disabled}
-         title={muted ? {t('contactItem.modal.error')} : displayName}>
+         title={muted ? t('contactItem.modal.error') : displayName}>
       <div className={styles.info}>
         {!muted && <span className={styles.contactName}>{displayName}</span>}
         {(!disabled && user.email) && <a href={'mailto:' + user.email} className={styles.contactEmail}>{user.email}</a>}
