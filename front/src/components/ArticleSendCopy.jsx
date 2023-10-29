@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 
 import { useToasts } from '@geist-ui/core'
 import { Send } from 'react-feather'
+import { useTranslation } from 'react-i18next'
 
 import {
   duplicateArticle
@@ -14,6 +15,7 @@ import {useMutation} from '../hooks/graphql.js'
 export default function ArticleSendCopy ({ article }) {
   const { setToast } = useToasts()
   const mutation = useMutation()
+  const { t } = useTranslation()
 
   const handleUserUpdated = useCallback(async ({ user, action }) => {
     if (action === 'select' || action === 'unselect') {
