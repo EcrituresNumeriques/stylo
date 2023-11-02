@@ -56,6 +56,6 @@
     "mongodb-memory-server": "^8.11.0"
   },
   "volta": {
-    "node": "18.16.0"
+    "node": "18.18.2"
   }
 }

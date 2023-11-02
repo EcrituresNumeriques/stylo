@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/EcrituresNumeriques/stylo#readme",
   "dependencies": {
-    "archiver": "5.3.1",
+    "archiver": "5.3.2",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "graphql": "^16.1.0",
@@ -53,6 +53,6 @@
     }
   },
   "volta": {
-    "node": "18.16.0"
+    "node": "18.18.2"
   }
 }
