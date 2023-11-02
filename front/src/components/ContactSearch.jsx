@@ -150,7 +150,7 @@ export default function ContactSearch (
                type="text"
                icon={Search}
                value={filter}
-               placeholder= {t('contactItem.modal.placeholder')}
+               placeholder= {t('contact.searchField.placeholder')}
                onChange={updateFilter}
         />
       </div>

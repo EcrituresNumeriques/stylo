@@ -77,7 +77,7 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
       <aside className={styles.actionButtons}>
         <Link
           className={[buttonStyles.icon, buttonStyles.button, articles.length === 0 ? buttonStyles.isDisabled : ''].filter(d => d).join(' ')}
-          title={t('corpus.button.preview')}
+          title={t('corpus.preview.buttonTitle')}
           target="_blank"
           to={`/books/${_id}/preview`}
         >

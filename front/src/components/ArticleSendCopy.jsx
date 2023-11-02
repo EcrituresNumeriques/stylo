@@ -25,7 +25,7 @@ export default function ArticleSendCopy ({ article }) {
           variables: {user: null, to: user._id, article: article._id}
         })
         setToast({
-          text: t('article.sendCopy.success') ` ${user.displayName || user.username}.`,
+          text: t('article.sendCopy.successNotification', {username: user.displayName || user.username}), 
           type: 'success',
         })
       } catch (err) {
