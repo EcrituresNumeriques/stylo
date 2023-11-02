@@ -72,7 +72,7 @@ services:
       - graphql-stylo
 
   export-gateway:
-    image: "davidbgk/stylo-export:0.0.31"
+    image: "davidbgk/stylo-export:0.0.32"
     env_file:
       - stylo.env
     environment:
