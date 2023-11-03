@@ -31,7 +31,7 @@ export default function ArticleSendCopy ({ article }) {
       } catch (err) {
         setToast({
           type: 'error',
-          text: t('article.sendCopy.error')` ${err.message}`
+          text: t('article.sendCopy.errorNotification', {errMessage: err.message})
         })
       }
     }

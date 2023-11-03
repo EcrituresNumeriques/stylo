@@ -67,7 +67,7 @@
   "article.soloSessionTakeOver.title": "Session d'édition terminée",
   "article.soloSessionTakeOver.message": "Cet article est en lecture seule car l'utilisateur {{username}} a pris la main sur la session d'édition. Si vous souhaitez continuer d'éditer cet article, merci de récupérer la session d'édition ou de créer une session collaborative",
   "article.sendCopy.successNotification": "Copie de l'article envoyée à {{username}}",
-  "article.sendCopy.errorNotification": "Impossible d'envoyer une copie de l'article {{errMessage}}",
+  "article.sendCopy.errorNotification": "Impossible d'envoyer une copie de l'article: {{errMessage}}",
   "version.editingSessionEnded.text": "Session d'édition terminée",
   "version.collaborativeSessionEnded.text": "Session collaborative terminée",
   "modal.cancelButton.text": "Annuler",
