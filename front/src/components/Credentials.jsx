@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+
 
 import { useGraphQL } from '../helpers/graphQL'
 import { changePassword as query } from './Credentials.graphql'
@@ -17,6 +19,7 @@ export default function Credentials () {
   const [isUpdating, setIsUpdating] = useState(false)
   const userId = useSelector(state => state.activeUser._id)
   const runQuery = useGraphQL()
+  const { t } = useTranslation()
 
   const changePassword = async (e) => {
     e.preventDefault()

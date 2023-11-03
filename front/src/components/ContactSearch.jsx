@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import debounce from 'lodash.debounce'
 import useGraphQL, { useMutation } from '../hooks/graphql.js'
+import { useTranslation } from 'react-i18next'
 
 import styles from './ContactSearch.module.scss'
 import Field from './Field.jsx'
@@ -29,6 +30,7 @@ export default function ContactSearch (
     showActiveUser,
   }
 ) {
+  const { t } = useTranslation()
   const activeUser = useSelector(state => state.activeUser)
   const activeUserId = activeUser._id
   const {
