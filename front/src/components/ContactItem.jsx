@@ -1,5 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { CheckSquare, Square, User, UserCheck } from 'react-feather'
+import { useTranslation } from 'react-i18next'
+
 
 import styles from './ContactItem.module.scss'
 import Button from './Button.jsx'
@@ -21,6 +23,7 @@ export default function ContactItem (
 
   const [activeState, setActiveState] = useState(false)
   const [selectedState, setSelectedState] = useState(false)
+  const { t } = useTranslation()
 
   useEffect(() => {
     setActiveState(active)
