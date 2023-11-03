@@ -2,8 +2,7 @@
 title: "About _Stylo_"
 ---
 
-
-Stylo is developed by the [Canada Research Chair in Digital Textualities](https://ecrituresnumeriques.ca/en/) and [PiNinja](https://3.14159.ninja/) company, with the support of [Érudit](https://www.erudit.org/en/), under [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE) licence.
+Stylo is a semantic text editor designed and produced by the [Canada Research Chair in Digital Textualities](http://ecrituresnumeriques.ca) team, under the [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE) license.
 
 <img src="/uploads/images/logo-crc-ecrinum.svg" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:250px">
 
@@ -11,7 +10,13 @@ Stylo is developed by the [Canada Research Chair in Digital Textualities](https:
 
 ## The project
 
-Stylo is currently a prototype tool undergoing development, implemented in the respective editorial chains of the journal [Sens Public](http://sens-public.org) and the publishing house [Les Ateliers [sens public]](https://ateliers.sens-public.org). It is currently in the testing phase for other journals, in particular for the partnership project, [Revue2.0](http://revue20.org/). This tool is also used by various authors and students for their personal scientific and institutional work.
+More than a tool, Stylo is a philosophy of text.
+It's based on the idea that we need to design textual models adapted for writing in the humanities and social sciences (SHS).
+
+It is designed and created to write scientific texts, and in particular adapted for SHS journals.
+
+It is currently a prototype tool under development, implemented in the editorial chain of several journals as part of the [Revue 2.0] partnership project (http://revue20.org/).
+The tool is also used by various authors and students for their own scientific or institutional work.
 
 Stylo can be used online through the address [stylo.huma-num.fr](https://stylo.huma-num.fr/). This version of Stylo is deployed and maintained by [Huma-Num](https://www.huma-num.fr/), who provides data backup and security.
 
@@ -53,3 +58,10 @@ The researchers participating in the project are as follows:
 - [Guillaume Grossetie](https://github.com/ggrossetie)
 - [Thomas Parisot](https://détour.studio)
 - [David Larlet](http://larlet.com/)
+- [Arthur Juchereau](https://ecrituresnumeriques.ca/fr/Equipe/Arthur-Juchereau)
+
+## Partners
+
+- [Huma-num](https://www.huma-num.fr/)
+- [Métopes](www.metopes.fr/)
+- [Érudit](http://erudit.org/)
