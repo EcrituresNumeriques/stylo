@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import slugify from 'slugify'
@@ -22,6 +23,7 @@ export default function Export ({ bookId, articleVersionId, articleId, bib, name
   const { exportFormats, exportStyles, exportStylesPreview, isLoading } = useStyloExport({ csl, bib })
   const { host } = window.location
   const exportId = useMemo(() => slugify(name, { strict: true, lower: true }) || (articleVersionId ?? articleId ?? bookId), [name])
+  const { t } = useTranslation()
 
   const exportUrl = bookId
     ? `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${exportId}&book=${bookId}&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${Boolean(toc)}&tld=${tld}&unnumbered=${unnumbered}`
@@ -80,7 +82,7 @@ export default function Export ({ bookId, articleVersionId, articleId, bib, name
 
       <nav className={styles.actions}>
         <a className={clsx(buttonStyles.button, buttonStyles.primary)} href={exportUrl} rel="noreferrer noopener" target="_blank" role="button">
-          {t('export.form.button')}
+          {t('export.submitForm.button')}
         </a>
       </nav>
     </section>
