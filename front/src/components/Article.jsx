@@ -144,12 +144,12 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
       onArticleDeleted(article)
       setToast({
         type: 'default',
-        text: `Article successfully deleted`
+        text: t('article.delete.toastSuccess')
       })
     } catch (err) {
       setToast({
         type: 'error',
-        text: `Unable to delete article: ${err.message}`
+        text: t('article.delete.toastError', {errMessage: err.message})
       })
     }
   }
@@ -225,7 +225,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
           <span className={styles.titleText}>
             {article.title}
-            <Button title="Edit" icon={true} className={styles.editTitleButton} onClick={(evt) =>
+            <Button title={t('article.editName.button')} icon={true} className={styles.editTitleButton} onClick={(evt) =>
               evt.stopPropagation() || setRenaming(true)
             }>
             <Edit3 size="20"/>
@@ -237,14 +237,14 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
         <form className={clsx(styles.renamingForm, fieldStyles.inlineFields)} onSubmit={(e) => rename(e)}>
           <Field className={styles.inlineField} autoFocus={true} type="text" value={newTitle}
                  onChange={(e) => setNewTitle(e.target.value)} placeholder="Article Title"/>
-          <Button title="Save" primary={true} onClick={(e) => rename(e)}>
-            <Check/> Save
+          <Button title={t('article.editName.buttonSave')} primary={true} onClick={(e) => rename(e)}>
+            <Check/> {t('article.editName.buttonSave')}
           </Button>
-          <Button title="Cancel" type="button" onClick={() => {
+          <Button title={t('article.editName.buttonCancel')} type="button" onClick={() => {
             setRenaming(false)
             setNewTitle(article.title)
           }}>
-            Cancel
+            {t('article.editName.buttonCancel')}
           </Button>
         </form>
       )}
@@ -252,7 +252,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
       <aside className={styles.actionButtons}>
 
         {isArticleOwner &&
-          <Button title="Delete" icon={true} onClick={() => setDeleteArticleVisible(true)}>
+          <Button title={t('article.delete.button')} icon={true} onClick={() => setDeleteArticleVisible(true)}>
             <Trash/>
           </Button>}
 
@@ -271,19 +271,19 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
           <GeistModal.Action onClick={handleDeleteArticle}>{t('modal.confirmButton.text')}</GeistModal.Action>
         </GeistModal>
 
-        <Button title="Duplicate" icon={true} onClick={() => duplicate()}>
+        <Button title={t('article.duplicate.button')} icon={true} onClick={() => duplicate()}>
           <Copy/>
         </Button>
 
-        {<Button title="Send a copy" icon={true} onClick={() => setSending(true)}>
+        {<Button title={t('article.sendCopy.button')} icon={true} onClick={() => setSending(true)}>
           <Send/>
         </Button>}
 
-        {<Button title="Share article" icon={true} onClick={() => setSharing(true)}>
+        {<Button title={t('article.share.button')} icon={true} onClick={() => setSharing(true)}>
           <UserPlus/>
         </Button>}
 
-        <Button title="Download a printable version" icon={true} onClick={() => setExporting(true)}>
+        <Button title={t('article.download.button')} icon={true} onClick={() => setExporting(true)}>
           <Printer/>
         </Button>
 
@@ -291,7 +291,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
         <SoloSessionAction collaborativeSession={article.collaborativeSession} soloSession={article.soloSession} articleId={articleId}/>
 
-        <Link title="Preview (open a new window)" target="_blank" className={buttonStyles.icon}
+        <Link title={t('article.preview.button')} target="_blank" className={buttonStyles.icon}
               to={`/article/${article._id}/preview`}>
           <Eye/>
         </Link>

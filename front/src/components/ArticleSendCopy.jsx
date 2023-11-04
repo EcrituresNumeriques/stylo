@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 
 import { useToasts } from '@geist-ui/core'
 import { Send } from 'react-feather'
+import { useTranslation } from 'react-i18next'
 
 import {
   duplicateArticle
@@ -14,6 +15,7 @@ import {useMutation} from '../hooks/graphql.js'
 export default function ArticleSendCopy ({ article }) {
   const { setToast } = useToasts()
   const mutation = useMutation()
+  const { t } = useTranslation()
 
   const handleUserUpdated = useCallback(async ({ user, action }) => {
     if (action === 'select' || action === 'unselect') {
@@ -23,13 +25,13 @@ export default function ArticleSendCopy ({ article }) {
           variables: {user: null, to: user._id, article: article._id}
         })
         setToast({
-          text: `Copie de l'article envoyée à ${user.displayName || user.username}.`,
+          text: t('article.sendCopy.successNotification', {username: user.displayName || user.username}), 
           type: 'success',
         })
       } catch (err) {
         setToast({
           type: 'error',
-          text: `Unable to send a copy of the article: ${err.message}`
+          text: t('article.sendCopy.errorNotification', {errMessage: err.message})
         })
       }
     }

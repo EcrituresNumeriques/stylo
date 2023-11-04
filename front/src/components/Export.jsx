@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import slugify from 'slugify'
@@ -22,6 +23,7 @@ export default function Export ({ bookId, articleVersionId, articleId, bib, name
   const { exportFormats, exportStyles, exportStylesPreview, isLoading } = useStyloExport({ csl, bib })
   const { host } = window.location
   const exportId = useMemo(() => slugify(name, { strict: true, lower: true }) || (articleVersionId ?? articleId ?? bookId), [name])
+  const { t } = useTranslation()
 
   const exportUrl = bookId
     ? `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${exportId}&book=${bookId}&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${Boolean(toc)}&tld=${tld}&unnumbered=${unnumbered}`
@@ -34,7 +36,7 @@ export default function Export ({ bookId, articleVersionId, articleId, bib, name
       {(articleId && exportFormats.length) && <Select id="export-formats" label="Formats" value={format} onChange={(e) => setFormat(e.target.value)}>
         {exportFormats.map(({ key, name }) => <option value={key} key={key}>{ name }</option>)}
         </Select>}
-        {bookId && <Select id="export-formats" label="Formats" value={format} onChange={(e) => setFormat(e.target.value)}>
+        {bookId && <Select id="export-formats" label={t('export.format.label')} value={format} onChange={(e) => setFormat(e.target.value)}>
           <option value="html5">HTML5</option>
           <option value="zip">ZIP</option>
           <option value="pdf">PDF</option>
@@ -61,26 +63,26 @@ export default function Export ({ bookId, articleVersionId, articleId, bib, name
         </Select>}
 
         <Select id="export-toc" label="Additional options" value={toc} onChange={(e) => setToc(parseInt(e.target.value, 10))}>
-          <option value="1">Table of content</option>
-          <option value="0">No table of content</option>
+          <option value="1">{t('export.additionnalOptions.toc')}</option>
+          <option value="0">{t('export.additionnalOptions.notoc')}</option>
         </Select>
         {bookId && (
           <Select id="export-numbering" value={unnumbered} onChange={(e) => setUnnumbered(e.target.value)}>
-            <option value="false">Section and Chapters: numbered</option>
-            <option value="true">Section and Chapters: unnumbered</option>
+            <option value="false">{t('export.sectionChapters.numbered')}</option>
+            <option value="true">{t('export.sectionChapters.unnumbered')}</option>
           </Select>
         )}
         {bookId && (
           <Select value={tld} onChange={(e) => setTld(e.target.value)}>
-            <option value="part">Book division: Part & chapters</option>
-            <option value="chapter">Book division: Chapter only</option>
+            <option value="part">{t('export.bookDivision.part')}</option>
+            <option value="chapter">{t('export.bookDivision.chapter')}</option>
           </Select>
         )}
       </form>
 
       <nav className={styles.actions}>
         <a className={clsx(buttonStyles.button, buttonStyles.primary)} href={exportUrl} rel="noreferrer noopener" target="_blank" role="button">
-          Export with these settings
+          {t('export.submitForm.button')}
         </a>
       </nav>
     </section>

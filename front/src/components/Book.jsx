@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { Check, ChevronDown, ChevronRight, Edit3, MessageSquare, Printer } from 'react-feather'
 
@@ -28,6 +29,7 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
   const [tempName, setTempName] = useState(tagName)
   const [name, setName] = useState(tagName)
   const [isRenaming, setIsRenaming] = useState(false)
+  const { t } = useTranslation()
 
   const runQuery = useGraphQL()
 
@@ -77,13 +79,13 @@ export default function Book ({ name: tagName, _id, updatedAt, articles }) {
       <aside className={styles.actionButtons}>
         <Link
           className={[buttonStyles.icon, buttonStyles.button, articles.length === 0 ? buttonStyles.isDisabled : ''].filter(d => d).join(' ')}
-          title="Preview"
+          title={t('corpus.preview.buttonTitle')}
           target="_blank"
           to={`/books/${_id}/preview`}
         >
           <MessageSquare />
         </Link>
-        <Button className={buttonStyles.icon} title="Export" onClick={() => setExporting(true)}>
+        <Button className={buttonStyles.icon} title={t('corpus.export.button')} onClick={() => setExporting(true)}>
           <Printer />
         </Button>
       </aside>

@@ -1,5 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { CheckSquare, Square, User, UserCheck } from 'react-feather'
+import { useTranslation } from 'react-i18next'
+
 
 import styles from './ContactItem.module.scss'
 import Button from './Button.jsx'
@@ -21,6 +23,7 @@ export default function ContactItem (
 
   const [activeState, setActiveState] = useState(false)
   const [selectedState, setSelectedState] = useState(false)
+  const { t } = useTranslation()
 
   useEffect(() => {
     setActiveState(active)
@@ -47,7 +50,7 @@ export default function ContactItem (
     <div key={`contact-${user._id}`}
          className={clsx(styles.contact, muted ? styles.muted : '', disabled ? styles.disabled : '')}
          aria-disabled={muted || disabled}
-         title={muted ? 'Aucun utilisateur trouvé pour cette adresse email' : displayName}>
+         title={muted ? t('contact.userNotFound.message', {username: displayName}) : displayName}>
       <div className={styles.info}>
         {!muted && <span className={styles.contactName}>{displayName}</span>}
         {(!disabled && user.email) && <a href={'mailto:' + user.email} className={styles.contactEmail}>{user.email}</a>}

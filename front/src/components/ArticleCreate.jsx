@@ -37,7 +37,7 @@ export default function ArticleCreate ({ onSubmit }) {
         setTags(tags)
       } catch (err) {
         setToast({
-          text: `Unable to load tags: ${err}`,
+          text: t('article.getTags.error', {errMessage: err }),
           type: 'error'
         })
       }
@@ -55,12 +55,12 @@ export default function ArticleCreate ({ onSubmit }) {
       delete createdArticle.addTags
       onSubmit(createdArticle)
       setToast({
-        text: `New article created`,
+        text: t('article.create.successNotification'),
         type: 'default'
       })
     } catch (err) {
       setToast({
-        text: `Unable to create a new article: ${err}`,
+        text: t('article.create.errorNotification', {errMessage: err}),
         type: 'error'
       })
     }
