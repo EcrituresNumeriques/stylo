@@ -340,12 +340,17 @@ module.exports = {
     },
 
     /**
-     * Delete an article a user has access to
+     * Delete an article.
      *
      * @param {import('mongoose').Document} article
      * @returns
      */
     async delete (article) {
+      await Workspace.updateMany({}, {
+        $pull: {
+          articles: article._id
+        }
+      })
       await article.remove()
       return article.$isDeleted()
     },

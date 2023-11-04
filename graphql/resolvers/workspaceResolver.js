@@ -119,7 +119,8 @@ module.exports = {
      * @returns {Promise<*>}
      */
     async articles (workspace, _args, context) {
-      const articles = await Promise.all(workspace.articles.map((articleId) => context.loaders.articles.load(articleId)))
+      const articles = (await Promise.all(workspace.articles.map((articleId) => context.loaders.articles.load(articleId))))
+        .filter((a) => a !== undefined) // remove deleted articles
       articles.sort((a, b) => a.createdAt > b.createdAt ? -1 : 1)
       return Article.complete(articles, context.loaders)
     },
