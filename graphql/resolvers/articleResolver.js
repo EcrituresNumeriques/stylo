@@ -352,6 +352,7 @@ module.exports = {
         }
       })
       await article.remove()
+      // TODO: remove versions associated with this article!
       return article.$isDeleted()
     },
 

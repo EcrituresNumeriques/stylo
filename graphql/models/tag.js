@@ -20,6 +20,7 @@ const tagSchema = new Schema({
       return toHex((color ?? '').replace('grey', 'gray')) || color || '#ccc'
     }
   },
+  // TODO remove this link
   articles:[
     {
       type: Schema.Types.ObjectId,
