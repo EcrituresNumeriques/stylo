@@ -9,38 +9,28 @@ module.exports = {
   Mutation: {
     async createTag (_, args, context){
       const { userId } = isUser(args, context)
-
-      //fetch user
       const thisUser = await User.findById(userId)
       if (!thisUser) {
         throw new Error('This user does not exist')
       }
-
-      //Add default article + default version
       const newTag = await Tag.create({
         name: args.name,
         description: args.description,
         color: args.color,
         owner: thisUser
       })
-
+      // TODO do not add tag in user.tags
       thisUser.tags.push(newTag)
       await thisUser.save()
-
       return newTag
     },
     async deleteTag (_, args, context) {
       const { userId } = isUser(args, context)
-
-      //Recover tag, and all articles
       const tag = await Tag.findOne({ _id: args.tag, owner: userId })
       if (!tag) {
         throw new Error('Unable to find tag')
       }
-
-      //pull tags from user and article + remove tag
       await tag.remove()
-
       return tag.$isDeleted()
     },
     async updateTag (_, args, context) {
@@ -69,6 +59,7 @@ module.exports = {
         ? { _id: args.tag }
         : { _id: args.tag, owner: userId }
 
+      // TODO load articles using a query on the articles collection
       const tag = Tag.findOne(query).populate({
         path: 'articles',
         populate: { path: 'versions' },
@@ -89,16 +80,9 @@ module.exports = {
 
   Tag: {
     async articles (tag, { limit }) {
+      // TODO load articles using a query on the articles collection
       await tag.populate({ path: 'articles', options: { limit } }).execPopulate()
-
       return tag.articles
     },
-
-    // @TODO when `owner: ID!` changes into `owner: User!`
-    // async owner (tag) {
-    //   await tag.populate({ path: 'owner', populate: { path: 'user' }}).execPopulate()
-
-    //   return tag.owner
-    // }
   },
 }

@@ -15,6 +15,7 @@ const userSchema = new Schema({
     type: String,
     // unique but not required, we need to create a sparse index manually
   },
+  // TODO remove this link
   tags: [
     {
       type: Schema.Types.ObjectId,
