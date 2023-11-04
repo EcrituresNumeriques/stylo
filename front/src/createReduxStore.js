@@ -304,6 +304,7 @@ function loginUser (state, { user, token: sessionToken }) {
       ...state,
       sessionToken,
       activeUser: {
+        ...state.user,
         ...user,
         // dates are expected to be in timestamp string format (including milliseconds)
         createdAt: String(new Date(user.createdAt).getTime()),
