@@ -121,5 +121,8 @@
   "export.sectionChapters.unnumbered": "Section and Chapters: unnumbered",
   "export.bookDivision.part": "Book division: Part & chapters",
   "export.bookDivision.chapter": "Book division: Chapter only",
-  "export.submitForm.button": "Export with these settings"
+  "export.submitForm.button": "Export with these settings",
+  "footer.documentation.link": "Documentation",
+  "footer.changelog.link": "Changelog",
+  "footer.navStats.checkbox": "I accept to share my navigation stats"
 }
