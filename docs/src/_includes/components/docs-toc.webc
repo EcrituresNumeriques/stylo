@@ -23,4 +23,8 @@ text-decoration: none;
 color: var(--couleur-police);
 }
 
+:host a:hover {
+color: var(--couleur-lien);    
+}
+
 </style>
