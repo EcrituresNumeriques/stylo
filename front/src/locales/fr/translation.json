@@ -119,5 +119,9 @@
   "export.sectionChapters.unnumbered": "Section et chapitres: non numérotés",
   "export.bookDivision.part": "Division du corpus : parties et chapitres",
   "export.bookDivision.chapter": "Division du corpus : chapitres seulement",
-  "export.submitForm.button": "Exporter avec ces paramètres"
+  "export.submitForm.button": "Exporter avec ces paramètres",
+  "footer.documentation.link": "Documentation",
+  "footer.changelog.link": "Journal des modifications",
+  "footer.navStats.checkbox": "J'accepte de partager mes statistiques de navigation",
+  "footer.privacy.link": "Confidentialité"
 }
