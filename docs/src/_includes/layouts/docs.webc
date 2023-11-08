@@ -174,7 +174,7 @@
           <div class="docs-layout__center-sidebar">
             <!---- Todo fill sidebar ---->
             <div 
-            webc:is="toc"
+            webc:is="docs-toc"
             :@content="content"
             ></div>
           </div>
@@ -421,20 +421,4 @@
     right: 0;
   }
 
-  .toc {
-    position: fixed;
-  }
-
-  .toc ul {
-    list-style: none;
-  }
-
-  .toc a:link, a:visited {
-    text-decoration: none;
-    color: var(--couleur-police);
-  }
-
-  .toc ul > li > a:hover, a:active {
-    color: var(--couleur-lien, inherit);
-  }
 </style>
