@@ -124,5 +124,6 @@
   "export.submitForm.button": "Export with these settings",
   "footer.documentation.link": "Documentation",
   "footer.changelog.link": "Changelog",
-  "footer.navStats.checkbox": "I accept to share my navigation stats"
+  "footer.navStats.checkbox": "I accept to share my navigation stats",
+  "footer.privacy.link": "Privacy"
 }
