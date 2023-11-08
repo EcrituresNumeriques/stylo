@@ -1,0 +1,26 @@
+<!-- Table Of Content -->
+<!-- La fonction toc() va créer une élément qui suppose la classe .toc
+
+Doc: 
+    @prop {String} content Contient d'autres éléments html : nav, ul, li, a
+    @global {Function} toc() est un plugin issu de https://github.com/jdsteinbach/eleventy-plugin-toc
+-->
+<template
+    @html="toc(content)"
+    webc:nokeep
+></template>
+
+<style webc:scoped>
+
+:host ul {
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+:host a {
+text-decoration: none;
+color: var(--couleur-police);
+}
+
+</style>

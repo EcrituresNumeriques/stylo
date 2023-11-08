@@ -1,5 +1,0 @@
-<!-- TOC -->
-<template
-    @html="toc(content)"
-    webc:nokeep
-></template>
