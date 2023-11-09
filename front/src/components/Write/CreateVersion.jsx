@@ -58,7 +58,7 @@ const CreateVersion = ({ articleId, readOnly, onClose }) => {
         >
           <Field
             className={styles.createVersionInput}
-            placeholder={t('write.placeholder.createVersion')}
+            placeholder={t('write.createVersion.placeholder')}
             value={message}
             autoFocus={true}
             onChange={(e) => setMessage(e.target.value)}
@@ -66,17 +66,17 @@ const CreateVersion = ({ articleId, readOnly, onClose }) => {
           <ul className={styles.actions}>
             <li className={styles.closeButton}>
               <Button icon={true} onClick={onClose}>
-                Close
+                {t('write.sidebar.closeButton')}
               </Button>
             </li>
             <li>
               <Button primary={true}>
-                {t('write.minorButton.createVersion')}
+                {t('write.createVersion.minorButton.')}
               </Button>
             </li>
             <li>
               <Button onClick={(e) => handleCreateVersion(e, true)}>
-                {t('write.majorButton.createVersion')}
+                {t('write.createVersion.majorButton')}
               </Button>
             </li>
           </ul>

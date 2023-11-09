@@ -25,7 +25,7 @@ export default function ReferenceList() {
   const handleShowAll = useCallback(() => setShowAll(true), [])
   return (
     <>
-      <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder="Search" onChange={(e) => setFilter(e.target.value)} />
+      <Field className={styles.searchField} type="text" icon={Search} value={filter} placeholder={t('write.searchFieldBiblio.placeholder')} onChange={(e) => setFilter(e.target.value)} />
       {filter && <span className={styles.resultFoundCount}>{bibTeXFound.length} found</span>}
       {bibTeXFound
         .map((entry, index) => (
