@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
 
 import styles from './articleEditorMetadata.module.scss'
 import YamlEditor from './yamleditor/YamlEditor'
@@ -10,6 +11,7 @@ import MonacoYamlEditor from './providers/monaco/YamlEditor'
 import { Sidebar } from 'react-feather'
 
 export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const expanded = useSelector(
     (state) => state.articlePreferences.expandSidebarRight
@@ -57,7 +59,7 @@ export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
         onClick={toggleExpand}
         className={expanded ? styles.close : styles.open}
       >
-        <Sidebar /> {expanded ? 'close' : 'Metadata'}
+        <Sidebar /> {expanded ? t('write.sidebar.closeButton') : t('write.sidebar.metadataButton')}
       </button>
       {expanded && (
         <div className={styles.yamlEditor}>
@@ -67,15 +69,15 @@ export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
             items={[
               {
                 value: 'basic',
-                name: 'Basic Mode',
+                name: t('write.basicMode.metadataButton'),
               },
               {
                 value: 'editor',
-                name: 'Editor Mode',
+                name: t('write.editorMode.metadataButton'),
               },
               {
                 value: 'raw',
-                name: 'Raw Mode',
+                name: t('write.rawMode.metadataButton'),
               },
             ]}
           />

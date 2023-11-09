@@ -125,5 +125,9 @@
   "footer.navStats.checkbox": "J'accepte de partager mes statistiques de navigation",
   "footer.privacy.link": "Confidentialité",
   "write.sidebar.closeButton": "Fermer",
-  "write.sidebar.biblioAndCoButton": "Bibliographie & cie"
+  "write.sidebar.biblioAndCoButton": "Bibliographie & cie",
+  "write.sidebar.metadataButton": "Métadonnées",
+  "write.basicMode.metadataButton": "Mode léger",
+  "write.editorMode.metadataButton": "Mode revue",
+  "write.rawMode.metadataButton": "Mode brut"
 }
