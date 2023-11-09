@@ -133,6 +133,8 @@
   "write.title.biblioModal": "Bibliography manager",
   "write.searchFieldBiblio.placeholder": "Search",
   "write.showBiblio.button": "Show all",
+  "write.titleVersion.sidebar": "Versions",
+  "write.newVersion.button": "New version",
   "write.createVersion.button": "New version",
   "write.createVersion.placeholder": "Label of the version (optional)",
   "write.createVersion.defaultNotification": "New version created",

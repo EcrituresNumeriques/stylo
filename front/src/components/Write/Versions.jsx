@@ -145,10 +145,10 @@ export default function Versions ({ article, selectedVersion, compareTo, readOnl
     <section className={clsx(menuStyles.section)}>
       <h1 className={expand ? null : styles.closed} onClick={toggleExpand}>
         {expand ? <ChevronDown/> : <ChevronRight/>}
-        Versions
+        {t('write.titleVersion.sidebar')}
 
         {!readOnly && <Button className={styles.headingAction} small={true} disabled={readOnly} onClick={createNewVersion}>
-          New Version
+        {t('write.newVersion.button')}
         </Button>}
         {readOnly && <Link className={clsx(buttonStyles.button, buttonStyles.secondary, styles.editMode, styles.headingAction)} to={`/article/${article._id}`}> <ArrowLeft/> Edit Mode</Link>}
       </h1>

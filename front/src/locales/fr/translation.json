@@ -131,6 +131,8 @@
   "write.title.biblioModal": "Gestionnaire de références bibliographiques",
   "write.searchFieldBiblio.placeholder": "Rechercher",
   "write.showBiblio.button": "Afficher tout",
+  "write.titleVersion.sidebar": "Versions",
+  "write.newVersion.button": "Nouvelle version",
   "write.createVersion.button": "Nouvelle version",
   "write.createVersion.placeholder": "Nom de la version (optionnel)",
   "write.createVersion.defaultNotification": "Nouvelle version créée",
