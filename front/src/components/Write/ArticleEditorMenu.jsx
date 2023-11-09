@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 import styles from './articleEditorMenu.module.scss'
 import Stats from './Stats'
@@ -13,11 +14,12 @@ export default function ArticleEditorMenu ({ articleInfos, readOnly, compareTo, 
   const articleStats = useSelector(state => state.articleStats, shallowEqual)
   const dispatch = useDispatch()
   const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandSidebarLeft' }), [])
+  const { t } = useTranslation()
 
   return (
     <nav className={`${expanded ? styles.expandleft : styles.retractleft}`}>
       <button onClick={toggleExpand} className={expanded ? styles.close : styles.open}>
-        <Sidebar /> {expanded ? 'close' : 'Bibliography & co'}
+        <Sidebar /> {expanded ? t('write.sidebar.closeButton') : t('write.sidebar.biblioAndCoButton')}
       </button>
       {expanded && (<div>
         <Versions

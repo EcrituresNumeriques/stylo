@@ -125,5 +125,7 @@
   "footer.documentation.link": "Documentation",
   "footer.changelog.link": "Changelog",
   "footer.navStats.checkbox": "I accept to share my navigation stats",
-  "footer.privacy.link": "Privacy"
+  "footer.privacy.link": "Privacy",
+  "write.sidebar.closeButton": "Fermer",
+  "write.sidebar.biblioAndCoButton": "Bibliographie & cie"
 }
