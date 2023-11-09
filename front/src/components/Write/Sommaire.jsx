@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'
 import { ChevronDown, ChevronRight } from 'react-feather'
+import { useTranslation } from 'react-i18next'
 import { usePandocAnchoring } from '../../hooks/pandoc.js'
 
 import styles from './sommaire.module.scss'
@@ -21,11 +22,12 @@ export default function Sommaire () {
       ? document.querySelector(`#${target.dataset.headingAnchor}`)?.scrollIntoView()
       : dispatch({ type: 'UPDATE_EDITOR_CURSOR_POSITION', lineNumber: parseInt(target.dataset.index, 10), column: 0 })
   },[hasHtmlAnchors])
+  const { t } = useTranslation()
 
   return (
     <section className={[styles.section, menuStyles.section].join(' ')}>
       <h1 onClick={toggleExpand}>
-        {expand ? <ChevronDown/> : <ChevronRight/>} Table of contents
+        {expand ? <ChevronDown/> : <ChevronRight/>} {t('write.titleToc.sidebar')}
       </h1>
       {expand && (<ul>
         {articleStructure.map((item) => (

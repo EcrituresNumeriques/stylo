@@ -145,6 +145,7 @@
   "write.editButton.versionName": "Edit",
   "write.cancelButton.versionName": "Cancel",
   "write.saveButton.versionName": "Save",
+  "write.titleToc.sidebar": "Table of contents",
   "write.wordCount.stat": "Words : {{stats}}",
   "write.charCountNoSpace.stat": "Characters : {{stats}}",
   "write.charCountPlusSpace.stat": "Characters (with spaces) : {{stats}}",

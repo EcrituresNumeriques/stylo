@@ -143,6 +143,7 @@
   "write.editButton.versionName": "Éditer",
   "write.cancelButton.versionName": "Annuler",
   "write.saveButton.versionName": "Sauvegarder",
+  "write.titleToc.sidebar": "Table des matières",
   "write.wordCount.stat": "Mots : {{stats}}",
   "write.charCountNoSpace.stat": "Caractères : {{stats}}",
   "write.charCountPlusSpace.stat": "Caractères (espaces comprises) : {{stats}}",
