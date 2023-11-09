@@ -140,6 +140,7 @@ export default function Versions ({ article, selectedVersion, compareTo, readOnl
     setExpandCreateForm(true)
   }, [])
   const cancelExport = useCallback(() => setExportParams({}), [])
+  const { t } = useTranslation()
 
   return (
     <section className={clsx(menuStyles.section)}>
