@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ChevronDown, ChevronRight } from 'react-feather'
+import { useTranslation } from 'react-i18next'
 
 import menuStyles from './menu.module.scss'
 
@@ -8,6 +9,7 @@ export default function WriteStats ({ stats }) {
   const expand = useSelector(state => state.articlePreferences.expandStats)
   const dispatch = useDispatch()
   const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandStats' }), [])
+  const { t } = useTranslation()
 
   return (
     <section className={menuStyles.section}>
