@@ -130,6 +130,7 @@
   "write.sidebar.manageButton": "Gestion",
   "write.title.biblioModal": "Gestionnaire de références bibliographiques",
   "write.searchFieldBiblio.placeholder": "Rechercher",
+  "write.showBiblio.button": "Afficher tout",
   "write.createVersion.placeholder": "Nom de la version (optionnel)",
   "write.createVersion.defaultNotification": "Nouvelle version créée",
   "write.createVersion.minorButton": "Version mineure",

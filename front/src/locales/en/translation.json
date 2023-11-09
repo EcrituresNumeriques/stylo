@@ -132,6 +132,7 @@
   "write.sidebar.manageButton": "Manage",
   "write.title.biblioModal": "Bibliography manager",
   "write.searchFieldBiblio.placeholder": "Search",
+  "write.showBiblio.button": "Show all",
   "write.createVersion.placeholder": "Label of the version (optional)",
   "write.createVersion.defaultNotification": "New version created",
   "write.createVersion.minorButton": "Create minor",
