@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 import { fetchAllCollectionsPerLibrary, fetchBibliographyFromCollectionHref } from '../../../helpers/zotero'
 import { useGraphQL } from '../../../helpers/graphQL'
@@ -20,6 +21,7 @@ import { Rss, Clipboard } from 'react-feather'
  */
 
 export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink, onChange }) {
+  const { t } = useTranslation()
   const zoteroToken = useSelector(state => state.activeUser.zoteroToken)
   const userId = useSelector(state => state.activeUser._id)
   const backendEndpoint = useSelector(state => state.applicationConfig.backendEndpoint)
@@ -137,31 +139,30 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
 
   return <div className={styles.zotero}>
     <form className={styles.section} disabled={isSaving} onSubmit={handleCollectionFormSubmission}>
-      <h3><Rss />Import a collection from my account</h3>
+      <h3><Rss />{t('writeBibliographe.titleImportCollection.zoteroPanel')}</h3>
       {zoteroToken && <Combobox label="" items={groupedZoteroCollections} value={zoteroCollectionHref} onChange={handleZoteroCollectionChange} />}
       {zoteroToken && (
         <Button type="submit" primary disabled={!zoteroCollectionHref || isSaving}>
           {isSaving
-            ? 'Fetching…'
-            : 'Replace bibliography with this account collection'}
+            ? t('writeBibliographe.fetchingButton.zoteroPanel')
+            : t('writeBibliographe.replaceAccountCollection.zoteroPanel')}
         </Button>
       )}
 
       {!zoteroToken && (
         <Button type="button" onClick={handleZoteroAccountConnection}>
-          First, connect my Zotero account
+          {t('writeBibliographe.buttonZoteroAccount.zoteroPanel')}
         </Button>
       )}
     </form>
 
     <form className={styles.section} onSubmit={handleZoteroLinkFormSubmission}>
-      <h3><Clipboard /> Import by URL</h3>
+      <h3><Clipboard />{t('writeBibliographe.titleImportByUrl.zoteroPanel')}</h3>
 
       <p className={styles.helpText}>
-        Please paste the URL of a <em>public</em> Zotero library, so that it looks like<br />
+        {t('writeBibliographe.textImportByUrl.zoteroPanel')}
 
-        <code>https://www.zotero.org/groups/<mark>[IDnumber]/collections/[IDcollection]</mark></code> or<br />
-        <code>https://www.zotero.org/groups/<mark>[IDnumber]</mark></code>
+        <code>https://www.zotero.org/groups/<mark>[IDnumber]/collections/[IDcollection]</mark></code>
       </p>
       <Field
         onChange={handleZoteroLinkChange}
@@ -177,8 +178,8 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
         disabled={isSaving || !hasLinkChanged}
       >
         {isSaving
-          ? 'Fetching…'
-          : 'Replace bibliography with this collection'}
+          ? t('writeBibliographe.fetchingButton.zoteroPanel')
+          : t('writeBibliographe.replaceAccountCollection.zoteroPanel')}
       </Button>
     </form>
   </div>

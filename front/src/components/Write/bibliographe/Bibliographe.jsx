@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 import NavTag from '../../NavTab'
 
@@ -8,15 +9,16 @@ import CitationsPanel from './CitationsPanel'
 import RawBibtexPanel from './RawBibtexPanel'
 
 const tabItems = [
-  { value: 'zotero', name: 'Zotero' },
-  { value: 'citations', name: 'Citations' },
-  { value: 'raw', name: 'Raw BibTeX' }
+  { value: 'zotero', name: t('writeBibliographe.zotero.tabItem') },
+  { value: 'citations', name: t('writeBibliographe.citation.tabItem') },
+  { value: 'raw', name: t('writeBibliographe.rawBibtex.tabItem') }
 ]
 
 export default function Bibliographe({ article, cancel }) {
   const [selector, setSelector] = useState(tabItems.at(0).value)
   const dispatch = useDispatch()
   const handleTabChange = useCallback((value) => setSelector(value), [])
+  const { t } = useTranslation()
 
   const onChange = useCallback((bib) => {
     dispatch({ type: 'UPDATE_WORKING_ARTICLE_BIBLIOGRAPHY', articleId: article._id, bibliography: bib })

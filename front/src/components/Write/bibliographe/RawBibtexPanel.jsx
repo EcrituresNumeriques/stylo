@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
 import debounce from 'lodash.debounce'
 import { getValidationResults } from '../../../helpers/bibtex.js'
@@ -25,6 +26,7 @@ export default function RawBibtexPanel ({ onChange }) {
     event.preventDefault()
     onChange(bib)
   }, [bib])
+  const { t } = useTranslation()
 
   return (
     <form onSubmit={handleFormSubmit}>
@@ -46,7 +48,7 @@ export default function RawBibtexPanel ({ onChange }) {
       <ul className={styles.actions}>
         <li className={styles.actionsSubmit}>
           <Button primary={true} disabled={!isValid} className={styles.primary}>
-            <Check/> Save
+            <Check/> {t('writeBibliographe.buttonSave.rawPanel')}
           </Button>
         </li>
       </ul>

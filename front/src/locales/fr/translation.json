@@ -142,5 +142,18 @@
   "write.sidebar.metadataButton": "Métadonnées",
   "write.basicMode.metadataButton": "Mode léger",
   "write.editorMode.metadataButton": "Mode revue",
-  "write.rawMode.metadataButton": "Mode brut"
+  "write.rawMode.metadataButton": "Mode brut",
+  "writeBibliographe.zotero.tabItem": "Zotero",
+  "writeBibliographe.citation.tabItem": "Citations",
+  "writeBibliographe.rawBibtex.tabItem": "BibTeX brut",
+  "writeBibliographe.tips.citationPanel": "Coller les citations BibTeX ci-dessus pour la validation syntaxique.",
+  "writeBibliographe.addRefererences.citationPanel": "Ajouter les références",
+  "writeBibliographe.buttonSave.citationPanel": "Sauvegarder",
+  "writeBibliographe.buttonSave.rawPanel": "Sauvegarder",
+  "writeBibliographe.fetchingButton.zoteroPanel": "Récupération...",
+  "writeBibliographe.replaceAccountCollection.zoteroPanel": "Remplacer la bibliographie actuelle par cette collection",
+  "writeBibliographe.titleImportCollection.zoteroPanel": "Importer une collection depuis mon compte",
+  "writeBibliographe.buttonZoteroAccount.zoteroPanel": "Connecter d'abord mon compte Zotero",
+  "writeBibliographe.titleImportByUrl.zoteroPanel": "Importer depuis une URL",
+  "writeBibliographe.textImportByUrl.zoteroPanel": "Utiliser une URL d'une collection Zotero <em>publique</em>, elle doit ressembler à<br />"
 }

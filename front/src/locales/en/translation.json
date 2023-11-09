@@ -144,5 +144,18 @@
   "write.sidebar.metadataButton": "Metadata",
   "write.basicMode.metadataButton": "Basic mode",
   "write.editorMode.metadataButton": "Journal mode",
-  "write.rawMode.metadataButton": "Raw mode"
+  "write.rawMode.metadataButton": "Raw mode",
+  "writeBibliographe.zotero.tabItem": "Zotero",
+  "writeBibliographe.citation.tabItem": "Citations",
+  "writeBibliographe.rawBibtex.tabItem": "Raw BibTeX",
+  "writeBibliographe.tips.citationPanel": "Paste BibTeX above for syntax validation.",
+  "writeBibliographe.addRefererences.citationPanel": "Add references",
+  "writeBibliographe.buttonSave.citationPanel": "Save changes",
+  "writeBibliographe.buttonSave.rawPanel": "Save",
+  "writeBibliographe.fetchingButton.zoteroPanel": "Fetching...",
+  "writeBibliographe.replaceAccountCollection.zoteroPanel": "Replace bibliography with this account collection",
+  "writeBibliographe.titleImportCollection.zoteroPanel": "Import a collection from my account",
+  "writeBibliographe.buttonZoteroAccount.zoteroPanel": "First, connect my Zotero account",
+  "writeBibliographe.titleImportByUrl.zoteroPanel": "Import by URL",
+  "writeBibliographe.textImportByUrl.zoteroPanel": "Please paste the URL of a <em>public</em> Zotero library, so that it looks like<br />"
 }
