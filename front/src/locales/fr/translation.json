@@ -130,6 +130,7 @@
   "write.sidebar.manageButton": "Gestion",
   "write.title.biblioModal": "Gestionnaire de références bibliographiques",
   "write.searchFieldBiblio.placeholder": "Rechercher",
+  "write.copyClipboard.referenceButton": "Copier dans le presse-papiers",
   "write.showBiblio.button": "Afficher tout",
   "write.titleVersion.sidebar": "Versions",
   "write.newVersion.button": "Nouvelle version",

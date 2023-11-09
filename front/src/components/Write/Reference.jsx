@@ -1,5 +1,6 @@
 import React, { memo } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { useTranslation } from 'react-i18next'
 
 import { Clipboard } from 'react-feather'
 import styles from './reference.module.scss'
@@ -8,6 +9,8 @@ import Button from '../Button'
 
 const BibliographyReference = memo(function BibliographyReference ({ entry }) {
   const { key, title, type, date, authorName } = entry
+  const { t } = useTranslation()
+
   return (
     <div
       className={styles.reference}
@@ -24,7 +27,7 @@ const BibliographyReference = memo(function BibliographyReference ({ entry }) {
         </p>
       </div>
       <CopyToClipboard text={`[@${key}]`}>
-        <Button title="Copy to clipboard" className={styles.copyToClipboard} icon={true}><Clipboard/></Button>
+        <Button title={t('write.copyClipboard.referenceButton')} className={styles.copyToClipboard} icon={true}><Clipboard/></Button>
       </CopyToClipboard>
     </div>
   )

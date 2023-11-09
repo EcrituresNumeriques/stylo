@@ -132,6 +132,7 @@
   "write.sidebar.manageButton": "Manage",
   "write.title.biblioModal": "Bibliography manager",
   "write.searchFieldBiblio.placeholder": "Search",
+  "write.copyClipboard.referenceButton": "Copy to clipboard",
   "write.showBiblio.button": "Show all",
   "write.titleVersion.sidebar": "Versions",
   "write.newVersion.button": "New version",
