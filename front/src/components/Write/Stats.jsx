@@ -16,10 +16,10 @@ export default function WriteStats ({ stats }) {
       </h1>
       {expand && (
         <>
-          <p>Words : {stats.wordCount}</p>
-          <p>Characters : {stats.charCountNoSpace}</p>
-          <p>Characters (with spaces) : {stats.charCountPlusSpace}</p>
-          <p>Citations : {stats.citationNb}</p>
+          <p>{t('write.wordCount.stat', {stats: stats.wordCount})}</p>
+          <p>{t('write.charCountNoSpace.stat', {stats: stats.charCountNoSpace})}</p>
+          <p>{t('write.charCountPlusSpace.stat', {stats: stats.charCountPlusSpace})}</p>
+          <p>{t('write.citations.stat', {stats: stats.citationNb})}</p>
         </>
       )}
     </section>
