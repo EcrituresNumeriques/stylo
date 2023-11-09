@@ -8,6 +8,7 @@ import ZoteroPanel from './ZoteroPanel'
 import CitationsPanel from './CitationsPanel'
 import RawBibtexPanel from './RawBibtexPanel'
 
+const { t } = useTranslation()
 const tabItems = [
   { value: 'zotero', name: t('writeBibliographe.zotero.tabItem') },
   { value: 'citations', name: t('writeBibliographe.citation.tabItem') },
@@ -18,7 +19,6 @@ export default function Bibliographe({ article, cancel }) {
   const [selector, setSelector] = useState(tabItems.at(0).value)
   const dispatch = useDispatch()
   const handleTabChange = useCallback((value) => setSelector(value), [])
-  const { t } = useTranslation()
 
   const onChange = useCallback((bib) => {
     dispatch({ type: 'UPDATE_WORKING_ARTICLE_BIBLIOGRAPHY', articleId: article._id, bibliography: bib })
