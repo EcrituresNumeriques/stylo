@@ -71,7 +71,7 @@ const CreateVersion = ({ articleId, readOnly, onClose }) => {
             </li>
             <li>
               <Button primary={true}>
-                {t('write.createVersion.minorButton.')}
+                {t('write.createVersion.minorButton')}
               </Button>
             </li>
             <li>
