@@ -54,11 +54,11 @@ function Version ({ articleId, compareTo, readOnly, selectedVersion, v }) {
         <Field autoFocus={true} type="text" value={title} onChange={(event) => setTitle(event.target.value)}
                placeholder={'Label of the version'}/>
         <div className={styles.actions}>
-          <Button title="Save" primary={true}>
-            <Check/> Save
+          <Button title={t('write.saveButton.versionName')} primary={true}>
+            <Check/> {t('write.saveButton.versionName')}
           </Button>
-          <Button title="Cancel" type="button" onClick={cancelRenaming}>
-            Cancel
+          <Button title={t('write.cancelButton.versionName')} type="button" onClick={cancelRenaming}>
+          {t('write.cancelButton.versionName')}
           </Button>
         </div>
       </form>
@@ -76,7 +76,7 @@ function Version ({ articleId, compareTo, readOnly, selectedVersion, v }) {
         <span className={styles.versionLabel}>
           v{v.version}.{v.revision}{' '}{title || ''}
         </span>
-        {!readOnly && <Button title="Edit" icon={true} className={styles.editTitleButton} onClick={startRenaming}>
+        {!readOnly && <Button title={t('write.editButton.versionName')} icon={true} className={styles.editTitleButton} onClick={startRenaming}>
           <Edit3 size="20"/>
         </Button>}
       </header>}
@@ -99,7 +99,7 @@ function Version ({ articleId, compareTo, readOnly, selectedVersion, v }) {
             className={clsx(buttonStyles.button, buttonStyles.secondary, styles.action)}
             to={compareLink}
           >
-            Compare
+            {t('write.compareButton.version')}
           </Link>
         </li>
       )}
@@ -109,7 +109,7 @@ function Version ({ articleId, compareTo, readOnly, selectedVersion, v }) {
             className={clsx(buttonStyles.button, buttonStyles.secondary, styles.action)}
             to={`/article/${articleId}/${versionPart}`}
           >
-            Stop
+            {t('write.stopButton.version')}
           </Link>
         </li>
       )}
