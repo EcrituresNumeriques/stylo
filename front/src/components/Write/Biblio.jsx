@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 import { ChevronDown, ChevronRight } from 'react-feather'
 
@@ -23,17 +24,18 @@ function Biblio ({ article, readOnly }) {
     setModal(true)
   }, [])
   const closeModal = useCallback(() => setModal(false), [])
+  const { t } = useTranslation()
 
   return (
     <section className={[menuStyles.section, styles.section].join(' ')}>
       <h1 onClick={toggleExpand}>
-        {expand ? <ChevronDown/> : <ChevronRight/>} Bibliography
+        {expand ? <ChevronDown/> : <ChevronRight/>} {t('write.sidebar.biblioTitle')}
 
-        <Button className={styles.headingAction} small={true} disabled={readOnly} onClick={openModal}>Manage</Button>
+        <Button className={styles.headingAction} small={true} disabled={readOnly} onClick={openModal}>{t('write.sidebar.manageButton')}</Button>
       </h1>
       {expand && <ReferenceList />}
       {modal && (
-        <Modal title="Bibliography Manager" cancel={closeModal}>
+        <Modal title={t('write.title.biblioModal')} cancel={closeModal}>
           <Bibliographe cancel={closeModal} article={article} />
         </Modal>
       )}
