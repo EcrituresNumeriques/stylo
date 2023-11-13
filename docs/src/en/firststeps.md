@@ -3,7 +3,7 @@ title: Getting started with Stylo
 ---
 
 ## Creating an account
-In order to edit in Stylo, creating a user account via Huma-Num is recommended. To create an account, go to Stylo: https://stylo.huma-num.fr and choose the type of account (we recommend that you create a Huma-Num account or log in if you already have one):
+In order to edit in Stylo, creating a user account via Huma-Num is recommended. To create an account, go to Stylo: https://stylo.huma-num.fr and choose the type of account:
 
 ![Register](/uploads/images/Login-Huma-Num-V2.PNG)
 
@@ -197,7 +197,7 @@ The bibliography lists the bibliographic references that you have added. The bib
 2. **Citations** : you can manually fill in your bibliography using BibTex format;
 3. **Raw bibtex** : to edit the BibTeX directly.
 
-You can directly [structure your references in BibTex](http://www.andy-roberts.net/writing/latex/bibliographies), or export your references in BibTex with your bibliography management tool:
+You can directly [structure your references in BibTex](/en/bibtexsyntax/), or export your references in BibTex with your bibliography management tool:
 
 - See tutorials : <a class="btn btn-info" href="http://sens-public.org/IMG/pdf/Utiliser_Zotero.pdf" role="button">Zotero</a> <a class="btn btn-info" href="https://libguides.usask.ca/c.php?g=218034&p=1446316" role="button">Mendeley</a>
 

@@ -4,7 +4,7 @@ title: Pour commencer avec Stylo
 
 ## Création d'un compte
 
-Afin d'éditer dans Stylo, la création d'un compte utilisateur via Huma-Num vous est recommandée. Pour créer un compte, rendez-vous sur Stylo : [https://stylo.huma-num.fr](https://stylo.huma-num.fr) et choisissez le type de compte (nous vous recommandons de créer un compte Huma-Num ou de vous connecter si vous en avez déjà un) :
+Afin d'éditer dans Stylo, nous vous recommandons la création d'un compte utilisateur via Huma-Num. Pour créer un compte, rendez-vous sur Stylo : [https://stylo.huma-num.fr](https://stylo.huma-num.fr) et choisissez le type de compte :
 
 ![Register](/uploads/images/Login-Huma-Num-V2.PNG)
 
@@ -44,7 +44,7 @@ Pour chaque article, plusieurs actions sont possibles :
 | ![Ajouter aux espaces de travail](/uploads/images/ajout-dans-espace-de-travail.png) | pour ajouter un article dans un espace de travail |
 | ![Ajouter aux corpus](/uploads/images/add-to-corpus.png) | pour ajouter à un corpus |
 
-Note : le nom du document tel que visible sur Stylo ne correspond pas au titre de l'article qui sera généré. Le titre doit être renseigné dans les métadonnées (volet de droite sur l'article) pour apparaître sur la prévisualisation ou les exports.
+Note : le nom du document tel que visible sur Stylo ne correspond pas au titre de l'article qui sera généré. Le titre doit être renseigné dans les métadonnées (volet de droite sur la page d'édition) pour apparaître lors de la prévisualisation ou les exports.
 
 **Attention :** supprimer un article est irréversible. Cependant, si l'article est partagé avec un autre usager, même après sa suppression, il restera accessible pour cet utilisateur.
 
@@ -73,7 +73,7 @@ L'interface d'édition d'un article présente plusieurs modules :
 
 ## L'option Share
 
-La fonction **[Share]** permet d'inviter des co-auteur·rice·s à travailler sur le même article. Ces utilisateurs ont alors accès à tout l'historique. Les versions de l'article se synchronisent pour tous les utilisateurs au fur et à mesure des modifications effectuées sur le document.
+La fonction **[Share]** permet d'inviter des co-auteur·rice·s à travailler sur le même article. Ces utilisateur·ice·s ont alors accès à tout l'historique. Les versions de l'article se synchronisent pour tous les utilisateurs au fur et à mesure des modifications effectuées sur le document.
 
 **Attention** : partager un article avec un autre utilisateur est possible uniquement en renseignant l'adresse courriel qui a servi à créer son compte utilisateur sur Stylo. 
 
@@ -163,7 +163,7 @@ Pour exporter un article, il faut cliquer sur le bouton "Export" depuis la page 
 
 ![Export](/uploads/images/Download.png)
 
-Le menu d'export permet de choisir le format d'export. Il contient également la possibilité d'intégrer ou non une table des matières.
+Le menu d'export permet de choisir le format d'export. Il contient également la possibilité d'intégrer ou non la table des matières.
 
 ![Export](/uploads/images/ExportConfig-V2.PNG)
 
@@ -203,7 +203,7 @@ La bibliographie liste les références bibliographiques que vous avez ajoutées
 - **Citations** : il vous est possible de renseigner votre bibliographie manuellement au format BibTeX ;
 - **Raw BibTeX** : il est possible de corriger directement le BibTeX.
 
-Vous pouvez directement [structurer vos références en BibTeX](http://www.andy-roberts.net/writing/latex/bibliographies) ou exporter vos références en BibTeX grâce à votre outil de gestion de bibliographie :
+Vous pouvez directement [structurer vos références en BibTeX](/fr/syntaxe-bibtex/) ou exporter vos références en BibTeX grâce à votre outil de gestion de bibliographie :
 
 - voir tutoriels : <a class="btn btn-info" href="http://sens-public.org/IMG/pdf/Utiliser_Zotero.pdf" role="button">Zotero</a> <a class="btn btn-info" href="https://libguides.usask.ca/c.php?g=218034&p=1446316" role="button">Mendeley</a>
 
