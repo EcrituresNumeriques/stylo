@@ -10,9 +10,9 @@ Stylo est un éditeur de texte sémantique conçu et réalisé par l'équipe de 
 
 ## Le projet
 
-Plus qu'en outil, Stylo est une philosophie du texte. Il repose sur l'idée que nous devons concevoir des modèles textuels adaptés pour l'écriture en sciences humaines et sociales (SHS).
+Plus qu'un outil, Stylo est une philosophie du texte. Il repose sur l'idée que nous devons concevoir des modèles textuels adaptés pour l'écriture en sciences humaines et sociales (SHS).
 
-Il est pensé et crée pour écrire des textes scientifiques et en particulier adapté pour les revues en SHS.
+Il est pensé et créé pour écrire des textes scientifiques et en particulier adapté pour les revues en SHS.
 
 C'est actuellement un outil prototype en cours de développement, implémenté dans la chaîne éditoriale de plusieurs revues dans le cadre notamment du projet partenariat [Revue 2.0](http://revue20.org/).
 Cet outil est par ailleurs utilisé par différent·e·s auteur·e·s et étudiant·e·s à titre personnel pour leurs travaux scientifiques ou institutionnels.
@@ -27,16 +27,16 @@ Le code source de Stylo est disponible sur [GitHub](https://github.com/Ecritures
 
 Bien que fondamentale en vue d’une diffusion numérique, la structuration des documents et leur balisage sont actuellement reportés à la fin du processus éditorial quand, en réalité, ceux-ci devraient être envisagés dès la production (par l’auteur·e, dès la première révision des articles). À cet égard, il semble urgent et cohérent de réintégrer le travail de balisage et de structuration en début de chaîne éditoriale.
 
-La philosophie de Stylo consiste à remettre dans les mains des chercheur·e·s la gestion du balisage en partant cette fois-ci de leurs compétences, qui relèvent davantage de compétences sémantiques que graphiques.
+La philosophie de Stylo consiste à remettre entre les mains des chercheur·e·s la gestion du balisage du texte en partant cette fois-ci de leurs compétences, qui relèvent davantage de compétences sémantiques que graphiques.
 
-L'éditeur est basé sur la séparation entre le balisage sémantique et les affichages graphiques, ce qui permet à l'auteur·e de se consacrer au sens du texte plutôt que sur sa mise en forme.
+L'éditeur est basé sur la séparation entre le balisage sémantique et les affichages graphiques, ce qui permet à l'auteur·e de se consacrer au sens du texte plutôt qu'à sa mise en forme.
 
-Stylo propose une solution libre, basée sur des standards (Markdown, YAML, BibTeX) qui permet de :
+Stylo propose une solution libre, basée sur des standards (Markdown, YAML, BibTeX) qui permet :
 
-- produire des textes bien balisés avec des métadonnées riches et une bibliographie structurée ;
-- produire de multiples sorties (PDF, HTML, XML, ODT...) à partir d'un seul document.
+- d'écrire des textes bien balisés avec des métadonnées riches et une bibliographie structurée ;
+- de produire de multiples sorties (PDF, HTML, XML, ODT...) à partir d'un seul document.
 
-Stylo est un outil qui implémente des formats et des technologies de conversion existantes et déjà utilisées par la communauté, ce qui permet une libre circulation des documents qui ne sont pas enfermés dans un format particulier.
+Stylo est un outil qui implémente des formats et des technologies de conversion existantes et déjà utilisées par la communauté scientifique, ce qui permet une libre circulation des documents qui ne sont pas enfermés dans un format particulier.
 
 ## Contributeur·rice·s
 
@@ -62,7 +62,7 @@ Les chercheur·e·s participant à la réalisation de ce projet sont les suivant
 ## Partenaires
 
 - [Huma-num](https://www.huma-num.fr/)
-- [Métopes](www.metopes.fr/)
+- [Métopes](http://www.metopes.fr/)
 - [Érudit](http://erudit.org/)
 
 

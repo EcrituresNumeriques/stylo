@@ -6,8 +6,6 @@ Stylo is a semantic text editor designed and produced by the [Canada Research Ch
 
 <img src="/uploads/images/logo-crc-ecrinum.svg" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:250px">
 
-<img src="/uploads/images/erudit-logotype-rouge.png" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:150px">
-
 ## The project
 
 More than a tool, Stylo is a philosophy of text.
@@ -63,5 +61,5 @@ The researchers participating in the project are as follows:
 ## Partners
 
 - [Huma-num](https://www.huma-num.fr/)
-- [Métopes](www.metopes.fr/)
+- [Métopes](http://www.metopes.fr/)
 - [Érudit](http://erudit.org/)
