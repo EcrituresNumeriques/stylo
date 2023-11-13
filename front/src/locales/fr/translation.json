@@ -126,6 +126,8 @@
   "footer.privacy.link": "Confidentialité",
   "write.sidebar.closeButton": "Fermer",
   "write.sidebar.biblioAndCoButton": "Bibliographie & cie",
+  "write.title.buttonExport": "Exporter",
+  "write.title.buttonPreview": "Prévisualiser (ouvrir une nouvelle fenêtre)",
   "write.sidebar.biblioTitle": "Bibliographie",
   "write.sidebar.manageButton": "Gestion",
   "write.title.biblioModal": "Gestionnaire de références bibliographiques",

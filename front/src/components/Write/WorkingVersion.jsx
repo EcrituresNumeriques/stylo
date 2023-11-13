@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState, useCallback } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
 import { AlertCircle, AlignLeft, Check, Edit3, Eye, Loader, Printer } from 'react-feather'
+import { useTranslation } from 'react-i18next'
 import ArticleContributors from '../ArticleContributors.jsx'
 import TimeAgo from '../TimeAgo.jsx'
 
@@ -76,6 +77,7 @@ export default function WorkingVersion ({ articleInfos, live, selectedVersion, m
   const workingArticle = useSelector(state => state.workingArticle, shallowEqual)
   const cancelExport = useCallback(() => setExporting(false), [])
   const openExport = useCallback(() => setExporting(true), [])
+  const { t } = useTranslation()
 
 
   const previewUrl = selectedVersion
@@ -113,12 +115,12 @@ export default function WorkingVersion ({ articleInfos, live, selectedVersion, m
             </Link>
           </li></>)}
           <li>
-            <Button icon title="Download a printable version" onClick={openExport}>
+            <Button icon title={t('write.title.buttonExport')} onClick={openExport}>
               <Printer/>
             </Button>
           </li>
           <li>
-            <Link to={previewUrl} title="Preview (open a new window)" target="_blank" rel="noopener noreferrer"
+            <Link to={previewUrl} title={t('write.title.buttonPreview')} target="_blank" rel="noopener noreferrer"
                   className={buttonStyles.icon}>
               <Eye/>
             </Link>
