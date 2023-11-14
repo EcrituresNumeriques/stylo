@@ -4,7 +4,7 @@ title: Pour commencer avec Stylo
 
 ## Création d'un compte
 
-Afin d'éditer dans Stylo, nous vous recommandons la création d'un compte utilisateur via Huma-Num. Pour créer un compte, rendez-vous sur Stylo : [https://stylo.huma-num.fr](https://stylo.huma-num.fr) et choisissez le type de compte :
+Afin d'éditer dans Stylo, nous vous recommandons la création d'un compte utilisateur via Huma-Num. Pour créer un compte, rendez-vous sur Stylo : <https://stylo.huma-num.fr> et choisissez le type de compte :
 
 ![Register](/uploads/images/Login-Huma-Num-V2.PNG)
 

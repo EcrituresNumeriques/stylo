@@ -60,6 +60,6 @@ The researchers participating in the project are as follows:
 
 ## Partners
 
-- [Huma-num](https://www.huma-num.fr/)
+- [Huma-Num](https://www.huma-num.fr/)
 - [Métopes](http://www.metopes.fr/)
 - [Érudit](http://erudit.org/)

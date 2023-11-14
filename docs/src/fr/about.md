@@ -5,7 +5,7 @@ useSideMenu: true
 
 Stylo est un éditeur de texte sémantique conçu et réalisé par l'équipe de la [Chaire de recherche du Canada sur les écritures numériques](http://ecrituresnumeriques.ca), sous licence [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE).
 
-<img src="/uploads/images/logo.png" alt="logo CRCEN" class="img-responsive img-thumbnail" style="max-width:250px">
+<img src="/uploads/images/logo.png" alt="Logo CRCEN" class="img-responsive img-thumbnail" style="max-width:250px">
 
 
 ## Le projet
@@ -61,7 +61,7 @@ Les chercheur·e·s participant à la réalisation de ce projet sont les suivant
 
 ## Partenaires
 
-- [Huma-num](https://www.huma-num.fr/)
+- [Huma-Num](https://www.huma-num.fr/)
 - [Métopes](http://www.metopes.fr/)
 - [Érudit](http://erudit.org/)
 
