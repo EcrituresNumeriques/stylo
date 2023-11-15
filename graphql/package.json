@@ -1,6 +1,6 @@
 {
   "name": "graphql-stylo",
-  "version": "1.0.0-dev",
+  "version": "3.0.1",
   "description": "",
   "main": "index.js",
   "private": true,
