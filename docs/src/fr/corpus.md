@@ -70,6 +70,12 @@ Une fenêtre pop-up contenant un formulaire va s'ouvrir et permettre de modifier
 
 ## Exporter un corpus
 
+<alert-block heading="Important">
+
+Les exports des corpus ne sont pas fonctionnels. Ils seront développés courant 2024.
+
+</alert-block>
+
 ![Exporter un corpus](/uploads/images/Export.png)
 
 L'export d'un corpus se réalise de la même manière que pour un article.
