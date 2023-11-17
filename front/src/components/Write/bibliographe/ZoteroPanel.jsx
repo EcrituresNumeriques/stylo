@@ -139,28 +139,28 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
 
   return <div className={styles.zotero}>
     <form className={styles.section} disabled={isSaving} onSubmit={handleCollectionFormSubmission}>
-      <h3><Rss />{t('writeBibliographe.titleImportCollection.zoteroPanel')}</h3>
+      <h3><Rss />{t('zoteroPanel.titleImportCollection.text')}</h3>
       {zoteroToken && <Combobox label="" items={groupedZoteroCollections} value={zoteroCollectionHref} onChange={handleZoteroCollectionChange} />}
       {zoteroToken && (
         <Button type="submit" primary disabled={!zoteroCollectionHref || isSaving}>
           {isSaving
-            ? t('writeBibliographe.fetchingButton.zoteroPanel')
-            : t('writeBibliographe.replaceAccountCollection.zoteroPanel')}
+            ? t('zoteroPanel.fetchingButton.text')
+            : t('zoteroPanel.replaceAccountCollection.text')}
         </Button>
       )}
 
       {!zoteroToken && (
         <Button type="button" onClick={handleZoteroAccountConnection}>
-          {t('writeBibliographe.buttonZoteroAccount.zoteroPanel')}
+          {t('zoteroPanel.buttonZoteroAccount.text')}
         </Button>
       )}
     </form>
 
     <form className={styles.section} onSubmit={handleZoteroLinkFormSubmission}>
-      <h3><Clipboard />{t('writeBibliographe.titleImportByUrl.zoteroPanel')}</h3>
+      <h3><Clipboard />{t('zoteroPanel.titleImportByUrl.text')}</h3>
 
       <p className={styles.helpText}>
-        {t('writeBibliographe.textImportByUrl.zoteroPanel')}
+        {t('zoteroPanel.textImportByUrl.text')}
 
         <code>https://www.zotero.org/groups/<mark>[IDnumber]/collections/[IDcollection]</mark></code>
       </p>
@@ -178,8 +178,8 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
         disabled={isSaving || !hasLinkChanged}
       >
         {isSaving
-          ? t('writeBibliographe.fetchingButton.zoteroPanel')
-          : t('writeBibliographe.replaceAccountCollection.zoteroPanel')}
+          ? t('zoteroPanel.fetchingButton.text')
+          : t('zoteroPanel.replaceAccountCollection.text')}
       </Button>
     </form>
   </div>

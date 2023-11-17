@@ -35,7 +35,7 @@ function Biblio ({ article, readOnly }) {
       </h1>
       {expand && <ReferenceList />}
       {modal && (
-        <Modal title={t('write.title.biblioModal')} cancel={closeModal}>
+        <Modal title={t('write.biblioModal.title')} cancel={closeModal}>
           <Bibliographe cancel={closeModal} article={article} />
         </Modal>
       )}
