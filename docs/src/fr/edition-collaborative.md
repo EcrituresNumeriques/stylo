@@ -30,9 +30,8 @@ C'est un mode qu'il faut initialiser en appuyant sur l'icône \[*Collaborative e
 Le premier utilisateur à appuyer sur ce bouton devient le modérateur de la session d'écriture collaborative.
 Pour rejoindre une session collaborative, les autres utilisateurs devront eux aussi cliquer sur ce bouton dans leur interface.
 
-Une session d'écriture collaborative est un mode particulier qui ne correspond pas au fonctionement nominal d'écriture dans Stylo.
-Dans ce mode collaboratif, seul le texte en Markdown est accessible en écriture.
-Les autres informations ne sont pas accessibles (les volets à gauche et à droite de l'éditeur de texte).
+Une session d'écriture collaborative est un mode particulier qui ne correspond pas au fonctionnement nominal d'écriture dans Stylo.
+Dans ce mode collaboratif, seul le texte en Markdown est accessible. Les autres informations ne sont pas accessibles (les volets à gauche et à droite de l'éditeur de texte).
 
 ![Collaborative editing interface](/uploads/images/collaborative-editing-interface.png)
 
