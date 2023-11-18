@@ -22,7 +22,7 @@ Par exemple, on peut créer un espace de travail pour une revue et ainsi partage
 L'espace de travail en lui-même pourra être nommé "Revue XX" mais les articles qui y seront associés n'appartiendront pas à cet espace de travail.
 Chaque article restera attaché au compte utilisateur qui l'a créé.
 
-L'accès à cette fonctionnalité se fait depuis le menu déroulant accessible en cliquant sur le non utilisateur en haut de la page.
+L'accès à cette fonctionnalité se fait depuis le menu déroulant accessible en cliquant sur le nom d'utilisateur en haut de la page.
 
 ![Menu pour accéder aux espaces de travail](/uploads/images/menu-espace-de-travail.png)
 
@@ -30,7 +30,7 @@ Ensuite il faut cliquer sur \[Tous les espaces\] pour accéder au gestionnaire d
 
 ## Gérer ses espaces de travail
 
-Le gestionnaire des espaces de travail comporte quatre fonctionnalités :
+Le gestionnaire des espaces de travail comporte trois fonctionnalités :
 
 - la création d'un espace de travail en cliquant sur le bouton correspondant \[Créer un espace de travail\]. Celui-ci ouvre un formulaire composé de trois champs que sont le \[Nom\], la \[Description\] et le choix d'une \[Couleur\].
 - la possibilité de quitter un espace de travail. Pour cela il faut cliquer sur le bouton \[Quitter l'espace\]. (_Note : En cliquant sur ce bouton, si les étoiles le souhaitent, vous pourrez vivre une aventure inédite, jusqu'alors inconnue des mémoires humaines..._)
@@ -53,19 +53,17 @@ Il incombe à chacun la responsabilité de la gestion des informations et des dy
 Un espace de travail est une configuration qui permet d'afficher uniquement les documents qui y sont liés dans l'interface de Stylo.
 Ils sont affichés en lieu et place des articles personnels.
 
-L'affichage des articles ne se passe donc pas dans le gestionnaire des espaces de travail mais dans la page \[Articles\] (en cliquant sur le bouton dans le bandeau noir en haut de la page).
-
-Ensuite, il faut cliquer sur son \[Nom d'utilisateur\] et sélectionner dans le menu déroulant l'espace de travail dans lequel on souhaite travailler.
+L'affichage des articles ne se passe donc pas dans le gestionnaire des espaces de travail mais dans la page \[Articles\] (disponible en haut de la page). Ensuite, il faut cliquer sur son \[Nom d'utilisateur\] et sélectionner dans le menu déroulant l'espace de travail dans lequel on souhaite travailler.
 
 L'espace dans lequel se situe l'utilisateur est indiqué à deux endroits différents :
 
-1. dans le menu en haut de la page (bandeau noir), si rien n'est indiqué sous le nom d'utilisateur, on se trouve dans l'espace personnel ;
+1. dans le menu en haut de la page, sous le \[Nom d'utilisateur\] ;
 
-![Indication de l'espace dans lequel on travaille](/uploads/images/BarreLateraleStyloNoire-V2.PNG)
+![barre avec espace de travail](/uploads/images/affichage-espace-de-travail.png)
 
-sinon, le nom de l'espace de travail dans lequel on se trouve est indiqué sous le nom d'utilisateur ;
+Si rien n'est indiqué sous le nom, on se trouve dans l'espace personnel ;
 
-![](/uploads/images/indication-espace-de-travail-dans-menu.png)
+![Barre avec espace personnel](/uploads/images/affichage-espace-perso.png)
 
 2. le nom de l'espace de travail est aussi indiqué en haut de la liste des articles.
 
@@ -96,4 +94,4 @@ Cette tâche s'effectue automatiquement lorsque le dernier membre d'un espace de
 Si le dernier membre d'un espace de travail souhaite le quitter, une fenêtre pop-up s'ouvre pour demander la confirmation de cette action.
 
 Il n'y a que l'instance de partage entre les membres qui est supprimée lorsque le dernier membre a quitté l'espace. 
-Étant donné que les articles restent associés à leur créateur, ceux-ci restent disponibles sur l'espace personne de son propriétaire.
+Étant donné que les articles restent associés à leur créateur, ceux-ci restent disponibles sur l'espace personnel de son propriétaire.
