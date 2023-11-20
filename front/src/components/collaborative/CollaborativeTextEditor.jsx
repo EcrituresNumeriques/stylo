@@ -2,7 +2,7 @@ import { Loading } from '@geist-ui/core'
 import PropTypes from 'prop-types'
 import Editor from '@monaco-editor/react'
 import throttle from 'lodash.throttle'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
 import * as collaborating from './collaborating.js'
@@ -43,6 +43,8 @@ const colors = [
 
 export default function CollaborativeTextEditor ({ articleId, collaborativeSessionCreatorId, collaborativeSessionId, onCollaborativeSessionStateUpdated }) {
   const connectingRef = useRef(false)
+  const [viewportHeight, setViewportHeight] = useState(window.innerHeight)
+  const [editorVerticalOffset, setEditorVerticalOffset] = useState(0)
   const [dynamicStyles, setDynamicStyles] = useState('')
   const [websocketStatus, setWebsocketStatus] = useState('')
   const [yText, setYText] = useState(null)
@@ -145,8 +147,9 @@ export default function CollaborativeTextEditor ({ articleId, collaborativeSessi
 
   const handleEditorDidMount = useCallback((editor) => {
     editorRef.current = editor
+    setEditorVerticalOffset(editor._domElement.getBoundingClientRect().y + window.scrollY + 50)
     new MonacoBinding(yText, editor.getModel(), new Set([editor]), awareness)
-  }, [yText, awareness])
+  }, [yText, awareness, setEditorVerticalOffset])
 
   useEffect(() => {
     const line = editorCursorPosition.lineNumber
@@ -156,6 +159,23 @@ export default function CollaborativeTextEditor ({ articleId, collaborativeSessi
     editor?.setPosition({ lineNumber: line + 1, column: endOfLineColumn })
     editor?.revealLine(line + 1, 1) // smooth
   }, [editorRef, editorCursorPosition])
+
+  const updateViewportHeight = useCallback(() => {
+    setViewportHeight(window.innerHeight)
+    const editor = editorRef.current
+    if (editor) {
+      setEditorVerticalOffset(editor._domElement.getBoundingClientRect().y + window.scrollY + 50)
+    }
+  }, [setViewportHeight, editorRef, setEditorVerticalOffset])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', updateViewportHeight)
+    }
+    return () => {
+      window.removeEventListener('resize', updateViewportHeight)
+    }
+  }, [updateViewportHeight])
 
   if (!yText) {
     return <Loading/>
@@ -171,6 +191,7 @@ export default function CollaborativeTextEditor ({ articleId, collaborativeSessi
     <Editor
       options={options}
       className={styles.editor}
+      height={viewportHeight - editorVerticalOffset + "px"}
       defaultLanguage="markdown"
       onMount={handleEditorDidMount}
     />
