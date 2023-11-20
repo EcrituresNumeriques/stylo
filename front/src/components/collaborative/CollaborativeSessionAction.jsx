@@ -52,7 +52,7 @@ export default function CollaborativeSessionAction ({ collaborativeSession, arti
 
   return (
     <>
-      <Button title="Collaborative editing" icon={true} onClick={() => setCollaborativeEditingVisible(true)}>
+      <Button title={t('collaborativeSessionAction.launchCollaborativeSessionButton.title')} icon={true} onClick={() => setCollaborativeEditingVisible(true)}>
         <Users/>
         {collaborativeSession && collaborativeSession.id && <Badge type="error">Live</Badge>}
       </Button>

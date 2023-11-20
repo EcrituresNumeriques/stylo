@@ -70,6 +70,8 @@
   "article.sendCopy.errorNotification": "Unable to send a copy of the article: {{errMessage}}",
   "version.editingSessionEnded.text": "Editing session ended",
   "version.collaborativeSessionEnded.text": "Collaborative session ended",
+  "collaborativeSessionAction.launchCollaborativeSessionButton.title": "Collaborative editing",
+  "soloSessionAction.launchSoloSessionButton.title": "Edit article",
   "modal.cancelButton.text": "Cancel",
   "modal.confirmButton.text": "Confirm",
   "modal.close.text": "Close",
@@ -171,5 +173,8 @@
   "zoteroPanel.titleImportCollection.text": "Import a collection from my account",
   "zoteroPanel.buttonZoteroAccount.text": "First, connect my Zotero account",
   "zoteroPanel.titleImportByUrl.text": "Import by URL",
-  "zoteroPanel.textImportByUrl.text": "Please paste the URL of a <em>public</em> Zotero library, so that it looks like<br />"
+  "zoteroPanel.textImportByUrl.text": "Please paste the URL of a <em>public</em> Zotero library, so that it looks like<br />",
+  "workingVersion.stateUiProps.savedText": "Last saved",
+  "workingVersion.stateUiProps.savingText": "Saving",
+  "workingVersion.stateUiProps.saveErrorText": "Erreur"
 }

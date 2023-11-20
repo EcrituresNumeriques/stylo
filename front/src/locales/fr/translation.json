@@ -70,6 +70,8 @@
   "article.sendCopy.errorNotification": "Impossible d'envoyer une copie de l'article: {{errMessage}}",
   "version.editingSessionEnded.text": "Session d'édition terminée",
   "version.collaborativeSessionEnded.text": "Session collaborative terminée",
+  "collaborativeSessionAction.launchCollaborativeSessionButton.title": "Édition collaborative",
+  "soloSessionAction.launchSoloSessionButton.title": "Modifier l'article",
   "modal.cancelButton.text": "Annuler",
   "modal.confirmButton.text": "Confirmer",
   "modal.close.text": "Fermer",
@@ -169,5 +171,8 @@
   "zoteroPanel.titleImportCollection.text": "Importer une collection depuis mon compte",
   "zoteroPanel.buttonZoteroAccount.text": "Connecter d'abord mon compte Zotero",
   "zoteroPanel.titleImportByUrl.text": "Importer depuis une URL",
-  "zoteroPanel.textImportByUrl.text": "Utiliser une URL d'une collection Zotero <em>publique</em>, elle doit ressembler à<br />"
+  "zoteroPanel.textImportByUrl.text": "Utiliser une URL d'une collection Zotero <em>publique</em>, elle doit ressembler à<br />",
+  "workingVersion.stateUiProps.savedText": "Dernière sauvegarde",
+  "workingVersion.stateUiProps.savingText": "En cours de sauvegarde",
+  "workingVersion.stateUiProps.saveErrorText": "Error"
 }

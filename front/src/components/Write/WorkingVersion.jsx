@@ -15,19 +15,21 @@ import Export from "../Export";
 
 const ONE_MINUTE = 60000
 
+const { t } = useTranslation()
+
 const stateUiProps = {
   saved: {
-    text: 'Last saved',
+    text: t('workingVersion.stateUiProps.savedText'),
     icon: <Check/>,
     style: styles.savedIndicator
   },
   saving: {
-    text: 'Saving',
+    text: t('workingVersion.stateUiProps.savingText'),
     icon: <Loader/>,
     style: styles.savingIndicator
   },
   saveFailure: {
-    text: 'Error',
+    text: t('workingVersion.stateUiProps.saveErrorText'),
     icon: <AlertCircle/>,
     style: styles.failureIndicator
   },
