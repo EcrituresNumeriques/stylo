@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Link} from 'react-router-dom'
 import clsx from 'clsx'
 import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-ui/core'
+import { useActiveWorkspace } from '../hooks/workspace.js'
 
 import styles from './articles.module.scss'
 import ArticleVersionLinks from './ArticleVersionLinks.jsx'
@@ -52,6 +53,8 @@ import ArticleSendCopy from './ArticleSendCopy.jsx'
 export default function Article ({ article, onArticleUpdated, onArticleDeleted, onArticleCreated }) {
   const activeUser = useSelector(state => state.activeUser)
   const articleId = useMemo(() => article._id, [article])
+  const activeWorkspace = useActiveWorkspace()
+  const activeWorkspaceId = useMemo(() => activeWorkspace?._id, [activeWorkspace])
 
   const {
     data: contributorsQueryData,
@@ -251,7 +254,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
       <aside className={styles.actionButtons}>
 
-        {isArticleOwner &&
+        {isArticleOwner && !activeWorkspaceId &&
           <Button title={t('article.delete.button')} icon={true} onClick={() => setDeleteArticleVisible(true)}>
             <Trash/>
           </Button>}
