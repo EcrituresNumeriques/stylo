@@ -5,13 +5,13 @@ title: "Collaborative writing"
 ## Prerequisites for synchronous writing
 
 Synchronous collaborative editing enables several users to edit an article in Stylo at the same time.
-This feature is similar to that found in other applications such as [Hedgedoc](https://hedgedoc.org/) and Google Docs.
+This feature is similar to those found in other applications such as [Hedgedoc](https://hedgedoc.org/) and Google Docs.
 
-Unlike these applications, where sharing a simple URL is enough to grant write rights to a document, Stylo requires user authentication to obtain this right.
+Unlike these applications, where sharing a simple URL is enough to grant writing rights to a document, Stylo requires user authentication to obtain this right.
 
 Information on authentication can be found on the [Getting started with Stylo](/en/first-steps/#creating-an-account) page.
 
-Next, users who wish to write on a Stylo article during a collaborative session must have access to the article to be edited. 
+Then, users who wish to write in a Stylo article during a collaborative session must have access to the article. 
 To gain access rights to an article, 3 solutions are available: 
 
 - [create an article](/en/myarticles/#create-a-new-article) 
@@ -31,17 +31,17 @@ The first user to press this button becomes the moderator of the collaborative e
 To join a collaborative session, other users must also click on this button in their interface.
 
 A collaborative writing session is a special mode that does not correspond to the nominal writing function in Stylo.
-In this collaborative mode, only Markdown text is accessible for writing.
-Other information is not accessible (the panes on the left and right of the text editor).
+In this collaborative mode, only Markdown text is accessible.
+All other information is not accessible (the panels on the left and right of the text editor).
 
 ![Collaborative editing interface](/uploads/images/collaborative-editing-interface.png)
 
-To ensure that the application functions correctly, the end of a collaborative session must be marked by a synchronous mode closure.
+To ensure correct operation of the application, the end of a collaborative session must be marked by closing the synchronous mode. 
 Only the session moderator can perform this action, by pressing the end session button at the top right of the screen, above the Monaco editor.
 
 <alert-block heading="Important">
 
-If a collaborative session is not closed correctly, the article concerned will no longer be accessible in simple editing.
+If a collaborative session is not closed correctly, the article will no longer be accessible in simple edition.
 
 </alert-block>
 

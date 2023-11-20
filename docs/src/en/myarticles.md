@@ -134,6 +134,14 @@ This function also allows you to send the article with the same system:
 
 The [Send a Copy] option is not sharing the article; only the last version of the article will be visible for the user and the changes will not be visible to other users. In the [Send a Copy] process, two versions of the article are created and the users each work on a version that is not visible to the other.
 
+## Take over 
+
+When an article is shared (via a workspace or the share button) with another user, the article editing function is only available to one person at a time. You'll see by the red dot in the box that a collaborator is editing the article or has not properly closed his editing session. If you also want to edit the article, you can take over the editing session by pressing ![Edit](/uploads/images/edit-red.png) and confirm. The other collaborator will then be in read-only mode and you will be able to edit the article. 
+
+To properly close an editing session, simply return to the *Articles* page when you've finished your work.
+
+{% figure "/uploads/gif/reprise-de-session.gif", "Take over" %}
+
 ## Duplicate an article
 
 You can duplicate your article by clicking on the following icon:

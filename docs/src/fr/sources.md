@@ -1,8 +1,8 @@
 ---
-title: Source de Stylo
+title: Sources de Stylo
 ---
 
-**Source de Stylo** : 
+**Sources de Stylo** : 
 
 Vous pouvez retrouver tout le code source de Stylo sur son [dépôt GitHub](https://github.com/EcrituresNumeriques/stylo).
 

@@ -4,9 +4,7 @@ title: "About _Stylo_"
 
 Stylo is a semantic text editor designed and produced by the [Canada Research Chair in Digital Textualities](http://ecrituresnumeriques.ca) team, under the [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE) license.
 
-<img src="/uploads/images/logo-crc-ecrinum.svg" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:250px">
-
-<img src="/uploads/images/erudit-logotype-rouge.png" alt="logoErudit" class="img-responsive img-thumbnail" style="max-width:150px">
+<img src="/uploads/images/logo-crc-ecrinum.svg" alt="Logo CRCDT" class="img-responsive img-thumbnail" style="max-width:250px">
 
 ## The project
 
@@ -62,6 +60,6 @@ The researchers participating in the project are as follows:
 
 ## Partners
 
-- [Huma-num](https://www.huma-num.fr/)
-- [Métopes](www.metopes.fr/)
+- [Huma-Num](https://www.huma-num.fr/)
+- [Métopes](http://www.metopes.fr/)
 - [Érudit](http://erudit.org/)

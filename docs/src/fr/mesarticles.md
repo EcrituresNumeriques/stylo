@@ -140,6 +140,14 @@ Pour partager, vous devez renseigner l'adresse courriel de l'utilisateur Stylo :
 
 ![Share](/uploads/images/share-form.png)
 
+## Reprise de session
+
+Lorsqu'un article est partagé avec un autre utilisateur (par la fonction partage ou par un espace de travail), la fonction d'édition de l'article n'est disponible que pour une personne à la fois. Vous verrez au point rouge qui s'affiche dans la case qu'un collaborateur est en train d'éditer l'article ou n'a pas bien fermé sa session d'édition. Si vous voulez vous aussi éditer l'article, vous pouvez reprendre la session d'édition en appuyant sur ![Edit](/uploads/images/edit-red.png) et confirmer la reprise de session. L'autre collaborateur sera alors en lecture seule et vous pourrez éditer l'article. 
+
+Pour bien fermer une session d'édition, simplement retourner sur la page *Articles* lorsque vous avez terminé votre travail.
+
+{% figure "/uploads/gif/reprise-de-session.gif", "Reprise de session" %}
+
 ## Dupliquer un article
 
 Vous pouvez dupliquer votre article en cliquant sur l'icône suivante :

@@ -70,6 +70,12 @@ A pop-up window containing a form will open, allowing you to modify the data con
 
 ## Export a corpus
 
+<alert-block heading="Important">
+
+Corpus exports are not yet available. They will be developed in 2024.
+
+</alert-block>
+
 ![Export a corpus](/uploads/images/Export.png)
 
 Exporting a corpus is done in the same way as for an article.

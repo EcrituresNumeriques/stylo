@@ -1,5 +1,5 @@
 ---
-title:  Stylo Source
+title:  Stylo Sources
 ---
 
 Report problems and bugs on the [project's GitHub repository](https://github.com/EcrituresNumeriques/stylo/issues).
