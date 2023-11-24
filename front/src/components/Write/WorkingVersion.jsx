@@ -16,6 +16,8 @@ import Export from "../Export";
 const ONE_MINUTE = 60000
 
 export function ArticleVersion ({ version }) {
+  const { t } = useTranslation()
+
   return <span>
     {!version && <span>{t('workingVersion.spanWorkingCopy.text')}</span>}
     {version && version.message && <span>
@@ -32,23 +34,23 @@ export function ArticleSaveState ({ state, updatedAt, stateMessage }) {
   const [lastRefreshedAt, setLastRefresh] = useState(Date.now())
   const { t } = useTranslation()
 
-const stateUiProps = {
-  saved: {
-    text: t('workingVersion.stateUiProps.savedText'),
-    icon: <Check/>,
-    style: styles.savedIndicator
-  },
-  saving: {
-    text: t('workingVersion.stateUiProps.savingText'),
-    icon: <Loader/>,
-    style: styles.savingIndicator
-  },
-  saveFailure: {
-    text: t('workingVersion.stateUiProps.saveErrorText'),
-    icon: <AlertCircle/>,
-    style: styles.failureIndicator
-  },
-}
+  const stateUiProps = {
+    saved: {
+      text: t('workingVersion.stateUiProps.savedText'),
+      icon: <Check/>,
+      style: styles.savedIndicator
+    },
+    saving: {
+      text: t('workingVersion.stateUiProps.savingText'),
+      icon: <Loader/>,
+      style: styles.savingIndicator
+    },
+    saveFailure: {
+      text: t('workingVersion.stateUiProps.saveErrorText'),
+      icon: <AlertCircle/>,
+      style: styles.failureIndicator
+    },
+  }
   const stateUi = stateUiProps[state]
 
   const isoString = useMemo(() => new Date(updatedAt).toISOString(), [updatedAt, lastRefreshedAt])
