@@ -54,11 +54,11 @@ function Version ({ articleId, compareTo, readOnly, selectedVersion, v }) {
         <Field autoFocus={true} type="text" value={title} onChange={(event) => setTitle(event.target.value)}
                placeholder={'Label of the version'}/>
         <div className={styles.actions}>
-          <Button title="Save" primary={true}>
-            <Check/> Save
+          <Button title={t('write.saveVersionName.buttonTitle')} primary={true}>
+            <Check/> {t('write.saveVersionName.buttonText')}
           </Button>
-          <Button title="Cancel" type="button" onClick={cancelRenaming}>
-            Cancel
+          <Button title={t('write.cancelVersionName.buttonTitle')} type="button" onClick={cancelRenaming}>
+          {t('write.cancelVersionName.buttonText')}
           </Button>
         </div>
       </form>
@@ -76,7 +76,7 @@ function Version ({ articleId, compareTo, readOnly, selectedVersion, v }) {
         <span className={styles.versionLabel}>
           v{v.version}.{v.revision}{' '}{title || ''}
         </span>
-        {!readOnly && <Button title="Edit" icon={true} className={styles.editTitleButton} onClick={startRenaming}>
+        {!readOnly && <Button title={t('write.editVersionName.buttonTitle')} icon={true} className={styles.editTitleButton} onClick={startRenaming}>
           <Edit3 size="20"/>
         </Button>}
       </header>}
@@ -99,7 +99,7 @@ function Version ({ articleId, compareTo, readOnly, selectedVersion, v }) {
             className={clsx(buttonStyles.button, buttonStyles.secondary, styles.action)}
             to={compareLink}
           >
-            Compare
+            {t('write.compareVersion.button')}
           </Link>
         </li>
       )}
@@ -109,7 +109,7 @@ function Version ({ articleId, compareTo, readOnly, selectedVersion, v }) {
             className={clsx(buttonStyles.button, buttonStyles.secondary, styles.action)}
             to={`/article/${articleId}/${versionPart}`}
           >
-            Stop
+            {t('write.stopCompareVersion.button')}
           </Link>
         </li>
       )}
@@ -140,15 +140,16 @@ export default function Versions ({ article, selectedVersion, compareTo, readOnl
     setExpandCreateForm(true)
   }, [])
   const cancelExport = useCallback(() => setExportParams({}), [])
+  const { t } = useTranslation()
 
   return (
     <section className={clsx(menuStyles.section)}>
       <h1 className={expand ? null : styles.closed} onClick={toggleExpand}>
         {expand ? <ChevronDown/> : <ChevronRight/>}
-        Versions
+        {t('write.titleVersion.sidebar')}
 
         {!readOnly && <Button className={styles.headingAction} small={true} disabled={readOnly} onClick={createNewVersion}>
-          New Version
+        {t('write.newVersion.button')}
         </Button>}
         {readOnly && <Link className={clsx(buttonStyles.button, buttonStyles.secondary, styles.editMode, styles.headingAction)} to={`/article/${article._id}`}> <ArrowLeft/> Edit Mode</Link>}
       </h1>

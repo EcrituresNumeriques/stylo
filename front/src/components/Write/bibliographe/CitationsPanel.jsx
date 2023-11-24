@@ -1,8 +1,11 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import { shallowEqual, useSelector } from 'react-redux'
 import debounce from 'lodash.debounce'
 import { Check, HelpCircle, Plus, Trash } from 'react-feather'
 import { useToasts } from '@geist-ui/core'
+
 
 import { toBibtex, toEntries, getValidationResults } from '../../../helpers/bibtex'
 
@@ -24,6 +27,7 @@ export default function CitationsPanel ({ onChange }) {
   const isValid = useMemo(() => citationValidationResult.valid, [citationValidationResult.valid])
   const isEmpty = useMemo(() => addCitation.trim().length === 0, [addCitation])
   const hasChanged = useMemo(() => bib !== workingArticleBibliography.text, [bib, workingArticleBibliography.text])
+  const { t } = useTranslation()
 
   // Merged citations are not yet saved
   const mergeCitations = useCallback(() => {
@@ -75,7 +79,7 @@ export default function CitationsPanel ({ onChange }) {
       <ul className={styles.actions}>
         <li className={styles.actionsHelp}>
           <HelpCircle />
-          Paste BibTeX above for syntax validation.
+          {t('writeBibliographe.tips.citationPanel')}
         </li>
         <li className={styles.actionsSubmit}>
           <Button
@@ -84,7 +88,7 @@ export default function CitationsPanel ({ onChange }) {
             disabled={!isValid || isEmpty}
             onClick={mergeCitations}
           >
-            <Plus/> Add references
+            <Plus/> {t('writeBibliographe.addRefererences.citationPanel')}
           </Button>
         </li>
       </ul>
@@ -126,7 +130,7 @@ export default function CitationsPanel ({ onChange }) {
       <ul className={styles.actions}>
         <li className={styles.actionsSubmit}>
           <Button primary={true} onClick={handleChanges} className={styles.primary} disabled={!hasChanged}>
-            <Check /> Save changes
+            <Check /> {t('writeBibliographe.buttonSave.citationPanel')}
           </Button>
         </li>
       </ul>

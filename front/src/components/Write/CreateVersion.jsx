@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { ArrowLeft } from 'react-feather'
 import { createVersion } from '../../services/ArticleService.graphql'
+import { useTranslation } from 'react-i18next'
 
 import { useMutation } from '../../hooks/graphql.js'
 
@@ -14,6 +15,7 @@ import Button from '../Button'
 import Field from '../Field'
 
 const CreateVersion = ({ articleId, readOnly, onClose }) => {
+  const { t } = useTranslation()
   const { setToast } = useToasts()
   const mutation = useMutation()
   const activeUser = useSelector(state => state.activeUser)
@@ -33,7 +35,7 @@ const CreateVersion = ({ articleId, readOnly, onClose }) => {
       })
       dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: response.article.createVersion.versions })
       setToast({
-        text: `Nouvelle version créée.`,
+        text: t('write.createVersion.defaultNotification'),
         type: 'default',
       })
     } catch (err) {
@@ -56,7 +58,7 @@ const CreateVersion = ({ articleId, readOnly, onClose }) => {
         >
           <Field
             className={styles.createVersionInput}
-            placeholder="Label of the version (optional)"
+            placeholder={t('write.createVersion.placeholder')}
             value={message}
             autoFocus={true}
             onChange={(e) => setMessage(e.target.value)}
@@ -64,17 +66,17 @@ const CreateVersion = ({ articleId, readOnly, onClose }) => {
           <ul className={styles.actions}>
             <li className={styles.closeButton}>
               <Button icon={true} onClick={onClose}>
-                Close
+                {t('write.sidebar.closeButton')}
               </Button>
             </li>
             <li>
               <Button primary={true}>
-                Create Minor
+                {t('write.createMinorVersion.Button')}
               </Button>
             </li>
             <li>
               <Button onClick={(e) => handleCreateVersion(e, true)}>
-                Create Major
+                {t('write.createMajorVersion.Button')}
               </Button>
             </li>
           </ul>

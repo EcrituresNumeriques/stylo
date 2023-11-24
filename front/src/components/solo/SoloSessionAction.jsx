@@ -78,7 +78,7 @@ export default function SoloSessionAction ({ collaborativeSession, soloSession, 
                            onClick={() => setTakeOverModalVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
         <GeistModal.Action onClick={() => handleTakeOver()}>{t('modal.confirmButton.text')}</GeistModal.Action>
       </GeistModal>
-      <Button title="Edit article" primary={true} onClick={handleStartSoloEditing}>
+      <Button title={t('soloSessionAction.launchSoloSessionButton.title')} primary={true} onClick={handleStartSoloEditing}>
         <Edit3/>
         {soloSession && <Dot type="error"/>}
       </Button>
