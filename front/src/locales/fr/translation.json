@@ -175,5 +175,5 @@
   "workingVersion.stateUiProps.savedText": "Dernière sauvegarde",
   "workingVersion.stateUiProps.savingText": "En cours de sauvegarde",
   "workingVersion.stateUiProps.saveErrorText": "Erreur",
-  "workingVersion.spanWorkingCopy.text": "copie de travail"
+  "workingVersion.spanWorkingCopy.text": "version de travail"
 }
