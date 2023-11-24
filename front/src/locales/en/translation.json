@@ -176,5 +176,6 @@
   "zoteroPanel.textImportByUrl.text": "Please paste the URL of a <em>public</em> Zotero library, so that it looks like<br />",
   "workingVersion.stateUiProps.savedText": "Last saved",
   "workingVersion.stateUiProps.savingText": "Saving",
-  "workingVersion.stateUiProps.saveErrorText": "Erreur"
+  "workingVersion.stateUiProps.saveErrorText": "Error",
+  "workingVersion.spanWorkingCopy.text": "working copy"
 }

@@ -174,5 +174,6 @@
   "zoteroPanel.textImportByUrl.text": "Utiliser une URL d'une collection Zotero <em>publique</em>, elle doit ressembler à<br />",
   "workingVersion.stateUiProps.savedText": "Dernière sauvegarde",
   "workingVersion.stateUiProps.savingText": "En cours de sauvegarde",
-  "workingVersion.stateUiProps.saveErrorText": "Error"
+  "workingVersion.stateUiProps.saveErrorText": "Erreur",
+  "workingVersion.spanWorkingCopy.text": "copie de travail"
 }

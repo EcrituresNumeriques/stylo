@@ -17,7 +17,7 @@ const ONE_MINUTE = 60000
 
 export function ArticleVersion ({ version }) {
   return <span>
-    {!version && <span>working copy</span>}
+    {!version && <span>{t('workingVersion.spanWorkingCopy.text')}</span>}
     {version && version.message && <span>
       <span className={styles.versionLabel}>{version.message}</span>
       <span className={styles.versionNumber}>v{version.major}.{version.minor}</span>
