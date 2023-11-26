@@ -1,5 +1,5 @@
 name: Ansible deploy production
-run-name: Deploy version ${{ inputs.tag }} on production by @${{ github.actor }}
+run-name: Deploy version ${{ inputs.release-version }} on production by @${{ github.actor }}
 
 on:
 #  workflow_run:
@@ -9,8 +9,8 @@ on:
 #      - completed
   workflow_dispatch:
     inputs:
-      tag:
-        description: Git tag to deploy against
+      release-version:
+        description: Release version to deploy
         required: true
 
 jobs:
@@ -20,12 +20,10 @@ jobs:
       name: production
       url: https://stylo.huma-num.fr
 
-    if: ${{ (github.event.workflow_run.conclusion == 'success' && github.ref_type == 'tag') || github.event_name == 'workflow_dispatch' }}
-
     steps:
     - uses: actions/checkout@v4
       with:
-        ref: ${{ inputs.tag }}
+        ref: ${{ format('v{0}', inputs.release-version) }}
 
     - name: Set up Python 3.10 (w/ cache)
       uses: actions/setup-python@v4
@@ -50,4 +48,4 @@ jobs:
 
     - name: Run playbook
       working-directory: ./infrastructure
-      run: ansible-playbook -i inventories/prod --extra-vars "@vault-prod.yml" --extra-vars "app_version=${{ inputs.tag }}" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v
+      run: ansible-playbook -i inventories/prod --extra-vars "@vault-prod.yml" --extra-vars "app_version=${{ inputs.release-version }}" --private-key ~/.ssh/id_ed25519 --vault-password-file ./.ansible-vault-password playbook.yml -v
