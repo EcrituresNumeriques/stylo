@@ -120,7 +120,6 @@ async function createSoloSession (article, user, force = false) {
 async function createVersion (article, { major, message, userId, type }) {
   const { bib, yaml, md } = article.workingVersion
 
-  console.log(article.versions)
   /** @type {Query<Array<Article>>|Array<Article>} */
   const latestVersions = await Version.find({ _id: { $in: article.versions.map((a) => a._id) } })
     .sort({ createdAt: -1 })
@@ -160,7 +159,7 @@ async function createVersion (article, { major, message, userId, type }) {
     type: type || 'userAction'
   })
   await createdVersion.populate('owner').execPopulate()
-  article.versions.unshift(createdVersion)
+  article.versions.unshift(createdVersion._id)
   return true
 }
 
@@ -402,8 +401,17 @@ module.exports = {
       return article.save()
     },
 
+    /**
+     * @param article
+     * @param articleVersionInput
+     * @param context
+     * @return {Promise<Article>}
+     */
     async createVersion (article, { articleVersionInput }) {
-      const result = await createVersion(article, { ...articleVersionInput, type: 'userAction' })
+      const result = await createVersion(article, {
+        ...articleVersionInput,
+        type: 'userAction'
+      })
       if (result === false) {
         throw new ApiError('ILLEGAL_STATE', 'Unable to create a new version since there\'s no change')
       }
@@ -473,11 +481,12 @@ module.exports = {
         }
         article.soloSession = null
         await createVersion(article, {
-          major: false,
-          message: '',
-          userId: user._id,
-          type: 'editingSessionEnded'
-        })
+            major: false,
+            message: '',
+            userId: user._id,
+            type: 'editingSessionEnded'
+          }
+        )
         await article.save()
         notifyArticleStatusChange(article)
       }
