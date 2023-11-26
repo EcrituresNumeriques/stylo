@@ -1,4 +1,5 @@
 name: Ansible deploy production
+run-name: Deploy version ${{ inputs.tag }} on production by @${{ github.actor }}
 
 on:
 #  workflow_run:
