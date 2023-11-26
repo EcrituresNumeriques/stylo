@@ -34,3 +34,8 @@ jobs:
           git push origin "v$RELEASE_VERSION"
         env:
           RELEASE_VERSION: ${{ inputs.version }}
+  call-build-deploy-docker:
+    uses: EcrituresNumeriques/stylo/.github/workflows/docker.yml@master
+    with:
+      release-version: ${{ inputs.version }}
+    secrets: inherit
