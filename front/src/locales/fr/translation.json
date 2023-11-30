@@ -48,7 +48,7 @@
   "article.versions.title": "Versions",
   "article.workspaces.title": "Espaces de travail",
   "article.tags.title": "Étiquettes",
-  "article.by.text": "par",
+  "article.by.text": "par {{owner}}",
   "article.deleteModal.title": "Supprimer un article",
   "article.deleteModal.confirmMessage": "Êtes-vous sûr de vouloir supprimer cet article ?",
   "article.deleteModal.contributorsRemovalNote": "Si vous supprimez cet article, les contributeurs ne pourront plus accéder à celui-ci.",
@@ -175,5 +175,6 @@
   "workingVersion.stateUiProps.savedText": "Dernière sauvegarde",
   "workingVersion.stateUiProps.savingText": "En cours de sauvegarde",
   "workingVersion.stateUiProps.saveErrorText": "Erreur",
-  "workingVersion.spanWorkingCopy.text": "version de travail"
+  "workingVersion.spanWorkingCopy.text": "version de travail",
+  "workingVersion.by.text": "par"
 }
