@@ -35,7 +35,7 @@
   "article.versions.title": "Versions",
   "article.workspaces.title": "Espaces de travail",
   "article.tags.title": "Étiquettes",
-  "article.by.text": "par",
+  "article.by.text": "par {{owner}}",
   "article.deleteModal.title": "Supprimer un article",
   "article.deleteModal.confirmMessage": "Êtes-vous sûr de vouloir supprimer cet article ?",
   "article.deleteModal.contributorsRemovalNote": "Si vous supprimez cet article, les contributeurs ne pourront plus accéder à celui-ci.",
@@ -87,5 +87,6 @@
   "workspace.createForm.descriptionField": "Description",
   "workspace.createForm.colorField": "Couleur",
   "workspace.createForm.buttonTitle": "Créer un nouvel espace de travail",
-  "workspace.createForm.buttonText": "Créer"
+  "workspace.createForm.buttonText": "Créer",
+  "workingVersion.by.text": "par"
 }
