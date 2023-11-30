@@ -84,7 +84,7 @@ function Version ({ articleId, compareTo, readOnly, selectedVersion, v }) {
       {!renaming && <p>
         {v.owner && (
           <span className={styles.author}>
-          {t('article.by.text', {owner: v.owner.displayName || v.owner.username})}
+          {t('article.by.text')}
         </span>
         )}
         <span className={styles.momentsAgo}>

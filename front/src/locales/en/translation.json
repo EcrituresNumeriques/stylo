@@ -48,7 +48,7 @@
   "article.versions.title": "Versions",
   "article.workspaces.title": "Workspaces",
   "article.tags.title": "Tags",
-  "article.by.text": "by {{owner}}",
+  "article.by.text": "by",
   "article.deleteModal.title": "Delete an article",
   "article.deleteModal.confirmMessage": "Are you sure you want to delete this article?",
   "article.deleteModal.contributorsRemovalNote": "If you delete this article, contributors won't have access to this article anymore.",
