@@ -95,6 +95,32 @@ Par exemple :
 
 **Attention :** il ne faut pas utiliser de syntaxe Markdown en accompagnement d'une citation. Par exemple, il ne faut surtout pas utiliser un balisage de ce type : `[@shirky_here_2008, [lien vers une page web](https://sens-public.org)]`
 
+## Cas particuliers
+
+### Lettres capitales pour les titres en anglais
+
+Les styles bibliographiques en anglais requièrent souvent une capitalisation de chaque mot du titre de la référence. Stylo (et Pandoc) vont correctement styler les titres à condition que les références déclarent bien la langue utilisée. 
+
+La langue du document Stylo détermine la langue du style bibliographique par défaut pour toutes les références, sauf pour les références bibliographiques contenant une autre donnée de langue. Par exemple, si la langue déclarée dans les métadonnées du document est `fr`, les références seront traitées comme telles. Si, parmi ces références, l'une est déclarée `en`, alors la capitalisation du titre s'appliquera.
+
+**Attention :** le format Bibtex intègre plusieurs clés de langue : `language`, `langid`. Stylo (et Pandoc) ne prend en compte que la clé `langid`, alors que l'interface de Zotero ne permet de renseigner que la clé `language` ! Il sera donc nécessaire d'ajouter la clé `langid` directement dans le bibtex (onglet [BibTex brut] dans le gestionnaire bibliographique) pour que la langue de la référence soit correctement prise en compte par Stylo.
+
+```bibtex
+@book{coleman_coding_2013,
+	address = {Princeton},
+	title = {Coding freedom: the ethics and aesthetics of hacking},
+	isbn = {978-0-691-14460-3},
+	shorttitle = {Coding freedom},
+	language = {eng},
+	langid = {en},
+	publisher = {Princeton University Press},
+	author = {Coleman, E. Gabriella},
+	year = {2013},
+}
+```
+
+- Pour en savoir plus : [documentation Pandoc | Capitalization in titles](https://pandoc.org/MANUAL.html#capitalization-in-titles)
+
 ## Quelques ressources
 
 - [Qu'est-ce que Zotero ?](http://editorialisation.org/ediwiki/index.php?title=Zotero)
