@@ -66,6 +66,18 @@
       when: site == "stylo.huma-num.fr"
       notify: reload nginx
 
+    - name: Prune Docker images
+      become: yes
+      ansible.builtin.shell:
+        cmd: "docker image prune -af"
+      run_once: true
+
+    - name: Prune Docker system
+      become: yes
+      ansible.builtin.shell:
+        cmd: "docker system prune -af"
+      run_once: true
+
     - name: Copy systemd service file
       become: yes
       ansible.builtin.copy:
