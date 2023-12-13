@@ -103,7 +103,10 @@ Les styles bibliographiques en anglais requièrent souvent une capitalisation de
 
 La langue du document Stylo détermine la langue du style bibliographique par défaut pour toutes les références, sauf pour les références bibliographiques contenant une autre donnée de langue. Par exemple, si la langue déclarée dans les métadonnées du document est `fr`, les références seront traitées comme telles. Si, parmi ces références, l'une est déclarée `en`, alors la capitalisation du titre s'appliquera.
 
-**Attention :** le format Bibtex intègre plusieurs clés de langue : `language`, `langid`. Stylo (et Pandoc) ne prend en compte que la clé `langid`, alors que l'interface de Zotero ne permet de renseigner que la clé `language` ! Il sera donc nécessaire d'ajouter la clé `langid` directement dans le bibtex (onglet [BibTex brut] dans le gestionnaire bibliographique) pour que la langue de la référence soit correctement prise en compte par Stylo.
+**Attention :** le format Bibtex intègre plusieurs propriétés de langue : `language`, `langid`. Stylo (et Pandoc) ne prend en compte que la propriété `langid`, alors que l'interface de Zotero ne permet de renseigner que la propriété `language` ! Il sera donc nécessaire d'ajouter manuellement la propriété `langid: en`. Pour cela, deux possibilités : 
+
+1. Soit dans Zotero, utiliser [la section Extra](https://www.zotero.org/support/kb/item_types_and_fields#citing_fields_from_extra) qui permet de renseigner des couples `propriété: valeur` supplémentaire, par exemple dans notre cas : `langid: en`. Après synchronisation Zotero/Stylo, la propriété sera bien prise en compte dans Stylo.
+2. Soit dans Stylo, ouvrir l'onglet [Bibtex brut] dans le gestionnaire de bibliographie, et ajouter le couple `langid: en` à la référence concernée.   
 
 ```bibtex
 @book{coleman_coding_2013,
@@ -118,6 +121,8 @@ La langue du document Stylo détermine la langue du style bibliographique par d�
 	year = {2013},
 }
 ```
+
+Notez que la synchronisation Zotero ne fonctionne que dans un sens : les ajouts ou les modifications des références dans l'onglet [Bibtex brut] ne seront pas reportés dans votre collection Zotero. Une nouvelle synchronisation depuis Zotero vers Stylo effacera vos modifications manuelles dans [Bibtex brut]. La première option (section Extra) est donc conseillée.
 
 - Pour en savoir plus : [documentation Pandoc | Capitalization in titles](https://pandoc.org/MANUAL.html#capitalization-in-titles)
 
