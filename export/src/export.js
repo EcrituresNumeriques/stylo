@@ -146,7 +146,7 @@ function createBookExportContext (chapters, { id, title }) {
   const chaptersSorted = chapters.sort((a, b) => a.order - b.order).map((c) => c.article)
   const chaptersData = chaptersSorted.reduce((acc, chapter) => {
     const workingVersion = chapter.versions.length > 0
-      ? chapter.versions[chapter.versions.length - 1]
+      ? chapter.versions[0] // versions ordered by creation date descending (first version is the latest version)
       : chapter.workingVersion
     acc.bib.push(workingVersion.bib)
     acc.md.push(workingVersion.md)
