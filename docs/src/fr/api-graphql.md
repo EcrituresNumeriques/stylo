@@ -7,7 +7,7 @@ title: API GraphQL
 Stylo intègre dorénavant une API GraphQL à laquelle les utilisateurs peuvent avoir accès en lecture et en écriture.
 
 L'API donne accès aux données de Stylo grâce au langage de requête GraphQL.
-Depuis l'*endpoint* [https://stylo.huma-num.fr/graphql](https://stylo.huma-num.fr/graphql), il devient possible de connecter Stylo à tout un ensemble de fonctionnalités réalisées par vos soins, donc sur mesure.
+Depuis l'*endpoint* https://stylo.huma-num.fr/graphql, il devient possible de connecter Stylo à tout un ensemble de fonctionnalités réalisées par vos soins, donc sur mesure.
 Par exemple, l'API vous permet de récupérer vos articles et de les intégrer dans votre générateur de site statique préféré.
 
 GraphQL signifie **Graph Query Language**. C'est un langage de requête et un environnement d'exécution pour les interfaces de programmation d'application (API). C'est tout d'abord une création de Facebook en 2012, qui fut publié en libre accès en 2015. Vous obtenez de vos requêtes uniquement les données demandées et vous en définissez la structure.
@@ -24,7 +24,8 @@ GraphQL signifie **Graph Query Language**. C'est un langage de requête et un en
 
 1. Installer GraphQL
 
-Si vous utilisez Google Chrome, il est facile d'installer l'extension. Vous pouvez choisir par exemple GraphQL Playground ou encore Altair GraphQL. Si vous voulez l'installer sur votre ordinateur et que vous avez brew, vous pouvez aussi entrer la commande « brew cask install graphql-playground ». Plusieurs options s'offrent à vous, si celles-ci ne vous conviennent pas vous pouvez en rechercher d'autres, ce ne sont que quelques suggestions. Pour cette formation, nous allons utiliser l'extension GraphQL Playground, mais vous pouvez aussi utiliser la version locale ou la [version web](https://legacy.graphqlbin.com/new).
+Pour l'installation, vous pouvez vous référer au site...?
+
 
 2. Entrer l'URL
 
@@ -106,8 +107,8 @@ query {
 
 Vous aurez peut-être remarqué que l'application vous offre des options d'autocomplétions lorsque vous écrivez. Cela vous donne des exemples de ce que vous pouvez demander par la suite. 
 
-Vous trouverez aussi une liste complète dans l'onglet à gauche de l'écran « Schema ». Si vous cliquez dessus, l'onglet s'ouvre. 
-L'onglet de documentation de l'API est l'une des fonctionnalités les plus intéressantes de GraphQL Playground. Il vous permet de prévisualiser toutes les requêtes et mutations possibles, ainsi que leurs détails en un seul champ d'un schéma donné.
+Vous trouverez aussi une liste complète dans l'onglet à gauche de l'écran « Schema » ou dans certaines version « Doc ». Si vous cliquez dessus, l'onglet s'ouvre. 
+L'onglet de documentation de l'API est une fonctionnalités très intéressantes de GraphQL Playground. Il vous permet de prévisualiser toutes les requêtes et mutations possibles, ainsi que leurs détails en un seul champ d'un schéma donné.
 
 ![Schema](https://upload.wikimedia.org/wikipedia/commons/c/c6/Capture_d%E2%80%99%C3%A9cran_2024-01-23_184801.png)
 
