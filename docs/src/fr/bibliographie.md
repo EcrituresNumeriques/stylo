@@ -95,6 +95,37 @@ Par exemple :
 
 **Attention :** il ne faut pas utiliser de syntaxe Markdown en accompagnement d'une citation. Par exemple, il ne faut surtout pas utiliser un balisage de ce type : `[@shirky_here_2008, [lien vers une page web](https://sens-public.org)]`
 
+## Cas particuliers
+
+### Lettres capitales pour les titres en anglais
+
+Les styles bibliographiques en anglais requièrent souvent une capitalisation de chaque mot du titre de la référence. Stylo (et Pandoc) vont correctement styler les titres à condition que les références déclarent bien la langue utilisée. 
+
+La langue du document Stylo détermine la langue du style bibliographique par défaut pour toutes les références, sauf pour les références bibliographiques contenant une autre donnée de langue. Par exemple, si la langue déclarée dans les métadonnées du document est `fr`, les références seront traitées comme telles. Si, parmi ces références, l'une est déclarée `en`, alors la capitalisation du titre s'appliquera.
+
+**Attention :** le format Bibtex intègre plusieurs propriétés de langue : `language`, `langid`. Stylo (et Pandoc) ne prend en compte que la propriété `langid`, alors que l'interface de Zotero ne permet de renseigner que la propriété `language` ! Il sera donc nécessaire d'ajouter manuellement la propriété `langid: en`. Pour cela, deux possibilités : 
+
+1. Soit dans Zotero, utiliser [la section Extra](https://www.zotero.org/support/kb/item_types_and_fields#citing_fields_from_extra) qui permet de renseigner des couples `propriété: valeur` supplémentaire, par exemple dans notre cas : `langid: en`. Après synchronisation Zotero/Stylo, la propriété sera bien prise en compte dans Stylo.
+2. Soit dans Stylo, ouvrir l'onglet [Bibtex brut] dans le gestionnaire de bibliographie, et ajouter le couple `langid: en` à la référence concernée.   
+
+```bibtex
+@book{coleman_coding_2013,
+	address = {Princeton},
+	title = {Coding freedom: the ethics and aesthetics of hacking},
+	isbn = {978-0-691-14460-3},
+	shorttitle = {Coding freedom},
+	language = {eng},
+	langid = {en},
+	publisher = {Princeton University Press},
+	author = {Coleman, E. Gabriella},
+	year = {2013},
+}
+```
+
+Notez que la synchronisation Zotero ne fonctionne que dans un sens : les ajouts ou les modifications des références dans l'onglet [Bibtex brut] ne seront pas reportés dans votre collection Zotero. Une nouvelle synchronisation depuis Zotero vers Stylo effacera vos modifications manuelles dans [Bibtex brut]. La première option (section Extra) est donc conseillée.
+
+- Pour en savoir plus : [documentation Pandoc | Capitalization in titles](https://pandoc.org/MANUAL.html#capitalization-in-titles)
+
 ## Quelques ressources
 
 - [Qu'est-ce que Zotero ?](http://editorialisation.org/ediwiki/index.php?title=Zotero)
