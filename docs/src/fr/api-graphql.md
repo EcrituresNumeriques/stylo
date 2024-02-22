@@ -34,7 +34,7 @@ Une fois l'extension ou l'environnement installé, assurez-vous d'entrer dans le
 
 Il vous faut aussi entrer votre clé API. Dans l'application Stylo, cliquez sur votre nom, le menu déroulant s'ouvrira et vous cliquez ensuite sur votre adresse courriel. Cela vous mènera aux informations de votre compte. C'est dans cette section que vous trouverez votre clé. Copiez-la. De retour dans GraphQL, en bas à gauche se trouve l'onglet "HTTP HEADERS". Entrez la clé comme suis : 
 
-```
+```graphql
 {
 "Authorization":"VOTRE CLÉ API" 
 }
@@ -59,7 +59,7 @@ Ensuite, il faut spécifier le type de requête, dans le premier exemple, nous l
 Vous pouvez bien sûr demander d'autres informations. Les possibilités sont immenses et vont de pair avec vos besoins. 
 Il ne faut pas oublier de refermer les crochets après l'ouverture de chacun. Quand vous êtes prêts cliquez sur le bouton d'exécution. 
 
-```
+```graphql
 Exemple 1 :
 query tousMesArticles {
     user {
@@ -76,7 +76,7 @@ query tousMesArticles {
 
 Dans l'exemple 2, il vous faut entrer l'identifiant de l'un des article de la liste précédente. Gardez-le, vous en aurez aussi besoin pour le dernier exemple. Une fois la requête entrée, vous devriez voir le titre de votre article, ainsi que la personne qui le détient.
 
-``` 
+```graphql 
 Exemple 2 :
 query articles {
     article(article: " ID DE L'ARTICLE "){
@@ -123,7 +123,7 @@ Vous pouvez créer des articles, partager vos articles, les dupliquer et plus en
 
 Regardons un exemple de mutation : 
 
-```
+```graphql
 mutation{createArticle(title:"TITRE DE L'ARTICLE",
     user:" VOTRE ID ")
     {title _id}}
