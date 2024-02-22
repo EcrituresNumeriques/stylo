@@ -93,7 +93,7 @@ query articles {
 
 Pour ce dernier exemple, il vous faut encore une fois entrer votre identifiant d'article dans l'espace approprié. Cette fois-ci, GraphQL vous montre le titre de votre article, ceux qui y ont contribué, mais aussi le Markdown, Yaml et BibTex qu'il contient! 
 
-```
+```graphql
 Exemple 3 :
 query {
     article(article: " ID DE L'ARTICLE "){
