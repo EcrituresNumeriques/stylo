@@ -34,7 +34,7 @@ Once you've installed the extension or environment, make sure you enter the URL 
 
 You also need to enter your API key. In the Stylo application, click on your name, the drop-down menu will open and then you click on your e-mail address. This will take you to your account information. This is where you'll find your key. Copy it. Back in GraphQL, on the bottom left is the "HTTP HEADERS" tab. Enter the key as follows: 
 
-```
+```graphql
 {
 "Authorization": "YOUR API KEY" 
 }
@@ -58,7 +58,7 @@ In the first example, we're asking for a list of all your articles contained in 
 You can, of course, request other information as well. The possibilities are immense, and they go hand in hand with your needs. 
 Don't forget to close the brackets after opening each one.When you're ready, click the execute button. 
 
-```
+```graphql
 Example 1:
 query allMyArticles {
     user {
@@ -75,7 +75,7 @@ query allMyArticles {
 
 In example 2, you need to enter the identifier of one of the articles in the previous list. Keep it, as you'll need it for the last example too. Once you've entered the query, you should see the title of your item, as well as the person who owns it.
 
-``` 
+```graphql
 Example 2:
 query articles {
     article(article: "ARTICLE ID"){
@@ -123,7 +123,7 @@ You can create articles, share your articles, duplicate them and much more. The 
 Let's look at an example of a mutation: 
 
 
-```
+```graphql
 mutation{createArticle(title: "ARTICLE TITLE",
     user:" YOUR ID ")
     {title _id}}
