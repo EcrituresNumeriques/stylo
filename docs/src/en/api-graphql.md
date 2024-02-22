@@ -22,11 +22,9 @@ GraphQL stands for **Graph Query Language**. It's a query language and runtime e
 
 ### Before you start
 
-1. Install GraphQL
+1. Installing a GraphQL client
 
-If you're using Google Chrome, it's easy to install the extension. You can choose, for example, GraphQL Playground or Altair GraphQL. If you want to install it on your computer and you have brew, you can also enter the command "brew cask install graphql-playground". There are a number of options available to you, and if these don't suit you, you can search for others - these are just a few suggestions. 
-
-For this course, we'll be using the GraphQL Playground extension, but you can also use the local version or the [web version](https://legacy.graphqlbin.com/new).
+You can choose your preferred client, be it GraphQL Playground, Altair or other. The following demonstration uses the GraphQL Playground client.
 
 2. Enter the URL
 
@@ -93,7 +91,7 @@ query articles {
 
 For this last example, once again you need to enter your article ID in the appropriate space. This time, GraphQL shows you not only the title of your article and the contributors, but also the Markdown, Yaml and BibTex it contains! 
 
-```
+```graphql
 Example 3 :
 query {
     article(article: "ARTICLE ID"){
