@@ -22,10 +22,9 @@ GraphQL signifie **Graph Query Language**. C'est un langage de requête et un en
 
 ### Avant de commencer
 
-1. Installer GraphQL
+1. Installer un client GraphQL
 
-Pour l'installation, vous pouvez vous référer au site...?
-
+Vous pouvez choisir votre client préféré, que ce soit GraphQL Playground, Altair ou autre. La démonstration qui suit est réalisée avec le client GraphQL Playground.
 
 2. Entrer l'URL
 
