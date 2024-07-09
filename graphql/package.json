@@ -36,7 +36,7 @@
     "jsdom": "^21.0.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.11.1",
-    "passport": "^0.6.0",
+    "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "passport-oauth": "^1.0.0",
     "passport-openidconnect": "^0.1.1",
@@ -56,6 +56,6 @@
     "mongodb-memory-server": "^8.11.0"
   },
   "volta": {
-    "node": "18.18.2"
+    "node": "18.20.4"
   }
 }
