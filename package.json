@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/EcrituresNumeriques/stylo#readme",
   "devDependencies": {
-    "concurrently": "^7.6.0",
+    "concurrently": "^8.0.0",
     "dotenv": "^16.0.3"
   },
   "volta": {
