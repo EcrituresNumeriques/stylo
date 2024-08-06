@@ -199,7 +199,7 @@ The bibliography lists the bibliographic references that you have added. The bib
 
 You can directly [structure your references in BibTex](/en/bibtexsyntax/), or export your references in BibTex with your bibliography management tool:
 
-- See tutorials : <a class="btn btn-info" href="http://sens-public.org/IMG/pdf/Utiliser_Zotero.pdf" role="button">Zotero</a> <a class="btn btn-info" href="https://libguides.usask.ca/c.php?g=218034&p=1446316" role="button">Mendeley</a>
+- See tutorials : <a class="btn btn-info" href="https://research.library.gsu.edu/c.php?g=115275" role="button">Zotero</a> <a class="btn btn-info" href="https://libguides.usask.ca/c.php?g=218034&p=1446316" role="button">Mendeley</a>
 
 To add a reference to the article, you just need to click on the reference, then paste (Ctrl+V) the reference in the desired place of the text. This way, a click is the same as "copying" the reference key to the clipboard. Then, you just need to paste it into the body text.
 
