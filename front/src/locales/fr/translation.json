@@ -70,6 +70,7 @@
   "article.sendCopy.errorNotification": "Impossible d'envoyer une copie de l'article: {{errMessage}}",
   "version.editingSessionEnded.text": "Session d'édition terminée",
   "version.collaborativeSessionEnded.text": "Session collaborative terminée",
+  "version.by.text": "par {{owner}}",
   "collaborativeSessionAction.launchCollaborativeSessionButton.title": "Édition collaborative",
   "soloSessionAction.launchSoloSessionButton.title": "Modifier l'article",
   "modal.cancelButton.text": "Annuler",
@@ -175,5 +176,6 @@
   "workingVersion.stateUiProps.savedText": "Dernière sauvegarde",
   "workingVersion.stateUiProps.savingText": "En cours de sauvegarde",
   "workingVersion.stateUiProps.saveErrorText": "Erreur",
-  "workingVersion.spanWorkingCopy.text": "version de travail"
+  "workingVersion.spanWorkingCopy.text": "version de travail",
+  "workingVersion.by.text": "par"
 }

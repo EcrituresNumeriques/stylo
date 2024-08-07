@@ -133,7 +133,7 @@ export default function WorkingVersion ({ articleInfos, live, selectedVersion, m
       <section>
         <div className={styles.meta}>
           <ul className={styles.byLine}>
-            <li className={styles.owners}>by {articleOwnerAndContributors.join(', ')}</li>
+            <li className={styles.owners}>{t('workingVersion.by.text')} {articleOwnerAndContributors.join(', ')}</li>
             <li className={styles.version}>
               <ArticleVersion version={live.version}/>
             </li>
