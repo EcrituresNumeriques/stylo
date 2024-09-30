@@ -17,14 +17,6 @@ First step is to clone the project, you can use either the HTTPS or SSH version 
     $ git clone git@github.com:EcrituresNumeriques/stylo.git
 
 
-Stylo uses submodules to pull templates (and those templates are hosted on framagit).
-If you have an account with ssh enabled on framagit, you can pull all submodules using the following commands:
-
-
-    $ git submodule init
-    $ git submodule update
-
-
 ## Run with Docker
 
 Useful to run a fully fledged Stylo in no time.
