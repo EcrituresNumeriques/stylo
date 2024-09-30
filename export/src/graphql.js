@@ -18,7 +18,6 @@ function getGraphQLClient () {
     return graphQLClient
   }
   const graphqlEndpoint = process.env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT || 'http://localhost:3030/graphql'
-  console.log()
   const passthroughToken = process.env.SE_GRAPHQL_TOKEN
   graphQLClient = new GraphQLClient(graphqlEndpoint, {
     headers: {
