@@ -29,7 +29,7 @@ It is possible to choose from several bibliographic styles: some embed the refer
 
 The export module takes care of formatting references, adding or removing spaces, inserting "Ibids." according to the style, etc.
 
-Exports are produced using the conversion tool [Pandoc](https://pandoc.org/) based on the templates available [here](https://framagit.org/stylo-editor/templates-stylo).
+Exports are produced using the conversion tool [Pandoc](https://pandoc.org/) based on the templates available [here](./export/templates).
 
 The export also allows you to download the source files of Stylo (.md,.bib,.yaml) and the media inserted in the article if there are any.
 

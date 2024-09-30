@@ -30,16 +30,16 @@ function generatePandocCommand (
   bibliographyFilePath,
   metadataFilePath
 ) {
-  const templatesDirPath = path.join(__dirname, 'templates-stylo')
+  const templatesDirPath = path.join(__dirname, 'templates')
   let templateArg = `--template=${path.join(
     templatesDirPath,
-    'templateHtml5.html5'
+    'publish.html'
   )}`
   if (preview) {
     templateArg = `--template=${path.join(
       templatesDirPath,
-      'templateHtml5-preview.html5'
-    )} -H ${path.join(templatesDirPath, 'preview.html')}`
+      'preview.html'
+    )} --include-in-header=${path.join(templatesDirPath, 'preview-styles.html')}`
   }
   const cslFilePath = path.join(templatesDirPath, 'chicagomodified.csl')
   // https://github.com/jgm/pandoc/blob/main/MANUAL.txt
@@ -54,8 +54,8 @@ ${templateArg} \
 --toc \
 --csl=${cslFilePath} \
 --citeproc \
--f markdown \
--t html5 \
+--from=markdown \
+-to=html5 \
 ${markdownFilePath}`
 }
 
