@@ -75,7 +75,7 @@ L'interface d'édition d'un article présente plusieurs modules :
 
 La fonction **[Share]** permet d'inviter des co-auteur·rice·s à travailler sur le même article. Ces utilisateur·ice·s ont alors accès à tout l'historique. Les versions de l'article se synchronisent pour tous les utilisateurs au fur et à mesure des modifications effectuées sur le document.
 
-**Attention** : partager un article avec un autre utilisateur est possible uniquement en renseignant l'adresse courriel qui a servi à créer son compte utilisateur sur Stylo. 
+**Attention** : partager un article avec un autre utilisateur est possible uniquement en renseignant l'adresse courriel qui a servi à créer son compte utilisateur sur Stylo.
 
 ## Nouvel article
 
@@ -151,7 +151,7 @@ Pour approfondir vos connaissances en syntaxe Markdown, vous pouvez consulter la
 
 ![Active](/uploads/images/Nom-Version-V2.PNG)
 
-Une version du document correspond à une sauvegarde de votre travail. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. En chargeant une ancienne version, ce sont donc ces trois éléments qui sont mis à jour. 
+Une version du document correspond à une sauvegarde de votre travail. Une version contient toujours les trois éléments de l'article : métadonnées, bibliographie, corps de texte. En chargeant une ancienne version, ce sont donc ces trois éléments qui sont mis à jour.
 
 Votre travail est par défaut automatiquement sauvegardé sur Stylo, mais vous devez créer vous-mêmes les versions. Pour ce faire, vous pouvez donc -- et cela est conseillé -- utiliser la fonction de sauvegarde [New Version] qui permet de générer une nouvelle version du travail.
 
@@ -184,7 +184,7 @@ Il est possible de choisir parmi plusieurs styles bibliographiques : certains i
 
 Le module d'export se charge de mettre en forme les références, d'ajouter ou d'enlever les espaces, d'insérer des "Ibid." en accord avec le style, etc.
 
-Les exports sont produits grâce à l'outil de conversion [Pandoc](https://pandoc.org/) sur la base des templates disponibles [ici](https://framagit.org/stylo-editeur/templates-stylo).
+Les exports sont produits grâce à l'outil de conversion [Pandoc](https://pandoc.org/) sur la base des [templates `stylo-export`](https://gitlab.huma-num.fr/ecrinum/stylo/stylo-export/-/tree/main/templates/generique).
 
 Pour davantage d'informations sur l'export Stylo, vous pouvez consulter la [page dédiée](/fr/exports).
 
@@ -228,7 +228,7 @@ Le bouton [**Metadata**] permet d'ouvrir le volet des métadonnées. Trois modes
 
 **Important** : afin d'exporter un article, les champs "Title" et "Authors" doivent obligatoirement être renseignés.
 
-**Attention** : dans le volet des métadonnées se trouve la division sur la "Bibliographie" dont l'option *Display* permet de choisir la visualisation de la bibliographie dans son entièreté ("All citations") ou uniquement des références qui ont été citées dans le corps de l'article ("Only used"). 
+**Attention** : dans le volet des métadonnées se trouve la division sur la "Bibliographie" dont l'option *Display* permet de choisir la visualisation de la bibliographie dans son entièreté ("All citations") ou uniquement des références qui ont été citées dans le corps de l'article ("Only used").
 
 ![Bibliography-Display](/uploads/images/Bibliography-Display-V2.PNG)
 
