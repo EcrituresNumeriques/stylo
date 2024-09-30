@@ -54,14 +54,6 @@ cd ~
 git clone https://github.com/EcrituresNumeriques/stylo.git
 ```
 
-Update the submodule:
-
-```bash
-cd stylo
-git submodule init
-git submodule update
-```
-
 Copy the `stylo-example.env` file and edit the variables:
 
 ```bash

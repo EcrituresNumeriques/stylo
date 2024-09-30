@@ -1,4 +1,0 @@
-[submodule "export/src/templates-stylo"]
-	path = export/src/templates-stylo
-	url = https://framagit.org/stylo-editeur/templates-stylo.git
-        branch = master
