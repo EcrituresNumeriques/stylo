@@ -2,8 +2,9 @@ const YAML = require('js-yaml')
 const { YAMLException } = require('js-yaml')
 const removeMd = require('remove-markdown')
 const { logger } = require('../logger')
+const config = require('../config.js')
 
-const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
+const canonicalBaseUrl = config.get('export.baseUrl')
 const FORMATTED_FIELD_RE = /_f$/
 
 /**

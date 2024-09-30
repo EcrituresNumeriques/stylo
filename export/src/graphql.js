@@ -17,8 +17,9 @@ function getGraphQLClient () {
   if (graphQLClient) {
     return graphQLClient
   }
-  const graphqlEndpoint = process.env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT || 'http://localhost:3030/graphql'
-  const passthroughToken = process.env.SE_GRAPHQL_TOKEN
+  const graphqlEndpoint = config.get('api.urlEndpoint')
+  const passthroughToken = config.get('api.passthroughToken')
+
   graphQLClient = new GraphQLClient(graphqlEndpoint, {
     headers: {
       authorization: `Bearer ${passthroughToken}`,

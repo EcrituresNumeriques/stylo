@@ -1,3 +1,4 @@
+const config = require('./config.js')
 const archiver = require('archiver')
 
 const { logger } = require('./logger')
@@ -5,8 +6,8 @@ const { FindByIdNotFoundError } = require('./helpers/errors')
 const { normalize } = require('./helpers/filename')
 const { getArticleById, getVersionById, getCorpusById } = require('./graphql')
 
-const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
-const exportEndpoint = process.env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT || 'http://127.0.0.1:3080'
+const canonicalBaseUrl = config.get('export.canonicalBaseUrl')
+const exportEndpoint = config.get('export.urlEndpoint')
 
 const exportZip = async ({ bib, yaml, md, id, versionId, title }, res, _) => {
   const filename = `${normalize(title)}.zip`
