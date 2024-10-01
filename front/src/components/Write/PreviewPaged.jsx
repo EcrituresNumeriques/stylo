@@ -19,7 +19,7 @@ export default function Preview ({ preview, yaml }) {
 
   useEffect(() => {
     if (html && isLoading) {
-      const [metadata] = YAML.loadAll(yaml)
+      const [metadata = {}] = YAML.loadAll(yaml)
       const render = compileTemplate(template)
 
       const base64Stylesheet = `data:text/css;base64,${btoa(stylesheet)}`
