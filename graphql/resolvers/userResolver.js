@@ -129,7 +129,7 @@ module.exports = {
      * @returns {Promise<void>}
      */
     async tags (user) {
-      return Tag.find({ owner: user._id }).lean()
+      return Tag.find({ owner: user._id })
     },
 
     async workspaces (user) {
