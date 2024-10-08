@@ -9,7 +9,7 @@
     "npm": ">=8"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --collectCoverage --coverageReporters html --coverageReporters text-summary --coverageReporters lcovonly --detectOpenHandles",
     "start": "node src/app.js",
     "dev": "npx dotenv -e ../stylo.env npm run start",
     "prod": "NODE_ENV=production node --heapsnapshot-signal=SIGUSR2 src/app.js"
