@@ -7,3 +7,5 @@ sails/.tmp
 nodemon.dev.json
 /.idea/
 /.run/
+
+coverage/

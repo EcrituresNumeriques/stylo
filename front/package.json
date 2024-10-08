@@ -24,7 +24,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "develop": "npm run start",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test": "vitest --coverage",
     "posttest": "eslint ./src"
   },
   "dependencies": {
@@ -80,13 +80,14 @@
     "url": "https://github.com/ecrituresnumeriques/stylo/issues"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.2",
     "@welldone-software/why-did-you-render": "^6.2.3",
     "eslint": "^8.2.0",
-    "eslint-plugin-jest": "^25.2.4",
     "eslint-plugin-jsonc": "^2.5.0",
     "eslint-plugin-react": "^7.27.0",
-    "jest": "^29.3.1",
-    "prettier": "^2.3.0"
+    "eslint-plugin-vitest": "^0.4.1",
+    "prettier": "^2.3.0",
+    "vitest": "^2.1.2"
   },
   "volta": {
     "node": "18.18.2"

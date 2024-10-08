@@ -16,12 +16,14 @@ COPY ./ /modules/
 RUN set -ex \
     && apk update \
     && apk add linux-headers openssl-dev pcre-dev zlib-dev openssl abuild \
-               musl-dev libxslt libxml2-utils make mercurial gcc unzip git \
+               musl-dev libxslt libxml2-utils make gcc unzip git \
                xz g++ \
     # allow abuild as a root user \
     && printf "#!/bin/sh\\n/usr/bin/abuild -F \"\$@\"\\n" > /usr/local/bin/abuild \
     && chmod +x /usr/local/bin/abuild \
-    && hg clone -r ${NGINX_VERSION}-${PKG_RELEASE} https://hg.nginx.org/pkg-oss/ \
+    && curl -f -sSLO https://github.com/nginx/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz \
+    && mkdir pkg-oss \
+    && tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz -C pkg-oss --strip-components 1 \
     && cd pkg-oss \
     && mkdir /tmp/packages \
     && for module in "$ENABLED_MODULES"; do \
