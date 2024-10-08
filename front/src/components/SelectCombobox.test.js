@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest'
 import { groupItems } from "./SelectCombobox.js"
 
 describe('groupItems', () => {

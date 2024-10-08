@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest'
 import { usePandocAnchoring } from './pandoc.js'
 
 describe('usePandocAnchoring()', () => {

@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest'
 import { merge } from './acquintances.js'
 
 describe('merge', () => {

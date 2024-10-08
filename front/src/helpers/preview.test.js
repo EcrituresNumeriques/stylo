@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest'
 import { compileTemplate } from './preview.js'
 
 describe('compileTemplate', () => {
