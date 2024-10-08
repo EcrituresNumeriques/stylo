@@ -13,6 +13,5 @@ node_modules/
 # Mac files
 .DS_Store
 
-/coverage/
 /build/
 public/config.json

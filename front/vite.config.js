@@ -64,10 +64,13 @@ export default defineConfig(async ({ mode }) => {
     },
 
     test: {
-      root: 'src',
+      exclude: [
+        'build/**',
+        'public/**',
+        'node_modules/**'
+      ],
       coverage: {
         reporter: ['text', 'html', 'lcovonly'],
-        reportsDirectory: '../coverage'
       }
     }
   }
