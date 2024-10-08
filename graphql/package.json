@@ -10,7 +10,7 @@
   },
   "scripts": {
     "generate-service-token": "node -p \"require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year' })\"",
-    "test": "jest",
+    "test": "jest --collectCoverage --coverageReporters html --coverageReporters text-summary --coverageReporters lcovonly --detectOpenHandles",
     "posttest": "eslint '**/*.js'",
     "start": "node app.js",
     "prod": "NODE_ENV=production node --tls-max-v1.2 --heapsnapshot-signal=SIGUSR2 app.js"
