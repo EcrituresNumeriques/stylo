@@ -61,6 +61,17 @@ export default defineConfig(async ({ mode }) => {
           target: 'http://127.0.0.1:3030'
         }
       }
+    },
+
+    test: {
+      exclude: [
+        'build/**',
+        'public/**',
+        'node_modules/**'
+      ],
+      coverage: {
+        reporter: ['text', 'html', 'lcovonly'],
+      }
     }
   }
 })

@@ -35,6 +35,24 @@ jobs:
       working-directory: ${{ matrix.app }}
       run: npm clean-install-test --no-audit --no-fund
 
+    - name: Coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        base-path: ${{ matrix.app }}
+        parallel: true
+        flag-name: run-${{ join(matrix.*, ' - ') }}
+
     - name: Build (if necessary)
       working-directory: ${{ matrix.app }}
       run: npm run build --if-present
+
+  finish:
+    needs: build
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@v2
+      with:
+        parallel-finished: true
+        carryforward: "run-front,run-graphql,run-export"

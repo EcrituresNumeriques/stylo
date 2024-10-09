@@ -52,12 +52,12 @@ test('should create a book export context', () => {
         title: 'Chapter 2: The Pool of Tears',
         versions: [
           {
-            bib: 'Bibliography of chapter 2, first version',
-            md: 'Content of chapter 2, first version',
-          },
-          {
             bib: 'Bibliography of chapter 2, second version',
             md: 'Content of chapter 2, second version',
+          },
+          {
+            bib: 'Bibliography of chapter 2, first version',
+            md: 'Content of chapter 2, first version',
           }
         ],
         workingVersion: {

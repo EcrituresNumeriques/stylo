@@ -3,7 +3,6 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    'jest/globals': true,
   },
   extends: [
     'eslint:recommended',
@@ -23,7 +22,7 @@ module.exports = {
       parser: "jsonc-eslint-parser",
     },
   ],
-  plugins: ['react', 'jest'],
+  plugins: ['react', 'vitest'],
   settings: {
     react: {
       version: '16.13',

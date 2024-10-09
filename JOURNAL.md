@@ -1,5 +1,20 @@
 # Journal de développement
 
+## Lundi 30 septembre 2024
+
+### Ce que j'ai aimé/appris
+
+- reprendre l'écriture de ce journal 😄
+- remettre les mains dans le code en retrouvant Roch et Nicolas à Paris 8
+- supprimer du code en redirigeant une fonctionnalité vers le module `stylo-export`
+- supprimer la dépendance au _submodule_ git
+- l'équilibre papote / code
+
+### Ce que j'ai trouvé difficile
+
+- revenir dans un contexte qui a bougé pendant un an, ne pas être au fait des tenants et aboutissants de certaines réflexions (métadonnées)
+- constater qu'un bug empêche l'affichage des articles en local pour des raisons qui m'échappent encore (sentiment de fragilité applicative)
+
 ## Mercredi 9 mars 2022
 
 ### Ce que j'ai aimé/appris
