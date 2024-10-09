@@ -64,14 +64,16 @@ export default defineConfig(async ({ mode }) => {
     },
 
     test: {
+      coverage: {
+        reporter: ['text', 'html', 'lcovonly'],
+      },
+      environment: 'jsdom',
       exclude: [
         'build/**',
         'public/**',
         'node_modules/**'
       ],
-      coverage: {
-        reporter: ['text', 'html', 'lcovonly'],
-      }
+      setupFiles: ['./tests/setup.js']
     }
   }
 })
