@@ -1,6 +1,9 @@
 const pkg = require('./package.json')
 const ospath = require('node:path')
 const process = require('node:process')
+const config = require('./config.js')
+config.validate({ allowed: 'strict' })
+
 process.env.YPERSISTENCE = ospath.join(__dirname, 'ydata')
 
 const express = require('express')
@@ -35,35 +38,35 @@ const wss = new WebSocket.Server({ noServer: true })
 
 const app = express()
 
-const mongoServer = process.env.MONGO_SERVER
-const mongoServerPort = process.env.MONGO_SERVER_PORT
-const mongoServerDB = process.env.MONGO_SERVER_DB
+const mongoServer = config.get('mongo.host')
+const mongoServerPort = config.get('mongo.port')
+const mongoServerDB = config.get('mongo.db')
 
-const listenPort = process.env.PORT || 3030
-const origin = process.env.ALLOW_CORS_FRONTEND
-const jwtSecret = process.env.JWT_SECRET_SESSION_COOKIE
-const sessionSecret = process.env.SESSION_SECRET
-const oicName = process.env.OPENID_CONNECT_NAME
-const oicIssuer = process.env.OPENID_CONNECT_ISSUER
-const oicAuthUrl = process.env.OPENID_CONNECT_AUTH_URL
-const oicTokenUrl = process.env.OPENID_CONNECT_TOKEN_URL
-const oicUserInfoUrl = process.env.OPENID_CONNECT_USER_INFO_URL
-const oicCallbackUrl = process.env.OPENID_CONNECT_CALLBACK_URL
-const oicClientId = process.env.OPENID_CONNECT_CLIENT_ID
-const oicClientSecret = process.env.OPENID_CONNECT_CLIENT_SECRET
-const oicScope = process.env.OPENID_CONNECT_SCOPE || 'profile email'
+const listenPort = config.get('port')
+const origin = config.get('security.cors.origin')
+const jwtSecret = config.get('security.jwt.secret')
+const sessionSecret = config.get('security.session.secret')
+const oicName = config.get('oauthProvider.name')
+const oicIssuer = config.get('oauthProvider.issuer')
+const oicAuthUrl = config.get('oauthProvider.auth.url')
+const oicTokenUrl = config.get('oauthProvider.auth.tokenUrl')
+const oicUserInfoUrl = config.get('oauthProvider.auth.userInfo')
+const oicCallbackUrl = config.get('oauthProvider.callbackUrl')
+const oicClientId = config.get('oauthProvider.client.id')
+const oicClientSecret = config.get('oauthProvider.client.secret')
+const oicScope = config.get('oauthProvider.scope')
 
-const zoteroAuthClientKey = process.env.ZOTERO_AUTH_CLIENT_KEY
-const zoteroAuthClientSecret = process.env.ZOTERO_AUTH_CLIENT_SECRET
-const zoteroAuthCallbackUrl = process.env.ZOTERO_AUTH_CALLBACK_URL
-const zoteroRequestTokenEndpoint = process.env.ZOTERO_REQUEST_TOKEN_ENDPOINT || 'https://www.zotero.org/oauth/request'
-const zoteroAccessTokenEndpoint = process.env.ZOTERO_ACCESS_TOKEN_ENDPOINT || 'https://www.zotero.org/oauth/access'
-const zoteroAuthorizeEndpoint = process.env.ZOTERO_AUTHORIZE_ENDPOINT || 'https://www.zotero.org/oauth/authorize'
+const zoteroAuthClientKey = config.get('zotero.auth.clientKey')
+const zoteroAuthClientSecret = config.get('zotero.auth.clientSecret')
+const zoteroAuthCallbackUrl = config.get('zotero.auth.callbackUrl')
+const zoteroRequestTokenEndpoint = config.get('zotero.requestToken')
+const zoteroAccessTokenEndpoint = config.get('zotero.accessPoint')
+const zoteroAuthorizeEndpoint = config.get('zotero.authorize')
 const zoteroAuthScope = ['library_access=1', 'all_groups=read']
 
 //A Secure cookie is only sent to the server with an encrypted request over the HTTPS protocol.
 // Note that insecure sites (http:) can't set cookies with the Secure directive.
-const secureCookie = process.env.HTTPS === 'true'
+const secureCookie = config.get('securedCookie')
 // When we have multiple origins (for instance, using deploy previews on different domains) then cookies `sameSite` attribute is permissive (using 'none' value).
 // When we have a single origin (most likely when running in a production environment) then we are using a secure/strict value for cookies `sameSite` attribute ('strict').
 // When using 'strict' value, cookies will not be sent along with requests initiated by third-party websites.

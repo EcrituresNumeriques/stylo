@@ -1,9 +1,4 @@
-const fs = require('node:fs').promises
-const path = require('node:path')
-const os = require('node:os')
-const util = require('node:util')
-const exec = util.promisify(require('node:child_process').exec)
-
+const config = require('./config.js')
 const archiver = require('archiver')
 
 const { logger } = require('./logger')
@@ -11,7 +6,8 @@ const { FindByIdNotFoundError } = require('./helpers/errors')
 const { normalize } = require('./helpers/filename')
 const { getArticleById, getVersionById, getCorpusById } = require('./graphql')
 
-const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
+const canonicalBaseUrl = config.get('export.canonicalBaseUrl')
+const exportEndpoint = config.get('export.urlEndpoint')
 
 const exportZip = async ({ bib, yaml, md, id, versionId, title }, res, _) => {
   const filename = `${normalize(title)}.zip`
@@ -24,101 +20,50 @@ const exportZip = async ({ bib, yaml, md, id, versionId, title }, res, _) => {
   return archive.finalize()
 }
 
-function generatePandocCommand (
-  preview,
-  markdownFilePath,
-  bibliographyFilePath,
-  metadataFilePath
-) {
-  const templatesDirPath = path.join(__dirname, 'templates-stylo')
-  let templateArg = `--template=${path.join(
-    templatesDirPath,
-    'templateHtml5.html5'
-  )}`
-  if (preview) {
-    templateArg = `--template=${path.join(
-      templatesDirPath,
-      'templateHtml5-preview.html5'
-    )} -H ${path.join(templatesDirPath, 'preview.html')}`
-  }
-  const cslFilePath = path.join(templatesDirPath, 'chicagomodified.csl')
-  // https://github.com/jgm/pandoc/blob/main/MANUAL.txt
-  // `pandoc` [*options*] [*input-file*]...
-  return `pandoc \
---metadata-file=${metadataFilePath} \
---bibliography=${bibliographyFilePath} \
---standalone \
-${templateArg} \
---section-divs \
---ascii \
---toc \
---csl=${cslFilePath} \
---citeproc \
--f markdown \
--t html5 \
-${markdownFilePath}`
+async function getExportPreview (bodyOptions) {
+  const body = new FormData()
+  Object.entries(bodyOptions).forEach(([key, value]) => body.append(key, value))
+
+  return fetch(`${exportEndpoint}/api/article_preview`, {
+    method: 'POST',
+    body
+  }).then(response => response.text())
 }
 
 const exportHtml = async ({ bib, yaml, md, id, versionId, title }, res, req) => {
   const preview = req.query.preview
   const originalUrl = req.originalUrl
 
-  let tmpDirectory
-  try {
-    tmpDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'stylo-'))
+  let html5 = await getExportPreview({
+    md_content: md,
+    bib_content: bib,
+    yaml_content: yaml,
+    bibliography_style: 'chicagomodified'
+  })
 
-    // write files into the temporary directory
-    const markdownFilePath = path.join(tmpDirectory, `${id}.md`)
-    const bibliographyFilePath = path.join(tmpDirectory, `${id}.bib`)
-    const metadataFilePath = path.join(tmpDirectory, `${id}.yaml`)
-
-    await Promise.all([
-      fs.writeFile(markdownFilePath, md, 'utf8'),
-      fs.writeFile(bibliographyFilePath, bib, 'utf8'),
-      fs.writeFile(metadataFilePath, yaml, 'utf8'),
-    ])
-
-    // pandoc command
-    const pandocCommand = generatePandocCommand(
-      preview,
-      markdownFilePath,
-      bibliographyFilePath,
-      metadataFilePath
+  if (canonicalBaseUrl && !html5.includes('<link rel="canonical"')) {
+    // HACK! we add the link tag in the head!
+    html5 = html5.replace(
+      /(<head>\s?)/gs,
+      `$1<link rel="canonical" href="${canonicalBaseUrl + originalUrl}">`
     )
-    const FIFTEEN_MEGABYTES = 15 * 1024 * 1024
-    const { stdout, stderr } = await exec(pandocCommand, { maxBuffer: FIFTEEN_MEGABYTES })
-    if (stderr) {
-      logger.warn(stderr)
-    }
-    let html5 = stdout
-    if (canonicalBaseUrl && !html5.includes('<link rel="canonical"')) {
-      // HACK! we add the link tag in the head!
-      html5 = html5.replace(
-        /(<head>\s?)/gs,
-        `$1<link rel="canonical" href="${canonicalBaseUrl + originalUrl}">`
-      )
-    }
-
-    if (preview) {
-      html5 = html5.replace(/<\/body>/, () => {
-        return `<script type="application/json" class="js-hypothesis-config">
-      {
-        "openSidebar": true
-      }
-    </script>
-    <script src="https://hypothes.is/embed.js" async></script>
-    </body>`
-      })
-    } else {
-      res.attachment(`${normalize(title)}.html`)
-    }
-
-    res.send(html5)
-  } finally {
-    if (tmpDirectory) {
-      await fs.rm(tmpDirectory, { recursive: true, maxRetries: 3 })
-    }
   }
+
+  if (preview) {
+    html5 = html5.replace(/<\/body>/, () => {
+      return `<script type="application/json" class="js-hypothesis-config">
+    {
+      "openSidebar": true
+    }
+  </script>
+  <script src="https://hypothes.is/embed.js" async></script>
+  </body>`
+    })
+  } else {
+    res.attachment(`${normalize(title)}.html`)
+  }
+
+  res.send(html5)
 }
 
 const getArticleExportContext = async (articleId) => {

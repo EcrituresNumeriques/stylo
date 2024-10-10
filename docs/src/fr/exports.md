@@ -29,7 +29,7 @@ Il est possible de choisir parmi plusieurs styles bibliographiques : certains i
 
 Le module d'export se charge de mettre en forme les références, d'ajouter ou d'enlever les espaces, d'insérer des "Ibid." en accord avec le style, etc.
 
-Les exports sont produits grâce à l'outil de conversion [Pandoc](https://pandoc.org/) sur la base des templates disponibles [ici](https://framagit.org/stylo-editeur/templates-stylo).
+Les exports sont produits grâce à l'outil de conversion [Pandoc](https://pandoc.org/) sur la base des [templates `stylo-export`](https://gitlab.huma-num.fr/ecrinum/stylo/stylo-export/-/tree/main/templates/generique).
 
 L'export permet aussi de télécharger les fichiers source de Stylo (.md, .bib, .yaml) et les médias insérés dans l'article s'il y en a.
 
@@ -45,9 +45,9 @@ Pour plus d'informations sur l'emploi des templates, voir ce [tutoriel](https://
 
 La version actuelle du module d'export de Stylo ([https://export.stylo.huma-num.fr/](https://export.stylo.huma-num.fr/)) propose un export générique et un export pour une intégration dans la chaîne d'édition de Métopes (schéma XML-TEI Commons Publishing pour Métopes ou OpenEdition).
 
-La version _legacy_ de l'export de Stylo ([https://stylo-export.ecrituresnumeriques.ca](https://stylo-export.ecrituresnumeriques.ca/)) liste d'autres exports personnalisés de Stylo dont : 
+La version _legacy_ de l'export de Stylo ([https://stylo-export.ecrituresnumeriques.ca](https://stylo-export.ecrituresnumeriques.ca/)) liste d'autres exports personnalisés de Stylo dont :
 
-- les exports pour les revues qui utilisent Stylo dans leurs chaînes éditoriales : 
+- les exports pour les revues qui utilisent Stylo dans leurs chaînes éditoriales :
   - [Sens public](http://sens-public.org/)
   - [Scriptura](https://www.facebook.com/RevueScriptura/)
   - [Nouvelles Vues](https://nouvellesvues.org/presentation-de-la-revue/)
@@ -56,22 +56,22 @@ La version _legacy_ de l'export de Stylo ([https://stylo-export.ecrituresnumeriq
 
 ## Les exports spéciaux
 
-### Exports modèles de l'Université de Montréal 
+### Exports modèles de l'Université de Montréal
 
-La page des exports Stylo [Modèles de l'Université de Montréal](https://stylo-export.ecrituresnumeriques.ca/exportudem.html) a été créée pour permettre aux étudiant.es de l'Université de Montréal de produire leurs rendus directement avec la mise en forme réglementaire. 
+La page des exports Stylo [Modèles de l'Université de Montréal](https://stylo-export.ecrituresnumeriques.ca/exportudem.html) a été créée pour permettre aux étudiant.es de l'Université de Montréal de produire leurs rendus directement avec la mise en forme réglementaire.
 
-Trois modèles sont proposés : 
+Trois modèles sont proposés :
 
 - Le modèle du Département des littératures de langue française (DLLF)
   -  avec /ou/ sans table des matières (en cours d'implémentation)
 
-- Le modèle du Plan de cours 
+- Le modèle du Plan de cours
 
 <iframe src="http://stylo-doc.ecrituresnumeriques.ca/uploads/pdf/testPlanCours.pdf" title="testPlanCours" width="100%" height="500" allowfullscreen></iframe>
 
 - Le modèle de L'École de bibliothéconomie et des sciences de l'information (EBSI)
 
-<iframe src="http://stylo-doc.ecrituresnumeriques.ca/uploads/pdf/test.pdf" title="testEBSI" width="100%" height="500" allowfullscreen></iframe> 
+<iframe src="http://stylo-doc.ecrituresnumeriques.ca/uploads/pdf/test.pdf" title="testEBSI" width="100%" height="500" allowfullscreen></iframe>
 
 #### Modèle DLLF
 (à venir)
@@ -116,9 +116,9 @@ year: '2021'
 5. Dans la page d'export du Plan de cours, coller la clef de version à l'emplacement dédié;
 6. Puis attribuer un nom à l'export, sélectionner le modèle du Plan de cours et cliquer sur "Submit".
 
-#### Modèle EBSI 
+#### Modèle EBSI
 
-Pour exporter votre document selon le modèle de l'EBSI, il faut : 
+Pour exporter votre document selon le modèle de l'EBSI, il faut :
 
 1. Éditer les métadonnées suivantes dans le volet des métadonnées en mode "RAW" :
 
@@ -139,7 +139,7 @@ day: '05'
 cours:
   - id: Sigle
     title: Titre du cours
-teachers: 
+teachers:
   - forname: Prénom
     surname: Nom
 lang: fr
