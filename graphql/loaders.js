@@ -23,7 +23,7 @@ async function getVersions (versionIds) {
 async function findByIds(ids, model) {
   const items = await model
     .find({ _id: { $in: ids } })
-    .lean()
+
   const itemByIds = items.reduce((acc, item) => {
     acc[item._id] = item
     return acc

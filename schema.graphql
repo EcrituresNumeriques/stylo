@@ -132,7 +132,7 @@ type Mutation {
     "Create a new corpus"
     createCorpus(createCorpusInput: CreateCorpusInput!): Corpus
     "Create tag [need to be authenticated as specified user]"
-    createTag(color: HexColorCode!, description: String, name: String!, user: ID): Tag
+    createTag(color: HexColorCode, description: String, name: String!, user: ID): Tag
     "Create user + password + default article"
     createUser(details: NewUserInput!): User!
     "Create a new workspace"
