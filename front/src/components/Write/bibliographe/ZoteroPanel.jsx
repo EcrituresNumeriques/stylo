@@ -106,7 +106,7 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
     setSaving(true)
     try {
       const result = await fetchBibliographyFromCollectionHref({ token, collectionHref })
-      onChange(result.join('\n'))
+      onChange(result)
     } catch (err) {
       console.error(`Something went wrong while fetching bibliography from Zotero: ${collectionHref}`, err)
     } finally {

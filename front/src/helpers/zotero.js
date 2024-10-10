@@ -189,8 +189,8 @@ export async function fetchUserCollections ({ userID, key }) {
 /**
  * @param collectionHref
  * @param key Zotero API key
- * @returns {Promise<string[]>}
+ * @returns {Promise<string>}
  */
 export const fetchBibliographyFromCollectionHref = async ({ collectionHref, token: key = null, }) => {
-  return fetchAllBibTeX(new URL(collectionHref + '/items'), key)
+  return (await fetchAllBibTeX(new URL(collectionHref + '/items'), key)).join('\n')
 }
