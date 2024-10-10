@@ -9,7 +9,7 @@
   },
   "engines": {
     "node": ">=18",
-    "npm": ">=8"
+    "npm": ">=10"
   },
   "scripts": {
     "dev": "DOTENV_CONFIG_PATH=stylo.env node -r dotenv/config ./node_modules/.bin/concurrently 'npm:dev:*'",
@@ -39,6 +39,7 @@
     "dotenv": "^16.0.3"
   },
   "volta": {
-    "node": "18.18.2"
+    "node": "18.18.2",
+    "npm": "10.2.0"
   }
 }

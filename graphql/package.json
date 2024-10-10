@@ -6,7 +6,7 @@
   "private": true,
   "engines": {
     "node": ">=18",
-    "npm": ">=8"
+    "npm": ">=10"
   },
   "scripts": {
     "generate-service-token": "node -p \"require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year' })\"",
@@ -19,7 +19,6 @@
   "license": "ISC",
   "dependencies": {
     "@graphql-tools/schema": "^9.0.12",
-    "@types/mongoose": "^5.11.97",
     "atob": "^2.1.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
@@ -56,6 +55,7 @@
     "mongodb-memory-server": "^8.11.0"
   },
   "volta": {
-    "node": "18.18.2"
+    "node": "18.18.2",
+    "npm": "10.2.0"
   }
 }
