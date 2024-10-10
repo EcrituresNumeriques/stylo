@@ -1,5 +1,6 @@
 import React, { Fragment, useMemo, useState } from 'react'
 import Form from '@rjsf/core'
+import validator from "@rjsf/validator-ajv8"
 import { set } from 'object-path-immutable'
 import basicUiSchema from '../schemas/ui-schema-basic-override.json'
 import uiSchema from '../schemas/ui-schema-editor.json'
@@ -23,11 +24,11 @@ const CustomSelect = function(props) {
     </div>)
 }
 function ArrayFieldTemplate(props) {
-  const addItemTitle = props.uiSchema['ui:add-item-title'] || 'Ajouter'
-  const removeItemTitle = props.uiSchema['ui:remove-item-title'] || 'Supprimer'
+  const addItemTitle = props.uiSchema['ui:add-item-title'] ?? 'Ajouter'
+  const removeItemTitle = props.uiSchema['ui:remove-item-title'] ?? 'Supprimer'
   const title = props.uiSchema['ui:title']
 
-  const inlineRemoveButton = props.schema?.items?.type === 'string'
+  const inlineRemoveButton = props.schema?.items?.type === 'string' || !removeItemTitle
   return (
     <fieldset className={styles.fieldset} key={props.key}>
       {title && <legend id={props.id}>{title}</legend>}
@@ -69,6 +70,11 @@ function ArrayFieldTemplate(props) {
   )
 }
 
+/**
+ *
+ * @param {ObjectFieldTemplateProps} props
+ * @returns
+ */
 function ObjectFieldTemplate(props) {
   if (props.uiSchema['ui:groups']) {
     const groups = props.uiSchema['ui:groups']
@@ -111,8 +117,6 @@ function ObjectFieldTemplate(props) {
     const autocomplete = props.uiSchema['ui:autocomplete']
     return (
       <Fragment key={props.key}>
-        {props.title}
-        {props.description}
         {autocomplete === "IsidoreAuthorSearch" && <IsidoreAuthorAPIAutocompleteField {...props}/>}
         {props.properties.map((element) => (
           <Fragment key={element.name}>{element.content}</Fragment>
@@ -154,13 +158,18 @@ export default function SchemaForm ({
     IsidoreAuthorSearch: isidoreAuthorSearch,
   }
 
+  const customTemplates = {
+    ObjectFieldTemplate,
+    ArrayFieldTemplate
+  }
+
   return (
     <Form
       className={styles.form}
-      ObjectFieldTemplate={ObjectFieldTemplate}
-      ArrayFieldTemplate={ArrayFieldTemplate}
       formContext={formContext}
       schema={schema}
+      name="Metadata"
+      templates={customTemplates}
       widgets={customWidgets}
       fields={customFields}
       uiSchema={effectiveUiSchema}
@@ -170,6 +179,7 @@ export default function SchemaForm ({
         onChange(toYaml(e.formData))
       }}
       onError={setErrors}
+      validator={validator}
     >
       <hr hidden={true} />
     </Form>

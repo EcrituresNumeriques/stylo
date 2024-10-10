@@ -98,7 +98,7 @@ function getValue(event, multiple) {
   }
 }
 
-function SelectWidget(props) {
+export default function SelectWidget(props) {
   const {
     uiSchema,
     schema,
@@ -109,7 +109,7 @@ function SelectWidget(props) {
     disabled,
     readonly,
     multiple,
-    autofocus,
+    autofocus = false,
     onChange,
     onBlur,
     onFocus,
@@ -158,9 +158,3 @@ function SelectWidget(props) {
     </select>
   );
 }
-
-SelectWidget.defaultProps = {
-  autofocus: false,
-};
-
-export default SelectWidget;
