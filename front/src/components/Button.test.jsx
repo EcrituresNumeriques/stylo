@@ -1,6 +1,5 @@
 import { describe, expect, test } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import {getRoles} from '@testing-library/dom'
 import React from 'react'
 import Component from './Button.jsx'
 
