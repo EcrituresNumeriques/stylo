@@ -25,7 +25,8 @@ afterEach(() => {
 vi.mock('react-i18next', () => ({
   useTranslation: vi.fn().mockReturnValue({
     t: vi.fn().mockImplementation(key => key)
-  })
+  }),
+  Translation: vi.fn()
 }))
 
 export function renderWithProviders (ui, { preloadedState = {}, store = createReduxStore(merge({}, initialState, preloadedState)), ...renderOptions } = {}) {

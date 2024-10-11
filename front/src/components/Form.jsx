@@ -1,10 +1,12 @@
-import React, { Fragment, useMemo, useState } from 'react'
-import Form from '@rjsf/core'
-import validator from "@rjsf/validator-ajv8"
+import PropTypes from 'prop-types'
+import React, { Fragment, useCallback, useMemo, useState } from 'react'
+import Form, { getDefaultRegistry } from '@rjsf/core'
+import validator from '@rjsf/validator-ajv8'
 import { set } from 'object-path-immutable'
+import { Translation } from 'react-i18next'
 import basicUiSchema from '../schemas/ui-schema-basic-override.json'
-import uiSchema from '../schemas/ui-schema-editor.json'
-import schema from '../schemas/data-schema.json'
+import defaultUiSchema from '../schemas/ui-schema-editor.json'
+import defaultSchema from '../schemas/data-schema.json'
 import { toYaml } from './Write/metadata/yaml'
 
 // REMIND: use a custom SelectWidget to support "ui:emptyValue"
@@ -18,22 +20,65 @@ import Button from './Button'
 import { Plus, Trash } from 'react-feather'
 import IsidoreAuthorAPIAutocompleteField from './Write/metadata/isidoreAuthor'
 
-const CustomSelect = function(props) {
-  return (<div className={styles.selectContainer}>
-      <SelectWidget {...props}/>
-    </div>)
-}
-function ArrayFieldTemplate(props) {
-  const addItemTitle = props.uiSchema['ui:add-item-title'] ?? 'Ajouter'
-  const removeItemTitle = props.uiSchema['ui:remove-item-title'] ?? 'Supprimer'
-  const title = props.uiSchema['ui:title']
+const {
+  templates: { BaseInputTemplate: DefaultBaseInputTemplate },
+} = getDefaultRegistry()
 
-  const inlineRemoveButton = props.schema?.items?.type === 'string' || !removeItemTitle
+/**
+ * @param {BaseInputTemplate} properties
+ */
+function BaseInputTemplate (properties) {
+  const { placeholder } = properties
+  return (<Translation>
+    {
+      (t) => <DefaultBaseInputTemplate {...properties} placeholder={t(placeholder)}/>
+    }
+  </Translation>)
+}
+
+/**
+ * @param {SelectWidget} properties
+ */
+function CustomSelect (properties) {
+  const { options, title, placeholder } = properties
+  return (<div className={styles.selectContainer}>
+    <Translation>
+      {
+        (t) => <SelectWidget {...{
+          ...properties, placeholder: t(placeholder), options: {
+            enumOptions: options?.enumOptions?.map((opt) => {
+              if (title && opt.label in title) {
+                return {
+                  label: t(title[opt.label]),
+                  value: opt.value
+                }
+              }
+              return {
+                label: t(opt.label),
+                value: opt.value
+              }
+            })
+          }
+        }}/>
+      }
+    </Translation>
+  </div>)
+}
+
+/**
+ * @param {ArrayFieldTemplateProps} properties
+ */
+function ArrayFieldTemplate (properties) {
+  const addItemTitle = properties.uiSchema['ui:add-item-title'] ?? 'Ajouter'
+  const removeItemTitle = properties.uiSchema['ui:remove-item-title'] ?? 'Supprimer'
+  const title = properties.uiSchema['ui:title']
+
+  const inlineRemoveButton = properties.schema?.items?.type === 'string' || !removeItemTitle
   return (
-    <fieldset className={styles.fieldset} key={props.key}>
-      {title && <legend id={props.id}>{title}</legend>}
-      {props.items &&
-        props.items.map((element) => (
+    <fieldset className={styles.fieldset} key={properties.key}>
+      {title && <Translation>{(t) => <legend id={properties.id}>{t(title)}</legend>}</Translation>}
+      {properties.items &&
+        properties.items.map((element) => (
           <div
             id={element.key}
             key={element.key}
@@ -55,12 +100,12 @@ function ArrayFieldTemplate(props) {
             )}
           </div>
         ))}
-      {props.canAdd && (
+      {properties.canAdd && (
         <Button
           type="button"
           className={styles.addButton}
           tabIndex={-1}
-          onClick={props.onAddClick}
+          onClick={properties.onAddClick}
         >
           <Plus/>
           {addItemTitle}
@@ -70,21 +115,41 @@ function ArrayFieldTemplate(props) {
   )
 }
 
+function FieldTemplate (properties) {
+  const { id, classNames, style, help, description, errors, children } = properties
+  const label = properties.schema.$id
+    ? properties.label[properties.schema.$id]
+    : properties.label
+  return (
+    <div className={classNames} style={style}>
+      <label htmlFor={id}>
+        <Translation>
+          {
+            (t) => <>{t(label)}</>
+          }
+        </Translation>
+      </label>
+      {description}
+      {children}
+      {errors}
+      {help}
+    </div>
+  )
+}
+
 /**
- *
- * @param {ObjectFieldTemplateProps} props
- * @returns
+ * @param {ObjectFieldTemplateProps} properties
  */
-function ObjectFieldTemplate(props) {
-  if (props.uiSchema['ui:groups']) {
-    const groups = props.uiSchema['ui:groups']
+function ObjectFieldTemplate (properties) {
+  if (properties.uiSchema['ui:groups']) {
+    const groups = properties.uiSchema['ui:groups']
     const groupedElements = groups.map(({ fields, title }) => {
       const elements = fields
         .filter(
-          (field) => (props.uiSchema[field] || {})['ui:widget'] !== 'hidden'
+          (field) => (properties.uiSchema[field] || {})['ui:widget'] !== 'hidden'
         )
         .map((field) => {
-          const element = props.properties.find((element) => element.name === field)
+          const element = properties.properties.find((element) => element.name === field)
 
           if (!element) {
             console.error('Field configuration not found for "%s" in \'ui:groups\' "%s" — part of %o', field, title, fields)
@@ -93,32 +158,39 @@ function ObjectFieldTemplate(props) {
           return [field, element]
         })
 
-        if (elements && elements.length > 0) {
-          return (
-            <fieldset className={styles.fieldset} key={fields.join('-')}>
-              {title && <legend>{title}</legend>}
-              {elements.map(([field, element]) => (
-                element
-                  ? <Fragment key={field}>{element.content}</Fragment>
-                  : <p key={field} className={styles.fieldHasNoElementError}>
-                      Field <code>{field}</code> defined in <code>ui:groups</code> is not an
-                      entry of <code>data-schema.json[properties]</code> object.
-                    </p>
-              ))}
-            </fieldset>
-          )
-        }
+      if (elements && elements.length > 0) {
+        return (
+          <fieldset className={styles.fieldset} key={fields.join('-')}>
+            {title && <legend>
+              <Translation>
+                {
+                  (t) => <>{t(title)}</>
+                }
+              </Translation>
+            </legend>}
+            {elements.map(([field, element]) => (
+              element
+                ? <Fragment key={field}>{element.content}</Fragment>
+                : <p key={field} className={styles.fieldHasNoElementError}>
+                  Field <code>{field}</code> defined in <code>ui:groups</code> is not an
+                  entry of <code>data-schema.json[properties]</code> object.
+                </p>
+            ))}
+          </fieldset>
+        )
+      }
     })
 
     return <>{groupedElements}</>
   }
 
-  if (props) {
-    const autocomplete = props.uiSchema['ui:autocomplete']
+  if (properties) {
+    const autocomplete = properties.uiSchema['ui:autocomplete']
     return (
-      <Fragment key={props.key}>
-        {autocomplete === "IsidoreAuthorSearch" && <IsidoreAuthorAPIAutocompleteField {...props}/>}
-        {props.properties.map((element) => (
+      <Fragment key={properties.key}>
+        {properties.description}
+        {autocomplete === 'IsidoreAuthorSearch' && <IsidoreAuthorAPIAutocompleteField {...properties}/>}
+        {properties.properties.map((element) => (
           <Fragment key={element.name}>{element.content}</Fragment>
         ))}
       </Fragment>
@@ -126,14 +198,28 @@ function ObjectFieldTemplate(props) {
   }
 }
 
+const customFields = {
+  IsidoreKeywordSearch: isidoreKeywordSearch,
+  IsidoreAuthorSearch: isidoreAuthorSearch,
+}
+
+/**
+ *
+ * @param initialFormData
+ * @param basicMode
+ * @param {(any) => void} onChange
+ * @return {Element}
+ * @constructor
+ */
 export default function SchemaForm ({
   formData: initialFormData,
   basicMode,
-  onChange = () => {},
+  onChange = () => {
+  },
 }) {
   const [formData, setFormData] = useState(initialFormData)
-  const [errors, setErrors] = useState({})
-  const formContext = {
+  const [, setErrors] = useState({})
+  const formContext = useMemo(() => ({
     partialUpdate: ({ id, value }) => {
       const path = id.replace('root_', '').replace('_', '.')
       setFormData((state) => {
@@ -142,10 +228,10 @@ export default function SchemaForm ({
         return newFormData
       })
     },
-  }
+  }), [onChange, setFormData])
 
   const effectiveUiSchema = useMemo(
-    () => (basicMode ? { ...uiSchema, ...basicUiSchema } : uiSchema),
+    () => (basicMode ? { ...defaultUiSchema, ...basicUiSchema } : defaultUiSchema),
     [basicMode]
   )
 
@@ -153,35 +239,42 @@ export default function SchemaForm ({
     SelectWidget: CustomSelect,
   }
 
-  const customFields = {
-    IsidoreKeywordSearch: isidoreKeywordSearch,
-    IsidoreAuthorSearch: isidoreAuthorSearch,
-  }
-
   const customTemplates = {
     ObjectFieldTemplate,
+    FieldTemplate,
+    BaseInputTemplate,
     ArrayFieldTemplate
   }
 
+  const handleUpdate = useCallback((event) => {
+    const formData = event.formData
+    setFormData(formData)
+    onChange(toYaml(formData))
+  }, [setFormData, onChange])
+
+  // noinspection JSValidateTypes
   return (
     <Form
       className={styles.form}
       formContext={formContext}
-      schema={schema}
+      schema={defaultSchema}
       name="Metadata"
       templates={customTemplates}
       widgets={customWidgets}
       fields={customFields}
       uiSchema={effectiveUiSchema}
       formData={formData}
-      onChange={(e) => {
-        setFormData(e.formData)
-        onChange(toYaml(e.formData))
-      }}
+      onChange={handleUpdate}
       onError={setErrors}
       validator={validator}
     >
-      <hr hidden={true} />
+      <hr hidden={true}/>
     </Form>
   )
+}
+
+SchemaForm.propTypes = {
+  formData: PropTypes.object,
+  basicMode: PropTypes.bool,
+  onChange: PropTypes.func
 }

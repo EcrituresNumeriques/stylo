@@ -26,8 +26,12 @@
 
 .form {
   :global {
-    .field-array > label.control-label {
-      @include legend;
+    .field-array > label {
+      display: none;
+    }
+    
+    .field-object > label {
+      font-weight: bold;
     }
   }
 
@@ -84,7 +88,7 @@
     }
 
     .form-group {
-      border-bottom: 1px solid #f0f0f0;
+      //border-bottom: 1px solid #f0f0f0;
       display: flex;
       align-items: center;
       padding: 0.5rem 0.5rem;
@@ -96,6 +100,10 @@
 
         > * {
           width: 100%;
+        }
+        
+        .field-object > label {
+          display: none;
         }
 
         > fieldset {
