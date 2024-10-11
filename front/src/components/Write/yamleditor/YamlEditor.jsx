@@ -1,8 +1,9 @@
 import React from 'react'
-import Form from '../../Form'
+import PropTypes from 'prop-types'
 import YAML from 'js-yaml'
+import Form from '../../Form'
 
-export default function YamlEditor ({ yaml, basicMode, onChange }) {
+export default function YamlEditor ({ yaml = '', basicMode = false, onChange }) {
   const [parsed = {}] = YAML.loadAll(yaml)
 
   // we convert YYYY/MM/DD dates into ISO YYYY-MM-DD
@@ -22,4 +23,10 @@ export default function YamlEditor ({ yaml, basicMode, onChange }) {
   }
 
   return <Form formData={parsed} basicMode={basicMode} onChange={onChange} />
+}
+
+YamlEditor.propTypes = {
+  yaml: PropTypes.string,
+  basicMode: PropTypes.bool,
+  onChange: PropTypes.func
 }

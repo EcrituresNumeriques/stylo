@@ -148,16 +148,20 @@
         "ui:title": "Language"
       },
       "list_f": {
-        "classNames": "inline-field-string",
+        "ui:classNames": "inline-field-string",
         "ui:add-item-title": "Ajouter un mot-clé",
-        "ui:remove-item-title": "Supprimer"
+        "ui:remove-item-title": "Supprimer",
+        "items": {
+          "ui:label": false
+        }
       }
     }
   },
   "controlledKeywords": {
-    "classNames": "inline-field-string",
+    "ui:classNames": "inline-field-string",
     "ui:title": "Mots clés Contrôlés",
     "ui:add-item-title": "Ajouter une mot-clé contrôlé",
+    "ui:remove-item-title": "",
     "items": {
       "ui:field": "IsidoreKeywordSearch"
     }
