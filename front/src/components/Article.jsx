@@ -25,7 +25,7 @@ import {
   ChevronRight,
   Copy,
   Edit3,
-  Eye,
+  Eye, List,
   Printer,
   Send,
   Trash,
@@ -46,15 +46,20 @@ import { getTags } from './Tag.graphql'
 import useGraphQL, { useMutation } from '../hooks/graphql'
 import TimeAgo from './TimeAgo.jsx'
 import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
-import { useSelector } from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
+import MetadataForm from "./metadata/MetadataForm.jsx";
+import YAML from "js-yaml";
+import debounce from "lodash.debounce";
 
 export default function Article ({ article, onArticleUpdated, onArticleDeleted, onArticleCreated }) {
   const activeUser = useSelector(state => state.activeUser)
   const articleId = useMemo(() => article._id, [article])
   const activeWorkspace = useActiveWorkspace()
   const activeWorkspaceId = useMemo(() => activeWorkspace?._id, [activeWorkspace])
+  const articleMetadata = useMemo(() =>  YAML.loadAll(article.workingVersion?.yaml || '')[0] || {}, [article])
+  const dispatch = useDispatch()
 
   const {
     data: contributorsQueryData,
@@ -100,6 +105,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
   const [sharing, setSharing] = useState(false)
   const [sending, setSending] = useState(false)
+  const [editMetadata, setEditMetadata] = useState(false)
 
   const isArticleOwner = activeUser._id === article.owner._id
 
@@ -165,6 +171,10 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
     setSharing(false)
   }, [setSharing])
 
+  const closeMetadataModal = useCallback(() => {
+    setEditMetadata(false)
+  }, [setEditMetadata])
+
   const handleArticleTagsUpdated = useCallback((event) => {
     onArticleUpdated({
       ...article,
@@ -172,11 +182,33 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
     })
   }, [article])
 
+  const updateWorkingArticleMetadata = useCallback(
+    debounce(
+      ({ metadata }) => {
+        dispatch({
+          type: 'UPDATE_WORKING_ARTICLE_METADATA',
+          articleId,
+          metadata,
+        })
+        onArticleUpdated({
+          ...article,
+          workingVersion: {
+            ...article.workingVersion,
+            yaml: metadata
+          }
+        })
+      },
+      1000,
+      { leading: false, trailing: true }
+    ),
+    [articleId, onArticleUpdated]
+  )
+
   return (
     <article className={styles.article}>
       {exporting && (
         <Modal title="Export" cancel={() => setExporting(false)}>
-          <Export articleId={article._id} bib={article.workingVersion.bibPreview} name={article.title}/>
+          <Export articleId={article._id} bib={article.workingVersion?.bibPreview} name={article.title}/>
         </Modal>
       )}
 
@@ -192,6 +224,18 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
           />
         </GeistModal.Content>
         <GeistModal.Action passive onClick={closeSharingModal}>{t('modal.close.text')}</GeistModal.Action>
+      </GeistModal>
+
+      <GeistModal width="30rem" visible={editMetadata} onClose={closeMetadataModal}>
+        <h2>{t('article.editMetadataModal.title')}</h2>
+        <GeistModal.Content>
+          <MetadataForm
+            data={articleMetadata}
+            templates={['basic']}
+            onChange={(metadata) => updateWorkingArticleMetadata({ metadata })}
+          />
+        </GeistModal.Content>
+        <GeistModal.Action passive onClick={closeMetadataModal}>{t('modal.close.text')}</GeistModal.Action>
       </GeistModal>
 
       <GeistModal width="30rem" visible={sharing} onClose={closeSharingModal}>
@@ -276,6 +320,10 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
         <Button title={t('article.duplicate.button')} icon={true} onClick={() => duplicate()}>
           <Copy/>
+        </Button>
+
+        <Button title={t('article.metadata.button')} icon={true} onClick={() => setEditMetadata(true)}>
+          <List/>
         </Button>
 
         {<Button title={t('article.sendCopy.button')} icon={true} onClick={() => setSending(true)}>

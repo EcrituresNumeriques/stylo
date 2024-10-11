@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useState } from 'react'
+import React, {Fragment, useCallback, useMemo, useState} from 'react'
 import Form from '@rjsf/core'
 import { set } from 'object-path-immutable'
 import basicUiSchema from '../schemas/ui-schema-basic-override.json'
@@ -154,6 +154,12 @@ export default function SchemaForm ({
     IsidoreAuthorSearch: isidoreAuthorSearch,
   }
 
+  const handleUpdate = useCallback((event) => {
+    const formData = event.formData
+    setFormData(formData)
+    onChange(toYaml(formData))
+  }, [setFormData, onChange])
+
   return (
     <Form
       className={styles.form}
@@ -165,10 +171,7 @@ export default function SchemaForm ({
       fields={customFields}
       uiSchema={effectiveUiSchema}
       formData={formData}
-      onChange={(e) => {
-        setFormData(e.formData)
-        onChange(toYaml(e.formData))
-      }}
+      onChange={handleUpdate}
       onError={setErrors}
     >
       <hr hidden={true} />

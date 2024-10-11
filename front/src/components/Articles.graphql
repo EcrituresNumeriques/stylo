@@ -29,6 +29,7 @@ query getUserArticles($user: ID!) {
 
     workingVersion {
       bibPreview
+      yaml
     }
 
     owner {
@@ -99,6 +100,7 @@ query getWorkspaceArticles ($workspaceId: ID!) {
 
       workingVersion {
         bibPreview
+        yaml
       }
 
       owner {

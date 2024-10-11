@@ -9,6 +9,7 @@ query getCorpus($filter: FilterCorpusInput, $includeArticles: Boolean = false) {
             username
             email
         }
+        metadata
         articles @include(if: $includeArticles) {
             article {
                 _id
@@ -40,6 +41,14 @@ mutation createCorpus($createCorpusInput: CreateCorpusInput!) {
 mutation deleteCorpus($corpusId: ID!) {
     corpus(corpusId: $corpusId) {
         delete {
+            _id
+        }
+    }
+}
+
+mutation updateMetadata($corpusId: ID!, $metadata: String!) {
+    corpus(corpusId: $corpusId) {
+        updateMetadata(metadata: $metadata) {
             _id
         }
     }
