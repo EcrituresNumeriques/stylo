@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, {useCallback, useMemo, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
@@ -9,6 +9,7 @@ import NavTag from '../NavTab'
 import YAML from 'js-yaml'
 import MonacoYamlEditor from './providers/monaco/YamlEditor'
 import { Sidebar } from 'react-feather'
+import MetadataForm from "../metadata/MetadataForm.jsx";
 
 export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
   const { t } = useTranslation()
@@ -22,6 +23,8 @@ export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
 
   const [rawYaml, setRawYaml] = useState(yaml)
   const [error, setError] = useState('')
+
+  const data = useMemo(() =>  YAML.loadAll(rawYaml)[0] || {}, [rawYaml])
 
   const toggleExpand = useCallback(
     () =>
@@ -105,15 +108,9 @@ export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
             />
           )}
           {selector !== 'raw' && !readOnly && (
-            <YamlEditor
-              yaml={rawYaml}
-              basicMode={selector === 'basic'}
-              error={(reason) => {
-                setError(reason)
-                if (reason !== '') {
-                  setSelector('raw')
-                }
-              }}
+            <MetadataForm
+              data={data}
+              templates={selector === 'basic' ? ['basic'] : ['']}
               onChange={(yaml) => {
                 setRawYaml(yaml)
                 handleYaml(yaml)
