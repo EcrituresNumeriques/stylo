@@ -90,8 +90,7 @@
       "type": "string",
       "title": "Display",
       "default": "",
-      "enum": ["@*", ""],
-      "enumNames": ["All citations", "Only used"]
+      "enum": ["@*", ""]
     },
     "authors": {
       "type": "array",

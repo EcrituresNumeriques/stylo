@@ -13,11 +13,11 @@
       ]
     },
     {
-      "title": "Acknowledgements",
+      "title": "article.metadata.acknowledgements.title",
       "fields": ["acknowledgements"]
     },
     {
-      "title": "Bibliography",
+      "title": "article.metadata.bibliography.title",
       "fields": ["link-citations", "nocite"]
     },
     {
@@ -59,7 +59,6 @@
       ]
     }
   ],
-
   "id": {
     "ui:title": "ID",
     "ui:placeholder": "XXXX"
@@ -70,37 +69,42 @@
     "ui:widget": "uri"
   },
   "title_f": {
-    "ui:title": "Title"
+    "ui:title": "article.metadata.title"
   },
   "surtitle": {
-    "ui:title": "Surtitle"
+    "ui:title": "article.metadata.surtitle"
   },
   "subtitle_f": {
-    "ui:title": "Subtitle"
+    "ui:title": "article.metadata.subtitle"
   },
   "link-citations": {
     "ui:widget": "select",
     "ui:emptyValue": ""
   },
   "nocite": {
+    "ui:title": "article.metadata.bibliographyDisplay",
     "ui:widget": "select",
-    "ui:emptyValue": ""
+    "ui:emptyValue": "",
+    "ui:enumNames": [
+      "article.metadata.bibliographyDisplay.all",
+      "article.metadata.bibliographyDisplay.onlyUsed"
+    ]
   },
   "date": {
     "ui:title": "Date",
     "ui:widget": "date"
   },
   "lang": {
-    "ui:title": "Language",
-    "ui:placeholder": "Select language"
+    "ui:title": "article.metadata.language",
+    "ui:placeholder": "article.metadata.language.placeholder"
   },
   "rights": {
-    "ui:title": "License",
-    "ui:placeholder": "License"
+    "ui:title": "article.metadata.license",
+    "ui:placeholder": "article.metadata.license.placeholder"
   },
   "journal_issue": {
-    "ui:title": "Journal issue",
-    "ui:placeholder": "Journal issue"
+    "ui:title": "article.metadata.journalIssue",
+    "ui:placeholder": "article.metadata.journalIssue.placeholder"
   },
   "biography": {
     "ui:widget": "textarea"
@@ -108,7 +112,7 @@
   "authors": {
     "ui:add-item-title": "Ajouter un author",
     "ui:remove-item-title": "Supprimer",
-    "ui:title": "Authors",
+    "ui:title": "article.metadata.authors",
     "items": {
       "ui:autocomplete": "IsidoreAuthorSearch"
     }
@@ -219,7 +223,7 @@
     "ui:title": "Translators"
   },
   "acknowledgements": {
-    "ui:title": "Acknowledgements"
+    "ui:title": "article.metadata.acknowledgements"
   },
   "reviewers": {
     "ui:title": "Réviseurs"
@@ -235,5 +239,8 @@
   },
   "diffnum": {
     "ui:title": "Diffnum"
+  },
+  "funder": {
+    "ui:title": ""
   }
 }
