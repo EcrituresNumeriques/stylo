@@ -1,28 +1,15 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import YAML from 'js-yaml'
 import Form from '../../Form'
+import { toYaml } from "../metadata/yaml.js";
+import { convertLegacyValues } from "../../metadata/MetadataValues.js";
 
-export default function YamlEditor ({ yaml = '', basicMode = false, onChange }) {
+export default function YamlEditor({ yaml = '', basicMode = false, onChange = () => {} }) {
   const [parsed = {}] = YAML.loadAll(yaml)
-
-  // we convert YYYY/MM/DD dates into ISO YYYY-MM-DD
-  if (parsed.date) {
-    parsed.date = parsed.date.replace(/\//g, '-')
-  }
-
-  // we array-ify legacy string keywords
-  if (parsed.keywords) {
-    parsed.keywords = parsed.keywords.map(block => {
-      if (typeof block.list_f === 'string') {
-        block.list_f = block.list_f.split(',').map(word => word.trim())
-      }
-
-      return block
-    })
-  }
-
-  return <Form formData={parsed} basicMode={basicMode} onChange={onChange} />
+  const formData = convertLegacyValues(parsed)
+  const handleChange = useCallback((newFormData) => onChange(toYaml(newFormData)), [onChange])
+  return <Form formData={formData} basicMode={basicMode} onChange={handleChange}/>
 }
 
 YamlEditor.propTypes = {

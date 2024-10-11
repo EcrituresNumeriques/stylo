@@ -7,7 +7,6 @@ import { Translation } from 'react-i18next'
 import basicUiSchema from '../schemas/ui-schema-basic-override.json'
 import defaultUiSchema from '../schemas/ui-schema-editor.json'
 import defaultSchema from '../schemas/data-schema.json'
-import { toYaml } from './Write/metadata/yaml'
 
 // REMIND: use a custom SelectWidget to support "ui:emptyValue"
 // remove once fixed in https://github.com/rjsf-team/react-jsonschema-form/issues/1041
@@ -256,7 +255,7 @@ export default function SchemaForm ({
       const path = id.replace('root_', '').replace('_', '.')
       setFormData((state) => {
         const newFormData = set(state, path, value)
-        onChange(toYaml(newFormData))
+        onChange(newFormData)
         return newFormData
       })
     },
@@ -282,7 +281,7 @@ export default function SchemaForm ({
   const handleUpdate = useCallback((event) => {
     const formData = event.formData
     setFormData(formData)
-    onChange(toYaml(formData))
+    onChange(formData)
   }, [setFormData, onChange])
 
   // noinspection JSValidateTypes
