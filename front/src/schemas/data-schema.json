@@ -84,14 +84,13 @@
     "link-citations": {
       "type": "boolean",
       "title": "Citation Link",
-      "enumNames": ["yes", "no"]
+      "enum": ["true", "false"]
     },
     "nocite": {
       "type": "string",
       "title": "Display",
       "default": "",
-      "enum": ["@*", ""],
-      "enumNames": ["All citations", "Only used"]
+      "enum": ["@*", ""]
     },
     "authors": {
       "type": "array",

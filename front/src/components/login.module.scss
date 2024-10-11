@@ -1,3 +1,4 @@
+@use "sass:color";
 @use '../styles/defaults' as *;
 @use '../styles/variables' as *;
 
@@ -66,6 +67,14 @@
 }
 
 %humaNumBtn {
+  text-decoration: none;
+  display: block;
+  color: white;
+  font-weight: 200;
+  padding: 0.5em 2em .5em 3em;
+  position: relative;
+  margin-bottom: 0.25em;
+
   &:focus {
     outline: 1px solid $main-color;
   }
@@ -83,14 +92,6 @@
     top: 0;
     bottom: 0;
   }
-
-  text-decoration: none;
-  display: block;
-  color: white;
-  font-weight: 200;
-  padding: 0.5em 2em .5em 3em;
-  position: relative;
-  margin-bottom: 0.25em;
 }
 
 a.humaNumCreateAccountBtn {
@@ -98,7 +99,7 @@ a.humaNumCreateAccountBtn {
   background-color: #f7931e;
 
   &:hover, &:focus {
-    background-color: darken(#f7931e, 5%);
+    background-color: color.adjust(#f7931e, $lightness: 5%);
   }
 }
 
@@ -107,7 +108,7 @@ a.humaNumConnectBtn {
   background-color: #c00;
 
   &:hover, &:focus {
-    background-color: darken(#c00, 5%);
+    background-color: color.adjust(#c00, $lightness: 5%);
   }
 }
 
