@@ -11,6 +11,11 @@ scalar ID
 scalar Int
 scalar Boolean
 
+enum AuthType {
+  oidc
+  local
+}
+
 type UserSearch {
   _id: ID
   displayName: String
@@ -32,7 +37,8 @@ type User {
   _id: ID
   displayName: String
   username: String
-  authType: String
+  authType: AuthType
+  authTypes: [AuthType]
   email: EmailAddress
   firstName: String
   lastName: String
@@ -48,7 +54,7 @@ type User {
   createdAt: DateTime
   updatedAt: DateTime
   apiToken: JWT
-  
+
   addContact(userId: ID!): User
   removeContact(userId: ID!): User
 
@@ -141,13 +147,13 @@ type Article {
   setZoteroLink(zotero: String!): Boolean
   updateWorkingVersion(content: WorkingVersionInput!): Article
   workspaces: [Workspace!]
-  
+
   addContributor(userId: ID!): Article
   removeContributor(userId: ID!): Article
   createVersion(articleVersionInput: ArticleVersionInput!): Article
   startCollaborativeSession: CollaborativeSession!
   startSoloSession: SoloSession!
-  takeOverSoloSession: SoloSession! 
+  takeOverSoloSession: SoloSession!
   stopCollaborativeSession: Article
   stopSoloSession: Article
 }
@@ -266,7 +272,7 @@ type Workspace {
 
   article(articleId: ID!): WorkspaceArticle
   member(userId: ID!): WorkspaceMember
-  
+
   stats: WorkspaceStats
 
   # mutations
@@ -315,7 +321,7 @@ type Corpus {
   updatedAt: DateTime
 
   article(articleId: ID!): CorpusArticle
-  
+
   # mutations
   addArticle(articleId: ID!): Corpus
   rename(name: String!): Corpus
@@ -441,13 +447,13 @@ type Mutation {
   Returns an error if the corpus does not exist or cannot be accessed.
   """
   article(articleId: ID!): Article
-  
+
   """
   Get a corpus for a given id.
   Returns an error if the corpus does not exist or cannot be accessed.
   """
   corpus(corpusId: ID!): Corpus
-  
+
   "Create a new corpus"
   createCorpus(createCorpusInput: CreateCorpusInput!): Corpus
 }`
