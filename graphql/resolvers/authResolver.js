@@ -23,9 +23,9 @@ async function checkCredentials ({ username, password }) {
     throw new Error('Unable to authenticate, please check your username and password!')
   }
 
-  if (user.authType === 'oidc') {
-    logger.error({ module: 'authentication', username }, 'OpenID Connect account must authenticate using Huma-Num')
-    throw new Error('Unable to authenticate, please connect using Huma-Num!')
+  if (!user.authTypes.includes('local')) {
+    logger.error({ module: 'authentication', username }, 'Account without set password')
+    throw new Error('Unable to authenticate, please check your username and password!')
   }
 
   if (!(await user.comparePassword(password))) {

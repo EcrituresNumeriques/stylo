@@ -32,6 +32,7 @@ const Corpus = lazy(() => import('./components/corpus/Corpus'))
 const Articles = lazy(() => import('./components/Articles'))
 const Workspaces = lazy(() => import('./components/workspace/Workspaces'))
 const Credentials = lazy(() => import('./components/Credentials'))
+const UserInfos = lazy(() => import('./components/UserInfos.jsx'))
 const Write = lazy(() => import('./components/Write/Write'))
 const ArticlePreview = lazy(() => import('./components/ArticlePreview'))
 const Privacy = lazy(() => import('./components/Privacy'))
@@ -124,6 +125,7 @@ render(
                 <Workspaces/>
               </PrivateRoute>
               <PrivateRoute path="/credentials" exact>
+                <UserInfos />
                 <Credentials/>
               </PrivateRoute>
               {/* Annotate a Book */}
