@@ -24,7 +24,7 @@ function toWebsocketEndpoint (endpoint) {
 }
 
 // Définition du store Redux et de l'ensemble des actions
-const initialState = {
+export const initialState = {
   hasBooted: false,
   sessionToken: localStorage.getItem(sessionTokenName),
   workingArticle: {
@@ -64,6 +64,8 @@ const initialState = {
   },
   // Active user (authenticated)
   activeUser: {
+    authType: null,
+    authTypes: [],
     zoteroToken: null,
     selectedTagIds: [],
     workspaces: [],
@@ -83,45 +85,47 @@ const initialState = {
   }
 }
 
-const reducer = createReducer(initialState, {
-  APPLICATION_CONFIG: setApplicationConfig,
-  PROFILE: setProfile,
-  CLEAR_ZOTERO_TOKEN: clearZoteroToken,
-  LOGIN: loginUser,
-  UPDATE_SESSION_TOKEN: setSessionToken,
-  UPDATE_ACTIVE_USER_DETAILS: updateActiveUserDetails,
-  LOGOUT: logoutUser,
+function createRootReducer (state) {
+  return createReducer(state, {
+    APPLICATION_CONFIG: setApplicationConfig,
+    PROFILE: setProfile,
+    CLEAR_ZOTERO_TOKEN: clearZoteroToken,
+    LOGIN: loginUser,
+    UPDATE_SESSION_TOKEN: setSessionToken,
+    UPDATE_ACTIVE_USER_DETAILS: updateActiveUserDetails,
+    LOGOUT: logoutUser,
 
-  // article reducers
-  UPDATE_ARTICLE_STATS: updateArticleStats,
-  UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
-  UPDATE_ARTICLE_WRITERS: updateArticleWriters,
+    // article reducers
+    UPDATE_ARTICLE_STATS: updateArticleStats,
+    UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
+    UPDATE_ARTICLE_WRITERS: updateArticleWriters,
 
-  // user preferences reducers
-  USER_PREFERENCES_TOGGLE: toggleUserPreferences,
+    // user preferences reducers
+    USER_PREFERENCES_TOGGLE: toggleUserPreferences,
 
-  SET_ARTICLE_VERSIONS: setArticleVersions,
-  SET_WORKING_ARTICLE_UPDATED_AT: setWorkingArticleUpdatedAt,
-  SET_WORKING_ARTICLE_TEXT: setWorkingArticleText,
-  SET_WORKING_ARTICLE_METADATA: setWorkingArticleMetadata,
-  SET_WORKING_ARTICLE_BIBLIOGRAPHY: setWorkingArticleBibliography,
-  SET_WORKING_ARTICLE_STATE: setWorkingArticleState,
-  SET_CREATE_ARTICLE_VERSION_ERROR: setCreateArticleVersionError,
+    SET_ARTICLE_VERSIONS: setArticleVersions,
+    SET_WORKING_ARTICLE_UPDATED_AT: setWorkingArticleUpdatedAt,
+    SET_WORKING_ARTICLE_TEXT: setWorkingArticleText,
+    SET_WORKING_ARTICLE_METADATA: setWorkingArticleMetadata,
+    SET_WORKING_ARTICLE_BIBLIOGRAPHY: setWorkingArticleBibliography,
+    SET_WORKING_ARTICLE_STATE: setWorkingArticleState,
+    SET_CREATE_ARTICLE_VERSION_ERROR: setCreateArticleVersionError,
 
-  ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
+    ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
 
-  UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
+    UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
 
-  SET_WORKSPACES: setWorkspaces,
-  SET_ACTIVE_WORKSPACE: setActiveWorkspace,
+    SET_WORKSPACES: setWorkspaces,
+    SET_ACTIVE_WORKSPACE: setActiveWorkspace,
 
-  UPDATE_SELECTED_TAG: updateSelectedTag,
-  TAG_CREATED: tagCreated,
+    UPDATE_SELECTED_TAG: updateSelectedTag,
+    TAG_CREATED: tagCreated,
 
-  SET_LATEST_CORPUS_DELETED: setLatestCorpusDeleted,
-  SET_LATEST_CORPUS_CREATED: setLatestCorpusCreated,
-  SET_LATEST_CORPUS_UPDATED: setLatestCorpusUpdated,
-})
+    SET_LATEST_CORPUS_DELETED: setLatestCorpusDeleted,
+    SET_LATEST_CORPUS_CREATED: setLatestCorpusCreated,
+    SET_LATEST_CORPUS_UPDATED: setLatestCorpusUpdated,
+  })
+}
 
 const createNewArticleVersion = store => {
   return next => {
@@ -511,6 +515,8 @@ function setLatestCorpusUpdated (state, { data }) {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-export default () => createStore(reducer, composeEnhancers(
-  applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage)
-))
+export default function createReduxStore (state = initialState) {
+  return createStore(createRootReducer(state), composeEnhancers(
+    applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage)
+  ))
+}
