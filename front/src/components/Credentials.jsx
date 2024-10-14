@@ -71,6 +71,8 @@ export default function Credentials () {
           autoComplete="new-password"
           placeholder= {t('credentials.newPassword.placeholder')}
           aria-label= {t('credentials.newPassword.placeholder')}
+          minLength={6}
+          required={true}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -81,6 +83,8 @@ export default function Credentials () {
           placeholder= {t('credentials.confirmNewPassword.placeholder')}
           aria-label= {t('credentials.confirmNewPassword.placeholder')}
           className={password === passwordC ? null : styles.beware}
+          minLength={6}
+          required={true}
           value={passwordC}
           onChange={(e) => setPasswordC(e.target.value)}
         />
