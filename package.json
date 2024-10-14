@@ -14,6 +14,7 @@
   "scripts": {
     "dev": "DOTENV_CONFIG_PATH=.env node -r dotenv/config ./node_modules/.bin/concurrently 'npm:dev:*'",
     "dev:front": "./front/node_modules/.bin/vite ./front",
+    "predev:graphql": "./graphql/node_modules/.bin/db-migrate up --migrations-dir ./graphql",
     "dev:graphql": "node --watch ./graphql/app.js --watch",
     "dev:export": "node  --watch ./export/src/app.js --watch",
     "start": "DOTENV_CONFIG_PATH=.env node -r dotenv/config ./node_modules/.bin/concurrently 'npm:start:*'",
