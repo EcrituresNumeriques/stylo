@@ -1,0 +1,19 @@
+name: Node `front` application
+
+on:
+  push:
+    branches:
+    - master
+    paths:
+    - 'front/**'
+    - '.github/workflows/node*.yml'
+  pull_request:
+    paths:
+    - 'front/**'
+    - '.github/workflows/node*.yml'
+
+jobs:
+  build:
+    uses: EcrituresNumeriques/stylo/.github/workflows/node.yml@feat/migrate-db
+    with:
+      app-dir: front

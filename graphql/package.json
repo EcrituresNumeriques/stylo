@@ -11,7 +11,7 @@
   "scripts": {
     "generate-service-token": "node -p \"require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year' })\"",
     "test": "jest --collectCoverage --coverageReporters html --coverageReporters text-summary --coverageReporters lcovonly --detectOpenHandles",
-    "migrate": "db-migrate up",
+    "migrations": "db-migrate up",
     "posttest": "eslint '**/*.js'",
     "prestart": "npm run migrate",
     "start": "node app.js",
