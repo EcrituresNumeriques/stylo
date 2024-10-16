@@ -33,10 +33,6 @@
       "label": "Projet",
       "children": [
         {
-          "label": "Actualités",
-          "url": "/fr/actualites"
-        },
-        {
           "label": "À propos",
           "url": "/fr/about"
         },
