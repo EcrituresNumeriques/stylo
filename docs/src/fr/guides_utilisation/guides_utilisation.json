@@ -28,21 +28,6 @@
             "url": "/fr/guides_utilisation/memoires"
           }
         ]
-      },
-      {
-        "label": "Langue",
-        "children": [
-          {
-            "label": "English",
-            "url": "/en/userguides",
-            "lang": "en"
-          },
-          {
-            "label": "Français",
-            "url": "/fr/guides-utilisation",
-            "lang": "fr"
-          }
-        ]
       }
     ]
 }
