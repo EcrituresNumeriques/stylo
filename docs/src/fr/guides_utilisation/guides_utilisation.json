@@ -1,0 +1,48 @@
+{
+    "sectionTitle": "Guides d'utilisation",
+    "sectionUrl": "/fr/guides_utilisation",
+    "disableSearch": false,
+    "searchIndexUrl": "/fr/search-index.json",
+    "menu": [
+      {
+        "label": "Guides d'utilisation",
+        "children": [
+          {
+            "label": "Premiers pas dans Stylo",
+            "url": "/fr/guides_utilisation/premierspas"
+          },
+          {
+            "label": "Gérer ses articles",
+            "url": "/fr/guides_utilisation/mesarticles"
+          },
+          {
+            "label": "Gérer ses métadonnées",
+            "url": "/fr/guides_utilisation/metadata"
+          },
+          {
+            "label": "Gérer sa bibliographie",
+            "url": "/fr/guides_utilisation/bibliographie"
+          },
+          {
+            "label": "Mémoires et thèses",
+            "url": "/fr/guides_utilisation/memoires"
+          }
+        ]
+      },
+      {
+        "label": "Langue",
+        "children": [
+          {
+            "label": "English",
+            "url": "/en/userguides",
+            "lang": "en"
+          },
+          {
+            "label": "Français",
+            "url": "/fr/guides-utilisation",
+            "lang": "fr"
+          }
+        ]
+      }
+    ]
+}

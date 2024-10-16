@@ -1,0 +1,36 @@
+{
+    "sectionTitle": "Foire aux questions",
+    "sectionUrl": "/fr/faq",
+    "disableSearch": false,
+    "searchIndexUrl": "/fr/search-index.json",
+    "menu": [
+      {
+        "label": "F.A.Q",
+        "children": [
+          {
+            "label": "Problèmes connus",
+            "url": "/fr/faq/problemes"
+          },
+          {
+            "label": "Contact",
+            "url": "/fr/faq/contacts"
+          }
+        ]
+      },
+      {
+        "label": "Langue",
+        "children": [
+          {
+            "label": "English",
+            "url": "/en/faq",
+            "lang": "en"
+          },
+          {
+            "label": "Français",
+            "url": "/fr/faq",
+            "lang": "fr"
+          }
+        ]
+      }
+    ]
+}
