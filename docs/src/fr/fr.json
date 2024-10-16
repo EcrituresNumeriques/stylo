@@ -9,28 +9,33 @@
   "searchIndexUrl": "/fr/search-index.json",
   "menu": [
     {
-      "label": "Actualités",
-      "url": "/fr/actualites"
-    },
-    {
-      "label": "Fonctionnalités",
-      "url": "/fr/fonctionnalites"
-    },
-    {
-      "label": "Guides d'utilisation",
-      "url": "/fr/guides_utilisation"
-    },
-    {
-      "label": "Tutoriels",
-      "url": "/fr/tutoriels"
-    },
-    {
-      "label": "F.A.Q",
-      "url": "/fr/faq"
+      "label": "Documentation",
+      "children": [
+        {
+          "label": "Fonctionnalités",
+          "url": "/fr/fonctionnalites"
+        },
+        {
+          "label": "Guides d'utilisation",
+          "url": "/fr/guides_utilisation"
+        },
+        {
+          "label": "Tutoriels",
+          "url": "/fr/tutoriels"
+        },
+        {
+          "label": "F.A.Q",
+          "url": "/fr/faq"
+        }
+      ]
     },
     {
       "label": "Projet",
       "children": [
+        {
+          "label": "Actualités",
+          "url": "/fr/actualites"
+        },
         {
           "label": "À propos",
           "url": "/fr/about"
