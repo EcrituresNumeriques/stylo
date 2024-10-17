@@ -1,28 +1,21 @@
 name: Node applications
 
 on:
-  push:
-    branches:
-    - master
-    paths:
-    - 'graphql/**'
-    - 'front/**'
-    - 'export/**'
-    - '.github/workflows/node.yml'
-  pull_request:
-    paths:
-    - 'graphql/**'
-    - 'front/**'
-    - 'export/**'
-    - '.github/workflows/node.yml'
+  workflow_call:
+    inputs:
+      app-dir:
+        type: string
+        required: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        app: [front, graphql, export]
+
+    services:
+      mongodb:
+        image: mongo:4.4
+        ports:
+        - 27017/tcp
 
     steps:
     - uses: actions/checkout@v4
@@ -31,22 +24,28 @@ jobs:
         node-version-file: .nvmrc
         cache: npm
 
-    - name: Install and test
-      working-directory: ${{ matrix.app }}
-      run: npm clean-install-test --no-audit --no-fund
+    - name: Install
+      working-directory: ${{ inputs.app-dir }}
+      run: npm clean-install --no-audit --no-fund
+
+    - name: Test
+      working-directory: ${{ inputs.app-dir }}
+      run: npm test
+      env:
+        DATABASE_URL: mongodb://127.0.0.1:${{ job.services.mongodb.ports[27017] }}/stylo
 
     - name: Coveralls
       uses: coverallsapp/github-action@v2
       with:
-        base-path: ${{ matrix.app }}
+        base-path: ${{ inputs.app-dir }}
         parallel: true
-        flag-name: run-${{ join(matrix.*, ' - ') }}
+        flag-name: run-${{ inputs.app-dir }}
 
     - name: Build (if necessary)
-      working-directory: ${{ matrix.app }}
+      working-directory: ${{ inputs.app-dir }}
       run: npm run build --if-present
 
-  finish:
+  publish-coverage-report:
     needs: build
     if: ${{ always() }}
     runs-on: ubuntu-latest

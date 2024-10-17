@@ -1,0 +1,19 @@
+name: Node `graphql` application
+
+on:
+  push:
+    branches:
+    - master
+    paths:
+    - 'graphql/**'
+    - '.github/workflows/node*.yml'
+  pull_request:
+    paths:
+    - 'graphql/**'
+    - '.github/workflows/node*.yml'
+
+jobs:
+  build:
+    uses: EcrituresNumeriques/stylo/.github/workflows/node.yml@feat/migrate-db
+    with:
+      app-dir: graphql
