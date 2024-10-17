@@ -22,10 +22,10 @@ async function checkCredentials ({ username, password }) {
     logger.error({ module: 'authentication', username }, 'Account not found for username')
     throw new Error('Unable to authenticate, please check your username and password!')
   }
-
-  if (user.authType === 'oidc') {
-    logger.error({ module: 'authentication', username }, 'OpenID Connect account must authenticate using Huma-Num')
-    throw new Error('Unable to authenticate, please connect using Huma-Num!')
+console.log(user.authTypes)
+  if (!user.authTypes.includes('local')) {
+    logger.error({ module: 'authentication', username }, 'Account without set password')
+    throw new Error('Unable to authenticate, please check your username and password!')
   }
 
   if (!(await user.comparePassword(password))) {
@@ -52,6 +52,8 @@ module.exports = {
       if(!await user.comparePassword(args.old)){
         throw new Error("Old password is incorrect");
       }
+
+      console.log(args)
 
       // set new password
       user.set('password', args.new)
