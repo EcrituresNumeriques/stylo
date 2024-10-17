@@ -38,10 +38,6 @@ const wss = new WebSocket.Server({ noServer: true })
 
 const app = express()
 
-const mongoServer = config.get('mongo.host')
-const mongoServerPort = config.get('mongo.port')
-const mongoServerDB = config.get('mongo.db')
-
 const listenPort = config.get('port')
 const origin = config.get('security.cors.origin')
 const jwtSecret = config.get('security.jwt.secret')
@@ -320,7 +316,7 @@ mongoose.set('useCreateIndex', true)
 mongoose.set('useFindAndModify', false)
 
 mongoose
-  .connect(`mongodb://${mongoServer}:${mongoServerPort}/${mongoServerDB}`)
+  .connect(config.get('mongo.databaseUrl'))
   .then(() => {
     logger.info('Listening on http://localhost:%s', listenPort)
     const server = app.listen(listenPort)

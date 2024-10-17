@@ -1,8 +1,16 @@
 const convict = require('convict')
+const assert = require('node:assert/strict')
 require('dotenv').config({ path: '../stylo.env' })
 
-convict.addFormat(require('convict-format-with-validator').url)
+const isURL = require('validator/lib/isURL')
 
+convict.addFormat(require('convict-format-with-validator').url)
+convict.addFormat({
+  name: 'mongodb-url',
+  coerce: (v) => v.toString(),
+  validate: (val) => assert.ok(isURL(val, { require_tld: false, protocols: ['mongodb', 'mongodb+srv'] }), 'must be a mongodb protocol URL')
+
+})
 /**
  * @type {convict.Config<{
  *
@@ -11,6 +19,7 @@ convict.addFormat(require('convict-format-with-validator').url)
 module.exports = convict({
   export: {
     baseUrl: {
+      default: 'http://127.0.0.1:3060',
       format: 'url',
       env: 'EXPORT_CANONICAL_BASE_URL'
     },
@@ -21,42 +30,40 @@ module.exports = convict({
     }
   },
   mongo: {
-    db: {
-      format: String,
-      env: 'MONGO_SERVER_DB'
-    },
-    host: {
-      format: 'ip',
-      env: 'MONGO_SERVER'
-    },
-    port: {
-      format: 'port',
-      env: 'MONGO_SERVER_PORT'
+    databaseUrl: {
+      default: 'mongodb://127.0.0.1:27017/stylo-dev',
+      format: 'mongodb-url',
+      env: 'DATABASE_URL'
     }
   },
   oauthProvider: {
     name: {
       format: String,
-      env: 'OPENID_CONNECT_NAME'
+      env: 'OPENID_CONNECT_NAME',
+      default: null
     },
     issuer: {
       format: 'url',
-      env: 'OPENID_CONNECT_ISSUER'
+      env: 'OPENID_CONNECT_ISSUER',
+      default: null
     },
     callbackUrl: {
       format: 'url',
-      env: 'OPENID_CONNECT_CALLBACK_URL'
+      env: 'OPENID_CONNECT_CALLBACK_URL',
+      default: null
     },
     client: {
       id: {
         format: String,
         sensitive: true,
-        env: 'OPENID_CONNECT_CLIENT_ID'
+        env: 'OPENID_CONNECT_CLIENT_ID',
+        default: null
       },
       secret: {
         format: String,
         sensitive: true,
-        env: 'OPENID_CONNECT_CLIENT_SECRET'
+        env: 'OPENID_CONNECT_CLIENT_SECRET',
+        default: null
       }
     },
     scope: {
@@ -66,15 +73,18 @@ module.exports = convict({
     auth: {
       tokenUrl: {
         format: 'url',
-        env: 'OPENID_CONNECT_TOKEN_URL'
+        env: 'OPENID_CONNECT_TOKEN_URL',
+        default: null
       },
       userInfo: {
         format: 'url',
-        env: 'OPENID_CONNECT_USER_INFO_URL'
+        env: 'OPENID_CONNECT_USER_INFO_URL',
+        default: null
       },
       url: {
         format: 'url',
-        env: 'OPENID_CONNECT_AUTH_URL'
+        env: 'OPENID_CONNECT_AUTH_URL',
+        default: null
       }
     }
   },
@@ -85,6 +95,7 @@ module.exports = convict({
   },
   securedCookie: {
     format: Boolean,
+    default: false,
     env: 'HTTPS'
   },
   security: {
@@ -99,14 +110,16 @@ module.exports = convict({
       secret: {
         format: String,
         sensitive: true,
-        env: 'JWT_SECRET_SESSION_COOKIE'
+        env: 'JWT_SECRET_SESSION_COOKIE',
+        default: null
       }
     },
     session: {
       secret: {
         format: String,
         sensitive: true,
-        env: 'SESSION_SECRET'
+        env: 'SESSION_SECRET',
+        default: null
       }
     }
   },
@@ -132,11 +145,13 @@ module.exports = convict({
         env: 'ZOTERO_AUTH_CALLBACK_URL'
       },
       clientKey: {
+        default: null,
         format: String,
         sensitive: true,
         env: 'ZOTERO_AUTH_CLIENT_KEY'
       },
       clientSecret: {
+        default: null,
         format: String,
         sensitive: true,
         env: 'ZOTERO_AUTH_CLIENT_SECRET'
