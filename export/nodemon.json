@@ -1,8 +1,0 @@
-{
-    "env": {
-        "MONGO_SERVER": "localhost",
-        "MONGO_SERVER_PORT": 27017,
-        "MONGO_SERVER_DB": "graphql",
-        "NODE_ENV": "dev"
-    }
-}
