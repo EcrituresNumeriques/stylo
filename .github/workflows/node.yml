@@ -6,14 +6,16 @@ on:
       app-dir:
         type: string
         required: true
-      database-url:
-        type: string
-        required: false
-        default: 'mongodb://localhost:27017/stylo'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:4.4
+        ports:
+        - 27017/tcp
 
     steps:
     - uses: actions/checkout@v4
@@ -26,15 +28,11 @@ jobs:
       working-directory: ${{ inputs.app-dir }}
       run: npm clean-install --no-audit --no-fund
 
-    - name: Prepare
-      working-directory: ${{ inputs.app-dir }}
-      run: npm run migrations --if-present
-      env:
-        DATABASE_URL: ${{ inputs.database-url }}
-
     - name: Test
       working-directory: ${{ inputs.app-dir }}
       run: npm test
+      env:
+        DATABASE_URL: mongodb://127.0.0.1:${{ job.services.mongodb.ports[27017] }}/stylo
 
     - name: Coveralls
       uses: coverallsapp/github-action@v2
@@ -47,7 +45,7 @@ jobs:
       working-directory: ${{ inputs.app-dir }}
       run: npm run build --if-present
 
-  finish:
+  publish-coverage-report:
     needs: build
     if: ${{ always() }}
     runs-on: ubuntu-latest

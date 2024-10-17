@@ -10,12 +10,12 @@
   },
   "scripts": {
     "generate-service-token": "node -p \"require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year' })\"",
-    "test": "jest --collectCoverage --coverageReporters html --coverageReporters text-summary --coverageReporters lcovonly --detectOpenHandles",
-    "migrations": "db-migrate up",
+    "test": "MONGO_MEMORY_SERVER_FILE=jest.config.js jest --collectCoverage --coverageReporters html --coverageReporters text-summary --coverageReporters lcovonly --detectOpenHandles",
+    "migrations": "DOTENV_CONFIG_PATH=${DOTENV_CONFIG_PATH:-../stylo.env} node -r dotenv/config ./node_modules/.bin/db-migrate up",
     "posttest": "eslint '**/*.js'",
-    "prestart": "npm run migrate",
+    "prestart": "npm run migrations",
     "start": "node app.js",
-    "preprod": "npm run migrate",
+    "preprod": "npm run migrations",
     "prod": "NODE_ENV=production node --tls-max-v1.2 --heapsnapshot-signal=SIGUSR2 app.js"
   },
   "author": "",
@@ -54,13 +54,13 @@
     "y-websocket": "^1.5.0"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^4.3.2",
     "@types/jest": "^29.2.5",
     "eslint": "^8.2.0",
     "eslint-plugin-jest": "^27.2.0",
     "eslint-plugin-security": "^1.5.0",
     "jest": "^29.3.1",
-    "jest-environment-node": "^29.3.1",
-    "mongodb-memory-server": "^8.11.0"
+    "jest-environment-node": "^29.3.1"
   },
   "volta": {
     "node": "18.20.4",

@@ -17,4 +17,3 @@ jobs:
     uses: EcrituresNumeriques/stylo/.github/workflows/node.yml@feat/migrate-db
     with:
       app-dir: graphql
-      database-url: mongodb://localhost:27017/stylo

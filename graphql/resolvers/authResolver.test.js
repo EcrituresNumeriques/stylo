@@ -1,17 +1,10 @@
-/**
- * @jest-environment ./jest/in-memory-mongodb-environment.js
- */
-const mongoose = require('mongoose')
 const { checkCredentials } = require('./authResolver')
 const User = require('../models/user')
-
-beforeAll(() => {
-  globalThis.mongoose = mongoose
-})
+const db = User.db
 
 describe('auth resolver', () => {
   test('authenticate using username + password', async () => {
-    globalThis.mongoose.connection.db.collection('users').createIndex({ username: 1 }, { unique: true, sparse: true })
+    db.collection('users').createIndex({ username: 1 }, { unique: true, sparse: true })
     await User.create({
       email: 'guillaume@domain.org',
       username: 'ggrossetie',
@@ -30,7 +23,7 @@ describe('auth resolver', () => {
     })
   })
   test('authenticate using email + password', async () => {
-    globalThis.mongoose.connection.db.collection('users').createIndex({ username: 1 }, { unique: true, sparse: true })
+    db.collection('users').createIndex({ username: 1 }, { unique: true, sparse: true })
     await User.create({
       email: 'guillaume@domain.org',
       username: 'ggrossetie',
@@ -49,7 +42,7 @@ describe('auth resolver', () => {
     })
   })
   test('authenticate using displayName + password', async () => {
-    globalThis.mongoose.connection.db.collection('users').createIndex({ username: 1 }, { unique: true, sparse: true })
+    db.collection('users').createIndex({ username: 1 }, { unique: true, sparse: true })
     await User.create({
       email: 'thomas@domain.org',
       displayName: 'thomas',
@@ -66,7 +59,7 @@ describe('auth resolver', () => {
     })
   })
   test('authenticate using displayName when username is defined + password', async () => {
-    globalThis.mongoose.connection.db.collection('users').createIndex({ username: 1 }, { unique: true, sparse: true })
+    db.collection('users').createIndex({ username: 1 }, { unique: true, sparse: true })
     await User.create({
       email: 'thomas@domain.org',
       username: 'tparisot',
@@ -89,7 +82,7 @@ describe('auth resolver', () => {
     })
   })
   test('duplicate username', async () => {
-    globalThis.mongoose.connection.db.collection('users').createIndex({ username: 1 }, { unique: true, sparse: true })
+    db.collection('users').createIndex({ username: 1 }, { unique: true, sparse: true })
     await User.create({
       email: 'thomas@domain.org',
       username: 'bob',
@@ -103,10 +96,10 @@ describe('auth resolver', () => {
       displayName: 'Guillaume Grossetie',
       password: 'pa$$w0rd',
       authType: 'local',
-    })).rejects.toThrow('E11000 duplicate key error collection: test.users index: username_1 dup key: { username: "bob" }')
+    })).rejects.toThrow('E11000 duplicate key error collection: stylo-tests.users index: username_1 dup key: { username: "bob" }')
   })
   test('missing username', async () => {
-    globalThis.mongoose.connection.db.collection('users').createIndex({ username: 1 }, { unique: true, sparse: true })
+    db.collection('users').createIndex({ username: 1 }, { unique: true, sparse: true })
     await User.create({
       email: 'thomas@domain.org',
       displayName: 'Thomas Parisot',

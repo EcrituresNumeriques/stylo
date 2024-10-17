@@ -1,17 +1,15 @@
 exports.up = async function (db) {
-  const mongo = await db._run("getDbInstance")
-  const cursor = mongo.collection('articles').find({})
+  const articles = await db._find('articles', {})
 
-  while (await cursor.hasNext()) {
-    const article = await cursor.next()
+  for await (const article of articles) {
     const latestVersionId = article.versions.slice(-1)[0]
 
     if (typeof article.workingVersion === 'undefined') {
       if (latestVersionId) {
-        const latestVersion = await db.versions.findOne({ _id: latestVersionId })
-        await db.articles.updateOne(
-          { _id: article._id },
-          {
+        const [latestVersion] = await db._find('versions', { _id: latestVersionId })
+        await db._run('update', 'articles', {
+          query: { _id: article._id },
+          update: {
             $set: {
               workingVersion: {
                 bib: latestVersion.bib,
@@ -20,15 +18,14 @@ exports.up = async function (db) {
               },
             },
           },
-          { upsert: false }
-        )
+          options: { upsert: false }
+        })
+
         // if the latest version is "autosave", remove!
-        await db.versions.remove({ _id: latestVersionId, autosave: true })
+        await db.collections('versions').deleteOne({ _id: latestVersionId, autosave: true })
       }
     }
   }
-
-  return mongo.close()
 }
 
 exports.down = function () {

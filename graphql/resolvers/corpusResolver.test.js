@@ -1,15 +1,7 @@
-/**
- * @jest-environment ./jest/in-memory-mongodb-environment.js
- */
-const mongoose = require('mongoose')
 const { Query, Corpus: CorpusMutation } = require('./corpusResolver')
 const Corpus = require('../models/corpus')
 const User = require('../models/user')
 const Article = require('../models/article')
-
-beforeAll(() => {
-  globalThis.mongoose = mongoose
-})
 
 describe('corpus resolver', () => {
   test('add an article to an existing corpus', async () => {

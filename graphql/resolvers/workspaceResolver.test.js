@@ -1,16 +1,8 @@
-/**
- * @jest-environment ./jest/in-memory-mongodb-environment.js
- */
-const mongoose = require('mongoose')
-const { ObjectId } = mongoose.Types
+const { ObjectId } = require('mongoose').Types
 const { Query, Mutation: RootMutation, Workspace: WorkspaceMutation } = require('./workspaceResolver')
 const Workspace = require('../models/workspace')
 const User = require('../models/user')
 const Article = require('../models/article')
-
-beforeAll(() => {
-  globalThis.mongoose = mongoose
-})
 
 describe('workspace resolver', () => {
   test('create a workspace', async () => {
