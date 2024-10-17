@@ -2,7 +2,7 @@
   "name": "graphql-stylo",
   "version": "3.1.5",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "private": true,
   "engines": {
     "node": ">=18",

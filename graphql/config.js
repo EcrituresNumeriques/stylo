@@ -1,8 +1,16 @@
 const convict = require('convict')
+const assert = require('node:assert/strict')
 require('dotenv').config({ path: ['.env', '../.env'] })
 
-convict.addFormat(require('convict-format-with-validator').url)
+const isURL = require('validator/lib/isURL')
 
+convict.addFormat(require('convict-format-with-validator').url)
+convict.addFormat({
+  name: 'mongodb-url',
+  coerce: (v) => v.toString(),
+  validate: (val) => assert.ok(isURL(val, { require_tld: false, protocols: ['mongodb', 'mongodb+srv'] }), 'must be a mongodb protocol URL')
+
+})
 /**
  * @type {convict.Config<{
  *
@@ -22,32 +30,22 @@ module.exports = convict({
     }
   },
   mongo: {
-    db: {
-      format: String,
-      env: 'MONGO_SERVER_DB',
-      default: 'stylo-dev'
-    },
-    host: {
-      format: String,
-      env: 'MONGO_SERVER',
-      default: '127.0.0.1'
-    },
-    port: {
-      format: 'port',
-      env: 'MONGO_SERVER_PORT',
-      default: '27017'
+    databaseUrl: {
+      default: 'mongodb://127.0.0.1:27017/stylo-dev',
+      format: 'mongodb-url',
+      env: 'DATABASE_URL'
     }
   },
   oauthProvider: {
     name: {
       format: String,
       env: 'OPENID_CONNECT_NAME',
-      default: null,
+      default: null
     },
     issuer: {
       format: 'url',
       env: 'OPENID_CONNECT_ISSUER',
-      default: null,
+      default: null
     },
     callbackUrl: {
       format: 'url',
@@ -76,12 +74,12 @@ module.exports = convict({
       tokenUrl: {
         format: 'url',
         env: 'OPENID_CONNECT_TOKEN_URL',
-        default: null,
+        default: null
       },
       userInfo: {
         format: 'url',
         env: 'OPENID_CONNECT_USER_INFO_URL',
-        default: null,
+        default: null
       },
       url: {
         format: 'url',
@@ -113,7 +111,7 @@ module.exports = convict({
         format: String,
         sensitive: true,
         env: 'JWT_SECRET_SESSION_COOKIE',
-        default: null,
+        default: null
       }
     },
     session: {
