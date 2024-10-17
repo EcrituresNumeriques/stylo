@@ -11,11 +11,11 @@
   "scripts": {
     "generate-service-token": "node -p \"require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year' })\"",
     "test": "jest --collectCoverage --coverageReporters html --coverageReporters text-summary --coverageReporters lcovonly --detectOpenHandles",
-    "migrations": "db-migrate up",
+    "migrations": "DOTENV_CONFIG_PATH=${DOTENV_CONFIG_PATH:-../stylo.env} node -r dotenv/config ./node_modules/.bin/db-migrate up",
     "posttest": "eslint '**/*.js'",
-    "prestart": "npm run migrate",
+    "prestart": "npm run migrations",
     "start": "node app.js",
-    "preprod": "npm run migrate",
+    "preprod": "npm run migrations",
     "prod": "NODE_ENV=production node --tls-max-v1.2 --heapsnapshot-signal=SIGUSR2 app.js"
   },
   "author": "",

@@ -50,6 +50,7 @@ const colours = {
   'gold': '#ffd700',
   'goldenrod': '#daa520',
   'gray': '#808080',
+  'grey': '#808080',
   'green': '#008000',
   'greenyellow': '#adff2f',
   'honeydew': '#f0fff0',
@@ -142,45 +143,32 @@ const colours = {
   'yellowgreen': '#9acd32'
 }
 
-const conn = Mongo()
-const session = conn.startSession()
+exports.up = async function (db) {
+  const tags = await db._find('tags', {})
 
-session.startTransaction()
+  for await (const tag of tags) {
+    let color
 
-const cursor = db.tags.find({})
-while (cursor.hasNext()) {
-  const tag = cursor.next()
-  if (tag.color && tag.color.charAt(0) !== '#') {
-    db.tags.updateOne(
-      { _id: tag._id },
-      {
-        $set: {
-          color: colours[tag.color] || '#eeeeee',
+    if (tag.color && tag.color.charAt(0) !== '#') {
+      color = colours[tag.color] || '#eeeeee'
+    } else if (tag.color && tag.color.length < 7) {
+      color = '#cccccc'
+    } else if (!tag.color) {
+      color = '#eeeeee'
+    }
+
+    if (color) {
+      await db._run('update', 'tags', {
+        query: { _id: tag._id },
+        update: {
+          $set: { color }
         },
-      },
-      { upsert: false }
-    )
-  } else if (tag.color && tag.color.length < 7) {
-    db.tags.updateOne(
-      { _id: tag._id },
-      {
-        $set: {
-          color: '#cccccc',
-        },
-      },
-      { upsert: false }
-    )
-  } else if (!tag.color) {
-    db.tags.updateOne(
-      { _id: tag._id },
-      {
-        $set: {
-          color: '#eeeeee',
-        },
-      },
-      { upsert: false }
-    )
+        options: { upsert: false }
+      })
+    }
   }
 }
 
-session.commitTransaction()
+exports.down = function () {
+  return null
+}
