@@ -4,6 +4,7 @@ const os = require('node:os')
 const util = require('node:util')
 const exec = util.promisify(require('node:child_process').exec)
 
+const config = require('./config.js')
 const archiver = require('archiver')
 
 const { logger } = require('./logger')
@@ -11,7 +12,7 @@ const { FindByIdNotFoundError } = require('./helpers/errors')
 const { normalize } = require('./helpers/filename')
 const { getArticleById, getVersionById, getCorpusById } = require('./graphql')
 
-const canonicalBaseUrl = process.env.EXPORT_CANONICAL_BASE_URL
+const canonicalBaseUrl = config.get('export.canonicalBaseUrl')
 
 const exportZip = async ({ bib, yaml, md, id, versionId, title }, res, _) => {
   const filename = `${normalize(title)}.zip`
