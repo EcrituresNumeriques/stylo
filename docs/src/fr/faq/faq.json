@@ -16,6 +16,21 @@
             "url": "/fr/faq/contacts"
           }
         ]
+      },
+      {
+        "label": "Langue",
+        "children": [
+          {
+            "label": "English",
+            "url": "/en/faq",
+            "lang": "en"
+          },
+          {
+            "label": "Français",
+            "url": "/fr/faq",
+            "lang": "fr"
+          }
+        ]
       }
     ]
 }

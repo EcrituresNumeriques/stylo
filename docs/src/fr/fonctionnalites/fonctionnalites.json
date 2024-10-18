@@ -32,6 +32,21 @@
             "url": "/fr/fonctionnalites/versionner"
           }
         ]
+      },
+      {
+        "label": "Langue",
+        "children": [
+          {
+            "label": "English",
+            "url": "/en/features",
+            "lang": "en"
+          },
+          {
+            "label": "Français",
+            "url": "/fr/fonctionnalites",
+            "lang": "fr"
+          }
+        ]
       }
     ]
 }
