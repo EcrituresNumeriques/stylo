@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stylo.huma-num.fr/metadata.schema.json",
+  "title": "Metadata",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "book",
+        "journal"
+      ]
+    },
+    "publication": {
+      "type": "object",
+      "discriminator": {
+        "propertyName": "type"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/book"
+        },
+        {
+          "$ref": "#/$defs/journal"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "book": {
+      "type": "object"
+    },
+    "journal": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "issue": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "identifier": {
+              "type": "string"
+            },
+            "number": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
