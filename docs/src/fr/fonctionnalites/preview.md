@@ -1,5 +1,5 @@
 ---
-title: Prévisualiser et annoter un article
+title: "Prévisualiser et annoter un article"
 ---
 
 ## Prévisualisation

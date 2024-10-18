@@ -1,0 +1,29 @@
+{
+    "sectionTitle": "Tutoriels",
+    "sectionUrl": "/fr/tutoriels",
+    "disableSearch": false,
+    "searchIndexUrl": "/fr/search-index.json",
+    "menu": [
+      {
+        "label": "Tutoriels",
+        "children": [
+          {
+            "label": "Écrire en Markdown",
+            "url": "/fr/tutoriels/syntaxemarkdown"
+          },
+          {
+            "label": "Écrire en YAML",
+            "url": "/fr/tutoriels/syntaxe-yaml"
+          },
+          {
+            "label": "Écrire en BibTeX",
+            "url": "/fr/tutoriels/syntaxe-bibtex"
+          },
+          {
+            "label": "Écrire des requêtes GraphQL",
+            "url": "/fr/tutoriels/api-graphql"
+          }
+        ]
+      }
+    ]
+}

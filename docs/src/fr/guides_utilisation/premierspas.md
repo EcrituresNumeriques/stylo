@@ -1,5 +1,5 @@
 ---
-title: Pour commencer avec Stylo
+title: "Pour commencer avec Stylo"
 ---
 
 ## Création d'un compte

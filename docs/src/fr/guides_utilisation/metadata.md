@@ -1,5 +1,5 @@
 ---
-title: Gérer ses métadonnées
+title: "Gérer ses métadonnées"
 ---
 
 Comme nous l'avons vu précédemment, les métadonnées des documents créés dans Stylo sont sérialisées en YAML.
