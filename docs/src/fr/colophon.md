@@ -1,5 +1,5 @@
 ---
-title: À propos de _Stylo_
+title: "Colophon"
 useSideMenu: true
 ---
 

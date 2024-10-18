@@ -1,5 +1,6 @@
 ---
-title: Structurer la bibliographie
+title: "Structurer la bibliographie"
+date: Last modified
 ---
 
 La bibliographie liste les références bibliographiques que vous avez ajoutées à votre article. Pour ajouter vos références, vous devez cliquer sur **\[Manage\]** dans le volet latéral de gauche, à droite de l’onglet *Bibliography*. L'outil *Bibliography Manager* s'ouvre alors et vous propose plusieurs possibilités :

@@ -5,7 +5,7 @@
     "searchIndexUrl": "/fr/search-index.json",
     "menu": [
       {
-        "label": "F.A.Q",
+        "label": "FAQ",
         "children": [
           {
             "label": "Problèmes connus",
@@ -14,21 +14,6 @@
           {
             "label": "Contact",
             "url": "/fr/faq/contacts"
-          }
-        ]
-      },
-      {
-        "label": "Langue",
-        "children": [
-          {
-            "label": "English",
-            "url": "/en/faq",
-            "lang": "en"
-          },
-          {
-            "label": "Français",
-            "url": "/fr/faq",
-            "lang": "fr"
           }
         ]
       }

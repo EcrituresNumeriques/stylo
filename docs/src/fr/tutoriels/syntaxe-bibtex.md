@@ -1,5 +1,5 @@
 ---
-title: La syntaxe BibTeX
+title: "La syntaxe BibTeX"
 ---
 
 BibTeX est le format (`.bib`) qui accompagne l'un des plus anciens programme de gestion des références bibliographiques portant le même nom.

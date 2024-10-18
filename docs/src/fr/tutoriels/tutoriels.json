@@ -24,21 +24,6 @@
             "url": "/fr/tutoriels/api-graphql"
           }
         ]
-      },
-      {
-        "label": "Langue",
-        "children": [
-          {
-            "label": "English",
-            "url": "/en/tutorials",
-            "lang": "en"
-          },
-          {
-            "label": "Français",
-            "url": "/fr/tutoriels",
-            "lang": "fr"
-          }
-        ]
       }
     ]
 }

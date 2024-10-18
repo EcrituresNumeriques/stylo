@@ -51,7 +51,7 @@ module.exports = function(eleventyConfig) {
   });
 
   // Empêche le comportement par défaut d'eleventy de faire un merge sur les données d'un tableau
-  eleventyConfig.setDataDeepMerge(false);
+  eleventyConfig.setDataDeepMerge(true);
 
   // Collections
   // Tous les contenus sous /fr

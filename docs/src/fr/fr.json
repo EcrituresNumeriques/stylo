@@ -3,11 +3,29 @@
   "lang": "fr",
   "description": "Stylo est un éditeur de texte simplifiant la rédaction et l'édition d'articles scientifiques en Sciences Humaines et Sociales.",
   "rights": "Licence <a href=\"https://creativecommons.org/licenses/by-sa/4.0/\">Creative Commons [CC BY-SA 4.0]</a> – Chaire de recherche du Canada sur les écritures numériques",
+  "sources": "<a href=\"https://github.com/EcrituresNumeriques/stylo/\">Github</a>",
+  "contact": "<a href=\"/fr/faq/contacts/\">Contactez-nous</a>",
+  "colophon": "<a href=\"/fr/colophon\">Colophon</a>",
   "sectionTitle": "Documentation",
   "sectionUrl": "/fr",
   "disableSearch": false,
   "searchIndexUrl": "/fr/search-index.json",
   "menu": [
+    {
+      "label": "Langue",
+      "children": [
+        {
+          "label": "Anglais",
+          "url": "/en",
+          "lang": "en"
+        },
+        {
+          "label": "Français",
+          "url": "/fr",
+          "lang": "fr"
+        }
+      ]
+    },
     {
       "label": "Documentation",
       "children": [
@@ -24,40 +42,8 @@
           "url": "/fr/tutoriels"
         },
         {
-          "label": "F.A.Q",
+          "label": "FAQ",
           "url": "/fr/faq"
-        }
-      ]
-    },
-    {
-      "label": "Projet",
-      "children": [
-        {
-          "label": "À propos",
-          "url": "/fr/about"
-        },
-        {
-          "label": "Sources",
-          "url": "/fr/sources"
-        },
-        {
-          "label": "Publications",
-          "url": "/fr/publications"
-        }
-      ]
-    },
-    {
-      "label": "Langue",
-      "children": [
-        {
-          "label": "English",
-          "url": "/en",
-          "lang": "en"
-        },
-        {
-          "label": "Français",
-          "url": "/fr",
-          "lang": "fr"
         }
       ]
     }
