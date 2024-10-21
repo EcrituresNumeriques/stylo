@@ -22,38 +22,46 @@ module.exports = convict({
   },
   mongo: {
     db: {
+      default: 'stylo-dev',
       format: String,
       env: 'MONGO_SERVER_DB'
     },
     host: {
+      default: '127.0.0.1',
       format: 'ip',
       env: 'MONGO_SERVER'
     },
     port: {
+      default: '27027',
       format: 'port',
       env: 'MONGO_SERVER_PORT'
     }
   },
   oauthProvider: {
     name: {
+      default: '',
       format: String,
       env: 'OPENID_CONNECT_NAME'
     },
     issuer: {
+      default: '',
       format: 'url',
       env: 'OPENID_CONNECT_ISSUER'
     },
     callbackUrl: {
+      default: '',
       format: 'url',
       env: 'OPENID_CONNECT_CALLBACK_URL'
     },
     client: {
       id: {
+        default: '',
         format: String,
         sensitive: true,
         env: 'OPENID_CONNECT_CLIENT_ID'
       },
       secret: {
+        default: '',
         format: String,
         sensitive: true,
         env: 'OPENID_CONNECT_CLIENT_SECRET'
@@ -66,15 +74,18 @@ module.exports = convict({
     auth: {
       tokenUrl: {
         format: 'url',
-        env: 'OPENID_CONNECT_TOKEN_URL'
+        env: 'OPENID_CONNECT_TOKEN_URL',
+        default: '',
       },
       userInfo: {
         format: 'url',
-        env: 'OPENID_CONNECT_USER_INFO_URL'
+        env: 'OPENID_CONNECT_USER_INFO_URL',
+        default: '',
       },
       url: {
         format: 'url',
-        env: 'OPENID_CONNECT_AUTH_URL'
+        env: 'OPENID_CONNECT_AUTH_URL',
+        default: ''
       }
     }
   },
