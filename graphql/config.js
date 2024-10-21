@@ -85,7 +85,8 @@ module.exports = convict({
   },
   securedCookie: {
     format: Boolean,
-    env: 'HTTPS'
+    env: 'HTTPS',
+    default: false
   },
   security: {
     cors: {
