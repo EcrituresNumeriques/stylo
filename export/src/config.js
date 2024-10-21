@@ -21,7 +21,7 @@ module.exports = convict({
       default: 'http://localhost:3030/graphql'
     },
     passthroughToken: {
-      format: 'string',
+      format: String,
       sensitive: true,
       env: 'SE_GRAPHQL_TOKEN',
       default: null
@@ -30,7 +30,7 @@ module.exports = convict({
   export: {
     // legacy option
     canonicalBaseUrl: {
-      format: 'url',
+      format: String,
       env: 'EXPORT_CANONICAL_BASE_URL',
       default: 'http://127.0.0.1:3060'
     },

@@ -11,7 +11,7 @@ convict.addFormat(require('convict-format-with-validator').url)
 module.exports = convict({
   export: {
     baseUrl: {
-      format: 'url',
+      format: String,
       env: 'EXPORT_CANONICAL_BASE_URL',
       default: 'http://127.0.0.1:3060'
     },
