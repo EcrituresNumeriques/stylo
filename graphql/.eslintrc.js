@@ -15,7 +15,7 @@ module.exports = {
   rules: {},
   overrides: [
     {
-      files: '**/*.test.js',
+      files: ['**/*.test.js', './tests/*.js'],
       plugins: ['jest'],
       env: {
         'jest/globals': true
