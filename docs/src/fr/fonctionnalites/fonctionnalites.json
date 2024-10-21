@@ -1,0 +1,41 @@
+{
+    "sectionTitle": "Fonctionnalités",
+    "sectionUrl": "/fr/fonctionnalites",
+    "disableSearch": false,
+    "searchIndexUrl": "/fr/search-index.json",
+    "menu": [
+      {
+        "label": "Fonctionnalités",
+        "children": [
+          {
+            "label": "Corpus",
+            "url": "/fr/fonctionnalites/corpus"
+          },
+          {
+            "label": "Éditeur Monaco",
+            "url": "/fr/fonctionnalites/editeur-monaco"
+          },
+          {
+            "label": "Édition collaborative",
+            "url": "/fr/fonctionnalites/edition-collaborative"
+          },
+          {
+            "label": "Espace de travail",
+            "url": "/fr/fonctionnalites/espace-de-travail"
+          },
+          {
+            "label": "Exports",
+            "url": "/fr/fonctionnalites/exports"
+          },
+          {
+            "label": "Prévisualisation",
+            "url": "/fr/fonctionnalites/preview"
+          },
+          {
+            "label": "Versionner",
+            "url": "/fr/fonctionnalites/versionner"
+          }
+        ]
+      }
+    ]
+}

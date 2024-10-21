@@ -1,5 +1,5 @@
 ---
-title: Versionner ses documents
+title: "Versionner ses documents"
 ---
 
 ## Introduction
