@@ -31,7 +31,7 @@
     },
     {
       "title": "Diffusion",
-      "fields": ["publisher", "journal"]
+      "fields": ["publisher", "journal", "journal_email"]
     },
     {
       "fields": ["director"]
@@ -102,6 +102,9 @@
     "ui:title": "Journal issue",
     "ui:placeholder": "Journal issue"
   },
+  "biography": {
+    "ui:widget": "textarea"
+  },
   "authors": {
     "ui:add-item-title": "Ajouter un author",
     "ui:remove-item-title": "Supprimer",
@@ -123,6 +126,9 @@
   },
   "journal": {
     "ui:title": "Journal"
+  },
+  "journal_email": {
+    "ui:title": "Journal's email"
   },
   "abstract": {
     "ui:title": "Résumés",
@@ -201,8 +207,7 @@
     "ui:remove-item-title": "Supprimer",
     "items": {
       "text_f": {
-        "ui:title": "Title",
-        "ui:widget": "textarea"
+        "ui:title": "Title"
       },
       "lang": {
         "ui:title": "Language",
