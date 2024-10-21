@@ -1,6 +1,7 @@
 const { gql, GraphQLClient, ClientError } = require('graphql-request')
 const { FindByIdNotFoundError } = require('./helpers/errors')
 const { logger } = require('./logger')
+const config = require('./config.js')
 
 let graphQLClient = null
 
