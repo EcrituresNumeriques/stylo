@@ -12,59 +12,60 @@ module.exports = convict({
   export: {
     baseUrl: {
       format: 'url',
-      env: 'EXPORT_CANONICAL_BASE_URL'
+      env: 'EXPORT_CANONICAL_BASE_URL',
+      default: 'http://127.0.0.1:3060'
     },
     urlEndpoint: {
-      default: 'http://127.0.0.1:3080',
       format: 'url',
-      env: 'SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT'
+      env: 'SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT',
+      default: 'http://127.0.0.1:3080'
     }
   },
   mongo: {
     db: {
-      default: 'stylo-dev',
       format: String,
-      env: 'MONGO_SERVER_DB'
+      env: 'MONGO_SERVER_DB',
+      default: 'stylo-dev'
     },
     host: {
-      default: '127.0.0.1',
       format: String,
-      env: 'MONGO_SERVER'
+      env: 'MONGO_SERVER',
+      default: '127.0.0.1'
     },
     port: {
-      default: '27027',
       format: 'port',
-      env: 'MONGO_SERVER_PORT'
+      env: 'MONGO_SERVER_PORT',
+      default: '27027'
     }
   },
   oauthProvider: {
     name: {
-      default: '',
       format: String,
-      env: 'OPENID_CONNECT_NAME'
+      env: 'OPENID_CONNECT_NAME',
+      default: null,
     },
     issuer: {
-      default: '',
       format: 'url',
-      env: 'OPENID_CONNECT_ISSUER'
+      env: 'OPENID_CONNECT_ISSUER',
+      default: null,
     },
     callbackUrl: {
-      default: '',
       format: 'url',
-      env: 'OPENID_CONNECT_CALLBACK_URL'
+      env: 'OPENID_CONNECT_CALLBACK_URL',
+      default: 'http://localhost:3000/authorization-code/callback'
     },
     client: {
       id: {
-        default: '',
         format: String,
         sensitive: true,
-        env: 'OPENID_CONNECT_CLIENT_ID'
+        env: 'OPENID_CONNECT_CLIENT_ID',
+        default: null
       },
       secret: {
-        default: '',
         format: String,
         sensitive: true,
-        env: 'OPENID_CONNECT_CLIENT_SECRET'
+        env: 'OPENID_CONNECT_CLIENT_SECRET',
+        default: null
       }
     },
     scope: {
@@ -75,24 +76,24 @@ module.exports = convict({
       tokenUrl: {
         format: 'url',
         env: 'OPENID_CONNECT_TOKEN_URL',
-        default: '',
+        default: null,
       },
       userInfo: {
         format: 'url',
         env: 'OPENID_CONNECT_USER_INFO_URL',
-        default: '',
+        default: null,
       },
       url: {
         format: 'url',
         env: 'OPENID_CONNECT_AUTH_URL',
-        default: ''
+        default: null
       }
     }
   },
   port: {
-    default: 3030,
     format: 'port',
-    env: 'PORT'
+    env: 'PORT',
+    default: 3030
   },
   securedCookie: {
     format: Boolean,
@@ -111,47 +112,52 @@ module.exports = convict({
       secret: {
         format: String,
         sensitive: true,
-        env: 'JWT_SECRET_SESSION_COOKIE'
+        env: 'JWT_SECRET_SESSION_COOKIE',
+        default: null,
       }
     },
     session: {
       secret: {
         format: String,
         sensitive: true,
-        env: 'SESSION_SECRET'
+        env: 'SESSION_SECRET',
+        default: null
       }
     }
   },
   zotero: {
     accessPoint: {
-      default: 'https://www.zotero.org/oauth/access',
       format: 'url',
-      env: 'ZOTERO_ACCESS_TOKEN_ENDPOINT'
+      env: 'ZOTERO_ACCESS_TOKEN_ENDPOINT',
+      default: 'https://www.zotero.org/oauth/access'
     },
     authorize: {
-      default: 'https://www.zotero.org/oauth/authorize',
       format: 'url',
-      env: 'ZOTERO_AUTHORIZE_ENDPOINT'
+      env: 'ZOTERO_AUTHORIZE_ENDPOINT',
+      default: 'https://www.zotero.org/oauth/authorize'
     },
     requestToken: {
-      default: 'https://www.zotero.org/oauth/request',
       format: 'url',
-      env: 'ZOTERO_REQUEST_TOKEN_ENDPOINT'
+      env: 'ZOTERO_REQUEST_TOKEN_ENDPOINT',
+      default: 'https://www.zotero.org/oauth/request'
     },
     auth: {
       callbackUrl: {
         format: 'url',
-        env: 'ZOTERO_AUTH_CALLBACK_URL'
+        env: 'ZOTERO_AUTH_CALLBACK_URL',
+        default: 'http://localhost:3030/authorization-code/zotero/callback'
       },
       clientKey: {
         format: String,
         sensitive: true,
-        env: 'ZOTERO_AUTH_CLIENT_KEY'
+        env: 'ZOTERO_AUTH_CLIENT_KEY',
+        default: null
       },
       clientSecret: {
         format: String,
         sensitive: true,
-        env: 'ZOTERO_AUTH_CLIENT_SECRET'
+        env: 'ZOTERO_AUTH_CLIENT_SECRET',
+        default: null
       }
     }
   }
