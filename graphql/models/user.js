@@ -71,8 +71,18 @@ const userSchema = new Schema({
   }
 }, { timestamps: true });
 
-userSchema.methods.comparePassword = function (password) {
-  return bcrypt.compare(password, this.password)
+/**
+ * Compare an existing password against a user input one.
+ *
+ * There is a possibility the initial password is not set.
+ * If that's the case, we compare the login password to itself.
+ *
+ * @param {String} password
+ * @returns {Boolean}
+ */
+userSchema.methods.comparePassword = async function (password) {
+  const oldPassword = this.password ?? bcrypt.hashSync(password, 10)
+  return bcrypt.compare(password, oldPassword)
 }
 
 userSchema.methods.createDefaultArticle = async function createDefaultArticle () {
@@ -92,6 +102,17 @@ userSchema.methods.createDefaultArticle = async function createDefaultArticle ()
   this.articles.push(newArticle)
   return this.save()
 }
+
+userSchema.virtual('authTypes').get(function() {
+  const types = new Set()
+  types.add(this.authType)
+
+  if (this.password) {
+    types.add('local')
+  }
+
+  return Array.from(types)
+})
 
 module.exports = mongoose.model('User', userSchema)
 module.exports.schema = userSchema

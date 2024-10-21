@@ -73,13 +73,15 @@ export default defineConfig(async ({ mode }) => {
     test: {
       coverage: {
         reporter: ['text', 'html', 'lcovonly'],
+        extension: ['.js', '.jsx'],
+        exclude: [
+          '**/build/**',
+          '**/public/**',
+          '**/*.config.*',
+          '**/{tests,bin}/*',
+        ]
       },
       environment: 'jsdom',
-      exclude: [
-        'build/**',
-        'public/**',
-        'node_modules/**'
-      ],
       setupFiles: ['./tests/setup.js']
     }
   }
