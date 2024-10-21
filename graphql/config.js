@@ -28,7 +28,7 @@ module.exports = convict({
     },
     host: {
       default: '127.0.0.1',
-      format: 'ip',
+      format: 'string',
       env: 'MONGO_SERVER'
     },
     port: {
