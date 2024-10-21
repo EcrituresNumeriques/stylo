@@ -4,4 +4,7 @@ import '@testing-library/jest-dom/vitest'
 
 vi.mock('react-router-dom')
 
+// mock Fetch requests
+globalThis.fetch = vi.fn()
+
 afterEach(() => cleanup())
