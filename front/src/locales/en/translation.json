@@ -179,5 +179,21 @@
   "workingVersion.stateUiProps.savingText": "Saving",
   "workingVersion.stateUiProps.saveErrorText": "Error",
   "workingVersion.spanWorkingCopy.text": "working copy",
-  "workingVersion.by.text": "by"
+  "workingVersion.by.text": "by",
+  "article.metadata.title": "Title",
+  "article.metadata.subtitle": "Subtitle",
+  "article.metadata.surtitle": "Surtitle",
+  "article.metadata.language": "Language",
+  "article.metadata.language.placeholder": "Select a language",
+  "article.metadata.license": "License",
+  "article.metadata.license.placeholder": "License",
+  "article.metadata.journalIssue": "Journal issue",
+  "article.metadata.journalIssue.placeholder": "Journal issue",
+  "article.metadata.acknowledgements": "Acknowledgements",
+  "article.metadata.acknowledgements.title": "Acknowledgements",
+  "article.metadata.bibliography.title": "Bibliography",
+  "article.metadata.bibliographyDisplay": "Display",
+  "article.metadata.bibliographyDisplay.all": "All citations",
+  "article.metadata.bibliographyDisplay.onlyUsed": "Only used",
+  "article.metadata.authors": "Authors"
 }
