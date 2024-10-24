@@ -1,5 +1,5 @@
 ---
-title: Mémoires et thèses
+title: "Mémoires et thèses"
 ---
 
 Stylo permet de créer des documents plus complexes que de simples articles, tels que des mémoires ou des thèses ; cette fonctionnalité s'appelle **Corpus**.

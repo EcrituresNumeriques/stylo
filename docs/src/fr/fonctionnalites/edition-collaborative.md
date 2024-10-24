@@ -1,5 +1,5 @@
 ---
-title: L'édition collaborative synchrone
+title: "L'édition collaborative synchrone"
 ---
 
 ## Les pré-requis pour l'écriture synchrone

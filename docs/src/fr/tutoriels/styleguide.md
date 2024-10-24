@@ -1,5 +1,5 @@
 ---
-title: Guide de style
+title: "Guide de style"
 lang: fr
 sectionTitle: Guide de style
 isHome: true

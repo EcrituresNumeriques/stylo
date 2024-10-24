@@ -1,5 +1,5 @@
 ---
-title: L'éditeur de texte Monaco
+title: "L'éditeur de texte Monaco"
 ---
 
 L'éditeur de texte, pièce centrale de Stylo, a été remplacé par l'éditeur de texte [Monaco](https://microsoft.github.io/monaco-editor/).

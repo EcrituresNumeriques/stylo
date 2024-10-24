@@ -13,6 +13,18 @@ Usage:
     class="document-footer__rights"
     @html="$data.rights"
   ></div>
+  <div
+    class="document-footer__rights"
+    @html="$data.contact"
+  ></div>
+  <div
+    class="document-footer__rights"
+    @html="$data.sources"
+  ></div>
+    <div
+    class="document-footer__rights"
+    @html="$data.colophon"
+  ></div>
 </div>
 
 <style webc:scoped>
