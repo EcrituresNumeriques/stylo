@@ -1,7 +1,7 @@
 export function getApplicationConfig(defaultValues) {
   return fetch(`/config.json`).then(response => {
     // this is the path taken when config is server-side generated
-    if (response.ok) {
+    if (response.ok && response.headers.get('content-type') === 'application/json') {
       return response.json()
     }
 
