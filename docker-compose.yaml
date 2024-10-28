@@ -38,7 +38,7 @@ services:
       context: ./export/
       labels:
         - org.opencontainers.image.source=https://github.com/EcrituresNumeriques/stylo
-    container_name: "export-stylo"
+    container_name: "export-stylo"  # export-stylo-legacy
     image: "ghcr.io/ecrituresnumeriques/stylo-export:${TAG:-latest}"
     depends_on:
       mongodb-stylo:
@@ -62,6 +62,8 @@ services:
         - SNOWPACK_MATOMO_SITE_ID
     image: "ghcr.io/ecrituresnumeriques/stylo-front:${TAG:-latest}"
     container_name: "front-stylo"
+    volumes:
+      - ./build:/usr/share/nginx/html
     env_file:
       - .env
     ports:
@@ -71,6 +73,7 @@ services:
 
   export-gateway:
     image: "davidbgk/stylo-export:1.1.0"
+    container_name: "export-gateway" # export-stylo-modern
     env_file:
       - .env
     environment:
@@ -83,6 +86,7 @@ services:
 
   pandoc-api:
     image: "davidbgk/pandoc-api:0.0.17"
+    container_name: "pandoc-api"
     ports:
       - 127.0.0.1:3090:8000
 

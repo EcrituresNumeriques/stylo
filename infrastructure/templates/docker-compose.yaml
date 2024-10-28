@@ -48,8 +48,8 @@ services:
   front-stylo:
     image: "ghcr.io/ecrituresnumeriques/stylo-front:{{app_version}}"
     container_name: "front-stylo"
-    env_file:
-      - .env
+    volumes:
+      - ./front-assets:/usr/share/nginx/html
     ports:
       - 127.0.0.1:3000:80
     depends_on:

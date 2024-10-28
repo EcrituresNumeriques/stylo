@@ -120,6 +120,11 @@
         src: "./.env"
         dest: "~/stylo/.env"
 
+    - name: Copy frontend assets files
+      ansible.builtin.copy:
+        src: "{{ assets_path }}"
+        dest: "~/stylo/front-assets"
+
     - name: Restart containers
       become: true
       ansible.builtin.systemd:
