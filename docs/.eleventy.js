@@ -50,7 +50,9 @@ module.exports = function(eleventyConfig) {
     ],
   });
 
-  // Empêche le comportement par défaut d'eleventy de faire un merge sur les données d'un tableau
+  // Réglage du comportement par défaut d'11ty de fusionner n'importe quelle propriété héritée de la structure de données
+  // Prend true ou false comme valeur (false permet de désactiver le comportement de fusion)
+  // Documentation ici : <https://www.11ty.dev/docs/data-deep-merge/>
   eleventyConfig.setDataDeepMerge(true);
 
   // Collections

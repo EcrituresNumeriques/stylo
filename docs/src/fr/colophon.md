@@ -1,12 +1,6 @@
 ---
 title: "Colophon"
-useSideMenu: true
 ---
-
-Stylo est un éditeur de texte sémantique conçu et réalisé par l'équipe de la [Chaire de recherche du Canada sur les écritures numériques](http://ecrituresnumeriques.ca), sous licence [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE).
-
-<img src="/uploads/images/logo.png" alt="Logo CRCEN" class="img-responsive img-thumbnail" style="max-width:250px">
-
 
 ## Le projet
 
@@ -18,8 +12,6 @@ C'est actuellement un outil prototype en cours de développement, implémenté d
 Cet outil est par ailleurs utilisé par différent·e·s auteur·e·s et étudiant·e·s à titre personnel pour leurs travaux scientifiques ou institutionnels.
 
 Stylo peut être utilisé en ligne à l'adresse [stylo.huma-num.fr](https://stylo.huma-num.fr). Cette instance de Stylo est déployée et maintenue par [Huma-Num](https://www.huma-num.fr), qui assure la sauvegarde et la sécurité des données.
-
-Le code source de Stylo est disponible sur [GitHub](https://github.com/EcrituresNumeriques/stylo/).
 
 ## La *Stylo*-sophie
 
@@ -38,13 +30,12 @@ Stylo propose une solution libre, basée sur des standards (Markdown, YAML, BibT
 
 Stylo est un outil qui implémente des formats et des technologies de conversion existantes et déjà utilisées par la communauté scientifique, ce qui permet une libre circulation des documents qui ne sont pas enfermés dans un format particulier.
 
-## Contributeur·rice·s
 
-Les chercheur·e·s participant à la réalisation de ce projet sont les suivants :
+## Contributeur·rice·s actuels
+
+### Chercheur·e·s
 
 - [Antoine Fauchié](https://ecrituresnumeriques.ca/fr/Equipe/Antoine-Fauchie/)
-- [Arthur Juchereau](https://ecrituresnumeriques.ca/fr/Equipe/Arthur-Juchereau)
-- [Lena Krause](https://ecrituresnumeriques.ca/fr/Equipe/Lena-Krause)
 - [Margot Mellet](https://ecrituresnumeriques.ca/fr/Equipe/Margot-Mellet)
 - [Servanne Monjour](https://ecrituresnumeriques.ca/fr/Equipe/Servanne-Monjour-)
 - [Nicolas Sauret](https://ecrituresnumeriques.ca/fr/Equipe/Nicolas-Sauret)
@@ -52,17 +43,30 @@ Les chercheur·e·s participant à la réalisation de ce projet sont les suivant
 - [Roch Delannay](https://ecrituresnumeriques.ca/fr/Equipe/Roch-Delannay)
 - [Louis-Olivier Brassard](https://www.loupbrun.ca)
 
-## Développeurs
+### Développeurs
 
 - [Guillaume Grossetie](https://github.com/ggrossetie)
 - [Thomas Parisot](https://détour.studio)
 - [David Larlet](http://larlet.com/)
-- [Arthur Juchereau](https://ecrituresnumeriques.ca/fr/Equipe/Arthur-Juchereau)
+- [Yves Marcoux](https://recherche.umontreal.ca/fr/nos-equipes-de-recherche/repertoire-des-professeurs/chercheur/is/in14146/)
 
-## Partenaires
+### Designers
+
+- [Maïtané Lenoir](https://maiwann.net/)
+
+### Partenaires
 
 - [Huma-Num](https://www.huma-num.fr/)
 - [Métopes](http://www.metopes.fr/)
 - [Érudit](http://erudit.org/)
 
 
+## Ancien·ne·s Contributeur·rice·s
+
+- [Arthur Juchereau](https://ecrituresnumeriques.ca/fr/Equipe/Arthur-Juchereau)
+- [Lena Krause](https://ecrituresnumeriques.ca/fr/Equipe/Lena-Krause)
+
+
+## Briques technologiques
+
+La documentation de Stylo a été créée avec le générateur de site statique [11ty](https://www.11ty.dev/)
