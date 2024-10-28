@@ -17,7 +17,6 @@
     "npm": ">=10"
   },
   "scripts": {
-    "prebuild": "node ./bin/create-config.js",
     "lint": "prettier --check src",
     "lint:fix": "prettier --write src",
     "start": "vite",
