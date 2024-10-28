@@ -35,7 +35,7 @@ module.exports = convict({
     port: {
       format: 'port',
       env: 'MONGO_SERVER_PORT',
-      default: '27027'
+      default: '27017'
     }
   },
   oauthProvider: {
