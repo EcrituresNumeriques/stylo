@@ -31,7 +31,7 @@ Useful to run a fully fledged Stylo in no time.
 
 Run the following command:
 
-    $ cp stylo-example.env stylo.env
+    $ cp stylo-example.env .env
     $ docker-compose up
 
 **NOTE:** The first time, this command can take a few dozen minutes depending on your network speed and machine capabilities. Subsequent calls will be faster.
@@ -58,7 +58,7 @@ We provide a working configuration example below for the Nginx server.
 
 After _cloning_ the repo, build the service and its dependencies:
 
-    $ cp stylo-example.env stylo.env
+    $ cp stylo-example.env .env
     $ npm clean-install
     $ npm start
 

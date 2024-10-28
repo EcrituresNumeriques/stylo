@@ -1,5 +1,3 @@
-version: '2.1'
-
 services:
   mongodb-stylo:
     image: mongo:4.4
@@ -28,7 +26,7 @@ services:
       mongodb-stylo:
         condition: service_healthy
     env_file:
-      - ./stylo.env
+      - .env
     environment:
       - MONGO_SERVER=mongodb-stylo
       - MONGO_SERVER_PORT=27017
@@ -46,7 +44,7 @@ services:
       mongodb-stylo:
         condition: service_healthy
     env_file:
-      - ./stylo.env
+      - .env
     environment:
       - MONGO_SERVER=mongodb-stylo
       - MONGO_SERVER_PORT=27017
@@ -65,7 +63,7 @@ services:
     image: "ghcr.io/ecrituresnumeriques/stylo-front:${TAG:-latest}"
     container_name: "front-stylo"
     env_file:
-      - ./stylo.env
+      - .env
     ports:
       - 127.0.0.1:3000:80
     depends_on:
@@ -74,7 +72,7 @@ services:
   export-gateway:
     image: "davidbgk/stylo-export:1.1.0"
     env_file:
-      - stylo.env
+      - .env
     environment:
       - SE_PANDOC_API_BASE_URL=${SE_PANDOC_API_BASE_URL:-http://pandoc-api:8000/latest/}
       - SE_ALLOWED_INSTANCE_BASE_URLS=${SE_ALLOWED_INSTANCE_BASE_URLS:-http://localhost:3000 http://localhost:3030 http://host.docker.internal:3030}

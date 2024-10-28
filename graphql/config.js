@@ -1,5 +1,5 @@
 const convict = require('convict')
-require('dotenv').config({ path: '../stylo.env' })
+require('dotenv').config({ path: ['.env', '../.env'] })
 
 convict.addFormat(require('convict-format-with-validator').url)
 
