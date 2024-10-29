@@ -27,5 +27,5 @@ npm run generate-service-token --silent
 :warning: It requires `JWT_SECRET_SESSION_COOKIE` environment variable to be set, and to be the same value as the running GraphQL server.
 
 ```
-DOTENV_CONFIG_PATH=../stylo.env NODE_OPTIONS="--require dotenv/config" npm run generate-service-token --silent
+DOTENV_CONFIG_PATH=../.env NODE_OPTIONS="--require dotenv/config" npm run generate-service-token --silent
 ```

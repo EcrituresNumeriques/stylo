@@ -96,7 +96,7 @@
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
       loop:
-        - { src: "./stylo.env", dest: "~/stylo/stylo.env" }
+        - { src: "./.env", dest: "~/stylo/.env" }
         - { src: "./docker-compose.yaml", dest: "~/stylo/docker-compose.yaml" }
 
     - name: Pull Docker containers
@@ -117,8 +117,13 @@
 
     - name: Update config files
       ansible.builtin.template:
-        src: "./stylo.env"
-        dest: "~/stylo/stylo.env"
+        src: "./.env"
+        dest: "~/stylo/.env"
+
+    - name: Copy frontend assets files
+      ansible.builtin.copy:
+        src: "{{ assets_path }}"
+        dest: "~/stylo/front-assets"
 
     - name: Restart containers
       become: true

@@ -34,13 +34,14 @@ export const initialState = {
       entries: []
     }
   },
+  // they are defined statically via vite.config.js
   applicationConfig: {
-    backendEndpoint: import.meta.env.SNOWPACK_PUBLIC_BACKEND_ENDPOINT,
-    graphqlEndpoint: import.meta.env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT,
-    exportEndpoint: import.meta.env.SNOWPACK_PUBLIC_EXPORT_ENDPOINT,
-    processEndpoint: import.meta.env.SNOWPACK_PUBLIC_PROCESS_ENDPOINT,
-    pandocExportEndpoint: import.meta.env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT,
-    humanIdRegisterEndpoint: import.meta.env.SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT,
+    backendEndpoint: __BACKEND_ENDPOINT__,
+    graphqlEndpoint: __GRAPHQL_ENDPOINT__,
+    exportEndpoint: __EXPORT_ENDPOINT__,
+    processEndpoint: __PROCESS_ENDPOINT__,
+    pandocExportEndpoint: __PANDOC_EXPORT_ENDPOINT__,
+    humanIdRegisterEndpoint: __HUMANID_REGISTER_ENDPOINT__,
   },
   articleStructure: [],
   articleVersions: [],

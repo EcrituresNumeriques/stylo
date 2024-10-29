@@ -1,16 +1,12 @@
 import { defineConfig, loadEnv } from 'vite'
-import { createRequire } from 'module'
-import process from 'node:process'
+import pkg from './package.json' assert { type: 'json' }
 import react from '@vitejs/plugin-react'
 import handlebars from 'vite-plugin-handlebars'
 import graphql from '@rollup/plugin-graphql'
 
-const require = createRequire(import.meta.url)
-const { version } = require('./package.json')
-
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), 'SNOWPACK_')
+  const env = loadEnv(mode, import.meta.resolve('..'), 'SNOWPACK_')
   const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
 
   return {
@@ -49,7 +45,14 @@ export default defineConfig(async ({ mode }) => {
       })
     ],
     define: {
-      APP_VERSION: JSON.stringify(version),
+      APP_VERSION: JSON.stringify(pkg.version),
+      __BACKEND_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_BACKEND_ENDPOINT),
+      __GRAPHQL_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT),
+      __EXPORT_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_EXPORT_ENDPOINT),
+      __PROCESS_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_PROCESS_ENDPOINT),
+      __PANDOC_EXPORT_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT),
+      __HUMANID_REGISTER_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT)
+
     },
     resolve: {
       alias: {

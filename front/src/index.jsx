@@ -13,7 +13,6 @@ import CollaborativeEditor from './components/collaborative/CollaborativeEditor.
 import App from './layouts/App'
 import createStore from './createReduxStore'
 import { getUserProfile } from './helpers/userProfile'
-import { getApplicationConfig } from './helpers/applicationConfig'
 
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -41,16 +40,13 @@ const store = createStore()
 const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
 
 ;(async () => {
-  let { applicationConfig: defaultApplicationConfig, sessionToken } = store.getState()
+  let { applicationConfig, sessionToken } = store.getState()
   const authToken = new URLSearchParams(location.hash).get('#auth-token')
   if (authToken) {
     store.dispatch({ type: 'UPDATE_SESSION_TOKEN', token: authToken })
     sessionToken = authToken
     window.history.replaceState({}, '', location.pathname)
   }
-
-  const applicationConfig = await getApplicationConfig(defaultApplicationConfig)
-  store.dispatch({ type: 'APPLICATION_CONFIG', applicationConfig })
 
   try {
     const { user, token } = await getUserProfile({ applicationConfig, sessionToken })

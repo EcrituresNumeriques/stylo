@@ -1,14 +1,4 @@
 # build environment
-FROM node:18-alpine as app-builder
-WORKDIR /app
-COPY package*.json ./
-ARG SNOWPACK_MATOMO_URL
-ARG SNOWPACK_MATOMO_SITE_ID
-RUN apk add --update-cache git
-RUN npm ci --silent
-COPY . ./
-RUN npm run build
-
 FROM nginx:mainline-alpine as nginx-modules-builder
 ENV ENABLED_MODULES="brotli"
 COPY ./ /modules/
@@ -72,10 +62,6 @@ RUN set -ex \
        done \
     && rm -rf /tmp/packages
 
-COPY --from=app-builder /app/build /usr/share/nginx/html
 COPY nginx-default.conf /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
-COPY start.sh ./
-RUN chmod +x /start.sh
-CMD ["/start.sh"]

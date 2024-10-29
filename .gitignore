@@ -4,6 +4,8 @@ node_modules/
 graphql/nodemon.dev.json
 sails/.tmp
 /stylo.env
+/.env
+/.env.local
 nodemon.dev.json
 /.idea/
 /.run/

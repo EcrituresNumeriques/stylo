@@ -28,6 +28,15 @@ module.exports = {
       version: '16.13',
     },
   },
+  globals: {
+    APP_VERSION: true,
+    __BACKEND_ENDPOINT__: true,
+    __GRAPHQL_ENDPOINT__: true,
+    __EXPORT_ENDPOINT__: true,
+    __PROCESS_ENDPOINT__: true,
+    __PANDOC_EXPORT_ENDPOINT__: true,
+    __HUMANID_REGISTER_ENDPOINT__: true
+  },
   rules: {
     'react/prop-types': ['warn'],
     'no-unused-vars': ['warn'],
