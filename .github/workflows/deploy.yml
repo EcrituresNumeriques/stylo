@@ -62,6 +62,7 @@ jobs:
       id: assets
       with:
         name: front-assets
+        path: /tmp/front-assets
 
     - name: Set up Python 3.10 (w/ cache)
       uses: actions/setup-python@v5
@@ -89,7 +90,7 @@ jobs:
       run: |
         ansible-playbook -v -i inventories/dev \
           --extra-vars "@vault-dev.yml" \
-          --extra-vars "assets_path=${{ steps.assets.outputs.download-path }}/front-assets" \
+          --extra-vars "assets_path= /tmp/front-assets" \
           --private-key ~/.ssh/id_ed25519 \
           --vault-password-file ./.ansible-vault-password \
           playbook.yml
