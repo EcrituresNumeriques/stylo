@@ -79,6 +79,7 @@ export default defineConfig(async ({ mode }) => {
           '**/public/**',
           '**/*.config.*',
           '**/{tests,bin}/*',
+          '**/*.test.jsx?',
         ]
       },
       environment: 'jsdom',
