@@ -88,9 +88,10 @@ jobs:
     - name: Run playbook
       working-directory: ./infrastructure
       run: |
+        ls -R /tmp/front-assets
         ansible-playbook -v -i inventories/dev \
           --extra-vars "@vault-dev.yml" \
-          --extra-vars "assets_path= /tmp/front-assets" \
+          --extra-vars "assets_path=/tmp/front-assets/" \
           --private-key ~/.ssh/id_ed25519 \
           --vault-password-file ./.ansible-vault-password \
           playbook.yml
