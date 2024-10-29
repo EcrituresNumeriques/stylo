@@ -92,7 +92,7 @@ jobs:
         ansible-playbook -v -i inventories/prod \
           --extra-vars "@vault-prod.yml" \
           --extra-vars "app_version=${{ inputs.release-version }}" \
-          --extra-vars "assets_path=${{ steps.assets.outputs.download-path }}/stylo" \
+          --extra-vars "assets_path=${{ steps.assets.outputs.download-path }}/front-assets" \
           --private-key ~/.ssh/id_ed25519 \
           --vault-password-file ./.ansible-vault-password \
           playbook.yml
