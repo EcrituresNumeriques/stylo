@@ -74,6 +74,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install -r .github/workflows/deploy-requirements.txt
+        ansible-galaxy collection install ansible.posix
 
     - name: Set Ansible config secrets
       run: |
@@ -88,7 +89,6 @@ jobs:
     - name: Run playbook
       working-directory: ./infrastructure
       run: |
-        ls -R /tmp/front-assets
         ansible-playbook -v -i inventories/dev \
           --extra-vars "@vault-dev.yml" \
           --extra-vars "assets_path=/tmp/front-assets/" \

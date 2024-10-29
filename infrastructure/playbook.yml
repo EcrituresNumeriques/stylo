@@ -121,9 +121,10 @@
         dest: "~/stylo/.env"
 
     - name: Copy frontend assets files
-      ansible.builtin.copy:
+      ansible.posix.synchronize:
         src: "{{ assets_path }}"
         dest: "~/stylo/front-assets/"
+        delete: true
 
     - name: Restart containers
       become: true
