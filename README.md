@@ -19,14 +19,13 @@ Plus d'informations sur [la documentation](http://stylo-doc.ecrituresnumeriques.
 
 - Node.js v18+
 - MongoDB
-- (optionnel) Pandoc, pour le [service d'export](./export)
 
 ## Sous MacOS
 
 ```bash
 brew tap mongodb/brew
 
-brew install pandoc mongodb-community nvm
+brew install mongodb-community nvm
 brew install --cask docker
 
 nvm install v18 --default

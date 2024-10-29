@@ -134,9 +134,9 @@ This function also allows you to send the article with the same system:
 
 The [Send a Copy] option is not sharing the article; only the last version of the article will be visible for the user and the changes will not be visible to other users. In the [Send a Copy] process, two versions of the article are created and the users each work on a version that is not visible to the other.
 
-## Take over 
+## Take over
 
-When an article is shared (via a workspace or the share button) with another user, the article editing function is only available to one person at a time. You'll see by the red dot in the box that a collaborator is editing the article or has not properly closed his editing session. If you also want to edit the article, you can take over the editing session by pressing ![Edit](/uploads/images/edit-red.png) and confirm. The other collaborator will then be in read-only mode and you will be able to edit the article. 
+When an article is shared (via a workspace or the share button) with another user, the article editing function is only available to one person at a time. You'll see by the red dot in the box that a collaborator is editing the article or has not properly closed his editing session. If you also want to edit the article, you can take over the editing session by pressing ![Edit](/uploads/images/edit-red.png) and confirm. The other collaborator will then be in read-only mode and you will be able to edit the article.
 
 To properly close an editing session, simply return to the *Articles* page when you've finished your work.
 
@@ -156,7 +156,7 @@ To export an article, you must click on the "Export" button, then the page "My a
 
 ![Export](/uploads/images/Download.png)
 
-The export menu allows you to choose the export format. It also contains the option to include or exclude a table of contents. 
+The export menu allows you to choose the export format. It also contains the option to include or exclude a table of contents.
 
 ![Export](uploads/images/ExportConfig-V2.PNG)
 
@@ -177,7 +177,7 @@ It is possible to choose from several bibliographic styles, some of which integr
 
 The export module manages the reference formatting, adding or removing spaces, and inserting "ibid" according to the style, etc.
 
-Exports are produced thanks to the [pandoc](https://pandoc.org/) conversion tool, based on templates available [here](https://framagit.org/stylo-editeur/templates-stylo).
+Exports are produced thanks to the [pandoc](https://pandoc.org/) conversion tool, based on [`stylo-export` templates](https://gitlab.huma-num.fr/ecrinum/stylo/stylo-export/-/tree/main/templates/generique).
 
 The export also downloads the Stylo source files (.md, .bib, .yaml) and the media inserted in the article, if this is the case.
 
