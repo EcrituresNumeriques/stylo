@@ -63,7 +63,7 @@ services:
     image: "ghcr.io/ecrituresnumeriques/stylo-front:${TAG:-latest}"
     container_name: "front-stylo"
     volumes:
-      - ./build:/usr/share/nginx/html
+      - ./front/build:/usr/share/nginx/html
     env_file:
       - .env
     ports:
