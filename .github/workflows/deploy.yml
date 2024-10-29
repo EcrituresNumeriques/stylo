@@ -87,9 +87,9 @@ jobs:
     - name: Run playbook
       working-directory: ./infrastructure
       run: |
-        ansible-playbook -vvv -i inventories/dev \
+        ansible-playbook -v -i inventories/dev \
           --extra-vars "@vault-dev.yml" \
-          --extra-vars "assets_path=${{ steps.assets.outputs.download-path }}" \
+          --extra-vars "assets_path=${{ steps.assets.outputs.download-path }}/stylo" \
           --private-key ~/.ssh/id_ed25519 \
           --vault-password-file ./.ansible-vault-password \
           playbook.yml
