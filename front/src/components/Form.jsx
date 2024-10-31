@@ -4,9 +4,6 @@ import Form, { getDefaultRegistry } from '@rjsf/core'
 import validator from '@rjsf/validator-ajv8'
 import { set } from 'object-path-immutable'
 import { Translation } from 'react-i18next'
-import basicUiSchema from '../schemas/ui-schema-basic-override.json'
-import defaultUiSchema from '../schemas/ui-schema-editor.json'
-import defaultSchema from '../schemas/data-schema.json'
 
 // REMIND: use a custom SelectWidget to support "ui:emptyValue"
 // remove once fixed in https://github.com/rjsf-team/react-jsonschema-form/issues/1041
@@ -183,7 +180,7 @@ function ObjectFieldTemplate (properties) {
           const element = properties.properties.find((element) => element.name === field)
 
           if (!element) {
-            console.error('Field configuration not found for "%s" in \'ui:groups\' "%s" — part of %o', field, title, fields)
+            console.error('Field configuration not found for "%s" in \'ui:groups\' "%s" — part of %o', field, title || '', fields)
           }
 
           return [field, element]
@@ -237,14 +234,16 @@ const customFields = {
 /**
  *
  * @param initialFormData
- * @param basicMode
+ * @param schema
+ * @param uiSchema
  * @param {(any) => void} onChange
  * @return {Element}
  * @constructor
  */
 export default function SchemaForm ({
   formData: initialFormData,
-  basicMode,
+  schema,
+  uiSchema,
   onChange = () => {
   },
 }) {
@@ -261,10 +260,6 @@ export default function SchemaForm ({
     },
   }), [onChange, setFormData])
 
-  const effectiveUiSchema = useMemo(
-    () => (basicMode ? { ...defaultUiSchema, ...basicUiSchema } : defaultUiSchema),
-    [basicMode]
-  )
 
   const customWidgets = {
     SelectWidget: CustomSelectWidget,
@@ -289,12 +284,12 @@ export default function SchemaForm ({
     <Form
       className={styles.form}
       formContext={formContext}
-      schema={defaultSchema}
+      schema={schema}
       name="Metadata"
       templates={customTemplates}
       widgets={customWidgets}
       fields={customFields}
-      uiSchema={effectiveUiSchema}
+      uiSchema={uiSchema}
       formData={formData}
       onChange={handleUpdate}
       onError={setErrors}
@@ -307,6 +302,8 @@ export default function SchemaForm ({
 
 SchemaForm.propTypes = {
   formData: PropTypes.object,
+  schema: PropTypes.object,
+  uiSchema: PropTypes.object,
   basicMode: PropTypes.bool,
   onChange: PropTypes.func
 }

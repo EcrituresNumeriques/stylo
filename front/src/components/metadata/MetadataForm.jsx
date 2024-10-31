@@ -6,19 +6,21 @@ import { convertLegacyValues } from "./MetadataValues.js";
 
 /**
  * @param data Values in JSON format
- * @param templates List of template names
- * @param onChange Function that return the values in YAML format
+ * @param schema Data schema
+ * @param uiSchema UI schema
+ * @param onChange Function that return the values in JSON format
  * @returns {Element}
  * @constructor
  */
-export default function MetadataForm({ data, templates, onChange }) {
+export default function MetadataForm({ data, schema, uiSchema, onChange }) {
   const formData = convertLegacyValues(data)
-  const basicMode = templates.includes('basic')
-  return <Form formData={formData} basicMode={basicMode} onChange={onChange}/>
+  return <Form formData={formData} schema={schema} uiSchema={uiSchema} onChange={onChange}/>
 }
 
 MetadataForm.propTypes = {
   data: PropTypes.object,
+  schema: PropTypes.object,
+  uiSchema: PropTypes.object,
   templates: PropTypes.array,
   onChange: PropTypes.func,
 }

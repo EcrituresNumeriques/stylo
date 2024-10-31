@@ -46,7 +46,7 @@ mutation deleteCorpus($corpusId: ID!) {
     }
 }
 
-mutation updateMetadata($corpusId: ID!, $metadata: String!) {
+mutation updateMetadata($corpusId: ID!, $metadata: JSON!) {
     corpus(corpusId: $corpusId) {
         updateMetadata(metadata: $metadata) {
             _id

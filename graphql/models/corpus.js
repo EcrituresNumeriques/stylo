@@ -20,8 +20,8 @@ const corpusSchema = new Schema({
     default: ''
   },
   metadata: {
-    type: String,
-    default: ''
+    type: Schema.Types.Mixed,
+    default: {}
   },
   workspace: {
     type: Schema.Types.ObjectId,
