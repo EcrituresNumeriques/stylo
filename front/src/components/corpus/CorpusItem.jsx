@@ -18,7 +18,7 @@ import { deleteCorpus } from './Corpus.graphql'
 import styles from './corpusItem.module.scss'
 
 
-export default function CorpusItem ({ corpus }) {
+export default function CorpusItem({ corpus }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const dispatch = useDispatch()
@@ -86,7 +86,7 @@ export default function CorpusItem ({ corpus }) {
           </p>
         </div>
         <aside className={styles.actionButtons}>
-          <Button title="Edit" icon={true}  onClick={() => setEditCorpusVisible(true)}>
+          <Button title="Edit" icon={true} onClick={() => setEditCorpusVisible(true)}>
             <Settings/>
           </Button>
 
@@ -96,18 +96,19 @@ export default function CorpusItem ({ corpus }) {
           }}>
             <Trash/>
           </Button>
-          <Button title="Download a printable version" icon={true}  onClick={() => setExportCorpusVisible(true)}>
+          <Button title="Download a printable version" icon={true} onClick={() => setExportCorpusVisible(true)}>
             <Printer/>
           </Button>
 
-          <Link title="Preview (open a new window)" target="_blank" className={buttonStyles.icon} to={`/books/${corpus._id}/preview`}>
+          <Link title="Preview (open a new window)" target="_blank" className={buttonStyles.icon}
+                to={`/books/${corpus._id}/preview`}>
             <Eye/>
           </Link>
         </aside>
       </div>
       {expanded && <div className={styles.detail}>
         {corpus.description && <p>{corpus.description}</p>}
-        <CorpusArticles corpusId={corpusId} />
+        <CorpusArticles corpusId={corpusId}/>
       </div>}
 
       <GeistModal visible={deleteCorpusVisible} {...deleteCorpusModalBinding}>
@@ -115,16 +116,18 @@ export default function CorpusItem ({ corpus }) {
         <GeistModal.Content>
           {t('corpus.deleteModal.confirmMessage')}
         </GeistModal.Content>
-        <GeistModal.Action passive onClick={() => setDeleteCorpusVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
+        <GeistModal.Action passive
+                           onClick={() => setDeleteCorpusVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
         <GeistModal.Action onClick={handleDeleteCorpus}>{t('modal.confirmButton.text')}</GeistModal.Action>
       </GeistModal>
 
       <GeistModal visible={exportCorpusVisible} {...exportCorpusBindings}>
         <h2>{t('corpus.exportModal.title')}</h2>
         <GeistModal.Content>
-          <Export bookId={corpusId} name={corpus.name} />
+          <Export bookId={corpusId} name={corpus.name}/>
         </GeistModal.Content>
-        <GeistModal.Action passive onClick={() => setExportCorpusVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
+        <GeistModal.Action passive
+                           onClick={() => setExportCorpusVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
       </GeistModal>
 
       <GeistModal width="40rem" visible={editCorpusVisible} {...editCorpusBindings}>
@@ -132,7 +135,8 @@ export default function CorpusItem ({ corpus }) {
         <GeistModal.Content>
           <CorpusUpdate corpus={corpus} onSubmit={handleCorpusUpdated}/>
         </GeistModal.Content>
-        <GeistModal.Action passive onClick={() => setEditCorpusVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
+        <GeistModal.Action passive
+                           onClick={() => setEditCorpusVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
       </GeistModal>
     </div>
   )

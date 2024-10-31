@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stylo.huma-num.fr/schemas/corpus-journal-metadata.schema.json",
+  "title": "Journal metadata",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "journal"
+    },
+    "name": {
+      "type": "string"
+    },
+    "issue": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
