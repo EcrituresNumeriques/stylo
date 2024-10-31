@@ -1,5 +1,5 @@
 ---
-title: Sérialiser ses métadonnées en YAML
+title: "Sérialiser ses métadonnées en YAML"
 ---
 
 ## Introduction au YAML

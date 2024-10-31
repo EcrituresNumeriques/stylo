@@ -1,5 +1,5 @@
 ---
-title: Les corpus
+title: "Les corpus"
 ---
 
 La fonctionnalité **Corpus** permet de regrouper un ensemble d'articles Stylo sous un même label.

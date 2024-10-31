@@ -1,7 +1,7 @@
 <!---- Pied de page ---->
 <!----
 Pied de page partagé par les documents.
-Exploite la variable globale `rights`.
+Exploite les variables globales :  `rights`, `colophon`, `sources`, `contact`.
 
 Usage:
 
@@ -9,6 +9,18 @@ Usage:
 ---->
 
 <div class="document-footer">
+  <div
+    class="document-footer__contact"
+    @html="$data.contact"
+  ></div>
+  <div
+    class="document-footer__sources"
+    @html="$data.sources"
+  ></div>
+    <div
+    class="document-footer__colophon"
+    @html="$data.colophon"
+  ></div>
   <div
     class="document-footer__rights"
     @html="$data.rights"
@@ -21,20 +33,55 @@ Usage:
     padding: 1rem 0;
 
     border-top: 1px solid var(--couleur-fond-accent);
-    color: var(--couleur-fond-accent);
     font-size: .875rem;
   }
 
-  .document-footer__rights {
+
+  /* Déclare les propriétés CSS pour les valeurs des variables globales `contact`, `sources`, `colophon`
+  Cette mise en page est temporaire, elle devra faire l'objet d'une discussion ultérieure.*/
+  .document-footer__contact {
+    line-height: var(--interlignage, 125%);
+    
+  }
+
+  .document-footer__sources {
+    line-height: var(--interlignage, 125%);
+    
+  }
+
+  .document-footer__colophon {
     line-height: var(--interlignage, 125%);
   }
 
+  /* Déclare les propriétés css de la valeur récupéré avec la variable globale `rights` */
+  .document-footer__rights {
+    line-height: var(--interlignage, 125%);
+    color: var(--couleur-fond-accent);
+  }
+
   /* Liens */
+
+  /* Comportement par défaut des hyperliens dans le footer.
+  Le comportement ajouté est similaire au hyperliens présents dans la documentation.
+  Élément à rediscuter/valider. */
   .document-footer a {
+    color: var(--couleur-lien, inherit);
+    text-decoration: underline;
+  }
+
+  .document-footer a:hover {
+    color: var(--couleur-lien);
+    text-decoration: none; 
+  }
+
+  /* On préserve le comportement initialement prévu pour les hyperliens présents dans la valeur de la variable
+  globale `rights`. */
+  .document-footer__rights a {
     text-decoration: underline;
     color: inherit;
   }
-  .document-footer a:hover {
+
+  .document-footer__rights a:hover {
     color: var(--couleur-lien);
   }
 </style>

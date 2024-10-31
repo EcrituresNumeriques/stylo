@@ -1,5 +1,5 @@
 ---
-title: Les espaces de travail
+title: "Les espaces de travail"
 ---
 
 ## Fonctionnement

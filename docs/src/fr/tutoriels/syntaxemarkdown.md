@@ -1,5 +1,5 @@
 ---
-title: Syntaxe Markdown
+title: "Syntaxe Markdown"
 ---
 
 ## Titres

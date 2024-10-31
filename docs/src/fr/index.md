@@ -1,57 +1,30 @@
 ---
-title: "Stylo - un éditeur de texte sémantique"
+title: "Stylo - La documentation"
 useSideMenu: true
 isHome: true
 ---
 
-
-<alert-block heading="📢 Mise à jour des fonctionnalités" type="success">
-
-À l'attention des utilisatrices et des utilisateurs de Stylo : La tant attendue fonctionnalité d'écriture collaborative synchrone est maintenant disponible ! Pour en savoir plus, rendez-vous sur la [page de la documentation](/fr/edition-collaborative) qui y est consacrée !
-
-</alert-block> 
-
-
-<alert-block heading="📢 Mise à jour de la documentation" type="neutral">
-
-À l'attention des utilisatrices et des utilisateurs de Stylo : la documentation de Stylo a été mise à jour ! Elle se dote d'une nouvelle interface et d'une nouvelle structuration de ses données !  
-
-</alert-block> 
-
----
-
-Pour faire un tour rapide de certaines nouvelles fonctionnalités de 2023 voici une page d'information : [Nouvelles fonctionnalités !](/fr/messagev2/).
-
----
-
-**Si vous rencontrez des difficultés avec Stylo, n'hésitez pas [à nous écrire](mailto:crc.ecrituresnumeriques@gmail.com).**
-
-Une permanence est ouverte tous les jeudis de 11h à 12h (heure de Montréal) pour poser des questions, perfectionner l'utilisation de Stylo, partager vos expériences utilisateur ou autres : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Rejoignez la permanence en visioconférence</a>
-
----
-
-Bienvenue sur la documentation de Stylo. Stylo est un éditeur de texte simplifiant la rédaction et l'édition d'articles scientifiques en Sciences Humaines et Sociales.
-
-Il est destiné aux auteur·e·s et aux éditeur·rice·s engagé·e·s dans une édition scientifique de qualité.
-
-L'environnement de travail de Stylo intègre une chaîne éditoriale complète basée sur [pandoc](http://pandoc.org/) et outillée des modules suivants :
-
-  - **un éditeur de métadonnées**
-  - **un gestionnaire de versions**
-  - **un gestionnaire de la bibliographie**
-  - **différents formats d'export** : HTML5, XML (TEI, ÉruditArticle), PDF...
-  - **un outil d'annotation**
-  - **le partage des documents pour une édition collaborative**
-
-Stylo est développé par la [Chaire de recherche du Canada sur les écritures numériques](http://ecrituresnumeriques.ca/) et l'entreprise [PiNinja](https://3.14159.ninja/), avec le soutien d'[Érudit](http://erudit.org/) et d'[Huma-Num](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwiYouaYyOvsAhVpl3IEHeDcAIwQFjAAegQIARAD&url=https%3A%2F%2Fwww.huma-num.fr%2F&usg=AOvVaw38kFRXXxdbqSaOVHSsEY9t), sous licence [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE). 
-
-Stylo est désormais connecté à [HumanID](https://humanid.huma-num.fr/) et accessible à tous les utilisateurs et utilisatrices ayant un compte à Huma-Num. [Pour en savoir plus sur ce point](https://humanum.hypotheses.org/6311).
+Stylo, un éditeur de texte sémantique pour l'édition scientifique en lettres et en sciences humaines et sociales.
 
 ---
 
 <link-button href="https://stylo.huma-num.fr" size="small" color="default">Tester Stylo</link-button> &nbsp;
-<link-button href="/fr/premierspas" size="small" color="default">Premiers pas</link-button> &nbsp;
-<link-button href="https://ia803205.us.archive.org/13/items/stylo-doc-fr/StyloDocFR.mp4" size="small" color="default">Vidéo-Démo</link-button>
+
+---
+
+La documentation de Stylo est séparée en plusieurs parties\ :
+
+1. La section _Fonctionnalités_ regroupe la description de toutes les fonctionnalités de Stylo
+2. Les guides d'utilisation contiennent des plusieurs scénarios pour vous montrer différents usages des fonctionnalités
+3. Les tutoriels concernent les langages et formats employés dans Stylo (Markdown, YAML, BibTeX, GraphQL)
+4. La foire aux questions traite des problèmes connus
+
+---
+
+<link-button href="/fr/fonctionnalites" size="small" color="default">Les fonctionnalités</link-button> &nbsp;
+<link-button href="/fr/guides_utilisation" size="small" color="default">Les guides d'utilisation</link-button> &nbsp;
+<link-button href="/fr/tutoriels" size="small" color="default">Les tutoriels</link-button> &nbsp;
+<link-button href="/fr/faq" size="small" color="default">Foire aux questions</link-button> &nbsp;
 
 ---
 

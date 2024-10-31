@@ -50,6 +50,11 @@ module.exports = function(eleventyConfig) {
     ],
   });
 
+  // Réglage du comportement par défaut d'11ty de fusionner n'importe quelle propriété héritée de la structure de données
+  // Prend true ou false comme valeur (false permet de désactiver le comportement de fusion)
+  // Documentation ici : <https://www.11ty.dev/docs/data-deep-merge/>
+  eleventyConfig.setDataDeepMerge(true);
+
   // Collections
   // Tous les contenus sous /fr
   eleventyConfig.addCollection('docs__fr', function(collection) {
