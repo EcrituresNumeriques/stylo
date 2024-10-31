@@ -4,6 +4,8 @@ const { logger } = require('./logger')
 const pino = require('pino-http')({
   logger
 })
+const config = require('./config.js')
+config.validate({ allowed: 'strict' })
 
 const {
   exportArticleHtml,
@@ -29,7 +31,7 @@ app.use(cors({
   origin: '*'
 }))
 
-const listenPort = process.env.PORT || 3060
+const listenPort = config.get('port')
 
 const asyncExportVersionHtml = asyncHandler(exportVersionHtml)
 const asyncExportArticleHtml = asyncHandler(exportArticleHtml)

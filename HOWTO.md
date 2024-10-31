@@ -17,21 +17,13 @@ First step is to clone the project, you can use either the HTTPS or SSH version 
     $ git clone git@github.com:EcrituresNumeriques/stylo.git
 
 
-Stylo uses submodules to pull templates (and those templates are hosted on framagit).
-If you have an account with ssh enabled on framagit, you can pull all submodules using the following commands:
-
-
-    $ git submodule init
-    $ git submodule update
-
-
 ## Run with Docker
 
 Useful to run a fully fledged Stylo in no time.
 
 Run the following command:
 
-    $ cp stylo-example.env stylo.env
+    $ cp stylo-example.env .env
     $ docker-compose up
 
 **NOTE:** The first time, this command can take a few dozen minutes depending on your network speed and machine capabilities. Subsequent calls will be faster.
@@ -58,7 +50,7 @@ We provide a working configuration example below for the Nginx server.
 
 After _cloning_ the repo, build the service and its dependencies:
 
-    $ cp stylo-example.env stylo.env
+    $ cp stylo-example.env .env
     $ npm clean-install
     $ npm start
 

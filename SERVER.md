@@ -54,18 +54,10 @@ cd ~
 git clone https://github.com/EcrituresNumeriques/stylo.git
 ```
 
-Update the submodule:
-
-```bash
-cd stylo
-git submodule init
-git submodule update
-```
-
 Copy the `stylo-example.env` file and edit the variables:
 
 ```bash
-cp stylo-example.env stylo.env
+cp stylo-example.env .env
 ```
 
 Finally, start the application:
@@ -134,7 +126,7 @@ docker exec mongodb-stylo mongo --quiet --eval "db.adminCommand({listDatabases: 
 For instance, if we want to rename the database from `stylo` to `stylo-prod`, we can use:
 
     $ docker exec -i mongodb-stylo sh -c 'mongorestore --archive --nsFrom="stylo.*" --nsTo="stylo-prod.*"' < stylo-prod.dump
-   
+
 ## Apply migration script
 
 ```bash

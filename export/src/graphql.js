@@ -1,6 +1,7 @@
 const { gql, GraphQLClient, ClientError } = require('graphql-request')
 const { FindByIdNotFoundError } = require('./helpers/errors')
 const { logger } = require('./logger')
+const config = require('./config.js')
 
 let graphQLClient = null
 
@@ -17,9 +18,9 @@ function getGraphQLClient () {
   if (graphQLClient) {
     return graphQLClient
   }
-  const graphqlEndpoint = process.env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT || 'http://localhost:3030/graphql'
-  console.log()
-  const passthroughToken = process.env.SE_GRAPHQL_TOKEN
+  const graphqlEndpoint = config.get('api.urlEndpoint')
+  const passthroughToken = config.get('api.passthroughToken')
+
   graphQLClient = new GraphQLClient(graphqlEndpoint, {
     headers: {
       authorization: `Bearer ${passthroughToken}`,

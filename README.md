@@ -19,14 +19,13 @@ Plus d'informations sur [la documentation](http://stylo-doc.ecrituresnumeriques.
 
 - Node.js v18+
 - MongoDB
-- (optionnel) Pandoc, pour le [service d'export](./export)
 
 ## Sous MacOS
 
 ```bash
 brew tap mongodb/brew
 
-brew install pandoc mongodb-community nvm
+brew install mongodb-community nvm
 brew install --cask docker
 
 nvm install v18 --default
@@ -39,7 +38,7 @@ L'application se lance en combinant une base de données MongoDB, et des applica
 **La première fois que vous installez le projet**, lancez ces commandes :
 
 ```bash
-cp stylo-example.env stylo.env
+cp stylo-example.env .env
 npm clean-install
 npm --prefix front clean-install
 npm --prefix export clean-install
@@ -49,10 +48,10 @@ npm --prefix graphql clean-install
 
 ## Sans Docker
 
-Avant un premier lancement, la variable `SE_GRAPHQL_TOKEN` doit être renseignée dans `stylo.env` à l'aide de la valeur produite par cette commande :
+Avant un premier lancement, la variable `SE_GRAPHQL_TOKEN` doit être renseignée dans `.env` à l'aide de la valeur produite par cette commande :
 
 ```bash
-DOTENV_CONFIG_PATH=stylo.env NODE_OPTIONS="--require dotenv/config" npm run --prefix graphql generate-service-token --silent
+DOTENV_CONFIG_PATH=.env NODE_OPTIONS="--require dotenv/config" npm run --prefix graphql generate-service-token --silent
 ```
 
 Ensuite, ainsi que le reste du temps :
@@ -64,7 +63,7 @@ npm run dev
 
 ## Avec Docker
 
-Avant un premier lancement, la variable `SE_GRAPHQL_TOKEN` doit être renseignée dans `stylo.env` à l'aide de la valeur produite par cette commande :
+Avant un premier lancement, la variable `SE_GRAPHQL_TOKEN` doit être renseignée dans `.env` à l'aide de la valeur produite par cette commande :
 
 ```bash
 docker compose run -ti --build --rm graphql-stylo npm run generate-service-token --silent

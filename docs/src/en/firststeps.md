@@ -91,7 +91,7 @@ During this operation, you can also choose the tags related to the article:
 
 ![Add Tags](/uploads/images/AddTag.png)
 
-The article will then appear in your list of articles. 
+The article will then appear in your list of articles.
 
 Click on the button
 
@@ -117,12 +117,12 @@ The Stylo article must be written in Markdown, an easy-to-learn markup language.
 
 Markdown language allows a syntax structure that is easy to both read and write. Here are the main writing rules for Markdown:
 
-- Title: the levels of the title (level 1 for the title of the article, level 2 for the titles of the section, etc.) are organised using ```#```, like this: 
+- Title: the levels of the title (level 1 for the title of the article, level 2 for the titles of the section, etc.) are organised using ```#```, like this:
 	- ```# Title of the article```, ```## Introduction```, etc.
 
 Careful: The article's body text does not support titles for level 1; titles for level 1 are only used for the *Title* fields in the metadata.
 
-- **Italics**: italics can be created in two ways: ```_word_``` or ```*word*``` 
+- **Italics**: italics can be created in two ways: ```_word_``` or ```*word*```
 - **Bold**: bold can be created like this: ```**word**```
 - **Long citation**: long citations are created like this: ```> long citation```
 - **Footnote**: a footnote can be created with or without a number:
@@ -179,7 +179,7 @@ It is possible to choose from several bibliographic styles: some embed the refer
 
 The export module takes care of formatting references, adding or removing spaces, inserting "Ibids." according to the style, etc.
 
-Exports are produced using the conversion tool [Pandoc](https://pandoc.org/) based on the templates available [here](https://framagit.org/stylo-editor/templates-stylo).
+Exports are produced using the conversion tool [Pandoc](https://pandoc.org/) based on the templates available [here](export/templates).
 
 For more information on Stylo exporting, you can see this [page](/en/exports/)
 
@@ -228,7 +228,7 @@ The [Metadata] button opens the metadata pane. Three editing modes are available
 
 For more information on metadata editing, you can see this [page]().
 
-**Careful**: In the metadata pane is the "Bibliography" division, including the *Display* option, which allows you to choose to view the bibliography either in its entirety ("All citations"), or just the references which have been cited in the body of the article ("Only used"). 
+**Careful**: In the metadata pane is the "Bibliography" division, including the *Display* option, which allows you to choose to view the bibliography either in its entirety ("All citations"), or just the references which have been cited in the body of the article ("Only used").
 
 ![All citation](/uploads/images/allCitation.png)
 

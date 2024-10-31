@@ -3,7 +3,7 @@ import { LifeBuoy } from 'react-feather'
 import {  useSelector } from 'react-redux'
 import { Link, Route, Switch } from 'react-router-dom'
 
-import logoContent from '../../public/images/logo.svg?inline'
+import logoContent from '/images/logo.svg?inline'
 import { useActiveWorkspace } from '../hooks/workspace.js'
 
 import styles from './header.module.scss'

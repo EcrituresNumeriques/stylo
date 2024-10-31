@@ -1,7 +1,7 @@
 import './wdyr.js'
 import 'core-js/modules/web.structured-clone'
 import React, { lazy, Suspense } from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { GeistProvider, Loading } from '@geist-ui/core'
@@ -13,7 +13,6 @@ import CollaborativeEditor from './components/collaborative/CollaborativeEditor.
 import App from './layouts/App'
 import createStore from './createReduxStore'
 import { getUserProfile } from './helpers/userProfile'
-import { getApplicationConfig } from './helpers/applicationConfig'
 
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -32,6 +31,7 @@ const Corpus = lazy(() => import('./components/corpus/Corpus'))
 const Articles = lazy(() => import('./components/Articles'))
 const Workspaces = lazy(() => import('./components/workspace/Workspaces'))
 const Credentials = lazy(() => import('./components/Credentials'))
+const UserInfos = lazy(() => import('./components/UserInfos.jsx'))
 const Write = lazy(() => import('./components/Write/Write'))
 const ArticlePreview = lazy(() => import('./components/ArticlePreview'))
 const Privacy = lazy(() => import('./components/Privacy'))
@@ -40,16 +40,13 @@ const store = createStore()
 const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
 
 ;(async () => {
-  let { applicationConfig: defaultApplicationConfig, sessionToken } = store.getState()
+  let { applicationConfig, sessionToken } = store.getState()
   const authToken = new URLSearchParams(location.hash).get('#auth-token')
   if (authToken) {
     store.dispatch({ type: 'UPDATE_SESSION_TOKEN', token: authToken })
     sessionToken = authToken
     window.history.replaceState({}, '', location.pathname)
   }
-
-  const applicationConfig = await getApplicationConfig(defaultApplicationConfig)
-  store.dispatch({ type: 'APPLICATION_CONFIG', applicationConfig })
 
   try {
     const { user, token } = await getUserProfile({ applicationConfig, sessionToken })
@@ -98,7 +95,8 @@ const TrackPageViews = () => {
   return null
 }
 
-render(
+const root = createRoot(document.getElementById('root'))
+root.render(
   <React.StrictMode>
     <GeistProvider>
       <Provider store={store}>
@@ -124,6 +122,7 @@ render(
                 <Workspaces/>
               </PrivateRoute>
               <PrivateRoute path="/credentials" exact>
+                <UserInfos />
                 <Credentials/>
               </PrivateRoute>
               {/* Annotate a Book */}
@@ -194,5 +193,4 @@ render(
       </Provider>
     </GeistProvider>
   </React.StrictMode>,
-  document.getElementById('root')
 )

@@ -2,7 +2,7 @@
   "name": "@ecrituresnumerique/stylo-front",
   "private": true,
   "description": "Stylo front-end, online text editor for scholars",
-  "version": "3.0.7",
+  "version": "3.1.5",
   "license": "MIT",
   "type": "module",
   "#browserlist#": "https://browserslist.dev/?q=ZGVmYXVsdHMsIGxhc3QgMiB2ZXJzaW9ucywgbm90IGRlYWQsID4gMC4yJQ%3D%3D",
@@ -17,7 +17,6 @@
     "npm": ">=10"
   },
   "scripts": {
-    "prebuild": "node ./bin/create-config.js",
     "lint": "prettier --check src",
     "lint:fix": "prettier --write src",
     "start": "vite",
@@ -36,8 +35,8 @@
     "@rjsf/core": "~5.21",
     "@rjsf/validator-ajv8": "^5.21.2",
     "@rollup/plugin-graphql": "^2.0.2",
-    "@vitejs/plugin-legacy": "^3.0.1",
-    "@vitejs/plugin-react": "^4.0.0",
+    "@vitejs/plugin-legacy": "~5.4",
+    "@vitejs/plugin-react": "~4.3",
     "biblatex-csl-converter": "^1.11.0",
     "clsx": "^1.2.1",
     "core-js": "^3.38",
@@ -68,8 +67,8 @@
     "slugify": "1.6.6",
     "swr": "^2.0.0",
     "terser": "^5.16.1",
-    "vite": "^4.0.1",
-    "vite-plugin-handlebars": "^1.6.0",
+    "vite": "~5.4",
+    "vite-plugin-handlebars": "~2.0",
     "y-monaco": "^0.1.4",
     "y-websocket": "^1.5.0",
     "yjs": "^13.6.6"
@@ -98,6 +97,7 @@
     "eslint-plugin-react": "^7.27.0",
     "eslint-plugin-vitest": "^0.5.4",
     "jsdom": "^25.0.1",
+    "lodash.merge": "^4.6.2",
     "prettier": "^2.3.0",
     "vitest": "^2.1.2"
   },
