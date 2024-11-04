@@ -1,5 +1,5 @@
 ---
-title: "API GraphQL"
+title: "GraphQL API"
 ---
 
 ## Stylo's GraphQL API - An introduction

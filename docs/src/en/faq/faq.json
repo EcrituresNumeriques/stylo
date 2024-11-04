@@ -1,0 +1,17 @@
+{
+    "sectionTitle": "Foire aux questions",
+    "sectionUrl": "/en/faq",
+    "disableSearch": false,
+    "searchIndexUrl": "/en/search-index.json",
+    "menu": [
+      {
+        "label": "FAQ",
+        "children": [
+          {
+            "label": "Solving known problems",
+            "url": "/en/faq/problems"
+          }
+        ]
+      }
+    ]
+}

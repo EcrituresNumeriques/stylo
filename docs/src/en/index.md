@@ -3,51 +3,27 @@ title: Stylo - a semantic text editor
 isHome: true
 ---
 
-<alert-block heading="📢 Feature Update" type="success">
-
-To Stylo users: The long-awaited synchronous collaborative writing feature is now available! To find out more, go to the [documentation page](/fr/edition-collaborative) which is dedicated to it!
-
-</alert-block>
-
-
-<alert-block heading="📢 Documentation update" type="neutral">
-
-To the attention of Stylo users: the Stylo documentation has been updated! It has a new interface and a new structuring of its data!
-
-</alert-block>
-
----
-
-Attention Stylo users: the semantic text editor Stylo has just been updated. To discover the new features in detail, please visit the information page: [New features!](/en/newfeatures/).
-
----
-
-**If you encounter any difficulties with Stylo, do not hesitate to contact us : [write here](mailto:crc.ecrituresnumeriques@gmail.com).**
-
-A helpdesk is open every Thursday from 11am to 12pm (Montreal time) to respond to questions, improve the use of Stylo, share user experience or any concern or comment : <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Reach the helpdesk by videoconference</a>
-
----
 
 Welcome to Stylo resource information. Stylo is a text editor that simplifies writing and editing scientific articles in the Human and Social Sciences.
 
-It is designed for authors and publishers engaged in quality scientific publishing.
+---
 
-Stylo's work environment encompasses a complete editorial chain based on [pandoc](https://pandoc.org/) and is equipped with the following modules: 
-
-- **A metadata editor**
-- **A version manager**
-- **A bibliographic manager**
-- **Different export formats** : HTML5, XML (TEI, ÉruditArticle), PDF...
-- **An annotation tool**
-- **Sharing documents for collaborative editing**
-
-Stylo is developed by the [Canada Research Chair in Digital Textualities](https://ecrituresnumeriques.ca/en/) and [PiNinja](https://3.14159.ninja/) company, with the support of[Érudit](https://www.erudit.org/en/) and of [Huma-Num](https://www.huma-num.fr/), under [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE) licence.
-
-Stylo is now connected to [HumanID](https://humanid.huma-num.fr/) and accessible to all users with an account at Huma-Num. [Read more about this](https://humanum.hypotheses.org/6311).
+<link-button href="https://stylo.huma-num.fr" size="small" color="default">Test Stylo</link-button> &nbsp;
 
 ---
 
-<a class="btn btn-info" href="https://stylo.huma-num.fr" role="button">Test Stylo</a> <a class="btn btn-info" href="pages/firststeps.md" role="button">First steps</a> <a class="btn btn-info" href="https://ia601400.us.archive.org/16/items/stylo_202009/Stylo.mp4" role="button">Demo-video</a>
+Stylo's documentation is divided into several sections:
+1. The _Features_ section contains descriptions of all Stylo features.
+2. The user guides contain several scenarios to show you different uses of the features.
+3. Tutorials cover the languages and formats used in Stylo (Markdown, YAML, BibTeX, GraphQL).
+4. Frequently asked questions deal with known problems
+
+---
+
+<link-button href="/fr/fonctionnalites" size="small" color="default">Features</link-button> &nbsp;
+<link-button href="/fr/guides_utilisation" size="small" color="default">User guides</link-button> &nbsp;
+<link-button href="/fr/tutoriels" size="small" color="default">Tutorials</link-button> &nbsp;
+<link-button href="/fr/faq" size="small" color="default">Frequently asked questions</link-button> &nbsp;
 
 ---
 

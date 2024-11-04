@@ -1,0 +1,29 @@
+{
+    "sectionTitle": "Tutorials",
+    "sectionUrl": "/en/tutorials",
+    "disableSearch": false,
+    "searchIndexUrl": "/en/search-index.json",
+    "menu": [
+      {
+        "label": "Tutorials",
+        "children": [
+          {
+            "label": "Writing in Markdown",
+            "url": "/en/tutorials/markdownsyntax"
+          },
+          {
+            "label": "Writing in YAML",
+            "url": "/en/tutorials/yamlsyntax"
+          },
+          {
+            "label": "Writing in BibTeX",
+            "url": "/en/tutorials/bibtexsyntax"
+          },
+          {
+            "label": "GraphQL API",
+            "url": "/en/tutorials/api-graphql"
+          }
+        ]
+      }
+    ]
+}
