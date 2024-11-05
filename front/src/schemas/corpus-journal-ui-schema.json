@@ -1,0 +1,28 @@
+{
+  "ui:groups": [
+    {
+      "title": "corpus.metadata.form.issue",
+      "fields": [
+        "issue"
+      ]
+    }
+  ],
+  "type": {
+    "ui:widget": "hidden"
+  },
+  "name": {
+    "ui:title": "corpus.metadata.form.name"
+  },
+  "issue": {
+    "ui:order": ["number", "title", "identifier"],
+    "number": {
+      "ui:title": "corpus.metadata.form.issue.number"
+    },
+    "title": {
+      "ui:title": "corpus.metadata.form.issue.title"
+    },
+    "identifier": {
+      "ui:title": "corpus.metadata.form.issue.identifier"
+    }
+  }
+}

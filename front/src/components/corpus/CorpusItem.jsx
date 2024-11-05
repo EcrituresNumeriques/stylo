@@ -16,6 +16,7 @@ import CorpusUpdate from './CorpusUpdate.jsx'
 
 import { deleteCorpus } from './Corpus.graphql'
 import styles from './corpusItem.module.scss'
+import CorpusMetadataModal from "./CorpusMetadataModal.jsx";
 
 
 export default function CorpusItem({ corpus }) {
@@ -90,6 +91,8 @@ export default function CorpusItem({ corpus }) {
             <Settings/>
           </Button>
 
+          <CorpusMetadataModal corpusId={corpusId} initialValue={corpus.metadata}/>
+
           <Button title="Delete" icon={true} onClick={(event) => {
             event.preventDefault()
             setDeleteCorpusVisible(true)
@@ -147,6 +150,7 @@ CorpusItem.propTypes = {
     _id: PropTypes.string.isRequired,
     name: PropTypes.string,
     description: PropTypes.string,
+    metadata: PropTypes.object,
     creator: PropTypes.shape({
       displayName: PropTypes.string,
       username: PropTypes.string

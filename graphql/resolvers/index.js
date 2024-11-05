@@ -7,9 +7,12 @@ const { Corpus, Query: CorpusQuery, Mutation: CorpusMutation } = require('./corp
 const { Mutation: AuthMutation } = require('./authResolver')
 const { InstanceUsageStats, Query: StatsQuery } = require('./statsResolver')
 const { EmailAddressResolver, JWTResolver, HexColorCodeResolver, DateTimeResolver } = require('graphql-scalars')
+const { GraphQLJSON, GraphQLJSONObject } = require('./jsonScalar.js')
 
 module.exports = {
   // Custom Scalars
+  JSON: GraphQLJSON,
+  JSONObject: GraphQLJSONObject,
   EmailAddress: EmailAddressResolver,
   JWT: JWTResolver,
   HexColorCode: HexColorCodeResolver,

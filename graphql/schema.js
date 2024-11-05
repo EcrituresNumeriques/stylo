@@ -2,6 +2,8 @@ const { makeExecutableSchema } = require('@graphql-tools/schema')
 const resolvers = require('./resolvers/index.js')
 
 const typeDefs = `#graphql
+scalar JSON
+scalar JSONObject
 scalar EmailAddress
 scalar JWT
 scalar DateTime
@@ -306,14 +308,14 @@ input ArticleOrder {
 input UpdateCorpusInput {
   name: String!
   description: String
-  metadata: String
+  metadata: JSON
 }
 
 type Corpus {
   _id: String!
   name: String!
   description: String
-  metadata: String
+  metadata: JSON
   workspace: String
   articles: [CorpusArticle!]!
   creator: User!
@@ -325,7 +327,7 @@ type Corpus {
   # mutations
   addArticle(articleId: ID!): Corpus
   rename(name: String!): Corpus
-  updateMetadata(metadata: String!): Corpus
+  updateMetadata(metadata: JSON!): Corpus
   updateArticlesOrder(articlesOrderInput: [ArticleOrder!]!): Corpus
   delete: Corpus!
   update(updateCorpusInput: UpdateCorpusInput!): Corpus!

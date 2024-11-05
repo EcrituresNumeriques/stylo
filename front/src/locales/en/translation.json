@@ -76,6 +76,8 @@
   "modal.cancelButton.text": "Cancel",
   "modal.confirmButton.text": "Confirm",
   "modal.close.text": "Close",
+  "modal.saveButton.text": "Save",
+  "corpus.type.journal": "Journal",
   "corpus.createForm.titleField": "Title",
   "corpus.createForm.descriptionField": "Description",
   "corpus.createModal.title": "Create a corpus",
@@ -90,6 +92,7 @@
   "corpus.articlesOrder.toastSuccess": "Articles order successfully updated.",
   "corpus.articlesOrder.toastFailure": "Unable to update articles order: {{errorMessage}}",
   "corpus.editModal.title": "Edit a corpus",
+  "corpus.metadataModal.title": "Edit corpus metadata",
   "corpus.editForm.buttonText": "Update",
   "corpus.editForm.buttonTitle": "Update this corpus",
   "corpus.update.toastSuccess": "Corpus successfully updated.",
@@ -261,5 +264,10 @@
   "article.metadata.type.interview": "Interview",
   "article.metadata.type.editorialColumn": "Editorial column",
   "form.addItem.title": "Add",
-  "form.removeItem.title": "Remove"
+  "form.removeItem.title": "Remove",
+  "corpus.metadata.form.name": "Name",
+  "corpus.metadata.form.issue": "Issue",
+  "corpus.metadata.form.issue.title": "Title",
+  "corpus.metadata.form.issue.number": "N°",
+  "corpus.metadata.form.issue.identifier": "Identifier"
 }

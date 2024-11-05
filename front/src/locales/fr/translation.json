@@ -76,6 +76,8 @@
   "modal.cancelButton.text": "Annuler",
   "modal.confirmButton.text": "Confirmer",
   "modal.close.text": "Fermer",
+  "modal.saveButton.text": "Enregistrer",
+  "corpus.type.journal": "Revue",
   "corpus.createForm.titleField": "Titre",
   "corpus.createForm.descriptionField": "Description",
   "corpus.createModal.title": "Créer un corpus",
@@ -92,6 +94,7 @@
   "corpus.articlesOrder.toastFailure": "Impossible de mettre à jour lʼordre des articles : {{errorMessage}}",
   "corpus.load.toastFailure": "Impossible de charger les corpus : {{errorMessage}}",
   "corpus.editModal.title": "Modifier un corpus",
+  "corpus.metadataModal.title": "Modifier les métadonnées du corpus",
   "corpus.editForm.buttonText": "Mettre à jour",
   "corpus.editForm.buttonTitle": "Mettre à jour ce corpus",
   "article.corpus.title": "Corpus",
@@ -259,5 +262,10 @@
   "article.metadata.type.interview": "Entretien",
   "article.metadata.type.editorialColumn": "Chronique",
   "form.addItem.title": "Ajouter",
-  "form.removeItem.title": "Supprimer"
+  "form.removeItem.title": "Supprimer",
+  "corpus.metadata.form.name": "Nom",
+  "corpus.metadata.form.issue": "Numéro de revue",
+  "corpus.metadata.form.issue.title": "Titre",
+  "corpus.metadata.form.issue.number": "N°",
+  "corpus.metadata.form.issue.identifier": "Identifiant"
 }
