@@ -1,5 +1,5 @@
 ---
-title: Markdown syntax
+title: Writing in Markdown
 ---
 
 ## Titles

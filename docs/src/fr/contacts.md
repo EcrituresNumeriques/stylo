@@ -2,7 +2,7 @@
 title: Contact
 ---
 
-Stylo est développé par l'équipe de la [Chaire de recherche du Canada sur les écritures numériques](https://ecrituresnumeriques.ca/fr/Equipe) et par l'entreprise PiNinja.
+## Nous contacter
 
 Pour plus d'informations, vous pouvez nous contacter à l'[adresse email de la Chaire](mailto:crc.ecrituresnumeriques@gmail.com).
 
@@ -17,5 +17,3 @@ Nous prendrons en considération des demandes spécifiques d'adaptation de Stylo
 Les bugs ou les problèmes techniques peuvent être signalés sur le [dépôt GitHub du projet](https://github.com/EcrituresNumeriques/stylo/issues).
 
 {% link-button "https://github.com/EcrituresNumeriques/stylo/issues/new", "hyperlink" %}Signaler un bug{% endlink-button %}
-
-Tout autre retour ou commentaire peut être envoyé par courriel à <crc.ecrituresnumeriques@gmail.com>.

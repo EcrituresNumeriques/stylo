@@ -3,6 +3,9 @@
   "lang": "en",
   "description": "Stylo is a text editor that simplifies writing and editing scientific articles in the Human and Social Sciences.",
   "rights": "Licence Creative Commons [CC BY-SA 4.0] – Canada Research Chair on digital textualities",
+  "sources": "<a href=\"https://github.com/EcrituresNumeriques/stylo/\">Sources</a>",
+  "contact": "<a href=\"/en/contacts/\">Contact us</a>",
+  "colophon": "<a href=\"/en/colophon\">Colophon</a>",
 
   "sectionTitle": "Documentation",
   "sectionUrl": "/en",
@@ -10,66 +13,6 @@
   "disableSearch": false,
   "searchIndexUrl": "/en/search-index.json",
   "menu": [
-    {
-      "label": "News",
-      "url": "/en/news"
-    },
-    {
-      "label": "Project",
-      "children": [
-        {
-          "label": "About",
-          "url": "/en/about"
-        },
-        {
-          "label": "Sources",
-          "url": "/en/sources"
-        },
-        {
-          "label": "Contact",
-          "url": "/en/contacts"
-        },
-        {
-          "label": "Publications",
-          "url": "/en/publications"
-        }
-      ]
-    },
-
-    {
-      "label": "Writing guide",
-      "children": [
-        { "label": "Getting started with Stylo", "url": "/en/firststeps" },
-        { "label": "Writing in Markdown", "url": "/en/markdownsyntax" },
-        { "label": "Writing in BibTeX", "url": "/en/bibtexsyntax" },
-        { "label": "Writing in YAML", "url": "/en/yamlsyntax" }
-      ]
-    },
-
-    {
-      "label": "Article management",
-      "children": [
-        { "label": "Manage my article", "url": "/en/myarticles" },
-        { "label": "Manage my bibliography", "url": "/en/managingref" },
-        { "label": "Preview and annotate an article", "url": "/en/preview" },
-        { "label": "Versioning content", "url": "/en/versioning" },
-        { "label": "Manage my metadata", "url": "/en/metadata" }
-      ]
-    },
-    {
-      "label": "Stylo features",
-      "children": [
-        { "label": "Corpus", "url": "/en/corpus" },
-        { "label": "Workspaces", "url": "/en/workspaces" },
-        { "label": "Collaborative writing", "url": "/en/collaborative-writing" },
-        { "label": "Monaco text editor", "url": "/en/monaco-editor" },
-        { "label": "API GraphQL", "url": "/en/api-graphql" },
-        { "label": "Exports", "url": "/en/exports" },
-        { "label": "Dissertation and theses", "url": "/en/dissertation" },
-        { "label": "Solving problems", "url": "/en/problems" }
-      ]
-    },
-
     {
       "label": "Language",
       "children": [
@@ -82,6 +25,27 @@
           "label": "Français",
           "url": "/fr",
           "lang": "fr"
+        }
+      ]
+    },
+    {
+      "label": "Documentation",
+      "children": [
+        {
+          "label": "Features",
+          "url": "/en/features"
+        },
+        {
+          "label": "User guides",
+          "url": "/en/user-guides"
+        },
+        {
+          "label": "Tutorials",
+          "url": "/en/tutorials"
+        },
+        {
+          "label": "FAQ",
+          "url": "/en/faq"
         }
       ]
     }

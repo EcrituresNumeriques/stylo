@@ -1,0 +1,41 @@
+{
+    "sectionTitle": "Features",
+    "sectionUrl": "/en/features",
+    "disableSearch": false,
+    "searchIndexUrl": "/en/search-index.json",
+    "menu": [
+      {
+        "label": "Features",
+        "children": [
+          {
+            "label": "Corpus",
+            "url": "/en/features/corpus"
+          },
+          {
+            "label": "Monaco text editor",
+            "url": "/en/features/monaco-editor"
+          },
+          {
+            "label": "Collaborative writing",
+            "url": "/en/features/collaborative-writing"
+          },
+          {
+            "label": "Workspaces",
+            "url": "/en/features/workspaces"
+          },
+          {
+            "label": "Exports",
+            "url": "/en/features/exports"
+          },
+          {
+            "label": "Preview and annotate an article",
+            "url": "/en/features/preview"
+          },
+          {
+            "label": "Versioning content",
+            "url": "/en/features/versioning"
+          }
+        ]
+      }
+    ]
+}

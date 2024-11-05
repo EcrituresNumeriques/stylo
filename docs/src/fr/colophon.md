@@ -46,9 +46,9 @@ Stylo est un outil qui implémente des formats et des technologies de conversion
 ### Développeurs
 
 - [Guillaume Grossetie](https://github.com/ggrossetie)
-- [Thomas Parisot](https://détour.studio)
 - [David Larlet](http://larlet.com/)
 - [Yves Marcoux](https://recherche.umontreal.ca/fr/nos-equipes-de-recherche/repertoire-des-professeurs/chercheur/is/in14146/)
+- [Thomas Parisot](https://détour.studio)
 
 ### Designers
 
@@ -56,10 +56,9 @@ Stylo est un outil qui implémente des formats et des technologies de conversion
 
 ### Partenaires
 
+- [Érudit](http://erudit.org/)
 - [Huma-Num](https://www.huma-num.fr/)
 - [Métopes](http://www.metopes.fr/)
-- [Érudit](http://erudit.org/)
-
 
 ## Ancien·ne·s Contributeur·rice·s
 
@@ -69,4 +68,4 @@ Stylo est un outil qui implémente des formats et des technologies de conversion
 
 ## Briques technologiques
 
-La documentation de Stylo a été créée avec le générateur de site statique [11ty](https://www.11ty.dev/)
+La documentation de Stylo a été créée avec le générateur de site statique [11ty](https://www.11ty.dev/).

@@ -1,0 +1,33 @@
+{
+    "sectionTitle": "User guides",
+    "sectionUrl": "/en/user-guides",
+    "disableSearch": false,
+    "searchIndexUrl": "/en/search-index.json",
+    "menu": [
+      {
+        "label": "User guides",
+        "children": [
+          {
+            "label": "Getting started with Stylo",
+            "url": "/en/user-guides/firsteps"
+          },
+          {
+            "label": "Manage my articles",
+            "url": "/en/user-guides/myarticles"
+          },
+          {
+            "label": "Manage my metadata",
+            "url": "/en/user-guides/metadata"
+          },
+          {
+            "label": "Manage my references",
+            "url": "/en/user-guides/managingref"
+          },
+          {
+            "label": "Dissertation and thesis",
+            "url": "/en/user-guides/dissertation"
+          }
+        ]
+      }
+    ]
+}

@@ -1,5 +1,5 @@
 ---
-title: Export Page
+title: Exports
 ---
 
 ## Export en article
