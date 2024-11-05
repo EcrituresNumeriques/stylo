@@ -242,7 +242,7 @@
   "article.metadata.dossier": "Dossier",
   "article.metadata.dossier.title": "Titre du dossier",
   "article.metadata.dossier.id": "Identifiant du dossier",
-  "article.metadata.issueDirectors": "Directeur·ices du dossier",
+  "article.metadata.issueDirectors": "Directeur·ices du numéro",
   "article.metadata.issueDirectors.director.addItem": "Ajouter un·e directeur·ice",
   "article.metadata.directors": "Directeur·ices de la revue",
   "article.metadata.directors.addItem": "Ajouter un·e directeur·ice",
