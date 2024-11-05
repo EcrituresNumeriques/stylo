@@ -4,14 +4,10 @@
 @use './button.module' as *;
 
 @mixin legend {
-  background-color: $main-background-color;
-  border-top: 1px solid $main-border-color;
-  border-bottom: 1px solid $main-border-color;
-  display: block;
-  font-size: 1.15em;
+  font-size: 1.75rem;
   font-weight: bold;
   margin: 0;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   text-align: left;
   width: 100%;
 }
@@ -27,8 +23,10 @@
 
 .form {
   :global {
-    .field-object > label {
+    label {
       font-weight: bold;
+      padding-bottom: 0.15rem;
+      font-size: 0.875rem;
     }
 
     [role='combobox'] {
@@ -51,9 +49,9 @@
     }
 
     .form-group {
-      //border-bottom: 1px solid #f0f0f0;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: start;
       padding: 0.5rem 0.5rem;
 
       &.field-array {
@@ -110,16 +108,12 @@
         > * {
           width: 100%;
         }
-
-        input {
-          width: 100%;
-        }
       }
 
       &.field-string,
       &.field-boolean {
         label {
-          flex: 0 0 100px;
+         padding-bottom: 0.15rem;
         }
       }
 
@@ -216,6 +210,7 @@
 
   legend {
     @include legend;
+    font-size: 1.25rem;
   }
 }
 
