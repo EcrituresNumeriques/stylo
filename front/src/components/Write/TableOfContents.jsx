@@ -25,7 +25,7 @@ export default function TableOfContents () {
     if (articleStructure.length === 0) {
       return <></>
     }
-    return <>
+    return <div className={styles.tocPopover}>
       <Popover.Item title>
         <span>{t('toc.title')}</span>
       </Popover.Item>
@@ -35,13 +35,14 @@ export default function TableOfContents () {
           <GeistLink href="#" data-index={item.index} onClick={handleTableEntryClick}>{item.title}</GeistLink>
         </Popover.Item>
       ))}
-    </>
+    </div>
   }
 
   return (
     <Popover className={clsx(styles.tocTooltip, articleStructure.length === 0 && styles.empty)}
              placement="bottomStart"
-             content={content} hideArrow={articleStructure.length === 0}>
+             content={content} 
+             hideArrow={articleStructure.length === 0}>
       <AlignLeft/>
     </Popover>)
 }
