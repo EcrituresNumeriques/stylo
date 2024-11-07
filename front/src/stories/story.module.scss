@@ -1,0 +1,11 @@
+.container {
+  padding: 0.25rem
+}
+
+.container {
+  :global {
+    .content {
+      padding: 1rem;
+    }
+  }
+}

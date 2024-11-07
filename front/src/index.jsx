@@ -25,6 +25,7 @@ import Field from './components/Field'
 import { Check, Copy, Search } from 'react-feather'
 import buttonStyles from './components/button.module.scss'
 import Select from './components/Select'
+import Story from './stories/Story.jsx'
 
 // lazy loaded routes
 const Corpus = lazy(() => import('./components/corpus/Corpus'))
@@ -153,30 +154,7 @@ root.render(
                 <Privacy/>
               </Route>
               <Route exact path="/ux">
-                <h2>Buttons</h2>
-                <h4>Primary</h4>
-                <Button primary={true}>Create New Article</Button>
-                <h4>Secondary</h4>
-                <Button>Manage Tags</Button>
-                <h4>With Icon</h4>
-                <Button><Check/> Save</Button>
-                <h4>Icon Only</h4>
-                <Button icon={true}><Copy/></Button>
-                <h2>Fields</h2>
-                <h4>Search</h4>
-                <Field placeholder="Search" icon={Search}/>
-                <h4>Textarea</h4>
-                <div style={{ 'max-width': '50%' }}>
-                  <textarea className={buttonStyles.textarea} rows="10">Du texte</textarea>
-                </div>
-                <h4>Select</h4>
-                <Select>
-                  <option>Tome de Savoie</option>
-                  <option>Reblochon</option>
-                  <option>St Marcellin</option>
-                </Select>
-                <h4>Tabs</h4>
-                <h4>Form actions</h4>
+                <Story/>
               </Route>
               <Route exact path="/error">
                 <Error/>

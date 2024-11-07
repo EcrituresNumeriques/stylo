@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "url": {
+      "type": "string"
+    },
+    "license": {
+      "type": "string"
+    },
+    "issue": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

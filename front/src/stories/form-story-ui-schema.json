@@ -1,0 +1,22 @@
+{
+  "ui:groups": [
+    {
+      "title": "Article",
+      "fields": [
+        "id",
+        "date",
+        "url",
+        "license"
+      ]
+    },
+    {
+      "title": "Issue",
+      "fields": [
+        "issue"
+      ]
+    }
+  ],
+  "date": {
+    "ui:widget": "date"
+  }
+}
