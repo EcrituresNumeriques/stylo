@@ -42,6 +42,7 @@ export const initialState = {
     processEndpoint: __PROCESS_ENDPOINT__,
     pandocExportEndpoint: __PANDOC_EXPORT_ENDPOINT__,
     humanIdRegisterEndpoint: __HUMANID_REGISTER_ENDPOINT__,
+    websocketEndpoint: toWebsocketEndpoint(__BACKEND_ENDPOINT__)
   },
   articleStructure: [],
   articleVersions: [],
@@ -88,7 +89,6 @@ export const initialState = {
 
 function createRootReducer (state) {
   return createReducer(state, {
-    APPLICATION_CONFIG: setApplicationConfig,
     PROFILE: setProfile,
     CLEAR_ZOTERO_TOKEN: clearZoteroToken,
     LOGIN: loginUser,
@@ -258,15 +258,6 @@ function persistStateIntoLocalStorage ({ getState }) {
       return next(action)
     }
   }
-}
-
-function setApplicationConfig (state, action) {
-  const applicationConfig = {
-    ...action.applicationConfig,
-    websocketEndpoint: toWebsocketEndpoint(action.applicationConfig.backendEndpoint)
-  }
-
-  return { ...state, applicationConfig }
 }
 
 function setProfile (state, action) {
