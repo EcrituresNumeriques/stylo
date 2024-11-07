@@ -1,9 +1,13 @@
 .stats {
+  position: sticky;
+  bottom: 2px;
   display: flex;
   justify-content: center;
-  margin: 1em auto 2em;
   color: #4a4a4a;
   font-size: 0.85rem;
+  background-color: #f9f9f9;
+  padding: 0.5rem;
+  border: 1px solid #d8d8d8;
 }
 
 .stats > li:not(:last-child)::after {

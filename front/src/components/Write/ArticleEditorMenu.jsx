@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 import styles from './articleEditorMenu.module.scss'
-import Stats from './Stats'
 import Biblio from './Biblio'
 import Sommaire from './Sommaire'
 import Versions from './Versions'
@@ -11,7 +10,6 @@ import { Sidebar } from 'react-feather'
 
 export default function ArticleEditorMenu ({ articleInfos, readOnly, compareTo, selectedVersion }) {
   const expanded = useSelector(state => state.articlePreferences.expandSidebarLeft)
-  const articleStats = useSelector(state => state.articleStats, shallowEqual)
   const dispatch = useDispatch()
   const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandSidebarLeft' }), [])
   const { t } = useTranslation()
@@ -19,7 +17,7 @@ export default function ArticleEditorMenu ({ articleInfos, readOnly, compareTo, 
   return (
     <nav className={`${expanded ? styles.expandleft : styles.retractleft}`}>
       <button onClick={toggleExpand} className={expanded ? styles.close : styles.open}>
-        <Sidebar /> {expanded ? t('write.sidebar.closeButton') : t('write.sidebar.biblioAndCoButton')}
+        <Sidebar/> {expanded ? t('write.sidebar.closeButton') : t('write.sidebar.biblioAndCoButton')}
       </button>
       {expanded && (<div>
         <Versions
@@ -28,9 +26,8 @@ export default function ArticleEditorMenu ({ articleInfos, readOnly, compareTo, 
           compareTo={compareTo}
           readOnly={readOnly}
         />
-        <Sommaire />
-        <Biblio readOnly={readOnly} article={articleInfos} />
-        <Stats stats={articleStats} />
+        <Sommaire/>
+        <Biblio readOnly={readOnly} article={articleInfos}/>
       </div>)}
     </nav>
   )
