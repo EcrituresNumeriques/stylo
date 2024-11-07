@@ -1,0 +1,11 @@
+.tocTooltip.empty {
+  cursor: not-allowed;
+}
+
+.tocTooltip {
+  cursor: pointer;
+}
+
+.tocTooltip > svg {
+  display: flex;
+}

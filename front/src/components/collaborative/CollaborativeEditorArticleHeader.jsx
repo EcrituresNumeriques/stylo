@@ -1,23 +1,20 @@
-import { Loading, Popover, Link as GeistLink, useModal, Modal as GeistModal } from '@geist-ui/core'
-import clsx from 'clsx'
+import { Loading, useModal, Modal as GeistModal } from '@geist-ui/core'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import React, { useCallback } from 'react'
-import { AlignLeft, Eye, Printer } from 'react-feather'
-import { useDispatch, useSelector } from 'react-redux'
+import { Eye, Printer } from 'react-feather'
 
 import useGraphQL from '../../hooks/graphql.js'
 import { getArticleInfo } from '../Article.graphql'
 import Button from '../Button.jsx'
 import buttonStyles from '../button.module.scss'
 import Export from '../Export.jsx'
+import TableOfContents from '../Write/TableOfContents.jsx'
 
 import styles from './CollaborativeEditorArticleHeader.module.scss'
 
 
 export default function CollaborativeEditorArticleHeader ({ articleId }) {
-  const dispatch = useDispatch()
-  const articleStructure = useSelector(state => state.articleStructure)
   const { data, isLoading } = useGraphQL({ query: getArticleInfo, variables: { articleId } }, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
@@ -29,10 +26,6 @@ export default function CollaborativeEditorArticleHeader ({ articleId }) {
     bindings: exportModalBinding
   } = useModal()
 
-  const handleTableOfContentsEntryClicked = useCallback(({ target }) => {
-    dispatch({ type: 'UPDATE_EDITOR_CURSOR_POSITION', lineNumber: parseInt(target.dataset.index, 10), column: 0 })
-  }, [])
-
   const handleOpenExportModal = useCallback(() => {
     setExportModalVisible(true)
   }, [])
@@ -41,27 +34,9 @@ export default function CollaborativeEditorArticleHeader ({ articleId }) {
     return <Loading/>
   }
 
-  const content = () => {
-    if (articleStructure.length === 0) {
-      return <></>
-    }
-    return  <>
-      <Popover.Item title>
-        <span>Table Of Contents</span>
-      </Popover.Item>
-      {articleStructure.map((item) => (
-        <Popover.Item key={`line-${item.index}-${item.line}`} tabIndex={0}>
-          <GeistLink href="#" data-index={item.index} onClick={handleTableOfContentsEntryClicked}>{item.title}</GeistLink>
-        </Popover.Item>
-      ))}
-    </>
-  }
-
   return (<header className={styles.header}>
     <h1 className={styles.title}>
-      <Popover className={clsx(styles.tocTooltip, articleStructure.length === 0 && styles.empty)} placement="bottomStart" content={content} hideArrow={articleStructure.length === 0}>
-        <AlignLeft/>
-      </Popover>
+      <TableOfContents/>
       {data?.article?.title}
     </h1>
 

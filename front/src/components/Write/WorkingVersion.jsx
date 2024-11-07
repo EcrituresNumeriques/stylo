@@ -1,17 +1,16 @@
-import { Modal as GeistModal } from '@geist-ui/core'
 import React, { useEffect, useMemo, useState, useCallback } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
-import { Link } from "react-router-dom";
-import { AlertCircle, AlignLeft, Check, Edit3, Eye, Loader, Printer } from 'react-feather'
+import { Link } from 'react-router-dom'
+import { AlertCircle, Check, Edit3, Eye, Loader, Printer } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-import ArticleContributors from '../ArticleContributors.jsx'
 import TimeAgo from '../TimeAgo.jsx'
+import TableOfContents from './TableOfContents.jsx'
 
 import styles from './workingVersion.module.scss'
-import buttonStyles from "../button.module.scss";
-import Button from "../Button";
-import Modal from "../Modal";
-import Export from "../Export";
+import buttonStyles from '../button.module.scss'
+import Button from '../Button'
+import Modal from '../Modal'
+import Export from '../Export'
 
 const ONE_MINUTE = 60000
 
@@ -71,8 +70,8 @@ export function ArticleSaveState ({ state, updatedAt, stateMessage }) {
       </span>)}
     </span>
 
-    {state === 'saved' && (<TimeAgo date={isoString}/>)}
-  </>)
+      {state === 'saved' && (<TimeAgo date={isoString}/>)}
+    </>)
 }
 
 export default function WorkingVersion ({ articleInfos, live, selectedVersion, mode }) {
@@ -81,7 +80,6 @@ export default function WorkingVersion ({ articleInfos, live, selectedVersion, m
   const cancelExport = useCallback(() => setExporting(false), [])
   const openExport = useCallback(() => setExporting(true), [])
   const { t } = useTranslation()
-
 
   const previewUrl = selectedVersion
     ? `/article/${articleInfos._id}/version/${selectedVersion}/preview`
@@ -96,27 +94,35 @@ export default function WorkingVersion ({ articleInfos, live, selectedVersion, m
       <section className={styles.section}>
         <header className={styles.header}>
           <h1 className={styles.title}>
-            <AlignLeft/>
+            <TableOfContents/>
             {articleInfos.title}
           </h1>
         </header>
         {exporting && (
           <Modal title="Export" cancel={cancelExport}>
-            <Export articleVersionId={selectedVersion} articleId={articleInfos._id} bib={live.bibPreview} name={articleInfos.title} />
+            <Export articleVersionId={selectedVersion} articleId={articleInfos._id} bib={live.bibPreview}
+                    name={articleInfos.title}/>
           </Modal>
         )}
         <ul className={styles.actions}>
-          {articleInfos.preview.stylesheet && (<><li>
-            <Link to={`/article/${articleInfos._id}`} className={mode === 'write' ? buttonStyles.primaryDisabled : buttonStyles.secondary} title="Edit article">
-              <Edit3/> Edit
-            </Link>
-          </li>
-          <li>
-            <Link to={`/article/${articleInfos._id}/preview`} className={mode === 'preview' ? buttonStyles.primaryDisabled : buttonStyles.secondary} title="Preview article">
-              <Eye/>{articleInfos.preview.stylesheet ? 'Paged.js' : <abbr title="HyperText Markup Language">HTML</abbr>}
-            &nbsp;Preview
-            </Link>
-          </li></>)}
+          {articleInfos.preview.stylesheet && (<>
+            <li>
+              <Link to={`/article/${articleInfos._id}`}
+                    className={mode === 'write' ? buttonStyles.primaryDisabled : buttonStyles.secondary}
+                    title="Edit article">
+                <Edit3/> Edit
+              </Link>
+            </li>
+            <li>
+              <Link to={`/article/${articleInfos._id}/preview`}
+                    className={mode === 'preview' ? buttonStyles.primaryDisabled : buttonStyles.secondary}
+                    title="Preview article">
+                <Eye/>{articleInfos.preview.stylesheet ? 'Paged.js' :
+                <abbr title="HyperText Markup Language">HTML</abbr>}
+                &nbsp;Preview
+              </Link>
+            </li>
+          </>)}
           <li>
             <Button icon title={t('write.title.buttonExport')} onClick={openExport}>
               <Printer/>
@@ -138,7 +144,8 @@ export default function WorkingVersion ({ articleInfos, live, selectedVersion, m
               <ArticleVersion version={live.version}/>
             </li>
             {!live.version && <li className={styles.lastSaved}>
-              <ArticleSaveState state={workingArticle.state} updatedAt={workingArticle.updatedAt} stateMessage={workingArticle.stateMessage}/>
+              <ArticleSaveState state={workingArticle.state} updatedAt={workingArticle.updatedAt}
+                                stateMessage={workingArticle.stateMessage}/>
             </li>}
           </ul>
         </div>

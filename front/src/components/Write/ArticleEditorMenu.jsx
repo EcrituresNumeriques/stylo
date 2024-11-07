@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import styles from './articleEditorMenu.module.scss'
 import Stats from './Stats'
 import Biblio from './Biblio'
-import Sommaire from './Sommaire'
 import Versions from './Versions'
 import { Sidebar } from 'react-feather'
 
@@ -28,7 +27,6 @@ export default function ArticleEditorMenu ({ articleInfos, readOnly, compareTo, 
           compareTo={compareTo}
           readOnly={readOnly}
         />
-        <Sommaire />
         <Biblio readOnly={readOnly} article={articleInfos} />
         <Stats stats={articleStats} />
       </div>)}
