@@ -10,12 +10,12 @@ import clsx from 'clsx'
 import { groupItems } from './SelectCombobox.js'
 
 /**
- * @typedef ComboboxItem
+ * @typedef {Object} ComboboxItem
  *
  * @property {String} key
  * @property {String} name
- * @property {numbered} index
- * @property {String=} section
+ * @property {Number} index
+ * @property {String} [section]
  */
 
 export default function Combobox ({ id, label, items, value: initialSelectedItem, onChange }) {

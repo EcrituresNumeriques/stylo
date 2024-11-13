@@ -40,12 +40,15 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
   const handleZoteroLinkChange = useCallback((event) => setZoteroLink(event.target.value), [])
   const handleZoteroCollectionChange = useCallback((href) => setZoteroCollectionHref(href), [])
   const hasLinkChanged = useMemo(() => initialZoteroLink || initialZoteroLink !== zoteroLink, [zoteroLink])
+  /** @type {ComboboxItem[]} */
   const groupedZoteroCollections = useMemo(() => {
-    /** @type {ComboboxValue[]} */
-    return zoteroCollections.map(({ data, meta, library, links }) => ({
+    return zoteroCollections.map(({ data, meta, library, links }, index) => ({
       key: links.self.href,
       name: `${data.name} (${meta.numItems} items)`,
-      section: `${library.name} (${library.type})`
+      section: `${library.name} (${library.type})`,
+      // pre-assign an index to each entry. It will persist upon filtered results.
+      // @see https://github.com/EcrituresNumeriques/stylo/issues/1014
+      index
     }))
   }, [zoteroCollections])
 
