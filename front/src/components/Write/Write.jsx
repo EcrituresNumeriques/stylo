@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import throttle from 'lodash.throttle'
 import debounce from 'lodash.debounce'
 import { useMutation } from '../../hooks/graphql.js'
+import ArticleStats from '../ArticleStats.jsx'
 import ErrorMessageCard from '../ErrorMessageCard.jsx'
 
 import styles from './write.module.scss'
@@ -349,6 +350,8 @@ export default function Write() {
               selectedVersion={currentVersion}
               compareTo={compareTo}
               currentArticleVersion={live.version} />
+
+            <ArticleStats/>
           </Route>
         </Switch>
       </article>

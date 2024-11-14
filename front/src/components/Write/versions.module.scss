@@ -1,6 +1,6 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
-@use '../articles.module.scss' as article;
+@use '../article.module.scss' as article;
 
 .versionsList {
   font-size: 0.9em;
@@ -22,13 +22,14 @@
 }
 
 .editTitleButton {
-  @extend article, .editTitleButton;
+  @include article.inlineTextButton;
   height: auto;
   padding: 0 .25em;
 }
 
 .momentAgo {
-  @extend article, .momentsAgo;
+  opacity: .5;
+  margin-left: .5em;
 }
 
 .version {

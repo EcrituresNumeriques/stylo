@@ -1,0 +1,35 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+.createTagButton {
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid #868e96;
+  display: flex;
+  align-items: center;
+  font-size: 0.8em;
+  padding: 0.25em 1.25em;
+  line-height: inherit;
+  color: $main-lighter-color;
+}
+
+.filterByTags {
+  display: flex;
+  flex-wrap: wrap;
+
+  > li {
+    display: flex;
+    margin-bottom: 0.5rem;
+  }
+
+  > li:not(:last-child) {
+    margin-right: 0.5rem;
+  }
+
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.createTagButton {
+  
+}

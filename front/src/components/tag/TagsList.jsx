@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-import styles from '../articles.module.scss'
+import styles from './tagsList.module.scss'
 import ArticleTag from '../Tag.jsx'
 import Button from '../Button.jsx'
 import TagCreate from '../TagCreate.jsx'

@@ -4,15 +4,16 @@
 
 .expandleft {
   @extend .details;
-  //border-right: 1px solid $main-border-color;
   padding-bottom: 1em;
-  //border-bottom: 1px solid $main-border-color;
+  border-right: 1px solid $main-border-color;
+  border-bottom: 1px solid $main-border-color;
   margin-top: -1em;
   padding-top: 1em;
   display: flex;
   flex-direction: column;
   min-width: 300px;
   overflow-y: auto;
+  max-height: calc(100vh - 76px);
   > button {
     color: $main-color;
     margin-left: auto;

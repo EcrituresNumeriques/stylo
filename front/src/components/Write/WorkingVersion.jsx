@@ -1,10 +1,8 @@
-import { Modal as GeistModal } from '@geist-ui/core'
 import React, { useEffect, useMemo, useState, useCallback } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
 import { AlertCircle, AlignLeft, Check, Edit3, Eye, Loader, Printer } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-import ArticleContributors from '../ArticleContributors.jsx'
 import TimeAgo from '../TimeAgo.jsx'
 
 import styles from './workingVersion.module.scss'

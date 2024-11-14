@@ -47,7 +47,7 @@ const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
   try {
     const { user, token } = await getUserProfile({ applicationConfig, sessionToken })
     const pathname = location.pathname
-    const workspacePathRxResult =    pathname.match(workspacePathsRx)
+    const workspacePathRxResult = pathname.match(workspacePathsRx)
     let activeWorkspaceId
     if (workspacePathRxResult) {
       activeWorkspaceId = workspacePathRxResult.groups.id
@@ -98,70 +98,70 @@ root.render(
       <Provider store={store}>
         <Suspense fallback={<Loading/>}>
           <Router>
-          <TrackPageViews/>
-          <Header/>
-          <App>
-            <Switch>
-              <Route path="/register" exact>
-                <Register/>
-              </Route>
-              {/* Articles index */}
-              <PrivateRoute path={['/articles', '/', '/workspaces/:workspaceId/articles']} exact>
-                <Articles/>
-              </PrivateRoute>
-              {/* Books index */}
-              <PrivateRoute path={['/books', '/workspaces/:workspaceId/books']} exact>
-                <Corpus/>
-              </PrivateRoute>
-              {/* Workspaces index */}
-              <PrivateRoute path={['/workspaces']} exact>
-                <Workspaces/>
-              </PrivateRoute>
-              <PrivateRoute path="/credentials" exact>
-                <UserInfos />
-                <Credentials/>
-              </PrivateRoute>
-              {/* Annotate a Book */}
-              <Route path={[`/books/:bookId/preview`]} exact>
-                <ArticlePreview/>
-              </Route>
-              {/* Annotate an article or its version */}
-              <Route path={[`/article/:id/version/:version/preview`, `/article/:id/preview`]} exact>
-                <ArticlePreview/>
-              </Route>
-              {/* Write and Compare */}
-              <PrivateRoute path={[`/article/:id/compare/:compareTo`, `/article/:id/version/:version/compare/:compareTo`]} exact>
-                <Write/>
-              </PrivateRoute>
-              {/* Write with a given version */}
-              <PrivateRoute path={`/article/:id/version/:version`} exact>
-                <Write/>
-              </PrivateRoute>
-              {/* Write and/or Preview */}
-              <PrivateRoute path={[`/article/:id/preview`, `/article/:id`]} exact>
-                <Write/>
-              </PrivateRoute>
-              {/* Collaborative editing */}
-              <PrivateRoute path={[`/article/:articleId/session/:sessionId`]} exact>
-                <CollaborativeEditor/>
-              </PrivateRoute>
-              <Route exact path="/privacy">
-                <Privacy/>
-              </Route>
-              <Route exact path="/ux">
-                <Story/>
-              </Route>
-              <Route exact path="/error">
-                <Error/>
-              </Route>
-              <Route path="*">
-                <NotFound/>
-              </Route>
-            </Switch>
-          </App>
-
-          <Footer/>
-        </Router>
+            <App>
+              <TrackPageViews/>
+              <Header/>
+              <Switch>
+                <Route path="/register" exact>
+                  <Register/>
+                </Route>
+                {/* Articles index */}
+                <PrivateRoute path={['/articles', '/', '/workspaces/:workspaceId/articles']} exact>
+                  <Articles/>
+                </PrivateRoute>
+                {/* Books index */}
+                <PrivateRoute path={['/books', '/workspaces/:workspaceId/books']} exact>
+                  <Corpus/>
+                </PrivateRoute>
+                {/* Workspaces index */}
+                <PrivateRoute path={['/workspaces']} exact>
+                  <Workspaces/>
+                </PrivateRoute>
+                <PrivateRoute path="/credentials" exact>
+                  <UserInfos/>
+                  <Credentials/>
+                </PrivateRoute>
+                {/* Annotate a Book */}
+                <Route path={[`/books/:bookId/preview`]} exact>
+                  <ArticlePreview/>
+                </Route>
+                {/* Annotate an article or its version */}
+                <Route path={[`/article/:id/version/:version/preview`, `/article/:id/preview`]} exact>
+                  <ArticlePreview/>
+                </Route>
+                {/* Write and Compare */}
+                <PrivateRoute
+                  path={[`/article/:id/compare/:compareTo`, `/article/:id/version/:version/compare/:compareTo`]} exact>
+                  <Write/>
+                </PrivateRoute>
+                {/* Write with a given version */}
+                <PrivateRoute path={`/article/:id/version/:version`} exact>
+                  <Write/>
+                </PrivateRoute>
+                {/* Write and/or Preview */}
+                <PrivateRoute path={[`/article/:id/preview`, `/article/:id`]} exact>
+                  <Write/>
+                </PrivateRoute>
+                {/* Collaborative editing */}
+                <PrivateRoute path={[`/article/:articleId/session/:sessionId`]} exact>
+                  <CollaborativeEditor/>
+                </PrivateRoute>
+                <Route exact path="/privacy">
+                  <Privacy/>
+                </Route>
+                <Route exact path="/ux">
+                  <Story/>
+                </Route>
+                <Route exact path="/error">
+                  <Error/>
+                </Route>
+                <Route path="*">
+                  <NotFound/>
+                </Route>
+              </Switch>
+              <Footer/>
+            </App>
+          </Router>
         </Suspense>
       </Provider>
     </GeistProvider>

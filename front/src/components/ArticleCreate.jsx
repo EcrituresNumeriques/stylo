@@ -8,7 +8,7 @@ import { createArticle } from './Articles.graphql'
 import Field from './Field.jsx'
 import { getTags } from './Tag.graphql'
 
-import styles from './ArticleCreate.module.scss'
+import styles from './articleCreate.module.scss'
 import ArticleTag from './Tag'
 import { useCurrentUser } from '../contexts/CurrentUser'
 

@@ -1,9 +1,9 @@
 import React from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
-import styles from './CollaborativeEditorArticleStats.module.scss'
+import styles from './articleStats.module.scss'
 
 
-export default function CollaborativeEditorArticleStats () {
+export default function ArticleStats () {
   const articleStats = useSelector(state => state.articleStats, shallowEqual)
   return (<ul className={styles.stats}>
     <li>Words : {articleStats.wordCount}</li>

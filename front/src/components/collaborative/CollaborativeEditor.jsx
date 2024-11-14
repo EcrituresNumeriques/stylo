@@ -2,11 +2,11 @@ import { Loading } from '@geist-ui/core'
 import React, { useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import useGraphQL from '../../hooks/graphql.js'
+import ArticleStats from '../ArticleStats.jsx'
 
 import { getCollaborativeSession } from './CollaborativeSession.graphql'
 
 import CollaborativeEditorArticleHeader from './CollaborativeEditorArticleHeader.jsx'
-import CollaborativeEditorArticleStats from './CollaborativeEditorArticleStats.jsx'
 import CollaborativeSessionError from './CollaborativeSessionError.jsx'
 import CollaborativeTextEditor from './CollaborativeTextEditor.jsx'
 
@@ -49,6 +49,6 @@ export default function CollaborativeEditor () {
         collaborativeSessionId={collaborativeSessionId}
         onCollaborativeSessionStateUpdated={handleCollaborativeSessionStateUpdated}
       />
-      <CollaborativeEditorArticleStats/>
+      <ArticleStats/>
     </div>)
 }

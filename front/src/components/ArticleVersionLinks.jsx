@@ -4,7 +4,7 @@ import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import useGraphQL from '../hooks/graphql.js'
-import styles from './articles.module.scss'
+import styles from './articleVersionLinks.module.scss'
 
 import { getArticleVersions } from './Article.graphql'
 import TimeAgo from './TimeAgo.jsx'
