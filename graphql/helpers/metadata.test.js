@@ -1,4 +1,4 @@
-const { reformat } = require('./metadata')
+const { reformat, toLegacyFormat, fromLegacyFormat } = require('./metadata')
 const YAML = require('js-yaml')
 const fs = require('node:fs/promises')
 const path = require('path')
@@ -142,4 +142,33 @@ test('should be identical', async () => {
 
   const expected = '---\n' + YAML.dump(YAML.load(expectedContent, 'utf8'), { sortKeys: true }) + '---'
   expect(reformat(input, {id: 'abcd1234'})).toBe(expected)
+})
+
+test('should convert to legacy format', async () => {
+  const expectedContentFilename = path.join(__dirname, '__fixtures__', 'article-uploaded-to-the-cloud-v0.json')
+  const inputFilename = path.join(__dirname, '__fixtures__', 'article-uploaded-to-the-cloud-v1.json')
+
+  const expectedContent = JSON.parse(await fs.readFile(expectedContentFilename, 'utf8'))
+  const input =JSON.parse( await fs.readFile(inputFilename, 'utf8'))
+  const actual = toLegacyFormat(input)
+  expect(actual).toMatchObject({
+    ...expectedContent,
+    abstract: expect.arrayContaining(expectedContent.abstract)
+  })
+})
+
+test('should convert from legacy format', async () => {
+  const expectedContentFilename = path.join(__dirname, '__fixtures__', 'article-uploaded-to-the-cloud-v1.json')
+  const inputFilename = path.join(__dirname, '__fixtures__', 'article-uploaded-to-the-cloud-v0.json')
+
+  const expectedContent = JSON.parse(await fs.readFile(expectedContentFilename, 'utf8'))
+  const input =JSON.parse( await fs.readFile(inputFilename, 'utf8'))
+  const actual = fromLegacyFormat(input)
+  expect(actual).toMatchObject({
+    ...expectedContent,
+    journal: {
+      ...expectedContent.journal,
+      url: undefined
+    }
+  })
 })

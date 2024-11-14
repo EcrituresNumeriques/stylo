@@ -1,0 +1,114 @@
+{
+  "abstract": [
+    {
+      "lang": "fr",
+      "text_f": "Cet article se penche sur l’appropriation par trois séries télévisées contemporaines des visions utopiques post-humanistes de la vie après la mort dans un univers virtuel grâce au « téléchargement de conscience », une technologie actuellement inexistante, mais faisant l’objet de nombreuses discussions et projections."
+    },
+    {
+      "lang": "en",
+      "text_f": "This article examines how three contemporary television series appropriate the utopian post-humanist visions of life after death in a virtual universe made possible by “mind uploading”, a technology that does not currently exist but is the subject of much discussion and projection."
+    }
+  ],
+  "acknowledgements": "Merci à tous !",
+  "authors": [
+    {
+      "affiliations": "aff",
+      "biography": "bio",
+      "email": "courriel",
+      "foaf": "foaf",
+      "forname": "Sylvaine",
+      "isni": "isni",
+      "orcid": "0000-0001-6424-3229",
+      "surname": "Bataille",
+      "viaf": "viaf",
+      "wikidata": "wikidata"
+    }
+  ],
+  "controlledKeywords": [
+    {
+      "idRameau": "",
+      "label": "F# (langage de programmation)",
+      "uriRameau": "http://data.bnf.fr/ark:/12148/cb16191752f"
+    }
+  ],
+  "date": "2024-05-28",
+  "diffnum": "Sens Public Web Publishing",
+  "director": [
+    {
+      "forname": "Marcello",
+      "surname": "Vitali-Rosati"
+    }
+  ],
+  "dossier": [
+    {
+      "id": "1710",
+      "title_f": "L’œuvre numérique à son miroir : regards sur les créations digitales contemporaines"
+    }
+  ],
+  "funder": {
+    "funder_id": "",
+    "funder_name": "Université de Montréal"
+  },
+  "id": "SP1711",
+  "issnnum": "2104-3272",
+  "issueDirectors": [
+    {
+      "forname": "Tony",
+      "surname": "Gheeraert"
+    },
+    {
+      "forname": "Mélanie",
+      "surname": "Lucciano"
+    },
+    {
+      "forname": "Sandra",
+      "surname": "Provini"
+    }
+  ],
+  "journal": "Sens Public",
+  "journal_email": "redaction@sens-public.org",
+  "journal_issue": "2024.8",
+  "keywords": [
+    {
+      "lang": "fr",
+      "list_f": [
+        "Arts et lettres",
+        "Cinéma",
+        "Fiction"
+      ]
+    },
+    {
+      "lang": "en",
+      "list_f": [
+        "Cinema",
+        "Fiction",
+        "Narrative"
+      ]
+    }
+  ],
+  "lang": "fr",
+  "prod": "Sens Public Prod",
+  "prodnum": "Sens Public Web Prod",
+  "publisher": "Sens Public Publishing",
+  "reviewers": [
+    {
+      "forname": "McCage",
+      "surname": "Griffiths"
+    }
+  ],
+  "rights": "CC BY-SA 4.0",
+  "subtitle_f": "Téléchargement de conscience, réflexivité et ré-enchantement de la technologie dans trois fictions sérielles anglophones",
+  "title_f": "Uploaded to the cloud… Sounds like heaven!",
+  "translator": [
+    {
+      "forname": "Shaun",
+      "surname": "Nicks"
+    }
+  ],
+  "url_article": "https://sens-public.org/articles/1711/",
+  "typeArticle": [
+    "Essai",
+    "Entretien",
+    "Chronique"
+  ]
+}

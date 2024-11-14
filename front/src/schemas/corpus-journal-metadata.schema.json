@@ -8,6 +8,10 @@
       "type": "string",
       "const": "journal"
     },
+    "@version": {
+      "type": "string",
+      "const": "1.0"
+    },
     "name": {
       "type": "string"
     },
