@@ -1,12 +1,6 @@
 @use '../styles/defaults' as *;
 @use '../styles/variables' as *;
 
-:global {
-  body {
-    overflow-y: scroll;
-  }
-}
-
 .articleCounter {
   font-size: 1.1rem;
   font-weight: 600;
