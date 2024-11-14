@@ -1,6 +1,12 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
 
+:global {
+  body {
+    overflow-y: scroll;
+  }
+}
+
 .section {
   @extend .wrapped-center;
   padding: 1rem;

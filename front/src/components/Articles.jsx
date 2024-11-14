@@ -153,15 +153,13 @@ export default function Articles () {
         <h1>Articles</h1>
         {activeWorkspace && <WorkspaceLabel color={activeWorkspace.color} name={activeWorkspace.name}/>}
       </header>
-      <div className={styles.actions}>
-        <Field className={styles.searchField}
-               type="text"
-               icon={Search}
-               value={filter}
-               placeholder={t('article.search.placeholder')}
-               onChange={(e) => setFilter(etv(e))}
-        />
-      </div>
+      <Field className={styles.searchField}
+             type="text"
+             icon={Search}
+             value={filter}
+             placeholder={t('article.search.placeholder')}
+             onChange={(e) => setFilter(etv(e))}
+      />
 
       <aside className={styles.filtersContainer}>
         <div className={styles.filtersTags}>

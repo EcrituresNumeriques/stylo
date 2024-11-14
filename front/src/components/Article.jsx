@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-ui/core'
 import { useActiveWorkspace } from '../hooks/workspace.js'
 
-import styles from './articles.module.scss'
+import styles from './article.module.scss'
 import ArticleVersionLinks from './ArticleVersionLinks.jsx'
 import buttonStyles from './button.module.scss'
 import CollaborativeSessionAction from './collaborative/CollaborativeSessionAction.jsx'
@@ -182,9 +182,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
       <GeistModal width="30rem" visible={sharing} onClose={closeSharingModal}>
         <h2>{t('article.shareModal.title')}</h2>
-        <span className={styles.sendSubtitle}>
-          <span className={styles.sendText}>{t('article.shareModal.description')}</span>
-        </span>
+        <span className={styles.sendText}>{t('article.shareModal.description')}</span>
         <GeistModal.Content>
           <ArticleContributors
             article={article}
@@ -196,9 +194,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
       <GeistModal width="30rem" visible={sharing} onClose={closeSharingModal}>
         <h2>{t('article.shareModal.title')}</h2>
-        <span className={styles.sendSubtitle}>
-          <span className={styles.sendText}>{t('article.shareModal.description')}</span>
-        </span>
+        <span className={styles.sendText}>{t('article.shareModal.description')}</span>
         <GeistModal.Content>
           <ArticleContributors
             article={article}
@@ -210,7 +206,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
 
       <GeistModal width="25rem" visible={sending} onClose={closeSendingModal}>
         <h2>{t('article.sendCopyModal.title')}</h2>
-        <span className={styles.sendSubtitle}>
+        <span>
           <span className={styles.sendText}>{t('article.sendCopyModal.description')}{' '}</span>
           <span><Send className={styles.sendIcon}/></span>
         </span>
@@ -226,7 +222,7 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
             {expanded ? <ChevronDown/> : <ChevronRight/>}
           </span>
 
-          <span className={styles.titleText}>
+          <span>
             {article.title}
             <Button title={t('article.editName.button')} icon={true} className={styles.editTitleButton} onClick={(evt) =>
               evt.stopPropagation() || setRenaming(true)
