@@ -32,8 +32,10 @@ if (SENTRY_DSN) {
     dsn: SENTRY_DSN,
     environment: APP_ENVIRONMENT,
     integrations: [
+      Sentry.browserTracingIntegration(),
       Sentry.reactRouterV5BrowserTracingIntegration({ history })
     ],
+    tracesSampleRate: 0.1,
     tracePropagationTargets: [/^huma-num.fr\//]
   })
 }
