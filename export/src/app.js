@@ -1,11 +1,16 @@
+const Sentry = require('@sentry/node')
+const { nodeProfilingIntegration } = require('@sentry/profiling-node')
+
+const config = require('./config.js')
+config.validate({ allowed: 'strict' })
+
+
 const express = require('express')
 const cors = require('cors')
 const { logger } = require('./logger')
 const pino = require('pino-http')({
   logger
 })
-const config = require('./config.js')
-config.validate({ allowed: 'strict' })
 
 const {
   exportArticleHtml,
@@ -30,6 +35,20 @@ app.use(pino)
 app.use(cors({
   origin: '*'
 }))
+
+if (config.get('sentry.dsn')) {
+  Sentry.init({
+    dsn: config.get('sentry.dsn'),
+    environment: process.env.NODE_ENV,
+    attachStacktrace: true,
+    includeLocalVariables: true,
+    integrations: [
+      nodeProfilingIntegration()
+    ]
+  })
+
+  Sentry.setupExpressErrorHandler(app)
+}
 
 const listenPort = config.get('port')
 
