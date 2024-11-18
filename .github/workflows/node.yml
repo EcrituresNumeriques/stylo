@@ -22,10 +22,6 @@ jobs:
       working-directory: ${{ inputs.app-dir }}
       run: npm clean-install --no-audit --no-fund
 
-    - name: Prepare
-      working-directory: ${{ inputs.app-dir }}
-      run: npm run migrations --if-present
-
     - name: Test
       working-directory: ${{ inputs.app-dir }}
       run: npm test
