@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
 import pkg from './package.json' assert { type: 'json' }
 import react from '@vitejs/plugin-react'
@@ -6,7 +7,7 @@ import graphql from '@rollup/plugin-graphql'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
-  const env = loadEnv(mode, import.meta.resolve('..'), 'SNOWPACK_')
+  const env = loadEnv(mode, fileURLToPath(import.meta.resolve('..')), 'SNOWPACK_')
   const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
 
   return {
