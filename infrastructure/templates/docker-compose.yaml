@@ -38,10 +38,6 @@ services:
         condition: service_healthy
     env_file:
       - .env
-    environment:
-      - DATABASE_URL=mongodb://mongodb-stylo:27017/{{mongo_server_db}}
-      - MONGO_SERVER=mongodb-stylo
-      - MONGO_SERVER_PORT=27017
     ports:
       - 127.0.0.1:3060:3060
 
