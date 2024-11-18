@@ -157,6 +157,13 @@ module.exports = convict({
         env: 'ZOTERO_AUTH_CLIENT_SECRET',
         default: null
       }
+    },
+  },
+  sentry: {
+    dsn: {
+      format: 'url',
+      env: 'SENTRY_GRAPHQL_DSN',
+      default: null
     }
   }
 })

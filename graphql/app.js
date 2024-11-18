@@ -6,6 +6,8 @@ config.validate({ allowed: 'strict' })
 
 process.env.YPERSISTENCE = ospath.join(__dirname, 'ydata')
 
+const Sentry = require('@sentry/node')
+const { nodeProfilingIntegration } = require('@sentry/profiling-node')
 const express = require('express')
 const bodyParser = require('body-parser')
 const { createHandler } = require('graphql-http/lib/use/express')
@@ -80,6 +82,20 @@ const corsOptions = {
     const found = allowedOrigins.some(o => o.test(origin))
     callback(null, found ? origin : false)
   }
+}
+
+if (config.get('sentry.dsn')) {
+  Sentry.init({
+    dsn: config.get('sentry.dsn'),
+    environment: process.env.NODE_ENV,
+    attachStacktrace: true,
+    includeLocalVariables: true,
+    integrations: [
+      nodeProfilingIntegration()
+    ]
+  })
+
+  Sentry.setupExpressErrorHandler(app)
 }
 
 passport.use('zotero', new OAuthStrategy({
