@@ -17,7 +17,7 @@ const MongoStore = require('connect-mongo')(session)
 const passport = require('passport')
 const OidcStrategy = require('passport-openidconnect').Strategy
 const LocalStrategy = require('passport-local').Strategy
-const OAuthStrategy = require('passport-oauth').OAuthStrategy
+const OAuthStrategy = require('passport-oauth1')
 const { logger } = require('./logger')
 const pino = require('pino-http')({
   logger

@@ -4,14 +4,15 @@
 
 /**
  * @param {ComboboxItem[]} items
+ * @returns {Record<String, ComboboxItem[]>}
  */
 export function groupItems (items) {
-  return Array.from(items.reduce((groups, item, index) => {
+  return Array.from(items.reduce((groups, item) => {
     if (!groups.has(item.section)) {
       groups.set(item.section, [])
     }
 
-    groups.get(item.section).push({ ...item, index })
+    groups.get(item.section).push({ ...item })
 
     return groups
   }, new Map()).entries())
