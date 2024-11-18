@@ -8,7 +8,7 @@ exports.up = async function (db) {
     .createIndex({ name: -1 }, { unique: false })
   await mongo
     .collection('tags')
-    .createIndex({ updatedAt: -1 }, { unique: false })
+    .createIndex({ createdAt: -1 }, { unique: false })
   await mongo
     .collection('articles')
     .createIndex({ createdAt: -1 }, { unique: false })

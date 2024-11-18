@@ -54,13 +54,13 @@
     "y-websocket": "^1.5.0"
   },
   "devDependencies": {
-    "@shelf/jest-mongodb": "^4.3.2",
-    "@types/jest": "^29.2.5",
+    "@shelf/jest-mongodb": "~4.3",
+    "@types/jest": "~29.5",
     "eslint": "^8.2.0",
-    "eslint-plugin-jest": "^27.2.0",
-    "eslint-plugin-security": "^1.5.0",
-    "jest": "^29.3.1",
-    "jest-environment-node": "^29.3.1"
+    "eslint-plugin-jest": "~28.9",
+    "eslint-plugin-security": "~3.0",
+    "jest": "~29.7",
+    "jest-environment-node": "~29.7"
   },
   "volta": {
     "node": "18.20.4",
