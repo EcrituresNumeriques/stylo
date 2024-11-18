@@ -14,6 +14,6 @@ on:
 
 jobs:
   build:
-    uses: EcrituresNumeriques/stylo/.github/workflows/node.yml@feat/migrate-db
+    uses: EcrituresNumeriques/stylo/.github/workflows/node.yml@master
     with:
       app-dir: graphql

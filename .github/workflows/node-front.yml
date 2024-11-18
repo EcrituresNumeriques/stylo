@@ -14,6 +14,6 @@ on:
 
 jobs:
   build:
-    uses: EcrituresNumeriques/stylo/.github/workflows/node.yml
+    uses: EcrituresNumeriques/stylo/.github/workflows/node.yml@master
     with:
       app-dir: front
