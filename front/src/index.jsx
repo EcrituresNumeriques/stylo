@@ -1,8 +1,10 @@
 import './wdyr.js'
 import 'core-js/modules/web.structured-clone'
+import * as Sentry from '@sentry/react'
 import React, { lazy, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
+import { BrowserRouter as Router, Route as OriginalRoute, Switch, useHistory } from 'react-router-dom'
+import { createBrowserHistory } from 'history'
 import { Provider } from 'react-redux'
 import { GeistProvider, Loading } from '@geist-ui/core'
 
@@ -21,6 +23,20 @@ import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/404'
 import Error from './components/Error'
 import Story from './stories/Story.jsx'
+
+const Route = Sentry.withSentryRouting(OriginalRoute)
+const history = createBrowserHistory()
+
+if (SENTRY_DSN) {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    environment: APP_ENVIRONMENT,
+    integrations: [
+      Sentry.reactRouterV5BrowserTracingIntegration({ history })
+    ],
+    tracePropagationTargets: [/^huma-num.fr\//]
+  })
+}
 
 // lazy loaded routes
 const Corpus = lazy(() => import('./components/corpus/Corpus'))
@@ -91,13 +107,18 @@ const TrackPageViews = () => {
   return null
 }
 
-const root = createRoot(document.getElementById('root'))
+const root = createRoot(document.getElementById('root'), {
+  onUncaughtError: Sentry.reactErrorHandler(),
+  onCaughtError: Sentry.reactErrorHandler(),
+  onRecoverableError: Sentry.reactErrorHandler()
+})
+
 root.render(
   <React.StrictMode>
     <GeistProvider>
       <Provider store={store}>
         <Suspense fallback={<Loading/>}>
-          <Router>
+          <Router history={history}>
             <App>
               <TrackPageViews/>
               <Header/>

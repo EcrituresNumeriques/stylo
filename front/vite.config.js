@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
+import { sentryVitePlugin } from '@sentry/vite-plugin'
 import pkg from './package.json' assert { type: 'json' }
 import react from '@vitejs/plugin-react'
 import handlebars from 'vite-plugin-handlebars'
@@ -7,7 +8,7 @@ import graphql from '@rollup/plugin-graphql'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
-  const env = loadEnv(mode, fileURLToPath(import.meta.resolve('..')), 'SNOWPACK_')
+  const env = loadEnv(mode, fileURLToPath(import.meta.resolve('..')), ['SNOWPACK_', 'SENTRY_'])
   const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
 
   return {
@@ -43,10 +44,20 @@ export default defineConfig(async ({ mode }) => {
           SNOWPACK_MATOMO_URL,
           SNOWPACK_MATOMO_SITE_ID,
         }
+      }),
+      sentryVitePlugin({
+        org: 'ecrinum-stylo',
+        project: 'stylo-front',
+        authToken: env.SNOWPACK_SENTRY_AUTH_TOKEN,
+        sourcemaps: {
+          // filesToDeleteAfterUpload: false
+        }
       })
     ],
     define: {
       APP_VERSION: JSON.stringify(pkg.version),
+      APP_ENVIRONMENT: JSON.stringify(env.SENTRY_ENVIRONMENT),
+      SENTRY_DSN: JSON.stringify(env.SENTRY_DSN),
       __BACKEND_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_BACKEND_ENDPOINT),
       __GRAPHQL_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT),
       __EXPORT_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_EXPORT_ENDPOINT),

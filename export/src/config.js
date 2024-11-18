@@ -39,5 +39,13 @@ module.exports = convict({
       env: 'SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT',
       default: 'http://127.0.0.1:3080'
     }
+  },
+  sentry: {
+    dsn: {
+      format: 'url',
+      env: 'SENTRY_EXPORT_DSN',
+      default: null,
+      nullable: true
+    }
   }
 })
