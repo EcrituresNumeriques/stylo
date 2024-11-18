@@ -48,7 +48,7 @@ export default defineConfig(async ({ mode }) => {
       sentryVitePlugin({
         org: 'ecrinum-stylo',
         project: 'stylo-front',
-        authToken: env.SNOWPACK_SENTRY_AUTH_TOKEN,
+        authToken: env.SENTRY_AUTH_TOKEN,
         sourcemaps: {
           // filesToDeleteAfterUpload: false
         }
