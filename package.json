@@ -3,7 +3,7 @@
   "private": true,
   "version": "3.1.5",
   "description": "Stylo est un éditeur de textes pour articles scientifiques en sciences humaines et sociales.",
-  "main": "index.js",
+  "main": "graphql/app.js",
   "directories": {
     "doc": "docs"
   },
@@ -14,6 +14,7 @@
   "scripts": {
     "dev": "DOTENV_CONFIG_PATH=.env node -r dotenv/config ./node_modules/.bin/concurrently 'npm:dev:*'",
     "dev:front": "./front/node_modules/.bin/vite ./front",
+    "predev:graphql": "DOTENV_CONFIG_PATH=stylo.env node -r dotenv/config ./graphql/node_modules/.bin/db-migrate up --migrations-dir ./graphql/migrations",
     "dev:graphql": "node --watch ./graphql/app.js --watch",
     "dev:export": "node  --watch ./export/src/app.js --watch",
     "start": "DOTENV_CONFIG_PATH=.env node -r dotenv/config ./node_modules/.bin/concurrently 'npm:start:*'",
