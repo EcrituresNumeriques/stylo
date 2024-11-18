@@ -30,6 +30,7 @@ const history = createBrowserHistory()
 if (import.meta.env.SENTRY_DSN) {
   Sentry.init({
     dsn: import.meta.env.SENTRY_DSN,
+    environment: import.meta.env.APP_ENVIRONMENT,
     integrations: [
       Sentry.reactRouterV5BrowserTracingIntegration({ history })
     ],

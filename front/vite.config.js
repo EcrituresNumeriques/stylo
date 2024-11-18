@@ -8,7 +8,7 @@ import graphql from '@rollup/plugin-graphql'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
-  const env = loadEnv(mode, fileURLToPath(import.meta.resolve('..')), 'SNOWPACK_')
+  const env = loadEnv(mode, fileURLToPath(import.meta.resolve('..')), ['SNOWPACK_', 'SENTRY_'])
   const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
 
   return {
