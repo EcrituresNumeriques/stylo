@@ -299,6 +299,7 @@ function setSessionToken (state, { token: sessionToken }) {
 
 function loginUser (state, { user, token: sessionToken }) {
   if (sessionToken) {
+    Sentry.setUser({ id: user._id })
     return {
       ...state,
       sessionToken,
@@ -323,6 +324,7 @@ function updateActiveUserDetails (state, action) {
 }
 
 function logoutUser (state) {
+  Sentry.setUser(null)
   return { ...state, ...initialState }
 }
 
