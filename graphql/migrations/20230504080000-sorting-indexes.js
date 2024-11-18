@@ -1,13 +1,25 @@
 exports.up = async function (db) {
-  await db.addIndex('articles', 'updatedAt_-1', ['updatedAt'])
-  await db.addIndex('tags', 'tags_name-1', ['name'])
-  await db.addIndex('tags', 'createdAt_-1', ['createdAt'])
-  await db.addIndex('versions', 'createdAt_-1', ['createdAt'])
+  const mongo = await db._run("getDbInstance", true)
+  await mongo
+    .collection('articles')
+    .createIndex({ updatedAt: -1 }, { unique: false })
+  await mongo
+    .collection('tags')
+    .createIndex({ name: -1 }, { unique: false })
+  await mongo
+    .collection('tags')
+    .createIndex({ updatedAt: -1 }, { unique: false })
+  await mongo
+    .collection('articles')
+    .createIndex({ createdAt: -1 }, { unique: false })
+  await mongo
+    .collection('versions')
+    .createIndex({ createdAt: -1 }, { unique: false })
 }
 
 exports.down = async function (db) {
   await db.removeIndex('articles', 'updatedAt_-1')
-  await db.removeIndex('tags', 'tags_name-1')
+  await db.removeIndex('tags', 'name_-1')
   await db.removeIndex('tags', 'createdAt_-1')
   await db.removeIndex('versions', 'createdAt_-1')
 }
