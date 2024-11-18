@@ -11,12 +11,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      mongodb:
-        image: mongo:4.4
-        ports:
-        - 27017/tcp
-
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -28,11 +22,13 @@ jobs:
       working-directory: ${{ inputs.app-dir }}
       run: npm clean-install --no-audit --no-fund
 
+    - name: Prepare
+      working-directory: ${{ inputs.app-dir }}
+      run: npm run migrations --if-present
+
     - name: Test
       working-directory: ${{ inputs.app-dir }}
       run: npm test
-      env:
-        DATABASE_URL: mongodb://127.0.0.1:${{ job.services.mongodb.ports[27017] }}/stylo
 
     - name: Coveralls
       uses: coverallsapp/github-action@v2
