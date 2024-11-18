@@ -31,6 +31,7 @@ module.exports = {
   globals: {
     APP_VERSION: true,
     APP_ENVIRONMENT: true,
+    SENTRY_DSN: true,
     __BACKEND_ENDPOINT__: true,
     __GRAPHQL_ENDPOINT__: true,
     __EXPORT_ENDPOINT__: true,

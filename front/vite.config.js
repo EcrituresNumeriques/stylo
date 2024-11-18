@@ -56,6 +56,8 @@ export default defineConfig(async ({ mode }) => {
     ],
     define: {
       APP_VERSION: JSON.stringify(pkg.version),
+      APP_ENVIRONMENT: JSON.stringify(env.SENTRY_ENVIRONMENT),
+      SENTRY_DSN: JSON.stringify(env.SENTRY_DSN),
       __BACKEND_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_BACKEND_ENDPOINT),
       __GRAPHQL_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT),
       __EXPORT_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_EXPORT_ENDPOINT),

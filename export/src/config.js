@@ -44,7 +44,8 @@ module.exports = convict({
     dsn: {
       format: 'url',
       env: 'SENTRY_EXPORT_DSN',
-      default: null
+      default: null,
+      nullable: true
     }
   }
 })

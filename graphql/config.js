@@ -163,7 +163,8 @@ module.exports = convict({
     dsn: {
       format: 'url',
       env: 'SENTRY_GRAPHQL_DSN',
-      default: null
+      default: null,
+      nullable: true
     }
   }
 })

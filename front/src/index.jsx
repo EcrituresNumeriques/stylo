@@ -27,10 +27,10 @@ import Story from './stories/Story.jsx'
 const Route = Sentry.withSentryRouting(OriginalRoute)
 const history = createBrowserHistory()
 
-if (import.meta.env.SENTRY_DSN) {
+if (SENTRY_DSN) {
   Sentry.init({
-    dsn: import.meta.env.SENTRY_DSN,
-    environment: import.meta.env.APP_ENVIRONMENT,
+    dsn: SENTRY_DSN,
+    environment: APP_ENVIRONMENT,
     integrations: [
       Sentry.reactRouterV5BrowserTracingIntegration({ history })
     ],
