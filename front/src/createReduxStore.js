@@ -1,8 +1,11 @@
 import { applyMiddleware, compose, createStore } from 'redux'
+import * as Sentry from '@sentry/react'
 import { toEntries } from './helpers/bibtex'
 import ArticleService from './services/ArticleService'
 import WorkspaceService from './services/WorkspaceService.js'
 const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName = 'sessionToken' } = import.meta.env
+
+const sentryReduxEnhancer = Sentry.createReduxEnhancer()
 
 function createReducer (initialState, handlers) {
   return function reducer (state = initialState, action) {
@@ -509,6 +512,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export default function createReduxStore (state = initialState) {
   return createStore(createRootReducer(state), composeEnhancers(
-    applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage)
+    applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage),
+    sentryReduxEnhancer
   ))
 }

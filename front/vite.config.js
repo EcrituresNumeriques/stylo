@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
+import { sentryVitePlugin } from '@sentry/vite-plugin'
 import pkg from './package.json' assert { type: 'json' }
 import react from '@vitejs/plugin-react'
 import handlebars from 'vite-plugin-handlebars'
@@ -42,6 +43,14 @@ export default defineConfig(async ({ mode }) => {
           SNOWPACK_MATOMO: Boolean(SNOWPACK_MATOMO_URL) && Boolean(SNOWPACK_MATOMO_SITE_ID),
           SNOWPACK_MATOMO_URL,
           SNOWPACK_MATOMO_SITE_ID,
+        }
+      }),
+      sentryVitePlugin({
+        org: 'ecrinum-stylo',
+        project: 'stylo-front',
+        authToken: env.SNOWPACK_SENTRY_AUTH_TOKEN,
+        sourcemaps: {
+          // filesToDeleteAfterUpload: false
         }
       })
     ],
