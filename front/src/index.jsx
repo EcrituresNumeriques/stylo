@@ -34,7 +34,8 @@ if (SENTRY_DSN) {
     integrations: [
       Sentry.browserTracingIntegration(),
       Sentry.reactRouterV5BrowserTracingIntegration({ history }),
-      Sentry.replayIntegration()
+      Sentry.replayIntegration(),
+      Sentry.replayCanvasIntegration()
     ],
     tracesSampleRate: 1.0,
     replaysSessionSampleRate: 0.1,
