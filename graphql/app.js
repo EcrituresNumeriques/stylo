@@ -93,7 +93,7 @@ if (config.get('sentry.dsn')) {
     integrations: [
       nodeProfilingIntegration(),
       Sentry.mongooseIntegration(),
-      new Sentry.dataloaderIntegration()
+      Sentry.dataloaderIntegration()
     ]
   })
 
