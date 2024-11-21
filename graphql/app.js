@@ -91,7 +91,9 @@ if (config.get('sentry.dsn')) {
     attachStacktrace: true,
     includeLocalVariables: true,
     integrations: [
-      nodeProfilingIntegration()
+      nodeProfilingIntegration(),
+      Sentry.mongooseIntegration(),
+      new Sentry.dataloaderIntegration()
     ]
   })
 

@@ -78,6 +78,7 @@ jobs:
       run: |
         docker buildx bake -f docker-compose.yaml \
           --set '*.platform=linux/amd64' \
+          --build-arg SENTRY_RELEASE=${{ inputs.release-version || 'latest' }} \
           --load --pull ${{ matrix.app }}
 
     - name: Login to GitHub Container Registry ghcr.io
