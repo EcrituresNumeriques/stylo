@@ -10,7 +10,7 @@ import graphql from '@rollup/plugin-graphql'
 export default defineConfig(async ({ mode }) => {
   const env = loadEnv(mode, fileURLToPath(import.meta.resolve('..')), ['SNOWPACK_', 'SENTRY_'])
   const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
-  const sourcemap = Boolean(env.ENABLE_SOURCEMAPS) || env.SENTRY_ENVIRONMENT === 'dev'
+  const sourcemap = Boolean(env.ENABLE_SOURCEMAPS) || env.SENTRY_ENVIRONMENT === 'dev' || false
 
   return {
     base: env.DEPLOY_PRIME_URL ?? '/',
@@ -49,10 +49,7 @@ export default defineConfig(async ({ mode }) => {
       sentryVitePlugin({
         org: 'ecrinum-stylo',
         project: 'stylo-front',
-        authToken: env.SENTRY_AUTH_TOKEN,
-        sourcemaps: {
-          filesToDeleteAfterUpload: sourcemap
-        }
+        authToken: env.SENTRY_AUTH_TOKEN
       })
     ],
     define: {
