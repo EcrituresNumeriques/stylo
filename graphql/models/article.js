@@ -32,13 +32,13 @@ const articleSchema = new Schema({
       type: String,
       default: ''
     },
-    yaml: {
-      type: String,
-      default: ''
-    },
     bib: {
       type: String,
       default: ''
+    },
+    metadata: {
+      type: Schema.Types.Mixed,
+      default: {}
     },
   },
   versions: [

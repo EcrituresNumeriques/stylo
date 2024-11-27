@@ -45,7 +45,6 @@ npm --prefix export clean-install
 npm --prefix graphql clean-install
 ```
 
-
 ## Sans Docker
 
 Avant un premier lancement, la variable `SE_GRAPHQL_TOKEN` doit être renseignée dans `.env` à l'aide de la valeur produite par cette commande :

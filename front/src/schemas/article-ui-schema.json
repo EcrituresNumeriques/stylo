@@ -1,0 +1,511 @@
+{
+  "ui:groups": [
+    {
+      "title": "Article",
+      "fields": [
+        "id",
+        "publicationDate",
+        "url",
+        "license",
+        "acknowledgements"
+      ]
+    },
+    {
+      "title": "Titre et résumé",
+      "fields": [
+        "lang",
+        "title",
+        "subtitle",
+        "abstract"
+      ]
+    },
+    {
+      "title": "Mots-clés",
+      "fields": [
+        "keywords"
+      ]
+    },
+    {
+      "title": "Mots-clés contrôlés",
+      "fields": [
+        "controlledKeywords"
+      ]
+    },
+    {
+      "title": "Titre, résumé et mots-clés traduits",
+      "fields": [
+        "localizedContent"
+      ]
+    },
+    {
+      "title": "article.metadata.authors",
+      "fields": [
+        "authors"
+      ]
+    },
+    {
+      "title": "article.metadata.reviewers",
+      "fields": [
+        "reviewers"
+      ]
+    },
+    {
+      "title": "article.metadata.transcribers",
+      "fields": [
+        "transcribers"
+      ]
+    },
+    {
+      "title": "article.metadata.translationOf",
+      "fields": [
+        "translationOf"
+      ]
+    },
+    {
+      "title": "article.metadata.translators",
+      "fields": [
+        "translators"
+      ]
+    },
+    {
+      "title": "article.metadata.issue",
+      "fields": [
+        "issue"
+      ]
+    },
+    {
+      "title": "article.metadata.issueDirectors",
+      "fields": [
+        "issueDirectors"
+      ]
+    },
+    {
+      "title": "article.metadata.production",
+      "fields": [
+        "production"
+      ]
+    },
+    {
+      "title": "article.metadata.funder",
+      "fields": [
+        "funder"
+      ]
+    },
+    {
+      "title": "article.metadata.journal",
+      "fields": [
+        "journal"
+      ]
+    },
+    {
+      "title": "article.metadata.journalDirectors",
+      "fields": [
+        "journalDirectors"
+      ]
+    }
+  ],
+  "id": {
+    "ui:title": "ID",
+    "ui:placeholder": "XXXX"
+  },
+  "surtitle": {
+    "ui:title": "article.metadata.surtitle"
+  },
+  "link-citations": {
+    "ui:widget": "select",
+    "ui:emptyValue": "",
+    "ui:title": "article.metadata.citationsLink",
+    "ui:enumNames": [
+      "article.metadata.citationsLink.yes",
+      "article.metadata.citationsLink.no"
+    ]
+  },
+  "nocite": {
+    "ui:title": "article.metadata.bibliographyDisplay",
+    "ui:widget": "select",
+    "ui:emptyValue": "",
+    "ui:enumNames": [
+      "article.metadata.bibliographyDisplay.all",
+      "article.metadata.bibliographyDisplay.onlyUsed"
+    ]
+  },
+  "date": {
+    "ui:title": "Date",
+    "ui:widget": "date"
+  },
+  "lang": {
+    "ui:title": "article.metadata.language",
+    "ui:placeholder": "article.metadata.language.placeholder"
+  },
+  "rights": {
+    "ui:title": "article.metadata.license",
+    "ui:placeholder": "article.metadata.license.placeholder"
+  },
+  "journal_issue": {
+    "ui:title": "article.metadata.journalIssue",
+    "ui:placeholder": "article.metadata.journalIssue.placeholder"
+  },
+  "biography": {
+    "ui:widget": "textarea"
+  },
+  "authors": {
+    "ui:add-item-title": "article.metadata.authors.addItem",
+    "items": {
+      "ui:autocomplete": "IsidoreAuthorSearch",
+      "surname": {
+        "ui:title": "article.metadata.people.surname"
+      },
+      "forename": {
+        "ui:title": "article.metadata.people.forename"
+      },
+      "affiliations": {
+        "ui:title": "article.metadata.people.affiliations"
+      },
+      "biography": {
+        "ui:title": "article.metadata.people.biography"
+      },
+      "email": {
+        "ui:title": "article.metadata.people.email"
+      },
+      "orcid": {
+        "ui:title": "article.metadata.people.orcid"
+      },
+      "viaf": {
+        "ui:title": "article.metadata.people.viaf"
+      },
+      "foaf": {
+        "ui:title": "article.metadata.people.foaf"
+      },
+      "isni": {
+        "ui:title": "article.metadata.people.isni"
+      },
+      "wikidata": {
+        "ui:title": "article.metadata.people.wikidata"
+      }
+    }
+  },
+  "translationOf": {
+    "ui:title": "article.metadata.translationOf",
+    "items": {
+      "url": {
+        "ui:widget": "uri",
+        "ui:title": "article.metadata.translationOf.url"
+      },
+      "title_f": {
+        "ui:title": "article.metadata.translationOf.title"
+      },
+      "lang": {
+        "ui:title": "article.metadata.translationOf.lang"
+      }
+    }
+  },
+  "publisher": {
+    "ui:title": "article.metadata.publisher"
+  },
+  "journal": {
+    "ui:title": "article.metadata.journal"
+  },
+  "journal_email": {
+    "ui:title": "article.metadata.journalEmail"
+  },
+  "title": {
+    "ui:title": "article.metadata.title"
+  },
+  "subtitle": {
+    "ui:title": "article.metadata.subtitle"
+  },
+  "abstract": {
+    "ui:title": "article.metadata.abstract",
+    "ui:widget": "textarea"
+  },
+  "license": {
+    "ui:title": "article.metadata.license"
+  },
+  "url": {
+    "ui:title": "article.metadata.url"
+  },
+  "publicationDate": {
+    "ui:title": "article.metadata.publicationDate"
+  },
+  "keywords": {
+    "ui:add-item-title": "article.metadata.keywords.addItem",
+    "ui:remove-item-title": "article.metadata.keywords.removeItem",
+    "items": {
+      "ui:label": false,
+      "ui:className": "keywords"
+    }
+  },
+  "controlledKeywords": {
+    "ui:classNames": "inline-field-string",
+    "ui:add-item-title": "article.metadata.controlledKeywords.addItem",
+    "ui:remove-item-title": "",
+    "items": {
+      "ui:field": "IsidoreKeywordSearch",
+      "ui:className": "keywords"
+    }
+  },
+  "typeArticle": {
+    "ui:widget": "checkboxes",
+    "ui:title": "article.metadata.type",
+    "ui:enumNames": [
+      "article.metadata.type.essay",
+      "article.metadata.type.creation",
+      "article.metadata.type.lecture",
+      "article.metadata.type.dossierSummary",
+      "article.metadata.type.interview",
+      "article.metadata.type.editorialColumn"
+    ]
+  },
+  "dossier": {
+    "ui:title": "article.metadata.dossier",
+    "ui:options": {
+      "removable": false,
+      "addable": false
+    },
+    "items": {
+      "title_f": {
+        "ui:title": "article.metadata.dossier.title"
+      },
+      "id": {
+        "ui:title": "article.metadata.dossier.id"
+      }
+    }
+  },
+  "issueDirectors": {
+    "items": {
+      "surname": {
+        "ui:title": "article.metadata.people.surname"
+      },
+      "forename": {
+        "ui:title": "article.metadata.people.forename"
+      },
+      "affiliations": {
+        "ui:title": "article.metadata.people.affiliations"
+      },
+      "biography": {
+        "ui:title": "article.metadata.people.biography"
+      },
+      "email": {
+        "ui:title": "article.metadata.people.email"
+      },
+      "orcid": {
+        "ui:title": "article.metadata.people.orcid"
+      },
+      "viaf": {
+        "ui:title": "article.metadata.people.viaf"
+      },
+      "foaf": {
+        "ui:title": "article.metadata.people.foaf"
+      },
+      "isni": {
+        "ui:title": "article.metadata.people.isni"
+      },
+      "wikidata": {
+        "ui:title": "article.metadata.people.wikidata"
+      }
+    }
+  },
+  "director": {
+    "ui:add-item-title": "article.metadata.directors.addItem",
+    "items": {
+      "surname": {
+        "ui:title": "article.metadata.people.surname"
+      },
+      "forename": {
+        "ui:title": "article.metadata.people.forename"
+      },
+      "affiliations": {
+        "ui:title": "article.metadata.people.affiliations"
+      },
+      "biography": {
+        "ui:title": "article.metadata.people.biography"
+      },
+      "email": {
+        "ui:title": "article.metadata.people.email"
+      },
+      "orcid": {
+        "ui:title": "article.metadata.people.orcid"
+      },
+      "viaf": {
+        "ui:title": "article.metadata.people.viaf"
+      },
+      "foaf": {
+        "ui:title": "article.metadata.people.foaf"
+      },
+      "isni": {
+        "ui:title": "article.metadata.people.isni"
+      },
+      "wikidata": {
+        "ui:title": "article.metadata.people.wikidata"
+      }
+    }
+  },
+  "transcribers": {
+    "items": {
+      "surname": {
+        "ui:title": "article.metadata.people.surname"
+      },
+      "forename": {
+        "ui:title": "article.metadata.people.forename"
+      },
+      "affiliations": {
+        "ui:title": "article.metadata.people.affiliations"
+      },
+      "biography": {
+        "ui:title": "article.metadata.people.biography"
+      },
+      "email": {
+        "ui:title": "article.metadata.people.email"
+      },
+      "orcid": {
+        "ui:title": "article.metadata.people.orcid"
+      },
+      "viaf": {
+        "ui:title": "article.metadata.people.viaf"
+      },
+      "foaf": {
+        "ui:title": "article.metadata.people.foaf"
+      },
+      "isni": {
+        "ui:title": "article.metadata.people.isni"
+      },
+      "wikidata": {
+        "ui:title": "article.metadata.people.wikidata"
+      }
+    }
+  },
+  "translatedTitle": {
+    "ui:add-item-title": "article.metadata.translatedTitle.addItem",
+    "items": {
+      "text_f": {
+        "ui:title": "article.metadata.translatedTitle.title"
+      },
+      "lang": {
+        "ui:title": "article.metadata.translatedTitle.lang",
+        "ui:placeholder": "article.metadata.translatedTitle.lang.placeholder"
+      }
+    }
+  },
+  "translator": {
+    "ui:title": "article.metadata.translators",
+    "items": {
+      "surname": {
+        "ui:title": "article.metadata.people.surname"
+      },
+      "forename": {
+        "ui:title": "article.metadata.people.forename"
+      },
+      "affiliations": {
+        "ui:title": "article.metadata.people.affiliations"
+      },
+      "biography": {
+        "ui:title": "article.metadata.people.biography"
+      },
+      "email": {
+        "ui:title": "article.metadata.people.email"
+      },
+      "orcid": {
+        "ui:title": "article.metadata.people.orcid"
+      },
+      "viaf": {
+        "ui:title": "article.metadata.people.viaf"
+      },
+      "foaf": {
+        "ui:title": "article.metadata.people.foaf"
+      },
+      "isni": {
+        "ui:title": "article.metadata.people.isni"
+      },
+      "wikidata": {
+        "ui:title": "article.metadata.people.wikidata"
+      }
+    }
+  },
+  "acknowledgements": {
+    "ui:title": "article.metadata.acknowledgements",
+    "ui:widget": "textarea"
+  },
+  "reviewers": {
+    "ui:edit-item-title": "Éditer",
+    "ui:item-fields": {
+      "forename": true,
+      "surname": true,
+      "affiliations": true
+    },
+    "items": {
+      "surname": {
+        "ui:title": "article.metadata.people.surname"
+      },
+      "forename": {
+        "ui:title": "article.metadata.people.forename"
+      },
+      "affiliations": {
+        "ui:title": "article.metadata.people.affiliations"
+      },
+      "biography": {
+        "ui:title": "article.metadata.people.biography"
+      },
+      "email": {
+        "ui:title": "article.metadata.people.email"
+      },
+      "orcid": {
+        "ui:title": "article.metadata.people.orcid"
+      },
+      "viaf": {
+        "ui:title": "article.metadata.people.viaf"
+      },
+      "foaf": {
+        "ui:title": "article.metadata.people.foaf"
+      },
+      "isni": {
+        "ui:title": "article.metadata.people.isni"
+      },
+      "wikidata": {
+        "ui:title": "article.metadata.people.wikidata"
+      }
+    }
+  },
+  "issnnum": {
+    "ui:title": "article.metadata.issnnum"
+  },
+  "prod": {
+    "ui:title": "article.metadata.prod"
+  },
+  "prodnum": {
+    "ui:title": "article.metadata.prodnum"
+  },
+  "diffnum": {
+    "ui:title": "article.metadata.diffnum"
+  },
+  "funder": {
+    "ui:title": "",
+    "funder_name": {
+      "ui:title": "article.metadata.funder.name"
+    },
+    "funder_id": {
+      "ui:title": "article.metadata.funder.id"
+    }
+  },
+  "localizedContent": {
+    "ui:add-item-title": "article.metadata.language.addItem",
+    "items": {
+      "lang": {
+        "ui:title": "article.metadata.language"
+      },
+      "title": {
+        "ui:title": "article.metadata.title"
+      },
+      "subtitle": {
+        "ui:title": "article.metadata.subtitle"
+      },
+      "abstract": {
+        "ui:title": "article.metadata.abstract",
+        "ui:widget": "textarea"
+      },
+      "keywords": {
+        "ui:title": "article.metadata.keywords",
+        "ui:add-item-title": "article.metadata.keywords.addItem"
+      }
+    }
+  }
+}

@@ -39,7 +39,7 @@
       "biography": "bio",
       "email": "courriel",
       "foaf": "foaf",
-      "forname": "Sylvaine",
+      "forename": "Sylvaine",
       "isni": "isni",
       "orcid": "0000-0001-6424-3229",
       "surname": "Bataille",
@@ -49,33 +49,33 @@
   ],
   "issueDirectors": [
     {
-      "forname": "Tony",
+      "forename": "Tony",
       "surname": "Gheeraert"
     },
     {
-      "forname": "Mélanie",
+      "forename": "Mélanie",
       "surname": "Lucciano"
     },
     {
-      "forname": "Sandra",
+      "forename": "Sandra",
       "surname": "Provini"
     }
   ],
   "reviewers": [
     {
-      "forname": "McCage",
+      "forename": "McCage",
       "surname": "Griffiths"
     }
   ],
   "translators": [
     {
-      "forname": "Shaun",
+      "forename": "Shaun",
       "surname": "Nicks"
     }
   ],
   "journalDirectors": [
     {
-      "forname": "Marcello",
+      "forename": "Marcello",
       "surname": "Vitali-Rosati"
     }
   ],

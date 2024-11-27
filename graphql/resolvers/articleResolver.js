@@ -1,7 +1,7 @@
+const YAML = require('js-yaml')
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Types
 const { getYDoc } = require('y-websocket/bin/utils')
-const defaultsData = require('../data/defaultsData')
 
 const Article = require('../models/article')
 const User = require('../models/user')
@@ -15,6 +15,7 @@ const { computeMajorVersion, computeMinorVersion } = require('../helpers/version
 const { previewEntries } = require('../helpers/bibliography')
 const { notifyArticleStatusChange } = require('../events')
 const { logger } = require('../logger')
+const { toLegacyFormat } = require('../helpers/metadata')
 
 
 async function getUser (userId) {
@@ -118,7 +119,7 @@ async function createSoloSession (article, user, force = false) {
 }
 
 async function createVersion (article, { major, message, userId, type }) {
-  const { bib, yaml, md } = article.workingVersion
+  const { bib, metadata, md } = article.workingVersion
 
   /** @type {Query<Array<Article>>|Array<Article>} */
   const latestVersions = await Version.find({ _id: { $in: article.versions.map((a) => a._id) } })
@@ -126,7 +127,7 @@ async function createVersion (article, { major, message, userId, type }) {
 
   if (latestVersions?.length > 0) {
     const latestVersion = latestVersions[0]
-    if (bib === latestVersion.bib && yaml === latestVersion.yaml && md === latestVersion.md) {
+    if (bib === latestVersion.bib && metadata === latestVersion.metadata && md === latestVersion.md) {
       logger.info('Won\'t create a new version since there\'s no change', {
         action: 'createVersion',
         articleId: article._id
@@ -150,7 +151,7 @@ async function createVersion (article, { major, message, userId, type }) {
 
   const createdVersion = await Version.create({
     md,
-    yaml,
+    metadata,
     bib,
     version,
     revision,
@@ -175,12 +176,12 @@ module.exports = {
       const user = await getUser(context.userId)
       //Add default article + default version
       const newArticle = await Article.create({
-        title: args.title || defaultsData.title,
+        title: args.title || 'New article',
         owner: user,
         workingVersion: {
-          md: defaultsData.md,
-          bib: defaultsData.bib,
-          yaml: defaultsData.yaml,
+          md: '',
+          bib: '',
+          metadata: {},
         }
       })
 
@@ -499,7 +500,9 @@ module.exports = {
     bibPreview ({ bib }) {
       return previewEntries(bib)
     },
-    yaml ({ yaml }, { options }) {
+    yaml ({ metadata }, { options }) {
+      const legacyMetadata = toLegacyFormat(metadata)
+      const yaml = YAML.dump(legacyMetadata)
       return options?.strip_markdown
         ? reformat(yaml, { replaceBibliography: false })
         : yaml

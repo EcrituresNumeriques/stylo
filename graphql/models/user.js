@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 
-const { article: defaultArticle, yaml: defaultUserYaml } = require('../data/defaultsData')
+const { article: defaultArticle } = require('../data/defaultsData')
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const userSchema = new Schema({
   email: {
@@ -64,12 +64,8 @@ const userSchema = new Schema({
   },
   zoteroToken: {
     type: String
-  },
-  yaml: {
-    type: String,
-    defaults: defaultUserYaml
   }
-}, { timestamps: true });
+}, { timestamps: true })
 
 /**
  * Compare an existing password against a user input one.
@@ -91,7 +87,7 @@ userSchema.methods.createDefaultArticle = async function createDefaultArticle ()
     zoteroLink: defaultArticle.zoteroLink,
     owner: this,
     workingVersion: {
-      yaml: defaultArticle.yaml,
+      metadata: defaultArticle.metadata,
       bib: defaultArticle.bib,
       md: defaultArticle.md
     },
@@ -103,7 +99,7 @@ userSchema.methods.createDefaultArticle = async function createDefaultArticle ()
   return this.save()
 }
 
-userSchema.virtual('authTypes').get(function() {
+userSchema.virtual('authTypes').get(function () {
   const types = new Set()
   types.add(this.authType)
 

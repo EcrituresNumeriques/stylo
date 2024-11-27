@@ -38,6 +38,7 @@
     "@sentry/react": "^8.38.0",
     "@vitejs/plugin-legacy": "~5.4",
     "@vitejs/plugin-react": "~4.3",
+    "allof-merge": "^0.6.6",
     "biblatex-csl-converter": "^1.11.0",
     "clsx": "^1.2.1",
     "core-js": "^3.38",

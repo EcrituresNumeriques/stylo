@@ -1,7 +1,7 @@
 const { reformat, toLegacyFormat, fromLegacyFormat } = require('./metadata')
 const YAML = require('js-yaml')
 const fs = require('node:fs/promises')
-const path = require('path')
+const path = require('node:path')
 
 const expectedContentFilename = path.join(__dirname, '__fixtures__', 'psp1515.expected.yml')
 const inputFilename = path.join(__dirname, '__fixtures__', 'psp1515.input.yml')

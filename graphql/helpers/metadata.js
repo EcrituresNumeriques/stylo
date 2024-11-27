@@ -11,14 +11,14 @@ const FORMATTED_FIELD_RE = /_f$/
  * This sorting ensures the `nocite` key is always the last one.
  * @see https://github.com/EcrituresNumeriques/stylo/issues/425
  */
-function sortKeys(a, b) {
+function sortKeys (a, b) {
   if (a === 'nocite') return 1
   if (b === 'nocite') return -1
 
   return a.localeCompare(b)
 }
 
-function walkObject(obj, itemTransformFn) {
+function walkObject (obj, itemTransformFn) {
   Object.entries(obj).forEach(([key, value]) => {
     itemTransformFn(obj, key, value)
 
@@ -31,19 +31,19 @@ function walkObject(obj, itemTransformFn) {
 }
 
 /**
- * Parse a YAML into a useable object
+ * Parse a YAML into a usable object
  * It will throw a YAMLException if it fails to parse the string
  *
  * @param {String} yaml
  * @returns {Object}
  */
-function toObject(yaml) {
+function toObject (yaml) {
   const [doc = {}] = YAML.loadAll(yaml, 'utf8')
 
   return doc
 }
 
-function reformat(yaml, { id, originalUrl, replaceBibliography = false }) {
+function reformat (yaml, { id, originalUrl, replaceBibliography = false }) {
   if (!yaml || yaml.trim().length === 0) {
     return ''
   }
@@ -128,18 +128,18 @@ function reformat(yaml, { id, originalUrl, replaceBibliography = false }) {
 
 /**
  * @param {{
- *   "type": string,
- *   "@version": string,
- *   "id": string,
- *   "publicationDate": string,
- *   "url": string,
- *   "lang": string,
- *   "title": string,
- *   "subtitle": string,
- *   "abstract": string,
- *   "keywords": string[],
- *   "license": string,
- *   "acknowledgements": string,
+ *   'type': string,
+ *   '@version': string,
+ *   'id': string,
+ *   'publicationDate': string,
+ *   'url': string,
+ *   'lang': string,
+ *   'title': string,
+ *   'subtitle': string,
+ *   'abstract': string,
+ *   'keywords': string[],
+ *   'license': string,
+ *   'acknowledgements': string,
  *   localizedContent: {
  *     lang: string,
  *     title: string,
@@ -147,40 +147,38 @@ function reformat(yaml, { id, originalUrl, replaceBibliography = false }) {
  *     abstract: string,
  *     keywords: string[]
  *   }[],
- *   "controlledKeywords": {
+ *   'controlledKeywords': {
  *     label: string,
  *     idRameau: string,
  *     uriRameau: string
  *   }[]
- *   "authors": [],
- *   "reviewers": [],
- *   "transcribers": [],
- *   "translators": [],
- *   "translationOf": {
+ *   'authors': [],
+ *   'reviewers': [],
+ *   'transcribers': [],
+ *   'translators': [],
+ *   'translationOf': {
  *     lang: string,
  *     title: string,
  *     url: string
  *   },
- *   "issue": {}
- *   "issueDirectors": [],
- *   "production": {
+ *   'issue': {}
+ *   'issueDirectors': [],
+ *   'production': {
  *     issn: string,
- *     producer: string,
- *     prodNum: string,
- *     diffNum: string
+ *     entities: []
  *   },
- *   "funder": {
+ *   'funder': {
  *     organization: string,
  *     id: string
  *   },
- *   "journal": {
+ *   'journal': {
  *     name: string,
  *     publisher: string,
  *     email: string,
  *     url: string
  *   },
- *   "journalDirectors": [],
- *   "senspublic": {"categories": string[]}
+ *   'journalDirectors': [],
+ *   'senspublic': {'categories': string[], 'linkedArticles': any, 'translations': any}
  * }} metadata
  * @returns {{
  *   id: string,
@@ -190,7 +188,7 @@ function reformat(yaml, { id, originalUrl, replaceBibliography = false }) {
  *   journal_email: string,
  *   journal_issue: string,
  *   lang: string,
- *   "link-citations": string,
+ *   'link-citations': string,
  *   nocite: string,
  *   prod: string,
  *   prodnum: string,
@@ -222,71 +220,99 @@ function reformat(yaml, { id, originalUrl, replaceBibliography = false }) {
  *   typeArticle: string[],
  * }}
  */
-function toLegacyFormat(metadata) {
+function toLegacyFormat (metadata) {
   // unmapped:
   // metadata.journal.url
-  const abstract = [...metadata.localizedContent?.map(c => ({
+  const {
+    id,
+    abstract: mainAbstract,
+    acknowledgements,
+    localizedContent,
+    publicationDate,
+    journal,
+    issue,
+    lang,
+    production,
+    license,
+    subtitle,
+    title,
+    url,
+    funder,
+    authors,
+    controlledKeywords,
+    journalDirectors,
+    issueDirectors,
+    keywords,
+    reviewers,
+    transcribers,
+    translationOf,
+    translators,
+    senspublic,
+    ...extra
+  } = metadata
+  const abstract = [...localizedContent?.map(c => ({
     lang: c.lang,
     text_f: c.abstract
   })) ?? [], {
-    lang: metadata.lang,
-    text_f: metadata.abstract
+    lang: lang,
+    text_f: mainAbstract
   }]
   return {
-    id: metadata.id,
-    acknowledgements: metadata.acknowledgements,
-    date: metadata.publicationDate,
-    journal: metadata.journal?.name,
-    journal_email: metadata.journal?.email,
-    journal_issue: metadata.issue?.number,
-    lang: metadata.lang,
-    prod: metadata.production?.entities?.find(e => e.type === 'producer' && e.media !== "digital")?.name,
-    prodnum: metadata.production?.entities?.find(e => e.type === 'producer' && e.media === "digital")?.name,
-    diffnum: metadata.production?.entities?.find(e => e.type === 'publisher' && e.media === "digital")?.name,
-    publisher: metadata.journal?.publisher,
-    rights: metadata.license,
-    subtitle_f: metadata.subtitle,
-    title_f: metadata.title,
-    url_article: metadata.url,
-    issnnum: metadata.production?.issn,
+    ...extra,
+    id,
+    acknowledgements,
+    date: publicationDate,
+    journal: journal?.name,
+    journal_email: journal?.email,
+    journal_issue: issue?.number,
+    lang: lang,
+    prod: production?.entities?.find(e => e.type === 'producer' && e.media !== 'digital')?.name,
+    prodnum: production?.entities?.find(e => e.type === 'producer' && e.media === 'digital')?.name,
+    diffnum: production?.entities?.find(e => e.type === 'publisher' && e.media === 'digital')?.name,
+    publisher: journal?.publisher,
+    rights: license,
+    subtitle_f: subtitle,
+    title_f: title,
+    url_article: url,
+    issnnum: production?.issn,
     funder: {
-      funder_id: metadata.funder?.id,
-      funder_name: metadata.funder?.organization,
+      funder_id: funder?.id,
+      funder_name: funder?.organization,
     },
     abstract: abstract,
-    authors: metadata.authors,
-    controlledKeywords: metadata.controlledKeywords,
-    director: metadata.journalDirectors,
+    authors: authors?.map(p => toLegacyPerson(p)),
+    controlledKeywords: controlledKeywords,
+    director: journalDirectors?.map(p => toLegacyPerson(p)),
     dossier: [
       {
-        id: metadata.issue?.identifier,
-        title_f: metadata.issue?.title,
+        id: issue?.identifier,
+        title_f: issue?.title,
       }
     ],
-    issueDirectors: metadata.issueDirectors,
+    issueDirectors: issueDirectors?.map(p => toLegacyPerson(p)),
     keywords: [
       {
-        lang: metadata.lang,
-        list_f: metadata.keywords,
+        lang: lang,
+        list_f: keywords,
       },
-      ...metadata.localizedContent?.map(c => ({
+      ...localizedContent?.map(c => ({
         lang: c.lang,
         list_f: c.keywords
       })) ?? []
     ],
-    reviewers: metadata.reviewers,
-    transcribers: metadata.transcribers,
-    translatedTitle: metadata.localizedContent?.map(c => ({
+    reviewers: reviewers?.map(p => toLegacyPerson(p)),
+    transcribers: transcribers?.map(p => toLegacyPerson(p)),
+    translatedTitle: localizedContent?.map(c => ({
       lang: c.lang,
       text_f: c.title
     })),
     translationOf: [
-      metadata.translationOf
+      translationOf
     ],
-    articleslies: [], // MISSING!
-    translations: [], // MISSING!
-    translator: metadata.translators,
-    typeArticle: metadata.senspublic.categories
+    articleslies: senspublic?.linkedArticles,
+    translations: senspublic?.translations,
+    translator: translators?.map(p => toLegacyPerson(p)),
+    typeArticle: senspublic?.categories
   }
 }
 
@@ -299,7 +325,7 @@ function toLegacyFormat(metadata) {
  *   journal_email: string,
  *   journal_issue: string,
  *   lang: string,
- *   "link-citations": string,
+ *   'link-citations': string,
  *   nocite: string,
  *   prod: string,
  *   prodnum: string,
@@ -331,18 +357,18 @@ function toLegacyFormat(metadata) {
  *   typeArticle: string[],
  * }} metadata
  * @returns {{
- *   "type": string,
- *   "@version": string,
- *   "id": string,
- *   "publicationDate": string,
- *   "url": string,
- *   "lang": string,
- *   "title": string,
- *   "subtitle": string,
- *   "abstract": string,
- *   "keywords": string[],
- *   "license": string,
- *   "acknowledgements": string,
+ *   'type': string,
+ *   '@version': string,
+ *   'id': string,
+ *   'publicationDate': string,
+ *   'url': string,
+ *   'lang': string,
+ *   'title': string,
+ *   'subtitle': string,
+ *   'abstract': string,
+ *   'keywords': string[],
+ *   'license': string,
+ *   'acknowledgements': string,
  *   localizedContent: {
  *     lang: string,
  *     title: string,
@@ -350,116 +376,176 @@ function toLegacyFormat(metadata) {
  *     abstract: string,
  *     keywords: string[]
  *   }[],
- *   "controlledKeywords": {
+ *   'controlledKeywords': {
  *     label: string,
  *     idRameau: string,
  *     uriRameau: string
  *   }[]
- *   "authors": [],
- *   "reviewers": [],
- *   "transcribers": [],
- *   "translators": [],
- *   "translationOf": {
+ *   'authors': [],
+ *   'reviewers': [],
+ *   'transcribers': [],
+ *   'translators': [],
+ *   'translationOf': {
  *     lang: string,
  *     title: string,
  *     url: string
  *   },
- *   "issue": {}
- *   "issueDirectors": [],
- *   "production": {
+ *   'issue': {}
+ *   'issueDirectors': [],
+ *   'production': {
  *     issn: string,
  *     entities: {type: string, media: string, name: string}[]
  *   },
- *   "funder": {
+ *   'funder': {
  *     organization: string,
  *     id: string
  *   },
- *   "journal": {
+ *   'journal': {
  *     name: string,
  *     publisher: string,
  *     email: string,
  *     url: string
  *   },
- *   "journalDirectors": [],
+ *   'journalDirectors': [],
  * }}
  */
-function fromLegacyFormat(metadata) {
-  const translatedAbstract = metadata.abstract?.filter(a => a.lang !== metadata.lang)
-  const translatedTitle = metadata.translatedTitle?.filter(a => a.lang !== metadata.lang)
-  const translatedKeywords = metadata.keywords?.filter(a => a.lang !== metadata.lang)
-  const languages = Array.from(new Set([...translatedAbstract?.map(a => a.lang) ?? [], ...translatedTitle?.map(t => t.lang) ?? [], ...translatedKeywords?.map(k => k.lang) ?? []]))
+function fromLegacyFormat (metadata) {
+  const {
+    id,
+    lang,
+    title_f,
+    subtitle_f,
+    acknowledgements,
+    abstract,
+    keywords,
+    translatedTitle,
+    controlledKeywords,
+    date,
+    url_article,
+    rights,
+    authors,
+    reviewers,
+    transcribers,
+    translator,
+    issueDirectors,
+    director,
+    funder,
+    journal,
+    publisher,
+    journal_email,
+    dossier,
+    journal_issue,
+    issnnum,
+    prod,
+    prodnum,
+    diffnum,
+    typeArticle,
+    articleslies,
+    translations,
+    ...extra
+  } = metadata
+  const translatedAbstracts = abstract?.filter(a => a?.lang !== lang)
+  const translatedTitles = translatedTitle?.filter(a => a?.lang !== lang)
+  const translatedKeywords = keywords?.filter(a => a?.lang !== lang)
+  const languages = Array.from(new Set([...translatedAbstracts?.map(a => a?.lang) ?? [], ...translatedTitles?.map(t => t?.lang) ?? [], ...translatedKeywords?.map(k => k?.lang) ?? []]))
   const localizedContent = languages.map(l => ({
     lang: l,
-    title: translatedTitle?.find(a => a.lang === l)?.text_f,
-    abstract: translatedAbstract?.find(a => a.lang === l)?.text_f,
-    keywords: translatedKeywords?.find(a => a.lang === l)?.list_f,
+    title: translatedTitles?.find(a => a?.lang === l)?.text_f,
+    abstract: translatedAbstracts?.find(a => a?.lang === l)?.text_f,
+    keywords: translatedKeywords?.find(a => a?.lang === l)?.list_f,
   }))
   const productionEntities = []
-  if (metadata.prod) {
+  if (prod) {
     productionEntities.push({
-      type: "producer",
-      media: "",
-      name: metadata.prod
+      type: 'producer',
+      media: '',
+      name: prod
     })
   }
-  if (metadata.prodnum) {
+  if (prodnum) {
     productionEntities.push({
-      type: "producer",
-      media: "digital",
-      name: metadata.prodnum
+      type: 'producer',
+      media: 'digital',
+      name: prodnum
     })
   }
-  if (metadata.diffnum) {
+  if (diffnum) {
     productionEntities.push({
-      type: "publisher",
-      media: "digital",
-      name: metadata.diffnum
+      type: 'publisher',
+      media: 'digital',
+      name: diffnum
     })
   }
+
   return {
-    type: "article",
-    "@version": "1.0",
-    id: metadata.id,
-    lang: metadata.lang,
-    title: metadata.title_f,
-    subtitle: metadata.subtitle_f,
-    acknowledgements: metadata.acknowledgements,
-    abstract: metadata.abstract.find(a => a.lang === metadata.lang)?.text_f,
-    keywords: metadata.keywords.find(k => k.lang === metadata.lang)?.list_f,
-    controlledKeywords: metadata.controlledKeywords,
-    publicationDate: metadata.date,
-    url: metadata.url_article,
-    license: metadata.rights,
-    authors: metadata.authors,
-    reviewers: metadata.reviewers,
-    transcribers: metadata.transcribers,
-    translators: metadata.translator,
-    issueDirectors: metadata.issueDirectors,
-    journalDirectors: metadata.director,
+    ...extra,
+    type: 'article',
+    '@version': '1.0',
+    id,
+    lang,
+    title: title_f,
+    subtitle: subtitle_f,
+    acknowledgements,
+    abstract: abstract?.find(a => a?.lang === lang)?.text_f,
+    keywords: keywords?.find(k => k?.lang === lang)?.list_f,
+    controlledKeywords: controlledKeywords,
+    publicationDate: date,
+    url: url_article,
+    license: rights,
+    authors: authors?.map(p => fromLegacyPerson(p)),
+    reviewers: reviewers?.map(p => fromLegacyPerson(p)),
+    transcribers: transcribers?.map(p => fromLegacyPerson(p)),
+    translators: translator?.map(p => fromLegacyPerson(p)),
+    issueDirectors: issueDirectors?.map(p => fromLegacyPerson(p)),
+    journalDirectors: director?.map(p => fromLegacyPerson(p)),
     funder: {
-      organization: metadata.funder?.funder_name,
-      id: metadata.funder?.funder_id
+      organization: funder?.funder_name,
+      id: funder?.funder_id
     },
     journal: {
-      name: metadata.journal,
-      publisher: metadata.publisher,
-      email: metadata.journal_email,
+      name: journal,
+      publisher: publisher,
+      email: journal_email,
       url: undefined // value is not available in legacy format
     },
     issue: {
-      title: metadata.dossier?.[0]?.title_f,
-      identifier: metadata.dossier?.[0]?.id,
-      number: metadata.journal_issue
+      title: dossier?.[0]?.title_f,
+      identifier: dossier?.[0]?.id,
+      number: journal_issue
     },
     production: {
-      issn: metadata.issnnum,
+      issn: issnnum,
       entities: productionEntities
     },
     localizedContent: localizedContent,
     senspublic: {
-      categories: metadata.typeArticle
+      categories: typeArticle,
+      linkedArticles: articleslies,
+      translations: translations
     }
   }
+}
+
+function fromLegacyPerson (p) {
+  if (p) {
+    const { forname, ...rest } = p
+    return {
+      forename: forname,
+      ...rest
+    }
+  }
+  return p
+}
+
+function toLegacyPerson (p) {
+  if (p) {
+    const { forename, ...rest } = p
+    return {
+      forname: forename,
+      ...rest
+    }
+  }
+  return p
 }
 
 module.exports = {

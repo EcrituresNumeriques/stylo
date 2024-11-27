@@ -52,7 +52,6 @@
       display: flex;
       flex-direction: column;
       align-items: start;
-      padding: 0.5rem 0.5rem;
 
       &.field-array {
         border-bottom: none;
@@ -104,6 +103,7 @@
       &.field-object {
         flex-direction: column;
         flex: 1;
+        gap: 0.5rem;
 
         > * {
           width: 100%;
@@ -160,11 +160,18 @@
           }
         }
       }
+      
+      .array-item.keywords {
+        display: flex;
+        align-items: center;
+        
+        > .field-string {
+          flex: 1;
+        }
+      }
 
       /** Array of objects field */
       .array-item.can-add-remove {
-        /*padding: 0 0.5rem;*/
-
         > div {
           padding-right: 0;
         }
@@ -204,12 +211,16 @@
 }
 
 .fieldset {
+  display: flex;
+  flex-direction: column;
   border: none;
-  margin: 0 0 0.75rem;
-  padding: 0;
+  gap: 0.5rem;
+  padding: 0 0 1.5rem;
+  margin: 0;
 
   legend {
     @include legend;
+    padding: 0 0 0.5rem;
     font-size: 1.25rem;
   }
 }
@@ -219,7 +230,6 @@
 }
 
 .autocompleteField {
-  margin-right: .5em;
 }
 
 .addButton,
@@ -236,7 +246,7 @@
 }
 
 .fieldHasNoElementError {
-  border: 1px solid red;
+  border: 1px solid $error-color;
   margin: .5em;
   padding: .5rem;
 }

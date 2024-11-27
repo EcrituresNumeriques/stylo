@@ -51,7 +51,6 @@ type User {
   articles(limit: Int, page: Int): [Article]
   workspaces: [Workspace!]
   admin: Boolean
-  yaml: String
   zoteroToken: String
   createdAt: DateTime
   updatedAt: DateTime
@@ -84,6 +83,7 @@ type WorkingVersion {
   bib: String
   bibPreview: String
   md: String
+  metadata: JSON
   yaml (options: YamlFormattingInput): String
 }
 
@@ -95,6 +95,7 @@ type Version {
   md: String
   sommaire: String
   type: String
+  metadata: JSON
   yaml (options: YamlFormattingInput): String
   bib: String
   bibPreview: String
@@ -210,7 +211,7 @@ type InstanceArticleStats implements InstanceObjectUsageStats {
 input WorkingVersionInput {
   bib: String,
   md: String,
-  yaml: String,
+  metadata: JSON,
 }
 
 input YamlFormattingInput {
@@ -233,7 +234,6 @@ input UserProfileInput {
   firstName: String
   lastName: String
   institution: String
-  yaml: String
   zoteroToken: String
 }
 
