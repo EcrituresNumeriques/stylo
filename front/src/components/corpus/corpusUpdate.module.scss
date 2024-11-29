@@ -1,17 +1,18 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
 
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .controlField {
   display: flex;
+  flex-direction: column;
   label {
-    flex-shrink: 0;
-    margin-right: 1rem;
-    padding: calc(0.5em - 1px) 0;
-    flex-basis: 10rem;
-    text-align: end;
-  }
-  div {
-    flex: 1;
+    font-weight: 600;
+    padding: 0 0 0.25rem;
   }
 }
 

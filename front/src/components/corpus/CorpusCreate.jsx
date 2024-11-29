@@ -58,7 +58,7 @@ export default function CorpusCreate ({onSubmit}) {
 
   return (
     <section>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <Field
           ref={titleInputRef}
           {...titleBindings}

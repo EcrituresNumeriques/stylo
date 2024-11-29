@@ -7,7 +7,7 @@ import Field from '../Field.jsx'
 
 import { updateCorpus } from "./Corpus.graphql"
 
-import styles from './corpusEdit.module.scss'
+import styles from './corpusUpdate.module.scss'
 
 
 export default function CorpusUpdate ({corpus, onSubmit}) {
@@ -53,7 +53,7 @@ export default function CorpusUpdate ({corpus, onSubmit}) {
 
   return (
     <section>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <Field
           ref={titleInputRef}
           {...titleBindings}
