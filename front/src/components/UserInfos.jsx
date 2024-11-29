@@ -95,9 +95,9 @@ export default function UserInfos () {
               onTextUpdate={handleYamlUpdate}
             />
           </Field>
-          <Field label="Zotero">
+          <Field label="Zotero" className={styles.zotero}>
             <>
-              {zoteroToken && <span>Linked with <b>{zoteroToken}</b> account.</span>}
+              {zoteroToken && <span>Linked with <code>{zoteroToken}</code> account.</span>}
               {!zoteroToken && <span>No linked account.</span>}
               {zoteroToken && (
                 <Button title="Unlink this Zotero account" onClick={unlinkZoteroAccount}>
