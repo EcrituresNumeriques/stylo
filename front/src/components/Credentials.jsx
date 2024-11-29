@@ -2,7 +2,6 @@ import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-
 import { useGraphQL } from '../helpers/graphQL'
 import { changePassword as query } from './Credentials.graphql'
 import styles from './credentials.module.scss'
@@ -92,7 +91,7 @@ export default function Credentials () {
           disabled={!canSubmit}
           primary={true}
         >
-          {isUpdating ? 'Updating…' : 'Change'}
+          {isUpdating ? t('credentials.updatePassword.updatingButton') : t('credentials.updatePassword.confirmButton')}
         </Button>
       </form>
     </section>

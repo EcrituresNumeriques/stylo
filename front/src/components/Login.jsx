@@ -70,8 +70,8 @@ export default function Login () {
       </section>
 
       <section className={styles.box}>
-        <h1 className={styles.loginTitle}>Welcome to Stylo!</h1>
-        <form onSubmit={handleSubmit}>
+        <h1>Welcome to Stylo!</h1>
+        <form onSubmit={handleSubmit} className={styles.loginForm}>
           <fieldset>
             <legend>
               Connect with a Huma-Num account <small>(recommended)</small>
@@ -82,7 +82,7 @@ export default function Login () {
               <a href="https://humanum.hypotheses.org/5754#content">How does it work?</a>
             </p>
 
-            <p className={styles.authenticationProviderLinks}>
+            <p>
               <a
                 className={styles.humaNumConnectBtn}
                 href={backendEndpoint + '/login/openid'}
