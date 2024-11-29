@@ -97,11 +97,9 @@ function ArrayFieldTemplate (properties) {
   const addItemTitle = properties.uiSchema['ui:add-item-title'] ?? 'form.addItem.title'
   const removeItemTitle = properties.uiSchema['ui:remove-item-title'] ?? 'form.removeItem.title'
   const title = properties.uiSchema['ui:title']
-
   const inlineRemoveButton = properties.schema?.items?.type === 'string' || !removeItemTitle
   return (
-    <div className={styles.arrayField}>
-      <fieldset className={styles.fieldset} key={properties.key}>
+      <fieldset className={clsx(styles.fieldset, styles.array)} key={properties.key}>
         {title && <Translation>{(t) => 
           <legend id={properties.id}>{t(title)}</legend>}
         </Translation>}
@@ -120,7 +118,6 @@ function ArrayFieldTemplate (properties) {
         )}
         {properties.items &&
           properties.items.map((element) => {
-            console.log({ element })
             return (
               <div
                 id={element.key}
@@ -147,7 +144,6 @@ function ArrayFieldTemplate (properties) {
             )
           })}
       </fieldset>
-    </div>
   )
 }
 
@@ -204,14 +200,16 @@ function ObjectFieldTemplate (properties) {
                 }
               </Translation>
             </legend>}
-            {elements.map(([field, element]) => (
-              element
-                ? <Fragment key={field}>{element.content}</Fragment>
-                : <p key={field} className={styles.fieldHasNoElementError}>
-                  Field <code>{field}</code> defined in <code>ui:groups</code> is not an
-                  entry of <code>data-schema.json[properties]</code> object.
-                </p>
-            ))}
+            {elements.map(([field, element]) => {
+              return (
+                element
+                  ? <Fragment key={field}>{element.content}</Fragment>
+                  : <p key={field} className={styles.fieldHasNoElementError}>
+                    Field <code>{field}</code> defined in <code>ui:groups</code> is not an
+                    entry of <code>data-schema.json[properties]</code> object.
+                  </p>
+              )
+            })}
           </fieldset>
         )
       }

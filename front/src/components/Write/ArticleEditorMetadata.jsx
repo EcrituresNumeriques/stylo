@@ -1,3 +1,4 @@
+import { Toggle } from '@geist-ui/core'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -73,20 +74,31 @@ export default function ArticleEditorMetadata ({ onChange, readOnly, metadata })
       </button>
       {expanded && (
         <div className={styles.yamlEditor}>
-          <NavTag
-            defaultValue={selector}
-            onChange={setSelector}
-            items={[
-              {
-                value: 'basic',
-                name: t('write.basicMode.metadataButton'),
-              },
-              {
-                value: 'raw',
-                name: t('write.rawMode.metadataButton'),
-              },
-            ]}
-          />
+          <header className={styles.header}>
+            <h2>Metadonnées</h2>
+            <div className={styles.toggle} onClick={() => setSelector(selector === 'raw' ? 'basic' : 'raw')}>
+              <Toggle id="raw-mode" checked={selector === 'raw'} title={'Activer le mode YAML'} onChange={(e) => {
+                console.log(e)
+                setSelector(e.target.checked ? 'raw' : 'basic')
+              }}/>
+              <label htmlFor="raw-mode">YAML</label>
+            </div>
+          </header>
+
+          {/*<NavTag*/}
+          {/*  defaultValue={selector}*/}
+          {/*  onChange={setSelector}*/}
+          {/*  items={[*/}
+          {/*    {*/}
+          {/*      value: 'basic',*/}
+          {/*      name: t('write.basicMode.metadataButton'),*/}
+          {/*    },*/}
+          {/*    {*/}
+          {/*      value: 'raw',*/}
+          {/*      name: t('write.rawMode.metadataButton'),*/}
+          {/*    },*/}
+          {/*  ]}*/}
+          {/*/>*/}
           {selector === 'raw' && (
             <>
               {error !== '' && <p className={styles.error}>{error}</p>}
