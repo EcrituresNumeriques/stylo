@@ -2,8 +2,11 @@ const YAML = require('js-yaml')
 const { fromLegacyFormat } = require('../helpers/metadata')
 
 exports.up = async function (db) {
-  const articles = await db._find('articles', {})
-  for await (const article of articles) {
+  const mongo = await db._run('getDbInstance', true)
+  const articles = mongo.collection('articles')
+  const articlesCursor = articles.find({})
+  while (await articlesCursor.hasNext()) {
+    const article = await articlesCursor.next()
     let metadata = {}
     if (article.workingVersion.yaml) {
       try {
@@ -13,19 +16,19 @@ exports.up = async function (db) {
         console.error(`Invalid metadata format on article with id: ${article._id}, metadata will be empty - reason: ${error.reason}`)
       }
     }
-    await db._run('update', 'articles', {
-      query: { _id: article._id },
-      update: {
+    await articles.updateOne({ _id: article._id }, {
         $set: {
-          "workingVersion.metadata": metadata
+          'workingVersion.metadata': metadata
         }
       },
-      options: { upsert: false }
-    })
+      { upsert: false }
+    )
   }
-
-  const versions = await db._find('versions', {})
-  for await (const version of versions) {
+  await articlesCursor.close()
+  const versions = mongo.collection('versions')
+  const versionsCursor = versions.find({})
+  while (await versionsCursor.hasNext()) {
+    const version = await versionsCursor.next()
     let metadata = {}
     if (version.yaml) {
       try {
@@ -35,16 +38,15 @@ exports.up = async function (db) {
         console.error(`Invalid metadata format on version with id: ${version._id}, metadata will be empty - reason: ${error.reason}`)
       }
     }
-    await db._run('update', 'versions', {
-      query: { _id: version._id },
-      update: {
+    await versions.updateOne({ _id: version._id }, {
         $set: {
           metadata
         }
       },
-      options: { upsert: false }
-    })
+      { upsert: false }
+    )
   }
+  await versionsCursor.close()
 }
 
 exports.down = function () {
