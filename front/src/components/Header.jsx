@@ -7,7 +7,9 @@ import logoContent from '/images/logo.svg?inline'
 import { useActiveWorkspace } from '../hooks/workspace.js'
 
 import styles from './header.module.scss'
+import LanguagesMenu from './header/LanguagesMenu.jsx'
 import UserMenu from './header/UserMenu.jsx'
+import LanguagesIcon from './header/LanguagesIcon.jsx'
 
 function Header () {
   const activeWorkspace = useActiveWorkspace()
@@ -40,6 +42,7 @@ function Header () {
                   <LifeBuoy size={16}/>
                   Documentation
                 </a>
+                <LanguagesMenu/>
               </nav>
             </>
           }

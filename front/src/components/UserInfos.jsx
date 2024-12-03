@@ -85,15 +85,15 @@ export default function UserInfos () {
             value={institution}
             onChange={(e) => setInstitution(etv(e))}
           />
-          <Field  label="Zotero"className={styles.zotero}>
+          <Field label="Zotero">
             <>
-              {zoteroToken && <span>Linked with <code>{zoteroToken}</code> account.</span>}
-              {!zoteroToken && <span>No linked account.</span>}
-              {zoteroToken && (
+              {zoteroToken && <div className={styles.zotero}>
+                <div>Linked with <code>{zoteroToken}</code> account.</div>
                 <Button title="Unlink this Zotero account" onClick={unlinkZoteroAccount}>
                   Unlink
                 </Button>
-              )}
+              </div>}
+              {!zoteroToken && <span>No linked account.</span>}
             </>
           </Field>
           <div className={formStyles.footer}>
