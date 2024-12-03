@@ -5,12 +5,10 @@ import { Link } from 'react-router-dom'
 import { Layers, LogOut, User } from 'react-feather'
 
 import useComponentVisible from '../../hooks/componentVisible'
-import LanguageSelect from '../LanguageSelect.jsx'
 import styles from './UserMenu.module.scss'
 import Button from '../Button.jsx'
 import WorkspaceMenuItem from '../workspace/WorkspaceMenuItem.jsx'
 import UserMenuLink from './UserMenuLink.jsx'
-
 
 export default function UserMenu () {
   const { t } = useTranslation()
@@ -53,9 +51,6 @@ export default function UserMenu () {
             <Button className={styles.logoutButton} onClick={logout} link>
               <LogOut size={22}/>
             </Button>
-          </div>
-          <div className={styles.languageBlock}>
-            <LanguageSelect/>
           </div>
         </div>
       </div>}

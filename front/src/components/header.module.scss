@@ -54,6 +54,15 @@
   content: "\2197";
 }
 
+.languagesMenu {
+  display: flex;
+  font-weight: normal;
+  gap: 0.35em;
+  align-items: center;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
 .secondaryNav {
   padding-left: 2em;
   height: 100%;
