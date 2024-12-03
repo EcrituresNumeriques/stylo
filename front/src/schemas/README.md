@@ -13,7 +13,7 @@ Si c'était une fonction, elle s'écrirait comme ceci :
 const form = reactForm({ JSONSchema, UISchema })
 
 form.on('submit', (formData) => {
-  const rawYaml = toYaml(formData)
+ // ...
 })
 ```
 
@@ -21,8 +21,8 @@ form.on('submit', (formData) => {
 
 Un [simulateur en ligne] offre un résultat visuel en temps réel.
 
-- collez le contenu du fichier [`data-schema.json`](./data-schema.json) dans le champ `JSONSchema`
-- collez le contenu du fichier [`ui-schema-editor.json`](./ui-schema-editor.json) dans le champ `UISchema`
+- collez le contenu d'un fichier "metadata.schema.json" dans le champ `JSONSchema`
+- collez le contenu d'un fichier "ui-schema.json" dans le champ `UISchema`
 
 [react-json-schema-form]: https://react-jsonschema-form.readthedocs.io/en/latest/
 [simulateur en ligne]: https://rjsf-team.github.io/react-jsonschema-form/

@@ -150,10 +150,10 @@ export default function Write() {
     return setLive({ ...live, md: text })
   }
 
-  const handleYaml = (metadata) => {
+  const handleMetadataChange = (metadata) => {
     updateWorkingArticleMetadata({ metadata })
     setWorkingArticleDirty()
-    return setLive({ ...live, yaml: metadata })
+    return setLive({ ...live, metadata })
   }
 
   const handleStateUpdated = useCallback((event) => {
@@ -216,7 +216,7 @@ export default function Write() {
           currentArticle = {
             bib: data.version.bib,
             md: data.version.md,
-            yaml: data.version.yaml,
+            metadata: data.version.metadata,
             bibPreview: data.version.bibPreview,
             version: {
               message: data.version.message,
@@ -238,14 +238,14 @@ export default function Write() {
           updatedAt: article.updatedAt,
         })
 
-        const { md, bib, yaml } = currentArticle
+        const { md, bib, metadata } = currentArticle
 
         batch(() => {
           dispatch({ type: 'SET_ARTICLE_VERSIONS', versions: article.versions })
           dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
           dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
           dispatch({ type: 'SET_WORKING_ARTICLE_TEXT', text: md })
-          dispatch({ type: 'SET_WORKING_ARTICLE_METADATA', metadata: yaml })
+          dispatch({ type: 'SET_WORKING_ARTICLE_METADATA', metadata })
           dispatch({ type: 'SET_WORKING_ARTICLE_BIBLIOGRAPHY', bibliography: bib })
           dispatch({
             type: 'SET_WORKING_ARTICLE_UPDATED_AT',
@@ -339,7 +339,7 @@ export default function Write() {
 
         <Switch>
           <Route path="*/preview" exact>
-            <PreviewComponent preview={articleInfos.preview} yaml={live.yaml} />
+            <PreviewComponent preview={articleInfos.preview} metadata={live.metadata} />
           </Route>
           <Route path="*">
             <MonacoEditor
@@ -356,8 +356,8 @@ export default function Write() {
         </Switch>
       </article>
       <ArticleEditorMetadata
-        yaml={live.yaml}
-        handleYaml={handleYaml}
+        metadata={live.metadata}
+        onChange={handleMetadataChange}
         readOnly={mode === MODES_READONLY}
       />
     </section>

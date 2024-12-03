@@ -36,7 +36,7 @@ export default class ArticleService {
     })
   }
 
-  async saveMetadata (yaml) {
+  async saveMetadata (metadata) {
     const { sessionToken, graphqlEndpoint } = this
 
     return runQuery({ sessionToken, graphqlEndpoint }, {
@@ -44,7 +44,7 @@ export default class ArticleService {
       variables: {
         userId: this.userId,
         articleId: this.articleId,
-        content: { yaml }
+        content: { metadata }
       }
     })
   }

@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stylo.huma-num.fr/schemas/article-metadata.schema.json",
+  "title": "Article metadata",
+  "type": "object",
+  "definitions": {
+    "lang": {
+      "type": "string",
+      "enum": [
+        "fr",
+        "en",
+        "it",
+        "es",
+        "pt",
+        "de",
+        "uk",
+        "ar"
+      ]
+    },
+    "productionEntity": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "publisher",
+            "producer",
+            "editor"
+          ]
+        },
+        "media": {
+          "type": "string",
+          "enum": [
+            "",
+            "print",
+            "digital",
+            "ebook"
+          ]
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "person": {
+      "type": "object",
+      "properties": {
+        "surname": {
+          "type": "string",
+          "title": "Last name"
+        },
+        "forename": {
+          "type": "string",
+          "title": "First name"
+        },
+        "affiliations": {
+          "type": "string",
+          "title": "Affiliations"
+        },
+        "biography": {
+          "type": "string",
+          "title": "Biography"
+        },
+        "email": {
+          "type": "string",
+          "title": "Email"
+        },
+        "orcid": {
+          "type": "string",
+          "title": "ORCID"
+        },
+        "viaf": {
+          "type": "string",
+          "title": "VIAF"
+        },
+        "foaf": {
+          "type": "string",
+          "title": "FOAF"
+        },
+        "isni": {
+          "type": "string",
+          "title": "ISNI"
+        },
+        "wikidata": {
+          "type": "string",
+          "title": "Wikidata"
+        }
+      }
+    },
+    "localizedContent": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "$ref": "#/definitions/lang"
+        },
+        "title": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "abstract": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "article"
+    },
+    "@version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "id": {
+      "type": "string"
+    },
+    "publicationDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "license": {
+      "type": "string"
+    },
+    "acknowledgements": {
+      "type": "string"
+    },
+    "localizedContent": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/localizedContent"
+      }
+    },
+    "controlledKeywords": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "idRameau": {
+            "type": "string"
+          },
+          "uriRameau": {
+            "type": "string"
+          }
+        }
+      },
+      "uniqueItems": true
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    },
+    "reviewers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    },
+    "transcribers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    },
+    "translators": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    },
+    "translationOf": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "lang": {
+          "$ref": "#/definitions/lang"
+        }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        }
+      }
+    },
+    "issueDirectors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    },
+    "production": {
+      "type": "object",
+      "properties": {
+        "issn": {
+          "type": "string"
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/productionEntity"
+          }
+        }
+      }
+    },
+    "funder": {
+      "type": "object",
+      "properties": {
+        "organization": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "journal": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "publisher": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "journalDirectors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/localizedContent"
+    }
+  ]
+}

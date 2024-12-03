@@ -12,7 +12,6 @@ import formStyles from './field.module.scss'
 import Button from './Button'
 import Field from './Field'
 import TimeAgo from './TimeAgo.jsx'
-import MonacoYamlEditor from './Write/providers/monaco/YamlEditor'
 
 export default function UserInfos () {
   const dispatch = useDispatch()
@@ -25,7 +24,6 @@ export default function UserInfos () {
   const [firstName, setFirstName] = useState(activeUser.firstName || '')
   const [lastName, setLastName] = useState(activeUser.lastName || '')
   const [institution, setInstitution] = useState(activeUser.institution || '')
-  const [yaml, setYaml] = useState(activeUser.yaml)
   const [isSaving, setIsSaving] = useState(false)
 
   const updateActiveUserDetails = useCallback((payload) => dispatch({
@@ -33,7 +31,6 @@ export default function UserInfos () {
     payload
   }), [])
   const clearZoteroToken = useCallback(() => dispatch({ type: 'CLEAR_ZOTERO_TOKEN' }), [])
-  const handleYamlUpdate = useCallback((yaml) => setYaml(yaml), [])
 
   const unlinkZoteroAccount = useCallback(async (event) => {
     event.preventDefault()
@@ -49,12 +46,12 @@ export default function UserInfos () {
     setIsSaving(true)
     const variables = {
       user: activeUser._id,
-      details: { yaml, displayName, firstName, lastName, institution },
+      details: { displayName, firstName, lastName, institution },
     }
     const { updateUser: userDetails } = await runQuery({ query: updateUser, variables })
     updateActiveUserDetails(userDetails)
     setIsSaving(false)
-  }, [activeUser._id, yaml, displayName, firstName, lastName, institution])
+  }, [activeUser._id, displayName, firstName, lastName, institution])
 
   return (<>
       <section className={styles.section}>
@@ -88,14 +85,7 @@ export default function UserInfos () {
             value={institution}
             onChange={(e) => setInstitution(etv(e))}
           />
-          <Field id="yamlField" label="Default YAML">
-            <MonacoYamlEditor
-              id="yamlField"
-              text={activeUser.yaml}
-              onTextUpdate={handleYamlUpdate}
-            />
-          </Field>
-          <Field label="Zotero" className={styles.zotero}>
+          <Field  label="Zotero"className={styles.zotero}>
             <>
               {zoteroToken && <span>Linked with <code>{zoteroToken}</code> account.</span>}
               {!zoteroToken && <span>No linked account.</span>}

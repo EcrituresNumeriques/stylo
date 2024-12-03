@@ -1,9 +1,11 @@
-const Version = require('../models/version')
+const YAML = require('js-yaml')
 const mongoose = require('mongoose')
 
+const Version = require('../models/version')
 const { ApiError } = require('../helpers/errors')
 const { reformat } = require('../helpers/metadata.js')
 const { previewEntries } = require('../helpers/bibliography')
+const { toLegacyFormat } = require('../helpers/metadata')
 
 module.exports = {
   Query: {
@@ -39,7 +41,9 @@ module.exports = {
       return previewEntries(bib)
     },
 
-    yaml ({ yaml }, { options }) {
+    yaml ({ metadata }, { options }) {
+      const legacyMetadata = toLegacyFormat(metadata)
+      const yaml = YAML.dump(legacyMetadata)
       return options?.strip_markdown
         ? reformat(yaml, { replaceBibliography: false })
         : yaml

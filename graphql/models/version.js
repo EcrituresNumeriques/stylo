@@ -31,9 +31,15 @@ const versionSchema = new Schema({
       return md
     }
   },
+  // for backward compatibility, read-only 
+  // data are now stored in JSON format in the "metadata" field
   yaml: {
     type: String,
     default: ''
+  },
+  metadata: {
+    type: Schema.Types.Mixed,
+    default: {}
   },
   bib: String,
   sommaire: {

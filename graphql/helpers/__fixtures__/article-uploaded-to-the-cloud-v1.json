@@ -1,0 +1,124 @@
+{
+  "type": "article",
+  "@version": "1.0",
+  "id": "SP1711",
+  "publicationDate": "2024-05-28",
+  "url": "https://sens-public.org/articles/1711/",
+  "license": "CC BY-SA 4.0",
+  "acknowledgements": "Merci à tous !",
+  "lang": "fr",
+  "title": "Uploaded to the cloud… Sounds like heaven!",
+  "subtitle": "Téléchargement de conscience, réflexivité et ré-enchantement de la technologie dans trois fictions sérielles anglophones",
+  "abstract": "Cet article se penche sur l’appropriation par trois séries télévisées contemporaines des visions utopiques post-humanistes de la vie après la mort dans un univers virtuel grâce au « téléchargement de conscience », une technologie actuellement inexistante, mais faisant l’objet de nombreuses discussions et projections.",
+  "keywords": [
+    "Arts et lettres",
+    "Cinéma",
+    "Fiction"
+  ],
+  "localizedContent": [
+    {
+      "lang": "en",
+      "abstract": "This article examines how three contemporary television series appropriate the utopian post-humanist visions of life after death in a virtual universe made possible by “mind uploading”, a technology that does not currently exist but is the subject of much discussion and projection.",
+      "keywords": [
+        "Cinema",
+        "Fiction",
+        "Narrative"
+      ]
+    }
+  ],
+  "controlledKeywords": [
+    {
+      "idRameau": "",
+      "label": "F# (langage de programmation)",
+      "uriRameau": "http://data.bnf.fr/ark:/12148/cb16191752f"
+    }
+  ],
+  "authors": [
+    {
+      "affiliations": "aff",
+      "biography": "bio",
+      "email": "courriel",
+      "foaf": "foaf",
+      "forename": "Sylvaine",
+      "isni": "isni",
+      "orcid": "0000-0001-6424-3229",
+      "surname": "Bataille",
+      "viaf": "viaf",
+      "wikidata": "wikidata"
+    }
+  ],
+  "issueDirectors": [
+    {
+      "forename": "Tony",
+      "surname": "Gheeraert"
+    },
+    {
+      "forename": "Mélanie",
+      "surname": "Lucciano"
+    },
+    {
+      "forename": "Sandra",
+      "surname": "Provini"
+    }
+  ],
+  "reviewers": [
+    {
+      "forename": "McCage",
+      "surname": "Griffiths"
+    }
+  ],
+  "translators": [
+    {
+      "forename": "Shaun",
+      "surname": "Nicks"
+    }
+  ],
+  "journalDirectors": [
+    {
+      "forename": "Marcello",
+      "surname": "Vitali-Rosati"
+    }
+  ],
+  "issue": {
+    "title": "L’œuvre numérique à son miroir : regards sur les créations digitales contemporaines",
+    "identifier": "1710",
+    "number": "2024.8"
+  },
+  "production": {
+    "issn": "2104-3272",
+    "entities": [
+      {
+        "name": "Sens Public Prod",
+        "media": "",
+        "type": "producer"
+      },
+      {
+        "name": "Sens Public Web Prod",
+        "media": "digital",
+        "type": "producer"
+      },
+      {
+        "name": "Sens Public Web Publishing",
+        "media": "digital",
+        "type": "publisher"
+      }
+    ]
+  },
+  "funder": {
+    "organization": "Université de Montréal",
+    "id": ""
+  },
+  "journal": {
+    "name": "Sens Public",
+    "publisher": "Sens Public Publishing",
+    "email": "redaction@sens-public.org",
+    "url": "https://www.sens-public.org/"
+  },
+  "senspublic": {
+    "categories": [
+      "Essai",
+      "Entretien",
+      "Chronique"
+    ]
+  }
+}

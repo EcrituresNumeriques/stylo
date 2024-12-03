@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import React, { Fragment, useCallback, useMemo, useState } from 'react'
 import Form, { getDefaultRegistry } from '@rjsf/core'
@@ -18,7 +19,7 @@ import IsidoreAuthorAPIAutocompleteField from './Write/metadata/isidoreAuthor'
 
 const {
   templates: { BaseInputTemplate: DefaultBaseInputTemplate },
-  widgets: { CheckboxesWidget}
+  widgets: { CheckboxesWidget }
 } = getDefaultRegistry()
 
 /**
@@ -96,50 +97,53 @@ function ArrayFieldTemplate (properties) {
   const addItemTitle = properties.uiSchema['ui:add-item-title'] ?? 'form.addItem.title'
   const removeItemTitle = properties.uiSchema['ui:remove-item-title'] ?? 'form.removeItem.title'
   const title = properties.uiSchema['ui:title']
-
   const inlineRemoveButton = properties.schema?.items?.type === 'string' || !removeItemTitle
   return (
-    <fieldset className={styles.fieldset} key={properties.key}>
-      {title && <Translation>{(t) => <legend id={properties.id}>{t(title)}</legend>}</Translation>}
-      {properties.items &&
-        properties.items.map((element) => (
-          <div
-            id={element.key}
-            key={element.key}
-            className={`${element.className} can-add-remove`}
+      <fieldset className={clsx(styles.fieldset, styles.array)} key={properties.key}>
+        {title && <Translation>{(t) => 
+          <legend id={properties.id}>{t(title)}</legend>}
+        </Translation>}
+        {properties.canAdd && (
+          <Button
+            type="button"
+            className={styles.addButton}
+            tabIndex={-1}
+            onClick={properties.onAddClick}
           >
-            {element.children}
-            {element.hasRemove && (
-              <Button
-                icon={inlineRemoveButton}
-                type="button"
-                className={[styles.removeButton, inlineRemoveButton ? styles.inlineRemoveButton : ''].join(' ')}
-                tabIndex={-1}
-                disabled={element.disabled || element.readonly}
-                onClick={element.onDropIndexClick(element.index)}
+            <Plus/>
+            <Translation>
+              {(t) => t(addItemTitle)}
+            </Translation>
+          </Button>
+        )}
+        {properties.items &&
+          properties.items.map((element) => {
+            return (
+              <div
+                id={element.key}
+                key={element.key}
+                className={clsx(element.className, 'can-add-remove', element?.uiSchema?.['ui:className'])}
               >
-                <Trash/>
-                {inlineRemoveButton ? '' : <Translation>
-                  {(t) => t(removeItemTitle)}
-                </Translation>}
-              </Button>
-            )}
-          </div>
-        ))}
-      {properties.canAdd && (
-        <Button
-          type="button"
-          className={styles.addButton}
-          tabIndex={-1}
-          onClick={properties.onAddClick}
-        >
-          <Plus/>
-          <Translation>
-            {(t) => t(addItemTitle)}
-          </Translation>
-        </Button>
-      )}
-    </fieldset>
+                {element.children}
+                {element.hasRemove && (
+                  <Button
+                    icon={inlineRemoveButton}
+                    type="button"
+                    className={[styles.removeButton, inlineRemoveButton ? styles.inlineRemoveButton : ''].join(' ')}
+                    tabIndex={-1}
+                    disabled={element.disabled || element.readonly}
+                    onClick={element.onDropIndexClick(element.index)}
+                  >
+                    <Trash/>
+                    {inlineRemoveButton ? '' : <Translation>
+                      {(t) => t(removeItemTitle)}
+                    </Translation>}
+                  </Button>
+                )}
+              </div>
+            )
+          })}
+      </fieldset>
   )
 }
 
@@ -196,14 +200,16 @@ function ObjectFieldTemplate (properties) {
                 }
               </Translation>
             </legend>}
-            {elements.map(([field, element]) => (
-              element
-                ? <Fragment key={field}>{element.content}</Fragment>
-                : <p key={field} className={styles.fieldHasNoElementError}>
-                  Field <code>{field}</code> defined in <code>ui:groups</code> is not an
-                  entry of <code>data-schema.json[properties]</code> object.
-                </p>
-            ))}
+            {elements.map(([field, element]) => {
+              return (
+                element
+                  ? <Fragment key={field}>{element.content}</Fragment>
+                  : <p key={field} className={styles.fieldHasNoElementError}>
+                    Field <code>{field}</code> defined in <code>ui:groups</code> is not an
+                    entry of <code>data-schema.json[properties]</code> object.
+                  </p>
+              )
+            })}
           </fieldset>
         )
       }

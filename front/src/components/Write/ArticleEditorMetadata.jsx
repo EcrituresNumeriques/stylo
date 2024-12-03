@@ -1,16 +1,19 @@
-import React, { useCallback, useState } from 'react'
+import { Toggle } from '@geist-ui/core'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-
-import styles from './articleEditorMetadata.module.scss'
-import YamlEditor from './yamleditor/YamlEditor'
-import NavTag from '../NavTab'
 import YAML from 'js-yaml'
-import MonacoYamlEditor from './providers/monaco/YamlEditor'
 import { Sidebar } from 'react-feather'
 
-export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
+import { toYaml } from './metadata/yaml.js'
+import ArticleEditorMetadataForm from './yamleditor/ArticleEditorMetadataForm.jsx'
+import NavTag from '../NavTab'
+import MonacoYamlEditor from './providers/monaco/YamlEditor'
+
+import styles from './articleEditorMetadata.module.scss'
+
+export default function ArticleEditorMetadata ({ onChange, readOnly, metadata }) {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const expanded = useSelector(
@@ -19,7 +22,7 @@ export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
   const selector = useSelector(
     (state) => state.articlePreferences.metadataFormMode
   )
-
+  const yaml = useMemo(() => toYaml(metadata), [metadata])
   const [rawYaml, setRawYaml] = useState(yaml)
   const [error, setError] = useState('')
 
@@ -41,17 +44,25 @@ export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
     []
   )
 
+  const handleFormUpdate = useCallback((metadata) => {
+    if (readOnly) {
+      return
+    }
+    setRawYaml(toYaml(metadata))
+    onChange(metadata)
+  }, [readOnly, setRawYaml, onChange])
+
   const handleRawYamlChange = useCallback((yaml) => {
     try {
-      YAML.loadAll(yaml)
+      const [metadata = {}] = YAML.loadAll(yaml)
       setError('')
-      handleYaml(yaml)
+      onChange(metadata)
     } catch (err) {
       setError(err.message)
     } finally {
       setRawYaml(yaml)
     }
-  }, [yaml])
+  }, [setRawYaml])
 
   return (
     <nav className={`${expanded ? styles.expandRight : styles.retractRight}`}>
@@ -59,28 +70,35 @@ export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
         onClick={toggleExpand}
         className={expanded ? styles.close : styles.open}
       >
-        <Sidebar /> {expanded ? t('write.sidebar.closeButton') : t('write.sidebar.metadataButton')}
+        <Sidebar/> {expanded ? t('write.sidebar.closeButton') : t('write.sidebar.metadataButton')}
       </button>
       {expanded && (
         <div className={styles.yamlEditor}>
-          <NavTag
-            defaultValue={selector}
-            onChange={setSelector}
-            items={[
-              {
-                value: 'basic',
-                name: t('write.basicMode.metadataButton'),
-              },
-              {
-                value: 'editor',
-                name: t('write.editorMode.metadataButton'),
-              },
-              {
-                value: 'raw',
-                name: t('write.rawMode.metadataButton'),
-              },
-            ]}
-          />
+          <header className={styles.header}>
+            <h2>Metadonnées</h2>
+            <div className={styles.toggle} onClick={() => setSelector(selector === 'raw' ? 'basic' : 'raw')}>
+              <Toggle id="raw-mode" checked={selector === 'raw'} title={'Activer le mode YAML'} onChange={(e) => {
+                console.log(e)
+                setSelector(e.target.checked ? 'raw' : 'basic')
+              }}/>
+              <label htmlFor="raw-mode">YAML</label>
+            </div>
+          </header>
+
+          {/*<NavTag*/}
+          {/*  defaultValue={selector}*/}
+          {/*  onChange={setSelector}*/}
+          {/*  items={[*/}
+          {/*    {*/}
+          {/*      value: 'basic',*/}
+          {/*      name: t('write.basicMode.metadataButton'),*/}
+          {/*    },*/}
+          {/*    {*/}
+          {/*      value: 'raw',*/}
+          {/*      name: t('write.rawMode.metadataButton'),*/}
+          {/*    },*/}
+          {/*  ]}*/}
+          {/*/>*/}
           {selector === 'raw' && (
             <>
               {error !== '' && <p className={styles.error}>{error}</p>}
@@ -92,32 +110,16 @@ export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
               />
             </>
           )}
-          {selector !== 'raw' && readOnly && (
-            <YamlEditor
-              yaml={rawYaml}
-              basicMode={selector === 'basic'}
+          {selector !== 'raw' && (
+            <ArticleEditorMetadataForm
+              metadata={metadata}
               error={(reason) => {
                 setError(reason)
                 if (reason !== '') {
                   setSelector('raw')
                 }
               }}
-            />
-          )}
-          {selector !== 'raw' && !readOnly && (
-            <YamlEditor
-              yaml={rawYaml}
-              basicMode={selector === 'basic'}
-              error={(reason) => {
-                setError(reason)
-                if (reason !== '') {
-                  setSelector('raw')
-                }
-              }}
-              onChange={(yaml) => {
-                setRawYaml(yaml)
-                handleYaml(yaml)
-              }}
+              onChange={handleFormUpdate}
             />
           )}
         </div>
@@ -127,7 +129,7 @@ export default function ArticleEditorMetadata({ handleYaml, readOnly, yaml }) {
 }
 
 ArticleEditorMetadata.propTypes = {
-  handleYaml: PropTypes.func,
+  onChange: PropTypes.func,
   readOnly: PropTypes.bool,
-  yaml: PropTypes.string,
+  metadata: PropTypes.object,
 }

@@ -11,7 +11,7 @@
   min-width: 375px;
   max-width: 375px;
   max-height: calc(100vh - 76px);
-  overflow-y: auto;
+  overflow-y: scroll;
   padding: 1em 0.5em 2em 0.75em;
 
   > button {
@@ -69,6 +69,27 @@
       height: calc(100% - 8rem);
     }
   }
+}
+
+.toggle {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  font-size: 1.125rem;
+  cursor: pointer;
+
+  > label {
+    cursor: pointer;
+    font-weight: 500;
+    user-select: none;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
 }
 
 .yamlEditor {

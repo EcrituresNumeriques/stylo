@@ -5,10 +5,9 @@ import styles from './PreviewPaged.module.scss'
 import { Previewer } from 'pagedjs'
 import { compileTemplate } from '../../helpers/preview.js'
 import clsx from 'clsx'
-import YAML from 'js-yaml'
 import Loading from '../Loading.jsx'
 
-export default function Preview ({ preview, yaml }) {
+export default function Preview ({ preview, metadata }) {
   const renderRef = useRef()
   const [isLoading, setIsLoading] = useState(true)
   const { template, stylesheet } = preview
@@ -19,7 +18,6 @@ export default function Preview ({ preview, yaml }) {
 
   useEffect(() => {
     if (html && isLoading) {
-      const [metadata = {}] = YAML.loadAll(yaml)
       const render = compileTemplate(template)
 
       const base64Stylesheet = `data:text/css;base64,${btoa(stylesheet)}`
@@ -31,7 +29,7 @@ export default function Preview ({ preview, yaml }) {
         )
         .then(() => setIsLoading(false))
     }
-  }, [html, yaml])
+  }, [html, metadata])
 
   return <>
     <Loading label="Processing paginated preview…" hidden={!isLoading} />

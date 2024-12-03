@@ -55,7 +55,7 @@ query getEditableArticle ($article: ID!, $hasVersion: Boolean!, $version: ID!) {
       md
       bib
       bibPreview
-      yaml
+      metadata
     }
 
     collaborativeSession {
@@ -80,7 +80,7 @@ query getEditableArticle ($article: ID!, $hasVersion: Boolean!, $version: ID!) {
     md
     bib
     bibPreview
-    yaml
+    metadata
     message
     revision
     version
