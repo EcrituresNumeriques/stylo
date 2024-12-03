@@ -21,4 +21,10 @@ fieldset {
 
 .create {
   margin: 2rem 0 1rem;
+  
+  > form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 }
