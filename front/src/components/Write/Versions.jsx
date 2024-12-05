@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { ArrowLeft, Check, ChevronDown, ChevronRight, Edit3 } from 'react-feather'
 import TimeAgo from '../TimeAgo.jsx'
 
@@ -22,14 +23,20 @@ import clsx from 'clsx'
 
 function Version ({ articleId, compareTo, readOnly, selectedVersion, v }) {
   const { t } = useTranslation()
-  const className = clsx({
-    [styles.selected]: v._id === selectedVersion,
-    [styles.compareTo]: v._id === compareTo
-  })
 
   const articleVersionId = v._id
-  const versionPart = selectedVersion ? `version/${selectedVersion}/` : ''
-  const compareLink = `/article/${articleId}/${versionPart}compare/${v._id}`
+
+  const isComparing = useMemo(() => compareTo || selectedVersion, [compareTo, selectedVersion])
+  const isSelected = useMemo(() => articleVersionId === selectedVersion, [articleVersionId, selectedVersion])
+  const versionPart = useMemo(() => selectedVersion ? `version/${selectedVersion}/` : '', [selectedVersion])
+  const compareLink = useMemo(() => `/article/${articleId}/${versionPart}compare/${articleVersionId}`, [articleId, versionPart, articleVersionId])
+  const canCompare = useMemo(() => ![compareTo, selectedVersion].includes(articleVersionId), [compareTo, selectedVersion, articleVersionId])
+  const canStopCompare = useMemo(() => isComparing && compareTo && articleVersionId === compareTo, [compareTo, articleVersionId])
+
+  const className = clsx({
+    [styles.selected]: isSelected,
+    [styles.compareTo]: isComparing && articleVersionId === compareTo
+  })
 
   const runQuery = useGraphQL()
   const [renaming, setRenaming] = useState(false)
@@ -48,6 +55,7 @@ function Version ({ articleId, compareTo, readOnly, selectedVersion, v }) {
   }, [title])
 
   return <li
+    aria-current={isSelected}
     className={clsx(className, styles.version, manualVersion ? styles.manualVersion : styles.automaticVersion)}>
     {renaming && (
       <form className={styles.renamingForm} onSubmit={handleRename}>
@@ -92,34 +100,92 @@ function Version ({ articleId, compareTo, readOnly, selectedVersion, v }) {
       </span>
       </p>}
     </Link>
-    {!renaming && selectedVersion && <ul className={styles.actions}>
-      {![compareTo, selectedVersion].includes(v._id) && (
-        <li>
-          <Link
-            className={clsx(buttonStyles.button, buttonStyles.secondary, styles.action)}
-            to={compareLink}
-          >
-            {t('write.compareVersion.button')}
-          </Link>
-        </li>
-      )}
-      {v._id === compareTo && (
-        <li>
-          <Link
-            className={clsx(buttonStyles.button, buttonStyles.secondary, styles.action)}
-            to={`/article/${articleId}/${versionPart}`}
-          >
-            {t('write.stopCompareVersion.button')}
-          </Link>
-        </li>
-      )}
-    </ul>}
+
+    <ul className={styles.actions}>
+      <li hidden={!canCompare}>
+        <Link
+          className={clsx(buttonStyles.button, buttonStyles.secondary, styles.action)}
+          to={compareLink}
+        >
+          {t('write.compareVersion.button')}
+        </Link>
+      </li>
+      <li hidden={!canStopCompare}>
+        <Link
+          className={clsx(buttonStyles.button, buttonStyles.secondary, styles.action)}
+          to={`/article/${articleId}/${versionPart}`}
+        >
+          {t('write.stopCompareVersion.button')}
+        </Link>
+      </li>
+    </ul>
   </li>
 }
 
 Version.propTypes = {
   articleId: PropTypes.string.isRequired,
   v: PropTypes.object.isRequired,
+  selectedVersion: PropTypes.string,
+  compareTo: PropTypes.string,
+  readOnly: PropTypes.bool,
+}
+
+export function WorkingVersion ({ articleId, selectedVersion = null, compareTo = null, readOnly }) {
+  const updatedAt = useSelector(state => state.workingArticle.updatedAt)
+  const { t } = useTranslation()
+  const { pathname } = useLocation()
+
+  const articleVersionId = null
+  const isComparing = useMemo(() => pathname.includes('/compare'), [pathname])
+
+  const isSelected = useMemo(() => articleVersionId === selectedVersion, [articleVersionId, selectedVersion])
+  const compareLink = useMemo(() => selectedVersion ? `/article/${articleId}/version/${selectedVersion}/compare/working-copy` : `/article/${articleId}/compare/${selectedVersion}`, [articleId, selectedVersion, articleVersionId])
+  const canCompare = useMemo(() => isComparing ? ![compareTo, selectedVersion].includes(articleVersionId) : selectedVersion, [isComparing, compareTo, selectedVersion, articleVersionId])
+  const canStopCompare = useMemo(() => isComparing && compareTo === articleVersionId, [isComparing, isSelected])
+
+  const className = clsx({
+    [styles.selected]: isSelected,
+    [styles.compareTo]: isComparing && articleVersionId === compareTo
+  })
+
+  return <li className={clsx(styles.version, className, styles.automaticVersion)} aria-current={isSelected}>
+    <Link to={`/article/${articleId}`} className={clsx(styles.versionLink, selectedVersion && styles.versionLinkCompare)}>
+      <header>
+        <span className={styles.versionLabel}>
+          {t('workingVersion.spanWorkingCopy.text')}
+        </span>
+      </header>
+
+      <p>
+        <span className={styles.momentsAgo}>
+         <TimeAgo date={updatedAt}/>
+      </span>
+      </p>
+    </Link>
+
+    <ul className={styles.actions}>
+      <li hidden={!canCompare}>
+        <Link
+          className={clsx(buttonStyles.button, buttonStyles.secondary, styles.action)}
+          to={compareLink}
+        >
+          {t('write.compareVersion.button')}
+        </Link>
+      </li>
+      <li hidden={!canStopCompare}>
+        <Link
+          className={clsx(buttonStyles.button, buttonStyles.secondary, styles.action)}
+          to={`/article/${articleId}`}
+        >
+          {t('write.stopCompareVersion.button')}
+        </Link>
+      </li>
+    </ul>
+  </li>
+}
+
+WorkingVersion.propTypes = {
+  articleId: PropTypes.string.isRequired,
   selectedVersion: PropTypes.string,
   compareTo: PropTypes.string,
   readOnly: PropTypes.bool,
@@ -168,13 +234,19 @@ export default function Versions ({ article, selectedVersion, compareTo, readOnl
           </p>)}
 
           <ul className={styles.versionsList}>
+            <WorkingVersion
+              articleId={article._id}
+              selectedVersion={selectedVersion}
+              compareTo={compareTo}
+              readOnly={readOnly} />
+
             {articleVersions.map((v) => (
               <Version key={`showVersion-${v._id}`}
-                       articleId={article._id}
-                       selectedVersion={selectedVersion}
-                       compareTo={compareTo}
-                       readOnly={readOnly}
-                       v={v}/>
+                articleId={article._id}
+                selectedVersion={selectedVersion}
+                compareTo={compareTo}
+                readOnly={readOnly}
+                v={v}/>
             ))}
           </ul>
         </>

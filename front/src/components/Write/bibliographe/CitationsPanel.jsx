@@ -58,9 +58,6 @@ export default function CitationsPanel ({ onChange }) {
 
   const handleChanges = useCallback(() => onChange(bib), [bib])
 
-  console.log({ isValid, isEmpty})
-  console.log(citationValidationResult)
-
   return (<div className={styles.citations}>
     <section className={styles.section}>
       <MonacoBibtexEditor
