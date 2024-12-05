@@ -91,7 +91,7 @@ const getArticleExportContext = async (articleId) => {
 
 const getBookExportContext = async (bookId) => {
   const book = await getCorpusById(bookId)
-  console.log({book})
+
   const { articles: chapters, _id: id, name: title } = book
 
   // we can create empty books… but no need to preview them
