@@ -1,7 +1,13 @@
-query compareVersion ($to: ID!) {
-  version(version: $to) {
+query compareVersion ($to: ID!, $article: ID!, $hasVersion: Boolean!) {
+  version(version: $to) @include(if: $hasVersion) {
     _id
     md
+  }
+
+  article (article: $article) {
+    workingVersion @skip(if: $hasVersion) {
+      md
+    }
   }
 }
 

@@ -30,8 +30,8 @@ export default function MonacoDiffEditor ({ text, compareTo, articleId, selected
   }, [])
 
   useEffect(() => {
-    runQuery({ query, variables: { to: compareTo } })
-      .then(({ version }) => setModifiedText(version.md))
+    runQuery({ query, variables: { article: articleId, to: compareTo ?? 'working-copy', hasVersion: Boolean(compareTo) } })
+      .then(({ article, version }) => setModifiedText(version?.md ?? article.workingVersion?.md))
   }, [compareTo])
 
   const monacoOptions = useMemo(() => ({

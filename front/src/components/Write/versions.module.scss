@@ -27,26 +27,23 @@
   padding: 0 .25em;
 }
 
-.momentAgo {
-  opacity: .5;
-  margin-left: .5em;
-}
-
 .version {
   border: 1px solid transparent;
   border-left: 4px solid;
   margin-bottom: 0.25em;
   margin-left: 0.5rem;
   margin-right: 0.25em;
-  cursor: pointer;
   display: flex;
 }
 
 .versionLink {
   color: inherit;
+  cursor: pointer;
   text-decoration: none;
   flex-grow: 1;
   background-color: transparent;
+  margin: -0.5rem;  /* counter act the 0.5rem padding of its container */
+  padding: 0.5rem;  /* ^^^^^^ */
 
   > header {
     max-width: 265px;

@@ -158,8 +158,8 @@ root.render(
                 </Route>
                 {/* Write and Compare */}
                 <PrivateRoute
-                  path={[`/article/:id/compare/:compareTo`, `/article/:id/version/:version/compare/:compareTo`]} exact>
-                  <Write/>
+                  path={[`/article/:id/compare/:compareTo`, `/article/:id/version/:version/compare/working-copy`, `/article/:id/version/:version/compare/:compareTo`]} exact>
+                  <Write />
                 </PrivateRoute>
                 {/* Write with a given version */}
                 <PrivateRoute path={`/article/:id/version/:version`} exact>
