@@ -65,7 +65,7 @@
     "jest-environment-node": "~29.7"
   },
   "volta": {
-    "node": "18.20.4",
-    "npm": "10.9.0"
+    "node": "18.20.5",
+    "npm": "10.9.2"
   }
 }
