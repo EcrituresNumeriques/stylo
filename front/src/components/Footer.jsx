@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Switch, Route, Link } from 'react-router-dom'
+import { Switch, Route, NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import styles from './header.module.scss'
@@ -32,7 +32,7 @@ function Footer () {
             {t('footer.changelog.link')}
             </a>
           </li>
-          <li><Link to="/privacy">{t('footer.privacy.link')}</Link></li>
+          <li><NavLink to="/privacy">{t('footer.privacy.link')}</NavLink></li>
           { import.meta.env.SNOWPACK_MATOMO_URL && (<li>
             <label className={styles.consentLabel}>
               <input type="checkbox" checked={userHasConsent} onChange={toggleConsent} disabled={true} />

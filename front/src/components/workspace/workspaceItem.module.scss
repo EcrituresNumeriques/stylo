@@ -7,18 +7,9 @@
   margin-bottom: 1em;
 }
 
-.chip {
-  display: inline-block;
-  height: 1.35em;
-  width: 1.35em;
-  border-radius: 4px;
-  margin-right: 0.75em;
-}
-
-.title {
+.workspace {
   font-size: 1.35em;
-  display: flex;
-  padding-bottom: 0.5em;
+  font-weight: bold;
 }
 
 .button {
@@ -33,11 +24,6 @@
 .creator {
   font-weight: 500;
   font-style: italic;
-}
-
-.field > label {
-  font-weight: 600;
-  padding: 0.25em;
 }
 
 .actionButtons {

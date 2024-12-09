@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { LifeBuoy } from 'react-feather'
-import {  useSelector } from 'react-redux'
-import { Link, Route, Switch } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { NavLink, Route, Switch } from 'react-router-dom'
 
 import logoContent from '/images/logo.svg?inline'
 import { useActiveWorkspace } from '../hooks/workspace.js'
@@ -9,7 +9,6 @@ import { useActiveWorkspace } from '../hooks/workspace.js'
 import styles from './header.module.scss'
 import LanguagesMenu from './header/LanguagesMenu.jsx'
 import UserMenu from './header/UserMenu.jsx'
-import LanguagesIcon from './header/LanguagesIcon.jsx'
 
 function Header () {
   const activeWorkspace = useActiveWorkspace()
@@ -22,14 +21,14 @@ function Header () {
       <header className={styles.headerContainer}>
         <section className={styles.header}>
           <h1 className={styles.logo}>
-            <Link to="/"><img src={logoContent} alt="Stylo" title="Stylo"/></Link>
+            <NavLink to="/"><img src={logoContent} alt="Stylo" title="Stylo"/></NavLink>
           </h1>
           {connected &&
             <>
               <nav>
                 <ul className={styles.menuLinks}>
-                  <li><Link to={activeWorkspaceId ? `/workspaces/${activeWorkspaceId}/articles` : '/articles'}>Articles</Link></li>
-                  <li><Link to={activeWorkspaceId ? `/workspaces/${activeWorkspaceId}/books` : '/books'}>Corpus</Link></li>
+                  <li><NavLink to={activeWorkspaceId ? `/workspaces/${activeWorkspaceId}/articles` : '/articles'}>Articles</NavLink></li>
+                  <li><NavLink to={activeWorkspaceId ? `/workspaces/${activeWorkspaceId}/books` : '/books'}>Corpus</NavLink></li>
                 </ul>
               </nav>
               <nav className={styles.secondaryNav}>
@@ -49,8 +48,8 @@ function Header () {
           {!connected &&
             <nav>
               <ul className={styles.menuLinks}>
-                <li><Link to="/">Login</Link></li>
-                <li><Link to="/register" className={styles.registerAction}>Register</Link></li>
+                <li><NavLink to="/">Login</NavLink></li>
+                <li><NavLink to="/register" className={styles.registerAction}>Register</NavLink></li>
               </ul>
             </nav>
           }

@@ -63,6 +63,7 @@ export default function Corpus () {
       <header className={styles.header}>
         <h1>Corpus</h1>
         {activeWorkspace && <WorkspaceLabel color={activeWorkspace.color} name={activeWorkspace.name}/>}
+        {!activeWorkspace && <WorkspaceLabel color="#ccc" name={t('workspace.myspace')}/>}
       </header>
       <p className={styles.introduction}>
         A corpus is a collection of articles that you can sort and export all at once.
