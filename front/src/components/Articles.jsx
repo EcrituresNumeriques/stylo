@@ -152,6 +152,7 @@ export default function Articles () {
       <header className={styles.articlesHeader}>
         <h1>Articles</h1>
         {activeWorkspace && <WorkspaceLabel color={activeWorkspace.color} name={activeWorkspace.name}/>}
+        {!activeWorkspace && <WorkspaceLabel color="#ccc" name={t('workspace.myspace')}/>}
       </header>
       <Field className={styles.searchField}
              type="text"
