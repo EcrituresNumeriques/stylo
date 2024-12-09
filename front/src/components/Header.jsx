@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { LifeBuoy } from 'react-feather'
 import { useSelector } from 'react-redux'
-import { Link, Route, Switch } from 'react-router-dom'
+import { NavLink, Route, Switch } from 'react-router-dom'
 
 import logoContent from '/images/logo.svg?inline'
 import { useActiveWorkspace } from '../hooks/workspace.js'
@@ -9,7 +9,6 @@ import { useActiveWorkspace } from '../hooks/workspace.js'
 import styles from './header.module.scss'
 import LanguagesMenu from './header/LanguagesMenu.jsx'
 import UserMenu from './header/UserMenu.jsx'
-import LanguagesIcon from './header/LanguagesIcon.jsx'
 
 function Header() {
   const activeWorkspace = useActiveWorkspace()
@@ -26,16 +25,16 @@ function Header() {
         <header className={styles.headerContainer}>
           <section className={styles.header}>
             <h1 className={styles.logo}>
-              <Link to="/">
+              <NavLink to="/">
                 <img src={logoContent} alt="Stylo" title="Stylo" />
-              </Link>
+              </NavLink>
             </h1>
             {connected && (
               <>
                 <nav>
                   <ul className={styles.menuLinks}>
                     <li>
-                      <Link
+                      <NavLink
                         to={
                           activeWorkspaceId
                             ? `/workspaces/${activeWorkspaceId}/articles`
@@ -43,10 +42,10 @@ function Header() {
                         }
                       >
                         Articles
-                      </Link>
+                      </NavLink>
                     </li>
                     <li>
-                      <Link
+                      <NavLink
                         to={
                           activeWorkspaceId
                             ? `/workspaces/${activeWorkspaceId}/books`
@@ -54,7 +53,7 @@ function Header() {
                         }
                       >
                         Corpus
-                      </Link>
+                      </NavLink>
                     </li>
                   </ul>
                 </nav>
@@ -77,12 +76,12 @@ function Header() {
               <nav>
                 <ul className={styles.menuLinks}>
                   <li>
-                    <Link to="/">Login</Link>
+                    <NavLink to="/">Login</NavLink>
                   </li>
                   <li>
-                    <Link to="/register" className={styles.registerAction}>
+                    <NavLink to="/register" className={styles.registerAction}>
                       Register
-                    </Link>
+                    </NavLink>
                   </li>
                 </ul>
               </nav>
