@@ -12,7 +12,6 @@ import WorkspaceManageMembers from './WorkspaceManageMembers.jsx'
 import { useGraphQL } from '../../helpers/graphQL.js'
 import Field from '../Field.jsx'
 
-
 export default function WorkspaceItem ({ workspace }) {
   const { t } = useTranslation()
   const runQuery = useGraphQL()
@@ -48,15 +47,9 @@ export default function WorkspaceItem ({ workspace }) {
     setMembersCount(workspace.stats?.membersCount || 0)
   }, [workspace.stats])
 
-  const workspaceTitle = (<>
-    <h5 className={styles.title}>
-      <span className={styles.chip} style={{ backgroundColor: workspace.color }}></span>
-      <span className={styles.name}>{workspace.name}</span>
-    </h5>
-  </>)
-
   return (<div className={styles.container}>
-    {workspaceTitle}
+    <WorkspaceLabel className={styles.workspace} color={workspace.color} name={workspace.name} />
+
     {workspace.personal && <>
       <Field className={styles.field} label="Articles">
         <span>{workspace.articlesCount}</span>

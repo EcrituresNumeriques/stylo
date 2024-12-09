@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ChevronRight } from 'react-feather'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
-import { useLocation, useHistory } from 'react-router-dom'
+import { NavLink, useLocation, useHistory } from 'react-router-dom'
 
 import styles from './WorkspaceMenuItem.module.scss'
 
