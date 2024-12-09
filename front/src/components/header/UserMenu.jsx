@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Layers, LogOut, User } from 'react-feather'
 
 import useComponentVisible from '../../hooks/componentVisible'
@@ -36,18 +36,18 @@ export default function UserMenu () {
           <ul>
             <WorkspaceMenuItem color="#D9D9D9" name={t('workspace.myspace')}/>
             {activeUser.workspaces.map((workspace) => <WorkspaceMenuItem id={workspace._id} key={workspace._id} color={workspace.color} name={workspace.name} />)}
-            <li className={styles.workspacesLink}><Link to="/workspaces" onClick={() => setIsComponentVisible(false)}><Layers/>{t('workspace.all')}</Link></li>
+            <li className={styles.workspacesLink}><NavLink to="/workspaces" onClick={() => setIsComponentVisible(false)}><Layers/>{t('workspace.all')}</NavLink></li>
           </ul>
         </div>
         <div className={styles.footer}>
           <div className={styles.userBlock}>
-            <Link to="/credentials" onClick={() => setIsComponentVisible(false)} className={styles.userCard}>
+            <NavLink to="/credentials" onClick={() => setIsComponentVisible(false)} className={styles.userCard}>
               <div className={styles.persona}><User/></div>
               <div className={styles.userInfo}>
                 <div className={styles.username}>{activeUser.displayName}</div>
                 <div className={styles.email}>{activeUser.email}</div>
               </div>
-            </Link>
+            </NavLink>
             <Button className={styles.logoutButton} onClick={logout} link>
               <LogOut size={22}/>
             </Button>
