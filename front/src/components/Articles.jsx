@@ -231,6 +231,9 @@ export default function Articles() {
               name={activeWorkspace.name}
             />
           )}
+          {!activeWorkspace && (
+            <WorkspaceLabel color="#ccc" name={t('workspace.myspace')} />
+          )}
         </header>
         <Field
           className={styles.searchField}
