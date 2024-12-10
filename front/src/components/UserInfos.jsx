@@ -128,6 +128,9 @@ export default function UserInfos() {
 
       <section className={styles.section}>
         <div className={styles.info}>
+          <Field label={t('user.account.username')}>
+            <>{activeUser.username || '-'}</>
+          </Field>
           <Field label={t('user.account.email')}>
             <>{activeUser.email}</>
           </Field>
