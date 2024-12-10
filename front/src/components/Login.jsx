@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Helmet } from 'react-helmet'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { applicationConfig } from '../config.js'
 
 import styles from './login.module.scss'
@@ -68,32 +68,33 @@ export default function Login() {
       </Helmet>
       <section className={styles.disclaimer}>
         <p>
-          Looking for technical and editing support?
-          <br />
-          Join the{' '}
-          <a
-            href="https://ecrituresnumeriques.ca/en/2019/10/25/Stylo-technical-and-editing-support"
-            target="_blank"
-            rel="noreferrer"
-          >
-            weekly session
-          </a>{' '}
-          for Stylo users.
+          <Trans i18nKey="credentials.login.supportText">
+            Looking for technical and editing support? <br />
+            <a
+              href="https://ecrituresnumeriques.ca/en/2019/10/25/Stylo-technical-and-editing-support"
+              target="_blank"
+              rel="noreferrer"
+            >
+              weekly session
+            </a>
+            for Stylo users
+          </Trans>
         </p>
       </section>
 
       <section className={styles.box}>
-        <h1>Welcome to Stylo!</h1>
+        <h1>{t('credentials.login.title')}</h1>
         <form onSubmit={handleSubmit} className={styles.loginForm}>
           <fieldset>
             <legend>
-              Connect with a Huma-Num account <small>(recommended)</small>
+              {t('credentials.login.withRemoteAccount')}
+              <small>({t('credentials.login.recommendedMethod')})</small>
             </legend>
 
             <p className={styles.help}>
-              <HelpCircle size={18} className={styles.inlineIcon} />
+              <HelpCircle size={18} className={styles.inlineIcon} aria-hidden />
               <a href="https://humanum.hypotheses.org/5754#content">
-                How does it work?
+                {t('credentials.login.howto')}
               </a>
             </p>
 
@@ -102,31 +103,31 @@ export default function Login() {
                 className={styles.humaNumConnectBtn}
                 href={backendEndpoint + '/login/openid'}
               >
-                Connect with Huma-Num
+                {t('credentials.login.withService', { name: 'Huma-Num' })}
               </a>
               <a
                 className={styles.humaNumCreateAccountBtn}
                 href={humanIdRegisterEndpoint}
               >
-                Create a Huma-Num account
+                {t('credentials.login.registerWithService', {
+                  name: 'Huma-Num',
+                })}
               </a>
             </p>
 
             <p className={styles.help}>
-              <HelpCircle size={18} className={styles.inlineIcon} />
-              If you use the same email address for your{' '}
-              <strong>existing</strong> Stylo account and for your Huma-Num
-              account, the two accounts will be automatically merged.
+              <HelpCircle size={18} className={styles.inlineIcon} aria-hidden />
+              {t('credentials.login.remoteAccountHelp')}
             </p>
           </fieldset>
 
           <hr />
 
           <fieldset>
-            <legend>Connect with a local Stylo account</legend>
+            <legend>{t('credentials.login.withLocalAccount')}</legend>
 
             <Field
-              label="Username"
+              label={t('user.account.username')}
               id="username"
               hasError={error !== ''}
               required={true}
@@ -135,7 +136,7 @@ export default function Login() {
               onChange={(event) => setUsername(event.target.value)}
             />
             <Field
-              label="Password"
+              label={t('credentials.password.placeholder')}
               id="password"
               hasError={error !== ''}
               required={true}
@@ -147,11 +148,13 @@ export default function Login() {
             {error && <InlineAlert message={error} />}
             <ul className={styles.actions}>
               <li>
-                <Link to="/register">Create an account</Link>
+                <Link to="/register">
+                  {t('credentials.login.registerLink')}
+                </Link>
               </li>
               <li className={styles.actionsSubmit}>
                 <Button primary={true} type="submit">
-                  Login
+                  {t('credentials.login.confirmButton')}
                 </Button>
               </li>
             </ul>

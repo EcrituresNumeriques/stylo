@@ -54,7 +54,7 @@ export default function Register() {
           <Field
             name="email"
             type="email"
-            label="Email*"
+            label={t('user.account.email')}
             autoComplete="email"
             autoFocus={true}
             required={true}

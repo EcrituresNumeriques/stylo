@@ -131,6 +131,7 @@
   "soloSessionAction.launchSoloSessionButton.title": "Edit article",
   "modal.cancelButton.text": "Cancel",
   "modal.confirmButton.text": "Confirm",
+  "modal.open.text": "Open",
   "modal.close.text": "Close",
   "modal.saveButton.text": "Save",
   "corpus.page.title": "Corpus list - {{ workspace }}",
