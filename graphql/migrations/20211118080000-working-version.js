@@ -1,30 +1,34 @@
 exports.up = async function (db) {
-  const articles = await db._find('articles', {})
-
-  for await (const article of articles) {
-    const latestVersionId = article.versions.slice(-1)[0]
-
-    if (typeof article.workingVersion === 'undefined') {
-      if (latestVersionId) {
-        const [latestVersion] = await db._find('versions', { _id: latestVersionId })
-        await db._run('update', 'articles', {
-          query: { _id: article._id },
-          update: {
-            $set: {
-              workingVersion: {
-                bib: latestVersion.bib,
-                md: latestVersion.md,
-                yaml: latestVersion.yaml,
-              },
+  const mongo = await db._run('getDbInstance', true)
+  const articles = mongo.collection('articles')
+  const versions = mongo.collection('versions')
+  const articlesCursor = articles.find({})
+  try {
+    while (await articlesCursor.hasNext()) {
+      const article = await articlesCursor.next()
+      if (typeof article.workingVersion === 'undefined') {
+        const latestVersionId = article.versions.slice(-1)[0]
+        if (latestVersionId) {
+          const [latestVersion] = await versions.findOne({ _id: latestVersionId })
+          await articles.updateOne({ _id: article._id }, {
+              $set: {
+                workingVersion: {
+                  bib: latestVersion.bib,
+                  md: latestVersion.md,
+                  yaml: latestVersion.yaml,
+                }
+              }
             },
-          },
-          options: { upsert: false }
-        })
-
-        // if the latest version is "autosave", remove!
-        await db.collections('versions').deleteOne({ _id: latestVersionId, autosave: true })
+            { upsert: false }
+          )
+          // if the latest version is "autosave", remove!
+          await versions.deleteOne({ _id: latestVersionId, autosave: true })
+        }
       }
     }
+  } finally {
+    await articlesCursor.close()
+    await mongo.close()
   }
 }
 
