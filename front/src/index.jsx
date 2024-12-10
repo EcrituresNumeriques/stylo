@@ -142,14 +142,24 @@ root.render(
                 </Route>
                 {/* Articles index */}
                 <PrivateRoute
-                  path={['/articles', '/', '/workspaces/:workspaceId/articles']}
+                  path={[
+                    '/articles',
+                    '/',
+                    '/workspaces/:workspaceId/articles',
+                    '/workspaces/:workspaceId',
+                  ]}
                   exact
                 >
                   <Articles />
                 </PrivateRoute>
                 {/* Books index */}
                 <PrivateRoute
-                  path={['/books', '/workspaces/:workspaceId/books']}
+                  path={[
+                    '/corpus',
+                    '/workspaces/:workspaceId/corpus',
+                    '/books',
+                    '/workspaces/:workspaceId/books',
+                  ]}
                   exact
                 >
                   <Corpus />
@@ -163,7 +173,10 @@ root.render(
                   <Credentials />
                 </PrivateRoute>
                 {/* Annotate a Book */}
-                <Route path={[`/books/:bookId/preview`]} exact>
+                <Route
+                  path={['/corpus/:bookId/preview', '/books/:bookId/preview']}
+                  exact
+                >
                   <ArticlePreview />
                 </Route>
                 {/* Annotate an article or its version */}
