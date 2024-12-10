@@ -1,20 +1,27 @@
 exports.up = async function (db) {
-  const articles = await db._find('articles', {})
-
-  for await (const article of articles) {
-    const versionsIds = article.versions
-
-    if (Array.isArray(versionsIds)) {
-      for await (const _id of versionsIds) {
-        const [version] = await db._find('versions', { _id })
-        if (!version) {
-          await db._run('update', 'articles', {
-            query: { _id: article._id },
-            update: { $pull: { versions: _id } }
-          })
+  const mongo = await db._run('getDbInstance', true)
+  const articles = mongo.collection('articles')
+  const versions = mongo.collection('versions')
+  const articlesCursor = articles.find({})
+  try {
+    while (await articlesCursor.hasNext()) {
+      const article = await articlesCursor.next()
+      const versionsIds = article.versions
+      if (Array.isArray(versionsIds)) {
+        for await (const _id of versionsIds) {
+          const version = await versions.findOne({ _id })
+          if (!version) {
+            await articles.updateOne(
+              { _id: article._id },
+              { $pull: { versions: _id } }
+            )
+          }
         }
       }
     }
+  } finally {
+    articlesCursor.close()
+    mongo.close()
   }
 }
 

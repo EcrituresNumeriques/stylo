@@ -10,7 +10,7 @@ exports.up = async function (db) {
     let metadata = {}
     if (article.workingVersion.yaml) {
       try {
-        const [legacyMetadata = {}] = YAML.loadAll(article.workingVersion.yaml, 'utf8')
+        const [legacyMetadata = {}] = YAML.loadAll(article.workingVersion.yaml, { json: true })
         metadata = fromLegacyFormat(legacyMetadata)
       } catch (error) {
         console.error(`Invalid metadata format on article with id: ${article._id}, metadata will be empty - reason: ${error.reason}`)
@@ -32,7 +32,7 @@ exports.up = async function (db) {
     let metadata = {}
     if (version.yaml) {
       try {
-        const [legacyMetadata = {}] = YAML.loadAll(version.yaml, 'utf8')
+        const [legacyMetadata = {}] = YAML.loadAll(version.yaml, { json: true })
         metadata = fromLegacyFormat(legacyMetadata)
       } catch (error) {
         console.error(`Invalid metadata format on version with id: ${version._id}, metadata will be empty - reason: ${error.reason}`)

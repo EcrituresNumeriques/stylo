@@ -1,23 +1,28 @@
 exports.up = async function (db) {
-  const versions = await db._find('versions', {"owner": null })
-
-  for await (const version of versions) {
-    const articleId = version.article
-    const articles = await db._find('articles', { _id: articleId })
-
-    for await (const article of articles) {
-      if (article.owner !== null) {
-        await db._run('update', 'versions', {
-          query: { _id: version._id },
-          update: {
+  const mongo = await db._run('getDbInstance', true)
+  const articles = mongo.collection('articles')
+  const versions = mongo.collection('versions')
+  const versionsCursor = versions.find({ "owner": null })
+  try {
+    while (await versionsCursor.hasNext()) {
+      const version = await versionsCursor.next()
+      const articleId = version.article
+      const article = await articles.findOne({ _id: articleId })
+      if (article && article.owner !== null) {
+        versions.updateOne(
+          { _id: version._id },
+          {
             $set: {
               owner: article.owner,
-            },
+            }
           },
-          options: { upsert: false }
-        })
+          { upsert: false }
+        )
       }
     }
+  } finally {
+    await versionsCursor.close()
+    await mongo.close()
   }
 }
 

@@ -444,7 +444,10 @@ function fromLegacyFormat (metadata) {
     translations,
     ...extra
   } = metadata
-  const translatedAbstracts = abstract?.filter(a => a?.lang !== lang)
+  const abstractNormalized = typeof abstract === 'string'
+    ? [{ lang: 'fr', text_f: abstract }]
+    : abstract
+  const translatedAbstracts = abstractNormalized?.filter(a => a?.lang !== lang)
   const translatedTitles = translatedTitle?.filter(a => a?.lang !== lang)
   const translatedKeywords = keywords?.filter(a => a?.lang !== lang)
   const languages = Array.from(new Set([...translatedAbstracts?.map(a => a?.lang) ?? [], ...translatedTitles?.map(t => t?.lang) ?? [], ...translatedKeywords?.map(k => k?.lang) ?? []]))
@@ -486,7 +489,7 @@ function fromLegacyFormat (metadata) {
     title: title_f,
     subtitle: subtitle_f,
     acknowledgements,
-    abstract: abstract?.find(a => a?.lang === lang)?.text_f,
+    abstract: abstractNormalized?.find(a => a?.lang === lang)?.text_f,
     keywords: keywords?.find(k => k?.lang === lang)?.list_f,
     controlledKeywords: controlledKeywords,
     publicationDate: date,
