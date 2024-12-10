@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { LifeBuoy } from 'react-feather'
 import { useSelector } from 'react-redux'
 import { NavLink, Route, Switch } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import logoContent from '/images/logo.svg?inline'
 import { useActiveWorkspace } from '../hooks/workspace.js'
@@ -17,6 +18,7 @@ function Header() {
     [activeWorkspace]
   )
   const connected = useSelector((state) => state.loggedIn)
+  const { t } = useTranslation()
 
   return (
     <Switch>
@@ -25,8 +27,14 @@ function Header() {
         <header className={styles.headerContainer}>
           <section className={styles.header}>
             <h1 className={styles.logo}>
-              <NavLink to="/">
-                <img src={logoContent} alt="Stylo" title="Stylo" />
+              <NavLink
+                to={
+                  activeWorkspaceId
+                    ? `/workspaces/${activeWorkspaceId}/articles`
+                    : '/'
+                }
+              >
+                <img src={logoContent} alt="Stylo" />
               </NavLink>
             </h1>
             {connected && (
@@ -41,18 +49,18 @@ function Header() {
                             : '/articles'
                         }
                       >
-                        Articles
+                        {t('workspace.articlesCount.label')}
                       </NavLink>
                     </li>
                     <li>
                       <NavLink
                         to={
                           activeWorkspaceId
-                            ? `/workspaces/${activeWorkspaceId}/books`
-                            : '/books'
+                            ? `/workspaces/${activeWorkspaceId}/corpus`
+                            : '/corpus'
                         }
                       >
-                        Corpus
+                        {t('article.corpus.title')}
                       </NavLink>
                     </li>
                   </ul>
@@ -65,26 +73,31 @@ function Header() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <LifeBuoy size={16} />
-                    Documentation
+                    <LifeBuoy size={16} role="presentation" />
+                    {t('footer.documentation.link')}
                   </a>
                   <LanguagesMenu />
                 </nav>
               </>
             )}
             {!connected && (
-              <nav>
-                <ul className={styles.menuLinks}>
-                  <li>
-                    <NavLink to="/">Login</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/register" className={styles.registerAction}>
-                      Register
-                    </NavLink>
-                  </li>
-                </ul>
-              </nav>
+              <>
+                <nav>
+                  <ul className={styles.menuLinks}>
+                    <li>
+                      <NavLink to="/">{t('header.login')}</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/register" className={styles.registerAction}>
+                        {t('header.register')}
+                      </NavLink>
+                    </li>
+                  </ul>
+                </nav>
+                <nav className={styles.secondaryNav}>
+                  <LanguagesMenu />
+                </nav>
+              </>
             )}
           </section>
         </header>

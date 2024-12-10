@@ -1,9 +1,9 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { ChevronRight } from 'react-feather'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
-import { NavLink, useLocation, useHistory } from 'react-router-dom'
+import React from 'react'
+import { ChevronRight } from 'react-feather'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import styles from './WorkspaceMenuItem.module.scss'
 

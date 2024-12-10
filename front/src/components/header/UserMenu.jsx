@@ -32,6 +32,8 @@ export default function UserMenu() {
     <div ref={ref} className={styles.container}>
       <div
         className={styles.userMenuLink}
+        aria-label={t('header.manage')}
+        tabIndex={0}
         onClick={() => setIsComponentVisible(!isComponentVisible)}
       >
         <UserMenuLink
@@ -61,8 +63,7 @@ export default function UserMenu() {
                   to="/workspaces"
                   onClick={() => setIsComponentVisible(false)}
                 >
-                  <Layers />
-                  {t('workspace.all')}
+                  <Layers role="presentation" /> {t('workspace.all')}
                 </NavLink>
               </li>
             </ul>
@@ -73,9 +74,10 @@ export default function UserMenu() {
                 to="/credentials"
                 onClick={() => setIsComponentVisible(false)}
                 className={styles.userCard}
+                aria-label={t('credentials.manage')}
               >
                 <div className={styles.persona}>
-                  <User />
+                  <User role="presentation" />
                 </div>
                 <div className={styles.userInfo}>
                   <div className={styles.username}>
@@ -85,7 +87,10 @@ export default function UserMenu() {
                 </div>
               </NavLink>
               <Button className={styles.logoutButton} onClick={logout} link>
-                <LogOut size={22} />
+                <LogOut
+                  size={22}
+                  aria-label={t('credentials.logout.confirmButton')}
+                />
               </Button>
             </div>
           </div>

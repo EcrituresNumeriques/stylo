@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, useHistory } from 'react-router-dom'
 
 import etv from '../helpers/eventTargetValue'
@@ -12,7 +13,8 @@ import Field from './Field'
 import Button from './Button'
 import { ArrowLeftCircle, Check } from 'react-feather'
 
-function Register() {
+export default function Register() {
+  const { t } = useTranslation()
   const history = useHistory()
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
@@ -82,14 +84,14 @@ function Register() {
           <Field
             id="email"
             type="email"
-            label="Email*"
+            label={t('user.account.email')}
             autoComplete="email"
             required={true}
             onChange={(e) => setEmail(etv(e))}
           />
           <Field
             id="username"
-            label="Username*"
+            label={t('user.account.username')}
             autoComplete="username"
             required={true}
             onChange={(e) => setUsername(etv(e))}
@@ -97,7 +99,7 @@ function Register() {
           <Field
             id="password"
             type="password"
-            label="Password*"
+            label={t('credentials.password.placeholder')}
             autoComplete="new-password"
             required={true}
             onChange={(e) => setPassword(etv(e))}
@@ -105,7 +107,7 @@ function Register() {
           <Field
             id="passwordc"
             type="password"
-            label="Confirm Password*"
+            label={t('credentials.confirmNewPassword.placeholder')}
             autoComplete="new-password"
             required={true}
             onChange={(e) => setPasswordC(etv(e))}
@@ -118,22 +120,22 @@ function Register() {
 
           <Field
             id="display-name"
-            label="Display Name"
+            label={t('user.account.displayName')}
             onChange={(e) => setDisplayName(etv(e))}
           />
           <Field
             id="first-name"
-            label="First Name"
+            label={t('user.account.firstName')}
             onChange={(e) => setFirstName(etv(e))}
           />
           <Field
             id="last-name"
-            label="Last Name"
+            label={t('user.account.lastName')}
             onChange={(e) => setLastName(etv(e))}
           />
           <Field
             id="institution"
-            label="Organization"
+            label={t('user.account.institution')}
             onChange={(e) => setInstitution(etv(e))}
           />
         </fieldset>
@@ -155,5 +157,3 @@ function Register() {
     </section>
   )
 }
-
-export default Register

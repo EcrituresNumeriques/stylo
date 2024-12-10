@@ -64,14 +64,12 @@ export default function CollaborativeSessionAction({
 
   return (
     <>
-      <Button
-        title={t(
-          'collaborativeSessionAction.launchCollaborativeSessionButton.title'
-        )}
-        icon={true}
-        onClick={() => setCollaborativeEditingVisible(true)}
-      >
-        <Users />
+      <Button icon={true} onClick={() => setCollaborativeEditingVisible(true)}>
+        <Users
+          aria-label={t(
+            'collaborativeSessionAction.launchCollaborativeSessionButton.title'
+          )}
+        />
         {collaborativeSession && collaborativeSession.id && (
           <Badge type="error">Live</Badge>
         )}

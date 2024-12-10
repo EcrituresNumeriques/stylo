@@ -10,8 +10,8 @@ export default function UserMenuLink({ username, activeWorkspace }) {
   const { t } = useTranslation()
 
   return (
-    <div className={styles.container}>
-      <User className={styles.icon} size={20} />
+    <div className={styles.container} aria-label={username}>
+      <User className={styles.icon} size={20} role="presentation" />
 
       <div className={styles.username}>{username}</div>
       {activeWorkspace && (

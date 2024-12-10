@@ -97,13 +97,11 @@ export default function SoloSessionAction({
           {t('modal.confirmButton.text')}
         </GeistModal.Action>
       </GeistModal>
-      <Button
-        title={t('soloSessionAction.launchSoloSessionButton.title')}
-        primary={true}
-        onClick={handleStartSoloEditing}
-      >
-        <Edit3 />
-        {soloSession && <Dot type="error" />}
+      <Button primary={true} onClick={handleStartSoloEditing}>
+        <Edit3
+          aria-label={t('soloSessionAction.launchSoloSessionButton.title')}
+        />
+        {soloSession && <Dot type="error" role="presentation" />}
       </Button>
     </>
   )

@@ -269,18 +269,21 @@ export default function Article({
       {!renaming && (
         <h1 className={styles.title} onClick={toggleExpansion}>
           <span tabIndex={0} onKeyUp={toggleExpansion} className={styles.icon}>
-            {expanded ? <ChevronDown /> : <ChevronRight />}
+            {expanded ? (
+              <ChevronDown aria-label={t('modal.close.text')} />
+            ) : (
+              <ChevronRight aria-label={t('modal.open.text')} />
+            )}
           </span>
 
           <span>
             {article.title}
             <Button
-              title={t('article.editName.button')}
               icon={true}
               className={styles.editTitleButton}
               onClick={(evt) => evt.stopPropagation() || setRenaming(true)}
             >
-              <Edit3 size="20" />
+              <Edit3 size="20" aria-label={t('article.editName.button')} />
             </Button>
           </span>
         </h1>
@@ -320,12 +323,9 @@ export default function Article({
 
       <aside className={styles.actionButtons}>
         {isArticleOwner && !activeWorkspaceId && (
-          <Button
-            title={t('article.delete.button')}
-            icon={true}
-            onClick={() => setDeleteArticleVisible(true)}
-          >
-            <Trash />
+          <Button icon={true} onClick={() => setDeleteArticleVisible(true)}>
+            {' '}
+            <Trash aria-label={t('article.delete.button')} />
           </Button>
         )}
 
@@ -356,40 +356,24 @@ export default function Article({
           </GeistModal.Action>
         </GeistModal>
 
-        <Button
-          title={t('article.duplicate.button')}
-          icon={true}
-          onClick={() => duplicate()}
-        >
-          <Copy />
+        <Button icon={true} onClick={() => duplicate()}>
+          <Copy aria-label={t('article.duplicate.button')} />
         </Button>
 
         {
-          <Button
-            title={t('article.sendCopy.button')}
-            icon={true}
-            onClick={() => setSending(true)}
-          >
-            <Send />
+          <Button icon={true} onClick={() => setSending(true)}>
+            <Send aria-label={t('article.sendCopy.button')} />
           </Button>
         }
 
         {
-          <Button
-            title={t('article.share.button')}
-            icon={true}
-            onClick={() => setSharing(true)}
-          >
-            <UserPlus />
+          <Button icon={true} onClick={() => setSharing(true)}>
+            <UserPlus aria-label={t('article.share.button')} />
           </Button>
         }
 
-        <Button
-          title={t('article.download.button')}
-          icon={true}
-          onClick={() => setExporting(true)}
-        >
-          <Printer />
+        <Button icon={true} onClick={() => setExporting(true)}>
+          <Printer aria-label={t('article.download.button')} />
         </Button>
 
         <CollaborativeSessionAction
@@ -404,12 +388,11 @@ export default function Article({
         />
 
         <Link
-          title={t('article.preview.button')}
           target="_blank"
           className={buttonStyles.icon}
           to={`/article/${article._id}/preview`}
         >
-          <Eye />
+          <Eye aria-label={t('article.preview.button')} />
         </Link>
       </aside>
 
