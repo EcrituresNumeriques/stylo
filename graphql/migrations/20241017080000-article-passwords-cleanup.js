@@ -3,7 +3,6 @@ exports.up = async function (db) {
   const mongo = await db._run("getDbInstance")
   const collections = (await mongo.listCollections().toArray()).map(c => c.name)
 
-
   // 1. remove article owners (moved into owner+contributors)
   await mongo.collection('articles').updateMany({}, { $unset: { owners: ''}})
 

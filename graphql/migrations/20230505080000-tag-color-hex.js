@@ -145,10 +145,8 @@ const colours = {
 
 exports.up = async function (db) {
   const tags = await db._find('tags', {})
-
   for await (const tag of tags) {
     let color
-
     if (tag.color && tag.color.charAt(0) !== '#') {
       color = colours[tag.color] || '#eeeeee'
     } else if (tag.color && tag.color.length < 7) {
@@ -156,7 +154,6 @@ exports.up = async function (db) {
     } else if (!tag.color) {
       color = '#eeeeee'
     }
-
     if (color) {
       await db._run('update', 'tags', {
         query: { _id: tag._id },
