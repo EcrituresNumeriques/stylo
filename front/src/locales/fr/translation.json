@@ -7,7 +7,7 @@
   "user.account.institution": "Institution",
   "user.account.id": "Identifiant",
   "user.account.email": "Courriel",
-  "user.account.createdAt": "Compte crée",
+  "user.account.createdAt": "Compte créé",
   "user.account.updatedAt": "Compte mis à jour",
   "user.account.apiKey": "Clé d'accès à l'API",
   "user.account.authentication": "Type d'authentification",
