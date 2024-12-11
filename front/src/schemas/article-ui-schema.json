@@ -2,106 +2,67 @@
   "ui:groups": [
     {
       "title": "article.metadata.headerTitle",
-      "fields": [
-        "id",
-        "publicationDate",
-        "url",
-        "license",
-        "acknowledgements"
-      ]
+      "fields": ["id", "publicationDate", "url", "license", "acknowledgements"]
     },
     {
       "title": "article.metadata.titleAndAbstract",
-      "fields": [
-        "lang",
-        "title",
-        "subtitle",
-        "abstract"
-      ]
+      "fields": ["lang", "title", "subtitle", "abstract"]
     },
     {
       "title": "article.metadata.keywords",
-      "fields": [
-        "keywords"
-      ]
+      "fields": ["keywords"]
     },
     {
       "title": "article.metadata.controlledKeywords",
-      "fields": [
-        "controlledKeywords"
-      ]
+      "fields": ["controlledKeywords"]
     },
     {
       "title": "article.metadata.localizedContent",
-      "fields": [
-        "localizedContent"
-      ]
+      "fields": ["localizedContent"]
     },
     {
       "title": "article.metadata.authors",
-      "fields": [
-        "authors"
-      ]
+      "fields": ["authors"]
     },
     {
       "title": "article.metadata.reviewers",
-      "fields": [
-        "reviewers"
-      ]
+      "fields": ["reviewers"]
     },
     {
       "title": "article.metadata.transcribers",
-      "fields": [
-        "transcribers"
-      ]
+      "fields": ["transcribers"]
     },
     {
       "title": "article.metadata.translationOf",
-      "fields": [
-        "translationOf"
-      ]
+      "fields": ["translationOf"]
     },
     {
       "title": "article.metadata.translators",
-      "fields": [
-        "translators"
-      ]
+      "fields": ["translators"]
     },
     {
       "title": "article.metadata.issue",
-      "fields": [
-        "issue"
-      ]
+      "fields": ["issue"]
     },
     {
       "title": "article.metadata.issueDirectors",
-      "fields": [
-        "issueDirectors"
-      ]
+      "fields": ["issueDirectors"]
     },
     {
       "title": "article.metadata.production",
-      "fields": [
-        "production"
-      ]
+      "fields": ["production"]
     },
     {
       "title": "article.metadata.funder",
-      "fields": [
-        "funder"
-      ]
+      "fields": ["funder"]
     },
     {
       "title": "article.metadata.journal",
-      "fields": [
-        "journal"
-      ]
+      "fields": ["journal"]
     },
     {
       "title": "article.metadata.journalDirectors",
-      "fields": [
-        "journalDirectors"
-      ]
+      "fields": ["journalDirectors"]
     }
   ],
   "id": {

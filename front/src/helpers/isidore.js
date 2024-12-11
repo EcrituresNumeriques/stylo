@@ -66,11 +66,11 @@ export async function searchAuthor(searchValue) {
         return response.ok
           ? response.json()
           : Promise.reject(
-            new Error(
-              'Error while fetching results from Isidore',
-              response.text
+              new Error(
+                'Error while fetching results from Isidore',
+                response.text
+              )
             )
-          )
       })
       .then((json) => {
         if (

@@ -12,8 +12,7 @@ import CollaborativeTextEditor from './CollaborativeTextEditor.jsx'
 
 import styles from './CollaborativeEditor.module.scss'
 
-
-export default function CollaborativeEditor () {
+export default function CollaborativeEditor() {
   const { sessionId: collaborativeSessionId, articleId } = useParams()
 
   const {
@@ -29,26 +28,35 @@ export default function CollaborativeEditor () {
   }, [])
 
   if (collaborativeSessionLoading) {
-    return <Loading/>
+    return <Loading />
   }
 
-  if (collaborativeSessionData?.article?.collaborativeSession?.id !== collaborativeSessionId) {
-    return <div className={styles.errorContainer}>
-      <CollaborativeSessionError error="notFound"/>
-    </div>
+  if (
+    collaborativeSessionData?.article?.collaborativeSession?.id !==
+    collaborativeSessionId
+  ) {
+    return (
+      <div className={styles.errorContainer}>
+        <CollaborativeSessionError error="notFound" />
+      </div>
+    )
   }
 
-  const collaborativeSessionCreatorId = collaborativeSessionData?.article?.collaborativeSession?.creator?._id
+  const collaborativeSessionCreatorId =
+    collaborativeSessionData?.article?.collaborativeSession?.creator?._id
 
   return (
     <div className={styles.container}>
-      <CollaborativeEditorArticleHeader articleId={articleId}/>
+      <CollaborativeEditorArticleHeader articleId={articleId} />
       <CollaborativeTextEditor
         articleId={articleId}
         collaborativeSessionCreatorId={collaborativeSessionCreatorId}
         collaborativeSessionId={collaborativeSessionId}
-        onCollaborativeSessionStateUpdated={handleCollaborativeSessionStateUpdated}
+        onCollaborativeSessionStateUpdated={
+          handleCollaborativeSessionStateUpdated
+        }
       />
-      <ArticleStats/>
-    </div>)
+      <ArticleStats />
+    </div>
+  )
 }

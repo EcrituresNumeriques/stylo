@@ -1,4 +1,10 @@
-import { Code, Modal as GeistModal, Text, useModal, useToasts } from '@geist-ui/core'
+import {
+  Code,
+  Modal as GeistModal,
+  Text,
+  useModal,
+  useToasts,
+} from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
@@ -30,12 +36,10 @@ const MODES_PREVIEW = 'preview'
 const MODES_READONLY = 'readonly'
 const MODES_WRITE = 'write'
 
-export function deriveModeFrom ({ path, currentVersion }) {
+export function deriveModeFrom({ path, currentVersion }) {
   if (path === '/article/:id/preview') {
     return MODES_PREVIEW
-  }
-
-  else if (currentVersion) {
+  } else if (currentVersion) {
     return MODES_READONLY
   }
 
@@ -44,22 +48,33 @@ export function deriveModeFrom ({ path, currentVersion }) {
 
 export default function Write() {
   const { setToast } = useToasts()
-  const backendEndpoint = useSelector(state => state.applicationConfig.backendEndpoint)
+  const backendEndpoint = useSelector(
+    (state) => state.applicationConfig.backendEndpoint
+  )
   const { t } = useTranslation()
   const { version: currentVersion, id: articleId, compareTo } = useParams()
-  const workingArticle = useSelector(state => state.workingArticle, shallowEqual)
+  const workingArticle = useSelector(
+    (state) => state.workingArticle,
+    shallowEqual
+  )
   const userId = useActiveUserId()
   const dispatch = useDispatch()
   const runQuery = useGraphQL()
   const routeMatch = useRouteMatch()
-  const [collaborativeSessionActive, setCollaborativeSessionActive] = useState(false)
+  const [collaborativeSessionActive, setCollaborativeSessionActive] =
+    useState(false)
   const [soloSessionActive, setSoloSessionActive] = useState(false)
   const mode = useMemo(() => {
-    if (collaborativeSessionActive || soloSessionActive)  {
+    if (collaborativeSessionActive || soloSessionActive) {
       return MODES_READONLY
     }
-    return deriveModeFrom({ currentVersion, path: routeMatch.path})
-  }, [currentVersion, routeMatch.path, collaborativeSessionActive, soloSessionActive])
+    return deriveModeFrom({ currentVersion, path: routeMatch.path })
+  }, [
+    currentVersion,
+    routeMatch.path,
+    collaborativeSessionActive,
+    soloSessionActive,
+  ])
   const [graphQLError, setGraphQLError] = useState()
   const [isLoading, setIsLoading] = useState(true)
   const [live, setLive] = useState({})
@@ -77,23 +92,23 @@ export default function Write() {
   const {
     visible: collaborativeSessionActiveVisible,
     setVisible: setCollaborativeSessionActiveVisible,
-    bindings: collaborativeSessionActiveBinding
+    bindings: collaborativeSessionActiveBinding,
   } = useModal()
 
   const {
     visible: soloSessionActiveVisible,
     setVisible: setSoloSessionActiveVisible,
-    bindings: soloSessionActiveBinding
+    bindings: soloSessionActiveBinding,
   } = useModal()
 
   const {
     visible: soloSessionTakeOverModalVisible,
     setVisible: setSoloSessionTakeOverModalVisible,
-    bindings: soloSessionTakeOverModalBinding
+    bindings: soloSessionTakeOverModalBinding,
   } = useModal()
 
   const PreviewComponent = useMemo(
-    () => articleInfos.preview.stylesheet ? PreviewPaged : PreviewHtml,
+    () => (articleInfos.preview.stylesheet ? PreviewPaged : PreviewHtml),
     [articleInfos.preview.stylesheet, currentVersion]
   )
 
@@ -111,7 +126,10 @@ export default function Write() {
   const setWorkingArticleDirty = useCallback(
     debounce(
       async () => {
-        dispatch({ type: 'SET_WORKING_ARTICLE_STATE', workingArticleState: 'saving' })
+        dispatch({
+          type: 'SET_WORKING_ARTICLE_STATE',
+          workingArticleState: 'saving',
+        })
       },
       1000,
       { leading: true, trailing: false }
@@ -156,28 +174,41 @@ export default function Write() {
     return setLive({ ...live, metadata })
   }
 
-  const handleStateUpdated = useCallback((event) => {
-    const parsedData = JSON.parse(event.data)
-    if (parsedData.articleStateUpdated) {
-      const articleStateUpdated = parsedData.articleStateUpdated
-      if (articleId === articleStateUpdated._id) {
-        if (articleStateUpdated.soloSession && articleStateUpdated.soloSession.id) {
-          if (userId !== articleStateUpdated.soloSession.creator._id) {
-            setSoloSessionTakenOverBy(articleStateUpdated.soloSession.creatorUsername)
-            setSoloSessionActive(true)
-            setSoloSessionTakeOverModalVisible(true)
+  const handleStateUpdated = useCallback(
+    (event) => {
+      const parsedData = JSON.parse(event.data)
+      if (parsedData.articleStateUpdated) {
+        const articleStateUpdated = parsedData.articleStateUpdated
+        if (articleId === articleStateUpdated._id) {
+          if (
+            articleStateUpdated.soloSession &&
+            articleStateUpdated.soloSession.id
+          ) {
+            if (userId !== articleStateUpdated.soloSession.creator._id) {
+              setSoloSessionTakenOverBy(
+                articleStateUpdated.soloSession.creatorUsername
+              )
+              setSoloSessionActive(true)
+              setSoloSessionTakeOverModalVisible(true)
+            }
+          } else if (articleStateUpdated.collaborativeSession) {
+            setCollaborativeSessionActiveVisible(true)
+            setCollaborativeSessionActive(true)
           }
-        } else if (articleStateUpdated.collaborativeSession) {
-          setCollaborativeSessionActiveVisible(true)
-          setCollaborativeSessionActive(true)
         }
       }
-    }
-  }, [articleId])
+    },
+    [articleId]
+  )
 
   useEffect(() => {
     // FIXME: should retrieve extensions.type 'COLLABORATIVE_SESSION_CONFLICT'
-    if (workingArticle && workingArticle.state === 'saveFailure' && workingArticle.stateMessage === 'Active collaborative session, cannot update the working copy.') {
+    if (
+      workingArticle &&
+      workingArticle.state === 'saveFailure' &&
+      workingArticle.stateMessage ===
+        'Active collaborative session, cannot update the working copy.'
+    ) {
       setCollaborativeSessionActiveVisible(true)
       setCollaborativeSessionActive(true)
     }
@@ -190,16 +221,15 @@ export default function Write() {
       article: articleId,
       version: currentVersion || 'latest',
       hasVersion: typeof currentVersion === 'string',
-      isPreview: mode === MODES_PREVIEW
+      isPreview: mode === MODES_PREVIEW,
     }
 
     setIsLoading(true)
     ;(async () => {
-      const data = await runQuery({ query, variables })
-        .catch((error) => {
-          setGraphQLError(error)
-          return {}
-        })
+      const data = await runQuery({ query, variables }).catch((error) => {
+        setGraphQLError(error)
+        return {}
+      })
 
       if (data?.article) {
         if (data.article.soloSession && data.article.soloSession.id) {
@@ -208,8 +238,14 @@ export default function Write() {
             setSoloSessionActiveVisible(true)
           }
         }
-        setCollaborativeSessionActive(data.article.collaborativeSession && data.article.collaborativeSession.id)
-        setCollaborativeSessionActiveVisible(data.article.collaborativeSession && data.article.collaborativeSession.id)
+        setCollaborativeSessionActive(
+          data.article.collaborativeSession &&
+            data.article.collaborativeSession.id
+        )
+        setCollaborativeSessionActiveVisible(
+          data.article.collaborativeSession &&
+            data.article.collaborativeSession.id
+        )
         const article = data.article
         let currentArticle
         if (currentVersion) {
@@ -246,7 +282,10 @@ export default function Write() {
           dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
           dispatch({ type: 'SET_WORKING_ARTICLE_TEXT', text: md })
           dispatch({ type: 'SET_WORKING_ARTICLE_METADATA', metadata })
-          dispatch({ type: 'SET_WORKING_ARTICLE_BIBLIOGRAPHY', bibliography: bib })
+          dispatch({
+            type: 'SET_WORKING_ARTICLE_BIBLIOGRAPHY',
+            bibliography: bib,
+          })
           dispatch({
             type: 'SET_WORKING_ARTICLE_UPDATED_AT',
             updatedAt: article.updatedAt,
@@ -261,12 +300,18 @@ export default function Write() {
       try {
         await mutation({ query: stopSoloSession, variables: { articleId } })
       } catch (err) {
-        if (err && err.messages && err.messages.length > 0 && err.messages[0].extensions && err.messages[0].extensions.type === 'UNAUTHORIZED') {
+        if (
+          err &&
+          err.messages &&
+          err.messages.length > 0 &&
+          err.messages[0].extensions &&
+          err.messages[0].extensions.type === 'UNAUTHORIZED'
+        ) {
           // cannot end solo session... ignoring
         } else {
           setToast({
             type: 'error',
-            text: `Unable to end solo session: ${err.toString()}`
+            text: `Unable to end solo session: ${err.toString()}`,
           })
         }
       }
@@ -292,7 +337,9 @@ export default function Write() {
     return (
       <section className={styles.errorContainer}>
         <ErrorMessageCard title="Error">
-          <Text><Code>{graphQLError?.message || graphQLError.toString()}</Code></Text>
+          <Text>
+            <Code>{graphQLError?.message || graphQLError.toString()}</Code>
+          </Text>
         </ErrorMessageCard>
       </section>
     )
@@ -304,28 +351,52 @@ export default function Write() {
 
   return (
     <section className={styles.container}>
-      <GeistModal width="40rem" visible={collaborativeSessionActiveVisible} {...collaborativeSessionActiveBinding}>
+      <GeistModal
+        width="40rem"
+        visible={collaborativeSessionActiveVisible}
+        {...collaborativeSessionActiveBinding}
+      >
         <h2>{t('article.collaborativeSessionActive.title')}</h2>
         <GeistModal.Content>
           {t('article.collaborativeSessionActive.message')}
         </GeistModal.Content>
-        <GeistModal.Action onClick={() => setCollaborativeSessionActiveVisible(false)}>{t('modal.confirmButton.text')}</GeistModal.Action>
+        <GeistModal.Action
+          onClick={() => setCollaborativeSessionActiveVisible(false)}
+        >
+          {t('modal.confirmButton.text')}
+        </GeistModal.Action>
       </GeistModal>
 
-      <GeistModal width="40rem" visible={soloSessionActiveVisible} {...soloSessionActiveBinding}>
+      <GeistModal
+        width="40rem"
+        visible={soloSessionActiveVisible}
+        {...soloSessionActiveBinding}
+      >
         <h2>{t('article.soloSessionActive.title')}</h2>
         <GeistModal.Content>
           {t('article.soloSessionActive.message')}
         </GeistModal.Content>
-        <GeistModal.Action onClick={() => setSoloSessionActiveVisible(false)}>{t('modal.confirmButton.text')}</GeistModal.Action>
+        <GeistModal.Action onClick={() => setSoloSessionActiveVisible(false)}>
+          {t('modal.confirmButton.text')}
+        </GeistModal.Action>
       </GeistModal>
 
-      <GeistModal width="40rem" visible={soloSessionTakeOverModalVisible} {...soloSessionTakeOverModalBinding}>
+      <GeistModal
+        width="40rem"
+        visible={soloSessionTakeOverModalVisible}
+        {...soloSessionTakeOverModalBinding}
+      >
         <h2>{t('article.soloSessionTakeOver.title')}</h2>
         <GeistModal.Content>
-          {t('article.soloSessionTakeOver.message', { username: soloSessionTakenOverBy })}
+          {t('article.soloSessionTakeOver.message', {
+            username: soloSessionTakenOverBy,
+          })}
         </GeistModal.Content>
-        <GeistModal.Action onClick={() => setSoloSessionTakeOverModalVisible(false)}>{t('modal.confirmButton.text')}</GeistModal.Action>
+        <GeistModal.Action
+          onClick={() => setSoloSessionTakeOverModalVisible(false)}
+        >
+          {t('modal.confirmButton.text')}
+        </GeistModal.Action>
       </GeistModal>
 
       <ArticleEditorMenu
@@ -334,12 +405,20 @@ export default function Write() {
         selectedVersion={currentVersion}
         readOnly={mode === MODES_READONLY}
       />
-      <article className={clsx({[styles.article]: mode !== MODES_PREVIEW})}>
-        <WorkingVersion articleInfos={articleInfos} live={live} selectedVersion={currentVersion} mode={mode} />
+      <article className={clsx({ [styles.article]: mode !== MODES_PREVIEW })}>
+        <WorkingVersion
+          articleInfos={articleInfos}
+          live={live}
+          selectedVersion={currentVersion}
+          mode={mode}
+        />
 
         <Switch>
           <Route path="*/preview" exact>
-            <PreviewComponent preview={articleInfos.preview} metadata={live.metadata} />
+            <PreviewComponent
+              preview={articleInfos.preview}
+              metadata={live.metadata}
+            />
           </Route>
           <Route path="*">
             <MonacoEditor
@@ -349,9 +428,10 @@ export default function Write() {
               articleId={articleInfos._id}
               selectedVersion={currentVersion}
               compareTo={compareTo}
-              currentArticleVersion={live.version} />
+              currentArticleVersion={live.version}
+            />
 
-            <ArticleStats/>
+            <ArticleStats />
           </Route>
         </Switch>
       </article>
@@ -367,5 +447,5 @@ export default function Write() {
 Write.propTypes = {
   version: PropTypes.string,
   id: PropTypes.string,
-  compareTo: PropTypes.string
+  compareTo: PropTypes.string,
 }

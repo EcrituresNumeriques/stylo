@@ -1,4 +1,9 @@
-import { Button, Modal as GeistModal, useModal, useToasts } from '@geist-ui/core'
+import {
+  Button,
+  Modal as GeistModal,
+  useModal,
+  useToasts,
+} from '@geist-ui/core'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
@@ -16,13 +21,22 @@ import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
 import { getCorpus } from './Corpus.graphql'
 import CorpusItem from './CorpusItem.jsx'
 
-export default function Corpus () {
+export default function Corpus() {
   const { t } = useTranslation()
   const { setToast } = useToasts()
-  const currentUser = useSelector(state => state.activeUser, shallowEqual)
-  const latestCorpusCreated = useSelector(state => state.latestCorpusCreated, shallowEqual)
-  const latestCorpusDeleted = useSelector(state => state.latestCorpusDeleted, shallowEqual)
-  const latestCorpusUpdated = useSelector(state => state.latestCorpusUpdated, shallowEqual)
+  const currentUser = useSelector((state) => state.activeUser, shallowEqual)
+  const latestCorpusCreated = useSelector(
+    (state) => state.latestCorpusCreated,
+    shallowEqual
+  )
+  const latestCorpusDeleted = useSelector(
+    (state) => state.latestCorpusDeleted,
+    shallowEqual
+  )
+  const latestCorpusUpdated = useSelector(
+    (state) => state.latestCorpusUpdated,
+    shallowEqual
+  )
   const [isLoading, setIsLoading] = useState(true)
   const [corpus, setCorpus] = useState([])
   const activeUserId = useActiveUserId()
@@ -31,7 +45,7 @@ export default function Corpus () {
   const {
     visible: createCorpusVisible,
     setVisible: setCreateCorpusVisible,
-    bindings: createCorpusModalBinding
+    bindings: createCorpusModalBinding,
   } = useModal()
 
   const runQuery = useGraphQL()
@@ -41,7 +55,7 @@ export default function Corpus () {
   }, [])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       try {
         const variables = activeWorkspaceId
           ? { filter: { workspaceId: activeWorkspaceId } }
@@ -52,41 +66,74 @@ export default function Corpus () {
       } catch (err) {
         setToast({
           type: 'error',
-          text: t('corpus.load.toastFailure', {errorMessage: err.toString()})
+          text: t('corpus.load.toastFailure', { errorMessage: err.toString() }),
         })
       }
     })()
-  }, [activeUserId, activeWorkspaceId, latestCorpusCreated, latestCorpusDeleted, latestCorpusUpdated])
+  }, [
+    activeUserId,
+    activeWorkspaceId,
+    latestCorpusCreated,
+    latestCorpusDeleted,
+    latestCorpusUpdated,
+  ])
 
-  return (<CurrentUserContext.Provider value={currentUser}>
-    <section className={styles.section}>
-      <header className={styles.header}>
-        <h1>Corpus</h1>
-        {activeWorkspace && <WorkspaceLabel color={activeWorkspace.color} name={activeWorkspace.name}/>}
-      </header>
-      <p className={styles.introduction}>
-        A corpus is a collection of articles that you can sort and export all at once.
-      </p>
+  return (
+    <CurrentUserContext.Provider value={currentUser}>
+      <section className={styles.section}>
+        <header className={styles.header}>
+          <h1>Corpus</h1>
+          {activeWorkspace && (
+            <WorkspaceLabel
+              color={activeWorkspace.color}
+              name={activeWorkspace.name}
+            />
+          )}
+        </header>
+        <p className={styles.introduction}>
+          A corpus is a collection of articles that you can sort and export all
+          at once.
+        </p>
 
-      <Button type="secondary" className={styles.button} onClick={() => setCreateCorpusVisible(true)}>{t('corpus.createAction.buttonText')}</Button>
+        <Button
+          type="secondary"
+          className={styles.button}
+          onClick={() => setCreateCorpusVisible(true)}
+        >
+          {t('corpus.createAction.buttonText')}
+        </Button>
 
-      <GeistModal width="40rem" visible={createCorpusVisible} {...createCorpusModalBinding}>
-        <h2>{t('corpus.createModal.title')}</h2>
-        <GeistModal.Content>
-          <CorpusCreate onSubmit={handleCreateNewCorpus}/>
-        </GeistModal.Content>
-        <GeistModal.Action passive onClick={() => setCreateCorpusVisible(false)}>{t('modal.close.text')}</GeistModal.Action>
-      </GeistModal>
+        <GeistModal
+          width="40rem"
+          visible={createCorpusVisible}
+          {...createCorpusModalBinding}
+        >
+          <h2>{t('corpus.createModal.title')}</h2>
+          <GeistModal.Content>
+            <CorpusCreate onSubmit={handleCreateNewCorpus} />
+          </GeistModal.Content>
+          <GeistModal.Action
+            passive
+            onClick={() => setCreateCorpusVisible(false)}
+          >
+            {t('modal.close.text')}
+          </GeistModal.Action>
+        </GeistModal>
 
-      {isLoading ? <Loading/> : (
-        <ul className={styles.corpusList}>
-          {corpus.map((c) => {
-            return (
-              <li key={c._id}><CorpusItem corpus={c}/></li>
-            )
-          })}
-        </ul>
-      )}
-    </section>
-  </CurrentUserContext.Provider>)
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <ul className={styles.corpusList}>
+            {corpus.map((c) => {
+              return (
+                <li key={c._id}>
+                  <CorpusItem corpus={c} />
+                </li>
+              )
+            })}
+          </ul>
+        )}
+      </section>
+    </CurrentUserContext.Provider>
+  )
 }

@@ -7,7 +7,7 @@ import { useLocation, useHistory } from 'react-router-dom'
 
 import styles from './WorkspaceMenuItem.module.scss'
 
-export default function WorkspaceMenuItem ({ color, name, id }) {
+export default function WorkspaceMenuItem({ color, name, id }) {
   const dispatch = useDispatch()
   const history = useHistory()
   const location = useLocation()
@@ -29,15 +29,21 @@ export default function WorkspaceMenuItem ({ color, name, id }) {
     dispatch({ type: 'SET_ACTIVE_WORKSPACE', workspaceId })
   }
 
-  const activeUser = useSelector(state => state.activeUser)
+  const activeUser = useSelector((state) => state.activeUser)
 
   return (
     <>
-      <li onClick={() => setActiveWorkspace(id)}
-          className={activeUser.activeWorkspaceId === id ? clsx(styles.item, styles.selected) : styles.item}>
-        <span className={styles.chip} style={{ backgroundColor: color }}/>
+      <li
+        onClick={() => setActiveWorkspace(id)}
+        className={
+          activeUser.activeWorkspaceId === id
+            ? clsx(styles.item, styles.selected)
+            : styles.item
+        }
+      >
+        <span className={styles.chip} style={{ backgroundColor: color }} />
         <span className={styles.name}>{name}</span>
-        <ChevronRight className={styles.chevron}/>
+        <ChevronRight className={styles.chevron} />
       </li>
     </>
   )
@@ -46,5 +52,5 @@ export default function WorkspaceMenuItem ({ color, name, id }) {
 WorkspaceMenuItem.propTypes = {
   name: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
-  id: PropTypes.string
+  id: PropTypes.string,
 }

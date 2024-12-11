@@ -6,36 +6,18 @@
   "definitions": {
     "lang": {
       "type": "string",
-      "enum": [
-        "fr",
-        "en",
-        "it",
-        "es",
-        "pt",
-        "de",
-        "uk",
-        "ar"
-      ]
+      "enum": ["fr", "en", "it", "es", "pt", "de", "uk", "ar"]
     },
     "productionEntity": {
       "type": "object",
       "properties": {
         "type": {
           "type": "string",
-          "enum": [
-            "publisher",
-            "producer",
-            "editor"
-          ]
+          "enum": ["publisher", "producer", "editor"]
         },
         "media": {
           "type": "string",
-          "enum": [
-            "",
-            "print",
-            "digital",
-            "ebook"
-          ]
+          "enum": ["", "print", "digital", "ebook"]
         },
         "name": {
           "type": "string"

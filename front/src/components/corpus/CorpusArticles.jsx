@@ -13,15 +13,27 @@ import styles from './corpusItem.module.scss'
 
 import { getCorpus } from './Corpus.graphql'
 
-export default function CorpusArticles ({ corpusId }) {
+export default function CorpusArticles({ corpusId }) {
   const { t } = useTranslation()
   const activeWorkspace = useActiveWorkspace()
-  const activeWorkspaceId = useMemo(() => activeWorkspace?._id, [activeWorkspace])
-  const { data, isLoading, mutate } = useGraphQL({ query: getCorpus, variables: { filter: { corpusId: corpusId }, includeArticles: true } }, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  })
-  const corpusArticles = useMemo(() => data?.corpus?.[0]?.articles || [], [data])
+  const activeWorkspaceId = useMemo(
+    () => activeWorkspace?._id,
+    [activeWorkspace]
+  )
+  const { data, isLoading, mutate } = useGraphQL(
+    {
+      query: getCorpus,
+      variables: { filter: { corpusId: corpusId }, includeArticles: true },
+    },
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  )
+  const corpusArticles = useMemo(
+    () => data?.corpus?.[0]?.articles || [],
+    [data]
+  )
 
   const handleUpdate = useCallback(() => {
     mutate()
@@ -30,23 +42,39 @@ export default function CorpusArticles ({ corpusId }) {
   return (
     <>
       <h5 className={styles.partsTitle}>{t('corpus.parts.label')}</h5>
-      {isLoading && <Loading/>}
-      {!isLoading && corpusArticles.length > 0 && <ul>
-        <DndProvider backend={HTML5Backend}>
-          <CorpusArticleItems corpusId={corpusId} articles={corpusArticles} onUpdate={handleUpdate}/>
-        </DndProvider>
-      </ul>}
-      {!isLoading && corpusArticles.length === 0 &&
+      {isLoading && <Loading />}
+      {!isLoading && corpusArticles.length > 0 && (
+        <ul>
+          <DndProvider backend={HTML5Backend}>
+            <CorpusArticleItems
+              corpusId={corpusId}
+              articles={corpusArticles}
+              onUpdate={handleUpdate}
+            />
+          </DndProvider>
+        </ul>
+      )}
+      {!isLoading && corpusArticles.length === 0 && (
         <>
-          <Spacer/>
+          <Spacer />
           <Note className={styles.noteWithIcon} type="secondary" label={false}>
-            <Info/>
+            <Info />
             <Trans i18nKey="corpus.addPart.note">
-              To add a new chapter, go to the <Link to={activeWorkspaceId ? `/workspaces/${activeWorkspaceId}/articles` : '/articles'}>articles page</Link> and select this corpus.
+              To add a new chapter, go to the{' '}
+              <Link
+                to={
+                  activeWorkspaceId
+                    ? `/workspaces/${activeWorkspaceId}/articles`
+                    : '/articles'
+                }
+              >
+                articles page
+              </Link>{' '}
+              and select this corpus.
             </Trans>
           </Note>
         </>
-      }
+      )}
     </>
   )
 }

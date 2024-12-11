@@ -3,7 +3,10 @@ import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-import { fetchAllCollectionsPerLibrary, fetchBibliographyFromCollectionHref } from '../../../helpers/zotero'
+import {
+  fetchAllCollectionsPerLibrary,
+  fetchBibliographyFromCollectionHref,
+} from '../../../helpers/zotero'
 import { useGraphQL } from '../../../helpers/graphQL'
 import { useProfile } from '../../../helpers/userProfile'
 import { linkToZotero as query } from '../../Article.graphql'
@@ -20,11 +23,17 @@ import { Rss, Clipboard } from 'react-feather'
  * @typedef {import('../../../helpers/zotero').ZoteroCollection} ZoteroCollection
  */
 
-export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink, onChange }) {
+export default function ZoteroPanel({
+  articleId,
+  zoteroLink: initialZoteroLink,
+  onChange,
+}) {
   const { t } = useTranslation()
-  const zoteroToken = useSelector(state => state.activeUser.zoteroToken)
-  const userId = useSelector(state => state.activeUser._id)
-  const backendEndpoint = useSelector(state => state.applicationConfig.backendEndpoint)
+  const zoteroToken = useSelector((state) => state.activeUser.zoteroToken)
+  const userId = useSelector((state) => state.activeUser._id)
+  const backendEndpoint = useSelector(
+    (state) => state.applicationConfig.backendEndpoint
+  )
 
   const [zoteroLink, setZoteroLink] = useState(initialZoteroLink)
   const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)
@@ -37,9 +46,18 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
   const runQuery = useGraphQL()
   const refreshProfile = useProfile()
 
-  const handleZoteroLinkChange = useCallback((event) => setZoteroLink(event.target.value), [])
-  const handleZoteroCollectionChange = useCallback((href) => setZoteroCollectionHref(href), [])
-  const hasLinkChanged = useMemo(() => initialZoteroLink || initialZoteroLink !== zoteroLink, [zoteroLink])
+  const handleZoteroLinkChange = useCallback(
+    (event) => setZoteroLink(event.target.value),
+    []
+  )
+  const handleZoteroCollectionChange = useCallback(
+    (href) => setZoteroCollectionHref(href),
+    []
+  )
+  const hasLinkChanged = useMemo(
+    () => initialZoteroLink || initialZoteroLink !== zoteroLink,
+    [zoteroLink]
+  )
   /** @type {ComboboxItem[]} */
   const groupedZoteroCollections = useMemo(() => {
     return zoteroCollections.map(({ data, meta, library, links }, index) => ({
@@ -48,26 +66,29 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
       section: `${library.name} (${library.type})`,
       // pre-assign an index to each entry. It will persist upon filtered results.
       // @see https://github.com/EcrituresNumeriques/stylo/issues/1014
-      index
+      index,
     }))
   }, [zoteroCollections])
 
-  const persistZoteroLink = useCallback(async (zoteroLink) => {
-    if (!zoteroLink === initialZoteroLink) {
-      return
-    }
-
-    try {
-      const variables = {
-        zotero: zoteroLink,
-        user: userId,
-        article: articleId,
+  const persistZoteroLink = useCallback(
+    async (zoteroLink) => {
+      if (!zoteroLink === initialZoteroLink) {
+        return
       }
-      await runQuery({ query, variables })
-    } catch (err) {
-      alert(err)
-    }
-  }, [initialZoteroLink])
+
+      try {
+        const variables = {
+          zotero: zoteroLink,
+          user: userId,
+          article: articleId,
+        }
+        await runQuery({ query, variables })
+      } catch (err) {
+        alert(err)
+      }
+    },
+    [initialZoteroLink]
+  )
 
   const refreshCollection = useCallback(async (zoteroLink) => {
     if (!zoteroLink) {
@@ -79,39 +100,47 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
     })
   }, [])
 
-
   const handleZoteroLinkFormSubmission = useCallback(async (event) => {
     event.preventDefault()
-    const zoteroLink = (new FormData(event.target)).get('zoteroLink')
+    const zoteroLink = new FormData(event.target).get('zoteroLink')
     setSaving(true)
 
     await Promise.all([
       persistZoteroLink(zoteroLink),
-      refreshCollection(zoteroLink)
+      refreshCollection(zoteroLink),
     ])
 
     setSaving(false)
   }, [])
 
-  const handleCollectionFormSubmission = useCallback(async (event) => {
-    event.preventDefault()
-    setSaving(true)
+  const handleCollectionFormSubmission = useCallback(
+    async (event) => {
+      event.preventDefault()
+      setSaving(true)
 
-    await importCollection({
-      token: zoteroToken,
-      collectionHref: zoteroCollectionHref,
-    })
+      await importCollection({
+        token: zoteroToken,
+        collectionHref: zoteroCollectionHref,
+      })
 
-    setSaving(false)
-  }, [zoteroCollectionHref])
+      setSaving(false)
+    },
+    [zoteroCollectionHref]
+  )
 
   const importCollection = useCallback(async ({ token, collectionHref }) => {
     setSaving(true)
     try {
-      const result = await fetchBibliographyFromCollectionHref({ token, collectionHref })
+      const result = await fetchBibliographyFromCollectionHref({
+        token,
+        collectionHref,
+      })
       onChange(result)
     } catch (err) {
-      console.error(`Something went wrong while fetching bibliography from Zotero: ${collectionHref}`, err)
+      console.error(
+        `Something went wrong while fetching bibliography from Zotero: ${collectionHref}`,
+        err
+      )
     } finally {
       setSaving(false)
     }
@@ -140,50 +169,79 @@ export default function ZoteroPanel ({ articleId, zoteroLink: initialZoteroLink,
     }
   }, [zoteroToken])
 
-  return <div className={styles.zotero}>
-    <form className={styles.section} disabled={isSaving} onSubmit={handleCollectionFormSubmission}>
-      <h3><Rss />{t('zoteroPanel.titleImportCollection.text')}</h3>
-      {zoteroToken && <Combobox label="" items={groupedZoteroCollections} value={zoteroCollectionHref} onChange={handleZoteroCollectionChange} />}
-      {zoteroToken && (
-        <Button type="submit" primary disabled={!zoteroCollectionHref || isSaving}>
+  return (
+    <div className={styles.zotero}>
+      <form
+        className={styles.section}
+        disabled={isSaving}
+        onSubmit={handleCollectionFormSubmission}
+      >
+        <h3>
+          <Rss />
+          {t('zoteroPanel.titleImportCollection.text')}
+        </h3>
+        {zoteroToken && (
+          <Combobox
+            label=""
+            items={groupedZoteroCollections}
+            value={zoteroCollectionHref}
+            onChange={handleZoteroCollectionChange}
+          />
+        )}
+        {zoteroToken && (
+          <Button
+            type="submit"
+            primary
+            disabled={!zoteroCollectionHref || isSaving}
+          >
+            {isSaving
+              ? t('zoteroPanel.fetchingButton.text')
+              : t('zoteroPanel.replaceAccountCollection.text')}
+          </Button>
+        )}
+
+        {!zoteroToken && (
+          <Button type="button" onClick={handleZoteroAccountConnection}>
+            {t('zoteroPanel.buttonZoteroAccount.text')}
+          </Button>
+        )}
+      </form>
+
+      <form
+        className={styles.section}
+        onSubmit={handleZoteroLinkFormSubmission}
+      >
+        <h3>
+          <Clipboard />
+          {t('zoteroPanel.titleImportByUrl.text')}
+        </h3>
+
+        <p className={styles.helpText}>
+          {t('zoteroPanel.textImportByUrl.text')}
+
+          <code>
+            https://www.zotero.org/groups/
+            <mark>[IDnumber]/collections/[IDcollection]</mark>
+          </code>
+        </p>
+        <Field
+          onChange={handleZoteroLinkChange}
+          name="zoteroLink"
+          placeholder="[IDnumber]/collections/[IDcollection]"
+          value={zoteroLink}
+          prefix="https://www.zotero.org/groups/"
+          autoFocus={true}
+        />
+        <Button
+          type="submit"
+          primary={true}
+          disabled={isSaving || !hasLinkChanged}
+        >
           {isSaving
             ? t('zoteroPanel.fetchingButton.text')
             : t('zoteroPanel.replaceAccountCollection.text')}
         </Button>
-      )}
-
-      {!zoteroToken && (
-        <Button type="button" onClick={handleZoteroAccountConnection}>
-          {t('zoteroPanel.buttonZoteroAccount.text')}
-        </Button>
-      )}
-    </form>
-
-    <form className={styles.section} onSubmit={handleZoteroLinkFormSubmission}>
-      <h3><Clipboard />{t('zoteroPanel.titleImportByUrl.text')}</h3>
-
-      <p className={styles.helpText}>
-        {t('zoteroPanel.textImportByUrl.text')}
-
-        <code>https://www.zotero.org/groups/<mark>[IDnumber]/collections/[IDcollection]</mark></code>
-      </p>
-      <Field
-        onChange={handleZoteroLinkChange}
-        name="zoteroLink"
-        placeholder="[IDnumber]/collections/[IDcollection]"
-        value={zoteroLink}
-        prefix="https://www.zotero.org/groups/"
-        autoFocus={true}
-      />
-      <Button
-        type="submit"
-        primary={true}
-        disabled={isSaving || !hasLinkChanged}
-      >
-        {isSaving
-          ? t('zoteroPanel.fetchingButton.text')
-          : t('zoteroPanel.replaceAccountCollection.text')}
-      </Button>
-    </form>
-  </div>
+      </form>
+    </div>
+  )
 }

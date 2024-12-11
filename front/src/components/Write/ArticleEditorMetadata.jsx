@@ -13,7 +13,11 @@ import MonacoYamlEditor from './providers/monaco/YamlEditor'
 
 import styles from './articleEditorMetadata.module.scss'
 
-export default function ArticleEditorMetadata ({ onChange, readOnly, metadata }) {
+export default function ArticleEditorMetadata({
+  onChange,
+  readOnly,
+  metadata,
+}) {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const expanded = useSelector(
@@ -44,25 +48,31 @@ export default function ArticleEditorMetadata ({ onChange, readOnly, metadata })
     []
   )
 
-  const handleFormUpdate = useCallback((metadata) => {
-    if (readOnly) {
-      return
-    }
-    setRawYaml(toYaml(metadata))
-    onChange(metadata)
-  }, [readOnly, setRawYaml, onChange])
-
-  const handleRawYamlChange = useCallback((yaml) => {
-    try {
-      const [metadata = {}] = YAML.loadAll(yaml)
-      setError('')
+  const handleFormUpdate = useCallback(
+    (metadata) => {
+      if (readOnly) {
+        return
+      }
+      setRawYaml(toYaml(metadata))
       onChange(metadata)
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setRawYaml(yaml)
-    }
-  }, [setRawYaml])
+    },
+    [readOnly, setRawYaml, onChange]
+  )
+
+  const handleRawYamlChange = useCallback(
+    (yaml) => {
+      try {
+        const [metadata = {}] = YAML.loadAll(yaml)
+        setError('')
+        onChange(metadata)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setRawYaml(yaml)
+      }
+    },
+    [setRawYaml]
+  )
 
   return (
     <nav className={`${expanded ? styles.expandRight : styles.retractRight}`}>
@@ -70,17 +80,28 @@ export default function ArticleEditorMetadata ({ onChange, readOnly, metadata })
         onClick={toggleExpand}
         className={expanded ? styles.close : styles.open}
       >
-        <Sidebar/> {expanded ? t('write.sidebar.closeButton') : t('write.sidebar.metadataButton')}
+        <Sidebar />{' '}
+        {expanded
+          ? t('write.sidebar.closeButton')
+          : t('write.sidebar.metadataButton')}
       </button>
       {expanded && (
         <div className={styles.yamlEditor}>
           <header className={styles.header}>
             <h2>Metadonnées</h2>
-            <div className={styles.toggle} onClick={() => setSelector(selector === 'raw' ? 'basic' : 'raw')}>
-              <Toggle id="raw-mode" checked={selector === 'raw'} title={'Activer le mode YAML'} onChange={(e) => {
-                console.log(e)
-                setSelector(e.target.checked ? 'raw' : 'basic')
-              }}/>
+            <div
+              className={styles.toggle}
+              onClick={() => setSelector(selector === 'raw' ? 'basic' : 'raw')}
+            >
+              <Toggle
+                id="raw-mode"
+                checked={selector === 'raw'}
+                title={'Activer le mode YAML'}
+                onChange={(e) => {
+                  console.log(e)
+                  setSelector(e.target.checked ? 'raw' : 'basic')
+                }}
+              />
               <label htmlFor="raw-mode">YAML</label>
             </div>
           </header>

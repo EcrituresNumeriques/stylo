@@ -1,23 +1,23 @@
-query compareVersion ($to: ID!, $article: ID!, $hasVersion: Boolean!) {
+query compareVersion($to: ID!, $article: ID!, $hasVersion: Boolean!) {
   version(version: $to) @include(if: $hasVersion) {
     _id
     md
   }
 
-  article (article: $article) {
+  article(article: $article) {
     workingVersion @skip(if: $hasVersion) {
       md
     }
   }
 }
 
-query renameVersion ($version: ID!, $name: String) {
+query renameVersion($version: ID!, $name: String) {
   version(version: $version) {
     rename(name: $name)
   }
 }
 
-query getEditableArticle ($article: ID!, $hasVersion: Boolean!, $version: ID!) {
+query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
   article(article: $article) {
     _id
     title

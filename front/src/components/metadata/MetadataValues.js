@@ -15,9 +15,14 @@ export function convertLegacyValues(data) {
 
   // we array-ify legacy string keywords
   if (data.keywords) {
-    data.keywords = data.keywords.map(block => {
-      if (block && typeof block === 'object' && 'list_f' in block && typeof block.list_f === 'string') {
-        block.list_f = block.list_f.split(',').map(word => word.trim())
+    data.keywords = data.keywords.map((block) => {
+      if (
+        block &&
+        typeof block === 'object' &&
+        'list_f' in block &&
+        typeof block.list_f === 'string'
+      ) {
+        block.list_f = block.list_f.split(',').map((word) => word.trim())
       }
       return block
     })

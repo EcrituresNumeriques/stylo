@@ -12,10 +12,13 @@ import styles from './biblio.module.scss'
 import Button from '../Button'
 import ReferenceList from './ReferenceList'
 
-function Biblio ({ article, readOnly }) {
-  const expand = useSelector(state => state.articlePreferences.expandBiblio)
+function Biblio({ article, readOnly }) {
+  const expand = useSelector((state) => state.articlePreferences.expandBiblio)
   const dispatch = useDispatch()
-  const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandBiblio' }), [])
+  const toggleExpand = useCallback(
+    () => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandBiblio' }),
+    []
+  )
 
   const [modal, setModal] = useState(false)
   const openModal = useCallback((event) => {
@@ -29,9 +32,16 @@ function Biblio ({ article, readOnly }) {
   return (
     <section className={[menuStyles.section, styles.section].join(' ')}>
       <h1 onClick={toggleExpand}>
-        {expand ? <ChevronDown/> : <ChevronRight/>} {t('write.sidebar.biblioTitle')}
-
-        <Button className={styles.headingAction} small={true} disabled={readOnly} onClick={openModal}>{t('write.sidebar.manageButton')}</Button>
+        {expand ? <ChevronDown /> : <ChevronRight />}{' '}
+        {t('write.sidebar.biblioTitle')}
+        <Button
+          className={styles.headingAction}
+          small={true}
+          disabled={readOnly}
+          onClick={openModal}
+        >
+          {t('write.sidebar.manageButton')}
+        </Button>
       </h1>
       {expand && <ReferenceList />}
       {modal && (

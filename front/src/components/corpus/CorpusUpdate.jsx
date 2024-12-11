@@ -5,16 +5,17 @@ import { useGraphQL } from '../../helpers/graphQL.js'
 
 import Field from '../Field.jsx'
 
-import { updateCorpus } from "./Corpus.graphql"
+import { updateCorpus } from './Corpus.graphql'
 
 import styles from './corpusUpdate.module.scss'
 
-
-export default function CorpusUpdate ({corpus, onSubmit}) {
+export default function CorpusUpdate({ corpus, onSubmit }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const { state: title, bindings: titleBindings } = useInput(corpus.name)
-  const { state: description, bindings: descriptionBindings } = useInput(corpus.description)
+  const { state: description, bindings: descriptionBindings } = useInput(
+    corpus.description
+  )
   const titleInputRef = useRef()
   const runQuery = useGraphQL()
 
@@ -24,32 +25,37 @@ export default function CorpusUpdate ({corpus, onSubmit}) {
     }
   }, [titleInputRef])
 
-  const handleSubmit = useCallback(async (event) => {
-    try {
-      event.preventDefault()
-      await runQuery({
-        query: updateCorpus,
-        variables: {
-          corpusId: corpus._id,
-          updateCorpusInput: {
-            name: title,
-            description,
-            metadata: ''
-          }
-        }
-      })
-      onSubmit()
-      setToast({
-        text: t('corpus.update.toastSuccess'),
-        type: 'default'
-      })
-    } catch (err) {
-      setToast({
-        text: t('corpus.update.toastFailure', {errorMessage: err.toString()}),
-        type: 'error'
-      })
-    }
-  }, [title, description])
+  const handleSubmit = useCallback(
+    async (event) => {
+      try {
+        event.preventDefault()
+        await runQuery({
+          query: updateCorpus,
+          variables: {
+            corpusId: corpus._id,
+            updateCorpusInput: {
+              name: title,
+              description,
+              metadata: '',
+            },
+          },
+        })
+        onSubmit()
+        setToast({
+          text: t('corpus.update.toastSuccess'),
+          type: 'default',
+        })
+      } catch (err) {
+        setToast({
+          text: t('corpus.update.toastFailure', {
+            errorMessage: err.toString(),
+          }),
+          type: 'error',
+        })
+      }
+    },
+    [title, description]
+  )
 
   return (
     <section>
@@ -74,7 +80,8 @@ export default function CorpusUpdate ({corpus, onSubmit}) {
               onClick={handleSubmit}
               className={styles.button}
               type="secondary"
-              title={t('corpus.editForm.buttonTitle')}>
+              title={t('corpus.editForm.buttonTitle')}
+            >
               {t('corpus.editForm.buttonText')}
             </Button>
           </li>

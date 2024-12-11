@@ -4,8 +4,10 @@ import schema from './form-story.schema.json'
 import uiSchema from './form-story-ui-schema.json'
 
 export default function FormStory() {
-  return <>
-    <h2>Form</h2>
-    <SchemaForm formData={{}} uiSchema={uiSchema} schema={schema}/>
-  </>
+  return (
+    <>
+      <h2>Form</h2>
+      <SchemaForm formData={{}} uiSchema={uiSchema} schema={schema} />
+    </>
+  )
 }

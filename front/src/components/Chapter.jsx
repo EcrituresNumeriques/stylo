@@ -12,13 +12,13 @@ import Field from './Field'
 import { useCurrentUser } from '../contexts/CurrentUser'
 import clsx from 'clsx'
 
-export default function Chapter ({ article }) {
+export default function Chapter({ article }) {
   const articleId = article._id
   const latestVersion = article.versions && article.versions[0]
   const latestArticleVersion = latestVersion && {
     message: latestVersion.message,
     major: latestVersion.version,
-    minor: latestVersion.revision
+    minor: latestVersion.revision,
   }
 
   const [renaming, setRenaming] = useState(false)
@@ -44,29 +44,55 @@ export default function Chapter ({ article }) {
   const latestVersionVersionNumber = latestArticleVersion
     ? `v${latestArticleVersion.major}.${latestArticleVersion.minor}`
     : 'latest'
-  const currentArticleVersionTitle = ` (${[latestArticleVersionLabel, latestVersionVersionNumber].filter(item => item).join(' ')})`
+  const currentArticleVersionTitle = ` (${[
+    latestArticleVersionLabel,
+    latestVersionVersionNumber,
+  ]
+    .filter((item) => item)
+    .join(' ')})`
   return (
     <>
       {!renaming && (
         <p>
-          <Link to={`/article/${articleId}`}>{title}{currentArticleVersionTitle}</Link>
-          <Button className={[buttonStyles.icon, styles.renameButton].join(' ')} onClick={() => setRenaming(true)}>
-            <Edit3/>
+          <Link to={`/article/${articleId}`}>
+            {title}
+            {currentArticleVersionTitle}
+          </Link>
+          <Button
+            className={[buttonStyles.icon, styles.renameButton].join(' ')}
+            onClick={() => setRenaming(true)}
+          >
+            <Edit3 />
           </Button>
         </p>
       )}
-      {renaming && renaming && (<form className={clsx(styles.renamingForm, fieldStyles.inlineFields)} onSubmit={(e) => rename(e)}>
-        <Field autoFocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(e.target.value)} placeholder="Book Title" />
-        <Button title="Save" primary={true} onClick={(e) => rename(e)}>
-          <Check /> Save
-        </Button>
-        <Button title="Cancel" type="button" onClick={() => {
-          setRenaming(false)
-          setTempTitle(article.title)
-        }}>
-          Cancel
-        </Button>
-      </form>)}
+      {renaming && renaming && (
+        <form
+          className={clsx(styles.renamingForm, fieldStyles.inlineFields)}
+          onSubmit={(e) => rename(e)}
+        >
+          <Field
+            autoFocus={true}
+            type="text"
+            value={tempTitle}
+            onChange={(e) => setTempTitle(e.target.value)}
+            placeholder="Book Title"
+          />
+          <Button title="Save" primary={true} onClick={(e) => rename(e)}>
+            <Check /> Save
+          </Button>
+          <Button
+            title="Cancel"
+            type="button"
+            onClick={() => {
+              setRenaming(false)
+              setTempTitle(article.title)
+            }}
+          >
+            Cancel
+          </Button>
+        </form>
+      )}
     </>
   )
 }

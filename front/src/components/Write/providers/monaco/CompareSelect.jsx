@@ -2,17 +2,17 @@ import React, { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import styles from './CompareSelect.module.scss'
-import Select from "../../../Select";
-import { useSelector } from "react-redux";
+import Select from '../../../Select'
+import { useSelector } from 'react-redux'
 
-export default function CompareSelect ({
-                                         articleId,
-                                         selectedVersion,
-                                         compareTo,
-                                         currentArticleVersion,
-                                         readOnly
-                                       }) {
-  const articleVersions = useSelector(state => state.articleVersions)
+export default function CompareSelect({
+  articleId,
+  selectedVersion,
+  compareTo,
+  currentArticleVersion,
+  readOnly,
+}) {
+  const articleVersions = useSelector((state) => state.articleVersions)
   const [compareVersionId, setCompareVersionId] = useState(null)
   const history = useHistory()
   const handleCompareSelect = useCallback(
@@ -43,15 +43,16 @@ export default function CompareSelect ({
   const currentVersionVersionNumber = currentArticleVersion
     ? `v${currentArticleVersion.major}.${currentArticleVersion.minor}`
     : 'latest'
-  const currentArticleVersionTitle = [currentArticleVersionLabel, currentVersionVersionNumber].join(' ')
+  const currentArticleVersionTitle = [
+    currentArticleVersionLabel,
+    currentVersionVersionNumber,
+  ].join(' ')
   const versionTitle = readOnly ? currentArticleVersionTitle : 'Working Copy'
   return (
     <section className={styles.compareVersions}>
       <h2>Compare Versions</h2>
       <div className={styles.versions}>
-        <div>
-          {versionTitle}
-        </div>
+        <div>{versionTitle}</div>
         <div className={styles.modifiedVersion}>
           <Select onChange={handleCompareSelect} value={compareTo}>
             <option value={false}>Stop compare</option>

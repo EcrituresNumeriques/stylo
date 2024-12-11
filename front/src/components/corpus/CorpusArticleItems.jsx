@@ -10,7 +10,7 @@ import { updateArticlesOrder } from './Corpus.graphql'
 
 import styles from './corpusArticleItems.module.scss'
 
-export default function CorpusArticleItems ({ corpusId, articles, onUpdate }) {
+export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
   const [isLoading, setLoading] = useState(true)
   const [articleCards, setArticleCards] = useState([])
   useEffect(() => {
@@ -23,32 +23,44 @@ export default function CorpusArticleItems ({ corpusId, articles, onUpdate }) {
   const mutation = useMutation()
   const { setToast } = useToasts()
   const { t } = useTranslation()
-  const updateArticleOrder = useCallback(debounce(
-    async (orderedArticles) => {
-      const articlesOrderInput = orderedArticles.map((item, index) => ({ articleId: item._id, order: index }))
-      try {
-        await mutation({ query: updateArticlesOrder, variables: { corpusId, articlesOrderInput } })
-        onUpdate()
-        setToast({
-          type: 'default',
-          text: t('corpus.articlesOrder.toastSuccess')
-        })
-      } catch (err) {
-        setToast({
-          type: 'error',
-          text: t('corpus.articlesOrder.toastFailure', {errorMessage: err.toString()})
-        })
-      }
-    },
-    750,
-    { leading: false, trailing: true }
-  ), [])
+  const updateArticleOrder = useCallback(
+    debounce(
+      async (orderedArticles) => {
+        const articlesOrderInput = orderedArticles.map((item, index) => ({
+          articleId: item._id,
+          order: index,
+        }))
+        try {
+          await mutation({
+            query: updateArticlesOrder,
+            variables: { corpusId, articlesOrderInput },
+          })
+          onUpdate()
+          setToast({
+            type: 'default',
+            text: t('corpus.articlesOrder.toastSuccess'),
+          })
+        } catch (err) {
+          setToast({
+            type: 'error',
+            text: t('corpus.articlesOrder.toastFailure', {
+              errorMessage: err.toString(),
+            }),
+          })
+        }
+      },
+      750,
+      { leading: false, trailing: true }
+    ),
+    []
+  )
   const moveArticleCard = useCallback((dragIndex, hoverIndex) => {
     setArticleCards((prevCards) => {
       const length = prevCards.length
-      const position = hoverIndex < dragIndex
-        ? { startIndex: hoverIndex, endIndex: dragIndex }
-        : { startIndex: dragIndex, endIndex: hoverIndex }
+      const position =
+        hoverIndex < dragIndex
+          ? { startIndex: hoverIndex, endIndex: dragIndex }
+          : { startIndex: dragIndex, endIndex: hoverIndex }
       const orderedArticles = [
         ...prevCards.slice(0, position.startIndex),
         prevCards[position.endIndex],
@@ -74,9 +86,13 @@ export default function CorpusArticleItems ({ corpusId, articles, onUpdate }) {
     )
   }, [])
   if (isLoading) {
-    return <Loading/>
+    return <Loading />
   }
-  return <div className={styles.container}>{articleCards.map((card, i) => renderCard(card, i))}</div>
+  return (
+    <div className={styles.container}>
+      {articleCards.map((card, i) => renderCard(card, i))}
+    </div>
+  )
 }
 
 CorpusArticleItems.propTypes = {

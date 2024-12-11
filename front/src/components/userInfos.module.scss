@@ -2,12 +2,11 @@
 @use '../styles/variables' as *;
 
 .section {
-
   &:not(:last-child) {
     margin-bottom: 2rem;
   }
 
   h2 {
-    margin: 1rem 0 .5rem;
+    margin: 1rem 0 0.5rem;
   }
 }

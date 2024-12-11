@@ -11,7 +11,7 @@ const toValueFn = (el) => ({
   // when 'feed' is provided, 'option' is returned as an object
   // when there are several values, 'option' is returned as an array of objects
   uriRameau: Array.isArray(el.option)
-    ? el.option.find(meta => meta['@key'] === 'uri')['@value']
+    ? el.option.find((meta) => meta['@key'] === 'uri')['@value']
     : el.option['@value'],
   idRameau: '',
 })
@@ -56,8 +56,19 @@ export default function IsidoreAPIAutocompleteField(props) {
 
   return (
     <div {...getComboboxProps()}>
-      {!isEmpty && <span className={styles.comboboxReadonlyField}>{props.formData.label}</span>}
-      {isEmpty && <Field {...getInputProps({ className: styles.autocompleteField }, { suppressRefError: true })} />}
+      {!isEmpty && (
+        <span className={styles.comboboxReadonlyField}>
+          {props.formData.label}
+        </span>
+      )}
+      {isEmpty && (
+        <Field
+          {...getInputProps(
+            { className: styles.autocompleteField },
+            { suppressRefError: true }
+          )}
+        />
+      )}
       <ul {...getMenuProps()}>
         {isOpen &&
           inputItems.map((item, index) => (

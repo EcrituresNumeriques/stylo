@@ -8,7 +8,7 @@ import Field from '../Field.jsx'
 import styles from './createWorkspace.module.scss'
 import { randomColor } from '../../helpers/colors.js'
 
-export default function CreateWorkspace () {
+export default function CreateWorkspace() {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const { state: name, bindings: nameBindings } = useInput('')
@@ -17,7 +17,7 @@ export default function CreateWorkspace () {
   const nameInputRef = useRef()
 
   const handleSubmit = useCallback(async () => {
-    dispatch({type: 'CREATE_WORKSPACE', data: {name, color, description}})
+    dispatch({ type: 'CREATE_WORKSPACE', data: { name, color, description } })
   }, [name, color, description])
 
   return (
@@ -42,10 +42,13 @@ export default function CreateWorkspace () {
         />
         <ul className={styles.actions}>
           <li>
-            <Button type="secondary"
-                    className={styles.button}
-                    title={t('workspace.createForm.buttonTitle')}
-                    onClick={handleSubmit}>{t('workspace.createForm.buttonText')}
+            <Button
+              type="secondary"
+              className={styles.button}
+              title={t('workspace.createForm.buttonTitle')}
+              onClick={handleSubmit}
+            >
+              {t('workspace.createForm.buttonText')}
             </Button>
           </li>
         </ul>

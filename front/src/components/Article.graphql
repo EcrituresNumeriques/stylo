@@ -46,9 +46,9 @@ query getArticleContributors($articleId: ID!) {
   }
 }
 
-query deleteArticle ($article: ID!) {
-  article (article: $article) {
-    delete (dryRun: false)
+query deleteArticle($article: ID!) {
+  article(article: $article) {
+    delete(dryRun: false)
   }
 }
 
@@ -61,9 +61,9 @@ mutation duplicateArticle($user: ID, $article: ID!, $to: ID!) {
   }
 }
 
-query addTags ($article: ID!, $tags: [ID]!) {
-  article (article: $article) {
-    addTags (tags: $tags) {
+query addTags($article: ID!, $tags: [ID]!) {
+  article(article: $article) {
+    addTags(tags: $tags) {
       _id
       name
       color
@@ -71,9 +71,9 @@ query addTags ($article: ID!, $tags: [ID]!) {
   }
 }
 
-query removeTags ($article: ID!, $tags: [ID]!) {
-  article (article: $article) {
-    removeTags (tags: $tags) {
+query removeTags($article: ID!, $tags: [ID]!) {
+  article(article: $article) {
+    removeTags(tags: $tags) {
       _id
       name
       color
@@ -82,7 +82,7 @@ query removeTags ($article: ID!, $tags: [ID]!) {
 }
 
 query getArticleInfo($articleId: ID!) {
-  article (article: $articleId) {
+  article(article: $articleId) {
     title
 
     workingVersion {
@@ -92,7 +92,7 @@ query getArticleInfo($articleId: ID!) {
 }
 
 query getArticleTags($articleId: ID!) {
-  article (article: $articleId) {
+  article(article: $articleId) {
     tags {
       _id
       name
@@ -102,7 +102,7 @@ query getArticleTags($articleId: ID!) {
 }
 
 mutation startCollaborativeSession($articleId: ID!) {
-  article (articleId: $articleId) {
+  article(articleId: $articleId) {
     startCollaborativeSession {
       id
     }

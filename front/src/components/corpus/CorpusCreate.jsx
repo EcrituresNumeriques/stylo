@@ -9,10 +9,9 @@ import Field from '../Field.jsx'
 
 import styles from './corpusCreate.module.scss'
 
-import { createCorpus } from "./Corpus.graphql"
+import { createCorpus } from './Corpus.graphql'
 
-
-export default function CorpusCreate ({onSubmit}) {
+export default function CorpusCreate({ onSubmit }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const dispatch = useDispatch()
@@ -21,7 +20,10 @@ export default function CorpusCreate ({onSubmit}) {
   const titleInputRef = useRef()
   const runQuery = useGraphQL()
   const activeWorkspace = useActiveWorkspace()
-  const activeWorkspaceId = useMemo(() => activeWorkspace?._id, [activeWorkspace])
+  const activeWorkspaceId = useMemo(
+    () => activeWorkspace?._id,
+    [activeWorkspace]
+  )
 
   useEffect(() => {
     if (titleInputRef.current !== undefined) {
@@ -29,32 +31,39 @@ export default function CorpusCreate ({onSubmit}) {
     }
   }, [titleInputRef])
 
-  const handleSubmit = useCallback(async (event) => {
-    try {
-      event.preventDefault()
-      const response = await runQuery({
-        query: createCorpus, variables: {
-          createCorpusInput: {
-            name: title,
-            description,
-            workspace: activeWorkspaceId,
-            metadata: ''
-          }
-        }
-      })
-      dispatch({ type: 'SET_LATEST_CORPUS_CREATED', data: { corpusId: response.createCorpus._id } })
-      onSubmit()
-      setToast({
-        text: `New corpus created`,
-        type: 'default'
-      })
-    } catch (err) {
-      setToast({
-        text: `Unable to create a new corpus: ${err}`,
-        type: 'error'
-      })
-    }
-  }, [title, description])
+  const handleSubmit = useCallback(
+    async (event) => {
+      try {
+        event.preventDefault()
+        const response = await runQuery({
+          query: createCorpus,
+          variables: {
+            createCorpusInput: {
+              name: title,
+              description,
+              workspace: activeWorkspaceId,
+              metadata: '',
+            },
+          },
+        })
+        dispatch({
+          type: 'SET_LATEST_CORPUS_CREATED',
+          data: { corpusId: response.createCorpus._id },
+        })
+        onSubmit()
+        setToast({
+          text: `New corpus created`,
+          type: 'default',
+        })
+      } catch (err) {
+        setToast({
+          text: `Unable to create a new corpus: ${err}`,
+          type: 'error',
+        })
+      }
+    },
+    [title, description]
+  )
 
   return (
     <section>
@@ -79,7 +88,8 @@ export default function CorpusCreate ({onSubmit}) {
               onClick={handleSubmit}
               className={styles.button}
               type="secondary"
-              title={t('corpus.createForm.buttonTitle')}>
+              title={t('corpus.createForm.buttonTitle')}
+            >
               {t('corpus.createForm.buttonText')}
             </Button>
           </li>

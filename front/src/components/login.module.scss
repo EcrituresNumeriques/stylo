@@ -1,4 +1,4 @@
-@use "sass:color";
+@use 'sass:color';
 @use '../styles/defaults' as *;
 @use '../styles/variables' as *;
 
@@ -18,9 +18,8 @@
   }
 
   h1 {
-    margin: 0 0 .75em;
+    margin: 0 0 0.75em;
     text-align: center;
-
   }
 
   form > fieldset {
@@ -59,14 +58,12 @@
 }
 
 .help {
-  font-size: .9em;
-  margin: .25em 0 1rem;
+  font-size: 0.9em;
+  margin: 0.25em 0 1rem;
 }
 
-
-
 .inlineIcon {
-  margin-right: .25em;
+  margin-right: 0.25em;
   vertical-align: middle;
 }
 
@@ -75,7 +72,7 @@
   display: block;
   color: white;
   font-weight: 200;
-  padding: 0.5em 2em .5em 3em;
+  padding: 0.5em 2em 0.5em 3em;
   position: relative;
   margin-bottom: 0.25em;
 
@@ -102,7 +99,8 @@ a.humaNumCreateAccountBtn {
   @extend %humaNumBtn;
   background-color: #f7931e;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background-color: color.adjust(#f7931e, $lightness: 5%);
   }
 }
@@ -111,7 +109,8 @@ a.humaNumConnectBtn {
   @extend %humaNumBtn;
   background-color: #c00;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background-color: color.adjust(#c00, $lightness: 5%);
   }
 }

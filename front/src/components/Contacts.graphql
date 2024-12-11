@@ -1,48 +1,47 @@
 query addContact($userId: ID!, $contactId: ID!) {
-    user(user: $userId) {
-        addContact(userId: $contactId) {
-            _id
-            acquintances {
-                _id
-                displayName
-                username
-                email
-            }
-        }
-    }
-}
-
-query removeContact($userId: ID!, $contactId: ID!) {
-    user(user: $userId) {
-        removeContact(userId: $contactId) {
-            _id
-            acquintances {
-                _id
-                displayName
-                username
-                email
-            }
-        }
-    }
-}
-
-query getUserByEmail($userEmail: String!) {
-    getUser(filter: {email: $userEmail}) {
+  user(user: $userId) {
+    addContact(userId: $contactId) {
+      _id
+      acquintances {
         _id
         displayName
         username
         email
+      }
     }
+  }
+}
+
+query removeContact($userId: ID!, $contactId: ID!) {
+  user(user: $userId) {
+    removeContact(userId: $contactId) {
+      _id
+      acquintances {
+        _id
+        displayName
+        username
+        email
+      }
+    }
+  }
+}
+
+query getUserByEmail($userEmail: String!) {
+  getUser(filter: { email: $userEmail }) {
+    _id
+    displayName
+    username
+    email
+  }
 }
 
 query getContacts($userId: ID!) {
-    user(user: $userId) {
-        acquintances {
-            _id
-            displayName
-            username
-            email
-        }
+  user(user: $userId) {
+    acquintances {
+      _id
+      displayName
+      username
+      email
     }
+  }
 }
-

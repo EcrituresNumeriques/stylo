@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import CompareSelect from "./CompareSelect";
-import styles from "./DiffEditor.module.scss";
+import CompareSelect from './CompareSelect'
+import styles from './DiffEditor.module.scss'
 import * as monaco from 'monaco-editor'
 import { DiffEditor, loader } from '@monaco-editor/react'
 import { useGraphQL } from '../../../../helpers/graphQL'
@@ -9,7 +9,15 @@ import { compareVersion as query } from '../../Write.graphql'
 import { defineFlippedDiffTheme } from './support'
 loader.config({ monaco })
 
-export default function MonacoDiffEditor ({ text, compareTo, articleId, selectedVersion, currentArticleVersion, readOnly, onTextUpdate }) {
+export default function MonacoDiffEditor({
+  text,
+  compareTo,
+  articleId,
+  selectedVersion,
+  currentArticleVersion,
+  readOnly,
+  onTextUpdate,
+}) {
   const [modifiedText, setModifiedText] = useState('')
   const runQuery = useGraphQL()
 
@@ -30,25 +38,36 @@ export default function MonacoDiffEditor ({ text, compareTo, articleId, selected
   }, [])
 
   useEffect(() => {
-    runQuery({ query, variables: { article: articleId, to: compareTo ?? 'working-copy', hasVersion: Boolean(compareTo) } })
-      .then(({ article, version }) => setModifiedText(version?.md ?? article.workingVersion?.md))
+    runQuery({
+      query,
+      variables: {
+        article: articleId,
+        to: compareTo ?? 'working-copy',
+        hasVersion: Boolean(compareTo),
+      },
+    }).then(({ article, version }) =>
+      setModifiedText(version?.md ?? article.workingVersion?.md)
+    )
   }, [compareTo])
 
-  const monacoOptions = useMemo(() => ({
-    showFoldingControls: "always",
-    originalEditable: !readOnly,
-    readOnly: true,
-    overviewRulerLanes: 0,
-    hideCursorInOverviewRuler: true,
-    overviewRulerBorder: false,
-    scrollBeyondLastLine: false,
-    renderIndicators: false,
-    wordWrap: 'on',
-    wrappingIndent: 'none',
-    minimap: {
-      enabled: false
-    }
-  }), [readOnly])
+  const monacoOptions = useMemo(
+    () => ({
+      showFoldingControls: 'always',
+      originalEditable: !readOnly,
+      readOnly: true,
+      overviewRulerLanes: 0,
+      hideCursorInOverviewRuler: true,
+      overviewRulerBorder: false,
+      scrollBeyondLastLine: false,
+      renderIndicators: false,
+      wordWrap: 'on',
+      wrappingIndent: 'none',
+      minimap: {
+        enabled: false,
+      },
+    }),
+    [readOnly]
+  )
 
   return (
     <div>

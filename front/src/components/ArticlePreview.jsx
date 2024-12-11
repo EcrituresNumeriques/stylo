@@ -7,26 +7,30 @@ import Loading from './Loading'
 
 export default function ArticlePreview() {
   const { id, version, bookId } = useParams()
-  const { exportEndpoint } = useSelector(state => state.applicationConfig)
+  const { exportEndpoint } = useSelector((state) => state.applicationConfig)
   const [isLoaded, setLoaded] = useState(false)
   const previewFrame = useRef()
 
   const url = bookId
-    ? (`${exportEndpoint}/api/v1/htmlBook/${bookId}?preview=true`)
-    : (version
-      ? `${exportEndpoint}/api/v1/htmlVersion/${version}?preview=true`
-      : `${exportEndpoint}/api/v1/htmlArticle/${id}?preview=true`)
+    ? `${exportEndpoint}/api/v1/htmlBook/${bookId}?preview=true`
+    : version
+    ? `${exportEndpoint}/api/v1/htmlVersion/${version}?preview=true`
+    : `${exportEndpoint}/api/v1/htmlArticle/${id}?preview=true`
 
   useEffect(() => {
     previewFrame.current.addEventListener('load', () => setLoaded(true))
   }, [])
 
-  return <>
-    {!isLoaded && <Loading />}
+  return (
+    <>
+      {!isLoaded && <Loading />}
 
-    <iframe className={styles.previewContainer} ref={previewFrame} hidden={!isLoaded} src={url} />
-  </>
+      <iframe
+        className={styles.previewContainer}
+        ref={previewFrame}
+        hidden={!isLoaded}
+        src={url}
+      />
+    </>
+  )
 }
-
-
-

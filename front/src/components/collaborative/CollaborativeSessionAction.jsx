@@ -10,14 +10,17 @@ import { useMutation } from '../../hooks/graphql.js'
 import { startCollaborativeSession } from '../Article.graphql'
 import Button from '../Button.jsx'
 
-export default function CollaborativeSessionAction ({ collaborativeSession, articleId }) {
+export default function CollaborativeSessionAction({
+  collaborativeSession,
+  articleId,
+}) {
   const { t } = useTranslation()
   const history = useHistory()
   const mutation = useMutation()
   const {
     visible: collaborativeEditingVisible,
     setVisible: setCollaborativeEditingVisible,
-    bindings: collaborativeEditingBinding
+    bindings: collaborativeEditingBinding,
   } = useModal()
 
   const handleStartCollaborativeEditing = useCallback(async () => {
@@ -27,22 +30,31 @@ export default function CollaborativeSessionAction ({ collaborativeSession, arti
       history.push(`/article/${articleId}/session/${collaborativeSession.id}`)
     } else {
       // start a new collaborative session
-      const data = await mutation({ query: startCollaborativeSession, variables: { articleId } })
-      history.push(`/article/${articleId}/session/${data.article.startCollaborativeSession.id}`)
+      const data = await mutation({
+        query: startCollaborativeSession,
+        variables: { articleId },
+      })
+      history.push(
+        `/article/${articleId}/session/${data.article.startCollaborativeSession.id}`
+      )
     }
   }, [collaborativeSession])
 
-  const collaborativeSessionDialogTitle = useMemo(() =>
+  const collaborativeSessionDialogTitle = useMemo(
+    () =>
       collaborativeSession
         ? t('article.collaborativeEditingJoin.title')
-        : t('article.collaborativeEditingStart.title')
-    , [collaborativeSession])
+        : t('article.collaborativeEditingStart.title'),
+    [collaborativeSession]
+  )
 
-  const collaborativeSessionDialogMessage = useMemo(() =>
+  const collaborativeSessionDialogMessage = useMemo(
+    () =>
       collaborativeSession
         ? t('article.collaborativeEditingJoin.confirmMessage')
-        : t('article.collaborativeEditingStart.confirmMessage')
-    , [collaborativeSession])
+        : t('article.collaborativeEditingStart.confirmMessage'),
+    [collaborativeSession]
+  )
 
   useEffect(() => {
     return () => {
@@ -52,26 +64,44 @@ export default function CollaborativeSessionAction ({ collaborativeSession, arti
 
   return (
     <>
-      <Button title={t('collaborativeSessionAction.launchCollaborativeSessionButton.title')} icon={true} onClick={() => setCollaborativeEditingVisible(true)}>
-        <Users/>
-        {collaborativeSession && collaborativeSession.id && <Badge type="error">Live</Badge>}
+      <Button
+        title={t(
+          'collaborativeSessionAction.launchCollaborativeSessionButton.title'
+        )}
+        icon={true}
+        onClick={() => setCollaborativeEditingVisible(true)}
+      >
+        <Users />
+        {collaborativeSession && collaborativeSession.id && (
+          <Badge type="error">Live</Badge>
+        )}
       </Button>
-      <GeistModal width="35rem" visible={collaborativeEditingVisible} {...collaborativeEditingBinding}>
+      <GeistModal
+        width="35rem"
+        visible={collaborativeEditingVisible}
+        {...collaborativeEditingBinding}
+      >
         <h2>{collaborativeSessionDialogTitle}</h2>
         <GeistModal.Content>
           {collaborativeSessionDialogMessage}
         </GeistModal.Content>
-        <GeistModal.Action passive onClick={() => setCollaborativeEditingVisible(false)}>
+        <GeistModal.Action
+          passive
+          onClick={() => setCollaborativeEditingVisible(false)}
+        >
           {t('modal.cancelButton.text')}
         </GeistModal.Action>
-        <GeistModal.Action onClick={handleStartCollaborativeEditing}>{t('modal.confirmButton.text')}</GeistModal.Action>
+        <GeistModal.Action onClick={handleStartCollaborativeEditing}>
+          {t('modal.confirmButton.text')}
+        </GeistModal.Action>
       </GeistModal>
-    </>)
+    </>
+  )
 }
 
 CollaborativeSessionAction.propTypes = {
   articleId: PropTypes.string.isRequired,
   collaborativeSession: PropTypes.shape({
-    id: PropTypes.string
-  })
+    id: PropTypes.string,
+  }),
 }

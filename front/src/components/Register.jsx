@@ -12,7 +12,7 @@ import Field from './Field'
 import Button from './Button'
 import { ArrowLeftCircle, Check } from 'react-feather'
 
-function Register () {
+function Register() {
   const history = useHistory()
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
@@ -74,30 +74,76 @@ function Register () {
           createUser(details)
         }}
       >
-
         <h1>Create a Stylo account</h1>
 
         <fieldset>
           <legend>Required informations</legend>
 
-          <Field id="email" type="email" label="Email*" autoComplete="email" required={true} onChange={(e) => setEmail(etv(e))} />
-          <Field id="username" label="Username*" autoComplete="username" required={true} onChange={(e) => setUsername(etv(e))} />
-          <Field id="password" type="password" label="Password*" autoComplete="new-password" required={true} onChange={(e) => setPassword(etv(e))} />
-          <Field id="passwordc" type="password" label="Confirm Password*" autoComplete="new-password" required={true} onChange={(e) => setPasswordC(etv(e))} className={password === passwordC ? null : styles.beware} />
+          <Field
+            id="email"
+            type="email"
+            label="Email*"
+            autoComplete="email"
+            required={true}
+            onChange={(e) => setEmail(etv(e))}
+          />
+          <Field
+            id="username"
+            label="Username*"
+            autoComplete="username"
+            required={true}
+            onChange={(e) => setUsername(etv(e))}
+          />
+          <Field
+            id="password"
+            type="password"
+            label="Password*"
+            autoComplete="new-password"
+            required={true}
+            onChange={(e) => setPassword(etv(e))}
+          />
+          <Field
+            id="passwordc"
+            type="password"
+            label="Confirm Password*"
+            autoComplete="new-password"
+            required={true}
+            onChange={(e) => setPasswordC(etv(e))}
+            className={password === passwordC ? null : styles.beware}
+          />
         </fieldset>
 
         <fieldset>
           <legend>Optional details</legend>
 
-          <Field id="display-name" label="Display Name" onChange={(e) => setDisplayName(etv(e))} />
-          <Field id="first-name" label="First Name" onChange={(e) => setFirstName(etv(e))} />
-          <Field id="last-name" label="Last Name" onChange={(e) => setLastName(etv(e))} />
-          <Field id="institution" label="Organization" onChange={(e) => setInstitution(etv(e))} />
+          <Field
+            id="display-name"
+            label="Display Name"
+            onChange={(e) => setDisplayName(etv(e))}
+          />
+          <Field
+            id="first-name"
+            label="First Name"
+            onChange={(e) => setFirstName(etv(e))}
+          />
+          <Field
+            id="last-name"
+            label="Last Name"
+            onChange={(e) => setLastName(etv(e))}
+          />
+          <Field
+            id="institution"
+            label="Organization"
+            onChange={(e) => setInstitution(etv(e))}
+          />
         </fieldset>
 
         <ul className={styles.actions}>
           <li>
-            <Link to="/"><ArrowLeftCircle className={styles.inlineIcon} size={20} />Go back to Login</Link>
+            <Link to="/">
+              <ArrowLeftCircle className={styles.inlineIcon} size={20} />
+              Go back to Login
+            </Link>
           </li>
           <li className={styles.actionsSubmit}>
             <Button primary={true} type="submit">

@@ -9,56 +9,66 @@ import styles from './articleVersionLinks.module.scss'
 import { getArticleVersions } from './Article.graphql'
 import TimeAgo from './TimeAgo.jsx'
 
-export default function ArticleVersionLinks ({ articleId, article }) {
+export default function ArticleVersionLinks({ articleId, article }) {
   const { t } = useTranslation()
-  const { data, isLoading } = useGraphQL({
-    query: getArticleVersions,
-    variables: { articleId }
-  }, {
-    fallbackData: {
-      article
+  const { data, isLoading } = useGraphQL(
+    {
+      query: getArticleVersions,
+      variables: { articleId },
     },
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  })
-  const getVersions = () => (data?.article?.versions || []).map(v => {
-    let title = ''
-    if (v.type === 'editingSessionEnded') {
-      title = t('version.editingSessionEnded.text')
-    } else if (v.type === 'collaborativeSessionEnded') {
-      title = t('version.collaborativeSessionEnded.text')
-    } else {
-      title = `v${v.version}.${v.revision} ${v.message}`
+    {
+      fallbackData: {
+        article,
+      },
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
     }
-    return {
-      ...v,
-      type: v.type || 'userAction',
-      title,
-    }
-  })
+  )
+  const getVersions = () =>
+    (data?.article?.versions || []).map((v) => {
+      let title = ''
+      if (v.type === 'editingSessionEnded') {
+        title = t('version.editingSessionEnded.text')
+      } else if (v.type === 'collaborativeSessionEnded') {
+        title = t('version.collaborativeSessionEnded.text')
+      } else {
+        title = `v${v.version}.${v.revision} ${v.message}`
+      }
+      return {
+        ...v,
+        type: v.type || 'userAction',
+        title,
+      }
+    })
   const versions = useMemo(getVersions, [data])
 
   if (isLoading) {
-    return <Loading/>
+    return <Loading />
   }
 
   return (
     <>
-      {versions && versions.length > 0 &&
+      {versions && versions.length > 0 && (
         <>
           <h4>{t('article.versions.title')}</h4>
           <ul className={styles.versions}>
             {versions.map((v) => (
-              <li key={`version-${v._id}`} className={clsx(v.type === 'userAction' ? styles.userVersion : styles.automaticVersion)}>
+              <li
+                key={`version-${v._id}`}
+                className={clsx(
+                  v.type === 'userAction'
+                    ? styles.userVersion
+                    : styles.automaticVersion
+                )}
+              >
                 <Link to={`/article/${article._id}/version/${v._id}`}>
-                  <span>{v.title}</span>{' '}
-                  <TimeAgo date={v.createdAt}/>
+                  <span>{v.title}</span> <TimeAgo date={v.createdAt} />
                 </Link>
               </li>
-              ))}
+            ))}
           </ul>
         </>
-      }
+      )}
     </>
-)
+  )
 }

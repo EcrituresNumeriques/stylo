@@ -14,10 +14,10 @@
   min-height: 5em;
   padding: 1em;
 
-  [role="doc-bibliography"] {
+  [role='doc-bibliography'] {
     display: flex;
     flex-direction: column;
-    gap: .5em;
+    gap: 0.5em;
   }
 }
 

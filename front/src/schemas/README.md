@@ -13,7 +13,7 @@ Si c'était une fonction, elle s'écrirait comme ceci :
 const form = reactForm({ JSONSchema, UISchema })
 
 form.on('submit', (formData) => {
- // ...
+  // ...
 })
 ```
 

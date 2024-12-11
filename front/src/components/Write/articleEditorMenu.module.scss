@@ -1,7 +1,6 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
 
-
 .expandleft {
   @extend .details;
   padding-bottom: 1em;
