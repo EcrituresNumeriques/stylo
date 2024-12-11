@@ -1,21 +1,15 @@
-import {
-  Loading,
-  Modal as GeistModal,
-  useModal,
-  Button as GeistButton,
-} from '@geist-ui/core'
+import { Loading, useModal, Button as GeistButton } from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
 import { CurrentUserContext } from '../contexts/CurrentUser'
 import { Search } from 'react-feather'
+import { useArticles } from '../hooks/articles.js'
 
-import useGraphQL from '../hooks/graphql'
-import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
+import ArticleCreateModal from './ArticleCreateModal.jsx'
 import etv from '../helpers/eventTargetValue'
 
 import Article from './Article'
-import ArticleCreate from './ArticleCreate.jsx'
 
 import styles from './articles.module.scss'
 import Field from './Field'
@@ -26,162 +20,46 @@ import TagsList from './tag/TagsList.jsx'
 
 export default function Articles() {
   const { t } = useTranslation()
-  const backendEndpoint = useSelector(
-    (state) => state.applicationConfig.backendEndpoint
-  )
+  const { backendEndpoint, selectedTagIds } = useSelector((state) => ({
+    backendEndpoint: state.applicationConfig.backendEndpoint,
+    selectedTagIds: state.activeUser.selectedTagIds || [],
+  }))
   const currentUser = useSelector((state) => state.activeUser, shallowEqual)
-  const selectedTagIds = useSelector(
-    (state) => state.activeUser.selectedTagIds || []
-  )
-  const {
-    visible: createArticleVisible,
-    setVisible: setCreateArticleVisible,
-    bindings: createArticleModalBinding,
-  } = useModal()
+  const articleCreateModal = useModal()
   const activeUserId = useActiveUserId()
   const [filter, setFilter] = useState('')
   const activeWorkspace = useActiveWorkspace()
+
+  const { articles, isLoading, updateArticle, deleteArticle, createArticle } =
+    useArticles()
+
   const activeWorkspaceId = useMemo(
     () => activeWorkspace?._id,
     [activeWorkspace]
   )
 
-  const query = useMemo(
-    () => (activeWorkspaceId ? getWorkspaceArticles : getUserArticles),
-    [activeWorkspaceId]
-  )
-  const variables = useMemo(
-    () =>
-      activeWorkspaceId
-        ? { workspaceId: activeWorkspaceId }
-        : { user: activeUserId },
-    [activeWorkspaceId]
-  )
-  const { data, isLoading, mutate } = useGraphQL(
-    { query, variables },
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  )
-  const articles = useMemo(
-    () =>
-      (activeWorkspaceId ? data?.workspace?.articles : data?.articles) || [],
-    [activeWorkspaceId, data]
-  )
-
-  const handleArticleUpdated = useCallback(
-    async (updatedArticle) => {
-      const updatedArticles = articles.map((article) =>
-        article._id === updatedArticle._id ? updatedArticle : article
-      )
-      if (activeWorkspaceId) {
-        await mutate(
-          {
-            workspace: {
-              ...data.workspace,
-              articles: updatedArticles,
-            },
-          },
-          { revalidate: false }
-        )
-      } else {
-        await mutate(
-          {
-            articles: updatedArticles,
-          },
-          { revalidate: false }
-        )
-      }
-    },
-    [articles]
-  )
-
-  const handleArticleDeleted = useCallback(
-    async (deletedArticle) => {
-      const updatedArticles = articles.filter(
-        (article) => article._id !== deletedArticle._id
-      )
-      if (activeWorkspaceId) {
-        await mutate(
-          {
-            workspace: {
-              ...data.workspace,
-              articles: updatedArticles,
-            },
-          },
-          { revalidate: false }
-        )
-      } else {
-        await mutate(
-          {
-            articles: updatedArticles,
-          },
-          { revalidate: false }
-        )
-      }
-    },
-    [articles]
-  )
-
   const handleArticleCreated = useCallback(
     async (createdArticle) => {
-      setCreateArticleVisible(false)
-      const updatedArticles = [createdArticle, ...articles]
-      if (activeWorkspaceId) {
-        await mutate(
-          {
-            workspace: {
-              ...data.workspace,
-              articles: updatedArticles,
-            },
-          },
-          { revalidate: false }
-        )
-      } else {
-        await mutate(
-          {
-            articles: updatedArticles,
-          },
-          { revalidate: false }
-        )
-      }
+      articleCreateModal.setVisible(false)
+      await createArticle(createdArticle)
     },
-    [articles]
+    [createArticle]
   )
 
   const handleStateUpdated = useCallback(
-    (event) => {
+    async (event) => {
       const parsedData = JSON.parse(event.data)
       if (parsedData.articleStateUpdated) {
         const articleStateUpdated = parsedData.articleStateUpdated
-        const updatedArticles = articles.map((article) => {
-          if (article._id === articleStateUpdated._id) {
-            return {
-              ...article,
-              soloSession: articleStateUpdated.soloSession,
-              collaborativeSession: articleStateUpdated.collaborativeSession,
-            }
-          }
-          return article
-        })
-        if (activeWorkspaceId) {
-          mutate(
-            {
-              workspace: {
-                ...data.workspace,
-                articles: updatedArticles,
-              },
-            },
-            { revalidate: false }
-          )
-        } else {
-          mutate(
-            {
-              articles: updatedArticles,
-            },
-            { revalidate: false }
-          )
+        const article = articles.find(
+          (article) => article._id === articleStateUpdated._id
+        )
+        if (article) {
+          await updateArticle({
+            ...article,
+            soloSession: articleStateUpdated.soloSession,
+            collaborativeSession: articleStateUpdated.collaborativeSession,
+          })
         }
       }
     },
@@ -195,7 +73,7 @@ export default function Articles() {
         `${backendEndpoint}/events?userId=${activeUserId}`
       )
       events.onmessage = (event) => {
-        handleStateUpdated(event)
+        void handleStateUpdated(event)
       }
     }
     return () => {
@@ -257,7 +135,7 @@ export default function Articles() {
             <GeistButton
               type="secondary"
               className={styles.button}
-              onClick={() => setCreateArticleVisible(true)}
+              onClick={() => articleCreateModal.setVisible(true)}
             >
               {t('article.createAction.buttonText')}
             </GeistButton>
@@ -267,22 +145,10 @@ export default function Articles() {
           </div>
         </div>
 
-        <GeistModal
-          width="40rem"
-          visible={createArticleVisible}
-          {...createArticleModalBinding}
-        >
-          <h2>{t('article.createModal.title')}</h2>
-          <GeistModal.Content>
-            <ArticleCreate onSubmit={handleArticleCreated} />
-          </GeistModal.Content>
-          <GeistModal.Action
-            passive
-            onClick={() => setCreateArticleVisible(false)}
-          >
-            {t('modal.close.text')}
-          </GeistModal.Action>
-        </GeistModal>
+        <ArticleCreateModal
+          {...articleCreateModal}
+          onCreate={handleArticleCreated}
+        />
 
         {isLoading ? (
           <Loading />
@@ -291,8 +157,8 @@ export default function Articles() {
             <Article
               key={`article-${article._id}`}
               article={article}
-              onArticleUpdated={handleArticleUpdated}
-              onArticleDeleted={handleArticleDeleted}
+              onArticleUpdated={updateArticle}
+              onArticleDeleted={deleteArticle}
               onArticleCreated={handleArticleCreated}
             />
           ))
