@@ -14,7 +14,6 @@ import ArticleCreate from './ArticleCreate.jsx'
 
 import styles from './articles.module.scss'
 import Field from './Field'
-import Button from './Button.jsx'
 import { useActiveUserId } from '../hooks/user'
 import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
 import { useActiveWorkspace } from '../hooks/workspace.js'
@@ -252,13 +251,15 @@ export default function Articles() {
         </aside>
 
         <div className={styles.articlesTableHeader}>
-          {!activeWorkspaceId && (
-            <Button primary onClick={() => setCreateArticleVisible(true)}>
-              {t('article.createAction.buttonText')}
-            </Button>
-          )}
+          <GeistButton
+            type="secondary"
+            className={styles.button}
+            onClick={() => setCreateArticleVisible(true)}
+          >
+            {t('article.createAction.buttonText')}
+          </GeistButton>
           <div className={styles.articleCounter}>
-            {t('article.count', { count: keepArticles.length })}
+            {keepArticles.length} article{keepArticles.length > 1 ? 's' : ''}
           </div>
         </div>
 
