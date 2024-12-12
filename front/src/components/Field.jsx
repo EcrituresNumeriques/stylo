@@ -2,8 +2,33 @@ import clsx from 'clsx'
 import React, { forwardRef, useId } from 'react'
 import styles from './field.module.scss'
 
+/**
+ * @typedef {Object} FieldInput
+ * @property {string} label
+ * @property {string=} type
+ * @property {string=} id
+ * @property {boolean=} hasError
+ * @property {string=} className
+ * @property {string=} prefix
+ * @property {React.ReactNode[]=} children
+ */
+
+/**
+ * @param {React.ReactHTMLElement(props: FieldInput)} node
+ * @param {React.ForwardedRef} forwardedRef
+ * @return {React.ForwardRefRenderFunction}
+ */
 export default forwardRef(function Field(
-  { hasError, className, prefix, children, label, id, type, ...otherProps },
+  {
+    hasError,
+    className,
+    prefix,
+    children,
+    label,
+    id,
+    type = 'text',
+    ...otherProps
+  },
   forwardedRef
 ) {
   const uid = `field-${id ?? useId()}`
