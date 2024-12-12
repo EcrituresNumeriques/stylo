@@ -2,7 +2,6 @@ import {
   Loading,
   Modal as GeistModal,
   useModal,
-  Button as GeistButton,
 } from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -19,6 +18,7 @@ import ArticleCreate from './ArticleCreate.jsx'
 
 import styles from './articles.module.scss'
 import Field from './Field'
+import Button from './Button.jsx'
 import { useActiveUserId } from '../hooks/user'
 import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
 import { useActiveWorkspace } from '../hooks/workspace.js'
@@ -254,16 +254,15 @@ export default function Articles() {
 
         <div className={styles.articlesTableHeader}>
           {!activeWorkspaceId && (
-            <GeistButton
-              type="secondary"
-              className={styles.button}
+            <Button
+              primary
               onClick={() => setCreateArticleVisible(true)}
             >
               {t('article.createAction.buttonText')}
-            </GeistButton>
+            </Button>
           )}
           <div className={styles.articleCounter}>
-            {keepArticles.length} article{keepArticles.length > 1 ? 's' : ''}
+            {t('article.count', { count: keepArticles.length })}
           </div>
         </div>
 
