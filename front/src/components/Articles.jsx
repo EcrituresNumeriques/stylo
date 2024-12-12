@@ -269,7 +269,10 @@ export default function Articles() {
         >
           <h2>{t('article.createModal.title')}</h2>
           <GeistModal.Content>
-            <ArticleCreate onSubmit={handleArticleCreated} />
+            <ArticleCreate
+              onSubmit={handleArticleCreated}
+              workspaceId={activeWorkspaceId}
+            />
           </GeistModal.Content>
           <GeistModal.Action
             passive

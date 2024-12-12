@@ -174,9 +174,11 @@ module.exports = {
      */
     async createArticle (_root, args, context) {
       const user = await getUser(context.userId)
+      const { title, tags, workspaces } = args.createArticleInput
+
       //Add default article + default version
       const newArticle = await Article.create({
-        title: args.title || 'New article',
+        title,
         owner: user,
         workingVersion: {
           md: '',
@@ -184,6 +186,18 @@ module.exports = {
           metadata: {},
         }
       })
+
+      if (Array.isArray(tags) && tags.length) {
+        await newArticle.addTags(...tags)
+      }
+
+      if (Array.isArray(workspaces) && workspaces.length) {
+        for await (const id of workspaces) {
+          const workspace = await Workspace.getWorkspaceById(id, user)
+          workspace.articles.push(newArticle)
+          await workspace.save()
+        }
+      }
 
       user.articles.push(newArticle)
       await user.save()

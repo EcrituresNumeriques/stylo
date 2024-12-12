@@ -130,8 +130,8 @@ type Mutation {
     Returns an error if the corpus does not exist or cannot be accessed.
     """
     corpus(corpusId: ID!): Corpus
-    "Create article for specified user [need to be authenticated as specified user]"
-    createArticle(tags: [ID], title: String!, user: ID): Article
+    "Create a new article"
+    createArticle(createArticleInput: CreateArticleInput!): Article
     "Create a new corpus"
     createCorpus(createCorpusInput: CreateCorpusInput!): Corpus
     "Create tag [need to be authenticated as specified user]"
@@ -349,6 +349,12 @@ input ArticleVersionInput {
     major: Boolean
     message: String
     userId: ID!
+}
+
+input CreateArticleInput {
+    title: String!
+    tags: [ID]
+    workspaces: [ID]
 }
 
 input CreateCorpusInput {
