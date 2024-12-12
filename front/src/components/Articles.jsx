@@ -18,6 +18,7 @@ import Article from './Article'
 import ArticleCreate from './ArticleCreate.jsx'
 
 import styles from './articles.module.scss'
+import buttonStyles from './button.module.scss'
 import Field from './Field'
 import { useActiveUserId } from '../hooks/user'
 import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
@@ -281,6 +282,9 @@ export default function Articles() {
             onClick={() => setCreateArticleVisible(false)}
           >
             {t('modal.close.text')}
+          </GeistModal.Action>
+          <GeistModal.Action type="submit" form="article-create-form" className={buttonStyles.primary}>
+            {t('article.createForm.buttonText')}
           </GeistModal.Action>
         </GeistModal>
 

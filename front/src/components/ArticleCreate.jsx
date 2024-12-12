@@ -85,7 +85,7 @@ export default function ArticleCreate({ onSubmit }) {
 
   return (
     <section>
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form onSubmit={handleSubmit} className={styles.form} id="article-create-form">
         <Field
           ref={titleInputRef}
           {...titleBindings}
@@ -111,18 +111,6 @@ export default function ArticleCreate({ onSubmit }) {
             </ul>
           </div>
         )}
-        <ul className={styles.actions}>
-          <li>
-            <Button
-              type="secondary"
-              className={styles.button}
-              title={t('article.createForm.buttonTitle')}
-              onClick={handleSubmit}
-            >
-              {t('article.createForm.buttonText')}
-            </Button>
-          </li>
-        </ul>
       </form>
     </section>
   )
