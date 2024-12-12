@@ -263,7 +263,7 @@ export default function Articles() {
             </GeistButton>
           )}
           <div className={styles.articleCounter}>
-            {keepArticles.length} article{keepArticles.length > 1 ? 's' : ''}
+            {t('article.count', { count: keepArticles.length })}
           </div>
         </div>
 
