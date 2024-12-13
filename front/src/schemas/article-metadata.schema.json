@@ -248,6 +248,26 @@
       "items": {
         "$ref": "#/definitions/person"
       }
+    },
+    "senspublic": {
+      "type": "object",
+      "properties": {
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Essai",
+              "Création",
+              "Lecture",
+              "Sommaire dossier",
+              "Entretien",
+              "Chronique"
+            ]
+          },
+          "uniqueItems": true
+        }
+      }
     }
   },
   "allOf": [

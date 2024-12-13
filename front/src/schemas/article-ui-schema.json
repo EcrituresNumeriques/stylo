@@ -61,6 +61,12 @@
       "fields": ["journal"]
     },
     {
+      "title": "article.metadata.senspublic",
+      "fields": [
+        "senspublic"
+      ]
+    },
+    {
       "title": "article.metadata.journalDirectors",
       "fields": ["journalDirectors"]
     }
@@ -445,6 +451,20 @@
       "wikidata": {
         "ui:title": "article.metadata.people.wikidata"
       }
+    }
+  },
+  "senspublic": {
+    "categories": {
+      "ui:widget": "checkboxes",
+      "ui:title": "article.metadata.senspublic.categories",
+      "ui:enumNames": [
+        "article.metadata.senspublic.essay",
+        "article.metadata.senspublic.creation",
+        "article.metadata.senspublic.lecture",
+        "article.metadata.senspublic.dossierSummary",
+        "article.metadata.senspublic.interview",
+        "article.metadata.senspublic.editorialColumn"
+      ]
     }
   }
 }
