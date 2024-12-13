@@ -13,6 +13,7 @@ import Article from './Article'
 import ArticleCreate from './ArticleCreate.jsx'
 
 import styles from './articles.module.scss'
+import Button from './Button.jsx'
 import Field from './Field'
 import { useActiveUserId } from '../hooks/user'
 import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
@@ -251,13 +252,13 @@ export default function Articles() {
         </aside>
 
         <div className={styles.articlesTableHeader}>
-          <GeistButton
+          <Button
             type="secondary"
             className={styles.button}
             onClick={() => setCreateArticleVisible(true)}
           >
             {t('article.createAction.buttonText')}
-          </GeistButton>
+          </Button>
           <div className={styles.articleCounter}>
             {keepArticles.length} article{keepArticles.length > 1 ? 's' : ''}
           </div>
