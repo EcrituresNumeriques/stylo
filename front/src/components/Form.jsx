@@ -117,6 +117,7 @@ function ArrayFieldTemplate(properties) {
   const title = properties.uiSchema['ui:title']
   const inlineRemoveButton =
     properties.schema?.items?.type === 'string' || !removeItemTitle
+  const items = [...properties.items].reverse()
   return (
     <fieldset
       className={clsx(styles.fieldset, styles.array)}
@@ -138,8 +139,8 @@ function ArrayFieldTemplate(properties) {
           <Translation>{(t) => t(addItemTitle)}</Translation>
         </Button>
       )}
-      {properties.items &&
-        properties.items.map((element) => {
+      {items &&
+        items.map((element) => {
           return (
             <div
               id={element.key}
