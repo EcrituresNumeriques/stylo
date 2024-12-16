@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react'
 import { LifeBuoy } from 'react-feather'
 import { useSelector } from 'react-redux'
-import { Link, Route, Switch } from 'react-router-dom'
+import { NavLink, Route, Switch } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import logoContent from '/images/logo.svg?inline'
 import { useActiveWorkspace } from '../hooks/workspace.js'
@@ -9,7 +10,6 @@ import { useActiveWorkspace } from '../hooks/workspace.js'
 import styles from './header.module.scss'
 import LanguagesMenu from './header/LanguagesMenu.jsx'
 import UserMenu from './header/UserMenu.jsx'
-import LanguagesIcon from './header/LanguagesIcon.jsx'
 
 function Header() {
   const activeWorkspace = useActiveWorkspace()
@@ -18,6 +18,7 @@ function Header() {
     [activeWorkspace]
   )
   const connected = useSelector((state) => state.loggedIn)
+  const { t } = useTranslation()
 
   return (
     <Switch>
@@ -26,16 +27,16 @@ function Header() {
         <header className={styles.headerContainer}>
           <section className={styles.header}>
             <h1 className={styles.logo}>
-              <Link to="/">
+              <NavLink to="/">
                 <img src={logoContent} alt="Stylo" title="Stylo" />
-              </Link>
+              </NavLink>
             </h1>
             {connected && (
               <>
                 <nav>
                   <ul className={styles.menuLinks}>
                     <li>
-                      <Link
+                      <NavLink
                         to={
                           activeWorkspaceId
                             ? `/workspaces/${activeWorkspaceId}/articles`
@@ -43,10 +44,10 @@ function Header() {
                         }
                       >
                         Articles
-                      </Link>
+                      </NavLink>
                     </li>
                     <li>
-                      <Link
+                      <NavLink
                         to={
                           activeWorkspaceId
                             ? `/workspaces/${activeWorkspaceId}/books`
@@ -54,7 +55,7 @@ function Header() {
                         }
                       >
                         Corpus
-                      </Link>
+                      </NavLink>
                     </li>
                   </ul>
                 </nav>
@@ -74,18 +75,25 @@ function Header() {
               </>
             )}
             {!connected && (
-              <nav>
-                <ul className={styles.menuLinks}>
-                  <li>
-                    <Link to="/">Login</Link>
-                  </li>
-                  <li>
-                    <Link to="/register" className={styles.registerAction}>
-                      Register
-                    </Link>
-                  </li>
-                </ul>
-              </nav>
+              <>
+                <nav>
+                  <ul className={styles.menuLinks}>
+                    <li>
+                      <NavLink to="/">
+                        {t('credentials.login.confirmButton')}
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/register" className={styles.registerAction}>
+                        {t('credentials.login.registerLink')}
+                      </NavLink>
+                    </li>
+                  </ul>
+                </nav>
+                <nav className={styles.secondaryNav}>
+                  <LanguagesMenu />
+                </nav>
+              </>
             )}
           </section>
         </header>
