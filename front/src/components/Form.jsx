@@ -148,7 +148,7 @@ function ArrayFieldTemplate(properties) {
               className={clsx(
                 element.className,
                 'can-add-remove',
-                element?.uiSchema?.['ui:className'],
+                element?.uiSchema?.['ui:className']
               )}
             >
               {element.children}
@@ -218,11 +218,11 @@ function ObjectFieldTemplate(properties) {
       const elements = fields
         .filter(
           (field) =>
-            (properties.uiSchema[field] || {})['ui:widget'] !== 'hidden',
+            (properties.uiSchema[field] || {})['ui:widget'] !== 'hidden'
         )
         .map((field) => {
           const element = properties.properties.find(
-            (element) => element.name === field,
+            (element) => element.name === field
           )
 
           if (!element) {
@@ -230,7 +230,7 @@ function ObjectFieldTemplate(properties) {
               'Field configuration not found for "%s" in \'ui:groups\' "%s" — part of %o',
               field,
               title || '',
-              fields,
+              fields
             )
           }
 
@@ -313,7 +313,7 @@ export default function SchemaForm({
         })
       },
     }),
-    [onChange, setFormData],
+    [onChange, setFormData]
   )
 
   const customWidgets = {
@@ -334,7 +334,7 @@ export default function SchemaForm({
       setFormData(formData)
       onChange(formData)
     },
-    [setFormData, onChange],
+    [setFormData, onChange]
   )
 
   // noinspection JSValidateTypes
