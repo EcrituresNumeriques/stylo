@@ -1,5 +1,11 @@
-const YAML = require('js-yaml')
-const { fromLegacyFormat } = require('../helpers/metadata')
+function updateLegacyValues(metadata) {
+  if (typeof metadata.publicationDate === 'string') {
+    metadata.publicationDate = metadata.publicationDate.replace(/\//g, '-')
+  }
+  if (typeof metadata.keywords === 'string') {
+    metadata.keywords = metadata.keywords.split(',').map((word) => word.trim())
+  }
+}
 
 exports.up = async function (db) {
   const mongo = await db._run('getDbInstance', true)
@@ -8,17 +14,13 @@ exports.up = async function (db) {
     const articlesCursor = articles.find({})
     while (await articlesCursor.hasNext()) {
       const article = await articlesCursor.next()
-      let metadata = {}
-      if (article.workingVersion.yaml) {
+      const metadata = article.workingVersion.metadata
+      if (metadata) {
         try {
-          const [legacyMetadata = {}] = YAML.loadAll(
-            article.workingVersion.yaml,
-            { json: true }
-          )
-          metadata = fromLegacyFormat(legacyMetadata)
+          updateLegacyValues(metadata)
         } catch (error) {
           console.error(
-            `Invalid metadata format on article with id: ${article._id}, metadata will be empty - reason: ${error.reason}`
+            `Unable to update legacy values in metadata on article with id: ${article._id} - reason: ${error.reason}`
           )
         }
       }
@@ -37,16 +39,13 @@ exports.up = async function (db) {
     const versionsCursor = versions.find({})
     while (await versionsCursor.hasNext()) {
       const version = await versionsCursor.next()
-      let metadata = {}
-      if (version.yaml) {
+      const metadata = version.metadata
+      if (metadata) {
         try {
-          const [legacyMetadata = {}] = YAML.loadAll(version.yaml, {
-            json: true,
-          })
-          metadata = fromLegacyFormat(legacyMetadata)
+          updateLegacyValues(metadata)
         } catch (error) {
           console.error(
-            `Invalid metadata format on version with id: ${version._id}, metadata will be empty - reason: ${error.reason}`
+            `Unable to update legacy values in metadata on version with id: ${version._id} - reason: ${error.reason}`
           )
         }
       }

@@ -1,5 +1,11 @@
 import { describe, test, expect } from 'vitest'
-import { filter, toBibtex, toEntries, validate, getValidationResults } from './bibtex'
+import {
+  filter,
+  toBibtex,
+  toEntries,
+  validate,
+  getValidationResults,
+} from './bibtex'
 
 describe('parse', () => {
   test('it should return line errors on syntax error', () => {
@@ -181,17 +187,20 @@ describe('parse', () => {
 
 describe('getValidationResults', () => {
   test('it should be valid when empty', async () => {
-    expect(await getValidationResults('')).toEqual({ valid: true, messages: []})
+    expect(await getValidationResults('')).toEqual({
+      valid: true,
+      messages: [],
+    })
   })
 
   test('it should return errors with issues', async () => {
     expect(await getValidationResults('@[][][][][]')).toEqual({
       valid: false,
-      messages: ["runaway_key at line 1"]
+      messages: ['runaway_key at line 1'],
     })
     expect(await getValidationResults('abcd')).toEqual({
       valid: false,
-      messages: []
+      messages: [],
     })
   })
 
@@ -200,7 +209,10 @@ describe('getValidationResults', () => {
       title = {test19}
     }`
 
-    expect(await getValidationResults(bib)).toEqual({ valid: true, messages: []})
+    expect(await getValidationResults(bib)).toEqual({
+      valid: true,
+      messages: [],
+    })
   })
 })
 
@@ -221,7 +233,7 @@ describe('toEntries', () => {
         type: 'book',
         entry: {},
         date: undefined,
-        authorName: ''
+        authorName: '',
       },
       {
         title: 'test26',
@@ -229,7 +241,7 @@ describe('toEntries', () => {
         type: 'book',
         entry: {},
         date: undefined,
-        authorName: ''
+        authorName: '',
       },
     ])
   })
@@ -248,7 +260,7 @@ describe('toEntries', () => {
         type: 'book',
         entry: {},
         date: undefined,
-        authorName: 'Thomas, Gelzer'
+        authorName: 'Thomas, Gelzer',
       },
     ])
   })
@@ -266,7 +278,7 @@ describe('toEntries', () => {
         type: 'book',
         entry: {},
         date: undefined,
-        authorName: ''
+        authorName: '',
       },
     ])
   })

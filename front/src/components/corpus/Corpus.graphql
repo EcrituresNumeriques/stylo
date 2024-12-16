@@ -1,89 +1,92 @@
 query getCorpus($filter: FilterCorpusInput, $includeArticles: Boolean = false) {
-    corpus(filter: $filter) {
-        _id
-        name
-        description
-        creator {
-            _id
-            displayName
-            username
-            email
-        }
-        metadata
-        articles @include(if: $includeArticles) {
-            article {
-                _id
-                title
-            }
-        }
-        createdAt
-        updatedAt
+  corpus(filter: $filter) {
+    _id
+    name
+    description
+    creator {
+      _id
+      displayName
+      username
+      email
     }
+    metadata
+    articles @include(if: $includeArticles) {
+      article {
+        _id
+        title
+      }
+    }
+    createdAt
+    updatedAt
+  }
 }
 
 mutation createCorpus($createCorpusInput: CreateCorpusInput!) {
-    createCorpus(createCorpusInput: $createCorpusInput) {
-        _id
-        name
-        description
-        creator {
-            _id
-            displayName
-            username
-            email
-        }
-        createdAt
-        updatedAt
-        workspace
+  createCorpus(createCorpusInput: $createCorpusInput) {
+    _id
+    name
+    description
+    creator {
+      _id
+      displayName
+      username
+      email
     }
+    createdAt
+    updatedAt
+    workspace
+  }
 }
 
 mutation deleteCorpus($corpusId: ID!) {
-    corpus(corpusId: $corpusId) {
-        delete {
-            _id
-        }
+  corpus(corpusId: $corpusId) {
+    delete {
+      _id
     }
+  }
 }
 
 mutation updateMetadata($corpusId: ID!, $metadata: JSON!) {
-    corpus(corpusId: $corpusId) {
-        updateMetadata(metadata: $metadata) {
-            _id
-        }
+  corpus(corpusId: $corpusId) {
+    updateMetadata(metadata: $metadata) {
+      _id
     }
+  }
 }
 
 mutation updateCorpus($corpusId: ID!, $updateCorpusInput: UpdateCorpusInput!) {
-    corpus(corpusId: $corpusId) {
-        update(updateCorpusInput: $updateCorpusInput) {
-            _id
-        }
+  corpus(corpusId: $corpusId) {
+    update(updateCorpusInput: $updateCorpusInput) {
+      _id
     }
+  }
 }
 
 mutation removeArticleFromCorpus($corpusId: ID!, $articleId: ID!) {
-    corpus(corpusId: $corpusId) {
-        article(articleId: $articleId) {
-            remove {
-                _id
-            }
-        }
+  corpus(corpusId: $corpusId) {
+    article(articleId: $articleId) {
+      remove {
+        _id
+      }
     }
+  }
 }
 
 mutation addArticleToCorpus($corpusId: ID!, $articleId: ID!) {
-    corpus(corpusId: $corpusId) {
-        addArticle(articleId: $articleId) {
-            _id
-        }
+  corpus(corpusId: $corpusId) {
+    addArticle(articleId: $articleId) {
+      _id
     }
+  }
 }
 
-mutation updateArticlesOrder($corpusId: ID!, $articlesOrderInput: [ArticleOrder!]!) {
-    corpus(corpusId: $corpusId) {
-        updateArticlesOrder(articlesOrderInput: $articlesOrderInput) {
-            _id
-        }
+mutation updateArticlesOrder(
+  $corpusId: ID!
+  $articlesOrderInput: [ArticleOrder!]!
+) {
+  corpus(corpusId: $corpusId) {
+    updateArticlesOrder(articlesOrderInput: $articlesOrderInput) {
+      _id
     }
+  }
 }

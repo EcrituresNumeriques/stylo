@@ -13,13 +13,13 @@ const DIVISIONS = [
   { amount: 7, name: 'days' },
   { amount: 4.34524, name: 'weeks' },
   { amount: 12, name: 'months' },
-  { amount: Number.POSITIVE_INFINITY, name: 'years' }
+  { amount: Number.POSITIVE_INFINITY, name: 'years' },
 ]
 
-export default function TimeAgo ({ date, className }) {
+export default function TimeAgo({ date, className }) {
   const { t } = useTranslation()
   const formatter = new Intl.RelativeTimeFormat(i18n.language, {
-    numeric: 'auto'
+    numeric: 'auto',
   })
   let duration = (new Date(date) - new Date()) / 1000
   let value
@@ -37,7 +37,9 @@ export default function TimeAgo ({ date, className }) {
     value = formatter.format(Math.round(duration), division.name)
   }
   return (
-    <time className={clsx(className, styles.time)} dateTime={date}>{value}</time>
+    <time className={clsx(className, styles.time)} dateTime={date}>
+      {value}
+    </time>
   )
 }
 

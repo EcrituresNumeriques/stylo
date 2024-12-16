@@ -1,9 +1,15 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
-import { Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import clsx from 'clsx'
-import { Modal as GeistModal, Note, Spacer, useModal, useToasts } from '@geist-ui/core'
+import {
+  Modal as GeistModal,
+  Note,
+  Spacer,
+  useModal,
+  useToasts,
+} from '@geist-ui/core'
 import { useActiveWorkspace } from '../hooks/workspace.js'
 
 import styles from './article.module.scss'
@@ -29,7 +35,7 @@ import {
   Printer,
   Send,
   Trash,
-  UserPlus
+  UserPlus,
 } from 'react-feather'
 
 import {
@@ -50,45 +56,61 @@ import { useSelector } from 'react-redux'
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
 
-export default function Article ({ article, onArticleUpdated, onArticleDeleted, onArticleCreated }) {
-  const activeUser = useSelector(state => state.activeUser)
+export default function Article({
+  article,
+  onArticleUpdated,
+  onArticleDeleted,
+  onArticleCreated,
+}) {
+  const activeUser = useSelector((state) => state.activeUser)
   const articleId = useMemo(() => article._id, [article])
   const activeWorkspace = useActiveWorkspace()
-  const activeWorkspaceId = useMemo(() => activeWorkspace?._id, [activeWorkspace])
+  const activeWorkspaceId = useMemo(
+    () => activeWorkspace?._id,
+    [activeWorkspace]
+  )
 
-  const {
-    data: contributorsQueryData,
-    error: contributorsError,
-  } = useGraphQL({ query: getArticleContributors, variables: { articleId } }, {
-    fallbackData: {
-      article
-    },
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  })
-  const contributors = (contributorsQueryData?.article?.contributors || []).filter(c => c.user._id !== article.owner._id)
-  const { data: userTagsQueryData } = useGraphQL({ query: getTags, variables: {} }, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  })
-  const userTags = (userTagsQueryData?.user?.tags || [])
-  const { data: articleTagsQueryData } = useGraphQL({ query: getArticleTags, variables: { articleId } }, {
-    fallbackData: {
-      article
-    },
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  })
-  const tags = (articleTagsQueryData?.article?.tags || [])
+  const { data: contributorsQueryData, error: contributorsError } = useGraphQL(
+    { query: getArticleContributors, variables: { articleId } },
+    {
+      fallbackData: {
+        article,
+      },
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  )
+  const contributors = (
+    contributorsQueryData?.article?.contributors || []
+  ).filter((c) => c.user._id !== article.owner._id)
+  const { data: userTagsQueryData } = useGraphQL(
+    { query: getTags, variables: {} },
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  )
+  const userTags = userTagsQueryData?.user?.tags || []
+  const { data: articleTagsQueryData } = useGraphQL(
+    { query: getArticleTags, variables: { articleId } },
+    {
+      fallbackData: {
+        article,
+      },
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  )
+  const tags = articleTagsQueryData?.article?.tags || []
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const {
     visible: deleteArticleVisible,
     setVisible: setDeleteArticleVisible,
-    bindings: deleteArticleModalBinding
+    bindings: deleteArticleModalBinding,
   } = useModal()
 
   const mutation = useMutation()
@@ -107,52 +129,65 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
     if (contributorsError) {
       setToast({
         type: 'error',
-        text: `Unable to load contributors: ${contributorsError.toString()}`
+        text: `Unable to load contributors: ${contributorsError.toString()}`,
       })
     }
   }, [contributorsError])
 
-  const toggleExpansion = useCallback((event) => {
-    if (!event.key || [' ', 'Enter'].includes(event.key)) {
-      setExpanded(!expanded)
-    }
-  }, [setExpanded, expanded])
+  const toggleExpansion = useCallback(
+    (event) => {
+      if (!event.key || [' ', 'Enter'].includes(event.key)) {
+        setExpanded(!expanded)
+      }
+    },
+    [setExpanded, expanded]
+  )
 
   const duplicate = async () => {
     const duplicatedArticleQuery = await mutation({
       query: duplicateArticle,
-      variables: { user: activeUser._id, to: activeUser._id, article: articleId }
+      variables: {
+        user: activeUser._id,
+        to: activeUser._id,
+        article: articleId,
+      },
     })
     onArticleCreated({
       ...article,
       ...duplicatedArticleQuery.duplicateArticle,
       contributors: [],
-      versions: []
+      versions: [],
     })
   }
 
   const rename = async (e) => {
     e.preventDefault()
-    await mutation({ query: renameArticle, variables: { user: activeUser._id, article: articleId, title: newTitle } })
+    await mutation({
+      query: renameArticle,
+      variables: { user: activeUser._id, article: articleId, title: newTitle },
+    })
     onArticleUpdated({
       ...article,
-      title: newTitle
+      title: newTitle,
     })
     setRenaming(false)
   }
 
   const handleDeleteArticle = async () => {
     try {
-      await mutation({ query: deleteArticle, variables: { article: articleId } })
+      await mutation({
+        query: deleteArticle,
+        variables: { article: articleId },
+      })
       onArticleDeleted(article)
       setToast({
         type: 'default',
-        text: t('article.delete.toastSuccess')
+        text: t('article.delete.toastSuccess'),
       })
     } catch (err) {
       setToast({
         type: 'error',
-        text: t('article.delete.toastError', {errMessage: err.message})
+        text: t('article.delete.toastError', { errMessage: err.message }),
       })
     }
   }
@@ -165,172 +200,268 @@ export default function Article ({ article, onArticleUpdated, onArticleDeleted, 
     setSharing(false)
   }, [setSharing])
 
-  const handleArticleTagsUpdated = useCallback((event) => {
-    onArticleUpdated({
-      ...article,
-      tags: event.updatedTags
-    })
-  }, [article])
+  const handleArticleTagsUpdated = useCallback(
+    (event) => {
+      onArticleUpdated({
+        ...article,
+        tags: event.updatedTags,
+      })
+    },
+    [article]
+  )
 
   return (
     <article className={styles.article}>
       {exporting && (
         <Modal title="Export" cancel={() => setExporting(false)}>
-          <Export articleId={article._id} bib={article.workingVersion.bibPreview} name={article.title}/>
+          <Export
+            articleId={article._id}
+            bib={article.workingVersion.bibPreview}
+            name={article.title}
+          />
         </Modal>
       )}
 
       <GeistModal width="30rem" visible={sharing} onClose={closeSharingModal}>
         <h2>{t('article.shareModal.title')}</h2>
-        <span className={styles.sendText}>{t('article.shareModal.description')}</span>
+        <span className={styles.sendText}>
+          {t('article.shareModal.description')}
+        </span>
         <GeistModal.Content>
-          <ArticleContributors
-            article={article}
-            contributors={contributors}
-          />
+          <ArticleContributors article={article} contributors={contributors} />
         </GeistModal.Content>
-        <GeistModal.Action passive onClick={closeSharingModal}>{t('modal.close.text')}</GeistModal.Action>
+        <GeistModal.Action passive onClick={closeSharingModal}>
+          {t('modal.close.text')}
+        </GeistModal.Action>
       </GeistModal>
 
       <GeistModal width="30rem" visible={sharing} onClose={closeSharingModal}>
         <h2>{t('article.shareModal.title')}</h2>
-        <span className={styles.sendText}>{t('article.shareModal.description')}</span>
+        <span className={styles.sendText}>
+          {t('article.shareModal.description')}
+        </span>
         <GeistModal.Content>
-          <ArticleContributors
-            article={article}
-            contributors={contributors}
-          />
+          <ArticleContributors article={article} contributors={contributors} />
         </GeistModal.Content>
-        <GeistModal.Action passive onClick={closeSharingModal}>{t('modal.close.text')}</GeistModal.Action>
+        <GeistModal.Action passive onClick={closeSharingModal}>
+          {t('modal.close.text')}
+        </GeistModal.Action>
       </GeistModal>
 
       <GeistModal width="25rem" visible={sending} onClose={closeSendingModal}>
         <h2>{t('article.sendCopyModal.title')}</h2>
         <span>
-          <span className={styles.sendText}>{t('article.sendCopyModal.description')}{' '}</span>
-          <span><Send className={styles.sendIcon}/></span>
+          <span className={styles.sendText}>
+            {t('article.sendCopyModal.description')}{' '}
+          </span>
+          <span>
+            <Send className={styles.sendIcon} />
+          </span>
         </span>
         <GeistModal.Content>
-          <ArticleSendCopy article={article} cancel={closeSendingModal}/>
+          <ArticleSendCopy article={article} cancel={closeSendingModal} />
         </GeistModal.Content>
-        <GeistModal.Action passive onClick={closeSendingModal}>{t('modal.close.text')}</GeistModal.Action>
+        <GeistModal.Action passive onClick={closeSendingModal}>
+          {t('modal.close.text')}
+        </GeistModal.Action>
       </GeistModal>
 
       {!renaming && (
         <h1 className={styles.title} onClick={toggleExpansion}>
           <span tabIndex={0} onKeyUp={toggleExpansion} className={styles.icon}>
-            {expanded ? <ChevronDown/> : <ChevronRight/>}
+            {expanded ? <ChevronDown /> : <ChevronRight />}
           </span>
 
           <span>
             {article.title}
-            <Button title={t('article.editName.button')} icon={true} className={styles.editTitleButton} onClick={(evt) =>
-              evt.stopPropagation() || setRenaming(true)
-            }>
-            <Edit3 size="20"/>
-          </Button>
+            <Button
+              title={t('article.editName.button')}
+              icon={true}
+              className={styles.editTitleButton}
+              onClick={(evt) => evt.stopPropagation() || setRenaming(true)}
+            >
+              <Edit3 size="20" />
+            </Button>
           </span>
         </h1>
       )}
       {renaming && (
-        <form className={clsx(styles.renamingForm, fieldStyles.inlineFields)} onSubmit={(e) => rename(e)}>
-          <Field className={styles.inlineField} autoFocus={true} type="text" value={newTitle}
-                 onChange={(e) => setNewTitle(e.target.value)} placeholder="Article Title"/>
-          <Button title={t('article.editName.buttonSave')} primary={true} onClick={(e) => rename(e)}>
-            <Check/> {t('article.editName.buttonSave')}
+        <form
+          className={clsx(styles.renamingForm, fieldStyles.inlineFields)}
+          onSubmit={(e) => rename(e)}
+        >
+          <Field
+            className={styles.inlineField}
+            autoFocus={true}
+            type="text"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+            placeholder="Article Title"
+          />
+          <Button
+            title={t('article.editName.buttonSave')}
+            primary={true}
+            onClick={(e) => rename(e)}
+          >
+            <Check /> {t('article.editName.buttonSave')}
           </Button>
-          <Button title={t('article.editName.buttonCancel')} type="button" onClick={() => {
-            setRenaming(false)
-            setNewTitle(article.title)
-          }}>
+          <Button
+            title={t('article.editName.buttonCancel')}
+            type="button"
+            onClick={() => {
+              setRenaming(false)
+              setNewTitle(article.title)
+            }}
+          >
             {t('article.editName.buttonCancel')}
           </Button>
         </form>
       )}
 
       <aside className={styles.actionButtons}>
+        {isArticleOwner && !activeWorkspaceId && (
+          <Button
+            title={t('article.delete.button')}
+            icon={true}
+            onClick={() => setDeleteArticleVisible(true)}
+          >
+            <Trash />
+          </Button>
+        )}
 
-        {isArticleOwner && !activeWorkspaceId &&
-          <Button title={t('article.delete.button')} icon={true} onClick={() => setDeleteArticleVisible(true)}>
-            <Trash/>
-          </Button>}
-
-        <GeistModal visible={deleteArticleVisible} {...deleteArticleModalBinding}>
+        <GeistModal
+          visible={deleteArticleVisible}
+          {...deleteArticleModalBinding}
+        >
           <h2>{t('article.deleteModal.title')}</h2>
           <GeistModal.Content>
             {t('article.deleteModal.confirmMessage')}
-            {contributors && contributors.length > 0 && (<>
-              <Spacer h={1}/>
-              <Note label="Important" type="error">{t('article.deleteModal.contributorsRemovalNote')}</Note>
-            </>)}
+            {contributors && contributors.length > 0 && (
+              <>
+                <Spacer h={1} />
+                <Note label="Important" type="error">
+                  {t('article.deleteModal.contributorsRemovalNote')}
+                </Note>
+              </>
+            )}
           </GeistModal.Content>
-          <GeistModal.Action passive onClick={() => setDeleteArticleVisible(false)}>
+          <GeistModal.Action
+            passive
+            onClick={() => setDeleteArticleVisible(false)}
+          >
             {t('modal.cancelButton.text')}
           </GeistModal.Action>
-          <GeistModal.Action onClick={handleDeleteArticle}>{t('modal.confirmButton.text')}</GeistModal.Action>
+          <GeistModal.Action onClick={handleDeleteArticle}>
+            {t('modal.confirmButton.text')}
+          </GeistModal.Action>
         </GeistModal>
 
-        <Button title={t('article.duplicate.button')} icon={true} onClick={() => duplicate()}>
-          <Copy/>
+        <Button
+          title={t('article.duplicate.button')}
+          icon={true}
+          onClick={() => duplicate()}
+        >
+          <Copy />
         </Button>
 
-        {<Button title={t('article.sendCopy.button')} icon={true} onClick={() => setSending(true)}>
-          <Send/>
-        </Button>}
+        {
+          <Button
+            title={t('article.sendCopy.button')}
+            icon={true}
+            onClick={() => setSending(true)}
+          >
+            <Send />
+          </Button>
+        }
 
-        {<Button title={t('article.share.button')} icon={true} onClick={() => setSharing(true)}>
-          <UserPlus/>
-        </Button>}
+        {
+          <Button
+            title={t('article.share.button')}
+            icon={true}
+            onClick={() => setSharing(true)}
+          >
+            <UserPlus />
+          </Button>
+        }
 
-        <Button title={t('article.download.button')} icon={true} onClick={() => setExporting(true)}>
-          <Printer/>
+        <Button
+          title={t('article.download.button')}
+          icon={true}
+          onClick={() => setExporting(true)}
+        >
+          <Printer />
         </Button>
 
-        <CollaborativeSessionAction collaborativeSession={article.collaborativeSession} articleId={articleId}/>
+        <CollaborativeSessionAction
+          collaborativeSession={article.collaborativeSession}
+          articleId={articleId}
+        />
 
-        <SoloSessionAction collaborativeSession={article.collaborativeSession} soloSession={article.soloSession} articleId={articleId}/>
+        <SoloSessionAction
+          collaborativeSession={article.collaborativeSession}
+          soloSession={article.soloSession}
+          articleId={articleId}
+        />
 
-        <Link title={t('article.preview.button')} target="_blank" className={buttonStyles.icon}
-              to={`/article/${article._id}/preview`}>
-          <Eye/>
+        <Link
+          title={t('article.preview.button')}
+          target="_blank"
+          className={buttonStyles.icon}
+          to={`/article/${article._id}/preview`}
+        >
+          <Eye />
         </Link>
       </aside>
 
       <section className={styles.metadata}>
         <p className={styles.metadataAuthoring}>
           {tags.map((t) => (
-            <span className={styles.tagChip} key={'tagColor-' + t._id} style={{ backgroundColor: t.color || 'grey' }}/>
+            <span
+              className={styles.tagChip}
+              key={'tagColor-' + t._id}
+              style={{ backgroundColor: t.color || 'grey' }}
+            />
           ))}
-          <span className={styles.by}>{t('article.by.text')}</span> <span
-          className={styles.author}>{article.owner.displayName}</span>
-          {contributors?.length > 0 && (<span
-            className={styles.contributorNames}><span>, {contributors.map(c => c.user.displayName || c.user.username).join(', ')}</span></span>)}
-          <TimeAgo date={article.updatedAt} className={styles.momentsAgo}/>
+          <span className={styles.by}>{t('article.by.text')}</span>{' '}
+          <span className={styles.author}>{article.owner.displayName}</span>
+          {contributors?.length > 0 && (
+            <span className={styles.contributorNames}>
+              <span>
+                ,{' '}
+                {contributors
+                  .map((c) => c.user.displayName || c.user.username)
+                  .join(', ')}
+              </span>
+            </span>
+          )}
+          <TimeAgo date={article.updatedAt} className={styles.momentsAgo} />
         </p>
 
         {expanded && (
           <div>
-            <ArticleVersionLinks article={article} articleId={articleId}/>
+            <ArticleVersionLinks article={article} articleId={articleId} />
 
-            {userTags.length > 0 && <>
-              <h4>{t('article.tags.title')}</h4>
-              <div className={styles.editTags}>
-                <ArticleTags
-                  articleId={article._id}
-                  userTags={userTags}
-                  onArticleTagsUpdated={handleArticleTagsUpdated}/>
-              </div>
-            </>
-            }
+            {userTags.length > 0 && (
+              <>
+                <h4>{t('article.tags.title')}</h4>
+                <div className={styles.editTags}>
+                  <ArticleTags
+                    articleId={article._id}
+                    userTags={userTags}
+                    onArticleTagsUpdated={handleArticleTagsUpdated}
+                  />
+                </div>
+              </>
+            )}
 
             <h4>{t('article.workspaces.title')}</h4>
             <ul className={styles.workspaces}>
-              <WorkspaceSelectionItems articleId={articleId}/>
+              <WorkspaceSelectionItems articleId={articleId} />
             </ul>
 
             <h4>{t('article.corpus.title')}</h4>
             <ul className={styles.corpusList}>
-              <CorpusSelectItems articleId={articleId}/>
+              <CorpusSelectItems articleId={articleId} />
             </ul>
           </div>
         )}
@@ -343,11 +474,11 @@ Article.propTypes = {
   article: PropTypes.shape({
     title: PropTypes.string,
     owner: PropTypes.shape({
-      displayName: PropTypes.string
+      displayName: PropTypes.string,
     }),
     collaborativeSession: PropTypes.object,
     soloSession: PropTypes.object,
     updatedAt: PropTypes.string,
-    _id: PropTypes.string
-  })
+    _id: PropTypes.string,
+  }),
 }

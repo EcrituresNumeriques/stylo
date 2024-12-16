@@ -6,7 +6,7 @@
   font-size: 0.9em;
   padding-bottom: 1em;
   > li {
-    padding: .5rem;
+    padding: 0.5rem;
   }
   > li.selected {
     background-color: hsl(120deg 68% 90%);
@@ -24,7 +24,7 @@
 .editTitleButton {
   @include article.inlineTextButton;
   height: auto;
-  padding: 0 .25em;
+  padding: 0 0.25em;
 }
 
 .version {
@@ -42,8 +42,8 @@
   text-decoration: none;
   flex-grow: 1;
   background-color: transparent;
-  margin: -0.5rem;  /* counter act the 0.5rem padding of its container */
-  padding: 0.5rem;  /* ^^^^^^ */
+  margin: -0.5rem; /* counter act the 0.5rem padding of its container */
+  padding: 0.5rem; /* ^^^^^^ */
 
   > header {
     max-width: 265px;

@@ -13,24 +13,31 @@ import Button from './Button'
 import Field from './Field'
 import TimeAgo from './TimeAgo.jsx'
 
-export default function UserInfos () {
+export default function UserInfos() {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const runQuery = useGraphQL()
-  const activeUser = useSelector(state => state.activeUser, shallowEqual)
-  const zoteroToken = useSelector(state => state.activeUser.zoteroToken)
-  const sessionToken = useSelector(state => state.sessionToken)
+  const activeUser = useSelector((state) => state.activeUser, shallowEqual)
+  const zoteroToken = useSelector((state) => state.activeUser.zoteroToken)
+  const sessionToken = useSelector((state) => state.sessionToken)
   const [displayName, setDisplayName] = useState(activeUser.displayName)
   const [firstName, setFirstName] = useState(activeUser.firstName || '')
   const [lastName, setLastName] = useState(activeUser.lastName || '')
   const [institution, setInstitution] = useState(activeUser.institution || '')
   const [isSaving, setIsSaving] = useState(false)
 
-  const updateActiveUserDetails = useCallback((payload) => dispatch({
-    type: `UPDATE_ACTIVE_USER_DETAILS`,
-    payload
-  }), [])
-  const clearZoteroToken = useCallback(() => dispatch({ type: 'CLEAR_ZOTERO_TOKEN' }), [])
+  const updateActiveUserDetails = useCallback(
+    (payload) =>
+      dispatch({
+        type: `UPDATE_ACTIVE_USER_DETAILS`,
+        payload,
+      }),
+    []
+  )
+  const clearZoteroToken = useCallback(
+    () => dispatch({ type: 'CLEAR_ZOTERO_TOKEN' }),
+    []
+  )
 
   const unlinkZoteroAccount = useCallback(async (event) => {
     event.preventDefault()
@@ -41,19 +48,26 @@ export default function UserInfos () {
     setIsSaving(false)
   }, [])
 
-  const updateInfo = useCallback(async (e) => {
-    e.preventDefault()
-    setIsSaving(true)
-    const variables = {
-      user: activeUser._id,
-      details: { displayName, firstName, lastName, institution },
-    }
-    const { updateUser: userDetails } = await runQuery({ query: updateUser, variables })
-    updateActiveUserDetails(userDetails)
-    setIsSaving(false)
-  }, [activeUser._id, displayName, firstName, lastName, institution])
+  const updateInfo = useCallback(
+    async (e) => {
+      e.preventDefault()
+      setIsSaving(true)
+      const variables = {
+        user: activeUser._id,
+        details: { displayName, firstName, lastName, institution },
+      }
+      const { updateUser: userDetails } = await runQuery({
+        query: updateUser,
+        variables,
+      })
+      updateActiveUserDetails(userDetails)
+      setIsSaving(false)
+    },
+    [activeUser._id, displayName, firstName, lastName, institution]
+  )
 
-  return (<>
+  return (
+    <>
       <section className={styles.section}>
         <h2>{t('user.account.title')}</h2>
         <form onSubmit={updateInfo} className={styles.form}>
@@ -87,18 +101,25 @@ export default function UserInfos () {
           />
           <Field label="Zotero">
             <>
-              {zoteroToken && <div className={styles.zotero}>
-                <div>Linked with <code>{zoteroToken}</code> account.</div>
-                <Button title="Unlink this Zotero account" onClick={unlinkZoteroAccount}>
-                  Unlink
-                </Button>
-              </div>}
+              {zoteroToken && (
+                <div className={styles.zotero}>
+                  <div>
+                    Linked with <code>{zoteroToken}</code> account.
+                  </div>
+                  <Button
+                    title="Unlink this Zotero account"
+                    onClick={unlinkZoteroAccount}
+                  >
+                    Unlink
+                  </Button>
+                </div>
+              )}
               {!zoteroToken && <span>No linked account.</span>}
             </>
           </Field>
           <div className={formStyles.footer}>
             <Button primary={true} disabled={isSaving}>
-              {isSaving ? <Loader/> : <Check/>}
+              {isSaving ? <Loader /> : <Check />}
               Save changes
             </Button>
           </div>
@@ -107,33 +128,48 @@ export default function UserInfos () {
 
       <section className={styles.section}>
         <div className={styles.info}>
-          <Field label={t("user.account.email")}>
+          <Field label={t('user.account.email')}>
             <>{activeUser.email}</>
           </Field>
-          {activeUser.username && <Field label="Username"><>{activeUser.username}</>
-          </Field>}
-          <Field label={t("user.account.authentication")}>
-            <>{activeUser.authType === 'oidc' ? 'OpenID (External)' : 'Password'}</>
-          </Field>
-          <Field label={t("user.account.apiKey")} className={styles.apiKeyField}>
+          {activeUser.username && (
+            <Field label="Username">
+              <>{activeUser.username}</>
+            </Field>
+          )}
+          <Field label={t('user.account.authentication')}>
             <>
-              <code className={styles.apiKeyValue} title={t("user.account.apiKeyValue", {token: sessionToken})}>{sessionToken}</code>
+              {activeUser.authType === 'oidc'
+                ? 'OpenID (External)'
+                : 'Password'}
+            </>
+          </Field>
+          <Field
+            label={t('user.account.apiKey')}
+            className={styles.apiKeyField}
+          >
+            <>
+              <code
+                className={styles.apiKeyValue}
+                title={t('user.account.apiKeyValue', { token: sessionToken })}
+              >
+                {sessionToken}
+              </code>
               <CopyToClipboard text={sessionToken}>
-                <Button title={t("user.account.copyApiKey")} icon={true}>
-                  <Clipboard/>
+                <Button title={t('user.account.copyApiKey')} icon={true}>
+                  <Clipboard />
                 </Button>
               </CopyToClipboard>
             </>
           </Field>
-          <Field label={t("user.account.id")}>
+          <Field label={t('user.account.id')}>
             <code>{activeUser._id}</code>
           </Field>
           {activeUser.admin && <Field label="Admin">✔️</Field>}
-          <Field label={t("user.account.createdAt")}>
-            <TimeAgo date={activeUser.createdAt}/>
+          <Field label={t('user.account.createdAt')}>
+            <TimeAgo date={activeUser.createdAt} />
           </Field>
-          <Field label={t("user.account.updatedAt")}>
-            <TimeAgo date={activeUser.updatedAt}/>
+          <Field label={t('user.account.updatedAt')}>
+            <TimeAgo date={activeUser.updatedAt} />
           </Field>
         </div>
       </section>

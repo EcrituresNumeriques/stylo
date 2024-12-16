@@ -2,7 +2,7 @@ import React from 'react'
 
 import styles from '../components/Write/write.module.scss'
 
-export default function Privacy () {
+export default function Privacy() {
   return (
     <section className={styles.container}>
       <article className={styles.simplePage}>

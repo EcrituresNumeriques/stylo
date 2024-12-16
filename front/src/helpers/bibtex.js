@@ -38,17 +38,19 @@ export function validate(bibtex) {
   }))
 }
 
-export async function getValidationResults (bibtex) {
+export async function getValidationResults(bibtex) {
   const result = { valid: false, messages: [] }
 
   if (bibtex.trim() === '') {
     result.valid = true
-  }
-  else {
+  } else {
     const validationResult = await validate(bibtex)
 
     if (validationResult.warnings.length || validationResult.errors.length) {
-      result.messages = [...validationResult.errors, ...validationResult.warnings]
+      result.messages = [
+        ...validationResult.errors,
+        ...validationResult.warnings,
+      ]
     } else {
       result.valid = validationResult.empty || validationResult.success !== 0
     }
@@ -65,16 +67,17 @@ export function deriveAuthorNameAndDate(entry) {
   if (Array.isArray(author) && author.length) {
     const { family, given, prefix, literal } = author[0]
     if (literal) {
-      authorName = literal.map(o => o.text).join(' ')
-    }
-    else {
-      const authorPrefix = prefix ? `${prefix.map(o => o.text).join(' ')} ` : ''
+      authorName = literal.map((o) => o.text).join(' ')
+    } else {
+      const authorPrefix = prefix
+        ? `${prefix.map((o) => o.text).join(' ')} `
+        : ''
       const authorNames = []
       if (given) {
-        authorNames.push(given.map(o => o.text).join(' '))
+        authorNames.push(given.map((o) => o.text).join(' '))
       }
       if (family) {
-        authorNames.push(family.map(o => o.text).join(' '))
+        authorNames.push(family.map((o) => o.text).join(' '))
       }
       authorName = `${authorPrefix}${authorNames.join(', ')}`
     }
@@ -105,7 +108,6 @@ export function toEntries(input) {
     }))
     .sort(compare)
 }
-
 
 /**
  * Filter invalid citation from a raw BibTeX

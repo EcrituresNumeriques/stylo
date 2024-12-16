@@ -134,7 +134,7 @@
       input[type='date'],
       input[type='text'],
       input[type='url'] {
-        @include inputField
+        @include inputField;
       }
 
       input[type='date'] {
@@ -234,7 +234,7 @@
 }
 
 .comboboxReadonlyField {
-  margin-right: .5em;
+  margin-right: 0.5em;
 }
 
 .autocompleteField {
@@ -243,7 +243,7 @@
 .addButton,
 .removeButton {
   font-size: 1em;
-  margin-top: .25rem;
+  margin-top: 0.25rem;
 }
 
 .inlineRemoveButton {
@@ -257,6 +257,6 @@
 
 .fieldHasNoElementError {
   border: 1px solid $error-color;
-  margin: .5em;
-  padding: .5rem;
+  margin: 0.5em;
+  padding: 0.5rem;
 }

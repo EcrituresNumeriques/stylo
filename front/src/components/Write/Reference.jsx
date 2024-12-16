@@ -7,27 +7,40 @@ import styles from './reference.module.scss'
 import ReferenceTypeIcon from '../ReferenceTypeIcon'
 import Button from '../Button'
 
-const BibliographyReference = memo(function BibliographyReference ({ entry }) {
+const BibliographyReference = memo(function BibliographyReference({ entry }) {
   const { key, title, type, date, authorName } = entry
   const { t } = useTranslation()
 
   return (
-    <div
-      className={styles.reference}
-    >
-      <ReferenceTypeIcon type={type} className={styles.referenceTypeIcon}/>
+    <div className={styles.reference}>
+      <ReferenceTypeIcon type={type} className={styles.referenceTypeIcon} />
       <div className={styles.referenceInfo}>
-        <p className={styles.referencePrimaryInfo} title={authorName + ' | ' + title}>
-          {authorName && <span className={styles.referenceAuthor}>{authorName}</span>}
-          <span className={styles.referenceTitle} title={title}>{title}</span>
+        <p
+          className={styles.referencePrimaryInfo}
+          title={authorName + ' | ' + title}
+        >
+          {authorName && (
+            <span className={styles.referenceAuthor}>{authorName}</span>
+          )}
+          <span className={styles.referenceTitle} title={title}>
+            {title}
+          </span>
           <span className={styles.referenceDate}>{date}</span>
         </p>
         <p className={styles.referenceSecondaryInfo}>
-          <span className={styles.referenceKey} title={'@' + key}>@{key}</span>
+          <span className={styles.referenceKey} title={'@' + key}>
+            @{key}
+          </span>
         </p>
       </div>
       <CopyToClipboard text={`[@${key}]`}>
-        <Button title={t('write.copyClipboard.referenceButton')} className={styles.copyToClipboard} icon={true}><Clipboard/></Button>
+        <Button
+          title={t('write.copyClipboard.referenceButton')}
+          className={styles.copyToClipboard}
+          icon={true}
+        >
+          <Clipboard />
+        </Button>
       </CopyToClipboard>
     </div>
   )

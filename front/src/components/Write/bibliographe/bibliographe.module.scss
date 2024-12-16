@@ -4,7 +4,7 @@
 .actions {
   display: flex;
   align-items: center;
-  margin: .5em 0;
+  margin: 0.5em 0;
 }
 
 .actionsSubmit {
@@ -12,10 +12,9 @@
 }
 
 .actionsHelp svg {
-  margin-right: .25em;
+  margin-right: 0.25em;
   vertical-align: middle;
 }
-
 
 .raw,
 .citations,
@@ -24,14 +23,14 @@
 
   h3 > svg {
     max-height: fit-content;
-    margin-right: .3rem;
+    margin-right: 0.3rem;
     vertical-align: sub;
   }
 }
 
 .zotero {
   .section > h3 {
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
   }
 
   .section > p {

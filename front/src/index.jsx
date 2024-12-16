@@ -3,7 +3,12 @@ import 'core-js/modules/web.structured-clone'
 import * as Sentry from '@sentry/react'
 import React, { lazy, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter as Router, Route as OriginalRoute, Switch, useHistory } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Route as OriginalRoute,
+  Switch,
+  useHistory,
+} from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import { Provider } from 'react-redux'
 import { GeistProvider, Loading } from '@geist-ui/core'
@@ -35,12 +40,12 @@ if (SENTRY_DSN) {
       Sentry.browserTracingIntegration(),
       Sentry.reactRouterV5BrowserTracingIntegration({ history }),
       Sentry.replayIntegration(),
-      Sentry.replayCanvasIntegration()
+      Sentry.replayCanvasIntegration(),
     ],
     tracesSampleRate: 1.0,
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,
-    tracePropagationTargets: [/^\//]
+    tracePropagationTargets: [/^\//],
   })
 }
 
@@ -67,7 +72,10 @@ const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
   }
 
   try {
-    const { user, token } = await getUserProfile({ applicationConfig, sessionToken })
+    const { user, token } = await getUserProfile({
+      applicationConfig,
+      sessionToken,
+    })
     const pathname = location.pathname
     const workspacePathRxResult = pathname.match(workspacePathsRx)
     let activeWorkspaceId
@@ -88,19 +96,19 @@ const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
 
     if (currentValue !== previousValue) {
       sessionToken = currentValue
-      getUserProfile({ applicationConfig, sessionToken })
-        .then((response) => store.dispatch({ type: 'PROFILE', ...response }))
+      getUserProfile({ applicationConfig, sessionToken }).then((response) =>
+        store.dispatch({ type: 'PROFILE', ...response })
+      )
     }
   })
 })()
-
 
 const TrackPageViews = () => {
   const history = useHistory()
 
   history.listen(({ pathname, search, state }, action) => {
     /* global _paq */
-    const _paq = window._paq = window._paq || []
+    const _paq = (window._paq = window._paq || [])
 
     //@todo do this dynamically, based on a subscription to the store
     //otherwise, we should use _paq.push(['forgetConsentGiven'])
@@ -116,81 +124,105 @@ const TrackPageViews = () => {
 const root = createRoot(document.getElementById('root'), {
   onUncaughtError: Sentry.reactErrorHandler(),
   onCaughtError: Sentry.reactErrorHandler(),
-  onRecoverableError: Sentry.reactErrorHandler()
+  onRecoverableError: Sentry.reactErrorHandler(),
 })
 
 root.render(
   <React.StrictMode>
     <GeistProvider>
       <Provider store={store}>
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
           <Router history={history}>
             <App>
-              <TrackPageViews/>
-              <Header/>
+              <TrackPageViews />
+              <Header />
               <Switch>
                 <Route path="/register" exact>
-                  <Register/>
+                  <Register />
                 </Route>
                 {/* Articles index */}
-                <PrivateRoute path={['/articles', '/', '/workspaces/:workspaceId/articles']} exact>
-                  <Articles/>
+                <PrivateRoute
+                  path={['/articles', '/', '/workspaces/:workspaceId/articles']}
+                  exact
+                >
+                  <Articles />
                 </PrivateRoute>
                 {/* Books index */}
-                <PrivateRoute path={['/books', '/workspaces/:workspaceId/books']} exact>
-                  <Corpus/>
+                <PrivateRoute
+                  path={['/books', '/workspaces/:workspaceId/books']}
+                  exact
+                >
+                  <Corpus />
                 </PrivateRoute>
                 {/* Workspaces index */}
                 <PrivateRoute path={['/workspaces']} exact>
-                  <Workspaces/>
+                  <Workspaces />
                 </PrivateRoute>
                 <PrivateRoute path="/credentials" exact>
-                  <UserInfos/>
-                  <Credentials/>
+                  <UserInfos />
+                  <Credentials />
                 </PrivateRoute>
                 {/* Annotate a Book */}
                 <Route path={[`/books/:bookId/preview`]} exact>
-                  <ArticlePreview/>
+                  <ArticlePreview />
                 </Route>
                 {/* Annotate an article or its version */}
-                <Route path={[`/article/:id/version/:version/preview`, `/article/:id/preview`]} exact>
-                  <ArticlePreview/>
+                <Route
+                  path={[
+                    `/article/:id/version/:version/preview`,
+                    `/article/:id/preview`,
+                  ]}
+                  exact
+                >
+                  <ArticlePreview />
                 </Route>
                 {/* Write and Compare */}
                 <PrivateRoute
-                  path={[`/article/:id/compare/:compareTo`, `/article/:id/version/:version/compare/working-copy`, `/article/:id/version/:version/compare/:compareTo`]} exact>
+                  path={[
+                    `/article/:id/compare/:compareTo`,
+                    `/article/:id/version/:version/compare/working-copy`,
+                    `/article/:id/version/:version/compare/:compareTo`,
+                  ]}
+                  exact
+                >
                   <Write />
                 </PrivateRoute>
                 {/* Write with a given version */}
                 <PrivateRoute path={`/article/:id/version/:version`} exact>
-                  <Write/>
+                  <Write />
                 </PrivateRoute>
                 {/* Write and/or Preview */}
-                <PrivateRoute path={[`/article/:id/preview`, `/article/:id`]} exact>
-                  <Write/>
+                <PrivateRoute
+                  path={[`/article/:id/preview`, `/article/:id`]}
+                  exact
+                >
+                  <Write />
                 </PrivateRoute>
                 {/* Collaborative editing */}
-                <PrivateRoute path={[`/article/:articleId/session/:sessionId`]} exact>
-                  <CollaborativeEditor/>
+                <PrivateRoute
+                  path={[`/article/:articleId/session/:sessionId`]}
+                  exact
+                >
+                  <CollaborativeEditor />
                 </PrivateRoute>
                 <Route exact path="/privacy">
-                  <Privacy/>
+                  <Privacy />
                 </Route>
                 <Route exact path="/ux">
-                  <Story/>
+                  <Story />
                 </Route>
                 <Route exact path="/error">
-                  <Error/>
+                  <Error />
                 </Route>
                 <Route path="*">
-                  <NotFound/>
+                  <NotFound />
                 </Route>
               </Switch>
-              <Footer/>
+              <Footer />
             </App>
           </Router>
         </Suspense>
       </Provider>
     </GeistProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 )

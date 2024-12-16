@@ -6,7 +6,7 @@ dialog::backdrop {
 }
 
 :global {
-  body[data-scrolling="false"] {
+  body[data-scrolling='false'] {
     overflow: hidden;
   }
 

@@ -72,7 +72,7 @@ query getUserArticles($user: ID!) {
   }
 }
 
-query getWorkspaceArticles ($workspaceId: ID!) {
+query getWorkspaceArticles($workspaceId: ID!) {
   tags {
     _id
     owner
@@ -143,8 +143,8 @@ query getWorkspaceArticles ($workspaceId: ID!) {
   }
 }
 
-mutation createArticle ($title: String!, $user: ID!, $tags: [ID]!) {
-  createArticle(title: $title, user:$user) {
+mutation createArticle($title: String!, $user: ID!, $tags: [ID]!) {
+  createArticle(title: $title, user: $user) {
     _id
     title
     updatedAt
@@ -162,7 +162,7 @@ mutation createArticle ($title: String!, $user: ID!, $tags: [ID]!) {
       _id
     }
 
-    addTags (tags: $tags) {
+    addTags(tags: $tags) {
       _id
       name
       color

@@ -10,9 +10,13 @@ import Button from '../Button.jsx'
 
 import { startSoloSession, takeOverSoloSession } from './SoloSession.graphql'
 
-export default function SoloSessionAction ({ collaborativeSession, soloSession, articleId }) {
+export default function SoloSessionAction({
+  collaborativeSession,
+  soloSession,
+  articleId,
+}) {
   const { t } = useTranslation()
-  const activeUser = useSelector(state => state.activeUser)
+  const activeUser = useSelector((state) => state.activeUser)
   const { setToast } = useToasts()
   const history = useHistory()
   const [activeSoloSessionCreator, setActiveSoloSessionCreator] = useState('')
@@ -20,7 +24,7 @@ export default function SoloSessionAction ({ collaborativeSession, soloSession, 
   const {
     visible: takeOverModalVisible,
     setVisible: setTakeOverModalVisible,
-    bindings: takeOverModalBinding
+    bindings: takeOverModalBinding,
   } = useModal()
   const handleStartSoloEditing = useCallback(async () => {
     if (soloSession && soloSession.id) {
@@ -36,15 +40,20 @@ export default function SoloSessionAction ({ collaborativeSession, soloSession, 
         await mutation({ query: startSoloSession, variables: { articleId } })
         history.push(`/article/${articleId}`)
       } catch (err) {
-        if (err && err.messages && err.messages.length > 0 && err.messages[0].extensions && err.messages[0].extensions.type === 'UNAUTHORIZED_SOLO_SESSION_ACTIVE') {
+        if (
+          err &&
+          err.messages &&
+          err.messages.length > 0 &&
+          err.messages[0].extensions &&
+          err.messages[0].extensions.type === 'UNAUTHORIZED_SOLO_SESSION_ACTIVE'
+        ) {
           // already exists
           history.push(`/article/${articleId}`)
         } else {
           setToast({
-              type: 'error',
-              text: `Unable to start a solo session: ${err.toString()}`
-            }
-          )
+            type: 'error',
+            text: `Unable to start a solo session: ${err.toString()}`,
+          })
         }
       }
     }
@@ -56,10 +65,9 @@ export default function SoloSessionAction ({ collaborativeSession, soloSession, 
       history.push(`/article/${articleId}`)
     } catch (err) {
       setToast({
-          type: 'error',
-          text: `Unable to take over this solo session: ${err.toString()}`
-        }
-      )
+        type: 'error',
+        text: `Unable to take over this solo session: ${err.toString()}`,
+      })
     }
   }, [setTakeOverModalVisible])
 
@@ -69,18 +77,33 @@ export default function SoloSessionAction ({ collaborativeSession, soloSession, 
 
   return (
     <>
-      <GeistModal width="30rem" visible={takeOverModalVisible} {...takeOverModalBinding}>
+      <GeistModal
+        width="30rem"
+        visible={takeOverModalVisible}
+        {...takeOverModalBinding}
+      >
         <h2>Take over</h2>
         <GeistModal.Content>
-          Would you like to take over the editing session from {activeSoloSessionCreator}?
+          Would you like to take over the editing session from{' '}
+          {activeSoloSessionCreator}?
         </GeistModal.Content>
-        <GeistModal.Action passive
-                           onClick={() => setTakeOverModalVisible(false)}>{t('modal.cancelButton.text')}</GeistModal.Action>
-        <GeistModal.Action onClick={() => handleTakeOver()}>{t('modal.confirmButton.text')}</GeistModal.Action>
+        <GeistModal.Action
+          passive
+          onClick={() => setTakeOverModalVisible(false)}
+        >
+          {t('modal.cancelButton.text')}
+        </GeistModal.Action>
+        <GeistModal.Action onClick={() => handleTakeOver()}>
+          {t('modal.confirmButton.text')}
+        </GeistModal.Action>
       </GeistModal>
-      <Button title={t('soloSessionAction.launchSoloSessionButton.title')} primary={true} onClick={handleStartSoloEditing}>
-        <Edit3/>
-        {soloSession && <Dot type="error"/>}
+      <Button
+        title={t('soloSessionAction.launchSoloSessionButton.title')}
+        primary={true}
+        onClick={handleStartSoloEditing}
+      >
+        <Edit3 />
+        {soloSession && <Dot type="error" />}
       </Button>
     </>
   )
@@ -91,9 +114,9 @@ SoloSessionAction.propTypes = {
   soloSession: PropTypes.shape({
     id: PropTypes.string,
     creator: PropTypes.string,
-    creatorUsername: PropTypes.string
+    creatorUsername: PropTypes.string,
   }),
   collaborativeSession: PropTypes.shape({
-    id: PropTypes.string
-  })
+    id: PropTypes.string,
+  }),
 }

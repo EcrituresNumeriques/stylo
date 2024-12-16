@@ -2,9 +2,7 @@
   "ui:groups": [
     {
       "title": "corpus.metadata.form.issue",
-      "fields": [
-        "issue"
-      ]
+      "fields": ["issue"]
     }
   ],
   "type": {

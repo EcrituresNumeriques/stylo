@@ -14,9 +14,9 @@ import { useGraphQL } from '../../helpers/graphQL.js'
 import { getWorkspaces, getUserStats } from './Workspaces.graphql'
 import CreateWorkspace from '../../components/workspace/CreateWorkspace.jsx'
 
-export default function Workspaces () {
+export default function Workspaces() {
   const { t } = useTranslation()
-  const activeUser = useSelector(state => state.activeUser, shallowEqual)
+  const activeUser = useSelector((state) => state.activeUser, shallowEqual)
   const [filter, setFilter] = useState('')
   const [creating, setCreating] = useState(false)
   const [workspaces, setWorkspaces] = useState([])
@@ -32,7 +32,7 @@ export default function Workspaces () {
   const runQuery = useGraphQL()
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       try {
         const getUserStatsResponse = await runQuery({ query: getUserStats })
         const userStats = getUserStatsResponse.user.stats
@@ -45,7 +45,8 @@ export default function Workspaces () {
           createdAt: activeUser.createdAt,
           updatedAt: activeUser.updatedAt,
           members: [],
-          articlesCount: userStats.myArticlesCount + userStats.contributedArticlesCount
+          articlesCount:
+            userStats.myArticlesCount + userStats.contributedArticlesCount,
         })
       } catch (err) {
         alert(err)
@@ -54,7 +55,7 @@ export default function Workspaces () {
   }, [activeUser._id, t])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       try {
         const getWorkspacesResponse = await runQuery({ query: getWorkspaces })
         const workspaces = getWorkspacesResponse.workspaces
@@ -66,33 +67,50 @@ export default function Workspaces () {
     })()
   }, [currentWorkspaces])
 
-  return (<CurrentUserContext.Provider value={activeUser}>
-    <section className={styles.section}>
-      <h1>{t('workspace.title')}</h1>
-      <div>
-        <Field className={styles.searchField} type="text"
-               icon={Search}
-               value={filter}
-               placeholder={t('search.placeholder')}
-               onChange={(e) => setFilter(e.target.value)}/>
-      </div>
-      <Button type="secondary" className={styles.button} onClick={() => setCreating(true)}>{t('workspace.createNew.button')}</Button>
+  return (
+    <CurrentUserContext.Provider value={activeUser}>
+      <section className={styles.section}>
+        <h1>{t('workspace.title')}</h1>
+        <div>
+          <Field
+            className={styles.searchField}
+            type="text"
+            icon={Search}
+            value={filter}
+            placeholder={t('search.placeholder')}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+        </div>
+        <Button
+          type="secondary"
+          className={styles.button}
+          onClick={() => setCreating(true)}
+        >
+          {t('workspace.createNew.button')}
+        </Button>
 
-      <GeistModal width="45rem" visible={creating} onClose={handleCloseCreate}>
-        <h2>{t('workspace.createModal.title')}</h2>
-        <GeistModal.Content>
-          <CreateWorkspace/>
-        </GeistModal.Content>
-        <GeistModal.Action passive onClick={handleCloseCreate}>{t('modal.close.text')}</GeistModal.Action>
-      </GeistModal>
+        <GeistModal
+          width="45rem"
+          visible={creating}
+          onClose={handleCloseCreate}
+        >
+          <h2>{t('workspace.createModal.title')}</h2>
+          <GeistModal.Content>
+            <CreateWorkspace />
+          </GeistModal.Content>
+          <GeistModal.Action passive onClick={handleCloseCreate}>
+            {t('modal.close.text')}
+          </GeistModal.Action>
+        </GeistModal>
 
-      <ul className={styles.workspacesList}>
-        {[personalWorkspace, ...workspaces].map((workspace) => (
-          <li key={`workspace-${workspace._id}`}>
-            <WorkspaceItem workspace={workspace}/>
-          </li>
-        ))}
-      </ul>
-    </section>
-  </CurrentUserContext.Provider>)
+        <ul className={styles.workspacesList}>
+          {[personalWorkspace, ...workspaces].map((workspace) => (
+            <li key={`workspace-${workspace._id}`}>
+              <WorkspaceItem workspace={workspace} />
+            </li>
+          ))}
+        </ul>
+      </section>
+    </CurrentUserContext.Provider>
+  )
 }

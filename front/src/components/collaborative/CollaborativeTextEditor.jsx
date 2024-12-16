@@ -41,46 +41,59 @@ const colors = [
   '#DDDDDD',
 ]
 
-export default function CollaborativeTextEditor ({
+export default function CollaborativeTextEditor({
   articleId,
   collaborativeSessionCreatorId,
   collaborativeSessionId,
-  onCollaborativeSessionStateUpdated
+  onCollaborativeSessionStateUpdated,
 }) {
   const connectingRef = useRef(false)
   const [dynamicStyles, setDynamicStyles] = useState('')
   const [websocketStatus, setWebsocketStatus] = useState('')
   const [yText, setYText] = useState(null)
   const [awareness, setAwareness] = useState(null)
-  const { websocketEndpoint } = useSelector(state => state.applicationConfig, shallowEqual)
-  const activeUser = useSelector(state => ({
-    _id: state.activeUser._id,
-    email: state.activeUser.email,
-    displayName: state.activeUser.displayName,
-    username: state.activeUser.username
-  }), shallowEqual)
+  const { websocketEndpoint } = useSelector(
+    (state) => state.applicationConfig,
+    shallowEqual
+  )
+  const activeUser = useSelector(
+    (state) => ({
+      _id: state.activeUser._id,
+      email: state.activeUser.email,
+      displayName: state.activeUser.displayName,
+      username: state.activeUser.username,
+    }),
+    shallowEqual
+  )
   const dispatch = useDispatch()
   const editorRef = useRef()
-  const editorCursorPosition = useSelector(state => state.editorCursorPosition, shallowEqual)
+  const editorCursorPosition = useSelector(
+    (state) => state.editorCursorPosition,
+    shallowEqual
+  )
 
-  const options = useMemo(() => ({
-    automaticLayout: true,
-    readOnly: websocketStatus !== 'connected',
-    contextmenu: websocketStatus === 'connected',
-    autoClosingBrackets: 'never',
-    wordBasedSuggestions: false,
-    overviewRulerLanes: 0,
-    hideCursorInOverviewRuler: true,
-    overviewRulerBorder: false,
-    scrollBeyondLastLine: false,
-    wordWrap: 'on',
-    wrappingIndent: 'none',
-    minimap: {
-      enabled: false
-    }
-  }), [websocketStatus])
+  const options = useMemo(
+    () => ({
+      automaticLayout: true,
+      readOnly: websocketStatus !== 'connected',
+      contextmenu: websocketStatus === 'connected',
+      autoClosingBrackets: 'never',
+      wordBasedSuggestions: false,
+      overviewRulerLanes: 0,
+      hideCursorInOverviewRuler: true,
+      overviewRulerBorder: false,
+      scrollBeyondLastLine: false,
+      wordWrap: 'on',
+      wrappingIndent: 'none',
+      minimap: {
+        enabled: false,
+      },
+    }),
+    [websocketStatus]
+  )
 
-  const handleUpdateArticleStructureAndStats = throttle(({ text }) => {
+  const handleUpdateArticleStructureAndStats = throttle(
+    ({ text }) => {
       dispatch({ type: 'UPDATE_ARTICLE_STATS', md: text })
       dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md: text })
     },
@@ -88,20 +101,26 @@ export default function CollaborativeTextEditor ({
     { leading: false, trailing: true }
   )
 
-  const writerInfo = useMemo(() => ({
-    id: activeUser._id,
-    email: activeUser.email,
-    displayName: activeUser.displayName,
-    username: activeUser.username,
-    color: colors[Math.floor(Math.random() * 14)]
-  }), [activeUser])
+  const writerInfo = useMemo(
+    () => ({
+      id: activeUser._id,
+      email: activeUser.email,
+      displayName: activeUser.displayName,
+      username: activeUser.username,
+      color: colors[Math.floor(Math.random() * 14)],
+    }),
+    [activeUser]
+  )
 
-  const handleWritersUpdated = useCallback(({ states }) => {
-    const writers = Object.fromEntries(states)
-    dispatch({ type: 'UPDATE_ARTICLE_WRITERS', articleWriters: writers })
-    setDynamicStyles(Object.entries(writers).map(([key, writer]) => {
-      const color = writer.user.color
-      return `
+  const handleWritersUpdated = useCallback(
+    ({ states }) => {
+      const writers = Object.fromEntries(states)
+      dispatch({ type: 'UPDATE_ARTICLE_WRITERS', articleWriters: writers })
+      setDynamicStyles(
+        Object.entries(writers)
+          .map(([key, writer]) => {
+            const color = writer.user.color
+            return `
 .yRemoteSelection-${key} {
   background-color: ${color};
 }
@@ -110,22 +129,33 @@ export default function CollaborativeTextEditor ({
   border-top: ${color} solid 2px;
   border-bottom: ${color} solid 2px;
 }`
-    }).join('\n'))
-  }, [setDynamicStyles])
+          })
+          .join('\n')
+      )
+    },
+    [setDynamicStyles]
+  )
 
-  const handleWebsocketStatusUpdated = useCallback((status) => {
-    setWebsocketStatus(status)
-  }, [setWebsocketStatus])
+  const handleWebsocketStatusUpdated = useCallback(
+    (status) => {
+      setWebsocketStatus(status)
+    },
+    [setWebsocketStatus]
+  )
 
   useEffect(() => {
     if (connectingRef.current) return
     connectingRef.current = true
-    const { awareness, doc: yDocument, wsProvider } = collaborating.connect({
+    const {
+      awareness,
+      doc: yDocument,
+      wsProvider,
+    } = collaborating.connect({
       roomName: collaborativeSessionId,
       websocketEndpoint,
       user: writerInfo,
       onChange: handleWritersUpdated,
-      onStatusUpdated: handleWebsocketStatusUpdated
+      onStatusUpdated: handleWebsocketStatusUpdated,
     })
     const yText = yDocument.getText('main')
     const yState = yDocument.getText('state')
@@ -148,10 +178,13 @@ export default function CollaborativeTextEditor ({
     }
   }, [collaborativeSessionId, websocketEndpoint, writerInfo])
 
-  const handleEditorDidMount = useCallback((editor) => {
-    editorRef.current = editor
-    new MonacoBinding(yText, editor.getModel(), new Set([editor]), awareness)
-  }, [yText, awareness])
+  const handleEditorDidMount = useCallback(
+    (editor) => {
+      editorRef.current = editor
+      new MonacoBinding(yText, editor.getModel(), new Set([editor]), awareness)
+    },
+    [yText, awareness]
+  )
 
   useEffect(() => {
     const line = editorCursorPosition.lineNumber
@@ -163,29 +196,31 @@ export default function CollaborativeTextEditor ({
   }, [editorRef, editorCursorPosition])
 
   if (!yText) {
-    return <Loading/>
+    return <Loading />
   }
 
-  return (<>
-    <style>{dynamicStyles}</style>
-    <CollaborativeEditorStatus
-      articleId={articleId}
-      websocketStatus={websocketStatus}
-      collaborativeSessionCreatorId={collaborativeSessionCreatorId}
-    />
-    <Editor
-      options={options}
-      className={styles.editor}
-      defaultLanguage="markdown"
-      onMount={handleEditorDidMount}
-      on
-    />
-  </>)
+  return (
+    <>
+      <style>{dynamicStyles}</style>
+      <CollaborativeEditorStatus
+        articleId={articleId}
+        websocketStatus={websocketStatus}
+        collaborativeSessionCreatorId={collaborativeSessionCreatorId}
+      />
+      <Editor
+        options={options}
+        className={styles.editor}
+        defaultLanguage="markdown"
+        onMount={handleEditorDidMount}
+        on
+      />
+    </>
+  )
 }
 
 CollaborativeTextEditor.propTypes = {
   articleId: PropTypes.string.isRequired,
   collaborativeSessionId: PropTypes.string.isRequired,
   collaborativeSessionCreatorId: PropTypes.string.isRequired,
-  onCollaborativeSessionStateUpdated: PropTypes.func
+  onCollaborativeSessionStateUpdated: PropTypes.func,
 }

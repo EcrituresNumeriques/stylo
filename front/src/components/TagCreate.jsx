@@ -11,8 +11,7 @@ import styles from './TagCreate.module.scss'
 import Field from './Field'
 import { useCurrentUser } from '../contexts/CurrentUser'
 
-
-export default function TagCreate () {
+export default function TagCreate() {
   const { setToast } = useToasts()
   const { data, mutate } = useMutate({ query: getTags, variables: {} })
   const { t } = useTranslation()
@@ -30,27 +29,33 @@ export default function TagCreate () {
     color,
   }
 
-  const handleCreateTag = useCallback((event) => {
-    event.preventDefault()
-    ;(async () => {
-      try {
-        const result = await runQuery({
-          query: createTag,
-          variables
-        })
-        await mutate({
-          user: {
-            tags: [...data.user.tags, result.createTag]
-          }
-        }, { revalidate: false })
-      } catch (err) {
-        setToast({
-          type: 'error',
-          text: `Unable to create a new tag: ${err.message}`
-        })
-      }
-    })()
-  }, [variables])
+  const handleCreateTag = useCallback(
+    (event) => {
+      event.preventDefault()
+      ;(async () => {
+        try {
+          const result = await runQuery({
+            query: createTag,
+            variables,
+          })
+          await mutate(
+            {
+              user: {
+                tags: [...data.user.tags, result.createTag],
+              },
+            },
+            { revalidate: false }
+          )
+        } catch (err) {
+          setToast({
+            type: 'error',
+            text: `Unable to create a new tag: ${err.message}`,
+          })
+        }
+      })()
+    },
+    [variables]
+  )
 
   return (
     <section className={styles.create}>
@@ -72,7 +77,11 @@ export default function TagCreate () {
         />
         <ul className={styles.actions}>
           <li>
-            <Button onClick={handleCreateTag} type="secondary" title={t('tag.createForm.buttonTitle')}>
+            <Button
+              onClick={handleCreateTag}
+              type="secondary"
+              title={t('tag.createForm.buttonTitle')}
+            >
               {t('tag.createForm.buttonText')}
             </Button>
           </li>
@@ -81,4 +90,3 @@ export default function TagCreate () {
     </section>
   )
 }
-

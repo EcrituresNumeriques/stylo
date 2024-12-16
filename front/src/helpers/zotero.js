@@ -39,13 +39,12 @@ import { filter } from './bibtex'
  * @property {String} type Mime-Type of the link
  */
 
-
 /**
  * Get the next link from headers.
  * @param headers HTTP headers (from a response)
  * @returns {URL|null}
  */
-function getNextLink (headers) {
+function getNextLink(headers) {
   if (!headers.has('Link') || headers.get('Link') === '') {
     return null
   }
@@ -63,7 +62,7 @@ function getNextLink (headers) {
  * @param {Object[]} agg
  * @returns {Promise<string[]>} a list of JSON responses
  */
-async function fetchAllJSON (url, key, agg = []) {
+async function fetchAllJSON(url, key, agg = []) {
   if (key) {
     url.searchParams.set('key', key)
   }
@@ -95,7 +94,7 @@ async function fetchAllJSON (url, key, agg = []) {
  * @param agg
  * @returns {Promise<string[]>} - a list of bibliographical references (as BibTeX)
  */
-async function fetchAllBibTeX (url, key, agg = []) {
+async function fetchAllBibTeX(url, key, agg = []) {
   if (key) {
     url.searchParams.set('key', key)
   }
@@ -126,7 +125,7 @@ async function fetchAllBibTeX (url, key, agg = []) {
  * @param {String} url
  * @returns {Promise<string>} - a JSON response
  */
-function fetchJSON (url) {
+function fetchJSON(url) {
   return fetch(url).then((response) => response.json())
 }
 
@@ -134,7 +133,7 @@ function fetchJSON (url) {
  * @param {String} token Zotero API token
  * @returns {Promise<object>} - a JSON response (contains userID and key)
  */
-function fetchUserFromToken (token) {
+function fetchUserFromToken(token) {
   return fetchJSON(`https://api.zotero.org/keys/${token}`)
 }
 
@@ -143,14 +142,16 @@ function fetchUserFromToken (token) {
  * @param {String} key Zotero API key
  * @returns {Promise<ZoteroCollection[]>} - a list of Zotero collections
  */
-async function fetchAllCollections ({ userID, key }) {
+async function fetchAllCollections({ userID, key }) {
   // let collections = []
   const url = new URL(`https://api.zotero.org/users/${userID}/groups`)
   const groups = (await fetchAllJSON(url, key)).flat()
 
-  const groupCollections = await Promise.all(groups.map(group => {
-    return fetchAllJSON(new URL(`${group.links.self.href}/collections`), key)
-  })).then(groups => [].concat(...groups.flat()))
+  const groupCollections = await Promise.all(
+    groups.map((group) => {
+      return fetchAllJSON(new URL(`${group.links.self.href}/collections`), key)
+    })
+  ).then((groups) => [].concat(...groups.flat()))
   // concat dissolves empty arrays (groups without collections)
 
   // snowpack@3.2 cannot transform this for Safari11
@@ -170,7 +171,7 @@ async function fetchAllCollections ({ userID, key }) {
  * @param {String} token
  * @returns {Promise<ZoteroCollection[]>}
  */
-export async function fetchAllCollectionsPerLibrary ({ token }) {
+export async function fetchAllCollectionsPerLibrary({ token }) {
   const { userID, key } = await fetchUserFromToken(token)
 
   return fetchAllCollections({ userID, key })
@@ -181,9 +182,11 @@ export async function fetchAllCollectionsPerLibrary ({ token }) {
  * @param token
  * @returns {Promise<ZoteroCollection[]>}
  */
-export async function fetchUserCollections ({ userID, key }) {
-  return fetchAllJSON(new URL(`https://api.zotero.org/users/${userID}/collections`), key)
-    .then((all) => all.flat())
+export async function fetchUserCollections({ userID, key }) {
+  return fetchAllJSON(
+    new URL(`https://api.zotero.org/users/${userID}/collections`),
+    key
+  ).then((all) => all.flat())
 }
 
 /**
@@ -191,6 +194,11 @@ export async function fetchUserCollections ({ userID, key }) {
  * @param key Zotero API key
  * @returns {Promise<string>}
  */
-export const fetchBibliographyFromCollectionHref = async ({ collectionHref, token: key = null, }) => {
-  return (await fetchAllBibTeX(new URL(collectionHref + '/items'), key)).join('\n')
+export const fetchBibliographyFromCollectionHref = async ({
+  collectionHref,
+  token: key = null,
+}) => {
+  return (await fetchAllBibTeX(new URL(collectionHref + '/items'), key)).join(
+    '\n'
+  )
 }

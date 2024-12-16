@@ -27,7 +27,8 @@
     background-color: $main-background-color;
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     color: $main-color-links;
     border-bottom-color: $main-color-links;
   }

@@ -27,6 +27,8 @@ describe('compileTemplate', () => {
   test('ignore non-matching patterns', () => {
     const template = compileTemplate(html)
     expect(template({ author: 'Moi' })).toMatch(/<p>\$au\n\s+thor\$<\/p>/)
-    expect(template({ author: 'Moi' })).toMatch(/<footer>\$colophon<\/footer>yes\$/)
+    expect(template({ author: 'Moi' })).toMatch(
+      /<footer>\$colophon<\/footer>yes\$/
+    )
   })
 })

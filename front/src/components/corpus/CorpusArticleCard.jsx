@@ -3,16 +3,16 @@ import { useDrag, useDrop } from 'react-dnd'
 
 import styles from './corpusArticleCard.module.scss'
 
-export default function CorpusArticleCard ({ id, article, index, moveCard }) {
+export default function CorpusArticleCard({ id, article, index, moveCard }) {
   const ref = useRef(null)
   const [{ handlerId }, drop] = useDrop({
     accept: 'card',
-    collect (monitor) {
+    collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
       }
     },
-    hover (item, monitor) {
+    hover(item, monitor) {
       if (!ref.current) {
         return
       }
@@ -49,7 +49,7 @@ export default function CorpusArticleCard ({ id, article, index, moveCard }) {
       // but it's good here for the sake of performance
       // to avoid expensive index searches.
       item.index = hoverIndex
-    }
+    },
   })
   const [{ isDragging }, drag] = useDrag({
     type: 'card',
@@ -63,8 +63,24 @@ export default function CorpusArticleCard ({ id, article, index, moveCard }) {
   const opacity = isDragging ? 0 : 1
   drag(drop(ref))
   return (
-    <div ref={ref} className={styles.card} style={{opacity}} data-handler-id={handlerId}>
-      <svg xmlns="http://www.w3.org/2000/svg" width="1.05rem" height="1.05rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="tabler-icon tabler-icon-grip-vertical">
+    <div
+      ref={ref}
+      className={styles.card}
+      style={{ opacity }}
+      data-handler-id={handlerId}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="1.05rem"
+        height="1.05rem"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="tabler-icon tabler-icon-grip-vertical"
+      >
         <path d="M9 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
         <path d="M9 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
         <path d="M9 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>

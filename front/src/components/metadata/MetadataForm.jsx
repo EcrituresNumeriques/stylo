@@ -1,8 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import Form from "../Form.jsx";
-import { convertLegacyValues } from "./MetadataValues.js";
+import Form from '../Form.jsx'
 
 /**
  * @param data Values in JSON format
@@ -13,8 +12,14 @@ import { convertLegacyValues } from "./MetadataValues.js";
  * @constructor
  */
 export default function MetadataForm({ data, schema, uiSchema, onChange }) {
-  const formData = convertLegacyValues(data)
-  return <Form formData={formData} schema={schema} uiSchema={uiSchema} onChange={onChange}/>
+  return (
+    <Form
+      formData={data}
+      schema={schema}
+      uiSchema={uiSchema}
+      onChange={onChange}
+    />
+  )
 }
 
 MetadataForm.propTypes = {
@@ -24,4 +29,3 @@ MetadataForm.propTypes = {
   templates: PropTypes.array,
   onChange: PropTypes.func,
 }
-

@@ -1,11 +1,11 @@
-import { shallowEqual, useSelector } from "react-redux"
+import { shallowEqual, useSelector } from 'react-redux'
 import { print } from 'graphql/language/printer'
 
 /**
  * @typedef {import('graphql/language/ast').DocumentNode} DocumentNode
  */
 
-async function getErrorResponse (response) {
+async function getErrorResponse(response) {
   try {
     return await response.clone().json()
   } catch (err) {
@@ -13,14 +13,14 @@ async function getErrorResponse (response) {
     return {
       errors: [
         {
-          message: responseText
-        }
-      ]
+          message: responseText,
+        },
+      ],
     }
   }
 }
 
-export default async function askGraphQL (
+export default async function askGraphQL(
   payload,
   action = 'fetching from the server',
   sessionToken = null,
@@ -34,15 +34,22 @@ export default async function askGraphQL (
       'Content-Type': 'application/json',
       Accept: 'application/json',
       // Authorization header is provided only when we have a token
-      ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {})
+      ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {}),
     },
     body: JSON.stringify(payload),
   })
 
   if (!response.ok) {
     const errorResponse = await getErrorResponse(response)
-    console.error(`Something wrong happened during: ${action} => ${response.status}, ${response.statusText}: ${JSON.stringify(errorResponse)}`)
-    const errorMessage = errorResponse && errorResponse.errors && errorResponse.errors.length ? errorResponse.errors[0].message : 'Unexpected error!'
+    console.error(
+      `Something wrong happened during: ${action} => ${response.status}, ${
+        response.statusText
+      }: ${JSON.stringify(errorResponse)}`
+    )
+    const errorMessage =
+      errorResponse && errorResponse.errors && errorResponse.errors.length
+        ? errorResponse.errors[0].message
+        : 'Unexpected error!'
     throw new Error(errorMessage)
   }
 
@@ -53,9 +60,12 @@ export default async function askGraphQL (
   return json.data
 }
 
-export function useGraphQL () {
-  const sessionToken = useSelector(state => state.sessionToken)
-  const graphqlEndpoint = useSelector(state => state.applicationConfig.graphqlEndpoint, shallowEqual)
+export function useGraphQL() {
+  const sessionToken = useSelector((state) => state.sessionToken)
+  const graphqlEndpoint = useSelector(
+    (state) => state.applicationConfig.graphqlEndpoint,
+    shallowEqual
+  )
 
   return runQuery.bind(null, { sessionToken, graphqlEndpoint })
 }
@@ -67,8 +77,13 @@ export function useGraphQL () {
  * @param {{[string: key]: value}} variables
  * @return {Promise<string|object>}
  */
-export function runQuery({ sessionToken, graphqlEndpoint }, { query: queryOrAST, variables }) {
+export function runQuery(
+  { sessionToken, graphqlEndpoint },
+  { query: queryOrAST, variables }
+) {
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
 
-  return askGraphQL({ query, variables }, null, sessionToken, { graphqlEndpoint })
+  return askGraphQL({ query, variables }, null, sessionToken, {
+    graphqlEndpoint,
+  })
 }

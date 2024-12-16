@@ -1,9 +1,11 @@
 .pagedContainer {
-  --color-mbox : rgba(0,0,0,0.2);
+  --color-mbox: rgba(0, 0, 0, 0.2);
   --margin: calc(var(--pagedjs-margin-left) / 2);
 
   /* reinstate browser styles for aggressively styles written in general.scss */
-  li, ul, p {
+  li,
+  ul,
+  p {
     list-style: revert;
     margin: revert;
     padding: revert;

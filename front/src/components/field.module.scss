@@ -9,16 +9,15 @@
   height: 2.5em;
   justify-content: flex-start;
   line-height: 1.5;
-  padding: calc(.5em - 1px) calc(.75em - 1px);
+  padding: calc(0.5em - 1px) calc(0.75em - 1px);
   position: relative;
   vertical-align: top;
   width: 100%;
 }
 
 .error {
-
   label {
-    color: $error-color
+    color: $error-color;
   }
   input {
     border: 1px solid $error-color !important;
@@ -39,7 +38,8 @@
     }
   }
 
-  input, textarea {
+  input,
+  textarea {
     @include inputField;
   }
 
@@ -76,14 +76,15 @@
 }
 
 .withPrefix {
-  input, textarea {
+  input,
+  textarea {
     padding-left: calc(var(--chars-count) * 0.55em);
   }
 }
 
 .prefix {
-  opacity: .4;
-  padding: calc(.5em + 1px) 0 calc(.5em + 1px) calc(.75em + 1px);
+  opacity: 0.4;
+  padding: calc(0.5em + 1px) 0 calc(0.5em + 1px) calc(0.75em + 1px);
   position: absolute;
   z-index: 10;
   user-select: none;
@@ -104,7 +105,7 @@
 
 .inlineFields {
   display: flex;
-  gap: .5rem;
+  gap: 0.5rem;
 
   > * {
     flex: 0 0 auto;
@@ -135,29 +136,29 @@
   /* (with label) .field label font-size + .field label margin-bottom + .field padding-top + .field border-top-width */
   top: calc(1rem + 0.5rem + 0.2rem + 1px);
 }
-  /* (without label) .field border-top-width  */
-  .combobox > label:empty ~ * .comboboxControllerActions {
-    top: 1px;
-  }
+/* (without label) .field border-top-width  */
+.combobox > label:empty ~ * .comboboxControllerActions {
+  top: 1px;
+}
 
 .comboboxGroup {
   /*
     because we cannot add padding on generated content,
     we add to the container (padding-top) and the first child (margin-top)
   */
-  &[data-label]:not([data-label=""]) {
+  &[data-label]:not([data-label='']) {
     padding-top: 1em;
 
     &:before {
       content: attr(data-label);
       height: 2em;
       font-weight: bold;
-      padding: 0 .5em;
+      padding: 0 0.5em;
     }
 
     > li {
       &:first-of-type {
-        margin-top: .5em;
+        margin-top: 0.5em;
       }
 
       padding-left: 1.5em;
@@ -170,17 +171,21 @@
   border: 1px solid black;
   padding: 0;
   position: absolute;
-  margin-top: calc(-1rem + 1px); /* (with label) same as form .field + border-bottom-width */
+  margin-top: calc(
+    -1rem + 1px
+  ); /* (with label) same as form .field + border-bottom-width */
   width: 100%;
   z-index: 900;
 }
-  .combobox > label:empty ~ .comboboxResults:not(:empty) {
-    margin-top: calc(-0.5rem + 1px); /* (no label) same as .field margin-bottom + border-bottom-width */
-  }
-  .comboboxItem {
-    cursor: pointer;
-    padding: .5em 1em;
-  }
-  .comboboxHighlightedItem {
-    background-color: rgba(0, 0, 0, 0.2);
-  }
+.combobox > label:empty ~ .comboboxResults:not(:empty) {
+  margin-top: calc(
+    -0.5rem + 1px
+  ); /* (no label) same as .field margin-bottom + border-bottom-width */
+}
+.comboboxItem {
+  cursor: pointer;
+  padding: 0.5em 1em;
+}
+.comboboxHighlightedItem {
+  background-color: rgba(0, 0, 0, 0.2);
+}

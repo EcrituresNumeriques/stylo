@@ -8,27 +8,42 @@ import ZoteroPanel from './ZoteroPanel'
 import CitationsPanel from './CitationsPanel'
 import RawBibtexPanel from './RawBibtexPanel'
 
-
 export default function Bibliographe({ article, cancel }) {
   const { t } = useTranslation()
   const tabItems = [
     { value: 'zotero', name: t('writeBibliographe.zotero.tabItem') },
     { value: 'citations', name: t('writeBibliographe.citation.tabItem') },
-    { value: 'raw', name: t('writeBibliographe.rawBibtex.tabItem') }
+    { value: 'raw', name: t('writeBibliographe.rawBibtex.tabItem') },
   ]
   const [selector, setSelector] = useState(tabItems.at(0).value)
   const dispatch = useDispatch()
   const handleTabChange = useCallback((value) => setSelector(value), [])
 
   const onChange = useCallback((bib) => {
-    dispatch({ type: 'UPDATE_WORKING_ARTICLE_BIBLIOGRAPHY', articleId: article._id, bibliography: bib })
+    dispatch({
+      type: 'UPDATE_WORKING_ARTICLE_BIBLIOGRAPHY',
+      articleId: article._id,
+      bibliography: bib,
+    })
     cancel()
   }, [])
 
-  return (<article>
-    <NavTag defaultValue={selector} onChange={handleTabChange} items={tabItems}/>
-    {selector === 'zotero' && <ZoteroPanel articleId={article._id} onChange={onChange} zoteroLink={article.zoteroLink} />}
-    {selector === 'citations' && <CitationsPanel onChange={onChange} />}
-    {selector === 'raw' && <RawBibtexPanel onChange={onChange} />}
-  </article>)
+  return (
+    <article>
+      <NavTag
+        defaultValue={selector}
+        onChange={handleTabChange}
+        items={tabItems}
+      />
+      {selector === 'zotero' && (
+        <ZoteroPanel
+          articleId={article._id}
+          onChange={onChange}
+          zoteroLink={article.zoteroLink}
+        />
+      )}
+      {selector === 'citations' && <CitationsPanel onChange={onChange} />}
+      {selector === 'raw' && <RawBibtexPanel onChange={onChange} />}
+    </article>
+  )
 }

@@ -4,7 +4,7 @@ import App from '../layouts/App'
 
 import styles from '../components/Write/write.module.scss'
 
-export default function PageNotFound () {
+export default function PageNotFound() {
   const location = useLocation()
   return (
     <App layout="fullPage">
@@ -12,7 +12,9 @@ export default function PageNotFound () {
         <article className={styles.error}>
           <h2>Error 404</h2>
 
-          <p>Page not found at <code>{location.pathname}</code>.</p>
+          <p>
+            Page not found at <code>{location.pathname}</code>.
+          </p>
         </article>
       </section>
     </App>

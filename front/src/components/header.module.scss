@@ -12,7 +12,6 @@
     }
   }
 
-
   a {
     color: $main-background-color;
   }
@@ -51,7 +50,7 @@
 }
 
 .documentationLink::after {
-  content: "\2197";
+  content: '\2197';
 }
 
 .languagesMenu {
@@ -86,13 +85,13 @@
   margin-right: 1.25em;
 }
 
-.logoutAction{
+.logoutAction {
   margin: 0 1.25em;
   cursor: pointer;
 }
 
 .linkIcon {
-  margin: 0 .2em;
+  margin: 0 0.2em;
   vertical-align: middle;
 }
 
@@ -114,14 +113,14 @@
     display: inline;
 
     &:not(:last-child):after {
-      content: "•";
-      margin: 0 .5em;
+      content: '•';
+      margin: 0 0.5em;
     }
   }
 }
 
 .consentLabel {
   cursor: pointer;
-  font-size: .8em;
+  font-size: 0.8em;
   vertical-align: middle;
 }

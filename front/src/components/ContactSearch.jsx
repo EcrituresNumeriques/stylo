@@ -9,7 +9,12 @@ import { useTranslation } from 'react-i18next'
 import styles from './ContactSearch.module.scss'
 import Field from './Field.jsx'
 
-import { addContact, removeContact, getUserByEmail, getContacts } from './Contacts.graphql'
+import {
+  addContact,
+  removeContact,
+  getUserByEmail,
+  getContacts,
+} from './Contacts.graphql'
 import ContactItem from './ContactItem.jsx'
 
 /**
@@ -21,72 +26,95 @@ import ContactItem from './ContactItem.jsx'
  * @returns {JSX.Element}
  * @constructor
  */
-export default function ContactSearch (
-  {
-    members,
-    onUserUpdated,
-    selectedIcon = <CheckSquare/>,
-    unselectedIcon = <Square/>,
-    showActiveUser,
-  }
-) {
+export default function ContactSearch({
+  members,
+  onUserUpdated,
+  selectedIcon = <CheckSquare />,
+  unselectedIcon = <Square />,
+  showActiveUser,
+}) {
   const { t } = useTranslation()
-  const activeUser = useSelector(state => state.activeUser)
+  const activeUser = useSelector((state) => state.activeUser)
   const activeUserId = activeUser._id
-  const {
-    data: userContactsQueryData,
-    mutate: mutateUserContacts
-  } = useGraphQL({ query: getContacts, variables: { userId: activeUserId } }, {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false
-    }
-  )
+  const { data: userContactsQueryData, mutate: mutateUserContacts } =
+    useGraphQL(
+      { query: getContacts, variables: { userId: activeUserId } },
+      {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+      }
+    )
   const mutation = useMutation()
-  const userContacts = useMemo(() => userContactsQueryData?.user?.acquintances || [], [userContactsQueryData])
+  const userContacts = useMemo(
+    () => userContactsQueryData?.user?.acquintances || [],
+    [userContactsQueryData]
+  )
   const [filter, setFilter] = useState('')
   const [contacts, setContacts] = useState([])
   const [userFound, setUserFound] = useState(null)
-  const filterContact = useCallback((contact) => {
-    const contactName = contact.displayName || contact.username
-    return contact._id !== activeUserId && (contact.email.toLowerCase().includes(filter.toLowerCase()) || contactName.toLowerCase().includes(filter.toLowerCase()))
-  }, [filter])
-  const contactsFound = useMemo(() => contacts.filter(filterContact), [contacts, filterContact])
-  const handleContactUpdate = useCallback(async (event) => {
-    const { _id: userId } = event.user
-    if (event.action === 'select' || event.action === 'active') {
-      const contactsFound = contacts.find((c) => c._id === userId)
-      if (!contactsFound) {
-        setContacts([{
-          ...event.user,
-          active: event.action === 'active' ? true : event.user.action,
-          selected: event.action === 'select' ? true : event.user.selected,
-        }, ...contacts])
-        setUserFound(null)
-      }
-    }
-    if (event.action === 'active') {
-      const response = await mutation({ query: addContact, variables: { userId: activeUserId, contactId: userId } })
-      const updatedContacts = {
-        user: {
-          acquintances: response.user.addContact.acquintances
+  const filterContact = useCallback(
+    (contact) => {
+      const contactName = contact.displayName || contact.username
+      return (
+        contact._id !== activeUserId &&
+        (contact.email.toLowerCase().includes(filter.toLowerCase()) ||
+          contactName.toLowerCase().includes(filter.toLowerCase()))
+      )
+    },
+    [filter]
+  )
+  const contactsFound = useMemo(
+    () => contacts.filter(filterContact),
+    [contacts, filterContact]
+  )
+  const handleContactUpdate = useCallback(
+    async (event) => {
+      const { _id: userId } = event.user
+      if (event.action === 'select' || event.action === 'active') {
+        const contactsFound = contacts.find((c) => c._id === userId)
+        if (!contactsFound) {
+          setContacts([
+            {
+              ...event.user,
+              active: event.action === 'active' ? true : event.user.action,
+              selected: event.action === 'select' ? true : event.user.selected,
+            },
+            ...contacts,
+          ])
+          setUserFound(null)
         }
       }
-      await mutateUserContacts(updatedContacts, { revalidate: false })
-    } else if (event.action === 'inactive') {
-      const response = await mutation({ query: removeContact, variables: { userId: activeUserId, contactId: userId } })
-      const updatedContacts = {
-        user: {
-          acquintances: response.user.removeContact.acquintances
+      if (event.action === 'active') {
+        const response = await mutation({
+          query: addContact,
+          variables: { userId: activeUserId, contactId: userId },
+        })
+        const updatedContacts = {
+          user: {
+            acquintances: response.user.addContact.acquintances,
+          },
         }
+        await mutateUserContacts(updatedContacts, { revalidate: false })
+      } else if (event.action === 'inactive') {
+        const response = await mutation({
+          query: removeContact,
+          variables: { userId: activeUserId, contactId: userId },
+        })
+        const updatedContacts = {
+          user: {
+            acquintances: response.user.removeContact.acquintances,
+          },
+        }
+        await mutateUserContacts(updatedContacts, { revalidate: false })
       }
-      await mutateUserContacts(updatedContacts, { revalidate: false })
-    }
-    onUserUpdated && onUserUpdated(event)
-  }, [activeUserId, contacts])
+      onUserUpdated && onUserUpdated(event)
+    },
+    [activeUserId, contacts]
+  )
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       if (userContacts !== undefined) {
         const membersById = members.reduce((agg, m) => {
           agg[m._id] = m
@@ -98,42 +126,54 @@ export default function ContactSearch (
             agg[contact._id] = {
               ...contact,
               active: true,
-              selected: true
+              selected: true,
             }
             return agg
           }
           agg[contact._id] = {
             ...contact,
             active: true,
-            selected: false
+            selected: false,
           }
           return agg
         }, {})
         // remove members that are also contacts
         const contactIds = Object.keys(contactsById)
-        const distantMembers = members.filter((m) => !contactIds.includes(m._id)).map((m) => ({ ...m, selected: true }))
+        const distantMembers = members
+          .filter((m) => !contactIds.includes(m._id))
+          .map((m) => ({ ...m, selected: true }))
         setContacts([...Object.values(contactsById), ...distantMembers])
       }
     })()
   }, [activeUserId, members, userContacts])
 
-  const searchUserByEmail = useCallback(debounce(
-    async ({ email }) => {
-      const contactsFound = contacts.filter((c) => c._id !== activeUserId && c.email.toLowerCase().includes(email.toLowerCase()))
-      if (contactsFound.length === 0) {
-        const data = await mutation({ query: getUserByEmail, variables: { userEmail: email } })
-        if (data.getUser?._id === activeUserId) {
-          setUserFound(null)
+  const searchUserByEmail = useCallback(
+    debounce(
+      async ({ email }) => {
+        const contactsFound = contacts.filter(
+          (c) =>
+            c._id !== activeUserId &&
+            c.email.toLowerCase().includes(email.toLowerCase())
+        )
+        if (contactsFound.length === 0) {
+          const data = await mutation({
+            query: getUserByEmail,
+            variables: { userEmail: email },
+          })
+          if (data.getUser?._id === activeUserId) {
+            setUserFound(null)
+          } else {
+            setUserFound(data.getUser)
+          }
         } else {
-          setUserFound(data.getUser)
+          setUserFound(null)
         }
-      } else {
-        setUserFound(null)
-      }
-    },
-    1000,
-    { leading: false, trailing: true }
-  ), [contacts, activeUserId])
+      },
+      1000,
+      { leading: false, trailing: true }
+    ),
+    [contacts, activeUserId]
+  )
 
   const updateFilter = useCallback((event) => {
     const email = event.target.value
@@ -141,23 +181,25 @@ export default function ContactSearch (
     searchUserByEmail({ email })
   }, [])
 
-  const inactiveUser = filter.length > 0 && contactsFound.length === 0 && !userFound
-    ? { _id: 'inactive', email: filter, state: 'inactive' }
-    : undefined
+  const inactiveUser =
+    filter.length > 0 && contactsFound.length === 0 && !userFound
+      ? { _id: 'inactive', email: filter, state: 'inactive' }
+      : undefined
 
   return (
     <>
       <div className={styles.header}>
-        <Field className={styles.searchField}
-               type="text"
-               icon={Search}
-               value={filter}
-               placeholder= {t('contact.searchField.placeholder')}
-               onChange={updateFilter}
+        <Field
+          className={styles.searchField}
+          type="text"
+          icon={Search}
+          value={filter}
+          placeholder={t('contact.searchField.placeholder')}
+          onChange={updateFilter}
         />
       </div>
       <div className={styles.contacts}>
-        {showActiveUser &&
+        {showActiveUser && (
           <ContactItem
             key={activeUserId}
             user={activeUser}
@@ -167,18 +209,19 @@ export default function ContactSearch (
             selectedIcon={selectedIcon}
             unselectedIcon={unselectedIcon}
           />
-        }
-        {contactsFound.map((user) => <ContactItem
-          key={user._id}
-          user={user}
-          selected={user.selected}
-          active={user.active}
-          onUserUpdated={handleContactUpdate}
-          selectedIcon={selectedIcon}
-          unselectedIcon={unselectedIcon}
-        />)
-        }
-        {userFound &&
+        )}
+        {contactsFound.map((user) => (
+          <ContactItem
+            key={user._id}
+            user={user}
+            selected={user.selected}
+            active={user.active}
+            onUserUpdated={handleContactUpdate}
+            selectedIcon={selectedIcon}
+            unselectedIcon={unselectedIcon}
+          />
+        ))}
+        {userFound && (
           <ContactItem
             key={userFound._id}
             user={userFound}
@@ -187,8 +230,8 @@ export default function ContactSearch (
             unselectedIcon={unselectedIcon}
             onUserUpdated={handleContactUpdate}
           />
-        }
-        {inactiveUser &&
+        )}
+        {inactiveUser && (
           <ContactItem
             key="inactive"
             user={inactiveUser}
@@ -197,7 +240,7 @@ export default function ContactSearch (
             unselectedIcon={unselectedIcon}
             onUserUpdated={handleContactUpdate}
           />
-        }
+        )}
       </div>
     </>
   )
@@ -209,5 +252,5 @@ ContactSearch.propTypes = {
   onUserUpdated: PropTypes.func,
   selectedIcon: PropTypes.element,
   unselectedIcon: PropTypes.element,
-  showActiveUser: PropTypes.bool
+  showActiveUser: PropTypes.bool,
 }

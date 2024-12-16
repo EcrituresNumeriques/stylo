@@ -64,13 +64,14 @@
     @extend .clickable;
     display: flex;
     align-items: center;
-    gap: .25rem;
-    padding: .5rem 0.75rem;
+    gap: 0.25rem;
+    padding: 0.5rem 0.75rem;
     transition: background-color 0.5s ease;
-    border:solid 1px currentColor;
+    border: solid 1px currentColor;
     border-radius: 26px;
 
-    &.open:hover, &.open:focus {
+    &.open:hover,
+    &.open:focus {
       color: #232323;
     }
 
@@ -106,13 +107,14 @@
   > button {
     @extend .clickable;
     position: absolute;
-    top: .25rem;
-    padding: .5rem 0.75rem;
+    top: 0.25rem;
+    padding: 0.5rem 0.75rem;
     transition: background-color 0.5s ease;
-    border:solid 1px currentColor;
+    border: solid 1px currentColor;
     border-radius: 26px;
 
-    &.open:hover, &.open:focus {
+    &.open:hover,
+    &.open:focus {
       color: #fff;
     }
 
@@ -125,7 +127,7 @@
 
   .close {
     background-color: $main-background-color;
-    top: .5rem;
+    top: 0.5rem;
 
     svg {
       display: none;

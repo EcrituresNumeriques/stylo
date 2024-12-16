@@ -7,37 +7,63 @@ import Component from './Credentials.jsx'
 
 describe('Credentials', () => {
   test('renders with OIDC', () => {
-    const preloadedState = { activeUser: { authType: 'oidc', authTypes: ['oidc'] } }
+    const preloadedState = {
+      activeUser: { authType: 'oidc', authTypes: ['oidc'] },
+    }
     renderWithProviders(<Component />, { preloadedState })
 
     expect(screen.getByRole('form')).toBeInTheDocument()
-    expect(screen.queryByLabelText('credentials.oldPassword.placeholder')).not.toBeInTheDocument()
-    expect(screen.queryByLabelText('credentials.newPassword.placeholder')).toBeInTheDocument()
-    expect(screen.queryByLabelText('credentials.confirmNewPassword.placeholder')).toBeInTheDocument()
+    expect(
+      screen.queryByLabelText('credentials.oldPassword.placeholder')
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByLabelText('credentials.newPassword.placeholder')
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByLabelText('credentials.confirmNewPassword.placeholder')
+    ).toBeInTheDocument()
   })
 
   test('renders with password only', () => {
-    const preloadedState = { activeUser: { authType: 'local', authTypes: ['local'] } }
+    const preloadedState = {
+      activeUser: { authType: 'local', authTypes: ['local'] },
+    }
     renderWithProviders(<Component />, { preloadedState })
 
     expect(screen.getByRole('form')).toBeInTheDocument()
-    expect(screen.queryByLabelText('credentials.oldPassword.placeholder')).toBeInTheDocument()
-    expect(screen.queryByLabelText('credentials.newPassword.placeholder')).toBeInTheDocument()
-    expect(screen.queryByLabelText('credentials.confirmNewPassword.placeholder')).toBeInTheDocument()
+    expect(
+      screen.queryByLabelText('credentials.oldPassword.placeholder')
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByLabelText('credentials.newPassword.placeholder')
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByLabelText('credentials.confirmNewPassword.placeholder')
+    ).toBeInTheDocument()
   })
 
   test('renders with both password and oidc', () => {
-    const preloadedState = { activeUser: { authType: 'oidc', authTypes: ['oidc', 'local'] } }
+    const preloadedState = {
+      activeUser: { authType: 'oidc', authTypes: ['oidc', 'local'] },
+    }
     renderWithProviders(<Component />, { preloadedState })
 
     expect(screen.getByRole('form')).toBeInTheDocument()
-    expect(screen.queryByLabelText('credentials.oldPassword.placeholder')).toBeInTheDocument()
-    expect(screen.queryByLabelText('credentials.newPassword.placeholder')).toBeInTheDocument()
-    expect(screen.queryByLabelText('credentials.confirmNewPassword.placeholder')).toBeInTheDocument()
+    expect(
+      screen.queryByLabelText('credentials.oldPassword.placeholder')
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByLabelText('credentials.newPassword.placeholder')
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByLabelText('credentials.confirmNewPassword.placeholder')
+    ).toBeInTheDocument()
   })
 
   test('cannot be submitted when confirmation difers from new password', async () => {
-    const preloadedState = { activeUser: { authType: 'local', authTypes: ['local'] } }
+    const preloadedState = {
+      activeUser: { authType: 'local', authTypes: ['local'] },
+    }
     renderWithProviders(<Component />, { preloadedState })
 
     screen.getByLabelText('credentials.oldPassword.placeholder').focus()
@@ -53,7 +79,9 @@ describe('Credentials', () => {
   })
 
   test('can be submitted when confirmation equals new password', async () => {
-    const preloadedState = { activeUser: { authType: 'local', authTypes: ['local'] } }
+    const preloadedState = {
+      activeUser: { authType: 'local', authTypes: ['local'] },
+    }
     renderWithProviders(<Component />, { preloadedState })
 
     screen.getByLabelText('credentials.oldPassword.placeholder').focus()
@@ -69,7 +97,9 @@ describe('Credentials', () => {
   })
 
   test('can be submitted when confirmation equals new password and is oidc', async () => {
-    const preloadedState = { activeUser: { authType: 'local', authTypes: ['oidc'] } }
+    const preloadedState = {
+      activeUser: { authType: 'local', authTypes: ['oidc'] },
+    }
     renderWithProviders(<Component />, { preloadedState })
 
     screen.getByLabelText('credentials.newPassword.placeholder').focus()
@@ -81,8 +111,11 @@ describe('Credentials', () => {
     expect(screen.getByRole('button')).toBeEnabled()
     fireEvent.click(screen.getByRole('button'))
 
-    expect(fetch).toHaveBeenLastCalledWith(undefined, expect.objectContaining({
-      body: expect.stringMatching(/query":"mutation changePassword/)
-    }))
+    expect(fetch).toHaveBeenLastCalledWith(
+      undefined,
+      expect.objectContaining({
+        body: expect.stringMatching(/query":"mutation changePassword/),
+      })
+    )
   })
 })

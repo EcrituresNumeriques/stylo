@@ -16,7 +16,11 @@ describe('Button', () => {
   })
 
   test('renders with title, className and props', () => {
-    render(<Component title="ok" disabled small link icon className="truc">Test</Component>)
+    render(
+      <Component title="ok" disabled small link icon className="truc">
+        Test
+      </Component>
+    )
     expect(screen.getByRole('button')).toHaveAttribute('title', 'ok')
     expect(screen.getByRole('button')).toHaveAttribute('disabled')
     expect(screen.getByRole('button')).toHaveClass(/small/)

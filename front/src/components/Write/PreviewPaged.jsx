@@ -7,14 +7,20 @@ import { compileTemplate } from '../../helpers/preview.js'
 import clsx from 'clsx'
 import Loading from '../Loading.jsx'
 
-export default function Preview ({ preview, metadata }) {
+export default function Preview({ preview, metadata }) {
   const renderRef = useRef()
   const [isLoading, setIsLoading] = useState(true)
   const { template, stylesheet } = preview
-  const md_content = useSelector(state => state.workingArticle.text)
-  const yaml_content = useSelector(state => state.workingArticle.metadata)
-  const bib_content = useSelector(state => state.workingArticle.bibliography.text)
-  const { html } = useStyloExportPreview({ md_content, yaml_content, bib_content })
+  const md_content = useSelector((state) => state.workingArticle.text)
+  const yaml_content = useSelector((state) => state.workingArticle.metadata)
+  const bib_content = useSelector(
+    (state) => state.workingArticle.bibliography.text
+  )
+  const { html } = useStyloExportPreview({
+    md_content,
+    yaml_content,
+    bib_content,
+  })
 
   useEffect(() => {
     if (html && isLoading) {
@@ -31,10 +37,15 @@ export default function Preview ({ preview, metadata }) {
     }
   }, [html, metadata])
 
-  return <>
-    <Loading label="Processing paginated preview…" hidden={!isLoading} />
-    <section className={clsx(styles.pagedContainer, 'stylo-pagedjs-container')} ref={renderRef}>
-      <template data-ref="pagedjs-content" />
-    </section>
-  </>
+  return (
+    <>
+      <Loading label="Processing paginated preview…" hidden={!isLoading} />
+      <section
+        className={clsx(styles.pagedContainer, 'stylo-pagedjs-container')}
+        ref={renderRef}
+      >
+        <template data-ref="pagedjs-content" />
+      </section>
+    </>
+  )
 }

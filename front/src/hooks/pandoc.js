@@ -1,9 +1,9 @@
 import slugify from 'slugify'
 
-export function usePandocAnchoring () {
+export function usePandocAnchoring() {
   const state = new Map()
 
-  return function getAnchor (string) {
+  return function getAnchor(string) {
     let slug = slugify(string, { strict: true, lower: true })
 
     if (state.has(slug)) {

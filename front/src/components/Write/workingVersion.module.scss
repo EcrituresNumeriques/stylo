@@ -28,7 +28,7 @@
   overflow: hidden;
 
   svg {
-    margin: 0 .3em -0.1em 0;
+    margin: 0 0.3em -0.1em 0;
   }
 }
 
@@ -37,25 +37,25 @@
 }
 
 .owners:after {
-  content: "-";
+  content: '-';
   margin: 0 0.5em;
 }
 
 .version:not(:last-child):after {
-  content: "-";
+  content: '-';
   margin: 0 0.5em;
 }
 
 .versionLabel {
-  margin-right: .25em;
+  margin-right: 0.25em;
 }
 
 .versionLabel + .versionNumber:before {
-  content: '('
+  content: '(';
 }
 
 .versionLabel + .versionNumber:after {
-  content: ')'
+  content: ')';
 }
 
 .meta {
@@ -64,7 +64,9 @@
   color: #4a4a4a;
   font-size: 0.75rem;
   margin-right: 0.5rem;
-  margin-left: calc(24px + (0.3 * 1.65rem)); /* .icon width + (.title font-size * icon margin-right) */
+  margin-left: calc(
+    24px + (0.3 * 1.65rem)
+  ); /* .icon width + (.title font-size * icon margin-right) */
   margin-bottom: 0.75em;
 }
 
@@ -86,7 +88,9 @@
   margin-right: auto;
 }
 
-.savedIndicator, .savingIndicator, .failureIndicator {
+.savedIndicator,
+.savingIndicator,
+.failureIndicator {
   align-items: center;
   border-radius: 0.375em;
   display: inline-flex;
@@ -130,7 +134,7 @@
   padding-right: 0.75rem;
 
   strong {
-    margin-right: .5em;
+    margin-right: 0.5em;
   }
 
   & > svg {
@@ -162,7 +166,7 @@ time {
 
 .focusButton > svg {
   margin-right: 0.3em;
-  margin-left: 0
+  margin-left: 0;
 }
 
 .focusActiveButton {

@@ -8,27 +8,49 @@ import Sommaire from './Sommaire'
 import Versions from './Versions'
 import { Sidebar } from 'react-feather'
 
-export default function ArticleEditorMenu ({ articleInfos, readOnly, compareTo, selectedVersion }) {
-  const expanded = useSelector(state => state.articlePreferences.expandSidebarLeft)
+export default function ArticleEditorMenu({
+  articleInfos,
+  readOnly,
+  compareTo,
+  selectedVersion,
+}) {
+  const expanded = useSelector(
+    (state) => state.articlePreferences.expandSidebarLeft
+  )
   const dispatch = useDispatch()
-  const toggleExpand = useCallback(() => dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandSidebarLeft' }), [])
+  const toggleExpand = useCallback(
+    () =>
+      dispatch({
+        type: 'ARTICLE_PREFERENCES_TOGGLE',
+        key: 'expandSidebarLeft',
+      }),
+    []
+  )
   const { t } = useTranslation()
 
   return (
     <nav className={`${expanded ? styles.expandleft : styles.retractleft}`}>
-      <button onClick={toggleExpand} className={expanded ? styles.close : styles.open}>
-        <Sidebar/> {expanded ? t('write.sidebar.closeButton') : t('write.sidebar.biblioAndCoButton')}
+      <button
+        onClick={toggleExpand}
+        className={expanded ? styles.close : styles.open}
+      >
+        <Sidebar />{' '}
+        {expanded
+          ? t('write.sidebar.closeButton')
+          : t('write.sidebar.biblioAndCoButton')}
       </button>
-      {expanded && (<div>
-        <Versions
-          article={articleInfos}
-          selectedVersion={selectedVersion}
-          compareTo={compareTo}
-          readOnly={readOnly}
-        />
-        <Sommaire/>
-        <Biblio readOnly={readOnly} article={articleInfos}/>
-      </div>)}
+      {expanded && (
+        <div>
+          <Versions
+            article={articleInfos}
+            selectedVersion={selectedVersion}
+            compareTo={compareTo}
+            readOnly={readOnly}
+          />
+          <Sommaire />
+          <Biblio readOnly={readOnly} article={articleInfos} />
+        </div>
+      )}
     </nav>
   )
 }

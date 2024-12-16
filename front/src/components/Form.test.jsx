@@ -5,7 +5,9 @@ import Component from './Form.jsx'
 
 describe('Form', () => {
   test('renders a form with an empty form data and empty schema/uiSchema', () => {
-    const { getByRole } = render(<Component formData={{}} schema={{}} uiSchema={{}} />)
+    const { getByRole } = render(
+      <Component formData={{}} schema={{}} uiSchema={{}} />
+    )
 
     expect(getByRole('form')).toBeInTheDocument()
   })

@@ -1,15 +1,21 @@
-
-query updateWorkingVersion ($articleId: ID!, $content: WorkingVersionInput!) {
-  article (article: $articleId) {
-    updateWorkingVersion (content: $content) {
+query updateWorkingVersion($articleId: ID!, $content: WorkingVersionInput!) {
+  article(article: $articleId) {
+    updateWorkingVersion(content: $content) {
       updatedAt
     }
   }
 }
 
-mutation createVersion ($articleId: ID!, $userId: ID!, $major: Boolean!, $message: String) {
-  article (articleId: $articleId) {
-    createVersion(articleVersionInput: { major: $major, message: $message, userId: $userId }) {
+mutation createVersion(
+  $articleId: ID!
+  $userId: ID!
+  $major: Boolean!
+  $message: String
+) {
+  article(articleId: $articleId) {
+    createVersion(
+      articleVersionInput: { major: $major, message: $message, userId: $userId }
+    ) {
       versions {
         _id
         version

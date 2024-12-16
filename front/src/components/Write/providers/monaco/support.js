@@ -1,4 +1,4 @@
-export function registerReadOnlyTheme (monaco) {
+export function registerReadOnlyTheme(monaco) {
   monaco.editor.defineTheme('styloReadOnly', {
     base: 'vs',
     inherit: true,
@@ -10,22 +10,21 @@ export function registerReadOnlyTheme (monaco) {
       'editorLineNumber.foreground': '#7d7d7d',
       'editor.selectionHighlightBackground': '#fafafa',
       'editorLineNumber.activeForeground': '#7d7d7d',
-    }
+    },
   })
 }
 
 export class BibliographyCompletionProvider {
-
-  constructor (bibTeXEntries) {
+  constructor(bibTeXEntries) {
     this.monaco = undefined
     this._bibTeXEntries = bibTeXEntries
   }
 
-  get bibTeXEntries () {
+  get bibTeXEntries() {
     return this._bibTeXEntries
   }
 
-  set bibTeXEntries (value) {
+  set bibTeXEntries(value) {
     this._bibTeXEntries = value
   }
 
@@ -38,9 +37,11 @@ export class BibliographyCompletionProvider {
           startLineNumber: position.lineNumber,
           endLineNumber: position.lineNumber,
           startColumn: 1,
-          endColumn: position.column
+          endColumn: position.column,
         })
-        const match = textUntilPosition.match(/(?:^|\W)(?<square_bracket>\[?)@[^{},~#%\s\\]*$/)
+        const match = textUntilPosition.match(
+          /(?:^|\W)(?<square_bracket>\[?)@[^{},~#%\s\\]*$/
+        )
         if (!match) {
           return { suggestions: [] }
         }
@@ -49,43 +50,50 @@ export class BibliographyCompletionProvider {
           startLineNumber: position.lineNumber,
           endLineNumber: position.lineNumber,
           startColumn: word.startColumn,
-          endColumn: word.endColumn
+          endColumn: word.endColumn,
         }
         const endCharacter = model.getValueInRange({
           startLineNumber: position.lineNumber,
           endLineNumber: position.lineNumber,
           startColumn: position.column,
-          endColumn: position.column + 1
+          endColumn: position.column + 1,
         })
         const startsWithSquareBracket = match.groups.square_bracket === '['
         return {
-          suggestions: self.createBibliographyProposals(range, { startsWithSquareBracket, endCharacter }, monaco)
+          suggestions: self.createBibliographyProposals(
+            range,
+            { startsWithSquareBracket, endCharacter },
+            monaco
+          ),
         }
-      }
+      },
     })
   }
 
-  createBibliographyProposals (range, ctx, monaco) {
+  createBibliographyProposals(range, ctx, monaco) {
     const { startsWithSquareBracket, endCharacter } = ctx
     return this._bibTeXEntries.map((entry) => ({
       label: entry.key,
       kind: monaco.languages.CompletionItemKind.Reference,
       documentation: entry.title,
-      insertText: startsWithSquareBracket && endCharacter !== ']' ? `${entry.key}] ` : `${entry.key} `,
-      range: range
+      insertText:
+        startsWithSquareBracket && endCharacter !== ']'
+          ? `${entry.key}] `
+          : `${entry.key} `,
+      range: range,
     }))
   }
 }
 
-export function defineFlippedDiffTheme (monaco) {
+export function defineFlippedDiffTheme(monaco) {
   monaco.editor.defineTheme('flippedDiffTheme', {
     base: 'vs',
     inherit: true,
     rules: [],
     colors: {
       'diffEditor.insertedTextBackground': '#ff000033',
-      'diffEditor.removedTextBackground': '#28d22833'
-    }
+      'diffEditor.removedTextBackground': '#28d22833',
+    },
   })
   monaco.editor.setTheme('flippedDiffTheme')
 }

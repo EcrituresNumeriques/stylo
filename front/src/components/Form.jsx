@@ -18,92 +18,92 @@ import { Plus, Trash } from "react-feather";
 import IsidoreAuthorAPIAutocompleteField from "./Write/metadata/isidoreAuthor";
 
 const {
-	templates: { BaseInputTemplate: DefaultBaseInputTemplate },
-	widgets: { CheckboxesWidget },
-} = getDefaultRegistry();
+  templates: { BaseInputTemplate: DefaultBaseInputTemplate },
+  widgets: { CheckboxesWidget },
+} = getDefaultRegistry()
 
 /**
  * @param {BaseInputTemplate} properties
  */
 function BaseInputTemplate(properties) {
-	const { placeholder } = properties;
-	return (
-		<Translation>
-			{(t) => (
-				<DefaultBaseInputTemplate
-					{...properties}
-					placeholder={t(placeholder)}
-				/>
-			)}
-		</Translation>
-	);
+  const { placeholder } = properties
+  return (
+    <Translation>
+      {(t) => (
+        <DefaultBaseInputTemplate
+          {...properties}
+          placeholder={t(placeholder)}
+        />
+      )}
+    </Translation>
+  )
 }
 
 /**
  * @param {SelectWidget} properties
  */
 function CustomSelectWidget(properties) {
-	const { options, title, placeholder } = properties;
-	return (
-		<div className={styles.selectContainer}>
-			<Translation>
-				{(t) => (
-					<SelectWidget
-						{...{
-							...properties,
-							placeholder: t(placeholder),
-							options: {
-								enumOptions: options?.enumOptions?.map((opt) => {
-									if (title && opt.label in title) {
-										return {
-											label: t(title[opt.label]),
-											value: opt.value,
-										};
-									}
-									return {
-										label: t(opt.label),
-										value: opt.value,
-									};
-								}),
-							},
-						}}
-					/>
-				)}
-			</Translation>
-		</div>
-	);
+  const { options, title, placeholder } = properties
+  return (
+    <div className={styles.selectContainer}>
+      <Translation>
+        {(t) => (
+          <SelectWidget
+            {...{
+              ...properties,
+              placeholder: t(placeholder),
+              options: {
+                enumOptions: options?.enumOptions?.map((opt) => {
+                  if (title && opt.label in title) {
+                    return {
+                      label: t(title[opt.label]),
+                      value: opt.value,
+                    }
+                  }
+                  return {
+                    label: t(opt.label),
+                    value: opt.value,
+                  }
+                }),
+              },
+            }}
+          />
+        )}
+      </Translation>
+    </div>
+  )
 }
 
 /**
  * @param {WidgetProps} properties
  */
 function CustomCheckboxesWidget(properties) {
-	const { options, title } = properties;
-	return (
-		<Translation>
-			{(t) => (
-				<CheckboxesWidget
-					{...{
-						...properties,
-						options: {
-							enumOptions: options?.enumOptions?.map((opt) => {
-								if (title && opt.label in title) {
-									return {
-										label: t(title[opt.label]),
-										value: opt.value,
-									};
-								}
-								return {
-									label: t(opt.label),
-									value: opt.value,
-								};
-							}),
-						},
-					}}
-				/>
-			)}
-		</Translation>
-	);
+  const { options, title } = properties
+  return (
+    <Translation>
+      {(t) => (
+        <CheckboxesWidget
+          {...{
+            ...properties,
+            options: {
+              enumOptions: options?.enumOptions?.map((opt) => {
+                if (title && opt.label in title) {
+                  return {
+                    label: t(title[opt.label]),
+                    value: opt.value,
+                  }
+                }
+                return {
+                  label: t(opt.label),
+                  value: opt.value,
+                }
+              }),
+            },
+          }}
+        />
+      )}
+    </Translation>
+  )
 }
 
 /**
@@ -212,72 +212,72 @@ function FieldTemplate(properties) {
  * @param {ObjectFieldTemplateProps} properties
  */
 function ObjectFieldTemplate(properties) {
-	if (properties.uiSchema["ui:groups"]) {
-		const groups = properties.uiSchema["ui:groups"];
-		const groupedElements = groups.map(({ fields, title }) => {
-			const elements = fields
-				.filter(
-					(field) =>
-						(properties.uiSchema[field] || {})["ui:widget"] !== "hidden",
-				)
-				.map((field) => {
-					const element = properties.properties.find(
-						(element) => element.name === field,
-					);
+  if (properties.uiSchema['ui:groups']) {
+    const groups = properties.uiSchema['ui:groups']
+    const groupedElements = groups.map(({ fields, title }) => {
+      const elements = fields
+        .filter(
+          (field) =>
+            (properties.uiSchema[field] || {})['ui:widget'] !== 'hidden'
+        )
+        .map((field) => {
+          const element = properties.properties.find(
+            (element) => element.name === field
+          )
 
-					if (!element) {
-						console.error(
-							'Field configuration not found for "%s" in \'ui:groups\' "%s" — part of %o',
-							field,
-							title || "",
-							fields,
-						);
-					}
+          if (!element) {
+            console.error(
+              'Field configuration not found for "%s" in \'ui:groups\' "%s" — part of %o',
+              field,
+              title || '',
+              fields
+            )
+          }
 
 					return [field, element];
 				});
 
-			if (elements && elements.length > 0) {
-				return (
-					<fieldset className={styles.fieldset} key={fields.join("-")}>
-						{title && (
-							<legend>
-								<Translation>{(t) => <>{t(title)}</>}</Translation>
-							</legend>
-						)}
-						{elements.map(([field, element]) => {
-							return element ? (
-								<Fragment key={field}>{element.content}</Fragment>
-							) : (
-								<p key={field} className={styles.fieldHasNoElementError}>
-									Field <code>{field}</code> defined in <code>ui:groups</code>{" "}
-									is not an entry of <code>data-schema.json[properties]</code>{" "}
-									object.
-								</p>
-							);
-						})}
-					</fieldset>
-				);
-			}
-		});
+      if (elements && elements.length > 0) {
+        return (
+          <fieldset className={styles.fieldset} key={fields.join('-')}>
+            {title && (
+              <legend>
+                <Translation>{(t) => <>{t(title)}</>}</Translation>
+              </legend>
+            )}
+            {elements.map(([field, element]) => {
+              return element ? (
+                <Fragment key={field}>{element.content}</Fragment>
+              ) : (
+                <p key={field} className={styles.fieldHasNoElementError}>
+                  Field <code>{field}</code> defined in <code>ui:groups</code>{' '}
+                  is not an entry of <code>data-schema.json[properties]</code>{' '}
+                  object.
+                </p>
+              )
+            })}
+          </fieldset>
+        )
+      }
+    })
 
 		return <>{groupedElements}</>;
 	}
 
-	if (properties) {
-		const autocomplete = properties.uiSchema["ui:autocomplete"];
-		return (
-			<Fragment key={properties.key}>
-				{properties.description}
-				{autocomplete === "IsidoreAuthorSearch" && (
-					<IsidoreAuthorAPIAutocompleteField {...properties} />
-				)}
-				{properties.properties.map((element) => (
-					<Fragment key={element.name}>{element.content}</Fragment>
-				))}
-			</Fragment>
-		);
-	}
+  if (properties) {
+    const autocomplete = properties.uiSchema['ui:autocomplete']
+    return (
+      <Fragment key={properties.key}>
+        {properties.description}
+        {autocomplete === 'IsidoreAuthorSearch' && (
+          <IsidoreAuthorAPIAutocompleteField {...properties} />
+        )}
+        {properties.properties.map((element) => (
+          <Fragment key={element.name}>{element.content}</Fragment>
+        ))}
+      </Fragment>
+    )
+  }
 }
 
 const customFields = {
@@ -295,73 +295,73 @@ const customFields = {
  * @constructor
  */
 export default function SchemaForm({
-	formData: initialFormData,
-	schema,
-	uiSchema,
-	onChange = () => {},
+  formData: initialFormData,
+  schema,
+  uiSchema,
+  onChange = () => {},
 }) {
-	const [formData, setFormData] = useState(initialFormData);
-	const [, setErrors] = useState({});
-	const formContext = useMemo(
-		() => ({
-			partialUpdate: ({ id, value }) => {
-				const path = id.replace("root_", "").replace("_", ".");
-				setFormData((state) => {
-					const newFormData = set(state, path, value);
-					onChange(newFormData);
-					return newFormData;
-				});
-			},
-		}),
-		[onChange, setFormData],
-	);
+  const [formData, setFormData] = useState(initialFormData)
+  const [, setErrors] = useState({})
+  const formContext = useMemo(
+    () => ({
+      partialUpdate: ({ id, value }) => {
+        const path = id.replace('root_', '').replace('_', '.')
+        setFormData((state) => {
+          const newFormData = set(state, path, value)
+          onChange(newFormData)
+          return newFormData
+        })
+      },
+    }),
+    [onChange, setFormData]
+  )
 
 	const customWidgets = {
 		SelectWidget: CustomSelectWidget,
 		CheckboxesWidget: CustomCheckboxesWidget,
 	};
 
-	const customTemplates = {
-		ObjectFieldTemplate,
-		FieldTemplate,
-		BaseInputTemplate,
-		ArrayFieldTemplate,
-	};
+  const customTemplates = {
+    ObjectFieldTemplate,
+    FieldTemplate,
+    BaseInputTemplate,
+    ArrayFieldTemplate,
+  }
 
-	const handleUpdate = useCallback(
-		(event) => {
-			const formData = event.formData;
-			setFormData(formData);
-			onChange(formData);
-		},
-		[setFormData, onChange],
-	);
+  const handleUpdate = useCallback(
+    (event) => {
+      const formData = event.formData
+      setFormData(formData)
+      onChange(formData)
+    },
+    [setFormData, onChange]
+  )
 
-	// noinspection JSValidateTypes
-	return (
-		<Form
-			className={styles.form}
-			formContext={formContext}
-			schema={schema}
-			name="Metadata"
-			templates={customTemplates}
-			widgets={customWidgets}
-			fields={customFields}
-			uiSchema={uiSchema}
-			formData={formData}
-			onChange={handleUpdate}
-			onError={setErrors}
-			validator={validator}
-		>
-			<hr hidden={true} />
-		</Form>
-	);
+  // noinspection JSValidateTypes
+  return (
+    <Form
+      className={styles.form}
+      formContext={formContext}
+      schema={schema}
+      name="Metadata"
+      templates={customTemplates}
+      widgets={customWidgets}
+      fields={customFields}
+      uiSchema={uiSchema}
+      formData={formData}
+      onChange={handleUpdate}
+      onError={setErrors}
+      validator={validator}
+    >
+      <hr hidden={true} />
+    </Form>
+  )
 }
 
 SchemaForm.propTypes = {
-	formData: PropTypes.object,
-	schema: PropTypes.object,
-	uiSchema: PropTypes.object,
-	basicMode: PropTypes.bool,
-	onChange: PropTypes.func,
-};
+  formData: PropTypes.object,
+  schema: PropTypes.object,
+  uiSchema: PropTypes.object,
+  basicMode: PropTypes.bool,
+  onChange: PropTypes.func,
+}

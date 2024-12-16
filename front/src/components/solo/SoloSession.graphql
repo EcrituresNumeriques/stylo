@@ -1,28 +1,28 @@
 query getSoloSession($articleId: ID!) {
-    article(article: $articleId) {
-        soloSession {
-            id
-            creator {
-                _id
-            }
-            creatorUsername
-            createdAt
-        }
+  article(article: $articleId) {
+    soloSession {
+      id
+      creator {
+        _id
+      }
+      creatorUsername
+      createdAt
     }
+  }
 }
 
 mutation startSoloSession($articleId: ID!) {
-    article (articleId: $articleId) {
-        startSoloSession {
-            id
-        }
+  article(articleId: $articleId) {
+    startSoloSession {
+      id
     }
+  }
 }
 
 mutation takeOverSoloSession($articleId: ID!) {
-    article (articleId: $articleId) {
-        takeOverSoloSession {
-            id
-        }
+  article(articleId: $articleId) {
+    takeOverSoloSession {
+      id
     }
+  }
 }
