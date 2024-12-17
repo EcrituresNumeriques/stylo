@@ -16,14 +16,6 @@
   border: 1px solid $main-border-color;
   background-color: $extra-background-color;
 
-  > h1 {
-    margin-bottom: 1rem;
-  }
-
-  > p {
-    margin-bottom: 1rem;
-  }
-
   > article:nth-of-type(2n + 1) {
     background-color: $alternate-row-color;
   }
@@ -33,25 +25,14 @@
   display: flex;
   column-gap: 1rem;
   align-items: center;
+
+  h1 {
+    margin: 0;
+  }
 }
 
 .filtersContainer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-}
-
-.filtersTags {
-  flex-grow: 1;
-}
-
-.button {
-  @extend .clickable;
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  margin-right: 0.5rem;
-  background-color: $button-primary-background !important;
-  color: $button-primary-color !important;
+  margin: 0 0 3rem;
 }
 
 .searchField {

@@ -19,8 +19,6 @@
 @media screen {
   html {
     background-color: $main-background-color;
-    font-family: 'Inter', serif;
-    color: $main-color;
   }
 
   button,
@@ -46,6 +44,12 @@
   html,
   body {
     height: 100%;
+  }
+
+  body {
+    color: $main-color;
+    font-family: 'Inter', serif;
+    font-size: 100%;
   }
 
   a {
@@ -74,6 +78,40 @@
   li {
     list-style: none;
   }
+}
+
+h1, .h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 2.25rem 0 1rem;
+}
+
+h2, .h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 2rem 0 .8rem;
+}
+
+h3, .h3 {
+  font-size: 1.24rem;
+  font-weight: 700;
+  margin: 1.8rem 0 .7rem;
+}
+
+h4, .h4 {
+  font-size: 1.16rem;
+  font-weight: 600;
+  margin: 1.4rem 0 .5rem;
+}
+
+h5, .h5 {
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin: 1.2rem 0 .4rem;
+}
+
+p:not(:last-child) {
+  margin: 0 0 .8rem;
 }
 
 /* clears the ‘X’ from Internet Explorer */

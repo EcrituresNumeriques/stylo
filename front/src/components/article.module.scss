@@ -21,79 +21,41 @@
 }
 
 .article {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-
-  column-gap: 2em;
-  row-gap: 0.15em;
-
-  padding: 1rem;
+  display: grid;
+  grid-template-columns: 2rem 3fr 2fr;
+  grid-template-areas: "toggle title actions"
+                       ". metadata metadata"
+                       ". details details";
+  gap: 0;
+  padding: .5rem;
+  margin-bottom: .5rem;
   position: relative;
-
-  .title,
-  .renamingForm {
-    cursor: pointer;
-    flex: 250px 1;
-  }
 
   .inlineField {
     flex: 1;
   }
 
-  .title {
-    display: inline-flex;
-    align-items: center;
-    text-wrap: balance;
-  }
-
-  .renamingForm {
-    display: flex;
-  }
-
-  .actionButtons {
-    flex-shrink: 1;
-    text-align: right;
-  }
-
-  .metadata,
   .deleteArticle {
     width: 100%;
     margin-left: 0.5em;
   }
 
-  .metadata {
-    h4 {
-      margin-bottom: 0.25rem;
-    }
-
-    > p:not(:last-child) {
-      margin-bottom: 1rem;
-    }
-  }
-
   .metadataAuthoring {
+    display: flex;
+    gap: .5rem;
     font-size: 0.9em;
+
+    > * {
+      flex-shrink: 0;
+    }
   }
 
   .versions {
     margin-bottom: 1.5rem;
   }
 
-  .tagChip {
-    font-size: 0.6rem;
-    display: inline-block;
-    padding: 0.25rem;
-    margin-right: 0.5rem;
-    border-radius: 100% 100%;
-  }
-
   .author {
     font-style: italic;
-  }
-
-  .contributors {
-    padding-left: 0.5em;
   }
 
   .editTags {
@@ -111,6 +73,38 @@
   }
 }
 
+.areaTitle {
+  grid-area: title;
+  display: flex;
+  align-items: center;
+
+  .title {
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    text-wrap: balance;
+
+  }
+}
+
+.areaActions {
+  grid-area: actions;
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 0;
+  text-align: right;
+}
+
+.areaMetadata {
+  grid-area: metadata;
+  padding: .5rem 1rem .5rem 0;
+}
+
+.areaDetails {
+  grid-area: details;
+  padding: .5rem 1rem .5rem 0;
+}
+
 .sendText,
 .sendIcon {
   vertical-align: middle;
@@ -121,16 +115,17 @@
   width: 1em;
 }
 
-.icon {
-  display: flex;
+.toggleButton {
+  grid-area: toggle;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
 }
 
 .contributorNames {
   display: inline-flex;
-}
-
-.author {
-  margin-right: 0.5em;
 }
 
 .momentsAgo {
