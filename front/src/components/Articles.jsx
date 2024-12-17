@@ -239,18 +239,12 @@ export default function Articles() {
         />
 
         <aside className={styles.filtersContainer}>
-          <div className={styles.filtersTags}>
-            <h4>{t('tag.list.title')}</h4>
-            <TagsList />
-          </div>
+          <h4>{t('tag.list.title')}</h4>
+          <TagsList tags={tags} />
         </aside>
 
         <div className={styles.articlesTableHeader}>
-          <Button
-            type="secondary"
-            className={styles.button}
-            onClick={() => setCreateArticleVisible(true)}
-          >
+          <Button primary={true} onClick={() => setCreateArticleVisible(true)}>
             {t('article.createAction.buttonText')}
           </Button>
           <div className={styles.articleCounter}>
