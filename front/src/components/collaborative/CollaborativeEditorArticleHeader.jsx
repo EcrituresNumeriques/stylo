@@ -23,14 +23,10 @@ import styles from './CollaborativeEditorArticleHeader.module.scss'
 export default function CollaborativeEditorArticleHeader({ articleId }) {
   const dispatch = useDispatch()
   const articleStructure = useSelector((state) => state.articleStructure)
-  const { data, isLoading } = useGraphQL(
-    { query: getArticleInfo, variables: { articleId } },
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  )
+  const { data, isLoading } = useGraphQL({
+    query: getArticleInfo,
+    variables: { articleId },
+  })
   const {
     visible: exportModalVisible,
     setVisible: setExportModalVisible,

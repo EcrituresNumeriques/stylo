@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react'
-import { useMutate, useMutation } from '../hooks/graphql.js'
+import React, { useCallback, useMemo } from 'react'
+import { useMutation } from '../hooks/graphql.js'
 
 import styles from './articleContributors.module.scss'
 import ContactSearch from './ContactSearch.jsx'
@@ -12,11 +12,7 @@ import { useToasts } from '@geist-ui/core'
 export default function ArticleContributors({ article }) {
   const mutation = useMutation()
   const { setToast } = useToasts()
-  const articleId = article._id
-  const { mutate } = useMutate({
-    query: getArticleContributors,
-    variables: { articleId },
-  })
+  const articleId = useMemo(() => article._id, [])
 
   const handleUserUpdated = useCallback(
     async ({ user, action }) => {
@@ -24,7 +20,7 @@ export default function ArticleContributors({ article }) {
       if (action === 'select') {
         // add contributor
         try {
-          const response = await mutation({
+          await mutation({
             query: addContributor,
             variables: { userId, articleId },
           })
@@ -34,14 +30,6 @@ export default function ArticleContributors({ article }) {
             } ajouté à l'article.`,
             type: 'default',
           })
-          await mutate(
-            {
-              article: {
-                contributors: response.article.addContributor.contributors,
-              },
-            },
-            { revalidate: false }
-          )
         } catch (err) {
           setToast({
             text: String(err),
@@ -50,7 +38,7 @@ export default function ArticleContributors({ article }) {
         }
       } else if (action === 'unselect') {
         try {
-          const response = await mutation({
+          await mutation({
             query: removeContributor,
             variables: { userId, articleId },
           })
@@ -60,14 +48,6 @@ export default function ArticleContributors({ article }) {
             } supprimé de l'article.`,
             type: 'warning',
           })
-          await mutate(
-            {
-              article: {
-                contributors: response.article.removeContributor.contributors,
-              },
-            },
-            { revalidate: false }
-          )
         } catch (err) {
           setToast({
             text: String(err),

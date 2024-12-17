@@ -53,16 +53,12 @@ export default function Articles() {
         : { user: activeUserId },
     [activeWorkspaceId]
   )
-  const { data, isLoading, mutate } = useGraphQL(
-    { query, variables },
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  )
-  const articles = useMemo(
-    () =>
-      (activeWorkspaceId ? data?.workspace?.articles : data?.articles) || [],
+  const { data, isLoading, mutate } = useGraphQL({ query, variables })
+  const { articles = [], tags = [] } = useMemo(
+    () => ({
+      articles: data?.workspace?.articles ?? data?.articles,
+      tags: data?.tags,
+    }),
     [activeWorkspaceId, data]
   )
 
@@ -190,16 +186,14 @@ export default function Articles() {
       events = new EventSource(
         `${backendEndpoint}/events?userId=${activeUserId}`
       )
-      events.onmessage = (event) => {
-        handleStateUpdated(event)
-      }
+      events.onmessage = handleStateUpdated
     }
     return () => {
       if (events) {
         events.close()
       }
     }
-  }, [isLoading, handleStateUpdated])
+  }, [isLoading])
 
   const keepArticles = useMemo(
     () =>

@@ -37,14 +37,7 @@ export default function ContactSearch({
   const activeUser = useSelector((state) => state.activeUser)
   const activeUserId = activeUser._id
   const { data: userContactsQueryData, mutate: mutateUserContacts } =
-    useGraphQL(
-      { query: getContacts, variables: { userId: activeUserId } },
-      {
-        revalidateIfStale: false,
-        revalidateOnFocus: false,
-        revalidateOnReconnect: false,
-      }
-    )
+    useGraphQL({ query: getContacts, variables: { userId: activeUserId } })
   const mutation = useMutation()
   const userContacts = useMemo(
     () => userContactsQueryData?.user?.acquintances || [],

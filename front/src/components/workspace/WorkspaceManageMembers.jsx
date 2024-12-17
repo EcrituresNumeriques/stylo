@@ -13,13 +13,10 @@ export default function WorkspaceManageMembers({ workspace }) {
   const workspaceId = workspace._id
   const mutation = useMutation()
   const { setToast } = useToasts()
-  const { data, mutate } = useGraphQL(
-    { query: getWorkspaceMembers, variables: { workspaceId } },
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  )
+  const { data, mutate } = useGraphQL({
+    query: getWorkspaceMembers,
+    variables: { workspaceId },
+  })
   const members =
     data?.workspace?.members?.map((member) => ({
       ...member,
