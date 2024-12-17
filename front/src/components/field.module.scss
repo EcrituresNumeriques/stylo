@@ -133,8 +133,7 @@
 .comboboxControllerActions {
   position: absolute;
   right: 0;
-  /* (with label) .field label font-size + .field label margin-bottom + .field padding-top + .field border-top-width */
-  top: calc(1rem + 0.5rem + 0.2rem + 1px);
+  top: 0;
 }
 /* (without label) .field border-top-width  */
 .combobox > label:empty ~ * .comboboxControllerActions {
