@@ -1,6 +1,12 @@
-import useSWR, { preload } from 'swr'
+import useSWR from 'swr'
 import { shallowEqual, useSelector } from 'react-redux'
 import { print } from 'graphql/language/printer'
+
+/**
+ * @typedef {import('graphql/language').DocumentNode} DocumentNode
+ * @typedef {import('swr').SWRConfiguration} SWRConfiguration
+ * @typedef {import('swr').SWRResponse} SWRResponse
+ */
 
 async function fetcher({ query, variables, sessionToken, graphqlEndpoint }) {
   return request({ query, variables, sessionToken, graphqlEndpoint })
@@ -47,24 +53,26 @@ async function request({
 }
 
 /**
- * @param queryOrAST GraphQL query
- * @param variables query arguments
+ * @param {{query: string | DocumentNode, variables: Record<string,any>[]}} args
  * @param {SWRConfiguration} [options] - optional SWR options
  * @returns {SWRResponse}
  */
-export default function useGraphQL({ query: queryOrAST, variables }, options) {
+export default function useGraphQL(
+  { query: queryOrAST, variables },
+  options = {}
+) {
   const sessionToken = useSelector((state) => state.sessionToken)
   const graphqlEndpoint = useSelector(
-    (state) => state.applicationConfig.graphqlEndpoint,
-    shallowEqual
+    (state) => state.applicationConfig.graphqlEndpoint
   )
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
 
-  return useSWR(
-    { query, variables, sessionToken, graphqlEndpoint },
-    fetcher,
-    options
-  )
+  return useSWR({ query, variables, sessionToken, graphqlEndpoint }, fetcher, {
+    revalidateIfStale: true,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    ...options,
+  })
 }
 
 export function useMutation() {
@@ -90,43 +98,4 @@ export function runMutation(
     graphqlEndpoint,
     type: 'mutation',
   })
-}
-
-export function useMutate({ query: queryOrAST, variables }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const graphqlEndpoint = useSelector(
-    (state) => state.applicationConfig.graphqlEndpoint,
-    shallowEqual
-  )
-  const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
-
-  return useSWR({ query, variables, sessionToken, graphqlEndpoint })
-}
-
-export function useSWRKey() {
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const graphqlEndpoint = useSelector(
-    (state) => state.applicationConfig.graphqlEndpoint,
-    shallowEqual
-  )
-
-  return ({ query: queryOrAST, variables }) => {
-    const query =
-      typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
-    return { query, variables, sessionToken, graphqlEndpoint }
-  }
-}
-
-export function usePreload() {
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const graphqlEndpoint = useSelector(
-    (state) => state.applicationConfig.graphqlEndpoint,
-    shallowEqual
-  )
-
-  return ({ query: queryOrAST, variables }) => {
-    const query =
-      typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
-    return preload({ query, variables, sessionToken, graphqlEndpoint }, fetcher)
-  }
 }

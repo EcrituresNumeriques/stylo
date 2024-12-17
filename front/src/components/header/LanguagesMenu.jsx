@@ -30,29 +30,33 @@ export default function LanguagesMenu() {
       <div
         className={styles.languagesMenuLink}
         onClick={() => setIsComponentVisible(!isComponentVisible)}
+        tabIndex={0}
+        role="button"
       >
         <LanguagesIcon width={20} height={20} />
       </div>
       {isComponentVisible && (
         <div className={styles.menu}>
-          <div>
-            <ul className={styles.languages}>
-              <li
-                onClick={() => handleLanguageChange('en')}
-                className={language === 'en' ? styles.activeStyle : ''}
-                title="English"
-              >
-                English
-              </li>
-              <li
-                onClick={() => handleLanguageChange('fr')}
-                className={language === 'fr' ? styles.activeStyle : ''}
-                title="Français"
-              >
-                Français
-              </li>
-            </ul>
-          </div>
+          <ul className={styles.languages}>
+            <li
+              onClick={() => handleLanguageChange('en')}
+              tabIndex={0}
+              className={language === 'en' ? styles.activeStyle : ''}
+              aria-selected={language === 'en' ? true : false}
+              lang="en"
+            >
+              English
+            </li>
+            <li
+              onClick={() => handleLanguageChange('fr')}
+              tabIndex={0}
+              className={language === 'fr' ? styles.activeStyle : ''}
+              aria-selected={language === 'fr' ? true : false}
+              lang="fr"
+            >
+              Français
+            </li>
+          </ul>
         </div>
       )}
     </div>

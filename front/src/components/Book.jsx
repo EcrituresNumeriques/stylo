@@ -118,7 +118,7 @@ export default function Book({ name: tagName, _id, updatedAt, articles }) {
             .join(' ')}
           title={t('corpus.preview.buttonTitle')}
           target="_blank"
-          to={`/books/${_id}/preview`}
+          to={`/corpus/${_id}/preview`}
         >
           <MessageSquare />
         </Link>

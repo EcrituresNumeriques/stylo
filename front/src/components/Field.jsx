@@ -1,11 +1,37 @@
 import clsx from 'clsx'
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useId } from 'react'
 import styles from './field.module.scss'
 
+/**
+ * @typedef {Object} FieldInput
+ * @property {string} label
+ * @property {string=} type
+ * @property {string=} id
+ * @property {boolean=} hasError
+ * @property {string=} className
+ * @property {string=} prefix
+ * @property {React.ReactNode[]=} children
+ */
+
+/**
+ * @param {React.ReactHTMLElement(props: FieldInput)} node
+ * @param {React.ForwardedRef} forwardedRef
+ * @return {React.ForwardRefRenderFunction}
+ */
 export default forwardRef(function Field(
-  { hasError, className, prefix, children, label, id, type, ...otherProps },
+  {
+    hasError,
+    className,
+    prefix,
+    children,
+    label,
+    id,
+    type = 'text',
+    ...otherProps
+  },
   forwardedRef
 ) {
+  const uid = `field-${id ?? useId()}`
   const classNames = [
     styles.field,
     prefix && styles.withPrefix,
@@ -23,7 +49,7 @@ export default forwardRef(function Field(
 
   return (
     <div className={clsx(classNames)}>
-      {label && <label htmlFor={id}>{label}</label>}
+      {label && <label htmlFor={uid}>{label}</label>}
       <div
         className={clsx('control', otherProps.icon && 'has-icons-left')}
         style={computedStyles}
@@ -34,6 +60,7 @@ export default forwardRef(function Field(
             {prefix && <span className={styles.prefix}>{prefix}</span>}
             <input
               {...otherProps}
+              id={uid}
               className="input"
               type={type || 'text'}
               ref={forwardedRef}

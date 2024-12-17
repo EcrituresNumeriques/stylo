@@ -1,5 +1,5 @@
 import { Button, Textarea, useInput, useToasts } from '@geist-ui/core'
-import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useGraphQL } from '../../helpers/graphQL.js'
@@ -17,19 +17,12 @@ export default function CorpusCreate({ onSubmit }) {
   const dispatch = useDispatch()
   const { state: title, bindings: titleBindings } = useInput('')
   const { state: description, bindings: descriptionBindings } = useInput('')
-  const titleInputRef = useRef()
   const runQuery = useGraphQL()
   const activeWorkspace = useActiveWorkspace()
   const activeWorkspaceId = useMemo(
     () => activeWorkspace?._id,
     [activeWorkspace]
   )
-
-  useEffect(() => {
-    if (titleInputRef.current !== undefined) {
-      titleInputRef.current.focus()
-    }
-  }, [titleInputRef])
 
   const handleSubmit = useCallback(
     async (event) => {
@@ -69,7 +62,7 @@ export default function CorpusCreate({ onSubmit }) {
     <section>
       <form onSubmit={handleSubmit} className={styles.form}>
         <Field
-          ref={titleInputRef}
+          autoFocus={true}
           {...titleBindings}
           label={t('corpus.createForm.titleField')}
           type="text"

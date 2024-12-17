@@ -3,10 +3,11 @@ const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Types
 const { getYDoc } = require('y-websocket/bin/utils')
 
-const Article = require('../models/article')
-const User = require('../models/user')
-const Workspace = require('../models/workspace')
-const Version = require('../models/version')
+const Article = require('../models/article.js')
+const Corpus = require('../models/corpus.js')
+const User = require('../models/user.js')
+const Workspace = require('../models/workspace.js')
+const Version = require('../models/version.js')
 
 const isUser = require('../policies/isUser')
 const { ApiError } = require('../helpers/errors')
@@ -174,9 +175,11 @@ module.exports = {
      */
     async createArticle (_root, args, context) {
       const user = await getUser(context.userId)
+      const { title, tags, workspaces } = args.createArticleInput
+
       //Add default article + default version
       const newArticle = await Article.create({
-        title: args.title || 'New article',
+        title,
         owner: user,
         workingVersion: {
           md: '',
@@ -184,6 +187,18 @@ module.exports = {
           metadata: {},
         }
       })
+
+      if (Array.isArray(tags) && tags.length) {
+        await newArticle.addTags(...tags)
+      }
+
+      if (Array.isArray(workspaces) && workspaces.length) {
+        for await (const id of workspaces) {
+          const workspace = await Workspace.getWorkspaceById(id, user)
+          workspace.articles.push(newArticle)
+          await workspace.save()
+        }
+      }
 
       user.articles.push(newArticle)
       await user.save()
@@ -315,7 +330,16 @@ module.exports = {
       })
     },
 
-    async removeContributor (article, { userId }) {
+    async corpuses(article, _, { user }) {
+      if (user.admin) {
+        return Corpus.find({ 'articles.article': article._id })
+      }
+      return Corpus.find({
+        $and: [{ 'articles.article': article._id }, { creator: user._id }],
+      })
+    },
+
+    async removeContributor(article, { userId }) {
       const contributorUser = await getUser(userId)
       await article.unshareWith(contributorUser)
       return article

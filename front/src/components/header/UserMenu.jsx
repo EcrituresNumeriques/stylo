@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Layers, LogOut, User } from 'react-feather'
 
 import useComponentVisible from '../../hooks/componentVisible'
@@ -32,6 +32,8 @@ export default function UserMenu() {
     <div ref={ref} className={styles.container}>
       <div
         className={styles.userMenuLink}
+        aria-label={t('header.manage')}
+        tabIndex={0}
         onClick={() => setIsComponentVisible(!isComponentVisible)}
       >
         <UserMenuLink
@@ -57,25 +59,25 @@ export default function UserMenu() {
                 />
               ))}
               <li className={styles.workspacesLink}>
-                <Link
+                <NavLink
                   to="/workspaces"
                   onClick={() => setIsComponentVisible(false)}
                 >
-                  <Layers />
-                  {t('workspace.all')}
-                </Link>
+                  <Layers role="presentation" /> {t('workspace.all')}
+                </NavLink>
               </li>
             </ul>
           </div>
           <div className={styles.footer}>
             <div className={styles.userBlock}>
-              <Link
+              <NavLink
                 to="/credentials"
                 onClick={() => setIsComponentVisible(false)}
                 className={styles.userCard}
+                aria-label={t('credentials.manage')}
               >
                 <div className={styles.persona}>
-                  <User />
+                  <User role="presentation" />
                 </div>
                 <div className={styles.userInfo}>
                   <div className={styles.username}>
@@ -83,9 +85,12 @@ export default function UserMenu() {
                   </div>
                   <div className={styles.email}>{activeUser.email}</div>
                 </div>
-              </Link>
+              </NavLink>
               <Button className={styles.logoutButton} onClick={logout} link>
-                <LogOut size={22} />
+                <LogOut
+                  size={22}
+                  aria-label={t('credentials.logout.confirmButton')}
+                />
               </Button>
             </div>
           </div>

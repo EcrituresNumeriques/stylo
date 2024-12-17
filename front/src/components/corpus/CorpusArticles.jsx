@@ -20,16 +20,10 @@ export default function CorpusArticles({ corpusId }) {
     () => activeWorkspace?._id,
     [activeWorkspace]
   )
-  const { data, isLoading, mutate } = useGraphQL(
-    {
-      query: getCorpus,
-      variables: { filter: { corpusId: corpusId }, includeArticles: true },
-    },
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  )
+  const { data, isLoading, mutate } = useGraphQL({
+    query: getCorpus,
+    variables: { filter: { corpusId: corpusId }, includeArticles: true },
+  })
   const corpusArticles = useMemo(
     () => data?.corpus?.[0]?.articles || [],
     [data]

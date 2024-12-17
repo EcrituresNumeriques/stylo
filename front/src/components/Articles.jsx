@@ -1,8 +1,4 @@
-import {
-  Loading,
-  Modal as GeistModal,
-  useModal,
-} from '@geist-ui/core'
+import { Loading, Modal as GeistModal, useModal } from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
@@ -17,8 +13,8 @@ import Article from './Article'
 import ArticleCreate from './ArticleCreate.jsx'
 
 import styles from './articles.module.scss'
-import Field from './Field'
 import Button from './Button.jsx'
+import Field from './Field'
 import { useActiveUserId } from '../hooks/user'
 import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
 import { useActiveWorkspace } from '../hooks/workspace.js'
@@ -57,16 +53,12 @@ export default function Articles() {
         : { user: activeUserId },
     [activeWorkspaceId]
   )
-  const { data, isLoading, mutate } = useGraphQL(
-    { query, variables },
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  )
-  const articles = useMemo(
-    () =>
-      (activeWorkspaceId ? data?.workspace?.articles : data?.articles) || [],
+  const { data, isLoading, mutate } = useGraphQL({ query, variables })
+  const { articles = [], tags = [] } = useMemo(
+    () => ({
+      articles: data?.workspace?.articles ?? data?.articles,
+      tags: data?.tags,
+    }),
     [activeWorkspaceId, data]
   )
 
@@ -194,16 +186,14 @@ export default function Articles() {
       events = new EventSource(
         `${backendEndpoint}/events?userId=${activeUserId}`
       )
-      events.onmessage = (event) => {
-        handleStateUpdated(event)
-      }
+      events.onmessage = handleStateUpdated
     }
     return () => {
       if (events) {
         events.close()
       }
     }
-  }, [isLoading, handleStateUpdated])
+  }, [isLoading])
 
   const keepArticles = useMemo(
     () =>
@@ -235,6 +225,9 @@ export default function Articles() {
               name={activeWorkspace.name}
             />
           )}
+          {!activeWorkspace && (
+            <WorkspaceLabel color="#ccc" name={t('workspace.myspace')} />
+          )}
         </header>
         <Field
           className={styles.searchField}
@@ -246,23 +239,16 @@ export default function Articles() {
         />
 
         <aside className={styles.filtersContainer}>
-          <div className={styles.filtersTags}>
-            <h4>{t('tag.list.title')}</h4>
-            <TagsList />
-          </div>
+          <h4>{t('tag.list.title')}</h4>
+          <TagsList tags={tags} />
         </aside>
 
         <div className={styles.articlesTableHeader}>
-          {!activeWorkspaceId && (
-            <Button
-              primary
-              onClick={() => setCreateArticleVisible(true)}
-            >
-              {t('article.createAction.buttonText')}
-            </Button>
-          )}
+          <Button primary={true} onClick={() => setCreateArticleVisible(true)}>
+            {t('article.createAction.buttonText')}
+          </Button>
           <div className={styles.articleCounter}>
-            {t('article.count', { count: keepArticles.length })}
+            {keepArticles.length} article{keepArticles.length > 1 ? 's' : ''}
           </div>
         </div>
 
@@ -273,7 +259,10 @@ export default function Articles() {
         >
           <h2>{t('article.createModal.title')}</h2>
           <GeistModal.Content>
-            <ArticleCreate onSubmit={handleArticleCreated} />
+            <ArticleCreate
+              onSubmit={handleArticleCreated}
+              workspaceId={activeWorkspaceId}
+            />
           </GeistModal.Content>
           <GeistModal.Action
             passive

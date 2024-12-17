@@ -1,6 +1,70 @@
+fragment articleBasicFields on Article {
+  _id
+  title
+  updatedAt
+
+  owner {
+    _id
+    displayName
+    username
+  }
+
+  contributors {
+    user {
+      _id
+      email
+      username
+      displayName
+    }
+  }
+}
+
+fragment articleDetailedFields on Article {
+  ...articleBasicFields
+
+  tags {
+    _id
+    color
+    name
+  }
+
+  versions {
+    _id
+    message
+    revision
+    version
+    type
+    createdAt
+  }
+
+  workspaces {
+    _id
+    color
+    name
+  }
+
+  corpuses {
+    _id
+    name
+  }
+}
+
+fragment articleVersionFields on Article {
+  versions {
+    _id
+    message
+    revision
+    version
+    type
+    createdAt
+  }
+}
+
 query renameArticle($article: ID!, $title: String!) {
   article(article: $article) {
     rename(title: $title)
+
+    ...articleDetailedFields
   }
 }
 
@@ -12,14 +76,7 @@ query linkToZotero($article: ID!, $zotero: String!) {
 
 query getArticleVersions($articleId: ID!) {
   article(article: $articleId) {
-    versions {
-      _id
-      message
-      revision
-      version
-      type
-      createdAt
-    }
+    ...articleVersionFields
   }
 }
 
@@ -30,6 +87,44 @@ query getArticleWorkspaces($articleId: ID!) {
       color
       name
     }
+  }
+}
+
+query getArticleDetails($articleId: ID!, $corpusFilters: FilterCorpusInput) {
+  article(article: $articleId) {
+    ...articleDetailedFields
+  }
+
+  tags {
+    _id
+    name
+    color
+  }
+
+  workspaces {
+    _id
+    name
+    color
+  }
+
+  corpus(filter: $corpusFilters) {
+    _id
+    name
+    description
+    creator {
+      _id
+      displayName
+      username
+      email
+    }
+    metadata
+    articles {
+      article {
+        _id
+      }
+    }
+    createdAt
+    updatedAt
   }
 }
 
@@ -105,6 +200,24 @@ mutation startCollaborativeSession($articleId: ID!) {
   article(articleId: $articleId) {
     startCollaborativeSession {
       id
+    }
+  }
+}
+
+mutation addArticleToWorkspace($workspaceId: ID!, $articleId: ID!) {
+  workspace(workspaceId: $workspaceId) {
+    addArticle(articleId: $articleId) {
+      _id
+    }
+  }
+}
+
+mutation removeArticleFromWorkspace($workspaceId: ID!, $articleId: ID!) {
+  workspace(workspaceId: $workspaceId) {
+    article(articleId: $articleId) {
+      remove {
+        _id
+      }
     }
   }
 }

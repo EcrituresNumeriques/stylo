@@ -3,8 +3,7 @@ import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { randomColor } from '../helpers/colors.js'
-import { useGraphQL } from '../helpers/graphQL'
-import { useMutate } from '../hooks/graphql'
+import useGraphQL from '../hooks/graphql'
 import { createTag, getTags } from './Tag.graphql'
 
 import styles from './TagCreate.module.scss'
@@ -13,7 +12,7 @@ import { useCurrentUser } from '../contexts/CurrentUser'
 
 export default function TagCreate() {
   const { setToast } = useToasts()
-  const { data, mutate } = useMutate({ query: getTags, variables: {} })
+  const { data, mutate } = useGraphQL({ query: getTags, variables: {} })
   const { t } = useTranslation()
   const { state: name, bindings: nameBindings } = useInput('')
   const { state: description, bindings: descriptionBindings } = useInput('')

@@ -142,7 +142,7 @@ export default function CorpusItem({ corpus }) {
             title="Preview (open a new window)"
             target="_blank"
             className={buttonStyles.icon}
-            to={`/books/${corpus._id}/preview`}
+            to={`/corpus/${corpus._id}/preview`}
           >
             <Eye />
           </Link>
