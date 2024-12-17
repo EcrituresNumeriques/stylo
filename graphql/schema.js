@@ -156,6 +156,7 @@ type Article {
   setZoteroLink(zotero: String!): Boolean
   updateWorkingVersion(content: WorkingVersionInput!): Article
   workspaces: [Workspace!]
+  corpuses: [Corpus!]
 
   addContributor(userId: ID!): Article
   removeContributor(userId: ID!): Article
