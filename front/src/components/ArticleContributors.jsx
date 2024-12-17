@@ -7,10 +7,9 @@ import {
   addContributor,
   removeContributor,
 } from './ArticleContributors.graphql'
-import { getArticleContributors } from './Article.graphql'
 import { useToasts } from '@geist-ui/core'
 
-export default function ArticleContributors({ article, contributors }) {
+export default function ArticleContributors({ article }) {
   const mutation = useMutation()
   const { setToast } = useToasts()
   const articleId = article._id
@@ -83,7 +82,7 @@ export default function ArticleContributors({ article, contributors }) {
   return (
     <section className={styles.acquintances}>
       <ContactSearch
-        members={contributors.map((c) => c.user)}
+        members={article.contributors.map((c) => c.user)}
         onUserUpdated={handleUserUpdated}
       />
     </section>
