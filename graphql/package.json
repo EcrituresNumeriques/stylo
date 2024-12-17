@@ -51,7 +51,7 @@
     "passport-openidconnect": "^0.1.1",
     "pino": "^7.11.0",
     "pino-http": "^7.0.0",
-    "remove-markdown": "^0.5.0",
+    "remove-markdown": "^0.6.0",
     "ws": "^8.13.0",
     "y-websocket": "^1.5.0"
   },
@@ -65,7 +65,7 @@
     "jest-environment-node": "~29.7"
   },
   "volta": {
-    "node": "18.20.4",
-    "npm": "10.9.0"
+    "node": "18.20.5",
+    "npm": "10.9.2"
   }
 }
