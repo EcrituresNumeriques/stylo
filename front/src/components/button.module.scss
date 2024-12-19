@@ -106,8 +106,8 @@ a.icon:not(.primary) {
 .primary {
   @extend .button;
 
-  background-color: #000;
-  color: #fff;
+  background-color: #000 !important;
+  color: #fff !important;
   border: 1px solid #000;
 
   &:disabled {
