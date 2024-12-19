@@ -10,12 +10,11 @@ export function groupItems(items) {
   return Array.from(
     items
       .reduce((groups, item) => {
-        if (!groups.has(item.section)) {
-          groups.set(item.section, [])
+        const section = item.section
+        if (!groups.has(section)) {
+          groups.set(section, [])
         }
-
-        groups.get(item.section).push({ ...item })
-
+        groups.get(section).push({ ...item })
         return groups
       }, new Map())
       .entries()
