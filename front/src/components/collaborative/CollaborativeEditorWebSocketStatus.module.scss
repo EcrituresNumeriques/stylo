@@ -1,3 +1,28 @@
 .dot {
   font-size: 0.8rem !important;
+  
+  :global {
+    .label {
+      display: flex;
+      gap: 0.25rem;
+    }
+  }
+}
+
+.loadingIndicator {
+  height: 1em;
+  width: 1em;
+  animation: rotation 2.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  flex-shrink: 0;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }

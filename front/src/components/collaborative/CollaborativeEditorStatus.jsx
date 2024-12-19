@@ -9,7 +9,6 @@ import PropTypes from 'prop-types'
 import React, { useCallback } from 'react'
 import { StopCircle } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-import { shallowEqual, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { useMutation } from '../../hooks/graphql.js'
 import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
@@ -22,21 +21,12 @@ import styles from './CollaborativeEditorStatus.module.scss'
 export default function CollaborativeEditorStatus({
   articleId,
   websocketStatus,
-  collaborativeSessionCreatorId,
+  collaborativeSessionState,
 }) {
   const { t } = useTranslation()
   const mutation = useMutation()
   const { setToast } = useToasts()
   const history = useHistory()
-  const activeUser = useSelector(
-    (state) => ({
-      _id: state.activeUser._id,
-      email: state.activeUser.email,
-      displayName: state.activeUser.displayName,
-      username: state.activeUser.username,
-    }),
-    shallowEqual
-  )
 
   const {
     visible: collaborativeSessionEndVisible,
@@ -74,18 +64,24 @@ export default function CollaborativeEditorStatus({
           <CollaborativeEditorWriters />
         </div>
         <div className={styles.status}>
-          <CollaborativeEditorWebSocketStatus status={websocketStatus} />
+          <CollaborativeEditorWebSocketStatus
+            status={websocketStatus}
+            state={collaborativeSessionState}
+          />
         </div>
-        <Button
-          className={clsx(styles.button)}
-          type="error"
-          ghost
-          auto
-          scale={0.4}
-          onClick={handleConfirmCollaborativeSessionEnd}
-        >
-          <StopCircle /> End collaborative session
-        </Button>
+        {websocketStatus === 'connected' &&
+          collaborativeSessionState === 'started' && (
+            <Button
+              className={clsx(styles.button)}
+              type="error"
+              ghost
+              auto
+              scale={0.4}
+              onClick={handleConfirmCollaborativeSessionEnd}
+            >
+              <StopCircle /> End collaborative session
+            </Button>
+          )}
       </div>
       <GeistModal
         width="35rem"
@@ -114,5 +110,5 @@ export default function CollaborativeEditorStatus({
 CollaborativeEditorStatus.propTypes = {
   articleId: PropTypes.string.isRequired,
   websocketStatus: PropTypes.string.isRequired,
-  collaborativeSessionCreatorId: PropTypes.string.isRequired,
+  collaborativeSessionState: PropTypes.string.isRequired,
 }

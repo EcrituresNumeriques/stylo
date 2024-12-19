@@ -50,6 +50,7 @@ export default function CollaborativeTextEditor({
   const connectingRef = useRef(false)
   const [dynamicStyles, setDynamicStyles] = useState('')
   const [websocketStatus, setWebsocketStatus] = useState('')
+  const [collaborativeSessionState, setCollaborativeSessionState] = useState('')
   const [yText, setYText] = useState(null)
   const [awareness, setAwareness] = useState(null)
   const { websocketEndpoint } = useSelector(
@@ -75,7 +76,9 @@ export default function CollaborativeTextEditor({
   const options = useMemo(
     () => ({
       automaticLayout: true,
-      readOnly: websocketStatus !== 'connected',
+      readOnly:
+        websocketStatus !== 'connected' ||
+        collaborativeSessionState !== 'started',
       contextmenu: websocketStatus === 'connected',
       autoClosingBrackets: 'never',
       wordBasedSuggestions: false,
@@ -143,8 +146,18 @@ export default function CollaborativeTextEditor({
     [setWebsocketStatus]
   )
 
+  const handleEditorDidMount = useCallback(
+    (editor) => {
+      editorRef.current = editor
+      new MonacoBinding(yText, editor.getModel(), new Set([editor]), awareness)
+    },
+    [yText, awareness]
+  )
+
   useEffect(() => {
-    if (connectingRef.current) return
+    if (connectingRef.current) {
+      return
+    }
     connectingRef.current = true
     const {
       awareness,
@@ -163,28 +176,18 @@ export default function CollaborativeTextEditor({
       handleUpdateArticleStructureAndStats({ text: yText.toString() })
     })
     yState.observe(function () {
+      setCollaborativeSessionState(yState.toString())
       onCollaborativeSessionStateUpdated({ state: yState.toString() })
     })
     setAwareness(awareness)
     setYText(yText)
     return () => {
-      try {
-        awareness.destroy()
-        wsProvider.disconnect()
-        wsProvider.destroy()
-      } catch (err) {
-        // try to disconnect...
-      }
+      connectingRef.current = false
+      awareness.destroy()
+      wsProvider.disconnect()
+      wsProvider.destroy()
     }
   }, [collaborativeSessionId, websocketEndpoint, writerInfo])
-
-  const handleEditorDidMount = useCallback(
-    (editor) => {
-      editorRef.current = editor
-      new MonacoBinding(yText, editor.getModel(), new Set([editor]), awareness)
-    },
-    [yText, awareness]
-  )
 
   useEffect(() => {
     const line = editorCursorPosition.lineNumber
@@ -204,6 +207,7 @@ export default function CollaborativeTextEditor({
       <style>{dynamicStyles}</style>
       <CollaborativeEditorStatus
         articleId={articleId}
+        collaborativeSessionState={collaborativeSessionState}
         websocketStatus={websocketStatus}
         collaborativeSessionCreatorId={collaborativeSessionCreatorId}
       />
@@ -212,7 +216,6 @@ export default function CollaborativeTextEditor({
         className={styles.editor}
         defaultLanguage="markdown"
         onMount={handleEditorDidMount}
-        on
       />
     </>
   )
