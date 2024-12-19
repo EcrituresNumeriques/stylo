@@ -36,7 +36,6 @@ export default function CorpusUpdate({ corpus, onSubmit }) {
             updateCorpusInput: {
               name: title,
               description,
-              metadata: '',
             },
           },
         })
