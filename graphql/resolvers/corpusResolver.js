@@ -2,21 +2,22 @@ const { ApiError } = require('../helpers/errors')
 const Corpus = require('../models/corpus')
 const Workspace = require('../models/workspace')
 
-async function getCorpusByContext (corpusId, context) {
+async function getCorpusByContext(corpusId, context) {
   if (context.token?.admin === true || context.user?.admin) {
     return getCorpus(corpusId)
   }
   const userId = context.userId
   if (!userId) {
-    throw new ApiError('UNAUTHENTICATED', `Unable to find an authentication context: ${context}`)
+    throw new ApiError(
+      'UNAUTHENTICATED',
+      `Unable to find an authentication context: ${context}`
+    )
   }
   return getCorpusByUser(corpusId, userId)
 }
 
-async function getCorpus (corpusId) {
-  const corpus = await Corpus
-    .findById(corpusId)
-    .populate('creator')
+async function getCorpus(corpusId) {
+  const corpus = await Corpus.findById(corpusId).populate('creator')
 
   if (!corpus) {
     throw new ApiError('NOT_FOUND', `Unable to find corpus with id ${corpusId}`)
@@ -24,17 +25,14 @@ async function getCorpus (corpusId) {
   return corpus
 }
 
-async function getCorpusByUser (corpusId, userId) {
+async function getCorpusByUser(corpusId, userId) {
   const userWorkspaces = await Workspace.find({
-    'members.user': userId
+    'members.user': userId,
   })
   const workspaceIds = userWorkspaces.map((w) => w._id)
   const corpus = await Corpus.findOne({
     _id: corpusId,
-    $or: [
-      { creator: userId },
-      { workspace: { $in: workspaceIds } }
-    ]
+    $or: [{ creator: userId }, { workspace: { $in: workspaceIds } }],
   }).populate('creator')
 
   if (!corpus) {
@@ -44,21 +42,20 @@ async function getCorpusByUser (corpusId, userId) {
 }
 
 class CorpusArticle {
-
-  get article () {
+  get article() {
     return this._article
   }
 
-  get order () {
+  get order() {
     return this._article.order
   }
 
-  constructor (corpus, article) {
+  constructor(corpus, article) {
     this.corpus = corpus
     this._article = article
   }
 
-  async remove () {
+  async remove() {
     if (this._article) {
       this.corpus.articles.pull({ _id: this._article._id })
       return this.corpus.save()
@@ -66,7 +63,7 @@ class CorpusArticle {
     return this.corpus
   }
 
-  async move (order) {
+  async move(order) {
     if (this._article) {
       const articles = this.corpus.articles
       const map = new Map(articles.map((obj) => [obj.order, obj]))
@@ -103,10 +100,13 @@ module.exports = {
      * @param { user } user
      * @returns {Promise<*>}
      */
-    async createCorpus (_, args, { user }) {
+    async createCorpus(_, args, { user }) {
       const { createCorpusInput } = args
       if (!user) {
-        throw new ApiError('UNAUTHENTICATED', 'Unable to create a corpus as an unauthenticated user')
+        throw new ApiError(
+          'UNAUTHENTICATED',
+          'Unable to create a corpus as an unauthenticated user'
+        )
       }
       // any user can create a corpus
       const newCorpus = new Corpus({
@@ -128,7 +128,7 @@ module.exports = {
      * @param {{ user: User, token: {}, userId: String }} context
      * @returns {Promise<*>}
      */
-    async corpus (_root, { corpusId }, context) {
+    async corpus(_root, { corpusId }, context) {
       return getCorpusByContext(corpusId, context)
     },
   },
@@ -142,10 +142,13 @@ module.exports = {
      * @param context
      * @returns {Promise<[Corpus]>}
      */
-    async corpus (_, args, context) {
+    async corpus(_, args, context) {
       const { user } = context
       if (!user) {
-        throw new ApiError('UNAUTHENTICATED', 'Unable to get a list of corpus as an unauthenticated user')
+        throw new ApiError(
+          'UNAUTHENTICATED',
+          'Unable to get a list of corpus as an unauthenticated user'
+        )
       }
       if ('filter' in args) {
         const filter = args.filter
@@ -155,49 +158,56 @@ module.exports = {
         if ('workspaceId' in filter) {
           // check that the user can access the workspace
           await Workspace.getWorkspaceById(filter.workspaceId, user)
-          return Corpus.find({ 'workspace': filter.workspaceId })
+          return Corpus.find({ workspace: filter.workspaceId })
             .populate([{ path: 'creator' }])
             .sort([['updatedAt', -1]])
         }
       }
-      return Corpus.find({ 'creator': user?._id, 'workspace': null })
+      return Corpus.find({ creator: user?._id, workspace: null })
         .populate([{ path: 'creator' }])
         .sort([['updatedAt', -1]])
     },
   },
 
   Corpus: {
-    async articles (corpus, _args, context) {
-      const articles = await Promise.all(corpus.articles
-        .map(async (article) => {
-          const articleLoaded = await context.loaders.articles.load(article.article)
+    async articles(corpus, _args, context) {
+      const articles = await Promise.all(
+        corpus.articles.map(async (article) => {
+          const articleLoaded = await context.loaders.articles.load(
+            article.article
+          )
           return {
             _id: article._id,
             order: article.order,
-            article: articleLoaded
+            article: articleLoaded,
           }
-        }))
-      articles.sort((a, b) => a.order < b.order ? -1 : 1)
+        })
+      )
+      articles.sort((a, b) => (a.order < b.order ? -1 : 1))
       return articles
     },
 
-    async article (corpus, { articleId }) {
-      const article = corpus.articles.find(({ article }) => article.equals(articleId))
+    async article(corpus, { articleId }) {
+      const article = corpus.articles.find(({ article }) =>
+        article.equals(articleId)
+      )
       return new CorpusArticle(corpus, article)
     },
 
-    async rename (corpus, { name }) {
+    async rename(corpus, { name }) {
       corpus.name = name
       return corpus.save()
     },
 
-    async updateMetadata (corpus, { metadata }) {
+    async updateMetadata(corpus, { metadata }) {
       corpus.metadata = metadata
       return corpus.save()
     },
 
-    async addArticle (corpus, { articleId, order }) {
-      const articleAlreadyAdded = corpus.articles.find(({ article }) => article.id === articleId)
+    async addArticle(corpus, { articleId, order }) {
+      const articleAlreadyAdded = corpus.articles.find(
+        ({ article }) => article.id === articleId
+      )
       if (articleAlreadyAdded) {
         return corpus
       }
@@ -205,7 +215,7 @@ module.exports = {
       return corpus.save()
     },
 
-    async delete (corpus) {
+    async delete(corpus) {
       await corpus.remove()
       if (corpus.$isDeleted()) {
         return corpus
@@ -213,14 +223,22 @@ module.exports = {
       throw new ApiError('ERROR', `Unable to delete the corpus ${corpus._id}`)
     },
 
-    async update (corpus, { updateCorpusInput }) {
+    async update(corpus, { updateCorpusInput }) {
       corpus.name = updateCorpusInput.name
       corpus.description = updateCorpusInput.description
-      corpus.metadata = updateCorpusInput.metadata
+      const metadata = updateCorpusInput.metadata
+      if (
+        metadata &&
+        typeof metadata === 'object' &&
+        !Array.isArray(metadata)
+      ) {
+        corpus.metadata = metadata
+      }
       return await corpus.save()
     },
 
     async updateArticlesOrder(corpus, { articlesOrderInput }) {
+      console.log({ corpus })
       const articlesOrderMap = articlesOrderInput.reduce((acc, item) => {
         acc[item.articleId] = item.order
         return acc
@@ -233,6 +251,6 @@ module.exports = {
         }
       })
       return corpus.save()
-    }
+    },
   },
 }
