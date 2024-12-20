@@ -1,10 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Dot, Loading } from '@geist-ui/core'
+import { Dot } from '@geist-ui/core'
+import { Loader } from 'react-feather'
 
 import styles from './CollaborativeEditorWebSocketStatus.module.scss'
 
-export default function CollaborativeEditorWebSocketStatus({ status }) {
+export default function CollaborativeEditorWebSocketStatus({ status, state }) {
+  if (state !== 'started') {
+    return (
+      <Dot type="warning" className={styles.dot}>
+        Connecting
+        <Loader className={styles.loadingIndicator} />
+      </Dot>
+    )
+  }
   return (
     <>
       {status === 'connected' && (
@@ -19,7 +28,8 @@ export default function CollaborativeEditorWebSocketStatus({ status }) {
       )}
       {status === 'connecting' && (
         <Dot type="warning" className={styles.dot}>
-          Connecting <Loading />
+          Connecting
+          <Loader className={styles.loadingIndicator} />
         </Dot>
       )}
     </>
@@ -27,5 +37,6 @@ export default function CollaborativeEditorWebSocketStatus({ status }) {
 }
 
 CollaborativeEditorWebSocketStatus.propTypes = {
+  state: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
 }
