@@ -39,6 +39,16 @@ export default function Export({
     [name]
   )
   const { t } = useTranslation()
+  const groupedExportStyles = useMemo(() => {
+    return exportStyles?.map(({ key, name }, index) => ({
+      key,
+      name,
+      section: '',
+      // pre-assign an index to each entry. It will persist upon filtered results.
+      // @see https://github.com/EcrituresNumeriques/stylo/issues/1014
+      index,
+    }))
+  }, [exportStyles])
 
   const exportUrl = bookId
     ? `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${exportId}&book=${bookId}&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${Boolean(
@@ -93,7 +103,7 @@ export default function Export({
           <Combobox
             id="export-styles"
             label="Bibliography style"
-            items={exportStyles}
+            items={groupedExportStyles}
             value={csl}
             onChange={setCsl}
           />
