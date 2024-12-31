@@ -157,6 +157,8 @@
   "credentials.newPassword.placeholder": "New password",
   "credentials.confirmNewPassword.placeholder": "Confirm new password",
   "export.format.label": "Formats",
+  "export.bibliography.label": "Bibliography style",
+  "export.additionnalOptions.label": "Additional options",
   "export.additionnalOptions.toc": "Table of content",
   "export.additionnalOptions.notoc": "No table of content",
   "export.sectionChapters.numbered": "Section and Chapters: numbered",

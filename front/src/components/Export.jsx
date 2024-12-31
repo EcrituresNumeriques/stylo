@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import clsx from 'clsx'
-import PropTypes from 'prop-types'
 import slugify from 'slugify'
 import useStyloExport from '../hooks/stylo-export.js'
 import { applicationConfig } from '../config.js'
@@ -13,30 +12,38 @@ import styles from './export.module.scss'
 import buttonStyles from './button.module.scss'
 import formStyles from './form.module.scss'
 
-export default function Export({
-  bookId,
-  articleVersionId,
-  articleId,
-  bib,
-  name,
-}) {
-  const { processEndpoint, exportEndpoint, pandocExportEndpoint } =
-    applicationConfig
-  const [format, setFormat] = useState(bookId ? 'html5' : 'html')
+/**
+ * @typedef {Object} ExportProps
+ * @property {string?} bookId
+ * @property {string?} articleVersionId
+ * @property {string?} articleId
+ * @property {string} bib
+ * @property {string} name
+ */
+
+/**
+ *
+ * @param {ExportProps} props
+ * @returns {React.ReactElement}
+ */
+export default function Export(props) {
+  const { t } = useTranslation()
+  const { bookId, articleVersionId = '', articleId, bib, name } = props
+  const { pandocExportHost, pandocExportEndpoint } = applicationConfig
+
+  const [format, setFormat] = useState('html')
   const [csl, setCsl] = useState('chicagomodified')
   const [toc, setToc] = useState('0')
   const [unnumbered, setUnnumbered] = useState('false')
   const [tld, setTld] = useState('false')
   const { exportFormats, exportStyles, exportStylesPreview, isLoading } =
     useStyloExport({ csl, bib })
-  const { host } = window.location
   const exportId = useMemo(
     () =>
       slugify(name, { strict: true, lower: true }) ||
       (articleVersionId ?? articleId ?? bookId),
     [name]
   )
-  const { t } = useTranslation()
   const groupedExportStyles = useMemo(() => {
     return exportStyles?.map(({ key, name }, index) => ({
       key,
@@ -48,22 +55,22 @@ export default function Export({
     }))
   }, [exportStyles])
 
-  const exportUrl = bookId
-    ? `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${exportId}&book=${bookId}&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${Boolean(
-        toc
-      )}&tld=${tld}&unnumbered=${unnumbered}`
-    : `${pandocExportEndpoint}/generique/article/export/${host}/${articleId}/${exportId}/?with_toc=${toc}&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=${format}&version=${
-        articleVersionId ?? ''
-      }`
+  const exportUrl = useMemo(() => {
+    return `${pandocExportEndpoint}/generique/${
+      articleId ? 'article' : 'corpus'
+    }/export/${pandocExportHost}/${
+      articleId ?? bookId
+    }/${exportId}/?with_toc=${toc}&with_nocite=1&with_link_citations=1&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=${format}&version=${articleVersionId}`
+  }, [toc, csl, format])
 
   return (
     <section className={styles.export}>
       <form className={clsx(formStyles.form, formStyles.verticalForm)}>
-        {articleId && !exportFormats.length && <Loading inline size="24" />}
-        {articleId && exportFormats.length && (
+        {!exportFormats.length && <Loading inline size="24" />}
+        {exportFormats.length && (
           <Select
             id="export-formats"
-            label="Formats"
+            label={t('export.format.label')}
             value={format}
             onChange={(e) => setFormat(e.target.value)}
           >
@@ -74,39 +81,18 @@ export default function Export({
             ))}
           </Select>
         )}
-        {bookId && (
-          <Select
-            id="export-formats"
-            label={t('export.format.label')}
-            value={format}
-            onChange={(e) => setFormat(e.target.value)}
-          >
-            <option value="html5">HTML5</option>
-            <option value="zip">ZIP</option>
-            <option value="pdf">PDF</option>
-            <option value="tex">LATEX</option>
-            <option value="xml">XML (érudit)</option>
-            <option value="odt">ODT</option>
-            <option value="docx">DOCX</option>
-            <option value="epub">EPUB</option>
-            <option value="tei">TEI</option>
-            <option value="icml">ICML</option>
-          </Select>
-        )}
 
-        {articleId && bib && !exportStyles.length && (
-          <Loading inline size="24" />
-        )}
-        {articleId && bib && exportStyles.length && (
+        {bib && !exportStyles.length && <Loading inline size="24" />}
+        {bib && exportStyles.length && (
           <Combobox
             id="export-styles"
-            label="Bibliography style"
+            label={t('export.bibliography.label')}
             items={groupedExportStyles}
             value={csl}
             onChange={setCsl}
           />
         )}
-        {articleId && bib && (
+        {bib && (
           <div className={styles.bibliographyPreview}>
             {isLoading && <Loading inline size="24" />}
             {!isLoading && (
@@ -115,34 +101,16 @@ export default function Export({
           </div>
         )}
 
-        {bookId && bib && (
-          <Select
-            id="export-styles"
-            label="Bibliography style"
-            value={csl}
-            setCsl={setCsl}
-          >
-            <option value="chicagomodified">chicagomodified</option>
-            <option value="lettres-et-sciences-humaines-fr">
-              {' '}
-              lettres-et-sciences-humaines-fr
-            </option>
-            <option value="chicago-fullnote-bibliography-fr">
-              {' '}
-              chicago-fullnote-bibliography-fr
-            </option>
-          </Select>
-        )}
-
         <Select
           id="export-toc"
-          label="Additional options"
+          label={t('export.additionnalOptions.label')}
           value={toc}
           onChange={(e) => setToc(parseInt(e.target.value, 10))}
         >
           <option value="1">{t('export.additionnalOptions.toc')}</option>
           <option value="0">{t('export.additionnalOptions.notoc')}</option>
         </Select>
+
         {bookId && (
           <Select
             id="export-numbering"
@@ -178,13 +146,4 @@ export default function Export({
       </nav>
     </section>
   )
-}
-
-// TODO use "shapes" to either have bookId, or articleId, or articleId and articleVersionId
-Export.propTypes = {
-  bookId: PropTypes.string,
-  articleVersionId: PropTypes.string,
-  articleId: PropTypes.string,
-  name: PropTypes.string.isRequired,
-  bib: PropTypes.string,
 }
