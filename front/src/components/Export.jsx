@@ -51,18 +51,16 @@ export default function Export({
   }, [exportStyles])
 
   const exportUrl = bookId
-    ? `${processEndpoint}/cgi-bin/exportBook/exec.cgi?id=${exportId}&book=${bookId}&processor=xelatex&source=${exportEndpoint}/&format=${format}&bibstyle=${csl}&toc=${Boolean(
-        toc
-      )}&tld=${tld}&unnumbered=${unnumbered}`
-    : `${pandocExportEndpoint}/generique/export/${host}/${articleId}/${exportId}/?with_toc=${toc}&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=${format}&version=${
+    ? `${pandocExportEndpoint}/generique/corpus/export/${host}/${bookId}/${exportId}/?with_toc=${toc}&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=${format}`
+    : `${pandocExportEndpoint}/generique/article/export/${host}/${articleId}/${exportId}/?with_toc=${toc}&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=${format}&version=${
         articleVersionId ?? ''
       }`
 
   return (
     <section className={styles.export}>
       <form className={clsx(formStyles.form, formStyles.verticalForm)}>
-        {articleId && !exportFormats.length && <Loading inline size="24" />}
-        {articleId && exportFormats.length && (
+        {!exportFormats.length && <Loading inline size="24" />}
+        {exportFormats.length && (
           <Select
             id="export-formats"
             label="Formats"
@@ -76,30 +74,9 @@ export default function Export({
             ))}
           </Select>
         )}
-        {bookId && (
-          <Select
-            id="export-formats"
-            label={t('export.format.label')}
-            value={format}
-            onChange={(e) => setFormat(e.target.value)}
-          >
-            <option value="html5">HTML5</option>
-            <option value="zip">ZIP</option>
-            <option value="pdf">PDF</option>
-            <option value="tex">LATEX</option>
-            <option value="xml">XML (érudit)</option>
-            <option value="odt">ODT</option>
-            <option value="docx">DOCX</option>
-            <option value="epub">EPUB</option>
-            <option value="tei">TEI</option>
-            <option value="icml">ICML</option>
-          </Select>
-        )}
 
-        {articleId && bib && !exportStyles.length && (
-          <Loading inline size="24" />
-        )}
-        {articleId && bib && exportStyles.length && (
+        {bib && !exportStyles.length && <Loading inline size="24" />}
+        {bib && exportStyles.length && (
           <Combobox
             id="export-styles"
             label="Bibliography style"
@@ -108,32 +85,13 @@ export default function Export({
             onChange={setCsl}
           />
         )}
-        {articleId && bib && (
+        {bib && (
           <div className={styles.bibliographyPreview}>
             {isLoading && <Loading inline size="24" />}
             {!isLoading && (
               <div dangerouslySetInnerHTML={{ __html: exportStylesPreview }} />
             )}
           </div>
-        )}
-
-        {bookId && bib && (
-          <Select
-            id="export-styles"
-            label="Bibliography style"
-            value={csl}
-            setCsl={setCsl}
-          >
-            <option value="chicagomodified">chicagomodified</option>
-            <option value="lettres-et-sciences-humaines-fr">
-              {' '}
-              lettres-et-sciences-humaines-fr
-            </option>
-            <option value="chicago-fullnote-bibliography-fr">
-              {' '}
-              chicago-fullnote-bibliography-fr
-            </option>
-          </Select>
         )}
 
         <Select
@@ -145,6 +103,7 @@ export default function Export({
           <option value="1">{t('export.additionnalOptions.toc')}</option>
           <option value="0">{t('export.additionnalOptions.notoc')}</option>
         </Select>
+
         {bookId && (
           <Select
             id="export-numbering"
