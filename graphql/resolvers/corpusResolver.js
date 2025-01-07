@@ -143,13 +143,15 @@ module.exports = {
      * @returns {Promise<[Corpus]>}
      */
     async corpus(_, args, context) {
-      const { user } = context
-      if (!user) {
+      const { user, token } = context
+
+      if (!user && !token?.admin) {
         throw new ApiError(
           'UNAUTHENTICATED',
           'Unable to get a list of corpus as an unauthenticated user'
         )
       }
+
       if ('filter' in args) {
         const filter = args.filter
         if ('corpusId' in filter) {
