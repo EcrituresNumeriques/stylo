@@ -34,6 +34,8 @@ export default function Export(props) {
   const [format, setFormat] = useState('html')
   const [csl, setCsl] = useState('chicagomodified')
   const [toc, setToc] = useState('0')
+  const [nocite, setNocite] = useState('0')
+  const [link_citations, setLinkCitations] = useState('0')
   const [unnumbered, setUnnumbered] = useState('false')
   const [tld, setTld] = useState('false')
   const { exportFormats, exportStyles, exportStylesPreview, isLoading } =
@@ -60,8 +62,8 @@ export default function Export(props) {
       articleId ? 'article' : 'corpus'
     }/export/${pandocExportHost}/${
       articleId ?? bookId
-    }/${exportId}/?with_toc=${toc}&with_nocite=1&with_link_citations=1&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=${format}&version=${articleVersionId}`
-  }, [toc, csl, format])
+    }/${exportId}/?with_toc=${toc}&with_nocite=${nocite}&with_link_citations=${link_citations}&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=${format}&version=${articleVersionId}`
+  }, [toc, csl, format, nocite, link_citations])
 
   return (
     <section className={styles.export}>
@@ -102,13 +104,30 @@ export default function Export(props) {
         )}
 
         <Select
-          id="export-toc"
-          label={t('export.additionnalOptions.label')}
+          label={t('export.toc.label')}
           value={toc}
           onChange={(e) => setToc(parseInt(e.target.value, 10))}
         >
-          <option value="1">{t('export.additionnalOptions.toc')}</option>
-          <option value="0">{t('export.additionnalOptions.notoc')}</option>
+          <option value="1">{t('export.toc.yes')}</option>
+          <option value="0">{t('export.toc.no')}</option>
+        </Select>
+
+        <Select
+          label={t('export.nocite.label')}
+          value={nocite}
+          onChange={(e) => setNocite(e.target.value)}
+        >
+          <option value="1">{t('export.nocite.all')}</option>
+          <option value="0">{t('export.nocite.onlyUsed')}</option>
+        </Select>
+
+        <Select
+          label={t('export.linkCitations.label')}
+          value={link_citations}
+          onChange={(e) => setLinkCitations(e.target.value)}
+        >
+          <option value="1">{t('export.linkCitations.yes')}</option>
+          <option value="0">{t('export.linkCitations.no')}</option>
         </Select>
 
         {bookId && (
