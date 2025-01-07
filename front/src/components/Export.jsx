@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useMemo } from 'react'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import clsx from 'clsx'
 import slugify from 'slugify'
@@ -28,18 +29,34 @@ import formStyles from './form.module.scss'
  */
 export default function Export(props) {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+
   const { bookId, articleVersionId = '', articleId, bib, name } = props
   const { pandocExportHost, pandocExportEndpoint } = applicationConfig
 
-  const [format, setFormat] = useState('html')
-  const [csl, setCsl] = useState('chicagomodified')
-  const [toc, setToc] = useState('0')
-  const [nocite, setNocite] = useState('0')
-  const [link_citations, setLinkCitations] = useState('0')
-  const [unnumbered, setUnnumbered] = useState('false')
-  const [tld, setTld] = useState('false')
+  const {
+    bibliography_style,
+    with_toc,
+    link_citations,
+    with_nocite,
+    formats,
+    unnumbered,
+    book_division,
+  } = useSelector((state) => state.exportPreferences, shallowEqual)
+
+  const setPreference = useCallback(
+    (key) => (event) =>
+      dispatch({
+        type: 'SET_EXPORT_PREFERENCES',
+        key,
+        value: event.target.value,
+      }),
+    []
+  )
+
   const { exportFormats, exportStyles, exportStylesPreview, isLoading } =
-    useStyloExport({ csl, bib })
+    useStyloExport({ bibliography_style, bib })
+
   const exportId = useMemo(
     () =>
       slugify(name, { strict: true, lower: true }) ||
@@ -62,8 +79,8 @@ export default function Export(props) {
       articleId ? 'article' : 'corpus'
     }/export/${pandocExportHost}/${
       articleId ?? bookId
-    }/${exportId}/?with_toc=${toc}&with_nocite=${nocite}&with_link_citations=${link_citations}&with_ascii=0&bibliography_style=${csl}&formats=originals&formats=${format}&version=${articleVersionId}`
-  }, [toc, csl, format, nocite, link_citations])
+    }/${exportId}/?with_toc=${with_toc}&with_nocite=${with_nocite}&with_link_citations=${link_citations}&with_ascii=0&bibliography_style=${bibliography_style}&formats=originals&formats=${formats}&version=${articleVersionId}`
+  }, [with_toc, bibliography_style, formats, with_nocite, link_citations])
 
   return (
     <section className={styles.export}>
@@ -73,8 +90,8 @@ export default function Export(props) {
           <Select
             id="export-formats"
             label={t('export.format.label')}
-            value={format}
-            onChange={(e) => setFormat(e.target.value)}
+            value={formats}
+            onChange={setPreference('formats')}
           >
             {exportFormats.map(({ key, name }) => (
               <option value={key} key={key}>
@@ -90,8 +107,8 @@ export default function Export(props) {
             id="export-styles"
             label={t('export.bibliography.label')}
             items={groupedExportStyles}
-            value={csl}
-            onChange={setCsl}
+            value={bibliography_style}
+            onChange={setPreference('bibliography_style')}
           />
         )}
         {bib && (
@@ -105,8 +122,8 @@ export default function Export(props) {
 
         <Select
           label={t('export.toc.label')}
-          value={toc}
-          onChange={(e) => setToc(parseInt(e.target.value, 10))}
+          value={with_toc}
+          onChange={setPreference('with_toc')}
         >
           <option value="1">{t('export.toc.yes')}</option>
           <option value="0">{t('export.toc.no')}</option>
@@ -114,8 +131,8 @@ export default function Export(props) {
 
         <Select
           label={t('export.nocite.label')}
-          value={nocite}
-          onChange={(e) => setNocite(e.target.value)}
+          value={with_nocite}
+          onChange={setPreference('with_nocite')}
         >
           <option value="1">{t('export.nocite.all')}</option>
           <option value="0">{t('export.nocite.onlyUsed')}</option>
@@ -124,7 +141,7 @@ export default function Export(props) {
         <Select
           label={t('export.linkCitations.label')}
           value={link_citations}
-          onChange={(e) => setLinkCitations(e.target.value)}
+          onChange={setPreference('link_citations')}
         >
           <option value="1">{t('export.linkCitations.yes')}</option>
           <option value="0">{t('export.linkCitations.no')}</option>
@@ -134,7 +151,7 @@ export default function Export(props) {
           <Select
             id="export-numbering"
             value={unnumbered}
-            onChange={(e) => setUnnumbered(e.target.value)}
+            onChange={setPreference('unnumbered')}
           >
             <option value="false">
               {t('export.sectionChapters.numbered')}
@@ -145,7 +162,10 @@ export default function Export(props) {
           </Select>
         )}
         {bookId && (
-          <Select value={tld} onChange={(e) => setTld(e.target.value)}>
+          <Select
+            value={book_division}
+            onChange={setPreference('book_division')}
+          >
             <option value="part">{t('export.bookDivision.part')}</option>
             <option value="chapter">{t('export.bookDivision.chapter')}</option>
           </Select>

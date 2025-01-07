@@ -71,6 +71,17 @@ export const initialState = {
         currentUser: null,
         trackingConsent: true /* default value should be false */,
       },
+  exportPreferences: localStorage.getItem('exportPreferences')
+    ? JSON.parse(localStorage.getItem('exportPreferences'))
+    : {
+        bibliography_style: 'chicagomodified',
+        with_toc: 0,
+        link_citations: 0,
+        with_nocite: 0,
+        formats: 'html',
+        unnumbered: 0,
+        book_division: 'part',
+      },
   editorCursorPosition: {
     lineNumber: 0,
     column: 0,
@@ -93,6 +104,7 @@ function createRootReducer(state) {
 
     // user preferences reducers
     USER_PREFERENCES_TOGGLE: toggleUserPreferences,
+    SET_EXPORT_PREFERENCES: setExportPreferences,
 
     SET_ARTICLE_VERSIONS: setArticleVersions,
     SET_WORKING_ARTICLE_UPDATED_AT: setWorkingArticleUpdatedAt,
@@ -258,27 +270,23 @@ const createNewArticleVersion = (store) => {
 }
 
 function persistStateIntoLocalStorage({ getState }) {
+  const actionStateMap = new Map([
+    ['ARTICLE_PREFERENCES_TOGGLE', 'articlePreferences'],
+    ['USER_PREFERENCES_TOGGLE', 'userPreferences'],
+    ['SET_EXPORT_PREFERENCES', 'exportPreferences'],
+  ])
+
   return (next) => {
     return (action) => {
-      if (action.type === 'ARTICLE_PREFERENCES_TOGGLE') {
+      if (actionStateMap.has(action.type)) {
+        const key = actionStateMap.get(action.type)
         // we run the reducer first
         next(action)
         // we fetch the updated state
-        const { articlePreferences } = getState()
-        // we persist it for a later page reload
-        localStorage.setItem(
-          'articlePreferences',
-          JSON.stringify(articlePreferences)
-        )
+        const state = getState()[key]
 
-        return
-      } else if (action.type === 'USER_PREFERENCES_TOGGLE') {
-        // we run the reducer first
-        next(action)
-        // we fetch the updated state
-        const { userPreferences } = getState()
         // we persist it for a later page reload
-        localStorage.setItem('userPreferences', JSON.stringify(userPreferences))
+        localStorage.setItem(key, JSON.stringify(state))
 
         return
       } else if (action.type === 'LOGOUT') {
@@ -465,29 +473,37 @@ function setWorkingArticleState(state, { workingArticleState, message }) {
   }
 }
 
-function toggleArticlePreferences(state, { key, value }) {
-  const { articlePreferences } = state
+function togglePreferences(storeKey) {
+  return function togglePreferencesReducer(state, { key, value }) {
+    const preferences = state[storeKey]
 
-  return {
-    ...state,
-    articlePreferences: {
-      ...articlePreferences,
-      [key]: value === undefined ? !articlePreferences[key] : value,
-    },
+    return {
+      ...state,
+      [storeKey]: {
+        ...preferences,
+        [key]: value === undefined ? !preferences[key] : value,
+      },
+    }
   }
 }
 
-function toggleUserPreferences(state, { key, value }) {
-  const { userPreferences } = state
+function setPreferences(storeKey) {
+  return function setPreferencesReducer(state, { key, value }) {
+    const preferences = state[storeKey]
 
-  return {
-    ...state,
-    userPreferences: {
-      ...userPreferences,
-      [key]: value === undefined ? !userPreferences[key] : value,
-    },
+    return {
+      ...state,
+      [storeKey]: {
+        ...preferences,
+        [key]: value,
+      },
+    }
   }
 }
+
+const toggleArticlePreferences = togglePreferences('articlePreferences')
+const toggleUserPreferences = togglePreferences('userPreferences')
+const setExportPreferences = setPreferences('exportPreferences')
 
 function updateEditorCursorPosition(state, { lineNumber, column }) {
   return {
