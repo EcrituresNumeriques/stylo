@@ -8,9 +8,13 @@ import graphql from '@rollup/plugin-graphql'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
-  const env = loadEnv(mode, fileURLToPath(import.meta.resolve('..')), ['SNOWPACK_', 'SENTRY_'])
+  const env = loadEnv(mode, fileURLToPath(import.meta.resolve('..')), [
+    'SNOWPACK_',
+    'SENTRY_',
+  ])
   const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
-  const sourcemap = Boolean(env.ENABLE_SOURCEMAPS) || env.SENTRY_ENVIRONMENT === 'dev' || false
+  const sourcemap =
+    Boolean(env.ENABLE_SOURCEMAPS) || env.SENTRY_ENVIRONMENT === 'dev' || false
 
   return {
     base: env.DEPLOY_PRIME_URL ?? '/',
@@ -21,66 +25,83 @@ export default defineConfig(async ({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            writer: ['monaco-editor', 'y-monaco', '@monaco-editor/react', '@rjsf/core']
-          }
-        }
-      }
+            writer: [
+              'monaco-editor',
+              'y-monaco',
+              '@monaco-editor/react',
+              '@rjsf/core',
+            ],
+          },
+        },
+      },
     },
     css: {
       preprocessorOptions: {
         scss: {
-          api: 'modern-compiler'
-        }
-      }
+          api: 'modern-compiler',
+        },
+      },
     },
     plugins: [
       graphql(),
       react({
-        jsxImportSource: mode === 'development' ? '@welldone-software/why-did-you-render' : 'react'
+        jsxImportSource:
+          mode === 'development'
+            ? '@welldone-software/why-did-you-render'
+            : 'react',
       }),
       // legacy({ target }),
       handlebars({
         context: {
-          SNOWPACK_MATOMO: Boolean(SNOWPACK_MATOMO_URL) && Boolean(SNOWPACK_MATOMO_SITE_ID),
+          SNOWPACK_MATOMO:
+            Boolean(SNOWPACK_MATOMO_URL) && Boolean(SNOWPACK_MATOMO_SITE_ID),
           SNOWPACK_MATOMO_URL,
           SNOWPACK_MATOMO_SITE_ID,
-        }
+        },
       }),
       sentryVitePlugin({
         org: 'ecrinum-stylo',
         project: 'stylo-front',
-        authToken: env.SENTRY_AUTH_TOKEN
-      })
+        authToken: env.SENTRY_AUTH_TOKEN,
+      }),
     ],
     define: {
       APP_VERSION: JSON.stringify(pkg.version),
       APP_ENVIRONMENT: JSON.stringify(env.SENTRY_ENVIRONMENT),
       SENTRY_DSN: JSON.stringify(env.SENTRY_DSN),
-      __BACKEND_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_BACKEND_ENDPOINT),
-      __GRAPHQL_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT),
+      __BACKEND_ENDPOINT__: JSON.stringify(
+        env.SNOWPACK_PUBLIC_BACKEND_ENDPOINT
+      ),
+      __GRAPHQL_ENDPOINT__: JSON.stringify(
+        env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT
+      ),
       __EXPORT_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_EXPORT_ENDPOINT),
-      __PROCESS_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_PROCESS_ENDPOINT),
-      __PANDOC_EXPORT_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT),
-      __HUMANID_REGISTER_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT)
-
+      __PANDOC_EXPORT_ENDPOINT__: JSON.stringify(
+        env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT
+      ),
+      __HUMANID_REGISTER_ENDPOINT__: JSON.stringify(
+        env.SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT
+      ),
     },
     resolve: {
       alias: {
-        'react-redux': mode === 'development' ? 'react-redux/lib' : 'react-redux'
-      }
+        'react-redux':
+          mode === 'development' ? 'react-redux/lib' : 'react-redux',
+      },
     },
     server: {
       port: 3000,
       proxy: {
         '/graphql': {
           target: 'http://127.0.0.1:3030',
-          prependPath: false
+          prependPath: false,
         },
         // as in infrastructure/files/stylo.huma-num.fr.conf
-        '^/(login/openid|login/local|login/zotero|logout|authorization-code|events)': {
-          target: 'http://127.0.0.1:3030'
-        }
-      }
+        '^/(login/openid|login/local|login/zotero|logout|authorization-code|events)':
+          {
+            target: 'http://127.0.0.1:3030',
+          },
+      },
     },
 
     test: {
@@ -93,10 +114,10 @@ export default defineConfig(async ({ mode }) => {
           '**/*.config.*',
           '**/{tests,bin}/*',
           '**/*.test.jsx?',
-        ]
+        ],
       },
       environment: 'jsdom',
-      setupFiles: ['./tests/setup.js']
-    }
+      setupFiles: ['./tests/setup.js'],
+    },
   }
 })
