@@ -9,41 +9,42 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # libcrypto.so.1.1 is missing in ubuntu-24.04
+    runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version-file: .nvmrc
-        cache: npm
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
 
-    - name: Install
-      working-directory: ${{ inputs.app-dir }}
-      run: npm clean-install --no-audit --no-fund
+      - name: Install
+        working-directory: ${{ inputs.app-dir }}
+        run: npm clean-install --no-audit --no-fund
 
-    - name: Test
-      working-directory: ${{ inputs.app-dir }}
-      run: npm test
+      - name: Test
+        working-directory: ${{ inputs.app-dir }}
+        run: npm test
 
-    - name: Coveralls
-      uses: coverallsapp/github-action@v2
-      with:
-        base-path: ${{ inputs.app-dir }}
-        parallel: true
-        flag-name: run-${{ inputs.app-dir }}
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          base-path: ${{ inputs.app-dir }}
+          parallel: true
+          flag-name: run-${{ inputs.app-dir }}
 
-    - name: Build (if necessary)
-      working-directory: ${{ inputs.app-dir }}
-      run: npm run build --if-present
+      - name: Build (if necessary)
+        working-directory: ${{ inputs.app-dir }}
+        run: npm run build --if-present
 
   publish-coverage-report:
     needs: build
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
-    - name: Coveralls Finished
-      uses: coverallsapp/github-action@v2
-      with:
-        parallel-finished: true
-        carryforward: "run-front,run-graphql,run-export"
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@v2
+        with:
+          parallel-finished: true
+          carryforward: 'run-front,run-graphql,run-export'
