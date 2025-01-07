@@ -1,29 +1,28 @@
 # Reference docs: https://docs.netlify.com/configure-builds/file-based-configuration/
 [build]
-  # Because https://docs.netlify.com/configure-builds/troubleshooting-tips/#command-not-found
-  # See also https://docs.netlify.com/configure-builds/monorepos/
-  # npm 8.5 does some weird shenanigans when multiple package.json coexist within a directory tree
-  base = "front"
-  publish = "build"
-  command = "npm run build -- --mode production"
+# Because https://docs.netlify.com/configure-builds/troubleshooting-tips/#command-not-found
+# See also https://docs.netlify.com/configure-builds/monorepos/
+# npm 8.5 does some weird shenanigans when multiple package.json coexist within a directory tree
+base = "front"
+publish = "build"
+command = "npm run build -- --mode production"
 
-  [build.environment]
-    # System env
-    NODE_VERSION = "18"
-    ENABLE_SOURCEMAPS = "true"
-    NPM_FLAGS = "--no-audit --no-fund"
+[build.environment]
+# System env
+NODE_VERSION = "18"
+ENABLE_SOURCEMAPS = "true"
+NPM_FLAGS = "--no-audit --no-fund"
 
-    # App env (new Snowpack)
-    SNOWPACK_PUBLIC_EXPORT_ENDPOINT = "https://stylo-dev.huma-num.fr"
-    SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT = "https://stylo-dev.huma-num.fr/graphql"
-    SNOWPACK_PUBLIC_PROCESS_ENDPOINT = "https://stylo-export.ecrituresnumeriques.ca"
-    SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT = "https://export.stylo-dev.huma-num.fr"
-    SNOWPACK_PUBLIC_BACKEND_ENDPOINT = "https://stylo-dev.huma-num.fr"
-    SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT = "https://auth-test.huma-num.fr/register?service=http://stylo-dev.huma-num.fr/authorization-code/callback"
+# App env (new Snowpack)
+SNOWPACK_PUBLIC_EXPORT_ENDPOINT = "https://stylo-dev.huma-num.fr"
+SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT = "https://stylo-dev.huma-num.fr/graphql"
+SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT = "https://export.stylo-dev.huma-num.fr"
+SNOWPACK_PUBLIC_BACKEND_ENDPOINT = "https://stylo-dev.huma-num.fr"
+SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT = "https://auth-test.huma-num.fr/register?service=http://stylo-dev.huma-num.fr/authorization-code/callback"
 
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  force = false
-  status = 200
+from = "/*"
+to = "/index.html"
+force = false
+status = 200
