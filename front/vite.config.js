@@ -75,7 +75,6 @@ export default defineConfig(async ({ mode }) => {
       __GRAPHQL_ENDPOINT__: JSON.stringify(
         env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT
       ),
-      __EXPORT_ENDPOINT__: JSON.stringify(env.SNOWPACK_PUBLIC_EXPORT_ENDPOINT),
       __PANDOC_EXPORT_ENDPOINT__: JSON.stringify(
         env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT
       ),

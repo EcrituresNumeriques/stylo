@@ -30,17 +30,6 @@ services:
     ports:
       - 127.0.0.1:3030:3030
 
-  export-stylo:
-    image: 'ghcr.io/ecrituresnumeriques/stylo-export:{{app_version}}'
-    container_name: 'export-stylo'
-    depends_on:
-      mongodb-stylo:
-        condition: service_healthy
-    env_file:
-      - .env
-    ports:
-      - 127.0.0.1:3060:3060
-
   front-stylo:
     image: 'ghcr.io/ecrituresnumeriques/stylo-front:{{app_version}}'
     container_name: 'front-stylo'
@@ -51,8 +40,9 @@ services:
     depends_on:
       - graphql-stylo
 
-  export-gateway:
+  export-stylo:
     image: 'davidbgk/stylo-export:2.0.0'
+    container_name: 'export-stylo'
     env_file:
       - .env
     environment:
@@ -65,5 +55,6 @@ services:
 
   pandoc-api:
     image: 'davidbgk/pandoc-api:2.0.0'
+    container_name: 'pandoc-api'
     ports:
       - 127.0.0.1:3090:8000

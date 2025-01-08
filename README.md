@@ -41,7 +41,6 @@ L'application se lance en combinant une base de données MongoDB, et des applica
 cp stylo-example.env .env
 npm clean-install
 npm --prefix front clean-install
-npm --prefix export clean-install
 npm --prefix graphql clean-install
 ```
 
