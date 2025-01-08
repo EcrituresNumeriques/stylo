@@ -32,21 +32,6 @@ services:
     ports:
       - 127.0.0.1:3030:3030
 
-  export-stylo:
-    build:
-      context: ./export/
-      labels:
-        - org.opencontainers.image.source=https://github.com/EcrituresNumeriques/stylo
-    container_name: 'export-stylo' # export-stylo-legacy
-    image: 'ghcr.io/ecrituresnumeriques/stylo-export:${TAG:-latest}'
-    depends_on:
-      mongodb-stylo:
-        condition: service_healthy
-    env_file:
-      - .env
-    ports:
-      - 127.0.0.1:3060:3060
-
   front-stylo:
     build:
       context: ./front
@@ -67,9 +52,9 @@ services:
     depends_on:
       - graphql-stylo
 
-  export-gateway:
+  export-stylo:
     image: 'davidbgk/stylo-export:2.0.0'
-    container_name: 'export-gateway' # export-stylo-modern
+    container_name: 'export-stylo'
     env_file:
       - .env
     environment:

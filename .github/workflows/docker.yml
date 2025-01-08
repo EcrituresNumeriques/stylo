@@ -14,24 +14,24 @@ on:
         type: string
   push:
     tags:
-    - 'v*' # Push events to matching v*, i.e. v1.0, v2.1.3
+      - 'v*' # Push events to matching v*, i.e. v1.0, v2.1.3
     branches:
-    - master
+      - master
     paths:
-    - 'graphql/**'
-    - 'front/**'
-    - 'export/**'
-    - '.github/workflows/docker.yml'
-    - 'docker-compose.yaml'
-    - 'stylo-example.env'
+      - 'graphql/**'
+      - 'front/**'
+      - 'export/**'
+      - '.github/workflows/docker.yml'
+      - 'docker-compose.yaml'
+      - 'stylo-example.env'
   pull_request:
     paths:
-    - 'graphql/dockerfile'
-    - 'front/dockerfile'
-    - 'export/dockerfile'
-    - '.github/workflows/docker.yml'
-    - 'docker-compose.yaml'
-    - 'stylo-example.env'
+      - 'graphql/dockerfile'
+      - 'front/dockerfile'
+      - 'export/dockerfile'
+      - '.github/workflows/docker.yml'
+      - 'docker-compose.yaml'
+      - 'stylo-example.env'
 
 jobs:
   build-and-push:
@@ -40,7 +40,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        app: [front-stylo, graphql-stylo, export-stylo]
+        app: [front-stylo, graphql-stylo]
 
     # A couple of things need to be done to perform an automated push of Stylo Docker images on GitHub
     # 1. For each Stylo "Package" in EcrituresNumeriques, add People or Teams and set their access (Read, Write or Admin)
@@ -57,33 +57,33 @@ jobs:
       TAG: ${{ inputs.release-version || 'latest' }}
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        ref: ${{ (inputs.release-version  && format('v{0}', inputs.release-version)) || github.ref }}
-    - uses: docker/setup-buildx-action@v3
-    - run: cp stylo-example.env .env
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ (inputs.release-version  && format('v{0}', inputs.release-version)) || github.ref }}
+      - uses: docker/setup-buildx-action@v3
+      - run: cp stylo-example.env .env
 
-    # Needed to expose ACTIONS_CACHE_URL and ACTIONS_RUNTIME_URL variables
-    # Which are unreachable outside of an action context
-    - uses: crazy-max/ghaction-github-runtime@v3
+      # Needed to expose ACTIONS_CACHE_URL and ACTIONS_RUNTIME_URL variables
+      # Which are unreachable outside of an action context
+      - uses: crazy-max/ghaction-github-runtime@v3
 
-    # https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-from
-    # https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-to
-    # https://docs.docker.com/build/ci/github-actions/examples/#github-cache
-    # https://docs.docker.com/build/bake/compose-file/
-    # buildx bake `--cache-from=type=gha` somewhat assumes Docker Hub is the registry, even though the image name tells it otherwise
-    # hence the repeated `--set` flags
-    # it could be better by factoring `--set` options
-    - name: Build images
-      run: |
-        docker buildx bake -f docker-compose.yaml \
-          --set '*.platform=linux/amd64' \
-          --set *.args.SENTRY_RELEASE=${{ inputs.release-version || 'latest' }} \
-          --load --pull ${{ matrix.app }}
+      # https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-from
+      # https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-to
+      # https://docs.docker.com/build/ci/github-actions/examples/#github-cache
+      # https://docs.docker.com/build/bake/compose-file/
+      # buildx bake `--cache-from=type=gha` somewhat assumes Docker Hub is the registry, even though the image name tells it otherwise
+      # hence the repeated `--set` flags
+      # it could be better by factoring `--set` options
+      - name: Build images
+        run: |
+          docker buildx bake -f docker-compose.yaml \
+            --set '*.platform=linux/amd64' \
+            --set *.args.SENTRY_RELEASE=${{ inputs.release-version || 'latest' }} \
+            --load --pull ${{ matrix.app }}
 
-    - name: Login to GitHub Container Registry ghcr.io
-      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Login to GitHub Container Registry ghcr.io
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-    - if: ${{ github.ref_type == 'tag' || github.ref_name == 'master' || github.ref_name == 'main' }}
-      name: Push images (on tag, or default branch)
-      run: docker buildx bake -f docker-compose.yaml --push ${{ matrix.app }}
+      - if: ${{ github.ref_type == 'tag' || github.ref_name == 'master' || github.ref_name == 'main' }}
+        name: Push images (on tag, or default branch)
+        run: docker buildx bake -f docker-compose.yaml --push ${{ matrix.app }}
