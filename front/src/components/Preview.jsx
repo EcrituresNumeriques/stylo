@@ -58,10 +58,15 @@ export default function Preview({ query }) {
     return () => document.body.removeChild(script)
   }, [])
 
+  const hasVersion = Boolean(version)
   const { data, isLoading: isDataLoading } = useGraphQL(
     {
       query: queries[query],
-      variables: { id, version, hasVersion: Boolean(version) },
+      variables: {
+        id,
+        version: hasVersion ? version : 'dummy',
+        hasVersion,
+      },
     },
     {
       revalidateOnFocus: false,

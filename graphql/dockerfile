@@ -10,7 +10,7 @@ RUN npm clean-install
 
 COPY . .
 
-ENV NODE_ENV "production"
+ENV NODE_ENV="production"
 EXPOSE 3030
 
 CMD ["npm", "run", "prod"]
