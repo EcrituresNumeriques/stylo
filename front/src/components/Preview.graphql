@@ -1,4 +1,4 @@
-query getArticle($id: ID!) {
+query getArticle($id: ID!, $version: ID!, $hasVersion: Boolean!) {
   article(article: $id) {
     _id
     title
@@ -17,10 +17,34 @@ query getArticle($id: ID!) {
       username
     }
 
-    workingVersion {
+    workingVersion @skip(if: $hasVersion) {
       md
       bib
       metadata
+    }
+  }
+
+  version(version: $version) @include(if: $hasVersion) {
+    md
+    bib
+    metadata
+  }
+}
+
+query getCorpus($filter: FilterCorpusInput) {
+  corpus(filter: $filter) {
+    metadata
+    articles {
+      article {
+        _id
+        title
+
+        workingVersion {
+          md
+          bib
+          metadata
+        }
+      }
     }
   }
 }

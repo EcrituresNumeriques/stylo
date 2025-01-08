@@ -4,12 +4,35 @@ import { Loading } from '@geist-ui/core'
 import { useStyloExportPreview } from '../hooks/stylo-export.js'
 import useGraphQL from '../hooks/graphql.js'
 
-import { getArticle as query } from './Preview.graphql'
+import * as queries from './Preview.graphql'
 
 import './Preview.scss'
 
-export default function Preview() {
-  const { id } = useParams()
+function mapContent({ query, data }) {
+  if (!data) {
+    return {}
+  }
+
+  if (query === 'getArticle') {
+    const root = data?.article?.workingVersion ?? data?.version
+    return {
+      md_content: root?.md,
+      metadata_content: root?.metadata,
+      bib_content: root?.bib,
+    }
+  } else if (query === 'getCorpus') {
+    return {
+      md_content: '',
+      metadata_content: '',
+      bib_content: '',
+    }
+  }
+
+  throw Error('Unknown query mapping. Cannot preview this content.')
+}
+
+export default function Preview({ query }) {
+  const { id, version } = useParams()
 
   useEffect(() => {
     globalThis.hypothesisConfig = function hypothesisConfig() {
@@ -31,13 +54,15 @@ export default function Preview() {
     script.src = 'https://hypothes.is/embed.js'
     script.async = true
     document.body.appendChild(script)
-    script.onload = () => console.log('script loaded')
 
     return () => document.body.removeChild(script)
   }, [])
 
   const { data, isLoading: isDataLoading } = useGraphQL(
-    { query, variables: { id } },
+    {
+      query: queries[query],
+      variables: { id, version, hasVersion: Boolean(version) },
+    },
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
@@ -45,9 +70,7 @@ export default function Preview() {
   )
 
   const { html: __html, isLoading: isPreviewLoading } = useStyloExportPreview({
-    md_content: data?.article?.workingVersion?.md,
-    metadata_content: data?.article?.workingVersion?.metadata,
-    bib_content: data?.article?.workingVersion?.bib,
+    ...mapContent({ data, query }),
     with_toc: true,
     with_nocite: true,
     with_link_citations: true,
