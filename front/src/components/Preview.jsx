@@ -8,31 +8,85 @@ import * as queries from './Preview.graphql'
 
 import './Preview.scss'
 
-function mapContent({ query, data }) {
-  if (!data) {
-    return {}
+const strategies = new Map([
+  [
+    'article',
+    {
+      query({ id, version, workspaceId }) {
+        const hasVersion = Boolean(version)
+
+        return {
+          query: queries.getArticle,
+          variables: {
+            id,
+            version: hasVersion ? version : 'dummy',
+            hasVersion,
+          },
+        }
+      },
+      mapContent(data) {
+        const root = data?.article?.workingVersion ?? data?.version
+        return {
+          md_content: root?.md,
+          metadata_content: root?.metadata,
+          bib_content: root?.bib,
+        }
+      },
+      title(data) {
+        const root = data?.article?.workingVersion ?? data?.version
+        return root.title ?? root.name
+      },
+    },
+  ],
+  [
+    'corpus',
+    {
+      query({ id, workspaceId }) {
+        return {
+          query: queries.getCorpus,
+          variables: {
+            filter: {
+              corpusId: id,
+              workspaceId,
+            },
+          },
+        }
+      },
+      mapContent(data) {
+        return data?.corpus?.at(0)?.articles?.reduce(
+          (obj, { article }) => ({
+            md_content: obj.md_content + '\n\n\n' + article.workingVersion.md,
+            metadata_content: Object.keys(obj.metadata_content).length
+              ? { ...data.corpus.metadata, ...obj.metadata_content }
+              : article.workingVersion.metadata,
+            bib_content:
+              obj.bib_content + '\n\n---\n\n' + article.workingVersion.bib,
+          }),
+          {
+            md_content: '',
+            metadata_content: {},
+            bib_content: '',
+          }
+        )
+      },
+      title(data) {
+        return data?.corpus?.at(0).name
+      },
+    },
+  ],
+])
+
+export default function Preview({ strategy: strategyId }) {
+  const { id, version, workspaceId } = useParams()
+
+  const strategy = useMemo(
+    () => strategies.get(strategyId),
+    [id, version, strategyId]
+  )
+
+  if (!strategy) {
+    throw Error('Unknown query mapping. Cannot preview this content.')
   }
-
-  if (query === 'getArticle') {
-    const root = data?.article?.workingVersion ?? data?.version
-    return {
-      md_content: root?.md,
-      metadata_content: root?.metadata,
-      bib_content: root?.bib,
-    }
-  } else if (query === 'getCorpus') {
-    return {
-      md_content: '',
-      metadata_content: '',
-      bib_content: '',
-    }
-  }
-
-  throw Error('Unknown query mapping. Cannot preview this content.')
-}
-
-export default function Preview({ query }) {
-  const { id, version } = useParams()
 
   useEffect(() => {
     globalThis.hypothesisConfig = function hypothesisConfig() {
@@ -58,16 +112,8 @@ export default function Preview({ query }) {
     return () => document.body.removeChild(script)
   }, [])
 
-  const hasVersion = Boolean(version)
   const { data, isLoading: isDataLoading } = useGraphQL(
-    {
-      query: queries[query],
-      variables: {
-        id,
-        version: hasVersion ? version : 'dummy',
-        hasVersion,
-      },
-    },
+    strategy.query({ id, version, workspaceId }),
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
@@ -75,7 +121,7 @@ export default function Preview({ query }) {
   )
 
   const { html: __html, isLoading: isPreviewLoading } = useStyloExportPreview({
-    ...mapContent({ data, query }),
+    ...strategy.mapContent(data),
     with_toc: true,
     with_nocite: true,
     with_link_citations: true,
@@ -93,6 +139,7 @@ export default function Preview({ query }) {
   return (
     <>
       <meta name="robots" content="noindex, nofollow" />
+      <title>{strategy.title(data)}</title>
       <section dangerouslySetInnerHTML={{ __html }} />
     </>
   )

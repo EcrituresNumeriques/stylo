@@ -155,7 +155,7 @@ module.exports = {
       if ('filter' in args) {
         const filter = args.filter
         if ('corpusId' in filter) {
-          return [await getCorpusByContext(filter.corpusId, context)]
+          return [await getCorpus(filter.corpusId)]
         }
         if ('workspaceId' in filter) {
           // check that the user can access the workspace

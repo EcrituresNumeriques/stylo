@@ -25,6 +25,7 @@ query getArticle($id: ID!, $version: ID!, $hasVersion: Boolean!) {
   }
 
   version(version: $version) @include(if: $hasVersion) {
+    name
     md
     bib
     metadata
@@ -33,6 +34,7 @@ query getArticle($id: ID!, $version: ID!, $hasVersion: Boolean!) {
 
 query getCorpus($filter: FilterCorpusInput) {
   corpus(filter: $filter) {
+    name
     metadata
     articles {
       article {

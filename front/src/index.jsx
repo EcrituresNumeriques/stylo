@@ -164,8 +164,14 @@ root.render(
                   <Credentials />
                 </PrivateRoute>
                 {/* Annotate a Book */}
-                <Route path={[`/books/:id/preview`]} exact>
-                  <Preview query="getCorpus" />
+                <Route
+                  path={[
+                    '/workspaces/:workspaceId/books/:id/preview',
+                    '/books/:id/preview',
+                  ]}
+                  exact
+                >
+                  <Preview strategy="corpus" />
                 </Route>
                 {/* Annotate an article or its version */}
                 <Route
@@ -175,7 +181,7 @@ root.render(
                   ]}
                   exact
                 >
-                  <Preview query="getArticle" />
+                  <Preview strategy="article" />
                 </Route>
                 {/* Write and Compare */}
                 <PrivateRoute
