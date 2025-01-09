@@ -27,6 +27,7 @@ import Register from './components/Register'
 import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/404'
 import Error from './components/Error'
+import { applicationConfig } from './stores/applicationConfig.jsx'
 import { authStore, getActions } from './stores/authStore.jsx'
 import Story from './stories/Story.jsx'
 
@@ -66,7 +67,6 @@ const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
 ;(async () => {
   const { init } = getActions()
   init()
-  const { applicationConfig } = store.getState()
   const sessionToken = authStore.getState().sessionToken
   authStore.subscribe((state, prevState) => {
     const previousValue = prevState.sessionToken
