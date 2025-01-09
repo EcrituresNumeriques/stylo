@@ -1,8 +1,4 @@
-import {
-  Loading,
-  Modal as GeistModal,
-  useModal,
-} from '@geist-ui/core'
+import { Loading, Modal as GeistModal, useModal } from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
@@ -254,10 +250,7 @@ export default function Articles() {
 
         <div className={styles.articlesTableHeader}>
           {!activeWorkspaceId && (
-            <Button
-              primary
-              onClick={() => setCreateArticleVisible(true)}
-            >
+            <Button primary onClick={() => setCreateArticleVisible(true)}>
               {t('article.createAction.buttonText')}
             </Button>
           )}

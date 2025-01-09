@@ -27,6 +27,7 @@ import Register from './components/Register'
 import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/404'
 import Error from './components/Error'
+import { authStore, getActions } from './stores/authStore.jsx'
 import Story from './stories/Story.jsx'
 
 const Route = Sentry.withSentryRouting(OriginalRoute)
@@ -63,14 +64,19 @@ const store = createStore()
 const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
 
 ;(async () => {
-  let { applicationConfig, sessionToken } = store.getState()
-  const authToken = new URLSearchParams(location.hash).get('#auth-token')
-  if (authToken) {
-    store.dispatch({ type: 'UPDATE_SESSION_TOKEN', token: authToken })
-    sessionToken = authToken
-    window.history.replaceState({}, '', location.pathname)
-  }
-
+  const { init } = getActions()
+  init()
+  const { applicationConfig } = store.getState()
+  const sessionToken = authStore.getState().sessionToken
+  authStore.subscribe((state, prevState) => {
+    const previousValue = prevState.sessionToken
+    const currentValue = state.sessionToken
+    if (currentValue !== previousValue) {
+      getUserProfile({ applicationConfig, sessionToken: currentValue }).then(
+        (response) => store.dispatch({ type: 'PROFILE', ...response })
+      )
+    }
+  })
   try {
     const { user, token } = await getUserProfile({
       applicationConfig,
@@ -90,6 +96,7 @@ const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
 
   // refresh session profile whenever something happens to the session token
   // maybe there is a better way to do this
+  /*
   store.subscribe(() => {
     const previousValue = sessionToken
     const { sessionToken: currentValue } = store.getState()
@@ -100,7 +107,7 @@ const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
         store.dispatch({ type: 'PROFILE', ...response })
       )
     }
-  })
+  })*/
 })()
 
 const TrackPageViews = () => {

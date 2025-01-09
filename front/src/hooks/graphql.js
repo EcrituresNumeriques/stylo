@@ -6,7 +6,7 @@ async function fetcher({ query, variables, sessionToken, graphqlEndpoint }) {
   return request({ query, variables, sessionToken, graphqlEndpoint })
 }
 
-async function request({
+export async function request({
   query,
   variables,
   sessionToken,
