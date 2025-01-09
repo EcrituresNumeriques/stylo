@@ -1,100 +1,105 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const { computeMajorVersion, computeMinorVersion } = require('../helpers/versions.js')
+const {
+  computeMajorVersion,
+  computeMinorVersion,
+} = require('../helpers/versions.js')
 const { prefixRulesWith, sanitizeTemplate } = require('../helpers/preview.js')
 
 const ArticleContributorSchema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
-  roles: [String]
+  roles: [String],
 })
 
-const articleSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
-    default: 'autocreated'
-  },
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  },
-  contributors: [ArticleContributorSchema],
-  zoteroLink: {
-    type: String,
-    default: ''
-  },
-  workingVersion: {
-    md: {
+const articleSchema = new Schema(
+  {
+    title: {
       type: String,
-      default: ''
+      required: true,
+      default: 'autocreated',
     },
-    bib: {
-      type: String,
-      default: ''
-    },
-    metadata: {
-      type: Schema.Types.Mixed,
-      default: {}
-    },
-  },
-  versions: [
-    {
+    owner: {
       type: Schema.Types.ObjectId,
-      ref: 'Version'
-    }
-  ],
-  tags: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Tag'
-    }
-  ],
-  preview: {
-    stylesheet: {
+      ref: 'User',
+    },
+    contributors: [ArticleContributorSchema],
+    zoteroLink: {
       type: String,
       default: '',
-      set: prefixRulesWith.bind(null, 'stylo-pagedjs-container')
     },
-    template: {
-      type: String,
-      default: '',
-      set: sanitizeTemplate
-    }
+    workingVersion: {
+      md: {
+        type: String,
+        default: '',
+      },
+      bib: {
+        type: String,
+        default: '',
+      },
+      metadata: {
+        type: Schema.Types.Mixed,
+        default: {},
+      },
+    },
+    versions: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Version',
+      },
+    ],
+    tags: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Tag',
+      },
+    ],
+    preview: {
+      stylesheet: {
+        type: String,
+        default: '',
+        set: prefixRulesWith.bind(null, 'stylo-pagedjs-container'),
+      },
+      template: {
+        type: String,
+        default: '',
+        set: sanitizeTemplate,
+      },
+    },
+    collaborativeSession: {
+      id: {
+        type: Schema.Types.ObjectId,
+      },
+      creator: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+      createdAt: {
+        type: Schema.Types.Date,
+      },
+    },
+    soloSession: {
+      id: {
+        type: Schema.Types.ObjectId,
+      },
+      creator: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+      creatorUsername: {
+        type: String,
+        default: '',
+      },
+      createdAt: {
+        type: Schema.Types.Date,
+      },
+    },
   },
-  collaborativeSession: {
-    id: {
-      type: Schema.Types.ObjectId,
-    },
-    creator: {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    },
-    createdAt: {
-      type: Schema.Types.Date
-    }
-  },
-  soloSession: {
-    id: {
-      type: Schema.Types.ObjectId,
-    },
-    creator: {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    },
-    creatorUsername: {
-      type: String,
-      default: ''
-    },
-    createdAt: {
-      type: Schema.Types.Date
-    }
-  },
-}, { timestamps: true })
-
+  { timestamps: true, minimize: false }
+)
 
 /**
  * Returns a single article for a given user
@@ -102,10 +107,14 @@ const articleSchema = new Schema({
  * @param {{ _id: String, user: String }}
  * @returns Article
  */
-articleSchema.statics.findOneByOwner = function findOneByOwner ({ _id, user }) {
-  return this
-    .findOne({ _id, $or: [{ owner: { $in: user } }, { contributors: { $elemMatch: { user: { $in: user } } } }] })
-    .populate({ path: 'contributors', populate: 'user' })
+articleSchema.statics.findOneByOwner = function findOneByOwner({ _id, user }) {
+  return this.findOne({
+    _id,
+    $or: [
+      { owner: { $in: user } },
+      { contributors: { $elemMatch: { user: { $in: user } } } },
+    ],
+  }).populate({ path: 'contributors', populate: 'user' })
 }
 
 /**
@@ -114,14 +123,18 @@ articleSchema.statics.findOneByOwner = function findOneByOwner ({ _id, user }) {
  * @param {{ userId: String }}
  * @returns {Array<Article>}
  */
-articleSchema.statics.findManyByOwner = function findManyByOwner ({ userId }) {
-  return this
-    .find({ $or: [{ owner: userId }, { contributors: { $elemMatch: { user: userId } } }] })
+articleSchema.statics.findManyByOwner = function findManyByOwner({ userId }) {
+  return this.find({
+    $or: [
+      { owner: userId },
+      { contributors: { $elemMatch: { user: userId } } },
+    ],
+  })
     .sort({ updatedAt: -1 })
     .populate([
       { path: 'tags', options: { sort: { createdAt: -1 } } },
-      { path: 'owner', },
-      { path: 'contributors', populate: 'user' }
+      { path: 'owner' },
+      { path: 'contributors', populate: 'user' },
     ])
 }
 
@@ -131,16 +144,22 @@ articleSchema.statics.findManyByOwner = function findManyByOwner ({ userId }) {
  * @param {{ users, tags }} loaders
  * @returns {Promise<Article[]>}
  */
-articleSchema.statics.complete = async function complete (articles, loaders) {
-  return Promise.all(articles.map(async (article) => {
-    article.tags = await Promise.all(article.tags.map(async (tagId) => await loaders.tags.load(tagId)))
-    article.owner = await loaders.users.load(article.owner)
-    article.contributors = await Promise.all(article.contributors.map(async (contributor) => {
-      contributor.user = await loaders.users.load(contributor.user)
-      return contributor
-    }))
-    return article
-  }))
+articleSchema.statics.complete = async function complete(articles, loaders) {
+  return Promise.all(
+    articles.map(async (article) => {
+      article.tags = await Promise.all(
+        article.tags.map(async (tagId) => await loaders.tags.load(tagId))
+      )
+      article.owner = await loaders.users.load(article.owner)
+      article.contributors = await Promise.all(
+        article.contributors.map(async (contributor) => {
+          contributor.user = await loaders.users.load(contributor.user)
+          return contributor
+        })
+      )
+      return article
+    })
+  )
 }
 
 /**
@@ -148,11 +167,11 @@ articleSchema.statics.complete = async function complete (articles, loaders) {
  * @param {{ filter: {}, loaders: { users, tags } }} context
  * @returns {Promise<Article[]>}
  */
-articleSchema.statics.getArticles = async function getArticles ({ filter, loaders }) {
-  const articles = await this
-    .find(filter)
-    .sort({ updatedAt: -1 })
-    .lean()
+articleSchema.statics.getArticles = async function getArticles({
+  filter,
+  loaders,
+}) {
+  const articles = await this.find(filter).sort({ updatedAt: -1 }).lean()
   return this.complete(articles, loaders)
 }
 
@@ -162,17 +181,18 @@ articleSchema.statics.getArticles = async function getArticles ({ filter, loader
  * @param {String} articleId
  * @returns Article
  */
-articleSchema.statics.findAndPopulateOne = function findAndPopulateOne (articleId) {
-  return this
-    .findOne({  _id: articleId })
+articleSchema.statics.findAndPopulateOne = function findAndPopulateOne(
+  articleId
+) {
+  return this.findOne({ _id: articleId })
     .populate([
       { path: 'tags', options: { sort: { createdAt: -1 } } },
-      { path: 'owner' }
+      { path: 'owner' },
     ])
     .populate({ path: 'contributors', populate: { path: 'user' } })
 }
 
-articleSchema.methods.addTags = async function addTags (...tagIds) {
+articleSchema.methods.addTags = async function addTags(...tagIds) {
   // Step 1 : add tags to article
   this.tags.push(...tagIds)
 
@@ -189,7 +209,7 @@ articleSchema.methods.addTags = async function addTags (...tagIds) {
   return this.save({ timestamps: false })
 }
 
-articleSchema.methods.removeTags = async function removeTags (...tagIds) {
+articleSchema.methods.removeTags = async function removeTags(...tagIds) {
   // Step 1 : remove tags to article
   this.tags.pull(...tagIds)
 
@@ -206,8 +226,10 @@ articleSchema.methods.removeTags = async function removeTags (...tagIds) {
   return this.save({ timestamps: false })
 }
 
-articleSchema.methods.shareWith = async function shareWith (user) {
-  const isAlreadyShared = this.contributors.find(({ user: u }) => u.equals(user))
+articleSchema.methods.shareWith = async function shareWith(user) {
+  const isAlreadyShared = this.contributors.find(({ user: u }) =>
+    u.equals(user)
+  )
 
   if (isAlreadyShared) {
     return
@@ -217,14 +239,16 @@ articleSchema.methods.shareWith = async function shareWith (user) {
 
   return Promise.all([
     this.save({ timestamps: false }),
-    user.save({ timestamps: false })
+    user.save({ timestamps: false }),
   ])
 }
 
-articleSchema.methods.unshareWith = async function shareWith (user) {
+articleSchema.methods.unshareWith = async function shareWith(user) {
   // we keep only contributors who are not the one we unshare with
   // @see https://mongoosejs.com/docs/api.html#document_Document-equals
-  this.contributors = this.contributors.filter(({ user: u }) => u.equals(user) === false)
+  this.contributors = this.contributors.filter(
+    ({ user: u }) => u.equals(user) === false
+  )
 
   // we keep it for legacy sake
   // because technically, we do not push the article in the user's list
@@ -232,27 +256,34 @@ articleSchema.methods.unshareWith = async function shareWith (user) {
 
   return Promise.all([
     this.save({ timestamps: false }),
-    user.save({ timestamps: false })
+    user.save({ timestamps: false }),
   ])
 }
 
-articleSchema.methods.createNewVersion = async function createNewVersion ({ mode, message, user }) {
+articleSchema.methods.createNewVersion = async function createNewVersion({
+  mode,
+  message,
+  user,
+}) {
   const { bib, yaml, md } = this.workingVersion
   const mostRecentVersion = this.versions.at(0)
 
-  const { revision, version } = mode === 'MAJOR'
-    ? computeMajorVersion(mostRecentVersion)
-    : computeMinorVersion(mostRecentVersion)
+  const { revision, version } =
+    mode === 'MAJOR'
+      ? computeMajorVersion(mostRecentVersion)
+      : computeMinorVersion(mostRecentVersion)
 
-  const createdVersion = await this.model('Version').create({
-    md,
-    yaml,
-    bib,
-    version,
-    revision,
-    message,
-    owner: user.id,
-  }).then((v) => v.populate('owner').execPopulate())
+  const createdVersion = await this.model('Version')
+    .create({
+      md,
+      yaml,
+      bib,
+      version,
+      revision,
+      message,
+      owner: user.id,
+    })
+    .then((v) => v.populate('owner').execPopulate())
 
   this.versions.push(createdVersion)
   await this.save()
