@@ -1,6 +1,7 @@
 import useSWR, { preload } from 'swr'
-import { shallowEqual, useSelector } from 'react-redux'
 import { print } from 'graphql/language/printer'
+import { applicationConfig } from '../stores/applicationConfig.jsx'
+import { useSessionToken } from '../stores/authStore.jsx'
 
 async function fetcher({ query, variables, sessionToken, graphqlEndpoint }) {
   return request({ query, variables, sessionToken, graphqlEndpoint })
@@ -53,11 +54,8 @@ export async function request({
  * @returns {SWRResponse}
  */
 export default function useGraphQL({ query: queryOrAST, variables }, options) {
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const graphqlEndpoint = useSelector(
-    (state) => state.applicationConfig.graphqlEndpoint,
-    shallowEqual
-  )
+  const sessionToken = useSessionToken()
+  const graphqlEndpoint = applicationConfig.graphqlEndpoint
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
 
   return useSWR(
@@ -68,12 +66,8 @@ export default function useGraphQL({ query: queryOrAST, variables }, options) {
 }
 
 export function useMutation() {
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const graphqlEndpoint = useSelector(
-    (state) => state.applicationConfig.graphqlEndpoint,
-    shallowEqual
-  )
-
+  const sessionToken = useSessionToken()
+  const graphqlEndpoint = applicationConfig.graphqlEndpoint
   return runMutation.bind(null, { sessionToken, graphqlEndpoint })
 }
 
@@ -93,23 +87,15 @@ export function runMutation(
 }
 
 export function useMutate({ query: queryOrAST, variables }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const graphqlEndpoint = useSelector(
-    (state) => state.applicationConfig.graphqlEndpoint,
-    shallowEqual
-  )
+  const sessionToken = useSessionToken()
+  const graphqlEndpoint = applicationConfig.graphqlEndpoint
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
-
   return useSWR({ query, variables, sessionToken, graphqlEndpoint })
 }
 
 export function useSWRKey() {
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const graphqlEndpoint = useSelector(
-    (state) => state.applicationConfig.graphqlEndpoint,
-    shallowEqual
-  )
-
+  const sessionToken = useSessionToken()
+  const graphqlEndpoint = applicationConfig.graphqlEndpoint
   return ({ query: queryOrAST, variables }) => {
     const query =
       typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
@@ -118,12 +104,8 @@ export function useSWRKey() {
 }
 
 export function usePreload() {
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const graphqlEndpoint = useSelector(
-    (state) => state.applicationConfig.graphqlEndpoint,
-    shallowEqual
-  )
-
+  const sessionToken = useSessionToken()
+  const graphqlEndpoint = applicationConfig.graphqlEndpoint
   return ({ query: queryOrAST, variables }) => {
     const query =
       typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)

@@ -6,6 +6,7 @@ import { CurrentUserContext } from '../contexts/CurrentUser'
 import { Search } from 'react-feather'
 
 import useGraphQL from '../hooks/graphql'
+import { applicationConfig } from '../stores/applicationConfig.jsx'
 import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
 import etv from '../helpers/eventTargetValue'
 
@@ -22,9 +23,7 @@ import TagsList from './tag/TagsList.jsx'
 
 export default function Articles() {
   const { t } = useTranslation()
-  const backendEndpoint = useSelector(
-    (state) => state.applicationConfig.backendEndpoint
-  )
+
   const currentUser = useSelector((state) => state.activeUser, shallowEqual)
   const selectedTagIds = useSelector(
     (state) => state.activeUser.selectedTagIds || []
@@ -188,7 +187,7 @@ export default function Articles() {
     let events
     if (!isLoading) {
       events = new EventSource(
-        `${backendEndpoint}/events?userId=${activeUserId}`
+        `${applicationConfig.backendEndpoint}/events?userId=${activeUserId}`
       )
       events.onmessage = (event) => {
         handleStateUpdated(event)
