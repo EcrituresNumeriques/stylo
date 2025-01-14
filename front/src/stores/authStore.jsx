@@ -56,7 +56,6 @@ export const authStore = createStore()(
             login(response.user, sessionToken)
             window.history.replaceState({}, '', location.pathname)
           } catch (error) {
-            // ooops!
             console.log('User seemingly not authenticated: %s', error.message)
             logout()
           }
@@ -103,6 +102,5 @@ const actionsSelector = (state) => state.actions
 
 export const useActiveUser = () => useAuthStore(activeUserSelector)
 export const useActiveUserId = () => useAuthStore(activeUserIdSelector)
-export const getSessionToken = () => sessionTokenSelector(authStore.getState())
 export const useSessionToken = () => useAuthStore(sessionTokenSelector)
 export const getActions = () => actionsSelector(authStore.getState())
