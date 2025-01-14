@@ -1,5 +1,6 @@
-import { shallowEqual, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { print } from 'graphql/language/printer'
+import { applicationConfig } from '../stores/applicationConfig.jsx'
 
 /**
  * @typedef {import('graphql/language/ast').DocumentNode} DocumentNode
@@ -23,8 +24,7 @@ async function getErrorResponse(response) {
 export default async function askGraphQL(
   payload,
   action = 'fetching from the server',
-  sessionToken = null,
-  applicationConfig
+  sessionToken = null
 ) {
   const response = await fetch(applicationConfig.graphqlEndpoint, {
     method: 'POST',
@@ -62,28 +62,17 @@ export default async function askGraphQL(
 
 export function useGraphQL() {
   const sessionToken = useSelector((state) => state.sessionToken)
-  const graphqlEndpoint = useSelector(
-    (state) => state.applicationConfig.graphqlEndpoint,
-    shallowEqual
-  )
-
-  return runQuery.bind(null, { sessionToken, graphqlEndpoint })
+  return runQuery.bind(null, { sessionToken })
 }
 
 /**
- * @param {string}sessionToken
- * @param {string} graphqlEndpoint
+ * @param {string} sessionToken
  * @param {DocumentNode|string} queryOrAST
  * @param {{[string: key]: value}} variables
  * @return {Promise<string|object>}
  */
-export function runQuery(
-  { sessionToken, graphqlEndpoint },
-  { query: queryOrAST, variables }
-) {
+export function runQuery({ sessionToken }, { query: queryOrAST, variables }) {
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
 
-  return askGraphQL({ query, variables }, null, sessionToken, {
-    graphqlEndpoint,
-  })
+  return askGraphQL({ query, variables }, null, sessionToken)
 }

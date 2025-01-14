@@ -5,6 +5,7 @@ import throttle from 'lodash.throttle'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
+import { applicationConfig } from '../../stores/applicationConfig.jsx'
 import * as collaborating from './collaborating.js'
 import CollaborativeEditorStatus from './CollaborativeEditorStatus.jsx'
 
@@ -53,10 +54,7 @@ export default function CollaborativeTextEditor({
   const [collaborativeSessionState, setCollaborativeSessionState] = useState('')
   const [yText, setYText] = useState(null)
   const [awareness, setAwareness] = useState(null)
-  const { websocketEndpoint } = useSelector(
-    (state) => state.applicationConfig,
-    shallowEqual
-  )
+  const { websocketEndpoint } = applicationConfig
   const activeUser = useSelector(
     (state) => ({
       _id: state.activeUser._id,

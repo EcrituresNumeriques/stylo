@@ -6,6 +6,7 @@ import { CurrentUserContext } from '../contexts/CurrentUser'
 import { Search } from 'react-feather'
 
 import useGraphQL from '../hooks/graphql'
+import { applicationConfig } from '../stores/applicationConfig.jsx'
 import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
 import etv from '../helpers/eventTargetValue'
 
@@ -22,9 +23,7 @@ import TagsList from './tag/TagsList.jsx'
 
 export default function Articles() {
   const { t } = useTranslation()
-  const backendEndpoint = useSelector(
-    (state) => state.applicationConfig.backendEndpoint
-  )
+  const { backendEndpoint } = applicationConfig
   const currentUser = useSelector((state) => state.activeUser, shallowEqual)
   const selectedTagIds = useSelector(
     (state) => state.activeUser.selectedTagIds || []
@@ -252,7 +251,6 @@ export default function Articles() {
           <Button primary onClick={() => setCreateArticleVisible(true)}>
             {t('article.createAction.buttonText')}
           </Button>
-
           <div className={styles.articleCounter}>
             {t('article.count', { count: keepArticles.length })}
           </div>

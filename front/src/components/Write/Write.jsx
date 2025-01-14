@@ -14,6 +14,7 @@ import PropTypes from 'prop-types'
 import throttle from 'lodash.throttle'
 import debounce from 'lodash.debounce'
 import { useMutation } from '../../hooks/graphql.js'
+import { applicationConfig } from '../../stores/applicationConfig.jsx'
 import ArticleStats from '../ArticleStats.jsx'
 import ErrorMessageCard from '../ErrorMessageCard.jsx'
 
@@ -48,9 +49,7 @@ export function deriveModeFrom({ path, currentVersion }) {
 
 export default function Write() {
   const { setToast } = useToasts()
-  const backendEndpoint = useSelector(
-    (state) => state.applicationConfig.backendEndpoint
-  )
+  const { backendEndpoint } = applicationConfig
   const { t } = useTranslation()
   const { version: currentVersion, id: articleId, compareTo } = useParams()
   const workingArticle = useSelector(

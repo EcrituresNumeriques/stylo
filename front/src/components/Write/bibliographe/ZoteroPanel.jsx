@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
@@ -9,6 +8,7 @@ import {
 } from '../../../helpers/zotero'
 import { useGraphQL } from '../../../helpers/graphQL'
 import { useProfile } from '../../../helpers/userProfile'
+import { applicationConfig } from '../../../stores/applicationConfig.jsx'
 import { linkToZotero as query } from '../../Article.graphql'
 
 import Button from '../../Button'
@@ -31,10 +31,7 @@ export default function ZoteroPanel({
   const { t } = useTranslation()
   const zoteroToken = useSelector((state) => state.activeUser.zoteroToken)
   const userId = useSelector((state) => state.activeUser._id)
-  const backendEndpoint = useSelector(
-    (state) => state.applicationConfig.backendEndpoint
-  )
-
+  const { backendEndpoint } = applicationConfig
   const [zoteroLink, setZoteroLink] = useState(initialZoteroLink)
   const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)
   /**

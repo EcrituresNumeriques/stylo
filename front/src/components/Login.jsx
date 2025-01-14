@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { applicationConfig } from '../stores/applicationConfig.jsx'
 
 import styles from './login.module.scss'
 import Field from './Field'
@@ -20,12 +21,7 @@ export default function Login() {
   )
   const authToken = new URLSearchParams(location.hash).get('#auth-token')
 
-  const backendEndpoint = useSelector(
-    (state) => state.applicationConfig.backendEndpoint
-  )
-  const humanIdRegisterEndpoint = useSelector(
-    (state) => state.applicationConfig.humanIdRegisterEndpoint
-  )
+  const { backendEndpoint, humanIdRegisterEndpoint } = applicationConfig
 
   useEffect(() => {
     if (authToken) {
