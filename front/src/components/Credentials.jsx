@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useGraphQL } from '../helpers/graphQL'
@@ -21,7 +21,7 @@ export default function Credentials() {
   const runQuery = useGraphQL()
   const { t } = useTranslation()
 
-  const canSubmit = useCallback(() => {
+  const canSubmit = useMemo(() => {
     if (hasExistingPassword) {
       return passwordO && password && passwordC && password === passwordC
     } else {

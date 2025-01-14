@@ -1,5 +1,4 @@
 import * as Sentry from '@sentry/react'
-import { useSelector } from 'react-redux'
 import { createStore, useStore } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
