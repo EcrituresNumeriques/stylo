@@ -19,8 +19,6 @@
 @media screen {
   html {
     background-color: $main-background-color;
-    font-family: 'Inter', serif;
-    color: $main-color;
   }
 
   button,
@@ -46,6 +44,12 @@
   html,
   body {
     height: 100%;
+  }
+
+  body {
+    color: $main-color;
+    font-family: 'Inter', serif;
+    font-size: 100%;
   }
 
   a {
