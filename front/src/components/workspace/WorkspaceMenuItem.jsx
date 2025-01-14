@@ -3,7 +3,7 @@ import { ChevronRight } from 'react-feather'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import { useLocation, useHistory } from 'react-router-dom'
-import { getActions, useActiveUser } from '../../stores/authStore.jsx'
+import { getActions, useActiveWorkspace } from '../../stores/workspaceStore.jsx'
 
 import styles from './WorkspaceMenuItem.module.scss'
 
@@ -11,8 +11,9 @@ export default function WorkspaceMenuItem({ color, name, id }) {
   const history = useHistory()
   const location = useLocation()
   const { setActiveWorkspaceId } = getActions()
+  const activeWorkspace = useActiveWorkspace()
 
-  const setActiveWorkspace = (workspaceId) => {
+  const updateActiveWorkspace = (workspaceId) => {
     const path = location.pathname
     if (path.endsWith('/books')) {
       if (id) {
@@ -29,14 +30,12 @@ export default function WorkspaceMenuItem({ color, name, id }) {
     }
     setActiveWorkspaceId(workspaceId)
   }
-
-  const activeUser = useActiveUser()
   return (
     <>
       <li
-        onClick={() => setActiveWorkspace(id)}
+        onClick={() => updateActiveWorkspace(id)}
         className={
-          activeUser.activeWorkspaceId === id
+          activeWorkspace?._id === id
             ? clsx(styles.item, styles.selected)
             : styles.item
         }

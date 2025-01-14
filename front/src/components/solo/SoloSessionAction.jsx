@@ -113,7 +113,7 @@ SoloSessionAction.propTypes = {
   articleId: PropTypes.string.isRequired,
   soloSession: PropTypes.shape({
     id: PropTypes.string,
-    creator: PropTypes.string,
+    creator: PropTypes.object,
     creatorUsername: PropTypes.string,
   }),
   collaborativeSession: PropTypes.shape({

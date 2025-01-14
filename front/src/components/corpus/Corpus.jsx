@@ -10,11 +10,8 @@ import { shallowEqual, useSelector } from 'react-redux'
 import { CurrentUserContext } from '../../contexts/CurrentUser'
 
 import { useGraphQL } from '../../helpers/graphQL'
-import {
-  useActiveUser,
-  useActiveUserId,
-  useActiveWorkspace,
-} from '../../stores/authStore.jsx'
+import { useActiveUser, useActiveUserId } from '../../stores/authStore.jsx'
+import { useActiveWorkspace } from '../../stores/workspaceStore.jsx'
 import styles from './corpus.module.scss'
 import CorpusCreate from './CorpusCreate.jsx'
 

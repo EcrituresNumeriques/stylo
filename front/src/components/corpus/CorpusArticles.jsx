@@ -6,7 +6,7 @@ import { Info } from 'react-feather'
 import { Trans, useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import useGraphQL from '../../hooks/graphql.js'
-import { useActiveWorkspace } from '../../stores/authStore.jsx'
+import { useActiveWorkspace } from '../../stores/workspaceStore.jsx'
 import CorpusArticleItems from './CorpusArticleItems.jsx'
 
 import styles from './corpusItem.module.scss'

@@ -1,11 +1,10 @@
 import React, { useState, useCallback } from 'react'
 import { Check, Clipboard, Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import { useGraphQL } from '../helpers/graphQL'
-import { useActiveUser } from '../stores/authStore.jsx'
+import { getActions, useActiveUser } from '../stores/authStore.jsx'
 import { updateUser } from './Credentials.graphql'
 import etv from '../helpers/eventTargetValue'
 import styles from './credentials.module.scss'
@@ -15,10 +14,10 @@ import Field from './Field'
 import TimeAgo from './TimeAgo.jsx'
 
 export default function UserInfos() {
-  const dispatch = useDispatch()
   const { t } = useTranslation()
   const runQuery = useGraphQL()
   const activeUser = useActiveUser()
+  const { clearZoteroToken, updateActiveUser } = getActions()
   const zoteroToken = activeUser.zoteroToken
   const sessionToken = activeUser.sessionToken
   const [displayName, setDisplayName] = useState(activeUser.displayName)
@@ -27,27 +26,16 @@ export default function UserInfos() {
   const [institution, setInstitution] = useState(activeUser.institution || '')
   const [isSaving, setIsSaving] = useState(false)
 
-  const updateActiveUserDetails = useCallback(
-    (payload) =>
-      dispatch({
-        type: `UPDATE_ACTIVE_USER_DETAILS`,
-        payload,
-      }),
-    []
+  const unlinkZoteroAccount = useCallback(
+    async (event) => {
+      event.preventDefault()
+      const variables = { user: activeUser._id, details: { zoteroToken: null } }
+      await runQuery({ query: updateUser, variables })
+      clearZoteroToken()
+      setIsSaving(false)
+    },
+    [clearZoteroToken]
   )
-  const clearZoteroToken = useCallback(
-    () => dispatch({ type: 'CLEAR_ZOTERO_TOKEN' }),
-    []
-  )
-
-  const unlinkZoteroAccount = useCallback(async (event) => {
-    event.preventDefault()
-
-    const variables = { user: activeUser._id, details: { zoteroToken: null } }
-    await runQuery({ query: updateUser, variables })
-    clearZoteroToken()
-    setIsSaving(false)
-  }, [])
 
   const updateInfo = useCallback(
     async (e) => {
@@ -61,10 +49,17 @@ export default function UserInfos() {
         query: updateUser,
         variables,
       })
-      updateActiveUserDetails(userDetails)
+      updateActiveUser(userDetails)
       setIsSaving(false)
     },
-    [activeUser._id, displayName, firstName, lastName, institution]
+    [
+      activeUser._id,
+      displayName,
+      firstName,
+      lastName,
+      institution,
+      updateActiveUser,
+    ]
   )
 
   return (

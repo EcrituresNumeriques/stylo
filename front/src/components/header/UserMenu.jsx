@@ -5,6 +5,10 @@ import { Layers, LogOut, User } from 'react-feather'
 
 import useComponentVisible from '../../hooks/componentVisible'
 import { getActions, useActiveUser } from '../../stores/authStore.jsx'
+import {
+  useActiveWorkspace,
+  useWorkspaces,
+} from '../../stores/workspaceStore.jsx'
 import styles from './UserMenu.module.scss'
 import Button from '../Button.jsx'
 import WorkspaceMenuItem from '../workspace/WorkspaceMenuItem.jsx'
@@ -20,13 +24,12 @@ export default function UserMenu() {
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible(false)
   const activeUser = useActiveUser()
-  const activeWorkspace = activeUser?.workspaces?.find(
-    (workspace) => workspace._id === activeUser.activeWorkspaceId
-  )
+  const activeWorkspace = useActiveWorkspace()
+  const workspaces = useWorkspaces()
 
   useEffect(() => {
     setIsComponentVisible(false)
-  }, [activeUser.activeWorkspaceId])
+  }, [activeWorkspace])
 
   return (
     <div ref={ref} className={styles.container}>
@@ -48,7 +51,7 @@ export default function UserMenu() {
                 color="#D9D9D9"
                 name={t('workspace.myspace')}
               />
-              {activeUser.workspaces.map((workspace) => (
+              {workspaces.map((workspace) => (
                 <WorkspaceMenuItem
                   id={workspace._id}
                   key={workspace._id}

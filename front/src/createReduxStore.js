@@ -2,9 +2,6 @@ import { applyMiddleware, compose, createStore } from 'redux'
 import * as Sentry from '@sentry/react'
 import { toEntries } from './helpers/bibtex'
 import ArticleService from './services/ArticleService'
-import WorkspaceService from './services/WorkspaceService.js'
-const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName = 'sessionToken' } =
-  import.meta.env
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer()
 
@@ -76,9 +73,6 @@ export const initialState = {
 
 function createRootReducer(state) {
   return createReducer(state, {
-    CLEAR_ZOTERO_TOKEN: clearZoteroToken,
-    UPDATE_ACTIVE_USER_DETAILS: updateActiveUserDetails,
-
     // article reducers
     UPDATE_ARTICLE_STATS: updateArticleStats,
     UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
@@ -99,8 +93,6 @@ function createRootReducer(state) {
 
     UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
 
-    SET_WORKSPACES: setWorkspaces,
-
     UPDATE_SELECTED_TAG: updateSelectedTag,
     TAG_CREATED: tagCreated,
 
@@ -113,35 +105,6 @@ function createRootReducer(state) {
 const createNewArticleVersion = (store) => {
   return (next) => {
     return async (action) => {
-      if (action.type === 'CREATE_WORKSPACE') {
-        const { activeUser, sessionToken, applicationConfig } = store.getState()
-        const workspaces = activeUser.workspaces
-        const workspaceService = new WorkspaceService(
-          sessionToken,
-          applicationConfig
-        )
-        const response = await workspaceService.create(action.data)
-        store.dispatch({
-          type: 'SET_WORKSPACES',
-          workspaces: [response.createWorkspace, ...workspaces],
-        })
-        return next(action)
-      }
-      if (action.type === 'LEAVE_WORKSPACE') {
-        const { activeUser, sessionToken, applicationConfig } = store.getState()
-        const workspaces = activeUser.workspaces
-        const workspaceService = new WorkspaceService(
-          sessionToken,
-          applicationConfig
-        )
-        const workspaceId = action.data.workspaceId
-        await workspaceService.leave(workspaceId)
-        store.dispatch({
-          type: 'SET_WORKSPACES',
-          workspaces: workspaces.filter((w) => w._id !== workspaceId),
-        })
-        return next(action)
-      }
       if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
         const { activeUser, sessionToken, applicationConfig, userPreferences } =
           store.getState()
@@ -287,37 +250,10 @@ function persistStateIntoLocalStorage({ getState }) {
         localStorage.setItem('userPreferences', JSON.stringify(userPreferences))
 
         return
-      } else if (action.type === 'LOGOUT') {
-        const { applicationConfig } = getState()
-        localStorage.removeItem('articlePreferences')
-        localStorage.removeItem('userPreferences')
-        document.location.replace(applicationConfig.backendEndpoint + '/logout')
-      }
-
-      if (action.type === 'LOGOUT') {
-        localStorage.removeItem(sessionTokenName)
-        return next(action)
       }
 
       return next(action)
     }
-  }
-}
-
-function clearZoteroToken(state) {
-  return {
-    ...state,
-    activeUser: {
-      ...state.activeUser,
-      zoteroToken: null,
-    },
-  }
-}
-
-function updateActiveUserDetails(state, action) {
-  return {
-    ...state,
-    activeUser: { ...state.activeUser, ...action.payload },
   }
 }
 
@@ -446,16 +382,6 @@ function updateEditorCursorPosition(state, { lineNumber, column }) {
     editorCursorPosition: {
       lineNumber,
       column,
-    },
-  }
-}
-
-function setWorkspaces(state, { workspaces }) {
-  return {
-    ...state,
-    activeUser: {
-      ...state.activeUser,
-      workspaces,
     },
   }
 }

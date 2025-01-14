@@ -34,8 +34,17 @@
     padding: calc(0.75em - 1px);
     resize: vertical;
     font-size: 0.9em;
-    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
-      DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+    font-family:
+      Consolas,
+      Menlo,
+      Monaco,
+      Lucida Console,
+      Liberation Mono,
+      DejaVu Sans Mono,
+      Bitstream Vera Sans Mono,
+      Courier New,
+      monospace,
+      serif;
   }
 
   textarea:not([rows]) {

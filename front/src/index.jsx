@@ -26,7 +26,8 @@ import Register from './components/Register'
 import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/404'
 import Error from './components/Error'
-import { getActions } from './stores/authStore.jsx'
+import { getActions as getAuthActions } from './stores/authStore.jsx'
+import { getActions as getWorkspaceActions } from './stores/workspaceStore.jsx'
 import Story from './stories/Story.jsx'
 
 const Route = Sentry.withSentryRouting(OriginalRoute)
@@ -62,8 +63,10 @@ const Privacy = lazy(() => import('./components/Privacy'))
 const store = createStore()
 
 ;(async () => {
-  const { init } = getActions()
-  await init()
+  const { init: authInit } = getAuthActions()
+  const { init: workspaceInit } = getWorkspaceActions()
+  await authInit()
+  workspaceInit()
 })()
 
 const TrackPageViews = () => {

@@ -7,7 +7,8 @@ import { Search } from 'react-feather'
 
 import useGraphQL from '../hooks/graphql'
 import { applicationConfig } from '../stores/applicationConfig.jsx'
-import { useActiveUser, useActiveWorkspace } from '../stores/authStore.jsx'
+import { useActiveUser } from '../stores/authStore.jsx'
+import { useActiveWorkspace } from '../stores/workspaceStore.jsx'
 import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
 import etv from '../helpers/eventTargetValue'
 
@@ -35,10 +36,7 @@ export default function Articles() {
 
   const [filter, setFilter] = useState('')
   const activeWorkspace = useActiveWorkspace()
-  const activeWorkspaceId = useMemo(
-    () => activeWorkspace?._id,
-    [activeWorkspace]
-  )
+  const activeWorkspaceId = activeWorkspace?._id
 
   const query = useMemo(
     () => (activeWorkspaceId ? getWorkspaceArticles : getUserArticles),
