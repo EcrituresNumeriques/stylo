@@ -11,6 +11,7 @@ import {
   useToasts,
 } from '@geist-ui/core'
 import { useActiveWorkspace } from '../hooks/workspace.js'
+import { useActiveUser } from '../stores/authStore.jsx'
 
 import styles from './article.module.scss'
 import ArticleVersionLinks from './ArticleVersionLinks.jsx'
@@ -52,7 +53,6 @@ import { getTags } from './Tag.graphql'
 import useGraphQL, { useMutation } from '../hooks/graphql'
 import TimeAgo from './TimeAgo.jsx'
 import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
-import { useSelector } from 'react-redux'
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
 
@@ -62,7 +62,7 @@ export default function Article({
   onArticleDeleted,
   onArticleCreated,
 }) {
-  const activeUser = useSelector((state) => state.activeUser)
+  const activeUser = useActiveUser()
   const articleId = useMemo(() => article._id, [article])
   const activeWorkspace = useActiveWorkspace()
   const activeWorkspaceId = useMemo(

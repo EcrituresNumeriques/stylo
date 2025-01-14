@@ -1,10 +1,11 @@
 import React, { useState, useCallback } from 'react'
 import { Check, Clipboard, Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-import { useSelector, useDispatch, shallowEqual } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import { useGraphQL } from '../helpers/graphQL'
+import { useActiveUser } from '../stores/authStore.jsx'
 import { updateUser } from './Credentials.graphql'
 import etv from '../helpers/eventTargetValue'
 import styles from './credentials.module.scss'
@@ -17,9 +18,9 @@ export default function UserInfos() {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const runQuery = useGraphQL()
-  const activeUser = useSelector((state) => state.activeUser, shallowEqual)
-  const zoteroToken = useSelector((state) => state.activeUser.zoteroToken)
-  const sessionToken = useSelector((state) => state.sessionToken)
+  const activeUser = useActiveUser()
+  const zoteroToken = activeUser.zoteroToken
+  const sessionToken = activeUser.sessionToken
   const [displayName, setDisplayName] = useState(activeUser.displayName)
   const [firstName, setFirstName] = useState(activeUser.firstName || '')
   const [lastName, setLastName] = useState(activeUser.lastName || '')

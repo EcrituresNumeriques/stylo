@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import useSWR from 'swr'
 import { useSelector } from 'react-redux'
 import { toYaml } from '../components/Write/metadata/yaml.js'
+import { applicationConfig } from '../stores/applicationConfig.jsx'
 
 const fetcher = (url) => fetch(url).then((response) => response.json())
 const postFetcher = ([url, formData]) => {
@@ -18,9 +19,7 @@ export default function useStyloExport({
   csl: bibliography_style,
   bib: excerpt,
 }) {
-  const pandocExportEndpoint = useSelector(
-    (state) => state.applicationConfig.pandocExportEndpoint
-  )
+  const { pandocExportEndpoint } = applicationConfig
 
   const { data: exportFormats } = useSWR(
     `${pandocExportEndpoint}/api/available_exports`,
@@ -57,9 +56,7 @@ export function useStyloExportPreview({
   bib_content,
   metadata_content,
 }) {
-  const pandocExportEndpoint = useSelector(
-    (state) => state.applicationConfig.pandocExportEndpoint
-  )
+  const { pandocExportEndpoint } = applicationConfig
   const yaml_content = useMemo(
     () => toYaml(metadata_content),
     [metadata_content]

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import React, { useCallback, useState } from 'react'
 import { Edit3 } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { useMutation } from '../../hooks/graphql.js'
+import { useActiveUser } from '../../stores/authStore.jsx'
 import Button from '../Button.jsx'
 
 import { startSoloSession, takeOverSoloSession } from './SoloSession.graphql'
@@ -16,7 +16,7 @@ export default function SoloSessionAction({
   articleId,
 }) {
   const { t } = useTranslation()
-  const activeUser = useSelector((state) => state.activeUser)
+  const activeUser = useActiveUser()
   const { setToast } = useToasts()
   const history = useHistory()
   const [activeSoloSessionCreator, setActiveSoloSessionCreator] = useState('')

@@ -1,5 +1,6 @@
-import { shallowEqual, useSelector } from 'react-redux'
 import { print } from 'graphql/language/printer'
+import { applicationConfig } from '../stores/applicationConfig.jsx'
+import { useSessionToken } from '../stores/authStore.jsx'
 
 /**
  * @typedef {import('graphql/language/ast').DocumentNode} DocumentNode
@@ -61,11 +62,8 @@ export default async function askGraphQL(
 }
 
 export function useGraphQL() {
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const graphqlEndpoint = useSelector(
-    (state) => state.applicationConfig.graphqlEndpoint,
-    shallowEqual
-  )
+  const sessionToken = useSessionToken()
+  const { graphqlEndpoint } = applicationConfig
 
   return runQuery.bind(null, { sessionToken, graphqlEndpoint })
 }

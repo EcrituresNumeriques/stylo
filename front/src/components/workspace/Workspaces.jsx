@@ -1,10 +1,10 @@
 import { Button, Modal as GeistModal } from '@geist-ui/core'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { shallowEqual, useSelector } from 'react-redux'
 import { Search } from 'react-feather'
 
 import { CurrentUserContext } from '../../contexts/CurrentUser'
+import { useActiveUser } from '../../stores/authStore.jsx'
 
 import styles from './workspaces.module.scss'
 import Field from '../../components/Field.jsx'
@@ -16,7 +16,7 @@ import CreateWorkspace from '../../components/workspace/CreateWorkspace.jsx'
 
 export default function Workspaces() {
   const { t } = useTranslation()
-  const activeUser = useSelector((state) => state.activeUser, shallowEqual)
+  const activeUser = useActiveUser()
   const [filter, setFilter] = useState('')
   const [creating, setCreating] = useState(false)
   const [workspaces, setWorkspaces] = useState([])

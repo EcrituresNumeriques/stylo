@@ -1,6 +1,6 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { applicationConfig } from '../stores/applicationConfig.jsx'
 import { getActions } from '../stores/authStore.jsx'
 
 import styles from './login.module.scss'
@@ -13,18 +13,9 @@ export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const { setToken, init } = getActions()
+  const { setToken } = getActions()
 
-  const backendEndpoint = useSelector(
-    (state) => state.applicationConfig.backendEndpoint
-  )
-  const humanIdRegisterEndpoint = useSelector(
-    (state) => state.applicationConfig.humanIdRegisterEndpoint
-  )
-
-  useEffect(() => {
-    init()
-  }, [init])
+  const { backendEndpoint, humanIdRegisterEndpoint } = applicationConfig
 
   const handleSubmit = useCallback(
     (event) => {

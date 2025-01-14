@@ -1,12 +1,13 @@
 import { Loading, Modal as GeistModal, useModal } from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { shallowEqual, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { CurrentUserContext } from '../contexts/CurrentUser'
 import { Search } from 'react-feather'
 
 import useGraphQL from '../hooks/graphql'
 import { applicationConfig } from '../stores/applicationConfig.jsx'
+import { useActiveUser } from '../stores/authStore.jsx'
 import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
 import etv from '../helpers/eventTargetValue'
 
@@ -16,15 +17,14 @@ import ArticleCreate from './ArticleCreate.jsx'
 import styles from './articles.module.scss'
 import Field from './Field'
 import Button from './Button.jsx'
-import { useActiveUserId } from '../hooks/user'
 import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
 import { useActiveWorkspace } from '../hooks/workspace.js'
 import TagsList from './tag/TagsList.jsx'
 
 export default function Articles() {
   const { t } = useTranslation()
-
-  const currentUser = useSelector((state) => state.activeUser, shallowEqual)
+  const activeUser = useActiveUser()
+  const activeUserId = activeUser._id
   const selectedTagIds = useSelector(
     (state) => state.activeUser.selectedTagIds || []
   )
@@ -33,7 +33,7 @@ export default function Articles() {
     setVisible: setCreateArticleVisible,
     bindings: createArticleModalBinding,
   } = useModal()
-  const activeUserId = useActiveUserId()
+
   const [filter, setFilter] = useState('')
   const activeWorkspace = useActiveWorkspace()
   const activeWorkspaceId = useMemo(
@@ -220,7 +220,7 @@ export default function Articles() {
   )
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    <CurrentUserContext.Provider value={activeUser}>
       <section className={styles.section}>
         <header className={styles.articlesHeader}>
           <h1>Articles</h1>

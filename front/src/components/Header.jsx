@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
 import { LifeBuoy } from 'react-feather'
-import { useSelector } from 'react-redux'
 import { NavLink, Route, Switch } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import logoContent from '/images/logo.svg?inline'
 import { useActiveWorkspace } from '../hooks/workspace.js'
+import { useActiveUser } from '../stores/authStore.jsx'
 
 import styles from './header.module.scss'
 import LanguagesMenu from './header/LanguagesMenu.jsx'
@@ -17,7 +17,7 @@ function Header() {
     () => activeWorkspace?._id,
     [activeWorkspace]
   )
-  const connected = useSelector((state) => state.loggedIn)
+  const activeUser = useActiveUser()
   const { t } = useTranslation()
 
   return (
@@ -31,7 +31,7 @@ function Header() {
                 <img src={logoContent} alt="Stylo" title="Stylo" />
               </NavLink>
             </h1>
-            {connected && (
+            {activeUser && (
               <>
                 <nav>
                   <ul className={styles.menuLinks}>
@@ -74,7 +74,7 @@ function Header() {
                 </nav>
               </>
             )}
-            {!connected && (
+            {!activeUser && (
               <>
                 <nav>
                   <ul className={styles.menuLinks}>

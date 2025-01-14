@@ -8,6 +8,7 @@ import { createVersion } from '../../services/ArticleService.graphql'
 import { useTranslation } from 'react-i18next'
 
 import { useMutation } from '../../hooks/graphql.js'
+import { useActiveUser } from '../../stores/authStore.jsx'
 
 import styles from './createVersion.module.scss'
 import buttonStyles from '../button.module.scss'
@@ -18,7 +19,7 @@ const CreateVersion = ({ articleId, readOnly, onClose }) => {
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const mutation = useMutation()
-  const activeUser = useSelector((state) => state.activeUser)
+  const activeUser = useActiveUser()
   const dispatch = useDispatch()
   const [message, setMessage] = useState('')
   const handleCreateVersion = useCallback(

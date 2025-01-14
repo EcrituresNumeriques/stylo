@@ -11,11 +11,11 @@ import { CurrentUserContext } from '../../contexts/CurrentUser'
 
 import { useGraphQL } from '../../helpers/graphQL'
 import { useActiveWorkspace } from '../../hooks/workspace.js'
+import { useActiveUser, useActiveUserId } from '../../stores/authStore.jsx'
 import styles from './corpus.module.scss'
 import CorpusCreate from './CorpusCreate.jsx'
 
 import Loading from '../Loading'
-import { useActiveUserId } from '../../hooks/user'
 import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
 
 import { getCorpus } from './Corpus.graphql'
@@ -24,7 +24,7 @@ import CorpusItem from './CorpusItem.jsx'
 export default function Corpus() {
   const { t } = useTranslation()
   const { setToast } = useToasts()
-  const currentUser = useSelector((state) => state.activeUser, shallowEqual)
+  const activeUser = useActiveUser()
   const latestCorpusCreated = useSelector(
     (state) => state.latestCorpusCreated,
     shallowEqual
@@ -79,7 +79,7 @@ export default function Corpus() {
   ])
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    <CurrentUserContext.Provider value={activeUser}>
       <section className={styles.section}>
         <header className={styles.header}>
           <h1>Corpus</h1>

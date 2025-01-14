@@ -19,7 +19,6 @@ import './styles/general.scss'
 import CollaborativeEditor from './components/collaborative/CollaborativeEditor.jsx'
 import App from './layouts/App'
 import createStore from './createReduxStore'
-import { getUserProfile } from './helpers/userProfile'
 
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -27,8 +26,7 @@ import Register from './components/Register'
 import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/404'
 import Error from './components/Error'
-import { applicationConfig } from './stores/applicationConfig.jsx'
-import { authStore, getActions } from './stores/authStore.jsx'
+import { getActions } from './stores/authStore.jsx'
 import Story from './stories/Story.jsx'
 
 const Route = Sentry.withSentryRouting(OriginalRoute)
@@ -62,58 +60,16 @@ const ArticlePreview = lazy(() => import('./components/ArticlePreview'))
 const Privacy = lazy(() => import('./components/Privacy'))
 
 const store = createStore()
-const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
 
 ;(async () => {
   const { init } = getActions()
-  init()
-  const sessionToken = authStore.getState().sessionToken
-  authStore.subscribe((state, prevState) => {
-    const previousValue = prevState.sessionToken
-    const currentValue = state.sessionToken
-    if (currentValue !== previousValue) {
-      getUserProfile({ applicationConfig, sessionToken: currentValue }).then(
-        (response) => store.dispatch({ type: 'PROFILE', ...response })
-      )
-    }
-  })
-  try {
-    const { user, token } = await getUserProfile({
-      applicationConfig,
-      sessionToken,
-    })
-    const pathname = location.pathname
-    const workspacePathRxResult = pathname.match(workspacePathsRx)
-    let activeWorkspaceId
-    if (workspacePathRxResult) {
-      activeWorkspaceId = workspacePathRxResult.groups.id
-    }
-    store.dispatch({ type: 'PROFILE', user, token, activeWorkspaceId })
-  } catch (error) {
-    console.log('User seemingly not authenticated: %s', error.message)
-    store.dispatch({ type: 'PROFILE' })
-  }
-
-  // refresh session profile whenever something happens to the session token
-  // maybe there is a better way to do this
-  /*
-  store.subscribe(() => {
-    const previousValue = sessionToken
-    const { sessionToken: currentValue } = store.getState()
-
-    if (currentValue !== previousValue) {
-      sessionToken = currentValue
-      getUserProfile({ applicationConfig, sessionToken }).then((response) =>
-        store.dispatch({ type: 'PROFILE', ...response })
-      )
-    }
-  })*/
+  await init()
 })()
 
 const TrackPageViews = () => {
   const history = useHistory()
 
-  history.listen(({ pathname, search, state }, action) => {
+  history.listen(({ pathname }) => {
     /* global _paq */
     const _paq = (window._paq = window._paq || [])
 

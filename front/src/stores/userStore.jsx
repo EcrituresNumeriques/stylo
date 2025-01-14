@@ -1,16 +1,14 @@
-import { shallowEqual, useSelector } from 'react-redux'
 import { create } from 'zustand'
 import { request } from '../hooks/graphql.js'
 import { getTags } from '../components/Tag.graphql'
+import { applicationConfig } from './applicationConfig.jsx'
+import { useSessionToken } from './authStore.jsx'
 
 export const useTagStore = create((set) => ({
   tags: [],
   getTags: async () => {
-    const sessionToken = useSelector((state) => state.sessionToken)
-    const graphqlEndpoint = useSelector(
-      (state) => state.applicationConfig.graphqlEndpoint,
-      shallowEqual
-    )
+    const sessionToken = useSessionToken()
+    const { graphqlEndpoint } = applicationConfig
     const response = await request({
       query: getTags,
       variables: {},
