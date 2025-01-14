@@ -127,6 +127,12 @@ type SoloSession {
   createdAt: DateTime
 }
 
+input CreateArticleInput {
+  title: String!
+  tags: [ID]
+  workspaces: [ID]
+}
+
 type Article {
   _id: ID!
   title: String
@@ -407,7 +413,7 @@ type Mutation {
   removeCredential(email: EmailAddress!, user: ID): User
 
   "Create article for specified user [need to be authenticated as specified user]"
-  createArticle(title: String!, user: ID, tags: [ID]): Article
+  createArticle(createArticleInput: CreateArticleInput!): Article
 
   "Create tag [need to be authenticated as specified user]"
   createTag(

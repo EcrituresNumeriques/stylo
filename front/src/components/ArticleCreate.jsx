@@ -1,32 +1,37 @@
-import { Button, useInput, useToasts } from '@geist-ui/core'
+import { useToasts } from '@geist-ui/core'
 import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
-import etv from '../helpers/eventTargetValue'
 import { useGraphQL } from '../helpers/graphQL'
 import { createArticle } from './Articles.graphql'
 import Field from './Field.jsx'
 import { getTags } from './Tag.graphql'
+import Button from './Button.jsx'
+import Checkbox from './Checkbox.jsx'
 
 import styles from './articleCreate.module.scss'
-import ArticleTag from './Tag'
-import { useCurrentUser } from '../contexts/CurrentUser'
+import formStyles from './field.module.scss'
+import checkboxStyles from './Checkbox.module.scss'
+import { fromFormData } from '../helpers/forms.js'
 
-export default function ArticleCreate({ onSubmit }) {
+/**
+ * @typedef {Object} ArticleCreateProps
+ * @property {function=} onSubmit
+ * @property {string=} workspaceId
+ */
+
+/**
+ * @param {ArticleCreateProps} props
+ * @returns {React.ReactHTMLElement}
+ */
+export default function ArticleCreate({ onSubmit, workspaceId = null }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
-  const { state: title, bindings: titleBindings } = useInput('')
-  const titleInputRef = useRef()
-  const [tags, setTags] = useState([])
-  const [selectedTagIds, setSelectedtagIds] = useState([])
-  const runQuery = useGraphQL()
-  const activeUser = useCurrentUser()
 
-  useEffect(() => {
-    if (titleInputRef.current !== undefined) {
-      titleInputRef.current.focus()
-    }
-  }, [titleInputRef])
+  const [tags, setTags] = useState([])
+  const runQuery = useGraphQL()
+  const workspaces = useSelector((state) => state.activeUser.workspaces)
 
   useEffect(() => {
     // Self invoking async function
@@ -45,67 +50,73 @@ export default function ArticleCreate({ onSubmit }) {
     })()
   }, [])
 
-  const handleSubmit = useCallback(
-    async (event) => {
-      try {
-        event.preventDefault()
-        const result = await runQuery({
-          query: createArticle,
-          variables: { user: activeUser._id, title, tags: selectedTagIds },
-        })
-        const createdArticle = {
-          ...result.createArticle,
-          tags: result.createArticle.addTags,
-        }
-        delete createdArticle.addTags
-        onSubmit(createdArticle)
-        setToast({
-          text: t('article.create.successNotification'),
-          type: 'default',
-        })
-      } catch (err) {
-        setToast({
-          text: t('article.create.errorNotification', { errMessage: err }),
-          type: 'error',
-        })
-      }
-    },
-    [title, selectedTagIds]
-  )
-
-  const toggleCheckedTags = useCallback(
-    (event) => {
-      const _id = etv(event)
-      selectedTagIds.includes(_id)
-        ? setSelectedtagIds(selectedTagIds.filter((tagId) => tagId !== _id))
-        : setSelectedtagIds([...selectedTagIds, _id])
-    },
-    [selectedTagIds]
-  )
+  const handleSubmit = useCallback(async (event) => {
+    try {
+      event.preventDefault()
+      const createArticleInput = fromFormData(event.target)
+      const { createArticle: createdArticle } = await runQuery({
+        query: createArticle,
+        variables: { createArticleInput },
+      })
+      onSubmit(createdArticle)
+      setToast({
+        text: t('article.create.successNotification'),
+        type: 'default',
+      })
+    } catch (err) {
+      setToast({
+        text: t('article.create.errorNotification', { errMessage: err }),
+        type: 'error',
+      })
+    }
+  }, [])
 
   return (
     <section>
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form onSubmit={handleSubmit} className={formStyles.form}>
         <Field
-          ref={titleInputRef}
-          {...titleBindings}
+          autoFocus={true}
           label={t('article.createForm.titleField')}
           type="text"
-          className={styles.titleField}
+          name="title"
+          required={true}
         />
+
         {tags.length > 0 && (
-          <div className={styles.field}>
-            <label>{t('article.createForm.tagsField')}</label>
-            <ul className={styles.tags}>
+          <div>
+            <span className={formStyles.fieldLabel}>
+              {t('article.createForm.tagsField')}
+            </span>
+
+            <ul className={checkboxStyles.inlineList}>
               {tags.map((t) => (
                 <li key={`selectTag-${t._id}`}>
-                  <ArticleTag
-                    tag={t}
-                    checked={selectedTagIds.includes(t._id)}
-                    name={`selectTag-${t._id}`}
-                    onClick={toggleCheckedTags}
-                    disableAction={false}
-                  />
+                  <Checkbox name="tags[]" value={t._id} color={t.color}>
+                    {t.name}
+                  </Checkbox>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {workspaces.length > 0 && (
+          <div>
+            <span className={formStyles.fieldLabel}>
+              {t('workspace.title')}
+            </span>
+
+            <ul className={checkboxStyles.inlineList}>
+              {workspaces.map((workspace) => (
+                <li key={`selectWorkspace-${workspace._id}`}>
+                  <Checkbox
+                    name="workspaces[]"
+                    value={workspace._id}
+                    color={workspace.color}
+                    defaultChecked={workspaceId === workspace._id}
+                  >
+                    {workspace.name}
+                  </Checkbox>
                 </li>
               ))}
             </ul>
@@ -113,12 +124,7 @@ export default function ArticleCreate({ onSubmit }) {
         )}
         <ul className={styles.actions}>
           <li>
-            <Button
-              type="secondary"
-              className={styles.button}
-              title={t('article.createForm.buttonTitle')}
-              onClick={handleSubmit}
-            >
+            <Button primary className={styles.button}>
               {t('article.createForm.buttonText')}
             </Button>
           </li>
