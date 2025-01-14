@@ -1,35 +1,49 @@
 import { Button, useInput } from '@geist-ui/core'
 import React, { useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
+import { useWorkspaceActions } from '../../hooks/workspace.js'
 
 import Field from '../Field.jsx'
 
 import styles from './createWorkspace.module.scss'
 import { randomColor } from '../../helpers/colors.js'
 
-export default function CreateWorkspace() {
-  const dispatch = useDispatch()
+export default function CreateWorkspace({ onSubmit }) {
   const { t } = useTranslation()
   const { state: name, bindings: nameBindings } = useInput('')
   const { state: description, bindings: descriptionBindings } = useInput('')
   const { state: color, bindings: colorBindings } = useInput(randomColor())
   const nameInputRef = useRef()
+  const currentUser = useSelector((state) => state.activeUser, shallowEqual)
+  const { addWorkspace } = useWorkspaceActions()
 
   const handleSubmit = useCallback(async () => {
-    dispatch({ type: 'CREATE_WORKSPACE', data: { name, color, description } })
+    await addWorkspace({
+      name,
+      color,
+      description,
+      updatedAt: new Date().getTime(),
+      createdAt: new Date().getTime(),
+      stats: {
+        membersCount: 1,
+        articlesCount: 0,
+      },
+      creator: currentUser,
+    })
+    onSubmit()
   }, [name, color, description])
 
   return (
     <section>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <Field
           autoFocus={true}
           ref={nameInputRef}
           {...nameBindings}
           label={t('workspace.createForm.nameField')}
           type="text"
-          className={styles.nameField}
+          className={styles.name}
         />
         <Field
           label={t('workspace.createForm.descriptionField')}

@@ -1,58 +1,39 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Slash, Users } from 'react-feather'
-import { Modal as GeistModal, Button, Note, Text, Spacer } from '@geist-ui/core'
+import { Button, useModal } from '@geist-ui/core'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import TimeAgo from '../TimeAgo.jsx'
+import LeaveWorkspaceModal from './LeaveWorkspaceModal.jsx'
 
 import styles from './workspaceItem.module.scss'
-import { getWorkspace } from './Workspaces.graphql'
-import WorkspaceLabel from './WorkspaceLabel.jsx'
-import WorkspaceManageMembers from './WorkspaceManageMembers.jsx'
-import { useGraphQL } from '../../helpers/graphQL.js'
+import WorkspaceManageMembersModal from './WorkspaceManageMembersModal.jsx'
 import Field from '../Field.jsx'
 
+/**
+ * @typedef {Object} WorkspaceItemProps
+ * @property {{
+ *   color: string,
+ *   name: string,
+ *   description: string,
+ *   personal: boolean,
+ *   articlesCount: number,
+ *   creator: {
+ *     displayName: string,
+ *     username: string
+ *   },
+ *   createdAt: string,
+ *   updatedAt: string
+ * }} workspace
+ */
+
+/**
+ * @param {WorkspaceItemProps} props
+ * @returns {React.ReactHTMLElement}
+ */
 export default function WorkspaceItem({ workspace }) {
   const { t } = useTranslation()
-  const runQuery = useGraphQL()
-  const dispatch = useDispatch()
-  const [managingMembers, setManagingMembers] = useState(false)
-  const [leaving, setLeaving] = useState(false)
-  const [membersCount, setMembersCount] = useState(0)
-
-  const handleCloseManagingMembers = useCallback(async () => {
-    const response = await runQuery({
-      query: getWorkspace,
-      variables: { workspaceId: workspace._id },
-    })
-    setMembersCount(response.workspace.stats.membersCount)
-    setManagingMembers(false)
-  }, [workspace._id])
-
-  const handleOpenManagingMembers = useCallback(() => {
-    setManagingMembers(true)
-  }, [workspace._id])
-
-  const handleOpenLeaving = useCallback(() => {
-    setLeaving(true)
-  }, [workspace._id])
-
-  const handleCloseLeaving = useCallback(() => {
-    setLeaving(false)
-  }, [workspace._id])
-
-  const handleLeavingWorkspace = useCallback(
-    () =>
-      dispatch({
-        type: 'LEAVE_WORKSPACE',
-        data: { workspaceId: workspace._id },
-      }),
-    [workspace._id]
-  )
-
-  useEffect(() => {
-    setMembersCount(workspace.stats?.membersCount || 0)
-  }, [workspace.stats])
+  const workspaceLeaveModal = useModal()
+  const workspaceManageMembersModal = useModal()
 
   const workspaceTitle = (
     <>
@@ -115,7 +96,7 @@ export default function WorkspaceItem({ workspace }) {
               className={styles.field}
               label={t('workspace.membersCount.label')}
             >
-              <span>{membersCount}</span>
+              <span>{workspace.stats.membersCount}</span>
             </Field>
             <Field
               className={styles.field}
@@ -131,7 +112,7 @@ export default function WorkspaceItem({ workspace }) {
               scale={0.8}
               icon={<Users />}
               title={t('workspace.manageMember.title')}
-              onClick={handleOpenManagingMembers}
+              onClick={() => workspaceManageMembersModal.setVisible(true)}
             >
               {t('workspace.manageMember.button')}
             </Button>
@@ -143,58 +124,18 @@ export default function WorkspaceItem({ workspace }) {
               scale={0.5}
               icon={<Slash />}
               title={t('workspace.leave.title')}
-              onClick={handleOpenLeaving}
+              onClick={() => workspaceLeaveModal.setVisible(true)}
             >
               {t('workspace.leave.button')}
             </Button>
           </aside>
-          <GeistModal visible={leaving} onClose={handleCloseLeaving}>
-            <WorkspaceLabel
-              className={styles.workspaceLabel}
-              color={workspace.color}
-              name={workspace.name}
-            />
-            <h2>Quitter l'espace de travail</h2>
-            <GeistModal.Content>
-              Êtes-vous sûr de vouloir quitter cet espace de travail ?
-              {workspace.stats.membersCount === 1 && (
-                <>
-                  <Spacer h={1} />
-                  <Note label="Important" type="error">
-                    L'espace de travail sera <Text i>supprimé</Text> car vous
-                    êtes la dernière personne appartenant à cet espace.
-                  </Note>
-                </>
-              )}
-            </GeistModal.Content>
-            <GeistModal.Action passive onClick={handleCloseLeaving}>
-              {t('modal.cancelButton.text')}
-            </GeistModal.Action>
-            <GeistModal.Action onClick={handleLeavingWorkspace}>
-              {t('modal.confirmButton.text')}
-            </GeistModal.Action>
-          </GeistModal>
-          <GeistModal
-            width="35rem"
-            visible={managingMembers}
-            onClose={handleCloseManagingMembers}
-          >
-            <WorkspaceLabel
-              className={styles.workspaceLabel}
-              color={workspace.color}
-              name={workspace.name}
-            />
-            <h2>Gérer les membres de l'espace de travail</h2>
-            <div className={styles.managingMembersSubtitle}>
-              <div>Permet d'ajouter ou de supprimer un membre</div>
-            </div>
-            <GeistModal.Content>
-              <WorkspaceManageMembers workspace={workspace} />
-            </GeistModal.Content>
-            <GeistModal.Action passive onClick={handleCloseManagingMembers}>
-              {t('modal.close.text')}
-            </GeistModal.Action>
-          </GeistModal>
+
+          <LeaveWorkspaceModal {...workspaceLeaveModal} workspace={workspace} />
+
+          <WorkspaceManageMembersModal
+            {...workspaceManageMembersModal}
+            workspace={workspace}
+          />
         </>
       )}
     </div>
