@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { Loading } from '@geist-ui/core'
 import React, { useCallback, useMemo } from 'react'
 import useGraphQL from '../../hooks/graphql.js'
-import { useActiveWorkspace } from '../../hooks/workspace.js'
+import { useActiveWorkspace } from '../../stores/authStore.jsx'
 import { getCorpus } from './Corpus.graphql'
 import CorpusSelectItem from './CorpusSelectItem.jsx'
 

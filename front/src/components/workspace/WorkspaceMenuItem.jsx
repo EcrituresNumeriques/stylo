@@ -1,17 +1,17 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import { ChevronRight } from 'react-feather'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import { useLocation, useHistory } from 'react-router-dom'
-import { useActiveUser } from '../../stores/authStore.jsx'
+import { getActions, useActiveUser } from '../../stores/authStore.jsx'
 
 import styles from './WorkspaceMenuItem.module.scss'
 
 export default function WorkspaceMenuItem({ color, name, id }) {
-  const dispatch = useDispatch()
   const history = useHistory()
   const location = useLocation()
+  const { setActiveWorkspaceId } = getActions()
+
   const setActiveWorkspace = (workspaceId) => {
     const path = location.pathname
     if (path.endsWith('/books')) {
@@ -27,7 +27,7 @@ export default function WorkspaceMenuItem({ color, name, id }) {
         history.push(`/articles`)
       }
     }
-    dispatch({ type: 'SET_ACTIVE_WORKSPACE', workspaceId })
+    setActiveWorkspaceId(workspaceId)
   }
 
   const activeUser = useActiveUser()

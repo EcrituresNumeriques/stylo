@@ -4,8 +4,7 @@ import { NavLink, Route, Switch } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import logoContent from '/images/logo.svg?inline'
-import { useActiveWorkspace } from '../hooks/workspace.js'
-import { useActiveUser } from '../stores/authStore.jsx'
+import { useActiveUser, useActiveWorkspace } from '../stores/authStore.jsx'
 
 import styles from './header.module.scss'
 import LanguagesMenu from './header/LanguagesMenu.jsx'

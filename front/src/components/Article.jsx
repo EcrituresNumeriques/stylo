@@ -10,8 +10,7 @@ import {
   useModal,
   useToasts,
 } from '@geist-ui/core'
-import { useActiveWorkspace } from '../hooks/workspace.js'
-import { useActiveUser } from '../stores/authStore.jsx'
+import { useActiveUser, useActiveWorkspace } from '../stores/authStore.jsx'
 
 import styles from './article.module.scss'
 import ArticleVersionLinks from './ArticleVersionLinks.jsx'

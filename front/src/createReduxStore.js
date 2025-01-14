@@ -100,7 +100,6 @@ function createRootReducer(state) {
     UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
 
     SET_WORKSPACES: setWorkspaces,
-    SET_ACTIVE_WORKSPACE: setActiveWorkspace,
 
     UPDATE_SELECTED_TAG: updateSelectedTag,
     TAG_CREATED: tagCreated,
@@ -457,16 +456,6 @@ function setWorkspaces(state, { workspaces }) {
     activeUser: {
       ...state.activeUser,
       workspaces,
-    },
-  }
-}
-
-function setActiveWorkspace(state, { workspaceId }) {
-  return {
-    ...state,
-    activeUser: {
-      ...state.activeUser,
-      activeWorkspaceId: workspaceId,
     },
   }
 }

@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/react'
+import { useSelector } from 'react-redux'
 import { createStore, useStore } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
@@ -48,12 +49,23 @@ export const authStore = createStore()(
             await setToken(currentSessionToken)
           }
         },
+        setActiveWorkspaceId: (activeWorkspaceId) => {
+          const activeUser = get().activeUser
+          if (activeUser) {
+            set({
+              activeUser: {
+                ...activeUser,
+                activeWorkspaceId,
+              },
+            })
+          }
+        },
         setToken: async (sessionToken) => {
           const { login, logout } = get().actions
           try {
             const response = await getUserProfile(sessionToken)
             const activeWorkspaceId = extractWorkspaceIdFromLocation()
-            login(response.user, sessionToken)
+            login({ ...response.user, activeWorkspaceId }, sessionToken)
             window.history.replaceState({}, '', location.pathname)
           } catch (error) {
             console.log('User seemingly not authenticated: %s', error.message)
@@ -104,3 +116,15 @@ export const useActiveUser = () => useAuthStore(activeUserSelector)
 export const useActiveUserId = () => useAuthStore(activeUserIdSelector)
 export const useSessionToken = () => useAuthStore(sessionTokenSelector)
 export const getActions = () => actionsSelector(authStore.getState())
+// REMIND: we might want to use a dedicated store to manage workspaces
+export const useActiveWorkspace = () =>
+  useAuthStore((state) => {
+    const activeUser = state.activeUser
+    const activeWorkspaceId = activeUser?.activeWorkspaceId
+    if (activeWorkspaceId) {
+      return activeUser.workspaces?.find(
+        (workspace) => workspace._id === activeWorkspaceId
+      )
+    }
+    return undefined
+  })

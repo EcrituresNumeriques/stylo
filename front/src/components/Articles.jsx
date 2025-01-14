@@ -7,7 +7,7 @@ import { Search } from 'react-feather'
 
 import useGraphQL from '../hooks/graphql'
 import { applicationConfig } from '../stores/applicationConfig.jsx'
-import { useActiveUser } from '../stores/authStore.jsx'
+import { useActiveUser, useActiveWorkspace } from '../stores/authStore.jsx'
 import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
 import etv from '../helpers/eventTargetValue'
 
@@ -18,7 +18,6 @@ import styles from './articles.module.scss'
 import Field from './Field'
 import Button from './Button.jsx'
 import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
-import { useActiveWorkspace } from '../hooks/workspace.js'
 import TagsList from './tag/TagsList.jsx'
 
 export default function Articles() {

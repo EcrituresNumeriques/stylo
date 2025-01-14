@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useGraphQL } from '../../helpers/graphQL.js'
-import { useActiveWorkspace } from '../../hooks/workspace.js'
+import { useActiveWorkspace } from '../../stores/authStore.jsx'
 
 import Field from '../Field.jsx'
 
