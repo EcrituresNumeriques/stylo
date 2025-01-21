@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Loading } from '@geist-ui/core'
 import { useStyloExportPreview } from '../hooks/stylo-export.js'
 import useGraphQL from '../hooks/graphql.js'
+import { applicationConfig } from '../config.js'
 
 import * as queries from './Preview.graphql'
 
@@ -78,6 +79,12 @@ const strategies = new Map([
 
 export default function Preview({ strategy: strategyId }) {
   const { id, version, workspaceId } = useParams()
+  const { canonicalBaseUrl } = applicationConfig
+  const canonicalUrl = canonicalBaseUrl
+    ? `${canonicalBaseUrl}/api/v1/${
+        strategyId === 'article' ? 'htmlArticle' : 'htmlBook'
+      }/${id}?preview=true`
+    : null
 
   const strategy = useMemo(
     () => strategies.get(strategyId),
@@ -140,6 +147,7 @@ export default function Preview({ strategy: strategyId }) {
     <>
       <meta name="robots" content="noindex, nofollow" />
       <title>{strategy.title(data)}</title>
+      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
       <section dangerouslySetInnerHTML={{ __html }} />
     </>
   )

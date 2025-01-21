@@ -69,6 +69,9 @@ export default defineConfig(async ({ mode }) => {
       APP_VERSION: JSON.stringify(pkg.version),
       APP_ENVIRONMENT: JSON.stringify(env.SENTRY_ENVIRONMENT),
       SENTRY_DSN: JSON.stringify(env.SENTRY_DSN),
+      __ANNOTATIONS_CANONICAL_BASE_URL__: JSON.stringify(
+        env.SNOWPACK_PUBLIC_ANNOTATIONS_CANONICAL_BASE_URL
+      ),
       __BACKEND_ENDPOINT__: JSON.stringify(
         env.SNOWPACK_PUBLIC_BACKEND_ENDPOINT
       ),

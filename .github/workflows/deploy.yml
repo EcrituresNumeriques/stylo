@@ -18,6 +18,7 @@ env:
   SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT: https://auth-test.huma-num.fr/register?service=https://stylo-dev.huma-num.fr/authorization-code/callback
   SNOWPACK_MATOMO_URL: https://analyseweb.huma-num.fr/
   SNOWPACK_MATOMO_SITE_ID: 286
+  SNOWPACK_PUBLIC_ANNOTATIONS_CANONICAL_BASE_URL: https://stylo-dev.huma-num.fr
   SENTRY_DSN: https://276d5080680a70a3edf98783a2b264d0@o4507130700496896.ingest.de.sentry.io/4507130704560208
   SENTRY_ENVIRONMENT: dev
 

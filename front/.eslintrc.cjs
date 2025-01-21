@@ -32,6 +32,7 @@ module.exports = {
     APP_VERSION: true,
     APP_ENVIRONMENT: true,
     SENTRY_DSN: true,
+    __ANNOTATIONS_CANONICAL_BASE_URL__: true,
     __BACKEND_ENDPOINT__: true,
     __GRAPHQL_ENDPOINT__: true,
     __PANDOC_EXPORT_ENDPOINT__: true,
