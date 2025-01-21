@@ -27,6 +27,7 @@ import Register from './components/Register'
 import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/404'
 import Error from './components/Error'
+import { applicationConfig } from './config.js'
 import Story from './stories/Story.jsx'
 
 const Route = Sentry.withSentryRouting(OriginalRoute)
@@ -63,7 +64,7 @@ const store = createStore()
 const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
 
 ;(async () => {
-  let { applicationConfig, sessionToken } = store.getState()
+  let { sessionToken } = store.getState()
   const authToken = new URLSearchParams(location.hash).get('#auth-token')
   if (authToken) {
     store.dispatch({ type: 'UPDATE_SESSION_TOKEN', token: authToken })
@@ -96,7 +97,7 @@ const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
 
     if (currentValue !== previousValue) {
       sessionToken = currentValue
-      getUserProfile({ applicationConfig, sessionToken }).then((response) =>
+      getUserProfile({ sessionToken }).then((response) =>
         store.dispatch({ type: 'PROFILE', ...response })
       )
     }

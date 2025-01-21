@@ -2,16 +2,15 @@ import { create, leave } from './WorkspaceService.graphql'
 import { runQuery } from '../helpers/graphQL.js'
 
 export default class WorkspaceService {
-  constructor(sessionToken, applicationConfig) {
+  constructor(sessionToken) {
     this.sessionToken = sessionToken
-    this.graphqlEndpoint = applicationConfig.graphqlEndpoint
   }
 
   async create(data) {
-    const { sessionToken, graphqlEndpoint } = this
+    const { sessionToken } = this
 
     return runQuery(
-      { sessionToken, graphqlEndpoint },
+      { sessionToken },
       {
         query: create,
         variables: {
@@ -22,10 +21,10 @@ export default class WorkspaceService {
   }
 
   async leave(workspaceId) {
-    const { sessionToken, graphqlEndpoint } = this
+    const { sessionToken } = this
 
     return runQuery(
-      { sessionToken, graphqlEndpoint },
+      { sessionToken },
       {
         query: leave,
         variables: {

@@ -8,7 +8,6 @@ import { Sidebar } from 'react-feather'
 
 import { toYaml } from './metadata/yaml.js'
 import ArticleEditorMetadataForm from './yamleditor/ArticleEditorMetadataForm.jsx'
-import NavTag from '../NavTab'
 import MonacoYamlEditor from './providers/monaco/YamlEditor'
 
 import styles from './articleEditorMetadata.module.scss'

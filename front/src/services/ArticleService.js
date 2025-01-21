@@ -3,18 +3,17 @@ import { runQuery } from '../helpers/graphQL.js'
 import { updateWorkingVersion, createVersion } from './ArticleService.graphql'
 
 export default class ArticleService {
-  constructor(userId, articleId, sessionToken, applicationConfig) {
+  constructor(userId, articleId, sessionToken) {
     this.userId = userId
     this.articleId = articleId
     this.sessionToken = sessionToken
-    this.graphqlEndpoint = applicationConfig.graphqlEndpoint
   }
 
   async saveText(md) {
-    const { sessionToken, graphqlEndpoint } = this
+    const { sessionToken } = this
 
     return runQuery(
-      { sessionToken, graphqlEndpoint },
+      { sessionToken },
       {
         query: updateWorkingVersion,
         variables: {
@@ -27,10 +26,10 @@ export default class ArticleService {
   }
 
   async saveBibliography(bib) {
-    const { sessionToken, graphqlEndpoint } = this
+    const { sessionToken } = this
 
     return runQuery(
-      { sessionToken, graphqlEndpoint },
+      { sessionToken },
       {
         query: updateWorkingVersion,
         variables: {
@@ -43,10 +42,10 @@ export default class ArticleService {
   }
 
   async saveMetadata(metadata) {
-    const { sessionToken, graphqlEndpoint } = this
+    const { sessionToken } = this
 
     return runQuery(
-      { sessionToken, graphqlEndpoint },
+      { sessionToken },
       {
         query: updateWorkingVersion,
         variables: {
@@ -59,10 +58,10 @@ export default class ArticleService {
   }
 
   async createNewVersion(major = false, message = '') {
-    const { sessionToken, graphqlEndpoint } = this
+    const { sessionToken } = this
 
     return await runQuery(
-      { sessionToken, graphqlEndpoint },
+      { sessionToken },
       {
         query: createVersion,
         variables: {

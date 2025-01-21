@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react'
-import { useSelector, shallowEqual } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import slugify from 'slugify'
 import useStyloExport from '../hooks/stylo-export.js'
+import { applicationConfig } from '../config.js'
 
 import Select from './Select'
 import Combobox from './SelectCombobox.jsx'
@@ -20,10 +20,8 @@ export default function Export({
   bib,
   name,
 }) {
-  const { processEndpoint, exportEndpoint, pandocExportEndpoint } = useSelector(
-    (state) => state.applicationConfig,
-    shallowEqual
-  )
+  const { processEndpoint, exportEndpoint, pandocExportEndpoint } =
+    applicationConfig
   const [format, setFormat] = useState(bookId ? 'html5' : 'html')
   const [csl, setCsl] = useState('chicagomodified')
   const [toc, setToc] = useState('0')

@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/react'
 import { toEntries } from './helpers/bibtex'
 import ArticleService from './services/ArticleService'
 import WorkspaceService from './services/WorkspaceService.js'
+import { applicationConfig } from './config.js'
 const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName = 'sessionToken' } =
   import.meta.env
 
@@ -18,17 +19,6 @@ function createReducer(initialState, handlers) {
   }
 }
 
-function toWebsocketEndpoint(endpoint) {
-  if (endpoint) {
-    const endpointUrl = new URL(endpoint)
-    const protocol = endpointUrl.protocol
-    return `${protocol === 'https:' ? 'wss' : 'ws'}://${endpointUrl.hostname}:${
-      endpointUrl.port
-    }/ws`
-  }
-  return `ws://127.0.0.1:3030/ws`
-}
-
 // Définition du store Redux et de l'ensemble des actions
 export const initialState = {
   hasBooted: false,
@@ -39,16 +29,6 @@ export const initialState = {
       text: '',
       entries: [],
     },
-  },
-  // they are defined statically via vite.config.js
-  applicationConfig: {
-    backendEndpoint: __BACKEND_ENDPOINT__,
-    graphqlEndpoint: __GRAPHQL_ENDPOINT__,
-    exportEndpoint: __EXPORT_ENDPOINT__,
-    processEndpoint: __PROCESS_ENDPOINT__,
-    pandocExportEndpoint: __PANDOC_EXPORT_ENDPOINT__,
-    humanIdRegisterEndpoint: __HUMANID_REGISTER_ENDPOINT__,
-    websocketEndpoint: toWebsocketEndpoint(__BACKEND_ENDPOINT__),
   },
   articleStructure: [],
   articleVersions: [],
@@ -142,12 +122,9 @@ const createNewArticleVersion = (store) => {
   return (next) => {
     return async (action) => {
       if (action.type === 'CREATE_WORKSPACE') {
-        const { activeUser, sessionToken, applicationConfig } = store.getState()
+        const { activeUser, sessionToken } = store.getState()
         const workspaces = activeUser.workspaces
-        const workspaceService = new WorkspaceService(
-          sessionToken,
-          applicationConfig
-        )
+        const workspaceService = new WorkspaceService(sessionToken)
         const response = await workspaceService.create(action.data)
         store.dispatch({
           type: 'SET_WORKSPACES',
@@ -156,12 +133,9 @@ const createNewArticleVersion = (store) => {
         return next(action)
       }
       if (action.type === 'LEAVE_WORKSPACE') {
-        const { activeUser, sessionToken, applicationConfig } = store.getState()
+        const { activeUser, sessionToken } = store.getState()
         const workspaces = activeUser.workspaces
-        const workspaceService = new WorkspaceService(
-          sessionToken,
-          applicationConfig
-        )
+        const workspaceService = new WorkspaceService(sessionToken)
         const workspaceId = action.data.workspaceId
         await workspaceService.leave(workspaceId)
         store.dispatch({
@@ -171,15 +145,13 @@ const createNewArticleVersion = (store) => {
         return next(action)
       }
       if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
-        const { activeUser, sessionToken, applicationConfig, userPreferences } =
-          store.getState()
+        const { activeUser, sessionToken, userPreferences } = store.getState()
         const userId = userPreferences.currentUser ?? activeUser._id
         const { articleId, major, message } = action
         const articleService = new ArticleService(
           userId,
           articleId,
-          sessionToken,
-          applicationConfig
+          sessionToken
         )
         try {
           const response = await articleService.createNewVersion(major, message)
@@ -193,16 +165,14 @@ const createNewArticleVersion = (store) => {
         return next(action)
       }
       if (action.type === 'UPDATE_WORKING_ARTICLE_TEXT') {
-        const { activeUser, sessionToken, applicationConfig, userPreferences } =
-          store.getState()
+        const { activeUser, sessionToken, userPreferences } = store.getState()
         const userId = userPreferences.currentUser ?? activeUser._id
         const { articleId, text } = action
         try {
           const { article } = await new ArticleService(
             userId,
             articleId,
-            sessionToken,
-            applicationConfig
+            sessionToken
           ).saveText(text)
           store.dispatch({
             type: 'SET_WORKING_ARTICLE_STATE',
@@ -224,16 +194,14 @@ const createNewArticleVersion = (store) => {
         return next(action)
       }
       if (action.type === 'UPDATE_WORKING_ARTICLE_METADATA') {
-        const { activeUser, sessionToken, applicationConfig, userPreferences } =
-          store.getState()
+        const { activeUser, sessionToken, userPreferences } = store.getState()
         const userId = userPreferences.currentUser ?? activeUser._id
         const { articleId, metadata } = action
         try {
           const { article } = await new ArticleService(
             userId,
             articleId,
-            sessionToken,
-            applicationConfig
+            sessionToken
           ).saveMetadata(metadata)
           store.dispatch({
             type: 'SET_WORKING_ARTICLE_STATE',
@@ -254,16 +222,14 @@ const createNewArticleVersion = (store) => {
         return next(action)
       }
       if (action.type === 'UPDATE_WORKING_ARTICLE_BIBLIOGRAPHY') {
-        const { activeUser, sessionToken, applicationConfig, userPreferences } =
-          store.getState()
+        const { activeUser, sessionToken, userPreferences } = store.getState()
         const userId = userPreferences.currentUser ?? activeUser._id
         const { articleId, bibliography } = action
         try {
           const { article } = await new ArticleService(
             userId,
             articleId,
-            sessionToken,
-            applicationConfig
+            sessionToken
           ).saveBibliography(bibliography)
           store.dispatch({
             type: 'SET_WORKING_ARTICLE_STATE',
@@ -316,10 +282,10 @@ function persistStateIntoLocalStorage({ getState }) {
 
         return
       } else if (action.type === 'LOGOUT') {
-        const { applicationConfig } = getState()
+        const { backendEndpoint } = applicationConfig
         localStorage.removeItem('articlePreferences')
         localStorage.removeItem('userPreferences')
-        document.location.replace(applicationConfig.backendEndpoint + '/logout')
+        document.location.replace(backendEndpoint + '/logout')
       }
 
       if (action.type === 'LOGIN' || action.type === 'UPDATE_SESSION_TOKEN') {
