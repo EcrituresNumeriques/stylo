@@ -1,7 +1,7 @@
 services:
   mongodb-stylo:
     image: mongo:4.4
-    container_name: "mongodb-stylo"
+    container_name: 'mongodb-stylo'
     environment:
       - MONGO_DATA_DIR=/data/db
       - MONGO_LOG_DIR=/dev/null
@@ -9,7 +9,7 @@ services:
       - ./data/db:/data/db
     command: mongod --logpath=/dev/null
     healthcheck:
-      test: ["CMD", "mongo", "--eval", "\"db.adminCommand('ping')\""]
+      test: ['CMD', 'mongo', '--eval', '"db.adminCommand(''ping'')"']
       interval: 30s
       timeout: 5s
     ports:
@@ -20,8 +20,8 @@ services:
       context: ./graphql/
       labels:
         - org.opencontainers.image.source=https://github.com/EcrituresNumeriques/stylo
-    image: "ghcr.io/ecrituresnumeriques/stylo-graphql:${TAG:-latest}"
-    container_name: "graphql-stylo"
+    image: 'ghcr.io/ecrituresnumeriques/stylo-graphql:${TAG:-latest}'
+    container_name: 'graphql-stylo'
     depends_on:
       mongodb-stylo:
         condition: service_healthy
@@ -37,8 +37,8 @@ services:
       context: ./export/
       labels:
         - org.opencontainers.image.source=https://github.com/EcrituresNumeriques/stylo
-    container_name: "export-stylo"  # export-stylo-legacy
-    image: "ghcr.io/ecrituresnumeriques/stylo-export:${TAG:-latest}"
+    container_name: 'export-stylo' # export-stylo-legacy
+    image: 'ghcr.io/ecrituresnumeriques/stylo-export:${TAG:-latest}'
     depends_on:
       mongodb-stylo:
         condition: service_healthy
@@ -56,8 +56,8 @@ services:
       args:
         - SNOWPACK_MATOMO_URL
         - SNOWPACK_MATOMO_SITE_ID
-    image: "ghcr.io/ecrituresnumeriques/stylo-front:${TAG:-latest}"
-    container_name: "front-stylo"
+    image: 'ghcr.io/ecrituresnumeriques/stylo-front:${TAG:-latest}'
+    container_name: 'front-stylo'
     volumes:
       - ./front/build:/usr/share/nginx/html
     env_file:
@@ -68,8 +68,8 @@ services:
       - graphql-stylo
 
   export-gateway:
-    image: "davidbgk/stylo-export:1.1.0"
-    container_name: "export-gateway" # export-stylo-modern
+    image: 'davidbgk/stylo-export:2.0.0'
+    container_name: 'export-gateway' # export-stylo-modern
     env_file:
       - .env
     environment:
@@ -78,11 +78,10 @@ services:
     ports:
       - 127.0.0.1:3080:8001
     extra_hosts:
-    - "host.docker.internal:host-gateway"
+      - 'host.docker.internal:host-gateway'
 
   pandoc-api:
-    image: "davidbgk/pandoc-api:0.0.17"
-    container_name: "pandoc-api"
+    image: 'davidbgk/pandoc-api:2.0.0'
+    container_name: 'pandoc-api'
     ports:
       - 127.0.0.1:3090:8000
-
