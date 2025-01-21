@@ -61,6 +61,7 @@ export default function TagCreate() {
     <section className={styles.create}>
       <form onSubmit={handleCreateTag}>
         <Field
+          autoFocus={true}
           label={t('tag.createForm.nameField')}
           type="text"
           {...nameBindings}

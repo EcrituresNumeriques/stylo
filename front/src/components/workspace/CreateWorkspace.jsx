@@ -24,6 +24,7 @@ export default function CreateWorkspace() {
     <section>
       <form onSubmit={handleSubmit}>
         <Field
+          autoFocus={true}
           ref={nameInputRef}
           {...nameBindings}
           label={t('workspace.createForm.nameField')}
