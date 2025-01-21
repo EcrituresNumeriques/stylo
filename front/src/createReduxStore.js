@@ -2,9 +2,6 @@ import { applyMiddleware, compose, createStore } from 'redux'
 import * as Sentry from '@sentry/react'
 import { toEntries } from './helpers/bibtex'
 import ArticleService from './services/ArticleService'
-import WorkspaceService from './services/WorkspaceService.js'
-const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName = 'sessionToken' } =
-  import.meta.env
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer()
 
@@ -18,37 +15,14 @@ function createReducer(initialState, handlers) {
   }
 }
 
-function toWebsocketEndpoint(endpoint) {
-  if (endpoint) {
-    const endpointUrl = new URL(endpoint)
-    const protocol = endpointUrl.protocol
-    return `${protocol === 'https:' ? 'wss' : 'ws'}://${endpointUrl.hostname}:${
-      endpointUrl.port
-    }/ws`
-  }
-  return `ws://127.0.0.1:3030/ws`
-}
-
 // Définition du store Redux et de l'ensemble des actions
 export const initialState = {
-  hasBooted: false,
-  sessionToken: localStorage.getItem(sessionTokenName),
   workingArticle: {
     state: 'saved',
     bibliography: {
       text: '',
       entries: [],
     },
-  },
-  // they are defined statically via vite.config.js
-  applicationConfig: {
-    backendEndpoint: __BACKEND_ENDPOINT__,
-    graphqlEndpoint: __GRAPHQL_ENDPOINT__,
-    exportEndpoint: __EXPORT_ENDPOINT__,
-    processEndpoint: __PROCESS_ENDPOINT__,
-    pandocExportEndpoint: __PANDOC_EXPORT_ENDPOINT__,
-    humanIdRegisterEndpoint: __HUMANID_REGISTER_ENDPOINT__,
-    websocketEndpoint: toWebsocketEndpoint(__BACKEND_ENDPOINT__),
   },
   articleStructure: [],
   articleVersions: [],
@@ -99,13 +73,6 @@ export const initialState = {
 
 function createRootReducer(state) {
   return createReducer(state, {
-    PROFILE: setProfile,
-    CLEAR_ZOTERO_TOKEN: clearZoteroToken,
-    LOGIN: loginUser,
-    UPDATE_SESSION_TOKEN: setSessionToken,
-    UPDATE_ACTIVE_USER_DETAILS: updateActiveUserDetails,
-    LOGOUT: logoutUser,
-
     // article reducers
     UPDATE_ARTICLE_STATS: updateArticleStats,
     UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
@@ -126,9 +93,6 @@ function createRootReducer(state) {
 
     UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
 
-    SET_WORKSPACES: setWorkspaces,
-    SET_ACTIVE_WORKSPACE: setActiveWorkspace,
-
     UPDATE_SELECTED_TAG: updateSelectedTag,
     TAG_CREATED: tagCreated,
 
@@ -141,35 +105,6 @@ function createRootReducer(state) {
 const createNewArticleVersion = (store) => {
   return (next) => {
     return async (action) => {
-      if (action.type === 'CREATE_WORKSPACE') {
-        const { activeUser, sessionToken, applicationConfig } = store.getState()
-        const workspaces = activeUser.workspaces
-        const workspaceService = new WorkspaceService(
-          sessionToken,
-          applicationConfig
-        )
-        const response = await workspaceService.create(action.data)
-        store.dispatch({
-          type: 'SET_WORKSPACES',
-          workspaces: [response.createWorkspace, ...workspaces],
-        })
-        return next(action)
-      }
-      if (action.type === 'LEAVE_WORKSPACE') {
-        const { activeUser, sessionToken, applicationConfig } = store.getState()
-        const workspaces = activeUser.workspaces
-        const workspaceService = new WorkspaceService(
-          sessionToken,
-          applicationConfig
-        )
-        const workspaceId = action.data.workspaceId
-        await workspaceService.leave(workspaceId)
-        store.dispatch({
-          type: 'SET_WORKSPACES',
-          workspaces: workspaces.filter((w) => w._id !== workspaceId),
-        })
-        return next(action)
-      }
       if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
         const { activeUser, sessionToken, applicationConfig, userPreferences } =
           store.getState()
@@ -315,93 +250,11 @@ function persistStateIntoLocalStorage({ getState }) {
         localStorage.setItem('userPreferences', JSON.stringify(userPreferences))
 
         return
-      } else if (action.type === 'LOGOUT') {
-        const { applicationConfig } = getState()
-        localStorage.removeItem('articlePreferences')
-        localStorage.removeItem('userPreferences')
-        document.location.replace(applicationConfig.backendEndpoint + '/logout')
-      }
-
-      if (action.type === 'LOGIN' || action.type === 'UPDATE_SESSION_TOKEN') {
-        next(action)
-        const { sessionToken } = getState()
-        localStorage.setItem(sessionTokenName, sessionToken)
-        return
-      }
-
-      if (action.type === 'LOGOUT') {
-        localStorage.removeItem(sessionTokenName)
-        return next(action)
       }
 
       return next(action)
     }
   }
-}
-
-function setProfile(state, action) {
-  const { user } = action
-  if (!user) {
-    return { ...state, activeUser: undefined, hasBooted: true }
-  }
-  return {
-    ...state,
-    hasBooted: true,
-    loggedIn: true,
-    activeUser: {
-      ...state.activeUser,
-      activeWorkspaceId: action.activeWorkspaceId,
-      ...user,
-    },
-  }
-}
-
-function clearZoteroToken(state) {
-  return {
-    ...state,
-    activeUser: {
-      ...state.activeUser,
-      zoteroToken: null,
-    },
-  }
-}
-
-function setSessionToken(state, { token: sessionToken }) {
-  return {
-    ...state,
-    sessionToken,
-  }
-}
-
-function loginUser(state, { user, token: sessionToken }) {
-  if (sessionToken) {
-    Sentry.setUser({ id: user._id })
-    return {
-      ...state,
-      sessionToken,
-      activeUser: {
-        ...state.user,
-        ...user,
-        // dates are expected to be in timestamp string format (including milliseconds)
-        createdAt: String(new Date(user.createdAt).getTime()),
-        updatedAt: String(new Date(user.updatedAt).getTime()),
-      },
-    }
-  }
-
-  return state
-}
-
-function updateActiveUserDetails(state, action) {
-  return {
-    ...state,
-    activeUser: { ...state.activeUser, ...action.payload },
-  }
-}
-
-function logoutUser(state) {
-  Sentry.setUser(null)
-  return { ...state, ...initialState }
 }
 
 const SPACE_RE = /\s+/gi
@@ -529,26 +382,6 @@ function updateEditorCursorPosition(state, { lineNumber, column }) {
     editorCursorPosition: {
       lineNumber,
       column,
-    },
-  }
-}
-
-function setWorkspaces(state, { workspaces }) {
-  return {
-    ...state,
-    activeUser: {
-      ...state.activeUser,
-      workspaces,
-    },
-  }
-}
-
-function setActiveWorkspace(state, { workspaceId }) {
-  return {
-    ...state,
-    activeUser: {
-      ...state.activeUser,
-      activeWorkspaceId: workspaceId,
     },
   }
 }

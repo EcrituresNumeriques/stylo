@@ -1,6 +1,7 @@
-import React, { useCallback, useState, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useCallback, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { applicationConfig } from '../stores/applicationConfig.jsx'
+import { getActions } from '../stores/authStore.jsx'
 
 import styles from './login.module.scss'
 import Field from './Field'
@@ -12,33 +13,14 @@ export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const dispatch = useDispatch()
-  const { replace, location } = useHistory()
-  const setSessionToken = useCallback(
-    (token) => dispatch({ type: 'UPDATE_SESSION_TOKEN', token }),
-    []
-  )
-  const authToken = new URLSearchParams(location.hash).get('#auth-token')
+  const { setToken } = getActions()
 
-  const backendEndpoint = useSelector(
-    (state) => state.applicationConfig.backendEndpoint
-  )
-  const humanIdRegisterEndpoint = useSelector(
-    (state) => state.applicationConfig.humanIdRegisterEndpoint
-  )
-
-  useEffect(() => {
-    if (authToken) {
-      setSessionToken(authToken)
-      replace(location.pathname)
-    }
-  }, [authToken])
+  const { backendEndpoint, humanIdRegisterEndpoint } = applicationConfig
 
   const handleSubmit = useCallback(
     (event) => {
       setError('')
       event.preventDefault()
-
       fetch(backendEndpoint + '/login/local', {
         method: 'POST',
         // this parameter enables the cookie directive (set-cookie)
@@ -54,7 +36,7 @@ export default function Login() {
             ? response.json()
             : Promise.reject(new Error('Email or password is incorrect'))
         })
-        .then((data) => dispatch({ type: 'LOGIN', ...data }))
+        .then((data) => setToken(data.token))
         .catch((error) => {
           setError(error.message)
         })

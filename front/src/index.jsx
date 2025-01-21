@@ -19,7 +19,6 @@ import './styles/general.scss'
 import CollaborativeEditor from './components/collaborative/CollaborativeEditor.jsx'
 import App from './layouts/App'
 import createStore from './createReduxStore'
-import { getUserProfile } from './helpers/userProfile'
 
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -27,6 +26,8 @@ import Register from './components/Register'
 import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/404'
 import Error from './components/Error'
+import { getActions as getAuthActions } from './stores/authStore.jsx'
+import { getActions as getWorkspaceActions } from './stores/workspaceStore.jsx'
 import Story from './stories/Story.jsx'
 
 const Route = Sentry.withSentryRouting(OriginalRoute)
@@ -60,53 +61,18 @@ const ArticlePreview = lazy(() => import('./components/ArticlePreview'))
 const Privacy = lazy(() => import('./components/Privacy'))
 
 const store = createStore()
-const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
 
 ;(async () => {
-  let { applicationConfig, sessionToken } = store.getState()
-  const authToken = new URLSearchParams(location.hash).get('#auth-token')
-  if (authToken) {
-    store.dispatch({ type: 'UPDATE_SESSION_TOKEN', token: authToken })
-    sessionToken = authToken
-    window.history.replaceState({}, '', location.pathname)
-  }
-
-  try {
-    const { user, token } = await getUserProfile({
-      applicationConfig,
-      sessionToken,
-    })
-    const pathname = location.pathname
-    const workspacePathRxResult = pathname.match(workspacePathsRx)
-    let activeWorkspaceId
-    if (workspacePathRxResult) {
-      activeWorkspaceId = workspacePathRxResult.groups.id
-    }
-    store.dispatch({ type: 'PROFILE', user, token, activeWorkspaceId })
-  } catch (error) {
-    console.log('User seemingly not authenticated: %s', error.message)
-    store.dispatch({ type: 'PROFILE' })
-  }
-
-  // refresh session profile whenever something happens to the session token
-  // maybe there is a better way to do this
-  store.subscribe(() => {
-    const previousValue = sessionToken
-    const { sessionToken: currentValue } = store.getState()
-
-    if (currentValue !== previousValue) {
-      sessionToken = currentValue
-      getUserProfile({ applicationConfig, sessionToken }).then((response) =>
-        store.dispatch({ type: 'PROFILE', ...response })
-      )
-    }
-  })
+  const { init: authInit } = getAuthActions()
+  const { init: workspaceInit } = getWorkspaceActions()
+  await authInit()
+  workspaceInit()
 })()
 
 const TrackPageViews = () => {
   const history = useHistory()
 
-  history.listen(({ pathname, search, state }, action) => {
+  history.listen(({ pathname }) => {
     /* global _paq */
     const _paq = (window._paq = window._paq || [])
 

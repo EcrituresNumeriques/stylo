@@ -14,12 +14,13 @@ import PropTypes from 'prop-types'
 import throttle from 'lodash.throttle'
 import debounce from 'lodash.debounce'
 import { useMutation } from '../../hooks/graphql.js'
+import { applicationConfig } from '../../stores/applicationConfig.jsx'
+import { useActiveUserId } from '../../stores/authStore.jsx'
 import ArticleStats from '../ArticleStats.jsx'
 import ErrorMessageCard from '../ErrorMessageCard.jsx'
 
 import styles from './write.module.scss'
 
-import { useActiveUserId } from '../../hooks/user'
 import { useGraphQL } from '../../helpers/graphQL'
 import { getEditableArticle as query, stopSoloSession } from './Write.graphql'
 
@@ -48,9 +49,7 @@ export function deriveModeFrom({ path, currentVersion }) {
 
 export default function Write() {
   const { setToast } = useToasts()
-  const backendEndpoint = useSelector(
-    (state) => state.applicationConfig.backendEndpoint
-  )
+  const { backendEndpoint } = applicationConfig
   const { t } = useTranslation()
   const { version: currentVersion, id: articleId, compareTo } = useParams()
   const workingArticle = useSelector(

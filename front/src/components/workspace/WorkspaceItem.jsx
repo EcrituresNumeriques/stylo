@@ -1,8 +1,9 @@
+import PropTypes from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Slash, Users } from 'react-feather'
 import { Modal as GeistModal, Button, Note, Text, Spacer } from '@geist-ui/core'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { getActions } from '../../stores/workspaceStore.jsx'
 import TimeAgo from '../TimeAgo.jsx'
 
 import styles from './workspaceItem.module.scss'
@@ -15,10 +16,10 @@ import Field from '../Field.jsx'
 export default function WorkspaceItem({ workspace }) {
   const { t } = useTranslation()
   const runQuery = useGraphQL()
-  const dispatch = useDispatch()
   const [managingMembers, setManagingMembers] = useState(false)
   const [leaving, setLeaving] = useState(false)
   const [membersCount, setMembersCount] = useState(0)
+  const { leaveWorkspace } = getActions()
 
   const handleCloseManagingMembers = useCallback(async () => {
     const response = await runQuery({
@@ -42,11 +43,7 @@ export default function WorkspaceItem({ workspace }) {
   }, [workspace._id])
 
   const handleLeavingWorkspace = useCallback(
-    () =>
-      dispatch({
-        type: 'LEAVE_WORKSPACE',
-        data: { workspaceId: workspace._id },
-      }),
+    async () => await leaveWorkspace(workspace._id),
     [workspace._id]
   )
 
@@ -154,15 +151,15 @@ export default function WorkspaceItem({ workspace }) {
               color={workspace.color}
               name={workspace.name}
             />
-            <h2>Quitter l'espace de travail</h2>
+            <h2>Quitter l&apos;espace de travail</h2>
             <GeistModal.Content>
               Êtes-vous sûr de vouloir quitter cet espace de travail ?
               {workspace.stats.membersCount === 1 && (
                 <>
                   <Spacer h={1} />
                   <Note label="Important" type="error">
-                    L'espace de travail sera <Text i>supprimé</Text> car vous
-                    êtes la dernière personne appartenant à cet espace.
+                    L&apos;espace de travail sera <Text i>supprimé</Text> car
+                    vous êtes la dernière personne appartenant à cet espace.
                   </Note>
                 </>
               )}
@@ -184,9 +181,9 @@ export default function WorkspaceItem({ workspace }) {
               color={workspace.color}
               name={workspace.name}
             />
-            <h2>Gérer les membres de l'espace de travail</h2>
-            <div className={styles.managingMembersSubtitle}>
-              <div>Permet d'ajouter ou de supprimer un membre</div>
+            <h2>Gérer les membres de l&apos;espace de travail</h2>
+            <div>
+              <div>Permet d&apos;ajouter ou de supprimer un membre</div>
             </div>
             <GeistModal.Content>
               <WorkspaceManageMembers workspace={workspace} />
@@ -199,4 +196,19 @@ export default function WorkspaceItem({ workspace }) {
       )}
     </div>
   )
+}
+
+WorkspaceItem.propTypes = {
+  workspace: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    personal: PropTypes.bool.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    articlesCount: PropTypes.number.isRequired,
+    color: PropTypes.string.isRequired,
+    stats: PropTypes.object.isRequired,
+    creator: PropTypes.object.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
+  }),
 }

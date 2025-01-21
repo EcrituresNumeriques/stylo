@@ -1,17 +1,19 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { ChevronRight } from 'react-feather'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import { useLocation, useHistory } from 'react-router-dom'
+import { getActions, useActiveWorkspace } from '../../stores/workspaceStore.jsx'
 
 import styles from './WorkspaceMenuItem.module.scss'
 
 export default function WorkspaceMenuItem({ color, name, id }) {
-  const dispatch = useDispatch()
   const history = useHistory()
   const location = useLocation()
-  const setActiveWorkspace = (workspaceId) => {
+  const { setActiveWorkspaceId } = getActions()
+  const activeWorkspace = useActiveWorkspace()
+
+  const updateActiveWorkspace = (workspaceId) => {
     const path = location.pathname
     if (path.endsWith('/books')) {
       if (id) {
@@ -26,17 +28,14 @@ export default function WorkspaceMenuItem({ color, name, id }) {
         history.push(`/articles`)
       }
     }
-    dispatch({ type: 'SET_ACTIVE_WORKSPACE', workspaceId })
+    setActiveWorkspaceId(workspaceId)
   }
-
-  const activeUser = useSelector((state) => state.activeUser)
-
   return (
     <>
       <li
-        onClick={() => setActiveWorkspace(id)}
+        onClick={() => updateActiveWorkspace(id)}
         className={
-          activeUser.activeWorkspaceId === id
+          activeWorkspace?._id === id
             ? clsx(styles.item, styles.selected)
             : styles.item
         }

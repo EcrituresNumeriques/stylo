@@ -1,17 +1,16 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { Route } from 'react-router-dom'
+import { useActiveUser } from '../stores/authStore.jsx'
 
 import Login from './Login'
 
 function PrivateRoute({ children, ...rest }) {
-  const loggedIn = useSelector((state) => state.loggedIn)
-
+  const activeUser = useActiveUser()
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        loggedIn ? children : <Login from={location} />
+        activeUser ? children : <Login from={location} />
       }
     />
   )

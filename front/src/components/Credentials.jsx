@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 import { useGraphQL } from '../helpers/graphQL'
+import { useActiveUser } from '../stores/authStore.jsx'
 import { changePassword as query } from './Credentials.graphql'
 import styles from './credentials.module.scss'
 import fieldStyles from './field.module.scss'
@@ -15,10 +15,9 @@ export default function Credentials() {
   const [passwordO, setPasswordO] = useState('')
   const [passwordC, setPasswordC] = useState('')
   const [isUpdating, setIsUpdating] = useState(false)
-  const userId = useSelector((state) => state.activeUser._id)
-  const hasExistingPassword = useSelector((state) =>
-    state.activeUser.authTypes.includes('local')
-  )
+  const activeUser = useActiveUser()
+  const userId = activeUser._id
+  const hasExistingPassword = activeUser.authTypes.includes('local')
   const runQuery = useGraphQL()
   const { t } = useTranslation()
 
@@ -28,7 +27,7 @@ export default function Credentials() {
     } else {
       return password && passwordC && password === passwordC
     }
-  })
+  }, [passwordO, password, passwordC])
 
   const changePassword = async (e) => {
     e.preventDefault()

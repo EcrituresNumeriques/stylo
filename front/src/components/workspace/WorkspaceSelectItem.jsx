@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
+import { useActiveUser } from '../../stores/authStore.jsx'
 
 import { removeArticle, addArticle } from './WorkspaceArticle.graphql'
 import styles from './WorkspaceSelectItem.module.scss'
@@ -16,7 +17,7 @@ export default function WorkspaceSelectItem({
   onChange,
 }) {
   const runQuery = useGraphQL()
-  const activeUser = useSelector((state) => state.activeUser)
+  const activeUser = useActiveUser()
   const toggleWorkspaceArticle = useCallback(
     async (event) => {
       event.preventDefault()

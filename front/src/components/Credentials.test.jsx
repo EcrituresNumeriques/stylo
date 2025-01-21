@@ -3,14 +3,16 @@ import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { renderWithProviders } from '../../tests/setup.js'
+import { applicationConfig } from '../stores/applicationConfig.jsx'
+import { authStore } from '../stores/authStore.jsx'
 import Component from './Credentials.jsx'
 
 describe('Credentials', () => {
   test('renders with OIDC', () => {
-    const preloadedState = {
+    authStore.setState({
       activeUser: { authType: 'oidc', authTypes: ['oidc'] },
-    }
-    renderWithProviders(<Component />, { preloadedState })
+    })
+    renderWithProviders(<Component />, {})
 
     expect(screen.getByRole('form')).toBeInTheDocument()
     expect(
@@ -25,10 +27,10 @@ describe('Credentials', () => {
   })
 
   test('renders with password only', () => {
-    const preloadedState = {
+    authStore.setState({
       activeUser: { authType: 'local', authTypes: ['local'] },
-    }
-    renderWithProviders(<Component />, { preloadedState })
+    })
+    renderWithProviders(<Component />, {})
 
     expect(screen.getByRole('form')).toBeInTheDocument()
     expect(
@@ -43,10 +45,10 @@ describe('Credentials', () => {
   })
 
   test('renders with both password and oidc', () => {
-    const preloadedState = {
+    authStore.setState({
       activeUser: { authType: 'oidc', authTypes: ['oidc', 'local'] },
-    }
-    renderWithProviders(<Component />, { preloadedState })
+    })
+    renderWithProviders(<Component />, {})
 
     expect(screen.getByRole('form')).toBeInTheDocument()
     expect(
@@ -60,11 +62,11 @@ describe('Credentials', () => {
     ).toBeInTheDocument()
   })
 
-  test('cannot be submitted when confirmation difers from new password', async () => {
-    const preloadedState = {
+  test('cannot be submitted when confirmation differs from new password', async () => {
+    authStore.setState({
       activeUser: { authType: 'local', authTypes: ['local'] },
-    }
-    renderWithProviders(<Component />, { preloadedState })
+    })
+    renderWithProviders(<Component />, {})
 
     screen.getByLabelText('credentials.oldPassword.placeholder').focus()
     await userEvent.keyboard('aaaa')
@@ -79,10 +81,10 @@ describe('Credentials', () => {
   })
 
   test('can be submitted when confirmation equals new password', async () => {
-    const preloadedState = {
+    authStore.setState({
       activeUser: { authType: 'local', authTypes: ['local'] },
-    }
-    renderWithProviders(<Component />, { preloadedState })
+    })
+    renderWithProviders(<Component />, {})
 
     screen.getByLabelText('credentials.oldPassword.placeholder').focus()
     await userEvent.keyboard('aaaa')
@@ -97,10 +99,10 @@ describe('Credentials', () => {
   })
 
   test('can be submitted when confirmation equals new password and is oidc', async () => {
-    const preloadedState = {
+    authStore.setState({
       activeUser: { authType: 'local', authTypes: ['oidc'] },
-    }
-    renderWithProviders(<Component />, { preloadedState })
+    })
+    renderWithProviders(<Component />, {})
 
     screen.getByLabelText('credentials.newPassword.placeholder').focus()
     await userEvent.keyboard('abcd')
@@ -112,7 +114,7 @@ describe('Credentials', () => {
     fireEvent.click(screen.getByRole('button'))
 
     expect(fetch).toHaveBeenLastCalledWith(
-      undefined,
+      applicationConfig.graphqlEndpoint,
       expect.objectContaining({
         body: expect.stringMatching(/query":"mutation changePassword/),
       })

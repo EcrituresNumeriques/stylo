@@ -7,6 +7,10 @@ export default class WorkspaceService {
     this.graphqlEndpoint = applicationConfig.graphqlEndpoint
   }
 
+  /**
+   * @param data
+   * @return {Promise<{createWorkspace}>}
+   */
   async create(data) {
     const { sessionToken, graphqlEndpoint } = this
 

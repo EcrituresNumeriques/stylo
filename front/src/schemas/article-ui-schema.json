@@ -62,9 +62,7 @@
     },
     {
       "title": "article.metadata.senspublic",
-      "fields": [
-        "senspublic"
-      ]
+      "fields": ["senspublic"]
     },
     {
       "title": "article.metadata.journalDirectors",

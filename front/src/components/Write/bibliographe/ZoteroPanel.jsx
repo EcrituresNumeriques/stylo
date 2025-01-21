@@ -1,6 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
-import { useSelector } from 'react-redux'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -8,7 +6,8 @@ import {
   fetchBibliographyFromCollectionHref,
 } from '../../../helpers/zotero'
 import { useGraphQL } from '../../../helpers/graphQL'
-import { useProfile } from '../../../helpers/userProfile'
+import { applicationConfig } from '../../../stores/applicationConfig.jsx'
+import { useActiveUser } from '../../../stores/authStore.jsx'
 import { linkToZotero as query } from '../../Article.graphql'
 
 import Button from '../../Button'
@@ -29,11 +28,8 @@ export default function ZoteroPanel({
   onChange,
 }) {
   const { t } = useTranslation()
-  const zoteroToken = useSelector((state) => state.activeUser.zoteroToken)
-  const userId = useSelector((state) => state.activeUser._id)
-  const backendEndpoint = useSelector(
-    (state) => state.applicationConfig.backendEndpoint
-  )
+  const { zoteroToken, _id: userId } = useActiveUser()
+  const { backendEndpoint } = applicationConfig
 
   const [zoteroLink, setZoteroLink] = useState(initialZoteroLink)
   const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)
@@ -44,7 +40,6 @@ export default function ZoteroPanel({
 
   const [isSaving, setSaving] = useState(false)
   const runQuery = useGraphQL()
-  const refreshProfile = useProfile()
 
   const handleZoteroLinkChange = useCallback(
     (event) => setZoteroLink(event.target.value),
@@ -154,7 +149,8 @@ export default function ZoteroPanel({
     )
     const intervalId = setInterval(() => {
       if (popup.closed) {
-        refreshProfile()
+        // FIXME: why do we need to refresh?
+        //refreshProfile()
         clearInterval(intervalId)
       }
     }, 1000)
