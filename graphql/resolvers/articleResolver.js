@@ -298,12 +298,12 @@ module.exports = {
      * Fetch an article as the current user
      *
      * @param {null} _root
-     * @param {*} args
+     * @param {{ article: string }} args
      * @param {{ loaders: { article }, userId, token }} context
      * @returns
      */
-    async article(_root, args, context) {
-      return await getArticleByContext(args.article, context)
+    async article(_root, args) {
+      return await getArticle(args.article)
     },
 
     /**
