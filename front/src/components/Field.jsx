@@ -1,28 +1,39 @@
 import clsx from 'clsx'
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useEffect, useRef } from 'react'
 import styles from './field.module.scss'
 
 export default forwardRef(function Field(
-  { hasError, className, prefix, children, label, id, type, ...otherProps },
+  {
+    hasError,
+    className,
+    prefix,
+    children,
+    label,
+    id,
+    type,
+    autoFocus = false,
+    ...otherProps
+  },
   forwardedRef
 ) {
-  const classNames = [
+  const inputRef = forwardedRef ?? useRef()
+  const classNames = clsx(
     styles.field,
     prefix && styles.withPrefix,
     'control-field',
-  ]
-
-  if (className) {
-    classNames.push(className)
-  }
-  if (hasError) {
-    classNames.push(styles.error)
-  }
+    className && className,
+    hasError && styles.error
+  )
 
   const computedStyles = { '--chars-count': prefix?.length }
+  useEffect(() => {
+    if (autoFocus) {
+      inputRef.current.focus()
+    }
+  }, [])
 
   return (
-    <div className={clsx(classNames)}>
+    <div className={classNames}>
       {label && <label htmlFor={id}>{label}</label>}
       <div
         className={clsx('control', otherProps.icon && 'has-icons-left')}
@@ -36,7 +47,7 @@ export default forwardRef(function Field(
               {...otherProps}
               className="input"
               type={type || 'text'}
-              ref={forwardedRef}
+              ref={inputRef}
             />
             {otherProps.icon && (
               <span className="icon is-small is-left">
