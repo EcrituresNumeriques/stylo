@@ -1,8 +1,4 @@
-import {
-  Loading,
-  Modal as GeistModal,
-  useModal,
-} from '@geist-ui/core'
+import { Loading, Modal as GeistModal, useModal } from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
@@ -253,14 +249,10 @@ export default function Articles() {
         </aside>
 
         <div className={styles.articlesTableHeader}>
-          {!activeWorkspaceId && (
-            <Button
-              primary
-              onClick={() => setCreateArticleVisible(true)}
-            >
-              {t('article.createAction.buttonText')}
-            </Button>
-          )}
+          <Button primary onClick={() => setCreateArticleVisible(true)}>
+            {t('article.createAction.buttonText')}
+          </Button>
+
           <div className={styles.articleCounter}>
             {t('article.count', { count: keepArticles.length })}
           </div>
@@ -273,7 +265,10 @@ export default function Articles() {
         >
           <h2>{t('article.createModal.title')}</h2>
           <GeistModal.Content>
-            <ArticleCreate onSubmit={handleArticleCreated} />
+            <ArticleCreate
+              onSubmit={handleArticleCreated}
+              workspaceId={activeWorkspaceId}
+            />
           </GeistModal.Content>
           <GeistModal.Action
             passive
