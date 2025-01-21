@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import { print } from 'graphql/language/printer'
-import { applicationConfig } from '../stores/applicationConfig.jsx'
+import { applicationConfig } from '../config.js'
 
 /**
  * @typedef {import('graphql/language/ast').DocumentNode} DocumentNode

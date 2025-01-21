@@ -27,7 +27,7 @@ import Register from './components/Register'
 import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/404'
 import Error from './components/Error'
-import { applicationConfig } from './stores/applicationConfig.jsx'
+import { applicationConfig } from './config.js'
 import Story from './stories/Story.jsx'
 
 const Route = Sentry.withSentryRouting(OriginalRoute)

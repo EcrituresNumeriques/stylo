@@ -1,7 +1,7 @@
 import useSWR, { preload } from 'swr'
 import { useSelector } from 'react-redux'
 import { print } from 'graphql/language/printer'
-import { applicationConfig } from '../stores/applicationConfig.jsx'
+import { applicationConfig } from '../config.js'
 
 async function fetcher({ query, variables, sessionToken }) {
   return request({ query, variables, sessionToken })

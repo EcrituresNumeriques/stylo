@@ -14,7 +14,7 @@ import PropTypes from 'prop-types'
 import throttle from 'lodash.throttle'
 import debounce from 'lodash.debounce'
 import { useMutation } from '../../hooks/graphql.js'
-import { applicationConfig } from '../../stores/applicationConfig.jsx'
+import { applicationConfig } from '../../config.js'
 import ArticleStats from '../ArticleStats.jsx'
 import ErrorMessageCard from '../ErrorMessageCard.jsx'
 

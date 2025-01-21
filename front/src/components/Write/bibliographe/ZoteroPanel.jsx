@@ -8,7 +8,7 @@ import {
 } from '../../../helpers/zotero'
 import { useGraphQL } from '../../../helpers/graphQL'
 import { useProfile } from '../../../helpers/userProfile'
-import { applicationConfig } from '../../../stores/applicationConfig.jsx'
+import { applicationConfig } from '../../../config.js'
 import { linkToZotero as query } from '../../Article.graphql'
 
 import Button from '../../Button'

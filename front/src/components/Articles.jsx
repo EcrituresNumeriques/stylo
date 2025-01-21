@@ -6,7 +6,7 @@ import { CurrentUserContext } from '../contexts/CurrentUser'
 import { Search } from 'react-feather'
 
 import useGraphQL from '../hooks/graphql'
-import { applicationConfig } from '../stores/applicationConfig.jsx'
+import { applicationConfig } from '../config.js'
 import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
 import etv from '../helpers/eventTargetValue'
 

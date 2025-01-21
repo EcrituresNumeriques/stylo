@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/react'
 import { toEntries } from './helpers/bibtex'
 import ArticleService from './services/ArticleService'
 import WorkspaceService from './services/WorkspaceService.js'
-import { applicationConfig } from './stores/applicationConfig.jsx'
+import { applicationConfig } from './config.js'
 const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName = 'sessionToken' } =
   import.meta.env
 

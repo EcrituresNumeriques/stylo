@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { applicationConfig } from '../stores/applicationConfig.jsx'
+import { applicationConfig } from '../config.js'
 
 import styles from './articles.module.scss'
 import Loading from './Loading'

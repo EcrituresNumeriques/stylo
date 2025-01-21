@@ -5,7 +5,7 @@ import throttle from 'lodash.throttle'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
-import { applicationConfig } from '../../stores/applicationConfig.jsx'
+import { applicationConfig } from '../../config.js'
 import * as collaborating from './collaborating.js'
 import CollaborativeEditorStatus from './CollaborativeEditorStatus.jsx'
 

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import { toYaml } from '../components/Write/metadata/yaml.js'
-import { applicationConfig } from '../stores/applicationConfig.jsx'
+import { applicationConfig } from '../config.js'
 
 const fetcher = (url) => fetch(url).then((response) => response.json())
 const postFetcher = ([url, formData]) => {

@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import slugify from 'slugify'
 import useStyloExport from '../hooks/stylo-export.js'
-import { applicationConfig } from '../stores/applicationConfig.jsx'
+import { applicationConfig } from '../config.js'
 
 import Select from './Select'
 import Combobox from './SelectCombobox.jsx'

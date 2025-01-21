@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { applicationConfig } from '../stores/applicationConfig.jsx'
+import { applicationConfig } from '../config.js'
 
 import styles from './login.module.scss'
 import Field from './Field'
