@@ -646,21 +646,23 @@ span.question:hover::after {
  article {
   counter-reset: para;
 
-  p, pre {
-    counter-increment: para;
-    position: relative;
+  section:not(#footnotes, #bibliographie) {
+    p, pre {
+      counter-increment: para;
+      position: relative;
 
 
-    &::before {
-      font-family: monospace;
-      margin: auto;
-      margin-left: auto;
-      opacity: 0.5;
-      content: "(" counter(para) ")";
-      position: absolute;
-      text-align: right;
-      left: -2.5rem;
-      font-size: 0.75rem;
+      &::before {
+        font-family: monospace;
+        margin: auto;
+        margin-left: auto;
+        opacity: 0.5;
+        content: "(" counter(para) ")";
+        position: absolute;
+        text-align: right;
+        left: -2.5rem;
+        font-size: 0.75rem;
+      }
     }
   }
 }
