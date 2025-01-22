@@ -1,8 +1,8 @@
 // variables defined statically via vite.config.js
 export const applicationConfig = {
   backendEndpoint: __BACKEND_ENDPOINT__,
+  canonicalBaseUrl: __ANNOTATIONS_CANONICAL_BASE_URL__,
   graphqlEndpoint: __GRAPHQL_ENDPOINT__,
-  exportEndpoint: __EXPORT_ENDPOINT__,
   pandocExportEndpoint: __PANDOC_EXPORT_ENDPOINT__,
   pandocExportHost:
     import.meta.env.SNOWPACK_PUBLIC_PANDOC_EXPORT_HOST ?? window.location.host,

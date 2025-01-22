@@ -22,8 +22,37 @@ body {
   line-height: 1.7;
   padding: 1em;
   margin: auto;
-  max-width: 42em;
   background: #fefefe;
+}
+
+body {
+  main {
+    > section {
+      display: grid;
+      grid-template-areas:
+        ".      header    ."
+        ".      divider   ."
+        "toc    article   .";
+      gap: 1rem;
+
+      > nav {
+        grid-area: toc;
+      }
+
+      > hr {
+        grid-area: divider;
+      }
+
+      > header {
+        grid-area: header;
+      }
+
+      > article {
+        grid-area: article;
+        max-width: 42em;
+      }
+    }
+  }
 }
 
 a {
@@ -608,4 +637,36 @@ span.question:hover::after {
   font-size: 1em;
   padding-left:5px;
   padding-right:5px;
+}
+
+/*
+ * @see https://github.com/EcrituresNumeriques/stylo/issues/1001
+ */
+
+ article {
+  counter-reset: para;
+
+  section:not(#footnotes, #bibliographie) {
+    p, pre {
+      counter-increment: para;
+      position: relative;
+
+
+      &::before {
+        font-family: monospace;
+        margin: auto;
+        margin-left: auto;
+        opacity: 0.5;
+        content: "(" counter(para) ")";
+        position: absolute;
+        text-align: right;
+        left: -2.5rem;
+        font-size: 0.75rem;
+      }
+    }
+  }
+}
+
+blockquote > p::before {
+  content: none;
 }

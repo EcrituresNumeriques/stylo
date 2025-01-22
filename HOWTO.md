@@ -2,8 +2,8 @@
 
 Depending on your needs, you may want to install Stylo in different ways :
 
- - [With Docker](#run-with-docker) (suited to run Stylo rapidly)
- - [Without Docker](#run-without-docker) (suited to tailor your Stylo setup)
+- [With Docker](#run-with-docker) (suited to run Stylo rapidly)
+- [Without Docker](#run-without-docker) (suited to tailor your Stylo setup)
 
 [Ansible playbooks](#deploy-with-ansible) enable you to deploy Stylo on a remote machine, accessible with the SSH protocol.
 
@@ -13,9 +13,7 @@ You can find various pointers in our [GitHub Actions automations](./.github/work
 
 First step is to clone the project, you can use either the HTTPS or SSH version of the repository URL:
 
-
     $ git clone git@github.com:EcrituresNumeriques/stylo.git
-
 
 ## Run with Docker
 
@@ -29,9 +27,11 @@ Run the following command:
 **NOTE:** The first time, this command can take a few dozen minutes depending on your network speed and machine capabilities. Subsequent calls will be faster.
 
 This gives your access to:
+
 - Stylo (frontend): http://localhost:3000
 - GraphQL endpoint: http://localhost:3030
-- Export endpoint: http://localhost:3060
+- Export endpoint: http://localhost:3080
+- Pandoc API: http://localhost:3090
 
 ## Run without Docker
 
@@ -53,7 +53,6 @@ After _cloning_ the repo, build the service and its dependencies:
     $ cp stylo-example.env .env
     $ npm clean-install
     $ npm start
-
 
 After the image is built, you should have a Stylo instance running on your server.
 Now, we need to expose it to the outside world with a reverse proxy.

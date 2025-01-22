@@ -8,8 +8,11 @@ convict.addFormat(require('convict-format-with-validator').url)
 convict.addFormat({
   name: 'mongodb-url',
   coerce: (v) => v.toString(),
-  validate: (val) => assert.ok(isURL(val, { require_tld: false, protocols: ['mongodb', 'mongodb+srv'] }), 'must be a mongodb protocol URL')
-
+  validate: (val) =>
+    assert.ok(
+      isURL(val, { require_tld: false, protocols: ['mongodb', 'mongodb+srv'] }),
+      'must be a mongodb protocol URL'
+    ),
 })
 /**
  * @type {convict.Config<{
@@ -20,143 +23,143 @@ module.exports = convict({
   export: {
     baseUrl: {
       format: String,
-      env: 'EXPORT_CANONICAL_BASE_URL',
-      default: 'http://127.0.0.1:3060'
+      env: 'SNOWPACK_PUBLIC_ANNOTATIONS_CANONICAL_BASE_URL',
+      default: 'http://127.0.0.1:3060',
     },
     urlEndpoint: {
       format: 'url',
       env: 'SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT',
-      default: 'http://127.0.0.1:3080'
-    }
+      default: 'http://127.0.0.1:3080',
+    },
   },
   mongo: {
     databaseUrl: {
       default: 'mongodb://127.0.0.1:27017/stylo-dev',
       format: 'mongodb-url',
-      env: 'DATABASE_URL'
-    }
+      env: 'DATABASE_URL',
+    },
   },
   oauthProvider: {
     name: {
       format: String,
       env: 'OPENID_CONNECT_NAME',
-      default: null
+      default: null,
     },
     issuer: {
       format: 'url',
       env: 'OPENID_CONNECT_ISSUER',
-      default: null
+      default: null,
     },
     callbackUrl: {
       format: 'url',
       env: 'OPENID_CONNECT_CALLBACK_URL',
-      default: 'http://localhost:3000/authorization-code/callback'
+      default: 'http://localhost:3000/authorization-code/callback',
     },
     client: {
       id: {
         format: String,
         sensitive: true,
         env: 'OPENID_CONNECT_CLIENT_ID',
-        default: null
+        default: null,
       },
       secret: {
         format: String,
         sensitive: true,
         env: 'OPENID_CONNECT_CLIENT_SECRET',
-        default: null
-      }
+        default: null,
+      },
     },
     scope: {
       default: 'profile email',
-      env: 'OPENID_CONNECT_SCOPE'
+      env: 'OPENID_CONNECT_SCOPE',
     },
     auth: {
       tokenUrl: {
         format: 'url',
         env: 'OPENID_CONNECT_TOKEN_URL',
-        default: null
+        default: null,
       },
       userInfo: {
         format: 'url',
         env: 'OPENID_CONNECT_USER_INFO_URL',
-        default: null
+        default: null,
       },
       url: {
         format: 'url',
         env: 'OPENID_CONNECT_AUTH_URL',
-        default: null
-      }
-    }
+        default: null,
+      },
+    },
   },
   port: {
     format: 'port',
     env: 'PORT',
-    default: 3030
+    default: 3030,
   },
   securedCookie: {
     format: Boolean,
     env: 'HTTPS',
-    default: false
+    default: false,
   },
   security: {
     cors: {
       origin: {
         // url1 url2
         default: 'http://127.0.0.1:3000 http://127.0.0.1:3030',
-        env: 'ALLOW_CORS_FRONTEND'
-      }
+        env: 'ALLOW_CORS_FRONTEND',
+      },
     },
     jwt: {
       secret: {
         format: String,
         sensitive: true,
         env: 'JWT_SECRET_SESSION_COOKIE',
-        default: null
-      }
+        default: null,
+      },
     },
     session: {
       secret: {
         format: String,
         sensitive: true,
         env: 'SESSION_SECRET',
-        default: null
-      }
-    }
+        default: null,
+      },
+    },
   },
   zotero: {
     accessPoint: {
       format: 'url',
       env: 'ZOTERO_ACCESS_TOKEN_ENDPOINT',
-      default: 'https://www.zotero.org/oauth/access'
+      default: 'https://www.zotero.org/oauth/access',
     },
     authorize: {
       format: 'url',
       env: 'ZOTERO_AUTHORIZE_ENDPOINT',
-      default: 'https://www.zotero.org/oauth/authorize'
+      default: 'https://www.zotero.org/oauth/authorize',
     },
     requestToken: {
       format: 'url',
       env: 'ZOTERO_REQUEST_TOKEN_ENDPOINT',
-      default: 'https://www.zotero.org/oauth/request'
+      default: 'https://www.zotero.org/oauth/request',
     },
     auth: {
       callbackUrl: {
         format: 'url',
         env: 'ZOTERO_AUTH_CALLBACK_URL',
-        default: 'http://localhost:3030/authorization-code/zotero/callback'
+        default: 'http://localhost:3030/authorization-code/zotero/callback',
       },
       clientKey: {
         format: String,
         sensitive: true,
         env: 'ZOTERO_AUTH_CLIENT_KEY',
-        default: null
+        default: null,
       },
       clientSecret: {
         format: String,
         sensitive: true,
         env: 'ZOTERO_AUTH_CLIENT_SECRET',
-        default: null
-      }
+        default: null,
+      },
     },
   },
   sentry: {
@@ -164,7 +167,7 @@ module.exports = convict({
       format: 'url',
       env: 'SENTRY_GRAPHQL_DSN',
       default: null,
-      nullable: true
-    }
-  }
+      nullable: true,
+    },
+  },
 })

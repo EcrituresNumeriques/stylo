@@ -143,23 +143,14 @@ module.exports = {
      * @returns {Promise<[Corpus]>}
      */
     async corpus(_, args, context) {
-      const { user, token } = context
-
-      if (!user && !token?.admin) {
-        throw new ApiError(
-          'UNAUTHENTICATED',
-          'Unable to get a list of corpus as an unauthenticated user'
-        )
-      }
+      const { user } = context
 
       if ('filter' in args) {
         const filter = args.filter
         if ('corpusId' in filter) {
-          return [await getCorpusByContext(filter.corpusId, context)]
+          return [await getCorpus(filter.corpusId)]
         }
         if ('workspaceId' in filter) {
-          // check that the user can access the workspace
-          await Workspace.getWorkspaceById(filter.workspaceId, user)
           return Corpus.find({ workspace: filter.workspaceId })
             .populate([{ path: 'creator' }])
             .sort([['updatedAt', -1]])

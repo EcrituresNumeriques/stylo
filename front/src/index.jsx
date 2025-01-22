@@ -57,7 +57,7 @@ const Workspaces = lazy(() => import('./components/workspace/Workspaces'))
 const Credentials = lazy(() => import('./components/Credentials'))
 const UserInfos = lazy(() => import('./components/UserInfos.jsx'))
 const Write = lazy(() => import('./components/Write/Write'))
-const ArticlePreview = lazy(() => import('./components/ArticlePreview'))
+const Preview = lazy(() => import('./components/Preview.jsx'))
 const Privacy = lazy(() => import('./components/Privacy'))
 
 const store = createStore()
@@ -164,8 +164,14 @@ root.render(
                   <Credentials />
                 </PrivateRoute>
                 {/* Annotate a Book */}
-                <Route path={[`/books/:bookId/preview`]} exact>
-                  <ArticlePreview />
+                <Route
+                  path={[
+                    '/workspaces/:workspaceId/books/:id/preview',
+                    '/books/:id/preview',
+                  ]}
+                  exact
+                >
+                  <Preview strategy="corpus" />
                 </Route>
                 {/* Annotate an article or its version */}
                 <Route
@@ -175,7 +181,7 @@ root.render(
                   ]}
                   exact
                 >
-                  <ArticlePreview />
+                  <Preview strategy="article" />
                 </Route>
                 {/* Write and Compare */}
                 <PrivateRoute

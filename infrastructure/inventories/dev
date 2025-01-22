@@ -19,7 +19,6 @@ openid_connect_client_secret='{{ openid_connect_client_secret }}'
 allow_cors_frontend='https://stylo-dev.huma-num.fr https://export.stylo-dev.huma-num.fr/ https://deploy-preview-\\d+--stylo-dev\\.netlify\\.app https://stylo-dev.netlify.app https://master--stylo-dev.netlify.app'
 stylo_backend_endpoint={{ lookup('env', 'SNOWPACK_PUBLIC_BACKEND_ENDPOINT') or 'https://stylo-dev.huma-num.fr' }}
 graphql_endpoint={{ lookup('env', 'SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT') or 'https://stylo-dev.huma-num.fr/graphql' }}
-export_endpoint={{ lookup('env', 'SNOWPACK_PUBLIC_EXPORT_ENDPOINT') or 'https://stylo-dev.huma-num.fr' }}
 pandoc_export_endpoint={{ lookup('env', 'SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT') or 'https://export.stylo-dev.huma-num.fr' }}
 human_id_register_endpoint={{ lookup('env', 'SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT') or 'https://auth-test.huma-num.fr/register?service=https://stylo-dev.huma-num.fr/authorization-code/callback' }}
 export_canonical_base_url='https://stylo-dev.huma-num.fr'

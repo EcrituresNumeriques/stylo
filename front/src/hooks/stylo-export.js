@@ -4,7 +4,7 @@ import { toYaml } from '../components/Write/metadata/yaml.js'
 import { applicationConfig } from '../config.js'
 
 const fetcher = (url) => fetch(url).then((response) => response.json())
-const postFetcher = ([url, formData]) => {
+function postFetcher([url, formData]) {
   const body = new FormData()
 
   Object.entries(formData).forEach(([key, value]) => body.append(key, value))
@@ -51,6 +51,9 @@ export function useStyloExportPreview({
   md_content,
   bib_content,
   metadata_content,
+  with_toc = false,
+  with_nocite = false,
+  with_link_citations = false,
 }) {
   const { pandocExportEndpoint } = applicationConfig
   const yaml_content = useMemo(
@@ -62,10 +65,13 @@ export function useStyloExportPreview({
     md_content,
     yaml_content,
     bib_content,
+    with_toc,
+    with_nocite,
+    with_link_citations,
   }
 
   const { data: html, isLoading } = useSWR(
-    [`${pandocExportEndpoint}/api/article_preview`, previewArgs],
+    () => [`${pandocExportEndpoint}/api/article_preview`, previewArgs],
     postFetcher,
     { fallbackData: '' }
   )

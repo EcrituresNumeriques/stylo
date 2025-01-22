@@ -41,7 +41,6 @@ L'application se lance en combinant une base de données MongoDB, et des applica
 cp stylo-example.env .env
 npm clean-install
 npm --prefix front clean-install
-npm --prefix export clean-install
 npm --prefix graphql clean-install
 ```
 
@@ -71,7 +70,7 @@ docker compose run -ti --build --rm graphql-stylo npm run generate-service-token
 Ensuite, ainsi que le reste du temps :
 
 ```bash
-docker compose up mongodb-stylo export-gateway pandoc-api
+docker compose up mongodb-stylo export-stylo pandoc-api
 npm run dev
 ```
 
@@ -87,6 +86,6 @@ Pour installer une instance Stylo en tant que service à disposition d'utilisate
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FEcrituresNumeriques%2Fstylo.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FEcrituresNumeriques%2Fstylo?ref=badge_shield)
 
-
 ## License
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FEcrituresNumeriques%2Fstylo.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FEcrituresNumeriques%2Fstylo?ref=badge_large)
