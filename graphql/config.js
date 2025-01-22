@@ -24,7 +24,7 @@ module.exports = convict({
     baseUrl: {
       format: String,
       env: 'SNOWPACK_PUBLIC_ANNOTATIONS_CANONICAL_BASE_URL',
-      default: 'http://127.0.0.1:3060',
+      default: 'https://stylo.ecrituresnumeriques.ca',
     },
     urlEndpoint: {
       format: 'url',
