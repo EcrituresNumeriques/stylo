@@ -14,11 +14,9 @@ const postFetcher = ([url, formData]) => {
   )
 }
 
-export default function useStyloExport({
-  csl: bibliography_style,
-  bib: excerpt,
-}) {
+export default function useStyloExport({ bibliography_style, bib: excerpt }) {
   const { pandocExportEndpoint } = applicationConfig
+
   const { data: exportFormats } = useSWR(
     `${pandocExportEndpoint}/api/available_exports`,
     fetcher,

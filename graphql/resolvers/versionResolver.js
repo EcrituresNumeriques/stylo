@@ -9,7 +9,7 @@ const { toLegacyFormat } = require('../helpers/metadata')
 
 module.exports = {
   Query: {
-    async version (_, { version: versionId }) {
+    async version(_, { version: versionId }) {
       // TODO need to make sure user should have access to this version
       const version = await Version.findById(versionId).populate('owner')
       if (!version) {
@@ -23,14 +23,14 @@ module.exports = {
   },
 
   Version: {
-    async owner (version, _args, context) {
+    async owner(version, _args, context) {
       if (version instanceof mongoose.Document && version.populated('owner')) {
         return version.owner
       }
       return context.loaders.users.load(version.owner._id)
     },
 
-    async rename (version, { name }) {
+    async rename(version, { name }) {
       version.set('message', name)
       const result = await version.save({ timestamps: false })
 
@@ -41,12 +41,12 @@ module.exports = {
       return previewEntries(bib)
     },
 
-    yaml ({ metadata }, { options }) {
+    yaml({ metadata = {} }, { options }) {
       const legacyMetadata = toLegacyFormat(metadata)
       const yaml = YAML.dump(legacyMetadata)
       return options?.strip_markdown
         ? reformat(yaml, { replaceBibliography: false })
         : yaml
-    }
-  }
+    },
+  },
 }

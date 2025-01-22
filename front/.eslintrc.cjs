@@ -18,8 +18,8 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["**/*.json", "**/*.json5", "**/*.jsonc"],
-      parser: "jsonc-eslint-parser",
+      files: ['**/*.json', '**/*.json5', '**/*.jsonc'],
+      parser: 'jsonc-eslint-parser',
     },
   ],
   plugins: ['react', 'vitest'],
@@ -35,9 +35,8 @@ module.exports = {
     __BACKEND_ENDPOINT__: true,
     __GRAPHQL_ENDPOINT__: true,
     __EXPORT_ENDPOINT__: true,
-    __PROCESS_ENDPOINT__: true,
     __PANDOC_EXPORT_ENDPOINT__: true,
-    __HUMANID_REGISTER_ENDPOINT__: true
+    __HUMANID_REGISTER_ENDPOINT__: true,
   },
   rules: {
     'react/prop-types': ['warn'],
@@ -47,6 +46,6 @@ module.exports = {
     'jsonc/key-spacing': ['error'],
     'jsonc/no-irregular-whitespace': ['error'],
     'jsonc/object-curly-newline': ['error'],
-    'jsonc/object-property-newline': ['error']
+    'jsonc/object-property-newline': ['error'],
   },
 }

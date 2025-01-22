@@ -21,7 +21,6 @@ stylo_backend_endpoint={{ lookup('env', 'SNOWPACK_PUBLIC_BACKEND_ENDPOINT') or '
 graphql_endpoint={{ lookup('env', 'SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT') or 'https://stylo.huma-num.fr/graphql' }}
 # Conserve stylo.ecrituresnumeriques.ca car les annotations hypothes.is sont liées à ce nom de domaine
 export_endpoint={{ lookup('env', 'SNOWPACK_PUBLIC_EXPORT_ENDPOINT') or 'https://stylo.ecrituresnumeriques.ca' }}
-process_endpoint={{ lookup('env', 'SNOWPACK_PUBLIC_PROCESS_ENDPOINT') or 'https://stylo-export.ecrituresnumeriques.ca' }}
 pandoc_export_endpoint={{ lookup('env', 'SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT') or 'https://export.stylo.huma-num.fr' }}
 human_id_register_endpoint={{ lookup('env', 'SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT') or 'https://humanid.huma-num.fr/register?service=https://stylo.huma-num.fr/authorization-code/callback' }}
 # Désactive l'URL canonical vers stylo.huma-num.fr car Hypthesis ne sait pas faire le lien

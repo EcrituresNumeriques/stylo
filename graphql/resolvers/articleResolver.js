@@ -548,7 +548,7 @@ module.exports = {
     bibPreview({ bib }) {
       return previewEntries(bib)
     },
-    yaml({ metadata }, { options }) {
+    yaml({ metadata = {} }, { options }) {
       const legacyMetadata = toLegacyFormat(metadata)
       const yaml = YAML.dump(legacyMetadata)
       return options?.strip_markdown

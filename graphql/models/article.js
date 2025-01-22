@@ -43,6 +43,7 @@ const articleSchema = new Schema(
       metadata: {
         type: Schema.Types.Mixed,
         default: {},
+        get: (metadata) => metadata ?? {},
       },
     },
     versions: [

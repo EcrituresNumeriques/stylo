@@ -4,34 +4,38 @@ const Schema = mongoose.Schema
 const CorpusArticleSchema = new Schema({
   article: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Article'
+    ref: 'Article',
   },
-  order: Number
+  order: Number,
 })
 
-const corpusSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
+const corpusSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    articles: [CorpusArticleSchema],
+    description: {
+      type: String,
+      default: '',
+    },
+    metadata: {
+      type: Schema.Types.Mixed,
+      default: {},
+      get: (metadata) => metadata ?? {},
+    },
+    workspace: {
+      type: Schema.Types.ObjectId,
+      ref: 'Workspace',
+    },
+    creator: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
   },
-  articles: [CorpusArticleSchema],
-  description: {
-    type: String,
-    default: ''
-  },
-  metadata: {
-    type: Schema.Types.Mixed,
-    default: {}
-  },
-  workspace: {
-    type: Schema.Types.ObjectId,
-    ref: 'Workspace',
-  },
-  creator: {
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  }
-}, { timestamps: true })
+  { timestamps: true }
+)
 
 module.exports = mongoose.model('Corpus', corpusSchema)
 module.exports.schema = corpusSchema

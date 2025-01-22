@@ -2,11 +2,11 @@ name: Ansible deploy production
 run-name: Deploy version ${{ inputs.release-version }} on production by @${{ github.actor }}
 
 on:
-#  workflow_run:
-#    workflows:
-#      - "Build and deploy Docker images"
-#    types:
-#      - completed
+  #  workflow_run:
+  #    workflows:
+  #      - "Build and deploy Docker images"
+  #    types:
+  #      - completed
   workflow_dispatch:
     inputs:
       release-version:
@@ -17,7 +17,6 @@ env:
   SNOWPACK_PUBLIC_BACKEND_ENDPOINT: https://stylo.huma-num.fr
   SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT: https://stylo.huma-num.fr/graphql
   SNOWPACK_PUBLIC_EXPORT_ENDPOINT: https://stylo.ecrituresnumeriques.ca
-  SNOWPACK_PUBLIC_PROCESS_ENDPOINT: https://stylo-export.ecrituresnumeriques.ca
   SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT: https://export.stylo.huma-num.fr
   SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT: https://humanid.huma-num.fr/register?service=https://stylo.huma-num.fr/authorization-code/callback
   SNOWPACK_MATOMO_URL: https://analyseweb.huma-num.fr/
@@ -60,44 +59,44 @@ jobs:
       url: https://stylo.huma-num.fr
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        ref: ${{ format('v{0}', inputs.release-version) }}
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ format('v{0}', inputs.release-version) }}
 
-    - uses: actions/download-artifact@v4
-      id: assets
-      with:
-        name: front-assets
-        path: /tmp/front-assets
+      - uses: actions/download-artifact@v4
+        id: assets
+        with:
+          name: front-assets
+          path: /tmp/front-assets
 
-    - name: Set up Python 3.10 (w/ cache)
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-        cache: 'pip'
-        cache-dependency-path: '**/deploy-requirements.txt'
+      - name: Set up Python 3.10 (w/ cache)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+          cache-dependency-path: '**/deploy-requirements.txt'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install -r .github/workflows/deploy-requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install -r .github/workflows/deploy-requirements.txt
 
-    - name: Set Ansible config secrets
-      run: |
-        echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_PROD }}" > infrastructure/.ansible-vault-password
+      - name: Set Ansible config secrets
+        run: |
+          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_PROD }}" > infrastructure/.ansible-vault-password
 
-    - name: Setup SSH
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_ed25519
-        chmod 600 ~/.ssh/id_ed25519
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
 
-    - name: Run playbook
-      working-directory: ./infrastructure
-      run: |
-        ansible-playbook -v -i inventories/prod \
-          --extra-vars "@vault-prod.yml" \
-          --extra-vars "app_version=${{ inputs.release-version }}" \
-          --extra-vars "assets_path=/tmp/front-assets/" \
-          --private-key ~/.ssh/id_ed25519 \
-          --vault-password-file ./.ansible-vault-password \
-          playbook.yml
+      - name: Run playbook
+        working-directory: ./infrastructure
+        run: |
+          ansible-playbook -v -i inventories/prod \
+            --extra-vars "@vault-prod.yml" \
+            --extra-vars "app_version=${{ inputs.release-version }}" \
+            --extra-vars "assets_path=/tmp/front-assets/" \
+            --private-key ~/.ssh/id_ed25519 \
+            --vault-password-file ./.ansible-vault-password \
+            playbook.yml

@@ -41,6 +41,7 @@ const versionSchema = new Schema(
     metadata: {
       type: Schema.Types.Mixed,
       default: {},
+      get: (metadata) => metadata ?? {},
     },
     bib: String,
     sommaire: {

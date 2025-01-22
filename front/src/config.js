@@ -3,8 +3,9 @@ export const applicationConfig = {
   backendEndpoint: __BACKEND_ENDPOINT__,
   graphqlEndpoint: __GRAPHQL_ENDPOINT__,
   exportEndpoint: __EXPORT_ENDPOINT__,
-  processEndpoint: __PROCESS_ENDPOINT__,
   pandocExportEndpoint: __PANDOC_EXPORT_ENDPOINT__,
+  pandocExportHost:
+    import.meta.env.SNOWPACK_PUBLIC_PANDOC_EXPORT_HOST ?? window.location.host,
   humanIdRegisterEndpoint: __HUMANID_REGISTER_ENDPOINT__,
   websocketEndpoint: toWebsocketEndpoint(__BACKEND_ENDPOINT__),
 }
