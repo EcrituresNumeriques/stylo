@@ -147,7 +147,7 @@ export default function Export(props) {
           <option value="0">{t('export.linkCitations.no')}</option>
         </Select>
 
-        {bookId && (
+        {/*bookId && (
           <Select
             id="export-numbering"
             value={unnumbered}
@@ -160,8 +160,8 @@ export default function Export(props) {
               {t('export.sectionChapters.unnumbered')}
             </option>
           </Select>
-        )}
-        {bookId && (
+        )*/}
+        {/*bookId && (
           <Select
             value={book_division}
             onChange={setPreference('book_division')}
@@ -169,7 +169,7 @@ export default function Export(props) {
             <option value="part">{t('export.bookDivision.part')}</option>
             <option value="chapter">{t('export.bookDivision.chapter')}</option>
           </Select>
-        )}
+        )*/}
       </form>
 
       <nav className={styles.actions}>
