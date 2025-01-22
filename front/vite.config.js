@@ -35,13 +35,6 @@ export default defineConfig(async ({ mode }) => {
         },
       },
     },
-    css: {
-      preprocessorOptions: {
-        scss: {
-          api: 'modern-compiler',
-        },
-      },
-    },
     plugins: [
       graphql(),
       react({
