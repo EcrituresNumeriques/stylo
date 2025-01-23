@@ -3,10 +3,12 @@ import { useSWRConfig } from 'swr'
 import {
   getWorkspaceMembers,
   getWorkspaces,
-  inviteMember as inviteMemberQuery,
-  removeMember as removeMemberQuery,
+  inviteMember as inviteMemberMutation,
+  removeMember as removeMemberMutation,
+  create as createMutation,
+  leave as leaveMutation,
 } from '../components/workspace/Workspaces.graphql'
-import WorkspaceService from '../services/WorkspaceService.js'
+import { runQuery } from '../helpers/graphQL.js'
 import useGraphQL, { useMutation, useSWRKey } from './graphql.js'
 
 export function useActiveWorkspace() {
@@ -36,7 +38,7 @@ export function useWorkspaceMembersActions(workspaceId) {
 
   const updateMembersCount = async (result) => {
     await workspacesMutate(key, async (data) => ({
-      workspaces: data.workspaces.map((w) => {
+      workspaces: data?.workspaces?.map((w) => {
         if (w._id === workspaceId) {
           return {
             ...w,
@@ -55,7 +57,7 @@ export function useWorkspaceMembersActions(workspaceId) {
   const removeMember = async (user) => {
     const { _id: userId } = user
     await mutation({
-      query: removeMemberQuery,
+      query: removeMemberMutation,
       variables: { workspaceId, userId },
     })
     const result = await mutate(
@@ -74,7 +76,7 @@ export function useWorkspaceMembersActions(workspaceId) {
   const inviteMember = async (user) => {
     const { _id: userId } = user
     await mutation({
-      query: inviteMemberQuery,
+      query: inviteMemberMutation,
       variables: { workspaceId, userId, role: '' },
     })
     const result = await mutate(
@@ -107,21 +109,36 @@ export function useWorkspaceActions() {
   const { mutate } = useSWRConfig()
   const key = useSWRKey()({ query: getWorkspaces })
   const sessionToken = useSelector((state) => state.sessionToken)
-  const workspaceService = new WorkspaceService(sessionToken)
   const addWorkspace = async (workspace) => {
-    await workspaceService.create({
-      color: workspace.color,
-      description: workspace.description,
-      name: workspace.name,
-    })
-    mutate(key, async (data) => ({
+    await runQuery(
+      { sessionToken },
+      {
+        query: createMutation,
+        variables: {
+          data: {
+            color: workspace.color,
+            description: workspace.description,
+            name: workspace.name,
+          },
+        },
+      }
+    )
+    await mutate(key, async (data) => ({
       workspaces: [workspace, ...data.workspaces],
     }))
   }
 
   const leaveWorkspace = async (workspaceId) => {
-    await workspaceService.leave(workspaceId)
-    mutate(
+    await runQuery(
+      { sessionToken },
+      {
+        query: leaveMutation,
+        variables: {
+          workspaceId,
+        },
+      }
+    )
+    await mutate(
       key,
       async (data) => ({
         workspaces: data.workspaces.filter((w) => w._id !== workspaceId),
