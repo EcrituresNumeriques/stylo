@@ -45,12 +45,13 @@ export default function Export(props) {
   } = useSelector((state) => state.exportPreferences, shallowEqual)
 
   const setPreference = useCallback(
-    (key) => (event) =>
-      dispatch({
-        type: 'SET_EXPORT_PREFERENCES',
-        key,
-        value: event.target.value,
-      }),
+    /** @param {string} key */ (key) =>
+      /** @param {string|Event} event */ (event) =>
+        dispatch({
+          type: 'SET_EXPORT_PREFERENCES',
+          key,
+          value: event?.target?.value ?? event,
+        }),
     []
   )
 
