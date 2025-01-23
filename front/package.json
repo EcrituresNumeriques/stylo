@@ -36,6 +36,7 @@
     "@rjsf/validator-ajv8": "~5.22",
     "@rollup/plugin-graphql": "^2.0.2",
     "@sentry/react": "^8.38.0",
+    "@sentry/vite-plugin": "^3.0.0",
     "@vitejs/plugin-legacy": "^6.0.0",
     "@vitejs/plugin-react": "^4.3.4",
     "allof-merge": "^0.6.6",
@@ -89,20 +90,19 @@
     "url": "https://github.com/ecrituresnumeriques/stylo/issues"
   },
   "devDependencies": {
-    "@sentry/vite-plugin": "^2.22.6",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
-    "@vitest/coverage-v8": "^2.1.2",
+    "@vitest/coverage-v8": "^3.0.3",
     "@welldone-software/why-did-you-render": "~8.0",
     "eslint": "^8.2.0",
     "eslint-plugin-jsonc": "^2.5.0",
     "eslint-plugin-react": "^7.27.0",
     "eslint-plugin-vitest": "^0.5.4",
-    "jsdom": "^25.0.1",
+    "jsdom": "^26.0.0",
     "lodash.merge": "^4.6.2",
     "prettier": "^2.3.0",
-    "vitest": "^2.1.8"
+    "vitest": "^3.0.3"
   },
   "volta": {
     "node": "18.20.4",
