@@ -69,7 +69,7 @@ export function useGraphQL() {
  * @param {string} sessionToken
  * @param {DocumentNode|string} queryOrAST
  * @param {{[string: key]: value}} variables
- * @return {Promise<string|object>}
+ * @returns {Promise<string|object>}
  */
 export function runQuery({ sessionToken }, { query: queryOrAST, variables }) {
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)

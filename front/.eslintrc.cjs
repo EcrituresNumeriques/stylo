@@ -8,6 +8,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:jsonc/recommended-with-json',
+    'plugin:jsdoc/recommended-typescript-flavor',
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -22,7 +23,7 @@ module.exports = {
       parser: 'jsonc-eslint-parser',
     },
   ],
-  plugins: ['react', 'vitest'],
+  plugins: ['react', 'vitest', 'jsdoc'],
   settings: {
     react: {
       version: '16.13',
@@ -39,6 +40,12 @@ module.exports = {
     __HUMANID_REGISTER_ENDPOINT__: true,
   },
   rules: {
+    'jsdoc/require-description': ['off'],
+    'jsdoc/require-example': ['off'],
+    'jsdoc/require-jsdoc': ['off'],
+    'jsdoc/require-param-description': ['off'],
+    'jsdoc/require-returns-description': ['off'],
+    'jsdoc/require-property-description': ['off'],
     'react/prop-types': ['warn'],
     'no-unused-vars': ['warn'],
     'jsonc/indent': ['error', 2],

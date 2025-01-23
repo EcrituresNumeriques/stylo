@@ -43,7 +43,9 @@ async function request({ query, variables, sessionToken, type = 'fetch' }) {
 
 /**
  * @param queryOrAST GraphQL query
+ * @param queryOrAST.query
  * @param variables query arguments
+ * @param queryOrAST.variables
  * @param {SWRConfiguration} [options] - optional SWR options
  * @returns {SWRResponse}
  */
