@@ -1,0 +1,28 @@
+.alert {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem;
+  border: 1px solid;
+  font-size: 0.9em;
+}
+
+.warning {
+  background-color: rgb(255, 251, 230);
+  border-color: rgb(255, 229, 143);
+}
+
+.info {
+  background-color: rgb(230, 244, 255);
+  border-color: rgb(145, 202, 255);
+}
+
+.success {
+  background-color: rgb(246, 255, 237);
+  border-color: rgb(183, 235, 143);
+}
+
+.error {
+  background-color: rgb(255, 242, 240);
+  border-color: rgb(255, 204, 199);
+}

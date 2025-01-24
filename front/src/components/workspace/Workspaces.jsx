@@ -11,7 +11,7 @@ import WorkspaceItem from '../../components/workspace/WorkspaceItem.jsx'
 
 import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { useWorkspaces } from '../../hooks/workspace.js'
-import Loading from '../Loading.jsx'
+import Loading from '../molecules/Loading.jsx'
 import CreateWorkspaceModal from './CreateWorkspaceModal.jsx'
 import { getUserStats } from './Workspaces.graphql'
 

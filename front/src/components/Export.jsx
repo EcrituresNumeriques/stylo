@@ -8,7 +8,7 @@ import { applicationConfig } from '../config.js'
 
 import Select from './Select'
 import Combobox from './SelectCombobox.jsx'
-import Loading from './Loading'
+import Loading from './molecules/Loading.jsx'
 import styles from './export.module.scss'
 import buttonStyles from './button.module.scss'
 import formStyles from './form.module.scss'
@@ -96,7 +96,7 @@ export default function Export(props) {
     <>
       <section className={styles.export}>
         <form className={formStyles.form}>
-          {!exportFormats.length && <Loading inline size="24" />}
+          {!exportFormats.length && <Loading size="1.5rem" />}
           {exportFormats.length && (
             <Select
               id="export-formats"
@@ -112,7 +112,7 @@ export default function Export(props) {
             </Select>
           )}
 
-          {bib && !exportStyles.length && <Loading inline size="24" />}
+          {bib && !exportStyles.length && <Loading inline size="1.5rem" />}
           {bib && exportStyles.length && (
             <Combobox
               id="export-styles"
@@ -124,7 +124,7 @@ export default function Export(props) {
           )}
           {bib && (
             <div className={styles.bibliographyPreview}>
-              {isLoading && <Loading inline size="24" />}
+              {isLoading && <Loading inline size="1.5rem" />}
               {!isLoading && (
                 <div
                   dangerouslySetInnerHTML={{ __html: exportStylesPreview }}
