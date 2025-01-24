@@ -4,39 +4,39 @@ import { filter } from './bibtex'
 /**
  * @typedef ZoteroCollection
  * @property {ZoteroCollectionData} data
- * @property {String} key
+ * @property {string} key
  * @property {ZoteroLibrary} library
  * @property {Object.<string, HTMLLink>} links
  * @property {ZoteroMeta} meta
- * @property {Number} version
+ * @property {number} version
  */
 
 /**
  * @typedef ZoteroCollectionData
- * @property {String} key
- * @property {String} name Name of the collection
- * @property {String} parentCollection Parent collection key
- * @property {Number} version
+ * @property {string} key
+ * @property {string} name Name of the collection
+ * @property {string} parentCollection Parent collection key
+ * @property {number} version
  */
 
 /**
  * @typedef ZoteroLibrary
- * @property {Number} id
+ * @property {number} id
  * @property {Object.<string, HTMLLink>} links
- * @property {String} name Name of the library
- * @property {String} type Enum of 'user' or 'group' (whom it belongs)
+ * @property {string} name Name of the library
+ * @property {string} type Enum of 'user' or 'group' (whom it belongs)
  */
 
 /**
  * @typedef ZoteroMeta
- * @property {Number} numCollections
- * @property {Number} numItems
+ * @property {number} numCollections
+ * @property {number} numItems
  */
 
 /**
  * @typedef HTMLLink
- * @property {String} href
- * @property {String} type Mime-Type of the link
+ * @property {string} href
+ * @property {string} type Mime-Type of the link
  */
 
 /**
@@ -58,8 +58,8 @@ function getNextLink(headers) {
 /**
  *
  * @param {URL} url
- * @param {String} key Zotero API key
- * @param {Object[]} agg
+ * @param {string} key Zotero API key
+ * @param {object[]} agg
  * @returns {Promise<string[]>} a list of JSON responses
  */
 async function fetchAllJSON(url, key, agg = []) {
@@ -122,7 +122,7 @@ async function fetchAllBibTeX(url, key, agg = []) {
 }
 
 /**
- * @param {String} url
+ * @param {string} url
  * @returns {Promise<string>} - a JSON response
  */
 function fetchJSON(url) {
@@ -130,7 +130,7 @@ function fetchJSON(url) {
 }
 
 /**
- * @param {String} token Zotero API token
+ * @param {string} token Zotero API token
  * @returns {Promise<object>} - a JSON response (contains userID and key)
  */
 function fetchUserFromToken(token) {
@@ -138,8 +138,8 @@ function fetchUserFromToken(token) {
 }
 
 /**
- * @param {String} userID
- * @param {String} key Zotero API key
+ * @param {string} userID
+ * @param {string} key Zotero API key
  * @returns {Promise<ZoteroCollection[]>} - a list of Zotero collections
  */
 async function fetchAllCollections({ userID, key }) {
@@ -168,7 +168,7 @@ async function fetchAllCollections({ userID, key }) {
 }
 
 /**
- * @param {String} token
+ * @param {string} token
  * @returns {Promise<ZoteroCollection[]>}
  */
 export async function fetchAllCollectionsPerLibrary({ token }) {
@@ -180,6 +180,8 @@ export async function fetchAllCollectionsPerLibrary({ token }) {
 /**
  *
  * @param token
+ * @param token.userID
+ * @param token.key
  * @returns {Promise<ZoteroCollection[]>}
  */
 export async function fetchUserCollections({ userID, key }) {
@@ -190,8 +192,10 @@ export async function fetchUserCollections({ userID, key }) {
 }
 
 /**
+ * @param collectionHref.collectionHref
  * @param collectionHref
  * @param key Zotero API key
+ * @param collectionHref.token
  * @returns {Promise<string>}
  */
 export const fetchBibliographyFromCollectionHref = async ({

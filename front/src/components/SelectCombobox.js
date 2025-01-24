@@ -4,7 +4,7 @@
 
 /**
  * @param {ComboboxItem[]} items
- * @returns {Record<String, ComboboxItem[]>}
+ * @returns {Record<string, ComboboxItem[]>}
  */
 export function groupItems(items) {
   return Array.from(

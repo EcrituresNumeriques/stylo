@@ -19,7 +19,6 @@ export function toBibtex(entries) {
 /**
  * We tolerate `unexpected_field` warnings as it's user provided, it does not have any side effect
  * @see https://github.com/EcrituresNumeriques/stylo/issues/187
- *
  * @param {string} bibtex
  * @returns {Promise<{success: number,empty: boolean,warnings: Array.<string>,error: Array.<string>}>}
  */
@@ -88,6 +87,7 @@ export function deriveAuthorNameAndDate(entry) {
 
 /**
  * @param {string} Bibtex bibliography
+ * @param input
  * @returns {Array.<{ title: string, key: string, type: string }}
  */
 export function toEntries(input) {
