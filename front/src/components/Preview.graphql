@@ -20,7 +20,7 @@ query getArticle($id: ID!, $version: ID!, $hasVersion: Boolean!) {
     workingVersion @skip(if: $hasVersion) {
       md
       bib
-      metadata
+      yaml(options: { strip_markdown: true })
     }
   }
 
@@ -28,7 +28,7 @@ query getArticle($id: ID!, $version: ID!, $hasVersion: Boolean!) {
     name
     md
     bib
-    metadata
+    yaml(options: { strip_markdown: true })
   }
 }
 
@@ -44,7 +44,7 @@ query getCorpus($filter: FilterCorpusInput) {
         workingVersion {
           md
           bib
-          metadata
+          yaml(options: { strip_markdown: true })
         }
       }
     }

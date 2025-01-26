@@ -1,6 +1,4 @@
-import { useMemo } from 'react'
 import useSWR from 'swr'
-import { toYaml } from '../components/Write/metadata/yaml.js'
 import { applicationConfig } from '../config.js'
 
 const fetcher = (url) => fetch(url).then((response) => response.json())
@@ -47,19 +45,27 @@ export default function useStyloExport({ bibliography_style, bib: excerpt }) {
   }
 }
 
+/**
+ *
+ * @param {{
+ *   md_content: string,
+ *   bib_content: string,
+ *   yaml_content: string,
+ *   with_toc?: boolean,
+ *   with_nocite?: boolean,
+ *   with_link_citations?: boolean
+ * }} StyloExportPreviewParams
+ * @returns {Promise<{ html: string, isLoading: boolean }}
+ */
 export function useStyloExportPreview({
   md_content,
   bib_content,
-  metadata_content,
+  yaml_content,
   with_toc = false,
   with_nocite = false,
   with_link_citations = false,
 }) {
   const { pandocExportEndpoint } = applicationConfig
-  const yaml_content = useMemo(
-    () => toYaml(metadata_content),
-    [metadata_content]
-  )
   const previewArgs = {
     bibliography_style: 'chicagomodified',
     md_content,
