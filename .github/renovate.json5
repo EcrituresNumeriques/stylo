@@ -11,12 +11,18 @@
       "groupName": "GitHub Actions"
     },
     {
-      "matchManagers": ["dockerfile"],
+      "matchManagers": ["dockerfile", "docker-compose"],
       "groupName": "Docker images"
     },
     {
+      "matchFileNames": ["front/package.json"],
       "matchManagers": ["npm"],
-      "groupName": "Node dependencies"
+      "groupName": "Frontend dependencies"
+    },
+    {
+      "matchFileNames": ["graphql/package.json"],
+      "matchManagers": ["npm"],
+      "groupName": "Backend dependencies"
     },
     {
       "matchManagers": ["pip_requirements"],
