@@ -32,11 +32,11 @@
   },
   "homepage": "https://github.com/EcrituresNumeriques/stylo#readme",
   "devDependencies": {
-    "concurrently": "^7.6.0",
+    "concurrently": "^9.0.0",
     "dotenv": "^16.0.3"
   },
   "volta": {
     "node": "18.20.4",
-    "npm": "10.9.0"
+    "npm": "11.0.0"
   }
 }
