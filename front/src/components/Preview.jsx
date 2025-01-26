@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { Loading } from '@geist-ui/core'
 import { useStyloExportPreview } from '../hooks/stylo-export.js'
+import { toYaml } from './Write/metadata/yaml.js'
 import useGraphQL from '../hooks/graphql.js'
 import { applicationConfig } from '../config.js'
 
@@ -29,7 +30,7 @@ const strategies = new Map([
         const root = data?.article?.workingVersion ?? data?.version
         return {
           md_content: root?.md,
-          metadata_content: root?.metadata,
+          yaml_content: root?.yaml,
           bib_content: root?.bib,
         }
       },
@@ -55,17 +56,22 @@ const strategies = new Map([
       },
       mapContent(data) {
         return data?.corpus?.at(0)?.articles?.reduce(
-          (obj, { article }) => ({
+          (obj, { article }, index) => ({
             md_content: obj.md_content + '\n\n\n' + article.workingVersion.md,
-            metadata_content: Object.keys(obj.metadata_content).length
-              ? { ...data.corpus.metadata, ...obj.metadata_content }
-              : article.workingVersion.metadata,
+            yaml_content:
+              index === 0
+                ? toYaml(data.corpus.medatada) +
+                  '\n\n---\n\n' +
+                  article.workingVersion.yaml
+                : obj.yaml_content +
+                  '\n\n---\n\n' +
+                  article.workingVersion.yaml,
             bib_content:
               obj.bib_content + '\n\n---\n\n' + article.workingVersion.bib,
           }),
           {
             md_content: '',
-            metadata_content: {},
+            yaml_content: '',
             bib_content: '',
           }
         )
