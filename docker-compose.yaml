@@ -1,6 +1,6 @@
 services:
   mongodb-stylo:
-    image: mongo:4.4
+    image: mongo:8.0
     container_name: 'mongodb-stylo'
     environment:
       - MONGO_DATA_DIR=/data/db
