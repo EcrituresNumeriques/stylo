@@ -16,12 +16,10 @@
     },
     {
       "matchFileNames": ["front/package.json"],
-      "matchManagers": ["npm"],
       "groupName": "Frontend dependencies"
     },
     {
       "matchFileNames": ["graphql/package.json"],
-      "matchManagers": ["npm"],
       "groupName": "Backend dependencies"
     },
     {
