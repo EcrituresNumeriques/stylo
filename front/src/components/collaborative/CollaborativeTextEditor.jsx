@@ -90,7 +90,7 @@ export default function CollaborativeTextEditor({
         enabled: false,
       },
     }),
-    [websocketStatus]
+    [websocketStatus, collaborativeSessionState]
   )
 
   const handleUpdateArticleStructureAndStats = throttle(
