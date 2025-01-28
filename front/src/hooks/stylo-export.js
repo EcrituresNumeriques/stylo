@@ -2,6 +2,7 @@ import useSWR from 'swr'
 import { applicationConfig } from '../config.js'
 
 const fetcher = (url) => fetch(url).then((response) => response.json())
+
 function postFetcher([url, formData]) {
   const body = new FormData()
 
@@ -66,18 +67,26 @@ export function useStyloExportPreview({
   with_link_citations = false,
 }) {
   const { pandocExportEndpoint } = applicationConfig
-  const previewArgs = {
-    bibliography_style: 'chicagomodified',
-    md_content,
-    yaml_content,
-    bib_content,
-    with_toc,
-    with_nocite,
-    with_link_citations,
-  }
-
   const { data: html, isLoading } = useSWR(
-    () => [`${pandocExportEndpoint}/api/article_preview`, previewArgs],
+    () => {
+      // prevent SWR from running the query
+      // https://swr.vercel.app/docs/conditional-fetching#dependent
+      if (md_content === undefined) {
+        throw new Error('Preview parameters are not yet loaded!')
+      }
+      return [
+        `${pandocExportEndpoint}/api/article_preview`,
+        {
+          bibliography_style: 'chicagomodified',
+          md_content,
+          yaml_content,
+          bib_content,
+          with_toc,
+          with_nocite,
+          with_link_citations,
+        },
+      ]
+    },
     postFetcher,
     { fallbackData: '' }
   )
