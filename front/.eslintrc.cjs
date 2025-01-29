@@ -26,7 +26,7 @@ module.exports = {
   plugins: ['react', 'vitest', 'jsdoc'],
   settings: {
     react: {
-      version: '16.13',
+      version: '18.3',
     },
   },
   globals: {
