@@ -47,4 +47,4 @@ jobs:
         uses: coverallsapp/github-action@v2
         with:
           parallel-finished: true
-          carryforward: 'run-front,run-graphql,run-export'
+          carryforward: 'run-front,run-graphql'
