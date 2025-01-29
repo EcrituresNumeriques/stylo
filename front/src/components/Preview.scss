@@ -2,15 +2,8 @@
 * I add this to html files generated with pandoc.
 */
 
-@media only screen and (max-width: 1000px) {
-  nav {
-    display: none;
-  }
-}
-
 html {
-  font-size: 100%;
-  overflow-y: scroll;
+  font-size: 1rem;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
 }
@@ -18,11 +11,22 @@ html {
 body {
   color: #444;
   font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
-  font-size: 12px;
+  font-size: 0.8em;
   line-height: 1.7;
   padding: 1em;
   margin: auto;
   background: #fefefe;
+}
+
+@media only screen and (min-width: 30rem) {
+  body {
+    font-size: 1em;
+  }
+}
+@media only screen and (min-width: 48rem) {
+  body {
+    font-size: 1.2em;
+  }
 }
 
 body {
@@ -30,17 +34,57 @@ body {
     > section {
       display: grid;
       grid-template-areas:
-        ".      header    ."
-        ".      divider   ."
-        "toc    article   .";
-      gap: 1rem;
+        "header"
+        "toc"
+        "article";
+      gap: 2rem;
+
+      @media only screen and (min-width: 60rem) {
+        & {
+          grid-template-areas:
+            "toc      header"
+            "toc    article";
+          grid-template-columns: 1fr 3fr;
+        }
+      }
 
       > nav {
         grid-area: toc;
+        align-self: start;
+        top: 0;
+
+        @media only screen and (min-width: 60rem) {
+          & {
+            position: sticky;
+          }
+        }
+
+
+        &::before {
+          content: 'Table des matières';
+          font-weight: bold;
+        }
+
+        > ul {
+          padding: 0;
+
+          @media only screen and (min-width: 60rem) {
+            & {
+              overflow-y: auto;
+              max-height: 90vh;
+            }
+          }
+
+
+          li {
+            list-style-type: none;
+            margin-bottom: .2em;
+          }
+        }
       }
 
       > hr {
-        grid-area: divider;
+        display: none;
       }
 
       > header {
@@ -107,7 +151,7 @@ img {
 h1, h2, h3, h4, h5, h6 {
   color: #111;
   line-height: 125%;
-  margin-top: 2em;
+  margin-top: .5em;
   font-weight: normal;
 }
 
@@ -148,10 +192,9 @@ blockquote {
 
 hr {
   display: block;
-  height: 2px;
+  height: .1em;
   border: 0;
-  border-top: 1px solid #aaa;
-  border-bottom: 1px solid #eee;
+  border-top: .1em solid #aaa;
   margin: 1em 0;
   padding: 0;
 }
@@ -260,8 +303,8 @@ figcaption {
 
 table {
   margin-bottom: 2em;
-  border-bottom: 1px solid #ddd;
-  border-right: 1px solid #ddd;
+  border-bottom: .1em solid #ddd;
+  border-right: .1em solid #ddd;
   border-spacing: 0;
   border-collapse: collapse;
 }
@@ -269,14 +312,14 @@ table {
 table th {
   padding: .2em 1em;
   background-color: #eee;
-  border-top: 1px solid #ddd;
-  border-left: 1px solid #ddd;
+  border-top: .1em solid #ddd;
+  border-left: .1em solid #ddd;
 }
 
 table td {
   padding: .2em 1em;
-  border-top: 1px solid #ddd;
-  border-left: 1px solid #ddd;
+  border-top: .1em solid #ddd;
+  border-left: .1em solid #ddd;
   vertical-align: top;
 }
 
@@ -285,16 +328,6 @@ table td {
   text-align: center;
 }
 
-@media only screen and (min-width: 480px) {
-  body {
-    font-size: 14px;
-  }
-}
-@media only screen and (min-width: 768px) {
-  body {
-    font-size: 16px;
-  }
-}
 @media print {
   * {
     background: transparent !important;
@@ -362,33 +395,9 @@ table td {
   }
 }
 
-nav::before {
-  content: 'Table des matières';
-  font-weight: bold;
-  padding-left: 2em;
-}
-
-nav {
-position: fixed;
-top: 0;
-left: 0;
-font-weight: 500;
-padding-top: 3em;
-width: 20%;
-overflow-y: auto;
-height: 100%;
-}
-
-nav li {
-  list-style-type: none;
-  padding-top: 0.8em;
-  line-height: 1.3em;
-
-}
-
 header {
   border: 1px solid rgb(200,200,200);
-  padding:10px;
+  padding: 1em;
   background-color: rgb(240,240,240);
 
 }
@@ -408,12 +417,12 @@ header {
 
 #schema-scholarly-article > span[property=author]{
   font-size: large;
-  padding-top: 20px;
+  padding-top: 1.5em;
   line-height: 2em;
 }
 
 div.resume {
-  margin-top: 10px;
+  margin-top: .5em;
 }
 
 div.resume[lang=en]::before {
@@ -457,7 +466,7 @@ div.resume[lang=it]::before {
       }
 
 div.keywords {
-  margin-top: 10px;
+  margin-top: .5em;
 }
 
 .keywords > div {
@@ -473,7 +482,7 @@ div.keywords {
 }
 
 div.authorKeywords_fr {
-  margin-top: 10px;
+  margin-top: .5em;
 }
 
 div.authorKeywords_fr span::before {
@@ -495,7 +504,7 @@ div.authorKeywords_en span::after {
 }
 
 hr#startArticle {
-  margin-top: 4em;
+  margin: 1em 0;
   height: 1px;
   border-top : 1px solid rgb(200,200,200)
 }
@@ -538,8 +547,8 @@ span.these:hover::before {
   position:relative;
   color: #a91e58;
   font-size: 1em;
-  padding-left:5px;
-  padding-right:5px;
+  padding-left: .25em;
+  padding-right: .25em;
 }
 
 span.these:hover::after {
@@ -547,8 +556,8 @@ span.these:hover::after {
   position:relative;
   color: #a91e58;
   font-size: 1em;
-  padding-left:5px;
-  padding-right:5px;
+  padding-left: .25em;
+  padding-right: .25em;
 }
 
 span.exemple {
@@ -560,8 +569,8 @@ span.exemple:hover::before {
   position:relative;
   color: #b37114;
   font-size: 1em;
-  padding-left:5px;
-  padding-right:5px;
+  padding-left: .25em;
+  padding-right: .25em;
 }
 
 span.exemple:hover::after {
@@ -569,8 +578,8 @@ span.exemple:hover::after {
   position:relative;
   color: #b37114;
   font-size: 1em;
-  padding-left:5px;
-  padding-right:5px;
+  padding-left: .25em;
+  padding-right: .25em;
 }
 
 span.concept {
@@ -582,8 +591,8 @@ span.concept:hover::before {
   position:relative;
   color: #14b371;
   font-size: 1em;
-  padding-left:5px;
-  padding-right:5px;
+  padding-left: .25em;
+  padding-right: .25em;
 }
 
 span.concept:hover::after {
@@ -591,8 +600,8 @@ span.concept:hover::after {
   position:relative;
   color: #14b371;
   font-size: 1em;
-  padding-left:5px;
-  padding-right:5px;
+  padding-left:.25em;
+  padding-right:.25em;
 }
 
 span.definition {
@@ -604,8 +613,8 @@ span.definition:hover::before {
   position:relative;
   color: #1456b3;
   font-size: 1em;
-  padding-left:5px;
-  padding-right:5px;
+  padding-left:.25em;
+  padding-right:.25em;
 }
 
 span.definition:hover::after {
@@ -613,8 +622,8 @@ span.definition:hover::after {
   position:relative;
   color: #1456b3;
   font-size: 1em;
-  padding-left:5px;
-  padding-right:5px;
+  padding-left:.25em;
+  padding-right:.25em;
 }
 
 span.question {
@@ -626,8 +635,8 @@ span.question:hover::before {
   position:relative;
   color: #ff7214;
   font-size: 1em;
-  padding-left:5px;
-  padding-right:5px;
+  padding-left:.25em;
+  padding-right:.25em;
 }
 
 span.question:hover::after {
@@ -635,8 +644,8 @@ span.question:hover::after {
   position:relative;
   color: #ff7214;
   font-size: 1em;
-  padding-left:5px;
-  padding-right:5px;
+  padding-left:.25em;
+  padding-right:.25em;
 }
 
 /*
@@ -660,7 +669,8 @@ span.question:hover::after {
         content: "(" counter(para) ")";
         position: absolute;
         text-align: right;
-        left: -2.5rem;
+        left: -2em;
+        top: calc(1em * 1.7 / 2); /* to match baseline of first line */
         font-size: 0.75rem;
       }
     }
