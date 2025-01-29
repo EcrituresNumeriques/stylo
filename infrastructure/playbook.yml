@@ -132,6 +132,8 @@
         name: docker-compose-stylo
         state: restarted
         daemon_reload: true
+      environment:
+        NODE_OPTIONS: "{{ node_options_flag }}"
 
   handlers:
     - name: reload nginx

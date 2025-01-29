@@ -17,8 +17,8 @@ Plus d'informations sur [la documentation](http://stylo-doc.ecrituresnumeriques.
 
 # Pré-requis
 
-- Node.js v18+
-- MongoDB
+- Node.js v22+
+- MongoDB 4.4
 
 ## Sous MacOS
 
