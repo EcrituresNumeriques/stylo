@@ -164,13 +164,7 @@ root.render(
                   <Credentials />
                 </PrivateRoute>
                 {/* Annotate a Book */}
-                <Route
-                  path={[
-                    '/workspaces/:workspaceId/books/:id/preview',
-                    '/books/:id/preview',
-                  ]}
-                  exact
-                >
+                <Route path="/books/:id/preview" exact>
                   <Preview strategy="corpus" />
                 </Route>
                 {/* Annotate an article or its version */}

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { LifeBuoy } from 'react-feather'
 import { useSelector } from 'react-redux'
 import { NavLink, Route, Switch } from 'react-router-dom'
@@ -11,12 +11,10 @@ import styles from './header.module.scss'
 import LanguagesMenu from './header/LanguagesMenu.jsx'
 import UserMenu from './header/UserMenu.jsx'
 
-function Header() {
+export default function Header() {
   const activeWorkspace = useActiveWorkspace()
-  const activeWorkspaceId = useMemo(
-    () => activeWorkspace?._id,
-    [activeWorkspace]
-  )
+  const activeWorkspaceId = activeWorkspace?._id
+
   const connected = useSelector((state) => state.loggedIn)
   const { t } = useTranslation()
 
@@ -24,16 +22,16 @@ function Header() {
     <Switch>
       <Route path="*/preview" />
       <Route path="*">
-        <header className={styles.headerContainer}>
+        <header className={styles.headerContainer} role="banner">
           <section className={styles.header}>
             <h1 className={styles.logo}>
-              <NavLink to="/">
-                <img src={logoContent} alt="Stylo" title="Stylo" />
+              <NavLink to="/" rel="home">
+                <img src={logoContent} alt="Stylo" />
               </NavLink>
             </h1>
             {connected && (
               <>
-                <nav>
+                <nav role="navigation">
                   <ul className={styles.menuLinks}>
                     <li>
                       <NavLink
@@ -76,7 +74,7 @@ function Header() {
             )}
             {!connected && (
               <>
-                <nav>
+                <nav role="navigation">
                   <ul className={styles.menuLinks}>
                     <li>
                       <NavLink to="/">
@@ -101,5 +99,3 @@ function Header() {
     </Switch>
   )
 }
-
-export default Header

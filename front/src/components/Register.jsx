@@ -94,10 +94,26 @@ export default function Register() {
         <fieldset>
           <legend>{t('credentials.register.optionalFields')}</legend>
 
-          <Field name="displayName" label={t('user.account.displayName')} />
-          <Field name="firstName" label={t('user.account.firstName')} />
-          <Field name="lastName" label={t('user.account.lastName')} />
-          <Field name="institution" label={t('user.account.institution')} />
+          <Field
+            name="displayName"
+            autoComplete="nickname"
+            label={t('user.account.displayName')}
+          />
+          <Field
+            name="firstName"
+            autoComplete="given-name"
+            label={t('user.account.firstName')}
+          />
+          <Field
+            name="lastName"
+            autoComplete="family-name"
+            label={t('user.account.lastName')}
+          />
+          <Field
+            name="institution"
+            autoComplete="organization"
+            label={t('user.account.institution')}
+          />
         </fieldset>
 
         <ul className={styles.actions}>
