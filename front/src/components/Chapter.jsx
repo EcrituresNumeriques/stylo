@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Check, Edit3 } from 'react-feather'
 
-import { useGraphQL } from '../helpers/graphQL'
+import { useGraphQLClient } from '../helpers/graphQL'
 import { renameArticle as query } from './Article.graphql'
 import Button from './Button'
 import buttonStyles from './button.module.scss'
@@ -25,7 +25,7 @@ export default function Chapter({ article }) {
   const [title, setTitle] = useState(article.title)
   const [tempTitle, setTempTitle] = useState(article.title)
   const activeUser = useCurrentUser()
-  const runQuery = useGraphQL()
+  const runQuery = useGraphQLClient()
 
   const rename = async (e) => {
     e.preventDefault()

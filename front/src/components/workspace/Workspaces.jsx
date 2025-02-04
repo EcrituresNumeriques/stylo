@@ -10,7 +10,7 @@ import Field from '../../components/Field.jsx'
 import WorkspaceItem from '../../components/workspace/WorkspaceItem.jsx'
 
 import { CurrentUserContext } from '../../contexts/CurrentUser'
-import { useGraphQL } from '../../helpers/graphQL.js'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { useWorkspaces } from '../../hooks/workspace.js'
 import Loading from '../Loading.jsx'
 import CreateWorkspaceModal from './CreateWorkspaceModal.jsx'
@@ -30,7 +30,7 @@ export default function Workspaces() {
     personal: true,
     members: [],
   })
-  const runQuery = useGraphQL()
+  const runQuery = useGraphQLClient()
 
   useEffect(() => {
     ;(async () => {

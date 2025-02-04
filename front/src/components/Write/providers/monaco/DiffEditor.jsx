@@ -4,7 +4,7 @@ import CompareSelect from './CompareSelect'
 import styles from './DiffEditor.module.scss'
 import * as monaco from 'monaco-editor'
 import { DiffEditor, loader } from '@monaco-editor/react'
-import { useGraphQL } from '../../../../helpers/graphQL'
+import { useGraphQLClient } from '../../../../helpers/graphQL'
 import { compareVersion as query } from '../../Write.graphql'
 import { defineFlippedDiffTheme } from './support'
 loader.config({ monaco })
@@ -19,7 +19,7 @@ export default function MonacoDiffEditor({
   onTextUpdate,
 }) {
   const [modifiedText, setModifiedText] = useState('')
-  const runQuery = useGraphQL()
+  const runQuery = useGraphQLClient()
 
   const handleEditorDidMount = useCallback((editor, monaco) => {
     defineFlippedDiffTheme(monaco)

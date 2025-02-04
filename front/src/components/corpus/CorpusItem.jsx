@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { useGraphQL } from '../../helpers/graphQL.js'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
 import Button from '../Button.jsx'
 import buttonStyles from '../button.module.scss'
 import Export from '../Export.jsx'
@@ -47,7 +47,7 @@ export default function CorpusItem({ corpus }) {
     bindings: editCorpusBindings,
   } = useModal()
 
-  const runQuery = useGraphQL()
+  const runQuery = useGraphQLClient()
   const corpusId = useMemo(() => corpus._id, [corpus])
 
   const handleCorpusUpdated = useCallback(() => {

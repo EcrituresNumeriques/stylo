@@ -21,7 +21,7 @@ import ErrorMessageCard from '../ErrorMessageCard.jsx'
 import styles from './write.module.scss'
 
 import { useActiveUserId } from '../../hooks/user'
-import { useGraphQL } from '../../helpers/graphQL'
+import { useGraphQLClient } from '../../helpers/graphQL'
 import { getEditableArticle as query, stopSoloSession } from './Write.graphql'
 
 import ArticleEditorMenu from './ArticleEditorMenu.jsx'
@@ -59,7 +59,7 @@ export default function Write() {
   )
   const userId = useActiveUserId()
   const dispatch = useDispatch()
-  const runQuery = useGraphQL()
+  const runQuery = useGraphQLClient()
   const routeMatch = useRouteMatch()
   const [collaborativeSessionActive, setCollaborativeSessionActive] =
     useState(false)

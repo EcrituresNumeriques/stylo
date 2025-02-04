@@ -5,7 +5,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { Helmet } from 'react-helmet'
 
-import { useGraphQL } from '../helpers/graphQL'
+import { useGraphQLClient } from '../helpers/graphQL'
 import { updateUser } from './Credentials.graphql'
 import etv from '../helpers/eventTargetValue'
 import styles from './credentials.module.scss'
@@ -17,7 +17,7 @@ import TimeAgo from './TimeAgo.jsx'
 export default function UserInfos() {
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const runQuery = useGraphQL()
+  const runQuery = useGraphQLClient()
   const activeUser = useSelector((state) => state.activeUser, shallowEqual)
   const zoteroToken = useSelector((state) => state.activeUser.zoteroToken)
   const sessionToken = useSelector((state) => state.sessionToken)

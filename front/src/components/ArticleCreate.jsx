@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
-import { useGraphQL } from '../helpers/graphQL'
+import { useGraphQLClient } from '../helpers/graphQL'
 import { createArticle } from './Articles.graphql'
 import Field from './Field.jsx'
 import { getTags } from './Tag.graphql'
@@ -30,7 +30,7 @@ export default function ArticleCreate({ onSubmit, workspaceId = null }) {
   const { setToast } = useToasts()
 
   const [tags, setTags] = useState([])
-  const runQuery = useGraphQL()
+  const runQuery = useGraphQLClient()
   const workspaces = useSelector((state) => state.activeUser.workspaces)
 
   useEffect(() => {

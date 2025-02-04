@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 import { updateMetadata } from './Corpus.graphql'
-import { useGraphQL } from '../../helpers/graphQL.js'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
 import MetadataForm from '../metadata/MetadataForm.jsx'
 import corpusMetadataSchema from '../../schemas/corpus-journal-metadata.schema.json'
 import corpusUiSchema from '../../schemas/corpus-journal-ui-schema.json'
@@ -16,7 +16,7 @@ import Select from '../Select.jsx'
 export default function CorpusMetadataModal({ corpusId, initialValue }) {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const runQuery = useGraphQL()
+  const runQuery = useGraphQLClient()
   const [corpusMetadata, setCorpusMetadata] = useState(initialValue)
   const {
     visible: editMetadataVisible,

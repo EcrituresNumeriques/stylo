@@ -15,7 +15,7 @@ import Export from './Export.jsx'
 import Chapter from './Chapter.jsx'
 
 import etv from '../helpers/eventTargetValue.js'
-import { useGraphQL } from '../helpers/graphQL.js'
+import { useGraphQLClient } from '../helpers/graphQL.js'
 import { updateTag as query } from './Corpus.graphql'
 
 import styles from './articles.module.scss'
@@ -38,7 +38,7 @@ export default function Book({ name: tagName, _id, updatedAt, articles }) {
   const [isRenaming, setIsRenaming] = useState(false)
   const { t } = useTranslation()
 
-  const runQuery = useGraphQL()
+  const runQuery = useGraphQLClient()
 
   const renameBook = useCallback(
     async (event) => {

@@ -1,7 +1,7 @@
 import { Button, Textarea, useInput, useToasts } from '@geist-ui/core'
 import React, { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useGraphQL } from '../../helpers/graphQL.js'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
 
 import Field from '../Field.jsx'
 
@@ -17,7 +17,7 @@ export default function CorpusUpdate({ corpus, onSubmit }) {
     corpus.description
   )
   const titleInputRef = useRef()
-  const runQuery = useGraphQL()
+  const runQuery = useGraphQLClient()
 
   useEffect(() => {
     if (titleInputRef.current !== undefined) {

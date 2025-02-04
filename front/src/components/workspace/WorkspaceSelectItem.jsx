@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 
 import { removeArticle, addArticle } from './Workspaces.graphql'
 import styles from './WorkspaceSelectItem.module.scss'
-import { useGraphQL } from '../../helpers/graphQL.js'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
 
 export default function WorkspaceSelectItem({
   articleId,
@@ -15,7 +15,7 @@ export default function WorkspaceSelectItem({
   name,
   onChange,
 }) {
-  const runQuery = useGraphQL()
+  const runQuery = useGraphQLClient()
   const activeUser = useSelector((state) => state.activeUser)
   const toggleWorkspaceArticle = useCallback(
     async (event) => {

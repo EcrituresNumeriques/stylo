@@ -10,7 +10,7 @@ import { shallowEqual, useSelector } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import { CurrentUserContext } from '../../contexts/CurrentUser'
 
-import { useGraphQL } from '../../helpers/graphQL'
+import { useGraphQLClient } from '../../helpers/graphQL'
 import { useActiveWorkspace } from '../../hooks/workspace.js'
 import styles from './corpus.module.scss'
 import CorpusCreate from './CorpusCreate.jsx'
@@ -49,7 +49,7 @@ export default function Corpus() {
     bindings: createCorpusModalBinding,
   } = useModal()
 
-  const runQuery = useGraphQL()
+  const runQuery = useGraphQLClient()
 
   const handleCreateNewCorpus = useCallback(() => {
     setCreateCorpusVisible(false)

@@ -60,7 +60,7 @@ export default async function askGraphQL(
   return json.data
 }
 
-export function useGraphQL() {
+export function useGraphQLClient() {
   const sessionToken = useSelector((state) => state.sessionToken)
   return runQuery.bind(null, { sessionToken })
 }
