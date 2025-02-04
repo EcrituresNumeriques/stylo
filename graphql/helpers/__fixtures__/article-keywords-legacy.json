@@ -1,0 +1,159 @@
+{
+  "@version" : "1.0",
+  "abstract" : [
+    {
+      "lang" : "en",
+      "text" : "Wandering through the construction sites of the complete reconstruction of the\nTurcot highway interchange between 2015 and 2017, two artists began a creative process inspired by the contemplation and interpretation of unusual landscapes. As residents of the area, their continued exposure to the\nmonumentality of these structures and the intensity of its soundscape revealed how we come to endure sensory experiences, however violent, of our living environments. (DB and CM)",
+      "text_f" : "Wandering through the construction sites of the complete reconstruction of the\nTurcot highway interchange between 2015 and 2017, two artists began a creative process inspired by the contemplation and interpretation of unusual landscapes. As residents of the area, their continued exposure to the\nmonumentality of these structures and the intensity of its soundscape revealed how we come to endure sensory experiences, however violent, of our living environments. (DB and CM)"
+    },
+    {
+      "lang" : "fr",
+      "text" : "Errant à travers les chantiers de la reconstruction complète de\nl’échangeur Turcot de 2015 à 2017, deux artistes y ont amorcé leur démarche créative basée sur la contemplation et l’interprétation de paysages. En tant que résidents du secteur, la réalisation de la\nmonumentalité des structures et de l’intensité de l’environnement sonore leur ont révélé notre accoutumance aux expériences sensorielles même violentes de nos milieux. (DB et CM)",
+      "text_f" : "Errant à travers les chantiers de la reconstruction complète de\nl’échangeur Turcot de 2015 à 2017, deux artistes y ont amorcé leur démarche créative basée sur la contemplation et l’interprétation de paysages. En tant que résidents du secteur, la réalisation de la\nmonumentalité des structures et de l’intensité de l’environnement sonore leur ont révélé notre accoutumance aux expériences sensorielles même violentes de nos milieux. (DB et CM)"
+    }
+  ],
+  "acknowledgements" : null,
+  "articleslies" : [
+    {
+      "auteur" : "",
+      "titre" : "",
+      "url" : ""
+    }
+  ],
+  "authors" : [
+    {
+      "forname" : "Charles",
+      "orcid" : "0000-0001-6839-0234",
+      "surname" : "Montambault"
+    },
+    {
+      "forname" : "Daniel",
+      "orcid" : " 0000-0001-6597-0938",
+      "surname" : "Boisclair"
+    }
+  ],
+  "bibliography" : "SP1620.bib",
+  "controlledKeywords" : [
+    {
+      "idRameau" : "",
+      "label" : "Paysage sonore (musique)",
+      "uriRameau" : "http://data.bnf.fr/ark:/12148/cb166350047"
+    },
+    {
+      "idRameau" : "",
+      "label" : "Phénoménologie",
+      "uriRameau" : "http://data.bnf.fr/ark:/12148/cb11933094c"
+    },
+    {
+      "idRameau" : "",
+      "label" : "Entropie",
+      "uriRameau" : "http://data.bnf.fr/ark:/12148/cb12099111d"
+    },
+    {
+      "idRameau" : "",
+      "label" : "Brutalisme (architecture)",
+      "uriRameau" : "http://data.bnf.fr/ark:/12148/cb121584956"
+    },
+    {
+      "idRameau" : "",
+      "label" : "Ambiance",
+      "uriRameau" : "http://data.culture.fr/thesaurus/resource/ark:/67717/T990-60"
+    },
+    {
+      "idRameau" : "",
+      "label" : "Contemplation",
+      "uriRameau" : "http://data.bnf.fr/ark:/12148/cb13162673b"
+    },
+    {
+      "idRameau" : "",
+      "label" : "Autoroute",
+      "uriRameau" : "http://data.culture.fr/thesaurus/resource/ark:/67717/T990-279"
+    }
+  ],
+  "date" : "2025/02/03",
+  "day" : "03",
+  "diffnum" : "Érudit",
+  "director" : [
+    {
+      "foaf" : "",
+      "forname" : "Gérard",
+      "gender" : "",
+      "isni" : "",
+      "orcid" : "0000-0002-6651-1650",
+      "surname" : "Wormser",
+      "viaf" : ""
+    }
+  ],
+  "dossier" : [
+    {
+      "id" : "1610",
+      "title" : "La route et ses bas-côtés",
+      "title_f" : "La route et ses bas-côtés"
+    }
+  ],
+  "funder" : {
+    "funder_id" : null,
+    "funder_name" : null
+  },
+  "id" : "SP1620",
+  "issnnum" : "2104-3272",
+  "issueDirectors" : [
+    {
+      "affiliations" : "Université de Montréal, Université Paris Cité",
+      "email" : "eugenie.matthey-jonais@umontreal.ca",
+      "forname" : "Eugénie",
+      "orcid" : "0000-0001-6533-4210",
+      "surname" : "Matthey-Jonais"
+    }
+  ],
+  "journal" : "Sens public",
+  "journal_email" : null,
+  "journal_issue" : null,
+  "keywords" : [
+    {
+      "lang" : "fr",
+      "list" : "Autoroute, Ambiance, Contemplation, Entropie, Paysage sonore, Brutalisme, Phénoménologie, Installation",
+      "list_f" : "Autoroute, Ambiance, Contemplation, Entropie, Paysage sonore, Brutalisme, Phénoménologie, Installation"
+    },
+    {
+      "lang" : "en",
+      "list" : "Highway, Ambiance, Contemplation, Entropy, Soundscape, Brutalism, Phenomenology, Installation",
+      "list_f" : "Highway, Ambiance, Contemplation, Entropy, Soundscape, Brutalism, Phenomenology, Installation"
+    }
+  ],
+  "lang" : "fr",
+  "link-citations" : true,
+  "logocredits" : "Captation vidéo sous l'ancien échangeur Turcot pour Les Nouveaux Monuments, 2016.",
+  "month" : "02",
+  "nocite" : "@*",
+  "prod" : "Sens public",
+  "prodnum" : "Sens public",
+  "publisher" : "Département des littératures de langue française",
+  "rights" : "Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)",
+  "subtitle" : "Médier par le sensible l'influence préconsciente de l'échangeur Turcot en 2016-2017",
+  "subtitle_f" : "Médier par le sensible l'influence préconsciente de l'échangeur Turcot en 2016-2017",
+  "title" : "Les Nouveaux Monuments : l'ambiant autoroutier",
+  "title_f" : "Les Nouveaux Monuments : l'ambiant autoroutier",
+  "translatedTitle" : [
+    {
+      "lang" : "en",
+      "text_f" : null
+    }
+  ],
+  "translationOf" : [
+    null
+  ],
+  "translations" : [
+    {
+      "lang" : "",
+      "titre" : "",
+      "url" : ""
+    }
+  ],
+  "type" : "article",
+  "typeArticle" : [
+    "Création"
+  ],
+  "url_article" : "/articles/1620",
+  "year" : "2025"
+}
