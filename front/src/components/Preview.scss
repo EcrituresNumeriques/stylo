@@ -94,6 +94,14 @@ body {
       > article {
         grid-area: article;
         max-width: 42em;
+
+        ol li {
+          list-style: decimal;
+        }
+
+        ul li {
+          list-style: disc;
+        }
       }
     }
   }
@@ -656,7 +664,7 @@ span.question:hover::after {
   counter-reset: para;
 
   section:not(#footnotes, #bibliographie) {
-    p, pre {
+    p, pre:not(.sourceCode) {
       counter-increment: para;
       position: relative;
 
@@ -669,8 +677,8 @@ span.question:hover::after {
         content: "(" counter(para) ")";
         position: absolute;
         text-align: right;
-        left: -2em;
-        top: calc(1em * 1.7 / 2); /* to match baseline of first line */
+        left: -2.8em;
+        top: calc(1em * 1.7 / 3); /* to match baseline of first line */
         font-size: 0.75rem;
       }
     }
@@ -679,4 +687,9 @@ span.question:hover::after {
 
 blockquote > p::before {
   content: none;
+}
+
+#footnotes ol {
+  padding-left: 0;
+  list-style-position: inside;
 }
