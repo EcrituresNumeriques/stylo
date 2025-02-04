@@ -46,7 +46,7 @@ module.exports = {
     'jsdoc/require-param-description': ['off'],
     'jsdoc/require-returns-description': ['off'],
     'jsdoc/require-property-description': ['off'],
-    'react/prop-types': ['warn'],
+    'react/prop-types': 'off',
     'no-unused-vars': ['warn'],
     'jsonc/indent': ['error', 2],
     // 'jsonc/sort-keys': ['warn'],

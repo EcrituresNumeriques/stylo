@@ -2,7 +2,6 @@ import { applyMiddleware, compose, createStore } from 'redux'
 import * as Sentry from '@sentry/react'
 import { toEntries } from './helpers/bibtex'
 import ArticleService from './services/ArticleService'
-import WorkspaceService from './services/WorkspaceService.js'
 import { applicationConfig } from './config.js'
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer()
@@ -118,7 +117,6 @@ function createRootReducer(state) {
 
     UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
 
-    SET_WORKSPACES: setWorkspaces,
     SET_ACTIVE_WORKSPACE: setActiveWorkspace,
 
     UPDATE_SELECTED_TAG: updateSelectedTag,
@@ -133,29 +131,6 @@ function createRootReducer(state) {
 const createNewArticleVersion = (store) => {
   return (next) => {
     return async (action) => {
-      if (action.type === 'CREATE_WORKSPACE') {
-        const { activeUser, sessionToken } = store.getState()
-        const workspaces = activeUser.workspaces
-        const workspaceService = new WorkspaceService(sessionToken)
-        const response = await workspaceService.create(action.data)
-        store.dispatch({
-          type: 'SET_WORKSPACES',
-          workspaces: [response.createWorkspace, ...workspaces],
-        })
-        return next(action)
-      }
-      if (action.type === 'LEAVE_WORKSPACE') {
-        const { activeUser, sessionToken } = store.getState()
-        const workspaces = activeUser.workspaces
-        const workspaceService = new WorkspaceService(sessionToken)
-        const workspaceId = action.data.workspaceId
-        await workspaceService.leave(workspaceId)
-        store.dispatch({
-          type: 'SET_WORKSPACES',
-          workspaces: workspaces.filter((w) => w._id !== workspaceId),
-        })
-        return next(action)
-      }
       if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
         const { activeUser, sessionToken, userPreferences } = store.getState()
         const userId = userPreferences.currentUser ?? activeUser._id
@@ -511,16 +486,6 @@ function updateEditorCursorPosition(state, { lineNumber, column }) {
     editorCursorPosition: {
       lineNumber,
       column,
-    },
-  }
-}
-
-function setWorkspaces(state, { workspaces }) {
-  return {
-    ...state,
-    activeUser: {
-      ...state.activeUser,
-      workspaces,
     },
   }
 }

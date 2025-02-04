@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 
-import { removeArticle, addArticle } from './WorkspaceArticle.graphql'
+import { removeArticle, addArticle } from './Workspaces.graphql'
 import styles from './WorkspaceSelectItem.module.scss'
 import { useGraphQL } from '../../helpers/graphQL.js'
 

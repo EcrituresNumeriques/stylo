@@ -29,7 +29,7 @@ export default function MonacoDiffEditor({
     editor.getOriginalEditor().setValue(text)
 
     if (readOnly === false) {
-      // We emulate StandaloneDitor.onUpdate props
+      // We emulate StandaloneEditor.onUpdate props
       // https://github.com/suren-atoyan/monaco-react/blob/5b9a8e517065af5af2abf9e8e640b23b649b6178/src/Editor/Editor.js#L168-L175
       editor.getOriginalEditor().onDidChangeModelContent(() => {
         onTextUpdate(editor.getOriginalEditor().getValue())
