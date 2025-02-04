@@ -4,8 +4,10 @@ import { Search } from 'react-feather'
 import buttonStyles from '../components/button.module.scss'
 import Field from '../components/Field.jsx'
 import Select from '../components/Select.jsx'
+import Sidebar from '../components/Sidebar.jsx'
 import ButtonStory from './Button.story.jsx'
 import FormStory from './Form.story.jsx'
+import SidebarStory from './Sidebar.story.jsx'
 
 import styles from './story.module.scss'
 
@@ -35,6 +37,9 @@ export default function Story() {
             <option>Reblochon</option>
             <option>St Marcellin</option>
           </Select>
+        </Tabs.Item>
+        <Tabs.Item label="sidebar" value="4">
+          <SidebarStory />
         </Tabs.Item>
       </Tabs>
     </div>
