@@ -16,7 +16,7 @@ import Select from '../Select.jsx'
 export default function CorpusMetadataModal({ corpusId, initialValue }) {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
   const [corpusMetadata, setCorpusMetadata] = useState(initialValue)
   const {
     visible: editMetadataVisible,
@@ -25,7 +25,7 @@ export default function CorpusMetadataModal({ corpusId, initialValue }) {
   } = useModal()
 
   const handleUpdateMetadata = useCallback(async () => {
-    await runQuery({
+    await query({
       query: updateMetadata,
       variables: {
         corpusId: corpusId,
@@ -37,7 +37,7 @@ export default function CorpusMetadataModal({ corpusId, initialValue }) {
       data: { corpusId, date: new Date() },
     })
     setEditMetadataVisible(false)
-  }, [corpusId, dispatch, runQuery, updateMetadata, corpusId, corpusMetadata])
+  }, [corpusId, dispatch, query, updateMetadata, corpusId, corpusMetadata])
 
   const handleMetadataUpdated = useCallback(
     (metadata) => {

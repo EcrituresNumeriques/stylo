@@ -38,7 +38,7 @@ export default function Book({ name: tagName, _id, updatedAt, articles }) {
   const [isRenaming, setIsRenaming] = useState(false)
   const { t } = useTranslation()
 
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
 
   const renameBook = useCallback(
     async (event) => {
@@ -48,7 +48,7 @@ export default function Book({ name: tagName, _id, updatedAt, articles }) {
         tag: _id,
         name: tempName,
       }
-      const newTag = await runQuery({ query, variables })
+      const newTag = await query({ query, variables })
       setName(newTag.updateTag.name)
       setIsRenaming(false)
     },

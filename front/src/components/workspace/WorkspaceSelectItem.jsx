@@ -15,14 +15,14 @@ export default function WorkspaceSelectItem({
   name,
   onChange,
 }) {
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
   const activeUser = useSelector((state) => state.activeUser)
   const toggleWorkspaceArticle = useCallback(
     async (event) => {
       event.preventDefault()
       const [id, checked] = [event.target.value, event.target.checked]
       const query = checked ? addArticle : removeArticle
-      await runQuery({
+      await query({
         query,
         variables: { articleId: articleId, workspaceId: id },
       })

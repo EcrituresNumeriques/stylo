@@ -17,7 +17,7 @@ import TimeAgo from './TimeAgo.jsx'
 export default function UserInfos() {
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
   const activeUser = useSelector((state) => state.activeUser, shallowEqual)
   const zoteroToken = useSelector((state) => state.activeUser.zoteroToken)
   const sessionToken = useSelector((state) => state.sessionToken)
@@ -44,7 +44,7 @@ export default function UserInfos() {
     event.preventDefault()
 
     const variables = { user: activeUser._id, details: { zoteroToken: null } }
-    await runQuery({ query: updateUser, variables })
+    await query({ query: updateUser, variables })
     clearZoteroToken()
     setIsSaving(false)
   }, [])
@@ -57,7 +57,7 @@ export default function UserInfos() {
         user: activeUser._id,
         details: { displayName, firstName, lastName, institution },
       }
-      const { updateUser: userDetails } = await runQuery({
+      const { updateUser: userDetails } = await query({
         query: updateUser,
         variables,
       })

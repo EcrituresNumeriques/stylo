@@ -25,7 +25,7 @@ export default function Chapter({ article }) {
   const [title, setTitle] = useState(article.title)
   const [tempTitle, setTempTitle] = useState(article.title)
   const activeUser = useCurrentUser()
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
 
   const rename = async (e) => {
     e.preventDefault()
@@ -34,7 +34,7 @@ export default function Chapter({ article }) {
       article: articleId,
       title: tempTitle,
     }
-    await runQuery({ query, variables })
+    await query({ query, variables })
     setTitle(tempTitle)
     setRenaming(false)
   }

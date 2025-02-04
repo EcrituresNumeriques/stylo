@@ -19,7 +19,7 @@ export default function MonacoDiffEditor({
   onTextUpdate,
 }) {
   const [modifiedText, setModifiedText] = useState('')
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
 
   const handleEditorDidMount = useCallback((editor, monaco) => {
     defineFlippedDiffTheme(monaco)
@@ -38,7 +38,7 @@ export default function MonacoDiffEditor({
   }, [])
 
   useEffect(() => {
-    runQuery({
+    query({
       query,
       variables: {
         article: articleId,

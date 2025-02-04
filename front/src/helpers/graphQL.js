@@ -21,11 +21,13 @@ async function getErrorResponse(response) {
   }
 }
 
-async function askGraphQL(
-  payload,
-  action = 'fetching from the server',
-  sessionToken = null
-) {
+/**
+ * @param {string} sessionToken
+ * @param {string} query
+ * @param {{[string: key]: value}|undefined} variables
+ * @returns {Promise<string|object>}
+ */
+async function executeRequest({ sessionToken, query, variables }) {
   const response = await fetch(applicationConfig.graphqlEndpoint, {
     method: 'POST',
     mode: 'cors',
@@ -36,13 +38,16 @@ async function askGraphQL(
       // Authorization header is provided only when we have a token
       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {}),
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({
+      query,
+      variables,
+    }),
   })
 
   if (!response.ok) {
     const errorResponse = await getErrorResponse(response)
     console.error(
-      `Something wrong happened during: ${action} => ${response.status}, ${
+      `Something wrong happened during => ${response.status}, ${
         response.statusText
       }: ${JSON.stringify(errorResponse)}`
     )
@@ -63,25 +68,19 @@ async function askGraphQL(
 export function useGraphQLClient() {
   const sessionToken = useSelector((state) => state.sessionToken)
   return {
-    query: (query, variables) => runQuery({ query, variables, sessionToken }),
+    query: (query, variables) =>
+      executeQuery({ query, variables, sessionToken }),
   }
 }
 
 /**
- * @typedef {Object} QueryParameters
- * @property {{
- *   sessionToken: string,
- *   query: DocumentNode|string,
- *   variables: {[string: key]: value}
- * }}
- */
-
-/**
- * @param {QueryParameters} queryParameters
+ *
+ * @param {string} sessionToken
+ * @param {DocumentNode|string} queryOrAST
+ * @param {{[string: key]: value}|undefined} variables
  * @returns {Promise<string|object>}
  */
-export function runQuery({ sessionToken, query: queryOrAST, variables }) {
+export function executeQuery({ sessionToken, query: queryOrAST, variables }) {
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
-
-  return askGraphQL({ query, variables }, null, sessionToken)
+  return executeRequest({ query, variables, sessionToken })
 }

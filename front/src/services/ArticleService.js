@@ -1,4 +1,4 @@
-import { runQuery } from '../helpers/graphQL.js'
+import { executeQuery } from '../helpers/graphQL.js'
 
 import { updateWorkingVersion, createVersion } from './ArticleService.graphql'
 
@@ -12,7 +12,7 @@ export default class ArticleService {
   async saveText(md) {
     const { sessionToken } = this
 
-    return runQuery(
+    return executeQuery(
       { sessionToken },
       {
         query: updateWorkingVersion,
@@ -28,7 +28,7 @@ export default class ArticleService {
   async saveBibliography(bib) {
     const { sessionToken } = this
 
-    return runQuery(
+    return executeQuery(
       { sessionToken },
       {
         query: updateWorkingVersion,
@@ -44,7 +44,7 @@ export default class ArticleService {
   async saveMetadata(metadata) {
     const { sessionToken } = this
 
-    return runQuery(
+    return executeQuery(
       { sessionToken },
       {
         query: updateWorkingVersion,
@@ -60,7 +60,7 @@ export default class ArticleService {
   async createNewVersion(major = false, message = '') {
     const { sessionToken } = this
 
-    return await runQuery(
+    return await executeQuery(
       { sessionToken },
       {
         query: createVersion,

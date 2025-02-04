@@ -49,7 +49,7 @@ export default function Corpus() {
     bindings: createCorpusModalBinding,
   } = useModal()
 
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
 
   const handleCreateNewCorpus = useCallback(() => {
     setCreateCorpusVisible(false)
@@ -61,7 +61,7 @@ export default function Corpus() {
         const variables = activeWorkspaceId
           ? { filter: { workspaceId: activeWorkspaceId } }
           : {}
-        const data = await runQuery({ query: getCorpus, variables })
+        const data = await query({ query: getCorpus, variables })
         setCorpus(data.corpus)
         setIsLoading(false)
       } catch (err) {

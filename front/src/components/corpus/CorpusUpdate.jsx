@@ -17,7 +17,7 @@ export default function CorpusUpdate({ corpus, onSubmit }) {
     corpus.description
   )
   const titleInputRef = useRef()
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
 
   useEffect(() => {
     if (titleInputRef.current !== undefined) {
@@ -29,7 +29,7 @@ export default function CorpusUpdate({ corpus, onSubmit }) {
     async (event) => {
       try {
         event.preventDefault()
-        await runQuery({
+        await query({
           query: updateCorpus,
           variables: {
             corpusId: corpus._id,

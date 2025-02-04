@@ -1,9 +1,9 @@
 import { useDispatch } from 'react-redux'
-import { runQuery, useGraphQLClient } from './graphQL.js'
+import { executeQuery, useGraphQLClient } from './graphQL.js'
 import { getFullUserProfile as getUserProfileQuery } from '../components/Credentials.graphql'
 
 export function getUserProfile({ sessionToken }) {
-  return runQuery({ sessionToken }, { query })
+  return executeQuery({ sessionToken, query: getUserProfileQuery })
 }
 
 export function useProfile() {

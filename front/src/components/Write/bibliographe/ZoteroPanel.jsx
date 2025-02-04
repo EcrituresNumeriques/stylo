@@ -40,7 +40,7 @@ export default function ZoteroPanel({
   const [zoteroCollections, setZoteroCollections] = useState([])
 
   const [isSaving, setSaving] = useState(false)
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
   const refreshProfile = useProfile()
 
   const handleZoteroLinkChange = useCallback(
@@ -79,7 +79,7 @@ export default function ZoteroPanel({
           user: userId,
           article: articleId,
         }
-        await runQuery({ query, variables })
+        await query({ query, variables })
       } catch (err) {
         alert(err)
       }

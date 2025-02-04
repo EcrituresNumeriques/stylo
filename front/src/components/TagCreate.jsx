@@ -20,7 +20,7 @@ export default function TagCreate() {
   const { state: color, bindings: colorBindings } = useInput(randomColor())
 
   const activeUser = useCurrentUser()
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
 
   const variables = {
     user: activeUser._id,
@@ -34,7 +34,7 @@ export default function TagCreate() {
       event.preventDefault()
       ;(async () => {
         try {
-          const result = await runQuery({
+          const result = await query({
             query: createTag,
             variables,
           })

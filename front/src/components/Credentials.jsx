@@ -19,7 +19,7 @@ export default function Credentials() {
   const hasExistingPassword = useSelector((state) =>
     state.activeUser.authTypes.includes('local')
   )
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
   const { t } = useTranslation()
 
   const canSubmit = useMemo(() => {
@@ -39,7 +39,7 @@ export default function Credentials() {
         new: password,
         user: userId,
       }
-      await runQuery({ query, variables })
+      await query({ query, variables })
       setPassword('')
       setPasswordO('')
       setPasswordC('')

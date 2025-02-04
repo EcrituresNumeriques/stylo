@@ -47,7 +47,7 @@ export default function CorpusItem({ corpus }) {
     bindings: editCorpusBindings,
   } = useModal()
 
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
   const corpusId = useMemo(() => corpus._id, [corpus])
 
   const handleCorpusUpdated = useCallback(() => {
@@ -60,7 +60,7 @@ export default function CorpusItem({ corpus }) {
 
   const handleDeleteCorpus = useCallback(async () => {
     try {
-      await runQuery({ query: deleteCorpus, variables: { corpusId } })
+      await query({ query: deleteCorpus, variables: { corpusId } })
       dispatch({ type: 'SET_LATEST_CORPUS_DELETED', data: { corpusId } })
       setToast({
         text: t('corpus.delete.toastSuccess'),

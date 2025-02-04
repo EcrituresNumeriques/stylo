@@ -18,14 +18,14 @@ export default function Register() {
   const passwordRef = useRef()
   const passwordConfirmationRef = useRef()
   const history = useHistory()
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
 
   const handleFormSubmit = useCallback(async (event) => {
     event.preventDefault()
     const details = fromFormData(event.target)
 
     try {
-      await runQuery({ query: queries.createUser, variables: { details } })
+      await query({ query: queries.createUser, variables: { details } })
       // if no error thrown, we can navigate to /
       setToast({
         type: 'default',

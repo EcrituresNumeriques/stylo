@@ -30,7 +30,7 @@ export default function ArticleCreate({ onSubmit, workspaceId = null }) {
   const { setToast } = useToasts()
 
   const [tags, setTags] = useState([])
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
   const workspaces = useSelector((state) => state.activeUser.workspaces)
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function ArticleCreate({ onSubmit, workspaceId = null }) {
       try {
         const {
           user: { tags },
-        } = await runQuery({ query: getTags, variables: {} })
+        } = await query({ query: getTags, variables: {} })
         setTags(tags)
       } catch (err) {
         setToast({
@@ -54,7 +54,7 @@ export default function ArticleCreate({ onSubmit, workspaceId = null }) {
     try {
       event.preventDefault()
       const createArticleInput = fromFormData(event.target)
-      const { createArticle: createdArticle } = await runQuery({
+      const { createArticle: createdArticle } = await query({
         query: createArticle,
         variables: { createArticleInput },
       })

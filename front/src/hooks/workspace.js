@@ -8,7 +8,7 @@ import {
   create as createMutation,
   leave as leaveMutation,
 } from '../components/workspace/Workspaces.graphql'
-import { runQuery } from '../helpers/graphQL.js'
+import { executeQuery } from '../helpers/graphQL.js'
 import useGraphQL, { useMutation, useSWRKey } from './graphql.js'
 
 export function useActiveWorkspace() {
@@ -110,7 +110,7 @@ export function useWorkspaceActions() {
   const key = useSWRKey()({ query: getWorkspaces })
   const sessionToken = useSelector((state) => state.sessionToken)
   const addWorkspace = async (workspace) => {
-    await runQuery(
+    await executeQuery(
       { sessionToken },
       {
         query: createMutation,
@@ -129,7 +129,7 @@ export function useWorkspaceActions() {
   }
 
   const leaveWorkspace = async (workspaceId) => {
-    await runQuery(
+    await executeQuery(
       { sessionToken },
       {
         query: leaveMutation,

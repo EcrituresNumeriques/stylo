@@ -30,12 +30,12 @@ export default function Workspaces() {
     personal: true,
     members: [],
   })
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
 
   useEffect(() => {
     ;(async () => {
       try {
-        const getUserStatsResponse = await runQuery({ query: getUserStats })
+        const getUserStatsResponse = await query({ query: getUserStats })
         const userStats = getUserStatsResponse.user.stats
         setPersonalWorkspace({
           _id: activeUser._id,

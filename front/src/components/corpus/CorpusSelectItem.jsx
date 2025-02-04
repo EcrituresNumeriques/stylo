@@ -13,13 +13,13 @@ export default function CorpusSelectItem({
   articleId,
   onChange,
 }) {
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
   const toggleCorpusArticle = useCallback(
     async (event) => {
       event.preventDefault()
       const [corpusId, checked] = [event.target.value, event.target.checked]
       const query = checked ? addArticleToCorpus : removeArticleFromCorpus
-      await runQuery({
+      await query({
         query,
         variables: { articleId: articleId, corpusId: corpusId },
       })

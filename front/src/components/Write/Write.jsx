@@ -59,7 +59,7 @@ export default function Write() {
   )
   const userId = useActiveUserId()
   const dispatch = useDispatch()
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
   const routeMatch = useRouteMatch()
   const [collaborativeSessionActive, setCollaborativeSessionActive] =
     useState(false)
@@ -226,7 +226,7 @@ export default function Write() {
 
     setIsLoading(true)
     ;(async () => {
-      const data = await runQuery({ query, variables }).catch((error) => {
+      const data = await query({ query, variables }).catch((error) => {
         setGraphQLError(error)
         return {}
       })

@@ -18,7 +18,7 @@ export default function CorpusCreate({ onSubmit }) {
   const { state: title, bindings: titleBindings } = useInput('')
   const { state: description, bindings: descriptionBindings } = useInput('')
   const titleInputRef = useRef()
-  const runQuery = useGraphQLClient()
+  const { query } = useGraphQLClient()
   const activeWorkspace = useActiveWorkspace()
   const activeWorkspaceId = useMemo(
     () => activeWorkspace?._id,
@@ -35,7 +35,7 @@ export default function CorpusCreate({ onSubmit }) {
     async (event) => {
       try {
         event.preventDefault()
-        const response = await runQuery({
+        const response = await query({
           query: createCorpus,
           variables: {
             createCorpusInput: {
