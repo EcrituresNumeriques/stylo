@@ -22,12 +22,18 @@ async function getErrorResponse(response) {
 }
 
 /**
- * @param {string} sessionToken
- * @param {string} query
- * @param {{[string: key]: value}|undefined} variables
+ * @param {string} query request query (as string)
+ * @param {{[string: key]: value}|undefined} variables request variables
+ * @param {string} sessionToken session token (for authentication)
+ * @param {'fetch'|'mutate'} [type='fetch'] request type (either fetch or mutate)
  * @returns {Promise<string|object>}
  */
-async function executeRequest({ sessionToken, query, variables }) {
+async function executeRequest({
+  query,
+  variables,
+  sessionToken,
+  type = 'fetch',
+}) {
   const response = await fetch(applicationConfig.graphqlEndpoint, {
     method: 'POST',
     mode: 'cors',
@@ -47,7 +53,7 @@ async function executeRequest({ sessionToken, query, variables }) {
   if (!response.ok) {
     const errorResponse = await getErrorResponse(response)
     console.error(
-      `Something wrong happened during => ${response.status}, ${
+      `Something wrong happened during ${type} => ${response.status}, ${
         response.statusText
       }: ${JSON.stringify(errorResponse)}`
     )
@@ -55,14 +61,22 @@ async function executeRequest({ sessionToken, query, variables }) {
       errorResponse && errorResponse.errors && errorResponse.errors.length
         ? errorResponse.errors[0].message
         : 'Unexpected error!'
-    throw new Error(errorMessage)
+    const error = new Error(errorMessage)
+    error.messages = errorResponse?.errors ?? [errorMessage]
+    throw error
   }
 
-  const json = await response.json()
-  if (json.errors) {
-    throw new Error(json.errors[0].message)
+  const body = await response.json()
+  if (body.errors) {
+    const errorMessage =
+      type === 'fetch'
+        ? 'Something wrong happened while fetching data.'
+        : 'Something wrong happened while mutating data.'
+    const error = new Error(errorMessage)
+    error.messages = body.errors
+    throw error
   }
-  return json.data
+  return body.data
 }
 
 export function useGraphQLClient() {
@@ -74,13 +88,20 @@ export function useGraphQLClient() {
 }
 
 /**
- *
- * @param {string} sessionToken
- * @param {DocumentNode|string} queryOrAST
- * @param {{[string: key]: value}|undefined} variables
+ * @param {Object} context query context
+ * @param {DocumentNode|string} context.query request query (as AST or string)
+ * @param {{[string: key]: any}|undefined} context.variables request variables
+ * @param {string} context.sessionToken session token (for authentication)
+ * @param {'fetch'|'mutate'} [context.type='fetch'] request type (either fetch or mutate)
  * @returns {Promise<string|object>}
+ * @throws Error if something went wrong
  */
-export function executeQuery({ sessionToken, query: queryOrAST, variables }) {
+export function executeQuery({
+  query: queryOrAST,
+  variables,
+  sessionToken,
+  type = 'fetch',
+}) {
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
-  return executeRequest({ query, variables, sessionToken })
+  return executeRequest({ query, variables, sessionToken, type })
 }
