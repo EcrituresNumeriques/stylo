@@ -42,6 +42,7 @@ if (SENTRY_DSN) {
       Sentry.reactRouterV5BrowserTracingIntegration({ history }),
       Sentry.replayIntegration(),
       Sentry.replayCanvasIntegration(),
+      Sentry.captureConsoleIntegration({ levels: ['warn', 'error', 'assert'] }),
     ],
     tracesSampleRate: 1.0,
     replaysSessionSampleRate: 0.1,
