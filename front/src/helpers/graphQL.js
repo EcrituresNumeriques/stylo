@@ -1,5 +1,5 @@
-import { useSelector } from 'react-redux'
 import { print } from 'graphql/language/printer'
+import { useSelector } from 'react-redux'
 import { applicationConfig } from '../config.js'
 
 /**
@@ -21,7 +21,7 @@ async function getErrorResponse(response) {
   }
 }
 
-export default async function askGraphQL(
+async function askGraphQL(
   payload,
   action = 'fetching from the server',
   sessionToken = null
@@ -62,16 +62,25 @@ export default async function askGraphQL(
 
 export function useGraphQLClient() {
   const sessionToken = useSelector((state) => state.sessionToken)
-  return runQuery.bind(null, { sessionToken })
+  return {
+    query: (query, variables) => runQuery({ query, variables, sessionToken }),
+  }
 }
 
 /**
- * @param {string} sessionToken
- * @param {DocumentNode|string} queryOrAST
- * @param {{[string: key]: value}} variables
+ * @typedef {Object} QueryParameters
+ * @property {{
+ *   sessionToken: string,
+ *   query: DocumentNode|string,
+ *   variables: {[string: key]: value}
+ * }}
+ */
+
+/**
+ * @param {QueryParameters} queryParameters
  * @returns {Promise<string|object>}
  */
-export function runQuery({ sessionToken }, { query: queryOrAST, variables }) {
+export function runQuery({ sessionToken, query: queryOrAST, variables }) {
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
 
   return askGraphQL({ query, variables }, null, sessionToken)
