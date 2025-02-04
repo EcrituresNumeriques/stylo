@@ -691,5 +691,10 @@ blockquote > p::before {
 
 #footnotes ol {
   padding-left: 0;
-  list-style-position: inside;
+
+  ::marker {
+    content: counter(list-item) "  ";
+    font-weight: bold;
+
+  }
 }
