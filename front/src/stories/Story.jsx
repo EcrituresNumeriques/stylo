@@ -8,6 +8,7 @@ import Loading from '../components/molecules/Loading.jsx'
 import Select from '../components/Select.jsx'
 import ButtonStory from './Button.story.jsx'
 import FormStory from './Form.story.jsx'
+import SidebarStory from './Sidebar.story.jsx'
 
 import styles from './story.module.scss'
 
@@ -126,6 +127,9 @@ export default function Story() {
             <option>Reblochon</option>
             <option>St Marcellin</option>
           </Select>
+        </Tabs.Item>
+        <Tabs.Item label="sidebar" value="5">
+          <SidebarStory />
         </Tabs.Item>
       </Tabs>
     </div>
