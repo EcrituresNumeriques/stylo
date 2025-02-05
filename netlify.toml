@@ -10,7 +10,7 @@ command = "npm run build -- --mode production"
 [build.environment]
 # System env
 NODE_VERSION = "18"
-ENABLE_SOURCEMAPS = "true"
+SNOWPACK_SOURCEMAPS = 'inline'
 NPM_FLAGS = "--no-audit --no-fund"
 
 # App env (new Snowpack)
