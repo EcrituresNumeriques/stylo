@@ -29,7 +29,7 @@ import ArticleEditorMetadata from './ArticleEditorMetadata.jsx'
 import WorkingVersion from './WorkingVersion'
 import PreviewHtml from './PreviewHtml'
 import PreviewPaged from './PreviewPaged'
-import Loading from '../Loading'
+import Loading from '../molecules/Loading.jsx'
 import MonacoEditor from './providers/monaco/Editor'
 import clsx from 'clsx'
 
