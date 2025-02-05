@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
-import pkg from './package.json' assert { type: 'json' }
+import pkg from './package.json' with { type: 'json' }
 import react from '@vitejs/plugin-react'
 import handlebars from 'vite-plugin-handlebars'
 import graphql from '@rollup/plugin-graphql'
@@ -13,8 +13,7 @@ export default defineConfig(async ({ mode }) => {
     'SENTRY_',
   ])
   const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
-  const sourcemap =
-    env.SNOWPACK_SOURCEMAPS || env.SENTRY_ENVIRONMENT === 'dev' || false
+  const sourcemap = Boolean(mode === 'development' || env.SENTRY_ENVIRONMENT === 'dev')
 
   return {
     base: env.DEPLOY_PRIME_URL ?? '/',
@@ -56,6 +55,7 @@ export default defineConfig(async ({ mode }) => {
         org: 'ecrinum-stylo',
         project: 'stylo-front',
         authToken: env.SENTRY_AUTH_TOKEN,
+        telemetry: false
       }),
     ],
     define: {
