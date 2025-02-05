@@ -3,6 +3,7 @@ const assert = require('node:assert/strict')
 require('dotenv').config({ path: ['.env', '../.env'] })
 
 const isURL = require('validator/lib/isURL')
+const ospath = require('node:path')
 
 convict.addFormat(require('convict-format-with-validator').url)
 convict.addFormat({
@@ -168,6 +169,14 @@ module.exports = convict({
       env: 'SENTRY_GRAPHQL_DSN',
       default: null,
       nullable: true,
+    },
+  },
+  yjs: {
+    persistenceDataDirectory: {
+      format: String,
+      env: 'YJS_PERSISTENCE_DATA_DIR',
+      default: ospath.join(__dirname, 'ydata'),
+      nullable: false,
     },
   },
 })

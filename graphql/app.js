@@ -1,10 +1,9 @@
 const pkg = require('./package.json')
-const ospath = require('node:path')
 const process = require('node:process')
 const config = require('./config.js')
 config.validate({ allowed: 'strict' })
 
-process.env.YPERSISTENCE = ospath.join(__dirname, 'ydata')
+process.env.YPERSISTENCE = config.get('yjs.persistenceDataDirectory')
 
 const Sentry = require('@sentry/node')
 const { nodeProfilingIntegration } = require('@sentry/profiling-node')
@@ -22,7 +21,7 @@ const LocalStrategy = require('passport-local').Strategy
 const OAuthStrategy = require('passport-oauth1')
 const { logger } = require('./logger')
 const pino = require('pino-http')({
-  logger
+  logger,
 })
 
 const schema = require('./schema')
@@ -31,7 +30,12 @@ const { checkCredentials } = require('./resolvers/authResolver')
 const { createJWTToken, populateUserFromJWT } = require('./helpers/token')
 const User = require('./models/user')
 const { ApiError } = require('./helpers/errors')
-const { createTagLoader, createUserLoader, createArticleLoader, createVersionLoader } = require('./loaders')
+const {
+  createTagLoader,
+  createUserLoader,
+  createArticleLoader,
+  createVersionLoader,
+} = require('./loaders')
 
 const { setupWSConnection } = require('y-websocket/bin/utils')
 const WebSocket = require('ws')
@@ -69,19 +73,23 @@ const secureCookie = config.get('securedCookie')
 // When we have a single origin (most likely when running in a production environment) then we are using a secure/strict value for cookies `sameSite` attribute ('strict').
 // When using 'strict' value, cookies will not be sent along with requests initiated by third-party websites.
 // Reference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
-const allowedOrigins = (origin ?? '').split(' ').filter(v => v).map(o => new RegExp('^' + o))
+const allowedOrigins = (origin ?? '')
+  .split(' ')
+  .filter((v) => v)
+  .map((o) => new RegExp('^' + o))
 // SameSite should be None on cross-site response.
 // Please note that "SameSite=None" must also specify the Secure attribute (they require a secure context/HTTPS).
-const sameSiteCookies = allowedOrigins.length > 1 && secureCookie ? 'none' : 'lax'
+const sameSiteCookies =
+  allowedOrigins.length > 1 && secureCookie ? 'none' : 'lax'
 
 const corsOptions = {
   optionsSuccessStatus: 200,
   credentials: true,
   // Access-Control-Allow-Origin header will be added only if the inbound Origin header matches one of the allowed origins
   origin: (origin, callback) => {
-    const found = allowedOrigins.some(o => o.test(origin))
+    const found = allowedOrigins.some((o) => o.test(origin))
     callback(null, found ? origin : false)
-  }
+  },
 }
 
 if (config.get('sentry.dsn')) {
@@ -94,82 +102,95 @@ if (config.get('sentry.dsn')) {
     integrations: [
       nodeProfilingIntegration(),
       Sentry.mongooseIntegration(),
-      Sentry.dataloaderIntegration()
-    ]
+      Sentry.dataloaderIntegration(),
+    ],
   })
 
   Sentry.setupExpressErrorHandler(app)
 }
 
-passport.use('zotero', new OAuthStrategy({
-    requestTokenURL: zoteroRequestTokenEndpoint,
-    accessTokenURL: zoteroAccessTokenEndpoint,
-    userAuthorizationURL: zoteroAuthorizeEndpoint + '?all_groups=read&library_access=1',
-    consumerKey: zoteroAuthClientKey,
-    consumerSecret: zoteroAuthClientSecret,
-    callbackURL: zoteroAuthCallbackUrl,
-    sessionKey: 'oauth_token'
-  },
-  function (zoteroToken, tokenSecret, profile, done) {
-    return done(null, { zoteroToken })
-  }
-))
-
-passport.use('oidc', new OidcStrategy({
-  name: oicName,
-  issuer: oicIssuer,
-  authorizationURL: oicAuthUrl,
-  tokenURL: oicTokenUrl,
-  userInfoURL: oicUserInfoUrl,
-  clientID: oicClientId,
-  clientSecret: oicClientSecret,
-  callbackURL: oicCallbackUrl,
-  skipUserProfile: false,
-  scope: oicScope
-}, async (iss, profile, done) => {
-  // careful, function arity matters https://github.com/jaredhanson/passport-openidconnect/blob/6197df6adf878bb641fd605c55f1c92f67253a07/lib/strategy.js#L223-L252
-  // profile has this shape https://www.passportjs.org/reference/normalized-profile/
-  // when 'skipUserProfile' is set to false (aka: give us profile data)
-  const { name, displayName } = profile
-  const { value: email } = profile.emails[0] || {}
-
-  if (!email) {
-    throw new ApiError('Cannot find or create a user without email address.')
-  }
-
-  let user = await User.findOne({ email })
-
-  // we create a new user if we could find one
-  if (!user) {
-    user = new User({
-      email,
-      displayName,
-      institution: '',
-      firstName: name.givenName || '',
-      lastName: name.familyName || '',
-      authType: 'oidc',
-    })
-
-    try {
-      // we populate a user with initial content
-      await user.save()
-      await user.createDefaultArticle()
-    } catch (err) {
-      return done(`Unable to create a new user ${email}, cause:`, err)
+passport.use(
+  'zotero',
+  new OAuthStrategy(
+    {
+      requestTokenURL: zoteroRequestTokenEndpoint,
+      accessTokenURL: zoteroAccessTokenEndpoint,
+      userAuthorizationURL:
+        zoteroAuthorizeEndpoint + '?all_groups=read&library_access=1',
+      consumerKey: zoteroAuthClientKey,
+      consumerSecret: zoteroAuthClientSecret,
+      callbackURL: zoteroAuthCallbackUrl,
+      sessionKey: 'oauth_token',
+    },
+    function (zoteroToken, tokenSecret, profile, done) {
+      return done(null, { zoteroToken })
     }
-  }
+  )
+)
 
-  // this, will be stored in session via `serializeUser()`
-  return done(null, user)
-}))
+passport.use(
+  'oidc',
+  new OidcStrategy(
+    {
+      name: oicName,
+      issuer: oicIssuer,
+      authorizationURL: oicAuthUrl,
+      tokenURL: oicTokenUrl,
+      userInfoURL: oicUserInfoUrl,
+      clientID: oicClientId,
+      clientSecret: oicClientSecret,
+      callbackURL: oicCallbackUrl,
+      skipUserProfile: false,
+      scope: oicScope,
+    },
+    async (iss, profile, done) => {
+      // careful, function arity matters https://github.com/jaredhanson/passport-openidconnect/blob/6197df6adf878bb641fd605c55f1c92f67253a07/lib/strategy.js#L223-L252
+      // profile has this shape https://www.passportjs.org/reference/normalized-profile/
+      // when 'skipUserProfile' is set to false (aka: give us profile data)
+      const { name, displayName } = profile
+      const { value: email } = profile.emails[0] || {}
 
-passport.use(new LocalStrategy({ session: false },
-  function (username, password, done) {
+      if (!email) {
+        throw new ApiError(
+          'Cannot find or create a user without email address.'
+        )
+      }
+
+      let user = await User.findOne({ email })
+
+      // we create a new user if we could find one
+      if (!user) {
+        user = new User({
+          email,
+          displayName,
+          institution: '',
+          firstName: name.givenName || '',
+          lastName: name.familyName || '',
+          authType: 'oidc',
+        })
+
+        try {
+          // we populate a user with initial content
+          await user.save()
+          await user.createDefaultArticle()
+        } catch (err) {
+          return done(`Unable to create a new user ${email}, cause:`, err)
+        }
+      }
+
+      // this, will be stored in session via `serializeUser()`
+      return done(null, user)
+    }
+  )
+)
+
+passport.use(
+  new LocalStrategy({ session: false }, function (username, password, done) {
     checkCredentials({ username, password })
-      .then(user => done(null, user))
-      .catch(e => done(e, false))
-  }
-))
+      .then((user) => done(null, user))
+      .catch((e) => done(e, false))
+  })
+)
 
 // mandatory for passport-login/logout
 passport.serializeUser((user, next) => next(null, user.id))
@@ -183,29 +204,35 @@ app.set('x-powered-by', false)
 app.use(pino)
 app.use(cors(corsOptions))
 app.use(bodyParser.json({ limit: '50mb' }))
-app.use(session({
-  secret: sessionSecret,
-  resave: false,
-  proxy: true,
-  saveUninitialized: false,
-  store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  cookie: {
-    httpOnly: true,
-    secure: secureCookie,
-    sameSite: sameSiteCookies
-  }
-}))
+app.use(
+  session({
+    secret: sessionSecret,
+    resave: false,
+    proxy: true,
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    cookie: {
+      httpOnly: true,
+      secure: secureCookie,
+      sameSite: sameSiteCookies,
+    },
+  })
+)
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.get('/version', (req, res) => res.json({
-  name: pkg.name,
-  version: pkg.version
-}))
+app.get('/version', (req, res) =>
+  res.json({
+    name: pkg.name,
+    version: pkg.version,
+  })
+)
 
 app.get('/events', handleEvents)
 
-app.get('/login/openid', async (req, res, next) => {
+app.get(
+  '/login/openid',
+  async (req, res, next) => {
     if (req.user) {
       const { email } = req.user
       const token = await createJWTToken({ email, jwtSecret })
@@ -227,49 +254,53 @@ app.get(
   passport.authenticate('zotero', { scope: zoteroAuthScope })
 )
 
-app.use('/authorization-code/zotero/callback',
-  (req, res, next) => {
-    passport.authenticate('zotero', async (err, user, info, status) => {
-      if (err) {
-        logger.error({ err }, 'Unable to authenticate on Zotero.')
-        return next(err)
-      }
-      if (!user) {
-        return res.status(401).redirect(req.session.origin)
-      }
-      const { zoteroToken } = user
-      if (req.user) {
-        const email = req.user.email
+app.use('/authorization-code/zotero/callback', (req, res, next) => {
+  passport.authenticate('zotero', async (err, user, info, status) => {
+    if (err) {
+      logger.error({ err }, 'Unable to authenticate on Zotero.')
+      return next(err)
+    }
+    if (!user) {
+      return res.status(401).redirect(req.session.origin)
+    }
+    const { zoteroToken } = user
+    if (req.user) {
+      const email = req.user.email
 
-        // save the Zotero token
-        const authenticatedUser = await User.findOne({ email })
-        authenticatedUser.zoteroToken = zoteroToken
-        await authenticatedUser.save()
+      // save the Zotero token
+      const authenticatedUser = await User.findOne({ email })
+      authenticatedUser.zoteroToken = zoteroToken
+      await authenticatedUser.save()
 
-        res.status(200)
-          .set({
-            'Content-Type': 'text/html'
-          })
-          .end(`<script>window.close();</script>`)
-      } else {
-        logger.error({ err, user, info, status }, 'Unable to authenticate on Zotero, no user session found.')
-        res.status(400).redirect(req.session.origin)
-      }
+      res
+        .status(200)
+        .set({
+          'Content-Type': 'text/html',
+        })
+        .end(`<script>window.close();</script>`)
+    } else {
+      logger.error(
+        { err, user, info, status },
+        'Unable to authenticate on Zotero, no user session found.'
+      )
+      res.status(400).redirect(req.session.origin)
+    }
+  })(req, res, next)
+})
 
-    })(req, res, next)
-  })
-
-app.use('/authorization-code/callback',
+app.use(
+  '/authorization-code/callback',
   passport.authenticate('oidc', { failWithError: true }),
-  async function onSuccess (req, res) {
+  async function onSuccess(req, res) {
     const { email } = req.user
     const token = await createJWTToken({ email, jwtSecret })
     return res.redirect(`${req.session.origin ?? '/'}#auth-token=${token}`)
   },
-  function onFailure (error, req, res) {
+  function onFailure(error, req, res) {
     logger.error({ error }, 'Unexpected error.')
     res.redirect(`/error?message=${error.message}`)
-  })
+  }
+)
 
 app.get('/logout', (req, res, next) => {
   req.logout(function (err) {
@@ -281,9 +312,10 @@ app.get('/logout', (req, res, next) => {
   })
 })
 
-app.post('/login/local',
+app.post(
+  '/login/local',
   passport.authenticate('local', { failWithError: true }),
-  async function onSuccess (req, res) {
+  async function onSuccess(req, res) {
     const { email } = req.user
 
     const token = await createJWTToken({ email, jwtSecret })
@@ -291,14 +323,14 @@ app.post('/login/local',
     res.statusCode = 200
     res.json({ user: req.user, token })
   },
-  function onFailure (error, req, res) {
+  function onFailure(error, req, res) {
     logger.error({ error }, 'Unexpected error.')
     res.statusCode = 401
     res.json({ error })
   }
 )
 
-function createLoaders () {
+function createLoaders() {
   return {
     tags: createTagLoader(),
     users: createUserLoader(),
@@ -307,23 +339,27 @@ function createLoaders () {
   }
 }
 
-app.post('/graphql', populateUserFromJWT({ jwtSecret }), createHandler({
-  schema,
-  /**
-   * @param {express.Request} req
-   * @returns {{token: DecodedJWT, user: User}}
-   */
-  context: (req) => {
-    const token = req.raw.token ?? {}
-    const user = req.raw.user ?? null
-    return {
-      token,
-      user,
-      userId: user?.id.toString() || token?._id,
-      loaders: createLoaders()
-    }
-  },
-}))
+app.post(
+  '/graphql',
+  populateUserFromJWT({ jwtSecret }),
+  createHandler({
+    schema,
+    /**
+     * @param {express.Request} req
+     * @returns {{token: DecodedJWT, user: User}}
+     */
+    context: (req) => {
+      const token = req.raw.token ?? {}
+      const user = req.raw.user ?? null
+      return {
+        token,
+        user,
+        userId: user?.id.toString() || token?._id,
+        loaders: createLoaders(),
+      }
+    },
+  })
+)
 
 // Collaborative Writing Websocket
 wss.on('connection', setupWSConnection)
@@ -340,13 +376,13 @@ mongoose
     logger.info('Listening on http://localhost:%s', listenPort)
     const server = app.listen(listenPort)
     server.on('upgrade', (request, socket, head) => {
-      wss.handleUpgrade(request, socket, head, function handleAuth (ws) {
+      wss.handleUpgrade(request, socket, head, function handleAuth(ws) {
         // const jwtToken = new URL('http://localhost' + request.url).searchParams.get("token")
         // TODO: check token and permissions
         wss.emit('connection', ws, request)
       })
     })
   })
-  .catch(err => {
+  .catch((err) => {
     logger.error({ err }, 'Unable to connect to MongoDB.')
   })
