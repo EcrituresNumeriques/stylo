@@ -36,6 +36,7 @@ const history = createBrowserHistory()
 if (SENTRY_DSN) {
   Sentry.init({
     dsn: SENTRY_DSN,
+    release: `stylo-front@${APP_VERSION}`,
     environment: APP_ENVIRONMENT,
     integrations: [
       Sentry.browserTracingIntegration(),

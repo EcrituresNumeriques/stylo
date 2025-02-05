@@ -88,6 +88,7 @@ if (config.get('sentry.dsn')) {
   Sentry.init({
     dsn: config.get('sentry.dsn'),
     environment: process.env.NODE_ENV,
+    release: `stylo-graphql@${pkg.version}`,
     attachStacktrace: true,
     includeLocalVariables: true,
     integrations: [
