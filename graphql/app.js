@@ -1,5 +1,4 @@
 const pkg = require('./package.json')
-const ospath = require('node:path')
 const process = require('node:process')
 const config = require('./config.js')
 config.validate({ allowed: 'strict' })
