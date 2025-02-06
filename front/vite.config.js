@@ -10,11 +10,7 @@ import { coverageConfigDefaults } from 'vitest/config'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
-  const envPrefix = [
-    'SNOWPACK_',
-    'SENTRY_',
-  ]
-
+  const envPrefix = ['SNOWPACK_', 'SENTRY_']
   const env = loadEnv(mode, fileURLToPath(import.meta.resolve('..')), envPrefix)
   const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
   const isDevelopment = Boolean(mode === 'development' || env.SENTRY_ENVIRONMENT === 'dev')
@@ -102,22 +98,6 @@ export default defineConfig(async ({ mode }) => {
     define: {
       APP_VERSION: JSON.stringify(pkg.version),
       APP_ENVIRONMENT: JSON.stringify(env.SENTRY_ENVIRONMENT),
-      SENTRY_DSN: JSON.stringify(env.SENTRY_DSN),
-      __ANNOTATIONS_CANONICAL_BASE_URL__: JSON.stringify(
-        env.SNOWPACK_PUBLIC_ANNOTATIONS_CANONICAL_BASE_URL
-      ),
-      __BACKEND_ENDPOINT__: JSON.stringify(
-        env.SNOWPACK_PUBLIC_BACKEND_ENDPOINT
-      ),
-      __GRAPHQL_ENDPOINT__: JSON.stringify(
-        env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT
-      ),
-      __PANDOC_EXPORT_ENDPOINT__: JSON.stringify(
-        env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT
-      ),
-      __HUMANID_REGISTER_ENDPOINT__: JSON.stringify(
-        env.SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT
-      ),
     },
     resolve: {
       alias: {

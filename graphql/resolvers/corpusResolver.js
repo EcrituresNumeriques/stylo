@@ -231,7 +231,6 @@ module.exports = {
     },
 
     async updateArticlesOrder(corpus, { articlesOrderInput }) {
-      console.log({ corpus })
       const articlesOrderMap = articlesOrderInput.reduce((acc, item) => {
         acc[item.articleId] = item.order
         return acc
