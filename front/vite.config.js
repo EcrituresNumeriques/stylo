@@ -59,11 +59,6 @@ export default defineConfig(async ({ mode }) => {
     define: {
       APP_VERSION: JSON.stringify(pkg.version),
       APP_ENVIRONMENT: JSON.stringify(env.SENTRY_ENVIRONMENT),
-    resolve: {
-      alias: {
-        'react-redux':
-          mode === 'development' ? 'react-redux/lib' : 'react-redux',
-      },
     },
     server: {
       port: 3000,
