@@ -4,12 +4,15 @@ import * as Sentry from '@sentry/react'
 import React, { lazy, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import {
-  BrowserRouter as Router,
-  Route as OriginalRoute,
-  Switch,
-  useHistory,
-} from 'react-router-dom'
-import { createBrowserHistory } from 'history'
+  createBrowserRouter,
+  createRoutesFromChildren,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+  useLocation,
+  useNavigationType,
+  matchRoutes,
+} from 'react-router'
 import { Provider } from 'react-redux'
 import { GeistProvider, Loading } from '@geist-ui/core'
 
@@ -17,32 +20,33 @@ import './i18n.js'
 import './styles/general.scss'
 import './styles/general.scss'
 import CollaborativeEditor from './components/collaborative/CollaborativeEditor.jsx'
-import App from './layouts/App'
+import App, { loader as AppLoader } from './layouts/App'
 import createStore from './createReduxStore'
-import { getUserProfile } from './helpers/userProfile'
 
-import Header from './components/Header'
-import Footer from './components/Footer'
-import Register from './components/Register'
-import PrivateRoute from './components/PrivateRoute'
-import NotFound from './components/404'
-import Error from './components/Error'
+import ErrorBoundary from './components/Error.jsx'
+import PageNotFound from './components/Error404.jsx'
+import Login from './components/Login.jsx'
+import Register from './components/Register.jsx'
+import RequireAuth from './components/PrivateRoute.jsx'
 import AuthCallback from './components/AuthCallback'
 import { applicationConfig } from './config.js'
 import Story from './stories/Story.jsx'
 import { Helmet } from 'react-helmet'
 
-const Route = Sentry.withSentryRouting(OriginalRoute)
-const history = createBrowserHistory()
-
-if (SENTRY_DSN) {
+if (import.meta.SENTRY_DSN) {
   Sentry.init({
-    dsn: SENTRY_DSN,
+    dsn: import.meta.SENTRY_DSN,
     release: `stylo-front@${APP_VERSION}`,
     environment: APP_ENVIRONMENT,
     integrations: [
       Sentry.browserTracingIntegration(),
-      Sentry.reactRouterV5BrowserTracingIntegration({ history }),
+      Sentry.reactRouterV7BrowserTracingIntegration({
+        useEffect: React.useEffect,
+        useLocation,
+        useNavigationType,
+        createRoutesFromChildren,
+        matchRoutes,
+      }),
       Sentry.replayIntegration(),
       Sentry.replayCanvasIntegration(),
       Sentry.captureConsoleIntegration({ levels: ['warn', 'error', 'assert'] }),
@@ -65,66 +69,6 @@ const Preview = lazy(() => import('./components/Preview.jsx'))
 const Privacy = lazy(() => import('./components/Privacy'))
 
 const store = createStore()
-const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|corpus)$/
-
-;(async () => {
-  let { sessionToken } = store.getState()
-  const authToken = new URLSearchParams(location.hash).get('#auth-token')
-  if (authToken) {
-    store.dispatch({ type: 'UPDATE_SESSION_TOKEN', token: authToken })
-    sessionToken = authToken
-    window.history.replaceState({}, '', location.pathname)
-  }
-
-  try {
-    const { user, token } = await getUserProfile({
-      applicationConfig,
-      sessionToken,
-    })
-    const pathname = location.pathname
-    const workspacePathRxResult = pathname.match(workspacePathsRx)
-    let activeWorkspaceId
-    if (workspacePathRxResult) {
-      activeWorkspaceId = workspacePathRxResult.groups.id
-    }
-    store.dispatch({ type: 'PROFILE', user, token, activeWorkspaceId })
-  } catch (error) {
-    console.log('User seemingly not authenticated: %s', error.message)
-    store.dispatch({ type: 'PROFILE' })
-  }
-
-  // refresh session profile whenever something happens to the session token
-  // maybe there is a better way to do this
-  store.subscribe(() => {
-    const previousValue = sessionToken
-    const { sessionToken: currentValue } = store.getState()
-
-    if (currentValue !== previousValue) {
-      sessionToken = currentValue
-      getUserProfile({ sessionToken }).then((response) =>
-        store.dispatch({ type: 'PROFILE', ...response })
-      )
-    }
-  })
-})()
-
-const TrackPageViews = () => {
-  const history = useHistory()
-
-  history.listen(({ pathname, search, state }, action) => {
-    /* global _paq */
-    const _paq = (window._paq = window._paq || [])
-
-    //@todo do this dynamically, based on a subscription to the store
-    //otherwise, we should use _paq.push(['forgetConsentGiven'])
-    _paq.push(['setConsentGiven'])
-    _paq.push(['setCustomUrl', pathname])
-    //_paq.push(['setDocumentTitle', 'My New Title'])
-    _paq.push(['trackPageView'])
-  })
-
-  return null
-}
 
 const root = createRoot(document.getElementById('root'), {
   onUncaughtError: Sentry.reactErrorHandler(),
@@ -132,107 +76,72 @@ const root = createRoot(document.getElementById('root'), {
   onRecoverableError: Sentry.reactErrorHandler(),
 })
 
+const router = createBrowserRouter(
+  Sentry.withSentryReactRouterV7Routing(
+    createRoutesFromElements(
+      <Route
+        path="/"
+        element={<App />}
+        loader={AppLoader}
+        ErrorBoundary={ErrorBoundary}
+      >
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+
+        <Route path="articles" element={<RequireAuth />}>
+          <Route index element={<Articles />} />
+        </Route>
+
+        <Route path="article/:id">
+          <Route index element={<Write />} />
+          <Route path="compare/:compareTo" element={<Write />} />
+          <Route path="preview" element={<Preview strategy="article" />} />
+          <Route path="session/:sessionId" element={<CollaborativeEditor />} />
+
+          <Route path="version/:version">
+            <Route index element={<Write />} />
+            <Route path="preview" element={<Preview strategy="article" />} />
+            <Route path="compare/:compareTo?" element={<Write />} />
+          </Route>
+        </Route>
+
+        <Route path="corpus" element={<RequireAuth />}>
+          <Route index element={<Corpus />} />
+          <Route path=":id">
+            <Route path="preview" element={<Preview strategy="corpus" />} />
+          </Route>
+        </Route>
+
+        <Route path="workspaces" element={<RequireAuth />}>
+          <Route index element={<Workspaces />} />
+
+          <Route path=":workspaceId">
+            <Route path="articles" element={<Articles />} />
+            <Route path="corpus" element={<Corpus />} />
+          </Route>
+        </Route>
+
+        <Route path="credentials" element={<RequireAuth />}>
+          <Route path="auth-callback/:service" element={<AuthCallback />} />
+          <Route index element={<Credentials />} />
+        </Route>
+
+        <Route path="privacy" element={<Privacy />} />
+
+        <Route path="ux" element={<Story />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Route>
+    )
+  )
+)
+
 root.render(
   <React.StrictMode>
     <Helmet defaultTitle="Stylo" titleTemplate="%s - Stylo" />
     <GeistProvider>
       <Provider store={store}>
         <Suspense fallback={<Loading />}>
-          <Router history={history}>
-            <App>
-              <TrackPageViews />
-              <Header />
-              <Switch>
-                <Route path="/register" component={Register} exact />
-                {/* Articles index */}
-                <PrivateRoute
-                  path={['/articles', '/', '/workspaces/:workspaceId/articles']}
-                  component={Articles}
-                  exact
-                />
-                {/* Corpus index */}
-                <PrivateRoute
-                  path={['/corpus', '/workspaces/:workspaceId/corpus']}
-                  component={Corpus}
-                  exact
-                />
-                {/* Workspaces index */}
-                <PrivateRoute
-                  path={['/workspaces']}
-                  component={Workspaces}
-                  exact
-                />
-                <PrivateRoute path="/credentials" exact>
-                  <UserInfos />
-                  <Credentials />
-                </PrivateRoute>
-
-                <PrivateRoute
-                  exact
-                  path="/credentials/auth-callback/:service"
-                  component={AuthCallback}
-                />
-
-                {/* Annotate a Corpus */}
-                <Route
-                  path={[
-                    '/workspaces/:workspaceId/corpus/:id/preview',
-                    '/corpus/:id/preview',
-                  ]}
-                  exact
-                >
-                  <Preview strategy="corpus" />
-                </Route>
-                {/* Annotate an article or its version */}
-                <Route
-                  path={[
-                    `/article/:id/version/:version/preview`,
-                    `/article/:id/preview`,
-                  ]}
-                  exact
-                >
-                  <Preview strategy="article" />
-                </Route>
-                {/* Write and Compare */}
-                <PrivateRoute
-                  path={[
-                    `/article/:id/compare/:compareTo`,
-                    `/article/:id/version/:version/compare/working-copy`,
-                    `/article/:id/version/:version/compare/:compareTo`,
-                  ]}
-                  component={Write}
-                  exact
-                />
-                {/* Write with a given version */}
-                <PrivateRoute
-                  path={`/article/:id/version/:version`}
-                  component={Write}
-                  exact
-                />
-                {/* Write and/or Preview */}
-                <PrivateRoute
-                  path={[`/article/:id/preview`, `/article/:id`]}
-                  component={Write}
-                  exact
-                />
-                {/* Collaborative editing */}
-                <PrivateRoute
-                  path={[`/article/:articleId/session/:sessionId`]}
-                  component={CollaborativeEditor}
-                  exact
-                />
-                <Route exact path="/privacy" component={Privacy} />
-                <Route exact path="/ux" component={Story} />
-                <Route exact path="/error">
-                  <Error />
-                </Route>
-                <Route path="*">
-                  <NotFound />
-                </Route>
-              </Switch>
-              <Footer />
-            </App>
-          </Router>
+          <RouterProvider router={router} />
         </Suspense>
       </Provider>
     </GeistProvider>
