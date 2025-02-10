@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react'
 import { Edit3 } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { useMutation } from '../../hooks/graphql.js'
 import Button from '../Button.jsx'
 
@@ -18,7 +18,7 @@ export default function SoloSessionAction({
   const { t } = useTranslation()
   const activeUser = useSelector((state) => state.activeUser)
   const { setToast } = useToasts()
-  const history = useHistory()
+  const navigate = useNavigate()
   const [activeSoloSessionCreator, setActiveSoloSessionCreator] = useState('')
   const mutation = useMutation()
   const {
@@ -32,13 +32,13 @@ export default function SoloSessionAction({
         setActiveSoloSessionCreator(soloSession.creatorUsername)
         setTakeOverModalVisible(true)
       } else {
-        history.push(`/article/${articleId}`)
+        navigate(`/article/${articleId}`)
       }
     } else {
       // start a new solo session
       try {
         await mutation({ query: startSoloSession, variables: { articleId } })
-        history.push(`/article/${articleId}`)
+        navigate(`/article/${articleId}`)
       } catch (err) {
         if (
           err &&
@@ -48,7 +48,7 @@ export default function SoloSessionAction({
           err.messages[0].extensions.type === 'UNAUTHORIZED_SOLO_SESSION_ACTIVE'
         ) {
           // already exists
-          history.push(`/article/${articleId}`)
+          navigate(`/article/${articleId}`)
         } else {
           setToast({
             type: 'error',
@@ -62,7 +62,7 @@ export default function SoloSessionAction({
     try {
       await mutation({ query: takeOverSoloSession, variables: { articleId } })
       setTakeOverModalVisible(false)
-      history.push(`/article/${articleId}`)
+      navigate(`/article/${articleId}`)
     } catch (err) {
       setToast({
         type: 'error',

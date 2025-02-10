@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router'
 import { useToasts } from '@geist-ui/core'
 import { useGraphQLClient } from '../helpers/graphQL'
 import * as queries from './Credentials.graphql'
@@ -17,7 +17,7 @@ export default function Register() {
   const { setToast } = useToasts()
   const passwordRef = useRef()
   const passwordConfirmationRef = useRef()
-  const history = useHistory()
+  const navigate = useNavigate()
   const { query } = useGraphQLClient()
 
   const handleFormSubmit = useCallback(async (event) => {
@@ -31,7 +31,7 @@ export default function Register() {
         type: 'default',
         text: t('credentials.register.successToast'),
       })
-      history.push('/')
+      navigate('/login')
     } catch (err) {
       setToast({
         type: 'error',
@@ -106,7 +106,7 @@ export default function Register() {
 
         <ul className={styles.actions}>
           <li>
-            <Link to="/">
+            <Link to="/login">
               <ArrowLeftCircle className={styles.inlineIcon} size={20} />
               {t('credentials.login.goBackLink')}
             </Link>

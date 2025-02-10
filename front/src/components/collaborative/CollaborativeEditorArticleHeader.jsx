@@ -6,7 +6,7 @@ import {
   Modal as GeistModal,
 } from '@geist-ui/core'
 import clsx from 'clsx'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import PropTypes from 'prop-types'
 import React, { useCallback } from 'react'
 import { AlignLeft, Eye, Printer } from 'react-feather'

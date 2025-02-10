@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, Code } from '@geist-ui/core'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import ErrorMessageCard from '../ErrorMessageCard.jsx'
 
 export default function CollaborativeSessionError({ error }) {

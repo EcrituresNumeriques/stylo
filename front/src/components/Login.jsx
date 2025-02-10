@@ -1,5 +1,5 @@
-import React, { useCallback, useState, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import React, { useCallback, useState } from 'react'
+import { Link, useNavigate } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
@@ -17,21 +17,8 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const dispatch = useDispatch()
-  const { replace, location } = useHistory()
-  const setSessionToken = useCallback(
-    (token) => dispatch({ type: 'UPDATE_SESSION_TOKEN', token }),
-    []
-  )
-  const authToken = new URLSearchParams(location.hash).get('#auth-token')
-
+  const navigate = useNavigate()
   const { backendEndpoint, humanIdRegisterEndpoint } = applicationConfig
-
-  useEffect(() => {
-    if (authToken) {
-      setSessionToken(authToken)
-      replace(location.pathname)
-    }
-  }, [authToken])
 
   const handleSubmit = useCallback(
     (event) => {
@@ -53,7 +40,10 @@ export default function Login() {
             ? response.json()
             : Promise.reject(new Error('Email or password is incorrect'))
         })
-        .then((data) => dispatch({ type: 'LOGIN', ...data }))
+        .then((data) => {
+          dispatch({ type: 'LOGIN', ...data })
+          navigate('/articles')
+        })
         .catch((error) => {
           setError(error.message)
         })

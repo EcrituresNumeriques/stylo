@@ -9,7 +9,7 @@ import PropTypes from 'prop-types'
 import React, { useCallback } from 'react'
 import { StopCircle } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { useMutation } from '../../hooks/graphql.js'
 import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 import CollaborativeEditorWriters from './CollaborativeEditorWriters.jsx'
@@ -26,7 +26,7 @@ export default function CollaborativeEditorStatus({
   const { t } = useTranslation()
   const mutation = useMutation()
   const { setToast } = useToasts()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const {
     visible: collaborativeSessionEndVisible,
@@ -44,7 +44,7 @@ export default function CollaborativeEditorStatus({
         type: 'default',
         text: 'Collaborative session ended',
       })
-      history.push('/articles')
+      navigate('/articles')
     } catch (err) {
       setToast({
         type: 'error',

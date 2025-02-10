@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Badge, Modal as GeistModal, useModal } from '@geist-ui/core'
 import { Users } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 import { useMutation } from '../../hooks/graphql.js'
 
@@ -15,7 +15,7 @@ export default function CollaborativeSessionAction({
   articleId,
 }) {
   const { t } = useTranslation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const mutation = useMutation()
   const {
     visible: collaborativeEditingVisible,
@@ -27,14 +27,14 @@ export default function CollaborativeSessionAction({
     // try to start a collaborative editing
     if (collaborativeSession && collaborativeSession.id) {
       // join existing collaborative session
-      history.push(`/article/${articleId}/session/${collaborativeSession.id}`)
+      navigate(`/article/${articleId}/session/${collaborativeSession.id}`)
     } else {
       // start a new collaborative session
       const data = await mutation({
         query: startCollaborativeSession,
         variables: { articleId },
       })
-      history.push(
+      navigate(
         `/article/${articleId}/session/${data.article.startCollaborativeSession.id}`
       )
     }

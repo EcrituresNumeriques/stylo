@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router'
 import { useTranslation } from 'react-i18next'
 
 import styles from './Write/write.module.scss'

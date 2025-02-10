@@ -2,7 +2,7 @@ import { Loading } from '@geist-ui/core'
 import clsx from 'clsx'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import useGraphQL from '../hooks/graphql.js'
 import styles from './articleVersionLinks.module.scss'
 

@@ -1,6 +1,6 @@
 import { Loading } from '@geist-ui/core'
 import React, { useCallback } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import useGraphQL from '../../hooks/graphql.js'
 import ArticleStats from '../ArticleStats.jsx'
 

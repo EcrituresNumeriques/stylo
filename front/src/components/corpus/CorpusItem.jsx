@@ -11,7 +11,7 @@ import {
 } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { useGraphQLClient } from '../../helpers/graphQL.js'
 import Button from '../Button.jsx'
 import buttonStyles from '../button.module.scss'
@@ -138,14 +138,14 @@ export default function CorpusItem({ corpus }) {
             <Printer />
           </Button>
 
-          <Link
+          <NavLink
             title={t('corpus.preview.buttonTitle')}
             target="_blank"
             className={buttonStyles.icon}
             to={`/corpus/${corpus._id}/preview`}
           >
             <Eye />
-          </Link>
+          </NavLink>
         </aside>
       </div>
       {expanded && (

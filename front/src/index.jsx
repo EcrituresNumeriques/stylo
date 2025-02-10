@@ -63,7 +63,6 @@ const Corpus = lazy(() => import('./components/corpus/Corpus'))
 const Articles = lazy(() => import('./components/Articles'))
 const Workspaces = lazy(() => import('./components/workspace/Workspaces'))
 const Credentials = lazy(() => import('./components/Credentials'))
-const UserInfos = lazy(() => import('./components/UserInfos.jsx'))
 const Write = lazy(() => import('./components/Write/Write'))
 const Preview = lazy(() => import('./components/Preview.jsx'))
 const Privacy = lazy(() => import('./components/Privacy'))
@@ -94,14 +93,17 @@ const router = createBrowserRouter(
 
         <Route path="article/:id">
           <Route index element={<Write />} />
-          <Route path="compare/:compareTo" element={<Write />} />
+          <Route path="compare/:compareTo" element={<Write mode="compare" />} />
           <Route path="preview" element={<Preview strategy="article" />} />
           <Route path="session/:sessionId" element={<CollaborativeEditor />} />
 
           <Route path="version/:version">
             <Route index element={<Write />} />
             <Route path="preview" element={<Preview strategy="article" />} />
-            <Route path="compare/:compareTo?" element={<Write />} />
+            <Route
+              path="compare/:compareTo?"
+              element={<Write mode="compare" />}
+            />
           </Route>
         </Route>
 
