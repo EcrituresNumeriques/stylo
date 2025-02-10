@@ -7,7 +7,6 @@ import {
   fetchBibliographyFromCollectionHref,
 } from '../../../helpers/zotero'
 import { useGraphQL } from '../../../helpers/graphQL'
-import { useProfile } from '../../../helpers/userProfile'
 import { applicationConfig } from '../../../config.js'
 import { linkToZotero as query } from '../../Article.graphql'
 
@@ -41,7 +40,6 @@ export default function ZoteroPanel({
 
   const [isSaving, setSaving] = useState(false)
   const runQuery = useGraphQL()
-  const refreshProfile = useProfile()
 
   const handleZoteroLinkChange = useCallback(
     (event) => setZoteroLink(event.target.value),
