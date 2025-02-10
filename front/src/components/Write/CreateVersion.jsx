@@ -1,7 +1,7 @@
 import { useToasts } from '@geist-ui/core'
 import PropTypes from 'prop-types'
 import React, { useCallback, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { ArrowLeft } from 'react-feather'
 import { createVersion } from '../../services/ArticleService.graphql'

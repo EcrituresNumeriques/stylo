@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouteMatch } from 'react-router-dom'
+import { useRouteMatch } from 'react-router'
 import { ChevronDown, ChevronRight } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { usePandocAnchoring } from '../../hooks/pandoc.js'

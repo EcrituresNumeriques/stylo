@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { Check, Edit3 } from 'react-feather'
 
 import { useGraphQL } from '../helpers/graphQL'
