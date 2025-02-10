@@ -7,9 +7,8 @@ import {
 } from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Switch, Route, useRouteMatch } from 'react-router-dom'
+import { useMatch, useParams } from 'react-router'
 import { batch, shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import throttle from 'lodash.throttle'
 import debounce from 'lodash.debounce'
@@ -59,7 +58,7 @@ export default function Write() {
   const userId = useActiveUserId()
   const dispatch = useDispatch()
   const runQuery = useGraphQL()
-  const routeMatch = useRouteMatch()
+  const routeMatch = useMatch()
   const [collaborativeSessionActive, setCollaborativeSessionActive] =
     useState(false)
   const [soloSessionActive, setSoloSessionActive] = useState(false)
@@ -412,27 +411,17 @@ export default function Write() {
           mode={mode}
         />
 
-        <Switch>
-          <Route path="*/preview" exact>
-            <PreviewComponent
-              preview={articleInfos.preview}
-              metadata={live.metadata}
-            />
-          </Route>
-          <Route path="*">
-            <MonacoEditor
-              text={live.md}
-              readOnly={mode === MODES_READONLY}
-              onTextUpdate={handleMDCM}
-              articleId={articleInfos._id}
-              selectedVersion={currentVersion}
-              compareTo={compareTo}
-              currentArticleVersion={live.version}
-            />
+        <MonacoEditor
+          text={live.md}
+          readOnly={mode === MODES_READONLY}
+          onTextUpdate={handleMDCM}
+          articleId={articleInfos._id}
+          selectedVersion={currentVersion}
+          compareTo={compareTo}
+          currentArticleVersion={live.version}
+        />
 
-            <ArticleStats />
-          </Route>
-        </Switch>
+        <ArticleStats />
       </article>
       <ArticleEditorMetadata
         metadata={live.metadata}

@@ -289,17 +289,16 @@ function persistStateIntoLocalStorage({ getState }) {
 }
 
 function setProfile(state, action) {
-  const { user } = action
+  const { user, hasBooted = state.hasBooted } = action
   if (!user) {
-    return { ...state, activeUser: undefined, hasBooted: true }
+    return { ...state, activeUser: undefined }
   }
+
   return {
     ...state,
-    hasBooted: true,
-    loggedIn: true,
+    hasBooted,
     activeUser: {
       ...state.activeUser,
-      activeWorkspaceId: action.activeWorkspaceId,
       ...user,
     },
   }

@@ -1,13 +1,17 @@
 // variables defined statically via vite.config.js
 export const applicationConfig = {
-  backendEndpoint: __BACKEND_ENDPOINT__,
-  canonicalBaseUrl: __ANNOTATIONS_CANONICAL_BASE_URL__,
-  graphqlEndpoint: __GRAPHQL_ENDPOINT__,
-  pandocExportEndpoint: __PANDOC_EXPORT_ENDPOINT__,
+  backendEndpoint: import.meta.env.SNOWPACK_PUBLIC_BACKEND_ENDPOINT,
+  canonicalBaseUrl: import.meta.env
+    .SNOWPACK_PUBLIC_ANNOTATIONS_CANONICAL_BASE_URL,
+  graphqlEndpoint: import.meta.env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT,
+  pandocExportEndpoint: import.meta.env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT,
   pandocExportHost:
     import.meta.env.SNOWPACK_PUBLIC_PANDOC_EXPORT_HOST ?? window.location.host,
-  humanIdRegisterEndpoint: __HUMANID_REGISTER_ENDPOINT__,
-  websocketEndpoint: toWebsocketEndpoint(__BACKEND_ENDPOINT__),
+  humanIdRegisterEndpoint: import.meta.env
+    .SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT,
+  websocketEndpoint: toWebsocketEndpoint(
+    import.meta.env.SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT
+  ),
 }
 
 function toWebsocketEndpoint(endpoint) {
