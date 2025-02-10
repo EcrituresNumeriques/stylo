@@ -94,12 +94,6 @@ export default function Login() {
               >
                 Connect with Huma-Num
               </a>
-              <a
-                className={styles.humaNumCreateAccountBtn}
-                href={humanIdRegisterEndpoint}
-              >
-                Create a Huma-Num account
-              </a>
             </p>
 
             <p className={styles.help}>
