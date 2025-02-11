@@ -88,8 +88,12 @@ export default function Preview({ strategy: strategyId }) {
   const { canonicalBaseUrl } = applicationConfig
   const canonicalUrl = canonicalBaseUrl
     ? `${canonicalBaseUrl}/api/v1/${
-        strategyId === 'article' ? 'htmlArticle' : 'htmlBook'
-      }/${id}?preview=true`
+        strategyId === 'article'
+          ? version
+            ? 'htmlVersion'
+            : 'htmlArticle'
+          : 'htmlBook'
+      }/${version ?? id}?preview=true`
     : null
 
   const strategy = useMemo(
