@@ -92,16 +92,10 @@ module.exports = {
     },
 
     async user (_root, args, context) {
-      let userId
-      if (context.token.admin) {
-        userId = args.user
-        if (!userId) {
-          throw new ApiError('UNAUTHENTICATED', `Unable to find an authentication context: ${context}`)
-        }
-      } else {
-        userId = context.userId
+      if (!context.userId) {
+        throw new ApiError('UNAUTHENTICATED', `Unable to find an authentication context: ${JSON.stringify(context)}`)
       }
-      return User.findById(userId)
+      return User.findById(context.userId)
     },
 
     async getUser (_, { filter }, context) {
