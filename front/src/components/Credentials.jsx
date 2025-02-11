@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 import { useGraphQLClient } from '../helpers/graphQL'
-import { changePassword as query } from './Credentials.graphql'
+import { changePassword as changePasswordQuery } from './Credentials.graphql'
 import styles from './credentials.module.scss'
 import fieldStyles from './field.module.scss'
 import Button from './Button'
@@ -39,7 +39,7 @@ export default function Credentials() {
         new: password,
         user: userId,
       }
-      await query({ query, variables })
+      await query({ query: changePasswordQuery, variables })
       setPassword('')
       setPasswordO('')
       setPasswordC('')
