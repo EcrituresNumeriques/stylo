@@ -2,6 +2,7 @@ const Sentry = require('@sentry/node')
 const { nodeProfilingIntegration } = require('@sentry/profiling-node')
 const pkg = require('./package.json')
 const process = require('node:process')
+const debounce = require('lodash.debounce')
 const config = require('./config.js')
 config.validate({ allowed: 'strict' })
 
@@ -62,9 +63,11 @@ const {
   createVersionLoader,
 } = require('./loaders')
 
-const { setupWSConnection } = require('y-websocket/bin/utils')
+const Y = require('yjs')
+const yjsUtils = require('y-websocket/bin/utils')
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
+const { mongo } = require("mongoose");
 const wss = new WebSocket.Server({ noServer: true })
 
 const listenPort = config.get('port')
@@ -381,7 +384,46 @@ app.post(
 )
 
 // Collaborative Writing Websocket
-wss.on('connection', setupWSConnection)
+const builtinPersistence = yjsUtils.getPersistence()
+yjsUtils.setPersistence({
+  bindState: async (roomName, ydoc) => {
+    console.log('bindState:', roomName)
+    const sessionId = roomName.split('/')[1] // format: ws/{sessionId}
+    console.log('sessionId:', sessionId)
+    const result = await mongoose.connection.collection('articles')
+      .findOne({
+        '$and': [
+          { 'collaborativeSession.id': new mongo.ObjectID(sessionId) },
+          { 'workingVersion.ydoc': { $ne: null } },
+        ]
+      })
+    // TODO: handle errors
+    if (result) {
+      const documentState = Buffer.from(result.workingVersion.ydoc, "base64")
+      Y.applyUpdate(ydoc, documentState)
+    }
+    await builtinPersistence.bindState(roomName, ydoc)
+    ydoc.on('update', debounce(async () => {
+        const sessionId = roomName.split('/')[1] // format: ws/{sessionId}
+        const documentState = Y.encodeStateAsUpdate(ydoc) // is a Uint8Array
+        await mongoose.connection.collection('articles')
+          .updateOne(
+            { 'collaborativeSession.id': new mongo.ObjectID(sessionId) },
+            {
+              $set: { 'workingVersion.ydoc': Buffer.from(documentState).toString('base64') }
+            })
+        // TODO: handle errors
+      },
+      4000,
+      { leading: false, trailing: true }
+    ))
+  },
+  writeState: async (roomName, ydoc) => {
+    console.log('writeState:', roomName)
+    await builtinPersistence.writeState(roomName, ydoc)
+  }
+})
+wss.on('connection', yjsUtils.setupWSConnection)
 
 const server = app.listen(listenPort, (err) => {
   if (err) {

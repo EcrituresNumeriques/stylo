@@ -1,3 +1,4 @@
+const crypto = require('node:crypto')
 const YAML = require('js-yaml')
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Types
@@ -20,6 +21,8 @@ const { previewEntries } = require('../helpers/bibliography.js')
 const { notifyArticleStatusChange } = require('../events.js')
 const { logger } = require('../logger.js')
 const { toLegacyFormat } = require('../helpers/metadata.js')
+const Y = require("yjs");
+const { mongo } = require("mongoose");
 
 async function getUser(userId) {
   const user = await User.findById(userId)
@@ -489,13 +492,16 @@ module.exports = {
         createdAt: new Date(),
       }
       article.collaborativeSession = collaborativeSession
+
+      // TODO: à déplacer côté bindState si le document yjs existe en base de données.
+      /*
       const yDoc = getYDoc(`ws/${collaborativeSessionId.toString()}`)
       const yText = yDoc.getText('main')
       yText.insert(0, article.workingVersion.md)
 
       const yState = yDoc.getText('state')
       yState.delete(0, yState.length)
-      yState.insert(0, 'started')
+      yState.insert(0, 'started')*/
 
       await article.save()
       notifyArticleStatusChange(article)
@@ -557,6 +563,12 @@ module.exports = {
   },
 
   WorkingVersion: {
+    md({ ydoc = {} }) {
+      const documentState = Buffer.from(ydoc, "base64")
+      const yjsdoc = getYDoc(`ws/${new mongo.ObjectID().toString()}`)
+      Y.applyUpdate(yjsdoc, documentState)
+      return yjsdoc.getText('main')
+    },
     bibPreview({ bib }) {
       return previewEntries(bib)
     },

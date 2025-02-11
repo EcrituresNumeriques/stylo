@@ -39,6 +39,9 @@ const articleSchema = new Schema(
       default: '',
     },
     workingVersion: {
+      ydoc: {
+        type: Object
+      },
       md: {
         type: String,
         default: '',
