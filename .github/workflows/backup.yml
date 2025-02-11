@@ -1,0 +1,44 @@
+name: Ansible backup dev
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: https://stylo-dev.huma-num.fr
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.10 (w/ cache)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+          cache-dependency-path: '**/deploy-requirements.txt'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install -r .github/workflows/deploy-requirements.txt
+
+      - name: Set Ansible config secrets
+        run: |
+          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_DEV }}" > infrastructure/.ansible-vault-password
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+      - name: Run playbook
+        working-directory: ./infrastructure
+        run: |
+          ansible-playbook -vvv -i inventories/dev \
+            --extra-vars "@vault-dev.yml" \
+            --private-key ~/.ssh/id_ed25519 \
+            --vault-password-file ./.ansible-vault-password \
+            backup-playbook.yml
