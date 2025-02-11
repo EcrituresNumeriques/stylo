@@ -124,7 +124,6 @@ export default function Login() {
               id="username"
               hasError={error !== ''}
               required={true}
-              autoFocus={true}
               autoComplete="username"
               onChange={(event) => setUsername(event.target.value)}
             />
