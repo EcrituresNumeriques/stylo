@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { applicationConfig } from '../config.js'
 
@@ -10,11 +10,13 @@ import { HelpCircle } from 'react-feather'
 import InlineAlert from './feedback/InlineAlert.jsx'
 
 export default function Login() {
+  const params = useParams()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const dispatch = useDispatch()
-  const { replace, location } = useHistory()
+  const navigate = useNavigate()
+  const location = useLocation()
   const setSessionToken = useCallback(
     (token) => dispatch({ type: 'UPDATE_SESSION_TOKEN', token }),
     []
@@ -26,7 +28,10 @@ export default function Login() {
   useEffect(() => {
     if (authToken) {
       setSessionToken(authToken)
-      replace(location.pathname)
+      navigate(params?.state?.returnTo ?? '/', {
+        replace: true,
+        /* maybe?? /* state: { authToken } */
+      })
     }
   }, [authToken])
 
@@ -97,12 +102,6 @@ export default function Login() {
                 href={backendEndpoint + '/login/openid'}
               >
                 Connect with Huma-Num
-              </a>
-              <a
-                className={styles.humaNumCreateAccountBtn}
-                href={humanIdRegisterEndpoint}
-              >
-                Create a Huma-Num account
               </a>
             </p>
 
