@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  deployment:
+  backup:
     runs-on: ubuntu-latest
     environment:
       name: staging
@@ -37,7 +37,7 @@ jobs:
       - name: Run playbook
         working-directory: ./infrastructure
         run: |
-          ansible-playbook -vvv -i inventories/dev \
+          ansible-playbook -v -i inventories/dev \
             --extra-vars "@vault-dev.yml" \
             --private-key ~/.ssh/id_ed25519 \
             --vault-password-file ./.ansible-vault-password \

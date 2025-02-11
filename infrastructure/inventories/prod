@@ -31,6 +31,7 @@ matomo_url={{ lookup('env', 'SNOWPACK_MATOMO_URL') or 'https://analyseweb.huma-n
 matomo_site_id={{ lookup('env', 'SNOWPACK_MATOMO_SITE_ID') or 286 }}
 se_graphql_token=
 assets_path='./front/build'
+mongo_backup_path='/home/stylo/stylo/backup'
 
 [stylo]
 node01 ansible_user=stylo ansible_host=cchum-kvm-stylo.in2p3.fr

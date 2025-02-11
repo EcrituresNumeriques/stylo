@@ -9,19 +9,20 @@
     - name: Populate service facts
       ansible.builtin.service_facts:
 
-    - name: Print service facts
-      ansible.builtin.debug:
-        var: ansible_facts.services
+    - name: Create backup directory if it does not exist
+      ansible.builtin.file:
+        path: "{{ mongo_backup_path }}"
+        state: directory
+        mode: "0755"
 
     - name: Copy config files
       ansible.builtin.template:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
+        mode: "{{ item.mode }}"
       loop:
-        - { src: "./backup.sh", dest: "~/stylo/backup.sh" }
+        - { src: "./backup.sh", dest: "~/stylo/backup.sh", mode: '0755' }
 
-    - name: restart systemd service if it exists
-      service:
-        state: restarted
-        name: ntpd.service
-      when: ansible_facts['services']['ntpd.service']['status'] | default('not-found') != 'not-found'
+    - name: Run backup
+      ansible.builtin.command: ~/stylo/backup.sh
+      when: ansible_facts['services']['docker-compose-stylo.service']['state'] | default('not-found') == 'running'
