@@ -8,7 +8,7 @@
     "doc": "docs"
   },
   "engines": {
-    "node": ">=18",
+    "node": ">=22",
     "npm": ">=10"
   },
   "scripts": {
@@ -32,11 +32,11 @@
   },
   "homepage": "https://github.com/EcrituresNumeriques/stylo#readme",
   "devDependencies": {
-    "concurrently": "^9.0.0",
-    "dotenv": "^16.0.3"
+    "concurrently": "^9.1.2",
+    "dotenv": "^16.4.7"
   },
   "volta": {
-    "node": "18.20.6",
-    "npm": "10.9.0"
+    "node": "22.13.1",
+    "npm": "10.9.2"
   }
 }
