@@ -244,8 +244,8 @@ app.get(
   '/login/openid',
   async (req, res, next) => {
     if (req.user) {
-      const { email } = req.user
-      const token = await createJWTToken({ email, jwtSecret })
+      const user = await User.assessLogin({ email: req.user.email })
+      const token = await createJWTToken({ user, jwtSecret })
       res.redirect(`${req.headers.referer ?? '/'}#auth-token=${token}`)
     } else {
       req.session.origin = req.headers.referer
@@ -302,8 +302,8 @@ app.use(
   '/authorization-code/callback',
   passport.authenticate('oidc', { failWithError: true }),
   async function onSuccess(req, res) {
-    const { email } = req.user
-    const token = await createJWTToken({ email, jwtSecret })
+    const user = await User.assessLogin({ email: req.user.email })
+    const token = await createJWTToken({ user, jwtSecret })
     return res.redirect(`${req.session.origin ?? '/'}#auth-token=${token}`)
   },
   function onFailure(error, req, res) {
@@ -326,9 +326,8 @@ app.post(
   '/login/local',
   passport.authenticate('local', { failWithError: true }),
   async function onSuccess(req, res) {
-    const { email } = req.user
-
-    const token = await createJWTToken({ email, jwtSecret })
+    const user = await User.assessLogin({ email: req.user.email })
+    const token = await createJWTToken({ user, jwtSecret })
 
     res.statusCode = 200
     res.json({ user: req.user, token })
