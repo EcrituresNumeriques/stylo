@@ -9,6 +9,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:jsonc/recommended-with-json',
     'plugin:jsdoc/recommended-typescript-flavor',
+    'prettier',
   ],
   parserOptions: {
     ecmaFeatures: {
