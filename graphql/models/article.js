@@ -323,4 +323,3 @@ articleSchema.post('remove', async function () {
 })
 
 module.exports = mongoose.model('Article', articleSchema)
-module.exports.schema = articleSchema

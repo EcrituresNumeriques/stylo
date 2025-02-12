@@ -38,4 +38,3 @@ const corpusSchema = new Schema(
 )
 
 module.exports = mongoose.model('Corpus', corpusSchema)
-module.exports.schema = corpusSchema

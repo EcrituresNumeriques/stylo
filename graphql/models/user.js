@@ -73,19 +73,21 @@ userSchema.methods.comparePassword = async function (password) {
   return bcrypt.compare(password, oldPassword)
 }
 
-userSchema.methods.createDefaultArticle = async function createDefaultArticle () {
-  const newArticle = await this.model('Article').create({
-    title: defaultArticle.title,
-    zoteroLink: defaultArticle.zoteroLink,
-    owner: this,
-    workingVersion: {
-      metadata: defaultArticle.metadata,
-      bib: defaultArticle.bib,
-      md: defaultArticle.md
-    },
-  })
+userSchema.methods.createDefaultArticle =
+  async function createDefaultArticle() {
+    const newArticle = await this.model('Article').create({
+      title: defaultArticle.title,
+      zoteroLink: defaultArticle.zoteroLink,
+      owner: this,
+      workingVersion: {
+        metadata: defaultArticle.metadata,
+        bib: defaultArticle.bib,
+        md: defaultArticle.md,
+      },
+    })
 
-  await newArticle.createNewVersion({ mode: 'MINOR', user: this })
+    await newArticle.createNewVersion({ mode: 'MINOR', user: this })
+  }
 
 userSchema.statics.assessLogin = async function assessLogin(query) {
   const user = this.findOne(query)
@@ -105,4 +107,3 @@ userSchema.virtual('authTypes').get(function () {
 })
 
 module.exports = mongoose.model('User', userSchema)
-module.exports.schema = userSchema

@@ -57,4 +57,3 @@ const versionSchema = new Schema(
 )
 
 module.exports = mongoose.model('Version', versionSchema)
-module.exports.schema = versionSchema
