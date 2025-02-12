@@ -2,12 +2,13 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const Sentry = require('@sentry/node')
 
-module.exports.createJWTToken = async function createJWTToken ({ email, jwtSecret}) {
-  const user = await User.findOne({ email })
-
+module.exports.createJWTToken = async function createJWTToken({
+  user,
+  jwtSecret,
+}) {
   // generate a JWT token
   const payload = {
-    email,
+    email: user.email,
     _id: user._id,
     authType: user.authType,
     admin: Boolean(user.admin),
@@ -17,7 +18,9 @@ module.exports.createJWTToken = async function createJWTToken ({ email, jwtSecre
   return jwt.sign(payload, jwtSecret)
 }
 
-module.exports.populateUserFromJWT = function populateUserFromJWT ({ jwtSecret }) {
+module.exports.populateUserFromJWT = function populateUserFromJWT({
+  jwtSecret,
+}) {
   return async function populateUserFromJWTMiddleware(req, res, next) {
     const jwtToken = req.headers.authorization?.replace(/^Bearer\s+/, '')
 

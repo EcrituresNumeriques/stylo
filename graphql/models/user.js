@@ -5,67 +5,59 @@ const { article: defaultArticle } = require('../data/defaultsData')
 
 const Schema = mongoose.Schema
 
-const userSchema = new Schema({
-  email: {
-    type: String,
-    unique: true,
-    required: true
-  },
-  username: {
-    type: String,
+const userSchema = new Schema(
+  {
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+    displayName: String,
     // unique but not required, we need to create a sparse index manually
+    username: String,
+    // TODO remove this link
+    tags: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Tag',
+      },
+    ],
+    acquintances: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+    articles: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Article',
+      },
+    ],
+    authType: {
+      type: String,
+      default: 'local',
+      enum: ['local', 'oidc'],
+    },
+    password: {
+      type: String,
+      default: null,
+      set: (password) => {
+        return bcrypt.hashSync(password, 10)
+      },
+    },
+    admin: {
+      type: Boolean,
+      default: false,
+    },
+    firstName: String,
+    lastName: String,
+    institution: String,
+    connectedAt: Date,
+    zoteroToken: String,
   },
-  // TODO remove this link
-  tags: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Tag'
-    }
-  ],
-  acquintances: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    }
-  ],
-  articles: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Article'
-    }
-  ],
-  authType: {
-    type: String,
-    default: 'local',
-    enum: ['local', 'oidc']
-  },
-  password: {
-    type: String,
-    default: null,
-    set: (password) => {
-      return bcrypt.hashSync(password, 10)
-    }
-  },
-  displayName: {
-    type: String,
-  },
-  admin: {
-    type: Boolean,
-    default: false
-  },
-  firstName: {
-    type: String
-  },
-  lastName: {
-    type: String
-  },
-  institution: {
-    type: String
-  },
-  zoteroToken: {
-    type: String
-  }
-}, { timestamps: true })
+  { timestamps: true }
+)
 
 /**
  * Compare an existing password against a user input one.
