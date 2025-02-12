@@ -50,8 +50,8 @@ function Header() {
                       <NavLink
                         to={
                           activeWorkspaceId
-                            ? `/workspaces/${activeWorkspaceId}/books`
-                            : '/books'
+                            ? `/workspaces/${activeWorkspaceId}/corpus`
+                            : '/corpus'
                         }
                       >
                         Corpus
