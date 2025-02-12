@@ -183,8 +183,6 @@ type Query {
   tags(user: ID): [Tag]
   "Get authenticated user info."
   user(user: ID): User
-  "Fetch all users [Reserved for admins]"
-  users: [User]
   "Fetch version info"
   version(version: ID!): Version
   "Get a given workspace"

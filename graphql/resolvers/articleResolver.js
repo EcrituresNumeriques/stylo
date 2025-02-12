@@ -336,8 +336,8 @@ module.exports = {
   },
 
   Article: {
-    async workspaces(article, _, { user }) {
-      if (user.admin) {
+    async workspaces(article, _, { user, token }) {
+      if (token.admin) {
         return Workspace.find({ articles: article._id })
       }
       return Workspace.find({

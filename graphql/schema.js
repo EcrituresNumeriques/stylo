@@ -50,7 +50,6 @@ type User {
   acquintances(limit: Int, page: Int): [User]
   articles(limit: Int, page: Int): [Article]
   workspaces: [Workspace!]
-  admin: Boolean
   zoteroToken: String
   createdAt: DateTime
   updatedAt: DateTime
@@ -352,9 +351,6 @@ input FilterCorpusInput {
 }
 
 type Query {
-  "Fetch all users [Reserved for admins]"
-  users: [User]
-
   """
   Get authenticated user info.
   """

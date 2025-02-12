@@ -3,7 +3,7 @@ const Corpus = require('../models/corpus')
 const Workspace = require('../models/workspace')
 
 async function getCorpusByContext(corpusId, context) {
-  if (context.token?.admin === true || context.user?.admin) {
+  if (context.token?.admin) {
     return getCorpus(corpusId)
   }
   const userId = context.userId

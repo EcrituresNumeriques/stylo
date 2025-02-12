@@ -164,7 +164,6 @@ export default function UserInfos() {
           <Field label={t('user.account.id')}>
             <code>{activeUser._id}</code>
           </Field>
-          {activeUser.admin && <Field label="Admin">✔️</Field>}
           <Field label={t('user.account.createdAt')}>
             <TimeAgo date={activeUser.createdAt} />
           </Field>
