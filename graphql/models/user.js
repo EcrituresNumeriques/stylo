@@ -90,7 +90,7 @@ userSchema.methods.createDefaultArticle =
   }
 
 userSchema.statics.assessLogin = async function assessLogin(query) {
-  const user = this.findOne(query)
+  const user = await this.findOne(query)
   user.connectedAt = Date.now()
   return user.save()
 }
