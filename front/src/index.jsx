@@ -63,7 +63,7 @@ const Preview = lazy(() => import('./components/Preview.jsx'))
 const Privacy = lazy(() => import('./components/Privacy'))
 
 const store = createStore()
-const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|books)$/
+const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|corpus)$/
 
 ;(async () => {
   let { sessionToken } = store.getState()
@@ -150,9 +150,9 @@ root.render(
                 >
                   <Articles />
                 </PrivateRoute>
-                {/* Books index */}
+                {/* Corpus index */}
                 <PrivateRoute
-                  path={['/books', '/workspaces/:workspaceId/books']}
+                  path={['/corpus', '/workspaces/:workspaceId/corpus']}
                   exact
                 >
                   <Corpus />
@@ -165,11 +165,11 @@ root.render(
                   <UserInfos />
                   <Credentials />
                 </PrivateRoute>
-                {/* Annotate a Book */}
+                {/* Annotate a Corpus */}
                 <Route
                   path={[
-                    '/workspaces/:workspaceId/books/:id/preview',
-                    '/books/:id/preview',
+                    '/workspaces/:workspaceId/corpus/:id/preview',
+                    '/corpus/:id/preview',
                   ]}
                   exact
                 >

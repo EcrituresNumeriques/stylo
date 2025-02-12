@@ -10,21 +10,21 @@ import {
   Printer,
 } from 'react-feather'
 
-import Modal from './Modal'
-import Export from './Export'
-import Chapter from './Chapter'
+import Modal from './Modal.jsx'
+import Export from './Export.jsx'
+import Chapter from './Chapter.jsx'
 
-import etv from '../helpers/eventTargetValue'
-import { useGraphQL } from '../helpers/graphQL'
-import { updateTag as query } from './Books.graphql'
+import etv from '../helpers/eventTargetValue.js'
+import { useGraphQL } from '../helpers/graphQL.js'
+import { updateTag as query } from './Corpus.graphql'
 
 import styles from './articles.module.scss'
 import buttonStyles from './button.module.scss'
 import fieldStyles from './field.module.scss'
 
-import Button from './Button'
-import Field from './Field'
-import { useCurrentUser } from '../contexts/CurrentUser'
+import Button from './Button.jsx'
+import Field from './Field.jsx'
+import { useCurrentUser } from '../contexts/CurrentUser.js'
 import clsx from 'clsx'
 import TimeAgo from './TimeAgo.jsx'
 
@@ -118,7 +118,7 @@ export default function Book({ name: tagName, _id, updatedAt, articles }) {
             .join(' ')}
           title={t('corpus.preview.buttonTitle')}
           target="_blank"
-          to={`/books/${_id}/preview`}
+          to={`/corpus/${_id}/preview`}
         >
           <MessageSquare />
         </Link>
