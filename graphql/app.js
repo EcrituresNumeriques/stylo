@@ -42,8 +42,6 @@ const WebSocket = require('ws')
 const { handleEvents } = require('./events')
 const wss = new WebSocket.Server({ noServer: true })
 
-const app = express()
-
 const listenPort = config.get('port')
 const origin = config.get('security.cors.origin')
 const jwtSecret = config.get('security.jwt.secret')
@@ -101,13 +99,25 @@ if (config.get('sentry.dsn')) {
     includeLocalVariables: true,
     integrations: [
       nodeProfilingIntegration(),
+      Sentry.dedupeIntegration(),
       Sentry.mongooseIntegration(),
+      Sentry.graphqlIntegration(),
       Sentry.dataloaderIntegration(),
+      Sentry.consoleIntegration(),
+      Sentry.extraErrorDataIntegration(),
+      Sentry.onUncaughtExceptionIntegration(),
+      Sentry.onUnhandledRejectionIntegration(),
+      Sentry.linkedErrorsIntegration(),
+      Sentry.rewriteFramesIntegration(),
     ],
+    tracesSampleRate: 1.0,
+    profilesSampleRate: 1.0,
   })
-
-  Sentry.setupExpressErrorHandler(app)
 }
+
+const app = express()
+
+config.get('sentry.dsn') && Sentry.setupExpressErrorHandler(app)
 
 passport.use(
   'zotero',
