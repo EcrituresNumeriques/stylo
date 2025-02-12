@@ -87,8 +87,10 @@ userSchema.methods.createDefaultArticle = async function createDefaultArticle ()
 
   await newArticle.createNewVersion({ mode: 'MINOR', user: this })
 
-  this.articles.push(newArticle)
-  return this.save()
+userSchema.statics.assessLogin = async function assessLogin(query) {
+  const user = this.findOne(query)
+  user.connectedAt = Date.now()
+  return user.save()
 }
 
 userSchema.virtual('authTypes').get(function () {
