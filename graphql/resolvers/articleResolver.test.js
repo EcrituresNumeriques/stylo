@@ -9,17 +9,17 @@ describe('article resolver', () => {
     const context = {
       user: {
         email: 'bob@huma-num.fr',
-        admin: false,
         id: userId.toString(),
-        _id: userId._id
-      }
+        _id: userId._id,
+      },
+      token: {},
     }
     const article = await Article.create({
       title: 'My thesis',
       owner: [userId],
       contributors: [],
       versions: [],
-      tags: []
+      tags: [],
     })
     await Workspace.create({
       name: 'Workspace A',
@@ -27,15 +27,15 @@ describe('article resolver', () => {
       members: [
         {
           user: new ObjectId(),
-          role: 'editor'
+          role: 'editor',
         },
         {
           user: new ObjectId(),
-          role: 'translator'
+          role: 'translator',
         },
         {
           user: userId,
-          role: 'contributor'
+          role: 'contributor',
         },
       ],
       articles: [article._id],
@@ -47,7 +47,7 @@ describe('article resolver', () => {
       members: [
         {
           user: new ObjectId(),
-          role: 'editor'
+          role: 'editor',
         },
       ],
       articles: [article._id],
@@ -59,24 +59,31 @@ describe('article resolver', () => {
       members: [
         {
           user: userId,
-          role: 'editor'
+          role: 'editor',
         },
       ],
       articles: [article._id],
       creator: new ObjectId(),
     })
     let workspaces = await ArticleMutation.workspaces(article, {}, context)
-    expect(workspaces.map(w => w.toObject())).toMatchObject([
+    expect(workspaces.map((w) => w.toObject())).toMatchObject([
       { name: 'Workspace A' },
       //  should not contain Workspace B because user is not invited in this workspace
-      { name: 'Workspace C' }
+      { name: 'Workspace C' },
     ])
-    const contextWithAdminUser = { user: { ...context.user, admin: true } }
-    workspaces = await ArticleMutation.workspaces(article, {}, contextWithAdminUser)
-    expect(workspaces.map(w => w.toObject())).toMatchObject([
+    const contextWithAdminUser = {
+      user: { ...context.user },
+      token: { admin: true },
+    }
+    workspaces = await ArticleMutation.workspaces(
+      article,
+      {},
+      contextWithAdminUser
+    )
+    expect(workspaces.map((w) => w.toObject())).toMatchObject([
       { name: 'Workspace A' },
       { name: 'Workspace B' }, // admin user can see all workspaces that includes a given article
-      { name: 'Workspace C' }
+      { name: 'Workspace C' },
     ])
   })
 })

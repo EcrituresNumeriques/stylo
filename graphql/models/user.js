@@ -46,10 +46,6 @@ const userSchema = new Schema(
         return bcrypt.hashSync(password, 10)
       },
     },
-    admin: {
-      type: Boolean,
-      default: false,
-    },
     firstName: String,
     lastName: String,
     institution: String,
@@ -87,6 +83,9 @@ userSchema.methods.createDefaultArticle =
     })
 
     await newArticle.createNewVersion({ mode: 'MINOR', user: this })
+
+    this.articles.push(newArticle)
+    return this.save()
   }
 
 userSchema.statics.assessLogin = async function assessLogin(query) {

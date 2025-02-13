@@ -11,7 +11,6 @@ module.exports.createJWTToken = async function createJWTToken({
     email: user.email,
     _id: user._id,
     authType: user.authType,
-    admin: Boolean(user.admin),
     session: true,
   }
 
