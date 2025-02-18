@@ -52,7 +52,7 @@ export default function LanguagesMenu() {
                 Français
               </li>
               <li
-                onClick={() => handleLanguageChange('fr')}
+                onClick={() => handleLanguageChange('es')}
                 className={language === 'es' ? styles.activeStyle : ''}
                 title="Spanish"
               >
