@@ -51,6 +51,13 @@ export default function LanguagesMenu() {
               >
                 Français
               </li>
+              <li
+                onClick={() => handleLanguageChange('fr')}
+                className={language === 'es' ? styles.activeStyle : ''}
+                title="Spanish"
+              >
+                Spanish
+              </li>
             </ul>
           </div>
         </div>
