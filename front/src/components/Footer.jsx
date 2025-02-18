@@ -20,6 +20,7 @@ function Footer() {
     <Switch>
       <Route path="*/preview" />
       <Route path="/article/*" />
+      <Route path="/credentials/auth-callback" />
       <Route path="*">
         <footer className={styles.footerContainer}>
           <ul className={styles.footerList}>

@@ -91,6 +91,7 @@ function createRootReducer(state) {
   return createReducer(state, {
     PROFILE: setProfile,
     CLEAR_ZOTERO_TOKEN: clearZoteroToken,
+    SET_AUTH_TOKEN: setAuthToken,
     LOGIN: loginUser,
     UPDATE_SESSION_TOKEN: setSessionToken,
     UPDATE_ACTIVE_USER_DETAILS: updateActiveUserDetails,
@@ -312,6 +313,18 @@ function clearZoteroToken(state) {
       ...state.activeUser,
       zoteroToken: null,
     },
+  }
+}
+
+function setAuthToken(state, { service, token = null }) {
+  if (service === 'zotero') {
+    return {
+      ...state,
+      activeUser: {
+        ...state.activeUser,
+        zoteroToken: token,
+      },
+    }
   }
 }
 

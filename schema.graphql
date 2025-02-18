@@ -165,6 +165,8 @@ type Mutation {
   updateUser(details: UserProfileInput!, user: ID): User
   "Get a workspace for mutation"
   workspace(workspaceId: ID!): Workspace
+
+  setAuthToken(service: String!, token: String): User
 }
 
 type Query {

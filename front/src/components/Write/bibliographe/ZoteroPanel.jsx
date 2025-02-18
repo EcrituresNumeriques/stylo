@@ -7,9 +7,8 @@ import {
   fetchBibliographyFromCollectionHref,
 } from '../../../helpers/zotero'
 import { useGraphQLClient } from '../../../helpers/graphQL'
-import { useProfile } from '../../../helpers/userProfile'
-import { applicationConfig } from '../../../config.js'
 import { linkToZotero as linkToZoteroQuery } from '../../Article.graphql'
+import { useSetAuthToken } from '../../../hooks/user.js'
 
 import Button from '../../Button'
 import Field from '../../Field'
@@ -31,7 +30,6 @@ export default function ZoteroPanel({
   const { t } = useTranslation()
   const zoteroToken = useSelector((state) => state.activeUser.zoteroToken)
   const userId = useSelector((state) => state.activeUser._id)
-  const { backendEndpoint } = applicationConfig
   const [zoteroLink, setZoteroLink] = useState(initialZoteroLink)
   const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)
   /**
@@ -41,7 +39,6 @@ export default function ZoteroPanel({
 
   const [isSaving, setSaving] = useState(false)
   const { query } = useGraphQLClient()
-  const refreshProfile = useProfile()
 
   const handleZoteroLinkChange = useCallback(
     (event) => setZoteroLink(event.target.value),
@@ -143,19 +140,7 @@ export default function ZoteroPanel({
     }
   }, [])
 
-  const handleZoteroAccountConnection = useCallback(() => {
-    const popup = window.open(
-      `${backendEndpoint}/login/zotero`,
-      'openid',
-      'width=660&height=360&menubar=0&toolbar=0'
-    )
-    const intervalId = setInterval(() => {
-      if (popup.closed) {
-        refreshProfile()
-        clearInterval(intervalId)
-      }
-    }, 1000)
-  }, [])
+  const { link: linkZoteroAccount } = useSetAuthToken('zotero')
 
   useEffect(() => {
     if (zoteroToken) {
@@ -198,7 +183,7 @@ export default function ZoteroPanel({
         )}
 
         {!zoteroToken && (
-          <Button type="button" onClick={handleZoteroAccountConnection}>
+          <Button type="button" onClick={linkZoteroAccount}>
             {t('zoteroPanel.buttonZoteroAccount.text')}
           </Button>
         )}
