@@ -90,7 +90,6 @@ export const initialState = {
 function createRootReducer(state) {
   return createReducer(state, {
     PROFILE: setProfile,
-    CLEAR_ZOTERO_TOKEN: clearZoteroToken,
     SET_AUTH_TOKEN: setAuthToken,
     LOGIN: loginUser,
     UPDATE_SESSION_TOKEN: setSessionToken,
@@ -302,16 +301,6 @@ function setProfile(state, action) {
       ...state.activeUser,
       activeWorkspaceId: action.activeWorkspaceId,
       ...user,
-    },
-  }
-}
-
-function clearZoteroToken(state) {
-  return {
-    ...state,
-    activeUser: {
-      ...state.activeUser,
-      zoteroToken: null,
     },
   }
 }
