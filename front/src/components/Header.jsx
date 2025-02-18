@@ -23,6 +23,7 @@ function Header() {
   return (
     <Switch>
       <Route path="*/preview" />
+      <Route path="/credentials/auth-callback" />
       <Route path="*">
         <header className={styles.headerContainer}>
           <section className={styles.header}>
