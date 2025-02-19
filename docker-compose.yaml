@@ -53,7 +53,7 @@ services:
       - graphql-stylo
 
   export-stylo:
-    image: 'davidbgk/stylo-export:2.1.1'
+    image: 'davidbgk/stylo-export:2.2.1'
     container_name: 'export-stylo'
     env_file:
       - .env
