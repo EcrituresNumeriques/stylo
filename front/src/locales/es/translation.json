@@ -23,7 +23,7 @@
   "article.createForm.tagsField": "Etiquetas",
   "article.createForm.titleField": "Título",
   "article.search.placeholder": "Búsqueda",
-  "article.download.button": "Télécharger",
+  "article.download.button": "Exportar",
   "article.share.button": "Compartir",
   "article.delete.button": "Borrar",
   "article.duplicate.button": "Duplicar",
