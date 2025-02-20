@@ -27,6 +27,7 @@ import Register from './components/Register'
 import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/404'
 import Error from './components/Error'
+import AuthCallback from './components/AuthCallback'
 import { applicationConfig } from './config.js'
 import Story from './stories/Story.jsx'
 import { Helmet } from 'react-helmet'
@@ -163,9 +164,15 @@ root.render(
                 <PrivateRoute path={['/workspaces']} exact>
                   <Workspaces />
                 </PrivateRoute>
+
+                {/* User preferences and such */}
                 <PrivateRoute path="/credentials" exact>
                   <UserInfos />
                   <Credentials />
+                </PrivateRoute>
+
+                <PrivateRoute exact path="/credentials/auth-callback/:service">
+                  <AuthCallback />
                 </PrivateRoute>
                 {/* Annotate a Corpus */}
                 <Route

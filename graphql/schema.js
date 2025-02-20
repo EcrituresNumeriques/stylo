@@ -392,6 +392,9 @@ type Mutation {
   "Create user + password + default article"
   createUser(details: NewUserInput!): User!
 
+  "Sets a user authentication token (to something, or nothing if unlinking services"
+  setAuthToken (service: String!, token: String): User
+
   "Add an email to your acquintances [need to be authentificated as user]"
   addAcquintance(email: EmailAddress!, user: ID): User
 
