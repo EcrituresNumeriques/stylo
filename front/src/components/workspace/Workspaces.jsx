@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { Search } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
+import { Helmet } from 'react-helmet'
+
 import Field from '../../components/Field.jsx'
 
 import WorkspaceItem from '../../components/workspace/WorkspaceItem.jsx'
@@ -62,6 +64,9 @@ export default function Workspaces() {
 
   return (
     <CurrentUserContext.Provider value={activeUser}>
+      <Helmet>
+        <title>{t('workspace.title')}</title>
+      </Helmet>
       <section className={styles.section}>
         <h1>{t('workspace.title')}</h1>
         <div>

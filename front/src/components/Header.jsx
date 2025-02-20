@@ -24,77 +24,70 @@ function Header() {
     <Switch>
       <Route path="*/preview" />
       <Route path="*">
-        <header className={styles.headerContainer}>
+        <header className={styles.headerContainer} role="banner">
           <section className={styles.header}>
             <h1 className={styles.logo}>
-              <NavLink to="/">
+              <NavLink to="/" rel="home">
                 <img src={logoContent} alt="Stylo" title="Stylo" />
               </NavLink>
             </h1>
-            {connected && (
-              <>
-                <nav>
-                  <ul className={styles.menuLinks}>
-                    <li>
-                      <NavLink
-                        to={
-                          activeWorkspaceId
-                            ? `/workspaces/${activeWorkspaceId}/articles`
-                            : '/articles'
-                        }
-                      >
-                        Articles
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to={
-                          activeWorkspaceId
-                            ? `/workspaces/${activeWorkspaceId}/corpus`
-                            : '/corpus'
-                        }
-                      >
-                        Corpus
-                      </NavLink>
-                    </li>
-                  </ul>
-                </nav>
-                <nav className={styles.secondaryNav}>
-                  <UserMenu />
-                  <a
-                    className={styles.documentationLink}
-                    href="https://stylo-doc.ecrituresnumeriques.ca"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <LifeBuoy size={16} />
-                    Documentation
-                  </a>
-                  <LanguagesMenu />
-                </nav>
-              </>
-            )}
-            {!connected && (
-              <>
-                <nav>
-                  <ul className={styles.menuLinks}>
-                    <li>
-                      <NavLink to="/">
-                        {t('credentials.login.confirmButton')}
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink to="/register" className={styles.registerAction}>
-                        {t('credentials.login.registerLink')}
-                      </NavLink>
-                    </li>
-                  </ul>
-                </nav>
-                <nav className={styles.secondaryNav}>
-                  <LanguagesMenu />
-                </nav>
-              </>
-            )}
+            <nav role="navigation">
+              <ul className={styles.menuLinks}>
+                {connected && (
+                  <li>
+                    <NavLink
+                      to={
+                        activeWorkspaceId
+                          ? `/workspaces/${activeWorkspaceId}/articles`
+                          : '/articles'
+                      }
+                    >
+                      Articles
+                    </NavLink>
+                  </li>
+                )}
+                {connected && (
+                  <li>
+                    <NavLink
+                      to={
+                        activeWorkspaceId
+                          ? `/workspaces/${activeWorkspaceId}/corpus`
+                          : '/corpus'
+                      }
+                    >
+                      Corpus
+                    </NavLink>
+                  </li>
+                )}
+                {!connected && (
+                  <li>
+                    <NavLink to="/">
+                      {t('credentials.login.confirmButton')}
+                    </NavLink>
+                  </li>
+                )}
+                {!connected && (
+                  <li>
+                    <NavLink to="/register" className={styles.registerAction}>
+                      {t('credentials.login.registerLink')}
+                    </NavLink>
+                  </li>
+                )}
+              </ul>
+            </nav>
+            <nav className={styles.secondaryNav}>
+              {connected && <UserMenu />}
+              <a
+                className={styles.documentationLink}
+                href="https://stylo-doc.ecrituresnumeriques.ca"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <LifeBuoy size={16} />
+                Documentation
+              </a>
+              <LanguagesMenu />
+            </nav>
           </section>
         </header>
       </Route>

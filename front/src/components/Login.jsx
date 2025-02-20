@@ -1,6 +1,8 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import { Helmet } from 'react-helmet'
+import { useTranslation } from 'react-i18next'
 import { applicationConfig } from '../config.js'
 
 import styles from './login.module.scss'
@@ -10,6 +12,7 @@ import { HelpCircle } from 'react-feather'
 import InlineAlert from './feedback/InlineAlert.jsx'
 
 export default function Login() {
+  const { t } = useTranslation()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -60,6 +63,9 @@ export default function Login() {
 
   return (
     <>
+      <Helmet>
+        <title>{t('credentials.login.confirmButton')}</title>
+      </Helmet>
       <section className={styles.disclaimer}>
         <p>
           Looking for technical and editing support?

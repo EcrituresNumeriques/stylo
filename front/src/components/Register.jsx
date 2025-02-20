@@ -10,6 +10,7 @@ import Field from './Field'
 import Button from './Button'
 import { ArrowLeftCircle, Check } from 'react-feather'
 import { fromFormData, validateSameFieldValue } from '../helpers/forms.js'
+import { Helmet } from 'react-helmet'
 
 export default function Register() {
   const { t } = useTranslation()
@@ -41,6 +42,9 @@ export default function Register() {
 
   return (
     <section className={styles.box}>
+      <Helmet>
+        <title>{t('credentials.login.registerLink')}</title>
+      </Helmet>
       <form onSubmit={handleFormSubmit} id="form-register">
         <h1>{t('credentials.register.title')}</h1>
 
