@@ -32,6 +32,7 @@ import PreviewPaged from './PreviewPaged'
 import Loading from '../Loading'
 import MonacoEditor from './providers/monaco/Editor'
 import clsx from 'clsx'
+import { Helmet } from 'react-helmet'
 
 const MODES_PREVIEW = 'preview'
 const MODES_READONLY = 'readonly'
@@ -350,6 +351,9 @@ export default function Write() {
 
   return (
     <section className={styles.container}>
+      <Helmet>
+        <title>{t('article.page.title', { title: articleInfos.title })}</title>
+      </Helmet>
       <GeistModal
         width="40rem"
         visible={collaborativeSessionActiveVisible}

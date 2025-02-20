@@ -29,6 +29,7 @@ import NotFound from './components/404'
 import Error from './components/Error'
 import { applicationConfig } from './config.js'
 import Story from './stories/Story.jsx'
+import { Helmet } from 'react-helmet'
 
 const Route = Sentry.withSentryRouting(OriginalRoute)
 const history = createBrowserHistory()
@@ -132,6 +133,7 @@ const root = createRoot(document.getElementById('root'), {
 
 root.render(
   <React.StrictMode>
+    <Helmet defaultTitle="Stylo" titleTemplate="%s - Stylo" />
     <GeistProvider>
       <Provider store={store}>
         <Suspense fallback={<Loading />}>
