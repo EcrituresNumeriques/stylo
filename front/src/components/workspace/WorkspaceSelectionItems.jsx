@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
 import { getArticleWorkspaces } from './Workspaces.graphql'
-import useGraphQL from '../../hooks/graphql.js'
+import useFetchData from '../../hooks/graphql.js'
 import WorkspaceSelectItem from './WorkspaceSelectItem.jsx'
 
 export default function WorkspaceSelectionItems({ articleId }) {
   const userWorkspaces = useSelector((state) => state.activeUser.workspaces)
-  const { data, isLoading, mutate } = useGraphQL(
+  const { data, isLoading, mutate } = useFetchData(
     { query: getArticleWorkspaces, variables: { articleId } },
     {
       revalidateOnFocus: false,

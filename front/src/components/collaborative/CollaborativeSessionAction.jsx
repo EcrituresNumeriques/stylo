@@ -5,10 +5,9 @@ import { Users } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 
-import { useMutation } from '../../hooks/graphql.js'
-
 import { startCollaborativeSession } from '../Article.graphql'
 import Button from '../Button.jsx'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
 
 export default function CollaborativeSessionAction({
   collaborativeSession,
@@ -16,7 +15,7 @@ export default function CollaborativeSessionAction({
 }) {
   const { t } = useTranslation()
   const history = useHistory()
-  const mutation = useMutation()
+  const { query } = useGraphQLClient()
   const {
     visible: collaborativeEditingVisible,
     setVisible: setCollaborativeEditingVisible,
@@ -30,7 +29,7 @@ export default function CollaborativeSessionAction({
       history.push(`/article/${articleId}/session/${collaborativeSession.id}`)
     } else {
       // start a new collaborative session
-      const data = await mutation({
+      const data = await query({
         query: startCollaborativeSession,
         variables: { articleId },
       })
