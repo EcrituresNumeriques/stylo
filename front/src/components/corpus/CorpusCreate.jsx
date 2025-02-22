@@ -2,7 +2,7 @@ import { Button, Textarea, useInput, useToasts } from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { useGraphQL } from '../../helpers/graphQL.js'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { useActiveWorkspace } from '../../hooks/workspace.js'
 
 import Field from '../Field.jsx'
@@ -18,7 +18,7 @@ export default function CorpusCreate({ onSubmit }) {
   const { state: title, bindings: titleBindings } = useInput('')
   const { state: description, bindings: descriptionBindings } = useInput('')
   const titleInputRef = useRef()
-  const runQuery = useGraphQL()
+  const { query } = useGraphQLClient()
   const activeWorkspace = useActiveWorkspace()
   const activeWorkspaceId = useMemo(
     () => activeWorkspace?._id,
@@ -35,7 +35,7 @@ export default function CorpusCreate({ onSubmit }) {
     async (event) => {
       try {
         event.preventDefault()
-        const response = await runQuery({
+        const response = await query({
           query: createCorpus,
           variables: {
             createCorpusInput: {

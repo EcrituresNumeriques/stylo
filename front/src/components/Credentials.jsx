@@ -2,8 +2,8 @@ import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-import { useGraphQL } from '../helpers/graphQL'
-import { changePassword as query } from './Credentials.graphql'
+import { useGraphQLClient } from '../helpers/graphQL'
+import { changePassword as changePasswordQuery } from './Credentials.graphql'
 import styles from './credentials.module.scss'
 import fieldStyles from './field.module.scss'
 import Button from './Button'
@@ -19,7 +19,7 @@ export default function Credentials() {
   const hasExistingPassword = useSelector((state) =>
     state.activeUser.authTypes.includes('local')
   )
-  const runQuery = useGraphQL()
+  const { query } = useGraphQLClient()
   const { t } = useTranslation()
 
   const canSubmit = useMemo(() => {
@@ -39,7 +39,7 @@ export default function Credentials() {
         new: password,
         user: userId,
       }
-      await runQuery({ query, variables })
+      await query({ query: changePasswordQuery, variables })
       setPassword('')
       setPasswordO('')
       setPasswordC('')

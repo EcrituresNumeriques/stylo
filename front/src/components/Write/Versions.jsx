@@ -17,7 +17,7 @@ import styles from './versions.module.scss'
 import menuStyles from './menu.module.scss'
 import buttonStyles from '../button.module.scss'
 
-import { useGraphQL } from '../../helpers/graphQL'
+import { useGraphQLClient } from '../../helpers/graphQL'
 import { renameVersion } from './Write.graphql'
 
 import Modal from '../Modal'
@@ -62,7 +62,7 @@ function Version({ articleId, compareTo, readOnly, selectedVersion, v }) {
     [styles.compareTo]: isComparing && articleVersionId === compareTo,
   })
 
-  const runQuery = useGraphQL()
+  const { query } = useGraphQLClient()
   const [renaming, setRenaming] = useState(false)
   const [title, setTitle] = useState(v.message)
   const versionType = v.type || 'userAction'
@@ -80,7 +80,7 @@ function Version({ articleId, compareTo, readOnly, selectedVersion, v }) {
     async (event) => {
       event.preventDefault()
       const variables = { version: articleVersionId, name: title }
-      await runQuery({ query: renameVersion, variables })
+      await query({ query: renameVersion, variables })
       setTitle(title)
       setRenaming(false)
     },

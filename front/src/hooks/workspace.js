@@ -1,14 +1,14 @@
 import { useSelector } from 'react-redux'
 import { useSWRConfig } from 'swr'
 import {
+  create as createMutation,
   getWorkspaceMembers,
   getWorkspaces,
   inviteMember as inviteMemberMutation,
-  removeMember as removeMemberMutation,
-  create as createMutation,
   leave as leaveMutation,
+  removeMember as removeMemberMutation,
 } from '../components/workspace/Workspaces.graphql'
-import { runQuery } from '../helpers/graphQL.js'
+import { executeQuery } from '../helpers/graphQL.js'
 import useGraphQL, { useMutation, useSWRKey } from './graphql.js'
 
 export function useActiveWorkspace() {
@@ -110,34 +110,30 @@ export function useWorkspaceActions() {
   const key = useSWRKey()({ query: getWorkspaces })
   const sessionToken = useSelector((state) => state.sessionToken)
   const addWorkspace = async (workspace) => {
-    await runQuery(
-      { sessionToken },
-      {
-        query: createMutation,
-        variables: {
-          data: {
-            color: workspace.color,
-            description: workspace.description,
-            name: workspace.name,
-          },
+    await executeQuery({
+      sessionToken,
+      query: createMutation,
+      variables: {
+        data: {
+          color: workspace.color,
+          description: workspace.description,
+          name: workspace.name,
         },
-      }
-    )
+      },
+    })
     await mutate(key, async (data) => ({
       workspaces: [workspace, ...data.workspaces],
     }))
   }
 
   const leaveWorkspace = async (workspaceId) => {
-    await runQuery(
-      { sessionToken },
-      {
-        query: leaveMutation,
-        variables: {
-          workspaceId,
-        },
-      }
-    )
+    await executeQuery({
+      sessionToken,
+      query: leaveMutation,
+      variables: {
+        workspaceId,
+      },
+    })
     await mutate(
       key,
       async (data) => ({

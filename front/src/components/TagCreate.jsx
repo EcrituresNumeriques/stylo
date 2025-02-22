@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { randomColor } from '../helpers/colors.js'
-import { useGraphQL } from '../helpers/graphQL'
+import { useGraphQLClient } from '../helpers/graphQL'
 import { useMutate } from '../hooks/graphql'
 import { createTag, getTags } from './Tag.graphql'
 
@@ -20,7 +20,7 @@ export default function TagCreate() {
   const { state: color, bindings: colorBindings } = useInput(randomColor())
 
   const activeUser = useCurrentUser()
-  const runQuery = useGraphQL()
+  const { query } = useGraphQLClient()
 
   const variables = {
     user: activeUser._id,
@@ -34,7 +34,7 @@ export default function TagCreate() {
       event.preventDefault()
       ;(async () => {
         try {
-          const result = await runQuery({
+          const result = await query({
             query: createTag,
             variables,
           })

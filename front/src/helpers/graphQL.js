@@ -1,5 +1,5 @@
-import { useSelector } from 'react-redux'
 import { print } from 'graphql/language/printer'
+import { useSelector } from 'react-redux'
 import { applicationConfig } from '../config.js'
 
 /**
@@ -21,11 +21,19 @@ async function getErrorResponse(response) {
   }
 }
 
-export default async function askGraphQL(
-  payload,
-  action = 'fetching from the server',
-  sessionToken = null
-) {
+/**
+ * @param {string} query request query (as string)
+ * @param {{[string: key]: value}|undefined} variables request variables
+ * @param {string} sessionToken session token (for authentication)
+ * @param {'fetch'|'mutate'} [type='fetch'] request type (either fetch or mutate)
+ * @returns {Promise<string|object>}
+ */
+async function executeRequest({
+  query,
+  variables,
+  sessionToken,
+  type = 'fetch',
+}) {
   const response = await fetch(applicationConfig.graphqlEndpoint, {
     method: 'POST',
     mode: 'cors',
@@ -36,13 +44,16 @@ export default async function askGraphQL(
       // Authorization header is provided only when we have a token
       ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {}),
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({
+      query,
+      variables,
+    }),
   })
 
   if (!response.ok) {
     const errorResponse = await getErrorResponse(response)
     console.error(
-      `Something wrong happened during: ${action} => ${response.status}, ${
+      `Something wrong happened during ${type} => ${response.status}, ${
         response.statusText
       }: ${JSON.stringify(errorResponse)}`
     )
@@ -50,29 +61,47 @@ export default async function askGraphQL(
       errorResponse && errorResponse.errors && errorResponse.errors.length
         ? errorResponse.errors[0].message
         : 'Unexpected error!'
-    throw new Error(errorMessage)
+    const error = new Error(errorMessage)
+    error.messages = errorResponse?.errors ?? [errorMessage]
+    throw error
   }
 
-  const json = await response.json()
-  if (json.errors) {
-    throw new Error(json.errors[0].message)
+  const body = await response.json()
+  if (body.errors) {
+    const errorMessage =
+      type === 'fetch'
+        ? 'Something wrong happened while fetching data.'
+        : 'Something wrong happened while mutating data.'
+    const error = new Error(errorMessage)
+    error.messages = body.errors
+    throw error
   }
-  return json.data
+  return body.data
 }
 
-export function useGraphQL() {
+export function useGraphQLClient() {
   const sessionToken = useSelector((state) => state.sessionToken)
-  return runQuery.bind(null, { sessionToken })
+  return {
+    query: ({query, variables}) =>
+      executeQuery({ query, variables, sessionToken }),
+  }
 }
 
 /**
- * @param {string} sessionToken
- * @param {DocumentNode|string} queryOrAST
- * @param {{[string: key]: value}} variables
+ * @param {Object} context query context
+ * @param {DocumentNode|string} context.query request query (as AST or string)
+ * @param {{[string: key]: any}|undefined} context.variables request variables
+ * @param {string} context.sessionToken session token (for authentication)
+ * @param {'fetch'|'mutate'} [context.type='fetch'] request type (either fetch or mutate)
  * @returns {Promise<string|object>}
+ * @throws Error if something went wrong
  */
-export function runQuery({ sessionToken }, { query: queryOrAST, variables }) {
+export function executeQuery({
+  query: queryOrAST,
+  variables,
+  sessionToken,
+  type = 'fetch',
+}) {
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
-
-  return askGraphQL({ query, variables }, null, sessionToken)
+  return executeRequest({ query, variables, sessionToken, type })
 }
