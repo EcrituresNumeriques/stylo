@@ -4,25 +4,20 @@ import { useToasts } from '@geist-ui/core'
 import { Send } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 
-import { duplicateArticle } from './Article.graphql'
-
 import styles from './articleSendCopy.module.scss'
 import ContactSearch from './ContactSearch.jsx'
-import { useMutation } from '../hooks/graphql.js'
+import { useArticleActions } from '../hooks/article.js'
 
 export default function ArticleSendCopy({ article }) {
   const { setToast } = useToasts()
-  const mutation = useMutation()
+  const { copy } = useArticleActions(article._id)
   const { t } = useTranslation()
 
   const handleUserUpdated = useCallback(
     async ({ user, action }) => {
       if (action === 'select' || action === 'unselect') {
         try {
-          await mutation({
-            query: duplicateArticle,
-            variables: { user: null, to: user._id, article: article._id },
-          })
+          await copy(user._id)
           setToast({
             text: t('article.sendCopy.successNotification', {
               username: user.displayName || user.username,

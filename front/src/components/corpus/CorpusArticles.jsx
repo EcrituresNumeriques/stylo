@@ -5,7 +5,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Info } from 'react-feather'
 import { Trans, useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import useGraphQL from '../../hooks/graphql.js'
+import useFetchData from '../../hooks/graphql.js'
 import { useActiveWorkspace } from '../../hooks/workspace.js'
 import CorpusArticleItems from './CorpusArticleItems.jsx'
 
@@ -20,7 +20,7 @@ export default function CorpusArticles({ corpusId }) {
     () => activeWorkspace?._id,
     [activeWorkspace]
   )
-  const { data, isLoading, mutate } = useGraphQL(
+  const { data, isLoading, mutate } = useFetchData(
     {
       query: getCorpus,
       variables: { filter: { corpusId: corpusId }, includeArticles: true },

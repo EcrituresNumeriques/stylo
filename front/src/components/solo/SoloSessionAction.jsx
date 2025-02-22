@@ -5,10 +5,10 @@ import { Edit3 } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { useMutation } from '../../hooks/graphql.js'
 import Button from '../Button.jsx'
 
 import { startSoloSession, takeOverSoloSession } from './SoloSession.graphql'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
 
 export default function SoloSessionAction({
   collaborativeSession,
@@ -20,7 +20,7 @@ export default function SoloSessionAction({
   const { setToast } = useToasts()
   const history = useHistory()
   const [activeSoloSessionCreator, setActiveSoloSessionCreator] = useState('')
-  const mutation = useMutation()
+  const { query } = useGraphQLClient()
   const {
     visible: takeOverModalVisible,
     setVisible: setTakeOverModalVisible,
@@ -37,7 +37,7 @@ export default function SoloSessionAction({
     } else {
       // start a new solo session
       try {
-        await mutation({ query: startSoloSession, variables: { articleId } })
+        await query({ query: startSoloSession, variables: { articleId } })
         history.push(`/article/${articleId}`)
       } catch (err) {
         if (
@@ -60,7 +60,7 @@ export default function SoloSessionAction({
   }, [soloSession, setTakeOverModalVisible])
   const handleTakeOver = useCallback(async () => {
     try {
-      await mutation({ query: takeOverSoloSession, variables: { articleId } })
+      await query({ query: takeOverSoloSession, variables: { articleId } })
       setTakeOverModalVisible(false)
       history.push(`/article/${articleId}`)
     } catch (err) {

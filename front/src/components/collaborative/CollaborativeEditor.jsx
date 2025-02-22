@@ -1,7 +1,7 @@
 import { Loading } from '@geist-ui/core'
 import React, { useCallback } from 'react'
 import { useParams } from 'react-router-dom'
-import useGraphQL from '../../hooks/graphql.js'
+import useFetchData from '../../hooks/graphql.js'
 import ArticleStats from '../ArticleStats.jsx'
 
 import { getCollaborativeSession } from './CollaborativeSession.graphql'
@@ -19,7 +19,7 @@ export default function CollaborativeEditor() {
     data: collaborativeSessionData,
     isLoading: collaborativeSessionLoading,
     mutate: mutateCollaborativeSession,
-  } = useGraphQL({ query: getCollaborativeSession, variables: { articleId } })
+  } = useFetchData({ query: getCollaborativeSession, variables: { articleId } })
 
   const handleCollaborativeSessionStateUpdated = useCallback(({ state }) => {
     if (state === 'ended') {

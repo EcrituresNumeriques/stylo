@@ -3,12 +3,12 @@ import debounce from 'lodash.debounce'
 import PropTypes from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useMutation } from '../../hooks/graphql.js'
 import CorpusArticleCard from './CorpusArticleCard.jsx'
 
 import { updateArticlesOrder } from './Corpus.graphql'
 
 import styles from './corpusArticleItems.module.scss'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
 
 export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
   const [isLoading, setLoading] = useState(true)
@@ -20,7 +20,7 @@ export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
       setLoading(false)
     }
   }, [articles])
-  const mutation = useMutation()
+  const { query } = useGraphQLClient()
   const { setToast } = useToasts()
   const { t } = useTranslation()
   const updateArticleOrder = useCallback(
@@ -31,7 +31,7 @@ export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
           order: index,
         }))
         try {
-          await mutation({
+          await query({
             query: updateArticlesOrder,
             variables: { corpusId, articlesOrderInput },
           })

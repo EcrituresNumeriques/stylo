@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { Loading } from '@geist-ui/core'
 import React, { useCallback, useMemo } from 'react'
-import useGraphQL from '../../hooks/graphql.js'
+import useFetchData from '../../hooks/graphql.js'
 import { useActiveWorkspace } from '../../hooks/workspace.js'
 import { getCorpus } from './Corpus.graphql'
 import CorpusSelectItem from './CorpusSelectItem.jsx'
@@ -20,7 +20,7 @@ export default function CorpusSelectItems({ articleId }) {
     [activeWorkspaceId]
   )
 
-  const { data, isLoading, mutate } = useGraphQL(
+  const { data, isLoading, mutate } = useFetchData(
     { query: getCorpus, variables },
     {
       revalidateOnFocus: false,

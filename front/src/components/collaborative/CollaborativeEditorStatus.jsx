@@ -10,13 +10,13 @@ import React, { useCallback } from 'react'
 import { StopCircle } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
-import { useMutation } from '../../hooks/graphql.js'
 import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 import CollaborativeEditorWriters from './CollaborativeEditorWriters.jsx'
 
 import { stopCollaborativeSession } from './CollaborativeSession.graphql'
 
 import styles from './CollaborativeEditorStatus.module.scss'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
 
 export default function CollaborativeEditorStatus({
   articleId,
@@ -24,7 +24,7 @@ export default function CollaborativeEditorStatus({
   collaborativeSessionState,
 }) {
   const { t } = useTranslation()
-  const mutation = useMutation()
+  const { query } = useGraphQLClient()
   const { setToast } = useToasts()
   const history = useHistory()
 
@@ -36,7 +36,7 @@ export default function CollaborativeEditorStatus({
 
   const handleEndCollaborativeSession = useCallback(async () => {
     try {
-      await mutation({
+      await query({
         query: stopCollaborativeSession,
         variables: { articleId },
       })
@@ -51,7 +51,7 @@ export default function CollaborativeEditorStatus({
         text: 'Unable to stop the collaborative session: ' + err.toString(),
       })
     }
-  }, [mutation])
+  }, [])
 
   const handleConfirmCollaborativeSessionEnd = useCallback(async () => {
     setCollaborativeSessionEndVisible(true)

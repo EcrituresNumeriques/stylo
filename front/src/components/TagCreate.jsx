@@ -3,24 +3,20 @@ import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { randomColor } from '../helpers/colors.js'
-import { useGraphQLClient } from '../helpers/graphQL'
-import { useMutate } from '../hooks/graphql'
-import { createTag, getTags } from './Tag.graphql'
 
 import styles from './TagCreate.module.scss'
 import Field from './Field'
+import { useUserTagActions } from '../hooks/user.js'
 
 export default function TagCreate() {
   const { setToast } = useToasts()
-  const { data, mutate } = useMutate({ query: getTags, variables: {} })
+  const { create: createTag } = useUserTagActions()
   const { t } = useTranslation()
   const { state: name, bindings: nameBindings } = useInput('')
   const { state: description, bindings: descriptionBindings } = useInput('')
   const { state: color, bindings: colorBindings } = useInput(randomColor())
 
-  const { query } = useGraphQLClient()
-
-  const variables = {
+  const tag = {
     name,
     description,
     color,
@@ -31,18 +27,7 @@ export default function TagCreate() {
       event.preventDefault()
       ;(async () => {
         try {
-          const result = await query({
-            query: createTag,
-            variables,
-          })
-          await mutate(
-            {
-              user: {
-                tags: [...data.user.tags, result.createTag],
-              },
-            },
-            { revalidate: false }
-          )
+          await createTag(tag)
         } catch (err) {
           setToast({
             type: 'error',
@@ -51,7 +36,7 @@ export default function TagCreate() {
         }
       })()
     },
-    [variables]
+    [tag]
   )
 
   return (
