@@ -1,10 +1,10 @@
-query renameArticle($article: ID!, $title: String!) {
+query renameArticle($articleId: ID!, $title: String!) {
   article(article: $article) {
     rename(title: $title)
   }
 }
 
-query linkToZotero($article: ID!, $zotero: String!) {
+query linkToZotero($articleId: ID!, $zotero: String!) {
   article(article: $article) {
     setZoteroLink(zotero: $zotero)
   }
@@ -61,8 +61,8 @@ mutation duplicateArticle($user: ID, $article: ID!, $to: ID!) {
   }
 }
 
-query addTags($article: ID!, $tags: [ID]!) {
-  article(article: $article) {
+query addTags($articleId: ID!, $tags: [ID]!) {
+  article(article: $articleId) {
     addTags(tags: $tags) {
       _id
       name
@@ -71,8 +71,8 @@ query addTags($article: ID!, $tags: [ID]!) {
   }
 }
 
-query removeTags($article: ID!, $tags: [ID]!) {
-  article(article: $article) {
+query removeTags($articleId: ID!, $tags: [ID]!) {
+  article(article: $articleId) {
     removeTags(tags: $tags) {
       _id
       name

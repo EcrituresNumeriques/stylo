@@ -1,5 +1,4 @@
 import { useSelector } from 'react-redux'
-import { useSWRConfig } from 'swr'
 import {
   create as createMutation,
   getWorkspaceMembers,
@@ -9,7 +8,7 @@ import {
   removeMember as removeMemberMutation,
 } from '../components/workspace/Workspaces.graphql'
 import { executeQuery } from '../helpers/graphQL.js'
-import useGraphQL, { useMutation, useSWRKey } from './graphql.js'
+import useFetchData, { useMutateData } from './graphql.js'
 
 export function useActiveWorkspace() {
   return useSelector((state) => {
@@ -25,10 +24,11 @@ export function useActiveWorkspace() {
 }
 
 export function useWorkspaceMembersActions(workspaceId) {
-  const { mutate: workspacesMutate } = useSWRConfig()
-  const key = useSWRKey()({ query: getWorkspaces })
-  const mutation = useMutation()
-  const { data, mutate, error, isLoading } = useGraphQL(
+  const { mutate: workspacesMutate } = useMutateData({
+    query: getWorkspaces,
+  })
+  const sessionToken = useSelector((state) => state.sessionToken)
+  const { data, mutate, error, isLoading } = useFetchData(
     { query: getWorkspaceMembers, variables: { workspaceId } },
     {
       revalidateOnFocus: false,
@@ -37,7 +37,7 @@ export function useWorkspaceMembersActions(workspaceId) {
   )
 
   const updateMembersCount = async (result) => {
-    await workspacesMutate(key, async (data) => ({
+    await workspacesMutate(async (data) => ({
       workspaces: data?.workspaces?.map((w) => {
         if (w._id === workspaceId) {
           return {
@@ -56,9 +56,11 @@ export function useWorkspaceMembersActions(workspaceId) {
 
   const removeMember = async (user) => {
     const { _id: userId } = user
-    await mutation({
+    await executeQuery({
       query: removeMemberMutation,
       variables: { workspaceId, userId },
+      sessionToken,
+      type: 'mutation',
     })
     const result = await mutate(
       async (data) => {
@@ -75,9 +77,11 @@ export function useWorkspaceMembersActions(workspaceId) {
 
   const inviteMember = async (user) => {
     const { _id: userId } = user
-    await mutation({
+    await executeQuery({
       query: inviteMemberMutation,
       variables: { workspaceId, userId, role: '' },
+      sessionToken,
+      type: 'mutation',
     })
     const result = await mutate(
       async (data) => {
@@ -106,8 +110,7 @@ export function useWorkspaceMembersActions(workspaceId) {
 }
 
 export function useWorkspaceActions() {
-  const { mutate } = useSWRConfig()
-  const key = useSWRKey()({ query: getWorkspaces })
+  const { mutate } = useMutateData({ query: getWorkspaces })
   const sessionToken = useSelector((state) => state.sessionToken)
   const addWorkspace = async (workspace) => {
     await executeQuery({
@@ -121,7 +124,7 @@ export function useWorkspaceActions() {
         },
       },
     })
-    await mutate(key, async (data) => ({
+    await mutate(async (data) => ({
       workspaces: [workspace, ...data.workspaces],
     }))
   }
@@ -135,7 +138,6 @@ export function useWorkspaceActions() {
       },
     })
     await mutate(
-      key,
       async (data) => ({
         workspaces: data.workspaces.filter((w) => w._id !== workspaceId),
       }),
@@ -150,7 +152,7 @@ export function useWorkspaceActions() {
 }
 
 export function useWorkspaces() {
-  const { data, error, isLoading } = useGraphQL({
+  const { data, error, isLoading } = useFetchData({
     query: getWorkspaces,
   })
 

@@ -1,10 +1,13 @@
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useGraphQLClient } from '../helpers/graphQL.js'
-import { applicationConfig } from '../config.js'
 import { generatePath } from 'react-router-dom'
 
 import { setAuthToken as setAuthTokenMutation } from '../components/Credentials.graphql'
+import { getTags, createTag } from '../components/Tag.graphql'
+
+import { useMutateData } from './graphql.js'
+import { useGraphQLClient, executeQuery } from '../helpers/graphQL.js'
+import { applicationConfig } from '../config.js'
 
 export function useActiveUserId() {
   return useSelector((state) => state.activeUser._id)
@@ -46,9 +49,33 @@ export function useSetAuthToken(service) {
 
   const unlink = useCallback(async () => {
     const variables = { service: 'zotero', token: null }
-    await dispatch({ type: 'SET_AUTH_TOKEN', ...variables })
+    dispatch({ type: 'SET_AUTH_TOKEN', ...variables })
     await query({ query: setAuthTokenMutation, variables })
   }, [])
 
   return { link, unlink }
+}
+
+export function useUserTagActions() {
+  const { query } = useGraphQLClient()
+  const { mutate } = useMutateData({
+    query: getTags,
+    variables: {},
+  })
+  const create = async (tag) => {
+    const result = await query({
+      query: createTag,
+      variables: tag,
+      type: 'mutation',
+    })
+    await mutate(async (data) => ({
+      user: {
+        tags: [...data.user.tags, result.createTag],
+      },
+    }))
+  }
+
+  return {
+    create,
+  }
 }
