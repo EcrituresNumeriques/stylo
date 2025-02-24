@@ -23,7 +23,7 @@ convict.addFormat({
 module.exports = convict({
   env: {
     format: ['dev', 'prod'],
-    env: 'NODE_ENV',
+    env: 'SENTRY_ENVIRONMENT',
     default: 'dev',
   },
   export: {
