@@ -25,10 +25,7 @@ export default defineConfig(async ({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks (id, { getModuleInfo }) {
-            if (id.match(/\/(yjs|y-.+)\//)) {
-              return 'collaboration'
-            }
-            else if (id.match(/\/(@rjsf\/.+|biblatex-csl-converter)\//)) {
+            if (id.match(/\/(@rjsf\/.+|biblatex-csl-converter)\//)) {
               return 'metadata'
             }
             else if (id.match(/\/pagedjs\//)) {
