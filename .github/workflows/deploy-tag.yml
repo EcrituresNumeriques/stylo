@@ -53,7 +53,7 @@ jobs:
           include-hidden-files: true
 
       - name: Sentry Release (front)
-        uses: getsentry/action-release@v1
+        uses: getsentry/action-release@v2
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
