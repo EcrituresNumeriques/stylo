@@ -94,12 +94,12 @@ export default defineConfig(async ({ mode }) => {
           filesToDeleteAfterUpload: isDevelopment ? [] : ['*.js.map']
         },
         release: {
-          name: pkg.version,
+          name: isDevelopment ? null : pkg.version,
           inject: true,
           create: true,
           deploy: {
             env: env.SENTRY_ENVIRONMENT,
-            name: pkg.version
+            name: isDevelopment ? null : pkg.version
           }
         }
       }),
