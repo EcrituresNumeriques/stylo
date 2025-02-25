@@ -20,7 +20,7 @@ export default defineConfig(async ({ mode }) => {
     envPrefix: 'SNOWPACK_',
     build: {
       outDir: 'build',
-      sourcemap,
+      sourcemap: true,
       rollupOptions: {
         output: {
           manualChunks: {
@@ -51,11 +51,24 @@ export default defineConfig(async ({ mode }) => {
           SNOWPACK_MATOMO_SITE_ID,
         },
       }),
-      sentryVitePlugin({
-        org: 'ecrinum-stylo',
-        project: 'stylo-front',
+      env.SENTRY_AUTH_TOKEN && sentryVitePlugin({
+        org: env.SENTRY_ORG,
+        project: env.SENTRY_PROJECT,
         authToken: env.SENTRY_AUTH_TOKEN,
-        telemetry: false
+        telemetry: true,
+        debug: env.SENTRY_DEBUG,
+        sourcemaps: {
+          filesToDeleteAfterUpload: !sourcemap
+        },
+        release: {
+          name: pkg.version,
+          inject: true,
+          create: true,
+          deploy: {
+            env: env.SENTRY_ENVIRONMENT,
+            name: pkg.version
+          }
+        }
       }),
     ],
     define: {
