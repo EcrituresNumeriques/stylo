@@ -49,5 +49,6 @@ jobs:
     uses: EcrituresNumeriques/stylo/.github/workflows/deploy-tag.yml@master
     with:
       release-version: ${{ inputs.version }}
+    secrets: inherit
     if: ${{ inputs.trigger-deploy }}
     needs: [call-build-deploy-docker]
