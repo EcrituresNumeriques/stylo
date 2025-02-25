@@ -6,6 +6,7 @@ import react from '@vitejs/plugin-react'
 import handlebars from 'vite-plugin-handlebars'
 import graphql from '@rollup/plugin-graphql'
 import { visualizer } from 'rollup-plugin-visualizer'
+import { coverageConfigDefaults } from 'vitest/config'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
@@ -141,9 +142,11 @@ export default defineConfig(async ({ mode }) => {
 
     test: {
       coverage: {
+        provider: 'v8',
         reporter: ['text', 'html', 'lcovonly'],
         extension: ['.js', '.jsx'],
         exclude: [
+          ...coverageConfigDefaults.exclude,
           '**/build/**',
           '**/public/**',
           '**/*.config.*',

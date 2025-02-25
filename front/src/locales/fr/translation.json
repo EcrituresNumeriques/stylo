@@ -34,6 +34,8 @@
   "credentials.authentication.success.title": "Authentification réussie",
   "credentials.authentication.success.description": "Votre compte Stylo a bien été relié au service {{ service }}.",
   "credentials.authentication.error.description": "Nous n'avons pas réussi à connecter le service {{ service }} : {{ message }}.",
+  "credentials.authentication.error.noToken": "Aucun jeton d'authentification n'a été détecté.",
+  "credentials.authentication.error.unknownService": "Service d'authentification inconnu.",
   "credentials.authentication.error.title": "Échec de l'authentification",
   "credentials.authentication.back": "Revenir à Stylo",
   "credentials.authentication.linkedService.description": "Compte Stylo connecté à {{ service }} ({{ token }}).",

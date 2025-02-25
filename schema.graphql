@@ -166,7 +166,7 @@ type Mutation {
   "Get a workspace for mutation"
   workspace(workspaceId: ID!): Workspace
 
-  setAuthToken(service: String!, token: String): User
+  setAuthToken(service: AuthTokenService!, token: String): User
 }
 
 type Query {
@@ -324,6 +324,10 @@ type WorkspaceStats {
 enum AuthType {
   local
   oidc
+}
+
+enum AuthTokenService {
+  zotero
 }
 
 "A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."

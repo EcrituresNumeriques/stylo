@@ -37,6 +37,8 @@ module.exports = {
       if (service === 'zotero') {
         user.zoteroToken = serviceToken
         await user.save()
+      } else {
+        throw new Error(`Service unknown (${service})`)
       }
 
       return user
