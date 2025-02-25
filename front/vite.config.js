@@ -5,6 +5,7 @@ import pkg from './package.json' with { type: 'json' }
 import react from '@vitejs/plugin-react'
 import handlebars from 'vite-plugin-handlebars'
 import graphql from '@rollup/plugin-graphql'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
@@ -13,7 +14,7 @@ export default defineConfig(async ({ mode }) => {
     'SENTRY_',
   ])
   const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
-  const sourcemap = Boolean(mode === 'development' || env.SENTRY_ENVIRONMENT === 'dev')
+  const isDevelopment = Boolean(mode === 'development' || env.SENTRY_ENVIRONMENT === 'dev')
 
   return {
     base: env.DEPLOY_PRIME_URL ?? '/',
@@ -23,13 +24,45 @@ export default defineConfig(async ({ mode }) => {
       sourcemap: true,
       rollupOptions: {
         output: {
-          manualChunks: {
-            writer: [
-              'monaco-editor',
-              'y-monaco',
-              '@monaco-editor/react',
-              '@rjsf/core',
-            ],
+          manualChunks (id, { getModuleInfo }) {
+            if (id.match(/\/(yjs|y-.+)\//)) {
+              return 'collaboration'
+            }
+            else if (id.match(/\/(@rjsf\/.+|biblatex-csl-converter)\//)) {
+              return 'metadata'
+            }
+            else if (id.match(/\/pagedjs\//)) {
+              return 'pagedPreview'
+            }
+            else if (id.match(/\/(core-js|react|react-.+|redux)\//)) {
+              return 'react'
+            }
+            else if (id.match(/\/(@geist-ui\/core|i18next)\//)) {
+              return 'ui'
+            }
+            else if (id.match(/\/monaco-editor\/esm\/vs\/editor\/common/)) {
+              return 'writerEditorCommon'
+            }
+            else if (id.match(/\/monaco-editor\/.+\/diffEditor/)) {
+              return 'writerTextEditorDiff'
+            }
+            else if (id.match(/\/monaco-editor\/esm\/vs\/editor/)) {
+              return 'writerTextEditor'
+            }
+            else if (id.match(/\/monaco-editor\/esm\/vs\/(base|common)/)) {
+              return 'writerBase'
+            }
+            // else if (id.match(/\/monaco-editor\/esm\/vs\/base\/browser/)) {
+            //   return 'writerBaseBrowser'
+            // }
+            else if (id.match(/\/monaco-editor\/esm\/vs\/(basic-languages|language)\//)) {
+              return 'writerLanguages'
+            }
+            else if (id.match(/\/monaco-editor\/esm\/vs\/platform\//)) {
+              return 'writerPlatform'
+            }
+
+            return null
           },
         },
       },
@@ -58,7 +91,7 @@ export default defineConfig(async ({ mode }) => {
         telemetry: true,
         debug: env.SENTRY_DEBUG,
         sourcemaps: {
-          filesToDeleteAfterUpload: !sourcemap
+          filesToDeleteAfterUpload: isDevelopment ? [] : ['*.js.map']
         },
         release: {
           name: pkg.version,
@@ -70,6 +103,7 @@ export default defineConfig(async ({ mode }) => {
           }
         }
       }),
+      isDevelopment && visualizer()
     ],
     define: {
       APP_VERSION: JSON.stringify(pkg.version),
