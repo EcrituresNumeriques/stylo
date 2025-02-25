@@ -243,7 +243,7 @@ function reformat(yaml, { id, originalUrl, replaceBibliography = false }) {
  *   translatedTitle: [],
  *   translationOf: [],
  *   translations: [],
- *   translator: [],
+ *   translators: [],
  *   typeArticle: string[],
  * }}
  */
@@ -345,7 +345,7 @@ function toLegacyFormat(metadata) {
     translationOf: [translationOf],
     articleslies: senspublic?.linkedArticles,
     translations: senspublic?.translations,
-    translator: translators?.map((p) => toLegacyPerson(p)),
+    translators: translators?.map((p) => toLegacyPerson(p)),
     typeArticle: senspublic?.categories,
   }
 }
