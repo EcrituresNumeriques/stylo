@@ -7,6 +7,10 @@ on:
       version:
         description: Version
         required: true
+      trigger-deploy:
+        description: Trigger deploy?
+        type: boolean
+        default: true
 
 jobs:
   release:
@@ -33,9 +37,17 @@ jobs:
           git push origin "v$RELEASE_VERSION"
         env:
           RELEASE_VERSION: ${{ inputs.version }}
+
   call-build-deploy-docker:
     uses: EcrituresNumeriques/stylo/.github/workflows/docker.yml@master
     with:
       release-version: ${{ inputs.version }}
     secrets: inherit
     needs: [release]
+
+  call-deploy-prod:
+    uses: EcrituresNumeriques/stylo/.github/workflows/deploy-tag.yml@master
+    with:
+      release-version: ${{ inputs.version }}
+    if: ${{ inputs.trigger-deploy }}
+    needs: [call-build-deploy-docker]
