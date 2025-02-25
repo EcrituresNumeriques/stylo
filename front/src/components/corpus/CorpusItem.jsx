@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { useGraphQL } from '../../helpers/graphQL.js'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
 import Button from '../Button.jsx'
 import buttonStyles from '../button.module.scss'
 import Export from '../Export.jsx'
@@ -47,7 +47,7 @@ export default function CorpusItem({ corpus }) {
     bindings: editCorpusBindings,
   } = useModal()
 
-  const runQuery = useGraphQL()
+  const { query } = useGraphQLClient()
   const corpusId = useMemo(() => corpus._id, [corpus])
 
   const handleCorpusUpdated = useCallback(() => {
@@ -60,7 +60,7 @@ export default function CorpusItem({ corpus }) {
 
   const handleDeleteCorpus = useCallback(async () => {
     try {
-      await runQuery({ query: deleteCorpus, variables: { corpusId } })
+      await query({ query: deleteCorpus, variables: { corpusId } })
       dispatch({ type: 'SET_LATEST_CORPUS_DELETED', data: { corpusId } })
       setToast({
         text: t('corpus.delete.toastSuccess'),
