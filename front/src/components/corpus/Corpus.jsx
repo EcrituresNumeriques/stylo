@@ -7,6 +7,7 @@ import {
 import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
+import { Helmet } from 'react-helmet'
 import { CurrentUserContext } from '../../contexts/CurrentUser'
 
 import { useGraphQL } from '../../helpers/graphQL'
@@ -80,6 +81,13 @@ export default function Corpus() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
+      <Helmet>
+        <title>
+          {t('corpus.page.title', {
+            workspace: activeWorkspace?.name ?? '$t(workspace.myspace)',
+          })}
+        </title>
+      </Helmet>
       <section className={styles.section}>
         <header className={styles.header}>
           <h1>Corpus</h1>

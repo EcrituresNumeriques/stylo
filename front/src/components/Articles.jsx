@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
 import { CurrentUserContext } from '../contexts/CurrentUser'
 import { Search } from 'react-feather'
+import { Helmet } from 'react-helmet'
 
 import useGraphQL from '../hooks/graphql'
 import { applicationConfig } from '../config.js'
@@ -221,6 +222,13 @@ export default function Articles() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
+      <Helmet>
+        <title>
+          {t('articles.page.title', {
+            workspace: activeWorkspace?.name ?? '$t(workspace.myspace)',
+          })}
+        </title>
+      </Helmet>
       <section className={styles.section}>
         <header className={styles.articlesHeader}>
           <h1>Articles</h1>

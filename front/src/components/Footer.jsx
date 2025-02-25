@@ -27,16 +27,6 @@ function Footer() {
             <li>Stylo {APP_VERSION}</li>
             <li>
               <a
-                href="https://stylo-doc.ecrituresnumeriques.ca"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <HelpCircle className={styles.linkIcon} size={14} />
-                {t('footer.documentation.link')}
-              </a>
-            </li>
-            <li>
-              <a
                 href="https://github.com/EcrituresNumeriques/stylo/releases"
                 rel="noopener noreferrer"
                 target="_blank"

@@ -2,16 +2,16 @@ name: Ansible deploy production
 run-name: Deploy version ${{ inputs.release-version }} on production by @${{ github.actor }}
 
 on:
-  #  workflow_run:
-  #    workflows:
-  #      - "Build and deploy Docker images"
-  #    types:
-  #      - completed
   workflow_dispatch:
     inputs:
       release-version:
         description: Release version to deploy
         required: true
+  workflow_call:
+    inputs:
+      release-version:
+        required: true
+        type: string
 
 env:
   SNOWPACK_PUBLIC_BACKEND_ENDPOINT: https://stylo.huma-num.fr
@@ -42,7 +42,9 @@ jobs:
           npm run build --prefix=front
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SNOWPACK_SOURCEMAPS: 'hidden'
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: stylo-front
+          SENTRY_DEBUG: true
 
       - name: Store build artifacts for the deploy stage
         uses: actions/upload-artifact@v4
@@ -51,30 +53,6 @@ jobs:
           path: ./front/build
           if-no-files-found: error
           include-hidden-files: true
-
-      - name: Sentry Release (front)
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: stylo-front
-        with:
-          environment: prod
-          version: '${{ inputs.release-version }}'
-          inject: true
-          sourcemaps: ./front/build
-          strip_common_prefix: true
-
-      - name: Sentry Release (graphql)
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: stylo-graphql
-        with:
-          environment: prod
-          version: '${{ inputs.release-version }}'
-          strip_common_prefix: true
 
   deployment:
     runs-on: ubuntu-latest

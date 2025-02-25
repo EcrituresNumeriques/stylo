@@ -139,7 +139,18 @@ function reformat(yaml, { id, originalUrl, replaceBibliography = false }) {
   }
 
   // dump the result enclosed in "---"
-  return '---\n' + YAML.dump(doc, { sortKeys }) + '---'
+  // forcing quotes is better for pandoc
+  // @see https://github.com/EcrituresNumeriques/stylo/issues/1249
+  return (
+    '---\n' +
+    YAML.dump(doc, {
+      sortKeys,
+      noArrayIndent: true,
+      forceQuotes: true,
+      quotingType: '"',
+    }) +
+    '---\n'
+  )
 }
 
 /**

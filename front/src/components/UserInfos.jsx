@@ -3,6 +3,7 @@ import { Check, Clipboard, Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { Helmet } from 'react-helmet'
 
 import { useGraphQL } from '../helpers/graphQL'
 import { updateUser } from './Credentials.graphql'
@@ -68,6 +69,9 @@ export default function UserInfos() {
 
   return (
     <>
+      <Helmet>
+        <title>{t('user.account.title')}</title>
+      </Helmet>
       <section className={styles.section}>
         <h2>{t('user.account.title')}</h2>
         <form onSubmit={updateInfo} className={styles.form}>

@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { Loading } from '@geist-ui/core'
+import { Helmet } from 'react-helmet'
+
 import { useStyloExportPreview } from '../hooks/stylo-export.js'
 import { toYaml } from './Write/metadata/yaml.js'
 import useGraphQL from '../hooks/graphql.js'
@@ -155,9 +157,12 @@ export default function Preview({ strategy: strategyId }) {
 
   return (
     <>
-      <meta name="robots" content="noindex, nofollow" />
-      <title>{strategy.title(data)}</title>
-      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+        <title>{strategy.title(data)}</title>
+        {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+      </Helmet>
+
       <section dangerouslySetInnerHTML={{ __html }} />
     </>
   )

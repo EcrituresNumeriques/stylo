@@ -29,6 +29,7 @@ import NotFound from './components/404'
 import Error from './components/Error'
 import { applicationConfig } from './config.js'
 import Story from './stories/Story.jsx'
+import { Helmet } from 'react-helmet'
 
 const Route = Sentry.withSentryRouting(OriginalRoute)
 const history = createBrowserHistory()
@@ -132,6 +133,7 @@ const root = createRoot(document.getElementById('root'), {
 
 root.render(
   <React.StrictMode>
+    <Helmet defaultTitle="Stylo" titleTemplate="%s - Stylo" />
     <GeistProvider>
       <Provider store={store}>
         <Suspense fallback={<Loading />}>
@@ -140,27 +142,25 @@ root.render(
               <TrackPageViews />
               <Header />
               <Switch>
-                <Route path="/register" exact>
-                  <Register />
-                </Route>
+                <Route path="/register" component={Register} exact />
                 {/* Articles index */}
                 <PrivateRoute
                   path={['/articles', '/', '/workspaces/:workspaceId/articles']}
+                  component={Articles}
                   exact
-                >
-                  <Articles />
-                </PrivateRoute>
+                />
                 {/* Corpus index */}
                 <PrivateRoute
                   path={['/corpus', '/workspaces/:workspaceId/corpus']}
+                  component={Corpus}
                   exact
-                >
-                  <Corpus />
-                </PrivateRoute>
+                />
                 {/* Workspaces index */}
-                <PrivateRoute path={['/workspaces']} exact>
-                  <Workspaces />
-                </PrivateRoute>
+                <PrivateRoute
+                  path={['/workspaces']}
+                  component={Workspaces}
+                  exact
+                />
                 <PrivateRoute path="/credentials" exact>
                   <UserInfos />
                   <Credentials />
@@ -192,34 +192,29 @@ root.render(
                     `/article/:id/version/:version/compare/working-copy`,
                     `/article/:id/version/:version/compare/:compareTo`,
                   ]}
+                  component={Write}
                   exact
-                >
-                  <Write />
-                </PrivateRoute>
+                />
                 {/* Write with a given version */}
-                <PrivateRoute path={`/article/:id/version/:version`} exact>
-                  <Write />
-                </PrivateRoute>
+                <PrivateRoute
+                  path={`/article/:id/version/:version`}
+                  component={Write}
+                  exact
+                />
                 {/* Write and/or Preview */}
                 <PrivateRoute
                   path={[`/article/:id/preview`, `/article/:id`]}
+                  component={Write}
                   exact
-                >
-                  <Write />
-                </PrivateRoute>
+                />
                 {/* Collaborative editing */}
                 <PrivateRoute
                   path={[`/article/:articleId/session/:sessionId`]}
+                  component={CollaborativeEditor}
                   exact
-                >
-                  <CollaborativeEditor />
-                </PrivateRoute>
-                <Route exact path="/privacy">
-                  <Privacy />
-                </Route>
-                <Route exact path="/ux">
-                  <Story />
-                </Route>
+                />
+                <Route exact path="/privacy" component={Privacy} />
+                <Route exact path="/ux" component={Story} />
                 <Route exact path="/error">
                   <Error />
                 </Route>

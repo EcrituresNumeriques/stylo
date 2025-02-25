@@ -21,6 +21,11 @@ convict.addFormat({
  * }>}
  */
 module.exports = convict({
+  env: {
+    format: ['dev', 'prod'],
+    env: 'SENTRY_ENVIRONMENT',
+    default: 'dev',
+  },
   export: {
     baseUrl: {
       format: String,

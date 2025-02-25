@@ -1,12 +1,37 @@
+const Sentry = require('@sentry/node')
+const { nodeProfilingIntegration } = require('@sentry/profiling-node')
 const pkg = require('./package.json')
 const process = require('node:process')
 const config = require('./config.js')
 config.validate({ allowed: 'strict' })
 
+if (config.get('sentry.dsn')) {
+  Sentry.init({
+    dsn: config.get('sentry.dsn'),
+    environment: config.get('env'),
+    release: `stylo-graphql@${pkg.version}`,
+    attachStacktrace: true,
+    includeLocalVariables: true,
+    integrations: [
+      nodeProfilingIntegration(),
+      Sentry.dedupeIntegration(),
+      Sentry.mongooseIntegration(),
+      Sentry.graphqlIntegration(),
+      Sentry.dataloaderIntegration(),
+      Sentry.consoleIntegration(),
+      Sentry.extraErrorDataIntegration(),
+      Sentry.onUncaughtExceptionIntegration(),
+      Sentry.onUnhandledRejectionIntegration(),
+      Sentry.linkedErrorsIntegration(),
+      Sentry.rewriteFramesIntegration(),
+    ],
+    tracesSampleRate: 1.0,
+    profilesSampleRate: 1.0,
+  })
+}
+
 process.env.YPERSISTENCE = config.get('yjs.persistenceDataDirectory')
 
-const Sentry = require('@sentry/node')
-const { nodeProfilingIntegration } = require('@sentry/profiling-node')
 const express = require('express')
 const bodyParser = require('body-parser')
 const { createHandler } = require('graphql-http/lib/use/express')
@@ -88,31 +113,6 @@ const corsOptions = {
     const found = allowedOrigins.some((o) => o.test(origin))
     callback(null, found ? origin : false)
   },
-}
-
-if (config.get('sentry.dsn')) {
-  Sentry.init({
-    dsn: config.get('sentry.dsn'),
-    environment: process.env.NODE_ENV,
-    release: `stylo-graphql@${pkg.version}`,
-    attachStacktrace: true,
-    includeLocalVariables: true,
-    integrations: [
-      nodeProfilingIntegration(),
-      Sentry.dedupeIntegration(),
-      Sentry.mongooseIntegration(),
-      Sentry.graphqlIntegration(),
-      Sentry.dataloaderIntegration(),
-      Sentry.consoleIntegration(),
-      Sentry.extraErrorDataIntegration(),
-      Sentry.onUncaughtExceptionIntegration(),
-      Sentry.onUnhandledRejectionIntegration(),
-      Sentry.linkedErrorsIntegration(),
-      Sentry.rewriteFramesIntegration(),
-    ],
-    tracesSampleRate: 1.0,
-    profilesSampleRate: 1.0,
-  })
 }
 
 const app = express()
