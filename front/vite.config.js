@@ -43,9 +43,6 @@ export default defineConfig(async ({ mode }) => {
             else if (id.match(/\/monaco-editor\/esm\/vs\/editor\/common/)) {
               return 'writerEditorCommon'
             }
-            else if (id.match(/\/monaco-editor\/.+\/diffEditor/)) {
-              return 'writerTextEditorDiff'
-            }
             else if (id.match(/\/monaco-editor\/esm\/vs\/editor/)) {
               return 'writerTextEditor'
             }
