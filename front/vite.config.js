@@ -40,7 +40,7 @@ export default defineConfig(async ({ mode }) => {
             else if (id.match(/\/(@geist-ui\/core|i18next)\//)) {
               return 'ui'
             }
-            else if (id.match(/\/monaco-editor\/esm\/vs\/editor\/common/)) {
+            else if (id.match(/\/(monaco-editor\/esm\/vs\/editor\/common|yjs|y-.+)/)) {
               return 'writerEditorCommon'
             }
             else if (id.match(/\/monaco-editor\/esm\/vs\/editor/)) {
