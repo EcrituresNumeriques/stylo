@@ -2,16 +2,16 @@ name: Ansible deploy production
 run-name: Deploy version ${{ inputs.release-version }} on production by @${{ github.actor }}
 
 on:
-  #  workflow_run:
-  #    workflows:
-  #      - "Build and deploy Docker images"
-  #    types:
-  #      - completed
   workflow_dispatch:
     inputs:
       release-version:
         description: Release version to deploy
         required: true
+  workflow_call:
+    inputs:
+      release-version:
+        required: true
+        type: string
 
 env:
   SNOWPACK_PUBLIC_BACKEND_ENDPOINT: https://stylo.huma-num.fr
