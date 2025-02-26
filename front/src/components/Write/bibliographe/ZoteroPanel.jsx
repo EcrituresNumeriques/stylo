@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import {
   fetchAllCollectionsPerLibrary,
   fetchBibliographyFromCollectionHref,
+  prefixLegacyUrl,
 } from '../../../helpers/zotero'
 import { useGraphQLClient } from '../../../helpers/graphQL'
 import { linkToZotero as linkToZoteroQuery } from '../../Article.graphql'
@@ -90,7 +91,8 @@ export default function ZoteroPanel({
     }
 
     await importCollection({
-      collectionHref: `https://api.zotero.org/groups/${zoteroLink}`,
+      collectionHref: zoteroLink,
+      token: zoteroToken,
     })
   }, [])
 
@@ -112,14 +114,18 @@ export default function ZoteroPanel({
       event.preventDefault()
       setSaving(true)
 
-      await importCollection({
-        token: zoteroToken,
-        collectionHref: zoteroCollectionHref,
-      })
+      await Promise.all([
+        persistZoteroLink(zoteroCollectionHref),
+        importCollection({
+          token: zoteroToken,
+          collectionHref: zoteroCollectionHref,
+        }),
+      ])
 
+      setZoteroLink(zoteroCollectionHref)
       setSaving(false)
     },
-    [zoteroCollectionHref]
+    [zoteroCollectionHref, zoteroToken]
   )
 
   const importCollection = useCallback(async ({ token, collectionHref }) => {
@@ -159,7 +165,7 @@ export default function ZoteroPanel({
         onSubmit={handleCollectionFormSubmission}
       >
         <h3>
-          <Rss />
+          <Rss aria-hidden />
           {t('zoteroPanel.titleImportCollection.text')}
         </h3>
         {zoteroToken && (
@@ -194,24 +200,21 @@ export default function ZoteroPanel({
         onSubmit={handleZoteroLinkFormSubmission}
       >
         <h3>
-          <Clipboard />
+          <Clipboard aria-hidden />
           {t('zoteroPanel.titleImportByUrl.text')}
         </h3>
 
         <p className={styles.helpText}>
-          {t('zoteroPanel.textImportByUrl.text')}
-
-          <code>
-            https://www.zotero.org/groups/
-            <mark>[IDnumber]/collections/[IDcollection]</mark>
-          </code>
+          {t(
+            zoteroToken
+              ? 'zoteroPanel.textImportByUrl.withToken'
+              : 'zoteroPanel.textImportByUrl.withoutToken'
+          )}
         </p>
         <Field
           onChange={handleZoteroLinkChange}
           name="zoteroLink"
-          placeholder="[IDnumber]/collections/[IDcollection]"
-          value={zoteroLink}
-          prefix="https://www.zotero.org/groups/"
+          value={prefixLegacyUrl(zoteroLink)}
           autoFocus={true}
         />
         <Button
