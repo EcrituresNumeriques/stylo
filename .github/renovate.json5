@@ -19,6 +19,10 @@
       "groupName": "Frontend dependencies"
     },
     {
+      "matchFileNames": ["docs/package.json"],
+      "groupName": "Documentation dependencies"
+    },
+    {
       "matchFileNames": ["graphql/package.json"],
       "groupName": "Backend dependencies"
     },
