@@ -354,5 +354,8 @@
   "corpus.metadata.form.issue": "Issue",
   "corpus.metadata.form.issue.title": "Title",
   "corpus.metadata.form.issue.number": "N°",
-  "corpus.metadata.form.issue.identifier": "Identifier"
+  "corpus.metadata.form.issue.identifier": "Identifier",
+  "header.documentation.link": "Documentation",
+  "header.corpus.link": "Corpus",
+  "header.articles.link": "Articles"
 }
