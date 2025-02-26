@@ -60,7 +60,7 @@ export default function CorpusArticles({ corpusId }) {
           <Note className={styles.noteWithIcon} type="secondary" label={false}>
             <Info />
             <Trans i18nKey="corpus.addPart.note">
-              To add a new chapter, go to the{' '}
+              To add a new chapter, go to the
               <Link
                 to={
                   activeWorkspaceId
@@ -69,7 +69,7 @@ export default function CorpusArticles({ corpusId }) {
                 }
               >
                 articles page
-              </Link>{' '}
+              </Link>
               and select this corpus.
             </Trans>
           </Note>
