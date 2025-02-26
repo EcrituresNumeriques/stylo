@@ -1,15 +1,15 @@
 import React, { useCallback } from 'react'
 import { useArticleContributorActions } from '../hooks/contributor.js'
-import { useMutate, useMutation } from '../hooks/graphql.js'
 
 import styles from './articleContributors.module.scss'
 import ContactSearch from './ContactSearch.jsx'
 
-import { getArticleContributors } from './Article.graphql'
 import { useToasts } from '@geist-ui/core'
+import { useTranslation } from 'react-i18next'
 
 export default function ArticleContributors({ article, contributors }) {
   const { setToast } = useToasts()
+  const { t } = useTranslation()
   const articleId = article._id
   const { addContributor, removeContributor } = useArticleContributorActions({
     articleId,
@@ -22,9 +22,9 @@ export default function ArticleContributors({ article, contributors }) {
         try {
           await addContributor(userId)
           setToast({
-            text: `Contributeur ${
-              user.displayName || user.username
-            } ajouté à l'article.`,
+            text: t('article.contributors.added', {
+              name: user.displayName || user.username,
+            }),
             type: 'default',
           })
         } catch (err) {
@@ -37,10 +37,10 @@ export default function ArticleContributors({ article, contributors }) {
         try {
           await removeContributor(userId)
           setToast({
-            text: `Contributeur ${
-              user.displayName || user.username
-            } supprimé de l'article.`,
-            type: 'warning',
+            text: t('article.contributors.removed', {
+              name: user.displayName || user.username,
+            }),
+            type: 'default',
           })
         } catch (err) {
           setToast({

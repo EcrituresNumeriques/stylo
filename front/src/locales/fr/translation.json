@@ -54,6 +54,8 @@
   "time.fewSecondsAgo": "à lʼinstant",
   "search.placeholder": "Recherche",
   "articles.page.title": "Articles - {{ workspace }}",
+  "article.contributors.added": "{{ name }} peut désormais contribuer à cet article.",
+  "article.contributors.removed": "{{ name }} a été retiré·e des contributeur·ices.",
   "article.count_zero": "aucun article",
   "article.count_one": "{{ count }} article",
   "article.count_other": "{{ count }} articles",

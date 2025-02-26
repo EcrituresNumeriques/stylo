@@ -54,6 +54,8 @@
   "time.fewSecondsAgo": "a few seconds ago",
   "search.placeholder": "Search",
   "articles.page.title": "Articles - {{ workspace }}",
+  "article.contributors.added": "{{ name }} is now a contributor.",
+  "article.contributors.removed": "{{ name }} has been removed from contributors.",
   "article.count_zero": "no article",
   "article.count_one": "{{ count }} article",
   "article.count_other": "{{ count }} articles",
