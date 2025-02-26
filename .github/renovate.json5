@@ -19,6 +19,20 @@
       "groupName": "Frontend dependencies"
     },
     {
+      "matchFileNames": ["front/package.json"],
+      groupName: 'React dependencies',
+      matchPackageNames: [
+        '/react/',
+      ],
+    },
+    {
+      "matchFileNames": ["front/package.json"],
+      groupName: 'i18n dependencies',
+      matchPackageNames: [
+        '/i18next/',
+      ],
+    },
+    {
       "matchFileNames": ["docs/package.json"],
       "groupName": "Documentation dependencies"
     },
