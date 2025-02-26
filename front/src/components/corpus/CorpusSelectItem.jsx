@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import { removeArticleFromCorpus, addArticleToCorpus } from './Corpus.graphql'
 import styles from './CorpusSelectItem.module.scss'
-import { useGraphQL } from '../../helpers/graphQL.js'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
 
 export default function CorpusSelectItem({
   selected,
@@ -13,14 +13,16 @@ export default function CorpusSelectItem({
   articleId,
   onChange,
 }) {
-  const runQuery = useGraphQL()
+  const { query } = useGraphQLClient()
   const toggleCorpusArticle = useCallback(
     async (event) => {
       event.preventDefault()
       const [corpusId, checked] = [event.target.value, event.target.checked]
-      const query = checked ? addArticleToCorpus : removeArticleFromCorpus
-      await runQuery({
-        query,
+      const graphqlQuery = checked
+        ? addArticleToCorpus
+        : removeArticleFromCorpus
+      await query({
+        query: graphqlQuery,
         variables: { articleId: articleId, corpusId: corpusId },
       })
       onChange({ corpusId })

@@ -2,7 +2,7 @@ import React, { useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useHistory } from 'react-router-dom'
 import { useToasts } from '@geist-ui/core'
-import { useGraphQL } from '../helpers/graphQL'
+import { useGraphQLClient } from '../helpers/graphQL'
 import * as queries from './Credentials.graphql'
 
 import styles from './login.module.scss'
@@ -18,14 +18,14 @@ export default function Register() {
   const passwordRef = useRef()
   const passwordConfirmationRef = useRef()
   const history = useHistory()
-  const runQuery = useGraphQL()
+  const { query } = useGraphQLClient()
 
   const handleFormSubmit = useCallback(async (event) => {
     event.preventDefault()
     const details = fromFormData(event.target)
 
     try {
-      await runQuery({ query: queries.createUser, variables: { details } })
+      await query({ query: queries.createUser, variables: { details } })
       // if no error thrown, we can navigate to /
       setToast({
         type: 'default',

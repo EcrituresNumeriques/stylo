@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Slash, Users } from 'react-feather'
 import { Button, useModal } from '@geist-ui/core'
 import { useTranslation } from 'react-i18next'

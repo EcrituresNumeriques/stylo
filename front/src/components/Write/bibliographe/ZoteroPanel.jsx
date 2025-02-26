@@ -6,10 +6,10 @@ import {
   fetchAllCollectionsPerLibrary,
   fetchBibliographyFromCollectionHref,
 } from '../../../helpers/zotero'
-import { useGraphQL } from '../../../helpers/graphQL'
+import { useGraphQLClient } from '../../../helpers/graphQL'
 import { useProfile } from '../../../helpers/userProfile'
 import { applicationConfig } from '../../../config.js'
-import { linkToZotero as query } from '../../Article.graphql'
+import { linkToZotero as linkToZoteroQuery } from '../../Article.graphql'
 
 import Button from '../../Button'
 import Field from '../../Field'
@@ -40,7 +40,7 @@ export default function ZoteroPanel({
   const [zoteroCollections, setZoteroCollections] = useState([])
 
   const [isSaving, setSaving] = useState(false)
-  const runQuery = useGraphQL()
+  const { query } = useGraphQLClient()
   const refreshProfile = useProfile()
 
   const handleZoteroLinkChange = useCallback(
@@ -79,7 +79,7 @@ export default function ZoteroPanel({
           user: userId,
           article: articleId,
         }
-        await runQuery({ query, variables })
+        await query({ query: linkToZoteroQuery, variables })
       } catch (err) {
         alert(err)
       }

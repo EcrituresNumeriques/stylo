@@ -21,8 +21,11 @@ import ErrorMessageCard from '../ErrorMessageCard.jsx'
 import styles from './write.module.scss'
 
 import { useActiveUserId } from '../../hooks/user'
-import { useGraphQL } from '../../helpers/graphQL'
-import { getEditableArticle as query, stopSoloSession } from './Write.graphql'
+import { useGraphQLClient } from '../../helpers/graphQL'
+import {
+  getEditableArticle as getEditableArticleQuery,
+  stopSoloSession,
+} from './Write.graphql'
 
 import ArticleEditorMenu from './ArticleEditorMenu.jsx'
 import ArticleEditorMetadata from './ArticleEditorMetadata.jsx'
@@ -59,7 +62,7 @@ export default function Write() {
   )
   const userId = useActiveUserId()
   const dispatch = useDispatch()
-  const runQuery = useGraphQL()
+  const { query } = useGraphQLClient()
   const routeMatch = useRouteMatch()
   const [collaborativeSessionActive, setCollaborativeSessionActive] =
     useState(false)
@@ -226,7 +229,10 @@ export default function Write() {
 
     setIsLoading(true)
     ;(async () => {
-      const data = await runQuery({ query, variables }).catch((error) => {
+      const data = await query({
+        query: getEditableArticleQuery,
+        variables,
+      }).catch((error) => {
         setGraphQLError(error)
         return {}
       })

@@ -1,9 +1,9 @@
 import { useToasts } from '@geist-ui/core'
-import React, { useState, useCallback, useEffect, useRef } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
-import { useGraphQL } from '../helpers/graphQL'
+import { useGraphQLClient } from '../helpers/graphQL'
 import { createArticle } from './Articles.graphql'
 import Field from './Field.jsx'
 import { getTags } from './Tag.graphql'
@@ -30,7 +30,7 @@ export default function ArticleCreate({ onSubmit, workspaceId = null }) {
   const { setToast } = useToasts()
 
   const [tags, setTags] = useState([])
-  const runQuery = useGraphQL()
+  const { query } = useGraphQLClient()
   const workspaces = useSelector((state) => state.activeUser.workspaces)
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function ArticleCreate({ onSubmit, workspaceId = null }) {
       try {
         const {
           user: { tags },
-        } = await runQuery({ query: getTags, variables: {} })
+        } = await query({ query: getTags, variables: {} })
         setTags(tags)
       } catch (err) {
         setToast({
@@ -54,7 +54,7 @@ export default function ArticleCreate({ onSubmit, workspaceId = null }) {
     try {
       event.preventDefault()
       const createArticleInput = fromFormData(event.target)
-      const { createArticle: createdArticle } = await runQuery({
+      const { createArticle: createdArticle } = await query({
         query: createArticle,
         variables: { createArticleInput },
       })
