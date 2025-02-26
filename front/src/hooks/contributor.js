@@ -21,7 +21,7 @@ export function useArticleContributorActions({ articleId }) {
       query: addContributorQuery,
       variables: { userId: contributorId, articleId },
     })
-    await mutate(key, async (_) => ({
+    await mutate(key, async () => ({
       article: {
         contributors: response.article.addContributor.contributors,
       },
@@ -34,7 +34,7 @@ export function useArticleContributorActions({ articleId }) {
       query: removeContributorQuery,
       variables: { userId: contributorId, articleId },
     })
-    await mutate(key, async (_) => ({
+    await mutate(key, async () => ({
       article: {
         contributors: response.article.removeContributor.contributors,
       },

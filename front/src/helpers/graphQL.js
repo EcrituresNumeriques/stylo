@@ -22,10 +22,11 @@ async function getErrorResponse(response) {
 }
 
 /**
- * @param {string} query request query (as string)
- * @param {{[string: key]: value}|undefined} variables request variables
- * @param {string} sessionToken session token (for authentication)
- * @param {'fetch'|'mutate'} [type='fetch'] request type (either fetch or mutate)
+ * @param {object} config request configuration
+ * @param {string} config.query request query (as string)
+ * @param {{[string: key]: value}|undefined} config.variables request variables
+ * @param {string} config.sessionToken session token (for authentication)
+ * @param {'fetch'|'mutate'} config.type request type (either fetch or mutate)
  * @returns {Promise<string|object>}
  */
 async function executeRequest({
@@ -82,18 +83,18 @@ async function executeRequest({
 export function useGraphQLClient() {
   const sessionToken = useSelector((state) => state.sessionToken)
   return {
-    query: ({query, variables}) =>
+    query: ({ query, variables }) =>
       executeQuery({ query, variables, sessionToken }),
   }
 }
 
 /**
- * @param {Object} context query context
+ * @param {object} context query context
  * @param {DocumentNode|string} context.query request query (as AST or string)
  * @param {{[string: key]: any}|undefined} context.variables request variables
  * @param {string} context.sessionToken session token (for authentication)
- * @param {'fetch'|'mutate'} [context.type='fetch'] request type (either fetch or mutate)
- * @returns {Promise<string|object>}
+ * @param {'fetch'|'mutate'} context.type request type (either fetch or mutate)
+ * @returns {Promise<string|{[key: string]: any}>}
  * @throws Error if something went wrong
  */
 export function executeQuery({
