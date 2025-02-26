@@ -9,7 +9,7 @@ import {
 import { useGraphQLClient } from '../../../helpers/graphQL'
 import { useProfile } from '../../../helpers/userProfile'
 import { applicationConfig } from '../../../config.js'
-import { linkToZotero as query } from '../../Article.graphql'
+import { linkToZotero as linkToZoteroQuery } from '../../Article.graphql'
 
 import Button from '../../Button'
 import Field from '../../Field'
@@ -79,7 +79,7 @@ export default function ZoteroPanel({
           user: userId,
           article: articleId,
         }
-        await query({ query, variables })
+        await query({ query: linkToZoteroQuery, variables })
       } catch (err) {
         alert(err)
       }

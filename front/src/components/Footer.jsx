@@ -4,7 +4,6 @@ import { Switch, Route, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import styles from './header.module.scss'
-import { HelpCircle } from 'react-feather'
 
 function Footer() {
   const dispatch = useDispatch()

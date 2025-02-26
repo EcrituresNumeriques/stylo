@@ -5,7 +5,7 @@ import styles from './DiffEditor.module.scss'
 import * as monaco from 'monaco-editor'
 import { DiffEditor, loader } from '@monaco-editor/react'
 import { useGraphQLClient } from '../../../../helpers/graphQL'
-import { compareVersion as query } from '../../Write.graphql'
+import { compareVersion as compareVersionQuery } from '../../Write.graphql'
 import { defineFlippedDiffTheme } from './support'
 loader.config({ monaco })
 
@@ -39,7 +39,7 @@ export default function MonacoDiffEditor({
 
   useEffect(() => {
     query({
-      query,
+      query: compareVersionQuery,
       variables: {
         article: articleId,
         to: compareTo ?? 'working-copy',
