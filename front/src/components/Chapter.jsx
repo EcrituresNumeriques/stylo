@@ -66,7 +66,7 @@ export default function Chapter({ article }) {
           </Button>
         </p>
       )}
-      {renaming && renaming && (
+      {renaming && (
         <form
           className={clsx(styles.renamingForm, fieldStyles.inlineFields)}
           onSubmit={(e) => rename(e)}
