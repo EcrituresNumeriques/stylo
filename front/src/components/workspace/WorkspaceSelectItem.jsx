@@ -21,9 +21,9 @@ export default function WorkspaceSelectItem({
     async (event) => {
       event.preventDefault()
       const [id, checked] = [event.target.value, event.target.checked]
-      const query = checked ? addArticle : removeArticle
+      const graphqlQuery = checked ? addArticle : removeArticle
       await query({
-        query,
+        query: graphqlQuery,
         variables: { articleId: articleId, workspaceId: id },
       })
       onChange({ workspaceId: id })

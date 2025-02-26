@@ -18,9 +18,11 @@ export default function CorpusSelectItem({
     async (event) => {
       event.preventDefault()
       const [corpusId, checked] = [event.target.value, event.target.checked]
-      const query = checked ? addArticleToCorpus : removeArticleFromCorpus
+      const graphqlQuery = checked
+        ? addArticleToCorpus
+        : removeArticleFromCorpus
       await query({
-        query,
+        query: graphqlQuery,
         variables: { articleId: articleId, corpusId: corpusId },
       })
       onChange({ corpusId })
