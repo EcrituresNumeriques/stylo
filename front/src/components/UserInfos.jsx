@@ -7,6 +7,9 @@ import { Helmet } from 'react-helmet'
 
 import { useGraphQLClient } from '../helpers/graphQL'
 import { updateUser } from './Credentials.graphql'
+
+import { useSetAuthToken } from '../hooks/user.js'
+
 import etv from '../helpers/eventTargetValue'
 import styles from './credentials.module.scss'
 import formStyles from './field.module.scss'
@@ -35,19 +38,9 @@ export default function UserInfos() {
       }),
     []
   )
-  const clearZoteroToken = useCallback(
-    () => dispatch({ type: 'CLEAR_ZOTERO_TOKEN' }),
-    []
-  )
 
-  const unlinkZoteroAccount = useCallback(async (event) => {
-    event.preventDefault()
-
-    const variables = { user: activeUser._id, details: { zoteroToken: null } }
-    await query({ query: updateUser, variables })
-    clearZoteroToken()
-    setIsSaving(false)
-  }, [])
+  const { link: linkZoteroAccount, unlink: unlinkZoteroAccount } =
+    useSetAuthToken('zotero')
 
   const updateInfo = useCallback(
     async (e) => {
@@ -107,18 +100,42 @@ export default function UserInfos() {
             <>
               {zoteroToken && (
                 <div className={styles.zotero}>
-                  <div>
-                    Linked with <code>{zoteroToken}</code> account.
-                  </div>
+                  <p>
+                    {t('credentials.authentication.linkedService.description', {
+                      service: 'Zotero',
+                      token: zoteroToken,
+                    })}
+                  </p>
                   <Button
-                    title="Unlink this Zotero account"
                     onClick={unlinkZoteroAccount}
+                    type="button"
+                    aria-label={t('credentials.authentication.unlinkLabel', {
+                      service: 'zotero',
+                    })}
                   >
-                    Unlink
+                    {t('credentials.authentication.unlinkButton')}
                   </Button>
                 </div>
               )}
-              {!zoteroToken && <span>No linked account.</span>}
+              {!zoteroToken && (
+                <div className={styles.zotero}>
+                  <p>
+                    {t(
+                      'credentials.authentication.unlinkedService.description'
+                    )}
+                  </p>
+
+                  <Button
+                    onClick={linkZoteroAccount}
+                    type="button"
+                    aria-label={t('credentials.authentication.linkLabel', {
+                      service: 'zotero',
+                    })}
+                  >
+                    {t('credentials.authentication.linkButton')}
+                  </Button>
+                </div>
+              )}
             </>
           </Field>
           <div className={formStyles.footer}>

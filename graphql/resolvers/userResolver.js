@@ -29,6 +29,21 @@ module.exports = {
       return newUser
     },
 
+    async setAuthToken(_, args, { token, user }) {
+      const { service, token: serviceToken } = args
+
+      isUser(args, { token, user })
+
+      if (service === 'zotero') {
+        user.zoteroToken = serviceToken
+        await user.save()
+      } else {
+        throw new Error(`Service unknown (${service})`)
+      }
+
+      return user
+    },
+
     async addAcquintance(_, args, context) {
       const { userId } = isUser(args, context)
 

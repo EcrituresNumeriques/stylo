@@ -18,6 +18,10 @@ enum AuthType {
   local
 }
 
+enum AuthTokenService {
+  zotero
+}
+
 type UserSearch {
   _id: ID
   displayName: String
@@ -391,6 +395,9 @@ type Query {
 type Mutation {
   "Create user + password + default article"
   createUser(details: NewUserInput!): User!
+
+  "Sets a user authentication token (to something, or nothing if unlinking services"
+  setAuthToken (service: AuthTokenService!, token: String): User
 
   "Add an email to your acquintances [need to be authentificated as user]"
   addAcquintance(email: EmailAddress!, user: ID): User

@@ -4,14 +4,22 @@ import { Route } from 'react-router-dom'
 
 import Login from './Login'
 
-function PrivateRoute({ children, ...rest }) {
+function PrivateRoute({ children, component, ...rest }) {
   const loggedIn = useSelector((state) => state.loggedIn)
 
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        loggedIn ? children : <Login from={location} />
+        loggedIn ? (
+          component ? (
+            React.createElement(component, rest, children)
+          ) : (
+            children
+          )
+        ) : (
+          <Login from={location} />
+        )
       }
     />
   )

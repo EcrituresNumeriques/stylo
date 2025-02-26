@@ -132,8 +132,8 @@ passport.use(
       callbackURL: zoteroAuthCallbackUrl,
       sessionKey: 'oauth_token',
     },
-    function (zoteroToken, tokenSecret, profile, done) {
-      return done(null, { zoteroToken })
+    function (token, tokenSecret, profile, params, done) {
+      return done(null, { token, profile })
     }
   )
 )
@@ -258,44 +258,36 @@ app.get(
 app.get(
   '/login/zotero',
   (req, res, next) => {
-    req.session.origin = req.headers.referer
+    req.session.returnTo = req.query.returnTo
     next()
   },
   passport.authenticate('zotero', { scope: zoteroAuthScope })
 )
 
 app.use('/authorization-code/zotero/callback', (req, res, next) => {
-  passport.authenticate('zotero', async (err, user, info, status) => {
-    if (err) {
-      logger.error({ err }, 'Unable to authenticate on Zotero.')
-      return next(err)
-    }
-    if (!user) {
-      return res.status(401).redirect(req.session.origin)
-    }
-    const { zoteroToken } = user
-    if (req.user) {
-      const email = req.user.email
+  passport.authenticate(
+    'zotero',
+    /**
+     * @param {Error} err
+     * @param {{token: String, profile: {userID: String, username: String}}} param1
+     * @returns {import('express').Response}
+     */
+    async (err, { token, profile }) => {
+      if (err) {
+        logger.error({ err }, 'Unable to authenticate on Zotero.')
 
-      // save the Zotero token
-      const authenticatedUser = await User.findOne({ email })
-      authenticatedUser.zoteroToken = zoteroToken
-      await authenticatedUser.save()
+        return res
+          .status(400)
+          .redirect(`${req.session.returnTo}#type=error&message=${err.message}`)
+      }
 
       res
         .status(200)
-        .set({
-          'Content-Type': 'text/html',
-        })
-        .end(`<script>window.close();</script>`)
-    } else {
-      logger.error(
-        { err, user, info, status },
-        'Unable to authenticate on Zotero, no user session found.'
-      )
-      res.status(400).redirect(req.session.origin)
+        .redirect(
+          `${req.session.returnTo}#token=${token}&username=${profile.username}`
+        )
     }
-  })(req, res, next)
+  )(req, res, next)
 })
 
 app.use(
