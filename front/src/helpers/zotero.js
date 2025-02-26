@@ -1,6 +1,9 @@
 import LinkHeader from 'http-link-header'
 import { filter } from './bibtex'
 
+const baseApiUrl = 'https://api.zotero.org/'
+const baseWebUrl = 'https://www.zotero.org/'
+
 /**
  * @typedef ZoteroCollection
  * @property {ZoteroCollectionData} data
@@ -37,6 +40,14 @@ import { filter } from './bibtex'
  * @typedef HTMLLink
  * @property {string} href
  * @property {string} type Mime-Type of the link
+ */
+
+/**
+ * @typedef {Object} ZoteroKeyResponse
+ * @property {string} userID
+ * @property {string} key
+ * @property {string} username
+ * @property {string} displayName
  */
 
 /**
@@ -89,9 +100,9 @@ async function fetchAllJSON(url, key, agg = []) {
 }
 
 /**
- * @param url
- * @param key Zotero API key
- * @param agg
+ * @param {string} url
+ * @param {string} key Zotero API key
+ * @param {string[]=} agg
  * @returns {Promise<string[]>} - a list of bibliographical references (as BibTeX)
  */
 async function fetchAllBibTeX(url, key, agg = []) {
@@ -122,24 +133,19 @@ async function fetchAllBibTeX(url, key, agg = []) {
 }
 
 /**
- * @param {string} url
- * @returns {Promise<string>} - a JSON response
- */
-function fetchJSON(url) {
-  return fetch(url).then((response) => response.json())
-}
-
-/**
  * @param {string} token Zotero API token
- * @returns {Promise<object>} - a JSON response (contains userID and key)
+ * @returns {Promise<ZoteroKeyResponse>} - a JSON response (contains userID and key)
  */
 function fetchUserFromToken(token) {
-  return fetchJSON(`https://api.zotero.org/keys/${token}`)
+  return fetch(`https://api.zotero.org/keys/${token}`).then((response) =>
+    response.json()
+  )
 }
 
 /**
- * @param {string} userID
- * @param {string} key Zotero API key
+ * @param {object} options
+ * @param {string} options.userID
+ * @param {string} options.key Zotero API key
  * @returns {Promise<ZoteroCollection[]>} - a list of Zotero collections
  */
 async function fetchAllCollections({ userID, key }) {
@@ -154,21 +160,14 @@ async function fetchAllCollections({ userID, key }) {
   ).then((groups) => [].concat(...groups.flat()))
   // concat dissolves empty arrays (groups without collections)
 
-  // snowpack@3.2 cannot transform this for Safari11
-  // for await (const group of groups) {
-  //   collections = collections.concat(
-  //     await fetchJSON(
-  //       `${group.links.self.href}/collections?key=${key}`
-  //     )
-  //   )
-  // }
   const userCollections = await fetchUserCollections({ userID, key })
 
   return userCollections.concat(groupCollections)
 }
 
 /**
- * @param {string} token
+ * @param {object} options
+ * @param {string} options.token
  * @returns {Promise<ZoteroCollection[]>}
  */
 export async function fetchAllCollectionsPerLibrary({ token }) {
@@ -179,9 +178,9 @@ export async function fetchAllCollectionsPerLibrary({ token }) {
 
 /**
  *
- * @param token
- * @param token.userID
- * @param token.key
+ * @param {object} token
+ * @param {string} token.userID
+ * @param {string} token.key
  * @returns {Promise<ZoteroCollection[]>}
  */
 export async function fetchUserCollections({ userID, key }) {
@@ -192,17 +191,92 @@ export async function fetchUserCollections({ userID, key }) {
 }
 
 /**
- * @param collectionHref.collectionHref
- * @param collectionHref
- * @param key Zotero API key
- * @param collectionHref.token
+ * @param {object} options
+ * @param {string} options.collectionHref
+ * @param {string=} options.token
  * @returns {Promise<string>}
  */
-export const fetchBibliographyFromCollectionHref = async ({
+export async function fetchBibliographyFromCollectionHref({
   collectionHref,
   token: key = null,
-}) => {
+}) {
   return (await fetchAllBibTeX(new URL(collectionHref + '/items'), key)).join(
     '\n'
   )
+}
+
+/**
+ * Converts a Zotero Web URL (group, collection, etc.) into a Zotero API URL
+ * If a token is provided, it does its best to translate userIds and groupIds.
+ * @see https://github.com/EcrituresNumeriques/stylo/issues/816#issuecomment-1419418761
+ * @param {string} plainUrl
+ * @param {string=} token
+ * @returns {Promise<string>} Zotero API URL
+ */
+export async function toApiUrl(plainUrl, token) {
+  // https://www.zotero.org/{username}/library
+  // https://www.zotero.org/{username}/collections/{collectionId}
+  // https://www.zotero.org/{username}/collections/{collectionId}/items/{itemId}/collection
+  // https://www.zotero.org/groups/{groupId}/articlesamroute/library
+  // https://www.zotero.org/groups/{groupId}/article_durassavoie-bernard/collections/{collectionId}
+  // https://www.zotero.org/groups/{groupId}/article_durassavoie-bernard/collections/{collectionId}/items/{itemId}/collection
+  const GROUP_RE =
+    /zotero.org\/(groups\/(?<groupId>\d+)(\/[a-zA-Z0-9_%-]+)?|(?<username>[^/]+))(\/collections\/(?<collectionId>[A-Z0-9]+))?(\/items\/(?<itemId>[A-Z0-9]+))?(\/tags\/(?<tag>[^/]+))?(\/(?<action>collection|library|item-list|trash))?$/
+
+  if (/https:\/\/api.zotero.org\/(users|groups)\/\d+\//i.test(plainUrl)) {
+    return plainUrl
+  }
+
+  if (!plainUrl.startsWith(baseWebUrl)) {
+    throw new Error('This is not a Zotero URL')
+  }
+
+  if (!plainUrl.startsWith('https://www.zotero.org/groups/') && !token) {
+    throw new Error('A token is required to fetch personal items.')
+  }
+
+  const result = plainUrl.match(GROUP_RE)
+  let userId = null
+  const { username, groupId, collectionId, itemId, tag, action } = result.groups
+
+  if (tag) {
+    throw new Error('Cannot fetch items associated to a tag.')
+  }
+
+  if (username) {
+    const user = await fetchUserFromToken()
+
+    if (user.username !== username) {
+      throw new Error('Cannot fetch another member personal library')
+    }
+
+    userId = user.userID
+  }
+
+  const path = [
+    userId && `users/${userId}`,
+    groupId && `groups/${groupId}`,
+    collectionId || itemId ? '' : 'items',
+    collectionId && !itemId && `collections/${collectionId}/items`,
+    itemId && `items/${itemId}/children`,
+  ]
+    .filter(Boolean)
+    .join('/')
+
+  return baseApiUrl + path
+}
+
+/**
+ *
+ * @param {string=} urlSuffix
+ * @returns {string|undefined}
+ */
+export function prefixLegacyUrl(urlSuffix) {
+  const MAYBE_ZOTERO_RE = /^\d+\/([^/]+\/)?collections\/[A-Z0-9]+/
+
+  if (typeof urlSuffix === 'string' && MAYBE_ZOTERO_RE.test(urlSuffix)) {
+    return `${baseWebUrl}groups/${urlSuffix}`
+  }
+
+  return urlSuffix
 }
