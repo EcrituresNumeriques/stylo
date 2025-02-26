@@ -11,6 +11,7 @@ import {
   Printer,
 } from 'react-feather'
 import { useTranslation } from 'react-i18next'
+import { toBibtex } from '../../helpers/bibtex.js'
 import TimeAgo from '../TimeAgo.jsx'
 
 import styles from './workingVersion.module.scss'
@@ -139,7 +140,7 @@ export default function WorkingVersion({
             <Export
               articleVersionId={selectedVersion}
               articleId={articleInfos._id}
-              bib={live.bibPreview}
+              bib={toBibtex(workingArticle.bibliography.entries.slice(0, 3))}
               name={articleInfos.title}
             />
           </Modal>
