@@ -10,7 +10,10 @@ import { useSWRKey } from './graphql.js'
 
 export function useArticleContributorActions({ articleId }) {
   const { mutate } = useSWRConfig()
-  const key = useSWRKey()({ query: getArticleContributors })
+  const key = useSWRKey()({
+    query: getArticleContributors,
+    variables: { articleId },
+  })
   const sessionToken = useSelector((state) => state.sessionToken)
   const addContributor = async (contributorId) => {
     const response = await executeQuery({
