@@ -43,7 +43,7 @@ function Header() {
                           : '/articles'
                       }
                     >
-                      Articles
+                      {t('header.articles.link')}
                     </NavLink>
                   </li>
                 )}
@@ -56,7 +56,7 @@ function Header() {
                           : '/corpus'
                       }
                     >
-                      Corpus
+                      {t('header.corpus.link')}
                     </NavLink>
                   </li>
                 )}
@@ -85,7 +85,7 @@ function Header() {
                 rel="noopener noreferrer"
               >
                 <LifeBuoy size={16} />
-                Documentation
+                {t('header.documentation.link')}
               </a>
               <LanguagesMenu />
             </nav>

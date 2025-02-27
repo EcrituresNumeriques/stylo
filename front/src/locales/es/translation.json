@@ -333,5 +333,8 @@
   "credentials.login.goBackLink": "Volver a la página de inicio",
   "export.toc.no": "Sin tabla de contenido",
   "credentials.manage": "Gestionar mi cuenta",
-  "user.account.updatedAt": "Cuenta actualizada"
+  "user.account.updatedAt": "Cuenta actualizada",
+  "header.documentation.link": "Documentación",
+  "header.corpus.link": "Corpus",
+  "header.articles.link": "Artículo"
 }

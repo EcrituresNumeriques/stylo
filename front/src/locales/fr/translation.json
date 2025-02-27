@@ -351,5 +351,8 @@
   "corpus.metadata.form.issue": "Numéro de revue",
   "corpus.metadata.form.issue.title": "Titre",
   "corpus.metadata.form.issue.number": "N°",
-  "corpus.metadata.form.issue.identifier": "Identifiant"
+  "corpus.metadata.form.issue.identifier": "Identifiant",
+  "header.documentation.link": "Documentation",
+  "header.corpus.link": "Corpus",
+  "header.articles.link": "Articles"
 }
