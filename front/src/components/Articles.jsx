@@ -6,7 +6,7 @@ import { CurrentUserContext } from '../contexts/CurrentUser'
 import { Search } from 'react-feather'
 import { Helmet } from 'react-helmet'
 
-import useGraphQL from '../hooks/graphql'
+import useFetchData from '../hooks/graphql'
 import { applicationConfig } from '../config.js'
 import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
 import etv from '../helpers/eventTargetValue'
@@ -53,7 +53,7 @@ export default function Articles() {
         : { user: activeUserId },
     [activeWorkspaceId]
   )
-  const { data, isLoading, mutate } = useGraphQL(
+  const { data, isLoading, mutate } = useFetchData(
     { query, variables },
     {
       revalidateOnFocus: false,

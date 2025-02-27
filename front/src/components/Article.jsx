@@ -38,23 +38,18 @@ import {
   UserPlus,
 } from 'react-feather'
 
-import {
-  duplicateArticle,
-  renameArticle,
-  deleteArticle,
-  getArticleTags,
-  getArticleContributors,
-} from './Article.graphql'
+import { getArticleTags, getArticleContributors } from './Article.graphql'
 import SoloSessionAction from './solo/SoloSessionAction.jsx'
 
 import { getTags } from './Tag.graphql'
 
-import useGraphQL, { useMutation } from '../hooks/graphql'
+import useFetchData from '../hooks/graphql'
 import TimeAgo from './TimeAgo.jsx'
 import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
 import { useSelector } from 'react-redux'
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
+import { useArticleActions } from '../hooks/article.js'
 
 export default function Article({
   article,
@@ -69,22 +64,24 @@ export default function Article({
     () => activeWorkspace?._id,
     [activeWorkspace]
   )
+  const articleActions = useArticleActions(articleId)
 
-  const { data: contributorsQueryData, error: contributorsError } = useGraphQL(
-    { query: getArticleContributors, variables: { articleId } },
-    {
-      fallbackData: {
-        article,
-      },
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  )
+  const { data: contributorsQueryData, error: contributorsError } =
+    useFetchData(
+      { query: getArticleContributors, variables: { articleId } },
+      {
+        fallbackData: {
+          article,
+        },
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+      }
+    )
   const contributors = (
     contributorsQueryData?.article?.contributors || []
   ).filter((c) => c.user._id !== article.owner._id)
-  const { data: userTagsQueryData } = useGraphQL(
+  const { data: userTagsQueryData } = useFetchData(
     { query: getTags, variables: {} },
     {
       revalidateIfStale: false,
@@ -93,7 +90,7 @@ export default function Article({
     }
   )
   const userTags = userTagsQueryData?.user?.tags || []
-  const { data: articleTagsQueryData } = useGraphQL(
+  const { data: articleTagsQueryData } = useFetchData(
     { query: getArticleTags, variables: { articleId } },
     {
       fallbackData: {
@@ -113,7 +110,6 @@ export default function Article({
     bindings: deleteArticleModalBinding,
   } = useModal()
 
-  const mutation = useMutation()
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [renaming, setRenaming] = useState(false)
@@ -144,14 +140,7 @@ export default function Article({
   )
 
   const duplicate = async () => {
-    const duplicatedArticleQuery = await mutation({
-      query: duplicateArticle,
-      variables: {
-        user: activeUser._id,
-        to: activeUser._id,
-        article: articleId,
-      },
-    })
+    const duplicatedArticleQuery = await articleActions.duplicate()
     onArticleCreated({
       ...article,
       ...duplicatedArticleQuery.duplicateArticle,
@@ -162,10 +151,7 @@ export default function Article({
 
   const rename = async (e) => {
     e.preventDefault()
-    await mutation({
-      query: renameArticle,
-      variables: { user: activeUser._id, article: articleId, title: newTitle },
-    })
+    await articleActions.rename(newTitle)
     onArticleUpdated({
       ...article,
       title: newTitle,
@@ -175,10 +161,7 @@ export default function Article({
 
   const handleDeleteArticle = async () => {
     try {
-      await mutation({
-        query: deleteArticle,
-        variables: { article: articleId },
-      })
+      await articleActions.remove()
       onArticleDeleted(article)
       setToast({
         type: 'default',

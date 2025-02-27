@@ -83,8 +83,8 @@ async function executeRequest({
 export function useGraphQLClient() {
   const sessionToken = useSelector((state) => state.sessionToken)
   return {
-    query: ({ query, variables }) =>
-      executeQuery({ query, variables, sessionToken }),
+    query: ({ query, variables, type = 'fetch' }) =>
+      executeQuery({ query, variables, sessionToken, type }),
   }
 }
 
