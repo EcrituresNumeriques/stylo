@@ -13,7 +13,7 @@ export async function parse(bibtex) {
 }
 
 export function toBibtex(entries) {
-  return entries.map((e) => e.raw_text).join('\n\n')
+  return entries.map((e) => e?.entry?.raw_text ?? e.raw_text).join('\n\n')
 }
 
 /**
