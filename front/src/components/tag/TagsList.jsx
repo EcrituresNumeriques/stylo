@@ -1,25 +1,27 @@
 import { Loading, Modal as GeistModal, useModal } from '@geist-ui/core'
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 import styles from './tagsList.module.scss'
 import ArticleTag from '../Tag.jsx'
 import Button from '../Button.jsx'
-import TagCreate from '../TagCreate.jsx'
+import TagEditForm from './TagEditForm.jsx'
 import { getTags } from '../Tag.graphql'
 import useGraphQL from '../../hooks/graphql'
 
-export default function TagsList() {
+export default function TagsList({ action, ActionIcon }) {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const selectedTagIds = useSelector(
     (state) => state.activeUser.selectedTagIds || []
   )
+  const [editedTag, setEditedTag] = useState()
+
   const {
-    visible: createTagVisible,
-    setVisible: setCreateTagVisible,
-    bindings: createTagModalBinding,
+    visible: tagEditFormVisible,
+    setVisible: setTagEditFormVisible,
+    bindings: tagEditFormModalBinding,
   } = useModal()
   const { data, isLoading } = useGraphQL(
     { query: getTags, variables: {} },
@@ -29,9 +31,13 @@ export default function TagsList() {
     }
   )
   const tags = data?.user?.tags || []
+
+  // clears the edited tag when form is not visible anymore
   useEffect(() => {
-    setCreateTagVisible(false)
-  }, [tags])
+    if (!tagEditFormVisible) {
+      setEditedTag()
+    }
+  }, [editedTag, tagEditFormVisible])
 
   const handleTagSelected = useCallback(
     (event) => {
@@ -41,6 +47,11 @@ export default function TagsList() {
     [selectedTagIds]
   )
 
+  const triggerEditTagForm = useCallback((tag) => {
+    setEditedTag(tag)
+    setTagEditFormVisible(true)
+  }, [])
+
   if (isLoading) {
     return <Loading />
   }
@@ -48,21 +59,33 @@ export default function TagsList() {
   return (
     <>
       <ul className={styles.filterByTags}>
-        {tags.map((t) => (
-          <li key={`filterTag-${t._id}`}>
+        {tags.map((tag) => (
+          <li key={`filterTag-${tag._id}`}>
             <ArticleTag
-              tag={t}
-              name={`filterTag-${t._id}`}
+              tag={tag}
+              name={`filterTag-${tag._id}`}
               onClick={handleTagSelected}
               disableAction={false}
-              selected={selectedTagIds.includes(t._id)}
-            />
+              selected={selectedTagIds.includes(tag._id)}
+            >
+              {action && (
+                <Button
+                  icon
+                  small
+                  aria-label={t('tag.editForm.buttonTitle', { name: tag.name })}
+                  type="button"
+                  onClick={() => triggerEditTagForm(tag)}
+                >
+                  <ActionIcon size="1rem" />
+                </Button>
+              )}
+            </ArticleTag>
           </li>
         ))}
         <li>
           <Button
             className={styles.createTagButton}
-            onClick={() => setCreateTagVisible(true)}
+            onClick={() => setTagEditFormVisible(true)}
           >
             {t('tag.createAction.buttonText')}
           </Button>
@@ -71,14 +94,19 @@ export default function TagsList() {
 
       <GeistModal
         width="40rem"
-        visible={createTagVisible}
-        {...createTagModalBinding}
+        visible={tagEditFormVisible}
+        {...tagEditFormModalBinding}
       >
-        <h2>{t('tag.createForm.title')}</h2>
+        <h2>
+          {editedTag ? t('tag.editForm.title') : t('tag.createForm.title')}
+        </h2>
         <GeistModal.Content>
-          <TagCreate />
+          <TagEditForm
+            tag={editedTag}
+            onSubmit={() => setTagEditFormVisible(false)}
+          />
         </GeistModal.Content>
-        <GeistModal.Action passive onClick={() => setCreateTagVisible(false)}>
+        <GeistModal.Action passive onClick={() => setTagEditFormVisible(false)}>
           {t('modal.close.text')}
         </GeistModal.Action>
       </GeistModal>

@@ -9,8 +9,6 @@ import createReduxStore, { initialState } from '../src/createReduxStore.js'
 import merge from 'lodash.merge'
 import '../src/i18n.js'
 
-// vi.mock('react-router-dom')
-
 // mock Fetch requests
 globalThis.fetch = vi.fn().mockResolvedValue({
   ok: vi.fn(),
@@ -49,6 +47,7 @@ export function renderWithProviders(
     route = '/',
     path = '/',
     store = createReduxStore(merge({}, initialState, preloadedState)),
+    currentUser = {},
     ...renderOptions
   } = {}
 ) {

@@ -21,7 +21,6 @@ export default function Button(props) {
       type={props.type ?? (props.primary ? 'submit' : 'button')}
       title={props.title}
       onClick={props.onClick}
-      onDoubleClick={props.onDoubleClick}
       disabled={props.disabled}
       aria-label={props['aria-label']}
     >
