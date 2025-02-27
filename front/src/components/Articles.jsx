@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
 import { CurrentUserContext } from '../contexts/CurrentUser'
-import { Search } from 'react-feather'
+import { Search, Settings } from 'react-feather'
 import { Helmet } from 'react-helmet'
 
 import useGraphQL from '../hooks/graphql'
@@ -13,6 +13,7 @@ import etv from '../helpers/eventTargetValue'
 
 import Article from './Article'
 import ArticleCreate from './ArticleCreate.jsx'
+import TagEditForm from './tag/TagEditForm.jsx'
 
 import styles from './articles.module.scss'
 import Field from './Field'
@@ -229,9 +230,10 @@ export default function Articles() {
           })}
         </title>
       </Helmet>
+
       <section className={styles.section}>
         <header className={styles.articlesHeader}>
-          <h1>Articles</h1>
+          <h1>{t('header.articles.link')}</h1>
           {activeWorkspace && (
             <WorkspaceLabel
               color={activeWorkspace.color}
@@ -251,7 +253,7 @@ export default function Articles() {
         <aside className={styles.filtersContainer}>
           <div className={styles.filtersTags}>
             <h4>{t('tag.list.title')}</h4>
-            <TagsList />
+            <TagsList action={TagEditForm} ActionIcon={Settings} />
           </div>
         </aside>
 

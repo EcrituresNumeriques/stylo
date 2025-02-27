@@ -8,6 +8,7 @@ export default function ArticleTag({
   key,
   onClick,
   disableAction,
+  children,
 }) {
   const isSelected = tag.selected || selected
   const classNames = clsx(styles.tag, isSelected && styles.selected)
@@ -15,7 +16,7 @@ export default function ArticleTag({
   const backgroundColor = tag.color || 'grey'
 
   return (
-    <label className={classNames}>
+    <label className={classNames} aria-label={tag.name}>
       {!disableAction && (
         <input
           name={key}
@@ -27,7 +28,8 @@ export default function ArticleTag({
         />
       )}
       {tag.name}
-      <span className={styles.chip} style={{ backgroundColor }} />
+      <span className={styles.chip} style={{ backgroundColor }} aria-hidden />
+      {children}
     </label>
   )
 }
