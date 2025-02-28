@@ -52,12 +52,12 @@ export default function CorpusCreate({ onSubmit }) {
         })
         onSubmit()
         setToast({
-          text: `New corpus created`,
+          text: t('corpus.create.toastSuccess'),
           type: 'default',
         })
       } catch (err) {
         setToast({
-          text: `Unable to create a new corpus: ${err}`,
+          text: t('corpus.create.toastFailure'),
           type: 'error',
         })
       }
@@ -75,7 +75,7 @@ export default function CorpusCreate({ onSubmit }) {
           type="text"
         />
         <div className={styles.controlField}>
-          <label>Description</label>
+          <label>{t('corpus.createForm.descriptionField')}</label>
           <Textarea
             {...descriptionBindings}
             label={t('corpus.createForm.descriptionField')}

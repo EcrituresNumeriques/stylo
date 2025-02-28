@@ -108,7 +108,7 @@ export default function CorpusItem({ corpus }) {
         </div>
         <aside className={styles.actionButtons}>
           <Button
-            title="Edit"
+            title={t('corpus.edit.buttonTitle')}
             icon={true}
             onClick={() => setEditCorpusVisible(true)}
           >
@@ -121,7 +121,7 @@ export default function CorpusItem({ corpus }) {
           />
 
           <Button
-            title="Delete"
+            title={t('corpus.delete.buttonTitle')}
             icon={true}
             onClick={(event) => {
               event.preventDefault()
@@ -131,7 +131,7 @@ export default function CorpusItem({ corpus }) {
             <Trash />
           </Button>
           <Button
-            title="Download a printable version"
+            title={t('corpus.export.buttonTitle')}
             icon={true}
             onClick={() => setExportCorpusVisible(true)}
           >
@@ -139,7 +139,7 @@ export default function CorpusItem({ corpus }) {
           </Button>
 
           <Link
-            title="Preview (open a new window)"
+            title={t('corpus.preview.buttonTitle')}
             target="_blank"
             className={buttonStyles.icon}
             to={`/corpus/${corpus._id}/preview`}
