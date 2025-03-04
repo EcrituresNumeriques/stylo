@@ -90,7 +90,7 @@ export default function Corpus() {
       </Helmet>
       <section className={styles.section}>
         <header className={styles.header}>
-          <h1>Corpus</h1>
+          <h1>{t('header.corpus.link')}</h1>
           {activeWorkspace && (
             <WorkspaceLabel
               color={activeWorkspace.color}
@@ -98,10 +98,7 @@ export default function Corpus() {
             />
           )}
         </header>
-        <p className={styles.introduction}>
-          A corpus is a collection of articles that you can sort and export all
-          at once.
-        </p>
+        <p className={styles.introduction}>{t('corpus.page.description')}</p>
 
         <Button
           type="secondary"
