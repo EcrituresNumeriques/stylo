@@ -183,6 +183,16 @@ export default function Article({
     setSharing(false)
   }, [setSharing])
 
+  const handleArticleTagsUpdated = useCallback(
+    (event) => {
+      onArticleUpdated({
+        ...article,
+        tags: event.updatedTags,
+      })
+    },
+    [article]
+  )
+
   return (
     <article className={styles.article}>
       {exporting && (
@@ -418,7 +428,11 @@ export default function Article({
               <>
                 <h4>{t('article.tags.title')}</h4>
                 <div className={styles.editTags}>
-                  <ArticleTags articleId={article._id} userTags={userTags} />
+                  <ArticleTags
+                    articleId={article._id}
+                    userTags={userTags}
+                    onArticleTagsUpdated={handleArticleTagsUpdated}
+                  />
                 </div>
               </>
             )}
