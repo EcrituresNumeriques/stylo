@@ -431,7 +431,6 @@ type Mutation {
     description: String
     color: HexColorCode
     tag: ID!
-    user: ID
   ): Tag
 
   "Delete tag, and remove it from all related articles"
