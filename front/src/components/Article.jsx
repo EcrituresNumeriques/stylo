@@ -235,19 +235,6 @@ export default function Article({
         </GeistModal.Action>
       </GeistModal>
 
-      <GeistModal width="30rem" visible={sharing} onClose={closeSharingModal}>
-        <h2>{t('article.shareModal.title')}</h2>
-        <span className={styles.sendText}>
-          {t('article.shareModal.description')}
-        </span>
-        <GeistModal.Content>
-          <ArticleContributors article={article} contributors={contributors} />
-        </GeistModal.Content>
-        <GeistModal.Action passive onClick={closeSharingModal}>
-          {t('modal.close.text')}
-        </GeistModal.Action>
-      </GeistModal>
-
       <GeistModal width="25rem" visible={sending} onClose={closeSendingModal}>
         <h2>{t('article.sendCopyModal.title')}</h2>
         <span>
