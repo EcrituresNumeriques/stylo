@@ -8,7 +8,6 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
 import { Helmet } from 'react-helmet'
-import { CurrentUserContext } from '../../contexts/CurrentUser'
 
 import { useGraphQLClient } from '../../helpers/graphQL'
 import { useActiveWorkspace } from '../../hooks/workspace.js'
@@ -80,7 +79,7 @@ export default function Corpus() {
   ])
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    <section className={styles.section}>
       <Helmet>
         <title>
           {t('corpus.page.title', {
@@ -88,57 +87,56 @@ export default function Corpus() {
           })}
         </title>
       </Helmet>
-      <section className={styles.section}>
-        <header className={styles.header}>
-          <h1>{t('header.corpus.link')}</h1>
-          {activeWorkspace && (
-            <WorkspaceLabel
-              color={activeWorkspace.color}
-              name={activeWorkspace.name}
-            />
-          )}
-        </header>
-        <p className={styles.introduction}>{t('corpus.page.description')}</p>
 
-        <Button
-          type="secondary"
-          className={styles.button}
-          onClick={() => setCreateCorpusVisible(true)}
-        >
-          {t('corpus.createAction.buttonText')}
-        </Button>
-
-        <GeistModal
-          width="40rem"
-          visible={createCorpusVisible}
-          {...createCorpusModalBinding}
-        >
-          <h2>{t('corpus.createModal.title')}</h2>
-          <GeistModal.Content>
-            <CorpusCreate onSubmit={handleCreateNewCorpus} />
-          </GeistModal.Content>
-          <GeistModal.Action
-            passive
-            onClick={() => setCreateCorpusVisible(false)}
-          >
-            {t('modal.close.text')}
-          </GeistModal.Action>
-        </GeistModal>
-
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <ul className={styles.corpusList}>
-            {corpus.map((c) => {
-              return (
-                <li key={c._id}>
-                  <CorpusItem corpus={c} />
-                </li>
-              )
-            })}
-          </ul>
+      <header className={styles.header}>
+        <h1>{t('header.corpus.link')}</h1>
+        {activeWorkspace && (
+          <WorkspaceLabel
+            color={activeWorkspace.color}
+            name={activeWorkspace.name}
+          />
         )}
-      </section>
-    </CurrentUserContext.Provider>
+      </header>
+      <p className={styles.introduction}>{t('corpus.page.description')}</p>
+
+      <Button
+        type="secondary"
+        className={styles.button}
+        onClick={() => setCreateCorpusVisible(true)}
+      >
+        {t('corpus.createAction.buttonText')}
+      </Button>
+
+      <GeistModal
+        width="40rem"
+        visible={createCorpusVisible}
+        {...createCorpusModalBinding}
+      >
+        <h2>{t('corpus.createModal.title')}</h2>
+        <GeistModal.Content>
+          <CorpusCreate onSubmit={handleCreateNewCorpus} />
+        </GeistModal.Content>
+        <GeistModal.Action
+          passive
+          onClick={() => setCreateCorpusVisible(false)}
+        >
+          {t('modal.close.text')}
+        </GeistModal.Action>
+      </GeistModal>
+
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <ul className={styles.corpusList}>
+          {corpus.map((c) => {
+            return (
+              <li key={c._id}>
+                <CorpusItem corpus={c} />
+              </li>
+            )
+          })}
+        </ul>
+      )}
+    </section>
   )
 }

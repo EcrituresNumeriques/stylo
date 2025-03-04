@@ -422,7 +422,6 @@ type Mutation {
   createTag(
     name: String!
     description: String
-    user: ID
     color: HexColorCode!
   ): Tag
 

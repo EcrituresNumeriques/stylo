@@ -36,15 +36,9 @@ mutation updateTag(
 mutation createTag(
   $name: String!
   $description: String
-  $user: ID!
   $color: HexColorCode!
 ) {
-  createTag(
-    name: $name
-    description: $description
-    user: $user
-    color: $color
-  ) {
+  createTag(name: $name, description: $description, color: $color) {
     _id
     name
     description
