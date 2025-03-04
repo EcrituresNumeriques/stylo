@@ -1,16 +1,14 @@
 import { useSelector } from 'react-redux'
-import { useSWRConfig } from 'swr'
 import { executeQuery } from '../helpers/graphQL.js'
 import {
   addContributor as addContributorQuery,
   removeContributor as removeContributorQuery,
 } from '../components/ArticleContributors.graphql'
 import { getArticleContributors } from '../components/Article.graphql'
-import { useSWRKey } from './graphql.js'
+import { useMutateData } from './graphql.js'
 
 export function useArticleContributorActions({ articleId }) {
-  const { mutate } = useSWRConfig()
-  const key = useSWRKey()({
+  const { mutate } = useMutateData({
     query: getArticleContributors,
     variables: { articleId },
   })
@@ -21,7 +19,7 @@ export function useArticleContributorActions({ articleId }) {
       query: addContributorQuery,
       variables: { userId: contributorId, articleId },
     })
-    await mutate(key, async () => ({
+    await mutate(async () => ({
       article: {
         contributors: response.article.addContributor.contributors,
       },
@@ -34,7 +32,7 @@ export function useArticleContributorActions({ articleId }) {
       query: removeContributorQuery,
       variables: { userId: contributorId, articleId },
     })
-    await mutate(key, async () => ({
+    await mutate(async () => ({
       article: {
         contributors: response.article.removeContributor.contributors,
       },

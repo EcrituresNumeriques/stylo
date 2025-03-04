@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet'
 
 import { useStyloExportPreview } from '../hooks/stylo-export.js'
 import { toYaml } from './Write/metadata/yaml.js'
-import useGraphQL from '../hooks/graphql.js'
+import useFetchData from '../hooks/graphql.js'
 import { applicationConfig } from '../config.js'
 
 import * as queries from './Preview.graphql'
@@ -131,7 +131,7 @@ export default function Preview({ strategy: strategyId }) {
     return () => document.body.removeChild(script)
   }, [])
 
-  const { data, isLoading: isDataLoading } = useGraphQL(
+  const { data, isLoading: isDataLoading } = useFetchData(
     strategy.query({ id, version, workspaceId }),
     {
       revalidateOnFocus: false,

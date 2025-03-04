@@ -8,7 +8,7 @@ import ArticleTag from '../Tag.jsx'
 import Button from '../Button.jsx'
 import TagCreate from '../TagCreate.jsx'
 import { getTags } from '../Tag.graphql'
-import useGraphQL from '../../hooks/graphql'
+import useFetchData from '../../hooks/graphql'
 
 export default function TagsList() {
   const { t } = useTranslation()
@@ -21,7 +21,7 @@ export default function TagsList() {
     setVisible: setCreateTagVisible,
     bindings: createTagModalBinding,
   } = useModal()
-  const { data, isLoading } = useGraphQL(
+  const { data, isLoading } = useFetchData(
     { query: getTags, variables: {} },
     {
       revalidateOnFocus: false,
