@@ -1,11 +1,11 @@
 query renameArticle($articleId: ID!, $title: String!) {
-  article(article: $article) {
+  article(article: $articleId) {
     rename(title: $title)
   }
 }
 
 query linkToZotero($articleId: ID!, $zotero: String!) {
-  article(article: $article) {
+  article(article: $articleId) {
     setZoteroLink(zotero: $zotero)
   }
 }
@@ -46,14 +46,14 @@ query getArticleContributors($articleId: ID!) {
   }
 }
 
-query deleteArticle($article: ID!) {
-  article(article: $article) {
+query deleteArticle($articleId: ID!) {
+  article(article: $articleId) {
     delete(dryRun: false)
   }
 }
 
-mutation duplicateArticle($user: ID, $article: ID!, $to: ID!) {
-  duplicateArticle(article: $article, to: $to, user: $user) {
+mutation duplicateArticle($user: ID, $articleId: ID!, $to: ID!) {
+  duplicateArticle(article: $articleId, to: $to, user: $user) {
     _id
     title
     createdAt

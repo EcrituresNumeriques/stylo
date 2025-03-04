@@ -81,7 +81,7 @@ export function useArticleActions({ articleId }) {
       variables: {
         user: null,
         to: toUserId,
-        article: articleId,
+        articleId,
       },
       sessionToken,
       type: 'mutation',
@@ -93,7 +93,7 @@ export function useArticleActions({ articleId }) {
       variables: {
         user: activeUser._id,
         to: activeUser._id,
-        article: articleId,
+        articleId,
       },
       sessionToken,
       type: 'mutation',

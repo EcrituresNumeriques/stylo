@@ -10,7 +10,7 @@ import { useArticleActions } from '../hooks/article.js'
 
 export default function ArticleSendCopy({ article }) {
   const { setToast } = useToasts()
-  const { copy } = useArticleActions(article._id)
+  const { copy } = useArticleActions({ articleId: article._id })
   const { t } = useTranslation()
 
   const handleUserUpdated = useCallback(

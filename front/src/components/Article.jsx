@@ -65,7 +65,7 @@ export default function Article({
     () => activeWorkspace?._id,
     [activeWorkspace]
   )
-  const articleActions = useArticleActions(articleId)
+  const articleActions = useArticleActions({ articleId })
 
   const { data: contributorsQueryData, error: contributorsError } =
     useFetchData(
