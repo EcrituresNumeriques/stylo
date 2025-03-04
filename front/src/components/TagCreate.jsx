@@ -9,7 +9,6 @@ import { createTag, getTags } from './Tag.graphql'
 
 import styles from './TagCreate.module.scss'
 import Field from './Field'
-import { useCurrentUser } from '../contexts/CurrentUser'
 
 export default function TagCreate() {
   const { setToast } = useToasts()
@@ -19,11 +18,9 @@ export default function TagCreate() {
   const { state: description, bindings: descriptionBindings } = useInput('')
   const { state: color, bindings: colorBindings } = useInput(randomColor())
 
-  const activeUser = useCurrentUser()
   const { query } = useGraphQLClient()
 
   const variables = {
-    user: activeUser._id,
     name,
     description,
     color,
