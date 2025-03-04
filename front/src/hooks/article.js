@@ -41,6 +41,7 @@ export function useArticleTagActions({ articleId }) {
       },
       { revalidate: false }
     )
+    return tags
   }
   const remove = async (tagId) => {
     const result = await executeQuery({
@@ -61,6 +62,7 @@ export function useArticleTagActions({ articleId }) {
       },
       { revalidate: false }
     )
+    return tags
   }
 
   return {

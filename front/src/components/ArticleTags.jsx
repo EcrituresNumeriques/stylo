@@ -5,7 +5,11 @@ import ArticleTag from './Tag'
 
 import { useArticleTagActions } from '../hooks/article.js'
 
-export default function ArticleTags({ articleId, userTags }) {
+export default function ArticleTags({
+  articleId,
+  userTags,
+  onArticleTagsUpdated,
+}) {
   const { tags, isLoading, error, remove, add } = useArticleTagActions({
     articleId,
   })
@@ -13,11 +17,8 @@ export default function ArticleTags({ articleId, userTags }) {
   const handleClick = useCallback(
     async (event) => {
       const [id, checked] = [event.target.value, event.target.checked]
-      if (checked) {
-        await add(id)
-      } else {
-        await remove(id)
-      }
+      const updatedTags = checked ? await add(id) : await remove(id)
+      onArticleTagsUpdated({ articleId, updatedTags })
     },
     [articleId]
   )
