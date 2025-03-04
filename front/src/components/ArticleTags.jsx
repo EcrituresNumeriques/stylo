@@ -5,11 +5,7 @@ import ArticleTag from './Tag'
 
 import { useArticleTagActions } from '../hooks/article.js'
 
-export default function ArticleTags({
-  articleId,
-  userTags,
-  onArticleTagsUpdated,
-}) {
+export default function ArticleTags({ articleId, userTags }) {
   const { tags, isLoading, error, remove, add } = useArticleTagActions({
     articleId,
   })
@@ -22,7 +18,6 @@ export default function ArticleTags({
       } else {
         await remove(id)
       }
-      onArticleTagsUpdated({ articleId, updatedTags })
     },
     [articleId]
   )
