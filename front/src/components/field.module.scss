@@ -160,7 +160,7 @@
     &:before {
       content: attr(data-label);
       height: 2em;
-      font-weight: bold;
+      font-weight: 500;
       padding: 0 0.5em;
     }
 
@@ -179,11 +179,10 @@
   border: 1px solid black;
   padding: 0;
   position: absolute;
-  margin-top: calc(
-    -1rem + 1px
-  ); /* (with label) same as form .field + border-bottom-width */
   width: 100%;
   z-index: 900;
+  max-height: 20rem;
+  overflow-y: auto;
 }
 .combobox > label:empty ~ .comboboxResults:not(:empty) {
   margin-top: calc(
