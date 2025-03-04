@@ -9,7 +9,6 @@ import Field from '../../components/Field.jsx'
 
 import WorkspaceItem from '../../components/workspace/WorkspaceItem.jsx'
 
-import { CurrentUserContext } from '../../contexts/CurrentUser'
 import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { useWorkspaces } from '../../hooks/workspace.js'
 import Loading from '../Loading.jsx'
@@ -63,40 +62,39 @@ export default function Workspaces() {
   }
 
   return (
-    <CurrentUserContext.Provider value={activeUser}>
+    <section className={styles.section}>
       <Helmet>
         <title>{t('workspace.title')}</title>
       </Helmet>
-      <section className={styles.section}>
-        <h1>{t('workspace.title')}</h1>
-        <div>
-          <Field
-            className={styles.searchField}
-            type="text"
-            icon={Search}
-            value={filter}
-            placeholder={t('search.placeholder')}
-            onChange={(e) => setFilter(e.target.value)}
-          />
-        </div>
-        <Button
-          type="secondary"
-          className={styles.button}
-          onClick={() => workspaceCreateModal.setVisible(true)}
-        >
-          {t('workspace.createNew.button')}
-        </Button>
 
-        <CreateWorkspaceModal {...workspaceCreateModal} />
+      <h1>{t('workspace.title')}</h1>
+      <div>
+        <Field
+          className={styles.searchField}
+          type="text"
+          icon={Search}
+          value={filter}
+          placeholder={t('search.placeholder')}
+          onChange={(e) => setFilter(e.target.value)}
+        />
+      </div>
+      <Button
+        type="secondary"
+        className={styles.button}
+        onClick={() => workspaceCreateModal.setVisible(true)}
+      >
+        {t('workspace.createNew.button')}
+      </Button>
 
-        <ul className={styles.workspacesList}>
-          {[personalWorkspace, ...workspaces].map((workspace) => (
-            <li key={`workspace-${workspace._id}`}>
-              <WorkspaceItem workspace={workspace} />
-            </li>
-          ))}
-        </ul>
-      </section>
-    </CurrentUserContext.Provider>
+      <CreateWorkspaceModal {...workspaceCreateModal} />
+
+      <ul className={styles.workspacesList}>
+        {[personalWorkspace, ...workspaces].map((workspace) => (
+          <li key={`workspace-${workspace._id}`}>
+            <WorkspaceItem workspace={workspace} />
+          </li>
+        ))}
+      </ul>
+    </section>
   )
 }

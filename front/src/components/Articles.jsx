@@ -1,8 +1,7 @@
 import { Loading, Modal as GeistModal, useModal } from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { shallowEqual, useSelector } from 'react-redux'
-import { CurrentUserContext } from '../contexts/CurrentUser'
+import { useSelector } from 'react-redux'
 import { Search } from 'react-feather'
 import { Helmet } from 'react-helmet'
 
@@ -25,7 +24,6 @@ import TagsList from './tag/TagsList.jsx'
 export default function Articles() {
   const { t } = useTranslation()
   const { backendEndpoint } = applicationConfig
-  const currentUser = useSelector((state) => state.activeUser, shallowEqual)
   const selectedTagIds = useSelector(
     (state) => state.activeUser.selectedTagIds || []
   )
@@ -221,7 +219,7 @@ export default function Articles() {
   )
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    <section className={styles.section}>
       <Helmet>
         <title>
           {t('articles.page.title', {
@@ -229,75 +227,74 @@ export default function Articles() {
           })}
         </title>
       </Helmet>
-      <section className={styles.section}>
-        <header className={styles.articlesHeader}>
-          <h1>Articles</h1>
-          {activeWorkspace && (
-            <WorkspaceLabel
-              color={activeWorkspace.color}
-              name={activeWorkspace.name}
-            />
-          )}
-        </header>
-        <Field
-          className={styles.searchField}
-          type="text"
-          icon={Search}
-          value={filter}
-          placeholder={t('article.search.placeholder')}
-          onChange={(e) => setFilter(etv(e))}
-        />
 
-        <aside className={styles.filtersContainer}>
-          <div className={styles.filtersTags}>
-            <h4>{t('tag.list.title')}</h4>
-            <TagsList />
-          </div>
-        </aside>
-
-        <div className={styles.articlesTableHeader}>
-          <Button primary onClick={() => setCreateArticleVisible(true)}>
-            {t('article.createAction.buttonText')}
-          </Button>
-          <div className={styles.articleCounter}>
-            {t('article.count', { count: keepArticles.length })}
-          </div>
-        </div>
-
-        <GeistModal
-          width="40rem"
-          visible={createArticleVisible}
-          {...createArticleModalBinding}
-        >
-          <h2>{t('article.createModal.title')}</h2>
-          <GeistModal.Content>
-            <ArticleCreate
-              onSubmit={handleArticleCreated}
-              workspaceId={activeWorkspaceId}
-            />
-          </GeistModal.Content>
-          <GeistModal.Action
-            passive
-            onClick={() => setCreateArticleVisible(false)}
-          >
-            {t('modal.close.text')}
-          </GeistModal.Action>
-        </GeistModal>
-
-        {isLoading ? (
-          <Loading />
-        ) : (
-          keepArticles.map((article) => (
-            <Article
-              key={`article-${article._id}`}
-              article={article}
-              onArticleUpdated={handleArticleUpdated}
-              onArticleDeleted={handleArticleDeleted}
-              onArticleCreated={handleArticleCreated}
-            />
-          ))
+      <header className={styles.articlesHeader}>
+        <h1>Articles</h1>
+        {activeWorkspace && (
+          <WorkspaceLabel
+            color={activeWorkspace.color}
+            name={activeWorkspace.name}
+          />
         )}
-      </section>
-    </CurrentUserContext.Provider>
+      </header>
+      <Field
+        className={styles.searchField}
+        type="text"
+        icon={Search}
+        value={filter}
+        placeholder={t('article.search.placeholder')}
+        onChange={(e) => setFilter(etv(e))}
+      />
+
+      <aside className={styles.filtersContainer}>
+        <div className={styles.filtersTags}>
+          <h4>{t('tag.list.title')}</h4>
+          <TagsList />
+        </div>
+      </aside>
+
+      <div className={styles.articlesTableHeader}>
+        <Button primary onClick={() => setCreateArticleVisible(true)}>
+          {t('article.createAction.buttonText')}
+        </Button>
+        <div className={styles.articleCounter}>
+          {t('article.count', { count: keepArticles.length })}
+        </div>
+      </div>
+
+      <GeistModal
+        width="40rem"
+        visible={createArticleVisible}
+        {...createArticleModalBinding}
+      >
+        <h2>{t('article.createModal.title')}</h2>
+        <GeistModal.Content>
+          <ArticleCreate
+            onSubmit={handleArticleCreated}
+            workspaceId={activeWorkspaceId}
+          />
+        </GeistModal.Content>
+        <GeistModal.Action
+          passive
+          onClick={() => setCreateArticleVisible(false)}
+        >
+          {t('modal.close.text')}
+        </GeistModal.Action>
+      </GeistModal>
+
+      {isLoading ? (
+        <Loading />
+      ) : (
+        keepArticles.map((article) => (
+          <Article
+            key={`article-${article._id}`}
+            article={article}
+            onArticleUpdated={handleArticleUpdated}
+            onArticleDeleted={handleArticleDeleted}
+            onArticleCreated={handleArticleCreated}
+          />
+        ))
+      )}
+    </section>
   )
 }
