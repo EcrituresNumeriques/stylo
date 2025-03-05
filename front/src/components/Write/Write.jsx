@@ -7,9 +7,8 @@ import {
 } from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Switch, Route, useRouteMatch } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router'
 import { batch, shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import throttle from 'lodash.throttle'
 import debounce from 'lodash.debounce'
@@ -30,31 +29,35 @@ import {
 import ArticleEditorMenu from './ArticleEditorMenu.jsx'
 import ArticleEditorMetadata from './ArticleEditorMetadata.jsx'
 import WorkingVersion from './WorkingVersion'
-import PreviewHtml from './PreviewHtml'
-import PreviewPaged from './PreviewPaged'
 import Loading from '../Loading'
 import MonacoEditor from './providers/monaco/Editor'
 import clsx from 'clsx'
 import { Helmet } from 'react-helmet'
 
-const MODES_PREVIEW = 'preview'
-const MODES_READONLY = 'readonly'
-const MODES_WRITE = 'write'
+/**
+ * @enum {string}
+ */
+const MODES = {
+  PREVIEW: 'preview',
+  READONLY: 'readonly',
+  WRITE: 'write',
+}
 
 export function deriveModeFrom({ path, currentVersion }) {
   if (path === '/article/:id/preview') {
-    return MODES_PREVIEW
+    return MODES.PREVIEW
   } else if (currentVersion) {
-    return MODES_READONLY
+    return MODES.READONLY
   }
 
-  return MODES_WRITE
+  return MODES.WRITE
 }
 
 export default function Write() {
   const { setToast } = useToasts()
   const { backendEndpoint } = applicationConfig
   const { t } = useTranslation()
+  const location = useLocation()
   const { version: currentVersion, id: articleId, compareTo } = useParams()
   const workingArticle = useSelector(
     (state) => state.workingArticle,
@@ -63,21 +66,15 @@ export default function Write() {
   const userId = useActiveUserId()
   const dispatch = useDispatch()
   const { query } = useGraphQLClient()
-  const routeMatch = useRouteMatch()
   const [collaborativeSessionActive, setCollaborativeSessionActive] =
     useState(false)
   const [soloSessionActive, setSoloSessionActive] = useState(false)
   const mode = useMemo(() => {
     if (collaborativeSessionActive || soloSessionActive) {
-      return MODES_READONLY
+      return MODES.READONLY
     }
-    return deriveModeFrom({ currentVersion, path: routeMatch.path })
-  }, [
-    currentVersion,
-    routeMatch.path,
-    collaborativeSessionActive,
-    soloSessionActive,
-  ])
+    return deriveModeFrom({ currentVersion, path: location.pathname })
+  }, [currentVersion, location, collaborativeSessionActive, soloSessionActive])
   const [graphQLError, setGraphQLError] = useState()
   const [isLoading, setIsLoading] = useState(true)
   const [live, setLive] = useState({})
@@ -109,11 +106,6 @@ export default function Write() {
     setVisible: setSoloSessionTakeOverModalVisible,
     bindings: soloSessionTakeOverModalBinding,
   } = useModal()
-
-  const PreviewComponent = useMemo(
-    () => (articleInfos.preview.stylesheet ? PreviewPaged : PreviewHtml),
-    [articleInfos.preview.stylesheet, currentVersion]
-  )
 
   const deriveArticleStructureAndStats = useCallback(
     throttle(
@@ -224,7 +216,7 @@ export default function Write() {
       article: articleId,
       version: currentVersion || 'latest',
       hasVersion: typeof currentVersion === 'string',
-      isPreview: mode === MODES_PREVIEW,
+      isPreview: mode === MODES.PREVIEW,
     }
 
     setIsLoading(true)
@@ -412,9 +404,9 @@ export default function Write() {
         articleInfos={articleInfos}
         compareTo={compareTo}
         selectedVersion={currentVersion}
-        readOnly={mode === MODES_READONLY}
+        readOnly={mode === MODES.READONLY}
       />
-      <article className={clsx({ [styles.article]: mode !== MODES_PREVIEW })}>
+      <article className={clsx({ [styles.article]: mode !== MODES.PREVIEW })}>
         <WorkingVersion
           articleInfos={articleInfos}
           live={live}
@@ -422,32 +414,22 @@ export default function Write() {
           mode={mode}
         />
 
-        <Switch>
-          <Route path="*/preview" exact>
-            <PreviewComponent
-              preview={articleInfos.preview}
-              metadata={live.metadata}
-            />
-          </Route>
-          <Route path="*">
-            <MonacoEditor
-              text={live.md}
-              readOnly={mode === MODES_READONLY}
-              onTextUpdate={handleMDCM}
-              articleId={articleInfos._id}
-              selectedVersion={currentVersion}
-              compareTo={compareTo}
-              currentArticleVersion={live.version}
-            />
+        <MonacoEditor
+          text={live.md}
+          readOnly={mode === MODES.READONLY}
+          onTextUpdate={handleMDCM}
+          articleId={articleInfos._id}
+          selectedVersion={currentVersion}
+          compareTo={compareTo}
+          currentArticleVersion={live.version}
+        />
 
-            <ArticleStats />
-          </Route>
-        </Switch>
+        <ArticleStats />
       </article>
       <ArticleEditorMetadata
         metadata={live.metadata}
         onChange={handleMetadataChange}
-        readOnly={mode === MODES_READONLY}
+        readOnly={mode === MODES.READONLY}
       />
     </section>
   )

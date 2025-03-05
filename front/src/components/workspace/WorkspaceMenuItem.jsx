@@ -3,27 +3,27 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ChevronRight } from 'react-feather'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router'
 
 import styles from './WorkspaceMenuItem.module.scss'
 
 export default function WorkspaceMenuItem({ color, name, id }) {
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
   const location = useLocation()
   const setActiveWorkspace = (workspaceId) => {
     const path = location.pathname
     if (path.endsWith('/corpus')) {
       if (id) {
-        history.push(`/workspaces/${id}/corpus`)
+        navigate(`/workspaces/${id}/corpus`)
       } else {
-        history.push(`/corpus`)
+        navigate(`/corpus`)
       }
     } else {
       if (id) {
-        history.push(`/workspaces/${id}/articles`)
+        navigate(`/workspaces/${id}/articles`)
       } else {
-        history.push(`/articles`)
+        navigate(`/articles`)
       }
     }
     dispatch({ type: 'SET_ACTIVE_WORKSPACE', workspaceId })
