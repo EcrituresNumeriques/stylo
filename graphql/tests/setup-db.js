@@ -1,11 +1,6 @@
 const mongoose = require('mongoose')
 const migrate = require('db-migrate')
 
-mongoose.set('useNewUrlParser', true)
-mongoose.set('useUnifiedTopology', true)
-mongoose.set('useCreateIndex', true)
-mongoose.set('useFindAndModify', false)
-
 const databaseUrl = global.__MONGO_URI__ + 'stylo-tests'
 
 beforeAll(async () => {
@@ -17,16 +12,16 @@ beforeAll(async () => {
   await migrateInstance.up()
 })
 
-
 beforeAll(async () => {
   globalThis.__MONGO__ = await mongoose.connect(databaseUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: true
+    useFindAndModify: true,
   })
 
-  globalThis.__MONGO_SESSION__ = await globalThis.__MONGO__.connection.startSession()
+  globalThis.__MONGO_SESSION__ =
+    await globalThis.__MONGO__.connection.startSession()
 })
 
 afterAll(async () => {
