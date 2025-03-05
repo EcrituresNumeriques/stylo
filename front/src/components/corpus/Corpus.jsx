@@ -14,7 +14,7 @@ import { useActiveWorkspace } from '../../hooks/workspace.js'
 import styles from './corpus.module.scss'
 import CorpusCreate from './CorpusCreate.jsx'
 
-import Loading from '../Loading'
+import Loading from '../molecules/Loading.jsx'
 import { useActiveUserId } from '../../hooks/user'
 import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
 
