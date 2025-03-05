@@ -1,19 +1,45 @@
-import React, { memo } from 'react'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
+import React, { memo, useCallback } from 'react'
+import copy from 'copy-to-clipboard'
 import { useTranslation } from 'react-i18next'
+import { useToasts } from '@geist-ui/core'
 
 import { Clipboard } from 'react-feather'
 import styles from './reference.module.scss'
 import ReferenceTypeIcon from '../ReferenceTypeIcon'
 import Button from '../Button'
 
-const BibliographyReference = memo(function BibliographyReference({ entry }) {
-  const { key, title, type, date, authorName } = entry
+const CopyButton = memo(function ReferenceCopyButton({ text }) {
   const { t } = useTranslation()
+  const { setToast } = useToasts()
+
+  const handleCopy = useCallback(() => {
+    copy(text)
+    setToast({
+      type: 'default',
+      text: t('write.copyReferenceToClipboard.successToast', { text }),
+    })
+  })
+
+  return (
+    <Button
+      title={t('write.copyReferenceToClipboard.Button', { text })}
+      className={styles.copyToClipboard}
+      onClick={handleCopy}
+      icon
+    >
+      <Clipboard />
+    </Button>
+  )
+})
+
+export default function BibliographyReference({ entry }) {
+  const { key, title, type, date, authorName } = entry
+  const text = `[@${key}]`
 
   return (
     <div className={styles.reference}>
       <ReferenceTypeIcon type={type} className={styles.referenceTypeIcon} />
+
       <div className={styles.referenceInfo}>
         <p
           className={styles.referencePrimaryInfo}
@@ -33,17 +59,8 @@ const BibliographyReference = memo(function BibliographyReference({ entry }) {
           </span>
         </p>
       </div>
-      <CopyToClipboard text={`[@${key}]`}>
-        <Button
-          title={t('write.copyClipboard.referenceButton')}
-          className={styles.copyToClipboard}
-          icon={true}
-        >
-          <Clipboard />
-        </Button>
-      </CopyToClipboard>
+
+      <CopyButton text={text} />
     </div>
   )
-})
-
-export default BibliographyReference
+}
