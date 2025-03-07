@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import YAML from 'js-yaml'
-import { Sidebar } from 'react-feather'
+import Sidebar from '../Sidebar.jsx'
 
 import { toYaml } from './metadata/yaml.js'
 import ArticleEditorMetadataForm from './yamleditor/ArticleEditorMetadataForm.jsx'
@@ -74,77 +74,55 @@ export default function ArticleEditorMetadata({
   )
 
   return (
-    <nav className={`${expanded ? styles.expandRight : styles.retractRight}`}>
-      <button
-        onClick={toggleExpand}
-        className={expanded ? styles.close : styles.open}
-      >
-        <Sidebar />{' '}
-        {expanded
-          ? t('write.sidebar.closeButton')
-          : t('write.sidebar.metadataButton')}
-      </button>
-      {expanded && (
-        <div className={styles.yamlEditor}>
-          <header className={styles.header}>
-            <h2>Metadonnées</h2>
-            <div
-              className={styles.toggle}
-              onClick={() => setSelector(selector === 'raw' ? 'basic' : 'raw')}
-            >
-              <Toggle
-                id="raw-mode"
-                checked={selector === 'raw'}
-                title={'Activer le mode YAML'}
-                onChange={(e) => {
-                  console.log(e)
-                  setSelector(e.target.checked ? 'raw' : 'basic')
-                }}
-              />
-              <label htmlFor="raw-mode">YAML</label>
-            </div>
-          </header>
-
-          {/*<NavTag*/}
-          {/*  defaultValue={selector}*/}
-          {/*  onChange={setSelector}*/}
-          {/*  items={[*/}
-          {/*    {*/}
-          {/*      value: 'basic',*/}
-          {/*      name: t('write.basicMode.metadataButton'),*/}
-          {/*    },*/}
-          {/*    {*/}
-          {/*      value: 'raw',*/}
-          {/*      name: t('write.rawMode.metadataButton'),*/}
-          {/*    },*/}
-          {/*  ]}*/}
-          {/*/>*/}
-          {selector === 'raw' && (
-            <>
-              {error !== '' && <p className={styles.error}>{error}</p>}
-              <MonacoYamlEditor
-                height="calc(100vh - 280px)"
-                fontSize="14"
-                text={rawYaml}
-                onTextUpdate={handleRawYamlChange}
-              />
-            </>
-          )}
-          {selector !== 'raw' && (
-            <ArticleEditorMetadataForm
-              metadata={metadata}
-              error={(reason) => {
-                setError(reason)
-                if (reason !== '') {
-                  setSelector('raw')
-                }
+    <Sidebar
+      labelClosed={'Métadonnées'}
+      opened={expanded}
+      setOpened={toggleExpand}
+    >
+      <div className={styles.metadata}>
+        <header className={styles.header}>
+          <h2>Metadonnées</h2>
+          <div
+            className={styles.toggle}
+            onClick={() => setSelector(selector === 'raw' ? 'basic' : 'raw')}
+          >
+            <Toggle
+              id="raw-mode"
+              checked={selector === 'raw'}
+              title={'Activer le mode YAML'}
+              onChange={(e) => {
+                console.log(e)
+                setSelector(e.target.checked ? 'raw' : 'basic')
               }}
-              onChange={handleFormUpdate}
             />
-          )}
-        </div>
-      )}
-    </nav>
+            <label htmlFor="raw-mode">YAML</label>
+          </div>
+        </header>
+        {selector === 'raw' && (
+          <>
+            {error !== '' && <p className={styles.error}>{error}</p>}
+            <MonacoYamlEditor
+              height="calc(100vh - 280px)"
+              fontSize="14"
+              text={rawYaml}
+              onTextUpdate={handleRawYamlChange}
+            />
+          </>
+        )}
+        {selector !== 'raw' && (
+          <ArticleEditorMetadataForm
+            metadata={metadata}
+            error={(reason) => {
+              setError(reason)
+              if (reason !== '') {
+                setSelector('raw')
+              }
+            }}
+            onChange={handleFormUpdate}
+          />
+        )}
+      </div>
+    </Sidebar>
   )
 }
 
