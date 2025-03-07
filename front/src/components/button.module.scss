@@ -80,6 +80,10 @@
   }
 }
 
+.button:disabled {
+  cursor: default;
+}
+
 a.button:not(.primary),
 a.icon:not(.primary) {
   color: currentColor;
