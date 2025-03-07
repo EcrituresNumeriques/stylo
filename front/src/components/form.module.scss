@@ -146,6 +146,12 @@
       .checkboxes {
         padding-left: 10%;
 
+        .checkbox.disabled {
+          label {
+            cursor: default;
+          }
+        }
+
         .checkbox {
           padding: 0.5rem 0;
 

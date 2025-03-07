@@ -67,6 +67,7 @@ export default function IsidoreAuthorAPIAutocompleteField(props) {
             className: styles.autocompleteField,
             autoComplete: 'disabled',
             icon: Search,
+            readOnly: props.readonly,
           },
           { suppressRefError: true }
         )}

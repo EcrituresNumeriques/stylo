@@ -1,7 +1,6 @@
 import { Toggle } from '@geist-ui/core'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import YAML from 'js-yaml'
 import { Sidebar } from 'react-feather'
@@ -12,6 +11,13 @@ import MonacoYamlEditor from './providers/monaco/YamlEditor'
 
 import styles from './articleEditorMetadata.module.scss'
 
+/**
+ * @param {object} props properties
+ * @param {any} props.metadata
+ * @param {boolean} props.readOnly
+ * @param {(any) => void} props.onChange
+ * @returns {Element}
+ */
 export default function ArticleEditorMetadata({
   onChange,
   readOnly,
@@ -97,7 +103,6 @@ export default function ArticleEditorMetadata({
                 checked={selector === 'raw'}
                 title={'Activer le mode YAML'}
                 onChange={(e) => {
-                  console.log(e)
                   setSelector(e.target.checked ? 'raw' : 'basic')
                 }}
               />
@@ -132,6 +137,7 @@ export default function ArticleEditorMetadata({
           )}
           {selector !== 'raw' && (
             <ArticleEditorMetadataForm
+              readOnly={readOnly}
               metadata={metadata}
               error={(reason) => {
                 setError(reason)
@@ -146,10 +152,4 @@ export default function ArticleEditorMetadata({
       )}
     </nav>
   )
-}
-
-ArticleEditorMetadata.propTypes = {
-  onChange: PropTypes.func,
-  readOnly: PropTypes.bool,
-  metadata: PropTypes.object,
 }

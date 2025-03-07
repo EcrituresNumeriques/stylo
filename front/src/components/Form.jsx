@@ -24,6 +24,7 @@ const {
 
 /**
  * @param {BaseInputTemplate} properties
+ * @returns {Element}
  */
 function BaseInputTemplate(properties) {
   const { placeholder } = properties
@@ -41,6 +42,7 @@ function BaseInputTemplate(properties) {
 
 /**
  * @param {SelectWidget} properties
+ * @returns {Element}
  */
 function CustomSelectWidget(properties) {
   const { options, title, placeholder } = properties
@@ -76,6 +78,7 @@ function CustomSelectWidget(properties) {
 
 /**
  * @param {WidgetProps} properties
+ * @returns {Element}
  */
 function CustomCheckboxesWidget(properties) {
   const { options, title } = properties
@@ -108,6 +111,7 @@ function CustomCheckboxesWidget(properties) {
 
 /**
  * @param {ArrayFieldTemplateProps} properties
+ * @returns {Element}
  */
 function ArrayFieldTemplate(properties) {
   const addItemTitle =
@@ -130,6 +134,7 @@ function ArrayFieldTemplate(properties) {
       )}
       {properties.canAdd && (
         <Button
+          disabled={properties.disabled || properties.readonly}
           type="button"
           className={styles.addButton}
           tabIndex={-1}
@@ -210,6 +215,7 @@ function FieldTemplate(properties) {
 
 /**
  * @param {ObjectFieldTemplateProps} properties
+ * @returns {Element}
  */
 function ObjectFieldTemplate(properties) {
   if (properties.uiSchema['ui:groups']) {
@@ -286,16 +292,17 @@ const customFields = {
 }
 
 /**
- *
- * @param initialFormData
- * @param schema
- * @param uiSchema
- * @param {(any) => void} onChange
- * @return {Element}
- * @constructor
+ * @param {object} props properties
+ * @param {any} props.formData
+ * @param {boolean} props.readOnly
+ * @param {any} props.schema
+ * @param {any} props.uiSchema
+ * @param {(any) => void} props.onChange
+ * @returns {Element}
  */
 export default function SchemaForm({
   formData: initialFormData,
+  readOnly,
   schema,
   uiSchema,
   onChange = () => {},
@@ -340,6 +347,7 @@ export default function SchemaForm({
   // noinspection JSValidateTypes
   return (
     <Form
+      readonly={readOnly}
       className={styles.form}
       formContext={formContext}
       schema={schema}
