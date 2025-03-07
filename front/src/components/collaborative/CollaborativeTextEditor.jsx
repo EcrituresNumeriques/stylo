@@ -184,7 +184,7 @@ export default function CollaborativeTextEditor({
     editor?.focus()
     const endOfLineColumn = editor?.getModel()?.getLineMaxColumn(line + 1)
     editor?.setPosition({ lineNumber: line + 1, column: endOfLineColumn })
-    editor?.revealLine(line + 1, 1) // smooth
+    editor?.revealLineNearTop(line + 1, 1) // smooth
   }, [editorRef, editorCursorPosition])
 
   if (!yText) {
@@ -207,6 +207,8 @@ export default function CollaborativeTextEditor({
         />
       </div>
       <Editor
+        width={'100%'}
+        height={'auto'}
         options={options}
         className={styles.editor}
         defaultLanguage="markdown"

@@ -11,6 +11,10 @@ import CollaborativeSessionError from './CollaborativeSessionError.jsx'
 import CollaborativeTextEditor from './CollaborativeTextEditor.jsx'
 
 import styles from './CollaborativeEditor.module.scss'
+import { Sidebar } from 'react-feather'
+import Button from '../Button.jsx'
+import ArticleEditorMetadata from '../Write/ArticleEditorMetadata.jsx'
+import CollaborativeEditorMenu from './CollaborativeEditorMenu.jsx'
 
 export default function CollaborativeEditor() {
   const { sessionId: collaborativeSessionId, articleId } = useParams()
@@ -46,17 +50,20 @@ export default function CollaborativeEditor() {
     collaborativeSessionData?.article?.collaborativeSession?.creator?._id
 
   return (
-    <div className={styles.container}>
-      <CollaborativeEditorArticleHeader articleId={articleId} />
-      <CollaborativeTextEditor
-        articleId={articleId}
-        collaborativeSessionCreatorId={collaborativeSessionCreatorId}
-        collaborativeSessionId={collaborativeSessionId}
-        onCollaborativeSessionStateUpdated={
-          handleCollaborativeSessionStateUpdated
-        }
-      />
-      <ArticleStats />
-    </div>
+    <section className={styles.container}>
+      <div className={styles.main} role="main">
+        <CollaborativeEditorArticleHeader articleId={articleId} />
+        <CollaborativeTextEditor
+          articleId={articleId}
+          collaborativeSessionCreatorId={collaborativeSessionCreatorId}
+          collaborativeSessionId={collaborativeSessionId}
+          onCollaborativeSessionStateUpdated={
+            handleCollaborativeSessionStateUpdated
+          }
+        />
+        <ArticleStats />
+      </div>
+      <CollaborativeEditorMenu />
+    </section>
   )
 }

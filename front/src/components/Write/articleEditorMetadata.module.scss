@@ -92,6 +92,12 @@
   margin-bottom: 1.25rem;
 }
 
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .yamlEditor {
   display: flex;
   flex-direction: column;

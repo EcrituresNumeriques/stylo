@@ -101,6 +101,14 @@ input[type='search']::-webkit-search-results-decoration {
   display: none;
 }
 
+.toggle {
+  background-color: #5b5b5b !important;
+}
+
+.toggle.checked {
+  background-color: #0070f3  !important;;
+}
+
 input:read-only,
 textarea:read-only,
 select:disabled {

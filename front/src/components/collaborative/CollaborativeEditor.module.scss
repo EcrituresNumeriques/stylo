@@ -2,10 +2,17 @@
 @use '../../styles/variables' as *;
 
 .container {
-  max-width: 1280px;
+  max-width: 1440px;
   margin: auto;
   padding-left: 1em;
   padding-right: 1em;
+  position: relative;
+  display: flex;
+  gap: 1rem;
+}
+
+.main {
+  flex: 1;
   position: relative;
 }
 
