@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import Form from '../Form.jsx'
 
@@ -28,12 +27,4 @@ export default function MetadataForm({
       onChange={onChange}
     />
   )
-}
-
-MetadataForm.propTypes = {
-  data: PropTypes.object,
-  schema: PropTypes.object,
-  uiSchema: PropTypes.object,
-  templates: PropTypes.array,
-  onChange: PropTypes.func,
 }

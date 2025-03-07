@@ -5,6 +5,7 @@ import Editor, { loader } from '@monaco-editor/react'
 import defaultEditorOptions from './options.js'
 
 import styles from './YamlEditor.module.scss'
+
 loader.config({ monaco })
 
 export default function MonacoYamlEditor({
@@ -12,16 +13,18 @@ export default function MonacoYamlEditor({
   height,
   onTextUpdate,
   fontSize = 16,
+  readOnly = false,
 }) {
   const options = useMemo(
     () => ({
       ...defaultEditorOptions,
+      readOnly,
       fontSize,
       lineNumbers: false,
       wordWrap: 'off',
       wrappingIndent: 'same',
     }),
-    []
+    [readOnly]
   )
 
   return (
