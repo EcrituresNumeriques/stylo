@@ -3,6 +3,7 @@ import * as monaco from 'monaco-editor'
 import Editor, { loader } from '@monaco-editor/react'
 
 import styles from './YamlEditor.module.scss'
+
 loader.config({ monaco })
 
 export default function MonacoYamlEditor({
@@ -10,10 +11,12 @@ export default function MonacoYamlEditor({
   height,
   onTextUpdate,
   fontSize = 16,
+  readOnly = false,
 }) {
   const options = useMemo(
     () => ({
       contextmenu: true,
+      readOnly: readOnly,
       wordBasedSuggestions: false,
       overviewRulerLanes: 0,
       hideCursorInOverviewRuler: true,
@@ -29,7 +32,7 @@ export default function MonacoYamlEditor({
         enabled: false,
       },
     }),
-    []
+    [readOnly]
   )
 
   return (

@@ -109,25 +109,11 @@ export default function ArticleEditorMetadata({
               <label htmlFor="raw-mode">YAML</label>
             </div>
           </header>
-
-          {/*<NavTag*/}
-          {/*  defaultValue={selector}*/}
-          {/*  onChange={setSelector}*/}
-          {/*  items={[*/}
-          {/*    {*/}
-          {/*      value: 'basic',*/}
-          {/*      name: t('write.basicMode.metadataButton'),*/}
-          {/*    },*/}
-          {/*    {*/}
-          {/*      value: 'raw',*/}
-          {/*      name: t('write.rawMode.metadataButton'),*/}
-          {/*    },*/}
-          {/*  ]}*/}
-          {/*/>*/}
           {selector === 'raw' && (
             <>
               {error !== '' && <p className={styles.error}>{error}</p>}
               <MonacoYamlEditor
+                readOnly={readOnly}
                 height="calc(100vh - 280px)"
                 fontSize="14"
                 text={rawYaml}
