@@ -101,6 +101,14 @@ describe('toApiUrl', () => {
     )
   })
 
+  test('converts legacy url', () => {
+    const url = '[2381910]/revue_f%C3%A9mur/collections/[P3JEQVU4]'
+
+    return expect(toApiUrl(prefixLegacyUrl(url))).resolves.toBe(
+      'https://api.zotero.org/groups/2381910/collections/P3JEQVU4/items'
+    )
+  })
+
   test('converts library url', async () => {
     const url = 'https://www.zotero.org/mattheyje/collections/DITT533A'
 
@@ -115,16 +123,26 @@ describe('toApiUrl', () => {
     const url =
       'https://www.zotero.org/mattheyje/collections/DITT533A/items/LXVEBKSN/collection'
     await expect(toApiUrl(url, fakeToken)).resolves.toBe(
-      'https://api.zotero.org/users/4922242/items/LXVEBKSN/children'
+      'https://api.zotero.org/users/4922242/items/LXVEBKSN'
     )
 
     await expect(toApiUrl(url)).rejects.toThrow()
   })
 
-  test('groupe', () => {
-    return expect(
+  test('groupe', async () => {
+    await expect(
       toApiUrl('https://www.zotero.org/groups/3822124/articlesamroute/library')
     ).resolves.toBe('https://api.zotero.org/groups/3822124/items')
+
+    await expect(
+      toApiUrl('https://www.zotero.org/groups/1612889/ethnocomptabilites')
+    ).resolves.toBe('https://api.zotero.org/groups/1612889/items')
+
+    await expect(
+      toApiUrl(
+        'https://www.zotero.org/groups/1612889/ethnocomptabilites/library'
+      )
+    ).resolves.toBe('https://api.zotero.org/groups/1612889/items')
   })
 
   test('(sous)-collection dans un groupe', async () => {
@@ -134,6 +152,30 @@ describe('toApiUrl', () => {
       )
     ).resolves.toBe(
       'https://api.zotero.org/groups/2373533/collections/FYFFI3VG/items'
+    )
+
+    await expect(
+      toApiUrl(
+        'https://www.zotero.org/groups/1612889/ethnocomptabilites/collections/8ZJKU2RM'
+      )
+    ).resolves.toBe(
+      'https://api.zotero.org/groups/1612889/collections/8ZJKU2RM/items'
+    )
+
+    await expect(
+      toApiUrl(
+        'https://www.zotero.org/groups/2381910/revue_fémur/collections/P3JEQVU4'
+      )
+    ).resolves.toBe(
+      'https://api.zotero.org/groups/2381910/collections/P3JEQVU4/items'
+    )
+
+    await expect(
+      toApiUrl(
+        'https://www.zotero.org/groups/2381910/revue_f%C3%A9mur/collections/P3JEQVU4'
+      )
+    ).resolves.toBe(
+      'https://api.zotero.org/groups/2381910/collections/P3JEQVU4/items'
     )
 
     await expect(
@@ -151,14 +193,24 @@ describe('toApiUrl', () => {
     )
   })
 
-  test("item sélectionné dans une collection d'un groupe", () => {
-    return expect(
+  test("item sélectionné dans une collection d'un groupe", async () => {
+    await expect(
       toApiUrl(
         'https://www.zotero.org/groups/2373533/article_durassavoie-bernard/collections/FYFFI3VG/items/V4H7CRG5/collection'
       )
-    ).resolves.toBe(
-      'https://api.zotero.org/groups/2373533/items/V4H7CRG5/children'
-    )
+    ).resolves.toBe('https://api.zotero.org/groups/2373533/items/V4H7CRG5')
+
+    await expect(
+      toApiUrl(
+        'https://www.zotero.org/groups/1612889/ethnocomptabilites/collections/6F2QIM32/items/WM2LXQB9/collection'
+      )
+    ).resolves.toBe('https://api.zotero.org/groups/1612889/items/WM2LXQB9')
+
+    await expect(
+      toApiUrl(
+        'https://www.zotero.org/groups/2381910/revue_fémur/collections/P3JEQVU4/items/6VR4JGQX/collection'
+      )
+    ).resolves.toBe('https://api.zotero.org/groups/2381910/items/6VR4JGQX')
   })
 
   test('items liés à un tag', () => {
@@ -199,11 +251,16 @@ describe('prefixLegacyUrl', () => {
     )
   })
 
-  test('do not prefix API URLs', () => {
-    const url = 'https://api.zotero.org/users/4922242/collections/ZWU5CAC8'
-
-    expect(prefixLegacyUrl(url)).toBe(url)
-  })
+  test.each(
+    [
+      'https://api.zotero.org/users/4922242/collections/ZWU5CAC8',
+      'https://www.zotero.org/groups/2381910/revue_f%C3%A9mur/collections/P3JEQVU4/items/6VR4JGQX/collection',
+    ],
+    'do not prefix fully resolved URLs',
+    (url) => {
+      expect(prefixLegacyUrl(url)).toBe(url)
+    }
+  )
 
   test("do not prefix something that's shady", () => {
     expect(prefixLegacyUrl('5025104/aaaa/ZLPY5WLF')).toBe(

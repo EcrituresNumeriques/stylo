@@ -100,7 +100,7 @@ async function fetchAllJSON(url, key, agg = []) {
 }
 
 /**
- * @param {string} url
+ * @param {URL} url
  * @param {string} key Zotero API key
  * @param {string[]=} agg
  * @returns {Promise<string[]>} - a list of bibliographical references (as BibTeX)
@@ -200,9 +200,7 @@ export async function fetchBibliographyFromCollectionHref({
   collectionHref,
   token: key = null,
 }) {
-  return (await fetchAllBibTeX(new URL(collectionHref + '/items'), key)).join(
-    '\n'
-  )
+  return (await fetchAllBibTeX(new URL(collectionHref), key)).join('\n')
 }
 
 /**
@@ -214,6 +212,7 @@ export async function fetchBibliographyFromCollectionHref({
  * @returns {Promise<string>} Zotero API URL
  */
 export async function toApiUrl(plainUrl, token) {
+  // https://www.zotero.org/{username}
   // https://www.zotero.org/{username}/library
   // https://www.zotero.org/{username}/collections/{collectionId}
   // https://www.zotero.org/{username}/collections/{collectionId}/items/{itemId}/collection
@@ -221,7 +220,7 @@ export async function toApiUrl(plainUrl, token) {
   // https://www.zotero.org/groups/{groupId}/article_durassavoie-bernard/collections/{collectionId}
   // https://www.zotero.org/groups/{groupId}/article_durassavoie-bernard/collections/{collectionId}/items/{itemId}/collection
   const GROUP_RE =
-    /zotero.org\/(groups\/(?<groupId>\d+)(\/[a-zA-Z0-9_%-]+)?|(?<username>[^/]+))(\/collections\/(?<collectionId>[A-Z0-9]+))?(\/items\/(?<itemId>[A-Z0-9]+))?(\/tags\/(?<tag>[^/]+))?(\/(?<action>collection|library|item-list|trash))?$/
+    /zotero.org\/(groups\/(?<groupId>\d+)(\/[^/]+)?|(?<username>[^/]+))(\/collections\/(?<collectionId>[A-Z0-9]+))?(\/items\/(?<itemId>[A-Z0-9]+))?(\/tags\/(?<tag>[^/]+))?(\/(?<action>collection|library|item-list|trash))?$/
 
   if (/https:\/\/api.zotero.org\/(users|groups)\/\d+\//i.test(plainUrl)) {
     return plainUrl
@@ -236,6 +235,7 @@ export async function toApiUrl(plainUrl, token) {
   }
 
   const result = plainUrl.match(GROUP_RE)
+
   let userId = null
   const { username, groupId, collectionId, itemId, tag, action } = result.groups
 
@@ -258,7 +258,7 @@ export async function toApiUrl(plainUrl, token) {
     groupId && `groups/${groupId}`,
     collectionId || itemId ? '' : 'items',
     collectionId && !itemId && `collections/${collectionId}/items`,
-    itemId && `items/${itemId}/children`,
+    itemId && `items/${itemId}`,
   ]
     .filter(Boolean)
     .join('/')
@@ -274,8 +274,12 @@ export async function toApiUrl(plainUrl, token) {
 export function prefixLegacyUrl(urlSuffix) {
   const MAYBE_ZOTERO_RE = /^\d+\/([^/]+\/)?collections\/[A-Z0-9]+/
 
-  if (typeof urlSuffix === 'string' && MAYBE_ZOTERO_RE.test(urlSuffix)) {
-    return `${baseWebUrl}groups/${urlSuffix}`
+  if (typeof urlSuffix === 'string') {
+    const suffix = urlSuffix.replace(/[[\]]/g, '')
+
+    if (MAYBE_ZOTERO_RE.test(suffix)) {
+      return `${baseWebUrl}groups/${suffix}`
+    }
   }
 
   return urlSuffix
