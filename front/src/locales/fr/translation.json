@@ -215,7 +215,7 @@
   "write.searchFieldBiblio.placeholder": "Rechercher",
   "write.copyReferenceToClipboard.Button": "Copier '{{text}}' dans le presse-papiers",
   "write.copyReferenceToClipboard.successToast": "'{{text}}' copié dans le presse-papiers",
-  "write.showBiblio.button": "Afficher tout",
+  "write.showBiblio.button": "Afficher les {{length}} références",
   "write.titleVersion.sidebar": "Versions",
   "write.newVersion.button": "Nouvelle version",
   "write.createVersion.button": "Nouvelle version",
