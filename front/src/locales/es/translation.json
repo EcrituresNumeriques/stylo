@@ -143,7 +143,7 @@
   "write.searchFieldBiblio.placeholder": "Buscar",
   "write.copyReferenceToClipboard.Button": "Copiar '{{text}}' al portapapeles",
   "write.copyReferenceToClipboard.successToast": "'{{text}}' copiado al portapapeles",
-  "write.showBiblio.button": "Ver todos",
+  "write.showBiblio.button": "Ver todas al {{length}} portapapeles",
   "write.titleVersion.sidebar": "Versiones",
   "write.newVersion.button": "Nueva versión",
   "write.createVersion.button": "Nueva versión",

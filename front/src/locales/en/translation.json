@@ -218,7 +218,7 @@
   "write.searchFieldBiblio.placeholder": "Search",
   "write.copyReferenceToClipboard.Button": "Copy '{{text}}' to clipboard",
   "write.copyReferenceToClipboard.successToast": "'{{text}}' copied to clipboard",
-  "write.showBiblio.button": "Show all",
+  "write.showBiblio.button": "Show all {{length}} references",
   "write.titleVersion.sidebar": "Versions",
   "write.newVersion.button": "New version",
   "write.createVersion.button": "New version",
