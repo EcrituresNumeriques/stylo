@@ -4,11 +4,12 @@ import styles from './InlineAlert.module.scss'
 
 export default function InlineAlert({ title = 'Error', message }) {
   return (
-    <div className={styles.inlineAlert}>
-      <AlertCircle />
+    <p className={styles.inlineAlert} role="alert">
+      <AlertCircle aria-hidden />
+
       <span className={styles.message}>
         <strong>{title}.</strong> {message}
       </span>
-    </div>
+    </p>
   )
 }

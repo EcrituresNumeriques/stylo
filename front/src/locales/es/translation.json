@@ -295,7 +295,6 @@
   "export.bibliography.label": "Estilo de bibliografía",
   "article.metadata.senspublic.categories": "Categorías",
   "article.metadata.titleAndAbstract": "Título y resumen",
-  "credentials.login.registerWithService": "Crear una cuenta de {{ name }}",
   "article.metadata.production.entities": "Jefes de producción",
   "export.toc.yes": "Con tabla de contenido",
   "user.account.apiKey": "Clave de acceso API",
