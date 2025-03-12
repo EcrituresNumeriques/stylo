@@ -115,9 +115,6 @@ export default defineConfig(async ({ mode }) => {
       __PANDOC_EXPORT_ENDPOINT__: JSON.stringify(
         env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT
       ),
-      __HUMANID_REGISTER_ENDPOINT__: JSON.stringify(
-        env.SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT
-      ),
     },
     resolve: {
       alias: {

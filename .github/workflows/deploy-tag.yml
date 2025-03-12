@@ -17,7 +17,6 @@ env:
   SNOWPACK_PUBLIC_BACKEND_ENDPOINT: https://stylo.huma-num.fr
   SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT: https://stylo.huma-num.fr/graphql
   SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT: https://export.stylo.huma-num.fr
-  SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT: https://humanid.huma-num.fr/register?service=https://stylo.huma-num.fr/authorization-code/callback
   SNOWPACK_MATOMO_URL: https://analyseweb.huma-num.fr/
   SNOWPACK_MATOMO_SITE_ID: 286
   SNOWPACK_PUBLIC_ANNOTATIONS_CANONICAL_BASE_URL: https://stylo.ecrituresnumeriques.ca

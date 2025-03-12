@@ -8,7 +8,6 @@ export const applicationConfig = {
   graphqlEndpoint: __GRAPHQL_ENDPOINT__,
   pandocExportEndpoint: __PANDOC_EXPORT_ENDPOINT__,
   pandocExportHost: import.meta.env.SNOWPACK_PUBLIC_PANDOC_EXPORT_HOST ?? host,
-  humanIdRegisterEndpoint: __HUMANID_REGISTER_ENDPOINT__,
   websocketEndpoint: toWebsocketEndpoint(__BACKEND_ENDPOINT__),
 }
 

@@ -38,7 +38,6 @@ module.exports = {
     __BACKEND_ENDPOINT__: true,
     __GRAPHQL_ENDPOINT__: true,
     __PANDOC_EXPORT_ENDPOINT__: true,
-    __HUMANID_REGISTER_ENDPOINT__: true,
   },
   rules: {
     'jsdoc/require-description': ['off'],
