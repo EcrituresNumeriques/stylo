@@ -13,15 +13,9 @@ describe('Credentials', () => {
     renderWithProviders(<Component />, { preloadedState })
 
     expect(screen.getByRole('form')).toBeInTheDocument()
-    expect(
-      screen.queryByLabelText('credentials.oldPassword.placeholder')
-    ).not.toBeInTheDocument()
-    expect(
-      screen.queryByLabelText('credentials.newPassword.placeholder')
-    ).toBeInTheDocument()
-    expect(
-      screen.queryByLabelText('credentials.confirmNewPassword.placeholder')
-    ).toBeInTheDocument()
+    expect(screen.queryByLabelText('Old password')).not.toBeInTheDocument()
+    expect(screen.queryByLabelText('New password')).toBeInTheDocument()
+    expect(screen.queryByLabelText('Confirm new password')).toBeInTheDocument()
   })
 
   test('renders with password only', () => {
@@ -31,15 +25,9 @@ describe('Credentials', () => {
     renderWithProviders(<Component />, { preloadedState })
 
     expect(screen.getByRole('form')).toBeInTheDocument()
-    expect(
-      screen.queryByLabelText('credentials.oldPassword.placeholder')
-    ).toBeInTheDocument()
-    expect(
-      screen.queryByLabelText('credentials.newPassword.placeholder')
-    ).toBeInTheDocument()
-    expect(
-      screen.queryByLabelText('credentials.confirmNewPassword.placeholder')
-    ).toBeInTheDocument()
+    expect(screen.queryByLabelText('Old password')).toBeInTheDocument()
+    expect(screen.queryByLabelText('New password')).toBeInTheDocument()
+    expect(screen.queryByLabelText('Confirm new password')).toBeInTheDocument()
   })
 
   test('renders with both password and oidc', () => {
@@ -49,15 +37,9 @@ describe('Credentials', () => {
     renderWithProviders(<Component />, { preloadedState })
 
     expect(screen.getByRole('form')).toBeInTheDocument()
-    expect(
-      screen.queryByLabelText('credentials.oldPassword.placeholder')
-    ).toBeInTheDocument()
-    expect(
-      screen.queryByLabelText('credentials.newPassword.placeholder')
-    ).toBeInTheDocument()
-    expect(
-      screen.queryByLabelText('credentials.confirmNewPassword.placeholder')
-    ).toBeInTheDocument()
+    expect(screen.queryByLabelText('Old password')).toBeInTheDocument()
+    expect(screen.queryByLabelText('New password')).toBeInTheDocument()
+    expect(screen.queryByLabelText('Confirm new password')).toBeInTheDocument()
   })
 
   test('cannot be submitted when confirmation difers from new password', async () => {
@@ -66,13 +48,13 @@ describe('Credentials', () => {
     }
     renderWithProviders(<Component />, { preloadedState })
 
-    screen.getByLabelText('credentials.oldPassword.placeholder').focus()
+    screen.getByLabelText('Old password').focus()
     await userEvent.keyboard('aaaa')
 
-    screen.getByLabelText('credentials.newPassword.placeholder').focus()
+    screen.getByLabelText('New password').focus()
     await userEvent.keyboard('abcd')
 
-    screen.getByLabelText('credentials.confirmNewPassword.placeholder').focus()
+    screen.getByLabelText('Confirm new password').focus()
     await userEvent.keyboard('abc')
 
     expect(screen.getByRole('button')).toBeDisabled()
@@ -84,13 +66,13 @@ describe('Credentials', () => {
     }
     renderWithProviders(<Component />, { preloadedState })
 
-    screen.getByLabelText('credentials.oldPassword.placeholder').focus()
+    screen.getByLabelText('Old password').focus()
     await userEvent.keyboard('aaaa')
 
-    screen.getByLabelText('credentials.newPassword.placeholder').focus()
+    screen.getByLabelText('New password').focus()
     await userEvent.keyboard('abcd')
 
-    screen.getByLabelText('credentials.confirmNewPassword.placeholder').focus()
+    screen.getByLabelText('Confirm new password').focus()
     await userEvent.keyboard('abcd')
 
     expect(screen.getByRole('button')).toBeEnabled()
@@ -102,10 +84,10 @@ describe('Credentials', () => {
     }
     renderWithProviders(<Component />, { preloadedState })
 
-    screen.getByLabelText('credentials.newPassword.placeholder').focus()
+    screen.getByLabelText('New password').focus()
     await userEvent.keyboard('abcd')
 
-    screen.getByLabelText('credentials.confirmNewPassword.placeholder').focus()
+    screen.getByLabelText('Confirm new password').focus()
     await userEvent.keyboard('abcd')
 
     expect(screen.getByRole('button')).toBeEnabled()
