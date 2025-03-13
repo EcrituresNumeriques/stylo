@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { Loading } from '@geist-ui/core'
 import { Helmet } from 'react-helmet'
 

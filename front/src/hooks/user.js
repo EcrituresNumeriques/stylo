@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useGraphQLClient } from '../helpers/graphQL.js'
 import { applicationConfig } from '../config.js'
-import { generatePath } from 'react-router-dom'
+import { generatePath } from 'react-router'
 
 import { setAuthToken as setAuthTokenMutation } from '../components/Credentials.graphql'
 

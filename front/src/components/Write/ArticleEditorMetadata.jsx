@@ -97,7 +97,6 @@ export default function ArticleEditorMetadata({
                 checked={selector === 'raw'}
                 title={'Activer le mode YAML'}
                 onChange={(e) => {
-                  console.log(e)
                   setSelector(e.target.checked ? 'raw' : 'basic')
                 }}
               />
