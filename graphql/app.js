@@ -39,7 +39,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 
 const session = require('express-session')
-const MongoStore = require('connect-mongo')(session)
+const MongoStore = require('connect-mongo')
 const passport = require('passport')
 const OidcStrategy = require('passport-openidconnect').Strategy
 const LocalStrategy = require('passport-local').Strategy
@@ -115,8 +115,22 @@ const corsOptions = {
   },
 }
 
-const app = express()
+/*
+ * Setup database
+ */
+const mongooseP = mongoose
+  .connect(config.get('mongo.databaseUrl'), {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: true,
+  })
+  .then((m) => m.connection.getClient())
 
+/*
+ * Setup App
+ */
+const app = express()
 config.get('sentry.dsn') && Sentry.setupExpressErrorHandler(app)
 
 passport.use(
@@ -220,7 +234,11 @@ app.use(
     resave: false,
     proxy: true,
     saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    store: MongoStore.create({
+      clientPromise: mongooseP,
+      autoRemove: 'native',
+      touchAfter: 12 * 3600,
+    }),
     cookie: {
       httpOnly: true,
       secure: secureCookie,
@@ -365,25 +383,19 @@ app.post(
 // Collaborative Writing Websocket
 wss.on('connection', setupWSConnection)
 
-// fix deprecation warnings: https://mongoosejs.com/docs/deprecations.html
-mongoose.set('useNewUrlParser', true)
-mongoose.set('useUnifiedTopology', true)
-mongoose.set('useCreateIndex', true)
-mongoose.set('useFindAndModify', false)
-
-mongoose
-  .connect(config.get('mongo.databaseUrl'))
-  .then(() => {
-    logger.info('Listening on http://localhost:%s', listenPort)
-    const server = app.listen(listenPort)
-    server.on('upgrade', (request, socket, head) => {
-      wss.handleUpgrade(request, socket, head, function handleAuth(ws) {
-        // const jwtToken = new URL('http://localhost' + request.url).searchParams.get("token")
-        // TODO: check token and permissions
-        wss.emit('connection', ws, request)
-      })
-    })
-  })
-  .catch((err) => {
+const server = app.listen(listenPort, (err) => {
+  if (err) {
     logger.error({ err }, 'Unable to connect to MongoDB.')
+    throw err
+  }
+
+  logger.info('Listening on http://localhost:%s', listenPort)
+})
+
+server.on('upgrade', (request, socket, head) => {
+  wss.handleUpgrade(request, socket, head, function handleAuth(ws) {
+    // const jwtToken = new URL('http://localhost' + request.url).searchParams.get("token")
+    // TODO: check token and permissions
+    wss.emit('connection', ws, request)
   })
+})

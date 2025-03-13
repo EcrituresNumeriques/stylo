@@ -1,6 +1,7 @@
 services:
   mongodb-stylo:
-    image: mongo:4.4
+    # to keep in sync with ./graphql/jest-mongodb-config.js / README.md
+    image: mongo:5
     container_name: 'mongodb-stylo'
     environment:
       - MONGO_DATA_DIR=/data/db

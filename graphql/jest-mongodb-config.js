@@ -3,10 +3,10 @@ module.exports = {
   mongodbMemoryServerOptions: {
     autoStart: false,
     binary: {
-      version: '4.4.29'
+      version: '5.0.31',
     },
     instance: {
-      dbName: 'stylo-tests'
-    }
-  }
+      dbName: 'stylo-tests',
+    },
+  },
 }
