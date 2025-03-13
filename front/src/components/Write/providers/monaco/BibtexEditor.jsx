@@ -7,6 +7,7 @@ loader.config({ monaco })
 
 // Taken from https://github.com/koka-lang/madoko/blob/master/styles/lang/bibtex.json
 import languageDefinition from './lang/bibtex.json'
+import defaultEditorOptions from './options.js'
 
 export default React.forwardRef(function MonacoBibtexEditor(
   { text, onTextUpdate, height = '300px' },
@@ -14,21 +15,11 @@ export default React.forwardRef(function MonacoBibtexEditor(
 ) {
   const options = useMemo(
     () => ({
-      contextmenu: true,
-      wordBasedSuggestions: false,
-      overviewRulerLanes: 0,
+      ...defaultEditorOptions,
       hideCursorInOverviewRuler: true,
       fontSize: 16,
-      lineNumbers: true,
-      overviewRulerBorder: false,
-      renderLineHighlight: false,
-      scrollBeyondLastLine: false,
-      showFoldingControls: 'always',
       wordWrap: 'off',
       wrappingIndent: 'same',
-      minimap: {
-        enabled: false,
-      },
     }),
     []
   )
