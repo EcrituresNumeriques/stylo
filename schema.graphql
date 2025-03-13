@@ -154,7 +154,6 @@ type Mutation {
     description: String
     name: String
     tag: ID!
-    user: ID
   ): Tag
   "Change user information"
   updateUser(details: UserProfileInput!, user: ID): User

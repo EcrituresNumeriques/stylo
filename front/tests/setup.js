@@ -33,6 +33,7 @@ export function renderWithProviders(
     route = '/',
     path = '/',
     store = createReduxStore(merge({}, initialState, preloadedState)),
+    currentUser = {},
     ...renderOptions
   } = {}
 ) {

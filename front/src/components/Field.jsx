@@ -10,7 +10,7 @@ export default forwardRef(function Field(
     children,
     label,
     id = useId(),
-    type,
+    type = 'text',
     autoFocus = false,
     ...otherProps
   },
@@ -45,13 +45,13 @@ export default forwardRef(function Field(
             {prefix && <span className={styles.prefix}>{prefix}</span>}
             <input
               {...otherProps}
-              className="input"
-              type={type || 'text'}
               id={id}
+              className="input"
+              type={type}
               ref={inputRef}
             />
             {otherProps.icon && (
-              <span className="icon is-small is-left">
+              <span className="icon is-small is-left" aria-hidden>
                 <otherProps.icon />
               </span>
             )}

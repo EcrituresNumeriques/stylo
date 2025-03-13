@@ -99,10 +99,6 @@ a.icon:not(.primary) {
   }
 }
 
-.small {
-  font-size: 0.8rem;
-}
-
 .primary {
   @extend .button;
 
@@ -195,6 +191,12 @@ a.icon:not(.primary) {
   > svg {
     margin: 0;
   }
+}
+
+.icon.small {
+  margin-left: .5rem;
+  padding: .2rem;
+  height: auto;
 }
 
 .toggle {
