@@ -44,9 +44,9 @@ describe('TagEditForm', () => {
 
     expect(screen.getByRole('form')).toBeInTheDocument()
 
-    const submitButton = screen.getByText('tag.createForm.buttonText')
+    const submitButton = screen.getByText('Create')
     await user.click(submitButton)
-    expect(screen.getByLabelText('tag.createForm.nameField')).toBeInvalid()
+    expect(screen.getByLabelText('Name')).toBeInvalid()
   })
 
   test('creates a new tag', async () => {
@@ -75,13 +75,13 @@ describe('TagEditForm', () => {
         }),
     })
 
-    const submitButton = screen.getByText('tag.createForm.buttonText')
+    const submitButton = screen.getByText('Create')
 
-    screen.getByLabelText('tag.createForm.nameField').focus()
+    screen.getByLabelText('Name').focus()
     await userEvent.keyboard('new tag')
 
     await user.click(submitButton)
-    expect(screen.getByLabelText('tag.createForm.nameField')).toBeValid()
+    expect(screen.getByLabelText('Name')).toBeValid()
     expect(onSubmit).toHaveBeenCalledExactlyOnceWith(createdTag)
   })
 
@@ -114,13 +114,13 @@ describe('TagEditForm', () => {
         }),
     })
 
-    const submitButton = screen.getByText('tag.editForm.buttonText')
+    const submitButton = screen.getByText('Update')
 
-    screen.getByLabelText('tag.createForm.nameField').focus()
+    screen.getByLabelText('Name').focus()
     await userEvent.keyboard('update tag')
 
     await user.click(submitButton)
-    expect(screen.getByLabelText('tag.createForm.nameField')).toBeValid()
+    expect(screen.getByLabelText('Name')).toBeValid()
     expect(onSubmit).toHaveBeenCalledExactlyOnceWith(updatedTag)
   })
 })
