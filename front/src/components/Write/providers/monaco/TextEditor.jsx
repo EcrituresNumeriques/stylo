@@ -8,6 +8,7 @@ import {
   BibliographyCompletionProvider,
   registerReadOnlyTheme,
 } from './support'
+import defaultEditorOptions from './options.js'
 
 import styles from './TextEditor.module.scss'
 
@@ -18,25 +19,6 @@ self.MonacoEnvironment = {
 }
 
 loader.config({ monaco })
-
-export function MonacoTextEditorForwardRef(props, ref) {
-  return React.forwardRef((props, ref) => {
-    const handleEditorDidMount = useCallback((editor) => {
-      ref.current = editor
-    }, [])
-
-    return (
-      <Editor
-        defaultValue={text}
-        className={styles.editor}
-        defaultLanguage="markdown"
-        onChange={handleEditorChange}
-        options={options}
-        onMount={handleEditorDidMount}
-      />
-    )
-  })
-}
 
 export default function MonacoTextEditor({ text, readOnly, onTextUpdate }) {
   const articleBibTeXEntries = useSelector(
@@ -53,20 +35,10 @@ export default function MonacoTextEditor({ text, readOnly, onTextUpdate }) {
   )
   const options = useMemo(
     () => ({
-      automaticLayout: true,
-      readOnly: readOnly,
+      ...defaultEditorOptions,
       contextmenu: !readOnly,
-      autoClosingBrackets: 'never',
-      wordBasedSuggestions: false,
-      overviewRulerLanes: 0,
-      hideCursorInOverviewRuler: true,
-      overviewRulerBorder: false,
-      scrollBeyondLastLine: false,
-      wordWrap: 'on',
-      wrappingIndent: 'none',
-      minimap: {
-        enabled: false,
-      },
+      readOnly: readOnly,
+      renderLineHighlight: true,
     }),
     [readOnly]
   )

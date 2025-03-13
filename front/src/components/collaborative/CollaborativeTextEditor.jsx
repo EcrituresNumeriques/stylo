@@ -7,6 +7,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
 import { applicationConfig } from '../../config.js'
 import * as collaborating from './collaborating.js'
+import defaultEditorOptions from '../Write/providers/monaco/options.js'
 import CollaborativeEditorStatus from './CollaborativeEditorStatus.jsx'
 
 import styles from './CollaborativeTextEditor.module.scss'
@@ -73,22 +74,11 @@ export default function CollaborativeTextEditor({
 
   const options = useMemo(
     () => ({
-      automaticLayout: true,
+      ...defaultEditorOptions,
+      contextmenu: websocketStatus === 'connected',
       readOnly:
         websocketStatus !== 'connected' ||
         collaborativeSessionState !== 'started',
-      contextmenu: websocketStatus === 'connected',
-      autoClosingBrackets: 'never',
-      wordBasedSuggestions: false,
-      overviewRulerLanes: 0,
-      hideCursorInOverviewRuler: true,
-      overviewRulerBorder: false,
-      scrollBeyondLastLine: false,
-      wordWrap: 'on',
-      wrappingIndent: 'none',
-      minimap: {
-        enabled: false,
-      },
     }),
     [websocketStatus, collaborativeSessionState]
   )
