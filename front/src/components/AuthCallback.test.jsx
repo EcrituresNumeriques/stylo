@@ -14,16 +14,14 @@ describe('AuthCallback', () => {
     })
 
     expect(getByRole('heading', { level: 2 })).toHaveTextContent(
-      'credentials.authentication.error.title'
+      'Authentication failure'
     )
 
     expect(
-      getByText('credentials.authentication.error.noToken')
+      getByText('Unable to locate authentication token.')
     ).toBeInTheDocument()
 
-    expect(getByRole('link')).toHaveTextContent(
-      'credentials.authentication.back'
-    )
+    expect(getByRole('link')).toHaveTextContent('Back to Stylo')
   })
 
   test('display a warning in case of unknown service', () => {
@@ -36,9 +34,7 @@ describe('AuthCallback', () => {
       route: '/credentials/auth-callback/aaa',
     })
 
-    expect(
-      getByText('credentials.authentication.error.unknownService')
-    ).toBeInTheDocument()
+    expect(getByText('Unknown authentication provider.')).toBeInTheDocument()
   })
 
   test('sends the credentials back to the opening window', () => {
@@ -54,12 +50,10 @@ describe('AuthCallback', () => {
     })
 
     expect(
-      getByText('credentials.authentication.success.description')
+      getByText('Stylo account has been linked to zotero.')
     ).toBeInTheDocument()
 
-    expect(getByRole('button')).toHaveTextContent(
-      'credentials.authentication.back'
-    )
+    expect(getByRole('button')).toHaveTextContent('Back to Stylo')
 
     expect(postMessage).toHaveBeenCalledWith(
       JSON.stringify({

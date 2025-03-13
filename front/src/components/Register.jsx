@@ -6,6 +6,7 @@ import { useGraphQLClient } from '../helpers/graphQL'
 import * as queries from './Credentials.graphql'
 
 import styles from './login.module.scss'
+import formStyles from './form.module.scss'
 import Field from './Field'
 import Button from './Button'
 import { ArrowLeftCircle, Check } from 'react-feather'
@@ -45,16 +46,23 @@ export default function Register() {
       <Helmet>
         <title>{t('credentials.login.registerLink')}</title>
       </Helmet>
-      <form onSubmit={handleFormSubmit} id="form-register">
+
+      <form
+        onSubmit={handleFormSubmit}
+        id="form-register"
+        className={formStyles.form}
+      >
         <h1>{t('credentials.register.title')}</h1>
 
-        <fieldset>
-          <legend>{t('credentials.register.requiredFields')}</legend>
+        <fieldset className={styles.section}>
+          <legend>
+            <h2>{t('credentials.register.requiredFields')}</h2>
+          </legend>
 
           <Field
             name="email"
             type="email"
-            label="Email*"
+            label={t('user.account.email')}
             autoComplete="email"
             autoFocus={true}
             required={true}
@@ -95,8 +103,10 @@ export default function Register() {
           />
         </fieldset>
 
-        <fieldset>
-          <legend>{t('credentials.register.optionalFields')}</legend>
+        <fieldset className={styles.section}>
+          <legend>
+            <h2>{t('credentials.register.optionalFields')}</h2>
+          </legend>
 
           <Field name="displayName" label={t('user.account.displayName')} />
           <Field name="firstName" label={t('user.account.firstName')} />

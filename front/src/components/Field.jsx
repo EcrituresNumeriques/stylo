@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { forwardRef, useEffect, useRef } from 'react'
+import React, { forwardRef, useEffect, useId, useRef } from 'react'
 import styles from './field.module.scss'
 
 export default forwardRef(function Field(
@@ -9,7 +9,7 @@ export default forwardRef(function Field(
     prefix,
     children,
     label,
-    id,
+    id = useId(),
     type,
     autoFocus = false,
     ...otherProps
@@ -47,6 +47,7 @@ export default forwardRef(function Field(
               {...otherProps}
               className="input"
               type={type || 'text'}
+              id={id}
               ref={inputRef}
             />
             {otherProps.icon && (
