@@ -5,7 +5,7 @@ import styles from './PreviewPaged.module.scss'
 import { Previewer } from 'pagedjs'
 import { compileTemplate } from '../../helpers/preview.js'
 import clsx from 'clsx'
-import Loading from '../Loading.jsx'
+import Loading from '../molecules/Loading.jsx'
 
 export default function Preview({ preview, metadata }) {
   const renderRef = useRef()
