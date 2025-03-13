@@ -1,8 +1,7 @@
 import React, { useState, useCallback } from 'react'
-import { Check, Clipboard, Loader } from 'react-feather'
+import { Check, Loader } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { Helmet } from 'react-helmet'
 
 import { useGraphQLClient } from '../helpers/graphQL'
@@ -168,19 +167,12 @@ export default function UserInfos() {
             label={t('user.account.apiKey')}
             className={styles.apiKeyField}
           >
-            <>
-              <code
-                className={styles.apiKeyValue}
-                title={t('user.account.apiKeyValue', { token: sessionToken })}
-              >
-                {sessionToken}
-              </code>
-              <CopyToClipboard text={sessionToken}>
-                <Button title={t('user.account.copyApiKey')} icon={true}>
-                  <Clipboard />
-                </Button>
-              </CopyToClipboard>
-            </>
+            <code
+              className={styles.apiKeyValue}
+              title={t('user.account.apiKeyValue', { token: sessionToken })}
+            >
+              {sessionToken}
+            </code>
           </Field>
           <Field label={t('user.account.id')}>
             <code>{activeUser._id}</code>

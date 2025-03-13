@@ -11,11 +11,15 @@ import styles from './header.module.scss'
 import LanguagesMenu from './header/LanguagesMenu.jsx'
 import UserMenu from './header/UserMenu.jsx'
 
-function Header() {
+export default function Header() {
   const activeWorkspace = useActiveWorkspace()
   const activeWorkspaceId = useMemo(
     () => activeWorkspace?._id,
     [activeWorkspace]
+  )
+  const baseUrl = useMemo(
+    () => (activeWorkspaceId ? `/workspaces/${activeWorkspaceId}` : ''),
+    [activeWorkspaceId]
   )
   const connected = useSelector((state) => state.loggedIn)
   const { t } = useTranslation()
@@ -28,7 +32,7 @@ function Header() {
         <header className={styles.headerContainer} role="banner">
           <section className={styles.header}>
             <h1 className={styles.logo}>
-              <NavLink to="/" rel="home">
+              <NavLink to={`${baseUrl}/`} rel="home">
                 <img src={logoContent} alt="Stylo" title="Stylo" />
               </NavLink>
             </h1>
@@ -36,26 +40,14 @@ function Header() {
               <ul className={styles.menuLinks}>
                 {connected && (
                   <li>
-                    <NavLink
-                      to={
-                        activeWorkspaceId
-                          ? `/workspaces/${activeWorkspaceId}/articles`
-                          : '/articles'
-                      }
-                    >
+                    <NavLink to={`${baseUrl}/articles`}>
                       {t('header.articles.link')}
                     </NavLink>
                   </li>
                 )}
                 {connected && (
                   <li>
-                    <NavLink
-                      to={
-                        activeWorkspaceId
-                          ? `/workspaces/${activeWorkspaceId}/corpus`
-                          : '/corpus'
-                      }
-                    >
+                    <NavLink to={`${baseUrl}/corpus`}>
                       {t('header.corpus.link')}
                     </NavLink>
                   </li>
@@ -84,7 +76,7 @@ function Header() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <LifeBuoy size={16} />
+                <LifeBuoy size={16} aria-hidden />
                 {t('header.documentation.link')}
               </a>
               <LanguagesMenu />
@@ -95,5 +87,3 @@ function Header() {
     </Switch>
   )
 }
-
-export default Header

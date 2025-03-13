@@ -1,10 +1,12 @@
 import { afterEach, vi } from 'vitest'
 import React from 'react'
 import { cleanup, render } from '@testing-library/react'
+import { I18nextProvider } from 'react-i18next'
 import '@testing-library/jest-dom/vitest'
 import { Provider } from 'react-redux'
 import { MemoryRouter, Route, Switch } from 'react-router-dom'
 import createReduxStore, { initialState } from '../src/createReduxStore.js'
+import i18n from '../src/i18n.js'
 
 import merge from 'lodash.merge'
 import '../src/i18n.js'
@@ -24,22 +26,6 @@ afterEach(() => {
   vi.clearAllMocks()
 })
 
-vi.mock('react-i18next', () => ({
-  initReactI18next: {
-    type: '3rdParty',
-    init: () => {},
-  },
-  useTranslation: () => {
-    return {
-      t: (i18nKey) => i18nKey,
-      i18n: {
-        changeLanguage: () => new Promise(() => {}),
-      },
-    }
-  },
-  Translation: vi.fn(),
-}))
-
 export function renderWithProviders(
   ui,
   {
@@ -56,17 +42,21 @@ export function renderWithProviders(
     return React.createElement(Provider, {
       store,
       children: React.createElement(
-        MemoryRouter,
-        { initialEntries: [route] },
+        I18nextProvider,
+        { i18n },
         React.createElement(
-          Switch,
-          {},
+          MemoryRouter,
+          { initialEntries: [route] },
           React.createElement(
-            Route,
-            {
-              path,
-            },
-            children
+            Switch,
+            {},
+            React.createElement(
+              Route,
+              {
+                path,
+              },
+              children
+            )
           )
         )
       ),

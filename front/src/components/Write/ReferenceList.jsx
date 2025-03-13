@@ -49,7 +49,7 @@ export default function ReferenceList() {
       ))}
       {!showAll && bibliographyEntries.length > 25 && (
         <Button className={styles.showAll} onClick={handleShowAll}>
-          {t('write.showBiblio.button')} {bibliographyEntries.length} references
+          {t('write.showBiblio.button', { length: bibliographyEntries.length })}
         </Button>
       )}
     </>

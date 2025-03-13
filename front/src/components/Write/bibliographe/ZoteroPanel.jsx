@@ -6,6 +6,7 @@ import {
   fetchAllCollectionsPerLibrary,
   fetchBibliographyFromCollectionHref,
   prefixLegacyUrl,
+  toApiUrl,
 } from '../../../helpers/zotero'
 import { useGraphQLClient } from '../../../helpers/graphQL'
 import { linkToZotero as linkToZoteroQuery } from '../../Article.graphql'
@@ -133,7 +134,7 @@ export default function ZoteroPanel({
     try {
       const result = await fetchBibliographyFromCollectionHref({
         token,
-        collectionHref,
+        collectionHref: await toApiUrl(collectionHref),
       })
       onChange(result)
     } catch (err) {
