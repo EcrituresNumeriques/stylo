@@ -1,13 +1,10 @@
-import { describe, expect, test, vi } from 'vitest'
-import { fireEvent, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+import { describe, expect, test, vi } from 'vitest'
+
 import { renderWithProviders } from '../../../tests/setup.js'
 import Component from './TagEditForm.jsx'
-import { unstable_serialize } from 'swr'
-import { getTags as getTagsQuery } from '../Tag.graphql'
-import { print } from 'graphql/language/printer'
-import { mutate } from 'swr'
 
 describe('TagEditForm', () => {
   const preloadedState = {
@@ -21,22 +18,22 @@ describe('TagEditForm', () => {
     color: '#fc0',
     description: '',
   }
-  const newTag = {
-    _id: 1,
-    name: 'test tag',
-    color: '#ccc',
-    description: '',
-  }
-
-  const cacheKey = unstable_serialize({
-    variables: {},
-    query: print(getTagsQuery),
-    sessionToken: null,
-  })
 
   test('requires name to be populated', async () => {
     const onSubmit = vi.fn()
     const user = userEvent.setup()
+
+    fetch.mockRestore().mockResolvedValueOnce({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          data: {
+            user: {
+              tags: [],
+            },
+          },
+        }),
+    })
 
     renderWithProviders(<Component tag={emptyTag} onSubmit={onSubmit} />, {
       preloadedState,
@@ -53,10 +50,16 @@ describe('TagEditForm', () => {
     const onSubmit = vi.fn()
     const user = userEvent.setup()
 
-    mutate(cacheKey, {
-      user: {
-        tags: [],
-      },
+    fetch.mockRestore().mockResolvedValueOnce({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          data: {
+            user: {
+              tags: [],
+            },
+          },
+        }),
     })
 
     renderWithProviders(<Component tag={emptyTag} onSubmit={onSubmit} />, {
@@ -89,10 +92,16 @@ describe('TagEditForm', () => {
     const onSubmit = vi.fn()
     const user = userEvent.setup()
 
-    mutate(cacheKey, {
-      user: {
-        tags: [existingTag],
-      },
+    fetch.mockRestore().mockResolvedValueOnce({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          data: {
+            user: {
+              tags: [existingTag],
+            },
+          },
+        }),
     })
 
     const updatedTag = {
