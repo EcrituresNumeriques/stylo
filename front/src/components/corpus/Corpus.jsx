@@ -1,82 +1,31 @@
-import {
-  Button,
-  Modal as GeistModal,
-  useModal,
-  useToasts,
-} from '@geist-ui/core'
-import React, { useState, useEffect, useCallback } from 'react'
+import { Button, Modal as GeistModal, useModal } from '@geist-ui/core'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { shallowEqual, useSelector } from 'react-redux'
 import { Helmet } from 'react-helmet'
 
-import { useGraphQLClient } from '../../helpers/graphQL'
+import { useCorpus } from '../../hooks/corpus.js'
 import { useActiveWorkspace } from '../../hooks/workspace.js'
 import styles from './corpus.module.scss'
 import CorpusCreate from './CorpusCreate.jsx'
 
 import Loading from '../Loading'
-import { useActiveUserId } from '../../hooks/user'
 import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
 
-import { getCorpus } from './Corpus.graphql'
 import CorpusItem from './CorpusItem.jsx'
 
 export default function Corpus() {
   const { t } = useTranslation()
-  const { setToast } = useToasts()
-  const currentUser = useSelector((state) => state.activeUser, shallowEqual)
-  const latestCorpusCreated = useSelector(
-    (state) => state.latestCorpusCreated,
-    shallowEqual
-  )
-  const latestCorpusDeleted = useSelector(
-    (state) => state.latestCorpusDeleted,
-    shallowEqual
-  )
-  const latestCorpusUpdated = useSelector(
-    (state) => state.latestCorpusUpdated,
-    shallowEqual
-  )
-  const [isLoading, setIsLoading] = useState(true)
-  const [corpus, setCorpus] = useState([])
-  const activeUserId = useActiveUserId()
+  const { corpus, isLoading } = useCorpus()
   const activeWorkspace = useActiveWorkspace()
-  const activeWorkspaceId = activeWorkspace?._id
   const {
     visible: createCorpusVisible,
     setVisible: setCreateCorpusVisible,
     bindings: createCorpusModalBinding,
   } = useModal()
 
-  const { query } = useGraphQLClient()
-
   const handleCreateNewCorpus = useCallback(() => {
     setCreateCorpusVisible(false)
   }, [])
-
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const variables = activeWorkspaceId
-          ? { filter: { workspaceId: activeWorkspaceId } }
-          : {}
-        const data = await query({ query: getCorpus, variables })
-        setCorpus(data.corpus)
-        setIsLoading(false)
-      } catch (err) {
-        setToast({
-          type: 'error',
-          text: t('corpus.load.toastFailure', { errorMessage: err.toString() }),
-        })
-      }
-    })()
-  }, [
-    activeUserId,
-    activeWorkspaceId,
-    latestCorpusCreated,
-    latestCorpusDeleted,
-    latestCorpusUpdated,
-  ])
 
   return (
     <section className={styles.section}>
@@ -114,7 +63,7 @@ export default function Corpus() {
       >
         <h2>{t('corpus.createModal.title')}</h2>
         <GeistModal.Content>
-          <CorpusCreate onSubmit={handleCreateNewCorpus} />
+          <CorpusCreate onSubmit={() => setCreateCorpusVisible(false)} />
         </GeistModal.Content>
         <GeistModal.Action
           passive
