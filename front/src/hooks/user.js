@@ -6,7 +6,7 @@ import { setAuthToken as setAuthTokenMutation } from '../components/Credentials.
 import { getTags, createTag } from '../components/Tag.graphql'
 
 import { useMutateData } from './graphql.js'
-import { useGraphQLClient, executeQuery } from '../helpers/graphQL.js'
+import { useGraphQLClient } from '../helpers/graphQL.js'
 import { applicationConfig } from '../config.js'
 
 export function useActiveUserId() {
