@@ -1,11 +1,9 @@
 import { Button, Textarea, useInput, useToasts } from '@geist-ui/core'
 import React, { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useGraphQLClient } from '../../helpers/graphQL.js'
+import { useCorpusActions } from '../../hooks/corpus.js'
 
 import Field from '../Field.jsx'
-
-import { updateCorpus } from './Corpus.graphql'
 
 import styles from './corpusUpdate.module.scss'
 
@@ -16,8 +14,8 @@ export default function CorpusUpdate({ corpus, onSubmit }) {
   const { state: description, bindings: descriptionBindings } = useInput(
     corpus.description
   )
-  const titleInputRef = useRef()
-  const { query } = useGraphQLClient()
+  const titleInputRef = useRef(null)
+  const { updateCorpus } = useCorpusActions()
 
   useEffect(() => {
     if (titleInputRef.current !== undefined) {
@@ -29,15 +27,10 @@ export default function CorpusUpdate({ corpus, onSubmit }) {
     async (event) => {
       try {
         event.preventDefault()
-        await query({
-          query: updateCorpus,
-          variables: {
-            corpusId: corpus._id,
-            updateCorpusInput: {
-              name: title,
-              description,
-            },
-          },
+        await updateCorpus({
+          corpusId: corpus._id,
+          title,
+          description,
         })
         onSubmit()
         setToast({

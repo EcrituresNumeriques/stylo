@@ -1,29 +1,19 @@
 import { Button, Textarea, useInput, useToasts } from '@geist-ui/core'
-import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
-import { useGraphQLClient } from '../../helpers/graphQL.js'
-import { useActiveWorkspace } from '../../hooks/workspace.js'
 
 import Field from '../Field.jsx'
+import { useCorpusActions } from '../../hooks/corpus.js'
 
 import styles from './corpusCreate.module.scss'
-
-import { createCorpus } from './Corpus.graphql'
 
 export default function CorpusCreate({ onSubmit }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
-  const dispatch = useDispatch()
   const { state: title, bindings: titleBindings } = useInput('')
   const { state: description, bindings: descriptionBindings } = useInput('')
-  const titleInputRef = useRef()
-  const { query } = useGraphQLClient()
-  const activeWorkspace = useActiveWorkspace()
-  const activeWorkspaceId = useMemo(
-    () => activeWorkspace?._id,
-    [activeWorkspace]
-  )
+  const titleInputRef = useRef(null)
+  const { createCorpus } = useCorpusActions()
 
   useEffect(() => {
     if (titleInputRef.current !== undefined) {
@@ -35,21 +25,7 @@ export default function CorpusCreate({ onSubmit }) {
     async (event) => {
       try {
         event.preventDefault()
-        const response = await query({
-          query: createCorpus,
-          variables: {
-            createCorpusInput: {
-              name: title,
-              description,
-              workspace: activeWorkspaceId,
-              metadata: '',
-            },
-          },
-        })
-        dispatch({
-          type: 'SET_LATEST_CORPUS_CREATED',
-          data: { corpusId: response.createCorpus._id },
-        })
+        await createCorpus({ title, description })
         onSubmit()
         setToast({
           text: t('corpus.create.toastSuccess'),

@@ -10,9 +10,8 @@ import {
   Trash,
 } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { useGraphQLClient } from '../../helpers/graphQL.js'
+import { useCorpusActions } from '../../hooks/corpus.js'
 import Button from '../Button.jsx'
 import buttonStyles from '../button.module.scss'
 import Export from '../Export.jsx'
@@ -21,14 +20,12 @@ import TimeAgo from '../TimeAgo.jsx'
 import CorpusArticles from './CorpusArticles.jsx'
 import CorpusUpdate from './CorpusUpdate.jsx'
 
-import { deleteCorpus } from './Corpus.graphql'
 import styles from './corpusItem.module.scss'
 import CorpusMetadataModal from './CorpusMetadataModal.jsx'
 
 export default function CorpusItem({ corpus }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
-  const dispatch = useDispatch()
   const {
     visible: deleteCorpusVisible,
     setVisible: setDeleteCorpusVisible,
@@ -47,21 +44,12 @@ export default function CorpusItem({ corpus }) {
     bindings: editCorpusBindings,
   } = useModal()
 
-  const { query } = useGraphQLClient()
+  const { deleteCorpus } = useCorpusActions()
   const corpusId = useMemo(() => corpus._id, [corpus])
-
-  const handleCorpusUpdated = useCallback(() => {
-    setEditCorpusVisible(false)
-    dispatch({
-      type: 'SET_LATEST_CORPUS_UPDATED',
-      data: { corpusId, date: new Date() },
-    })
-  }, [corpusId])
 
   const handleDeleteCorpus = useCallback(async () => {
     try {
-      await query({ query: deleteCorpus, variables: { corpusId } })
-      dispatch({ type: 'SET_LATEST_CORPUS_DELETED', data: { corpusId } })
+      await deleteCorpus(corpusId)
       setToast({
         text: t('corpus.delete.toastSuccess'),
         type: 'default',
@@ -191,7 +179,10 @@ export default function CorpusItem({ corpus }) {
       >
         <h2>{t('corpus.editModal.title')}</h2>
         <GeistModal.Content>
-          <CorpusUpdate corpus={corpus} onSubmit={handleCorpusUpdated} />
+          <CorpusUpdate
+            corpus={corpus}
+            onSubmit={() => setEditCorpusVisible(false)}
+          />
         </GeistModal.Content>
         <GeistModal.Action passive onClick={() => setEditCorpusVisible(false)}>
           {t('modal.cancelButton.text')}
