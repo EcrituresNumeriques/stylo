@@ -1,12 +1,19 @@
 import React, { useCallback, useMemo } from 'react'
 import { merge } from 'allof-merge'
-import PropTypes from 'prop-types'
 import Form from '../../Form'
 import uiSchema from '../../../schemas/article-ui-schema.json'
 import schema from '../../../schemas/article-metadata.schema.json'
 
+/**
+ * @param {object} props properties
+ * @param {any} props.metadata
+ * @param {boolean} props.readOnly
+ * @param {(any) => void} props.onChange
+ * @returns {Element}
+ */
 export default function ArticleEditorMetadataForm({
   metadata,
+  readOnly = false,
   onChange = () => {},
 }) {
   const schemaMerged = useMemo(() => merge(schema), [schema])
@@ -16,16 +23,11 @@ export default function ArticleEditorMetadataForm({
   )
   return (
     <Form
+      readOnly={readOnly}
       formData={metadata}
       schema={schemaMerged}
       uiSchema={uiSchema}
       onChange={handleChange}
     />
   )
-}
-
-ArticleEditorMetadataForm.propTypes = {
-  metadata: PropTypes.object,
-  basicMode: PropTypes.bool,
-  onChange: PropTypes.func,
 }
