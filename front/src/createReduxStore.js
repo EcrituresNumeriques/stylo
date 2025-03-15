@@ -60,7 +60,6 @@ export const initialState = {
     workspaces: [],
     activeWorkspaceId: null,
   },
-  latestTagCreated: null,
   latestCorpusCreated: null,
   latestCorpusDeleted: null,
   userPreferences: localStorage.getItem('userPreferences')
@@ -120,7 +119,6 @@ function createRootReducer(state) {
     SET_ACTIVE_WORKSPACE: setActiveWorkspace,
 
     UPDATE_SELECTED_TAG: updateSelectedTag,
-    TAG_CREATED: tagCreated,
 
     SET_LATEST_CORPUS_DELETED: setLatestCorpusDeleted,
     SET_LATEST_CORPUS_CREATED: setLatestCorpusCreated,
@@ -512,13 +510,6 @@ function updateSelectedTag(state, { tagId }) {
         ? selectedTagIds.filter((selectedTagId) => selectedTagId !== tagId)
         : [...selectedTagIds, tagId],
     },
-  }
-}
-
-function tagCreated(state, { tag }) {
-  return {
-    ...state,
-    latestTagCreated: tag,
   }
 }
 
