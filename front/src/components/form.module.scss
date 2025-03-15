@@ -5,7 +5,7 @@
 
 @mixin legend {
   font-size: 1.75rem;
-  font-weight: bold;
+  font-weight: 500;
   margin: 0;
   padding: 0.5rem;
   text-align: left;
@@ -24,7 +24,7 @@
 .form {
   :global {
     label {
-      font-weight: bold;
+      font-weight: 500;
       padding-bottom: 0.15rem;
       font-size: 0.875rem;
     }
@@ -60,7 +60,7 @@
 
         > label {
           padding-bottom: 0.25rem;
-          font-weight: bold;
+          font-weight: 500;
         }
 
         > * {
@@ -73,7 +73,7 @@
 
         > fieldset {
           > button {
-            font-weight: bold;
+            font-weight: 500;
           }
         }
       }

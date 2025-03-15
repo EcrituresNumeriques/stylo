@@ -7,7 +7,7 @@ import {
   Modal as GeistModal,
   Note,
   Spacer,
-  useModal,
+  useModal as useGeistModal,
   useToasts,
 } from '@geist-ui/core'
 import { useActiveWorkspace } from '../hooks/workspace.js'
@@ -55,6 +55,7 @@ import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
 import { useSelector } from 'react-redux'
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
+import { useModal } from '../hooks/modal.js'
 
 export default function Article({
   article,
@@ -111,11 +112,11 @@ export default function Article({
     visible: deleteArticleVisible,
     setVisible: setDeleteArticleVisible,
     bindings: deleteArticleModalBinding,
-  } = useModal()
+  } = useGeistModal()
 
   const mutation = useMutation()
+  const exportModal = useModal()
   const [expanded, setExpanded] = useState(false)
-  const [exporting, setExporting] = useState(false)
   const [renaming, setRenaming] = useState(false)
 
   const [newTitle, setNewTitle] = useState(article.title)
@@ -212,15 +213,22 @@ export default function Article({
 
   return (
     <article className={styles.article}>
-      {exporting && (
-        <Modal title="Export" cancel={() => setExporting(false)}>
-          <Export
-            articleId={article._id}
-            bib={article.workingVersion.bibPreview}
-            name={article.title}
-          />
-        </Modal>
-      )}
+      <Modal
+        ref={exportModal.ref}
+        title={
+          <>
+            <Printer /> Export
+          </>
+        }
+        cancel={() => exportModal.close()}
+      >
+        <Export
+          articleId={article._id}
+          bib={article.workingVersion.bibPreview}
+          name={article.title}
+          onCancel={() => exportModal.close()}
+        />
+      </Modal>
 
       <GeistModal width="30rem" visible={sharing} onClose={closeSharingModal}>
         <h2>{t('article.shareModal.title')}</h2>
@@ -374,7 +382,7 @@ export default function Article({
         <Button
           title={t('article.download.button')}
           icon={true}
-          onClick={() => setExporting(true)}
+          onClick={() => exportModal.show()}
         >
           <Printer />
         </Button>

@@ -1,55 +1,42 @@
-import React, { useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
+import React, { forwardRef } from 'react'
 import { X } from 'react-feather'
+import { useTranslation } from 'react-i18next'
 import Button from './Button'
 
 import styles from './modal.module.scss'
 
 const noop = () => {}
 
-export default function Modal({ title, children, cancel = noop }) {
-  const ref = useRef()
-
-  useEffect(() => {
-    ref.current.showModal()
-    document.body.setAttribute('data-scrolling', false)
-
-    return function cleanup() {
-      document.body.removeAttribute('data-scrolling')
-    }
-  }, [])
-
+export default forwardRef(function Modal(
+  { title, children, cancel = noop },
+  forwardedRef
+) {
+  const { t } = useTranslation()
   return (
     <dialog
       open={false}
       className={styles.modal}
-      ref={ref}
+      ref={forwardedRef}
       onClose={cancel}
       aria-labelledby="modal-title"
     >
-      <Button
-        aria-label="Close modal"
-        icon={true}
-        className={[styles.secondary, styles.closeButton].join(' ')}
-        onClick={cancel}
-      >
-        <X aria-hidden />
-      </Button>
+      <header className={styles.modalHeader}>
+        <Button
+          aria-label={t('modal.close.label')}
+          icon={true}
+          link={true}
+          className={styles.closeButton}
+          onClick={cancel}
+        >
+          {t('modal.close.text')} <X aria-hidden />
+        </Button>
 
-      <h1 id="modal-title" className={styles.title}>
-        {title}
-      </h1>
+        <h1 id="modal-title" className={styles.title}>
+          {title}
+        </h1>
+      </header>
 
-      <div className={styles.modalBody}>{children}</div>
+      <div>{children}</div>
     </dialog>
   )
-}
-
-Modal.propTypes = {
-  title: PropTypes.string.isRequired,
-  cancel: PropTypes.func,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]).isRequired,
-}
+})

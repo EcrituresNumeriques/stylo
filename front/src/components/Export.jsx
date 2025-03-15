@@ -12,9 +12,11 @@ import Loading from './Loading'
 import styles from './export.module.scss'
 import buttonStyles from './button.module.scss'
 import formStyles from './form.module.scss'
+import Button from './Button.jsx'
+import { X } from 'react-feather'
 
 /**
- * @typedef {Object} ExportProps
+ * @typedef {object} ExportProps
  * @property {string?} bookId
  * @property {string?} articleVersionId
  * @property {string?} articleId
@@ -31,7 +33,14 @@ export default function Export(props) {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const { bookId, articleVersionId = '', articleId, bib, name } = props
+  const {
+    bookId,
+    articleVersionId = '',
+    articleId,
+    bib,
+    name,
+    onCancel = () => {},
+  } = props
   const { pandocExportHost, pandocExportEndpoint } = applicationConfig
 
   const {
@@ -84,71 +93,74 @@ export default function Export(props) {
   }, [with_toc, bibliography_style, formats, with_nocite, link_citations])
 
   return (
-    <section className={styles.export}>
-      <form className={clsx(formStyles.form, formStyles.verticalForm)}>
-        {!exportFormats.length && <Loading inline size="24" />}
-        {exportFormats.length && (
+    <>
+      <section className={styles.export}>
+        <form className={formStyles.form}>
+          {!exportFormats.length && <Loading inline size="24" />}
+          {exportFormats.length && (
+            <Select
+              id="export-formats"
+              label={t('export.format.label')}
+              value={formats}
+              onChange={setPreference('formats')}
+            >
+              {exportFormats.map(({ key, name }) => (
+                <option value={key} key={key}>
+                  {name}
+                </option>
+              ))}
+            </Select>
+          )}
+
+          {bib && !exportStyles.length && <Loading inline size="24" />}
+          {bib && exportStyles.length && (
+            <Combobox
+              id="export-styles"
+              label={t('export.bibliography.label')}
+              items={groupedExportStyles}
+              value={bibliography_style}
+              onChange={setPreference('bibliography_style')}
+            />
+          )}
+          {bib && (
+            <div className={styles.bibliographyPreview}>
+              {isLoading && <Loading inline size="24" />}
+              {!isLoading && (
+                <div
+                  dangerouslySetInnerHTML={{ __html: exportStylesPreview }}
+                />
+              )}
+            </div>
+          )}
+
           <Select
-            id="export-formats"
-            label={t('export.format.label')}
-            value={formats}
-            onChange={setPreference('formats')}
+            label={t('export.toc.label')}
+            value={with_toc}
+            onChange={setPreference('with_toc')}
           >
-            {exportFormats.map(({ key, name }) => (
-              <option value={key} key={key}>
-                {name}
-              </option>
-            ))}
+            <option value="1">{t('export.toc.yes')}</option>
+            <option value="0">{t('export.toc.no')}</option>
           </Select>
-        )}
 
-        {bib && !exportStyles.length && <Loading inline size="24" />}
-        {bib && exportStyles.length && (
-          <Combobox
-            id="export-styles"
-            label={t('export.bibliography.label')}
-            items={groupedExportStyles}
-            value={bibliography_style}
-            onChange={setPreference('bibliography_style')}
-          />
-        )}
-        {bib && (
-          <div className={styles.bibliographyPreview}>
-            {isLoading && <Loading inline size="24" />}
-            {!isLoading && (
-              <div dangerouslySetInnerHTML={{ __html: exportStylesPreview }} />
-            )}
-          </div>
-        )}
+          <Select
+            label={t('export.nocite.label')}
+            value={with_nocite}
+            onChange={setPreference('with_nocite')}
+          >
+            <option value="1">{t('export.nocite.all')}</option>
+            <option value="0">{t('export.nocite.onlyUsed')}</option>
+          </Select>
 
-        <Select
-          label={t('export.toc.label')}
-          value={with_toc}
-          onChange={setPreference('with_toc')}
-        >
-          <option value="1">{t('export.toc.yes')}</option>
-          <option value="0">{t('export.toc.no')}</option>
-        </Select>
+          <Select
+            label={t('export.linkCitations.label')}
+            value={link_citations}
+            onChange={setPreference('link_citations')}
+          >
+            <option value="1">{t('export.linkCitations.yes')}</option>
+            <option value="0">{t('export.linkCitations.no')}</option>
+          </Select>
 
-        <Select
-          label={t('export.nocite.label')}
-          value={with_nocite}
-          onChange={setPreference('with_nocite')}
-        >
-          <option value="1">{t('export.nocite.all')}</option>
-          <option value="0">{t('export.nocite.onlyUsed')}</option>
-        </Select>
-
-        <Select
-          label={t('export.linkCitations.label')}
-          value={link_citations}
-          onChange={setPreference('link_citations')}
-        >
-          <option value="1">{t('export.linkCitations.yes')}</option>
-          <option value="0">{t('export.linkCitations.no')}</option>
-        </Select>
-
-        {/*bookId && (
+          {/*bookId && (
           <Select
             id="export-numbering"
             value={unnumbered}
@@ -162,7 +174,7 @@ export default function Export(props) {
             </option>
           </Select>
         )*/}
-        {/*bookId && (
+          {/*bookId && (
           <Select
             value={book_division}
             onChange={setPreference('book_division')}
@@ -171,9 +183,16 @@ export default function Export(props) {
             <option value="chapter">{t('export.bookDivision.chapter')}</option>
           </Select>
         )*/}
-      </form>
-
-      <nav className={styles.actions}>
+        </form>
+      </section>
+      <footer className={styles.actions}>
+        <Button
+          aria-label={t('modal.cancelButton.label')}
+          secondary={true}
+          onClick={() => onCancel()}
+        >
+          {t('modal.cancelButton.text')}
+        </Button>
         <a
           className={clsx(buttonStyles.button, buttonStyles.primary)}
           href={exportUrl}
@@ -183,7 +202,7 @@ export default function Export(props) {
         >
           {t('export.submitForm.button')}
         </a>
-      </nav>
-    </section>
+      </footer>
+    </>
   )
 }
