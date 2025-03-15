@@ -76,7 +76,7 @@ export default function ZoteroPanel({
         const variables = {
           zotero: zoteroLink,
           user: userId,
-          article: articleId,
+          articleId,
         }
         await query({ query: linkToZoteroQuery, variables })
       } catch (err) {

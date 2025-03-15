@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import useGraphQL from '../hooks/graphql.js'
+import useFetchData from '../hooks/graphql.js'
 import styles from './articleVersionLinks.module.scss'
 
 import { getArticleVersions } from './Article.graphql'
@@ -11,7 +11,7 @@ import TimeAgo from './TimeAgo.jsx'
 
 export default function ArticleVersionLinks({ articleId, article }) {
   const { t } = useTranslation()
-  const { data, isLoading } = useGraphQL(
+  const { data, isLoading } = useFetchData(
     {
       query: getArticleVersions,
       variables: { articleId },

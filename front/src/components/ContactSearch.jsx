@@ -3,19 +3,14 @@ import { CheckSquare, Search, Square } from 'react-feather'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import debounce from 'lodash.debounce'
-import useGraphQL, { useMutation } from '../hooks/graphql.js'
 import { useTranslation } from 'react-i18next'
 
 import styles from './ContactSearch.module.scss'
 import Field from './Field.jsx'
 
-import {
-  addContact,
-  removeContact,
-  getUserByEmail,
-  getContacts,
-} from './Contacts.graphql'
+import { getUserByEmail } from './Contacts.graphql'
 import ContactItem from './ContactItem.jsx'
+import { useContactActions } from '../hooks/contact.js'
 
 /**
  * @param members
@@ -36,20 +31,7 @@ export default function ContactSearch({
   const { t } = useTranslation()
   const activeUser = useSelector((state) => state.activeUser)
   const activeUserId = activeUser._id
-  const { data: userContactsQueryData, mutate: mutateUserContacts } =
-    useGraphQL(
-      { query: getContacts, variables: { userId: activeUserId } },
-      {
-        revalidateIfStale: false,
-        revalidateOnFocus: false,
-        revalidateOnReconnect: false,
-      }
-    )
-  const mutation = useMutation()
-  const userContacts = useMemo(
-    () => userContactsQueryData?.user?.acquintances || [],
-    [userContactsQueryData]
-  )
+  const { contacts: userContacts, add, remove } = useContactActions()
   const [filter, setFilter] = useState('')
   const [contacts, setContacts] = useState([])
   const [userFound, setUserFound] = useState(null)
@@ -86,27 +68,9 @@ export default function ContactSearch({
         }
       }
       if (event.action === 'active') {
-        const response = await mutation({
-          query: addContact,
-          variables: { userId: activeUserId, contactId: userId },
-        })
-        const updatedContacts = {
-          user: {
-            acquintances: response.user.addContact.acquintances,
-          },
-        }
-        await mutateUserContacts(updatedContacts, { revalidate: false })
+        await add(userId)
       } else if (event.action === 'inactive') {
-        const response = await mutation({
-          query: removeContact,
-          variables: { userId: activeUserId, contactId: userId },
-        })
-        const updatedContacts = {
-          user: {
-            acquintances: response.user.removeContact.acquintances,
-          },
-        }
-        await mutateUserContacts(updatedContacts, { revalidate: false })
+        await remove(userId)
       }
       onUserUpdated && onUserUpdated(event)
     },
