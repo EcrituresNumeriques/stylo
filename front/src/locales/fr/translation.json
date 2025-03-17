@@ -140,6 +140,8 @@
   "modal.cancelButton.text": "Annuler",
   "modal.cancelButton.label": "Annuler et fermer la modale",
   "modal.confirmButton.text": "Confirmer",
+  "modal.deleteButton.text": "Supprimer",
+  "modal.closeButton.text": "Fermer",
   "modal.open.text": "Ouvrir",
   "modal.close.text": "Fermer",
   "modal.close.label": "Fermer la modale",
