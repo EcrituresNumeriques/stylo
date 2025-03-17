@@ -56,7 +56,7 @@ export default function useStyloExport({ bibliography_style, bib: excerpt }) {
  *   with_nocite?: boolean,
  *   with_link_citations?: boolean
  * }} StyloExportPreviewParams
- * @returns {Promise<{ html: string, isLoading: boolean }}
+ * @returns {Promise<{ html: string, isLoading: boolean }>}
  */
 export function useStyloExportPreview({
   md_content,

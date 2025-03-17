@@ -28,7 +28,7 @@ export function useCorpusActions() {
         },
       },
     })
-    await mutate(key, async (data) => ({
+    await mutate(async (data) => ({
       article: [...data.corpus, response.createCorpus],
     }))
   }
