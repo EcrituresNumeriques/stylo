@@ -92,9 +92,14 @@
   margin-bottom: 1.25rem;
 }
 
-.yamlEditor {
+.metadata {
   display: flex;
   flex-direction: column;
+  min-width: 375px;
+  max-width: 375px;
+  max-height: calc(100vh - 180px);
+  overflow-y: scroll;
+  padding-right: 0.5rem;
 
   > section {
     :global {
