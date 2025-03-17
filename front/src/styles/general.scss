@@ -33,7 +33,7 @@
     resize: vertical;
     font-size: 0.9em;
     font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
-      DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   }
 
   textarea:not([rows]) {
@@ -86,17 +86,29 @@ input[type='search']::-ms-clear {
   width: 0;
   height: 0;
 }
+
 input[type='search']::-ms-reveal {
   display: none;
   width: 0;
   height: 0;
 }
+
 /* clears the ‘X’ from Chrome */
 input[type='search']::-webkit-search-decoration,
 input[type='search']::-webkit-search-cancel-button,
 input[type='search']::-webkit-search-results-button,
 input[type='search']::-webkit-search-results-decoration {
   display: none;
+}
+
+input:read-only,
+textarea:read-only,
+select:read-only,
+select:disabled {
+  border: 0 !important;
+  box-shadow: none !important;
+  color: $main-color !important;
+  background-color: $muted-background-color !important;
 }
 
 .yRemoteSelectionHead {
