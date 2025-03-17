@@ -1,5 +1,4 @@
 import { useSelector } from 'react-redux'
-import { useSWRConfig } from 'swr'
 import {
   createCorpus as createCorpusQuery,
   deleteCorpus as deleteCorpusQuery,
@@ -7,15 +6,14 @@ import {
   updateCorpus as updateCorpusQuery,
 } from '../components/corpus/Corpus.graphql'
 import { executeQuery } from '../helpers/graphQL.js'
-import useGraphQL, { useSWRKey } from './graphql.js'
+import useGraphQL, { useMutateData } from './graphql.js'
 import { useActiveWorkspace } from './workspace.js'
 
 export function useCorpusActions() {
   const activeWorkspace = useActiveWorkspace()
-  const { mutate } = useSWRConfig()
   const workspaceId = activeWorkspace?._id
   const variables = workspaceId ? { filter: { workspaceId } } : {}
-  const key = useSWRKey()({ query: getCorpusQuery, variables })
+  const { mutate } = useMutateData({ query: getCorpusQuery, variables })
   const sessionToken = useSelector((state) => state.sessionToken)
   const createCorpus = async ({ title, description }) => {
     const response = await executeQuery({
@@ -42,7 +40,7 @@ export function useCorpusActions() {
         corpusId,
       },
     })
-    await mutate(key, async (data) => ({
+    await mutate(async (data) => ({
       corpus: data.corpus.filter((c) => c._id !== corpusId),
     }))
   }
@@ -58,7 +56,7 @@ export function useCorpusActions() {
         },
       },
     })
-    await mutate(key, async (data) => ({
+    await mutate(async (data) => ({
       article: data.corpus.map((c) => {
         if (c._id === corpusId) {
           return {
