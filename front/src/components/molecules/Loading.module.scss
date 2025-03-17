@@ -1,27 +1,23 @@
-@use '../styles/defaults' as *;
-@use '../styles/variables' as *;
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+.icon {
+  width: 1em;
+  height: 1em;
+}
 
 .loading {
   color: $main-lighter-color;
   display: flex;
-  font-size: 2em;
   align-items: center;
-  justify-content: center;
-  padding: 1em;
+  gap: 0.35em;
 
   svg {
     display: block;
     animation: rotation 2.5s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
-    margin-right: 10px;
   }
-}
-
-.inline {
-  font-size: 1em;
-  justify-content: flex-start;
-  padding: 0;
 }
 
 @keyframes rotation {

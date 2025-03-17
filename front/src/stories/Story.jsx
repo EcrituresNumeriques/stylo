@@ -3,6 +3,8 @@ import React from 'react'
 import { Search } from 'react-feather'
 import buttonStyles from '../components/button.module.scss'
 import Field from '../components/Field.jsx'
+import Alert from '../components/molecules/Alert.jsx'
+import Loading from '../components/molecules/Loading.jsx'
 import Select from '../components/Select.jsx'
 import ButtonStory from './Button.story.jsx'
 import FormStory from './Form.story.jsx'
@@ -91,6 +93,19 @@ export default function Story() {
           <ButtonStory />
         </Tabs.Item>
 
+        <Tabs.Item label="state" value="2">
+          <h4>Loading</h4>
+          <Loading />
+          <Loading size={'1.5rem'} />
+          <Loading size={'2rem'} />
+          <Loading label={''} />
+          <h4>Alert</h4>
+          <Alert type={'warning'} message={'Warning'} />
+          <Alert type={'error'} message={'Error'} />
+          <Alert type={'info'} message={'Info'} />
+          <Alert type={'success'} message={'Success'} />
+          <Alert type={'success'} message={'Success'} showIcon={false} />
+        </Tabs.Item>
         <Tabs.Item label="form" value="3">
           <FormStory />
         </Tabs.Item>
