@@ -6,7 +6,7 @@ import Button from '../Button.jsx'
 import { randomColor } from '../../helpers/colors.js'
 import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { fromFormData } from '../../helpers/forms.js'
-import { useMutate } from '../../hooks/graphql.js'
+import useFetchData from '../../hooks/graphql.js'
 import { createTag, getTags, updateTag } from '../Tag.graphql'
 
 import styles from './TagEditForm.module.scss'
@@ -14,11 +14,11 @@ import Field from '../Field.jsx'
 
 export default function TagEditForm({ tag, onSubmit }) {
   const { setToast } = useToasts()
-  const { data, mutate } = useMutate({ query: getTags, variables: {} })
+  const { data, mutate } = useFetchData({ query: getTags, variables: {} })
   const { t } = useTranslation()
 
   const { query } = useGraphQLClient()
-  const isNew = Boolean(tag?._id ? false : true)
+  const isNew = Boolean(!tag?._id)
 
   const title = isNew ? t('tag.editForm.title') : t('tag.createForm.title')
 

@@ -12,7 +12,7 @@ import React, { useCallback } from 'react'
 import { AlignLeft, Eye, Printer } from 'react-feather'
 import { useDispatch, useSelector } from 'react-redux'
 
-import useGraphQL from '../../hooks/graphql.js'
+import useFetchData from '../../hooks/graphql.js'
 import { getArticleInfo } from '../Article.graphql'
 import Button from '../Button.jsx'
 import buttonStyles from '../button.module.scss'
@@ -23,7 +23,7 @@ import styles from './CollaborativeEditorArticleHeader.module.scss'
 export default function CollaborativeEditorArticleHeader({ articleId }) {
   const dispatch = useDispatch()
   const articleStructure = useSelector((state) => state.articleStructure)
-  const { data, isLoading } = useGraphQL(
+  const { data, isLoading } = useFetchData(
     { query: getArticleInfo, variables: { articleId } },
     {
       revalidateIfStale: false,

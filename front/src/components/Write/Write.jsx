@@ -13,7 +13,6 @@ import { useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import throttle from 'lodash.throttle'
 import debounce from 'lodash.debounce'
-import { useMutation } from '../../hooks/graphql.js'
 import { applicationConfig } from '../../config.js'
 import ArticleStats from '../ArticleStats.jsx'
 import ErrorMessageCard from '../ErrorMessageCard.jsx'
@@ -89,8 +88,6 @@ export default function Write() {
     zoteroLink: '',
     preview: {},
   })
-
-  const mutation = useMutation()
 
   const {
     visible: collaborativeSessionActiveVisible,
@@ -304,7 +301,7 @@ export default function Write() {
 
     return async () => {
       try {
-        await mutation({ query: stopSoloSession, variables: { articleId } })
+        await query({ query: stopSoloSession, variables: { articleId } })
       } catch (err) {
         if (
           err &&

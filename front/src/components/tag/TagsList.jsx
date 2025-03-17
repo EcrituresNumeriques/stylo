@@ -8,7 +8,7 @@ import ArticleTag from '../Tag.jsx'
 import Button from '../Button.jsx'
 import TagEditForm from './TagEditForm.jsx'
 import { getTags } from '../Tag.graphql'
-import useGraphQL from '../../hooks/graphql'
+import useFetchData from '../../hooks/graphql'
 
 export default function TagsList({ action, ActionIcon }) {
   const { t } = useTranslation()
@@ -23,7 +23,7 @@ export default function TagsList({ action, ActionIcon }) {
     setVisible: setTagEditFormVisible,
     bindings: tagEditFormModalBinding,
   } = useModal()
-  const { data, isLoading } = useGraphQL(
+  const { data, isLoading } = useFetchData(
     { query: getTags, variables: {} },
     {
       revalidateOnFocus: false,
