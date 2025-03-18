@@ -11,7 +11,7 @@ import { executeQuery } from '../helpers/graphQL.js'
 export function useContactActions() {
   const activeUser = useSelector((state) => state.activeUser)
   const sessionToken = useSelector((state) => state.sessionToken)
-  const activeUserId = activeUser.id
+  const activeUserId = activeUser._id
   const { data, mutate, isLoading, error } = useFetchData(
     { query: getContacts, variables: { userId: activeUserId } },
     {
