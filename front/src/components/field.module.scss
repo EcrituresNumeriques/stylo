@@ -1,5 +1,12 @@
 @use '../styles/variables' as *;
 
+@mixin inputFieldDisabled {
+  border: 0;
+  box-shadow: none;
+  color: $main-color;
+  background-color: $muted-background-color;
+}
+
 @mixin inputField {
   align-items: center;
   border: 1px solid #868e96;

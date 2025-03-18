@@ -103,12 +103,11 @@ input[type='search']::-webkit-search-results-decoration {
 
 input:read-only,
 textarea:read-only,
-select:read-only,
 select:disabled {
-  border: 0 !important;
-  box-shadow: none !important;
-  color: $main-color !important;
-  background-color: $muted-background-color !important;
+  border: 0;
+  box-shadow: none;
+  color: $main-color;
+  background-color: $muted-background-color;
 }
 
 .yRemoteSelectionHead {

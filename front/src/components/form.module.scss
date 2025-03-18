@@ -19,6 +19,13 @@
     @include actionField;
     @include selectField;
   }
+
+  select:disabled {
+    border: 0;
+    box-shadow: none;
+    color: $main-color;
+    background-color: $muted-background-color;
+  }
 }
 
 .form {
@@ -130,11 +137,22 @@
         width: 100%;
       }
 
+      select:disabled {
+        @include inputFieldDisabled;
+      }
+
       input[type='email'],
       input[type='date'],
       input[type='text'],
       input[type='url'] {
         @include inputField;
+      }
+
+      input[type='email']:read-only,
+      input[type='date']:read-only,
+      input[type='text']:read-only,
+      input[type='url']:read-only {
+        @include inputFieldDisabled;
       }
 
       input[type='date'] {
@@ -186,11 +204,20 @@
         }
 
         > button {
-          border: 1px solid black;
+          border: 1px solid $main-color;
+        }
+
+        > button:disabled {
+          border: none;
+          background-color: $muted-background-color;
         }
 
         > .field-string {
           display: unset;
+        }
+        
+        > .field-string + button {
+          border-left: none;
         }
       }
     }
