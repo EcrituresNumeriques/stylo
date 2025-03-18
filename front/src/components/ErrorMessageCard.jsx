@@ -8,7 +8,7 @@ export default function ErrorMessageCard({ title, children }) {
   return (
     <Card>
       <Card.Content className={styles.title}>
-        <AlertOctagon />{' '}
+        <AlertOctagon />
         <Text b my={0}>
           {title}
         </Text>

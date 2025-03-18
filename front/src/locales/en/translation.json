@@ -138,6 +138,8 @@
   "version.by.text": "by {{owner}}",
   "collaborativeSessionAction.launchCollaborativeSessionButton.title": "Collaborative editing",
   "soloSessionAction.launchSoloSessionButton.title": "Edit article",
+  "modal.takeOver.title": "Take over",
+  "modal.takeOver.description": "Would you like to take over the editing session from {{creator}}?",
   "modal.cancelButton.text": "Cancel",
   "modal.cancelButton.label": "Cancel and close modal",
   "modal.confirmButton.text": "Confirm",

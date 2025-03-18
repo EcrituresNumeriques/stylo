@@ -1,25 +1,28 @@
-import {
-  Loading,
-  Popover,
-  Link as GeistLink,
-  useModal,
-  Modal as GeistModal,
-} from '@geist-ui/core'
+import { Link as GeistLink, Popover } from '@geist-ui/core'
 import clsx from 'clsx'
-import { Link } from 'react-router-dom'
-import PropTypes from 'prop-types'
 import React, { useCallback } from 'react'
 import { AlignLeft, Eye, Printer } from 'react-feather'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import useFetchData from '../../hooks/graphql.js'
+import { useModal } from '../../hooks/modal.js'
+
 import { getArticleInfo } from '../Article.graphql'
+
 import Button from '../Button.jsx'
+
 import buttonStyles from '../button.module.scss'
 import Export from '../Export.jsx'
-
+import Modal from '../Modal.jsx'
+import Loading from '../molecules/Loading.jsx'
 import styles from './CollaborativeEditorArticleHeader.module.scss'
 
+/**
+ * @param props
+ * @param {string} props.articleId
+ * @return {Element}
+ */
 export default function CollaborativeEditorArticleHeader({ articleId }) {
   const dispatch = useDispatch()
   const articleStructure = useSelector((state) => state.articleStructure)
@@ -31,11 +34,7 @@ export default function CollaborativeEditorArticleHeader({ articleId }) {
       revalidateOnReconnect: false,
     }
   )
-  const {
-    visible: exportModalVisible,
-    setVisible: setExportModalVisible,
-    bindings: exportModalBinding,
-  } = useModal()
+  const exportModal = useModal()
 
   const handleTableOfContentsEntryClicked = useCallback(({ target }) => {
     dispatch({
@@ -43,10 +42,6 @@ export default function CollaborativeEditorArticleHeader({ articleId }) {
       lineNumber: parseInt(target.dataset.index, 10),
       column: 0,
     })
-  }, [])
-
-  const handleOpenExportModal = useCallback(() => {
-    setExportModalVisible(true)
   }, [])
 
   if (isLoading) {
@@ -94,11 +89,11 @@ export default function CollaborativeEditorArticleHeader({ articleId }) {
         {data?.article?.title}
       </h1>
 
-      <div className={styles.actions}>
+      <div>
         <Button
           icon
           title="Download a printable version"
-          onClick={handleOpenExportModal}
+          onClick={() => exportModal.show()}
         >
           <Printer />
         </Button>
@@ -113,27 +108,21 @@ export default function CollaborativeEditorArticleHeader({ articleId }) {
         </Link>
       </div>
 
-      <GeistModal
-        width="40rem"
-        visible={exportModalVisible}
-        {...exportModalBinding}
+      <Modal
+        {...exportModal.bindings}
+        title={
+          <>
+            <Printer /> Export
+          </>
+        }
       >
-        <h2>Export</h2>
-        <GeistModal.Content>
-          <Export
-            articleId={articleId}
-            name={data?.article?.title}
-            bib={data?.article?.workingVersion?.bibPreview}
-          />
-        </GeistModal.Content>
-        <GeistModal.Action passive onClick={() => setExportModalVisible(false)}>
-          Cancel
-        </GeistModal.Action>
-      </GeistModal>
+        <Export
+          articleId={articleId}
+          name={data?.article?.title}
+          bib={data?.article?.workingVersion?.bibPreview}
+          onCancel={() => exportModal.close()}
+        />
+      </Modal>
     </header>
   )
-}
-
-CollaborativeEditorArticleHeader.propTypes = {
-  articleId: PropTypes.string.isRequired,
 }

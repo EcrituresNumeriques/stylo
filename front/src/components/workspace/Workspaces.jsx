@@ -1,4 +1,3 @@
-import { Button, useModal } from '@geist-ui/core'
 import React, { useEffect, useState } from 'react'
 import { Search } from 'react-feather'
 import { useTranslation } from 'react-i18next'
@@ -10,7 +9,9 @@ import Field from '../../components/Field.jsx'
 import WorkspaceItem from '../../components/workspace/WorkspaceItem.jsx'
 
 import { useGraphQLClient } from '../../helpers/graphQL.js'
+import { useModal } from '../../hooks/modal.js'
 import { useWorkspaces } from '../../hooks/workspace.js'
+import Button from '../Button.jsx'
 import Loading from '../molecules/Loading.jsx'
 import CreateWorkspaceModal from './CreateWorkspaceModal.jsx'
 import { getUserStats } from './Workspaces.graphql'
@@ -78,11 +79,7 @@ export default function Workspaces() {
           onChange={(e) => setFilter(e.target.value)}
         />
       </div>
-      <Button
-        type="secondary"
-        className={styles.button}
-        onClick={() => workspaceCreateModal.setVisible(true)}
-      >
+      <Button primary onClick={() => workspaceCreateModal.show()}>
         {t('workspace.createNew.button')}
       </Button>
 

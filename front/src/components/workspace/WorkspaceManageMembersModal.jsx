@@ -1,37 +1,42 @@
-import { Modal as GeistModal } from '@geist-ui/core'
 import React from 'react'
+import { Users } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-import styles from './workspaceItem.module.scss'
+
+import Button from '../Button.jsx'
+import Modal from '../Modal.jsx'
 import WorkspaceLabel from './WorkspaceLabel.jsx'
 import WorkspaceManageMembers from './WorkspaceManageMembers.jsx'
 
+import styles from './workspaceItem.module.scss'
+
 export default function WorkspaceManageMembersModal({
-  visible,
-  setVisible,
+  close,
   bindings,
   workspace,
 }) {
   const { t } = useTranslation()
   return (
-    <GeistModal
-      width="35rem"
-      visible={visible}
-      onClose={() => setVisible(false)}
+    <Modal
       {...bindings}
+      title={
+        <>
+          <Users />
+          {t('workspace.manageMembersModal.title')}
+        </>
+      }
+      subtitle={t('workspace.manageMembersModal.subtitle')}
     >
       <WorkspaceLabel
         className={styles.workspaceLabel}
         color={workspace.color}
         name={workspace.name}
       />
-      <h2>{t('workspace.manageMembersModal.title')}</h2>
-      <div>{t('workspace.manageMembersModal.subtitle')}</div>
-      <GeistModal.Content>
-        <WorkspaceManageMembers workspace={workspace} />
-      </GeistModal.Content>
-      <GeistModal.Action passive onClick={() => setVisible(false)}>
-        {t('modal.close.text')}
-      </GeistModal.Action>
-    </GeistModal>
+      <WorkspaceManageMembers workspace={workspace} />
+      <div className={styles.actions}>
+        <Button secondary onClick={() => close()}>
+          {t('modal.close.text')}
+        </Button>
+      </div>
+    </Modal>
   )
 }

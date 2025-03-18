@@ -1,11 +1,13 @@
-import { Loading } from '@geist-ui/core'
 import React, { useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
-import { getArticleWorkspaces } from './Workspaces.graphql'
 import useFetchData from '../../hooks/graphql.js'
+import Loading from '../molecules/Loading.jsx'
+
 import WorkspaceSelectItem from './WorkspaceSelectItem.jsx'
+
+import { getArticleWorkspaces } from './Workspaces.graphql'
 
 export default function WorkspaceSelectionItems({ articleId }) {
   const userWorkspaces = useSelector((state) => state.activeUser.workspaces)

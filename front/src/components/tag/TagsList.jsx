@@ -1,14 +1,17 @@
-import { Loading, Modal as GeistModal, useModal } from '@geist-ui/core'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback } from 'react'
+import { Settings, Tag } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import useFetchData from '../../hooks/graphql'
+import { useModal } from '../../hooks/modal.js'
+import Button from '../Button.jsx'
+import Modal from '../Modal.jsx'
+import Loading from '../molecules/Loading.jsx'
+import { getTags } from '../Tag.graphql'
+import ArticleTag from '../Tag.jsx'
+import TagEditForm from './TagEditForm.jsx'
 
 import styles from './tagsList.module.scss'
-import ArticleTag from '../Tag.jsx'
-import Button from '../Button.jsx'
-import TagEditForm from './TagEditForm.jsx'
-import { getTags } from '../Tag.graphql'
-import useFetchData from '../../hooks/graphql'
 
 export default function TagsList({ action, ActionIcon }) {
   const { t } = useTranslation()
@@ -16,13 +19,10 @@ export default function TagsList({ action, ActionIcon }) {
   const selectedTagIds = useSelector(
     (state) => state.activeUser.selectedTagIds || []
   )
-  const [editedTag, setEditedTag] = useState()
 
-  const {
-    visible: tagEditFormVisible,
-    setVisible: setTagEditFormVisible,
-    bindings: tagEditFormModalBinding,
-  } = useModal()
+  const editTagModal = useModal()
+  const createTagModal = useModal()
+
   const { data, isLoading } = useFetchData(
     { query: getTags, variables: {} },
     {
@@ -32,25 +32,14 @@ export default function TagsList({ action, ActionIcon }) {
   )
   const tags = data?.user?.tags || []
 
-  // clears the edited tag when form is not visible anymore
-  useEffect(() => {
-    if (!tagEditFormVisible) {
-      setEditedTag()
-    }
-  }, [editedTag, tagEditFormVisible])
-
   const handleTagSelected = useCallback(
     (event) => {
+      console.log('received event!', event.target)
       const { id } = event.target.dataset
       dispatch({ type: 'UPDATE_SELECTED_TAG', tagId: id })
     },
     [selectedTagIds]
   )
-
-  const triggerEditTagForm = useCallback((tag) => {
-    setEditedTag(tag)
-    setTagEditFormVisible(true)
-  }, [])
 
   if (isLoading) {
     return <Loading />
@@ -67,49 +56,63 @@ export default function TagsList({ action, ActionIcon }) {
               onClick={handleTagSelected}
               disableAction={false}
               selected={selectedTagIds.includes(tag._id)}
-            >
-              {action && (
-                <Button
-                  icon
-                  small
-                  aria-label={t('tag.editForm.buttonTitle', { name: tag.name })}
-                  type="button"
-                  onClick={() => triggerEditTagForm(tag)}
-                >
-                  <ActionIcon size="1rem" />
-                </Button>
-              )}
-            </ArticleTag>
+              addon={
+                action && (
+                  <>
+                    <Modal
+                      {...editTagModal.bindings}
+                      title={
+                        <>
+                          <Tag /> {t('tag.editForm.title')}
+                        </>
+                      }
+                    >
+                      <TagEditForm
+                        tag={tag}
+                        onSubmit={() => editTagModal.close()}
+                        onCancel={() => editTagModal.close()}
+                      />
+                    </Modal>
+                    <Button
+                      icon
+                      small
+                      aria-label={t('tag.editForm.buttonTitle', {
+                        name: tag.name,
+                      })}
+                      type="button"
+                      onClick={() => editTagModal.show()}
+                    >
+                      <Settings size="1rem" />
+                    </Button>
+                  </>
+                )
+              }
+            ></ArticleTag>
           </li>
         ))}
         <li>
           <Button
             className={styles.createTagButton}
-            onClick={() => setTagEditFormVisible(true)}
+            onClick={() => createTagModal.show()}
           >
             {t('tag.createAction.buttonText')}
           </Button>
         </li>
       </ul>
 
-      <GeistModal
-        width="40rem"
-        visible={tagEditFormVisible}
-        {...tagEditFormModalBinding}
+      <Modal
+        {...createTagModal.bindings}
+        title={
+          <>
+            <Tag /> {t('tag.createForm.title')}
+          </>
+        }
       >
-        <h2>
-          {editedTag ? t('tag.editForm.title') : t('tag.createForm.title')}
-        </h2>
-        <GeistModal.Content>
-          <TagEditForm
-            tag={editedTag}
-            onSubmit={() => setTagEditFormVisible(false)}
-          />
-        </GeistModal.Content>
-        <GeistModal.Action passive onClick={() => setTagEditFormVisible(false)}>
-          {t('modal.close.text')}
-        </GeistModal.Action>
-      </GeistModal>
+        <TagEditForm
+          onSubmit={() => createTagModal.close()}
+          onCancel={() => createTagModal.close()}
+        />
+      </Modal>
     </>
   )
 }

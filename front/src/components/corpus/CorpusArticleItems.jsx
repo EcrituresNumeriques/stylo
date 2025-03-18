@@ -1,14 +1,15 @@
-import { Loading, useToasts } from '@geist-ui/core'
+import { useToasts } from '@geist-ui/core'
 import debounce from 'lodash.debounce'
 import PropTypes from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import CorpusArticleCard from './CorpusArticleCard.jsx'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
+import Loading from '../molecules/Loading.jsx'
 
 import { updateArticlesOrder } from './Corpus.graphql'
+import CorpusArticleCard from './CorpusArticleCard.jsx'
 
 import styles from './corpusArticleItems.module.scss'
-import { useGraphQLClient } from '../../helpers/graphQL.js'
 
 export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
   const [isLoading, setLoading] = useState(true)
@@ -85,9 +86,11 @@ export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
       />
     )
   }, [])
+
   if (isLoading) {
     return <Loading />
   }
+
   return (
     <div className={styles.container}>
       {articleCards.map((card, i) => renderCard(card, i))}

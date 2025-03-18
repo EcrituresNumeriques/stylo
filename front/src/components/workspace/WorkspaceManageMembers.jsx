@@ -1,7 +1,8 @@
-import { Loading, useToasts } from '@geist-ui/core'
+import { useToasts } from '@geist-ui/core'
 import React, { useCallback } from 'react'
 import { useWorkspaceMembersActions } from '../../hooks/workspace.js'
 import ContactSearch from '../ContactSearch.jsx'
+import Loading from '../molecules/Loading.jsx'
 
 export default function WorkspaceManageMembers({ workspace }) {
   const workspaceId = workspace._id

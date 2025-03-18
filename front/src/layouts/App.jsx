@@ -1,8 +1,8 @@
-import { Loading } from '@geist-ui/core'
 import clsx from 'clsx'
 import React, { Suspense, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
+import Loading from '../components/molecules/Loading.jsx'
 
 import styles from './app.module.scss'
 

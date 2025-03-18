@@ -1,11 +1,21 @@
 .tag {
   padding: 0.25em 0.5em;
-  cursor: pointer;
   user-select: none;
   border: 1px solid #aaa;
   display: flex;
   align-items: center;
   transition: box-shadow 90ms ease-in;
+}
+
+.tag > label > input {
+  cursor: pointer;
+}
+
+.tag > label {
+  cursor: pointer;
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
 }
 
 .tag:hover {

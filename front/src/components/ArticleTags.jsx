@@ -1,5 +1,5 @@
-import { Loading } from '@geist-ui/core'
 import React, { useCallback } from 'react'
+import Loading from './molecules/Loading.jsx'
 
 import ArticleTag from './Tag'
 

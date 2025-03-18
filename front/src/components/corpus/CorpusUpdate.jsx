@@ -1,13 +1,14 @@
-import { Button, Textarea, useInput, useToasts } from '@geist-ui/core'
+import { Textarea, useInput, useToasts } from '@geist-ui/core'
 import React, { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useCorpusActions } from '../../hooks/corpus.js'
 
 import Field from '../Field.jsx'
+import FormActions from '../molecules/FormActions.jsx'
 
 import styles from './corpusUpdate.module.scss'
 
-export default function CorpusUpdate({ corpus, onSubmit }) {
+export default function CorpusUpdate({ corpus, onSubmit, onCancel }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const { state: title, bindings: titleBindings } = useInput(corpus.name)
@@ -66,18 +67,14 @@ export default function CorpusUpdate({ corpus, onSubmit }) {
             placeholder={t('corpus.createForm.descriptionPlaceholder')}
           />
         </div>
-        <ul className={styles.actions}>
-          <li>
-            <Button
-              onClick={handleSubmit}
-              className={styles.button}
-              type="secondary"
-              title={t('corpus.editForm.buttonTitle')}
-            >
-              {t('corpus.editForm.buttonText')}
-            </Button>
-          </li>
-        </ul>
+        <FormActions
+          onSubmit={handleSubmit}
+          onCancel={onCancel}
+          submitButton={{
+            text: t('corpus.editForm.buttonText'),
+            title: t('corpus.editForm.buttonTitle'),
+          }}
+        />
       </form>
     </section>
   )

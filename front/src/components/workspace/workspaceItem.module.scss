@@ -49,10 +49,18 @@
 }
 
 .workspaceLabel {
+  font-weight: 600;
   padding-top: 0;
   padding-bottom: 1em;
-  font-size: 0.9em;
-  width: max-content;
-  margin: auto;
-  align-items: baseline;
+  font-size: 1em;
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  gap: 1rem;
 }

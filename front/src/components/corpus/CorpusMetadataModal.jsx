@@ -1,28 +1,26 @@
-import PropTypes from 'prop-types'
 import React, { useCallback, useState } from 'react'
-import { Modal as GeistModal, useModal } from '@geist-ui/core'
-import { useDispatch } from 'react-redux'
+import { List } from 'react-feather'
 import { useTranslation } from 'react-i18next'
-
-import { updateMetadata } from './Corpus.graphql'
+import { useDispatch } from 'react-redux'
 import { useGraphQLClient } from '../../helpers/graphQL.js'
-import MetadataForm from '../metadata/MetadataForm.jsx'
+import { useModal } from '../../hooks/modal.js'
 import corpusMetadataSchema from '../../schemas/corpus-journal-metadata.schema.json'
 import corpusUiSchema from '../../schemas/corpus-journal-ui-schema.json'
 import Button from '../Button.jsx'
-import { List } from 'react-feather'
+import MetadataForm from '../metadata/MetadataForm.jsx'
+import Modal from '../Modal.jsx'
+import FormActions from '../molecules/FormActions.jsx'
 import Select from '../Select.jsx'
+
+import { updateMetadata } from './Corpus.graphql'
+import styles from './CorpusMetadataModal.module.scss'
 
 export default function CorpusMetadataModal({ corpusId, initialValue }) {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { query } = useGraphQLClient()
   const [corpusMetadata, setCorpusMetadata] = useState(initialValue)
-  const {
-    visible: editMetadataVisible,
-    setVisible: setEditMetadataVisible,
-    bindings: editMetadataBindings,
-  } = useModal()
+  const modal = useModal()
 
   const handleUpdateMetadata = useCallback(async () => {
     await query({
@@ -36,7 +34,7 @@ export default function CorpusMetadataModal({ corpusId, initialValue }) {
       type: 'SET_LATEST_CORPUS_UPDATED',
       data: { corpusId, date: new Date() },
     })
-    setEditMetadataVisible(false)
+    modal.close()
   }, [corpusId, dispatch, query, updateMetadata, corpusId, corpusMetadata])
 
   const handleMetadataUpdated = useCallback(
@@ -48,45 +46,36 @@ export default function CorpusMetadataModal({ corpusId, initialValue }) {
 
   return (
     <>
-      <Button
-        title="Metadata"
-        icon={true}
-        onClick={() => setEditMetadataVisible(true)}
-      >
+      <Button title="Metadata" icon={true} onClick={() => modal.show()}>
         <List />
       </Button>
-      <GeistModal
-        width="40rem"
-        visible={editMetadataVisible}
-        {...editMetadataBindings}
+      <Modal
+        {...modal.bindings}
+        title={
+          <>
+            <List /> {t('corpus.metadataModal.title')}
+          </>
+        }
       >
-        <h2>{t('corpus.metadataModal.title')}</h2>
-        <GeistModal.Content>
+        <div className={styles.type}>
           <Select alignLabel={false} id="corpus-type" label="Type">
             <option value="journal">{t('corpus.type.journal')}</option>
           </Select>
-          <MetadataForm
-            data={initialValue}
-            schema={corpusMetadataSchema}
-            uiSchema={corpusUiSchema}
-            onChange={handleMetadataUpdated}
-          />
-        </GeistModal.Content>
-        <GeistModal.Action
-          passive
-          onClick={() => setEditMetadataVisible(false)}
-        >
-          {t('modal.close.text')}
-        </GeistModal.Action>
-        <GeistModal.Action onClick={handleUpdateMetadata}>
-          {t('modal.saveButton.text')}
-        </GeistModal.Action>
-      </GeistModal>
+        </div>
+        <MetadataForm
+          data={initialValue}
+          schema={corpusMetadataSchema}
+          uiSchema={corpusUiSchema}
+          onChange={handleMetadataUpdated}
+        />
+        <FormActions
+          onCancel={() => modal.close()}
+          onSubmit={handleUpdateMetadata}
+          submitButton={{
+            text: t('modal.saveButton.text'),
+          }}
+        />
+      </Modal>
     </>
   )
-}
-
-CorpusMetadataModal.propTypes = {
-  corpusId: PropTypes.string.isRequired,
-  initialValue: PropTypes.object.isRequired,
 }

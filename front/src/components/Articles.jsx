@@ -1,26 +1,28 @@
-import { Loading, Modal as GeistModal, useModal } from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import { Search, Settings } from 'react-feather'
 import { Helmet } from 'react-helmet'
+import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { applicationConfig } from '../config.js'
+import etv from '../helpers/eventTargetValue'
 
 import useFetchData from '../hooks/graphql'
-import { applicationConfig } from '../config.js'
-import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
-import etv from '../helpers/eventTargetValue'
+import { useModal } from '../hooks/modal.js'
+import { useActiveUserId } from '../hooks/user'
+import { useActiveWorkspace } from '../hooks/workspace.js'
 
 import Article from './Article'
 import ArticleCreate from './ArticleCreate.jsx'
-import TagEditForm from './tag/TagEditForm.jsx'
+import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
 
 import styles from './articles.module.scss'
-import Field from './Field'
 import Button from './Button.jsx'
-import { useActiveUserId } from '../hooks/user'
-import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
-import { useActiveWorkspace } from '../hooks/workspace.js'
+import Field from './Field'
+import Modal from './Modal.jsx'
+import Loading from './molecules/Loading.jsx'
+import TagEditForm from './tag/TagEditForm.jsx'
 import TagsList from './tag/TagsList.jsx'
+import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
 
 export default function Articles() {
   const { t } = useTranslation()
@@ -28,11 +30,7 @@ export default function Articles() {
   const selectedTagIds = useSelector(
     (state) => state.activeUser.selectedTagIds || []
   )
-  const {
-    visible: createArticleVisible,
-    setVisible: setCreateArticleVisible,
-    bindings: createArticleModalBinding,
-  } = useModal()
+  const createArticleModal = useModal()
   const activeUserId = useActiveUserId()
   const [filter, setFilter] = useState('')
   const activeWorkspace = useActiveWorkspace()
@@ -121,7 +119,7 @@ export default function Articles() {
 
   const handleArticleCreated = useCallback(
     async (createdArticle) => {
-      setCreateArticleVisible(false)
+      createArticleModal.close()
       const updatedArticles = [createdArticle, ...articles]
       if (activeWorkspaceId) {
         await mutate(
@@ -250,12 +248,12 @@ export default function Articles() {
       <aside className={styles.filtersContainer}>
         <div className={styles.filtersTags}>
           <h4>{t('tag.list.title')}</h4>
-          <TagsList action={TagEditForm} ActionIcon={Settings} />
+          <TagsList action={TagEditForm} />
         </div>
       </aside>
 
       <div className={styles.articlesTableHeader}>
-        <Button primary onClick={() => setCreateArticleVisible(true)}>
+        <Button primary onClick={() => createArticleModal.show()}>
           {t('article.createAction.buttonText')}
         </Button>
         <div className={styles.articleCounter}>
@@ -263,25 +261,16 @@ export default function Articles() {
         </div>
       </div>
 
-      <GeistModal
-        width="40rem"
-        visible={createArticleVisible}
-        {...createArticleModalBinding}
+      <Modal
+        {...createArticleModal.bindings}
+        title={t('article.createModal.title')}
       >
-        <h2>{t('article.createModal.title')}</h2>
-        <GeistModal.Content>
-          <ArticleCreate
-            onSubmit={handleArticleCreated}
-            workspaceId={activeWorkspaceId}
-          />
-        </GeistModal.Content>
-        <GeistModal.Action
-          passive
-          onClick={() => setCreateArticleVisible(false)}
-        >
-          {t('modal.close.text')}
-        </GeistModal.Action>
-      </GeistModal>
+        <ArticleCreate
+          onSubmit={handleArticleCreated}
+          workspaceId={activeWorkspaceId}
+          onCancel={() => createArticleModal.close()}
+        />
+      </Modal>
 
       {isLoading ? (
         <Loading />

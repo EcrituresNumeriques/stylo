@@ -1,4 +1,4 @@
-import { Loading, Note, Spacer } from '@geist-ui/core'
+import { Note, Spacer } from '@geist-ui/core'
 import React, { useCallback, useMemo } from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -7,6 +7,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import useFetchData from '../../hooks/graphql.js'
 import { useActiveWorkspace } from '../../hooks/workspace.js'
+import Loading from '../molecules/Loading.jsx'
 import CorpusArticleItems from './CorpusArticleItems.jsx'
 
 import styles from './corpusItem.module.scss'

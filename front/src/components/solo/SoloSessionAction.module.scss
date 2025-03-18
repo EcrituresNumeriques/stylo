@@ -1,2 +1,13 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
+
+.description {
+  text-align: start;
+}
+
+.actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}

@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
-import { Loading } from '@geist-ui/core'
 import { Helmet } from 'react-helmet'
 
+import Loading from './molecules/Loading.jsx'
+
 import { useStyloExportPreview } from '../hooks/stylo-export.js'
+
 import { toYaml } from './Write/metadata/yaml.js'
 import useFetchData from '../hooks/graphql.js'
 import { applicationConfig } from '../config.js'
