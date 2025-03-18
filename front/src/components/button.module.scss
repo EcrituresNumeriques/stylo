@@ -63,7 +63,7 @@
   }
 }
 
-.select {
+select.select {
   @include actionField;
   @include selectField;
 }
