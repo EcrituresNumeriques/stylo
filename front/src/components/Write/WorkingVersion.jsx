@@ -1,6 +1,4 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react'
-import { shallowEqual, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   AlertCircle,
   AlignLeft,
@@ -11,14 +9,17 @@ import {
   Printer,
 } from 'react-feather'
 import { useTranslation } from 'react-i18next'
+import { shallowEqual, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { toBibtex } from '../../helpers/bibtex.js'
+import { useModal } from '../../hooks/modal.js'
+import Button from '../Button'
+import buttonStyles from '../button.module.scss'
+import Export from '../Export'
+import Modal from '../Modal'
 import TimeAgo from '../TimeAgo.jsx'
 
 import styles from './workingVersion.module.scss'
-import buttonStyles from '../button.module.scss'
-import Button from '../Button'
-import Modal from '../Modal'
-import Export from '../Export'
 
 const ONE_MINUTE = 60000
 
@@ -107,15 +108,12 @@ export default function WorkingVersion({
   selectedVersion,
   mode,
 }) {
-  const [exporting, setExporting] = useState(false)
   const workingArticle = useSelector(
     (state) => state.workingArticle,
     shallowEqual
   )
-  const cancelExport = useCallback(() => setExporting(false), [])
-  const openExport = useCallback(() => setExporting(true), [])
   const { t } = useTranslation()
-
+  const exportModal = useModal()
   const previewUrl = selectedVersion
     ? `/article/${articleInfos._id}/version/${selectedVersion}/preview`
     : `/article/${articleInfos._id}/preview`
@@ -135,16 +133,22 @@ export default function WorkingVersion({
             {articleInfos.title}
           </h1>
         </header>
-        {exporting && (
-          <Modal title="Export" cancel={cancelExport}>
-            <Export
-              articleVersionId={selectedVersion}
-              articleId={articleInfos._id}
-              bib={toBibtex(workingArticle.bibliography.entries.slice(0, 3))}
-              name={articleInfos.title}
-            />
-          </Modal>
-        )}
+        <Modal
+          {...exportModal.bindings}
+          title={
+            <>
+              <Printer /> Export
+            </>
+          }
+        >
+          <Export
+            articleVersionId={selectedVersion}
+            articleId={articleInfos._id}
+            bib={toBibtex(workingArticle.bibliography.entries.slice(0, 3))}
+            name={articleInfos.title}
+            onCancel={() => exportModal.close()}
+          />
+        </Modal>
         <ul className={styles.actions}>
           {articleInfos.preview.stylesheet && (
             <>
@@ -186,7 +190,7 @@ export default function WorkingVersion({
             <Button
               icon
               title={t('write.title.buttonExport')}
-              onClick={openExport}
+              onClick={() => exportModal.show()}
             >
               <Printer />
             </Button>

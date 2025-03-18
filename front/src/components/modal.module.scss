@@ -27,6 +27,13 @@ dialog::backdrop {
   align-items: center;
 }
 
+.subtitle {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  font-weight: 400;
+}
+
 .modal {
   padding: var(--spacing);
   width: 90vw;

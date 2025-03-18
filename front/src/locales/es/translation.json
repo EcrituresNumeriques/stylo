@@ -263,6 +263,8 @@
   "credentials.login.remoteAccountHelp": "Si utiliza la <strong>misma dirección de correo electrónico</strong> para una cuenta local de Stylo y una cuenta de Huma-Num, las dos cuentas se fusionarán automáticamente.",
   "article.metadata.senspublic.essay": "Ensayo",
   "credentials.login.confirmButton": "Acceso",
+  "modal.deleteButton.text": "Borrar",
+  "modal.closeButton.text": "Cerrar",
   "article.metadata.production.entities.name": "Nombre",
   "article.metadata.production.entities.addItem": "añadir una entidad responsable",
   "workspace.leaveModal.title": "Salir de este espacio de trabajo",

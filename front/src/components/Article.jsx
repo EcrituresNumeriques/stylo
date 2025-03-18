@@ -1,30 +1,7 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react'
-import PropTypes from 'prop-types'
-import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { useToasts } from '@geist-ui/core'
 import clsx from 'clsx'
-import {
-  Modal as GeistModal,
-  Note,
-  Spacer,
-  useModal as useGeistModal,
-  useToasts,
-} from '@geist-ui/core'
-import { useActiveWorkspace } from '../hooks/workspace.js'
-
-import styles from './article.module.scss'
-import ArticleVersionLinks from './ArticleVersionLinks.jsx'
-import buttonStyles from './button.module.scss'
-import CollaborativeSessionAction from './collaborative/CollaborativeSessionAction.jsx'
-import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
-import fieldStyles from './field.module.scss'
-
-import Modal from './Modal'
-import Export from './Export'
-import ArticleTags from './ArticleTags'
-
-import Field from './Field'
-import Button from './Button'
+import PropTypes from 'prop-types'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Check,
   ChevronDown,
@@ -37,8 +14,15 @@ import {
   Trash,
   UserPlus,
 } from 'react-feather'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+
+import { useActiveWorkspace } from '../hooks/workspace.js'
 
 import { getArticleTags, getArticleContributors } from './Article.graphql'
+import Button from './Button.jsx'
+import Field from './Field.jsx'
+import Modal from './Modal.jsx'
 import SoloSessionAction from './solo/SoloSessionAction.jsx'
 
 import { getTags } from './Tag.graphql'
@@ -51,6 +35,16 @@ import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
 import { useArticleActions } from '../hooks/article.js'
 import { useModal } from '../hooks/modal.js'
+
+import CollaborativeSessionAction from './collaborative/CollaborativeSessionAction.jsx'
+import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
+import ArticleTags from './ArticleTags.jsx'
+import ArticleVersionLinks from './ArticleVersionLinks.jsx'
+import Export from './Export.jsx'
+
+import styles from './article.module.scss'
+import fieldStyles from './field.module.scss'
+import buttonStyles from './button.module.scss'
 
 export default function Article({
   article,
@@ -105,20 +99,15 @@ export default function Article({
   const tags = articleTagsQueryData?.article?.tags || []
   const { t } = useTranslation()
   const { setToast } = useToasts()
-  const {
-    visible: deleteArticleVisible,
-    setVisible: setDeleteArticleVisible,
-    bindings: deleteArticleModalBinding,
-  } = useGeistModal()
 
   const exportModal = useModal()
+  const sharingModal = useModal()
+  const sendCopyModal = useModal()
+  const deleteModal = useModal()
   const [expanded, setExpanded] = useState(false)
   const [renaming, setRenaming] = useState(false)
 
   const [newTitle, setNewTitle] = useState(article.title)
-
-  const [sharing, setSharing] = useState(false)
-  const [sending, setSending] = useState(false)
 
   const isArticleOwner = activeUser._id === article.owner._id
 
@@ -176,14 +165,6 @@ export default function Article({
     }
   }
 
-  const closeSendingModal = useCallback(() => {
-    setSending(false)
-  }, [setSending])
-
-  const closeSharingModal = useCallback(() => {
-    setSharing(false)
-  }, [setSharing])
-
   const handleArticleTagsUpdated = useCallback(
     (event) => {
       onArticleUpdated({
@@ -197,13 +178,12 @@ export default function Article({
   return (
     <article className={styles.article}>
       <Modal
-        ref={exportModal.ref}
+        {...exportModal.bindings}
         title={
           <>
             <Printer /> Export
           </>
         }
-        cancel={() => exportModal.close()}
       >
         <Export
           articleId={article._id}
@@ -213,36 +193,79 @@ export default function Article({
         />
       </Modal>
 
-      <GeistModal width="30rem" visible={sharing} onClose={closeSharingModal}>
-        <h2>{t('article.shareModal.title')}</h2>
-        <span className={styles.sendText}>
-          {t('article.shareModal.description')}
-        </span>
-        <GeistModal.Content>
-          <ArticleContributors article={article} contributors={contributors} />
-        </GeistModal.Content>
-        <GeistModal.Action passive onClick={closeSharingModal}>
-          {t('modal.close.text')}
-        </GeistModal.Action>
-      </GeistModal>
+      <Modal
+        {...sharingModal.bindings}
+        title={
+          <>
+            <UserPlus /> {t('article.shareModal.title')}
+          </>
+        }
+        subtitle={t('article.shareModal.description')}
+      >
+        <ArticleContributors article={article} contributors={contributors} />
+        <footer className={styles.actions}>
+          <Button type="button" onClick={() => sharingModal.close()}>
+            {t('modal.closeButton.text')}
+          </Button>
+        </footer>
+      </Modal>
 
-      <GeistModal width="25rem" visible={sending} onClose={closeSendingModal}>
-        <h2>{t('article.sendCopyModal.title')}</h2>
-        <span>
-          <span className={styles.sendText}>
-            {t('article.sendCopyModal.description')}{' '}
-          </span>
-          <span>
-            <Send className={styles.sendIcon} />
-          </span>
-        </span>
-        <GeistModal.Content>
-          <ArticleSendCopy article={article} cancel={closeSendingModal} />
-        </GeistModal.Content>
-        <GeistModal.Action passive onClick={closeSendingModal}>
-          {t('modal.close.text')}
-        </GeistModal.Action>
-      </GeistModal>
+      <Modal
+        {...sendCopyModal.bindings}
+        title={
+          <>
+            <Send /> {t('article.sendCopyModal.title')}
+          </>
+        }
+        subtitle={
+          <>
+            <span className={styles.sendText}>
+              {t('article.sendCopyModal.description')}
+            </span>
+            <span>
+              <Send className={styles.sendIcon} />
+            </span>
+          </>
+        }
+      >
+        <ArticleSendCopy
+          article={article}
+          cancel={() => sendCopyModal.close()}
+        />
+        <footer className={styles.actions}>
+          <Button type="button" onClick={() => sendCopyModal.close()}>
+            {t('modal.closeButton.text')}
+          </Button>
+        </footer>
+      </Modal>
+
+      <Modal
+        {...deleteModal.bindings}
+        title={
+          <>
+            <Trash /> {t('article.deleteModal.title')}
+          </>
+        }
+      >
+        {t('article.deleteModal.confirmMessage')}
+        {contributors && contributors.length > 0 && (
+          <div className={clsx(styles.note, styles.important)}>
+            {t('article.deleteModal.contributorsRemovalNote')}
+          </div>
+        )}
+        <footer className={styles.actions}>
+          <Button type="button" onClick={() => deleteModal.close()}>
+            {t('modal.cancelButton.text')}
+          </Button>
+          <Button
+            type="button"
+            onClick={() => handleDeleteArticle()}
+            primary={true}
+          >
+            {t('modal.deleteButton.text')}
+          </Button>
+        </footer>
+      </Modal>
 
       {!renaming && (
         <h1 className={styles.title} onClick={toggleExpansion}>
@@ -301,38 +324,11 @@ export default function Article({
           <Button
             title={t('article.delete.button')}
             icon={true}
-            onClick={() => setDeleteArticleVisible(true)}
+            onClick={() => deleteModal.show()}
           >
             <Trash />
           </Button>
         )}
-
-        <GeistModal
-          visible={deleteArticleVisible}
-          {...deleteArticleModalBinding}
-        >
-          <h2>{t('article.deleteModal.title')}</h2>
-          <GeistModal.Content>
-            {t('article.deleteModal.confirmMessage')}
-            {contributors && contributors.length > 0 && (
-              <>
-                <Spacer h={1} />
-                <Note label="Important" type="error">
-                  {t('article.deleteModal.contributorsRemovalNote')}
-                </Note>
-              </>
-            )}
-          </GeistModal.Content>
-          <GeistModal.Action
-            passive
-            onClick={() => setDeleteArticleVisible(false)}
-          >
-            {t('modal.cancelButton.text')}
-          </GeistModal.Action>
-          <GeistModal.Action onClick={handleDeleteArticle}>
-            {t('modal.confirmButton.text')}
-          </GeistModal.Action>
-        </GeistModal>
 
         <Button
           title={t('article.duplicate.button')}
@@ -346,7 +342,7 @@ export default function Article({
           <Button
             title={t('article.sendCopy.button')}
             icon={true}
-            onClick={() => setSending(true)}
+            onClick={() => sendCopyModal.show()}
           >
             <Send />
           </Button>
@@ -356,7 +352,7 @@ export default function Article({
           <Button
             title={t('article.share.button')}
             icon={true}
-            onClick={() => setSharing(true)}
+            onClick={() => sharingModal.show()}
           >
             <UserPlus />
           </Button>

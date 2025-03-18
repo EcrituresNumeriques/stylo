@@ -1,32 +1,27 @@
-import React, { useCallback, useMemo } from 'react'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { useTranslation } from 'react-i18next'
 import clsx from 'clsx'
+import React, { useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import slugify from 'slugify'
-import useStyloExport from '../hooks/stylo-export.js'
 import { applicationConfig } from '../config.js'
+import useStyloExport from '../hooks/stylo-export.js'
+import Button from './Button.jsx'
 
 import Select from './Select'
 import Combobox from './SelectCombobox.jsx'
 import Loading from './molecules/Loading.jsx'
-import styles from './export.module.scss'
 import buttonStyles from './button.module.scss'
+import styles from './export.module.scss'
 import formStyles from './form.module.scss'
-import Button from './Button.jsx'
-import { X } from 'react-feather'
 
 /**
- * @typedef {object} ExportProps
- * @property {string?} bookId
- * @property {string?} articleVersionId
- * @property {string?} articleId
- * @property {string} bib
- * @property {string} name
- */
-
-/**
- *
- * @param {ExportProps} props
+ * @param {object} props
+ * @param {string?} props.bookId
+ * @param {string?} props.articleVersionId
+ * @param {string?} props.articleId
+ * @param {string} props.bib
+ * @param {string} props.name
+ * @param {() => {}} props.onCancel
  * @returns {React.ReactElement}
  */
 export default function Export(props) {

@@ -20,8 +20,6 @@ import buttonStyles from '../button.module.scss'
 import { useGraphQLClient } from '../../helpers/graphQL'
 import { renameVersion } from './Write.graphql'
 
-import Modal from '../Modal'
-import Export from '../Export'
 import Button from '../Button'
 import Field from '../Field'
 import CreateVersion from './CreateVersion'
@@ -324,7 +322,6 @@ export default function Versions({
   )
   const expand = useSelector((state) => state.articlePreferences.expandVersions)
   const dispatch = useDispatch()
-  const [exportParams, setExportParams] = useState({})
   const [expandCreateForm, setExpandCreateForm] = useState(false)
 
   const toggleExpand = useCallback(
@@ -342,7 +339,6 @@ export default function Versions({
     })
     setExpandCreateForm(true)
   }, [])
-  const cancelExport = useCallback(() => setExportParams({}), [])
   const { t } = useTranslation()
 
   return (
@@ -376,11 +372,6 @@ export default function Versions({
           </Link>
         )}
       </h1>
-      {exportParams.articleId && (
-        <Modal title="Export" cancel={cancelExport}>
-          <Export {...exportParams} />
-        </Modal>
-      )}
       {expand && (
         <>
           {expandCreateForm && (
