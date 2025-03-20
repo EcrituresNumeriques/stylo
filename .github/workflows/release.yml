@@ -33,10 +33,11 @@ jobs:
 
           git commit -a -m "Release $RELEASE_VERSION"
           git tag "v$RELEASE_VERSION"
-          git push origin master
+          git push origin "$BRANCH_NAME"
           git push origin "v$RELEASE_VERSION"
         env:
           RELEASE_VERSION: ${{ inputs.version }}
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
 
   call-build-deploy-docker:
     uses: EcrituresNumeriques/stylo/.github/workflows/docker.yml@master
