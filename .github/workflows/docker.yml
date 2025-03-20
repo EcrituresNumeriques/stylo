@@ -84,6 +84,6 @@ jobs:
       - name: Login to GitHub Container Registry ghcr.io
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - if: ${{ github.ref_type == 'tag' || github.ref_name == 'master' || github.ref_name == 'main' }}
-        name: Push images (on tag, or default branch)
+      - if: ${{ github.ref_type == 'tag' || github.ref_name == 'master' || github.ref_name == 'main' || endsWith(github.ref_name, '.x') }}
+        name: Push images (on tag, default or maintenance branch)
         run: docker buildx bake -f docker-compose.yaml --push ${{ matrix.app }}
