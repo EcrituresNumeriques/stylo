@@ -6,11 +6,10 @@ import { useSelector } from 'react-redux'
 import { useGraphQLClient } from '../helpers/graphQL'
 import { createArticle } from './Articles.graphql'
 import Field from './Field.jsx'
+import FormActions from './molecules/FormActions.jsx'
 import { getTags } from './Tag.graphql'
-import Button from './Button.jsx'
 import Checkbox from './Checkbox.jsx'
 
-import styles from './articleCreate.module.scss'
 import formStyles from './field.module.scss'
 import checkboxStyles from './Checkbox.module.scss'
 import { fromFormData } from '../helpers/forms.js'
@@ -22,10 +21,17 @@ import { fromFormData } from '../helpers/forms.js'
  */
 
 /**
- * @param {ArticleCreateProps} props
+ * @param props
+ * @param {function} props.onSubmit
+ * @param {function} props.onCancel
+ * @param {string|null} props.workspaceId
  * @returns {React.ReactHTMLElement}
  */
-export default function ArticleCreate({ onSubmit, workspaceId = null }) {
+export default function ArticleCreate({
+  onSubmit,
+  onCancel,
+  workspaceId = null,
+}) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
 
@@ -51,8 +57,8 @@ export default function ArticleCreate({ onSubmit, workspaceId = null }) {
   }, [])
 
   const handleSubmit = useCallback(async (event) => {
+    event.preventDefault()
     try {
-      event.preventDefault()
       const createArticleInput = fromFormData(event.target)
       const { createArticle: createdArticle } = await query({
         query: createArticle,
@@ -122,13 +128,13 @@ export default function ArticleCreate({ onSubmit, workspaceId = null }) {
             </ul>
           </div>
         )}
-        <ul className={styles.actions}>
-          <li>
-            <Button primary className={styles.button}>
-              {t('article.createForm.buttonText')}
-            </Button>
-          </li>
-        </ul>
+        <FormActions
+          onCancel={onCancel}
+          submitButton={{
+            text: t('article.createForm.buttonText'),
+            title: t('article.createForm.buttonText'),
+          }}
+        />
       </form>
     </section>
   )

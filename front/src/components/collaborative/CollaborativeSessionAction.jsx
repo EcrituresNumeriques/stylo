@@ -1,14 +1,24 @@
+import { Badge } from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo } from 'react'
-import PropTypes from 'prop-types'
-import { Badge, Modal as GeistModal, useModal } from '@geist-ui/core'
 import { Users } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 
-import { startCollaborativeSession } from '../Article.graphql'
-import Button from '../Button.jsx'
 import { useGraphQLClient } from '../../helpers/graphQL.js'
+import { useModal } from '../../hooks/modal.js'
 
+import { startCollaborativeSession } from '../Article.graphql'
+
+import Button from '../Button.jsx'
+import Modal from '../Modal.jsx'
+import FormActions from '../molecules/FormActions.jsx'
+
+/**
+ * @param props
+ * @param {{id: string}} props.collaborativeSession
+ * @param {string} props.articleId
+ * @return {Element}
+ */
 export default function CollaborativeSessionAction({
   collaborativeSession,
   articleId,
@@ -16,11 +26,7 @@ export default function CollaborativeSessionAction({
   const { t } = useTranslation()
   const history = useHistory()
   const { query } = useGraphQLClient()
-  const {
-    visible: collaborativeEditingVisible,
-    setVisible: setCollaborativeEditingVisible,
-    bindings: collaborativeEditingBinding,
-  } = useModal()
+  const collaborativeEditingModal = useModal()
 
   const handleStartCollaborativeEditing = useCallback(async () => {
     // try to start a collaborative editing
@@ -55,12 +61,6 @@ export default function CollaborativeSessionAction({
     [collaborativeSession]
   )
 
-  useEffect(() => {
-    return () => {
-      setCollaborativeEditingVisible(false)
-    }
-  }, [])
-
   return (
     <>
       <Button
@@ -68,39 +68,29 @@ export default function CollaborativeSessionAction({
           'collaborativeSessionAction.launchCollaborativeSessionButton.title'
         )}
         icon={true}
-        onClick={() => setCollaborativeEditingVisible(true)}
+        onClick={() => collaborativeEditingModal.show()}
       >
         <Users />
         {collaborativeSession && collaborativeSession.id && (
           <Badge type="error">Live</Badge>
         )}
       </Button>
-      <GeistModal
-        width="35rem"
-        visible={collaborativeEditingVisible}
-        {...collaborativeEditingBinding}
+      <Modal
+        {...collaborativeEditingModal.bindings}
+        title={
+          <>
+            <Users /> {collaborativeSessionDialogTitle}
+          </>
+        }
       >
-        <h2>{collaborativeSessionDialogTitle}</h2>
-        <GeistModal.Content>
+        <p style={{ textAlign: 'start' }}>
           {collaborativeSessionDialogMessage}
-        </GeistModal.Content>
-        <GeistModal.Action
-          passive
-          onClick={() => setCollaborativeEditingVisible(false)}
-        >
-          {t('modal.cancelButton.text')}
-        </GeistModal.Action>
-        <GeistModal.Action onClick={handleStartCollaborativeEditing}>
-          {t('modal.confirmButton.text')}
-        </GeistModal.Action>
-      </GeistModal>
+        </p>
+        <FormActions
+          onCancel={() => collaborativeEditingModal.close()}
+          onSubmit={handleStartCollaborativeEditing}
+        />
+      </Modal>
     </>
   )
-}
-
-CollaborativeSessionAction.propTypes = {
-  articleId: PropTypes.string.isRequired,
-  collaborativeSession: PropTypes.shape({
-    id: PropTypes.string,
-  }),
 }

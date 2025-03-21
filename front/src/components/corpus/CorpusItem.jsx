@@ -1,6 +1,5 @@
-import { Modal as GeistModal, useModal, useToasts } from '@geist-ui/core'
+import { useToasts } from '@geist-ui/core'
 import React, { useCallback, useMemo, useState } from 'react'
-import PropTypes from 'prop-types'
 import {
   ChevronDown,
   ChevronRight,
@@ -12,37 +11,53 @@ import {
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useCorpusActions } from '../../hooks/corpus.js'
+import { useModal } from '../../hooks/modal.js'
 import Button from '../Button.jsx'
 import buttonStyles from '../button.module.scss'
 import Export from '../Export.jsx'
+import Modal from '../Modal.jsx'
+import FormActions from '../molecules/FormActions.jsx'
 import TimeAgo from '../TimeAgo.jsx'
 
 import CorpusArticles from './CorpusArticles.jsx'
-import CorpusUpdate from './CorpusUpdate.jsx'
 
 import styles from './corpusItem.module.scss'
 import CorpusMetadataModal from './CorpusMetadataModal.jsx'
+import CorpusUpdate from './CorpusUpdate.jsx'
 
+/**
+ * @typedef Article
+ * @type {object}
+ * @property {string} _id
+ * @property {string} title
+ */
+
+/**
+ * @typedef Corpus
+ * @type {object}
+ * @property {string} _id
+ * @property {string} name
+ * @property {string} description
+ * @property {any} metadata
+ * @property {object} creator
+ * @property {string} creator.displayName
+ * @property {string} creator.username
+ * @property {Article[]} articles
+ * @property {string} updatedAt
+ * @property {string} createdAt
+ */
+
+/**
+ * @param {Corpus} corpus
+ * @return {Element}
+ */
 export default function CorpusItem({ corpus }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
-  const {
-    visible: deleteCorpusVisible,
-    setVisible: setDeleteCorpusVisible,
-    bindings: deleteCorpusModalBinding,
-  } = useModal()
 
-  const {
-    visible: exportCorpusVisible,
-    setVisible: setExportCorpusVisible,
-    bindings: exportCorpusBindings,
-  } = useModal()
-
-  const {
-    visible: editCorpusVisible,
-    setVisible: setEditCorpusVisible,
-    bindings: editCorpusBindings,
-  } = useModal()
+  const deleteCorpusModal = useModal()
+  const exportCorpusModal = useModal()
+  const editCorpusModal = useModal()
 
   const { deleteCorpus } = useCorpusActions()
   const corpusId = useMemo(() => corpus._id, [corpus])
@@ -98,7 +113,7 @@ export default function CorpusItem({ corpus }) {
           <Button
             title={t('corpus.edit.buttonTitle')}
             icon={true}
-            onClick={() => setEditCorpusVisible(true)}
+            onClick={() => editCorpusModal.show()}
           >
             <Settings />
           </Button>
@@ -113,7 +128,7 @@ export default function CorpusItem({ corpus }) {
             icon={true}
             onClick={(event) => {
               event.preventDefault()
-              setDeleteCorpusVisible(true)
+              deleteCorpusModal.show()
             }}
           >
             <Trash />
@@ -121,7 +136,7 @@ export default function CorpusItem({ corpus }) {
           <Button
             title={t('corpus.export.buttonTitle')}
             icon={true}
-            onClick={() => setExportCorpusVisible(true)}
+            onClick={() => exportCorpusModal.show()}
           >
             <Printer />
           </Button>
@@ -143,72 +158,50 @@ export default function CorpusItem({ corpus }) {
         </div>
       )}
 
-      <GeistModal visible={deleteCorpusVisible} {...deleteCorpusModalBinding}>
-        <h2>{t('corpus.deleteModal.title')}</h2>
-        <GeistModal.Content>
-          {t('corpus.deleteModal.confirmMessage')}
-        </GeistModal.Content>
-        <GeistModal.Action
-          passive
-          onClick={() => setDeleteCorpusVisible(false)}
-        >
-          {t('modal.cancelButton.text')}
-        </GeistModal.Action>
-        <GeistModal.Action onClick={handleDeleteCorpus}>
-          {t('modal.confirmButton.text')}
-        </GeistModal.Action>
-      </GeistModal>
-
-      <GeistModal visible={exportCorpusVisible} {...exportCorpusBindings}>
-        <h2>{t('corpus.exportModal.title')}</h2>
-        <GeistModal.Content>
-          <Export bookId={corpusId} name={corpus.name} />
-        </GeistModal.Content>
-        <GeistModal.Action
-          passive
-          onClick={() => setExportCorpusVisible(false)}
-        >
-          {t('modal.cancelButton.text')}
-        </GeistModal.Action>
-      </GeistModal>
-
-      <GeistModal
-        width="40rem"
-        visible={editCorpusVisible}
-        {...editCorpusBindings}
+      <Modal
+        {...deleteCorpusModal.bindings}
+        title={
+          <>
+            <Trash /> {t('corpus.deleteModal.title')}
+          </>
+        }
       >
-        <h2>{t('corpus.editModal.title')}</h2>
-        <GeistModal.Content>
-          <CorpusUpdate
-            corpus={corpus}
-            onSubmit={() => setEditCorpusVisible(false)}
-          />
-        </GeistModal.Content>
-        <GeistModal.Action passive onClick={() => setEditCorpusVisible(false)}>
-          {t('modal.cancelButton.text')}
-        </GeistModal.Action>
-      </GeistModal>
+        <p>{t('corpus.deleteModal.confirmMessage')}</p>
+        <FormActions
+          onCancel={() => deleteCorpusModal.close()}
+          onSubmit={handleDeleteCorpus}
+        />
+      </Modal>
+
+      <Modal
+        {...exportCorpusModal.bindings}
+        title={
+          <>
+            <Printer /> {t('corpus.exportModal.title')}
+          </>
+        }
+      >
+        <Export
+          bookId={corpusId}
+          name={corpus.name}
+          onCancel={() => exportCorpusModal.close()}
+        />
+      </Modal>
+
+      <Modal
+        {...editCorpusModal.bindings}
+        title={
+          <>
+            <Settings /> {t('corpus.editModal.title')}
+          </>
+        }
+      >
+        <CorpusUpdate
+          corpus={corpus}
+          onSubmit={() => editCorpusModal.close()}
+          onCancel={() => editCorpusModal.close()}
+        />
+      </Modal>
     </div>
   )
-}
-
-CorpusItem.propTypes = {
-  corpus: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string,
-    description: PropTypes.string,
-    metadata: PropTypes.object,
-    creator: PropTypes.shape({
-      displayName: PropTypes.string,
-      username: PropTypes.string,
-    }),
-    articles: PropTypes.arrayOf(
-      PropTypes.shape({
-        _id: PropTypes.string,
-        title: PropTypes.string,
-      })
-    ),
-    updatedAt: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
-  }),
 }

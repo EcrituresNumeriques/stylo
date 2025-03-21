@@ -1,8 +1,8 @@
-import { Loading } from '@geist-ui/core'
 import React, { useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import useFetchData from '../../hooks/graphql.js'
 import ArticleStats from '../ArticleStats.jsx'
+import Loading from '../molecules/Loading.jsx'
 
 import { getCollaborativeSession } from './CollaborativeSession.graphql'
 

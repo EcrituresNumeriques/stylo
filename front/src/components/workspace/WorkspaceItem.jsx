@@ -1,13 +1,16 @@
 import React from 'react'
 import { Slash, Users } from 'react-feather'
-import { Button, useModal } from '@geist-ui/core'
 import { useTranslation } from 'react-i18next'
+
+import { useModal } from '../../hooks/modal.js'
+import Button from '../Button.jsx'
+import Field from '../Field.jsx'
+
 import TimeAgo from '../TimeAgo.jsx'
 import LeaveWorkspaceModal from './LeaveWorkspaceModal.jsx'
 
 import styles from './workspaceItem.module.scss'
 import WorkspaceManageMembersModal from './WorkspaceManageMembersModal.jsx'
-import Field from '../Field.jsx'
 
 /**
  * @typedef {Object} WorkspaceItemProps
@@ -42,7 +45,7 @@ export default function WorkspaceItem({ workspace }) {
           className={styles.chip}
           style={{ backgroundColor: workspace.color }}
         ></span>
-        <span className={styles.name}>{workspace.name}</span>
+        <span>{workspace.name}</span>
       </h5>
     </>
   )
@@ -107,26 +110,16 @@ export default function WorkspaceItem({ workspace }) {
           </div>
           <aside className={styles.actionButtons}>
             <Button
-              className={styles.button}
-              auto
-              scale={0.8}
-              icon={<Users />}
               title={t('workspace.manageMember.title')}
-              onClick={() => workspaceManageMembersModal.setVisible(true)}
+              onClick={() => workspaceManageMembersModal.show()}
             >
-              {t('workspace.manageMember.button')}
+              <Users /> {t('workspace.manageMember.button')}
             </Button>
             <Button
-              type="error-light"
-              className={styles.button}
-              ghost
-              auto
-              scale={0.5}
-              icon={<Slash />}
               title={t('workspace.leave.title')}
-              onClick={() => workspaceLeaveModal.setVisible(true)}
+              onClick={() => workspaceLeaveModal.show()}
             >
-              {t('workspace.leave.button')}
+              <Slash /> {t('workspace.leave.button')}
             </Button>
           </aside>
 

@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo } from 'react'
+import React, { forwardRef } from 'react'
 import { X } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import Button from './Button'

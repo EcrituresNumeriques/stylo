@@ -113,7 +113,7 @@ export function useWorkspaceActions() {
   const { mutate } = useMutateData({ query: getWorkspaces })
   const sessionToken = useSelector((state) => state.sessionToken)
   const addWorkspace = async (workspace) => {
-    await executeQuery({
+    const result = await executeQuery({
       sessionToken,
       query: createMutation,
       variables: {
@@ -124,9 +124,12 @@ export function useWorkspaceActions() {
         },
       },
     })
-    await mutate(async (data) => ({
-      workspaces: [workspace, ...data.workspaces],
-    }))
+    await mutate(
+      async (data) => ({
+        workspaces: [result.createWorkspace, ...data.workspaces],
+      }),
+      { revalidate: false }
+    )
   }
 
   const leaveWorkspace = async (workspaceId) => {

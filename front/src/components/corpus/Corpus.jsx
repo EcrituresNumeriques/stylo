@@ -1,10 +1,12 @@
-import { Button, Modal as GeistModal, useModal } from '@geist-ui/core'
-import React, { useCallback } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 
 import { useCorpus } from '../../hooks/corpus.js'
+import { useModal } from '../../hooks/modal.js'
 import { useActiveWorkspace } from '../../hooks/workspace.js'
+import Button from '../Button.jsx'
+import Modal from '../Modal.jsx'
 import styles from './corpus.module.scss'
 import CorpusCreate from './CorpusCreate.jsx'
 
@@ -17,15 +19,7 @@ export default function Corpus() {
   const { t } = useTranslation()
   const { corpus, isLoading } = useCorpus()
   const activeWorkspace = useActiveWorkspace()
-  const {
-    visible: createCorpusVisible,
-    setVisible: setCreateCorpusVisible,
-    bindings: createCorpusModalBinding,
-  } = useModal()
-
-  const handleCreateNewCorpus = useCallback(() => {
-    setCreateCorpusVisible(false)
-  }, [])
+  const createCorpusModal = useModal()
 
   return (
     <section className={styles.section}>
@@ -48,30 +42,19 @@ export default function Corpus() {
       </header>
       <p className={styles.introduction}>{t('corpus.page.description')}</p>
 
-      <Button
-        type="secondary"
-        className={styles.button}
-        onClick={() => setCreateCorpusVisible(true)}
-      >
+      <Button primary onClick={() => createCorpusModal.show()}>
         {t('corpus.createAction.buttonText')}
       </Button>
 
-      <GeistModal
-        width="40rem"
-        visible={createCorpusVisible}
-        {...createCorpusModalBinding}
+      <Modal
+        {...createCorpusModal.bindings}
+        title={t('corpus.createModal.title')}
       >
-        <h2>{t('corpus.createModal.title')}</h2>
-        <GeistModal.Content>
-          <CorpusCreate onSubmit={() => setCreateCorpusVisible(false)} />
-        </GeistModal.Content>
-        <GeistModal.Action
-          passive
-          onClick={() => setCreateCorpusVisible(false)}
-        >
-          {t('modal.close.text')}
-        </GeistModal.Action>
-      </GeistModal>
+        <CorpusCreate
+          onSubmit={() => createCorpusModal.close()}
+          onCancel={() => createCorpusModal.close()}
+        />
+      </Modal>
 
       {isLoading ? (
         <Loading />

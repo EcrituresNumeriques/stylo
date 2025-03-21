@@ -1,40 +1,37 @@
-import {
-  Code,
-  Modal as GeistModal,
-  Text,
-  useModal,
-  useToasts,
-} from '@geist-ui/core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Switch, Route, useRouteMatch } from 'react-router-dom'
-import { batch, shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import throttle from 'lodash.throttle'
+import { Code, Text, useToasts } from '@geist-ui/core'
+import clsx from 'clsx'
 import debounce from 'lodash.debounce'
+import throttle from 'lodash.throttle'
+import { Helmet } from 'react-helmet'
+import { useTranslation } from 'react-i18next'
+import { batch, shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom'
+
 import { applicationConfig } from '../../config.js'
+import { useGraphQLClient } from '../../helpers/graphQL'
+import { useModal } from '../../hooks/modal.js'
+import { useActiveUserId } from '../../hooks/user'
+
 import ArticleStats from '../ArticleStats.jsx'
 import ErrorMessageCard from '../ErrorMessageCard.jsx'
+import Modal from '../Modal.jsx'
+import FormActions from '../molecules/FormActions.jsx'
+import Loading from '../molecules/Loading.jsx'
+import ArticleEditorMenu from './ArticleEditorMenu.jsx'
+import ArticleEditorMetadata from './ArticleEditorMetadata.jsx'
 
-import styles from './write.module.scss'
+import PreviewHtml from './PreviewHtml'
+import PreviewPaged from './PreviewPaged'
+import MonacoEditor from './providers/monaco/Editor'
+import WorkingVersion from './WorkingVersion'
 
-import { useActiveUserId } from '../../hooks/user'
-import { useGraphQLClient } from '../../helpers/graphQL'
 import {
   getEditableArticle as getEditableArticleQuery,
   stopSoloSession,
 } from './Write.graphql'
 
-import ArticleEditorMenu from './ArticleEditorMenu.jsx'
-import ArticleEditorMetadata from './ArticleEditorMetadata.jsx'
-import WorkingVersion from './WorkingVersion'
-import PreviewHtml from './PreviewHtml'
-import PreviewPaged from './PreviewPaged'
-import Loading from '../molecules/Loading.jsx'
-import MonacoEditor from './providers/monaco/Editor'
-import clsx from 'clsx'
-import { Helmet } from 'react-helmet'
+import styles from './write.module.scss'
 
 const MODES_PREVIEW = 'preview'
 const MODES_READONLY = 'readonly'
@@ -50,6 +47,9 @@ export function deriveModeFrom({ path, currentVersion }) {
   return MODES_WRITE
 }
 
+/**
+ * @return {Element}
+ */
 export default function Write() {
   const { setToast } = useToasts()
   const { backendEndpoint } = applicationConfig
@@ -89,23 +89,9 @@ export default function Write() {
     preview: {},
   })
 
-  const {
-    visible: collaborativeSessionActiveVisible,
-    setVisible: setCollaborativeSessionActiveVisible,
-    bindings: collaborativeSessionActiveBinding,
-  } = useModal()
-
-  const {
-    visible: soloSessionActiveVisible,
-    setVisible: setSoloSessionActiveVisible,
-    bindings: soloSessionActiveBinding,
-  } = useModal()
-
-  const {
-    visible: soloSessionTakeOverModalVisible,
-    setVisible: setSoloSessionTakeOverModalVisible,
-    bindings: soloSessionTakeOverModalBinding,
-  } = useModal()
+  const collaborativeSessionActiveModal = useModal()
+  const soloSessionActiveModal = useModal()
+  const soloSessionTakeOverModal = useModal()
 
   const PreviewComponent = useMemo(
     () => (articleInfos.preview.stylesheet ? PreviewPaged : PreviewHtml),
@@ -189,10 +175,10 @@ export default function Write() {
                 articleStateUpdated.soloSession.creatorUsername
               )
               setSoloSessionActive(true)
-              setSoloSessionTakeOverModalVisible(true)
+              soloSessionTakeOverModal.show()
             }
           } else if (articleStateUpdated.collaborativeSession) {
-            setCollaborativeSessionActiveVisible(true)
+            collaborativeSessionActiveModal.show()
             setCollaborativeSessionActive(true)
           }
         }
@@ -209,7 +195,7 @@ export default function Write() {
       workingArticle.stateMessage ===
         'Active collaborative session, cannot update the working copy.'
     ) {
-      setCollaborativeSessionActiveVisible(true)
+      collaborativeSessionActiveModal.show()
       setCollaborativeSessionActive(true)
     }
   }, [workingArticle])
@@ -238,17 +224,19 @@ export default function Write() {
         if (data.article.soloSession && data.article.soloSession.id) {
           if (userId !== data.article.soloSession.creator._id) {
             setSoloSessionActive(true)
-            setSoloSessionActiveVisible(true)
+            soloSessionActiveModal.show()
           }
         }
         setCollaborativeSessionActive(
           data.article.collaborativeSession &&
             data.article.collaborativeSession.id
         )
-        setCollaborativeSessionActiveVisible(
+        const collaborativeSessionActiveModalVisible =
           data.article.collaborativeSession &&
-            data.article.collaborativeSession.id
-        )
+          data.article.collaborativeSession.id
+        if (collaborativeSessionActiveModalVisible) {
+          collaborativeSessionActiveModal.show()
+        }
         const article = data.article
         let currentArticle
         if (currentVersion) {
@@ -357,53 +345,52 @@ export default function Write() {
       <Helmet>
         <title>{t('article.page.title', { title: articleInfos.title })}</title>
       </Helmet>
-      <GeistModal
-        width="40rem"
-        visible={collaborativeSessionActiveVisible}
-        {...collaborativeSessionActiveBinding}
+      <Modal
+        {...collaborativeSessionActiveModal.bindings}
+        title={t('article.collaborativeSessionActive.title')}
       >
-        <h2>{t('article.collaborativeSessionActive.title')}</h2>
-        <GeistModal.Content>
-          {t('article.collaborativeSessionActive.message')}
-        </GeistModal.Content>
-        <GeistModal.Action
-          onClick={() => setCollaborativeSessionActiveVisible(false)}
-        >
-          {t('modal.confirmButton.text')}
-        </GeistModal.Action>
-      </GeistModal>
+        {t('article.collaborativeSessionActive.message')}
+        <FormActions
+          onCancel={() => collaborativeSessionActiveModal.close()}
+          onSubmit={() => collaborativeSessionActiveModal.close()}
+          submitButton={{
+            text: t('modal.confirmButton.text'),
+            title: t('modal.confirmButton.text'),
+          }}
+        />
+      </Modal>
 
-      <GeistModal
-        width="40rem"
-        visible={soloSessionActiveVisible}
-        {...soloSessionActiveBinding}
+      <Modal
+        {...soloSessionActiveModal.bindings}
+        title={t('article.soloSessionActive.title')}
       >
-        <h2>{t('article.soloSessionActive.title')}</h2>
-        <GeistModal.Content>
-          {t('article.soloSessionActive.message')}
-        </GeistModal.Content>
-        <GeistModal.Action onClick={() => setSoloSessionActiveVisible(false)}>
-          {t('modal.confirmButton.text')}
-        </GeistModal.Action>
-      </GeistModal>
+        {t('article.soloSessionActive.message')}
+        <FormActions
+          onCancel={() => soloSessionActiveModal.close()}
+          onSubmit={() => soloSessionActiveModal.close()}
+          submitButton={{
+            text: t('modal.confirmButton.text'),
+            title: t('modal.confirmButton.text'),
+          }}
+        />
+      </Modal>
 
-      <GeistModal
-        width="40rem"
-        visible={soloSessionTakeOverModalVisible}
-        {...soloSessionTakeOverModalBinding}
+      <Modal
+        {...soloSessionTakeOverModal.bindings}
+        title={t('article.soloSessionTakeOver.title')}
       >
-        <h2>{t('article.soloSessionTakeOver.title')}</h2>
-        <GeistModal.Content>
-          {t('article.soloSessionTakeOver.message', {
-            username: soloSessionTakenOverBy,
-          })}
-        </GeistModal.Content>
-        <GeistModal.Action
-          onClick={() => setSoloSessionTakeOverModalVisible(false)}
-        >
-          {t('modal.confirmButton.text')}
-        </GeistModal.Action>
-      </GeistModal>
+        {t('article.soloSessionTakeOver.message', {
+          username: soloSessionTakenOverBy,
+        })}
+        <FormActions
+          onCancel={() => soloSessionTakeOverModal.close()}
+          onSubmit={() => soloSessionTakeOverModal.close()}
+          submitButton={{
+            text: t('modal.confirmButton.text'),
+            title: t('modal.confirmButton.text'),
+          }}
+        />
+      </Modal>
 
       <ArticleEditorMenu
         articleInfos={articleInfos}
@@ -448,10 +435,4 @@ export default function Write() {
       />
     </section>
   )
-}
-
-Write.propTypes = {
-  version: PropTypes.string,
-  id: PropTypes.string,
-  compareTo: PropTypes.string,
 }

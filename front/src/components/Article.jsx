@@ -15,36 +15,37 @@ import {
   UserPlus,
 } from 'react-feather'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { useArticleActions } from '../hooks/article.js'
+
+import useFetchData from '../hooks/graphql'
+import { useModal } from '../hooks/modal.js'
 
 import { useActiveWorkspace } from '../hooks/workspace.js'
 
-import { getArticleTags, getArticleContributors } from './Article.graphql'
-import Button from './Button.jsx'
-import Field from './Field.jsx'
-import Modal from './Modal.jsx'
-import SoloSessionAction from './solo/SoloSessionAction.jsx'
+import { getArticleContributors, getArticleTags } from './Article.graphql'
 
-import { getTags } from './Tag.graphql'
-
-import useFetchData from '../hooks/graphql'
-import TimeAgo from './TimeAgo.jsx'
-import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
-import { useSelector } from 'react-redux'
+import styles from './article.module.scss'
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
-import { useArticleActions } from '../hooks/article.js'
-import { useModal } from '../hooks/modal.js'
+import ArticleTags from './ArticleTags.jsx'
+import ArticleVersionLinks from './ArticleVersionLinks.jsx'
+import Button from './Button.jsx'
+import buttonStyles from './button.module.scss'
 
 import CollaborativeSessionAction from './collaborative/CollaborativeSessionAction.jsx'
 import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
-import ArticleTags from './ArticleTags.jsx'
-import ArticleVersionLinks from './ArticleVersionLinks.jsx'
 import Export from './Export.jsx'
-
-import styles from './article.module.scss'
+import Field from './Field.jsx'
 import fieldStyles from './field.module.scss'
-import buttonStyles from './button.module.scss'
+import Modal from './Modal.jsx'
+import FormActions from './molecules/FormActions.jsx'
+import SoloSessionAction from './solo/SoloSessionAction.jsx'
+
+import { getTags } from './Tag.graphql'
+import TimeAgo from './TimeAgo.jsx'
+import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
 
 export default function Article({
   article,
@@ -187,7 +188,7 @@ export default function Article({
       >
         <Export
           articleId={article._id}
-          bib={article.workingVersion.bibPreview}
+          bib={article.workingVersion?.bibPreview}
           name={article.title}
           onCancel={() => exportModal.close()}
         />
@@ -253,18 +254,14 @@ export default function Article({
             {t('article.deleteModal.contributorsRemovalNote')}
           </div>
         )}
-        <footer className={styles.actions}>
-          <Button type="button" onClick={() => deleteModal.close()}>
-            {t('modal.cancelButton.text')}
-          </Button>
-          <Button
-            type="button"
-            onClick={() => handleDeleteArticle()}
-            primary={true}
-          >
-            {t('modal.deleteButton.text')}
-          </Button>
-        </footer>
+        <FormActions
+          onSubmit={handleDeleteArticle}
+          onCancel={() => deleteModal.close()}
+          submitButton={{
+            text: t('modal.deleteButton.text'),
+            title: t('modal.deleteButton.text'),
+          }}
+        />
       </Modal>
 
       {!renaming && (

@@ -1,18 +1,24 @@
 import { useToasts } from '@geist-ui/core'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-
-import Button from '../Button.jsx'
 import { randomColor } from '../../helpers/colors.js'
-import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { fromFormData } from '../../helpers/forms.js'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
 import useFetchData from '../../hooks/graphql.js'
+import Field from '../Field.jsx'
+import FormActions from '../molecules/FormActions.jsx'
 import { createTag, getTags, updateTag } from '../Tag.graphql'
 
 import styles from './TagEditForm.module.scss'
-import Field from '../Field.jsx'
 
-export default function TagEditForm({ tag, onSubmit }) {
+/**
+ * @param props
+ * @param {any|null} props.tag
+ * @param {function} props.onSubmit
+ * @param {function} props.onCancel
+ * @return {Element}
+ */
+export default function TagEditForm({ tag, onSubmit, onCancel }) {
   const { setToast } = useToasts()
   const { data, mutate } = useFetchData({ query: getTags, variables: {} })
   const { t } = useTranslation()
@@ -79,15 +85,15 @@ export default function TagEditForm({ tag, onSubmit }) {
           defaultValue={tag?.color ?? randomColor()}
         />
 
-        <ul className={styles.actions}>
-          <li>
-            <Button primary={true} title={t('tag.createForm.buttonTitle')}>
-              {isNew
-                ? t('tag.createForm.buttonText')
-                : t('tag.editForm.buttonText')}
-            </Button>
-          </li>
-        </ul>
+        <FormActions
+          onCancel={onCancel}
+          submitButton={{
+            title: t('tag.createForm.buttonTitle'),
+            text: isNew
+              ? t('tag.createForm.buttonText')
+              : t('tag.editForm.buttonText'),
+          }}
+        />
       </form>
     </section>
   )

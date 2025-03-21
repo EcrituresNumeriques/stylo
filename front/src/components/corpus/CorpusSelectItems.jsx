@@ -1,11 +1,18 @@
-import PropTypes from 'prop-types'
-import { Loading } from '@geist-ui/core'
 import React, { useCallback, useMemo } from 'react'
+
 import useFetchData from '../../hooks/graphql.js'
 import { useActiveWorkspace } from '../../hooks/workspace.js'
-import { getCorpus } from './Corpus.graphql'
+
+import Loading from '../molecules/Loading.jsx'
 import CorpusSelectItem from './CorpusSelectItem.jsx'
 
+import { getCorpus } from './Corpus.graphql'
+
+/**
+ * @param props
+ * @param {string} props.articleId
+ * @return {Element}
+ */
 export default function CorpusSelectItems({ articleId }) {
   const activeWorkspace = useActiveWorkspace()
   const activeWorkspaceId = useMemo(
@@ -55,8 +62,4 @@ export default function CorpusSelectItems({ articleId }) {
           ))}
     </>
   )
-}
-
-CorpusSelectItems.propTypes = {
-  articleId: PropTypes.string,
 }

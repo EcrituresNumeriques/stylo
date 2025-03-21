@@ -1,13 +1,21 @@
-import { Button, Textarea, useInput, useToasts } from '@geist-ui/core'
+import { Textarea, useInput, useToasts } from '@geist-ui/core'
 import React, { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useCorpusActions } from '../../hooks/corpus.js'
 
 import Field from '../Field.jsx'
-import { useCorpusActions } from '../../hooks/corpus.js'
+import FormActions from '../molecules/FormActions.jsx'
 
 import styles from './corpusCreate.module.scss'
 
-export default function CorpusCreate({ onSubmit }) {
+/**
+ * @param props
+ * @param {function} props.onSubmit
+ * @param {function} props.onCancel
+ * @return {Element}
+ * @constructor
+ */
+export default function CorpusCreate({ onSubmit, onCancel }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const { state: title, bindings: titleBindings } = useInput('')
@@ -23,8 +31,8 @@ export default function CorpusCreate({ onSubmit }) {
 
   const handleSubmit = useCallback(
     async (event) => {
+      event.preventDefault()
       try {
-        event.preventDefault()
         await createCorpus({ title, description })
         onSubmit()
         setToast({
@@ -45,6 +53,7 @@ export default function CorpusCreate({ onSubmit }) {
     <section>
       <form onSubmit={handleSubmit} className={styles.form}>
         <Field
+          required={true}
           ref={titleInputRef}
           {...titleBindings}
           label={t('corpus.createForm.titleField')}
@@ -58,18 +67,13 @@ export default function CorpusCreate({ onSubmit }) {
             placeholder={t('corpus.createForm.descriptionPlaceholder')}
           />
         </div>
-        <ul className={styles.actions}>
-          <li>
-            <Button
-              onClick={handleSubmit}
-              className={styles.button}
-              type="secondary"
-              title={t('corpus.createForm.buttonTitle')}
-            >
-              {t('corpus.createForm.buttonText')}
-            </Button>
-          </li>
-        </ul>
+        <FormActions
+          onCancel={onCancel}
+          submitButton={{
+            text: t('corpus.createForm.buttonText'),
+            title: t('corpus.createForm.buttonTitle'),
+          }}
+        />
       </form>
     </section>
   )

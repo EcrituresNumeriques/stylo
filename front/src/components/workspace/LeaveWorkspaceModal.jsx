@@ -1,51 +1,52 @@
-import { Modal as GeistModal, Note, Spacer, Text } from '@geist-ui/core'
 import React, { useCallback } from 'react'
+import { Note, Spacer, Text } from '@geist-ui/core'
+import { Slash, Users } from 'react-feather'
 import { Trans, useTranslation } from 'react-i18next'
+
 import { useWorkspaceActions } from '../../hooks/workspace.js'
-import styles from './workspaceItem.module.scss'
+
+import Modal from '../Modal.jsx'
+import FormActions from '../molecules/FormActions.jsx'
 import WorkspaceLabel from './WorkspaceLabel.jsx'
 
-export default function LeaveWorkspaceModal({
-  visible,
-  setVisible,
-  bindings,
-  workspace,
-}) {
+import styles from './workspaceItem.module.scss'
+
+export default function LeaveWorkspaceModal({ close, bindings, workspace }) {
   const { leaveWorkspace } = useWorkspaceActions()
   const handleLeavingWorkspace = useCallback(async () => {
     await leaveWorkspace(workspace._id)
-    setVisible(false)
+    close()
   }, [workspace._id])
 
   const { t } = useTranslation()
   return (
-    <GeistModal visible={visible} {...bindings}>
+    <Modal
+      {...bindings}
+      title={
+        <>
+          <Slash />
+          {t('workspace.leaveModal.title')}
+        </>
+      }
+    >
       <WorkspaceLabel
         className={styles.workspaceLabel}
         color={workspace.color}
         name={workspace.name}
       />
-      <h2>{t('workspace.leaveModal.title')}</h2>
-      <GeistModal.Content>
-        {t('workspace.leaveModal.confirm')}
-        {workspace.stats.membersCount === 1 && (
-          <>
-            <Spacer h={1} />
-            <Note label="Important" type="error">
-              <Trans i18nKey="workspace.leaveModal.confirmDeletion">
-                Lʼespace de travail sera <Text i>supprimé</Text> car vous êtes
-                la dernière personne appartenant à cet espace.
-              </Trans>
-            </Note>
-          </>
-        )}
-      </GeistModal.Content>
-      <GeistModal.Action passive onClick={() => setVisible(false)}>
-        {t('modal.cancelButton.text')}
-      </GeistModal.Action>
-      <GeistModal.Action onClick={handleLeavingWorkspace}>
-        {t('modal.confirmButton.text')}
-      </GeistModal.Action>
-    </GeistModal>
+      {t('workspace.leaveModal.confirm')}
+      {workspace.stats.membersCount === 1 && (
+        <>
+          <Spacer h={1} />
+          <Note label="Important" type="error">
+            <Trans i18nKey="workspace.leaveModal.confirmDeletion">
+              Lʼespace de travail sera <Text i>supprimé</Text> car vous êtes la
+              dernière personne appartenant à cet espace.
+            </Trans>
+          </Note>
+        </>
+      )}
+      <FormActions onSubmit={handleLeavingWorkspace} onCancel={() => close()} />
+    </Modal>
   )
 }

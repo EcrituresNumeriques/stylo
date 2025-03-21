@@ -1,38 +1,42 @@
-import { Button, useInput } from '@geist-ui/core'
+import { useInput } from '@geist-ui/core'
 import React, { useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
+import { randomColor } from '../../helpers/colors.js'
 import { useWorkspaceActions } from '../../hooks/workspace.js'
 
 import Field from '../Field.jsx'
+import FormActions from '../molecules/FormActions.jsx'
 
 import styles from './createWorkspace.module.scss'
-import { randomColor } from '../../helpers/colors.js'
 
-export default function CreateWorkspace({ onSubmit }) {
+/**
+ * @param {Object} props
+ * @param {Function} props.onSubmit
+ * @param {Function} props.onCancel
+ * @return {JSX.Element}
+ */
+export default function CreateWorkspace({ onSubmit, onCancel }) {
   const { t } = useTranslation()
   const { state: name, bindings: nameBindings } = useInput('')
   const { state: description, bindings: descriptionBindings } = useInput('')
   const { state: color, bindings: colorBindings } = useInput(randomColor())
-  const nameInputRef = useRef()
+  const nameInputRef = useRef(null)
   const currentUser = useSelector((state) => state.activeUser, shallowEqual)
   const { addWorkspace } = useWorkspaceActions()
 
-  const handleSubmit = useCallback(async () => {
-    await addWorkspace({
-      name,
-      color,
-      description,
-      updatedAt: new Date().getTime(),
-      createdAt: new Date().getTime(),
-      stats: {
-        membersCount: 1,
-        articlesCount: 0,
-      },
-      creator: currentUser,
-    })
-    onSubmit()
-  }, [name, color, description])
+  const handleSubmit = useCallback(
+    async (event) => {
+      event.preventDefault()
+      await addWorkspace({
+        name,
+        color,
+        description,
+      })
+      onSubmit()
+    },
+    [name, color, description]
+  )
 
   return (
     <section>
@@ -55,18 +59,13 @@ export default function CreateWorkspace({ onSubmit }) {
           type="color"
           {...colorBindings}
         />
-        <ul className={styles.actions}>
-          <li>
-            <Button
-              type="secondary"
-              className={styles.button}
-              title={t('workspace.createForm.buttonTitle')}
-              onClick={handleSubmit}
-            >
-              {t('workspace.createForm.buttonText')}
-            </Button>
-          </li>
-        </ul>
+        <FormActions
+          onCancel={onCancel}
+          submitButton={{
+            text: t('workspace.createForm.buttonText'),
+            title: t('workspace.createForm.buttonTitle'),
+          }}
+        />
       </form>
     </section>
   )
