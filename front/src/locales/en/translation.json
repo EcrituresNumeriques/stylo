@@ -136,6 +136,7 @@
   "modal.close.text": "Close",
   "modal.close.label": "Close modal",
   "modal.saveButton.text": "Save",
+  "modal.createButton.text": "Create",
   "corpus.page.title": "Corpus list - {{ workspace }}",
   "corpus.page.description": "A corpus is a collection of articles that you can sort and export all at once.",
   "corpus.type.journal": "Journal",
@@ -373,5 +374,8 @@
   "editorMenu.open.label": "Close",
   "editorMenu.close.label": "Menu",
   "export.title": "Export",
-  "annotate.title": "Annotate"
+  "annotate.title": "Annotate",
+  "versions.title": "Versions",
+  "versions.createVersion.title": "Create a new version",
+  "versions.createVersion.button": "New version"
 }

@@ -1,46 +1,43 @@
-import { useToasts } from '@geist-ui/core'
-import PropTypes from 'prop-types'
+import { Toggle, useToasts } from '@geist-ui/core'
 import React, { useCallback, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { ArrowLeft } from 'lucide-react'
-import { createVersion } from '../../services/ArticleService.graphql'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
-import styles from './createVersion.module.scss'
+import { fromFormData } from '../../helpers/forms.js'
+import { useArticleVersionActions } from '../../hooks/article.js'
+
+import FormActions from '../molecules/FormActions.jsx'
+
 import buttonStyles from '../button.module.scss'
-import Button from '../Button'
-import Field from '../Field'
-import { useGraphQLClient } from '../../helpers/graphQL.js'
+import styles from './createVersion.module.scss'
 
-const CreateVersion = ({ articleId, readOnly, onClose }) => {
+/**
+ * @param props
+ * @param {string} props.articleId
+ * @param {() => {}} props.onClose
+ * @param {() => {}} props.onSubmit
+ * @return {Element}
+ */
+export default function CreateVersion({ articleId, onClose, onSubmit }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
-  const { query } = useGraphQLClient()
+  const { create } = useArticleVersionActions({ articleId })
   const activeUser = useSelector((state) => state.activeUser)
-  const dispatch = useDispatch()
-  const [message, setMessage] = useState('')
+  const [majorVersion, setMajorVersion] = useState(false)
   const handleCreateVersion = useCallback(
-    async (e, major = false) => {
-      e.preventDefault()
+    async (event) => {
+      event.preventDefault()
+      const details = fromFormData(event.target)
       try {
-        const response = await query({
-          query: createVersion,
-          variables: {
-            userId: activeUser._id,
-            articleId,
-            major,
-            message,
-          },
-        })
-        dispatch({
-          type: 'SET_ARTICLE_VERSIONS',
-          versions: response.article.createVersion.versions,
+        await create({
+          major: majorVersion,
+          description: details.description,
         })
         setToast({
           text: t('write.createVersion.defaultNotification'),
           type: 'default',
         })
+        onSubmit()
       } catch (err) {
         const errorMessage =
           err.messages && err.messages.length
@@ -52,57 +49,40 @@ const CreateVersion = ({ articleId, readOnly, onClose }) => {
         })
       }
     },
-    [message, activeUser]
+    [activeUser, majorVersion]
   )
 
   return (
-    <div className={styles.container}>
-      {readOnly && (
-        <Link
-          className={[buttonStyles.button, buttonStyles.secondary].join(' ')}
-          to={`/article/${articleId}`}
-        >
-          {' '}
-          <ArrowLeft /> Edit Mode
-        </Link>
-      )}
-      <form
-        className={styles.createForm}
-        onSubmit={(e) => handleCreateVersion(e, false)}
+    <form className={styles.form} onSubmit={(e) => handleCreateVersion(e)}>
+      <label htmlFor="description">Description</label>
+      <textarea
+        id="description"
+        name="description"
+        className={buttonStyles.textarea}
+        rows="10"
+        style={{ width: '100%', fontFamily: 'Inter' }}
+        placeholder={t('write.createVersion.placeholder')}
+      ></textarea>
+      <div
+        className={styles.toggle}
+        onClick={() => setMajorVersion(!majorVersion)}
       >
-        <Field
-          className={styles.createVersionInput}
-          placeholder={t('write.createVersion.placeholder')}
-          value={message}
-          autoFocus={true}
-          onChange={(e) => setMessage(e.target.value)}
+        <Toggle
+          id="major-version"
+          name="majorVersion"
+          checked={majorVersion}
+          onChange={(e) => {
+            setMajorVersion(e.target.checked)
+          }}
         />
-        <ul className={styles.actions}>
-          <li className={styles.closeButton}>
-            <Button icon={true} onClick={onClose}>
-              {t('write.sidebar.closeButton')}
-            </Button>
-          </li>
-          <li>
-            <Button primary={true}>
-              {t('write.createMinorVersion.Button')}
-            </Button>
-          </li>
-          <li>
-            <Button onClick={(e) => handleCreateVersion(e, true)}>
-              {t('write.createMajorVersion.Button')}
-            </Button>
-          </li>
-        </ul>
-      </form>
-    </div>
+        <label htmlFor="major-version">Version majeure</label>
+      </div>
+      <FormActions
+        submitButton={{
+          text: t('modal.createButton.text'),
+        }}
+        onCancel={() => onClose()}
+      />
+    </form>
   )
-}
-
-export default CreateVersion
-
-CreateVersion.propTypes = {
-  articleId: PropTypes.string,
-  readOnly: PropTypes.bool,
-  onClose: PropTypes.func,
 }

@@ -17,6 +17,25 @@ query renameVersion($version: ID!, $name: String) {
   }
 }
 
+query getArticleVersions($article: ID!) {
+  article(article: $article) {
+    _id
+    updatedAt
+    versions {
+      _id
+      version
+      revision
+      message
+      updatedAt
+      owner {
+        displayName
+        username
+      }
+      type
+    }
+  }
+}
+
 query getArticleWorkingCopy($articleId: ID!) {
   article(article: $articleId) {
     _id
