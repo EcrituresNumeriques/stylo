@@ -396,5 +396,8 @@
   "loading.label": "Chargement…",
   "validating.label": "Validation…",
   "bibliography.deleteReferenceModal.title": "Remove a reference",
-  "bibliography.deleteReferenceModal.confirmMessage": "Are you sure you want to remove the following reference: <1>{{key}}</1> ?"
+  "bibliography.deleteReferenceModal.confirmMessage": "Are you sure you want to remove the following reference: <1>{{key}}</1> ?",
+  "versions.title": "Versions",
+  "versions.createVersion.title": "Create a new version",
+  "versions.createVersion.button": "New version"
 }

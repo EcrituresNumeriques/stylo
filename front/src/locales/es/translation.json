@@ -88,6 +88,7 @@
   "modal.close.text": "Cerrar",
   "modal.close.label": "Cerrar modal",
   "modal.saveButton.text": "Registrar",
+  "modal.createButton.text": "Crear",
   "corpus.type.journal": "Revista",
   "corpus.createForm.titleField": "Título",
   "corpus.createForm.descriptionField": "Descripción",
@@ -364,5 +365,8 @@
   "editorMenu.close.label": "Menú",
   "export.title": "Exportar",
   "annotate.title": "Anotar",
-  "bibliography.title": "Bibliografía"
+  "bibliography.title": "Bibliografía",
+  "versions.title": "Versións",
+  "versions.createVersion.title": "Crear una nueva versión",
+  "versions.createVersion.button": "Vueva versión"
 }

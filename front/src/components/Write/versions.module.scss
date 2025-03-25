@@ -108,10 +108,17 @@
 }
 
 .headingAction {
-  margin-left: auto;
+  margin: 0.5rem 0 0.75rem 0.5rem;
 }
 
 .editMode {
   font-size: 0.8rem;
   margin-left: auto;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }

@@ -396,5 +396,8 @@
   "loading.label": "Chargement…",
   "validating.label": "Validation…",
   "bibliography.deleteReferenceModal.title": "Supprimer une référence bibliographique",
-  "bibliography.deleteReferenceModal.confirmMessage": "Êtes-vous sûr de vouloir supprimer la référence bibliographique : <1>{{key}}</1> ?"
+  "bibliography.deleteReferenceModal.confirmMessage": "Êtes-vous sûr de vouloir supprimer la référence bibliographique : <1>{{key}}</1> ?",
+  "versions.title": "Versions",
+  "versions.createVersion.title": "Créer une nouvelle version",
+  "versions.createVersion.button": "Nouvelle version"
 }
