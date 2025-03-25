@@ -12,17 +12,18 @@ import LanguagesMenu from './header/LanguagesMenu.jsx'
 import UserMenu from './header/UserMenu.jsx'
 
 export default function Header() {
+  const { t } = useTranslation()
   const activeWorkspace = useActiveWorkspace()
   const activeWorkspaceId = useMemo(
     () => activeWorkspace?._id,
     [activeWorkspace]
   )
+
   const baseUrl = useMemo(
     () => (activeWorkspaceId ? `/workspaces/${activeWorkspaceId}` : ''),
     [activeWorkspaceId]
   )
   const connected = useSelector((state) => state.loggedIn)
-  const { t } = useTranslation()
 
   return (
     <Switch>
@@ -32,7 +33,7 @@ export default function Header() {
         <header className={styles.headerContainer} role="banner">
           <section className={styles.header}>
             <h1 className={styles.logo}>
-              <NavLink to={`${baseUrl}/`} rel="home">
+              <NavLink to={connected ? `${baseUrl}/articles` : ''} rel="home">
                 <img src={logoContent} alt="Stylo" title="Stylo" />
               </NavLink>
             </h1>
