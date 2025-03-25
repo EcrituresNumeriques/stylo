@@ -354,5 +354,10 @@
   "user.account.updatedAt": "Cuenta actualizada",
   "header.documentation.link": "Documentación",
   "header.corpus.link": "Corpus",
-  "header.articles.link": "Artículo"
+  "header.articles.link": "Artículo",
+  "metadata.title": "Metadatos",
+  "metadata.showYaml": "Activar el modo YAML",
+  "toc.title": "Tabla de contenido",
+  "editorMenu.open.label": "Cerrar",
+  "editorMenu.close.label": "Menú"
 }

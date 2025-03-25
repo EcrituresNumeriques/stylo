@@ -1,8 +1,5 @@
-import { Link as GeistLink, Popover } from '@geist-ui/core'
-import clsx from 'clsx'
-import React, { useCallback } from 'react'
-import { AlignLeft, Eye, Printer } from 'react-feather'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+import { Eye, Printer } from 'react-feather'
 import { Link } from 'react-router-dom'
 
 import useFetchData from '../../hooks/graphql.js'
@@ -24,8 +21,6 @@ import styles from './CollaborativeEditorArticleHeader.module.scss'
  * @return {Element}
  */
 export default function CollaborativeEditorArticleHeader({ articleId }) {
-  const dispatch = useDispatch()
-  const articleStructure = useSelector((state) => state.articleStructure)
   const { data, isLoading } = useFetchData(
     { query: getArticleInfo, variables: { articleId } },
     {
@@ -36,59 +31,13 @@ export default function CollaborativeEditorArticleHeader({ articleId }) {
   )
   const exportModal = useModal()
 
-  const handleTableOfContentsEntryClicked = useCallback(({ target }) => {
-    dispatch({
-      type: 'UPDATE_EDITOR_CURSOR_POSITION',
-      lineNumber: parseInt(target.dataset.index, 10),
-      column: 0,
-    })
-  }, [])
-
   if (isLoading) {
     return <Loading />
   }
 
-  const content = () => {
-    if (articleStructure.length === 0) {
-      return <></>
-    }
-    return (
-      <>
-        <Popover.Item title>
-          <span>Table Of Contents</span>
-        </Popover.Item>
-        {articleStructure.map((item) => (
-          <Popover.Item key={`line-${item.index}-${item.line}`} tabIndex={0}>
-            <GeistLink
-              href="#"
-              data-index={item.index}
-              onClick={handleTableOfContentsEntryClicked}
-            >
-              {item.title}
-            </GeistLink>
-          </Popover.Item>
-        ))}
-      </>
-    )
-  }
-
   return (
     <header className={styles.header}>
-      <h1 className={styles.title}>
-        <Popover
-          className={clsx(
-            styles.tocTooltip,
-            articleStructure.length === 0 && styles.empty
-          )}
-          placement="bottomStart"
-          content={content}
-          hideArrow={articleStructure.length === 0}
-        >
-          <AlignLeft />
-        </Popover>
-        {data?.article?.title}
-      </h1>
-
+      <h1 className={styles.title}>{data?.article?.title}</h1>
       <div>
         <Button
           icon

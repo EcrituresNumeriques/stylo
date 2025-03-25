@@ -1,16 +1,14 @@
 import { useSelector } from 'react-redux'
-import { executeQuery } from '../helpers/graphQL.js'
-import {
-  duplicateArticle,
-  renameArticle,
-  deleteArticle,
-} from '../components/Article.graphql'
-
 import {
   addTags,
-  removeTags,
+  deleteArticle,
+  duplicateArticle,
   getArticleTags,
+  removeTags,
+  renameArticle,
 } from '../components/Article.graphql'
+import { getArticleWorkingCopy } from '../components/Write/Write.graphql'
+import { executeQuery } from '../helpers/graphQL.js'
 import useFetchData from './graphql.js'
 
 export function useArticleTagActions({ articleId }) {
@@ -121,5 +119,21 @@ export function useArticleActions({ articleId }) {
     duplicate,
     rename,
     remove,
+  }
+}
+
+export function useArticleWorkingCopy({ articleId }) {
+  const { data, error, isLoading } = useFetchData(
+    { query: getArticleWorkingCopy, variables: { articleId } },
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  )
+
+  return {
+    article: data?.article,
+    isLoading,
+    error,
   }
 }

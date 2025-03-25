@@ -4,6 +4,7 @@ import { PanelRightClose, PanelRightOpen } from 'lucide-react'
 import styles from './Sidebar.module.scss'
 
 export default function Sidebar({
+  className,
   opened,
   setOpened,
   labelOpened,
@@ -20,7 +21,11 @@ export default function Sidebar({
 
   return (
     <div
-      className={clsx(styles.sidebar, opened ? styles.opened : styles.closed)}
+      className={clsx(
+        styles.sidebar,
+        opened ? styles.opened : styles.closed,
+        className
+      )}
     >
       <div className={styles.action} onClick={() => setOpened(!opened)}>
         <div className={styles.icon}>{button}</div>

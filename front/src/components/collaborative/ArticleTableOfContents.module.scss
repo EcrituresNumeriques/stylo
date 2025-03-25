@@ -1,0 +1,28 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.headlineItem {
+  @extend .clickable;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em 1em;
+  border-bottom: 1px solid transparent;
+
+  &:nth-child(2n + 1) {
+    border-bottom-color: $main-background-color;
+    background-color: $main-background-color;
+  }
+
+  &:hover,
+  &:focus {
+    color: $main-color-links;
+    border-bottom-color: $main-color-links;
+  }
+}

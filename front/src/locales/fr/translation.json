@@ -376,5 +376,10 @@
   "corpus.metadata.form.issue.identifier": "Identifiant",
   "header.documentation.link": "Documentation",
   "header.corpus.link": "Corpus",
-  "header.articles.link": "Articles"
+  "header.articles.link": "Articles",
+  "metadata.title": "Métadonnées",
+  "metadata.showYaml": "Activer le mode YAML",
+  "toc.title": "Tables des matières",
+  "editorMenu.open.label": "Fermer",
+  "editorMenu.close.label": "Menu"
 }
