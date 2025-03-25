@@ -1,42 +1,39 @@
+import clsx from 'clsx'
 import React from 'react'
-import PropTypes from 'prop-types'
-import { Dot } from '@geist-ui/core'
 import { Loader } from 'react-feather'
 
 import styles from './CollaborativeEditorWebSocketStatus.module.scss'
 
+/**
+ * @param props
+ * @param {string} props.status
+ * @param {string} props.state
+ * @return {Element}
+ * @constructor
+ */
 export default function CollaborativeEditorWebSocketStatus({ status, state }) {
-  if (state !== 'started') {
+  if (status === 'connected') {
+    return <></>
+  }
+
+  if (state !== 'started' || status === 'connecting') {
     return (
-      <Dot type="warning" className={styles.dot}>
+      <div className={clsx(styles.status, styles.connecting)}>
+        <span className={clsx(styles.dot, styles.warning)}></span>
         Connecting
         <Loader className={styles.loadingIndicator} />
-      </Dot>
+      </div>
     )
   }
-  return (
-    <>
-      {status === 'connected' && (
-        <Dot type="success" className={styles.dot}>
-          Connected
-        </Dot>
-      )}
-      {status === 'disconnected' && (
-        <Dot type="error" className={styles.dot}>
-          Disconnected
-        </Dot>
-      )}
-      {status === 'connecting' && (
-        <Dot type="warning" className={styles.dot}>
-          Connecting
-          <Loader className={styles.loadingIndicator} />
-        </Dot>
-      )}
-    </>
-  )
-}
 
-CollaborativeEditorWebSocketStatus.propTypes = {
-  state: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired,
+  return (
+    <div className={clsx(styles.status, styles.disconnected)}>
+      {status === 'disconnected' && (
+        <>
+          <span className={clsx(styles.dot, styles.info)}></span>
+          Disconnected
+        </>
+      )}
+    </div>
+  )
 }

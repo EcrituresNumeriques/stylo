@@ -2,6 +2,7 @@ import { Tabs } from '@geist-ui/core'
 import React from 'react'
 import { Search } from 'react-feather'
 import buttonStyles from '../components/button.module.scss'
+import CollaborativeEditorWebSocketStatus from '../components/collaborative/CollaborativeEditorWebSocketStatus.jsx'
 import Field from '../components/Field.jsx'
 import Alert from '../components/molecules/Alert.jsx'
 import Loading from '../components/molecules/Loading.jsx'
@@ -23,7 +24,7 @@ export default function Story() {
           <h4>Heading 4</h4>
           <h5>Heading 5</h5>
 
-          <p>paragrap</p>
+          <p>paragraph</p>
 
           <p>
             regular <span>span</span> <small>small</small>
@@ -110,7 +111,6 @@ export default function Story() {
         <Tabs.Item label="form" value="3">
           <FormStory />
         </Tabs.Item>
-
         <Tabs.Item label="fields" value="4">
           <h2>Fields</h2>
           <h4>Search</h4>
@@ -130,6 +130,18 @@ export default function Story() {
         </Tabs.Item>
         <Tabs.Item label="sidebar" value="5">
           <SidebarStory />
+        </Tabs.Item>
+        <Tabs.Item label="Collaborative editor" value="6">
+          <h4>Status</h4>
+          <h5>Connected</h5>
+          <CollaborativeEditorWebSocketStatus status={'connected'} />
+          <h5>Connecting</h5>
+          <CollaborativeEditorWebSocketStatus status={'connecting'} />
+          <h5>Disconnected</h5>
+          <CollaborativeEditorWebSocketStatus
+            status={'disconnected'}
+            state={'started'}
+          />
         </Tabs.Item>
       </Tabs>
     </div>

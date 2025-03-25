@@ -9,6 +9,7 @@ import Loading from '../molecules/Loading.jsx'
 import * as collaborating from './collaborating.js'
 import defaultEditorOptions from '../Write/providers/monaco/options.js'
 import CollaborativeEditorStatus from './CollaborativeEditorStatus.jsx'
+import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 
 import styles from './CollaborativeTextEditor.module.scss'
 
@@ -66,7 +67,7 @@ export default function CollaborativeTextEditor({
     shallowEqual
   )
   const dispatch = useDispatch()
-  const editorRef = useRef()
+  const editorRef = useRef(null)
   const editorCursorPosition = useSelector(
     (state) => state.editorCursorPosition,
     shallowEqual
@@ -199,6 +200,12 @@ export default function CollaborativeTextEditor({
         websocketStatus={websocketStatus}
         collaborativeSessionCreatorId={collaborativeSessionCreatorId}
       />
+      <div className={styles.inlineStatus}>
+        <CollaborativeEditorWebSocketStatus
+          status={websocketStatus}
+          state={collaborativeSessionState}
+        />
+      </div>
       <Editor
         options={options}
         className={styles.editor}
