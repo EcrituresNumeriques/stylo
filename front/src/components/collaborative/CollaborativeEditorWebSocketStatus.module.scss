@@ -1,12 +1,23 @@
 .dot {
-  font-size: 0.8rem !important;
-  
-  :global {
-    .label {
-      display: flex;
-      gap: 0.25rem;
-    }
-  }
+  border-radius: 50%;
+  height: 0.65em;
+  width: 0.65em;
+}
+
+.connecting {
+  background-color: hsl(11, 89%, 95%);
+}
+
+.warning {
+  background-color: hsl(11, 89%, 60%);
+}
+
+.disconnected {
+  background-color: hsl(0, 0%, 95%);
+}
+
+.info {
+  background-color: hsl(0, 0%, 30%);
 }
 
 .loadingIndicator {
@@ -16,6 +27,15 @@
   animation-iteration-count: infinite;
   animation-timing-function: linear;
   flex-shrink: 0;
+}
+
+.status {
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.9rem;
+  padding: 0.75rem;
+  display: flex;
+  justify-content: center;
 }
 
 @keyframes rotation {

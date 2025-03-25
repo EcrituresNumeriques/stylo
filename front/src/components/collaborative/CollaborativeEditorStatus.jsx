@@ -10,7 +10,6 @@ import Modal from '../Modal.jsx'
 import FormActions from '../molecules/FormActions.jsx'
 
 import styles from './CollaborativeEditorStatus.module.scss'
-import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 import CollaborativeEditorWriters from './CollaborativeEditorWriters.jsx'
 
 import { stopCollaborativeSession } from './CollaborativeSession.graphql'
@@ -58,12 +57,6 @@ export default function CollaborativeEditorStatus({
       <div className={styles.row}>
         <div className={styles.writers}>
           <CollaborativeEditorWriters />
-        </div>
-        <div className={styles.status}>
-          <CollaborativeEditorWebSocketStatus
-            status={websocketStatus}
-            state={collaborativeSessionState}
-          />
         </div>
         {websocketStatus === 'connected' &&
           collaborativeSessionState === 'started' && (
