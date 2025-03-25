@@ -1,6 +1,13 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+/*
+  This is required to avoid loaders to crash because
+  they have not seen these models before.
+*/
+require('./tag.js')
+require('./version.js')
+
 const {
   computeMajorVersion,
   computeMinorVersion,
