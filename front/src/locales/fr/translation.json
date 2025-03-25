@@ -135,6 +135,7 @@
   "modal.close.text": "Fermer",
   "modal.close.label": "Fermer la modale",
   "modal.saveButton.text": "Enregistrer",
+  "modal.createButton.text": "Créer",
   "corpus.page.title": "Liste des corpus - {{ workspace }}",
   "corpus.page.description": "Un corpus est une collection d'articles triables et exportables en une seule action.",
   "corpus.type.journal": "Revue",
@@ -369,5 +370,8 @@
   "editorMenu.open.label": "Fermer",
   "editorMenu.close.label": "Menu",
   "export.title": "Exporter",
-  "annotate.title": "Annoter"
+  "annotate.title": "Annoter",
+  "versions.title": "Versions",
+  "versions.createVersion.title": "Créer une nouvelle version",
+  "versions.createVersion.button": "Nouvelle version"
 }
