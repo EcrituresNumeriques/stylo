@@ -236,6 +236,12 @@ type UserPermission {
   user: User!
 }
 
+enum WorkspaceRole {
+  contributor
+  editor
+  translator
+}
+
 type UserSearch {
   _id: ID
   displayName: String
@@ -288,7 +294,7 @@ type Workspace {
   createdAt: DateTime
   creator: User!
   description: String
-  inviteMember(role: String, userId: ID!): Workspace
+  inviteMember(role: WorkspaceRole, userId: ID!): Workspace
   leave: Workspace
   member(userId: ID!): WorkspaceMember
   members: [User!]!
