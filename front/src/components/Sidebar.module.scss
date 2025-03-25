@@ -6,20 +6,37 @@
 }
 
 .opened {
-  margin-left: 6rem;
+  margin-left: 1rem;
   .action {
-    left: -4.5rem;
+    left: 0.5rem;
   }
 }
 
 .closed {
   margin-left: 6rem;
-  padding-left: 3rem;
+  padding-left: 0.5rem;
   
   .action {
-    right: 0.5rem;
+    left: -1.5rem;
+    transition: left 0.5s;
+  }
+  
+  .action:hover {
+    left: -5rem;
   }
 }
+
+@keyframes run {
+  0% {
+    left: -1.5rem;
+    right: auto;
+  }
+  100% {
+    right: -1rem;
+    left: auto;
+  }
+}
+
 
 .action {
   display: flex;
