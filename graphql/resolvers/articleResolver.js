@@ -3,22 +3,23 @@ const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Types
 const { getYDoc } = require('y-websocket/bin/utils')
 
-const Article = require('../models/article')
-const User = require('../models/user')
-const Workspace = require('../models/workspace')
-const Version = require('../models/version')
+const Article = require('../models/article.js')
+const User = require('../models/user.js')
+const Corpus = require('../models/corpus.js')
+const Workspace = require('../models/workspace.js')
+const Version = require('../models/version.js')
 
-const isUser = require('../policies/isUser')
-const { ApiError } = require('../helpers/errors')
+const isUser = require('../policies/isUser.js')
+const { ApiError } = require('../helpers/errors.js')
 const { reformat } = require('../helpers/metadata.js')
 const {
   computeMajorVersion,
   computeMinorVersion,
-} = require('../helpers/versions')
-const { previewEntries } = require('../helpers/bibliography')
-const { notifyArticleStatusChange } = require('../events')
-const { logger } = require('../logger')
-const { toLegacyFormat } = require('../helpers/metadata')
+} = require('../helpers/versions.js')
+const { previewEntries } = require('../helpers/bibliography.js')
+const { notifyArticleStatusChange } = require('../events.js')
+const { logger } = require('../logger.js')
+const { toLegacyFormat } = require('../helpers/metadata.js')
 
 async function getUser(userId) {
   const user = await User.findById(userId)
@@ -32,6 +33,7 @@ async function getArticleByContext(articleId, context) {
   if (context.token.admin === true) {
     return await getArticle(articleId)
   }
+
   const userId = context.userId
   if (!userId) {
     throw new ApiError(
@@ -286,8 +288,18 @@ module.exports = {
       newArticle.isNew = true
       withUser.articles.push(newArticle)
 
-      //Save the three objects
       await Promise.all([newArticle.save(), withUser.save()])
+
+      // Maintain links
+      await Corpus.updateMany(
+        { 'articles.article': article._id },
+        { $push: { articles: { article: newArticle._id } } }
+      )
+
+      await Workspace.updateMany(
+        { articles: article },
+        { $push: { articles: [newArticle._id] } }
+      )
 
       return newArticle
     },
