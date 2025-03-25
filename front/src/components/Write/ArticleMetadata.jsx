@@ -15,7 +15,6 @@ import ArticleEditorMetadataForm from './yamleditor/ArticleEditorMetadataForm.js
  * @param {object} props
  * @param {(object) => void} props.onChange
  * @param {(object) => void} props.onBack
- * @param {boolean} props.showBackButton
  * @param {boolean} props.readOnly
  * @param {object} props.metadata
  * @returns {Element}

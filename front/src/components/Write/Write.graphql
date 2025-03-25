@@ -17,6 +17,22 @@ query renameVersion($version: ID!, $name: String) {
   }
 }
 
+query getArticleWorkingCopy($articleId: ID!) {
+  article(article: $articleId) {
+    _id
+    title
+    zoteroLink
+    updatedAt
+
+    workingVersion {
+      md
+      bib
+      bibPreview
+      metadata
+    }
+  }
+}
+
 query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
   article(article: $article) {
     _id

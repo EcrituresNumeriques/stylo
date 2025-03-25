@@ -2,16 +2,21 @@ import clsx from 'clsx'
 import React, { useState } from 'react'
 import { ChevronRight } from 'react-feather'
 import { useTranslation } from 'react-i18next'
+import { useArticleWorkingCopy } from '../../hooks/article.js'
 import Sidebar from '../Sidebar.jsx'
 import ArticleMetadata from '../Write/ArticleMetadata.jsx'
 import ArticleTableOfContents from './ArticleTableOfContents.jsx'
 
 import styles from './CollaborativeEditorMenu.module.scss'
 
-export default function CollaborativeEditorMenu() {
+export default function CollaborativeEditorMenu({ articleId }) {
   const { t } = useTranslation()
   const [opened, setOpened] = useState(false)
   const [activeMenu, setActiveMenu] = useState('')
+
+  const { article } = useArticleWorkingCopy({ articleId })
+
+  const metadata = article?.workingVersion?.metadata
 
   return (
     <div className={styles.menu} role="menu">
@@ -47,7 +52,7 @@ export default function CollaborativeEditorMenu() {
             {activeMenu === 'metadata' && (
               <ArticleMetadata
                 onBack={() => setActiveMenu('')}
-                metadata={{}}
+                metadata={metadata}
                 readOnly={true}
               />
             )}
