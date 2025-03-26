@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react'
-import { X } from 'react-feather'
+import { X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import Button from './Button'
 

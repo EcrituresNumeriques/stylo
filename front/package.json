@@ -62,7 +62,6 @@
     "react-dnd": "16.0.1",
     "react-dnd-html5-backend": "16.0.1",
     "react-dom": "~18.3",
-    "react-feather": "^2.0.9",
     "react-helmet": "^6.1.0",
     "react-i18next": "^12.2.2",
     "react-redux": "^7.2.4",

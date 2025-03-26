@@ -3,7 +3,7 @@ import styles from './field.module.scss'
 import buttonStyles from './button.module.scss'
 import { useCombobox } from 'downshift'
 import PropTypes from 'prop-types'
-import { ChevronDown, X } from 'react-feather'
+import { ChevronDown, X } from 'lucide-react'
 
 import Field from './Field.jsx'
 import clsx from 'clsx'

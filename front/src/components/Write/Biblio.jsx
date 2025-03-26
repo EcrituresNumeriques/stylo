@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-import { ChevronDown, ChevronRight } from 'react-feather'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 import { useModal } from '../../hooks/modal.js'
 
 import Modal from '../Modal'

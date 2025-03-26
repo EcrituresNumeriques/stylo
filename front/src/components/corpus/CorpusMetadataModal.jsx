@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { List } from 'react-feather'
+import { List } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useGraphQLClient } from '../../helpers/graphQL.js'

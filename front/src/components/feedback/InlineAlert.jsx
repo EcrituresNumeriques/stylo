@@ -1,5 +1,6 @@
 import React from 'react'
-import { AlertCircle } from 'react-feather'
+import { AlertCircle } from 'lucide-react'
+
 import styles from './InlineAlert.module.scss'
 
 export default function InlineAlert({ title = 'Error', message }) {

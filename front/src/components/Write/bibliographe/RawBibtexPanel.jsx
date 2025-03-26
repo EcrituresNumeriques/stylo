@@ -4,7 +4,7 @@ import { shallowEqual, useSelector } from 'react-redux'
 import debounce from 'lodash.debounce'
 import { getValidationResults } from '../../../helpers/bibtex.js'
 
-import { Check } from 'react-feather'
+import { Check } from 'lucide-react'
 
 import MonacoBibtexEditor from '../providers/monaco/BibtexEditor'
 import Button from '../../Button'

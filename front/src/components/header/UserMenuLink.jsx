@@ -1,9 +1,10 @@
 import React from 'react'
+import { User } from 'lucide-react'
 import PropTypes from 'prop-types'
 
 import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
+
 import styles from './UserMenuLink.module.scss'
-import { User } from 'react-feather'
 
 export default function UserMenuLink({ username, activeWorkspace }) {
   return (

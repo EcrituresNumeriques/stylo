@@ -5,7 +5,7 @@ import { useCombobox } from 'downshift'
 import Field from '../../Field'
 
 import styles from '../../form.module.scss'
-import { Search } from 'react-feather'
+import { Search } from 'lucide-react'
 
 function toValueFn(el) {
   const firstname = el.option.find((opt) => opt['@key'] === 'firstname')?.[

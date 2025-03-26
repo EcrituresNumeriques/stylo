@@ -7,7 +7,7 @@ import {
   Eye,
   Loader,
   Printer,
-} from 'react-feather'
+} from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'

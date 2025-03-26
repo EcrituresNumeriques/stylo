@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Settings, Tag } from 'react-feather'
+import { Settings, Tag } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import useFetchData from '../../hooks/graphql'

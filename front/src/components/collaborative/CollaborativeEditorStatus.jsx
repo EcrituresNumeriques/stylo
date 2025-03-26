@@ -1,6 +1,6 @@
 import { useToasts } from '@geist-ui/core'
 import React, { useCallback } from 'react'
-import { StopCircle } from 'react-feather'
+import { StopCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { useGraphQLClient } from '../../helpers/graphQL.js'

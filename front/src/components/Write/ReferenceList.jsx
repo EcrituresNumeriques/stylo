@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
-import { Search } from 'react-feather'
+import { Search } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import Reference from './Reference'

@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { Check, Loader } from 'react-feather'
+import { Check, Loader } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { Helmet } from 'react-helmet'

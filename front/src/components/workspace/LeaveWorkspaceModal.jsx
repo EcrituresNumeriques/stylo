@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { Note, Spacer, Text } from '@geist-ui/core'
-import { Slash, Users } from 'react-feather'
+import { Slash } from 'lucide-react'
 import { Trans, useTranslation } from 'react-i18next'
 
 import { useWorkspaceActions } from '../../hooks/workspace.js'

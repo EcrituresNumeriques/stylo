@@ -3,7 +3,7 @@ import copy from 'copy-to-clipboard'
 import { useTranslation } from 'react-i18next'
 import { useToasts } from '@geist-ui/core'
 
-import { Clipboard } from 'react-feather'
+import { Clipboard } from 'lucide-react'
 import styles from './reference.module.scss'
 import ReferenceTypeIcon from '../ReferenceTypeIcon'
 import Button from '../Button'

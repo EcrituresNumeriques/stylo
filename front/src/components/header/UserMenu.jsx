@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Layers, LogOut, User } from 'react-feather'
+import { Layers, LogOut, User } from 'lucide-react'
 
 import useComponentVisible from '../../hooks/componentVisible'
 import styles from './UserMenu.module.scss'

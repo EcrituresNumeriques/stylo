@@ -1,6 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-import { Loader } from 'react-feather'
+import { Loader } from 'lucide-react'
 
 import styles from './Loading.module.scss'
 

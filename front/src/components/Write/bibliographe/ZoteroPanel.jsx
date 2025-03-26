@@ -17,7 +17,7 @@ import Field from '../../Field'
 import Combobox from '../../SelectCombobox.jsx'
 
 import styles from './bibliographe.module.scss'
-import { Rss, Clipboard } from 'react-feather'
+import { Rss, Clipboard } from 'lucide-react'
 
 /**
  * @typedef {import('../../SelectCombobox').ComboboxItem} ComboboxItem

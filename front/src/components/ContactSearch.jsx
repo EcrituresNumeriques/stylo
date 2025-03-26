@@ -1,7 +1,7 @@
 import debounce from 'lodash.debounce'
 import PropTypes from 'prop-types'
 import React, { useCallback, useMemo, useState } from 'react'
-import { CheckSquare, Search, Square } from 'react-feather'
+import { CheckSquare, Search, Square } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useGraphQLClient } from '../helpers/graphQL.js'

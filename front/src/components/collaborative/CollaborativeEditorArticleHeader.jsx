@@ -1,5 +1,5 @@
 import React from 'react'
-import { Eye, Printer } from 'react-feather'
+import { Eye, Printer } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import useFetchData from '../../hooks/graphql.js'

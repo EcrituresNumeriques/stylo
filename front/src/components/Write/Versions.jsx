@@ -10,7 +10,7 @@ import {
   ChevronDown,
   ChevronRight,
   Edit3,
-} from 'react-feather'
+} from 'lucide-react'
 import TimeAgo from '../TimeAgo.jsx'
 
 import styles from './versions.module.scss'

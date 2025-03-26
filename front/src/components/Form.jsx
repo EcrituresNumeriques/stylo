@@ -14,7 +14,7 @@ import isidoreAuthorSearch from './Write/metadata/isidoreAuthor'
 
 import styles from './form.module.scss'
 import Button from './Button'
-import { Plus, Trash } from 'react-feather'
+import { Plus, Trash } from 'lucide-react'
 import IsidoreAuthorAPIAutocompleteField from './Write/metadata/isidoreAuthor'
 
 const {

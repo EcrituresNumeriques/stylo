@@ -1,7 +1,7 @@
 import { Dot, useToasts } from '@geist-ui/core'
 import PropTypes from 'prop-types'
 import React, { useCallback, useState } from 'react'
-import { Edit3 } from 'react-feather'
+import { Edit3 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'

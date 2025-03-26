@@ -11,9 +11,6 @@ import CollaborativeSessionError from './CollaborativeSessionError.jsx'
 import CollaborativeTextEditor from './CollaborativeTextEditor.jsx'
 
 import styles from './CollaborativeEditor.module.scss'
-import { Sidebar } from 'react-feather'
-import Button from '../Button.jsx'
-import ArticleEditorMetadata from '../Write/ArticleEditorMetadata.jsx'
 import CollaborativeEditorMenu from './CollaborativeEditorMenu.jsx'
 
 export default function CollaborativeEditor() {

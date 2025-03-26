@@ -1,5 +1,5 @@
 import React from 'react'
-import { Slash, Users } from 'react-feather'
+import { Slash, Users } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { useModal } from '../../hooks/modal.js'

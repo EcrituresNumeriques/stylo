@@ -1,6 +1,6 @@
 import { Tabs } from '@geist-ui/core'
 import React from 'react'
-import { Search } from 'react-feather'
+import { Search } from 'lucide-react'
 import buttonStyles from '../components/button.module.scss'
 import CollaborativeEditorWebSocketStatus from '../components/collaborative/CollaborativeEditorWebSocketStatus.jsx'
 import Field from '../components/Field.jsx'

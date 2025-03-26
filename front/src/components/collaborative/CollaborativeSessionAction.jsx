@@ -1,6 +1,6 @@
 import { Badge } from '@geist-ui/core'
-import React, { useCallback, useEffect, useMemo } from 'react'
-import { Users } from 'react-feather'
+import React, { useCallback, useMemo } from 'react'
+import { Users } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 
