@@ -61,7 +61,6 @@ const userSchema = new Schema(
     lastName: String,
     institution: String,
     connectedAt: Date,
-    zoteroToken: String,
   },
   { timestamps: true }
 )
