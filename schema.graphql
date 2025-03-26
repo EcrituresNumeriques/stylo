@@ -205,6 +205,17 @@ type Tag {
   updatedAt: DateTime
 }
 
+type AuthProvider {
+  id: String
+  token: String
+  updatedAt: DateTime
+}
+
+type AuthProvidersMap {
+  humanid: AuthProvider
+  zotero: AuthProvider
+}
+
 type User {
   _id: ID
   acquintances(limit: Int, page: Int): [User]
@@ -212,8 +223,8 @@ type User {
   admin: Boolean
   apiToken: JWT
   articles(limit: Int, page: Int): [Article]
-  authType: AuthType
   authTypes: [AuthType]
+  authProviders: AuthProvidersMap
   createdAt: DateTime
   displayName: String
   email: EmailAddress

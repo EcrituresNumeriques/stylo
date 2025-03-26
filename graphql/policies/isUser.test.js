@@ -7,7 +7,6 @@ const sameUserToken = {
   _id: user,
   email: 'test@example.com',
   session: true,
-  authType: 'oidc',
 }
 
 const differentUserObject = new UserModel({ _id: '00000de2f83aa77c5f92dc2f' })
