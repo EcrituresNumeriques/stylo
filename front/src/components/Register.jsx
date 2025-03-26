@@ -77,7 +77,7 @@ export default function Register() {
             ref={passwordRef}
             name="password"
             type="password"
-            label={t('credentials.password.placeholder')}
+            label={t('credentials.password.label')}
             minLength={6}
             autoComplete="new-password"
             onChange={validateSameFieldValue(

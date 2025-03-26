@@ -59,7 +59,6 @@ const Corpus = lazy(() => import('./components/corpus/Corpus'))
 const Articles = lazy(() => import('./components/Articles'))
 const Workspaces = lazy(() => import('./components/workspace/Workspaces'))
 const Credentials = lazy(() => import('./components/Credentials'))
-const UserInfos = lazy(() => import('./components/UserInfos.jsx'))
 const Write = lazy(() => import('./components/Write/Write'))
 const Preview = lazy(() => import('./components/Preview.jsx'))
 const Privacy = lazy(() => import('./components/Privacy'))
@@ -163,7 +162,6 @@ root.render(
                   exact
                 />
                 <PrivateRoute path="/credentials" exact>
-                  <UserInfos />
                   <Credentials />
                 </PrivateRoute>
 
