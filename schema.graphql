@@ -221,7 +221,6 @@ type User {
   acquintances(limit: Int, page: Int): [User]
   addContact(userId: ID!): User
   admin: Boolean
-  apiToken: JWT
   articles(limit: Int, page: Int): [Article]
   authTypes: [AuthType]
   authProviders: AuthProvidersMap
@@ -238,7 +237,6 @@ type User {
   updatedAt: DateTime
   username: String
   workspaces: [Workspace!]
-  zoteroToken: String
 }
 
 type UserPermission {
@@ -419,7 +417,6 @@ input UserProfileInput {
   firstName: String
   institution: String
   lastName: String
-  zoteroToken: String
 }
 
 input WorkingVersionInput {
