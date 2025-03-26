@@ -10,7 +10,6 @@ module.exports.createJWTToken = async function createJWTToken({
   const payload = {
     email: user.email,
     _id: user._id,
-    authType: user.authType,
     session: true,
   }
 
