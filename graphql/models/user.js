@@ -47,13 +47,10 @@ const userSchema = new Schema(
         ref: 'Article',
       },
     ],
-    authType: {
-      type: String,
-      default: 'local',
-      enum: ['local', 'oidc'],
     authProviders: {
       type: Map,
       of: AuthProviderSchema,
+      default: {},
     },
     password: {
       type: String,

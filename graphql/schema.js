@@ -39,12 +39,23 @@ type UserStats {
   contributedArticlesCount: Int
 }
 
+type AuthProvider {
+  id: String
+  token: String
+  updatedAt: DateTime
+}
+
+type AuthProvidersMap {
+  humanid: AuthProvider
+  zotero: AuthProvider
+}
+
 type User {
   _id: ID
   displayName: String
   username: String
-  authType: AuthType
   authTypes: [AuthType]
+  authProviders: AuthProvidersMap
   email: EmailAddress
   firstName: String
   lastName: String

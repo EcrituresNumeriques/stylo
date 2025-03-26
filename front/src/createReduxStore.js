@@ -53,9 +53,9 @@ export const initialState = {
   },
   // Active user (authenticated)
   activeUser: {
-    authType: null,
     authTypes: [],
     zoteroToken: null,
+    authProviders: {},
     selectedTagIds: [],
     workspaces: [],
     activeWorkspaceId: null,

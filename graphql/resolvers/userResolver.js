@@ -23,6 +23,7 @@ module.exports = {
         firstName: userInput.firstName || null,
         lastName: userInput.lastName || null,
         password: userInput.password,
+        connectedAt: Date.now(),
       })
       await newUser.createDefaultArticle()
       return newUser
@@ -137,6 +138,13 @@ module.exports = {
           context.loaders.users.load(contactId)
         )
       )
+    },
+
+    authProviders(user) {
+      return {
+        humanid: user.get('authProviders.humanid'),
+        zotero: user.get('authProviders.zotero'),
+      }
     },
 
     /**
