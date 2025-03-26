@@ -134,7 +134,7 @@ export default function Login() {
               autoComplete="username"
             />
             <Field
-              label={t('credentials.password.placeholder')}
+              label={t('credentials.password.label')}
               name="password"
               hasError={error !== ''}
               required={true}
