@@ -2,10 +2,10 @@ import { describe, expect, test } from 'vitest'
 import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import { renderWithProviders } from '../../tests/setup.js'
-import Component from './Credentials.jsx'
+import { renderWithProviders } from '../../../tests/setup.js'
+import Component from './PasswordChange.jsx'
 
-describe('Credentials', () => {
+describe('PasswordChange', () => {
   test('renders with OIDC', () => {
     const preloadedState = {
       activeUser: { authTypes: ['oidc'] },
