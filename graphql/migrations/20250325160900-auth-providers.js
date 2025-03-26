@@ -16,11 +16,9 @@ exports.up = async function (db) {
     query: { zoteroToken: { $type: 'string' } },
     update: [
       {
-        $set: {
-          'authProviders.zotero': {
-            token: '$zoteroToken',
-          },
-        },
+        // we unset tokens rather than migrating them
+        // as we miss the 'userId' and thus are unable to authenticate/link an account
+        $unset: 'zoteroToken',
       },
     ],
   })
@@ -29,10 +27,10 @@ exports.up = async function (db) {
 exports.down = function (db) {
   return db._run('updateMany', 'users', {
     query: {},
-    update: {
-      $unset: {
-        authProviders: true,
+    update: [
+      {
+        $unset: 'authProviders',
       },
-    },
+    ],
   })
 }

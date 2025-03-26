@@ -318,7 +318,7 @@ app.use('/authorization-code/zotero/callback', (req, res, next) => {
      * @param {{token: String, profile: {userID: String, username: String}}} param1
      * @returns {import('express').Response}
      */
-    async (err, { token, profile }) => {
+    async (err, { token }) => {
       if (err) {
         logger.error({ err }, 'Unable to authenticate on Zotero.')
 
@@ -327,11 +327,7 @@ app.use('/authorization-code/zotero/callback', (req, res, next) => {
           .redirect(`${req.session.returnTo}#type=error&message=${err.message}`)
       }
 
-      res
-        .status(200)
-        .redirect(
-          `${req.session.returnTo}#token=${token}&username=${profile.username}`
-        )
+      res.status(200).redirect(`${req.session.returnTo}#token=${token}`)
     }
   )(req, res, next)
 })

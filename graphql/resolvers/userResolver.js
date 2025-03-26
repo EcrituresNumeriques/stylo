@@ -35,7 +35,15 @@ module.exports = {
       isUser(args, { token, user })
 
       if (service === 'zotero') {
-        user.zoteroToken = serviceToken
+        // there is no merging for MongooseMap as for now
+        user.set('authProviders.zotero', {
+          ...(user
+            .get('authProviders.zotero')
+            ?.toObject({ flattenMaps: true }) ?? {}),
+          token: serviceToken,
+          updatedAt: Date.now(),
+        })
+
         await user.save()
       } else {
         throw new Error(`Service unknown (${service})`)
@@ -85,19 +93,14 @@ module.exports = {
         throw new Error('Unable to find user')
       }
 
-      ;[
-        'displayName',
-        'firstName',
-        'lastName',
-        'institution',
-        'yaml',
-        'zoteroToken',
-      ].forEach((field) => {
-        if (Object.hasOwn(details, field)) {
-          /* eslint-disable security/detect-object-injection */
-          thisUser.set(field, details[field])
+      ;['displayName', 'firstName', 'lastName', 'institution', 'yaml'].forEach(
+        (field) => {
+          if (Object.hasOwn(details, field)) {
+            /* eslint-disable security/detect-object-injection */
+            thisUser.set(field, details[field])
+          }
         }
-      })
+      )
 
       return thisUser.save()
     },

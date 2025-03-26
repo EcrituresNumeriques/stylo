@@ -26,12 +26,12 @@ describe('setAuthToken', () => {
       context
     )
 
-    expect(u).toHaveProperty('zoteroToken', 'abcd')
+    expect(u.authProviders.get('zotero')).toHaveProperty('token', 'abcd')
   })
 
   test('remove a new zotero token', async () => {
     const id = user.id
-    user.set('zoteroToken', 'abcd')
+    user.set('authProviders.zotero', { token: 'abcd' })
     await user.save()
 
     const context = {
@@ -48,7 +48,7 @@ describe('setAuthToken', () => {
       context
     )
 
-    expect(u).toHaveProperty('zoteroToken', null)
+    expect(u.authProviders.get('zotero')).toHaveProperty('token', null)
   })
 
   test('throws an error with an unknown service', async () => {

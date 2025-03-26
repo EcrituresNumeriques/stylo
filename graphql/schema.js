@@ -65,10 +65,8 @@ type User {
   acquintances(limit: Int, page: Int): [User]
   articles(limit: Int, page: Int): [Article]
   workspaces: [Workspace!]
-  zoteroToken: String
   createdAt: DateTime
   updatedAt: DateTime
-  apiToken: JWT
 
   addContact(userId: ID!): User
   removeContact(userId: ID!): User
@@ -234,7 +232,6 @@ input UserProfileInput {
   firstName: String
   lastName: String
   institution: String
-  zoteroToken: String
 }
 
 type WorkspaceArticle {
