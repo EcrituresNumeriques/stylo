@@ -1,5 +1,5 @@
 import React from 'react'
-import { Users } from 'react-feather'
+import { Users } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import Button from '../Button.jsx'

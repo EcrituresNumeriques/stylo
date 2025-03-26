@@ -7,7 +7,7 @@ import {
   Printer,
   Settings,
   Trash,
-} from 'react-feather'
+} from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useCorpusActions } from '../../hooks/corpus.js'

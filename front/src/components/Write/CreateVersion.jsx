@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React, { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { ArrowLeft } from 'react-feather'
+import { ArrowLeft } from 'lucide-react'
 import { createVersion } from '../../services/ArticleService.graphql'
 import { useTranslation } from 'react-i18next'
 

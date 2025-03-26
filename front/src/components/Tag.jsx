@@ -1,7 +1,5 @@
 import clsx from 'clsx'
 import React from 'react'
-import { Settings } from 'react-feather'
-import Button from './Button.jsx'
 import styles from './tag.module.scss'
 
 export default function ArticleTag({

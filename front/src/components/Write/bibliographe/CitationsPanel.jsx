@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { shallowEqual, useSelector } from 'react-redux'
 import debounce from 'lodash.debounce'
-import { Check, HelpCircle, Plus, Trash } from 'react-feather'
+import { Check, HelpCircle, Plus, Trash } from 'lucide-react'
 import { useToasts } from '@geist-ui/core'
 
 import {

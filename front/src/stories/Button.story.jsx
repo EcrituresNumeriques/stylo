@@ -1,5 +1,5 @@
 import React from 'react'
-import { Check, Copy } from 'react-feather'
+import { Check, Copy } from 'lucide-react'
 import Button from '../components/Button.jsx'
 
 export default function ButtonStory() {

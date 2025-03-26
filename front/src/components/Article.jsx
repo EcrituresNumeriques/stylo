@@ -13,7 +13,7 @@ import {
   Send,
   Trash,
   UserPlus,
-} from 'react-feather'
+} from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'

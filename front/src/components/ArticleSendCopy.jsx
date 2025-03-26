@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 
 import { useToasts } from '@geist-ui/core'
-import { Send } from 'react-feather'
+import { Send } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import styles from './articleSendCopy.module.scss'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { ChevronRight } from 'react-feather'
+import { ChevronRight } from 'lucide-react'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import { useLocation, useHistory } from 'react-router-dom'

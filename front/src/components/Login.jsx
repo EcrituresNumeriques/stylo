@@ -10,7 +10,7 @@ import styles from './login.module.scss'
 import formStyles from './form.module.scss'
 import Field from './Field'
 import Button from './Button'
-import { HelpCircle } from 'react-feather'
+import { HelpCircle } from 'lucide-react'
 import InlineAlert from './feedback/InlineAlert.jsx'
 
 export default function Login() {

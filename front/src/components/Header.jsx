@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { LifeBuoy } from 'react-feather'
+import { LifeBuoy } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { NavLink, Route, Switch } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'

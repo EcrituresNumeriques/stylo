@@ -1,7 +1,7 @@
 import { Toggle } from '@geist-ui/core'
 import YAML from 'js-yaml'
 import React, { useCallback, useMemo, useState } from 'react'
-import { ArrowLeft } from 'react-feather'
+import { ArrowLeft } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 

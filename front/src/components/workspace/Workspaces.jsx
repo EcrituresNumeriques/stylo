@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Search } from 'react-feather'
+import { Search } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
 import { Helmet } from 'react-helmet'

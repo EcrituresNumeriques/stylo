@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import React, { useState } from 'react'
-import { ChevronRight } from 'react-feather'
+import { ChevronRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useArticleWorkingCopy } from '../../hooks/article.js'
 import Sidebar from '../Sidebar.jsx'

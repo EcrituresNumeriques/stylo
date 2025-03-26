@@ -1,6 +1,6 @@
 import { Card, Divider, Text } from '@geist-ui/core'
 import React from 'react'
-import { AlertOctagon } from 'react-feather'
+import { AlertOctagon } from 'lucide-react'
 
 import styles from './ErrorMessageCard.module.scss'
 

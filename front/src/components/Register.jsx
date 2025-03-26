@@ -9,7 +9,7 @@ import styles from './login.module.scss'
 import formStyles from './form.module.scss'
 import Field from './Field'
 import Button from './Button'
-import { ArrowLeftCircle, Check } from 'react-feather'
+import { ArrowLeftCircle, Check } from 'lucide-react'
 import { fromFormData, validateSameFieldValue } from '../helpers/forms.js'
 import { Helmet } from 'react-helmet'
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { CheckSquare, Square, User, UserCheck } from 'react-feather'
+import { CheckSquare, Square, User, UserCheck } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import styles from './ContactItem.module.scss'

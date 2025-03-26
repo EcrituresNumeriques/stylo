@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { ArrowLeft } from 'react-feather'
+import { ArrowLeft } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'

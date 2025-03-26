@@ -6,7 +6,7 @@ import styles from './articleEditorMenu.module.scss'
 import Biblio from './Biblio'
 import Sommaire from './Sommaire'
 import Versions from './Versions'
-import { Sidebar } from 'react-feather'
+import { Sidebar } from 'lucide-react'
 
 export default function ArticleEditorMenu({
   articleInfos,

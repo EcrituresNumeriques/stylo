@@ -48,7 +48,7 @@ export default defineConfig(async ({ mode }) => {
             ],
             ui: [
               '@geist-ui/core',
-              'react-feather',
+              'lucide-react',
             ],
             textEditor: [
               'monaco-editor',

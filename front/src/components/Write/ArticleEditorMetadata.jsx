@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Sidebar } from 'react-feather'
+import { Sidebar } from 'lucide-react'
 
 import styles from './articleEditorMetadata.module.scss'
 import ArticleMetadata from './ArticleMetadata.jsx'
