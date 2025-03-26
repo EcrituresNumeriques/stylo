@@ -172,11 +172,11 @@ passport.use(
       skipUserProfile: false,
       scope: oicScope,
     },
-    async (iss, profile, done) => {
-      // careful, function arity matters https://github.com/jaredhanson/passport-openidconnect/blob/6197df6adf878bb641fd605c55f1c92f67253a07/lib/strategy.js#L223-L252
+    async (iss, profile, context, idToken, accessToken, refreshToken, done) => {
+      // careful, function arity matters https://github.com/jaredhanson/passport-openidconnect/blob/v0.1.2/lib/strategy.js#L245
       // profile has this shape https://www.passportjs.org/reference/normalized-profile/
       // when 'skipUserProfile' is set to false (aka: give us profile data)
-      const { name, displayName } = profile
+      const { id, name, displayName } = profile
       const { value: email } = profile.emails[0] || {}
 
       if (!email) {
@@ -185,17 +185,41 @@ passport.use(
         )
       }
 
-      let user = await User.findOne({ email })
+      let user = await User.findOne({
+        $or: [
+          // favourite connection, stable over time
+          { 'authProviders.humanid.id': id },
+          // legacy connection, prior to https://github.com/EcrituresNumeriques/stylo/issues/1074
+          { 'authProviders.humanid.email': email },
+        ],
+      })
 
-      // we create a new user if we could find one
-      if (!user) {
+      // update user with more up to date values
+      if (user) {
+        user.set({
+          connectedAt: Date.now(),
+          'authProviders.humanid': {
+            id,
+            email,
+            token: accessToken,
+            updatedAt: Date.now(),
+          },
+        })
+        user = await user.save()
+      } else {
         user = new User({
           email,
+          connectedAt: Date.now(),
           displayName,
           institution: '',
           firstName: name.givenName || '',
           lastName: name.familyName || '',
-          authType: 'oidc',
+          'authProviders.humanid': {
+            id,
+            email,
+            token: accessToken,
+            updatedAt: Date.now(),
+          },
         })
 
         try {
@@ -267,8 +291,7 @@ app.get(
   '/login/openid',
   async (req, res, next) => {
     if (req.user) {
-      const user = await User.assessLogin({ email: req.user.email })
-      const token = await createJWTToken({ user, jwtSecret })
+      const token = await createJWTToken({ user: req.user, jwtSecret })
       res.redirect(`${req.headers.referer ?? '/'}#auth-token=${token}`)
     } else {
       req.session.origin = req.headers.referer

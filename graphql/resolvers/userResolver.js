@@ -23,7 +23,6 @@ module.exports = {
         firstName: userInput.firstName || null,
         lastName: userInput.lastName || null,
         password: userInput.password,
-        authType: 'local',
       })
       await newUser.createDefaultArticle()
       return newUser
