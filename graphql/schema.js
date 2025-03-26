@@ -39,12 +39,23 @@ type UserStats {
   contributedArticlesCount: Int
 }
 
+type AuthProvider {
+  id: String
+  token: String
+  updatedAt: DateTime
+}
+
+type AuthProvidersMap {
+  humanid: AuthProvider
+  zotero: AuthProvider
+}
+
 type User {
   _id: ID
   displayName: String
   username: String
-  authType: AuthType
   authTypes: [AuthType]
+  authProviders: AuthProvidersMap
   email: EmailAddress
   firstName: String
   lastName: String
@@ -54,10 +65,8 @@ type User {
   acquintances(limit: Int, page: Int): [User]
   articles(limit: Int, page: Int): [Article]
   workspaces: [Workspace!]
-  zoteroToken: String
   createdAt: DateTime
   updatedAt: DateTime
-  apiToken: JWT
 
   addContact(userId: ID!): User
   removeContact(userId: ID!): User
@@ -243,7 +252,6 @@ input UserProfileInput {
   firstName: String
   lastName: String
   institution: String
-  zoteroToken: String
 }
 
 type WorkspaceArticle {

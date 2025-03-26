@@ -5,6 +5,19 @@ const { article: defaultArticle } = require('../data/defaultsData')
 
 const Schema = mongoose.Schema
 
+const AuthProviderSchema = new Schema({
+  id: {
+    type: String,
+  },
+  email: {
+    type: String,
+  },
+  token: {
+    type: String,
+  },
+  updatedAt: Date,
+})
+
 const userSchema = new Schema(
   {
     email: {
@@ -34,23 +47,20 @@ const userSchema = new Schema(
         ref: 'Article',
       },
     ],
-    authType: {
-      type: String,
-      default: 'local',
-      enum: ['local', 'oidc'],
+    authProviders: {
+      type: Map,
+      of: AuthProviderSchema,
+      default: {},
     },
     password: {
       type: String,
       default: null,
-      set: (password) => {
-        return bcrypt.hashSync(password, 10)
-      },
+      set: (password) => bcrypt.hashSync(password, 10),
     },
     firstName: String,
     lastName: String,
     institution: String,
     connectedAt: Date,
-    zoteroToken: String,
   },
   { timestamps: true }
 )
@@ -94,12 +104,19 @@ userSchema.statics.assessLogin = async function assessLogin(query) {
   return user.save()
 }
 
-userSchema.virtual('authTypes').get(function () {
+userSchema.virtual('authTypes').get(function authTypes() {
   const types = new Set()
-  types.add(this.authType)
 
   if (this.password) {
     types.add('local')
+  }
+
+  const hasRemoteAuth = Object.entries(this.authProviders ?? {}).some(
+    ([, { id, email, token }]) => id || email || token
+  )
+
+  if (hasRemoteAuth) {
+    types.add('oidc')
   }
 
   return Array.from(types)
