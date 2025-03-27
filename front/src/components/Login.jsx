@@ -5,8 +5,10 @@ import { Helmet } from 'react-helmet'
 import { Trans, useTranslation } from 'react-i18next'
 import { applicationConfig } from '../config.js'
 import { fromFormData } from '../helpers/forms.js'
+import clsx from 'clsx'
 
 import styles from './login.module.scss'
+import buttonStyles from './button.module.scss'
 import formStyles from './form.module.scss'
 import Field from './Field'
 import Button from './Button'
@@ -77,8 +79,13 @@ export default function Login() {
 
           <p>
             <a
-              className={styles.humaNumConnectBtn}
-              href={backendEndpoint + '/login/openid'}
+              className={clsx(
+                buttonStyles.link,
+                buttonStyles.secondary,
+                buttonStyles.block,
+                styles.humaNumConnectBtn
+              )}
+              href={backendEndpoint + '/login/humanid'}
               lang="fr"
               aria-label={t('credentials.login.withService', {
                 name: 'Huma-Num',
@@ -88,21 +95,47 @@ export default function Login() {
             </a>
           </p>
 
-          <p className={styles.help}>
-            <HelpCircle size={18} className={styles.inlineIcon} aria-hidden />
-            <a href="https://humanum.hypotheses.org/5754#content">
-              {t('credentials.login.howto')}
+          <p>
+            <a
+              className={clsx(
+                buttonStyles.link,
+                buttonStyles.secondary,
+                buttonStyles.block,
+                styles.hypothesisConnectBtn
+              )}
+              href={backendEndpoint + '/login/hypothesis'}
+              lang="en"
+              aria-label={t('credentials.login.withService', {
+                name: 'Hypothesis',
+              })}
+            >
+              Hypothesis
+            </a>
+          </p>
+
+          <p>
+            <a
+              className={clsx(
+                buttonStyles.link,
+                buttonStyles.secondary,
+                buttonStyles.block,
+                styles.zoteroConnectBtn
+              )}
+              href={backendEndpoint + '/login/zotero'}
+              lang="en"
+              aria-label={t('credentials.login.withService', {
+                name: 'Zotero',
+              })}
+            >
+              Zotero
             </a>
           </p>
 
           <p className={styles.help}>
             <HelpCircle size={18} className={styles.inlineIcon} aria-hidden />
-            <Trans i18nKey="credentials.login.remoteAccountHelp">
-              If you use the same email address for your
-              <strong>existing</strong>
-              Stylo account and for your Huma-Num account, the two accounts will
-              be automatically merged.
-            </Trans>
+            <a href="https://humanum.hypotheses.org/5754#content">
+              {t('credentials.login.howto')}
+            </a>
           </p>
         </fieldset>
 
@@ -125,7 +158,7 @@ export default function Login() {
               autoComplete="username"
             />
             <Field
-              label={t('credentials.password.placeholder')}
+              label={t('credentials.password.label')}
               name="password"
               hasError={error !== ''}
               required={true}

@@ -53,9 +53,8 @@ export const initialState = {
   },
   // Active user (authenticated)
   activeUser: {
-    authType: null,
     authTypes: [],
-    zoteroToken: null,
+    authProviders: {},
     selectedTagIds: [],
     workspaces: [],
     activeWorkspaceId: null,
@@ -298,12 +297,18 @@ function setProfile(state, action) {
 }
 
 function setAuthToken(state, { service, token = null }) {
-  if (service === 'zotero') {
+  if (['zotero', 'humanid', 'hypothesis'].includes(service)) {
     return {
       ...state,
       activeUser: {
         ...state.activeUser,
-        zoteroToken: token,
+        authProviders: {
+          ...(state.activeUser?.authProviders ?? {}),
+          [service]: {
+            ...(state.activeUser?.authProviders?.[service] ?? {}),
+            token,
+          },
+        },
       },
     }
   }

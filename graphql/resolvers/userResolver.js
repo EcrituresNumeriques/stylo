@@ -23,7 +23,7 @@ module.exports = {
         firstName: userInput.firstName || null,
         lastName: userInput.lastName || null,
         password: userInput.password,
-        authType: 'local',
+        connectedAt: Date.now(),
       })
       await newUser.createDefaultArticle()
       return newUser
@@ -34,8 +34,23 @@ module.exports = {
 
       isUser(args, { token, user })
 
-      if (service === 'zotero') {
-        user.zoteroToken = serviceToken
+      if (['zotero', 'humanid', 'hypothesis'].includes(service)) {
+        const authProviderKey = `authProviders.${service}`
+
+        if (serviceToken) {
+          // workaround the absence of `merge` option for `MongooseMap.$set()`
+          user.set(authProviderKey, {
+            ...(user.get(authProviderKey)?.toObject({ flattenMaps: true }) ??
+              {}),
+            token: serviceToken,
+            updatedAt: Date.now(),
+          })
+        } else {
+          user.set(authProviderKey, {
+            updatedAt: Date.now(),
+          })
+        }
+
         await user.save()
       } else {
         throw new Error(`Service unknown (${service})`)
@@ -85,19 +100,14 @@ module.exports = {
         throw new Error('Unable to find user')
       }
 
-      ;[
-        'displayName',
-        'firstName',
-        'lastName',
-        'institution',
-        'yaml',
-        'zoteroToken',
-      ].forEach((field) => {
-        if (Object.hasOwn(details, field)) {
-          /* eslint-disable security/detect-object-injection */
-          thisUser.set(field, details[field])
+      ;['displayName', 'firstName', 'lastName', 'institution', 'yaml'].forEach(
+        (field) => {
+          if (Object.hasOwn(details, field)) {
+            /* eslint-disable security/detect-object-injection */
+            thisUser.set(field, details[field])
+          }
         }
-      })
+      )
 
       return thisUser.save()
     },
@@ -138,6 +148,13 @@ module.exports = {
           context.loaders.users.load(contactId)
         )
       )
+    },
+
+    authProviders(user) {
+      return {
+        humanid: user.get('authProviders.humanid'),
+        zotero: user.get('authProviders.zotero'),
+      }
     },
 
     /**
