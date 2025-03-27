@@ -17,7 +17,7 @@ import {
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { useArticleActions } from '../hooks/article.js'
 import useFetchData from '../hooks/graphql'
@@ -59,7 +59,6 @@ export default function Article({
   onArticleDeleted,
   onArticleCreated,
 }) {
-  const { history } = useHistory()
   const activeUser = useSelector((state) => state.activeUser)
   const articleId = useMemo(() => article._id, [article])
   const activeWorkspace = useActiveWorkspace()
