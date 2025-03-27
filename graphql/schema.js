@@ -19,6 +19,8 @@ enum AuthType {
 }
 
 enum AuthTokenService {
+  humanid
+  hypothesis
   zotero
 }
 

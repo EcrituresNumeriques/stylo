@@ -300,17 +300,16 @@ function setProfile(state, action) {
   }
 }
 
-function setAuthToken(state, { service, id = null, token = null }) {
-  if (service === 'zotero') {
+function setAuthToken(state, { service, token = null }) {
+  if (['zotero', 'humanid', 'hypothesis'].includes(service)) {
     return {
       ...state,
       activeUser: {
         ...state.activeUser,
         authProviders: {
           ...(state.activeUser?.authProviders ?? {}),
-          zotero: {
-            ...(state.activeUser?.authProviders?.zotero ?? {}),
-            id,
+          [service]: {
+            ...(state.activeUser?.authProviders?.[service] ?? {}),
             token,
           },
         },

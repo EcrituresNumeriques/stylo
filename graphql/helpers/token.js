@@ -2,18 +2,38 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const Sentry = require('@sentry/node')
 
+/**
+ * @typedef {Object} RequestContext
+ * @property {import('express-session').Session} session
+ * @property {string} token
+ * @property {import('../models/user.js')} user
+ * @property {string?} userId
+ * @property {import('../loaders.js').createLoaders()} loaders
+ */
+
+/**
+ *
+ * @param {Object} params
+ * @param {User} params.user
+ * @param {string} params.jwtSecret
+ * @returns {Promise<string>}
+ */
 module.exports.createJWTToken = async function createJWTToken({
   user,
   jwtSecret,
 }) {
-  // generate a JWT token
   const payload = {
     email: user.email,
     _id: user._id,
     session: true,
   }
 
-  return jwt.sign(payload, jwtSecret)
+  return jwt.sign(
+    payload,
+    jwtSecret /*, {
+    expiresIn: '30d',
+  }*/
+  )
 }
 
 module.exports.populateUserFromJWT = function populateUserFromJWT({

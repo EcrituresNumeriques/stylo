@@ -4,37 +4,47 @@ const Article = require('./models/article')
 const Version = require('./models/version')
 const DataLoader = require('dataloader')
 
-async function getTags (tagIds) {
+/**
+ * @typedef {Object} Loaders
+ * @property {DataLoader} tags
+ * @property {DataLoader} users
+ * @property {DataLoader} articles
+ * @property {DataLoader} versions
+ */
+
+async function getTags(tagIds) {
   return findByIds(tagIds, Tag)
 }
 
-async function getUsers (userIds) {
+async function getUsers(userIds) {
   return findByIds(userIds, User)
 }
 
-async function getArticles (articleIds) {
+async function getArticles(articleIds) {
   return findByIds(articleIds, Article)
 }
 
-async function getVersions (versionIds) {
+async function getVersions(versionIds) {
   return findByIds(versionIds, Version)
 }
 
 async function findByIds(ids, model) {
-  const items = await model
-    .find({ _id: { $in: ids } })
-    .lean()
+  const items = await model.find({ _id: { $in: ids } }).lean()
   const itemByIds = items.reduce((acc, item) => {
     acc[item._id] = item
     return acc
   }, {})
   // eslint-disable-next-line security/detect-object-injection
-  return ids.map(id => itemByIds[id])
+  return ids.map((id) => itemByIds[id])
 }
 
 module.exports = {
-  createTagLoader: () => new DataLoader(getTags),
-  createUserLoader: () => new DataLoader(getUsers),
-  createArticleLoader: () => new DataLoader(getArticles),
-  createVersionLoader: () => new DataLoader(getVersions),
+  createLoaders() {
+    return {
+      tags: new DataLoader(getTags),
+      users: new DataLoader(getUsers),
+      articles: new DataLoader(getArticles),
+      versions: new DataLoader(getVersions),
+    }
+  },
 }

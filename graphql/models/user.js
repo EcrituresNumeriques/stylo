@@ -9,6 +9,9 @@ const AuthProviderSchema = new Schema({
   id: {
     type: String,
   },
+  username: {
+    type: String,
+  },
   email: {
     type: String,
   },
@@ -20,11 +23,7 @@ const AuthProviderSchema = new Schema({
 
 const userSchema = new Schema(
   {
-    email: {
-      type: String,
-      unique: true,
-      required: true,
-    },
+    email: String,
     displayName: String,
     // unique but not required, we need to create a sparse index manually
     username: String,
@@ -97,12 +96,6 @@ userSchema.methods.createDefaultArticle =
     this.articles.push(newArticle)
     return this.save()
   }
-
-userSchema.statics.assessLogin = async function assessLogin(query) {
-  const user = await this.findOne(query)
-  user.connectedAt = Date.now()
-  return user.save()
-}
 
 userSchema.virtual('authTypes').get(function authTypes() {
   const types = new Set()

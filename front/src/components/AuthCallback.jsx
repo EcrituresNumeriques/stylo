@@ -7,7 +7,7 @@ import buttonStyles from './button.module.scss'
 
 import Button from './Button.jsx'
 
-const ENABLED_SERVICES = ['zotero']
+const ENABLED_SERVICES = ['humanid', 'hypothesis', 'zotero']
 
 export default function AuthCallbackPopup() {
   const location = useLocation()
@@ -62,7 +62,7 @@ export default function AuthCallbackPopup() {
           {t(
             `credentials.authentication.${authParams.type}.${authParams.translationKey}`,
             {
-              service: authParams.service,
+              service: `$t(credentials.authentication.service.${authParams.service})`,
               message: authParams.message,
             }
           )}

@@ -34,15 +34,22 @@ module.exports = {
 
       isUser(args, { token, user })
 
-      if (service === 'zotero') {
-        // there is no merging for MongooseMap as for now
-        user.set('authProviders.zotero', {
-          ...(user
-            .get('authProviders.zotero')
-            ?.toObject({ flattenMaps: true }) ?? {}),
-          token: serviceToken,
-          updatedAt: Date.now(),
-        })
+      if (['zotero', 'humanid', 'hypothesis'].includes(service)) {
+        const authProviderKey = `authProviders.${service}`
+
+        if (serviceToken) {
+          // workaround the absence of `merge` option for `MongooseMap.$set()`
+          user.set(authProviderKey, {
+            ...(user.get(authProviderKey)?.toObject({ flattenMaps: true }) ??
+              {}),
+            token: serviceToken,
+            updatedAt: Date.now(),
+          })
+        } else {
+          user.set(authProviderKey, {
+            updatedAt: Date.now(),
+          })
+        }
 
         await user.save()
       } else {
@@ -146,6 +153,7 @@ module.exports = {
     authProviders(user) {
       return {
         humanid: user.get('authProviders.humanid'),
+        hypothesis: user.get('authProviders.hypothesis'),
         zotero: user.get('authProviders.zotero'),
       }
     },
