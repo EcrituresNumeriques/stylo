@@ -24,25 +24,25 @@ import useFetchData from '../hooks/graphql'
 import { useModal } from '../hooks/modal.js'
 import { useActiveWorkspace } from '../hooks/workspace.js'
 
-import { getArticleContributors, getArticleTags } from './Article.graphql'
-import styles from './article.module.scss'
-
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
 import ArticleTags from './ArticleTags.jsx'
 import ArticleVersionLinks from './ArticleVersionLinks.jsx'
 import Button from './Button.jsx'
-
-import buttonStyles from './button.module.scss'
 import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
 import Export from './Export.jsx'
 import Field from './Field.jsx'
-import fieldStyles from './field.module.scss'
 import Modal from './Modal.jsx'
 import FormActions from './molecules/FormActions.jsx'
-import { getTags } from './Tag.graphql'
 import TimeAgo from './TimeAgo.jsx'
 import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
+
+import { getArticleContributors, getArticleTags } from './Article.graphql'
+import { getTags } from './Tag.graphql'
+
+import buttonStyles from './button.module.scss'
+import fieldStyles from './field.module.scss'
+import styles from './article.module.scss'
 
 /**
  * @param props
