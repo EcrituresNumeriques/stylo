@@ -44,10 +44,14 @@ const colors = [
   '#DDDDDD',
 ]
 
+/**
+ * @param props
+ * @param props.articleId
+ * @param props.onCollaborativeSessionStateUpdated
+ * @return {Element}
+ */
 export default function CollaborativeTextEditor({
   articleId,
-  collaborativeSessionCreatorId,
-  collaborativeSessionId,
   onCollaborativeSessionStateUpdated,
 }) {
   const connectingRef = useRef(false)
@@ -150,7 +154,7 @@ export default function CollaborativeTextEditor({
       doc: yDocument,
       wsProvider,
     } = collaborating.connect({
-      roomName: collaborativeSessionId,
+      roomName: articleId,
       websocketEndpoint,
       user: writerInfo,
       onChange: handleWritersUpdated,
@@ -174,7 +178,7 @@ export default function CollaborativeTextEditor({
         wsProvider.destroy()
       }
     }
-  }, [collaborativeSessionId, websocketEndpoint, writerInfo])
+  }, [articleId, websocketEndpoint, writerInfo])
 
   useEffect(() => {
     const line = editorCursorPosition.lineNumber
@@ -192,11 +196,7 @@ export default function CollaborativeTextEditor({
   return (
     <>
       <style>{dynamicStyles}</style>
-      <CollaborativeEditorStatus
-        articleId={articleId}
-        websocketStatus={websocketStatus}
-        collaborativeSessionCreatorId={collaborativeSessionCreatorId}
-      />
+      <CollaborativeEditorStatus />
       <div className={styles.inlineStatus}>
         <CollaborativeEditorWebSocketStatus status={websocketStatus} />
       </div>
@@ -210,11 +210,4 @@ export default function CollaborativeTextEditor({
       />
     </>
   )
-}
-
-CollaborativeTextEditor.propTypes = {
-  articleId: PropTypes.string.isRequired,
-  collaborativeSessionId: PropTypes.string.isRequired,
-  collaborativeSessionCreatorId: PropTypes.string.isRequired,
-  onCollaborativeSessionStateUpdated: PropTypes.func,
 }

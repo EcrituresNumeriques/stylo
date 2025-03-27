@@ -67,7 +67,7 @@ const Y = require('yjs')
 const yjsUtils = require('y-websocket/bin/utils')
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
-const { mongo } = require("mongoose");
+const { mongo } = require('mongoose')
 const wss = new WebSocket.Server({ noServer: true })
 
 const listenPort = config.get('port')
@@ -388,40 +388,46 @@ const builtinPersistence = yjsUtils.getPersistence()
 yjsUtils.setPersistence({
   bindState: async (roomName, ydoc) => {
     console.log('bindState:', roomName)
-    const sessionId = roomName.split('/')[1] // format: ws/{sessionId}
-    console.log('sessionId:', sessionId)
-    const result = await mongoose.connection.collection('articles')
-      .findOne({
-        '$and': [
-          { 'collaborativeSession.id': new mongo.ObjectID(sessionId) },
-          { 'workingVersion.ydoc': { $ne: null } },
-        ]
-      })
+    const articleId = roomName.split('/')[1] // format: ws/{articleId}
+    console.log('articleId:', articleId)
+    const result = await mongoose.connection.collection('articles').findOne({
+      $and: [
+        { _id: new mongo.ObjectID(articleId) },
+        { 'workingVersion.ydoc': { $ne: null } },
+      ],
+    })
     // TODO: handle errors
     if (result) {
-      const documentState = Buffer.from(result.workingVersion.ydoc, "base64")
+      const documentState = Buffer.from(result.workingVersion.ydoc, 'base64')
       Y.applyUpdate(ydoc, documentState)
     }
     await builtinPersistence.bindState(roomName, ydoc)
-    ydoc.on('update', debounce(async () => {
-        const sessionId = roomName.split('/')[1] // format: ws/{sessionId}
-        const documentState = Y.encodeStateAsUpdate(ydoc) // is a Uint8Array
-        await mongoose.connection.collection('articles')
-          .updateOne(
-            { 'collaborativeSession.id': new mongo.ObjectID(sessionId) },
+    ydoc.on(
+      'update',
+      debounce(
+        async () => {
+          const articleId = roomName.split('/')[1] // format: ws/{articleId}
+          const documentState = Y.encodeStateAsUpdate(ydoc) // is a Uint8Array
+          await mongoose.connection.collection('articles').updateOne(
+            { _id: new mongo.ObjectID(articleId) },
             {
-              $set: { 'workingVersion.ydoc': Buffer.from(documentState).toString('base64') }
-            })
-        // TODO: handle errors
-      },
-      4000,
-      { leading: false, trailing: true }
-    ))
+              $set: {
+                'workingVersion.ydoc':
+                  Buffer.from(documentState).toString('base64'),
+              },
+            }
+          )
+          // TODO: handle errors
+        },
+        4000,
+        { leading: false, trailing: true }
+      )
+    )
   },
   writeState: async (roomName, ydoc) => {
     console.log('writeState:', roomName)
     await builtinPersistence.writeState(roomName, ydoc)
-  }
+  },
 })
 wss.on('connection', yjsUtils.setupWSConnection)
 

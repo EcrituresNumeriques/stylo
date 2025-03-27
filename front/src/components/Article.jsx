@@ -1,7 +1,5 @@
 import { useToasts } from '@geist-ui/core'
 import clsx from 'clsx'
-import PropTypes from 'prop-types'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Check,
   ChevronDown,
@@ -14,6 +12,8 @@ import {
   Trash,
   UserPlus,
 } from 'lucide-react'
+import PropTypes from 'prop-types'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -363,16 +363,8 @@ export default function Article({
           <Printer />
         </Button>
 
-        <CollaborativeSessionAction
-          collaborativeSession={article.collaborativeSession}
-          articleId={articleId}
-        />
-
-        <SoloSessionAction
-          collaborativeSession={article.collaborativeSession}
-          soloSession={article.soloSession}
-          articleId={articleId}
-        />
+        <SoloSessionAction articleId={articleId} />
+        <CollaborativeSessionAction articleId={articleId} />
 
         <Link
           title={t('article.preview.button')}
