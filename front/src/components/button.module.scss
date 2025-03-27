@@ -103,6 +103,10 @@ a.icon:not(.primary) {
   }
 }
 
+.block {
+  display: block;
+}
+
 .primary {
   @extend .button;
 
