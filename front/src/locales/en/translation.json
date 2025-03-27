@@ -384,5 +384,7 @@
   "metadata.showYaml": "Enable YAML mode",
   "toc.title": "Table Of Contents",
   "editorMenu.open.label": "Close", 
-  "editorMenu.close.label": "Menu"
+  "editorMenu.close.label": "Menu",
+  "export.title": "Export",
+  "annotate.title": "Annotate"
 }

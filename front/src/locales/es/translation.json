@@ -359,5 +359,7 @@
   "metadata.showYaml": "Activar el modo YAML",
   "toc.title": "Tabla de contenido",
   "editorMenu.open.label": "Cerrar",
-  "editorMenu.close.label": "Menú"
+  "editorMenu.close.label": "Menú",
+  "export.title": "Exportar",
+  "annotate.title": "Anotar"
 }

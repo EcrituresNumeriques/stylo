@@ -20,7 +20,8 @@
   flex-direction: column;
   flex: 1;
   width: 100%;
-  > li {
+
+  > a {
     user-select: none;
     cursor: pointer;
     font-size: 1.5rem;
@@ -28,19 +29,13 @@
     display: flex;
     align-items: center;
     gap: 0.25rem;
-
-    > a {
-      display: flex;
-      gap: 0.25rem;
-      text-decoration: none;
-      color: $main-color;
-
-    }
+    text-decoration: none;
+    color: $main-color;
   }
 }
 
 .external::after {
-    content: "↗";
+  content: "↗";
 }
 
 .content {

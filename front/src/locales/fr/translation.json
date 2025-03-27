@@ -381,5 +381,7 @@
   "metadata.showYaml": "Activer le mode YAML",
   "toc.title": "Tables des matières",
   "editorMenu.open.label": "Fermer",
-  "editorMenu.close.label": "Menu"
+  "editorMenu.close.label": "Menu",
+  "export.title": "Exporter",
+  "annotate.title": "Annoter"
 }
