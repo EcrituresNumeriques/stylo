@@ -1,8 +1,16 @@
 import clsx from 'clsx'
+import { ArrowLeft, ChevronRight, ExternalLink, Printer } from 'lucide-react'
 import React, { useState } from 'react'
-import { ChevronRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
 import { useArticleWorkingCopy } from '../../hooks/article.js'
+import useFetchData from '../../hooks/graphql.js'
+import { useModal } from '../../hooks/modal.js'
+
+import { getArticleInfo } from '../Article.graphql'
+import Export from '../Export.jsx'
+import Modal from '../Modal.jsx'
+import Loading from '../molecules/Loading.jsx'
 import Sidebar from '../Sidebar.jsx'
 import ArticleMetadata from '../Write/ArticleMetadata.jsx'
 import ArticleTableOfContents from './ArticleTableOfContents.jsx'
@@ -13,8 +21,21 @@ export default function CollaborativeEditorMenu({ articleId }) {
   const { t } = useTranslation()
   const [opened, setOpened] = useState(false)
   const [activeMenu, setActiveMenu] = useState('')
-
+  const exportModal = useModal()
   const { article } = useArticleWorkingCopy({ articleId })
+  const history = useHistory()
+  const { data, isLoading } = useFetchData(
+    { query: getArticleInfo, variables: { articleId } },
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  )
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   const metadata = article?.workingVersion?.metadata
 
@@ -29,24 +50,47 @@ export default function CollaborativeEditorMenu({ articleId }) {
       >
         <section>
           {activeMenu === '' && (
-            <ul className={styles.entries}>
-              <li onClick={() => setActiveMenu('toc')}>
+            <div className={styles.entries}>
+              <a href="#" onClick={() => setActiveMenu('toc')}>
                 {t('toc.title')}
                 <ChevronRight
                   style={{ strokeWidth: 3 }}
                   height={32}
                   width={32}
                 />
-              </li>
-              <li onClick={() => setActiveMenu('metadata')}>
+              </a>
+              <a href="#" onClick={() => setActiveMenu('metadata')}>
                 {t('metadata.title')}
                 <ChevronRight
                   style={{ strokeWidth: 3 }}
                   height={32}
                   width={32}
                 />
-              </li>
-            </ul>
+              </a>
+
+              <a
+                href="#"
+                onClick={() => setActiveMenu('export')}
+                title="Download a printable version"
+              >
+                {t('export.title')}
+                <ChevronRight
+                  style={{ strokeWidth: 3 }}
+                  height={32}
+                  width={32}
+                />
+              </a>
+
+              <a
+                href={`/article/${articleId}/preview`}
+                title="Preview (open a new window)"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.external}
+              >
+                {t('annotate.title')}
+              </a>
+            </div>
           )}
           <div className={styles.content}>
             {activeMenu === 'metadata' && (
@@ -58,6 +102,25 @@ export default function CollaborativeEditorMenu({ articleId }) {
             )}
             {activeMenu === 'toc' && (
               <ArticleTableOfContents onBack={() => setActiveMenu('')} />
+            )}
+            {activeMenu === 'export' && (
+              <>
+                <h2
+                  className={styles.title}
+                  onClick={() => setActiveMenu('')}
+                  style={{ cursor: 'pointer', userSelect: 'none' }}
+                >
+                  <span style={{ display: 'flex' }}>
+                    <ArrowLeft style={{ strokeWidth: 3 }} />
+                  </span>
+                  <span>{t('export.title')}</span>
+                </h2>
+                <Export
+                  articleId={articleId}
+                  name={data?.article?.title}
+                  bib={data?.article?.workingVersion?.bibPreview}
+                />
+              </>
             )}
           </div>
         </section>

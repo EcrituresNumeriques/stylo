@@ -5,11 +5,11 @@ import { ArrowLeft } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-import styles from './articleEditorMetadata.module.scss'
-
 import { toYaml } from './metadata/yaml.js'
 import MonacoYamlEditor from './providers/monaco/YamlEditor'
 import ArticleEditorMetadataForm from './yamleditor/ArticleEditorMetadataForm.jsx'
+
+import styles from './articleEditorMetadata.module.scss'
 
 /**
  * @param {object} props
