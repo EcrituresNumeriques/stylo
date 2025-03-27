@@ -1,22 +1,18 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Code, Text, useToasts } from '@geist-ui/core'
+import { Code, Text } from '@geist-ui/core'
 import clsx from 'clsx'
 import debounce from 'lodash.debounce'
 import throttle from 'lodash.throttle'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
-import { batch, shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { batch, useDispatch } from 'react-redux'
 import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom'
 
-import { applicationConfig } from '../../config.js'
 import { useGraphQLClient } from '../../helpers/graphQL'
-import { useModal } from '../../hooks/modal.js'
 import { useActiveUserId } from '../../hooks/user'
 
 import ArticleStats from '../ArticleStats.jsx'
 import ErrorMessageCard from '../ErrorMessageCard.jsx'
-import Modal from '../Modal.jsx'
-import FormActions from '../molecules/FormActions.jsx'
 import Loading from '../molecules/Loading.jsx'
 import ArticleEditorMenu from './ArticleEditorMenu.jsx'
 import ArticleEditorMetadata from './ArticleEditorMetadata.jsx'
@@ -26,10 +22,7 @@ import PreviewPaged from './PreviewPaged'
 import MonacoEditor from './providers/monaco/Editor'
 import WorkingVersion from './WorkingVersion'
 
-import {
-  getEditableArticle as getEditableArticleQuery,
-  stopSoloSession,
-} from './Write.graphql'
+import { getEditableArticle as getEditableArticleQuery } from './Write.graphql'
 
 import styles from './write.module.scss'
 
@@ -51,36 +44,18 @@ export function deriveModeFrom({ path, currentVersion }) {
  * @return {Element}
  */
 export default function Write() {
-  const { setToast } = useToasts()
-  const { backendEndpoint } = applicationConfig
   const { t } = useTranslation()
   const { version: currentVersion, id: articleId, compareTo } = useParams()
-  const workingArticle = useSelector(
-    (state) => state.workingArticle,
-    shallowEqual
-  )
   const userId = useActiveUserId()
   const dispatch = useDispatch()
   const { query } = useGraphQLClient()
   const routeMatch = useRouteMatch()
-  const [collaborativeSessionActive, setCollaborativeSessionActive] =
-    useState(false)
-  const [soloSessionActive, setSoloSessionActive] = useState(false)
   const mode = useMemo(() => {
-    if (collaborativeSessionActive || soloSessionActive) {
-      return MODES_READONLY
-    }
     return deriveModeFrom({ currentVersion, path: routeMatch.path })
-  }, [
-    currentVersion,
-    routeMatch.path,
-    collaborativeSessionActive,
-    soloSessionActive,
-  ])
+  }, [currentVersion, routeMatch.path])
   const [graphQLError, setGraphQLError] = useState()
   const [isLoading, setIsLoading] = useState(true)
   const [live, setLive] = useState({})
-  const [soloSessionTakenOverBy, setSoloSessionTakenOverBy] = useState('')
   const [articleInfos, setArticleInfos] = useState({
     title: '',
     owner: '',
@@ -88,10 +63,6 @@ export default function Write() {
     zoteroLink: '',
     preview: {},
   })
-
-  const collaborativeSessionActiveModal = useModal()
-  const soloSessionActiveModal = useModal()
-  const soloSessionTakeOverModal = useModal()
 
   const PreviewComponent = useMemo(
     () => (articleInfos.preview.stylesheet ? PreviewPaged : PreviewHtml),
@@ -160,46 +131,6 @@ export default function Write() {
     return setLive({ ...live, metadata })
   }
 
-  const handleStateUpdated = useCallback(
-    (event) => {
-      const parsedData = JSON.parse(event.data)
-      if (parsedData.articleStateUpdated) {
-        const articleStateUpdated = parsedData.articleStateUpdated
-        if (articleId === articleStateUpdated._id) {
-          if (
-            articleStateUpdated.soloSession &&
-            articleStateUpdated.soloSession.id
-          ) {
-            if (userId !== articleStateUpdated.soloSession.creator._id) {
-              setSoloSessionTakenOverBy(
-                articleStateUpdated.soloSession.creatorUsername
-              )
-              setSoloSessionActive(true)
-              soloSessionTakeOverModal.show()
-            }
-          } else if (articleStateUpdated.collaborativeSession) {
-            collaborativeSessionActiveModal.show()
-            setCollaborativeSessionActive(true)
-          }
-        }
-      }
-    },
-    [articleId]
-  )
-
-  useEffect(() => {
-    // FIXME: should retrieve extensions.type 'COLLABORATIVE_SESSION_CONFLICT'
-    if (
-      workingArticle &&
-      workingArticle.state === 'saveFailure' &&
-      workingArticle.stateMessage ===
-        'Active collaborative session, cannot update the working copy.'
-    ) {
-      collaborativeSessionActiveModal.show()
-      setCollaborativeSessionActive(true)
-    }
-  }, [workingArticle])
-
   // Reload when version switching
   useEffect(() => {
     const variables = {
@@ -221,22 +152,6 @@ export default function Write() {
       })
 
       if (data?.article) {
-        if (data.article.soloSession && data.article.soloSession.id) {
-          if (userId !== data.article.soloSession.creator._id) {
-            setSoloSessionActive(true)
-            soloSessionActiveModal.show()
-          }
-        }
-        setCollaborativeSessionActive(
-          data.article.collaborativeSession &&
-            data.article.collaborativeSession.id
-        )
-        const collaborativeSessionActiveModalVisible =
-          data.article.collaborativeSession &&
-          data.article.collaborativeSession.id
-        if (collaborativeSessionActiveModalVisible) {
-          collaborativeSessionActiveModal.show()
-        }
         const article = data.article
         let currentArticle
         if (currentVersion) {
@@ -286,43 +201,7 @@ export default function Write() {
 
       setIsLoading(false)
     })()
-
-    return async () => {
-      try {
-        await query({ query: stopSoloSession, variables: { articleId } })
-      } catch (err) {
-        if (
-          err &&
-          err.messages &&
-          err.messages.length > 0 &&
-          err.messages[0].extensions &&
-          err.messages[0].extensions.type === 'UNAUTHORIZED'
-        ) {
-          // cannot end solo session... ignoring
-        } else {
-          setToast({
-            type: 'error',
-            text: `Unable to end solo session: ${err.toString()}`,
-          })
-        }
-      }
-    }
   }, [currentVersion, articleId])
-
-  useEffect(() => {
-    let events
-    if (!isLoading) {
-      events = new EventSource(`${backendEndpoint}/events?userId=${userId}`)
-      events.onmessage = (event) => {
-        handleStateUpdated(event)
-      }
-    }
-    return () => {
-      if (events) {
-        events.close()
-      }
-    }
-  }, [isLoading, handleStateUpdated])
 
   if (graphQLError) {
     return (
@@ -345,53 +224,6 @@ export default function Write() {
       <Helmet>
         <title>{t('article.page.title', { title: articleInfos.title })}</title>
       </Helmet>
-      <Modal
-        {...collaborativeSessionActiveModal.bindings}
-        title={t('article.collaborativeSessionActive.title')}
-      >
-        {t('article.collaborativeSessionActive.message')}
-        <FormActions
-          onCancel={() => collaborativeSessionActiveModal.close()}
-          onSubmit={() => collaborativeSessionActiveModal.close()}
-          submitButton={{
-            text: t('modal.confirmButton.text'),
-            title: t('modal.confirmButton.text'),
-          }}
-        />
-      </Modal>
-
-      <Modal
-        {...soloSessionActiveModal.bindings}
-        title={t('article.soloSessionActive.title')}
-      >
-        {t('article.soloSessionActive.message')}
-        <FormActions
-          onCancel={() => soloSessionActiveModal.close()}
-          onSubmit={() => soloSessionActiveModal.close()}
-          submitButton={{
-            text: t('modal.confirmButton.text'),
-            title: t('modal.confirmButton.text'),
-          }}
-        />
-      </Modal>
-
-      <Modal
-        {...soloSessionTakeOverModal.bindings}
-        title={t('article.soloSessionTakeOver.title')}
-      >
-        {t('article.soloSessionTakeOver.message', {
-          username: soloSessionTakenOverBy,
-        })}
-        <FormActions
-          onCancel={() => soloSessionTakeOverModal.close()}
-          onSubmit={() => soloSessionTakeOverModal.close()}
-          submitButton={{
-            text: t('modal.confirmButton.text'),
-            title: t('modal.confirmButton.text'),
-          }}
-        />
-      </Modal>
-
       <ArticleEditorMenu
         articleInfos={articleInfos}
         compareTo={compareTo}

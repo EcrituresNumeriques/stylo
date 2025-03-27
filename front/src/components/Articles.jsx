@@ -1,10 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { Search } from 'lucide-react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { applicationConfig } from '../config.js'
-import etv from '../helpers/eventTargetValue'
 
 import useFetchData from '../hooks/graphql'
 import { useModal } from '../hooks/modal.js'
@@ -13,9 +11,6 @@ import { useActiveWorkspace } from '../hooks/workspace.js'
 
 import Article from './Article'
 import ArticleCreate from './ArticleCreate.jsx'
-import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
-
-import styles from './articles.module.scss'
 import Button from './Button.jsx'
 import Field from './Field'
 import Modal from './Modal.jsx'
@@ -23,10 +18,14 @@ import Loading from './molecules/Loading.jsx'
 import TagEditForm from './tag/TagEditForm.jsx'
 import TagsList from './tag/TagsList.jsx'
 import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
+import etv from '../helpers/eventTargetValue'
+
+import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
+
+import styles from './articles.module.scss'
 
 export default function Articles() {
   const { t } = useTranslation()
-  const { backendEndpoint } = applicationConfig
   const selectedTagIds = useSelector(
     (state) => state.activeUser.selectedTagIds || []
   )
@@ -142,61 +141,6 @@ export default function Articles() {
     },
     [articles]
   )
-
-  const handleStateUpdated = useCallback(
-    (event) => {
-      const parsedData = JSON.parse(event.data)
-      if (parsedData.articleStateUpdated) {
-        const articleStateUpdated = parsedData.articleStateUpdated
-        const updatedArticles = articles.map((article) => {
-          if (article._id === articleStateUpdated._id) {
-            return {
-              ...article,
-              soloSession: articleStateUpdated.soloSession,
-              collaborativeSession: articleStateUpdated.collaborativeSession,
-            }
-          }
-          return article
-        })
-        if (activeWorkspaceId) {
-          mutate(
-            {
-              workspace: {
-                ...data.workspace,
-                articles: updatedArticles,
-              },
-            },
-            { revalidate: false }
-          )
-        } else {
-          mutate(
-            {
-              articles: updatedArticles,
-            },
-            { revalidate: false }
-          )
-        }
-      }
-    },
-    [articles]
-  )
-
-  useEffect(() => {
-    let events
-    if (!isLoading) {
-      events = new EventSource(
-        `${backendEndpoint}/events?userId=${activeUserId}`
-      )
-      events.onmessage = (event) => {
-        handleStateUpdated(event)
-      }
-    }
-    return () => {
-      if (events) {
-        events.close()
-      }
-    }
-  }, [isLoading, handleStateUpdated])
 
   const keepArticles = useMemo(
     () =>
