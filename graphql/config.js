@@ -17,7 +17,61 @@ convict.addFormat({
 })
 /**
  * @type {convict.Config<{
- *
+ *  env: 'dev' | 'prod',
+ *  export: {
+ *    baseUrl: string,
+ *    urlEndpoint: string
+ *  },
+ *  hypothesis: {
+ *    auth: {
+ *      callbackUrl: string,
+ *      clientId: string
+ *    }
+ *  },
+ *  jwt: {
+ *    secret: string
+ *  },
+ *  mongo: {
+ *    databaseUrl: string
+ *  },
+ *  oauthProvider: {
+ *    name: string,
+ *    issuer: string,
+ *    callbackUrl: string,
+ *    client: {
+ *      id: string,
+ *      secret: string
+ *    },
+ *    scope: string,
+ *    auth: {
+ *      tokenUrl: string,
+ *      userInfo: string,
+ *      url: string
+ *    }
+ *  },
+ *  port: number,
+ *  securedCookie: boolean,
+ *  security: {
+ *    cors: {
+ *      origin: string
+ *    }
+ *  },
+ *  sentry: {
+ *    dsn: string | null
+ *  },
+ *  session: {
+ *    secret: string
+ *  },
+ *  yjs: {
+ *    persistenceDataDirectory: string
+ *  },
+ *  zotero: {
+ *    auth: {
+ *      callbackUrl: string,
+ *      clientKey: string,
+ *      clientSecret: string
+ *    }
+ *  }
  * }>}
  */
 module.exports = convict({
@@ -132,22 +186,22 @@ module.exports = convict({
       },
     },
   },
+  hypothesis: {
+    auth: {
+      callbackUrl: {
+        format: 'url',
+        env: 'HYPOTHESIS_AUTH_CALLBACK_URL',
+        default: 'http://localhost:3030/authorization-code/hypothesis/callback',
+      },
+      clientId: {
+        format: String,
+        sensitive: true,
+        env: 'HYPOTHESIS_AUTH_CLIENT_KEY',
+        default: null,
+      },
+    },
+  },
   zotero: {
-    accessPoint: {
-      format: 'url',
-      env: 'ZOTERO_ACCESS_TOKEN_ENDPOINT',
-      default: 'https://www.zotero.org/oauth/access',
-    },
-    authorize: {
-      format: 'url',
-      env: 'ZOTERO_AUTHORIZE_ENDPOINT',
-      default: 'https://www.zotero.org/oauth/authorize',
-    },
-    requestToken: {
-      format: 'url',
-      env: 'ZOTERO_REQUEST_TOKEN_ENDPOINT',
-      default: 'https://www.zotero.org/oauth/request',
-    },
     auth: {
       callbackUrl: {
         format: 'url',
