@@ -414,6 +414,7 @@ yjsUtils.setPersistence({
               $set: {
                 'workingVersion.ydoc':
                   Buffer.from(documentState).toString('base64'),
+                updatedAt: new Date(),
               },
             }
           )
