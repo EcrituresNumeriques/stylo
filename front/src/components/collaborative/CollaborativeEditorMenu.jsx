@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { ChevronRight, ExternalLink, Printer } from 'lucide-react'
+import { ArrowLeft, ChevronRight, ExternalLink, Printer } from 'lucide-react'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
@@ -70,10 +70,15 @@ export default function CollaborativeEditorMenu({ articleId }) {
 
               <a
                 href="#"
-                onClick={() => exportModal.show()}
+                onClick={() => setActiveMenu('export')}
                 title="Download a printable version"
               >
                 {t('export.title')}
+                <ChevronRight
+                  style={{ strokeWidth: 3 }}
+                  height={32}
+                  width={32}
+                />
               </a>
 
               <a
@@ -98,24 +103,28 @@ export default function CollaborativeEditorMenu({ articleId }) {
             {activeMenu === 'toc' && (
               <ArticleTableOfContents onBack={() => setActiveMenu('')} />
             )}
+            {activeMenu === 'export' && (
+              <>
+                <h2
+                  className={styles.title}
+                  onClick={() => setActiveMenu('')}
+                  style={{ cursor: 'pointer', userSelect: 'none' }}
+                >
+                  <span style={{ display: 'flex' }}>
+                    <ArrowLeft style={{ strokeWidth: 3 }} />
+                  </span>
+                  <span>{t('export.title')}</span>
+                </h2>
+                <Export
+                  articleId={articleId}
+                  name={data?.article?.title}
+                  bib={data?.article?.workingVersion?.bibPreview}
+                />
+              </>
+            )}
           </div>
         </section>
       </Sidebar>
-      <Modal
-        {...exportModal.bindings}
-        title={
-          <>
-            <Printer /> Export
-          </>
-        }
-      >
-        <Export
-          articleId={articleId}
-          name={data?.article?.title}
-          bib={data?.article?.workingVersion?.bibPreview}
-          onCancel={() => exportModal.close()}
-        />
-      </Modal>
     </div>
   )
 }

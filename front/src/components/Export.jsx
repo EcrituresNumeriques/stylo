@@ -6,13 +6,13 @@ import slugify from 'slugify'
 import { applicationConfig } from '../config.js'
 import useStyloExport from '../hooks/stylo-export.js'
 import Button from './Button.jsx'
-
-import Select from './Select'
-import Combobox from './SelectCombobox.jsx'
-import Loading from './molecules/Loading.jsx'
 import buttonStyles from './button.module.scss'
 import styles from './export.module.scss'
 import formStyles from './form.module.scss'
+import Loading from './molecules/Loading.jsx'
+
+import Select from './Select'
+import Combobox from './SelectCombobox.jsx'
 
 /**
  * @param {object} props
@@ -24,18 +24,16 @@ import formStyles from './form.module.scss'
  * @param {() => {}} props.onCancel
  * @returns {React.ReactElement}
  */
-export default function Export(props) {
+export default function Export({
+  bookId,
+  articleVersionId = '',
+  articleId,
+  bib,
+  name,
+  onCancel,
+}) {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-
-  const {
-    bookId,
-    articleVersionId = '',
-    articleId,
-    bib,
-    name,
-    onCancel = () => {},
-  } = props
   const { pandocExportHost, pandocExportEndpoint } = applicationConfig
 
   const {
@@ -181,13 +179,15 @@ export default function Export(props) {
         </form>
       </section>
       <footer className={styles.actions}>
-        <Button
-          aria-label={t('modal.cancelButton.label')}
-          secondary={true}
-          onClick={() => onCancel()}
-        >
-          {t('modal.cancelButton.text')}
-        </Button>
+        {onCancel && (
+          <Button
+            aria-label={t('modal.cancelButton.label')}
+            secondary={true}
+            onClick={() => onCancel()}
+          >
+            {t('modal.cancelButton.text')}
+          </Button>
+        )}
         <a
           className={clsx(buttonStyles.button, buttonStyles.primary)}
           href={exportUrl}

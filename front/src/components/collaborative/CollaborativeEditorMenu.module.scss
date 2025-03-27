@@ -42,3 +42,10 @@
   width: 100%;
   min-width: 375px;
 }
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
