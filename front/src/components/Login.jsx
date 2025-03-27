@@ -8,6 +8,7 @@ import { fromFormData } from '../helpers/forms.js'
 import { useActiveUserId } from '../hooks/user.js'
 
 import styles from './login.module.scss'
+import buttonStyles from './button.module.scss'
 import formStyles from './form.module.scss'
 import Field from './Field'
 import Button from './Button'
@@ -86,8 +87,9 @@ export default function Login() {
 
           <p>
             <a
-              className={styles.humaNumConnectBtn}
-              href={backendEndpoint + '/login/openid'}
+              className={buttonStyles.loginLink}
+              style={{ '--login-icon': 'url(/images/huma-num-logo.svg)' }}
+              href={backendEndpoint + '/login/humanid'}
               lang="fr"
               aria-label={t('credentials.login.withService', {
                 name: 'Huma-Num',
@@ -97,21 +99,39 @@ export default function Login() {
             </a>
           </p>
 
-          <p className={styles.help}>
-            <HelpCircle size={18} className={styles.inlineIcon} aria-hidden />
-            <a href="https://humanum.hypotheses.org/5754#content">
-              {t('credentials.login.howto')}
+          <p>
+            <a
+              className={buttonStyles.loginLink}
+              style={{ '--login-icon': 'url(/images/hypothesis-logo.svg)' }}
+              href={backendEndpoint + '/login/hypothesis'}
+              lang="en"
+              aria-label={t('credentials.login.withService', {
+                name: 'Hypothesis',
+              })}
+            >
+              Hypothesis
+            </a>
+          </p>
+
+          <p>
+            <a
+              className={buttonStyles.loginLink}
+              style={{ '--login-icon': 'url(/images/zotero-logo.svg)' }}
+              href={backendEndpoint + '/login/zotero'}
+              lang="en"
+              aria-label={t('credentials.login.withService', {
+                name: 'Zotero',
+              })}
+            >
+              Zotero
             </a>
           </p>
 
           <p className={styles.help}>
             <HelpCircle size={18} className={styles.inlineIcon} aria-hidden />
-            <Trans i18nKey="credentials.login.remoteAccountHelp">
-              If you use the same email address for your
-              <strong>existing</strong>
-              Stylo account and for your Huma-Num account, the two accounts will
-              be automatically merged.
-            </Trans>
+            <a href="https://humanum.hypotheses.org/5754#content">
+              {t('credentials.login.howto')}
+            </a>
           </p>
         </fieldset>
 

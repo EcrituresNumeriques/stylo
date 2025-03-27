@@ -17,7 +17,60 @@ convict.addFormat({
 })
 /**
  * @type {convict.Config<{
- *
+ *  env: 'dev' | 'prod',
+ *  export: {
+ *    baseUrl: string,
+ *    urlEndpoint: string
+ *  },
+ *  hypothesis: {
+ *    auth: {
+ *      callbackUrl: string,
+ *      clientId: string
+ *    }
+ *  },
+ *  mongo: {
+ *    databaseUrl: string
+ *  },
+ *  oauthProvider: {
+ *    name: string,
+ *    issuer: string,
+ *    callbackUrl: string,
+ *    client: {
+ *      id: string,
+ *      secret: string
+ *    },
+ *    auth: {
+ *      tokenUrl: string,
+ *      userInfo: string,
+ *      url: string
+ *    }
+ *  },
+ *  port: number,
+ *  securedCookie: boolean,
+ *  security: {
+ *    cors: {
+ *      origin: string
+ *    },
+ *    jwt: {
+ *      secret: string
+ *    },
+ *    session: {
+ *      secret: string
+ *    }
+ *  },
+ *  sentry: {
+ *    dsn: string | null
+ *  },
+ *  yjs: {
+ *    persistenceDataDirectory: string
+ *  },
+ *  zotero: {
+ *    auth: {
+ *      callbackUrl: string,
+ *      clientKey: string,
+ *      clientSecret: string
+ *    }
+ *  }
  * }>}
  */
 module.exports = convict({
@@ -46,11 +99,6 @@ module.exports = convict({
     },
   },
   oauthProvider: {
-    name: {
-      format: String,
-      env: 'OPENID_CONNECT_NAME',
-      default: null,
-    },
     issuer: {
       format: 'url',
       env: 'OPENID_CONNECT_ISSUER',
@@ -74,10 +122,6 @@ module.exports = convict({
         env: 'OPENID_CONNECT_CLIENT_SECRET',
         default: null,
       },
-    },
-    scope: {
-      default: 'profile email',
-      env: 'OPENID_CONNECT_SCOPE',
     },
     auth: {
       tokenUrl: {
@@ -132,22 +176,22 @@ module.exports = convict({
       },
     },
   },
+  hypothesis: {
+    auth: {
+      callbackUrl: {
+        format: 'url',
+        env: 'HYPOTHESIS_AUTH_CALLBACK_URL',
+        default: 'http://localhost:3030/authorization-code/hypothesis/callback',
+      },
+      clientId: {
+        format: String,
+        sensitive: true,
+        env: 'HYPOTHESIS_AUTH_CLIENT_KEY',
+        default: null,
+      },
+    },
+  },
   zotero: {
-    accessPoint: {
-      format: 'url',
-      env: 'ZOTERO_ACCESS_TOKEN_ENDPOINT',
-      default: 'https://www.zotero.org/oauth/access',
-    },
-    authorize: {
-      format: 'url',
-      env: 'ZOTERO_AUTHORIZE_ENDPOINT',
-      default: 'https://www.zotero.org/oauth/authorize',
-    },
-    requestToken: {
-      format: 'url',
-      env: 'ZOTERO_REQUEST_TOKEN_ENDPOINT',
-      default: 'https://www.zotero.org/oauth/request',
-    },
     auth: {
       callbackUrl: {
         format: 'url',

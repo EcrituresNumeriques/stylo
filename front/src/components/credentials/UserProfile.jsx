@@ -92,43 +92,37 @@ export default function UserInfos() {
       </section>
 
       <section className={styles.section}>
-        <div className={styles.info}>
-          <Field label={t('user.account.email')}>
-            <>{activeUser.email}</>
-          </Field>
-          {activeUser.username && (
-            <Field label="Username">
-              <>{activeUser.username}</>
-            </Field>
-          )}
-          <Field label={t('user.account.authentication')}>
-            <>
-              {activeUser.authTypes.includes('oidc')
-                ? 'OpenID (External)'
-                : 'Password'}
-            </>
-          </Field>
-          <Field
-            label={t('user.account.apiKey')}
-            className={styles.apiKeyField}
-          >
-            <code
-              className={styles.apiKeyValue}
-              title={t('user.account.apiKeyValue', { token: sessionToken })}
-            >
-              {sessionToken}
-            </code>
-          </Field>
-          <Field label={t('user.account.id')}>
+        <dl className={styles.info}>
+          <dt>{t('user.account.email')}</dt>
+          <dd>{activeUser.email}</dd>
+
+          <dt>{t('user.account.id')}</dt>
+          <dd>
             <code>{activeUser._id}</code>
-          </Field>
-          <Field label={t('user.account.createdAt')}>
+          </dd>
+
+          {activeUser.username && (
+            <>
+              <dt>{t('user.account.username')}</dt>
+              <dd>{activeUser.username}</dd>
+            </>
+          )}
+
+          <dt>{t('user.account.apiKey')}</dt>
+          <dd>
+            <code className={styles.apiKeyValue}>{sessionToken}</code>
+          </dd>
+
+          <dt>{t('user.account.createdAt')}</dt>
+          <dd>
             <TimeAgo date={activeUser.createdAt} />
-          </Field>
-          <Field label={t('user.account.updatedAt')}>
+          </dd>
+
+          <dt>{t('user.account.updatedAt')}</dt>
+          <dd>
             <TimeAgo date={activeUser.updatedAt} />
-          </Field>
-        </div>
+          </dd>
+        </dl>
       </section>
     </>
   )
