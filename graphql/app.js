@@ -31,7 +31,9 @@ if (config.get('sentry.dsn')) {
   })
 }
 
-process.env.YPERSISTENCE = config.get('yjs.persistenceDataDirectory')
+process.env.YPERSISTENCE = config.get(
+  'collaboration.editingSessionDataDirectory'
+)
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -389,14 +391,12 @@ yjsUtils.setPersistence({
   bindState: async (roomName, ydoc) => {
     console.log('bindState:', roomName)
     const articleId = roomName.split('/')[1] // format: ws/{articleId}
-    console.log('articleId:', articleId)
     const result = await mongoose.connection.collection('articles').findOne({
       $and: [
         { _id: new mongo.ObjectID(articleId) },
         { 'workingVersion.ydoc': { $ne: null } },
       ],
     })
-    // TODO: handle errors
     if (result) {
       const documentState = Buffer.from(result.workingVersion.ydoc, 'base64')
       Y.applyUpdate(ydoc, documentState)
@@ -407,26 +407,33 @@ yjsUtils.setPersistence({
       debounce(
         async () => {
           const articleId = roomName.split('/')[1] // format: ws/{articleId}
-          const documentState = Y.encodeStateAsUpdate(ydoc) // is a Uint8Array
-          await mongoose.connection.collection('articles').updateOne(
-            { _id: new mongo.ObjectID(articleId) },
-            {
-              $set: {
-                'workingVersion.ydoc':
-                  Buffer.from(documentState).toString('base64'),
-                updatedAt: new Date(),
-              },
-            }
-          )
-          // TODO: handle errors
+          try {
+            const documentState = Y.encodeStateAsUpdate(ydoc) // is a Uint8Array
+            await mongoose.connection.collection('articles').updateOne(
+              { _id: new mongo.ObjectID(articleId) },
+              {
+                $set: {
+                  'workingVersion.ydoc':
+                    Buffer.from(documentState).toString('base64'),
+                  updatedAt: new Date(),
+                },
+              }
+            )
+          } catch (error) {
+            Sentry.captureException(error)
+            console.error(
+              `Unable to save document state to the working copy on article: ${articleId}`,
+              error
+            )
+          }
         },
-        4000,
+        config.get('collaboration.updateWorkingCopyIntervalMs'),
         { leading: false, trailing: true }
       )
     )
   },
   writeState: async (roomName, ydoc) => {
-    console.log('writeState:', roomName)
+    console.log('writeState: ', roomName)
     await builtinPersistence.writeState(roomName, ydoc)
   },
 })

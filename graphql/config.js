@@ -176,10 +176,21 @@ module.exports = convict({
       nullable: true,
     },
   },
-  yjs: {
+  collaboration: {
+    updateWorkingCopyIntervalMs: {
+      format: 'int',
+      env: 'COLLABORATION_UPDATE_WORKING_COPY_INTERVAL_MS',
+      default: 3000,
+    },
+    editingSessionDataDirectory: {
+      format: String,
+      env: 'COLLABORATION_EDITING_SESSION_PERSISTENCE_DATA_DIR',
+      default: ospath.join(__dirname, 'yeditingsession'),
+      nullable: false,
+    },
     persistenceDataDirectory: {
       format: String,
-      env: 'YJS_PERSISTENCE_DATA_DIR',
+      env: 'COLLABORATION_PERSISTENCE_DATA_DIR',
       default: ospath.join(__dirname, 'ydata'),
       nullable: false,
     },

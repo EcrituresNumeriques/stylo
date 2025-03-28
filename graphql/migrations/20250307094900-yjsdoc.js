@@ -63,7 +63,7 @@ exports.down = function () {
 
 async function applyUpdate(ydoc, docName) {
   const LeveldbPersistence = require('y-leveldb').LeveldbPersistence
-  const persistenceDir = config.get('yjs.persistenceDataDirectory')
+  const persistenceDir = config.get('collaboration.persistenceDataDirectory')
   const ldb = new LeveldbPersistence(persistenceDir)
   const persistedYdoc = await ldb.getYDoc(docName)
   const newUpdates = Y.encodeStateAsUpdate(ydoc)
