@@ -19,6 +19,19 @@ globalThis.fetch = vi.fn().mockResolvedValue({
   json: vi.fn().mockResolvedValue({}),
 })
 
+// remove once https://github.com/jsdom/jsdom/issues/3294 is fixed
+HTMLDialogElement.prototype.show = vi.fn(function mock() {
+  this.open = true
+})
+
+HTMLDialogElement.prototype.showModal = vi.fn(function mock() {
+  this.open = true
+})
+
+HTMLDialogElement.prototype.close = vi.fn(function mock() {
+  this.open = false
+})
+
 globalThis.alert = console.error
 
 afterEach(() => {

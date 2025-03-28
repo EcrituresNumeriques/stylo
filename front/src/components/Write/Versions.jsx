@@ -365,6 +365,7 @@ export default function Versions({
           small={true}
           disabled={readOnly}
           onClick={() => createVersionModal.show()}
+          testId="create-version-button"
         >
           {t('versions.createVersion.button')}
         </Button>
@@ -400,7 +401,7 @@ export default function Versions({
           onSubmit={() => createVersionModal.close()}
         />
       </Modal>
-      <ul className={styles.versionsList}>
+      <ul className={styles.versionsList} data-testid="versions">
         <WorkingVersion
           articleId={article._id}
           selectedVersion={selectedVersion}
