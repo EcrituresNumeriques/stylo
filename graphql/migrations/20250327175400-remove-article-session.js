@@ -3,20 +3,26 @@ exports.up = async function (db) {
   try {
     const articles = mongo.collection('articles')
     const articlesCursor = articles.find({})
-    while (await articlesCursor.hasNext()) {
-      const article = await articlesCursor.next()
-      await articles.updateOne(
-        { _id: article._id },
-        {
-          $unset: {
-            collaborativeSession: '',
-            soloSession: '',
+    try {
+      while (await articlesCursor.hasNext()) {
+        const article = await articlesCursor.next()
+        await articles.updateOne(
+          { _id: article._id },
+          {
+            $unset: {
+              collaborativeSession: '',
+              soloSession: '',
+            },
           },
-        },
-        { upsert: false }
-      )
+          { upsert: false }
+        )
+      }
+    } catch (err) {
+      console.log('Something went wrong while processing articles', err)
+      throw err
+    } finally {
+      await articlesCursor.close()
     }
-    await articlesCursor.close()
   } finally {
     mongo.close()
   }
