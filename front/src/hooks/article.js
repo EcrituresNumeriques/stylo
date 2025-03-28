@@ -181,7 +181,7 @@ export function useArticleVersionActions({ articleId }) {
     })
     await mutate(async (data) => ({
       article: {
-        ...data.article,
+        ...data?.article,
         versions: response.article.createVersion.versions,
       },
     }))
@@ -198,7 +198,7 @@ export function useArticleVersionActions({ articleId }) {
     })
     await mutate(async (data) => ({
       article: {
-        ...data.article,
+        ...data?.article,
         versions: data.article.versions.map((v) => {
           if (v._id === versionId) {
             return {
