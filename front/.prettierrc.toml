@@ -1,0 +1,4 @@
+plugins = ["@trivago/prettier-plugin-sort-imports"]
+importOrder = ["^react.*$|^[a-z-]+$", ".*\\.js$", "<THIRD_PARTY_MODULES>", ".*\\.graphql$", "^.*\\.scss$"]
+importOrderSeparation = true
+importOrderSortSpecifiers = true
