@@ -53,7 +53,11 @@ export default function CreateVersion({ articleId, onClose, onSubmit }) {
   )
 
   return (
-    <form className={styles.form} onSubmit={(e) => handleCreateVersion(e)}>
+    <form
+      className={styles.form}
+      onSubmit={(e) => handleCreateVersion(e)}
+      data-testid="create-version-form"
+    >
       <label htmlFor="description">Description</label>
       <textarea
         id="description"
@@ -69,6 +73,7 @@ export default function CreateVersion({ articleId, onClose, onSubmit }) {
       >
         <Toggle
           id="major-version"
+          data-testid="major-version-toggle"
           name="majorVersion"
           checked={majorVersion}
           onChange={(e) => {

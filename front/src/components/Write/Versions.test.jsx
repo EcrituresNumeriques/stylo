@@ -1,4 +1,10 @@
-import { fireEvent, screen } from '@testing-library/react'
+import {
+  getByLabelText,
+  getByRole,
+  getByTestId,
+  screen,
+} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { describe, expect, test } from 'vitest'
 import { renderWithProviders } from '../../../tests/setup.js'
@@ -56,13 +62,36 @@ describe('Versions', () => {
         ),
     })
 
+    const user = userEvent.setup()
+
     renderWithProviders(<Component />)
 
     const createVersionButton = await screen.findByTestId(
       'create-version-button'
     )
     expect(createVersionButton).toBeInTheDocument()
-    //fireEvent.click(createVersionButton)
-    //showModal is not implemented in jsdom as a result ref.current.showModal() will fail
+    await user.click(createVersionButton)
+
+    const createVersionForm = await screen.findByTestId('create-version-form')
+    expect(createVersionForm).toBeInTheDocument()
+
+    const submitButton = getByRole(createVersionForm, 'button', {
+      name: 'Create',
+    })
+    const description = getByRole(createVersionForm, 'textbox', {
+      label: 'Description',
+    })
+    description.focus()
+    await userEvent.keyboard('This is a new version')
+    await user.click(submitButton)
+
+    expect(fetch).toHaveBeenCalledWith(
+      undefined,
+      expect.objectContaining({
+        body: expect.stringMatching(
+          /query":"mutation createVersion.*"major":false,"message":"This is a new version".*/
+        ),
+      })
+    )
   })
 })

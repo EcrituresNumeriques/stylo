@@ -1,6 +1,5 @@
 import { describe, expect, test } from 'vitest'
 import {
-  fireEvent,
   getByRole,
   getByLabelText,
   queryByRole,
