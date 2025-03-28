@@ -2,6 +2,7 @@ const Sentry = require('@sentry/node')
 const { nodeProfilingIntegration } = require('@sentry/profiling-node')
 const pkg = require('./package.json')
 const process = require('node:process')
+const debounce = require('lodash.debounce')
 const config = require('./config.js')
 config.validate({ allowed: 'strict' })
 
@@ -30,7 +31,9 @@ if (config.get('sentry.dsn')) {
   })
 }
 
-process.env.YPERSISTENCE = config.get('yjs.persistenceDataDirectory')
+process.env.YPERSISTENCE = config.get(
+  'collaboration.editingSessionDataDirectory'
+)
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -62,9 +65,11 @@ const {
   createVersionLoader,
 } = require('./loaders')
 
-const { setupWSConnection } = require('y-websocket/bin/utils')
+const Y = require('yjs')
+const yjsUtils = require('y-websocket/bin/utils')
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
+const { mongo } = require('mongoose')
 const wss = new WebSocket.Server({ noServer: true })
 
 const listenPort = config.get('port')
@@ -381,7 +386,58 @@ app.post(
 )
 
 // Collaborative Writing Websocket
-wss.on('connection', setupWSConnection)
+const builtinPersistence = yjsUtils.getPersistence()
+yjsUtils.setPersistence({
+  bindState: async (roomName, ydoc) => {
+    console.log('bindState:', roomName)
+    const articleId = roomName.split('/')[1] // format: ws/{articleId}
+    const result = await mongoose.connection.collection('articles').findOne({
+      $and: [
+        { _id: new mongo.ObjectID(articleId) },
+        { 'workingVersion.ydoc': { $ne: null } },
+      ],
+    })
+    if (result) {
+      const documentState = Buffer.from(result.workingVersion.ydoc, 'base64')
+      Y.applyUpdate(ydoc, documentState)
+    }
+    await builtinPersistence.bindState(roomName, ydoc)
+    ydoc.on(
+      'update',
+      debounce(
+        async () => {
+          const articleId = roomName.split('/')[1] // format: ws/{articleId}
+          try {
+            const documentState = Y.encodeStateAsUpdate(ydoc) // is a Uint8Array
+            await mongoose.connection.collection('articles').updateOne(
+              { _id: new mongo.ObjectID(articleId) },
+              {
+                $set: {
+                  'workingVersion.ydoc':
+                    Buffer.from(documentState).toString('base64'),
+                  updatedAt: new Date(),
+                },
+              }
+            )
+          } catch (error) {
+            Sentry.captureException(error)
+            console.error(
+              `Unable to save document state to the working copy on article: ${articleId}`,
+              error
+            )
+          }
+        },
+        config.get('collaboration.updateWorkingCopyIntervalMs'),
+        { leading: false, trailing: true }
+      )
+    )
+  },
+  writeState: async (roomName, ydoc) => {
+    console.log('writeState: ', roomName)
+    await builtinPersistence.writeState(roomName, ydoc)
+  },
+})
+wss.on('connection', yjsUtils.setupWSConnection)
 
 const server = app.listen(listenPort, (err) => {
   if (err) {

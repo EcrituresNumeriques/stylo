@@ -138,7 +138,7 @@ describe('duplicateArticle', () => {
     // eg: owner, contributors, zoteroLink, workingVersion,
 
     // and others which should not
-    // eg: versions, collaborativeSession, soloSession
+    // eg: versions
   })
 
   test('duplicated article is still linked to corpus and workspace', async () => {

@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types'
 import Editor from '@monaco-editor/react'
 import throttle from 'lodash.throttle'
+import PropTypes from 'prop-types'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
 import { applicationConfig } from '../../config.js'
 import Loading from '../molecules/Loading.jsx'
-import * as collaborating from './collaborating.js'
 import defaultEditorOptions from '../Write/providers/monaco/options.js'
+import * as collaborating from './collaborating.js'
 import CollaborativeEditorStatus from './CollaborativeEditorStatus.jsx'
 import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 
@@ -44,16 +44,19 @@ const colors = [
   '#DDDDDD',
 ]
 
+/**
+ * @param props
+ * @param props.articleId
+ * @param props.onCollaborativeSessionStateUpdated
+ * @return {Element}
+ */
 export default function CollaborativeTextEditor({
   articleId,
-  collaborativeSessionCreatorId,
-  collaborativeSessionId,
   onCollaborativeSessionStateUpdated,
 }) {
   const connectingRef = useRef(false)
   const [dynamicStyles, setDynamicStyles] = useState('')
   const [websocketStatus, setWebsocketStatus] = useState('')
-  const [collaborativeSessionState, setCollaborativeSessionState] = useState('')
   const [yText, setYText] = useState(null)
   const [awareness, setAwareness] = useState(null)
   const { websocketEndpoint } = applicationConfig
@@ -77,11 +80,9 @@ export default function CollaborativeTextEditor({
     () => ({
       ...defaultEditorOptions,
       contextmenu: websocketStatus === 'connected',
-      readOnly:
-        websocketStatus !== 'connected' ||
-        collaborativeSessionState !== 'started',
+      readOnly: websocketStatus !== 'connected',
     }),
-    [websocketStatus, collaborativeSessionState]
+    [websocketStatus]
   )
 
   const handleUpdateArticleStructureAndStats = throttle(
@@ -153,7 +154,7 @@ export default function CollaborativeTextEditor({
       doc: yDocument,
       wsProvider,
     } = collaborating.connect({
-      roomName: collaborativeSessionId,
+      roomName: articleId,
       websocketEndpoint,
       user: writerInfo,
       onChange: handleWritersUpdated,
@@ -165,7 +166,6 @@ export default function CollaborativeTextEditor({
       handleUpdateArticleStructureAndStats({ text: yText.toString() })
     })
     yState.observe(function () {
-      setCollaborativeSessionState(yState.toString())
       onCollaborativeSessionStateUpdated({ state: yState.toString() })
     })
     setAwareness(awareness)
@@ -173,10 +173,12 @@ export default function CollaborativeTextEditor({
     return () => {
       connectingRef.current = false
       awareness.destroy()
-      wsProvider.disconnect()
-      wsProvider.destroy()
+      if (wsProvider.wsconnected) {
+        wsProvider.disconnect()
+        wsProvider.destroy()
+      }
     }
-  }, [collaborativeSessionId, websocketEndpoint, writerInfo])
+  }, [articleId, websocketEndpoint, writerInfo])
 
   useEffect(() => {
     const line = editorCursorPosition.lineNumber
@@ -194,17 +196,9 @@ export default function CollaborativeTextEditor({
   return (
     <>
       <style>{dynamicStyles}</style>
-      <CollaborativeEditorStatus
-        articleId={articleId}
-        collaborativeSessionState={collaborativeSessionState}
-        websocketStatus={websocketStatus}
-        collaborativeSessionCreatorId={collaborativeSessionCreatorId}
-      />
+      <CollaborativeEditorStatus />
       <div className={styles.inlineStatus}>
-        <CollaborativeEditorWebSocketStatus
-          status={websocketStatus}
-          state={collaborativeSessionState}
-        />
+        <CollaborativeEditorWebSocketStatus status={websocketStatus} />
       </div>
       <Editor
         width={'100%'}
@@ -216,11 +210,4 @@ export default function CollaborativeTextEditor({
       />
     </>
   )
-}
-
-CollaborativeTextEditor.propTypes = {
-  articleId: PropTypes.string.isRequired,
-  collaborativeSessionId: PropTypes.string.isRequired,
-  collaborativeSessionCreatorId: PropTypes.string.isRequired,
-  onCollaborativeSessionStateUpdated: PropTypes.func,
 }

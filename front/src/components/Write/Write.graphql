@@ -79,22 +79,6 @@ query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
       bibPreview
       metadata
     }
-
-    collaborativeSession {
-      id
-      creator {
-        _id
-      }
-      createdAt
-    }
-
-    soloSession {
-      id
-      creator {
-        _id
-      }
-      createdAt
-    }
   }
 
   version(version: $version) @include(if: $hasVersion) {
@@ -109,14 +93,6 @@ query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
     owner {
       displayName
       username
-    }
-  }
-}
-
-mutation stopSoloSession($articleId: ID!) {
-  article(articleId: $articleId) {
-    stopSoloSession {
-      _id
     }
   }
 }

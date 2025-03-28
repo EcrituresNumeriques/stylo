@@ -39,6 +39,9 @@ const articleSchema = new Schema(
       default: '',
     },
     workingVersion: {
+      ydoc: {
+        type: Object,
+      },
       md: {
         type: String,
         default: '',
@@ -75,34 +78,6 @@ const articleSchema = new Schema(
         type: String,
         default: '',
         set: sanitizeTemplate,
-      },
-    },
-    collaborativeSession: {
-      id: {
-        type: Schema.Types.ObjectId,
-      },
-      creator: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-      },
-      createdAt: {
-        type: Schema.Types.Date,
-      },
-    },
-    soloSession: {
-      id: {
-        type: Schema.Types.ObjectId,
-      },
-      creator: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-      },
-      creatorUsername: {
-        type: String,
-        default: '',
-      },
-      createdAt: {
-        type: Schema.Types.Date,
       },
     },
   },

@@ -100,11 +100,3 @@ query getArticleTags($articleId: ID!) {
     }
   }
 }
-
-mutation startCollaborativeSession($articleId: ID!) {
-  article(articleId: $articleId) {
-    startCollaborativeSession {
-      id
-    }
-  }
-}
