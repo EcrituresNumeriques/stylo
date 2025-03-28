@@ -2,7 +2,11 @@ import { fireEvent, screen } from '@testing-library/react'
 import React from 'react'
 import { describe, expect, test } from 'vitest'
 import { renderWithProviders } from '../../tests/setup.js'
-import { useArticleActions, useArticleTagActions } from './article.js'
+import {
+  useArticleActions,
+  useArticleTagActions,
+  useArticleVersionActions,
+} from './article.js'
 
 describe('Article', () => {
   test('add tag', async () => {
@@ -194,6 +198,108 @@ describe('Article', () => {
       undefined,
       expect.objectContaining({
         body: expect.stringMatching(/"query":"query deleteArticle\(/),
+      })
+    )
+  })
+})
+
+describe('Article versions', () => {
+  test('should create a new version', async () => {
+    fetch.mockResolvedValue({
+      ok: true,
+      json: () =>
+        new Promise((resolve) =>
+          resolve({
+            data: {
+              article: {
+                createVersion: {
+                  versions: ['111', '222'],
+                },
+              },
+            },
+          })
+        ),
+    })
+    const Component = () => {
+      const { create } = useArticleVersionActions({
+        articleId: '444',
+      })
+
+      return (
+        <div>
+          <button
+            data-testid={'create-version'}
+            onClick={() =>
+              create({
+                major: true,
+                description: 'This is a major version!',
+              })
+            }
+          ></button>
+        </div>
+      )
+    }
+    renderWithProviders(<Component />, {})
+    const createVersion = await screen.findByTestId('create-version')
+    fireEvent.click(createVersion)
+    expect(fetch).toHaveBeenLastCalledWith(
+      undefined,
+      expect.objectContaining({
+        body: expect.stringMatching(/"query":"mutation createVersion\(/),
+      })
+    )
+  })
+  test('should update description', async () => {
+    fetch.mockResolvedValue({
+      ok: true,
+      json: () =>
+        new Promise((resolve) =>
+          resolve({
+            data: {
+              article: {
+                createVersion: {
+                  versions: [
+                    {
+                      _id: '111',
+                      message: 'This is a minor version!',
+                    },
+                    {
+                      _id: '222',
+                      message: 'This is a major version!',
+                    },
+                  ],
+                },
+              },
+            },
+          })
+        ),
+    })
+    const Component = () => {
+      const { updateDescription } = useArticleVersionActions({
+        articleId: '444',
+      })
+
+      return (
+        <div>
+          <button
+            data-testid={'update-version'}
+            onClick={() =>
+              updateDescription({
+                versionId: '222',
+                description: 'New description!',
+              })
+            }
+          ></button>
+        </div>
+      )
+    }
+    renderWithProviders(<Component />, {})
+    const updateVersion = await screen.findByTestId('update-version')
+    fireEvent.click(updateVersion)
+    expect(fetch).toHaveBeenLastCalledWith(
+      undefined,
+      expect.objectContaining({
+        body: expect.stringMatching(/"query":"query renameVersion\(/),
       })
     )
   })
