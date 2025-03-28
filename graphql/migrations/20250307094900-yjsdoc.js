@@ -1,5 +1,4 @@
 const config = require('../config.js')
-config.validate({ allowed: 'strict' })
 const Y = require('yjs')
 
 exports.up = async function (db) {
