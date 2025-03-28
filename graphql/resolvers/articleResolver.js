@@ -1,7 +1,4 @@
-const crypto = require('node:crypto')
 const YAML = require('js-yaml')
-const mongoose = require('mongoose')
-const { ObjectId } = mongoose.Types
 const { getYDoc } = require('y-websocket/bin/utils')
 
 const Article = require('../models/article.js')
@@ -18,7 +15,6 @@ const {
   computeMinorVersion,
 } = require('../helpers/versions.js')
 const { previewEntries } = require('../helpers/bibliography.js')
-const { notifyArticleStatusChange } = require('../events.js')
 const { logger } = require('../logger.js')
 const { toLegacyFormat } = require('../helpers/metadata.js')
 const Y = require('yjs')
@@ -400,7 +396,7 @@ module.exports = {
       return article
     },
 
-    async updateWorkingVersion(article, { content }, { user }) {
+    async updateWorkingVersion(article, { content }) {
       Object.entries(content).forEach(([key, value]) =>
         article.set({
           workingVersion: {
