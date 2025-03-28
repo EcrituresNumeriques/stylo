@@ -22,6 +22,12 @@ enum AuthTokenService {
   zotero
 }
 
+enum WorkspaceRole {
+  contributor
+  editor
+  translator
+}
+
 type UserSearch {
   _id: ID
   displayName: String
@@ -288,7 +294,7 @@ type Workspace {
 
   # mutations
   leave: Workspace
-  inviteMember(userId: ID!, role: String): Workspace
+  inviteMember(userId: ID!, role: WorkspaceRole): Workspace
   addArticle(articleId: ID!): Workspace
 }
 
