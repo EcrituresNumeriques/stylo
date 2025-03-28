@@ -1,30 +1,31 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { Rss, Clipboard } from 'lucide-react'
 
 import {
   fetchAllCollectionsPerLibrary,
   fetchBibliographyFromCollectionHref,
   prefixLegacyUrl,
   toApiUrl,
-} from '../../../helpers/zotero'
-import { useGraphQLClient } from '../../../helpers/graphQL'
-import { linkToZotero as linkToZoteroQuery } from '../../Article.graphql'
-import { useSetAuthToken } from '../../../hooks/user.js'
+} from '../../helpers/zotero.js'
+import { useGraphQLClient } from '../../helpers/graphQL.js'
+import { useSetAuthToken } from '../../hooks/user.js'
 
-import Button from '../../Button'
-import Field from '../../Field'
-import Combobox from '../../SelectCombobox.jsx'
+import Button from '../Button.jsx'
+import Field from '../Field.jsx'
+import Combobox from '../SelectCombobox.jsx'
 
-import styles from './bibliographe.module.scss'
-import { Rss, Clipboard } from 'lucide-react'
+import { linkToZotero as linkToZoteroQuery } from '../Article.graphql'
+
+import styles from './BibliographyZoteroImport.module.scss'
 
 /**
- * @typedef {import('../../SelectCombobox').ComboboxItem} ComboboxItem
- * @typedef {import('../../../helpers/zotero').ZoteroCollection} ZoteroCollection
+ * @typedef {import('../SelectCombobox.jsx').ComboboxItem} ComboboxItem
+ * @typedef {import('../../helpers/zotero.js').ZoteroCollection} ZoteroCollection
  */
 
-export default function ZoteroPanel({
+export default function BibliographyZoteroImport({
   articleId,
   zoteroLink: initialZoteroLink,
   onChange,
@@ -205,7 +206,7 @@ export default function ZoteroPanel({
           {t('zoteroPanel.titleImportByUrl.text')}
         </h3>
 
-        <p className={styles.helpText}>
+        <p>
           {t(
             zoteroToken
               ? 'zoteroPanel.textImportByUrl.withToken'

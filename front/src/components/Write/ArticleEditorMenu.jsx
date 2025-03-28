@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 import styles from './articleEditorMenu.module.scss'
-import Biblio from './Biblio'
 import Sommaire from './Sommaire'
 import Versions from './Versions'
 import { Sidebar } from 'lucide-react'
@@ -48,7 +47,6 @@ export default function ArticleEditorMenu({
             readOnly={readOnly}
           />
           <Sommaire />
-          <Biblio readOnly={readOnly} article={articleInfos} />
         </div>
       )}
     </nav>

@@ -363,5 +363,6 @@
   "editorMenu.open.label": "Cerrar",
   "editorMenu.close.label": "Menú",
   "export.title": "Exportar",
-  "annotate.title": "Anotar"
+  "annotate.title": "Anotar",
+  "bibliography.title": "Bibliografía"
 }

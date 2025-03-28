@@ -1,0 +1,34 @@
+.zotero {
+  margin-bottom: 1rem;
+
+  h3 > svg {
+    max-height: fit-content;
+    margin-right: 0.3rem;
+    vertical-align: sub;
+  }
+
+  .section > h3 {
+    margin-bottom: 0.5rem;
+  }
+
+  .section > p {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    display: block;
+  }
+
+  input {
+    display: block;
+    width: 100%;
+  }
+
+  button[type="submit"] {
+    margin-top: 0.5rem;
+  }
+}
+
+.section:not(:last-child) {
+  margin-bottom: 3rem;
+}

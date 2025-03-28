@@ -1,5 +1,29 @@
 import { BibLatexParser } from 'biblatex-csl-converter'
 
+/**
+ * @typedef BibTeXParseResult
+ * @type {object}
+ * @property {{[key: string]: {}}} entries
+ * @property {{[key: string]: {}}} strings
+ * @property {{groups: *, meta: *}} jabref
+ * @property {{type: string, line: number, entry: string|undefined, key: string|undefined, expected: string|undefined, found: string|undefined}[]} errors
+ * @property {{type: string, line: number, type_name: string|undefined}[]} warnings
+ * @property {{type: string, line: number}[]} comments
+ */
+
+/**
+ * @typedef BibTeXValidationResult
+ * @type {object}
+ * @property {{[key: string]: {}}} entries
+ * @property {boolean} empty
+ * @property {{type: string, line: number, entry: string|undefined, key: string|undefined, expected: string|undefined, found: string|undefined}[]} errors
+ * @property {{type: string, line: number, type_name: string|undefined}[]} warnings
+ */
+
+/**
+ * @param bibtex
+ * @return {Promise<BibTeXParseResult>}
+ */
 export async function parse(bibtex) {
   const parser = new BibLatexParser(bibtex, {
     processUnexpected: true,
@@ -8,7 +32,6 @@ export async function parse(bibtex) {
     async: true,
   })
 
-  // {"entries":{},"errors":[],"warnings":[],"comments":[],"strings":{},"jabref":{"groups":false,"meta":{}}}
   return parser.parse()
 }
 
@@ -20,42 +43,28 @@ export function toBibtex(entries) {
  * We tolerate `unexpected_field` warnings as it's user provided, it does not have any side effect
  * @see https://github.com/EcrituresNumeriques/stylo/issues/187
  * @param {string} bibtex
- * @returns {Promise<{success: number,empty: boolean,warnings: Array.<string>,error: Array.<string>}>}
+ * @returns {Promise<BibTeXValidationResult>}
  */
-export function validate(bibtex) {
-  return parse(bibtex).then((result) => ({
-    entries: result.entries,
-    success: Object.keys(result.entries).length,
-    empty: String(bibtex).trim().length === 0,
-    errors: result.errors.map((error) => error.type + ' at line ' + error.line),
-    warnings: result.warnings
-      .filter(
-        (error) =>
-          error.type !== 'unexpected_field' && error.type !== 'unknown_field'
-      )
-      .map((error) => error.type + ' at line ' + error.line),
-  }))
-}
-
-export async function getValidationResults(bibtex) {
-  const result = { valid: false, messages: [] }
-
-  if (bibtex.trim() === '') {
-    result.valid = true
-  } else {
-    const validationResult = await validate(bibtex)
-
-    if (validationResult.warnings.length || validationResult.errors.length) {
-      result.messages = [
-        ...validationResult.errors,
-        ...validationResult.warnings,
-      ]
-    } else {
-      result.valid = validationResult.empty || validationResult.success !== 0
+export async function validate(bibtex) {
+  const empty = String(bibtex).trim().length === 0
+  if (empty) {
+    return {
+      empty: true,
+      warnings: [],
+      errors: [],
+      entries: {},
     }
   }
-
-  return result
+  const result = await parse(bibtex)
+  return {
+    entries: result.entries,
+    empty: false,
+    errors: result.errors,
+    warnings: result.warnings.filter(
+      (error) =>
+        error.type !== 'unexpected_field' && error.type !== 'unknown_field'
+    ),
+  }
 }
 
 export function deriveAuthorNameAndDate(entry) {
@@ -86,11 +95,13 @@ export function deriveAuthorNameAndDate(entry) {
 }
 
 /**
- * @param {string} Bibtex bibliography
- * @param input
- * @returns {Array.<{ title: string, key: string, type: string }}
+ * @param {string} input bibliography as BibTeX
+ * @returns {{ title: string, key: string, type: string }[]}
  */
 export function toEntries(input) {
+  if (input === '') {
+    return []
+  }
   const { entries } = new BibLatexParser(input, {
     processUnexpected: true,
     processUnknown: true,

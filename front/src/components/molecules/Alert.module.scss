@@ -5,6 +5,10 @@
   padding: 0.5rem;
   border: 1px solid;
   font-size: 0.9em;
+
+  > svg {
+    flex: 0 0 1.5rem;
+  }
 }
 
 .warning {
