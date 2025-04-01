@@ -1,7 +1,5 @@
 import { useToasts } from '@geist-ui/core'
 import clsx from 'clsx'
-import PropTypes from 'prop-types'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Check,
   ChevronDown,
@@ -9,44 +7,52 @@ import {
   Copy,
   Edit3,
   Eye,
+  Pencil,
   Printer,
   Send,
+  Squirrel,
   Trash,
   UserPlus,
 } from 'lucide-react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { useArticleActions } from '../hooks/article.js'
 
+import { useArticleActions } from '../hooks/article.js'
 import useFetchData from '../hooks/graphql'
 import { useModal } from '../hooks/modal.js'
-
 import { useActiveWorkspace } from '../hooks/workspace.js'
 
-import { getArticleContributors, getArticleTags } from './Article.graphql'
-
-import styles from './article.module.scss'
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
 import ArticleTags from './ArticleTags.jsx'
 import ArticleVersionLinks from './ArticleVersionLinks.jsx'
 import Button from './Button.jsx'
-import buttonStyles from './button.module.scss'
-
-import CollaborativeSessionAction from './collaborative/CollaborativeSessionAction.jsx'
 import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
 import Export from './Export.jsx'
 import Field from './Field.jsx'
-import fieldStyles from './field.module.scss'
 import Modal from './Modal.jsx'
 import FormActions from './molecules/FormActions.jsx'
-import SoloSessionAction from './solo/SoloSessionAction.jsx'
-
-import { getTags } from './Tag.graphql'
 import TimeAgo from './TimeAgo.jsx'
 import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
 
+import { getArticleContributors, getArticleTags } from './Article.graphql'
+import { getTags } from './Tag.graphql'
+
+import buttonStyles from './button.module.scss'
+import fieldStyles from './field.module.scss'
+import styles from './article.module.scss'
+
+/**
+ * @param props
+ * @param {{title: string, owner: {displayName: string}, updatedAt: string, _id: string }} props.article
+ * @param props.onArticleUpdated
+ * @param props.onArticleDeleted
+ * @param props.onArticleCreated
+ * @return {Element}
+ * @constructor
+ */
 export default function Article({
   article,
   onArticleUpdated,
@@ -363,16 +369,23 @@ export default function Article({
           <Printer />
         </Button>
 
-        <CollaborativeSessionAction
-          collaborativeSession={article.collaborativeSession}
-          articleId={articleId}
-        />
+        <Link
+          title={t('article.legacyEditor.edit.title')}
+          icon={true}
+          to={`/legacy/article/${article._id}`}
+          className={clsx(buttonStyles.icon, styles.deprecated)}
+        >
+          <Squirrel />
+        </Link>
 
-        <SoloSessionAction
-          collaborativeSession={article.collaborativeSession}
-          soloSession={article.soloSession}
-          articleId={articleId}
-        />
+        <Link
+          title={t('article.editor.edit.title')}
+          primary={true}
+          className={buttonStyles.primary}
+          to={`/article/${article._id}`}
+        >
+          <Pencil />
+        </Link>
 
         <Link
           title={t('article.preview.button')}
@@ -439,17 +452,4 @@ export default function Article({
       </section>
     </article>
   )
-}
-
-Article.propTypes = {
-  article: PropTypes.shape({
-    title: PropTypes.string,
-    owner: PropTypes.shape({
-      displayName: PropTypes.string,
-    }),
-    collaborativeSession: PropTypes.object,
-    soloSession: PropTypes.object,
-    updatedAt: PropTypes.string,
-    _id: PropTypes.string,
-  }),
 }

@@ -211,13 +211,16 @@ root.render(
                 />
                 {/* Write and/or Preview */}
                 <PrivateRoute
-                  path={[`/article/:id/preview`, `/article/:id`]}
+                  path={[`/legacy/article/:id/preview`, `/legacy/article/:id`]}
                   component={Write}
                   exact
                 />
                 {/* Collaborative editing */}
                 <PrivateRoute
-                  path={[`/article/:articleId/session/:sessionId`]}
+                  path={[
+                    `/article/:articleId`,
+                    `/article/:articleId/session/:sessionId`,
+                  ]}
                   component={CollaborativeEditor}
                   exact
                 />

@@ -22,6 +22,7 @@ services:
     container_name: 'graphql-stylo'
     volumes:
       - ./data/ydata:/data/ydata
+      - ./data/yeditingsession:/data/yeditingsession
     depends_on:
       mongodb-stylo:
         condition: service_healthy
@@ -29,7 +30,9 @@ services:
       - .env
     environment:
       - DATABASE_URL=mongodb://mongodb-stylo:27017/{{mongo_server_db}}
-      - YJS_PERSISTENCE_DATA_DIR=/data/ydata
+      - COLLABORATION_PERSISTENCE_DATA_DIR=/data/ydata
+      - COLLABORATION_EDITING_SESSION_PERSISTENCE_DATA_DIR=/data/yeditingsession
+      - COLLABORATION_UPDATE_WORKING_COPY_INTERVAL_MS=3000
     ports:
       - 127.0.0.1:3030:3030
 
