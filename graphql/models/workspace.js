@@ -8,7 +8,10 @@ const WorkspaceMemberSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  role: String,
+  role: {
+    type: String,
+    enum: ['editor', 'translator', 'contributor'],
+  },
 })
 
 const workspaceSchema = new Schema(
