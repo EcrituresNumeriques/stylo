@@ -1,6 +1,10 @@
 const config = require('../config.js')
 const Y = require('yjs')
 
+const LeveldbPersistence = require('y-leveldb').LeveldbPersistence
+const persistenceDir = config.get('collaboration.persistenceDataDirectory')
+const ldb = new LeveldbPersistence(persistenceDir)
+
 exports.up = async function (db) {
   const mongo = await db._run('getDbInstance', true)
   try {
@@ -61,9 +65,6 @@ exports.down = function () {
 }
 
 async function applyUpdate(ydoc, docName) {
-  const LeveldbPersistence = require('y-leveldb').LeveldbPersistence
-  const persistenceDir = config.get('collaboration.persistenceDataDirectory')
-  const ldb = new LeveldbPersistence(persistenceDir)
   const persistedYdoc = await ldb.getYDoc(docName)
   const newUpdates = Y.encodeStateAsUpdate(ydoc)
   await ldb.storeUpdate(docName, newUpdates)
