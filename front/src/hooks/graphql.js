@@ -22,8 +22,53 @@ export default function useFetchData(
   options
 ) {
   const sessionToken = useSelector((state) => state.sessionToken)
-  const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
+  const query = resolveQuery(queryOrAST)
   return useSWR({ query, variables, sessionToken }, fetch, options)
+}
+
+/**
+ * Fetch data conditionally using SWR.
+ * @param {object|function} param config
+ * @param {SWRConfiguration} [options] - SWR options (optional)
+ * @returns {SWRResponse}
+ */
+export function useConditionalFetchData(param, options) {
+  const sessionToken = useSelector((state) => state.sessionToken)
+  const resolvedKey = resolveKey(param, sessionToken)
+  return useSWR(resolvedKey, fetch, options)
+}
+
+function resolveKey(param, sessionToken) {
+  return typeof param === 'function'
+    ? resolveKeyFunction(param, sessionToken)
+    : resolveKeyParam(param, sessionToken)
+}
+
+function resolveKeyParam(param, sessionToken) {
+  if (param) {
+    return {
+      query: resolveQuery(param.query),
+      variables: param.variables,
+      sessionToken,
+    }
+  }
+  return null
+}
+
+function resolveKeyFunction(fn, sessionToken) {
+  const value = fn()
+  if (value) {
+    return {
+      query: resolveQuery(value.query),
+      variables: value.variables,
+      sessionToken,
+    }
+  }
+  return null
+}
+
+function resolveQuery(queryOrAST) {
+  return typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
 }
 
 /**
@@ -51,7 +96,7 @@ export function useMutateData({ query, variables }) {
  */
 function useSWRKey({ query: queryOrAST, variables }) {
   const sessionToken = useSelector((state) => state.sessionToken)
-  const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
+  const query = resolveQuery(queryOrAST)
   return { query, variables, sessionToken }
 }
 

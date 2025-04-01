@@ -8,14 +8,23 @@ import {
   renameArticle,
 } from '../components/Article.graphql'
 import {
+  getArticleVersion,
+  getArticleVersions,
   getArticleWorkingCopy,
-  renameVersion,
   getEditableArticle,
+  renameVersion,
 } from '../components/Write/Write.graphql'
 import { toEntries } from '../helpers/bibtex.js'
 import { executeQuery } from '../helpers/graphQL.js'
-import { updateWorkingVersion } from '../services/ArticleService.graphql'
-import useFetchData, { useMutateData } from './graphql.js'
+import {
+  createVersion,
+  updateWorkingVersion,
+} from '../services/ArticleService.graphql'
+
+import useFetchData, {
+  useConditionalFetchData,
+  useMutateData,
+} from './graphql.js'
 
 export function useArticleTagActions({ articleId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
@@ -277,6 +286,22 @@ export function useArticleVersions({ articleId }) {
     error,
     isLoading,
     article: data?.article,
+  }
+}
+
+export function useArticleVersion({ versionId }) {
+  const { data, error, isLoading } = useConditionalFetchData(
+    versionId ? { query: getArticleVersion, variables: { versionId } } : null,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  )
+
+  return {
+    error,
+    isLoading,
+    version: data?.version,
   }
 }
 

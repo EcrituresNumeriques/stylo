@@ -18,7 +18,11 @@ import { getArticleInfo } from '../Article.graphql'
 
 import styles from './CollaborativeEditorMenu.module.scss'
 
-export default function CollaborativeEditorMenu({ articleId }) {
+export default function CollaborativeEditorMenu({
+  articleId,
+  versionId,
+  compareTo,
+}) {
   const { t } = useTranslation()
   const [opened, setOpened] = useState(false)
   const [activeMenu, setActiveMenu] = useState('')
@@ -145,6 +149,8 @@ export default function CollaborativeEditorMenu({ articleId }) {
             {activeMenu === 'versions' && (
               <Versions
                 articleId={articleId}
+                selectedVersion={versionId}
+                compareTo={compareTo}
                 showTitle={true}
                 onBack={() => setActiveMenu('')}
               />
