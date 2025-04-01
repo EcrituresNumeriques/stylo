@@ -1,26 +1,6 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
 
-.container {
-  padding: 0.5rem;
-}
-
-.createForm {
-  text-align: right;
-  margin: 1rem 0 0;
-  border-left: 4px solid #202020;
-  padding: 0.5rem 0 0.25rem 0.5rem;
-}
-
-.createVersionInput {
-  width: 100%;
-  padding-bottom: 0.5rem;
-
-  input {
-    width: 100%;
-  }
-}
-
 .actions {
   display: flex;
   margin-top: 0.5rem;
@@ -33,6 +13,26 @@
   }
 }
 
-.closeButton {
-  margin-right: auto;
+.toggle {
+  margin-top: 1rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  cursor: pointer;
+  
+  > label {
+    cursor: pointer;
+    user-select: none;
+  }
+}
+
+.form {
+  :global {
+    label {
+      display: block;
+      font-weight: 500;
+      padding-bottom: 0.15rem;
+      font-size: 0.875rem;
+    }
+  }
 }
