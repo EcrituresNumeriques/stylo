@@ -1,6 +1,5 @@
 import Editor from '@monaco-editor/react'
 import throttle from 'lodash.throttle'
-import PropTypes from 'prop-types'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
@@ -47,13 +46,9 @@ const colors = [
 /**
  * @param props
  * @param props.articleId
- * @param props.onCollaborativeSessionStateUpdated
  * @return {Element}
  */
-export default function CollaborativeTextEditor({
-  articleId,
-  onCollaborativeSessionStateUpdated,
-}) {
+export default function CollaborativeTextEditor({ articleId }) {
   const connectingRef = useRef(false)
   const [dynamicStyles, setDynamicStyles] = useState('')
   const [websocketStatus, setWebsocketStatus] = useState('')
@@ -161,12 +156,8 @@ export default function CollaborativeTextEditor({
       onStatusUpdated: handleWebsocketStatusUpdated,
     })
     const yText = yDocument.getText('main')
-    const yState = yDocument.getText('state')
     yText.observe(function () {
       handleUpdateArticleStructureAndStats({ text: yText.toString() })
-    })
-    yState.observe(function () {
-      onCollaborativeSessionStateUpdated({ state: yState.toString() })
     })
     setAwareness(awareness)
     setYText(yText)
