@@ -1,87 +1,89 @@
-import React, { useCallback, useState, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { Helmet } from 'react-helmet'
-import { Trans, useTranslation } from 'react-i18next'
-import { applicationConfig } from '../config.js'
-import { fromFormData } from '../helpers/forms.js'
+import { HelpCircle } from "lucide-react";
+import React, { useCallback, useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import { Trans, useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 
-import styles from './login.module.scss'
-import formStyles from './form.module.scss'
-import Field from './Field'
-import Button from './Button'
-import { HelpCircle } from 'lucide-react'
-import InlineAlert from './feedback/InlineAlert.jsx'
+import { applicationConfig } from "../config.js";
+import { fromFormData } from "../helpers/forms.js";
+
+import Button from "./Button";
+import Field from "./Field";
+import InlineAlert from "./feedback/InlineAlert.jsx";
+
+import formStyles from "./form.module.scss";
+import styles from "./login.module.scss";
 
 export default function Login() {
-  const { t } = useTranslation()
-  const [error, setError] = useState('')
-  const dispatch = useDispatch()
-  const { replace, location } = useHistory()
+  const { t } = useTranslation();
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const { replace, location } = useHistory();
   const setSessionToken = useCallback(
-    (token) => dispatch({ type: 'UPDATE_SESSION_TOKEN', token }),
-    []
-  )
-  const authToken = new URLSearchParams(location.hash).get('#auth-token')
+    (token) => dispatch({ type: "UPDATE_SESSION_TOKEN", token }),
+    [],
+  );
+  const authToken = new URLSearchParams(location.hash).get("#auth-token");
 
-  const { backendEndpoint } = applicationConfig
+  const { backendEndpoint } = applicationConfig;
 
   useEffect(() => {
     if (authToken) {
-      setSessionToken(authToken)
-      replace(location.pathname)
+      setSessionToken(authToken);
+      replace(location.pathname);
     }
-  }, [authToken])
+  }, [authToken]);
 
   const handleSubmit = useCallback((event) => {
-    event.preventDefault()
-    const data = fromFormData(event.target)
-    setError('')
+    event.preventDefault();
+    const data = fromFormData(event.target);
+    setError("");
 
-    fetch(backendEndpoint + '/login/local', {
-      method: 'POST',
+    fetch(backendEndpoint + "/login/local", {
+      method: "POST",
       // this parameter enables the cookie directive (set-cookie)
-      credentials: 'include',
+      credentials: "include",
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(data),
     })
       .then((response) => {
         return response.ok
           ? response.json()
-          : Promise.reject(new Error('Email or password is incorrect'))
+          : Promise.reject(new Error("Email or password is incorrect"));
       })
-      .then((data) => dispatch({ type: 'LOGIN', ...data }))
+      .then((data) => dispatch({ type: "LOGIN", ...data }))
       .catch((error) => {
-        setError(error.message)
-      })
-  }, [])
+        setError(error.message);
+      });
+  }, []);
 
   return (
     <>
       <Helmet>
-        <title>{t('credentials.login.confirmButton')}</title>
+        <title>{t("credentials.login.confirmButton")}</title>
       </Helmet>
 
       <section className={styles.box}>
-        <h1>{t('credentials.login.title')}</h1>
+        <h1>{t("credentials.login.title")}</h1>
 
         <fieldset className={styles.section}>
           <legend>
             <h2 id="external-login">
-              {t('credentials.login.withRemoteAccount')}
+              {t("credentials.login.withRemoteAccount")}
             </h2>
           </legend>
 
           <p>
             <a
               className={styles.humaNumConnectBtn}
-              href={backendEndpoint + '/login/openid'}
+              href={backendEndpoint + "/login/openid"}
               lang="fr"
-              aria-label={t('credentials.login.withService', {
-                name: 'Huma-Num',
+              aria-label={t("credentials.login.withService", {
+                name: "Huma-Num",
               })}
             >
               Huma-Num
@@ -91,7 +93,7 @@ export default function Login() {
           <p className={styles.help}>
             <HelpCircle size={18} className={styles.inlineIcon} aria-hidden />
             <a href="https://humanum.hypotheses.org/5754#content">
-              {t('credentials.login.howto')}
+              {t("credentials.login.howto")}
             </a>
           </p>
 
@@ -108,7 +110,7 @@ export default function Login() {
 
         <fieldset className={styles.section}>
           <legend>
-            <h2 id="local-login">{t('credentials.login.withLocalAccount')}</h2>
+            <h2 id="local-login">{t("credentials.login.withLocalAccount")}</h2>
           </legend>
 
           <form
@@ -117,17 +119,17 @@ export default function Login() {
             aria-labelledby="local-login"
           >
             <Field
-              label={t('user.account.username')}
+              label={t("user.account.username")}
               name="username"
-              hasError={error !== ''}
+              hasError={error !== ""}
               required={true}
               autoFocus={true}
               autoComplete="username"
             />
             <Field
-              label={t('credentials.password.placeholder')}
+              label={t("credentials.password.placeholder")}
               name="password"
-              hasError={error !== ''}
+              hasError={error !== ""}
               required={true}
               type="password"
               autoComplete="current-password"
@@ -137,12 +139,12 @@ export default function Login() {
             <ul className={styles.actions}>
               <li>
                 <Link to="/register">
-                  {t('credentials.login.registerLink')}
+                  {t("credentials.login.registerLink")}
                 </Link>
               </li>
               <li className={styles.actionsSubmit}>
                 <Button primary={true} type="submit">
-                  {t('credentials.login.confirmButton')}
+                  {t("credentials.login.confirmButton")}
                 </Button>
               </li>
             </ul>
@@ -150,5 +152,5 @@ export default function Login() {
         </fieldset>
       </section>
     </>
-  )
+  );
 }
