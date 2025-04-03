@@ -55,7 +55,7 @@ export default function Header() {
                 )}
                 {!connected && (
                   <li>
-                    <NavLink to="/">
+                    <NavLink to="/login">
                       {t('credentials.login.confirmButton')}
                     </NavLink>
                   </li>

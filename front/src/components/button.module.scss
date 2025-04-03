@@ -103,6 +103,19 @@ a.icon:not(.primary) {
   }
 }
 
+.linkPrimary {
+  @extend .link;
+  @extend .primary;
+  text-decoration: none;
+}
+
+.linkSecondary {
+  @extend .link;
+  @extend .secondary;
+  text-decoration: none;
+}
+
+
 .primary {
   @extend .button;
 
@@ -115,12 +128,12 @@ a.icon:not(.primary) {
     background-color: rgba(239, 239, 239, 0.3);
     border-color: rgba(118, 118, 118, 0.3);
   }
-}
 
-.primary:hover:not([disabled]),
-.primary:focus-visible:not([disabled]) {
-  background-color: rgba(0, 0, 0, 0.75);
-  color: #fff;
+  &:hover:not([disabled]),
+  &:focus-visible:not([disabled]) {
+    background-color: rgba(0, 0, 0, 0.75);
+    color: #fff;
+  }
 }
 
 .secondary {
@@ -135,11 +148,22 @@ a.icon:not(.primary) {
     background-color: rgba(239, 239, 239, 0.3);
     border-color: rgba(118, 118, 118, 0.3);
   }
+
+  &:hover:not([disabled]),
+  &:focus-visible:not([disabled]) {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
 }
 
-.secondary:hover:not([disabled]),
-.secondary:focus-visible:not([disabled]) {
-  background-color: rgba(0, 0, 0, 0.2);
+details.secondary {
+  height: auto;
+  cursor: default;
+  user-select: text;
+
+  summary {
+    cursor: pointer;
+    user-select: none
+  }
 }
 
 .tertiary {

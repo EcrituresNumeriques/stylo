@@ -4,7 +4,6 @@
 .headerContainer {
   background-color: $main-color;
   color: $main-background-color;
-  margin-bottom: 1rem;
 
   @media print {
     & {
@@ -49,10 +48,6 @@
   text-decoration: none;
 }
 
-.documentationLink::after {
-  content: '\2197';
-}
-
 .languagesMenu {
   display: flex;
   font-weight: normal;
@@ -79,6 +74,13 @@
       vertical-align: middle;
     }
   }
+}
+
+.logoAsImg {
+  background-color: #000;
+  height: 1em;
+  padding: .5em;
+  box-sizing: content-box;
 }
 
 .registerAction {
