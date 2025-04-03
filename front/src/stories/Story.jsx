@@ -1,149 +1,198 @@
-import { Tabs } from '@geist-ui/core'
 import React from 'react'
-import { Search } from 'lucide-react'
-import buttonStyles from '../components/button.module.scss'
 import CollaborativeEditorWebSocketStatus from '../components/collaborative/CollaborativeEditorWebSocketStatus.jsx'
-import Field from '../components/Field.jsx'
 import Alert from '../components/molecules/Alert.jsx'
 import Loading from '../components/molecules/Loading.jsx'
-import Select from '../components/Select.jsx'
 import ButtonStory from './Button.story.jsx'
 import FormStory from './Form.story.jsx'
 import SidebarStory from './Sidebar.story.jsx'
 
-import styles from './story.module.scss'
+import buttonStyles from '../components/button.module.scss'
+import styles from '../layout.module.scss'
 
 export default function Story() {
   return (
     <div className={styles.container}>
-      <Tabs initialValue="1">
-        <Tabs.Item label="typography" value="1">
-          <h1>Heading 1</h1>
-          <h2>Heading 2</h2>
-          <h3>Heading 3</h3>
-          <h4>Heading 4</h4>
-          <h5>Heading 5</h5>
+      <section aria-label="Typographie">
+        <h1>Heading 1</h1>
+        <h2>Heading 2</h2>
+        <h3>Heading 3</h3>
+        <h4>Heading 4</h4>
+        <h5>Heading 5</h5>
 
-          <p>paragraph</p>
+        <p className={styles.hero}>
+          Stylo est un éditeur de texte sémantique, créé pour écrire des textes
+          scientifiques
+        </p>
 
-          <p>
-            regular <span>span</span> <small>small</small>
-            <sup>script</sup> and <sub>subscript</sub>
-          </p>
+        <p>
+          C'est également un projet de recherche réalisé par l’équipe de la
+          Chaire de recherche du Canada sur les écritures numériques
+        </p>
 
-          <p>
-            <a href="#">hyperlink</a>
-          </p>
+        <p>
+          regular <span>span</span> <small>small</small>
+          <sup>script</sup> and <sub>subscript</sub>
+        </p>
 
-          <table>
-            <caption>table caption</caption>
-            <thead>
-              <tr>
-                <th scope="col">header 1</th>
-                <th scope="col">header 2</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>cell 1</td>
-                <td>cell 2</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td>footer 1</td>
-                <td>footer 2</td>
-              </tr>
-            </tfoot>
-          </table>
+        <p>
+          <a href="#">hyperlink</a>
+        </p>
 
-          <p>
+        <table>
+          <caption>table caption</caption>
+          <thead>
+            <tr>
+              <th scope="col">header 1</th>
+              <th scope="col">header 2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>cell 1</td>
+              <td>cell 2</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>footer 1</td>
+              <td>footer 2</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <p>
+          <img src="/android-chrome-192x192.png" alt="" />
+        </p>
+
+        <p>
+          <figure>
+            <figcaption>caption</figcaption>
             <img src="/android-chrome-192x192.png" alt="" />
-          </p>
+          </figure>
+        </p>
 
-          <p>
-            <figure>
-              <figcaption>caption</figcaption>
-              <img src="/android-chrome-192x192.png" alt="" />
-            </figure>
-          </p>
+        <ul>
+          <li>item a</li>
+          <li>item b</li>
+        </ul>
 
-          <ul>
-            <li>item a</li>
-            <li>item b</li>
-          </ul>
+        <ol>
+          <li>item 1</li>
+          <li>item 2</li>
+        </ol>
 
-          <ol>
-            <li>item 1</li>
-            <li>item 2</li>
-          </ol>
+        <div className={styles.container}>
+          <section className={styles.sectionPrimary}>
+            <h1>Section</h1>
+            <p className={styles.hero}>Texte en exergue.</p>
 
-          <fieldset>
-            <legend>fieldset legend</legend>
+            <p>Paragraphe ordinaire.</p>
 
-            <p>some paragraph</p>
-          </fieldset>
+            <p>Autre paragraphe.</p>
+          </section>
 
-          <details open>
-            <summary>details summary</summary>
+          <section className={styles.sectionAlternate}>
+            <h1>Section (alternative)</h1>
 
-            <p>some paragraph</p>
-          </details>
-        </Tabs.Item>
+            <p>
+              Projet de recherche et outil prototype adapté pour les revues en
+              Sciences Humaines et Sociales.
+            </p>
+          </section>
 
-        <Tabs.Item label="buttons" value="2">
-          <ButtonStory />
-        </Tabs.Item>
+          <section className={styles.sectionPrimary}>
+            <h1>Actualités</h1>
 
-        <Tabs.Item label="state" value="2">
-          <h4>Loading</h4>
-          <Loading />
-          <Loading size={'1.5rem'} />
-          <Loading size={'2rem'} />
-          <Loading label={''} />
-          <h4>Alert</h4>
-          <Alert type={'warning'} message={'Warning'} />
-          <Alert type={'error'} message={'Error'} />
-          <Alert type={'info'} message={'Info'} />
-          <Alert type={'success'} message={'Success'} />
-          <Alert type={'success'} message={'Success'} showIcon={false} />
-        </Tabs.Item>
-        <Tabs.Item label="form" value="3">
-          <FormStory />
-        </Tabs.Item>
-        <Tabs.Item label="fields" value="4">
-          <h2>Fields</h2>
-          <h4>Search</h4>
-          <Field placeholder="Search" icon={Search} />
-          <h4>Textarea</h4>
-          <div style={{ 'max-width': '50%' }}>
-            <textarea className={buttonStyles.textarea} rows="10">
-              Du texte
-            </textarea>
-          </div>
-          <h4>Select</h4>
-          <Select>
-            <option>Tome de Savoie</option>
-            <option>Reblochon</option>
-            <option>St Marcellin</option>
-          </Select>
-        </Tabs.Item>
-        <Tabs.Item label="sidebar" value="5">
-          <SidebarStory />
-        </Tabs.Item>
-        <Tabs.Item label="Collaborative editor" value="6">
-          <h4>Status</h4>
-          <h5>Connected</h5>
-          <CollaborativeEditorWebSocketStatus status={'connected'} />
-          <h5>Connecting</h5>
-          <CollaborativeEditorWebSocketStatus status={'connecting'} />
-          <h5>Disconnected</h5>
-          <CollaborativeEditorWebSocketStatus
-            status={'disconnected'}
-            state={'started'}
-          />
-        </Tabs.Item>
-      </Tabs>
+            <h2>Publications</h2>
+
+            <div className={styles.desktopGridOf3}>
+              <article className={styles.article}>
+                <h3>
+                  Stylo en 2023 : de nouvelles fonctionnalités pour l'écriture
+                  et l'édition scientifique
+                </h3>
+
+                <ul className={styles.articleMetadata}>
+                  <li>
+                    <time>2023-06</time>
+                  </li>
+                </ul>
+
+                <a className={buttonStyles.linkSecondary} href="#">
+                  Plus d'infos
+                </a>
+              </article>
+              <article className={styles.article}>
+                <h3>
+                  Stylo en 2023 : de nouvelles fonctionnalités pour l'écriture
+                  et l'édition scientifique
+                </h3>
+
+                <ul className={styles.articleMetadata}>
+                  <li>
+                    <time>2023-06</time>
+                  </li>
+                </ul>
+
+                <a className={buttonStyles.linkSecondary} href="#">
+                  Plus d'infos
+                </a>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <fieldset>
+          <legend>fieldset legend</legend>
+
+          <p>some paragraph</p>
+        </fieldset>
+
+        <details open>
+          <summary>details summary</summary>
+
+          <p>some paragraph</p>
+        </details>
+      </section>
+
+      <section aria-label="Boutons">
+        <ButtonStory />
+      </section>
+
+      <section aria-label="États">
+        <h4>Loading</h4>
+        <Loading />
+        <Loading size={'1.5rem'} />
+        <Loading size={'2rem'} />
+        <Loading label={''} />
+        <h4>Alert</h4>
+        <Alert type={'warning'} message={'Warning'} />
+        <Alert type={'error'} message={'Error'} />
+        <Alert type={'info'} message={'Info'} />
+        <Alert type={'success'} message={'Success'} />
+        <Alert type={'success'} message={'Success'} showIcon={false} />
+      </section>
+
+      <section aria-label="Formulaires">
+        <FormStory />
+      </section>
+
+      <section aria-label="Barre latérale">
+        <SidebarStory />
+      </section>
+
+      <section aria-label="Éditeur de texte">
+        <h4>Status</h4>
+        <h5>Connected</h5>
+        <CollaborativeEditorWebSocketStatus status={'connected'} />
+        <h5>Connecting</h5>
+        <CollaborativeEditorWebSocketStatus status={'connecting'} />
+        <h5>Disconnected</h5>
+        <CollaborativeEditorWebSocketStatus
+          status={'disconnected'}
+          state={'started'}
+        />
+      </section>
     </div>
   )
 }

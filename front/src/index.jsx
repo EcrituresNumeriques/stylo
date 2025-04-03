@@ -23,13 +23,12 @@ import { getUserProfile } from './helpers/userProfile'
 
 import Header from './components/Header'
 import Footer from './components/Footer'
-import Register from './components/Register'
+import Login from './components/Login'
 import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/404'
 import Error from './components/Error'
 import AuthCallback from './components/AuthCallback'
 import { applicationConfig } from './config.js'
-import Story from './stories/Story.jsx'
 import { Helmet } from 'react-helmet'
 
 const Route = Sentry.withSentryRouting(OriginalRoute)
@@ -55,14 +54,17 @@ if (SENTRY_DSN) {
 }
 
 // lazy loaded routes
-const Corpus = lazy(() => import('./components/corpus/Corpus'))
-const Articles = lazy(() => import('./components/Articles'))
-const Workspaces = lazy(() => import('./components/workspace/Workspaces'))
-const Credentials = lazy(() => import('./components/Credentials'))
+const Home = lazy(() => import('./components/Home.jsx'))
+const Register = lazy(() => import('./components/Register.jsx'))
+const Corpus = lazy(() => import('./components/corpus/Corpus.jsx'))
+const Articles = lazy(() => import('./components/Articles.jsx'))
+const Workspaces = lazy(() => import('./components/workspace/Workspaces.jsx'))
+const Credentials = lazy(() => import('./components/Credentials.jsx'))
 const UserInfos = lazy(() => import('./components/UserInfos.jsx'))
-const Write = lazy(() => import('./components/Write/Write'))
+const Write = lazy(() => import('./components/Write/Write.jsx'))
 const Preview = lazy(() => import('./components/Preview.jsx'))
-const Privacy = lazy(() => import('./components/Privacy'))
+const Privacy = lazy(() => import('./components/Privacy.jsx'))
+const Story = lazy(() => import('./stories/Story.jsx'))
 
 const store = createStore()
 const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|corpus)$/
@@ -143,7 +145,9 @@ root.render(
               <TrackPageViews />
               <Header />
               <Switch>
+                <Route path="/" component={Home} exact />
                 <Route path="/register" component={Register} exact />
+                <Route path="/login" component={Login} exact />
                 {/* Articles index */}
                 <PrivateRoute
                   path={['/articles', '/', '/workspaces/:workspaceId/articles']}
