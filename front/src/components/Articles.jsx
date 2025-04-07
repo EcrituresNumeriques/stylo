@@ -156,7 +156,8 @@ export default function Articles() {
         })
         .filter(
           (article) =>
-            article.title.toLowerCase().indexOf(filter.toLowerCase()) > -1
+            article.title.toLowerCase().indexOf(filter.toLowerCase()) > -1 ||
+            article._id === filter
         ),
     [filter, articles, selectedTagIds]
   )
