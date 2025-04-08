@@ -14,7 +14,7 @@
     "Versionado automático o deliberado de documentos;",
     "Gestor de bibliografía y sincronización con Zotero;",
     "Creación, manipulación y exportación de un corpus de artículos;",
-    "Exportación de artículos en PDF, HTML, XML, ODT."
+    "Exportación de artículos en PDF, HTML, XML, LaTeX, ODT."
   ],
   "news.title": "Noticias",
   "news.workshops.title": "Próximos talleres",

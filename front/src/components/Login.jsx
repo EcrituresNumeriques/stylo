@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet'
 import { Trans, useTranslation } from 'react-i18next'
 import { applicationConfig } from '../config.js'
 import { fromFormData } from '../helpers/forms.js'
+import { useActiveUserId } from '../hooks/user.js'
 
 import styles from './login.module.scss'
 import formStyles from './form.module.scss'
@@ -18,6 +19,8 @@ export default function Login() {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const { replace, location } = useHistory()
+  const userId = useActiveUserId()
+
   const setSessionToken = useCallback(
     (token) => dispatch({ type: 'UPDATE_SESSION_TOKEN', token }),
     []
@@ -29,9 +32,12 @@ export default function Login() {
   useEffect(() => {
     if (authToken) {
       setSessionToken(authToken)
-      replace(location.pathname)
     }
-  }, [authToken])
+
+    if (userId || authToken) {
+      replace('/articles')
+    }
+  }, [authToken, userId])
 
   const handleSubmit = useCallback((event) => {
     event.preventDefault()
@@ -53,7 +59,10 @@ export default function Login() {
           ? response.json()
           : Promise.reject(new Error('Email or password is incorrect'))
       })
-      .then((data) => dispatch({ type: 'LOGIN', ...data }))
+      .then((data) => {
+        dispatch({ type: 'LOGIN', ...data })
+        replace('/articles')
+      })
       .catch((error) => {
         setError(error.message)
       })

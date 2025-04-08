@@ -1,9 +1,10 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useHistory } from 'react-router-dom'
 import { useToasts } from '@geist-ui/core'
 import { useGraphQLClient } from '../helpers/graphQL'
 import * as queries from './Credentials.graphql'
+import { useActiveUserId } from '../hooks/user.js'
 
 import styles from './login.module.scss'
 import formStyles from './form.module.scss'
@@ -16,10 +17,17 @@ import { Helmet } from 'react-helmet'
 export default function Register() {
   const { t } = useTranslation()
   const { setToast } = useToasts()
+  const userId = useActiveUserId()
   const passwordRef = useRef()
   const passwordConfirmationRef = useRef()
   const history = useHistory()
   const { query } = useGraphQLClient()
+
+  useEffect(() => {
+    if (userId) {
+      history.replace('/articles')
+    }
+  }, [userId])
 
   const handleFormSubmit = useCallback(async (event) => {
     event.preventDefault()
@@ -32,7 +40,7 @@ export default function Register() {
         type: 'default',
         text: t('credentials.register.successToast'),
       })
-      history.push('/')
+      history.push('/articles')
     } catch (err) {
       setToast({
         type: 'error',

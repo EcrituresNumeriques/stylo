@@ -9,20 +9,20 @@
     "Metadata management;",
     "Lightweight markup languages (Markdown, YAML, BibTeX);",
     "Command palette and keyboard shortcuts (Monaco editor);",
-    "Web preview and annotation of an article;",
+    "Web preview, sharing and article annotation;",
     "Asynchronous collaboration spaces and synchronous collaborative editing;",
     "Automatic or deliberate versioning of documents;",
     "Bibliography manager and synchronisation with Zotero;",
     "Creation, manipulation, and export of a corpus of articles;",
-    "Export of articles in PDF, HTML, XML, ODT."
+    "Export of articles in PDF, HTML, XML, LaTeX, ODT."
   ],
   "news.title": "News",
   "news.workshops.title": "Upcoming workshops",
   "news.release.title": "Latest update",
   "news.publications.title": "Publications",
   "contactus.title": "Contact us",
-  "contactus.description": "Do you have questions, need help, or want to discuss Stylo?",
-  "contactus.join": "Discover the support forum",
-  "contactus.publishing": "Are you a journal that wants to use Stylo?",
+  "contactus.description": "Do you have questions, need help, or willing to open a conversation about Stylo?",
+  "contactus.join": "Join the Stylo community message board",
+  "contactus.publishing": "Are you a publication that wants to use Stylo?",
   "contactus.mailto": "Contact the Chair"
 }

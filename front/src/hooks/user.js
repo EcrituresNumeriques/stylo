@@ -10,7 +10,7 @@ import { useGraphQLClient } from '../helpers/graphQL.js'
 import { applicationConfig } from '../config.js'
 
 export function useActiveUserId() {
-  return useSelector((state) => state.activeUser._id)
+  return useSelector((state) => state.activeUser?._id)
 }
 
 export function useSetAuthToken(service) {

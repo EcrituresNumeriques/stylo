@@ -9,20 +9,20 @@
     "Gestion des métadonnées ;",
     "Langages de balisage légers (Markown, YAML, BibTeX) ;",
     "Commande palette et raccourcis claviers (éditeur Monaco) ;",
-    "Prévisualisation et annotation web d’un article ;",
+    "Prévisualisation, partage et annotation web d'un article ;",
     "Espaces de collaborations asynchrones et édition collaborative synchrone ;",
     "Versionnage automatique ou délibéré des documents ;",
     "Gestionnaire de bibliographie et synchronisation avec Zotero ;",
     "Création, manipulation et export d’un corpus d’articles ;",
-    "Export d’articles en PDF, HTML, XML, ODT."
+    "Export d'articles en PDF, HTML, XML, LaTeX, ODT."
   ],
   "news.title": "Actualités",
   "news.workshops.title": "Prochains ateliers",
   "news.release.title": "Dernière mise à jour",
   "news.publications.title": "Publications",
   "contactus.title": "Nous contacter",
-  "contactus.description": "Vous avez des questions, besoin d'aide ou d'échanger autour de Stylo ?",
-  "contactus.join": "Découvrir le forum d'entraide",
+  "contactus.description": "Vous avez des questions, besoin d'aide ou envie d'échanger autour de Stylo ?",
+  "contactus.join": "Visiter le forum de la communauté Stylo",
   "contactus.publishing": "Vous êtes une revue qui souhaite utiliser Stylo ?",
   "contactus.mailto": "Contacter la Chaire"
 }
