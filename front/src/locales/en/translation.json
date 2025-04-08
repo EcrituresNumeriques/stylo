@@ -402,5 +402,8 @@
   "versions.workingCopy.text": "Working copy",
   "versions.editingSessionEnded.text": "Editing session ended",
   "versions.collaborativeSessionEnded.text": "Collaborative session ended",
-  "versions.version.text": "Version {{major}}.{{minor}}"
+  "versions.version.text": "Version {{major}}.{{minor}}",
+  "article.stats.words": "Words: {{count}}",
+  "article.stats.chars": "Characters: {{count}} (with spaces: {{countWithSpaces}})",
+  "article.stats.citations": "Citations: {{count}}"
 }

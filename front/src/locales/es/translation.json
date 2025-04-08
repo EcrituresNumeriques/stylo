@@ -370,5 +370,8 @@
   "versions.workingCopy.text": "Versión operativa",
   "versions.editingSessionEnded.text": "Sesión de edición finalizada",
   "versions.collaborativeSessionEnded.text": "Fin de la sesión de colaboración",
-  "versions.version.text": "Versión {{major}}.{{minor}}"
+  "versions.version.text": "Versión {{major}}.{{minor}}",
+  "article.stats.words": "Palabras : {{count}}",
+  "article.stats.chars": "Caracteres : {{count}} (con espacios : {{countWithSpaces}})",
+  "article.stats.citations": "Citas : {{count}}"
 }
