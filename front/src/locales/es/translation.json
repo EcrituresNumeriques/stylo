@@ -77,8 +77,6 @@
   "article.soloSessionTakeOver.message": "Este artículo es de sólo lectura porque el usuario {{username}} ha tomado la sesión de edición. Si desea continuar editando este artículo, recupere la sesión de edición o cree una sesión de colaboración.",
   "article.sendCopy.successNotification": "Copia del artículo enviada a {{username}}",
   "article.sendCopy.errorNotification": "No se puede enviar una copia del artículo : {{errMessage}}",
-  "version.editingSessionEnded.text": "Sesión de edición finalizada",
-  "version.collaborativeSessionEnded.text": "Fin de la sesión de colaboración",
   "version.by.text": "por {{owner}}",
   "article.editor.edit.title": "Modificar el artículo",
   "article.legacyEditor.edit.title": "[LEGACY] Modificar el artículo",
@@ -368,5 +366,9 @@
   "bibliography.title": "Bibliografía",
   "versions.title": "Versións",
   "versions.createVersion.title": "Crear una nueva versión",
-  "versions.createVersion.button": "Vueva versión"
+  "versions.createVersion.button": "Vueva versión",
+  "versions.workingCopy.text": "Versión operativa",
+  "versions.editingSessionEnded.text": "Sesión de edición finalizada",
+  "versions.collaborativeSessionEnded.text": "Fin de la sesión de colaboración",
+  "versions.version.text": "Versión {{major}}.{{minor}}"
 }

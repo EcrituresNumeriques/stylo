@@ -120,8 +120,6 @@
   "article.deleteModal.contributorsRemovalNote": "Si vous supprimez cet article, les contributeurs ne pourront plus accéder à celui-ci.",
   "article.sendCopy.successNotification": "Copie de l'article envoyée à {{username}}",
   "article.sendCopy.errorNotification": "Impossible d'envoyer une copie de l'article: {{errMessage}}",
-  "version.editingSessionEnded.text": "Session d'édition terminée",
-  "version.collaborativeSessionEnded.text": "Session collaborative terminée",
   "version.by.text": "par {{owner}}",
   "article.editor.edit.title": "Modifier l'article",
   "article.legacyEditor.edit.title": "[LEGACY] Modifier l'article",
@@ -399,5 +397,9 @@
   "bibliography.deleteReferenceModal.confirmMessage": "Êtes-vous sûr de vouloir supprimer la référence bibliographique : <1>{{key}}</1> ?",
   "versions.title": "Versions",
   "versions.createVersion.title": "Créer une nouvelle version",
-  "versions.createVersion.button": "Nouvelle version"
+  "versions.createVersion.button": "Nouvelle version",
+  "versions.workingCopy.text": "Copie de travail",
+  "versions.editingSessionEnded.text": "Session d'édition terminée",
+  "versions.collaborativeSessionEnded.text": "Session collaborative terminée",
+  "versions.version.text": "Version {{major}}.{{minor}}"
 }
