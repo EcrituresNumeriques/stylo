@@ -17,6 +17,7 @@ import ArticleTableOfContents from './ArticleTableOfContents.jsx'
 import { getArticleInfo } from '../Article.graphql'
 
 import styles from './CollaborativeEditorMenu.module.scss'
+import CollaborativeVersions from './CollaborativeVersions.jsx'
 
 export default function CollaborativeEditorMenu({
   articleId,
@@ -147,7 +148,7 @@ export default function CollaborativeEditorMenu({
               </>
             )}
             {activeMenu === 'versions' && (
-              <Versions
+              <CollaborativeVersions
                 articleId={articleId}
                 selectedVersion={versionId}
                 compareTo={compareTo}
