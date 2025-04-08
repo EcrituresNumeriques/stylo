@@ -1,6 +1,6 @@
 .writers {
-  margin-left: 1em;
-  flex: 1;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .row {
@@ -8,25 +8,5 @@
   align-items: center;
   margin-bottom: 1em;
   gap: 0.75rem;
-}
-
-.status {
-  font-weight: 300;
-}
-
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  padding-bottom: 1em;
-}
-
-.button {
-  > div {
-    display: flex;
-    gap: 0.5em;
-
-    > svg {
-      stroke-width: 1.25;
-    }
-  }
+  justify-content: space-between;
 }

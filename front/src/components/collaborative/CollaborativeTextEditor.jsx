@@ -15,9 +15,10 @@ import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketSt
 import styles from './CollaborativeTextEditor.module.scss'
 
 /**
- * @param props
- * @param props.articleId
- * @return {Element}
+ * @param {object} props
+ * @param {string} props.articleId
+ * @param {string|undefined} props.versionId
+ * @returns {Element}
  */
 export default function CollaborativeTextEditor({ articleId, versionId }) {
   const { yText, awareness, websocketStatus, dynamicStyles } = useCollaboration(
@@ -102,7 +103,7 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
   return (
     <>
       <style>{dynamicStyles}</style>
-      <CollaborativeEditorStatus />
+      <CollaborativeEditorStatus versionId={versionId} />
       <div className={styles.inlineStatus}>
         <CollaborativeEditorWebSocketStatus status={websocketStatus} />
       </div>

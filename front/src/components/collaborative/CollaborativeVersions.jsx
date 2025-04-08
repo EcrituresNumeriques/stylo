@@ -21,7 +21,6 @@ import styles from './CollaborativeVersions.module.scss'
  * @param {() => void} props.onBack
  * @param {string} props.articleId
  * @param {string} props.selectedVersion
- * @param {string} props.compareTo
  * @param {boolean} props.readOnly
  * @returns {JSX.Element}
  */
@@ -30,7 +29,6 @@ export default function CollaborativeVersions({
   onBack,
   articleId,
   selectedVersion,
-  compareTo,
   readOnly,
 }) {
   const history = useHistory()
