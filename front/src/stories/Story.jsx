@@ -10,6 +10,7 @@ import SidebarStory from './Sidebar.story.jsx'
 
 import buttonStyles from '../components/button.module.scss'
 import styles from '../layout.module.scss'
+import i18n from '../i18n.js'
 
 export default function Story() {
   return (
@@ -198,10 +199,11 @@ export default function Story() {
 
       <section className={styles.versions} aria-label="Versions">
         <Version
-          description=""
-          title={'Version de travail'}
-          creator={'ggrossetie'}
-          date={new Date('1995-12-17T03:24:00')}
+          type="workingCopy"
+              description=""
+              title={'Version de travail'}
+              creator={'ggrossetie'}
+              date={new Date('2025-04-07T03:24:00')}
         />
         <Version
           description={
@@ -209,13 +211,20 @@ export default function Story() {
           }
           title={'Version 1.2'}
           creator={'ggrossetie'}
-          date={new Date('1995-12-17T03:24:00')}
+          date={new Date('2025-04-06T03:24:00')}
         />
-        <Version
+        <div className={styles.yearGroup}>
+              {new Intl.DateTimeFormat(i18n.language, {
+                month: 'long',
+                year: 'numeric',
+              }).format(new Date('2025-03-23T03:24:00'))}
+            </div>
+            <Version
           description=""
-          title={'Session d’édition terminée'}
-          creator={'ggrossetie'}
-          date={new Date('1995-12-17T03:24:00')}
+          type="editingSessionEnded"
+              title={'Session d’édition terminée'}
+              creator={'ggrossetie'}
+              date={new Date('2025-03-23T03:24:00')}
         />
       </section>
     </div>

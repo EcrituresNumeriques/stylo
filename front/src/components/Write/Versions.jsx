@@ -299,14 +299,14 @@ export function WorkingVersion({
 }
 
 /**
- * @param props
+ * @param {object} props
  * @param {boolean} props.showTitle
  * @param {() => void} props.onBack
- * @param props.articleId
- * @param props.selectedVersion
- * @param props.compareTo
- * @param props.readOnly
- * @return {Element}
+ * @param {string} props.articleId
+ * @param {string} props.selectedVersion
+ * @param {string} props.compareTo
+ * @param {boolean} props.readOnly
+ * @returns {Element}
  */
 export default function Versions({
   showTitle,
