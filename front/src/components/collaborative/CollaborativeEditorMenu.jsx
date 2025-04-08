@@ -11,19 +11,14 @@ import Loading from '../molecules/Loading.jsx'
 import Sidebar from '../Sidebar.jsx'
 import ArticleBibliography from '../bibliography/ArticleBibliography.jsx'
 import ArticleMetadata from '../Write/ArticleMetadata.jsx'
-import Versions from '../Write/Versions.jsx'
 import ArticleTableOfContents from './ArticleTableOfContents.jsx'
+import CollaborativeVersions from './CollaborativeVersions.jsx'
 
 import { getArticleInfo } from '../Article.graphql'
 
 import styles from './CollaborativeEditorMenu.module.scss'
-import CollaborativeVersions from './CollaborativeVersions.jsx'
 
-export default function CollaborativeEditorMenu({
-  articleId,
-  versionId,
-  compareTo,
-}) {
+export default function CollaborativeEditorMenu({ articleId, versionId }) {
   const { t } = useTranslation()
   const [opened, setOpened] = useState(false)
   const [activeMenu, setActiveMenu] = useState('')
@@ -151,7 +146,6 @@ export default function CollaborativeEditorMenu({
               <CollaborativeVersions
                 articleId={articleId}
                 selectedVersion={versionId}
-                compareTo={compareTo}
                 showTitle={true}
                 onBack={() => setActiveMenu('')}
               />

@@ -10,15 +10,9 @@ import CollaborativeEditorMenu from './CollaborativeEditorMenu.jsx'
 import defaultEditorOptions from '../Write/providers/monaco/options.js'
 
 import styles from './CollaborativeEditor.module.scss'
-import CollaborativeTextReader from './CollaborativeTextReader.jsx'
 
 export default function CollaborativeEditor() {
   const { articleId, compareTo, versionId } = useParams()
-
-  console.log({ articleId, compareTo, versionId })
-
-  if (versionId) {
-  }
 
   if (compareTo) {
     return (
