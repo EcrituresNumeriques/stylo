@@ -1,4 +1,6 @@
 {
+  "more.about": "Learn more",
+  "more.about.accessibleLabel": "Learn more about {{about}}.",
   "user.account.title": "Account information",
   "user.account.displayName": "Display name",
   "user.account.firstName": "First name",
@@ -368,7 +370,7 @@
   "metadata.title": "Metadata",
   "metadata.showYaml": "Enable YAML mode",
   "toc.title": "Table Of Contents",
-  "editorMenu.open.label": "Close", 
+  "editorMenu.open.label": "Close",
   "editorMenu.close.label": "Menu",
   "export.title": "Export",
   "annotate.title": "Annotate"

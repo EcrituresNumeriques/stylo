@@ -1,4 +1,6 @@
 {
+  "more.about": "Saber más",
+  "more.about.accessibleLabel": "Saber más sobre {{about}}.",
   "workspace.myspace": "Mi espacio",
   "workspace.description.label": "Descripción",
   "workspace.createdBy.label": "por",

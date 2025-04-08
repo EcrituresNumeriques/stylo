@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation, Trans } from 'react-i18next'
 import {
   Building2,
   CalendarDays,
@@ -16,6 +17,9 @@ import buttonStyles from './button.module.scss'
 import clsx from 'clsx'
 
 export default function Home() {
+  const { t } = useTranslation('home')
+  const { t: tGlobal } = useTranslation()
+
   return (
     <>
       <section className={clsx(styles.sectionPrimary, styles.centered)}>
@@ -23,19 +27,13 @@ export default function Home() {
           <img src={styloLogo} alt="Stylo" className={headerStyles.logoAsImg} />
         </h1>
 
-        <p className={styles.hero}>
-          Stylo est un éditeur de texte sémantique et collaboratif, créé pour
-          écrire des textes scientifiques.
-        </p>
+        <p className={styles.hero}>{t('hero.main')}</p>
 
-        <p>
-          C'est également un projet de recherche réalisé par l’équipe de la
-          Chaire de recherche du Canada sur les écritures numériques.
-        </p>
+        <p>{t('hero.description')}</p>
 
         <p>
           <Link to="/register" className={buttonStyles.linkPrimary}>
-            Créer un compte Stylo
+            {tGlobal('credentials.login.registerLink')}
           </Link>
         </p>
 
@@ -45,54 +43,43 @@ export default function Home() {
             rel="noreferrer noopener"
             target="_blank"
             className={buttonStyles.linkSecondary}
+            aria-label={tGlobal('more.about.accessibleLabel', {
+              about: 'Stylo',
+            })}
           >
-            En savoir plus
+            {tGlobal('more.about')}
           </a>
         </p>
       </section>
 
       <section className={styles.sectionAlternate}>
-        <h1>Le projet</h1>
+        <h1>{t('project.title')}</h1>
 
         <p>
-          Stylo est un éditeur de texte sémantique, libre et collaboratif, basé
-          sur des <strong>standards ouverts</strong>. Il permet de produire de{' '}
-          <strong>multiples sorties</strong>à partir d’un seul document ou d’un
-          corpus. Il se base sur des formats et des technologies de conversion
-          utilisées par la communauté scientifique.
+          <Trans i18nKey="project.tool" ns="home" />
         </p>
 
         <p>
-          Stylo est un projet de recherche et un outil prototype adapté pour les
-          revues en Sciences Humaines et Sociales. Il intègre l’ensemble de la
-          chaîne éditoriale dans un même environnement. La circulation des
-          textes numériques est facilitée en séparant la structure sémantique
-          des documents de leur mise en forme, sans format ni logiciel
-          propriétaire.
+          <Trans i18nKey="project.research" ns="home" />
         </p>
 
-        <h2>Fonctionnalités</h2>
+        <h2>{t('project.features.title')}</h2>
 
         <ul className={styles.spacer}>
-          <li>Gestion des métadonnées ;</li>
-          <li>Langages de balisage légers (Markown, YAML, BibTeX) ;</li>
-          <li>Commande palette et raccourcis claviers (éditeur Monaco) ;</li>
-          <li>Prévisualisation et annotation web d’un article ;</li>
-          <li>
-            Espaces de collaborations asynchrones et édition collaborative
-            synchrone ;
-          </li>
-          <li>Versionnage automatique ou délibéré des documents ;</li>
-          <li>
-            Gestionnaire de bibliographie et synchronisation avec Zotero ;
-          </li>
-          <li>Création, manipulation et export d’un corpus d’articles ;</li>
-          <li>Export d’articles en PDF, HTML, XML, ODT.</li>
+          <li>{t('project.features.0')}</li>
+          <li>{t('project.features.1')}</li>
+          <li>{t('project.features.2')}</li>
+          <li>{t('project.features.3')}</li>
+          <li>{t('project.features.4')}</li>
+          <li>{t('project.features.5')}</li>
+          <li>{t('project.features.6')}</li>
+          <li>{t('project.features.7')}</li>
+          <li>{t('project.features.8')}</li>
         </ul>
 
         <p>
           <Link to="/register" className={buttonStyles.linkPrimary}>
-            Créer un compte Stylo
+            {tGlobal('credentials.login.registerLink')}
           </Link>
         </p>
 
@@ -102,16 +89,19 @@ export default function Home() {
             rel="noreferrer noopener"
             target="_blank"
             className={buttonStyles.linkSecondary}
+            aria-label={tGlobal('more.about.accessibleLabel', {
+              about: 'Stylo',
+            })}
           >
-            En savoir plus
+            {tGlobal('more.about')}
           </a>
         </p>
       </section>
 
       <section className={styles.sectionPrimary}>
-        <h1>Actualités</h1>
+        <h1>{t('news.title')}</h1>
 
-        <h2>Prochains ateliers</h2>
+        <h2>{t('news.workshops.title')}</h2>
 
         <div className={styles.desktopGridOf3}>
           <article className={styles.article}>
@@ -137,16 +127,16 @@ export default function Home() {
               rel="noreferrer noopener"
               className={buttonStyles.linkSecondary}
             >
-              Plus d'infos
+              {tGlobal('more.about')}
             </a>
           </article>
         </div>
 
-        <h2>Dernière mise à jour</h2>
+        <h2>{t('news.release.title')}</h2>
         {/* https://github.com/EcrituresNumeriques/stylo/releases.atom */}
 
         <div className={styles.desktopGridOf3}>
-          <article className={styles.article}>
+          <article className={styles.article} lang="fr">
             <h3>Stylo 3.4</h3>
 
             <ul className={styles.articleMetadata}>
@@ -389,13 +379,13 @@ export default function Home() {
                 rel="noreferrer noopener"
                 className={buttonStyles.linkSecondary}
               >
-                Plus d'infos
+                {tGlobal('more.about')}
               </a>
             </p>
           </article>
         </div>
 
-        <h2>Publications</h2>
+        <h2>{t('news.publications.title')}</h2>
         {/* https://api.zotero.org/groups/322999/items/top?direction=desc&format=atom&qmode=titleCreatorYear&sort=date&tag=Stylo,_nettoy%C3%A9 */}
 
         <div className={styles.desktopGridOf3}>
@@ -454,7 +444,7 @@ export default function Home() {
               rel="noreferrer noopener"
               className={buttonStyles.linkSecondary}
             >
-              Plus d'infos
+              {tGlobal('more.about')}
             </a>
           </article>
 
@@ -485,26 +475,24 @@ export default function Home() {
               rel="noreferrer noopener"
               className={buttonStyles.linkSecondary}
             >
-              Plus d'infos
+              {tGlobal('more.about')}
             </a>
           </article>
         </div>
       </section>
 
       <section className={styles.sectionAlternate}>
-        <h1>Nous contacter</h1>
+        <h1>{t('contactus.title')}</h1>
 
-        <p>
-          Vous avez des questions, besoin d'aide ou d'échanger autour de Stylo ?
-        </p>
+        <p>{t('contactus.description')}</p>
 
         <p className={styles.spacer}>
-          <a href="#" className={buttonStyles.linkPrimary}>
-            Découvrir le forum d'entraide
+          <a href="#" className={buttonStyles.linkPrimary} target="_blank">
+            {t('contactus.join')}
           </a>
         </p>
 
-        <p>Si vous êtes une revue qui souhaite utiliser Stylo</p>
+        <p>{t('contactus.publishing')}</p>
 
         <p>
           <a
@@ -513,7 +501,7 @@ export default function Home() {
             rel="noreferrer noopener"
             className={buttonStyles.linkSecondary}
           >
-            Contacter la Chaire
+            {t('contactus.mailto')}
           </a>
         </p>
       </section>
