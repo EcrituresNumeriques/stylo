@@ -1,3 +1,6 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
 .versions {
   display: flex;
   flex-direction: column;
@@ -6,6 +9,12 @@
 }
 
 .info {
+  margin-top: 0.5rem;
+}
+
+.monthSeparator {
+  text-transform: capitalize;
+  color: $main-lighter-color;
   margin-top: 0.5rem;
 }
 

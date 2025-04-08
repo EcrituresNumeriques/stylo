@@ -398,8 +398,16 @@ yjsUtils.setPersistence({
         ],
       })
       if (result) {
-        const documentState = Buffer.from(result.workingVersion.ydoc, 'base64')
-        Y.applyUpdate(ydoc, documentState)
+        try {
+          const documentState = Buffer.from(result.workingVersion.ydoc, 'base64')
+          Y.applyUpdate(ydoc, documentState)
+        } catch (error) {
+          Sentry.captureException(error)
+          console.error(
+            `Unable to load document state from the working copy on article: ${articleId}`,
+            error
+          )
+        }
       }
       await builtinPersistence.bindState(roomName, ydoc)
       ydoc.on(

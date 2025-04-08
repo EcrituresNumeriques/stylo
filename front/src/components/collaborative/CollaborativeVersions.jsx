@@ -14,6 +14,7 @@ import { useArticleVersions } from '../../hooks/article.js'
 import { useModal } from '../../hooks/modal.js'
 
 import styles from './CollaborativeVersions.module.scss'
+import i18n from '../../i18n.js'
 
 /**
  * @param {object} props
@@ -61,6 +62,59 @@ export default function CollaborativeVersions({
     <h2 className={styles.title}>{t('versions.title')}</h2>
   )
 
+  const monthYearFormat = new Intl.DateTimeFormat(i18n.language, {
+    month: 'long',
+    year: 'numeric',
+  })
+
+  function getMap() {
+    let previousVersionDate
+    return articleVersions.map((version) => {
+      const title =
+        version.type === 'editingSessionEnded' ||
+        version.type === 'collaborativeSessionEnded'
+          ? t(`versions.${version.type}.text`)
+          : t('versions.version.text', {
+              major: version.version,
+              minor: version.revision,
+            })
+
+      const date = new Date(version.updatedAt)
+      const versionItem = (
+        <Version
+          key={`showVersion-${version._id}`}
+          date={date}
+          title={title}
+          description={version.message}
+          type={version.type}
+          creator={version.owner?.displayName || version.owner?.username}
+          selected={selectedVersion === version._id}
+          onClick={() => {
+            history.push(`/article/${articleId}/version/${version._id}`)
+          }}
+        />
+      )
+      if (previousVersionDate) {
+        if (
+          previousVersionDate.getFullYear() !== date.getFullYear() ||
+          previousVersionDate.getMonth() !== date.getMonth()
+        ) {
+          previousVersionDate = date
+          return (
+            <>
+              <div className={styles.monthSeparator}>
+                {monthYearFormat.format(date)}
+              </div>
+              {versionItem}
+            </>
+          )
+        }
+      }
+      previousVersionDate = date
+      return versionItem
+    })
+  }
+
   return (
     <section>
       {showTitle && title}
@@ -103,26 +157,13 @@ export default function CollaborativeVersions({
         <Version
           date={new Date(updatedAt)}
           type="workingCopy"
-          title="Copie de travail"
+          title={t('versions.workingCopy.text')}
           selected={!selectedVersion}
           onClick={() => {
             history.push(`/article/${articleId}`)
           }}
         />
-        {articleVersions.map((v) => (
-          <Version
-            key={`showVersion-${v._id}`}
-            date={new Date(v.updatedAt)}
-            title={`Version ${v.version}.${v.revision}`}
-            description={v.message}
-            type={v.type}
-            creator={v.owner?.displayName || v.owner?.username}
-            selected={selectedVersion === v._id}
-            onClick={() => {
-              history.push(`/article/${articleId}/version/${v._id}`)
-            }}
-          />
-        ))}
+        {getMap()}
       </ul>
     </section>
   )

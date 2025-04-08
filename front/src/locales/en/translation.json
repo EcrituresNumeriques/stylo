@@ -121,7 +121,6 @@
   "article.deleteModal.contributorsRemovalNote": "If you delete this article, contributors won't have access to this article anymore.",
   "article.sendCopy.successNotification": "Copie of the article send to {{username}}",
   "article.sendCopy.errorNotification": "Unable to send a copy of the article: {{errMessage}}",
-  "version.editingSessionEnded.text": "Editing session ended",
   "version.by.text": "by {{owner}}",
   "article.editor.edit.title": "Edit article",
   "article.legacyEditor.edit.title": "[LEGACY] Edit article",
@@ -377,5 +376,9 @@
   "annotate.title": "Annotate",
   "versions.title": "Versions",
   "versions.createVersion.title": "Create a new version",
-  "versions.createVersion.button": "New version"
+  "versions.createVersion.button": "New version",
+  "versions.workingCopy.text": "Working copy",
+  "versions.editingSessionEnded.text": "Editing session ended",
+  "versions.collaborativeSessionEnded.text": "Collaborative session ended",
+  "versions.version.text": "Version {{major}}.{{minor}}"
 }
