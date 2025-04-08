@@ -1,16 +1,18 @@
 import React from 'react'
+
 import CollaborativeEditorWebSocketStatus from '../components/collaborative/CollaborativeEditorWebSocketStatus.jsx'
 import Alert from '../components/molecules/Alert.jsx'
 import Loading from '../components/molecules/Loading.jsx'
 import Version from '../components/molecules/Version.jsx'
-import Select from '../components/Select.jsx'
 import ButtonStory from './Button.story.jsx'
 import FormStory from './Form.story.jsx'
 import SidebarStory from './Sidebar.story.jsx'
 
+import i18n from '../i18n.js'
+
 import buttonStyles from '../components/button.module.scss'
 import styles from '../layout.module.scss'
-import i18n from '../i18n.js'
+import storyStyles from './story.module.scss'
 
 export default function Story() {
   return (
@@ -28,7 +30,7 @@ export default function Story() {
         </p>
 
         <p>
-          C'est également un projet de recherche réalisé par l’équipe de la
+          C&apos;est également un projet de recherche réalisé par l’équipe de la
           Chaire de recherche du Canada sur les écritures numériques
         </p>
 
@@ -111,8 +113,8 @@ export default function Story() {
             <div className={styles.desktopGridOf3}>
               <article className={styles.article}>
                 <h3>
-                  Stylo en 2023 : de nouvelles fonctionnalités pour l'écriture
-                  et l'édition scientifique
+                  Stylo en 2023 : de nouvelles fonctionnalités pour
+                  l&apos;écriture et l&apos;édition scientifique
                 </h3>
 
                 <ul className={styles.articleMetadata}>
@@ -122,13 +124,13 @@ export default function Story() {
                 </ul>
 
                 <a className={buttonStyles.linkSecondary} href="#">
-                  Plus d'infos
+                  Plus d&apos;infos
                 </a>
               </article>
               <article className={styles.article}>
                 <h3>
-                  Stylo en 2023 : de nouvelles fonctionnalités pour l'écriture
-                  et l'édition scientifique
+                  Stylo en 2023 : de nouvelles fonctionnalités pour
+                  l&apos;écriture et l&apos;édition scientifique
                 </h3>
 
                 <ul className={styles.articleMetadata}>
@@ -138,7 +140,7 @@ export default function Story() {
                 </ul>
 
                 <a className={buttonStyles.linkSecondary} href="#">
-                  Plus d'infos
+                  Plus d&apos;infos
                 </a>
               </article>
             </div>
@@ -197,13 +199,13 @@ export default function Story() {
         />
       </section>
 
-      <section className={styles.versions} aria-label="Versions">
+      <section className={storyStyles.versions} aria-label="Versions">
         <Version
           type="workingCopy"
-              description=""
-              title={'Version de travail'}
-              creator={'ggrossetie'}
-              date={new Date('2025-04-07T03:24:00')}
+          description=""
+          title={'Version de travail'}
+          creator={'ggrossetie'}
+          date={new Date('2025-04-07T03:24:00')}
         />
         <Version
           description={
@@ -213,18 +215,18 @@ export default function Story() {
           creator={'ggrossetie'}
           date={new Date('2025-04-06T03:24:00')}
         />
-        <div className={styles.yearGroup}>
-              {new Intl.DateTimeFormat(i18n.language, {
-                month: 'long',
-                year: 'numeric',
-              }).format(new Date('2025-03-23T03:24:00'))}
-            </div>
-            <Version
+        <div className={storyStyles.yearGroup}>
+          {new Intl.DateTimeFormat(i18n.language, {
+            month: 'long',
+            year: 'numeric',
+          }).format(new Date('2025-03-23T03:24:00'))}
+        </div>
+        <Version
           description=""
           type="editingSessionEnded"
-              title={'Session d’édition terminée'}
-              creator={'ggrossetie'}
-              date={new Date('2025-03-23T03:24:00')}
+          title={'Session d’édition terminée'}
+          creator={'ggrossetie'}
+          date={new Date('2025-03-23T03:24:00')}
         />
       </section>
     </div>
