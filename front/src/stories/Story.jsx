@@ -2,6 +2,8 @@ import React from 'react'
 import CollaborativeEditorWebSocketStatus from '../components/collaborative/CollaborativeEditorWebSocketStatus.jsx'
 import Alert from '../components/molecules/Alert.jsx'
 import Loading from '../components/molecules/Loading.jsx'
+import Version from '../components/molecules/Version.jsx'
+import Select from '../components/Select.jsx'
 import ButtonStory from './Button.story.jsx'
 import FormStory from './Form.story.jsx'
 import SidebarStory from './Sidebar.story.jsx'
@@ -191,6 +193,29 @@ export default function Story() {
         <CollaborativeEditorWebSocketStatus
           status={'disconnected'}
           state={'started'}
+        />
+      </section>
+
+      <section className={styles.versions} aria-label="Versions">
+        <Version
+          description=""
+          title={'Version de travail'}
+          creator={'ggrossetie'}
+          date={new Date('1995-12-17T03:24:00')}
+        />
+        <Version
+          description={
+            'Cohérence des titres de section et mise à jour de la table des matières.'
+          }
+          title={'Version 1.2'}
+          creator={'ggrossetie'}
+          date={new Date('1995-12-17T03:24:00')}
+        />
+        <Version
+          description=""
+          title={'Session d’édition terminée'}
+          creator={'ggrossetie'}
+          date={new Date('1995-12-17T03:24:00')}
         />
       </section>
     </div>

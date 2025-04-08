@@ -9,12 +9,16 @@ import {
 } from '../components/Article.graphql'
 import {
   getArticleVersions,
+  getArticleVersion,
   renameVersion,
   getArticleWorkingCopy,
 } from '../components/Write/Write.graphql'
 import { createVersion } from '../services/ArticleService.graphql'
 
-import useFetchData, { useMutateData } from './graphql.js'
+import useFetchData, {
+  useConditionalFetchData,
+  useMutateData,
+} from './graphql.js'
 import { executeQuery } from '../helpers/graphQL.js'
 
 export function useArticleTagActions({ articleId }) {
@@ -157,6 +161,22 @@ export function useArticleVersions({ articleId }) {
     error,
     isLoading,
     article: data?.article,
+  }
+}
+
+export function useArticleVersion({ versionId }) {
+  const { data, error, isLoading } = useConditionalFetchData(
+    versionId ? { query: getArticleVersion, variables: { versionId } } : null,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  )
+
+  return {
+    error,
+    isLoading,
+    version: data?.version,
   }
 }
 

@@ -115,3 +115,20 @@ query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
     }
   }
 }
+
+query getArticleVersion($versionId: ID!) {
+  version(version: $versionId) {
+    _id
+    md
+    bib
+    bibPreview
+    metadata
+    message
+    revision
+    version
+    owner {
+      displayName
+      username
+    }
+  }
+}

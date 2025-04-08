@@ -1,0 +1,18 @@
+.container {
+  padding: 0.25rem;
+}
+
+.versions {
+  max-width: 375px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.container {
+  :global {
+    .content {
+      padding: 1rem;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import clsx from 'clsx'
-import React, { useCallback, useMemo, useState } from 'react'
 import { ArrowLeft, Check, Edit3 } from 'lucide-react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -9,16 +9,16 @@ import {
   useArticleVersions,
 } from '../../hooks/article.js'
 import { useModal } from '../../hooks/modal.js'
-
-import TimeAgo from '../TimeAgo.jsx'
 import Button from '../Button'
+
+import buttonStyles from '../button.module.scss'
 import Field from '../Field'
 import Modal from '../Modal.jsx'
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
-import CreateVersion from './CreateVersion'
 
-import buttonStyles from '../button.module.scss'
+import TimeAgo from '../TimeAgo.jsx'
+import CreateVersion from './CreateVersion'
 import styles from './versions.module.scss'
 
 /**
@@ -52,14 +52,8 @@ function Version({ articleId, compareTo, readOnly, selectedVersion, v }) {
     () => `/article/${articleId}/${versionPart}compare/${articleVersionId}`,
     [articleId, versionPart, articleVersionId]
   )
-  const canCompare = useMemo(
-    () => ![compareTo, selectedVersion].includes(articleVersionId),
-    [compareTo, selectedVersion, articleVersionId]
-  )
-  const canStopCompare = useMemo(
-    () => isComparing && compareTo && articleVersionId === compareTo,
-    [compareTo, articleVersionId]
-  )
+  const canCompare = false
+  const canStopCompare = false
 
   const className = clsx({
     [styles.selected]: isSelected,
@@ -176,32 +170,34 @@ function Version({ articleId, compareTo, readOnly, selectedVersion, v }) {
         )}
       </Link>
 
-      <ul className={styles.actions}>
-        <li hidden={!canCompare}>
-          <Link
-            className={clsx(
-              buttonStyles.button,
-              buttonStyles.secondary,
-              styles.action
-            )}
-            to={compareLink}
-          >
-            {t('write.compareVersion.button')}
-          </Link>
-        </li>
-        <li hidden={!canStopCompare}>
-          <Link
-            className={clsx(
-              buttonStyles.button,
-              buttonStyles.secondary,
-              styles.action
-            )}
-            to={`/article/${articleId}/${versionPart}`}
-          >
-            {t('write.stopCompareVersion.button')}
-          </Link>
-        </li>
-      </ul>
+      {(canCompare || canStopCompare) && (
+        <ul className={styles.actions}>
+          <li hidden={!canCompare}>
+            <Link
+              className={clsx(
+                buttonStyles.button,
+                buttonStyles.secondary,
+                styles.action
+              )}
+              to={compareLink}
+            >
+              {t('write.compareVersion.button')}
+            </Link>
+          </li>
+          <li hidden={!canStopCompare}>
+            <Link
+              className={clsx(
+                buttonStyles.button,
+                buttonStyles.secondary,
+                styles.action
+              )}
+              to={`/article/${articleId}/${versionPart}`}
+            >
+              {t('write.stopCompareVersion.button')}
+            </Link>
+          </li>
+        </ul>
+      )}
     </li>
   )
 }
@@ -237,17 +233,8 @@ export function WorkingVersion({
         : `/article/${articleId}/compare/${selectedVersion}`,
     [articleId, selectedVersion, articleVersionId]
   )
-  const canCompare = useMemo(
-    () =>
-      isComparing
-        ? ![compareTo, selectedVersion].includes(articleVersionId)
-        : selectedVersion,
-    [isComparing, compareTo, selectedVersion, articleVersionId]
-  )
-  const canStopCompare = useMemo(
-    () => isComparing && compareTo === articleVersionId,
-    [isComparing, isSelected]
-  )
+  const canCompare = false
+  const canStopCompare = false
 
   const className = clsx({
     [styles.selected]: isSelected,
@@ -279,32 +266,34 @@ export function WorkingVersion({
         </p>
       </Link>
 
-      <ul className={styles.actions}>
-        <li hidden={!canCompare}>
-          <Link
-            className={clsx(
-              buttonStyles.button,
-              buttonStyles.secondary,
-              styles.action
-            )}
-            to={compareLink}
-          >
-            {t('write.compareVersion.button')}
-          </Link>
-        </li>
-        <li hidden={!canStopCompare}>
-          <Link
-            className={clsx(
-              buttonStyles.button,
-              buttonStyles.secondary,
-              styles.action
-            )}
-            to={`/article/${articleId}`}
-          >
-            {t('write.stopCompareVersion.button')}
-          </Link>
-        </li>
-      </ul>
+      {(canCompare || canStopCompare) && (
+        <ul className={styles.actions}>
+          <li hidden={!canCompare}>
+            <Link
+              className={clsx(
+                buttonStyles.button,
+                buttonStyles.secondary,
+                styles.action
+              )}
+              to={compareLink}
+            >
+              {t('write.compareVersion.button')}
+            </Link>
+          </li>
+          <li hidden={!canStopCompare}>
+            <Link
+              className={clsx(
+                buttonStyles.button,
+                buttonStyles.secondary,
+                styles.action
+              )}
+              to={`/article/${articleId}`}
+            >
+              {t('write.stopCompareVersion.button')}
+            </Link>
+          </li>
+        </ul>
+      )}
     </li>
   )
 }
