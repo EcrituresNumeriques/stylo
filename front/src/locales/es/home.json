@@ -1,0 +1,28 @@
+{
+  "hero.main": "Stylo es un editor de texto semántico y colaborativo, creado para escribir textos científicos.",
+  "hero.description": "También es un proyecto de investigación realizado por el equipo de la Cátedra de Investigación de Canadá sobre Escrituras Digitales.",
+  "project.title": "El proyecto",
+  "project.tool": "Stylo es un editor de texto semántico, libre y colaborativo, basado en <strong>estándares abiertos</strong>. Permite producir <strong>múltiples salidas</strong> a partir de un solo documento o un corpus. Se basa en formatos y tecnologías de conversión utilizadas por la comunidad científica.",
+  "project.research": "Stylo es un proyecto de investigación y una herramienta prototipo adaptada para revistas en Ciencias Sociales y Humanidades. Integra toda la cadena editorial en un mismo entorno. La circulación de textos digitales se facilita separando la estructura semántica de los documentos de su formato, sin software ni formatos propietarios.",
+  "project.features.title": "Características",
+  "project.features": [
+    "Gestión de metadatos;",
+    "Lenguajes de marcado ligeros (Markdown, YAML, BibTeX);",
+    "Paleta de comandos y atajos de teclado (editor Monaco);",
+    "Previsualización y anotación web de un artículo;",
+    "Espacios de colaboración asincrónica y edición colaborativa sincrónica;",
+    "Versionado automático o deliberado de documentos;",
+    "Gestor de bibliografía y sincronización con Zotero;",
+    "Creación, manipulación y exportación de un corpus de artículos;",
+    "Exportación de artículos en PDF, HTML, XML, LaTeX, ODT."
+  ],
+  "news.title": "Noticias",
+  "news.workshops.title": "Próximos talleres",
+  "news.release.title": "Última actualización",
+  "news.publications.title": "Publicaciones",
+  "contactus.title": "Contáctanos",
+  "contactus.description": "¿Tienes preguntas, necesitas ayuda o quieres hablar sobre Stylo?",
+  "contactus.join": "Descubre el foro de ayuda",
+  "contactus.publishing": "¿Eres una revista que desea usar Stylo?",
+  "contactus.mailto": "Contactar con la Cátedra"
+}

@@ -1,0 +1,28 @@
+{
+  "hero.main": "Stylo is a semantic and collaborative text editor, created for writing scientific texts.",
+  "hero.description": "It is also a research project carried out by the team of the Canada Research Chair on Digital Writing.",
+  "project.title": "The project",
+  "project.tool": "Stylo is a semantic, open-source, and collaborative text editor based on <strong>open standards</strong>. It allows the production of <strong>multiple outputs</strong> from a single document or corpus. It is based on formats and conversion technologies used by the scientific community.",
+  "project.research": "Stylo is a research project and a prototype tool adapted for journals in the Humanities and Social Sciences. It integrates the entire editorial chain into a single environment. The circulation of digital texts is facilitated by separating the semantic structure of documents from their formatting, without proprietary formats or software.",
+  "project.features.title": "Features",
+  "project.features": [
+    "Metadata management;",
+    "Lightweight markup languages (Markdown, YAML, BibTeX);",
+    "Command palette and keyboard shortcuts (Monaco editor);",
+    "Web preview, sharing and article annotation;",
+    "Asynchronous collaboration spaces and synchronous collaborative editing;",
+    "Automatic or deliberate versioning of documents;",
+    "Bibliography manager and synchronisation with Zotero;",
+    "Creation, manipulation, and export of a corpus of articles;",
+    "Export of articles in PDF, HTML, XML, LaTeX, ODT."
+  ],
+  "news.title": "News",
+  "news.workshops.title": "Upcoming workshops",
+  "news.release.title": "Latest update",
+  "news.publications.title": "Publications",
+  "contactus.title": "Contact us",
+  "contactus.description": "Do you have questions, need help, or willing to open a conversation about Stylo?",
+  "contactus.join": "Join the Stylo community message board",
+  "contactus.publishing": "Are you a publication that wants to use Stylo?",
+  "contactus.mailto": "Contact the Chair"
+}

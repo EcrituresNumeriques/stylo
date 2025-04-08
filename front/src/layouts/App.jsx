@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import React, { Suspense, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
@@ -22,12 +21,10 @@ export default function StyloApp({ children }) {
       {hasBooted ? (
         <Switch>
           <Route path="/article/*">
-            <main className={clsx(styles.app, styles.viewportMaxHeight)}>
-              {children}
-            </main>
+            <main className={styles.viewportMaxHeight}>{children}</main>
           </Route>
           <Route path="*">
-            <main className={styles.app}>{children}</main>
+            <main>{children}</main>
           </Route>
         </Switch>
       ) : (

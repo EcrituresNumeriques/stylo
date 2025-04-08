@@ -1,4 +1,6 @@
 {
+  "more.about": "En savoir plus",
+  "more.about.accessibleLabel": "En savoir plus à propos de {{about}}.",
   "user.account.title": "Information du compte",
   "user.account.displayName": "Nom d'affichage",
   "user.account.firstName": "Prénom",

@@ -1,0 +1,28 @@
+{
+  "hero.main": "Stylo est un éditeur de texte sémantique et collaboratif, créé pour écrire des textes scientifiques.",
+  "hero.description": "C'est également un projet de recherche réalisé par l’équipe de la Chaire de recherche du Canada sur les écritures numériques.",
+  "project.title": "Le projet",
+  "project.tool": "Stylo est un éditeur de texte sémantique, libre et collaboratif, basé sur des <strong>standards ouverts</strong>. Il permet de produire de <strong>multiples sorties</strong> à partir d’un seul document ou d’un corpus. Il se base sur des formats et des technologies de conversion utilisées par la communauté scientifique.",
+  "project.research": "Stylo est un projet de recherche et un outil prototype adapté pour les revues en Sciences Humaines et Sociales. Il intègre l’ensemble de la chaîne éditoriale dans un même environnement. La circulation des textes numériques est facilitée en séparant la structure sémantique des documents de leur mise en forme, sans format ni logiciel propriétaire.",
+  "project.features.title": "Fonctionnalités",
+  "project.features": [
+    "Gestion des métadonnées ;",
+    "Langages de balisage légers (Markown, YAML, BibTeX) ;",
+    "Commande palette et raccourcis claviers (éditeur Monaco) ;",
+    "Prévisualisation, partage et annotation web d'un article ;",
+    "Espaces de collaborations asynchrones et édition collaborative synchrone ;",
+    "Versionnage automatique ou délibéré des documents ;",
+    "Gestionnaire de bibliographie et synchronisation avec Zotero ;",
+    "Création, manipulation et export d’un corpus d’articles ;",
+    "Export d'articles en PDF, HTML, XML, LaTeX, ODT."
+  ],
+  "news.title": "Actualités",
+  "news.workshops.title": "Prochains ateliers",
+  "news.release.title": "Dernière mise à jour",
+  "news.publications.title": "Publications",
+  "contactus.title": "Nous contacter",
+  "contactus.description": "Vous avez des questions, besoin d'aide ou envie d'échanger autour de Stylo ?",
+  "contactus.join": "Visiter le forum de la communauté Stylo",
+  "contactus.publishing": "Vous êtes une revue qui souhaite utiliser Stylo ?",
+  "contactus.mailto": "Contacter la Chaire"
+}

@@ -33,7 +33,7 @@ export default function Header() {
         <header className={styles.headerContainer} role="banner">
           <section className={styles.header}>
             <h1 className={styles.logo}>
-              <NavLink to={connected ? `${baseUrl}/articles` : ''} rel="home">
+              <NavLink to="/" rel="home">
                 <img src={logoContent} alt="Stylo" title="Stylo" />
               </NavLink>
             </h1>
@@ -55,7 +55,7 @@ export default function Header() {
                 )}
                 {!connected && (
                   <li>
-                    <NavLink to="/">
+                    <NavLink to="/login">
                       {t('credentials.login.confirmButton')}
                     </NavLink>
                   </li>
