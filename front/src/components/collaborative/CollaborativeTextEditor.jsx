@@ -80,6 +80,13 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
   }, [yText])
 
   useEffect(() => {
+    if (version) {
+      dispatch({ type: 'UPDATE_ARTICLE_STATS', md: version.md })
+      dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md: version.md })
+    }
+  }, [version])
+
+  useEffect(() => {
     const line = editorCursorPosition.lineNumber
     const editor = editorRef.current
     editor?.focus()
