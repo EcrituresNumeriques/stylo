@@ -24,8 +24,8 @@ export default function Home() {
         </h1>
 
         <p className={styles.hero}>
-          Stylo est un éditeur de texte sémantique, créé pour écrire des textes
-          scientifiques.
+          Stylo est un éditeur de texte sémantique et collaboratif, créé pour
+          écrire des textes scientifiques.
         </p>
 
         <p>
@@ -56,20 +56,19 @@ export default function Home() {
 
         <p>
           Stylo est un éditeur de texte sémantique, libre et collaboratif, basé
-          sur des standards <strong>ouverts</strong>, permettant de produire de
-          multiples sorties à partir d’un seul document ou d’un corpus, en
-          implémentant des formats et des technologies de conversion déjà
+          sur des <strong>standards ouverts</strong>. Il permet de produire de{' '}
+          <strong>multiples sorties</strong>à partir d’un seul document ou d’un
+          corpus. Il se base sur des formats et des technologies de conversion
           utilisées par la communauté scientifique.
         </p>
 
         <p>
-          Projet de recherche et outil prototype adapté pour les revues en
-          Sciences Humaines et Sociales, Stylo permet ainsi d’intégrer
-          l’ensemble de la chaîne éditoriale dans un même environnement, tout en
-          séparant la structuration sémantique d’un document de sa mise en
-          forme, et en facilitant la circulation des textes numériques hors des
-          formats et serveurs propriétaires des grands groupes de la Sillicon
-          Valley.
+          Stylo est un projet de recherche et un outil prototype adapté pour les
+          revues en Sciences Humaines et Sociales. Il intègre l’ensemble de la
+          chaîne éditoriale dans un même environnement. La circulation des
+          textes numériques est facilitée en séparant la structure sémantique
+          des documents de leur mise en forme, sans format ni logiciel
+          propriétaire.
         </p>
 
         <h2>Fonctionnalités</h2>
@@ -77,6 +76,7 @@ export default function Home() {
         <ul className={styles.spacer}>
           <li>Gestion des métadonnées ;</li>
           <li>Langages de balisage légers (Markown, YAML, BibTeX) ;</li>
+          <li>Commande palette et raccourcis claviers (éditeur Monaco) ;</li>
           <li>Prévisualisation et annotation web d’un article ;</li>
           <li>
             Espaces de collaborations asynchrones et édition collaborative
