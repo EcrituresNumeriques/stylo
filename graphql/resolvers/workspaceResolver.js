@@ -193,7 +193,7 @@ module.exports = {
       return workspace.save()
     },
 
-    async inviteMember(workspace, { userId, role }) {
+    async inviteMember(workspace, { userId }) {
       // question: should we check that the authenticated user "knows" the member?
       const memberAlreadyInvited = workspace.members.find(
         (id) => String(id) === userId
@@ -201,7 +201,7 @@ module.exports = {
       if (memberAlreadyInvited) {
         return workspace
       }
-      workspace.members.push({ user: userId, role })
+      workspace.members.push({ user: userId })
       return workspace.save()
     },
   },

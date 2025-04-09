@@ -288,7 +288,7 @@ type Workspace {
   createdAt: DateTime
   creator: User!
   description: String
-  inviteMember(role: String, userId: ID!): Workspace
+  inviteMember(userId: ID!): Workspace
   leave: Workspace
   member(userId: ID!): WorkspaceMember
   members: [User!]!
@@ -305,7 +305,6 @@ type WorkspaceArticle {
 
 type WorkspaceMember {
   remove: Workspace!
-  role: String
   user: User
   workspace: Workspace!
 }

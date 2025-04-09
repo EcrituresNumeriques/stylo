@@ -79,7 +79,7 @@ export function useWorkspaceMembersActions(workspaceId) {
     const { _id: userId } = user
     await executeQuery({
       query: inviteMemberMutation,
-      variables: { workspaceId, userId, role: '' },
+      variables: { workspaceId, userId },
       sessionToken,
       type: 'mutation',
     })

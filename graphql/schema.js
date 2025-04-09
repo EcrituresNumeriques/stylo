@@ -257,7 +257,6 @@ type WorkspaceArticle {
 type WorkspaceMember {
   workspace: Workspace!
   user: User
-  role: String
 
   # mutation
   remove: Workspace!
@@ -288,7 +287,7 @@ type Workspace {
 
   # mutations
   leave: Workspace
-  inviteMember(userId: ID!, role: String): Workspace
+  inviteMember(userId: ID!): Workspace
   addArticle(articleId: ID!): Workspace
 }
 
