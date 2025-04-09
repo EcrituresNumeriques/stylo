@@ -86,7 +86,7 @@ describe('workspace resolver', () => {
     const workspace = await Workspace.create({
       name: 'Workspace C',
       color: '#ff8c69',
-      members: [{ user: guillaume.id }, { user: thomas.id, role: 'editor' }],
+      members: [{ user: guillaume.id }, { user: thomas.id }],
       articles: [],
       creator: guillaume.id,
     })

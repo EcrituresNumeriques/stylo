@@ -33,15 +33,12 @@ describe('article resolver', () => {
       members: [
         {
           user: new ObjectId(),
-          role: 'editor',
         },
         {
           user: new ObjectId(),
-          role: 'translator',
         },
         {
           user: userId,
-          role: 'contributor',
         },
       ],
       articles: [article._id],
@@ -53,7 +50,6 @@ describe('article resolver', () => {
       members: [
         {
           user: new ObjectId(),
-          role: 'editor',
         },
       ],
       articles: [article._id],
@@ -65,7 +61,6 @@ describe('article resolver', () => {
       members: [
         {
           user: userId,
-          role: 'editor',
         },
       ],
       articles: [article._id],
