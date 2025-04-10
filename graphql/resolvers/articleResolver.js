@@ -20,6 +20,17 @@ const { toLegacyFormat } = require('../helpers/metadata.js')
 const Y = require('yjs')
 const { mongo } = require('mongoose')
 
+function getTextFromYjsDoc(yjsdocBase64) {
+  const documentState = Buffer.from(yjsdocBase64, 'base64')
+  const yjsdoc = getYDoc(`ws/${new mongo.ObjectID().toString()}`)
+  try {
+    Y.applyUpdate(yjsdoc, documentState)
+    return yjsdoc.getText('main').toString()
+  } finally {
+    yjsdoc.destroy()
+  }
+}
+
 async function getUser(userId) {
   const user = await User.findById(userId)
   if (!user) {
@@ -99,7 +110,9 @@ async function getArticleByUser(articleId, userId) {
 }
 
 async function createVersion(article, { major, message, userId, type }) {
-  const { bib, metadata, md } = article.workingVersion
+  const { bib, metadata, ydoc } = article.workingVersion
+
+  const md = getTextFromYjsDoc(ydoc)
 
   /** @type {Query<Array<Article>>|Array<Article>} */
   const latestVersions = await Version.find({
@@ -432,10 +445,7 @@ module.exports = {
 
   WorkingVersion: {
     md({ ydoc = {} }) {
-      const documentState = Buffer.from(ydoc, 'base64')
-      const yjsdoc = getYDoc(`ws/${new mongo.ObjectID().toString()}`)
-      Y.applyUpdate(yjsdoc, documentState)
-      return yjsdoc.getText('main')
+      return getTextFromYjsDoc(ydoc)
     },
     bibPreview({ bib }) {
       return previewEntries(bib)

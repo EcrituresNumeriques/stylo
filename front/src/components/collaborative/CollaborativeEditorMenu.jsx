@@ -1,29 +1,27 @@
 import clsx from 'clsx'
-import { ArrowLeft, ChevronRight, ExternalLink, Printer } from 'lucide-react'
+import { ArrowLeft, ChevronRight } from 'lucide-react'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
+
 import { useArticleWorkingCopy } from '../../hooks/article.js'
 import useFetchData from '../../hooks/graphql.js'
-import { useModal } from '../../hooks/modal.js'
 
-import { getArticleInfo } from '../Article.graphql'
 import Export from '../Export.jsx'
-import Modal from '../Modal.jsx'
 import Loading from '../molecules/Loading.jsx'
 import Sidebar from '../Sidebar.jsx'
 import ArticleMetadata from '../Write/ArticleMetadata.jsx'
 import ArticleTableOfContents from './ArticleTableOfContents.jsx'
+import CollaborativeVersions from './CollaborativeVersions.jsx'
+
+import { getArticleInfo } from '../Article.graphql'
 
 import styles from './CollaborativeEditorMenu.module.scss'
 
-export default function CollaborativeEditorMenu({ articleId }) {
+export default function CollaborativeEditorMenu({ articleId, versionId }) {
   const { t } = useTranslation()
   const [opened, setOpened] = useState(false)
   const [activeMenu, setActiveMenu] = useState('')
-  const exportModal = useModal()
   const { article } = useArticleWorkingCopy({ articleId })
-  const history = useHistory()
   const { data, isLoading } = useFetchData(
     { query: getArticleInfo, variables: { articleId } },
     {
@@ -67,7 +65,14 @@ export default function CollaborativeEditorMenu({ articleId }) {
                   width={32}
                 />
               </a>
-
+              <a onClick={() => setActiveMenu('versions')}>
+                {t('versions.title')}
+                <ChevronRight
+                  style={{ strokeWidth: 3 }}
+                  height={32}
+                  width={32}
+                />
+              </a>
               <a
                 href="#"
                 onClick={() => setActiveMenu('export')}
@@ -80,7 +85,6 @@ export default function CollaborativeEditorMenu({ articleId }) {
                   width={32}
                 />
               </a>
-
               <a
                 href={`/article/${articleId}/preview`}
                 title="Preview (open a new window)"
@@ -121,6 +125,14 @@ export default function CollaborativeEditorMenu({ articleId }) {
                   bib={data?.article?.workingVersion?.bibPreview}
                 />
               </>
+            )}
+            {activeMenu === 'versions' && (
+              <CollaborativeVersions
+                articleId={articleId}
+                selectedVersion={versionId}
+                showTitle={true}
+                onBack={() => setActiveMenu('')}
+              />
             )}
           </div>
         </section>

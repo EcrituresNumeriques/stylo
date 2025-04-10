@@ -1,0 +1,26 @@
+.container {
+  padding: 0.25rem;
+}
+
+.versions {
+  max-width: 375px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.yearGroup {
+  text-transform: capitalize;
+  font-size: 0.9rem;
+  color: #3e3e3e;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.container {
+  :global {
+    .content {
+      padding: 1rem;
+    }
+  }
+}

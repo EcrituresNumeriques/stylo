@@ -1,32 +1,38 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import PropTypes from 'prop-types'
-import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
-import {
-  ArrowLeft,
-  Check,
-  ChevronDown,
-  ChevronRight,
-  Edit3,
-} from 'lucide-react'
-import TimeAgo from '../TimeAgo.jsx'
-
-import styles from './versions.module.scss'
-import menuStyles from './menu.module.scss'
-import buttonStyles from '../button.module.scss'
-
-import { useGraphQLClient } from '../../helpers/graphQL'
-import { renameVersion } from './Write.graphql'
-
-import Button from '../Button'
-import Field from '../Field'
-import CreateVersion from './CreateVersion'
 import clsx from 'clsx'
+import { ArrowLeft, Check, Edit3 } from 'lucide-react'
+import React, { useCallback, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Link, useLocation } from 'react-router-dom'
 
+import {
+  useArticleVersionActions,
+  useArticleVersions,
+} from '../../hooks/article.js'
+import { useModal } from '../../hooks/modal.js'
+import Button from '../Button'
+
+import buttonStyles from '../button.module.scss'
+import Field from '../Field'
+import Modal from '../Modal.jsx'
+import Alert from '../molecules/Alert.jsx'
+import Loading from '../molecules/Loading.jsx'
+
+import TimeAgo from '../TimeAgo.jsx'
+import CreateVersion from './CreateVersion'
+import styles from './versions.module.scss'
+
+/**
+ *
+ * @param props
+ * @param props.articleId
+ * @param props.compareTo
+ * @param props.readOnly
+ * @param props.selectedVersion
+ * @param props.v
+ */
 function Version({ articleId, compareTo, readOnly, selectedVersion, v }) {
   const { t } = useTranslation()
+  const { updateDescription } = useArticleVersionActions({ articleId })
 
   const articleVersionId = v._id
 
@@ -46,21 +52,14 @@ function Version({ articleId, compareTo, readOnly, selectedVersion, v }) {
     () => `/article/${articleId}/${versionPart}compare/${articleVersionId}`,
     [articleId, versionPart, articleVersionId]
   )
-  const canCompare = useMemo(
-    () => ![compareTo, selectedVersion].includes(articleVersionId),
-    [compareTo, selectedVersion, articleVersionId]
-  )
-  const canStopCompare = useMemo(
-    () => isComparing && compareTo && articleVersionId === compareTo,
-    [compareTo, articleVersionId]
-  )
+  const canCompare = false
+  const canStopCompare = false
 
   const className = clsx({
     [styles.selected]: isSelected,
     [styles.compareTo]: isComparing && articleVersionId === compareTo,
   })
 
-  const { query } = useGraphQLClient()
   const [renaming, setRenaming] = useState(false)
   const [title, setTitle] = useState(v.message)
   const versionType = v.type || 'userAction'
@@ -77,8 +76,10 @@ function Version({ articleId, compareTo, readOnly, selectedVersion, v }) {
   const handleRename = useCallback(
     async (event) => {
       event.preventDefault()
-      const variables = { version: articleVersionId, name: title }
-      await query({ query: renameVersion, variables })
+      await updateDescription({
+        versionId: articleVersionId,
+        description: title,
+      })
       setTitle(title)
       setRenaming(false)
     },
@@ -169,51 +170,52 @@ function Version({ articleId, compareTo, readOnly, selectedVersion, v }) {
         )}
       </Link>
 
-      <ul className={styles.actions}>
-        <li hidden={!canCompare}>
-          <Link
-            className={clsx(
-              buttonStyles.button,
-              buttonStyles.secondary,
-              styles.action
-            )}
-            to={compareLink}
-          >
-            {t('write.compareVersion.button')}
-          </Link>
-        </li>
-        <li hidden={!canStopCompare}>
-          <Link
-            className={clsx(
-              buttonStyles.button,
-              buttonStyles.secondary,
-              styles.action
-            )}
-            to={`/article/${articleId}/${versionPart}`}
-          >
-            {t('write.stopCompareVersion.button')}
-          </Link>
-        </li>
-      </ul>
+      {(canCompare || canStopCompare) && (
+        <ul className={styles.actions}>
+          <li hidden={!canCompare}>
+            <Link
+              className={clsx(
+                buttonStyles.button,
+                buttonStyles.secondary,
+                styles.action
+              )}
+              to={compareLink}
+            >
+              {t('write.compareVersion.button')}
+            </Link>
+          </li>
+          <li hidden={!canStopCompare}>
+            <Link
+              className={clsx(
+                buttonStyles.button,
+                buttonStyles.secondary,
+                styles.action
+              )}
+              to={`/article/${articleId}/${versionPart}`}
+            >
+              {t('write.stopCompareVersion.button')}
+            </Link>
+          </li>
+        </ul>
+      )}
     </li>
   )
 }
 
-Version.propTypes = {
-  articleId: PropTypes.string.isRequired,
-  v: PropTypes.object.isRequired,
-  selectedVersion: PropTypes.string,
-  compareTo: PropTypes.string,
-  readOnly: PropTypes.bool,
-}
-
+/**
+ * @param props
+ * @param props.articleId
+ * @param props.selectedVersion
+ * @param props.compareTo
+ * @param props.updatedAt
+ * @return {Element}
+ */
 export function WorkingVersion({
   articleId,
   selectedVersion = null,
   compareTo = null,
-  readOnly,
+  updatedAt,
 }) {
-  const updatedAt = useSelector((state) => state.workingArticle.updatedAt)
   const { t } = useTranslation()
   const { pathname } = useLocation()
 
@@ -231,17 +233,8 @@ export function WorkingVersion({
         : `/article/${articleId}/compare/${selectedVersion}`,
     [articleId, selectedVersion, articleVersionId]
   )
-  const canCompare = useMemo(
-    () =>
-      isComparing
-        ? ![compareTo, selectedVersion].includes(articleVersionId)
-        : selectedVersion,
-    [isComparing, compareTo, selectedVersion, articleVersionId]
-  )
-  const canStopCompare = useMemo(
-    () => isComparing && compareTo === articleVersionId,
-    [isComparing, isSelected]
-  )
+  const canCompare = false
+  const canStopCompare = false
 
   const className = clsx({
     [styles.selected]: isSelected,
@@ -273,151 +266,150 @@ export function WorkingVersion({
         </p>
       </Link>
 
-      <ul className={styles.actions}>
-        <li hidden={!canCompare}>
-          <Link
-            className={clsx(
-              buttonStyles.button,
-              buttonStyles.secondary,
-              styles.action
-            )}
-            to={compareLink}
-          >
-            {t('write.compareVersion.button')}
-          </Link>
-        </li>
-        <li hidden={!canStopCompare}>
-          <Link
-            className={clsx(
-              buttonStyles.button,
-              buttonStyles.secondary,
-              styles.action
-            )}
-            to={`/article/${articleId}`}
-          >
-            {t('write.stopCompareVersion.button')}
-          </Link>
-        </li>
-      </ul>
+      {(canCompare || canStopCompare) && (
+        <ul className={styles.actions}>
+          <li hidden={!canCompare}>
+            <Link
+              className={clsx(
+                buttonStyles.button,
+                buttonStyles.secondary,
+                styles.action
+              )}
+              to={compareLink}
+            >
+              {t('write.compareVersion.button')}
+            </Link>
+          </li>
+          <li hidden={!canStopCompare}>
+            <Link
+              className={clsx(
+                buttonStyles.button,
+                buttonStyles.secondary,
+                styles.action
+              )}
+              to={`/article/${articleId}`}
+            >
+              {t('write.stopCompareVersion.button')}
+            </Link>
+          </li>
+        </ul>
+      )}
     </li>
   )
 }
 
-WorkingVersion.propTypes = {
-  articleId: PropTypes.string.isRequired,
-  selectedVersion: PropTypes.string,
-  compareTo: PropTypes.string,
-  readOnly: PropTypes.bool,
-}
-
+/**
+ * @param {object} props
+ * @param {boolean} props.showTitle
+ * @param {() => void} props.onBack
+ * @param {string} props.articleId
+ * @param {string} props.selectedVersion
+ * @param {string} props.compareTo
+ * @param {boolean} props.readOnly
+ * @returns {Element}
+ */
 export default function Versions({
-  article,
+  showTitle,
+  onBack,
+  articleId,
   selectedVersion,
   compareTo,
   readOnly,
 }) {
-  const articleVersions = useSelector(
-    (state) => state.articleVersions,
-    shallowEqual
-  )
-  const expand = useSelector((state) => state.articlePreferences.expandVersions)
-  const dispatch = useDispatch()
-  const [expandCreateForm, setExpandCreateForm] = useState(false)
-
-  const toggleExpand = useCallback(
-    () =>
-      dispatch({ type: 'ARTICLE_PREFERENCES_TOGGLE', key: 'expandVersions' }),
-    []
-  )
-  const closeNewVersion = useCallback(() => setExpandCreateForm(false), [])
-  const createNewVersion = useCallback((event) => {
-    event.preventDefault()
-    dispatch({
-      type: 'ARTICLE_PREFERENCES_TOGGLE',
-      key: 'expandVersions',
-      value: false,
-    })
-    setExpandCreateForm(true)
-  }, [])
+  const { article, isLoading, error } = useArticleVersions({ articleId })
+  const articleVersions = article?.versions
+  const updatedAt = article?.updatedAt
+  const createVersionModal = useModal()
   const { t } = useTranslation()
 
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (error) {
+    return <Alert message={error.message} />
+  }
+
+  const title = onBack ? (
+    <h2
+      className={styles.title}
+      onClick={onBack}
+      style={{ cursor: 'pointer', userSelect: 'none' }}
+    >
+      <span onClick={onBack} style={{ display: 'flex' }}>
+        <ArrowLeft style={{ strokeWidth: 3 }} />
+      </span>
+      <span>{t('versions.title')}</span>
+    </h2>
+  ) : (
+    <h2 className={styles.title}>{t('versions.title')}</h2>
+  )
+
   return (
-    <section className={clsx(menuStyles.section)}>
-      <h1 className={expand ? null : styles.closed} onClick={toggleExpand}>
-        {expand ? <ChevronDown /> : <ChevronRight />}
-        {t('write.titleVersion.sidebar')}
-
-        {!readOnly && (
-          <Button
-            className={styles.headingAction}
-            small={true}
-            disabled={readOnly}
-            onClick={createNewVersion}
-          >
-            {t('write.newVersion.button')}
-          </Button>
-        )}
-        {readOnly && (
-          <Link
-            className={clsx(
-              buttonStyles.button,
-              buttonStyles.secondary,
-              styles.editMode,
-              styles.headingAction
-            )}
-            to={`/article/${article._id}`}
-          >
-            {' '}
-            <ArrowLeft /> Edit Mode
-          </Link>
-        )}
-      </h1>
-      {expand && (
-        <>
-          {expandCreateForm && (
-            <CreateVersion
-              articleId={article._id}
-              readOnly={readOnly}
-              onClose={closeNewVersion}
-            />
-          )}
-
-          {articleVersions.length === 0 && (
-            <p>
-              <strong>All changes are automatically saved.</strong>
-              <br />
-              Create a new version to keep track of particular changes.
-            </p>
-          )}
-
-          <ul className={styles.versionsList}>
-            <WorkingVersion
-              articleId={article._id}
-              selectedVersion={selectedVersion}
-              compareTo={compareTo}
-              readOnly={readOnly}
-            />
-
-            {articleVersions.map((v) => (
-              <Version
-                key={`showVersion-${v._id}`}
-                articleId={article._id}
-                selectedVersion={selectedVersion}
-                compareTo={compareTo}
-                readOnly={readOnly}
-                v={v}
-              />
-            ))}
-          </ul>
-        </>
+    <section>
+      {showTitle && title}
+      {!readOnly && (
+        <Button
+          className={styles.headingAction}
+          small={true}
+          disabled={readOnly}
+          onClick={() => createVersionModal.show()}
+          testId="create-version-button"
+        >
+          {t('versions.createVersion.button')}
+        </Button>
       )}
+      {readOnly && (
+        <Link
+          className={clsx(
+            buttonStyles.button,
+            buttonStyles.secondary,
+            styles.editMode,
+            styles.headingAction
+          )}
+          to={`/article/${article._id}`}
+        >
+          <ArrowLeft /> Edit Mode
+        </Link>
+      )}
+      {articleVersions.length === 0 && (
+        <p>
+          <strong>All changes are automatically saved.</strong>
+          <br />
+          Create a new version to keep track of particular changes.
+        </p>
+      )}
+      <Modal
+        title={t('versions.createVersion.title')}
+        {...createVersionModal.bindings}
+      >
+        <CreateVersion
+          articleId={article._id}
+          readOnly={readOnly}
+          onClose={() => createVersionModal.close()}
+          onSubmit={() => createVersionModal.close()}
+        />
+      </Modal>
+      <ul className={styles.versionsList} data-testid="versions">
+        <WorkingVersion
+          articleId={article._id}
+          selectedVersion={selectedVersion}
+          compareTo={compareTo}
+          readOnly={readOnly}
+          updatedAt={updatedAt}
+        />
+
+        {articleVersions.map((v) => (
+          <Version
+            key={`showVersion-${v._id}`}
+            articleId={article._id}
+            selectedVersion={selectedVersion}
+            compareTo={compareTo}
+            readOnly={readOnly}
+            v={v}
+          />
+        ))}
+      </ul>
     </section>
   )
-}
-
-Versions.propTypes = {
-  article: PropTypes.object.isRequired,
-  selectedVersion: PropTypes.string,
-  compareTo: PropTypes.string,
-  readOnly: PropTypes.bool,
 }

@@ -170,14 +170,12 @@ root.render(
                   <UserInfos />
                   <Credentials />
                 </PrivateRoute>
-
                 <PrivateRoute
                   exact
                   path="/credentials/auth-callback/:service"
                   component={AuthCallback}
                 />
-
-                {/* Annotate a Corpus */}
+                {/* Annotate a corpus */}
                 <Route
                   path={[
                     '/workspaces/:workspaceId/corpus/:id/preview',
@@ -197,23 +195,17 @@ root.render(
                 >
                   <Preview strategy="article" />
                 </Route>
-                {/* Write and Compare */}
+                {/* Write and compare */}
                 <PrivateRoute
                   path={[
-                    `/article/:id/compare/:compareTo`,
-                    `/article/:id/version/:version/compare/working-copy`,
-                    `/article/:id/version/:version/compare/:compareTo`,
+                    `/legacy/article/:id/compare/:compareTo`,
+                    `/legacy/article/:id/version/:version/compare/working-copy`,
+                    `/legacy/article/:id/version/:version/compare/:compareTo`,
                   ]}
                   component={Write}
                   exact
                 />
-                {/* Write with a given version */}
-                <PrivateRoute
-                  path={`/article/:id/version/:version`}
-                  component={Write}
-                  exact
-                />
-                {/* Write and/or Preview */}
+                {/* Legacy write and/or preview */}
                 <PrivateRoute
                   path={[`/legacy/article/:id/preview`, `/legacy/article/:id`]}
                   component={Write}
@@ -223,6 +215,10 @@ root.render(
                 <PrivateRoute
                   path={[
                     `/article/:articleId`,
+                    `/article/:articleId/compare/:compareTo`,
+                    `/article/:articleId/version/:versionId`,
+                    `/article/:articleId/version/:versionId/compare/:compareTo`,
+                    // the following route can be removed after the migration since we don't use session anymore
                     `/article/:articleId/session/:sessionId`,
                   ]}
                   component={CollaborativeEditor}
