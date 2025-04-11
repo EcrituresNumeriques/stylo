@@ -136,6 +136,10 @@ type Mutation {
   createTag(color: HexColorCode!, description: String, name: String!): Tag
   "Create user + password + default article"
   createUser(details: NewUserInput!): User!
+  createUserWithAuth(
+    details: NewUserWithAuthInput!
+    service: AuthTokenService!
+  ): String
   "Create a new workspace"
   createWorkspace(createWorkspaceInput: CreateWorkspaceInput!): Workspace
   "Delete tag, and remove it from all related articles"
@@ -160,7 +164,8 @@ type Mutation {
   "Get a workspace for mutation"
   workspace(workspaceId: ID!): Workspace
 
-  setAuthToken(service: AuthTokenService!, token: String): User
+  setAuthToken(service: AuthTokenService!): User
+  unsetAuthToken(service: AuthTokenService!): User
 }
 
 type Query {
@@ -402,6 +407,13 @@ input NewUserInput {
   password: String!
   passwordC: String!
   username: String!
+}
+
+input NewUserWithAuthInput {
+  displayName: String
+  firstName: String
+  institution: String
+  lastName: String
 }
 
 input UpdateCorpusInput {

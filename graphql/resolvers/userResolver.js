@@ -39,34 +39,123 @@ module.exports = {
       return newUser
     },
 
-    async setAuthToken(_, args, { token, user }) {
-      const { service, token: serviceToken } = args
-
-      isUser(args, { token, user })
-
-      if (['zotero', 'humanid', 'hypothesis'].includes(service)) {
-        const authProviderKey = `authProviders.${service}`
-
-        if (serviceToken) {
-          // workaround the absence of `merge` option for `MongooseMap.$set()`
-          user.set(authProviderKey, {
-            ...(user.get(authProviderKey)?.toObject({ flattenMaps: true }) ??
-              {}),
-            token: serviceToken,
-            updatedAt: Date.now(),
-          })
-        } else {
-          user.set(authProviderKey, {
-            updatedAt: Date.now(),
-          })
-        }
-
-        await user.save()
-      } else {
-        throw new Error(`Service unknown (${service})`)
+    /**
+     * Create account after two steps login
+     * @param {DataLoaders} _
+     * @param {Object} args
+     * @param {Object} args.details Form details
+     * @param {'humanid'|'hypothesis'|'zotero'} args.service Only used to validate GraphQL mutation.
+     * @param {RequestContext} context
+     * @returns {Promise<string>}
+     */
+    async createUserWithAuth(_, { details }, { session }) {
+      // link accounts
+      if (!session?.pendingRegistration) {
+        throw new ApiError('REGISTRATION_NOT_FOUND', 'No registration found')
       }
 
-      return user
+      const user = await User.create({
+        // will unwrap 'email, 'authProviders' and possibly 'displayName'
+        ...session.pendingRegistration,
+        // we want to keep the user defined choice if any
+        displayName:
+          details.displayName || session.pendingRegistration.displayName,
+        firstName: details.firstName,
+        lastName: details.lastName,
+        institution: details.institution,
+        connectedAt: Date.now(),
+      })
+
+      await user.createDefaultArticle()
+      delete session.pendingRegistration
+
+      return createJWTToken({
+        user,
+        jwtSecret: config.get('security.jwt.secret'),
+      })
+    },
+
+    /**
+     * Set an authentication token based on info previously stored in the session
+     * It works both after coming back with a new user (not known to any account) or linked to an existing account
+     * @param {import('../loaders.js').Loaders} _
+     * @param {{ service: 'zotero' | 'humanid' | 'hypothesis' }} params
+     * @param {import('../helpers/token.js').RequestContext} context
+     * @returns {Promise<User>}
+     */
+    async setAuthToken(_, { service }, { token, user, session }) {
+      isUser({}, { token, user })
+
+      const authProviderKey = `authProviders.${service}`
+
+      console.log(session)
+
+      if (!session?.pendingRegistration?.authProviders) {
+        throw new ApiError('ACCOUNT_NOT_FOUND', 'No remote account data found')
+      }
+
+      // pending linking account
+      // we need to verify if the credentials are not already linked to another account
+      if (session.fromAccount) {
+        // eslint-disable-next-line security/detect-object-injection
+        const remoteId = session.pendingRegistration.authProviders[service].id
+        const existingUser = await User.findOne({
+          [`authProviders.${service}.id`]: remoteId,
+        })
+
+        console.log(
+          'existingUser',
+          existingUser,
+          `authProviders.${service}.id`,
+          session.pendingRegistration.authProviders
+        )
+
+        if (existingUser) {
+          const error = new ApiError(
+            'ACCOUNT_ALREADY_LINKED',
+            'This account is already linked to another Stylo user.'
+          )
+          error.status = 409
+
+          throw error
+        }
+      }
+
+      // eslint-disable-next-line security/detect-object-injection
+      const data = session.pendingRegistration.authProviders[service]
+
+      // workaround the absence of `merge` option for `MongooseMap.$set()`
+      user.set(authProviderKey, {
+        ...(user.get(authProviderKey)?.toObject({ flattenMaps: true }) ?? {}),
+        ...data,
+        updatedAt: Date.now(),
+      })
+
+      // clean up transient registration/linking data
+      delete session.pendingRegistration
+      delete session.fromAccount
+
+      return await user.save()
+    },
+
+    /**
+     * Disconnect a remote account from Stylo
+     *
+     * @param {*} _
+     * @param {*} param1
+     * @param {*} param2
+     * @returns {Promise<User>}
+     */
+    async unsetAuthToken(_, { service }, { token, user }) {
+      isUser({}, { token, user })
+
+      // TODO revoke token from remote service
+
+      //
+      const authProviderKey = `authProviders.${service}`
+      user.set(authProviderKey, null)
+
+      return await user.save()
     },
 
     async addAcquintance(_, args, context) {

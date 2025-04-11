@@ -26,19 +26,21 @@ export default function Login() {
     (token) => dispatch({ type: 'UPDATE_SESSION_TOKEN', token }),
     []
   )
-  const authToken = new URLSearchParams(location.hash).get('#auth-token')
 
   const { backendEndpoint } = applicationConfig
 
   useEffect(() => {
-    if (authToken) {
-      setSessionToken(authToken)
-    }
+    const authToken = new URLSearchParams(location.hash).get('#auth-token')
 
-    if (userId || authToken) {
+    if (!userId && authToken) {
+      setSessionToken(authToken)
       replace('/articles')
     }
-  }, [authToken, userId])
+
+    if (userId) {
+      replace('/articles')
+    }
+  }, [])
 
   const handleSubmit = useCallback((event) => {
     event.preventDefault()
@@ -150,7 +152,6 @@ export default function Login() {
               name="username"
               hasError={error !== ''}
               required={true}
-              autoFocus={true}
               autoComplete="username"
             />
             <Field
