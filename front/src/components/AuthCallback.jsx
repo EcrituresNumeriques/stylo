@@ -1,81 +1,78 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { useGraphQLClient } from '../helpers/graphQL.js'
 
 import styles from './Write/write.module.scss'
 import buttonStyles from './button.module.scss'
+import * as queries from '../components/Credentials.graphql'
 
 import Button from './Button.jsx'
 
-const ENABLED_SERVICES = ['humanid', 'hypothesis', 'zotero']
-
 export default function AuthCallbackPopup() {
-  const location = useLocation()
+  const { query } = useGraphQLClient()
   const { service } = useParams()
-  const [authParams, setAuthParams] = useState({})
+  const dispatch = useDispatch()
+  const [errorCode, setErrorCode] = useState(null)
   const hasOpener = Boolean(window.opener)
 
   const { t } = useTranslation()
-  const saveCredentials = useCallback(({ service, token, type }) => {
-    if (type === 'success' && hasOpener) {
-      window.opener.postMessage(
-        JSON.stringify({
-          type: 'SET_AUTH_TOKEN',
-          service,
-          token,
-        })
-      )
-    }
-  }, [])
 
-  const closePopup = useCallback(() => window.close(), [])
+  const closePopup = useCallback(
+    (authProviders) => {
+      if (hasOpener && !errorCode) {
+        window.opener.postMessage(JSON.stringify(authProviders))
+      } else {
+        window.close()
+      }
+    },
+    [errorCode]
+  )
 
   useEffect(() => {
-    let translationKey = 'description'
+    query({
+      query: queries.setAuthTokenMutation,
+      variables: { service },
+      withCredentials: true,
+    }).then(
+      ({ setAuthToken }) => {
+        dispatch({
+          type: 'UPDATE_ACTIVE_USER_DETAILS',
+          payload: setAuthToken.authProviders,
+        })
 
-    let {
-      token,
-      type = 'success',
-      message = '',
-    } = Object.fromEntries(
-      new URLSearchParams(location.hash.slice(1)).entries()
+        closePopup(setAuthToken.authProviders)
+      },
+      (error) =>
+        setErrorCode(error.messages[0]?.extensions.type || error.message)
     )
-
-    if (!ENABLED_SERVICES.includes(service)) {
-      type = 'error'
-      translationKey = 'unknownService'
-    } else if (!token && !message) {
-      type = 'error'
-      translationKey = 'noToken'
-    }
-
-    setAuthParams({ service, token, type, message, translationKey })
-    saveCredentials({ service, token, type, message })
   }, [])
+
+  if (errorCode === null) {
+    return null
+  }
 
   return (
     <section className={styles.container}>
       <article className={styles.simplePage}>
-        <h2>{t(`credentials.authentication.${authParams.type}.title`)}</h2>
+        <h2>{t(`credentials.authentication.error.title`)}</h2>
 
         <p>
-          {t(
-            `credentials.authentication.${authParams.type}.${authParams.translationKey}`,
-            {
-              service: `$t(credentials.authentication.service.${authParams.service})`,
-              message: authParams.message,
-            }
-          )}
+          {t('credentials.authentication.error.description', {
+            service: `$t(credentials.authentication.service.${service})`,
+            errorCode: errorCode,
+          })}
         </p>
 
         <p>
           {hasOpener && (
-            <Button onClick={closePopup} disabled={!authParams.type}>
+            <Button onClick={closePopup}>
               {t('credentials.authentication.back')}
             </Button>
           )}
           {!hasOpener && (
-            <Link to="/" className={buttonStyles.secondary}>
+            <Link to="/credentials" className={buttonStyles.secondary}>
               {t('credentials.authentication.back')}
             </Link>
           )}

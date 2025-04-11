@@ -125,14 +125,16 @@ export default defineConfig(async ({ mode }) => {
     server: {
       port: 3000,
       proxy: {
-        // as in infrastructure/files/stylo.huma-num.fr.conf
-        '^/(graphql|login/.+|logout|authorization-code/.+|events)$':
-          {
-            target: 'http://127.0.0.1:3030',
-          },
-        '^/ws': {
+        '/graphql': {
           target: 'http://127.0.0.1:3030',
-          ws: true,
+        },
+        '^/(login/|authorize/|logout|authorization-code|version)': {
+          target: 'http://127.0.0.1:3030',
+        },
+        '/events': {
+          target: 'http://127.0.0.1:3030',
+          prependPath: false,
+          ws: true
         }
       },
     },

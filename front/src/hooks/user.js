@@ -1,8 +1,7 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { generatePath } from 'react-router-dom'
 
-import { setAuthToken as setAuthTokenMutation } from '../components/Credentials.graphql'
+import { unsetAuthTokenMutation } from '../components/Credentials.graphql'
 import { getTags, createTag } from '../components/Tag.graphql'
 
 import { useMutateData } from './graphql.js'
@@ -30,34 +29,41 @@ export function useSetAuthToken(service) {
 
   const link = useCallback(async function handleSetAuthToken() {
     const popup = window.open(
-      `${backendEndpoint}/login/${service}`,
+      `${backendEndpoint}/authorize/${service}?returnTo=${frontendEndpoint}/credentials/auth-callback/${service}`,
       `auth-${service}`,
       'width=660&height=360&menubar=0&toolbar=0'
     )
 
-    async function handleSave({ data, type, source }) {
+    async function handleClose({ data, type, source }) {
       if (source === popup && type === 'message' && data) {
-        const reduxAction = JSON.parse(data)
+        const authProviders = JSON.parse(data ?? '')
 
-        // optimistic update
-        await dispatch(reduxAction)
-        query({
-          query: setAuthTokenMutation,
-          variables: { service: reduxAction.service, token: reduxAction.token },
-        })
+        if (authProviders) {
+          dispatch({
+            type: 'UPDATE_ACTIVE_USER_DETAILS',
+            payload: {
+              authProviders,
+            },
+          })
+        }
+
+        popup.close()
       }
     }
 
-    window.addEventListener('message', handleSave)
+    window.addEventListener('message', handleClose)
     popup.addEventListener('beforeunload', () =>
-      window.removeEventListener('message', handleSave)
+      window.removeEventListener('message', handleClose)
     )
   }, [])
 
   const unlink = useCallback(async () => {
-    const variables = { service, token: null }
-    dispatch({ type: 'SET_AUTH_TOKEN', ...variables })
-    await query({ query: setAuthTokenMutation, variables })
+    const { unsetAuthToken } = await query({
+      query: unsetAuthTokenMutation,
+      variables: { service },
+    })
+
+    dispatch({ type: 'UPDATE_ACTIVE_USER_DETAILS', payload: unsetAuthToken })
   }, [])
 
   return { link, unlink, token, id, isLinked }

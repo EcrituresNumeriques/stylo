@@ -71,12 +71,6 @@ const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|corpus)$/
 
 ;(async () => {
   let { sessionToken } = store.getState()
-  const authToken = new URLSearchParams(location.hash).get('#auth-token')
-  if (authToken) {
-    store.dispatch({ type: 'UPDATE_SESSION_TOKEN', token: authToken })
-    sessionToken = authToken
-    window.history.replaceState({}, '', location.pathname)
-  }
 
   try {
     const { user, token } = await getUserProfile({
