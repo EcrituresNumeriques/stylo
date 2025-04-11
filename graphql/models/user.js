@@ -71,9 +71,9 @@ const userSchema = new Schema(
  * If that's the case, we compare the login password to itself.
  *
  * @param {String} password
- * @returns {Boolean}
+ * @returns {Promise<Boolean>}
  */
-userSchema.methods.comparePassword = async function (password) {
+userSchema.methods.comparePassword = async function comparePassword(password) {
   const oldPassword = this.password ?? bcrypt.hashSync(password, 10)
   return bcrypt.compare(password, oldPassword)
 }

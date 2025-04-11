@@ -5,6 +5,15 @@ const Workspace = require('../models/workspace')
 const Article = require('../models/article')
 const Tag = require('../models/tag')
 const { ApiError } = require('../helpers/errors')
+const { createJWTToken } = require('../helpers/token.js')
+
+const config = require('../config.js')
+
+/**
+ * @typedef {import('../models/user.js')} User
+ * @typedef {import('../helpers/token.js').RequestContext} RequestContext
+ * @typedef {import('../loaders.js').Loaders} DataLoaders
+ */
 
 module.exports = {
   Mutation: {
@@ -14,6 +23,7 @@ module.exports = {
       if (existingUser) {
         throw new Error('User with this email already exists!')
       }
+
       // create a user
       const newUser = await User.create({
         email: userInput.email,
