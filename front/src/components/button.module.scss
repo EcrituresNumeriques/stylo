@@ -95,7 +95,7 @@ a.icon:not(.primary) {
   color: currentColor;
   cursor: pointer;
   font-size: inherit;
-  text-decoration: underline;
+  text-decoration: none;
 
   &:hover,
   &:focus {
@@ -115,6 +115,32 @@ a.icon:not(.primary) {
   text-decoration: none;
 }
 
+.loginLink {
+  @extend .link;
+  @extend .secondary;
+  @extend .block;
+
+  padding: .5em .5em .5em 2.5em;
+
+  &::before {
+    content: '';
+    width: 1.25em;
+    display: block;
+    background-image: var(--login-icon);
+    background-size: contain;
+    background-position: left center;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: .5em;
+    top: 0;
+    bottom: 0;
+  }
+}
+
+
+.block {
+  display: block;
+}
 
 .primary {
   @extend .button;

@@ -1,5 +1,7 @@
 import clsx from 'clsx'
 import React, { forwardRef, useEffect, useId, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import styles from './field.module.scss'
 
 export default forwardRef(function Field(
@@ -8,6 +10,7 @@ export default forwardRef(function Field(
     className,
     prefix,
     children,
+    mandatory = false,
     label,
     id = useId(),
     type = 'text',
@@ -17,6 +20,7 @@ export default forwardRef(function Field(
   forwardedRef
 ) {
   const inputRef = forwardedRef ?? useRef()
+  const { t } = useTranslation()
   const classNames = clsx(
     styles.field,
     prefix && styles.withPrefix,
@@ -34,7 +38,19 @@ export default forwardRef(function Field(
 
   return (
     <div className={classNames}>
-      {label && <label htmlFor={id}>{label}</label>}
+      {label && (
+        <label htmlFor={id}>
+          {label}
+          {mandatory && (
+            <span
+              className={styles.mandatoryHelper}
+              title={t('field.mandatory')}
+            >
+              *
+            </span>
+          )}
+        </label>
+      )}
       <div
         className={clsx('control', otherProps.icon && 'has-icons-left')}
         style={computedStyles}
@@ -46,6 +62,7 @@ export default forwardRef(function Field(
             <input
               {...otherProps}
               id={id}
+              required={otherProps.required || mandatory}
               className="input"
               type={type}
               ref={inputRef}

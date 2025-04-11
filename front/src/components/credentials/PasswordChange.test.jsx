@@ -2,13 +2,13 @@ import { describe, expect, test } from 'vitest'
 import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import { renderWithProviders } from '../../tests/setup.js'
-import Component from './Credentials.jsx'
+import { renderWithProviders } from '../../../tests/setup.js'
+import Component from './PasswordChange.jsx'
 
-describe('Credentials', () => {
+describe('PasswordChange', () => {
   test('renders with OIDC', () => {
     const preloadedState = {
-      activeUser: { authType: 'oidc', authTypes: ['oidc'] },
+      activeUser: { authTypes: ['oidc'] },
     }
     renderWithProviders(<Component />, { preloadedState })
 
@@ -20,7 +20,7 @@ describe('Credentials', () => {
 
   test('renders with password only', () => {
     const preloadedState = {
-      activeUser: { authType: 'local', authTypes: ['local'] },
+      activeUser: { authTypes: ['local'] },
     }
     renderWithProviders(<Component />, { preloadedState })
 
@@ -32,7 +32,7 @@ describe('Credentials', () => {
 
   test('renders with both password and oidc', () => {
     const preloadedState = {
-      activeUser: { authType: 'oidc', authTypes: ['oidc', 'local'] },
+      activeUser: { authTypes: ['oidc', 'local'] },
     }
     renderWithProviders(<Component />, { preloadedState })
 
@@ -44,7 +44,7 @@ describe('Credentials', () => {
 
   test('cannot be submitted when confirmation difers from new password', async () => {
     const preloadedState = {
-      activeUser: { authType: 'local', authTypes: ['local'] },
+      activeUser: { authTypes: ['local'] },
     }
     renderWithProviders(<Component />, { preloadedState })
 
@@ -62,7 +62,7 @@ describe('Credentials', () => {
 
   test('can be submitted when confirmation equals new password', async () => {
     const preloadedState = {
-      activeUser: { authType: 'local', authTypes: ['local'] },
+      activeUser: { authTypes: ['local'] },
     }
     renderWithProviders(<Component />, { preloadedState })
 
@@ -80,7 +80,7 @@ describe('Credentials', () => {
 
   test('can be submitted when confirmation equals new password and is oidc', async () => {
     const preloadedState = {
-      activeUser: { authType: 'local', authTypes: ['oidc'] },
+      activeUser: { authTypes: ['oidc'] },
     }
     renderWithProviders(<Component />, { preloadedState })
 

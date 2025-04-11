@@ -19,6 +19,8 @@ enum AuthType {
 }
 
 enum AuthTokenService {
+  humanid
+  hypothesis
   zotero
 }
 
@@ -39,12 +41,23 @@ type UserStats {
   contributedArticlesCount: Int
 }
 
+type AuthProvider {
+  id: String
+  token: String
+  updatedAt: DateTime
+}
+
+type AuthProvidersMap {
+  humanid: AuthProvider
+  zotero: AuthProvider
+}
+
 type User {
   _id: ID
   displayName: String
   username: String
-  authType: AuthType
   authTypes: [AuthType]
+  authProviders: AuthProvidersMap
   email: EmailAddress
   firstName: String
   lastName: String
@@ -54,10 +67,8 @@ type User {
   acquintances(limit: Int, page: Int): [User]
   articles(limit: Int, page: Int): [Article]
   workspaces: [Workspace!]
-  zoteroToken: String
   createdAt: DateTime
   updatedAt: DateTime
-  apiToken: JWT
 
   addContact(userId: ID!): User
   removeContact(userId: ID!): User
@@ -218,12 +229,18 @@ input NewUserInput {
   institution: String
 }
 
+input NewUserWithAuthInput {
+  displayName: String
+  firstName: String
+  institution: String
+  lastName: String
+}
+
 input UserProfileInput {
   displayName: String
   firstName: String
   lastName: String
   institution: String
-  zoteroToken: String
 }
 
 type WorkspaceArticle {
@@ -375,8 +392,14 @@ type Mutation {
   "Create user + password + default article"
   createUser(details: NewUserInput!): User!
 
+  "Create user after authentication with an auth provider"
+  createUserWithAuth(details: NewUserWithAuthInput!, service: AuthTokenService!): String
+
   "Sets a user authentication token (to something, or nothing if unlinking services"
-  setAuthToken (service: AuthTokenService!, token: String): User
+  setAuthToken (service: AuthTokenService!): User
+
+  "Disconnect Stylo account from an authentication service"
+  unsetAuthToken (service: AuthTokenService!): User
 
   "Add an email to your acquintances [need to be authentificated as user]"
   addAcquintance(email: EmailAddress!, user: ID): User
