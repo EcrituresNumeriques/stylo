@@ -12,6 +12,7 @@ import {
 import { createBrowserHistory } from 'history'
 import { Provider } from 'react-redux'
 import { GeistProvider } from '@geist-ui/core'
+import { Helmet } from 'react-helmet'
 
 import './i18n.js'
 import './styles/general.scss'
@@ -22,15 +23,14 @@ import App from './layouts/App'
 import createStore from './createReduxStore'
 import { getUserProfile } from './helpers/userProfile'
 
-import Header from './components/Header'
-import Footer from './components/Footer'
-import Login from './components/Login'
-import PrivateRoute from './components/PrivateRoute'
-import NotFound from './components/404'
-import Error from './components/Error'
-import AuthCallback from './components/AuthCallback'
+import Header from './components/Header.jsx'
+import Footer from './components/Footer.jsx'
+import Login from './components/Login.jsx'
+import AuthCallback from './components/AuthCallback.jsx'
+import PrivateRoute from './components/PrivateRoute.jsx'
+import NotFound from './components/404.jsx'
+import Error from './components/Error.jsx'
 import { applicationConfig } from './config.js'
-import { Helmet } from 'react-helmet'
 
 const Route = Sentry.withSentryRouting(OriginalRoute)
 const history = createBrowserHistory()
@@ -57,6 +57,9 @@ if (SENTRY_DSN) {
 // lazy loaded routes
 const Home = lazy(() => import('./components/Home.jsx'))
 const Register = lazy(() => import('./components/Register.jsx'))
+const RegisterWithAuthProvider = lazy(() =>
+  import('./components/RegisterWithAuthProvider.jsx')
+)
 const Corpus = lazy(() => import('./components/corpus/Corpus.jsx'))
 const Articles = lazy(() => import('./components/Articles.jsx'))
 const Workspaces = lazy(() => import('./components/workspace/Workspaces.jsx'))
@@ -141,6 +144,12 @@ root.render(
               <Switch>
                 <Route path="/" component={Home} exact />
                 <Route path="/register" component={Register} exact />
+                <Route
+                  path="/register/:service"
+                  component={RegisterWithAuthProvider}
+                  exact
+                />
+
                 <Route path="/login" component={Login} exact />
                 {/* Articles index */}
                 <PrivateRoute

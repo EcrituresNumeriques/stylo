@@ -1,5 +1,7 @@
 import clsx from 'clsx'
 import React, { forwardRef, useEffect, useId, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import styles from './field.module.scss'
 
 export default forwardRef(function Field(
@@ -8,6 +10,7 @@ export default forwardRef(function Field(
     className,
     prefix,
     children,
+    mandatory = false,
     label,
     id = useId(),
     type = 'text',
@@ -17,6 +20,7 @@ export default forwardRef(function Field(
   forwardedRef
 ) {
   const inputRef = forwardedRef ?? useRef()
+  const { t } = useTranslation()
   const classNames = clsx(
     styles.field,
     prefix && styles.withPrefix,
