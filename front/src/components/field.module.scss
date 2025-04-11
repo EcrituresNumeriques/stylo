@@ -93,6 +93,18 @@
   }
 }
 
+.mandatoryHelper {
+  margin-left: 0.25em;
+
+  &::before {
+    content: "(" / "";
+  }
+
+  &::after {
+    content: ")" / "";
+  }
+}
+
 .withPrefix {
   input,
   textarea {

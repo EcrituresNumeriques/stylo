@@ -38,7 +38,19 @@ export default forwardRef(function Field(
 
   return (
     <div className={classNames}>
-      {label && <label htmlFor={id}>{label}</label>}
+      {label && (
+        <label htmlFor={id}>
+          {label}
+          {mandatory && (
+            <span
+              className={styles.mandatoryHelper}
+              title={t('field.mandatory')}
+            >
+              *
+            </span>
+          )}
+        </label>
+      )}
       <div
         className={clsx('control', otherProps.icon && 'has-icons-left')}
         style={computedStyles}
@@ -50,6 +62,7 @@ export default forwardRef(function Field(
             <input
               {...otherProps}
               id={id}
+              required={otherProps.required || mandatory}
               className="input"
               type={type}
               ref={inputRef}
