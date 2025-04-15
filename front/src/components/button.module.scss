@@ -89,6 +89,10 @@ a.icon:not(.primary) {
   color: currentColor;
 }
 
+a.icon:after {
+  display: none;
+}
+
 .link {
   background-color: transparent;
   border: none;

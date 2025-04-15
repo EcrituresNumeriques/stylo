@@ -14,6 +14,13 @@
   overflow-x: hidden;
 }
 
+a.external:after {
+  display: block;
+  content: "↗";
+  mask: none;
+  background-color: transparent;
+}
+
 .entries {
   display: flex;
   gap: 1rem;
