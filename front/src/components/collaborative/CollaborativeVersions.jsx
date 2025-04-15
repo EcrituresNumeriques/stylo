@@ -1,4 +1,5 @@
 import React from 'react'
+import { shallowEqual, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowLeft } from 'lucide-react'
@@ -22,7 +23,6 @@ import i18n from '../../i18n.js'
  * @param {() => void} props.onBack
  * @param {string} props.articleId
  * @param {string} props.selectedVersion
- * @param {boolean} props.readOnly
  * @returns {JSX.Element}
  */
 export default function CollaborativeVersions({
@@ -30,8 +30,12 @@ export default function CollaborativeVersions({
   onBack,
   articleId,
   selectedVersion,
-  readOnly,
 }) {
+  const articleWorkingCopyStatus = useSelector(
+    (state) => state.articleWorkingCopy.status,
+    shallowEqual
+  )
+  const syncing = articleWorkingCopyStatus === 'syncing'
   const history = useHistory()
   const { article, isLoading, error } = useArticleVersions({ articleId })
   const articleVersions = article?.versions
@@ -118,16 +122,15 @@ export default function CollaborativeVersions({
   return (
     <section>
       {showTitle && title}
-      {!readOnly && (
-        <Button
-          small={true}
-          disabled={readOnly}
-          onClick={() => createVersionModal.show()}
-          testId="create-version-button"
-        >
-          {t('versions.createVersion.button')}
-        </Button>
-      )}
+      <Button
+        small={true}
+        disabled={syncing}
+        onClick={() => createVersionModal.show()}
+        testId="create-version-button"
+      >
+        {t('versions.createVersion.button')}
+        {syncing && <Loading label="" className={styles.loading} />}
+      </Button>
       {articleVersions.length === 0 && (
         <p className={styles.info}>
           <Alert
@@ -148,7 +151,6 @@ export default function CollaborativeVersions({
       >
         <CreateVersion
           articleId={article._id}
-          readOnly={readOnly}
           onClose={() => createVersionModal.close()}
           onSubmit={() => createVersionModal.close()}
         />

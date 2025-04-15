@@ -1,8 +1,8 @@
-import { applyMiddleware, compose, createStore } from 'redux'
 import * as Sentry from '@sentry/react'
+import { applyMiddleware, compose, createStore } from 'redux'
+import { applicationConfig } from './config.js'
 import { toEntries } from './helpers/bibtex'
 import ArticleService from './services/ArticleService'
-import { applicationConfig } from './config.js'
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer()
 
@@ -28,6 +28,9 @@ export const initialState = {
       text: '',
       entries: [],
     },
+  },
+  articleWorkingCopy: {
+    status: 'synced',
   },
   articleStructure: [],
   articleVersions: [],
@@ -97,6 +100,7 @@ function createRootReducer(state) {
     UPDATE_ARTICLE_STATS: updateArticleStats,
     UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
     UPDATE_ARTICLE_WRITERS: updateArticleWriters,
+    UPDATE_ARTICLE_WORKING_COPY_STATUS: updateArticleWorkingCopyStatus,
 
     // user preferences reducers
     USER_PREFERENCES_TOGGLE: toggleUserPreferences,
@@ -393,6 +397,13 @@ function updateArticleStructure(state, { md }) {
 
 function updateArticleWriters(state, { articleWriters }) {
   return { ...state, articleWriters }
+}
+
+function updateArticleWorkingCopyStatus(state, { status }) {
+  return {
+    ...state,
+    articleWorkingCopy: { ...state.articleWorkingCopy, status },
+  }
 }
 
 function setArticleVersions(state, { versions }) {

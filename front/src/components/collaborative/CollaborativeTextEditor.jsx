@@ -72,9 +72,24 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
     editorRef.current = editor
   }, [])
 
+  let timeoutId
   useEffect(() => {
     if (yText) {
       yText.observe(function () {
+        dispatch({
+          type: 'UPDATE_ARTICLE_WORKING_COPY_STATUS',
+          status: 'syncing',
+        })
+        if (timeoutId) {
+          clearTimeout(timeoutId)
+        }
+        timeoutId = setTimeout(() => {
+          dispatch({
+            type: 'UPDATE_ARTICLE_WORKING_COPY_STATUS',
+            status: 'synced',
+          })
+        }, 4000)
+
         handleUpdateArticleStructureAndStats({ text: yText.toString() })
       })
     }
@@ -127,7 +142,7 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
         />
       )}
       <div
-        className={clsx(styles.collaborativeEditor, !yText && styles.hidden)}
+        className={clsx(styles.collaborativeEditor, versionId && styles.hidden)}
       >
         <Editor
           width={'100%'}

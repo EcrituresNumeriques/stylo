@@ -123,15 +123,6 @@ export function useCollaboration({ articleId, versionId }) {
     }
   }, [articleId, websocketEndpoint, writerInfo])
 
-  if (versionId) {
-    return {
-      awareness: null,
-      yText: null,
-      websocketStatus,
-      dynamicStyles,
-    }
-  }
-
   return {
     websocketStatus,
     awareness,
