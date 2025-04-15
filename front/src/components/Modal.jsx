@@ -31,7 +31,7 @@ export default forwardRef(function Modal(
       aria-labelledby="modal-title"
     >
       {visible && (
-        <>
+        <div className={styles.content}>
           <header className={styles.modalHeader}>
             <Button
               aria-label={t('modal.close.label')}
@@ -50,7 +50,7 @@ export default forwardRef(function Modal(
           </header>
 
           <div>{children}</div>
-        </>
+        </div>
       )}
     </dialog>
   )
