@@ -120,7 +120,6 @@
   "article.deleteModal.contributorsRemovalNote": "If you delete this article, contributors wonʼt have access to this article anymore.",
   "article.sendCopy.successNotification": "Copie of the article send to {{username}}",
   "article.sendCopy.errorNotification": "Unable to send a copy of the article: {{errMessage}}",
-  "version.editingSessionEnded.text": "Editing session ended",
   "version.by.text": "by {{owner}}",
   "article.editor.edit.title": "Edit article",
   "article.legacyEditor.edit.title": "[LEGACY] Edit article",
@@ -396,5 +395,16 @@
   "loading.label": "Chargement…",
   "validating.label": "Validation…",
   "bibliography.deleteReferenceModal.title": "Remove a reference",
-  "bibliography.deleteReferenceModal.confirmMessage": "Are you sure you want to remove the following reference: <1>{{key}}</1> ?"
+  "bibliography.deleteReferenceModal.confirmMessage": "Are you sure you want to remove the following reference: <1>{{key}}</1> ?",
+  "versions.title": "Versions",
+  "versions.createVersion.title": "Create a new version",
+  "versions.createVersion.button": "New version",
+  "versions.workingCopy.text": "Working copy",
+  "versions.editingSessionEnded.text": "Editing session ended",
+  "versions.collaborativeSessionEnded.text": "Collaborative session ended",
+  "versions.version.text": "Version {{major}}.{{minor}}",
+  "article.stats.words": "Words: {{count}}",
+  "article.stats.chars": "Characters: {{count}} (with spaces: {{countWithSpaces}})",
+  "article.stats.citations": "Citations: {{count}}",
+  "versions.explanation.text": "<0>All changes are automatically saved.</0><1>Create a new version to keep track of particular changes.</1>"
 }

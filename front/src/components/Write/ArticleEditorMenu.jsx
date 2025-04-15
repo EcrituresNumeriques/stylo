@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
 import styles from './articleEditorMenu.module.scss'
+import ArticleVersions from './ArticleVersions.jsx'
 import Sommaire from './Sommaire'
 import Versions from './Versions'
 import { Sidebar } from 'lucide-react'
@@ -33,15 +34,15 @@ export default function ArticleEditorMenu({
         onClick={toggleExpand}
         className={expanded ? styles.close : styles.open}
       >
-        <Sidebar />{' '}
+        <Sidebar />
         {expanded
           ? t('write.sidebar.closeButton')
           : t('write.sidebar.biblioAndCoButton')}
       </button>
       {expanded && (
         <div>
-          <Versions
-            article={articleInfos}
+          <ArticleVersions
+            articleId={articleInfos._id}
             selectedVersion={selectedVersion}
             compareTo={compareTo}
             readOnly={readOnly}

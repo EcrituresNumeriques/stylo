@@ -17,6 +17,25 @@ query renameVersion($version: ID!, $name: String) {
   }
 }
 
+query getArticleVersions($article: ID!) {
+  article(article: $article) {
+    _id
+    updatedAt
+    versions {
+      _id
+      version
+      revision
+      message
+      updatedAt
+      owner {
+        displayName
+        username
+      }
+      type
+    }
+  }
+}
+
 query getArticleWorkingCopy($articleId: ID!) {
   article(article: $articleId) {
     _id
@@ -82,6 +101,23 @@ query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
   }
 
   version(version: $version) @include(if: $hasVersion) {
+    _id
+    md
+    bib
+    bibPreview
+    metadata
+    message
+    revision
+    version
+    owner {
+      displayName
+      username
+    }
+  }
+}
+
+query getArticleVersion($versionId: ID!) {
+  version(version: $versionId) {
     _id
     md
     bib

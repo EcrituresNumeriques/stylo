@@ -97,7 +97,7 @@ export function ArticleSaveState({ state, updatedAt, stateMessage }) {
         )}
       </span>
 
-      {state === 'saved' && <TimeAgo date={isoString} />}
+      {state === 'saved' && isoString && <TimeAgo date={isoString} />}
     </>
   )
 }

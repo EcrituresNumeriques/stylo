@@ -23,6 +23,7 @@ export default function Button(props) {
       onClick={props.onClick}
       disabled={props.disabled}
       aria-label={props['aria-label']}
+      data-testid={props.testId}
     >
       {props.children}
     </button>

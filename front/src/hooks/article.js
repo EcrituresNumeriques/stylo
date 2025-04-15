@@ -8,13 +8,23 @@ import {
   renameArticle,
 } from '../components/Article.graphql'
 import {
+  getArticleVersion,
+  getArticleVersions,
   getArticleWorkingCopy,
   getEditableArticle,
+  renameVersion,
 } from '../components/Write/Write.graphql'
 import { toEntries } from '../helpers/bibtex.js'
 import { executeQuery } from '../helpers/graphQL.js'
-import { updateWorkingVersion } from '../services/ArticleService.graphql'
-import useFetchData, { useMutateData } from './graphql.js'
+import {
+  createVersion,
+  updateWorkingVersion,
+} from '../services/ArticleService.graphql'
+
+import useFetchData, {
+  useConditionalFetchData,
+  useMutateData,
+} from './graphql.js'
 
 export function useArticleTagActions({ articleId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
@@ -260,5 +270,95 @@ export function useBibliographyActions({ articleId }) {
 
   return {
     updateBibliography,
+  }
+}
+
+export function useArticleVersions({ articleId }) {
+  const { data, error, isLoading } = useFetchData(
+    { query: getArticleVersions, variables: { article: articleId } },
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  )
+
+  return {
+    error,
+    isLoading,
+    article: data?.article,
+  }
+}
+
+export function useArticleVersion({ versionId }) {
+  const { data, error, isLoading } = useConditionalFetchData(
+    versionId ? { query: getArticleVersion, variables: { versionId } } : null,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  )
+
+  return {
+    error,
+    isLoading,
+    version: data?.version,
+  }
+}
+
+export function useArticleVersionActions({ articleId }) {
+  const sessionToken = useSelector((state) => state.sessionToken)
+  const activeUser = useSelector((state) => state.activeUser)
+  const { mutate } = useMutateData({
+    query: getArticleVersions,
+    variables: { article: articleId },
+  })
+  const create = async (version) => {
+    const response = await executeQuery({
+      query: createVersion,
+      variables: {
+        userId: activeUser._id,
+        articleId,
+        major: version.major,
+        message: version.description,
+      },
+      sessionToken,
+      type: 'mutation',
+    })
+    await mutate(async (data) => ({
+      article: {
+        ...data?.article,
+        versions: response.article.createVersion.versions,
+      },
+    }))
+  }
+  const updateDescription = async ({ versionId, description }) => {
+    await executeQuery({
+      query: renameVersion,
+      variables: {
+        version: versionId,
+        name: description,
+      },
+      sessionToken,
+      type: 'mutation',
+    })
+    await mutate(async (data) => ({
+      article: {
+        ...data?.article,
+        versions: data.article.versions.map((v) => {
+          if (v._id === versionId) {
+            return {
+              ...v,
+              message: description,
+            }
+          }
+          return v
+        }),
+      },
+    }))
+  }
+
+  return {
+    create,
+    updateDescription,
   }
 }

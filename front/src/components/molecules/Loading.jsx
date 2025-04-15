@@ -12,12 +12,16 @@ import styles from './Loading.module.scss'
  * @param {boolean=} props.hidden (default: false)
  * @returns {React.ReactHTMLElement}
  */
-export default function Loading({ label, size = '1rem', hidden = false }) {
+export default function Loading({
+  label = 'Loading…',
+  size = '1rem',
+  hidden = false,
+  className,
+}) {
   const { t } = useTranslation()
-
   return (
     <div
-      className={clsx(styles.loading)}
+      className={clsx(styles.loading, className)}
       style={{ fontSize: size }}
       hidden={hidden}
     >

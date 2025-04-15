@@ -1,0 +1,36 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+.versions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.info {
+  margin-top: 0.5rem;
+}
+
+.loading {
+  margin-left: 0.5rem;
+  color: rgb(170, 170, 170)
+}
+
+.tip {
+ display: block;
+}
+
+.monthSeparator {
+  text-transform: capitalize;
+  color: $main-lighter-color;
+  margin-top: 0.5rem;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
