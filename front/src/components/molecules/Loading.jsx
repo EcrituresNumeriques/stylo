@@ -13,12 +13,15 @@ import styles from './Loading.module.scss'
  * @returns {React.ReactHTMLElement}
  */
 export default function Loading({
-  label = 'Loading…',
+  label,
   size = '1rem',
   hidden = false,
   className,
 }) {
   const { t } = useTranslation()
+  if (label === undefined) {
+    label = t('loading.label')
+  }
   return (
     <div
       className={clsx(styles.loading, className)}
@@ -26,7 +29,7 @@ export default function Loading({
       hidden={hidden}
     >
       <Loader className={styles.icon} aria-hidden />
-      {label || t('loading.label')}
+      {label}
     </div>
   )
 }

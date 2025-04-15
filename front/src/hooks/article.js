@@ -138,7 +138,9 @@ export function useArticleActions({ articleId }) {
 }
 
 export function useArticleWorkingCopy({ articleId }) {
-  const { data, error, isLoading } = useFetchData(
+  const sessionToken = useSelector((state) => state.sessionToken)
+  const activeUser = useSelector((state) => state.activeUser)
+  const { data, error, mutate, isLoading } = useFetchData(
     { query: getArticleWorkingCopy, variables: { articleId } },
     {
       revalidateOnFocus: false,
@@ -146,8 +148,36 @@ export function useArticleWorkingCopy({ articleId }) {
     }
   )
 
+  const updateMetadata = async (metadata) => {
+    await executeQuery({
+      sessionToken,
+      query: updateWorkingVersion,
+      variables: {
+        userId: activeUser._id,
+        articleId: articleId,
+        content: { metadata },
+      },
+      type: 'mutate',
+    })
+    await mutate(
+      async (data) => {
+        return {
+          article: {
+            ...data,
+            workingVersion: {
+              ...data.workingVersion,
+              metadata: metadata,
+            },
+          },
+        }
+      },
+      { revalidate: false }
+    )
+  }
+
   return {
     article: data?.article,
+    updateMetadata,
     isLoading,
     error,
   }

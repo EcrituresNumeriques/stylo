@@ -406,5 +406,6 @@
   "article.stats.words": "Words: {{count}}",
   "article.stats.chars": "Characters: {{count}} (with spaces: {{countWithSpaces}})",
   "article.stats.citations": "Citations: {{count}}",
-  "versions.explanation.text": "<0>All changes are automatically saved.</0><1>Create a new version to keep track of particular changes.</1>"
+  "versions.explanation.text": "<0>All changes are automatically saved.</0><1>Create a new version to keep track of particular changes.</1>",
+  "metadata.readonly": "Metadata are editable only when you are the only one working on the article."
 }

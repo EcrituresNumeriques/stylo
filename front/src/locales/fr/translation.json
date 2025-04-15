@@ -405,5 +405,6 @@
   "article.stats.words": "Mots : {{count}}",
   "article.stats.chars": "Caractères : {{count}} (avec espaces : {{countWithSpaces}})",
   "article.stats.citations": "Citations : {{count}}",
-  "versions.explanation.text": "<0>Tous les changements sont automatiquement enregistrés.</0><1>Créer une nouvelle version afin de suivre des changements particuliers.</1>"
+  "versions.explanation.text": "<0>Tous les changements sont automatiquement enregistrés.</0><1>Créer une nouvelle version afin de suivre des changements particuliers.</1>",
+  "metadata.readonly": "Les métadonnées sont éditables uniquement quand vous êtes seul·e sur l'article."
 }
