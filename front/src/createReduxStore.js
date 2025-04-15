@@ -258,10 +258,8 @@ function persistStateIntoLocalStorage({ getState }) {
 
         return
       } else if (action.type === 'LOGOUT') {
-        const { backendEndpoint } = applicationConfig
         localStorage.removeItem('articlePreferences')
         localStorage.removeItem('userPreferences')
-        document.location.replace(backendEndpoint + '/logout')
       }
 
       if (action.type === 'LOGIN' || action.type === 'UPDATE_SESSION_TOKEN') {
@@ -286,7 +284,6 @@ function setProfile(state, action) {
   if (!user) {
     return { ...state, activeUser: undefined }
   }
-
   return {
     ...state,
     activeUser: {
@@ -502,7 +499,11 @@ function updateSelectedTag(state, { tagId }) {
   }
 }
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const composeEnhancers =
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+    trace: true,
+    traceLimit: 25,
+  }) || compose
 
 export default function createReduxStore(state = initialState) {
   return createStore(

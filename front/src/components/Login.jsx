@@ -20,7 +20,7 @@ export default function Login() {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const { replace, location } = useHistory()
-  const { data, isLoading, mutate } = useProfile()
+  const { data, mutate } = useProfile()
 
   const setSessionToken = useCallback(
     (token) => dispatch({ type: 'UPDATE_SESSION_TOKEN', token }),
@@ -34,7 +34,7 @@ export default function Login() {
 
     if (!data?.user?._id && authToken) {
       setSessionToken(authToken)
-      replace('/articles')
+      mutate()
     }
   }, [])
 

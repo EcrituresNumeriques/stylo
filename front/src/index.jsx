@@ -103,7 +103,7 @@ root.render(
             <TrackPageViews />
             <Header />
 
-            <main>
+            <main tabIndex={-1}>
               <Switch>
                 <Route path="/" component={Home} exact />
                 <Route path="/register" component={Register} exact />

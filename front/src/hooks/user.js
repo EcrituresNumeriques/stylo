@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   getFullUserProfile,
   unsetAuthTokenMutation,
+  logoutMutation,
 } from '../components/Credentials.graphql'
 import { getTags, createTag } from '../components/Tag.graphql'
 
@@ -102,9 +103,9 @@ export function useProfile() {
   return useFetchData(
     { query: getFullUserProfile },
     {
-      revalidateIfStale: false,
+      revalidateIfStale: true,
       revalidateOnFocus: false,
-      revalidateOnReconnect: true,
+      revalidateOnReconnect: false,
       suspense: true,
       onSuccess({ user }) {
         dispatch({
@@ -114,4 +115,17 @@ export function useProfile() {
       },
     }
   )
+}
+
+export function useLogout() {
+  const dispatch = useDispatch()
+  const { query } = useGraphQLClient()
+  const { mutate } = useMutateData({ query: getFullUserProfile })
+
+  return useCallback(async () => {
+    await mutate({ user: null })
+    await query({ query: logoutMutation })
+
+    dispatch({ type: 'LOGOUT' })
+  }, [])
 }
