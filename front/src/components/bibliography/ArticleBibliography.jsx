@@ -1,7 +1,8 @@
 import { Toggle } from '@geist-ui/core'
 import { ArrowLeft } from 'lucide-react'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
 import { useEditableArticle } from '../../hooks/article.js'
 import { useModal } from '../../hooks/modal.js'
@@ -21,17 +22,17 @@ import BibliographyZoteroImport from './BibliographyZoteroImport.jsx'
  * @param props
  * @param props.articleId
  * @param props.versionId
- * @param props.readOnly
  * @param props.onBack
  * @return {Element}
  * @constructor
  */
-export default function ArticleBibliography({
-  articleId,
-  versionId,
-  onBack,
-  readOnly,
-}) {
+export default function ArticleBibliography({ articleId, versionId, onBack }) {
+  /** @type {object} */
+  const articleWriters = useSelector((state) => state.articleWriters || {})
+  const readOnly = useMemo(
+    () => Object.keys(articleWriters).length > 1,
+    [articleWriters]
+  )
   const { t } = useTranslation()
   const zoteroModal = useModal()
   const addReferenceModal = useModal()
@@ -97,6 +98,9 @@ export default function ArticleBibliography({
         </div>
       </header>
       <section>
+        <div className={styles.readonly}>
+          <Alert message={t('bibliography.readonly')} type="warning" />
+        </div>
         <div className={styles.headingActions}>
           <Button
             small={true}
@@ -121,12 +125,14 @@ export default function ArticleBibliography({
           <BibliographyReferenceList
             bibliography={bibliography}
             onUpdate={onChange}
+            readOnly={readOnly}
           />
         )}
         {selector === 'raw' && (
           <BibliographyBibtexEditor
             onChange={(result) => onChange(result.text)}
             initialValue={bibliography.bibtext}
+            readOnly={readOnly}
           />
         )}
 
@@ -148,6 +154,7 @@ export default function ArticleBibliography({
           <BibliographyBibtexEditor
             initialValue={''}
             editorHeight={'500px'}
+            readOnly={readOnly}
             onChange={(result) => {
               if (
                 !result.loading &&

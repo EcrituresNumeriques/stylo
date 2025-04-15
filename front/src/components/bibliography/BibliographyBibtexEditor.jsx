@@ -14,6 +14,7 @@ import styles from './BibliographyBibtexEditor.module.scss'
 export default function BibliographyBibtexEditor({
   initialValue,
   onChange,
+  readOnly,
   editorHeight = 'calc(100vh - 350px)',
 }) {
   const { updateText, errors, warnings, isLoading, references } =
@@ -91,10 +92,12 @@ export default function BibliographyBibtexEditor({
         errors={errors}
         warnings={warnings}
         references={references}
+        readOnly={readOnly}
       />
       <div className={styles.editor}>
         <MonacoBibtexEditor
           text={text}
+          readOnly={readOnly}
           onTextUpdate={handleTextUpdate}
           fontSize="14"
           height={editorHeight}

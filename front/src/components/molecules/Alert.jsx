@@ -37,15 +37,11 @@ function getStyle(type) {
 }
 
 /**
- * @typedef {Object} AlertProps
- * @property {string} message
- * @property {string=} type
- * @property {boolean} showIcon
- */
-
-/**
- * @param {AlertProps} props
- * @returns {React.ReactHTMLElement}
+ * @param props
+ * @param {string} props.message
+ * @param {'error'|'warning'|'info'|'success'} props.type (default: 'error')
+ * @param {boolean=} props.showIcon (default: true)
+ * @return {JSX.Element}
  */
 export default function Alert({ message, type = 'error', showIcon = true }) {
   const icon = showIcon ? getIcon(type) : <></>
