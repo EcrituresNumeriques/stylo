@@ -78,6 +78,10 @@ userSchema.methods.comparePassword = async function comparePassword(password) {
   return bcrypt.compare(password, oldPassword)
 }
 
+userSchema.methods.getAuthProvidersCount = function getAuthProvidersCount() {
+  return Array.from(this.authProviders.values()).filter((d) => d).length
+}
+
 userSchema.methods.createDefaultArticle =
   async function createDefaultArticle() {
     const newArticle = await this.model('Article').create({

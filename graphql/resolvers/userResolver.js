@@ -150,6 +150,14 @@ module.exports = {
 
       // TODO revoke token from remote service
 
+      // check if not the last account
+      if (!user.password && user.getAuthProvidersCount() === 1) {
+        throw new ApiError(
+          'LAST_ACCOUNT',
+          'You cannot remove the last authentication method'
+        )
+      }
+
       //
       const authProviderKey = `authProviders.${service}`
       user.set(authProviderKey, null)

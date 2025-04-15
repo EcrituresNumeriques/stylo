@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
@@ -19,6 +19,7 @@ export function useActiveUserId() {
 export function useSetAuthToken(service) {
   const dispatch = useDispatch()
   const { query } = useGraphQLClient()
+  const [error, setError] = useState('')
   const { backendEndpoint, frontendEndpoint } = applicationConfig
 
   const token = useSelector(
@@ -32,6 +33,7 @@ export function useSetAuthToken(service) {
   const isLinked = useMemo(() => id ?? token, [id, token])
 
   const link = useCallback(async function handleSetAuthToken() {
+    setError('')
     const popup = window.open(
       `${backendEndpoint}/authorize/${service}?returnTo=${frontendEndpoint}/credentials/auth-callback/${service}`,
       `auth-${service}`,
@@ -62,15 +64,20 @@ export function useSetAuthToken(service) {
   }, [])
 
   const unlink = useCallback(async () => {
-    const { unsetAuthToken } = await query({
-      query: unsetAuthTokenMutation,
-      variables: { service },
-    })
+    try {
+      setError('')
+      const { unsetAuthToken } = await query({
+        query: unsetAuthTokenMutation,
+        variables: { service },
+      })
 
-    dispatch({ type: 'UPDATE_ACTIVE_USER_DETAILS', payload: unsetAuthToken })
+      dispatch({ type: 'UPDATE_ACTIVE_USER_DETAILS', payload: unsetAuthToken })
+    } catch (error) {
+      setError(error.messages.at(0).extensions.type)
+    }
   }, [])
 
-  return { link, unlink, token, id, isLinked }
+  return { link, unlink, token, id, isLinked, error }
 }
 
 export function useUserTagActions() {

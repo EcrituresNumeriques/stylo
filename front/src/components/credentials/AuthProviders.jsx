@@ -9,7 +9,7 @@ import Button from '../Button.jsx'
 export function AuthProvider({ service }) {
   const { t } = useTranslation()
 
-  const { link, unlink, isLinked } = useSetAuthToken(service)
+  const { link, unlink, isLinked, error } = useSetAuthToken(service)
 
   return (
     <div className={styles.authProvider}>
