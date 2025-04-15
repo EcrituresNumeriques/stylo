@@ -216,17 +216,6 @@ app.use(
   onAuthFailure
 )
 
-/* TODO move to graphql method + linked session */
-app.get('/logout', (req, res, next) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err)
-    }
-    req.session.destroy()
-    res.redirect('/')
-  })
-})
-
 /**
  * @returns {import('./').Loaders}
  */

@@ -52,8 +52,7 @@ module.exports.populateUserFromJWT = function populateUserFromJWT({
     } catch (error) {
       Sentry.setUser(null)
 
-      res.status(400)
-      return res.json(error)
+      return next()
     }
 
     // 2. Fetch associated user, only if not populated by Passport Session before

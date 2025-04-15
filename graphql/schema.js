@@ -395,6 +395,9 @@ type Mutation {
   "Create user after authentication with an auth provider"
   createUserWithAuth(details: NewUserWithAuthInput!, service: AuthTokenService!): String
 
+  "Log out a user"
+  logout: User
+
   "Sets a user authentication token (to something, or nothing if unlinking services"
   setAuthToken (service: AuthTokenService!): User
 

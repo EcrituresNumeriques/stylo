@@ -140,6 +140,8 @@ type Mutation {
     details: NewUserWithAuthInput!
     service: AuthTokenService!
   ): String
+  "Log out a user"
+  logout: User
   "Create a new workspace"
   createWorkspace(createWorkspaceInput: CreateWorkspaceInput!): Workspace
   "Delete tag, and remove it from all related articles"

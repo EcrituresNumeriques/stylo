@@ -75,6 +75,14 @@ module.exports = {
       })
     },
 
+    async logout(_, args, { token, user, session }) {
+      isUser({}, { token, user })
+
+      session.destroy()
+
+      return null
+    },
+
     /**
      * Set an authentication token based on info previously stored in the session
      * It works both after coming back with a new user (not known to any account) or linked to an existing account
@@ -88,8 +96,6 @@ module.exports = {
 
       const authProviderKey = `authProviders.${service}`
 
-      console.log(session)
-
       if (!session?.pendingRegistration?.authProviders) {
         throw new ApiError('ACCOUNT_NOT_FOUND', 'No remote account data found')
       }
@@ -102,13 +108,6 @@ module.exports = {
         const existingUser = await User.findOne({
           [`authProviders.${service}.id`]: remoteId,
         })
-
-        console.log(
-          'existingUser',
-          existingUser,
-          `authProviders.${service}.id`,
-          session.pendingRegistration.authProviders
-        )
 
         if (existingUser) {
           const error = new ApiError(
@@ -215,11 +214,9 @@ module.exports = {
   Query: {
     async user(_root, args, context) {
       if (!context.userId) {
-        throw new ApiError(
-          'UNAUTHENTICATED',
-          `Unable to find an authentication context: ${JSON.stringify(context)}`
-        )
+        return null
       }
+
       return User.findById(context.userId)
     },
 
