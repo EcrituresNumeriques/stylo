@@ -1,7 +1,6 @@
 import { useInput } from '@geist-ui/core'
 import React, { useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { shallowEqual, useSelector } from 'react-redux'
 import { randomColor } from '../../helpers/colors.js'
 import { useWorkspaceActions } from '../../hooks/workspace.js'
 
@@ -22,7 +21,6 @@ export default function CreateWorkspace({ onSubmit, onCancel }) {
   const { state: description, bindings: descriptionBindings } = useInput('')
   const { state: color, bindings: colorBindings } = useInput(randomColor())
   const nameInputRef = useRef(null)
-  const currentUser = useSelector((state) => state.activeUser, shallowEqual)
   const { addWorkspace } = useWorkspaceActions()
 
   const handleSubmit = useCallback(

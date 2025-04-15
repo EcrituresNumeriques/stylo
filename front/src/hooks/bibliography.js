@@ -1,5 +1,6 @@
 import debounce from 'lodash.debounce'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { BibliographyCompletionProvider } from '../components/Write/providers/monaco/support.js'
 import { validate } from '../helpers/bibtex.js'
 
 export const validationResultInitialState = (text) => {
@@ -50,5 +51,15 @@ export default function useBibliography({ initialText }) {
     isLoading: validationResult.loading,
     errors: validationResult.errors,
     warnings: validationResult.warnings,
+  }
+}
+
+export function useBibliographyCompletion() {
+  const bibliographyCompletionProvider = useRef(
+    new BibliographyCompletionProvider([])
+  )
+
+  return {
+    provider: bibliographyCompletionProvider.current,
   }
 }

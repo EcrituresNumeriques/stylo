@@ -10,7 +10,6 @@ import {
   Pencil,
   Printer,
   Send,
-  Squirrel,
   Trash,
   UserPlus,
 } from 'lucide-react'

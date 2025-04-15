@@ -10,6 +10,7 @@ import styles from './UserMenu.module.scss'
 import Button from '../Button.jsx'
 import WorkspaceMenuItem from '../workspace/WorkspaceMenuItem.jsx'
 import UserMenuLink from './UserMenuLink.jsx'
+import { useActiveWorkspace } from '../../hooks/workspace.js'
 
 export default function UserMenu() {
   const { t } = useTranslation()
@@ -17,19 +18,17 @@ export default function UserMenu() {
 
   const handleLogout = useCallback(() => {
     setIsComponentVisible(false)
-    logout()
+    logout().then()
   }, [])
 
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible(false)
   const activeUser = useSelector((state) => state.activeUser)
-  const activeWorkspace = activeUser.workspaces.find(
-    (workspace) => workspace._id === activeUser.activeWorkspaceId
-  )
+  const activeWorkspace = useActiveWorkspace()
 
   useEffect(() => {
     setIsComponentVisible(false)
-  }, [activeUser.activeWorkspaceId])
+  }, [activeWorkspace])
 
   return (
     <div ref={ref} className={styles.container}>

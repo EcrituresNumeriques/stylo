@@ -1,7 +1,8 @@
 import React from 'react'
 
-import styles from '../components/Write/write.module.scss'
 import Loading from './molecules/Loading.jsx'
+
+import styles from './Page.module.scss'
 
 export default function LoadingPage() {
   return (

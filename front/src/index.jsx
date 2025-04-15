@@ -126,83 +126,94 @@ root.render(
           <App>
             <TrackPageViews />
             <Header />
-            <Switch>
-              <Route path="/" component={Home} exact />
-              <Route path="/register" component={Register} exact />
-              <Route
-                path="/register/:service"
-                component={RegisterWithAuthProvider}
-                exact
-              />
-              <Route path="/login" component={Login} exact />
-              {/* Articles index */}
-              <PrivateRoute
-                path={['/articles', '/', '/workspaces/:workspaceId/articles']}
-                component={Articles}
-                exact
-              />
-              {/* Corpus index */}
-              <PrivateRoute
-                path={['/corpus', '/workspaces/:workspaceId/corpus']}
-                component={Corpus}
-                exact
-              />
-              {/* Workspaces index */}
-              <PrivateRoute
-                path={['/workspaces']}
-                component={Workspaces}
-                exact
-              />
-              <PrivateRoute path="/credentials" exact>
-                <Credentials />
-              </PrivateRoute>
-              <PrivateRoute
-                exact
-                path="/credentials/auth-callback/:service"
-                component={AuthCallback}
-              />
-              {/* Annotate a corpus */}
-              <Route
-                path={[
-                  '/workspaces/:workspaceId/corpus/:id/preview',
-                  '/corpus/:id/preview',
-                ]}
-                exact
-              >
-                <Preview strategy="corpus" />
-              </Route>
-              {/* Annotate an article or its version */}
-              <Route
-                path={[
-                  `/article/:id/version/:version/preview`,
-                  `/article/:id/preview`,
-                ]}
-                exact
-              >
-                <Preview strategy="article" />
-              </Route>
-              {/* Collaborative editing */}
-              <PrivateRoute
-                path={[
-                  `/article/:articleId`,
-                  `/article/:articleId/compare/:compareTo`,
-                  `/article/:articleId/version/:versionId`,
-                  `/article/:articleId/version/:versionId/compare/:compareTo`,
-                  // the following route can be removed after the migration since we don't use session anymore
-                  `/article/:articleId/session/:sessionId`,
-                ]}
-                component={CollaborativeEditor}
-                exact
-              />
-              <Route exact path="/privacy" component={Privacy} />
-              <Route exact path="/ux" component={Story} />
-              <Route exact path="/error">
-                <Error />
-              </Route>
-              <Route path="*">
-                <NotFound />
-              </Route>
-            </Switch>
+            <main tabIndex={-1}>
+              <Suspense fallback={<LoadingPage />}>
+                <Switch>
+                  <Route path="/" component={Home} exact />
+                  <Route path="/register" component={Register} exact />
+                  <Route
+                    path="/register/:service"
+                    component={RegisterWithAuthProvider}
+                    exact
+                  />
+                  <Route path="/login" component={Login} exact />
+                  {/* Articles index */}
+                  <PrivateRoute
+                    path={[
+                      '/articles',
+                      '/',
+                      '/workspaces/:workspaceId/articles',
+                    ]}
+                    component={Articles}
+                    exact
+                  />
+                  {/* Corpus index */}
+                  <PrivateRoute
+                    path={['/corpus', '/workspaces/:workspaceId/corpus']}
+                    component={Corpus}
+                    exact
+                  />
+                  {/* Workspaces index */}
+                  <PrivateRoute
+                    path={['/workspaces']}
+                    component={Workspaces}
+                    exact
+                  />
+                  <PrivateRoute path="/credentials" exact>
+                    <Credentials />
+                  </PrivateRoute>
+                  <PrivateRoute
+                    exact
+                    path="/credentials/auth-callback/:service"
+                    component={AuthCallback}
+                  />
+                  {/* Annotate a corpus */}
+                  <Route
+                    path={[
+                      '/workspaces/:workspaceId/corpus/:id/preview',
+                      '/corpus/:id/preview',
+                    ]}
+                    exact
+                  >
+                    <Preview strategy="corpus" />
+                  </Route>
+                  {/* Annotate an article or its version */}
+                  <Route
+                    path={[
+                      `/article/:id/version/:version/preview`,
+                      `/article/:id/preview`,
+                    ]}
+                    exact
+                  >
+                    <Preview strategy="article" />
+                  </Route>
+                  {/* Collaborative editing */}
+                  <PrivateRoute
+                    path={[
+                      `/article/:articleId`,
+                      `/article/:articleId/compare/:compareTo`,
+                      `/article/:articleId/version/:versionId`,
+                      `/article/:articleId/version/:versionId/compare/:compareTo`,
+                      // the following route can be removed after the migration since we don't use session anymore
+                      `/article/:articleId/session/:sessionId`,
+                    ]}
+                    component={CollaborativeEditor}
+                    exact
+                  />
+                  <Route exact path="/privacy" component={Privacy} />
+                  <Route exact path="/ux" component={Story} />
+                  {import.meta.env.DEV && (
+                    <Route exact path="/ux/loading" component={LoadingPage} />
+                  )}
+                  <Route exact path="/error">
+                    <Error />
+                  </Route>
+                  <Route path="*">
+                    <NotFound />
+                  </Route>
+                </Switch>
+              </Suspense>
+            </main>
             <Footer />
           </App>
         </Router>
