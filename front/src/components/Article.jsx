@@ -370,15 +370,6 @@ export default function Article({
         </Button>
 
         <Link
-          title={t('article.legacyEditor.edit.title')}
-          icon={true}
-          to={`/legacy/article/${article._id}`}
-          className={clsx(buttonStyles.icon, styles.deprecated)}
-        >
-          <Squirrel />
-        </Link>
-
-        <Link
           title={t('article.editor.edit.title')}
           primary={true}
           className={buttonStyles.primary}

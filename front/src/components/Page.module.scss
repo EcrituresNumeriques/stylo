@@ -1,0 +1,24 @@
+@use '../styles/defaults' as *;
+@use '../styles/variables' as *;
+
+.simplePage {
+  background-color: $extra-background-color;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  margin: 5rem auto;
+  padding: 2rem;
+  width: 100%;
+  max-width: 50%;
+}
+
+.container {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  max-height: calc(100vh - 91px);
+}

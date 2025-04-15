@@ -1,8 +1,0 @@
-@use '../../styles/defaults' as *;
-@use '../../styles/variables' as *;
-
-.compare {
-  @extend .wrapped-center;
-  background-color: $extra-background-color;
-  padding: 1rem;
-}
