@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react'
-import { Note, Spacer, Text } from '@geist-ui/core'
-import { Slash } from 'lucide-react'
+import { CircleOff } from 'lucide-react'
 import { Trans, useTranslation } from 'react-i18next'
 
 import { useWorkspaceActions } from '../../hooks/workspace.js'
 
 import Modal from '../Modal.jsx'
+import Alert from '../molecules/Alert.jsx'
 import FormActions from '../molecules/FormActions.jsx'
 import WorkspaceLabel from './WorkspaceLabel.jsx'
 
@@ -24,7 +24,7 @@ export default function LeaveWorkspaceModal({ close, bindings, workspace }) {
       {...bindings}
       title={
         <>
-          <Slash />
+          <CircleOff />
           {t('workspace.leaveModal.title')}
         </>
       }
@@ -36,15 +36,16 @@ export default function LeaveWorkspaceModal({ close, bindings, workspace }) {
       />
       {t('workspace.leaveModal.confirm')}
       {workspace.stats.membersCount === 1 && (
-        <>
-          <Spacer h={1} />
-          <Note label="Important" type="error">
+        <Alert
+          className={styles.message}
+          type={'warning'}
+          message={
             <Trans i18nKey="workspace.leaveModal.confirmDeletion">
-              Lʼespace de travail sera <Text i>supprimé</Text> car vous êtes la
-              dernière personne appartenant à cet espace.
+              Lʼespace de travail sera <i>supprimé</i> car vous êtes la dernière
+              personne appartenant à cet espace.
             </Trans>
-          </Note>
-        </>
+          }
+        />
       )}
       <FormActions onSubmit={handleLeavingWorkspace} onCancel={() => close()} />
     </Modal>
