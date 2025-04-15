@@ -98,9 +98,11 @@ export default function ArticleBibliography({ articleId, versionId, onBack }) {
         </div>
       </header>
       <section>
-        <div className={styles.readonly}>
-          <Alert message={t('bibliography.readonly')} type="warning" />
-        </div>
+        {readOnly && (
+          <div className={styles.readonly}>
+            <Alert message={t('bibliography.readonly')} type="warning" />
+          </div>
+        )}
         <div className={styles.headingActions}>
           <Button
             small={true}
