@@ -23,6 +23,12 @@ module.exports = {
       files: ['**/*.json', '**/*.json5', '**/*.jsonc'],
       parser: 'jsonc-eslint-parser',
     },
+    {
+      files: ['**/locales/**/*.json'],
+      rules: {
+        'no-irregular-whitespace': ['off'],
+      },
+    },
   ],
   plugins: ['react', 'vitest', 'jsdoc'],
   settings: {
