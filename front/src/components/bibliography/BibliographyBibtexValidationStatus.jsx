@@ -10,8 +10,10 @@ export default function BibliographyBibtexValidationStatus({
   errors,
   warnings,
   references,
+  readOnly,
 }) {
   const { t } = useTranslation()
+  const referencesCount = Object.keys(references).length
 
   const component = (element) => {
     return <div className={styles.container}>{element}</div>
@@ -19,6 +21,17 @@ export default function BibliographyBibtexValidationStatus({
 
   if (isLoading) {
     return component(<Loading label={t('validating.label')} />)
+  }
+
+  if (readOnly) {
+    return component(
+      <Alert
+        type={referencesCount === 0 ? 'info' : 'success'}
+        message={t('bibliography.readonly.references', {
+          count: referencesCount,
+        })}
+      />
+    )
   }
 
   if (errors.length > 0) {
@@ -49,7 +62,6 @@ export default function BibliographyBibtexValidationStatus({
     )
   }
 
-  const referencesCount = Object.keys(references).length
   return component(
     <Alert
       type={referencesCount === 0 ? 'info' : 'success'}

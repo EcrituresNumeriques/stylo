@@ -19,6 +19,7 @@ const { logger } = require('../logger.js')
 const { toLegacyFormat } = require('../helpers/metadata.js')
 const Y = require('yjs')
 const { mongo } = require('mongoose')
+const Sentry = require('@sentry/node')
 
 function getTextFromYjsDoc(yjsdocBase64) {
   const documentState = Buffer.from(yjsdocBase64, 'base64')
@@ -444,8 +445,17 @@ module.exports = {
   },
 
   WorkingVersion: {
-    md({ ydoc = {} }) {
-      return getTextFromYjsDoc(ydoc)
+    md({ ydoc = '' }) {
+      try {
+        return getTextFromYjsDoc(ydoc)
+      } catch (err) {
+        Sentry.captureException(err)
+        console.error(
+          'Unable to load text content (Markdown) from the Y.js document on article',
+          err
+        )
+        return ''
+      }
     },
     bibPreview({ bib }) {
       return previewEntries(bib)
