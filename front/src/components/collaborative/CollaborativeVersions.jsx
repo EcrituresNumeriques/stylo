@@ -158,7 +158,7 @@ export default function CollaborativeVersions({
       </Modal>
       <ul className={styles.versions} data-testid="versions">
         <Version
-          date={new Date(updatedAt)}
+          date={null}
           type="workingCopy"
           title={t('versions.workingCopy.text')}
           selected={!selectedVersion}

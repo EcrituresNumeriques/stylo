@@ -1,10 +1,16 @@
-import React, { useMemo } from 'react'
-import { Bot, User } from 'lucide-react'
 import { clsx } from 'clsx'
+import { Bot, User } from 'lucide-react'
+import React, { useMemo } from 'react'
 
 import i18n from '../../i18n.js'
 
 import styles from './Version.module.scss'
+
+const relativeTimeFormatOptions = {
+  localeMatcher: 'best fit',
+  numeric: 'auto',
+  style: 'long',
+}
 
 export default function Version({
   title,
@@ -27,6 +33,12 @@ export default function Version({
         options.year = '2-digit'
       }
       return new Intl.DateTimeFormat(i18n.language, options).format(date)
+    } else if (type === 'workingCopy') {
+      // today!
+      return new Intl.RelativeTimeFormat(
+        i18n.language,
+        relativeTimeFormatOptions
+      ).format(0, 'day')
     }
     return ''
   }, [date, currentYear])
