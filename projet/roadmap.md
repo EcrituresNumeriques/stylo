@@ -40,7 +40,7 @@
 
 
 - [ ] Ergo des autres modals:
-  - [ ] Biblio : icônes sur les références biblio pour dire : "cliquer et coller la clé dans le presse papier"
+  - [ ] Bibliography : icônes sur les références biblio pour dire : "cliquer et coller la clé dans le presse papier"
     - [ ] visualiser les infos : auteur/titre/date
     - [ ] affichage conflictuel : metadonnées VS comparaison de fichier
   - [ ] Versions :

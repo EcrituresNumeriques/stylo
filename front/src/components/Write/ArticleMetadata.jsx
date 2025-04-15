@@ -98,7 +98,6 @@ export default function ArticleMetadata({
             checked={selector === 'raw'}
             title={t('metadata.showYaml')}
             onChange={(e) => {
-              console.log(e)
               setSelector(e.target.checked ? 'raw' : 'basic')
             }}
           />

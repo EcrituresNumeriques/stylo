@@ -10,13 +10,11 @@ import {
   toBibtex,
   toEntries,
   getValidationResults,
-} from '../../../helpers/bibtex'
+} from '../../helpers/bibtex.js'
 
-import MonacoBibtexEditor from '../providers/monaco/BibtexEditor'
-import ReferenceTypeIcon from '../../ReferenceTypeIcon'
-import Button from '../../Button'
-
-import styles from './bibliographe.module.scss'
+import MonacoBibtexEditor from '../Write/providers/monaco/BibtexEditor.jsx'
+import ReferenceTypeIcon from '../ReferenceTypeIcon.jsx'
+import Button from '../Button.jsx'
 
 export default function CitationsPanel({ onChange }) {
   const { setToast } = useToasts()
@@ -83,8 +81,8 @@ export default function CitationsPanel({ onChange }) {
   const handleChanges = useCallback(() => onChange(bib), [bib])
 
   return (
-    <div className={styles.citations}>
-      <section className={styles.section}>
+    <div className={}>
+      <section className={}>
         <MonacoBibtexEditor
           height="150px"
           text={addCitation}
@@ -92,18 +90,18 @@ export default function CitationsPanel({ onChange }) {
           onTextUpdate={handleTextUpdate}
         />
         {citationValidationResult.messages && (
-          <ul className={styles.citationMessages}>
+          <ul className={}>
             {citationValidationResult.messages.map((m, i) => (
               <li key={m + i}>{m}</li>
             ))}
           </ul>
         )}
-        <ul className={styles.actions}>
-          <li className={styles.actionsHelp}>
+        <ul className={}>
+          <li className={}>
             <HelpCircle />
             {t('writeBibliographe.tips.citationPanel')}
           </li>
-          <li className={styles.actionsSubmit}>
+          <li className={}>
             <Button
               primary={true}
               type="submit"
@@ -116,29 +114,29 @@ export default function CitationsPanel({ onChange }) {
         </ul>
       </section>
 
-      <section className={styles.section}>
+      <section className={}>
         <h3>{bibTeXEntries.length} citations</h3>
 
-        <div className={styles.responsiveTable}>
-          <table className={styles.citationList}>
+        <div className={}>
+          <table className={}>
             <colgroup>
-              <col className={styles.colIcon} />
-              <col className={styles.colKey} />
-              <col className={styles.colActions} />
+              <col className={} />
+              <col className={} />
+              <col className={} />
             </colgroup>
             <tbody>
               {bibTeXEntries.map((b, index) => (
                 <tr
                   key={`citation-${b.key}-${index}`}
-                  className={styles.citation}
+                  className={}
                 >
-                  <td className={`icon-${b.type} ${styles.colIcon}`}>
+                  <td className={`icon-${b.type}`}>
                     <ReferenceTypeIcon type={b.type} />
                   </td>
-                  <th className={styles.colKey} scope="row">
+                  <th className={} scope="row">
                     @{b.key}
                   </th>
-                  <td className={styles.colActions}>
+                  <td className={}>
                     <Button
                       icon={true}
                       onClick={() => handleRemove(index)}
@@ -153,12 +151,12 @@ export default function CitationsPanel({ onChange }) {
           </table>
         </div>
 
-        <ul className={styles.actions}>
-          <li className={styles.actionsSubmit}>
+        <ul className={}>
+          <li className={}>
             <Button
               primary={true}
               onClick={handleChanges}
-              className={styles.primary}
+              className={}
               disabled={!hasChanged}
             >
               <Check /> {t('writeBibliographe.buttonSave.citationPanel')}

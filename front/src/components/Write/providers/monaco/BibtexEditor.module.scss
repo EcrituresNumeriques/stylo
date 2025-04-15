@@ -1,0 +1,11 @@
+@use '../../../../styles/defaults' as *;
+@use '../../../../styles/variables' as *;
+
+:global {
+  .monaco-editor .glyph-margin-widgets .error {
+      background: $error-color;
+  }
+  .monaco-editor .glyph-margin-widgets .warning {
+    background: $warn-color;
+  }
+}

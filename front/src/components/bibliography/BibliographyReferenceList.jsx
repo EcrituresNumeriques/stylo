@@ -1,20 +1,22 @@
-import React, { useCallback, useState } from 'react'
-import { shallowEqual, useSelector } from 'react-redux'
 import { Search } from 'lucide-react'
+import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import Reference from './Reference'
-import styles from './ReferenceList.module.scss'
-import Field from '../Field'
-import Button from '../Button'
+import { toBibtex } from '../../helpers/bibtex.js'
+import { useBibliographyActions } from '../../hooks/article.js'
 
-export default function ReferenceList() {
-  const bibliographyEntries = useSelector(
-    (state) => state.workingArticle.bibliography.entries,
-    shallowEqual
-  )
+import Button from '../Button.jsx'
+import Field from '../Field.jsx'
+import BibliographyReference from './BibliographyReference.jsx'
+
+import styles from './BibliographyReferenceList.module.scss'
+
+export default function BibliographyReferenceList({ bibliography, onUpdate }) {
+  const { t } = useTranslation()
   const [filter, setFilter] = useState('')
   const [showAll, setShowAll] = useState(false)
+
+  const bibliographyEntries = bibliography.entries
   let bibTeXFound
   if (filter) {
     bibTeXFound = bibliographyEntries.filter(
@@ -28,7 +30,18 @@ export default function ReferenceList() {
     }
   }
   const handleShowAll = useCallback(() => setShowAll(true), [])
-  const { t } = useTranslation()
+
+  const handleRemove = useCallback(
+    (indexToRemove) => {
+      const newBibTeXEntries = [
+        ...bibliographyEntries.slice(0, indexToRemove),
+        ...bibliographyEntries.slice(indexToRemove + 1),
+      ]
+      onUpdate(toBibtex(newBibTeXEntries.map(({ entry }) => entry)))
+    },
+    [bibliographyEntries]
+  )
+
   return (
     <>
       <Field
@@ -45,7 +58,11 @@ export default function ReferenceList() {
         </span>
       )}
       {bibTeXFound.map((entry, index) => (
-        <Reference key={`ref-${entry.key}-${index}`} entry={entry} />
+        <BibliographyReference
+          key={`ref-${entry.key}-${index}`}
+          entry={entry}
+          onRemove={() => handleRemove(index)}
+        />
       ))}
       {!showAll && bibliographyEntries.length > 25 && (
         <Button className={styles.showAll} onClick={handleShowAll}>

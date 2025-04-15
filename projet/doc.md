@@ -37,7 +37,7 @@ Vous disposez de cinq menus et d'un espace d'écriture à proprement parler :
   - de visualiser l'historique des versions (en bas du menu) et d'afficher une ancienne version du texte (en cliquant sur le numéro de version souhaité)
   - de tagguer une version de l'article (en cliquant sur la version et ensuite sur "Tag" en haut du menu)
 2. Le menu "Sommaire" affiche automatiquement le sommaire de l'article sur la base des niveaux de titres dans votre texte (un # est un titre de niveau 1, ## de niveau 2 etc.)
-3. Le menu "Biblio" permet :
+3. Le menu "Bibliography" permet :
   - d'ajouter une ou plusieurs références bibliographiques (en cliquant sr "Add reference" et en collant dans le box qui s'ouvre des références bibtex)
   - de visualiser les références existantes
   - d'insérer des références dans le texte (en cliquant sur la référence et en la collant dans le texte avec un paste ou un Ctrl-V)
