@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { ArrowLeft } from 'lucide-react'
 
 import Loading from '../molecules/Loading.jsx'
@@ -136,11 +136,12 @@ export default function CollaborativeVersions({
           <Alert
             type={'info'}
             message={
-              <>
+              <Trans i18nKey="versions.explanation.text">
                 <strong>All changes are automatically saved.</strong>
-                <br />
-                Create a new version to keep track of particular changes.
-              </>
+                <span className={styles.tip}>
+                  Create a new version to keep track of particular changes.
+                </span>
+              </Trans>
             }
           />
         </p>

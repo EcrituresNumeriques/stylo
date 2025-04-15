@@ -405,5 +405,6 @@
   "versions.version.text": "Version {{major}}.{{minor}}",
   "article.stats.words": "Words: {{count}}",
   "article.stats.chars": "Characters: {{count}} (with spaces: {{countWithSpaces}})",
-  "article.stats.citations": "Citations: {{count}}"
+  "article.stats.citations": "Citations: {{count}}",
+  "versions.explanation.text": "<0>All changes are automatically saved.</0><1>Create a new version to keep track of particular changes.</1>"
 }
