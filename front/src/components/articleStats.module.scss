@@ -1,6 +1,6 @@
 .stats {
   position: sticky;
-  bottom: 2px;
+  bottom: 17px; // height of the footer
   display: flex;
   justify-content: center;
   color: #4a4a4a;
@@ -8,6 +8,7 @@
   background-color: #f9f9f9;
   padding: 0.5rem;
   border: 1px solid #d8d8d8;
+  min-width: 450px;
 }
 
 .stats > li:not(:last-child)::after {

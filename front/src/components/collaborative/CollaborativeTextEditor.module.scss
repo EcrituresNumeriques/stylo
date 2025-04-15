@@ -1,6 +1,14 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
 
+.collaborativeEditor {
+
+}
+
+.hidden {
+  display: none;
+}
+
 .editor {
   border: 1px solid $main-border-color;
   min-height: 200px;

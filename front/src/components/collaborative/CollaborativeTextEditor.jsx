@@ -1,4 +1,5 @@
 import Editor from '@monaco-editor/react'
+import clsx from 'clsx'
 import throttle from 'lodash.throttle'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
@@ -125,7 +126,9 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
           onMount={handleEditorDidMount}
         />
       )}
-      {yText && (
+      <div
+        className={clsx(styles.collaborativeEditor, !yText && styles.hidden)}
+      >
         <Editor
           width={'100%'}
           height={'auto'}
@@ -134,7 +137,7 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
           defaultLanguage="markdown"
           onMount={handleCollaborativeEditorDidMount}
         />
-      )}
+      </div>
     </>
   )
 }
