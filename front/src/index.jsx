@@ -1,7 +1,7 @@
 import './wdyr.js'
 import 'core-js/modules/web.structured-clone'
 import * as Sentry from '@sentry/react'
-import React, { lazy, Suspense } from 'react'
+import React, { lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import {
   Router,
@@ -21,7 +21,6 @@ import CollaborativeEditor from './components/collaborative/CollaborativeEditor.
 import Loading from './components/molecules/Loading.jsx'
 import App from './layouts/App'
 import createStore from './createReduxStore'
-import { getUserProfile } from './helpers/userProfile'
 
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
@@ -30,7 +29,6 @@ import AuthCallback from './components/AuthCallback.jsx'
 import PrivateRoute from './components/PrivateRoute.jsx'
 import NotFound from './components/404.jsx'
 import Error from './components/Error.jsx'
-import { applicationConfig } from './config.js'
 
 const Route = Sentry.withSentryRouting(OriginalRoute)
 const history = createBrowserHistory()
@@ -70,42 +68,6 @@ const Privacy = lazy(() => import('./components/Privacy.jsx'))
 const Story = lazy(() => import('./stories/Story.jsx'))
 
 const store = createStore()
-const workspacePathsRx = /^\/workspaces\/(?<id>[a-z0-9]+)\/(?:articles|corpus)$/
-
-;(async () => {
-  let { sessionToken } = store.getState()
-
-  try {
-    const { user, token } = await getUserProfile({
-      applicationConfig,
-      sessionToken,
-    })
-    const pathname = location.pathname
-    const workspacePathRxResult = pathname.match(workspacePathsRx)
-    let activeWorkspaceId
-    if (workspacePathRxResult) {
-      activeWorkspaceId = workspacePathRxResult.groups.id
-    }
-    store.dispatch({ type: 'PROFILE', user, token, activeWorkspaceId })
-  } catch (error) {
-    console.log('User seemingly not authenticated: %s', error.message)
-    store.dispatch({ type: 'PROFILE' })
-  }
-
-  // refresh session profile whenever something happens to the session token
-  // maybe there is a better way to do this
-  store.subscribe(() => {
-    const previousValue = sessionToken
-    const { sessionToken: currentValue } = store.getState()
-
-    if (currentValue !== previousValue) {
-      sessionToken = currentValue
-      getUserProfile({ sessionToken }).then((response) =>
-        store.dispatch({ type: 'PROFILE', ...response })
-      )
-    }
-  })
-})()
 
 const TrackPageViews = () => {
   const history = useHistory()
@@ -136,11 +98,12 @@ root.render(
     <Helmet defaultTitle="Stylo" titleTemplate="%s - Stylo" />
     <GeistProvider>
       <Provider store={store}>
-        <Suspense fallback={<Loading />}>
-          <Router history={history}>
-            <App>
-              <TrackPageViews />
-              <Header />
+        <Router history={history}>
+          <App>
+            <TrackPageViews />
+            <Header />
+
+            <main>
               <Switch>
                 <Route path="/" component={Home} exact />
                 <Route path="/register" component={Register} exact />
@@ -235,10 +198,10 @@ root.render(
                   <NotFound />
                 </Route>
               </Switch>
-              <Footer />
-            </App>
-          </Router>
-        </Suspense>
+            </main>
+            <Footer />
+          </App>
+        </Router>
       </Provider>
     </GeistProvider>
   </React.StrictMode>

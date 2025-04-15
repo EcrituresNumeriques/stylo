@@ -1,11 +1,11 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Helmet } from 'react-helmet'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { applicationConfig } from '../config.js'
 import { fromFormData } from '../helpers/forms.js'
-import { useActiveUserId } from '../hooks/user.js'
+import { useProfile } from '../hooks/user.js'
 
 import styles from './login.module.scss'
 import buttonStyles from './button.module.scss'
@@ -20,7 +20,7 @@ export default function Login() {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const { replace, location } = useHistory()
-  const userId = useActiveUserId()
+  const { data, isLoading, mutate } = useProfile()
 
   const setSessionToken = useCallback(
     (token) => dispatch({ type: 'UPDATE_SESSION_TOKEN', token }),
@@ -32,12 +32,8 @@ export default function Login() {
   useEffect(() => {
     const authToken = new URLSearchParams(location.hash).get('#auth-token')
 
-    if (!userId && authToken) {
+    if (!data?.user?._id && authToken) {
       setSessionToken(authToken)
-      replace('/articles')
-    }
-
-    if (userId) {
       replace('/articles')
     }
   }, [])
@@ -63,6 +59,7 @@ export default function Login() {
           : Promise.reject(new Error('Email or password is incorrect'))
       })
       .then((data) => {
+        mutate({ user: data.user })
         dispatch({ type: 'LOGIN', ...data })
         replace('/articles')
       })
@@ -70,6 +67,10 @@ export default function Login() {
         setError(error.message)
       })
   }, [])
+
+  if (data?.user) {
+    return <Redirect to="/articles" />
+  }
 
   return (
     <>

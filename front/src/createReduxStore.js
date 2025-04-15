@@ -20,7 +20,6 @@ function createReducer(initialState, handlers) {
 
 // Définition du store Redux et de l'ensemble des actions
 export const initialState = {
-  hasBooted: false,
   sessionToken: localStorage.getItem(sessionTokenName),
   workingArticle: {
     state: 'saved',
@@ -285,12 +284,11 @@ function persistStateIntoLocalStorage({ getState }) {
 function setProfile(state, action) {
   const { user } = action
   if (!user) {
-    return { ...state, activeUser: undefined, hasBooted: true }
+    return { ...state, activeUser: undefined }
   }
+
   return {
     ...state,
-    hasBooted: true,
-    loggedIn: true,
     activeUser: {
       ...state.activeUser,
       activeWorkspaceId: action.activeWorkspaceId,

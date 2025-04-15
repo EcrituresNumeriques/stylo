@@ -1,10 +1,13 @@
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { unsetAuthTokenMutation } from '../components/Credentials.graphql'
+import {
+  getFullUserProfile,
+  unsetAuthTokenMutation,
+} from '../components/Credentials.graphql'
 import { getTags, createTag } from '../components/Tag.graphql'
 
-import { useMutateData } from './graphql.js'
+import useFetchData, { useMutateData } from './graphql.js'
 import { useGraphQLClient } from '../helpers/graphQL.js'
 import { applicationConfig } from '../config.js'
 
@@ -91,4 +94,24 @@ export function useUserTagActions() {
   return {
     create,
   }
+}
+
+export function useProfile() {
+  const dispatch = useDispatch()
+
+  return useFetchData(
+    { query: getFullUserProfile },
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+      suspense: true,
+      onSuccess({ user }) {
+        dispatch({
+          type: 'PROFILE',
+          user,
+        })
+      },
+    }
+  )
 }
