@@ -4,6 +4,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import Alert from '../molecules/Alert.jsx'
 
 import { toYaml } from './metadata/yaml.js'
 import MonacoYamlEditor from './providers/monaco/YamlEditor'
@@ -15,16 +16,16 @@ import styles from './articleEditorMetadata.module.scss'
  * @param {object} props
  * @param {(object) => void} props.onChange
  * @param {(object) => void} props.onBack
- * @param {boolean} props.readOnly
  * @param {object} props.metadata
  * @returns {Element}
  */
-export default function ArticleMetadata({
-  onChange,
-  readOnly,
-  onBack,
-  metadata,
-}) {
+export default function ArticleMetadata({ onChange, onBack, metadata }) {
+  /** @type {object} */
+  const articleWriters = useSelector((state) => state.articleWriters || {})
+  const readOnly = useMemo(
+    () => Object.keys(articleWriters).length > 1,
+    [articleWriters]
+  )
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const selector = useSelector(
@@ -104,6 +105,11 @@ export default function ArticleMetadata({
           <label htmlFor="raw-mode">YAML</label>
         </div>
       </header>
+      {readOnly && (
+        <div className={styles.readonly}>
+          <Alert message={t('metadata.readonly')} type="warning" />
+        </div>
+      )}
       {selector === 'raw' && (
         <>
           {error !== '' && <p className={styles.error}>{error}</p>}

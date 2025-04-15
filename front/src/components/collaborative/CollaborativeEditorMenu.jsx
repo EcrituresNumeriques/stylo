@@ -22,7 +22,7 @@ export default function CollaborativeEditorMenu({ articleId, versionId }) {
   const { t } = useTranslation()
   const [opened, setOpened] = useState(false)
   const [activeMenu, setActiveMenu] = useState('')
-  const { article } = useArticleWorkingCopy({ articleId })
+  const { article, updateMetadata } = useArticleWorkingCopy({ articleId })
   const { data, isLoading } = useFetchData(
     { query: getArticleInfo, variables: { articleId } },
     {
@@ -111,7 +111,7 @@ export default function CollaborativeEditorMenu({ articleId, versionId }) {
               <ArticleMetadata
                 onBack={() => setActiveMenu('')}
                 metadata={metadata}
-                readOnly={true}
+                onChange={(metadata) => updateMetadata(metadata)}
               />
             )}
             {activeMenu === 'toc' && (
