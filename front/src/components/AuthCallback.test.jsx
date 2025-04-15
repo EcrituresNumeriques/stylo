@@ -2,7 +2,6 @@ import { describe, expect, test, vi } from 'vitest'
 import React from 'react'
 import Component from './AuthCallback.jsx'
 import { renderWithProviders } from '../../tests/setup.js'
-import { Link, useLocation, useParams } from 'react-router-dom'
 
 describe('AuthCallback', () => {
   test('display with no hash info and no opener', () => {

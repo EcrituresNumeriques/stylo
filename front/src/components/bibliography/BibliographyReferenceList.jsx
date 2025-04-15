@@ -3,7 +3,6 @@ import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { toBibtex } from '../../helpers/bibtex.js'
-import { useBibliographyActions } from '../../hooks/article.js'
 
 import Button from '../Button.jsx'
 import Field from '../Field.jsx'

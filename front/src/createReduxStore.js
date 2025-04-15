@@ -1,8 +1,6 @@
 import * as Sentry from '@sentry/react'
 import { applyMiddleware, compose, createStore } from 'redux'
 import { applicationConfig } from './config.js'
-import { toEntries } from './helpers/bibtex'
-import ArticleService from './services/ArticleService'
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer()
 
@@ -22,19 +20,10 @@ function createReducer(initialState, handlers) {
 export const initialState = {
   hasBooted: false,
   sessionToken: localStorage.getItem(sessionTokenName),
-  workingArticle: {
-    state: 'saved',
-    bibliography: {
-      text: '',
-      entries: [],
-    },
-  },
   articleWorkingCopy: {
     status: 'synced',
   },
   articleStructure: [],
-  articleVersions: [],
-  createArticleVersionError: null,
   articleWriters: [],
   articlePreferences: localStorage.getItem('articlePreferences')
     ? JSON.parse(localStorage.getItem('articlePreferences'))
@@ -106,14 +95,6 @@ function createRootReducer(state) {
     USER_PREFERENCES_TOGGLE: toggleUserPreferences,
     SET_EXPORT_PREFERENCES: setExportPreferences,
 
-    SET_ARTICLE_VERSIONS: setArticleVersions,
-    SET_WORKING_ARTICLE_UPDATED_AT: setWorkingArticleUpdatedAt,
-    SET_WORKING_ARTICLE_TEXT: setWorkingArticleText,
-    SET_WORKING_ARTICLE_METADATA: setWorkingArticleMetadata,
-    SET_WORKING_ARTICLE_BIBLIOGRAPHY: setWorkingArticleBibliography,
-    SET_WORKING_ARTICLE_STATE: setWorkingArticleState,
-    SET_CREATE_ARTICLE_VERSION_ERROR: setCreateArticleVersionError,
-
     ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
 
     UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
@@ -122,122 +103,6 @@ function createRootReducer(state) {
 
     UPDATE_SELECTED_TAG: updateSelectedTag,
   })
-}
-
-const createNewArticleVersion = (store) => {
-  return (next) => {
-    return async (action) => {
-      if (action.type === 'CREATE_NEW_ARTICLE_VERSION') {
-        const { activeUser, sessionToken, userPreferences } = store.getState()
-        const userId = userPreferences.currentUser ?? activeUser._id
-        const { articleId, major, message } = action
-        const articleService = new ArticleService(
-          userId,
-          articleId,
-          sessionToken
-        )
-        try {
-          const response = await articleService.createNewVersion(major, message)
-          store.dispatch({
-            type: 'SET_ARTICLE_VERSIONS',
-            versions: response.article.createVersion.versions,
-          })
-        } catch (err) {
-          store.dispatch({ type: 'SET_CREATE_ARTICLE_VERSION_ERROR', err: err })
-        }
-        return next(action)
-      }
-      if (action.type === 'UPDATE_WORKING_ARTICLE_TEXT') {
-        const { activeUser, sessionToken, userPreferences } = store.getState()
-        const userId = userPreferences.currentUser ?? activeUser._id
-        const { articleId, text } = action
-        try {
-          const { article } = await new ArticleService(
-            userId,
-            articleId,
-            sessionToken
-          ).saveText(text)
-          store.dispatch({
-            type: 'SET_WORKING_ARTICLE_STATE',
-            workingArticleState: 'saved',
-          })
-          store.dispatch({ type: 'SET_WORKING_ARTICLE_TEXT', text })
-          store.dispatch({
-            type: 'SET_WORKING_ARTICLE_UPDATED_AT',
-            updatedAt: article.updateWorkingVersion.updatedAt,
-          })
-        } catch (err) {
-          console.error(err)
-          store.dispatch({
-            type: 'SET_WORKING_ARTICLE_STATE',
-            workingArticleState: 'saveFailure',
-            message: err.message,
-          })
-        }
-        return next(action)
-      }
-      if (action.type === 'UPDATE_WORKING_ARTICLE_METADATA') {
-        const { activeUser, sessionToken, userPreferences } = store.getState()
-        const userId = userPreferences.currentUser ?? activeUser._id
-        const { articleId, metadata } = action
-        try {
-          const { article } = await new ArticleService(
-            userId,
-            articleId,
-            sessionToken
-          ).saveMetadata(metadata)
-          store.dispatch({
-            type: 'SET_WORKING_ARTICLE_STATE',
-            workingArticleState: 'saved',
-          })
-          store.dispatch({ type: 'SET_WORKING_ARTICLE_METADATA', metadata })
-          store.dispatch({
-            type: 'SET_WORKING_ARTICLE_UPDATED_AT',
-            updatedAt: article.updateWorkingVersion.updatedAt,
-          })
-        } catch (err) {
-          console.error(err)
-          store.dispatch({
-            type: 'SET_WORKING_ARTICLE_STATE',
-            workingArticleState: 'saveFailure',
-          })
-        }
-        return next(action)
-      }
-      if (action.type === 'UPDATE_WORKING_ARTICLE_BIBLIOGRAPHY') {
-        const { activeUser, sessionToken, userPreferences } = store.getState()
-        const userId = userPreferences.currentUser ?? activeUser._id
-        const { articleId, bibliography } = action
-        try {
-          const { article } = await new ArticleService(
-            userId,
-            articleId,
-            sessionToken
-          ).saveBibliography(bibliography)
-          store.dispatch({
-            type: 'SET_WORKING_ARTICLE_STATE',
-            workingArticleState: 'saved',
-          })
-          store.dispatch({
-            type: 'SET_WORKING_ARTICLE_BIBLIOGRAPHY',
-            bibliography,
-          })
-          store.dispatch({
-            type: 'SET_WORKING_ARTICLE_UPDATED_AT',
-            updatedAt: article.updateWorkingVersion.updatedAt,
-          })
-        } catch (err) {
-          console.error(err)
-          store.dispatch({
-            type: 'SET_WORKING_ARTICLE_STATE',
-            workingArticleState: 'saveFailure',
-          })
-        }
-        return next(action)
-      }
-      return next(action)
-    }
-  }
 }
 
 function persistStateIntoLocalStorage({ getState }) {
@@ -406,53 +271,6 @@ function updateArticleWorkingCopyStatus(state, { status }) {
   }
 }
 
-function setArticleVersions(state, { versions }) {
-  return { ...state, articleVersions: versions }
-}
-
-function setCreateArticleVersionError(state, { err }) {
-  return { ...state, createArticleVersionError: err }
-}
-
-function setWorkingArticleUpdatedAt(state, { updatedAt }) {
-  const { workingArticle } = state
-  return { ...state, workingArticle: { ...workingArticle, updatedAt } }
-}
-
-function setWorkingArticleText(state, { text }) {
-  const { workingArticle } = state
-  return { ...state, workingArticle: { ...workingArticle, text } }
-}
-
-function setWorkingArticleMetadata(state, { metadata }) {
-  const { workingArticle } = state
-  return { ...state, workingArticle: { ...workingArticle, metadata } }
-}
-
-function setWorkingArticleBibliography(state, { bibliography }) {
-  const bibTeXEntries = toEntries(bibliography)
-  const { workingArticle } = state
-  return {
-    ...state,
-    workingArticle: {
-      ...workingArticle,
-      bibliography: { text: bibliography, entries: bibTeXEntries },
-    },
-  }
-}
-
-function setWorkingArticleState(state, { workingArticleState, message }) {
-  const { workingArticle } = state
-  return {
-    ...state,
-    workingArticle: {
-      ...workingArticle,
-      state: workingArticleState,
-      stateMessage: message,
-    },
-  }
-}
-
 function togglePreferences(storeKey) {
   return function togglePreferencesReducer(state, { key, value }) {
     const preferences = state[storeKey]
@@ -524,7 +342,7 @@ export default function createReduxStore(state = initialState) {
   return createStore(
     createRootReducer(state),
     composeEnhancers(
-      applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage),
+      applyMiddleware(persistStateIntoLocalStorage),
       sentryReduxEnhancer
     )
   )

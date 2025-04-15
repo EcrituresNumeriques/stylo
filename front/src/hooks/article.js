@@ -16,10 +16,7 @@ import {
 } from '../components/Write/Write.graphql'
 import { toEntries } from '../helpers/bibtex.js'
 import { executeQuery } from '../helpers/graphQL.js'
-import {
-  createVersion,
-  updateWorkingVersion,
-} from '../services/ArticleService.graphql'
+import { createVersion, updateWorkingVersion } from './ArticleService.graphql'
 
 import useFetchData, {
   useConditionalFetchData,
