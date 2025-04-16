@@ -34,7 +34,6 @@ export default function TagsList({ action, ActionIcon }) {
 
   const handleTagSelected = useCallback(
     (event) => {
-      console.log('received event!', event.target)
       const { id } = event.target.dataset
       dispatch({ type: 'UPDATE_SELECTED_TAG', tagId: id })
     },

@@ -2,6 +2,8 @@ import { print } from 'graphql/language/printer'
 import { useSelector } from 'react-redux'
 import { applicationConfig } from '../config.js'
 
+const corsStrategy = APP_ENVIRONMENT === 'prod' ? 'same-origin' : 'include'
+
 /**
  * @typedef {import('graphql/language/ast').DocumentNode} DocumentNode
  */
@@ -91,7 +93,7 @@ export function useGraphQLClient() {
         variables,
         sessionToken,
         type,
-        credentials: withCredentials === false ? 'omit' : 'same-origin',
+        credentials: withCredentials === false ? 'omit' : corsStrategy,
       }),
   }
 }

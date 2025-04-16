@@ -49,6 +49,7 @@ type AuthProvider {
 
 type AuthProvidersMap {
   humanid: AuthProvider
+  hypothesis: AuthProvider
   zotero: AuthProvider
 }
 

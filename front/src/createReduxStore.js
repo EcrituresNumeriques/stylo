@@ -1,22 +1,10 @@
 import * as Sentry from '@sentry/react'
 import { applyMiddleware, compose, createStore } from 'redux'
-import { applicationConfig } from './config.js'
 import { toEntries } from './helpers/bibtex'
 import ArticleService from './services/ArticleService'
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer()
-
 const sessionTokenName = 'sessionToken'
-
-function createReducer(initialState, handlers) {
-  return function reducer(state = initialState, action) {
-    if (Object.prototype.hasOwnProperty.call(handlers, action.type)) {
-      return handlers[action.type](state, action)
-    } else {
-      return state
-    }
-  }
-}
 
 // Définition du store Redux et de l'ensemble des actions
 export const initialState = {
@@ -85,6 +73,26 @@ export const initialState = {
   },
 }
 
+/**
+ *
+ * @param {*} state
+ * @returns
+ */
+function createReducer(initialState, handlers) {
+  return function reducer(state = initialState, action) {
+    if (Object.prototype.hasOwnProperty.call(handlers, action.type)) {
+      return handlers[action.type](state, action)
+    } else {
+      return state
+    }
+  }
+}
+
+/**
+ *
+ * @param {*} state
+ * @returns
+ */
 function createRootReducer(state) {
   return createReducer(state, {
     PROFILE: setProfile,
@@ -505,9 +513,9 @@ const composeEnhancers =
     traceLimit: 25,
   }) || compose
 
-export default function createReduxStore(state = initialState) {
+export default function createReduxStore(state = {}) {
   return createStore(
-    createRootReducer(state),
+    createRootReducer({ ...initialState, ...state }),
     composeEnhancers(
       applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage),
       sentryReduxEnhancer
