@@ -127,10 +127,8 @@ export function useProfile() {
 export function useLogout() {
   const dispatch = useDispatch()
   const { query } = useGraphQLClient()
-  const { mutate } = useMutateData({ query: getFullUserProfile })
 
   return useCallback(async () => {
-    await mutate({ user: null })
     await query({ query: logoutMutation })
 
     dispatch({ type: 'LOGOUT' })

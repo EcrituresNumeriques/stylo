@@ -335,9 +335,8 @@ function updateActiveUserDetails(state, action) {
   }
 }
 
-function logoutUser(state) {
-  Sentry.setUser(null)
-  return { ...state, ...initialState }
+function logoutUser() {
+  return structuredClone(initialState)
 }
 
 const SPACE_RE = /\s+/gi
@@ -515,7 +514,10 @@ const composeEnhancers =
 
 export default function createReduxStore(state = {}) {
   return createStore(
-    createRootReducer({ ...initialState, ...state }),
+    createRootReducer({
+      ...structuredClone(initialState),
+      ...structuredClone(state),
+    }),
     composeEnhancers(
       applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage),
       sentryReduxEnhancer

@@ -90,9 +90,10 @@ export default function UserMenu() {
               <Button
                 className={styles.logoutButton}
                 onClick={handleLogout}
+                aria-label={t('credentials.logout.confirmButton')}
                 link
               >
-                <LogOut size={22} />
+                <LogOut size={22} aria-hidden />
               </Button>
             </div>
           </div>
