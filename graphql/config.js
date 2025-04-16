@@ -31,6 +31,9 @@ convict.addFormat({
  *  mongo: {
  *    databaseUrl: string
  *  },
+ * auth: {
+ *   enabledServices: string[]
+ * },
  *  oauthProvider: {
  *    name: string,
  *    issuer: string,
@@ -96,6 +99,12 @@ module.exports = convict({
       default: 'mongodb://127.0.0.1:27017/stylo-dev',
       format: 'mongodb-url',
       env: 'DATABASE_URL',
+    },
+  },
+  auth: {
+    enabledServices: {
+      format: 'Array',
+      default: ['humanid', 'zotero', 'hypothesis'],
     },
   },
   oauthProvider: {

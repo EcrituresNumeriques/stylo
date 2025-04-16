@@ -66,8 +66,8 @@ async function verify(req, token, tokenSecret, profile, params, done) {
 
   return this.redirect(
     req.session.fromAccount
-      ? '/credentials/auth-callback/zotero'
-      : `/register/zotero?name=${username}`
+      ? `${req.session.origin}/credentials/auth-callback/zotero`
+      : `${req.session.origin}/register/zotero?name=${username}`
   )
 }
 

@@ -45,7 +45,7 @@ async function verify(
   refreshToken,
   done
 ) {
-  const { id, emails } = profile
+  const { id, displayName, emails } = profile
   const { value: email } = emails[0] || {}
 
   const user = await User.findOne({
@@ -84,7 +84,11 @@ async function verify(
     },
   }
 
-  return this.redirect(`/register/humanid?name=${profile.displayName}`)
+  return this.redirect(
+    req.session.fromAccount
+      ? `${req.session.origin}/credentials/auth-callback/humanid`
+      : `${req.session.origin}/register/humanid?name=${displayName}`
+  )
 }
 
 module.exports = {

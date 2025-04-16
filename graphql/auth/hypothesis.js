@@ -41,7 +41,7 @@ async function verify(req, accessToken, refreshToken, _, done) {
 
   const providerInfos = {
     id,
-    accessToken,
+    token: accessToken,
   }
 
   // update user with more up to date values
@@ -63,7 +63,11 @@ async function verify(req, accessToken, refreshToken, _, done) {
     },
   }
 
-  return this.redirect(`/register/hypothesis?name=${displayName}`)
+  return this.redirect(
+    req.session.fromAccount
+      ? `${req.session.origin}/credentials/auth-callback/hypothesis`
+      : `${req.session.origin}/register/hypothesis?name=${displayName}`
+  )
 }
 
 module.exports = {

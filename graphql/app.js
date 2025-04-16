@@ -55,7 +55,7 @@ const { populateUserFromJWT } = require('./helpers/token.js')
 
 const User = require('./models/user')
 const {
-  markAsFromAccount,
+  stampAuth,
   onAuthSuccess,
   onAuthFailure,
   localAuth,
@@ -168,25 +168,21 @@ app.get('/version', (req, res) =>
 
 app.get('/events', handleEvents)
 
-app.get('/login/humanid', passport.authenticate('humanid'))
-app.get('/login/hypothesis', passport.authenticate('hypothesis'))
-app.get('/login/zotero', passport.authenticate('zotero'))
+config.get('auth.enabledServices').forEach((service) => {
+  // used on initial login
+  app.get(
+    `/login/${service}`,
+    stampAuth(service),
+    passport.authenticate(service)
+  )
 
-app.get(
-  '/authorize/humanid',
-  markAsFromAccount('humanid'),
-  passport.authorize('humanid')
-)
-app.get(
-  '/authorize/hypothesis',
-  markAsFromAccount('hypothesis'),
-  passport.authorize('hypothesis')
-)
-app.get(
-  '/authorize/zotero',
-  markAsFromAccount('zotero'),
-  passport.authorize('zotero')
-)
+  // used to link account when we are already logged in
+  app.get(
+    `/authorize/${service}`,
+    stampAuth(service, { alreadyLoggedIn: true }),
+    passport.authorize(service)
+  )
+})
 
 app.post(
   '/login/local',
@@ -257,7 +253,10 @@ yjsUtils.setPersistence({
       })
       if (result) {
         try {
-          const documentState = Buffer.from(result.workingVersion.ydoc, 'base64')
+          const documentState = Buffer.from(
+            result.workingVersion.ydoc,
+            'base64'
+          )
           Y.applyUpdate(ydoc, documentState)
         } catch (error) {
           Sentry.captureException(error)
