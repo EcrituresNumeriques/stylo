@@ -289,9 +289,11 @@ function persistStateIntoLocalStorage({ getState }) {
 
 function setProfile(state, action) {
   const { user } = action
+
   if (!user) {
     return { ...state, activeUser: undefined }
   }
+
   return {
     ...state,
     activeUser: {

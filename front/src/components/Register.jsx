@@ -10,7 +10,6 @@ import styles from './login.module.scss'
 import formStyles from './form.module.scss'
 import Field from './Field'
 import Button from './Button'
-import { ArrowLeftCircle, Check } from 'lucide-react'
 import { fromFormData, validateSameFieldValue } from '../helpers/forms.js'
 import { Helmet } from 'react-helmet'
 
@@ -124,16 +123,12 @@ export default function Register() {
 
         <ul className={styles.actions}>
           <li>
-            <Link to="/">
-              <ArrowLeftCircle className={styles.inlineIcon} size={20} />
-              {t('credentials.login.goBackLink')}
-            </Link>
-          </li>
-          <li className={styles.actionsSubmit}>
             <Button primary={true} type="submit">
-              <Check role="presentation" />
               {t('credentials.login.registerLink')}
             </Button>
+          </li>
+          <li>
+            <Link to="/">{t('credentials.login.goBackLink')}</Link>
           </li>
         </ul>
       </form>

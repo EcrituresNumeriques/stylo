@@ -1,7 +1,8 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useRef, useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Helmet } from 'react-helmet'
+import { useToasts } from '@geist-ui/core'
 import { useTranslation } from 'react-i18next'
 import { applicationConfig } from '../config.js'
 import { fromFormData } from '../helpers/forms.js'
@@ -13,12 +14,13 @@ import formStyles from './form.module.scss'
 import Field from './Field'
 import Button from './Button'
 import { HelpCircle } from 'lucide-react'
-import InlineAlert from './feedback/InlineAlert.jsx'
 
 export default function Login() {
   const { t } = useTranslation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
+  const { setToast } = useToasts()
+  const usernameRef = useRef(null)
   const { replace, location } = useHistory()
   const userId = useActiveUserId()
 
@@ -66,7 +68,11 @@ export default function Login() {
         replace('/articles')
       })
       .catch((error) => {
-        setError(error.message)
+        setToast({
+          type: 'error',
+          text: error.message,
+        })
+        usernameRef.current.focus()
       })
   }, [])
 
@@ -152,6 +158,7 @@ export default function Login() {
               hasError={error !== ''}
               required={true}
               autoComplete="username"
+              ref={usernameRef}
             />
             <Field
               label={t('credentials.password.label')}
@@ -162,17 +169,16 @@ export default function Login() {
               autoComplete="current-password"
             />
 
-            {error && <InlineAlert message={error} />}
             <ul className={styles.actions}>
+              <li>
+                <Button primary={true} type="submit">
+                  {t('credentials.login.confirmButton')}
+                </Button>
+              </li>
               <li>
                 <Link to="/register">
                   {t('credentials.login.registerLink')}
                 </Link>
-              </li>
-              <li className={styles.actionsSubmit}>
-                <Button primary={true} type="submit">
-                  {t('credentials.login.confirmButton')}
-                </Button>
               </li>
             </ul>
           </form>
