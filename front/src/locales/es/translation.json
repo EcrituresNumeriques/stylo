@@ -345,6 +345,8 @@
   "credentials.register.successToast": "Cuenta creada. Ya puede iniciar sesión.",
   "article.metadata.production.entities.type.publisher": "Difusor",
   "credentials.register.optionalFields": "Detalles opcionales",
+  "credentials.registerWithAuth.title": "Creación de cuenta Stylo",
+  "credentials.registerWithAuth.description": "Por favor, complete la siguiente información para finalizar la creación de una cuenta Stylo vinculada a {{ serviceLabel }}. Si ya tiene una cuenta Stylo, por favor <3>inicie sesión</3> con sus credenciales y luego vincule el servicio {{ serviceLabel }} desde la configuración de su cuenta.",
   "form.removePerson.title": "Eliminar a esta persona",
   "credentials.login.goBackLink": "Volver a la página de inicio",
   "export.toc.no": "Sin tabla de contenido",

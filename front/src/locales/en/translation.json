@@ -21,6 +21,8 @@
   "credentials.register.successToast": "Account created. You can now login.",
   "credentials.register.errorToast": "Unable to create the account ({{ message }}).",
   "credentials.register.optionalFields": "Optional details",
+  "credentials.registerWithAuth.title": "Stylo account creation",
+  "credentials.registerWithAuth.description": "Please complete the following information to finalize the creation of a Stylo account linked to {{ serviceLabel }}. If you already have a Stylo account, please <3>log in</3> with your credentials and then link the {{ serviceLabel }} service from your account settings.",
   "credentials.login.title": "Login to Stylo",
   "credentials.login.withRemoteAccount": "Login with an external account",
   "credentials.login.withLocalAccount": "Login with a local account",
