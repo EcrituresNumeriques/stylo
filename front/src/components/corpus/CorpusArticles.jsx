@@ -1,12 +1,11 @@
-import { Note, Spacer } from '@geist-ui/core'
 import React, { useCallback, useMemo } from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { Info } from 'lucide-react'
 import { Trans, useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import useFetchData from '../../hooks/graphql.js'
 import { useActiveWorkspace } from '../../hooks/workspace.js'
+import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 import CorpusArticleItems from './CorpusArticleItems.jsx'
 
@@ -56,10 +55,10 @@ export default function CorpusArticles({ corpusId }) {
         </ul>
       )}
       {!isLoading && corpusArticles.length === 0 && (
-        <>
-          <Spacer />
-          <Note className={styles.noteWithIcon} type="secondary" label={false}>
-            <Info />
+        <Alert
+          className={styles.message}
+          type={'info'}
+          message={
             <Trans i18nKey="corpus.addPart.note">
               To add a new chapter, go to the
               <Link
@@ -73,8 +72,8 @@ export default function CorpusArticles({ corpusId }) {
               </Link>
               and select this corpus.
             </Trans>
-          </Note>
-        </>
+          }
+        />
       )}
     </>
   )

@@ -38,15 +38,21 @@ function getStyle(type) {
 
 /**
  * @param props
- * @param {string} props.message
+ * @param {string|JSX.Element} props.message
  * @param {'error'|'warning'|'info'|'success'} props.type (default: 'error')
  * @param {boolean=} props.showIcon (default: true)
+ * @param {string|undefined} props.className
  * @return {JSX.Element}
  */
-export default function Alert({ message, type = 'error', showIcon = true }) {
+export default function Alert({
+  message,
+  type = 'error',
+  showIcon = true,
+  className,
+}) {
   const icon = showIcon ? getIcon(type) : <></>
   return (
-    <div className={clsx(styles.alert, getStyle(type))}>
+    <div className={clsx(styles.alert, getStyle(type), className)}>
       {icon} <span>{message}</span>
     </div>
   )

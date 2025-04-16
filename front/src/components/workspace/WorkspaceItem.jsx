@@ -1,5 +1,5 @@
 import React from 'react'
-import { Slash, Users } from 'lucide-react'
+import { CircleOff, Slash, Users } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { useModal } from '../../hooks/modal.js'
@@ -119,7 +119,7 @@ export default function WorkspaceItem({ workspace }) {
               title={t('workspace.leave.title')}
               onClick={() => workspaceLeaveModal.show()}
             >
-              <Slash /> {t('workspace.leave.button')}
+              <CircleOff /> {t('workspace.leave.button')}
             </Button>
           </aside>
 

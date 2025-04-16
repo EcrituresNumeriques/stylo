@@ -1,4 +1,3 @@
-import { Loading } from '@geist-ui/core'
 import clsx from 'clsx'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -7,6 +6,7 @@ import useFetchData from '../hooks/graphql.js'
 import styles from './articleVersionLinks.module.scss'
 
 import { getArticleVersions } from './Article.graphql'
+import Loading from './molecules/Loading.jsx'
 import TimeAgo from './TimeAgo.jsx'
 
 export default function ArticleVersionLinks({ articleId, article }) {
