@@ -2,65 +2,149 @@ import { describe, expect, test, vi } from 'vitest'
 import React from 'react'
 import Component from './AuthCallback.jsx'
 import { renderWithProviders } from '../../tests/setup.js'
-import { Link, useLocation, useParams } from 'react-router-dom'
 
 describe('AuthCallback', () => {
-  test('display with no hash info and no opener', () => {
-    window.opener = null
+  test('displays a warning when no ongoing session (w/ opener)', async () => {
+    window.opener = { postMessage: vi.fn() }
 
-    const { getByRole, getByText } = renderWithProviders(<Component />, {
-      path: '/credentials/auth-callback/:service',
-      route: '/credentials/auth-callback/zotero',
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          errors: [
+            {
+              message: 'No remote account data found',
+              extensions: {
+                type: 'ACCOUNT_NOT_FOUND',
+                errors: ['No remote account data found'],
+              },
+            },
+          ],
+          data: { user: null },
+        }),
     })
+
+    const { findByRole, getByRole, getByText } = renderWithProviders(
+      <Component />,
+      {
+        path: '/credentials/auth-callback/:service',
+        route: '/credentials/auth-callback/zotero',
+      }
+    )
+
+    await findByRole('heading')
 
     expect(getByRole('heading', { level: 2 })).toHaveTextContent(
       'Authentication failure'
     )
 
     expect(
-      getByText('Unable to locate authentication token.')
+      getByText(
+        'We did not manage to link Zotero service. Error code: ACCOUNT_NOT_FOUND.'
+      )
     ).toBeInTheDocument()
+
+    expect(getByRole('button')).toHaveTextContent('Back to Stylo')
+  })
+
+  test('displays a warning when no ongoing session (w/o opener)', async () => {
+    window.opener = null
+
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          errors: [
+            {
+              message: 'No remote account data found',
+              extensions: {
+                type: 'ACCOUNT_NOT_FOUND',
+                errors: ['No remote account data found'],
+              },
+            },
+          ],
+          data: { user: null },
+        }),
+    })
+
+    const { findByRole, getByRole } = renderWithProviders(<Component />, {
+      path: '/credentials/auth-callback/:service',
+      route: '/credentials/auth-callback/zotero',
+    })
+
+    await findByRole('heading')
 
     expect(getByRole('link')).toHaveTextContent('Back to Stylo')
   })
 
-  test('display a warning in case of unknown service', () => {
-    window.opener = null
-    // vi.mocked(useLocation).mockReturnValue({ hash: '' })
-    // vi.mocked(useParams).mockReturnValue({ service: 'aaa' })
+  test('gets an updated user with merged session data (w/ opener)', async () => {
+    window.opener = { postMessage: vi.fn() }
 
-    const { getByText } = renderWithProviders(<Component />, {
+    fetch.mockRestore().mockResolvedValueOnce({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          data: {
+            setAuthToken: {
+              authProviders: {
+                hypothesis: {
+                  id: 'accnt:example@hypothes.is',
+                },
+              },
+            },
+          },
+        }),
+    })
+
+    renderWithProviders(<Component />, {
       path: '/credentials/auth-callback/:service',
       route: '/credentials/auth-callback/aaa',
     })
 
-    expect(getByText('Unknown authentication provider.')).toBeInTheDocument()
-  })
-
-  test('sends the credentials back to the opening window', () => {
-    const service = 'zotero'
-    const token = 'abcd'
-    const postMessage = vi.fn()
-
-    window.opener = { postMessage }
-
-    const { getByRole, getByText } = renderWithProviders(<Component />, {
-      path: '/credentials/auth-callback/:service',
-      route: `/credentials/auth-callback/${service}#token=${token}`,
+    await vi.waitFor(() => {
+      return expect(window.opener.postMessage).toHaveBeenCalled()
     })
 
-    expect(
-      getByText('Stylo account has been linked to zotero.')
-    ).toBeInTheDocument()
-
-    expect(getByRole('button')).toHaveTextContent('Back to Stylo')
-
-    expect(postMessage).toHaveBeenCalledWith(
+    expect(window.opener.postMessage).toHaveBeenCalledWith(
       JSON.stringify({
-        type: 'SET_AUTH_TOKEN',
-        service,
-        token,
+        hypothesis: {
+          id: 'accnt:example@hypothes.is',
+        },
       })
     )
+  })
+
+  test('gets an updated user with merged session (w/o opener)', async () => {
+    const service = 'zotero'
+
+    window.opener = null
+    window.close = vi.fn()
+
+    fetch.mockRestore().mockResolvedValueOnce({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          data: {
+            setAuthToken: {
+              authProviders: {
+                hypothesis: {
+                  id: 'accnt:example@hypothes.is',
+                },
+              },
+            },
+          },
+        }),
+    })
+
+    renderWithProviders(<Component />, {
+      path: '/credentials/auth-callback/:service',
+      route: `/credentials/auth-callback/${service}`,
+    })
+
+    await vi.waitFor(() => {
+      return expect(window.close).toHaveBeenCalled()
+    })
+
+    expect(window.close).toHaveBeenCalledOnce()
   })
 })

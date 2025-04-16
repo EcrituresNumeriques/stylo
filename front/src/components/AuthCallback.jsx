@@ -55,10 +55,16 @@ export default function AuthCallbackPopup() {
 
   return (
     <section className={styles.container}>
-      <article className={styles.simplePage}>
-        <h2>{t(`credentials.authentication.error.title`)}</h2>
+      <article
+        className={styles.simplePage}
+        aria-labelledby="credentials-authentication-error-title"
+        aria-describedby="credentials-authentication-error-description"
+      >
+        <h2 id="credentials-authentication-error-title">
+          {t(`credentials.authentication.error.title`)}
+        </h2>
 
-        <p>
+        <p id="credentials-authentication-error-description">
           {t('credentials.authentication.error.description', {
             service: `$t(credentials.authentication.service.${service})`,
             errorCode: errorCode,
