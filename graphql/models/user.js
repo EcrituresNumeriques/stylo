@@ -23,10 +23,25 @@ const AuthProviderSchema = new Schema({
 
 const userSchema = new Schema(
   {
-    email: String,
-    displayName: String,
+    email: {
+      type: String,
+      set(value) {
+        return String(value).trim()
+      },
+    },
+    displayName: {
+      type: String,
+      set(value) {
+        return String(value).trim()
+      },
+    },
     // unique but not required, we need to create a sparse index manually
-    username: String,
+    username: {
+      type: String,
+      set(value) {
+        return String(value).trim()
+      },
+    },
     // TODO remove this link
     tags: [
       {
@@ -54,7 +69,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       default: null,
-      set: (password) => bcrypt.hashSync(password, 10),
+      set: (password) => bcrypt.hashSync(password.trim(), 10),
     },
     firstName: String,
     lastName: String,

@@ -1,6 +1,7 @@
 {
   "more.about": "Learn more",
   "more.about.accessibleLabel": "Learn more about {{about}}.",
+  "field.mandatory": "mandatory field",
   "user.account.title": "User profile",
   "user.account.displayName": "Display name",
   "user.account.firstName": "First name",
@@ -187,6 +188,7 @@
   "credentials.changePassword.title": "Password",
   "credentials.oldPassword.label": "Old password",
   "credentials.password.label": "Password",
+  "credentials.confirmPassword.label": "Confirm password",
   "credentials.newPassword.label": "New password",
   "credentials.confirmNewPassword.label": "Confirm new password",
   "export.format.label": "Formats",

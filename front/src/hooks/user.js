@@ -2,13 +2,12 @@ import { useCallback, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
-  getFullUserProfile,
   unsetAuthTokenMutation,
   logoutMutation,
 } from '../components/Credentials.graphql'
 import { getTags, createTag } from '../components/Tag.graphql'
 
-import useFetchData, { useMutateData } from './graphql.js'
+import { useMutateData } from './graphql.js'
 import { useGraphQLClient } from '../helpers/graphQL.js'
 import { applicationConfig } from '../config.js'
 
@@ -16,6 +15,11 @@ export function useActiveUserId() {
   return useSelector((state) => state.activeUser?._id)
 }
 
+/**
+ *
+ * @param {'humanid' | 'hypothesis' | 'zotero' } service
+ * @returns {{ link: React.EffectCallback, token: string | undefined, id: string | undefined, isLinked: boolean, error: string, unlink: React.EffectCallback }}
+ */
 export function useSetAuthToken(service) {
   const dispatch = useDispatch()
   const { query } = useGraphQLClient()
@@ -102,26 +106,6 @@ export function useUserTagActions() {
   return {
     create,
   }
-}
-
-export function useProfile() {
-  const dispatch = useDispatch()
-
-  return useFetchData(
-    { query: getFullUserProfile },
-    {
-      revalidateIfStale: true,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      suspense: true,
-      onSuccess({ user }) {
-        dispatch({
-          type: 'PROFILE',
-          user,
-        })
-      },
-    }
-  )
 }
 
 export function useLogout() {

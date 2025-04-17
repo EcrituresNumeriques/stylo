@@ -109,6 +109,8 @@ module.exports = {
           [`authProviders.${service}.id`]: remoteId,
         })
 
+        // we do not check if we link against the same user
+        // I don't know if this is a path that can be taken
         if (existingUser) {
           const error = new ApiError(
             'ACCOUNT_ALREADY_LINKED',

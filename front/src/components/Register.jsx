@@ -58,12 +58,18 @@ export default function Register() {
         onSubmit={handleFormSubmit}
         id="form-register"
         className={formStyles.form}
+        aria-labelledby="form-register-title"
       >
-        <h1>{t('credentials.register.title')}</h1>
+        <h1 id="form-register-title">{t('credentials.register.title')}</h1>
 
-        <fieldset className={styles.section}>
+        <fieldset
+          className={styles.section}
+          aria-labelledby="form-register-s1-title"
+        >
           <legend>
-            <h2>{t('credentials.register.requiredFields')}</h2>
+            <h2 id="form-register-s1-title">
+              {t('credentials.register.requiredFields')}
+            </h2>
           </legend>
 
           <Field
@@ -99,7 +105,7 @@ export default function Register() {
             name="passwordC"
             type="password"
             minLength={6}
-            label={t('credentials.confirmNewPassword.placeholder')}
+            label={t('credentials.confirmPassword.label')}
             autoComplete="new-password"
             onChange={validateSameFieldValue(
               passwordConfirmationRef,
@@ -110,9 +116,14 @@ export default function Register() {
           />
         </fieldset>
 
-        <fieldset className={styles.section}>
+        <fieldset
+          className={styles.section}
+          aria-labelledby="form-register-s2-title"
+        >
           <legend>
-            <h2>{t('credentials.register.optionalFields')}</h2>
+            <h2 id="form-register-s2-title">
+              {t('credentials.register.optionalFields')}
+            </h2>
           </legend>
 
           <Field name="displayName" label={t('user.account.displayName')} />

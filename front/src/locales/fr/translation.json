@@ -191,6 +191,7 @@
   "credentials.changePassword.title": "Mot de passe",
   "credentials.oldPassword.label": "Ancien mot de passe",
   "credentials.password.label": "Mot de passe",
+  "credentials.confirmPassword.label": "Confirmer le mot de passe",
   "credentials.newPassword.label": "Nouveau mot de passe",
   "credentials.confirmNewPassword.label": "Confirmer le nouveau mot de passe",
   "export.format.label": "Formats",

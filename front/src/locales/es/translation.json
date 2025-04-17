@@ -129,6 +129,7 @@
   "contact.userNotFound.message": "No hay usuarios en esta dirección de correo electrónico",
   "contact.searchField.placeholder": "Correo electrónico de contacto",
   "credentials.changePassword.title": "Contraseña",
+  "credentials.confirmPassword.label": "Confirmar contraseña",
   "credentials.oldPassword.label": "Contraseña antigua",
   "credentials.newPassword.label": "Nueva contraseña",
   "credentials.confirmNewPassword.label": "Confirmar nueva contraseña",

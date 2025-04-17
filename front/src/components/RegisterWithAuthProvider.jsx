@@ -95,16 +95,14 @@ export default function RegisterWithAuthProvider() {
         <Field name="lastName" label={t('user.account.lastName')} />
         <Field name="institution" label={t('user.account.institution')} />
 
-        <ul>
+        <ul className={styles.actions}>
           <li>
             <Button primary={true} type="submit">
-              {t('credentials.registerWithAuth.submitButton')}
+              {t('credentials.login.registerLink')}
             </Button>
           </li>
           <li>
-            <Link to="/login">
-              {t('credentials.registerWithAuth.goBackLink')}
-            </Link>
+            <Link to="/">{t('credentials.login.goBackLink')}</Link>
           </li>
         </ul>
       </form>
