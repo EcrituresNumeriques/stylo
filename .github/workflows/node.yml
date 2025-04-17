@@ -23,9 +23,11 @@ jobs:
         working-directory: ${{ inputs.app-dir }}
         run: npm clean-install --no-audit --no-fund
 
-      - name: Test
+      - name: Run tests
         working-directory: ${{ inputs.app-dir }}
-        run: npm test
+        run: |
+          cp ../stylo-example.env ../.env
+          npm test
 
       - name: Coveralls
         uses: coverallsapp/github-action@v2
