@@ -5,15 +5,15 @@ import { Helmet } from 'react-helmet'
 import { useCorpus } from '../../hooks/corpus.js'
 import { useModal } from '../../hooks/modal.js'
 import { useActiveWorkspace } from '../../hooks/workspace.js'
+
 import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
-import styles from './corpus.module.scss'
-import CorpusCreate from './CorpusCreate.jsx'
-
 import Loading from '../molecules/Loading.jsx'
 import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
-
+import CorpusForm from './CorpusForm.jsx'
 import CorpusItem from './CorpusItem.jsx'
+
+import styles from './corpus.module.scss'
 
 export default function Corpus() {
   const { t } = useTranslation()
@@ -50,7 +50,7 @@ export default function Corpus() {
         {...createCorpusModal.bindings}
         title={t('corpus.createModal.title')}
       >
-        <CorpusCreate
+        <CorpusForm
           onSubmit={() => createCorpusModal.close()}
           onCancel={() => createCorpusModal.close()}
         />
