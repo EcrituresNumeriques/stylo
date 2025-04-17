@@ -130,42 +130,42 @@ module.exports = convict({
   oauthProvider: {
     issuer: {
       format: 'url',
-      env: 'OPENID_CONNECT_ISSUER',
+      env: 'HUMANID_ISSUER',
       default: null,
     },
     callbackUrl: {
       format: 'url',
-      env: 'OPENID_CONNECT_CALLBACK_URL',
+      env: 'HUMANID_CALLBACK_URL',
       default: 'http://localhost:3000/authorization-code/callback',
     },
     client: {
       id: {
         format: String,
         sensitive: true,
-        env: 'OPENID_CONNECT_CLIENT_ID',
+        env: 'HUMANID_CLIENT_ID',
         default: null,
       },
       secret: {
         format: String,
         sensitive: true,
-        env: 'OPENID_CONNECT_CLIENT_SECRET',
+        env: 'HUMANID_CLIENT_SECRET',
         default: null,
       },
     },
     auth: {
       tokenUrl: {
         format: 'url',
-        env: 'OPENID_CONNECT_TOKEN_URL',
+        env: 'HUMANID_TOKEN_URL',
         default: null,
       },
       userInfo: {
         format: 'url',
-        env: 'OPENID_CONNECT_USER_INFO_URL',
+        env: 'HUMANID_USER_INFO_URL',
         default: null,
       },
       url: {
         format: 'url',
-        env: 'OPENID_CONNECT_AUTH_URL',
+        env: 'HUMANID_AUTH_URL',
         default: null,
       },
     },
