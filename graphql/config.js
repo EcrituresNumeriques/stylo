@@ -6,6 +6,26 @@ const isURL = require('validator/lib/isURL')
 const ospath = require('node:path')
 
 convict.addFormat(require('convict-format-with-validator').url)
+
+convict.addFormat({
+  name: 'cors-origins',
+  coerce(value) {
+    return String(value)
+      .split(' ')
+      .map((v) => v.trim())
+      .filter((v) => v)
+      .map((v) => {
+        // eslint-disable-next-line security/detect-non-literal-regexp
+        return new RegExp(v)
+      })
+  },
+  validate(origins) {
+    return origins.every(
+      (origin) => origin.test('http://') || origin.test('https://')
+    )
+  },
+})
+
 convict.addFormat({
   name: 'mongodb-url',
   coerce: (v) => v.toString(),
@@ -52,7 +72,7 @@ convict.addFormat({
  *  securedCookie: boolean,
  *  security: {
  *    cors: {
- *      origin: string
+ *      origin: RegExp[]
  *    },
  *    jwt: {
  *      secret: string
@@ -163,6 +183,7 @@ module.exports = convict({
   security: {
     cors: {
       origin: {
+        format: 'cors-origins',
         // url1 url2
         default: 'http://127.0.0.1:3000 http://127.0.0.1:3030',
         env: 'ALLOW_CORS_FRONTEND',

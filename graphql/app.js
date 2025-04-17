@@ -82,20 +82,24 @@ const secureCookie = config.get('securedCookie')
 // When we have a single origin (most likely when running in a production environment) then we are using a secure/strict value for cookies `sameSite` attribute ('strict').
 // When using 'strict' value, cookies will not be sent along with requests initiated by third-party websites.
 // Reference: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
-const allowedOrigins = (config.get('security.cors.origin') ?? '')
-  .split(' ')
-  .filter((v) => v)
-  .map((o) => new RegExp('^' + o))
+const allowedOrigins = config.get('security.cors.origin')
+
 // SameSite should be None on cross-site response.
 // Please note that "SameSite=None" must also specify the Secure attribute (they require a secure context/HTTPS).
+/**
+ * @type {boolean | "lax" | "strict" | "none"}
+ */
 const sameSiteCookies =
   allowedOrigins.length > 1 && secureCookie ? 'none' : 'lax'
 
+/**
+ * @type {import('cors').CorsOptions}
+ */
 const corsOptions = {
   optionsSuccessStatus: 200,
   credentials: true,
   // Access-Control-Allow-Origin header will be added only if the inbound Origin header matches one of the allowed origins
-  origin: (origin, callback) => {
+  origin(origin, callback) {
     const found = allowedOrigins.some((o) => o.test(origin))
     callback(null, found ? origin : false)
   },
@@ -120,6 +124,9 @@ const app = express()
 
 config.get('sentry.dsn') && Sentry.setupExpressErrorHandler(app)
 
+/**
+ * @type {import('express-session').SessionOptions}
+ */
 const sessionOptions = {
   name: 'stylo.session',
   secret: config.get('security.session.secret'),
