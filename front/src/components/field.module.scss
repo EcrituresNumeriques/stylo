@@ -59,6 +59,7 @@
   input,
   textarea {
     @include inputField;
+    height: auto;
   }
 
   :global {
