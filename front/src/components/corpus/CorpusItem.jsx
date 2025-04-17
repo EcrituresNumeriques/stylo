@@ -10,20 +10,21 @@ import {
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+
 import { useCorpusActions } from '../../hooks/corpus.js'
 import { useModal } from '../../hooks/modal.js'
+
 import Button from '../Button.jsx'
-import buttonStyles from '../button.module.scss'
 import Export from '../Export.jsx'
 import Modal from '../Modal.jsx'
 import FormActions from '../molecules/FormActions.jsx'
 import TimeAgo from '../TimeAgo.jsx'
-
 import CorpusArticles from './CorpusArticles.jsx'
-
-import styles from './corpusItem.module.scss'
+import CorpusForm from './CorpusForm.jsx'
 import CorpusMetadataModal from './CorpusMetadataModal.jsx'
-import CorpusUpdate from './CorpusUpdate.jsx'
+
+import buttonStyles from '../button.module.scss'
+import styles from './corpusItem.module.scss'
 
 /**
  * @typedef Article
@@ -196,11 +197,7 @@ export default function CorpusItem({ corpus }) {
           </>
         }
       >
-        <CorpusUpdate
-          corpus={corpus}
-          onSubmit={() => editCorpusModal.close()}
-          onCancel={() => editCorpusModal.close()}
-        />
+        <CorpusForm corpus={corpus} onCancel={() => editCorpusModal.close()} />
       </Modal>
     </div>
   )

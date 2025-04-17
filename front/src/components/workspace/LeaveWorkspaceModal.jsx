@@ -15,7 +15,6 @@ export default function LeaveWorkspaceModal({ close, bindings, workspace }) {
   const { leaveWorkspace } = useWorkspaceActions()
   const handleLeavingWorkspace = useCallback(async () => {
     await leaveWorkspace(workspace._id)
-    close()
   }, [workspace._id])
 
   const { t } = useTranslation()
