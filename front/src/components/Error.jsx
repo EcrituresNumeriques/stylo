@@ -1,7 +1,7 @@
 import React from 'react'
 import App from '../layouts/App'
 
-import styles from '../components/Write/write.module.scss'
+import styles from './Error.module.scss'
 
 export default function Error() {
   const urlSearchParams = new URLSearchParams(window.location.search)

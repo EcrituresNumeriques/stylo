@@ -62,7 +62,6 @@ const Articles = lazy(() => import('./components/Articles.jsx'))
 const Workspaces = lazy(() => import('./components/workspace/Workspaces.jsx'))
 const Credentials = lazy(() => import('./components/Credentials.jsx'))
 const UserInfos = lazy(() => import('./components/UserInfos.jsx'))
-const Write = lazy(() => import('./components/Write/Write.jsx'))
 const Preview = lazy(() => import('./components/Preview.jsx'))
 const Privacy = lazy(() => import('./components/Privacy.jsx'))
 const Story = lazy(() => import('./stories/Story.jsx'))
@@ -196,22 +195,6 @@ root.render(
                 >
                   <Preview strategy="article" />
                 </Route>
-                {/* Write and compare */}
-                <PrivateRoute
-                  path={[
-                    `/legacy/article/:id/compare/:compareTo`,
-                    `/legacy/article/:id/version/:version/compare/working-copy`,
-                    `/legacy/article/:id/version/:version/compare/:compareTo`,
-                  ]}
-                  component={Write}
-                  exact
-                />
-                {/* Legacy write and/or preview */}
-                <PrivateRoute
-                  path={[`/legacy/article/:id/preview`, `/legacy/article/:id`]}
-                  component={Write}
-                  exact
-                />
                 {/* Collaborative editing */}
                 <PrivateRoute
                   path={[

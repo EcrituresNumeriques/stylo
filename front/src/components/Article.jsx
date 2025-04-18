@@ -10,7 +10,6 @@ import {
   Pencil,
   Printer,
   Send,
-  Squirrel,
   Trash,
   UserPlus,
 } from 'lucide-react'
@@ -368,15 +367,6 @@ export default function Article({
         >
           <Printer />
         </Button>
-
-        <Link
-          title={t('article.legacyEditor.edit.title')}
-          icon={true}
-          to={`/legacy/article/${article._id}`}
-          className={clsx(buttonStyles.icon, styles.deprecated)}
-        >
-          <Squirrel />
-        </Link>
 
         <Link
           title={t('article.editor.edit.title')}

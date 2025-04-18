@@ -1,19 +1,3 @@
-export function registerReadOnlyTheme(monaco) {
-  monaco.editor.defineTheme('styloReadOnly', {
-    base: 'vs',
-    inherit: true,
-    rules: [{ background: 'EDF9FA' }],
-    colors: {
-      'editor.foreground': '#000000',
-      'editor.background': '#fafafa',
-      'editor.lineHighlightBackground': '#fafafa',
-      'editorLineNumber.foreground': '#7d7d7d',
-      'editor.selectionHighlightBackground': '#fafafa',
-      'editorLineNumber.activeForeground': '#7d7d7d',
-    },
-  })
-}
-
 export class BibliographyCompletionProvider {
   constructor(bibTeXEntries) {
     this.monaco = undefined
@@ -83,17 +67,4 @@ export class BibliographyCompletionProvider {
       range: range,
     }))
   }
-}
-
-export function defineFlippedDiffTheme(monaco) {
-  monaco.editor.defineTheme('flippedDiffTheme', {
-    base: 'vs',
-    inherit: true,
-    rules: [],
-    colors: {
-      'diffEditor.insertedTextBackground': '#ff000033',
-      'diffEditor.removedTextBackground': '#28d22833',
-    },
-  })
-  monaco.editor.setTheme('flippedDiffTheme')
 }

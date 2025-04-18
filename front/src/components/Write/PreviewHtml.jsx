@@ -1,24 +1,18 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { useStyloExportPreview } from '../../hooks/stylo-export.js'
-import styles from './write.module.scss'
 
-export default function HtmlPreview() {
-  const md_content = useSelector((state) => state.workingArticle.text)
-  const metadata_content = useSelector((state) => state.workingArticle.metadata)
-  const bib_content = useSelector(
-    (state) => state.workingArticle.bibliography.text
-  )
+import { useStyloExportPreview } from '../../hooks/stylo-export.js'
+import Loading from '../molecules/Loading.jsx'
+
+export default function HtmlPreview({ text, metadata, bibliography }) {
   const { html: __html, isLoading } = useStyloExportPreview({
-    md_content,
-    metadata_content,
-    bib_content,
+    md_content: text,
+    metadata_content: metadata,
+    bib_content: bibliography,
   })
 
-  return (
-    <section
-      className={styles.previewPage}
-      dangerouslySetInnerHTML={{ __html }}
-    />
-  )
+  if (isLoading) {
+    return <Loading />
+  }
+
+  return <section dangerouslySetInnerHTML={{ __html }} />
 }

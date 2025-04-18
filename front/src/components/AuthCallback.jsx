@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-import styles from './Write/write.module.scss'
+import styles from './Page.module.scss'
 import buttonStyles from './button.module.scss'
 
 import Button from './Button.jsx'

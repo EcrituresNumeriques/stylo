@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useStyloExportPreview } from '../../hooks/stylo-export.js'
 import styles from './PreviewPaged.module.scss'
 import { Previewer } from 'pagedjs'
@@ -7,15 +6,13 @@ import { compileTemplate } from '../../helpers/preview.js'
 import clsx from 'clsx'
 import Loading from '../molecules/Loading.jsx'
 
-export default function Preview({ preview, metadata }) {
-  const renderRef = useRef()
+export default function Preview({ preview, metadata, text, bibliography }) {
+  const renderRef = useRef(null)
   const [isLoading, setIsLoading] = useState(true)
   const { template, stylesheet } = preview
-  const md_content = useSelector((state) => state.workingArticle.text)
-  const yaml_content = useSelector((state) => state.workingArticle.metadata)
-  const bib_content = useSelector(
-    (state) => state.workingArticle.bibliography.text
-  )
+  const md_content = text
+  const yaml_content = metadata
+  const bib_content = bibliography
   const { html } = useStyloExportPreview({
     md_content,
     yaml_content,
