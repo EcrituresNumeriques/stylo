@@ -19,5 +19,7 @@ const fetcher = (url) =>
     .then((feed) => Array.from(feed.querySelectorAll('entry')))
 
 export function useFeed(url) {
-  return useSWRImmutable(url, fetcher)
+  return useSWRImmutable(url, fetcher, {
+    fallbackData: [],
+  })
 }

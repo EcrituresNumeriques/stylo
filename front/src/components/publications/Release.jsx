@@ -15,6 +15,11 @@ export default function Release({ entry }) {
     year: 'numeric',
   })
 
+  // In case no data has been fetched
+  if (!entry) {
+    return null
+  }
+
   const title = entry.querySelector('title').textContent
   const link = entry
     .querySelector('link[type="text/html"]')
