@@ -129,12 +129,15 @@ export default function Home() {
           {styloFeed.isLoading ? (
             <Loading />
           ) : (
-            styloFeed.data.map((entry, i) => <Workshop entry={entry} key={i} />)
+            styloFeed.data
+              .filter((entry) =>
+                entry.querySelector('category[term="atelierstylo"]')
+              )
+              .map((entry, i) => <Workshop entry={entry} key={i} />)
           )}
         </div>
 
         <h2>{t('news.release.title')}</h2>
-        {/* https://github.com/EcrituresNumeriques/stylo/releases.atom */}
 
         <div className={styles.desktopGridOf3}>
           {releaseFeed.isLoading ? (
@@ -153,15 +156,14 @@ export default function Home() {
         </div>
 
         <h2>{t('news.publications.title')}</h2>
-        {/* https://api.zotero.org/groups/322999/items/top?direction=desc&format=atom&qmode=titleCreatorYear&sort=date&tag=Stylo,_nettoy%C3%A9 */}
 
         <div className={styles.desktopGridOf3}>
           {styloFeed.isLoading ? (
             <Loading />
           ) : (
-            styloFeed.data.map((entry, i) => (
-              <Publication entry={entry} key={i} />
-            ))
+            styloFeed.data
+              .filter((entry) => entry.querySelector('category[term="stylog"]'))
+              .map((entry, i) => <Publication entry={entry} key={i} />)
           )}
         </div>
       </section>

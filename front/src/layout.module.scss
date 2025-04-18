@@ -59,7 +59,7 @@ $base-spacing: 2em;
     margin: 0 0 $base-spacing 0;
 
     li {
-      margin: 0 0 ($base-spacing/2);
+      margin: 0 0 calc($base-spacing/2);
     }
   }
 
