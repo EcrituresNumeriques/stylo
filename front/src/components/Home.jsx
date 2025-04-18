@@ -16,9 +16,12 @@ import headerStyles from './header.module.scss'
 import buttonStyles from './button.module.scss'
 import clsx from 'clsx'
 
+import { useActiveUserId } from '../hooks/user.js'
+
 export default function Home() {
   const { t } = useTranslation('home')
   const { t: tGlobal } = useTranslation()
+  const userId = useActiveUserId()
 
   return (
     <>
@@ -31,11 +34,17 @@ export default function Home() {
 
         <p>{t('hero.description')}</p>
 
-        <p>
-          <Link to="/register" className={buttonStyles.linkPrimary}>
-            {tGlobal('credentials.login.registerLink')}
-          </Link>
-        </p>
+        {!userId && (
+          <p className={styles.horizontalActions}>
+            <Link to="/register" className={buttonStyles.linkPrimary}>
+              {tGlobal('credentials.login.registerLink')}
+            </Link>
+
+            <Link to="/login" className={buttonStyles.linkSecondary}>
+              {tGlobal('credentials.login.confirmButton')}
+            </Link>
+          </p>
+        )}
 
         <p>
           <a
@@ -77,11 +86,17 @@ export default function Home() {
           <li>{t('project.features.8')}</li>
         </ul>
 
-        <p>
-          <Link to="/register" className={buttonStyles.linkPrimary}>
-            {tGlobal('credentials.login.registerLink')}
-          </Link>
-        </p>
+        {!userId && (
+          <p className={styles.horizontalActions}>
+            <Link to="/register" className={buttonStyles.linkPrimary}>
+              {tGlobal('credentials.login.registerLink')}
+            </Link>
+
+            <Link to="/login" className={buttonStyles.linkSecondary}>
+              {tGlobal('credentials.login.confirmButton')}
+            </Link>
+          </p>
+        )}
 
         <p>
           <a
