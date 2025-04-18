@@ -21,5 +21,6 @@ const fetcher = (url) =>
 export function useFeed(url) {
   return useSWRImmutable(url, fetcher, {
     fallbackData: [],
+    revalidateOnMount: true,
   })
 }
