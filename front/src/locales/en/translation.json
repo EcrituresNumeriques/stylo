@@ -205,6 +205,8 @@
   "credentials.authentication.linkButton": "Link",
   "credentials.authentication.linkedService.description": "Stylo account linked to {{ service }}.",
   "credentials.authentication.linkLabel": "Link your Stylo account to {{ service }} service.",
+  "credentials.authentication.linkServiceButton_linked": "Unlink",
+  "credentials.authentication.linkServiceButton_unlinked": "Link",
   "credentials.authentication.service.description_humanid": "Connect in a single click. The service is managed by Huma-Num, a national research lab part of CNRS.",
   "credentials.authentication.service.description_hypothesis": "Connect in a single click. The service is managed by Hypothes.is Project.",
   "credentials.authentication.service.description_zotero": "Connect in a single click and retrieval of your private and personal collections. The service is managed by Corporation for Digital Scholarship.",

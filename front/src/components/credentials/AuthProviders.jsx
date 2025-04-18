@@ -23,7 +23,7 @@ export function AuthProvider({ service }) {
         </p>
 
         <Button onClick={isLinked ? unlink : link} type="button">
-          {t('credentials.authentication.actionButton', {
+          {t('credentials.authentication.linkServiceButton', {
             context: isLinked ? 'linked' : 'unlinked',
           })}
         </Button>
