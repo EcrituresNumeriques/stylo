@@ -1,17 +1,17 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { Route } from 'react-router-dom'
+import { useActiveUserId } from '../hooks/user.js'
 
 import Login from './Login'
 
 function PrivateRoute({ children, component, ...rest }) {
-  const loggedIn = useSelector((state) => state.loggedIn)
+  const userId = useActiveUserId()
 
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        loggedIn ? (
+        userId ? (
           component ? (
             React.createElement(component, rest, children)
           ) : (

@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Layers, LogOut, User } from 'lucide-react'
+import { useLogout } from '../../hooks/user.js'
 
 import useComponentVisible from '../../hooks/componentVisible'
 import styles from './UserMenu.module.scss'
@@ -12,11 +13,13 @@ import UserMenuLink from './UserMenuLink.jsx'
 
 export default function UserMenu() {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const logout = () => {
+  const logout = useLogout()
+
+  const handleLogout = useCallback(() => {
     setIsComponentVisible(false)
-    dispatch({ type: 'LOGOUT' })
-  }
+    logout()
+  }, [])
+
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible(false)
   const activeUser = useSelector((state) => state.activeUser)
@@ -84,8 +87,13 @@ export default function UserMenu() {
                   <div className={styles.email}>{activeUser.email}</div>
                 </div>
               </Link>
-              <Button className={styles.logoutButton} onClick={logout} link>
-                <LogOut size={22} />
+              <Button
+                className={styles.logoutButton}
+                onClick={handleLogout}
+                aria-label={t('credentials.logout.confirmButton')}
+                link
+              >
+                <LogOut size={22} aria-hidden />
               </Button>
             </div>
           </div>

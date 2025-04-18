@@ -6,6 +6,26 @@ const isURL = require('validator/lib/isURL')
 const ospath = require('node:path')
 
 convict.addFormat(require('convict-format-with-validator').url)
+
+convict.addFormat({
+  name: 'cors-origins',
+  coerce(value) {
+    return String(value)
+      .split(' ')
+      .map((v) => v.trim())
+      .filter((v) => v)
+      .map((v) => {
+        // eslint-disable-next-line security/detect-non-literal-regexp
+        return new RegExp(v)
+      })
+  },
+  validate(origins) {
+    return origins.every(
+      (origin) => origin.test('http://') || origin.test('https://')
+    )
+  },
+})
+
 convict.addFormat({
   name: 'mongodb-url',
   coerce: (v) => v.toString(),
@@ -17,7 +37,63 @@ convict.addFormat({
 })
 /**
  * @type {convict.Config<{
- *
+ *  env: 'dev' | 'prod',
+ *  export: {
+ *    baseUrl: string,
+ *    urlEndpoint: string
+ *  },
+ *  hypothesis: {
+ *    auth: {
+ *      callbackUrl: string,
+ *      clientId: string
+ *    }
+ *  },
+ *  mongo: {
+ *    databaseUrl: string
+ *  },
+ * auth: {
+ *   enabledServices: string[]
+ * },
+ *  oauthProvider: {
+ *    name: string,
+ *    issuer: string,
+ *    callbackUrl: string,
+ *    client: {
+ *      id: string,
+ *      secret: string
+ *    },
+ *    auth: {
+ *      tokenUrl: string,
+ *      userInfo: string,
+ *      url: string
+ *    }
+ *  },
+ *  port: number,
+ *  securedCookie: boolean,
+ *  security: {
+ *    cors: {
+ *      origin: RegExp[]
+ *    },
+ *    jwt: {
+ *      secret: string
+ *    },
+ *    session: {
+ *      secret: string
+ *    }
+ *  },
+ *  sentry: {
+ *    dsn: string | null
+ *  },
+ *  yjs: {
+ *    persistenceDataDirectory: string
+ *  },
+ *  zotero: {
+ *    auth: {
+ *      callbackUrl: string,
+ *      clientKey: string,
+ *      clientSecret: string
+ *    }
+ *  }
  * }>}
  */
 module.exports = convict({
@@ -45,54 +121,51 @@ module.exports = convict({
       env: 'DATABASE_URL',
     },
   },
-  oauthProvider: {
-    name: {
-      format: String,
-      env: 'OPENID_CONNECT_NAME',
-      default: null,
+  auth: {
+    enabledServices: {
+      format: 'Array',
+      default: ['humanid', 'zotero', 'hypothesis'],
     },
+  },
+  oauthProvider: {
     issuer: {
       format: 'url',
-      env: 'OPENID_CONNECT_ISSUER',
+      env: 'HUMANID_ISSUER',
       default: null,
     },
     callbackUrl: {
       format: 'url',
-      env: 'OPENID_CONNECT_CALLBACK_URL',
+      env: 'HUMANID_CALLBACK_URL',
       default: 'http://localhost:3000/authorization-code/callback',
     },
     client: {
       id: {
         format: String,
         sensitive: true,
-        env: 'OPENID_CONNECT_CLIENT_ID',
+        env: 'HUMANID_CLIENT_ID',
         default: null,
       },
       secret: {
         format: String,
         sensitive: true,
-        env: 'OPENID_CONNECT_CLIENT_SECRET',
+        env: 'HUMANID_CLIENT_SECRET',
         default: null,
       },
-    },
-    scope: {
-      default: 'profile email',
-      env: 'OPENID_CONNECT_SCOPE',
     },
     auth: {
       tokenUrl: {
         format: 'url',
-        env: 'OPENID_CONNECT_TOKEN_URL',
+        env: 'HUMANID_TOKEN_URL',
         default: null,
       },
       userInfo: {
         format: 'url',
-        env: 'OPENID_CONNECT_USER_INFO_URL',
+        env: 'HUMANID_USER_INFO_URL',
         default: null,
       },
       url: {
         format: 'url',
-        env: 'OPENID_CONNECT_AUTH_URL',
+        env: 'HUMANID_AUTH_URL',
         default: null,
       },
     },
@@ -110,6 +183,7 @@ module.exports = convict({
   security: {
     cors: {
       origin: {
+        format: 'cors-origins',
         // url1 url2
         default: 'http://127.0.0.1:3000 http://127.0.0.1:3030',
         env: 'ALLOW_CORS_FRONTEND',
@@ -132,22 +206,22 @@ module.exports = convict({
       },
     },
   },
+  hypothesis: {
+    auth: {
+      callbackUrl: {
+        format: 'url',
+        env: 'HYPOTHESIS_AUTH_CALLBACK_URL',
+        default: 'http://localhost:3030/authorization-code/hypothesis/callback',
+      },
+      clientId: {
+        format: String,
+        sensitive: true,
+        env: 'HYPOTHESIS_AUTH_CLIENT_KEY',
+        default: null,
+      },
+    },
+  },
   zotero: {
-    accessPoint: {
-      format: 'url',
-      env: 'ZOTERO_ACCESS_TOKEN_ENDPOINT',
-      default: 'https://www.zotero.org/oauth/access',
-    },
-    authorize: {
-      format: 'url',
-      env: 'ZOTERO_AUTHORIZE_ENDPOINT',
-      default: 'https://www.zotero.org/oauth/authorize',
-    },
-    requestToken: {
-      format: 'url',
-      env: 'ZOTERO_REQUEST_TOKEN_ENDPOINT',
-      default: 'https://www.zotero.org/oauth/request',
-    },
     auth: {
       callbackUrl: {
         format: 'url',

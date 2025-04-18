@@ -136,6 +136,12 @@ type Mutation {
   createTag(color: HexColorCode!, description: String, name: String!): Tag
   "Create user + password + default article"
   createUser(details: NewUserInput!): User!
+  createUserWithAuth(
+    details: NewUserWithAuthInput!
+    service: AuthTokenService!
+  ): String
+  "Log out a user"
+  logout: User
   "Create a new workspace"
   createWorkspace(createWorkspaceInput: CreateWorkspaceInput!): Workspace
   "Delete tag, and remove it from all related articles"
@@ -160,7 +166,8 @@ type Mutation {
   "Get a workspace for mutation"
   workspace(workspaceId: ID!): Workspace
 
-  setAuthToken(service: AuthTokenService!, token: String): User
+  setAuthToken(service: AuthTokenService!): User
+  unsetAuthToken(service: AuthTokenService!): User
 }
 
 type Query {
@@ -205,15 +212,26 @@ type Tag {
   updatedAt: DateTime
 }
 
+type AuthProvider {
+  id: String
+  token: String
+  updatedAt: DateTime
+}
+
+type AuthProvidersMap {
+  humanid: AuthProvider
+  hypothesis: AuthProvider
+  zotero: AuthProvider
+}
+
 type User {
   _id: ID
   acquintances(limit: Int, page: Int): [User]
   addContact(userId: ID!): User
   admin: Boolean
-  apiToken: JWT
   articles(limit: Int, page: Int): [Article]
-  authType: AuthType
   authTypes: [AuthType]
+  authProviders: AuthProvidersMap
   createdAt: DateTime
   displayName: String
   email: EmailAddress
@@ -227,7 +245,6 @@ type User {
   updatedAt: DateTime
   username: String
   workspaces: [Workspace!]
-  zoteroToken: String
 }
 
 type UserPermission {
@@ -320,6 +337,8 @@ enum AuthType {
 }
 
 enum AuthTokenService {
+  humanid
+  hypothesis
   zotero
 }
 
@@ -393,6 +412,13 @@ input NewUserInput {
   username: String!
 }
 
+input NewUserWithAuthInput {
+  displayName: String
+  firstName: String
+  institution: String
+  lastName: String
+}
+
 input UpdateCorpusInput {
   description: String
   metadata: JSON
@@ -408,7 +434,6 @@ input UserProfileInput {
   firstName: String
   institution: String
   lastName: String
-  zoteroToken: String
 }
 
 input WorkingVersionInput {

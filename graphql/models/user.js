@@ -5,16 +5,43 @@ const { article: defaultArticle } = require('../data/defaultsData')
 
 const Schema = mongoose.Schema
 
+const AuthProviderSchema = new Schema({
+  id: {
+    type: String,
+  },
+  username: {
+    type: String,
+  },
+  email: {
+    type: String,
+  },
+  token: {
+    type: String,
+  },
+  updatedAt: Date,
+})
+
 const userSchema = new Schema(
   {
     email: {
       type: String,
-      unique: true,
-      required: true,
+      set(value) {
+        return String(value).trim()
+      },
     },
-    displayName: String,
+    displayName: {
+      type: String,
+      set(value) {
+        return String(value).trim()
+      },
+    },
     // unique but not required, we need to create a sparse index manually
-    username: String,
+    username: {
+      type: String,
+      set(value) {
+        return String(value).trim()
+      },
+    },
     // TODO remove this link
     tags: [
       {
@@ -34,23 +61,20 @@ const userSchema = new Schema(
         ref: 'Article',
       },
     ],
-    authType: {
-      type: String,
-      default: 'local',
-      enum: ['local', 'oidc'],
+    authProviders: {
+      type: Map,
+      of: AuthProviderSchema,
+      default: {},
     },
     password: {
       type: String,
       default: null,
-      set: (password) => {
-        return bcrypt.hashSync(password, 10)
-      },
+      set: (password) => bcrypt.hashSync(password.trim(), 10),
     },
     firstName: String,
     lastName: String,
     institution: String,
     connectedAt: Date,
-    zoteroToken: String,
   },
   { timestamps: true }
 )
@@ -62,11 +86,15 @@ const userSchema = new Schema(
  * If that's the case, we compare the login password to itself.
  *
  * @param {String} password
- * @returns {Boolean}
+ * @returns {Promise<Boolean>}
  */
-userSchema.methods.comparePassword = async function (password) {
+userSchema.methods.comparePassword = async function comparePassword(password) {
   const oldPassword = this.password ?? bcrypt.hashSync(password, 10)
   return bcrypt.compare(password, oldPassword)
+}
+
+userSchema.methods.getAuthProvidersCount = function getAuthProvidersCount() {
+  return Array.from(this.authProviders.values()).filter((d) => d).length
 }
 
 userSchema.methods.createDefaultArticle =
@@ -88,18 +116,19 @@ userSchema.methods.createDefaultArticle =
     return this.save()
   }
 
-userSchema.statics.assessLogin = async function assessLogin(query) {
-  const user = await this.findOne(query)
-  user.connectedAt = Date.now()
-  return user.save()
-}
-
-userSchema.virtual('authTypes').get(function () {
+userSchema.virtual('authTypes').get(function authTypes() {
   const types = new Set()
-  types.add(this.authType)
 
   if (this.password) {
     types.add('local')
+  }
+
+  const hasRemoteAuth = Object.entries(this.authProviders ?? {}).some(
+    ([, { id, email, token }]) => id || email || token
+  )
+
+  if (hasRemoteAuth) {
+    types.add('oidc')
   }
 
   return Array.from(types)

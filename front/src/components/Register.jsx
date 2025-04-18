@@ -10,7 +10,6 @@ import styles from './login.module.scss'
 import formStyles from './form.module.scss'
 import Field from './Field'
 import Button from './Button'
-import { ArrowLeftCircle, Check } from 'lucide-react'
 import { fromFormData, validateSameFieldValue } from '../helpers/forms.js'
 import { Helmet } from 'react-helmet'
 
@@ -59,12 +58,18 @@ export default function Register() {
         onSubmit={handleFormSubmit}
         id="form-register"
         className={formStyles.form}
+        aria-labelledby="form-register-title"
       >
-        <h1>{t('credentials.register.title')}</h1>
+        <h1 id="form-register-title">{t('credentials.register.title')}</h1>
 
-        <fieldset className={styles.section}>
+        <fieldset
+          className={styles.section}
+          aria-labelledby="form-register-s1-title"
+        >
           <legend>
-            <h2>{t('credentials.register.requiredFields')}</h2>
+            <h2 id="form-register-s1-title">
+              {t('credentials.register.requiredFields')}
+            </h2>
           </legend>
 
           <Field
@@ -85,7 +90,7 @@ export default function Register() {
             ref={passwordRef}
             name="password"
             type="password"
-            label={t('credentials.password.placeholder')}
+            label={t('credentials.password.label')}
             minLength={6}
             autoComplete="new-password"
             onChange={validateSameFieldValue(
@@ -100,7 +105,7 @@ export default function Register() {
             name="passwordC"
             type="password"
             minLength={6}
-            label={t('credentials.confirmNewPassword.placeholder')}
+            label={t('credentials.confirmPassword.label')}
             autoComplete="new-password"
             onChange={validateSameFieldValue(
               passwordConfirmationRef,
@@ -111,9 +116,14 @@ export default function Register() {
           />
         </fieldset>
 
-        <fieldset className={styles.section}>
+        <fieldset
+          className={styles.section}
+          aria-labelledby="form-register-s2-title"
+        >
           <legend>
-            <h2>{t('credentials.register.optionalFields')}</h2>
+            <h2 id="form-register-s2-title">
+              {t('credentials.register.optionalFields')}
+            </h2>
           </legend>
 
           <Field name="displayName" label={t('user.account.displayName')} />
@@ -124,16 +134,12 @@ export default function Register() {
 
         <ul className={styles.actions}>
           <li>
-            <Link to="/">
-              <ArrowLeftCircle className={styles.inlineIcon} size={20} />
-              {t('credentials.login.goBackLink')}
-            </Link>
-          </li>
-          <li className={styles.actionsSubmit}>
             <Button primary={true} type="submit">
-              <Check role="presentation" />
               {t('credentials.login.registerLink')}
             </Button>
+          </li>
+          <li>
+            <Link to="/">{t('credentials.login.goBackLink')}</Link>
           </li>
         </ul>
       </form>

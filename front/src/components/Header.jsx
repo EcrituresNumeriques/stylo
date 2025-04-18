@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
 import { LifeBuoy } from 'lucide-react'
-import { useSelector } from 'react-redux'
 import { NavLink, Route, Switch } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import logoContent from '/images/logo.svg?inline'
 import { useActiveWorkspace } from '../hooks/workspace.js'
+import { useActiveUserId } from '../hooks/user.js'
 
 import styles from './header.module.scss'
 import LanguagesMenu from './header/LanguagesMenu.jsx'
@@ -23,7 +23,7 @@ export default function Header() {
     () => (activeWorkspaceId ? `/workspaces/${activeWorkspaceId}` : ''),
     [activeWorkspaceId]
   )
-  const connected = useSelector((state) => state.loggedIn)
+  const userId = useActiveUserId()
 
   return (
     <Switch>
@@ -39,28 +39,28 @@ export default function Header() {
             </h1>
             <nav role="navigation">
               <ul className={styles.menuLinks}>
-                {connected && (
+                {userId && (
                   <li>
                     <NavLink to={`${baseUrl}/articles`}>
                       {t('header.articles.link')}
                     </NavLink>
                   </li>
                 )}
-                {connected && (
+                {userId && (
                   <li>
                     <NavLink to={`${baseUrl}/corpus`}>
                       {t('header.corpus.link')}
                     </NavLink>
                   </li>
                 )}
-                {!connected && (
+                {!userId && (
                   <li>
                     <NavLink to="/login">
                       {t('credentials.login.confirmButton')}
                     </NavLink>
                   </li>
                 )}
-                {!connected && (
+                {!userId && (
                   <li>
                     <NavLink to="/register" className={styles.registerAction}>
                       {t('credentials.login.registerLink')}
@@ -70,7 +70,7 @@ export default function Header() {
               </ul>
             </nav>
             <nav className={styles.secondaryNav}>
-              {connected && <UserMenu />}
+              {userId && <UserMenu />}
               <a
                 className={styles.documentationLink}
                 href="https://stylo-doc.ecrituresnumeriques.ca"

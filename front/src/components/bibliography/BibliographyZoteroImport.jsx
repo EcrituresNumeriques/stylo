@@ -31,7 +31,9 @@ export default function BibliographyZoteroImport({
   onChange,
 }) {
   const { t } = useTranslation()
-  const zoteroToken = useSelector((state) => state.activeUser.zoteroToken)
+  const zoteroToken = useSelector(
+    (state) => state.activeUser.authProviders?.zotero?.token
+  )
   const userId = useSelector((state) => state.activeUser._id)
   const [zoteroLink, setZoteroLink] = useState(initialZoteroLink)
   const [zoteroCollectionHref, setZoteroCollectionHref] = useState(null)

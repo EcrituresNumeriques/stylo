@@ -2,6 +2,8 @@ import { print } from 'graphql/language/printer'
 import { useSelector } from 'react-redux'
 import { applicationConfig } from '../config.js'
 
+const corsStrategy = APP_ENVIRONMENT === 'prod' ? 'same-origin' : 'include'
+
 /**
  * @typedef {import('graphql/language/ast').DocumentNode} DocumentNode
  */
@@ -24,6 +26,7 @@ async function getErrorResponse(response) {
 /**
  * @param {object} config request configuration
  * @param {string} config.query request query (as string)
+ * @param {'omit' | 'same-origin' | 'include'} config.credentials request query (as string)
  * @param {{[string: key]: value}|undefined} config.variables request variables
  * @param {string} config.sessionToken session token (for authentication)
  * @param {'fetch'|'mutate'} config.type request type (either fetch or mutate)
@@ -34,11 +37,12 @@ async function executeRequest({
   variables,
   sessionToken,
   type = 'fetch',
+  credentials = 'omit',
 }) {
   const response = await fetch(applicationConfig.graphqlEndpoint, {
     method: 'POST',
     mode: 'cors',
-    credentials: 'omit',
+    credentials,
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
@@ -83,14 +87,21 @@ async function executeRequest({
 export function useGraphQLClient() {
   const sessionToken = useSelector((state) => state.sessionToken)
   return {
-    query: ({ query, variables, type = 'fetch' }) =>
-      executeQuery({ query, variables, sessionToken, type }),
+    query: ({ query, variables, type = 'fetch', withCredentials = false }) =>
+      executeQuery({
+        query,
+        variables,
+        sessionToken,
+        type,
+        credentials: withCredentials === false ? 'omit' : corsStrategy,
+      }),
   }
 }
 
 /**
  * @param {object} context query context
  * @param {DocumentNode|string} context.query request query (as AST or string)
+ * @param {'omit' | 'same-origin' | 'include'} context.credentials request variables
  * @param {{[string: key]: any}|undefined} context.variables request variables
  * @param {string} context.sessionToken session token (for authentication)
  * @param {'fetch'|'mutate'} context.type request type (either fetch or mutate)
@@ -101,8 +112,9 @@ export function executeQuery({
   query: queryOrAST,
   variables,
   sessionToken,
+  credentials = 'omit',
   type = 'fetch',
 }) {
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
-  return executeRequest({ query, variables, sessionToken, type })
+  return executeRequest({ query, variables, sessionToken, type, credentials })
 }

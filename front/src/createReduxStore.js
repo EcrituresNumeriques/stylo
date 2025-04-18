@@ -1,26 +1,13 @@
 import * as Sentry from '@sentry/react'
 import { applyMiddleware, compose, createStore } from 'redux'
-import { applicationConfig } from './config.js'
 import { toEntries } from './helpers/bibtex'
 import ArticleService from './services/ArticleService'
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer()
-
 const sessionTokenName = 'sessionToken'
-
-function createReducer(initialState, handlers) {
-  return function reducer(state = initialState, action) {
-    if (Object.prototype.hasOwnProperty.call(handlers, action.type)) {
-      return handlers[action.type](state, action)
-    } else {
-      return state
-    }
-  }
-}
 
 // Définition du store Redux et de l'ensemble des actions
 export const initialState = {
-  hasBooted: false,
   sessionToken: localStorage.getItem(sessionTokenName),
   workingArticle: {
     state: 'saved',
@@ -56,9 +43,8 @@ export const initialState = {
   },
   // Active user (authenticated)
   activeUser: {
-    authType: null,
     authTypes: [],
-    zoteroToken: null,
+    authProviders: {},
     selectedTagIds: [],
     workspaces: [],
     activeWorkspaceId: null,
@@ -87,10 +73,29 @@ export const initialState = {
   },
 }
 
+/**
+ *
+ * @param {*} state
+ * @returns
+ */
+function createReducer(initialState, handlers) {
+  return function reducer(state = initialState, action) {
+    if (Object.prototype.hasOwnProperty.call(handlers, action.type)) {
+      return handlers[action.type](state, action)
+    } else {
+      return state
+    }
+  }
+}
+
+/**
+ *
+ * @param {*} state
+ * @returns
+ */
 function createRootReducer(state) {
   return createReducer(state, {
     PROFILE: setProfile,
-    SET_AUTH_TOKEN: setAuthToken,
     LOGIN: loginUser,
     UPDATE_SESSION_TOKEN: setSessionToken,
     UPDATE_ACTIVE_USER_DETAILS: updateActiveUserDetails,
@@ -261,10 +266,8 @@ function persistStateIntoLocalStorage({ getState }) {
 
         return
       } else if (action.type === 'LOGOUT') {
-        const { backendEndpoint } = applicationConfig
         localStorage.removeItem('articlePreferences')
         localStorage.removeItem('userPreferences')
-        document.location.replace(backendEndpoint + '/logout')
       }
 
       if (action.type === 'LOGIN' || action.type === 'UPDATE_SESSION_TOKEN') {
@@ -286,30 +289,18 @@ function persistStateIntoLocalStorage({ getState }) {
 
 function setProfile(state, action) {
   const { user } = action
+
   if (!user) {
-    return { ...state, activeUser: undefined, hasBooted: true }
+    return { ...state, activeUser: undefined }
   }
+
   return {
     ...state,
-    hasBooted: true,
-    loggedIn: true,
     activeUser: {
       ...state.activeUser,
       activeWorkspaceId: action.activeWorkspaceId,
       ...user,
     },
-  }
-}
-
-function setAuthToken(state, { service, token = null }) {
-  if (service === 'zotero') {
-    return {
-      ...state,
-      activeUser: {
-        ...state.activeUser,
-        zoteroToken: token,
-      },
-    }
   }
 }
 
@@ -346,9 +337,8 @@ function updateActiveUserDetails(state, action) {
   }
 }
 
-function logoutUser(state) {
-  Sentry.setUser(null)
-  return { ...state, ...initialState }
+function logoutUser() {
+  return structuredClone(initialState)
 }
 
 const SPACE_RE = /\s+/gi
@@ -518,11 +508,19 @@ function updateSelectedTag(state, { tagId }) {
   }
 }
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+      trace: true,
+      traceLimit: 25,
+    })
+  : compose
 
-export default function createReduxStore(state = initialState) {
+export default function createReduxStore(state = {}) {
   return createStore(
-    createRootReducer(state),
+    createRootReducer({
+      ...structuredClone(initialState),
+      ...structuredClone(state),
+    }),
     composeEnhancers(
       applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage),
       sentryReduxEnhancer

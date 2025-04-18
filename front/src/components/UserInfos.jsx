@@ -158,7 +158,7 @@ export default function UserInfos() {
           )}
           <Field label={t('user.account.authentication')}>
             <>
-              {activeUser.authType === 'oidc'
+              {activeUser.authTypes.includes('oidc')
                 ? 'OpenID (External)'
                 : 'Password'}
             </>

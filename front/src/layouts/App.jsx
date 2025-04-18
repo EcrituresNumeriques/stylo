@@ -1,12 +1,7 @@
-import React, { Suspense, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
-import Loading from '../components/molecules/Loading.jsx'
-
-import styles from './app.module.scss'
+import React, { useEffect } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 
 export default function StyloApp({ children }) {
-  const hasBooted = useSelector((state) => state.hasBooted)
   const history = useHistory()
   const { pathname } = useLocation()
 
@@ -16,20 +11,5 @@ export default function StyloApp({ children }) {
     }
   }, [pathname])
 
-  return (
-    <Suspense fallback={<Loading />}>
-      {hasBooted ? (
-        <Switch>
-          <Route path="/article/*">
-            <main className={styles.viewportMaxHeight}>{children}</main>
-          </Route>
-          <Route path="*">
-            <main>{children}</main>
-          </Route>
-        </Switch>
-      ) : (
-        <Loading />
-      )}
-    </Suspense>
-  )
+  return <>{children}</>
 }

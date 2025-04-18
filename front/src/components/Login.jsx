@@ -1,23 +1,26 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useRef, useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Helmet } from 'react-helmet'
-import { Trans, useTranslation } from 'react-i18next'
+import { useToasts } from '@geist-ui/core'
+import { useTranslation } from 'react-i18next'
 import { applicationConfig } from '../config.js'
 import { fromFormData } from '../helpers/forms.js'
 import { useActiveUserId } from '../hooks/user.js'
 
 import styles from './login.module.scss'
+import buttonStyles from './button.module.scss'
 import formStyles from './form.module.scss'
 import Field from './Field'
 import Button from './Button'
 import { HelpCircle } from 'lucide-react'
-import InlineAlert from './feedback/InlineAlert.jsx'
 
 export default function Login() {
   const { t } = useTranslation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
+  const { setToast } = useToasts()
+  const usernameRef = useRef(null)
   const { replace, location } = useHistory()
   const userId = useActiveUserId()
 
@@ -25,19 +28,20 @@ export default function Login() {
     (token) => dispatch({ type: 'UPDATE_SESSION_TOKEN', token }),
     []
   )
-  const authToken = new URLSearchParams(location.hash).get('#auth-token')
 
   const { backendEndpoint } = applicationConfig
 
   useEffect(() => {
+    const authToken = new URLSearchParams(location.hash).get('#auth-token')
+
     if (authToken) {
       setSessionToken(authToken)
     }
 
-    if (userId || authToken) {
+    if (userId) {
       replace('/articles')
     }
-  }, [authToken, userId])
+  }, [userId])
 
   const handleSubmit = useCallback((event) => {
     event.preventDefault()
@@ -64,7 +68,11 @@ export default function Login() {
         replace('/articles')
       })
       .catch((error) => {
-        setError(error.message)
+        setToast({
+          type: 'error',
+          text: error.message,
+        })
+        usernameRef.current.focus()
       })
   }, [])
 
@@ -86,8 +94,9 @@ export default function Login() {
 
           <p>
             <a
-              className={styles.humaNumConnectBtn}
-              href={backendEndpoint + '/login/openid'}
+              className={buttonStyles.loginLink}
+              style={{ '--login-icon': 'url(/images/huma-num-logo.svg)' }}
+              href={backendEndpoint + '/login/humanid'}
               lang="fr"
               aria-label={t('credentials.login.withService', {
                 name: 'Huma-Num',
@@ -97,21 +106,39 @@ export default function Login() {
             </a>
           </p>
 
-          <p className={styles.help}>
-            <HelpCircle size={18} className={styles.inlineIcon} aria-hidden />
-            <a href="https://humanum.hypotheses.org/5754#content">
-              {t('credentials.login.howto')}
+          <p>
+            <a
+              className={buttonStyles.loginLink}
+              style={{ '--login-icon': 'url(/images/hypothesis-logo.svg)' }}
+              href={backendEndpoint + '/login/hypothesis'}
+              lang="en"
+              aria-label={t('credentials.login.withService', {
+                name: 'Hypothesis',
+              })}
+            >
+              Hypothesis
+            </a>
+          </p>
+
+          <p>
+            <a
+              className={buttonStyles.loginLink}
+              style={{ '--login-icon': 'url(/images/zotero-logo.svg)' }}
+              href={backendEndpoint + '/login/zotero'}
+              lang="en"
+              aria-label={t('credentials.login.withService', {
+                name: 'Zotero',
+              })}
+            >
+              Zotero
             </a>
           </p>
 
           <p className={styles.help}>
             <HelpCircle size={18} className={styles.inlineIcon} aria-hidden />
-            <Trans i18nKey="credentials.login.remoteAccountHelp">
-              If you use the same email address for your
-              <strong>existing</strong>
-              Stylo account and for your Huma-Num account, the two accounts will
-              be automatically merged.
-            </Trans>
+            <a href="https://humanum.hypotheses.org/5754#content">
+              {t('credentials.login.howto')}
+            </a>
           </p>
         </fieldset>
 
@@ -130,11 +157,11 @@ export default function Login() {
               name="username"
               hasError={error !== ''}
               required={true}
-              autoFocus={true}
               autoComplete="username"
+              ref={usernameRef}
             />
             <Field
-              label={t('credentials.password.placeholder')}
+              label={t('credentials.password.label')}
               name="password"
               hasError={error !== ''}
               required={true}
@@ -142,17 +169,16 @@ export default function Login() {
               autoComplete="current-password"
             />
 
-            {error && <InlineAlert message={error} />}
             <ul className={styles.actions}>
+              <li>
+                <Button primary={true} type="submit">
+                  {t('credentials.login.confirmButton')}
+                </Button>
+              </li>
               <li>
                 <Link to="/register">
                   {t('credentials.login.registerLink')}
                 </Link>
-              </li>
-              <li className={styles.actionsSubmit}>
-                <Button primary={true} type="submit">
-                  {t('credentials.login.confirmButton')}
-                </Button>
               </li>
             </ul>
           </form>
