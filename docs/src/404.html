@@ -1,3 +1,11 @@
+---
+title: 404 Page introuvable / Page Not Found
+siteTitle: Stylo
+permalink: /404.html
+
+useSideMenu: false
+---
+
 <!doctype html>
 <html>
   <!---- Disposition pour la documentation ---->
@@ -6,19 +14,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Métadonnées -->
-    <title>404 page not found</title>
+    <title>{{ title }}</title>
     <!-- Styles -->
     <link rel="stylesheet" href="../styles/modern-normalize.css" />
     <link rel="stylesheet" href="../styles/variables.css" />
     <link rel="stylesheet" href="../styles/fonts/bitter.css" />
+    <!---- CSS bundle ---->
+    <style @raw="getBundle('css')" webc:keep></style>
+
+
     <!-- Theme -->
     <link rel="icon" href="/uploads/images/favicon.svg" />
     <meta name="theme-color" content="#0B0A3A" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#D4D4E8" media="(prefers-color-scheme: light)" />
   </head>
   <body>
-    <h1>404 Page Introuvable / Page Not Found</h1>
-    <p>La page que vous cherchez n'existe probablement plus ou peut avoir été déplacé. Pour aller à la page d'accueil de la documentation de Stylo, c'est  <a href="/fr/">par ici</a></p>
-    <p>The page that you searched for probably does not exist anymore or may have been displaced. To go to the home page of Stylo's documentation, it's <a href="/en/">over here</a></p>
+    <p lang="fr">La page que vous cherchez n'existe probablement plus ou peut avoir été déplacé. Pour aller à la page d'accueil de la documentation de Stylo, c'est  <a href="/fr/">par ici</a></p>
+    <p lang="en">The page that you searched for probably does not exist anymore or may have been displaced. To go to the home page of Stylo's documentation, it's <a href="/en/">over here</a></p>
   </body>
 </html>
