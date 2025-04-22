@@ -27,6 +27,7 @@
   "article.editName.buttonCancel": "Annuler",
   "article.editName.buttonSave": "Sauvegarder",
   "article.editor.edit.title": "Modifier l'article",
+  "article.editors.label": "Collaborateurs en ligne",
   "article.getTags.error": "Impossible de récupérer les étiquettes: {{errMessage}}",
   "article.legacyEditor.edit.title": "[LEGACY] Modifier l'article",
   "article.metadata.abstract": "Résumé",

@@ -27,6 +27,7 @@
   "article.editName.buttonCancel": "Cancel",
   "article.editName.buttonSave": "Save",
   "article.editor.edit.title": "Edit article",
+  "article.editors.label": "Editors online",
   "article.getTags.error": "Unable to load tags {{errMessage}}",
   "article.legacyEditor.edit.title": "[LEGACY] Edit article",
   "article.metadata.abstract": "Abstract",
