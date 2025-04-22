@@ -4,6 +4,8 @@ const pkg = require('./package.json')
 const process = require('node:process')
 const debounce = require('lodash.debounce')
 const config = require('./config.js')
+const proxy = require('express-http-proxy')
+
 config.validate({ allowed: 'strict' })
 
 if (config.get('sentry.dsn')) {
@@ -219,8 +221,30 @@ app.use(
   onAuthFailure
 )
 
-/**
- * @returns {import('./').Loaders}
+/*
+ * Feed proxy
+ */
+app.use(
+  '/feed/publications',
+  proxy('https://revue30.org', {
+    parseReqBody: false,
+    proxyReqPathResolver() {
+      return '/blog/feed.xml'
+    },
+  })
+)
+app.use(
+  '/feed/releases',
+  proxy('https://github.com', {
+    parseReqBody: false,
+    proxyReqPathResolver() {
+      return '/ecrituresNumeriques/stylo/releases.atom'
+    },
+  })
+)
+
+/*
+ * GraphQL interface
  */
 
 app.post(
