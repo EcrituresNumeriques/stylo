@@ -3,14 +3,16 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Layers, LogOut, User } from 'lucide-react'
-import { useLogout } from '../../hooks/user.js'
 
+import { useLogout } from '../../hooks/user.js'
 import useComponentVisible from '../../hooks/componentVisible'
-import styles from './UserMenu.module.scss'
+import { useActiveWorkspace } from '../../hooks/workspace.js'
+
 import Button from '../Button.jsx'
 import WorkspaceMenuItem from '../workspace/WorkspaceMenuItem.jsx'
 import UserMenuLink from './UserMenuLink.jsx'
-import { useActiveWorkspace } from '../../hooks/workspace.js'
+
+import styles from './UserMenu.module.scss'
 
 export default function UserMenu() {
   const { t } = useTranslation()
@@ -18,7 +20,7 @@ export default function UserMenu() {
 
   const handleLogout = useCallback(() => {
     setIsComponentVisible(false)
-    logout()
+    logout().then()
   }, [])
 
   const { ref, isComponentVisible, setIsComponentVisible } =
