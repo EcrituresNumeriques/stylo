@@ -156,7 +156,7 @@ function setProfile(state, action) {
   const { user } = action
 
   if (!user) {
-    return { ...state, activeUser: undefined }
+    return { ...state, activeUser: structuredClone(initialState.activeUser) }
   }
 
   return {
@@ -183,7 +183,7 @@ function loginUser(state, { user, token: sessionToken }) {
       ...state,
       sessionToken,
       activeUser: {
-        ...state.user,
+        ...state.activeUser,
         ...user,
         // dates are expected to be in timestamp string format (including milliseconds)
         createdAt: String(new Date(user.createdAt).getTime()),
