@@ -64,7 +64,6 @@ const Corpus = lazy(() => import('./components/corpus/Corpus.jsx'))
 const Articles = lazy(() => import('./components/Articles.jsx'))
 const Workspaces = lazy(() => import('./components/workspace/Workspaces.jsx'))
 const Credentials = lazy(() => import('./components/Credentials.jsx'))
-const Write = lazy(() => import('./components/Write/Write.jsx'))
 const Preview = lazy(() => import('./components/Preview.jsx'))
 const Privacy = lazy(() => import('./components/Privacy.jsx'))
 const Story = lazy(() => import('./stories/Story.jsx'))
@@ -127,7 +126,6 @@ root.render(
           <App>
             <TrackPageViews />
             <Header />
-
             <main tabIndex={-1}>
               <Suspense fallback={<LoadingPage />}>
                 <Switch>
@@ -138,7 +136,6 @@ root.render(
                     component={RegisterWithAuthProvider}
                     exact
                   />
-
                   <Route path="/login" component={Login} exact />
                   {/* Articles index */}
                   <PrivateRoute
@@ -190,25 +187,6 @@ root.render(
                   >
                     <Preview strategy="article" />
                   </Route>
-                  {/* Write and compare */}
-                  <PrivateRoute
-                    path={[
-                      `/legacy/article/:id/compare/:compareTo`,
-                      `/legacy/article/:id/version/:version/compare/working-copy`,
-                      `/legacy/article/:id/version/:version/compare/:compareTo`,
-                    ]}
-                    component={Write}
-                    exact
-                  />
-                  {/* Legacy write and/or preview */}
-                  <PrivateRoute
-                    path={[
-                      `/legacy/article/:id/preview`,
-                      `/legacy/article/:id`,
-                    ]}
-                    component={Write}
-                    exact
-                  />
                   {/* Collaborative editing */}
                   <PrivateRoute
                     path={[
@@ -224,6 +202,9 @@ root.render(
                   />
                   <Route exact path="/privacy" component={Privacy} />
                   <Route exact path="/ux" component={Story} />
+                  {import.meta.env.DEV && (
+                    <Route exact path="/ux/loading" component={LoadingPage} />
+                  )}
                   <Route exact path="/error">
                     <Error />
                   </Route>

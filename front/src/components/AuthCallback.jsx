@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useGraphQLClient } from '../helpers/graphQL.js'
 
-import styles from './Write/write.module.scss'
+import styles from './Page.module.scss'
 import buttonStyles from './button.module.scss'
 import * as queries from '../components/Credentials.graphql'
 

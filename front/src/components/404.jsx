@@ -1,10 +1,9 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
-import styles from '../components/Write/write.module.scss'
+import styles from './Error.module.scss'
 
 export default function PageNotFound() {
   const location = useLocation()
-
   return (
     <section className={styles.container}>
       <article className={styles.error}>

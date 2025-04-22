@@ -2,7 +2,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 
-import styles from '../components/Write/write.module.scss'
+import styles from './Page.module.scss'
 
 export default function Privacy() {
   const { t } = useTranslation()

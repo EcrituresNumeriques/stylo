@@ -39,7 +39,6 @@ export default function CollaborativeVersions({
   const history = useHistory()
   const { article, isLoading, error } = useArticleVersions({ articleId })
   const articleVersions = article?.versions
-  const updatedAt = article?.updatedAt
   const createVersionModal = useModal()
   const { t } = useTranslation()
 

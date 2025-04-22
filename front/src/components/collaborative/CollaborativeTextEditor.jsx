@@ -4,7 +4,8 @@ import throttle from 'lodash.throttle'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
-import { useArticleVersion } from '../../hooks/article.js'
+import { useArticleVersion, useEditableArticle } from '../../hooks/article.js'
+import { useBibliographyCompletion } from '../../hooks/bibliography.js'
 import { useCollaboration } from '../../hooks/collaboration.js'
 import Alert from '../molecules/Alert.jsx'
 
@@ -27,6 +28,12 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
     { articleId, versionId }
   )
   const { version, error, isLoading } = useArticleVersion({ versionId })
+  const { provider: bibliographyCompletionProvider } =
+    useBibliographyCompletion()
+  const { bibliography } = useEditableArticle({
+    articleId,
+    versionId,
+  })
   const dispatch = useDispatch()
   const editorRef = useRef(null)
   const editorCursorPosition = useSelector(
@@ -55,8 +62,10 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
   )
 
   const handleCollaborativeEditorDidMount = useCallback(
-    (editor) => {
+    (editor, monaco) => {
       editorRef.current = editor
+      const completionProvider = bibliographyCompletionProvider.register(monaco)
+      editor.onDidDispose(() => completionProvider.dispose())
       if (yText && awareness) {
         new MonacoBinding(
           yText,
@@ -102,6 +111,12 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
       dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md: version.md })
     }
   }, [version])
+
+  useEffect(() => {
+    if (bibliography) {
+      bibliographyCompletionProvider.bibTeXEntries = bibliography.entries
+    }
+  }, [bibliography])
 
   useEffect(() => {
     const line = editorCursorPosition.lineNumber
