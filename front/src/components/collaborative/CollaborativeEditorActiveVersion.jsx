@@ -24,7 +24,7 @@ export default function CollaborativeEditorActiveVersion({ versionId }) {
     const versionDate = new Intl.DateTimeFormat(i18n.language, {
       dateStyle: 'full',
       timeStyle: 'long',
-    }).format(version.updatedAt)
+    }).format(new Date(version.createdAt))
     return (
       <Alert
         type="info"

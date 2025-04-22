@@ -13,9 +13,9 @@ import Version from '../molecules/Version.jsx'
 
 import { useArticleVersions } from '../../hooks/article.js'
 import { useModal } from '../../hooks/modal.js'
+import i18n from '../../i18n.js'
 
 import styles from './CollaborativeVersions.module.scss'
-import i18n from '../../i18n.js'
 
 /**
  * @param {object} props
@@ -70,7 +70,7 @@ export default function CollaborativeVersions({
     year: 'numeric',
   })
 
-  function getMap() {
+  function versionsPerMonth() {
     let previousVersionDate
     return articleVersions.map((version) => {
       const title =
@@ -82,7 +82,7 @@ export default function CollaborativeVersions({
               minor: version.revision,
             })
 
-      const date = new Date(version.updatedAt)
+      const date = new Date(version.createdAt)
       const versionItem = (
         <Version
           key={`showVersion-${version._id}`}
@@ -165,7 +165,7 @@ export default function CollaborativeVersions({
             history.push(`/article/${articleId}`)
           }}
         />
-        {getMap()}
+        {versionsPerMonth()}
       </ul>
     </section>
   )
