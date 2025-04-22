@@ -7,6 +7,7 @@ import fieldStyles from '../../../field.module.scss'
 import languageDefinition from './lang/bibtex.json'
 import defaultEditorOptions from './options.js'
 import './BibtexEditor.module.scss'
+import MonacoEditor from '../../../molecules/MonacoEditor.jsx'
 
 loader.config({ monaco })
 
@@ -42,7 +43,7 @@ export default function MonacoBibtexEditor({
   }, [])
 
   return (
-    <Editor
+    <MonacoEditor
       height={height}
       defaultValue={text}
       className={fieldStyles.textEditor}

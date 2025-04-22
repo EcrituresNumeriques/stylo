@@ -1,9 +1,6 @@
 import React, { useRef, useEffect, useMemo, useCallback } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 
-import * as monaco from 'monaco-editor'
-import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
-import Editor, { loader } from '@monaco-editor/react'
 import {
   BibliographyCompletionProvider,
   registerReadOnlyTheme,
@@ -11,14 +8,7 @@ import {
 import defaultEditorOptions from './options.js'
 
 import styles from './TextEditor.module.scss'
-
-self.MonacoEnvironment = {
-  getWorker(_, label) {
-    return new editorWorker()
-  },
-}
-
-loader.config({ monaco })
+import MonacoEditor from '../../../molecules/MonacoEditor.jsx'
 
 export default function MonacoTextEditor({ text, readOnly, onTextUpdate }) {
   const articleBibTeXEntries = useSelector(
@@ -74,7 +64,7 @@ export default function MonacoTextEditor({ text, readOnly, onTextUpdate }) {
   const handleEditorChange = useCallback((value) => onTextUpdate(value), [])
 
   return (
-    <Editor
+    <MonacoEditor
       defaultValue={text}
       className={styles.editor}
       defaultLanguage="markdown"

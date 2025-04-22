@@ -5,6 +5,7 @@ import Editor, { loader } from '@monaco-editor/react'
 import defaultEditorOptions from './options.js'
 
 import styles from './YamlEditor.module.scss'
+import MonacoEditor from '../../../molecules/MonacoEditor.jsx'
 
 loader.config({ monaco })
 
@@ -28,7 +29,7 @@ export default function MonacoYamlEditor({
   )
 
   return (
-    <Editor
+    <MonacoEditor
       className={styles.editor}
       height={height}
       defaultValue={text}
