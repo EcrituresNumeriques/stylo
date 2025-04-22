@@ -5,39 +5,39 @@
  * @param {Number} count
  * @returns {String}
  */
-function previewEntries (bibtex, count = 2) {
+function previewEntries(bibtex, count = 2) {
   let STATE = ''
   let obj = { kind: '', entry: '' }
 
-  const entries = Array.from((bibtex?.trim() ?? '')
-    .split(/^(\s*@(?<kind>[^{]+)\s*\{\s*[^,]+,)\s*$/gm))
-    .reduce((all, part) => {
-      const trimmedPart = part.trim()
+  const entries = Array.from(
+    (bibtex?.trim() ?? '').split(/^(\s*@(?<kind>[^{]+)\s*\{\s*[^,]+,)\s*$/gm)
+  ).reduce((all, part) => {
+    const trimmedPart = part.trim()
 
-      if (!trimmedPart) {
-        return all
-      }
-
-      if (trimmedPart.startsWith('@')) {
-        STATE = 'HEAD'
-        obj = { kind: '', entry: part }
-        return all
-      }
-
-      if (STATE === 'HEAD') {
-        STATE = 'KIND'
-        obj.kind = trimmedPart
-        return all
-      }
-
-      if (STATE === 'KIND') {
-        STATE = 'BODY'
-        obj.entry += part.trimEnd()
-        return all.concat([ [obj.kind, obj.entry ]])
-      }
-
+    if (!trimmedPart) {
       return all
-    }, [])
+    }
+
+    if (trimmedPart.startsWith('@')) {
+      STATE = 'HEAD'
+      obj = { kind: '', entry: part }
+      return all
+    }
+
+    if (STATE === 'HEAD') {
+      STATE = 'KIND'
+      obj.kind = trimmedPart
+      return all
+    }
+
+    if (STATE === 'KIND') {
+      STATE = 'BODY'
+      obj.entry += part.trimEnd()
+      return all.concat([[obj.kind, obj.entry]])
+    }
+
+    return all
+  }, [])
 
   if (!Array.isArray(entries) || entries.length === 0) {
     return ''

@@ -9,15 +9,19 @@ exports.up = async function (db) {
       if (typeof article.workingVersion === 'undefined') {
         const latestVersionId = article.versions.slice(-1)[0]
         if (latestVersionId) {
-          const [latestVersion] = await versions.findOne({ _id: latestVersionId })
-          await articles.updateOne({ _id: article._id }, {
+          const [latestVersion] = await versions.findOne({
+            _id: latestVersionId,
+          })
+          await articles.updateOne(
+            { _id: article._id },
+            {
               $set: {
                 workingVersion: {
                   bib: latestVersion.bib,
                   md: latestVersion.md,
                   yaml: latestVersion.yaml,
-                }
-              }
+                },
+              },
             },
             { upsert: false }
           )

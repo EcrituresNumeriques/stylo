@@ -18,7 +18,9 @@
     "dev:graphql": "node --watch ./graphql/app.js --watch",
     "start": "DOTENV_CONFIG_PATH=.env node -r dotenv/config ./node_modules/.bin/concurrently 'npm:start:*'",
     "start:front": "./front/node_modules/.bin/vite build ./front",
-    "start:graphql": "node --watch ./graphql/app.js"
+    "start:graphql": "node --watch ./graphql/app.js",
+    "lint": "prettier --check front graphql ",
+    "lint:fix": "prettier --write front graphql"
   },
   "repository": {
     "type": "git",
@@ -33,7 +35,8 @@
   "homepage": "https://github.com/EcrituresNumeriques/stylo#readme",
   "devDependencies": {
     "concurrently": "^9.1.2",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "prettier": "^3.5.3"
   },
   "volta": {
     "node": "22.14.0",

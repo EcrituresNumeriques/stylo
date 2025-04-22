@@ -1,4 +1,4 @@
-function deriveToc (md) {
+function deriveToc(md) {
   return md
     .split('\n')
     .filter((line) => line.match(/^#+ /))
@@ -6,5 +6,5 @@ function deriveToc (md) {
 }
 
 module.exports = {
-  deriveToc
+  deriveToc,
 }

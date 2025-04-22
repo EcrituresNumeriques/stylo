@@ -241,8 +241,8 @@ export function useEditableArticle({ articleId, versionId }) {
   }
 
   const bibtext = hasVersion
-    ? data?.article?.version?.bib ?? ''
-    : data?.article?.workingVersion?.bib ?? ''
+    ? (data?.article?.version?.bib ?? '')
+    : (data?.article?.workingVersion?.bib ?? '')
 
   const entries = toEntries(bibtext)
 

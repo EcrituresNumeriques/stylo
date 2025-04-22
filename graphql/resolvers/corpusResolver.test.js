@@ -8,7 +8,7 @@ describe('corpus resolver', () => {
     const guillaume = await User.create({
       email: 'guillaume@huma-num.fr',
       firstName: 'Guillaume',
-      lastName: 'Grossetie'
+      lastName: 'Grossetie',
     })
     const corpus = await Corpus.create({
       name: 'Corpus A',
@@ -25,21 +25,18 @@ describe('corpus resolver', () => {
     await CorpusMutation.addArticle(corpus, { articleId: thesis.id })
     const corpusList = await Query.corpus({}, {}, { user: guillaume })
     expect(corpusList[0].toJSON()).toMatchObject({
-        name: 'Corpus A',
-        articles: [
-          { article: thesis._id }
-        ],
-        creator: {
-          _id: guillaume._id
-        },
+      name: 'Corpus A',
+      articles: [{ article: thesis._id }],
+      creator: {
+        _id: guillaume._id,
       },
-    )
+    })
   })
   test('remove an existing article', async () => {
     const guillaume = await User.create({
       email: 'guillaume@huma-num.fr',
       firstName: 'Guillaume',
-      lastName: 'Grossetie'
+      lastName: 'Grossetie',
     })
     const thesis = await Article.create({
       title: 'My Thesis',
@@ -53,23 +50,24 @@ describe('corpus resolver', () => {
       articles: [{ article: thesis, order: 1 }],
       creator: guillaume.id,
     })
-    const corpusArticle = await CorpusMutation.article(corpus, { articleId: thesis.id })
+    const corpusArticle = await CorpusMutation.article(corpus, {
+      articleId: thesis.id,
+    })
     await corpusArticle.remove()
     const corpusList = await Query.corpus({}, {}, { user: guillaume })
     expect(corpusList[0].toJSON()).toMatchObject({
-        name: 'Corpus B',
-        articles: [],
-        creator: {
-          _id: guillaume._id
-        },
+      name: 'Corpus B',
+      articles: [],
+      creator: {
+        _id: guillaume._id,
       },
-    )
+    })
   })
   test('move an existing article', async () => {
     const guillaume = await User.create({
       email: 'guillaume@huma-num.fr',
       firstName: 'Guillaume',
-      lastName: 'Grossetie'
+      lastName: 'Grossetie',
     })
     const chapter1 = await Article.create({
       title: 'Chapter #1',
@@ -108,24 +106,25 @@ describe('corpus resolver', () => {
         { article: chapter4, order: 4 },
       ],
       creator: {
-        _id: guillaume.id
+        _id: guillaume.id,
       },
     })
-    const corpusArticle = await CorpusMutation.article(corpus, { articleId: chapter1.id })
+    const corpusArticle = await CorpusMutation.article(corpus, {
+      articleId: chapter1.id,
+    })
     await corpusArticle.move(1)
     const corpusList = await Query.corpus({}, {}, { user: guillaume })
     expect(corpusList[0].toJSON()).toMatchObject({
-        name: 'Corpus C',
-        articles: [
-          { article: chapter2._id, order: 2 },
-          { article: chapter3._id, order: 3 },
-          { article: chapter1._id, order: 1 },
-          { article: chapter4._id, order: 4 },
-        ],
-        creator: {
-          _id: guillaume._id
-        },
+      name: 'Corpus C',
+      articles: [
+        { article: chapter2._id, order: 2 },
+        { article: chapter3._id, order: 3 },
+        { article: chapter1._id, order: 1 },
+        { article: chapter4._id, order: 4 },
+      ],
+      creator: {
+        _id: guillaume._id,
       },
-    )
+    })
   })
 })

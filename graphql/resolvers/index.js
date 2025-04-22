@@ -1,12 +1,38 @@
-const { User, Query: UserQuery, Mutation: UserMutation } = require('./userResolver')
-const { Article, WorkingVersion, Query: ArticleQuery, Mutation: ArticleMutation } = require('./articleResolver')
+const {
+  User,
+  Query: UserQuery,
+  Mutation: UserMutation,
+} = require('./userResolver')
+const {
+  Article,
+  WorkingVersion,
+  Query: ArticleQuery,
+  Mutation: ArticleMutation,
+} = require('./articleResolver')
 const { Tag, Query: TagQuery, Mutation: TagMutation } = require('./tagResolver')
-const { Version, Query: VersionQuery, Mutation: VersionMutation } = require('./versionResolver')
-const { Workspace, Query: WorkspaceQuery, Mutation: WorkspaceMutation } = require('./workspaceResolver')
-const { Corpus, Query: CorpusQuery, Mutation: CorpusMutation } = require('./corpusResolver')
+const {
+  Version,
+  Query: VersionQuery,
+  Mutation: VersionMutation,
+} = require('./versionResolver')
+const {
+  Workspace,
+  Query: WorkspaceQuery,
+  Mutation: WorkspaceMutation,
+} = require('./workspaceResolver')
+const {
+  Corpus,
+  Query: CorpusQuery,
+  Mutation: CorpusMutation,
+} = require('./corpusResolver')
 const { Mutation: AuthMutation } = require('./authResolver')
 const { InstanceUsageStats, Query: StatsQuery } = require('./statsResolver')
-const { EmailAddressResolver, JWTResolver, HexColorCodeResolver, DateTimeResolver } = require('graphql-scalars')
+const {
+  EmailAddressResolver,
+  JWTResolver,
+  HexColorCodeResolver,
+  DateTimeResolver,
+} = require('graphql-scalars')
 const { GraphQLJSON, GraphQLJSONObject } = require('./jsonScalar.js')
 
 module.exports = {
@@ -45,5 +71,5 @@ module.exports = {
     ...AuthMutation,
     ...WorkspaceMutation,
     ...CorpusMutation,
-  }
+  },
 }

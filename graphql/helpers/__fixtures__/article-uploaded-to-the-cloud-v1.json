@@ -10,20 +10,12 @@
   "title": "Uploaded to the cloud… Sounds like heaven!",
   "subtitle": "Téléchargement de conscience, réflexivité et ré-enchantement de la technologie dans trois fictions sérielles anglophones",
   "abstract": "Cet article se penche sur l’appropriation par trois séries télévisées contemporaines des visions utopiques post-humanistes de la vie après la mort dans un univers virtuel grâce au « téléchargement de conscience », une technologie actuellement inexistante, mais faisant l’objet de nombreuses discussions et projections.",
-  "keywords": [
-    "Arts et lettres",
-    "Cinéma",
-    "Fiction"
-  ],
+  "keywords": ["Arts et lettres", "Cinéma", "Fiction"],
   "localizedContent": [
     {
       "lang": "en",
       "abstract": "This article examines how three contemporary television series appropriate the utopian post-humanist visions of life after death in a virtual universe made possible by “mind uploading”, a technology that does not currently exist but is the subject of much discussion and projection.",
-      "keywords": [
-        "Cinema",
-        "Fiction",
-        "Narrative"
-      ]
+      "keywords": ["Cinema", "Fiction", "Narrative"]
     }
   ],
   "controlledKeywords": [
@@ -115,10 +107,6 @@
     "url": "https://www.sens-public.org/"
   },
   "senspublic": {
-    "categories": [
-      "Essai",
-      "Entretien",
-      "Chronique"
-    ]
+    "categories": ["Essai", "Entretien", "Chronique"]
   }
 }

@@ -64,21 +64,37 @@ section { break-before: right; }
   })
 
   test('skip non rules', () => {
-    expect(transformedCss).toMatch('@page{size:8.5in 11in;margin:20mm 25mm;@footnote{')
-    expect(transformedCss).toMatch('@page :left{margin:20mm 40mm 20mm 30mm;@top-left{')
-    expect(transformedCss).toMatch('@font-face{font-family:"Stix";font-weight:normal;font-style:normal}')
+    expect(transformedCss).toMatch(
+      '@page{size:8.5in 11in;margin:20mm 25mm;@footnote{'
+    )
+    expect(transformedCss).toMatch(
+      '@page :left{margin:20mm 40mm 20mm 30mm;@top-left{'
+    )
+    expect(transformedCss).toMatch(
+      '@font-face{font-family:"Stix";font-weight:normal;font-style:normal}'
+    )
   })
 
   test('prefix adequate rules', () => {
     expect(transformedCss).toMatch('}:root{--red: #f00}')
-    expect(transformedCss).toMatch('}.stylo-pagedjs-container h1{string-set:booktitle content(text)}')
-    expect(transformedCss).toMatch('}.stylo-pagedjs-container section{break-before:right}')
-    expect(transformedCss).toMatch('}.stylo-pagedjs-container .copyright-rw{padding:0}')
-    expect(transformedCss).toMatch('{.stylo-pagedjs-container p{font-family:sans-serif}')
+    expect(transformedCss).toMatch(
+      '}.stylo-pagedjs-container h1{string-set:booktitle content(text)}'
+    )
+    expect(transformedCss).toMatch(
+      '}.stylo-pagedjs-container section{break-before:right}'
+    )
+    expect(transformedCss).toMatch(
+      '}.stylo-pagedjs-container .copyright-rw{padding:0}'
+    )
+    expect(transformedCss).toMatch(
+      '{.stylo-pagedjs-container p{font-family:sans-serif}'
+    )
   })
 
   test('substitute body with selectorName', () => {
-    expect(transformedCss).toMatch('}.stylo-pagedjs-container{font:Stix,sans-serif}')
+    expect(transformedCss).toMatch(
+      '}.stylo-pagedjs-container{font:Stix,sans-serif}'
+    )
   })
 })
 

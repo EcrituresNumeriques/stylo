@@ -57,8 +57,8 @@ if (SENTRY_DSN) {
 // lazy loaded routes
 const Home = lazy(() => import('./components/Home.jsx'))
 const Register = lazy(() => import('./components/Register.jsx'))
-const RegisterWithAuthProvider = lazy(() =>
-  import('./components/RegisterWithAuthProvider.jsx')
+const RegisterWithAuthProvider = lazy(
+  () => import('./components/RegisterWithAuthProvider.jsx')
 )
 const Corpus = lazy(() => import('./components/corpus/Corpus.jsx'))
 const Articles = lazy(() => import('./components/Articles.jsx'))
@@ -67,8 +67,8 @@ const Credentials = lazy(() => import('./components/Credentials.jsx'))
 const Preview = lazy(() => import('./components/Preview.jsx'))
 const Privacy = lazy(() => import('./components/Privacy.jsx'))
 const Story = lazy(() => import('./stories/Story.jsx'))
-const CollaborativeEditor = lazy(() =>
-  import('./components/collaborative/CollaborativeEditor.jsx')
+const CollaborativeEditor = lazy(
+  () => import('./components/collaborative/CollaborativeEditor.jsx')
 )
 
 let sessionToken = new URLSearchParams(location.hash).get('#auth-token')

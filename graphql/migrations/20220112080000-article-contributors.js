@@ -11,9 +11,13 @@ exports.up = async function (db) {
         {
           $set: {
             owner: ownerId,
-            contributors: contributors.map(userId => ({ user: userId, roles: ['read', 'write'] }))
-          }
-        })
+            contributors: contributors.map((userId) => ({
+              user: userId,
+              roles: ['read', 'write'],
+            })),
+          },
+        }
+      )
     }
   } finally {
     await articlesCursor.close()

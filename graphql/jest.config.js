@@ -10,7 +10,5 @@ module.exports = {
   preset: '@shelf/jest-mongodb',
   watchPathIgnorePatterns: ['globalConfig'],
 
-  setupFilesAfterEnv: [
-    './tests/setup-db.js'
-  ]
+  setupFilesAfterEnv: ['./tests/setup-db.js'],
 }

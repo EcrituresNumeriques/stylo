@@ -71,19 +71,11 @@
   "keywords": [
     {
       "lang": "fr",
-      "list_f": [
-        "Arts et lettres",
-        "Cinéma",
-        "Fiction"
-      ]
+      "list_f": ["Arts et lettres", "Cinéma", "Fiction"]
     },
     {
       "lang": "en",
-      "list_f": [
-        "Cinema",
-        "Fiction",
-        "Narrative"
-      ]
+      "list_f": ["Cinema", "Fiction", "Narrative"]
     }
   ],
   "lang": "fr",
@@ -106,9 +98,5 @@
     }
   ],
   "url_article": "https://sens-public.org/articles/1711/",
-  "typeArticle": [
-    "Essai",
-    "Entretien",
-    "Chronique"
-  ]
+  "typeArticle": ["Essai", "Entretien", "Chronique"]
 }

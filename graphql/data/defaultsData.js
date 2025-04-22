@@ -223,26 +223,20 @@ Pour plus d'informations, consultez la documentation.
       subtitle: 'Un article type',
       abstract: `C'est article est un exemple d'article type édité sur _Stylo_. _Stylo_ est un éditeur d'article scientifique dédié aux sciences humaines.
 Vous pouvez éditer cet article pour vous entraîner. Une documentation plus complète est accessible en cliquant sur le lien documentation.`,
-      keywords: [
-        'édition',
-        'bac-à-sable'
-      ],
+      keywords: ['édition', 'bac-à-sable'],
       localizedContent: [
         {
           lang: 'en',
           abstract: '',
-          keywords: [
-            'publishing',
-            'sandbox'
-          ]
-        }
+          keywords: ['publishing', 'sandbox'],
+        },
       ],
       controlledKeywords: [
         {
           idRameau: 'FRBNF13318593',
           label: 'Édition',
-          uriRameau: 'http://catalogue.bnf.fr/ark:/12148/cb13318593f'
-        }
+          uriRameau: 'http://catalogue.bnf.fr/ark:/12148/cb13318593f',
+        },
       ],
       authors: [
         {
@@ -255,7 +249,7 @@ Vous pouvez éditer cet article pour vous entraîner. Une documentation plus com
           orcid: '0000-0001-6424-3229',
           surname: 'Vitali-Rosati',
           viaf: '',
-          wikidata: ''
+          wikidata: '',
         },
         {
           affiliations: '',
@@ -267,8 +261,8 @@ Vous pouvez éditer cet article pour vous entraîner. Une documentation plus com
           orcid: '0000-0001-7516-3427',
           surname: 'Sauret',
           viaf: '',
-          wikidata: ''
-        }
+          wikidata: '',
+        },
       ],
       issueDirectors: [],
       reviewers: [],
@@ -277,13 +271,13 @@ Vous pouvez éditer cet article pour vous entraîner. Une documentation plus com
       issue: {},
       production: {
         issn: '',
-        entities: []
+        entities: [],
       },
       funder: {
         organization: '',
-        id: ''
+        id: '',
       },
-      journal: {}
-    }
-  }
+      journal: {},
+    },
+  },
 }

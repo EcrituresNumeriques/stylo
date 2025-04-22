@@ -7,11 +7,11 @@ class ApiError extends Error {
     this.extensions = {
       date: new Date(),
       type,
-      errors
-    };
+      errors,
+    }
   }
 }
 
 module.exports = {
-  ApiError
+  ApiError,
 }

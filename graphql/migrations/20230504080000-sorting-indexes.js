@@ -1,12 +1,10 @@
 exports.up = async function (db) {
-  const mongo = await db._run("getDbInstance", true)
+  const mongo = await db._run('getDbInstance', true)
   try {
     await mongo
       .collection('articles')
       .createIndex({ updatedAt: -1 }, { unique: false })
-    await mongo
-      .collection('tags')
-      .createIndex({ name: -1 }, { unique: false })
+    await mongo.collection('tags').createIndex({ name: -1 }, { unique: false })
     await mongo
       .collection('tags')
       .createIndex({ createdAt: -1 }, { unique: false })
