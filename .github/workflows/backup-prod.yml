@@ -1,14 +1,23 @@
-name: Ansible backup dev
+name: Ansible backup prod
 
 on:
   workflow_dispatch:
+    inputs:
+      release-version:
+        description: Release version
+        required: true
+  workflow_call:
+    inputs:
+      release-version:
+        required: true
+        type: string
 
 jobs:
   backup:
     runs-on: ubuntu-latest
     environment:
-      name: staging
-      url: https://stylo-dev.huma-num.fr
+      name: production
+      url: https://stylo.huma-num.fr
 
     steps:
       - uses: actions/checkout@v4
@@ -26,19 +35,20 @@ jobs:
 
       - name: Set Ansible config secrets
         run: |
-          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_DEV }}" > infrastructure/.ansible-vault-password
+          echo "${{ secrets.ANSIBLE_VAULT_PASSWORD_PROD }}" > infrastructure/.ansible-vault-password
 
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY_DEV }}" > ~/.ssh/id_ed25519
+          echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
 
       - name: Run backup playbook
         working-directory: ./infrastructure
         run: |
-          ansible-playbook -v -i inventories/dev \
-            --extra-vars "@vault-dev.yml" \
+          ansible-playbook -v -i inventories/prod \
+            --extra-vars "@vault-prod.yml" \
+            --extra-vars "app_version=${{ inputs.release-version }}" \
             --private-key ~/.ssh/id_ed25519 \
             --vault-password-file ./.ansible-vault-password \
             backup-playbook.yml
