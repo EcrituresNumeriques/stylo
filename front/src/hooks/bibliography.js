@@ -53,7 +53,7 @@ export default function useBibliography({ initialText }) {
     warnings: validationResult.warnings,
   }
 }
-
+// TODO use an isolated store to manage shared data between components
 export function useBibliographyCompletion() {
   const bibliographyCompletionProvider = useRef(
     new BibliographyCompletionProvider([])
