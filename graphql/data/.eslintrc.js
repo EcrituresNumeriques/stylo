@@ -3,6 +3,6 @@ module.exports = {
     db: 'readonly',
     Mongo: 'readonly',
     ObjectId: 'readonly',
-    print: 'readonly'
+    print: 'readonly',
   },
 }

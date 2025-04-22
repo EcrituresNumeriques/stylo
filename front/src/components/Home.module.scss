@@ -1,4 +1,4 @@
-@use "./header.module.scss" as global;
+@use './header.module.scss' as global;
 
 .changelog {
   > summary,
@@ -14,8 +14,10 @@
     font-size: 1em;
   }
 
-  p, ul, ol {
-    font-size: .9rem;
+  p,
+  ul,
+  ol {
+    font-size: 0.9rem;
   }
 }
 

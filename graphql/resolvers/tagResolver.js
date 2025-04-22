@@ -7,7 +7,7 @@ const { ApiError } = require('../helpers/errors')
 
 module.exports = {
   Mutation: {
-    async createTag (_, args, context){
+    async createTag(_, args, context) {
       const { userId } = isUser(args, context)
       const thisUser = await User.findById(userId)
       if (!thisUser) {
@@ -17,14 +17,14 @@ module.exports = {
         name: args.name,
         description: args.description,
         color: args.color,
-        owner: thisUser
+        owner: thisUser,
       })
       // TODO do not add tag in user.tags
       thisUser.tags.push(newTag)
       await thisUser.save()
       return newTag
     },
-    async deleteTag (_, args, context) {
+    async deleteTag(_, args, context) {
       const { userId } = isUser(args, context)
       const tag = await Tag.findOne({ _id: args.tag, owner: userId })
       if (!tag) {
@@ -33,7 +33,7 @@ module.exports = {
       await tag.remove()
       return tag.$isDeleted()
     },
-    async updateTag (_, args, context) {
+    async updateTag(_, args, context) {
       const { userId } = isUser(args, context)
 
       const thisTag = await Tag.findOne({ _id: args.tag, owner: userId })
@@ -41,7 +41,7 @@ module.exports = {
         throw new Error('Unable to find tag')
       }
 
-      ['name', 'description', 'color'].forEach(field => {
+      ;['name', 'description', 'color'].forEach((field) => {
         if (Object.hasOwn(args, field)) {
           /* eslint-disable security/detect-object-injection */
           thisTag.set(field, args[field])
@@ -53,7 +53,7 @@ module.exports = {
   },
 
   Query: {
-    async tag (_, args, context) {
+    async tag(_, args, context) {
       const { userId } = isUser(args, context)
       const query = context.token.admin
         ? { _id: args.tag }
@@ -66,22 +66,27 @@ module.exports = {
       })
 
       if (!tag) {
-        throw new ApiError('NOT_FOUND', `Unable to find tag with id ${args.tag}`)
+        throw new ApiError(
+          'NOT_FOUND',
+          `Unable to find tag with id ${args.tag}`
+        )
       }
 
       return tag
     },
 
-    async tags (_root, args, context) {
+    async tags(_root, args, context) {
       const { userId } = isUser(args, context)
       return Tag.find({ owner: userId })
     },
   },
 
   Tag: {
-    async articles (tag, { limit }) {
+    async articles(tag, { limit }) {
       // TODO load articles using a query on the articles collection
-      await tag.populate({ path: 'articles', options: { limit } }).execPopulate()
+      await tag
+        .populate({ path: 'articles', options: { limit } })
+        .execPopulate()
       return tag.articles
     },
   },

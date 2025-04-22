@@ -17,7 +17,7 @@ export default function Sidebar({
     <PanelRightOpen size={36} />
   )
 
-  const label = opened ? labelOpened ?? 'Close' : labelClosed ?? 'Open'
+  const label = opened ? (labelOpened ?? 'Close') : (labelClosed ?? 'Open')
 
   return (
     <div

@@ -16,6 +16,8 @@ Not 2, not 4, but 3.`
   test('computeMajorVersion', () => {
     expect(deriveToc(emptyText)).toEqual('')
     expect(deriveToc(textWithOneHeadline)).toEqual('# Hello World')
-    expect(deriveToc(textWithManyHeadlines)).toEqual('# Hello World\n## How are you?\n### Level 3')
+    expect(deriveToc(textWithManyHeadlines)).toEqual(
+      '# Hello World\n## How are you?\n### Level 3'
+    )
   })
 })

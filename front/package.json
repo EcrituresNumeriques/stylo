@@ -17,8 +17,6 @@
     "npm": ">=10"
   },
   "scripts": {
-    "lint": "prettier --check src",
-    "lint:fix": "prettier --write src",
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -108,7 +106,6 @@
     "eslint-plugin-vitest": "^0.5.4",
     "jsdom": "^26.0.0",
     "lodash.merge": "^4.6.2",
-    "prettier": "^2.3.0",
     "rollup-plugin-visualizer": "^5.14.0",
     "vitest": "^3.0.3"
   },

@@ -10,14 +10,13 @@ import { coverageConfigDefaults } from 'vitest/config'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
-  const envPrefix = [
-    'SNOWPACK_',
-    'SENTRY_',
-  ]
+  const envPrefix = ['SNOWPACK_', 'SENTRY_']
 
   const env = loadEnv(mode, fileURLToPath(import.meta.resolve('..')), envPrefix)
   const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
-  const isDevelopment = Boolean(mode === 'development' || env.SENTRY_ENVIRONMENT === 'dev')
+  const isDevelopment = Boolean(
+    mode === 'development' || env.SENTRY_ENVIRONMENT === 'dev'
+  )
 
   return {
     base: env.DEPLOY_PRIME_URL ?? '/',
@@ -31,7 +30,7 @@ export default defineConfig(async ({ mode }) => {
             metadata: [
               'biblatex-csl-converter',
               '@rjsf/core',
-              '@rjsf/validator-ajv8'
+              '@rjsf/validator-ajv8',
             ],
             pagedPreview: ['pagedjs'],
             react: [
@@ -44,19 +43,16 @@ export default defineConfig(async ({ mode }) => {
               'react-i18next',
               'react-redux',
               'react-router-dom',
-              'redux'
+              'redux',
             ],
-            ui: [
-              '@geist-ui/core',
-              'lucide-react',
-            ],
+            ui: ['@geist-ui/core', 'lucide-react'],
             textEditor: [
               'monaco-editor',
               '@monaco-editor/react',
               'y-monaco',
               'y-websocket',
-              'yjs'
-            ]
+              'yjs',
+            ],
           },
         },
       },
@@ -78,26 +74,27 @@ export default defineConfig(async ({ mode }) => {
           SNOWPACK_MATOMO_SITE_ID,
         },
       }),
-      env.SENTRY_AUTH_TOKEN && sentryVitePlugin({
-        org: env.SENTRY_ORG,
-        project: env.SENTRY_PROJECT,
-        authToken: env.SENTRY_AUTH_TOKEN,
-        telemetry: true,
-        debug: env.SENTRY_DEBUG,
-        sourcemaps: {
-          filesToDeleteAfterUpload: isDevelopment ? [] : ['*.js.map']
-        },
-        release: {
-          name: isDevelopment ? null : pkg.version,
-          inject: true,
-          create: true,
-          deploy: {
-            env: env.SENTRY_ENVIRONMENT,
-            name: isDevelopment ? null : pkg.version
-          }
-        }
-      }),
-      isDevelopment && visualizer()
+      env.SENTRY_AUTH_TOKEN &&
+        sentryVitePlugin({
+          org: env.SENTRY_ORG,
+          project: env.SENTRY_PROJECT,
+          authToken: env.SENTRY_AUTH_TOKEN,
+          telemetry: true,
+          debug: env.SENTRY_DEBUG,
+          sourcemaps: {
+            filesToDeleteAfterUpload: isDevelopment ? [] : ['*.js.map'],
+          },
+          release: {
+            name: isDevelopment ? null : pkg.version,
+            inject: true,
+            create: true,
+            deploy: {
+              env: env.SENTRY_ENVIRONMENT,
+              name: isDevelopment ? null : pkg.version,
+            },
+          },
+        }),
+      isDevelopment && visualizer(),
     ],
     define: {
       APP_VERSION: JSON.stringify(pkg.version),
@@ -134,7 +131,7 @@ export default defineConfig(async ({ mode }) => {
         '/events': {
           target: 'http://127.0.0.1:3030',
           prependPath: false,
-          ws: true
+          ws: true,
         },
       },
     },

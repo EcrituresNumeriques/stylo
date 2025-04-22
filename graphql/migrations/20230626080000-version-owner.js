@@ -2,7 +2,7 @@ exports.up = async function (db) {
   const mongo = await db._run('getDbInstance', true)
   const articles = mongo.collection('articles')
   const versions = mongo.collection('versions')
-  const versionsCursor = versions.find({ "owner": null })
+  const versionsCursor = versions.find({ owner: null })
   try {
     while (await versionsCursor.hasNext()) {
       const version = await versionsCursor.next()
@@ -14,7 +14,7 @@ exports.up = async function (db) {
           {
             $set: {
               owner: article.owner,
-            }
+            },
           },
           { upsert: false }
         )

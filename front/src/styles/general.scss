@@ -32,8 +32,17 @@
     padding: calc(0.75em - 1px);
     resize: vertical;
     font-size: 0.9em;
-    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono,
-    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+    font-family:
+      Consolas,
+      Menlo,
+      Monaco,
+      Lucida Console,
+      Liberation Mono,
+      DejaVu Sans Mono,
+      Bitstream Vera Sans Mono,
+      Courier New,
+      monospace,
+      serif;
   }
 
   textarea:not([rows]) {
@@ -61,14 +70,15 @@
       text-decoration: none;
     }
 
-    &[target="_blank"]::after {
+    &[target='_blank']::after {
       display: inline-block;
-      content: "";
+      content: '';
       background-color: currentColor;
-      mask: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogIDxwYXRoIGQ9Ik0xNSAzaDZ2NiIvPgogIDxwYXRoIGQ9Ik0xMCAxNCAyMSAzIi8+CiAgPHBhdGggZD0iTTE4IDEzdjZhMiAyIDAgMCAxLTIgMkg1YTIgMiAwIDAgMS0yLTJWOGEyIDIgMCAwIDEgMi0yaDYiLz4KPC9zdmc+) no-repeat;
+      mask: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogIDxwYXRoIGQ9Ik0xNSAzaDZ2NiIvPgogIDxwYXRoIGQ9Ik0xMCAxNCAyMSAzIi8+CiAgPHBhdGggZD0iTTE4IDEzdjZhMiAyIDAgMCAxLTIgMkg1YTIgMiAwIDAgMS0yLTJWOGEyIDIgMCAwIDEgMi0yaDYiLz4KPC9zdmc+)
+        no-repeat;
       mask-size: cover;
       line-height: 1rem;
-      margin-left: .4em;
+      margin-left: 0.4em;
       width: 1rem;
       height: 1rem;
     }
@@ -87,7 +97,8 @@
     padding: 0;
   }
 
-  ul, ol {
+  ul,
+  ol {
     list-style: none;
   }
 }
@@ -118,11 +129,11 @@ input[type='search']::-webkit-search-results-decoration {
 }
 
 .toggle.checked {
-  background-color: #0070f3  !important;;
+  background-color: #0070f3 !important;
 }
 
 .icon {
-  margin-right: .25em;
+  margin-right: 0.25em;
   height: 1em;
   width: 1em;
 }
