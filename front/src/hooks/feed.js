@@ -8,7 +8,6 @@ import useSWRImmutable from 'swr/immutable'
 const fetcher = (url) =>
   fetch(url, {
     method: 'GET',
-    credentials: 'omit',
     headers: {
       'Content-Type': 'text/xml',
       Accept: 'text/xml, application/xml',

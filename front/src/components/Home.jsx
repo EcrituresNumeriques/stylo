@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation, Trans } from 'react-i18next'
 import styloLogo from '/images/logo.svg'
+import { applicationConfig } from '../config.js'
 
 import Loading from './molecules/Loading.jsx'
 import Publication from './publications/Publication.jsx'
@@ -12,17 +13,17 @@ import styles from '../layout.module.scss'
 import headerStyles from './header.module.scss'
 import buttonStyles from './button.module.scss'
 import clsx from 'clsx'
-
 import { useActiveUserId } from '../hooks/user.js'
 import { useFeed } from '../hooks/feed.js'
+const { backendEndpoint } = applicationConfig
 
 export default function Home() {
   const { t } = useTranslation('home')
   const { t: tGlobal } = useTranslation()
   const userId = useActiveUserId()
 
-  const styloFeed = useFeed('/feed/publications')
-  const releaseFeed = useFeed('/feed/releases')
+  const styloFeed = useFeed(`${backendEndpoint}/feed/publications`)
+  const releaseFeed = useFeed(`${backendEndpoint}/feed/releases`)
 
   return (
     <>

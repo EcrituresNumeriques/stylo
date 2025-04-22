@@ -136,16 +136,6 @@ export default defineConfig(async ({ mode }) => {
           prependPath: false,
           ws: true
         },
-        '/feed/publications': {
-          target: 'https://dev.revue30.org/blog/feed.xml',
-          changeOrigin: true,
-          ignorePath: true,
-        },
-        '/feed/releases': {
-          target: 'https://github.com/EcrituresNumeriques/stylo/releases.atom',
-          changeOrigin: true,
-          ignorePath: true,
-        }
       },
     },
 
