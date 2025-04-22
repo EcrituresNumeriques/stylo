@@ -22,7 +22,7 @@ import { BibLatexParser } from 'biblatex-csl-converter'
 
 /**
  * @param bibtex
- * @return {Promise<BibTeXParseResult>}
+ * @returns {Promise<BibTeXParseResult>}
  */
 export async function parse(bibtex) {
   const parser = new BibLatexParser(bibtex, {

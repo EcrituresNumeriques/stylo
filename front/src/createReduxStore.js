@@ -65,6 +65,8 @@ export const initialState = {
 /**
  *
  * @param {*} state
+ * @param initialState
+ * @param handlers
  * @returns
  */
 function createReducer(initialState, handlers) {
