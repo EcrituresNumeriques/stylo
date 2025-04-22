@@ -14,6 +14,7 @@ import CollaborativeEditorStatus from './CollaborativeEditorStatus.jsx'
 import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 
 import styles from './CollaborativeTextEditor.module.scss'
+import MonacoEditor from '../molecules/MonacoEditor.jsx'
 
 /**
  * @param {object} props
@@ -131,7 +132,7 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
         <CollaborativeEditorWebSocketStatus status={websocketStatus} />
       </div>
       {version && (
-        <Editor
+        <MonacoEditor
           width={'100%'}
           height={'auto'}
           value={version.md}
@@ -144,7 +145,7 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
       <div
         className={clsx(styles.collaborativeEditor, versionId && styles.hidden)}
       >
-        <Editor
+        <MonacoEditor
           width={'100%'}
           height={'auto'}
           options={options}
