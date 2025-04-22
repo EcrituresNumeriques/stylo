@@ -13,7 +13,7 @@ import TagEditForm from './TagEditForm.jsx'
 
 import styles from './tagsList.module.scss'
 
-export default function TagsList({ action, ActionIcon }) {
+export default function TagsList({ action }) {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const selectedTagIds = useSelector(
