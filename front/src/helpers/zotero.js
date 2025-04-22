@@ -43,7 +43,7 @@ const baseWebUrl = 'https://www.zotero.org/'
  */
 
 /**
- * @typedef {Object} ZoteroKeyResponse
+ * @typedef {object} ZoteroKeyResponse
  * @property {string} userID
  * @property {string} key
  * @property {string} username

@@ -27,6 +27,7 @@ module.exports = {
       files: ['**/locales/**/*.json'],
       rules: {
         'no-irregular-whitespace': ['off'],
+        'jsonc/sort-keys': ['error', 'asc'],
       },
     },
   ],

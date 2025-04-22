@@ -28,7 +28,7 @@ export default function useFetchData(
 
 /**
  * Fetch data conditionally using SWR.
- * @param {object|function} param config
+ * @param {object | Function} param config
  * @param {SWRConfiguration} [options] - SWR options (optional)
  * @returns {SWRResponse}
  */
