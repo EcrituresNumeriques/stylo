@@ -78,6 +78,9 @@ module.exports = {
     async logout(_, args, { token, user, session }) {
       isUser({}, { token, user })
 
+      delete session.fromAccount
+      delete session.pendingRegistration
+
       session.destroy()
 
       return null

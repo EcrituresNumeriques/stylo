@@ -21,6 +21,8 @@ function stampAuth(service, { alreadyLoggedIn = false } = {}) {
     const origin = new URL(req.header('origin') || req.header('referer'))
     req.session.origin = `${origin.protocol}//${origin.host}`
 
+    delete req.session.fromAccount
+
     // mark a multi-step request as originating from a logged in account (`passport.authorize()` scheme)
     if (alreadyLoggedIn) {
       req.session.fromAccount = service
