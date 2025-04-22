@@ -18,7 +18,7 @@ export default function UserMenu() {
 
   const handleLogout = useCallback(() => {
     setIsComponentVisible(false)
-    logout().then()
+    logout()
   }, [])
 
   const { ref, isComponentVisible, setIsComponentVisible } =
