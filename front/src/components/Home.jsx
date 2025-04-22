@@ -173,7 +173,12 @@ export default function Home() {
         <p>{t('contactus.description')}</p>
 
         <p className={styles.spacer}>
-          <a href="#" className={buttonStyles.linkPrimary} target="_blank">
+          <a
+            href="https://discussions.revue30.org/c/stylo/"
+            className={buttonStyles.linkPrimary}
+            rel="noreferrer noopener"
+            target="_blank"
+          >
             {t('contactus.join')}
           </a>
         </p>
