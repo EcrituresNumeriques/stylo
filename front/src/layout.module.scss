@@ -21,7 +21,9 @@ $base-spacing: 2em;
     margin-bottom: 0;
   }
 
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     margin: $base-spacing 0 calc($base-spacing / 2) 0;
   }
 
@@ -29,15 +31,18 @@ $base-spacing: 2em;
     margin-top: calc($base-spacing / 2);
   }
 
-  h1, .h1 {
+  h1,
+  .h1 {
     font-size: 2.5rem;
   }
 
-  h2, .h2 {
+  h2,
+  .h2 {
     font-size: 2rem;
   }
 
-  h3, .h3 {
+  h3,
+  .h3 {
     font-size: 1.5rem;
   }
 
@@ -51,10 +56,11 @@ $base-spacing: 2em;
   }
 
   ol {
-    list-style:decimal;
+    list-style: decimal;
   }
 
-  ul, ol {
+  ul,
+  ol {
     list-style-position: inside;
     margin: 0 0 $base-spacing 0;
 
@@ -67,7 +73,6 @@ $base-spacing: 2em;
     white-space: pre-wrap;
   }
 }
-
 
 .sectionPrimary {
   @extend .section;
@@ -117,7 +122,6 @@ $base-spacing: 2em;
   }
 }
 
-
 /*
  * Block level/paragraph elements
  */
@@ -131,7 +135,7 @@ $base-spacing: 2em;
 
 .horizontalActions {
   display: flex;
-  gap: $base-spacing
+  gap: $base-spacing;
 }
 
 .verticalActions {
@@ -139,7 +143,7 @@ $base-spacing: 2em;
   flex-direction: column;
 }
 
- /*
+/*
   * Organizing content altogether
   */
 .desktopGridOf3 {

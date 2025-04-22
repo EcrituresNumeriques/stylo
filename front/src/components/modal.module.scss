@@ -54,12 +54,12 @@ dialog::backdrop {
 }
 
 @keyframes slide-in {
-  0%{
-    opacity:0;
+  0% {
+    opacity: 0;
     transform: translate3d(0px, -30px, 0px);
   }
-  100%{
-    opacity:1;
+  100% {
+    opacity: 1;
     transform: translate3d(0px, 0px, 0px);
   }
 }
@@ -78,5 +78,5 @@ dialog::backdrop {
   font-size: 0.9rem;
   align-items: center;
   margin-left: auto;
-  display: flex
+  display: flex;
 }

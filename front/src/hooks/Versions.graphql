@@ -37,7 +37,12 @@ query getArticleVersion($versionId: ID!) {
   }
 }
 
-mutation createVersion($articleId: ID!, $userId: ID!, $major: Boolean!, $message: String) {
+mutation createVersion(
+  $articleId: ID!
+  $userId: ID!
+  $major: Boolean!
+  $message: String
+) {
   article(articleId: $articleId) {
     createVersion(
       articleVersionInput: { major: $major, message: $message, userId: $userId }

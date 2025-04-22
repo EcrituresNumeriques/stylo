@@ -11,6 +11,7 @@ export const applicationConfig = {
   websocketEndpoint: toWebsocketEndpoint(__BACKEND_ENDPOINT__),
 }
 
+console.log('gg')
 function toWebsocketEndpoint(endpoint) {
   if (endpoint) {
     const endpointUrl = new URL(endpoint)

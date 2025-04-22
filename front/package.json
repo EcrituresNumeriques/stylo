@@ -106,6 +106,7 @@
     "eslint-plugin-jsonc": "^2.5.0",
     "eslint-plugin-react": "^7.27.0",
     "eslint-plugin-vitest": "^0.5.4",
+    "husky": "^9.1.7",
     "jsdom": "^26.0.0",
     "lodash.merge": "^4.6.2",
     "prettier": "^2.3.0",
