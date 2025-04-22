@@ -94,16 +94,6 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
 
-      - name: Run backup playbook
-        working-directory: ./infrastructure
-        run: |
-          ansible-playbook -v -i inventories/prod \
-            --extra-vars "@vault-prod.yml" \
-            --extra-vars "app_version=${{ inputs.release-version }}" \
-            --private-key ~/.ssh/id_ed25519 \
-            --vault-password-file ./.ansible-vault-password \
-            backup-playbook.yml
-
       - name: Run deployment playbook
         working-directory: ./infrastructure
         run: |

@@ -11,6 +11,10 @@ on:
         description: Trigger deploy?
         type: boolean
         default: true
+      trigger-backup:
+        description: Trigger backup?
+        type: boolean
+        default: true
 
 jobs:
   release:
@@ -37,7 +41,15 @@ jobs:
           git push origin "v$RELEASE_VERSION"
         env:
           RELEASE_VERSION: ${{ inputs.version }}
-          BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
+  call-backup-prod:
+    uses: EcrituresNumeriques/stylo/.github/workflows/backup-prod.yml@master
+    with:
+      release-version: ${{ inputs.version }}
+    secrets: inherit
+    needs: [release]
+    if: ${{ inputs.trigger-backup }}
 
   call-build-deploy-docker:
     uses: EcrituresNumeriques/stylo/.github/workflows/docker.yml@master
