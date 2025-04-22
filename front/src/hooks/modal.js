@@ -13,14 +13,14 @@ export function useModal() {
     ref.current.close()
     setVisible(false)
     document.body.removeAttribute('data-scrolling')
-    document.removeEventListener('click', onClick)
+    document.removeEventListener('mousedown', onClick)
   }
 
   function show() {
     ref.current.showModal()
     setVisible(true)
     document.body.setAttribute('data-scrolling', 'false')
-    document.addEventListener('click', onClick)
+    document.addEventListener('mousedown', onClick)
   }
 
   return {

@@ -1,7 +1,8 @@
-import { useInput } from '@geist-ui/core'
-import React, { useCallback, useRef } from 'react'
+import { useToasts } from '@geist-ui/core'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { randomColor } from '../../helpers/colors.js'
+
+import { fromFormData } from '../../helpers/forms.js'
 import { useWorkspaceActions } from '../../hooks/workspace.js'
 
 import Field from '../Field.jsx'
@@ -17,45 +18,48 @@ import styles from './createWorkspace.module.scss'
  */
 export default function CreateWorkspace({ onSubmit, onCancel }) {
   const { t } = useTranslation()
-  const { state: name, bindings: nameBindings } = useInput('')
-  const { state: description, bindings: descriptionBindings } = useInput('')
-  const { state: color, bindings: colorBindings } = useInput(randomColor())
-  const nameInputRef = useRef(null)
+  const { setToast } = useToasts()
   const { addWorkspace } = useWorkspaceActions()
 
-  const handleSubmit = useCallback(
-    async (event) => {
-      event.preventDefault()
-      await addWorkspace({
-        name,
-        color,
-        description,
+  const handleSubmit = useCallback(async (event) => {
+    event.preventDefault()
+    try {
+      const createWorkspaceInput = fromFormData(event.target)
+      await addWorkspace(createWorkspaceInput)
+      setToast({
+        text: t('workspace.create.successNotification'),
+        type: 'default',
       })
+
       onSubmit()
-    },
-    [name, color, description]
-  )
+    } catch (err) {
+      setToast({
+        text: t('workspace.create.errorNotification', { errMessage: err }),
+        type: 'error',
+      })
+    }
+  }, [])
 
   return (
     <section>
       <form onSubmit={handleSubmit} className={styles.form}>
         <Field
           autoFocus={true}
-          ref={nameInputRef}
-          {...nameBindings}
-          label={t('workspace.createForm.nameField')}
+          required={true}
           type="text"
+          name="name"
+          label={t('workspace.createForm.nameField')}
           className={styles.name}
         />
         <Field
           label={t('workspace.createForm.descriptionField')}
           type="text"
-          {...descriptionBindings}
+          name="description"
         />
         <Field
           label={t('workspace.createForm.colorField')}
           type="color"
-          {...colorBindings}
+          name="color"
         />
         <FormActions
           onCancel={onCancel}
