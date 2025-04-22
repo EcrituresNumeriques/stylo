@@ -1,3 +1,17 @@
+fragment basicVersionFields on Version {
+  _id
+  version
+  revision
+  message
+  createdAt
+  owner {
+    displayName
+    username
+  }
+  type
+}
+
+
 query compareVersion($to: ID!, $article: ID!, $hasVersion: Boolean!) {
   version(version: $to) @include(if: $hasVersion) {
     _id
@@ -22,16 +36,7 @@ query getArticleVersions($article: ID!) {
     _id
     updatedAt
     versions {
-      _id
-      version
-      revision
-      message
-      updatedAt
-      owner {
-        displayName
-        username
-      }
-      type
+      ...basicVersionFields
     }
   }
 }
@@ -80,16 +85,7 @@ query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
     }
 
     versions {
-      _id
-      version
-      revision
-      message
-      updatedAt
-      owner {
-        displayName
-        username
-      }
-      type
+      ...basicVersionFields
     }
 
     workingVersion @skip(if: $hasVersion) {
@@ -101,34 +97,20 @@ query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
   }
 
   version(version: $version) @include(if: $hasVersion) {
-    _id
+    ...basicVersionFields
     md
     bib
     bibPreview
     metadata
-    message
-    revision
-    version
-    owner {
-      displayName
-      username
-    }
   }
 }
 
 query getArticleVersion($versionId: ID!) {
   version(version: $versionId) {
-    _id
+    ...basicVersionFields
     md
     bib
     bibPreview
     metadata
-    message
-    revision
-    version
-    owner {
-      displayName
-      username
-    }
   }
 }
