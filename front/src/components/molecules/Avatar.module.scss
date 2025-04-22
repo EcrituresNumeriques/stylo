@@ -1,0 +1,25 @@
+.avatar {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #eaeaea;
+  border-radius: 50%;
+  vertical-align: top;
+  background-color: #fff;
+  box-sizing: border-box;
+  width: calc(1.75 * 16px);
+  height: calc(1.75 * 16px);
+  padding: 0 0 0 0;
+}
+
+.text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: calc(1 * 16px);
+  text-align: center;
+  transform: translate(-50%, -50%) scale(0.65);
+  white-space: nowrap;
+  user-select: none;
+  text-transform: lowercase;
+}

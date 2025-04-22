@@ -1,6 +1,7 @@
 import React from 'react'
-import { Avatar, Tooltip } from '@geist-ui/core'
 import { useSelector } from 'react-redux'
+
+import Avatar from '../molecules/Avatar.jsx'
 
 import styles from './CollaborativeEditorWriters.module.scss'
 
@@ -8,24 +9,18 @@ export default function CollaborativeEditorWriters() {
   const articleWriters = useSelector((state) => state.articleWriters)
 
   return (
-    <Avatar.Group>
+    <div>
       {Object.entries(articleWriters).map(([key, writer]) => {
         return (
-          <Tooltip
-            key={key}
-            text={writer.user?.displayName}
-            className={styles.avatar}
-            placement="topStart"
-            leaveDelay={0}
-          >
-            <Avatar text={writer.user?.displayName} stacked />
+          <div key={key} className={styles.writer}>
+            <Avatar text={writer.user?.displayName} />
             <div
               className={styles.dot}
               style={{ backgroundColor: writer.user?.color }}
             />
-          </Tooltip>
+          </div>
         )
       })}
-    </Avatar.Group>
+    </div>
   )
 }

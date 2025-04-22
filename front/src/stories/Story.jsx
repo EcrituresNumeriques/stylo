@@ -13,6 +13,7 @@ import i18n from '../i18n.js'
 import buttonStyles from '../components/button.module.scss'
 import styles from '../layout.module.scss'
 import storyStyles from './story.module.scss'
+import Avatar from '../components/molecules/Avatar.jsx'
 
 export default function Story() {
   return (
@@ -228,6 +229,12 @@ export default function Story() {
           creator={'ggrossetie'}
           date={new Date('2025-03-23T03:24:00')}
         />
+      </section>
+
+      <section aria-label="Avatars">
+        <Avatar text="GG" />
+        <Avatar text="TP" />
+        <Avatar text="Roch" />
       </section>
     </div>
   )
