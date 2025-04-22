@@ -1,3 +1,16 @@
+fragment basicVersionFields on Version {
+  _id
+  version
+  revision
+  message
+  createdAt
+  owner {
+    displayName
+    username
+  }
+  type
+}
+
 query renameArticle($articleId: ID!, $title: String!) {
   article(article: $articleId) {
     rename(title: $title)
@@ -98,5 +111,77 @@ query getArticleTags($articleId: ID!) {
       name
       color
     }
+  }
+}
+
+query updateWorkingVersion($articleId: ID!, $content: WorkingVersionInput!) {
+  article(article: $articleId) {
+    updateWorkingVersion(content: $content) {
+      updatedAt
+    }
+  }
+}
+
+query getArticleWorkingCopy($articleId: ID!) {
+  article(article: $articleId) {
+    _id
+    title
+    zoteroLink
+    updatedAt
+
+    workingVersion {
+      md
+      bib
+      bibPreview
+      metadata
+    }
+  }
+}
+
+query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
+  article(article: $article) {
+    _id
+    title
+    zoteroLink
+    updatedAt
+
+    # actually, as we do not request new article data when switching from WRITE to PREVIEW
+    # we skip this data fetching optimization for now
+    # css @include(if: $isPreview)
+    preview {
+      stylesheet
+      template
+    }
+
+    owner {
+      displayName
+      username
+    }
+
+    contributors {
+      user {
+        displayName
+        username
+      }
+    }
+
+    versions {
+      ...basicVersionFields
+    }
+
+    workingVersion @skip(if: $hasVersion) {
+      md
+      bib
+      bibPreview
+      metadata
+    }
+  }
+
+  version(version: $version) @include(if: $hasVersion) {
+    ...basicVersionFields
+    md
+    bib
+    bibPreview
+    metadata
   }
 }
