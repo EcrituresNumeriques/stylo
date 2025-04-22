@@ -1,4 +1,12 @@
 import { useSelector } from 'react-redux'
+
+import { toEntries } from '../helpers/bibtex.js'
+import { executeQuery } from '../helpers/graphQL.js'
+import useFetchData, {
+  useConditionalFetchData,
+  useMutateData,
+} from './graphql.js'
+
 import {
   addTags,
   deleteArticle,
@@ -6,22 +14,16 @@ import {
   getArticleTags,
   removeTags,
   renameArticle,
-} from '../components/Article.graphql'
-import {
-  getArticleVersion,
-  getArticleVersions,
   getArticleWorkingCopy,
   getEditableArticle,
+  updateWorkingVersion,
+} from '../components/Article.graphql'
+import {
+  createVersion,
+  getArticleVersion,
+  getArticleVersions,
   renameVersion,
-} from '../components/Write/Write.graphql'
-import { toEntries } from '../helpers/bibtex.js'
-import { executeQuery } from '../helpers/graphQL.js'
-import { createVersion, updateWorkingVersion } from './ArticleService.graphql'
-
-import useFetchData, {
-  useConditionalFetchData,
-  useMutateData,
-} from './graphql.js'
+} from './Versions.graphql'
 
 export function useArticleTagActions({ articleId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
@@ -239,8 +241,8 @@ export function useEditableArticle({ articleId, versionId }) {
   }
 
   const bibtext = hasVersion
-    ? (data?.article?.version?.bib ?? '')
-    : (data?.article?.workingVersion?.bib ?? '')
+    ? data?.article?.version?.bib ?? ''
+    : data?.article?.workingVersion?.bib ?? ''
 
   const entries = toEntries(bibtext)
 
@@ -253,50 +255,6 @@ export function useEditableArticle({ articleId, versionId }) {
     },
     isLoading,
     error,
-  }
-}
-
-export function useBibliographyActions({ articleId }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const activeUser = useSelector((state) => state.activeUser)
-  const { mutate } = useMutateData({
-    query: getEditableArticle,
-    variables: {
-      article: articleId,
-      hasVersion: false,
-      version: '',
-    },
-  })
-
-  const updateBibliography = async (bib) => {
-    await executeQuery({
-      sessionToken,
-      query: updateWorkingVersion,
-      variables: {
-        userId: activeUser._id,
-        articleId: articleId,
-        content: { bib },
-      },
-      type: 'mutate',
-    })
-    await mutate(
-      async (data) => {
-        return {
-          article: {
-            ...data,
-            workingVersion: {
-              ...data.workingVersion,
-              bib: bib,
-            },
-          },
-        }
-      },
-      { revalidate: false }
-    )
-  }
-
-  return {
-    updateBibliography,
   }
 }
 

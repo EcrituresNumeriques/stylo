@@ -1,0 +1,50 @@
+fragment basicVersionFields on Version {
+  _id
+  version
+  revision
+  message
+  createdAt
+  owner {
+    displayName
+    username
+  }
+  type
+}
+
+query renameVersion($version: ID!, $name: String) {
+  version(version: $version) {
+    rename(name: $name)
+  }
+}
+
+query getArticleVersions($article: ID!) {
+  article(article: $article) {
+    _id
+    updatedAt
+    versions {
+      ...basicVersionFields
+    }
+  }
+}
+
+query getArticleVersion($versionId: ID!) {
+  version(version: $versionId) {
+    ...basicVersionFields
+    md
+    bib
+    bibPreview
+    metadata
+  }
+}
+
+mutation createVersion($articleId: ID!, $userId: ID!, $major: Boolean!, $message: String) {
+  article(articleId: $articleId) {
+    createVersion(
+      articleVersionInput: { major: $major, message: $message, userId: $userId }
+    ) {
+      versions {
+        ...basicVersionFields
+      }
+    }
+  }
+}
