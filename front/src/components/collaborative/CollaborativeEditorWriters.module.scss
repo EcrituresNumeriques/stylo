@@ -10,5 +10,10 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  z-index: 99;
+  z-index: 9;
+}
+
+.writer {
+  position: relative;
+  margin: 0 0 0 calc(-0.625 * 16px);
 }
