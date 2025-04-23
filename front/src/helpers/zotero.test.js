@@ -1,4 +1,4 @@
-import { describe, test, expect, vi, beforeEach } from 'vitest'
+import { describe, test, expect, beforeEach } from 'vitest'
 import {
   fetchBibliographyFromCollectionHref,
   prefixLegacyUrl,
@@ -6,13 +6,12 @@ import {
 } from './zotero'
 
 describe('fetchBibliographyFromCollection', () => {
-  fetch
-    .mockRestore()
-    .mockResolvedValueOnce({
-      headers: new Headers({
-        Link: '<https://api.zotero.org/page/2>; rel="next"',
-      }),
-      text: vi.fn().mockResolvedValue(`
+  beforeEach(() => {
+    fetch
+      .mockRestore()
+      .mockResolvedValueOnce(
+        new Response(
+          `
 @book{grossetie_test1_nodate,
 	title = {test1},
 	publisher = {Moi},
@@ -23,26 +22,43 @@ describe('fetchBibliographyFromCollection', () => {
 	title = {Hello},
 	shorttitle = {Hi},
 	author = {Grossetie, Guillaume},
-}`),
-    })
-    .mockResolvedValueOnce({
-      headers: new Headers({
-        Link: '<https://api.zotero.org/page/3>; rel="next"',
-      }),
-      text: vi.fn().mockResolvedValue(''),
-    })
-    .mockResolvedValueOnce({
-      headers: new Headers({}),
-      text: vi.fn().mockResolvedValue(`
+}`,
+          {
+            headers: new Headers({
+              Link: '<https://api.zotero.org/page/2>; rel="next"',
+            }),
+            status: 200,
+          }
+        )
+      )
+      .mockResolvedValueOnce(
+        new Response('', {
+          status: 200,
+          headers: new Headers({
+            Link: '<https://api.zotero.org/page/3>; rel="next"',
+          }),
+        })
+      )
+      .mockResolvedValueOnce(
+        new Response('', {
+          status: 504,
+        })
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          `
 @misc{grossetie_test_nodate,
 	type = {yuzutech.fr},
 	title = {test},
 	journal = {How to},
 	author = {GROSSETIE, guillaume},
-}`),
-    })
+}`,
+          { status: 200 }
+        )
+      )
+  })
 
-  test('fetches a paginated collection of more than 25 elements', async () => {
+  test('fetches a paginated collection with retriable errors', async () => {
     const zoteroId = '2478772/collections/UGF4W4PZ'
     const bib = await fetchBibliographyFromCollectionHref({
       collectionHref: `https://api.zotero.org/groups/${zoteroId}`,
@@ -107,6 +123,32 @@ describe('toApiUrl', () => {
     return expect(toApiUrl(prefixLegacyUrl(url))).resolves.toBe(
       'https://api.zotero.org/groups/2381910/collections/P3JEQVU4/items'
     )
+  })
+
+  test('converts a library url from a group selector', async () => {
+    const expectation =
+      'https://api.zotero.org/users/716114/collections/6G3G47QK/items'
+
+    await expect(
+      toApiUrl(
+        'https://api.zotero.org/users/716114/collections/6G3G47QK',
+        fakeToken
+      )
+    ).resolves.toBe(expectation)
+    await expect(toApiUrl(expectation, fakeToken)).resolves.toBe(expectation)
+  })
+
+  test('converts a group library url from a group selector', async () => {
+    const expectation =
+      'https://api.zotero.org/groups/716114/collections/6G3G47QK/items'
+
+    await expect(
+      toApiUrl(
+        'https://api.zotero.org/groups/716114/collections/6G3G47QK',
+        fakeToken
+      )
+    ).resolves.toBe(expectation)
+    await expect(toApiUrl(expectation, fakeToken)).resolves.toBe(expectation)
   })
 
   test('converts library url', async () => {

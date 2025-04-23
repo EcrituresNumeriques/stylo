@@ -158,6 +158,10 @@
   "bibliography.errors_one": "Thereʼs a syntax error in your BibTeX. <1>Unable to save.</1>",
   "bibliography.errors_other": "There are {{count}} syntax errors in your BibTeX. <1>Unable to save.</1>",
   "bibliography.importZotero.button": "Import via Zotero",
+  "bibliography.importZotero.collections": {
+    "leaf": "{{ name }} ({{ count }} elementos)",
+    "section": "{{ name }} ({{ type }})"
+  },
   "bibliography.importZotero.title": "Import via Zotero",
   "bibliography.readonly": "The bibliography is editable only when you are the only one working on the article.",
   "bibliography.readonly.references_one": "Thereʼs one reference in your BibTeX.",
