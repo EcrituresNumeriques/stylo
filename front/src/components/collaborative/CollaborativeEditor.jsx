@@ -17,7 +17,7 @@ export default function CollaborativeEditor() {
   if (compareTo) {
     return (
       <section className={styles.container}>
-        <div className={styles.main} role="main">
+        <div className={styles.main}>
           <DiffEditor
             className={styles.diffEditor}
             width={'100%'}
