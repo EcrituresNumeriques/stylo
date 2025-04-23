@@ -109,12 +109,21 @@ async function fetchAllBibTeX(url, key, agg = []) {
   if (key) {
     url.searchParams.set('key', key)
   }
+
   url.searchParams.set('format', 'bibtex')
   const response = await fetch(url.toString(), {
     method: 'GET',
     credentials: 'same-origin',
     'Zotero-API-Version': '3',
   })
+
+  if (!response.ok) {
+    const error = new Error(response.statusText)
+    error.statusCode = response.status
+    error.response = response
+
+    throw error
+  }
 
   const { headers } = response
   const bib = await response.text()

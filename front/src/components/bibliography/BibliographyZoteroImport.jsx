@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Rss, Clipboard } from 'lucide-react'
+import { useToasts } from '@geist-ui/core'
 
 import {
   fetchAllCollectionsPerLibrary,
@@ -31,6 +32,7 @@ export default function BibliographyZoteroImport({
   onChange,
 }) {
   const { t } = useTranslation()
+  const { setToast } = useToasts()
   const zoteroToken = useSelector(
     (state) => state.activeUser.authProviders?.zotero?.token
   )
@@ -83,7 +85,10 @@ export default function BibliographyZoteroImport({
         }
         await query({ query: linkToZoteroQuery, variables })
       } catch (err) {
-        alert(err)
+        setToast({
+          type: 'error',
+          text: err,
+        })
       }
     },
     [initialZoteroLink]
@@ -140,11 +145,25 @@ export default function BibliographyZoteroImport({
         collectionHref: await toApiUrl(collectionHref),
       })
       onChange(result)
+      setToast({
+        text: t('bibliography.importZotero.success'),
+      })
     } catch (err) {
-      console.error(
-        `Something went wrong while fetching bibliography from Zotero: ${collectionHref}`,
-        err
-      )
+      setToast({
+        type: 'error',
+        text: t(
+          [
+            `bibliography.importZotero.error.e${err.statusCode}`,
+            'bibliography.importZotero.error.generic',
+          ],
+          { message: err.message }
+        ),
+      })
+
+      // bubble errors we're responsible of to Sentry
+      if ([403, undefined].includes(err.statusCode)) {
+        throw err
+      }
     } finally {
       setSaving(false)
     }
