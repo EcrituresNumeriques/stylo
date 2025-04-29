@@ -1,5 +1,5 @@
 const YAML = require('js-yaml')
-const { getYDoc } = require('y-websocket/bin/utils')
+const { getYDoc } = require('@y/websocket-server/utils')
 
 const Article = require('../models/article.js')
 const User = require('../models/user.js')

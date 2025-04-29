@@ -69,7 +69,7 @@ const {
 const { createLoaders } = require('./loaders.js')
 
 const Y = require('yjs')
-const yjsUtils = require('y-websocket/bin/utils')
+const yjsUtils = require('@y/websocket-server/utils')
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
 const { mongo } = require('mongoose')
