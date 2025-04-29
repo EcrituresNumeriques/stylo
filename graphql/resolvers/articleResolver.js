@@ -178,6 +178,10 @@ module.exports = {
       const { title, tags, workspaces } = args.createArticleInput
 
       //Add default article + default version
+      const yDoc = new Y.Doc({ gc: false })
+      const yText = yDoc.getText('main')
+      yText.insert(0, '')
+      const documentState = Y.encodeStateAsUpdate(yDoc) // is a Uint8Array
       const newArticle = await Article.create({
         title,
         owner: user,
@@ -185,6 +189,7 @@ module.exports = {
           md: '',
           bib: '',
           metadata: {},
+          ydoc: Buffer.from(documentState).toString('base64'),
         },
       })
 
