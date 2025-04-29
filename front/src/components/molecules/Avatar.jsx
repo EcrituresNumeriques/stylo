@@ -7,7 +7,7 @@ import styles from './Avatar.module.scss'
  * @param {string} props.text
  * @returns {Element}
  */
-export default function Avatar({ text }) {
+export default function Avatar({ text = '' }) {
   const safeText = text.length <= 4 ? text : text.slice(0, 3)
   return (
     <figure className={styles.avatar}>

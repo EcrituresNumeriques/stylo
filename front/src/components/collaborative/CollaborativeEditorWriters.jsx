@@ -11,14 +11,14 @@ export default function CollaborativeEditorWriters() {
   const { t } = useTranslation()
 
   return (
-    <ul aria-label={t('article.editors.label')}>
+    <ul aria-label={t('article.editors.label')} className={styles.avatarsList}>
       {Object.entries(articleWriters).map(([key, writer]) => {
         return (
           <li key={key} className={styles.writer}>
             <Avatar text={writer.user?.displayName} />
             <div
               className={styles.dot}
-              style={{ backgroundColor: writer.user?.color }}
+              style={{ backgroundColor: writer.user?.color ?? '#ccc' }}
             />
           </li>
         )
