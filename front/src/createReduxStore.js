@@ -1,6 +1,8 @@
 import * as Sentry from '@sentry/react'
 import { applyMiddleware, compose, createStore } from 'redux'
 
+import { computeTextStats } from './helpers/markdown.js'
+
 const sentryReduxEnhancer = Sentry.createReduxEnhancer()
 const sessionTokenName = 'sessionToken'
 
@@ -208,28 +210,10 @@ function logoutUser() {
   return structuredClone(initialState)
 }
 
-const SPACE_RE = /\s+/gi
-const CITATION_RE = /(\[@[\w-]+)/gi
-const REMOVE_MARKDOWN_RE = /[#_*]+\s?/gi
-
 function updateArticleStats(state, { md }) {
-  const text = (md || '').trim()
-
-  const textWithoutMarkdown = text.replace(REMOVE_MARKDOWN_RE, '')
-  const wordCount = textWithoutMarkdown.replace(SPACE_RE, ' ').split(' ').length
-
-  const charCountNoSpace = textWithoutMarkdown.replace(SPACE_RE, '').length
-  const charCountPlusSpace = textWithoutMarkdown.length
-  const citationNb = text.match(CITATION_RE)?.length || 0
-
   return {
     ...state,
-    articleStats: {
-      wordCount,
-      charCountNoSpace,
-      charCountPlusSpace,
-      citationNb,
-    },
+    articleStats: computeTextStats(md),
   }
 }
 
