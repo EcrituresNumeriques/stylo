@@ -70,7 +70,7 @@ export function useCollaboration({ articleId, versionId }) {
       setDynamicStyles(
         Object.entries(writers)
           .map(([key, writer]) => {
-            const color = writer.user.color
+            const color = writer?.user?.color ?? '#ccc'
             return `
 .yRemoteSelection-${key} {
   background-color: ${color};
