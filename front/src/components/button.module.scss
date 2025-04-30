@@ -71,6 +71,11 @@ select.select {
   @include selectFieldContainer;
 }
 
+.inlineGroup {
+  display: flex;
+  gap: 0;
+}
+
 .button {
   @include actionField;
 
@@ -112,10 +117,15 @@ a.icon:after {
   text-decoration: none;
 }
 
-.linkSecondary {
+.linkSecondary:not(.activeLink) {
   @extend .link;
   @extend .secondary;
   text-decoration: none;
+}
+
+.activeLink {
+  @extend .link;
+  @extend .primary;
 }
 
 .loginLink {

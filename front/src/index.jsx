@@ -191,9 +191,9 @@ root.render(
                   <PrivateRoute
                     path={[
                       `/article/:articleId`,
-                      `/article/:articleId/preview`,
-                      `/article/:articleId/compare/:compareTo`,
-                      `/article/:articleId/version/:versionId/preview`,
+                      `/article/:articleId/:mode(preview)`,
+                      `/article/:articleId/:mode(compare)/:compareTo`,
+                      `/article/:articleId/version/:versionId/:mode(preview)`,
                       `/article/:articleId/version/:versionId`,
                       `/article/:articleId/version/:versionId/compare/:compareTo`,
                       // the following route can be removed after the migration since we don't use session anymore

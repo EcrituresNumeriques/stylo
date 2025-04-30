@@ -27,6 +27,12 @@
   "article.editName.buttonCancel": "Cancelar",
   "article.editName.buttonSave": "Guardar",
   "article.editor.edit.title": "Modificar el artículo",
+  "article.editor.modes": {
+    "compare": "Comparar",
+    "edit": "Modificar",
+    "preview": "Vista previa"
+  },
+  "article.editor.modes.menuLabel": "Modos de artículo",
   "article.editors.label": "Editores en línea",
   "article.getTags.error": "No se pueden recuperar las etiquetas : {{errMessage}}",
   "article.legacyEditor.edit.title": "[LEGACY] Modificar el artículo",

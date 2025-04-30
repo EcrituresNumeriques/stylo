@@ -7,6 +7,7 @@ import styles from './Loading.module.scss'
 
 /**
  * @param props
+ * @param {string=} props.className
  * @param {string=} props.label (default: 'Loading…')
  * @param {string=} props.size (default: '1rem')
  * @param {boolean=} props.hidden (default: false)

@@ -134,6 +134,7 @@ query getArticleWorkingCopy($articleId: ID!) {
       bib
       bibPreview
       metadata
+      yaml
     }
   }
 }
@@ -208,6 +209,7 @@ query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
       bib
       bibPreview
       metadata
+      yaml(options: { strip_markdown: true })
     }
   }
 
@@ -217,5 +219,6 @@ query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
     bib
     bibPreview
     metadata
+    yaml(options: { strip_markdown: true })
   }
 }
