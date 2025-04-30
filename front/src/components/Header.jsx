@@ -27,7 +27,7 @@ export default function Header() {
 
   return (
     <Switch>
-      <Route path="*/preview" />
+      <Route path="*/annotate" />
       <Route path="/credentials/auth-callback" />
       <Route path="*">
         <header className={styles.headerContainer} role="banner">

@@ -11,13 +11,11 @@ import CollaborativeEditorActiveVersion from './CollaborativeEditorActiveVersion
  */
 export default function CollaborativeEditorStatus({ versionId }) {
   return (
-    <>
-      <div className={styles.row}>
-        <CollaborativeEditorActiveVersion versionId={versionId} />
-        <div className={styles.writers}>
-          <CollaborativeEditorWriters />
-        </div>
+    <div className={styles.row}>
+      <CollaborativeEditorActiveVersion versionId={versionId} />
+      <div className={styles.writers}>
+        <CollaborativeEditorWriters />
       </div>
-    </>
+    </div>
   )
 }

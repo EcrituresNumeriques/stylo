@@ -96,7 +96,7 @@ export default function CollaborativeEditorMenu({ articleId, versionId }) {
                 />
               </a>
               <a
-                href={`/article/${articleId}/preview`}
+                href={`/article/${articleId}/annotate`}
                 title="Preview (open a new window)"
                 target="_blank"
                 rel="noopener noreferrer"

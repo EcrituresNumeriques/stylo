@@ -1,21 +1,34 @@
-query getCorpus($filter: FilterCorpusInput, $includeArticles: Boolean = false) {
+query getCorpus(
+  $filter: FilterCorpusInput
+  $includeArticles: Boolean = false
+  $includeWorkingVersion: Boolean = false
+) {
   corpus(filter: $filter) {
     _id
     name
     description
+    metadata
+
     creator {
       _id
       displayName
       username
       email
     }
-    metadata
+
     articles @include(if: $includeArticles) {
       article {
         _id
         title
+
+        workingVersion @include(if: $includeWorkingVersion) {
+          md
+          bib
+          yaml(options: { strip_markdown: true })
+        }
       }
     }
+
     createdAt
     updatedAt
   }

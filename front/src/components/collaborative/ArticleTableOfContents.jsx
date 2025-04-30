@@ -13,7 +13,7 @@ export default function ArticleTableOfContents({ onBack }) {
   const articleStructure = useSelector((state) => state.articleStructure)
   const getAnchor = usePandocAnchoring()
   const routeMatch = useRouteMatch()
-  const hasHtmlAnchors = routeMatch.path === '/article/:id/preview'
+  const hasHtmlAnchors = routeMatch.path === '/article/:id/annotate'
   const handleTableOfContentsEntryClicked = useCallback(
     ({ target }) => {
       hasHtmlAnchors

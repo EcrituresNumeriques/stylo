@@ -64,7 +64,7 @@ const Corpus = lazy(() => import('./components/corpus/Corpus.jsx'))
 const Articles = lazy(() => import('./components/Articles.jsx'))
 const Workspaces = lazy(() => import('./components/workspace/Workspaces.jsx'))
 const Credentials = lazy(() => import('./components/Credentials.jsx'))
-const Preview = lazy(() => import('./components/Preview.jsx'))
+const Annotate = lazy(() => import('./components/Annotate.jsx'))
 const Privacy = lazy(() => import('./components/Privacy.jsx'))
 const Story = lazy(() => import('./stories/Story.jsx'))
 const CollaborativeEditor = lazy(
@@ -170,28 +170,30 @@ root.render(
                   {/* Annotate a corpus */}
                   <Route
                     path={[
-                      '/workspaces/:workspaceId/corpus/:id/preview',
-                      '/corpus/:id/preview',
+                      '/workspaces/:workspaceId/corpus/:id/annotate',
+                      '/corpus/:id/annotate',
                     ]}
                     exact
                   >
-                    <Preview strategy="corpus" />
+                    <Annotate strategy="corpus" />
                   </Route>
                   {/* Annotate an article or its version */}
                   <Route
                     path={[
-                      `/article/:id/version/:version/preview`,
-                      `/article/:id/preview`,
+                      `/article/:id/version/:version/annotate`,
+                      `/article/:id/annotate`,
                     ]}
                     exact
                   >
-                    <Preview strategy="article" />
+                    <Annotate strategy="article" />
                   </Route>
                   {/* Collaborative editing */}
                   <PrivateRoute
                     path={[
                       `/article/:articleId`,
+                      `/article/:articleId/preview`,
                       `/article/:articleId/compare/:compareTo`,
+                      `/article/:articleId/version/:versionId/preview`,
                       `/article/:articleId/version/:versionId`,
                       `/article/:articleId/version/:versionId/compare/:compareTo`,
                       // the following route can be removed after the migration since we don't use session anymore

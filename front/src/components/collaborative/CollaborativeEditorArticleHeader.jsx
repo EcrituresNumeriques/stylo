@@ -1,4 +1,5 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 
 import useFetchData from '../../hooks/graphql.js'
 
@@ -11,7 +12,7 @@ import styles from './CollaborativeEditorArticleHeader.module.scss'
 /**
  * @param props
  * @param {string} props.articleId
- * @return {Element}
+ * @returns {import('react').ReactElementElement}
  */
 export default function CollaborativeEditorArticleHeader({ articleId }) {
   const { data, isLoading } = useFetchData(
@@ -29,6 +30,10 @@ export default function CollaborativeEditorArticleHeader({ articleId }) {
   return (
     <header className={styles.header}>
       <h1 className={styles.title}>{data?.article?.title}</h1>
+
+      <Helmet>
+        <title>{data?.article?.title}</title>
+      </Helmet>
     </header>
   )
 }

@@ -381,7 +381,7 @@ export default function Article({
           title={t('article.preview.button')}
           target="_blank"
           className={buttonStyles.icon}
-          to={`/article/${article._id}/preview`}
+          to={`/article/${article._id}/annotate`}
         >
           <Eye />
         </Link>
