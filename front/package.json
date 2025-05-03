@@ -51,7 +51,7 @@
     "js-yaml": "^4.1.0",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
-    "lucide-react": "^0.503.0",
+    "lucide-react": "^0.507.0",
     "monaco-editor": "^0.52.0",
     "object-path-immutable": "^4.1.0",
     "pagedjs": "^0.4.0",
