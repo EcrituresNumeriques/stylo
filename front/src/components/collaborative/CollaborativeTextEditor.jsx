@@ -85,7 +85,13 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
   let timeoutId
   useEffect(() => {
     if (yText) {
-      yText.observe(function () {
+      yText.observe(function (yTextEvent, transaction) {
+        console.debug('yText.observe', {
+          yTextEvent,
+          transaction,
+          text: yText.toString(),
+          delta: yText.toDelta(),
+        })
         dispatch({
           type: 'UPDATE_ARTICLE_WORKING_COPY_STATUS',
           status: 'syncing',
