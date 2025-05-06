@@ -12,15 +12,22 @@ import useFetchData, { useMutateData } from './graphql.js'
 
 export function useActiveWorkspace() {
   return useSelector((state) => {
-    const activeUser = state.activeUser
-    if (activeUser === undefined) {
+    const { activeUser, activeWorkspaceId } = state
+
+    if (!activeWorkspaceId || !activeUser) {
       return undefined
     }
-    const activeWorkspaceId = activeUser.activeWorkspaceId
+
     return activeUser.workspaces?.find(
       (workspace) => workspace._id === activeWorkspaceId
     )
   })
+}
+
+export function useActiveWorkspaceId() {
+  const workspace = useActiveWorkspace()
+
+  return workspace?._id
 }
 
 export function useWorkspaceMembersActions(workspaceId) {

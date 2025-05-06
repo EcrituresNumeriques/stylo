@@ -4,7 +4,7 @@ import { NavLink, Route, Switch } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 import logoContent from '/images/logo.svg?inline'
-import { useActiveWorkspace } from '../hooks/workspace.js'
+import { useActiveWorkspaceId } from '../hooks/workspace.js'
 import { useActiveUserId } from '../hooks/user.js'
 
 import styles from './header.module.scss'
@@ -13,11 +13,7 @@ import UserMenu from './header/UserMenu.jsx'
 
 export default function Header() {
   const { t } = useTranslation()
-  const activeWorkspace = useActiveWorkspace()
-  const activeWorkspaceId = useMemo(
-    () => activeWorkspace?._id,
-    [activeWorkspace]
-  )
+  const activeWorkspaceId = useActiveWorkspaceId()
 
   const baseUrl = useMemo(
     () => (activeWorkspaceId ? `/workspaces/${activeWorkspaceId}` : ''),

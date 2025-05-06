@@ -4,7 +4,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Trans, useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import useFetchData from '../../hooks/graphql.js'
-import { useActiveWorkspace } from '../../hooks/workspace.js'
+import { useActiveWorkspaceId } from '../../hooks/workspace.js'
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 import CorpusArticleItems from './CorpusArticleItems.jsx'
@@ -15,11 +15,7 @@ import { getCorpus } from './Corpus.graphql'
 
 export default function CorpusArticles({ corpusId }) {
   const { t } = useTranslation()
-  const activeWorkspace = useActiveWorkspace()
-  const activeWorkspaceId = useMemo(
-    () => activeWorkspace?._id,
-    [activeWorkspace]
-  )
+  const activeWorkspaceId = useActiveWorkspaceId()
   const { data, isLoading, mutate } = useFetchData(
     {
       query: getCorpus,

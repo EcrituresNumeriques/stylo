@@ -21,7 +21,7 @@ import { Link } from 'react-router-dom'
 import { useArticleActions } from '../hooks/article.js'
 import useFetchData from '../hooks/graphql'
 import { useModal } from '../hooks/modal.js'
-import { useActiveWorkspace } from '../hooks/workspace.js'
+import { useActiveWorkspaceId } from '../hooks/workspace.js'
 
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
@@ -60,11 +60,7 @@ export default function Article({
 }) {
   const activeUser = useSelector((state) => state.activeUser)
   const articleId = useMemo(() => article._id, [article])
-  const activeWorkspace = useActiveWorkspace()
-  const activeWorkspaceId = useMemo(
-    () => activeWorkspace?._id,
-    [activeWorkspace]
-  )
+  const activeWorkspaceId = useActiveWorkspaceId()
   const articleActions = useArticleActions({ articleId })
 
   const { data: contributorsQueryData, error: contributorsError } =

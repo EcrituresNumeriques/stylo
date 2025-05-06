@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react'
-import { useSelector } from 'react-redux'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 
 import { removeArticle, addArticle } from './Workspaces.graphql'
 import styles from './WorkspaceSelectItem.module.scss'
 import { useGraphQLClient } from '../../helpers/graphQL.js'
+import { useActiveWorkspaceId } from '../../hooks/workspace.js'
 
 export default function WorkspaceSelectItem({
   articleId,
@@ -16,7 +16,8 @@ export default function WorkspaceSelectItem({
   onChange,
 }) {
   const { query } = useGraphQLClient()
-  const activeUser = useSelector((state) => state.activeUser)
+  const activeWorkspaceId = useActiveWorkspaceId()
+
   const toggleWorkspaceArticle = useCallback(
     async (event) => {
       event.preventDefault()
@@ -34,7 +35,7 @@ export default function WorkspaceSelectItem({
     <>
       <li
         className={
-          activeUser.activeWorkspaceId === id ? clsx(styles.active) : ''
+          activeWorkspaceId === id ? clsx(styles.active) : ''
         }
       >
         <label className={clsx(styles.workspace, selected && styles.selected)}>
