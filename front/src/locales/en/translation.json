@@ -143,6 +143,7 @@
   "biblatexparser.error.missing_equal_sign": "Missing equal sign line {{line}}, found {{key}}",
   "biblatexparser.error.runaway_key": "Runaway key line {{line}}",
   "biblatexparser.error.token_mismatch": "Token mismatch line {{line}}, expected {{expected}} but found {{found}}",
+  "biblatexparser.error.unknown_uri": "URL of the field {{field_name}} is invalid on line {{line}}.",
   "biblatexparser.warning.unknown_type": "Unknown reference type '{{type_name}}' line {{line}}",
   "bibliography.addReference.button": "Add reference",
   "bibliography.addReference.title": "Add reference",

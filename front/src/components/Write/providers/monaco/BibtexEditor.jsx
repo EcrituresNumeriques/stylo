@@ -1,4 +1,5 @@
-import Editor, { loader } from '@monaco-editor/react'
+import { loader } from '@monaco-editor/react'
+import clsx from 'clsx'
 import * as monaco from 'monaco-editor'
 import React, { useCallback, useMemo } from 'react'
 import fieldStyles from '../../../field.module.scss'
@@ -6,8 +7,9 @@ import fieldStyles from '../../../field.module.scss'
 // Taken from https://github.com/koka-lang/madoko/blob/master/styles/lang/bibtex.json
 import languageDefinition from './lang/bibtex.json'
 import defaultEditorOptions from './options.js'
-import './BibtexEditor.module.scss'
 import MonacoEditor from '../../../molecules/MonacoEditor.jsx'
+
+import styles from './BibtexEditor.module.scss'
 
 loader.config({ monaco })
 
@@ -46,7 +48,7 @@ export default function MonacoBibtexEditor({
     <MonacoEditor
       height={height}
       defaultValue={text}
-      className={fieldStyles.textEditor}
+      className={clsx(fieldStyles.textEditor, styles.editor)}
       defaultLanguage="bibtex"
       onChange={onTextUpdate}
       options={options}
