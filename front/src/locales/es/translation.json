@@ -139,6 +139,7 @@
   "article.shareModal.title": "Compartir lʼartículo con un contacto",
   "article.stats.chars": "Caracteres : {{count}} (con espacios : {{countWithSpaces}})",
   "article.stats.citations": "Citas : {{count}}",
+  "article.stats.menuLabel": "Estadísticas del artículo",
   "article.stats.words": "Palabras : {{count}}",
   "article.tags.title": "Etiquetas",
   "article.versions.title": "Versiones",
