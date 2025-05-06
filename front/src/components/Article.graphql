@@ -134,7 +134,42 @@ query getArticleWorkingCopy($articleId: ID!) {
       bib
       bibPreview
       metadata
+      yaml
     }
+  }
+}
+
+query getArticle($id: ID!, $version: ID!, $hasVersion: Boolean!) {
+  article(article: $id) {
+    _id
+    title
+    updatedAt
+
+    # actually, as we do not request new article data when switching from WRITE to PREVIEW
+    # we skip this data fetching optimization for now
+    # css @include(if: $isPreview)
+    preview {
+      stylesheet
+      template
+    }
+
+    owner {
+      displayName
+      username
+    }
+
+    workingVersion @skip(if: $hasVersion) {
+      md
+      bib
+      yaml(options: { strip_markdown: true })
+    }
+  }
+
+  version(version: $version) @include(if: $hasVersion) {
+    name
+    md
+    bib
+    yaml(options: { strip_markdown: true })
   }
 }
 
@@ -174,6 +209,7 @@ query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
       bib
       bibPreview
       metadata
+      yaml(options: { strip_markdown: true })
     }
   }
 
@@ -183,5 +219,6 @@ query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
     bib
     bibPreview
     metadata
+    yaml(options: { strip_markdown: true })
   }
 }

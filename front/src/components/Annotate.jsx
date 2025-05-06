@@ -10,9 +10,10 @@ import { toYaml } from './Write/metadata/yaml.js'
 import useFetchData from '../hooks/graphql.js'
 import { applicationConfig } from '../config.js'
 
-import * as queries from './Preview.graphql'
+import { getArticle } from './Article.graphql'
+import { getCorpus } from './corpus/Corpus.graphql'
 
-import './Preview.scss'
+import './Annotate.scss'
 
 const strategies = new Map([
   [
@@ -22,7 +23,7 @@ const strategies = new Map([
         const hasVersion = Boolean(version)
 
         return {
-          query: queries.getArticle,
+          query: getArticle,
           variables: {
             id,
             version: hasVersion ? version : 'dummy',
@@ -49,8 +50,10 @@ const strategies = new Map([
     {
       query({ id, workspaceId }) {
         return {
-          query: queries.getCorpus,
+          query: getCorpus,
           variables: {
+            includeWorkingVersion: true,
+            includeArticles: true,
             filter: {
               corpusId: id,
               workspaceId,
@@ -87,7 +90,7 @@ const strategies = new Map([
   ],
 ])
 
-export default function Preview({ strategy: strategyId }) {
+export default function Annotate({ strategy: strategyId }) {
   const { id, version, workspaceId } = useParams()
   const { canonicalBaseUrl } = applicationConfig
   const canonicalUrl = canonicalBaseUrl

@@ -7,7 +7,7 @@ export default function ArticleStats() {
   const { t } = useTranslation()
   const articleStats = useSelector((state) => state.articleStats, shallowEqual)
   return (
-    <ul className={styles.stats}>
+    <ul className={styles.stats} aria-label={t('article.stats.menuLabel')}>
       <li>{t('article.stats.words', { count: articleStats.wordCount })}</li>
       <li>
         {t('article.stats.chars', {

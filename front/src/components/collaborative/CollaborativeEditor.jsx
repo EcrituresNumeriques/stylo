@@ -12,7 +12,7 @@ import defaultEditorOptions from '../Write/providers/monaco/options.js'
 import styles from './CollaborativeEditor.module.scss'
 
 export default function CollaborativeEditor() {
-  const { articleId, compareTo, versionId } = useParams()
+  const { articleId, mode = 'write', compareTo, versionId } = useParams()
 
   if (compareTo) {
     return (
@@ -35,11 +35,19 @@ export default function CollaborativeEditor() {
 
   return (
     <section className={styles.container}>
-      <div className={styles.main} role="main">
-        <CollaborativeEditorArticleHeader articleId={articleId} />
-        <CollaborativeTextEditor articleId={articleId} versionId={versionId} />
+      <div className={styles.main}>
+        <CollaborativeEditorArticleHeader
+          articleId={articleId}
+          versionId={versionId}
+        />
+        <CollaborativeTextEditor
+          mode={mode}
+          articleId={articleId}
+          versionId={versionId}
+        />
         <ArticleStats />
       </div>
+
       <CollaborativeEditorMenu
         articleId={articleId}
         versionId={versionId}

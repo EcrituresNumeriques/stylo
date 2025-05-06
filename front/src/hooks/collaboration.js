@@ -60,7 +60,7 @@ export function useCollaboration({ articleId, versionId }) {
       username: activeUser.username,
       color: colors[Math.floor(Math.random() * 14)],
     }),
-    [activeUser]
+    [activeUser?._id]
   )
 
   const handleWritersUpdated = useCallback(
@@ -121,7 +121,7 @@ export function useCollaboration({ articleId, versionId }) {
         wsProvider.destroy()
       }
     }
-  }, [articleId, websocketEndpoint, writerInfo])
+  }, [articleId, websocketEndpoint])
 
   return {
     websocketStatus,

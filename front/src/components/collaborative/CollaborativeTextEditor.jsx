@@ -1,18 +1,18 @@
-import Editor from '@monaco-editor/react'
-import clsx from 'clsx'
-import throttle from 'lodash.throttle'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import { Helmet } from 'react-helmet'
+import throttle from 'lodash.throttle'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
+
 import { useArticleVersion, useEditableArticle } from '../../hooks/article.js'
+import { useStyloExportPreview } from '../../hooks/stylo-export.js'
 import { useBibliographyCompletion } from '../../hooks/bibliography.js'
 import { useCollaboration } from '../../hooks/collaboration.js'
-import Alert from '../molecules/Alert.jsx'
 
+import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
+import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 import defaultEditorOptions from '../Write/providers/monaco/options.js'
-import CollaborativeEditorStatus from './CollaborativeEditorStatus.jsx'
-import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 
 import styles from './CollaborativeTextEditor.module.scss'
 import MonacoEditor from '../molecules/MonacoEditor.jsx'
@@ -21,19 +21,41 @@ import MonacoEditor from '../molecules/MonacoEditor.jsx'
  * @param {object} props
  * @param {string} props.articleId
  * @param {string|undefined} props.versionId
+ * @param {'write' | 'compare' | 'preview'} props.mode
  * @returns {Element}
  */
-export default function CollaborativeTextEditor({ articleId, versionId }) {
+export default function CollaborativeTextEditor({
+  articleId,
+  versionId,
+  mode,
+}) {
   const { yText, awareness, websocketStatus, dynamicStyles } = useCollaboration(
     { articleId, versionId }
   )
+
   const { version, error, isLoading } = useArticleVersion({ versionId })
   const { provider: bibliographyCompletionProvider } =
     useBibliographyCompletion()
-  const { bibliography } = useEditableArticle({
+  const { article, bibliography } = useEditableArticle({
     articleId,
     versionId,
   })
+
+  const { html: __html, isLoading: isPreviewLoading } = useStyloExportPreview({
+    ...(mode === 'preview'
+      ? {
+          md_content: versionId ? version.md : yText?.toString(),
+          yaml_content: versionId
+            ? version.yaml
+            : article?.workingVersion?.yaml,
+          bib_content: versionId ? version.bib : article?.workingVersion?.bib,
+        }
+      : {}),
+    with_toc: true,
+    with_nocite: true,
+    with_link_citations: true,
+  })
+
   const dispatch = useDispatch()
   const editorRef = useRef(null)
   const editorCursorPosition = useSelector(
@@ -85,12 +107,6 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
   useEffect(() => {
     if (yText) {
       yText.observe(function (yTextEvent, transaction) {
-        console.debug('yText.observe', {
-          yTextEvent,
-          transaction,
-          text: yText.toString(),
-          delta: yText.toDelta(),
-        })
         dispatch({
           type: 'UPDATE_ARTICLE_WORKING_COPY_STATUS',
           status: 'syncing',
@@ -136,7 +152,7 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
     return <Loading />
   }
 
-  if (isLoading) {
+  if (isLoading || isPreviewLoading) {
     return <Loading />
   }
 
@@ -147,10 +163,15 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
   return (
     <>
       <style>{dynamicStyles}</style>
-      <CollaborativeEditorStatus versionId={versionId} />
-      <div className={styles.inlineStatus}>
-        <CollaborativeEditorWebSocketStatus status={websocketStatus} />
-      </div>
+      <Helmet>
+        <title>{article.title}</title>
+      </Helmet>
+
+      <CollaborativeEditorWebSocketStatus
+        className={styles.inlineStatus}
+        status={websocketStatus}
+      />
+
       {version && (
         <MonacoEditor
           width={'100%'}
@@ -162,8 +183,17 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
           onMount={handleEditorDidMount}
         />
       )}
+
+      {mode === 'preview' && (
+        <section
+          className={styles.previewPage}
+          dangerouslySetInnerHTML={{ __html }}
+        />
+      )}
+
       <div
-        className={clsx(styles.collaborativeEditor, versionId && styles.hidden)}
+        className={styles.collaborativeEditor}
+        hidden={Boolean(versionId) || mode !== 'write'}
       >
         <MonacoEditor
           width={'100%'}

@@ -18,7 +18,7 @@ function Footer() {
 
   return (
     <Switch>
-      <Route path="*/preview" />
+      <Route path="*/annotate" />
       <Route path="/article/*" />
       <Route path="/credentials/auth-callback" />
       <Route path="*">

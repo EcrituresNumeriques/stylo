@@ -198,6 +198,9 @@ export function useEditableArticle({ articleId, versionId }) {
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
+      fallbackData: {
+        article: {},
+      },
     }
   )
 

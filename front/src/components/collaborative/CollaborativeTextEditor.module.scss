@@ -1,11 +1,8 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
+@use '../Page.module' as page;
 
 .collaborativeEditor {
-}
-
-.hidden {
-  display: none;
 }
 
 .editor {
@@ -16,6 +13,100 @@
   :global {
     .monaco-editor {
       position: absolute;
+    }
+  }
+}
+
+.previewPage {
+  @extend .simplePage;
+
+  margin: 0 auto 2em;
+  max-width: 100%;
+
+  @media screen and (min-width: 52em) {
+    & {
+      max-width: 52em;
+    }
+  }
+
+  > :is(header, nav) {
+    display: none;
+  }
+
+  > article {
+    a:link, a:visited {
+      color: #00f;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      line-height: 1.15;
+      margin: 2.25rem 0 1rem;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    h1 {
+      font-size: 2.986rem;
+    }
+
+    h2 {
+      font-size: 2.488rem;
+    }
+
+    h3 {
+      font-size: 2.074rem;
+    }
+
+    h4 {
+      font-size: 1.728rem;
+    }
+
+    h5 {
+      font-size: 1.44rem;
+    }
+
+    h6 {
+      font-size: 1.2rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    small {
+      font-size: 0.833rem;
+    }
+
+    ul {
+      list-style: disc;
+      list-style-position: inside;
+      padding-left: 1em;
+    }
+
+    ol {
+      list-style: decimal;
+      list-style-position: inside;
+      padding-left: 1em;
+    }
+
+    ul, ol, p, figure {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: .5em 0;
+    }
+
+    figure {
+      margin: 1em 0;
+    }
+
+    li {
+      margin-bottom: .25em;
+    }
+
+    :global(#footnotes > ol) {
+      list-style-position: outside;
     }
   }
 }

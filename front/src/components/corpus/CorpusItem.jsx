@@ -146,7 +146,7 @@ export default function CorpusItem({ corpus }) {
             title={t('corpus.preview.buttonTitle')}
             target="_blank"
             className={buttonStyles.icon}
-            to={`/corpus/${corpus._id}/preview`}
+            to={`/corpus/${corpus._id}/annotate`}
           >
             <Eye />
           </Link>

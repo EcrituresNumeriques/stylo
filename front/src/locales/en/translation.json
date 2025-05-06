@@ -27,6 +27,12 @@
   "article.editName.buttonCancel": "Cancel",
   "article.editName.buttonSave": "Save",
   "article.editor.edit.title": "Edit article",
+  "article.editor.modes": {
+    "compare": "Compare",
+    "edit": "Edit",
+    "preview": "Preview"
+  },
+  "article.editor.modes.menuLabel": "Article modes",
   "article.editors.label": "Editors online",
   "article.getTags.error": "Unable to load tags {{errMessage}}",
   "article.legacyEditor.edit.title": "[LEGACY] Edit article",
@@ -133,6 +139,7 @@
   "article.shareModal.title": "Share the article with a contact",
   "article.stats.chars": "Characters: {{count}} (with spaces: {{countWithSpaces}})",
   "article.stats.citations": "Citations: {{count}}",
+  "article.stats.menuLabel": "Article stats",
   "article.stats.words": "Words: {{count}}",
   "article.tags.title": "Tags",
   "article.versions.title": "Versions",
