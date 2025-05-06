@@ -143,6 +143,7 @@
   "biblatexparser.error.missing_equal_sign": "Signe égale (=) absent ligne {{line}}, trouvé {{key}}",
   "biblatexparser.error.runaway_key": "Clé incomplète ligne {{line}}",
   "biblatexparser.error.token_mismatch": "Jeton inattendu ligne {{line}}, attendu {{expected}} mais trouvé {{found}}",
+  "biblatexparser.error.unknown_uri": "L'URL du champ {{field_name}} est invalide en ligne {{line}}",
   "biblatexparser.warning.unknown_type": "Type de référence '{{type_name}}' non reconnu ligne {{line}}",
   "bibliography.addReference.button": "Ajouter une référence",
   "bibliography.addReference.title": "Ajouter une référence",
