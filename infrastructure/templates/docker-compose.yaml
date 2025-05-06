@@ -35,8 +35,6 @@ services:
       - COLLABORATION_PERSISTENCE_DATA_DIR=/data/ydata
       - COLLABORATION_EDITING_SESSION_PERSISTENCE_DATA_DIR=/data/yeditingsession
       - COLLABORATION_UPDATE_WORKING_COPY_INTERVAL_MS=3000
-      # disable y.js garbage collection
-      - GC=0
     ports:
       - 127.0.0.1:3030:3030
 

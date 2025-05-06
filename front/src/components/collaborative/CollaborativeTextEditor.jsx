@@ -66,13 +66,12 @@ export default function CollaborativeTextEditor({ articleId, versionId }) {
       editorRef.current = editor
       const completionProvider = bibliographyCompletionProvider.register(monaco)
       editor.onDidDispose(() => completionProvider.dispose())
+      const model = editor.getModel()
+      // Set EOL to LF otherwise it causes synchronization issues due to inconsistent EOL between Windows and Linux.
+      // https://github.com/yjs/y-monaco/issues/27
+      model.setEOL(monaco.editor.EndOfLineSequence.LF)
       if (yText && awareness) {
-        new MonacoBinding(
-          yText,
-          editor.getModel(),
-          new Set([editor]),
-          awareness
-        )
+        new MonacoBinding(yText, model, new Set([editor]), awareness)
       }
     },
     [yText, awareness]

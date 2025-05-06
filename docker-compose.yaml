@@ -32,8 +32,6 @@ services:
       - .env
     environment:
       - DATABASE_URL=mongodb://mongodb-stylo:27017/stylo-dev
-      # disable y.js garbage collection
-      - GC=0
     ports:
       - 127.0.0.1:3030:3030
 
