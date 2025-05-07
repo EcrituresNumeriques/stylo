@@ -10,7 +10,7 @@ import { coverageConfigDefaults } from 'vitest/config'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
-  const envPrefix = ['SNOWPACK_', 'SENTRY_', 'IMGUR_']
+  const envPrefix = ['SNOWPACK_', 'SENTRY_']
 
   const env = loadEnv(mode, fileURLToPath(import.meta.resolve('..')), envPrefix)
   const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
@@ -112,7 +112,7 @@ export default defineConfig(async ({ mode }) => {
       __PANDOC_EXPORT_ENDPOINT__: JSON.stringify(
         env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT
       ),
-      __IMGUR_CLIENT_ID__: JSON.stringify(env.IMGUR_CLIENT_ID),
+      __IMGUR_CLIENT_ID__: JSON.stringify(env.SNOWPACK_IMGUR_CLIENT_ID),
     },
     resolve: {
       alias: {
