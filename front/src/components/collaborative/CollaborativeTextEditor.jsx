@@ -16,6 +16,8 @@ import defaultEditorOptions from '../Write/providers/monaco/options.js'
 
 import styles from './CollaborativeTextEditor.module.scss'
 import MonacoEditor from '../molecules/MonacoEditor.jsx'
+import * as vscode from 'monaco-editor'
+import { onDropIntoEditor } from '../Write/providers/monaco/support.js'
 
 /**
  * @param {object} props
@@ -70,6 +72,9 @@ export default function CollaborativeTextEditor({
       ...defaultEditorOptions,
       contextmenu: hasVersion ? false : websocketStatus === 'connected',
       readOnly: hasVersion ? true : websocketStatus !== 'connected',
+      dropIntoEditor: {
+        enabled: true,
+      },
     }),
     [websocketStatus, hasVersion]
   )
@@ -86,6 +91,7 @@ export default function CollaborativeTextEditor({
   const handleCollaborativeEditorDidMount = useCallback(
     (editor, monaco) => {
       editorRef.current = editor
+      editor.onDropIntoEditor(onDropIntoEditor(editor))
       const completionProvider = bibliographyCompletionProvider.register(monaco)
       editor.onDidDispose(() => completionProvider.dispose())
       const model = editor.getModel()
