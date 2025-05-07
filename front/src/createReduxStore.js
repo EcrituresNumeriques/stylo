@@ -38,8 +38,8 @@ export const initialState = {
     authProviders: {},
     selectedTagIds: [],
     workspaces: [],
-    activeWorkspaceId: null,
   },
+  activeWorkspaceId: null,
   userPreferences: localStorage.getItem('userPreferences')
     ? JSON.parse(localStorage.getItem('userPreferences'))
     : {
@@ -167,7 +167,6 @@ function setProfile(state, action) {
     ...state,
     activeUser: {
       ...state.activeUser,
-      activeWorkspaceId: action.activeWorkspaceId,
       ...user,
     },
   }
@@ -292,10 +291,7 @@ function updateEditorCursorPosition(state, { lineNumber, column }) {
 function setActiveWorkspace(state, { workspaceId }) {
   return {
     ...state,
-    activeUser: {
-      ...state.activeUser,
-      activeWorkspaceId: workspaceId,
-    },
+    activeWorkspaceId: workspaceId,
   }
 }
 

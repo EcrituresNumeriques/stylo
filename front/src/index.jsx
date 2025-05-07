@@ -7,6 +7,7 @@ import {
   Router,
   Route as OriginalRoute,
   Switch,
+  matchPath,
   useHistory,
 } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
@@ -72,7 +73,17 @@ const CollaborativeEditor = lazy(
 )
 
 let sessionToken = new URLSearchParams(location.hash).get('#auth-token')
-const store = createStore(sessionToken ? { sessionToken } : {})
+
+const initialStoreData = {
+  ...(sessionToken ? { sessionToken } : {}),
+  activeWorkspaceId: matchPath(location.pathname, {
+    path: '/workspaces/:workspaceId',
+    strict: false,
+    exact: false
+  })?.params?.workspaceId
+}
+
+const store = createStore(initialStoreData)
 
 getUserProfile({
   applicationConfig,

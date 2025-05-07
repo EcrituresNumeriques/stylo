@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import useFetchData from '../hooks/graphql'
 import { useModal } from '../hooks/modal.js'
 import { useActiveUserId } from '../hooks/user'
-import { useActiveWorkspace } from '../hooks/workspace.js'
+import { useActiveWorkspace, useActiveWorkspaceId } from '../hooks/workspace.js'
 
 import Article from './Article'
 import ArticleCreate from './ArticleCreate.jsx'
@@ -33,10 +33,7 @@ export default function Articles() {
   const activeUserId = useActiveUserId()
   const [filter, setFilter] = useState('')
   const activeWorkspace = useActiveWorkspace()
-  const activeWorkspaceId = useMemo(
-    () => activeWorkspace?._id,
-    [activeWorkspace]
-  )
+  const activeWorkspaceId = useActiveWorkspaceId()
 
   const query = useMemo(
     () => (activeWorkspaceId ? getWorkspaceArticles : getUserArticles),
