@@ -112,6 +112,7 @@ export default defineConfig(async ({ mode }) => {
       __PANDOC_EXPORT_ENDPOINT__: JSON.stringify(
         env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT
       ),
+      __IMGUR_CLIENT_ID__: JSON.stringify(env.SNOWPACK_IMGUR_CLIENT_ID),
     },
     resolve: {
       alias: {

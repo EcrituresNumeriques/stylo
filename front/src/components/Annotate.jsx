@@ -116,7 +116,7 @@ export default function Annotate({ strategy: strategyId }) {
     globalThis.hypothesisConfig = function hypothesisConfig() {
       return {
         // enableExperimentalNewNoteButton: true,
-        openSidebar: false,
+        openSidebar: true,
         // theme: 'clean',
         // contentReady: Promise
         /*branding: {
