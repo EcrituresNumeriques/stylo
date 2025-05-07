@@ -79,6 +79,10 @@
       font-size: 0.833rem;
     }
 
+    img, video, figure, iframe, audio, canvas, table {
+      max-width: 100%;
+    }
+
     ul {
       list-style: disc;
       list-style-position: inside;
