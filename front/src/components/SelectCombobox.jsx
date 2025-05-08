@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styles from './field.module.scss'
 import buttonStyles from './button.module.scss'
 import { useCombobox } from 'downshift'
-import PropTypes from 'prop-types'
 import { ChevronDown, X } from 'lucide-react'
 
 import Field from './Field.jsx'
@@ -10,30 +9,73 @@ import clsx from 'clsx'
 import { groupItems } from './SelectCombobox.js'
 
 /**
- * @typedef {Object} ComboboxItem
- *
- * @property {String} key
- * @property {String} name
- * @property {Number} index
- * @property {String} [section]
+ * @typedef {object} ComboboxItem
+ * @property {string} key
+ * @property {string} name
+ * @property {number} index
+ * @property {string} [section]
  */
 
+/**
+ * @param {React.PropsWithChildren} props
+ * @param {string} props.id
+ * @param {string} props.label
+ * @param {ComboboxItem[]} props.items
+ * @param {(string) => void} props.onChange
+ * @param {string} props.value
+ * @returns {React.ReactElement}
+ */
 export default function Combobox({
   id,
   label,
   items,
-  value: initialSelectedItem,
+  value: selectedItem,
   onChange,
 }) {
-  const [inputItems, setInputItems] = useState([])
-  const selectedItem = useMemo(
-    () => items.find(({ key }) => key === initialSelectedItem),
-    [initialSelectedItem]
-  )
+  const [inputItems, setInputItems] = useState(items)
   const groupedItems = useMemo(() => groupItems(inputItems), [inputItems])
 
-  // Refresh the items list if loading is async
-  useEffect(() => setInputItems(items), [items])
+  useEffect(() => {
+    setInputItems(items)
+
+    if (selectedItem) {
+      const item = items.find(({ key }) => key === selectedItem)
+      setInputValue(item.name)
+      setHighlightedIndex(items.findIndex(({ key }) => key === selectedItem))
+    }
+  }, [items])
+
+  const stateReducer = useCallback(function reducer(state, { changes, type }) {
+    switch (type) {
+      case useCombobox.stateChangeTypes.InputKeyDownEnter:
+      case useCombobox.stateChangeTypes.ItemClick:
+        onChange(changes.selectedItem.key)
+
+        return {
+          ...changes,
+          highlightedIndex: items.findIndex(({ key }) => key === changes.selectedItem.key)
+        }
+
+      case useCombobox.stateChangeTypes.InputChange:
+      case useCombobox.stateChangeTypes.FunctionReset:
+        if (type === useCombobox.stateChangeTypes.FunctionReset || changes.inputValue === '') {
+          onChange('')
+        }
+
+        setInputItems(
+          !changes.inputValue
+            ? items
+            : items.filter((item) => {
+                return item.name.toLowerCase().includes(changes.inputValue.toLowerCase())
+              })
+        )
+
+        return changes
+
+      default:
+        return changes
+    }
+  }, [items])
 
   const {
     isOpen,
@@ -41,38 +83,36 @@ export default function Combobox({
     getLabelProps,
     getMenuProps,
     getInputProps,
-    getComboboxProps,
     highlightedIndex,
-    setInputValue,
     openMenu,
     getItemProps,
     inputValue,
+    setInputValue,
+    setHighlightedIndex,
+    reset
   } = useCombobox({
     items,
-    initialSelectedItem: selectedItem,
-    itemToString: ({ name }) => name,
-    onSelectedItemChange: ({ selectedItem }) => onChange(selectedItem.key),
-    onInputValueChange: ({ inputValue }) => {
-      setInputItems(
-        !inputValue
-          ? items
-          : items.filter((item) => {
-              return item.name.toLowerCase().includes(inputValue.toLowerCase())
-            })
-      )
+    selectedItem,
+    stateReducer,
+    itemToString (item) {
+      return item?.name
+    },
+    itemToKey (item) {
+      return item?.key
     },
   })
 
   return (
     <div className={styles.combobox}>
       <label {...getLabelProps()}>{label}</label>
-      <div {...getComboboxProps()} className={styles.comboboxController}>
+      <div className={styles.comboboxController}>
         <Field
           {...getInputProps({
             type: 'search',
             autoComplete: 'disabled',
             onFocus: () => !isOpen && openMenu(),
           })}
+          name={id}
           className={styles.autocompleteField}
         />
         <span className={styles.comboboxControllerActions}>
@@ -80,10 +120,10 @@ export default function Combobox({
             type="button"
             aria-label="reset value"
             className={clsx(buttonStyles.button, buttonStyles.icon)}
-            onClick={() => setInputValue('') || openMenu()}
             disabled={inputValue === ''}
+            onClick={reset}
           >
-            <X />
+            <X aria-hidden="true" />
           </button>
           <button
             type="button"
@@ -91,7 +131,7 @@ export default function Combobox({
             className={buttonStyles.icon}
             aria-label="toggle menu"
           >
-            <ChevronDown />
+            <ChevronDown aria-hidden="true" />
           </button>
         </span>
       </div>
@@ -121,12 +161,4 @@ export default function Combobox({
       </ul>
     </div>
   )
-}
-
-Combobox.propTypes = {
-  id: PropTypes.string,
-  label: PropTypes.string.isRequired,
-  items: PropTypes.array.isRequired,
-  onChange: PropTypes.func.isRequired,
-  value: PropTypes.string,
 }
