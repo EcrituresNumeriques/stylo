@@ -107,18 +107,14 @@ export default function ArticleBibliography({ articleId, versionId, onBack }) {
           <Button
             small={true}
             disabled={readOnly}
-            onClick={() => {
-              zoteroModal.show()
-            }}
+            onClick={() => zoteroModal.show()}
           >
             {t('bibliography.importZotero.button')}
           </Button>
           <Button
             small={true}
             disabled={readOnly}
-            onClick={() => {
-              addReferenceModal.show()
-            }}
+            onClick={() => addReferenceModal.show()}
           >
             {t('bibliography.addReference.button')}
           </Button>
@@ -144,8 +140,8 @@ export default function ArticleBibliography({ articleId, versionId, onBack }) {
         >
           <BibliographyZoteroImport
             articleId={articleId}
-            onChange={onChange}
             zoteroLink={article.zoteroLink}
+            onUpdated={zoteroModal.close}
           />
         </Modal>
 

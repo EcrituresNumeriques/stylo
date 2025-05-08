@@ -187,14 +187,10 @@
   position: absolute;
   width: 100%;
   z-index: 900;
-  max-height: 20rem;
+  max-height: min(30cqh, 20rem);
   overflow-y: auto;
 }
-.combobox > label:empty ~ .comboboxResults:not(:empty) {
-  margin-top: calc(
-    -0.5rem + 1px
-  ); /* (no label) same as .field margin-bottom + border-bottom-width */
-}
+
 .comboboxItem {
   cursor: pointer;
   padding: 0.5em 1em;

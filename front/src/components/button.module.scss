@@ -251,9 +251,7 @@ details.secondary {
   }
 
   &:disabled {
-    background: none;
-    cursor: not-allowed !important;
-    pointer-events: none;
+    @extend .isDisabled;
   }
 
   > svg {

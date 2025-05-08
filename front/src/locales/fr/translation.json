@@ -159,6 +159,19 @@
   "bibliography.errors_one": "Il y a une erreur de syntaxe dans le BibTeX. <1>Impossible d'enregistrer.</1>",
   "bibliography.errors_other": "Il y a {{count}} erreurs de syntaxes dans le BibTeX. <1>Impossible d'enregistrer.</1>",
   "bibliography.importZotero.button": "Importer via Zotero",
+  "bibliography.importZotero.collections": {
+    "leaf": "{{ name }} ({{ count }} références)",
+    "section": "{{ name }} ({{ type }})"
+  },
+  "bibliography.importZotero.error": {
+    "e400": "Stylo n'a pas correctement interrogé le service Zotero. Nous allons investiguer le problème.",
+    "e403": "Impossible d'importer cette collection privée. Est-elle partagée avec votre compte Zotero ?",
+    "e404": "Cette collection n'existe pas ou n'est pas publique.",
+    "e500": "Il y a un problème avec le service Zotero. Veuillez réessayer plus tard.",
+    "e503": "Il y a un problème avec le service Zotero. Veuillez réessayer plus tard.",
+    "generic": "Nous n'avons pas pu importer la collection Zotero. Nous allons investiguer le problème."
+  },
+  "bibliography.importZotero.success": "Import terminé avec succès.",
   "bibliography.importZotero.title": "Importer via Zotero",
   "bibliography.readonly": "La bibliographie est éditable uniquement quand vous êtes seul·e sur l'article.",
   "bibliography.readonly.references_one": "Il y a une référence dans le BibTeX.",

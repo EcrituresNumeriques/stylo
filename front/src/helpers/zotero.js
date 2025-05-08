@@ -5,11 +5,36 @@ const baseApiUrl = 'https://api.zotero.org/'
 const baseWebUrl = 'https://www.zotero.org/'
 
 /**
+ *
+ * @param {URL|string} url
+ * @param {RequestInit?} fetchOptions
+ * @param {number?} retries
+ * @returns {Promise<Response>}
+ */
+async function retryFetch(url, fetchOptions = {}, retries = 3) {
+  const initialRetries = retries
+
+  while (retries--) {
+    const response = await fetch(url?.toString(), fetchOptions)
+
+    if (response.ok) {
+      return response
+    } else {
+      await new Promise((resolve) =>
+        setTimeout(resolve, (initialRetries / retries) * 200)
+      )
+    }
+  }
+
+  throw new Error('Maximum attempts reached')
+}
+
+/**
  * @typedef ZoteroCollection
  * @property {ZoteroCollectionData} data
  * @property {string} key
  * @property {ZoteroLibrary} library
- * @property {Object.<string, HTMLLink>} links
+ * @property {{[key: string]: HTMLLink}} links
  * @property {ZoteroMeta} meta
  * @property {number} version
  */
@@ -25,7 +50,7 @@ const baseWebUrl = 'https://www.zotero.org/'
 /**
  * @typedef ZoteroLibrary
  * @property {number} id
- * @property {Object.<string, HTMLLink>} links
+ * @property {{[key: string]: HTMLLink}} links
  * @property {string} name Name of the library
  * @property {string} type Enum of 'user' or 'group' (whom it belongs)
  */
@@ -51,6 +76,24 @@ const baseWebUrl = 'https://www.zotero.org/'
  */
 
 /**
+ *
+ * @param {string} url
+ * @returns {boolean}
+ */
+export function isApiUrl(url) {
+  return /^https:\/\/api.zotero.org\/(users|groups)\/\d+\//i.test(url)
+}
+
+/**
+ *
+ * @param {string} url
+ * @returns {boolean}
+ */
+export function isWebUrl(url) {
+  return url.startsWith(baseWebUrl)
+}
+
+/**
  * Get the next link from headers.
  * @param headers HTTP headers (from a response)
  * @returns {URL|null}
@@ -68,112 +111,83 @@ function getNextLink(headers) {
 
 /**
  *
- * @param {URL} url
- * @param {string} key Zotero API key
- * @param {object[]} agg
- * @returns {Promise<string[]>} a list of JSON responses
+ * @param {URL} from
+ * @param {URL} to
+ * @returns {URL}
  */
-async function fetchAllJSON(url, key, agg = []) {
-  if (key) {
-    url.searchParams.set('key', key)
-  }
-  const response = await fetch(url.toString(), {
-    method: 'GET',
-    credentials: 'same-origin',
-    'Zotero-API-Version': '3',
+function copySearchParams(from, to) {
+  from.searchParams.forEach((value, key) => {
+    if (!to.searchParams.has(key)) {
+      to.searchParams.set(key, value)
+    }
   })
 
-  const { headers } = response
-  const json = await response.json()
-
-  if (json) {
-    agg.push(json)
-  }
-
-  const nextLink = getNextLink(headers)
-
-  if (nextLink) {
-    await fetchAllJSON(nextLink, key, agg)
-  }
-
-  return agg
+  return to
 }
 
 /**
- * @param {URL} url
- * @param {string} key Zotero API key
- * @param {string[]=} agg
- * @returns {Promise<string[]>} - a list of bibliographical references (as BibTeX)
+ *
+ * @param {URL} initialUrl
+ * @param {'json' | 'text'} resolveAs
+ * @returns {Generator<string[]|Object[]>} a list of aggregated responses
  */
-async function fetchAllBibTeX(url, key, agg = []) {
-  if (key) {
-    url.searchParams.set('key', key)
-  }
-  url.searchParams.set('format', 'bibtex')
-  const response = await fetch(url.toString(), {
+async function fetchAll(initialUrl, resolveAs = 'json') {
+  const agg = []
+  let url = initialUrl
+  const options = {
     method: 'GET',
     credentials: 'same-origin',
     'Zotero-API-Version': '3',
-  })
-
-  const { headers } = response
-  const bib = await response.text()
-
-  if (bib && bib.trim().length > 0) {
-    agg.push(filter(bib))
   }
 
-  const nextLink = getNextLink(headers)
+  while (url) {
+    copySearchParams(initialUrl, url)
+    const response = await retryFetch(url, options)
 
-  if (nextLink) {
-    await fetchAllBibTeX(nextLink, key, agg)
+    if (response.ok) {
+      const data = await response[resolveAs]()
+      agg.push(data)
+
+      url = getNextLink(response.headers)
+    }
   }
 
-  return agg
+  return agg.flat()
 }
 
 /**
  * @param {string} token Zotero API token
  * @returns {Promise<ZoteroKeyResponse>} - a JSON response (contains userID and key)
  */
-function fetchUserFromToken(token) {
-  return fetch(`https://api.zotero.org/keys/${token}`).then((response) =>
-    response.json()
-  )
+async function fetchUserFromToken(token) {
+  const response = await retryFetch(`https://api.zotero.org/keys/${token}`)
+
+  return response.json()
 }
 
 /**
- * @param {object} options
- * @param {string} options.userID
- * @param {string} options.key Zotero API key
- * @returns {Promise<ZoteroCollection[]>} - a list of Zotero collections
+ * @param {string} token
+ * @returns {Promise<ZoteroCollection[]>} - a list of user related collections
  */
-async function fetchAllCollections({ userID, key }) {
-  // let collections = []
-  const url = new URL(`https://api.zotero.org/users/${userID}/groups`)
-  const groups = (await fetchAllJSON(url, key)).flat()
+export async function fetchUserCollections(token) {
+  const { userID, key } = await fetchUserFromToken(token)
+
+  const [allGroups, userCollections] = await Promise.all([
+    fetchUserGroups({ userID, key }),
+    fetchUserLibraryCollections({ userID, key }),
+  ])
 
   const groupCollections = await Promise.all(
-    groups.map((group) => {
-      return fetchAllJSON(new URL(`${group.links.self.href}/collections`), key)
+    allGroups.map((group) => {
+      const url = new URL(`${group.links.self.href}/collections`)
+      url.searchParams.set('key', key)
+      url.searchParams.set('format', 'json')
+      return fetchAll(url)
     })
   ).then((groups) => [].concat(...groups.flat()))
   // concat dissolves empty arrays (groups without collections)
 
-  const userCollections = await fetchUserCollections({ userID, key })
-
   return userCollections.concat(groupCollections)
-}
-
-/**
- * @param {object} options
- * @param {string} options.token
- * @returns {Promise<ZoteroCollection[]>}
- */
-export async function fetchAllCollectionsPerLibrary({ token }) {
-  const { userID, key } = await fetchUserFromToken(token)
-
-  return fetchAllCollections({ userID, key })
 }
 
 /**
@@ -183,11 +197,27 @@ export async function fetchAllCollectionsPerLibrary({ token }) {
  * @param {string} token.key
  * @returns {Promise<ZoteroCollection[]>}
  */
-export async function fetchUserCollections({ userID, key }) {
-  return fetchAllJSON(
-    new URL(`https://api.zotero.org/users/${userID}/collections`),
-    key
-  ).then((all) => all.flat())
+export async function fetchUserLibraryCollections({ userID, key }) {
+  const url = new URL(`https://api.zotero.org/users/${userID}/collections`)
+  url.searchParams.set('key', key)
+  url.searchParams.set('format', 'json')
+
+  return fetchAll(url)
+}
+
+/**
+ *
+ * @param {object} token
+ * @param {string} token.userID
+ * @param {string} token.key
+ * @returns {Promise<ZoteroCollection[]>}
+ */
+export async function fetchUserGroups({ userID, key }) {
+  const url = new URL(`https://api.zotero.org/users/${userID}/groups`)
+  url.searchParams.set('key', key)
+  url.searchParams.set('format', 'json')
+
+  return fetchAll(url)
 }
 
 /**
@@ -200,7 +230,19 @@ export async function fetchBibliographyFromCollectionHref({
   collectionHref,
   token: key = null,
 }) {
-  return (await fetchAllBibTeX(new URL(collectionHref), key)).join('\n')
+  const url = new URL(collectionHref)
+  url.searchParams.set('format', 'bibtex')
+
+  if (key) {
+    url.searchParams.set('key', key)
+  }
+
+  return fetchAll(url, 'text').then((responses) =>
+    responses
+      .map((bib) => filter(bib))
+      .filter((d) => d)
+      .join('\n')
+  )
 }
 
 /**
@@ -212,6 +254,8 @@ export async function fetchBibliographyFromCollectionHref({
  * @returns {Promise<string>} Zotero API URL
  */
 export async function toApiUrl(plainUrl, token) {
+  let strategy = null
+
   // https://www.zotero.org/{username}
   // https://www.zotero.org/{username}/library
   // https://www.zotero.org/{username}/collections/{collectionId}
@@ -222,28 +266,45 @@ export async function toApiUrl(plainUrl, token) {
   const GROUP_RE =
     /zotero.org\/(groups\/(?<groupId>\d+)(\/[^/]+)?|(?<username>[^/]+))(\/collections\/(?<collectionId>[A-Z0-9]+))?(\/items\/(?<itemId>[A-Z0-9]+))?(\/tags\/(?<tag>[^/]+))?(\/(?<action>collection|library|item-list|trash))?$/
 
-  if (/https:\/\/api.zotero.org\/(users|groups)\/\d+\//i.test(plainUrl)) {
-    return plainUrl
-  }
+  // https://api.zotero.org/users/{userId}[/items]?
+  // https://api.zotero.org/users/{userId}/collections/{collectionId}[/items]?
+  // https://api.zotero.org/groups/{groupId}[/items]?
+  const API_RE =
+    /api.zotero.org\/(users\/(?<userId>\d+)|groups\/(?<groupId>\d+))(\/collections\/(?<collectionId>[A-Z0-9]+))?(\/(?<action>items\/top|items\/trash|items))?$/
 
-  if (!plainUrl.startsWith(baseWebUrl)) {
+  if (isApiUrl(plainUrl)) {
+    strategy = 'API'
+  } else if (isWebUrl(plainUrl)) {
+    strategy = 'WEB'
+  } else {
     throw new Error('This is not a Zotero URL')
   }
 
-  if (!plainUrl.startsWith('https://www.zotero.org/groups/') && !token) {
+  if (
+    strategy === 'WEB' &&
+    !plainUrl.startsWith('https://www.zotero.org/groups/') &&
+    !token
+  ) {
     throw new Error('A token is required to fetch personal items.')
   }
 
-  const result = plainUrl.match(GROUP_RE)
+  const result = plainUrl.match(strategy === 'WEB' ? GROUP_RE : API_RE)
 
-  let userId = null
-  const { username, groupId, collectionId, itemId, tag, action } = result.groups
+  let {
+    username,
+    userId,
+    groupId,
+    collectionId,
+    itemId,
+    tag,
+    action = 'items',
+  } = result.groups
 
   if (tag) {
     throw new Error('Cannot fetch items associated to a tag.')
   }
 
-  if (username) {
+  if (strategy === 'WEB' && username) {
     const user = await fetchUserFromToken()
 
     if (user.username !== username) {
@@ -253,12 +314,19 @@ export async function toApiUrl(plainUrl, token) {
     userId = user.userID
   }
 
+  if (strategy === 'WEB' && ['library', 'collection', 'items-list'].includes(action)) {
+    action = 'items'
+  }
+
   const path = [
+    // either one of them
     userId && `users/${userId}`,
     groupId && `groups/${groupId}`,
-    collectionId || itemId ? '' : 'items',
-    collectionId && !itemId && `collections/${collectionId}/items`,
+    // either a collection or an item
+    collectionId && !itemId && `collections/${collectionId}`,
     itemId && `items/${itemId}`,
+    // if it's not an item, it might have an action associated to it
+    !itemId && `${action}`,
   ]
     .filter(Boolean)
     .join('/')

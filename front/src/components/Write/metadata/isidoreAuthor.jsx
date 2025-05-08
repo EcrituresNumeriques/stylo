@@ -30,7 +30,6 @@ export default function IsidoreAuthorAPIAutocompleteField(props) {
     isOpen,
     getMenuProps,
     getInputProps,
-    getComboboxProps,
     highlightedIndex,
     getItemProps,
     reset,
@@ -60,7 +59,7 @@ export default function IsidoreAuthorAPIAutocompleteField(props) {
   )
 
   return (
-    <div {...getComboboxProps()}>
+    <div>
       <Field
         {...getInputProps(
           {

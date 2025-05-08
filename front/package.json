@@ -43,7 +43,7 @@
     "copy-to-clipboard": "^3.3.3",
     "core-js": "^3.38",
     "diff-match-patch": "^1.0.5",
-    "downshift": "^6.1.12",
+    "downshift": "^9.0.9",
     "http-link-header": "^1.0.2",
     "i18next": "^22.4.15",
     "i18next-browser-languagedetector": "^7.0.1",

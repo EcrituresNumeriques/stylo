@@ -16,6 +16,36 @@ export function useActiveUserId() {
 }
 
 /**
+ * @typedef {import('redux').Dispatch} Dispatch
+ */
+
+/**
+ *
+ * @param {string} key
+ * @param {'article' | 'user' | 'export'} namespace
+ * @returns {{ value: string|boolean|number, setValue: Dispatch, toggleValue: Dispatch }}
+ */
+export function usePreferenceItem(key, namespace = 'article') {
+  const dispatch = useDispatch()
+  const value = useSelector((state) => state[`${namespace}Preferences`]?.[key])
+
+  const ns = namespace.toUpperCase()
+
+  return {
+    value,
+    /**
+     * @param {boolean | undefined} value
+     */
+    setValue(value) {
+      dispatch({ type: `SET_${ns}_PREFERENCES`, key, value })
+    },
+    toggleValue() {
+      dispatch({ type: `${ns}_PREFERENCES_TOGGLE`, key })
+    },
+  }
+}
+
+/**
  *
  * @param {'humanid' | 'hypothesis' | 'zotero' } service
  * @returns {{ link: React.EffectCallback, token: string | undefined, id: string | undefined, isLinked: boolean, error: string, unlink: React.EffectCallback }}

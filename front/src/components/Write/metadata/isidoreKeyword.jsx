@@ -26,7 +26,6 @@ export default function IsidoreAPIAutocompleteField(props) {
     isOpen,
     getMenuProps,
     getInputProps,
-    getComboboxProps,
     highlightedIndex,
     getItemProps,
   } = useCombobox({
@@ -55,7 +54,7 @@ export default function IsidoreAPIAutocompleteField(props) {
   const isEmpty = ObjectIsEmpty(props.formData)
 
   return (
-    <div {...getComboboxProps()}>
+    <div>
       {!isEmpty && (
         <span className={styles.comboboxReadonlyField}>
           {props.formData.label}

@@ -17,10 +17,9 @@ export const initialState = {
   articlePreferences: localStorage.getItem('articlePreferences')
     ? JSON.parse(localStorage.getItem('articlePreferences'))
     : {
-        expandSidebarLeft: true,
-        expandSidebarRight: false,
+        expandSidebarRight: true,
+        activePanel: null,
         metadataFormMode: 'basic',
-        expandVersions: false,
       },
   articleFilters: {
     tagIds: [],
@@ -105,6 +104,7 @@ function createRootReducer(state) {
     SET_EXPORT_PREFERENCES: setExportPreferences,
 
     ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
+    SET_ARTICLE_PREFERENCES: setArticlePreferences,
 
     UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
 
@@ -117,6 +117,7 @@ function createRootReducer(state) {
 function persistStateIntoLocalStorage({ getState }) {
   const actionStateMap = new Map([
     ['ARTICLE_PREFERENCES_TOGGLE', 'articlePreferences'],
+    ['SET_ARTICLE_PREFERENCES', 'articlePreferences'],
     ['USER_PREFERENCES_TOGGLE', 'userPreferences'],
     ['SET_EXPORT_PREFERENCES', 'exportPreferences'],
   ])
@@ -275,6 +276,7 @@ function setPreferences(storeKey) {
 }
 
 const toggleArticlePreferences = togglePreferences('articlePreferences')
+const setArticlePreferences = setPreferences('articlePreferences')
 const toggleUserPreferences = togglePreferences('userPreferences')
 const setExportPreferences = setPreferences('exportPreferences')
 

@@ -17,9 +17,9 @@ query renameArticle($articleId: ID!, $title: String!) {
   }
 }
 
-query linkToZotero($articleId: ID!, $zotero: String!) {
+query updateZoteroLinkMutation($articleId: ID!, $url: String!) {
   article(article: $articleId) {
-    setZoteroLink(zotero: $zotero)
+    setZoteroLink(zotero: $url)
   }
 }
 

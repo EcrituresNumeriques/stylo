@@ -1,8 +1,9 @@
+import React, { useCallback } from 'react'
 import clsx from 'clsx'
 import { ArrowLeft, ChevronRight } from 'lucide-react'
-import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { usePreferenceItem } from '../../hooks/user.js'
 import { useArticleWorkingCopy } from '../../hooks/article.js'
 import useFetchData from '../../hooks/graphql.js'
 
@@ -20,8 +21,17 @@ import styles from './CollaborativeEditorMenu.module.scss'
 
 export default function CollaborativeEditorMenu({ articleId, versionId }) {
   const { t } = useTranslation()
-  const [opened, setOpened] = useState(false)
-  const [activeMenu, setActiveMenu] = useState('')
+  const { value: opened, toggleValue: setOpened } = usePreferenceItem(
+    'expandSidebarRight',
+    'article'
+  )
+  const { value: activeMenu, setValue: setActiveMenu } = usePreferenceItem(
+    'activePanel',
+    'article'
+  )
+
+  const onBack = useCallback(() => setActiveMenu(null), [])
+
   const { article, updateMetadata } = useArticleWorkingCopy({ articleId })
   const { data, isLoading } = useFetchData(
     { query: getArticleInfo, variables: { articleId } },
@@ -39,120 +49,134 @@ export default function CollaborativeEditorMenu({ articleId, versionId }) {
   const metadata = article?.workingVersion?.metadata
 
   return (
-    <div className={styles.menu} role="menu">
-      <Sidebar
-        className={clsx(styles.container, opened && styles.opened)}
-        opened={opened}
-        setOpened={setOpened}
-        labelOpened={t('editorMenu.open.label')}
-        labelClosed={t('editorMenu.close.label')}
-      >
-        <section>
-          {activeMenu === '' && (
-            <div className={styles.entries}>
-              <a href="#" onClick={() => setActiveMenu('toc')}>
-                {t('toc.title')}
-                <ChevronRight
-                  style={{ strokeWidth: 3 }}
-                  height={32}
-                  width={32}
-                />
-              </a>
-              <a href="#" onClick={() => setActiveMenu('metadata')}>
-                {t('metadata.title')}
-                <ChevronRight
-                  style={{ strokeWidth: 3 }}
-                  height={32}
-                  width={32}
-                />
-              </a>
-              <a href="#" onClick={() => setActiveMenu('bibliography')}>
-                {t('bibliography.title')}
-                <ChevronRight
-                  style={{ strokeWidth: 3 }}
-                  height={32}
-                  width={32}
-                />
-              </a>
+    <Sidebar
+      className={clsx(styles.container, opened && styles.opened)}
+      opened={opened}
+      setOpened={setOpened}
+      labelOpened={t('editorMenu.open.label')}
+      labelClosed={t('editorMenu.close.label')}
+    >
+      {!activeMenu && (
+        <ul
+          className={styles.entries}
+          role="menubar"
+          aria-orientation="vertical"
+        >
+          <li role="menuitem">
+            <button onClick={() => setActiveMenu('toc')}>
+              {t('toc.title')}
+              <ChevronRight
+                style={{ strokeWidth: 3 }}
+                height={32}
+                width={32}
+                aria-hidden
+              />
+            </button>
+          </li>
 
-              <a onClick={() => setActiveMenu('versions')}>
-                {t('versions.title')}
-                <ChevronRight
-                  style={{ strokeWidth: 3 }}
-                  height={32}
-                  width={32}
-                />
-              </a>
-              <a
-                href="#"
-                onClick={() => setActiveMenu('export')}
-                title="Download a printable version"
-              >
-                {t('export.title')}
-                <ChevronRight
-                  style={{ strokeWidth: 3 }}
-                  height={32}
-                  width={32}
-                />
-              </a>
-              <a
-                href={`/article/${articleId}/annotate`}
-                title="Preview (open a new window)"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.external}
-              >
-                {t('annotate.title')}
-              </a>
-            </div>
-          )}
-          <div className={styles.content}>
-            {activeMenu === 'metadata' && (
-              <ArticleMetadata
-                onBack={() => setActiveMenu('')}
-                metadata={metadata}
-                onChange={(metadata) => updateMetadata(metadata)}
+          <li role="menuitem">
+            <button onClick={() => setActiveMenu('metadata')}>
+              {t('metadata.title')}
+              <ChevronRight
+                style={{ strokeWidth: 3 }}
+                height={32}
+                width={32}
+                aria-hidden
               />
-            )}
-            {activeMenu === 'toc' && (
-              <ArticleTableOfContents onBack={() => setActiveMenu('')} />
-            )}
-            {activeMenu === 'bibliography' && (
-              <ArticleBibliography
-                articleId={articleId}
-                onBack={() => setActiveMenu('')}
+            </button>
+          </li>
+
+          <li role="menuitem">
+            <button onClick={() => setActiveMenu('bibliography')}>
+              {t('bibliography.title')}
+              <ChevronRight
+                style={{ strokeWidth: 3 }}
+                height={32}
+                width={32}
+                aria-hidden
               />
-            )}
-            {activeMenu === 'export' && (
-              <>
-                <h2
-                  className={styles.title}
-                  onClick={() => setActiveMenu('')}
-                  style={{ cursor: 'pointer', userSelect: 'none' }}
-                >
-                  <span style={{ display: 'flex' }}>
-                    <ArrowLeft style={{ strokeWidth: 3 }} />
-                  </span>
-                  <span>{t('export.title')}</span>
-                </h2>
-                <Export
-                  articleId={articleId}
-                  name={data?.article?.title}
-                  bib={data?.article?.workingVersion?.bibPreview}
-                />
-              </>
-            )}
-            {activeMenu === 'versions' && (
-              <CollaborativeVersions
-                articleId={articleId}
-                selectedVersion={versionId}
-                showTitle={true}
-                onBack={() => setActiveMenu('')}
+            </button>
+          </li>
+
+          <li role="menuitem">
+            <button onClick={() => setActiveMenu('versions')}>
+              {t('versions.title')}
+              <ChevronRight
+                style={{ strokeWidth: 3 }}
+                height={32}
+                width={32}
+                aria-hidden
               />
-            )}
-          </div>
-        </section>
-      </Sidebar>
-    </div>
+            </button>
+          </li>
+          <li role="menuitem">
+            <button
+              onClick={() => setActiveMenu('export')}
+              title="Download a printable version"
+            >
+              {t('export.title')}
+              <ChevronRight
+                style={{ strokeWidth: 3 }}
+                height={32}
+                width={32}
+                aria-hidden
+              />
+            </button>
+          </li>
+          <li role="menuitem">
+            <a
+              href={`/article/${articleId}/annotate`}
+              title="Preview (open a new window)"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.external}
+            >
+              {t('annotate.title')}
+            </a>
+          </li>
+        </ul>
+      )}
+
+      <div className={styles.content}>
+        {activeMenu === 'metadata' && (
+          <ArticleMetadata
+            onBack={onBack}
+            metadata={metadata}
+            onChange={(metadata) => updateMetadata(metadata)}
+          />
+        )}
+        {activeMenu === 'toc' && <ArticleTableOfContents onBack={onBack} />}
+        {activeMenu === 'bibliography' && (
+          <ArticleBibliography articleId={articleId} onBack={onBack} />
+        )}
+        {activeMenu === 'export' && (
+          <>
+            <h2
+              className={styles.title}
+              onClick={onBack}
+              style={{ cursor: 'pointer', userSelect: 'none' }}
+            >
+              <span style={{ display: 'flex' }}>
+                <ArrowLeft style={{ strokeWidth: 3 }} />
+              </span>
+              <span>{t('export.title')}</span>
+            </h2>
+            <Export
+              articleId={articleId}
+              name={data?.article?.title}
+              bib={data?.article?.workingVersion?.bibPreview}
+            />
+          </>
+        )}
+        {activeMenu === 'versions' && (
+          <CollaborativeVersions
+            articleId={articleId}
+            selectedVersion={versionId}
+            showTitle={true}
+            onBack={onBack}
+          />
+        )}
+      </div>
+    </Sidebar>
   )
 }

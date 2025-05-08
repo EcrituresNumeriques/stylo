@@ -17,6 +17,7 @@ import {
   getArticleWorkingCopy,
   getEditableArticle,
   updateWorkingVersion,
+  updateZoteroLinkMutation,
 } from '../components/Article.graphql'
 import {
   createVersion,
@@ -162,7 +163,7 @@ export function useArticleWorkingCopy({ articleId }) {
       async (data) => {
         return {
           article: {
-            ...data,
+            ...data.article,
             workingVersion: {
               ...data.workingVersion,
               metadata: metadata,
@@ -220,23 +221,46 @@ export function useEditableArticle({ articleId, versionId }) {
         if (hasVersion) {
           return {
             article: {
-              ...data,
+              ...data.article,
               version: {
                 ...data.version,
-                bib: bib,
+                bib,
               },
             },
           }
         } else {
           return {
             article: {
-              ...data,
+              ...data.article,
               workingVersion: {
                 ...data.workingVersion,
-                bib: bib,
+                bib,
               },
             },
           }
+        }
+      },
+      { revalidate: false }
+    )
+  }
+
+  const updateZoteroLink = async (url) => {
+    await executeQuery({
+      sessionToken,
+      query: updateZoteroLinkMutation,
+      variables: {
+        articleId: articleId,
+        url,
+      },
+      type: 'mutate',
+    })
+    await mutate(
+      async (data) => {
+        return {
+          article: {
+            ...data.article,
+            zoteroLink: url,
+          },
         }
       },
       { revalidate: false }
@@ -252,6 +276,7 @@ export function useEditableArticle({ articleId, versionId }) {
   return {
     article: data?.article,
     updateBibliography,
+    updateZoteroLink,
     bibliography: {
       bibtext,
       entries,

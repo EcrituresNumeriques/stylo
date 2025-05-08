@@ -1,3 +1,4 @@
+import React from 'react'
 import clsx from 'clsx'
 import { PanelRightClose, PanelRightOpen } from 'lucide-react'
 
@@ -7,31 +8,36 @@ export default function Sidebar({
   className,
   opened,
   setOpened,
-  labelOpened,
-  labelClosed,
+  labelOpened = 'Close',
+  labelClosed = 'Open',
   children,
 }) {
-  const button = opened ? (
-    <PanelRightClose size={36} />
-  ) : (
-    <PanelRightOpen size={36} />
-  )
-
-  const label = opened ? (labelOpened ?? 'Close') : (labelClosed ?? 'Open')
+  const ButtonIcon = opened ? PanelRightClose : PanelRightOpen
+  const label = opened ? labelOpened : labelClosed
 
   return (
-    <div
+    <aside
+      aria-labelledby="editor-sidebar-label"
       className={clsx(
         styles.sidebar,
         opened ? styles.opened : styles.closed,
         className
       )}
     >
-      <div className={styles.action} onClick={() => setOpened(!opened)}>
-        <div className={styles.icon}>{button}</div>
-        <div className={styles.label}>{label}</div>
-      </div>
+      <button
+        className={styles.action}
+        onClick={setOpened}
+        aria-pressed={opened}
+      >
+        <div className={styles.icon}>
+          <ButtonIcon size={36} aria-hidden />
+        </div>
+        <div className={styles.label} id="editor-sidebar-label">
+          {label}
+        </div>
+      </button>
+
       {opened && <div className={styles.content}>{children}</div>}
-    </div>
+    </aside>
   )
 }

@@ -1,20 +1,18 @@
-import React, { useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from 'react'
 import { Switch, Route, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
+import { usePreferenceItem } from '../hooks/user.js'
+
 import styles from './header.module.scss'
 
-function Footer() {
-  const dispatch = useDispatch()
-  const userHasConsent = useSelector(
-    (state) => state.userPreferences.trackingConsent
-  )
-  const toggleConsent = useCallback(
-    () => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'trackingConsent' }),
-    []
-  )
+export default function Footer() {
   const { t } = useTranslation()
+
+  const { value: userHasConsent, toggleValue } = usePreferenceItem(
+    'trackingConsent',
+    'user'
+  )
 
   return (
     <Switch>
@@ -43,7 +41,7 @@ function Footer() {
                   <input
                     type="checkbox"
                     checked={userHasConsent}
-                    onChange={toggleConsent}
+                    onChange={toggleValue}
                     disabled={true}
                   />
                   {t('footer.navStats.checkbox')}
@@ -56,5 +54,3 @@ function Footer() {
     </Switch>
   )
 }
-
-export default Footer
