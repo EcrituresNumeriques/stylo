@@ -46,6 +46,7 @@ jobs:
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: stylo-front
           SENTRY_DEBUG: true
+          SNOWPACK_IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID_PROD }}
 
       - name: Store build artifacts for the deploy stage
         uses: actions/upload-artifact@v4
