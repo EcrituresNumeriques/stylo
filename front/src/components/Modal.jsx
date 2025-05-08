@@ -29,6 +29,7 @@ export default forwardRef(function Modal(
       ref={forwardedRef}
       onClose={cancel}
       aria-labelledby="modal-title"
+      aria-describedby={subtitle ? 'modal-description' : null}
     >
       {visible && (
         <div className={styles.content}>
@@ -46,7 +47,7 @@ export default forwardRef(function Modal(
             <h1 id="modal-title" className={styles.title}>
               {title}
             </h1>
-            {subtitle && <div className={styles.subtitle}>{subtitle}</div>}
+            {subtitle && <div className={styles.subtitle} id="modal-description">{subtitle}</div>}
           </header>
 
           <div>{children}</div>
