@@ -1,5 +1,5 @@
 const YAML = require('js-yaml')
-const { getYDoc } = require('@y/websocket-server/utils')
+const { getYDoc, docs } = require('@y/websocket-server/utils')
 
 const Article = require('../models/article.js')
 const User = require('../models/user.js')
@@ -23,12 +23,14 @@ const Sentry = require('@sentry/node')
 
 function getTextFromYjsDoc(yjsdocBase64) {
   const documentState = Buffer.from(yjsdocBase64, 'base64')
-  const yjsdoc = getYDoc(`ws/${new mongo.ObjectID().toString()}`)
+  const docName = `ws/${new mongo.ObjectID().toString()}`
+  const yjsdoc = getYDoc(docName)
   try {
     Y.applyUpdate(yjsdoc, documentState)
     return yjsdoc.getText('main').toString()
   } finally {
     yjsdoc.destroy()
+    docs.delete(docName)
   }
 }
 
