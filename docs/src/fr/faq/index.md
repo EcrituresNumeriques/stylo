@@ -2,4 +2,4 @@
 title: "Foire aux questions"
 ---
 
-Vous avez une question ? Nous sommes là pour y répondre ! Si vous ne trouvez pas votre question ici, envoyez-nous un message sur notre [page de contact](/fr/contacts).
+Si vous ne trouvez pas la réponse à votre question ci-dessous ou dans le reste de la documentation, n'hésitez pas à [rentrer en contact](/fr/contacts) l'équipe ou la communauté de Stylo pour en faire part !

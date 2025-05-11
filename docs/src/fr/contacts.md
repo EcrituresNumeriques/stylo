@@ -2,18 +2,18 @@
 title: Contact
 ---
 
-## Nous contacter
+Stylo est un projet en développement piloté par l’équipe de [la Chaire de recherche du Canada sur les écritures numériques](https://www.ecrituresnumeriques.ca/fr).
 
-Pour plus d'informations, vous pouvez nous contacter à l'[adresse email de la Chaire](mailto:crc.ecrituresnumeriques@gmail.com).
+Si vous êtes une revue qui souhaiterait employer Stylo dans sa chaîne éditoriale, merci de contacter directement l'équipe à l'adresse courriel <crc.ecrituresnumeriques@gmail.com>. Nous prenons en considération des demandes spécifiques d’adaptation de Stylo à des besoins et pratiques particuliers.
 
-Pour répondre aux questions et échanger sur Stylo, une permanence est ouverte tous les jeudis de 11h à 12h (heure canadienne) :
+Si vous rencontrez des problèmes dans votre pratique de Stylo ou souhaiteriez échanger avec sa communauté, faire remonter des besoins ou même partager des pratiques à d'autres, vous pouvez le faire sur [le forum de la communauté Stylo](https://discussions.revue30.org/c/stylo/5).
 
-{% link-button "https://meet.jit.si/stylo", "hyperlink" %}Rejoignez la permanence en visioconférence{% endlink-button %}
+Enfin, pour un accompagnement plus personnalisé, une permanence est ouverte tous les jeudis de 11h à 12h (Heure de Montréal)&nbsp;:
 
-Nous prendrons en considération des demandes spécifiques d'adaptation de Stylo à des chaînes éditoriales particulières – par exemple d'une revue.
+[Rejoignez la permanence en visioconférence](https://meet.jit.si/stylo).
 
-## Signaler un bug
+## Signaler un bug 
 
-Les bugs ou les problèmes techniques peuvent être signalés sur le [dépôt GitHub du projet](https://github.com/EcrituresNumeriques/stylo/issues).
+Les bugs ou les problèmes techniques peuvent être signalés sur le dépôt [GitHub du projet](https://github.com/EcrituresNumeriques/stylo/issues).
 
-{% link-button "https://github.com/EcrituresNumeriques/stylo/issues/new", "hyperlink" %}Signaler un bug{% endlink-button %}
+Tout autre commentaire peut être fait sur le [forum de la communauté Stylo](https://discussions.revue30.org/c/stylo/5).

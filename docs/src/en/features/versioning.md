@@ -2,63 +2,30 @@
 title: "Versioning content"
 ---
 
-## Introduction 
+Versioning a document is no trivial matter. Performing this action can often be likened to creating a backup, yet the two notions differ slightly. Whereas a backup creates an archive of documents at a given point in time, versioning creates a tree structure in which document evolutions are recorded, and these are deliberately created by the user. This version can then be recalled at any time, i.e. the working file can be restored to a previous state thanks to the versioning principle. The version tree allows you to stack a document's modification history on top of itself, without having to duplicate in a multitude of archives the milestones you wish to keep.
 
-![Active](/uploads/images/Nom-Version-V2.PNG)
+In the context of collaborative work, the versioning system also enables an asynchronous writing dynamic to be set up, where everyone can version their modifications and make them more visible to other people working on the document.
 
-Versioning a document is no trivial matter.
-Performing this action can often be likened to creating a backup, yet the two notions differ slightly.
-Whereas a backup creates an archive of documents at a given point in time, versioning creates a tree structure in which document changes are recorded.
+In Stylo, the version of a document contains three elements: metadata, bibliography and text. When you load an older version, these three elements are updated. 
 
-Each of these evolutions is the subject of a version created explicitly by the user.
-This version can then be recalled at any time, i.e. the working file can be returned to a previous state thanks to the versioning principle.
-Whereas, in the case of backup, to return to a previous state, you would have to navigate through archives to find the desired state and open another document to then edit the information contained in this previous state.
-The version tree makes it possible to stack a document's modification history on top of itself, without having to duplicate in a multitude of archives the milestones you wish to preserve.
+**Note:** If you don't create a version, your work is still automatically saved, in what we call a “working copy”.
 
-In the context of collaborative work, the versioning system also enables an asynchronous writing dynamic to be set up, where everyone can version their modifications and make them easily accessible to other people working on the document.
+![New-Version](/uploads/images/refonte_doc/ANG/NewVersion_ANG.png)
 
-## How it works in Stylo
+So when you've reached a version you're happy with and of which you want to freeze a certain state, you can name save a version and name it in the *Version name* field, before saving it as a minor or major version (a minor version corresponds to a decimal number, e.g. the .1 in “1.1”, while a major version corresponds to an integer, e.g. 2).
 
-In Stylo, a version of a document always contains all three elements of the article: metadata, bibliography, body text.
-By loading an older version, these three elements are updated.
+![Label Version](/uploads/images/refonte_doc/ANG/LabelVersion_ANG.png)
 
-By default, your work is automatically saved to Stylo, in what is called a 'working copy'.
+<!-- ## Compare article versions
 
-**This working copy is not a version of your work, you have to create them manually.**
+For an earlier version, the feature for comparing different versions becomes available.
 
-To do this, you can - and this is advisable - use the [New Version] save function, which allows you to generate a new version of the job.
-
-### Create a new version
-
-{% figure "/uploads/gif/create-new-version.gif", "Create a new version" %}
-
-![New-Version](/uploads/images/New-Version-V2.PNG)
-
-So when you've arrived at a version you're happy with, you can name it in the *Label of the version* field before saving it as a minor (**[Create Minor]**) or major (**[Create Major]**) version.
-
-![Label Version](/uploads/images/Label-Version-V2.PNG)
-
-A minor version corresponds to minor changes, while a major version is the establishment of a version with significant changes. 
-
-Each version includes several features:
-
-- For the editable version (*Edit*):
-
-|                        Button                        |Function|
-|:----------------------------------------------------:|:--|
-| ![Major](/uploads/images/Create-Major-V2.PNG) | to save major version of your work |
-| ![Minor](/uploads/images/Create-Minor-V2.PNG) | to save minor version of your work |
-
-## Compare versions
-
-For an earlier version, the ability to compare different versions becomes available.
-
-Comparing different versions with each other allows you to quickly observe the changes made to a Stylo article. This is a very handy feature that offers a visual of the change history version by version.
-
-**[Compare]** to compare the different versions (one previous version and the current version or two previous versions).
+Comparing different versions allows you to quickly observe changes made to a Stylo article.
+It's a very practical feature, offering a quick view of the history of modifications version by version. You can compare a previous version with the current version, or two previous versions. Simply click on the **[Compare]** button to the right of the chosen version.
 
 To view an older version, simply click on its title. To return to the editable version, click on the **[Edit Mode]** button.
 
-When you're on an earlier version of your document, you have the option to export or preview it by clicking the buttons above the text editor.
+When you're on an earlier version of your document, you can export or preview it by clicking on the buttons to the right above the text editor.
 
-{% figure "/uploads/gif/comparer-versions.gif", "Compare different versions of a document" %}
+{% figure "/uploads/gif/comparer-versions.gif", "Compare document versions" %}--> 
+

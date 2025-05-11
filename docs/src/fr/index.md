@@ -1,10 +1,10 @@
 ---
-title: "Stylo - La documentation"
+title: "Stylo - un éditeur de texte sémantique et collaboratif"
 useSideMenu: true
 isHome: true
 ---
 
-Stylo, un éditeur de texte sémantique pour l'édition scientifique en lettres et en sciences humaines et sociales.
+Bienvenue dans la documentation de Stylo. Stylo est un éditeur de texte sémantique et collaboratif pour l'édition scientifique en lettres et en sciences humaines et sociales.
 
 ---
 
@@ -12,17 +12,17 @@ Stylo, un éditeur de texte sémantique pour l'édition scientifique en lettres 
 
 ---
 
-La documentation de Stylo est séparée en plusieurs parties\ :
+La documentation de Stylo est divisée en plusieurs sections :
 
-1. La section _Fonctionnalités_ regroupe la description de toutes les fonctionnalités de Stylo
-2. Les guides d'utilisation contiennent des plusieurs scénarios pour vous montrer différents usages des fonctionnalités
-3. Les tutoriels concernent les langages et formats employés dans Stylo (Markdown, YAML, BibTeX, GraphQL)
-4. La foire aux questions traite des problèmes connus
+- La section Fonctionnalités regroupe les descriptions de toutes les fonctionnalités de Stylo ;
+- Les Scénarios d'utilisation contiennent plusieurs vidéos explicatives destinées à vous guider dans de multiples cas d'usage des fonctionnalités de Stylo ;
+- Les Tutoriels vous accompagnent pour maîtriser les langages/syntaxes/formats de balisage, légers et ouverts, employés par Stylo (Markdown, YAML, BibTeX, GraphQL) ;
+- La FAQ (foire aux questions) traite des problèmes identifiés et connus.
 
 ---
 
 <link-button href="/fr/fonctionnalites" size="small" color="default">Les fonctionnalités</link-button> &nbsp;
-<link-button href="/fr/guides_utilisation" size="small" color="default">Les guides d'utilisation</link-button> &nbsp;
+<link-button href="/fr/scenarios_utilisation" size="small" color="default">Les scénarios d'utilisation</link-button> &nbsp;
 <link-button href="/fr/tutoriels" size="small" color="default">Les tutoriels</link-button> &nbsp;
 <link-button href="/fr/faq" size="small" color="default">Foire aux questions</link-button> &nbsp;
 

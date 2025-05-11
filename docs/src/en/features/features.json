@@ -8,12 +8,12 @@
         "label": "Features",
         "children": [
           {
-            "label": "Corpus",
-            "url": "/en/features/corpus"
+            "label": "Create an account",
+            "url": "/en/features/create-account"
           },
           {
-            "label": "Monaco text editor",
-            "url": "/en/features/monaco-editor"
+            "label": "Managing articles",
+            "url": "/en/features/myarticles"
           },
           {
             "label": "Collaborative writing",
@@ -24,16 +24,36 @@
             "url": "/en/features/workspaces"
           },
           {
-            "label": "Exports",
+            "label": "Article exports",
             "url": "/en/features/exports"
           },
           {
-            "label": "Preview and annotate an article",
-            "url": "/en/features/preview"
+            "label": "Share and annotate an article",
+            "url": "/en/features/share-annotate"
           },
           {
             "label": "Versioning content",
             "url": "/en/features/versioning"
+          },
+          {
+            "label": "Managing metadata",
+            "url": "/en/features/metadata"
+          },
+          {
+            "label": "Managing references",
+            "url": "/en/features/managingref"
+          },
+          {
+            "label": "Corpus",
+            "url": "/en/features/corpus"
+          },
+          {
+            "label": "Monaco text editor",
+            "url": "/en/features/monaco-editor"
+          },
+          {
+            "label": "Thesis and dissertations",
+            "url": "/en/features/dissertation"
           }
         ]
       }

@@ -1,0 +1,61 @@
+{
+    "sectionTitle": "Funcionalidades",
+    "sectionUrl": "/es/funcionalidad",
+    "disableSearch": false,
+    "searchIndexUrl": "/es/search-index.json",
+    "menu": [
+      {
+        "label": "Functionalidades",
+        "children": [
+          {
+            "label": "Crear una cuenta",
+            "url": "/es/funcionalidad/crear-cuenta"
+          },
+          {
+            "label": "Gestionar mis artículos",
+            "url": "/es/funcionalidad/mis-articulos"
+          },
+          {
+            "label": "Escritura collaborativa",
+            "url": "/es/funcionalidad/escritura-colaborativa"
+          },
+          {
+            "label": "Espacios de trabajo",
+            "url": "/es/funcionalidad/espacio-de-trabajo"
+          },
+          {
+            "label": "Exportar sus artículos o corpus",
+            "url": "/es/funcionalidad/exportaciones"
+          },
+          {
+            "label": "Compartir y anotar un artículo",
+            "url": "/es/funcionalidad/compartir-anotar"
+          },
+          {
+            "label": "Versionar contenidos",
+            "url": "/es/funcionalidad/versionar"
+          },
+          {
+            "label": "Gestionar mis metadatos",
+            "url": "/es/funcionalidad/metadatos"
+          },
+          {
+            "label": "Gestione sus referencias bibliográficas",
+            "url": "/es/funcionalidad/bibliographia"
+          },
+          {
+            "label": "Corpus",
+            "url": "/es/funcionalidad/corpus"
+          },
+          {
+            "label": "El editor de texto Monaco",
+            "url": "/es/funcionalidad/monaco-editor"
+          },
+          {
+            "label": "Mémoires et thèses",
+            "url": "/es/funcionalidad/tesis"
+          }
+        ]
+      }
+    ]
+}
