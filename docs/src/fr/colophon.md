@@ -1,71 +1,62 @@
 ---
-title: "Colophon"
+title: "À propos de _Stylo_"
 ---
 
-## Le projet
+Stylo est un éditeur de texte sémantique pour l’édition scientifique en lettres et en sciences humaines et sociales, piloté par l’équipe de la [Chaire de recherche du Canada sur les écritures numériques](https://www.ecrituresnumeriques.ca/fr), et sous licence [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE).
 
-Plus qu'un outil, Stylo est une philosophie du texte. Il repose sur l'idée que nous devons concevoir des modèles textuels adaptés pour l'écriture en sciences humaines et sociales (SHS).
+## À propos
 
-Il est pensé et créé pour écrire des textes scientifiques et en particulier adapté pour les revues en SHS.
+Plus qu’un outil, Stylo est une philosophie du texte. Il repose sur l’idée que nous devons concevoir des modèles textuels et environnements numériques adaptés pour l’écriture en Sciences Humaines et Sociales (SHS). 
 
-C'est actuellement un outil prototype en cours de développement, implémenté dans la chaîne éditoriale de plusieurs revues dans le cadre notamment du projet partenariat [Revue 2.0](http://revue20.org/).
-Cet outil est par ailleurs utilisé par différent·e·s auteur·e·s et étudiant·e·s à titre personnel pour leurs travaux scientifiques ou institutionnels.
+Adapté pour les revues en SHS, Stylo est un outil prototype, un projet de recherche en développement implémenté dans la chaîne éditoriale de [Sens Public](https://sens-public.org/), [Lampadaire](https://lampadaire.ca/), [Imaginations](https://imaginationsjournal.ca/index.php/imaginations), et d'autres encore. Il a été pensé et développé dans le cadre du projet partenarial [Revue 2.0](http://revue20.org/), et continue à être expérimenté et amélioré au travers du projet [Revue 3.0](https://revue30.org/). 
 
-Stylo peut être utilisé en ligne à l'adresse [stylo.huma-num.fr](https://stylo.huma-num.fr). Cette instance de Stylo est déployée et maintenue par [Huma-Num](https://www.huma-num.fr), qui assure la sauvegarde et la sécurité des données.
+Stylo est par ailleurs utilisé par différent·e·s auteur·e·s et étudiant·e·s à titre personnel, pour leurs travaux scientifiques ou institutionnels. 
 
-## La *Stylo*-sophie
+Cette instance de Stylo est déployée et maintenue par [Huma-Num](https://www.huma-num.fr/), qui assure la sauvegarde et la sécurité des données. Le code source de Stylo est disponible sur [GitHub](https://github.com/EcrituresNumeriques/stylo/).
 
-Éditeur de texte WYSIWYM pour les sciences humaines, Stylo est conçu pour changer l’ensemble de la chaîne éditoriale numérique des revues savantes en sciences humaines et sociales.
+## Stylo-sophie
 
-Bien que fondamentale en vue d’une diffusion numérique, la structuration des documents et leur balisage sont actuellement reportés à la fin du processus éditorial quand, en réalité, ceux-ci devraient être envisagés dès la production (par l’auteur·e, dès la première révision des articles). À cet égard, il semble urgent et cohérent de réintégrer le travail de balisage et de structuration en début de chaîne éditoriale.
+Prototypique d’une approche réflexive de la textualité numérique, Stylo encourage le développement d’une littératie critique, par une interaction active avec des langages et technologies open source adaptés à l'écriture, l'évaluation et la publication savante.
 
-La philosophie de Stylo consiste à remettre entre les mains des chercheur·e·s la gestion du balisage du texte en partant cette fois-ci de leurs compétences, qui relèvent davantage de compétences sémantiques que graphiques.
+À l'origine, Stylo est un éditeur de texte conçu pour transformer et intégrer l’ensemble de la chaîne éditoriale numérique des revues savantes en sciences humaines et sociales. Basé sur l'idée d'une séparation entre le balisage sémantique et les affichages graphiques d'un document, Stylo permet à l’auteur·e de se consacrer au sens du texte durant son écriture, plutôt qu’à sa mise en forme.
 
-L'éditeur est basé sur la séparation entre le balisage sémantique et les affichages graphiques, ce qui permet à l'auteur·e de se consacrer au sens du texte plutôt qu'à sa mise en forme.
+Stylo propose aujourd'hui une solution libre et collaborative, basée sur des standards ouverts (Markdown, YAML, BibTeX), permettant de multiples sorties (PDF, HTML, XML-TEI, TEI Commons Publishing, ODT) à partir d’un seul document ou d'un corpus - facilitant ainsi une circulation des documents hors des formats, environnements et serveurs propriétaires des grands groupes de la Sillicon Valley.
 
-Stylo propose une solution libre, basée sur des standards (Markdown, YAML, BibTeX) qui permet :
+### Contributeur·rice·s 
 
-- d'écrire des textes bien balisés avec des métadonnées riches et une bibliographie structurée ;
-- de produire de multiples sorties (PDF, HTML, XML, ODT...) à partir d'un seul document.
+- [Louis-Olivier Brassard](https://www.ecrituresnumeriques.ca/fr/personnes/louis-olivier-brassard)
+- [Victor Chaix](https://www.ecrituresnumeriques.ca/fr/personnes/victor-chaix)
+- [Roch Delannay](https://www.ecrituresnumeriques.ca/fr/personnes/roch-delannay)
+- [Giulia Ferretti](https://www.ecrituresnumeriques.ca/fr/personnes/giulia-ferretti)
+- [Antoine Fauchié](https://www.ecrituresnumeriques.ca/fr/personnes/antoine-fauchie)
+- [Camille Germain](https://www.ecrituresnumeriques.ca/fr/personnes/camille-germain)
+- [Clara Grometto](https://www.ecrituresnumeriques.ca/fr/personnes/clara-grometto)
+- [Arthur Juchereau](https://www.ecrituresnumeriques.ca/fr/personnes/arthur-juchereau)
+- [Lena Krause](https://www.ecrituresnumeriques.ca/fr/personnes/lena-krause)
+- [Margot Mellet](https://www.ecrituresnumeriques.ca/fr/personnes/margot-mellet)
+- [Servanne Monjour](https://www.ecrituresnumeriques.ca/fr/personnes/servanne-monjour)
+- [Nicolas Sauret](https://www.ecrituresnumeriques.ca/fr/personnes/nicolas-sauret)
+- [Marcello Vitali-Rosati](https://www.ecrituresnumeriques.ca/fr/personnes/marcello-vitali-rosati)
 
-Stylo est un outil qui implémente des formats et des technologies de conversion existantes et déjà utilisées par la communauté scientifique, ce qui permet une libre circulation des documents qui ne sont pas enfermés dans un format particulier.
-
-
-## Contributeur·rice·s actuels
-
-### Chercheur·e·s
-
-- [Antoine Fauchié](https://ecrituresnumeriques.ca/fr/Equipe/Antoine-Fauchie/)
-- [Margot Mellet](https://ecrituresnumeriques.ca/fr/Equipe/Margot-Mellet)
-- [Servanne Monjour](https://ecrituresnumeriques.ca/fr/Equipe/Servanne-Monjour-)
-- [Nicolas Sauret](https://ecrituresnumeriques.ca/fr/Equipe/Nicolas-Sauret)
-- [Marcello Vitali-Rosati](https://ecrituresnumeriques.ca/fr/Equipe/Marcello-Vitali-Rosati-)
-- [Roch Delannay](https://ecrituresnumeriques.ca/fr/Equipe/Roch-Delannay)
-- [Louis-Olivier Brassard](https://www.loupbrun.ca)
-
-### Développeurs
+## Développeur·euse·s
 
 - [Guillaume Grossetie](https://github.com/ggrossetie)
+- [Arthur Juchereau](https://www.ecrituresnumeriques.ca/fr/personnes/arthur-juchereau)
 - [David Larlet](http://larlet.com/)
+- [Maïtané Lenoir](https://maiwann.net/qui_suis_je)
 - [Yves Marcoux](https://recherche.umontreal.ca/fr/nos-equipes-de-recherche/repertoire-des-professeurs/chercheur/is/in14146/)
-- [Thomas Parisot](https://détour.studio)
+- [Thomas Parisot](https://xn--dtour-bsa.studio/)
 
-### Designers
+## Traductions
 
-- [Maïtané Lenoir](https://maiwann.net/)
+- Alexandre MacBeth (Espagnol)
 
-### Partenaires
+## Partenaires
 
-- [Érudit](http://erudit.org/)
 - [Huma-Num](https://www.huma-num.fr/)
 - [Métopes](http://www.metopes.fr/)
+- [Érudit](http://erudit.org/)
 
-## Ancien·ne·s Contributeur·rice·s
+---
 
-- [Arthur Juchereau](https://ecrituresnumeriques.ca/fr/Equipe/Arthur-Juchereau)
-- [Lena Krause](https://ecrituresnumeriques.ca/fr/Equipe/Lena-Krause)
-
-
-## Briques technologiques
-
-La documentation de Stylo a été créée avec le générateur de site statique [11ty](https://www.11ty.dev/).
+La documentation de Stylo a été créée à l'aide du générateur de site statique [11ty](https://www.11ty.dev/).

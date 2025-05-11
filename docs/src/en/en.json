@@ -1,11 +1,11 @@
 {
   "siteTitle": "Stylo",
   "lang": "en",
-  "description": "Stylo is a text editor that simplifies writing and editing scientific articles in the Human and Social Sciences.",
+  "description": "Stylo is a semantic and collaborative text editor for the Human and Social Sciences.",
   "rights": "Licence Creative Commons [CC BY-SA 4.0] – Canada Research Chair on digital textualities",
   "sources": "<a href=\"https://github.com/EcrituresNumeriques/stylo/\">Sources</a>",
-  "contact": "<a href=\"/en/contacts/\">Contact us</a>",
-  "colophon": "<a href=\"/en/colophon\">Colophon</a>",
+  "contact": "<a href=\"/en/contacts/\">Get in touch</a>",
+  "colophon": "<a href=\"/en/colophon\">About</a>",
 
   "sectionTitle": "Documentation",
   "sectionUrl": "/en",
@@ -25,6 +25,11 @@
           "label": "Français",
           "url": "/fr",
           "lang": "fr"
+        },
+        {
+          "label": "Español",
+          "url": "/es",
+          "lang": "es"
         }
       ]
     },
@@ -36,8 +41,8 @@
           "url": "/en/features"
         },
         {
-          "label": "User guides",
-          "url": "/en/user-guides"
+          "label": "Scenarios",
+          "url": "/en/scenarios"
         },
         {
           "label": "Tutorials",
