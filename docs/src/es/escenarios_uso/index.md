@@ -8,7 +8,7 @@ Aquí tienes una lista completa de nuestros escenarios de uso disponibles actual
 
 - Crear una cuenta Huma-Num para Stylo
 - Personaliza tu escritura en Stylo con Monaco
-- Versionar un documento Stylo
+- Versionar un documento con Stylo
 - Anotar artículos Stylo en colaboración
 - Gestionar referencias bibliográficas en Stylo
 - Exportar un artículo o un corpus de artículos de Stylo

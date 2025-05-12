@@ -8,7 +8,7 @@ Here is a complete list of our scenarios currently available&nbsp;:
 
 - Create a Huma-Num account for Stylo
 - Personalize your writing in Stylo with Monaco
-- Make versions of a Stylo document
+- Make versions of a document in Stylo
 - Annotate Stylo articles in a collaborative way
 - Manage bibliographic references in Stylo
 - Export an article or a corpus of articles from Stylo
