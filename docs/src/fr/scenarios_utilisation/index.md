@@ -7,8 +7,8 @@ Dans cette section vous trouverez des scénarios et guides d'utilisation sous la
 Voici la liste complète de nos scénarios d'utilisation présentement disponibles&nbsp;:
 
 - Créer un compte Huma-Num pour Stylo
-- Personnaliser l’'écriture dans Stylo avec Monaco
-- Versionner un document Stylo
+- Personnaliser l’écriture dans Stylo avec Monaco
+- Versionner un document avec Stylo
 - Annoter de manière collaborative un article Stylo 
 - Gérer ses références bibliographiques dans Stylo
 - Exporter un article ou corpus d'articles de Stylo
