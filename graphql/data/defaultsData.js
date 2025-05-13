@@ -1,8 +1,7 @@
 module.exports = {
   article: {
     title: 'How to Stylo',
-    // https://www.zotero.org/groups/2464757/collections/PLXDF42M
-    zoteroLink: '2464757/collections/PLXDF42M',
+    zoteroLink: 'https://www.zotero.org/groups/2464757/collections/PLXDF42M',
     md: `## Introduction
 
 Stylo est un éditeur de texte scientifique. Pour faire vos premiers pas sur Stylo, commencez par éditer cet article.
