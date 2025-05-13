@@ -22,7 +22,6 @@ Within Stylo's bibliographic reference manager, we have access to a raw mode tha
 Example of a reference in BibTeX :
 
 ```
-
 @article{vitali-rosati_marcello_ecrire_2020,
 	title = {Écrire les {SHS} en environnement numérique. {L}’éditeur de texte {Stylo}},
 	volume = {2020},
@@ -36,12 +35,11 @@ Example of a reference in BibTeX :
 	year = {2020},
 	note = {Publisher: Revue Intelligibilité du numérique, n°1/2020},
 }
-
 ```
 
-The declaration of this structure comprises several elements. 
+The declaration of this structure comprises several elements.
 
-- The first element is the type of document to be indexed, of which there are 17. A BiTex entry always begins with an asterisk (@), followed by the document type. In this example, it's an article. 
+- The first element is the type of document to be indexed, of which there are 17. A BiTex entry always begins with an asterisk (@), followed by the document type. In this example, it's an article.
 - The second element is called the key. In this example, it's this part: `{vitali-rosati_marcello_ecrire_2020,`. This is used to cite the document in the article.
 - The third element is the bibliographic field. For example, title, url, athor, etc. Descriptors are used to assign information to declared documents. Depending on the type of document declared, some descriptors are required, while others are optional. BibTeX offers a finite set of descriptors that can be used to fill in the data of a reference. The use of descriptors is not “open” either: in BibTeX, each document type has predetermined, required and optional descriptors.
 
