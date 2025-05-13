@@ -7,12 +7,10 @@ BibTeX es el formato (.bib) que acompaña a uno de los programas de gestión de 
 La estructura de una referencia en BibTeX es relativamente sencilla. Su forma general es la siguiente
 
 ```
-
 @documento{citation-key,
     campos obligatorios = ,
     [campos opcionales] = ,
 }
-
 ```
 
 Dentro del gestor de referencias bibliográficas de Stylo, tenemos acceso a un modo raw que nos permite ver y editar los datos de las referencias en BibTeX. Se encuentra en el panel de la izquierda, en 'Bibliografía', 'Gestión', y luego en la pestaña 'BibTex en bruto'.
@@ -22,25 +20,26 @@ Dentro del gestor de referencias bibliográficas de Stylo, tenemos acceso a un m
 Ejemplo de una referencia en BibTeX :
 
 ```
-@article{vitali-rosati_marcello_ecrire_2020,
-	title = {Écrire les {SHS} en environnement numérique. {L}’éditeur de texte {Stylo}},
-	volume = {2020},
-	url = {https://intelligibilite-numerique.numerev.com/numeros/n-1-2020/18-ecrire-les-shs-en-environnement-numerique-l-editeur-de-texte-stylo},
-	doi = {10.34745/numerev_1697},
-	language = {francés},
-	number = {1},
-	urldate = {2025-03-06},
-	journal = {Revue Intelligibilité du numérique},
-	author = {{Vitali-Rosati Marcello} and Nicolas, Sauret and Antoine, Fauchié and Margot, Mellet},
-	year = {20},
-	note = {Editorial: Revue Intelligibilité du numérique, n°1/2020},
+@article{sternCrystalsKnowledgeProduction2015,
+  title = {Crystals of {{Knowledge Production}}. {{An Intercontinental Conversation}} about {{Open Science}} and the {{Humanities}}},
+  author = {Stern, Niels and Gu{\'e}don, Jean-Claude and Jensen, Thomas Wiben},
+  year = {2015},
+  month = oct,
+  journal = {Nordic Perspectives on Open Science},
+  volume = {1},
+  pages = {1--24},
+  issn = {2464-1839},
+  doi = {10.7557/11.3619},
+  urldate = {2025-01-29},
+  abstract = {In this article two scholars engage in a conversation about open access and open science in research communication with a specific focus on the Humanities.~The two scholars have very different points of departure. Whereas Jean-Claude Gued{\'o}n has been a professor of Literature in North-America for many years and part of the open access movements since its beginning, Thomas Wiben Jensen is in the early part of his carreer and fairly new to the concept of open access.~The conversation begins with a focus on the Danish national strategy for open access and this strategy's consquenses for the journal NyS where Thomas Wiben is part of the editorial board. However, the conversation brings the reader on an unexpected journey through the history of science communication and through alternative ways of understanding knowledge production as frozen moments or crystals in the Great Conversation of science.It is the hope of the editor and the contributors that the conversation can lead to a debate about innovative ways of communicating and distributing scientific results.},
+  copyright = {Copyright (c) 2015 Niels Stern, Jean-Claude Gu{\'e}don, Thomas Wiben Jensen},
+  langid = {english}
 }
-
 ```
 
-La declaración de esta estructura incluye varios elementos. 
+La declaración de esta estructura incluye varios elementos.
 
-- El primer elemento es el tipo de documento que se desea indexar, de los cuales hay 17. Una entrada BiTex comienza siempre con un asterisco (@), seguido del tipo de documento. En este ejemplo, se trata de un artículo. 
+- El primer elemento es el tipo de documento que se desea indexar, de los cuales hay 17. Una entrada BiTex comienza siempre con un asterisco (@), seguido del tipo de documento. En este ejemplo, se trata de un artículo.
 - El segundo elemento se denomina clave. En este ejemplo, es esta parte: `{vitali-rosati_marcello_ecrire_2020,`. Se utiliza para citar el documento en el artículo.
 - El tercer elemento es el campo bibliográfico. Por ejemplo, título, url, athor, etc. Los descriptores se utilizan para asignar información a los documentos declarados. Dependiendo del tipo de documento declarado, algunos descriptores son obligatorios, mientras que otros son opcionales. BibTeX ofrece un conjunto finito de descriptores que pueden utilizarse para rellenar los datos de una referencia. El uso de descriptores tampoco es «libre»; en BibTeX cada tipo de documento tiene descriptores predeterminados, obligatorios y opcionales.
 
