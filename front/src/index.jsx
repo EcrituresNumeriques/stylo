@@ -23,7 +23,7 @@ import { applicationConfig } from './config.js'
 import createStore from './createReduxStore.js'
 import { getUserProfile } from './helpers/user.js'
 
-import App from './layouts/App.jsx'
+import App, { ScrollRestoration } from './layouts/App.jsx'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import Login from './components/Login.jsx'
@@ -136,6 +136,7 @@ root.render(
         <Router history={history}>
           <App>
             <TrackPageViews />
+            <ScrollRestoration />
             <Header />
             <main tabIndex={-1}>
               <Suspense fallback={<LoadingPage />}>
