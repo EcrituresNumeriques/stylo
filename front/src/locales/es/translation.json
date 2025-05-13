@@ -347,7 +347,7 @@
   "validating.label": "Validando…",
   "version.by.text": "por {{owner}}",
   "versions.collaborativeSessionEnded.text": "Fin de la sesión de colaboración",
-  "versions.createVersion.button": "Vueva versión",
+  "versions.createVersion.button": "Nueva versión",
   "versions.createVersion.title": "Crear una nueva versión",
   "versions.editingSessionEnded.text": "Sesión de edición finalizada",
   "versions.explanation.text": "<0>Todos los cambios se guardan automáticamente.</0><1>Crea una nueva versión para realizar un seguimiento de cambios específicos.</1>",
