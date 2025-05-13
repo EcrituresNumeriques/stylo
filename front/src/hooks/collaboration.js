@@ -94,6 +94,10 @@ export function useCollaboration({ articleId, versionId }) {
     [setWebsocketStatus]
   )
 
+  const handleAuthenticationError = useCallback(() => {
+    setWebsocketStatus('authenticationError')
+  }, [setWebsocketStatus])
+
   useEffect(() => {
     if (connectingRef.current) {
       return
@@ -109,6 +113,7 @@ export function useCollaboration({ articleId, versionId }) {
       user: writerInfo,
       onChange: handleWritersUpdated,
       onStatusUpdated: handleWebsocketStatusUpdated,
+      onAuthenticationError: handleAuthenticationError,
     })
     const yText = yDocument.getText('main')
     setAwareness(awareness)

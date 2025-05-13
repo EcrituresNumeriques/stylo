@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Loader } from 'lucide-react'
+import { Loader, ShieldAlert } from 'lucide-react'
 import React from 'react'
 
 import styles from './CollaborativeEditorWebSocketStatus.module.scss'
@@ -21,6 +21,14 @@ export default function CollaborativeEditorWebSocketStatus({ status }) {
         <span className={clsx(styles.dot, styles.warning)}></span>
         Connecting
         <Loader className={styles.loadingIndicator} />
+      </div>
+    )
+  }
+
+  if (status === 'authenticationError') {
+    return (
+      <div className={clsx(styles.status, styles.authenticationError)}>
+        <ShieldAlert /> Access to this article is denied
       </div>
     )
   }

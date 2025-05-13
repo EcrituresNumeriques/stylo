@@ -73,6 +73,7 @@ const yjsUtils = require('@y/websocket-server/utils')
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
 const { mongo } = require('mongoose')
+const encoding = require('lib0/encoding')
 const wss = new WebSocket.Server({ noServer: true })
 
 const jwtSecret = config.get('security.jwt.secret')
@@ -89,7 +90,7 @@ const allowedOrigins = config.get('security.cors.origin')
 // SameSite should be None on cross-site response.
 // Please note that "SameSite=None" must also specify the Secure attribute (they require a secure context/HTTPS).
 /**
- * @type {boolean | "lax" | "strict" | "none"}
+ * @type {boolean | 'lax' | 'strict' | 'none'}
  */
 const sameSiteCookies =
   allowedOrigins.length > 1 && secureCookie ? 'none' : 'lax'
@@ -335,7 +336,20 @@ yjsUtils.setPersistence({
     }
   },
 })
-wss.on('connection', yjsUtils.setupWSConnection)
+wss.on('connection', (conn, req) => {
+  const jwtToken = new URL('http://localhost' + req.url).searchParams.get(
+    'token'
+  )
+  if (jwtToken) {
+    yjsUtils.setupWSConnection(conn, req)
+  } else {
+    const encoder = encoding.createEncoder()
+    encoding.writeVarUint(encoder, 99)
+    encoding.writeVarUint(encoder, 0)
+    encoding.writeVarString(encoder, 'no JWT token provided')
+    conn.send(encoding.toUint8Array(encoder), {})
+  }
+})
 
 const server = app.listen(config.get('port'), (err) => {
   if (err) {
@@ -348,8 +362,6 @@ const server = app.listen(config.get('port'), (err) => {
 
 server.on('upgrade', (request, socket, head) => {
   wss.handleUpgrade(request, socket, head, function handleAuth(ws) {
-    // const jwtToken = new URL('http://localhost' + request.url).searchParams.get("token")
-    // TODO: check token and permissions
     wss.emit('connection', ws, request)
   })
 })

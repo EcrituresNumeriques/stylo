@@ -4,6 +4,10 @@
   width: 0.65em;
 }
 
+.authenticationError {
+  background-color: hsl(350 80% 80%);
+}
+
 .connecting {
   background-color: hsl(11, 89%, 95%);
 }
