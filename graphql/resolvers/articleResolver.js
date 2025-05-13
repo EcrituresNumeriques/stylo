@@ -1,5 +1,5 @@
 const YAML = require('js-yaml')
-const { getYDoc } = require('@y/websocket-server/utils')
+const { WSSharedDoc } = require('@y/websocket-server/utils')
 
 const Article = require('../models/article.js')
 const User = require('../models/user.js')
@@ -22,13 +22,12 @@ const { mongo } = require('mongoose')
 const Sentry = require('@sentry/node')
 
 function getTextFromYjsDoc(yjsdocBase64) {
-  const documentState = Buffer.from(yjsdocBase64, 'base64')
-  const yjsdoc = getYDoc(`ws/${new mongo.ObjectID().toString()}`)
+  const wsDoc = new WSSharedDoc(`ws/${new mongo.ObjectID().toString()}`)
   try {
-    Y.applyUpdate(yjsdoc, documentState)
-    return yjsdoc.getText('main').toString()
+    Y.applyUpdate(wsDoc, Buffer.from(yjsdocBase64, 'base64'))
+    return wsDoc.getText('main').toString()
   } finally {
-    yjsdoc.destroy()
+    wsDoc.destroy()
   }
 }
 
