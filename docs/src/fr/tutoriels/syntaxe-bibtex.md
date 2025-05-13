@@ -22,7 +22,6 @@ La structure d’une référence en BibTeX est relativement simple. Sa forme gé
 Exemple de référence en BibTeX :
 
 ```
-
 @article{vitali-rosati_marcello_ecrire_2020,
 	title = {Écrire les {SHS} en environnement numérique. {L}’éditeur de texte {Stylo}},
 	volume = {2020},
@@ -36,7 +35,6 @@ Exemple de référence en BibTeX :
 	year = {2020},
 	note = {Publisher: Revue Intelligibilité du numérique, n°1/2020},
 }
-
 ```
 
 La déclaration de cette structure comprend plusieurs éléments. 
