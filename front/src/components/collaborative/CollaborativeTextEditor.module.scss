@@ -38,6 +38,10 @@
       color: #00f;
     }
 
+    a[href] {
+      word-break: break-word;
+    }
+
     h1, h2, h3, h4, h5, h6 {
       line-height: 1.15;
       margin: 2.25rem 0 1rem;
