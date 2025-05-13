@@ -7,12 +7,10 @@ BibTeX is the format (.bib) accompanying one of the oldest bibliographic referen
 The structure of a BibTeX reference is relatively simple. Its general form looks like this:
 
 ```
-
 @document{citation-key,
     required-fields = ,
     [optional-fields] = ,
 }
-
 ```
 
 Within Stylo's bibliographic reference manager, we have access to a raw mode that allows us to view and edit reference data in BibTeX. It is located in the left-hand pane, under “Bibliography”, “Management”, then in the “BibTex raw” tab.
@@ -22,18 +20,20 @@ Within Stylo's bibliographic reference manager, we have access to a raw mode tha
 Example of a reference in BibTeX :
 
 ```
-@article{vitali-rosati_marcello_ecrire_2020,
-	title = {Écrire les {SHS} en environnement numérique. {L}’éditeur de texte {Stylo}},
-	volume = {2020},
-	url = {https://intelligibilite-numerique.numerev.com/numeros/n-1-2020/18-ecrire-les-shs-en-environnement-numerique-l-editeur-de-texte-stylo},
-	doi = {10.34745/numerev_1697},
-	language = {French},
-	number = {1},
-	urldate = {2025-03-06},
-	journal = {Revue Intelligibilité du numérique},
-	author = {{Vitali-Rosati Marcello} and Nicolas, Sauret and Antoine, Fauchié and Margot, Mellet},
-	year = {2020},
-	note = {Publisher: Revue Intelligibilité du numérique, n°1/2020},
+@article{sternCrystalsKnowledgeProduction2015,
+  title = {Crystals of {{Knowledge Production}}. {{An Intercontinental Conversation}} about {{Open Science}} and the {{Humanities}}},
+  author = {Stern, Niels and Gu{\'e}don, Jean-Claude and Jensen, Thomas Wiben},
+  year = {2015},
+  month = oct,
+  journal = {Nordic Perspectives on Open Science},
+  volume = {1},
+  pages = {1--24},
+  issn = {2464-1839},
+  doi = {10.7557/11.3619},
+  urldate = {2025-01-29},
+  abstract = {In this article two scholars engage in a conversation about open access and open science in research communication with a specific focus on the Humanities.~The two scholars have very different points of departure. Whereas Jean-Claude Gued{\'o}n has been a professor of Literature in North-America for many years and part of the open access movements since its beginning, Thomas Wiben Jensen is in the early part of his carreer and fairly new to the concept of open access.~The conversation begins with a focus on the Danish national strategy for open access and this strategy's consquenses for the journal NyS where Thomas Wiben is part of the editorial board. However, the conversation brings the reader on an unexpected journey through the history of science communication and through alternative ways of understanding knowledge production as frozen moments or crystals in the Great Conversation of science.It is the hope of the editor and the contributors that the conversation can lead to a debate about innovative ways of communicating and distributing scientific results.},
+  copyright = {Copyright (c) 2015 Niels Stern, Jean-Claude Gu{\'e}don, Thomas Wiben Jensen},
+  langid = {english}
 }
 ```
 
