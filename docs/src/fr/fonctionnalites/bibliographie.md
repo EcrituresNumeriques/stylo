@@ -51,8 +51,6 @@ Il existe plusieurs méthodes pour écrire rapidement ces clefs de citations dan
 
 - Une fonction d'autocomplétion est implémentée dans l'éditeur de texte. Il vous suffit de commencer à écrire `[@` ou simplement `@` pour que l’éditeur de texte vous propose toutes vos références associées à l’article. Si vous souhaitez affiner l’autocomplétion, il suffira d’ajouter la première lettre du nom de l’auteur pour réduire les propositions fournies : `[@b`.
 
-{% figure "/uploads/gif/add-reference-bib.gif", "Ajouter une référence bibliographique" %}
-
 - Vous pouvez aussi cliquer sur l'icône associée à la référence dans le volet de gauche, puis la coller (Ctrl+V) dans le texte à l'endroit souhaité. Elle apparaîtra alors ainsi `[@shirky_here_2008]`. Pour bien comprendre, un clic consiste à "copier" la clé BibTeX de la référence dans le presse-papier. 
 
 ![Bibliographie exemple](/uploads/images/refonte_doc/biblio-exemple.png)

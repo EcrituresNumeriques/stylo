@@ -50,8 +50,6 @@ There are several ways to quickly write these quotation keys in Stylo:
 
 - An autocomplete function is implemented in the text editor. Just start typing `[@` or simply `@` and the text editor will suggest all your references associated with the article. If you wish to refine autocompletion, simply add the first letter of the author's name to narrow down the suggestions provided: `[@b`.
 
-{% figure “/uploads/gif/add-reference-bib.gif”, “Add a bibliographic reference” %}
-
 - You can also click on the icon associated with the reference in the left-hand pane, then paste it (Ctrl+V) into the text at the desired location. It will then appear as `[@shirky_here_2008]`. To be clear, one click “copies” the reference's BibTeX key to the clipboard. 
 
 ![Bibliography example](/uploads/images/refonte_doc/ANG/biblio-exemple_ANG.png)

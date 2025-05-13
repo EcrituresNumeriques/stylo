@@ -50,8 +50,6 @@ Existen varios métodos para escribir estas claves de citación rápidamente en 
 
 - Se ha implementado una función de autocompletado en el editor de texto. Sólo tiene que empezar a escribir `[@` o simplemente `@` y el editor de texto le sugerirá todas las referencias asociadas al artículo. Si quieres refinar el autocompletado, simplemente añade la primera letra del nombre del autor para reducir el número de sugerencias: `[@b`.
 
-{% figure «/uploads/gif/add-reference-bib.gif», «Añadir una referencia bibliográfica» %}
-
 - También puedes hacer clic en el icono asociado a la referencia en el panel izquierdo y, a continuación, pegarla (Ctrl+V) en el texto donde la quieras. Aparecerá entonces como `[@shirky_here_2008]`. Para que quede claro, con un solo clic «copiará» la clave BibTeX de la referencia en el portapapeles. 
 
 ![Ejemplo de bibliografía](/uploads/images/refonte_doc/ANG/biblio-exemple_ANG.png)
