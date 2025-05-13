@@ -10,20 +10,3 @@
   display: flex;
   gap: 1rem;
 }
-
-.main {
-  flex: 1;
-  position: relative;
-}
-
-.diffEditor {
-  border: 1px solid $main-border-color;
-  min-height: 200px;
-  height: calc(100vh - 225px);
-
-  :global {
-    .monaco-editor {
-      position: absolute;
-    }
-  }
-}

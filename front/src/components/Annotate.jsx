@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import { Helmet } from 'react-helmet'
 
 import Loading from './molecules/Loading.jsx'

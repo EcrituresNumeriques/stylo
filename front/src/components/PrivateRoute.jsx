@@ -1,28 +1,20 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router'
 import { useActiveUserId } from '../hooks/user.js'
 
-import Login from './Login'
+/**
+ * @param {{redirectTo: string, withOutlet: boolean} & React.PropsWithChildren} props
+ * @returns {React.ReactElement}
+ */
+export default function PrivateRoute({
+  redirectTo = '/login',
+}) {
+  const activeUserId = useActiveUserId()
+  const location = useLocation()
 
-function PrivateRoute({ children, component, ...rest }) {
-  const userId = useActiveUserId()
-
-  return (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        userId ? (
-          component ? (
-            React.createElement(component, rest, children)
-          ) : (
-            children
-          )
-        ) : (
-          <Login from={location} />
-        )
-      }
-    />
+  return activeUserId ? (
+      <Outlet />
+  ) : (
+    <Navigate to={redirectTo} state={{ returnTo: location }} />
   )
 }
-
-export default PrivateRoute

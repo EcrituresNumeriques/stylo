@@ -42,7 +42,7 @@ export default defineConfig(async ({ mode }) => {
               'react-helmet',
               'react-i18next',
               'react-redux',
-              'react-router-dom',
+              'react-router',
               'redux',
             ],
             ui: ['@geist-ui/core', 'lucide-react'],
@@ -113,12 +113,6 @@ export default defineConfig(async ({ mode }) => {
         env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT
       ),
       __IMGUR_CLIENT_ID__: JSON.stringify(env.SNOWPACK_IMGUR_CLIENT_ID),
-    },
-    resolve: {
-      alias: {
-        'react-redux':
-          mode === 'development' ? 'react-redux/lib' : 'react-redux',
-      },
     },
     server: {
       port: 3000,

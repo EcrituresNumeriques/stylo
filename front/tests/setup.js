@@ -4,7 +4,7 @@ import { cleanup, render } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
 import '@testing-library/jest-dom/vitest'
 import { Provider } from 'react-redux'
-import { MemoryRouter, Route, Switch } from 'react-router-dom'
+import { createMemoryRouter, RouterProvider } from 'react-router'
 import createReduxStore, { initialState } from '../src/createReduxStore.js'
 import i18n from '../src/i18n.js'
 
@@ -51,27 +51,23 @@ export function renderWithProviders(
   } = {}
 ) {
   function Wrapper({ children }) {
+    const router = createMemoryRouter(
+      [
+        {
+          path: path,
+          element: children,
+        },
+      ],
+      { initialEntries: [route] }
+    )
+
     /* eslint-disable-next-line react/no-children-prop */
     return React.createElement(Provider, {
       store,
       children: React.createElement(
         I18nextProvider,
         { i18n },
-        React.createElement(
-          MemoryRouter,
-          { initialEntries: [route] },
-          React.createElement(
-            Switch,
-            {},
-            React.createElement(
-              Route,
-              {
-                path,
-              },
-              children
-            )
-          )
-        )
+        React.createElement(RouterProvider, { router })
       ),
     })
   }

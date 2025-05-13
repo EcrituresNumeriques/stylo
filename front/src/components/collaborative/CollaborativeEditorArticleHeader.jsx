@@ -1,6 +1,7 @@
-import React from 'react'
-import { NavLink, useRouteMatch } from 'react-router-dom'
+import React, { useCallback } from 'react'
+import { NavLink, useMatch } from 'react-router'
 import { useTranslation } from 'react-i18next'
+import clsx from 'clsx'
 
 import useFetchData from '../../hooks/graphql.js'
 
@@ -24,10 +25,8 @@ export default function CollaborativeEditorArticleHeader({
   versionId,
 }) {
   const { t } = useTranslation()
-  const match = useRouteMatch(
-    versionId
-      ? `/article/${articleId}/version/${versionId}`
-      : `/article/${articleId}`
+  const match = useMatch(
+    versionId ? `/article/:id/version/:versionId/*` : `/article/:id/*`
   )
 
   const { data, isLoading } = useFetchData(
@@ -41,6 +40,13 @@ export default function CollaborativeEditorArticleHeader({
       },
     }
   )
+
+  const activeClassName = useCallback(
+    ({ isActive }) =>
+      clsx(buttonStyles.linkSecondary, isActive && buttonStyles.activeLink),
+    []
+  )
+
   if (isLoading) {
     return <Loading />
   }
@@ -52,20 +58,20 @@ export default function CollaborativeEditorArticleHeader({
       <div className={styles.row}>
         <CollaborativeEditorActiveVersion versionId={versionId} />
 
-        <ul className={buttonStyles.inlineGroup} aria-label={t('article.editor.modes.menuLabel')}>
+        <ul
+          className={buttonStyles.inlineGroup}
+          aria-label={t('article.editor.modes.menuLabel')}
+        >
           <li>
-            <NavLink
-              activeClassName={buttonStyles.activeLink}
-              exact className={buttonStyles.linkSecondary} to={match.path}>
+            <NavLink className={activeClassName} to={match.pathnameBase} end>
               {t('article.editor.modes.edit')}
             </NavLink>
           </li>
           <li>
             <NavLink
-              exact
-              activeClassName={buttonStyles.activeLink}
-              className={buttonStyles.linkSecondary}
-              to={`${match.path}/preview`}
+              className={activeClassName}
+              to={`${match.pathnameBase}/preview`}
+              end
             >
               {t('article.editor.modes.preview')}
             </NavLink>

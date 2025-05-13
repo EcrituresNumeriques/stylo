@@ -1,0 +1,9 @@
+{
+  "404": {
+    "message": "The requested page does not exist: ",
+    "title": "Page not found"
+  },
+  "message": "An error prevents the app to work properly: ",
+  "title": "Error",
+  "unknown": "An unexpected error happened."
+}

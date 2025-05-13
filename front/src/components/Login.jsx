@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import { useToasts } from '@geist-ui/core'
@@ -21,25 +21,14 @@ export default function Login() {
   const dispatch = useDispatch()
   const { setToast } = useToasts()
   const usernameRef = useRef(null)
-  const { replace, location } = useHistory()
+  const navigate = useNavigate()
   const userId = useActiveUserId()
-
-  const setSessionToken = useCallback(
-    (token) => dispatch({ type: 'UPDATE_SESSION_TOKEN', token }),
-    []
-  )
 
   const { backendEndpoint } = applicationConfig
 
   useEffect(() => {
-    const authToken = new URLSearchParams(location.hash).get('#auth-token')
-
-    if (authToken) {
-      setSessionToken(authToken)
-    }
-
     if (userId) {
-      replace('/articles')
+      navigate('/articles', { replace: true })
     }
   }, [userId])
 
@@ -65,7 +54,7 @@ export default function Login() {
       })
       .then((data) => {
         dispatch({ type: 'LOGIN', ...data })
-        replace('/articles')
+        navigate('/articles')
       })
       .catch((error) => {
         setToast({

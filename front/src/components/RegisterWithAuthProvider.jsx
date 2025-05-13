@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { Link, useHistory, useLocation, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router'
 import { useToasts } from '@geist-ui/core'
 import { useGraphQLClient } from '../helpers/graphQL'
 import * as queries from './Credentials.graphql'
@@ -18,7 +18,7 @@ export default function RegisterWithAuthProvider() {
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const { service } = useParams()
-  const history = useHistory()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { search } = useLocation()
   const { query } = useGraphQLClient()
@@ -46,7 +46,7 @@ export default function RegisterWithAuthProvider() {
         text: t('credentials.register.successToast'),
       })
 
-      history.push('/articles')
+      navigate('/articles')
     } catch (err) {
       setToast({
         type: 'error',

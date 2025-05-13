@@ -16,6 +16,7 @@ import defaultEditorOptions from '../Write/providers/monaco/options.js'
 
 import styles from './CollaborativeTextEditor.module.scss'
 import MonacoEditor from '../molecules/MonacoEditor.jsx'
+import { DiffEditor } from '@monaco-editor/react'
 import * as vscode from 'monaco-editor'
 import { onDropIntoEditor } from '../Write/providers/monaco/support.js'
 
@@ -178,18 +179,6 @@ export default function CollaborativeTextEditor({
         status={websocketStatus}
       />
 
-      {version && (
-        <MonacoEditor
-          width={'100%'}
-          height={'auto'}
-          value={version.md}
-          options={options}
-          className={styles.editor}
-          defaultLanguage="markdown"
-          onMount={handleEditorDidMount}
-        />
-      )}
-
       {mode === 'preview' && (
         <section
           className={styles.previewPage}
@@ -197,17 +186,30 @@ export default function CollaborativeTextEditor({
         />
       )}
 
-      <div
-        className={styles.collaborativeEditor}
-        hidden={Boolean(versionId) || mode !== 'write'}
-      >
+      {mode === 'compare' && (
+        <div className={styles.collaborativeEditor}>
+          <DiffEditor
+            className={styles.editor}
+            width={'100%'}
+            height={'auto'}
+            modified={article.workingVersion?.md}
+            original={version.md}
+            language="markdown"
+            options={defaultEditorOptions}
+          />
+        </div>
+      )}
+
+      <div className={styles.collaborativeEditor} hidden={mode !== 'write'}>
         <MonacoEditor
           width={'100%'}
           height={'auto'}
           options={options}
           className={styles.editor}
           defaultLanguage="markdown"
-          onMount={handleCollaborativeEditorDidMount}
+          {...(hasVersion
+            ? { value: version.md, onMount: handleEditorDidMount }
+            : { onMount: handleCollaborativeEditorDidMount })}
         />
       </div>
     </>

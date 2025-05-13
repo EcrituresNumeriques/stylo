@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouteMatch } from 'react-router-dom'
+import { useMatch } from 'react-router'
 import { usePandocAnchoring } from '../../hooks/pandoc.js'
 
 import styles from './ArticleTableOfContents.module.scss'
@@ -12,7 +12,7 @@ export default function ArticleTableOfContents({ onBack }) {
   const dispatch = useDispatch()
   const articleStructure = useSelector((state) => state.articleStructure)
   const getAnchor = usePandocAnchoring()
-  const routeMatch = useRouteMatch()
+  const routeMatch = useMatch()
   const hasHtmlAnchors = routeMatch.path === '/article/:id/annotate'
   const handleTableOfContentsEntryClicked = useCallback(
     ({ target }) => {

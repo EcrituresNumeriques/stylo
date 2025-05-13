@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useGraphQLClient } from '../helpers/graphQL.js'

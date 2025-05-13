@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { Layers, LogOut, User } from 'lucide-react'
 import { useLogout } from '../../hooks/user.js'
 
