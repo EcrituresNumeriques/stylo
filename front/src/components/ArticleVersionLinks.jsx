@@ -28,9 +28,9 @@ export default function ArticleVersionLinks({ articleId, article }) {
     (data?.article?.versions || []).map((v) => {
       let title
       if (v.type === 'editingSessionEnded') {
-        title = t('version.editingSessionEnded.text')
+        title = t('versions.editingSessionEnded.text')
       } else if (v.type === 'collaborativeSessionEnded') {
-        title = t('version.collaborativeSessionEnded.text')
+        title = t('versions.collaborativeSessionEnded.text')
       } else {
         title = `v${v.version}.${v.revision} ${v.message}`
       }
