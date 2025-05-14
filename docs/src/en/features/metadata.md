@@ -11,4 +11,4 @@ in the corresponding section.
 
 You can edit your metadata by entering information in the appropriate boxes or, by activating the raw YAML mode in the top right-hand corner, you can fill in your metadata directly in YAML.
 
-*For more information on how to manage your metadata, please refer to the YAML section of "Tutorials".*.
+*For more information on how to manage your metadata, please refer to the YAML section of "Tutorials".*
