@@ -12,4 +12,4 @@ Para abrir el panel, haga clic en el botón «Metadatos».
 
 Puede editar sus metadatos introduciendo información en las casillas correspondientes o, activando el modo YAML sin procesar en la esquina superior derecha, puede activar el modo YAML sin procesar y rellenar sus metadatos en YAML.
 
-*Para más información sobre cómo gestionar tus metadatos, consulta la sección sobre YAML en los tutoriales.*.
+*Para más información sobre cómo gestionar tus metadatos, consulta la sección sobre YAML en los tutoriales.*
