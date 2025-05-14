@@ -2,18 +2,18 @@
 title: Contact
 ---
 
-## Contact us
+Stylo is a projet under development managed by the team of the [Canada Research Chair in Digital Textualities](https://www.ecrituresnumeriques.ca/fr).
 
-For more information, you can contact us at the [Chair's email address](mailto:crc.ecrituresnumeriques@gmail.com).
+If you are a journal that would like to use Stylo in your editorial chain, please contact the team directly at <crc.ecrituresnumeriques@gmail.com>. We take into consideration specific requests to adapt Stylo to particular needs and practices.
 
-For questions and discussion about Stylo, a helpdesk is open every Thursday morning from 11am to 12pm (Canadian time): <a class="btn btn-info" href="https://meet.jit.si/stylo" role="button">Reach the helpdesk by videoconference</a>.
+If you are experiencing problems with Stylo, or would like to exchange ideas with the community, report needs or even share practices with others, you can do so on [the Stylo community forum](https://discussions.revue30.org/c/stylo/5).
 
-{% link-button "https://meet.jit.si/stylo", "hyperlink" %}Reach the helpdesk by videoconference{% endlink-button %}
+Finally, for more personalized support, we have a permanent office open every Thursday from 11:00 a.m. to 12:00 p.m. (Montreal time)&nbsp;:
 
-We do consider specific requests that Stylo be adapted to particular editorial chains - like a journal, for example.
+[Join us by videoconference](https://meet.jit.si/stylo).
 
-## Report a bug
+## Report a bug 
 
-Report problems and bugs on the [GitHub repository](https://github.com/EcrituresNumeriques/stylo/issues).
+Bugs or technical problems can be reported on the [project GitHub] repository(https://github.com/EcrituresNumeriques/stylo/issues).
 
-{% link-button "https://github.com/EcrituresNumeriques/stylo/issues/new", "hyperlink" %}Report a bug{% endlink-button %}
+Any other comments can be made on the [Stylo community forum](https://discussions.revue30.org/c/stylo/5).

@@ -1,0 +1,17 @@
+{
+    "sectionTitle": "Preguntas más frecuentes",
+    "sectionUrl": "/es/faq",
+    "disableSearch": false,
+    "searchIndexUrl": "/es/search-index.json",
+    "menu": [
+      {
+        "label": "FAQ",
+        "children": [
+          {
+            "label": "Resolver problemas comunes",
+            "url": "/es/faq/problemas"
+          }
+        ]
+      }
+    ]
+}

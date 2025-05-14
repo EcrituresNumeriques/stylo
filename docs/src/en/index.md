@@ -1,10 +1,9 @@
 ---
-title: Stylo - a semantic text editor
+title: Stylo - a semantic and collaborative text editor
 isHome: true
 ---
 
-
-Welcome to Stylo resource information. Stylo is a text editor that simplifies writing and editing scientific articles in the Human and Social Sciences.
+Welcome to Stylo's documentation. Stylo is a semantic and collaborative text editor for the Human and Social Sciences.
 
 ---
 
@@ -13,17 +12,18 @@ Welcome to Stylo resource information. Stylo is a text editor that simplifies wr
 ---
 
 Stylo's documentation is divided into several sections:
-1. The _Features_ section contains descriptions of all Stylo features.
-2. The user guides contain several scenarios to show you different uses of the features.
-3. Tutorials cover the languages and formats used in Stylo (Markdown, YAML, BibTeX, GraphQL).
-4. Frequently asked questions deal with known problems
+
+- The Features section contains descriptions of all Stylo features;
+- The Scenarios contains a number of explanatory videos to guide you in multiple use cases of Stylo's features;
+- Tutorials cover the open and light languages/syntaxes/formats used in Stylo, to accompany you in their use (Markdown, YAML, BibTeX, GraphQL);
+- Frequently asked questions (FAQ) deal with identified and known problems.
 
 ---
 
-<link-button href="/fr/fonctionnalites" size="small" color="default">Features</link-button> &nbsp;
-<link-button href="/fr/guides_utilisation" size="small" color="default">User guides</link-button> &nbsp;
-<link-button href="/fr/tutoriels" size="small" color="default">Tutorials</link-button> &nbsp;
-<link-button href="/fr/faq" size="small" color="default">Frequently asked questions</link-button> &nbsp;
+<link-button href="/en/features" size="small" color="default">Features</link-button> &nbsp;
+<link-button href="/en/scenarios" size="small" color="default">Scenarios</link-button> &nbsp;
+<link-button href="/en/tutorials" size="small" color="default">Tutorials</link-button> &nbsp;
+<link-button href="/en/faq" size="small" color="default">Frequently asked questions</link-button> &nbsp;
 
 ---
 

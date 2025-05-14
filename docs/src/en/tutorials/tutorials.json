@@ -12,15 +12,15 @@
             "url": "/en/tutorials/markdownsyntax"
           },
           {
-            "label": "Writing in YAML",
+            "label": "Writing your Metadata in YAML",
             "url": "/en/tutorials/yamlsyntax"
           },
           {
-            "label": "Writing in BibTeX",
+            "label": "Managing your references in BibTeX",
             "url": "/en/tutorials/bibtexsyntax"
           },
           {
-            "label": "GraphQL API",
+            "label": "Using the GraphQL API",
             "url": "/en/tutorials/api-graphql"
           }
         ]

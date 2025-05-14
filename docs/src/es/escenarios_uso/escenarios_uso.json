@@ -1,0 +1,37 @@
+{
+    "sectionTitle": "Escenarios de uso",
+    "sectionUrl": "/es/escenarios_uso",
+    "disableSearch": false,
+    "searchIndexUrl": "/es/search-index.json",
+    "menu": [
+      {
+        "label": "Escenarios de uso",
+        "children": [
+          {
+            "label": "Crear una cuenta Huma-Num para Stylo",
+            "url": "/es/escenarios_uso/cuenta-humanum"
+          },
+          {
+            "label": "Personaliza tu escritura en Stylo con Monaco",
+            "url": "/es/escenarios_uso/escritura-monaco"
+          },
+          {
+            "label": "Versionar un documento con Stylo",
+            "url": "/es/escenarios_uso/versionar-documento"
+          },
+          {
+            "label": "Anotar artículos Stylo en colaboración",
+            "url": "/es/escenarios_uso/anotar-colaboracion"
+          },
+          {
+            "label": "Gestionar referencias bibliográficas en Stylo",
+            "url": "/es/escenarios_uso/gestionar-referencias"
+          },
+          {
+            "label": "Exportar un artículo o un corpus de artículos de Stylo",
+            "url": "/es/escenarios_uso/exportar-articulo-corpus"
+          }
+        ]
+      }
+    ]
+}
