@@ -2,15 +2,13 @@ import React, { useEffect, useMemo } from 'react'
 import { setUser as setSentryUser } from '@sentry/react'
 import { Outlet, ScrollRestoration, useLoaderData, useLocation, useNavigate } from 'react-router'
 import { useDispatch } from 'react-redux'
-
+import Footer from '../components/Footer.jsx'
+import Header from '../components/Header.jsx'
+import createReduxStore from '../createReduxStore.js'
 import { getUserProfile } from '../helpers/user.js'
 import { usePreferenceItem } from '../hooks/user.js'
-import createReduxStore from '../createReduxStore.js'
 
-import Header from '../components/Header.jsx'
-import Footer from '../components/Footer.jsx'
-
-export async function loader() {
+export async function loader () {
   const store = createReduxStore()
   const { sessionToken } = store.getState()
 
@@ -18,7 +16,7 @@ export async function loader() {
   return user
 }
 
-export default function StyloApp() {
+export default function StyloApp () {
   const location = useLocation()
   const navigate = useNavigate()
   const user = useLoaderData()
@@ -62,16 +60,23 @@ export default function StyloApp() {
     }
   }, [location.pathname, hasTrackingConsent])
 
-  const isMinimalist = useMemo(
-    () => location.pathname.endsWith('/annotate'), [location.pathname]
+  const hideHeader = useMemo(
+    () => location.pathname.endsWith('/annotate'),
+    [location.pathname]
+  )
+  const hideFooter = useMemo(
+    () => {
+      return location.pathname.endsWith('/annotate') || location.pathname.startsWith('/article')
+    },
+    [location.pathname]
   )
 
   return (<>
-    {isMinimalist || <Header />}
+    {hideHeader || <Header/>}
     <main tabIndex="-1">
-      <ScrollRestoration />
-      <Outlet />
+      <ScrollRestoration/>
+      <Outlet/>
     </main>
-    {isMinimalist || <Footer />}
+    {hideFooter || <Footer/>}
   </>)
 }
