@@ -36,10 +36,10 @@ export default function CollaborativeTextEditor({
     { articleId, versionId }
   )
 
-  const { version, error, isLoading } = useArticleVersion({ versionId })
+  const { version, error, isLoading: isVersionLoading } = useArticleVersion({ versionId })
   const { provider: bibliographyCompletionProvider } =
     useBibliographyCompletion()
-  const { article, bibliography } = useEditableArticle({
+  const { article, bibliography, isLoading: isWorkingVersionLoading } = useEditableArticle({
     articleId,
     versionId,
   })
@@ -67,6 +67,7 @@ export default function CollaborativeTextEditor({
   )
 
   const hasVersion = useMemo(() => !!versionId, [versionId])
+  const isLoading = yText === null || isPreviewLoading || isWorkingVersionLoading || isVersionLoading
 
   const options = useMemo(
     () => ({
@@ -155,11 +156,7 @@ export default function CollaborativeTextEditor({
     editor?.revealLineNearTop(line + 1, 1) // smooth
   }, [editorRef, editorCursorPosition])
 
-  if (!yText && !version) {
-    return <Loading />
-  }
-
-  if (isLoading || isPreviewLoading) {
+  if (isLoading) {
     return <Loading />
   }
 
