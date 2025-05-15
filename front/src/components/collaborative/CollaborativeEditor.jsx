@@ -13,7 +13,7 @@ export default function CollaborativeEditor({ mode = 'write' }) {
 
   return (
     <section className={styles.container}>
-      <div className={styles.main}>
+      <div className={styles.editorArea}>
         <CollaborativeEditorArticleHeader
           articleId={articleId}
           versionId={versionId}
@@ -27,6 +27,7 @@ export default function CollaborativeEditor({ mode = 'write' }) {
       </div>
 
       <CollaborativeEditorMenu
+        className={styles.sidebarArea}
         articleId={articleId}
         versionId={versionId}
         compareTo={compareTo}
