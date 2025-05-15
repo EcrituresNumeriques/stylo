@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 import {
   getByRole,
   getByLabelText,
@@ -16,12 +16,31 @@ describe('Login', () => {
     activeUser: { _id: 'test-user-id' },
   }
 
-  test('does not save when both fields are missing', async () => {
-    const user = userEvent.setup()
+  test('redirects when user is already logged in', async () => {
+    const redirectCalled = vi.fn()
 
     renderWithProviders(<Component />, {
       preloadedState,
+      extraRoutes: [
+        {
+          path: '/articles',
+          index: true,
+          Component () {
+            redirectCalled()
+
+            return <section id="articles">Liste des articles</section>
+          }
+        }
+      ]
     })
+
+    expect(redirectCalled).to.toHaveBeenCalledOnce()
+  })
+
+  test('does not save when both fields are missing', async () => {
+    const user = userEvent.setup()
+
+    renderWithProviders(<Component />)
 
     const form = screen.getByRole('form')
     expect(form).toBeInTheDocument()
@@ -56,9 +75,7 @@ describe('Login', () => {
   test('login/password matches', async () => {
     const user = userEvent.setup()
 
-    renderWithProviders(<Component />, {
-      preloadedState,
-    })
+    renderWithProviders(<Component />)
 
     const form = screen.getByRole('form')
     const submitButton = getByRole(form, 'button')
