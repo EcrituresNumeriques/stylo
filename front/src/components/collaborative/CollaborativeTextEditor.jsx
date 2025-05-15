@@ -81,14 +81,14 @@ export default function CollaborativeTextEditor({
     [websocketStatus, hasVersion]
   )
 
-  const handleUpdateArticleStructureAndStats = throttle(
-    ({ text }) => {
-      dispatch({ type: 'UPDATE_ARTICLE_STATS', md: text })
-      dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md: text })
+  const updateArticleStructureAndStats = useCallback(throttle(
+    ({ text: md }) => {
+      dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
+      dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
     },
     250,
     { leading: false, trailing: true }
-  )
+  ), [])
 
   const handleCollaborativeEditorDidMount = useCallback(
     (editor, monaco) => {
@@ -129,17 +129,17 @@ export default function CollaborativeTextEditor({
           })
         }, 4000)
 
-        handleUpdateArticleStructureAndStats({ text: yText.toString() })
+        updateArticleStructureAndStats({ text: yText.toString() })
       })
     }
-  }, [yText])
+  }, [articleId, versionId, yText])
 
   useEffect(() => {
-    if (version) {
+    if (versionId) {
       dispatch({ type: 'UPDATE_ARTICLE_STATS', md: version.md })
       dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md: version.md })
     }
-  }, [version])
+  }, [versionId])
 
   useEffect(() => {
     if (bibliography) {
