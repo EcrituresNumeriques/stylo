@@ -115,7 +115,7 @@
     display: inline;
 
     &:not(:last-child):after {
-      content: '•';
+      content: '•' / '';
       margin: 0 0.5em;
     }
   }
