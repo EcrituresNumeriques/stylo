@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo } from 'react'
+import { setUser as setSentryUser } from '@sentry/react'
 import { Outlet, ScrollRestoration, useLoaderData, useLocation, useNavigate } from 'react-router'
 import { useDispatch } from 'react-redux'
 
 import { getUserProfile } from '../helpers/user.js'
+import { usePreferenceItem } from '../hooks/user.js'
 import createReduxStore from '../createReduxStore.js'
 
 import Header from '../components/Header.jsx'
@@ -21,10 +23,18 @@ export default function StyloApp() {
   const navigate = useNavigate()
   const user = useLoaderData()
   const dispatch = useDispatch()
+  const { value: hasTrackingConsent } = usePreferenceItem('trackingConsent', 'user')
 
+  // Setup user session
   useEffect(() => {
     dispatch({ type: 'PROFILE', user })
-  }, [user])
+    setSentryUser({ id: user?._id })
+
+    if (hasTrackingConsent) {
+      const _paq = (window._paq = window._paq || [])
+      _paq.push(['setUserId', user?._id])
+    }
+  }, [user?._id, hasTrackingConsent])
 
   useEffect(() => {
     if (location.pathname.match(/\/books/i)) {
@@ -32,17 +42,25 @@ export default function StyloApp() {
     }
   }, [location.pathname])
 
+  // Forget tracking
   useEffect(() => {
-    /* global _paq */
-    const _paq = (window._paq = window._paq || [])
+    if (!hasTrackingConsent) {
+      const _paq = (window._paq = window._paq || [])
+      _paq.push(['forgetConsentGiven'])
+    }
+  }, [hasTrackingConsent])
 
-    //@todo do this dynamically, based on a subscription to the store
-    //otherwise, we should use _paq.push(['forgetConsentGiven'])
-    _paq.push(['setConsentGiven'])
-    _paq.push(['setCustomUrl', location.pathname])
-    //_paq.push(['setDocumentTitle', 'My New Title'])
-    _paq.push(['trackPageView'])
-  }, [location.pathname])
+
+  // Track location change
+  useEffect(() => {
+    if (hasTrackingConsent) {
+      const _paq = (window._paq = window._paq || [])
+      _paq.push(['setConsentGiven'])
+      _paq.push(['setCustomUrl', location.pathname])
+      //_paq.push(['setDocumentTitle', 'My New Title'])
+      _paq.push(['trackPageView'])
+    }
+  }, [location.pathname, hasTrackingConsent])
 
   const isMinimalist = useMemo(
     () => location.pathname.endsWith('/annotate'), [location.pathname]
