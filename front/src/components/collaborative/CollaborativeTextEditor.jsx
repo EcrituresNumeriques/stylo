@@ -16,6 +16,7 @@ import defaultEditorOptions from '../Write/providers/monaco/options.js'
 
 import styles from './CollaborativeTextEditor.module.scss'
 import MonacoEditor from '../molecules/MonacoEditor.jsx'
+import { DiffEditor } from '@monaco-editor/react'
 import * as vscode from 'monaco-editor'
 import { onDropIntoEditor } from '../Write/providers/monaco/support.js'
 
@@ -35,10 +36,10 @@ export default function CollaborativeTextEditor({
     { articleId, versionId }
   )
 
-  const { version, error, isLoading } = useArticleVersion({ versionId })
+  const { version, error, isLoading: isVersionLoading } = useArticleVersion({ versionId })
   const { provider: bibliographyCompletionProvider } =
     useBibliographyCompletion()
-  const { article, bibliography } = useEditableArticle({
+  const { article, bibliography, isLoading: isWorkingVersionLoading } = useEditableArticle({
     articleId,
     versionId,
   })
@@ -66,6 +67,7 @@ export default function CollaborativeTextEditor({
   )
 
   const hasVersion = useMemo(() => !!versionId, [versionId])
+  const isLoading = yText === null || isPreviewLoading || isWorkingVersionLoading || isVersionLoading
 
   const options = useMemo(
     () => ({
@@ -79,14 +81,14 @@ export default function CollaborativeTextEditor({
     [websocketStatus, hasVersion]
   )
 
-  const handleUpdateArticleStructureAndStats = throttle(
-    ({ text }) => {
-      dispatch({ type: 'UPDATE_ARTICLE_STATS', md: text })
-      dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md: text })
+  const updateArticleStructureAndStats = useCallback(throttle(
+    ({ text: md }) => {
+      dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
+      dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
     },
     250,
     { leading: false, trailing: true }
-  )
+  ), [])
 
   const handleCollaborativeEditorDidMount = useCallback(
     (editor, monaco) => {
@@ -127,17 +129,17 @@ export default function CollaborativeTextEditor({
           })
         }, 4000)
 
-        handleUpdateArticleStructureAndStats({ text: yText.toString() })
+        updateArticleStructureAndStats({ text: yText.toString() })
       })
     }
-  }, [yText])
+  }, [articleId, versionId, yText])
 
   useEffect(() => {
-    if (version) {
+    if (versionId) {
       dispatch({ type: 'UPDATE_ARTICLE_STATS', md: version.md })
       dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md: version.md })
     }
-  }, [version])
+  }, [versionId])
 
   useEffect(() => {
     if (bibliography) {
@@ -154,11 +156,7 @@ export default function CollaborativeTextEditor({
     editor?.revealLineNearTop(line + 1, 1) // smooth
   }, [editorRef, editorCursorPosition])
 
-  if (!yText && !version) {
-    return <Loading />
-  }
-
-  if (isLoading || isPreviewLoading) {
+  if (isLoading) {
     return <Loading />
   }
 
@@ -178,18 +176,6 @@ export default function CollaborativeTextEditor({
         status={websocketStatus}
       />
 
-      {version && (
-        <MonacoEditor
-          width={'100%'}
-          height={'auto'}
-          value={version.md}
-          options={options}
-          className={styles.editor}
-          defaultLanguage="markdown"
-          onMount={handleEditorDidMount}
-        />
-      )}
-
       {mode === 'preview' && (
         <section
           className={styles.previewPage}
@@ -197,17 +183,30 @@ export default function CollaborativeTextEditor({
         />
       )}
 
-      <div
-        className={styles.collaborativeEditor}
-        hidden={Boolean(versionId) || mode !== 'write'}
-      >
+      {mode === 'compare' && (
+        <div className={styles.collaborativeEditor}>
+          <DiffEditor
+            className={styles.editor}
+            width={'100%'}
+            height={'auto'}
+            modified={article.workingVersion?.md}
+            original={version.md}
+            language="markdown"
+            options={defaultEditorOptions}
+          />
+        </div>
+      )}
+
+      <div className={styles.collaborativeEditor} hidden={mode !== 'write'}>
         <MonacoEditor
           width={'100%'}
           height={'auto'}
           options={options}
           className={styles.editor}
           defaultLanguage="markdown"
-          onMount={handleCollaborativeEditorDidMount}
+          {...(hasVersion
+            ? { value: version.md, onMount: handleEditorDidMount }
+            : { onMount: handleCollaborativeEditorDidMount })}
         />
       </div>
     </>

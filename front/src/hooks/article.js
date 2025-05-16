@@ -308,6 +308,9 @@ export function useArticleVersion({ versionId }) {
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
+      fallbackData: {
+        version: {}
+      }
     }
   )
 

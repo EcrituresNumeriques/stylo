@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { Trans, useTranslation } from 'react-i18next'
 import { ArrowLeft } from 'lucide-react'
 
@@ -36,7 +36,7 @@ export default function CollaborativeVersions({
     shallowEqual
   )
   const syncing = articleWorkingCopyStatus === 'syncing'
-  const history = useHistory()
+  const navigate = useNavigate()
   const { article, isLoading, error } = useArticleVersions({ articleId })
   const articleVersions = article?.versions
   const createVersionModal = useModal()
@@ -93,7 +93,7 @@ export default function CollaborativeVersions({
           creator={version.owner?.displayName || version.owner?.username}
           selected={selectedVersion === version._id}
           onClick={() => {
-            history.push(`/article/${articleId}/version/${version._id}`)
+            navigate(`/article/${articleId}/version/${version._id}`)
           }}
         />
       )
@@ -162,7 +162,7 @@ export default function CollaborativeVersions({
           title={t('versions.workingCopy.text')}
           selected={!selectedVersion}
           onClick={() => {
-            history.push(`/article/${articleId}`)
+            navigate(`/article/${articleId}`)
           }}
         />
         {versionsPerMonth()}

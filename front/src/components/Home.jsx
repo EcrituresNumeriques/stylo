@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { useTranslation, Trans } from 'react-i18next'
 import styloLogo from '/images/logo.svg'
 

@@ -1,10 +1,10 @@
 import { afterEach, vi } from 'vitest'
-import React from 'react'
+import React, { Children } from 'react'
 import { cleanup, render } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
 import '@testing-library/jest-dom/vitest'
 import { Provider } from 'react-redux'
-import { MemoryRouter, Route, Switch } from 'react-router-dom'
+import { createRoutesStub } from 'react-router'
 import createReduxStore, { initialState } from '../src/createReduxStore.js'
 import i18n from '../src/i18n.js'
 
@@ -43,35 +43,35 @@ export function renderWithProviders(
   ui,
   {
     preloadedState = {},
-    route = '/',
-    path = '/',
+    route = '/test',
+    path = '/test',
+    extraRoutes = [],
     store = createReduxStore(merge({}, initialState, preloadedState)),
     currentUser = {},
     ...renderOptions
   } = {}
 ) {
   function Wrapper({ children }) {
+    const Stub = createRoutesStub(
+      [
+        {
+          path,
+          index: true,
+          Component () {
+            return Children.toArray(children)
+          }
+        },
+        ...extraRoutes
+      ]
+    )
+
     /* eslint-disable-next-line react/no-children-prop */
     return React.createElement(Provider, {
       store,
       children: React.createElement(
         I18nextProvider,
         { i18n },
-        React.createElement(
-          MemoryRouter,
-          { initialEntries: [route] },
-          React.createElement(
-            Switch,
-            {},
-            React.createElement(
-              Route,
-              {
-                path,
-              },
-              children
-            )
-          )
-        )
+        React.createElement(Stub, { initialEntries: [route] })
       ),
     })
   }

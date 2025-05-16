@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router'
 import { useToasts } from '@geist-ui/core'
 import { useGraphQLClient } from '../helpers/graphQL'
 import * as queries from './Credentials.graphql'
@@ -19,12 +19,12 @@ export default function Register() {
   const userId = useActiveUserId()
   const passwordRef = useRef()
   const passwordConfirmationRef = useRef()
-  const history = useHistory()
+  const navigate = useNavigate()
   const { query } = useGraphQLClient()
 
   useEffect(() => {
     if (userId) {
-      history.replace('/articles')
+      navigate('/articles')
     }
   }, [userId])
 
@@ -39,7 +39,7 @@ export default function Register() {
         type: 'default',
         text: t('credentials.register.successToast'),
       })
-      history.push('/articles')
+      navigate('/articles')
     } catch (err) {
       setToast({
         type: 'error',

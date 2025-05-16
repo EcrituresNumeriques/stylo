@@ -19,7 +19,7 @@ import { getArticleInfo } from '../Article.graphql'
 
 import styles from './CollaborativeEditorMenu.module.scss'
 
-export default function CollaborativeEditorMenu({ articleId, versionId }) {
+export default function CollaborativeEditorMenu({ articleId, className, versionId }) {
   const { t } = useTranslation()
   const { value: opened, toggleValue: setOpened } = usePreferenceItem(
     'expandSidebarRight',
@@ -50,7 +50,7 @@ export default function CollaborativeEditorMenu({ articleId, versionId }) {
 
   return (
     <Sidebar
-      className={clsx(styles.container, opened && styles.opened)}
+      className={clsx(className, opened && styles.opened)}
       opened={opened}
       setOpened={setOpened}
       labelOpened={t('editorMenu.open.label')}

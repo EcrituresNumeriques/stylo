@@ -2,28 +2,18 @@
 @use '../../styles/variables' as *;
 
 .container {
-  max-width: 1440px;
-  margin: auto;
-  padding-left: 1em;
-  padding-right: 1em;
+  @extend .wrapped-center;
   position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 1rem;
-}
 
-.main {
-  flex: 1;
-  position: relative;
-}
-
-.diffEditor {
-  border: 1px solid $main-border-color;
-  min-height: 200px;
-  height: calc(100vh - 225px);
-
-  :global {
-    .monaco-editor {
-      position: absolute;
-    }
+  @media screen and (min-width: $screen-breakpoint) {
+    grid-template-columns: 3fr auto;
   }
+}
+
+.sidebarArea {
+  height: calc(100vh - 3.3em /* size of the Header */ - 3rem /* size of the Footer */);
+  width: fit-content;
 }

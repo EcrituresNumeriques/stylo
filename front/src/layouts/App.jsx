@@ -1,31 +1,82 @@
-import React, { useEffect } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import React, { useEffect, useMemo } from 'react'
+import { setUser as setSentryUser } from '@sentry/react'
+import { Outlet, ScrollRestoration, useLoaderData, useLocation, useNavigate } from 'react-router'
+import { useDispatch } from 'react-redux'
+import Footer from '../components/Footer.jsx'
+import Header from '../components/Header.jsx'
+import createReduxStore from '../createReduxStore.js'
+import { getUserProfile } from '../helpers/user.js'
+import { usePreferenceItem } from '../hooks/user.js'
 
-export default function StyloApp({ children }) {
-  const history = useHistory()
-  const { pathname } = useLocation()
+export async function loader () {
+  const store = createReduxStore()
+  const { sessionToken } = store.getState()
 
-  useEffect(() => {
-    if (pathname.match(/\/books/i)) {
-      history.replace(pathname.replace(/\/books/i, '/corpus'))
-    }
-  }, [pathname])
-
-  return <>{children}</>
+  const { user } = await getUserProfile({ sessionToken })
+  return user
 }
 
-/**
- * Scroll to top each time a path has changed
- *
- * Will be removed with React Router v7+ as there is a supported component
- * @see https://dev.to/kunalukey/scroll-to-top-when-route-changes-reactjs-react-router-3bgn
- * @see https://api.reactrouter.com/v7/functions/react_router.ScrollRestoration.html
- * @see https://github.com/EcrituresNumeriques/stylo/pull/1250
- */
-export function ScrollRestoration () {
-  const { /* hash, */ pathname } = useLocation()
+export default function StyloApp () {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const user = useLoaderData()
+  const dispatch = useDispatch()
+  const { value: hasTrackingConsent } = usePreferenceItem('trackingConsent', 'user')
+
+  // Setup user session
+  useEffect(() => {
+    dispatch({ type: 'PROFILE', user })
+    setSentryUser({ id: user?._id })
+
+    if (hasTrackingConsent) {
+      const _paq = (window._paq = window._paq || [])
+      _paq.push(['setUserId', user?._id])
+    }
+  }, [user?._id, hasTrackingConsent])
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
+    if (location.pathname.match(/\/books/i)) {
+      navigate(location.pathname.replace(/\/books/i, '/corpus'))
+    }
+  }, [location.pathname])
+
+  // Forget tracking
+  useEffect(() => {
+    if (!hasTrackingConsent) {
+      const _paq = (window._paq = window._paq || [])
+      _paq.push(['forgetConsentGiven'])
+    }
+  }, [hasTrackingConsent])
+
+
+  // Track location change
+  useEffect(() => {
+    if (hasTrackingConsent) {
+      const _paq = (window._paq = window._paq || [])
+      _paq.push(['setConsentGiven'])
+      _paq.push(['setCustomUrl', location.pathname])
+      //_paq.push(['setDocumentTitle', 'My New Title'])
+      _paq.push(['trackPageView'])
+    }
+  }, [location.pathname, hasTrackingConsent])
+
+  const hideHeader = useMemo(
+    () => location.pathname.endsWith('/annotate'),
+    [location.pathname]
+  )
+  const hideFooter = useMemo(
+    () => {
+      return location.pathname.endsWith('/annotate') || location.pathname.startsWith('/article')
+    },
+    [location.pathname]
+  )
+
+  return (<>
+    {hideHeader || <Header/>}
+    <main tabIndex="-1">
+      <ScrollRestoration/>
+      <Outlet/>
+    </main>
+    {hideFooter || <Footer/>}
+  </>)
 }

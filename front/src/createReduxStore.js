@@ -1,9 +1,8 @@
-import * as Sentry from '@sentry/react'
+import { createReduxEnhancer as createSentryReduxEnhancer } from '@sentry/react'
 import { applyMiddleware, compose, createStore } from 'redux'
 
 import { computeTextStats } from './helpers/markdown.js'
 
-const sentryReduxEnhancer = Sentry.createReduxEnhancer()
 const sessionTokenName = 'sessionToken'
 
 // Définition du store Redux et de l'ensemble des actions
@@ -182,7 +181,6 @@ function setSessionToken(state, { token: sessionToken }) {
 
 function loginUser(state, { user, token: sessionToken }) {
   if (sessionToken) {
-    Sentry.setUser({ id: user._id })
     return {
       ...state,
       sessionToken,
@@ -325,7 +323,7 @@ export default function createReduxStore(state = {}) {
     }),
     composeEnhancers(
       applyMiddleware(persistStateIntoLocalStorage),
-      sentryReduxEnhancer
+      createSentryReduxEnhancer()
     )
   )
 }

@@ -1,10 +1,5 @@
 @use '../../styles/variables' as *;
 
-.container {
-  height: calc(100vh - 90px);
-  max-width: initial;
-}
-
 .opened {
   scrollbar-gutter: stable;
   overflow-x: hidden;
