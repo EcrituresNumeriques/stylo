@@ -297,8 +297,8 @@ module.exports = {
      * @param {{ loaders: { article }, userId, token }} context
      * @returns
      */
-    async article(_root, args) {
-      return await getArticle(args.article)
+    async article(_root, args, context) {
+      return await getArticleByContext(args.article, context)
     },
 
     /**
