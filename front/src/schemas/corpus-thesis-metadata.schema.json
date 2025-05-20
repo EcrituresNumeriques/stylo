@@ -134,19 +134,22 @@
       "format": "date"
     },
     "affiliatedInstitutions": {
-      "type": "object",
-      "properties": {
-        "universityName": {
-          "type": "string"
-        },
-        "department": {
-          "type": "string"
-        },
-        "faculty": {
-          "type": "string"
-        },
-        "doctoralSchool": {
-          "type": "string"
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "universityName": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "faculty": {
+            "type": "string"
+          },
+          "doctoralSchool": {
+            "type": "string"
+          }
         }
       }
     }
