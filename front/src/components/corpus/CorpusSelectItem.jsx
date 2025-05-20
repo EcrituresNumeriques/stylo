@@ -1,10 +1,12 @@
-import React, { useCallback } from 'react'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
+import React, { useCallback } from 'react'
 
-import { removeArticleFromCorpus, addArticleToCorpus } from './Corpus.graphql'
-import styles from './CorpusSelectItem.module.scss'
 import { useGraphQLClient } from '../../helpers/graphQL.js'
+
+import { addArticleToCorpus, removeArticleFromCorpus } from './Corpus.graphql'
+
+import styles from './CorpusSelectItem.module.scss'
 
 export default function CorpusSelectItem({
   selected,

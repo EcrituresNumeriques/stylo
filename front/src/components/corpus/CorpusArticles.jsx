@@ -2,16 +2,18 @@ import React, { useCallback, useMemo } from 'react'
 import { DndProvider } from 'react-dnd'
 import { Trans, useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
+
 import { dragAndDropManager } from '../../hooks/dnd.js'
 import useFetchData from '../../hooks/graphql.js'
 import { useActiveWorkspaceId } from '../../hooks/workspace.js'
+
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 import CorpusArticleItems from './CorpusArticleItems.jsx'
 
-import styles from './corpusItem.module.scss'
-
 import { getCorpus } from './Corpus.graphql'
+
+import styles from './corpusItem.module.scss'
 
 export default function CorpusArticles({ corpusId }) {
   const { t } = useTranslation()

@@ -1,6 +1,6 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 
 import { useCorpus } from '../../hooks/corpus.js'
@@ -34,10 +34,7 @@ export default function Corpus() {
       <header className={styles.header}>
         <h1>{t('header.corpus.link')}</h1>
 
-        <WorkspaceLabel
-          color={workspace.color}
-          name={workspace.name}
-        />
+        <WorkspaceLabel color={workspace.color} name={workspace.name} />
       </header>
 
       <p className={styles.introduction}>{t('corpus.page.description')}</p>
