@@ -1,9 +1,11 @@
+import { merge } from 'allof-merge'
 import { List } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { useModal } from '../../hooks/modal.js'
+import schema from '../../schemas/article-metadata.schema.json'
 import corpusJournalMetadataSchema from '../../schemas/corpus-journal-metadata.schema.json'
 import corpusJournalUiSchema from '../../schemas/corpus-journal-ui-schema.json'
 import corpusThesisUiSchema from '../../schemas/corpus-thesis-ui-schema.json'
@@ -25,7 +27,8 @@ export default function CorpusMetadataModal ({ corpusId, initialValue }) {
   const modal = useModal()
   const [metadataType, setMetadataType] = useState('journal')
 
-  const corpusMetadataSchema = useMemo(() => metadataType === 'journal' ? corpusJournalMetadataSchema : corpusThesisMetadataSchema, [metadataType])
+  const corpusThesisMetadataSchemaMerged = useMemo(() => merge(corpusThesisMetadataSchema), [corpusThesisMetadataSchema])
+  const corpusMetadataSchema = useMemo(() => metadataType === 'journal' ? corpusJournalMetadataSchema : corpusThesisMetadataSchemaMerged, [metadataType])
   const corpusUiSchema = useMemo(() => metadataType === 'journal' ? corpusJournalUiSchema : corpusThesisUiSchema, [metadataType])
   const handleUpdateMetadata = useCallback(async () => {
     await query({
