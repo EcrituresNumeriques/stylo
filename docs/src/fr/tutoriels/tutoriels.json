@@ -12,15 +12,15 @@
             "url": "/fr/tutoriels/syntaxemarkdown"
           },
           {
-            "label": "Écrire en YAML",
+            "label": "Sérialiser ses métadonnées en YAML",
             "url": "/fr/tutoriels/syntaxe-yaml"
           },
           {
-            "label": "Écrire en BibTeX",
+            "label": "Gérer ses références bibliographiques en BibTeX",
             "url": "/fr/tutoriels/syntaxe-bibtex"
           },
           {
-            "label": "Écrire des requêtes GraphQL",
+            "label": "Utiliser l'API GraphQL",
             "url": "/fr/tutoriels/api-graphql"
           }
         ]

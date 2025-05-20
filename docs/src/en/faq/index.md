@@ -2,4 +2,4 @@
 title: "Frequently asked questions"
 ---
 
-Got a question? We're here ton answer! If you don't see your question here, drop us a line to our [Contact page](/en/contacts). 
+If you can't find the answer to your question below or in the rest of the documentation, don't hesitate to [get in touch](/en/contacts) the Stylo team or community !

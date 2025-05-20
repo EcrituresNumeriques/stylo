@@ -8,32 +8,52 @@
         "label": "Fonctionnalités",
         "children": [
           {
-            "label": "Corpus",
-            "url": "/fr/fonctionnalites/corpus"
+            "label": "Créer un compte",
+            "url": "/fr/fonctionnalites/creer-compte"
           },
           {
-            "label": "Éditeur Monaco",
-            "url": "/fr/fonctionnalites/editeur-monaco"
+            "label": "Gestion des articles",
+            "url": "/fr/fonctionnalites/mesarticles"
           },
           {
-            "label": "Édition collaborative",
-            "url": "/fr/fonctionnalites/edition-collaborative"
+            "label": "L'écriture collaborative",
+            "url": "/fr/fonctionnalites/ecriture-collaborative"
           },
           {
-            "label": "Espace de travail",
+            "label": "Les espaces de travail",
             "url": "/fr/fonctionnalites/espace-de-travail"
           },
           {
-            "label": "Exports",
+            "label": "Exports d'articles",
             "url": "/fr/fonctionnalites/exports"
           },
           {
-            "label": "Prévisualisation",
-            "url": "/fr/fonctionnalites/preview"
+            "label": "Partager et annoter un article",
+            "url": "/fr/fonctionnalites/partager-annoter"
           },
           {
-            "label": "Versionner",
+            "label": "Versionner ses documents",
             "url": "/fr/fonctionnalites/versionner"
+          },
+          {
+            "label": "Gérer ses métadonnées",
+            "url": "/fr/fonctionnalites/metadata"
+          },
+          {
+            "label": "Gérer ses références bibliographiques",
+            "url": "/fr/fonctionnalites/bibliographie"
+          },
+          {
+            "label": "Les corpus",
+            "url": "/fr/fonctionnalites/corpus"
+          },
+          {
+            "label": "L'éditeur de texte Monaco",
+            "url": "/fr/fonctionnalites/editeur-monaco"
+          },
+          {
+            "label": "Mémoires et thèses",
+            "url": "/fr/fonctionnalites/memoires"
           }
         ]
       }

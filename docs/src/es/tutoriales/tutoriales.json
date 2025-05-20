@@ -1,0 +1,29 @@
+{
+    "sectionTitle": "Tutoriales",
+    "sectionUrl": "/es/tutoriales",
+    "disableSearch": false,
+    "searchIndexUrl": "/es/search-index.json",
+    "menu": [
+      {
+        "label": "Tutoriales",
+        "children": [
+          {
+            "label": "Escribir en Markdown",
+            "url": "/es/tutoriales/markdownsyntax"
+          },
+          {
+            "label": "Escribir metadatos en YAML",
+            "url": "/es/tutoriales/yamlsyntax"
+          },
+          {
+            "label": "Referencias sus citas en BibTeX",
+            "url": "/es/tutoriales/bibtexsyntax"
+          },
+          {
+            "label": "Utilizar la API GraphQL",
+            "url": "/es/tutoriales/api-graphql"
+          }
+        ]
+      }
+    ]
+}
