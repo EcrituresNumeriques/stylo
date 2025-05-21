@@ -1,5 +1,5 @@
 ---
-title: Stylo - a semantic and collaborative text editor
+title: "Stylo - un editor de texto semántico y colaborativo"
 isHome: true
 ---
 
@@ -7,7 +7,7 @@ Bienvenido a la documentación de Stylo. Stylo es un editor de texto semántico 
 
 ---
 
-<link-button href="https://stylo.huma-num.fr" size="small" color="default">Test Stylo</link-button> &nbsp;
+<link-button href="https://stylo.huma-num.fr" size="small" color="default">Probar Stylo</link-button> &nbsp;
 
 ---
 
@@ -27,4 +27,4 @@ La documentación de Stylo está dividida en varias secciones:
 
 ---
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><small><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Stylo Documentation</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://ecrituresnumeriques.ca/" property="cc:attributionName" rel="cc:attributionURL">CRC in digital textualities</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>. <br />Sources at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/EcrituresNumeriques/stylo/tree/master/docs" rel="dct:source">https://github.com/EcrituresNumeriques/stylo</a></small>.
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><small><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">La documentación de Stylo</span> de la <a xmlns:cc="http://creativecommons.org/ns#" href="http://ecrituresnumeriques.ca/" property="cc:attributionName" rel="cc:attributionURL">Cátedra de Investigación de Canadá en Escritura Digital</a> está bajo una licencia de Creative Commons <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>. <br />Fuentes en <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/EcrituresNumeriques/stylo/tree/master/docs" rel="dct:source">https://github.com/EcrituresNumeriques/stylo</a></small>.
