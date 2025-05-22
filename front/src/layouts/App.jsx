@@ -4,22 +4,23 @@ import { Outlet, ScrollRestoration, useLoaderData, useLocation, useNavigate } fr
 import { useDispatch } from 'react-redux'
 import Footer from '../components/Footer.jsx'
 import Header from '../components/Header.jsx'
-import createReduxStore from '../createReduxStore.js'
 import { getUserProfile } from '../helpers/user.js'
 import { usePreferenceItem } from '../hooks/user.js'
 
+/**
+ * Loads user data from localStorage JWT
+ * @returns {Promise<{ user: object }>}
+ */
 export async function loader () {
-  const store = createReduxStore()
-  const { sessionToken } = store.getState()
-
-  const { user } = await getUserProfile({ sessionToken })
-  return user
+  return await getUserProfile({
+    sessionToken: localStorage.getItem('sessionToken')
+  })
 }
 
 export default function StyloApp () {
   const location = useLocation()
   const navigate = useNavigate()
-  const user = useLoaderData()
+  const { user } = useLoaderData()
   const dispatch = useDispatch()
   const { value: hasTrackingConsent } = usePreferenceItem('trackingConsent', 'user')
 
@@ -66,7 +67,7 @@ export default function StyloApp () {
   )
   const hideFooter = useMemo(
     () => {
-      return location.pathname.endsWith('/annotate') || location.pathname.startsWith('/article')
+      return location.pathname.endsWith('/annotate') || location.pathname.startsWith('/article/')
     },
     [location.pathname]
   )

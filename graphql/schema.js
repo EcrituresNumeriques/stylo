@@ -347,7 +347,7 @@ input CreateCorpusInput {
 }
 
 input FilterCorpusInput {
-  workspaceId: String
+  workspaceId: ID
   corpusId: ID
 }
 
@@ -365,8 +365,8 @@ type Query {
   "Fetch tagged articles for a given user"
   tag(user: ID, tag: ID!): Tag
 
-  "Fetch a given user articles"
-  articles (user: ID): [Article]
+  "Fetch articles, optionally from a given Workspace"
+  articles (user: ID, filter: FilterCorpusInput): [Article]
 
   "Fetch article info [need to have access to this article]"
   article(user: ID, article: ID!): Article
@@ -378,7 +378,7 @@ type Query {
   stats: InstanceUsageStats
 
   "Get a given workspace"
-  workspace(workspaceId: ID!): Workspace
+  workspace(workspaceId: ID): Workspace
 
   "Get a list of workspaces for the authenticated user"
   workspaces: [Workspace!]

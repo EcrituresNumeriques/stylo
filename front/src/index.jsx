@@ -1,7 +1,7 @@
 import './wdyr.js'
 import 'core-js/modules/web.structured-clone'
 import * as Sentry from '@sentry/react'
-import React, { lazy, Suspense } from 'react'
+import React, { lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import {
   createBrowserRouter,
@@ -22,7 +22,6 @@ import './i18n.js'
 import './styles/general.scss'
 import './styles/general.scss'
 
-import { applicationConfig } from './config.js'
 import createStore from './createReduxStore.js'
 import { getUserProfile } from './helpers/user.js'
 
@@ -30,7 +29,7 @@ import App, { loader as AppLoader } from './layouts/App.jsx'
 import AuthCallback from './components/AuthCallback.jsx'
 import RequireAuth from './components/PrivateRoute.jsx'
 import ErrorBoundary from './components/Error.jsx'
-import Login from './components/Login.jsx'
+import Login, { Logout } from './components/Login.jsx'
 import LoadingPage from './components/LoadingPage.jsx'
 import NotFound from './components/404.jsx'
 
@@ -77,18 +76,9 @@ const CollaborativeEditor = lazy(
 )
 
 let sessionToken = new URLSearchParams(location.hash).get('#auth-token')
-
-const initialStoreData = {
+const store = createStore({
   ...(sessionToken ? { sessionToken } : {}),
-  activeWorkspaceId: matchPath('/workspaces/:workspaceId', location.pathname)?.params?.workspaceId
-}
-
-const store = createStore(initialStoreData)
-
-getUserProfile({
-  applicationConfig,
-  sessionToken,
-}).then(({ user }) => store.dispatch({ type: 'PROFILE', user }))
+})
 
 // refresh session profile whenever something happens to the session token
 // maybe there is a better way to do this
@@ -111,9 +101,10 @@ const root = createRoot(document.getElementById('root'), {
 })
 
 const router = createBrowserRouter(Sentry.withSentryReactRouterV7Routing(createRoutesFromElements(
-  <Route path="/" element={<App />} loader={AppLoader} ErrorBoundary={ErrorBoundary}>
+  <Route id="app" path="/" element={<App />} loader={AppLoader} ErrorBoundary={ErrorBoundary}>
     <Route index element={<Home />} />
     <Route path="login" element={<Login />} />
+    <Route path="logout" element={<Logout />} />
     <Route path="register" element={<Register />}>
       <Route
         path=":service"
@@ -153,9 +144,9 @@ const router = createBrowserRouter(Sentry.withSentryReactRouterV7Routing(createR
     <Route path="workspaces" element={<RequireAuth />}>
       <Route index element={<Workspaces />} />
 
-      <Route path=":workspaceId">
-        <Route path="articles" element={<Articles />} />
-        <Route path="corpus" element={<Corpus />} />
+      <Route path=":workspaceId" id="workspace">
+        <Route path="articles" id="workspaceArticles" element={<Articles />} />
+        <Route path="corpus" id="workspaceCorpuses" element={<Corpus />} />
       </Route>
     </Route>
 
