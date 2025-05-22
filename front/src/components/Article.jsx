@@ -16,12 +16,11 @@ import {
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router'
+import { Link, useParams } from 'react-router'
 
 import { useArticleActions } from '../hooks/article.js'
 import useFetchData from '../hooks/graphql'
 import { useModal } from '../hooks/modal.js'
-import { useActiveWorkspaceId } from '../hooks/workspace.js'
 
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
@@ -60,7 +59,7 @@ export default function Article({
 }) {
   const activeUser = useSelector((state) => state.activeUser)
   const articleId = useMemo(() => article._id, [article])
-  const activeWorkspaceId = useActiveWorkspaceId()
+  const { workspaceId: activeWorkspaceId } = useParams()
   const articleActions = useArticleActions({ articleId })
 
   const { data: contributorsQueryData, error: contributorsError } =

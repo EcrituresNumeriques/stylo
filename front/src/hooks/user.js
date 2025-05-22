@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
 import {
   unsetAuthTokenMutation,
@@ -11,6 +11,18 @@ import { useMutateData } from './graphql.js'
 import { useGraphQLClient } from '../helpers/graphQL.js'
 import { applicationConfig } from '../config.js'
 
+/**
+ * There is no need to use `shallowEqual` because we don't mutate the data
+ * but only replace them, either on form update or logout
+ * @returns {Object}
+ */
+export function useActiveUser() {
+  return useSelector((state) => state.activeUser)
+}
+
+/**
+ * @returns {string}
+ */
 export function useActiveUserId() {
   return useSelector((state) => state.activeUser?._id)
 }
