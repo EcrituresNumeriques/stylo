@@ -129,12 +129,12 @@ a:focus {
 
 *::-moz-selection {
   background: rgba(255, 255, 0, 0.3);
-  color: #000;
+  color: $main-color;
 }
 
 *::selection {
   background: rgba(255, 255, 0, 0.3);
-  color: #000;
+  color: $main-color;
 }
 
 a::-moz-selection {
@@ -217,7 +217,7 @@ pre,
 code,
 kbd,
 samp {
-  color: #000;
+  color: $main-color;
   font-family: monospace, monospace;
   _font-family: 'courier new', monospace;
   font-size: 0.98em;
@@ -240,13 +240,13 @@ dfn {
 
 ins {
   background: #ff9;
-  color: #000;
+  color: $main-color;
   text-decoration: none;
 }
 
 mark {
   background: #ff0;
-  color: #000;
+  color: $main-color;
   font-style: italic;
   font-weight: bold;
 }
