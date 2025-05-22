@@ -1,67 +1,48 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import useComponentVisible from '../../hooks/componentVisible.js'
-import i18n from '../../i18n.js'
-import LanguagesIcon from './LanguagesIcon.jsx'
-import styles from './LanguagesMenu.module.scss'
+
+import { Languages } from 'lucide-react'
+
+import styles from '../header.module.scss'
 
 export default function LanguagesMenu() {
-  const { t } = useTranslation()
-  const { ref, isComponentVisible, setIsComponentVisible } =
+  const { t, i18n } = useTranslation()
+  const { ref, isComponentVisible, toggleComponentIsVisible } =
     useComponentVisible(false)
 
-  const [language, setLanguage] = useState(i18n.language)
-
-  useEffect(() => {
-    setLanguage(i18n.language)
-  }, [i18n.language])
-
-  const handleLanguageChange = useCallback(async (value) => {
-    await i18n.changeLanguage(value)
-    setLanguage(value)
-  }, [])
-
-  useEffect(() => {
-    setIsComponentVisible(false)
+  const handleLanguageChange = useCallback(async (event) => {
+    const lang = event.target.getAttribute('lang')
+    await i18n.changeLanguage(lang)
   }, [])
 
   return (
-    <div ref={ref} className={styles.container}>
-      <div
-        className={styles.languagesMenuLink}
-        onClick={() => setIsComponentVisible(!isComponentVisible)}
+    <nav ref={ref} className={styles.toggleMenu} aria-labelledby="header-languages-button" aria-description={t('header.languagesMenu.description')}>
+      <button
+        id="header-languages-button"
+        aria-expanded={isComponentVisible}
+        aria-controls="header-languages-menu"
+        onClick={toggleComponentIsVisible}
       >
-        <LanguagesIcon width={20} height={20} />
-      </div>
+        <Languages size={20} aria-hidden />
+        <span className="sr-only">{t('header.languagesMenu.button')}</span>
+      </button>
+
       {isComponentVisible && (
-        <div className={styles.menu}>
-          <div>
-            <ul className={styles.languages}>
-              <li
-                onClick={() => handleLanguageChange('en')}
-                className={language === 'en' ? styles.activeStyle : ''}
-                title="English"
-              >
-                English
-              </li>
-              <li
-                onClick={() => handleLanguageChange('fr')}
-                className={language === 'fr' ? styles.activeStyle : ''}
-                title="Français"
-              >
-                Français
-              </li>
-              <li
-                onClick={() => handleLanguageChange('es')}
-                className={language === 'es' ? styles.activeStyle : ''}
-                title="Español"
-              >
-                Español
-              </li>
-            </ul>
-          </div>
+        <div className={styles.toggleMenuContainerAlignEnd} id="header-languages-menu">
+          <ul className={styles.toggleMenuList} aria-label={t('header.languagesMenu.list')}>
+            <li>
+              <button lang="en" onClick={handleLanguageChange} aria-pressed={i18n.language === 'en'}>English</button>
+            </li>
+            <li>
+              <button lang="fr" onClick={handleLanguageChange} aria-pressed={i18n.language === 'fr'}>Français</button>
+            </li>
+            <li>
+              <button lang="es" onClick={handleLanguageChange} aria-pressed={i18n.language === 'es'}>Español</button>
+            </li>
+          </ul>
         </div>
       )}
-    </div>
+    </nav>
   )
 }
