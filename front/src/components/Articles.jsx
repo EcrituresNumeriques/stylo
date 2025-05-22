@@ -133,8 +133,12 @@ export default function Articles() {
     [filter, articles, selectedTagIds]
   )
 
+  if (isLoading) {
+    return <LoadingPage />
+  }
+
   return (
-    <section className={styles.section}>
+    <section className={styles.section} aria-labelledby="articles-list-headline">
       <Helmet>
         <title>
           {t('articles.page.title', {
@@ -144,38 +148,34 @@ export default function Articles() {
       </Helmet>
 
       <header className={styles.articlesHeader}>
-        <h1>{t('header.articles.link')}</h1>
-        {activeWorkspace && (
-          <WorkspaceLabel
-            color={activeWorkspace.color}
-            name={activeWorkspace.name}
-          />
-        )}
+        <h1 id="articles-list-headline">{t('header.articles.link')}</h1>
+
+        <WorkspaceLabel
+          color={workspace.color}
+          name={workspace.name}
+        />
+
       </header>
-      <Field
-        className={styles.searchField}
-        type="text"
-        icon={Search}
-        value={filter}
-        placeholder={t('article.search.placeholder')}
-        onChange={(e) => setFilter(etv(e))}
-      />
 
-      <aside className={styles.filtersContainer}>
-        <div className={styles.filtersTags}>
-          <h4>{t('tag.list.title')}</h4>
+      <search aria-label={t('article.search.label')}>
+        <Field
+          className={styles.searchField}
+          type="search"
+          icon={Search}
+          value={filter}
+          label={t('article.search.label')}
+          placeholder={t('article.search.placeholder')}
+          onChange={(e) => setFilter(etv(e))}
+        />
+
+        <fieldset className={styles.filtersTags}>
+          <legend>
+            <h4>{t('tag.list.title')}</h4>
+          </legend>
+
           <TagsList action={TagEditForm} />
-        </div>
-      </aside>
-
-      <div className={styles.articlesTableHeader}>
-        <Button primary onClick={() => createArticleModal.show()}>
-          {t('article.createAction.buttonText')}
-        </Button>
-        <div className={styles.articleCounter}>
-          {t('article.count', { count: keepArticles.length })}
-        </div>
-      </div>
+        </fieldset>
+      </search>
 
       <Modal
         {...createArticleModal.bindings}
@@ -188,10 +188,18 @@ export default function Articles() {
         />
       </Modal>
 
-      {isLoading ? (
-        <Loading />
-      ) : (
-        keepArticles.map((article) => (
+      <div aria-labelledby="articles-list-headline" role="list">
+        <div  className={styles.articlesTableHeader}>
+          <Button primary onClick={() => createArticleModal.show()}>
+            {t('article.createAction.buttonText')}
+          </Button>
+
+          <span className={styles.articleCounter}>
+            {t('article.count', { count: keepArticles.length })}
+          </span>
+        </div>
+
+        {keepArticles.map((article) => (
           <Article
             key={`article-${article._id}`}
             article={article}
@@ -199,8 +207,9 @@ export default function Articles() {
             onArticleDeleted={handleArticleDeleted}
             onArticleCreated={handleArticleCreated}
           />
-        ))
-      )}
+        ))}
+      </div>
+
     </section>
   )
 }

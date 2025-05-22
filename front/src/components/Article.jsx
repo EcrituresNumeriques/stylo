@@ -177,7 +177,7 @@ export default function Article({
   )
 
   return (
-    <article className={styles.article}>
+    <article className={styles.article} aria-labelledby={`article-${article._id}-title`}>
       <Modal
         {...exportModal.bindings}
         title={
@@ -270,17 +270,18 @@ export default function Article({
             {expanded ? <ChevronDown /> : <ChevronRight />}
           </span>
 
-          <span>
+          <span id={`article-${article._id}-title`}>
             {article.title}
-            <Button
-              title={t('article.editName.button')}
-              icon={true}
-              className={styles.editTitleButton}
-              onClick={(evt) => evt.stopPropagation() || setRenaming(true)}
-            >
-              <Edit3 size="20" />
-            </Button>
           </span>
+
+          <Button
+            icon={true}
+            className={styles.editTitleButton}
+            onClick={(evt) => evt.stopPropagation() || setRenaming(true)}
+          >
+            <Edit3 className="icon" aria-hidden />
+            <span className="sr-only">{t('article.editName.button')}</span>
+          </Button>
         </h1>
       )}
       {renaming && (
@@ -365,7 +366,6 @@ export default function Article({
 
         <Link
           title={t('article.editor.edit.title')}
-          primary={true}
           className={buttonStyles.primary}
           to={`/article/${article._id}`}
         >
