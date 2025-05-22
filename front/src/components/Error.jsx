@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
-import { useRouteError, isRouteErrorResponse } from 'react-router'
+import { useTranslation } from 'react-i18next'
+import { isRouteErrorResponse, useRouteError } from 'react-router'
+
 import { captureException } from '@sentry/react'
 
 import styles from '../components/Error.module.scss'
-import { useTranslation } from 'react-i18next'
 
 export default function Error() {
   const error = useRouteError()
@@ -12,6 +13,19 @@ export default function Error() {
   useEffect(() => {
     captureException(error)
   }, [error])
+
+  if (error.status === 404) {
+    return (
+      <section className={styles.container}>
+        <article className={styles.error}>
+          <h2>{t('404.title')}</h2>
+          <p>
+            {t('404.message')} <code>{error.message}</code>.
+          </p>
+        </article>
+      </section>
+    )
+  }
 
   if (isRouteErrorResponse(error) || Object.hasOwn(error, 'message')) {
     return (
