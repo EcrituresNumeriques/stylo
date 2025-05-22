@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router'
 import {
   create as createMutation,
   getWorkspaceMembers,
@@ -11,23 +12,25 @@ import { executeQuery } from '../helpers/graphQL.js'
 import useFetchData, { useMutateData } from './graphql.js'
 
 export function useActiveWorkspace() {
-  return useSelector((state) => {
-    const { activeUser, activeWorkspaceId } = state
+  const workspaceId = useActiveWorkspaceId()
 
-    if (!activeWorkspaceId || !activeUser) {
+  return useSelector((state) => {
+    const { activeUser } = state
+
+    if (!workspaceId || !activeUser) {
       return undefined
     }
 
     return activeUser.workspaces?.find(
-      (workspace) => workspace._id === activeWorkspaceId
+      (workspace) => workspace._id === workspaceId
     )
   })
 }
 
 export function useActiveWorkspaceId() {
-  const workspace = useActiveWorkspace()
+  const { workspaceId } = useParams()
 
-  return workspace?._id
+  return workspaceId
 }
 
 export function useWorkspaceMembersActions(workspaceId) {

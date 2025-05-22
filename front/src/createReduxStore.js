@@ -37,12 +37,9 @@ export const initialState = {
     selectedTagIds: [],
     workspaces: [],
   },
-  activeWorkspaceId: null,
   userPreferences: localStorage.getItem('userPreferences')
     ? JSON.parse(localStorage.getItem('userPreferences'))
     : {
-        // The user we impersonate
-        currentUser: null,
         trackingConsent: true /* default value should be false */,
       },
   exportPreferences: localStorage.getItem('exportPreferences')
@@ -106,8 +103,6 @@ function createRootReducer(state) {
     SET_ARTICLE_PREFERENCES: setArticlePreferences,
 
     UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
-
-    SET_ACTIVE_WORKSPACE: setActiveWorkspace,
 
     UPDATE_SELECTED_TAG: updateSelectedTag,
   })
@@ -285,13 +280,6 @@ function updateEditorCursorPosition(state, { lineNumber, column }) {
       lineNumber,
       column,
     },
-  }
-}
-
-function setActiveWorkspace(state, { workspaceId }) {
-  return {
-    ...state,
-    activeWorkspaceId: workspaceId,
   }
 }
 

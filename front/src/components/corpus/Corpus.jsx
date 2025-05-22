@@ -1,10 +1,10 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
+import { useParams } from 'react-router'
 
 import { useCorpus } from '../../hooks/corpus.js'
 import { useModal } from '../../hooks/modal.js'
-import { useActiveWorkspace } from '../../hooks/workspace.js'
 
 import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
@@ -17,8 +17,8 @@ import styles from './corpus.module.scss'
 
 export default function Corpus() {
   const { t } = useTranslation()
-  const { corpus, isLoading } = useCorpus()
-  const activeWorkspace = useActiveWorkspace()
+  const { workspaceId } = useParams()
+  const { corpus, workspace, isLoading } = useCorpus({ workspaceId })
   const createCorpusModal = useModal()
 
   return (
@@ -26,19 +26,19 @@ export default function Corpus() {
       <Helmet>
         <title>
           {t('corpus.page.title', {
-            workspace: activeWorkspace?.name ?? '$t(workspace.myspace)',
+            workspace: workspace.name ?? '$t(workspace.myspace)',
           })}
         </title>
       </Helmet>
 
       <header className={styles.header}>
         <h1>{t('header.corpus.link')}</h1>
-        {activeWorkspace && (
-          <WorkspaceLabel
-            color={activeWorkspace.color}
-            name={activeWorkspace.name}
-          />
-        )}
+
+        <WorkspaceLabel
+          color={workspace.color}
+          name={workspace.name}
+        />
+
       </header>
       <p className={styles.introduction}>{t('corpus.page.description')}</p>
 

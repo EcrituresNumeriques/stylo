@@ -312,19 +312,30 @@ module.exports = {
      * - BUT not the granted account shared articles — we switch into their view for this
      *
      * @param {null} _root
-     * @param {{ user?: String }} args
+     * @param {{ user?: String, filter?: { workspaceId?: string, corpusId?: string } }} args
      * @param {{ user: User, token: Object, userId: String, loaders: { tags, users } }} context
      * @returns {Promise<Article[]>}
      */
     async articles (_root, args, context) {
       const { userId } = isUser(args, context)
+      let filterIds = null
+
+      // prefilter by articles contained in a workspace or corpus
+      if (args.filter?.workspaceId) {
+        const workspace = await Workspace.findById(args.filter.workspaceId, 'articles').lean()
+        filterIds = [...workspace.articles]
+      }
+
       return Article.getArticles({
-        filter: {
-          $or: [
-            { owner: userId },
-            { contributors: { $elemMatch: { user: userId } } },
-          ],
-        },
+        filter: !Array.isArray(filterIds) ?
+            {
+              $or: [
+                { owner: userId },
+                { contributors: { $elemMatch: { user: userId } } },
+              ]
+            } : {
+              _id: { $in: filterIds }
+            },
         loaders: context.loaders,
       })
     },

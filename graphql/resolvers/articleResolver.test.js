@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongoose').Types
 const {
   Article: ArticleResolver,
+  Query: ArticleQuery,
   Mutation: ArticleMutation,
 } = require('./articleResolver')
 const Workspace = require('../models/workspace')
@@ -9,6 +10,7 @@ const Version = require('../models/version')
 const User = require('../models/user.js')
 const Tag = require('../models/tag.js')
 const Corpus = require('../models/corpus.js')
+const { createLoaders } = require('../loaders.js')
 
 describe('article resolver', () => {
   test('get workspaces', async () => {
@@ -87,6 +89,81 @@ describe('article resolver', () => {
       { name: 'Workspace B' }, // admin user can see all workspaces that includes a given article
       { name: 'Workspace C' },
     ])
+  })
+})
+
+describe('articles', () => {
+  let user, user2, workspace
+  const context = {
+    user: {},
+    userId: null,
+    token: {},
+    loaders: createLoaders()
+  }
+
+  beforeEach(async () => {
+    user = await User.create({
+      email: 'test1@example.com',
+    })
+
+    user2 = await User.create({
+      email: 'test2@example.com',
+    })
+
+    context.user = user
+    context.userId = user._id
+    context.token._id = user._id
+
+    const article = await Article.create({
+      title: 'Article A',
+      owner: [user._id],
+    })
+    await Article.create({
+      title: 'Article B',
+      owner: [user._id],
+    })
+
+    await Article.create({
+      title: 'Article C',
+      owner: [user2.id],
+    })
+
+    workspace = await Workspace.create({
+      name: 'Workspace A',
+      color: '#f4a261',
+      members: [
+        {
+          user: user.id
+        },
+      ],
+      articles: [article.id],
+      creator: user.id,
+    })
+  })
+
+  test('refuses to list another user articles', async () => {
+    const articlesP = ArticleQuery.articles({}, { user: user2._id }, context)
+
+    return expect(articlesP).rejects.toThrow('Forbidden')
+  })
+
+  test('lists user articles', async () => {
+    const articles = await ArticleQuery.articles({}, {}, context)
+
+    // because sorting by last modified
+    expect(articles).toHaveProperty('0.title', 'Article B')
+    expect(articles).toHaveProperty('1.title', 'Article A')
+  })
+
+  test('list user articles for a given workspace', async () => {
+    const filter = {
+      workspaceId: workspace._id
+    }
+    const articles = await ArticleQuery.articles({}, { filter }, context)
+
+    // because sorting by last modified
+    expect(articles).toHaveLength(1)
+    expect(articles).toHaveProperty('0.title', 'Article A')
   })
 })
 

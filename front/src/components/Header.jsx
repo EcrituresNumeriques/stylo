@@ -34,7 +34,8 @@ export default function Header() {
       <div className={styles.container}>
         <h1 className={styles.logo}>
           <NavLink to="/" rel="home">
-            <img src={logoContent} alt="Stylo" />
+            <img src={logoContent} alt="Stylo" aria-hidden />
+            <span className="sr-only">{t('header.home')}</span>
           </NavLink>
         </h1>
 
