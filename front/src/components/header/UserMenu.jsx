@@ -1,103 +1,42 @@
-import React, { useCallback, useEffect } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router'
-import { Layers, LogOut, User } from 'lucide-react'
-import { useLogout } from '../../hooks/user.js'
+import { Link, NavLink } from 'react-router'
+import { LogOut, User } from 'lucide-react'
+import { useActiveUser } from '../../hooks/user.js'
 
-import useComponentVisible from '../../hooks/componentVisible'
-import styles from './UserMenu.module.scss'
-import Button from '../Button.jsx'
-import WorkspaceMenuItem from '../workspace/WorkspaceMenuItem.jsx'
-import UserMenuLink from './UserMenuLink.jsx'
-import { useActiveWorkspace } from '../../hooks/workspace.js'
+import styles from '../header.module.scss'
 
 export default function UserMenu() {
   const { t } = useTranslation()
-  const logout = useLogout()
+  const activeUser = useActiveUser()
 
-  const handleLogout = useCallback(() => {
-    setIsComponentVisible(false)
-    logout()
-  }, [])
+  if (!activeUser?._id) {
+    return (
+      <nav className={styles.userMenu} aria-label={t('header.userMenu.title')}>
+        <NavLink to="/login">
+          {t('credentials.login.confirmButton')}
+        </NavLink>
 
-  const { ref, isComponentVisible, setIsComponentVisible } =
-    useComponentVisible(false)
-  const activeUser = useSelector((state) => state.activeUser)
-  const activeWorkspace = useActiveWorkspace()
-
-  useEffect(() => {
-    setIsComponentVisible(false)
-  }, [activeWorkspace])
+        <NavLink to="/register" className="hidden-below-tablet">
+          {t('credentials.login.registerLink')}
+        </NavLink>
+      </nav>
+    )
+  }
 
   return (
-    <div ref={ref} className={styles.container}>
-      <div
-        className={styles.userMenuLink}
-        onClick={() => setIsComponentVisible(!isComponentVisible)}
-      >
-        <UserMenuLink
-          username={activeUser.displayName}
-          activeWorkspace={activeWorkspace}
-        />
-      </div>
-      {isComponentVisible && (
-        <div className={styles.menu}>
-          <div className={styles.workspaces}>
-            <h4>{t('workspace.menu.title')}</h4>
-            <ul>
-              <WorkspaceMenuItem
-                color="#D9D9D9"
-                name={t('workspace.myspace')}
-              />
-              {activeUser.workspaces.map((workspace) => (
-                <WorkspaceMenuItem
-                  id={workspace._id}
-                  key={workspace._id}
-                  color={workspace.color}
-                  name={workspace.name}
-                />
-              ))}
-              <li className={styles.workspacesLink}>
-                <Link
-                  to="/workspaces"
-                  onClick={() => setIsComponentVisible(false)}
-                >
-                  <Layers />
-                  {t('workspace.all')}
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div className={styles.footer}>
-            <div className={styles.userBlock}>
-              <Link
-                to="/credentials"
-                onClick={() => setIsComponentVisible(false)}
-                className={styles.userCard}
-              >
-                <div className={styles.persona}>
-                  <User />
-                </div>
-                <div className={styles.userInfo}>
-                  <div className={styles.username}>
-                    {activeUser.displayName}
-                  </div>
-                  <div className={styles.email}>{activeUser.email}</div>
-                </div>
-              </Link>
-              <Button
-                className={styles.logoutButton}
-                onClick={handleLogout}
-                aria-label={t('credentials.logout.confirmButton')}
-                link
-              >
-                <LogOut size={22} aria-hidden />
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+    <nav className={styles.userMenu} aria-label={t('header.userMenu.title')}>
+      <NavLink to="/credentials" aria-label={t('header.userMenu.profile')} aria-description={t('header.userMenu.profile.description')}>
+        <User aria-hidden className="icon hidden-below-tablet" />
+
+        <span className="hidden-below-tablet">{activeUser.displayName}</span>
+        <span className="hidden-above-tablet">{t('header.userMenu.shortLabel')}</span>
+      </NavLink>
+
+      <Link to="/logout">
+        <LogOut className="icon" aria-hidden />
+        <span className="sr-only">{t('credentials.logout.confirmButton')}</span>
+      </Link>
+    </nav>
   )
 }

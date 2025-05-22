@@ -16,9 +16,25 @@
   display: none;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 @media screen {
   html {
     background-color: $main-background-color;
+  }
+
+  button {
+    cursor: pointer;
   }
 
   button,
@@ -142,6 +158,23 @@ select:disabled {
   color: $main-color;
   background-color: $muted-background-color;
 }
+
+.hidden-below-tablet {
+  @media screen and (max-width: $tablet-breakpoint) {
+    & {
+      display: none;
+    }
+  }
+}
+
+.hidden-above-tablet {
+  @media screen and (min-width: $tablet-breakpoint) {
+    & {
+      display: none;
+    }
+  }
+}
+
 
 .yRemoteSelectionHead {
   position: absolute;
