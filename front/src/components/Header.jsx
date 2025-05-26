@@ -34,11 +34,12 @@ export default function Header() {
       <div className={styles.container}>
         <h1 className={styles.logo}>
           <NavLink to="/" rel="home">
-            <img src={logoContent} alt="Stylo" />
+            <img src={logoContent} alt="Stylo" aria-hidden />
+            <span className="sr-only">{t('header.home')}</span>
           </NavLink>
         </h1>
 
-        <nav role="navigation" ref={toolsRef} className={styles.navigation} aria-labelledby="app-menu" aria-description={t('header.mainMenu.description')}>
+        <nav role="navigation" id="main-navigation" ref={toolsRef} className={styles.navigation} aria-labelledby="app-menu" aria-description={t('header.mainMenu.description')}>
           <button className={styles.menuButton} aria-controls="app-menu" aria-pressed={areToolsVisible} onClick={toggleTools}>
             <Menu className="icon" aria-hidden />
             {t('header.mainMenu.button')}

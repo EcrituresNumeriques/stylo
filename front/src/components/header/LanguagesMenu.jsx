@@ -17,9 +17,9 @@ export default function LanguagesMenu() {
   }, [])
 
   return (
-    <nav ref={ref} className={styles.toggleMenu} aria-labelledby="header-languages-button" aria-description={t('header.languagesMenu.description')}>
+    <nav ref={ref} className={styles.toggleMenu} aria-labelledby="languages-selection" aria-description={t('header.languagesMenu.description')}>
       <button
-        id="header-languages-button"
+        id="languages-selection"
         aria-expanded={isComponentVisible}
         aria-controls="header-languages-menu"
         onClick={toggleComponentIsVisible}

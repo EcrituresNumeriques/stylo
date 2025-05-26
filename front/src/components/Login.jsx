@@ -29,7 +29,7 @@ export default function Login() {
 
   useEffect(() => {
     if (user?._id) {
-      navigate(location.state.returnTo ?? '/articles', { replace: true })
+      navigate(location?.state?.returnTo ?? '/articles', { replace: true })
     }
   }, [user?._id])
 

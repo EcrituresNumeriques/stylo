@@ -1,4 +1,4 @@
-import { describe, expect, test, vi } from 'vitest'
+import { beforeEach, describe, expect, test, vi } from 'vitest'
 import {
   getByRole,
   getByLabelText,
@@ -7,6 +7,7 @@ import {
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+import { useRouteLoaderData } from 'react-router'
 import { renderWithProviders } from '../../tests/setup.js'
 
 import Component from './Login.jsx'
@@ -16,8 +17,16 @@ describe('Login', () => {
     activeUser: { _id: 'test-user-id' },
   }
 
+  beforeEach(() => {
+    useRouteLoaderData.mockReturnValueOnce({})
+  })
+
   test('redirects when user is already logged in', async () => {
     const redirectCalled = vi.fn()
+
+    useRouteLoaderData.mockReturnValueOnce({
+      user: preloadedState.activeUser
+    })
 
     renderWithProviders(<Component />, {
       preloadedState,

@@ -4,8 +4,10 @@ import { Outlet, ScrollRestoration, useLoaderData, useLocation, useNavigate } fr
 import { useDispatch } from 'react-redux'
 import Footer from '../components/Footer.jsx'
 import Header from '../components/Header.jsx'
+import SkipLinks from '../components/SkipLinks.jsx'
 import { getUserProfile } from '../helpers/user.js'
 import { usePreferenceItem } from '../hooks/user.js'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Loads user data from localStorage JWT
@@ -22,6 +24,7 @@ export default function StyloApp () {
   const navigate = useNavigate()
   const { user } = useLoaderData()
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const { value: hasTrackingConsent } = usePreferenceItem('trackingConsent', 'user')
 
   // Setup user session
@@ -73,8 +76,9 @@ export default function StyloApp () {
   )
 
   return (<>
+    <SkipLinks />
     {hideHeader || <Header/>}
-    <main tabIndex="-1">
+    <main id="content" aria-label={t('main.title')} tabIndex="-1">
       <ScrollRestoration/>
       <Outlet/>
     </main>

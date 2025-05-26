@@ -39,6 +39,22 @@
   margin-right: auto;
 }
 
+.skiplinks {
+  @extend .header;
+  @extend .navigation;
+
+  background-color: $main-color;
+  gap: 1em;
+  padding: 1em;
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+
+  &:focus-within {
+    z-index: 1000;
+  }
+}
+
 .navigation {
   display: flex;
 
