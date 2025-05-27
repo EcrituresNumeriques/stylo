@@ -12,6 +12,10 @@
   "searchIndexUrl": "/fr/search-index.json",
   "menu": [
     {
+      "label": "À propos",
+      "url": "/fr/colophon"
+    },
+    {
       "label": "Langue",
       "children": [
         {
