@@ -3,9 +3,9 @@
   "lang": "es",
   "description": "Stylo es un editor de texto semántico y colaborativo para las Ciencias Humanas y Sociales",
   "rights": "Licencia Creative Commons [CC BY-SA 4.0] – Cátedra de Investigación de Canadá en Escritura Digital",
-  "sources": "<a href=\"https://github.com/EcrituresNumeriques/stylo/\">Fuentes de Stylo</a>",
+  "sources": "<a href=\"https://github.com/EcrituresNumeriques/stylo/\">Fuentes</a>",
   "contact": "<a href=\"/es/contacts/\">Contacto</a>",
-  "colophon": "<a href=\"/es/colophon\">Colophon</a>",
+  "colophon": "<a href=\"/es/colofon\">Acerca</a>",
 
   "sectionTitle": "Documentación",
   "sectionUrl": "/es",
