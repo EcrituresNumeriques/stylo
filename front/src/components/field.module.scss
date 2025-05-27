@@ -145,6 +145,16 @@
   }
 }
 
+.comboboxController {
+  position: relative;
+}
+
+.autocompleteField input {
+  padding-right: 6.25rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .comboboxControllerActions {
   position: absolute;
   right: 0;

@@ -27,10 +27,15 @@ export default function useStyloExport({ bibliography_style, bib: excerpt }) {
     { fallbackData: [] }
   )
   const { data: exportStylesPreview, isLoading } = useSWR(
-    [
-      `${pandocExportEndpoint}/api/bibliography_preview`,
-      { excerpt, bibliography_style },
-    ],
+    () => {
+      if (bibliography_style !== '') {
+        return [
+          `${pandocExportEndpoint}/api/bibliography_preview`,
+          { excerpt, bibliography_style },
+        ]
+      }
+      throw new Error('bibliography style is not defined, aborting.')
+    },
     postFetcher,
     { fallbackData: '' }
   )
