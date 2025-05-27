@@ -1,32 +1,24 @@
 import { useSelector } from 'react-redux'
 
-import { toEntries } from '../helpers/bibtex.js'
-import { executeQuery } from '../helpers/graphQL.js'
-import useFetchData, {
-  useConditionalFetchData,
-  useMutateData,
-} from './graphql.js'
-
 import {
   addTags,
   deleteArticle,
   duplicateArticle,
+  getArticleMetadata,
   getArticleTags,
+  getEditableArticle,
   removeTags,
   renameArticle,
-  getArticleWorkingCopy,
-  getEditableArticle,
   updateWorkingVersion,
   updateZoteroLinkMutation,
 } from '../components/Article.graphql'
-import {
-  createVersion,
-  getArticleVersion,
-  getArticleVersions,
-  renameVersion,
-} from './Versions.graphql'
 
-export function useArticleTagActions({ articleId }) {
+import { toEntries } from '../helpers/bibtex.js'
+import { executeQuery } from '../helpers/graphQL.js'
+import useFetchData, { useConditionalFetchData, useMutateData, } from './graphql.js'
+import { createVersion, getArticleVersion, getArticleVersions, renameVersion, } from './Versions.graphql'
+
+export function useArticleTagActions ({ articleId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
   const { data, mutate, error, isLoading } = useFetchData(
     { query: getArticleTags, variables: { articleId } },
@@ -87,7 +79,7 @@ export function useArticleTagActions({ articleId }) {
   }
 }
 
-export function useArticleActions({ articleId }) {
+export function useArticleActions ({ articleId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
   const activeUser = useSelector((state) => state.activeUser)
   const copy = async (toUserId) => {
@@ -137,11 +129,12 @@ export function useArticleActions({ articleId }) {
   }
 }
 
-export function useArticleWorkingCopy({ articleId }) {
+export function useArticleMetadata ({ articleId, versionId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
   const activeUser = useSelector((state) => state.activeUser)
+  const hasVersion = typeof versionId === 'string'
   const { data, error, mutate, isLoading } = useFetchData(
-    { query: getArticleWorkingCopy, variables: { articleId } },
+    { query: getArticleMetadata, variables: { articleId, versionId: versionId ?? '', hasVersion } },
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
@@ -149,6 +142,9 @@ export function useArticleWorkingCopy({ articleId }) {
   )
 
   const updateMetadata = async (metadata) => {
+    if (versionId) {
+      return
+    }
     await executeQuery({
       sessionToken,
       query: updateWorkingVersion,
@@ -175,15 +171,19 @@ export function useArticleWorkingCopy({ articleId }) {
     )
   }
 
+  const metadata = hasVersion
+    ? data?.version?.metadata
+    : data?.article?.workingVersion?.metadata
+
   return {
-    article: data?.article,
+    metadata,
     updateMetadata,
     isLoading,
     error,
   }
 }
 
-export function useEditableArticle({ articleId, versionId }) {
+export function useEditableArticle ({ articleId, versionId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
   const activeUser = useSelector((state) => state.activeUser)
   const hasVersion = typeof versionId === 'string'
@@ -286,7 +286,7 @@ export function useEditableArticle({ articleId, versionId }) {
   }
 }
 
-export function useArticleVersions({ articleId }) {
+export function useArticleVersions ({ articleId }) {
   const { data, error, isLoading } = useFetchData(
     { query: getArticleVersions, variables: { article: articleId } },
     {
@@ -302,7 +302,7 @@ export function useArticleVersions({ articleId }) {
   }
 }
 
-export function useArticleVersion({ versionId }) {
+export function useArticleVersion ({ versionId }) {
   const { data, error, isLoading } = useConditionalFetchData(
     versionId ? { query: getArticleVersion, variables: { versionId } } : null,
     {
@@ -321,7 +321,7 @@ export function useArticleVersion({ versionId }) {
   }
 }
 
-export function useArticleVersionActions({ articleId }) {
+export function useArticleVersionActions ({ articleId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
   const activeUser = useSelector((state) => state.activeUser)
   const { mutate } = useMutateData({

@@ -4,7 +4,6 @@ import { ArrowLeft, ChevronRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { usePreferenceItem } from '../../hooks/user.js'
-import { useArticleWorkingCopy } from '../../hooks/article.js'
 import useFetchData from '../../hooks/graphql.js'
 
 import Export from '../Export.jsx'
@@ -31,8 +30,6 @@ export default function CollaborativeEditorMenu({ articleId, className, versionI
   )
 
   const onBack = useCallback(() => setActiveMenu(null), [])
-
-  const { article, updateMetadata } = useArticleWorkingCopy({ articleId })
   const { data, isLoading } = useFetchData(
     { query: getArticleInfo, variables: { articleId } },
     {
@@ -45,8 +42,6 @@ export default function CollaborativeEditorMenu({ articleId, className, versionI
   if (isLoading) {
     return <Loading />
   }
-
-  const metadata = article?.workingVersion?.metadata
 
   return (
     <Sidebar
@@ -141,8 +136,8 @@ export default function CollaborativeEditorMenu({ articleId, className, versionI
         {activeMenu === 'metadata' && (
           <ArticleMetadata
             onBack={onBack}
-            metadata={metadata}
-            onChange={(metadata) => updateMetadata(metadata)}
+            articleId={articleId}
+            versionId={versionId}
           />
         )}
         {activeMenu === 'toc' && <ArticleTableOfContents onBack={onBack} />}

@@ -122,20 +122,17 @@ query updateWorkingVersion($articleId: ID!, $content: WorkingVersionInput!) {
   }
 }
 
-query getArticleWorkingCopy($articleId: ID!) {
+query getArticleMetadata($articleId: ID!, $versionId: ID!, $hasVersion: Boolean!) {
   article(article: $articleId) {
     _id
-    title
-    zoteroLink
-    updatedAt
 
     workingVersion {
-      md
-      bib
-      bibPreview
       metadata
-      yaml
     }
+  }
+
+  version(version: $versionId) @include(if: $hasVersion) {
+    metadata
   }
 }
 

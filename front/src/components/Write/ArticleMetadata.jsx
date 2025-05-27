@@ -1,34 +1,37 @@
 import { Toggle } from '@geist-ui/core'
 import YAML from 'js-yaml'
-import React, { useCallback, useMemo, useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { toYaml } from './metadata/yaml.js'
+import { useArticleMetadata } from '../../hooks/article.js'
 import { usePreferenceItem } from '../../hooks/user.js'
 
 import Alert from '../molecules/Alert.jsx'
+import Loading from '../molecules/Loading.jsx'
+
+import styles from './articleEditorMetadata.module.scss'
+import { toYaml } from './metadata/yaml.js'
 import MonacoYamlEditor from './providers/monaco/YamlEditor.jsx'
 import ArticleEditorMetadataForm from './yamleditor/ArticleEditorMetadataForm.jsx'
 
-import styles from './articleEditorMetadata.module.scss'
-
 /**
  * @param {object} props
- * @param {(object) => void} props.onChange
  * @param {(object) => void} props.onBack
- * @param {object} props.metadata
+ * @param {string} props.articleId
+ * @param {string} props.versionId
  * @returns {Element}
  */
-export default function ArticleMetadata({ onChange, onBack, metadata }) {
+export default function ArticleMetadata ({ onBack, articleId, versionId }) {
   /** @type {object} */
   const articleWriters = useSelector((state) => state.articleWriters || {})
-  const readOnly = useMemo(
+  const multiUserActive = useMemo(
     () => Object.keys(articleWriters).length > 1,
     [articleWriters]
   )
+  const readOnly = multiUserActive || versionId
   const { t } = useTranslation()
-
+  const { metadata, isLoading, updateMetadata } = useArticleMetadata({ articleId, versionId })
   const yaml = useMemo(() => toYaml(metadata), [metadata])
   const [rawYaml, setRawYaml] = useState(yaml)
   const [error, setError] = useState('')
@@ -39,22 +42,22 @@ export default function ArticleMetadata({ onChange, onBack, metadata }) {
   )
 
   const handleFormUpdate = useCallback(
-    (metadata) => {
+    async (metadata) => {
       if (readOnly) {
         return
       }
       setRawYaml(toYaml(metadata))
-      onChange(metadata)
+      await updateMetadata(metadata)
     },
-    [readOnly, setRawYaml, onChange]
+    [readOnly, setRawYaml, updateMetadata]
   )
 
   const handleRawYamlChange = useCallback(
-    (yaml) => {
+    async (yaml) => {
       try {
         const [metadata = {}] = YAML.loadAll(yaml)
         setError('')
-        onChange(metadata)
+        await updateMetadata(metadata)
       } catch (err) {
         setError(err.message)
       } finally {
@@ -64,6 +67,10 @@ export default function ArticleMetadata({ onChange, onBack, metadata }) {
     [setRawYaml]
   )
 
+  if (isLoading) {
+    return <Loading/>
+  }
+
   const title = onBack ? (
     <h2
       className={styles.title}
@@ -71,7 +78,7 @@ export default function ArticleMetadata({ onChange, onBack, metadata }) {
       style={{ cursor: 'pointer', userSelect: 'none' }}
     >
       <span onClick={onBack} style={{ display: 'flex' }}>
-        <ArrowLeft style={{ strokeWidth: 3 }} />
+        <ArrowLeft style={{ strokeWidth: 3 }}/>
       </span>
       <span>{t('metadata.title')}</span>
     </h2>
@@ -98,9 +105,14 @@ export default function ArticleMetadata({ onChange, onBack, metadata }) {
           <label htmlFor="raw-mode">YAML</label>
         </div>
       </header>
-      {readOnly && (
+      {versionId && (
         <div className={styles.readonly}>
-          <Alert message={t('metadata.readonly')} type="warning" />
+          <Alert message={t('metadata.readonly.versionView')} type="warning"/>
+        </div>
+      )}
+      {!versionId && multiUserActive && (
+        <div className={styles.readonly}>
+          <Alert message={t('metadata.readonly.multiUserActive')} type="warning"/>
         </div>
       )}
       {selector === 'raw' && (
