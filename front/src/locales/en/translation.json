@@ -1,5 +1,6 @@
 {
   "annotate.title": "Annotate",
+  "article.annotate.button": "Annotate (open a new window)",
   "article.by.text": "by",
   "article.contributors.added": "{{ name }} is now a contributor.",
   "article.contributors.removed": "{{ name }} has been removed from contributors.",

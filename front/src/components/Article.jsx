@@ -6,7 +6,7 @@ import {
   ChevronRight,
   Copy,
   Edit3,
-  Eye,
+  MessageSquareShare,
   Pencil,
   Printer,
   Send,
@@ -374,12 +374,12 @@ export default function Article({
         </Link>
 
         <Link
-          title={t('article.preview.button')}
+          title={t('article.annotate.button')}
           target="_blank"
           className={buttonStyles.icon}
           to={`/article/${article._id}/annotate`}
         >
-          <Eye />
+          <MessageSquareShare />
         </Link>
       </aside>
 
