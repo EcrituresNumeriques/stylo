@@ -28,7 +28,7 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true || github.event.workflow_dispatch
+    #if: github.event.pull_request.merged == true || github.event.workflow_dispatch
     steps:
       - name: Checkout
         uses: actions/checkout@v4
