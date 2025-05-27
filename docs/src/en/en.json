@@ -3,9 +3,9 @@
   "lang": "en",
   "description": "Stylo is a semantic and collaborative text editor for the Human and Social Sciences.",
   "rights": "Licence Creative Commons [CC BY-SA 4.0] – Canada Research Chair on digital textualities",
-  "sources": "<a href=\"https://github.com/EcrituresNumeriques/stylo/\">Sources</a>",
+  "sources": "<a href=\"/en/sources/\">Sources</a>",
   "contact": "<a href=\"/en/contacts/\">Get in touch</a>",
-  "colophon": "<a href=\"/en/colophon\">About</a>",
+  "colophon": "<a href=\"/en/colophon/\">About</a>",
 
   "sectionTitle": "Documentation",
   "sectionUrl": "/en",
@@ -13,6 +13,10 @@
   "disableSearch": false,
   "searchIndexUrl": "/en/search-index.json",
   "menu": [
+    {
+      "label": "About",
+      "url": "/en/colophon"
+    },
     {
       "label": "Language",
       "children": [

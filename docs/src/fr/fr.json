@@ -3,7 +3,7 @@
   "lang": "fr",
   "description": "Stylo est un éditeur de texte sémantique et collaboratif pour l'édition scientifique en lettres et en sciences humaines et sociales.",
   "rights": "Licence <a href=\"https://creativecommons.org/licenses/by-sa/4.0/\">Creative Commons [CC BY-SA 4.0]</a> – Chaire de recherche du Canada sur les écritures numériques",
-  "sources": "<a href=\"https://github.com/EcrituresNumeriques/stylo/\">Sources</a>",
+  "sources": "<a href=\"/fr/sources/\">Sources</a>",
   "contact": "<a href=\"/fr/contacts/\">Prendre contact</a>",
   "colophon": "<a href=\"/fr/colophon\">À propos</a>",
   "sectionTitle": "Documentation",
@@ -11,6 +11,10 @@
   "disableSearch": false,
   "searchIndexUrl": "/fr/search-index.json",
   "menu": [
+    {
+      "label": "À propos",
+      "url": "/fr/colophon"
+    },
     {
       "label": "Langue",
       "children": [
