@@ -4,7 +4,7 @@
       "title": "corpus.thesis.metadata.headerTitle",
       "fields": [
         "title",
-        "discipline",
+        "disciplines",
         "lang",
         "keywords",
         "pageCount",
@@ -31,8 +31,8 @@
   "@version": {
     "ui:widget": "hidden"
   },
-  "discipline": {
-    "ui:title": "corpus.thesis.metadata.discipline"
+  "disciplines": {
+    "ui:title": "corpus.thesis.metadata.disciplines"
   },
   "pageCount": {
     "ui:title": "corpus.thesis.metadata.pageCount"
