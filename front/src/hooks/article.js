@@ -206,6 +206,10 @@ export function useEditableArticle ({ articleId, versionId }) {
   )
 
   const updateBibliography = async (bib) => {
+    if (hasVersion) {
+      // can only update the bibliography on the working copy
+      return
+    }
     await executeQuery({
       sessionToken,
       query: updateWorkingVersion,
@@ -218,26 +222,14 @@ export function useEditableArticle ({ articleId, versionId }) {
     })
     await mutate(
       async (data) => {
-        if (hasVersion) {
-          return {
-            article: {
-              ...data.article,
-              version: {
-                ...data.version,
-                bib,
-              },
+        return {
+          article: {
+            ...data.article,
+            workingVersion: {
+              ...data.article.workingVersion,
+              bib,
             },
-          }
-        } else {
-          return {
-            article: {
-              ...data.article,
-              workingVersion: {
-                ...data.workingVersion,
-                bib,
-              },
-            },
-          }
+          },
         }
       },
       { revalidate: false }
