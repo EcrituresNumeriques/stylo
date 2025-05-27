@@ -114,6 +114,7 @@ export default function CollaborativeTextEditor({
   let timeoutId
   useEffect(() => {
     if (yText) {
+      updateArticleStructureAndStats({ text: yText.toString() })
       yText.observe(function (yTextEvent, transaction) {
         dispatch({
           type: 'UPDATE_ARTICLE_WORKING_COPY_STATUS',
