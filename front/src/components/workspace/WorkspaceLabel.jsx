@@ -3,20 +3,23 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 
 import styles from './WorkspaceLabel.module.scss'
+import { useTranslation } from 'react-i18next'
 
-export default function WorkspaceLabel({ name, color, className }) {
+/**
+ *
+ * @param {import('react').PropsWithoutRef} props
+ * @param {string=} props.name
+ * @param {string=} props.color
+ * @param {string=} props.className
+ * @returns {import('react').ReactElement}
+ */
+export default function WorkspaceLabel({ name, color: backgroundColor = '#ccc', className }) {
+  const { t } = useTranslation()
+
   return (
-    <>
-      <div className={clsx(className, styles.container)}>
-        <span className={styles.chip} style={{ backgroundColor: color }} />
-        <span className={styles.name}>{name}</span>
-      </div>
-    </>
+    <div className={clsx(className, styles.container)} aria-label={name}>
+      <span className={styles.chip} style={{ backgroundColor }} />
+      <span className={styles.name}>{name ?? t('workspace.myspace')}</span>
+    </div>
   )
-}
-
-WorkspaceLabel.propTypes = {
-  name: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
-  className: PropTypes.string,
 }

@@ -4,7 +4,7 @@ import { cleanup, render } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
 import '@testing-library/jest-dom/vitest'
 import { Provider } from 'react-redux'
-import { createRoutesStub } from 'react-router'
+import { createRoutesStub, Outlet, useRouteLoaderData } from 'react-router'
 import createReduxStore, { initialState } from '../src/createReduxStore.js'
 import i18n from '../src/i18n.js'
 
@@ -17,6 +17,15 @@ globalThis.fetch = vi.fn().mockResolvedValue({
   headers: new Headers(),
   text: vi.fn().mockResolvedValue(''),
   json: vi.fn().mockResolvedValue({}),
+})
+
+vi.mock('react-router', async (importOriginal) => {
+  const mod = await importOriginal()
+
+  return {
+    ...mod,
+    useRouteLoaderData: vi.fn()
+  }
 })
 
 // remove once https://github.com/jsdom/jsdom/issues/3294 is fixed
@@ -54,6 +63,16 @@ export function renderWithProviders(
   function Wrapper({ children }) {
     const Stub = createRoutesStub(
       [
+        {
+          id: 'app',
+          path: '/',
+          Component () {
+            return Outlet
+          },
+          loader () {
+            return { user: preloadedState?.activeUser }
+          }
+        },
         {
           path,
           index: true,

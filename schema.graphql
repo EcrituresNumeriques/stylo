@@ -174,7 +174,7 @@ type Query {
   "Fetch article info [need to have access to this article]"
   article(article: ID!, user: ID): Article
   "Fetch a given user articles"
-  articles(user: ID): [Article]
+  articles(user: ID, filter: FilterCorpusInput): [Article]
   "Get a list of corpus with an optional filter"
   corpus(filter: FilterCorpusInput): [Corpus!]
   getUser(filter: UserFilter): User
@@ -398,7 +398,7 @@ input CreateWorkspaceInput {
 
 input FilterCorpusInput {
   corpusId: ID
-  workspaceId: String
+  workspaceId: ID
 }
 
 input NewUserInput {

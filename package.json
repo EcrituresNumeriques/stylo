@@ -12,11 +12,11 @@
     "npm": ">=10"
   },
   "scripts": {
-    "dev": "DOTENV_CONFIG_PATH=.env node -r dotenv/config ./node_modules/.bin/concurrently 'npm:dev:*'",
+    "dev": "DOTENV_CONFIG_PATH=.env node -r dotenv/config ./node_modules/.bin/concurrently --kill-others-on-fail --prefix-colors yellow,blue 'npm:dev:*'",
     "dev:front": "./front/node_modules/.bin/vite ./front",
     "predev:graphql": "DOTENV_CONFIG_PATH=.env node -r dotenv/config ./graphql/node_modules/.bin/db-migrate up --migrations-dir ./graphql/migrations",
     "dev:graphql": "node --watch ./graphql/app.js --watch",
-    "start": "DOTENV_CONFIG_PATH=.env node -r dotenv/config ./node_modules/.bin/concurrently 'npm:start:*'",
+    "start": "DOTENV_CONFIG_PATH=.env node -r dotenv/config ./node_modules/.bin/concurrently --kill-others-on-fail --prefix-colors yellow,blue 'npm:start:*'",
     "start:front": "./front/node_modules/.bin/vite build ./front",
     "start:graphql": "node --watch ./graphql/app.js",
     "lint": "prettier --check front graphql ",

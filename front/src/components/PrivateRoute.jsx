@@ -1,6 +1,5 @@
 import React from 'react'
-import { Navigate, Outlet, useLocation } from 'react-router'
-import { useActiveUserId } from '../hooks/user.js'
+import { Outlet, useLocation, Navigate, useRouteLoaderData } from 'react-router'
 
 /**
  * @param {{redirectTo: string, withOutlet: boolean} & React.PropsWithChildren} props
@@ -9,12 +8,8 @@ import { useActiveUserId } from '../hooks/user.js'
 export default function PrivateRoute({
   redirectTo = '/login',
 }) {
-  const activeUserId = useActiveUserId()
+  const { user } = useRouteLoaderData('app')
   const location = useLocation()
 
-  return activeUserId ? (
-      <Outlet />
-  ) : (
-    <Navigate to={redirectTo} state={{ returnTo: location }} />
-  )
+  return user ? <Outlet /> : <Navigate to={redirectTo} state={{ returnTo: location }} />
 }

@@ -1,10 +1,77 @@
-query getUserArticles($user: ID!) {
-  user(user: $user) {
+# query getUserArticles($user: ID!) {
+#   user(user: $user) {
+#     _id
+#     displayName
+#   }
+
+#   corpus {
+#     _id
+#     name
+#     articles {
+#       article {
+#         _id
+#       }
+#     }
+#   }
+
+#   tags(user: $user) {
+#     _id
+#     owner
+#     description
+#     color
+#     name
+#   }
+
+#   articles(user: $user) {
+#     _id
+#     title
+#     updatedAt
+
+#     workingVersion {
+#       bibPreview
+#     }
+
+#     owner {
+#       _id
+#       displayName
+#       username
+#     }
+
+#     contributors {
+#       user {
+#         _id
+#         displayName
+#         username
+#         email
+#       }
+#     }
+
+#     tags {
+#       name
+#       owner
+#       color
+#       _id
+#     }
+#   }
+# }
+
+query getWorkspaceArticles($workspaceId: ID = "default", $isPersonalWorkspace: Boolean!, $filter: FilterCorpusInput) {
+  tags {
     _id
-    displayName
+    owner
+    description
+    color
+    name
   }
 
-  corpus {
+  workspace(workspaceId: $workspaceId) @skip (if: $isPersonalWorkspace) {
+    _id
+    name
+    color
+    description
+  }
+
+  corpus(filter: $filter) {
     _id
     name
     articles {
@@ -14,15 +81,7 @@ query getUserArticles($user: ID!) {
     }
   }
 
-  tags(user: $user) {
-    _id
-    owner
-    description
-    color
-    name
-  }
-
-  articles(user: $user) {
+  articles(filter: $filter) {
     _id
     title
     updatedAt
@@ -51,60 +110,6 @@ query getUserArticles($user: ID!) {
       owner
       color
       _id
-    }
-  }
-}
-
-query getWorkspaceArticles($workspaceId: ID!) {
-  tags {
-    _id
-    owner
-    description
-    color
-    name
-  }
-
-  workspace(workspaceId: $workspaceId) {
-    corpus {
-      _id
-      name
-      articles {
-        article {
-          _id
-        }
-      }
-    }
-
-    articles {
-      _id
-      title
-      updatedAt
-
-      workingVersion {
-        bibPreview
-      }
-
-      owner {
-        _id
-        displayName
-        username
-      }
-
-      contributors {
-        user {
-          _id
-          displayName
-          username
-          email
-        }
-      }
-
-      tags {
-        name
-        owner
-        color
-        _id
-      }
     }
   }
 }

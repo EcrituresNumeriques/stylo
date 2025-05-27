@@ -1,12 +1,12 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router'
+import { Link, useLocation, useNavigate, useRouteLoaderData } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import { useToasts } from '@geist-ui/core'
 import { useTranslation } from 'react-i18next'
 import { applicationConfig } from '../config.js'
 import { fromFormData } from '../helpers/forms.js'
-import { useActiveUserId } from '../hooks/user.js'
+import { useLogout } from '../hooks/user.js'
 
 import styles from './login.module.scss'
 import buttonStyles from './button.module.scss'
@@ -22,15 +22,16 @@ export default function Login() {
   const { setToast } = useToasts()
   const usernameRef = useRef(null)
   const navigate = useNavigate()
-  const userId = useActiveUserId()
+  const { user } = useRouteLoaderData('app')
+  const location = useLocation()
 
   const { backendEndpoint } = applicationConfig
 
   useEffect(() => {
-    if (userId) {
-      navigate('/articles', { replace: true })
+    if (user?._id) {
+      navigate(location?.state?.returnTo ?? '/articles', { replace: true })
     }
-  }, [userId])
+  }, [user?._id])
 
   const handleSubmit = useCallback((event) => {
     event.preventDefault()
@@ -175,4 +176,14 @@ export default function Login() {
       </section>
     </>
   )
+}
+
+export function Logout () {
+  const logout = useLogout()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    logout()
+    navigate('/', { replace: true })
+  }, [])
 }

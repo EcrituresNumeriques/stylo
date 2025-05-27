@@ -16,12 +16,11 @@ import {
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router'
+import { Link, useParams } from 'react-router'
 
 import { useArticleActions } from '../hooks/article.js'
 import useFetchData from '../hooks/graphql'
 import { useModal } from '../hooks/modal.js'
-import { useActiveWorkspaceId } from '../hooks/workspace.js'
 
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
@@ -60,7 +59,7 @@ export default function Article({
 }) {
   const activeUser = useSelector((state) => state.activeUser)
   const articleId = useMemo(() => article._id, [article])
-  const activeWorkspaceId = useActiveWorkspaceId()
+  const { workspaceId: activeWorkspaceId } = useParams()
   const articleActions = useArticleActions({ articleId })
 
   const { data: contributorsQueryData, error: contributorsError } =
@@ -178,7 +177,7 @@ export default function Article({
   )
 
   return (
-    <article className={styles.article}>
+    <article className={styles.article} aria-labelledby={`article-${article._id}-title`}>
       <Modal
         {...exportModal.bindings}
         title={
@@ -271,17 +270,18 @@ export default function Article({
             {expanded ? <ChevronDown /> : <ChevronRight />}
           </span>
 
-          <span>
+          <span id={`article-${article._id}-title`}>
             {article.title}
-            <Button
-              title={t('article.editName.button')}
-              icon={true}
-              className={styles.editTitleButton}
-              onClick={(evt) => evt.stopPropagation() || setRenaming(true)}
-            >
-              <Edit3 size="20" />
-            </Button>
           </span>
+
+          <Button
+            icon={true}
+            className={styles.editTitleButton}
+            onClick={(evt) => evt.stopPropagation() || setRenaming(true)}
+          >
+            <Edit3 className="icon" aria-hidden />
+            <span className="sr-only">{t('article.editName.button')}</span>
+          </Button>
         </h1>
       )}
       {renaming && (
@@ -366,7 +366,6 @@ export default function Article({
 
         <Link
           title={t('article.editor.edit.title')}
-          primary={true}
           className={buttonStyles.primary}
           to={`/article/${article._id}`}
         >
