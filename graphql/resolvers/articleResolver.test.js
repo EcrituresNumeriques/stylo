@@ -5,6 +5,7 @@ const {
 } = require('./articleResolver')
 const Workspace = require('../models/workspace')
 const Article = require('../models/article')
+const Version = require('../models/version')
 const User = require('../models/user.js')
 const Tag = require('../models/tag.js')
 const Corpus = require('../models/corpus.js')
@@ -170,5 +171,90 @@ describe('duplicateArticle', () => {
 
     expect(updatedCorpus.articles).toHaveLength(2)
     expect(updatedWorkspace.articles).toHaveLength(2)
+  })
+})
+
+
+describe('deleteArticle', () => {
+  let user
+  const context = {
+    user: {},
+    userId: null,
+    token: {},
+  }
+
+  beforeEach(async () => {
+    user = await User.create({
+      email: 'bob@huma-num.fr',
+    })
+
+    context.user = user
+    context.userId = user._id
+  })
+
+  test('article is deleted from versions, workspaces and corpus', async () => {
+    const version = await Version.create({
+      owner: user._id,
+      title: 'v1.0',
+      version: 1,
+      revision: 0,
+      message: 'Fix a few typos',
+      md: '# Hello World',
+      yaml: '',
+      metadata: {},
+      bib: ''
+    })
+
+    const chapter2 = await Article.create({
+      title: 'Chapter #2',
+      owner: [user._id],
+      contributors: [],
+      versions: [version._id],
+      tags: [],
+    })
+
+    const chapter1 = await Article.create({
+      title: 'Chapter #1',
+      owner: [user._id],
+      contributors: [],
+      versions: [],
+      tags: [],
+    })
+
+    const corpus = await Corpus.create({
+      name: 'Test Corpus #1',
+      articles: [
+        { article: { _id: chapter1._id }, order: 1 },
+        { article: { _id: chapter2._id }, order: 2 },
+      ],
+      creator: user,
+    })
+
+    const workspace = await Workspace.create({
+      color: '#bb69ff',
+      name: 'Test Workspace #1',
+      articles: [chapter1._id, chapter2._id],
+      members: [{ user: user._id }],
+      creator: user._id,
+    })
+
+    const removed = await ArticleResolver.delete(chapter2)
+    expect(removed).toBe(true)
+
+    const workspaceAfter = await Workspace.findById(workspace._id).lean().exec()
+    const corpusAfter = await Corpus.findById(corpus._id).lean().exec()
+    const versionAfter = await Version.findById(version._id).exec()
+    const chapter1After = await Article.findById(chapter1._id).exec()
+    const chapter2After = await Article.findById(chapter2._id).exec()
+
+    expect(workspaceAfter.articles).toEqual([
+      chapter1._id
+    ])
+    expect(corpusAfter.articles.map(a => ({ article: a.article, order: a.order }))).toEqual([
+      { article: chapter1._id, order: 1 },
+    ])
+    expect(versionAfter).toBeNull()
+    expect(chapter1After._id).toEqual(chapter1._id)
+    expect(chapter2After).toBeNull()
   })
 })
