@@ -17,13 +17,16 @@
 .previewPage {
   @extend .simplePage;
 
-  margin: 0 auto 2em;
+  box-shadow: none;
+  border: 1px solid #cccccc;
+  margin: 0;
+  display: block;
+  max-height: calc(100vh - 225px);
+  overflow-y: auto;
   max-width: 100%;
-
-  @media screen and (min-width: 52em) {
-    & {
-      max-width: 52em;
-    }
+  
+  hr {
+    display: none;
   }
 
   > :is(header, nav) {
