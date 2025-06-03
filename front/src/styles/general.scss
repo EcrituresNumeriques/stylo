@@ -119,11 +119,12 @@ input[type='search']::-webkit-search-results-decoration {
   display: none;
 }
 
-.toggle {
+// hack to change the color of Geist toggle
+.toggle:not(.button) {
   background-color: #5b5b5b !important;
 }
 
-.toggle.checked {
+.toggle:not(.button).checked {
   background-color: #0070f3 !important;
 }
 
