@@ -7,13 +7,16 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
+  padding: 0 1.5rem 0 0.5rem;
 
   @media screen {
-    grid-template-columns: 3fr auto;
+    // menu is 100px wide (when closed)
+    grid-template-columns: minmax(200px, 1fr) minmax(100px, auto);
   }
 }
 
 .sidebarArea {
   height: calc(100vh - 3.3em /* size of the Header */ - 3rem /* size of the Footer */);
   width: fit-content;
+  min-width: fit-content;
 }

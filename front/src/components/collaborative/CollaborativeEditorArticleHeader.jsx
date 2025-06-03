@@ -60,7 +60,6 @@ export default function CollaborativeEditorArticleHeader({
       <h1 className={styles.title}>{data.article.title}</h1>
 
       <div className={styles.row}>
-        <CollaborativeEditorActiveVersion versionId={versionId} />
         <div
           className={styles.mode}
           onClick={() => setMode(mode === 'preview' ? 'edit' : 'preview')}
@@ -78,6 +77,7 @@ export default function CollaborativeEditorArticleHeader({
           <CollaborativeEditorWriters />
         </div>
       </div>
+      <CollaborativeEditorActiveVersion versionId={versionId} />
     </header>
   )
 }
