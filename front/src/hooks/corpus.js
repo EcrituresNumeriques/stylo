@@ -7,13 +7,21 @@ import {
 } from '../components/corpus/Corpus.graphql'
 import { executeQuery } from '../helpers/graphQL.js'
 import useGraphQL, { useMutateData } from './graphql.js'
-import { useActiveWorkspace } from './workspace.js'
+import { useActiveWorkspaceId } from './workspace.js'
 
 export function useCorpusActions() {
-  const activeWorkspace = useActiveWorkspace()
-  const workspaceId = activeWorkspace?._id
-  const variables = workspaceId ? { filter: { workspaceId } } : {}
-  const { mutate } = useMutateData({ query: getCorpusQuery, variables })
+  const workspaceId = useActiveWorkspaceId()
+
+  const { mutate } = useMutateData({
+    query: getCorpusQuery,
+    variables: {
+      isPersonalWorkspace: !workspaceId,
+      filter: {
+        workspaceId
+      }
+    }
+  })
+
   const sessionToken = useSelector((state) => state.sessionToken)
   const createCorpus = async ({ title, description }) => {
     const response = await executeQuery({
@@ -23,7 +31,7 @@ export function useCorpusActions() {
         createCorpusInput: {
           name: title,
           description,
-          workspace: activeWorkspace?._id,
+          workspace: workspaceId,
           metadata: '',
         },
       },
@@ -79,20 +87,32 @@ export function useCorpusActions() {
   }
 }
 
-export function useCorpus() {
-  const activeWorkspace = useActiveWorkspace()
-  const workspaceId = activeWorkspace?._id
-  const variables = workspaceId ? { filter: { workspaceId } } : {}
+export function useCorpus({ workspaceId }) {
   const { data, error, isLoading } = useGraphQL(
-    { query: getCorpusQuery, variables },
+    {
+      query: getCorpusQuery,
+      variables: {
+        isPersonalWorkspace: !workspaceId,
+        filter: {
+          workspaceId
+        },
+        workspaceId
+      }
+    },
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
+      fallbackData: {
+        corpus: [],
+        workspace: {}
+      }
     }
   )
+
   return {
     error,
     isLoading,
-    corpus: data?.corpus ?? [],
+    corpus: data.corpus,
+    workspace: data.workspace ?? {}
   }
 }

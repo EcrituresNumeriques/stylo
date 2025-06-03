@@ -1,3 +1,5 @@
+@use './styles/variables' as *;
+
 $base-spacing: 2em;
 
 /*
@@ -96,7 +98,7 @@ $base-spacing: 2em;
  */
 
 .article {
-  border: 1px solid #000;
+  border: 1px solid $main-color;
   display: flex;
   flex-direction: column;
   align-items: first baseline;

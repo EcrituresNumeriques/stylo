@@ -1,4 +1,4 @@
-import { describe, expect, test, vi } from 'vitest'
+import { beforeEach, describe, expect, test, vi } from 'vitest'
 import {
   getByRole,
   getByLabelText,
@@ -7,6 +7,7 @@ import {
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+import { useRouteLoaderData } from 'react-router'
 import { renderWithProviders } from '../../tests/setup.js'
 
 import Component from './Login.jsx'
@@ -16,8 +17,16 @@ describe('Login', () => {
     activeUser: { _id: 'test-user-id' },
   }
 
+  beforeEach(() => {
+    useRouteLoaderData.mockReturnValue({ user: null })
+  })
+
   test('redirects when user is already logged in', async () => {
     const redirectCalled = vi.fn()
+
+    useRouteLoaderData.mockReturnValue({
+      user: preloadedState.activeUser
+    })
 
     renderWithProviders(<Component />, {
       preloadedState,
@@ -40,7 +49,9 @@ describe('Login', () => {
   test('does not save when both fields are missing', async () => {
     const user = userEvent.setup()
 
-    renderWithProviders(<Component />)
+    const { debug } = renderWithProviders(<Component />)
+
+    debug()
 
     const form = screen.getByRole('form')
     expect(form).toBeInTheDocument()

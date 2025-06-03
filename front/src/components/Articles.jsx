@@ -3,24 +3,23 @@ import { Search } from 'lucide-react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router'
 
 import useFetchData from '../hooks/graphql'
 import { useModal } from '../hooks/modal.js'
-import { useActiveUserId } from '../hooks/user'
-import { useActiveWorkspace, useActiveWorkspaceId } from '../hooks/workspace.js'
 
 import Article from './Article'
 import ArticleCreate from './ArticleCreate.jsx'
 import Button from './Button.jsx'
 import Field from './Field'
 import Modal from './Modal.jsx'
-import Loading from './molecules/Loading.jsx'
+import LoadingPage from './LoadingPage.jsx'
 import TagEditForm from './tag/TagEditForm.jsx'
 import TagsList from './tag/TagsList.jsx'
 import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
 import etv from '../helpers/eventTargetValue'
 
-import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
+import { getWorkspaceArticles } from './Articles.graphql'
 
 import styles from './articles.module.scss'
 
@@ -29,59 +28,51 @@ export default function Articles() {
   const selectedTagIds = useSelector(
     (state) => state.activeUser.selectedTagIds || []
   )
-  const createArticleModal = useModal()
-  const activeUserId = useActiveUserId()
-  const [filter, setFilter] = useState('')
-  const activeWorkspace = useActiveWorkspace()
-  const activeWorkspaceId = useActiveWorkspaceId()
 
-  const query = useMemo(
-    () => (activeWorkspaceId ? getWorkspaceArticles : getUserArticles),
-    [activeWorkspaceId]
-  )
-  const variables = useMemo(
-    () =>
-      activeWorkspaceId
-        ? { workspaceId: activeWorkspaceId }
-        : { user: activeUserId },
-    [activeWorkspaceId]
-  )
+  const createArticleModal = useModal()
+  const [filter, setFilter] = useState('')
+  const { workspaceId: activeWorkspaceId } = useParams()
+
   const { data, isLoading, mutate } = useFetchData(
-    { query, variables },
+    {
+      query: getWorkspaceArticles,
+      variables:
+      {
+        workspaceId: activeWorkspaceId,
+        isPersonalWorkspace: !activeWorkspaceId,
+        filter: {
+          workspaceId: activeWorkspaceId
+        }
+      }
+    },
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
+      fallbackData: {
+        articles: [],
+        corpus: [],
+        workspace: {}
+      }
     }
   )
-  const articles = useMemo(
-    () =>
-      (activeWorkspaceId ? data?.workspace?.articles : data?.articles) || [],
-    [activeWorkspaceId, data]
-  )
+
+  const { articles, /* tags, */ /* corpus */ workspace = {} } = data
 
   const handleArticleUpdated = useCallback(
     async (updatedArticle) => {
       const updatedArticles = articles.map((article) =>
         article._id === updatedArticle._id ? updatedArticle : article
       )
-      if (activeWorkspaceId) {
-        await mutate(
-          {
-            workspace: {
-              ...data.workspace,
-              articles: updatedArticles,
-            },
-          },
-          { revalidate: false }
-        )
-      } else {
-        await mutate(
-          {
+
+      await mutate(
+        {
+          workspace: {
+            ...data.workspace,
             articles: updatedArticles,
           },
-          { revalidate: false }
-        )
-      }
+        },
+        { revalidate: false }
+      )
     },
     [articles]
   )
@@ -91,24 +82,16 @@ export default function Articles() {
       const updatedArticles = articles.filter(
         (article) => article._id !== deletedArticle._id
       )
-      if (activeWorkspaceId) {
-        await mutate(
-          {
-            workspace: {
-              ...data.workspace,
-              articles: updatedArticles,
-            },
-          },
-          { revalidate: false }
-        )
-      } else {
-        await mutate(
-          {
+
+      await mutate(
+        {
+          workspace: {
+            ...data.workspace,
             articles: updatedArticles,
           },
-          { revalidate: false }
-        )
-      }
+        },
+        { revalidate: false }
+      )
     },
     [articles]
   )
@@ -117,24 +100,16 @@ export default function Articles() {
     async (createdArticle) => {
       createArticleModal.close()
       const updatedArticles = [createdArticle, ...articles]
-      if (activeWorkspaceId) {
-        await mutate(
-          {
-            workspace: {
-              ...data.workspace,
-              articles: updatedArticles,
-            },
-          },
-          { revalidate: false }
-        )
-      } else {
-        await mutate(
-          {
+
+      await mutate(
+        {
+          workspace: {
+            ...data.workspace,
             articles: updatedArticles,
           },
-          { revalidate: false }
-        )
-      }
+        },
+        { revalidate: false }
+      )
     },
     [articles]
   )
@@ -158,49 +133,49 @@ export default function Articles() {
     [filter, articles, selectedTagIds]
   )
 
+  if (isLoading) {
+    return <LoadingPage />
+  }
+
   return (
-    <section className={styles.section}>
+    <section className={styles.section} aria-labelledby="articles-list-headline">
       <Helmet>
         <title>
           {t('articles.page.title', {
-            workspace: activeWorkspace?.name ?? '$t(workspace.myspace)',
+            workspace: workspace.name ?? '$t(workspace.myspace)',
           })}
         </title>
       </Helmet>
 
       <header className={styles.articlesHeader}>
-        <h1>{t('header.articles.link')}</h1>
-        {activeWorkspace && (
-          <WorkspaceLabel
-            color={activeWorkspace.color}
-            name={activeWorkspace.name}
-          />
-        )}
+        <h1 id="articles-list-headline">{t('header.articles.link')}</h1>
+
+        <WorkspaceLabel
+          color={workspace.color}
+          name={workspace.name}
+        />
+
       </header>
-      <Field
-        className={styles.searchField}
-        type="text"
-        icon={Search}
-        value={filter}
-        placeholder={t('article.search.placeholder')}
-        onChange={(e) => setFilter(etv(e))}
-      />
 
-      <aside className={styles.filtersContainer}>
-        <div className={styles.filtersTags}>
-          <h4>{t('tag.list.title')}</h4>
+      <search aria-label={t('article.search.label')}>
+        <Field
+          className={styles.searchField}
+          type="search"
+          icon={Search}
+          value={filter}
+          label={t('article.search.label')}
+          placeholder={t('article.search.placeholder')}
+          onChange={(e) => setFilter(etv(e))}
+        />
+
+        <fieldset className={styles.filtersTags}>
+          <legend>
+            <h4>{t('tag.list.title')}</h4>
+          </legend>
+
           <TagsList action={TagEditForm} />
-        </div>
-      </aside>
-
-      <div className={styles.articlesTableHeader}>
-        <Button primary onClick={() => createArticleModal.show()}>
-          {t('article.createAction.buttonText')}
-        </Button>
-        <div className={styles.articleCounter}>
-          {t('article.count', { count: keepArticles.length })}
-        </div>
-      </div>
+        </fieldset>
+      </search>
 
       <Modal
         {...createArticleModal.bindings}
@@ -213,10 +188,18 @@ export default function Articles() {
         />
       </Modal>
 
-      {isLoading ? (
-        <Loading />
-      ) : (
-        keepArticles.map((article) => (
+      <div aria-labelledby="articles-list-headline" role="list">
+        <div  className={styles.articlesTableHeader}>
+          <Button primary onClick={() => createArticleModal.show()}>
+            {t('article.createAction.buttonText')}
+          </Button>
+
+          <span className={styles.articleCounter}>
+            {t('article.count', { count: keepArticles.length })}
+          </span>
+        </div>
+
+        {keepArticles.map((article) => (
           <Article
             key={`article-${article._id}`}
             article={article}
@@ -224,8 +207,9 @@ export default function Articles() {
             onArticleDeleted={handleArticleDeleted}
             onArticleCreated={handleArticleCreated}
           />
-        ))
-      )}
+        ))}
+      </div>
+
     </section>
   )
 }

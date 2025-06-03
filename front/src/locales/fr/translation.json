@@ -129,8 +129,9 @@
   "article.metadata.url": "URL de l'article",
   "article.metadata.url.placeholder": "URL de l'article",
   "article.page.title": "{{ title }} (modification)",
-  "article.preview.button": "Prévisualiser (ouvre une nouvelle fenêtre)",
-  "article.search.placeholder": "Recherche",
+  "article.preview.button": "Prévisualiser (ouvrir une nouvelle fenêtre)",
+  "article.search.label": "Recherche",
+  "article.search.placeholder": "Par titre d'article",
   "article.sendCopy.button": "Envoyer une copie",
   "article.sendCopy.errorNotification": "Impossible d'envoyer une copie de l'article: {{errMessage}}",
   "article.sendCopy.successNotification": "Copie de l'article envoyée à {{username}}",
@@ -302,10 +303,32 @@
   "form.removePerson.title": "Supprimer cette personne",
   "header.articles.link": "Articles",
   "header.corpus.link": "Corpus",
-  "header.documentation.link": "Documentation",
-  "header.languages": "Modifier la langue de l'interface",
-  "header.manage": "Gérer mon compte et mes espaces de travail",
+  "header.home": "Accueil",
+  "header.languagesMenu": {
+    "button": "Langues",
+    "description": "Modifier la langue de l'interface",
+    "list": "Choix de la langue"
+  },
+  "header.mainMenu": {
+    "articles": "Articles",
+    "button": "Menu",
+    "corpus": "Corpus",
+    "description": "Organisez des ensembles d'articles dans des corpus et travaillez dessus à plusieurs avec les espaces de travail.",
+    "list": "Outils d'écriture et de collaboration",
+    "workspaces": "Espaces de travail",
+    "workspaces.list": "Choix d'un espace de travail"
+  },
+  "header.skiplinks": {
+    "title": "Navigation rapide"
+  },
+  "header.userMenu": {
+    "profile": "Profil",
+    "profile.description": "Gérer mon profil et comptes associés",
+    "shortLabel": "Compte",
+    "title": "Paramètres de compte"
+  },
   "loading.label": "Chargement…",
+  "main.title": "Contenu principal",
   "metadata.readonly.multiUserActive": "Les métadonnées sont éditables uniquement quand vous êtes seul·e sur l'article.",
   "metadata.readonly.versionView": "Les métadonnées sont éditables uniquement sur la copie de travail.",
   "metadata.showYaml": "Activer le mode YAML",

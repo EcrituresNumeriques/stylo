@@ -19,6 +19,15 @@ globalThis.fetch = vi.fn().mockResolvedValue({
   json: vi.fn().mockResolvedValue({}),
 })
 
+vi.mock('react-router', async (importOriginal) => {
+  const mod = await importOriginal()
+
+  return {
+    ...mod,
+    useRouteLoaderData: vi.fn()
+  }
+})
+
 // remove once https://github.com/jsdom/jsdom/issues/3294 is fixed
 HTMLDialogElement.prototype.show = vi.fn(function mock() {
   this.open = true
@@ -47,7 +56,6 @@ export function renderWithProviders(
     path = '/test',
     extraRoutes = [],
     store = createReduxStore(merge({}, initialState, preloadedState)),
-    currentUser = {},
     ...renderOptions
   } = {}
 ) {

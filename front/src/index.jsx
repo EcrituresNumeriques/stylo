@@ -25,7 +25,6 @@ import './styles/general.scss'
 
 import { GeistProvider } from '@geist-ui/core'
 
-import { applicationConfig } from './config.js'
 import createStore from './createReduxStore.js'
 import { getUserProfile } from './helpers/user.js'
 
@@ -33,9 +32,9 @@ import NotFound from './components/404.jsx'
 import AuthCallback from './components/AuthCallback.jsx'
 import ErrorBoundary from './components/Error.jsx'
 import LoadingPage from './components/LoadingPage.jsx'
-import Login from './components/Login.jsx'
+import Login, { Logout } from './components/Login.jsx'
 import RequireAuth from './components/PrivateRoute.jsx'
-import { loader as ArticleLoader } from './components/collaborative/CollaborativeEditor.jsx'
+import CollaborativeEditor, { loader as ArticleLoader } from './components/collaborative/CollaborativeEditor.jsx'
 import App, { loader as AppLoader } from './layouts/App.jsx'
 
 if (SENTRY_DSN) {
@@ -76,24 +75,13 @@ const Credentials = lazy(() => import('./components/Credentials.jsx'))
 const Annotate = lazy(() => import('./components/Annotate.jsx'))
 const Privacy = lazy(() => import('./components/Privacy.jsx'))
 const Story = lazy(() => import('./stories/Story.jsx'))
-const CollaborativeEditor = lazy(
-  () => import('./components/collaborative/CollaborativeEditor.jsx')
-)
 
 let sessionToken = new URLSearchParams(location.hash).get('#auth-token')
-
-const initialStoreData = {
+const store = createStore({
   ...(sessionToken ? { sessionToken } : {}),
   activeWorkspaceId: matchPath('/workspaces/:workspaceId', location.pathname)
     ?.params?.workspaceId,
-}
-
-const store = createStore(initialStoreData)
-
-getUserProfile({
-  applicationConfig,
-  sessionToken,
-}).then(({ user }) => store.dispatch({ type: 'PROFILE', user }))
+})
 
 // refresh session profile whenever something happens to the session token
 // maybe there is a better way to do this
@@ -120,12 +108,14 @@ const router = createBrowserRouter(
     createRoutesFromElements(
       <Route
         path="/"
+        id="app"
         element={<App />}
         loader={AppLoader}
         ErrorBoundary={ErrorBoundary}
       >
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
+        <Route path="logout" element={<Logout />} />
         <Route path="register" element={<Register />}>
           <Route path=":service" element={<RegisterWithAuthProvider />} />
         </Route>
