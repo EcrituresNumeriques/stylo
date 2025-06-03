@@ -1,18 +1,18 @@
-import React, { useCallback } from 'react'
-import { NavLink, useMatch } from 'react-router'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import clsx from 'clsx'
+import { useMatch, useNavigate } from 'react-router'
+
+import { Toggle } from '@geist-ui/core'
 
 import useFetchData from '../../hooks/graphql.js'
 
 import Loading from '../molecules/Loading.jsx'
-import CollaborativeEditorWriters from './CollaborativeEditorWriters.jsx'
 import CollaborativeEditorActiveVersion from './CollaborativeEditorActiveVersion.jsx'
+import CollaborativeEditorWriters from './CollaborativeEditorWriters.jsx'
 
 import { getArticleInfo } from '../Article.graphql'
 
 import styles from './CollaborativeEditorArticleHeader.module.scss'
-import buttonStyles from '../button.module.scss'
 
 /**
  * @param props
@@ -28,6 +28,8 @@ export default function CollaborativeEditorArticleHeader({
   const match = useMatch(
     versionId ? `/article/:id/version/:versionId/*` : `/article/:id/*`
   )
+  const [mode, setMode] = useState('edit')
+  const navigate = useNavigate()
 
   const { data, isLoading } = useFetchData(
     { query: getArticleInfo, variables: { articleId } },
@@ -41,11 +43,13 @@ export default function CollaborativeEditorArticleHeader({
     }
   )
 
-  const activeClassName = useCallback(
-    ({ isActive }) =>
-      clsx(buttonStyles.linkSecondary, isActive && buttonStyles.activeLink),
-    []
-  )
+  useEffect(() => {
+    if (mode === 'preview') {
+      navigate(`${match.pathnameBase}/preview`)
+    } else {
+      navigate(match.pathnameBase)
+    }
+  }, [mode])
 
   if (isLoading) {
     return <Loading />
@@ -57,26 +61,18 @@ export default function CollaborativeEditorArticleHeader({
 
       <div className={styles.row}>
         <CollaborativeEditorActiveVersion versionId={versionId} />
-
-        <ul
-          className={buttonStyles.inlineGroup}
-          aria-label={t('article.editor.modes.menuLabel')}
+        <div
+          className={styles.mode}
+          onClick={() => setMode(mode === 'preview' ? 'edit' : 'preview')}
         >
-          <li>
-            <NavLink className={activeClassName} to={match.pathnameBase} end>
-              {t('article.editor.modes.edit')}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={activeClassName}
-              to={`${match.pathnameBase}/preview`}
-              end
-            >
-              {t('article.editor.modes.preview')}
-            </NavLink>
-          </li>
-        </ul>
+          <Toggle
+            id="preview-mode"
+            checked={mode === 'preview'}
+            title={t('article.editor.preview')}
+            onChange={(e) => setMode(e.target.checked ? 'preview' : 'edit')}
+          />
+          <label htmlFor="preview-mode">{t('article.editor.preview')}</label>
+        </div>
 
         <div className={styles.writers}>
           <CollaborativeEditorWriters />
