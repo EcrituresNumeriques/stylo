@@ -130,7 +130,8 @@
   "article.metadata.url.placeholder": "URL del artículo",
   "article.page.title": "{{ title }} (editando)",
   "article.preview.button": "Vista previa (se abre en una nueva pestaña)",
-  "article.search.placeholder": "Búsqueda",
+  "article.search.label": "Búsqueda",
+  "article.search.placeholder": "Por título",
   "article.sendCopy.button": "Enviar una copia",
   "article.sendCopy.errorNotification": "No se puede enviar una copia del artículo : {{errMessage}}",
   "article.sendCopy.successNotification": "Copia del artículo enviada a {{username}}",
@@ -291,9 +292,32 @@
   "form.removePerson.title": "Eliminar a esta persona",
   "header.articles.link": "Artículo",
   "header.corpus.link": "Corpus",
-  "header.languages": "Cambiar el idioma de la interfaz",
-  "header.manage": "Gestionar mi cuenta y mis espacios de trabajo",
+  "header.home": "Accueil",
+  "header.languagesMenu": {
+    "button": "Idiomas",
+    "description": "Cambiar el idioma de la interfaz",
+    "list": "Selección de idioma"
+  },
+  "header.mainMenu": {
+    "articles": "Artículos",
+    "button": "Menú",
+    "corpus": "Corpus",
+    "description": "Organiza conjuntos de artículos en corpus y trabaja en ellos junto con otros en los espacios de trabajo.",
+    "list": "Herramientas de escritura y colaboración",
+    "workspaces": "Espacios de trabajo",
+    "workspaces.list": "Elegir un espacio de trabajo"
+  },
+  "header.skiplinks": {
+    "title": "Navegación rápida"
+  },
+  "header.userMenu": {
+    "profile": "Perfil",
+    "profile.description": "Gestiona mi perfil y cuentas vinculadas.",
+    "shortLabel": "Cuenta",
+    "title": "Configuración de la cuenta"
+  },
   "loading.label": "Cargando…",
+  "main.title": "Contenido principal",
   "metadata.readonly.multiUserActive": "Los metadatos son editables solo cuando eres el único trabajando en el artículo.",
   "metadata.readonly.versionView": "Los metadatos son editables solo cuando se está en la copia de trabajo.",
   "metadata.showYaml": "Activar el modo YAML",

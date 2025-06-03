@@ -130,7 +130,8 @@
   "article.metadata.url.placeholder": "Article URL",
   "article.page.title": "{{ title }} (editing)",
   "article.preview.button": "Preview (open a new window)",
-  "article.search.placeholder": "Search",
+  "article.search.label": "Search",
+  "article.search.placeholder": "By title",
   "article.sendCopy.button": "Send a copy",
   "article.sendCopy.errorNotification": "Unable to send a copy of the article: {{errMessage}}",
   "article.sendCopy.successNotification": "Copie of the article send to {{username}}",
@@ -293,9 +294,32 @@
   "form.removePerson.title": "Remove this person",
   "header.articles.link": "Articles",
   "header.corpus.link": "Corpus",
-  "header.languages": "Change interface language",
-  "header.manage": "Manage my account and workpaces",
-  "loading.label": "Chargement…",
+  "header.home": "Home",
+  "header.languagesMenu": {
+    "button": "Languages",
+    "description": "Change interface language",
+    "list": "Language selection"
+  },
+  "header.mainMenu": {
+    "articles": "Articles",
+    "button": "Menu",
+    "corpus": "Corpus",
+    "description": "Organisez des ensembles d'articles dans des corpus et travaillez dessus à plusieurs avec les espaces de travail.",
+    "list": "Outils d'écriture et de collaboration",
+    "workspaces": "Espaces de travail",
+    "workspaces.list": "Choix d'un espace de travail"
+  },
+  "header.skiplinks": {
+    "title": "Navigation rapide"
+  },
+  "header.userMenu": {
+    "profile": "Profile",
+    "profile.description": "Manage my profile and linked accounts.",
+    "shortLabel": "Account",
+    "title": "Account parameters"
+  },
+  "loading.label": "Loading…",
+  "main.title": "Main content",
   "metadata.readonly.multiUserActive": "Metadata are editable only when you are the only one working on the article.",
   "metadata.readonly.versionView": "Metadata are editable only when you are on the working copy.",
   "metadata.showYaml": "Enable YAML mode",

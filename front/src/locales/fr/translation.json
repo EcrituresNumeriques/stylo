@@ -314,7 +314,7 @@
     "button": "Menu",
     "corpus": "Corpus",
     "description": "Organisez des ensembles d'articles dans des corpus et travaillez dessus à plusieurs avec les espaces de travail.",
-    "title": "Outils d'écriture et de collaboration",
+    "list": "Outils d'écriture et de collaboration",
     "workspaces": "Espaces de travail",
     "workspaces.list": "Choix d'un espace de travail"
   },
@@ -322,8 +322,8 @@
     "title": "Navigation rapide"
   },
   "header.userMenu": {
-    "profile": "profile",
-    "profile.description": "Gérer mon compte et mes espaces de travail",
+    "profile": "Profil",
+    "profile.description": "Gérer mon profil et comptes associés",
     "shortLabel": "Compte",
     "title": "Paramètres de compte"
   },
