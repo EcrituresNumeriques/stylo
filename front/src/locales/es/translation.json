@@ -34,6 +34,7 @@
     "preview": "Vista previa"
   },
   "article.editor.modes.menuLabel": "Modos de artículo",
+  "article.editor.preview": "Vista previa",
   "article.editors.label": "Editores en línea",
   "article.getTags.error": "No se pueden recuperar las etiquetas : {{errMessage}}",
   "article.legacyEditor.edit.title": "[LEGACY] Modificar el artículo",

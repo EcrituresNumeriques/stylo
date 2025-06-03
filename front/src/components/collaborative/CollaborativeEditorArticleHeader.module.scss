@@ -37,3 +37,13 @@
   gap: 0.75rem;
   justify-content: space-between;
 }
+
+.mode {
+  display: flex;
+  gap: 0.5rem;
+  cursor: pointer;
+
+  > label {
+    cursor: pointer;
+  }
+}
