@@ -3,7 +3,6 @@ import { useParams } from 'react-router'
 
 import createReduxStore from '../../createReduxStore.js'
 import { executeQuery } from '../../helpers/graphQL.js'
-import { getUserProfile } from '../../helpers/user.js'
 
 import ArticleStats from '../ArticleStats.jsx'
 import CollaborativeEditorArticleHeader from './CollaborativeEditorArticleHeader.jsx'
@@ -18,31 +17,29 @@ const articleIdRx = /^[a-f\d]{24}$/i
 
 export async function loader({ params }) {
   const { id: articleId } = params
+
   if (articleId && articleIdRx.test(articleId) === false) {
-    const error = new Error()
-    error.message = `Invalid article id ${articleId}`
-    error.status = 404
-    throw error
+    throw new Response(`Invalid article id ${articleId}`, { status: 400 })
   }
+
   const store = createReduxStore()
   const { sessionToken } = store.getState()
-  const { user } = await getUserProfile({ sessionToken })
+
   try {
-    const result = await executeQuery({
+    const { article } = await executeQuery({
       query: getArticleInfo,
       variables: { articleId },
       sessionToken,
     })
-    return { user, result }
+    return { article }
   } catch (err) {
     const errorMessage = err.messages?.[0]?.message ?? err.message
     const errorType = err.messages?.[0]?.extensions?.type
+
     if (errorType === 'NOT_FOUND') {
-      const error = new Error()
-      error.message = errorMessage
-      error.status = 404
-      throw error
+      throw new Response(errorMessage, { status: 404 })
     }
+
     throw err
   }
 }

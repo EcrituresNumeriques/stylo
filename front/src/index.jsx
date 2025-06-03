@@ -34,7 +34,7 @@ import ErrorBoundary from './components/Error.jsx'
 import LoadingPage from './components/LoadingPage.jsx'
 import Login, { Logout } from './components/Login.jsx'
 import RequireAuth from './components/PrivateRoute.jsx'
-import { loader as ArticleLoader } from './components/collaborative/CollaborativeEditor.jsx'
+import CollaborativeEditor, { loader as ArticleLoader } from './components/collaborative/CollaborativeEditor.jsx'
 import App, { loader as AppLoader } from './layouts/App.jsx'
 
 if (SENTRY_DSN) {
@@ -75,9 +75,6 @@ const Credentials = lazy(() => import('./components/Credentials.jsx'))
 const Annotate = lazy(() => import('./components/Annotate.jsx'))
 const Privacy = lazy(() => import('./components/Privacy.jsx'))
 const Story = lazy(() => import('./stories/Story.jsx'))
-const CollaborativeEditor = lazy(
-  () => import('./components/collaborative/CollaborativeEditor.jsx')
-)
 
 let sessionToken = new URLSearchParams(location.hash).get('#auth-token')
 const store = createStore({
