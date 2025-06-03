@@ -34,7 +34,7 @@
     "preview": "Prévisualiser"
   },
   "article.editor.modes.menuLabel": "Modes d'article",
-  "article.editor.preview": "Prévisualisation",
+  "article.editor.preview": "Aperçu",
   "article.editors.label": "Collaborateurs en ligne",
   "article.getTags.error": "Impossible de récupérer les étiquettes: {{errMessage}}",
   "article.legacyEditor.edit.title": "[LEGACY] Modifier l'article",

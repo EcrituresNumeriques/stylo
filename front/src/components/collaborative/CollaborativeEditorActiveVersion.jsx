@@ -21,9 +21,13 @@ export default function CollaborativeEditorActiveVersion({ versionId }) {
     const versionNumber = `${version.version}.${version.revision}`
     const versionCodename =
       version.message.trim().length > 0 ? `"${version.message}"` : null
+
+    const localDate = new Date()
+    console.log(localDate.getTimezoneOffset() * 60000)
+    console.log(version.createdAt)
     const versionDate = new Intl.DateTimeFormat(i18n.language, {
       dateStyle: 'full',
-      timeStyle: 'long',
+      timeStyle: 'short',
     }).format(new Date(version.createdAt))
     return (
       <Alert
@@ -36,6 +40,6 @@ export default function CollaborativeEditorActiveVersion({ versionId }) {
   }
 
   return (
-    <Alert type="info" message={`Vous êtes sur la copie de travail`}></Alert>
+    <></>
   )
 }
