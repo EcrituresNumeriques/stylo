@@ -61,7 +61,7 @@ Puedes compartir tu artículo con otros usuarios de Stylo haciendo clic en el si
 
 ![Share](/uploads/images/refonte_doc/Partager.png)
 
-{% figure "/uploads/gif/how-to-share.gif", "Partager un article" %}
+{% figure "/uploads/gif/how-to-share.gif", "compartir un artículo" %}
 
 Para compartir, es necesario introducir la dirección de correo electrónico del usuario de Stylo: se trata de la dirección de correo electrónico que el usuario utilizó para crear su cuenta de Stylo. Una vez introducida la dirección, tienes que añadirla haciendo clic en la casilla de verificación.
 

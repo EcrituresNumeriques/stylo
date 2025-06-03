@@ -12,8 +12,8 @@ Unlike these applications, where sharing a simple URL is enough to grant writing
 Furthermore, users wishing to write to a Stylo article must have access to the article to be edited. 
 To give other users access rights to an article, 2 alternatives are possible:
 
-- [share an article](/en/myarticles.md#share-an-article)
-- access an article in a [workspace](/en/workspace.md).
+- [share an article](/en/features/myarticles/#share-an-article)
+- access an article in a [workspace](/en/features/workspaces/).
 
 ## Collaborative article writing
 

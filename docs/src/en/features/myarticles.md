@@ -18,7 +18,7 @@ At the top of this page, there are a number of functions:
 
 Creating an article couldn't be easier. Simply click on the black “Create article” button on the left-hand side of your personal space. A dialog box will open, asking you to give your article a title. Then simply press the black “Create” button. You also have the option of assigning Tags and a Workspace to your article. 
 
-To start editing it, simply click on the button ![Edit button](/uploads/images/refonte_doc/ANG/Renommer_ANG.png) on the right. 
+To start editing it, simply click on the button ![Edit button](/uploads/images/refonte_doc/edit.png) on the right. 
 
 In your personal workspace, your articles will be displayed one after the other according to the most recent modifications.
 
@@ -61,9 +61,9 @@ By clicking on the “Create” button, your tag will now be available. You can 
 
 You can share your article with other Stylo users by clicking on the following icon:
 
-[Share](/uploads/images/refonte_doc/partager.png)
+![Share](/uploads/images/refonte_doc/partager.png)
 
-{% figure "/uploads/gif/how-to-share.gif", "Partager un article" %}
+{% figure "/uploads/gif/how-to-share.gif", "Share an article" %}
 
 To share, you need to enter the email address of the Stylo user: this is the email address with which the user created their Stylo account. Once you've entered the address, you need to add it by clicking on the checkbox.
 
@@ -83,7 +83,7 @@ To preview an article, you can :
 
 - Click on the “Preview” button from your personal space or from within your article. 
 
-![Preview](/uploads/images/refonte_doc/ANG/NouvellePrevisualisation_ANG.png))
+![Preview](/uploads/images/refonte_doc/ANG/NouvellePrevisualisation_ANG.png)
 
 ## Duplicate an article
 

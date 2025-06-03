@@ -12,8 +12,8 @@ Contrairement à ces applications où le partage d'une simple URL suffit à acco
 Ensuite, les utilisateurs qui souhaitent écrire dans un article Stylo doivent avoir accès à l'article à éditer. 
 Pour que d'autres utilisateurs·ices aient les droits d'accès à un article, 2 alternatives sont possibles : 
 
-- [partager un article](/fr/mesarticles.md#partager-un-article)
-- accéder à un article dans un [espace de travail](/fr/espace-de-travail.md).
+- [partager un article](/fr/fonctionnalites/mesarticles/#partager-un-article)
+- accéder à un article dans un [espace de travail](/fr/fonctionnalites/espace-de-travail/).
 
 ## Écrire collaborativement un article
 

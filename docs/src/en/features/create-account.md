@@ -20,4 +20,6 @@ You will then receive a confirmation e-mail. Confirm your e-mail address.
 
 You will then be able to log in to your personal workspace in Stylo!
 
-Having trouble creating your account? Don't hesitate to [contact us](/en/contacts.md)!
+See also: [video to accompany the creation of a Huma-Num account](/en/scenarios/humanum-account)
+
+Having trouble creating your account? Don't hesitate to [contact us](/en/contacts)!

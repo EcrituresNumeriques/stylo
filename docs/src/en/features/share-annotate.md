@@ -14,3 +14,4 @@ It is also possible to generate a link for sharing and annotating a specific ver
 
 To annotate the article, select the part of the text you wish to comment: an annotation icon will appear! [Annotation icon](/uploads/images/refonte_doc/Hypothesis.png). You can either highlight it (*Highlight*) or annotate it (*Annotate*), the former highlighting privately by default. The annotation can be private (“Post to Only me”), public (“Post to Public”) or visible to other Hypothesis users with access to the Hypothesis annotation group.
 
+See also: [video to accompany the social annotation functionality of an article in Stylo](/en/scenarios/annotate-collaboration)

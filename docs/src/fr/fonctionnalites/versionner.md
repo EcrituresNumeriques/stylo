@@ -16,6 +16,8 @@ Ainsi, lorsque vous êtes parvenu·es à une version que vous jugez satisfaisant
 
 ![Label Version](/uploads/images/refonte_doc/LabelVersion.png)
 
+Voir aussi : [vidéo pour accompagner la prise en main du versionnement dans Stylo](/fr/scenarios_utilisation/versionner-document)
+
 <!-- ## Comparer les versions d'un article
 
 Pour une version antérieure, la fonctionnalité de comparaison entre différentes versions devient disponible.

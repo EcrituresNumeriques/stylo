@@ -12,8 +12,8 @@ A diferencia de estas aplicaciones, en las que basta con compartir una simple UR
 A continuación, los usuarios que deseen escribir en un artículo de Stylo durante una sesión colaborativa deben tener acceso al artículo que van a editar. 
 Para dar a otros usuarios derechos de acceso a un artículo, existen 2 alternativas posibles:
 
-- [compartir un artículo](/es/mis-articulos.md#Compartir-un-artículo)
-- acceder a un artículo en un [espacio de trabajo](/es/espacio-trabajo.md).
+- [compartir un artículo](/es/funcionalidad/mis-articulos/#Compartir-un-artículo/)
+- acceder a un artículo en un [espacio de trabajo](/es/funcionalidad/espacio-de-trabajo/).
 
 ## Redacción colaborativa de artículos
 

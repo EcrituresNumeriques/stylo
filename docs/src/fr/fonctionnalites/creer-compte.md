@@ -19,4 +19,6 @@ Vous recevrez ensuite un courriel de confirmation. Confirmez votre adresse courr
 
 Vous pourrez ensuite vous connecter à votre espace de travail personnel dans Stylo.
 
-Vous rencontrez des difficultés avec la création de votre compte ? N'hésitez pas à [nous contacter](/fr/contacts.md) !
+Voir aussi : [vidéo pour accompagner la création d’un compte Huma-Num](/fr/scenarios_utilisation/compte-humanum)
+
+Vous rencontrez des difficultés avec la création de votre compte ? N'hésitez pas à [nous contacter](/fr/contacts) !
