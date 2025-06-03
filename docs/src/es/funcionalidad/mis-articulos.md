@@ -45,7 +45,7 @@ Tendrá acceso a :
 
 Desde tu espacio personal, puedes crear etiquetas y asignarlas a tus artículos. También puede buscar artículos por etiqueta. Una vez creadas, aparecerán en la parte superior de su espacio personal. Puede seleccionarlas y se mostrarán los artículos correspondientes.  
 
-Para ello, haga clic en el botón ![Añadir etiquetas](uploads/images/refonte_doc/ES/Ajouttag_ES.png) situado en la parte superior izquierda de su espacio personal.
+Para ello, haga clic en el botón ![Añadir etiquetas](/uploads/images/refonte_doc/ES/Ajouttag_ES.png) situado en la parte superior izquierda de su espacio personal.
 
 Se abrirá un cuadro de diálogo en el que se le pedirá que dé un nombre y una descripción a su etiqueta. También puede elegir su color. 
 

@@ -11,7 +11,7 @@ You can synchronize a bibliography (a collection or sub-collection) by connectin
 You can also import your bibliography from a Zotero collection via a URL.
 This URL can be a user, a group or a private or public collection.
 
-![Bibliography-Zotero](/uploads/images/refonte_doc/ANG/Biblio-Zotero_ANG.png)
+![Bibliography-Zotero](/uploads/images/refonte_doc/ANG/biblio-zotero_ANG.png)
 
 Here's how to synchronize a collection in your Zotero account:
 

@@ -22,7 +22,7 @@ Cada artículo permanecerá vinculado a la cuenta de usuario que lo creó.
 
 Se accede a esta función desde el menú desplegable al que se accede haciendo clic en el nombre de usuario en la parte superior de la página.
 
-![Menú de acceso a los espacios de trabajo](/upl/uploads/images/refonte_doc/ES/MenuWorkspace_ES.png)
+![Menú de acceso a los espacios de trabajo](/uploads/images/refonte_doc/ES/MenuWorkspace_ES.png)
 
 A continuación, haga clic en [Todos los espacios de trabajo] para acceder al gestor de espacios de trabajo.
 
@@ -38,9 +38,9 @@ El gestor de espacios de trabajo tiene tres funciones:
 
 </alert-block>
 
-{% figure "/uploads/gif/workspace.gif", "Crear un espacio de trabajo" %}
+{% figure "/uploads/gif/espace-de-travail.gif", "Crear un espacio de trabajo" %}
 
-{% figure "/uploads/gif/adding-user-workspace. gif", "Añadir un usuario Stylo al espacio de trabajo" %}
+{% figure "/uploads/gif/ajout-utilisateur-workspace.gif", "Añadir un usuario Stylo al espacio de trabajo" %}
 
 ## Visualizar un espacio de trabajo
 

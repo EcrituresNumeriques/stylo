@@ -32,7 +32,7 @@ You can rename your articles by clicking on the little pencil next to the title.
 
 To access an article's functionalities from your personal space or workspace, click on the arrow to the left of the title.
 
-![Arrow](uploads/images/refonte_doc/ANG/Chevron_ANG.png)
+![Arrow](/uploads/images/refonte_doc/ANG/Chevron_ANG.png)
 
 You'll have access to :
 
@@ -41,7 +41,7 @@ You'll have access to :
 - Workspaces (See Workspaces section) ;
 - Corpus (See Corpus section) ;
 
-![Features](uploads/images/refonte_doc/ANG/Fonction_ANG.png)
+![Features](/uploads/images/refonte_doc/ANG/Fonction_ANG.png)
 
 ## Create tags
 
@@ -51,7 +51,7 @@ To do this, click on the Add tags button ![Add Tags](/uploads/images/refonte_doc
 
 A dialog box will open, asking you to give your tag a name and a description. You can also choose its color. 
 
-![Create a Tag](uploads/images/refonte_doc/ANG/Creertag_ANG.png)
+![Create a Tag](/uploads/images/refonte_doc/ANG/Creertag_ANG.png)
 
 By clicking on the “Create” button, your tag will now be available. You can assign them as soon as you've created your articles, or afterwards by clicking on the arrow next to the title of your article.
 
@@ -61,7 +61,7 @@ By clicking on the “Create” button, your tag will now be available. You can 
 
 You can share your article with other Stylo users by clicking on the following icon:
 
-![Share](/uploads/images/refonte_doc/partager.png)
+![Share](/uploads/images/refonte_doc/Partager.png)
 
 {% figure "/uploads/gif/how-to-share.gif", "Share an article" %}
 

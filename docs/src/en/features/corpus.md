@@ -53,11 +53,11 @@ Then, in the same way as the article manager, unfold the corpus information wind
 
 Corpus information (title and description) can be updated by clicking on the corpus gear icon (in the corpus manager).
 
-![Edit corpus information](/uploads/images/pictogram-engrenage.png)
+![Edit corpus information](/uploads/images/pictogramme-engrenage.png)
 
 A pop-up window containing a form will open, allowing you to modify the data concerned.
 
-![Form for editing corpus information](/upl/uploads/images/refonte_doc/ANG/ModifCorpus_ANG.png)
+![Form for editing corpus information](/uploads/images/refonte_doc/ANG/ModifCorpus_ANG.png)
 
 ## Exporting a corpus
 
@@ -65,7 +65,7 @@ Exporting a corpus is carried out in the same way as exporting an article.
 
 To export a corpus, go to the corpus management page and click on the export button.
 
-![Export a corpus](/upl/uploads/images/refonte_doc/ANG/ExportCorpus_ANG.png)
+![Export a corpus](/uploads/images/refonte_doc/ANG/ExportCorpus_ANG.png)
 
 **Note:** Unlike articles, there is no access to the export function from the document editing interface, since the corpus exports several articles at the same time.
 
@@ -88,6 +88,7 @@ A window opens with several export options:
  - type of content division.
 
 ![Corpus export form](/uploads/images/corpus-formulaire-export.png)
+
 The **Corpus** feature lets you group together a set of Stylo articles.
 It serves two main purposes:
 

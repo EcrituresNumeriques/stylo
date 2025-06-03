@@ -40,7 +40,7 @@ Pour ajouter des articles à un corpus, il faut retourner sur la page \[Articles
 
 De la même façon que pour les étiquettes que l'on associe à un article, il faut ouvrir la fenêtre d'informations de l'article pour pouvoir l'ajouter à un corpus en cochant sur la case du corpus correspondant.
 
-![Ajouter un article dans un corpus](uploads/images/refonte_doc/AjoutCorpus.png)
+![Ajouter un article dans un corpus](/uploads/images/refonte_doc/AjoutCorpus.png)
 
 ## Ordonner un corpus
 
@@ -67,7 +67,7 @@ L'export d'un corpus se réalise de la même manière que l'export d'un article.
 
 Pour exporter un corpus, il faut se rendre sur la page de gestion des corpus et cliquer sur le bouton d'export.
 
-![Exporter un corpus](/upl/uploads/images/refonte_doc/ExportCorpus.png)
+![Exporter un corpus](/uploads/images/refonte_doc/ExportCorpus.png)
 
 **Note :** à la différence des articles, il n'y pas d'accès à la fonctionnalité d'export depuis l'interface d'édition des documents puisque le corpus exporte plusieurs articles en même temps.
 

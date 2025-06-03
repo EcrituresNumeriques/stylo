@@ -55,7 +55,7 @@ A continuación, del mismo modo que en el gestor de artículos, debe desplegar l
 
 La información del corpus (título y descripción) puede actualizarse haciendo clic en el icono del engranaje del corpus (en el gestor de corpus).
 
-![Editar la información del corpus](/upl/uploads/images/refonte_doc/EditCorpus.png)
+![Editar la información del corpus](/uploads/images/pictogramme-engrenage.png)
 
 Se abrirá una ventana emergente con un formulario que le permitirá modificar los datos en cuestión.
 

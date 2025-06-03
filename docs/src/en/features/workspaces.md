@@ -38,9 +38,9 @@ The workspace manager has three functions:
 
 </alert-block>
 
-{% figure "/uploads/gif/workspace.gif", "Creating a workspace" %}
+{% figure "/uploads/gif/espace-de-travail.gif", "Creating a workspace" %}
 
-{% figure "/uploads/gif/adding-user-workspace. gif", "Adding a Stylo user to the workspace" %}
+{% figure "/uploads/gif/ajout-utilisateur-workspace.gif", "Adding a Stylo user to the workspace" %}
 
 ## Displaying a workspace
 
@@ -78,7 +78,7 @@ As mentioned above, the workspace is not the owner of the articles shared within
 Consequently, to associate an article with a workspace, you need to return to your personal space by clicking on its \[User name] in the black banner at the top of the page, then on \[My space] to display its articles.
 
 You can only create an article (or add it to your workspace) from this interface.
-Once the article has been created, open its information by clicking on the arrow ![arrow](uploads/images/refonte_doc/Chevron.png) and tick the box associated with the workspace in which you wish to share the article.
+Once the article has been created, open its information by clicking on the arrow ![arrow](/uploads/images/refonte_doc/Chevron.png) and tick the box associated with the workspace in which you wish to share the article.
 
 ## Deleting a workspace
 
