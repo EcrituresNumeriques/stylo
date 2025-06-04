@@ -69,7 +69,8 @@ const userSchema = new Schema(
     password: {
       type: String,
       default: null,
-      set: (password) => bcrypt.hashSync(password.trim(), 10),
+      required: false,
+      set: (password) => password ? bcrypt.hashSync(password.trim(), 10) : null,
     },
     firstName: String,
     lastName: String,
@@ -133,5 +134,19 @@ userSchema.virtual('authTypes').get(function authTypes() {
 
   return Array.from(types)
 })
+
+userSchema.method('remove', async function softDeleteUser() {
+  this.set({
+    authProviders: {},
+    displayName: '[deleted user]',
+    email: null,
+    firstName: '',
+    institution: null,
+    lastName: '',
+    password: null,
+  })
+
+  return await this.save()
+}, { suppressWarning: true })
 
 module.exports = mongoose.model('User', userSchema)
