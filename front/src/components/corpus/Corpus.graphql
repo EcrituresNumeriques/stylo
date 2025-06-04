@@ -1,7 +1,7 @@
 query getCorpus(
   $filter: FilterCorpusInput
   $isPersonalWorkspace: Boolean = false,
-  $workspaceId: ID,
+  $workspaceId: ID!,
   $includeArticles: Boolean = false
   $includeWorkingVersion: Boolean = false
 ) {
