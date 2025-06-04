@@ -32,6 +32,20 @@ const tagSchema = new Schema(
   { timestamps: true }
 )
 
+/**
+ *
+ * @param {import('./user')} user
+ * @returns {mongoose.Collection} tags
+ */
+tagSchema.statics.findByUser = function findTagByUser(user) {
+  return this
+    .find({ 'owner': user?._id })
+    .sort([
+      ['updatedAt', -1],
+    ])
+}
+
+// TODO: middleware name will change in future version of Mongoose
 tagSchema.post('remove', async function () {
   await this.model('User').updateOne(
     { _id: this.owner },
