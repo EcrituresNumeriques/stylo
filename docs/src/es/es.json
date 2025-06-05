@@ -5,7 +5,7 @@
   "rights": "Licencia Creative Commons [CC BY-SA 4.0] – Cátedra de Investigación de Canadá en Escritura Digital",
   "sources": "<a href=\"/es/sources/\">Fuentes</a>",
   "contact": "<a href=\"/es/contacts/\">Contacto</a>",
-  "colophon": "<a href=\"/es/colofon/\">Acerca</a>",
+  "colophon": "<a href=\"/es/about/\">Acerca</a>",
 
   "sectionTitle": "Documentación",
   "sectionUrl": "/es",
@@ -15,7 +15,7 @@
   "menu": [
     {
       "label": "Acerca",
-      "url": "/es/colofon"
+      "url": "/es/about"
     },
     {
       "label": "Idioma",
