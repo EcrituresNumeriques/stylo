@@ -37,4 +37,15 @@ const corpusSchema = new Schema(
   { timestamps: true }
 )
 
+/**
+ *
+ * @param {import('./user')} user
+ * @returns {mongoose.Collection} corpuses
+ */
+corpusSchema.statics.findByUser = function findCorpusByUser(user) {
+  return this
+    .find({ creator: user._id })
+    .sort([['updatedAt', -1]])
+}
+
 module.exports = mongoose.model('Corpus', corpusSchema)
