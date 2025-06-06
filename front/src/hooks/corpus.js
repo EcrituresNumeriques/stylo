@@ -9,7 +9,7 @@ import { executeQuery } from '../helpers/graphQL.js'
 import useGraphQL, { useMutateData } from './graphql.js'
 import { useActiveWorkspaceId } from './workspace.js'
 
-export function useCorpusActions() {
+export function useCorpusActions () {
   const workspaceId = useActiveWorkspaceId()
 
   const { mutate } = useMutateData({
@@ -37,7 +37,7 @@ export function useCorpusActions() {
       },
     })
     await mutate(async (data) => ({
-      article: [...data.corpus, response.createCorpus],
+      corpus: [...data.corpus, response.createCorpus],
     }))
   }
   const deleteCorpus = async (corpusId) => {
@@ -87,7 +87,7 @@ export function useCorpusActions() {
   }
 }
 
-export function useCorpus({ workspaceId }) {
+export function useCorpus ({ workspaceId }) {
   const { data, error, isLoading } = useGraphQL(
     {
       query: getCorpusQuery,
