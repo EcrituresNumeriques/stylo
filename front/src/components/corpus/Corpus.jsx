@@ -38,8 +38,8 @@ export default function Corpus() {
           color={workspace.color}
           name={workspace.name}
         />
-
       </header>
+
       <p className={styles.introduction}>{t('corpus.page.description')}</p>
 
       <Button primary onClick={() => createCorpusModal.show()}>
