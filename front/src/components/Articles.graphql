@@ -55,7 +55,7 @@
 #   }
 # }
 
-query getWorkspaceArticles($workspaceId: ID = "default", $isPersonalWorkspace: Boolean!, $filter: FilterCorpusInput) {
+query getWorkspaceArticles($workspaceId: ID, $isPersonalWorkspace: Boolean!, $filter: FilterCorpusInput) {
   tags {
     _id
     owner

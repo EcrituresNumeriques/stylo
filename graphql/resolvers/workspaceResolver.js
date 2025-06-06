@@ -5,6 +5,10 @@ const Article = require('../models/article')
 const Corpus = require('../models/corpus')
 
 async function workspace(_, { workspaceId }, { user, token }) {
+  if (!workspaceId) {
+    return null
+  }
+
   if (token?.admin) {
     const workspace = await Workspace.findById(workspaceId)
     if (!workspace) {
@@ -15,9 +19,11 @@ async function workspace(_, { workspaceId }, { user, token }) {
     }
     return workspace
   }
+
   const workspace = await Workspace.findOne({
     $and: [{ _id: workspaceId }, { 'members.user': user?._id }],
   })
+
   if (!workspace) {
     throw new ApiError(
       'NOT_FOUND',

@@ -35,7 +35,7 @@ export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
     if (titleInputRef.current !== undefined) {
       titleInputRef.current.focus()
     }
-  }, [titleInputRef])
+  }, [])
 
   const handleSubmit = useCallback(async (event) => {
     event.preventDefault()

@@ -378,7 +378,7 @@ type Query {
   stats: InstanceUsageStats
 
   "Get a given workspace"
-  workspace(workspaceId: ID!): Workspace
+  workspace(workspaceId: ID): Workspace
 
   "Get a list of workspaces for the authenticated user"
   workspaces: [Workspace!]
