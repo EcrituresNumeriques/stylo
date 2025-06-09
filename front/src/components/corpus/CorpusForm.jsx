@@ -49,7 +49,6 @@ export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
       } else {
         await createCorpus(editCorpusInput)
       }
-      console.log({onSubmit})
       onSubmit()
       setToast({
         text: t(`corpus.${action}.toastSuccess`),

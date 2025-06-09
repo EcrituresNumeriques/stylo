@@ -22,9 +22,6 @@ export default function CollaborativeEditorActiveVersion({ versionId }) {
     const versionCodename =
       version.message.trim().length > 0 ? `"${version.message}"` : null
 
-    const localDate = new Date()
-    console.log(localDate.getTimezoneOffset() * 60000)
-    console.log(version.createdAt)
     const versionDate = new Intl.DateTimeFormat(i18n.language, {
       dateStyle: 'full',
       timeStyle: 'short',

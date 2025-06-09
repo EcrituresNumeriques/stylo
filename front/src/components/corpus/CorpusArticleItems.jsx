@@ -90,8 +90,6 @@ export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
   if (isLoading) {
     return <Loading />
   }
-  
-  console.log({articleCards})
 
   return (
     <div className={styles.container}>

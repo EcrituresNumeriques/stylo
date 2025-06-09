@@ -48,8 +48,6 @@ export default function UserInfos() {
     setIsSaving(false)
   }, [])
   
-  console.log({activeUser})
-
   return (
     <>
       <Helmet>
