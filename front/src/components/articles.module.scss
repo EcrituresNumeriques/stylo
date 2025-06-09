@@ -15,6 +15,9 @@
   padding: 1rem;
   border: 1px solid $main-border-color;
   background-color: $extra-background-color;
+  height: calc(100vh - 7rem);
+  display: grid;
+  grid-auto-rows: min-content min-content min-content 1fr;
 
   > h1 {
     margin-bottom: 1rem;
@@ -75,4 +78,10 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.5em;
+}
+
+.articlesList {
+  overflow-y: auto;
+  scroll-margin-inline-end: 1rem;
+  scrollbar-gutter: stable;
 }

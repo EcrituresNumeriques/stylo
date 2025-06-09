@@ -42,7 +42,7 @@ export default function Corpus() {
 
       <p className={styles.introduction}>{t('corpus.page.description')}</p>
 
-      <Button primary onClick={() => createCorpusModal.show()}>
+      <Button className={styles.createButton} primary onClick={() => createCorpusModal.show()}>
         {t('corpus.createAction.buttonText')}
       </Button>
 
