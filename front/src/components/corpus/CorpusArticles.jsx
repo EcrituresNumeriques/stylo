@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo } from 'react'
 import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Trans, useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
+import { dragAndDropManager } from '../../hooks/dnd.js'
 import useFetchData from '../../hooks/graphql.js'
 import { useActiveWorkspaceId } from '../../hooks/workspace.js'
 import Alert from '../molecules/Alert.jsx'
@@ -41,7 +41,7 @@ export default function CorpusArticles({ corpusId }) {
       {isLoading && <Loading />}
       {!isLoading && corpusArticles.length > 0 && (
         <ul>
-          <DndProvider backend={HTML5Backend}>
+          <DndProvider manager={dragAndDropManager}>
             <CorpusArticleItems
               corpusId={corpusId}
               articles={corpusArticles}
