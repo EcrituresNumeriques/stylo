@@ -1,7 +1,7 @@
 import clsx from 'clsx'
+import PropTypes from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import PropTypes from 'prop-types'
 
 import i18n from '../i18n.js'
 import styles from './TimeAgo.module.css'
@@ -16,7 +16,10 @@ const DIVISIONS = [
   { amount: Number.POSITIVE_INFINITY, name: 'years' },
 ]
 
-export default function TimeAgo({ date, className }) {
+export default function TimeAgo ({ date, className }) {
+  if (date === null || date === undefined) {
+    return <time className={clsx(className, styles.time)}>-</time>
+  }
   const { t } = useTranslation()
   const formatter = new Intl.RelativeTimeFormat(i18n.language, {
     numeric: 'auto',

@@ -47,6 +47,8 @@ export default function UserInfos() {
     updateActiveUserDetails(userDetails)
     setIsSaving(false)
   }, [])
+  
+  console.log({activeUser})
 
   return (
     <>
