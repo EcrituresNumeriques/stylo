@@ -197,7 +197,7 @@ export default function CorpusItem({ corpus }) {
           </>
         }
       >
-        <CorpusForm corpus={corpus} onCancel={() => editCorpusModal.close()} />
+        <CorpusForm corpus={corpus} onSubmit={() => editCorpusModal.close()} onCancel={() => editCorpusModal.close()} />
       </Modal>
     </div>
   )

@@ -21,6 +21,7 @@ export default function Corpus() {
   const { corpus, workspace, isLoading } = useCorpus({ workspaceId })
   const createCorpusModal = useModal()
 
+  console.log({corpus})
   return (
     <section className={styles.section}>
       <Helmet>

@@ -65,7 +65,7 @@ export function useCorpusActions () {
       },
     })
     await mutate(async (data) => ({
-      article: data.corpus.map((c) => {
+      corpus: data.corpus.map((c) => {
         if (c._id === corpusId) {
           return {
             ...c,

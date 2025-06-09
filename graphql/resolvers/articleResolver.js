@@ -48,7 +48,7 @@ async function getArticleByContext (articleId, context) {
   if (!userId) {
     throw new ApiError(
       'UNAUTHENTICATED',
-      `Unable to find an authentication context: ${context}`
+      `Unable to find an authentication context: ${JSON.stringify(context)}`
     )
   }
   return await getArticleByUser(articleId, userId)
@@ -298,6 +298,11 @@ module.exports = {
      * @returns
      */
     async article (_root, args, context) {
+      console.log({
+        _root,
+        args,
+        context
+      })
       return await getArticleByContext(args.article, context)
     },
 

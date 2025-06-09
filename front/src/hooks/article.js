@@ -118,6 +118,8 @@ export function useArticleActions ({ articleId }) {
     return await executeQuery({
       query: deleteArticle,
       variables: { articleId },
+      sessionToken,
+      type: 'mutation',
     })
   }
 
