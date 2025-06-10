@@ -1,18 +1,22 @@
+import { captureException } from '@sentry/react'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { isRouteErrorResponse, useRouteError } from 'react-router'
 
-import { captureException } from '@sentry/react'
-
 import styles from '../components/Error.module.scss'
+import Loading from './molecules/Loading.jsx'
 
-export default function Error() {
+export default function Error () {
+  // REMIND: can't use `Suspense` inside an ErrorBoundary component
+  const { t, _, ready } = useTranslation('errors', { useSuspense: false })
   const error = useRouteError()
-  const { t } = useTranslation('errors')
-
   useEffect(() => {
     captureException(error)
   }, [error])
+
+  if (!ready) {
+    return <Loading/>
+  }
 
   if (error.status === 404) {
     return (
@@ -27,6 +31,7 @@ export default function Error() {
     )
   }
 
+  const stacktrace = error.stack ?? error.stack
   if (isRouteErrorResponse(error) || Object.hasOwn(error, 'message')) {
     return (
       <section className={styles.container}>
@@ -35,21 +40,20 @@ export default function Error() {
 
           <p>
             {t('message')}
-            <q>
+            <pre>
               {error.statusText
                 ? `${error.status} ${error.statusText}`
                 : error.message}
-            </q>
+            </pre>
           </p>
 
-          {error.stack ||
-            (error.data && (
-              <details>
+          {stacktrace && (
+            <details className={styles.stacktrace}>
                 <pre>
-                  <code>{error.stack ?? error.data}</code>
+                  <code>{stacktrace}</code>
                 </pre>
-              </details>
-            ))}
+            </details>
+          )}
         </article>
       </section>
     )

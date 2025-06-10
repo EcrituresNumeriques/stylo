@@ -6,3 +6,7 @@
   @extend .simplePage;
   color: $error-color;
 }
+
+.stacktrace {
+  overflow-x: auto;
+}
