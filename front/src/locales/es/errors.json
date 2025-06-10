@@ -1,9 +1,10 @@
 {
   "404": {
-    "message": "La página solicitada no existe: ",
+    "message": "La página solicitada no existe :",
     "title": "Página no encontrada"
   },
+  "code": "<1>Código</1> : {{code}}.",
   "message": "Un error impide que la aplicación funcione correctamente: ",
-  "title": "Error",
+  "title": "Error {{status}}",
   "unknown": "Ocurrió un error inesperado."
 }
