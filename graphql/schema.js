@@ -18,6 +18,14 @@ enum AuthType {
   local
 }
 
+enum CorpusType {
+  neutral
+  # revue
+  journal
+  # thesis/mémoire
+  thesis
+}
+
 enum AuthTokenService {
   humanid
   hypothesis
@@ -319,6 +327,7 @@ input UpdateCorpusInput {
 
 type Corpus {
   _id: String!
+  type: CorpusType!
   name: String!
   description: String
   metadata: JSON
@@ -341,6 +350,7 @@ type Corpus {
 
 input CreateCorpusInput {
   name: String!
+  type: CorpusType!
   description: String
   metadata: String
   workspace: String

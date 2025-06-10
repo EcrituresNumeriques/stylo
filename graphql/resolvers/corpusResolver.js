@@ -113,6 +113,7 @@ module.exports = {
       // any user can create a corpus
       const newCorpus = new Corpus({
         name: createCorpusInput.name,
+        type: createCorpusInput.type,
         description: createCorpusInput.description,
         articles: [],
         metadata: createCorpusInput.metadata,
@@ -166,22 +167,28 @@ module.exports = {
 
   Corpus: {
     async articles(corpus, _args, context) {
-      const articles = (await Promise.all(
-        corpus.articles.map(async (article) => {
-          const articleLoaded = await context.loaders.articles.load(
-            article.article
-          )
-          if (articleLoaded === undefined) {
-            logger.warn(`Unable to find article ${article.article} on corpus ${corpus._id}`)
-            return undefined
-          }
-          return {
-            _id: article._id,
-            order: article.order,
-            article: articleLoaded,
-          }
-        }).filter(a => a)
-      )).filter(a => a)
+      const articles = (
+        await Promise.all(
+          corpus.articles
+            .map(async (article) => {
+              const articleLoaded = await context.loaders.articles.load(
+                article.article
+              )
+              if (articleLoaded === undefined) {
+                logger.warn(
+                  `Unable to find article ${article.article} on corpus ${corpus._id}`
+                )
+                return undefined
+              }
+              return {
+                _id: article._id,
+                order: article.order,
+                article: articleLoaded,
+              }
+            })
+            .filter((a) => a)
+        )
+      ).filter((a) => a)
       articles.sort((a, b) => (a.order < b.order ? -1 : 1))
       return articles
     },

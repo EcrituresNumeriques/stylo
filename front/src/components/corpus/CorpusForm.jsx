@@ -1,15 +1,17 @@
-import { useToasts } from '@geist-ui/core'
 import clsx from 'clsx'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import { useToasts } from '@geist-ui/core'
 
 import { fromFormData } from '../../helpers/forms.js'
 import { useCorpusActions } from '../../hooks/corpus.js'
 
 import Field from '../Field.jsx'
-import fieldStyles from '../field.module.scss'
+import Select from '../Select.jsx'
 import FormActions from '../molecules/FormActions.jsx'
 
+import fieldStyles from '../field.module.scss'
 import styles from './corpusCreate.module.scss'
 
 /**
@@ -73,6 +75,23 @@ export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
           type="text"
           defaultValue={corpus?.name}
         />
+        <Select
+          name="type"
+          id="type"
+          label={t('corpus.createForm.type')}
+          defaultValue={corpus?.type}
+          disabled={corpus !== undefined}
+        >
+          <option value={'neutral'} key={'neutral'}>
+            {t('corpus.type.neutral')}
+          </option>
+          <option value={'journal'} key={'journal'}>
+            {t('corpus.type.journal')}
+          </option>
+          <option value={'thesis'} key={'thesis'}>
+            {t('corpus.type.thesis')}
+          </option>
+        </Select>
         <div className={clsx(fieldStyles.field, 'control-field')}>
           <label htmlFor="description">
             {t('corpus.createForm.descriptionField')}
