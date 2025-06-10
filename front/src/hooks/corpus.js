@@ -1,15 +1,17 @@
 import { useSelector } from 'react-redux'
+
+import { executeQuery } from '../helpers/graphQL.js'
+import useGraphQL, { useMutateData } from './graphql.js'
+import { useActiveWorkspaceId } from './workspace.js'
+
 import {
   createCorpus as createCorpusQuery,
   deleteCorpus as deleteCorpusQuery,
   getCorpus as getCorpusQuery,
   updateCorpus as updateCorpusQuery,
 } from '../components/corpus/Corpus.graphql'
-import { executeQuery } from '../helpers/graphQL.js'
-import useGraphQL, { useMutateData } from './graphql.js'
-import { useActiveWorkspaceId } from './workspace.js'
 
-export function useCorpusActions () {
+export function useCorpusActions() {
   const workspaceId = useActiveWorkspaceId()
 
   const { mutate } = useMutateData({
@@ -17,9 +19,9 @@ export function useCorpusActions () {
     variables: {
       isPersonalWorkspace: !workspaceId,
       filter: {
-        workspaceId
-      }
-    }
+        workspaceId,
+      },
+    },
   })
 
   const sessionToken = useSelector((state) => state.sessionToken)
@@ -37,7 +39,7 @@ export function useCorpusActions () {
       },
     })
     await mutate(async (data) => ({
-      corpus: [...data.corpus, response.createCorpus],
+      corpus: [...(data?.corpus ?? []), response.createCorpus],
     }))
   }
   const deleteCorpus = async (corpusId) => {
@@ -87,25 +89,25 @@ export function useCorpusActions () {
   }
 }
 
-export function useCorpus ({ workspaceId }) {
+export function useCorpus({ workspaceId }) {
   const { data, error, isLoading } = useGraphQL(
     {
       query: getCorpusQuery,
       variables: {
         isPersonalWorkspace: !workspaceId,
         filter: {
-          workspaceId
+          workspaceId,
         },
-        workspaceId
-      }
+        workspaceId,
+      },
     },
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
       fallbackData: {
         corpus: [],
-        workspace: {}
-      }
+        workspace: {},
+      },
     }
   )
 
@@ -113,6 +115,6 @@ export function useCorpus ({ workspaceId }) {
     error,
     isLoading,
     corpus: data.corpus,
-    workspace: data.workspace ?? {}
+    workspace: data.workspace ?? {},
   }
 }
