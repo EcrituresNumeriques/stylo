@@ -4,6 +4,7 @@ class ApiError extends Error {
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, ApiError)
     }
+
     this.extensions = {
       date: new Date(),
       type,
