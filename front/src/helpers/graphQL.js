@@ -8,21 +8,6 @@ const corsStrategy = APP_ENVIRONMENT === 'prod' ? 'same-origin' : 'include'
  * @typedef {import('graphql/language/ast').DocumentNode} DocumentNode
  */
 
-async function getErrorResponse(response) {
-  try {
-    return await response.clone().json()
-  } catch (err) {
-    const responseText = await response.clone().text()
-    return {
-      errors: [
-        {
-          message: responseText,
-        },
-      ],
-    }
-  }
-}
-
 /**
  * @param {object} config request configuration
  * @param {string} config.query request query (as string)
@@ -56,31 +41,21 @@ async function executeRequest({
   })
 
   if (!response.ok) {
-    const errorResponse = await getErrorResponse(response)
-    console.error(
-      `Something wrong happened during ${type} => ${response.status}, ${
-        response.statusText
-      }: ${JSON.stringify(errorResponse)}`
-    )
-    const errorMessage =
-      errorResponse && errorResponse.errors && errorResponse.errors.length
-        ? errorResponse.errors[0].message
-        : 'Unexpected error!'
-    const error = new Error(errorMessage)
-    error.messages = errorResponse?.errors ?? [errorMessage]
-    throw error
+    throw new Response(response.statusText, {
+      status: response.status
+    })
   }
 
   const body = await response.json()
   if (body.errors) {
-    const errorMessage =
-      type === 'fetch'
-        ? 'Something wrong happened while fetching data.'
-        : 'Something wrong happened while mutating data.'
-    const error = new Error(errorMessage)
-    error.messages = body.errors
-    throw error
+    const error = body.errors.at(0)
+
+    throw new Response(error?.extensions?.code, {
+      status: error?.extensions?.http?.status,
+      statusText: error.message
+    })
   }
+
   return body.data
 }
 

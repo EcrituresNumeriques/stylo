@@ -1,6 +1,6 @@
 import { captureException } from '@sentry/react'
 import React, { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { isRouteErrorResponse, useRouteError } from 'react-router'
 
 import styles from '../components/Error.module.scss'
@@ -10,6 +10,7 @@ export default function Error () {
   // REMIND: can't use `Suspense` inside an ErrorBoundary component
   const { t, _, ready } = useTranslation('errors', { useSuspense: false })
   const error = useRouteError()
+
   useEffect(() => {
     captureException(error)
   }, [error])
@@ -18,40 +19,29 @@ export default function Error () {
     return <Loading/>
   }
 
-  if (error.status === 404) {
-    return (
-      <section className={styles.container}>
-        <article className={styles.error}>
-          <h2>{t('404.title')}</h2>
-          <p>
-            {t('404.message')} <code>{error.message}</code>.
-          </p>
-        </article>
-      </section>
-    )
-  }
-
-  const stacktrace = error.stack ?? error.stack
   if (isRouteErrorResponse(error) || Object.hasOwn(error, 'message')) {
     return (
       <section className={styles.container}>
         <article className={styles.error}>
-          <h2>{t('title')}</h2>
+          <h2>{t('title', { status: error.status })}</h2>
 
           <p>
-            {t('message')}
-            <pre>
-              {error.statusText
-                ? `${error.status} ${error.statusText}`
-                : error.message}
-            </pre>
+            {error.statusText || error.message}
           </p>
 
-          {stacktrace && (
-            <details className={styles.stacktrace}>
-                <pre>
-                  <code>{stacktrace}</code>
-                </pre>
+          {error.data && (
+            <p>
+              <Trans i18nKey="code" values={{code: error.data}} t={t}>
+                <strong>Code</strong> {error.data}
+              </Trans>
+            </p>
+          )}
+
+          {error.stack && (
+            <details>
+              <pre>
+                <code>{error.stack}</code>
+              </pre>
             </details>
           )}
         </article>

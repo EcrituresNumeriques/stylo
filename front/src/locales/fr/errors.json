@@ -3,7 +3,8 @@
     "message": "La page demandée n'existe pas : ",
     "title": "Page introuvable"
   },
+  "code": "<0>Code</0> : {{code}}.",
   "message": "Une erreur empêche l'application de fonctionner correctement : ",
-  "title": "Erreur",
+  "title": "Erreur {{status}}",
   "unknown": "Une erreur inattendue s'est produite."
 }
