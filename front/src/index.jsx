@@ -127,18 +127,31 @@ const router = createBrowserRouter(
           element={<RegisterWithAuthProvider />}
         />
 
+        {/* Annotations */}
+        <Route
+          path="article/:id/annotate"
+          element={<Annotate strategy="article" />}
+        />
+        <Route
+          path="article/:id/version/:version/annotate"
+          element={<Annotate strategy="article" />}
+        />
+        <Route
+          path="corpus/:id/annotate"
+          element={<Annotate strategy="corpus" />}
+        />
+
         {/* Articles */}
         <Route path="articles" element={<RequireAuth />}>
           <Route index element={<Articles />} />
         </Route>
 
-        <Route path="article/:id" loader={ArticleLoader}>
+        <Route
+          path="article/:id"
+          loader={ArticleLoader}
+          element={<RequireAuth />}
+        >
           <Route index element={<CollaborativeEditor />} />
-          <Route
-            path="preview"
-            element={<CollaborativeEditor mode="preview" />}
-          />
-          <Route path="annotate" element={<Annotate strategy="article" />} />
           <Route
             path="compare/:compareTo"
             element={<CollaborativeEditor mode="compare" />}
@@ -146,11 +159,6 @@ const router = createBrowserRouter(
 
           <Route path="version/:version">
             <Route index element={<CollaborativeEditor />} />
-            <Route
-              path="preview"
-              element={<CollaborativeEditor mode="preview" />}
-            />
-            <Route path="annotate" element={<Annotate strategy="article" />} />
             <Route
               path="compare/:compareTo?"
               element={<CollaborativeEditor mode="compare" />}
@@ -161,9 +169,6 @@ const router = createBrowserRouter(
         {/* Corpus */}
         <Route path="corpus" element={<RequireAuth />}>
           <Route index element={<Corpus />} />
-          <Route path=":id">
-            <Route path="annotate" element={<Annotate strategy="corpus" />} />
-          </Route>
         </Route>
 
         {/* Workspaces */}
