@@ -163,6 +163,10 @@ module.exports = {
         .populate([{ path: 'creator' }])
         .sort([['updatedAt', -1]])
     },
+
+    async sharedCorpus (_, args) {
+      return getCorpus(args.corpusId)
+    }
   },
 
   Corpus: {

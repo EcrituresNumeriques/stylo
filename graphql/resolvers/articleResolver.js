@@ -301,6 +301,10 @@ module.exports = {
       return await getArticleByContext(args.article, context)
     },
 
+    async sharedArticle (_root, args) {
+      return getArticle(args.article)
+    },
+
     /**
      * Fetch all the articles related to a user:
      * - one stated by the JWT token (context.user), a User object
