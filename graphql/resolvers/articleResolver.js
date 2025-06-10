@@ -298,12 +298,11 @@ module.exports = {
      * @returns
      */
     async article (_root, args, context) {
-      console.log({
-        _root,
-        args,
-        context
-      })
       return await getArticleByContext(args.article, context)
+    },
+
+    async sharedArticle (_root, args) {
+      return getArticle(args.article)
     },
 
     /**
