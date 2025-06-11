@@ -1,14 +1,61 @@
 fragment basicVersionFields on Version {
   _id
-  version
-  revision
-  message
   createdAt
+  message
   owner {
     displayName
     username
   }
   type
+  revision
+  version
+}
+fragment articleVersionFields on Version {
+  name
+  md
+  bib
+  yaml(options: { strip_markdown: true })
+}
+
+fragment basicArticleFields on Article {
+  _id
+  owner {
+    displayName
+    username
+  }
+  title
+  updatedAt
+}
+
+fragment editableArticleFields on Article {
+  contributors {
+    user {
+      displayName
+      username
+    }
+  }
+
+  versions {
+    ...basicVersionFields
+  }
+
+  workingVersion {
+    md
+    bib
+    yaml(options: { strip_markdown: true })
+  }
+
+  zoteroLink
+}
+
+fragment previewArticleFields on Article {
+  # actually, as we do not request new article data when switching from WRITE to PREVIEW
+  # we skip this data fetching optimization for now
+  # css @include(if: $isPreview)
+  preview {
+    stylesheet
+    template
+  }
 }
 
 query renameArticle($articleId: ID!, $title: String!) {
@@ -26,12 +73,7 @@ query updateZoteroLinkMutation($articleId: ID!, $url: String!) {
 query getArticleVersions($articleId: ID!) {
   article(article: $articleId) {
     versions {
-      _id
-      message
-      revision
-      version
-      type
-      createdAt
+      ...basicVersionFields
     }
   }
 }
@@ -138,84 +180,43 @@ query getArticleMetadata($articleId: ID!, $versionId: ID!, $hasVersion: Boolean!
 
 query getArticle($id: ID!, $version: ID!, $hasVersion: Boolean!) {
   article(article: $id) {
-    _id
-    title
-    updatedAt
-
-    # actually, as we do not request new article data when switching from WRITE to PREVIEW
-    # we skip this data fetching optimization for now
-    # css @include(if: $isPreview)
-    preview {
-      stylesheet
-      template
-    }
-
-    owner {
-      displayName
-      username
-    }
-
-    workingVersion @skip(if: $hasVersion) {
-      md
-      bib
-      yaml(options: { strip_markdown: true })
-    }
+    ...basicArticleFields
+    ...editableArticleFields
+    ...previewArticleFields
   }
 
   version(version: $version) @include(if: $hasVersion) {
-    name
-    md
-    bib
-    yaml(options: { strip_markdown: true })
+    ...articleVersionFields
   }
 }
 
+query getArticlePreview($id: ID!, $version: ID!, $hasVersion: Boolean!) {
+  sharedArticle(article: $id) {
+    ...basicArticleFields
+    ...editableArticleFields
+    ...previewArticleFields
+  }
+
+  version(version: $version) @include(if: $hasVersion) {
+    ...articleVersionFields
+  }
+}
+
+
 query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
   article(article: $article) {
-    _id
-    title
-    zoteroLink
-    updatedAt
+    ...basicArticleFields
+    ...editableArticleFields
+    ...previewArticleFields
 
-    # actually, as we do not request new article data when switching from WRITE to PREVIEW
-    # we skip this data fetching optimization for now
-    # css @include(if: $isPreview)
-    preview {
-      stylesheet
-      template
-    }
-
-    owner {
-      displayName
-      username
-    }
-
-    contributors {
-      user {
-        displayName
-        username
-      }
-    }
-
-    versions {
-      ...basicVersionFields
-    }
-
-    workingVersion @skip(if: $hasVersion) {
-      md
-      bib
+    workingVersion {
       bibPreview
-      metadata
-      yaml(options: { strip_markdown: true })
     }
   }
 
   version(version: $version) @include(if: $hasVersion) {
     ...basicVersionFields
-    md
-    bib
+    ...articleVersionFields
     bibPreview
-    metadata
-    yaml(options: { strip_markdown: true })
   }
 }

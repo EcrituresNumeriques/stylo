@@ -17,7 +17,6 @@ type Article {
   _id: ID!
   addContributor(userId: ID!): Article
   addTags(tags: [ID]!): [Tag]
-  collaborativeSession: CollaborativeSession
   contributors: [ArticleContributor]!
   createVersion(articleVersionInput: ArticleVersionInput!): Article
   createdAt: DateTime
@@ -29,13 +28,7 @@ type Article {
   rename(title: String!): Boolean
   setPreviewSettings(settings: ArticlePreviewInput!): Article
   setZoteroLink(zotero: String!): Boolean
-  soloSession: SoloSession
-  startCollaborativeSession: CollaborativeSession!
-  startSoloSession: SoloSession!
-  stopCollaborativeSession: Article
-  stopSoloSession: Article
   tags(limit: Int, page: Int): [Tag!]!
-  takeOverSoloSession: SoloSession!
   title: String
   updateWorkingVersion(content: WorkingVersionInput!): Article
   updatedAt: DateTime
@@ -53,12 +46,6 @@ type ArticleContributor {
 type ArticlePreviewSettings {
   stylesheet: String!
   template: String
-}
-
-type CollaborativeSession {
-  createdAt: DateTime
-  creator: User
-  id: ID
 }
 
 type Corpus {
@@ -172,11 +159,16 @@ type Mutation {
 
 type Query {
   "Fetch article info [need to have access to this article]"
-  article(article: ID!, user: ID): Article
+  article(article: ID!): Article
+  "Fetch an article [with an access key]"
+  sharedArticle(article: ID!, accessKey: JWT): Article
   "Fetch a given user articles"
   articles(user: ID, filter: FilterCorpusInput): [Article]
   "Get a list of corpus with an optional filter"
   corpus(filter: FilterCorpusInput): [Corpus!]
+  "Fetch a corpus with an optional filter"
+  sharedCorpus(corpusId: ID!, accessKey: JWT): Corpus
+
   getUser(filter: UserFilter): User
   "Fetch instance stats"
   stats: InstanceUsageStats
@@ -192,13 +184,6 @@ type Query {
   workspace(workspaceId: ID): Workspace
   "Get a list of workspaces for the authenticated user"
   workspaces: [Workspace!]
-}
-
-type SoloSession {
-  createdAt: DateTime
-  creator: User
-  creatorUsername: String
-  id: ID
 }
 
 type Tag {

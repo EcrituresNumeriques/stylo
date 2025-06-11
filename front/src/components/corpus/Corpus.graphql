@@ -1,3 +1,24 @@
+fragment basicCorpusFields on Corpus {
+  _id
+  createdAt
+  creator {
+    _id
+    displayName
+    username
+    email
+  }
+  description
+  metadata
+  name
+  updatedAt
+}
+fragment basicWorkspaceFields on Workspace {
+  _id
+  name
+  color
+  description
+}
+
 query getCorpus(
   $filter: FilterCorpusInput
   $isPersonalWorkspace: Boolean = false,
@@ -6,17 +27,7 @@ query getCorpus(
   $includeWorkingVersion: Boolean = false
 ) {
   corpus(filter: $filter) {
-    _id
-    name
-    description
-    metadata
-
-    creator {
-      _id
-      displayName
-      username
-      email
-    }
+    ...basicCorpusFields
 
     articles @include(if: $includeArticles) {
       article {
@@ -30,16 +41,37 @@ query getCorpus(
         }
       }
     }
-
-    createdAt
-    updatedAt
   }
 
   workspace(workspaceId: $workspaceId) @skip (if: $isPersonalWorkspace) {
-    _id
-    name
-    color
-    description
+    ...basicWorkspaceFields
+  }
+}
+
+query getCorpusPreview(
+  $filter: FilterCorpusInput!
+  $isPersonalWorkspace: Boolean = false,
+  $workspaceId: ID,
+) {
+  sharedCorpus(filter: $filter) {
+    ...basicCorpusFields
+
+    articles {
+      article {
+        _id
+        title
+
+        workingVersion {
+          md
+          bib
+          yaml(options: { strip_markdown: true })
+        }
+      }
+    }
+  }
+
+  workspace(workspaceId: $workspaceId) @skip (if: $isPersonalWorkspace) {
+    ...basicWorkspaceFields
   }
 }
 

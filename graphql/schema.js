@@ -371,6 +371,9 @@ type Query {
   "Fetch article info [need to have access to this article]"
   article(user: ID, article: ID!): Article
 
+  "Fetch an article [with an access key]"
+  sharedArticle(article: ID!, accessKey: JWT): Article
+
   "Fetch version info"
   version(version: ID!): Version
 
@@ -387,6 +390,9 @@ type Query {
   Get a list of corpus with an optional filter
   """
   corpus(filter: FilterCorpusInput): [Corpus!]
+
+  "Get a corpus [with an access key]"
+  sharedCorpus(corpusId: ID!, accessKey: JWT): Corpus
 }
 
 type Mutation {
