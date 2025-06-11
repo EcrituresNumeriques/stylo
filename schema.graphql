@@ -17,7 +17,6 @@ type Article {
   _id: ID!
   addContributor(userId: ID!): Article
   addTags(tags: [ID]!): [Tag]
-  collaborativeSession: CollaborativeSession
   contributors: [ArticleContributor]!
   createVersion(articleVersionInput: ArticleVersionInput!): Article
   createdAt: DateTime
@@ -29,13 +28,7 @@ type Article {
   rename(title: String!): Boolean
   setPreviewSettings(settings: ArticlePreviewInput!): Article
   setZoteroLink(zotero: String!): Boolean
-  soloSession: SoloSession
-  startCollaborativeSession: CollaborativeSession!
-  startSoloSession: SoloSession!
-  stopCollaborativeSession: Article
-  stopSoloSession: Article
   tags(limit: Int, page: Int): [Tag!]!
-  takeOverSoloSession: SoloSession!
   title: String
   updateWorkingVersion(content: WorkingVersionInput!): Article
   updatedAt: DateTime
@@ -55,10 +48,16 @@ type ArticlePreviewSettings {
   template: String
 }
 
-type CollaborativeSession {
-  createdAt: DateTime
-  creator: User
-  id: ID
+type AuthProvider {
+  id: String
+  token: String
+  updatedAt: DateTime
+}
+
+type AuthProvidersMap {
+  humanid: AuthProvider
+  hypothesis: AuthProvider
+  zotero: AuthProvider
 }
 
 type Corpus {
@@ -73,6 +72,7 @@ type Corpus {
   metadata: JSON
   name: String!
   rename(name: String!): Corpus
+  type: CorpusType!
   update(updateCorpusInput: UpdateCorpusInput!): Corpus!
   updateArticlesOrder(articlesOrderInput: [ArticleOrder!]!): Corpus
   updateMetadata(metadata: JSON!): Corpus
@@ -117,6 +117,7 @@ type Mutation {
   "Give access to a user using a password's email"
   addCredential(email: EmailAddress!, user: ID): User
   """
+
   Get an article for a given id.
   Returns an error if the corpus does not exist or cannot be accessed.
   """
@@ -124,6 +125,7 @@ type Mutation {
   "Change password"
   changePassword(new: String!, old: String!, user: ID): User
   """
+
   Get a corpus for a given id.
   Returns an error if the corpus does not exist or cannot be accessed.
   """
@@ -136,45 +138,39 @@ type Mutation {
   createTag(color: HexColorCode!, description: String, name: String!): Tag
   "Create user + password + default article"
   createUser(details: NewUserInput!): User!
-  createUserWithAuth(
-    details: NewUserWithAuthInput!
-    service: AuthTokenService!
-  ): String
-  "Log out a user"
-  logout: User
+  "Create user after authentication with an auth provider"
+  createUserWithAuth(details: NewUserWithAuthInput!, service: AuthTokenService!): String
   "Create a new workspace"
   createWorkspace(createWorkspaceInput: CreateWorkspaceInput!): Workspace
   "Delete tag, and remove it from all related articles"
   deleteTag(tag: ID!, user: ID): Boolean
   "Duplicate the working version of an article, with someone, or yourself"
   duplicateArticle(article: ID!, to: ID!, user: ID): Article
+  "Log out a user"
+  logout: User
   "Remove access to a user using a password's email (can't be the main email)"
   removeCredential(email: EmailAddress!, user: ID): User
+  "Sets a user authentication token (to something, or nothing if unlinking services"
+  setAuthToken(service: AuthTokenService!): User
   "add a user to an article"
   shareArticle(article: ID!, to: ID!, user: ID): Article
+  "Disconnect Stylo account from an authentication service"
+  unsetAuthToken(service: AuthTokenService!): User
   "remove a user to an article"
   unshareArticle(article: ID!, to: ID!, user: ID): Article
   "update name and description of a tag [need to be authenticated as specified user]"
-  updateTag(
-    color: HexColorCode
-    description: String
-    name: String
-    tag: ID!
-  ): Tag
+  updateTag(color: HexColorCode, description: String, name: String, tag: ID!): Tag
   "Change user information"
   updateUser(details: UserProfileInput!, user: ID): User
   "Get a workspace for mutation"
   workspace(workspaceId: ID!): Workspace
-
-  setAuthToken(service: AuthTokenService!): User
-  unsetAuthToken(service: AuthTokenService!): User
 }
 
 type Query {
   "Fetch article info [need to have access to this article]"
   article(article: ID!, user: ID): Article
-  "Fetch a given user articles"
-  articles(user: ID, filter: FilterCorpusInput): [Article]
+  "Fetch articles, optionally from a given Workspace"
+  articles(filter: FilterCorpusInput, user: ID): [Article]
   "Get a list of corpus with an optional filter"
   corpus(filter: FilterCorpusInput): [Corpus!]
   getUser(filter: UserFilter): User
@@ -194,13 +190,6 @@ type Query {
   workspaces: [Workspace!]
 }
 
-type SoloSession {
-  createdAt: DateTime
-  creator: User
-  creatorUsername: String
-  id: ID
-}
-
 type Tag {
   _id: ID!
   articles: [Article]
@@ -212,26 +201,13 @@ type Tag {
   updatedAt: DateTime
 }
 
-type AuthProvider {
-  id: String
-  token: String
-  updatedAt: DateTime
-}
-
-type AuthProvidersMap {
-  humanid: AuthProvider
-  hypothesis: AuthProvider
-  zotero: AuthProvider
-}
-
 type User {
   _id: ID
   acquintances(limit: Int, page: Int): [User]
   addContact(userId: ID!): User
-  admin: Boolean
   articles(limit: Int, page: Int): [Article]
-  authTypes: [AuthType]
   authProviders: AuthProvidersMap
+  authTypes: [AuthType]
   createdAt: DateTime
   displayName: String
   email: EmailAddress
@@ -331,15 +307,21 @@ type WorkspaceStats {
   membersCount: Int
 }
 
+enum AuthTokenService {
+  humanid
+  hypothesis
+  zotero
+}
+
 enum AuthType {
   local
   oidc
 }
 
-enum AuthTokenService {
-  humanid
-  hypothesis
-  zotero
+enum CorpusType {
+  journal
+  neutral
+  thesis
 }
 
 "A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
@@ -377,8 +359,8 @@ input ArticleVersionInput {
 }
 
 input CreateArticleInput {
-  title: String!
   tags: [ID]
+  title: String!
   workspaces: [ID]
 }
 
@@ -386,6 +368,7 @@ input CreateCorpusInput {
   description: String
   metadata: String
   name: String!
+  type: CorpusType!
   workspace: String
 }
 

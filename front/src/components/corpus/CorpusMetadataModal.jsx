@@ -1,21 +1,26 @@
-import React, { useCallback, useState } from 'react'
 import { List } from 'lucide-react'
+import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { useGraphQLClient } from '../../helpers/graphQL.js'
-import { useModal } from '../../hooks/modal.js'
+
 import corpusMetadataSchema from '../../schemas/corpus-journal-metadata.schema.json'
 import corpusUiSchema from '../../schemas/corpus-journal-ui-schema.json'
+
+import { useGraphQLClient } from '../../helpers/graphQL.js'
+import { useModal } from '../../hooks/modal.js'
+
 import Button from '../Button.jsx'
-import MetadataForm from '../metadata/MetadataForm.jsx'
 import Modal from '../Modal.jsx'
+import MetadataForm from '../metadata/MetadataForm.jsx'
 import FormActions from '../molecules/FormActions.jsx'
-import Select from '../Select.jsx'
 
 import { updateMetadata } from './Corpus.graphql'
-import styles from './CorpusMetadataModal.module.scss'
 
-export default function CorpusMetadataModal({ corpusId, initialValue }) {
+export default function CorpusMetadataModal({
+  corpusId,
+  corpusType,
+  initialValue,
+}) {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { query } = useGraphQLClient()
@@ -57,17 +62,14 @@ export default function CorpusMetadataModal({ corpusId, initialValue }) {
           </>
         }
       >
-        <div className={styles.type}>
-          <Select alignLabel={false} id="corpus-type" label="Type">
-            <option value="journal">{t('corpus.type.journal')}</option>
-          </Select>
-        </div>
-        <MetadataForm
-          data={initialValue}
-          schema={corpusMetadataSchema}
-          uiSchema={corpusUiSchema}
-          onChange={handleMetadataUpdated}
-        />
+        {corpusType === 'journal' && (
+          <MetadataForm
+            data={initialValue}
+            schema={corpusMetadataSchema}
+            uiSchema={corpusUiSchema}
+            onChange={handleMetadataUpdated}
+          />
+        )}
         <FormActions
           onCancel={() => modal.close()}
           onSubmit={handleUpdateMetadata}

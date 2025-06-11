@@ -1,5 +1,3 @@
-import { useToasts } from '@geist-ui/core'
-import React, { useCallback, useMemo, useState } from 'react'
 import {
   ChevronDown,
   ChevronRight,
@@ -8,8 +6,11 @@ import {
   Settings,
   Trash,
 } from 'lucide-react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
+
+import { useToasts } from '@geist-ui/core'
 
 import { useCorpusActions } from '../../hooks/corpus.js'
 import { useModal } from '../../hooks/modal.js'
@@ -17,8 +18,8 @@ import { useModal } from '../../hooks/modal.js'
 import Button from '../Button.jsx'
 import Export from '../Export.jsx'
 import Modal from '../Modal.jsx'
-import FormActions from '../molecules/FormActions.jsx'
 import TimeAgo from '../TimeAgo.jsx'
+import FormActions from '../molecules/FormActions.jsx'
 import CorpusArticles from './CorpusArticles.jsx'
 import CorpusForm from './CorpusForm.jsx'
 import CorpusMetadataModal from './CorpusMetadataModal.jsx'
@@ -37,6 +38,7 @@ import styles from './corpusItem.module.scss'
  * @typedef Corpus
  * @type {object}
  * @property {string} _id
+ * @property {string} type
  * @property {string} name
  * @property {string} description
  * @property {any} metadata
@@ -121,6 +123,7 @@ export default function CorpusItem({ corpus }) {
 
           <CorpusMetadataModal
             corpusId={corpusId}
+            corpusType={corpus.type}
             initialValue={corpus.metadata}
           />
 
@@ -197,7 +200,11 @@ export default function CorpusItem({ corpus }) {
           </>
         }
       >
-        <CorpusForm corpus={corpus} onSubmit={() => editCorpusModal.close()} onCancel={() => editCorpusModal.close()} />
+        <CorpusForm
+          corpus={corpus}
+          onSubmit={() => editCorpusModal.close()}
+          onCancel={() => editCorpusModal.close()}
+        />
       </Modal>
     </div>
   )
