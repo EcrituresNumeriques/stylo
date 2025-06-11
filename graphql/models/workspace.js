@@ -42,6 +42,19 @@ const workspaceSchema = new Schema(
   { timestamps: true }
 )
 
+/**
+ *
+ * @param {import('./user')} user
+ * @returns {mongoose.Collection} workspaces
+ */
+workspaceSchema.statics.findByUser = function findWorkspaceByUser(user) {
+  return this
+    .find({ 'members.user': user?._id })
+    .sort([
+      ['updatedAt', -1],
+    ])
+}
+
 workspaceSchema.methods.findMembersByArticle =
   async function findMembersByArticle(articleId) {
     const result = await this.aggregate([
@@ -86,5 +99,14 @@ workspaceSchema.statics.getWorkspaceById = async function getWorkspaceById(
   }
   return workspace
 }
+
+workspaceSchema.pre('deleteMany', async function DeleteManyHook () {
+  // console.log(this.getFilter())
+  // const $in = [].map(({ _id }) => _id)
+
+  // if ($in.length) {
+  //   await mongoose.model('Corpus').deleteMany({ workspace: { $in }})
+  // }
+})
 
 module.exports = mongoose.model('Workspace', workspaceSchema)
