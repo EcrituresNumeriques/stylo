@@ -191,8 +191,8 @@ export default function Articles() {
         />
       </Modal>
 
-      <div aria-labelledby="articles-list-headline" role="list">
-        <div  className={styles.articlesTableHeader}>
+      <div aria-labelledby="article-actions" role="menubar">
+        <div className={styles.articlesTableHeader}>
           <Button primary onClick={() => createArticleModal.show()}>
             {t('article.createAction.buttonText')}
           </Button>
@@ -201,7 +201,8 @@ export default function Articles() {
             {t('article.count', { count: keepArticles.length })}
           </span>
         </div>
-
+      </div>
+      <div className={styles.articlesList} aria-labelledby="articles-list" role="list">
         {keepArticles.map((article) => (
           <Article
             key={`article-${article._id}`}
