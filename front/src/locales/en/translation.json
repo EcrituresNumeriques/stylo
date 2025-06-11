@@ -212,6 +212,7 @@
   "corpus.parts.label": "Chapters",
   "corpus.preview.buttonTitle": "Preview",
   "corpus.type.journal": "Journal",
+  "corpus.type.thesis": "Thesis",
   "corpus.update.toastFailure": "Unable to update corpus: {{errorMessage}}",
   "corpus.update.toastSuccess": "Corpus successfully updated.",
   "corpus.updateForm.buttonText": "Update",
