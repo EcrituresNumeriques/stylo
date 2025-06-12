@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react'
-import { Link, useLocation, useNavigate, useRouteLoaderData } from 'react-router'
+import { Link, useLocation, useNavigate, useRevalidator, useRouteLoaderData } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import { useToasts } from '@geist-ui/core'
@@ -24,9 +24,23 @@ export default function Login() {
   const navigate = useNavigate()
   const { user } = useRouteLoaderData('app')
   const location = useLocation()
+  const revalidator = useRevalidator()
 
   const { backendEndpoint } = applicationConfig
 
+  // Scenario: auth callback return
+  useEffect(() => {
+    const token = new URLSearchParams(location.hash).get('#auth-token')
+
+    if (token) {
+      // will trigger a store subscription and profile to be loaded there (hooks mainly)
+      dispatch({ type: 'UPDATE_SESSION_TOKEN', token })
+      // will trigger AppLoader to reload data (PrivateRoute etc.)
+      revalidator.revalidate()
+    }
+  }, [location.hash])
+
+  // Scenario: user is logged in and lands on this page
   useEffect(() => {
     if (user?._id) {
       navigate(location?.state?.returnTo ?? '/articles', { replace: true })
