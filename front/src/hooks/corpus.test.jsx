@@ -28,7 +28,6 @@ describe('Corpus', () => {
     fetch.mockResolvedValueOnce({
       ok: true,
       json: () => {
-        console.log('resolve data')
         return new Promise((resolve) =>
           resolve({
             data: {

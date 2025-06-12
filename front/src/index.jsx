@@ -76,21 +76,19 @@ const Annotate = lazy(() => import('./components/Annotate.jsx'))
 const Privacy = lazy(() => import('./components/Privacy.jsx'))
 const Story = lazy(() => import('./stories/Story.jsx'))
 
-let sessionToken = new URLSearchParams(location.hash).get('#auth-token')
 const store = createStore({
-  ...(sessionToken ? { sessionToken } : {}),
   activeWorkspaceId: matchPath('/workspaces/:workspaceId', location.pathname)
     ?.params?.workspaceId,
 })
 
 // refresh session profile whenever something happens to the session token
 // maybe there is a better way to do this
+let previousValue = ''
 store.subscribe(() => {
-  const previousValue = sessionToken
-  const { sessionToken: currentValue } = store.getState()
+  const { sessionToken } = store.getState()
 
-  if (currentValue !== previousValue) {
-    sessionToken = currentValue
+  if (sessionToken !== previousValue) {
+    previousValue = sessionToken
     getUserProfile({ sessionToken }).then((response) =>
       store.dispatch({ type: 'PROFILE', ...response })
     )
