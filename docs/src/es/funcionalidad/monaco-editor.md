@@ -14,9 +14,12 @@ Al utilizar Monaco en Stylo, se han incorporado varias funciones de escritura:
 Además, haciendo clic con el botón derecho del ratón en el editor de texto se accede a otras opciones de edición:
 
 - Cambiar todas las ocurrencias (Ctrl+F2): le permite seleccionar y cambiar todas las ocurrencias de la misma selección;
-- Añadir comentario de línea (Ctrol+K y Ctrl+C): añade un comentario al campo de texto seleccionado;
 - Cortar (Ctrl+X);
 - Comando de la paleta (F1): da acceso a todas las acciones (y sus atajos de teclado) disponibles con Mónaco.
+
+Para acceder a la Paleta de comandos directamente mediante un atajo de teclado, puede usar la tecla F1 (Alt + F1 en Internet Explorer, y fn + F1 en el teclado Mac).
+
+También puede usar el atajo de teclado ctrl + k y luego ctrl + c (command para teclados Mac) para convertir una selección de texto en su documento Stylo en un comentario MarkDown (que no será visible cuando se exporte o en el enlace público de anotación).
 
 ## Autocompletar
 

@@ -15,8 +15,11 @@ De plus, en faisant un clic droit dans l’éditeur de texte, vous aurez accès 
 
 - Changes all occurrences (Ctrl+F2) : permet de sélectionner et modifier toutes les occurrences d’une même sélection ;
 - Cut (Ctrl+X) ;
-- Add line comment (Ctrol+K et Ctrl+C) : permet de mettre en commentaire le champs de texte sélectionné ;
 - Commande Palette (F1) : donne accès à l’ensemble des actions (et leurs raccourcis claviers) disponibles avec Monaco.
+
+Pour avoir accès à la Palette de commande directement au travers d’un raccourci clavier, vous pouvez utiliser la touche F1 (simultanément Alt + F1 sur Internet Explorer, et fn + F1 sur clavier Mac).
+
+Aussi, pour transformer une sélection de texte dans votre document Stylo en commentaire MarkDown (qui ne sera donc pas visible à l’export et sur le lien public d’annotation), vous pouvez utiliser le raccourci clavier ctrl + k puis ctrl + c (command pour les claviers Mac).
 
 ## Autocomplétion
 

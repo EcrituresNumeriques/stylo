@@ -15,8 +15,11 @@ In addition, right-click in the text editor to access other editing options:
 
 - Changes all occurrences (Ctrl+F2): allows you to select and modify all occurrences of the same selection;
 - Cut (Ctrl+X);
-- Add line comment (Ctrol+K and Ctrl+C): adds a comment to the selected text field;
 - Palette command (F1): gives access to all actions (and keyboard shortcuts) available with Monaco.
+
+To access the Command Palette directly via a keyboard shortcut, you can use the F1 key (Alt + F1 on Internet Explorer, and fn + F1 on the Mac keyboard).
+
+Also, to transform a text selection in your Stylo document into a MarkDown comment (which will therefore not be visible on export or on the public annotation link), you can use the keyboard shortcut ctrl + k and then ctrl + c (command, on Mac keyboard).
 
 ## Autocomplete
 
