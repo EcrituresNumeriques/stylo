@@ -20,10 +20,10 @@ For example, you can create a workspace for a magazine and share the various art
 The workspace itself may be named “Revue XX”, but the articles associated with it will not belong to this workspace.
 Each article will remain attached to the user account that created it.
 
-Access to this feature is via the drop-down menu accessible by clicking on the user name at the top of the page.
+Access to the various workspaces is via the "workspace" drop-down menu, on the vertical bar at the top of the page.
 
 ![Menu to access workspaces](/uploads/images/refonte_doc/ANG/MenuWorkspace_ANG.png)
-
+``
 Then click on \[All workspaces\] to access the workspace manager.
 
 ## Manage your workspaces
@@ -47,38 +47,13 @@ The workspace manager has three functions:
 A workspace is a configuration that allows only related documents to be displayed in the Stylo interface.
 They are displayed instead of personal articles.
 
-To display the articles in a workspace, click on its [User name] and select the workspace you wish to work in from the drop-down menu.
-
-The space in which the user is located is indicated in two different places:
-
-1. in the menu at the top of the page, under the [User name];
-
-![bar with workspace](/uploads/images/refonte_doc/ANG/BarreWorkspace_ANG.png)
-
-If nothing is indicated under the name, you are in the personal workspace;
-
-![bar with personal workspace](/uploads/images/refonte_doc/ANG/Workspace_ANG.png)
-
-2. the name of the workspace is also shown at the top of the list of articles.
-
-![workspace name](/uploads/images/refonte_doc/ANG/Art_Workspace_ANG.png)
+To display the articles in a workspace, simply click on it on the corresponding drop-down menu.
 
 Articles shared in the workspace appear in the place of personal articles.
 They can be accessed with the same functionality as in a personal workspace.
 
 The [corpus](/en/corpus) feature is also available in workspaces.
 A distinction is made between personal corpora and corpora linked to workspaces.
-
-## Associate an article with a workspace
-
-The \[Articles\] page changes slightly between personal and workspaces.
-The \[Create article\] button is no longer present in the workspace.
-
-As mentioned above, the workspace is not the owner of the articles shared within it.
-Consequently, to associate an article with a workspace, you need to return to your personal space by clicking on its \[User name] in the black banner at the top of the page, then on \[My space] to display its articles.
-
-You can only create an article (or add it to your workspace) from this interface.
-Once the article has been created, open its information by clicking on the arrow ![arrow](/uploads/images/refonte_doc/Chevron.png) and tick the box associated with the workspace in which you wish to share the article.
 
 ## Deleting a workspace
 

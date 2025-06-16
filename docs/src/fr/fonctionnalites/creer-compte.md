@@ -17,7 +17,7 @@ Il vous suffit d'entrer votre nom de famille, votre prénom et votre adresse cou
 
 Vous recevrez ensuite un courriel de confirmation. Confirmez votre adresse courriel.
 
-Vous pourrez ensuite vous connecter à votre espace de travail personnel dans Stylo.
+De retour sur Stylo, connectez-vous avec votre nouveau compte Huma-Num, rentrez vos informations telles que votre nom, prénom, institution, puis votre compte sera bien créé sur Stylo !
 
 Voir aussi : [vidéo pour accompagner la création d’un compte Huma-Num](/fr/scenarios_utilisation/compte-humanum)
 

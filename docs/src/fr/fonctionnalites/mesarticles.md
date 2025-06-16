@@ -74,15 +74,13 @@ Vous avez aussi la possibilité d’envoyer une copie de votre article à un·e 
 
 Seule la dernière version de l’article sera visible par l’utilisateur·ice et les modifications futures ne seront pas visibles par les deux utilisateur·rices. Dans le processus, deux versions de l’article sont créées et les utilisateurs·ices travaillent chacun·e sur une version qui n’est pas visible par l’autre.
 
-## Prévisualiser un article
+## Aperçu d'un article
 
-Il est possible de prévisualiser un article Stylo en HTML avec une mise en page par défaut.
+Il est possible d'avoir un aperçu de l'article Stylo en HTML avec une mise en page par défaut.
 
-Pour prévisualiser un article, il est possible :
+Pour avoir l'aperçu, cliquez sur l'interrupteur "aperçu" juste au dessus de votre article, dans l'éditeur. 
 
-- De cliquer sur le bouton « Prévisualiser » depuis votre espace personnel ou à partir de votre article. 
-
-![Prévisualiser](/uploads/images/refonte_doc/NouvellePrevisualisation.png)
+![Aperçu](/uploads/images/refonte_doc/previs.png)
 
 ## Dupliquer un article
 

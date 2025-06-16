@@ -18,7 +18,7 @@ Simply enter your surname, first name and e-mail address. You must then accept t
 
 You will then receive a confirmation e-mail. Confirm your e-mail address.
 
-You will then be able to log in to your personal workspace in Stylo!
+Back on Stylo, log in with your new Huma-Num account, enter your name, surname and institution, and your account will be created on Stylo!
 
 See also: [video to accompany the creation of a Huma-Num account](/en/scenarios/humanum-account)
 

@@ -4,7 +4,7 @@ title: Contacto
 
 Stylo es un proyecto en desarrollo dirigido por el equipo del [Cátedra de Investigación de Canadá en Escritura Digital](https://www.ecrituresnumeriques.ca/fr).
 
-Si usted es una revista que desea utilizar Stylo en su cadena editorial, póngase en contacto directamente con el equipo en <crc.ecrituresnumeriques@gmail.com>. Estudiaremos solicitudes específicas para adaptar Stylo a necesidades y prácticas particulares.
+Si usted es una revista que desea utilizar Stylo en su cadena editorial, póngase en contacto directamente con el equipo en <contact@ecrituresnumeriques.ca>. Estudiaremos solicitudes específicas para adaptar Stylo a necesidades y prácticas particulares.
 
 Si tiene problemas para utilizar Stylo o desea hablar con su comunidad, informar de sus necesidades o incluso compartir prácticas con los demás, puede hacerlo en [el foro de la comunidad Stylo](https://discussions.revue30.org/c/stylo/5).
 

@@ -75,13 +75,11 @@ Sólo la última versión del artículo será visible para el usuario y las modi
 
 ## Vista previa de un artículo
 
-Puede previsualizar un artículo Stylo en HTML con un diseño predeterminado.
+Es posible previsualizar el artículo Stylo en HTML con un diseño predeterminado.
 
-Para previsualizar un artículo, puedes :
+Para obtener la vista previa, haga clic en el interruptor "vista previa" justo encima de su artículo, en el editor. 
 
-- Hacer clic en el botón «Vista previa» desde su espacio personal o desde su artículo. 
-
-![Previsualizar](/uploads/images/refonte_doc/ES/NouvellePrevisualisation_ES.png)
+![Vista previa](/uploads/images/refonte_doc/ES/previs_ES.png)
 
 ## Duplicar un artículo
 

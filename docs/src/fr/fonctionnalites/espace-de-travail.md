@@ -20,7 +20,7 @@ Par exemple, on peut créer un espace de travail pour une revue et ainsi partage
 L'espace de travail en lui-même pourra être nommé « Revue XX » mais les articles qui y seront associés n'appartiendront pas à cet espace de travail.
 Chaque article restera attaché au compte utilisateur qui l'a créé.
 
-L'accès à cette fonctionnalité se fait depuis le menu déroulant accessible en cliquant sur le nom d'utilisateur en haut de la page.
+L'accès aux différents espaces de travail se fait depuis le menu déroulant "espace de travail", sur la barre verticale en haut de la page.
 
 ![Menu pour accéder aux espaces de travail](/uploads/images/refonte_doc/MenuWorkspace.png)
 
@@ -47,38 +47,13 @@ Le gestionnaire des espaces de travail comporte trois fonctionnalités :
 Un espace de travail est une configuration qui permet d'afficher uniquement les documents qui y sont liés dans l'interface de Stylo.
 Ils sont affichés en lieu et place des articles personnels.
 
-Pour afficher les articles d'un espace de travail, il faut cliquer sur son \[Nom d'utilisateur\] et sélectionner dans le menu déroulant l'espace de travail dans lequel on souhaite travailler.
-
-L'espace dans lequel se situe l'utilisateur·rice est indiqué à deux endroits différents :
-
-1. dans le menu en haut de la page, sous le \[Nom d'utilisateur\] ;
-
-![barre avec espace de travail](/uploads/images/refonte_doc/BarreWorkspace.png)
-
-Si rien n'est indiqué sous le nom, on se trouve dans l'espace personnel ;
-
-![Barre avec espace personnel](/uploads/images/refonte_doc/Workspace.png)
-
-2. le nom de l'espace de travail est aussi indiqué en haut de la liste des articles.
-
-![espace de travail articles](/uploads/images/refonte_doc/Art_Workspace.png)
+Pour afficher les articles d'un espace de travail, il faut simplement cliquer dessus, dans le menu déroulant.
 
 Les articles partagés dans l'espace de travail apparaissent à la place des articles personnels.
 Ils sont accessibles avec les mêmes fonctionnalités que dans un espace personnel.
 
 La fonctionnalité [corpus](/fr/corpus) est également disponible dans les espaces de travail.
 On distingue alors les corpus personnels des corpus liés à des espaces de travail.
-
-## Associer un article à un espace de travail
-
-La page \[Articles\] change légèrement entre l'espace personnel et l'espace de travail.
-Le bouton \[Créer un article\] n'est plus présent dans l'espace de travail.
-
-Comme nous l'avons mentionné, l'espace de travail n'est pas une entité propriétaire des articles qui y sont partagés.
-En conséquence, pour associer un article à un espace de travail, il faut retourner dans son espace personnel en cliquant sur son \[Nom d'utilisateur\] dans le bandeau noir en haut de la page, puis sur \[Mon espace\] pour afficher ses articles.
-
-La création d'un article (ou son ajout dans espace de travail) se fait uniquement depuis cette interface.
-Une fois l'article créé, il faut ouvrir ses informations en cliquant sur le chevron ![chevron](/uploads/images/refonte_doc/Chevron.png) puis cocher la case associée à l'espace de travail dans lequel on souhaite partager l'article.
 
 ## Suppression d'un espace de travail
 

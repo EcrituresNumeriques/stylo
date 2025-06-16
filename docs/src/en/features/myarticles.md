@@ -77,13 +77,11 @@ Only the latest version of the article will be visible to the user, and future m
 
 ## Preview an article
 
-It is possible to preview a Stylo article in HTML with a default layout.
+It is possible to preview the Stylo article in HTML with a default layout.
 
-To preview an article, you can :
+To have the preview, click on the "preview" switch just above your article, in the editor. 
 
-- Click on the “Preview” button from your personal space or from within your article. 
-
-![Preview](/uploads/images/refonte_doc/ANG/NouvellePrevisualisation_ANG.png)
+![Preview](/uploads/images/refonte_doc/ANG/previs_ANG.png)
 
 ## Duplicate an article
 
