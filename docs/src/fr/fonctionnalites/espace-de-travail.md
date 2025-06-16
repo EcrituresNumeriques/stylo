@@ -20,7 +20,7 @@ Par exemple, on peut créer un espace de travail pour une revue et ainsi partage
 L'espace de travail en lui-même pourra être nommé « Revue XX » mais les articles qui y seront associés n'appartiendront pas à cet espace de travail.
 Chaque article restera attaché au compte utilisateur qui l'a créé.
 
-L'accès aux différents espaces de travail se fait depuis le menu déroulant "espace de travail", sur la barre verticale en haut de la page.
+L'accès aux différents espaces de travail se fait depuis le menu déroulant \[Espaces de travail\], sur la barre horizontale en haut de la page.
 
 ![Menu pour accéder aux espaces de travail](/uploads/images/refonte_doc/MenuWorkspace.png)
 

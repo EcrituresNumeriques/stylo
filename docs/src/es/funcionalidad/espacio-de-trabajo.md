@@ -20,19 +20,19 @@ Por ejemplo, se puede crear un espacio de trabajo para una revista y compartir l
 El espacio de trabajo en sí podría llamarse «Revista XX», pero los artículos asociados a él no pertenecerán a este espacio de trabajo.
 Cada artículo permanecerá vinculado a la cuenta de usuario que lo creó.
 
-El acceso a los distintos espacios de trabajo se realiza a través del menú desplegable «espacio de trabajo», situado en la barra vertical de la parte superior de la página.
+El acceso a los distintos espacios de trabajo se realiza a través del menú desplegable \[Espacios de trabajo\], situado en la barra horizontal de la parte superior de la página.
 
 ![Menú de acceso a los espacios de trabajo](/uploads/images/refonte_doc/ES/MenuWorkspace_ES.png)
 
-A continuación, haga clic en [Todos los espacios de trabajo] para acceder al gestor de espacios de trabajo.
+A continuación, haga clic en \[Todos los espacios de trabajo\] para acceder al gestor de espacios de trabajo.
 
 ## Gestione sus espacios de trabajo
 
 El gestor de espacios de trabajo tiene tres funciones:
 
-- la creación de un espacio de trabajo haciendo clic en el botón correspondiente \[Crear un espacio de trabajo]. Se abre un formulario con tres campos: el nombre, la descripción y la elección del color.
-- la posibilidad de abandonar un espacio de trabajo. Para ello, haga clic en el botón \[Salir del espacio de trabajo]. (_Nota : Al hacer clic en este botón, si los astros lo desean, podrá vivir una aventura sin precedentes, hasta ahora desconocida para la memoria humana..._)
-- administrar los miembros de un espacio de trabajo desde el formulario \[Administrar miembros] visible en la información de cada uno de los espacios de trabajo creados.
+- la creación de un espacio de trabajo haciendo clic en el botón correspondiente \[Crear un espacio de trabajo\]. Se abre un formulario con tres campos: el nombre, la descripción y la elección del color.
+- la posibilidad de abandonar un espacio de trabajo. Para ello, haga clic en el botón \[Salir del espacio de trabajo\]. (_Nota : Al hacer clic en este botón, si los astros lo desean, podrá vivir una aventura sin precedentes, hasta ahora desconocida para la memoria humana..._)
+- administrar los miembros de un espacio de trabajo desde el formulario \[Administrar miembros\] visible en la información de cada uno de los espacios de trabajo creados.
 
 **No existen roles de administrador en los espacios de trabajo. Todos los miembros, incluido el creador del espacio de trabajo, tienen el mismo nivel de derechos. Cada miembro es responsable de gestionar la información y las dinámicas de colaboración.*
 

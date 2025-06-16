@@ -20,7 +20,7 @@ For example, you can create a workspace for a magazine and share the various art
 The workspace itself may be named “Revue XX”, but the articles associated with it will not belong to this workspace.
 Each article will remain attached to the user account that created it.
 
-Access to the various workspaces is via the "workspace" drop-down menu, on the vertical bar at the top of the page.
+Access to the various workspaces is via the \[Workspaces\] drop-down menu, on the horizontal bar at the top of the page.
 
 ![Menu to access workspaces](/uploads/images/refonte_doc/ANG/MenuWorkspace_ANG.png)
 ``
@@ -30,9 +30,9 @@ Then click on \[All workspaces\] to access the workspace manager.
 
 The workspace manager has three functions:
 
-- create a workspace by clicking on the corresponding button \[Create workspace]. This opens a form with three fields: Name, Description and Color.
-- the ability to exit a workspace. To do this, click on the \[Exit workspace] button.
-- administrate workspace members using the \[Manage members] form visible in the information for each workspace created.
+- create a workspace by clicking on the corresponding button \[Create workspace\]. This opens a form with three fields: Name, Description and Color.
+- the ability to exit a workspace. To do this, click on the \[Exit workspace\] button.
+- administrate workspace members using the \[Manage members\] form visible in the information for each workspace created.
 
 **There are no administrator roles in workspaces. All members, including the workspace creator, have the same rights. Everyone is responsible for managing information and collaborative dynamics.*
 
@@ -58,7 +58,7 @@ A distinction is made between personal corpora and corpora linked to workspaces.
 ## Deleting a workspace
 
 There is no button for deleting a workspace.
-This task is performed automatically when the last member of a workspace clicks on the \[Exit workspace] button in the workspace manager.
+This task is performed automatically when the last member of a workspace clicks on the \[Exit workspace\] button in the workspace manager.
 
 If the last member of a workspace wishes to leave it, a pop-up window appears, asking for confirmation of this action.
 
