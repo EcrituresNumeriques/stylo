@@ -1,7 +1,7 @@
 {
   "ui:groups": [
     {
-      "title": "corpus.metadata.form.issue",
+      "title": "issue",
       "fields": ["issue"]
     }
   ],
@@ -9,18 +9,18 @@
     "ui:widget": "hidden"
   },
   "name": {
-    "ui:title": "corpus.metadata.form.name"
+    "ui:title": "issue.name"
   },
   "issue": {
     "ui:order": ["number", "title", "identifier"],
     "number": {
-      "ui:title": "corpus.metadata.form.issue.number"
+      "ui:title": "issue.number"
     },
     "title": {
-      "ui:title": "corpus.metadata.form.issue.title"
+      "ui:title": "issue.title"
     },
     "identifier": {
-      "ui:title": "corpus.metadata.form.issue.identifier"
+      "ui:title": "issue.identifier"
     }
   }
 }
