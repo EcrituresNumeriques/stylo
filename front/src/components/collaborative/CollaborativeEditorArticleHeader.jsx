@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
 
-import { Toggle } from '@geist-ui/core'
-
 import useFetchData from '../../hooks/graphql.js'
 
-import Loading from '../molecules/Loading.jsx'
 import CollaborativeEditorActiveVersion from './CollaborativeEditorActiveVersion.jsx'
 import CollaborativeEditorWriters from './CollaborativeEditorWriters.jsx'
+import Loading from '../molecules/Loading.jsx'
+import Toggle from '../molecules/Toggle.jsx'
 
 import { getArticleInfo } from '../Article.graphql'
 
@@ -58,18 +57,14 @@ export default function CollaborativeEditorArticleHeader({
       <h1 className={styles.title}>{data.article.title}</h1>
 
       <div className={styles.row}>
-        <div
-          className={styles.mode}
-          onClick={() => setMode(mode === 'preview' ? 'edit' : 'preview')}
+        <Toggle
+          id="preview-mode"
+          checked={mode === 'preview'}
+          title={t('article.editor.preview')}
+          onChange={(checked) => setMode(checked ? 'preview' : 'edit')}
         >
-          <Toggle
-            id="preview-mode"
-            checked={mode === 'preview'}
-            title={t('article.editor.preview')}
-            onChange={(e) => setMode(e.target.checked ? 'preview' : 'edit')}
-          />
-          <label htmlFor="preview-mode">{t('article.editor.preview')}</label>
-        </div>
+          {t('article.editor.preview')}
+        </Toggle>
 
         <div className={styles.writers}>
           <CollaborativeEditorWriters />
