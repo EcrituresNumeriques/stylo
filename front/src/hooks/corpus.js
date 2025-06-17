@@ -25,7 +25,7 @@ export function useCorpusActions() {
   })
 
   const sessionToken = useSelector((state) => state.sessionToken)
-  const createCorpus = async ({ title, description }) => {
+  const createCorpus = async ({ title, description, type }) => {
     const response = await executeQuery({
       sessionToken,
       query: createCorpusQuery,
@@ -33,6 +33,7 @@ export function useCorpusActions() {
         createCorpusInput: {
           name: title,
           description,
+          type,
           workspace: workspaceId,
           metadata: '',
         },

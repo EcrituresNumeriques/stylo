@@ -1,12 +1,13 @@
 query getCorpus(
   $filter: FilterCorpusInput
-  $isPersonalWorkspace: Boolean = false,
-  $workspaceId: ID,
+  $isPersonalWorkspace: Boolean = false
+  $workspaceId: ID
   $includeArticles: Boolean = false
   $includeWorkingVersion: Boolean = false
 ) {
   corpus(filter: $filter) {
     _id
+    type
     name
     description
     metadata
@@ -35,7 +36,7 @@ query getCorpus(
     updatedAt
   }
 
-  workspace(workspaceId: $workspaceId) @skip (if: $isPersonalWorkspace) {
+  workspace(workspaceId: $workspaceId) @skip(if: $isPersonalWorkspace) {
     _id
     name
     color
