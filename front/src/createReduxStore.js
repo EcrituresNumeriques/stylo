@@ -1,4 +1,5 @@
 import { createReduxEnhancer as createSentryReduxEnhancer } from '@sentry/react'
+
 import { applyMiddleware, compose, createStore } from 'redux'
 
 import { computeTextStats } from './helpers/markdown.js'
@@ -97,10 +98,12 @@ function createRootReducer(state) {
 
     // user preferences reducers
     USER_PREFERENCES_TOGGLE: toggleUserPreferences,
-    SET_EXPORT_PREFERENCES: setExportPreferences,
-
     ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
+    CORPUS_PREFERENCES_TOGGLE: toggleCorpusPreferences,
+
     SET_ARTICLE_PREFERENCES: setArticlePreferences,
+    SET_EXPORT_PREFERENCES: setExportPreferences,
+    SET_CORPUS_PREFERENCES: setCorpusPreferences,
 
     UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
 
@@ -271,7 +274,9 @@ function setPreferences(storeKey) {
 const toggleArticlePreferences = togglePreferences('articlePreferences')
 const setArticlePreferences = setPreferences('articlePreferences')
 const toggleUserPreferences = togglePreferences('userPreferences')
+const toggleCorpusPreferences = togglePreferences('corpusPreferences')
 const setExportPreferences = setPreferences('exportPreferences')
+const setCorpusPreferences = setPreferences('corpusPreferences')
 
 function updateEditorCursorPosition(state, { lineNumber, column }) {
   return {
