@@ -230,8 +230,14 @@ module.exports = {
     },
 
     async update(corpus, { updateCorpusInput }) {
-      corpus.name = updateCorpusInput.name
-      corpus.description = updateCorpusInput.description
+      const name = updateCorpusInput.name
+      if (name !== undefined && name !== null) {
+        corpus.name = name
+      }
+      const description = updateCorpusInput.description
+      if (description !== undefined && description !== null) {
+        corpus.description = description
+      }
       const metadata = updateCorpusInput.metadata
       if (
         metadata &&

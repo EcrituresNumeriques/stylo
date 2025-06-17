@@ -1,10 +1,25 @@
-.type {
-  margin-bottom: 1rem;
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+.error {
+  background-color: red;
+  padding: 0.5rem;
+  color: $main-background-color;
+  text-align: center;
+  margin-top: 0;
 }
 
-.actions {
+.toggle {
+  margin-bottom: 0.5rem;
   display: flex;
-  margin-top: 1em;
+  gap: 0.5rem;
   justify-content: flex-end;
-  gap: 1rem;
+  font-size: 1.125rem;
+  cursor: pointer;
+
+  > label {
+    cursor: pointer;
+    font-weight: 500;
+    user-select: none;
+  }
 }

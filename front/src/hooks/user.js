@@ -1,15 +1,15 @@
 import { useCallback, useMemo, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
-import {
-  unsetAuthTokenMutation,
-  logoutMutation,
-} from '../components/Credentials.graphql'
-import { getTags, createTag } from '../components/Tag.graphql'
-
-import { useMutateData } from './graphql.js'
-import { useGraphQLClient } from '../helpers/graphQL.js'
 import { applicationConfig } from '../config.js'
+import { useGraphQLClient } from '../helpers/graphQL.js'
+import { useMutateData } from './graphql.js'
+
+import {
+  logoutMutation,
+  unsetAuthTokenMutation,
+} from '../components/Credentials.graphql'
+import { createTag, getTags } from '../components/Tag.graphql'
 
 /**
  * There is no need to use `shallowEqual` because we don't mutate the data
@@ -34,7 +34,7 @@ export function useActiveUserId() {
 /**
  *
  * @param {string} key
- * @param {'article' | 'user' | 'export'} namespace
+ * @param {'article' | 'user' | 'export' | 'corpus' } namespace
  * @returns {{ value: string|boolean|number, setValue: Dispatch, toggleValue: Dispatch }}
  */
 export function usePreferenceItem(key, namespace = 'article') {

@@ -320,7 +320,7 @@ input ArticleOrder {
 }
 
 input UpdateCorpusInput {
-  name: String!
+  name: String
   description: String
   metadata: JSON
 }

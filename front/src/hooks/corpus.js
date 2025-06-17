@@ -55,7 +55,7 @@ export function useCorpusActions() {
       corpus: data.corpus.filter((c) => c._id !== corpusId),
     }))
   }
-  const updateCorpus = async ({ corpusId, title, description }) => {
+  const updateCorpus = async ({ corpusId, title, description, metadata }) => {
     await executeQuery({
       sessionToken,
       query: updateCorpusQuery,
@@ -64,6 +64,7 @@ export function useCorpusActions() {
         updateCorpusInput: {
           name: title,
           description,
+          metadata,
         },
       },
     })
@@ -72,8 +73,9 @@ export function useCorpusActions() {
         if (c._id === corpusId) {
           return {
             ...c,
-            title,
-            description,
+            ...(title && { title }),
+            ...(description && { description }),
+            ...(metadata && { metadata }),
             updatedAt: new Date(),
           }
         } else {

@@ -1,23 +1,27 @@
 import { merge } from 'allof-merge'
+import YAML from 'js-yaml'
 import { List } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 
 import corpusJournalMetadataSchema from '../../schemas/corpus-journal-metadata.schema.json'
 import corpusJournalUiSchema from '../../schemas/corpus-journal-ui-schema.json'
 import corpusThesisMetadataSchema from '../../schemas/corpus-thesis-metadata.schema.json'
 import corpusThesisUiSchema from '../../schemas/corpus-thesis-ui-schema.json'
+import { Toggle, useToasts } from '@geist-ui/core'
 
-import { useGraphQLClient } from '../../helpers/graphQL.js'
+import { useCorpusActions } from '../../hooks/corpus.js'
 import { useModal } from '../../hooks/modal.js'
+import { usePreferenceItem } from '../../hooks/user.js'
+import { toYaml } from '../Write/metadata/yaml.js'
 
 import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
+import MonacoYamlEditor from '../Write/providers/monaco/YamlEditor.jsx'
 import MetadataForm from '../metadata/MetadataForm.jsx'
 import FormActions from '../molecules/FormActions.jsx'
 
-import { updateMetadata } from './Corpus.graphql'
+import styles from './CorpusMetadataModal.module.scss'
 
 export default function CorpusMetadataModal({
   corpusId,
@@ -25,11 +29,17 @@ export default function CorpusMetadataModal({
   initialValue,
 }) {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const { query } = useGraphQLClient()
-  const [corpusMetadata, setCorpusMetadata] = useState(initialValue)
+  const { updateCorpus } = useCorpusActions()
   const modal = useModal()
+  const { setToast } = useToasts()
 
+  const [metadata, setMetadata] = useState(initialValue)
+  const [yaml, setYaml] = useState(toYaml(metadata))
+  const [error, setError] = useState('')
+  const { value: selector, setValue: setSelector } = usePreferenceItem(
+    'metadataFormMode',
+    'corpus'
+  )
   const corpusThesisMetadataSchemaMerged = useMemo(
     () => merge(corpusThesisMetadataSchema),
     [corpusThesisMetadataSchema]
@@ -46,49 +56,103 @@ export default function CorpusMetadataModal({
       corpusType === 'journal' ? corpusJournalUiSchema : corpusThesisUiSchema,
     [corpusType]
   )
-  const handleUpdateMetadata = useCallback(async () => {
-    await query({
-      query: updateMetadata,
-      variables: {
-        corpusId: corpusId,
-        metadata: corpusMetadata,
-      },
-    })
-    dispatch({
-      type: 'SET_LATEST_CORPUS_UPDATED',
-      data: { corpusId, date: new Date() },
-    })
-    modal.close()
-  }, [corpusId, dispatch, query, updateMetadata, corpusId, corpusMetadata])
 
+  // handlers
+  const handleYamlChange = useCallback(
+    async (yaml) => {
+      try {
+        const [metadata = {}] = YAML.loadAll(yaml)
+        setError('')
+        setMetadata(metadata)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setYaml(yaml)
+      }
+    },
+    [setYaml, setMetadata]
+  )
+  const handleUpdateMetadata = useCallback(async () => {
+    try {
+      await updateCorpus({ corpusId, metadata })
+      modal.close()
+      setToast({
+        text: t(`corpus.update.toastSuccess`),
+        type: 'default',
+      })
+    } catch (err) {
+      setToast({
+        text: t(`corpus.update.toastFailure`, { errorMessage: err.message }),
+        type: 'error',
+      })
+    }
+  }, [corpusId, modal, corpusId, metadata])
   const handleMetadataUpdated = useCallback(
     (metadata) => {
-      setCorpusMetadata(metadata)
+      setMetadata(metadata)
+      setYaml(toYaml(metadata))
     },
-    [setCorpusMetadata]
+    [setMetadata, setYaml]
   )
+  const handleCancel = useCallback(() => {
+    setMetadata(initialValue)
+    setYaml(toYaml(initialValue))
+    modal.close()
+  }, [setMetadata, setYaml, initialValue, modal])
 
   return (
     <>
-      <Button title={t('metadata.title')} icon={true} onClick={() => modal.show()}>
+      <Button
+        title={t('metadata.title')}
+        icon={true}
+        onClick={() => modal.show()}
+      >
         <List />
       </Button>
       <Modal
         {...modal.bindings}
+        cancel={handleCancel}
         title={
           <>
             <List /> {t('corpus.metadataModal.title')}
           </>
         }
       >
-        <MetadataForm
-          data={initialValue}
-          schema={corpusMetadataSchema}
-          uiSchema={corpusUiSchema}
-          onChange={handleMetadataUpdated}
-        />
+        <div
+          className={styles.toggle}
+          onClick={() => setSelector(selector === 'raw' ? 'basic' : 'raw')}
+        >
+          <Toggle
+            id="raw-mode"
+            checked={selector === 'raw'}
+            title={t('metadata.showYaml')}
+            onChange={(e) => {
+              setSelector(e.target.checked ? 'raw' : 'basic')
+            }}
+          />
+          <label htmlFor="raw-mode">YAML</label>
+        </div>
+        {selector === 'raw' && (
+          <>
+            {error !== '' && <p className={styles.error}>{error}</p>}
+            <MonacoYamlEditor
+              height="calc(100vh - 350px)"
+              fontSize="14"
+              text={yaml}
+              onTextUpdate={handleYamlChange}
+            />
+          </>
+        )}
+        {selector !== 'raw' && (
+          <MetadataForm
+            data={metadata}
+            schema={corpusMetadataSchema}
+            uiSchema={corpusUiSchema}
+            onChange={handleMetadataUpdated}
+          />
+        )}
         <FormActions
-          onCancel={() => modal.close()}
+          onCancel={handleCancel}
           onSubmit={handleUpdateMetadata}
           submitButton={{
             text: t('modal.saveButton.text'),

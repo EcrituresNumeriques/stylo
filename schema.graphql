@@ -405,7 +405,7 @@ input NewUserWithAuthInput {
 input UpdateCorpusInput {
   description: String
   metadata: JSON
-  name: String!
+  name: String
 }
 
 input UserFilter {
