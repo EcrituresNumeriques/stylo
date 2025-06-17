@@ -31,7 +31,7 @@
   "article.editor.modes": {
     "compare": "Comparer",
     "edit": "Modifier",
-    "preview": "Prévisualiser"
+    "preview": "Aperçu"
   },
   "article.editor.modes.menuLabel": "Modes d'article",
   "article.editor.preview": "Aperçu",
@@ -129,7 +129,6 @@
   "article.metadata.url": "URL de l'article",
   "article.metadata.url.placeholder": "URL de l'article",
   "article.page.title": "{{ title }} (modification)",
-  "article.preview.button": "Prévisualiser (ouvrir une nouvelle fenêtre)",
   "article.search.label": "Recherche",
   "article.search.placeholder": "Par titre d'article",
   "article.sendCopy.button": "Envoyer une copie",
@@ -219,7 +218,6 @@
   "corpus.page.description": "Un corpus est une collection d'articles triables et exportables en une seule action.",
   "corpus.page.title": "Liste des corpus - {{ workspace }}",
   "corpus.parts.label": "Chapitres",
-  "corpus.preview.buttonTitle": "Prévisualiser",
   "corpus.type.journal": "Revue",
   "corpus.type.neutral": "Neutre",
   "corpus.type.thesis": "Thèse",
@@ -461,7 +459,6 @@
   "write.sidebar.metadataButton": "Métadonnées",
   "write.stopCompareVersion.button": "Stop",
   "write.title.buttonExport": "Exporter",
-  "write.title.buttonPreview": "Prévisualiser (ouvre une nouvelle fenêtre)",
   "write.titleToc.sidebar": "Table des matières",
   "write.titleVersion.sidebar": "Versions",
   "write.wordCountStat.text": "Mots : {{stats}}",
