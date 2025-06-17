@@ -7,6 +7,8 @@ import uiSchema from './form-story-ui-schema.json'
 
 import Field from '../components/Field.jsx'
 import Select from '../components/Select.jsx'
+import Toggle from '../components/molecules/Toggle.jsx'
+
 import buttonStyles from '../components/button.module.scss'
 
 export default function FormStory() {
@@ -26,6 +28,32 @@ export default function FormStory() {
         <option>Reblochon</option>
         <option>St Marcellin</option>
       </Select>
+
+
+      <fieldset>
+        <legend><h4>Switch</h4></legend>
+
+        <Toggle />
+        <Toggle disabled checked={true} />
+        <Toggle id="toggle-id" name="toggle-name">YAML</Toggle>
+        <Toggle disabled>YAML</Toggle>
+        <Toggle checked={true} labels={{true: 'coche activée', false: 'coche désactivée'}} />
+        <Toggle checked={true} labels={{true: 'coche activée', false: 'coche désactivée'}}>
+          Texte fixe (<code>aria-label</code> dynamique)
+        </Toggle>
+      </fieldset>
+
+
+      <fieldset>
+        <legend><h4>Switch (dans formulaire)</h4></legend>
+
+        <Field label="Acceptez-vous de cocher cette case ?" id="example-toggle">
+          <Toggle id="example-toggle" />
+        </Field>
+      </fieldset>
+
+
+
 
       <SchemaForm formData={{}} uiSchema={uiSchema} schema={schema} />
     </>
