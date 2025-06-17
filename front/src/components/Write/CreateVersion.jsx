@@ -1,4 +1,4 @@
-import { Toggle, useToasts } from '@geist-ui/core'
+import { useToasts } from '@geist-ui/core'
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -7,6 +7,7 @@ import { fromFormData } from '../../helpers/forms.js'
 import { useArticleVersionActions } from '../../hooks/article.js'
 
 import FormActions from '../molecules/FormActions.jsx'
+import Toggle from '../molecules/Toggle.jsx'
 
 import buttonStyles from '../button.module.scss'
 import styles from './createVersion.module.scss'
@@ -67,21 +68,16 @@ export default function CreateVersion({ articleId, onClose, onSubmit }) {
         style={{ width: '100%', fontFamily: 'Inter' }}
         placeholder={t('write.createVersion.placeholder')}
       ></textarea>
-      <div
-        className={styles.toggle}
-        onClick={() => setMajorVersion(!majorVersion)}
-      >
-        <Toggle
-          id="major-version"
-          data-testid="major-version-toggle"
-          name="majorVersion"
-          checked={majorVersion}
-          onChange={(e) => {
-            setMajorVersion(e.target.checked)
-          }}
-        />
-        <label htmlFor="major-version">Version majeure</label>
-      </div>
+
+      <Toggle
+        id="major-version"
+        data-testid="major-version-toggle"
+        name="majorVersion"
+        checked={majorVersion}
+        onChange={setMajorVersion}>
+          Version majeure
+        </Toggle>
+
       <FormActions
         submitButton={{
           text: t('modal.createButton.text'),
