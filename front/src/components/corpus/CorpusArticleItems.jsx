@@ -1,13 +1,16 @@
-import { useToasts } from '@geist-ui/core'
-import debounce from 'lodash.debounce'
 import PropTypes from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import { useToasts } from '@geist-ui/core'
+import debounce from 'lodash.debounce'
+
 import { useGraphQLClient } from '../../helpers/graphQL.js'
+
 import Loading from '../molecules/Loading.jsx'
+import CorpusArticleCard from './CorpusArticleCard.jsx'
 
 import { updateArticlesOrder } from './Corpus.graphql'
-import CorpusArticleCard from './CorpusArticleCard.jsx'
 
 import styles from './corpusArticleItems.module.scss'
 

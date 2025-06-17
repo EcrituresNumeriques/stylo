@@ -1,0 +1,302 @@
+{
+  "ui:groups": [
+    {
+      "title": "thesis.title",
+      "fields": [
+        "publicationDate",
+        "defenseDate",
+        "url",
+        "disciplines"
+      ]
+    },
+    {
+      "title": "thesis.titleAndAbstract",
+      "fields": [
+        "lang",
+        "title",
+        "subtitle",
+        "abstract"
+      ]
+    },
+    {
+      "title": "keywords",
+      "fields": [
+        "keywords"
+      ]
+    },
+    {
+      "title": "authors",
+      "fields": [
+        "authors"
+      ]
+    },
+    {
+      "title": "directors",
+      "fields": [
+        "directors"
+      ]
+    },
+    {
+      "title": "juryMembers",
+      "fields": [
+        "juryMembers"
+      ]
+    },
+    {
+      "title": "affiliatedInstitutions",
+      "fields": [
+        "affiliatedInstitutions"
+      ]
+    }
+  ],
+  "type": {
+    "ui:widget": "hidden"
+  },
+  "@version": {
+    "ui:widget": "hidden"
+  },
+  "disciplines": {
+    "ui:title": "disciplines",
+    "ui:add-item-title": "disciplines.itemAdd",
+    "ui:className": "disciplines",
+    "items": {
+      "ui:label": false,
+      "ui:className": "disciplines"
+    }
+  },
+  "pageCount": {
+    "ui:title": "pageCount"
+  },
+  "lang": {
+    "ui:title": "language",
+    "ui:placeholder": "language.placeholder"
+  },
+  "authors": {
+    "ui:add-item-title": "people.itemAdd",
+    "items": {
+      "ui:classNames": "person",
+      "ui:autocomplete": "IsidoreAuthorSearch",
+      "surname": {
+        "ui:title": "people.surname"
+      },
+      "forename": {
+        "ui:title": "people.forename"
+      },
+      "affiliations": {
+        "ui:title": "people.affiliations",
+        "ui:add-item-title": "people.affiliations.itemAdd",
+        "ui:className": "affiliations",
+        "items": {
+          "ui:label": false,
+          "ui:className": "affiliations"
+        }
+      },
+      "academicTitle": {
+        "ui:title": "people.academicTitle"
+      },
+      "role": {
+        "ui:title": "people.role"
+      },
+      "biography": {
+        "ui:title": "people.biography",
+        "ui:widget": "textarea"
+      },
+      "email": {
+        "ui:title": "people.email"
+      },
+      "orcid": {
+        "ui:title": "people.orcid"
+      },
+      "viaf": {
+        "ui:title": "people.viaf"
+      },
+      "foaf": {
+        "ui:title": "people.foaf"
+      },
+      "isni": {
+        "ui:title": "people.isni"
+      },
+      "wikidata": {
+        "ui:title": "people.wikidata"
+      }
+    }
+  },
+  "directors": {
+    "ui:add-item-title": "people.itemAdd",
+    "items": {
+      "ui:classNames": "person",
+      "ui:autocomplete": "IsidoreAuthorSearch",
+      "surname": {
+        "ui:title": "people.surname"
+      },
+      "forename": {
+        "ui:title": "people.forename"
+      },
+      "affiliations": {
+        "ui:title": "people.affiliations",
+        "ui:add-item-title": "people.affiliations.itemAdd",
+        "ui:className": "affiliations",
+        "items": {
+          "ui:label": false,
+          "ui:className": "affiliations"
+        }
+      },
+      "academicTitle": {
+        "ui:title": "people.academicTitle"
+      },
+      "role": {
+        "ui:title": "people.role"
+      },
+      "biography": {
+        "ui:title": "people.biography",
+        "ui:widget": "textarea"
+      },
+      "email": {
+        "ui:title": "people.email"
+      },
+      "orcid": {
+        "ui:title": "people.orcid"
+      },
+      "viaf": {
+        "ui:title": "people.viaf"
+      },
+      "foaf": {
+        "ui:title": "people.foaf"
+      },
+      "isni": {
+        "ui:title": "people.isni"
+      },
+      "wikidata": {
+        "ui:title": "people.wikidata"
+      }
+    }
+  },
+  "juryMembers": {
+    "ui:add-item-title": "people.itemAdd",
+    "items": {
+      "ui:classNames": "person",
+      "ui:autocomplete": "IsidoreAuthorSearch",
+      "surname": {
+        "ui:title": "people.surname"
+      },
+      "forename": {
+        "ui:title": "people.forename"
+      },
+      "affiliations": {
+        "ui:title": "people.affiliations",
+        "ui:add-item-title": "people.affiliations.itemAdd",
+        "ui:className": "affiliations",
+        "items": {
+          "ui:label": false,
+          "ui:className": "affiliations"
+        }
+      },
+      "academicTitle": {
+        "ui:title": "people.academicTitle"
+      },
+      "role": {
+        "ui:title": "people.role"
+      },
+      "biography": {
+        "ui:title": "people.biography",
+        "ui:widget": "textarea"
+      },
+      "email": {
+        "ui:title": "people.email"
+      },
+      "orcid": {
+        "ui:title": "people.orcid"
+      },
+      "viaf": {
+        "ui:title": "people.viaf"
+      },
+      "foaf": {
+        "ui:title": "people.foaf"
+      },
+      "isni": {
+        "ui:title": "people.isni"
+      },
+      "wikidata": {
+        "ui:title": "people.wikidata"
+      }
+    }
+  },
+  "translationOf": {
+    "ui:title": "translationOf",
+    "url": {
+      "ui:widget": "uri",
+      "ui:title": "translationOf.url"
+    },
+    "title": {
+      "ui:title": "translationOf.title"
+    },
+    "lang": {
+      "ui:title": "translationOf.lang"
+    }
+  },
+  "title": {
+    "ui:title": "title"
+  },
+  "subtitle": {
+    "ui:title": "subtitle"
+  },
+  "abstract": {
+    "ui:title": "abstract",
+    "ui:widget": "textarea"
+  },
+  "url": {
+    "ui:title": "url"
+  },
+  "publicationDate": {
+    "ui:title": "publicationDate",
+    "ui:widget": "date"
+  },
+  "defenseDate": {
+    "ui:title": "defenseDate",
+    "ui:widget": "date"
+  },
+  "keywords": {
+    "ui:add-item-title": "keywords.itemAdd",
+    "ui:className": "keywords",
+    "items": {
+      "ui:label": false,
+      "ui:className": "keywords"
+    }
+  },
+  "localizedContent": {
+    "ui:add-item-title": "language.itemAdd",
+    "items": {
+      "lang": {
+        "ui:title": "language"
+      },
+      "title": {
+        "ui:title": "title"
+      },
+      "subtitle": {
+        "ui:title": "subtitle"
+      },
+      "abstract": {
+        "ui:title": "abstract",
+        "ui:widget": "textarea"
+      },
+      "keywords": {
+        "ui:className": "keywords",
+        "ui:title": "keywords",
+        "ui:add-item-title": "keywords.itemAdd",
+        "ui:remove-item-title": "keywords.itemRemove",
+        "items": {
+          "ui:label": false,
+          "ui:className": "keywords"
+        }
+      }
+    }
+  },
+  "affiliatedInstitutions": {
+    "ui:add-item-title": "affiliatedInstitutions.itemAdd",
+    "ui:className": "affiliatedInstitutions",
+    "items": {
+      "ui:label": false,
+      "ui:className": "affiliatedInstitutions"
+    }
+  }
+}

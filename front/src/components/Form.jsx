@@ -1,21 +1,21 @@
 import clsx from 'clsx'
+import { Plus, Trash } from 'lucide-react'
+import { set } from 'object-path-immutable'
 import PropTypes from 'prop-types'
 import React, { Fragment, useCallback, useMemo, useState } from 'react'
-import Form, { getDefaultRegistry } from '@rjsf/core'
-import validator from '@rjsf/validator-ajv8'
-import { set } from 'object-path-immutable'
 import { Translation } from 'react-i18next'
 
+import Button from './Button'
 // REMIND: use a custom SelectWidget to support "ui:emptyValue"
 // remove once fixed in https://github.com/rjsf-team/react-jsonschema-form/issues/1041
 import SelectWidget from './SelectWidget'
-import isidoreKeywordSearch from './Write/metadata/isidoreKeyword'
 import isidoreAuthorSearch from './Write/metadata/isidoreAuthor'
+import IsidoreAuthorAPIAutocompleteField from './Write/metadata/isidoreAuthor'
+import isidoreKeywordSearch from './Write/metadata/isidoreKeyword'
+import Form, { getDefaultRegistry } from '@rjsf/core'
+import validator from '@rjsf/validator-ajv8'
 
 import styles from './form.module.scss'
-import Button from './Button'
-import { Plus, Trash } from 'lucide-react'
-import IsidoreAuthorAPIAutocompleteField from './Write/metadata/isidoreAuthor'
 
 const {
   templates: { BaseInputTemplate: DefaultBaseInputTemplate },
@@ -29,7 +29,7 @@ const {
 function BaseInputTemplate(properties) {
   const { placeholder } = properties
   return (
-    <Translation>
+    <Translation ns="form" useSuspense={false}>
       {(t) => (
         <DefaultBaseInputTemplate
           {...properties}
@@ -48,7 +48,7 @@ function CustomSelectWidget(properties) {
   const { options, title, placeholder } = properties
   return (
     <div className={styles.selectContainer}>
-      <Translation>
+      <Translation ns="form" useSuspense={false}>
         {(t) => (
           <SelectWidget
             {...{
@@ -83,7 +83,7 @@ function CustomSelectWidget(properties) {
 function CustomCheckboxesWidget(properties) {
   const { options, title } = properties
   return (
-    <Translation>
+    <Translation ns="form" useSuspense={false}>
       {(t) => (
         <CheckboxesWidget
           {...{
@@ -115,9 +115,9 @@ function CustomCheckboxesWidget(properties) {
  */
 function ArrayFieldTemplate(properties) {
   const addItemTitle =
-    properties.uiSchema['ui:add-item-title'] ?? 'form.addItem.title'
+    properties.uiSchema['ui:add-item-title'] ?? 'form.itemAdd'
   const removeItemTitle =
-    properties.uiSchema['ui:remove-item-title'] ?? 'form.removeItem.title'
+    properties.uiSchema['ui:remove-item-title'] ?? 'form.itemRemove'
   const title = properties.uiSchema['ui:title']
   const inlineRemoveButton =
     properties.schema?.items?.type === 'string' || !removeItemTitle
@@ -128,7 +128,7 @@ function ArrayFieldTemplate(properties) {
       key={properties.key}
     >
       {title && (
-        <Translation>
+        <Translation ns="form" useSuspense={false}>
           {(t) => <legend id={properties.id}>{t(title)}</legend>}
         </Translation>
       )}
@@ -141,7 +141,9 @@ function ArrayFieldTemplate(properties) {
           onClick={properties.onAddClick}
         >
           <Plus />
-          <Translation>{(t) => t(addItemTitle)}</Translation>
+          <Translation ns="form" useSuspense={false}>
+            {(t) => t(addItemTitle)}
+          </Translation>
         </Button>
       )}
       {items &&
@@ -173,7 +175,9 @@ function ArrayFieldTemplate(properties) {
                   {inlineRemoveButton ? (
                     ''
                   ) : (
-                    <Translation>{(t) => t(removeItemTitle)}</Translation>
+                    <Translation ns="form" useSuspense={false}>
+                      {(t) => t(removeItemTitle)}
+                    </Translation>
                   )}
                 </Button>
               )}
@@ -202,7 +206,9 @@ function FieldTemplate(properties) {
     <div className={classNames} style={style}>
       {displayLabel && (
         <label htmlFor={id}>
-          <Translation>{(t) => <>{t(label)}</>}</Translation>
+          <Translation ns="form" useSuspense={false}>
+            {(t) => <>{t(label)}</>}
+          </Translation>
         </label>
       )}
       {description}
@@ -248,7 +254,9 @@ function ObjectFieldTemplate(properties) {
           <fieldset className={styles.fieldset} key={fields.join('-')}>
             {title && (
               <legend>
-                <Translation>{(t) => <>{t(title)}</>}</Translation>
+                <Translation ns="form" useSuspense={false}>
+                  {(t) => <>{t(title)}</>}
+                </Translation>
               </legend>
             )}
             {elements.map(([field, element]) => {

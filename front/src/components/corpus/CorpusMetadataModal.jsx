@@ -1,10 +1,13 @@
+import { merge } from 'allof-merge'
 import { List } from 'lucide-react'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 
-import corpusMetadataSchema from '../../schemas/corpus-journal-metadata.schema.json'
-import corpusUiSchema from '../../schemas/corpus-journal-ui-schema.json'
+import corpusJournalMetadataSchema from '../../schemas/corpus-journal-metadata.schema.json'
+import corpusJournalUiSchema from '../../schemas/corpus-journal-ui-schema.json'
+import corpusThesisMetadataSchema from '../../schemas/corpus-thesis-metadata.schema.json'
+import corpusThesisUiSchema from '../../schemas/corpus-thesis-ui-schema.json'
 
 import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { useModal } from '../../hooks/modal.js'
@@ -27,6 +30,22 @@ export default function CorpusMetadataModal({
   const [corpusMetadata, setCorpusMetadata] = useState(initialValue)
   const modal = useModal()
 
+  const corpusThesisMetadataSchemaMerged = useMemo(
+    () => merge(corpusThesisMetadataSchema),
+    [corpusThesisMetadataSchema]
+  )
+  const corpusMetadataSchema = useMemo(
+    () =>
+      corpusType === 'journal'
+        ? corpusJournalMetadataSchema
+        : corpusThesisMetadataSchemaMerged,
+    [corpusType]
+  )
+  const corpusUiSchema = useMemo(
+    () =>
+      corpusType === 'journal' ? corpusJournalUiSchema : corpusThesisUiSchema,
+    [corpusType]
+  )
   const handleUpdateMetadata = useCallback(async () => {
     await query({
       query: updateMetadata,
@@ -62,14 +81,12 @@ export default function CorpusMetadataModal({
           </>
         }
       >
-        {corpusType === 'journal' && (
-          <MetadataForm
-            data={initialValue}
-            schema={corpusMetadataSchema}
-            uiSchema={corpusUiSchema}
-            onChange={handleMetadataUpdated}
-          />
-        )}
+        <MetadataForm
+          data={initialValue}
+          schema={corpusMetadataSchema}
+          uiSchema={corpusUiSchema}
+          onChange={handleMetadataUpdated}
+        />
         <FormActions
           onCancel={() => modal.close()}
           onSubmit={handleUpdateMetadata}
