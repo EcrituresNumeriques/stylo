@@ -1,19 +1,20 @@
-import { Toggle } from '@geist-ui/core'
 import YAML from 'js-yaml'
 import { ArrowLeft } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
+
+import { Toggle } from '@geist-ui/core'
+
 import { useArticleMetadata } from '../../hooks/article.js'
 import { usePreferenceItem } from '../../hooks/user.js'
 
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
-
-import styles from './articleEditorMetadata.module.scss'
-import { toYaml } from './metadata/yaml.js'
 import MonacoYamlEditor from './providers/monaco/YamlEditor.jsx'
 import ArticleEditorMetadataForm from './yamleditor/ArticleEditorMetadataForm.jsx'
+
+import styles from './articleEditorMetadata.module.scss'
 
 /**
  * @param {object} props
@@ -22,7 +23,7 @@ import ArticleEditorMetadataForm from './yamleditor/ArticleEditorMetadataForm.js
  * @param {string} props.versionId
  * @returns {Element}
  */
-export default function ArticleMetadata ({ onBack, articleId, versionId }) {
+export default function ArticleMetadata({ onBack, articleId, versionId }) {
   /** @type {object} */
   const articleWriters = useSelector((state) => state.articleWriters || {})
   const multiUserActive = useMemo(
@@ -31,9 +32,11 @@ export default function ArticleMetadata ({ onBack, articleId, versionId }) {
   )
   const readOnly = multiUserActive || versionId
   const { t } = useTranslation()
-  const { metadata, isLoading, updateMetadata } = useArticleMetadata({ articleId, versionId })
-  const yaml = useMemo(() => toYaml(metadata), [metadata])
-  const [rawYaml, setRawYaml] = useState(yaml)
+  const { metadata, metadataYaml, isLoading, updateMetadata } =
+    useArticleMetadata({
+      articleId,
+      versionId,
+    })
   const [error, setError] = useState('')
 
   const { value: selector, setValue: setSelector } = usePreferenceItem(
@@ -46,29 +49,23 @@ export default function ArticleMetadata ({ onBack, articleId, versionId }) {
       if (readOnly) {
         return
       }
-      setRawYaml(toYaml(metadata))
       await updateMetadata(metadata)
     },
-    [readOnly, setRawYaml, updateMetadata]
+    [readOnly, updateMetadata]
   )
 
-  const handleRawYamlChange = useCallback(
-    async (yaml) => {
-      try {
-        const [metadata = {}] = YAML.loadAll(yaml)
-        setError('')
-        await updateMetadata(metadata)
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setRawYaml(yaml)
-      }
-    },
-    [setRawYaml]
-  )
+  const handleYamlChange = useCallback(async (yaml) => {
+    try {
+      const [metadata = {}] = YAML.loadAll(yaml)
+      setError('')
+      await updateMetadata(metadata)
+    } catch (err) {
+      setError(err.message)
+    }
+  }, [])
 
   if (isLoading) {
-    return <Loading/>
+    return <Loading />
   }
 
   const title = onBack ? (
@@ -78,7 +75,7 @@ export default function ArticleMetadata ({ onBack, articleId, versionId }) {
       style={{ cursor: 'pointer', userSelect: 'none' }}
     >
       <span onClick={onBack} style={{ display: 'flex' }}>
-        <ArrowLeft style={{ strokeWidth: 3 }}/>
+        <ArrowLeft style={{ strokeWidth: 3 }} />
       </span>
       <span>{t('metadata.title')}</span>
     </h2>
@@ -107,12 +104,15 @@ export default function ArticleMetadata ({ onBack, articleId, versionId }) {
       </header>
       {versionId && (
         <div className={styles.readonly}>
-          <Alert message={t('metadata.readonly.versionView')} type="warning"/>
+          <Alert message={t('metadata.readonly.versionView')} type="warning" />
         </div>
       )}
       {!versionId && multiUserActive && (
         <div className={styles.readonly}>
-          <Alert message={t('metadata.readonly.multiUserActive')} type="warning"/>
+          <Alert
+            message={t('metadata.readonly.multiUserActive')}
+            type="warning"
+          />
         </div>
       )}
       {selector === 'raw' && (
@@ -122,8 +122,8 @@ export default function ArticleMetadata ({ onBack, articleId, versionId }) {
             readOnly={readOnly}
             height="calc(100vh - 280px)"
             fontSize="14"
-            text={rawYaml}
-            onTextUpdate={handleRawYamlChange}
+            text={metadataYaml}
+            onTextUpdate={handleYamlChange}
           />
         </>
       )}

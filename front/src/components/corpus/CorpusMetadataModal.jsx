@@ -34,7 +34,7 @@ export default function CorpusMetadataModal({
   const { setToast } = useToasts()
 
   const [metadata, setMetadata] = useState(initialValue)
-  const [yaml, setYaml] = useState(toYaml(metadata))
+  const yaml = useMemo(() => toYaml(metadata), [metadata])
   const [error, setError] = useState('')
   const { value: selector, setValue: setSelector } = usePreferenceItem(
     'metadataFormMode',
@@ -66,11 +66,9 @@ export default function CorpusMetadataModal({
         setMetadata(metadata)
       } catch (err) {
         setError(err.message)
-      } finally {
-        setYaml(yaml)
       }
     },
-    [setYaml, setMetadata]
+    [setMetadata]
   )
   const handleUpdateMetadata = useCallback(async () => {
     try {
@@ -90,15 +88,13 @@ export default function CorpusMetadataModal({
   const handleMetadataUpdated = useCallback(
     (metadata) => {
       setMetadata(metadata)
-      setYaml(toYaml(metadata))
     },
-    [setMetadata, setYaml]
+    [setMetadata]
   )
   const handleCancel = useCallback(() => {
     setMetadata(initialValue)
-    setYaml(toYaml(initialValue))
     modal.close()
-  }, [setMetadata, setYaml, initialValue, modal])
+  }, [setMetadata, initialValue, modal])
 
   return (
     <>
