@@ -107,7 +107,7 @@ export default function CollaborativeEditorMenu({ articleId, className, versionI
           <li role="menuitem">
             <button
               onClick={() => setActiveMenu('export')}
-              title="Download a printable version"
+              title={t('write.title.buttonExport')}
             >
               {t('export.title')}
               <ChevronRight
@@ -121,7 +121,7 @@ export default function CollaborativeEditorMenu({ articleId, className, versionI
           <li role="menuitem">
             <a
               href={`/article/${articleId}/annotate`}
-              title="Preview (open a new window)"
+              title={t('article.annotate.button')}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.external}

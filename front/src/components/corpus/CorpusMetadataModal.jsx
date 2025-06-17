@@ -51,7 +51,7 @@ export default function CorpusMetadataModal({
 
   return (
     <>
-      <Button title="Metadata" icon={true} onClick={() => modal.show()}>
+      <Button title={t('metadata.title')} icon={true} onClick={() => modal.show()}>
         <List />
       </Button>
       <Modal
