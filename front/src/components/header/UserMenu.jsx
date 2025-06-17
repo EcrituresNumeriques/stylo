@@ -13,7 +13,7 @@ export default function UserMenu() {
   if (!userId) {
     return (
       <nav className={styles.userMenu} aria-label={t('header.userMenu.title')}>
-        <NavLink to="/login">{t('credentials.login.confirmButton')}</NavLink>
+        <NavLink data-testid="login" to="/login">{t('credentials.login.confirmButton')}</NavLink>
 
         <NavLink to="/register" className="hidden-below-tablet">
           {t('credentials.login.registerLink')}

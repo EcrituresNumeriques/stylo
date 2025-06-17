@@ -148,6 +148,7 @@ export default function Login() {
             onSubmit={handleSubmit}
             className={formStyles.form}
             aria-labelledby="local-login"
+            data-testid="local-login-form"
           >
             <Field
               label={t('user.account.username')}
@@ -155,6 +156,7 @@ export default function Login() {
               hasError={error !== ''}
               required={true}
               autoComplete="username"
+              data-testid="local-login-username-field"
               ref={usernameRef}
             />
             <Field
@@ -163,6 +165,7 @@ export default function Login() {
               hasError={error !== ''}
               required={true}
               type="password"
+              data-testid="local-login-password-field"
               autoComplete="current-password"
             />
 
