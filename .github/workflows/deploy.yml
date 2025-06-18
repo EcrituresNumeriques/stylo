@@ -26,6 +26,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: 'GitHub Runner IP'
+        run: curl -s https://api.ipify.org/
+
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
