@@ -4,7 +4,7 @@ const isUser = require('../policies/isUser')
 const Workspace = require('../models/workspace')
 const Article = require('../models/article')
 const Tag = require('../models/tag')
-const { ApiError } = require('../helpers/errors')
+const { BadRequestError } = require('../helpers/errors')
 const { createJWTToken } = require('../helpers/token.js')
 
 const config = require('../config.js')
@@ -51,7 +51,7 @@ module.exports = {
     async createUserWithAuth(_, { details }, { session }) {
       // link accounts
       if (!session?.pendingRegistration) {
-        throw new ApiError('REGISTRATION_NOT_FOUND', 'No registration found')
+        throw new BadRequestError('REGISTRATION_NOT_FOUND', 'No registration found')
       }
 
       const user = await User.create({
@@ -100,7 +100,7 @@ module.exports = {
       const authProviderKey = `authProviders.${service}`
 
       if (!session?.pendingRegistration?.authProviders) {
-        throw new ApiError('ACCOUNT_NOT_FOUND', 'No remote account data found')
+        throw new BadRequestError('ACCOUNT_NOT_FOUND', 'No remote account data found')
       }
 
       // pending linking account
@@ -115,7 +115,7 @@ module.exports = {
         // we do not check if we link against the same user
         // I don't know if this is a path that can be taken
         if (existingUser) {
-          const error = new ApiError(
+          const error = new BadRequestError(
             'ACCOUNT_ALREADY_LINKED',
             'This account is already linked to another Stylo user.'
           )
@@ -157,7 +157,7 @@ module.exports = {
 
       // check if not the last account
       if (!user.password && user.getAuthProvidersCount() === 1) {
-        throw new ApiError(
+        throw new BadRequestError(
           'LAST_ACCOUNT',
           'You cannot remove the last authentication method'
         )

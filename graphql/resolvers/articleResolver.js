@@ -1,4 +1,4 @@
-const { GraphQLError } = require('graphql')
+const { NotFoundError } = require('graphql')
 const YAML = require('js-yaml')
 const { WSSharedDoc } = require('@y/websocket-server/utils')
 
@@ -20,6 +20,10 @@ const { toLegacyFormat } = require('../helpers/metadata.js')
 const Y = require('yjs')
 const { mongo } = require('mongoose')
 const Sentry = require('@sentry/node')
+const {
+  NotAuthenticatedError,
+  BadRequestError,
+} = require('../helpers/errors.js')
 
 function getTextFromYjsDoc(yjsdocBase64) {
   const wsDoc = new WSSharedDoc(`ws/${new mongo.ObjectID().toString()}`)
@@ -34,12 +38,7 @@ function getTextFromYjsDoc(yjsdocBase64) {
 async function getUser(userId) {
   const user = await User.findById(userId)
   if (!user) {
-    throw new GraphQLError(`Unable to find user with id ${userId}`, {
-      extensions: {
-        code: 'NOT_FOUND',
-        http: { status: 404 },
-      },
-    })
+    throw new NotFoundError('User', userId)
   }
   return user
 }
@@ -51,12 +50,7 @@ async function getArticleByContext(articleId, context) {
 
   const userId = context.userId
   if (!userId) {
-    throw new GraphQLError('Unable to find an authentication context', {
-      extensions: {
-        code: 'UNAUTHENTICATED',
-        http: { status: 401 },
-      },
-    })
+    throw new NotAuthenticatedError()
   }
 
   return await getArticleByUser(articleId, userId)
@@ -68,12 +62,7 @@ async function getArticle(articleId) {
     .populate({ path: 'contributors', populate: { path: 'user' } })
 
   if (!article) {
-    throw new GraphQLError(`Unable to find article with id ${articleId}`, {
-      extensions: {
-        code: 'NOT_FOUND',
-        http: { status: 404 },
-      },
-    })
+    throw new NotFoundError('Article', articleId)
   }
 
   return article
@@ -92,12 +81,7 @@ async function getArticleByUser(articleId, userId) {
       .populate({ path: 'contributors', populate: { path: 'user' } })
 
     if (!article) {
-      throw new GraphQLError(`Unable to find article with id ${articleId}`, {
-        extensions: {
-          code: 'NOT_FOUND',
-          http: { status: 404 },
-        },
-      })
+      throw new NotFoundError('Article', articleId)
     }
     return article
   }
@@ -114,12 +98,7 @@ async function getArticleByUser(articleId, userId) {
     .populate({ path: 'contributors', populate: { path: 'user' } })
 
   if (!article) {
-    throw new GraphQLError(`Unable to find article with id ${articleId}`, {
-      extensions: {
-        code: 'NOT_FOUND',
-        http: { status: 404 },
-      },
-    })
+    throw new NotFoundError('Article', articleId)
   }
   return article
 }
@@ -214,6 +193,11 @@ module.exports = {
       if (Array.isArray(workspaces) && workspaces.length) {
         for await (const id of workspaces) {
           const workspace = await Workspace.getWorkspaceById(id, user)
+
+          if (!workspace) {
+            throw new NotFoundError('Workspace', id)
+          }
+
           workspace.articles.push(newArticle)
           await workspace.save()
         }
@@ -489,14 +473,9 @@ module.exports = {
         type: 'userAction',
       })
       if (result === false) {
-        throw new GraphQLError(
-          'Unable to create a new version since there is no change',
-          {
-            extensions: {
-              code: 'ILLEGAL_STATE',
-              http: { status: 400 },
-            },
-          }
+        throw new BadRequestError(
+          'NO_CHANGE',
+          'Unable to create a new version since there is no change'
         )
       }
       await article.save()
