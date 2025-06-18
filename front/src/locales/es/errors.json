@@ -1,4 +1,8 @@
 {
+  "401": {
+    "message": "Está intentando acceder a una página protegida, por favor <1>autentíquese</1>.",
+    "title": "No autorizado"
+  },
   "404": {
     "message": "La página solicitada no existe :",
     "title": "Página no encontrada"

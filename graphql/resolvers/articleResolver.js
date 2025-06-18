@@ -21,7 +21,7 @@ const Y = require('yjs')
 const { mongo } = require('mongoose')
 const Sentry = require('@sentry/node')
 
-function getTextFromYjsDoc (yjsdocBase64) {
+function getTextFromYjsDoc(yjsdocBase64) {
   const wsDoc = new WSSharedDoc(`ws/${new mongo.ObjectID().toString()}`)
   try {
     Y.applyUpdate(wsDoc, Buffer.from(yjsdocBase64, 'base64'))
@@ -31,38 +31,38 @@ function getTextFromYjsDoc (yjsdocBase64) {
   }
 }
 
-async function getUser (userId) {
+async function getUser(userId) {
   const user = await User.findById(userId)
   if (!user) {
     throw new GraphQLError(`Unable to find user with id ${userId}`, {
       extensions: {
         code: 'NOT_FOUND',
-        http: { status: 404 }
-      }
+        http: { status: 404 },
+      },
     })
   }
   return user
 }
 
-async function getArticleByContext (articleId, context) {
+async function getArticleByContext(articleId, context) {
   if (context.token.admin === true) {
     return await getArticle(articleId)
   }
 
   const userId = context.userId
   if (!userId) {
-    throw new GraphQLError("Unable to find an authentication context", {
+    throw new GraphQLError('Unable to find an authentication context', {
       extensions: {
         code: 'UNAUTHENTICATED',
-        http: { status: 403 }
-      }
+        http: { status: 401 },
+      },
     })
   }
 
   return await getArticleByUser(articleId, userId)
 }
 
-async function getArticle (articleId) {
+async function getArticle(articleId) {
   const article = await Article.findById(articleId)
     .populate('owner tags')
     .populate({ path: 'contributors', populate: { path: 'user' } })
@@ -71,15 +71,15 @@ async function getArticle (articleId) {
     throw new GraphQLError(`Unable to find article with id ${articleId}`, {
       extensions: {
         code: 'NOT_FOUND',
-        http: { status: 404 }
-      }
+        http: { status: 404 },
+      },
     })
   }
 
   return article
 }
 
-async function getArticleByUser (articleId, userId) {
+async function getArticleByUser(articleId, userId) {
   const userWorkspace = await Workspace.findOne({
     'members.user': userId,
     articles: articleId,
@@ -95,8 +95,8 @@ async function getArticleByUser (articleId, userId) {
       throw new GraphQLError(`Unable to find article with id ${articleId}`, {
         extensions: {
           code: 'NOT_FOUND',
-          http: { status: 404 }
-        }
+          http: { status: 404 },
+        },
       })
     }
     return article
@@ -117,14 +117,14 @@ async function getArticleByUser (articleId, userId) {
     throw new GraphQLError(`Unable to find article with id ${articleId}`, {
       extensions: {
         code: 'NOT_FOUND',
-        http: { status: 404 }
-      }
+        http: { status: 404 },
+      },
     })
   }
   return article
 }
 
-async function createVersion (article, { major, message, userId, type }) {
+async function createVersion(article, { major, message, userId, type }) {
   const { bib, metadata, ydoc } = article.workingVersion
 
   const md = getTextFromYjsDoc(ydoc)
@@ -141,7 +141,7 @@ async function createVersion (article, { major, message, userId, type }) {
       metadata === latestVersion.metadata &&
       md === latestVersion.md
     ) {
-      logger.info('Won\'t create a new version since there\'s no change', {
+      logger.info("Won't create a new version since there's no change", {
         action: 'createVersion',
         articleId: article._id,
       })
@@ -187,7 +187,7 @@ module.exports = {
      * @param {*} args
      * @param {{ userId, token }} context
      */
-    async createArticle (_root, args, context) {
+    async createArticle(_root, args, context) {
       const user = await getUser(context.userId)
       const { title, tags, workspaces } = args.createArticleInput
 
@@ -224,7 +224,7 @@ module.exports = {
       return newArticle
     },
 
-    async article (_root, { articleId }, context) {
+    async article(_root, { articleId }, context) {
       return getArticleByContext(articleId, context)
     },
 
@@ -236,7 +236,7 @@ module.exports = {
      * @param {{ userId, token }} context
      * @returns
      */
-    async shareArticle (_root, args, context) {
+    async shareArticle(_root, args, context) {
       const withUser = await getUser(args.to)
       const article = await getArticleByContext(args.article, context)
       await article.shareWith(withUser)
@@ -251,7 +251,7 @@ module.exports = {
      * @param {{ userId, token }} context
      * @returns
      */
-    async unshareArticle (_root, args, context) {
+    async unshareArticle(_root, args, context) {
       const withUser = await getUser(args.to)
       const article = await getArticleByContext(args.article, context)
       await article.unshareWith(withUser)
@@ -266,7 +266,7 @@ module.exports = {
      * @param {{ userId, token }} context
      * @returns
      */
-    async duplicateArticle (_root, args, context) {
+    async duplicateArticle(_root, args, context) {
       const withUser = await getUser(args.to)
       const article = await getArticleByContext(args.article, context)
       const userId = context.userId
@@ -312,11 +312,11 @@ module.exports = {
      * @param {{ loaders: { article }, userId, token }} context
      * @returns
      */
-    async article (_root, args, context) {
+    async article(_root, args, context) {
       return await getArticleByContext(args.article, context)
     },
 
-    async sharedArticle (_root, args) {
+    async sharedArticle(_root, args) {
       return getArticle(args.article)
     },
 
@@ -335,25 +335,29 @@ module.exports = {
      * @param {{ user: User, token: Object, userId: String, loaders: { tags, users } }} context
      * @returns {Promise<Article[]>}
      */
-    async articles (_root, args, context) {
+    async articles(_root, args, context) {
       const { userId } = isUser(args, context)
       let filterIds = null
 
       // prefilter by articles contained in a workspace or corpus
       if (args.filter?.workspaceId) {
-        const workspace = await Workspace.findById(args.filter.workspaceId, 'articles').lean()
+        const workspace = await Workspace.findById(
+          args.filter.workspaceId,
+          'articles'
+        ).lean()
         filterIds = [...workspace.articles]
       }
 
       return Article.getArticles({
-        filter: !Array.isArray(filterIds) ?
-            {
+        filter: !Array.isArray(filterIds)
+          ? {
               $or: [
                 { owner: userId },
                 { contributors: { $elemMatch: { user: userId } } },
-              ]
-            } : {
-              _id: { $in: filterIds }
+              ],
+            }
+          : {
+              _id: { $in: filterIds },
             },
         loaders: context.loaders,
       })
@@ -361,7 +365,7 @@ module.exports = {
   },
 
   Article: {
-    async workspaces (article, _, { user, token }) {
+    async workspaces(article, _, { user, token }) {
       if (token.admin) {
         return Workspace.find({ articles: article._id })
       }
@@ -370,13 +374,13 @@ module.exports = {
       })
     },
 
-    async removeContributor (article, { userId }) {
+    async removeContributor(article, { userId }) {
       const contributorUser = await getUser(userId)
       await article.unshareWith(contributorUser)
       return article
     },
 
-    async addContributor (article, { userId }) {
+    async addContributor(article, { userId }) {
       const contributorUser = await User.findById(userId)
       if (!contributorUser) {
         throw new Error(`Unable to find user with id: ${userId}`)
@@ -385,7 +389,7 @@ module.exports = {
       return article
     },
 
-    async versions (article, _args, context) {
+    async versions(article, _args, context) {
       const versions = (
         await Promise.all(
           article.versions.map(
@@ -403,7 +407,7 @@ module.exports = {
      * @param {import('mongoose').Document} article
      * @returns
      */
-    async delete (article) {
+    async delete(article) {
       // remove article from workspaces
       await Workspace.updateMany(
         {},
@@ -417,12 +421,11 @@ module.exports = {
       await Corpus.updateMany(
         {},
         {
-          $pull:
-            {
-              articles: {
-                article: article._id
-              }
-            }
+          $pull: {
+            articles: {
+              article: article._id,
+            },
+          },
         }
       )
       // remove article versions
@@ -435,34 +438,34 @@ module.exports = {
       return article.$isDeleted()
     },
 
-    async rename (article, { title }) {
+    async rename(article, { title }) {
       article.set('title', title)
       const result = await article.save({ timestamps: false })
       return result === article
     },
 
-    async setZoteroLink (article, { zotero }) {
+    async setZoteroLink(article, { zotero }) {
       article.set('zoteroLink', zotero)
       const result = await article.save({ timestamps: false })
       return result === article
     },
 
-    async addTags (article, { tags }) {
+    async addTags(article, { tags }) {
       await article.addTags(...tags)
       return article.tags
     },
 
-    async removeTags (article, { tags }) {
+    async removeTags(article, { tags }) {
       await article.removeTags(...tags)
       return article.tags
     },
 
-    async setPreviewSettings (article, { settings }) {
+    async setPreviewSettings(article, { settings }) {
       await article.set('preview', settings, { merge: true }).save()
       return article
     },
 
-    async updateWorkingVersion (article, { content }) {
+    async updateWorkingVersion(article, { content }) {
       Object.entries(content).forEach(([key, value]) =>
         article.set({
           workingVersion: {
@@ -480,18 +483,21 @@ module.exports = {
      * @param context
      * @return {Promise<Article>}
      */
-    async createVersion (article, { articleVersionInput }) {
+    async createVersion(article, { articleVersionInput }) {
       const result = await createVersion(article, {
         ...articleVersionInput,
         type: 'userAction',
       })
       if (result === false) {
-        throw new GraphQLError('Unable to create a new version since there is no change', {
-          extensions: {
-            code: 'ILLEGAL_STATE',
-            http: { status: 400 }
+        throw new GraphQLError(
+          'Unable to create a new version since there is no change',
+          {
+            extensions: {
+              code: 'ILLEGAL_STATE',
+              http: { status: 400 },
+            },
           }
-        })
+        )
       }
       await article.save()
       return article
@@ -499,7 +505,7 @@ module.exports = {
   },
 
   WorkingVersion: {
-    md ({ ydoc = '' }) {
+    md({ ydoc = '' }) {
       try {
         return getTextFromYjsDoc(ydoc)
       } catch (err) {
@@ -511,10 +517,10 @@ module.exports = {
         return ''
       }
     },
-    bibPreview ({ bib }) {
+    bibPreview({ bib }) {
       return previewEntries(bib)
     },
-    yaml ({ metadata = {} }, { options }) {
+    yaml({ metadata = {} }, { options }) {
       const legacyMetadata = toLegacyFormat(metadata)
       const yaml = YAML.dump(legacyMetadata)
       return options?.strip_markdown
