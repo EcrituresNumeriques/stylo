@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongoose').Types
-const { ApiError } = require('../helpers/errors')
+const { NotFoundError, NotAuthenticatedError } = require('../helpers/errors')
 const Workspace = require('../models/workspace')
 const Article = require('../models/article')
 const Corpus = require('../models/corpus')
@@ -12,10 +12,7 @@ async function workspace(_, { workspaceId }, { user, token }) {
   if (token?.admin) {
     const workspace = await Workspace.findById(workspaceId)
     if (!workspace) {
-      throw new ApiError(
-        'NOT_FOUND',
-        `Unable to find workspace with id ${workspaceId}`
-      )
+      throw new NotFoundError('Workspace', workspaceId)
     }
     return workspace
   }
@@ -25,10 +22,7 @@ async function workspace(_, { workspaceId }, { user, token }) {
   })
 
   if (!workspace) {
-    throw new ApiError(
-      'NOT_FOUND',
-      `Unable to find workspace with id ${workspaceId} for user with id ${user?._id}`
-    )
+    throw new NotFoundError('Workspace', workspaceId)
   }
   return workspace
 }
@@ -68,10 +62,7 @@ module.exports = {
     async createWorkspace(_, args, { user }) {
       const { createWorkspaceInput } = args
       if (!user) {
-        throw new ApiError(
-          'UNAUTHENTICATED',
-          'Unable to create a workspace as an unauthenticated user'
-        )
+        throw new NotAuthenticatedError()
       }
       // any user can create a workspace
       const newWorkspace = new Workspace({
@@ -174,10 +165,7 @@ module.exports = {
 
     async leave(workspace, args, { user }) {
       if (!user) {
-        throw new ApiError(
-          'UNAUTHENTICATED',
-          'Unable to leave a workspace as an unauthenticated user'
-        )
+        throw new NotAuthenticatedError()
       }
 
       // TODO: remove workspace if there's no member left!

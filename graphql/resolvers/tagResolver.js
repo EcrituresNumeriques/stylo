@@ -3,7 +3,7 @@ const Tag = require('../models/tag')
 
 const isUser = require('../policies/isUser')
 
-const { ApiError } = require('../helpers/errors')
+const { NotFoundError } = require('../helpers/errors')
 
 module.exports = {
   Mutation: {
@@ -66,10 +66,7 @@ module.exports = {
       })
 
       if (!tag) {
-        throw new ApiError(
-          'NOT_FOUND',
-          `Unable to find tag with id ${args.tag}`
-        )
+        throw new NotFoundError('Tag', args.tag)
       }
 
       return tag
