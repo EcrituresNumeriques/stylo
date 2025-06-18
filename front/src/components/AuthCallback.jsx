@@ -1,14 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router'
-import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
+import { Link, useParams } from 'react-router'
+
 import { useGraphQLClient } from '../helpers/graphQL.js'
+
+import Button from './Button.jsx'
+
+import * as queries from '../components/Credentials.graphql'
 
 import styles from './Page.module.scss'
 import buttonStyles from './button.module.scss'
-import * as queries from '../components/Credentials.graphql'
-
-import Button from './Button.jsx'
 
 export default function AuthCallbackPopup() {
   const { query } = useGraphQLClient()
@@ -18,6 +20,7 @@ export default function AuthCallbackPopup() {
   const hasOpener = Boolean(window.opener)
 
   const { t } = useTranslation()
+  const { t: tError } = useTranslation('errors')
 
   const closePopup = useCallback(
     (authProviders) => {
@@ -31,22 +34,33 @@ export default function AuthCallbackPopup() {
   )
 
   useEffect(() => {
+    /**
+     * @param {ErrorResponse|GraphQLError} error
+     */
+    function onError(error) {
+      console.log({ error })
+      if (error.errors && error.errors.length > 0) {
+        const firstError = error.errors.at(0)
+        setErrorCode(firstError.extensions?.type || firstError.message)
+      } else if (error.statusText) {
+        setErrorCode(error.statusText)
+      } else {
+        setErrorCode(error.message || tError('unknown'))
+      }
+    }
+
     query({
       query: queries.setAuthTokenMutation,
       variables: { service },
       withCredentials: true,
-    }).then(
-      ({ setAuthToken }) => {
-        dispatch({
-          type: 'UPDATE_ACTIVE_USER_DETAILS',
-          payload: setAuthToken.authProviders,
-        })
+    }).then(({ setAuthToken }) => {
+      dispatch({
+        type: 'UPDATE_ACTIVE_USER_DETAILS',
+        payload: setAuthToken.authProviders,
+      })
 
-        closePopup(setAuthToken.authProviders)
-      },
-      (error) =>
-        setErrorCode(error.messages[0]?.extensions.type || error.message)
-    )
+      closePopup(setAuthToken.authProviders)
+    }, onError)
   }, [])
 
   if (errorCode === null) {

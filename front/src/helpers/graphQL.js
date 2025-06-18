@@ -1,5 +1,7 @@
-import { print } from 'graphql/language/printer'
 import { useSelector } from 'react-redux'
+
+import { print } from 'graphql/language/printer'
+
 import { applicationConfig } from '../config.js'
 
 const corsStrategy = APP_ENVIRONMENT === 'prod' ? 'same-origin' : 'include'
@@ -40,23 +42,41 @@ async function executeRequest({
     }),
   })
 
+  // GraphQL server always returns a 200/OK (even when there are one or more errors)
   if (!response.ok) {
-    throw new Response(response.statusText, {
-      status: response.status
+    throw new ErrorResponse({
+      statusText: response.statusText,
+      status: response.status,
+      //data: await response.text(),
     })
   }
 
   const body = await response.json()
   if (body.errors) {
-    const error = body.errors.at(0)
-
-    throw new Response(error?.extensions?.code, {
-      status: error?.extensions?.http?.status,
-      statusText: error.message
-    })
+    throw new GraphQLError(body.errors)
   }
 
   return body.data
+}
+
+export class ErrorResponse extends Error {
+  constructor({ status, statusText, data }) {
+    super()
+    this.status = status
+    this.statusText = statusText
+    this.data = data
+    this.message = statusText
+  }
+}
+
+export class GraphQLError extends Error {
+  constructor(errors) {
+    super()
+    this.errors = errors
+    this.status = errors?.at(0).extensions?.http?.status || 400
+    this.code = errors?.at(0).extensions?.code
+    this.message = errors?.at(0).message
+  }
 }
 
 export function useGraphQLClient() {
