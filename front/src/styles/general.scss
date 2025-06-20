@@ -28,6 +28,10 @@
   border: 0;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 @media screen {
   html {
     background-color: $main-background-color;
