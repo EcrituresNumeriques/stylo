@@ -1,0 +1,26 @@
+
+.container {
+  border-top: 1px solid hsl(210 10% 90% / 1);
+  background-color: hsl(210 10% 95% / 1);
+  margin-top: 3rem;
+  padding: 1.5rem 0.25rem 2rem;
+
+  @media print {
+    & {
+      display: none;
+    }
+  }
+}
+
+.links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  > li {
+    display: inline;
+  }
+}

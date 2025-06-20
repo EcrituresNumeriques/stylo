@@ -1,15 +1,15 @@
 import React from 'react'
-import { NavLink } from 'react-router'
 import { useTranslation } from 'react-i18next'
+import { NavLink } from 'react-router'
 
-import styles from './header.module.scss'
+import styles from './Footer.module.scss'
 
 export default function Footer() {
   const { t } = useTranslation()
 
   return (
-    <footer className={styles.footerContainer}>
-      <ul className={styles.footerList}>
+    <footer className={styles.container}>
+      <ul className={styles.links}>
         <li>
           <a
             href="https://github.com/EcrituresNumeriques/stylo/releases"
@@ -33,7 +33,11 @@ export default function Footer() {
           </a>
         </li>
         <li>
-          <a href="https://discussions.revue30.org/c/stylo/" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://discussions.revue30.org/c/stylo/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {t('footer.community.link')}
           </a>
         </li>
