@@ -1,4 +1,3 @@
-import { Toggle } from '@geist-ui/core'
 import YAML from 'js-yaml'
 import { ArrowLeft } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
@@ -9,6 +8,7 @@ import { usePreferenceItem } from '../../hooks/user.js'
 
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
+import Toggle from '../molecules/Toggle.jsx'
 
 import styles from './articleEditorMetadata.module.scss'
 import { toYaml } from './metadata/yaml.js'
@@ -90,20 +90,15 @@ export default function ArticleMetadata ({ onBack, articleId, versionId }) {
     <div className={styles.yamlEditor}>
       <header className={styles.header}>
         {title}
-        <div
-          className={styles.toggle}
-          onClick={() => setSelector(selector === 'raw' ? 'basic' : 'raw')}
+
+        <Toggle
+          id="raw-mode"
+          checked={selector === 'raw'}
+          title={t('metadata.showYaml')}
+          onChange={(checked) => setSelector(checked ? 'raw' : 'basic')}
         >
-          <Toggle
-            id="raw-mode"
-            checked={selector === 'raw'}
-            title={t('metadata.showYaml')}
-            onChange={(e) => {
-              setSelector(e.target.checked ? 'raw' : 'basic')
-            }}
-          />
-          <label htmlFor="raw-mode">YAML</label>
-        </div>
+          YAML
+        </Toggle>
       </header>
       {versionId && (
         <div className={styles.readonly}>
