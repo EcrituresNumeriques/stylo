@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router'
 
-import styles from './Error.module.scss'
+import styles from './AppError.module.scss'
 
 export default function PageNotFound() {
   const location = useLocation()
