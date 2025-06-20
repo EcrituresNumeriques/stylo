@@ -1,4 +1,13 @@
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
+
+import { toYaml } from '../components/Write/metadata/yaml.js'
+import { toEntries } from '../helpers/bibtex.js'
+import { executeQuery } from '../helpers/graphQL.js'
+import useFetchData, {
+  useConditionalFetchData,
+  useMutateData,
+} from './graphql.js'
 
 import {
   addTags,
@@ -12,13 +21,14 @@ import {
   updateWorkingVersion,
   updateZoteroLinkMutation,
 } from '../components/Article.graphql'
+import {
+  createVersion,
+  getArticleVersion,
+  getArticleVersions,
+  renameVersion,
+} from './Versions.graphql'
 
-import { toEntries } from '../helpers/bibtex.js'
-import { executeQuery } from '../helpers/graphQL.js'
-import useFetchData, { useConditionalFetchData, useMutateData, } from './graphql.js'
-import { createVersion, getArticleVersion, getArticleVersions, renameVersion, } from './Versions.graphql'
-
-export function useArticleTagActions ({ articleId }) {
+export function useArticleTagActions({ articleId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
   const { data, mutate, error, isLoading } = useFetchData(
     { query: getArticleTags, variables: { articleId } },
@@ -79,7 +89,7 @@ export function useArticleTagActions ({ articleId }) {
   }
 }
 
-export function useArticleActions ({ articleId }) {
+export function useArticleActions({ articleId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
   const activeUser = useSelector((state) => state.activeUser)
   const copy = async (toUserId) => {
@@ -131,12 +141,15 @@ export function useArticleActions ({ articleId }) {
   }
 }
 
-export function useArticleMetadata ({ articleId, versionId }) {
+export function useArticleMetadata({ articleId, versionId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
   const activeUser = useSelector((state) => state.activeUser)
   const hasVersion = typeof versionId === 'string'
   const { data, error, mutate, isLoading } = useFetchData(
-    { query: getArticleMetadata, variables: { articleId, versionId: versionId ?? '', hasVersion } },
+    {
+      query: getArticleMetadata,
+      variables: { articleId, versionId: versionId ?? '', hasVersion },
+    },
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
@@ -179,13 +192,14 @@ export function useArticleMetadata ({ articleId, versionId }) {
 
   return {
     metadata,
+    metadataYaml: toYaml(metadata),
     updateMetadata,
     isLoading,
     error,
   }
 }
 
-export function useEditableArticle ({ articleId, versionId }) {
+export function useEditableArticle({ articleId, versionId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
   const activeUser = useSelector((state) => state.activeUser)
   const hasVersion = typeof versionId === 'string'
@@ -280,7 +294,7 @@ export function useEditableArticle ({ articleId, versionId }) {
   }
 }
 
-export function useArticleVersions ({ articleId }) {
+export function useArticleVersions({ articleId }) {
   const { data, error, isLoading } = useFetchData(
     { query: getArticleVersions, variables: { article: articleId } },
     {
@@ -296,15 +310,15 @@ export function useArticleVersions ({ articleId }) {
   }
 }
 
-export function useArticleVersion ({ versionId }) {
+export function useArticleVersion({ versionId }) {
   const { data, error, isLoading } = useConditionalFetchData(
     versionId ? { query: getArticleVersion, variables: { versionId } } : null,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
       fallbackData: {
-        version: {}
-      }
+        version: {},
+      },
     }
   )
 
@@ -315,7 +329,7 @@ export function useArticleVersion ({ versionId }) {
   }
 }
 
-export function useArticleVersionActions ({ articleId }) {
+export function useArticleVersionActions({ articleId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
   const activeUser = useSelector((state) => state.activeUser)
   const { mutate } = useMutateData({
