@@ -34,7 +34,10 @@ import ErrorBoundary from './components/Error.jsx'
 import LoadingPage from './components/LoadingPage.jsx'
 import Login, { Logout } from './components/Login.jsx'
 import RequireAuth from './components/PrivateRoute.jsx'
-import CollaborativeEditor, { loader as ArticleLoader } from './components/collaborative/CollaborativeEditor.jsx'
+import RedirectIfAuth from './components/auth/RedirectIfAuth.jsx'
+import CollaborativeEditor, {
+  loader as ArticleLoader,
+} from './components/collaborative/CollaborativeEditor.jsx'
 import App, { loader as AppLoader } from './layouts/App.jsx'
 
 if (SENTRY_DSN) {
@@ -87,7 +90,7 @@ let previousValue = ''
 store.subscribe(() => {
   const { sessionToken } = store.getState()
 
-  if (sessionToken !== previousValue) {
+  if (sessionToken !== null && sessionToken !== previousValue) {
     previousValue = sessionToken
     getUserProfile({ sessionToken }).then((response) =>
       store.dispatch({ type: 'PROFILE', ...response })
@@ -112,7 +115,9 @@ const router = createBrowserRouter(
         ErrorBoundary={ErrorBoundary}
       >
         <Route index element={<Home />} />
-        <Route path="login" element={<Login />} />
+        <Route path="login" element={<RedirectIfAuth />}>
+          <Route index element={<Login />} />
+        </Route>
         <Route path="logout" element={<Logout />} />
         <Route path="register" element={<Register />}>
           <Route path=":service" element={<RegisterWithAuthProvider />} />

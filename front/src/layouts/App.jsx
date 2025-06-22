@@ -1,31 +1,47 @@
-import React, { useEffect, useMemo } from 'react'
 import { setUser as setSentryUser } from '@sentry/react'
-import { Outlet, ScrollRestoration, useLoaderData, useLocation, useNavigate } from 'react-router'
+
+import React, { useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import {
+  Outlet,
+  ScrollRestoration,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from 'react-router'
+
+import { getUserProfile } from '../helpers/user.js'
+import { usePreferenceItem } from '../hooks/user.js'
+
 import Footer from '../components/Footer.jsx'
 import Header from '../components/Header.jsx'
 import SkipLinks from '../components/SkipLinks.jsx'
-import { getUserProfile } from '../helpers/user.js'
-import { usePreferenceItem } from '../hooks/user.js'
-import { useTranslation } from 'react-i18next'
 
 /**
  * Loads user data from localStorage JWT
  * @returns {Promise<{ user: object }>}
  */
-export async function loader () {
-  return await getUserProfile({
-    sessionToken: localStorage.getItem('sessionToken')
-  })
+export async function loader() {
+  const sessionToken = localStorage.getItem('sessionToken')
+  if (sessionToken !== null && sessionToken.trim() !== '') {
+    return await getUserProfile({
+      sessionToken: localStorage.getItem('sessionToken'),
+    })
+  }
+  return { user: null }
 }
 
-export default function StyloApp () {
+export default function StyloApp() {
   const location = useLocation()
   const navigate = useNavigate()
   const { user } = useLoaderData()
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const { value: hasTrackingConsent } = usePreferenceItem('trackingConsent', 'user')
+  const { value: hasTrackingConsent } = usePreferenceItem(
+    'trackingConsent',
+    'user'
+  )
 
   // Setup user session
   useEffect(() => {
@@ -52,7 +68,6 @@ export default function StyloApp () {
     }
   }, [hasTrackingConsent])
 
-
   // Track location change
   useEffect(() => {
     if (hasTrackingConsent) {
@@ -68,20 +83,22 @@ export default function StyloApp () {
     () => location.pathname.endsWith('/annotate'),
     [location.pathname]
   )
-  const hideFooter = useMemo(
-    () => {
-      return location.pathname.endsWith('/annotate') || location.pathname.startsWith('/article/')
-    },
-    [location.pathname]
-  )
+  const hideFooter = useMemo(() => {
+    return (
+      location.pathname.endsWith('/annotate') ||
+      location.pathname.startsWith('/article/')
+    )
+  }, [location.pathname])
 
-  return (<>
-    <SkipLinks />
-    {hideHeader || <Header/>}
-    <main id="content" aria-label={t('main.title')} tabIndex="-1">
-      <ScrollRestoration/>
-      <Outlet/>
-    </main>
-    {hideFooter || <Footer/>}
-  </>)
+  return (
+    <>
+      <SkipLinks />
+      {hideHeader || <Header />}
+      <main id="content" aria-label={t('main.title')} tabIndex="-1">
+        <ScrollRestoration />
+        <Outlet />
+      </main>
+      {hideFooter || <Footer />}
+    </>
+  )
 }

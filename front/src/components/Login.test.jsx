@@ -1,16 +1,19 @@
+import React from 'react'
+import { useRouteLoaderData } from 'react-router'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
+
 import {
-  getByRole,
   getByLabelText,
+  getByRole,
   queryByRole,
   screen,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React from 'react'
-import { useRouteLoaderData } from 'react-router'
+
 import { renderWithProviders } from '../../tests/setup.js'
 
 import Component from './Login.jsx'
+import RedirectIfAuth from './auth/RedirectIfAuth.jsx'
 
 describe('Login', () => {
   const preloadedState = {
@@ -25,22 +28,22 @@ describe('Login', () => {
     const redirectCalled = vi.fn()
 
     useRouteLoaderData.mockReturnValue({
-      user: preloadedState.activeUser
+      user: preloadedState.activeUser,
     })
 
-    renderWithProviders(<Component />, {
+    renderWithProviders(<RedirectIfAuth />, {
       preloadedState,
       extraRoutes: [
         {
           path: '/articles',
           index: true,
-          Component () {
+          Component() {
             redirectCalled()
 
             return <section id="articles">Liste des articles</section>
-          }
-        }
-      ]
+          },
+        },
+      ],
     })
 
     expect(redirectCalled).to.toHaveBeenCalledOnce()
