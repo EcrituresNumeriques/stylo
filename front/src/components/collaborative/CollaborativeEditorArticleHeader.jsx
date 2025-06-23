@@ -44,9 +44,9 @@ export default function CollaborativeEditorArticleHeader({
   )
 
   useEffect(() => {
-    if (mode === 'preview') {
+    if (mode === 'preview' && match.params['*'] === '') {
       navigate(`${match.pathnameBase}/preview`)
-    } else {
+    } else if (match.params['*'] !== '') {
       navigate(match.pathnameBase)
     }
   }, [mode])
