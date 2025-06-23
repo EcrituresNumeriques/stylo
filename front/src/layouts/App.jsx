@@ -26,7 +26,7 @@ export async function loader() {
   const sessionToken = localStorage.getItem('sessionToken')
   if (sessionToken !== null && sessionToken.trim() !== '') {
     return await getUserProfile({
-      sessionToken: localStorage.getItem('sessionToken'),
+      sessionToken,
     })
   }
   return { user: null }
