@@ -36,7 +36,6 @@ export const initialState = {
     authTypes: [],
     authProviders: {},
     selectedTagIds: [],
-    workspaces: [],
   },
   userPreferences: localStorage.getItem('userPreferences')
     ? JSON.parse(localStorage.getItem('userPreferences'))

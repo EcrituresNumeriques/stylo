@@ -11,6 +11,7 @@
   padding: 0.25em 1.25em;
   line-height: inherit;
   color: $main-lighter-color;
+  min-height: 2.5em;
 }
 
 .filterByTags {
@@ -28,7 +29,4 @@
 
   margin-top: 0.25rem;
   margin-bottom: 0.5rem;
-}
-
-.createTagButton {
 }

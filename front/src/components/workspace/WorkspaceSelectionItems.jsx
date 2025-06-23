@@ -1,17 +1,31 @@
-import React, { useCallback, useMemo } from 'react'
-import PropTypes from 'prop-types'
-import { useSelector } from 'react-redux'
+import React, { useCallback } from 'react'
 
 import useFetchData from '../../hooks/graphql.js'
-import Loading from '../molecules/Loading.jsx'
+import { useWorkspaces } from '../../hooks/workspace.js'
 
+import Alert from '../molecules/Alert.jsx'
+import Loading from '../molecules/Loading.jsx'
 import WorkspaceSelectItem from './WorkspaceSelectItem.jsx'
 
 import { getArticleWorkspaces } from './Workspaces.graphql'
 
+/**
+ * @param {object} props
+ * @param {string} props.articleId
+ * @returns {Element}
+ */
 export default function WorkspaceSelectionItems({ articleId }) {
-  const userWorkspaces = useSelector((state) => state.activeUser.workspaces)
-  const { data, isLoading, mutate } = useFetchData(
+  const {
+    workspaces,
+    isLoading: isLoadingWorkspaces,
+    error: errorLoadingWorkspace,
+  } = useWorkspaces()
+  const {
+    data,
+    isLoading: isLoadingArticleWorkspaces,
+    error: errorLoadingArticleWorkspaces,
+    mutate,
+  } = useFetchData(
     { query: getArticleWorkspaces, variables: { articleId } },
     {
       revalidateOnFocus: false,
@@ -19,22 +33,26 @@ export default function WorkspaceSelectionItems({ articleId }) {
     }
   )
 
-  const articleWorkspaces = useMemo(
-    () => data?.article?.workspaces || [],
-    [data]
-  )
-
+  const articleWorkspaces = data?.article?.workspaces || []
   const handleWorkspaceUpdate = useCallback(() => {
     mutate()
   }, [mutate])
 
-  if (isLoading) {
+  if (isLoadingWorkspaces || isLoadingArticleWorkspaces) {
     return <Loading />
+  }
+
+  if (errorLoadingWorkspace) {
+    return <Alert message={errorLoadingWorkspace.message} />
+  }
+
+  if (errorLoadingArticleWorkspaces) {
+    return <Alert message={errorLoadingArticleWorkspaces.message} />
   }
 
   return (
     <>
-      {userWorkspaces.map((workspace) => (
+      {workspaces.map((workspace) => (
         <WorkspaceSelectItem
           key={workspace._id}
           id={workspace._id}
@@ -47,8 +65,4 @@ export default function WorkspaceSelectionItems({ articleId }) {
       ))}
     </>
   )
-}
-
-WorkspaceSelectionItems.propTypes = {
-  articleId: PropTypes.string,
 }
