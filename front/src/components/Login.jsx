@@ -1,19 +1,21 @@
-import React, { useCallback, useRef, useState, useEffect } from 'react'
-import { Link, useLocation, useNavigate, useRevalidator, useRouteLoaderData } from 'react-router'
-import { useDispatch } from 'react-redux'
+import { HelpCircle } from 'lucide-react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { useToasts } from '@geist-ui/core'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
+import { Link, useLocation, useNavigate, useRevalidator } from 'react-router'
+
+import Button from './Button'
+import Field from './Field'
+import { useToasts } from '@geist-ui/core'
+
 import { applicationConfig } from '../config.js'
 import { fromFormData } from '../helpers/forms.js'
 import { useLogout } from '../hooks/user.js'
 
-import styles from './login.module.scss'
 import buttonStyles from './button.module.scss'
 import formStyles from './form.module.scss'
-import Field from './Field'
-import Button from './Button'
-import { HelpCircle } from 'lucide-react'
+import styles from './login.module.scss'
 
 export default function Login() {
   const { t } = useTranslation()
@@ -21,8 +23,6 @@ export default function Login() {
   const dispatch = useDispatch()
   const { setToast } = useToasts()
   const usernameRef = useRef(null)
-  const navigate = useNavigate()
-  const { user } = useRouteLoaderData('app')
   const location = useLocation()
   const revalidator = useRevalidator()
 
@@ -39,13 +39,6 @@ export default function Login() {
       revalidator.revalidate()
     }
   }, [location.hash])
-
-  // Scenario: user is logged in and lands on this page
-  useEffect(() => {
-    if (user?._id) {
-      navigate(location?.state?.returnTo ?? '/articles', { replace: true })
-    }
-  }, [user?._id])
 
   const handleSubmit = useCallback((event) => {
     event.preventDefault()
@@ -69,7 +62,7 @@ export default function Login() {
       })
       .then((data) => {
         dispatch({ type: 'LOGIN', ...data })
-        navigate('/articles')
+        revalidator.revalidate()
       })
       .catch((error) => {
         setToast({
@@ -192,12 +185,18 @@ export default function Login() {
   )
 }
 
-export function Logout () {
+export function Logout() {
   const logout = useLogout()
   const navigate = useNavigate()
+  const revalidator = useRevalidator()
 
   useEffect(() => {
-    logout()
-    navigate('/', { replace: true })
+    ;(async () => {
+      await logout()
+      // make sure the sessionToken is removed before navigate is called
+      localStorage.removeItem('sessionToken')
+      await revalidator.revalidate()
+      navigate('/', { replace: true })
+    })()
   }, [])
 }
