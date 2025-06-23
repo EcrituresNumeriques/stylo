@@ -210,13 +210,13 @@
     "articles": "Articles",
     "button": "Menu",
     "corpus": "Corpus",
-    "description": "Organisez des ensembles d'articles dans des corpus et travaillez dessus à plusieurs avec les espaces de travail.",
-    "list": "Outils d'écriture et de collaboration",
-    "workspaces": "Espaces de travail",
-    "workspaces.list": "Choix d'un espace de travail"
+    "description": "Organize sets of articles into corpora and work on them with multiple users using workspaces.",
+    "list": "Writing and collaboration tools",
+    "workspaces": "Workspaces",
+    "workspaces.list": "Choice of workspace"
   },
   "header.skiplinks": {
-    "title": "Navigation rapide"
+    "title": "Quick navigation"
   },
   "header.userMenu": {
     "profile": "Profile",
