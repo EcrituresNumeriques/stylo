@@ -62,6 +62,10 @@
     height: auto;
   }
 
+  input[type='color'] {
+    height: 2.5em;
+  }
+
   :global {
     .control {
       align-self: center;

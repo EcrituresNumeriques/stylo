@@ -3,7 +3,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
 import { applicationConfig } from '../config.js'
 import { useGraphQLClient } from '../helpers/graphQL.js'
-import { useMutateData } from './graphql.js'
+import useFetchData, { useMutateData } from './graphql.js'
 
 import {
   logoutMutation,
@@ -147,6 +147,20 @@ export function useUserTagActions() {
 
   return {
     create,
+  }
+}
+
+export function useUserTags() {
+  const { data, error, isLoading } = useFetchData({
+    query: getTags,
+    variables: {},
+  })
+
+  const tags = data?.user?.tags || []
+  return {
+    tags,
+    error,
+    isLoading,
   }
 }
 

@@ -1,29 +1,34 @@
-import { useToasts } from '@geist-ui/core'
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 
 import { useGraphQLClient } from '../helpers/graphQL'
-import { createArticle } from './Articles.graphql'
-import Field from './Field.jsx'
-import FormActions from './molecules/FormActions.jsx'
-import { getTags } from './Tag.graphql'
-import Checkbox from './Checkbox.jsx'
+import { useToasts } from '@geist-ui/core'
 
-import formStyles from './field.module.scss'
-import checkboxStyles from './Checkbox.module.scss'
 import { fromFormData } from '../helpers/forms.js'
+import { useUserTags } from '../hooks/user.js'
+import { useWorkspaces } from '../hooks/workspace.js'
+
+import Checkbox from './Checkbox.jsx'
+import Field from './Field.jsx'
+import Alert from './molecules/Alert.jsx'
+import FormActions from './molecules/FormActions.jsx'
+import Loading from './molecules/Loading.jsx'
+
+import { createArticle } from './Articles.graphql'
+
+import checkboxStyles from './Checkbox.module.scss'
+import formStyles from './field.module.scss'
 
 /**
- * @typedef {Object} ArticleCreateProps
- * @property {function=} onSubmit
+ * @typedef {object} ArticleCreateProps
+ * @property {Function=} onSubmit
  * @property {string=} workspaceId
  */
 
 /**
- * @param props
- * @param {function} props.onSubmit
- * @param {function} props.onCancel
+ * @param {object} props
+ * @param {Function} props.onSubmit
+ * @param {Function} props.onCancel
  * @param {string|null} props.workspaceId
  * @returns {React.ReactHTMLElement}
  */
@@ -35,26 +40,7 @@ export default function ArticleCreate({
   const { t } = useTranslation()
   const { setToast } = useToasts()
 
-  const [tags, setTags] = useState([])
   const { query } = useGraphQLClient()
-  const workspaces = useSelector((state) => state.activeUser.workspaces)
-
-  useEffect(() => {
-    // Self invoking async function
-    ;(async () => {
-      try {
-        const {
-          user: { tags },
-        } = await query({ query: getTags, variables: {} })
-        setTags(tags)
-      } catch (err) {
-        setToast({
-          text: t('article.getTags.error', { errMessage: err }),
-          type: 'error',
-        })
-      }
-    })()
-  }, [])
 
   const handleSubmit = useCallback(async (event) => {
     event.preventDefault()
@@ -88,46 +74,9 @@ export default function ArticleCreate({
           required={true}
         />
 
-        {tags.length > 0 && (
-          <div>
-            <span className={formStyles.fieldLabel}>
-              {t('article.createForm.tagsField')}
-            </span>
+        <TagsField />
+        <WorkspacesField workspaceId={workspaceId} />
 
-            <ul className={checkboxStyles.inlineList}>
-              {tags.map((t) => (
-                <li key={`selectTag-${t._id}`}>
-                  <Checkbox name="tags[]" value={t._id} color={t.color}>
-                    {t.name}
-                  </Checkbox>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {workspaces.length > 0 && (
-          <div>
-            <span className={formStyles.fieldLabel}>
-              {t('workspace.title')}
-            </span>
-
-            <ul className={checkboxStyles.inlineList}>
-              {workspaces.map((workspace) => (
-                <li key={`selectWorkspace-${workspace._id}`}>
-                  <Checkbox
-                    name="workspaces[]"
-                    value={workspace._id}
-                    color={workspace.color}
-                    defaultChecked={workspaceId === workspace._id}
-                  >
-                    {workspace.name}
-                  </Checkbox>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
         <FormActions
           onCancel={onCancel}
           submitButton={{
@@ -138,4 +87,73 @@ export default function ArticleCreate({
       </form>
     </section>
   )
+}
+
+function WorkspacesField({ workspaceId }) {
+  const { t } = useTranslation()
+  const { workspaces, error, isLoading } = useWorkspaces()
+  if (error) {
+    return <Alert message={error.message} />
+  }
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (workspaces.length > 0) {
+    return (
+      <div>
+        <span className={formStyles.fieldLabel}>{t('workspace.title')}</span>
+
+        <ul className={checkboxStyles.inlineList}>
+          {workspaces.map((workspace) => (
+            <li key={`selectWorkspace-${workspace._id}`}>
+              <Checkbox
+                name="workspaces[]"
+                value={workspace._id}
+                color={workspace.color}
+                defaultChecked={workspaceId === workspace._id}
+              >
+                {workspace.name}
+              </Checkbox>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  return <></>
+}
+
+function TagsField() {
+  const { t } = useTranslation()
+  const { tags, error, isLoading } = useUserTags()
+  if (error) {
+    return <Alert message={error.message} />
+  }
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (tags.length > 0) {
+    return (
+      <div>
+        <span className={formStyles.fieldLabel}>
+          {t('article.createForm.tagsField')}
+        </span>
+
+        <ul className={checkboxStyles.inlineList}>
+          {tags.map((t) => (
+            <li key={`selectTag-${t._id}`}>
+              <Checkbox name="tags[]" value={t._id} color={t.color}>
+                {t.name}
+              </Checkbox>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  return <></>
 }
