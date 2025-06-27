@@ -134,6 +134,10 @@
 /*
  * 3. Langues
  */
+.languagesMenu {
+  position: relative;
+}
+
 .languagesMenu > button {
   display: flex;
 }
@@ -171,6 +175,14 @@
   @media screen and (min-width: $screen-breakpoint) {
     left: auto;
     right: -1em;
+  }
+  
+  .toggleMenuList {
+    padding: .5em;
+
+    @media screen and (min-width: $screen-breakpoint) {
+      padding: 1em;
+    }
   }
 }
 
