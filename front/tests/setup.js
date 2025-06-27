@@ -1,15 +1,17 @@
-import { afterEach, vi } from 'vitest'
 import React, { Children } from 'react'
-import { cleanup, render } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
-import '@testing-library/jest-dom/vitest'
 import { Provider } from 'react-redux'
 import { createRoutesStub } from 'react-router'
-import createReduxStore, { initialState } from '../src/createReduxStore.js'
-import i18n from '../src/i18n.js'
+import { afterEach, vi } from 'vitest'
 
-import merge from 'lodash.merge'
+import i18n from '../src/i18n.js'
 import '../src/i18n.js'
+
+import '@testing-library/jest-dom/vitest'
+import { cleanup, render } from '@testing-library/react'
+import merge from 'lodash.merge'
+
+import createReduxStore, { initialState } from '../src/createReduxStore.js'
 
 // mock Fetch requests
 globalThis.fetch = vi.fn().mockResolvedValue({
@@ -24,7 +26,7 @@ vi.mock('react-router', async (importOriginal) => {
 
   return {
     ...mod,
-    useRouteLoaderData: vi.fn()
+    useRouteLoaderData: vi.fn(),
   }
 })
 
@@ -60,18 +62,16 @@ export function renderWithProviders(
   } = {}
 ) {
   function Wrapper({ children }) {
-    const Stub = createRoutesStub(
-      [
-        {
-          path,
-          index: true,
-          Component () {
-            return Children.toArray(children)
-          }
+    const Stub = createRoutesStub([
+      {
+        path,
+        index: true,
+        Component() {
+          return Children.toArray(children)
         },
-        ...extraRoutes
-      ]
-    )
+      },
+      ...extraRoutes,
+    ])
 
     /* eslint-disable-next-line react/no-children-prop */
     return React.createElement(Provider, {

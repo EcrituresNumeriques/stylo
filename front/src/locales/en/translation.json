@@ -57,6 +57,7 @@
   "article.versions.title": "Versions",
   "article.workspaces.title": "Workspaces",
   "articles.page.title": "Articles - {{ workspace }}",
+  "authentication.error.message": "Username or password is incorrect.",
   "biblatexparser.error.cut_off_citation": "Reference cut off line {{line}}",
   "biblatexparser.error.key_value_error": "Key value error line {{line}}",
   "biblatexparser.error.missing_equal_sign": "Missing equal sign line {{line}}, found {{key}}",

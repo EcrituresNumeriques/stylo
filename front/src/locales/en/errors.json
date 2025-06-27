@@ -3,7 +3,6 @@
     "message": "The requested page does not exist: ",
     "title": "Page not found"
   },
-  "authentication.message": "Username or password is incorrect.",
   "message": "An error prevents the app to work properly: ",
   "title": "Error",
   "unknown": "An unexpected error happened."

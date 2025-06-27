@@ -3,7 +3,6 @@
     "message": "La page demandée n'existe pas : ",
     "title": "Page introuvable"
   },
-  "authentication.message": "L'identifiant de compte ou le mot de passe est incorrect.",
   "message": "Une erreur empêche l'application de fonctionner correctement : ",
   "title": "Erreur",
   "unknown": "Une erreur inattendue s'est produite."

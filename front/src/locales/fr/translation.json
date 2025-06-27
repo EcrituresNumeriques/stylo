@@ -57,6 +57,7 @@
   "article.versions.title": "Versions",
   "article.workspaces.title": "Espaces de travail",
   "articles.page.title": "Articles - {{ workspace }}",
+  "authentication.error.message": "L'identifiant de compte ou le mot de passe est incorrect.",
   "biblatexparser.error.cut_off_citation": "Référence tronquée ligne {{line}}",
   "biblatexparser.error.key_value_error": "Erreur de clé/valeur ligne {{line}}",
   "biblatexparser.error.missing_equal_sign": "Signe égale (=) absent ligne {{line}}, trouvé {{key}}",
