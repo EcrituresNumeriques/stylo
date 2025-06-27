@@ -19,6 +19,7 @@ import styles from './login.module.scss'
 
 export default function Login() {
   const { t } = useTranslation()
+  const { t: tErrors } = useTranslation('errors')
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const { setToast } = useToasts()
@@ -58,7 +59,7 @@ export default function Login() {
       .then((response) => {
         return response.ok
           ? response.json()
-          : Promise.reject(new Error('Email or password is incorrect'))
+          : Promise.reject(new Error(tErrors('authentication.message')))
       })
       .then((data) => {
         dispatch({ type: 'LOGIN', ...data })
