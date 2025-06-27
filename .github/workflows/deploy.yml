@@ -108,7 +108,7 @@ jobs:
         with:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MM_DEPLOY_WEBHOOK_URL }}
           MATTERMOST_CHANNEL: deploiement
-          TEXT: | 
-            A new version was deployed on [stylo-dev](https://stylo-dev.huma-num.fr/).  
+          TEXT: |
+            **:rocket: A new version was deployed on [stylo-dev](https://stylo-dev.huma-num.fr/).**  
           MATTERMOST_USERNAME: ${{ github.triggering_actor }}
-          MATTERMOST_ICON: https://cdn3.iconfinder.com/data/icons/leto-space/64/__rocket_spaceship-512.png
+          MATTERMOST_ICON_URL: https://cdn3.iconfinder.com/data/icons/leto-space/64/__rocket_spaceship-512.png
