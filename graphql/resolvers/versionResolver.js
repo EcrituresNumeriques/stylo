@@ -2,7 +2,7 @@ const YAML = require('js-yaml')
 const mongoose = require('mongoose')
 
 const Version = require('../models/version')
-const { ApiError } = require('../helpers/errors')
+const { NotFoundError } = require('../helpers/errors')
 const { reformat } = require('../helpers/metadata.js')
 const { previewEntries } = require('../helpers/bibliography')
 const { toLegacyFormat } = require('../helpers/metadata')
@@ -13,10 +13,7 @@ module.exports = {
       // TODO need to make sure user should have access to this version
       const version = await Version.findById(versionId).populate('owner')
       if (!version) {
-        throw new ApiError(
-          'NOT_FOUND',
-          `Unable to find version with id ${versionId}`
-        )
+        throw new NotFoundError('Version', versionId)
       }
       return version
     },

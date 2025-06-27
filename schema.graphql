@@ -168,11 +168,16 @@ type Mutation {
 
 type Query {
   "Fetch article info [need to have access to this article]"
-  article(article: ID!, user: ID): Article
+  article(article: ID!): Article
+  "Fetch an article [with an access key]"
+  sharedArticle(article: ID!, accessKey: JWT): Article
   "Fetch articles, optionally from a given Workspace"
   articles(filter: FilterCorpusInput, user: ID): [Article]
   "Get a list of corpus with an optional filter"
   corpus(filter: FilterCorpusInput): [Corpus!]
+  "Fetch a corpus with an optional filter"
+  sharedCorpus(corpusId: ID!, accessKey: JWT): Corpus
+
   getUser(filter: UserFilter): User
   "Fetch instance stats"
   stats: InstanceUsageStats

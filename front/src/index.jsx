@@ -28,9 +28,7 @@ import { GeistProvider } from '@geist-ui/core'
 import createStore from './createReduxStore.js'
 import { getUserProfile } from './helpers/user.js'
 
-import NotFound from './components/404.jsx'
 import AuthCallback from './components/AuthCallback.jsx'
-import ErrorBoundary from './components/Error.jsx'
 import LoadingPage from './components/LoadingPage.jsx'
 import Login, { Logout } from './components/Login.jsx'
 import RequireAuth from './components/PrivateRoute.jsx'
@@ -38,6 +36,8 @@ import RedirectIfAuth from './components/auth/RedirectIfAuth.jsx'
 import CollaborativeEditor, {
   loader as ArticleLoader,
 } from './components/collaborative/CollaborativeEditor.jsx'
+import NotFound from './components/errors/404.jsx'
+import ErrorBoundary from './components/errors/AppError.jsx'
 import App, { loader as AppLoader } from './layouts/App.jsx'
 
 if (SENTRY_DSN) {
@@ -127,18 +127,31 @@ const router = createBrowserRouter(
           element={<RegisterWithAuthProvider />}
         />
 
+        {/* Annotations */}
+        <Route
+          path="article/:id/annotate"
+          element={<Annotate strategy="article" />}
+        />
+        <Route
+          path="article/:id/version/:version/annotate"
+          element={<Annotate strategy="article" />}
+        />
+        <Route
+          path="corpus/:id/annotate"
+          element={<Annotate strategy="corpus" />}
+        />
+
         {/* Articles */}
         <Route path="articles" element={<RequireAuth />}>
           <Route index element={<Articles />} />
         </Route>
 
-        <Route path="article/:id" loader={ArticleLoader}>
+        <Route
+          path="article/:id"
+          loader={ArticleLoader}
+          element={<RequireAuth />}
+        >
           <Route index element={<CollaborativeEditor />} />
-          <Route
-            path="preview"
-            element={<CollaborativeEditor mode="preview" />}
-          />
-          <Route path="annotate" element={<Annotate strategy="article" />} />
           <Route
             path="compare/:compareTo"
             element={<CollaborativeEditor mode="compare" />}
@@ -146,11 +159,6 @@ const router = createBrowserRouter(
 
           <Route path="version/:version">
             <Route index element={<CollaborativeEditor />} />
-            <Route
-              path="preview"
-              element={<CollaborativeEditor mode="preview" />}
-            />
-            <Route path="annotate" element={<Annotate strategy="article" />} />
             <Route
               path="compare/:compareTo?"
               element={<CollaborativeEditor mode="compare" />}
@@ -161,9 +169,6 @@ const router = createBrowserRouter(
         {/* Corpus */}
         <Route path="corpus" element={<RequireAuth />}>
           <Route index element={<Corpus />} />
-          <Route path=":id">
-            <Route path="annotate" element={<Annotate strategy="corpus" />} />
-          </Route>
         </Route>
 
         {/* Workspaces */}

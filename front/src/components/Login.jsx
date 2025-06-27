@@ -192,9 +192,9 @@ export function Logout() {
 
   useEffect(() => {
     ;(async () => {
-      await logout()
       // make sure the sessionToken is removed before navigate is called
       localStorage.removeItem('sessionToken')
+      await logout()
       await revalidator.revalidate()
       navigate('/', { replace: true })
     })()

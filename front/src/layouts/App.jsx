@@ -58,6 +58,10 @@ export default function StyloApp() {
     if (location.pathname.match(/\/books/i)) {
       navigate(location.pathname.replace(/\/books/i, '/corpus'))
     }
+
+    if (location.pathname.match(/\/preview/i)) {
+      navigate(location.pathname.replace(/\/preview/i, '/annotate'))
+    }
   }, [location.pathname])
 
   // Forget tracking

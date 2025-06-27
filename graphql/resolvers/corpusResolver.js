@@ -1,4 +1,4 @@
-const { ApiError } = require('../helpers/errors')
+const { NotFoundError, NotAuthenticatedError } = require('../helpers/errors.js')
 const Corpus = require('../models/corpus')
 const Workspace = require('../models/workspace')
 
@@ -10,11 +10,9 @@ async function getCorpusByContext(corpusId, context) {
   }
   const userId = context.userId
   if (!userId) {
-    throw new ApiError(
-      'UNAUTHENTICATED',
-      `Unable to find an authentication context: ${context}`
-    )
+    throw new NotAuthenticatedError()
   }
+
   return getCorpusByUser(corpusId, userId)
 }
 
@@ -22,7 +20,7 @@ async function getCorpus(corpusId) {
   const corpus = await Corpus.findById(corpusId).populate('creator')
 
   if (!corpus) {
-    throw new ApiError('NOT_FOUND', `Unable to find corpus with id ${corpusId}`)
+    throw new NotFoundError('Corpus', corpusId)
   }
   return corpus
 }
@@ -38,7 +36,7 @@ async function getCorpusByUser(corpusId, userId) {
   }).populate('creator')
 
   if (!corpus) {
-    throw new ApiError('NOT_FOUND', `Unable to find corpus with id ${corpusId}`)
+    throw new NotFoundError('Corpus', corpusId)
   }
   return corpus
 }
@@ -105,11 +103,9 @@ module.exports = {
     async createCorpus(_, args, { user }) {
       const { createCorpusInput } = args
       if (!user) {
-        throw new ApiError(
-          'UNAUTHENTICATED',
-          'Unable to create a corpus as an unauthenticated user'
-        )
+        throw new NotAuthenticatedError()
       }
+
       // any user can create a corpus
       const newCorpus = new Corpus({
         name: createCorpusInput.name,
@@ -163,6 +159,10 @@ module.exports = {
         .populate([{ path: 'creator' }])
         .sort([['updatedAt', -1]])
     },
+
+    async sharedCorpus (_, args) {
+      return getCorpus(args.corpusId)
+    }
   },
 
   Corpus: {
@@ -223,10 +223,8 @@ module.exports = {
 
     async delete(corpus) {
       await corpus.remove()
-      if (corpus.$isDeleted()) {
-        return corpus
-      }
-      throw new ApiError('ERROR', `Unable to delete the corpus ${corpus._id}`)
+
+      return null
     },
 
     async update(corpus, { updateCorpusInput }) {

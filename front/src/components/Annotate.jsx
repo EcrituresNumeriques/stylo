@@ -10,8 +10,8 @@ import { toYaml } from './Write/metadata/yaml.js'
 import useFetchData from '../hooks/graphql.js'
 import { applicationConfig } from '../config.js'
 
-import { getArticle } from './Article.graphql'
-import { getCorpus } from './corpus/Corpus.graphql'
+import { getArticlePreview } from './Article.graphql'
+import { getCorpusPreview } from './corpus/Corpus.graphql'
 
 import './Annotate.scss'
 
@@ -23,7 +23,7 @@ const strategies = new Map([
         const hasVersion = Boolean(version)
 
         return {
-          query: getArticle,
+          query: getArticlePreview,
           variables: {
             id,
             version: hasVersion ? version : 'dummy',
@@ -32,7 +32,7 @@ const strategies = new Map([
         }
       },
       mapContent(data) {
-        const root = data?.article?.workingVersion ?? data?.version
+        const root = data?.sharedArticle?.workingVersion ?? data?.version
         return {
           md_content: root?.md,
           yaml_content: root?.yaml,
@@ -40,7 +40,7 @@ const strategies = new Map([
         }
       },
       title(data) {
-        const root = data?.article?.workingVersion ?? data?.version
+        const root = data?.sharedArticle?.workingVersion ?? data?.version
         return root.title ?? root.name
       },
     },
@@ -50,19 +50,14 @@ const strategies = new Map([
     {
       query({ id, workspaceId }) {
         return {
-          query: getCorpus,
+          query: getCorpusPreview,
           variables: {
-            includeWorkingVersion: true,
-            includeArticles: true,
-            filter: {
-              corpusId: id,
-              workspaceId,
-            },
+            corpusId: id,
           },
         }
       },
       mapContent(data) {
-        return data?.corpus?.at(0)?.articles?.reduce(
+        return data?.sharedCorpus?.at(0)?.articles?.reduce(
           (obj, { article }, index) => ({
             md_content: obj.md_content + '\n\n\n' + article.workingVersion.md,
             yaml_content:
@@ -84,7 +79,7 @@ const strategies = new Map([
         )
       },
       title(data) {
-        return data?.corpus?.at(0).name
+        return data?.sharedCorpus?.at(0).name
       },
     },
   ],
