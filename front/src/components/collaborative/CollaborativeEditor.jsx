@@ -22,9 +22,7 @@ export async function loader({ params }) {
     throw new Response(`Invalid article id ${articleId}`, { status: 400 })
   }
 
-  const store = createReduxStore()
-  const { sessionToken } = store.getState()
-
+  const sessionToken = localStorage.getItem('sessionToken')
   try {
     const { article } = await executeQuery({
       query: getArticleInfo,
@@ -46,7 +44,7 @@ export async function loader({ params }) {
 
 export default function CollaborativeEditor(props) {
   const { id: articleId, compareTo, version: versionId } = useParams()
-  const [searchParams] = useSearchParams({ mode: props.mode ?? 'write'})
+  const [searchParams] = useSearchParams({ mode: props.mode ?? 'write' })
   const mode = searchParams.get('mode')
 
   return (
