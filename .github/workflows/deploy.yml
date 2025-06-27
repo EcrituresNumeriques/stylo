@@ -103,3 +103,12 @@ jobs:
             --private-key ~/.ssh/id_ed25519 \
             --vault-password-file ./.ansible-vault-password \
             playbook.yml
+          
+      - uses: mattermost/action-mattermost-notify@v2.0.0
+        env:
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.MM_DEPLOY_WEBHOOK_URL }}
+          MATTERMOST_CHANNEL: deploiement
+          TEXT: | 
+            A new version was deployed on [stylo-dev](https://stylo-dev.huma-num.fr/).  
+          MATTERMOST_USERNAME: ${{ github.triggering_actor }}
+          MATTERMOST_ICON: https://cdn3.iconfinder.com/data/icons/leto-space/64/__rocket_spaceship-512.png
