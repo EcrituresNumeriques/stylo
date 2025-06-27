@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useMatch, useNavigate } from 'react-router'
+import { useSearchParams } from 'react-router'
 
 import { Toggle } from '@geist-ui/core'
 
@@ -25,11 +25,9 @@ export default function CollaborativeEditorArticleHeader({
   versionId,
 }) {
   const { t } = useTranslation()
-  const match = useMatch(
-    versionId ? `/article/:id/version/:versionId/*` : `/article/:id/*`
-  )
+
+  const [searchParams, setSearchParams] = useSearchParams()
   const [mode, setMode] = useState('edit')
-  const navigate = useNavigate()
 
   const { data, isLoading } = useFetchData(
     { query: getArticleInfo, variables: { articleId } },
@@ -44,10 +42,10 @@ export default function CollaborativeEditorArticleHeader({
   )
 
   useEffect(() => {
-    if (mode === 'preview' && match.params['*'] === '') {
-      navigate(`${match.pathnameBase}?mode=preview`)
-    } else if (match.params['*'] !== '') {
-      navigate(match.pathnameBase)
+    if (mode === 'preview' && searchParams.get('mode') !== 'preview') {
+      setSearchParams({ mode: 'preview' })
+    } else if (searchParams.get('mode') === 'preview') {
+      setSearchParams({})
     }
   }, [mode])
 
