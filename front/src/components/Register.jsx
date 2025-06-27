@@ -1,32 +1,27 @@
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useCallback, useRef } from 'react'
+import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router'
-import { useToasts } from '@geist-ui/core'
-import { useGraphQLClient } from '../helpers/graphQL'
-import * as queries from './Credentials.graphql'
-import { useActiveUserId } from '../hooks/user.js'
 
-import styles from './login.module.scss'
-import formStyles from './form.module.scss'
-import Field from './Field'
+import { useGraphQLClient } from '../helpers/graphQL'
 import Button from './Button'
+import Field from './Field'
+import { useToasts } from '@geist-ui/core'
+
 import { fromFormData, validateSameFieldValue } from '../helpers/forms.js'
-import { Helmet } from 'react-helmet'
+
+import * as queries from './Credentials.graphql'
+
+import formStyles from './form.module.scss'
+import styles from './login.module.scss'
 
 export default function Register() {
   const { t } = useTranslation()
   const { setToast } = useToasts()
-  const userId = useActiveUserId()
-  const passwordRef = useRef()
-  const passwordConfirmationRef = useRef()
+  const passwordRef = useRef(null)
+  const passwordConfirmationRef = useRef(null)
   const navigate = useNavigate()
   const { query } = useGraphQLClient()
-
-  useEffect(() => {
-    if (userId) {
-      navigate('/articles')
-    }
-  }, [userId])
 
   const handleFormSubmit = useCallback(async (event) => {
     event.preventDefault()

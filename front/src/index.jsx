@@ -119,9 +119,13 @@ const router = createBrowserRouter(
           <Route index element={<Login />} />
         </Route>
         <Route path="logout" element={<Logout />} />
-        <Route path="register" element={<Register />}>
-          <Route path=":service" element={<RegisterWithAuthProvider />} />
+        <Route path="register" element={<RedirectIfAuth />}>
+          <Route index element={<Register />} />
         </Route>
+        <Route
+          path="register/:service"
+          element={<RegisterWithAuthProvider />}
+        />
 
         {/* Articles */}
         <Route path="articles" element={<RequireAuth />}>
