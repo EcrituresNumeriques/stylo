@@ -21,5 +21,9 @@
     cursor: pointer;
     font-weight: 500;
     user-select: none;
+    
+    &[aria-disabled="true"] {
+      cursor: not-allowed;
+    }
   }
 }

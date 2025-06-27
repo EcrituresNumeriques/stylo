@@ -44,18 +44,24 @@ export default function CorpusMetadataModal({
     () => merge(corpusThesisMetadataSchema),
     [corpusThesisMetadataSchema]
   )
-  const corpusMetadataSchema = useMemo(
-    () =>
-      corpusType === 'journal'
-        ? corpusJournalMetadataSchema
-        : corpusThesisMetadataSchemaMerged,
-    [corpusType]
-  )
-  const corpusUiSchema = useMemo(
-    () =>
-      corpusType === 'journal' ? corpusJournalUiSchema : corpusThesisUiSchema,
-    [corpusType]
-  )
+  const corpusMetadataSchema = useMemo(() => {
+    if (corpusType === 'journal') {
+      return corpusJournalMetadataSchema
+    }
+    if (corpusType === 'thesis') {
+      return corpusThesisMetadataSchemaMerged
+    }
+    return null
+  }, [corpusType])
+  const corpusUiSchema = useMemo(() => {
+    if (corpusType === 'journal') {
+      return corpusJournalUiSchema
+    }
+    if (corpusType === 'thesis') {
+      return corpusThesisUiSchema
+    }
+    return null
+  }, [corpusType])
 
   // handlers
   const handleYamlChange = useCallback(
@@ -96,6 +102,16 @@ export default function CorpusMetadataModal({
     modal.close()
   }, [setMetadata, initialValue, modal])
 
+  const showYamlEditor = useMemo(
+    () => corpusType === 'neutral' || selector === 'raw',
+    [selector, corpusType]
+  )
+
+  const showMetadataForm = useMemo(
+    () => corpusType !== 'neutral' && selector !== 'raw',
+    [selector, corpusType]
+  )
+
   return (
     <>
       <Button
@@ -119,16 +135,19 @@ export default function CorpusMetadataModal({
           onClick={() => setSelector(selector === 'raw' ? 'basic' : 'raw')}
         >
           <Toggle
+            disabled={corpusType === 'neutral'}
             id="raw-mode"
-            checked={selector === 'raw'}
+            checked={selector === 'raw' || corpusType === 'neutral'}
             title={t('metadata.showYaml')}
             onChange={(e) => {
               setSelector(e.target.checked ? 'raw' : 'basic')
             }}
           />
-          <label htmlFor="raw-mode">YAML</label>
+          <label aria-disabled={corpusType === 'neutral'} htmlFor="raw-mode">
+            YAML
+          </label>
         </div>
-        {selector === 'raw' && (
+        {showYamlEditor && (
           <>
             {error !== '' && <p className={styles.error}>{error}</p>}
             <MonacoYamlEditor
@@ -139,7 +158,7 @@ export default function CorpusMetadataModal({
             />
           </>
         )}
-        {selector !== 'raw' && (
+        {showMetadataForm && (
           <MetadataForm
             data={metadata}
             schema={corpusMetadataSchema}
