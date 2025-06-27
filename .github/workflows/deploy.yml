@@ -104,7 +104,7 @@ jobs:
             --vault-password-file ./.ansible-vault-password \
             playbook.yml
           
-      - uses: mattermost/action-mattermost-notify@v2.0.0
+      - uses: mattermost/action-mattermost-notify@2.0.0
         env:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MM_DEPLOY_WEBHOOK_URL }}
           MATTERMOST_CHANNEL: deploiement
