@@ -294,9 +294,19 @@
   "affiliatedInstitutions": {
     "ui:add-item-title": "affiliatedInstitutions.itemAdd",
     "ui:className": "affiliatedInstitutions",
-    "items": {
-      "ui:label": false,
-      "ui:className": "affiliatedInstitutions"
+    "items":{
+      "universityName":{
+        "ui:title":"universityName"
+      },
+      "department":{
+        "ui:title":"department"
+      },
+      "faculty":{
+        "ui:title":"faculty"
+      },
+      "doctoralSchool":{
+        "ui:title":"doctoralSchool"
+      }
     }
   }
 }
