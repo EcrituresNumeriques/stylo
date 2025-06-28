@@ -132,11 +132,14 @@ export function useUserTagActions() {
       type: 'mutation',
     })
     await mutate(
-      async (data) => ({
-        user: {
-          tags: [...data.user.tags, result.createTag],
-        },
-      }),
+      async (data) => {
+        const tags = data?.user?.tags ?? []
+        return {
+          user: {
+            tags: [...tags, result.createTag],
+          },
+        }
+      },
       { revalidate: false }
     )
     return result.createTag
