@@ -1,23 +1,24 @@
-import React, { useCallback, useMemo, useState } from 'react'
 import { Search } from 'lucide-react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 
+import etv from '../helpers/eventTargetValue'
 import useFetchData from '../hooks/graphql'
+import Article from './Article'
+import Field from './Field'
+
 import { useModal } from '../hooks/modal.js'
 
-import Article from './Article'
 import ArticleCreate from './ArticleCreate.jsx'
 import Button from './Button.jsx'
-import Field from './Field'
-import Modal from './Modal.jsx'
 import LoadingPage from './LoadingPage.jsx'
+import Modal from './Modal.jsx'
 import TagEditForm from './tag/TagEditForm.jsx'
 import TagsList from './tag/TagsList.jsx'
 import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
-import etv from '../helpers/eventTargetValue'
 
 import { getWorkspaceArticles } from './Articles.graphql'
 
@@ -36,14 +37,13 @@ export default function Articles() {
   const { data, isLoading, mutate } = useFetchData(
     {
       query: getWorkspaceArticles,
-      variables:
-      {
+      variables: {
         workspaceId: activeWorkspaceId,
         isPersonalWorkspace: !activeWorkspaceId,
         filter: {
-          workspaceId: activeWorkspaceId
-        }
-      }
+          workspaceId: activeWorkspaceId,
+        },
+      },
     },
     {
       revalidateOnFocus: false,
@@ -51,8 +51,8 @@ export default function Articles() {
       fallbackData: {
         articles: [],
         corpus: [],
-        workspace: {}
-      }
+        workspace: {},
+      },
     }
   )
 
@@ -141,7 +141,10 @@ export default function Articles() {
   }
 
   return (
-    <section className={styles.section} aria-labelledby="articles-list-headline">
+    <section
+      className={styles.section}
+      aria-labelledby="articles-list-headline"
+    >
       <Helmet>
         <title>
           {t('articles.page.title', {
@@ -153,11 +156,7 @@ export default function Articles() {
       <header className={styles.articlesHeader}>
         <h1 id="articles-list-headline">{t('header.articles.link')}</h1>
 
-        <WorkspaceLabel
-          color={workspace.color}
-          name={workspace.name}
-        />
-
+        <WorkspaceLabel color={workspace.color} name={workspace.name} />
       </header>
 
       <search aria-label={t('article.search.label')}>
@@ -192,8 +191,12 @@ export default function Articles() {
       </Modal>
 
       <div aria-labelledby="articles-list-headline" role="list">
-        <div  className={styles.articlesTableHeader}>
-          <Button primary onClick={() => createArticleModal.show()}>
+        <div className={styles.articlesTableHeader}>
+          <Button
+            testId="create-article-button"
+            primary
+            onClick={() => createArticleModal.show()}
+          >
             {t('article.createAction.buttonText')}
           </Button>
 
@@ -212,7 +215,6 @@ export default function Articles() {
           />
         ))}
       </div>
-
     </section>
   )
 }
