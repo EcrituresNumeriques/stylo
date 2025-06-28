@@ -105,6 +105,10 @@
   "translationOf.title": "Titre",
   "translationOf.url": "URL",
   "translators": "Traducteur·ices",
-  "url": "URL"
+  "url": "URL", 
+  "universityName": "Université", 
+  "department": "Départment", 
+  "faculty": "Faculté", 
+  "doctoralSchool": "École doctorale"
 }
  
