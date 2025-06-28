@@ -21,6 +21,7 @@ export function useCorpusActions() {
       filter: {
         workspaceId,
       },
+      workspaceId,
     },
   })
 
