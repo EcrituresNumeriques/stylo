@@ -160,9 +160,9 @@ module.exports = {
         .sort([['updatedAt', -1]])
     },
 
-    async sharedCorpus (_, args) {
+    async sharedCorpus(_, args) {
       return getCorpus(args.corpusId)
-    }
+    },
   },
 
   Corpus: {
@@ -224,7 +224,7 @@ module.exports = {
     async delete(corpus) {
       await corpus.remove()
 
-      return null
+      return corpus
     },
 
     async update(corpus, { updateCorpusInput }) {
