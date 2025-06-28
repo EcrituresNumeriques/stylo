@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useRouteLoaderData } from 'react-router'
 
 import { applicationConfig } from '../config.js'
 import { useGraphQLClient } from '../helpers/graphQL.js'
@@ -12,19 +13,11 @@ import {
 import { createTag, getTags } from '../components/Tag.graphql'
 
 /**
- * There is no need to use `shallowEqual` because we don't mutate the data
- * but only replace them, either on form update or logout
- * @returns {Object}
- */
-export function useActiveUser() {
-  return useSelector((state) => state.activeUser)
-}
-
-/**
- * @returns {string}
+ * @returns {string|null}
  */
 export function useActiveUserId() {
-  return useSelector((state) => state.activeUser?._id)
+  const { user } = useRouteLoaderData('app')
+  return user?._id
 }
 
 /**
