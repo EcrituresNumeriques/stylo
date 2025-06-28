@@ -1,7 +1,14 @@
 const mongoose = require('mongoose')
+const { ObjectId } = require('mongoose').Types
 const bcrypt = require('bcryptjs')
 
 const { article: defaultArticle } = require('../data/defaultsData')
+
+const Article = require('./article.js')
+const Corpus = require('./corpus.js')
+const Tag = require('./tag.js')
+const Version = require('./version.js')
+const Workspace = require('./corpus.js')
 
 const Schema = mongoose.Schema
 
@@ -132,6 +139,43 @@ userSchema.virtual('authTypes').get(function authTypes() {
   }
 
   return Array.from(types)
+})
+
+// TODO: middleware name will change in future version of Mongoose
+userSchema.pre('remove', async function deleteAssociatedUserDocumentsHook() {
+  const session = await this.db.startSession()
+
+  await session.withTransaction(async () => {
+    // remove user from members of
+    await mongoose.model('User').updateMany(
+      {},
+      {
+        $pull: { acquintances: this.id },
+      }
+    )
+
+    // await Article.deleteMany({ owner: this.id })
+    // await Article.updateMany(
+    //   {},
+    //   {
+    //     $pull: { 'contributors': { user: this.id } },
+    //   }
+    // )
+
+    await Workspace.deleteMany({ creator: this.id })
+    await Workspace.updateMany(
+      {},
+      {
+        $pull: { 'members': { user: this.id } },
+      }
+    )
+
+    // await Corpus.deleteMany({ creator: this.id })
+    // await Tag.deleteMany({ owner: this.id })
+  })
+
+  await session.commitTransaction()
+  return session.endSession()
 })
 
 module.exports = mongoose.model('User', userSchema)
