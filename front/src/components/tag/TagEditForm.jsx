@@ -1,13 +1,14 @@
-import { useToasts } from '@geist-ui/core'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import { useToasts } from '@geist-ui/core'
+
 import { randomColor } from '../../helpers/colors.js'
 import { fromFormData } from '../../helpers/forms.js'
-import { useGraphQLClient } from '../../helpers/graphQL.js'
-import useFetchData from '../../hooks/graphql.js'
+import { useUserTagActions } from '../../hooks/user.js'
+
 import Field from '../Field.jsx'
 import FormActions from '../molecules/FormActions.jsx'
-import { createTag, getTags, updateTag } from '../Tag.graphql'
 
 import styles from './TagEditForm.module.scss'
 
@@ -20,41 +21,21 @@ import styles from './TagEditForm.module.scss'
  */
 export default function TagEditForm({ tag, onSubmit, onCancel }) {
   const { setToast } = useToasts()
-  const { data, mutate } = useFetchData({ query: getTags, variables: {} })
+  const { create, update } = useUserTagActions()
   const { t } = useTranslation()
 
-  const { query } = useGraphQLClient()
   const isNew = Boolean(!tag?._id)
 
   const title = isNew ? t('tag.editForm.title') : t('tag.createForm.title')
 
   const handleTagFormSubmit = useCallback(async (event) => {
     event.preventDefault()
-
-    const variables = {
+    const data = {
       ...fromFormData(event.target),
       tag: tag?._id ?? null,
     }
-
-    const result = await query({
-      query: isNew ? createTag : updateTag,
-      variables,
-    })
-
-    await mutate(
-      {
-        user: {
-          tags: isNew
-            ? [...data.user.tags, result.createTag]
-            : data.user.tags.map((tag) => {
-                return tag._id === result.updateTag._id ? result.updateTag : tag
-              }),
-        },
-      },
-      { revalidate: false }
-    )
-
-    onSubmit(result.updateTag ?? result.createTag)
+    const result = isNew ? await create(data) : await update(data)
+    onSubmit(result)
     setToast({
       text: t(`tag.${isNew ? 'createForm' : 'editForm'}.successNotification`),
       type: 'default',

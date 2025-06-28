@@ -10,7 +10,7 @@ import {
   logoutMutation,
   unsetAuthTokenMutation,
 } from '../components/Credentials.graphql'
-import { createTag, getTags } from '../components/Tag.graphql'
+import { createTag, getTags, updateTag } from '../components/Tag.graphql'
 
 /**
  * @returns {string|null}
@@ -131,15 +131,38 @@ export function useUserTagActions() {
       variables: tag,
       type: 'mutation',
     })
-    await mutate(async (data) => ({
-      user: {
-        tags: [...data.user.tags, result.createTag],
-      },
-    }))
+    await mutate(
+      async (data) => ({
+        user: {
+          tags: [...data.user.tags, result.createTag],
+        },
+      }),
+      { revalidate: false }
+    )
+    return result.createTag
+  }
+  const update = async (tag) => {
+    const result = await query({
+      query: updateTag,
+      variables: tag,
+      type: 'mutation',
+    })
+    await mutate(
+      async (data) => ({
+        user: {
+          tags: data.user.tags.map((tag) => {
+            return tag._id === result.updateTag._id ? result.updateTag : tag
+          }),
+        },
+      }),
+      { revalidate: false }
+    )
+    return result.updateTag
   }
 
   return {
     create,
+    update,
   }
 }
 
