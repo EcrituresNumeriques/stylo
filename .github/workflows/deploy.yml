@@ -106,7 +106,7 @@ jobs:
       
       - name: Get latest commit message
         run: |
-          echo "MESSAGE=$(git log -1 --pretty="\`%h\` %s)" >> $GITHUB_OUTPUT
+          echo "MESSAGE=$(git log -1 --pretty='`%h` %s')" >> $GITHUB_OUTPUT
         id: latest-commit
 
       - uses: mattermost/action-mattermost-notify@2.0.0
