@@ -103,13 +103,21 @@ jobs:
             --private-key ~/.ssh/id_ed25519 \
             --vault-password-file ./.ansible-vault-password \
             playbook.yml
-          
+      
+      - name: Get latest commit message
+        run: |
+          echo "MESSAGE=$(git log -1 --pretty="\`%h\` %s)" >> $GITHUB_OUTPUT
+        id: latest-commit
+
       - uses: mattermost/action-mattermost-notify@2.0.0
         with:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MM_DEPLOY_WEBHOOK_URL }}
           MATTERMOST_CHANNEL: deploiement
           TEXT: |
             **:rocket: A new version was deployed on [stylo-dev](https://stylo-dev.huma-num.fr/).**
+            *Latest commit:* ${{ steps.latest-commit.outputs.MESSAGE }}
             — GitHub Actions: [#${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
           MATTERMOST_USERNAME: ${{ github.triggering_actor }}
           MATTERMOST_ICON_URL: https://cdn3.iconfinder.com/data/icons/leto-space/64/__rocket_spaceship-512.png
+        env:
+          LATEST_COMMIT_MESSAGE: 
