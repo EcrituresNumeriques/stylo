@@ -1,9 +1,12 @@
-import React, { useCallback, useState } from 'react'
-import throttle from 'lodash.throttle'
-import { searchKeyword as isidoreKeywordSearch } from '../../../helpers/isidore'
+import clsx from 'clsx'
 import { useCombobox } from 'downshift'
-import Field from '../../Field'
+import React, { useCallback, useState } from 'react'
 
+import { searchKeyword as isidoreKeywordSearch } from '../../../helpers/isidore'
+import Field from '../../Field'
+import throttle from 'lodash.throttle'
+
+import fieldStyles from '../../field.module.scss'
 import styles from '../../form.module.scss'
 
 const toValueFn = (el) => ({
@@ -68,13 +71,15 @@ export default function IsidoreAPIAutocompleteField(props) {
           )}
         />
       )}
-      <ul {...getMenuProps()}>
+      <ul {...getMenuProps()} className={fieldStyles.comboboxResults}>
         {isOpen &&
           inputItems.map((item, index) => (
             <li
-              style={
-                highlightedIndex === index ? { backgroundColor: '#bde4ff' } : {}
-              }
+              className={clsx(
+                fieldStyles.comboboxItem,
+                highlightedIndex === index &&
+                  fieldStyles.comboboxHighlightedItem
+              )}
               key={`${item.option['@value']}${index}`}
               {...getItemProps({ item, index })}
             >
