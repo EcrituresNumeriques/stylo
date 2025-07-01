@@ -1,11 +1,14 @@
-import React, { useCallback, useState } from 'react'
-import throttle from 'lodash.throttle'
-import { searchAuthor as isidoreAuthorSearch } from '../../../helpers/isidore'
+import clsx from 'clsx'
 import { useCombobox } from 'downshift'
-import Field from '../../Field'
-
-import styles from '../../form.module.scss'
 import { Search } from 'lucide-react'
+import React, { useCallback, useState } from 'react'
+
+import { searchAuthor as isidoreAuthorSearch } from '../../../helpers/isidore'
+import Field from '../../Field'
+import throttle from 'lodash.throttle'
+
+import fieldStyles from '../../field.module.scss'
+import styles from '../../form.module.scss'
 
 function toValueFn(el) {
   const firstname = el.option.find((opt) => opt['@key'] === 'firstname')?.[
@@ -16,8 +19,9 @@ function toValueFn(el) {
   ]
   const orcid = el.option.find((opt) => opt['@key'] === 'orcid')?.['@value']
   const isni = el.option.find((opt) => opt['@key'] === 'isni')?.['@value']
+
   return {
-    forname: firstname,
+    forename: firstname,
     surname: lastname,
     orcid,
     isni,
@@ -71,19 +75,23 @@ export default function IsidoreAuthorAPIAutocompleteField(props) {
           { suppressRefError: true }
         )}
       />
-      <ul {...getMenuProps()}>
+      <ul {...getMenuProps()} className={fieldStyles.comboboxResults}>
         {isOpen &&
-          inputItems.map((item, index) => (
-            <li
-              style={
-                highlightedIndex === index ? { backgroundColor: '#bde4ff' } : {}
-              }
-              key={`${item.option['@value']}${index}`}
-              {...getItemProps({ item, index })}
-            >
-              {item['@label']}
-            </li>
-          ))}
+          inputItems.map((item, index) => {
+            return (
+              <li
+                className={clsx(
+                  fieldStyles.comboboxItem,
+                  highlightedIndex === index &&
+                    fieldStyles.comboboxHighlightedItem
+                )}
+                key={`${item.option['@value']}${index}`}
+                {...getItemProps({ item, index })}
+              >
+                {item['@label']}
+              </li>
+            )
+          })}
       </ul>
     </div>
   )

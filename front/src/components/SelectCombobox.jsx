@@ -1,12 +1,14 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import styles from './field.module.scss'
-import buttonStyles from './button.module.scss'
+import clsx from 'clsx'
 import { useCombobox } from 'downshift'
 import { ChevronDown, X } from 'lucide-react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { groupItems } from './SelectCombobox.js'
 
 import Field from './Field.jsx'
-import clsx from 'clsx'
-import { groupItems } from './SelectCombobox.js'
+
+import buttonStyles from './button.module.scss'
+import styles from './field.module.scss'
 
 /**
  * @typedef {object} ComboboxItem
@@ -45,37 +47,47 @@ export default function Combobox({
     }
   }, [items])
 
-  const stateReducer = useCallback(function reducer(state, { changes, type }) {
-    switch (type) {
-      case useCombobox.stateChangeTypes.InputKeyDownEnter:
-      case useCombobox.stateChangeTypes.ItemClick:
-        onChange(changes.selectedItem.key)
+  const stateReducer = useCallback(
+    function reducer(state, { changes, type }) {
+      switch (type) {
+        case useCombobox.stateChangeTypes.InputKeyDownEnter:
+        case useCombobox.stateChangeTypes.ItemClick:
+          onChange(changes.selectedItem.key)
 
-        return {
-          ...changes,
-          highlightedIndex: items.findIndex(({ key }) => key === changes.selectedItem.key)
-        }
+          return {
+            ...changes,
+            highlightedIndex: items.findIndex(
+              ({ key }) => key === changes.selectedItem.key
+            ),
+          }
 
-      case useCombobox.stateChangeTypes.InputChange:
-      case useCombobox.stateChangeTypes.FunctionReset:
-        if (type === useCombobox.stateChangeTypes.FunctionReset || changes.inputValue === '') {
-          onChange('')
-        }
+        case useCombobox.stateChangeTypes.InputChange:
+        case useCombobox.stateChangeTypes.FunctionReset:
+          if (
+            type === useCombobox.stateChangeTypes.FunctionReset ||
+            changes.inputValue === ''
+          ) {
+            onChange('')
+          }
 
-        setInputItems(
-          !changes.inputValue
-            ? items
-            : items.filter((item) => {
-                return item.name.toLowerCase().includes(changes.inputValue.toLowerCase())
-              })
-        )
+          setInputItems(
+            !changes.inputValue
+              ? items
+              : items.filter((item) => {
+                  return item.name
+                    .toLowerCase()
+                    .includes(changes.inputValue.toLowerCase())
+                })
+          )
 
-        return changes
+          return changes
 
-      default:
-        return changes
-    }
-  }, [items])
+        default:
+          return changes
+      }
+    },
+    [items]
+  )
 
   const {
     isOpen,
@@ -89,15 +101,15 @@ export default function Combobox({
     inputValue,
     setInputValue,
     setHighlightedIndex,
-    reset
+    reset,
   } = useCombobox({
     items,
     selectedItem,
     stateReducer,
-    itemToString (item) {
+    itemToString(item) {
       return item?.name
     },
-    itemToKey (item) {
+    itemToKey(item) {
       return item?.key
     },
   })
