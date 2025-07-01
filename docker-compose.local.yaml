@@ -1,0 +1,5 @@
+services:
+  mongodb-stylo:
+    environment: !override
+      - MONGO_LOG_DIR=/dev/null
+    volumes: !reset []

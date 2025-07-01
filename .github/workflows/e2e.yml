@@ -1,0 +1,43 @@
+name: Tests e2e
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies
+        run: |
+          npm clean-install
+          npm clean-install --prefix=front
+          npm clean-install --prefix=graphql
+      - name: Install playwright
+        run: |
+          npx playwright install --with-deps chromium
+        working-directory: front
+      - name: Start containers
+        run: |
+          cp stylo-example.env .env
+          docker compose up -d mongodb-stylo
+      - name: Start services
+        run: |
+          npm run dev &
+      - name: Wait services
+        run: |
+          sleep 10
+      - name: Run tests e2e
+        run: |
+          npm run test:e2e --prefix=front
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: front/playwright-report/
+          retention-days: 30
