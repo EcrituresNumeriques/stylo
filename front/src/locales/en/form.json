@@ -13,13 +13,16 @@
   "controlledKeywords": "Controlled keywords",
   "controlledKeywords.itemAdd": "Add a controlled keyword",
   "defenseDate": "Defense date",
+  "department": "Department",
   "directors": "Supervisors",
   "directors.itemAdd": "Add a supervisor",
   "disciplines": "Disciplines",
   "disciplines.itemAdd": "Add a discipline",
+  "doctoralSchool": "Doctoral School",
   "dossier": "Dossier",
   "dossier.id": "Dossier ID",
   "dossier.title": "Dossier title",
+  "faculty": "Faculty",
   "form.itemAdd": "Add",
   "form.itemRemove": "Remove",
   "funder": "Funder",
@@ -105,9 +108,6 @@
   "translationOf.title": "Title",
   "translationOf.url": "URL",
   "translators": "Translators",
-  "url": "URL", 
-  "universityName": "University name", 
-  "department": "Department", 
-  "faculty": "Faculty", 
-  "doctoralSchool": "Doctoral School"
+  "universityName": "University name",
+  "url": "URL"
 }

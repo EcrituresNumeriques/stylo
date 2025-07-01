@@ -13,13 +13,16 @@
   "controlledKeywords": "Palabras clave controladas",
   "controlledKeywords.itemAdd": "Añadir una palabra clave controlada",
   "defenseDate": "Fecha de defensa",
+  "department": "Departamento",
   "directors": "Directores·as",
   "directors.itemAdd": "Añadir un·a director·a",
   "disciplines": "Disciplinas",
   "disciplines.itemAdd": "Añadir una disciplina",
+  "doctoralSchool": "Escuela doctoral",
   "dossier": "Dossier",
   "dossier.id": "Identificador de dossier",
   "dossier.title": "Título del dossier",
+  "faculty": "Facultad",
   "form.itemAdd": "Añadir",
   "form.itemRemove": "Eliminar",
   "funder": "Financiador",
@@ -105,9 +108,6 @@
   "translationOf.title": "Título",
   "translationOf.url": "URL",
   "translators": "Traductor·as",
-  "url": "URL", 
   "universityName": "Universidad",
-  "department": "Departamento",
-  "faculty": "Facultad",
-  "doctoralSchool": "Escuela doctoral"
+  "url": "URL"
 }

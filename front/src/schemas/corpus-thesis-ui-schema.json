@@ -1,13 +1,13 @@
 {
   "ui:groups": [
     {
-      "title": "thesis.title",
       "fields": [
         "publicationDate",
         "defenseDate",
         "url",
         "disciplines"
-      ]
+      ],
+      "title": "thesis.title"
     },
     {
       "title": "thesis.titleAndAbstract",
@@ -294,18 +294,18 @@
   "affiliatedInstitutions": {
     "ui:add-item-title": "affiliatedInstitutions.itemAdd",
     "ui:className": "affiliatedInstitutions",
-    "items":{
-      "universityName":{
-        "ui:title":"universityName"
+    "items": {
+      "universityName": {
+        "ui:title": "universityName"
       },
-      "department":{
-        "ui:title":"department"
+      "department": {
+        "ui:title": "department"
       },
-      "faculty":{
-        "ui:title":"faculty"
+      "faculty": {
+        "ui:title": "faculty"
       },
-      "doctoralSchool":{
-        "ui:title":"doctoralSchool"
+      "doctoralSchool": {
+        "ui:title": "doctoralSchool"
       }
     }
   }
