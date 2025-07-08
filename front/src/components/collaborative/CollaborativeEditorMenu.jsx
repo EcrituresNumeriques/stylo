@@ -1,16 +1,18 @@
-import React, { useCallback } from 'react'
 import clsx from 'clsx'
 import { ArrowLeft, ChevronRight } from 'lucide-react'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useRouteLoaderData } from 'react-router'
 
-import { usePreferenceItem } from '../../hooks/user.js'
+import { trackEvent } from '../../helpers/analytics.js'
 import useFetchData from '../../hooks/graphql.js'
+import { usePreferenceItem } from '../../hooks/user.js'
 
 import Export from '../Export.jsx'
-import Loading from '../molecules/Loading.jsx'
 import Sidebar from '../Sidebar.jsx'
-import ArticleBibliography from '../bibliography/ArticleBibliography.jsx'
 import ArticleMetadata from '../Write/ArticleMetadata.jsx'
+import ArticleBibliography from '../bibliography/ArticleBibliography.jsx'
+import Loading from '../molecules/Loading.jsx'
 import ArticleTableOfContents from './ArticleTableOfContents.jsx'
 import CollaborativeVersions from './CollaborativeVersions.jsx'
 
@@ -18,7 +20,12 @@ import { getArticleInfo } from '../Article.graphql'
 
 import styles from './CollaborativeEditorMenu.module.scss'
 
-export default function CollaborativeEditorMenu({ articleId, className, versionId }) {
+export default function CollaborativeEditorMenu({
+  articleId,
+  className,
+  versionId,
+}) {
+  const { user } = useRouteLoaderData('app')
   const { t } = useTranslation()
   const { value: opened, toggleValue: setOpened } = usePreferenceItem(
     'expandSidebarRight',
@@ -29,7 +36,6 @@ export default function CollaborativeEditorMenu({ articleId, className, versionI
     'article'
   )
 
-  const onBack = useCallback(() => setActiveMenu(null), [])
   const { data, isLoading } = useFetchData(
     { query: getArticleInfo, variables: { articleId } },
     {
@@ -37,6 +43,25 @@ export default function CollaborativeEditorMenu({ articleId, className, versionI
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
     }
+  )
+
+  const handleNavigateBack = useCallback(() => {
+    trackEvent('ArticleMenuNavigation', 'back', '', '', {
+      articleId,
+      userId: user._id,
+    })
+    setActiveMenu(null)
+  }, [setActiveMenu])
+
+  const handleNavigateTo = useCallback(
+    (name) => {
+      trackEvent('ArticleMenuNavigation', 'goto', name, '', {
+        articleId,
+        userId: user._id,
+      })
+      setActiveMenu(name)
+    },
+    [setActiveMenu]
   )
 
   if (isLoading) {
@@ -58,7 +83,7 @@ export default function CollaborativeEditorMenu({ articleId, className, versionI
           aria-orientation="vertical"
         >
           <li role="menuitem">
-            <button onClick={() => setActiveMenu('toc')}>
+            <button onClick={() => handleNavigateTo('toc')}>
               {t('toc.title')}
               <ChevronRight
                 style={{ strokeWidth: 3 }}
@@ -70,7 +95,7 @@ export default function CollaborativeEditorMenu({ articleId, className, versionI
           </li>
 
           <li role="menuitem">
-            <button onClick={() => setActiveMenu('metadata')}>
+            <button onClick={() => handleNavigateTo('metadata')}>
               {t('metadata.title')}
               <ChevronRight
                 style={{ strokeWidth: 3 }}
@@ -82,7 +107,7 @@ export default function CollaborativeEditorMenu({ articleId, className, versionI
           </li>
 
           <li role="menuitem">
-            <button onClick={() => setActiveMenu('bibliography')}>
+            <button onClick={() => handleNavigateTo('bibliography')}>
               {t('bibliography.title')}
               <ChevronRight
                 style={{ strokeWidth: 3 }}
@@ -94,7 +119,7 @@ export default function CollaborativeEditorMenu({ articleId, className, versionI
           </li>
 
           <li role="menuitem">
-            <button onClick={() => setActiveMenu('versions')}>
+            <button onClick={() => handleNavigateTo('versions')}>
               {t('versions.title')}
               <ChevronRight
                 style={{ strokeWidth: 3 }}
@@ -106,7 +131,7 @@ export default function CollaborativeEditorMenu({ articleId, className, versionI
           </li>
           <li role="menuitem">
             <button
-              onClick={() => setActiveMenu('export')}
+              onClick={() => handleNavigateTo('export')}
               title={t('write.title.buttonExport')}
             >
               {t('export.title')}
@@ -135,20 +160,25 @@ export default function CollaborativeEditorMenu({ articleId, className, versionI
       <div className={styles.content}>
         {activeMenu === 'metadata' && (
           <ArticleMetadata
-            onBack={onBack}
+            onBack={handleNavigateBack}
             articleId={articleId}
             versionId={versionId}
           />
         )}
-        {activeMenu === 'toc' && <ArticleTableOfContents onBack={onBack} />}
+        {activeMenu === 'toc' && (
+          <ArticleTableOfContents onBack={handleNavigateBack} />
+        )}
         {activeMenu === 'bibliography' && (
-          <ArticleBibliography articleId={articleId} onBack={onBack} />
+          <ArticleBibliography
+            articleId={articleId}
+            onBack={handleNavigateBack}
+          />
         )}
         {activeMenu === 'export' && (
           <>
             <h2
               className={styles.title}
-              onClick={onBack}
+              onClick={handleNavigateBack}
               style={{ cursor: 'pointer', userSelect: 'none' }}
             >
               <span style={{ display: 'flex' }}>
@@ -168,7 +198,7 @@ export default function CollaborativeEditorMenu({ articleId, className, versionI
             articleId={articleId}
             selectedVersion={versionId}
             showTitle={true}
-            onBack={onBack}
+            onBack={handleNavigateBack}
           />
         )}
       </div>
