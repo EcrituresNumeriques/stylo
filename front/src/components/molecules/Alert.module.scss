@@ -11,6 +11,15 @@
   }
 }
 
+.fullscreen {
+  font-weight: bold;
+  justify-content: center;
+
+  a:after {
+    display: none;
+  }
+}
+
 .warning {
   background-color: rgb(255, 251, 230);
   border-color: rgb(255, 229, 143);

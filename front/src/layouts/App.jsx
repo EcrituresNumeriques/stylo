@@ -14,9 +14,11 @@ import {
 import { getUserProfile } from '../helpers/user.js'
 import { usePreferenceItem } from '../hooks/user.js'
 
+import CommunityAlert from '../components/CommunityAlert.jsx'
 import Footer from '../components/Footer.jsx'
 import Header from '../components/Header.jsx'
 import SkipLinks from '../components/SkipLinks.jsx'
+import { useDiscourseFeed } from '../hooks/feed.js'
 
 /**
  * Loads user data from localStorage JWT
@@ -83,6 +85,9 @@ export default function StyloApp() {
     }
   }, [location.pathname, hasTrackingConsent])
 
+  // Collect alert messages
+  const { data: alerts } = useDiscourseFeed('/community/alerts.json')
+
   const hideHeader = useMemo(
     () => location.pathname.endsWith('/annotate'),
     [location.pathname]
@@ -93,12 +98,13 @@ export default function StyloApp() {
       location.pathname.startsWith('/article/')
     )
   }, [location.pathname])
-
+console.log(alerts.topics)
   return (
     <>
       <SkipLinks />
       {hideHeader || <Header />}
       <main id="content" aria-label={t('main.title')} tabIndex="-1">
+        <CommunityAlert topic={alerts.topics?.at(0)} />
         <ScrollRestoration />
         <Outlet />
       </main>
