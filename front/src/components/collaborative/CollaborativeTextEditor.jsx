@@ -1,24 +1,26 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { Helmet } from 'react-helmet'
-import throttle from 'lodash.throttle'
+import { useTranslation } from 'react-i18next'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
 
+import { DiffEditor } from '@monaco-editor/react'
+import throttle from 'lodash.throttle'
+
 import { useArticleVersion, useEditableArticle } from '../../hooks/article.js'
-import { useStyloExportPreview } from '../../hooks/stylo-export.js'
 import { useBibliographyCompletion } from '../../hooks/bibliography.js'
 import { useCollaboration } from '../../hooks/collaboration.js'
+import { useStyloExportPreview } from '../../hooks/stylo-export.js'
+import defaultEditorOptions from '../Write/providers/monaco/options.js'
+import { onDropIntoEditor } from '../Write/providers/monaco/support.js'
+import { ack } from './actions'
 
-import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
-import defaultEditorOptions from '../Write/providers/monaco/options.js'
+import MonacoEditor from '../molecules/MonacoEditor.jsx'
+import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 
 import styles from './CollaborativeTextEditor.module.scss'
-import MonacoEditor from '../molecules/MonacoEditor.jsx'
-import { DiffEditor } from '@monaco-editor/react'
-import * as vscode from 'monaco-editor'
-import { onDropIntoEditor } from '../Write/providers/monaco/support.js'
 
 /**
  * @param {object} props
@@ -35,11 +37,20 @@ export default function CollaborativeTextEditor({
   const { yText, awareness, websocketStatus, dynamicStyles } = useCollaboration(
     { articleId, versionId }
   )
+  const { t } = useTranslation('editor')
 
-  const { version, error, isLoading: isVersionLoading } = useArticleVersion({ versionId })
+  const {
+    version,
+    error,
+    isLoading: isVersionLoading,
+  } = useArticleVersion({ versionId })
   const { provider: bibliographyCompletionProvider } =
     useBibliographyCompletion()
-  const { article, bibliography, isLoading: isWorkingVersionLoading } = useEditableArticle({
+  const {
+    article,
+    bibliography,
+    isLoading: isWorkingVersionLoading,
+  } = useEditableArticle({
     articleId,
     versionId,
   })
@@ -67,7 +78,11 @@ export default function CollaborativeTextEditor({
   )
 
   const hasVersion = useMemo(() => !!versionId, [versionId])
-  const isLoading = yText === null || isPreviewLoading || isWorkingVersionLoading || isVersionLoading
+  const isLoading =
+    yText === null ||
+    isPreviewLoading ||
+    isWorkingVersionLoading ||
+    isVersionLoading
 
   const options = useMemo(
     () => ({
@@ -81,21 +96,31 @@ export default function CollaborativeTextEditor({
     [websocketStatus, hasVersion]
   )
 
-  const updateArticleStructureAndStats = useCallback(throttle(
-    ({ text: md }) => {
-      dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
-      dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
-    },
-    250,
-    { leading: false, trailing: true }
-  ), [])
+  const updateArticleStructureAndStats = useCallback(
+    throttle(
+      ({ text: md }) => {
+        dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
+        dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
+      },
+      250,
+      { leading: false, trailing: true }
+    ),
+    []
+  )
 
   const handleCollaborativeEditorDidMount = useCallback(
     (editor, monaco) => {
       editorRef.current = editor
+
       editor.onDropIntoEditor(onDropIntoEditor(editor))
+
+      // Action commands
+      console.log({ ack })
+      editor.addAction({ ...ack, label: t(ack.label) })
+
       const completionProvider = bibliographyCompletionProvider.register(monaco)
       editor.onDidDispose(() => completionProvider.dispose())
+
       const model = editor.getModel()
       // Set EOL to LF otherwise it causes synchronization issues due to inconsistent EOL between Windows and Linux.
       // https://github.com/yjs/y-monaco/issues/27

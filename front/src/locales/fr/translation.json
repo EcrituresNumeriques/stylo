@@ -235,6 +235,7 @@
     "title": "Paramètres de compte"
   },
   "loading.label": "Chargement…",
+  "main.alerts.listTitle": "Messages de service",
   "main.title": "Contenu principal",
   "metadata.readonly.multiUserActive": "Les métadonnées sont éditables uniquement quand vous êtes seul·e sur l'article.",
   "metadata.readonly.versionView": "Les métadonnées sont éditables uniquement sur la copie de travail.",

@@ -1,7 +1,6 @@
 import React from 'react'
 import { useParams, useSearchParams } from 'react-router'
 
-import createReduxStore from '../../createReduxStore.js'
 import { executeQuery } from '../../helpers/graphQL.js'
 
 import ArticleStats from '../ArticleStats.jsx'

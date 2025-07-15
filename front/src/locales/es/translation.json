@@ -224,6 +224,7 @@
     "title": "Configuración de la cuenta"
   },
   "loading.label": "Cargando…",
+  "main.alerts.listTitle": "Mensajes de servicio",
   "main.title": "Contenido principal",
   "metadata.readonly.multiUserActive": "Los metadatos son editables solo cuando eres el único trabajando en el artículo.",
   "metadata.readonly.versionView": "Los metadatos son editables solo cuando se está en la copia de trabajo.",

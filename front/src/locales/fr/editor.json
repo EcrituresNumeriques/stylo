@@ -1,0 +1,8 @@
+{
+  "actions": {
+    "balisage-infra": {
+      "ack": "$t(actions.balisage-infra-prefix) remerciements"
+    },
+    "balisage-infra-prefix": "Ajouter un bloc :"
+  }
+}
