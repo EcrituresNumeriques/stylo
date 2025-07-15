@@ -100,6 +100,21 @@
         - { src: "./.env", dest: "~/stylo/.env" }
         - { src: "./docker-compose.yaml", dest: "~/stylo/docker-compose.yaml" }
 
+    - name: Copy backup files
+      ansible.builtin.template:
+        src: "./backup.sh"
+        dest: "~/stylo/backup.sh"
+        mode: "0775"
+      when: site == "stylo.huma-num.fr"
+
+    - name: Create a backup job (cron) that runs at midnight
+      ansible.builtin.cron:
+        name: "Backup data"
+        minute: "0"
+        hour: "0"
+        job: "/home/stylo/stylo/backup.sh >> /var/log/backup.log 2>&1"
+      when: site == "stylo.huma-num.fr"
+
     - name: Pull Docker containers
       ansible.builtin.shell:
         cmd: "docker compose pull"
