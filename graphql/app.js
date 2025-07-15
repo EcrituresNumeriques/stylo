@@ -225,6 +225,15 @@ app.use(
  * Feed proxy
  */
 app.use(
+  '/community/alerts.json',
+  proxy('https://discussions.revue30.org', {
+    parseReqBody: false,
+    proxyReqPathResolver() {
+      return '/search.json?q=tag:alerte'
+    },
+  })
+)
+app.use(
   '/feed/publications',
   proxy('https://revue30.org', {
     parseReqBody: false,

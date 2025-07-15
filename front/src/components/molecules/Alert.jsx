@@ -52,7 +52,7 @@ export default function Alert({
 }) {
   const icon = showIcon ? getIcon(type) : <></>
   return (
-    <div className={clsx(styles.alert, getStyle(type), className)}>
+    <div role="alert" className={clsx(styles.alert, getStyle(type), className)}>
       {icon} <span>{message}</span>
     </div>
   )
