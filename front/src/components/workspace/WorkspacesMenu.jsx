@@ -7,9 +7,12 @@ import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 
 import styles from '../header.module.scss'
+import { usePreferenceItem } from '../../hooks/user.js'
 
 export default function WorkspacesMenu({ activeTool }) {
   const { workspaces, error, isLoading } = useWorkspaces()
+  const { setValue: setActiveWorkspaceId } = usePreferenceItem('workspaceId', 'user')
+
   if (isLoading) {
     return <Loading />
   }
@@ -22,6 +25,7 @@ export default function WorkspacesMenu({ activeTool }) {
         <li key={workspace._id}>
           <NavLink
             to={`/workspaces/${workspace._id}/${activeTool}`}
+            onClick={() => setActiveWorkspaceId(workspace._id)}
             state={{ from: location.pathname }}
           >
             <span

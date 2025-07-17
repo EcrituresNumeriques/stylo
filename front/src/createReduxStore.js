@@ -6,6 +6,23 @@ import { computeTextStats } from './helpers/markdown.js'
 
 const sessionTokenName = 'sessionToken'
 
+/**
+ * @typedef {object} ExportPreferences
+ * @property {string} bibliography_style
+ * @property {0 | 1} with_toc
+ * @property {0 | 1} link_citations
+ * @property {0 | 1} with_nocite
+ * @property {'originals' | 'md-ssg' | 'html' | 'tex' | 'pdf' | 'odt' | 'docx' | 'icml' | 'xml-tei' | 'xml-erudit' | 'xml-tei-metopes'} formats
+ * @property {0 | 1} unnumbered
+ * @property {'part' | 'chapter'} book_division
+ */
+
+/**
+ * @typedef {object} UserPreferences
+ * @property {boolean} trackingConsent
+ * @property {string|null} workspaceId
+ */
+
 // Définition du store Redux et de l'ensemble des actions
 export const initialState = {
   sessionToken: localStorage.getItem(sessionTokenName),
@@ -37,11 +54,14 @@ export const initialState = {
     authProviders: {},
     selectedTagIds: [],
   },
+  /** @type {UserPreferences} */
   userPreferences: localStorage.getItem('userPreferences')
     ? JSON.parse(localStorage.getItem('userPreferences'))
     : {
         trackingConsent: true /* default value should be false */,
+        workspaceId: null
       },
+  /** @type {ExportPreferences} */
   exportPreferences: localStorage.getItem('exportPreferences')
     ? JSON.parse(localStorage.getItem('exportPreferences'))
     : {
@@ -96,13 +116,14 @@ function createRootReducer(state) {
     UPDATE_ARTICLE_WORKING_COPY_STATUS: updateArticleWorkingCopyStatus,
 
     // user preferences reducers
-    USER_PREFERENCES_TOGGLE: toggleUserPreferences,
     ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
     CORPUS_PREFERENCES_TOGGLE: toggleCorpusPreferences,
+    USER_PREFERENCES_TOGGLE: toggleUserPreferences,
 
     SET_ARTICLE_PREFERENCES: setArticlePreferences,
-    SET_EXPORT_PREFERENCES: setExportPreferences,
     SET_CORPUS_PREFERENCES: setCorpusPreferences,
+    SET_EXPORT_PREFERENCES: setExportPreferences,
+    SET_USER_PREFERENCES: setUserPreferences,
 
     UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
 
@@ -114,8 +135,9 @@ function persistStateIntoLocalStorage({ getState }) {
   const actionStateMap = new Map([
     ['ARTICLE_PREFERENCES_TOGGLE', 'articlePreferences'],
     ['SET_ARTICLE_PREFERENCES', 'articlePreferences'],
-    ['USER_PREFERENCES_TOGGLE', 'userPreferences'],
     ['SET_EXPORT_PREFERENCES', 'exportPreferences'],
+    ['USER_PREFERENCES_TOGGLE', 'userPreferences'],
+    ['SET_USER_PREFERENCES', 'userPreferences'],
   ])
 
   return (next) => {
@@ -273,6 +295,7 @@ function setPreferences(storeKey) {
 const toggleArticlePreferences = togglePreferences('articlePreferences')
 const setArticlePreferences = setPreferences('articlePreferences')
 const toggleUserPreferences = togglePreferences('userPreferences')
+const setUserPreferences = setPreferences('userPreferences')
 const toggleCorpusPreferences = togglePreferences('corpusPreferences')
 const setExportPreferences = setPreferences('exportPreferences')
 const setCorpusPreferences = setPreferences('corpusPreferences')
