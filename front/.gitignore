@@ -14,3 +14,9 @@ node_modules/
 .DS_Store
 
 /build/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

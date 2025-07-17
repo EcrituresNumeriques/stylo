@@ -1,7 +1,12 @@
+import clsx from 'clsx'
 import React from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
-import { useTranslation, Trans } from 'react-i18next'
+
 import styloLogo from '/images/logo.svg'
+
+import { useFeed } from '../hooks/feed.js'
+import { useActiveUserId } from '../hooks/user.js'
 
 import Loading from './molecules/Loading.jsx'
 import Publication from './publications/Publication.jsx'
@@ -9,11 +14,8 @@ import Release from './publications/Release.jsx'
 import Workshop from './publications/Workshop.jsx'
 
 import styles from '../layout.module.scss'
-import headerStyles from './header.module.scss'
 import buttonStyles from './button.module.scss'
-import clsx from 'clsx'
-import { useActiveUserId } from '../hooks/user.js'
-import { useFeed } from '../hooks/feed.js'
+import headerStyles from './header.module.scss'
 
 export default function Home() {
   const { t } = useTranslation('home')
