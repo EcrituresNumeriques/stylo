@@ -77,10 +77,7 @@ const Annotate = lazy(() => import('./components/Annotate.jsx'))
 const Privacy = lazy(() => import('./components/Privacy.jsx'))
 const Story = lazy(() => import('./stories/Story.jsx'))
 
-const store = createStore({
-  activeWorkspaceId: matchPath('/workspaces/:workspaceId', location.pathname)
-    ?.params?.workspaceId,
-})
+const store = createStore()
 
 // refresh session profile whenever something happens to the session token
 // maybe there is a better way to do this
