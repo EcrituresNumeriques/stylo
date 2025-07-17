@@ -229,7 +229,8 @@ app.use(
   proxy('https://discussions.revue30.org', {
     parseReqBody: false,
     proxyReqPathResolver() {
-      return '/search.json?q=tag:alerte'
+      // we filter on pinned alert, latest topic first
+      return '/search.json?q=tags:alerte&amp;in:pinned&amp;order:latest_topic'
     },
   })
 )

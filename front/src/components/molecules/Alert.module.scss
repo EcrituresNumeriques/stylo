@@ -11,9 +11,17 @@
   }
 }
 
+/**
+ * Good contrasts between background and foreground can be found
+ * at https://app.contrast-finder.org/
+ */
+
 .fullscreen {
-  font-weight: bold;
   justify-content: center;
+
+  &.warning {
+    font-weight: bold;
+  }
 
   a:after {
     display: none;
@@ -23,19 +31,35 @@
 .warning {
   background-color: rgb(255, 251, 230);
   border-color: rgb(255, 229, 143);
+
+  &.fullscreen {
+    color: rgb(130, 114, 73);
+  }
 }
 
 .info {
   background-color: rgb(230, 244, 255);
   border-color: rgb(145, 202, 255);
+
+  &.fullscreen {
+    color: rgb(81, 114, 145);
+  }
 }
 
 .success {
   background-color: rgb(246, 255, 237);
   border-color: rgb(183, 235, 143);
+
+  &.fullscreen {
+    color: rgb(84, 110, 67);
+  }
 }
 
 .error {
   background-color: rgb(255, 242, 240);
   border-color: rgb(255, 204, 199);
+
+  &.fullscreen {
+    color: rgb(130, 104, 99);
+  }
 }

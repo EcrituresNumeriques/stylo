@@ -1,4 +1,5 @@
-import useSWR from 'swr';
+import useSWR from 'swr'
+
 import useSWRImmutable from 'swr/immutable'
 
 /**
@@ -6,7 +7,7 @@ import useSWRImmutable from 'swr/immutable'
  * @param {string} url
  * @returns {Promise<HTMLElement[]>}
  */
-function fetcher (url) {
+function fetcher(url) {
   return fetch(url, {
     method: 'GET',
     headers: {
@@ -19,14 +20,14 @@ function fetcher (url) {
     .then((feed) => Array.from(feed.querySelectorAll('entry')))
 }
 
-function jsonFetcher (...args) {
+function jsonFetcher(...args) {
   return fetch(...args, {
     method: 'GET',
     cache: 'no-cache',
     headers: {
-      'Cache-Control': 'no-cache'
-    }
-  }).then(response => response.json())
+      'Cache-Control': 'no-cache',
+    },
+  }).then((response) => response.json())
 }
 
 export function useFeed(url) {
@@ -36,9 +37,15 @@ export function useFeed(url) {
   })
 }
 
-export function useDiscourseFeed(url) {
+/**
+ *
+ * @param {string} url
+ * @param {import('swr').SWRConfiguration} [swrOptions]
+ * @returns {import('swr').SWRResponse}
+ */
+export function useDiscourseFeed(url, swrOptions = {}) {
   return useSWR(url, jsonFetcher, {
-    fallbackData: {
-    }
+    fallbackData: {},
+    ...swrOptions
   })
 }

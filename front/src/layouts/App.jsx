@@ -14,7 +14,8 @@ import {
 import { getUserProfile } from '../helpers/user.js'
 import { usePreferenceItem } from '../hooks/user.js'
 
-import CommunityAlert from '../components/CommunityAlert.jsx'
+import CommunityAlerts from '../components/CommunityAlerts.jsx'
+import DevModeAlert from '../components/DevModeAlert.jsx'
 import Footer from '../components/Footer.jsx'
 import Header from '../components/Header.jsx'
 import SkipLinks from '../components/SkipLinks.jsx'
@@ -86,7 +87,10 @@ export default function StyloApp() {
   }, [location.pathname, hasTrackingConsent])
 
   // Collect alert messages
-  const { data: alerts } = useDiscourseFeed('/community/alerts.json')
+  const { data: alerts } = useDiscourseFeed('/community/alerts.json', {
+    refreshInterval: 60 * 1000,
+    revalidateOnFocus: false,
+  })
 
   const hideHeader = useMemo(
     () => location.pathname.endsWith('/annotate'),
@@ -103,11 +107,14 @@ console.log(alerts.topics)
     <>
       <SkipLinks />
       {hideHeader || <Header />}
+      {import.meta.env.MODE !== 'production' && <DevModeAlert />}
+      <CommunityAlerts topics={alerts.topics} />
+
       <main id="content" aria-label={t('main.title')} tabIndex="-1">
-        <CommunityAlert topic={alerts.topics?.at(0)} />
         <ScrollRestoration />
         <Outlet />
       </main>
+
       {hideFooter || <Footer />}
     </>
   )

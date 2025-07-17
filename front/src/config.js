@@ -3,6 +3,7 @@ const { host } = window.location
 
 export const applicationConfig = {
   frontendEndpoint: `//${host}`,
+  communityEndpoint: 'https://discussions.revue30.org',
   backendEndpoint: __BACKEND_ENDPOINT__,
   canonicalBaseUrl: __ANNOTATIONS_CANONICAL_BASE_URL__,
   graphqlEndpoint: __GRAPHQL_ENDPOINT__,
