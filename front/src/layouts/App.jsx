@@ -102,7 +102,7 @@ export default function StyloApp() {
       location.pathname.startsWith('/article/')
     )
   }, [location.pathname])
-console.log(alerts.topics)
+
   return (
     <>
       <SkipLinks />

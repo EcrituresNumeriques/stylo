@@ -226,6 +226,7 @@
     "title": "Account parameters"
   },
   "loading.label": "Loading…",
+  "main.alerts.listTitle": "Service messages",
   "main.title": "Main content",
   "metadata.readonly.multiUserActive": "Metadata are editable only when you are the only one working on the article.",
   "metadata.readonly.versionView": "Metadata are editable only when you are on the working copy.",
