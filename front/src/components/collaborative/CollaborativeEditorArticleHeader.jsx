@@ -16,30 +16,18 @@ import styles from './CollaborativeEditorArticleHeader.module.scss'
 
 /**
  * @param props
- * @param {string} props.articleId
+ * @param {string} props.articleTitle
  * @param {string?} props.versionId
  * @returns {import('react').ReactElementElement}
  */
 export default function CollaborativeEditorArticleHeader({
-  articleId,
+  articleTitle,
   versionId,
 }) {
   const { t } = useTranslation()
 
   const [searchParams, setSearchParams] = useSearchParams()
   const [mode, setMode] = useState('edit')
-
-  const { data, isLoading } = useFetchData(
-    { query: getArticleInfo, variables: { articleId } },
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      fallbackData: {
-        article: {},
-      },
-    }
-  )
 
   useEffect(() => {
     if (mode === 'preview' && searchParams.get('mode') !== 'preview') {
@@ -49,13 +37,9 @@ export default function CollaborativeEditorArticleHeader({
     }
   }, [mode])
 
-  if (isLoading) {
-    return <Loading />
-  }
-
   return (
     <header className={styles.header}>
-      <h1 className={styles.title}>{data.article.title}</h1>
+      <h1 className={styles.title}>{articleTitle}</h1>
 
       <div className={styles.row}>
         <div

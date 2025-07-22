@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
 
+import { ack } from './actions'
 import { DiffEditor } from '@monaco-editor/react'
 import throttle from 'lodash.throttle'
 
@@ -13,11 +14,11 @@ import { useCollaboration } from '../../hooks/collaboration.js'
 import { useStyloExportPreview } from '../../hooks/stylo-export.js'
 import defaultEditorOptions from '../Write/providers/monaco/options.js'
 import { onDropIntoEditor } from '../Write/providers/monaco/support.js'
-import { ack } from './actions'
 
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 import MonacoEditor from '../molecules/MonacoEditor.jsx'
+import CollaborativeEditorArticleHeader from './CollaborativeEditorArticleHeader.jsx'
 import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 
 import styles from './CollaborativeTextEditor.module.scss'
@@ -115,7 +116,6 @@ export default function CollaborativeTextEditor({
       editor.onDropIntoEditor(onDropIntoEditor(editor))
 
       // Action commands
-      console.log({ ack })
       editor.addAction({ ...ack, label: t(ack.label) })
 
       const completionProvider = bibliographyCompletionProvider.register(monaco)
@@ -196,6 +196,11 @@ export default function CollaborativeTextEditor({
       <Helmet>
         <title>{article.title}</title>
       </Helmet>
+
+      <CollaborativeEditorArticleHeader
+        articleTitle={article.title}
+        versionId={versionId}
+      />
 
       <CollaborativeEditorWebSocketStatus
         className={styles.inlineStatus}
