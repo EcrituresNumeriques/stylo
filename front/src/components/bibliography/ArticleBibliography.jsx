@@ -1,4 +1,3 @@
-import { Toggle } from '@geist-ui/core'
 import { ArrowLeft } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -12,6 +11,7 @@ import Modal from '../Modal.jsx'
 import Alert from '../molecules/Alert.jsx'
 import FormActions from '../molecules/FormActions.jsx'
 import Loading from '../molecules/Loading.jsx'
+import Toggle from '../molecules/Toggle.jsx'
 
 import styles from './ArticleBibliography.module.scss'
 import BibliographyBibtexEditor from './BibliographyBibtexEditor.jsx'
@@ -84,18 +84,15 @@ export default function ArticleBibliography({ articleId, versionId, onBack }) {
     <section>
       <header className={styles.header}>
         {title}
-        <div
-          className={styles.toggle}
-          onClick={() => setSelector(selector === 'raw' ? 'basic' : 'raw')}
+
+        <Toggle
+          id="raw-mode"
+          checked={selector === 'raw'}
+          title={t('bibliography.showBibTeX')}
+          onChange={(checked) => setSelector(checked ? 'raw' : 'basic')}
         >
-          <Toggle
-            id="raw-mode"
-            checked={selector === 'raw'}
-            title={t('bibliography.showBibTeX')}
-            onChange={(e) => setSelector(e.target.checked ? 'raw' : 'basic')}
-          />
-          <label htmlFor="raw-mode">BibTeX</label>
-        </div>
+          BibTeX
+        </Toggle>
       </header>
       <section>
         {readOnly && (
