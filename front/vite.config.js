@@ -1,12 +1,13 @@
-import { fileURLToPath } from 'node:url'
-import { defineConfig, loadEnv } from 'vite'
-import { sentryVitePlugin } from '@sentry/vite-plugin'
-import pkg from './package.json' with { type: 'json' }
-import react from '@vitejs/plugin-react'
-import handlebars from 'vite-plugin-handlebars'
-import graphql from '@rollup/plugin-graphql'
 import { visualizer } from 'rollup-plugin-visualizer'
-import { coverageConfigDefaults } from 'vitest/config'
+import { defineConfig, loadEnv } from 'vite'
+import handlebars from 'vite-plugin-handlebars'
+
+import pkg from './package.json' with { type: 'json' }
+import graphql from '@rollup/plugin-graphql'
+import { sentryVitePlugin } from '@sentry/vite-plugin'
+import react from '@vitejs/plugin-react'
+import { fileURLToPath } from 'node:url'
+import { configDefaults, coverageConfigDefaults } from 'vitest/config'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
@@ -132,6 +133,7 @@ export default defineConfig(async ({ mode }) => {
     },
 
     test: {
+      exclude: [...configDefaults.exclude, '**/e2e/*'],
       coverage: {
         provider: 'v8',
         reporter: ['text', 'html', 'lcovonly'],
