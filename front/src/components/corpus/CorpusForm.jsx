@@ -1,8 +1,7 @@
 import clsx from 'clsx'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-
-import { useToasts } from '@geist-ui/core'
+import { toast } from 'react-toastify'
 
 import { fromFormData } from '../../helpers/forms.js'
 import { useCorpusActions } from '../../hooks/corpus.js'
@@ -24,7 +23,6 @@ import styles from './corpusCreate.module.scss'
  */
 export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
   const { t } = useTranslation()
-  const { setToast } = useToasts()
   const titleInputRef = useRef(null)
   const { createCorpus, updateCorpus } = useCorpusActions()
 
@@ -52,13 +50,11 @@ export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
         await createCorpus(editCorpusInput)
       }
       onSubmit()
-      setToast({
-        text: t(`corpus.${action}.toastSuccess`),
-        type: 'default',
+      toast(t(`corpus.${action}.toastSuccess`), {
+        type: 'info',
       })
     } catch (err) {
-      setToast({
-        text: t(`corpus.${action}.toastFailure`, { errorMessage: err.message }),
+      toast(t(`corpus.${action}.toastFailure`, { errorMessage: err.message }), {
         type: 'error',
       })
     }

@@ -1,4 +1,3 @@
-import { useToasts } from '@geist-ui/core'
 import clsx from 'clsx'
 import {
   Check,
@@ -17,9 +16,11 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router'
+import { toast } from 'react-toastify'
+
+import useFetchData from '../hooks/graphql'
 
 import { useArticleActions } from '../hooks/article.js'
-import useFetchData from '../hooks/graphql'
 import { useModal } from '../hooks/modal.js'
 
 import ArticleContributors from './ArticleContributors.jsx'
@@ -27,20 +28,20 @@ import ArticleSendCopy from './ArticleSendCopy.jsx'
 import ArticleTags from './ArticleTags.jsx'
 import ArticleVersionLinks from './ArticleVersionLinks.jsx'
 import Button from './Button.jsx'
-import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
 import Export from './Export.jsx'
 import Field from './Field.jsx'
 import Modal from './Modal.jsx'
-import FormActions from './molecules/FormActions.jsx'
 import TimeAgo from './TimeAgo.jsx'
+import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
+import FormActions from './molecules/FormActions.jsx'
 import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
 
 import { getArticleContributors, getArticleTags } from './Article.graphql'
 import { getTags } from './Tag.graphql'
 
+import styles from './article.module.scss'
 import buttonStyles from './button.module.scss'
 import fieldStyles from './field.module.scss'
-import styles from './article.module.scss'
 
 /**
  * @param props
@@ -99,7 +100,6 @@ export default function Article({
   )
   const tags = articleTagsQueryData?.article?.tags || []
   const { t } = useTranslation()
-  const { setToast } = useToasts()
 
   const exportModal = useModal()
   const sharingModal = useModal()
@@ -114,9 +114,8 @@ export default function Article({
 
   useEffect(() => {
     if (contributorsError) {
-      setToast({
+      toast(`Unable to load contributors: ${contributorsError.toString()}`, {
         type: 'error',
-        text: `Unable to load contributors: ${contributorsError.toString()}`,
       })
     }
   }, [contributorsError])
@@ -154,14 +153,10 @@ export default function Article({
     try {
       await articleActions.remove()
       onArticleDeleted(article)
-      setToast({
-        type: 'default',
-        text: t('article.delete.toastSuccess'),
-      })
+      toast(t('article.delete.toastSuccess'), { type: 'info' })
     } catch (err) {
-      setToast({
+      toast(t('article.delete.toastError', { errMessage: err.message }), {
         type: 'error',
-        text: t('article.delete.toastError', { errMessage: err.message }),
       })
     }
   }
@@ -177,7 +172,10 @@ export default function Article({
   )
 
   return (
-    <article className={styles.article} aria-labelledby={`article-${article._id}-title`}>
+    <article
+      className={styles.article}
+      aria-labelledby={`article-${article._id}-title`}
+    >
       <Modal
         {...exportModal.bindings}
         title={
@@ -270,9 +268,7 @@ export default function Article({
             {expanded ? <ChevronDown /> : <ChevronRight />}
           </span>
 
-          <span id={`article-${article._id}-title`}>
-            {article.title}
-          </span>
+          <span id={`article-${article._id}-title`}>{article.title}</span>
 
           <Button
             icon={true}

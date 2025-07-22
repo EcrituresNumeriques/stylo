@@ -46,7 +46,7 @@ export default defineConfig(async ({ mode }) => {
               'react-router',
               'redux',
             ],
-            ui: ['@geist-ui/core', 'lucide-react'],
+            ui: ['lucide-react'],
             textEditor: [
               'monaco-editor',
               '@monaco-editor/react',
@@ -121,9 +121,10 @@ export default defineConfig(async ({ mode }) => {
         '/graphql': {
           target: 'http://127.0.0.1:3030',
         },
-        '^/(login/|authorize/|logout|feed/|community/|authorization-code|version)': {
-          target: 'http://127.0.0.1:3030',
-        },
+        '^/(login/|authorize/|logout|feed/|community/|authorization-code|version)':
+          {
+            target: 'http://127.0.0.1:3030',
+          },
         '/events': {
           target: 'http://127.0.0.1:3030',
           prependPath: false,
