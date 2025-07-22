@@ -2,11 +2,11 @@ import React, { useCallback, useRef } from 'react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router'
+import { toast } from 'react-toastify'
 
 import { useGraphQLClient } from '../helpers/graphQL'
 import Button from './Button'
 import Field from './Field'
-import { useToasts } from '@geist-ui/core'
 
 import { fromFormData, validateSameFieldValue } from '../helpers/forms.js'
 
@@ -17,7 +17,6 @@ import styles from './login.module.scss'
 
 export default function Register() {
   const { t } = useTranslation()
-  const { setToast } = useToasts()
   const passwordRef = useRef(null)
   const passwordConfirmationRef = useRef(null)
   const navigate = useNavigate()
@@ -30,15 +29,13 @@ export default function Register() {
     try {
       await query({ query: queries.createUser, variables: { details } })
       // if no error thrown, we can navigate to /
-      setToast({
-        type: 'default',
-        text: t('credentials.register.successToast'),
+      toast(t('credentials.register.successToast'), {
+        type: 'info',
       })
       navigate('/articles')
     } catch (err) {
-      setToast({
+      toast(t('credentials.register.errorToast', { message: err.message }), {
         type: 'error',
-        text: t('credentials.register.errorToast', { message: err.message }),
       })
     }
   }, [])

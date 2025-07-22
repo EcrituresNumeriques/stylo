@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
-import { useToasts } from '@geist-ui/core'
 import debounce from 'lodash.debounce'
 
 import { useGraphQLClient } from '../../helpers/graphQL.js'
@@ -25,7 +25,6 @@ export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
     }
   }, [articles])
   const { query } = useGraphQLClient()
-  const { setToast } = useToasts()
   const { t } = useTranslation()
   const updateArticleOrder = useCallback(
     debounce(
@@ -40,17 +39,14 @@ export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
             variables: { corpusId, articlesOrderInput },
           })
           onUpdate()
-          setToast({
-            type: 'default',
-            text: t('corpus.articlesOrder.toastSuccess'),
-          })
+          toast(t('corpus.articlesOrder.toastSuccess'), { type: 'info' })
         } catch (err) {
-          setToast({
-            type: 'error',
-            text: t('corpus.articlesOrder.toastFailure', {
+          toast(
+            t('corpus.articlesOrder.toastFailure', {
               errorMessage: err.toString(),
             }),
-          })
+            { type: 'error' }
+          )
         }
       },
       750,

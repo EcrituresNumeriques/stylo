@@ -1,29 +1,27 @@
-import { useToasts } from '@geist-ui/core'
 import copy from 'copy-to-clipboard'
 import { Clipboard, Trash } from 'lucide-react'
 import React, { memo, useCallback } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 import { useModal } from '../../hooks/modal.js'
-import Button from '../Button.jsx'
 
+import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
-import FormActions from '../molecules/FormActions.jsx'
 import ReferenceTypeIcon from '../ReferenceTypeIcon.jsx'
+import FormActions from '../molecules/FormActions.jsx'
 
 import styles from './BibliographyReference.module.scss'
 
 const CopyButton = memo(function ReferenceCopyButton({ text }) {
   const { t } = useTranslation()
-  const { setToast } = useToasts()
 
   const handleCopy = useCallback(() => {
     copy(text)
-    setToast({
-      type: 'default',
-      text: t('write.copyReferenceToClipboard.successToast', { text }),
+    toast(t('write.copyReferenceToClipboard.successToast', { text }), {
+      type: 'info',
     })
-  }, [setToast])
+  }, [])
 
   return (
     <Button

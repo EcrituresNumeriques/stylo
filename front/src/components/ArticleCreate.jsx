@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 import { useGraphQLClient } from '../helpers/graphQL'
-import { useToasts } from '@geist-ui/core'
 
 import { fromFormData } from '../helpers/forms.js'
 import { useUserTags } from '../hooks/user.js'
@@ -38,7 +38,6 @@ export default function ArticleCreate({
   workspaceId = null,
 }) {
   const { t } = useTranslation()
-  const { setToast } = useToasts()
 
   const { query } = useGraphQLClient()
 
@@ -51,13 +50,11 @@ export default function ArticleCreate({
         variables: { createArticleInput },
       })
       onSubmit(createdArticle)
-      setToast({
-        text: t('article.create.successNotification'),
-        type: 'default',
+      toast(t('article.create.successNotification'), {
+        type: 'info',
       })
     } catch (err) {
-      setToast({
-        text: t('article.create.errorNotification', { errMessage: err }),
+      toast(t('article.create.errorNotification', { errMessage: err }), {
         type: 'error',
       })
     }

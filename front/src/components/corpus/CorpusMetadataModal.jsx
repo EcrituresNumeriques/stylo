@@ -3,18 +3,19 @@ import YAML from 'js-yaml'
 import { List } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 import corpusJournalMetadataSchema from '../../schemas/corpus-journal-metadata.schema.json'
 import corpusJournalUiSchema from '../../schemas/corpus-journal-ui-schema.json'
 import corpusThesisMetadataSchema from '../../schemas/corpus-thesis-metadata.schema.json'
 import corpusThesisUiSchema from '../../schemas/corpus-thesis-ui-schema.json'
-import { Toggle, useToasts } from '@geist-ui/core'
 
 import { useCorpusActions } from '../../hooks/corpus.js'
 import { useModal } from '../../hooks/modal.js'
 import { usePreferenceItem } from '../../hooks/user.js'
 import { toYaml } from '../Write/metadata/yaml.js'
 
+import Toggle from '../../components/molecules/Toggle.jsx'
 import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
 import MonacoYamlEditor from '../Write/providers/monaco/YamlEditor.jsx'
@@ -31,7 +32,6 @@ export default function CorpusMetadataModal({
   const { t } = useTranslation()
   const { updateCorpus } = useCorpusActions()
   const modal = useModal()
-  const { setToast } = useToasts()
 
   const [metadata, setMetadata] = useState(initialValue)
   const yaml = useMemo(() => toYaml(metadata), [metadata])
@@ -80,13 +80,9 @@ export default function CorpusMetadataModal({
     try {
       await updateCorpus({ corpusId, metadata })
       modal.close()
-      setToast({
-        text: t(`corpus.update.toastSuccess`),
-        type: 'default',
-      })
+      toast(t(`corpus.update.toastSuccess`), { type: 'info' })
     } catch (err) {
-      setToast({
-        text: t(`corpus.update.toastFailure`, { errorMessage: err.message }),
+      toast(t(`corpus.update.toastFailure`, { errorMessage: err.message }), {
         type: 'error',
       })
     }
