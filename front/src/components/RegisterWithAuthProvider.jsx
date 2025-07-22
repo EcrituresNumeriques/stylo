@@ -1,22 +1,23 @@
 import React, { useCallback } from 'react'
+import { Helmet } from 'react-helmet'
 import { Trans, useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate, useParams } from 'react-router'
-import { useToasts } from '@geist-ui/core'
-import { useGraphQLClient } from '../helpers/graphQL'
-import * as queries from './Credentials.graphql'
+import { toast } from 'react-toastify'
 
-import styles from './login.module.scss'
-import formStyles from './form.module.scss'
-import Field from './Field'
+import { useGraphQLClient } from '../helpers/graphQL'
 import Button from './Button'
+import Field from './Field'
 
 import { fromFormData } from '../helpers/forms.js'
-import { Helmet } from 'react-helmet'
-import { useDispatch } from 'react-redux'
+
+import * as queries from './Credentials.graphql'
+
+import formStyles from './form.module.scss'
+import styles from './login.module.scss'
 
 export default function RegisterWithAuthProvider() {
   const { t } = useTranslation()
-  const { setToast } = useToasts()
   const { service } = useParams()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -41,16 +42,14 @@ export default function RegisterWithAuthProvider() {
       dispatch({ type: 'UPDATE_SESSION_TOKEN', token })
 
       // if no error thrown, we can navigate to /
-      setToast({
-        type: 'default',
-        text: t('credentials.register.successToast'),
+      toast(t('credentials.register.successToast'), {
+        type: 'info',
       })
 
       navigate('/articles')
     } catch (err) {
-      setToast({
+      toast(t('credentials.register.errorToast', { message: err.message }), {
         type: 'error',
-        text: t('credentials.register.errorToast', { message: err.message }),
       })
     }
   }, [])

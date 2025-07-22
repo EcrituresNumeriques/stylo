@@ -9,8 +9,7 @@ import {
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
-
-import { useToasts } from '@geist-ui/core'
+import { toast } from 'react-toastify'
 
 import { useCorpusActions } from '../../hooks/corpus.js'
 import { useModal } from '../../hooks/modal.js'
@@ -56,7 +55,6 @@ import styles from './corpusItem.module.scss'
  */
 export default function CorpusItem({ corpus }) {
   const { t } = useTranslation()
-  const { setToast } = useToasts()
 
   const deleteCorpusModal = useModal()
   const exportCorpusModal = useModal()
@@ -68,13 +66,9 @@ export default function CorpusItem({ corpus }) {
   const handleDeleteCorpus = useCallback(async () => {
     try {
       await deleteCorpus(corpusId)
-      setToast({
-        text: t('corpus.delete.toastSuccess'),
-        type: 'default',
-      })
+      toast(t('corpus.delete.toastSuccess'), { type: 'info' })
     } catch (err) {
-      setToast({
-        text: `Unable to delete corpus ${corpus.name}: ${err}`,
+      toast(`Unable to delete corpus ${corpus.name}: ${err}`, {
         type: 'error',
       })
     }

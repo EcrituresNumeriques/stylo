@@ -1,18 +1,18 @@
+import { Clipboard, Rss } from 'lucide-react'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Rss, Clipboard } from 'lucide-react'
-import { useToasts } from '@geist-ui/core'
+import { useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 
 import {
-  fetchUserCollections,
   fetchBibliographyFromCollectionHref,
+  fetchUserCollections,
+  isApiUrl,
   prefixLegacyUrl,
   toApiUrl,
-  isApiUrl,
 } from '../../helpers/zotero.js'
-import { useSetAuthToken } from '../../hooks/user.js'
 import { useEditableArticle } from '../../hooks/article.js'
+import { useSetAuthToken } from '../../hooks/user.js'
 
 import Button from '../Button.jsx'
 import Field from '../Field.jsx'
@@ -36,13 +36,12 @@ import styles from './BibliographyZoteroImport.module.scss'
 export default function BibliographyZoteroImport({
   articleId,
   zoteroLink: initialZoteroLink,
-  onUpdated = () => {}
+  onUpdated = () => {},
 }) {
   const { t } = useTranslation()
   const { updateBibliography, updateZoteroLink } = useEditableArticle({
     articleId,
   })
-  const { setToast } = useToasts()
   const { link: linkZoteroAccount } = useSetAuthToken('zotero')
   const zoteroToken = useSelector(
     (state) => state.activeUser.authProviders?.zotero?.token
@@ -59,8 +58,15 @@ export default function BibliographyZoteroImport({
   const groupedZoteroCollections = useMemo(() => {
     return zoteroCollections.map(({ data, meta, library, links }, index) => ({
       key: links.self.href,
-      name: t('bibliography.importZotero.collections.leaf', { name: data.name, count: meta.numItems }),
-      section: t('bibliography.importZotero.collections.section', { name: library.name, count: meta.numItems, type: library.type }),
+      name: t('bibliography.importZotero.collections.leaf', {
+        name: data.name,
+        count: meta.numItems,
+      }),
+      section: t('bibliography.importZotero.collections.section', {
+        name: library.name,
+        count: meta.numItems,
+        type: library.type,
+      }),
       // pre-assign an index to each entry. It will persist upon filtered results.
       // @see https://github.com/EcrituresNumeriques/stylo/issues/1014
       index,
@@ -90,7 +96,10 @@ export default function BibliographyZoteroImport({
   //   isApiUrl(zoteroLink) && isInUserCollections ? zoteroLink : ''
   // )
   const collectionUrl = useMemo(
-    () => (isApiUrl(zoteroLink) && (isLoadingCollections || isInUserCollections) ? zoteroLink : ''),
+    () =>
+      isApiUrl(zoteroLink) && (isLoadingCollections || isInUserCollections)
+        ? zoteroLink
+        : '',
     [zoteroLink, isLoadingCollections, isInUserCollections]
   )
 
@@ -130,21 +139,23 @@ export default function BibliographyZoteroImport({
           updateZoteroLink(zoteroLink),
         ])
 
-        setToast({
-          text: t('bibliography.importZotero.success', { url: zoteroLink }),
+        toast(t('bibliography.importZotero.success', { url: zoteroLink }), {
+          type: 'success',
         })
         onUpdated(bib)
       } catch (err) {
-        setToast({
-          type: 'error',
-          text: t(
+        toast(
+          t(
             [
               `bibliography.importZotero.error.e${err.statusCode}`,
               'bibliography.importZotero.error.generic',
             ],
             { message: err.message }
           ),
-        })
+          {
+            type: 'error',
+          }
+        )
 
         // bubble errors we're responsible of to Sentry
         if ([403, undefined].includes(err.statusCode)) {
@@ -186,7 +197,11 @@ export default function BibliographyZoteroImport({
           />
         )}
         {zoteroToken && (
-          <Button type="submit" primary disabled={isSaving || isLoadingCollections || !collectionUrl}>
+          <Button
+            type="submit"
+            primary
+            disabled={isSaving || isLoadingCollections || !collectionUrl}
+          >
             {isSaving
               ? t('zoteroPanel.fetchingButton.text')
               : t('zoteroPanel.replaceAccountCollection.text')}
@@ -213,7 +228,12 @@ export default function BibliographyZoteroImport({
               : 'zoteroPanel.textImportByUrl.withoutToken'
           )}
         </p>
-        <Field name="url" value={plainUrl} onChange={handlePlainUrlChange} type="url" />
+        <Field
+          name="url"
+          value={plainUrl}
+          onChange={handlePlainUrlChange}
+          type="url"
+        />
         <Button type="submit" primary={true} disabled={isSaving || !plainUrl}>
           {isSaving
             ? t('zoteroPanel.fetchingButton.text')

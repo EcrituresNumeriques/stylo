@@ -1,12 +1,13 @@
-import { useToasts } from '@geist-ui/core'
 import React, { useCallback } from 'react'
+import { toast } from 'react-toastify'
+
 import { useWorkspaceMembersActions } from '../../hooks/workspace.js'
+
 import ContactSearch from '../ContactSearch.jsx'
 import Loading from '../molecules/Loading.jsx'
 
 export default function WorkspaceManageMembers({ workspace }) {
   const workspaceId = workspace._id
-  const { setToast } = useToasts()
   const { members, error, isLoading, inviteMember, removeMember } =
     useWorkspaceMembersActions(workspaceId)
 
@@ -15,30 +16,32 @@ export default function WorkspaceManageMembers({ workspace }) {
       if (action === 'select') {
         try {
           await inviteMember(user)
-          setToast({
-            text: `Utilisateur ${
+          toast(
+            `Utilisateur ${
               user.displayName || user.username
             } invité en tant que membre.`,
-            type: 'default',
-          })
+            {
+              type: 'info',
+            }
+          )
         } catch (err) {
-          setToast({
-            text: String(err),
+          toast(String(err), {
             type: 'error',
           })
         }
       } else if (action === 'unselect') {
         try {
           await removeMember(user)
-          setToast({
-            text: `Utilisateur ${
+          toast(
+            `Utilisateur ${
               user.displayName || user.username
             } supprimé des membres.`,
-            type: 'warning',
-          })
+            {
+              type: 'warning',
+            }
+          )
         } catch (err) {
-          setToast({
-            text: String(err),
+          toast(String(err), {
             type: 'error',
           })
         }

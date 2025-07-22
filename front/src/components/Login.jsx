@@ -4,10 +4,10 @@ import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate, useRevalidator } from 'react-router'
+import { toast } from 'react-toastify'
 
 import Button from './Button'
 import Field from './Field'
-import { useToasts } from '@geist-ui/core'
 
 import { applicationConfig } from '../config.js'
 import { fromFormData } from '../helpers/forms.js'
@@ -21,7 +21,6 @@ export default function Login() {
   const { t } = useTranslation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
-  const { setToast } = useToasts()
   const usernameRef = useRef(null)
   const location = useLocation()
   const revalidator = useRevalidator()
@@ -65,9 +64,8 @@ export default function Login() {
         revalidator.revalidate()
       })
       .catch((error) => {
-        setToast({
+        toast(error.message, {
           type: 'error',
-          text: error.message,
         })
         usernameRef.current.focus()
       })

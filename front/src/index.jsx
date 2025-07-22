@@ -23,8 +23,6 @@ import {
 import './i18n.js'
 import './styles/general.scss'
 
-import { GeistProvider } from '@geist-ui/core'
-
 import createStore from './createReduxStore.js'
 import { getUserProfile } from './helpers/user.js'
 
@@ -206,10 +204,8 @@ const router = createBrowserRouter(
 root.render(
   <React.StrictMode>
     <Helmet defaultTitle="Stylo" titleTemplate="%s - Stylo" />
-    <GeistProvider>
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
-    </GeistProvider>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 )

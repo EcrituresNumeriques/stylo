@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-
-import { useToasts } from '@geist-ui/core'
+import { toast } from 'react-toastify'
 
 import { randomColor } from '../../helpers/colors.js'
 import { fromFormData } from '../../helpers/forms.js'
@@ -20,7 +19,6 @@ import styles from './TagEditForm.module.scss'
  * @return {Element}
  */
 export default function TagEditForm({ tag, onSubmit, onCancel }) {
-  const { setToast } = useToasts()
   const { create, update } = useUserTagActions()
   const { t } = useTranslation()
 
@@ -36,9 +34,8 @@ export default function TagEditForm({ tag, onSubmit, onCancel }) {
     }
     const result = isNew ? await create(data) : await update(data)
     onSubmit(result)
-    setToast({
-      text: t(`tag.${isNew ? 'createForm' : 'editForm'}.successNotification`),
-      type: 'default',
+    toast(t(`tag.${isNew ? 'createForm' : 'editForm'}.successNotification`), {
+      type: 'info',
     })
   }, [])
 
