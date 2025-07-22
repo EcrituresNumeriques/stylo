@@ -1,14 +1,16 @@
-import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { describe, expect, test, vi } from 'vitest'
 
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
 import { renderWithProviders } from '../../../tests/setup.js'
+
 import Component from './TagEditForm.jsx'
 
 describe('TagEditForm', () => {
-  const preloadedState = {
-    activeUser: { _id: 'test-user-id' },
+  const appLoaderState = {
+    user: { _id: 'test-user-id' },
   }
   const emptyTag = {}
 
@@ -36,10 +38,11 @@ describe('TagEditForm', () => {
     })
 
     renderWithProviders(<Component tag={emptyTag} onSubmit={onSubmit} />, {
-      preloadedState,
+      appLoaderState,
     })
 
-    expect(screen.getByRole('form')).toBeInTheDocument()
+    const form = await waitFor(() => screen.getByRole('form'))
+    expect(form).toBeInTheDocument()
 
     const submitButton = screen.getByText('Create')
     await user.click(submitButton)
@@ -63,7 +66,7 @@ describe('TagEditForm', () => {
     })
 
     renderWithProviders(<Component tag={emptyTag} onSubmit={onSubmit} />, {
-      preloadedState,
+      appLoaderState,
     })
 
     const createdTag = { ...existingTag, name: 'new tag' }
@@ -78,7 +81,7 @@ describe('TagEditForm', () => {
         }),
     })
 
-    const submitButton = screen.getByText('Create')
+    const submitButton = await waitFor(() => screen.getByText('Create'))
 
     screen.getByLabelText('Name').focus()
     await userEvent.keyboard('new tag')
@@ -110,7 +113,7 @@ describe('TagEditForm', () => {
     }
 
     renderWithProviders(<Component tag={existingTag} onSubmit={onSubmit} />, {
-      preloadedState,
+      appLoaderState,
     })
 
     fetch.mockRestore().mockResolvedValueOnce({
@@ -123,7 +126,7 @@ describe('TagEditForm', () => {
         }),
     })
 
-    const submitButton = screen.getByText('Update')
+    const submitButton = await waitFor(() => screen.getByText('Update'))
 
     screen.getByLabelText('Name').focus()
     await userEvent.keyboard('update tag')

@@ -12,7 +12,7 @@ import { Toggle, useToasts } from '@geist-ui/core'
 
 import { useCorpusActions } from '../../hooks/corpus.js'
 import { useModal } from '../../hooks/modal.js'
-import { usePreferenceItem } from '../../hooks/user.js'
+import { useCorpusPreferences } from '../../stores/preferencesStore.js'
 import { toYaml } from '../Write/metadata/yaml.js'
 
 import Button from '../Button.jsx'
@@ -36,10 +36,11 @@ export default function CorpusMetadataModal({
   const [metadata, setMetadata] = useState(initialValue)
   const yaml = useMemo(() => toYaml(metadata), [metadata])
   const [error, setError] = useState('')
-  const { value: selector, setValue: setSelector } = usePreferenceItem(
-    'metadataFormMode',
-    'corpus'
-  )
+
+  const { metadataFormMode: selector, setValue } = useCorpusPreferences()
+  function setSelector(value) {
+    setValue('metadataFormMode', value)
+  }
   const corpusThesisMetadataSchemaMerged = useMemo(
     () => merge(corpusThesisMetadataSchema),
     [corpusThesisMetadataSchema]

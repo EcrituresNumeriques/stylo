@@ -2,7 +2,6 @@ import { HelpCircle } from 'lucide-react'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate, useRevalidator } from 'react-router'
 
 import Button from './Button'
@@ -12,6 +11,7 @@ import { useToasts } from '@geist-ui/core'
 import { applicationConfig } from '../config.js'
 import { fromFormData } from '../helpers/forms.js'
 import { useLogout } from '../hooks/user.js'
+import { useAuthStore } from '../stores/authStore.js'
 
 import buttonStyles from './button.module.scss'
 import formStyles from './form.module.scss'
@@ -20,7 +20,7 @@ import styles from './login.module.scss'
 export default function Login() {
   const { t } = useTranslation()
   const [error, setError] = useState('')
-  const dispatch = useDispatch()
+  const { update, login } = useAuthStore()
   const { setToast } = useToasts()
   const usernameRef = useRef(null)
   const location = useLocation()
@@ -34,7 +34,7 @@ export default function Login() {
 
     if (token) {
       // will trigger a store subscription and profile to be loaded there (hooks mainly)
-      dispatch({ type: 'UPDATE_SESSION_TOKEN', token })
+      update(token)
       // will trigger AppLoader to reload data (PrivateRoute etc.)
       revalidator.revalidate()
     }
@@ -61,7 +61,7 @@ export default function Login() {
           : Promise.reject(new Error(t('authentication.error.message')))
       })
       .then((data) => {
-        dispatch({ type: 'LOGIN', ...data })
+        update(data.token)
         revalidator.revalidate()
       })
       .catch((error) => {

@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react'
 import { Search } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
-import { shallowEqual, useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
-
-import Field from '../../components/Field.jsx'
-
-import WorkspaceItem from '../../components/workspace/WorkspaceItem.jsx'
+import { useTranslation } from 'react-i18next'
+import { useRouteLoaderData } from 'react-router'
 
 import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { useModal } from '../../hooks/modal.js'
 import { useWorkspaces } from '../../hooks/workspace.js'
+
+import Field from '../../components/Field.jsx'
+import WorkspaceItem from '../../components/workspace/WorkspaceItem.jsx'
 import Button from '../Button.jsx'
 import Loading from '../molecules/Loading.jsx'
 import CreateWorkspaceModal from './CreateWorkspaceModal.jsx'
+
 import { getUserStats } from './Workspaces.graphql'
 
 import styles from './workspaces.module.scss'
 
 export default function Workspaces() {
   const { t } = useTranslation()
-  const activeUser = useSelector((state) => state.activeUser, shallowEqual)
+  const { user: activeUser } = useRouteLoaderData('app')
   const [filter, setFilter] = useState('')
   const { workspaces, error, isLoading } = useWorkspaces()
   const workspaceCreateModal = useModal()

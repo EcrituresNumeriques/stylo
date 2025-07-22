@@ -1,25 +1,27 @@
 import React, { useCallback } from 'react'
+import { Helmet } from 'react-helmet'
 import { Trans, useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate, useParams } from 'react-router'
-import { useToasts } from '@geist-ui/core'
-import { useGraphQLClient } from '../helpers/graphQL'
-import * as queries from './Credentials.graphql'
 
-import styles from './login.module.scss'
-import formStyles from './form.module.scss'
-import Field from './Field'
+import { useGraphQLClient } from '../helpers/graphQL'
 import Button from './Button'
+import Field from './Field'
+import { useToasts } from '@geist-ui/core'
 
 import { fromFormData } from '../helpers/forms.js'
-import { Helmet } from 'react-helmet'
-import { useDispatch } from 'react-redux'
+import { useAuthStore } from '../stores/authStore.js'
+
+import * as queries from './Credentials.graphql'
+
+import formStyles from './form.module.scss'
+import styles from './login.module.scss'
 
 export default function RegisterWithAuthProvider() {
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const { service } = useParams()
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const { update } = useAuthStore()
   const { search } = useLocation()
   const { query } = useGraphQLClient()
   const params = new URLSearchParams(search)
@@ -38,7 +40,7 @@ export default function RegisterWithAuthProvider() {
         withCredentials: true,
       })
 
-      dispatch({ type: 'UPDATE_SESSION_TOKEN', token })
+      update(token)
 
       // if no error thrown, we can navigate to /
       setToast({

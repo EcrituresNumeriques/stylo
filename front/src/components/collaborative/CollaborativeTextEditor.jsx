@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
 
+import { ack } from './actions'
 import { DiffEditor } from '@monaco-editor/react'
 import throttle from 'lodash.throttle'
 
@@ -11,9 +11,14 @@ import { useArticleVersion, useEditableArticle } from '../../hooks/article.js'
 import { useBibliographyCompletion } from '../../hooks/bibliography.js'
 import { useCollaboration } from '../../hooks/collaboration.js'
 import { useStyloExportPreview } from '../../hooks/stylo-export.js'
+import {
+  useArticleEditorStore,
+  useArticleStatsStore,
+  useArticleStatusStore,
+  useArticleStructureStore,
+} from '../../stores/articleStore.js'
 import defaultEditorOptions from '../Write/providers/monaco/options.js'
 import { onDropIntoEditor } from '../Write/providers/monaco/support.js'
-import { ack } from './actions'
 
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
@@ -38,7 +43,9 @@ export default function CollaborativeTextEditor({
     { articleId, versionId }
   )
   const { t } = useTranslation('editor')
-
+  const { update: updateStats } = useArticleStatsStore()
+  const { update: updateStructure } = useArticleStructureStore()
+  const { update: updateStatus } = useArticleStatusStore()
   const {
     version,
     error,
@@ -70,12 +77,8 @@ export default function CollaborativeTextEditor({
     with_link_citations: true,
   })
 
-  const dispatch = useDispatch()
   const editorRef = useRef(null)
-  const editorCursorPosition = useSelector(
-    (state) => state.editorCursorPosition,
-    shallowEqual
-  )
+  const { cursorPosition: editorCursorPosition } = useArticleEditorStore()
 
   const hasVersion = useMemo(() => !!versionId, [versionId])
   const isLoading =
@@ -99,8 +102,8 @@ export default function CollaborativeTextEditor({
   const updateArticleStructureAndStats = useCallback(
     throttle(
       ({ text: md }) => {
-        dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
-        dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
+        updateStats(md)
+        updateStructure(md)
       },
       250,
       { leading: false, trailing: true }
@@ -115,7 +118,6 @@ export default function CollaborativeTextEditor({
       editor.onDropIntoEditor(onDropIntoEditor(editor))
 
       // Action commands
-      console.log({ ack })
       editor.addAction({ ...ack, label: t(ack.label) })
 
       const completionProvider = bibliographyCompletionProvider.register(monaco)
@@ -141,18 +143,12 @@ export default function CollaborativeTextEditor({
     if (yText) {
       updateArticleStructureAndStats({ text: yText.toString() })
       yText.observe(function (yTextEvent, transaction) {
-        dispatch({
-          type: 'UPDATE_ARTICLE_WORKING_COPY_STATUS',
-          status: 'syncing',
-        })
+        updateStatus('syncing')
         if (timeoutId) {
           clearTimeout(timeoutId)
         }
         timeoutId = setTimeout(() => {
-          dispatch({
-            type: 'UPDATE_ARTICLE_WORKING_COPY_STATUS',
-            status: 'synced',
-          })
+          updateStatus('synced')
         }, 4000)
 
         updateArticleStructureAndStats({ text: yText.toString() })
@@ -162,8 +158,8 @@ export default function CollaborativeTextEditor({
 
   useEffect(() => {
     if (versionId) {
-      dispatch({ type: 'UPDATE_ARTICLE_STATS', md: version.md })
-      dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md: version.md })
+      updateStats(version.md)
+      updateStructure(version.md)
     }
   }, [versionId])
 

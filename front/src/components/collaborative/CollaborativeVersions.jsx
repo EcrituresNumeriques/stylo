@@ -1,19 +1,20 @@
-import React from 'react'
-import { shallowEqual, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
-import { Trans, useTranslation } from 'react-i18next'
 import { ArrowLeft } from 'lucide-react'
+import React from 'react'
+import { Trans, useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router'
 
-import Loading from '../molecules/Loading.jsx'
-import Alert from '../molecules/Alert.jsx'
-import Button from '../Button.jsx'
-import Modal from '../Modal.jsx'
-import CreateVersion from '../Write/CreateVersion.jsx'
-import Version from '../molecules/Version.jsx'
+import i18n from '../../i18n.js'
 
 import { useArticleVersions } from '../../hooks/article.js'
 import { useModal } from '../../hooks/modal.js'
-import i18n from '../../i18n.js'
+import { useArticleStatusStore } from '../../stores/articleStore.js'
+
+import Button from '../Button.jsx'
+import Modal from '../Modal.jsx'
+import CreateVersion from '../Write/CreateVersion.jsx'
+import Alert from '../molecules/Alert.jsx'
+import Loading from '../molecules/Loading.jsx'
+import Version from '../molecules/Version.jsx'
 
 import styles from './CollaborativeVersions.module.scss'
 
@@ -31,10 +32,7 @@ export default function CollaborativeVersions({
   articleId,
   selectedVersion,
 }) {
-  const articleWorkingCopyStatus = useSelector(
-    (state) => state.articleWorkingCopy.status,
-    shallowEqual
-  )
+  const { status: articleWorkingCopyStatus } = useArticleStatusStore()
   const syncing = articleWorkingCopyStatus === 'syncing'
   const navigate = useNavigate()
   const { article, isLoading, error } = useArticleVersions({ articleId })

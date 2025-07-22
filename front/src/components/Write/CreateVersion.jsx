@@ -1,7 +1,7 @@
 import { useToasts } from '@geist-ui/core'
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useRouteLoaderData } from 'react-router'
 
 import { fromFormData } from '../../helpers/forms.js'
 import { useArticleVersionActions } from '../../hooks/article.js'
@@ -23,7 +23,7 @@ export default function CreateVersion({ articleId, onClose, onSubmit }) {
   const { t } = useTranslation()
   const { setToast } = useToasts()
   const { create } = useArticleVersionActions({ articleId })
-  const activeUser = useSelector((state) => state.activeUser)
+  const { user: activeUser } = useRouteLoaderData('app')
   const [majorVersion, setMajorVersion] = useState(false)
   const handleCreateVersion = useCallback(
     async (event) => {
