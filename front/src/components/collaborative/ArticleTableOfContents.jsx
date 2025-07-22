@@ -1,18 +1,23 @@
-import React, { useCallback } from 'react'
 import { ArrowLeft } from 'lucide-react'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
 import { useMatch } from 'react-router'
+
 import { usePandocAnchoring } from '../../hooks/pandoc.js'
+import {
+  useArticleEditorStore,
+  useArticleStructureStore,
+} from '../../stores/articleStore.js'
 
 import styles from './ArticleTableOfContents.module.scss'
 
 export default function ArticleTableOfContents({ onBack }) {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const articleStructure = useSelector((state) => state.articleStructure)
+  const { updateCursorPosition } = useArticleEditorStore()
+  const { structure: articleStructure } = useArticleStructureStore()
   const getAnchor = usePandocAnchoring()
-  const routeMatch = useMatch('/article/:id/version/:versionId/*') || useMatch('/article/:id/*')
+  const routeMatch =
+    useMatch('/article/:id/version/:versionId/*') || useMatch('/article/:id/*')
   const { '*': mode = null } = routeMatch?.params ?? {}
   const hasHtmlAnchors = mode === 'preview'
 
@@ -22,8 +27,7 @@ export default function ArticleTableOfContents({ onBack }) {
         ? document
             .querySelector(`#${target.dataset.headingAnchor}`)
             ?.scrollIntoView()
-        : dispatch({
-            type: 'UPDATE_EDITOR_CURSOR_POSITION',
+        : updateCursorPosition({
             lineNumber: parseInt(target.dataset.index, 10),
             column: 0,
           })
@@ -53,13 +57,15 @@ export default function ArticleTableOfContents({ onBack }) {
         {articleStructure?.map((item) => (
           <li
             className={styles.headlineItem}
-            key={`line-${item.index}-${item.line}`}
+            key={`line-${item.index}`}
             role="button"
             tabIndex={0}
             data-index={item.index}
             data-heading-anchor={getAnchor(item.line)}
             onClick={handleTableOfContentsEntryClicked}
           >
+            {item.level > 1 && '\u00B7\xa0'.repeat(item.level - 2)}
+            {item.level > 1 && '\u21B3'}
             {item.title}
           </li>
         ))}

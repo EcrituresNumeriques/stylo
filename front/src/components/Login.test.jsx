@@ -1,6 +1,5 @@
 import React from 'react'
-import { useRouteLoaderData } from 'react-router'
-import { beforeEach, describe, expect, test, vi } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 
 import {
   getByLabelText,
@@ -16,23 +15,15 @@ import Component from './Login.jsx'
 import RedirectIfAuth from './auth/RedirectIfAuth.jsx'
 
 describe('Login', () => {
-  const preloadedState = {
-    activeUser: { _id: 'test-user-id' },
+  const appLoaderState = {
+    user: { _id: 'test-user-id' },
   }
-
-  beforeEach(() => {
-    useRouteLoaderData.mockReturnValue({ user: null })
-  })
 
   test('redirects when user is already logged in', async () => {
     const redirectCalled = vi.fn()
 
-    useRouteLoaderData.mockReturnValue({
-      user: preloadedState.activeUser,
-    })
-
     renderWithProviders(<RedirectIfAuth />, {
-      preloadedState,
+      appLoaderState,
       extraRoutes: [
         {
           path: '/articles',

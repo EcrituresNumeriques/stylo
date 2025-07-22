@@ -2,7 +2,6 @@ import { setUser as setSentryUser } from '@sentry/react'
 
 import React, { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import {
   Outlet,
   ScrollRestoration,
@@ -12,14 +11,14 @@ import {
 } from 'react-router'
 
 import { getUserProfile } from '../helpers/user.js'
-import { usePreferenceItem } from '../hooks/user.js'
+import { useDiscourseFeed } from '../hooks/feed.js'
+import { useUserPreferences } from '../stores/preferencesStore.js'
 
 import CommunityAlerts from '../components/CommunityAlerts.jsx'
 import DevModeAlert from '../components/DevModeAlert.jsx'
 import Footer from '../components/Footer.jsx'
 import Header from '../components/Header.jsx'
 import SkipLinks from '../components/SkipLinks.jsx'
-import { useDiscourseFeed } from '../hooks/feed.js'
 
 /**
  * Loads user data from localStorage JWT
@@ -39,16 +38,11 @@ export default function StyloApp() {
   const location = useLocation()
   const navigate = useNavigate()
   const { user } = useLoaderData()
-  const dispatch = useDispatch()
   const { t } = useTranslation()
-  const { value: hasTrackingConsent } = usePreferenceItem(
-    'trackingConsent',
-    'user'
-  )
+  const { trackingConsent: hasTrackingConsent } = useUserPreferences()
 
   // Setup user session
   useEffect(() => {
-    dispatch({ type: 'PROFILE', user })
     setSentryUser({ id: user?._id })
 
     if (hasTrackingConsent) {

@@ -1,37 +1,39 @@
-import React, { useState, useCallback } from 'react'
 import { Check, Loader } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
-import { useSelector, useDispatch, shallowEqual } from 'react-redux'
+import React, { useCallback, useState } from 'react'
 import { Helmet } from 'react-helmet'
+import { useTranslation } from 'react-i18next'
+import { useRouteLoaderData } from 'react-router'
 
 import { useGraphQLClient } from '../../helpers/graphQL'
-import { updateUser } from '../Credentials.graphql'
+import Button from '../Button'
+import Field from '../Field'
 
 import { fromFormData } from '../../helpers/forms.js'
+import { useAuthStore } from '../../stores/authStore.js'
+
+import TimeAgo from '../TimeAgo.jsx'
+
+import { updateUser } from '../Credentials.graphql'
 
 import styles from '../credentials.module.scss'
 import formStyles from '../field.module.scss'
-import Button from '../Button'
-import Field from '../Field'
-import TimeAgo from '../TimeAgo.jsx'
 
 export default function UserInfos() {
-  const dispatch = useDispatch()
   const { t } = useTranslation()
   const { query } = useGraphQLClient()
-  const activeUser = useSelector((state) => state.activeUser, shallowEqual)
+  const { user: activeUser } = useRouteLoaderData('app')
 
-  const sessionToken = useSelector((state) => state.sessionToken)
+  const { sessionToken } = useAuthStore()
   const [isSaving, setIsSaving] = useState(false)
 
-  const updateActiveUserDetails = useCallback(
-    (payload) =>
-      dispatch({
-        type: `UPDATE_ACTIVE_USER_DETAILS`,
-        payload,
-      }),
-    []
-  )
+  const updateActiveUserDetails = useCallback((payload) => {
+    // FIXME: Use SWR to update user!
+    /*
+    return dispatch({
+      type: `UPDATE_ACTIVE_USER_DETAILS`,
+      payload,
+    })*/
+  }, [])
 
   const updateInfo = useCallback(async (e) => {
     e.preventDefault()
@@ -47,7 +49,7 @@ export default function UserInfos() {
     updateActiveUserDetails(userDetails)
     setIsSaving(false)
   }, [])
-  
+
   return (
     <>
       <Helmet>

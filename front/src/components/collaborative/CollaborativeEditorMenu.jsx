@@ -6,7 +6,7 @@ import { useRouteLoaderData } from 'react-router'
 
 import { trackEvent } from '../../helpers/analytics.js'
 import useFetchData from '../../hooks/graphql.js'
-import { usePreferenceItem } from '../../hooks/user.js'
+import { useArticlePreferences } from '../../stores/preferencesStore.js'
 
 import Export from '../Export.jsx'
 import Sidebar from '../Sidebar.jsx'
@@ -27,14 +27,19 @@ export default function CollaborativeEditorMenu({
 }) {
   const { user } = useRouteLoaderData('app')
   const { t } = useTranslation()
-  const { value: opened, toggleValue: setOpened } = usePreferenceItem(
-    'expandSidebarRight',
-    'article'
-  )
-  const { value: activeMenu, setValue: setActiveMenu } = usePreferenceItem(
-    'activePanel',
-    'article'
-  )
+  const {
+    activePanel: activeMenu,
+    expandSidebarRight: opened,
+    setValue,
+  } = useArticlePreferences()
+
+  function setOpened() {
+    setValue('expandSidebarRight')
+  }
+
+  function setActiveMenu(value) {
+    setValue('activeMenu', value)
+  }
 
   const { data, isLoading } = useFetchData(
     { query: getArticleInfo, variables: { articleId } },

@@ -1,27 +1,28 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { useRouteLoaderData } from 'react-router'
 
 import { useGraphQLClient } from '../../helpers/graphQL'
-import { changePassword as changePasswordQuery } from '../Credentials.graphql'
-import styles from '../credentials.module.scss'
-import formStyles from '../form.module.scss'
 
 import Button from '../Button.jsx'
 import Field from '../Field.jsx'
+
+import { changePassword as changePasswordQuery } from '../Credentials.graphql'
+
+import styles from '../credentials.module.scss'
+import formStyles from '../form.module.scss'
 
 export default function Credentials() {
   const [password, setPassword] = useState('')
   const [passwordO, setPasswordO] = useState('')
   const [passwordC, setPasswordC] = useState('')
   const [isUpdating, setIsUpdating] = useState(false)
-  const userId = useSelector((state) => state.activeUser._id)
-  const hasExistingPassword = useSelector((state) =>
-    state.activeUser.authTypes.includes('local')
-  )
+  const { user: activeUser } = useRouteLoaderData('app')
+  const userId = activeUser?._id
+  const hasExistingPassword = activeUser?.authTypes?.includes('local')
+
   const { query } = useGraphQLClient()
   const { t } = useTranslation()
-  const dispatch = useDispatch()
 
   const canSubmit = useMemo(() => {
     if (hasExistingPassword) {
@@ -31,14 +32,14 @@ export default function Credentials() {
     }
   }, [passwordO, password, passwordC])
 
-  const updateActiveUserDetails = useCallback(
-    (payload) =>
-      dispatch({
-        type: `UPDATE_ACTIVE_USER_DETAILS`,
-        payload,
-      }),
-    []
-  )
+  const updateActiveUserDetails = useCallback((payload) => {
+    // FIXME Update user using SWR
+    /*
+    return dispatch({
+      type: `UPDATE_ACTIVE_USER_DETAILS`,
+      payload,
+    })*/
+  }, [])
 
   const changePassword = async (e) => {
     e.preventDefault()

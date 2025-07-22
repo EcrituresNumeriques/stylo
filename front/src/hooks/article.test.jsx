@@ -1,6 +1,8 @@
-import { fireEvent, screen } from '@testing-library/react'
 import React from 'react'
 import { describe, expect, test } from 'vitest'
+
+import { fireEvent, screen } from '@testing-library/react'
+
 import { renderWithProviders } from '../../tests/setup.js'
 import {
   useArticleActions,
@@ -51,7 +53,7 @@ describe('Article', () => {
         </div>
       )
     }
-    renderWithProviders(<Component />, {})
+    renderWithProviders(<Component />)
     const addTagButton = await screen.findByTestId('add-tag-111')
     fireEvent.click(addTagButton)
     expect(fetch).toHaveBeenLastCalledWith(

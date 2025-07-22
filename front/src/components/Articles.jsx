@@ -2,7 +2,6 @@ import { Search } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 
 import etv from '../helpers/eventTargetValue'
@@ -11,6 +10,7 @@ import Article from './Article'
 import Field from './Field'
 
 import { useModal } from '../hooks/modal.js'
+import { useArticleFiltersStore } from '../stores/articleStore.js'
 
 import ArticleCreate from './ArticleCreate.jsx'
 import Button from './Button.jsx'
@@ -26,9 +26,8 @@ import styles from './articles.module.scss'
 
 export default function Articles() {
   const { t } = useTranslation()
-  const selectedTagIds = useSelector(
-    (state) => state.activeUser.selectedTagIds || []
-  )
+  const { filters } = useArticleFiltersStore()
+  const selectedTagIds = filters.selectedTagIds
 
   const createArticleModal = useModal()
   const [filter, setFilter] = useState('')

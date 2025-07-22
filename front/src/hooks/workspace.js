@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 
 import { executeQuery } from '../helpers/graphQL.js'
@@ -23,7 +22,6 @@ export function useWorkspaceMembersActions(workspaceId) {
   const { mutate: workspacesMutate } = useMutateData({
     query: getWorkspaces,
   })
-  const sessionToken = useSelector((state) => state.sessionToken)
   const { data, mutate, error, isLoading } = useFetchData(
     { query: getWorkspaceMembers, variables: { workspaceId } },
     {
@@ -55,7 +53,6 @@ export function useWorkspaceMembersActions(workspaceId) {
     await executeQuery({
       query: removeMemberMutation,
       variables: { workspaceId, userId },
-      sessionToken,
       type: 'mutation',
     })
     const result = await mutate(
@@ -76,7 +73,6 @@ export function useWorkspaceMembersActions(workspaceId) {
     await executeQuery({
       query: inviteMemberMutation,
       variables: { workspaceId, userId },
-      sessionToken,
       type: 'mutation',
     })
     const result = await mutate(
@@ -107,10 +103,8 @@ export function useWorkspaceMembersActions(workspaceId) {
 
 export function useWorkspaceActions() {
   const { mutate } = useMutateData({ query: getWorkspaces })
-  const sessionToken = useSelector((state) => state.sessionToken)
   const addWorkspace = async (workspace) => {
     const result = await executeQuery({
-      sessionToken,
       query: createMutation,
       variables: {
         data: {
@@ -130,7 +124,6 @@ export function useWorkspaceActions() {
 
   const leaveWorkspace = async (workspaceId) => {
     await executeQuery({
-      sessionToken,
       query: leaveMutation,
       variables: {
         workspaceId,

@@ -1,10 +1,10 @@
 import { ArrowLeft } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 
 import { useEditableArticle } from '../../hooks/article.js'
 import { useModal } from '../../hooks/modal.js'
+import { useArticleRealTimeStore } from '../../stores/articleStore.js'
 
 import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
@@ -12,11 +12,11 @@ import Alert from '../molecules/Alert.jsx'
 import FormActions from '../molecules/FormActions.jsx'
 import Loading from '../molecules/Loading.jsx'
 import Toggle from '../molecules/Toggle.jsx'
-
-import styles from './ArticleBibliography.module.scss'
 import BibliographyBibtexEditor from './BibliographyBibtexEditor.jsx'
 import BibliographyReferenceList from './BibliographyReferenceList.jsx'
 import BibliographyZoteroImport from './BibliographyZoteroImport.jsx'
+
+import styles from './ArticleBibliography.module.scss'
 
 /**
  * @param props
@@ -28,7 +28,7 @@ import BibliographyZoteroImport from './BibliographyZoteroImport.jsx'
  */
 export default function ArticleBibliography({ articleId, versionId, onBack }) {
   /** @type {object} */
-  const articleWriters = useSelector((state) => state.articleWriters || {})
+  const { writers: articleWriters } = useArticleRealTimeStore()
   const readOnly = useMemo(
     () => Object.keys(articleWriters).length > 1,
     [articleWriters]

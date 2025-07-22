@@ -1,6 +1,5 @@
 import React, { Children } from 'react'
 import { I18nextProvider } from 'react-i18next'
-import { Provider } from 'react-redux'
 import { createRoutesStub } from 'react-router'
 import { afterEach, vi } from 'vitest'
 
@@ -9,9 +8,6 @@ import '../src/i18n.js'
 
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render } from '@testing-library/react'
-import merge from 'lodash.merge'
-
-import createReduxStore, { initialState } from '../src/createReduxStore.js'
 
 // mock Fetch requests
 globalThis.fetch = vi.fn().mockResolvedValue({
@@ -19,15 +15,6 @@ globalThis.fetch = vi.fn().mockResolvedValue({
   headers: new Headers(),
   text: vi.fn().mockResolvedValue(''),
   json: vi.fn().mockResolvedValue({}),
-})
-
-vi.mock('react-router', async (importOriginal) => {
-  const mod = await importOriginal()
-
-  return {
-    ...mod,
-    useRouteLoaderData: vi.fn(),
-  }
 })
 
 // remove once https://github.com/jsdom/jsdom/issues/3294 is fixed
@@ -53,11 +40,12 @@ afterEach(() => {
 export function renderWithProviders(
   ui,
   {
-    preloadedState = {},
+    appLoaderState = {
+      user: { _id: '123' },
+    },
     route = '/test',
     path = '/test',
     extraRoutes = [],
-    store = createReduxStore(merge({}, initialState, preloadedState)),
     ...renderOptions
   } = {}
 ) {
@@ -65,6 +53,10 @@ export function renderWithProviders(
     const Stub = createRoutesStub([
       {
         path,
+        id: 'app',
+        loader() {
+          return appLoaderState
+        },
         index: true,
         Component() {
           return Children.toArray(children)
@@ -74,15 +66,12 @@ export function renderWithProviders(
     ])
 
     /* eslint-disable-next-line react/no-children-prop */
-    return React.createElement(Provider, {
-      store,
-      children: React.createElement(
-        I18nextProvider,
-        { i18n },
-        React.createElement(Stub, { initialEntries: [route] })
-      ),
-    })
+    return React.createElement(
+      I18nextProvider,
+      { i18n },
+      React.createElement(Stub, { initialEntries: [route] })
+    )
   }
 
-  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
+  return { ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
 }

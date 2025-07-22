@@ -1,13 +1,14 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+
+import { useArticleRealTimeStore } from '../../stores/articleStore.js'
 
 import Avatar from '../molecules/Avatar.jsx'
 
 import styles from './CollaborativeEditorWriters.module.scss'
-import { useTranslation } from 'react-i18next'
 
 export default function CollaborativeEditorWriters() {
-  const articleWriters = useSelector((state) => state.articleWriters)
+  const { writers: articleWriters } = useArticleRealTimeStore()
   const { t } = useTranslation()
 
   return (

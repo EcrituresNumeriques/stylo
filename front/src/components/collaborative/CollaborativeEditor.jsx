@@ -21,12 +21,10 @@ export async function loader({ params }) {
     throw new Response(`Invalid article id ${articleId}`, { status: 400 })
   }
 
-  const sessionToken = localStorage.getItem('sessionToken')
   try {
     const { article } = await executeQuery({
       query: getArticleInfo,
       variables: { articleId },
-      sessionToken,
     })
     return { article }
   } catch (err) {

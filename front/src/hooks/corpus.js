@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux'
-
 import { executeQuery } from '../helpers/graphQL.js'
 import useGraphQL, { useMutateData } from './graphql.js'
 import { useActiveWorkspaceId } from './workspace.js'
@@ -25,10 +23,8 @@ export function useCorpusActions() {
     },
   })
 
-  const sessionToken = useSelector((state) => state.sessionToken)
   const createCorpus = async ({ title, description, type }) => {
     const response = await executeQuery({
-      sessionToken,
       query: createCorpusQuery,
       variables: {
         createCorpusInput: {
@@ -46,7 +42,6 @@ export function useCorpusActions() {
   }
   const deleteCorpus = async (corpusId) => {
     await executeQuery({
-      sessionToken,
       query: deleteCorpusQuery,
       variables: {
         corpusId,
@@ -58,7 +53,6 @@ export function useCorpusActions() {
   }
   const updateCorpus = async ({ corpusId, title, description, metadata }) => {
     await executeQuery({
-      sessionToken,
       query: updateCorpusQuery,
       variables: {
         corpusId,

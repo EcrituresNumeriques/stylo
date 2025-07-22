@@ -1,19 +1,21 @@
-import { describe, expect, test, vi } from 'vitest'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+import { describe, expect, test, vi } from 'vitest'
+
+import userEvent from '@testing-library/user-event'
+
 import { renderWithProviders } from '../../tests/setup.js'
 
 import Component from './RegisterWithAuthProvider.jsx'
 
 describe('RegisterWithAuthProvider', () => {
-  const preloadedState = {
-    activeUser: { _id: 'test-user-id' },
+  const appLoaderState = {
+    user: { _id: 'test-user-id' },
   }
 
   /* have not yet found a way to check the router location */
   test.skip('redirects if already logged in', async () => {
     renderWithProviders(<Component />, {
-      preloadedState,
+      appLoaderState,
     })
 
     expect(window.location.pathname).toBe('/articles')

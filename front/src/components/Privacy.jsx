@@ -2,17 +2,18 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 
-import { usePreferenceItem } from '../hooks/user.js'
+import { useUserPreferences } from '../stores/preferencesStore.js'
 
 import styles from './Page.module.scss'
 
 export default function Privacy() {
   const { t } = useTranslation()
 
-  const { value: userHasConsent, toggleValue } = usePreferenceItem(
-    'trackingConsent',
-    'user'
-  )
+  const { trackingConsent: userHasConsent, setValue } = useUserPreferences()
+
+  function toggleValue() {
+    setValue('trackingConsent')
+  }
 
   return (
     <section className={styles.container}>
@@ -32,9 +33,12 @@ export default function Privacy() {
               checked={userHasConsent}
               onChange={toggleValue}
               id="tracking-consent-checkbox"
-              />
+            />
 
-            <label className={styles.consentLabel} htmlFor="tracking-consent-checkbox">
+            <label
+              className={styles.consentLabel}
+              htmlFor="tracking-consent-checkbox"
+            >
               {t('footer.navStats.checkbox')}
             </label>
           </p>

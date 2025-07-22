@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { useRouteLoaderData } from 'react-router'
+
 import * as collaborating from '../components/collaborative/collaborating.js'
 import { applicationConfig } from '../config.js'
+import { useArticleRealTimeStore } from '../stores/articleStore.js'
 
 const colors = [
   // navy
@@ -35,22 +37,14 @@ const colors = [
 ]
 
 export function useCollaboration({ articleId, versionId }) {
+  const { update: updateWriters } = useArticleRealTimeStore()
   const connectingRef = useRef(false)
   const [dynamicStyles, setDynamicStyles] = useState('')
   const [websocketStatus, setWebsocketStatus] = useState('')
   const [yText, setYText] = useState(null)
   const [awareness, setAwareness] = useState(null)
   const { websocketEndpoint } = applicationConfig
-  const activeUser = useSelector(
-    (state) => ({
-      _id: state.activeUser._id,
-      email: state.activeUser.email,
-      displayName: state.activeUser.displayName,
-      username: state.activeUser.username,
-    }),
-    shallowEqual
-  )
-  const dispatch = useDispatch()
+  const { user: activeUser } = useRouteLoaderData('app')
 
   const writerInfo = useMemo(
     () => ({
@@ -66,7 +60,7 @@ export function useCollaboration({ articleId, versionId }) {
   const handleWritersUpdated = useCallback(
     ({ states }) => {
       const writers = Object.fromEntries(states)
-      dispatch({ type: 'UPDATE_ARTICLE_WRITERS', articleWriters: writers })
+      updateWriters(writers)
       setDynamicStyles(
         Object.entries(writers)
           .map(([key, writer]) => {

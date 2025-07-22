@@ -1,54 +1,64 @@
-import { describe, expect, test } from 'vitest'
-import { fireEvent, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+import { describe, expect, test } from 'vitest'
+
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
 import { renderWithProviders } from '../../../tests/setup.js'
+
 import Component from './PasswordChange.jsx'
 
 describe('PasswordChange', () => {
-  test('renders with OIDC', () => {
-    const preloadedState = {
-      activeUser: { authTypes: ['oidc'] },
+  test('renders with OIDC', async () => {
+    const appLoaderState = {
+      user: { authTypes: ['oidc'] },
     }
-    renderWithProviders(<Component />, { preloadedState })
+    renderWithProviders(<Component />, { appLoaderState })
 
-    expect(screen.getByRole('form')).toBeInTheDocument()
+    const form = await waitFor(() => screen.getByRole('form'))
+    expect(form).toBeInTheDocument()
     expect(screen.queryByLabelText('Old password')).not.toBeInTheDocument()
     expect(screen.queryByLabelText('New password')).toBeInTheDocument()
     expect(screen.queryByLabelText('Confirm new password')).toBeInTheDocument()
   })
 
-  test('renders with password only', () => {
-    const preloadedState = {
-      activeUser: { authTypes: ['local'] },
+  test('renders with password only', async () => {
+    const appLoaderState = {
+      user: { authTypes: ['local'] },
     }
-    renderWithProviders(<Component />, { preloadedState })
+    renderWithProviders(<Component />, { appLoaderState })
 
-    expect(screen.getByRole('form')).toBeInTheDocument()
+    const form = await waitFor(() => screen.getByRole('form'))
+    expect(form).toBeInTheDocument()
     expect(screen.queryByLabelText('Old password')).toBeInTheDocument()
     expect(screen.queryByLabelText('New password')).toBeInTheDocument()
     expect(screen.queryByLabelText('Confirm new password')).toBeInTheDocument()
   })
 
-  test('renders with both password and oidc', () => {
-    const preloadedState = {
-      activeUser: { authTypes: ['oidc', 'local'] },
+  test('renders with both password and oidc', async () => {
+    const appLoaderState = {
+      user: { authTypes: ['oidc', 'local'] },
     }
-    renderWithProviders(<Component />, { preloadedState })
+    renderWithProviders(<Component />, { appLoaderState })
 
-    expect(screen.getByRole('form')).toBeInTheDocument()
+    const form = await waitFor(() => screen.getByRole('form'))
+    expect(form).toBeInTheDocument()
     expect(screen.queryByLabelText('Old password')).toBeInTheDocument()
     expect(screen.queryByLabelText('New password')).toBeInTheDocument()
     expect(screen.queryByLabelText('Confirm new password')).toBeInTheDocument()
   })
 
   test('cannot be submitted when confirmation difers from new password', async () => {
-    const preloadedState = {
-      activeUser: { authTypes: ['local'] },
+    const appLoaderState = {
+      user: { authTypes: ['local'] },
     }
-    renderWithProviders(<Component />, { preloadedState })
+    renderWithProviders(<Component />, { appLoaderState })
 
-    screen.getByLabelText('Old password').focus()
+    const oldPasswordField = await waitFor(() =>
+      screen.getByLabelText('Old password')
+    )
+
+    oldPasswordField.focus()
     await userEvent.keyboard('aaaa')
 
     screen.getByLabelText('New password').focus()
@@ -61,12 +71,15 @@ describe('PasswordChange', () => {
   })
 
   test('can be submitted when confirmation equals new password', async () => {
-    const preloadedState = {
-      activeUser: { authTypes: ['local'] },
+    const appLoaderState = {
+      user: { authTypes: ['local'] },
     }
-    renderWithProviders(<Component />, { preloadedState })
+    renderWithProviders(<Component />, { appLoaderState })
 
-    screen.getByLabelText('Old password').focus()
+    const oldPasswordField = await waitFor(() =>
+      screen.getByLabelText('Old password')
+    )
+    oldPasswordField.focus()
     await userEvent.keyboard('aaaa')
 
     screen.getByLabelText('New password').focus()
@@ -79,12 +92,15 @@ describe('PasswordChange', () => {
   })
 
   test('can be submitted when confirmation equals new password and is oidc', async () => {
-    const preloadedState = {
-      activeUser: { authTypes: ['oidc'] },
+    const appLoaderState = {
+      user: { authTypes: ['oidc'] },
     }
-    renderWithProviders(<Component />, { preloadedState })
+    renderWithProviders(<Component />, { appLoaderState })
 
-    screen.getByLabelText('New password').focus()
+    const newPasswordField = await waitFor(() =>
+      screen.getByLabelText('New password')
+    )
+    newPasswordField.focus()
     await userEvent.keyboard('abcd')
 
     screen.getByLabelText('Confirm new password').focus()

@@ -2,12 +2,12 @@ import YAML from 'js-yaml'
 import { ArrowLeft } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 
 import { Toggle } from '@geist-ui/core'
 
 import { useArticleMetadata } from '../../hooks/article.js'
-import { usePreferenceItem } from '../../hooks/user.js'
+import { useArticleRealTimeStore } from '../../stores/articleStore.js'
+import { useArticlePreferences } from '../../stores/preferencesStore.js'
 
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
@@ -25,7 +25,7 @@ import styles from './articleEditorMetadata.module.scss'
  */
 export default function ArticleMetadata({ onBack, articleId, versionId }) {
   /** @type {object} */
-  const articleWriters = useSelector((state) => state.articleWriters || {})
+  const { writers: articleWriters } = useArticleRealTimeStore()
   const multiUserActive = useMemo(
     () => Object.keys(articleWriters).length > 1,
     [articleWriters]
@@ -39,10 +39,10 @@ export default function ArticleMetadata({ onBack, articleId, versionId }) {
     })
   const [error, setError] = useState('')
 
-  const { value: selector, setValue: setSelector } = usePreferenceItem(
-    'metadataFormMode',
-    'article'
-  )
+  const { metadataFormMode: selector, setValue } = useArticlePreferences()
+  function setSelector(value) {
+    setValue('metadataFormMode', value)
+  }
 
   const handleFormUpdate = useCallback(
     async (metadata) => {

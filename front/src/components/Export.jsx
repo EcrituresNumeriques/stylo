@@ -1,18 +1,21 @@
 import clsx from 'clsx'
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import slugify from 'slugify'
+
+import Select from './Select'
+
 import { applicationConfig } from '../config.js'
 import useStyloExport from '../hooks/stylo-export.js'
+import { useExportPreferences } from '../stores/preferencesStore.js'
+
 import Button from './Button.jsx'
+import Combobox from './SelectCombobox.jsx'
+import Loading from './molecules/Loading.jsx'
+
 import buttonStyles from './button.module.scss'
 import styles from './export.module.scss'
 import formStyles from './form.module.scss'
-import Loading from './molecules/Loading.jsx'
-
-import Select from './Select'
-import Combobox from './SelectCombobox.jsx'
 
 /**
  * @param {object} props
@@ -33,7 +36,6 @@ export default function Export({
   onCancel,
 }) {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
   const { pandocExportHost, pandocExportEndpoint } = applicationConfig
 
   const {
@@ -44,16 +46,13 @@ export default function Export({
     formats,
     unnumbered,
     book_division,
-  } = useSelector((state) => state.exportPreferences, shallowEqual)
+    setValue,
+  } = useExportPreferences()
 
   const setPreference = useCallback(
     /** @param {string} key */ (key) =>
       /** @param {string|Event} event */ (event) =>
-        dispatch({
-          type: 'SET_EXPORT_PREFERENCES',
-          key,
-          value: event?.target?.value ?? event,
-        }),
+        setValue(key, event?.target?.value ?? event),
     []
   )
 

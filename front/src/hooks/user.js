@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useRouteLoaderData } from 'react-router'
 
 import { applicationConfig } from '../config.js'
 import { useGraphQLClient } from '../helpers/graphQL.js'
+import { useAuthStore } from '../stores/authStore.js'
 import useFetchData, { useMutateData } from './graphql.js'
 
 import {
@@ -21,54 +21,18 @@ export function useActiveUserId() {
 }
 
 /**
- * @typedef {import('redux').Dispatch} Dispatch
- */
-
-/**
- *
- * @param {string} key
- * @param {'article' | 'user' | 'export' | 'corpus' } namespace
- * @returns {{ value: string|boolean|number, setValue: Dispatch, toggleValue: Dispatch }}
- */
-export function usePreferenceItem(key, namespace = 'article') {
-  const dispatch = useDispatch()
-  const value = useSelector((state) => state[`${namespace}Preferences`]?.[key])
-
-  const ns = namespace.toUpperCase()
-
-  return {
-    value,
-    /**
-     * @param {boolean | undefined} value
-     */
-    setValue(value) {
-      dispatch({ type: `SET_${ns}_PREFERENCES`, key, value })
-    },
-    toggleValue() {
-      dispatch({ type: `${ns}_PREFERENCES_TOGGLE`, key })
-    },
-  }
-}
-
-/**
  *
  * @param {'humanid' | 'hypothesis' | 'zotero' } service
  * @returns {{ link: React.EffectCallback, token: string | undefined, id: string | undefined, isLinked: boolean, error: string, unlink: React.EffectCallback }}
  */
 export function useSetAuthToken(service) {
-  const dispatch = useDispatch()
   const { query } = useGraphQLClient()
   const [error, setError] = useState('')
   const { backendEndpoint, frontendEndpoint } = applicationConfig
 
-  const token = useSelector(
-    (state) => state.activeUser.authProviders?.[service]?.token
-  )
-
-  const id = useSelector(
-    (state) => state.activeUser.authProviders?.[service]?.id
-  )
-
+  const { user } = useRouteLoaderData('app')
+  const token = user?.authProviders?.[service]?.token
+  const id = user?.authProviders?.[service]?.id
   const isLinked = useMemo(() => id ?? token, [id, token])
 
   const link = useCallback(async function handleSetAuthToken() {
@@ -84,12 +48,14 @@ export function useSetAuthToken(service) {
         const authProviders = JSON.parse(data ?? '')
 
         if (authProviders) {
+          // FIXME Use SWR to update active user
+          /*
           dispatch({
             type: 'UPDATE_ACTIVE_USER_DETAILS',
             payload: {
               authProviders,
             },
-          })
+          })*/
         }
 
         popup.close()
@@ -110,7 +76,10 @@ export function useSetAuthToken(service) {
         variables: { service },
       })
 
+      // FIXME Use SWR to update active user
+      /*
       dispatch({ type: 'UPDATE_ACTIVE_USER_DETAILS', payload: unsetAuthToken })
+      */
     } catch (error) {
       setError(error.messages.at(0).extensions.type)
     }
@@ -184,12 +153,11 @@ export function useUserTags() {
 }
 
 export function useLogout() {
-  const dispatch = useDispatch()
   const { query } = useGraphQLClient()
+  const { logout } = useAuthStore()
 
   return useCallback(async () => {
     await query({ query: logoutMutation })
-
-    dispatch({ type: 'LOGOUT' })
+    logout()
   }, [])
 }

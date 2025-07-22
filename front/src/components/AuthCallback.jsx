@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import { Link, useParams } from 'react-router'
 
 import { useGraphQLClient } from '../helpers/graphQL.js'
@@ -15,7 +14,6 @@ import buttonStyles from './button.module.scss'
 export default function AuthCallbackPopup() {
   const { query } = useGraphQLClient()
   const { service } = useParams()
-  const dispatch = useDispatch()
   const [errorCode, setErrorCode] = useState(null)
   const hasOpener = Boolean(window.opener)
 
@@ -54,10 +52,11 @@ export default function AuthCallbackPopup() {
       variables: { service },
       withCredentials: true,
     }).then(({ setAuthToken }) => {
-      dispatch({
+      // FIXME: update authProviders using SWR ?
+      /*dispatch({
         type: 'UPDATE_ACTIVE_USER_DETAILS',
         payload: setAuthToken.authProviders,
-      })
+      })*/
 
       closePopup(setAuthToken.authProviders)
     }, onError)

@@ -1,19 +1,18 @@
+import { useRouteLoaderData } from 'react-router'
+
+import { executeQuery } from '../helpers/graphQL.js'
 import useFetchData from './graphql.js'
-import { useSelector } from 'react-redux'
 
 import {
   addContact,
-  removeContact,
   getContacts,
+  removeContact,
 } from '../components/Contacts.graphql'
-import { executeQuery } from '../helpers/graphQL.js'
 
 export function useContactActions() {
-  const activeUser = useSelector((state) => state.activeUser)
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const activeUserId = activeUser._id
+  const { user: activerUser } = useRouteLoaderData('app')
   const { data, mutate, isLoading, error } = useFetchData(
-    { query: getContacts, variables: { userId: activeUserId } },
+    { query: getContacts, variables: { userId: activerUser._id } },
     {
       revalidateIfStale: false,
       revalidateOnFocus: false,
@@ -27,7 +26,6 @@ export function useContactActions() {
         userId: activeUserId,
         contactId,
       },
-      sessionToken,
       type: 'mutation',
     })
     await mutate(
@@ -43,7 +41,6 @@ export function useContactActions() {
     const result = await executeQuery({
       query: removeContact,
       variables: { userId: activeUserId, contactId },
-      sessionToken,
       type: 'mutation',
     })
     await mutate(
