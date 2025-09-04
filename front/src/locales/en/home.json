@@ -11,15 +11,15 @@
   "news.title": "News",
   "news.workshops.title": "Upcoming workshops",
   "project.features": [
-    "Metadata management;",
-    "Lightweight markup languages (Markdown, YAML, BibTeX);",
-    "Command palette and keyboard shortcuts (Monaco editor);",
+    "Lightweight markup languages (Markdown, YAML);",
+    "Command palette and keyboard shortcuts;",
+    "Automatic document backup and a versioning system;",
+    "Shared workspaces and collaborative writing;",
     "Web preview, sharing and article annotation;",
-    "Asynchronous collaboration spaces and synchronous collaborative editing;",
-    "Automatic or deliberate versioning of documents;",
-    "Bibliography manager and synchronisation with Zotero;",
-    "Creation, manipulation, and export of a corpus of articles;",
-    "Export of articles in PDF, HTML, XML, LaTeX, ODT."
+    "Bibliography manager (BibTeX) and synchronisation with Zotero;",
+    "Metadata manager and access to data via the Graph QL API;",
+    "Export of articles in PDF, HTML, XML, LaTeX, ODT;",
+    "Creation, manipulation, and export of a corpus of articles."
   ],
   "project.features.title": "Features",
   "project.research": "Stylo is a research project and a prototype tool adapted for journals in the Humanities and Social Sciences. It integrates the entire editorial chain into a single environment. The circulation of digital texts is facilitated by separating the semantic structure of documents from their formatting, without proprietary formats or software.",
