@@ -4,6 +4,8 @@ import { List } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import corpusBookMetadataSchema from '../../schemas/corpus-book-metadata.schema.json'
+import corpusBookUiSchema from '../../schemas/corpus-book-ui-schema.json'
 import corpusJournalMetadataSchema from '../../schemas/corpus-journal-metadata.schema.json'
 import corpusJournalUiSchema from '../../schemas/corpus-journal-ui-schema.json'
 import corpusThesisMetadataSchema from '../../schemas/corpus-thesis-metadata.schema.json'
@@ -45,12 +47,19 @@ export default function CorpusMetadataModal({
     () => merge(corpusThesisMetadataSchema),
     [corpusThesisMetadataSchema]
   )
+  const corpusBookMetadataSchemaMerged = useMemo(
+    () => merge(corpusBookMetadataSchema),
+    [corpusBookMetadataSchema]
+  )
   const corpusMetadataSchema = useMemo(() => {
     if (corpusType === 'journal') {
       return corpusJournalMetadataSchema
     }
     if (corpusType === 'thesis') {
       return corpusThesisMetadataSchemaMerged
+    }
+    if (corpusType === 'book') {
+      return corpusBookMetadataSchemaMerged
     }
     return null
   }, [corpusType])
@@ -60,6 +69,9 @@ export default function CorpusMetadataModal({
     }
     if (corpusType === 'thesis') {
       return corpusThesisUiSchema
+    }
+    if (corpusType === 'book') {
+      return corpusBookUiSchema
     }
     return null
   }, [corpusType])
@@ -131,18 +143,16 @@ export default function CorpusMetadataModal({
           </>
         }
       >
-        <div
-          className={styles.toggle}
-          onClick={() => setSelector(selector === 'raw' ? 'basic' : 'raw')}
-        >
+        <div className={styles.header}>
           <Toggle
             disabled={corpusType === 'neutral'}
             id="raw-mode"
             checked={selector === 'raw' || corpusType === 'neutral'}
             title={t('metadata.showYaml')}
-            onChange={(e) => {
-              setSelector(e.target.checked ? 'raw' : 'basic')
+            onChange={(checked) => {
+              setSelector(checked ? 'raw' : 'basic')
             }}
+            className={styles.toggle}
           >
             YAML
           </Toggle>

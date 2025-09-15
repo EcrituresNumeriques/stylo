@@ -11,19 +11,10 @@
 
 .toggle {
   margin-bottom: 0.5rem;
-  display: flex;
-  gap: 0.5rem;
-  justify-content: flex-end;
-  font-size: 1.125rem;
-  cursor: pointer;
+  display: inline-block;
+}
 
-  > label {
-    cursor: pointer;
-    font-weight: 500;
-    user-select: none;
-    
-    &[aria-disabled="true"] {
-      cursor: not-allowed;
-    }
-  }
+.header {
+  display: flex;
+  justify-content: flex-end;
 }

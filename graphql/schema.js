@@ -24,6 +24,8 @@ enum CorpusType {
   journal
   # thesis/mémoire
   thesis
+  # livre
+  book
 }
 
 enum AuthTokenService {

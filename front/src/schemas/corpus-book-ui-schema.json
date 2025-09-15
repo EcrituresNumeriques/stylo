@@ -1,0 +1,236 @@
+{
+  "ui:groups": [
+    {
+      "fields": [
+        "license",
+        "collective",
+        "pageCount",
+        "series",
+        "publisher",
+        "coverImageUrl"
+      ],
+      "title": "book.title"
+    },
+    {
+      "title": "book.titleAndAbstract",
+      "fields": [
+        "lang",
+        "title",
+        "subtitle",
+        "abstract"
+      ]
+    },
+    {
+      "title": "keywords",
+      "fields": [
+        "keywords"
+      ]
+    },
+    {
+      "title": "localizedContent",
+      "fields": [
+        "localizedContent"
+      ]
+    },
+    {
+      "title": "authors",
+      "fields": [
+        "authors"
+      ]
+    },
+    {
+      "title": "book.isbns",
+      "fields": [
+        "isbns"
+      ]
+    },
+    {
+      "title": "book.prices",
+      "fields": [
+        "prices"
+      ]
+    },
+    {
+      "title": "book.publication",
+      "fields": [
+        "publicationDate",
+        "publicationPlace",
+        "publicationUrls"
+      ]
+    }
+  ],
+  "type": {
+    "ui:widget": "hidden"
+  },
+  "@version": {
+    "ui:widget": "hidden"
+  },
+  "pageCount": {
+    "ui:title": "pageCount"
+  },
+  "lang": {
+    "ui:title": "language",
+    "ui:placeholder": "language.placeholder"
+  },
+  "isbns": {
+    "ui:add-item-title": "isbns.itemAdd",
+    "items": {
+      "media": {
+        "ui:title": "isbns.media",
+        "ui:enumNames": [
+          "media.print",
+          "media.pdf",
+          "media.digital",
+          "media.epub"
+        ]
+      },
+      "isbn": {
+        "ui:title": "isbn"
+      }
+    }
+  },
+  "prices": {
+    "ui:add-item-title": "prices.itemAdd",
+    "items": {
+      "media": {
+        "ui:title": "prices.media",
+        "ui:enumNames": [
+          "media.print",
+          "media.pdf",
+          "media.digital",
+          "media.epub"
+        ]
+      },
+      "price": {
+        "ui:title": "price"
+      }
+    }
+  },
+  "publicationUrls": {
+    "ui:add-item-title": "Ajouter une URL de publication",
+    "items": {
+      "media": {
+        "ui:title": "publicationUrls.media",
+        "ui:enumNames": [
+          "media.lulu",
+          "media.pdf",
+          "media.epub"
+        ]
+      },
+      "url": {
+        "ui:title": "url"
+      }
+    }
+  },
+  "authors": {
+    "ui:add-item-title": "people.itemAdd",
+    "items": {
+      "ui:classNames": "person",
+      "ui:autocomplete": "IsidoreAuthorSearch",
+      "surname": {
+        "ui:title": "people.surname"
+      },
+      "forename": {
+        "ui:title": "people.forename"
+      },
+      "affiliations": {
+        "ui:widget": "hidden"
+      },
+      "academicTitle": {
+        "ui:widget": "hidden"
+      },
+      "role": {
+        "ui:widget": "hidden"
+      },
+      "biography": {
+        "ui:title": "people.biography",
+        "ui:widget": "textarea"
+      },
+      "email": {
+        "ui:widget": "hidden"
+      },
+      "orcid": {
+        "ui:title": "people.orcid"
+      },
+      "viaf": {
+        "ui:widget": "hidden"
+      },
+      "foaf": {
+        "ui:widget": "hidden"
+      },
+      "isni": {
+        "ui:widget": "hidden"
+      },
+      "wikidata": {
+        "ui:widget": "hidden"
+      },
+      "presentation": {
+        "ui:title": "people.presentation"
+      }
+    }
+  },
+  "title": {
+    "ui:title": "title"
+  },
+  "subtitle": {
+    "ui:title": "subtitle"
+  },
+  "abstract": {
+    "ui:title": "abstract",
+    "ui:widget": "textarea"
+  },
+  "url": {
+    "ui:title": "url"
+  },
+  "publicationDate": {
+    "ui:title": "publicationDate",
+    "ui:widget": "date"
+  },
+  "series": {
+    "ui:title": "series"
+  },
+  "collective": {
+    "ui:label": false,
+    "ui:title": "collective",
+    "ui:widget": "toggle"
+  },
+  "coverImageUrl": {
+    "ui:title": "coverImageUrl"
+  },
+  "keywords": {
+    "ui:add-item-title": "keywords.itemAdd",
+    "ui:className": "keywords",
+    "items": {
+      "ui:label": false,
+      "ui:className": "keywords"
+    }
+  },
+  "localizedContent": {
+    "ui:add-item-title": "language.itemAdd",
+    "items": {
+      "lang": {
+        "ui:title": "language"
+      },
+      "title": {
+        "ui:title": "title"
+      },
+      "subtitle": {
+        "ui:title": "subtitle"
+      },
+      "abstract": {
+        "ui:title": "abstract",
+        "ui:widget": "textarea"
+      },
+      "keywords": {
+        "ui:className": "keywords",
+        "ui:title": "keywords",
+        "ui:add-item-title": "keywords.itemAdd",
+        "ui:remove-item-title": "keywords.itemRemove",
+        "items": {
+          "ui:label": false,
+          "ui:className": "keywords"
+        }
+      }
+    }
+  }
+}

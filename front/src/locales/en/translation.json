@@ -116,6 +116,7 @@
   "corpus.page.description": "A corpus is a collection of articles that you can sort and export all at once.",
   "corpus.page.title": "Corpus list - {{ workspace }}",
   "corpus.parts.label": "Chapters",
+  "corpus.type.book": "Book",
   "corpus.type.journal": "Journal",
   "corpus.type.neutral": "Neutral",
   "corpus.type.thesis": "Thesis",
