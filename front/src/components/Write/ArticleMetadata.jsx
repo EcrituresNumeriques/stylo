@@ -4,13 +4,12 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
-import { Toggle } from '@geist-ui/core'
-
 import { useArticleMetadata } from '../../hooks/article.js'
 import { usePreferenceItem } from '../../hooks/user.js'
 
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
+import Toggle from '../molecules/Toggle.jsx'
 import MonacoYamlEditor from './providers/monaco/YamlEditor.jsx'
 import ArticleEditorMetadataForm from './yamleditor/ArticleEditorMetadataForm.jsx'
 
@@ -90,6 +89,7 @@ export default function ArticleMetadata({ onBack, articleId, versionId }) {
 
         <Toggle
           id="raw-mode"
+          data-testid="raw-mode-toggle"
           checked={selector === 'raw'}
           title={t('metadata.showYaml')}
           onChange={(checked) => setSelector(checked ? 'raw' : 'basic')}

@@ -29,9 +29,10 @@ export default function ToggleSwitch({
   children,
   disabled = false,
   id,
-  labels={},
+  labels = {},
   name,
   onChange = () => {},
+  className,
 }) {
   const [isChecked, setChecked] = useState(checked)
   const [isActive, setActiveState] = useState(false)
@@ -51,11 +52,20 @@ export default function ToggleSwitch({
   }, [isChecked])
 
   if (!a11yLabel && !Children.count(children)) {
-    console.warn('This component is not accessible as it lacks a label (either as a child node or with the `labels` props).')
+    console.warn(
+      'This component is not accessible as it lacks a label (either as a child node or with the `labels` props).'
+    )
   }
 
   return (
-    <label className={clsx(styles.element, isActive && styles.elementActive, disabled && styles.elementDisabled)}>
+    <label
+      className={clsx(
+        styles.element,
+        isActive && styles.elementActive,
+        disabled && styles.elementDisabled,
+        className
+      )}
+    >
       <input
         id={id}
         disabled={disabled}

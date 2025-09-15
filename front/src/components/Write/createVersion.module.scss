@@ -15,15 +15,6 @@
 
 .toggle {
   margin-top: 1rem;
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  cursor: pointer;
-
-  > label {
-    cursor: pointer;
-    user-select: none;
-  }
 }
 
 .form {

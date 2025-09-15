@@ -8,7 +8,7 @@ import corpusJournalMetadataSchema from '../../schemas/corpus-journal-metadata.s
 import corpusJournalUiSchema from '../../schemas/corpus-journal-ui-schema.json'
 import corpusThesisMetadataSchema from '../../schemas/corpus-thesis-metadata.schema.json'
 import corpusThesisUiSchema from '../../schemas/corpus-thesis-ui-schema.json'
-import { Toggle, useToasts } from '@geist-ui/core'
+import { useToasts } from '@geist-ui/core'
 
 import { useCorpusActions } from '../../hooks/corpus.js'
 import { useModal } from '../../hooks/modal.js'
@@ -20,6 +20,7 @@ import Modal from '../Modal.jsx'
 import MonacoYamlEditor from '../Write/providers/monaco/YamlEditor.jsx'
 import MetadataForm from '../metadata/MetadataForm.jsx'
 import FormActions from '../molecules/FormActions.jsx'
+import Toggle from '../molecules/Toggle.jsx'
 
 import styles from './CorpusMetadataModal.module.scss'
 
@@ -142,10 +143,9 @@ export default function CorpusMetadataModal({
             onChange={(e) => {
               setSelector(e.target.checked ? 'raw' : 'basic')
             }}
-          />
-          <label aria-disabled={corpusType === 'neutral'} htmlFor="raw-mode">
+          >
             YAML
-          </label>
+          </Toggle>
         </div>
         {showYamlEditor && (
           <>

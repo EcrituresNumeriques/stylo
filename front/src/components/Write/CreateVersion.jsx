@@ -1,7 +1,8 @@
-import { useToasts } from '@geist-ui/core'
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
+
+import { useToasts } from '@geist-ui/core'
 
 import { fromFormData } from '../../helpers/forms.js'
 import { useArticleVersionActions } from '../../hooks/article.js'
@@ -74,9 +75,11 @@ export default function CreateVersion({ articleId, onClose, onSubmit }) {
         data-testid="major-version-toggle"
         name="majorVersion"
         checked={majorVersion}
-        onChange={setMajorVersion}>
-          Version majeure
-        </Toggle>
+        onChange={setMajorVersion}
+        className={styles.toggle}
+      >
+        Version majeure
+      </Toggle>
 
       <FormActions
         submitButton={{
