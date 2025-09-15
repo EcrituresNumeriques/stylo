@@ -4,7 +4,6 @@ import { useParams, useSearchParams } from 'react-router'
 import { executeQuery } from '../../helpers/graphQL.js'
 
 import ArticleStats from '../ArticleStats.jsx'
-import CollaborativeEditorArticleHeader from './CollaborativeEditorArticleHeader.jsx'
 import CollaborativeEditorMenu from './CollaborativeEditorMenu.jsx'
 import CollaborativeTextEditor from './CollaborativeTextEditor.jsx'
 
@@ -48,11 +47,7 @@ export default function CollaborativeEditor(props) {
 
   return (
     <section className={styles.container}>
-      <div className={styles.editorArea}>
-        <CollaborativeEditorArticleHeader
-          articleId={articleId}
-          versionId={versionId}
-        />
+      <div>
         <CollaborativeTextEditor
           mode={mode}
           articleId={articleId}
