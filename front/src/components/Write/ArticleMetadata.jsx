@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useArticleMetadata } from '../../hooks/article.js'
 import { usePreferenceItem } from '../../hooks/user.js'
 
+import Select from '../Select.jsx'
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 import Toggle from '../molecules/Toggle.jsx'
@@ -97,6 +98,7 @@ export default function ArticleMetadata({ onBack, articleId, versionId }) {
           YAML
         </Toggle>
       </header>
+
       {versionId && (
         <div className={styles.readonly}>
           <Alert message={t('metadata.readonly.versionView')} type="warning" />

@@ -1,0 +1,60 @@
+{
+  "ui:groups": [
+    {
+      "title": "blogPost.title",
+      "fields": [
+        "title",
+        "publicationDate",
+        "slug",
+        "lang"
+      ]
+    },
+    {
+      "title": "keywords",
+      "fields": [
+        "keywords"
+      ]
+    },
+    {
+      "title": "authors",
+      "fields": [
+        "authors"
+      ]
+    }
+  ],
+  "lang": {
+    "ui:title": "language",
+    "ui:placeholder": "language.placeholder"
+  },
+  "authors": {
+    "ui:add-item-title": "people.itemAdd",
+    "items": {
+      "ui:classNames": "person",
+      "ui:autocomplete": "IsidoreAuthorSearch",
+      "surname": {
+        "ui:title": "people.surname"
+      },
+      "forename": {
+        "ui:title": "people.forename"
+      }
+    }
+  },
+  "title": {
+    "ui:title": "title"
+  },
+  "slug": {
+    "ui:title": "slug"
+  },
+  "publicationDate": {
+    "ui:title": "publicationDate",
+    "ui:widget": "date"
+  },
+  "keywords": {
+    "ui:add-item-title": "keywords.itemAdd",
+    "ui:className": "keywords",
+    "items": {
+      "ui:label": false,
+      "ui:className": "keywords"
+    }
+  }
+}

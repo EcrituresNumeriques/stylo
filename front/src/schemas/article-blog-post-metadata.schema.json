@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stylo.huma-num.fr/schemas/article-blog-post-metadata.schema.json",
+  "title": "Blog post metadata",
+  "type": "object",
+  "definitions": {
+    "lang": {
+      "type": "string",
+      "enum": ["fr", "en", "it", "es", "pt", "de", "uk", "ar"]
+    },
+    "person": {
+      "type": "object",
+      "properties": {
+        "surname": {
+          "type": "string",
+          "title": "Last name"
+        },
+        "forename": {
+          "type": "string",
+          "title": "First name"
+        }
+      }
+    },
+    "localizedContent": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "$ref": "#/definitions/lang"
+        },
+        "title": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "blog-post"
+    },
+    "@version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "publicationDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/localizedContent"
+    }
+  ]
+}
