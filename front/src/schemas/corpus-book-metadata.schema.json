@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stylo.huma-num.fr/schemas/corpus-book-metadata.schema.json",
+  "title": "Book metadata",
+  "type": "object",
+  "definitions": {
+    "lang": {
+      "type": "string",
+      "enum": ["fr", "en", "it", "es", "pt", "de", "uk", "ar"]
+    },
+    "person": {
+      "type": "object",
+      "properties": {
+        "surname": {
+          "type": "string",
+          "title": "Last name"
+        },
+        "forename": {
+          "type": "string",
+          "title": "First name"
+        },
+        "affiliations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Affiliations"
+        },
+        "biography": {
+          "type": "string",
+          "title": "Biography"
+        },
+        "email": {
+          "type": "string",
+          "title": "Email"
+        },
+        "orcid": {
+          "type": "string",
+          "title": "ORCID"
+        },
+        "viaf": {
+          "type": "string",
+          "title": "VIAF"
+        },
+        "foaf": {
+          "type": "string",
+          "title": "FOAF"
+        },
+        "isni": {
+          "type": "string",
+          "title": "ISNI"
+        },
+        "wikidata": {
+          "type": "string",
+          "title": "Wikidata"
+        },
+        "academicTitle": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "presentation": {
+          "type": "string"
+        }
+      }
+    },
+    "localizedContent": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "$ref": "#/definitions/lang"
+        },
+        "title": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "abstract": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "mediaType": {
+      "type": "string",
+      "enum": ["print", "pdf", "digital", "epub"]
+    },
+    "priceEntity": {
+      "type": "object",
+      "properties": {
+        "media": {
+          "$ref": "#/definitions/mediaType"
+        },
+        "price": {
+          "type": "string"
+        }
+      }
+    },
+    "isbnEntity": {
+      "type": "object",
+      "properties": {
+        "media": {
+          "$ref": "#/definitions/mediaType"
+        },
+        "isbn": {
+          "type": "string"
+        }
+      }
+    },
+    "urlEntity": {
+      "type": "object",
+      "properties": {
+        "media": {
+          "type": "string",
+          "enum": ["lulu", "pdf", "epub"]
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "book"
+    },
+    "@version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "license": {
+      "type": "string"
+    },
+    "collective": {
+      "type": "boolean"
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    },
+    "translators": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    },
+    "localizedContent": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/localizedContent"
+      }
+    },
+    "url": {
+      "type": "string"
+    },
+    "publicationDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "description": {
+      "type": "string"
+    },
+    "pageCount": {
+      "type": "string"
+    },
+    "prices": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/priceEntity"
+      }
+    },
+    "isbns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/isbnEntity"
+      }
+    },
+    "publicationUrls": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/urlEntity"
+      }
+    },
+    "publisher": {
+      "type": "string"
+    },
+    "series": {
+      "type": "string"
+    },
+    "publicationPlace": {
+      "type": "string"
+    },
+    "coverImageUrl": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/localizedContent"
+    }
+  ]
+}

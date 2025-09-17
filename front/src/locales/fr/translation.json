@@ -124,6 +124,7 @@
   "corpus.page.description": "Un corpus est une collection d'articles triables et exportables en une seule action.",
   "corpus.page.title": "Liste des corpus - {{ workspace }}",
   "corpus.parts.label": "Chapitres",
+  "corpus.type.book": "Livre",
   "corpus.type.journal": "Revue",
   "corpus.type.neutral": "Neutre",
   "corpus.type.thesis": "Thèse",

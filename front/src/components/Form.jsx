@@ -15,6 +15,8 @@ import isidoreKeywordSearch from './Write/metadata/isidoreKeyword'
 import Form, { getDefaultRegistry } from '@rjsf/core'
 import validator from '@rjsf/validator-ajv8'
 
+import ToggleWidget from './ToggleWidget.jsx'
+
 import styles from './form.module.scss'
 
 const {
@@ -202,6 +204,10 @@ function FieldTemplate(properties) {
   const label = properties.schema.$id
     ? properties.label[properties.schema.$id]
     : properties.label
+
+  if (properties.hidden) {
+    return <></>
+  }
   return (
     <div className={classNames} style={style}>
       {displayLabel && (
@@ -334,6 +340,7 @@ export default function SchemaForm({
   const customWidgets = {
     SelectWidget: CustomSelectWidget,
     CheckboxesWidget: CustomCheckboxesWidget,
+    toggle: ToggleWidget,
   }
 
   const customTemplates = {

@@ -2,14 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
 
-import useFetchData from '../../hooks/graphql.js'
-
+import Toggle from '../molecules/Toggle.jsx'
 import CollaborativeEditorActiveVersion from './CollaborativeEditorActiveVersion.jsx'
 import CollaborativeEditorWriters from './CollaborativeEditorWriters.jsx'
-import Loading from '../molecules/Loading.jsx'
-import Toggle from '../molecules/Toggle.jsx'
-
-import { getArticleInfo } from '../Article.graphql'
 
 import styles from './CollaborativeEditorArticleHeader.module.scss'
 

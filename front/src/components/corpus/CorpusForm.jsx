@@ -91,6 +91,9 @@ export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
           <option value={'thesis'} key={'thesis'}>
             {t('corpus.type.thesis')}
           </option>
+          <option value={'book'} key={'book'}>
+            {t('corpus.type.book')}
+          </option>
         </Select>
         <div className={clsx(fieldStyles.field, 'control-field')}>
           <label htmlFor="description">
