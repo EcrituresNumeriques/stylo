@@ -28,6 +28,12 @@
   }
 }
 
+.selectDisabled {
+  &:after {
+    display: none;
+  }
+}
+
 .form {
   :global {
     label {
