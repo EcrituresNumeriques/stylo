@@ -29,7 +29,6 @@
     "@babel/plugin-proposal-async-generator-functions": "^7.20.1",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.25.7",
-    "@geist-ui/core": "^2.3.8",
     "@monaco-editor/react": "~4.7.0",
     "@rjsf/core": "^5.24.3",
     "@rjsf/validator-ajv8": "^5.24.3",
@@ -67,6 +66,7 @@
     "react-i18next": "^12.2.2",
     "react-redux": "^9.2.0",
     "react-router": "^7.6.0",
+    "react-toastify": "^11.0.5",
     "redux": "^5.0.1",
     "sass": "^1.56.2",
     "slugify": "1.6.6",
@@ -81,12 +81,6 @@
   "optionalDependencies": {
     "@esbuild/linux-x64": "^0.24.2",
     "@rollup/rollup-linux-x64-gnu": "^4.31.0"
-  },
-  "overrides": {
-    "@geist-ui/core": {
-      "react": "$react",
-      "react-dom": "$react-dom"
-    }
   },
   "repository": {
     "type": "git",

@@ -1,8 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-
-import { useToasts } from '@geist-ui/core'
+import { toast } from 'react-toastify'
 
 import { fromFormData } from '../../helpers/forms.js'
 import { useArticleVersionActions } from '../../hooks/article.js'
@@ -22,7 +21,6 @@ import styles from './createVersion.module.scss'
  */
 export default function CreateVersion({ articleId, onClose, onSubmit }) {
   const { t } = useTranslation()
-  const { setToast } = useToasts()
   const { create } = useArticleVersionActions({ articleId })
   const activeUser = useSelector((state) => state.activeUser)
   const [majorVersion, setMajorVersion] = useState(false)
@@ -35,19 +33,15 @@ export default function CreateVersion({ articleId, onClose, onSubmit }) {
           major: majorVersion,
           description: details.description,
         })
-        setToast({
-          text: t('write.createVersion.defaultNotification'),
-          type: 'default',
-        })
+        toast(t('write.createVersion.defaultNotification'), { type: 'info' })
         onSubmit()
       } catch (err) {
         const errorMessage =
           err.messages && err.messages.length
             ? err.messages[0].message
             : err.message
-        setToast({
+        toast(errorMessage, {
           type: 'error',
-          text: errorMessage,
         })
       }
     },
