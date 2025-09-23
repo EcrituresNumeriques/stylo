@@ -1,7 +1,8 @@
+import { clsx } from 'clsx'
 import React, { forwardRef } from 'react'
+
 import styles from './button.module.scss'
 import fieldStyles from './field.module.scss'
-import { clsx } from 'clsx'
 
 const Select = forwardRef((props, forwardedRef) => {
   return (
@@ -10,7 +11,12 @@ const Select = forwardRef((props, forwardedRef) => {
       ref={forwardedRef}
     >
       {props.label && <label htmlFor={props.id}>{props.label}</label>}
-      <div className={styles.selectContainer}>
+      <div
+        className={clsx(
+          styles.selectContainer,
+          props.disabled && styles.selectDisabled
+        )}
+      >
         <select className={props.className || styles.select} {...props}>
           {props.children}
         </select>

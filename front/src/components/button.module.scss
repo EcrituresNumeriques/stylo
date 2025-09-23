@@ -32,7 +32,12 @@
   width: 100%;
 
   &:disabled {
-    @extend .isDisabled;
+    border: none;
+    color: #202020;
+    background-color: #ececec;
+    opacity: 1;
+    cursor: not-allowed !important;
+    pointer-events: none;
   }
 }
 
@@ -69,6 +74,12 @@ select.select {
 
 .selectContainer {
   @include selectFieldContainer;
+}
+
+.selectDisabled {
+  &:after {
+    display: none;
+  }
 }
 
 .inlineGroup {
