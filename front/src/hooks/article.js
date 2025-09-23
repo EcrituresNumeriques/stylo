@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useRouteLoaderData } from 'react-router'
 
 import { toYaml } from '../components/Write/metadata/yaml.js'
 import { toEntries } from '../helpers/bibtex.js'
@@ -29,7 +28,6 @@ import {
 } from './Versions.graphql'
 
 export function useArticleTagActions({ articleId }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
   const { data, mutate, error, isLoading } = useFetchData(
     { query: getArticleTags, variables: { articleId } },
     {
@@ -44,7 +42,6 @@ export function useArticleTagActions({ articleId }) {
         articleId,
         tags: [tagId],
       },
-      sessionToken,
       type: 'mutation',
     })
     const tags = result.article.addTags
@@ -65,7 +62,6 @@ export function useArticleTagActions({ articleId }) {
         articleId,
         tags: [tagId],
       },
-      sessionToken,
       type: 'mutation',
     })
     const tags = result.article.removeTags
@@ -90,8 +86,7 @@ export function useArticleTagActions({ articleId }) {
 }
 
 export function useArticleActions({ articleId }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const activeUser = useSelector((state) => state.activeUser)
+  const { user: activeUser } = useRouteLoaderData('app')
   const copy = async (toUserId) => {
     return await executeQuery({
       query: duplicateArticle,
@@ -100,7 +95,6 @@ export function useArticleActions({ articleId }) {
         to: toUserId,
         articleId,
       },
-      sessionToken,
       type: 'mutation',
     })
   }
@@ -112,7 +106,6 @@ export function useArticleActions({ articleId }) {
         to: activeUser._id,
         articleId,
       },
-      sessionToken,
       type: 'mutation',
     })
   }
@@ -120,7 +113,6 @@ export function useArticleActions({ articleId }) {
     return await executeQuery({
       query: renameArticle,
       variables: { user: activeUser._id, articleId, title },
-      sessionToken,
       type: 'mutation',
     })
   }
@@ -128,7 +120,6 @@ export function useArticleActions({ articleId }) {
     return await executeQuery({
       query: deleteArticle,
       variables: { articleId },
-      sessionToken,
       type: 'mutation',
     })
   }
@@ -142,8 +133,7 @@ export function useArticleActions({ articleId }) {
 }
 
 export function useArticleMetadata({ articleId, versionId }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const activeUser = useSelector((state) => state.activeUser)
+  const { user: activeUser } = useRouteLoaderData('app')
   const hasVersion = typeof versionId === 'string'
   const { data, error, mutate, isLoading } = useFetchData(
     {
@@ -161,7 +151,6 @@ export function useArticleMetadata({ articleId, versionId }) {
       return
     }
     await executeQuery({
-      sessionToken,
       query: updateWorkingVersion,
       variables: {
         userId: activeUser._id,
@@ -200,8 +189,7 @@ export function useArticleMetadata({ articleId, versionId }) {
 }
 
 export function useEditableArticle({ articleId, versionId }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const activeUser = useSelector((state) => state.activeUser)
+  const { user: activeUser } = useRouteLoaderData('app')
   const hasVersion = typeof versionId === 'string'
   const { data, mutate, error, isLoading } = useFetchData(
     {
@@ -227,7 +215,6 @@ export function useEditableArticle({ articleId, versionId }) {
       return
     }
     await executeQuery({
-      sessionToken,
       query: updateWorkingVersion,
       variables: {
         userId: activeUser._id,
@@ -254,7 +241,6 @@ export function useEditableArticle({ articleId, versionId }) {
 
   const updateZoteroLink = async (url) => {
     await executeQuery({
-      sessionToken,
       query: updateZoteroLinkMutation,
       variables: {
         articleId: articleId,
@@ -330,8 +316,7 @@ export function useArticleVersion({ versionId }) {
 }
 
 export function useArticleVersionActions({ articleId }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
-  const activeUser = useSelector((state) => state.activeUser)
+  const { user: activeUser } = useRouteLoaderData('app')
   const { mutate } = useMutateData({
     query: getArticleVersions,
     variables: { article: articleId },
@@ -345,7 +330,6 @@ export function useArticleVersionActions({ articleId }) {
         major: version.major,
         message: version.description,
       },
-      sessionToken,
       type: 'mutation',
     })
     await mutate(async (data) => ({
@@ -362,7 +346,6 @@ export function useArticleVersionActions({ articleId }) {
         version: versionId,
         name: description,
       },
-      sessionToken,
       type: 'mutation',
     })
     await mutate(async (data) => ({

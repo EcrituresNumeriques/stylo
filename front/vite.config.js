@@ -42,9 +42,7 @@ export default defineConfig(async ({ mode }) => {
               'react-dnd',
               'react-helmet',
               'react-i18next',
-              'react-redux',
               'react-router',
-              'redux',
             ],
             ui: ['@geist-ui/core', 'lucide-react'],
             textEditor: [
@@ -121,9 +119,10 @@ export default defineConfig(async ({ mode }) => {
         '/graphql': {
           target: 'http://127.0.0.1:3030',
         },
-        '^/(login/|authorize/|logout|feed/|community/|authorization-code|version)': {
-          target: 'http://127.0.0.1:3030',
-        },
+        '^/(login/|authorize/|logout|feed/|community/|authorization-code|version)':
+          {
+            target: 'http://127.0.0.1:3030',
+          },
         '/events': {
           target: 'http://127.0.0.1:3030',
           prependPath: false,

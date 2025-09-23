@@ -1,7 +1,9 @@
-import { print } from 'graphql/language/printer'
-import { useSelector } from 'react-redux'
 import useSWR, { useSWRConfig } from 'swr'
+
+import { print } from 'graphql/language/printer'
+
 import { executeQuery } from '../helpers/graphQL.js'
+import { useAuthStore } from '../stores/authStore.js'
 
 /**
  * @typedef {import('graphql/language/ast').ASTNode} ASTNode
@@ -21,7 +23,7 @@ export default function useFetchData(
   { query: queryOrAST, variables },
   options
 ) {
-  const sessionToken = useSelector((state) => state.sessionToken)
+  const { sessionToken } = useAuthStore()
   const query = resolveQuery(queryOrAST)
   return useSWR({ query, variables, sessionToken }, fetch, options)
 }
@@ -33,7 +35,7 @@ export default function useFetchData(
  * @returns {SWRResponse}
  */
 export function useConditionalFetchData(param, options) {
-  const sessionToken = useSelector((state) => state.sessionToken)
+  const { sessionToken } = useAuthStore()
   const resolvedKey = resolveKey(param, sessionToken)
   return useSWR(resolvedKey, fetch, options)
 }
@@ -95,7 +97,7 @@ export function useMutateData({ query, variables }) {
  * @returns {{query: string, variables: {[key : string]: any}, sessionToken: string}} an SWR key
  */
 function useSWRKey({ query: queryOrAST, variables }) {
-  const sessionToken = useSelector((state) => state.sessionToken)
+  const { sessionToken } = useAuthStore()
   const query = resolveQuery(queryOrAST)
   return { query, variables, sessionToken }
 }

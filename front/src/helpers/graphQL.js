@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux'
-
 import { print } from 'graphql/language/printer'
 
 import { applicationConfig } from '../config.js'
@@ -80,13 +78,11 @@ export class GraphQLError extends Error {
 }
 
 export function useGraphQLClient() {
-  const sessionToken = useSelector((state) => state.sessionToken)
   return {
     query: ({ query, variables, type = 'fetch', withCredentials = false }) =>
       executeQuery({
         query,
         variables,
-        sessionToken,
         type,
         credentials: withCredentials === false ? 'omit' : corsStrategy,
       }),
@@ -98,7 +94,6 @@ export function useGraphQLClient() {
  * @param {DocumentNode|string} context.query request query (as AST or string)
  * @param {'omit' | 'same-origin' | 'include'} context.credentials request variables
  * @param {{[string: key]: any}|undefined} context.variables request variables
- * @param {string} context.sessionToken session token (for authentication)
  * @param {'fetch'|'mutate'} context.type request type (either fetch or mutate)
  * @returns {Promise<string|{[key: string]: any}>}
  * @throws Error if something went wrong
@@ -106,10 +101,10 @@ export function useGraphQLClient() {
 export function executeQuery({
   query: queryOrAST,
   variables,
-  sessionToken,
   credentials = 'omit',
   type = 'fetch',
 }) {
+  const sessionToken = localStorage.getItem('sessionToken')
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
   return executeRequest({ query, variables, sessionToken, type, credentials })
 }

@@ -1,24 +1,28 @@
-import React, { useCallback } from 'react'
 import { Settings, Tag } from 'lucide-react'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+
 import useFetchData from '../../hooks/graphql'
+
 import { useModal } from '../../hooks/modal.js'
+import { useArticleFiltersStore } from '../../stores/articleStore.js'
+
 import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
-import Loading from '../molecules/Loading.jsx'
-import { getTags } from '../Tag.graphql'
 import ArticleTag from '../Tag.jsx'
+import Loading from '../molecules/Loading.jsx'
 import TagEditForm from './TagEditForm.jsx'
+
+import { getTags } from '../Tag.graphql'
 
 import styles from './tagsList.module.scss'
 
 export default function TagsList({ action }) {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const selectedTagIds = useSelector(
-    (state) => state.activeUser.selectedTagIds || []
-  )
+  const { filters, toggleTagId } = useArticleFiltersStore()
+  const selectedTagIds = filters.selectedTagIds
+
+  console.log({ selectedTagIds, filters })
 
   const editTagModal = useModal()
   const createTagModal = useModal()
@@ -32,13 +36,10 @@ export default function TagsList({ action }) {
   )
   const tags = data?.user?.tags || []
 
-  const handleTagSelected = useCallback(
-    (event) => {
-      const { id } = event.target.dataset
-      dispatch({ type: 'UPDATE_SELECTED_TAG', tagId: id })
-    },
-    [selectedTagIds]
-  )
+  const handleTagClicked = useCallback((event) => {
+    const { id } = event.target.dataset
+    toggleTagId(id)
+  }, [])
 
   if (isLoading) {
     return <Loading />
@@ -52,7 +53,7 @@ export default function TagsList({ action }) {
             <ArticleTag
               tag={tag}
               name={`filterTag-${tag._id}`}
-              onClick={handleTagSelected}
+              onClick={handleTagClicked}
               disableAction={false}
               selected={selectedTagIds.includes(tag._id)}
               addon={

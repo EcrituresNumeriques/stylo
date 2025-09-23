@@ -1,23 +1,23 @@
 import React from 'react'
-import { shallowEqual, useSelector } from 'react-redux'
-import styles from './articleStats.module.scss'
 import { useTranslation } from 'react-i18next'
+
+import { useArticleStatsStore } from '../stores/articleStore.js'
+
+import styles from './articleStats.module.scss'
 
 export default function ArticleStats() {
   const { t } = useTranslation()
-  const articleStats = useSelector((state) => state.articleStats, shallowEqual)
+  const { stats } = useArticleStatsStore()
   return (
     <ul className={styles.stats} aria-label={t('article.stats.menuLabel')}>
-      <li>{t('article.stats.words', { count: articleStats.wordCount })}</li>
+      <li>{t('article.stats.words', { count: stats.wordCount })}</li>
       <li>
         {t('article.stats.chars', {
-          count: articleStats.charCountNoSpace,
-          countWithSpaces: articleStats.charCountPlusSpace,
+          count: stats.charCountNoSpace,
+          countWithSpaces: stats.charCountPlusSpace,
         })}
       </li>
-      <li>
-        {t('article.stats.citations', { count: articleStats.citationNb })}
-      </li>
+      <li>{t('article.stats.citations', { count: stats.citationNb })}</li>
     </ul>
   )
 }

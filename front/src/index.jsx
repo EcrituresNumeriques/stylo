@@ -7,14 +7,12 @@ import * as Sentry from '@sentry/react'
 import React, { lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Helmet } from 'react-helmet'
-import { Provider } from 'react-redux'
 import {
   Route,
   RouterProvider,
   createBrowserRouter,
   createRoutesFromChildren,
   createRoutesFromElements,
-  matchPath,
   matchRoutes,
   useLocation,
   useNavigationType,
@@ -25,8 +23,9 @@ import './styles/general.scss'
 
 import { GeistProvider } from '@geist-ui/core'
 
-import createStore from './createReduxStore.js'
 import { getUserProfile } from './helpers/user.js'
+import { useArticleStructureStore } from './stores/articleStore.js'
+import { useAuthStore } from './stores/authStore.js'
 
 import AuthCallback from './components/AuthCallback.jsx'
 import LoadingPage from './components/LoadingPage.jsx'
@@ -79,24 +78,9 @@ const Annotate = lazy(() => import('./components/Annotate.jsx'))
 const Privacy = lazy(() => import('./components/Privacy.jsx'))
 const Story = lazy(() => import('./stories/Story.jsx'))
 
-const store = createStore({
-  activeWorkspaceId: matchPath('/workspaces/:workspaceId', location.pathname)
-    ?.params?.workspaceId,
-})
-
 // refresh session profile whenever something happens to the session token
 // maybe there is a better way to do this
-let previousValue = ''
-store.subscribe(() => {
-  const { sessionToken } = store.getState()
-
-  if (sessionToken !== null && sessionToken !== previousValue) {
-    previousValue = sessionToken
-    getUserProfile({ sessionToken }).then((response) =>
-      store.dispatch({ type: 'PROFILE', ...response })
-    )
-  }
-})
+useAuthStore.subscribe((state) => state.sessionToken, console.log)
 
 const root = createRoot(document.getElementById('root'), {
   onUncaughtError: Sentry.reactErrorHandler(),
@@ -207,9 +191,7 @@ root.render(
   <React.StrictMode>
     <Helmet defaultTitle="Stylo" titleTemplate="%s - Stylo" />
     <GeistProvider>
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
+      <RouterProvider router={router} />
     </GeistProvider>
   </React.StrictMode>
 )
