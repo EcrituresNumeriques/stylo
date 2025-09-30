@@ -109,6 +109,7 @@ type WorkingVersion {
   bibPreview: String
   md: String
   metadata: JSON
+  metadataFormType: String
   yaml (options: YamlFormattingInput): String
 }
 
@@ -121,6 +122,7 @@ type Version {
   sommaire: String
   type: String
   metadata: JSON
+  metadataFormType: String
   yaml (options: YamlFormattingInput): String
   bib: String
   bibPreview: String
@@ -223,6 +225,7 @@ input WorkingVersionInput {
   bib: String,
   md: String,
   metadata: JSON,
+  metadataFormType: String
 }
 
 input YamlFormattingInput {

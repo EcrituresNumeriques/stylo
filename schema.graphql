@@ -168,17 +168,16 @@ type Mutation {
 
 type Query {
   "Fetch article info [need to have access to this article]"
-  article(article: ID!): Article
-  "Fetch an article [with an access key]"
-  sharedArticle(article: ID!, accessKey: JWT): Article
+  article(article: ID!, user: ID): Article
   "Fetch articles, optionally from a given Workspace"
   articles(filter: FilterCorpusInput, user: ID): [Article]
   "Get a list of corpus with an optional filter"
   corpus(filter: FilterCorpusInput): [Corpus!]
-  "Fetch a corpus with an optional filter"
-  sharedCorpus(corpusId: ID!, accessKey: JWT): Corpus
-
   getUser(filter: UserFilter): User
+  "Fetch an article [with an access key]"
+  sharedArticle(accessKey: JWT, article: ID!): Article
+  "Get a corpus [with an access key]"
+  sharedCorpus(accessKey: JWT, corpusId: ID!): Corpus
   "Fetch instance stats"
   stats: InstanceUsageStats
   "Fetch tagged articles for a given user"
@@ -256,6 +255,7 @@ type Version {
   md: String
   message: String
   metadata: JSON
+  metadataFormType: String
   name: String
   owner: User
   rename(name: String): Boolean
@@ -272,6 +272,7 @@ type WorkingVersion {
   bibPreview: String
   md: String
   metadata: JSON
+  metadataFormType: String
   yaml(options: YamlFormattingInput): String
 }
 
@@ -324,6 +325,7 @@ enum AuthType {
 }
 
 enum CorpusType {
+  book
   journal
   neutral
   thesis
@@ -428,6 +430,7 @@ input WorkingVersionInput {
   bib: String
   md: String
   metadata: JSON
+  metadataFormType: String
 }
 
 input YamlFormattingInput {

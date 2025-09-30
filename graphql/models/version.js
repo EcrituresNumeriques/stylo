@@ -43,6 +43,7 @@ const versionSchema = new Schema(
       default: {},
       get: (metadata) => metadata ?? {},
     },
+    metadataFormType: String,
     bib: String,
     sommaire: {
       type: String,
