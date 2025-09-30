@@ -170,11 +170,13 @@ query getArticleMetadata($articleId: ID!, $versionId: ID!, $hasVersion: Boolean!
 
     workingVersion {
       metadata
+      metadataFormType
     }
   }
 
   version(version: $versionId) @include(if: $hasVersion) {
     metadata
+    metadataFormType
   }
 }
 

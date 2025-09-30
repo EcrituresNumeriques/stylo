@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux'
 import { useArticleMetadata } from '../../hooks/article.js'
 import { usePreferenceItem } from '../../hooks/user.js'
 
-import Select from '../Select.jsx'
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 import Toggle from '../molecules/Toggle.jsx'
@@ -32,11 +31,17 @@ export default function ArticleMetadata({ onBack, articleId, versionId }) {
   )
   const readOnly = multiUserActive || versionId
   const { t } = useTranslation()
-  const { metadata, metadataYaml, isLoading, updateMetadata } =
-    useArticleMetadata({
-      articleId,
-      versionId,
-    })
+  const {
+    metadata,
+    metadataFormType,
+    metadataYaml,
+    isLoading,
+    updateMetadata,
+    updateMetadataFormType,
+  } = useArticleMetadata({
+    articleId,
+    versionId,
+  })
   const [error, setError] = useState('')
 
   const { value: selector, setValue: setSelector } = usePreferenceItem(
@@ -52,6 +57,16 @@ export default function ArticleMetadata({ onBack, articleId, versionId }) {
       await updateMetadata(metadata)
     },
     [readOnly, updateMetadata]
+  )
+
+  const handleFormTypeUpdate = useCallback(
+    async (formType) => {
+      if (readOnly) {
+        return
+      }
+      await updateMetadataFormType(formType)
+    },
+    [readOnly, updateMetadataFormType]
   )
 
   const handleYamlChange = useCallback(async (yaml) => {
@@ -128,6 +143,7 @@ export default function ArticleMetadata({ onBack, articleId, versionId }) {
         <ArticleEditorMetadataForm
           readOnly={readOnly}
           metadata={metadata}
+          metadataFormType={metadataFormType}
           error={(reason) => {
             setError(reason)
             if (reason !== '') {
@@ -135,6 +151,7 @@ export default function ArticleMetadata({ onBack, articleId, versionId }) {
             }
           }}
           onChange={handleFormUpdate}
+          onTypeChange={handleFormTypeUpdate}
         />
       )}
     </div>
