@@ -7,6 +7,10 @@ query getWorkspaces {
     description
     color
     bibliographyStyle
+    formMetadata {
+      data
+      ui
+    }
     createdAt
     updatedAt
     creator {
@@ -27,6 +31,10 @@ query getWorkspace($workspaceId: ID!) {
     description
     color
     bibliographyStyle
+    formMetadata {
+      data
+      ui
+    }
     createdAt
     updatedAt
     creator {
@@ -129,6 +137,12 @@ mutation leave($workspaceId: ID!) {
     leave {
       _id
     }
+  }
+}
+
+mutation updateFormMetadata($workspaceId: ID!, $input: UpdateWorkspaceFormMetadataInput!) {
+  updateWorkspaceFormMetadata(details: $input, workspaceId: $workspaceId) {
+    _id
   }
 }
 

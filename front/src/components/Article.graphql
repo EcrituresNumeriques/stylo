@@ -172,6 +172,13 @@ query getArticleMetadata($articleId: ID!, $versionId: ID!, $hasVersion: Boolean!
       metadata
       metadataFormType
     }
+    
+    workspaces {
+      formMetadata {
+        data
+        ui
+      }
+    }
   }
 
   version(version: $versionId) @include(if: $hasVersion) {

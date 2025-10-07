@@ -11,6 +11,7 @@ import {
   inviteMember as inviteMemberMutation,
   leave as leaveMutation,
   removeMember as removeMemberMutation,
+  updateFormMetadata as updateFormMetadataMutation,
 } from '../components/workspace/Workspaces.graphql'
 
 export function useActiveWorkspaceId() {
@@ -144,9 +145,36 @@ export function useWorkspaceActions() {
     )
   }
 
+  const updateFormMetadata = async (workspaceId, input) => {
+    await executeQuery({
+      sessionToken,
+      query: updateFormMetadataMutation,
+      variables: {
+        workspaceId,
+        input,
+      },
+    })
+    await mutate(
+      async (data) => ({
+        workspaces: data.workspaces.map((w) => {
+          if (w._id === workspaceId) {
+            return {
+              ...w,
+              formMetadata: input,
+            }
+          } else {
+            return w
+          }
+        }),
+      }),
+      { revalidate: false }
+    )
+  }
+
   return {
     addWorkspace,
     leaveWorkspace,
+    updateFormMetadata,
   }
 }
 

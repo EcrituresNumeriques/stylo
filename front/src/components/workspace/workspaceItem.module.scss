@@ -48,6 +48,11 @@
   align-items: center;
 }
 
+.primaryActionButtons {
+  display: flex;
+  gap: 1em;
+}
+
 .workspaceLabel {
   font-weight: 600;
   padding-top: 0;

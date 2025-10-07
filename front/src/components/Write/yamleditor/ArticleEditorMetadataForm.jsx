@@ -16,6 +16,7 @@ import styles from './ArticleEditorMetadataForm.module.scss'
  * @param {object} props properties
  * @param {any} props.metadata
  * @param {string} props.metadataFormType
+ * @param {any} props.metadataFormTypeOptions
  * @param {boolean} props.readOnly
  * @param {(any) => void} props.onChange
  * @param {(any) => void} props.onTypeChange
@@ -23,20 +24,38 @@ import styles from './ArticleEditorMetadataForm.module.scss'
  */
 export default function ArticleEditorMetadataForm({
   metadata,
-  metadataFormType,
+  metadataFormType = 'default',
+  metadataFormTypeOptions = [],
   readOnly = false,
   onChange = () => {},
   onTypeChange = () => {},
 }) {
   const [type, setType] = useState(metadataFormType)
-  const schemaMerged = useMemo(
-    () => (type === 'default' ? merge(defaultSchema) : merge(blogPostSchema)),
-    [defaultSchema, blogPostSchema, type]
-  )
-  const uiSchema = useMemo(
-    () => (type === 'default' ? defaultUiSchema : blogPostUiSchema),
-    [type]
-  )
+  const schemaMerged = useMemo(() => {
+    if (type === 'default') {
+      return merge(defaultSchema)
+    }
+    if (type === 'blog-post') {
+      return merge(blogPostSchema)
+    }
+    const option = metadataFormTypeOptions.find((o) => o.name === type)
+    if (option) {
+      return merge(option.data)
+    }
+  }, [defaultSchema, blogPostSchema, metadataFormTypeOptions, type])
+  const uiSchema = useMemo(() => {
+    if (type === 'default') {
+      return defaultUiSchema
+    }
+    if (type === 'blog-post') {
+      return blogPostUiSchema
+    }
+    const option = metadataFormTypeOptions.find((o) => o.name === type)
+    if (option) {
+      return option.ui
+    }
+  }, [defaultUiSchema, blogPostUiSchema, metadataFormTypeOptions, type])
+
   const handleChange = useCallback(
     (newFormData) => onChange(newFormData),
     [onChange]
@@ -61,6 +80,11 @@ export default function ArticleEditorMetadataForm({
         >
           <option value="default">{t('article.type.default')}</option>
           <option value="blog-post">{t('article.type.blogPost')}</option>
+          {metadataFormTypeOptions.map((option) => (
+            <option key={option.name} value={option.name}>
+              {option.name}
+            </option>
+          ))}
         </Select>
       </div>
       <Form
