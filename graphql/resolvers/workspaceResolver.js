@@ -1,12 +1,22 @@
 const { ObjectId } = require('mongoose').Types
-const { NotFoundError, NotAuthenticatedError } = require('../helpers/errors')
+const {
+  NotFoundError,
+  NotAuthenticatedError,
+  BadRequestError,
+} = require('../helpers/errors')
 const Workspace = require('../models/workspace')
 const Article = require('../models/article')
 const Corpus = require('../models/corpus')
 
-async function workspace(_, { workspaceId }, { user, token }) {
+/**
+ * @param workspaceId
+ * @param token
+ * @param user
+ * @return {Promise<import('mongoose').EnforceDocument<Workspace>>}
+ */
+async function getWorkspace(workspaceId, token, user) {
   if (!workspaceId) {
-    return null
+    throw new BadRequestError('INVALID_INPUT', 'workspaceId is required.')
   }
 
   if (token?.admin) {
@@ -24,7 +34,12 @@ async function workspace(_, { workspaceId }, { user, token }) {
   if (!workspace) {
     throw new NotFoundError('Workspace', workspaceId)
   }
+
   return workspace
+}
+
+async function workspace(_, { workspaceId }, { user, token }) {
+  return await getWorkspace(workspaceId, token, user)
 }
 
 class WorkspaceArticle {
@@ -74,6 +89,37 @@ module.exports = {
         creator: user._id,
       })
       return newWorkspace.save()
+    },
+
+    async updateWorkspaceFormMetadata(_, args, { user, token }) {
+      const { details, workspaceId } = args
+      if (!user) {
+        throw new NotAuthenticatedError()
+      }
+      const { data, ui } = details
+      if (data) {
+        try {
+          JSON.parse(data.trim())
+        } catch (e) {
+          throw new BadRequestError(
+            'INVALID_INPUT',
+            'formMetadata.data must be a valid JSON.'
+          )
+        }
+      }
+      if (ui) {
+        try {
+          JSON.parse(ui.trim())
+        } catch (e) {
+          throw new BadRequestError(
+            'INVALID_INPUT',
+            'formMetadata.ui must be a valid JSON.'
+          )
+        }
+      }
+      const workspace = await getWorkspace(workspaceId, token, user)
+      workspace.formMetadata = details
+      return workspace.save()
     },
 
     /**

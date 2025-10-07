@@ -162,6 +162,8 @@ type Mutation {
   updateTag(color: HexColorCode, description: String, name: String, tag: ID!): Tag
   "Change user information"
   updateUser(details: UserProfileInput!, user: ID): User
+  "Update workspace form metadata"
+  updateWorkspaceFormMetadata(details: UpdateWorkspaceFormMetadataInput!, workspaceId: ID!): Workspace
   "Get a workspace for mutation"
   workspace(workspaceId: ID!): Workspace
 }
@@ -287,6 +289,7 @@ type Workspace {
   createdAt: DateTime
   creator: User!
   description: String
+  formMetadata: WorkspaceFormMetadata
   inviteMember(userId: ID!): Workspace
   leave: Workspace
   member(userId: ID!): WorkspaceMember
@@ -300,6 +303,11 @@ type WorkspaceArticle {
   article: Article
   remove: Workspace!
   workspace: Workspace!
+}
+
+type WorkspaceFormMetadata {
+  data: String
+  ui: String
 }
 
 type WorkspaceMember {
@@ -413,6 +421,12 @@ input UpdateCorpusInput {
   description: String
   metadata: JSON
   name: String
+}
+
+"Input to update the form metadata on a workspace"
+input UpdateWorkspaceFormMetadataInput {
+  data: String
+  ui: String
 }
 
 input UserFilter {
