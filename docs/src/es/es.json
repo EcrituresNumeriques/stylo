@@ -18,6 +18,10 @@
       "url": "/es/about"
     },
     {
+      "label": "Comunicación",
+      "url": "/es/publications"
+    },
+    {
       "label": "Idioma",
       "children": [
         {

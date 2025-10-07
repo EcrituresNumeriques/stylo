@@ -16,6 +16,10 @@
       "url": "/fr/about"
     },
     {
+      "label": "Communications",
+      "url": "/fr/publications"
+    },
+    {
       "label": "Langue",
       "children": [
         {

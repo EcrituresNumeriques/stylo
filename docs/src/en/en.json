@@ -18,6 +18,10 @@
       "url": "/en/about"
     },
     {
+      "label": "Communications",
+      "url": "/en/publications"
+    },
+    {
       "label": "Language",
       "children": [
         {

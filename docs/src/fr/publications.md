@@ -4,11 +4,21 @@ title: Publications
 
 Stylo a été présenté lors de plusieurs événements scientifiques et professionnels :
 
+- [Colloque « Les Humanités numériques : engagement et apprentissages à l'université »](https://humanitesnum.sciencesconf.org/) « Littératie numérique et textuelle critique pour les étudiants en SHS : apprendre par l'expérience avec Stylo », juin 2025 : [résumé](https://newsletter-nexus.univ-montp3.fr/Resumes%20colloque_HN25.pdf) de la présentation (Victor Chaix, Clara Grometto, Marcello Vitali-Rosati, Roch Delannay, Giulia Ferretti)
+
+- [Semaine des URFIST 2025](https://sygefor.reseau-urfist.fr/#/training/11038/), « Rédaction et édition savante avec l'éditeur de texte Stylo », mars 2025 : [support de présentation](https://stylo.huma-num.fr/article/678a41d73449b80012599909/annotate) sur Stylo (Roch Delannay, Clara Grometto)
+
+- [Humanistica 2025](https://humanistica2025.sciencesconf.org/), « Pratiques d'écriture et épistémologie du texte : redéfinir le texte scientifique avec Stylo », avril 2025 (Halima Malek, Roch Delannay, Antoine Fauchié et Marcello Vitali-Rosati)
+
+- Pépinière des revues normandes, « Stylo, un éditeur pour les SHS », juillet 2024 : [diapositives](https://rochdelannay.net/presentations/stylo_normandie_24.html) de la présentation (Roch Delanney, Marcello Vitali-Rosati)
+
 - [Humanistica 2023](https://humanistica2023.sciencesconf.org/), « Stylo en 2023 : de nouvelles fonctionnalités pour l'écriture et l'édition scientifique », juin 2023 : [résumé](https://hal.science/HUMANISTICA-2023/hal-04126432v1) de la présentation (Roch Delannay, Antoine Fauchié et Marcello Vitali-Rosati)
 
-- [DH2022](https://dh2022.adho.org/), « Scholarly writing and editing with the text editor Stylo », juillet 2022 : [résumé](https://dh2022.adho.org/workshops-and-tutorials/wt-06) de la présentation (Roch Delannay et Antoine Fauchié)
+- [CRIHN Vitrine Humanités Numériques 2023](https://www.ecrituresnumeriques.ca/fr/evenements/2023/02/02/vitrine-sur-les-humanites-numeriques-du-centre-de-recherche-interuniversitaire-sur-les-humanites-numeriques), « ‘Put your pen down!’: zoom sur les nouvelles fonctionnalités de l’éditeur de texte Stylo », février 2023 (Antoine Fauchié, Giulia Ferretti, Roch Delannay et Marcello Vitali-Rosati)
 
-- [DH Unbound 2022](https://dhunbound2022.ach.org/), « The Stylo Workflow : Writing and editing with the text editor Stylo », mai 2022 :  présenté par  Margot Lise Mellet, Antoine Fauchié, Marcello Vitali-Rosati, Eugénie Matthey-Jonais, Roch Delannay, Giulia Ferretti
+- [DH 2022](https://dh2022.adho.org/), « Scholarly writing and editing with the text editor Stylo », juillet 2022 : [résumé](https://dh2022.adho.org/workshops-and-tutorials/wt-06) de la présentation (Roch Delannay et Antoine Fauchié)
+
+- [DH Unbound 2022](https://dhunbound2022.ach.org/), « The Stylo Workflow : Writing and editing with the text editor Stylo », mai 2022 (Margot Lise Mellet, Antoine Fauchié, Marcello Vitali-Rosati, Eugénie Matthey-Jonais, Roch Delannay, Giulia Ferretti)
 
 - [Humanistica 2021](https://humanistica2021.sciencesconf.org), « L’utilisation de l’outil Stylo dans le cadre de la revue *Sens public* », mai 2021 : [résumé](https://humanistica2021.sciencesconf.org/340826) de la présentation (Antoine Fauchié et Margot Mellet)
 
@@ -24,18 +34,10 @@ Stylo a été présenté lors de plusieurs événements scientifiques et profess
 
 - [Colloque Numerev 2019](https://numerev.com/agenda.id-9.html), juin 2019 : [vidéo](https://youtu.be/-WHoTXw6Two?t=20878) (Nicolas Sauret et Marcello Vitali-Rosati)
 
-- [Vitrine DH](https://crihn.openum.ca/nouvelles/2018/12/01/vitrine-hn-dh-showcase-2019/), février 2019 (Nicolas Sauret)
+- [CRHIN Vitrine Humanités Numériques 2019](https://crihn.openum.ca/nouvelles/2018/12/01/vitrine-hn-dh-showcase-2019/), février 2019 (Nicolas Sauret)
 
 - [Colloque CRIHN 2018](https://www.crihn.org/colloque-2018/) « Repenser les humanités numériques / Thinking the Digital Humanities Anew », octobre 2018 : [vidéo](https://archive.org/embed/CRIHN2018NicolasSauretStyloUnditeurSmantiquePourLesHumanits) (Nicolas Sauret)
 
 - [Journées Médici 2018](https://medici2018.sciencesconf.org/) (Métiers de l’édition scientifique publique), « Vers l’édition scientifique 4.0 ? »,  septembre 2018 : [présentation](https://ecrituresnumeriques.github.io/s_StyloMedici/) et [démonstration](https://www.youtube.com/embed/qcwEqbcxBF8) (Nicolas Sauret et Marcello Vitali-Rosati)
 
 - [Conférence DH Montréal](https://dh2017.adho.org/program-2/abstracts/), « Stylo : Repenser la chaîne éditoriale numérique pour les revues savantes en sciences humaines », août 2017 : [poster](/uploads/pdf/poster_Stylo_DH2017.pdf) et [résumé](https://dh2017.adho.org/abstracts/224/224.pdf) (en anglais) (Emmanuel Château-Dutier, Arthur Juchereau, Servanne Monjour, Nicolat Sauret, Michael Sinatra et Marcello Vitali-Rosati)
-
----
-
-# Vidéos de démonstration
-
-<iframe width="560" height="315" src="https://archive.org/embed/stylo-doc-fr" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="align:center;"></iframe>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/qcwEqbcxBF8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="align:center;"></iframe>
