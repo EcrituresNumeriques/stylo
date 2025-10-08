@@ -10,6 +10,8 @@ Stylo se ha presentado en diversos eventos científicos y profesionales:
 
 - [Humanistica 2025](https://humanistica2025.sciencesconf.org/), “Pratiques d'écriture et épistémologie du texte : redéfinir le texte scientifique avec Stylo”, April 2025 : [abstract](https://www.ecrituresnumeriques.ca/fr/evenements/2025/04/05/humanistica-2025) (Halima Malek, Roch Delannay, Antoine Fauchié and Marcello Vitali-Rosati)
 
+- [DH 2024](https://dh2024.adho.org/), « What's new in Stylo : Stylo with new writing and publishing features », août 2024 : [poster](/uploads/pdf/stylo-poster-adho-2024.pdf) (Roch Delannay, Antoine Fauchié, Marcello Vitali-Rosati)
+
 - Pépinière des revues normandes, “Stylo, un éditeur pour les SHS”, July 2024 : [slides](https://rochdelannay.net/presentations/stylo_normandie_24.html) (Roch Delanney, Marcello Vitali-Rosati)
 
 - [Humanistica 2023](https://humanistica2023.sciencesconf.org/), “Stylo en 2023 : de nouvelles fonctionnalités pour l'écriture et l'édition scientifique”, June 2023 : [abstract](https://hal.science/HUMANISTICA-2023/hal-04126432v1) (Roch Delannay, Antoine Fauchié and Marcello Vitali-Rosati)
