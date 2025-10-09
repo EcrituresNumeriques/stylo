@@ -49,7 +49,12 @@ function BaseInputTemplate(properties) {
 function CustomSelectWidget(properties) {
   const { options, title, placeholder } = properties
   return (
-    <div className={styles.selectContainer}>
+    <div
+      className={clsx(
+        styles.selectContainer,
+        (properties.disabled || properties.readonly) && styles.selectDisabled
+      )}
+    >
       <Translation ns="form" useSuspense={false}>
         {(t) => (
           <SelectWidget
