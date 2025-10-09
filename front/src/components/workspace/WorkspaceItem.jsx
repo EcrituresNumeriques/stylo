@@ -1,16 +1,17 @@
+import { Braces, CircleOff, Users } from 'lucide-react'
 import React from 'react'
-import { CircleOff, Slash, Users } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { useModal } from '../../hooks/modal.js'
+
 import Button from '../Button.jsx'
 import Field from '../Field.jsx'
-
 import TimeAgo from '../TimeAgo.jsx'
 import LeaveWorkspaceModal from './LeaveWorkspaceModal.jsx'
+import WorkspaceManageMembersModal from './WorkspaceManageMembersModal.jsx'
+import WorkspaceUpdateFormMetadataModal from './WorkspaceUpdateFormMetadataModal.jsx'
 
 import styles from './workspaceItem.module.scss'
-import WorkspaceManageMembersModal from './WorkspaceManageMembersModal.jsx'
 
 /**
  * @typedef {Object} WorkspaceItemProps
@@ -23,6 +24,10 @@ import WorkspaceManageMembersModal from './WorkspaceManageMembersModal.jsx'
  *   creator: {
  *     displayName: string,
  *     username: string
+ *   },
+ *   formMetadata: {
+ *     data: string,
+ *     ui: string
  *   },
  *   createdAt: string,
  *   updatedAt: string
@@ -37,6 +42,7 @@ export default function WorkspaceItem({ workspace }) {
   const { t } = useTranslation()
   const workspaceLeaveModal = useModal()
   const workspaceManageMembersModal = useModal()
+  const workspaceUpdateFormMetadataModal = useModal()
 
   const workspaceTitle = (
     <>
@@ -109,12 +115,20 @@ export default function WorkspaceItem({ workspace }) {
             </Field>
           </div>
           <aside className={styles.actionButtons}>
-            <Button
-              title={t('workspace.manageMember.title')}
-              onClick={() => workspaceManageMembersModal.show()}
-            >
-              <Users /> {t('workspace.manageMember.button')}
-            </Button>
+            <div className={styles.primaryActionButtons}>
+              <Button
+                title={t('workspace.manageMember.title')}
+                onClick={() => workspaceManageMembersModal.show()}
+              >
+                <Users /> {t('workspace.manageMember.button')}
+              </Button>
+              <Button
+                title={t('workspace.updateFormMetadata.title')}
+                onClick={() => workspaceUpdateFormMetadataModal.show()}
+              >
+                <Braces /> {t('workspace.updateFormMetadata.button')}
+              </Button>
+            </div>
             <Button
               title={t('workspace.leave.title')}
               onClick={() => workspaceLeaveModal.show()}
@@ -127,6 +141,11 @@ export default function WorkspaceItem({ workspace }) {
 
           <WorkspaceManageMembersModal
             {...workspaceManageMembersModal}
+            workspace={workspace}
+          />
+
+          <WorkspaceUpdateFormMetadataModal
+            {...workspaceUpdateFormMetadataModal}
             workspace={workspace}
           />
         </>

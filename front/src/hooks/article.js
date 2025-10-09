@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { toYaml } from '../components/Write/metadata/yaml.js'
@@ -172,12 +171,11 @@ export function useArticleMetadata({ articleId, versionId }) {
     })
     await mutate(
       async (data) => {
-        console.log({ data })
         return {
           article: {
             ...data.article,
             workingVersion: {
-              ...data.workingVersion,
+              ...data.article.workingVersion,
               metadataFormType: metadataFormType,
             },
           },
@@ -207,7 +205,7 @@ export function useArticleMetadata({ articleId, versionId }) {
           article: {
             ...data.article,
             workingVersion: {
-              ...data.workingVersion,
+              ...data.article.workingVersion,
               metadata: metadata,
             },
           },
@@ -221,6 +219,28 @@ export function useArticleMetadata({ articleId, versionId }) {
     ? data?.version?.metadata
     : data?.article?.workingVersion?.metadata
 
+  const options = data?.article?.workspaces
+    ?.filter((w) => w.formMetadata.data !== null)
+    .map((w) => {
+      try {
+        const data = JSON.parse(w.formMetadata.data)
+        const ui =
+          w.formMetadata.ui !== null ? JSON.parse(w.formMetadata.ui) : {}
+        return {
+          name: data.title || 'untitled',
+          data,
+          ui,
+        }
+      } catch (e) {
+        console.error(
+          `Ignore form metadata configured on workspace id: ${w._id}`,
+          e
+        )
+        return null
+      }
+    })
+    ?.filter((o) => o !== null)
+
   const metadataFormType = hasVersion
     ? data?.version?.metadataFormType
     : data?.article?.workingVersion?.metadataFormType
@@ -228,6 +248,7 @@ export function useArticleMetadata({ articleId, versionId }) {
   return {
     metadata,
     metadataFormType,
+    metadataFormTypeOptions: options ?? [],
     metadataYaml: toYaml(metadata),
     updateMetadata,
     updateMetadataFormType,

@@ -34,6 +34,7 @@ export default function ArticleMetadata({ onBack, articleId, versionId }) {
   const {
     metadata,
     metadataFormType,
+    metadataFormTypeOptions,
     metadataYaml,
     isLoading,
     updateMetadata,
@@ -144,6 +145,7 @@ export default function ArticleMetadata({ onBack, articleId, versionId }) {
           readOnly={readOnly}
           metadata={metadata}
           metadataFormType={metadataFormType}
+          metadataFormTypeOptions={metadataFormTypeOptions}
           error={(reason) => {
             setError(reason)
             if (reason !== '') {
