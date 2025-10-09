@@ -26,6 +26,10 @@ const workspaceSchema = new Schema(
     bibliographyStyle: {
       type: String,
     },
+    formMetadata: {
+      data: String,
+      ui: String,
+    },
     members: [WorkspaceMemberSchema],
     articles: [
       {

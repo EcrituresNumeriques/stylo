@@ -278,12 +278,26 @@ type WorkspaceStats {
   membersCount: Int
 }
 
+"""
+Form definition based on React JSON schema.
+It consists of:
+- data: the data structure in JSON schema format
+- ui: the user interface configuration
+
+Both must be valid JSON.
+"""
+type WorkspaceFormMetadata {
+  data: String
+  ui: String
+}
+
 type Workspace {
   _id: String!
   name: String!
   description: String
   color: HexColorCode!
   bibliographyStyle: String
+  formMetadata: WorkspaceFormMetadata
   members: [User!]!
   articles: [Article!]!
   corpus: [Corpus!]!
@@ -300,6 +314,12 @@ type Workspace {
   leave: Workspace
   inviteMember(userId: ID!): Workspace
   addArticle(articleId: ID!): Workspace
+}
+
+"Input to update the form metadata on a workspace"
+input UpdateWorkspaceFormMetadataInput {
+  data: String
+  ui: String
 }
 
 "Input to create a new workspace"
@@ -474,6 +494,9 @@ type Mutation {
 
   "Create a new workspace"
   createWorkspace(createWorkspaceInput: CreateWorkspaceInput!): Workspace
+
+  "Update workspace form metadata"
+  updateWorkspaceFormMetadata(details: UpdateWorkspaceFormMetadataInput!, workspaceId: ID!): Workspace
 
   "Get a workspace for mutation"
   workspace(workspaceId: ID!): Workspace

@@ -136,4 +136,101 @@ describe('workspace resolver', () => {
       name: 'Workspace D',
     })
   })
+  test('update form metadata', async () => {
+    const userId = new ObjectId('5a5b345f98f048281d88eac2')
+    const context = {
+      user: { id: userId.toString(), _id: userId._id },
+      token: { admin: false },
+    }
+    const workspace = await Workspace.create({
+      name: 'Workspace',
+      color: '#ff69e8',
+      members: [{ user: userId }],
+      articles: [],
+      creator: userId,
+    })
+    await RootMutation.updateWorkspaceFormMetadata(
+      {},
+      {
+        workspaceId: workspace.id,
+        details: {
+          data: `{"title": "book"}`,
+          ui: `{"ui:groups": []}`,
+        },
+      },
+      context
+    )
+    const getWorkspace = await Query.workspace(
+      {},
+      { workspaceId: workspace.id },
+      context
+    )
+    expect(getWorkspace.toJSON()).toMatchObject({
+      articles: [],
+      color: '#ff69e8',
+      creator: userId,
+      members: [{ user: userId }],
+      name: 'Workspace',
+      formMetadata: {
+        data: `{"title": "book"}`,
+        ui: `{"ui:groups": []}`,
+      },
+    })
+  })
+  test('update form metadata with invalid data JSON', async () => {
+    const userId = new ObjectId('5a5b345f98f048281d88eac2')
+    const context = {
+      user: { id: userId.toString(), _id: userId._id },
+      token: { admin: false },
+    }
+    const workspace = await Workspace.create({
+      name: 'Workspace',
+      color: '#ff69e8',
+      members: [{ user: userId }],
+      articles: [],
+      creator: userId,
+    })
+
+    await expect(() =>
+      RootMutation.updateWorkspaceFormMetadata(
+        {},
+        {
+          workspaceId: workspace.id,
+          details: {
+            data: `{"title":}`, // invalid JSON
+            ui: `{"ui:groups": []}`,
+          },
+        },
+        context
+      )
+    ).rejects.toThrow('formMetadata.data must be a valid JSON.')
+  })
+  test('update form metadata with invalid ui JSON', async () => {
+    const userId = new ObjectId('5a5b345f98f048281d88eac2')
+    const context = {
+      user: { id: userId.toString(), _id: userId._id },
+      token: { admin: false },
+    }
+    const workspace = await Workspace.create({
+      name: 'Workspace',
+      color: '#ff69e8',
+      members: [{ user: userId }],
+      articles: [],
+      creator: userId,
+    })
+
+    await expect(() =>
+      RootMutation.updateWorkspaceFormMetadata(
+        {},
+        {
+          workspaceId: workspace.id,
+          details: {
+            data: `{"title": "book"}`,
+            ui: `{`, // invalid JSON
+          },
+        },
+        context
+      )
+    ).rejects.toThrow('formMetadata.ui must be a valid JSON.')
+  })
 })
