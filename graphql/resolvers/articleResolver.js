@@ -104,7 +104,7 @@ async function getArticleByUser(articleId, userId) {
 }
 
 async function createVersion(article, { major, message, userId, type }) {
-  const { bib, metadata, ydoc } = article.workingVersion
+  const { bib, metadata, metadataFormType, ydoc } = article.workingVersion
 
   const md = getTextFromYjsDoc(ydoc)
 
@@ -146,6 +146,7 @@ async function createVersion(article, { major, message, userId, type }) {
   const createdVersion = await Version.create({
     md,
     metadata,
+    metadataFormType,
     bib,
     version,
     revision,

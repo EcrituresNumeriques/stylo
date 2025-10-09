@@ -156,6 +156,37 @@ export function useArticleMetadata({ articleId, versionId }) {
     }
   )
 
+  const updateMetadataFormType = async (metadataFormType) => {
+    if (versionId) {
+      return
+    }
+    await executeQuery({
+      sessionToken,
+      query: updateWorkingVersion,
+      variables: {
+        userId: activeUser._id,
+        articleId: articleId,
+        content: { metadataFormType },
+      },
+      type: 'mutate',
+    })
+    await mutate(
+      async (data) => {
+        console.log({ data })
+        return {
+          article: {
+            ...data.article,
+            workingVersion: {
+              ...data.workingVersion,
+              metadataFormType: metadataFormType,
+            },
+          },
+        }
+      },
+      { revalidate: false }
+    )
+  }
+
   const updateMetadata = async (metadata) => {
     if (versionId) {
       return
@@ -190,10 +221,16 @@ export function useArticleMetadata({ articleId, versionId }) {
     ? data?.version?.metadata
     : data?.article?.workingVersion?.metadata
 
+  const metadataFormType = hasVersion
+    ? data?.version?.metadataFormType
+    : data?.article?.workingVersion?.metadataFormType
+
   return {
     metadata,
+    metadataFormType,
     metadataYaml: toYaml(metadata),
     updateMetadata,
+    updateMetadataFormType,
     isLoading,
     error,
   }

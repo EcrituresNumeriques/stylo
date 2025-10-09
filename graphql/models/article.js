@@ -50,6 +50,10 @@ const articleSchema = new Schema(
         type: String,
         default: '',
       },
+      metadataFormType: {
+        type: String,
+        default: 'default',
+      },
       metadata: {
         type: Schema.Types.Mixed,
         default: {},
