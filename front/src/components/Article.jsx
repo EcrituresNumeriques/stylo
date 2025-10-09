@@ -175,6 +175,7 @@ export default function Article({
     <article
       className={styles.article}
       aria-labelledby={`article-${article._id}-title`}
+      role="listitem"
     >
       <Modal
         {...exportModal.bindings}
@@ -263,23 +264,26 @@ export default function Article({
       </Modal>
 
       {!renaming && (
-        <h1 className={styles.title} onClick={toggleExpansion}>
-          <span tabIndex={0} onKeyUp={toggleExpansion} className={styles.icon}>
-            {expanded ? <ChevronDown /> : <ChevronRight />}
-          </span>
+          <header className={styles.title} onClick={toggleExpansion}>
+            <span role="button" aria-expanded={expanded} aria-controls={`article-${article._id}-details`} tabIndex={0} onKeyUp={toggleExpansion} className={styles.icon}>
+              {expanded ? <ChevronDown /> : <ChevronRight />}
+            </span>
 
-          <span id={`article-${article._id}-title`}>{article.title}</span>
+            <h2 id={`article-${article._id}-title`}>
+              {article.title}
+            </h2>
 
-          <Button
-            icon={true}
-            className={styles.editTitleButton}
-            onClick={(evt) => evt.stopPropagation() || setRenaming(true)}
-          >
-            <Edit3 className="icon" aria-hidden />
-            <span className="sr-only">{t('article.editName.button')}</span>
-          </Button>
-        </h1>
+            <Button
+              icon={true}
+              className={styles.editTitleButton}
+              onClick={(evt) => evt.stopPropagation() || setRenaming(true)}
+            >
+              <Edit3 className="icon" aria-hidden />
+              <span className="sr-only">{t('article.editName.button')}</span>
+            </Button>
+        </header>
       )}
+
       {renaming && (
         <form
           className={clsx(styles.renamingForm, fieldStyles.inlineFields)}
@@ -313,70 +317,70 @@ export default function Article({
         </form>
       )}
 
-      <aside className={styles.actionButtons}>
+      <div role="menu" className={styles.actionButtons}>
         {isArticleOwner && !activeWorkspaceId && (
           <Button
-            title={t('article.delete.button')}
+            role="menuitem"
             icon={true}
             onClick={() => deleteModal.show()}
           >
-            <Trash />
+            <Trash aria-label={t('article.delete.button')} />
           </Button>
         )}
 
         <Button
-          title={t('article.duplicate.button')}
+          role="menuitem"
           icon={true}
           onClick={() => duplicate()}
         >
-          <Copy />
+          <Copy aria-label={t('article.duplicate.button')} />
         </Button>
 
         {
           <Button
-            title={t('article.sendCopy.button')}
+            role="menuitem"
             icon={true}
             onClick={() => sendCopyModal.show()}
           >
-            <Send />
+            <Send aria-label={t('article.sendCopy.button')} />
           </Button>
         }
 
         {
           <Button
-            title={t('article.share.button')}
+            role="menuitem"
             icon={true}
             onClick={() => sharingModal.show()}
           >
-            <UserPlus />
+            <UserPlus aria-label={t('article.share.button')} />
           </Button>
         }
 
         <Button
-          title={t('article.download.button')}
+          role="menuitem"
           icon={true}
           onClick={() => exportModal.show()}
         >
-          <Printer />
+          <Printer aria-label={t('article.download.button')} />
         </Button>
 
         <Link
-          title={t('article.editor.edit.title')}
+          role="menuitem"
           className={buttonStyles.primary}
           to={`/article/${article._id}`}
         >
-          <Pencil />
+          <Pencil aria-label={t('article.editor.edit.title')} />
         </Link>
 
         <Link
-          title={t('article.annotate.button')}
+          role="menuitem"
           target="_blank"
           className={buttonStyles.icon}
           to={`/article/${article._id}/annotate`}
         >
-          <MessageSquareShare />
+          <MessageSquareShare aria-label={t('article.annotate.button')} />
         </Link>
-      </aside>
+      </div>
 
       <section className={styles.metadata}>
         <p className={styles.metadataAuthoring}>
@@ -403,12 +407,12 @@ export default function Article({
         </p>
 
         {expanded && (
-          <div>
+          <div id={`article-${article._id}-details`}>
             <ArticleVersionLinks article={article} articleId={articleId} />
 
             {userTags.length > 0 && (
               <>
-                <h4>{t('article.tags.title')}</h4>
+                <h3>{t('article.tags.title')}</h3>
                 <div className={styles.editTags}>
                   <ArticleTags
                     articleId={article._id}
@@ -419,12 +423,12 @@ export default function Article({
               </>
             )}
 
-            <h4>{t('article.workspaces.title')}</h4>
+            <h3>{t('article.workspaces.title')}</h3>
             <ul className={styles.workspaces}>
               <WorkspaceSelectionItems articleId={articleId} />
             </ul>
 
-            <h4>{t('article.corpus.title')}</h4>
+            <h3>{t('article.corpus.title')}</h3>
             <ul className={styles.corpusList}>
               <CorpusSelectItems articleId={articleId} />
             </ul>

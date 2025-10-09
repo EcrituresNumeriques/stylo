@@ -18,7 +18,7 @@
     align-items: center;
     gap: 1em;
     justify-content: space-between;
-    padding: .5em;
+    padding: .75rem;
   }
 
   a, button {
@@ -37,6 +37,10 @@
 
 .logo {
   margin-right: auto;
+
+  img {
+    max-height: 2rem;
+  }
 }
 
 .skiplinks {
@@ -176,7 +180,7 @@
     left: auto;
     right: -1em;
   }
-  
+
   .toggleMenuList {
     padding: .5em;
 

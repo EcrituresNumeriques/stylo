@@ -39,7 +39,7 @@ export default function CorpusArticles({ corpusId }) {
 
   return (
     <>
-      <h5 className={styles.partsTitle}>{t('corpus.parts.label')}</h5>
+      <h3 className={styles.partsTitle}>{t('corpus.parts.label')}</h3>
       {isLoading && <Loading />}
       {!isLoading && corpusArticles.length > 0 && (
         <ul>

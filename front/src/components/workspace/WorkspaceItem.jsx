@@ -46,13 +46,15 @@ export default function WorkspaceItem({ workspace }) {
 
   const workspaceTitle = (
     <>
-      <h5 className={styles.title}>
+      <h2 className={styles.title}>
         <span
           className={styles.chip}
           style={{ backgroundColor: workspace.color }}
+          role="presentation"
         ></span>
+
         <span>{workspace.name}</span>
-      </h5>
+      </h2>
     </>
   )
 
