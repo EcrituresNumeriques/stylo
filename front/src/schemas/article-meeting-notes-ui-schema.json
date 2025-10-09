@@ -1,0 +1,29 @@
+{
+  "ui:groups": [
+    {
+      "title": "meetingNotes.title",
+      "fields": [
+        "publicationDate",
+        "abstract",
+        "authors"
+      ]
+    }
+  ],
+  "abstract": {
+    "ui:title": "meetingNotes.agenda",
+    "ui:widget": "textarea"
+  },
+  "authors": {
+    "ui:title": "meetingNotes.attendees",
+    "ui:add-item-title": "meetingNotes.attendees.add",
+    "items": {
+      "forename": {
+        "ui:title": "meetingNotes.attendee.name"
+      }
+    }
+  },
+  "publicationDate": {
+    "ui:title": "meetingNotes.date",
+    "ui:widget": "date"
+  }
+}

@@ -57,6 +57,7 @@
   "article.type.blogPost": "Billet de blog",
   "article.type.default": "Article",
   "article.type.label": "Type",
+  "article.type.meetingNotes": "Notes de réunion",
   "article.versions.title": "Versions",
   "article.workspaces.title": "Espaces de travail",
   "articles.page.title": "Articles - {{ workspace }}",
