@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { Menu } from 'lucide-react'
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, NavLink, useLocation, useRouteLoaderData } from 'react-router'
 
@@ -14,10 +14,12 @@ import UserMenu from './header/UserMenu.jsx'
 import WorkspacesMenu from './workspace/WorkspacesMenu.jsx'
 
 import styles from './header.module.scss'
+import { useDispatch } from 'react-redux'
 
 export default function Header() {
   const { t } = useTranslation()
   const activeWorkspaceId = useActiveWorkspaceId()
+  const dispatch = useDispatch()
   const { user } = useRouteLoaderData('app')
   const location = useLocation()
   const activeTool = location.pathname.includes('/corpus')
@@ -38,6 +40,10 @@ export default function Header() {
     isComponentVisible: areToolsVisible,
     toggleComponentIsVisible: toggleTools,
   } = useComponentVisible(false, 'tools')
+
+  const resetWorkspaceId = useCallback(() => {
+    dispatch({ type: 'SET_USER_PREFERENCES', key: 'workspaceId', value: null })
+  }, [])
 
   return (
     <header className={styles.header} role="banner">
@@ -109,6 +115,7 @@ export default function Header() {
                       <li>
                         <Link
                           to={`/${activeTool}`}
+                          onClick={resetWorkspaceId}
                           aria-current={!activeWorkspaceId ? 'page' : false}
                         >
                           <span

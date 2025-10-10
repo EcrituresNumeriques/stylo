@@ -13,11 +13,22 @@ import {
   removeMember as removeMemberMutation,
   updateFormMetadata as updateFormMetadataMutation,
 } from '../components/workspace/Workspaces.graphql'
+import { usePreferenceItem } from './user.js'
 
+/**
+ * Returns the active workspace identifier
+ *
+ * In order of priority:
+ * - URL
+ * - redux store
+ *
+ * @returns {string|undefined}
+ */
 export function useActiveWorkspaceId() {
+  const { value } = usePreferenceItem('workspaceId', 'user')
   const { workspaceId } = useParams()
 
-  return workspaceId
+  return workspaceId ?? value
 }
 
 export function useWorkspaceMembersActions(workspaceId) {
