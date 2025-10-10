@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stylo.huma-num.fr/schemas/article-meeting-notes-metadata.schema.json",
+  "title": "Meeting notes metadata",
+  "type": "object",
+  "definitions": {
+    "person": {
+      "type": "object",
+      "properties": {
+        "forename": {
+          "type": "string",
+          "title": "Name"
+        }
+      }
+    }
+  },
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "meeting-notes"
+    },
+    "@version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "publicationDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "abstract": {
+      "type": "string"
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/person"
+      }
+    }
+  }
+}
