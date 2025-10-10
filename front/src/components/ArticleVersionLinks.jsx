@@ -50,7 +50,7 @@ export default function ArticleVersionLinks({ articleId, article }) {
     <>
       {versions && versions.length > 0 && (
         <>
-          <h4>{t('article.versions.title')}</h4>
+          <h3>{t('article.versions.title')}</h3>
           <ul className={styles.versions}>
             {versions.map((v) => (
               <li

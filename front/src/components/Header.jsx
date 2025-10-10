@@ -42,12 +42,10 @@ export default function Header() {
   return (
     <header className={styles.header} role="banner">
       <div className={styles.container}>
-        <h1 className={styles.logo}>
-          <NavLink to="/" rel="home">
-            <img src={logoContent} alt="Stylo" aria-hidden />
-            <span className="sr-only">{t('header.home')}</span>
-          </NavLink>
-        </h1>
+        <NavLink to="/" rel="home"  className={styles.logo}>
+          <img src={logoContent} alt="Stylo" aria-hidden />
+          <span className="sr-only">{t('header.home')}</span>
+        </NavLink>
 
         {userId && (
           <nav

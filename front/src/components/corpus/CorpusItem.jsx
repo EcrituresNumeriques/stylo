@@ -85,19 +85,22 @@ export default function CorpusItem({ corpus }) {
   )
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} aria-labelledby={`corpus-${corpus._id}-title`}>
       <div className={styles.header}>
         <div className={styles.heading} onClick={toggleExpansion}>
-          <h4 className={styles.title}>
+          <h2 className={styles.title} id={`corpus-${corpus._id}-title`}>
             <span
               tabIndex={0}
+              role="button"
+              aria-expanded={expanded}
+              aria-controls={`corpus-${corpus._id}-chapters`}
               onKeyUp={toggleExpansion}
               className={styles.icon}
             >
               {expanded ? <ChevronDown /> : <ChevronRight />}
             </span>
             {corpus.name}
-          </h4>
+          </h2>
           <p className={styles.metadata}>
             <span className={styles.by}>{t('corpus.by.text')}</span>
             <span className={styles.creator}>
@@ -106,13 +109,14 @@ export default function CorpusItem({ corpus }) {
             <TimeAgo date={corpus.updatedAt} className={styles.updatedAt} />
           </p>
         </div>
-        <aside className={styles.actionButtons}>
+
+        <div role="menu" className={styles.actionButtons}>
           <Button
-            title={t('corpus.edit.buttonTitle')}
+            role="menuitem"
             icon={true}
             onClick={() => editCorpusModal.show()}
           >
-            <Settings />
+            <Settings aria-label={t('corpus.edit.buttonTitle')} />
           </Button>
 
           <CorpusMetadataModal
@@ -122,35 +126,35 @@ export default function CorpusItem({ corpus }) {
           />
 
           <Button
-            title={t('corpus.delete.buttonTitle')}
+            role="menuitem"
             icon={true}
             onClick={(event) => {
               event.preventDefault()
               deleteCorpusModal.show()
             }}
           >
-            <Trash />
+            <Trash aria-label={t('corpus.delete.buttonTitle')} />
           </Button>
           <Button
-            title={t('corpus.export.buttonTitle')}
+            role="menuitem"
             icon={true}
             onClick={() => exportCorpusModal.show()}
           >
-            <Printer />
+            <Printer aria-label={t('corpus.export.buttonTitle')} />
           </Button>
 
           <Link
-            title={t('article.annotate.button')}
+            role="menuitem"
             target="_blank"
             className={buttonStyles.icon}
             to={`/corpus/${corpus._id}/annotate`}
           >
-            <MessageSquareShare />
+            <MessageSquareShare aria-label={t('article.annotate.button')} />
           </Link>
-        </aside>
+        </div>
       </div>
       {expanded && (
-        <div className={styles.detail}>
+        <div id={`corpus-${corpus._id}-chapters`} className={styles.detail}>
           {corpus.description && <p>{corpus.description}</p>}
           <CorpusArticles corpusId={corpusId} />
         </div>

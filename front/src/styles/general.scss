@@ -1,6 +1,8 @@
 @use './defaults' as *;
 @use './variables' as *;
 
+@import url('@csstools/normalize.css');
+
 @font-face {
   font-family: 'Inter';
   src: url('/fonts/Inter-VariableFont_slnt,wght.ttf') format('truetype');
@@ -10,10 +12,6 @@
 
 * {
   box-sizing: border-box;
-}
-
-[hidden]:not([hidden='false']) {
-  display: none;
 }
 
 .sr-only {
@@ -30,6 +28,43 @@
 
 html {
   scrollbar-gutter: stable;
+}
+
+/*
+ * https://typescale.com/
+ * 1.067 Minor Second
+ */
+
+h1 {
+  font-size: 1.476rem;
+}
+
+h2 {
+  font-size: 1.383rem;
+}
+
+h3 {
+  font-size: 1.296rem;
+}
+
+h4 {
+  font-size: 1.215rem;
+}
+
+h5 {
+  font-size: 1.138rem;
+}
+
+h6 {
+  font-size: 1.067rem;
+}
+
+p {
+  font-size: 1rem;
+}
+
+small {
+  font-size: 0.937rem;
 }
 
 @media screen {

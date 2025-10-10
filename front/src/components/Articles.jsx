@@ -141,9 +141,8 @@ export default function Articles() {
   }
 
   return (
-    <section
+    <div
       className={styles.section}
-      aria-labelledby="articles-list-headline"
     >
       <Helmet>
         <title>
@@ -170,9 +169,9 @@ export default function Articles() {
           onChange={(e) => setFilter(etv(e))}
         />
 
-        <fieldset className={styles.filtersTags}>
+        <fieldset className={styles.filtersTags} aria-label={t('tag.list.title')}>
           <legend>
-            <h4>{t('tag.list.title')}</h4>
+            <h4 aria-level="2">{t('tag.list.title')}</h4>
           </legend>
 
           <TagsList action={TagEditForm} />
@@ -190,7 +189,7 @@ export default function Articles() {
         />
       </Modal>
 
-      <div aria-labelledby="articles-list-headline" role="list">
+      <section aria-labelledby="articles-list-headline" role="list">
         <div className={styles.articlesTableHeader}>
           <Button
             testId="create-article-button"
@@ -214,7 +213,7 @@ export default function Articles() {
             onArticleCreated={handleArticleCreated}
           />
         ))}
-      </div>
-    </section>
+      </section>
+    </div>
   )
 }
