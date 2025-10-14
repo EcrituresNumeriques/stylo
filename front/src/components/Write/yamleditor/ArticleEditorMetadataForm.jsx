@@ -69,6 +69,10 @@ export default function ArticleEditorMetadataForm({
           ...metadata,
           ...schema.const,
         })
+      } else {
+        // remove default const properties `@version` and `type` since we are using a custom schema
+        const { ['@version']: del, type, ...customMetadata } = metadata
+        handleChange(customMetadata)
       }
       onTypeChange(type)
     },

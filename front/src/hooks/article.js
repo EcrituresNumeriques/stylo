@@ -142,6 +142,9 @@ export function useArticleActions({ articleId }) {
   }
 }
 
+const emptyYaml = `---
+---`
+
 export function useArticleMetadata({ articleId, versionId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
   const activeUser = useSelector((state) => state.activeUser)
@@ -247,11 +250,12 @@ export function useArticleMetadata({ articleId, versionId }) {
     ? data?.version?.metadataFormType
     : data?.article?.workingVersion?.metadataFormType
 
+  const metadataYaml = metadata ? toYaml(clean(metadata)) : emptyYaml
   return {
     metadata,
     metadataFormType,
     metadataFormTypeOptions: options ?? [],
-    metadataYaml: metadata ? toYaml(clean(metadata)) : '',
+    metadataYaml: metadataYaml === '' ? emptyYaml : metadataYaml,
     updateMetadata,
     updateMetadataFormType,
     isLoading,
