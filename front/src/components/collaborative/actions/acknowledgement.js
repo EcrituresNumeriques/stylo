@@ -1,49 +1,12 @@
-import { KeyMod, Range, Selection } from 'monaco-editor'
+import createDelimitedBlockCommand, {
+  KeyCode,
+  KeyMod,
+} from './delimited-block.js'
 
-/**
- * @typedef {import('monaco-editor').editor.IActionDescriptor} IActionDescriptor
- * @typedef {import('monaco-editor').editor.ICodeEditor} ICodeEditor
- */
-
-/** @type {IActionDescriptor} */
-const command = {
-  id: 'stylo--balisage-infra--ack',
-  label: 'actions.balisage-infra.ack',
-  contextMenuGroupId: '1_balisage_infra',
-  keybindings: [
-    KeyMod.chord(
-      // common to 'balisage-infra'
-      KeyMod.CtrlCmd | KeyMod.KeyI,
-      // specific to this item within the 'balisage-infra' group
-      KeyMod.CtrlCmd | KeyMod.KeyA
-    )
-  ],
-  run
-}
-
-export default command
-
-/**
- * @param {ICodeEditor} editor
- */
-export function run (editor) {
-  const { startLineNumber, startColumn, endLineNumber, endColumn } = editor.getSelection()
-  const range = new Range(startLineNumber, startColumn, endLineNumber, endColumn)
-  const originalText = editor.getModel().getValueInRange(range)
-
-  const text = `::: {.ack}\n${originalText}\n:::\n\n`
-  const LINE_RETURN_COUNT = 4 /* 4 x \n in `text` */
-
-  const isTextSelected = startLineNumber !== endLineNumber || startColumn !== endColumn
-  const newStartLineNumber = isTextSelected ? endLineNumber + LINE_RETURN_COUNT : startLineNumber+1
-  const newColumn = 0
-
-  editor.executeEdits(command.id, [
-    {
-      range,
-      text,
-    }
-  ], [
-    new Selection(newStartLineNumber, newColumn, newStartLineNumber, newColumn)
-  ])
-}
+export default createDelimitedBlockCommand({
+  id: 'stylo--infratextual-markup--ack',
+  label: 'actions.infratextual-markup.ack',
+  contextMenuGroupId: '1_infratextual_markup',
+  keybindings: KeyMod.CtrlCmd | KeyCode.KeyA,
+  className: 'ack',
+})
