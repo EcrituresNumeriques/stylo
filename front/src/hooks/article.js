@@ -251,7 +251,7 @@ export function useArticleMetadata({ articleId, versionId }) {
     metadata,
     metadataFormType,
     metadataFormTypeOptions: options ?? [],
-    metadataYaml: toYaml(clean(metadata)),
+    metadataYaml: metadata ? toYaml(clean(metadata)) : '',
     updateMetadata,
     updateMetadataFormType,
     isLoading,
