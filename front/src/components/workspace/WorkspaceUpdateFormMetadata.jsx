@@ -59,7 +59,7 @@ export default function WorkspaceUpdateFormMetadata({
             style={{ width: '100%' }}
             rows="12"
           >
-            {workspace.formMetadata.data}
+            {workspace.formMetadata?.data}
           </textarea>
         </div>
         <label htmlFor="ui">{t('workspace.formMetadata.ui')}</label>
@@ -71,7 +71,7 @@ export default function WorkspaceUpdateFormMetadata({
             style={{ width: '100%' }}
             rows="10"
           >
-            {workspace.formMetadata.ui}
+            {workspace.formMetadata?.ui}
           </textarea>
         </div>
 
