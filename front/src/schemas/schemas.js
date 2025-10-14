@@ -41,3 +41,33 @@ function getConstMetadata(schema) {
       return map
     }, {})
 }
+
+export function clean(obj) {
+  const clone = structuredClone(obj)
+  removeEmptyArray(clone)
+  removeEmptyObject(clone)
+  return clone
+}
+
+export function removeEmptyArray(obj) {
+  Object.keys(obj).forEach((key) => {
+    const prop = obj[key]
+    if (Array.isArray(prop) && prop.length === 0) delete obj[key]
+    if (typeof prop === 'object') {
+      removeEmptyArray(prop)
+    }
+  })
+}
+
+export function removeEmptyObject(obj) {
+  Object.keys(obj).forEach((key) => {
+    const prop = obj[key]
+    if (typeof prop === 'object') {
+      if (Object.keys(prop).length === 0) {
+        delete obj[key]
+      } else {
+        removeEmptyObject(prop)
+      }
+    }
+  })
+}
