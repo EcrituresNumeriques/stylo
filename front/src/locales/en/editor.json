@@ -1,8 +1,8 @@
 {
   "actions": {
-    "balisage-infra": {
-      "ack": "$t(actions.balisage-infra-prefix) acknowledgment"
+    "infratextual-markup": {
+      "ack": "$t(actions.infratextual-markup-prefix) acknowledgment"
     },
-    "balisage-infra-prefix": "Add a block:"
+    "infratextual-markup-prefix": "Add a block:"
   }
 }
