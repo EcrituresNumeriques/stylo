@@ -56,7 +56,9 @@ export default function ArticleEditorMetadataForm({
   }, [metadataFormTypeOptions, type])
 
   const handleChange = useCallback(
-    (newFormData) => onChange(newFormData),
+    (newFormData) => {
+      onChange(newFormData)
+    },
     [onChange]
   )
 
@@ -65,14 +67,14 @@ export default function ArticleEditorMetadataForm({
       setType(type)
       const schema = ArticleSchemas.find((o) => o.name === type)
       if (schema && schema.const !== undefined) {
-        handleChange({
+        onChange({
           ...metadata,
           ...schema.const,
         })
       }
       onTypeChange(type)
     },
-    [setType, onTypeChange]
+    [onChange, setType, onTypeChange]
   )
 
   const { t } = useTranslation()

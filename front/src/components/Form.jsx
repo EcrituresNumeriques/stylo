@@ -6,7 +6,6 @@ import React, { Fragment, useCallback, useMemo, useState } from 'react'
 import { Translation } from 'react-i18next'
 
 import Button from './Button'
-// REMIND: use a custom SelectWidget to support "ui:emptyValue"
 // remove once fixed in https://github.com/rjsf-team/react-jsonschema-form/issues/1041
 import SelectWidget from './SelectWidget'
 import isidoreAuthorSearch from './Write/metadata/isidoreAuthor'
@@ -16,6 +15,8 @@ import Form, { getDefaultRegistry } from '@rjsf/core'
 import validator from '@rjsf/validator-ajv8'
 
 import ToggleWidget from './ToggleWidget.jsx'
+
+// REMIND: use a custom SelectWidget to support "ui:emptyValue"
 
 import styles from './form.module.scss'
 

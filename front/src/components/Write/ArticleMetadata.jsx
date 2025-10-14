@@ -43,6 +43,7 @@ export default function ArticleMetadata({ onBack, articleId, versionId }) {
     articleId,
     versionId,
   })
+  console.log({ metadataYaml, metadata })
   const [error, setError] = useState('')
 
   const { value: selector, setValue: setSelector } = usePreferenceItem(
