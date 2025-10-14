@@ -72,7 +72,7 @@ export default function ArticleEditorMetadataForm({
       }
       onTypeChange(type)
     },
-    [setType, onTypeChange]
+    [handleChange, setType, onTypeChange]
   )
 
   const { t } = useTranslation()

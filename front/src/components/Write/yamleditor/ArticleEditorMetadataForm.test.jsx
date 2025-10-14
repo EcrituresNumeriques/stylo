@@ -1,9 +1,11 @@
-import { describe, expect, test } from 'vitest'
-import { render } from '@testing-library/react'
 import React from 'react'
+import { describe, expect, test } from 'vitest'
+
+import { render } from '@testing-library/react'
+
 import Component from './ArticleEditorMetadataForm.jsx'
 
-describe('YamlEditor', () => {
+describe('ArticleEditorMetadataForm', () => {
   test('renders with an empty Yaml', () => {
     const { getByRole } = render(<Component yaml="" />)
 

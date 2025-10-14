@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { toYaml } from '../components/Write/metadata/yaml.js'
 import { toEntries } from '../helpers/bibtex.js'
 import { executeQuery } from '../helpers/graphQL.js'
+import { clean } from '../schemas/schemas.js'
 import useFetchData, {
   useConditionalFetchData,
   useMutateData,
@@ -250,7 +251,7 @@ export function useArticleMetadata({ articleId, versionId }) {
     metadata,
     metadataFormType,
     metadataFormTypeOptions: options ?? [],
-    metadataYaml: toYaml(metadata),
+    metadataYaml: toYaml(clean(metadata)),
     updateMetadata,
     updateMetadataFormType,
     isLoading,
