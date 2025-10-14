@@ -1,36 +1,13 @@
-import { merge } from 'allof-merge'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import blogPostSchema from '../../../schemas/article-blog-post-metadata.schema.json'
-import blogPostUiSchema from '../../../schemas/article-blog-post-ui-schema.json'
-import meetingNotesSchema from '../../../schemas/article-meeting-notes-metadata.schema.json'
-import meetingNotesUiSchema from '../../../schemas/article-meeting-notes-ui-schema.json'
-import defaultSchema from '../../../schemas/article-metadata.schema.json'
-import defaultUiSchema from '../../../schemas/article-ui-schema.json'
 import Form from '../../Form'
+
+import { ArticleSchemas } from '../../../schemas/schemas.js'
 
 import Select from '../../Select.jsx'
 
 import styles from './ArticleEditorMetadataForm.module.scss'
-
-const FormTypeDefaultOptions = [
-  {
-    name: 'default',
-    data: defaultSchema,
-    ui: defaultUiSchema,
-  },
-  {
-    name: 'blog-post',
-    data: blogPostSchema,
-    ui: blogPostUiSchema,
-  },
-  {
-    name: 'meeting-notes',
-    data: meetingNotesSchema,
-    ui: meetingNotesUiSchema,
-  },
-]
 
 /**
  * @param {object} props properties
@@ -52,31 +29,29 @@ export default function ArticleEditorMetadataForm({
 }) {
   const [type, setType] = useState(metadataFormType)
   const schemaMerged = useMemo(() => {
-    const defaultOption = FormTypeDefaultOptions.find((o) => o.name === type)
-    if (defaultOption === undefined) {
+    const schema = ArticleSchemas.find((o) => o.name === type)
+    if (schema === undefined) {
       const option = metadataFormTypeOptions.find((o) => o.name === type)
       if (option) {
-        return merge(option.data)
+        return option.data
       }
       // QUESTION: what should we do, if we can't find the form?
-      return merge(
-        FormTypeDefaultOptions.find((o) => o.name === 'default').data
-      )
+      return ArticleSchemas.find((o) => o.name === 'default').data
     } else {
-      return merge(defaultOption.data)
+      return schema.data
     }
   }, [metadataFormTypeOptions, type])
   const uiSchema = useMemo(() => {
-    const defaultOption = FormTypeDefaultOptions.find((o) => o.name === type)
-    if (defaultOption === undefined) {
+    const schema = ArticleSchemas.find((o) => o.name === type)
+    if (schema === undefined) {
       const option = metadataFormTypeOptions.find((o) => o.name === type)
       if (option) {
         return option.ui
       }
       // QUESTION: what should we do, if we can't find the form?
-      return FormTypeDefaultOptions.find((o) => o.name === 'default').ui
+      return ArticleSchemas.find((o) => o.name === 'default').ui
     } else {
-      return defaultOption.ui
+      return schema.ui
     }
   }, [metadataFormTypeOptions, type])
 
@@ -88,6 +63,13 @@ export default function ArticleEditorMetadataForm({
   const handleTypeChange = useCallback(
     (type) => {
       setType(type)
+      const schema = ArticleSchemas.find((o) => o.name === type)
+      if (schema && schema.const !== undefined) {
+        handleChange({
+          ...metadata,
+          ...schema.const,
+        })
+      }
       onTypeChange(type)
     },
     [setType, onTypeChange]

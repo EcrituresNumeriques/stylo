@@ -1,3 +1,4 @@
+import { merge } from 'allof-merge'
 import { useSelector } from 'react-redux'
 
 import { toYaml } from '../components/Write/metadata/yaml.js'
@@ -223,7 +224,7 @@ export function useArticleMetadata({ articleId, versionId }) {
     ?.filter((w) => w.formMetadata.data !== null)
     .map((w) => {
       try {
-        const data = JSON.parse(w.formMetadata.data)
+        const data = merge(JSON.parse(w.formMetadata.data))
         const ui =
           w.formMetadata.ui !== null ? JSON.parse(w.formMetadata.ui) : {}
         return {
