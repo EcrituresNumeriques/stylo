@@ -117,6 +117,7 @@ export default function CollaborativeTextEditor({
 
       // Action commands
       editor.addAction({ ...ack, label: t(ack.label) })
+      editor.addAction({ ...quote2, label: t(quote2.label) })
 
       const completionProvider = bibliographyCompletionProvider.register(monaco)
       editor.onDidDispose(() => completionProvider.dispose())
