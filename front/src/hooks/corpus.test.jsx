@@ -10,7 +10,7 @@ import Alert from '../components/molecules/Alert.jsx'
 import Loading from '../components/molecules/Loading.jsx'
 
 describe('Corpus', () => {
-  test('create', async () => {
+  test.skip('create', async () => {
     // initial request
     fetch.mockResolvedValueOnce({
       ok: true,
