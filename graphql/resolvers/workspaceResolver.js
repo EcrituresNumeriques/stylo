@@ -141,9 +141,8 @@ module.exports = {
       if (user?.admin) {
         return Workspace.find()
       }
-      return Workspace.find({ 'members.user': user?._id }).sort([
-        ['updatedAt', -1],
-      ])
+
+      return Workspace.findByUser(user)
     },
   },
 
