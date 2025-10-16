@@ -1,8 +1,35 @@
 {
   "actions": {
-    "infratextual-markup": {
-      "ack": "$t(actions.infratextual-markup-prefix) agradecimiento"
+    "infratextual-block": {
+      "ack": "$t(types.block) agradecimiento",
+      "answ": "$t(types.block) respuesta",
+      "dedi": "$t(types.block) dedicatoria",
+      "endnote": "$t(types.block) nota final",
+      "epigraph": "$t(types.block) epígrafe",
+      "notepre.aut": "$t(types.block) nota preliminar del autor",
+      "notepre.pb": "$t(types.block) nota preliminar del editor",
+      "notepre.tr": "$t(types.block) nota preliminar del traductor",
+      "question": "$t(types.block) pregunta",
+      "quote-alt": "$t(types.block) cita bis",
+      "sig": "$t(types.block) firma",
+      "sponsor": "$t(types.block) patrocinador"
     },
-    "infratextual-markup-prefix": "Añadir un bloque :"
+    "infratextual-inline": {
+      "inlinequote": "$t(types.inline) cita",
+      "smallcaps": "$t(types.inline) versalitas"
+    }
+  },
+  "stylo": {
+    "metopes": {
+      "citations": "Citas",
+      "entretien": "Entrevistas",
+      "liminaires": "Liminarios",
+      "rootMenu": "Métopes",
+      "texte": "Texto"
+    }
+  },
+  "types": {
+    "block": "Bloque",
+    "inline": "Elemento"
   }
 }
