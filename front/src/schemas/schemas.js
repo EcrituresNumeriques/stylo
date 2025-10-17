@@ -53,7 +53,7 @@ export function removeEmptyArray(obj) {
   Object.keys(obj).forEach((key) => {
     const prop = obj[key]
     if (Array.isArray(prop) && prop.length === 0) delete obj[key]
-    if (typeof prop === 'object') {
+    if (typeof prop === 'object' && prop !== null) {
       removeEmptyArray(prop)
     }
   })
@@ -62,7 +62,7 @@ export function removeEmptyArray(obj) {
 export function removeEmptyObject(obj) {
   Object.keys(obj).forEach((key) => {
     const prop = obj[key]
-    if (typeof prop === 'object') {
+    if (typeof prop === 'object' && prop !== null) {
       if (Object.keys(prop).length === 0) {
         delete obj[key]
       } else {
