@@ -4,6 +4,10 @@
   "article.by.text": "par",
   "article.contributors.added": "{{ name }} peut désormais contribuer à cet article.",
   "article.contributors.removed": "{{ name }} a été retiré·e des contributeur·ices.",
+  "article.copyId": {
+    "button": "Copier l'identifiant dans le presse-papier",
+    "successToast": "Identifié copié dans le presse-papier."
+  },
   "article.corpus.title": "Corpus",
   "article.count_one": "{{ count }} article",
   "article.count_other": "{{ count }} articles",
@@ -106,6 +110,10 @@
   "corpus.articlesOrder.toastFailure": "Impossible de mettre à jour lʼordre des articles : {{errorMessage}}",
   "corpus.articlesOrder.toastSuccess": "Lʼordre des articles a été modifié avec succès.",
   "corpus.by.text": "par",
+  "corpus.copyId": {
+    "button": "Copier l'identifiant dans le presse-papier",
+    "successToast": "Identifié copié dans le presse-papier."
+  },
   "corpus.create.toastFailure": "Impossible de créer le corpus : {{errorMessage}}",
   "corpus.create.toastSuccess": "Nouveau corpus créé avec succès",
   "corpus.createAction.buttonText": "Créer un corpus",

@@ -1,8 +1,10 @@
 import clsx from 'clsx'
+import copy from 'copy-to-clipboard'
 import {
   Check,
   ChevronDown,
   ChevronRight,
+  Clipboard,
   Copy,
   Edit3,
   MessageSquareShare,
@@ -138,6 +140,11 @@ export default function Article({
       versions: [],
     })
   }
+
+  const handleCopyId = useCallback(() => {
+    copy(articleId)
+    toast(t('article.copyId.successToast'), { type: 'success' })
+  }, [])
 
   const rename = async (e) => {
     e.preventDefault()
@@ -380,6 +387,15 @@ export default function Article({
         >
           <MessageSquareShare aria-label={t('article.annotate.button')} />
         </Link>
+
+        <Button
+          title={t('article.copyId.button')}
+          className={styles.copyToClipboard}
+          onClick={handleCopyId}
+          icon
+        >
+          <Clipboard />
+        </Button>
       </div>
 
       <section className={styles.metadata}>

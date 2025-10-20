@@ -1,6 +1,8 @@
+import copy from 'copy-to-clipboard'
 import {
   ChevronDown,
   ChevronRight,
+  Clipboard,
   MessageSquareShare,
   Printer,
   Settings,
@@ -75,6 +77,12 @@ export default function CorpusItem({ corpus }) {
   }, [corpusId])
 
   const [expanded, setExpanded] = useState(false)
+
+  const handleCopyId = useCallback(() => {
+    copy(corpusId)
+    toast(t('corpus.copyId.successToast'), { type: 'success' })
+  }, [])
+
   const toggleExpansion = useCallback(
     (event) => {
       if (!event.key || [' ', 'Enter'].includes(event.key)) {
@@ -151,6 +159,15 @@ export default function CorpusItem({ corpus }) {
           >
             <MessageSquareShare aria-label={t('article.annotate.button')} />
           </Link>
+
+          <Button
+            title={t('corpus.copyId.button')}
+            className={styles.copyToClipboard}
+            onClick={handleCopyId}
+            icon
+          >
+            <Clipboard />
+          </Button>
         </div>
       </div>
       {expanded && (

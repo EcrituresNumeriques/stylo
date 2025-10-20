@@ -4,6 +4,10 @@
   "article.by.text": "by",
   "article.contributors.added": "{{ name }} is now a contributor.",
   "article.contributors.removed": "{{ name }} has been removed from contributors.",
+  "article.copyId": {
+    "button": "Copy ID to clipboard",
+    "successToast": "ID copied to clipboard."
+  },
   "article.corpus.title": "Corpus",
   "article.count_one": "{{ count }} article",
   "article.count_other": "{{ count }} articles",
@@ -97,6 +101,10 @@
   "corpus.articlesOrder.toastFailure": "Unable to update articles order: {{errorMessage}}",
   "corpus.articlesOrder.toastSuccess": "Articles order successfully updated.",
   "corpus.by.text": "by",
+  "corpus.copyId": {
+    "button": "Copy ID to clipboard",
+    "successToast": "ID copied to clipboard."
+  },
   "corpus.create.toastFailure": "Unable to create new corpus : {{errorMessage}}",
   "corpus.create.toastSuccess": "New corpus created",
   "corpus.createAction.buttonText": "Create a corpus",
