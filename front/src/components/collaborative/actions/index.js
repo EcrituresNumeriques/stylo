@@ -13,6 +13,10 @@ export const actions = {
   epigraph: createDelimitedBlockCommand('epigraph', {
     body_pre: '[@source]'
   }),
+  figure: createDelimitedBlockCommand('figure', {
+    body_pre: '\n[titre]{.head}\n\n![caption](image.png)',
+    body_post: ':::{.credits}\n[]{.credits} [@source]\n:::'
+  }),
   inlinequote: createInlineBlockCommand('inlinequote'),
   notepreAuthor: createDelimitedBlockCommand('notepre.aut', {
     attrs: {origin: 'aut'},
@@ -112,6 +116,6 @@ export function MetopesMenu ({ editor, t }) {
       _bindAction(actions.signature),
       _bindAction(actions.smallcaps)
     ]),
-    // _bindAction(figurecomplexe),
+    _bindAction(actions.figure),
   ])
 }

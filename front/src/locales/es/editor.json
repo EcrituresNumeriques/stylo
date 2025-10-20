@@ -6,6 +6,7 @@
       "dedi": "$t(types.block) dedicatoria",
       "endnote": "$t(types.block) nota final",
       "epigraph": "$t(types.block) epígrafe",
+      "figure": "$t(types.block) figura",
       "notepre.aut": "$t(types.block) nota preliminar del autor",
       "notepre.pb": "$t(types.block) nota preliminar del editor",
       "notepre.tr": "$t(types.block) nota preliminar del traductor",
