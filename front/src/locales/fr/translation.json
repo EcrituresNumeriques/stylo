@@ -112,7 +112,7 @@
   "corpus.by.text": "par",
   "corpus.copyId": {
     "button": "Copier l'identifiant dans le presse-papier",
-    "successToast": "Identifié copié dans le presse-papier."
+    "successToast": "Identifiant copié dans le presse-papier."
   },
   "corpus.create.toastFailure": "Impossible de créer le corpus : {{errorMessage}}",
   "corpus.create.toastSuccess": "Nouveau corpus créé avec succès",
