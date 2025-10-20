@@ -6,7 +6,7 @@
   "article.contributors.removed": "{{ name }} a été retiré·e des contributeur·ices.",
   "article.copyId": {
     "button": "Copier l'identifiant dans le presse-papier",
-    "successToast": "Identifié copié dans le presse-papier."
+    "successToast": "Identifiant copié dans le presse-papier."
   },
   "article.corpus.title": "Corpus",
   "article.count_one": "{{ count }} article",
