@@ -11,6 +11,11 @@
     .monaco-editor {
       position: absolute;
     }
+
+    .monaco-menu .action-menu-item {
+      font-size: 1.1em;
+      text-decoration: none;
+    }
   }
 }
 
@@ -24,7 +29,7 @@
   max-height: calc(100vh - 225px);
   overflow-y: auto;
   max-width: 100%;
-  
+
   hr {
     display: none;
   }

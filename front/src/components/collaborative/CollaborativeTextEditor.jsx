@@ -3,8 +3,11 @@ import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
+import { Separator } from 'monaco-editor/esm/vs/base/common/actions.js'
+import { StandaloneServices } from 'monaco-editor/esm/vs/editor/standalone/browser/standaloneServices.js';
+import { IContextMenuService } from 'monaco-editor/esm/vs/platform/contextview/browser/contextView.js';
 
-import { ack } from './actions'
+import { actions, bindAction, MetopesMenu } from './actions'
 import { DiffEditor } from '@monaco-editor/react'
 import throttle from 'lodash.throttle'
 
@@ -22,6 +25,12 @@ import CollaborativeEditorArticleHeader from './CollaborativeEditorArticleHeader
 import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 
 import styles from './CollaborativeTextEditor.module.scss'
+import 'monaco-editor/esm/vs/base/browser/ui/codicons/codicon/codicon.css'
+
+/**
+ * @typedef {import('monaco-editor').editor.IStandaloneCodeEditor} IStandaloneCodeEditor
+ * @typedef {import('monaco-editor')} monaco
+ */
 
 /**
  * @param {object} props
@@ -110,13 +119,30 @@ export default function CollaborativeTextEditor({
   )
 
   const handleCollaborativeEditorDidMount = useCallback(
-    (editor, monaco) => {
+    (/** @type {IStandaloneCodeEditor} */ editor, /** @type {monaco} */ monaco) => {
       editorRef.current = editor
 
       editor.onDropIntoEditor(onDropIntoEditor(editor))
+      const contextMenuService = StandaloneServices.get(IContextMenuService);
 
-      // Action commands
-      editor.addAction({ ...ack, label: t(ack.label) })
+      editor.onContextMenu((e) => {
+        e.event.preventDefault()
+
+        return contextMenuService.showContextMenu({
+          getAnchor: () => ({
+            x: e.event.browserEvent.pageX,
+            y: e.event.browserEvent.pageY
+          }),
+          getActions: () => [
+            MetopesMenu({ editor, t }),
+            // new Separator(),
+          ],
+        })
+      })
+
+      // // Command Palette commands
+      const _bindAction = bindAction.bind(null, editor, t)
+      editor.addAction(_bindAction(actions.acknowledgement))
 
       const completionProvider = bibliographyCompletionProvider.register(monaco)
       editor.onDidDispose(() => completionProvider.dispose())
