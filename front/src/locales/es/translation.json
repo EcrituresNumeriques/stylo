@@ -4,6 +4,10 @@
   "article.by.text": "por",
   "article.contributors.added": "{{ name }} ahora es un colaborador.",
   "article.contributors.removed": "{{ name }} ha sido eliminado de los colaboradores.",
+  "article.copyId": {
+    "button": "Copiar ID al portapapeles",
+    "successToast": "ID copiado al portapapapeles."
+  },
   "article.corpus.title": "Corpus",
   "article.count_one": "{{ count }} artículo",
   "article.count_other": "{{ count }} artículos",
@@ -92,6 +96,10 @@
   "corpus.articlesOrder.toastFailure": "No se puede actualizar el orden de los artículos : {{errorMessage}}",
   "corpus.articlesOrder.toastSuccess": "El orden de los artículos se ha modificado correctamente.",
   "corpus.by.text": "por",
+  "corpus.copyId": {
+    "button": "Copiar ID al portapapeles",
+    "successToast": "ID copiado al portapapapeles."
+  },
   "corpus.create.toastFailure": "Imposible crear el corpus : {{errorMessage}}",
   "corpus.create.toastSuccess": "Nuevo corpus creado con éxito",
   "corpus.createAction.buttonText": "Crear un corpus",
