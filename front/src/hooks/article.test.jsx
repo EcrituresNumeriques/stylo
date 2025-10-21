@@ -1,6 +1,8 @@
-import { fireEvent, screen } from '@testing-library/react'
 import React from 'react'
 import { describe, expect, test } from 'vitest'
+
+import { fireEvent, screen } from '@testing-library/react'
+
 import { renderWithProviders } from '../../tests/setup.js'
 import {
   useArticleActions,
@@ -55,7 +57,7 @@ describe('Article', () => {
     const addTagButton = await screen.findByTestId('add-tag-111')
     fireEvent.click(addTagButton)
     expect(fetch).toHaveBeenLastCalledWith(
-      undefined,
+      'http://localhost:3000/graphql',
       expect.objectContaining({
         body: expect.stringMatching(/"query":"query addTags\(/),
       })
@@ -104,7 +106,7 @@ describe('Article', () => {
     const addTagButton = await screen.findByTestId('remove-tag-222')
     fireEvent.click(addTagButton)
     expect(fetch).toHaveBeenLastCalledWith(
-      undefined,
+      'http://localhost:3000/graphql',
       expect.objectContaining({
         body: expect.stringMatching(/"query":"query removeTags\(/),
       })
@@ -126,7 +128,7 @@ describe('Article', () => {
     const addTagButton = await screen.findByTestId('copy')
     fireEvent.click(addTagButton)
     expect(fetch).toHaveBeenLastCalledWith(
-      undefined,
+      'http://localhost:3000/graphql',
       expect.objectContaining({
         body: expect.stringMatching(/"query":"mutation duplicateArticle\(/),
       })
@@ -148,7 +150,7 @@ describe('Article', () => {
     const addTagButton = await screen.findByTestId('duplicate')
     fireEvent.click(addTagButton)
     expect(fetch).toHaveBeenLastCalledWith(
-      undefined,
+      'http://localhost:3000/graphql',
       expect.objectContaining({
         body: expect.stringMatching(/"query":"mutation duplicateArticle\(/),
       })
@@ -173,7 +175,7 @@ describe('Article', () => {
     const addTagButton = await screen.findByTestId('rename')
     fireEvent.click(addTagButton)
     expect(fetch).toHaveBeenLastCalledWith(
-      undefined,
+      'http://localhost:3000/graphql',
       expect.objectContaining({
         body: expect.stringMatching(/"query":"query renameArticle\(/),
       })
@@ -195,7 +197,7 @@ describe('Article', () => {
     const addTagButton = await screen.findByTestId('remove')
     fireEvent.click(addTagButton)
     expect(fetch).toHaveBeenLastCalledWith(
-      undefined,
+      'http://localhost:3000/graphql',
       expect.objectContaining({
         body: expect.stringMatching(/"query":"query deleteArticle\(/),
       })
@@ -243,7 +245,7 @@ describe('Article versions', () => {
     const createVersion = await screen.findByTestId('create-version')
     fireEvent.click(createVersion)
     expect(fetch).toHaveBeenLastCalledWith(
-      undefined,
+      'http://localhost:3000/graphql',
       expect.objectContaining({
         body: expect.stringMatching(/"query":"mutation createVersion\(/),
       })
@@ -297,7 +299,7 @@ describe('Article versions', () => {
     const updateVersion = await screen.findByTestId('update-version')
     fireEvent.click(updateVersion)
     expect(fetch).toHaveBeenLastCalledWith(
-      undefined,
+      'http://localhost:3000/graphql',
       expect.objectContaining({
         body: expect.stringMatching(/"query":"query renameVersion\(/),
       })

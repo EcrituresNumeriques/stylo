@@ -1,6 +1,8 @@
-import { fireEvent, screen } from '@testing-library/react'
 import React from 'react'
 import { describe, expect, test } from 'vitest'
+
+import { fireEvent, screen } from '@testing-library/react'
+
 import { renderWithProviders } from '../../tests/setup.js'
 import { useWorkspaceMembersActions } from './workspace.js'
 
@@ -52,7 +54,7 @@ describe('Workspace', () => {
     const inviteMemberButton = await screen.findByTestId('invite-member')
     fireEvent.click(inviteMemberButton)
     expect(fetch).toHaveBeenLastCalledWith(
-      undefined,
+      'http://localhost:3000/graphql',
       expect.objectContaining({
         body: expect.stringMatching(/"query":"mutation inviteMember\(/),
       })

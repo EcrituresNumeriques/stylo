@@ -108,7 +108,7 @@ describe('Login', () => {
 
     // expect data to have flown as a request
     expect(fetch).toHaveBeenCalledExactlyOnceWith(
-      'undefined/login/local',
+      '/login/local',
       expect.objectContaining({
         body: JSON.stringify({
           username: 'test@example.com',
