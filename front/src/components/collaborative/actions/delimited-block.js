@@ -1,4 +1,10 @@
-import { KeyCode, KeyMod, Range, Selection } from 'monaco-editor'
+import {
+  KeyCode,
+  KeyMod,
+  Range,
+  Selection,
+} from 'monaco-editor/esm/vs/editor/editor.api'
+
 import { blockAttributes } from './index.js'
 
 /**
@@ -18,15 +24,18 @@ import { blockAttributes } from './index.js'
  * @param {string?} opts.body_post
  * @returns {IActionDescriptor}
  */
-export default function createDelimitedBlockCommand(id, {
-  label = undefined,
-  contextMenuGroupId = '1_infratextual_markup',
-  keybindings = undefined,
-  className = undefined,
-  attrs = {},
-  body_pre = '',
-  body_post = ''
-} = {}) {
+export default function createDelimitedBlockCommand(
+  id,
+  {
+    label = undefined,
+    contextMenuGroupId = '1_infratextual_markup',
+    keybindings = undefined,
+    className = undefined,
+    attrs = {},
+    body_pre = '',
+    body_post = '',
+  } = {}
+) {
   /**
    * @param {ICodeEditor} editor
    */
@@ -44,7 +53,7 @@ export default function createDelimitedBlockCommand(id, {
     const originalText = editor.getModel().getValueInRange(range) || ''
 
     const attributes = blockAttributes({ classNames: [className ?? id], attrs })
-    const bodyParts = [body_pre, originalText, body_post].filter(d => d)
+    const bodyParts = [body_pre, originalText, body_post].filter((d) => d)
 
     const text = `::: {${attributes}}\n${bodyParts.join('\n\n')}\n:::\n\n`
     const LINE_RETURN_COUNT = text.matchAll('\n').length
@@ -62,7 +71,7 @@ export default function createDelimitedBlockCommand(id, {
         {
           range,
           text,
-          forceMoveMarkers: true
+          forceMoveMarkers: true,
         },
       ],
       [
@@ -80,14 +89,16 @@ export default function createDelimitedBlockCommand(id, {
     id: `stylo--infratextual-markup--${id}`,
     label: label ?? `actions.infratextual-block.${id}`,
     contextMenuGroupId,
-    keybindings: keybindings ? [
-      KeyMod.chord(
-        // common to 'infratextual markup'
-        KeyMod.CtrlCmd | KeyCode.KeyI,
-        // specific to this item within the 'infratextual-markup' group
-        keybindings
-      ),
-    ] : null,
+    keybindings: keybindings
+      ? [
+          KeyMod.chord(
+            // common to 'infratextual markup'
+            KeyMod.CtrlCmd | KeyCode.KeyI,
+            // specific to this item within the 'infratextual-markup' group
+            keybindings
+          ),
+        ]
+      : null,
     run,
   }
 }

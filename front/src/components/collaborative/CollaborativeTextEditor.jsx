@@ -3,13 +3,11 @@ import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
-import { Separator } from 'monaco-editor/esm/vs/base/common/actions.js'
-import { StandaloneServices } from 'monaco-editor/esm/vs/editor/standalone/browser/standaloneServices.js';
-import { IContextMenuService } from 'monaco-editor/esm/vs/platform/contextview/browser/contextView.js';
 
-import { actions, bindAction, MetopesMenu } from './actions'
+import { MetopesMenu, actions, bindAction } from './actions'
 import { DiffEditor } from '@monaco-editor/react'
 import throttle from 'lodash.throttle'
+import 'monaco-editor/esm/vs/base/browser/ui/codicons/codicon/codicon.css'
 
 import { useArticleVersion, useEditableArticle } from '../../hooks/article.js'
 import { useBibliographyCompletion } from '../../hooks/bibliography.js'
@@ -25,7 +23,6 @@ import CollaborativeEditorArticleHeader from './CollaborativeEditorArticleHeader
 import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 
 import styles from './CollaborativeTextEditor.module.scss'
-import 'monaco-editor/esm/vs/base/browser/ui/codicons/codicon/codicon.css'
 
 /**
  * @typedef {import('monaco-editor').editor.IStandaloneCodeEditor} IStandaloneCodeEditor
@@ -119,28 +116,30 @@ export default function CollaborativeTextEditor({
   )
 
   const handleCollaborativeEditorDidMount = useCallback(
-    (/** @type {IStandaloneCodeEditor} */ editor, /** @type {monaco} */ monaco) => {
+    (
+      /** @type {IStandaloneCodeEditor} */ editor,
+      /** @type {monaco} */ monaco
+    ) => {
       editorRef.current = editor
 
       editor.onDropIntoEditor(onDropIntoEditor(editor))
-      const contextMenuService = StandaloneServices.get(IContextMenuService);
 
-      editor.onContextMenu((e) => {
+      const contextMenu = editor.getContribution('editor.contrib.contextmenu')
+      contextMenu._onContextMenu = function (e) {
         e.event.preventDefault()
-
-        return contextMenuService.showContextMenu({
+        return contextMenu._contextMenuService.showContextMenu({
           getAnchor: () => ({
             x: e.event.browserEvent.pageX,
-            y: e.event.browserEvent.pageY
+            y: e.event.browserEvent.pageY,
           }),
           getActions: () => [
             MetopesMenu({ editor, t }),
             // new Separator(),
           ],
         })
-      })
+      }
 
-      // // Command Palette commands
+      // Command Palette commands
       const _bindAction = bindAction.bind(null, editor, t)
       editor.addAction(_bindAction(actions.acknowledgement))
 
