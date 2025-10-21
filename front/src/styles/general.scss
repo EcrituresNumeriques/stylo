@@ -1,8 +1,6 @@
 @use './defaults' as *;
 @use './variables' as *;
 
-@import url('@csstools/normalize.css');
-
 @font-face {
   font-family: 'Inter';
   src: url('/fonts/Inter-VariableFont_slnt,wght.ttf') format('truetype');

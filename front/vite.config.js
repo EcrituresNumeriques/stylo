@@ -6,14 +6,18 @@ import pkg from './package.json' with { type: 'json' }
 import graphql from '@rollup/plugin-graphql'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import react from '@vitejs/plugin-react'
+import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { configDefaults, coverageConfigDefaults } from 'vitest/config'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
   const envPrefix = ['SNOWPACK_', 'SENTRY_']
-
-  const env = loadEnv(mode, fileURLToPath(import.meta.resolve('..')), envPrefix)
+  const env = loadEnv(
+    mode,
+    fileURLToPath(join(import.meta.url, '..', '..')),
+    envPrefix
+  )
   const { SNOWPACK_MATOMO_URL, SNOWPACK_MATOMO_SITE_ID } = env
   const isDevelopment = Boolean(
     mode === 'development' || env.SENTRY_ENVIRONMENT === 'dev'
