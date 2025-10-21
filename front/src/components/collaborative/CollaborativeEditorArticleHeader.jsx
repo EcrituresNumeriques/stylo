@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
 
@@ -19,17 +19,12 @@ export default function CollaborativeEditorArticleHeader({
   versionId,
 }) {
   const { t } = useTranslation()
-
   const [searchParams, setSearchParams] = useSearchParams()
-  const [mode, setMode] = useState('edit')
 
-  useEffect(() => {
-    if (mode === 'preview' && searchParams.get('mode') !== 'preview') {
-      setSearchParams({ mode: 'preview' })
-    } else if (searchParams.get('mode') === 'preview') {
-      setSearchParams({})
-    }
-  }, [mode])
+  const searchParamMode = useMemo(
+    () => searchParams.get('mode'),
+    [searchParams]
+  )
 
   return (
     <header className={styles.header}>
@@ -38,9 +33,11 @@ export default function CollaborativeEditorArticleHeader({
       <div className={styles.row}>
         <Toggle
           id="preview-mode"
-          checked={mode === 'preview'}
+          checked={searchParamMode === 'preview'}
           title={t('article.editor.preview')}
-          onChange={(checked) => setMode(checked ? 'preview' : 'edit')}
+          onChange={(checked) =>
+            setSearchParams(checked ? { mode: 'preview' } : {})
+          }
         >
           {t('article.editor.preview')}
         </Toggle>
