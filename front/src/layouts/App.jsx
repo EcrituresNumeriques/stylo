@@ -104,6 +104,8 @@ export default function StyloApp() {
     )
   }, [location.pathname])
 
+  const restoreScroll = useMemo(() => location.hash === '', [location.hash])
+
   return (
     <>
       <SkipLinks />
@@ -112,7 +114,7 @@ export default function StyloApp() {
       <CommunityAlerts topics={alerts.topics} />
 
       <main id="content" aria-label={t('main.title')} tabIndex="-1">
-        <ScrollRestoration />
+        {restoreScroll && <ScrollRestoration />}
         <Outlet />
       </main>
 
