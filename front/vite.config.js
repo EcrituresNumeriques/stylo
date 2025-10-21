@@ -134,16 +134,6 @@ export default defineConfig(async ({ mode }) => {
       },
     },
 
-    resolve: {
-      // but still, some vitest errors as of https://github.com/microsoft/monaco-editor/issues/4712
-      alias: [
-        {
-          find: /^monaco-editor$/,
-          replacement: __dirname + "/node_modules/monaco-editor/esm/vs/editor/editor.api"
-        }
-      ],
-    },
-
     test: {
       exclude: [...configDefaults.exclude, '**/e2e/*'],
       coverage: {
