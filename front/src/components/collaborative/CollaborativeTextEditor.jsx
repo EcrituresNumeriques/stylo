@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
 
-import { MetopesMenu, actions, bindAction } from './actions'
+import { MetopesMenu, actions, registerActions, Separator } from './actions'
 import { DiffEditor } from '@monaco-editor/react'
 import throttle from 'lodash.throttle'
 import 'monaco-editor/esm/vs/base/browser/ui/codicons/codicon/codicon.css'
@@ -125,23 +125,21 @@ export default function CollaborativeTextEditor({
       editor.onDropIntoEditor(onDropIntoEditor(editor))
 
       const contextMenu = editor.getContribution('editor.contrib.contextmenu')
-      contextMenu._onContextMenu = function (e) {
-        e.event.preventDefault()
-        return contextMenu._contextMenuService.showContextMenu({
-          getAnchor: () => ({
-            x: e.event.browserEvent.pageX,
-            y: e.event.browserEvent.pageY,
-          }),
-          getActions: () => [
+      const originalMenuActions = contextMenu._getMenuActions(
+        editor.getModel(),
+        editor.contextMenuId
+      )
+
+      contextMenu._getMenuActions = function _getStyloCustomMenuActions () {
+        return [
+            ...originalMenuActions,
+            new Separator(),
             MetopesMenu({ editor, t }),
-            // new Separator(),
-          ],
-        })
+          ]
       }
 
       // Command Palette commands
-      const _bindAction = bindAction.bind(null, editor, t)
-      editor.addAction(_bindAction(actions.acknowledgement))
+      registerActions(editor, t, actions)
 
       const completionProvider = bibliographyCompletionProvider.register(monaco)
       editor.onDidDispose(() => completionProvider.dispose())
