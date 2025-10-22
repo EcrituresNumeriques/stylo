@@ -17,6 +17,7 @@ import { blockAttributes } from './index.js'
  * @param {object} opts
  * @param {string?} opts.label
  * @param {string?} opts.contextMenuGroupId
+ * @param {string?} opts.delimiters
  * @param {number?} opts.keybindings
  * @param {string?} opts.className
  * @param {{[key: string]: string}?} opts.attrs
@@ -29,6 +30,8 @@ export default function createDelimitedBlockCommand(
   {
     label = undefined,
     contextMenuGroupId = '1_infratextual_markup',
+    delimiters = ':::',
+    separator = '\n\n',
     keybindings = undefined,
     className = undefined,
     attrs = {},
@@ -55,7 +58,7 @@ export default function createDelimitedBlockCommand(
     const attributes = blockAttributes({ classNames: [className ?? id], attrs })
     const bodyParts = [body_pre, originalText, body_post].filter((d) => d)
 
-    const text = `::: {${attributes}}\n${bodyParts.join('\n\n')}\n:::\n\n`
+    const text = `${delimiters}${attributes}\n${bodyParts.join(separator)}\n${delimiters}\n\n`
     const LINE_RETURN_COUNT = text.matchAll('\n').length
 
     const isTextSelected =

@@ -47,6 +47,36 @@ export const actions = {
   sponsor: createDelimitedBlockCommand('sponsor'),
 }
 
+/** @type {object.<string,IActionDescriptor>} */
+export const md = {
+  italic: createInlineBlockCommand('italic', {
+    attrs: null,
+    body_pre: '__',
+    body_post: '__',
+  }),
+  bold: createInlineBlockCommand('bold', {
+    attrs: null,
+    body_pre: '**',
+    body_post: '**',
+  }),
+  footnoteRef: createInlineBlockCommand('footnote-ref', {
+    attrs: null,
+    body_pre: '',
+    body_post: '[^x]',
+  }),
+  footnoteContent: createDelimitedBlockCommand('footnote-content', {
+    attrs: null,
+    body_pre: '[^x]: ',
+    delimiters: '',
+    separator: ' '
+  }),
+  hyperlink: createInlineBlockCommand('hyperlink', {
+    attrs: null,
+    body_pre: '[',
+    body_post: '](https://example.com)',
+  }),
+}
+
 /**
  * @typedef {import('monaco-editor').editor.IActionDescriptor} IActionDescriptor
  * @typedef {import('monaco-editor').editor.ICodeEditor} ICodeEditor
@@ -89,17 +119,24 @@ export function registerActions (editor, t, actions) {
  * @see https://pandoc.org/MANUAL.html#extension-inline_code_attributes
  * @param {object} attributes
  * @param {Array.<string>} attributes.classNames
- * @param {{[key: string]: string}} attributes.attrs
+ * @param {{[key: string]: string}?} attributes.attrs
  * @returns {string}
  */
 export function blockAttributes({ classNames = [], attrs = {} } = {}) {
-  return [
+  if (attrs === null || attrs === undefined) {
+    return ''
+  }
+
+  const parts = [
     classNames.map((c) => `.${c}`),
     Object.entries(attrs).map(([key, value]) => `${key}="${value}"`),
   ]
     .flatMap((d) => d)
     .filter((d) => d)
-    .join(' ')
+
+  if (parts.length) {
+    return `{${parts.join(' ')}}`
+  }
 }
 
 /**
@@ -146,6 +183,22 @@ export function MetopesMenu({ editor, t }) {
         _bindAction(actions.smallcaps),
       ]),
       _bindAction(actions.figure),
+    ]
+  )
+}
+
+export function MarkdownMenu ({ editor, t }) {
+  const _bindAction = bindAction.bind(null, editor, t)
+
+  return new SubmenuAction(
+    'stylo--markdown--root',
+    t('stylo.markdown.rootMenu'),
+    [
+      _bindAction(md.italic),
+      _bindAction(md.bold),
+      _bindAction(md.hyperlink),
+      _bindAction(md.footnoteRef),
+      _bindAction(md.footnoteContent),
     ]
   )
 }

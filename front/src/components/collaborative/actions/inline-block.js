@@ -32,8 +32,8 @@ export default function createInlineBlockCommand(
     keybindings = undefined,
     className = undefined,
     attrs = {},
-    body_pre = '',
-    body_post = '',
+    body_pre = '[',
+    body_post = ']',
   } = {}
 ) {
   /**
@@ -51,11 +51,11 @@ export default function createInlineBlockCommand(
     )
 
     const originalText = editor.getModel().getValueInRange(range) || ''
-
     const attributes = blockAttributes({ classNames: [className ?? id], attrs })
+    console.log({ attributes, originalText })
     const bodyParts = [body_pre, originalText, body_post].filter((d) => d)
 
-    const text = `[${bodyParts.join(' ').trim()}]{${attributes}}`
+    const text = `${bodyParts.join('').trim()}${attributes}`
     const LINE_RETURN_COUNT = text.matchAll('\n').length
 
     const isTextSelected =
@@ -63,7 +63,7 @@ export default function createInlineBlockCommand(
     const newStartLineNumber = isTextSelected
       ? endLineNumber + LINE_RETURN_COUNT
       : startLineNumber + 1
-    const newColumn = 0
+    const newColumn = body_pre.length + 1
 
     editor.executeEdits(
       id,
