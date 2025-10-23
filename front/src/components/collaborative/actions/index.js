@@ -1,11 +1,14 @@
 import createDelimitedBlockCommand from './delimited-block.js'
 import createInlineBlockCommand from './inline-block.js'
 import {
+  Separator,
   SubmenuAction,
   toAction,
-} from 'monaco-editor/esm/vs/base/common/actions.js'
-import { KeyCode, KeyMod } from 'monaco-editor/esm/vs/editor/editor.api.js'
+} from 'monaco-editor/esm/vs/base/common/actions'
+export { Separator } from 'monaco-editor/esm/vs/base/common/actions'
+import { KeyCode, KeyMod } from 'monaco-editor/esm/vs/editor/editor.api'
 
+/** @type {object.<string,IActionDescriptor>} */
 export const actions = {
   acknowledgement: createDelimitedBlockCommand('ack', {
     keybindings: KeyMod.CtrlCmd | KeyCode.KeyA,
@@ -69,7 +72,21 @@ export function bindAction(editor, t, action) {
 }
 
 /**
+ * Registers actions as Command Palette items
  *
+ * @param {ICodeEditor} editor
+ * @param {TFunction} t
+ * @param {object.<string, IActionDescriptor>} actions
+ */
+export function registerActions (editor, t, actions) {
+  for (const action of Object.values(actions)) {
+    editor.addAction(bindAction(editor, t, action))
+  }
+}
+
+/**
+ * Generates pandoc markdown-compliant inline code attributes
+ * @see https://pandoc.org/MANUAL.html#extension-inline_code_attributes
  * @param {object} attributes
  * @param {Array.<string>} attributes.classNames
  * @param {{[key: string]: string}} attributes.attrs
@@ -86,7 +103,7 @@ export function blockAttributes({ classNames = [], attrs = {} } = {}) {
 }
 
 /**
- *
+ * Generates a bunch of commands for Métopes syntax
  * @see https://github.com/microsoft/monaco-editor/issues/1947#issuecomment-3245201455
  * @param {object} options
  * @param {ICodeEditor} options.editor
