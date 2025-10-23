@@ -1,6 +1,4 @@
 import {
-  KeyCode,
-  KeyMod,
   Range,
   Selection,
 } from 'monaco-editor/esm/vs/editor/editor.api'
@@ -28,8 +26,8 @@ export default function createInlineBlockCommand(
   id,
   {
     label = undefined,
-    contextMenuGroupId = '1_infratextual_markup',
-    keybindings = undefined,
+    contextMenuGroupId = '1_modification',
+    keybindings = [],
     className = undefined,
     attrs = {},
     body_pre = '[',
@@ -52,18 +50,17 @@ export default function createInlineBlockCommand(
 
     const originalText = editor.getModel().getValueInRange(range) || ''
     const attributes = blockAttributes({ classNames: [className ?? id], attrs })
-    console.log({ attributes, originalText })
     const bodyParts = [body_pre, originalText, body_post].filter((d) => d)
 
     const text = `${bodyParts.join('').trim()}${attributes}`
-    const LINE_RETURN_COUNT = text.matchAll('\n').length
 
     const isTextSelected =
       startLineNumber !== endLineNumber || startColumn !== endColumn
-    const newStartLineNumber = isTextSelected
-      ? endLineNumber + LINE_RETURN_COUNT
-      : startLineNumber + 1
-    const newColumn = body_pre.length + 1
+
+    const newStartLineNumber = endLineNumber
+    const newColumn = isTextSelected
+      ? endColumn + body_pre.length
+      : startColumn + body_pre.length;
 
     editor.executeEdits(
       id,
@@ -71,6 +68,7 @@ export default function createInlineBlockCommand(
         {
           range,
           text,
+          forceMoveMarkers: true,
         },
       ],
       [
@@ -88,16 +86,10 @@ export default function createInlineBlockCommand(
     id: `stylo--infratextual-markup--${id}`,
     label: label ?? `actions.infratextual-inline.${id}`,
     contextMenuGroupId,
-    keybindings: keybindings
-      ? [
-          KeyMod.chord(
-            // common to 'infratextual markup'
-            KeyMod.CtrlCmd | KeyCode.KeyI,
-            // specific to this item within the 'infratextual-markup' group
-            keybindings
-          ),
-        ]
-      : null,
+    keybindingContext: null,
+    contextMenuOrder: 1,
+    enabled: true,
+    keybindings,
     run,
   }
 }

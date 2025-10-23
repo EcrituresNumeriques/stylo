@@ -29,7 +29,7 @@ export default function createDelimitedBlockCommand(
   id,
   {
     label = undefined,
-    contextMenuGroupId = '1_infratextual_markup',
+    contextMenuGroupId = '1_modification',
     delimiters = ':::',
     separator = '\n\n',
     keybindings = undefined,
@@ -92,16 +92,10 @@ export default function createDelimitedBlockCommand(
     id: `stylo--infratextual-markup--${id}`,
     label: label ?? `actions.infratextual-block.${id}`,
     contextMenuGroupId,
-    keybindings: keybindings
-      ? [
-          KeyMod.chord(
-            // common to 'infratextual markup'
-            KeyMod.CtrlCmd | KeyCode.KeyI,
-            // specific to this item within the 'infratextual-markup' group
-            keybindings
-          ),
-        ]
-      : null,
+    contextMenuOrder: 1,
+    keybindingContext: null,
+    enabled: true,
+    keybindings,
     run,
   }
 }

@@ -7,6 +7,7 @@
       "endnote": "$t(types.block) nota final",
       "epigraph": "$t(types.block) epígrafe",
       "figure": "$t(types.block) figura",
+      "footnote-content": "Nota al pie (texto)",
       "notepre.aut": "$t(types.block) nota preliminar del autor",
       "notepre.pb": "$t(types.block) nota preliminar del editor",
       "notepre.tr": "$t(types.block) nota preliminar del traductor",
@@ -16,11 +17,18 @@
       "sponsor": "$t(types.block) patrocinador"
     },
     "infratextual-inline": {
+      "bold": "Negrita",
+      "footnote-ref": "Nota al pie (referencia)",
+      "hyperlink": "Hipervínculo",
       "inlinequote": "$t(types.inline) cita",
+      "italic": "Cursiva",
       "smallcaps": "$t(types.inline) versalitas"
     }
   },
   "stylo": {
+    "markdown": {
+      "rootMenu": "Lenguaje de marcado ligero"
+    },
     "metopes": {
       "citations": "Citas",
       "entretien": "Entrevistas",

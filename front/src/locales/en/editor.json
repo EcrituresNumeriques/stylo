@@ -7,6 +7,7 @@
       "endnote": "$t(types.block) end note",
       "epigraph": "$t(types.block) epigraph",
       "figure": "$t(types.block) figure",
+      "footnote-content": "Footnote (text)",
       "notepre.aut": "$t(types.block) preliminary note from author",
       "notepre.pb": "$t(types.block) preliminary note from publisher",
       "notepre.tr": "$t(types.block) preliminary note from translator",
@@ -16,11 +17,18 @@
       "sponsor": "$t(types.block) sponsor"
     },
     "infratextual-inline": {
+      "bold": "Bold",
+      "footnote-ref": "Footnote (reference)",
+      "hyperlink": "Hyperlink",
       "inlinequote": "$t(types.inline) citation",
+      "italic": "Italic",
       "smallcaps": "$t(types.inline) small caps"
     }
   },
   "stylo": {
+    "markdown": {
+      "rootMenu": "Lightweight markup language"
+    },
     "metopes": {
       "citations": "Citations",
       "entretien": "Interviews",

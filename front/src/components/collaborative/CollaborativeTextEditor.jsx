@@ -140,7 +140,8 @@ export default function CollaborativeTextEditor({
       }
 
       // Command Palette commands
-      registerActions(editor, t, actions)
+      registerActions(editor, t, actions.metopes)
+      registerActions(editor, t, actions.md, { palette: false })
 
       const completionProvider = bibliographyCompletionProvider.register(monaco)
       editor.onDidDispose(() => completionProvider.dispose())
