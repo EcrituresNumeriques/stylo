@@ -13,6 +13,7 @@ import Version from '../molecules/Version.jsx'
 
 import { useArticleVersions } from '../../hooks/article.js'
 import { useModal } from '../../hooks/modal.js'
+import { useDisplayName } from '../../hooks/user.js'
 import i18n from '../../i18n.js'
 
 import styles from './CollaborativeVersions.module.scss'
@@ -41,6 +42,7 @@ export default function CollaborativeVersions({
   const articleVersions = article?.versions
   const createVersionModal = useModal()
   const { t } = useTranslation()
+  const displayName = useDisplayName()
 
   if (isLoading) {
     return <Loading />
@@ -90,7 +92,7 @@ export default function CollaborativeVersions({
           title={title}
           description={version.message}
           type={version.type}
-          creator={version.owner?.displayName || version.owner?.username}
+          creator={displayName(version.owner)}
           selected={selectedVersion === version._id}
           onClick={() => {
             navigate(`/article/${articleId}/version/${version._id}`)

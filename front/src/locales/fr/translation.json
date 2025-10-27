@@ -300,6 +300,7 @@
   "user.account.firstName": "Prénom",
   "user.account.id": "Identifiant",
   "user.account.institution": "Institution",
+  "user.account.isDeleted.displayName": "[compte supprimé]",
   "user.account.lastName": "Nom",
   "user.account.title": "Profil utilisateur",
   "user.account.updatedAt": "Compte mis à jour",

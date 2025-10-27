@@ -11,6 +11,7 @@ import {
   unsetAuthTokenMutation,
 } from '../components/Credentials.graphql'
 import { createTag, getTags, updateTag } from '../components/Tag.graphql'
+import { useTranslation } from 'react-i18next'
 
 /**
  * @returns {string|null}
@@ -192,4 +193,19 @@ export function useLogout() {
 
     dispatch({ type: 'LOGOUT' })
   }, [])
+}
+
+/**
+ * @returns {(user: User) => string}
+ */
+export function useDisplayName () {
+  const { t } = useTranslation()
+
+  return function displayName (user = {}) {
+    if (user.displayName === '[deleted user]') {
+      return t('user.account.isDeleted.displayName')
+    }
+
+    return user.displayName || user.username
+  }
 }
