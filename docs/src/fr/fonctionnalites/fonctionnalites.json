@@ -54,6 +54,10 @@
           {
             "label": "Mémoires et thèses",
             "url": "/fr/fonctionnalites/memoires"
+          },
+          {
+            "label": "Site Web 'Crieur'",
+            "url": "/fr/fonctionnalites/site-web-crieur"
           }
         ]
       }
