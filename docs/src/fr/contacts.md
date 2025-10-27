@@ -2,7 +2,7 @@
 title: Contact
 ---
 
-Stylo est un projet en développement piloté par l’équipe de [la Chaire de recherche du Canada sur les écritures numériques](https://www.ecrituresnumeriques.ca/fr).
+Stylo est un projet en développement piloté par l’équipe du [laboratoire de recherche du Canada sur les écritures numériques](https://www.ecrituresnumeriques.ca/fr).
 
 Si vous êtes une revue qui souhaiterait employer Stylo dans sa chaîne éditoriale, merci de contacter directement l'équipe à l'adresse courriel <contact@ecrituresnumeriques.ca>. Nous prenons en considération des demandes spécifiques d’adaptation de Stylo à des besoins et pratiques particuliers.
 

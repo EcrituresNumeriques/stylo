@@ -2,7 +2,7 @@
 title: Contacto
 ---
 
-Stylo es un proyecto en desarrollo dirigido por el equipo del [Cátedra de Investigación de Canadá en Escritura Digital](https://www.ecrituresnumeriques.ca/fr).
+Stylo es un proyecto en desarrollo dirigido por el equipo del [Laboratorio sobre escrituras digitales](https://www.ecrituresnumeriques.ca/fr).
 
 Si usted es una revista que desea utilizar Stylo en su cadena editorial, póngase en contacto directamente con el equipo en <contact@ecrituresnumeriques.ca>. Estudiaremos solicitudes específicas para adaptar Stylo a necesidades y prácticas particulares.
 

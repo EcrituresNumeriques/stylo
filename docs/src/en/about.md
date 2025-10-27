@@ -2,7 +2,7 @@
 title: "About _Stylo_"
 ---
 
-Stylo is a semantic text editor for scientific publishing in the humanities and social sciences, led by the [Canada Research Chair in Digital Writing](https://www.ecrituresnumeriques.ca/en) team, and licensed under [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE).
+Stylo is a semantic text editor for scientific publishing in the humanities and social sciences, led by the [Research Laboratory on Digital Textualities](https://www.ecrituresnumeriques.ca/en) team, and licensed under [GPL-3.0](https://github.com/EcrituresNumeriques/stylo/blob/master/LICENSE).
 
 ## About
 

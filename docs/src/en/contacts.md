@@ -2,7 +2,7 @@
 title: Contact
 ---
 
-Stylo is a projet under development managed by the team of the [Canada Research Chair in Digital Textualities](https://www.ecrituresnumeriques.ca/fr).
+Stylo is a projet under development managed by the team of the [Research Laboratory on Digital Textualities](https://www.ecrituresnumeriques.ca/fr).
 
 If you are a journal that would like to use Stylo in your editorial chain, please contact the team directly at <contact@ecrituresnumeriques.ca>. We take into consideration specific requests to adapt Stylo to particular needs and practices.
 

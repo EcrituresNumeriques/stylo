@@ -21,4 +21,4 @@ Si votre compte est bien sur Huma-Num, vous pourrez récupérer un accès à vot
 
 ## J'ai du grec ancien dans mon article et j'aimerais qu'il puisse bien s'afficher dans l'export
 
-Si vous avez du Grec ancien dans votre article et souhaiteriez qu'il s'afficher dans l'export (en HTML, PDF, etc.), dans les métadonnées, activez l'option YAML (en haut à droite) et inscrivez directement ou bien `mainfont : Old Standard`, ou bien `fontfamily : Old Standard`. Cela modifiera toute la typographie de votre article ; prochainement, il sera possible de spécifier cette police seulement pour les bouts de texte concernés, au travers d'une balise précise. 
+Si vous avez du Grec ancien dans votre article et souhaiteriez qu'il s'afficher dans l'export (en HTML, PDF, etc.), dans les métadonnées, activez l'option YAML (en haut à droite) et inscrivez directement ou bien `mainfont : OldStandard`, ou bien `fontfamily : OldStandard`. Cela modifiera toute la typographie de votre article ; prochainement, il sera possible de spécifier cette police seulement pour les bouts de texte concernés, au travers d'une balise précise. 

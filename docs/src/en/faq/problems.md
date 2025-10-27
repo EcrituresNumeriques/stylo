@@ -21,4 +21,4 @@ It's up to you to decide which account to use, depending on whether you want to 
 
 ## I have Ancient Greek in my article and I'd like it to display well in the export
 
-If you have ancient Greek in your article and would like it to be displayed in the export (in HTML, PDF, etc.), in the metadata, activate the YAML option (top right) and directly enter either `mainfont : Old Standard`, or `fontfamily : Old Standard`. This will modify the entire typography of your article; in the near future, it will be possible to specify this font only for the text sections concerned, by means of a specific markup.
+If you have ancient Greek in your article and would like it to be displayed in the export (in HTML, PDF, etc.), in the metadata, activate the YAML option (top right) and directly enter either `mainfont : OldStandard`, or `fontfamily : OldStandard`. This will modify the entire typography of your article; in the near future, it will be possible to specify this font only for the text sections concerned, by means of a specific markup.

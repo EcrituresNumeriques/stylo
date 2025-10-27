@@ -21,5 +21,5 @@ Tú decides qué cuenta utilizar, dependiendo de si quieres que tu cuenta y su c
 
 ## Tengo griego antiguo en mi artículo y me gustaría que se mostrara correctamente en la exportación
 
-Si tiene griego antiguo en su artículo y desea que se muestre correctamente en la exportación (en HTML, PDF, etc.), active en los metadatos la opción YAML (arriba a la derecha) e introduzca `mainfont : Old Standard`, o `fontfamily: Old Standard`. Esto cambiará toda la tipografía de su artículo; en un futuro próximo, será posible especificar esta fuente sólo para los fragmentos de texto en cuestión, utilizando una marca específica.
+Si tiene griego antiguo en su artículo y desea que se muestre correctamente en la exportación (en HTML, PDF, etc.), active en los metadatos la opción YAML (arriba a la derecha) e introduzca `mainfont : OldStandard`, o `fontfamily: OldStandard`. Esto cambiará toda la tipografía de su artículo; en un futuro próximo, será posible especificar esta fuente sólo para los fragmentos de texto en cuestión, utilizando una marca específica.
 
