@@ -20,7 +20,7 @@ export default function BibliographyBibtexValidationStatus({
   }
 
   if (isLoading) {
-    return component(<Loading label={t('validating.label')} />)
+    return component(<Loading label={'validating.label'} />)
   }
 
   if (readOnly) {

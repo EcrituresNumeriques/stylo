@@ -128,7 +128,7 @@ export default function CollaborativeVersions({
         testId="create-version-button"
       >
         {t('versions.createVersion.button')}
-        {syncing && <Loading label="" className={styles.loading} />}
+        {syncing && <Loading className={styles.loading} />}
       </Button>
       {articleVersions.length === 0 && (
         <p className={styles.info}>

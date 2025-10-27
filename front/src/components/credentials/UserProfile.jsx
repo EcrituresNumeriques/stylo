@@ -47,7 +47,7 @@ export default function UserInfos() {
     updateActiveUserDetails(userDetails)
     setIsSaving(false)
   }, [])
-  
+
   return (
     <>
       <Helmet>

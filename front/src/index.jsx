@@ -107,6 +107,7 @@ const router = createBrowserRouter(
         id="app"
         element={<App />}
         loader={AppLoader}
+        HydrateFallback={LoadingPage}
         ErrorBoundary={ErrorBoundary}
       >
         <Route index element={<Home />} />
