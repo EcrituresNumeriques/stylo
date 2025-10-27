@@ -8,21 +8,20 @@ import styles from './Loading.module.scss'
 /**
  * @param props
  * @param {string=} props.className
- * @param {string=} props.label (default: 'Loading…')
+ * @param {string=} props.label translation label
  * @param {string=} props.size (default: '1rem')
  * @param {boolean=} props.hidden (default: false)
  * @returns {React.ReactHTMLElement}
  */
 export default function Loading({
-  label,
+  label = '',
   size = '1rem',
   hidden = false,
   className,
 }) {
   const { t } = useTranslation()
-  if (label === undefined) {
-    label = t('loading.label')
-  }
+  label = t([label, 'loading.label'])
+
   return (
     <div
       className={clsx(styles.loading, className)}

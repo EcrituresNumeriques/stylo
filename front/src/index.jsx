@@ -6,15 +6,14 @@ import * as Sentry from '@sentry/react'
 
 import React, { lazy } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Helmet } from 'react-helmet'
-import { Provider } from 'react-redux'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
+import { Provider as ReduxProvider } from 'react-redux'
 import {
   Route,
   RouterProvider,
   createBrowserRouter,
   createRoutesFromChildren,
   createRoutesFromElements,
-  matchPath,
   matchRoutes,
   useLocation,
   useNavigationType,
@@ -107,6 +106,7 @@ const router = createBrowserRouter(
         id="app"
         element={<App />}
         loader={AppLoader}
+        HydrateFallback={LoadingPage}
         ErrorBoundary={ErrorBoundary}
       >
         <Route index element={<Home />} />
@@ -200,9 +200,11 @@ const router = createBrowserRouter(
 
 root.render(
   <React.StrictMode>
-    <Helmet defaultTitle="Stylo" titleTemplate="%s - Stylo" />
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+    <HelmetProvider>
+      <Helmet defaultTitle="Stylo" titleTemplate="%s - Stylo" />
+      <ReduxProvider store={store}>
+        <RouterProvider router={router} />
+      </ReduxProvider>
+    </HelmetProvider>
   </React.StrictMode>
 )

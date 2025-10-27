@@ -1,6 +1,6 @@
 import { Search } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
