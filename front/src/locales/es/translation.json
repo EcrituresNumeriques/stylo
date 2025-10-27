@@ -282,6 +282,7 @@
   "user.account.firstName": "Nombre",
   "user.account.id": "Identificador",
   "user.account.institution": "Institución",
+  "user.account.isDeleted.displayName": "[usuario eliminado]",
   "user.account.lastName": "Apellido",
   "user.account.title": "Perfil de usuario",
   "user.account.updatedAt": "Cuenta actualizada",

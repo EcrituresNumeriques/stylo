@@ -3,6 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useModal } from '../../hooks/modal.js'
+import { useDisplayName } from '../../hooks/user.js'
 
 import Button from '../Button.jsx'
 import Field from '../Field.jsx'
@@ -40,6 +41,7 @@ import styles from './workspaceItem.module.scss'
  */
 export default function WorkspaceItem({ workspace }) {
   const { t } = useTranslation()
+  const displayName = useDisplayName()
   const workspaceLeaveModal = useModal()
   const workspaceManageMembersModal = useModal()
   const workspaceUpdateFormMetadataModal = useModal()
@@ -90,8 +92,7 @@ export default function WorkspaceItem({ workspace }) {
                     {' '}
                     <span>{t('workspace.createdBy.label')}</span>{' '}
                     <span className={styles.creator}>
-                      {workspace.creator.displayName ||
-                        workspace.creator.username}
+                      {displayName(workspace.creator)}
                     </span>
                   </>
                 )}
