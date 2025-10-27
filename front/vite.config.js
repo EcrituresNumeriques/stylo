@@ -44,7 +44,7 @@ export default defineConfig(async ({ mode }) => {
               'react',
               'react-dom',
               'react-dnd',
-              'react-helmet',
+              'react-helmet-async',
               'react-i18next',
               'react-redux',
               'react-router',

@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import { Check, Loader } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 
 import { useGraphQLClient } from '../../helpers/graphQL'
 import { updateUser } from '../Credentials.graphql'

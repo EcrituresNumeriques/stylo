@@ -1,6 +1,7 @@
 import React, { Children } from 'react'
 import { I18nextProvider } from 'react-i18next'
-import { Provider } from 'react-redux'
+import { Provider as ReduxProvider } from 'react-redux'
+import { HelmetProvider } from 'react-helmet-async'
 import { createRoutesStub } from 'react-router'
 import { afterEach, vi } from 'vitest'
 
@@ -74,12 +75,19 @@ export function renderWithProviders(
     ])
 
     /* eslint-disable-next-line react/no-children-prop */
-    return React.createElement(Provider, {
+    return React.createElement(ReduxProvider, {
       store,
       children: React.createElement(
         I18nextProvider,
         { i18n },
-        React.createElement(Stub, { initialEntries: [route] })
+        React.createElement(
+          HelmetProvider,
+          null,
+          React.createElement(
+            Stub,
+            { initialEntries: [route] }
+          )
+        )
       ),
     })
   }
