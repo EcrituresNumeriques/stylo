@@ -47,7 +47,7 @@ globalThis.alert = console.error
 
 afterEach(() => {
   cleanup()
-  vi.clearAllMocks()
+  vi.restoreAllMocks()
 })
 
 export function renderWithProviders(

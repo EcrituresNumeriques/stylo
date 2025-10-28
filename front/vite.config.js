@@ -147,6 +147,7 @@ export default defineConfig(async ({ mode }) => {
         provider: 'v8',
         reporter: ['text', 'html', 'lcovonly'],
         extension: ['.js', '.jsx'],
+        include: ['./src/**.{js,jsx}'],
         exclude: [
           ...coverageConfigDefaults.exclude,
           '**/build/**',
