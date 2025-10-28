@@ -1,4 +1,4 @@
-const { NotFoundError } = require('graphql')
+const { NotFoundError } = require('../helpers/errors.js')
 const YAML = require('js-yaml')
 const { WSSharedDoc } = require('@y/websocket-server/utils')
 
