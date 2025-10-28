@@ -155,7 +155,7 @@ module.exports = {
             .sort([['updatedAt', -1]])
         }
       }
-      return Corpus.find({ creator: user?._id, workspace: null })
+      return Corpus.findByUser({ user, workspace: null })
         .populate([{ path: 'creator' }])
         .sort([['updatedAt', -1]])
     },

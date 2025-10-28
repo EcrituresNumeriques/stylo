@@ -15,6 +15,7 @@ import { toast } from 'react-toastify'
 
 import { useCorpusActions } from '../../hooks/corpus.js'
 import { useModal } from '../../hooks/modal.js'
+import { useDisplayName } from '../../hooks/user.js'
 
 import Button from '../Button.jsx'
 import Export from '../Export.jsx'
@@ -57,6 +58,7 @@ import styles from './corpusItem.module.scss'
  */
 export default function CorpusItem({ corpus }) {
   const { t } = useTranslation()
+  const displayName = useDisplayName()
 
   const deleteCorpusModal = useModal()
   const exportCorpusModal = useModal()
@@ -111,9 +113,7 @@ export default function CorpusItem({ corpus }) {
           </h2>
           <p className={styles.metadata}>
             <span className={styles.by}>{t('corpus.by.text')}</span>
-            <span className={styles.creator}>
-              {corpus.creator.displayName || corpus.creator.username}
-            </span>
+            <span className={styles.creator}>{displayName(corpus.creator)}</span>
             <TimeAgo date={corpus.updatedAt} className={styles.updatedAt} />
           </p>
         </div>
