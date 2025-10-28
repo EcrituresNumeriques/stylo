@@ -482,6 +482,12 @@ module.exports = {
       await article.save()
       return article
     },
+
+    async workingVersion(article, _, context) {
+      const result = article.workingVersion
+      context.articleId = article._id
+      return result
+    },
   },
 
   WorkingVersion: {
@@ -506,6 +512,10 @@ module.exports = {
       return options?.strip_markdown
         ? reformat(yaml, { replaceBibliography: false })
         : yaml
+    },
+    async metadataFormSchemas(_, __, context) {
+      const workspaces = await Workspace.find({ articles: context.articleId })
+      return workspaces.map((w) => w.formMetadata)
     },
   },
 }
