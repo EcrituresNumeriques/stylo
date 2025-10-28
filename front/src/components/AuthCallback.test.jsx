@@ -80,7 +80,7 @@ describe('AuthCallback', () => {
   test('gets an updated user with merged session data (w/ opener)', async () => {
     window.opener = { postMessage: vi.fn() }
 
-    fetch.mockRestore().mockResolvedValueOnce({
+    fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({
@@ -120,7 +120,7 @@ describe('AuthCallback', () => {
     window.opener = null
     window.close = vi.fn()
 
-    fetch.mockRestore().mockResolvedValueOnce({
+    fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({

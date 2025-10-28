@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react'
-import { Helmet } from 'react-helmet-async'
 import { Trans, useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate, useParams } from 'react-router'
@@ -56,9 +55,7 @@ export default function RegisterWithAuthProvider() {
 
   return (
     <section className={styles.box}>
-      <Helmet>
-        <title>{t('credentials.registerWithAuth.title')}</title>
-      </Helmet>
+      <title>{t('credentials.registerWithAuth.title')}</title>
 
       <form
         onSubmit={handleFormSubmit}

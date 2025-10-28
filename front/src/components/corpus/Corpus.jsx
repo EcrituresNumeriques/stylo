@@ -1,5 +1,4 @@
 import React from 'react'
-import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 
@@ -23,13 +22,11 @@ export default function Corpus() {
 
   return (
     <section className={styles.section}>
-      <Helmet>
-        <title>
-          {t('corpus.page.title', {
-            workspace: workspace.name ?? '$t(workspace.myspace)',
-          })}
-        </title>
-      </Helmet>
+      <title>
+        {t('corpus.page.title', {
+          workspace: workspace.name ?? '$t(workspace.myspace)',
+        })}
+      </title>
 
       <header className={styles.header}>
         <h1>{t('header.corpus.link')}</h1>

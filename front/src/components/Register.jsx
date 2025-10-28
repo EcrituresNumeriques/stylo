@@ -1,5 +1,4 @@
 import React, { useCallback, useRef } from 'react'
-import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
@@ -42,9 +41,7 @@ export default function Register() {
 
   return (
     <section className={styles.box}>
-      <Helmet>
-        <title>{t('credentials.login.registerLink')}</title>
-      </Helmet>
+      <title>{t('credentials.login.registerLink')}</title>
 
       <form
         onSubmit={handleFormSubmit}

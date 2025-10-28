@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Search } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
-import { Helmet } from 'react-helmet-async'
 
 import Field from '../../components/Field.jsx'
 
@@ -64,9 +63,7 @@ export default function Workspaces() {
 
   return (
     <section className={styles.section}>
-      <Helmet>
-        <title>{t('workspace.title')}</title>
-      </Helmet>
+      <title>{t('workspace.title')}</title>
 
       <h1>{t('workspace.title')}</h1>
       <div>

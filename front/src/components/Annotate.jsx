@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router'
-import { Helmet } from 'react-helmet-async'
 
 import Loading from './molecules/Loading.jsx'
 
@@ -157,11 +156,9 @@ export default function Annotate({ strategy: strategyId }) {
 
   return (
     <>
-      <Helmet>
-        <meta name="robots" content="noindex, nofollow" />
-        <title>{strategy.title(data)}</title>
-        {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-      </Helmet>
+      <meta name="robots" content="noindex, nofollow" />
+      <title>{strategy.title(data)}</title>
+      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
 
       <section dangerouslySetInnerHTML={{ __html }} />
     </>

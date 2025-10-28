@@ -8,7 +8,6 @@ import {
 describe('fetchBibliographyFromCollection', () => {
   beforeEach(() => {
     fetch
-      .mockRestore()
       .mockResolvedValueOnce(
         new Response(
           `
@@ -74,7 +73,7 @@ describe('toApiUrl', () => {
   const fakeToken = 'ku1mTEyPCxhU7FgbjUkx1WiP'
 
   beforeEach(async () => {
-    fetch.mockRestore().mockResolvedValueOnce({
+    fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({
@@ -103,7 +102,7 @@ describe('toApiUrl', () => {
   test('ma library, échoue avec un token non-correspondant', async () => {
     const url = 'https://www.zotero.org/mattheyje/library'
 
-    fetch.mockRestore().mockResolvedValueOnce({
+    fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({
