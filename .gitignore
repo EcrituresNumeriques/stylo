@@ -9,3 +9,5 @@ sails/.tmp
 /.run/
 
 coverage/
+infrastructure/env
+infrastructure/venv
