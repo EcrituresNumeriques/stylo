@@ -44,7 +44,6 @@ export default defineConfig(async ({ mode }) => {
               'react',
               'react-dom',
               'react-dnd',
-              'react-helmet-async',
               'react-i18next',
               'react-redux',
               'react-router',
@@ -133,6 +132,10 @@ export default defineConfig(async ({ mode }) => {
         '/events': {
           target: 'http://127.0.0.1:3030',
           prependPath: false,
+          ws: true,
+        },
+        '^/ws': {
+          target: 'http://127.0.0.1:3030',
           ws: true,
         },
       },

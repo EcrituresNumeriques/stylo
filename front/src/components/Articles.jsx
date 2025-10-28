@@ -1,6 +1,5 @@
 import { Search } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
@@ -144,13 +143,11 @@ export default function Articles() {
     <div
       className={styles.section}
     >
-      <Helmet>
-        <title>
-          {t('articles.page.title', {
-            workspace: workspace.name ?? '$t(workspace.myspace)',
-          })}
-        </title>
-      </Helmet>
+      <title>
+        {t('articles.page.title', {
+          workspace: workspace.name ?? '$t(workspace.myspace)',
+        })}
+      </title>
 
       <header className={styles.articlesHeader}>
         <h1 id="articles-list-headline">{t('header.articles.link')}</h1>

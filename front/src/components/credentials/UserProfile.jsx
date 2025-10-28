@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react'
 import { Check, Loader } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
-import { Helmet } from 'react-helmet-async'
 
 import { useGraphQLClient } from '../../helpers/graphQL'
 import { updateUser } from '../Credentials.graphql'
@@ -50,9 +49,7 @@ export default function UserInfos() {
 
   return (
     <>
-      <Helmet>
-        <title>{t('user.account.title')}</title>
-      </Helmet>
+      <title>{t('user.account.title')}</title>
       <section className={styles.section}>
         <h2>{t('user.account.title')}</h2>
 
