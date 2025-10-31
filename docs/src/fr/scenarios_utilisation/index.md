@@ -12,5 +12,7 @@ Voici la liste complète de nos scénarios d'utilisation présentement disponibl
 - Annoter de manière collaborative un article Stylo 
 - Gérer ses références bibliographiques dans Stylo
 - Exporter un article ou corpus d'articles de Stylo
+- Générer un site Web pour ses articles Stylo avec le Crieur
+- Travailler sur un livre augmenté Le Pressoir avec Stylo
 
-Vous ne trouvez pas ce que vous chercher&nbsp;? N'hésitez pas à visiter la FAQ ou à [faire part de votre envie d'un nouveau guide d'utilisation](https://discussions.revue30.org/tags/c/stylo/5/suggestions). 
+Vous ne trouvez pas ce que vous cherchez&nbsp;? N'hésitez pas à visiter la FAQ ou à [faire part de votre envie d'un nouveau guide d'utilisation](https://discussions.revue30.org/tags/c/stylo/5/suggestions). 

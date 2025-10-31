@@ -12,5 +12,7 @@ Here is a complete list of our scenarios currently available&nbsp;:
 - Annotate Stylo articles in a collaborative way
 - Manage bibliographic references in Stylo
 - Export an article or a corpus of articles from Stylo
+- Generate a website for your Stylo articles with Crieur
+- Working on a web book Le Pressoir with Stylo
 
 Can't find what you're looking for&nbsp;? Please visit our FAQ or [ask for a new scenario](https://discussions.revue30.org/tags/c/stylo/5/suggestions).

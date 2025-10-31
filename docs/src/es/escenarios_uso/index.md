@@ -12,5 +12,7 @@ Aquí tienes una lista completa de nuestros escenarios de uso disponibles actual
 - Anotar artículos Stylo en colaboración
 - Gestionar referencias bibliográficas en Stylo
 - Exportar un artículo o un corpus de artículos de Stylo
+- Crear un sitio web para sus artículos Stylo con el Crieur
+- Trabajar en un libro aumentado Le Pressoir con Stylo
 
 ¿No encuentra lo que busca? Por favor consultan las FAQ o [[Informar de la necesidad de un nuevo escenario de uso](https://discussions.revue30.org/tags/c/stylo/5/suggestions). También agradeceremos cualquier sugerencia que pueda tener para ampliar nuestra documentación. 
