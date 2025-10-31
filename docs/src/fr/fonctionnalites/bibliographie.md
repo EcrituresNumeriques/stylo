@@ -63,43 +63,33 @@ Insérer une clé BibTeX dans le corps de texte a deux effets :
 
 ## Utilisation générale
 
-L'intégration de BibTeX dans vos documents Stylo permet de structurer finement et différement vos références bibliographiques, selon le sens qu'elles peuvent avoir dans votre texte et le contexte dans lequel il s'inscrit. Par exemple, est-ce utile d'avoir des personnes citées dans le corps du texte, ou non ? Il existe deux grandes catégories de mises en forme de citations : dans le corps du texte, ou en note de bas de page / de fin de document. 
+L'intégration de BibTeX dans vos documents Stylo, en plus de structurer vos références bibliographiques comme données "sémantiques" pour l'ordinateur, vous permet de mettre en forme vos références bibliographiques selon n'importe quel style et norme institutionnelle, sans s'en préoccuper pendant l'écriture et avant l'export de votre document.   
 
-Voici deux cas de figure pour produire l'appel de citation, selon vos besoins :
+Il existe deux grandes catégories de styles de citations : dans le corps du texte, ou en note de bas de page / de fin de document. 
 
-**Une référence dans le corps du texte, par exemple avec le style et la norme de référence bibliographique "Chicago Manual of Style 17th edition"** 
+Ainsi, selon vos besoins de citations et le contexte institutionnel de votre texte, vous pouvez mentionner vos références bibliographiques de ces manières, dans votre article : 
 
-- `[@shirky_here_2008]` produira : (Shirky 2008)
-- `[@shirky_here_2008, p194]` produira : (Shirky 2008, p194)
-- `@shirky_here_2008` produira : Shirky (2008)
-- `[-@shirky_here_2008]` produira : (2008)
+- `[@shirky_here_2008]` **pour citer**. En Chicago _inline_, par exemple, cela produira (Shirky 2008), tandis qu'en Chicago _footnote_, cela produira une note de bas de page avec toutes les informations bibliographiques).  
+- `[@shirky_here_2008, p194]` **pour citer avec le numéro de page**. En Chicago _inline_, cela produira `(Shirky 2008, p194)` à l'export, tandis qu'en Chicago _footnote_, cela produira une note de bas de pages avec toutes les informations bibliographiques ainsi que le numéro de page. 
+- `@shirky_here_2008` **pour citer avec le nom de l'auteur dans le texte**. En Chicago _inline_, cela produira `Shirky (2008)` à l'export, tandis qu'en Chicago _footnote_, cela citer l'auteur dans le texte avec une note de bas de page contenant l'ensemble de la référence bibliographique. 
+- `[-@shirky_here_2008]` **pour citer une référence déjà mentionnée**. En Chicago _inline_, cela produira `(2008)` à l'export, tandis qu'en Chicago _footnote_, cela produira une note de bas de page avec _Ibid._ dedans. 
 
-- Chicago fait sens si vous souhaitez citer l'auteur, l'année et la page entre parenthèses dans le corps du texte :
-
-|Dans l'éditeur | Dans la prévisualisation|
+Reprenons cas par cas. Dans Stylo, voici ce que donne Chicago _inline_ : 
+|Dans l'éditeur | Dans l'export|
 |:--|:--|
 |`L’espace réel, celui de notre vie matérielle,`<br/>`et le cyberespace (qui n’est certes`<br/>`pas si complètement virtuel) ne devraient`<br/>`pas faire l’objet d’appellations séparées`<br/>`puisqu’ils s’interpénètrent de plus`<br/>`en plus fermement [@shirky_here_2008, p. 194].` | `L’espace réel, celui de notre vie matérielle,`<br/>`et le cyberespace (qui n’est certes`<br/>` pas si complètement virtuel) ne devraient`<br/>`pas faire l’objet d’appellations séparées`<br/>`puisqu’ils s’interpénètrent de plus`<br/>`en plus fermement (Shirky 2008, 194).`|
 
 - Si le nom de l'auteur apparaît déjà et que vous souhaitez simplement ajouter l'année de publication entre parenthèses :
 
-|Dans l'éditeur | Dans la prévisualisation|
+|Dans l'éditeur | Dans l'export|
 |:--|:--|
 |`Clay @shirky_here_2008[p. 194] a suggéré que l’espace réel`<br/>`, celui de notre vie matérielle, et`<br/>`le cyberespace (qui n’est certes pas si complètement`<br/>`virtuel) ne devraient pas faire l’objet`<br/>`d’appellations séparées puisqu’ils s’interpénètrent `<br/>`de plus en plus fermement.` | `Clay Shirky (2008, 194), a suggéré que l’espace réel`<br/>`, celui de notre vie matérielle, et`<br/>`le cyberespace (qui n’est certes pas si complètement`<br/>`virtuel) ne devraient pas faire l’objet`<br/>`d’appellations séparées puisqu’ils s’interpénètrent`<br/>`de plus en plus fermement.`|
 
 - Afin d'éviter la répétition d'un nom, et indiquer seulement l'année, insérez un `-` devant la clé.
 
-|Dans l'éditeur | Dans la prévisualisation|
+|Dans l'éditeur | Dans l'export|
 |:--|:--|
 |`Des artistes conceptuels avaient cherché`<br/>`(apparemment sans grand succès ou`<br/>`sans grande conviction si l’on`<br/>`en croit Lucy Lippard [-@lippard_six_1973 ; -@lippard_get_1984])`<br/>`à contourner les règles du marché de l’art.` | `Des artistes conceptuels avaient cherché`<br/>`(apparemment sans grand succès ou`<br/>`sans grande conviction si l’on en croit Lucy Lippard (1973 ; 1984))`<br/>`à contourner les règles du marché de l’art.`|
-
-**Une référence en note de bas de page, par exemple avec le style et la norme de référence bibliographique "University of Bologna - Liberal Arts College (Università di Bologna - Facoltà di Lettere e Filosofia)"** 
-
-- `[@sauretEcrireCommuns2019]` produira une note de bas de page avec ces information : "Nicolas Sauret, Sylvia Fredriksson, « Écrire les communs », _Sens public_, 2019".
-- `[@sauretEcrireCommuns2019, 200]` produira une note de bas de page avec les mêmes informations, avec "p. 200" à la fin (ou alors "_Ibid._, p. 200.", si la citation a déjà été faite plus haut).
-- `@sauretEcrireCommuns2019` produira : "N. Sauret, S. Fredriksson" dans le corps du texte, renvoyant à une note de bas de page où sera indiqué les mêmes informations bibliographiques que dans le premier cas (ou alors "_Cité._", si déjà cité plus haut).
-- `[-@shirky_here_2008]` produira "_Ibid._", comme dans le premier et deuxième cas si la citation a déjà été citée plus haut (cette option avec le `-` est alors moins utile que pour un système de citations dans le corps du texte).
-
-Un tel style en notes de bas de page ou de fin de document a plus de sens si vous souhaitez moins encombrer d'informations bibliographiques le corps du texte lui-même.
 
 **Attention :** il ne faut pas utiliser de syntaxe Markdown en accompagnement d'une citation. Par exemple, il ne faut surtout pas utiliser un balisage de ce type : `[@shirky_here_2008, [lien vers une page web](https://sens-public.org)]`
 
