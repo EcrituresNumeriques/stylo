@@ -40,12 +40,13 @@ Vous pouvez directement [structurer vos références en BibTeX](http://www.andy-
 ## Intégrer des références dans votre article
 
 L'insertion de références bibliographiques dans le texte en Markdown doit respecter une syntaxe précise, pour être dynamique.
-L'intérêt d'intégrer les références bibliographiques au format BibTeX réside dans la possibilité de générer des bibliographies dynamiques et de gérer plusieurs paramètres pour obtenir des rendus souhaités.
+
+L'intérêt d'intégrer les références bibliographiques au format BibTeX réside dans la possibilité de générer des formats de citation et des bibliographies de manière dynamique à l'export, selon les rendus souhaités.
 
 Dans cette configuration, une syntaxe particulière est nécessaire pour indiquer une référence dans le texte, que l'on nomme une clef de citation, et dont la forme est la suivante : `[@clef-de-citation]`.
 Une clef de citation est encadrée par des crochets `[ ]`, puis est appelée avec le symbole `@`.
 
-Ce sont ces clefs qui ensuite seront transformés lors de l'export selon les normes souhaitées.
+Ce sont ces clefs qui ensuite seront transformés en rendus spécifiques lors de l'export, selon les normes souhaitées.
 
 Il existe plusieurs méthodes pour écrire rapidement ces clefs de citations dans Stylo :
 
@@ -57,20 +58,23 @@ Il existe plusieurs méthodes pour écrire rapidement ces clefs de citations dan
 
 Insérer une clé BibTeX dans le corps de texte a deux effets :
 
-1. La clé est remplacée automatiquement par l'appel de citation au bon format dans le corps de texte, par exemple : (Shirky 2008);
+1. La clé est remplacée automatiquement par l'appel de citation au bon format dans le corps de texte, par exemple : (Shirky 2008) en format Chicago;
 2. La référence bibliographique complète est ajoutée automatiquement en fin de document (prévisualisé ou exporté).
 
 ## Utilisation générale
 
-La syntaxe Markdown permet de structurer finement vos références bibliographiques. En fonction des besoins, voici différents cas de figure pour produire l'appel de citation :
+L'intégration de BibTeX dans vos documents Stylo permet de structurer finement et différement vos références bibliographiques, selon le sens qu'elles peuvent avoir dans votre texte et le contexte dans lequel il s'inscrit. Par exemple, est-ce utile d'avoir des personnes citées dans le corps du texte, ou non ? Il existe deux grandes catégories de mises en forme de citations : dans le corps du texte, ou en note de bas de page / de fin de document. 
+
+Voici deux cas de figure pour produire l'appel de citation, selon vos besoins :
+
+**Une référence dans le corps du texte, par exemple avec le style et la norme de référence bibliographique "Chicago Manual of Style 17th edition"** 
+
 - `[@shirky_here_2008]` produira : (Shirky 2008)
 - `[@shirky_here_2008, p194]` produira : (Shirky 2008, p194)
 - `@shirky_here_2008` produira : Shirky (2008)
 - `[-@shirky_here_2008]` produira : (2008)
 
-Par exemple :
-
-- Si vous souhaitez citer l'auteur, l'année et la page entre parenthèses :
+- Chicago fait sens si vous souhaitez citer l'auteur, l'année et la page entre parenthèses dans le corps du texte :
 
 |Dans l'éditeur | Dans la prévisualisation|
 |:--|:--|
@@ -82,11 +86,20 @@ Par exemple :
 |:--|:--|
 |`Clay @shirky_here_2008[p. 194] a suggéré que l’espace réel`<br/>`, celui de notre vie matérielle, et`<br/>`le cyberespace (qui n’est certes pas si complètement`<br/>`virtuel) ne devraient pas faire l’objet`<br/>`d’appellations séparées puisqu’ils s’interpénètrent `<br/>`de plus en plus fermement.` | `Clay Shirky (2008, 194), a suggéré que l’espace réel`<br/>`, celui de notre vie matérielle, et`<br/>`le cyberespace (qui n’est certes pas si complètement`<br/>`virtuel) ne devraient pas faire l’objet`<br/>`d’appellations séparées puisqu’ils s’interpénètrent`<br/>`de plus en plus fermement.`|
 
-- Afin d'éviter la répétition d'un nom, et indiquer seulement l'année, insérer un `-` devant la clé.
+- Afin d'éviter la répétition d'un nom, et indiquer seulement l'année, insérez un `-` devant la clé.
 
 |Dans l'éditeur | Dans la prévisualisation|
 |:--|:--|
 |`Des artistes conceptuels avaient cherché`<br/>`(apparemment sans grand succès ou`<br/>`sans grande conviction si l’on`<br/>`en croit Lucy Lippard [-@lippard_six_1973 ; -@lippard_get_1984])`<br/>`à contourner les règles du marché de l’art.` | `Des artistes conceptuels avaient cherché`<br/>`(apparemment sans grand succès ou`<br/>`sans grande conviction si l’on en croit Lucy Lippard (1973 ; 1984))`<br/>`à contourner les règles du marché de l’art.`|
+
+**Une référence en note de bas de page, par exemple avec le style et la norme de référence bibliographique "University of Bologna - Liberal Arts College (Università di Bologna - Facoltà di Lettere e Filosofia)"** 
+
+- `[@sauretEcrireCommuns2019]` produira une note de bas de page avec ces information : "Nicolas Sauret, Sylvia Fredriksson, « Écrire les communs », _Sens public_, 2019".
+- `[@sauretEcrireCommuns2019, 200]` produira une note de bas de page avec les mêmes informations, avec "p. 200" à la fin (ou alors "_Ibid._, p. 200.", si la citation a déjà été faite plus haut).
+- `@sauretEcrireCommuns2019` produira : "N. Sauret, S. Fredriksson" dans le corps du texte, renvoyant à une note de bas de page où sera indiqué les mêmes informations bibliographiques que dans le premier cas (ou alors "_Cité._", si déjà cité plus haut).
+- `[-@shirky_here_2008]` produira "_Ibid._", comme dans le premier et deuxième cas si la citation a déjà été citée plus haut (cette option avec le `-` est alors moins utile que pour un système de citations dans le corps du texte).
+
+Un tel style en notes de bas de page ou de fin de document a plus de sens si vous souhaitez moins encombrer d'informations bibliographiques le corps du texte lui-même.
 
 **Attention :** il ne faut pas utiliser de syntaxe Markdown en accompagnement d'une citation. Par exemple, il ne faut surtout pas utiliser un balisage de ce type : `[@shirky_here_2008, [lien vers une page web](https://sens-public.org)]`
 
