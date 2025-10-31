@@ -30,7 +30,15 @@
           {
             "label": "Export an article or a corpus of articles from Stylo",
             "url": "/en/scenarios/export-article-corpus"
-          }
+          },
+          {
+            "label": "Generate a website for your Stylo articles with Crieur", 
+            "url": "/en/website-Crieur"
+          },
+          {
+            "label": "Working on a web book Le Pressoir with Stylo", 
+            "url": "/en/book-Pressoir"
+          } 
         ]
       }
     ]

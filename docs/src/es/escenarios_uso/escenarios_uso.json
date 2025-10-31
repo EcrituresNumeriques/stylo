@@ -30,6 +30,14 @@
           {
             "label": "Exportar un artículo o un corpus de artículos de Stylo",
             "url": "/es/escenarios_uso/exportar-articulo-corpus"
+          },
+          {
+            "label": "Crear un sitio web para sus artículos Stylo con el Crieur", 
+            "url": "/es/sitio-Crieur"
+          },
+          {
+            "label": "Trabajar en un libro aumentado Le Pressoir con Stylo", 
+            "url": "/es/libro-Pressoir"
           }
         ]
       }
