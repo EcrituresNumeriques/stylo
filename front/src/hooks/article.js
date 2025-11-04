@@ -5,6 +5,8 @@ import { toYaml } from '../components/Write/metadata/yaml.js'
 import { toEntries } from '../helpers/bibtex.js'
 import { executeQuery } from '../helpers/graphQL.js'
 import { clean } from '../schemas/schemas.js'
+import { mutate as globalMutate } from 'swr'
+
 import useFetchData, {
   useConditionalFetchData,
   useMutateData,
@@ -164,6 +166,19 @@ export function useArticleMetadata({ articleId, versionId }) {
     if (versionId) {
       return
     }
+
+    async function mutateFn (data) {
+      return {
+        article: {
+          ...data.article,
+          workingVersion: {
+            ...data.article.workingVersion,
+            metadataFormType: metadataFormType,
+          },
+        },
+      }
+    }
+
     await executeQuery({
       sessionToken,
       query: updateWorkingVersion,
@@ -174,20 +189,19 @@ export function useArticleMetadata({ articleId, versionId }) {
       },
       type: 'mutate',
     })
-    await mutate(
-      async (data) => {
-        return {
-          article: {
-            ...data.article,
-            workingVersion: {
-              ...data.article.workingVersion,
-              metadataFormType: metadataFormType,
-            },
-          },
-        }
+
+    // TODO use a common query for all mutations
+    await mutate(mutateFn, { revalidate: false })
+    await globalMutate({
+      query: getEditableArticle,
+      variables: {
+        article: articleId,
+        hasVersion,
+        version: versionId ?? '',
       },
-      { revalidate: false }
-    )
+    },
+    mutateFn,
+    { revalidate: false })
   }
 
   const updateMetadata = async (metadata) => {
