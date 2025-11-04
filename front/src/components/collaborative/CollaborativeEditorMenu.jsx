@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { ArrowLeft, ChevronRight } from 'lucide-react'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useRouteLoaderData } from 'react-router'
+import { Link, useRouteLoaderData } from 'react-router'
 
 import { trackEvent } from '../../helpers/analytics.js'
 import useFetchData from '../../hooks/graphql.js'
@@ -144,15 +144,16 @@ export default function CollaborativeEditorMenu({
             </button>
           </li>
           <li role="menuitem">
-            <a
-              href={`/article/${articleId}/annotate`}
+            <Link
+              to="annotate"
+              relative={true}
               title={t('article.annotate.button')}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.external}
             >
               {t('annotate.title')}
-            </a>
+            </Link>
           </li>
         </ul>
       )}
