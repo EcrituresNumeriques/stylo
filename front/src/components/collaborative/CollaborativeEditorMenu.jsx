@@ -22,6 +22,7 @@ export default function CollaborativeEditorMenu({
   versionId,
 }) {
   const { user } = useRouteLoaderData('app')
+  const { article } = useRouteLoaderData('article')
   const { t } = useTranslation()
   const { value: opened, toggleValue: setOpened } = usePreferenceItem(
     'expandSidebarRight',
@@ -171,8 +172,8 @@ export default function CollaborativeEditorMenu({
             </h2>
             <Export
               articleId={articleId}
-              name={data?.article?.title}
-              bib={data?.article?.workingVersion?.bibPreview}
+              name={article?.title}
+              bib={article?.workingVersion?.bibPreview}
             />
           </>
         )}
