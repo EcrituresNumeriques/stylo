@@ -1,6 +1,8 @@
-import { print } from 'graphql/language/printer'
 import { useSelector } from 'react-redux'
 import useSWR, { useSWRConfig } from 'swr'
+
+import { print } from 'graphql/language/printer'
+
 import { executeQuery } from '../helpers/graphQL.js'
 
 /**
@@ -77,14 +79,18 @@ function resolveQuery(queryOrAST) {
  * @param {object} config config
  * @param {string|ASTNode} config.query GraphQL query
  * @param {{[key : string]: any}|undefined} config.variables query arguments
- * @returns {{mutate: (function(function(any): Promise, any?): Promise<any>)}}
+ * @returns {{mutate: (function(function(): Promise?, any?): Promise<any>)}}
  */
 export function useMutateData({ query, variables }) {
   const { mutate } = useSWRConfig()
   const key = useSWRKey({ query, variables })
   return {
-    mutate: async (mutationCallback, options) =>
-      await mutate(key, mutationCallback, options),
+    mutate: async (mutationCallback, options) => {
+      if (typeof mutationCallback === 'function') {
+        return await mutate(key, mutationCallback, options)
+      }
+      return await mutate(key)
+    },
   }
 }
 

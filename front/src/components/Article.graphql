@@ -139,10 +139,6 @@ query removeTags($articleId: ID!, $tags: [ID]!) {
 query getArticleInfo($articleId: ID!) {
   article(article: $articleId) {
     title
-
-    workingVersion {
-      bibPreview
-    }
   }
 }
 
@@ -164,7 +160,11 @@ query updateWorkingVersion($articleId: ID!, $content: WorkingVersionInput!) {
   }
 }
 
-query getArticleMetadata($articleId: ID!, $versionId: ID!, $hasVersion: Boolean!) {
+query getArticleMetadata(
+  $articleId: ID!
+  $versionId: ID!
+  $hasVersion: Boolean!
+) {
   article(article: $articleId) {
     _id
 
@@ -172,7 +172,7 @@ query getArticleMetadata($articleId: ID!, $versionId: ID!, $hasVersion: Boolean!
       metadata
       metadataFormType
     }
-    
+
     workspaces {
       formMetadata {
         data
@@ -210,7 +210,6 @@ query getArticlePreview($id: ID!, $version: ID!, $hasVersion: Boolean!) {
     ...articleVersionFields
   }
 }
-
 
 query getEditableArticle($article: ID!, $hasVersion: Boolean!, $version: ID!) {
   article(article: $article) {
