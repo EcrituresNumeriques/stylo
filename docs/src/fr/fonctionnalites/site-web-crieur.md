@@ -22,8 +22,8 @@ Il vous faudra au préalable télécharger UV, comme gestionnaire de paquets en 
 
 ## Personnalisation
 
-Pour personaliser votre site, vous pouvez éditer les styles public/statics/custom.css. 
+Pour personaliser votre site, vous pouvez éditer les styles dans public/statics/custom.css et en modifiant les templates dans public/templates/base.html. Vous trouverez un template pour cela sur [ce dépot de la revue Troubles](https://gitlab.huma-num.fr/ecrinum/crieur-troubles) (pour le consulter, vous devrez avoir un accès au Gitlab d'HumaNum avec votre compte). 
 
-Il est également possible possible d’éditer les templates dans public/templates/base.html. Pour la modification plus avancée des templates, il faut aller voir [les templates du Crieur](https://gitlab.huma-num.fr/ecrinum/crieur/-/tree/main/crieur/templates) et en copier-coller le contenu, tout en conservant le nom original, puis relancer le site avec la commande `uv run --with crieur crieur build`.
+Pour une modification plus avancée des templates, il faut aller voir [les templates du Crieur](https://gitlab.huma-num.fr/ecrinum/crieur/-/tree/main/crieur/templates) et en copier-coller le contenu, tout en conservant le nom original, puis relancer le site avec la commande `uv run --with crieur crieur build`.
 
 

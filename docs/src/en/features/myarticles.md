@@ -91,6 +91,10 @@ From your personal space or workspaces, you can duplicate an article by clicking
 
 A duplicate article will then be generated and will appear at the top of the list on your Stylo articles page. This article will automatically be entitled: [Copy]*Article title* . This duplicate is created from the current (most recent) version of the article and has no version history.
 
+## Copy an article ID
+
+To copy the ID of an article, simply click on the clipboard icon ![Copy ID](/uploads/images/refonte_doc/copier-id.png), in your personal space or the workspace in which the article is located.
+
 ## Delete an article 
 
 To delete an article, simply click on the trash can icon [Delete](/uploads/images/refonte_doc/Supprimer.png).

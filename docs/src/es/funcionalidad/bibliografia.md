@@ -39,6 +39,7 @@ Puede directamente [estructurar sus referencias en BibTeX](http://www.andy-rober
 ## Incluir referencias en su artículo
 
 La inserción de referencias bibliográficas en un texto Markdown debe seguir una sintaxis precisa si se desea que sea dinámica.
+
 La ventaja de integrar referencias bibliográficas en formato BibTeX reside en la posibilidad de generar bibliografías dinámicas y gestionar diversos parámetros para obtener los resultados deseados.
 
 En esta configuración, se requiere una sintaxis especial para indicar una referencia en el texto, conocida como clave de citación, que adopta la siguiente forma: `[@clave-de-citación]`.
@@ -61,17 +62,20 @@ Insertar una clave BibTeX en el cuerpo del texto tiene dos efectos:
 
 ## Uso general
 
-La sintaxis Markdown puede utilizarse para estructurar tus referencias bibliográficas con todo detalle. En función de tus necesidades, aquí tienes las distintas formas de producir la llamada a la cita :
-- `[@shirky_aquí_2008]` producirá: (Shirky 2008)
-- @[@shirky_here_2008, p194]` producirá: (Shirky 2008, p194)
-- `@shirky_here_2008` producirá: Shirky (2008)
-- `[-@shirky_aquí_2008]` producirá: (2008)
+La integración de BibTeX en sus documentos Stylo, además de estructurar sus referencias bibliográficas como datos «semánticos» para el ordenador, le permite dar formato a sus referencias bibliográficas según cualquier estilo y norma institucional, sin preocuparse por ello durante la redacción y antes de exportar su documento.   
 
-Por ejemplo:
+Existen dos grandes categorías de estilos de citas: en el cuerpo del texto o en notas al pie de página/al final del documento. 
 
-- Si desea citar al autor, el año y la página entre paréntesis :
+Así, según sus necesidades de citas y el contexto institucional de su texto, puede mencionar sus referencias bibliográficas de estas maneras en su artículo: 
 
-|En el editor | En la vista previa|
+- `[@shirky_here_2008]` **para citar**. En Chicago _inline_, por ejemplo, esto producirá (Shirky 2008), mientras que en Chicago _footnote_, esto producirá una nota al pie con toda la información bibliográfica).  
+- `[@shirky_here_2008, p194]` **para citar con el número de página**. En Chicago _inline_, esto producirá `(Shirky 2008, p194)` en la exportación, mientras que en Chicago _footnote_, esto producirá una nota al pie de página con toda la información bibliográfica, así como el número de página. 
+- `@shirky_here_2008` **para citar con el nombre del autor en el texto**. En Chicago _inline_, esto producirá `Shirky (2008)` en la exportación, mientras que en Chicago _footnote_, esto citará al autor en el texto con una nota al pie de página que contiene toda la referencia bibliográfica. 
+- `[-@shirky_here_2008]` **para citar una referencia ya mencionada**. En Chicago _inline_, esto producirá `(2008)` en la exportación, mientras que en Chicago _footnote_, esto producirá una nota al pie con _Ibid._ en su interior.
+
+Repasemos caso por caso. En Stylo, esto es lo que da Chicago _inline_: 
+
+|En el editor | En las exportaciones|
 |:--|:--|
 |`El espacio real, el espacio de nuestra vida material, y el ciberespacio (que ciertamente no es completamente virtual) no deben considerarse por separado, ya que cada vez están más entrelazados[@shirky_here_2008, p. 194].` | `El espacio real, el espacio de nuestra vida material, y el ciberespacio (que ciertamente no es completamente virtual) no deben considerarse por separado, ya que cada vez están más entrelazados(Shirky 2008, 194).`|
 

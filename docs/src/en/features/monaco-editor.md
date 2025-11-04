@@ -13,9 +13,10 @@ By using Monaco in Stylo, several writing functions have been incorporated:
  
 In addition, right-click in the text editor to access other editing options:
 
-- Changes all occurrences (Ctrl+F2): allows you to select and modify all occurrences of the same selection;
-- Cut (Ctrl+X);
-- Palette command (F1): gives access to all actions (and keyboard shortcuts) available with Monaco.
+- Copy (CTRL/Cmd+C);
+- Palette command (F1): gives access to all actions (and keyboard shortcuts) available with Monaco;
+- Metopes: blocks for infratextual markup in compliance with the Metopes chain; 
+- Lightweight markup language: transforms selected text into bold, italic or hyperlinked text using Markdown light syntax, as well as creating footnotes. Indicates corresponding keyboard shortcuts. 
 
 To access the Command Palette directly via a keyboard shortcut, you can use the F1 key (Alt + F1 on Internet Explorer, and fn + F1 on the Mac keyboard).
 

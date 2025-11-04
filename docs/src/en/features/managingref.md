@@ -39,6 +39,7 @@ You can directly [structure your references in BibTeX](http://www.andy-roberts.n
 ## Include references in your article
 
 Inserting bibliographical references into Markdown text requires precise syntax in order to be dynamic.
+
 The advantage of integrating bibliographical references in BibTeX format lies in the possibility of generating dynamic bibliographies and managing several parameters to obtain the wanted renderings. 
 
 In this configuration, a special syntax is required to indicate a reference in the text, known as a citation key, in the following form: `[@citation-key]`.
@@ -61,29 +62,32 @@ Inserting a BibTeX key in the body text has two effects:
 
 ## General use
 
-Markdown syntax can be used to structure your bibliographic references in the finest detail. Depending on your needs, here are some examples of how to produce a citation call:
-- `[@shirky_here_2008]` will produce: (Shirky 2008)
-- `[@shirky_here_2008, p194]` will produce: (Shirky 2008, p194)
-- `@shirky_here_2008` will produce: Shirky (2008)
-- `[-@shirky_here_2008]` will produce: (2008)
+The integration of BibTeX into your Stylo documents not only structures your bibliographic references as “semantic” data for the computer, but also allows you to format your bibliographic references according to any style and institutional standard, without having to worry about this while writing or before exporting your document.   
 
-For example:
+There are two main categories of citation styles: in the body of the text, or as a footnote/endnote. 
 
-- If you wish to cite the author, the year and page in parentheses :
+So, depending on your citation needs and the institutional context of your text, you can mention your bibliographical references in these ways, in your article: 
+
+- `[@shirky_here_2008]` **to quote**. In Chicago _inline_, for example, this will produce (Shirky 2008), while in Chicago _footnote_, it will produce a footnote with full bibliographical information).  
+- `[@shirky_here_2008, p194]**to cite with page number**. In Chicago _inline_, this will produce `(Shirky 2008, p194)` on export, while in Chicago _footnote_, it will produce a footnote with all bibliographic information as well as the page number. 
+- `@shirky_here_2008` **to cite with author's name in text**. In Chicago _inline_, this will produce `Shirky (2008)` for export, while in Chicago _footnote_, this will quote the author in the text with a footnote containing the full bibliographic reference. 
+- `[-@shirky_here_2008]` **to cite a reference already mentioned**. In Chicago _inline_, this will produce `(2008)` on export, while in Chicago _footnote_, this will produce a footnote with _Ibid._ in it. 
+
+Let's go case by case. In Stylo, here's what Chicago _inline_ produces: 
 
 |In the editor | In the preview|
 |:--|:--|
 |`Real space, the space of our material life, and cyberspace (which is certainly not completely virtual) should not be considered separately, as they are increasingly intertwined.[@shirky_here_2008, p. 194].` | `Real space, the space of our material life, and cyberspace (which is certainly not completely virtual) should not be considered separately, as they are increasingly intertwined.(Shirky 2008, 194).`|
 
-- If the author's name already appears and you only want to add the year of publication in parentheses :
+- If the author's name already appears and you only want to add the year of publication in parentheses:
 
-|In the editor | In the preview|
+|In the editor | In the export|
 |:--|:--|
 |`Clay @shirky_here_2008[p. 194] has suggested that real space, the space of our material lives, and cyberspace (which is certainly not entirely virtual) should not be referred to separately, as they are increasingly intertwined.` | `Clay Shirky (2008, 194)has suggested that real space, the space of our material lives, and cyberspace (which is certainly not entirely virtual) should not be referred to separately, as they are increasingly intertwined.`|
 
-- To avoid repeating a name and to indicate only the year, insert a `-` in front of the key.
+- To avoid repeating a name and to indicate only the year, insert a `-` in front of the key:
 
-|In the editor | In the preview|
+|In the editor | In the export|
 |:--|:--|
 |`Conceptual artists had tried (apparently without much success or conviction, if we are to believe Lucy Lippard [-@lippard_six_1973 ; -@lippard_get_1984])`<br/>`to circumvent the rules of the art market.` | `Conceptual artists had tried (apparently without much success or conviction, if we are to believe Lucy Lippard (1973 ; 1984))`<br/>`to circumvent the rules of the art market.`|
 

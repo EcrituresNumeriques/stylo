@@ -54,6 +54,10 @@
           {
             "label": "Tesis y disertaciones",
             "url": "/es/funcionalidad/tesis"
+          },
+          {
+            "label": "Generar un sitio web para tus artículos",
+            "url": "/es/funcionalidad/sitio-Crieur"
           }
         ]
       }

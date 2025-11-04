@@ -33,11 +33,11 @@
           },
           {
             "label": "Générer un site Web pour ses articles Stylo avec le Crieur",
-            "url": "/fr/site-Crieur"
+            "url": "/fr/scenarios_utilisation/site-Crieur"
           },
           {
             "label": "Travailler sur un livre augmenté Le Pressoir avec Stylo", 
-            "url": "/fr/livre-Pressoir"
+            "url": "/fr/scenarios_utilisation/livre-Pressoir"
           }
         ]
       }

@@ -33,11 +33,11 @@
           },
           {
             "label": "Generate a website for your Stylo articles with Crieur", 
-            "url": "/en/website-Crieur"
+            "url": "/en/scenarios/website-Crieur"
           },
           {
             "label": "Working on a web book Le Pressoir with Stylo", 
-            "url": "/en/book-Pressoir"
+            "url": "/en/scenarios/book-Pressoir"
           } 
         ]
       }

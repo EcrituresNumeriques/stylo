@@ -61,6 +61,14 @@ Une fenêtre pop-up contenant un formulaire va s'ouvrir et permettre de modifier
 
 ![Formulaire d'édition des informations du corpus](/uploads/images/refonte_doc/ModifCorpus.png)
 
+## Copier un identifiant de corpus
+
+Il peut être utile de copier l'identifiant d'un corpus pour l'utiliser avec d'autres outils tels que [Le Pressoir](https://pressoir.org/) et [Le Crieur](https://gitlab.huma-num.fr/ecrinum/crieur), qui peuvent prendre en entrée des corpus Stylo pour générer des sites web statiques à partir de ceux-ci.
+
+Vous pouvez copier l'identifiant dans le presse-papiers en cliquant sur l'icône du presse-papiers. 
+
+![Copier l'identifiant du corpus](/uploads/images/refonte_doc/copier-id.png)
+
 ## Exporter un corpus
 
 L'export d'un corpus se réalise de la même manière que l'export d'un article.

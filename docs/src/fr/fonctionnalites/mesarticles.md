@@ -90,6 +90,10 @@ Depuis votre espace personnel ou vos espaces de travail, vous pouvez dupliquer u
 
 Un doublon de l’article sera alors généré et apparaîtra en haut de la liste sur la page de vos articles Stylo. Cet article sera intitulé automatiquement : [Copy]*Titre de l’article* . Ce doublon est créé à partir de la version actuelle (la plus récente) de l’article et ne comporte pas d’historique de versions.
 
+## Copier l'identifiant d'un article
+
+Pour copier l'identifiant d'un article, il vous suffit de cliquer sur l'icône en forme de presse-papiers ![Copier l'ID](/uploads/images/refonte_doc/copier-id.png), dans votre espace personnel ou l'espace de travail dans lequel se situe l'article.
+
 ## Supprimer un article 
 
 Pour supprimer un article, il vous suffit de cliquer sur l'icône en forme de poubelle ![Supprimer](/uploads/images/refonte_doc/Supprimer.png), dans votre espace personnel.

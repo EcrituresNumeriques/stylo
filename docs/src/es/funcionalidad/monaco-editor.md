@@ -13,9 +13,10 @@ Al utilizar Monaco en Stylo, se han incorporado varias funciones de escritura:
  
 Además, haciendo clic con el botón derecho del ratón en el editor de texto se accede a otras opciones de edición:
 
-- Cambiar todas las ocurrencias (Ctrl+F2): le permite seleccionar y cambiar todas las ocurrencias de la misma selección;
-- Cortar (Ctrl+X);
-- Comando de la paleta (F1): da acceso a todas las acciones (y sus atajos de teclado) disponibles con Mónaco.
+- Copia (CTRL/Cmd+C);
+- Comando de la paleta (F1): da acceso a todas las acciones (y sus atajos de teclado) disponibles con Mónaco;
+- Metopes: bloques para el marcado infratextual de acuerdo con la cadena Metopes;
+- Lenguaje de marcado ligero: permite transformar el texto seleccionado en negrita, cursiva o hipervínculo según la sintaxis ligera Markdown, así como crear una nota al pie de página. Indica los atajos de teclado correspondientes. 
 
 Para acceder a la Paleta de comandos directamente mediante un atajo de teclado, puede usar la tecla F1 (Alt + F1 en Internet Explorer, y fn + F1 en el teclado Mac).
 

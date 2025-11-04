@@ -13,9 +13,10 @@ En utilisant Monaco dans Stylo, plusieurs fonctionnalité d'écriture ont été 
  
 De plus, en faisant un clic droit dans l’éditeur de texte, vous aurez accès à d'autres options d'édition :
 
-- Changes all occurrences (Ctrl+F2) : permet de sélectionner et modifier toutes les occurrences d’une même sélection ;
-- Cut (Ctrl+X) ;
-- Commande Palette (F1) : donne accès à l’ensemble des actions (et leurs raccourcis claviers) disponibles avec Monaco.
+- Copy (CTRL/Cmd+C) ;
+- Commande Palette (F1) : donne accès à l’ensemble des actions (et leurs raccourcis claviers) disponibles avec Monaco ;
+- Métopes : blocs pour le balisage infratextuel en conformité avec la chaîne Métopes ; 
+- Balisage léger : permet de transformer le texte sélectionné le gras, italique, hyperlien selon la syntaxe légère Markdown, ainsi que de créer une note de bas de page. Indique les raccourcis claviers qui leurs correspondent.  
 
 Pour avoir accès à la Palette de commande directement au travers d’un raccourci clavier, vous pouvez utiliser la touche F1 (simultanément Alt + F1 sur Internet Explorer, et fn + F1 sur clavier Mac).
 

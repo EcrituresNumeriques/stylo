@@ -89,6 +89,10 @@ Desde su espacio personal o sus espacios de trabajo, puede duplicar un artículo
 
 Se generará entonces un artículo duplicado que aparecerá en la parte superior de la lista de su página de artículos Stylo. Este artículo se titulará automáticamente: [Copia]*Título del artículo* . Este duplicado se crea a partir de la versión actual (más reciente) del artículo y no tiene historial de versiones.
 
+## Copiar el identificador de un artículo
+
+Para copiar el identificador de un artículo, solo tiene que hacer clic en el icono con forma de portapapeles. [Copiar el ID](/uploads/images/refonte_doc/copier-id.png), en su espacio personal o en el espacio de trabajo en el que se encuentra el artículo.
+
 ## Borrar un artículo 
 
 Para suprimir un artículo, basta con hacer clic en el icono de la papelera [Suprimir](/uploads/images/refonte_doc/Supprimer.png).
