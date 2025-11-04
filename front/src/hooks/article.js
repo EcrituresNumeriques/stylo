@@ -159,11 +159,20 @@ export function useArticleMetadata({ articleId, versionId }) {
       revalidateOnReconnect: false,
     }
   )
+  const { mutate: mutateEditableArticle } = useMutateData({
+    query: getEditableArticle,
+    variables: {
+      article: articleId,
+      hasVersion,
+      version: versionId ?? '',
+    },
+  })
 
   const updateMetadataFormType = async (metadataFormType) => {
     if (versionId) {
       return
     }
+
     await executeQuery({
       sessionToken,
       query: updateWorkingVersion,
@@ -174,6 +183,7 @@ export function useArticleMetadata({ articleId, versionId }) {
       },
       type: 'mutate',
     })
+    // TODO use a common query for all mutations
     await mutate(
       async (data) => {
         return {
@@ -218,6 +228,7 @@ export function useArticleMetadata({ articleId, versionId }) {
       },
       { revalidate: false }
     )
+    await mutateEditableArticle()
   }
 
   const metadata = hasVersion

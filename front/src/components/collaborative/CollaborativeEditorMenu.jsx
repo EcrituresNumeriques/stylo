@@ -5,18 +5,14 @@ import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router'
 
 import { trackEvent } from '../../helpers/analytics.js'
-import useFetchData from '../../hooks/graphql.js'
 import { usePreferenceItem } from '../../hooks/user.js'
 
 import Export from '../Export.jsx'
 import Sidebar from '../Sidebar.jsx'
 import ArticleMetadata from '../Write/ArticleMetadata.jsx'
 import ArticleBibliography from '../bibliography/ArticleBibliography.jsx'
-import Loading from '../molecules/Loading.jsx'
 import ArticleTableOfContents from './ArticleTableOfContents.jsx'
 import CollaborativeVersions from './CollaborativeVersions.jsx'
-
-import { getArticleInfo } from '../Article.graphql'
 
 import styles from './CollaborativeEditorMenu.module.scss'
 
@@ -34,15 +30,6 @@ export default function CollaborativeEditorMenu({
   const { value: activeMenu, setValue: setActiveMenu } = usePreferenceItem(
     'activePanel',
     'article'
-  )
-
-  const { data, isLoading } = useFetchData(
-    { query: getArticleInfo, variables: { articleId } },
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
   )
 
   const handleNavigateBack = useCallback(() => {
@@ -63,10 +50,6 @@ export default function CollaborativeEditorMenu({
     },
     [setActiveMenu]
   )
-
-  if (isLoading) {
-    return <Loading />
-  }
 
   return (
     <Sidebar

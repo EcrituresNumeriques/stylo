@@ -144,6 +144,7 @@ const router = createBrowserRouter(
         <Route
           path="article/:id"
           loader={ArticleLoader}
+          id="article"
           element={<RequireAuth />}
         >
           <Route index element={<CollaborativeEditor />} />
