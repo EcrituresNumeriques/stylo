@@ -108,6 +108,7 @@
       when: site == "stylo.huma-num.fr"
 
     - name: Add the user 'stylo' to the group 'syslog'
+      become: yes
       ansible.builtin.user:
         name: stylo
         shell: /bin/bash
