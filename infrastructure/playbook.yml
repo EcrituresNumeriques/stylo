@@ -107,6 +107,13 @@
         mode: "0775"
       when: site == "stylo.huma-num.fr"
 
+    - name: Add the user 'stylo' to the group 'syslog'
+      ansible.builtin.user:
+        name: stylo
+        shell: /bin/bash
+        groups: syslog
+        append: yes
+
     - name: Create a backup job (cron) that runs at midnight
       ansible.builtin.cron:
         name: "Backup data"
