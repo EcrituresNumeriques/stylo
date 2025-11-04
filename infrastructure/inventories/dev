@@ -29,6 +29,7 @@ matomo_site_id={{ lookup('env', 'SNOWPACK_MATOMO_SITE_ID') or 286 }}
 se_graphql_token=
 assets_path='./front/build'
 mongo_backup_path='/home/stylo/stylo/backup'
+se_domain_preview='stylo-dev.huma-num.fr'
 
 # Flags dispo sur https://www.ssllabs.com/ssltest/analyze.html?d=humanid.huma-num.fr
 node_options_flag='--tls-cipher-list="ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA" --tls-min-v1.2 --tls-max-v1.2'
