@@ -143,19 +143,25 @@ module.exports = {
      */
     async corpus(_, args, context) {
       const { user } = context
+      const filter = args?.filter
 
-      if ('filter' in args) {
+      if (filter) {
         const filter = args.filter
-        if ('corpusId' in filter) {
-          return [await getCorpus(filter.corpusId)]
+
+        if (filter.workspaceId) {
+          /*const workspace = */await Workspace.getWorkspaceById(filter.workspaceId, user)
+            .orFail(new NotFoundError('Workspace', filter.workspaceId))
         }
-        if ('workspaceId' in filter) {
-          return Corpus.find({ workspace: filter.workspaceId })
-            .populate([{ path: 'creator' }])
-            .sort([['updatedAt', -1]])
+
+        if (filter.corpusId) {
+          return [
+            await Corpus.findOneBy({ _id: filter.corpusId, workspace: filter.workspaceId })
+            .orFail(new NotFoundError('Corpus', filter.corpusId))
+          ]
         }
       }
-      return Corpus.find({ creator: user?._id, workspace: null })
+
+      return Corpus.find({ creator: user?._id, workspace: filter?.workspaceId })
         .populate([{ path: 'creator' }])
         .sort([['updatedAt', -1]])
     },

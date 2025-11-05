@@ -22,7 +22,7 @@ fragment basicWorkspaceFields on Workspace {
 
 query getCorpus(
   $filter: FilterCorpusInput
-  $isPersonalWorkspace: Boolean = false
+  $isPersonalWorkspace: Boolean = true
   $workspaceId: ID
   $includeArticles: Boolean = false
   $includeWorkingVersion: Boolean = false
@@ -50,11 +50,11 @@ query getCorpus(
 }
 
 query getCorpusPreview(
-  $filter: FilterCorpusInput!
-  $isPersonalWorkspace: Boolean = false,
-  $workspaceId: ID,
+  $corpusId: ID!
+  $isPersonalWorkspace: Boolean = true
+  $workspaceId: ID
 ) {
-  sharedCorpus(filter: $filter) {
+  sharedCorpus(corpusId: $corpusId) {
     ...basicCorpusFields
 
     articles {

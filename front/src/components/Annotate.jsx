@@ -57,12 +57,12 @@ const strategies = new Map([
         }
       },
       mapContent(data) {
-        return data?.sharedCorpus?.at(0)?.articles?.reduce(
+        return data?.sharedCorpus?.articles?.reduce(
           (obj, { article }, index) => ({
             md_content: obj.md_content + '\n\n\n' + article.workingVersion.md,
             yaml_content:
               index === 0
-                ? toYaml(data.corpus.medatada) +
+                ? toYaml(data.sharedCorpus?.medatada) +
                   '\n\n---\n\n' +
                   article.workingVersion.yaml
                 : obj.yaml_content +
@@ -79,7 +79,7 @@ const strategies = new Map([
         )
       },
       title(data) {
-        return data?.sharedCorpus?.at(0).name
+        return data?.sharedCorpus?.name
       },
     },
   ],

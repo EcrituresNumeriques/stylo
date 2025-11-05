@@ -12,7 +12,7 @@ import {
 } from '../components/corpus/Corpus.graphql'
 
 export function useCorpusActions() {
-  const workspaceId = useActiveWorkspaceId()
+  const workspaceId = useActiveWorkspaceId() ?? null
 
   const { mutate } = useMutateData({
     query: getCorpusQuery,
@@ -40,9 +40,13 @@ export function useCorpusActions() {
         },
       },
     })
-    await mutate(async (data) => ({
-      corpus: [...(data?.corpus ?? []), response.createCorpus],
-    }))
+    await mutate(async (data) => {
+      console.log('mutate', { data })
+      return {
+        corpus: [...(data?.corpus ?? []), response.createCorpus],
+        ...data,
+      }
+    })
   }
   const deleteCorpus = async (corpusId) => {
     await executeQuery({
@@ -93,7 +97,7 @@ export function useCorpusActions() {
   }
 }
 
-export function useCorpus({ workspaceId }) {
+export function useCorpus({ workspaceId = null }) {
   const { data, error, isLoading } = useGraphQL(
     {
       query: getCorpusQuery,
