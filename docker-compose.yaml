@@ -56,7 +56,7 @@ services:
       - graphql-stylo
 
   export-stylo:
-    image: 'davidbgk/stylo-export:3.3.0'
+    image: 'davidbgk/stylo-export:3.3.1'
     container_name: 'export-stylo'
     env_file:
       - .env
@@ -64,6 +64,7 @@ services:
       - SE_IMAGES_TIMEOUT=10
       - SE_PANDOC_API_BASE_URL=${SE_PANDOC_API_BASE_URL:-http://pandoc-api:8000/latest/}
       - SE_ALLOWED_INSTANCE_BASE_URLS=${SE_ALLOWED_INSTANCE_BASE_URLS:-http://localhost:3000 http://localhost:3030 http://host.docker.internal:3030}
+      - SE_CANONICAL_BASE_URL=http://localhost:3000
     ports:
       - 127.0.0.1:3080:8001
     extra_hosts:
