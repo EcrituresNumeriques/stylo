@@ -59,6 +59,7 @@
   "article.stats.words": "Mots : {{count}}",
   "article.tags.title": "Étiquettes",
   "article.type.blogPost": "Billet de blog",
+  "article.type.chapter": "Chapitre",
   "article.type.default": "Article",
   "article.type.label": "Type",
   "article.type.meetingNotes": "Notes de réunion",

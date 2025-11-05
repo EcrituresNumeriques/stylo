@@ -2,6 +2,8 @@ import { merge } from 'allof-merge'
 
 import blogPostSchema from './article-blog-post-metadata.schema.json'
 import blogPostUiSchema from './article-blog-post-ui-schema.json'
+import chapterSchema from './article-chapter-metadata.schema.json'
+import chapterUiSchema from './article-chapter-ui-schema.json'
 import meetingNotesSchema from './article-meeting-notes-metadata.schema.json'
 import meetingNotesUiSchema from './article-meeting-notes-ui-schema.json'
 import defaultSchema from './article-metadata.schema.json'
@@ -10,6 +12,7 @@ import defaultUiSchema from './article-ui-schema.json'
 const defaultSchemaMerged = merge(defaultSchema)
 const blogPostSchemaMerged = merge(blogPostSchema)
 const meetingNotesSchemaMerged = merge(meetingNotesSchema)
+const chapterSchemaMerged = merge(chapterSchema)
 
 export const ArticleSchemas = [
   {
@@ -29,6 +32,12 @@ export const ArticleSchemas = [
     data: meetingNotesSchemaMerged,
     const: getConstMetadata(meetingNotesSchemaMerged),
     ui: meetingNotesUiSchema,
+  },
+  {
+    name: 'chapter',
+    data: chapterSchemaMerged,
+    const: getConstMetadata(chapterSchemaMerged),
+    ui: chapterUiSchema,
   },
 ]
 

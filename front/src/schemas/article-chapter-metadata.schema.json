@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stylo.huma-num.fr/schemas/article-chapter-metadata.schema.json",
+  "title": "Article chapter metadata",
+  "type": "object",
+  "definitions": {
+    "lang": {
+      "type": "string",
+      "enum": ["fr", "en", "it", "es", "pt", "de", "uk", "ar"]
+    },
+    "localizedContent": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "$ref": "#/definitions/lang"
+        },
+        "title": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "abstract": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "chapter"
+    },
+    "@version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "localizedContent": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/localizedContent"
+      }
+    },
+    "controlledKeywords": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "idRameau": {
+            "type": "string"
+          },
+          "uriRameau": {
+            "type": "string"
+          }
+        }
+      },
+      "uniqueItems": true
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/definitions/localizedContent"
+    }
+  ]
+}
