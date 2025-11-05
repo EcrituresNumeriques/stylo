@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useGraphQLClient } from '../helpers/graphQL.js'
 import { useContactActions } from '../hooks/contact.js'
+import { useDisplayName } from '../hooks/user.js'
 import ContactItem from './ContactItem.jsx'
 
 import { getUserByEmail } from './Contacts.graphql'
@@ -30,6 +31,7 @@ export default function ContactSearch({
   showActiveUser,
 }) {
   const { t } = useTranslation()
+  const displayName = useDisplayName()
   const activeUser = useSelector((state) => state.activeUser)
   const activeUserId = activeUser._id
   const { contacts: userContacts, add, remove } = useContactActions()
@@ -39,7 +41,7 @@ export default function ContactSearch({
 
   const filterContact = useCallback(
     (contact) => {
-      const contactName = contact.displayName || contact.username
+      const contactName = displayName(contact)
       return (
         contact._id !== activeUserId &&
         (contact.email.toLowerCase().includes(filter.toLowerCase()) ||

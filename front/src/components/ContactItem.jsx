@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import styles from './ContactItem.module.scss'
 import Button from './Button.jsx'
 import clsx from 'clsx'
+import { useDisplayName } from '../hooks/user.js'
 
 export default function ContactItem({
   user,
@@ -19,6 +20,7 @@ export default function ContactItem({
   const [activeState, setActiveState] = useState(false)
   const [selectedState, setSelectedState] = useState(false)
   const { t } = useTranslation()
+  const displayName = useDisplayName()
 
   useEffect(() => {
     setActiveState(active)
@@ -46,7 +48,6 @@ export default function ContactItem({
     [activeState]
   )
 
-  const displayName = user.displayName || user.username
   return (
     <div
       key={`contact-${user._id}`}
@@ -58,12 +59,12 @@ export default function ContactItem({
       aria-disabled={muted || disabled}
       title={
         muted
-          ? t('contact.userNotFound.message', { username: displayName })
-          : displayName
+          ? t('contact.userNotFound.message', { username: displayName(user) })
+          : displayName(user)
       }
     >
       <div className={styles.info}>
-        {!muted && <span className={styles.contactName}>{displayName}</span>}
+        {!muted && <span className={styles.contactName}>{displayName(user)}</span>}
         {!disabled && user.email && (
           <a href={'mailto:' + user.email} className={styles.contactEmail}>
             {user.email}
