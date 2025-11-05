@@ -1,0 +1,70 @@
+{
+  "ui:groups": [
+    {
+      "title": "chapter.title",
+      "fields": ["title", "subtitle", "url"]
+    },
+    {
+      "title": "keywords",
+      "fields": ["keywords"]
+    },
+    {
+      "title": "controlledKeywords",
+      "fields": ["controlledKeywords"]
+    },
+    {
+      "title": "localizedContent",
+      "fields": ["localizedContent"]
+    }
+  ],
+  "title": {
+    "ui:title": "title"
+  },
+  "subtitle": {
+    "ui:title": "subtitle"
+  },
+  "url": {
+    "ui:title": "url"
+  },
+  "keywords": {
+    "ui:add-item-title": "keywords.itemAdd",
+    "ui:className": "keywords",
+    "items": {
+      "ui:label": false,
+      "ui:className": "keywords"
+    }
+  },
+  "controlledKeywords": {
+    "ui:classNames": "inline-field-string",
+    "ui:add-item-title": "controlledKeywords.itemAdd",
+    "ui:remove-item-title": "",
+    "items": {
+      "ui:field": "IsidoreKeywordSearch",
+      "ui:className": "keywords"
+    }
+  },
+  "localizedContent": {
+    "ui:add-item-title": "localizedContent.itemAdd",
+    "items": {
+      "lang": {
+        "ui:title": "language"
+      },
+      "title": {
+        "ui:title": "title"
+      },
+      "subtitle": {
+        "ui:title": "subtitle"
+      },
+      "keywords": {
+        "ui:className": "keywords",
+        "ui:title": "keywords",
+        "ui:add-item-title": "keywords.itemAdd",
+        "ui:remove-item-title": "keywords.itemRemove",
+        "items": {
+          "ui:label": false,
+          "ui:className": "keywords"
+        }
+      }
+    }
+  }
+}

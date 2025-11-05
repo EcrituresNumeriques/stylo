@@ -94,6 +94,7 @@ export default function ArticleEditorMetadataForm({
           <option value="meeting-notes">
             {t('article.type.meetingNotes')}
           </option>
+          <option value="chapter">{t('article.type.chapter')}</option>
           {metadataFormTypeOptions.map((option) => (
             <option key={option.name} value={option.name}>
               {option.name}
