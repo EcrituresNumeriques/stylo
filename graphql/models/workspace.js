@@ -64,7 +64,7 @@ workspaceSchema.methods.findMembersByArticle =
     return result[0].members
   }
 
-workspaceSchema.statics.getWorkspaceById = async function getWorkspaceById(
+workspaceSchema.statics.getWorkspaceById = function getWorkspaceById(
   workspaceId,
   user
 ) {
