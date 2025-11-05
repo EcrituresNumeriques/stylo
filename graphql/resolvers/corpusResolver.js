@@ -155,7 +155,7 @@ module.exports = {
 
         if (filter.corpusId) {
           return [
-            await Corpus.findOneBy({ _id: filter.corpusId, workspace: filter.workspaceId })
+            await Corpus.findOne({ _id: filter.corpusId, workspace: filter.workspaceId })
             .orFail(new NotFoundError('Corpus', filter.corpusId))
           ]
         }
