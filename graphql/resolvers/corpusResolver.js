@@ -3,6 +3,7 @@ const Corpus = require('../models/corpus')
 const Workspace = require('../models/workspace')
 
 const { logger } = require('../logger')
+const { NotAuthorizedError } = require('../helpers/errors')
 
 async function getCorpusByContext(corpusId, context) {
   if (context.token?.admin) {
@@ -145,23 +146,44 @@ module.exports = {
       const { user } = context
       const filter = args?.filter
 
-      if (filter) {
-        const filter = args.filter
+      const workspaceIdFilter = filter?.workspaceId
+      const corpusIdFilter = filter?.corpusId
 
-        if (filter.workspaceId) {
-          /*const workspace = */await Workspace.getWorkspaceById(filter.workspaceId, user)
-            .orFail(new NotFoundError('Workspace', filter.workspaceId))
+      if (corpusIdFilter) {
+        const corpus = await Corpus.findOne({ _id: corpusIdFilter }).orFail(
+          new NotFoundError('Corpus', corpusIdFilter)
+        )
+
+        // QUESTION: should we check the corpus workspace is equals to filter.workspaceId (if defined)?
+
+        if (corpus.workspace) {
+          // permission: make sure that the user belongs to the corpus workspace
+          await Workspace.getWorkspaceById(corpus.workspace, user).orFail(
+            new NotAuthorizedError()
+          )
+        } else {
+          // permission: make sure that the corpus belongs to the user
+          if (corpus.creator !== user._id) {
+            throw new NotAuthorizedError()
+          }
         }
 
-        if (filter.corpusId) {
-          return [
-            await Corpus.findOneBy({ _id: filter.corpusId, workspace: filter.workspaceId })
-            .orFail(new NotFoundError('Corpus', filter.corpusId))
-          ]
-        }
+        return [corpus]
       }
 
-      return Corpus.find({ creator: user?._id, workspace: filter?.workspaceId })
+      if (workspaceIdFilter) {
+        // permission: make sure that the user belongs to the workspace
+        await Workspace.getWorkspaceById(workspaceIdFilter, user).orFail(
+          new NotFoundError('Workspace', workspaceIdFilter)
+        )
+
+        return Corpus.find({ workspace: workspaceIdFilter })
+          .populate([{ path: 'creator' }])
+          .sort([['updatedAt', -1]])
+      }
+
+      // personal corpus
+      return Corpus.find({ creator: user?._id, workspace: workspaceIdFilter })
         .populate([{ path: 'creator' }])
         .sort([['updatedAt', -1]])
     },
