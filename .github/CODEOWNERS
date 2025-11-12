@@ -1,6 +1,9 @@
-*                 @stylo/dev @stylo/coordo
-front/            @stylo/dev
-graphql/          @stylo/dev
-infrastructure/   @stylo/dev @stylo/infra
+*                     @stylo/dev @stylo/coordo
 
-docs/             @stylo/coordo @stylo/docs
+front/                @stylo/dev
+graphql/              @stylo/dev
+infrastructure/       @stylo/dev @stylo/infra
+
+docker-compose*.yaml  @stylo/dev @stylo/export
+
+docs/                 @stylo/coordo @stylo/docs
