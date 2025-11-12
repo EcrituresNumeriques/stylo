@@ -1,0 +1,6 @@
+*                 @stylo/dev @stylo/coordo
+front/            @stylo/dev
+graphql/          @stylo/dev
+infrastructure/   @stylo/dev @stylo/infra
+
+docs/             @stylo/coordo @stylo/docs
