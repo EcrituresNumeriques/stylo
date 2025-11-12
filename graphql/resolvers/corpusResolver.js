@@ -143,7 +143,7 @@ module.exports = {
      * @returns {Promise<[Corpus]>}
      */
     async corpus(_, args, context) {
-      const { user } = context
+      const { user, token } = context
       const filter = args?.filter
 
       const workspaceIdFilter = filter?.workspaceId
@@ -163,7 +163,10 @@ module.exports = {
           )
         } else {
           // permission: make sure that the corpus belongs to the user
-          if (corpus.creator !== user._id) {
+          if (
+            token?.admin !== true ||
+            corpus.creator.toString() !== user._id.toString()
+          ) {
             throw new NotAuthorizedError()
           }
         }
