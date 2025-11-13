@@ -154,7 +154,10 @@ module.exports = {
           new NotFoundError('Corpus', corpusIdFilter)
         )
 
-        // QUESTION: should we check the corpus workspace is equals to filter.workspaceId (if defined)?
+        // permission: admin token can access any corpus!
+        if (token?.admin === true) {
+          return [corpus]
+        }
 
         if (corpus.workspace) {
           // permission: make sure that the user belongs to the corpus workspace
@@ -162,9 +165,6 @@ module.exports = {
             new NotAuthorizedError()
           )
         } else {
-          if (token?.admin === true) {
-            return [corpus]
-          }
           // permission: make sure that the corpus belongs to the user
           if (corpus.creator.toString() !== userId) {
             throw new NotAuthorizedError()
