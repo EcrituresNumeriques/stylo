@@ -143,7 +143,7 @@ module.exports = {
      * @returns {Promise<[Corpus]>}
      */
     async corpus(_, args, context) {
-      const { user, token } = context
+      const { user, userId, token } = context
       const filter = args?.filter
 
       const workspaceIdFilter = filter?.workspaceId
@@ -162,11 +162,11 @@ module.exports = {
             new NotAuthorizedError()
           )
         } else {
+          if (token?.admin === true) {
+            return [corpus]
+          }
           // permission: make sure that the corpus belongs to the user
-          if (
-            token?.admin !== true ||
-            corpus.creator.toString() !== user._id.toString()
-          ) {
+          if (corpus.creator.toString() !== userId) {
             throw new NotAuthorizedError()
           }
         }
@@ -186,7 +186,7 @@ module.exports = {
       }
 
       // personal corpus
-      return Corpus.find({ creator: user?._id, workspace: workspaceIdFilter })
+      return Corpus.find({ creator: userId, workspace: workspaceIdFilter })
         .populate([{ path: 'creator' }])
         .sort([['updatedAt', -1]])
     },
