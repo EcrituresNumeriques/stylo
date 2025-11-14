@@ -23,7 +23,11 @@ describe('corpus resolver', () => {
       tags: [],
     })
     await CorpusMutation.addArticle(corpus, { articleId: thesis.id })
-    const corpusList = await Query.corpus({}, {}, { user: guillaume })
+    const corpusList = await Query.corpus(
+      {},
+      {},
+      { user: guillaume, userId: guillaume.id }
+    )
     expect(corpusList[0].toJSON()).toMatchObject({
       name: 'Corpus A',
       articles: [{ article: thesis._id }],
@@ -54,7 +58,11 @@ describe('corpus resolver', () => {
       articleId: thesis.id,
     })
     await corpusArticle.remove()
-    const corpusList = await Query.corpus({}, {}, { user: guillaume })
+    const corpusList = await Query.corpus(
+      {},
+      {},
+      { user: guillaume, userId: guillaume.id }
+    )
     expect(corpusList[0].toJSON()).toMatchObject({
       name: 'Corpus B',
       articles: [],
@@ -113,7 +121,11 @@ describe('corpus resolver', () => {
       articleId: chapter1.id,
     })
     await corpusArticle.move(1)
-    const corpusList = await Query.corpus({}, {}, { user: guillaume })
+    const corpusList = await Query.corpus(
+      {},
+      {},
+      { user: guillaume, userId: guillaume.id }
+    )
     expect(corpusList[0].toJSON()).toMatchObject({
       name: 'Corpus C',
       articles: [
