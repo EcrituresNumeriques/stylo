@@ -59,6 +59,7 @@
   "article.stats.words": "Words: {{count}}",
   "article.tags.title": "Tags",
   "article.type.blogPost": "Blog post",
+  "article.type.chapter": "Chapter",
   "article.type.default": "Article",
   "article.type.label": "Type",
   "article.type.meetingNotes": "Meeting notes",
