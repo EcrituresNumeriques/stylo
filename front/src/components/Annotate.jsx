@@ -1,14 +1,13 @@
 import React, { useEffect, useMemo } from 'react'
-import { useParams } from 'react-router'
 import { Helmet } from 'react-helmet-async'
+import { useParams } from 'react-router'
+
+import { applicationConfig } from '../config.js'
+import useFetchData from '../hooks/graphql.js'
+import { useStyloExportPreview } from '../hooks/stylo-export.js'
+import { toYaml } from './Write/metadata/yaml.js'
 
 import Loading from './molecules/Loading.jsx'
-
-import { useStyloExportPreview } from '../hooks/stylo-export.js'
-
-import { toYaml } from './Write/metadata/yaml.js'
-import useFetchData from '../hooks/graphql.js'
-import { applicationConfig } from '../config.js'
 
 import { getArticlePreview } from './Article.graphql'
 import { getCorpusPreview } from './corpus/Corpus.graphql'
@@ -32,7 +31,7 @@ const strategies = new Map([
         }
       },
       mapContent(data) {
-        const root = data?.sharedArticle?.workingVersion ?? data?.version
+        const root = data?.version ?? data?.sharedArticle?.workingVersion
         return {
           md_content: root?.md,
           yaml_content: root?.yaml,
@@ -40,7 +39,7 @@ const strategies = new Map([
         }
       },
       title(data) {
-        const root = data?.sharedArticle?.workingVersion ?? data?.version
+        const root = data?.version ?? data?.sharedArticle?.workingVersion
         return root.title ?? root.name
       },
     },
