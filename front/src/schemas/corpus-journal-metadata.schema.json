@@ -3,6 +3,53 @@
   "$id": "https://stylo.huma-num.fr/schemas/corpus-journal-metadata.schema.json",
   "title": "Journal metadata",
   "type": "object",
+  "definitions": {
+    "person": {
+      "type": "object",
+      "properties": {
+        "surname": {
+          "type": "string",
+          "title": "Last name"
+        },
+        "forename": {
+          "type": "string",
+          "title": "First name"
+        },
+        "affiliations": {
+          "type": "string",
+          "title": "Affiliations"
+        },
+        "biography": {
+          "type": "string",
+          "title": "Biography"
+        },
+        "email": {
+          "type": "string",
+          "title": "Email"
+        },
+        "orcid": {
+          "type": "string",
+          "title": "ORCID"
+        },
+        "viaf": {
+          "type": "string",
+          "title": "VIAF"
+        },
+        "foaf": {
+          "type": "string",
+          "title": "FOAF"
+        },
+        "isni": {
+          "type": "string",
+          "title": "ISNI"
+        },
+        "wikidata": {
+          "type": "string",
+          "title": "Wikidata"
+        }
+      }
+    }
+  },
   "properties": {
     "type": {
       "type": "string",
@@ -26,6 +73,12 @@
         },
         "number": {
           "type": "string"
+        },
+        "directors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/person"
+          }
         }
       }
     }

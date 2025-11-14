@@ -12,7 +12,7 @@
     "ui:title": "issue.name"
   },
   "issue": {
-    "ui:order": ["number", "title", "identifier"],
+    "ui:order": ["number", "title", "identifier", "directors"],
     "number": {
       "ui:title": "issue.number"
     },
@@ -21,6 +21,44 @@
     },
     "identifier": {
       "ui:title": "issue.identifier"
+    },
+    "directors": {
+      "ui:title": "issueDirectors",
+      "ui:add-item-title": "people.itemAdd",
+      "items": {
+        "ui:classNames": "person",
+        "surname": {
+          "ui:title": "people.surname"
+        },
+        "forename": {
+          "ui:title": "people.forename"
+        },
+        "affiliations": {
+          "ui:title": "people.affiliations"
+        },
+        "biography": {
+          "ui:title": "people.biography",
+          "ui:widget": "textarea"
+        },
+        "email": {
+          "ui:title": "people.email"
+        },
+        "orcid": {
+          "ui:title": "people.orcid"
+        },
+        "viaf": {
+          "ui:title": "people.viaf"
+        },
+        "foaf": {
+          "ui:title": "people.foaf"
+        },
+        "isni": {
+          "ui:title": "people.isni"
+        },
+        "wikidata": {
+          "ui:title": "people.wikidata"
+        }
+      }
     }
   }
 }
