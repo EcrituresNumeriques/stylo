@@ -1,7 +1,6 @@
 import React, { Children } from 'react'
 import { I18nextProvider } from 'react-i18next'
 import { Provider as ReduxProvider } from 'react-redux'
-import { HelmetProvider } from 'react-helmet-async'
 import { createRoutesStub } from 'react-router'
 import { afterEach, vi } from 'vitest'
 
@@ -48,7 +47,7 @@ globalThis.alert = console.error
 
 afterEach(() => {
   cleanup()
-  vi.clearAllMocks()
+  vi.restoreAllMocks()
 })
 
 export function renderWithProviders(
@@ -81,12 +80,8 @@ export function renderWithProviders(
         I18nextProvider,
         { i18n },
         React.createElement(
-          HelmetProvider,
-          null,
-          React.createElement(
-            Stub,
-            { initialEntries: [route] }
-          )
+          Stub,
+          { initialEntries: [route] }
         )
       ),
     })

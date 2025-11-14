@@ -44,7 +44,6 @@ export default defineConfig(async ({ mode }) => {
               'react',
               'react-dom',
               'react-dnd',
-              'react-helmet-async',
               'react-i18next',
               'react-redux',
               'react-router',
@@ -135,6 +134,10 @@ export default defineConfig(async ({ mode }) => {
           prependPath: false,
           ws: true,
         },
+        '^/ws': {
+          target: 'http://127.0.0.1:3030',
+          ws: true,
+        },
       },
     },
 
@@ -144,6 +147,7 @@ export default defineConfig(async ({ mode }) => {
         provider: 'v8',
         reporter: ['text', 'html', 'lcovonly'],
         extension: ['.js', '.jsx'],
+        include: ['./src/**.{js,jsx}'],
         exclude: [
           ...coverageConfigDefaults.exclude,
           '**/build/**',

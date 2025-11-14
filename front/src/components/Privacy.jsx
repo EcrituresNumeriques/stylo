@@ -1,5 +1,4 @@
 import React from 'react'
-import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 
 import { usePreferenceItem } from '../hooks/user.js'
@@ -16,9 +15,7 @@ export default function Privacy() {
 
   return (
     <section className={styles.container}>
-      <Helmet>
-        <title>{t('footer.privacy.link')}</title>
-      </Helmet>
+      <title>{t('footer.privacy.link')}</title>
 
       <article className={styles.simplePage}>
         <h2>{t('footer.privacy.link')}</h2>

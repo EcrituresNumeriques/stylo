@@ -1,6 +1,5 @@
 import { HelpCircle } from 'lucide-react'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate, useRevalidator } from 'react-router'
@@ -73,9 +72,7 @@ export default function Login() {
 
   return (
     <>
-      <Helmet>
-        <title>{t('credentials.login.confirmButton')}</title>
-      </Helmet>
+      <title>{t('credentials.login.confirmButton')}</title>
 
       <section className={styles.box}>
         <h1>{t('credentials.login.title')}</h1>

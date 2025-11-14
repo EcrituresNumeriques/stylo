@@ -6,7 +6,6 @@ import * as Sentry from '@sentry/react'
 
 import React, { lazy } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { Provider as ReduxProvider } from 'react-redux'
 import {
   Route,
@@ -201,11 +200,9 @@ const router = createBrowserRouter(
 
 root.render(
   <React.StrictMode>
-    <HelmetProvider>
-      <Helmet defaultTitle="Stylo" titleTemplate="%s - Stylo" />
-      <ReduxProvider store={store}>
-        <RouterProvider router={router} />
-      </ReduxProvider>
-    </HelmetProvider>
+    <title>Stylo</title>
+    <ReduxProvider store={store}>
+      <RouterProvider router={router} />
+    </ReduxProvider>
   </React.StrictMode>
 )

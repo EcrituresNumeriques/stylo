@@ -23,7 +23,7 @@ describe('TagEditForm', () => {
     const onSubmit = vi.fn()
     const user = userEvent.setup()
 
-    fetch.mockRestore().mockResolvedValueOnce({
+    fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({
@@ -50,7 +50,7 @@ describe('TagEditForm', () => {
     const onSubmit = vi.fn()
     const user = userEvent.setup()
 
-    fetch.mockRestore().mockResolvedValueOnce({
+    fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({
@@ -68,7 +68,7 @@ describe('TagEditForm', () => {
 
     const createdTag = { ...existingTag, name: 'new tag' }
 
-    fetch.mockRestore().mockResolvedValueOnce({
+    fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({
@@ -92,7 +92,7 @@ describe('TagEditForm', () => {
     const onSubmit = vi.fn()
     const user = userEvent.setup()
 
-    fetch.mockRestore().mockResolvedValueOnce({
+    fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({
@@ -113,7 +113,7 @@ describe('TagEditForm', () => {
       preloadedState,
     })
 
-    fetch.mockRestore().mockResolvedValueOnce({
+    fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({
