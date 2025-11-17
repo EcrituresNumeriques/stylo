@@ -62,13 +62,10 @@ const strategies = new Map([
             yaml_content:
               index === 0
                 ? toYaml(data.sharedCorpus?.metadata) +
-                  '\n\n---\n\n' +
+                  '\n\n' +
                   article.workingVersion.yaml
-                : obj.yaml_content +
-                  '\n\n---\n\n' +
-                  article.workingVersion.yaml,
-            bib_content:
-              obj.bib_content + '\n\n---\n\n' + article.workingVersion.bib,
+                : obj.yaml_content + '\n\n' + article.workingVersion.yaml,
+            bib_content: obj.bib_content + '\n\n' + article.workingVersion.bib,
           }),
           {
             md_content: '',
