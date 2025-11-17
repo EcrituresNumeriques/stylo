@@ -8,6 +8,7 @@ import { useModal } from '../../hooks/modal.js'
 
 import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
+import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
 import CorpusForm from './CorpusForm.jsx'
@@ -18,7 +19,7 @@ import styles from './corpus.module.scss'
 export default function Corpus() {
   const { t } = useTranslation()
   const { workspaceId } = useParams()
-  const { corpus, workspace, isLoading } = useCorpus({ workspaceId })
+  const { corpus, workspace, isLoading, error } = useCorpus({ workspaceId })
   const createCorpusModal = useModal()
 
   return (
@@ -52,6 +53,8 @@ export default function Corpus() {
           onCancel={() => createCorpusModal.close()}
         />
       </Modal>
+
+      {error && <Alert className={styles.message} message={error.message} />}
 
       {isLoading ? (
         <Loading />
