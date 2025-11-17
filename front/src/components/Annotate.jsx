@@ -110,8 +110,6 @@ export default function Annotate({ strategy: strategyId }) {
   useEffect(() => {
     const mobileMode = windowWidth < HYPOTHESIS_SIDEBAR_WIDTH * 3
 
-    console.log({ mobileMode })
-
     globalThis.hypothesisConfig = function hypothesisConfig() {
       return {
         enableExperimentalNewNoteButton: true,
