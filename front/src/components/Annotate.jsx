@@ -1,14 +1,13 @@
 import React, { useEffect, useMemo } from 'react'
-import { useParams } from 'react-router'
 import { Helmet } from 'react-helmet-async'
+import { useParams } from 'react-router'
+
+import { applicationConfig } from '../config.js'
+import useFetchData from '../hooks/graphql.js'
+import { useStyloExportPreview } from '../hooks/stylo-export.js'
+import { toYaml } from './Write/metadata/yaml.js'
 
 import Loading from './molecules/Loading.jsx'
-
-import { useStyloExportPreview } from '../hooks/stylo-export.js'
-
-import { toYaml } from './Write/metadata/yaml.js'
-import useFetchData from '../hooks/graphql.js'
-import { applicationConfig } from '../config.js'
 
 import { getArticlePreview } from './Article.graphql'
 import { getCorpusPreview } from './corpus/Corpus.graphql'
@@ -62,7 +61,7 @@ const strategies = new Map([
             md_content: obj.md_content + '\n\n\n' + article.workingVersion.md,
             yaml_content:
               index === 0
-                ? toYaml(data.sharedCorpus?.medatada) +
+                ? toYaml(data.sharedCorpus?.metadata) +
                   '\n\n---\n\n' +
                   article.workingVersion.yaml
                 : obj.yaml_content +
