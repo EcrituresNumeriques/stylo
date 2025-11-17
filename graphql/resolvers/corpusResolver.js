@@ -268,11 +268,7 @@ module.exports = {
         corpus.description = description
       }
       const metadata = updateCorpusInput.metadata
-      if (
-        metadata &&
-        typeof metadata === 'object' &&
-        !Array.isArray(metadata)
-      ) {
+      if (metadata !== undefined) {
         corpus.metadata = metadata
       }
       return await corpus.save()
