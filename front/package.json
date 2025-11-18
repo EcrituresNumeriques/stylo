@@ -52,7 +52,7 @@
     "js-yaml": "^4.1.0",
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
-    "lucide-react": "^0.511.0",
+    "lucide-react": "^0.554.0",
     "monaco-editor": "^0.54.0",
     "mongodb": "^6.17.0",
     "object-path-immutable": "^4.1.0",
