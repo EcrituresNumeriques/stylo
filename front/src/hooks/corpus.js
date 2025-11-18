@@ -36,7 +36,7 @@ export function useCorpusActions() {
           description,
           type,
           workspace: workspaceId,
-          metadata: '',
+          metadata: {},
         },
       },
     })
@@ -80,7 +80,7 @@ export function useCorpusActions() {
             ...c,
             ...(title && { title }),
             ...(description && { description }),
-            ...(metadata && { metadata }),
+            ...(metadata !== undefined && { metadata }),
             updatedAt: new Date(),
           }
         } else {

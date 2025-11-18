@@ -377,7 +377,7 @@ input CreateCorpusInput {
   name: String!
   type: CorpusType!
   description: String
-  metadata: String
+  metadata: JSON
   workspace: String
 }
 

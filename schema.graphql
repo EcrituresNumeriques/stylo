@@ -381,7 +381,7 @@ input CreateArticleInput {
 
 input CreateCorpusInput {
   description: String
-  metadata: String
+  metadata: JSON
   name: String!
   type: CorpusType!
   workspace: String
