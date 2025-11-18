@@ -1,5 +1,6 @@
 exports.up = async function (db) {
-  return db._run('executeDbAdminCommand', {
+  const adminDb = db._getDbInstance().admin()
+  await adminDb.command({
     setFeatureCompatibilityVersion: '4.4',
   })
 }

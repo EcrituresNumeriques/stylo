@@ -1,23 +1,23 @@
 exports.up = async function (db) {
-  await db._run('updateMany', 'corpus', {
-    query: { type: { '$exists': true } },
-    update: [
-      {
-        $set: {
-          'type': 'neutral',
-        },
+  const mongo = db._getDbInstance()
+  const corpus = mongo.collection('corpus')
+  await corpus.updateMany(
+    { type: { $exists: true } },
+    {
+      $set: {
+        type: 'neutral',
       },
-    ],
-  })
+    }
+  )
 }
 
-exports.down = function (db) {
-  return db._run('updateMany', 'corpus', {
-    query: {},
-    update: [
-      {
-        $unset: 'type',
-      },
-    ],
-  })
+exports.down = async function (db) {
+  const mongo = db._getDbInstance()
+  const corpus = mongo.collection('corpus')
+  await corpus.updateMany(
+    {},
+    {
+      $unset: 'type',
+    }
+  )
 }

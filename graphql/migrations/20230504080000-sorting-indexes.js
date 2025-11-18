@@ -1,22 +1,18 @@
 exports.up = async function (db) {
-  const mongo = await db._run('getDbInstance', true)
-  try {
-    await mongo
-      .collection('articles')
-      .createIndex({ updatedAt: -1 }, { unique: false })
-    await mongo.collection('tags').createIndex({ name: -1 }, { unique: false })
-    await mongo
-      .collection('tags')
-      .createIndex({ createdAt: -1 }, { unique: false })
-    await mongo
-      .collection('articles')
-      .createIndex({ createdAt: -1 }, { unique: false })
-    await mongo
-      .collection('versions')
-      .createIndex({ createdAt: -1 }, { unique: false })
-  } finally {
-    await mongo.close()
-  }
+  const mongo = db._getDbInstance()
+  await mongo
+    .collection('articles')
+    .createIndex({ updatedAt: -1 }, { unique: false })
+  await mongo.collection('tags').createIndex({ name: -1 }, { unique: false })
+  await mongo
+    .collection('tags')
+    .createIndex({ createdAt: -1 }, { unique: false })
+  await mongo
+    .collection('articles')
+    .createIndex({ createdAt: -1 }, { unique: false })
+  await mongo
+    .collection('versions')
+    .createIndex({ createdAt: -1 }, { unique: false })
 }
 
 exports.down = async function (db) {

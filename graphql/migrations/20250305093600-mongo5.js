@@ -1,11 +1,13 @@
-exports.up = function (db) {
-  return db._run('executeDbAdminCommand', {
+exports.up = async function (db) {
+  const adminDb = db._getDbInstance().admin()
+  await adminDb.command({
     setFeatureCompatibilityVersion: '5.0',
   })
 }
 
-exports.down = function (db) {
-  return db._run('executeDbAdminCommand', {
+exports.down = async function (db) {
+  const adminDb = db._getDbInstance().admin()
+  await adminDb.command({
     setFeatureCompatibilityVersion: '4.4',
   })
 }
