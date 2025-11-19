@@ -2,6 +2,7 @@ const YAML = require('js-yaml')
 const mongoose = require('mongoose')
 
 const Version = require('../models/version')
+const Article = require('../models/article')
 const { NotFoundError } = require('../helpers/errors')
 const { reformat } = require('../helpers/metadata.js')
 const { previewEntries } = require('../helpers/bibliography')
@@ -44,6 +45,17 @@ module.exports = {
       return options?.strip_markdown
         ? reformat(yaml, { replaceBibliography: false })
         : yaml
+    },
+
+    async article(version, _args, context) {
+      const articles = await Article.getArticles({
+        filter: { versions: version._id },
+        loaders: context.loaders,
+      })
+      if (articles.length === 0) {
+        throw new NotFoundError('Version.article', version._id)
+      }
+      return articles[0]
     },
   },
 }
