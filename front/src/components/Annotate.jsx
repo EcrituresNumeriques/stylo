@@ -18,6 +18,11 @@ const strategies = new Map([
   [
     'article',
     {
+      canonical_url({ id, version }) {
+        const hasVersion = Boolean(version)
+
+        return `${applicationConfig.canonicalBaseUrl}/api/v1/${hasVersion ? 'htmlVersion' : 'htmlArticle'}/${hasVersion ? version : id}?preview=true`
+      },
       query({ id, version, workspaceId }) {
         const hasVersion = Boolean(version)
 
@@ -47,6 +52,9 @@ const strategies = new Map([
   [
     'corpus',
     {
+      canonical_url({ id }) {
+        return `${applicationConfig.canonicalBaseUrl}/api/v1/htmlBook/${id}?preview=true`
+      },
       query({ id, workspaceId }) {
         return {
           query: getCorpusPreview,
@@ -83,16 +91,6 @@ const strategies = new Map([
 
 export default function Annotate({ strategy: strategyId }) {
   const { id, version, workspaceId } = useParams()
-  const { canonicalBaseUrl } = applicationConfig
-  const canonicalUrl = canonicalBaseUrl
-    ? `${canonicalBaseUrl}/api/v1/${
-        strategyId === 'article'
-          ? version
-            ? 'htmlVersion'
-            : 'htmlArticle'
-          : 'htmlBook'
-      }/${version ?? id}?preview=true`
-    : null
 
   const strategy = useMemo(
     () => strategies.get(strategyId),
@@ -102,6 +100,8 @@ export default function Annotate({ strategy: strategyId }) {
   if (!strategy) {
     throw Error('Unknown query mapping. Cannot preview this content.')
   }
+
+  const canonicalUrl = strategy.canonical_url({ id, version })
 
   useEffect(() => {
     globalThis.hypothesisConfig = function hypothesisConfig() {
@@ -142,12 +142,7 @@ export default function Annotate({ strategy: strategyId }) {
     with_link_citations: true,
   })
 
-  const isLoading = useMemo(
-    () => isPreviewLoading || isDataLoading,
-    [isPreviewLoading, isDataLoading]
-  )
-
-  if (isLoading) {
+  if (isPreviewLoading || isDataLoading) {
     return <Loading />
   }
 
