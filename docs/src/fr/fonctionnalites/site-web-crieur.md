@@ -25,9 +25,12 @@ Pour personnaliser votre site Web, ajoutez un dossier `templates` à la racine d
 Pour générer le site Web avec vos personnalisations, vous devrez ajouter ces éléments à votre commande, sur votre terminal :
 - `--statics-path=statics`
 - `--templates-path=templates`
+
 Ce qui donne ceci :
 `uv run --with crieur crieur generate serve --statics-path=statics --templates-path=templates --title <"le titre de votre site">`
-Commande dans laquelle vous pouvez ajouter d'autres éléments et paramètres.
+
+Commande dans laquelle vous pouvez ajouter d'autres éléments et paramètres. 
+
 Vous trouverez un exemple de personnalisation minimaliste [sur ce repo](https://gitlab.huma-num.fr/ecrinum/stylo/crieur-atelier), qui donne [ce rendu graphique](https://crieur-atelier-149600.gitpages.huma-num.fr/).
 
 Le template Crieur le plus à jour et par défaut se trouve [ici](https://gitlab.huma-num.fr/ecrinum/crieur/-/blob/main/crieur/templates/base.html?ref_type=heads). Pour l'utiliser, vous devrez y ajouter des lignes dans le `head` pour bien appeler le fichier `statics/simple.css` et `statics/custom.css`. Des templates plus spécifiques se trouvent [dans le repo du Crieur](https://gitlab.huma-num.fr/ecrinum/crieur/-/tree/main/crieur/templates).

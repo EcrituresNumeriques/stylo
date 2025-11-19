@@ -25,9 +25,12 @@ Para personalizar su sitio web, añada una carpeta «templates» a la raíz de l
 Para generar el sitio web con sus personalizaciones, deberá añadir estos elementos a su comando, en su terminal:
 - `--statics-path=statics`
 - `--templates-path=templates`
+
 Esto da el siguiente resultado:
 `uv run --with crieur crieur generate serve --statics-path=statics --templates-path=templates --title <«el título de su sitio»>`
+
 A lo que puede añadir otros elementos y parámetros. 
+
 Encontrarás un ejemplo de personalización minimalista [en este repositorio](https://gitlab.huma-num.fr/ecrinum/stylo/crieur-atelier), que da [este resultado](https://crieur-atelier-149600.gitpages.huma-num.fr/).
 
 La plantilla Crieur más actualizada y predeterminada se puede encontrar [aquí](https://gitlab.huma-num.fr/ecrinum/crieur/-/blob/main/crieur/templates/base.html?ref_type=heads). Para utilizarla, deberá añadir líneas en el `head` para llamar a los archivos `statics/simple.css` y `statics/custom.css`. Puede encontrar plantillas más específicas [en el repositorio de Crieur](https://gitlab.huma-num.fr/ecrinum/crieur/-/tree/main/crieur/templates).

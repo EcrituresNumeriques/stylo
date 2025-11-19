@@ -25,9 +25,12 @@ To personalize your website, add a `templates` folder to the root of your projec
 To generate the website with your customizations, you'll need to add these elements to your command, on your terminal:
 - `--statics-path=statics`
 - `--templates-path=templates`
+
 This gives the following:
 `uv run --with crieur crieur generate serve --statics-path=statics --templates-path=templates --title <"the title of your site">`
+
 To which you can add other elements and parameters. 
+
 You will find an example of minimalist customization [on this repo](https://gitlab.huma-num.fr/ecrinum/stylo/crieur-atelier), which gives [this rendering](https://crieur-atelier-149600.gitpages.huma-num.fr/).
 
 The most up-to-date and default Crieur template can be found [here](https://gitlab.huma-num.fr/ecrinum/crieur/-/blob/main/crieur/templates/base.html?ref_type=heads). To use it, you'll need to add lines in the `head` to call the `statics/simple.css` and `statics/custom.css` files. More specific templates can be found [in the Crieur repo](https://gitlab.huma-num.fr/ecrinum/crieur/-/tree/main/crieur/templates).
