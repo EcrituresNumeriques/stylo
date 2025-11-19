@@ -1,5 +1,5 @@
 exports.up = async function (db) {
-  const mongo = await db._run('getDbInstance')
+  const mongo = db._getDbInstance()
   const indexes = await mongo.collection('users').listIndexes().toArray()
 
   const hasEmailIndex = indexes.some(({ name }) => name === 'email_1')
@@ -10,8 +10,6 @@ exports.up = async function (db) {
   await mongo
     .collection('users')
     .createIndex({ email: 1 }, { sparse: true, unique: true })
-
-  return mongo.close()
 }
 
 exports.down = async function (db) {

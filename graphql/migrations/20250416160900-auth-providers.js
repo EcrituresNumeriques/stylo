@@ -1,36 +1,34 @@
 exports.up = async function (db) {
-  await db._run('updateMany', 'users', {
-    query: { authType: 'oidc' },
-    update: [
-      {
-        $set: {
-          'authProviders.humanid': {
-            email: '$email',
-          },
+  const mongo = db._getDbInstance()
+  const users = mongo.collection('users')
+  await users.updateMany(
+    { authType: 'oidc' },
+    {
+      $set: {
+        'authProviders.humanid': {
+          email: '$email',
         },
       },
-    ],
-  })
+    }
+  )
 
-  await db._run('updateMany', 'users', {
-    query: { zoteroToken: { $type: 'string' } },
-    update: [
-      {
-        // we unset tokens rather than migrating them
-        // as we miss the 'userId' and thus are unable to authenticate/link an account
-        $unset: 'zoteroToken',
-      },
-    ],
-  })
+  await users.updateMany(
+    { zoteroToken: { $type: 'string' } },
+    {
+      // we unset tokens rather than migrating them
+      // as we miss the 'userId' and thus are unable to authenticate/link an account
+      $set: { zoteroToken: '' },
+    }
+  )
 }
 
-exports.down = function (db) {
-  return db._run('updateMany', 'users', {
-    query: {},
-    update: [
-      {
-        $unset: 'authProviders',
-      },
-    ],
-  })
+exports.down = async function (db) {
+  const mongo = db._getDbInstance()
+  const users = mongo.collection('users')
+  await users.updateMany(
+    {},
+    {
+      $unset: 'authProviders',
+    }
+  )
 }

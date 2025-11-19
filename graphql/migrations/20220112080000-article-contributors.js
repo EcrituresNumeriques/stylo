@@ -1,5 +1,5 @@
 exports.up = async function (db) {
-  const mongo = await db._run('getDbInstance', true)
+  const mongo = db._getDbInstance()
   const articles = mongo.collection('articles')
   const articlesCursor = articles.find({})
   try {
@@ -21,7 +21,6 @@ exports.up = async function (db) {
     }
   } finally {
     await articlesCursor.close()
-    await mongo.close()
   }
 }
 

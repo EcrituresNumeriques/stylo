@@ -2,57 +2,53 @@ const config = require('../config.js')
 const Y = require('yjs')
 
 exports.up = async function (db) {
-  const mongo = await db._run('getDbInstance', true)
+  const mongo = db._getDbInstance()
+  const articles = mongo.collection('articles')
+  const articlesCursor = articles.find({})
   try {
-    const articles = mongo.collection('articles')
-    const articlesCursor = articles.find({})
-    try {
-      while (await articlesCursor.hasNext()) {
-        const article = await articlesCursor.next()
-        const workingCopyYDoc = article.workingVersion.ydoc
-        if (!workingCopyYDoc) {
-          const collaborativeSession = article.collaborativeSession
-          let yDoc
-          if (collaborativeSession && collaborativeSession.id) {
-            // article has an active collaborative session
-            // create a yjs document from the collaborative session!
-            yDoc = new Y.Doc()
-            const docName = `ws/${collaborativeSession.id.toString()}`
-            await applyUpdate(yDoc, docName)
-            console.log(
-              `Found an active collaborative session on article: ${article._id} with session id: ${collaborativeSession.id}`
-            )
-          } else {
-            // create a yjs document from the working copy
-            yDoc = new Y.Doc()
-            const yText = yDoc.getText('main')
-            yText.insert(0, article.workingVersion.md)
-            console.log(
-              `Create a yjs document from the working copy on article: ${article._id}`
-            )
-          }
-          const documentState = Y.encodeStateAsUpdate(yDoc) // is a Uint8Array
-          await articles.updateOne(
-            { _id: article._id },
-            {
-              $set: {
-                'workingVersion.ydoc':
-                  Buffer.from(documentState).toString('base64'),
-              },
-            },
-            { upsert: false }
+    while (await articlesCursor.hasNext()) {
+      const article = await articlesCursor.next()
+      const workingCopyYDoc = article.workingVersion.ydoc
+      if (!workingCopyYDoc) {
+        const collaborativeSession = article.collaborativeSession
+        let yDoc
+        if (collaborativeSession && collaborativeSession.id) {
+          // article has an active collaborative session
+          // create a yjs document from the collaborative session!
+          yDoc = new Y.Doc()
+          const docName = `ws/${collaborativeSession.id.toString()}`
+          await applyUpdate(yDoc, docName)
+          console.log(
+            `Found an active collaborative session on article: ${article._id} with session id: ${collaborativeSession.id}`
           )
-          yDoc.destroy()
+        } else {
+          // create a yjs document from the working copy
+          yDoc = new Y.Doc()
+          const yText = yDoc.getText('main')
+          yText.insert(0, article.workingVersion.md)
+          console.log(
+            `Create a yjs document from the working copy on article: ${article._id}`
+          )
         }
+        const documentState = Y.encodeStateAsUpdate(yDoc) // is a Uint8Array
+        await articles.updateOne(
+          { _id: article._id },
+          {
+            $set: {
+              'workingVersion.ydoc':
+                Buffer.from(documentState).toString('base64'),
+            },
+          },
+          { upsert: false }
+        )
+        yDoc.destroy()
       }
-    } catch (err) {
-      console.log('Something went wrong while processing articles', err)
-      throw err
-    } finally {
-      await articlesCursor.close()
     }
+  } catch (err) {
+    console.log('Something went wrong while processing articles', err)
+    throw err
   } finally {
-    mongo.close()
+    await articlesCursor.close()
   }
 }
 

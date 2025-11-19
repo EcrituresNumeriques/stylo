@@ -155,13 +155,13 @@ exports.up = async function (db) {
       color = '#eeeeee'
     }
     if (color) {
-      await db._run('update', 'tags', {
-        query: { _id: tag._id },
-        update: {
+      await db.updateMany(
+        { _id: tag._id },
+        {
           $set: { color },
         },
-        options: { upsert: false },
-      })
+        { upsert: false }
+      )
     }
   }
 }

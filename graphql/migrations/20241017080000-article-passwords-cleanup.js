@@ -1,5 +1,5 @@
 exports.up = async function (db) {
-  const mongo = await db._run('getDbInstance')
+  const mongo = db._getDbInstance()
   const collections = (await mongo.listCollections().toArray()).map(
     (c) => c.name
   )
@@ -21,8 +21,6 @@ exports.up = async function (db) {
   if (collections.includes('tokens')) {
     await mongo.collection('tokens').drop()
   }
-
-  return mongo.close()
 }
 
 exports.down = function () {
