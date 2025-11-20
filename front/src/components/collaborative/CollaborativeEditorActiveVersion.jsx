@@ -1,7 +1,8 @@
 import React from 'react'
 
-import { useArticleVersion } from '../../hooks/article.js'
 import i18n from '../../i18n.js'
+
+import { useArticleVersion } from '../../hooks/article.js'
 
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
@@ -36,7 +37,5 @@ export default function CollaborativeEditorActiveVersion({ versionId }) {
     )
   }
 
-  return (
-    <></>
-  )
+  return <></>
 }

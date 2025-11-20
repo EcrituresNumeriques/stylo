@@ -1,10 +1,10 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import Avatar from '../molecules/Avatar.jsx'
 
 import styles from './CollaborativeEditorWriters.module.scss'
-import { useTranslation } from 'react-i18next'
 
 export default function CollaborativeEditorWriters() {
   const articleWriters = useSelector((state) => state.articleWriters)
