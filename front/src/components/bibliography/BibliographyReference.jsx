@@ -1,5 +1,5 @@
-import copy from 'copy-to-clipboard'
 import { Clipboard, Trash } from 'lucide-react'
+import { useCopyToClipboard } from 'react-use'
 import React, { memo, useCallback } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -15,9 +15,10 @@ import styles from './BibliographyReference.module.scss'
 
 const CopyButton = memo(function ReferenceCopyButton({ text }) {
   const { t } = useTranslation()
+  const [, copyToClipboard] = useCopyToClipboard()
 
   const handleCopy = useCallback(() => {
-    copy(text)
+    copyToClipboard(text)
     toast(t('write.copyReferenceToClipboard.successToast', { text }), {
       type: 'info',
     })
