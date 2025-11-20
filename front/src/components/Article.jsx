@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import copy from 'copy-to-clipboard'
+import { useCopyToClipboard } from 'react-use'
 import {
   Check,
   ChevronDown,
@@ -102,6 +102,7 @@ export default function Article({
   )
   const tags = articleTagsQueryData?.article?.tags || []
   const { t } = useTranslation()
+  const [, copyToClipboard] = useCopyToClipboard()
 
   const exportModal = useModal()
   const sharingModal = useModal()
@@ -142,7 +143,7 @@ export default function Article({
   }
 
   const handleCopyId = useCallback(() => {
-    copy(articleId)
+    copyToClipboard(articleId)
     toast(t('article.copyId.successToast'), { type: 'success' })
   }, [])
 

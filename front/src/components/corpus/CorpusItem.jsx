@@ -1,4 +1,3 @@
-import copy from 'copy-to-clipboard'
 import {
   ChevronDown,
   ChevronRight,
@@ -8,6 +7,7 @@ import {
   Settings,
   Trash,
 } from 'lucide-react'
+import { useCopyToClipboard } from 'react-use'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
@@ -57,6 +57,7 @@ import styles from './corpusItem.module.scss'
  */
 export default function CorpusItem({ corpus }) {
   const { t } = useTranslation()
+  const [, copyToClipboard] = useCopyToClipboard()
 
   const deleteCorpusModal = useModal()
   const exportCorpusModal = useModal()
@@ -79,7 +80,7 @@ export default function CorpusItem({ corpus }) {
   const [expanded, setExpanded] = useState(false)
 
   const handleCopyId = useCallback(() => {
-    copy(corpusId)
+    copyToClipboard(corpusId)
     toast(t('corpus.copyId.successToast'), { type: 'success' })
   }, [])
 
