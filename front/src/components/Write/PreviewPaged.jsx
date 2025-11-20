@@ -1,10 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useStyloExportPreview } from '../../hooks/stylo-export.js'
-import styles from './PreviewPaged.module.scss'
-import { Previewer } from 'pagedjs'
-import { compileTemplate } from '../../helpers/preview.js'
 import clsx from 'clsx'
+import { Previewer } from 'pagedjs'
+import React, { useEffect, useRef, useState } from 'react'
+
+import { compileTemplate } from '../../helpers/preview.js'
+import { useStyloExportPreview } from '../../hooks/stylo-export.js'
+
 import Loading from '../molecules/Loading.jsx'
+
+import styles from './PreviewPaged.module.scss'
 
 export default function Preview({ preview, metadata, text, bibliography }) {
   const renderRef = useRef(null)

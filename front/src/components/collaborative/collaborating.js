@@ -1,5 +1,6 @@
-import * as Y from 'yjs'
 import { WebsocketProvider } from 'y-websocket'
+import * as Y from 'yjs'
+
 import * as awarenessProtocol from 'y-protocols/awareness.js'
 
 const noop = () => {}

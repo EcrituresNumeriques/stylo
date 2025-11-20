@@ -1,4 +1,5 @@
 import * as vscode from 'monaco-editor'
+
 import { applicationConfig } from '../../../../config.js'
 
 export class BibliographyCompletionProvider {

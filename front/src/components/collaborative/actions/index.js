@@ -1,8 +1,14 @@
+import { SubmenuAction } from 'monaco-editor/esm/vs/base/common/actions'
+import {
+  KeyCode,
+  KeyMod,
+  editor as _editor,
+} from 'monaco-editor/esm/vs/editor/editor.api'
+
 import createDelimitedBlockCommand from './delimited-block.js'
 import createInlineBlockCommand from './inline-block.js'
-import { SubmenuAction } from 'monaco-editor/esm/vs/base/common/actions'
+
 export { Separator } from 'monaco-editor/esm/vs/base/common/actions'
-import { editor as _editor, KeyCode, KeyMod } from 'monaco-editor/esm/vs/editor/editor.api'
 
 /** @type {object.<string,object.<string, IActionDescriptor>>} */
 export const actions = {
@@ -11,7 +17,7 @@ export const actions = {
       attrs: null,
       body_pre: '__',
       body_post: '__',
-      keybindings: [KeyMod.CtrlCmd | KeyCode.KeyI]
+      keybindings: [KeyMod.CtrlCmd | KeyCode.KeyI],
     }),
     bold: createInlineBlockCommand('bold', {
       attrs: null,
@@ -23,29 +29,36 @@ export const actions = {
       attrs: null,
       body_pre: '',
       body_post: '[^x]',
-      keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF]
+      keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF],
     }),
     footnoteContent: createDelimitedBlockCommand('footnote-content', {
       attrs: null,
       body_pre: '[^x]: ',
       delimiters: '',
-      keybindings: [[KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.KeyF]],
-      separator: ' '
+      keybindings: [
+        [KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.KeyF],
+      ],
+      separator: ' ',
     }),
     hyperlink: createInlineBlockCommand('hyperlink', {
       attrs: null,
       body_pre: '[',
       body_post: '](https://example.com)',
-      keybindings: [KeyMod.CtrlCmd | KeyCode.KeyK]
+      keybindings: [KeyMod.CtrlCmd | KeyCode.KeyK],
     }),
   },
   metopes: {
     acknowledgement: createDelimitedBlockCommand('ack', {
-      keybindings: [KeyMod.chord(KeyMod.CtrlCmd | KeyCode.KeyM, KeyMod.CtrlCmd | KeyCode.KeyA)],
+      keybindings: [
+        KeyMod.chord(
+          KeyMod.CtrlCmd | KeyCode.KeyM,
+          KeyMod.CtrlCmd | KeyCode.KeyA
+        ),
+      ],
     }),
     dedication: createDelimitedBlockCommand('dedi'),
     endnote: createDelimitedBlockCommand('endnote', {
-      keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyD]
+      keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyD],
     }),
     epigraph: createDelimitedBlockCommand('epigraph', {
       body_pre: '[@source]',
@@ -115,24 +128,26 @@ export function bindAction(editor, t, action) {
  * @param {boolean} options.shortcuts
  * @param {object.<string, IActionDescriptor>} actions
  */
-export function registerActions (editor, t, actions, { palette = true, shortcuts = true } = {}) {
+export function registerActions(
+  editor,
+  t,
+  actions,
+  { palette = true, shortcuts = true } = {}
+) {
   for (const action of Object.values(actions)) {
     // adding an entry in the command palette also registers its keybinding
     if (palette) {
       editor.addAction(bindAction(editor, t, action))
-    }
-    else {
+    } else {
       _editor.addCommand(bindAction(editor, t, action))
     }
 
     // adding the keybinding for the context menu
     if (shortcuts && action.keybindings?.at(0)) {
-      _editor.addKeybindingRule(
-        {
-          keybinding: action.keybindings.at(0),
-          command: palette ? `${editor.getId()}:${action.id}` : action.id
-        }
-      )
+      _editor.addKeybindingRule({
+        keybinding: action.keybindings.at(0),
+        command: palette ? `${editor.getId()}:${action.id}` : action.id,
+      })
     }
   }
 }
@@ -196,7 +211,7 @@ export function MetopesMenu({ editor, t }) {
         t('stylo.metopes.citations'),
         [
           _bindAction(actions.metopes.inlinequote),
-          _bindAction(actions.metopes.quoteAlt)
+          _bindAction(actions.metopes.quoteAlt),
         ]
       ),
       new SubmenuAction('stylo--metopes--texte', t('stylo.metopes.texte'), [
@@ -205,7 +220,7 @@ export function MetopesMenu({ editor, t }) {
           t('stylo.metopes.entretien'),
           [
             _bindAction(actions.metopes.question),
-            _bindAction(actions.metopes.reponse)
+            _bindAction(actions.metopes.reponse),
           ]
         ),
         _bindAction(actions.metopes.signature),
@@ -216,7 +231,7 @@ export function MetopesMenu({ editor, t }) {
   )
 }
 
-export function MarkdownMenu ({ editor, t }) {
+export function MarkdownMenu({ editor, t }) {
   const _bindAction = bindAction.bind(null, editor, t)
 
   return new SubmenuAction(

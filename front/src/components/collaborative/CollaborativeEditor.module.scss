@@ -3,20 +3,23 @@
 
 .container {
   @extend .wrapped-center;
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  padding: 0 1.5rem 0 0.5rem;
 
-  @media screen {
-    // menu is 100px wide (when closed)
-    grid-template-columns: minmax(200px, 1fr) minmax(100px, auto);
-  }
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(100px, auto);
+  gap: 1rem;
+  flex: 1;
+  container-type: size;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.sidebarArea {
-  height: calc(100vh - 3.3em /* size of the Header */ - 3rem /* size of the Footer */);
-  width: fit-content;
-  min-width: fit-content;
+.editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  container-type: size;
+}
+
+.editorMenu .opened {
+  min-width: 415px;
 }
