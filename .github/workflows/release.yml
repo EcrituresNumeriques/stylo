@@ -16,7 +16,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: |
           node -e "const pkg = require('./package.json'); pkg.version = '$RELEASE_VERSION'; require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, '  '), 'utf8')"
           node -e "const pkg = require('./front/package.json'); pkg.version = '$RELEASE_VERSION'; require('fs').writeFileSync('./front/package.json', JSON.stringify(pkg, null, '  '), 'utf8')"

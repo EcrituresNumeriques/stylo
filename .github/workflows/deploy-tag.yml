@@ -28,11 +28,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ format('v{0}', inputs.release-version) }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -49,7 +49,7 @@ jobs:
           SNOWPACK_IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID_PROD }}
 
       - name: Store build artifacts for the deploy stage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: front-assets
           path: ./front/build
@@ -64,18 +64,18 @@ jobs:
       url: https://stylo.huma-num.fr
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ format('v{0}', inputs.release-version) }}
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v6
         id: assets
         with:
           name: front-assets
           path: /tmp/front-assets
 
       - name: Set up Python 3.12 (w/ cache)
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.13'
           cache: 'pip'
