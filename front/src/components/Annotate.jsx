@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router'
+import { useWindowSize } from 'react-use'
 
 import { applicationConfig } from '../config.js'
 import useFetchData from '../hooks/graphql.js'
@@ -14,10 +15,17 @@ import { getCorpusPreview } from './corpus/Corpus.graphql'
 
 import './Annotate.scss'
 
+const HYPOTHESIS_SIDEBAR_WIDTH = 428
+
 const strategies = new Map([
   [
     'article',
     {
+      canonical_url({ id, version }) {
+        const hasVersion = Boolean(version)
+
+        return `${applicationConfig.canonicalBaseUrl}/api/v1/${hasVersion ? 'htmlVersion' : 'htmlArticle'}/${hasVersion ? version : id}?preview=true`
+      },
       query({ id, version, workspaceId }) {
         const hasVersion = Boolean(version)
 
@@ -47,6 +55,9 @@ const strategies = new Map([
   [
     'corpus',
     {
+      canonical_url({ id }) {
+        return `${applicationConfig.canonicalBaseUrl}/api/v1/htmlBook/${id}?preview=true`
+      },
       query({ id, workspaceId }) {
         return {
           query: getCorpusPreview,
@@ -83,16 +94,7 @@ const strategies = new Map([
 
 export default function Annotate({ strategy: strategyId }) {
   const { id, version, workspaceId } = useParams()
-  const { canonicalBaseUrl } = applicationConfig
-  const canonicalUrl = canonicalBaseUrl
-    ? `${canonicalBaseUrl}/api/v1/${
-        strategyId === 'article'
-          ? version
-            ? 'htmlVersion'
-            : 'htmlArticle'
-          : 'htmlBook'
-      }/${version ?? id}?preview=true`
-    : null
+  const { width: windowWidth } = useWindowSize()
 
   const strategy = useMemo(
     () => strategies.get(strategyId),
@@ -103,19 +105,26 @@ export default function Annotate({ strategy: strategyId }) {
     throw Error('Unknown query mapping. Cannot preview this content.')
   }
 
+  const canonicalUrl = strategy.canonical_url({ id, version })
+
   useEffect(() => {
+    const mobileMode = windowWidth < HYPOTHESIS_SIDEBAR_WIDTH * 3
+
+    console.log({ mobileMode })
+
     globalThis.hypothesisConfig = function hypothesisConfig() {
       return {
-        // enableExperimentalNewNoteButton: true,
-        openSidebar: true,
-        // theme: 'clean',
-        // contentReady: Promise
-        /*branding: {
-          appBackgroundColor: 'white',
-          ctaBackgroundColor: 'rgba(3, 11, 16, 1)',
-          ctaTextColor: '#eee',
-          selectionFontFamily: 'helvetica, arial, sans serif'
-        }*/
+        enableExperimentalNewNoteButton: true,
+        openSidebar: !mobileMode,
+        sideBySide: {
+          // when 'manual', it does not move the content but overlaps it
+          // which is what we want when we do not open it automatically
+          // because it means we are in mobile mode
+          mode: mobileMode ? 'manual' : 'auto',
+          isActive () {
+            return true
+          }
+        }
       }
     }
 
@@ -142,15 +151,6 @@ export default function Annotate({ strategy: strategyId }) {
     with_link_citations: true,
   })
 
-  const isLoading = useMemo(
-    () => isPreviewLoading || isDataLoading,
-    [isPreviewLoading, isDataLoading]
-  )
-
-  if (isLoading) {
-    return <Loading />
-  }
-
   return (
     <>
       <Helmet>
@@ -159,7 +159,8 @@ export default function Annotate({ strategy: strategyId }) {
         {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
       </Helmet>
 
-      <section dangerouslySetInnerHTML={{ __html }} />
+      {isPreviewLoading || isDataLoading && <Loading />}
+      <section dangerouslySetInnerHTML={{ __html }} hidden={isPreviewLoading || isDataLoading} />
     </>
   )
 }
