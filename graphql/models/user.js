@@ -77,6 +77,7 @@ const userSchema = new Schema(
     lastName: String,
     institution: String,
     connectedAt: Date,
+    deletedAt: Date
   },
   { timestamps: true }
 )
@@ -136,12 +137,13 @@ userSchema.virtual('authTypes').get(function authTypes() {
   return Array.from(types)
 })
 
-userSchema.method('remove', async function softDeleteUser() {
+userSchema.methods.softDelete =  async function softDeleteUser() {
   // generate a random/unguessable email because email is a unique index
-  const email = `${randomUUID({ disableEntropyCache: true })}@example.com`
+  const email = `deleted-user-${randomUUID({ disableEntropyCache: true })}@example.com`
 
   this.set({
     authProviders: {},
+    deletedAt: Date.now(),
     displayName: '[deleted user]',
     email,
     firstName: '',
@@ -151,6 +153,6 @@ userSchema.method('remove', async function softDeleteUser() {
   })
 
   return await this.save()
-}, { suppressWarning: true })
+}
 
 module.exports = mongoose.model('User', userSchema)

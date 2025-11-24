@@ -43,7 +43,7 @@ describe('getAuthProvidersCount', () => {
   })
 })
 
-describe('remove', () => {
+describe('softDelete', () => {
   let userA, userB
 
   beforeEach(async () => {
@@ -129,14 +129,15 @@ describe('remove', () => {
       articles: [{ article: articleA.id, order: 1 }, { article: articleB.id, order: 2 }],
     })
 
-    await userA.remove()
+    await userA.softDelete()
   })
 
   test('user does not exist anymore', async () => {
     const user = await User.findOne({ displayName: '[deleted user]' })
 
+    expect(user).toHaveProperty('deletedAt', expect.any(Date))
     expect(user).toHaveProperty('password', null)
-    expect(user).toHaveProperty('email', expect.stringMatching(/^[a-f0-9-]+@example.com$/))
+    expect(user).toHaveProperty('email', expect.stringMatching(/^deleted-user-[a-f0-9-]+@example.com$/))
 
     return expect(await await User.find()).toHaveLength(2)
   })

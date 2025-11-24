@@ -202,7 +202,7 @@ export function useDisplayName () {
   const { t } = useTranslation()
 
   return function displayName (user = {}) {
-    if (user.displayName === '[deleted user]') {
+    if (user.deletedAt) {
       return t('user.account.isDeleted.displayName')
     }
 

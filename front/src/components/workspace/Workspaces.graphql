@@ -1,3 +1,4 @@
+# import './Credentials.graphql'
 ## queries
 
 query getWorkspaces {
@@ -14,8 +15,7 @@ query getWorkspaces {
     createdAt
     updatedAt
     creator {
-      username
-      displayName
+      ...basicPublicUserFields
     }
     stats {
       membersCount
@@ -38,8 +38,7 @@ query getWorkspace($workspaceId: ID!) {
     createdAt
     updatedAt
     creator {
-      username
-      displayName
+      ...basicPublicUserFields
     }
     stats {
       membersCount
@@ -70,10 +69,7 @@ query getUserStats {
 query getWorkspaceMembers($workspaceId: ID!) {
   workspace(workspaceId: $workspaceId) {
     members {
-      _id
-      displayName
-      username
-      email
+      ...extendedPublicUserFields
     }
   }
 }
@@ -85,10 +81,7 @@ mutation inviteMember($workspaceId: ID!, $userId: ID!) {
     inviteMember(userId: $userId) {
       _id
       members {
-        _id
-        displayName
-        username
-        email
+        ...extendedPublicUserFields
       }
     }
   }
@@ -100,10 +93,7 @@ mutation removeMember($workspaceId: ID!, $userId: ID!) {
       remove {
         _id
         members {
-          _id
-          displayName
-          username
-          email
+          ...extendedPublicUserFields
         }
       }
     }

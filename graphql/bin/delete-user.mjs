@@ -71,7 +71,7 @@ console.info([{
 }])
 
 if (values.force) {
-  await u.remove()
+  await u.softDelete()
   console.info('Deleted!')
 }
 
