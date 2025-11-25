@@ -1,8 +1,7 @@
 import { clsx } from 'clsx'
 import { Bot, User } from 'lucide-react'
 import React, { useMemo } from 'react'
-
-import i18n from '../../i18n.js'
+import { useTranslation } from 'react-i18next'
 
 import styles from './Version.module.scss'
 
@@ -12,6 +11,17 @@ const relativeTimeFormatOptions = {
   style: 'long',
 }
 
+/**
+ * @param {Object} props
+ * @param {string} props.title
+ * @param {string} props.description
+ * @param {string} props.creator
+ * @param {string} props.type
+ * @param {string} props.date
+ * @param {boolean} props.selected
+ * @param {(event => void)} props.onClick
+ * @returns {React.ReactElement}
+ */
 export default function Version({
   title,
   description,
@@ -21,6 +31,7 @@ export default function Version({
   selected,
   onClick = () => {},
 }) {
+  const { i18n } = useTranslation()
   const currentDate = new Date()
   const currentYear = currentDate.getFullYear()
   const shortDate = useMemo(() => {
@@ -73,7 +84,7 @@ export default function Version({
             <div className={styles.attribute}>
               {creator && (
                 <>
-                  <User size={'1rem'} /> {creator}
+                  <User size={'1rem'} aria-hidden /> {creator}
                 </>
               )}
             </div>

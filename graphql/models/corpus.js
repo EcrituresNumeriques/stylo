@@ -42,4 +42,18 @@ const corpusSchema = new Schema(
   { timestamps: true }
 )
 
+/**
+ * Retrieves corpuses owned by a given user in a given workspace.
+ *
+ * @param {object} params
+ * @param {import('./user')} params.user
+ * @param {import('./workspace')} [params.workspace]
+ * @returns {mongoose.Collection<import('./corpus')>} corpuses
+ */
+corpusSchema.statics.findByUser = function findCorpusByUser({ user, workspace = null }) {
+  return this
+    .find({ creator: user._id, workspace })
+    .sort([['updatedAt', -1]])
+}
+
 module.exports = mongoose.model('Corpus', corpusSchema)

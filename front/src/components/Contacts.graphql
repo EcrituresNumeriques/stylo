@@ -1,12 +1,11 @@
+#import './Credentials.graphql'
+
 query addContact($userId: ID!, $contactId: ID!) {
   user(user: $userId) {
     addContact(userId: $contactId) {
       _id
       acquintances {
-        _id
-        displayName
-        username
-        email
+        ...extendedPublicUserFields
       }
     }
   }
@@ -17,10 +16,7 @@ query removeContact($userId: ID!, $contactId: ID!) {
     removeContact(userId: $contactId) {
       _id
       acquintances {
-        _id
-        displayName
-        username
-        email
+        ...extendedPublicUserFields
       }
     }
   }
@@ -28,20 +24,14 @@ query removeContact($userId: ID!, $contactId: ID!) {
 
 query getUserByEmail($userEmail: String!) {
   getUser(filter: { email: $userEmail }) {
-    _id
-    displayName
-    username
-    email
+    ...extendedPublicUserFields
   }
 }
 
 query getContacts($userId: ID!) {
   user(user: $userId) {
     acquintances {
-      _id
-      displayName
-      username
-      email
+      ...extendedPublicUserFields
     }
   }
 }

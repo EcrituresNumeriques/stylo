@@ -45,6 +45,19 @@ const workspaceSchema = new Schema(
   { timestamps: true }
 )
 
+/**
+ *
+ * @param {import('./user')} user
+ * @returns {mongoose.Collection} workspaces
+ */
+workspaceSchema.statics.findByUser = function findWorkspaceByUser(user) {
+  return this
+    .find({ 'members.user': user?._id })
+    .sort([
+      ['updatedAt', -1],
+    ])
+}
+
 workspaceSchema.methods.findMembersByArticle =
   async function findMembersByArticle(articleId) {
     const result = await this.aggregate([

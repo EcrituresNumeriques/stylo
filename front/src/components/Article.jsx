@@ -21,7 +21,7 @@ import { Link, useParams } from 'react-router'
 import { toast } from 'react-toastify'
 
 import useFetchData from '../hooks/graphql'
-
+import { useDisplayName } from '../hooks/user.js'
 import { useArticleActions } from '../hooks/article.js'
 import { useModal } from '../hooks/modal.js'
 
@@ -60,6 +60,7 @@ export default function Article({
   onArticleDeleted,
   onArticleCreated,
 }) {
+  const displayName = useDisplayName()
   const activeUser = useSelector((state) => state.activeUser)
   const articleId = useMemo(() => article._id, [article])
   const { workspaceId: activeWorkspaceId } = useParams()
@@ -409,13 +410,13 @@ export default function Article({
             />
           ))}
           <span className={styles.by}>{t('article.by.text')}</span>{' '}
-          <span className={styles.author}>{article.owner.displayName}</span>
+          <span className={styles.author}>{displayName(article.owner)}</span>
           {contributors?.length > 0 && (
             <span className={styles.contributorNames}>
               <span>
                 ,{' '}
                 {contributors
-                  .map((c) => c.user.displayName || c.user.username)
+                  .map((c) => displayName(c.user))
                   .join(', ')}
               </span>
             </span>

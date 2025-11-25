@@ -224,6 +224,7 @@ type User {
   removeContact(userId: ID!): User
   stats: UserStats
   tags(limit: Int, page: Int): [Tag]
+  deletedAt: DateTime
   updatedAt: DateTime
   username: String
   workspaces: [Workspace!]

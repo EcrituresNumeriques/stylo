@@ -1,3 +1,5 @@
+#import './Credentials.graphql'
+
 query addContributor($userId: ID!, $articleId: ID!) {
   article(article: $articleId) {
     addContributor(userId: $userId) {
@@ -5,10 +7,7 @@ query addContributor($userId: ID!, $articleId: ID!) {
       contributors {
         roles
         user {
-          _id
-          displayName
-          username
-          email
+          ...extendedPublicUserFields
         }
       }
     }
@@ -22,10 +21,7 @@ query removeContributor($userId: ID!, $articleId: ID!) {
       contributors {
         roles
         user {
-          _id
-          displayName
-          username
-          email
+          ...extendedPublicUserFields
         }
       }
     }

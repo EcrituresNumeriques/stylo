@@ -1,59 +1,4 @@
-# query getUserArticles($user: ID!) {
-#   user(user: $user) {
-#     _id
-#     displayName
-#   }
-
-#   corpus {
-#     _id
-#     name
-#     articles {
-#       article {
-#         _id
-#       }
-#     }
-#   }
-
-#   tags(user: $user) {
-#     _id
-#     owner
-#     description
-#     color
-#     name
-#   }
-
-#   articles(user: $user) {
-#     _id
-#     title
-#     updatedAt
-
-#     workingVersion {
-#       bibPreview
-#     }
-
-#     owner {
-#       _id
-#       displayName
-#       username
-#     }
-
-#     contributors {
-#       user {
-#         _id
-#         displayName
-#         username
-#         email
-#       }
-#     }
-
-#     tags {
-#       name
-#       owner
-#       color
-#       _id
-#     }
-#   }
-# }
+#import './Credentials.graphql'
 
 query getWorkspaceArticles($workspaceId: ID, $isPersonalWorkspace: Boolean!, $filter: FilterCorpusInput) {
   tags {
@@ -92,16 +37,12 @@ query getWorkspaceArticles($workspaceId: ID, $isPersonalWorkspace: Boolean!, $fi
 
     owner {
       _id
-      displayName
-      username
+      ...basicPublicUserFields
     }
 
     contributors {
       user {
-        _id
-        displayName
-        username
-        email
+        ...extendedPublicUserFields
       }
     }
 
@@ -122,8 +63,7 @@ mutation createArticle($createArticleInput: CreateArticleInput!) {
 
     owner {
       _id
-      displayName
-      username
+      ...basicPublicUserFields
     }
 
     tags {

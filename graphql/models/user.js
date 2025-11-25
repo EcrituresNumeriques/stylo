@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
+const { randomUUID } = require('node:crypto')
 
 const { article: defaultArticle } = require('../data/defaultsData')
 
@@ -69,12 +70,14 @@ const userSchema = new Schema(
     password: {
       type: String,
       default: null,
-      set: (password) => bcrypt.hashSync(password.trim(), 10),
+      required: false,
+      set: (password) => password ? bcrypt.hashSync(password.trim(), 10) : null,
     },
     firstName: String,
     lastName: String,
     institution: String,
     connectedAt: Date,
+    deletedAt: Date
   },
   { timestamps: true }
 )
@@ -133,5 +136,23 @@ userSchema.virtual('authTypes').get(function authTypes() {
 
   return Array.from(types)
 })
+
+userSchema.methods.softDelete =  async function softDeleteUser() {
+  // generate a random/unguessable email because email is a unique index
+  const email = `deleted-user-${randomUUID({ disableEntropyCache: true })}@example.com`
+
+  this.set({
+    authProviders: {},
+    deletedAt: Date.now(),
+    displayName: '[deleted user]',
+    email,
+    firstName: '',
+    institution: null,
+    lastName: '',
+    password: null,
+  })
+
+  return await this.save()
+}
 
 module.exports = mongoose.model('User', userSchema)

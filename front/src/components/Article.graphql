@@ -1,10 +1,11 @@
+#import './Credentials.graphql'
+
 fragment basicVersionFields on Version {
   _id
   createdAt
   message
   owner {
-    displayName
-    username
+    ...basicPublicUserFields
   }
   type
   revision
@@ -20,8 +21,7 @@ fragment articleVersionFields on Version {
 fragment basicArticleFields on Article {
   _id
   owner {
-    displayName
-    username
+    ...basicPublicUserFields
   }
   title
   updatedAt
@@ -30,8 +30,7 @@ fragment basicArticleFields on Article {
 fragment editableArticleFields on Article {
   contributors {
     user {
-      displayName
-      username
+      ...basicPublicUserFields
     }
   }
 
@@ -92,10 +91,7 @@ query getArticleContributors($articleId: ID!) {
   article(article: $articleId) {
     contributors {
       user {
-        _id
-        email
-        username
-        displayName
+        ...extendedPublicUserFields
       }
     }
   }

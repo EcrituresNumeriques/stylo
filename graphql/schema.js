@@ -80,6 +80,7 @@ type User {
   workspaces: [Workspace!]
   createdAt: DateTime
   updatedAt: DateTime
+  deletedAt: DateTime
 
   addContact(userId: ID!): User
   removeContact(userId: ID!): User

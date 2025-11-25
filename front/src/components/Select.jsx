@@ -4,7 +4,7 @@ import React, { forwardRef } from 'react'
 import styles from './button.module.scss'
 import fieldStyles from './field.module.scss'
 
-const Select = forwardRef((props, forwardedRef) => {
+export default forwardRef(function Select (props, forwardedRef) {
   return (
     <div
       className={clsx(fieldStyles.field, 'control-field')}
@@ -24,7 +24,3 @@ const Select = forwardRef((props, forwardedRef) => {
     </div>
   )
 })
-
-Select.displayName = 'Select'
-
-export default Select

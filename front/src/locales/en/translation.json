@@ -290,6 +290,7 @@
   "user.account.firstName": "First name",
   "user.account.id": "Identifier",
   "user.account.institution": "Institution",
+  "user.account.isDeleted.displayName": "[deleted user]",
   "user.account.lastName": "Last name",
   "user.account.title": "User profile",
   "user.account.updatedAt": "Account updated",
