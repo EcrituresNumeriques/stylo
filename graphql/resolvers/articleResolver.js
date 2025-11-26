@@ -514,8 +514,7 @@ module.exports = {
         : yaml
     },
     async metadataFormSchemas(_, __, context) {
-      const workspaces = await Workspace.find({ articles: context.articleId })
-      return workspaces.map((w) => w.formMetadata)
+      return Workspace.find({ articles: context.articleId }, ['formMetadata']).lean()
     },
   },
 }
