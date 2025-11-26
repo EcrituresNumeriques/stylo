@@ -89,43 +89,6 @@ const articleSchema = new Schema(
 )
 
 /**
- * Returns a single article for a given user
- *
- * @param {{ _id: String, user: String }}
- * @returns Article
- */
-articleSchema.statics.findOneByOwner = function findOneByOwner({ _id, user }) {
-  return this.findOne({
-    _id,
-    $or: [
-      { owner: { $in: user } },
-      { contributors: { $elemMatch: { user: { $in: user } } } },
-    ],
-  }).populate({ path: 'contributors', populate: 'user' })
-}
-
-/**
- * Returns articles for a given user
- *
- * @param {{ userId: String }}
- * @returns {Array<Article>}
- */
-articleSchema.statics.findManyByOwner = function findManyByOwner({ userId }) {
-  return this.find({
-    $or: [
-      { owner: userId },
-      { contributors: { $elemMatch: { user: userId } } },
-    ],
-  })
-    .sort({ updatedAt: -1 })
-    .populate([
-      { path: 'tags', options: { sort: { createdAt: -1 } } },
-      { path: 'owner' },
-      { path: 'contributors', populate: 'user' },
-    ])
-}
-
-/**
  * Load associated data on a list of articles using data loaders.
  * @param articles a list of lean articles
  * @param {{ users, tags }} loaders
@@ -160,23 +123,6 @@ articleSchema.statics.getArticles = async function getArticles({
 }) {
   const articles = await this.find(filter).sort({ updatedAt: -1 }).lean()
   return this.complete(articles, loaders)
-}
-
-/**
- * Returns a single article, fully populated
- *
- * @param {String} articleId
- * @returns Article
- */
-articleSchema.statics.findAndPopulateOne = function findAndPopulateOne(
-  articleId
-) {
-  return this.findOne({ _id: articleId })
-    .populate([
-      { path: 'tags', options: { sort: { createdAt: -1 } } },
-      { path: 'owner' },
-    ])
-    .populate({ path: 'contributors', populate: { path: 'user' } })
 }
 
 articleSchema.methods.addTags = async function addTags(...tagIds) {
