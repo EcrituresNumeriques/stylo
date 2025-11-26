@@ -1,7 +1,4 @@
-import {
-  Range,
-  Selection,
-} from 'monaco-editor/esm/vs/editor/editor.api'
+import { Range, Selection } from 'monaco-editor/esm/vs/editor/editor.api'
 
 import { blockAttributes } from './index.js'
 
@@ -60,7 +57,7 @@ export default function createInlineBlockCommand(
     const newStartLineNumber = endLineNumber
     const newColumn = isTextSelected
       ? endColumn + body_pre.length
-      : startColumn + body_pre.length;
+      : startColumn + body_pre.length
 
     editor.executeEdits(
       id,

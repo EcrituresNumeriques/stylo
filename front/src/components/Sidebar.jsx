@@ -1,6 +1,6 @@
-import React from 'react'
 import clsx from 'clsx'
 import { PanelRightClose, PanelRightOpen } from 'lucide-react'
+import React from 'react'
 
 import styles from './Sidebar.module.scss'
 

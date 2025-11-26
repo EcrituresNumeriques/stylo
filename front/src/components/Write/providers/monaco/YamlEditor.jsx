@@ -1,11 +1,13 @@
-import React, { useMemo } from 'react'
 import * as monaco from 'monaco-editor'
+import React, { useMemo } from 'react'
+
 import Editor, { loader } from '@monaco-editor/react'
 
 import defaultEditorOptions from './options.js'
 
-import styles from './YamlEditor.module.scss'
 import MonacoEditor from '../../../molecules/MonacoEditor.jsx'
+
+import styles from './YamlEditor.module.scss'
 
 loader.config({ monaco })
 

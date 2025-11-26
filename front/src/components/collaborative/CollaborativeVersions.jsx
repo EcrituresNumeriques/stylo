@@ -1,14 +1,19 @@
+import { ArrowLeft } from 'lucide-react'
 import React from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { Trans, useTranslation } from 'react-i18next'
-import { ArrowLeft } from 'lucide-react'
 
-import Loading from '../molecules/Loading.jsx'
-import Alert from '../molecules/Alert.jsx'
+import i18n from '../../i18n.js'
+
+import { useArticleVersions } from '../../hooks/article.js'
+import { useModal } from '../../hooks/modal.js'
+
 import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
 import CreateVersion from '../Write/CreateVersion.jsx'
+import Alert from '../molecules/Alert.jsx'
+import Loading from '../molecules/Loading.jsx'
 import Version from '../molecules/Version.jsx'
 
 import { useArticleVersions } from '../../hooks/article.js'

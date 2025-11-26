@@ -47,7 +47,7 @@ export default function CollaborativeEditor(props) {
 
   return (
     <section className={styles.container}>
-      <div>
+      <div className={styles.editor}>
         <CollaborativeTextEditor
           mode={mode}
           articleId={articleId}
@@ -57,7 +57,7 @@ export default function CollaborativeEditor(props) {
       </div>
 
       <CollaborativeEditorMenu
-        className={styles.sidebarArea}
+        className={styles.editorMenu}
         articleId={articleId}
         versionId={versionId}
         compareTo={compareTo}
