@@ -34,7 +34,7 @@ export default function Footer() {
         </li>
         <li>
           <a
-            href="https://discussions.revue30.org/c/stylo/"
+            href="https://discussions.revue30.org/c/stylo/entraide-stylo/7"
             target="_blank"
             rel="noopener noreferrer"
           >

@@ -1,13 +1,15 @@
 import { MessageCircleQuestionMark } from 'lucide-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useRouteLoaderData } from 'react-router'
 
 import useComponentVisible from '../../hooks/componentVisible.js'
 
 import styles from '../header.module.scss'
 
 export default function HelpMenu() {
-  const { t, i18n } = useTranslation(['home', 'translation'])
+  const { t } = useTranslation(['home', 'translation'])
+  const { user } = useRouteLoaderData('app')
   const { ref, isComponentVisible, toggleComponentIsVisible } =
     useComponentVisible(false)
 
@@ -43,17 +45,17 @@ export default function HelpMenu() {
             </a>
           </li>
           <li>
-            <a href="https://discussions.revue30.org/c/5" target="_blank" rel="noreferrer noopener">
+            <a href="https://discussions.revue30.org/c/stylo/entraide-stylo/7" target="_blank" rel="noreferrer noopener">
               {t('footer.community.link', { ns: 'translation' })}
             </a>
           </li>
-          <li>
-            <a href={`https://stylo-doc.ecrituresnumeriques.ca/${i18n.language}/contacts/`} target="_blank" rel="noreferrer noopener">
+          {user?._id && <li>
+            <a href="mailto:contact@ecrituresnumeriques.ca">
               {t('contactus.mailto')}
             </a>
-          </li>
+          </li>}
           <li>
-            <a href="https://github.com/EcrituresNumeriques/stylo/issues/new" rel="noopener noreferrer" target="_blank">
+            <a href="https://github.com/EcrituresNumeriques/stylo/issues" rel="noopener noreferrer" target="_blank">
               {t('contactus.newBug')}
             </a>
           </li>

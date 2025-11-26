@@ -176,7 +176,7 @@ export default function Home() {
 
         <p className={styles.spacer}>
           <a
-            href="https://discussions.revue30.org/c/stylo/"
+            href="https://discussions.revue30.org/c/stylo/entraide-stylo/7"
             className={buttonStyles.linkPrimary}
             rel="noreferrer noopener"
             target="_blank"
