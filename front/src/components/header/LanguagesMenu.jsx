@@ -19,7 +19,7 @@ export default function LanguagesMenu() {
   return (
     <nav
       ref={ref}
-      className={styles.languagesMenu}
+      className={styles.dropdownMenu}
       aria-labelledby="languages-selection"
       aria-description={t('header.languagesMenu.description')}
     >
@@ -33,45 +33,45 @@ export default function LanguagesMenu() {
         <span className="sr-only">{t('header.languagesMenu.button')}</span>
       </button>
 
-      {isComponentVisible && (
-        <div
-          className={styles.toggleMenuContainerAlignEnd}
-          id="header-languages-menu"
+
+      <div
+        className={styles.toggleMenuContainerAlignEnd}
+        id="header-languages-menu"
+        hidden={!isComponentVisible}
+      >
+        <ul
+          className={styles.toggleMenuList}
+          aria-label={t('header.languagesMenu.list')}
         >
-          <ul
-            className={styles.toggleMenuList}
-            aria-label={t('header.languagesMenu.list')}
-          >
-            <li>
-              <button
-                lang="en"
-                onClick={handleLanguageChange}
-                aria-pressed={i18n.language === 'en'}
-              >
-                English
-              </button>
-            </li>
-            <li>
-              <button
-                lang="fr"
-                onClick={handleLanguageChange}
-                aria-pressed={i18n.language === 'fr'}
-              >
-                Français
-              </button>
-            </li>
-            <li>
-              <button
-                lang="es"
-                onClick={handleLanguageChange}
-                aria-pressed={i18n.language === 'es'}
-              >
-                Español
-              </button>
-            </li>
-          </ul>
-        </div>
-      )}
+          <li>
+            <button
+              lang="en"
+              onClick={handleLanguageChange}
+              aria-pressed={i18n.language === 'en'}
+            >
+              English
+            </button>
+          </li>
+          <li>
+            <button
+              lang="fr"
+              onClick={handleLanguageChange}
+              aria-pressed={i18n.language === 'fr'}
+            >
+              Français
+            </button>
+          </li>
+          <li>
+            <button
+              lang="es"
+              onClick={handleLanguageChange}
+              aria-pressed={i18n.language === 'es'}
+            >
+              Español
+            </button>
+          </li>
+        </ul>
+      </div>
     </nav>
   )
 }

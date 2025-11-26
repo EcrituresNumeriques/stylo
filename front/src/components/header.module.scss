@@ -138,12 +138,19 @@
 /*
  * 3. Langues
  */
-.languagesMenu {
+.dropdownMenu {
   position: relative;
-}
 
-.languagesMenu > button {
-  display: flex;
+  > button {
+    display: flex;
+  }
+
+  button, a {
+    display: inline-block;
+    font-size: 1em;
+    font-weight: initial;
+    padding: .5em;
+  }
 }
 
 /*
