@@ -9,6 +9,7 @@ import logoContent from '/images/logo.svg?inline'
 import useComponentVisible from '../hooks/componentVisible.js'
 import { useActiveWorkspaceId } from '../hooks/workspace.js'
 
+import HelpMenu from './header/HelpMenu.jsx'
 import LanguagesMenu from './header/LanguagesMenu.jsx'
 import UserMenu from './header/UserMenu.jsx'
 import WorkspacesMenu from './workspace/WorkspacesMenu.jsx'
@@ -142,6 +143,7 @@ export default function Header() {
         )}
 
         <UserMenu />
+        <HelpMenu />
         <LanguagesMenu />
       </div>
     </header>

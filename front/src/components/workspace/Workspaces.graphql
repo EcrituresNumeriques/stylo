@@ -1,4 +1,4 @@
-# import './Credentials.graphql'
+#import '../Credentials.graphql'
 ## queries
 
 query getWorkspaces {
