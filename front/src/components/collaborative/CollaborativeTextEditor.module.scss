@@ -5,7 +5,6 @@
 .editor {
   border: 1px solid $main-border-color;
   min-height: 200px;
-  height: calc(100vh - 225px);
 
   :global {
     .monaco-editor {
@@ -19,6 +18,15 @@
   }
 }
 
+.collaborativeEditor {
+  display: flex;
+  flex: 1;
+}
+
+.hidden {
+  display: none;
+}
+
 .previewPage {
   @extend .simplePage;
 
@@ -26,7 +34,6 @@
   border: 1px solid #cccccc;
   margin: 0;
   display: block;
-  max-height: calc(100vh - 225px);
   overflow-y: auto;
   max-width: 100%;
 
@@ -39,7 +46,8 @@
   }
 
   > article {
-    a:link, a:visited {
+    a:link,
+    a:visited {
       color: #00f;
     }
 
@@ -47,7 +55,12 @@
       word-break: break-word;
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       line-height: 1.15;
       margin: 2.25rem 0 1rem;
 
@@ -80,15 +93,23 @@
       font-size: 1.2rem;
     }
 
-    img, video, figure, iframe, audio, canvas, table {
+    img,
+    video,
+    figure,
+    iframe,
+    audio,
+    canvas,
+    table {
       max-width: 100%;
     }
 
-
-    ul, ol, p, figure {
+    ul,
+    ol,
+    p,
+    figure {
       font-size: 1rem;
       line-height: 1.6;
-      margin: 0 0 .75em;
+      margin: 0 0 0.75em;
     }
 
     ul {
@@ -101,7 +122,8 @@
       padding-left: 2em;
     }
 
-    li, li > p {
+    li,
+    li > p {
       margin: 0;
     }
 

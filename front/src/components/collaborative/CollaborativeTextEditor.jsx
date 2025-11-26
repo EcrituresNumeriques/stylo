@@ -1,10 +1,17 @@
+import clsx from 'clsx'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
 
-import { MarkdownMenu, MetopesMenu, actions, registerActions, Separator } from './actions'
+import {
+  MarkdownMenu,
+  MetopesMenu,
+  Separator,
+  actions,
+  registerActions,
+} from './actions'
 import { DiffEditor } from '@monaco-editor/react'
 import throttle from 'lodash.throttle'
 import 'monaco-editor/esm/vs/base/browser/ui/codicons/codicon/codicon.css'
@@ -130,13 +137,13 @@ export default function CollaborativeTextEditor({
         editor.contextMenuId
       )
 
-      contextMenu._getMenuActions = function _getStyloCustomMenuActions () {
+      contextMenu._getMenuActions = function _getStyloCustomMenuActions() {
         return [
-            ...originalMenuActions,
-            new Separator(),
-            MetopesMenu({ editor, t }),
-            MarkdownMenu({ editor, t }),
-          ]
+          ...originalMenuActions,
+          new Separator(),
+          MetopesMenu({ editor, t }),
+          MarkdownMenu({ editor, t }),
+        ]
       }
 
       // Command Palette commands
@@ -253,7 +260,12 @@ export default function CollaborativeTextEditor({
         </div>
       )}
 
-      <div className={styles.collaborativeEditor} hidden={mode !== 'write'}>
+      <div
+        className={clsx(
+          styles.collaborativeEditor,
+          mode !== 'write' && styles.hidden
+        )}
+      >
         <MonacoEditor
           width={'100%'}
           height={'auto'}

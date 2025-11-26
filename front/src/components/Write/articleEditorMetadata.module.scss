@@ -1,27 +1,6 @@
 @use '../../styles/defaults' as *;
 @use '../../styles/variables' as *;
 
-.expandRight {
-  @extend .details;
-  border-left: 1px solid $main-border-color;
-  border-bottom: 1px solid $main-border-color;
-  margin-top: -1em;
-  display: flex;
-  flex-direction: column;
-  min-width: 375px;
-  max-width: 375px;
-  max-height: calc(100vh - 76px);
-  overflow-y: scroll;
-  padding: 1em 0.5em 2em 0.75em;
-
-  > button {
-    color: $main-color;
-    left: 0.5rem;
-    margin-right: auto;
-    margin-bottom: 1em;
-  }
-}
-
 .readonly {
   margin-bottom: 1rem;
 }
