@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Chaire de recherche du Canada sur les écritures numériques",
+  "author": "Laboratoire de recherche du Canada sur les écritures numériques",
   "license": "CC BY-SA 4.0",
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
