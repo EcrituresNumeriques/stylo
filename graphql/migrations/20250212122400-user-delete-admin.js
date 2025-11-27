@@ -1,17 +1,9 @@
 exports.up = async function (db) {
-  const mongo = await db._run('getDbInstance', true)
-  try {
-    await mongo.collection('users').updateMany({}, { $unset: { admin: '' } })
-  } finally {
-    await mongo.close()
-  }
+  const mongo = db._getDbInstance()
+  await mongo.collection('users').updateMany({}, { $unset: { admin: '' } })
 }
 
 exports.down = async function (db) {
-  const mongo = await db._run('getDbInstance', true)
-  try {
-    await mongo.collection('users').updateMany({}, { $set: { admin: false } })
-  } finally {
-    await mongo.close()
-  }
+  const mongo = db._getDbInstance()
+  await mongo.collection('users').updateMany({}, { $set: { admin: false } })
 }

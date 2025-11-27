@@ -1,0 +1,10 @@
+{
+  "dev": {
+    "url": "DATABASE_URL",
+    "overwrite": {
+      "driver": {
+        "require": "@ggrossetie/db-migrate-mongodb"
+      }
+    }
+  }
+}

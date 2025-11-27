@@ -4,9 +4,19 @@ const migrate = require('db-migrate')
 const databaseUrl = global.__MONGO_URI__ + 'stylo-tests'
 
 beforeAll(async () => {
-  process.env.DATABASE_URL = databaseUrl
-
-  const migrateInstance = migrate.getInstance(true)
+  const migrateInstance = migrate.getInstance(true, {
+    env: 'dev',
+    config: {
+      dev: {
+        url: global.__MONGO_URI__ + 'stylo-tests',
+        overwrite: {
+          driver: {
+            require: '@ggrossetie/db-migrate-mongodb',
+          },
+        },
+      },
+    },
+  })
   migrateInstance.silence(true)
   await migrateInstance.reset()
   await migrateInstance.up()
