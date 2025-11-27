@@ -7,7 +7,6 @@
       "endnote": "$t(types.block) nota final",
       "epigraph": "$t(types.block) epígrafe",
       "figure": "$t(types.block) figura",
-      "footnote-content": "Nota al pie (texto)",
       "notepre.aut": "$t(types.block) nota preliminar del autor",
       "notepre.pb": "$t(types.block) nota preliminar del editor",
       "notepre.tr": "$t(types.block) nota preliminar del traductor",
@@ -18,7 +17,7 @@
     },
     "infratextual-inline": {
       "bold": "Negrita",
-      "footnote-ref": "Nota al pie (referencia)",
+      "footnote-inline": "Nota",
       "hyperlink": "Hipervínculo",
       "inlinequote": "$t(types.inline) cita",
       "italic": "Cursiva",

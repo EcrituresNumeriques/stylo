@@ -25,18 +25,13 @@ export const actions = {
       body_post: '**',
       keybindings: [KeyMod.CtrlCmd | KeyCode.KeyB],
     }),
-    footnoteRef: createInlineBlockCommand('footnote-ref', {
+    footnoteInline: createInlineBlockCommand('footnote-inline', {
       attrs: null,
-      body_pre: '',
-      body_post: '[^x]',
-      keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF],
-    }),
-    footnoteContent: createDelimitedBlockCommand('footnote-content', {
-      attrs: null,
-      body_pre: '[^x]: ',
+      body_pre: '^[',
+      body_post: ']',
       delimiters: '',
       keybindings: [
-        [KeyMod.CtrlCmd | KeyMod.Alt | KeyMod.Shift | KeyCode.KeyF],
+        [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF],
       ],
       separator: ' ',
     }),
@@ -241,8 +236,7 @@ export function MarkdownMenu({ editor, t }) {
       _bindAction(actions.md.italic),
       _bindAction(actions.md.bold),
       _bindAction(actions.md.hyperlink),
-      _bindAction(actions.md.footnoteRef),
-      _bindAction(actions.md.footnoteContent),
+      _bindAction(actions.md.footnoteInline),
     ]
   )
 }

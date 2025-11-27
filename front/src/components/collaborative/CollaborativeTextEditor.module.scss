@@ -139,6 +139,15 @@
       font-size: 0.833rem;
     }
   }
+
+  a[id^="fnref"]:target {
+      background-color: $text-highlight-color;
+    }
+
+  li[id^="fn"]:target {
+    background-color: $text-highlight-color;
+    outline: 1px solid #000;
+  }
 }
 
 .inlineStatus {
