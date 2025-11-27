@@ -65,9 +65,7 @@ export const actions = {
     outline: createDelimitedBlockCommand('outline', {
       attrs: { titre: 'valeurtitre' },
       className: 'encadre',
-      separator: '',
-      body_pre: '[',
-      body_post: ' [nom]{.name}[prenom]{.surname}]{.auth}\n\n'
+      body_post: '[[nom]{.name}[prenom]{.surname}]{.auth}'
     }),
     inlinequote: createInlineBlockCommand('inlinequote'),
     notepreAuthor: createDelimitedBlockCommand('notepre.aut', {
