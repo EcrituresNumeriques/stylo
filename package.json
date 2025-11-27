@@ -34,9 +34,9 @@
   },
   "homepage": "https://github.com/EcrituresNumeriques/stylo#readme",
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "5.2.2",
+    "@trivago/prettier-plugin-sort-imports": "6.0.0",
     "concurrently": "^9.1.2",
-    "dotenv": "^16.4.7",
+    "dotenv": "^17.0.0",
     "prettier": "^3.5.3"
   },
   "volta": {
