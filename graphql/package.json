@@ -66,13 +66,13 @@
     "@types/jest": "~29.5",
     "eslint": "~8.57",
     "eslint-config-prettier": "^10.0.1",
-    "eslint-plugin-jest": "~28.11.0",
+    "eslint-plugin-jest": "~28.14.0",
     "eslint-plugin-security": "~3.0",
     "jest": "~29.7",
     "jest-environment-node": "~29.7"
   },
   "volta": {
-    "node": "22.16.0",
-    "npm": "10.9.2"
+    "node": "22.21.1",
+    "npm": "10.9.4"
   }
 }
