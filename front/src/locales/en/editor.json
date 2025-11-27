@@ -7,7 +7,6 @@
       "endnote": "$t(types.block) end note",
       "epigraph": "$t(types.block) epigraph",
       "figure": "$t(types.block) figure",
-      "footnote-content": "Footnote (text)",
       "notepre.aut": "$t(types.block) preliminary note from author",
       "notepre.pb": "$t(types.block) preliminary note from publisher",
       "notepre.tr": "$t(types.block) preliminary note from translator",
@@ -19,7 +18,7 @@
     },
     "infratextual-inline": {
       "bold": "Bold",
-      "footnote-ref": "Footnote (reference)",
+      "footnote-inline": "Note",
       "hyperlink": "Hyperlink",
       "inlinequote": "$t(types.inline) citation",
       "italic": "Italic",
