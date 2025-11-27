@@ -81,9 +81,7 @@ module.exports = {
   Tag: {
     async articles(tag, { limit }) {
       // TODO load articles using a query on the articles collection
-      await tag
-        .populate({ path: 'articles', options: { limit } })
-        .execPopulate()
+      await tag.populate({ path: 'articles', options: { limit } })
       return tag.articles
     },
   },

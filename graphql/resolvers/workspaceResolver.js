@@ -189,9 +189,7 @@ module.exports = {
     },
 
     async members(workspace, { limit }) {
-      await workspace
-        .populate({ path: 'members', populate: 'user', limit })
-        .execPopulate()
+      await workspace.populate({ path: 'members', populate: 'user', limit })
       return workspace.members.map((m) => m.user)
     },
 

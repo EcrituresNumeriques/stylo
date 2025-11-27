@@ -59,7 +59,7 @@ describe('workspace resolver', () => {
       userId: thomas.id,
     })
     const members = await WorkspaceMutation.members(workspace, { limit: 10 })
-    expect(members.toObject()).toEqual(
+    expect(members.map((m) => m.toObject())).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           firstName: 'Guillaume',

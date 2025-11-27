@@ -51,7 +51,10 @@ module.exports = {
     async createUserWithAuth(_, { details }, { session }) {
       // link accounts
       if (!session?.pendingRegistration) {
-        throw new BadRequestError('REGISTRATION_NOT_FOUND', 'No registration found')
+        throw new BadRequestError(
+          'REGISTRATION_NOT_FOUND',
+          'No registration found'
+        )
       }
 
       const user = await User.create({
@@ -100,7 +103,10 @@ module.exports = {
       const authProviderKey = `authProviders.${service}`
 
       if (!session?.pendingRegistration?.authProviders) {
-        throw new BadRequestError('ACCOUNT_NOT_FOUND', 'No remote account data found')
+        throw new BadRequestError(
+          'ACCOUNT_NOT_FOUND',
+          'No remote account data found'
+        )
       }
 
       // pending linking account
@@ -199,7 +205,7 @@ module.exports = {
       //If all clear, add to acquintance
       thisUser.acquintances.push(thisAcquintance)
       await thisUser.save()
-      return thisUser.populate('acquintances').execPopulate()
+      return thisUser.populate('acquintances')
     },
 
     async updateUser(_, args, context) {
@@ -241,13 +247,11 @@ module.exports = {
 
   User: {
     async articles(user, { limit }) {
-      await user
-        .populate({
-          path: 'articles',
-          options: { limit },
-          populate: { path: 'owner tags' },
-        })
-        .execPopulate()
+      await user.populate({
+        path: 'articles',
+        options: { limit },
+        populate: { path: 'owner tags' },
+      })
       return user.articles
     },
 

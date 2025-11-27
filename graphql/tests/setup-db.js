@@ -23,11 +23,10 @@ beforeAll(async () => {
 })
 
 beforeAll(async () => {
+  mongoose.set('strictQuery', false)
   globalThis.__MONGO__ = await mongoose.connect(databaseUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: true,
   })
 
   globalThis.__MONGO_SESSION__ =
