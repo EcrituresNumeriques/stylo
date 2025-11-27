@@ -133,8 +133,7 @@ export default function ArticleMetadata({ onBack, articleId, versionId }) {
           {error !== '' && <p className={styles.error}>{error}</p>}
           <MonacoYamlEditor
             readOnly={readOnly}
-            height="100%"
-            fontSize="14"
+            height="400px"
             text={metadataYaml}
             onTextUpdate={handleYamlChange}
           />
