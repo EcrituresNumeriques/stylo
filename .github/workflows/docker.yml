@@ -57,7 +57,7 @@ jobs:
       TAG: ${{ inputs.release-version || 'latest' }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ (inputs.release-version  && format('v{0}', inputs.release-version)) || github.ref }}
       - uses: docker/setup-buildx-action@v3
