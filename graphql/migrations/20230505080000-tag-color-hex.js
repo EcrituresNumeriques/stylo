@@ -144,25 +144,33 @@ const colours = {
 }
 
 exports.up = async function (db) {
-  const tags = await db._find('tags', {})
-  for await (const tag of tags) {
-    let color
-    if (tag.color && tag.color.charAt(0) !== '#') {
-      color = colours[tag.color] || '#eeeeee'
-    } else if (tag.color && tag.color.length < 7) {
-      color = '#cccccc'
-    } else if (!tag.color) {
-      color = '#eeeeee'
+  const mongo = db._getDbInstance()
+
+  const tags = mongo.collection('tags')
+  const tagsCursor = tags.find({})
+  try {
+    while (await tagsCursor.hasNext()) {
+      const tag = await tagsCursor.next()
+      let color
+      if (tag.color && tag.color.charAt(0) !== '#') {
+        color = colours[tag.color] || '#eeeeee'
+      } else if (tag.color && tag.color.length < 7) {
+        color = '#cccccc'
+      } else if (!tag.color) {
+        color = '#eeeeee'
+      }
+      if (color) {
+        await tags.updateMany(
+          { _id: tag._id },
+          {
+            $set: { color },
+          },
+          { upsert: false }
+        )
+      }
     }
-    if (color) {
-      await db.updateMany(
-        { _id: tag._id },
-        {
-          $set: { color },
-        },
-        { upsert: false }
-      )
-    }
+  } finally {
+    await tagsCursor.close()
   }
 }
 
