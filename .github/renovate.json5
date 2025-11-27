@@ -1,51 +1,69 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "dependencyDashboard": true,
-  "separateMajorMinor": true,
-  "extends": [
-    ":preserveSemverRanges"
-  ],
-  "packageRules": [
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  dependencyDashboard: true,
+  separateMajorMinor: true,
+  extends: [':preserveSemverRanges'],
+  packageRules: [
     {
-      "matchManagers": ["github-actions"],
-      "groupName": "GitHub Actions"
+      matchDepTypes: ['devDependencies'],
+      matchUpdateTypes: ['patch', 'minor'],
+      groupName: 'Development dependencies (non-major)',
     },
     {
-      "matchManagers": ["dockerfile", "docker-compose"],
-      "groupName": "Docker images"
+      matchDepTypes: ['devDependencies'],
+      matchUpdateTypes: ['major'],
+      groupName: 'Development dependencies (major)',
     },
     {
-      "matchFileNames": ["front/package.json"],
-      "groupName": "Frontend dependencies"
+      // libcrypto.so.1.1 is missing in ubuntu-24.04
+      // stay on ubuntu-22.04 until we upgrade to MongoDB >=6
+      matchPackageNames: ['/ubuntu/'],
+      matchManagers: ['github-actions'],
+      enabled: false,
     },
     {
-      "matchFileNames": ["front/package.json"],
+      matchManagers: ['github-actions'],
+      groupName: 'GitHub Actions',
+    },
+    {
+      // manually upgrade Docker imaged (MongoDB, Node...)
+      matchManagers: ['dockerfile', 'docker-compose'],
+      groupName: 'Docker images',
+      enabled: false,
+    },
+    {
+      matchFileNames: ['front/package.json'],
+      groupName: 'Frontend dependencies',
+    },
+    {
+      matchFileNames: ['front/package.json'],
       groupName: 'React dependencies',
-      matchPackageNames: [
-        '/react/',
-      ],
+      matchPackageNames: ['/react/'],
     },
     {
-      "matchFileNames": ["front/package.json"],
+      matchFileNames: ['front/package.json'],
       groupName: 'i18n dependencies',
-      matchPackageNames: [
-        '/i18next/',
-      ],
+      matchPackageNames: ['/i18next/'],
     },
     {
-      "matchFileNames": ["docs/package.json"],
-      "groupName": "Documentation dependencies"
+      matchFileNames: ['docs/package.json'],
+      groupName: 'Documentation dependencies',
     },
     {
-      "matchFileNames": ["graphql/package.json"],
-      "groupName": "Backend dependencies"
+      matchFileNames: ['graphql/package.json'],
+      groupName: 'Backend dependencies',
     },
     {
-      "matchManagers": ["pip_requirements"],
-      "groupName": "Ansible dependencies"
+      matchFileNames: ['graphql/package.json'],
+      groupName: 'Backend dependencies related to MongoDB',
+      matchPackageNames: ['/mongodb/', '/mongoose/'],
+    },
+    {
+      matchManagers: ['pip_requirements'],
+      groupName: 'Ansible dependencies',
     },
   ],
-  "lockFileMaintenance": {
-    "enabled": true
-  }
+  lockFileMaintenance: {
+    enabled: true,
+  },
 }
