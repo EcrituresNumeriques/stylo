@@ -12,7 +12,7 @@
     {
       matchDepTypes: ['devDependencies'],
       matchUpdateTypes: ['major'],
-      groupName: 'Development dependencies (major)',
+      groupName: 'Development dependencies',
     },
     {
       // libcrypto.so.1.1 is missing in ubuntu-24.04
@@ -56,7 +56,7 @@
     {
       matchFileNames: ['graphql/package.json'],
       groupName: 'Backend dependencies related to MongoDB',
-      matchPackageNames: ['/mongodb/', '/mongoose/'],
+      matchPackageNames: ['/mongodb/', '/mongoose/', '/connect-mongo/'],
     },
     {
       matchManagers: ['pip_requirements'],
