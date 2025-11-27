@@ -67,6 +67,13 @@ export const actions = {
       body_pre: '\n[titre]{.head}\n\n![caption](image.png)',
       body_post: ':::{.credits}\n[]{.credits} [@source]\n:::',
     }),
+    outline: createDelimitedBlockCommand('outline', {
+      attrs: { titre: 'valeurtitre' },
+      className: 'encadre',
+      separator: '',
+      body_pre: '[',
+      body_post: ' [nom]{.name}[prenom]{.surname}]{.auth}\n\n'
+    }),
     inlinequote: createInlineBlockCommand('inlinequote'),
     notepreAuthor: createDelimitedBlockCommand('notepre.aut', {
       attrs: { origin: 'aut' },
@@ -227,6 +234,7 @@ export function MetopesMenu({ editor, t }) {
         _bindAction(actions.metopes.smallcaps),
       ]),
       _bindAction(actions.metopes.figure),
+      _bindAction(actions.metopes.outline),
     ]
   )
 }
