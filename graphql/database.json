@@ -1,6 +1,8 @@
 {
   "dev": {
-    "url": "DATABASE_URL",
+    "url": {
+      "env": "DATABASE_URL"
+    },
     "overwrite": {
       "driver": {
         "require": "@ggrossetie/db-migrate-mongodb"
