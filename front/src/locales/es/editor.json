@@ -11,6 +11,7 @@
       "notepre.aut": "$t(types.block) nota preliminar del autor",
       "notepre.pb": "$t(types.block) nota preliminar del editor",
       "notepre.tr": "$t(types.block) nota preliminar del traductor",
+      "outline": "$t(types.block) cuadro",
       "question": "$t(types.block) pregunta",
       "quote-alt": "$t(types.block) cita bis",
       "sig": "$t(types.block) firma",
