@@ -22,7 +22,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ggrossetie/db-migrate-mongodb": "2.0.0-beta.12",
+    "@ggrossetie/db-migrate-mongodb": "2.0.0-beta.14",
     "@graphql-tools/schema": "^9.0.12",
     "@sentry/node": "^9.2.0",
     "@sentry/profiling-node": "^9.2.0",

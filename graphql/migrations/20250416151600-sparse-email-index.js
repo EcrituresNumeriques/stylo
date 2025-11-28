@@ -13,6 +13,7 @@ exports.up = async function (db) {
 }
 
 exports.down = async function (db) {
-  await db.removeIndex('users', 'email_1')
-  await db.addIndex('users', 'email_1', ['email'], true)
+  const mongo = db._getDbInstance()
+  await mongo.collection('users').dropIndex('email_1')
+  await mongo.collection('users').createIndex({ email: 1 }, { unique: true })
 }

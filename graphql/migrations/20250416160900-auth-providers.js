@@ -28,7 +28,9 @@ exports.down = async function (db) {
   await users.updateMany(
     {},
     {
-      $unset: 'authProviders',
+      $unset: {
+        authProviders: '',
+      },
     }
   )
 }
