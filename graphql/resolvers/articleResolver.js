@@ -154,7 +154,7 @@ async function createVersion(article, { major, message, userId, type }) {
     owner: userId,
     type: type || 'userAction',
   })
-  await createdVersion.populate('owner').execPopulate()
+  await createdVersion.populate('owner')
   article.versions.unshift(createdVersion._id)
   return true
 }

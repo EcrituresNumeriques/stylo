@@ -130,7 +130,7 @@ articleSchema.methods.addTags = async function addTags(...tagIds) {
   this.tags.push(...tagIds)
 
   // Step 2 : populate article tags
-  await this.populate('tags').execPopulate()
+  await this.populate('tags')
 
   // now, add the article reference in these tags
   await this.model('Tag').updateMany(
@@ -147,7 +147,7 @@ articleSchema.methods.removeTags = async function removeTags(...tagIds) {
   this.tags.pull(...tagIds)
 
   // Step 2 : populate article tags
-  await this.populate('tags').execPopulate()
+  await this.populate('tags')
 
   // now, add the article reference in these tags
   await this.model('Tag').updateMany(
@@ -216,7 +216,7 @@ articleSchema.methods.createNewVersion = async function createNewVersion({
       message,
       owner: user.id,
     })
-    .then((v) => v.populate('owner').execPopulate())
+    .then((v) => v.populate('owner'))
 
   this.versions.push(createdVersion)
   await this.save()
@@ -225,7 +225,7 @@ articleSchema.methods.createNewVersion = async function createNewVersion({
 }
 
 articleSchema.pre('remove', async function () {
-  await this.populate('owner').execPopulate()
+  await this.populate('owner')
 
   const session = await this.db.startSession()
 

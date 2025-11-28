@@ -3,7 +3,7 @@ module.exports = {
   mongodbMemoryServerOptions: {
     autoStart: false,
     binary: {
-      version: '5.0.31',
+      version: '6.0.26',
     },
     instance: {
       dbName: 'stylo-tests',
