@@ -10,7 +10,7 @@ services:
       - ./data/db:/data/db
     command: mongod --logpath=/dev/null
     healthcheck:
-      test: ['CMD', 'mongo', '--eval', '"db.adminCommand(''ping'')"']
+      test: ['CMD', 'mongosh', '--eval', '"db.adminCommand(''ping'')"']
       interval: 30s
       timeout: 5s
       start_period: 5s
