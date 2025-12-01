@@ -177,10 +177,12 @@ export default function CorpusItem({ corpus }) {
         </div>
       </div>
       {expanded && (
-        <div id={`corpus-${corpus._id}-chapters`} className={styles.detail}>
-          {corpus.description && <p>{corpus.description}</p>}
-          <CorpusArticles corpusId={corpusId} />
-        </div>
+        <>
+          <div id={`corpus-${corpus._id}-chapters`} className={styles.detail}>
+            {corpus.description && <p>{corpus.description}</p>}
+            <CorpusArticles corpusId={corpusId} />
+          </div>
+        </>
       )}
 
       <Modal

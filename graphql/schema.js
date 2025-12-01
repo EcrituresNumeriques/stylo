@@ -330,6 +330,11 @@ input CreateWorkspaceInput {
   description: String
 }
 
+input SetCorpusArticlesInput {
+  corpusId: ID!
+  articleIds: [ID]
+}
+
 type CorpusArticle {
   corpus: Corpus!
   article: Article
@@ -513,6 +518,12 @@ type Mutation {
   Returns an error if the corpus does not exist or cannot be accessed.
   """
   corpus(corpusId: ID!): Corpus
+  
+  """
+  Updates the articles associated with the corpus.
+  Existing articles that are not in the list will be removed, and articles not currently present will be added.
+  """
+  setCorpusArticles(setCorpusArticlesInput: SetCorpusArticlesInput!): Corpus 
 
   "Create a new corpus"
   createCorpus(createCorpusInput: CreateCorpusInput!): Corpus

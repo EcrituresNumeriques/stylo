@@ -22,7 +22,7 @@ const { values, positionals } = parseArgs({
 const [email] = positionals
 
 if (!email) {
-  throw RangeError("email argument is missing.")
+  throw RangeError('email argument is missing.')
 }
 
 const dbClient = await mongoose.connect(config.get('mongo.databaseUrl'), {
@@ -61,14 +61,16 @@ const [corpuses, tags, versions, workspaces] = await Promise.all([
 /*
  * Print summary
  */
-console.info([{
-  user: u,
-  articles: u.articles.length,
-  corpuses: corpuses.length,
-  tags: tags.length,
-  versions: versions.length,
-  workspaces: workspaces.length,
-}])
+console.info([
+  {
+    user: u,
+    articles: u.articles.length,
+    corpuses: corpuses.length,
+    tags: tags.length,
+    versions: versions.length,
+    workspaces: workspaces.length,
+  },
+])
 
 if (values.force) {
   await u.softDelete()

@@ -1,5 +1,17 @@
 {
   "annotate.title": "Annotate",
+  "article.addToCorpus": {
+    "action": "Add chapters",
+    "add": "Add",
+    "added": "Added",
+    "error": "Unable to associate these chapters to the corpus: {{errMessage}}",
+    "label": "Choose these chapters",
+    "modal": {
+      "title": "Chapter selection"
+    },
+    "success": "Articles successfully associated to the corpus.",
+    "title": "Choose these chapters"
+  },
   "article.annotate.button": "Annotate (open a new window)",
   "article.by.text": "by",
   "article.contributors.added": "{{ name }} is now a contributor.",
@@ -40,6 +52,8 @@
   "article.editor.modes.menuLabel": "Article modes",
   "article.editor.preview": "Preview",
   "article.editors.label": "Editors online",
+  "article.filter.label": "Filter",
+  "article.filter.placeholder": "By article title",
   "article.getTags.error": "Unable to load tags {{errMessage}}",
   "article.legacyEditor.edit.title": "[LEGACY] Edit article",
   "article.page.title": "{{ title }} (editing)",
@@ -100,7 +114,6 @@
   "common.updatedAt.label": "updated at",
   "contact.searchField.placeholder": "Contact email",
   "contact.userNotFound.message": "No user found for this email adress",
-  "corpus.addPart.note": "To add a new chapter, go to the <1>articles page</1> and select this corpus.",
   "corpus.articlesOrder.toastFailure": "Unable to update articles order: {{errorMessage}}",
   "corpus.articlesOrder.toastSuccess": "Articles order successfully updated.",
   "corpus.by.text": "by",

@@ -152,6 +152,12 @@ type Mutation {
   removeCredential(email: EmailAddress!, user: ID): User
   "Sets a user authentication token (to something, or nothing if unlinking services"
   setAuthToken(service: AuthTokenService!): User
+  """
+
+  Updates the articles associated with the corpus.
+  Existing articles that are not in the list will be removed, and articles not currently present will be added.
+  """
+  setCorpusArticles(setCorpusArticlesInput: SetCorpusArticlesInput!): Corpus
   "add a user to an article"
   shareArticle(article: ID!, to: ID!, user: ID): Article
   "Disconnect Stylo account from an authentication service"
@@ -215,6 +221,7 @@ type User {
   authProviders: AuthProvidersMap
   authTypes: [AuthType]
   createdAt: DateTime
+  deletedAt: DateTime
   displayName: String
   email: EmailAddress
   firstName: String
@@ -224,7 +231,6 @@ type User {
   removeContact(userId: ID!): User
   stats: UserStats
   tags(limit: Int, page: Int): [Tag]
-  deletedAt: DateTime
   updatedAt: DateTime
   username: String
   workspaces: [Workspace!]
@@ -306,6 +312,15 @@ type WorkspaceArticle {
   workspace: Workspace!
 }
 
+"""
+
+Form definition based on React JSON schema.
+It consists of:
+- data: the data structure in JSON schema format
+- ui: the user interface configuration
+
+Both must be valid JSON.
+"""
 type WorkspaceFormMetadata {
   data: String
   ui: String
@@ -416,6 +431,11 @@ input NewUserWithAuthInput {
   firstName: String
   institution: String
   lastName: String
+}
+
+input SetCorpusArticlesInput {
+  articleIds: [ID]
+  corpusId: ID!
 }
 
 input UpdateCorpusInput {

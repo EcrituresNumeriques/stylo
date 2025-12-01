@@ -12,6 +12,7 @@ fragment basicCorpusFields on Corpus {
   type
   updatedAt
 }
+
 fragment basicWorkspaceFields on Workspace {
   _id
   name
@@ -43,7 +44,7 @@ query getCorpus(
     }
   }
 
-  workspace(workspaceId: $workspaceId) @skip (if: $isPersonalWorkspace) {
+  workspace(workspaceId: $workspaceId) @skip(if: $isPersonalWorkspace) {
     ...basicWorkspaceFields
   }
 }
@@ -139,5 +140,14 @@ mutation updateArticlesOrder(
     updateArticlesOrder(articlesOrderInput: $articlesOrderInput) {
       _id
     }
+  }
+}
+
+mutation setCorpusArticles(
+  $corpusId: ID!
+  $articleIds: [ID]!
+) {
+  setCorpusArticles(setCorpusArticlesInput: { corpusId: $corpusId, articleIds: $articleIds}) {
+    _id
   }
 }

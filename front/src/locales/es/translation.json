@@ -1,5 +1,17 @@
 {
   "annotate.title": "Anotar",
+  "article.addToCorpus": {
+    "action": "Agregar capítulos",
+    "add": "Agregar",
+    "added": "Agregado",
+    "error": "No es posible asociar estos capítulos al corpus: {{errMessage}}",
+    "label": "Elegir estos capítulos",
+    "modal": {
+      "title": "Selección de capítulos"
+    },
+    "success": "Artículos asociados al corpus con éxito.",
+    "title": "Elegir estos capítulos"
+  },
   "article.annotate.button": "Anotar (se abre en una nueva pestaña)",
   "article.by.text": "por",
   "article.contributors.added": "{{ name }} ahora es un colaborador.",
@@ -40,6 +52,8 @@
   "article.editor.modes.menuLabel": "Modos de artículo",
   "article.editor.preview": "Vista previa",
   "article.editors.label": "Editores en línea",
+  "article.filter.label": "Filtrar",
+  "article.filter.placeholder": "Por título de artículo",
   "article.getTags.error": "No se pueden recuperar las etiquetas : {{errMessage}}",
   "article.legacyEditor.edit.title": "[LEGACY] Modificar el artículo",
   "article.page.title": "{{ title }} (editando)",
@@ -94,7 +108,6 @@
   "common.updatedAt.label": "actualización",
   "contact.searchField.placeholder": "Contact email",
   "contact.userNotFound.message": "No user found for this email adress",
-  "corpus.addPart.note": "To add a new chapter, go to the <1>articles page</1> and select this corpus.",
   "corpus.articlesOrder.toastFailure": "No se puede actualizar el orden de los artículos : {{errorMessage}}",
   "corpus.articlesOrder.toastSuccess": "El orden de los artículos se ha modificado correctamente.",
   "corpus.by.text": "por",
