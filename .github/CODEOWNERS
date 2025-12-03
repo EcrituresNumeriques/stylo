@@ -1,0 +1,9 @@
+*                     @EcrituresNumeriques/stylo-dev @EcrituresNumeriques/stylo-coordo
+
+front/                @EcrituresNumeriques/stylo-dev
+graphql/              @EcrituresNumeriques/stylo-dev
+infrastructure/       @EcrituresNumeriques/stylo-dev @EcrituresNumeriques/infra
+
+docker-compose*.yaml  @EcrituresNumeriques/stylo-dev @EcrituresNumeriques/stylo-export
+
+docs/                 @EcrituresNumeriques/coordo @EcrituresNumeriques/stylo-docs
