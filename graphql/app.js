@@ -154,7 +154,7 @@ passport.use(localAuth.strategy)
 // mandatory for passport-login/logout
 passport.serializeUser((user, next) => next(null, user.id))
 passport.deserializeUser(async (id, next) => {
-  const user = await User.findById(id).populate({ path: 'permissions' })
+  const user = await User.findById(id)
   next(null, user)
 })
 
