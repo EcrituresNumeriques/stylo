@@ -1,43 +1,43 @@
 {
-    "sectionTitle": "Escenarios de uso",
-    "sectionUrl": "/es/escenarios_uso",
+    "sectionTitle": "Vídeos",
+    "sectionUrl": "/es/videos",
     "disableSearch": false,
     "searchIndexUrl": "/es/search-index.json",
     "menu": [
       {
-        "label": "Escenarios de uso",
+        "label": "Vídeos",
         "children": [
           {
             "label": "Crear una cuenta Huma-Num para Stylo",
-            "url": "/es/escenarios_uso/cuenta-humanum"
+            "url": "/es/videos/cuenta-humanum"
           },
           {
             "label": "Personaliza tu escritura en Stylo con Monaco",
-            "url": "/es/escenarios_uso/escritura-monaco"
+            "url": "/es/videos/escritura-monaco"
           },
           {
             "label": "Versionar un documento con Stylo",
-            "url": "/es/escenarios_uso/versionar-documento"
+            "url": "/es/videos/versionar-documento"
           },
           {
             "label": "Anotar artículos Stylo en colaboración",
-            "url": "/es/escenarios_uso/anotar-colaboracion"
+            "url": "/es/videos/anotar-colaboracion"
           },
           {
             "label": "Gestionar referencias bibliográficas en Stylo",
-            "url": "/es/escenarios_uso/gestionar-referencias"
+            "url": "/es/videos/gestionar-referencias"
           },
           {
             "label": "Exportar un artículo o un corpus de artículos de Stylo",
-            "url": "/es/escenarios_uso/exportar-articulo-corpus"
+            "url": "/es/videos/exportar-articulo-corpus"
           },
           {
             "label": "Crear un sitio web para sus artículos Stylo con el Crieur", 
-            "url": "/es/escenarios_uso/sitio-Crieur"
+            "url": "/es/videos/sitio-Crieur"
           },
           {
             "label": "Trabajar en un libro aumentado Le Pressoir con Stylo", 
-            "url": "/es/escenarios_uso/libro-Pressoir"
+            "url": "/es/videos/libro-Pressoir"
           }
         ]
       }

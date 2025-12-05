@@ -2,9 +2,9 @@
 title: "Generate a website for your articles"
 ---
 
-With the static website generator "Crieur", specially developed for Stylo, you can generate a website for your articles and corpora on Stylo. 
+With the static website generator ["Crieur"](https://ecrinum.gitpages.huma-num.fr/crieur/), specially developed for Stylo, you can generate a website for your articles and corpora on Stylo. It allows you to publish a journal website or create a blog with the advantage of using Stylo as a semantic and collaborative CMS for it and, in the process, of staying with lightweight and open formats Markdown and YAML. 
 
-A demonstration on how to take in charge le Crieur with Stylo can be found in [this video in "scenarios"](/en/scenarios/website-Crieur). 
+A demonstration on how to take in charge le Crieur with Stylo can be found in [this video](/en/videos/website-Crieur), and a written "step-by-step" guide on [this page of the Crieur documentation](https://ecrinum.gitpages.huma-num.fr/crieur/numero/utilisation/article/le-crieur-pas-a-pas/). 
 
 ## Crieur commands
 
@@ -20,17 +20,10 @@ You'll first need to download UV, a Python package manager: you'll find [instruc
 
 Le Crieur has been designed to allow a high degree of graphic and organizational customization of your site, without requiring excessive financial resources and technical skills. This is particularly important for journals that have their own identity, their own particular needs, and for which [the standardization required for distribution on platforms is often a source of frustration](https://revue30.org/en/projects/websites-production-from-stylo/).
 
-To personalize your website, add a `templates` folder to the root of your project folder, and upload [one of the HTML templates here](https://gitlab.huma-num.fr/ecrinum/stylo/crieur-atelier/-/tree/main/templates?ref_type=heads). Then create a `statics` folder, still at the root of your project folder, and add [this simple.css file](https://gitlab.huma-num.fr/ecrinum/stylo/crieur-atelier/-/blob/main/statics/simple.css?ref_type=heads) in it. Finally, create a `custom.css` file, in which you can define all the styles you want for your website. 
+To personalize your website, you can find instructions on [this page of Le Crieur's documentation](https://ecrinum.gitpages.huma-num.fr/crieur/numero/utilisation/article/configuration-avancee/).
 
-To generate the website with your customizations, you'll need to add these elements to your command, on your terminal:
-- `--statics-path=statics`
-- `--templates-path=templates`
+## Deployment of your project online
 
-This gives the following:
-`uv run --with crieur crieur generate serve --statics-path=statics --templates-path=templates --title <"the title of your site">`
+Publishing your project generated with Le Crieur can be done using a Git instance such as Huma-Num's GitLab. You can upload your project there and use the [.gitlab-ci.yml file](https://gitlab.huma-num.fr/ecrinum/crieur/-/blob/main/.gitlab-ci.yml) from Le Crieur's repository as a guide. You will, of course, need to adapt the corpus identifiers and the site title.
 
-To which you can add other elements and parameters. 
-
-You will find an example of minimalist customization [on this repo](https://gitlab.huma-num.fr/ecrinum/stylo/crieur-atelier), which gives [this rendering](https://crieur-atelier-149600.gitpages.huma-num.fr/).
-
-The most up-to-date and default Crieur template can be found [here](https://gitlab.huma-num.fr/ecrinum/crieur/-/blob/main/crieur/templates/base.html?ref_type=heads). To use it, you'll need to add lines in the `head` to call the `statics/simple.css` and `statics/custom.css` files. More specific templates can be found [in the Crieur repo](https://gitlab.huma-num.fr/ecrinum/crieur/-/tree/main/crieur/templates).
+You will find more advanced documentation and configurations regarding the deployment of your online project and its settings in [this section of Le Crieur's documentation](https://ecrinum.gitpages.huma-num.fr/crieur/numero/deploiement/).

@@ -14,4 +14,4 @@ También es posible generar un enlace para compartir y anotar una versión espec
 
 Para anotar el artículo, seleccione la parte del texto que desea comentar: aparecerá un icono de anotación [Annotation icon](/uploads/images/refonte_doc/Hypothesis.png). Puede resaltarlo (*Resaltar*) o anotarlo (*Anotar*), siendo el primero el que se resalta de forma privada por defecto. La anotación puede ser privada («Post to Only me»), pública («Post to Public») o visible para otros usuarios de Hypothesis que tengan acceso al grupo de anotaciones de Hypothesis.
 
-Véase también: [vídeo sobre cómo utilizar la anotación social de un artículo en Stylo](/es/escenarios_uso/compartir-anotar)
+Véase también: [vídeo sobre cómo utilizar la anotación social de un artículo en Stylo](/es/videos/compartir-anotar)

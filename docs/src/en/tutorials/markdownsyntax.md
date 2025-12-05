@@ -15,7 +15,7 @@ To create paragraphs, leave a blank line between your blocks of text.
 
 ## Footnote 
 
-There are several ways of inserting footnotes into your text. Footnotes can be inserted in the body of the text (inline) or with a footnote callout and backlink at the bottom of the article.
+There are several ways of inserting footnotes into your text. Footnotes can be inserted in the body of the text (inline) or with a footnote callout and backlink at the bottom of the article. The first option has the advantage of not requiring back-and-forth navigation between the body of the text and the note itself, at the bottom of the document.
 
 Examples:
 
@@ -53,7 +53,7 @@ Here's an italicized _word_.
 
 This gives:
 
-Here is a word in italics
+Here is a _word_ in italics
 
 - Bold is tagged with two `__` or two `**` before and after the bold word or phrase. For example&nbsp;:
 

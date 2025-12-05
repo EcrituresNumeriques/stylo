@@ -14,4 +14,4 @@ Il est possible aussi de générer un lien de partage et d'annotation d'une vers
 
 Pour annoter l'article, sélectionnez la partie du texte à commenter : une icône d'annotation apparaîtra ![Icône d'annotation](/uploads/images/refonte_doc/Hypothesis.png). Il vous est possible de le surligner (*Highlight*) ou d'annoter (*Annotate*), le premier surlignant en privé par défaut. L'annotation peut être privée ("Post to Only me"), publique ("Post to Public") ou visible par d'autres utilisateurs·ices d'Hypothesis ayant accès au groupe d'annotation Hypothesis.
 
-Voir aussi : [vidéo pour accompagner la prise en main de l’annotation sociale d’un article](/fr/scenarios_utilisation/annoter-collaboration)
+Voir aussi : [vidéo pour accompagner la prise en main de l’annotation sociale d’un article](/fr/videos/annoter-collaboration)

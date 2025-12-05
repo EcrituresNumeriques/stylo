@@ -15,7 +15,7 @@ Para crear párrafos, deje una línea en blanco entre los bloques de texto.
 
 ## Nota al pie de página 
 
-Hay varias formas de insertar notas a pie de página en el texto. Las notas a pie de página pueden insertarse en el cuerpo del texto (inline) o con una referencia a pie de página al pie del artículo.
+Hay varias formas de insertar notas a pie de página en el texto. Las notas a pie de página pueden insertarse en el cuerpo del texto (inline) o con una referencia a pie de página al pie del artículo. La primera opción tiene la ventaja de no requerir navegación de ida y vuelta entre el cuerpo del texto y la nota misma, en la parte inferior del documento.
 
 Ejemplos:
 
@@ -48,7 +48,7 @@ Aquí está mi texto<sup><a href="syntaxemarkdown.md#note-2" id="#note-2-b">2</a
 - La cursiva se marca con _ o * antes y después de la palabra o expresión en cursiva. Por ejemplo
 
 ```
-Una palabra en cursiva
+Una palabra en _cursiva_
 ```
 
 Esto da:

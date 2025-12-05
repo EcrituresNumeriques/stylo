@@ -16,7 +16,7 @@ So when you've reached a version you're happy with and of which you want to free
 
 ![Label Version](/uploads/images/refonte_doc/ANG/LabelVersion_ANG.png)
 
-See also: [video to guide you through versioning in Stylo](/en/scenarios/version-document)
+See also: [video to guide you through versioning in Stylo](/en/videos/version-document)
 
 <!-- ## Compare article versions
 

@@ -58,6 +58,10 @@
           {
             "label": "Site Web 'Crieur'",
             "url": "/fr/fonctionnalites/site-web-crieur"
+          },
+          {
+            "label": "Sauvegarder ses données",
+            "url": "/fr/fonctionnalites/sauvegarde"
           }
         ]
       }

@@ -13,11 +13,11 @@
           },
           {
             "label": "Sérialiser ses métadonnées en YAML",
-            "url": "/fr/tutoriels/syntaxe-yaml"
+            "url": "/fr/tutoriels/syntaxeyaml"
           },
           {
             "label": "Gérer ses références bibliographiques en BibTeX",
-            "url": "/fr/tutoriels/syntaxe-bibtex"
+            "url": "/fr/tutoriels/syntaxebibtex"
           },
           {
             "label": "Utiliser l'API GraphQL",

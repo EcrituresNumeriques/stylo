@@ -15,7 +15,7 @@ Pour créer des paragraphes, il faut laisser une ligne vide entre vos blocs de t
 
 ## Notes de bas pages
 
-Il y a plusieurs manières d'insérer des notes de bas de page dans votre texte. Les notes peuvent être dans le corps du texte (inline) ou avec appel de note et renvoi en bas de l'article.
+Il y a plusieurs manières d'insérer des notes de bas de page dans votre texte. Les notes peuvent être dans le corps du texte (inline) ou avec appel de note et renvoi en bas de l'article. La première option à l'avantage de ne pas requérir de faire des allers-retours entre le corps du texte et la note elle-même, en bas du document. 
 
 Exemples :
 

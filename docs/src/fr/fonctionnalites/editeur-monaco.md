@@ -8,7 +8,8 @@ En utilisant Monaco dans Stylo, plusieurs fonctionnalité d'écriture ont été 
 
 - Recherche et remplacement (CTRL/Cmd+F et CTRL/Cmd+H) ;
 - L’utilisation d'expressions régulières ;
-- Comparaison entre différentes versions d’un même document (fonctionnement ligne à ligne) ;
+- Raccourcis claviers (gras, italique, hyperlien, [note "inline"](/fr/tutoriels/syntaxemarkdown/#notes-de-bas-pages) selon les syntaxes Markdown)
+<!--- Comparaison entre différentes versions d’un même document (fonctionnement ligne à ligne) ;-->
 - Autocomplétion pour vos références et votre texte.
  
 De plus, en faisant un clic droit dans l’éditeur de texte, vous aurez accès à d'autres options d'édition :
@@ -16,7 +17,7 @@ De plus, en faisant un clic droit dans l’éditeur de texte, vous aurez accès 
 - Copy (CTRL/Cmd+C) ;
 - Commande Palette (F1) : donne accès à l’ensemble des actions (et leurs raccourcis claviers) disponibles avec Monaco ;
 - Métopes : blocs pour le balisage infratextuel en conformité avec la chaîne Métopes ; 
-- Balisage léger : permet de transformer le texte sélectionné le gras, italique, hyperlien selon la syntaxe légère Markdown, ainsi que de créer une note de bas de page. Indique les raccourcis claviers qui leurs correspondent.  
+- Balisage léger : permet de transformer le texte sélectionné en gras, italique, hyperlien et de créer une note "inline", indique les raccourcis claviers qui leurs sont associés.
 
 Pour avoir accès à la Palette de commande directement au travers d’un raccourci clavier, vous pouvez utiliser la touche F1 (simultanément Alt + F1 sur Internet Explorer, et fn + F1 sur clavier Mac).
 

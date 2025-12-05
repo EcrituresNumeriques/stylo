@@ -153,8 +153,6 @@ En este ejemplo, estamos pidiendo a la API que cree un artículo para nosotros. 
 
 GraphQL Playground es como un *sandbox*, es decir, un entorno de desarrollo integrado (IDE) donde es posible crear scripts, sea cual sea el lenguaje utilizado. ¡Estos scripts incorporan consultas GraphQL para automatizar ciertas tareas: por ejemplo, podríamos imaginar una copia de seguridad local de los datos de Stylo!
 
-Como puede verse, la API GraphQL de Stylo es sencilla de utilizar. Todo lo que tienes que hacer es introducir el nombre de los datos que quieres o las mutaciones que deseas y la aplicación te los proporcionará/realizará. Este es el final de la formación, ¡así que todo lo que tienes que hacer es probar diferentes consultas y mutaciones por ti mismo!idad local de los datos de Stylo!
-
 Como puede verse, la API GraphQL de Stylo es sencilla de utilizar. Todo lo que tienes que hacer es introducir el nombre de los datos que quieres o las mutaciones que deseas y la aplicación te los proporcionará. Este es el final de la formación, ¡así que todo lo que tienes que hacer es probar diferentes consultas y mutaciones por ti mismo!
 
 Más formación avanzada en breve...

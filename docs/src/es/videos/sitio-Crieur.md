@@ -12,6 +12,10 @@ Otros enlaces :
 
 - [Enlace al repositorio Gitlab de Crieur con todos sus comandos posibles y actualizaciones](https://gitlab.huma-num.fr/ecrinum/crieur)
 
-- [Enlace a la documentación de Stylo dedicada al soporte y la personalización de un sitio web creado con Le Crieur](https://stylo-doc.ecrituresnumeriques.ca/fr/fonctionnalites/site-web-crieur/)
+- [Enlace a la documentación de Crieur](https://ecrinum.gitpages.huma-num.fr/crieur/)
 
-- [Enlace sobre la configuración de un archivo gitlab-ci.yaml](https://docs.gitlab.com/ci/quick_start/)
+- [Enlace a la página de documentación de Stylo sobre Le Crieur](https://stylo-doc.ecrituresnumeriques.ca/fr/fonctionnalites/site-web-crieur/)
+
+- [Enlace a la configuración del archivo gitlab-ci.yaml](https://docs.gitlab.com/ci/quick_start/) y [Plantilla de Le Crieur reutilizable](https://gitlab.huma-num.fr/ecrinum/crieur/-/blob/main/.gitlab-ci.yml) (modificando el título del sitio y los identificadores del corpus); [Documentación más avanzada sobre la implementación de un proyecto en línea con Le Crieur](https://ecrinum.gitpages.huma-num.fr/crieur/numero/deploiement/)
+
+⚠️: También debe incluir el título del artículo en Stylo como metadatos, que corresponde al corpus en el que debe ubicarse.

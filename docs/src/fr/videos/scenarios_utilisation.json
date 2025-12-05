@@ -1,43 +1,43 @@
 {
-    "sectionTitle": "Scénarios d'utilisation",
-    "sectionUrl": "/fr/scenarios_utilisation",
+    "sectionTitle": "Vidéos",
+    "sectionUrl": "/fr/videos",
     "disableSearch": false,
     "searchIndexUrl": "/fr/search-index.json",
     "menu": [
       {
-        "label": "Scénarios d'utilisation",
+        "label": "Vidéos",
         "children": [
           {
             "label": "Créer un compte Huma-Num pour Stylo",
-            "url": "/fr/scenarios_utilisation/compte-humanum"
+            "url": "/fr/videos/compte-humanum"
           },
           {
             "label": "Personnaliser l'écriture dans Stylo avec Monaco",
-            "url": "/fr/scenarios_utilisation/ecriture-monaco"
+            "url": "/fr/videos/ecriture-monaco"
           },
           {
             "label": "Versionner un document avec Stylo",
-            "url": "/fr/scenarios_utilisation/versionner-document"
+            "url": "/fr/videos/versionner-document"
           },
           {
             "label": "Annoter de manière collaborative un article Stylo",
-            "url": "/fr/scenarios_utilisation/annoter-collaboration"
+            "url": "/fr/videos/annoter-collaboration"
           },
           {
             "label": "Gérer ses références bibliographiques dans Stylo",
-            "url": "/fr/scenarios_utilisation/gerer-references"
+            "url": "/fr/videos/gerer-references"
           },
           {
             "label": "Exporter un article ou un corpus d'articles de Stylo",
-            "url": "/fr/scenarios_utilisation/exporter-article-corpus"
+            "url": "/fr/videos/exporter-article-corpus"
           },
           {
             "label": "Générer un site Web pour ses articles Stylo avec le Crieur",
-            "url": "/fr/scenarios_utilisation/site-Crieur"
+            "url": "/fr/videos/site-Crieur"
           },
           {
             "label": "Travailler sur un livre augmenté Le Pressoir avec Stylo", 
-            "url": "/fr/scenarios_utilisation/livre-Pressoir"
+            "url": "/fr/videos/livre-Pressoir"
           }
         ]
       }

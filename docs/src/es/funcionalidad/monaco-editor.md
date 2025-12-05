@@ -6,9 +6,10 @@ El editor de texto utilizado en Stylo es [Monaco](https://microsoft.github.io/mo
 
 Al utilizar Monaco en Stylo, se han incorporado varias funciones de escritura:
 
-- Búsqueda y sustitución (CTRL/Cmd+F y CTRL/Cmd+H) ;
+- Búsqueda y sustitución (CTRL/Cmd+F y CTRL/Cmd+H);
 - Uso de expresiones regulares;
-- Comparación entre distintas versiones de un mismo documento (operación línea por línea);
+<!--- Comparación entre distintas versiones de un mismo documento (operación línea por línea);-->
+- Atajos de teclado (negrita, cursiva, hipervínculos, [nota "en línea" en sintaxis Markdown](/es/tutoriales/markdownsyntax/#nota-al-pie-de-página)); 
 - Autocompletado de referencias y texto.
  
 Además, haciendo clic con el botón derecho del ratón en el editor de texto se accede a otras opciones de edición:
@@ -16,7 +17,7 @@ Además, haciendo clic con el botón derecho del ratón en el editor de texto se
 - Copia (CTRL/Cmd+C);
 - Comando de la paleta (F1): da acceso a todas las acciones (y sus atajos de teclado) disponibles con Mónaco;
 - Metopes: bloques para el marcado infratextual de acuerdo con la cadena Metopes;
-- Lenguaje de marcado ligero: permite transformar el texto seleccionado en negrita, cursiva o hipervínculo según la sintaxis ligera Markdown, así como crear una nota al pie de página. Indica los atajos de teclado correspondientes. 
+- Lenguaje de marcado ligero: permite transformar el texto seleccionado en negrita, cursiva o hipervínculo, de crear una nota al pie de página y indica los atajos de teclado correspondientes. 
 
 Para acceder a la Paleta de comandos directamente mediante un atajo de teclado, puede usar la tecla F1 (Alt + F1 en Internet Explorer, y fn + F1 en el teclado Mac).
 

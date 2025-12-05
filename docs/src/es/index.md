@@ -14,14 +14,14 @@ Bienvenido a la documentación de Stylo. Stylo es un editor de texto semántico 
 La documentación de Stylo está dividida en varias secciones:
 
 - La sección Funcionalidad contiene descripciones de todas las funcionalidad de Stylo;
-- Los Escenarios de uso contienen una serie de videos para guiarle en casos de uso de las funciones;
+- Los Vídeos contienen una serie de videos para guiarle en casos de uso de las funciones;
 - Los Tutoriales para acompañarle en el uso de los lenguajes abiertos y ligeros utilizados en Stylo (Markdown, YAML, BibTeX, GraphQL);
 - Las Preguntas frecuentes (FAQ) tratan problemas identificados y conocidos.
 
 ---
 
 <link-button href="/es/funcionalidad" size="small" color="default">Funcionalidades</link-button> &nbsp;
-<link-button href="/es/escenarios_uso" size="small" color="default">Escenarios de uso</link-button> &nbsp;
+<link-button href="/es/videos" size="small" color="default">Vídeos</link-button> &nbsp;
 <link-button href="/es/tutoriales" size="small" color="default">Tutoriales</link-button> &nbsp;
 <link-button href="/es/faq" size="small" color="default">Preguntas frecuentes (FAQ)</link-button> &nbsp;
 

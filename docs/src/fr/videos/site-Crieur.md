@@ -12,6 +12,12 @@ Autres liens :
 
 - [Lien du dépot Gitlab du Crieur avec l'ensemble de ses commandes possibles, mises-à-jour](https://gitlab.huma-num.fr/ecrinum/crieur)
 
-- [Lien de la documentation de Stylo dédiée à la prise en charge et la personnalisation d'un site construit avec le Crieur](https://stylo-doc.ecrituresnumeriques.ca/fr/fonctionnalites/site-web-crieur/)
+- [Lien de la documentation du Crieur](https://ecrinum.gitpages.huma-num.fr/crieur/)
 
-- [Lien concernant la configuration d'un fichier gitlab-ci.yaml](https://docs.gitlab.com/ci/quick_start/)
+- [Lien de la page de documentation Stylo sur le Crieur](https://stylo-doc.ecrituresnumeriques.ca/fr/fonctionnalites/site-web-crieur/)
+
+- [Lien concernant la configuration d'un fichier gitlab-ci.yaml](https://docs.gitlab.com/ci/quick_start/) et [modèle du Crieur pouvant être repris](https://gitlab.huma-num.fr/ecrinum/crieur/-/blob/main/.gitlab-ci.yml) (en modifiant le titre du site et les identifiants des corpus) ; [documentation plus avancée sur le déploiement en ligne d'un projet avec le Crieur](https://ecrinum.gitpages.huma-num.fr/crieur/numero/deploiement/)
+
+⚠️ : Il faut également inscrire en métadonnée des articles dans Stylo le titre du numéro, qui correspond au corpus dans lequel il doit être placé !
+
+

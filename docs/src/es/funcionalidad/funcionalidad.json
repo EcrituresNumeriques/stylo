@@ -58,6 +58,10 @@
           {
             "label": "Generar un sitio web para tus artículos",
             "url": "/es/funcionalidad/sitio-Crieur"
+          },
+          {
+            "label": "Copia de seguridad de sus datos"
+            "url": "/es/funcionalidad/copia-seguridad"
           }
         ]
       }

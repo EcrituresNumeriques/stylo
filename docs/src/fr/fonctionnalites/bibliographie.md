@@ -71,7 +71,7 @@ Ainsi, selon vos besoins de citations et le contexte institutionnel de votre tex
 
 - `[@shirky_here_2008]` **pour citer**. En Chicago _inline_, par exemple, cela produira (Shirky 2008), tandis qu'en Chicago _footnote_, cela produira une note de bas de page avec toutes les informations bibliographiques).  
 - `[@shirky_here_2008, p194]` **pour citer avec le numéro de page**. En Chicago _inline_, cela produira `(Shirky 2008, p194)` à l'export, tandis qu'en Chicago _footnote_, cela produira une note de bas de pages avec toutes les informations bibliographiques ainsi que le numéro de page. 
-- `@shirky_here_2008` **pour citer avec le nom de l'auteur dans le texte**. En Chicago _inline_, cela produira `Shirky (2008)` à l'export, tandis qu'en Chicago _footnote_, cela citer l'auteur dans le texte avec une note de bas de page contenant l'ensemble de la référence bibliographique. 
+- `@shirky_here_2008` **pour citer avec le nom de l'auteur dans le texte**. En Chicago _inline_, cela produira `Shirky (2008)` à l'export, tandis qu'en Chicago _footnote_, cela citera l'auteur dans le texte avec une note de bas de page contenant l'ensemble de la référence bibliographique. 
 - `[-@shirky_here_2008]` **pour citer une référence déjà mentionnée**. En Chicago _inline_, cela produira `(2008)` à l'export, tandis qu'en Chicago _footnote_, cela produira une note de bas de page avec _Ibid._ dedans. 
 
 Reprenons cas par cas. Dans Stylo, voici ce que donne Chicago _inline_ : 

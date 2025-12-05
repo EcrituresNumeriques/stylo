@@ -20,6 +20,6 @@ You will then receive a confirmation e-mail. Confirm your e-mail address.
 
 Back on Stylo, log in with your new Huma-Num account, enter your name, surname and institution, and your account will be created on Stylo!
 
-See also: [video to accompany the creation of a Huma-Num account](/en/scenarios/humanum-account)
+See also: [video to accompany the creation of a Huma-Num account](/en/videos/humanum-account)
 
 Having trouble creating your account? Don't hesitate to [contact us](/en/contacts)!

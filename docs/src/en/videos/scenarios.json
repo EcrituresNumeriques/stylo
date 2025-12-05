@@ -1,43 +1,43 @@
 {
-    "sectionTitle": "Scenarios",
-    "sectionUrl": "/en/scenarios",
+    "sectionTitle": "Videos",
+    "sectionUrl": "/en/videos",
     "disableSearch": false,
     "searchIndexUrl": "/en/search-index.json",
     "menu": [
       {
-        "label": "Scenarios",
+        "label": "Videos",
         "children": [
           {
             "label": "Create a Huma-Num account for Stylo",
-            "url": "/en/scenarios/humanum-account"
+            "url": "/en/video/humanum-account"
           },
           {
             "label": "Personalize your writing in Stylo with Monaco",
-            "url": "/en/scenarios/monaco-writing"
+            "url": "/en/video/monaco-writing"
           },
           {
             "label": "Make versions of a document in Stylo",
-            "url": "/en/scenarios/versions-document"
+            "url": "/en/video/versions-document"
           },
           {
             "label": "Annotate Stylo articles in a collaborative way",
-            "url": "/en/scenarios/annotate-collaboration"
-          },
+            "url": "/en/video/annotate-collaboration"
+        },
           {
             "label": "Manage bibliographic references in Stylo",
-            "url": "/en/scenarios/manage-references"
+            "url": "/en/video/manage-references"
           },
           {
             "label": "Export an article or a corpus of articles from Stylo",
-            "url": "/en/scenarios/export-article-corpus"
+            "url": "/en/video/export-article-corpus"
           },
           {
             "label": "Generate a website for your Stylo articles with Crieur", 
-            "url": "/en/scenarios/website-Crieur"
+            "url": "/en/video/website-Crieur"
           },
           {
             "label": "Working on a web book Le Pressoir with Stylo", 
-            "url": "/en/scenarios/book-Pressoir"
+            "url": "/en/video/book-Pressoir"
           } 
         ]
       }

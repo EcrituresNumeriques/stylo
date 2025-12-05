@@ -58,6 +58,10 @@
           {
             "label": "Generate a website for your articles",
             "url": "/en/features/website-Crieur"
+          },
+          {
+            "label": "Backing up your data",
+            "url": "/en/features/backup"
           }
         ]
       }

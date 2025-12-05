@@ -2,9 +2,9 @@
 title: "Générer un site Web pour ses articles"
 ---
 
-Avec le générateur de sites statiques le Crieur, développé spécialement pour Stylo, vous pouvez générer un site Web pour vos articles et corpus sur Stylo. 
+Avec le générateur de sites statiques [le Crieur](https://ecrinum.gitpages.huma-num.fr/crieur/), développé spécialement pour Stylo, vous pouvez générer un site Web pour vos articles et corpus sur Stylo. Il permet de publier des revues en ligne ou de créer un blog avec l’avantage d'utiliser Stylo comme "CMS" sémantique et collaboratif et de rester au formatage léger et ouvert en Markdown et YAML.
 
-Une démonstration pour prendre en charge le Crieur avec Stylo et la ligne de commande se trouve dans [cette vidéo de "scénarios d'utilisation"](/fr/scenarios_utilisation/site_Crieur). 
+Une démonstration pour prendre en charge le Crieur avec Stylo et la ligne de commande se trouve dans [cette vidéo](/fr/videos/site_Crieur), et un guide écrit "pas à pas" sur [cette page de la documentation du Crieur](https://ecrinum.gitpages.huma-num.fr/crieur/numero/utilisation/article/le-crieur-pas-a-pas/).
 
 ## Commandes du Crieur
 
@@ -20,19 +20,10 @@ Il vous faudra au préalable télécharger UV, comme gestionnaire de paquets en 
 
 Le Crieur a été pensé pour permettre un degré élevé de personnalisation graphique et organisationnelle de votre site, sans nécessiter de ressources économiques et de compétences techniques trop importantes. Cela est particulièrement important pour les revues qui ont leur propre identité, leurs besoins particuliers, et pour lesquelles [l'uniformisation nécessaire pour la diffusion sur les plateformes est souvent source de frustration](https://revue30.org/projets/production-sites-web-par-stylo/).
 
-Pour personnaliser votre site Web, ajoutez un dossier `templates` à la racine de votre dossier hébergeant votre projet, et téléchargez-y [un des templates HTML ici](https://gitlab.huma-num.fr/ecrinum/stylo/crieur-atelier/-/tree/main/templates?ref_type=heads). Puis, créez un dossier `statics`, toujours à la racine, et ajoutez-y [ce fichier simple.css](https://gitlab.huma-num.fr/ecrinum/stylo/crieur-atelier/-/blob/main/statics/simple.css?ref_type=heads). Créez enfin un fichier `custom.css`, dans lequel vous pouvez définir tous les styles que vous souhaitez pour votre site.
+Vous trouverez des indications pour personnaliser votre site sur [cette page de la documentation du Crieur](https://ecrinum.gitpages.huma-num.fr/crieur/numero/utilisation/article/configuration-avancee/).
 
-Pour générer le site Web avec vos personnalisations, vous devrez ajouter ces éléments à votre commande, sur votre terminal :
-- `--statics-path=statics`
-- `--templates-path=templates`
+## Mise en ligne
 
-Ce qui donne ceci :
-`uv run --with crieur crieur generate serve --statics-path=statics --templates-path=templates --title <"le titre de votre site">`
+La mise en ligne de votre projet généré avec le Crieur peut se faire avec une instance git telle que le Gitlab d'Huma-Num. Vous pouvez y déposer votre projet et vous inspirer du [fichier .gitlab-ci.yml](https://gitlab.huma-num.fr/ecrinum/crieur/-/blob/main/.gitlab-ci.yml) du dépôt du Crieur. Il vous faudra bien sûr adapter les identifiants de corpus et le titre du site. 
 
-Commande dans laquelle vous pouvez ajouter d'autres éléments et paramètres. 
-
-Vous trouverez un exemple de personnalisation minimaliste [sur ce repo](https://gitlab.huma-num.fr/ecrinum/stylo/crieur-atelier), qui donne [ce rendu graphique](https://crieur-atelier-149600.gitpages.huma-num.fr/).
-
-Le template Crieur le plus à jour et par défaut se trouve [ici](https://gitlab.huma-num.fr/ecrinum/crieur/-/blob/main/crieur/templates/base.html?ref_type=heads). Pour l'utiliser, vous devrez y ajouter des lignes dans le `head` pour bien appeler le fichier `statics/simple.css` et `statics/custom.css`. Des templates plus spécifiques se trouvent [dans le repo du Crieur](https://gitlab.huma-num.fr/ecrinum/crieur/-/tree/main/crieur/templates).
-
-
+Vous trouverez une documentation et des configurations plus avancées concernant le déploiement de votre projet en ligne et ses configurations dans [cette rubrique de la documentation du Crieur](https://ecrinum.gitpages.huma-num.fr/crieur/numero/deploiement/).

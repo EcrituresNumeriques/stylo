@@ -16,7 +16,7 @@ Así, cuando hayas alcanzado una versión con la que estés satisfecho y quieres
 
 ![Label Version](/uploads/images/refonte_doc/ES/LabelVersion_ES.png)
 
-Véase también: [vídeo para familiarizarse con el versionado en Stylo](/es/escenarios_uso/versionar-documento)
+Véase también: [vídeo para familiarizarse con el versionado en Stylo](/es/videos/versionar-documento)
 
 <!--#### Comparar versiones de un artículo
 

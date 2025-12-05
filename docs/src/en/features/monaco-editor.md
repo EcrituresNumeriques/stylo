@@ -6,9 +6,10 @@ The text editor used in Stylo is [Monaco](https://microsoft.github.io/monaco-edi
 
 By using Monaco in Stylo, several writing functions have been incorporated:
 
-- Search and replace (CTRL/Cmd+F and CTRL/Cmd+H) ;
+- Search and replace (CTRL/Cmd+F and CTRL/Cmd+H);
 - Use of regular expressions;
-- Comparison between different versions of the same document (line-by-line operation);
+<!--- Comparison between different versions of the same document (line-by-line operation);-->
+- Keyboard shortcuts (bold, italics, hyperlink and [inline note](/en/tutorials/markdownsyntax/#footnote) in the Markdown syntax);
 - Autocompletion for references and text.
  
 In addition, right-click in the text editor to access other editing options:
@@ -16,7 +17,7 @@ In addition, right-click in the text editor to access other editing options:
 - Copy (CTRL/Cmd+C);
 - Palette command (F1): gives access to all actions (and keyboard shortcuts) available with Monaco;
 - Metopes: blocks for infratextual markup in compliance with the Metopes chain; 
-- Lightweight markup language: transforms selected text into bold, italic or hyperlinked text using Markdown light syntax, as well as creating footnotes. Indicates corresponding keyboard shortcuts. 
+- Lightweight markup language: transforms selected text into bold, italic, hyperlinked texts, creates inline notes and indicates corresponding keyboard shortcuts. 
 
 To access the Command Palette directly via a keyboard shortcut, you can use the F1 key (Alt + F1 on Internet Explorer, and fn + F1 on the Mac keyboard).
 
