@@ -39,7 +39,7 @@ const strategies = new Map([
         }
       },
       mapContent(data) {
-        const root = data?.version ?? data?.sharedArticle?.workingVersion
+        const root = data.version ?? data.sharedArticle?.workingVersion
         return {
           md_content: root?.md,
           yaml_content: root?.yaml,
@@ -47,8 +47,8 @@ const strategies = new Map([
         }
       },
       title(data) {
-        const root = data?.version ?? data?.sharedArticle?.workingVersion
-        return root.title ?? root.name
+        const root = data.version ?? data.sharedArticle?.workingVersion
+        return root?.title ?? root?.name
       },
     },
   ],
@@ -67,7 +67,7 @@ const strategies = new Map([
         }
       },
       mapContent(data) {
-        return data?.sharedCorpus?.articles?.reduce(
+        return data.sharedCorpus?.articles?.reduce(
           (obj, { article }, index) => ({
             md_content: obj.md_content + '\n\n\n' + article.workingVersion.md,
             yaml_content:
@@ -86,7 +86,7 @@ const strategies = new Map([
         )
       },
       title(data) {
-        return data?.sharedCorpus?.name
+        return data.sharedCorpus?.name
       },
     },
   ],
@@ -109,9 +109,6 @@ export default function Annotate({ strategy: strategyId }) {
 
   useEffect(() => {
     const mobileMode = windowWidth < HYPOTHESIS_SIDEBAR_WIDTH * 3
-
-    console.log({ mobileMode })
-
     globalThis.hypothesisConfig = function hypothesisConfig() {
       return {
         enableExperimentalNewNoteButton: true,
@@ -121,10 +118,10 @@ export default function Annotate({ strategy: strategyId }) {
           // which is what we want when we do not open it automatically
           // because it means we are in mobile mode
           mode: mobileMode ? 'manual' : 'auto',
-          isActive () {
+          isActive() {
             return true
-          }
-        }
+          },
+        },
       }
     }
 
@@ -141,6 +138,7 @@ export default function Annotate({ strategy: strategyId }) {
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
+      fallbackData: {},
     }
   )
 
@@ -159,8 +157,11 @@ export default function Annotate({ strategy: strategyId }) {
         {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
       </Helmet>
 
-      {isPreviewLoading || isDataLoading && <Loading />}
-      <section dangerouslySetInnerHTML={{ __html }} hidden={isPreviewLoading || isDataLoading} />
+      {isPreviewLoading || (isDataLoading && <Loading />)}
+      <section
+        dangerouslySetInnerHTML={{ __html }}
+        hidden={isPreviewLoading || isDataLoading}
+      />
     </>
   )
 }
