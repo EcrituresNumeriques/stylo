@@ -249,7 +249,7 @@ module.exports = {
      * @param {null} _root
      * @param {*} args
      * @param {{ userId, token }} context
-     * @returns
+     * @returns {Promise<import('./article')>}
      */
     async duplicateArticle(_root, args, context) {
       const withUser = await getUser(args.to)
@@ -318,7 +318,7 @@ module.exports = {
      * @param {null} _root
      * @param {{ user?: String, filter?: { workspaceId?: string, corpusId?: string } }} args
      * @param {{ user: User, token: Object, userId: String, loaders: { tags, users } }} context
-     * @returns {Promise<Article[]>}
+     * @returns {Promise<import('./article')[]>}
      */
     async articles(_root, args, context) {
       const { userId } = isUser(args, context)
