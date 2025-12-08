@@ -63,11 +63,7 @@ const versionSchema = new Schema(
  * @returns {mongoose.Collection} versions
  */
 versionSchema.statics.findByUser = function findVersionByUser(user) {
-  return this
-    .find({ 'owner': user?._id })
-    .sort([
-      ['updatedAt', -1],
-    ])
+  return this.find({ owner: user?._id }).sort([['updatedAt', -1]])
 }
 
 module.exports = mongoose.model('Version', versionSchema)

@@ -5,8 +5,8 @@ const Schema = mongoose.Schema
   This is required to avoid loaders to crash because
   they have not seen these models before.
 */
-require('./tag.js')
-require('./version.js')
+const Tag = require('./tag.js')
+const Version = require('./version.js')
 
 const {
   computeMajorVersion,
@@ -133,7 +133,7 @@ articleSchema.methods.addTags = async function addTags(...tagIds) {
   await this.populate('tags')
 
   // now, add the article reference in these tags
-  await this.model('Tag').updateMany(
+  await Tag.updateMany(
     { _id: { $in: tagIds } },
     { $push: { articles: this.id } },
     { safe: true }
@@ -150,7 +150,7 @@ articleSchema.methods.removeTags = async function removeTags(...tagIds) {
   await this.populate('tags')
 
   // now, add the article reference in these tags
-  await this.model('Tag').updateMany(
+  await Tag.updateMany(
     { _id: { $in: tagIds } },
     { $pull: { articles: this.id } },
     { safe: true }
@@ -206,17 +206,15 @@ articleSchema.methods.createNewVersion = async function createNewVersion({
       ? computeMajorVersion(mostRecentVersion)
       : computeMinorVersion(mostRecentVersion)
 
-  const createdVersion = await this.model('Version')
-    .create({
-      md,
-      yaml,
-      bib,
-      version,
-      revision,
-      message,
-      owner: user.id,
-    })
-    .then((v) => v.populate('owner'))
+  const createdVersion = await Version.create({
+    md,
+    yaml,
+    bib,
+    version,
+    revision,
+    message,
+    owner: user.id,
+  }).then((v) => v.populate('owner'))
 
   this.versions.push(createdVersion)
   await this.save()
@@ -234,12 +232,23 @@ articleSchema.pre('remove', async function () {
     this.owner.articles.pull(this.id)
     await this.owner.save()
 
-    // remove articles from tags owned by this user
-    await this.model('Tag').updateMany(
+    // remove article from tags owned by this user
+    await Tag.updateMany(
       { owner: this.owner.id },
       { $pull: { articles: this.id } },
       { safe: true }
     )
+
+    // remove versions associated with this article
+    const versions = this.versions
+    for (const versionId of versions) {
+      await Version.findByIdAndDelete(versionId)
+    }
+
+    // remove article from corpuses
+    await this.model('Corpus').removeArticle(this.id)
+    // remove article from workspaces
+    await this.model('Workspace').removeArticle(this.id)
   })
 
   await session.commitTransaction()

@@ -98,7 +98,7 @@ describe('articles', () => {
     user: {},
     userId: null,
     token: {},
-    loaders: createLoaders()
+    loaders: createLoaders(),
   }
 
   beforeEach(async () => {
@@ -133,7 +133,7 @@ describe('articles', () => {
       color: '#f4a261',
       members: [
         {
-          user: user.id
+          user: user.id,
         },
       ],
       articles: [article.id],
@@ -157,7 +157,7 @@ describe('articles', () => {
 
   test('list user articles for a given workspace', async () => {
     const filter = {
-      workspaceId: workspace._id
+      workspaceId: workspace._id,
     }
     const articles = await ArticleQuery.articles({}, { filter }, context)
 
@@ -251,7 +251,6 @@ describe('duplicateArticle', () => {
   })
 })
 
-
 describe('deleteArticle', () => {
   let user
   const context = {
@@ -279,7 +278,7 @@ describe('deleteArticle', () => {
       md: '# Hello World',
       yaml: '',
       metadata: {},
-      bib: ''
+      bib: '',
     })
 
     const chapter2 = await Article.create({
@@ -324,12 +323,10 @@ describe('deleteArticle', () => {
     const chapter1After = await Article.findById(chapter1._id).exec()
     const chapter2After = await Article.findById(chapter2._id).exec()
 
-    expect(workspaceAfter.articles).toEqual([
-      chapter1._id
-    ])
-    expect(corpusAfter.articles.map(a => ({ article: a.article, order: a.order }))).toEqual([
-      { article: chapter1._id, order: 1 },
-    ])
+    expect(workspaceAfter.articles).toEqual([chapter1._id])
+    expect(
+      corpusAfter.articles.map((a) => ({ article: a.article, order: a.order }))
+    ).toEqual([{ article: chapter1._id, order: 1 }])
     expect(versionAfter).toBeNull()
     expect(chapter1After._id).toEqual(chapter1._id)
     expect(chapter2After).toBeNull()

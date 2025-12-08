@@ -71,13 +71,14 @@ const userSchema = new Schema(
       type: String,
       default: null,
       required: false,
-      set: (password) => password ? bcrypt.hashSync(password.trim(), 10) : null,
+      set: (password) =>
+        password ? bcrypt.hashSync(password.trim(), 10) : null,
     },
     firstName: String,
     lastName: String,
     institution: String,
     connectedAt: Date,
-    deletedAt: Date
+    deletedAt: Date,
   },
   { timestamps: true }
 )
@@ -137,7 +138,7 @@ userSchema.virtual('authTypes').get(function authTypes() {
   return Array.from(types)
 })
 
-userSchema.methods.softDelete =  async function softDeleteUser() {
+userSchema.methods.softDelete = async function softDeleteUser() {
   // generate a random/unguessable email because email is a unique index
   const email = `deleted-user-${randomUUID({ disableEntropyCache: true })}@example.com`
 

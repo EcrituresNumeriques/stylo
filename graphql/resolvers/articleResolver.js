@@ -389,36 +389,10 @@ module.exports = {
     /**
      * Delete an article.
      *
-     * @param {import('mongoose').Document} article
-     * @returns
+     * @param {import('mongoose').Document<ObjectId, any, Article>} article
+     * @returns {boolean} true if the article was deleted, false otherwise
      */
     async delete(article) {
-      // remove article from workspaces
-      await Workspace.updateMany(
-        {},
-        {
-          $pull: {
-            articles: article._id,
-          },
-        }
-      )
-      // remove article from corpus
-      await Corpus.updateMany(
-        {},
-        {
-          $pull: {
-            articles: {
-              article: article._id,
-            },
-          },
-        }
-      )
-      // remove article versions
-      const versions = article.versions
-      for (const version of versions) {
-        await Version.findByIdAndDelete(version)
-      }
-      // remove article!
       await article.remove()
       return article.$isDeleted()
     },
