@@ -51,11 +51,7 @@ const workspaceSchema = new Schema(
  * @returns {mongoose.Collection} workspaces
  */
 workspaceSchema.statics.findByUser = function findWorkspaceByUser(user) {
-  return this
-    .find({ 'members.user': user?._id })
-    .sort([
-      ['updatedAt', -1],
-    ])
+  return this.find({ 'members.user': user?._id }).sort([['updatedAt', -1]])
 }
 
 workspaceSchema.methods.findMembersByArticle =
@@ -88,6 +84,24 @@ workspaceSchema.statics.getWorkspaceById = function getWorkspaceById(
   return this.findOne({
     $and: [{ _id: workspaceId }, { 'members.user': user?._id }],
   })
+}
+
+/**
+ * Removes an article from all workspaces where it appears.
+ *
+ * @param articleId article unique identifier
+ * @returns {Promise<import('mongodb').UpdateResult<import('./workspace')>>}
+ */
+workspaceSchema.statics.removeArticle = function removeArticle(articleId) {
+  return this.updateMany(
+    { articles: articleId },
+    {
+      $pull: {
+        articles: articleId,
+      },
+    },
+    { timestamps: true }
+  )
 }
 
 module.exports = mongoose.model('Workspace', workspaceSchema)
