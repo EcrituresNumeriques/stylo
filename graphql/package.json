@@ -65,6 +65,7 @@
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "~4.3",
+    "@testcontainers/mongodb": "^11.9.0",
     "@types/jest": "~29.5",
     "eslint": "~8.57",
     "eslint-config-prettier": "^10.0.1",
