@@ -1,6 +1,6 @@
 const { Mutation } = require('./userResolver.js')
 const User = require('../models/user.js')
-const { before, after, describe, test } = require('node:test')
+const { before, beforeEach, after, describe, test } = require('node:test')
 const assert = require('node:assert')
 const { setup, teardown } = require('../tests/harness')
 
@@ -14,33 +14,39 @@ describe('user resolver', () => {
     await teardown(container)
   })
 
+  beforeEach(async () => {
+    // purge user collection
+    await User.deleteMany({})
+  })
+
   describe('setAuthToken', () => {
-    let user
-
-    beforeEach(async () => {
-      user = new User({ email: 'test@example.com' })
-      await user.save()
-    })
-
     test('throws an error when no pendingRegistration data in session', async () => {
+      const user = new User({ email: 'user1@example.com' })
+      await user.save()
       const context = {
         user,
         token: { admin: false, _id: user.id },
         session: {},
       }
 
-      const result = Mutation.setAuthToken(
-        {},
+      await assert.rejects(
+        () =>
+          Mutation.setAuthToken(
+            {},
+            {
+              service: 'zotero',
+            },
+            context
+          ),
         {
-          service: 'zotero',
-        },
-        context
+          message: 'No remote account data found',
+        }
       )
-
-      return expect(result).rejects.toThrow('No remote account data found')
     })
 
     test('sets a token for an existing linked account', async () => {
+      const user = new User({ email: 'user2@example.com' })
+      await user.save()
       const id = user.id
 
       const context = {
@@ -66,14 +72,14 @@ describe('user resolver', () => {
         context
       )
 
-      await expect(u.authProviders.get('zotero')).toHaveProperty(
-        'token',
-        'abcd'
-      )
-      await expect(context.pendingRegistration).toBeUndefined()
+      const zotero = u.authProviders.get('zotero')
+      assert.equal(zotero.token, 'abcd')
+      assert.equal(context.pendingRegistration, undefined)
     })
 
     test('sets a token for a new linked account', async () => {
+      const user = new User({ email: 'user3@example.com' })
+      await user.save()
       const context = {
         user,
         token: { admin: false, _id: user.id },
@@ -98,19 +104,17 @@ describe('user resolver', () => {
         context
       )
 
-      await expect(u.authProviders.get('zotero')).toHaveProperty(
-        'token',
-        'abcd'
-      )
-      await expect(context.pendingRegistration).toBeUndefined()
-      await expect(context.fromAccount).toBeUndefined()
+      const zotero = u.authProviders.get('zotero')
+      assert.equal(zotero.token, 'abcd')
+      assert.equal(context.pendingRegistration, undefined)
+      assert.equal(context.fromAccount, undefined)
     })
 
     test('rejects when linking with an already linked account', async () => {
+      const user = new User({ email: 'user4@example.com' })
       user.set('authProviders.zotero', {
         id: 'abcd',
       })
-
       await user.save()
 
       const context = {
@@ -129,16 +133,18 @@ describe('user resolver', () => {
         },
       }
 
-      const result = Mutation.setAuthToken(
-        {},
+      await assert.rejects(
+        () =>
+          Mutation.setAuthToken(
+            {},
+            {
+              service: 'zotero',
+            },
+            context
+          ),
         {
-          service: 'zotero',
-        },
-        context
-      )
-
-      return expect(result).rejects.toThrow(
-        'This account is already linked to another Stylo user.'
+          message: 'This account is already linked to another Stylo user.',
+        }
       )
     })
 
@@ -148,25 +154,27 @@ describe('user resolver', () => {
         user: null,
       }
 
-      return expect(
-        Mutation.setAuthToken(
-          {},
-          {
-            service: 'zotero',
-            token: 'abcd',
-          },
-          context
-        )
-      ).rejects.toThrow('Unauthorized [context []]')
+      await assert.rejects(
+        () =>
+          Mutation.setAuthToken(
+            {},
+            {
+              service: 'zotero',
+              token: 'abcd',
+            },
+            context
+          ),
+        {
+          message: 'Unauthorized [context []]',
+        }
+      )
     })
   })
 
   describe('unsetAuthToken', () => {
-    let user
-
-    beforeEach(async () => {
-      user = new User({
-        email: 'test@example.com',
+    test('remove a zotero token', async () => {
+      const user = new User({
+        email: 'user5@example.com',
         authProviders: {
           humanid: {
             id: 'h-abcd',
@@ -179,9 +187,6 @@ describe('user resolver', () => {
         },
       })
       await user.save()
-    })
-
-    test('remove a zotero token', async () => {
       const context = {
         user,
         token: { admin: false, _id: user.id },
@@ -195,10 +200,24 @@ describe('user resolver', () => {
         context
       )
 
-      return expect(u.authProviders.get('zotero')).toBeNull()
+      assert.equal(u.authProviders.get('zotero'), null)
     })
 
     test('rejects when removing last token', async () => {
+      const user = new User({
+        email: 'user6@example.com',
+        authProviders: {
+          humanid: {
+            id: 'h-abcd',
+            token: 'hn-token-abdc',
+          },
+          zotero: {
+            id: 'z-abdc',
+            token: 'z-token-abcd',
+          },
+        },
+      })
+      await user.save()
       user.set('authProviders.humanid', null)
       await user.save()
 
@@ -207,16 +226,18 @@ describe('user resolver', () => {
         token: { admin: false, _id: user.id },
       }
 
-      const result = Mutation.unsetAuthToken(
-        {},
+      await assert.rejects(
+        () =>
+          Mutation.unsetAuthToken(
+            {},
+            {
+              service: 'zotero',
+            },
+            context
+          ),
         {
-          service: 'zotero',
-        },
-        context
-      )
-
-      return expect(result).rejects.toThrow(
-        'You cannot remove the last authentication method'
+          message: 'You cannot remove the last authentication method',
+        }
       )
     })
 
@@ -226,39 +247,40 @@ describe('user resolver', () => {
         user: null,
       }
 
-      return expect(
-        Mutation.setAuthToken(
-          {},
-          {
-            service: 'zotero',
-            token: 'abcd',
-          },
-          context
-        )
-      ).rejects.toThrow('Unauthorized [context []]')
+      await assert.rejects(
+        () =>
+          Mutation.setAuthToken(
+            {},
+            {
+              service: 'zotero',
+              token: 'abcd',
+            },
+            context
+          ),
+        {
+          message: 'Unauthorized [context []]',
+        }
+      )
     })
   })
 
   describe('createUser', () => {
-    let user
-
-    beforeEach(async () => {
-      user = new User({ email: 'test@example.com' })
-      await user.save()
-    })
-
     test('rejects when an account with idential email exists', async () => {
-      const result = Mutation.createUser(
-        {},
+      const user = new User({ email: 'user7@example.com' })
+      await user.save()
+      await assert.rejects(
+        () =>
+          Mutation.createUser(
+            {},
+            {
+              details: {
+                email: 'user7@example.com',
+              },
+            }
+          ),
         {
-          details: {
-            email: 'test@example.com',
-          },
+          message: 'User with this email already exists!',
         }
-      )
-
-      return expect(result).rejects.toThrow(
-        'User with this email already exists!'
       )
     })
 
@@ -274,9 +296,9 @@ describe('user resolver', () => {
         }
       )
 
-      await expect(u).toHaveProperty('email', 'test-with-space@example.com')
-      await expect(u).toHaveProperty('username', 'jane.doe')
-      await expect(u).toHaveProperty('displayName', 'jane.doe')
+      assert.equal(u.email, 'test-with-space@example.com')
+      assert.equal(u.username, 'jane.doe')
+      assert.equal(u.displayName, 'jane.doe')
     })
   })
 
@@ -287,15 +309,19 @@ describe('user resolver', () => {
         session: {},
       }
 
-      const result = Mutation.createUserWithAuth(
-        {},
+      await assert.rejects(
+        () =>
+          Mutation.createUserWithAuth(
+            {},
+            {
+              service: 'zotero',
+            },
+            context
+          ),
         {
-          service: 'zotero',
-        },
-        context
+          message: 'No registration found',
+        }
       )
-
-      return expect(result).rejects.toThrow('No registration found')
     })
 
     test('creates with both form and pending data', async () => {
@@ -329,17 +355,16 @@ describe('user resolver', () => {
         'authProviders.zotero.id': 'abcd',
       })
 
-      await expect(u).toHaveProperty('displayName', 'Jane Doe')
-      await expect(u).toHaveProperty('firstName', 'Jane')
+      assert.equal(u.displayName, 'Jane Doe')
+      assert.equal(u.firstName, 'Jane')
 
       // because `authProviders` is a Map object
       const testProvider = u.authProviders.get('zotero')
-      await expect(testProvider).toMatchObject({
-        id: 'abcd',
-        token: 'efgh',
-      })
+      assert.equal(testProvider.id, 'abcd')
+      assert.equal(testProvider.token, 'efgh')
 
-      return expect(jwt).toMatch(
+      assert.match(
+        jwt,
         // eslint-disable-next-line security/detect-unsafe-regex
         /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/
       )

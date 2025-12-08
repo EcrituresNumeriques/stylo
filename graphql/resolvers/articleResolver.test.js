@@ -18,14 +18,11 @@ const { setup, teardown } = require('../tests/harness.js')
 
 describe('article resolver', () => {
   let container
-  let user1, user2, user3, user4, user5, user6
+  let user2, user3, user4, user5, user6
   before(async () => {
     container = await setup()
-    user1 = await User.create({
-      email: 'test1@example.com',
-    })
     user2 = await User.create({
-      email: 'test2@example.com',
+      email: 'test2@huma-num.fr',
     })
     user3 = await User.create({
       email: 'test3@huma-num.fr',
