@@ -18,8 +18,27 @@ const { setup, teardown } = require('../tests/harness.js')
 
 describe('article resolver', () => {
   let container
+  let user1, user2, user3, user4, user5, user6
   before(async () => {
     container = await setup()
+    user1 = await User.create({
+      email: 'test1@example.com',
+    })
+    user2 = await User.create({
+      email: 'test2@example.com',
+    })
+    user3 = await User.create({
+      email: 'test3@huma-num.fr',
+    })
+    user4 = await User.create({
+      email: 'test4@huma-num.fr',
+    })
+    user5 = await User.create({
+      email: 'test5@huma-num.fr',
+    })
+    user6 = await User.create({
+      email: 'test6@huma-num.fr',
+    })
   })
 
   after(async () => {
@@ -123,7 +142,7 @@ describe('article resolver', () => {
   })
 
   describe('articles', () => {
-    let user, user2, workspace
+    let workspace
     const context = {
       user: {},
       userId: null,
@@ -131,31 +150,23 @@ describe('article resolver', () => {
       loaders: createLoaders(),
     }
 
-    beforeEach(async () => {
-      user = await User.create({
-        email: 'test1@example.com',
-      })
-
-      user2 = await User.create({
-        email: 'test2@example.com',
-      })
-
-      context.user = user
-      context.userId = user._id
-      context.token._id = user._id
+    before(async () => {
+      context.user = user2
+      context.userId = user2._id
+      context.token._id = user2._id
 
       const article = await Article.create({
         title: 'Article A',
-        owner: [user._id],
+        owner: [context.userId],
       })
       await Article.create({
         title: 'Article B',
-        owner: [user._id],
+        owner: [context.userId],
       })
 
       await Article.create({
         title: 'Article C',
-        owner: [user2.id],
+        owner: [user6._id],
       })
 
       workspace = await Workspace.create({
@@ -163,17 +174,17 @@ describe('article resolver', () => {
         color: '#f4a261',
         members: [
           {
-            user: user.id,
+            user: context.userId,
           },
         ],
         articles: [article.id],
-        creator: user.id,
+        creator: context.userId,
       })
     })
 
     test('refuses to list another user articles', async () => {
       await assert.rejects(
-        async () => ArticleQuery.articles({}, { user: user2._id }, context),
+        async () => ArticleQuery.articles({}, { user: user3._id }, context),
         {
           name: 'Error',
           message: /^Forbidden/,
@@ -206,31 +217,26 @@ describe('article resolver', () => {
   })
 
   describe('duplicate article', () => {
-    let user
     const context = {
       user: {},
       userId: null,
       token: {},
     }
 
-    beforeEach(async () => {
-      user = await User.create({
-        email: 'bob@huma-num.fr',
-      })
-
-      context.user = user
-      context.userId = user._id
+    before(async () => {
+      context.user = user4
+      context.userId = user4._id
     })
 
     test('article is duplicated with its intrinsic values', async () => {
       const tag = await Tag.create({
         name: 'Test tag #1',
-        owner: user._id,
+        owner: context.userId,
       })
 
       const article = await Article.create({
         title: 'My thesis',
-        owner: [user._id],
+        owner: [context.userId],
         contributors: [],
         versions: [],
         tags: [tag._id],
@@ -238,7 +244,7 @@ describe('article resolver', () => {
 
       const duplicatedArticle = await ArticleMutation.duplicateArticle(
         {},
-        { article: article._id, to: user._id },
+        { article: article._id, to: context.userId },
         context
       )
 
@@ -255,7 +261,7 @@ describe('article resolver', () => {
     test('duplicated article is still linked to corpus and workspace', async () => {
       const article = await Article.create({
         title: 'My thesis',
-        owner: [user._id],
+        owner: [context.userId],
         contributors: [],
         versions: [],
         tags: [],
@@ -264,20 +270,20 @@ describe('article resolver', () => {
       const corpus = await Corpus.create({
         name: 'Test Corpus #1',
         articles: [{ article: { _id: article._id }, order: 1 }],
-        creator: user,
+        creator: context.user,
       })
 
       const workspace = await Workspace.create({
         color: '#bb69ff',
         name: 'Test Workspace #1',
         articles: [article._id],
-        members: [{ user: user._id }],
-        creator: user._id,
+        members: [{ user: context.userId }],
+        creator: context.userId,
       })
 
       await ArticleMutation.duplicateArticle(
         {},
-        { article: article._id, to: user._id },
+        { article: article._id, to: context.userId },
         context
       )
 
@@ -290,7 +296,6 @@ describe('article resolver', () => {
   })
 
   describe('delete article', () => {
-    let user
     const context = {
       user: {},
       userId: null,
@@ -298,17 +303,13 @@ describe('article resolver', () => {
     }
 
     beforeEach(async () => {
-      user = await User.create({
-        email: 'bob@huma-num.fr',
-      })
-
-      context.user = user
-      context.userId = user._id
+      context.user = user5
+      context.userId = user5._id
     })
 
     test('article is deleted from versions, workspaces and corpus', async () => {
       const version = await Version.create({
-        owner: user._id,
+        owner: context.userId,
         title: 'v1.0',
         version: 1,
         revision: 0,
@@ -321,7 +322,7 @@ describe('article resolver', () => {
 
       const chapter2 = await Article.create({
         title: 'Chapter #2',
-        owner: [user._id],
+        owner: [context.userId],
         contributors: [],
         versions: [version._id],
         tags: [],
@@ -329,7 +330,7 @@ describe('article resolver', () => {
 
       const chapter1 = await Article.create({
         title: 'Chapter #1',
-        owner: [user._id],
+        owner: [context.userId],
         contributors: [],
         versions: [],
         tags: [],
@@ -341,15 +342,15 @@ describe('article resolver', () => {
           { article: { _id: chapter1._id }, order: 1 },
           { article: { _id: chapter2._id }, order: 2 },
         ],
-        creator: user,
+        creator: context.user,
       })
 
       const workspace = await Workspace.create({
         color: '#bb69ff',
         name: 'Test Workspace #1',
         articles: [chapter1._id, chapter2._id],
-        members: [{ user: user._id }],
-        creator: user._id,
+        members: [{ user: context.userId }],
+        creator: context.userId,
       })
 
       const removed = await ArticleResolver.delete(chapter2)
