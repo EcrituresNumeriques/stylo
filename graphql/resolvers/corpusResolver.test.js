@@ -2,8 +2,20 @@ const { Query, Corpus: CorpusMutation } = require('./corpusResolver')
 const Corpus = require('../models/corpus')
 const User = require('../models/user')
 const Article = require('../models/article')
+const { before, after, describe, test } = require('node:test')
+const assert = require('node:assert')
+const { setup, teardown } = require('../tests/harness')
 
 describe('corpus resolver', () => {
+  let container
+  before(async () => {
+    container = await setup()
+  })
+
+  after(async () => {
+    await teardown(container)
+  })
+
   test('add an article to an existing corpus', async () => {
     const guillaume = await User.create({
       email: 'guillaume@huma-num.fr',
@@ -28,23 +40,26 @@ describe('corpus resolver', () => {
       {},
       { user: guillaume, userId: guillaume.id }
     )
-    expect(corpusList[0].toJSON()).toMatchObject({
-      name: 'Corpus A',
-      articles: [{ article: thesis._id }],
-      creator: {
-        _id: guillaume._id,
-      },
-    })
+    const firstCorpusFound = corpusList[0].toJSON()
+    assert.equal(firstCorpusFound.name, 'Corpus A')
+    assert.deepEqual(
+      firstCorpusFound.articles.map((a) => a.article.toString()),
+      [thesis._id.toString()]
+    )
+    assert.equal(
+      firstCorpusFound.creator._id.toString(),
+      guillaume._id.toString()
+    )
   })
+
   test('remove an existing article', async () => {
-    const guillaume = await User.create({
-      email: 'guillaume@huma-num.fr',
-      firstName: 'Guillaume',
-      lastName: 'Grossetie',
+    const clara = await User.create({
+      email: 'clara@huma-num.fr',
+      firstName: 'Clara',
     })
     const thesis = await Article.create({
       title: 'My Thesis',
-      owner: guillaume.id,
+      owner: clara.id,
       contributors: [],
       versions: [],
       tags: [],
@@ -52,7 +67,7 @@ describe('corpus resolver', () => {
     const corpus = await Corpus.create({
       name: 'Corpus B',
       articles: [{ article: thesis, order: 1 }],
-      creator: guillaume.id,
+      creator: clara.id,
     })
     const corpusArticle = await CorpusMutation.article(corpus, {
       articleId: thesis.id,
@@ -61,46 +76,44 @@ describe('corpus resolver', () => {
     const corpusList = await Query.corpus(
       {},
       {},
-      { user: guillaume, userId: guillaume.id }
+      { user: clara, userId: clara.id }
     )
-    expect(corpusList[0].toJSON()).toMatchObject({
-      name: 'Corpus B',
-      articles: [],
-      creator: {
-        _id: guillaume._id,
-      },
-    })
+
+    const firstCorpusFound = corpusList[0].toJSON()
+    assert.equal(firstCorpusFound.name, 'Corpus B')
+    assert.deepEqual(firstCorpusFound.articles, [])
+    assert.equal(firstCorpusFound.creator._id.toString(), clara._id.toString())
   })
+
   test('move an existing article', async () => {
-    const guillaume = await User.create({
-      email: 'guillaume@huma-num.fr',
-      firstName: 'Guillaume',
-      lastName: 'Grossetie',
+    const thomas = await User.create({
+      email: 'thomas@huma-num.fr',
+      firstName: 'Thomas',
     })
     const chapter1 = await Article.create({
       title: 'Chapter #1',
-      owner: guillaume.id,
+      owner: thomas.id,
       contributors: [],
       versions: [],
       tags: [],
     })
     const chapter2 = await Article.create({
       title: 'Chapter #2',
-      owner: guillaume.id,
+      owner: thomas.id,
       contributors: [],
       versions: [],
       tags: [],
     })
     const chapter3 = await Article.create({
       title: 'Chapter #3',
-      owner: guillaume.id,
+      owner: thomas.id,
       contributors: [],
       versions: [],
       tags: [],
     })
     const chapter4 = await Article.create({
       title: 'Chapter #4',
-      owner: guillaume.id,
+      owner: thomas.id,
       contributors: [],
       versions: [],
       tags: [],
@@ -114,7 +127,7 @@ describe('corpus resolver', () => {
         { article: chapter4, order: 4 },
       ],
       creator: {
-        _id: guillaume.id,
+        _id: thomas.id,
       },
     })
     const corpusArticle = await CorpusMutation.article(corpus, {
@@ -124,19 +137,35 @@ describe('corpus resolver', () => {
     const corpusList = await Query.corpus(
       {},
       {},
-      { user: guillaume, userId: guillaume.id }
+      { user: thomas, userId: thomas.id }
     )
-    expect(corpusList[0].toJSON()).toMatchObject({
-      name: 'Corpus C',
-      articles: [
-        { article: chapter2._id, order: 2 },
-        { article: chapter3._id, order: 3 },
-        { article: chapter1._id, order: 1 },
-        { article: chapter4._id, order: 4 },
-      ],
-      creator: {
-        _id: guillaume._id,
-      },
-    })
+
+    const firstCorpusFound = corpusList[0].toJSON()
+    assert.equal(firstCorpusFound.name, 'Corpus C')
+    assert.deepEqual(
+      firstCorpusFound.articles.map((a) => ({
+        id: a.article.toString(),
+        order: a.order,
+      })),
+      [
+        {
+          id: chapter2._id.toString(),
+          order: 2,
+        },
+        {
+          id: chapter3._id.toString(),
+          order: 3,
+        },
+        {
+          id: chapter1._id.toString(),
+          order: 1,
+        },
+        {
+          id: chapter4._id.toString(),
+          order: 4,
+        },
+      ]
+    )
+    assert.equal(firstCorpusFound.creator._id.toString(), thomas._id.toString())
   })
 })
