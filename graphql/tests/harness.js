@@ -9,6 +9,9 @@ async function setup() {
     config: {
       dev: {
         url: container.getConnectionString() + '/stylo-tests',
+        options: {
+          directConnection: true,
+        },
         overwrite: {
           driver: {
             require: '@ggrossetie/db-migrate-mongodb',

@@ -26,29 +26,34 @@ describe('auth resolver', () => {
       username: 'ggrossetie',
       password: 's$cret!',
     })
-    console.log({ u })
-    assert.deepEqual(u, {
-      email: 'guillaume@domain.org',
-      username: 'ggrossetie',
-      displayName: 'Guillaume Grossetie',
-    })
+    assert.deepEqual(
+      { email: u.email, username: u.username, displayName: u.displayName },
+      {
+        email: 'guillaume@domain.org',
+        username: 'ggrossetie',
+        displayName: 'Guillaume Grossetie',
+      }
+    )
   })
   test('authenticate using email + password', async () => {
     await User.create({
-      email: 'guillaume@domain.org',
-      username: 'ggrossetie',
-      displayName: 'Guillaume Grossetie',
+      email: 'clara@domain.org',
+      username: 'cgrometto',
+      displayName: 'Clara Grometto',
       password: 's$cret!',
     })
     const u = await checkCredentials({
-      username: 'guillaume@domain.org',
+      username: 'clara@domain.org',
       password: 's$cret!',
     })
-    assert.deepEqual(u, {
-      email: 'guillaume@domain.org',
-      username: 'ggrossetie',
-      displayName: 'Guillaume Grossetie',
-    })
+    assert.deepEqual(
+      { email: u.email, username: u.username, displayName: u.displayName },
+      {
+        email: 'clara@domain.org',
+        username: 'cgrometto',
+        displayName: 'Clara Grometto',
+      }
+    )
   })
   test('authenticate using displayName + password', async () => {
     await User.create({
@@ -60,22 +65,25 @@ describe('auth resolver', () => {
       username: 'thomas',
       password: 'pa$$w0rd',
     })
-    assert.deepEqual(u, {
-      email: 'thomas@domain.org',
-      displayName: 'thomas',
-    })
+    assert.deepEqual(
+      { email: u.email, displayName: u.displayName },
+      {
+        email: 'thomas@domain.org',
+        displayName: 'thomas',
+      }
+    )
   })
   test('authenticate using displayName when username is defined + password', async () => {
     await User.create({
-      email: 'thomas@domain.org',
-      username: 'tparisot',
-      displayName: 'Thomas Parisot',
+      email: 'victor@domain.org',
+      username: 'vchaix',
+      displayName: 'Victor Chaix',
       password: 'pa$$w0rd',
     })
     await assert.rejects(
       () =>
         checkCredentials({
-          username: 'Thomas Parisot',
+          username: 'Victor Chaix',
           password: 'pa$$w0rd',
         }),
       {
@@ -84,45 +92,48 @@ describe('auth resolver', () => {
       }
     )
     const u = await checkCredentials({
-      username: 'tparisot',
+      username: 'vchaix',
       password: 'pa$$w0rd',
     })
-    assert.deepEqual(u, {
-      email: 'thomas@domain.org',
-      username: 'tparisot',
-      displayName: 'Thomas Parisot',
-    })
+    assert.deepEqual(
+      { email: u.email, username: u.username, displayName: u.displayName },
+      {
+        email: 'victor@domain.org',
+        username: 'vchaix',
+        displayName: 'Victor Chaix',
+      }
+    )
   })
   test('duplicate username', async () => {
     await User.create({
-      email: 'thomas@domain.org',
-      username: 'bob',
-      displayName: 'Thomas Parisot',
-      password: 'pa$$w0rd',
+      email: 'bob@marley.org',
+      username: 'bm',
+      displayName: 'Bob Marley',
+      password: 'chill1234',
     })
     await assert.rejects(
       () =>
         User.create({
-          email: 'guillaume@domain.org',
-          username: 'bob', // username already exists!
-          displayName: 'Guillaume Grossetie',
-          password: 'pa$$w0rd',
+          email: 'bob@domain.org',
+          username: 'bm', // username already exists!
+          displayName: 'Bob Mellet',
+          password: 'zecr$t!',
         }),
       {
         message:
-          'E11000 duplicate key error collection: stylo-tests.users index: username_1 dup key: { username: "bob" }',
+          'E11000 duplicate key error collection: stylo-tests.users index: username_1 dup key: { username: "bm" }',
       }
     )
   })
   test('missing username', async () => {
     await User.create({
-      email: 'thomas@domain.org',
-      displayName: 'Thomas Parisot',
+      email: 'david@domain.org',
+      displayName: 'David Larlet',
       password: 'pa$$w0rd',
     })
     await User.create({
-      email: 'guillaume@domain.org',
-      displayName: 'Guillaume Grossetie',
+      email: 'maïtané@domain.org',
+      displayName: 'Maïtané Lenoir',
       password: 'pa$$w0rd',
     })
     // username is unique but not mandatory!
