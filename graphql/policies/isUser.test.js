@@ -1,6 +1,9 @@
 const isUser = require('./isUser.js')
 const UserModel = require('../models/user.js')
 
+const { describe, test } = require('node:test')
+const assert = require('node:assert')
+
 const user = '63977de2f83aa77c5f92cb1c'
 const sameUserObject = new UserModel({ _id: user })
 const sameUserToken = {
@@ -15,39 +18,49 @@ const adminToken = { admin: true, roles: ['read'], readonly: true }
 
 describe('isUser', () => {
   test('without token, no args.user', () => {
-    expect(() => isUser({}, { token: {} })).toThrow(/Unauthorized/)
+    assert.throws(() => isUser({}, { token: {} }), { message: /Unauthorized/ })
   })
 
   test('without token, explicit args.user', () => {
-    expect(() => isUser({ user }, { token: {} })).toThrow(/Unauthorized/)
-  })
-
-  test('with admin token, explicit args.user', () => {
-    expect(isUser({ user }, { token: adminToken })).toEqual({ userId: user })
-  })
-
-  test('with admin token, no args.user', () => {
-    expect(isUser({}, { token: adminToken })).toEqual({ userId: null })
-  })
-
-  test('with token, implicit user is token user', () => {
-    expect(isUser({}, { token: sameUserToken, user: sameUserObject })).toEqual({
-      userId: sameUserToken._id,
+    assert.throws(() => isUser({ user }, { token: {} }), {
+      message: /Unauthorized/,
     })
   })
 
+  test('with admin token, explicit args.user', () => {
+    assert.deepStrictEqual(isUser({ user }, { token: adminToken }), {
+      userId: user,
+    })
+  })
+
+  test('with admin token, no args.user', () => {
+    assert.deepStrictEqual(isUser({}, { token: adminToken }), { userId: null })
+  })
+
+  test('with token, implicit user is token user', () => {
+    assert.deepStrictEqual(
+      isUser({}, { token: sameUserToken, user: sameUserObject }),
+      {
+        userId: sameUserToken._id,
+      }
+    )
+  })
+
   test('with token, explicit user is same as user token', () => {
-    expect(
-      isUser({ user }, { token: sameUserToken, user: sameUserObject })
-    ).toEqual({ userId: user })
+    assert.deepStrictEqual(
+      isUser({ user }, { token: sameUserToken, user: sameUserObject }),
+      { userId: user }
+    )
   })
 
   test('with token, explicit user is different than user token', () => {
-    expect(() =>
-      isUser(
-        { user: differentUserObject.id },
-        { token: sameUserToken, user: sameUserObject }
-      )
-    ).toThrow(/Forbidden/)
+    assert.throws(
+      () =>
+        isUser(
+          { user: differentUserObject.id },
+          { token: sameUserToken, user: sameUserObject }
+        ),
+      { message: /Forbidden/ }
+    )
   })
 })
