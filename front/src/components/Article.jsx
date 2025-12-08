@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import { useCopyToClipboard } from 'react-use'
 import {
   Check,
   ChevronDown,
@@ -19,11 +18,13 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router'
 import { toast } from 'react-toastify'
+import { useCopyToClipboard } from 'react-use'
 
 import useFetchData from '../hooks/graphql'
-import { useDisplayName } from '../hooks/user.js'
+
 import { useArticleActions } from '../hooks/article.js'
 import { useModal } from '../hooks/modal.js'
+import { useDisplayName } from '../hooks/user.js'
 
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
@@ -159,6 +160,7 @@ export default function Article({
   }
 
   const handleDeleteArticle = async () => {
+    deleteModal.close()
     try {
       await articleActions.remove()
       onArticleDeleted(article)
@@ -273,23 +275,28 @@ export default function Article({
       </Modal>
 
       {!renaming && (
-          <header className={styles.title} onClick={toggleExpansion}>
-            <span role="button" aria-expanded={expanded} aria-controls={`article-${article._id}-details`} tabIndex={0} onKeyUp={toggleExpansion} className={styles.icon}>
-              {expanded ? <ChevronDown /> : <ChevronRight />}
-            </span>
+        <header className={styles.title} onClick={toggleExpansion}>
+          <span
+            role="button"
+            aria-expanded={expanded}
+            aria-controls={`article-${article._id}-details`}
+            tabIndex={0}
+            onKeyUp={toggleExpansion}
+            className={styles.icon}
+          >
+            {expanded ? <ChevronDown /> : <ChevronRight />}
+          </span>
 
-            <h2 id={`article-${article._id}-title`}>
-              {article.title}
-            </h2>
+          <h2 id={`article-${article._id}-title`}>{article.title}</h2>
 
-            <Button
-              icon={true}
-              className={styles.editTitleButton}
-              onClick={(evt) => evt.stopPropagation() || setRenaming(true)}
-            >
-              <Edit3 className="icon" aria-hidden />
-              <span className="sr-only">{t('article.editName.button')}</span>
-            </Button>
+          <Button
+            icon={true}
+            className={styles.editTitleButton}
+            onClick={(evt) => evt.stopPropagation() || setRenaming(true)}
+          >
+            <Edit3 className="icon" aria-hidden />
+            <span className="sr-only">{t('article.editName.button')}</span>
+          </Button>
         </header>
       )}
 
@@ -337,11 +344,7 @@ export default function Article({
           </Button>
         )}
 
-        <Button
-          role="menuitem"
-          icon={true}
-          onClick={() => duplicate()}
-        >
+        <Button role="menuitem" icon={true} onClick={() => duplicate()}>
           <Copy aria-label={t('article.duplicate.button')} />
         </Button>
 
@@ -365,11 +368,7 @@ export default function Article({
           </Button>
         }
 
-        <Button
-          role="menuitem"
-          icon={true}
-          onClick={() => exportModal.show()}
-        >
+        <Button role="menuitem" icon={true} onClick={() => exportModal.show()}>
           <Printer aria-label={t('article.download.button')} />
         </Button>
 
@@ -414,10 +413,7 @@ export default function Article({
           {contributors?.length > 0 && (
             <span className={styles.contributorNames}>
               <span>
-                ,{' '}
-                {contributors
-                  .map((c) => displayName(c.user))
-                  .join(', ')}
+                , {contributors.map((c) => displayName(c.user)).join(', ')}
               </span>
             </span>
           )}
