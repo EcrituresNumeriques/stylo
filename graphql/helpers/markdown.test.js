@@ -1,5 +1,8 @@
 const { deriveToc } = require('./markdown.js')
 
+const { describe, test } = require('node:test')
+const assert = require('node:assert')
+
 describe('deriveToc', () => {
   const emptyText = ''
   const textWithOneHeadline = `
@@ -14,9 +17,10 @@ Well, and you?
 ### Level 3
 Not 2, not 4, but 3.`
   test('computeMajorVersion', () => {
-    expect(deriveToc(emptyText)).toEqual('')
-    expect(deriveToc(textWithOneHeadline)).toEqual('# Hello World')
-    expect(deriveToc(textWithManyHeadlines)).toEqual(
+    assert.equal(deriveToc(emptyText), '')
+    assert.equal(deriveToc(textWithOneHeadline), '# Hello World')
+    assert.equal(
+      deriveToc(textWithManyHeadlines),
       '# Hello World\n## How are you?\n### Level 3'
     )
   })

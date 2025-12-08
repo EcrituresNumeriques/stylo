@@ -57,21 +57,21 @@ describe('softDelete', () => {
 
     const ta1 = await Tag.create({
       name: 'User A tag #1',
-      owner: userA
+      owner: userA,
     })
     const ta2 = await Tag.create({
       name: 'User A tag #2',
-      owner: userA
+      owner: userA,
     })
     const tb1 = await Tag.create({
       name: 'User B tag',
-      owner: userB
+      owner: userB,
     })
 
     const articleA = await Article.create({
       title: 'User A article #1',
       owner: userA,
-      tags: [ta1, ta2]
+      tags: [ta1, ta2],
     })
 
     await articleA.createNewVersion({
@@ -111,22 +111,28 @@ describe('softDelete', () => {
       color: '#C00',
       creator: userB.id,
       articles: [articleA, articleB],
-      members: [{ user: userA }]
+      members: [{ user: userA }],
     })
 
     await Corpus.create({
       name: 'User B Corpus #1',
       description: 'because it is part of workspace which will be removed',
       creator: userB.id,
-      articles: [{ article: articleA.id, order: 1 }, { article: articleB.id, order: 2 }],
-      workspace: w1
+      articles: [
+        { article: articleA.id, order: 1 },
+        { article: articleB.id, order: 2 },
+      ],
+      workspace: w1,
     })
 
     await Corpus.create({
       name: 'User B Corpus #2',
       color: '#C00',
       creator: userB.id,
-      articles: [{ article: articleA.id, order: 1 }, { article: articleB.id, order: 2 }],
+      articles: [
+        { article: articleA.id, order: 1 },
+        { article: articleB.id, order: 2 },
+      ],
     })
 
     await userA.softDelete()
@@ -137,11 +143,13 @@ describe('softDelete', () => {
 
     expect(user).toHaveProperty('deletedAt', expect.any(Date))
     expect(user).toHaveProperty('password', null)
-    expect(user).toHaveProperty('email', expect.stringMatching(/^deleted-user-[a-f0-9-]+@example.com$/))
+    expect(user).toHaveProperty(
+      'email',
+      expect.stringMatching(/^deleted-user-[a-f0-9-]+@example.com$/)
+    )
 
-    return expect(await await User.find()).toHaveLength(2)
+    return expect(await User.find({})).toHaveLength(2)
   })
-
 
   test('articles should still be here', async () => {
     const articles = await Article.find()
