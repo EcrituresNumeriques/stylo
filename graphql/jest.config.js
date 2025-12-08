@@ -11,4 +11,5 @@ module.exports = {
   watchPathIgnorePatterns: ['globalConfig'],
 
   setupFilesAfterEnv: ['./tests/setup-db.js'],
+  modulePathIgnorePatterns: ['helpers'],
 }
