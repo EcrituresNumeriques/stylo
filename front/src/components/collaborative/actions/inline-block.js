@@ -8,15 +8,48 @@ import { blockAttributes } from './index.js'
  */
 
 /**
+ * @typedef {object} defaultBodyFn
+ * @property {string} attributes
+ * @property {string[]} bodyParts
+ */
+
+/**
+ * @typedef {object} customBodyFn
+ * @property {string} attributes
+ * @property {string} body_template
+ * @property {string} clipboardText
+ * @property {string} selectionText
+ */
+
+/**
+ * @typedef {defaultBodyFn | customBodyFn} bodyFnArgs
+ */
+
+/**
+ *
+ * @param {defaultBodyFn} params
+ * @returns {[number, string]}
+ */
+function defaultBodyFn ({ attributes, body_post, body_pre, selectionText }) {
+  const bodyParts = [body_pre, selectionText, body_post].map(s => String(s).trim())
+  const text = `${bodyParts.join('').trim()}${attributes}`
+  const lastLine = selectionText.split('\n').at(-1)
+
+  return [body_pre.length + lastLine.length , text]
+}
+
+/**
  * @param {string} id
  * @param {object} opts
- * @param {string?} opts.label
- * @param {string?} opts.contextMenuGroupId
- * @param {number?} opts.keybindings
- * @param {string?} opts.className
- * @param {{[key: string]: string}?} opts.attrs
- * @param {string?} opts.body_pre
- * @param {string?} opts.body_post
+ * @param {string} [opts.label]
+ * @param {string} [opts.contextMenuGroupId]
+ * @param {number} [opts.keybindings]
+ * @param {string} [opts.className]
+ * @param {{[key: string]: string}} [opts.attrs]
+ * @param {string} [opts.body_pre]
+ * @param {string} [opts.body_post]
+ * @param {string} [opts.body_template]
+ * @param {(bodyFnArgs) => [number, string]} [opts.body_fn]
  * @returns {IActionDescriptor}
  */
 export default function createInlineBlockCommand(
@@ -29,12 +62,14 @@ export default function createInlineBlockCommand(
     attrs = {},
     body_pre = '[',
     body_post = ']',
+    body_template = null,
+    body_fn = defaultBodyFn
   } = {}
 ) {
   /**
    * @param {ICodeEditor} editor
    */
-  function run(editor) {
+  async function run(editor) {
     const { startLineNumber, startColumn, endLineNumber, endColumn } =
       editor.getSelection()
 
@@ -45,19 +80,20 @@ export default function createInlineBlockCommand(
       endColumn
     )
 
-    const originalText = editor.getModel().getValueInRange(range) || ''
+    const clipboardText = await navigator.clipboard.readText()
+    const selectionText = editor.getModel().getValueInRange(range) || clipboardText || ''
     const attributes = blockAttributes({ classNames: [className ?? id], attrs })
-    const bodyParts = [body_pre, originalText, body_post].filter((d) => d)
-
-    const text = `${bodyParts.join('').trim()}${attributes}`
-
-    const isTextSelected =
-      startLineNumber !== endLineNumber || startColumn !== endColumn
 
     const newStartLineNumber = endLineNumber
-    const newColumn = isTextSelected
-      ? endColumn + body_pre.length
-      : startColumn + body_pre.length
+    const [newColumn, text] = /** @type {(bodyFnArgs) => [number, string]} */ body_fn({
+      attributes,
+      body_post,
+      body_pre,
+      body_template,
+      clipboardText,
+      selectionText
+    })
+
 
     editor.executeEdits(
       id,

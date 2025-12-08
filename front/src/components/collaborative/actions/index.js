@@ -37,8 +37,8 @@ export const actions = {
     }),
     hyperlink: createInlineBlockCommand('hyperlink', {
       attrs: null,
-      body_pre: '[',
-      body_post: '](https://example.com)',
+      body_template: '[{{text}}]({{url}})',
+      body_fn: copyPasteUrlFn,
       keybindings: [KeyMod.CtrlCmd | KeyCode.KeyK],
     }),
   },
@@ -116,6 +116,49 @@ export function bindAction(editor, t, action) {
     label: t(action.label),
     run: action.run.bind(null, editor),
   }
+}
+
+/**
+ *
+ * @param {string} [text]
+ * @returns {boolean}
+ */
+function isURL (text) {
+  try {
+    new URL(text)
+    return true
+  }
+  catch (error) {
+    return false
+  }
+}
+
+export function copyPasteUrlFn ({ attributes, body_template, clipboardText, selectionText }) {
+  const hasClipboardText = Boolean(clipboardText)
+  const hasSelectionText = Boolean(selectionText)
+  const isClipboardTextUrl = hasClipboardText ? isURL(clipboardText) : false
+  const isSelectionTextUrl = hasSelectionText ? isURL(selectionText) : false
+
+  let textPart = ''
+  let urlPart = 'https://example.com'
+
+  if (hasClipboardText) {
+    textPart = isClipboardTextUrl ? textPart : clipboardText
+    urlPart = isClipboardTextUrl ? clipboardText : urlPart
+  }
+
+  if (hasSelectionText) {
+    textPart = isSelectionTextUrl && !isClipboardTextUrl ? textPart : selectionText
+    urlPart = isSelectionTextUrl && !isClipboardTextUrl ? selectionText : urlPart
+  }
+
+  const text = body_template
+  .replace('{{text}}', textPart)
+  .replace('{{url}}', urlPart)
+  const lastLine = textPart.split('\n').at(-1)
+  const columnNumber = lastLine === textPart ? text.indexOf(textPart) + textPart.length : lastLine.length
+
+  return [columnNumber + 1, text]
 }
 
 /**
