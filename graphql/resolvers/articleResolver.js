@@ -204,8 +204,6 @@ module.exports = {
         }
       }
 
-      user.articles.push(newArticle)
-      await user.save()
       return newArticle
     },
 
@@ -269,9 +267,7 @@ module.exports = {
       })
 
       newArticle.isNew = true
-      withUser.articles.push(newArticle)
-
-      await Promise.all([newArticle.save(), withUser.save()])
+      await newArticle.save()
 
       // Maintain links
       await Corpus.updateMany(

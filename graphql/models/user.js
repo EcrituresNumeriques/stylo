@@ -56,12 +56,6 @@ const userSchema = new Schema(
         ref: 'User',
       },
     ],
-    articles: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Article',
-      },
-    ],
     authProviders: {
       type: Map,
       of: AuthProviderSchema,
@@ -115,8 +109,6 @@ userSchema.methods.createDefaultArticle =
     })
 
     await newArticle.createNewVersion({ mode: 'MINOR', user: this })
-
-    this.articles.push(newArticle)
     return this.save()
   }
 

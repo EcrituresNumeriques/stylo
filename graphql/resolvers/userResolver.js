@@ -246,13 +246,14 @@ module.exports = {
   },
 
   User: {
-    async articles(user, { limit }) {
-      await user.populate({
-        path: 'articles',
-        options: { limit },
-        populate: { path: 'owner tags' },
+    async articles(user, { limit, page }, context) {
+      page = page || 1
+      const options = limit ? { limit, skip: (page - 1) * limit } : {}
+      return Article.getArticles({
+        filter: { owner: user._id },
+        options,
+        loaders: context.loaders,
       })
-      return user.articles
     },
 
     async acquintances(user, args, context) {
@@ -314,11 +315,12 @@ module.exports = {
     },
 
     async stats(user) {
-      const contributedArticlesCount = (
-        await Article.find({ contributors: { $elemMatch: { user: user._id } } })
-      ).length
+      const contributedArticlesCount = await Article.countDocuments({
+        contributors: { $elemMatch: { user: user._id } },
+      })
+      const myArticlesCount = await Article.countDocuments({ owner: this._id })
       return {
-        myArticlesCount: user.articles.length,
+        myArticlesCount,
         contributedArticlesCount,
       }
     },
