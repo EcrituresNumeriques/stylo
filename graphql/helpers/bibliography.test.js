@@ -1,9 +1,12 @@
 const { previewEntries } = require('./bibliography.js')
 
+const { describe, test } = require('node:test')
+const assert = require('node:assert')
+
 describe('previewEntries', () => {
   test('returns nothing if empty', () => {
-    expect(previewEntries('    \n')).toEqual('')
-    expect(previewEntries(null)).toEqual('')
+    assert.equal(previewEntries('    \n'), '')
+    assert.equal(previewEntries(null), '')
   })
 
   test('ignore invalid parts', () => {
@@ -18,7 +21,7 @@ describe('previewEntries', () => {
       title = {En finir avec {Word} ! {Pour} une analyse des enjeux relatifs aux traitements de texte et à leur utilisation}
     }`
 
-    expect(previewEntries(bib)).toEqual(expected)
+    assert.equal(previewEntries(bib), expected)
   })
 
   test('returns 2 different kinds when available', () => {
@@ -110,7 +113,7 @@ describe('previewEntries', () => {
       keywords = {Artificial intelligence, Biotechnology, Medical applications, Medical ethics, Moral and ethical aspects, Surgical robots},
     }`
 
-    expect(previewEntries(bib)).toEqual(expectation)
+    assert.equal(previewEntries(bib), expectation)
   })
 
   test('returns 1 kinds if no choice', () => {
@@ -149,7 +152,7 @@ describe('previewEntries', () => {
       journal = {MuseMedusa},
     }`
 
-    expect(previewEntries(bib)).toEqual(expectation)
+    assert.equal(previewEntries(bib), expectation)
   })
 
   test('limit to {count} entries', () => {
@@ -187,6 +190,6 @@ describe('previewEntries', () => {
       journal = {MuseMedusa},
     }`
 
-    expect(previewEntries(bib, 1)).toEqual(expectation)
+    assert.equal(previewEntries(bib, 1), expectation)
   })
 })

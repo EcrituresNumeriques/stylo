@@ -8,7 +8,20 @@ const Workspace = require('../models/workspace')
 const User = require('../models/user')
 const Article = require('../models/article')
 
+const { after, before, describe, test } = require('node:test')
+const assert = require('node:assert')
+const { setup, teardown } = require('../tests/harness.js')
+
 describe('workspace resolver', () => {
+  let container
+  before(async () => {
+    container = await setup()
+  })
+
+  after(async () => {
+    await teardown(container)
+  })
+
   test('create a workspace', async () => {
     const userId = new ObjectId('5a5b345f98f048281d88eac2')
     const context = {
@@ -16,7 +29,7 @@ describe('workspace resolver', () => {
       token: { admin: false },
     }
     let workspaces = await Query.workspaces({}, {}, context)
-    expect(workspaces).toEqual([])
+    assert.deepEqual(workspaces, [])
     await RootMutation.createWorkspace(
       {},
       {
@@ -29,21 +42,26 @@ describe('workspace resolver', () => {
       context
     )
     workspaces = await Query.workspaces({}, {}, context)
-    expect(workspaces[0].toJSON()).toMatchObject({
-      articles: [],
-      color: '#49ffe0',
-      creator: new ObjectId('5a5b345f98f048281d88eac2'),
-      members: [{ user: new ObjectId('5a5b345f98f048281d88eac2') }],
-      name: 'Workspace A',
-    })
+    const firstWorkspaceFound = workspaces[0].toJSON()
+    assert.deepEqual(firstWorkspaceFound.articles, [])
+    assert.deepEqual(firstWorkspaceFound.color, '#49ffe0')
+    assert.deepEqual(
+      firstWorkspaceFound.creator.toString(),
+      '5a5b345f98f048281d88eac2'
+    )
+    assert.deepEqual(
+      firstWorkspaceFound.members.map((m) => m.user.toString()),
+      ['5a5b345f98f048281d88eac2']
+    )
+    assert.deepEqual(firstWorkspaceFound.name, 'Workspace A')
   })
   test('add a member to an existing workspace', async () => {
-    const guillaume = await User.create({
+    const user1 = await User.create({
       email: 'guillaume@huma-num.fr',
       firstName: 'Guillaume',
       lastName: 'Grossetie',
     })
-    const thomas = await User.create({
+    const user2 = await User.create({
       email: 'thomas@huma-num.fr',
       firstName: 'Thomas',
       lastName: 'Parisot',
@@ -51,67 +69,76 @@ describe('workspace resolver', () => {
     let workspace = await Workspace.create({
       name: 'Workspace B',
       color: '#bb69ff',
-      members: [{ user: guillaume.id }],
+      members: [{ user: user1.id }],
       articles: [],
-      creator: guillaume.id,
+      creator: user1.id,
     })
     workspace = await WorkspaceMutation.inviteMember(workspace, {
-      userId: thomas.id,
+      userId: user2.id,
     })
     const members = await WorkspaceMutation.members(workspace, { limit: 10 })
-    expect(members.map((m) => m.toObject())).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
+    assert.deepEqual(
+      members.map((m) => {
+        const memberObj = m.toObject()
+        return {
+          firstName: memberObj.firstName,
+          email: memberObj.email,
+        }
+      }),
+      [
+        {
           firstName: 'Guillaume',
           email: 'guillaume@huma-num.fr',
-        }),
-        expect.objectContaining({
+        },
+        {
           firstName: 'Thomas',
           email: 'thomas@huma-num.fr',
-        }),
-      ])
+        },
+      ]
     )
   })
   test('remove existing member', async () => {
-    const guillaume = await User.create({
-      email: 'guillaume@huma-num.fr',
-      firstName: 'Guillaume',
-      lastName: 'Grossetie',
+    const user1 = await User.create({
+      email: 'clara@huma-num.fr',
+      firstName: 'Clara',
     })
-    const thomas = await User.create({
-      email: 'thomas@huma-num.fr',
-      firstName: 'Thomas',
-      lastName: 'Parisot',
+    const user2 = await User.create({
+      email: 'victor@huma-num.fr',
+      firstName: 'Victor',
     })
     const workspace = await Workspace.create({
       name: 'Workspace C',
       color: '#ff8c69',
-      members: [{ user: guillaume.id }, { user: thomas.id }],
+      members: [{ user: user1.id }, { user: user2.id }],
       articles: [],
-      creator: guillaume.id,
+      creator: user1.id,
     })
     const workspaceMember = await WorkspaceMutation.member(workspace, {
-      userId: thomas.id,
+      userId: user2.id,
     })
     await workspaceMember.remove()
-    const workspaces = await Query.workspaces({}, {}, { user: guillaume })
-    expect(workspaces[0].toJSON()).toMatchObject({
-      articles: [],
-      color: '#ff8c69',
-      creator: guillaume._id,
-      members: [{ user: guillaume._id }], // thomas was removed
-      name: 'Workspace C',
-    })
+    const workspaces = await Query.workspaces({}, {}, { user: user1 })
+    const firstWorkspaceFound = workspaces[0].toJSON()
+    assert.deepEqual(firstWorkspaceFound.articles, [])
+    assert.deepEqual(firstWorkspaceFound.color, '#ff8c69')
+    assert.deepEqual(
+      firstWorkspaceFound.creator.toString(),
+      user1._id.toString()
+    )
+    assert.deepEqual(
+      firstWorkspaceFound.members.map((m) => m.user.toString()),
+      [user1._id.toString()] // thomas was removed
+    )
+    assert.deepEqual(firstWorkspaceFound.name, 'Workspace C')
   })
   test('remove existing article', async () => {
-    const guillaume = await User.create({
-      email: 'guillaume@huma-num.fr',
-      firstName: 'Guillaume',
-      lastName: 'Grossetie',
+    const user1 = await User.create({
+      email: 'david@huma-num.fr',
+      firstName: 'David',
     })
     const thesis = await Article.create({
       title: 'My Thesis',
-      owner: guillaume.id,
+      owner: user1.id,
       contributors: [],
       versions: [],
       tags: [],
@@ -119,22 +146,28 @@ describe('workspace resolver', () => {
     const workspace = await Workspace.create({
       name: 'Workspace D',
       color: '#698cff',
-      members: [{ user: guillaume.id }],
+      members: [{ user: user1.id }],
       articles: [thesis],
-      creator: guillaume.id,
+      creator: user1.id,
     })
     const workspaceArticle = await WorkspaceMutation.article(workspace, {
       articleId: thesis.id,
     })
     await workspaceArticle.remove()
-    const workspaces = await Query.workspaces({}, {}, { user: guillaume })
-    expect(workspaces[0].toJSON()).toMatchObject({
-      articles: [],
-      color: '#698cff',
-      creator: guillaume._id,
-      members: [{ user: guillaume._id }], // thomas was removed
-      name: 'Workspace D',
-    })
+    const workspaces = await Query.workspaces({}, {}, { user: user1 })
+
+    const firstWorkspaceFound = workspaces[0].toJSON()
+    assert.deepEqual(firstWorkspaceFound.articles, [])
+    assert.deepEqual(firstWorkspaceFound.color, '#698cff')
+    assert.deepEqual(
+      firstWorkspaceFound.creator.toString(),
+      user1._id.toString()
+    )
+    assert.deepEqual(
+      firstWorkspaceFound.members.map((m) => m.user.toString()),
+      [user1._id.toString()]
+    )
+    assert.deepEqual(firstWorkspaceFound.name, 'Workspace D')
   })
   test('update form metadata', async () => {
     const userId = new ObjectId('5a5b345f98f048281d88eac2')
@@ -165,16 +198,20 @@ describe('workspace resolver', () => {
       { workspaceId: workspace.id },
       context
     )
-    expect(getWorkspace.toJSON()).toMatchObject({
-      articles: [],
-      color: '#ff69e8',
-      creator: userId,
-      members: [{ user: userId }],
-      name: 'Workspace',
-      formMetadata: {
-        data: `{"title": "book"}`,
-        ui: `{"ui:groups": []}`,
-      },
+
+    const getWorkspaceObj = getWorkspace.toJSON()
+
+    assert.deepEqual(getWorkspaceObj.articles, [])
+    assert.deepEqual(getWorkspaceObj.color, '#ff69e8')
+    assert.deepEqual(getWorkspaceObj.creator.toString(), userId.toString())
+    assert.deepEqual(
+      getWorkspaceObj.members.map((m) => m.user.toString()),
+      [userId.toString()]
+    )
+    assert.deepEqual(getWorkspaceObj.name, 'Workspace')
+    assert.deepEqual(getWorkspaceObj.formMetadata, {
+      data: `{"title": "book"}`,
+      ui: `{"ui:groups": []}`,
     })
   })
   test('update form metadata with invalid data JSON', async () => {
@@ -191,19 +228,23 @@ describe('workspace resolver', () => {
       creator: userId,
     })
 
-    await expect(() =>
-      RootMutation.updateWorkspaceFormMetadata(
-        {},
-        {
-          workspaceId: workspace.id,
-          details: {
-            data: `{"title":}`, // invalid JSON
-            ui: `{"ui:groups": []}`,
+    await assert.rejects(
+      () =>
+        RootMutation.updateWorkspaceFormMetadata(
+          {},
+          {
+            workspaceId: workspace.id,
+            details: {
+              data: `{"title":}`, // invalid JSON
+              ui: `{"ui:groups": []}`,
+            },
           },
-        },
-        context
-      )
-    ).rejects.toThrow('formMetadata.data must be a valid JSON.')
+          context
+        ),
+      {
+        message: 'formMetadata.data must be a valid JSON.',
+      }
+    )
   })
   test('update form metadata with invalid ui JSON', async () => {
     const userId = new ObjectId('5a5b345f98f048281d88eac2')
@@ -219,18 +260,22 @@ describe('workspace resolver', () => {
       creator: userId,
     })
 
-    await expect(() =>
-      RootMutation.updateWorkspaceFormMetadata(
-        {},
-        {
-          workspaceId: workspace.id,
-          details: {
-            data: `{"title": "book"}`,
-            ui: `{`, // invalid JSON
+    await assert.rejects(
+      () =>
+        RootMutation.updateWorkspaceFormMetadata(
+          {},
+          {
+            workspaceId: workspace.id,
+            details: {
+              data: `{"title": "book"}`,
+              ui: `{`, // invalid JSON
+            },
           },
-        },
-        context
-      )
-    ).rejects.toThrow('formMetadata.ui must be a valid JSON.')
+          context
+        ),
+      {
+        message: 'formMetadata.ui must be a valid JSON.',
+      }
+    )
   })
 })
