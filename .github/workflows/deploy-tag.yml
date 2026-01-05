@@ -49,7 +49,7 @@ jobs:
           SNOWPACK_IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID_PROD }}
 
       - name: Store build artifacts for the deploy stage
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: front-assets
           path: ./front/build
@@ -68,7 +68,7 @@ jobs:
         with:
           ref: ${{ format('v{0}', inputs.release-version) }}
 
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         id: assets
         with:
           name: front-assets
