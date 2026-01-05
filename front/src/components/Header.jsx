@@ -2,7 +2,8 @@ import clsx from 'clsx'
 import { Menu } from 'lucide-react'
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, NavLink, useLocation, useRouteLoaderData } from 'react-router'
+import { useDispatch } from 'react-redux'
+import { NavLink, useLocation, useRouteLoaderData } from 'react-router'
 
 import logoContent from '/images/logo.svg?inline'
 
@@ -12,10 +13,9 @@ import { useActiveWorkspaceId } from '../hooks/workspace.js'
 import HelpMenu from './header/HelpMenu.jsx'
 import LanguagesMenu from './header/LanguagesMenu.jsx'
 import UserMenu from './header/UserMenu.jsx'
-import WorkspacesMenu from './workspace/WorkspacesMenu.jsx'
+import WorkspacesMenu from './header/WorkspacesMenu.jsx'
 
 import styles from './header.module.scss'
-import { useDispatch } from 'react-redux'
 
 export default function Header() {
   const { t } = useTranslation()
@@ -49,7 +49,7 @@ export default function Header() {
   return (
     <header className={styles.header} role="banner">
       <div className={styles.container}>
-        <NavLink to="/" rel="home"  className={styles.logo}>
+        <NavLink to="/" rel="home" className={styles.logo}>
           <img src={logoContent} alt="Stylo" aria-hidden />
           <span className="sr-only">{t('header.home')}</span>
         </NavLink>
@@ -81,61 +81,22 @@ export default function Header() {
                 className={styles.menuLinks}
                 aria-label={t('header.mainMenu.list')}
               >
-                <li hidden={!userId}>
-                  <NavLink to={`${baseUrl}/articles`} prefetch="intent">
-                    {t('header.mainMenu.articles')}
-                  </NavLink>
-                </li>
-                <li hidden={!userId}>
-                  <NavLink to={`${baseUrl}/corpus`}>
-                    {t('header.mainMenu.corpus')}
-                  </NavLink>
-                </li>
                 <li
                   hidden={!userId}
                   ref={workspacesRef}
                   className={styles.toggleMenu}
                 >
-                  <button
-                    aria-controls="header-workspaces-list"
-                    aria-expanded={areWorkspacesVisible}
-                    onClick={toggleWorkspaces}
-                  >
-                    {t('header.mainMenu.workspaces')}
-                  </button>
-
-                  <div
-                    className={styles.toggleMenuContainer}
-                    id="header-workspaces-list"
-                    hidden={!areWorkspacesVisible}
-                  >
-                    <ul
-                      className={styles.toggleMenuList}
-                      aria-label={t('header.mainMenu.workspaces.list')}
-                    >
-                      <li>
-                        <Link
-                          to={`/${activeTool}`}
-                          onClick={resetWorkspaceId}
-                          aria-current={!activeWorkspaceId ? 'page' : false}
-                        >
-                          <span
-                            className={styles.chip}
-                            style={{ backgroundColor: '#ccc' }}
-                          />
-                          {t('workspace.myspace')}
-                        </Link>
-                      </li>
-
-                      <WorkspacesMenu activeTool={activeTool} />
-
-                      <li>
-                        <NavLink to={`/workspaces`} end>
-                          {t('workspace.all')}
-                        </NavLink>
-                      </li>
-                    </ul>
-                  </div>
+                  <WorkspacesMenu activeTool={activeTool} />
+                </li>
+                <li hidden={!userId} className={styles.navLink}>
+                  <NavLink to={`${baseUrl}/articles`} prefetch="intent">
+                    {t('header.mainMenu.articles')}
+                  </NavLink>
+                </li>
+                <li hidden={!userId} className={styles.navLink}>
+                  <NavLink to={`${baseUrl}/corpus`}>
+                    {t('header.mainMenu.corpus')}
+                  </NavLink>
                 </li>
               </ul>
             </div>

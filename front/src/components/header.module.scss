@@ -18,7 +18,7 @@
     align-items: center;
     gap: 1em;
     justify-content: space-between;
-    padding: .75rem;
+    padding: 0.5rem .75rem 0;
   }
 
   a, button {
@@ -78,12 +78,12 @@
   .menuLinks {
     display: none;
     margin: 0;
+    height: 100%;
 
     @media screen and (min-width: $screen-breakpoint) {
       & {
         align-items: center;
         display: flex;
-        gap: 1em;
       }
     }
   }
@@ -141,15 +141,18 @@
 .dropdownMenu {
   position: relative;
 
-  > button {
-    display: flex;
-  }
-
   button, a {
     display: inline-block;
     font-size: 1em;
     font-weight: initial;
     padding: .5em;
+  }
+
+  > button {
+    display: flex;
+    align-content: center;
+    gap: 0.5rem;
+    flex-direction: row;
   }
 }
 
@@ -165,7 +168,6 @@
 .toggleMenuContainer {
   background-color: $main-color;
   left: 0;
-  margin-top: .5em;
   position: absolute;
   min-width: max-content;
   width: 100%;
@@ -185,7 +187,6 @@
 
   @media screen and (min-width: $screen-breakpoint) {
     left: auto;
-    right: -1em;
   }
 
   .toggleMenuList {
@@ -193,6 +194,28 @@
 
     @media screen and (min-width: $screen-breakpoint) {
       padding: 1em;
+    }
+  }
+}
+
+.navLink {
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  a, button {
+    background-color: $main-color;
+    border: none;
+    color: currentColor;
+    font-weight: bold;
+    font-size: 1em;
+    text-decoration: underline;
+    padding: .85rem 1em;
+
+    &:hover, &:focus, &[aria-pressed="true"], &[aria-current="page"] {
+      text-decoration: none;
+      background-color: white;
+      color: black;
     }
   }
 }

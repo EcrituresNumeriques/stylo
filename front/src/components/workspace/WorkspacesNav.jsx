@@ -1,18 +1,22 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router'
 
-import { useWorkspaces } from '../../hooks/workspace.js'
+import { usePreferenceItem } from '../../hooks/user.js'
+import { useActiveWorkspaceId, useWorkspaces } from '../../hooks/workspace.js'
 
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
+import WorkspaceLabel from './WorkspaceLabel.jsx'
 
 import styles from '../header.module.scss'
-import { usePreferenceItem } from '../../hooks/user.js'
 
-export default function WorkspacesMenu({ activeTool }) {
+export default function WorkspacesNav({ activeTool }) {
   const { workspaces, error, isLoading } = useWorkspaces()
-  const { setValue: setActiveWorkspaceId } = usePreferenceItem('workspaceId', 'user')
-
+  const { setValue: setActiveWorkspaceId } = usePreferenceItem(
+    'workspaceId',
+    'user'
+  )
   if (isLoading) {
     return <Loading />
   }

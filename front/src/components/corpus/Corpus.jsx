@@ -34,8 +34,6 @@ export default function Corpus() {
 
       <header className={styles.header}>
         <h1>{t('header.corpus.link')}</h1>
-
-        <WorkspaceLabel color={workspace.color} name={workspace.name} />
       </header>
 
       <p className={styles.introduction}>{t('corpus.page.description')}</p>

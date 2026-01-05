@@ -141,9 +141,7 @@ export default function Articles() {
   }
 
   return (
-    <div
-      className={styles.section}
-    >
+    <div className={styles.section}>
       <Helmet>
         <title>
           {t('articles.page.title', {
@@ -154,8 +152,6 @@ export default function Articles() {
 
       <header className={styles.articlesHeader}>
         <h1 id="articles-list-headline">{t('header.articles.link')}</h1>
-
-        <WorkspaceLabel color={workspace.color} name={workspace.name} />
       </header>
 
       <search aria-label={t('article.search.label')}>
@@ -169,7 +165,10 @@ export default function Articles() {
           onChange={(e) => setFilter(etv(e))}
         />
 
-        <fieldset className={styles.filtersTags} aria-label={t('tag.list.title')}>
+        <fieldset
+          className={styles.filtersTags}
+          aria-label={t('tag.list.title')}
+        >
           <legend>
             <h4 aria-level="2">{t('tag.list.title')}</h4>
           </legend>
