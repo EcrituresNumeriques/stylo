@@ -35,7 +35,7 @@ jobs:
       - name: Run tests e2e
         run: |
           npm run test:e2e --prefix=front
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
