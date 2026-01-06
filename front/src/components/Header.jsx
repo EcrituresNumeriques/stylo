@@ -53,16 +53,15 @@ export default function Header() {
           <img src={logoContent} alt="Stylo" aria-hidden />
           <span className="sr-only">{t('header.home')}</span>
         </NavLink>
-
-        {userId && (
-          <nav
-            role="navigation"
-            id="main-navigation"
-            ref={toolsRef}
-            className={styles.navigation}
-            aria-label={t('header.mainMenu.list')}
-            aria-description={t('header.mainMenu.description')}
-          >
+        <nav
+          role="navigation"
+          id="main-navigation"
+          ref={toolsRef}
+          className={styles.navigation}
+          aria-label={t('header.mainMenu.list')}
+          aria-description={t('header.mainMenu.description')}
+        >
+          <>
             <button
               className={styles.menuButton}
               aria-controls="app-menu"
@@ -77,35 +76,34 @@ export default function Header() {
               className={clsx(areToolsVisible && styles.menuLinksMobileVisible)}
               id="app-menu"
             >
-              <ul
+              <div
                 className={styles.menuLinks}
                 aria-label={t('header.mainMenu.list')}
               >
-                <li
-                  hidden={!userId}
-                  ref={workspacesRef}
-                  className={styles.toggleMenu}
-                >
-                  <WorkspacesMenu activeTool={activeTool} />
-                </li>
-                <li hidden={!userId} className={styles.navLink}>
-                  <NavLink to={`${baseUrl}/articles`} prefetch="intent">
-                    {t('header.mainMenu.articles')}
-                  </NavLink>
-                </li>
-                <li hidden={!userId} className={styles.navLink}>
-                  <NavLink to={`${baseUrl}/corpus`}>
-                    {t('header.mainMenu.corpus')}
-                  </NavLink>
-                </li>
-              </ul>
+                {userId && (
+                  <>
+                    <div ref={workspacesRef} className={styles.toggleMenu}>
+                      <WorkspacesMenu activeTool={activeTool} />
+                    </div>
+                    <div className={styles.navLink}>
+                      <NavLink to={`${baseUrl}/articles`} prefetch="intent">
+                        {t('header.mainMenu.articles')}
+                      </NavLink>
+                    </div>
+                    <div className={styles.navLink}>
+                      <NavLink to={`${baseUrl}/corpus`}>
+                        {t('header.mainMenu.corpus')}
+                      </NavLink>
+                    </div>
+                  </>
+                )}
+                <UserMenu />
+                <HelpMenu />
+                <LanguagesMenu />
+              </div>
             </div>
-          </nav>
-        )}
-
-        <UserMenu />
-        <HelpMenu />
-        <LanguagesMenu />
+          </>
+        </nav>
       </div>
     </header>
   )
