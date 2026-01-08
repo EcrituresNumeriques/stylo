@@ -8,13 +8,14 @@ import { useModal } from '../../hooks/modal.js'
 
 import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
+import PageTitle from '../atoms/PageTitle.jsx'
+import CorpusForm from '../corpus/CorpusForm.jsx'
+import CorpusItem from '../corpus/CorpusItem.jsx'
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
-import CorpusForm from './CorpusForm.jsx'
-import CorpusItem from './CorpusItem.jsx'
 
-import styles from './corpus.module.scss'
+import styles from './Corpus.module.scss'
 
 export default function Corpus() {
   const { t } = useTranslation()
@@ -33,16 +34,13 @@ export default function Corpus() {
       </Helmet>
 
       <header className={styles.header}>
-        <h1>{t('header.corpus.link')}</h1>
-
-        <WorkspaceLabel color={workspace.color} name={workspace.name} />
+        <PageTitle title={t('header.corpus.link')}></PageTitle>
+        <Button primary onClick={() => createCorpusModal.show()}>
+          {t('corpus.createAction.buttonText')}
+        </Button>
       </header>
-
+      <WorkspaceLabel color={workspace.color} name={workspace.name} />
       <p className={styles.introduction}>{t('corpus.page.description')}</p>
-
-      <Button primary onClick={() => createCorpusModal.show()}>
-        {t('corpus.createAction.buttonText')}
-      </Button>
 
       <Modal
         {...createCorpusModal.bindings}

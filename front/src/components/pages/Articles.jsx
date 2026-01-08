@@ -5,24 +5,24 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 
-import etv from '../helpers/eventTargetValue'
-import useFetchData from '../hooks/graphql'
-import Article from './Article'
-import Field from './Field'
+import etv from '../../helpers/eventTargetValue.js'
+import useFetchData from '../../hooks/graphql.js'
+import { useModal } from '../../hooks/modal.js'
 
-import { useModal } from '../hooks/modal.js'
+import Article from '../Article.jsx'
+import ArticleCreate from '../ArticleCreate.jsx'
+import Button from '../Button.jsx'
+import Field from '../Field.jsx'
+import Modal from '../Modal.jsx'
+import PageTitle from '../atoms/PageTitle.jsx'
+import Loading from '../molecules/Loading.jsx'
+import TagEditForm from '../tag/TagEditForm.jsx'
+import TagsList from '../tag/TagsList.jsx'
+import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
 
-import ArticleCreate from './ArticleCreate.jsx'
-import Button from './Button.jsx'
-import LoadingPage from './LoadingPage.jsx'
-import Modal from './Modal.jsx'
-import TagEditForm from './tag/TagEditForm.jsx'
-import TagsList from './tag/TagsList.jsx'
-import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
+import { getWorkspaceArticles } from '../Articles.graphql'
 
-import { getWorkspaceArticles } from './Articles.graphql'
-
-import styles from './articles.module.scss'
+import styles from './Articles.module.scss'
 
 export default function Articles() {
   const { t } = useTranslation()
@@ -137,13 +137,15 @@ export default function Articles() {
   )
 
   if (isLoading) {
-    return <LoadingPage />
+    return (
+      <div className={styles.section}>
+        <Loading />
+      </div>
+    )
   }
 
   return (
-    <div
-      className={styles.section}
-    >
+    <div className={styles.section}>
       <Helmet>
         <title>
           {t('articles.page.title', {
@@ -152,32 +154,43 @@ export default function Articles() {
         </title>
       </Helmet>
 
-      <header className={styles.articlesHeader}>
-        <h1 id="articles-list-headline">{t('header.articles.link')}</h1>
-
-        <WorkspaceLabel color={workspace.color} name={workspace.name} />
+      <header className={styles.pageHeader}>
+        <div className={styles.pageTitle}>
+          <PageTitle
+            id="articles-list-headline"
+            title={t('header.articles.link')}
+          />
+          <Button
+            className={styles.button}
+            testId="create-article-button"
+            primary
+            onClick={() => createArticleModal.show()}
+          >
+            {t('article.createAction.buttonText')}
+          </Button>
+        </div>
+        <search
+          className={styles.search}
+          aria-label={t('article.search.label')}
+        >
+          <Field
+            className={styles.searchField}
+            type="search"
+            icon={Search}
+            value={filter}
+            placeholder={t('article.search.placeholder')}
+            onChange={(e) => setFilter(etv(e))}
+          />
+        </search>
       </header>
+      <WorkspaceLabel color={workspace.color} name={workspace.name} />
+      <fieldset className={styles.filtersTags} aria-label={t('tag.list.title')}>
+        <legend>
+          <h4 aria-level="2">{t('tag.list.title')}</h4>
+        </legend>
 
-      <search aria-label={t('article.search.label')}>
-        <Field
-          className={styles.searchField}
-          type="search"
-          icon={Search}
-          value={filter}
-          label={t('article.search.label')}
-          placeholder={t('article.search.placeholder')}
-          onChange={(e) => setFilter(etv(e))}
-        />
-
-        <fieldset className={styles.filtersTags} aria-label={t('tag.list.title')}>
-          <legend>
-            <h4 aria-level="2">{t('tag.list.title')}</h4>
-          </legend>
-
-          <TagsList action={TagEditForm} />
-        </fieldset>
-      </search>
-
+        <TagsList action={TagEditForm} />
+      </fieldset>
       <Modal
         {...createArticleModal.bindings}
         title={t('article.createModal.title')}
@@ -191,28 +204,22 @@ export default function Articles() {
 
       <section aria-labelledby="articles-list-headline" role="list">
         <div className={styles.articlesTableHeader}>
-          <Button
-            testId="create-article-button"
-            primary
-            onClick={() => createArticleModal.show()}
-          >
-            {t('article.createAction.buttonText')}
-          </Button>
-
           <span className={styles.articleCounter}>
             {t('article.count', { count: keepArticles.length })}
           </span>
         </div>
 
-        {keepArticles.map((article) => (
-          <Article
-            key={`article-${article._id}`}
-            article={article}
-            onArticleUpdated={handleArticleUpdated}
-            onArticleDeleted={handleArticleDeleted}
-            onArticleCreated={handleArticleCreated}
-          />
-        ))}
+        <div className={styles.articlesList}>
+          {keepArticles.map((article) => (
+            <Article
+              key={`article-${article._id}`}
+              article={article}
+              onArticleUpdated={handleArticleUpdated}
+              onArticleDeleted={handleArticleDeleted}
+              onArticleCreated={handleArticleCreated}
+            />
+          ))}
+        </div>
       </section>
     </div>
   )

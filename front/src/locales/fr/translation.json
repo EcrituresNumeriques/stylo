@@ -105,6 +105,8 @@
   "bibliography.title": "Bibliographie",
   "bibliography.warnings_one": "Il y a un avertissement dans le BibTeX. <1>Impossible d'enregistrer.</1>",
   "bibliography.warnings_other": "Il y a {{count}} avertissements dans le BibTeX. <1>Impossible d'enregistrer.</1>",
+  "common.createdBy.label": "créé par",
+  "common.updatedAt.label": "mis à jour",
   "contact.searchField.placeholder": "Email du contact",
   "contact.userNotFound.message": "Aucun utilisateur à cette adresse courriel",
   "corpus.addPart.note": "Pour ajouter un chapitre, allez sur la <1>page des articles</1> afin de sélectionner ce corpus.",

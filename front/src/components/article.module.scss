@@ -16,6 +16,10 @@
   }
 }
 
+.primaryAction {
+  margin-left: 0.75rem;
+}
+
 .editTitleButton {
   @include inlineTextButton;
 }
@@ -56,20 +60,9 @@
     text-align: right;
   }
 
-  .metadata,
   .deleteArticle {
     width: 100%;
-    margin-left: 0.5em;
-  }
-
-  .metadata {
-    h4 {
-      margin-bottom: 0.25rem;
-    }
-
-    > p:not(:last-child) {
-      margin-bottom: 1rem;
-    }
+    color: $main-lighter-color
   }
 
   .metadataAuthoring {
@@ -79,12 +72,33 @@
   .versions {
     margin-bottom: 1.5rem;
   }
+  
+  .metadata {
+    padding-top: 1.125rem;
+    color: $main-lighter-color
+  }
+  
+  .tags {
+    display: flex;
+    gap: 0.5rem
+  }
+  
+  .corpuses {
+    display: flex;
+    gap: 0.5rem
+  }
+  
+  .tag {
+    border: 1px solid $muted-color;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+  }
 
   .tagChip {
-    font-size: 0.6rem;
-    display: inline-block;
-    padding: 0.25rem;
-    margin-right: 0.5rem;
+    width: 0.5rem;
+    height: 0.5rem;
     border-radius: 100% 100%;
   }
 

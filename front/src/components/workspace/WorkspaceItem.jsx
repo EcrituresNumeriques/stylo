@@ -7,7 +7,7 @@ import { useDisplayName } from '../../hooks/user.js'
 
 import Button from '../Button.jsx'
 import Field from '../Field.jsx'
-import TimeAgo from '../TimeAgo.jsx'
+import TimeAgo from '../atoms/TimeAgo.jsx'
 import LeaveWorkspaceModal from './LeaveWorkspaceModal.jsx'
 import WorkspaceManageMembersModal from './WorkspaceManageMembersModal.jsx'
 import WorkspaceUpdateFormMetadataModal from './WorkspaceUpdateFormMetadataModal.jsx'
