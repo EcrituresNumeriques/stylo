@@ -159,8 +159,48 @@ async function createVersion(article, { major, message, userId, type }) {
   return true
 }
 
+function eqSet(a, b) {
+  return a.size === b.size && a.intersection(b).size === a.size
+}
+
 module.exports = {
   Mutation: {
+    /**
+     * Update an article as the current user
+     * @param {null} _root
+     * @param {*} args
+     * @param {{ userId, token }} context
+     */
+    async updateArticle(_root, args, context) {
+      const { id, title, tags, workspaces } = args.updateArticleInput
+      const article = await getArticleByContext(id, context)
+      if (title) {
+        article.title = title
+      }
+      if (Array.isArray(tags)) {
+        article.tags = tags
+      }
+      if (Array.isArray(workspaces)) {
+        const currentWorkspaces = await Workspace.findByArticleId(id)
+        const currentWorkspacesSet = new Set(
+          currentWorkspaces.map((w) => w._id.toString())
+        )
+        const workspacesSet = new Set(workspaces)
+        if (!eqSet(workspacesSet, currentWorkspacesSet)) {
+          const additions = workspacesSet.difference(currentWorkspacesSet)
+          for (const additionWorkspaceId of additions) {
+            await Workspace.addArticle(additionWorkspaceId, article._id)
+          }
+          const deletions = currentWorkspacesSet.difference(workspacesSet)
+          for (const deletionWorkspaceId of deletions) {
+            await Workspace.deleteArticle(deletionWorkspaceId, article._id)
+          }
+        }
+      }
+      await article.save()
+      return article.populate('tags')
+    },
+
     /**
      * Create an article as the current user
      * @param {null} _root

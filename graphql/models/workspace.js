@@ -54,6 +54,15 @@ workspaceSchema.statics.findByUser = function findWorkspaceByUser(user) {
   return this.find({ 'members.user': user?._id }).sort([['updatedAt', -1]])
 }
 
+/**
+ * @returns {mongoose.Collection} workspaces
+ */
+workspaceSchema.statics.findByArticleId = function findWorkspaceByArticleId(
+  articleId
+) {
+  return this.find({ articles: articleId }).sort([['updatedAt', -1]])
+}
+
 workspaceSchema.methods.findMembersByArticle =
   async function findMembersByArticle(articleId) {
     const result = await this.aggregate([
@@ -72,6 +81,36 @@ workspaceSchema.methods.findMembersByArticle =
     ])
     return result[0].members
   }
+
+workspaceSchema.statics.deleteArticle = function deleteArticle(
+  workspaceId,
+  articleId
+) {
+  return this.updateOne(
+    { _id: workspaceId, articles: articleId },
+    {
+      $pull: {
+        articles: articleId,
+      },
+    },
+    { timestamps: false }
+  )
+}
+
+workspaceSchema.statics.addArticle = function addArticle(
+  workspaceId,
+  articleId
+) {
+  return this.updateOne(
+    { _id: workspaceId, articles: { $nin: [articleId] } },
+    {
+      $push: {
+        articles: articleId,
+      },
+    },
+    { timestamps: false }
+  )
+}
 
 workspaceSchema.statics.getWorkspaceById = function getWorkspaceById(
   workspaceId,

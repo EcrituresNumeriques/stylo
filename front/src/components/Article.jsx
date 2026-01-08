@@ -1,19 +1,16 @@
 import clsx from 'clsx'
 import {
-  Check,
-  ChevronDown,
-  ChevronRight,
-  Clipboard,
-  Copy,
-  Edit3,
+  Book,
+  EllipsisVertical,
   MessageSquareShare,
   Pencil,
   Printer,
   Send,
+  Tag,
   Trash,
   UserPlus,
 } from 'lucide-react'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router'
@@ -23,50 +20,39 @@ import { useCopyToClipboard } from 'react-use'
 import useFetchData from '../hooks/graphql'
 
 import { useArticleActions } from '../hooks/article.js'
+import useComponentVisible from '../hooks/componentVisible.js'
 import { useModal } from '../hooks/modal.js'
 import { useDisplayName } from '../hooks/user.js'
-import { Button, Field, TimeAgo } from './atoms/index.js'
-import { FormActions } from './molecules/index.js'
+import { Button, Color } from './atoms/index.js'
+import { FormActions, ObjectMetadataLabel } from './molecules/index.js'
+import { ArticleForm } from './organisms/index.js'
 
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
-import ArticleTags from './ArticleTags.jsx'
-import ArticleVersionLinks from './ArticleVersionLinks.jsx'
 import Export from './Export.jsx'
 import Modal from './Modal.jsx'
-import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
-import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
 
 import {
   getArticleContributors,
   getArticleTags,
 } from '../hooks/Article.graphql'
-import { getTags } from '../hooks/Tag.graphql'
 
-import styles from './article.module.scss'
+import styles from './Article.module.scss'
 import buttonStyles from './atoms/Button.module.scss'
-import fieldStyles from './atoms/Field.module.scss'
 
 /**
  * @param props
- * @param {{title: string, owner: {displayName: string}, updatedAt: string, _id: string }} props.article
- * @param props.onArticleUpdated
- * @param props.onArticleDeleted
- * @param props.onArticleCreated
+ * @param {{title: string, owner: {displayName: string?, username: string}, updatedAt: string, _id: string }} props.article
+ * @param {{id: string, name: string}[]} props.corpus
  * @return {Element}
  * @constructor
  */
-export default function Article({
-  article,
-  onArticleUpdated,
-  onArticleDeleted,
-  onArticleCreated,
-}) {
+export default function Article({ article, corpus }) {
   const displayName = useDisplayName()
   const activeUser = useSelector((state) => state.activeUser)
   const articleId = useMemo(() => article._id, [article])
   const { workspaceId: activeWorkspaceId } = useParams()
-  const articleActions = useArticleActions({ articleId })
+  const articleActions = useArticleActions({ articleId, activeWorkspaceId })
 
   const { data: contributorsQueryData, error: contributorsError } =
     useFetchData(
@@ -83,15 +69,6 @@ export default function Article({
   const contributors = (
     contributorsQueryData?.article?.contributors || []
   ).filter((c) => c.user._id !== article.owner._id)
-  const { data: userTagsQueryData } = useFetchData(
-    { query: getTags, variables: {} },
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  )
-  const userTags = userTagsQueryData?.user?.tags || []
   const { data: articleTagsQueryData } = useFetchData(
     { query: getArticleTags, variables: { articleId } },
     {
@@ -104,19 +81,23 @@ export default function Article({
     }
   )
   const tags = articleTagsQueryData?.article?.tags || []
-  const { t } = useTranslation()
+  const { t } = useTranslation('article', { useSuspense: false })
+  const { t: tModal } = useTranslation('modal', { useSuspense: false })
   const [, copyToClipboard] = useCopyToClipboard()
 
   const exportModal = useModal()
   const sharingModal = useModal()
   const sendCopyModal = useModal()
   const deleteModal = useModal()
-  const [expanded, setExpanded] = useState(false)
-  const [renaming, setRenaming] = useState(false)
-
-  const [newTitle, setNewTitle] = useState(article.title)
+  const updateModal = useModal()
 
   const isArticleOwner = activeUser._id === article.owner._id
+
+  const {
+    ref: actionsRef,
+    isComponentVisible: areActionsVisible,
+    toggleComponentIsVisible: toggleActions,
+  } = useComponentVisible(false, 'actions')
 
   useEffect(() => {
     if (contributorsError) {
@@ -126,69 +107,173 @@ export default function Article({
     }
   }, [contributorsError])
 
-  const toggleExpansion = useCallback(
-    (event) => {
-      if (!event.key || [' ', 'Enter'].includes(event.key)) {
-        setExpanded(!expanded)
-      }
-    },
-    [setExpanded, expanded]
-  )
-
-  const duplicate = async () => {
-    const duplicatedArticleQuery = await articleActions.duplicate()
-    onArticleCreated({
-      ...article,
-      ...duplicatedArticleQuery.duplicateArticle,
-      contributors: [],
-      versions: [],
-    })
-  }
+  const handleDuplicate = useCallback(async () => {
+    toggleActions()
+    await articleActions.duplicate(article)
+  }, [toggleActions, articleActions])
 
   const handleCopyId = useCallback(() => {
+    toggleActions()
     copyToClipboard(articleId)
-    toast(t('article.copyId.successToast'), { type: 'success' })
-  }, [])
-
-  const rename = async (e) => {
-    e.preventDefault()
-    await articleActions.rename(newTitle)
-    onArticleUpdated({
-      ...article,
-      title: newTitle,
-    })
-    setRenaming(false)
-  }
+    toast(t('actions.copyId.success'), { type: 'success' })
+  }, [toggleActions, articleId])
 
   const handleDeleteArticle = async () => {
     deleteModal.close()
     try {
       await articleActions.remove()
-      onArticleDeleted(article)
-      toast(t('article.delete.toastSuccess'), { type: 'info' })
+      toast(t('actions.delete.success'), { type: 'info' })
     } catch (err) {
-      toast(t('article.delete.toastError', { errMessage: err.message }), {
+      toast(t('actions.delete.error', { errMessage: err.message }), {
         type: 'error',
       })
     }
   }
 
-  const handleArticleTagsUpdated = useCallback(
-    (event) => {
-      onArticleUpdated({
-        ...article,
-        tags: event.updatedTags,
-      })
-    },
-    [article]
-  )
-
+  const canDeleteArticle = isArticleOwner && !activeWorkspaceId
   return (
     <article
       className={styles.article}
       aria-labelledby={`article-${article._id}-title`}
       role="listitem"
     >
+      <header className={styles.header}>
+        <div className={styles.title}>
+          <h2 id={`article-${article._id}-title`}>{article.title}</h2>
+        </div>
+
+        <div role="menu" className={styles.actionButtons}>
+          <Button
+            role="menuitem"
+            icon={true}
+            onClick={() => sharingModal.show()}
+            title={t('actions.share.title')}
+          >
+            <UserPlus aria-label={t('actions.share.label')} />
+          </Button>
+
+          <Link
+            role="menuitem"
+            target="_blank"
+            className={buttonStyles.icon}
+            to={`/article/${article._id}/annotate`}
+            title={t('actions.annotate.title')}
+          >
+            <MessageSquareShare aria-label={t('actions.annotate.label')} />
+          </Link>
+
+          <Link
+            role="menuitem"
+            className={clsx(buttonStyles.primary, styles.primaryAction)}
+            to={`/article/${article._id}`}
+            title={t('actions.edit.title')}
+          >
+            <Pencil aria-label={t('actions.edit.label')} />
+          </Link>
+
+          <div className={styles.dropdownMenu} ref={actionsRef}>
+            <Button
+              title={t('actions.menu.title')}
+              onClick={() => toggleActions()}
+              icon
+            >
+              <EllipsisVertical />
+            </Button>
+
+            <div className={styles.menu} hidden={!areActionsVisible}>
+              <ul>
+                <li
+                  onClick={() => {
+                    toggleActions()
+                    exportModal.show()
+                  }}
+                  title={t('actions.export.title')}
+                >
+                  {t('actions.export.label')}
+                </li>
+                <li
+                  onClick={() => {
+                    toggleActions()
+                    updateModal.show()
+                  }}
+                  title={t('actions.update.title')}
+                >
+                  {t('actions.update.label')}
+                </li>
+                <li
+                  onClick={handleDuplicate}
+                  title={t('actions.duplicate.title')}
+                >
+                  {t('actions.duplicate.label')}
+                </li>
+                <li
+                  onClick={() => {
+                    toggleActions()
+                    sendCopyModal.show()
+                  }}
+                  title={t('actions.sendCopy.title')}
+                >
+                  {t('actions.sendCopy.label')}
+                </li>
+                <li onClick={handleCopyId} title={t('actions.copyId.title')}>
+                  {t('actions.copyId.label')}
+                </li>
+                {canDeleteArticle && (
+                  <li
+                    onClick={() => {
+                      toggleActions()
+                      deleteModal.show()
+                    }}
+                    title={t('actions.delete.title')}
+                  >
+                    {t('actions.delete.label')}
+                  </li>
+                )}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+      <section style={{ width: '100%' }}>
+        <div className={styles.details}>
+          {tags.length > 0 && (
+            <div className={styles.tags}>
+              <Tag size={18} />
+              {tags.map((t) => (
+                <div
+                  className={styles.tag}
+                  style={{
+                    backgroundColor: Color.rrggbbaa(t.color || '#cccccc', 10),
+                    borderColor: Color.rrggbbaa(t.color || '#cccccc', 20),
+                  }}
+                >
+                  <div>{t.name}</div>
+                  <div
+                    key={'tag-' + t._id}
+                    className={styles.tagChip}
+                    style={{ backgroundColor: t.color || '#ccc' }}
+                    aria-hidden
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+          {corpus.length > 0 && (
+            <div className={styles.corpuses}>
+              <Book size={18} />
+              {corpus.map((c) => (
+                <div>{c.name}</div>
+              ))}
+            </div>
+          )}
+          <ObjectMetadataLabel
+            className={styles.metadata}
+            updatedAtDate={article.updatedAt}
+            creatorName={displayName(article.owner)}
+          />
+        </div>
+      </section>
+
       <Modal
         {...exportModal.bindings}
         title={
@@ -209,15 +294,15 @@ export default function Article({
         {...sharingModal.bindings}
         title={
           <>
-            <UserPlus /> {t('article.shareModal.title')}
+            <UserPlus /> {t('actions.share.title')}
           </>
         }
-        subtitle={t('article.shareModal.description')}
+        subtitle={t('actions.share.description')}
       >
         <ArticleContributors article={article} contributors={contributors} />
         <footer className={styles.actions}>
           <Button type="button" onClick={() => sharingModal.close()}>
-            {t('modal.closeButton.text')}
+            {tModal('closeButton.text')}
           </Button>
         </footer>
       </Modal>
@@ -226,13 +311,13 @@ export default function Article({
         {...sendCopyModal.bindings}
         title={
           <>
-            <Send /> {t('article.sendCopyModal.title')}
+            <Send /> {t('actions.sendCopy.title')}
           </>
         }
         subtitle={
           <>
             <span className={styles.sendText}>
-              {t('article.sendCopyModal.description')}
+              {t('actions.sendCopy.description')}
             </span>
             <span>
               <Send className={styles.sendIcon} />
@@ -246,7 +331,7 @@ export default function Article({
         />
         <footer className={styles.actions}>
           <Button type="button" onClick={() => sendCopyModal.close()}>
-            {t('modal.closeButton.text')}
+            {tModal('closeButton.text')}
           </Button>
         </footer>
       </Modal>
@@ -255,201 +340,34 @@ export default function Article({
         {...deleteModal.bindings}
         title={
           <>
-            <Trash /> {t('article.deleteModal.title')}
+            <Trash /> {t('actions.delete.title')}
           </>
         }
       >
-        {t('article.deleteModal.confirmMessage')}
+        {t('actions.delete.confirm')}
         {contributors && contributors.length > 0 && (
           <div className={clsx(styles.note, styles.important)}>
-            {t('article.deleteModal.contributorsRemovalNote')}
+            {t('actions.delete.contributorsRemovalNote')}
           </div>
         )}
         <FormActions
           onSubmit={handleDeleteArticle}
           onCancel={() => deleteModal.close()}
           submitButton={{
-            text: t('modal.deleteButton.text'),
-            title: t('modal.deleteButton.text'),
+            text: tModal('deleteButton.text'),
+            title: tModal('deleteButton.text'),
           }}
         />
       </Modal>
 
-      {!renaming && (
-        <header className={styles.title} onClick={toggleExpansion}>
-          <span
-            role="button"
-            aria-expanded={expanded}
-            aria-controls={`article-${article._id}-details`}
-            tabIndex={0}
-            onKeyUp={toggleExpansion}
-            className={styles.icon}
-          >
-            {expanded ? <ChevronDown /> : <ChevronRight />}
-          </span>
-
-          <h2 id={`article-${article._id}-title`}>{article.title}</h2>
-
-          <Button
-            icon={true}
-            className={styles.editTitleButton}
-            onClick={(evt) => evt.stopPropagation() || setRenaming(true)}
-          >
-            <Edit3 className="icon" aria-hidden />
-            <span className="sr-only">{t('article.editName.button')}</span>
-          </Button>
-        </header>
-      )}
-
-      {renaming && (
-        <form
-          className={clsx(styles.renamingForm, fieldStyles.inlineFields)}
-          onSubmit={(e) => rename(e)}
-        >
-          <Field
-            className={styles.inlineField}
-            autoFocus={true}
-            type="text"
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-            placeholder="Article Title"
-          />
-          <Button
-            title={t('article.editName.buttonSave')}
-            primary={true}
-            onClick={(e) => rename(e)}
-          >
-            <Check /> {t('article.editName.buttonSave')}
-          </Button>
-          <Button
-            title={t('article.editName.buttonCancel')}
-            type="button"
-            onClick={() => {
-              setRenaming(false)
-              setNewTitle(article.title)
-            }}
-          >
-            {t('article.editName.buttonCancel')}
-          </Button>
-        </form>
-      )}
-
-      <div role="menu" className={styles.actionButtons}>
-        {isArticleOwner && !activeWorkspaceId && (
-          <Button
-            role="menuitem"
-            icon={true}
-            onClick={() => deleteModal.show()}
-          >
-            <Trash aria-label={t('article.delete.button')} />
-          </Button>
-        )}
-
-        <Button role="menuitem" icon={true} onClick={() => duplicate()}>
-          <Copy aria-label={t('article.duplicate.button')} />
-        </Button>
-
-        {
-          <Button
-            role="menuitem"
-            icon={true}
-            onClick={() => sendCopyModal.show()}
-          >
-            <Send aria-label={t('article.sendCopy.button')} />
-          </Button>
-        }
-
-        {
-          <Button
-            role="menuitem"
-            icon={true}
-            onClick={() => sharingModal.show()}
-          >
-            <UserPlus aria-label={t('article.share.button')} />
-          </Button>
-        }
-
-        <Button role="menuitem" icon={true} onClick={() => exportModal.show()}>
-          <Printer aria-label={t('article.download.button')} />
-        </Button>
-
-        <Link
-          role="menuitem"
-          className={buttonStyles.primary}
-          to={`/article/${article._id}`}
-        >
-          <Pencil aria-label={t('article.editor.edit.title')} />
-        </Link>
-
-        <Link
-          role="menuitem"
-          target="_blank"
-          className={buttonStyles.icon}
-          to={`/article/${article._id}/annotate`}
-        >
-          <MessageSquareShare aria-label={t('article.annotate.button')} />
-        </Link>
-
-        <Button
-          title={t('article.copyId.button')}
-          className={styles.copyToClipboard}
-          onClick={handleCopyId}
-          icon
-        >
-          <Clipboard />
-        </Button>
-      </div>
-
-      <section className={styles.metadata}>
-        <p className={styles.metadataAuthoring}>
-          {tags.map((t) => (
-            <span
-              className={styles.tagChip}
-              key={'tagColor-' + t._id}
-              style={{ backgroundColor: t.color || 'grey' }}
-            />
-          ))}
-          <span className={styles.by}>{t('article.by.text')}</span>{' '}
-          <span className={styles.author}>{displayName(article.owner)}</span>
-          {contributors?.length > 0 && (
-            <span className={styles.contributorNames}>
-              <span>
-                , {contributors.map((c) => displayName(c.user)).join(', ')}
-              </span>
-            </span>
-          )}
-          <TimeAgo date={article.updatedAt} className={styles.momentsAgo} />
-        </p>
-
-        {expanded && (
-          <div id={`article-${article._id}-details`}>
-            <ArticleVersionLinks article={article} articleId={articleId} />
-
-            {userTags.length > 0 && (
-              <>
-                <h3>{t('article.tags.title')}</h3>
-                <div className={styles.editTags}>
-                  <ArticleTags
-                    articleId={article._id}
-                    userTags={userTags}
-                    onArticleTagsUpdated={handleArticleTagsUpdated}
-                  />
-                </div>
-              </>
-            )}
-
-            <h3>{t('article.workspaces.title')}</h3>
-            <ul className={styles.workspaces}>
-              <WorkspaceSelectionItems articleId={articleId} />
-            </ul>
-
-            <h3>{t('article.corpus.title')}</h3>
-            <ul className={styles.corpusList}>
-              <CorpusSelectItems articleId={articleId} />
-            </ul>
-          </div>
-        )}
-      </section>
+      <Modal {...updateModal.bindings} title={t('actions.update.title')}>
+        <ArticleForm
+          article={article}
+          onSubmit={() => updateModal.close()}
+          workspaceId={activeWorkspaceId}
+          onCancel={() => updateModal.close()}
+        />
+      </Modal>
     </article>
   )
 }

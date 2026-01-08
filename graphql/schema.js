@@ -148,6 +148,13 @@ input CreateArticleInput {
   workspaces: [ID]
 }
 
+input UpdateArticleInput {
+  id: ID!
+  title: String!
+  tags: [ID]
+  workspaces: [ID]
+}
+
 type Article {
   _id: ID!
   title: String
@@ -512,6 +519,8 @@ type Mutation {
   Returns an error if the corpus does not exist or cannot be accessed.
   """
   article(articleId: ID!): Article
+
+  updateArticle(updateArticleInput: UpdateArticleInput!): Article!
 
   """
   Get a corpus for a given id.

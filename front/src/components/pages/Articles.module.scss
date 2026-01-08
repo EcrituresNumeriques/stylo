@@ -1,18 +1,15 @@
-@use '../styles/defaults' as *;
-@use '../styles/variables' as *;
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
 
 .articleCounter {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 600;
   padding-bottom: 0.5rem;
-  padding-left: 0.75em;
-  padding-right: 0.5em;
-  margin-left: auto;
 }
 
 .section {
   @extend .wrapped-center;
-  padding: 1rem;
+  padding: 2rem;
   border: 1px solid $main-border-color;
   background-color: $extra-background-color;
 
@@ -27,6 +24,22 @@
   article:nth-of-type(2n + 1) {
     background-color: $alternate-row-color;
   }
+}
+
+.pageHeader {
+  display: flex;
+  column-gap: 1rem;
+  row-gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.pageTitle {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex: 1;
 }
 
 .articlesHeader {
@@ -47,20 +60,18 @@
 }
 
 .button {
-  @extend .clickable;
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  margin-right: 0.5rem;
-  background-color: $button-primary-background !important;
-  color: $button-primary-color !important;
+  white-space: nowrap;
+}
+
+.search {
+  flex: 1;
+  min-width: 400px;
 }
 
 .searchField {
   input {
     width: 100%;
   }
-
-  padding: 0.5rem 0;
 }
 
 .previewContainer {
@@ -73,6 +84,9 @@
 .articlesTableHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin-bottom: 0.5em;
+}
+
+.articlesList {
+  margin-left: 1rem;
 }

@@ -18,16 +18,18 @@ import {
   getArticleTags,
   getEditableArticle,
   removeTags,
-  renameArticle,
+  updateArticleQuery,
   updateWorkingVersion,
   updateZoteroLinkMutation,
 } from './Article.graphql'
+import { createArticle, getWorkspaceArticles } from './Articles.graphql'
 import {
   createVersion,
   getArticleVersion,
   getArticleVersions,
   renameVersion,
 } from './Versions.graphql'
+import { getArticleWorkspaces } from './Workspaces.graphql'
 
 export function useArticleTagActions({ articleId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
@@ -90,9 +92,59 @@ export function useArticleTagActions({ articleId }) {
   }
 }
 
-export function useArticleActions({ articleId }) {
+export function useArticlesActions({ activeWorkspaceId }) {
+  const sessionToken = useSelector((state) => state.sessionToken)
+  const { mutate: mutateArticles } = useMutateData({
+    query: getWorkspaceArticles,
+    variables: {
+      workspaceId: activeWorkspaceId,
+      isPersonalWorkspace: !activeWorkspaceId,
+      filter: {
+        workspaceId: activeWorkspaceId,
+      },
+    },
+  })
+  const create = async (createInput) => {
+    const { createArticle: createdArticle } = await executeQuery({
+      query: createArticle,
+      variables: { createArticleInput: createInput },
+      sessionToken,
+      type: 'mutation',
+    })
+    await mutateArticles(async (data) => {
+      console.log({ data })
+      return {
+        ...data,
+        articles: [createdArticle, ...data.articles],
+        workspace: {
+          ...data.workspace,
+          articles: [createdArticle, ...data.articles],
+        },
+      }
+    })
+  }
+  return {
+    create,
+  }
+}
+
+export function useArticleActions({ articleId, activeWorkspaceId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
   const activeUser = useSelector((state) => state.activeUser)
+  const { mutate: mutateArticleWorkspaces } = useMutateData({
+    query: getArticleWorkspaces,
+    variables: { articleId },
+  })
+  const { mutate: mutateArticles } = useMutateData({
+    query: getWorkspaceArticles,
+    variables: {
+      workspaceId: activeWorkspaceId,
+      isPersonalWorkspace: !activeWorkspaceId,
+      filter: {
+        workspaceId: activeWorkspaceId,
+      },
+    },
+  })
   const copy = async (toUserId) => {
     return await executeQuery({
       query: duplicateArticle,
@@ -105,8 +157,8 @@ export function useArticleActions({ articleId }) {
       type: 'mutation',
     })
   }
-  const duplicate = async () => {
-    return await executeQuery({
+  const duplicate = async (article) => {
+    const result = await executeQuery({
       query: duplicateArticle,
       variables: {
         user: activeUser._id,
@@ -116,29 +168,81 @@ export function useArticleActions({ articleId }) {
       sessionToken,
       type: 'mutation',
     })
-  }
-  const rename = async (title) => {
-    return await executeQuery({
-      query: renameArticle,
-      variables: { user: activeUser._id, articleId, title },
-      sessionToken,
-      type: 'mutation',
+    const duplicatedArticle = {
+      ...article,
+      ...result.duplicateArticle,
+      contributors: [],
+      versions: [],
+    }
+    await mutateArticles(async (data) => {
+      return {
+        ...data,
+        articles: [duplicatedArticle, ...(data?.articles ?? [])],
+        workspace: {
+          ...(data?.workspace ?? {}),
+          articles: [duplicatedArticle, ...(data?.articles ?? [])],
+        },
+      }
     })
   }
   const remove = async () => {
-    return await executeQuery({
+    await executeQuery({
       query: deleteArticle,
       variables: { articleId },
       sessionToken,
       type: 'mutation',
+    })
+    await mutateArticles(async (data) => {
+      const updatedArticles =
+        data?.articles?.filter((article) => article._id !== articleId) ?? []
+      return {
+        ...data,
+        articles: updatedArticles,
+        workspace: {
+          ...data.workspace,
+          articles: updatedArticles,
+        },
+      }
+    })
+  }
+  const update = async (article, { title, tags, workspaces }) => {
+    const response = await executeQuery({
+      sessionToken,
+      query: updateArticleQuery,
+      variables: {
+        updateArticleInput: {
+          id: articleId,
+          title,
+          tags,
+          workspaces,
+        },
+      },
+    })
+    const updatedArticle = {
+      ...article,
+      ...response.updateArticle,
+    }
+    await mutateArticleWorkspaces()
+    await mutateArticles(async (data) => {
+      const updatedArticles = data.articles.map((article) =>
+        article._id === updatedArticle._id ? updatedArticle : article
+      )
+      return {
+        ...data,
+        articles: updatedArticles,
+        workspace: {
+          ...data.workspace,
+          articles: updatedArticles,
+        },
+      }
     })
   }
 
   return {
     copy,
     duplicate,
-    rename,
     remove,
+    update,
   }
 }
 

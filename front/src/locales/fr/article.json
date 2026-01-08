@@ -1,0 +1,60 @@
+{
+  "actions": {
+    "menu": {
+      "title": "Plus d'actions sur lʼarticle"
+    },
+    "annotate": {
+      "label": "Annoter",
+      "title": "Annoter lʼarticle"
+    },
+    "copyId": {
+      "label": "Copier lʼidentifiant",
+      "title": "Copier lʼidentifiant de lʼarticle",
+      "success": "Identifiant copié dans le presse-papier."
+    },
+    "create": {
+      "error": "Impossible de créer un nouvel article: {{errMessage}}",
+      "label": "Créer",
+      "success": "Nouvel article créé",
+      "title": "Créer un nouvel article"
+    },
+    "delete": {
+      "confirm": "Êtes-vous sûr de vouloir supprimer cet article ?",
+      "contributorsRemovalNote": "Si vous supprimez cet article, les contributeurs ne pourront plus accéder à celui-ci.",
+      "error": "Impossible de supprimer lʼarticle: {{errMessage}}",
+      "label": "Supprimer",
+      "success": "Article supprimé avec succès.",
+      "title": "Supprimer lʼarticle"
+    },
+    "duplicate": {
+      "label": "Dupliquer",
+      "title": "Dupliquer lʼarticle"
+    },
+    "edit": {
+      "label": "Éditer",
+      "title": "Éditer lʼarticle"
+    },
+    "export": {
+      "label": "Exporter",
+      "title": "Exporter lʼarticle"
+    },
+    "sendCopy": {
+      "description": "Permet dʼenvoyer une copie de lʼarticle à lʼun de vos contacts en cliquant sur lʼicône",
+      "error": "Impossible dʼenvoyer une copie de lʼarticle: {{errMessage}}",
+      "label": "Envoyer une copie",
+      "success": "Copie de lʼarticle envoyée à {{username}}",
+      "title": "Envoyer une copie de lʼarticle"
+    },
+    "share": {
+      "description": "Permet de partager un article avec lʼun de vos contacts.",
+      "label": "Partager",
+      "title": "Partager lʼarticle avec un contact"
+    },
+    "update": {
+      "error": "Impossible de mettre à jour lʼarticle: {{errMessage}}",
+      "label": "Modifier",
+      "success": "Article mis à jour",
+      "title": "Modifier lʼarticle"
+    }
+  }
+}
