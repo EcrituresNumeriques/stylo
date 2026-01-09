@@ -20,29 +20,28 @@ import { useCopyToClipboard } from 'react-use'
 import useFetchData from '../hooks/graphql'
 
 import { useArticleActions } from '../hooks/article.js'
+import useComponentVisible from '../hooks/componentVisible.js'
 import { useModal } from '../hooks/modal.js'
 import { useDisplayName } from '../hooks/user.js'
 
 import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
-import ArticleVersionLinks from './ArticleVersionLinks.jsx'
 import Button from './Button.jsx'
 import Export from './Export.jsx'
 import Modal from './Modal.jsx'
-import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
 import FormActions from './molecules/FormActions.jsx'
 import ObjectMetadataLabel from './molecules/ObjectMetadataLabel.jsx'
-import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
 
 import { getArticleContributors, getArticleTags } from './Article.graphql'
 import { getTags } from './Tag.graphql'
 
-import styles from './article.module.scss'
+import styles from './Article.module.scss'
 import buttonStyles from './button.module.scss'
 
 /**
  * @param props
- * @param {{title: string, owner: {displayName: string}, updatedAt: string, _id: string }} props.article
+ * @param {{title: string, owner: {displayName: string?, username: string}, updatedAt: string, _id: string }} props.article
+ * @param {{id: string, name: string}[]} props.corpus
  * @param props.onArticleUpdated
  * @param props.onArticleDeleted
  * @param props.onArticleCreated
@@ -51,6 +50,7 @@ import buttonStyles from './button.module.scss'
  */
 export default function Article({
   article,
+  corpus,
   onArticleUpdated,
   onArticleDeleted,
   onArticleCreated,
@@ -176,12 +176,109 @@ export default function Article({
     [article]
   )
 
+  const {
+    ref: actionsRef,
+    isComponentVisible: areActionsVisible,
+    toggleComponentIsVisible: toggleActions,
+  } = useComponentVisible(false, 'actions')
+
+  console.log({ areActionsVisible })
+
   return (
     <article
       className={styles.article}
       aria-labelledby={`article-${article._id}-title`}
       role="listitem"
     >
+      <header className={styles.header}>
+        <div className={styles.title}>
+          <h2 id={`article-${article._id}-title`}>{article.title}</h2>
+        </div>
+
+        <div role="menu" className={styles.actionButtons}>
+          <Button
+            role="menuitem"
+            icon={true}
+            onClick={() => sharingModal.show()}
+          >
+            <UserPlus aria-label={t('article.share.button')} />
+          </Button>
+
+          <Link
+            role="menuitem"
+            target="_blank"
+            className={buttonStyles.icon}
+            to={`/article/${article._id}/annotate`}
+          >
+            <MessageSquareShare aria-label={t('article.annotate.button')} />
+          </Link>
+
+          <Link
+            role="menuitem"
+            className={clsx(buttonStyles.primary, styles.primaryAction)}
+            to={`/article/${article._id}`}
+          >
+            <Pencil aria-label={t('article.editor.edit.title')} />
+          </Link>
+
+          <div className={styles.dropdownMenu} ref={actionsRef}>
+            <Button
+              title={t('article.action.button')}
+              onClick={() => toggleActions()}
+              icon
+            >
+              <EllipsisVertical />
+            </Button>
+
+            <div className={styles.menu} hidden={!areActionsVisible}>
+              <ul>
+                <li>Exporter</li>
+                <li>Ajouter / Modifier les étiquettes</li>
+                <li>Associer à un espace de travail</li>
+                <li>Renommer</li>
+                <li>Dupliquer</li>
+                <li>Copier l'identifiant</li>
+                <li>Archiver</li>
+                <li>Supprimer</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+      <section style={{ width: '100%' }}>
+        <div className={styles.details}>
+          {tags.length > 0 && (
+            <div className={styles.tags}>
+              <Tag size={18} />
+              {tags.map((t) => (
+                <div className={styles.tag}>
+                  <div>{t.name}</div>
+                  <div
+                    key={'tag-' + t._id}
+                    className={styles.tagChip}
+                    style={{ backgroundColor: t.color || 'grey' }}
+                    aria-hidden
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+          {corpus.length > 0 && (
+            <div className={styles.corpuses}>
+              <Book size={18} />
+              {corpus.map((c) => (
+                <div>{c.name}</div>
+              ))}
+            </div>
+          )}
+          <ObjectMetadataLabel
+            className={styles.metadata}
+            updatedAtDate={article.updatedAt}
+            creatorName={displayName(article.owner)}
+          />
+        </div>
+      </section>
+
       <Modal
         {...exportModal.bindings}
         title={
@@ -267,89 +364,6 @@ export default function Article({
           }}
         />
       </Modal>
-
-      <header className={styles.title}>
-        <h2 id={`article-${article._id}-title`}>{article.title}</h2>
-      </header>
-
-      <div role="menu" className={styles.actionButtons}>
-        <Button role="menuitem" icon={true} onClick={() => sharingModal.show()}>
-          <UserPlus aria-label={t('article.share.button')} />
-        </Button>
-
-        <Link
-          role="menuitem"
-          target="_blank"
-          className={buttonStyles.icon}
-          to={`/article/${article._id}/annotate`}
-        >
-          <MessageSquareShare aria-label={t('article.annotate.button')} />
-        </Link>
-
-        <Link
-          role="menuitem"
-          className={clsx(buttonStyles.primary, styles.primaryAction)}
-          to={`/article/${article._id}`}
-        >
-          <Pencil aria-label={t('article.editor.edit.title')} />
-        </Link>
-
-        <Button title={t('article.action.button')} onClick={() => {}} icon>
-          <EllipsisVertical />
-        </Button>
-      </div>
-
-      <section style={{ width: '100%' }}>
-        <p className={styles.metadataAuthoring}>
-          {tags.length > 0 && (
-            <div className={styles.tags}>
-              <Tag />
-              {tags.map((t) => (
-                <div className={styles.tag}>
-                  <div>{t.name}</div>
-                  <div
-                    key={'tag-' + t._id}
-                    className={styles.tagChip}
-                    style={{ backgroundColor: t.color || 'grey' }}
-                    aria-hidden
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-          <div className={styles.corpuses}>
-            <Book />
-          </div>
-          <ObjectMetadataLabel
-            className={styles.metadata}
-            updatedAtDate={article.updatedAt}
-            creatorName={displayName(article.owner)}
-          />
-        </p>
-
-        {expanded && (
-          <div id={`article-${article._id}-details`}>
-            <ArticleVersionLinks article={article} articleId={articleId} />
-
-            {userTags.length > 0 && (
-              <>
-                <h3>{t('article.tags.title')}</h3>
-                <div className={styles.editTags}></div>
-              </>
-            )}
-
-            <h3>{t('article.workspaces.title')}</h3>
-            <ul className={styles.workspaces}>
-              <WorkspaceSelectionItems articleId={articleId} />
-            </ul>
-
-            <h3>{t('article.corpus.title')}</h3>
-            <ul className={styles.corpusList}>
-              <CorpusSelectItems articleId={articleId} />
-            </ul>
-          </div>
-        )}
-      </section>
     </article>
   )
 }

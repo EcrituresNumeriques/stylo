@@ -56,7 +56,7 @@ export default function Articles() {
     }
   )
 
-  const { articles, /* tags, */ /* corpus */ workspace = {} } = data
+  const { articles, corpus, workspace = {} } = data
 
   const handleArticleUpdated = useCallback(
     async (updatedArticle) => {
@@ -214,6 +214,9 @@ export default function Articles() {
             <Article
               key={`article-${article._id}`}
               article={article}
+              corpus={corpus.filter((c) =>
+                c.articles.map((a) => a.article._id).includes(article._id)
+              )}
               onArticleUpdated={handleArticleUpdated}
               onArticleDeleted={handleArticleDeleted}
               onArticleCreated={handleArticleCreated}
