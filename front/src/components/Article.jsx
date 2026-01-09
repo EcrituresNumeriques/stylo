@@ -239,7 +239,7 @@ export default function Article({
                 <li>Dupliquer</li>
                 <li>Copier l'identifiant</li>
                 <li>Archiver</li>
-                <li>Supprimer</li>
+                <li onClick={() => deleteModal.show()}>Supprimer</li>
               </ul>
             </div>
           </div>

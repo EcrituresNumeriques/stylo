@@ -66,6 +66,7 @@ export default function Articles() {
 
       await mutate(
         {
+          ...data,
           articles: updatedArticles,
           workspace: {
             ...data.workspace,
@@ -86,6 +87,7 @@ export default function Articles() {
 
       await mutate(
         {
+          ...data,
           articles: updatedArticles,
           workspace: {
             ...data.workspace,
@@ -105,6 +107,7 @@ export default function Articles() {
 
       await mutate(
         {
+          ...data,
           articles: updatedArticles,
           workspace: {
             ...data.workspace,

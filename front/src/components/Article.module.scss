@@ -21,11 +21,11 @@
       white-space: nowrap;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
-      align-items: flex-start;
+      text-align: start;
       
       > li {
         cursor: pointer;
+        padding: 0.35rem 0;
       }
     }
   }
