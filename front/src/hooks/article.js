@@ -19,6 +19,7 @@ import {
   getEditableArticle,
   removeTags,
   renameArticle,
+  updateArticleQuery,
   updateWorkingVersion,
   updateZoteroLinkMutation,
 } from '../components/Article.graphql'
@@ -133,12 +134,31 @@ export function useArticleActions({ articleId }) {
       type: 'mutation',
     })
   }
+  const update = async ({ title, tags, workspaces }) => {
+    try {
+      await executeQuery({
+        sessionToken,
+        query: updateArticleQuery,
+        variables: {
+          updateArticleInput: {
+            id: articleId,
+            title,
+            tags,
+            workspaces,
+          },
+        },
+      })
+    } catch (error) {
+      console.log({ error })
+    }
+  }
 
   return {
     copy,
     duplicate,
     rename,
     remove,
+    update,
   }
 }
 

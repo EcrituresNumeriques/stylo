@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { toBibtex } from '../../helpers/bibtex.js'
 
 import Button from '../Button.jsx'
-import Field from '../Field.jsx'
+import Field from '../atoms/Field.jsx'
 import BibliographyReference from './BibliographyReference.jsx'
 
 import styles from './BibliographyReferenceList.module.scss'

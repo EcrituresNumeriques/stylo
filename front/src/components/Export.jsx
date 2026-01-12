@@ -3,16 +3,18 @@ import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import slugify from 'slugify'
+
 import { applicationConfig } from '../config.js'
 import useStyloExport from '../hooks/stylo-export.js'
+
 import Button from './Button.jsx'
+import Select from './atoms/Select.jsx'
+import Combobox from './atoms/SelectCombobox.jsx'
+import Loading from './molecules/Loading.jsx'
+
 import buttonStyles from './button.module.scss'
 import styles from './export.module.scss'
 import formStyles from './form.module.scss'
-import Loading from './molecules/Loading.jsx'
-
-import Select from './Select'
-import Combobox from './SelectCombobox.jsx'
 
 /**
  * @param {object} props

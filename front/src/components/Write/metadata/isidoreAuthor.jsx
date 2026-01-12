@@ -4,10 +4,11 @@ import { Search } from 'lucide-react'
 import React, { useCallback, useState } from 'react'
 
 import { searchAuthor as isidoreAuthorSearch } from '../../../helpers/isidore'
-import Field from '../../Field'
 import throttle from 'lodash.throttle'
 
-import fieldStyles from '../../field.module.scss'
+import Field from '../../atoms/Field.jsx'
+
+import fieldStyles from '../../atoms/Field.module.scss'
 import styles from '../../form.module.scss'
 
 function toValueFn(el) {

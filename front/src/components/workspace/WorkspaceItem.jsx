@@ -6,7 +6,7 @@ import { useModal } from '../../hooks/modal.js'
 import { useDisplayName } from '../../hooks/user.js'
 
 import Button from '../Button.jsx'
-import Field from '../Field.jsx'
+import Field from '../atoms/Field.jsx'
 import TimeAgo from '../atoms/TimeAgo.jsx'
 import LeaveWorkspaceModal from './LeaveWorkspaceModal.jsx'
 import WorkspaceManageMembersModal from './WorkspaceManageMembersModal.jsx'

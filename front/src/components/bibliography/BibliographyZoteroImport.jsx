@@ -15,13 +15,13 @@ import { useEditableArticle } from '../../hooks/article.js'
 import { useSetAuthToken } from '../../hooks/user.js'
 
 import Button from '../Button.jsx'
-import Field from '../Field.jsx'
-import Combobox from '../SelectCombobox.jsx'
+import Field from '../atoms/Field.jsx'
+import Combobox from '../atoms/SelectCombobox.jsx'
 
 import styles from './BibliographyZoteroImport.module.scss'
 
 /**
- * @typedef {import('../SelectCombobox.jsx').ComboboxItem} ComboboxItem
+ * @typedef {import('../atoms/SelectCombobox.jsx').ComboboxItem} ComboboxItem
  * @typedef {import('../../helpers/zotero.js').ZoteroCollection} ZoteroCollection
  */
 

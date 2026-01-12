@@ -7,8 +7,8 @@ import { groupItems } from './SelectCombobox.js'
 
 import Field from './Field.jsx'
 
-import buttonStyles from './button.module.scss'
-import styles from './field.module.scss'
+import buttonStyles from '../button.module.scss'
+import styles from './Field.module.scss'
 
 /**
  * @typedef {object} ComboboxItem

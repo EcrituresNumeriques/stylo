@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import React, { forwardRef, useEffect, useId, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import styles from './field.module.scss'
+import styles from './Field.module.scss'
 
 export default forwardRef(function Field(
   {

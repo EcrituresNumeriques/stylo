@@ -1,6 +1,6 @@
 @use '../styles/defaults' as *;
 @use '../styles/variables' as *;
-@use './field.module' as *;
+@use 'atoms/Field.module' as *;
 @use './button.module' as *;
 
 @mixin legend {

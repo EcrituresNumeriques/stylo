@@ -57,6 +57,12 @@ fragment previewArticleFields on Article {
   }
 }
 
+mutation updateArticleQuery($updateArticleInput: UpdateArticleInput!) {
+  updateArticle(updateArticleInput: $updateArticleInput) {
+    _id
+  }
+}
+
 query renameArticle($articleId: ID!, $title: String!) {
   article(article: $articleId) {
     rename(title: $title)

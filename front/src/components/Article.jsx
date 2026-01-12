@@ -31,6 +31,8 @@ import Export from './Export.jsx'
 import Modal from './Modal.jsx'
 import FormActions from './molecules/FormActions.jsx'
 import ObjectMetadataLabel from './molecules/ObjectMetadataLabel.jsx'
+import ArticleCreate from './organisms/article/ArticleCreate.jsx'
+import ArticleForm from './organisms/article/ArticleForm.jsx'
 
 import { getArticleContributors, getArticleTags } from './Article.graphql'
 import { getTags } from './Tag.graphql'
@@ -104,12 +106,17 @@ export default function Article({
   const sharingModal = useModal()
   const sendCopyModal = useModal()
   const deleteModal = useModal()
-  const [expanded, setExpanded] = useState(false)
-  const [renaming, setRenaming] = useState(false)
+  const updateModal = useModal()
 
   const [newTitle, setNewTitle] = useState(article.title)
 
   const isArticleOwner = activeUser._id === article.owner._id
+
+  const {
+    ref: actionsRef,
+    isComponentVisible: areActionsVisible,
+    toggleComponentIsVisible: toggleActions,
+  } = useComponentVisible(false, 'actions')
 
   useEffect(() => {
     if (contributorsError) {
@@ -119,16 +126,8 @@ export default function Article({
     }
   }, [contributorsError])
 
-  const toggleExpansion = useCallback(
-    (event) => {
-      if (!event.key || [' ', 'Enter'].includes(event.key)) {
-        setExpanded(!expanded)
-      }
-    },
-    [setExpanded, expanded]
-  )
-
-  const duplicate = async () => {
+  const handleDuplicate = useCallback(async () => {
+    toggleActions()
     const duplicatedArticleQuery = await articleActions.duplicate()
     onArticleCreated({
       ...article,
@@ -136,12 +135,13 @@ export default function Article({
       contributors: [],
       versions: [],
     })
-  }
+  }, [toggleActions, articleActions])
 
   const handleCopyId = useCallback(() => {
+    toggleActions()
     copyToClipboard(articleId)
     toast(t('article.copyId.successToast'), { type: 'success' })
-  }, [])
+  }, [toggleActions, articleId])
 
   const rename = async (e) => {
     e.preventDefault()
@@ -175,12 +175,6 @@ export default function Article({
     },
     [article]
   )
-
-  const {
-    ref: actionsRef,
-    isComponentVisible: areActionsVisible,
-    toggleComponentIsVisible: toggleActions,
-  } = useComponentVisible(false, 'actions')
 
   console.log({ areActionsVisible })
 
@@ -233,13 +227,27 @@ export default function Article({
             <div className={styles.menu} hidden={!areActionsVisible}>
               <ul>
                 <li>Exporter</li>
-                <li>Ajouter / Modifier les étiquettes</li>
-                <li>Associer à un espace de travail</li>
+                <li
+                  onClick={() => {
+                    toggleActions()
+                    updateModal.show()
+                  }}
+                >
+                  Modifier
+                </li>
                 <li>Renommer</li>
-                <li>Dupliquer</li>
-                <li>Copier l'identifiant</li>
-                <li>Archiver</li>
-                <li onClick={() => deleteModal.show()}>Supprimer</li>
+                <li onClick={handleDuplicate}>Dupliquer</li>
+                <li onClick={handleCopyId}>Copier l'identifiant</li>
+                {isArticleOwner && !activeWorkspaceId && (
+                  <li
+                    onClick={() => {
+                      toggleActions()
+                      deleteModal.show()
+                    }}
+                  >
+                    Supprimer
+                  </li>
+                )}
               </ul>
             </div>
           </div>
@@ -362,6 +370,17 @@ export default function Article({
             text: t('modal.deleteButton.text'),
             title: t('modal.deleteButton.text'),
           }}
+        />
+      </Modal>
+
+      <Modal {...updateModal.bindings} title={t('article.createModal.title')}>
+        <ArticleForm
+          article={article}
+          onSubmit={() => {
+            console.log('UPDATED!')
+          }}
+          workspaceId={activeWorkspaceId}
+          onCancel={() => updateModal.close()}
         />
       </Modal>
     </article>
