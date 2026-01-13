@@ -4,7 +4,7 @@ title: “Crear una cuenta”
 
 En la página de inicio de Stylo, tienes dos opciones para crear una cuenta: una cuenta local en Stylo o una cuenta utilizando el servicio de autenticación Huma-num.
 
-Te sugerimos que crees una cuenta con Huma-Num, ya que te dará acceso a otras herramientas alojadas en esta plataforma. También podrás recuperar tu contraseña si la olvidas, lo que no es posible con una cuenta local en Stylo.
+Te sugerimos que [crees una cuenta con Huma-Num](https://humanid.huma-num.fr/register?skin=humanid&lmAuth=1HumanID), ya que te dará acceso a otras herramientas alojadas en esta plataforma. También podrás recuperar tu contraseña si la olvidas, lo que no es posible con una cuenta local en Stylo.
 
 Si ya tienes una cuenta Stylo o Huma-Num, conéctate [aquí](https://stylo.huma-num.fr/).
 
