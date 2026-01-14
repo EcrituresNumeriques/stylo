@@ -7,7 +7,7 @@ import { useGraphQLClient } from '../helpers/graphQL.js'
 
 import Button from './Button.jsx'
 
-import * as queries from '../components/Credentials.graphql'
+import * as queries from '../hooks/Credentials.graphql'
 
 import styles from './Page.module.scss'
 import buttonStyles from './button.module.scss'

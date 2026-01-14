@@ -14,7 +14,7 @@ import Alert from './molecules/Alert.jsx'
 import FormActions from './molecules/FormActions.jsx'
 import Loading from './molecules/Loading.jsx'
 
-import { createArticle } from './Articles.graphql'
+import { createArticle } from '../hooks/Articles.graphql'
 
 import checkboxStyles from './Checkbox.module.scss'
 import formStyles from './field.module.scss'

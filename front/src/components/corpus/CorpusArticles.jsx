@@ -11,7 +11,7 @@ import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 import CorpusArticleItems from './CorpusArticleItems.jsx'
 
-import { getCorpus } from './Corpus.graphql'
+import { getCorpus } from '../../hooks/Corpus.graphql'
 
 import styles from './corpusItem.module.scss'
 

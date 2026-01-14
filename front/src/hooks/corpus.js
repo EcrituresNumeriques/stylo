@@ -9,7 +9,7 @@ import {
   deleteCorpus as deleteCorpusQuery,
   getCorpus as getCorpusQuery,
   updateCorpus as updateCorpusQuery,
-} from '../components/corpus/Corpus.graphql'
+} from './Corpus.graphql'
 
 export function useCorpusActions() {
   const workspaceId = useActiveWorkspaceId() ?? null

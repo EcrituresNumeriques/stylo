@@ -20,7 +20,7 @@ import TagEditForm from './tag/TagEditForm.jsx'
 import TagsList from './tag/TagsList.jsx'
 import WorkspaceLabel from './workspace/WorkspaceLabel.jsx'
 
-import { getWorkspaceArticles } from './Articles.graphql'
+import { getWorkspaceArticles } from '../hooks/Articles.graphql'
 
 import styles from './articles.module.scss'
 
@@ -141,9 +141,7 @@ export default function Articles() {
   }
 
   return (
-    <div
-      className={styles.section}
-    >
+    <div className={styles.section}>
       <Helmet>
         <title>
           {t('articles.page.title', {
@@ -169,7 +167,10 @@ export default function Articles() {
           onChange={(e) => setFilter(etv(e))}
         />
 
-        <fieldset className={styles.filtersTags} aria-label={t('tag.list.title')}>
+        <fieldset
+          className={styles.filtersTags}
+          aria-label={t('tag.list.title')}
+        >
           <legend>
             <h4 aria-level="2">{t('tag.list.title')}</h4>
           </legend>

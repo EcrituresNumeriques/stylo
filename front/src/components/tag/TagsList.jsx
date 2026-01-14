@@ -1,15 +1,19 @@
-import React, { useCallback } from 'react'
 import { Settings, Tag } from 'lucide-react'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+
 import useFetchData from '../../hooks/graphql'
+
 import { useModal } from '../../hooks/modal.js'
+
 import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
-import Loading from '../molecules/Loading.jsx'
-import { getTags } from '../Tag.graphql'
 import ArticleTag from '../Tag.jsx'
+import Loading from '../molecules/Loading.jsx'
 import TagEditForm from './TagEditForm.jsx'
+
+import { getTags } from '../../hooks/Tag.graphql'
 
 import styles from './tagsList.module.scss'
 

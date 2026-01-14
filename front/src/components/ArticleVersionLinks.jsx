@@ -2,12 +2,15 @@ import clsx from 'clsx'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
-import useFetchData from '../hooks/graphql.js'
-import styles from './articleVersionLinks.module.scss'
 
-import { getArticleVersions } from './Article.graphql'
-import Loading from './molecules/Loading.jsx'
+import useFetchData from '../hooks/graphql.js'
+
 import TimeAgo from './TimeAgo.jsx'
+import Loading from './molecules/Loading.jsx'
+
+import { getArticleVersions } from '../hooks/Article.graphql'
+
+import styles from './articleVersionLinks.module.scss'
 
 export default function ArticleVersionLinks({ articleId, article }) {
   const { t } = useTranslation()

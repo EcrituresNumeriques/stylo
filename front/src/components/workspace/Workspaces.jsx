@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react'
 import { Search } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
-import { Helmet } from 'react-helmet-async'
-
-import Field from '../../components/Field.jsx'
-
-import WorkspaceItem from '../../components/workspace/WorkspaceItem.jsx'
 
 import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { useModal } from '../../hooks/modal.js'
 import { useWorkspaces } from '../../hooks/workspace.js'
+
+import Field from '../../components/Field.jsx'
+import WorkspaceItem from '../../components/workspace/WorkspaceItem.jsx'
 import Button from '../Button.jsx'
 import Loading from '../molecules/Loading.jsx'
 import CreateWorkspaceModal from './CreateWorkspaceModal.jsx'
-import { getUserStats } from './Workspaces.graphql'
+
+import { getUserStats } from '../../hooks/Workspaces.graphql'
 
 import styles from './workspaces.module.scss'
 

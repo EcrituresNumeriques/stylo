@@ -1,14 +1,16 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { useGraphQLClient } from '../../helpers/graphQL'
-import { changePassword as changePasswordQuery } from '../Credentials.graphql'
-import styles from '../credentials.module.scss'
-import formStyles from '../form.module.scss'
 
 import Button from '../Button.jsx'
 import Field from '../Field.jsx'
+
+import { changePassword as changePasswordQuery } from '../../hooks/Credentials.graphql'
+
+import styles from '../credentials.module.scss'
+import formStyles from '../form.module.scss'
 
 export default function Credentials() {
   const [password, setPassword] = useState('')
