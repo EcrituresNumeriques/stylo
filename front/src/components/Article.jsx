@@ -79,7 +79,8 @@ export default function Article({ article, corpus }) {
     }
   )
   const tags = articleTagsQueryData?.article?.tags || []
-  const { t } = useTranslation()
+  const { t } = useTranslation('article', { useSuspense: false })
+  const { t: tModal } = useTranslation('modal', { useSuspense: false })
   const [, copyToClipboard] = useCopyToClipboard()
 
   const exportModal = useModal()
@@ -112,16 +113,16 @@ export default function Article({ article, corpus }) {
   const handleCopyId = useCallback(() => {
     toggleActions()
     copyToClipboard(articleId)
-    toast(t('article.copyId.successToast'), { type: 'success' })
+    toast(t('actions.copyId.success'), { type: 'success' })
   }, [toggleActions, articleId])
 
   const handleDeleteArticle = async () => {
     deleteModal.close()
     try {
       await articleActions.remove()
-      toast(t('article.delete.toastSuccess'), { type: 'info' })
+      toast(t('actions.delete.success'), { type: 'info' })
     } catch (err) {
-      toast(t('article.delete.toastError', { errMessage: err.message }), {
+      toast(t('actions.delete.error', { errMessage: err.message }), {
         type: 'error',
       })
     }
@@ -144,8 +145,9 @@ export default function Article({ article, corpus }) {
             role="menuitem"
             icon={true}
             onClick={() => sharingModal.show()}
+            title={t('actions.share.title')}
           >
-            <UserPlus aria-label={t('article.share.button')} />
+            <UserPlus aria-label={t('actions.share.label')} />
           </Button>
 
           <Link
@@ -153,21 +155,23 @@ export default function Article({ article, corpus }) {
             target="_blank"
             className={buttonStyles.icon}
             to={`/article/${article._id}/annotate`}
+            title={t('actions.annotate.title')}
           >
-            <MessageSquareShare aria-label={t('article.annotate.button')} />
+            <MessageSquareShare aria-label={t('actions.annotate.label')} />
           </Link>
 
           <Link
             role="menuitem"
             className={clsx(buttonStyles.primary, styles.primaryAction)}
             to={`/article/${article._id}`}
+            title={t('actions.edit.title')}
           >
-            <Pencil aria-label={t('article.editor.edit.title')} />
+            <Pencil aria-label={t('actions.edit.label')} />
           </Link>
 
           <div className={styles.dropdownMenu} ref={actionsRef}>
             <Button
-              title={t('article.action.button')}
+              title={t('actions.menu.title')}
               onClick={() => toggleActions()}
               icon
             >
@@ -176,25 +180,45 @@ export default function Article({ article, corpus }) {
 
             <div className={styles.menu} hidden={!areActionsVisible}>
               <ul>
-                <li>Exporter</li>
+                <li
+                  onClick={() => {
+                    toggleActions()
+                    exportModal.show()
+                  }}
+                >
+                  {t('actions.export.label')}
+                </li>
                 <li
                   onClick={() => {
                     toggleActions()
                     updateModal.show()
                   }}
+                  title={t('actions.update.title')}
                 >
-                  Modifier
+                  {t('actions.update.label')}
                 </li>
                 <li onClick={handleDuplicate}>Dupliquer</li>
-                <li onClick={handleCopyId}>Copier l'identifiant</li>
+                <li
+                  onClick={() => {
+                    toggleActions()
+                    sendCopyModal.show()
+                  }}
+                  title={t('actions.sendCopy.title')}
+                >
+                  {t('actions.sendCopy.label')}
+                </li>
+                <li onClick={handleCopyId} title={t('actions.copyId.label')}>
+                  {t('actions.copyId.label')}
+                </li>
                 {canDeleteArticle && (
                   <li
                     onClick={() => {
                       toggleActions()
                       deleteModal.show()
                     }}
+                    title={t('actions.delete.title')}
                   >
-                    Supprimer
+                    {t('actions.delete.label')}
                   </li>
                 )}
               </ul>
@@ -256,15 +280,15 @@ export default function Article({ article, corpus }) {
         {...sharingModal.bindings}
         title={
           <>
-            <UserPlus /> {t('article.shareModal.title')}
+            <UserPlus /> {t('actions.share.title')}
           </>
         }
-        subtitle={t('article.shareModal.description')}
+        subtitle={t('actions.share.description')}
       >
         <ArticleContributors article={article} contributors={contributors} />
         <footer className={styles.actions}>
           <Button type="button" onClick={() => sharingModal.close()}>
-            {t('modal.closeButton.text')}
+            {tModal('closeButton.text')}
           </Button>
         </footer>
       </Modal>
@@ -273,13 +297,13 @@ export default function Article({ article, corpus }) {
         {...sendCopyModal.bindings}
         title={
           <>
-            <Send /> {t('article.sendCopyModal.title')}
+            <Send /> {t('actions.sendCopy.title')}
           </>
         }
         subtitle={
           <>
             <span className={styles.sendText}>
-              {t('article.sendCopyModal.description')}
+              {t('actions.sendCopy.description')}
             </span>
             <span>
               <Send className={styles.sendIcon} />
@@ -293,7 +317,7 @@ export default function Article({ article, corpus }) {
         />
         <footer className={styles.actions}>
           <Button type="button" onClick={() => sendCopyModal.close()}>
-            {t('modal.closeButton.text')}
+            {tModal('closeButton.text')}
           </Button>
         </footer>
       </Modal>
@@ -302,27 +326,27 @@ export default function Article({ article, corpus }) {
         {...deleteModal.bindings}
         title={
           <>
-            <Trash /> {t('article.deleteModal.title')}
+            <Trash /> {t('actions.delete.title')}
           </>
         }
       >
-        {t('article.deleteModal.confirmMessage')}
+        {t('actions.delete.confirm')}
         {contributors && contributors.length > 0 && (
           <div className={clsx(styles.note, styles.important)}>
-            {t('article.deleteModal.contributorsRemovalNote')}
+            {t('actions.delete.contributorsRemovalNote')}
           </div>
         )}
         <FormActions
           onSubmit={handleDeleteArticle}
           onCancel={() => deleteModal.close()}
           submitButton={{
-            text: t('modal.deleteButton.text'),
-            title: t('modal.deleteButton.text'),
+            text: tModal('deleteButton.text'),
+            title: tModal('deleteButton.text'),
           }}
         />
       </Modal>
 
-      <Modal {...updateModal.bindings} title={t('article.updateModal.title')}>
+      <Modal {...updateModal.bindings} title={t('actions.update.title')}>
         <ArticleForm
           article={article}
           onSubmit={() => updateModal.close()}
