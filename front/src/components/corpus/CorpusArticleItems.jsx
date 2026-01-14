@@ -10,7 +10,7 @@ import { useGraphQLClient } from '../../helpers/graphQL.js'
 import Loading from '../molecules/Loading.jsx'
 import CorpusArticleCard from './CorpusArticleCard.jsx'
 
-import { updateArticlesOrder } from './Corpus.graphql'
+import { updateArticlesOrder } from '../../hooks/Corpus.graphql'
 
 import styles from './corpusArticleItems.module.scss'
 

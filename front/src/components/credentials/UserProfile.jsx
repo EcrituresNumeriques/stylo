@@ -1,19 +1,21 @@
-import React, { useState, useCallback } from 'react'
 import { Check, Loader } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
-import { useSelector, useDispatch, shallowEqual } from 'react-redux'
+import React, { useCallback, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
 import { useGraphQLClient } from '../../helpers/graphQL'
-import { updateUser } from '../Credentials.graphql'
+import Button from '../Button'
+import Field from '../Field'
 
 import { fromFormData } from '../../helpers/forms.js'
 
+import TimeAgo from '../TimeAgo.jsx'
+
+import { updateUser } from '../../hooks/Credentials.graphql'
+
 import styles from '../credentials.module.scss'
 import formStyles from '../field.module.scss'
-import Button from '../Button'
-import Field from '../Field'
-import TimeAgo from '../TimeAgo.jsx'
 
 export default function UserInfos() {
   const dispatch = useDispatch()

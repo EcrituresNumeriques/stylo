@@ -10,8 +10,8 @@ import { toYaml } from './Write/metadata/yaml.js'
 
 import Loading from './molecules/Loading.jsx'
 
-import { getArticlePreview } from './Article.graphql'
-import { getCorpusPreview } from './corpus/Corpus.graphql'
+import { getArticlePreview } from '../hooks/Article.graphql'
+import { getCorpusPreview } from '../hooks/Corpus.graphql'
 
 import './Annotate.scss'
 
