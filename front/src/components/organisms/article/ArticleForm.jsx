@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 import { fromFormData } from '../../../helpers/forms.js'
-import { useGraphQLClient } from '../../../helpers/graphQL.js'
-import { useArticleActions } from '../../../hooks/article.js'
-import useFetchData from '../../../hooks/graphql.js'
+import {
+  useArticleActions,
+  useArticlesActions,
+} from '../../../hooks/article.js'
+import { useConditionalFetchData } from '../../../hooks/graphql.js'
 import { useUserTags } from '../../../hooks/user.js'
 import { useWorkspaces } from '../../../hooks/workspace.js'
 
@@ -15,7 +17,6 @@ import Alert from '../../molecules/Alert.jsx'
 import FormActions from '../../molecules/FormActions.jsx'
 import Loading from '../../molecules/Loading.jsx'
 
-import { createArticle } from '../../Articles.graphql'
 import { getArticleWorkspaces } from '../../workspace/Workspaces.graphql'
 
 import checkboxStyles from '../../atoms/Checkbox.module.scss'
@@ -31,19 +32,22 @@ import formStyles from '../../atoms/Field.module.scss'
  * @param {object} props
  * @param {Function} props.onSubmit
  * @param {Function} props.onCancel
- * @param {string|null} props.workspaceId
+ * @param {string|undefined} props.workspaceId
  * @returns {React.ReactHTMLElement}
  */
 export default function ArticleForm({
   article,
   onSubmit,
   onCancel,
-  workspaceId = null,
+  workspaceId,
 }) {
   const { t } = useTranslation()
 
-  const { query } = useGraphQLClient()
-  const { update } = useArticleActions(article && { articleId: article._id })
+  const { create } = useArticlesActions({ activeWorkspaceId: workspaceId })
+  const { update } = useArticleActions({
+    articleId: article?._id,
+    activeWorkspaceId: workspaceId,
+  })
 
   const action = useMemo(
     () => (article === undefined ? 'create' : 'update'),
@@ -53,27 +57,25 @@ export default function ArticleForm({
   const handleSubmit = useCallback(async (event) => {
     event.preventDefault()
     try {
-      const createArticleInput = fromFormData(event.target)
+      const formInput = fromFormData(event.target)
       if (article !== undefined) {
-        await update({
+        await update(article, {
           tags: [],
           workspaces: [],
-          ...createArticleInput,
+          ...formInput,
         })
-        onSubmit(article)
+        onSubmit()
       } else {
-        const { createArticle: createdArticle } = await query({
-          query: createArticle,
-          variables: { createArticleInput },
-        })
-        onSubmit(createdArticle)
+        await create(formInput)
+        onSubmit()
       }
-      toast(t('article.${action}.successNotification'), {
+      toast(t(`article.${action}.successNotification`), {
         type: 'info',
       })
     } catch (err) {
+      console.log({ err })
       toast(
-        t('article.${action}.errorNotification', { errMessage: err.message }),
+        t(`article.${action}.errorNotification`, { errMessage: err.message }),
         {
           type: 'error',
         }
@@ -115,12 +117,18 @@ function WorkspacesField({ workspaceId, articleId }) {
     data,
     isLoading: isLoadingArticleWorkspaces,
     error: errorLoadingArticleWorkspaces,
-    mutate,
-  } = useFetchData(
-    articleId && { query: getArticleWorkspaces, variables: { articleId } },
+  } = useConditionalFetchData(
+    articleId
+      ? { query: getArticleWorkspaces, variables: { articleId } }
+      : null,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
+      fallbackData: {
+        article: {
+          workspaces: [],
+        },
+      },
     }
   )
 
@@ -134,7 +142,7 @@ function WorkspacesField({ workspaceId, articleId }) {
     return <Loading />
   }
 
-  const defaultValues = data?.article?.workspaces?.map((w) => w._id)
+  const defaultValues = data.article.workspaces.map((w) => w._id)
   if (workspaces.length > 0) {
     return (
       <div>

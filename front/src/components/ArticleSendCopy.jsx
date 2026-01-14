@@ -1,6 +1,7 @@
 import { Send } from 'lucide-react'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router'
 import { toast } from 'react-toastify'
 
 import { useArticleActions } from '../hooks/article.js'
@@ -10,7 +11,11 @@ import ContactSearch from './ContactSearch.jsx'
 import styles from './articleSendCopy.module.scss'
 
 export default function ArticleSendCopy({ article }) {
-  const { copy } = useArticleActions({ articleId: article._id })
+  const { workspaceId: activeWorkspaceId } = useParams()
+  const { copy } = useArticleActions({
+    articleId: article._id,
+    activeWorkspaceId,
+  })
   const { t } = useTranslation()
 
   const handleUserUpdated = useCallback(

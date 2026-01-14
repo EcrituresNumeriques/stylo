@@ -10,7 +10,7 @@ import {
   Trash,
   UserPlus,
 } from 'lucide-react'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router'
@@ -31,11 +31,9 @@ import Export from './Export.jsx'
 import Modal from './Modal.jsx'
 import FormActions from './molecules/FormActions.jsx'
 import ObjectMetadataLabel from './molecules/ObjectMetadataLabel.jsx'
-import ArticleCreate from './organisms/article/ArticleCreate.jsx'
 import ArticleForm from './organisms/article/ArticleForm.jsx'
 
 import { getArticleContributors, getArticleTags } from './Article.graphql'
-import { getTags } from './Tag.graphql'
 
 import styles from './Article.module.scss'
 import buttonStyles from './button.module.scss'
@@ -44,24 +42,15 @@ import buttonStyles from './button.module.scss'
  * @param props
  * @param {{title: string, owner: {displayName: string?, username: string}, updatedAt: string, _id: string }} props.article
  * @param {{id: string, name: string}[]} props.corpus
- * @param props.onArticleUpdated
- * @param props.onArticleDeleted
- * @param props.onArticleCreated
  * @return {Element}
  * @constructor
  */
-export default function Article({
-  article,
-  corpus,
-  onArticleUpdated,
-  onArticleDeleted,
-  onArticleCreated,
-}) {
+export default function Article({ article, corpus }) {
   const displayName = useDisplayName()
   const activeUser = useSelector((state) => state.activeUser)
   const articleId = useMemo(() => article._id, [article])
   const { workspaceId: activeWorkspaceId } = useParams()
-  const articleActions = useArticleActions({ articleId })
+  const articleActions = useArticleActions({ articleId, activeWorkspaceId })
 
   const { data: contributorsQueryData, error: contributorsError } =
     useFetchData(
@@ -78,15 +67,6 @@ export default function Article({
   const contributors = (
     contributorsQueryData?.article?.contributors || []
   ).filter((c) => c.user._id !== article.owner._id)
-  const { data: userTagsQueryData } = useFetchData(
-    { query: getTags, variables: {} },
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  )
-  const userTags = userTagsQueryData?.user?.tags || []
   const { data: articleTagsQueryData } = useFetchData(
     { query: getArticleTags, variables: { articleId } },
     {
@@ -108,8 +88,6 @@ export default function Article({
   const deleteModal = useModal()
   const updateModal = useModal()
 
-  const [newTitle, setNewTitle] = useState(article.title)
-
   const isArticleOwner = activeUser._id === article.owner._id
 
   const {
@@ -128,13 +106,7 @@ export default function Article({
 
   const handleDuplicate = useCallback(async () => {
     toggleActions()
-    const duplicatedArticleQuery = await articleActions.duplicate()
-    onArticleCreated({
-      ...article,
-      ...duplicatedArticleQuery.duplicateArticle,
-      contributors: [],
-      versions: [],
-    })
+    await articleActions.duplicate(article)
   }, [toggleActions, articleActions])
 
   const handleCopyId = useCallback(() => {
@@ -143,21 +115,10 @@ export default function Article({
     toast(t('article.copyId.successToast'), { type: 'success' })
   }, [toggleActions, articleId])
 
-  const rename = async (e) => {
-    e.preventDefault()
-    await articleActions.rename(newTitle)
-    onArticleUpdated({
-      ...article,
-      title: newTitle,
-    })
-    setRenaming(false)
-  }
-
   const handleDeleteArticle = async () => {
     deleteModal.close()
     try {
       await articleActions.remove()
-      onArticleDeleted(article)
       toast(t('article.delete.toastSuccess'), { type: 'info' })
     } catch (err) {
       toast(t('article.delete.toastError', { errMessage: err.message }), {
@@ -166,18 +127,7 @@ export default function Article({
     }
   }
 
-  const handleArticleTagsUpdated = useCallback(
-    (event) => {
-      onArticleUpdated({
-        ...article,
-        tags: event.updatedTags,
-      })
-    },
-    [article]
-  )
-
-  console.log({ areActionsVisible })
-
+  const canDeleteArticle = isArticleOwner && !activeWorkspaceId
   return (
     <article
       className={styles.article}
@@ -235,10 +185,9 @@ export default function Article({
                 >
                   Modifier
                 </li>
-                <li>Renommer</li>
                 <li onClick={handleDuplicate}>Dupliquer</li>
                 <li onClick={handleCopyId}>Copier l'identifiant</li>
-                {isArticleOwner && !activeWorkspaceId && (
+                {canDeleteArticle && (
                   <li
                     onClick={() => {
                       toggleActions()
@@ -373,12 +322,10 @@ export default function Article({
         />
       </Modal>
 
-      <Modal {...updateModal.bindings} title={t('article.createModal.title')}>
+      <Modal {...updateModal.bindings} title={t('article.updateModal.title')}>
         <ArticleForm
           article={article}
-          onSubmit={() => {
-            console.log('UPDATED!')
-          }}
+          onSubmit={() => updateModal.close()}
           workspaceId={activeWorkspaceId}
           onCancel={() => updateModal.close()}
         />

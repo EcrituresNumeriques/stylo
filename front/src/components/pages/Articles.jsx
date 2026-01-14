@@ -15,7 +15,7 @@ import Modal from '../Modal.jsx'
 import Field from '../atoms/Field.jsx'
 import PageTitle from '../atoms/PageTitle.jsx'
 import Loading from '../molecules/Loading.jsx'
-import ArticleCreate from '../organisms/article/ArticleCreate.jsx'
+import ArticleForm from '../organisms/article/ArticleForm.jsx'
 import TagEditForm from '../tag/TagEditForm.jsx'
 import TagsList from '../tag/TagsList.jsx'
 import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
@@ -34,7 +34,7 @@ export default function Articles() {
   const [filter, setFilter] = useState('')
   const { workspaceId: activeWorkspaceId } = useParams()
 
-  const { data, isLoading, mutate } = useFetchData(
+  const { data, isLoading } = useFetchData(
     {
       query: getWorkspaceArticles,
       variables: {
@@ -55,70 +55,7 @@ export default function Articles() {
       },
     }
   )
-
   const { articles, corpus, workspace = {} } = data
-
-  const handleArticleUpdated = useCallback(
-    async (updatedArticle) => {
-      const updatedArticles = articles.map((article) =>
-        article._id === updatedArticle._id ? updatedArticle : article
-      )
-
-      await mutate(
-        {
-          ...data,
-          articles: updatedArticles,
-          workspace: {
-            ...data.workspace,
-            articles: updatedArticles,
-          },
-        },
-        { revalidate: false }
-      )
-    },
-    [articles]
-  )
-
-  const handleArticleDeleted = useCallback(
-    async (deletedArticle) => {
-      const updatedArticles = articles.filter(
-        (article) => article._id !== deletedArticle._id
-      )
-
-      await mutate(
-        {
-          ...data,
-          articles: updatedArticles,
-          workspace: {
-            ...data.workspace,
-            articles: updatedArticles,
-          },
-        },
-        { revalidate: false }
-      )
-    },
-    [articles]
-  )
-
-  const handleArticleCreated = useCallback(
-    async (createdArticle) => {
-      createArticleModal.close()
-      const updatedArticles = [createdArticle, ...articles]
-
-      await mutate(
-        {
-          ...data,
-          articles: updatedArticles,
-          workspace: {
-            ...data.workspace,
-            articles: updatedArticles,
-          },
-        },
-        { revalidate: false }
-      )
-    },
-    [articles]
-  )
 
   const keepArticles = useMemo(
     () =>
@@ -198,8 +135,8 @@ export default function Articles() {
         {...createArticleModal.bindings}
         title={t('article.createModal.title')}
       >
-        <ArticleCreate
-          onSubmit={handleArticleCreated}
+        <ArticleForm
+          onSubmit={() => createArticleModal.close()}
           workspaceId={activeWorkspaceId}
           onCancel={() => createArticleModal.close()}
         />
@@ -220,9 +157,6 @@ export default function Articles() {
               corpus={corpus.filter((c) =>
                 c.articles.map((a) => a.article._id).includes(article._id)
               )}
-              onArticleUpdated={handleArticleUpdated}
-              onArticleDeleted={handleArticleDeleted}
-              onArticleCreated={handleArticleCreated}
             />
           ))}
         </div>
