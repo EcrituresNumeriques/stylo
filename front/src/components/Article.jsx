@@ -39,8 +39,11 @@ import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
 import FormActions from './molecules/FormActions.jsx'
 import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
 
-import { getArticleContributors, getArticleTags } from './Article.graphql'
-import { getTags } from './Tag.graphql'
+import {
+  getArticleContributors,
+  getArticleTags,
+} from '../hooks/Article.graphql'
+import { getTags } from '../hooks/Tag.graphql'
 
 import styles from './article.module.scss'
 import buttonStyles from './button.module.scss'

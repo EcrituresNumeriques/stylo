@@ -1,11 +1,13 @@
-import React, { useCallback } from 'react'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
+import React, { useCallback } from 'react'
 
-import { removeArticle, addArticle } from './Workspaces.graphql'
-import styles from './WorkspaceSelectItem.module.scss'
 import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { useActiveWorkspaceId } from '../../hooks/workspace.js'
+
+import { addArticle, removeArticle } from '../../hooks/Workspaces.graphql'
+
+import styles from './WorkspaceSelectItem.module.scss'
 
 export default function WorkspaceSelectItem({
   articleId,
@@ -33,11 +35,7 @@ export default function WorkspaceSelectItem({
   )
   return (
     <>
-      <li
-        className={
-          activeWorkspaceId === id ? clsx(styles.active) : ''
-        }
-      >
+      <li className={activeWorkspaceId === id ? clsx(styles.active) : ''}>
         <label className={clsx(styles.workspace, selected && styles.selected)}>
           <input
             name={id}

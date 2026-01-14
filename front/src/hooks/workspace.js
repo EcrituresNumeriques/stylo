@@ -3,6 +3,7 @@ import { useParams } from 'react-router'
 
 import { executeQuery } from '../helpers/graphQL.js'
 import useFetchData, { useMutateData } from './graphql.js'
+import { usePreferenceItem } from './user.js'
 
 import {
   create as createMutation,
@@ -12,8 +13,7 @@ import {
   leave as leaveMutation,
   removeMember as removeMemberMutation,
   updateFormMetadata as updateFormMetadataMutation,
-} from '../components/workspace/Workspaces.graphql'
-import { usePreferenceItem } from './user.js'
+} from './Workspaces.graphql'
 
 /**
  * Returns the active workspace identifier

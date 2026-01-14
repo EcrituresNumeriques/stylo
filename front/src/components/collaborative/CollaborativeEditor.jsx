@@ -7,7 +7,7 @@ import ArticleStats from '../ArticleStats.jsx'
 import CollaborativeEditorMenu from './CollaborativeEditorMenu.jsx'
 import CollaborativeTextEditor from './CollaborativeTextEditor.jsx'
 
-import { getArticleInfo } from '../Article.graphql'
+import { getArticleInfo } from '../../hooks/Article.graphql'
 
 import styles from './CollaborativeEditor.module.scss'
 
