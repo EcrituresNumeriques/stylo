@@ -10,7 +10,7 @@ import defaultEditorOptions from './options.js'
 
 import MonacoEditor from '../../../molecules/MonacoEditor.jsx'
 
-import fieldStyles from '../../../field.module.scss'
+import fieldStyles from '../../../atoms/Field.module.scss'
 import styles from './BibtexEditor.module.scss'
 
 loader.config({ monaco })

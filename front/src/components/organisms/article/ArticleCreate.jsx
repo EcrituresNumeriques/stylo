@@ -2,22 +2,21 @@ import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
-import { useGraphQLClient } from '../helpers/graphQL'
+import { fromFormData } from '../../../helpers/forms.js'
+import { useGraphQLClient } from '../../../helpers/graphQL.js'
+import { useUserTags } from '../../../hooks/user.js'
+import { useWorkspaces } from '../../../hooks/workspace.js'
 
-import { fromFormData } from '../helpers/forms.js'
-import { useUserTags } from '../hooks/user.js'
-import { useWorkspaces } from '../hooks/workspace.js'
+import Checkbox from '../../atoms/Checkbox.jsx'
+import Field from '../../atoms/Field.jsx'
+import Alert from '../../molecules/Alert.jsx'
+import FormActions from '../../molecules/FormActions.jsx'
+import Loading from '../../molecules/Loading.jsx'
 
-import Checkbox from './Checkbox.jsx'
-import Field from './Field.jsx'
-import Alert from './molecules/Alert.jsx'
-import FormActions from './molecules/FormActions.jsx'
-import Loading from './molecules/Loading.jsx'
+import { createArticle } from '../../Articles.graphql'
 
-import { createArticle } from './Articles.graphql'
-
-import checkboxStyles from './Checkbox.module.scss'
-import formStyles from './field.module.scss'
+import checkboxStyles from '../../atoms/Checkbox.module.scss'
+import formStyles from '../../atoms/Field.module.scss'
 
 /**
  * @typedef {object} ArticleCreateProps

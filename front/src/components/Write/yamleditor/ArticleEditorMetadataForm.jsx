@@ -5,7 +5,7 @@ import Form from '../../Form'
 
 import { ArticleSchemas } from '../../../schemas/schemas.js'
 
-import Select from '../../Select.jsx'
+import Select from '../../atoms/Select.jsx'
 
 import styles from './ArticleEditorMetadataForm.module.scss'
 

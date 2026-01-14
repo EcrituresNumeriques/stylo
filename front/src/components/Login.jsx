@@ -7,11 +7,12 @@ import { Link, useLocation, useNavigate, useRevalidator } from 'react-router'
 import { toast } from 'react-toastify'
 
 import Button from './Button'
-import Field from './Field'
 
 import { applicationConfig } from '../config.js'
 import { fromFormData } from '../helpers/forms.js'
 import { useLogout } from '../hooks/user.js'
+
+import Field from './atoms/Field.jsx'
 
 import buttonStyles from './button.module.scss'
 import formStyles from './form.module.scss'

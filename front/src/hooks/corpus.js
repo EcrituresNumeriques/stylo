@@ -41,7 +41,6 @@ export function useCorpusActions() {
       },
     })
     await mutate(async (data) => {
-      console.log('mutate', { data })
       return {
         corpus: [...(data?.corpus ?? []), response.createCorpus],
         ...data,

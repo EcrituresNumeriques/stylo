@@ -90,6 +90,8 @@
   "bibliography.title": "Bibliografía",
   "bibliography.warnings_one": "Hay una advertencia en tu BibTeX. <1>No se puede guardar.</1>",
   "bibliography.warnings_other": "Hay {{count}} advertencias en tu BibTeX. <1>No se puede guardar.</1>",
+  "common.createdBy.label": "cree por",
+  "common.updatedAt.label": "actualización",
   "contact.searchField.placeholder": "Contact email",
   "contact.userNotFound.message": "No user found for this email adress",
   "corpus.addPart.note": "To add a new chapter, go to the <1>articles page</1> and select this corpus.",
