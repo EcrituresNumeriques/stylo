@@ -6,16 +6,16 @@ import Button from '../components/atoms/Button.jsx'
 export default function ButtonStory() {
   return (
     <>
-      <h2>Buttons</h2>
-      <h4>Primary</h4>
-      <Button primary={true}>Create New Article</Button>
-      <h4>Secondary</h4>
-      <Button>Manage Tags</Button>
-      <h4>With Icon</h4>
+      <h2>Boutons</h2>
+      <h4>Primaire</h4>
+      <Button primary={true}>Crée un article</Button>
+      <h4>Secondaire</h4>
+      <Button>Modifier les étiquettes</Button>
+      <h4>Avec icônes</h4>
       <Button>
-        <Check /> Save
+        <Check /> Enregistrer
       </Button>
-      <h4>Icon Only</h4>
+      <h4>Icônes uniquement</h4>
       <Button icon={true}>
         <Copy />
       </Button>
