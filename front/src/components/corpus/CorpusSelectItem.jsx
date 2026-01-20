@@ -4,7 +4,10 @@ import React, { useCallback } from 'react'
 
 import { useGraphQLClient } from '../../helpers/graphQL.js'
 
-import { addArticleToCorpus, removeArticleFromCorpus } from './Corpus.graphql'
+import {
+  addArticleToCorpus,
+  removeArticleFromCorpus,
+} from '../../hooks/Corpus.graphql'
 
 import styles from './CorpusSelectItem.module.scss'
 

@@ -21,7 +21,7 @@ import {
   renameArticle,
   updateWorkingVersion,
   updateZoteroLinkMutation,
-} from '../components/Article.graphql'
+} from './Article.graphql'
 import {
   createVersion,
   getArticleVersion,

@@ -1,7 +1,7 @@
-import { describe, expect, test, vi } from 'vitest'
 import React from 'react'
-import Component from './AuthCallback.jsx'
+import { describe, expect, test, vi } from 'vitest'
 import { renderWithProviders } from '../../tests/setup.js'
+import Component from './AuthCallback.jsx'
 
 describe('AuthCallback', () => {
   test('displays a warning when no ongoing session (w/ opener)', async () => {
@@ -80,7 +80,8 @@ describe('AuthCallback', () => {
   test('gets an updated user with merged session data (w/ opener)', async () => {
     window.opener = { postMessage: vi.fn() }
 
-    fetch.mockRestore().mockResolvedValueOnce({
+    fetch.mockRestore()
+      fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({
@@ -120,7 +121,8 @@ describe('AuthCallback', () => {
     window.opener = null
     window.close = vi.fn()
 
-    fetch.mockRestore().mockResolvedValueOnce({
+    fetch.mockRestore()
+    fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({

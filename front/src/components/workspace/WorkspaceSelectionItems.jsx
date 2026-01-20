@@ -7,7 +7,7 @@ import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 import WorkspaceSelectItem from './WorkspaceSelectItem.jsx'
 
-import { getArticleWorkspaces } from './Workspaces.graphql'
+import { getArticleWorkspaces } from '../../hooks/Workspaces.graphql'
 
 /**
  * @param {object} props

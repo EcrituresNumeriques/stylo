@@ -6,7 +6,7 @@ import { useActiveWorkspaceId } from '../../hooks/workspace.js'
 import Loading from '../molecules/Loading.jsx'
 import CorpusSelectItem from './CorpusSelectItem.jsx'
 
-import { getCorpus } from './Corpus.graphql'
+import { getCorpus } from '../../hooks/Corpus.graphql'
 
 /**
  * @param props

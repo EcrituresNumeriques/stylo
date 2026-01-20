@@ -10,7 +10,7 @@ import Field from './Field'
 
 import { fromFormData, validateSameFieldValue } from '../helpers/forms.js'
 
-import * as queries from './Credentials.graphql'
+import * as queries from '../hooks/Credentials.graphql'
 
 import formStyles from './form.module.scss'
 import styles from './login.module.scss'
