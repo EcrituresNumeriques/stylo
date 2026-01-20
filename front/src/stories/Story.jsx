@@ -2,6 +2,9 @@ import React from 'react'
 
 import i18n from '../i18n.js'
 
+import CreatedByLabel from '../components/atoms/CreatedByLabel.jsx'
+import PageTitle from '../components/atoms/PageTitle.jsx'
+import UpdatedAtLabel from '../components/atoms/UpdatedAtLabel.jsx'
 import CollaborativeEditorWebSocketStatus from '../components/collaborative/CollaborativeEditorWebSocketStatus.jsx'
 import Alert from '../components/molecules/Alert.jsx'
 import Avatar from '../components/molecules/Avatar.jsx'
@@ -19,11 +22,12 @@ export default function Story() {
   return (
     <div className={styles.container}>
       <section aria-label="Typographie">
-        <h1>Heading 1</h1>
-        <h2>Heading 2</h2>
-        <h3>Heading 3</h3>
-        <h4>Heading 4</h4>
-        <h5>Heading 5</h5>
+        <PageTitle title="Titre de la page" />
+        <h1>Titre 1</h1>
+        <h2>Titre 2</h2>
+        <h3>Titre 3</h3>
+        <h4>Titre 4</h4>
+        <h5>Titre 5</h5>
 
         <p className={styles.hero}>
           Stylo est un éditeur de texte sémantique, créé pour écrire des textes
@@ -36,32 +40,32 @@ export default function Story() {
         </p>
 
         <p>
-          regular <span>span</span> <small>small</small>
-          <sup>script</sup> and <sub>subscript</sub>
+          texte <span>span</span> <small>small</small>
+          <sup>script</sup> et <sub>subscript</sub>
         </p>
 
         <p>
-          <a href="#">hyperlink</a>
+          <a href="#">hyperlien</a>
         </p>
 
         <table>
-          <caption>table caption</caption>
+          <caption>Légende tableau</caption>
           <thead>
             <tr>
-              <th scope="col">header 1</th>
-              <th scope="col">header 2</th>
+              <th scope="col">Entête 1</th>
+              <th scope="col">Entête 2</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>cell 1</td>
-              <td>cell 2</td>
+              <td>Cellule 1</td>
+              <td>Cellule 2</td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
-              <td>footer 1</td>
-              <td>footer 2</td>
+              <td>Pied de page 1</td>
+              <td>Pied de page 2</td>
             </tr>
           </tfoot>
         </table>
@@ -72,19 +76,19 @@ export default function Story() {
 
         <p>
           <figure>
-            <figcaption>caption</figcaption>
+            <figcaption>Légende</figcaption>
             <img src="/android-chrome-192x192.png" alt="" />
           </figure>
         </p>
 
         <ul>
-          <li>item a</li>
-          <li>item b</li>
+          <li>Élément a</li>
+          <li>Élément b</li>
         </ul>
 
         <ol>
-          <li>item 1</li>
-          <li>item 2</li>
+          <li>Élément 1</li>
+          <li>Élément 2</li>
         </ol>
 
         <div className={styles.container}>
@@ -149,15 +153,15 @@ export default function Story() {
         </div>
 
         <fieldset>
-          <legend>fieldset legend</legend>
+          <legend>Légende</legend>
 
-          <p>some paragraph</p>
+          <p>Paragraphe</p>
         </fieldset>
 
         <details open>
-          <summary>details summary</summary>
+          <summary>Résumé</summary>
 
-          <p>some paragraph</p>
+          <p>Paragraphe</p>
         </details>
       </section>
 
@@ -166,12 +170,12 @@ export default function Story() {
       </section>
 
       <section aria-label="États">
-        <h4>Loading</h4>
+        <h4>Chargement</h4>
         <Loading />
         <Loading size={'1.5rem'} />
         <Loading size={'2rem'} />
         <Loading label={''} />
-        <h4>Alert</h4>
+        <h4>Alerte</h4>
         <Alert type={'warning'} message={'Warning'} />
         <Alert type={'error'} message={'Error'} />
         <Alert type={'info'} message={'Info'} />
@@ -188,12 +192,12 @@ export default function Story() {
       </section>
 
       <section aria-label="Éditeur de texte">
-        <h4>Status</h4>
-        <h5>Connected</h5>
+        <h4>Statuts</h4>
+        <h5>Connecté</h5>
         <CollaborativeEditorWebSocketStatus status={'connected'} />
-        <h5>Connecting</h5>
+        <h5>Connexion...</h5>
         <CollaborativeEditorWebSocketStatus status={'connecting'} />
-        <h5>Disconnected</h5>
+        <h5>Déconnecté</h5>
         <CollaborativeEditorWebSocketStatus
           status={'disconnected'}
           state={'started'}
@@ -235,6 +239,12 @@ export default function Story() {
         <Avatar text="GG" />
         <Avatar text="TP" />
         <Avatar text="Roch" />
+      </section>
+
+      <section aria-label="Objets">
+        <CreatedByLabel name={"Nom de l'utilisateur"} />
+        <br />
+        <UpdatedAtLabel date={new Date()} />
       </section>
     </div>
   )

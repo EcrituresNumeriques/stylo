@@ -14,15 +14,15 @@ import buttonStyles from '../components/atoms/Button.module.scss'
 export default function FormStory() {
   return (
     <>
-      <h4>Search</h4>
+      <h4>Recherche</h4>
       <Field placeholder="Search" icon={Search} />
-      <h4>Textarea</h4>
+      <h4>Champ de texte</h4>
       <div style={{ 'max-width': '50%' }}>
         <textarea className={buttonStyles.textarea} rows="10">
           Du texte
         </textarea>
       </div>
-      <h4>Select</h4>
+      <h4>Liste déroulante</h4>
       <Select>
         <option>Tome de Savoie</option>
         <option>Reblochon</option>
@@ -31,7 +31,7 @@ export default function FormStory() {
 
       <fieldset>
         <legend>
-          <h4>Switch</h4>
+          <h4>Interrupteur</h4>
         </legend>
 
         <Toggle />
@@ -54,7 +54,7 @@ export default function FormStory() {
 
       <fieldset>
         <legend>
-          <h4>Switch (dans formulaire)</h4>
+          <h4>Interrupteur (dans formulaire)</h4>
         </legend>
 
         <Field label="Acceptez-vous de cocher cette case ?" id="example-toggle">
