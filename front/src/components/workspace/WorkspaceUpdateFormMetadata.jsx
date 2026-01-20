@@ -7,7 +7,7 @@ import { useWorkspaceActions } from '../../hooks/workspace.js'
 
 import FormActions from '../molecules/FormActions.jsx'
 
-import buttonStyles from '../button.module.scss'
+import buttonStyles from '../atoms/Button.module.scss'
 import styles from './createWorkspace.module.scss'
 
 /**

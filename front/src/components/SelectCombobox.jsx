@@ -5,10 +5,10 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { groupItems } from './SelectCombobox.js'
 
-import Field from './Field.jsx'
+import Field from './atoms/Field.jsx'
 
-import buttonStyles from './button.module.scss'
-import styles from './field.module.scss'
+import buttonStyles from './atoms/Button.module.scss'
+import styles from './atoms/Field.module.scss'
 
 /**
  * @typedef {object} ComboboxItem

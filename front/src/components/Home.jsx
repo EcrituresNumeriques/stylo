@@ -14,7 +14,7 @@ import Release from './publications/Release.jsx'
 import Workshop from './publications/Workshop.jsx'
 
 import styles from '../layout.module.scss'
-import buttonStyles from './button.module.scss'
+import buttonStyles from './atoms/Button.module.scss'
 import headerStyles from './header.module.scss'
 
 export default function Home() {

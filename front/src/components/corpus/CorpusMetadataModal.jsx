@@ -18,9 +18,9 @@ import { usePreferenceItem } from '../../hooks/user.js'
 import { toYaml } from '../Write/metadata/yaml.js'
 
 import Toggle from '../../components/molecules/Toggle.jsx'
-import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
 import MonacoYamlEditor from '../Write/providers/monaco/YamlEditor.jsx'
+import Button from '../atoms/Button.jsx'
 import MetadataForm from '../metadata/MetadataForm.jsx'
 import FormActions from '../molecules/FormActions.jsx'
 

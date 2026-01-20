@@ -6,17 +6,17 @@ import { useSelector } from 'react-redux'
 import { useEditableArticle } from '../../hooks/article.js'
 import { useModal } from '../../hooks/modal.js'
 
-import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
+import Button from '../atoms/Button.jsx'
 import Alert from '../molecules/Alert.jsx'
 import FormActions from '../molecules/FormActions.jsx'
 import Loading from '../molecules/Loading.jsx'
 import Toggle from '../molecules/Toggle.jsx'
-
-import styles from './ArticleBibliography.module.scss'
 import BibliographyBibtexEditor from './BibliographyBibtexEditor.jsx'
 import BibliographyReferenceList from './BibliographyReferenceList.jsx'
 import BibliographyZoteroImport from './BibliographyZoteroImport.jsx'
+
+import styles from './ArticleBibliography.module.scss'
 
 /**
  * @param props

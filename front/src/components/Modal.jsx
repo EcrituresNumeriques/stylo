@@ -1,7 +1,8 @@
-import React, { forwardRef } from 'react'
 import { X } from 'lucide-react'
+import React, { forwardRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import Button from './Button'
+
+import Button from './atoms/Button.jsx'
 
 import styles from './modal.module.scss'
 
@@ -47,7 +48,11 @@ export default forwardRef(function Modal(
             <h1 id="modal-title" className={styles.title}>
               {title}
             </h1>
-            {subtitle && <div className={styles.subtitle} id="modal-description">{subtitle}</div>}
+            {subtitle && (
+              <div className={styles.subtitle} id="modal-description">
+                {subtitle}
+              </div>
+            )}
           </header>
 
           <div>{children}</div>

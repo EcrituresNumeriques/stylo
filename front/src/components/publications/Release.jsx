@@ -1,11 +1,11 @@
+import clsx from 'clsx'
+import { CalendarDays } from 'lucide-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { CalendarDays } from 'lucide-react'
-import clsx from 'clsx'
 
 import styles from '../../layout.module.scss'
 import homeStyles from '../Home.module.scss'
-import buttonStyles from '../button.module.scss'
+import buttonStyles from '../atoms/Button.module.scss'
 
 export default function Release({ entry }) {
   const { t, i18n } = useTranslation()

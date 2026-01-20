@@ -11,7 +11,7 @@ import { useContactActions } from '../hooks/contact.js'
 import { useDisplayName } from '../hooks/user.js'
 
 import ContactItem from './ContactItem.jsx'
-import Field from './Field.jsx'
+import Field from './atoms/Field.jsx'
 
 import { getUserByEmail } from '../hooks/Contacts.graphql'
 

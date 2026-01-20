@@ -1,6 +1,8 @@
-import { describe, expect, test, vi } from 'vitest'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+import { describe, expect, test } from 'vitest'
+
+import userEvent from '@testing-library/user-event'
+
 import { renderWithProviders } from '../../tests/setup.js'
 
 import Component from './RegisterWithAuthProvider.jsx'

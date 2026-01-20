@@ -5,17 +5,17 @@ import { useTranslation } from 'react-i18next'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
 import { useGraphQLClient } from '../../helpers/graphQL'
-import Button from '../Button'
-import Field from '../Field'
 
 import { fromFormData } from '../../helpers/forms.js'
 
-import TimeAgo from '../TimeAgo.jsx'
+import Button from '../atoms/Button.jsx'
+import Field from '../atoms/Field.jsx'
+import TimeAgo from '../atoms/TimeAgo.jsx'
 
 import { updateUser } from '../../hooks/Credentials.graphql'
 
+import formStyles from '../atoms/Field.module.scss'
 import styles from '../credentials.module.scss'
-import formStyles from '../field.module.scss'
 
 export default function UserInfos() {
   const dispatch = useDispatch()

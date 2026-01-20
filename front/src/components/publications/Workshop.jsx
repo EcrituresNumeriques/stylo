@@ -1,11 +1,11 @@
+import clsx from 'clsx'
+import { Building2, CalendarDays, MapPin } from 'lucide-react'
 import React, { useId } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Building2, CalendarDays, MapPin } from 'lucide-react'
-import clsx from 'clsx'
 
 import styles from '../../layout.module.scss'
 import homeStyles from '../Home.module.scss'
-import buttonStyles from '../button.module.scss'
+import buttonStyles from '../atoms/Button.module.scss'
 
 export default function Workshop({ entry }) {
   const { t, i18n } = useTranslation()

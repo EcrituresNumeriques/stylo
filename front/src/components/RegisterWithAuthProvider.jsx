@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate, useParams } from 'react-router'
 import { toast } from 'react-toastify'
 
-import { useGraphQLClient } from '../helpers/graphQL'
-import Button from './Button'
-import Field from './Field'
-
 import { fromFormData } from '../helpers/forms.js'
+import { useGraphQLClient } from '../helpers/graphQL.js'
+
+import Button from './atoms/Button.jsx'
+import Field from './atoms/Field.jsx'
 
 import * as queries from '../hooks/Credentials.graphql'
 

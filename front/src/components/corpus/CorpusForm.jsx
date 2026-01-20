@@ -6,11 +6,11 @@ import { toast } from 'react-toastify'
 import { fromFormData } from '../../helpers/forms.js'
 import { useCorpusActions } from '../../hooks/corpus.js'
 
-import Field from '../Field.jsx'
-import Select from '../Select.jsx'
+import Field from '../atoms/Field.jsx'
+import Select from '../atoms/Select.jsx'
 import FormActions from '../molecules/FormActions.jsx'
 
-import fieldStyles from '../field.module.scss'
+import fieldStyles from '../atoms/Field.module.scss'
 import styles from './corpusCreate.module.scss'
 
 /**

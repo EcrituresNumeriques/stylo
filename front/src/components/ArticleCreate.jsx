@@ -8,16 +8,16 @@ import { fromFormData } from '../helpers/forms.js'
 import { useUserTags } from '../hooks/user.js'
 import { useWorkspaces } from '../hooks/workspace.js'
 
-import Checkbox from './Checkbox.jsx'
-import Field from './Field.jsx'
+import Checkbox from './atoms/Checkbox.jsx'
+import Field from './atoms/Field.jsx'
 import Alert from './molecules/Alert.jsx'
 import FormActions from './molecules/FormActions.jsx'
 import Loading from './molecules/Loading.jsx'
 
 import { createArticle } from '../hooks/Articles.graphql'
 
-import checkboxStyles from './Checkbox.module.scss'
-import formStyles from './field.module.scss'
+import checkboxStyles from './atoms/Checkbox.module.scss'
+import formStyles from './atoms/Field.module.scss'
 
 /**
  * @typedef {object} ArticleCreateProps

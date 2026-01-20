@@ -30,11 +30,11 @@ import ArticleContributors from './ArticleContributors.jsx'
 import ArticleSendCopy from './ArticleSendCopy.jsx'
 import ArticleTags from './ArticleTags.jsx'
 import ArticleVersionLinks from './ArticleVersionLinks.jsx'
-import Button from './Button.jsx'
 import Export from './Export.jsx'
-import Field from './Field.jsx'
 import Modal from './Modal.jsx'
-import TimeAgo from './TimeAgo.jsx'
+import Button from './atoms/Button.jsx'
+import Field from './atoms/Field.jsx'
+import TimeAgo from './atoms/TimeAgo.jsx'
 import CorpusSelectItems from './corpus/CorpusSelectItems.jsx'
 import FormActions from './molecules/FormActions.jsx'
 import WorkspaceSelectionItems from './workspace/WorkspaceSelectionItems.jsx'
@@ -46,8 +46,8 @@ import {
 import { getTags } from '../hooks/Tag.graphql'
 
 import styles from './article.module.scss'
-import buttonStyles from './button.module.scss'
-import fieldStyles from './field.module.scss'
+import buttonStyles from './atoms/Button.module.scss'
+import fieldStyles from './atoms/Field.module.scss'
 
 /**
  * @param props
