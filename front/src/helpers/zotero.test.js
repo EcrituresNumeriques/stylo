@@ -1,15 +1,10 @@
-import { describe, test, expect, beforeEach } from 'vitest'
-import {
-  fetchBibliographyFromCollectionHref,
-  prefixLegacyUrl,
-  toApiUrl,
-} from './zotero'
+import { beforeEach, describe, expect, test } from 'vitest'
+import { fetchBibliographyFromCollectionHref, prefixLegacyUrl, toApiUrl, } from './zotero'
 
 describe('fetchBibliographyFromCollection', () => {
   beforeEach(() => {
-    fetch
-      .mockRestore()
-      .mockResolvedValueOnce(
+    fetch.mockRestore()
+      fetch.mockResolvedValueOnce(
         new Response(
           `
 @book{grossetie_test1_nodate,
@@ -74,7 +69,8 @@ describe('toApiUrl', () => {
   const fakeToken = 'ku1mTEyPCxhU7FgbjUkx1WiP'
 
   beforeEach(async () => {
-    fetch.mockRestore().mockResolvedValueOnce({
+    fetch.mockRestore()
+      fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({
@@ -103,7 +99,8 @@ describe('toApiUrl', () => {
   test('ma library, échoue avec un token non-correspondant', async () => {
     const url = 'https://www.zotero.org/mattheyje/library'
 
-    fetch.mockRestore().mockResolvedValueOnce({
+    fetch.mockRestore()
+      fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({
