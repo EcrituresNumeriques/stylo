@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 
 import useFetchData from '../hooks/graphql.js'
 
-import TimeAgo from './TimeAgo.jsx'
+import TimeAgo from './atoms/TimeAgo.jsx'
 import Loading from './molecules/Loading.jsx'
 
 import { getArticleVersions } from '../hooks/Article.graphql'

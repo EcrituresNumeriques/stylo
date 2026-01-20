@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import React from 'react'
-import styles from './button.module.scss'
+
+import styles from './Button.module.scss'
 
 export default function Button(props) {
   const classNames = clsx({

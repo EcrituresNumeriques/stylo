@@ -1,7 +1,7 @@
 @use '../styles/defaults' as *;
 @use '../styles/variables' as *;
-@use './field.module' as *;
-@use './button.module' as *;
+@use './atoms/Field.module' as *;
+@use 'atoms/Button.module' as *;
 
 @mixin legend {
   font-size: 1.75rem;

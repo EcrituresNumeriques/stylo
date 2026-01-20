@@ -1,14 +1,14 @@
 import { Clipboard, Trash } from 'lucide-react'
-import { useCopyToClipboard } from 'react-use'
 import React, { memo, useCallback } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import { useCopyToClipboard } from 'react-use'
 
 import { useModal } from '../../hooks/modal.js'
 
-import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
 import ReferenceTypeIcon from '../ReferenceTypeIcon.jsx'
+import Button from '../atoms/Button.jsx'
 import FormActions from '../molecules/FormActions.jsx'
 
 import styles from './BibliographyReference.module.scss'

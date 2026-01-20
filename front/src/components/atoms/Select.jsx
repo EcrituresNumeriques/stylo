@@ -1,10 +1,10 @@
 import { clsx } from 'clsx'
 import React, { forwardRef } from 'react'
 
-import styles from './button.module.scss'
-import fieldStyles from './field.module.scss'
+import styles from './Button.module.scss'
+import fieldStyles from './Field.module.scss'
 
-export default forwardRef(function Select (props, forwardedRef) {
+export default forwardRef(function Select(props, forwardedRef) {
   return (
     <div
       className={clsx(fieldStyles.field, 'control-field')}

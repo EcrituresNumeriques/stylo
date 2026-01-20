@@ -7,9 +7,9 @@ import useFetchData from '../../hooks/graphql'
 
 import { useModal } from '../../hooks/modal.js'
 
-import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
 import ArticleTag from '../Tag.jsx'
+import Button from '../atoms/Button.jsx'
 import Loading from '../molecules/Loading.jsx'
 import TagEditForm from './TagEditForm.jsx'
 

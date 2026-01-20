@@ -8,10 +8,10 @@ import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { useModal } from '../../hooks/modal.js'
 import { useWorkspaces } from '../../hooks/workspace.js'
 
-import Field from '../../components/Field.jsx'
-import WorkspaceItem from '../../components/workspace/WorkspaceItem.jsx'
-import Button from '../Button.jsx'
+import Button from '../atoms/Button.jsx'
+import Field from '../atoms/Field.jsx'
 import Loading from '../molecules/Loading.jsx'
+import WorkspaceItem from '../workspace/WorkspaceItem.jsx'
 import CreateWorkspaceModal from './CreateWorkspaceModal.jsx'
 
 import { getUserStats } from '../../hooks/Workspaces.graphql'

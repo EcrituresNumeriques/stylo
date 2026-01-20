@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./SelectCombobox.jsx').ComboboxItem} ComboboxItem
+ * @typedef {import('./SelectCombobox.js').ComboboxItem} ComboboxItem
  */
 
 /**

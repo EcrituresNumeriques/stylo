@@ -1,11 +1,13 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import clsx from 'clsx'
 import { CheckSquare, Square, User, UserCheck } from 'lucide-react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import styles from './ContactItem.module.scss'
-import Button from './Button.jsx'
-import clsx from 'clsx'
 import { useDisplayName } from '../hooks/user.js'
+
+import Button from './atoms/Button.jsx'
+
+import styles from './ContactItem.module.scss'
 
 export default function ContactItem({
   user,
@@ -64,7 +66,9 @@ export default function ContactItem({
       }
     >
       <div className={styles.info}>
-        {!muted && <span className={styles.contactName}>{displayName(user)}</span>}
+        {!muted && (
+          <span className={styles.contactName}>{displayName(user)}</span>
+        )}
         {!disabled && user.email && (
           <a href={'mailto:' + user.email} className={styles.contactEmail}>
             {user.email}

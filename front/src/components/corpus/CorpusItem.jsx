@@ -7,26 +7,26 @@ import {
   Settings,
   Trash,
 } from 'lucide-react'
-import { useCopyToClipboard } from 'react-use'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { toast } from 'react-toastify'
+import { useCopyToClipboard } from 'react-use'
 
 import { useCorpusActions } from '../../hooks/corpus.js'
 import { useModal } from '../../hooks/modal.js'
 import { useDisplayName } from '../../hooks/user.js'
 
-import Button from '../Button.jsx'
 import Export from '../Export.jsx'
 import Modal from '../Modal.jsx'
-import TimeAgo from '../TimeAgo.jsx'
+import Button from '../atoms/Button.jsx'
+import TimeAgo from '../atoms/TimeAgo.jsx'
 import FormActions from '../molecules/FormActions.jsx'
 import CorpusArticles from './CorpusArticles.jsx'
 import CorpusForm from './CorpusForm.jsx'
 import CorpusMetadataModal from './CorpusMetadataModal.jsx'
 
-import buttonStyles from '../button.module.scss'
+import buttonStyles from '../atoms/Button.module.scss'
 import styles from './corpusItem.module.scss'
 
 /**
@@ -96,7 +96,10 @@ export default function CorpusItem({ corpus }) {
   )
 
   return (
-    <div className={styles.container} aria-labelledby={`corpus-${corpus._id}-title`}>
+    <div
+      className={styles.container}
+      aria-labelledby={`corpus-${corpus._id}-title`}
+    >
       <div className={styles.header}>
         <div className={styles.heading} onClick={toggleExpansion}>
           <h2 className={styles.title} id={`corpus-${corpus._id}-title`}>
@@ -114,7 +117,9 @@ export default function CorpusItem({ corpus }) {
           </h2>
           <p className={styles.metadata}>
             <span className={styles.by}>{t('corpus.by.text')}</span>
-            <span className={styles.creator}>{displayName(corpus.creator)}</span>
+            <span className={styles.creator}>
+              {displayName(corpus.creator)}
+            </span>
             <TimeAgo date={corpus.updatedAt} className={styles.updatedAt} />
           </p>
         </div>

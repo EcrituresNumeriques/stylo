@@ -1,19 +1,19 @@
 import React from 'react'
 
+import i18n from '../i18n.js'
+
 import CollaborativeEditorWebSocketStatus from '../components/collaborative/CollaborativeEditorWebSocketStatus.jsx'
 import Alert from '../components/molecules/Alert.jsx'
+import Avatar from '../components/molecules/Avatar.jsx'
 import Loading from '../components/molecules/Loading.jsx'
 import Version from '../components/molecules/Version.jsx'
 import ButtonStory from './Button.story.jsx'
 import FormStory from './Form.story.jsx'
 import SidebarStory from './Sidebar.story.jsx'
 
-import i18n from '../i18n.js'
-
-import buttonStyles from '../components/button.module.scss'
+import buttonStyles from '../components/atoms/Button.module.scss'
 import styles from '../layout.module.scss'
 import storyStyles from './story.module.scss'
-import Avatar from '../components/molecules/Avatar.jsx'
 
 export default function Story() {
   return (

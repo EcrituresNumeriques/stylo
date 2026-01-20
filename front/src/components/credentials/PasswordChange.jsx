@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { useGraphQLClient } from '../../helpers/graphQL'
 
-import Button from '../Button.jsx'
-import Field from '../Field.jsx'
+import Button from '../atoms/Button.jsx'
+import Field from '../atoms/Field.jsx'
 
 import { changePassword as changePasswordQuery } from '../../hooks/Credentials.graphql'
 
