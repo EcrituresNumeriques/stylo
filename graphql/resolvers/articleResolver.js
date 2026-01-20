@@ -426,11 +426,7 @@ module.exports = {
 
     async updateWorkingVersion(article, { content }) {
       Object.entries(content).forEach(([key, value]) =>
-        article.set({
-          workingVersion: {
-            [key]: value,
-          },
-        })
+        article.set(`workingVersion.${key}`, value)
       )
 
       return article.save()
