@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import React from 'react'
+
 import styles from './tag.module.scss'
 
 export default function ArticleTag({

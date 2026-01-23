@@ -46,6 +46,6 @@ export function useFeed(url) {
 export function useDiscourseFeed(url, swrOptions = {}) {
   return useSWR(url, jsonFetcher, {
     fallbackData: {},
-    ...swrOptions
+    ...swrOptions,
   })
 }

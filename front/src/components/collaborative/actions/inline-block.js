@@ -30,12 +30,14 @@ import { blockAttributes } from './index.js'
  * @param {defaultBodyFn} params
  * @returns {[number, string]}
  */
-function defaultBodyFn ({ attributes, body_post, body_pre, selectionText }) {
-  const bodyParts = [body_pre, selectionText, body_post].map(s => String(s).trim())
+function defaultBodyFn({ attributes, body_post, body_pre, selectionText }) {
+  const bodyParts = [body_pre, selectionText, body_post].map((s) =>
+    String(s).trim()
+  )
   const text = `${bodyParts.join('').trim()}${attributes}`
   const lastLine = selectionText.split('\n').at(-1)
 
-  return [body_pre.length + lastLine.length , text]
+  return [body_pre.length + lastLine.length, text]
 }
 
 /**
@@ -63,7 +65,7 @@ export default function createInlineBlockCommand(
     body_pre = '[',
     body_post = ']',
     body_template = null,
-    body_fn = defaultBodyFn
+    body_fn = defaultBodyFn,
   } = {}
 ) {
   /**
@@ -81,19 +83,20 @@ export default function createInlineBlockCommand(
     )
 
     const clipboardText = await navigator.clipboard.readText()
-    const selectionText = editor.getModel().getValueInRange(range) || clipboardText || ''
+    const selectionText =
+      editor.getModel().getValueInRange(range) || clipboardText || ''
     const attributes = blockAttributes({ classNames: [className ?? id], attrs })
 
     const newStartLineNumber = endLineNumber
-    const [newColumn, text] = /** @type {(bodyFnArgs) => [number, string]} */ body_fn({
-      attributes,
-      body_post,
-      body_pre,
-      body_template,
-      clipboardText,
-      selectionText
-    })
-
+    const [newColumn, text] =
+      /** @type {(bodyFnArgs) => [number, string]} */ body_fn({
+        attributes,
+        body_post,
+        body_pre,
+        body_template,
+        clipboardText,
+        selectionText,
+      })
 
     editor.executeEdits(
       id,

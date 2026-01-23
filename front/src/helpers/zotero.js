@@ -1,4 +1,5 @@
 import LinkHeader from 'http-link-header'
+
 import { filter } from './bibtex'
 
 const baseApiUrl = 'https://api.zotero.org/'
@@ -314,7 +315,10 @@ export async function toApiUrl(plainUrl, token) {
     userId = user.userID
   }
 
-  if (strategy === 'WEB' && ['library', 'collection', 'items-list'].includes(action)) {
+  if (
+    strategy === 'WEB' &&
+    ['library', 'collection', 'items-list'].includes(action)
+  ) {
     action = 'items'
   }
 

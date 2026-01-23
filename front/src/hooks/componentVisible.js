@@ -5,11 +5,18 @@ import { useCallback, useEffect, useRef, useState } from 'react'
  * @param {HTMLElement} node
  * @returns {HTMLElement}
  */
-function findToggleableElements (node) {
-  return Array.from(node.querySelectorAll('a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'))
+function findToggleableElements(node) {
+  return Array.from(
+    node.querySelectorAll(
+      'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
+    )
+  )
 }
 
-export default function useComponentVisible(initialIsVisible, name = 'default') {
+export default function useComponentVisible(
+  initialIsVisible,
+  name = 'default'
+) {
   const [isComponentVisible, setIsComponentVisible] = useState(initialIsVisible)
   const ref = useRef(null)
 
@@ -19,7 +26,9 @@ export default function useComponentVisible(initialIsVisible, name = 'default') 
     }
   }, [])
 
-  const handleEscapeKey = useCallback(function componenteVisibleHandleEscapeKey(event) {
+  const handleEscapeKey = useCallback(function componenteVisibleHandleEscapeKey(
+    event
+  ) {
     if (event.key === 'Escape') {
       setIsComponentVisible(false)
       const first = findToggleableElements(ref.current).at(0)
@@ -27,24 +36,27 @@ export default function useComponentVisible(initialIsVisible, name = 'default') 
     }
   }, [])
 
-  const handleTabulation = useCallback(function componenteVisibleTabulationRotor(event) {
-    if (event.key === 'Tab') {
-      // const relatedMenu =
-      const all = findToggleableElements(ref.current)
-      const index = all.findIndex(el => el === event.target)
+  const handleTabulation = useCallback(
+    function componenteVisibleTabulationRotor(event) {
+      if (event.key === 'Tab') {
+        // const relatedMenu =
+        const all = findToggleableElements(ref.current)
+        const index = all.findIndex((el) => el === event.target)
 
-      // out of range, we rotate back
-      if (!event.shiftKey && index + 1 === all.length) {
-        event.preventDefault()
-        all.at(0).focus()
+        // out of range, we rotate back
+        if (!event.shiftKey && index + 1 === all.length) {
+          event.preventDefault()
+          all.at(0).focus()
+        }
+        // we rewinded back to beginning, we resume from the end
+        else if (event.shiftKey && index - 1 < 0) {
+          event.preventDefault()
+          all.at(-1).focus()
+        }
       }
-      // we rewinded back to beginning, we resume from the end
-      else if (event.shiftKey && index - 1 < 0) {
-        event.preventDefault()
-        all.at(-1).focus()
-      }
-    }
-  }, [])
+    },
+    []
+  )
 
   // uninstall on keyup if element was inside ref.current[aria-controls]
 
@@ -63,11 +75,15 @@ export default function useComponentVisible(initialIsVisible, name = 'default') 
       document.addEventListener('click', handleClickOutside, true)
       document.addEventListener('keyup', handleEscapeKey)
       document.addEventListener('keydown', handleTabulation)
-    }
-    else {
+    } else {
       uninstallListeners()
     }
   }, [isComponentVisible])
 
-  return { ref, isComponentVisible, setIsComponentVisible, toggleComponentIsVisible }
+  return {
+    ref,
+    isComponentVisible,
+    setIsComponentVisible,
+    toggleComponentIsVisible,
+  }
 }

@@ -1,10 +1,11 @@
 import clsx from 'clsx'
 import { AlertOctagon } from 'lucide-react'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { applicationConfig } from '../config.js'
+
 import styles from './molecules/Alert.module.scss'
-import { useTranslation } from 'react-i18next'
 
 export default function CommunityAlerts({ topics = [] }) {
   if (!topics || !topics.length) {

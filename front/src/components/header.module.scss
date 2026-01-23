@@ -18,10 +18,11 @@
     align-items: center;
     gap: 1em;
     justify-content: space-between;
-    padding: .75rem;
+    padding: 0.75rem;
   }
 
-  a, button {
+  a,
+  button {
     background-color: $main-color;
     border: none;
     color: currentColor;
@@ -29,7 +30,10 @@
     font-size: 1em;
     text-decoration: underline;
 
-    &:hover, &:focus, &[aria-pressed="true"], &[aria-current="page"] {
+    &:hover,
+    &:focus,
+    &[aria-pressed='true'],
+    &[aria-current='page'] {
       text-decoration: none;
     }
   }
@@ -103,11 +107,12 @@
       flex-direction: column;
       padding: 1em 0;
 
-      a, button {
+      a,
+      button {
         display: inline-block;
         font-size: 1em;
         font-weight: initial;
-        padding: .5em;
+        padding: 0.5em;
       }
 
       .toggleMenuContainer {
@@ -145,11 +150,12 @@
     display: flex;
   }
 
-  button, a {
+  button,
+  a {
     display: inline-block;
     font-size: 1em;
     font-weight: initial;
-    padding: .5em;
+    padding: 0.5em;
   }
 }
 
@@ -165,7 +171,7 @@
 .toggleMenuContainer {
   background-color: $main-color;
   left: 0;
-  margin-top: .5em;
+  margin-top: 0.5em;
   position: absolute;
   min-width: max-content;
   width: 100%;
@@ -189,7 +195,7 @@
   }
 
   .toggleMenuList {
-    padding: .5em;
+    padding: 0.5em;
 
     @media screen and (min-width: $screen-breakpoint) {
       padding: 1em;
@@ -198,7 +204,8 @@
 }
 
 .toggleMenu {
-  a, button {
+  a,
+  button {
     background-color: transparent;
   }
 
@@ -208,17 +215,18 @@
 
   .toggleMenuList {
     @extend .wrapped-center;
-    padding: .5em;
+    padding: 0.5em;
 
     @media screen and (min-width: $screen-breakpoint) {
       padding: 1em;
     }
 
-    button, a {
+    button,
+    a {
       display: inline-block;
       font-size: 1em;
       font-weight: initial;
-      padding: .5em;
+      padding: 0.5em;
     }
   }
 }
@@ -236,8 +244,8 @@
 
 .chip {
   display: inline-block;
-  height: .9em;
-  width: .9em;
+  height: 0.9em;
+  width: 0.9em;
   border-radius: 4px;
   margin-right: 0.5em;
 }

@@ -1,6 +1,8 @@
-import { describe, expect, test } from 'vitest'
-import { render } from '@testing-library/react'
 import React from 'react'
+import { describe, expect, test } from 'vitest'
+
+import { render } from '@testing-library/react'
+
 import Component from './Form.jsx'
 
 describe('Form', () => {

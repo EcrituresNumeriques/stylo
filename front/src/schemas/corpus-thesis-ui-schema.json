@@ -1,52 +1,32 @@
 {
   "ui:groups": [
     {
-      "fields": [
-        "publicationDate",
-        "defenseDate",
-        "url",
-        "disciplines"
-      ],
+      "fields": ["publicationDate", "defenseDate", "url", "disciplines"],
       "title": "thesis.title"
     },
     {
       "title": "thesis.titleAndAbstract",
-      "fields": [
-        "lang",
-        "title",
-        "subtitle",
-        "abstract"
-      ]
+      "fields": ["lang", "title", "subtitle", "abstract"]
     },
     {
       "title": "keywords",
-      "fields": [
-        "keywords"
-      ]
+      "fields": ["keywords"]
     },
     {
       "title": "authors",
-      "fields": [
-        "authors"
-      ]
+      "fields": ["authors"]
     },
     {
       "title": "directors",
-      "fields": [
-        "directors"
-      ]
+      "fields": ["directors"]
     },
     {
       "title": "juryMembers",
-      "fields": [
-        "juryMembers"
-      ]
+      "fields": ["juryMembers"]
     },
     {
       "title": "affiliatedInstitutions",
-      "fields": [
-        "affiliatedInstitutions"
-      ]
+      "fields": ["affiliatedInstitutions"]
     }
   ],
   "type": {

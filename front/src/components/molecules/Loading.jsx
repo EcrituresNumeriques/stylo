@@ -1,6 +1,6 @@
-import React from 'react'
 import clsx from 'clsx'
 import { Loader } from 'lucide-react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import styles from './Loading.module.scss'

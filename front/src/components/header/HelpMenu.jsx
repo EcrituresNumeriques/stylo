@@ -40,22 +40,36 @@ export default function HelpMenu() {
           aria-label={t('header.languagesMenu.list')}
         >
           <li>
-            <a href="https://stylo-doc.ecrituresnumeriques.ca/" target="_blank" rel="noreferrer noopener">
+            <a
+              href="https://stylo-doc.ecrituresnumeriques.ca/"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
               {t('footer.documentation.link', { ns: 'translation' })}
             </a>
           </li>
           <li>
-            <a href="https://discussions.revue30.org/c/stylo/entraide-stylo/7" target="_blank" rel="noreferrer noopener">
+            <a
+              href="https://discussions.revue30.org/c/stylo/entraide-stylo/7"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
               {t('footer.community.link', { ns: 'translation' })}
             </a>
           </li>
-          {user?._id && <li>
-            <a href="mailto:contact@ecrituresnumeriques.ca">
-              {t('contactus.mailto')}
-            </a>
-          </li>}
+          {user?._id && (
+            <li>
+              <a href="mailto:contact@ecrituresnumeriques.ca">
+                {t('contactus.mailto')}
+              </a>
+            </li>
+          )}
           <li>
-            <a href="https://github.com/EcrituresNumeriques/stylo/issues" rel="noopener noreferrer" target="_blank">
+            <a
+              href="https://github.com/EcrituresNumeriques/stylo/issues"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               {t('contactus.newBug')}
             </a>
           </li>

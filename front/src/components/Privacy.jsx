@@ -32,9 +32,12 @@ export default function Privacy() {
               checked={userHasConsent}
               onChange={toggleValue}
               id="tracking-consent-checkbox"
-              />
+            />
 
-            <label className={styles.consentLabel} htmlFor="tracking-consent-checkbox">
+            <label
+              className={styles.consentLabel}
+              htmlFor="tracking-consent-checkbox"
+            >
               {t('footer.navStats.checkbox')}
             </label>
           </p>

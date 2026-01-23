@@ -1,9 +1,9 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import clsx from 'clsx'
+import PropTypes from 'prop-types'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import styles from './WorkspaceLabel.module.scss'
-import { useTranslation } from 'react-i18next'
 
 /**
  *
@@ -13,7 +13,11 @@ import { useTranslation } from 'react-i18next'
  * @param {string=} props.className
  * @returns {import('react').ReactElement}
  */
-export default function WorkspaceLabel({ name, color: backgroundColor = '#ccc', className }) {
+export default function WorkspaceLabel({
+  name,
+  color: backgroundColor = '#ccc',
+  className,
+}) {
   const { t } = useTranslation()
 
   return (

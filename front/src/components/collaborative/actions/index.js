@@ -30,9 +30,7 @@ export const actions = {
       body_pre: '^[',
       body_post: ']',
       delimiters: '',
-      keybindings: [
-        [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF],
-      ],
+      keybindings: [[KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF]],
       separator: ' ',
     }),
     hyperlink: createInlineBlockCommand('hyperlink', {
@@ -65,7 +63,7 @@ export const actions = {
     outline: createDelimitedBlockCommand('outline', {
       attrs: { titre: 'valeurtitre' },
       className: 'encadre',
-      body_post: '[[nom]{.name}[prenom]{.surname}]{.auth}'
+      body_post: '[[nom]{.name}[prenom]{.surname}]{.auth}',
     }),
     inlinequote: createInlineBlockCommand('inlinequote'),
     notepreAuthor: createDelimitedBlockCommand('notepre.aut', {
@@ -123,17 +121,21 @@ export function bindAction(editor, t, action) {
  * @param {string} [text]
  * @returns {boolean}
  */
-function isURL (text) {
+function isURL(text) {
   try {
     new URL(text)
     return true
-  }
-  catch (error) {
+  } catch (error) {
     return false
   }
 }
 
-export function copyPasteUrlFn ({ attributes, body_template, clipboardText, selectionText }) {
+export function copyPasteUrlFn({
+  attributes,
+  body_template,
+  clipboardText,
+  selectionText,
+}) {
   const hasClipboardText = Boolean(clipboardText)
   const hasSelectionText = Boolean(selectionText)
   const isClipboardTextUrl = hasClipboardText ? isURL(clipboardText) : false
@@ -148,15 +150,20 @@ export function copyPasteUrlFn ({ attributes, body_template, clipboardText, sele
   }
 
   if (hasSelectionText) {
-    textPart = isSelectionTextUrl && !isClipboardTextUrl ? textPart : selectionText
-    urlPart = isSelectionTextUrl && !isClipboardTextUrl ? selectionText : urlPart
+    textPart =
+      isSelectionTextUrl && !isClipboardTextUrl ? textPart : selectionText
+    urlPart =
+      isSelectionTextUrl && !isClipboardTextUrl ? selectionText : urlPart
   }
 
   const text = body_template
-  .replace('{{text}}', textPart)
-  .replace('{{url}}', urlPart)
+    .replace('{{text}}', textPart)
+    .replace('{{url}}', urlPart)
   const lastLine = textPart.split('\n').at(-1)
-  const columnNumber = lastLine === textPart ? text.indexOf(textPart) + textPart.length : lastLine.length
+  const columnNumber =
+    lastLine === textPart
+      ? text.indexOf(textPart) + textPart.length
+      : lastLine.length
 
   return [columnNumber + 1, text]
 }

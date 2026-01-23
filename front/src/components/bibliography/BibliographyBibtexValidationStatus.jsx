@@ -1,5 +1,6 @@
 import React from 'react'
 import { Trans, useTranslation } from 'react-i18next'
+
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 

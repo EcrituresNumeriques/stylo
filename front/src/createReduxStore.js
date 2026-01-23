@@ -59,7 +59,7 @@ export const initialState = {
     ? JSON.parse(localStorage.getItem('userPreferences'))
     : {
         trackingConsent: true /* default value should be false */,
-        workspaceId: null
+        workspaceId: null,
       },
   /** @type {ExportPreferences} */
   exportPreferences: localStorage.getItem('exportPreferences')

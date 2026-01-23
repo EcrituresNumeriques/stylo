@@ -2,11 +2,7 @@
   "ui:groups": [
     {
       "title": "meetingNotes.title",
-      "fields": [
-        "publicationDate",
-        "abstract",
-        "authors"
-      ]
+      "fields": ["publicationDate", "abstract", "authors"]
     }
   ],
   "abstract": {

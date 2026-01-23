@@ -1,6 +1,10 @@
 #import './Credentials.graphql'
 
-query getWorkspaceArticles($workspaceId: ID, $isPersonalWorkspace: Boolean!, $filter: FilterCorpusInput) {
+query getWorkspaceArticles(
+  $workspaceId: ID
+  $isPersonalWorkspace: Boolean!
+  $filter: FilterCorpusInput
+) {
   tags {
     _id
     owner
@@ -9,7 +13,7 @@ query getWorkspaceArticles($workspaceId: ID, $isPersonalWorkspace: Boolean!, $fi
     name
   }
 
-  workspace(workspaceId: $workspaceId) @skip (if: $isPersonalWorkspace) {
+  workspace(workspaceId: $workspaceId) @skip(if: $isPersonalWorkspace) {
     _id
     name
     color

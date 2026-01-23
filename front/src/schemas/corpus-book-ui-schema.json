@@ -13,50 +13,31 @@
     },
     {
       "title": "book.titleAndAbstract",
-      "fields": [
-        "lang",
-        "title",
-        "subtitle",
-        "abstract"
-      ]
+      "fields": ["lang", "title", "subtitle", "abstract"]
     },
     {
       "title": "keywords",
-      "fields": [
-        "keywords"
-      ]
+      "fields": ["keywords"]
     },
     {
       "title": "localizedContent",
-      "fields": [
-        "localizedContent"
-      ]
+      "fields": ["localizedContent"]
     },
     {
       "title": "authors",
-      "fields": [
-        "authors"
-      ]
+      "fields": ["authors"]
     },
     {
       "title": "book.isbns",
-      "fields": [
-        "isbns"
-      ]
+      "fields": ["isbns"]
     },
     {
       "title": "book.prices",
-      "fields": [
-        "prices"
-      ]
+      "fields": ["prices"]
     },
     {
       "title": "book.publication",
-      "fields": [
-        "publicationDate",
-        "publicationPlace",
-        "publicationUrls"
-      ]
+      "fields": ["publicationDate", "publicationPlace", "publicationUrls"]
     }
   ],
   "type": {
@@ -111,11 +92,7 @@
     "items": {
       "media": {
         "ui:title": "publicationUrls.media",
-        "ui:enumNames": [
-          "media.lulu",
-          "media.pdf",
-          "media.epub"
-        ]
+        "ui:enumNames": ["media.lulu", "media.pdf", "media.epub"]
       },
       "url": {
         "ui:title": "url"

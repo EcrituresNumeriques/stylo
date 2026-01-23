@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+
 import * as collaborating from '../components/collaborative/collaborating.js'
 import { applicationConfig } from '../config.js'
 

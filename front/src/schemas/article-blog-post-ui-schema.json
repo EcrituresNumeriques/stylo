@@ -2,24 +2,15 @@
   "ui:groups": [
     {
       "title": "blogPost.title",
-      "fields": [
-        "title",
-        "publicationDate",
-        "slug",
-        "lang"
-      ]
+      "fields": ["title", "publicationDate", "slug", "lang"]
     },
     {
       "title": "keywords",
-      "fields": [
-        "keywords"
-      ]
+      "fields": ["keywords"]
     },
     {
       "title": "authors",
-      "fields": [
-        "authors"
-      ]
+      "fields": ["authors"]
     }
   ],
   "lang": {

@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { iconName } from '../helpers/bibtex'
+
 import styles from './ReferenceTypeIcon.module.scss'
 
 export default function ReferenceTypeIcon({ type, className }) {

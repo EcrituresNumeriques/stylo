@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react'
-import Loading from './molecules/Loading.jsx'
 
 import ArticleTag from './Tag'
 
 import { useArticleTagActions } from '../hooks/article.js'
+
+import Loading from './molecules/Loading.jsx'
 
 export default function ArticleTags({
   articleId,

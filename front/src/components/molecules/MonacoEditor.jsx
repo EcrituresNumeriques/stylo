@@ -1,7 +1,8 @@
-import React from 'react'
 import * as monaco from 'monaco-editor'
-import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+import React from 'react'
+
 import Editor, { loader } from '@monaco-editor/react'
+import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
 
 // Use monaco-editor as a npm package;
 // import it from node_modules and include monaco sources into your bundle (instead of using CDN).

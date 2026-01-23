@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest'
+
 import { computeTextStats } from './markdown.js'
 
 describe('computeTextStats()', () => {

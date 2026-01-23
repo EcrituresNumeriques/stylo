@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { Menu } from 'lucide-react'
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import { Link, NavLink, useLocation, useRouteLoaderData } from 'react-router'
 
 import logoContent from '/images/logo.svg?inline'
@@ -15,7 +16,6 @@ import UserMenu from './header/UserMenu.jsx'
 import WorkspacesMenu from './workspace/WorkspacesMenu.jsx'
 
 import styles from './header.module.scss'
-import { useDispatch } from 'react-redux'
 
 export default function Header() {
   const { t } = useTranslation()
@@ -49,7 +49,7 @@ export default function Header() {
   return (
     <header className={styles.header} role="banner">
       <div className={styles.container}>
-        <NavLink to="/" rel="home"  className={styles.logo}>
+        <NavLink to="/" rel="home" className={styles.logo}>
           <img src={logoContent} alt="Stylo" aria-hidden />
           <span className="sr-only">{t('header.home')}</span>
         </NavLink>

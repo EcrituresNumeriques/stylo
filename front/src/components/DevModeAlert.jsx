@@ -12,7 +12,6 @@ export default function DevModeAlert() {
       lang="fr"
     >
       <Info aria-hidden />
-
       Vous êtes sur une instance de développement de Stylo.
     </div>
   )

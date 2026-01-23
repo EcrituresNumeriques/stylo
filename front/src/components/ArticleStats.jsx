@@ -1,7 +1,8 @@
 import React from 'react'
-import { shallowEqual, useSelector } from 'react-redux'
-import styles from './articleStats.module.scss'
 import { useTranslation } from 'react-i18next'
+import { shallowEqual, useSelector } from 'react-redux'
+
+import styles from './articleStats.module.scss'
 
 export default function ArticleStats() {
   const { t } = useTranslation()

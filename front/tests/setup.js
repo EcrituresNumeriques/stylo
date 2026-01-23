@@ -1,7 +1,7 @@
 import React, { Children } from 'react'
+import { HelmetProvider } from 'react-helmet-async'
 import { I18nextProvider } from 'react-i18next'
 import { Provider as ReduxProvider } from 'react-redux'
-import { HelmetProvider } from 'react-helmet-async'
 import { createRoutesStub } from 'react-router'
 import { afterEach, vi } from 'vitest'
 
@@ -83,10 +83,7 @@ export function renderWithProviders(
         React.createElement(
           HelmetProvider,
           null,
-          React.createElement(
-            Stub,
-            { initialEntries: [route] }
-          )
+          React.createElement(Stub, { initialEntries: [route] })
         )
       ),
     })

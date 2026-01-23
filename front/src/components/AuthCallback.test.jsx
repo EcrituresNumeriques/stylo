@@ -1,6 +1,8 @@
 import React from 'react'
 import { describe, expect, test, vi } from 'vitest'
+
 import { renderWithProviders } from '../../tests/setup.js'
+
 import Component from './AuthCallback.jsx'
 
 describe('AuthCallback', () => {
@@ -81,7 +83,7 @@ describe('AuthCallback', () => {
     window.opener = { postMessage: vi.fn() }
 
     fetch.mockRestore()
-      fetch.mockResolvedValueOnce({
+    fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({

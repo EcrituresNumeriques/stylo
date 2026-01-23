@@ -1,17 +1,20 @@
 import React from 'react'
 import { NavLink } from 'react-router'
 
+import { usePreferenceItem } from '../../hooks/user.js'
 import { useWorkspaces } from '../../hooks/workspace.js'
 
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 
 import styles from '../header.module.scss'
-import { usePreferenceItem } from '../../hooks/user.js'
 
 export default function WorkspacesMenu({ activeTool }) {
   const { workspaces, error, isLoading } = useWorkspaces()
-  const { setValue: setActiveWorkspaceId } = usePreferenceItem('workspaceId', 'user')
+  const { setValue: setActiveWorkspaceId } = usePreferenceItem(
+    'workspaceId',
+    'user'
+  )
 
   if (isLoading) {
     return <Loading />

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+
 import Modal from '../Modal.jsx'
 import CreateWorkspace from './CreateWorkspace.jsx'
 

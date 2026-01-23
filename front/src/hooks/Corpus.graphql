@@ -143,11 +143,10 @@ mutation updateArticlesOrder(
   }
 }
 
-mutation setCorpusArticles(
-  $corpusId: ID!
-  $articleIds: [ID]!
-) {
-  setCorpusArticles(setCorpusArticlesInput: { corpusId: $corpusId, articleIds: $articleIds}) {
+mutation setCorpusArticles($corpusId: ID!, $articleIds: [ID]!) {
+  setCorpusArticles(
+    setCorpusArticlesInput: { corpusId: $corpusId, articleIds: $articleIds }
+  ) {
     _id
   }
 }

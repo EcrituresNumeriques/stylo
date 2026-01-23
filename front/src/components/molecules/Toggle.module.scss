@@ -1,14 +1,12 @@
 @use '../../styles/variables' as *;
 
-
-
 .element {
   --border-color: #202020;
   cursor: pointer;
 
   &.elementActive {
     outline: 2px solid $main-color-links;
-    outline-offset: .2em;
+    outline-offset: 0.2em;
   }
 
   &.elementDisabled {
@@ -22,20 +20,25 @@
   .state {
     --border-width: 1px;
     --padding: calc(var(--border-width) * 3);
-    --square-size: .8em;
+    --square-size: 0.8em;
 
     display: flex;
-    gap: .3em;
+    gap: 0.3em;
     user-select: none;
 
     .stateContainer {
       background-color: $extra-background-color;
       border: var(--border-width) solid var(--border-color);
       display: inline-block;
-      height: calc(var(--square-size) + (var(--padding) * 2) + (var(--border-width) * 2));
+      height: calc(
+        var(--square-size) + (var(--padding) * 2) + (var(--border-width) * 2)
+      );
       padding: 0 var(--padding);
       position: relative;
-      width: calc((var(--square-size) * 1.90) + (var(--padding) * 2) + (var(--border-width) * 2));
+      width: calc(
+        (var(--square-size) * 1.9) + (var(--padding) * 2) +
+          (var(--border-width) * 2)
+      );
     }
 
     .position {
@@ -54,7 +57,7 @@
 
   &:checked ~ .state {
     .position {
-      left: calc(var(--square-size) * .9);
+      left: calc(var(--square-size) * 0.9);
     }
   }
 }

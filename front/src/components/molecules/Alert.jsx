@@ -1,6 +1,6 @@
 import clsx from 'clsx'
-import React from 'react'
 import { AlertOctagon, CheckCircle, Info, XOctagon } from 'lucide-react'
+import React from 'react'
 
 import styles from './Alert.module.scss'
 

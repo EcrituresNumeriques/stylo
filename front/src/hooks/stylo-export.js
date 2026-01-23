@@ -1,4 +1,5 @@
 import useSWR from 'swr'
+
 import { applicationConfig } from '../config.js'
 
 const fetcher = (url) => fetch(url).then((response) => response.json())

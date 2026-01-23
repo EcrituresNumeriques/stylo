@@ -130,7 +130,10 @@ mutation leave($workspaceId: ID!) {
   }
 }
 
-mutation updateFormMetadata($workspaceId: ID!, $input: UpdateWorkspaceFormMetadataInput!) {
+mutation updateFormMetadata(
+  $workspaceId: ID!
+  $input: UpdateWorkspaceFormMetadataInput!
+) {
   updateWorkspaceFormMetadata(details: $input, workspaceId: $workspaceId) {
     _id
   }

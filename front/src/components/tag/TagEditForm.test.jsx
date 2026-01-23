@@ -1,9 +1,11 @@
-import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 import { describe, expect, test, vi } from 'vitest'
 
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
 import { renderWithProviders } from '../../../tests/setup.js'
+
 import Component from './TagEditForm.jsx'
 
 describe('TagEditForm', () => {

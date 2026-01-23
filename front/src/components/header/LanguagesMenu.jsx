@@ -33,7 +33,6 @@ export default function LanguagesMenu() {
         <span className="sr-only">{t('header.languagesMenu.button')}</span>
       </button>
 
-
       <div
         className={styles.toggleMenuContainerAlignEnd}
         id="header-languages-menu"

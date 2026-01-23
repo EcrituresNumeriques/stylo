@@ -1,10 +1,16 @@
 import { beforeEach, describe, expect, test } from 'vitest'
-import { fetchBibliographyFromCollectionHref, prefixLegacyUrl, toApiUrl, } from './zotero'
+
+import {
+  fetchBibliographyFromCollectionHref,
+  prefixLegacyUrl,
+  toApiUrl,
+} from './zotero'
 
 describe('fetchBibliographyFromCollection', () => {
   beforeEach(() => {
     fetch.mockRestore()
-      fetch.mockResolvedValueOnce(
+    fetch
+      .mockResolvedValueOnce(
         new Response(
           `
 @book{grossetie_test1_nodate,
@@ -70,7 +76,7 @@ describe('toApiUrl', () => {
 
   beforeEach(async () => {
     fetch.mockRestore()
-      fetch.mockResolvedValueOnce({
+    fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({
@@ -100,7 +106,7 @@ describe('toApiUrl', () => {
     const url = 'https://www.zotero.org/mattheyje/library'
 
     fetch.mockRestore()
-      fetch.mockResolvedValueOnce({
+    fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
         Promise.resolve({
