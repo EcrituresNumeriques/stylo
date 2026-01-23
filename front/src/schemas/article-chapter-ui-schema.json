@@ -55,6 +55,10 @@
       "subtitle": {
         "ui:title": "subtitle"
       },
+      "abstract": {
+        "ui:title": "abstract",
+        "ui:widget": "textarea"
+      },
       "keywords": {
         "ui:className": "keywords",
         "ui:title": "keywords",
