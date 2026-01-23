@@ -2,9 +2,9 @@ import { Languages } from 'lucide-react'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import useComponentVisible from '../../hooks/componentVisible.js'
+import useComponentVisible from '../../../hooks/componentVisible.js'
 
-import styles from '../header.module.scss'
+import styles from './header.module.scss'
 
 export default function LanguagesMenu() {
   const { t, i18n } = useTranslation()

@@ -6,13 +6,10 @@ import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate, useRevalidator } from 'react-router'
 import { toast } from 'react-toastify'
 
-import Field from './atoms/Field'
-
 import { applicationConfig } from '../config.js'
 import { fromFormData } from '../helpers/forms.js'
 import { useLogout } from '../hooks/user.js'
-
-import Button from './atoms/Button.jsx'
+import { Button, Field } from './atoms/index.js'
 
 import buttonStyles from './atoms/Button.module.scss'
 import formStyles from './form.module.scss'

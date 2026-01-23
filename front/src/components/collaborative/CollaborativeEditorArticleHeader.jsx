@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
 
-import Toggle from '../molecules/Toggle.jsx'
+import { Toggle } from '../molecules/index.js'
+
 import CollaborativeEditorActiveVersion from './CollaborativeEditorActiveVersion.jsx'
 import CollaborativeEditorWriters from './CollaborativeEditorWriters.jsx'
 

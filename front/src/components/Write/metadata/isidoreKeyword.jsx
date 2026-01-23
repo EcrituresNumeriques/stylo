@@ -5,8 +5,7 @@ import React, { useCallback, useState } from 'react'
 import throttle from 'lodash.throttle'
 
 import { searchKeyword as isidoreKeywordSearch } from '../../../helpers/isidore.js'
-
-import Field from '../../atoms/Field.jsx'
+import { Field } from '../../atoms/index.js'
 
 import fieldStyles from '../../atoms/Field.module.scss'
 import styles from '../../form.module.scss'

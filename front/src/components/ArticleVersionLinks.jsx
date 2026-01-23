@@ -4,9 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
 import useFetchData from '../hooks/graphql.js'
-
-import TimeAgo from './atoms/TimeAgo.jsx'
-import Loading from './molecules/Loading.jsx'
+import { TimeAgo } from './atoms/index.js'
+import { Loading } from './molecules/index.js'
 
 import { getArticleVersions } from '../hooks/Article.graphql'
 

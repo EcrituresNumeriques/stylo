@@ -5,9 +5,7 @@ import { toast } from 'react-toastify'
 
 import { fromFormData } from '../../helpers/forms.js'
 import { useArticleVersionActions } from '../../hooks/article.js'
-
-import FormActions from '../molecules/FormActions.jsx'
-import Toggle from '../molecules/Toggle.jsx'
+import { FormActions, Toggle } from '../molecules/index.js'
 
 import buttonStyles from '../atoms/Button.module.scss'
 import styles from './createVersion.module.scss'

@@ -16,13 +16,12 @@ import { useCorpusActions } from '../../hooks/corpus.js'
 import { useModal } from '../../hooks/modal.js'
 import { usePreferenceItem } from '../../hooks/user.js'
 import { toYaml } from '../Write/metadata/yaml.js'
+import { Button } from '../atoms/index.js'
+import { FormActions, Toggle } from '../molecules/index.js'
 
-import Toggle from '../../components/molecules/Toggle.jsx'
 import Modal from '../Modal.jsx'
 import MonacoYamlEditor from '../Write/providers/monaco/YamlEditor.jsx'
-import Button from '../atoms/Button.jsx'
 import MetadataForm from '../metadata/MetadataForm.jsx'
-import FormActions from '../molecules/FormActions.jsx'
 
 import styles from './CorpusMetadataModal.module.scss'
 

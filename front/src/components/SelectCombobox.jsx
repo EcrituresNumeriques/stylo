@@ -4,8 +4,7 @@ import { ChevronDown, X } from 'lucide-react'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { groupItems } from './SelectCombobox.js'
-
-import Field from './atoms/Field.jsx'
+import { Field } from './atoms/index.js'
 
 import buttonStyles from './atoms/Button.module.scss'
 import styles from './atoms/Field.module.scss'

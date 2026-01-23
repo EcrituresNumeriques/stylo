@@ -9,13 +9,11 @@ import i18n from '../../i18n.js'
 import { useArticleVersions } from '../../hooks/article.js'
 import { useModal } from '../../hooks/modal.js'
 import { useDisplayName } from '../../hooks/user.js'
+import { Button } from '../atoms/index.js'
+import { Alert, Loading, Version } from '../molecules/index.js'
 
 import Modal from '../Modal.jsx'
 import CreateVersion from '../Write/CreateVersion.jsx'
-import Button from '../atoms/Button.jsx'
-import Alert from '../molecules/Alert.jsx'
-import Loading from '../molecules/Loading.jsx'
-import Version from '../molecules/Version.jsx'
 
 import styles from './CollaborativeVersions.module.scss'
 

@@ -2,7 +2,7 @@ import { X } from 'lucide-react'
 import React, { forwardRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import Button from './atoms/Button.jsx'
+import { Button } from './atoms/index.js'
 
 import styles from './modal.module.scss'
 

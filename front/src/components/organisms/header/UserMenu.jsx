@@ -3,7 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, NavLink, useRouteLoaderData } from 'react-router'
 
-import styles from '../header.module.scss'
+import styles from './header.module.scss'
 
 export default function UserMenu() {
   const { t } = useTranslation()

@@ -1,4 +1,4 @@
-@use './header.module.scss' as global;
+@use 'organisms/header/header.module' as global;
 
 .changelog {
   > summary,

@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 import { useGraphQLClient } from '../../helpers/graphQL.js'
+import { FormActions } from '../molecules/index.js'
 
 import Modal from '../Modal.jsx'
-import FormActions from '../molecules/FormActions.jsx'
 import { ArticlesSelector } from './ArticlesSelector.jsx'
 
 import { setCorpusArticles } from '../../hooks/Corpus.graphql'

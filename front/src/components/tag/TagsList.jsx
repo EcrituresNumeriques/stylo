@@ -6,11 +6,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import useFetchData from '../../hooks/graphql'
 
 import { useModal } from '../../hooks/modal.js'
+import { Button } from '../atoms/index.js'
+import { Loading } from '../molecules/index.js'
 
 import Modal from '../Modal.jsx'
 import ArticleTag from '../Tag.jsx'
-import Button from '../atoms/Button.jsx'
-import Loading from '../molecules/Loading.jsx'
 import TagEditForm from './TagEditForm.jsx'
 
 import { getTags } from '../../hooks/Tag.graphql'

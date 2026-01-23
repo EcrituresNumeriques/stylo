@@ -12,15 +12,16 @@ import {
 } from 'react-router'
 import { ToastContainer } from 'react-toastify'
 
+import {
+  CommunityAlerts,
+  DevModeAlert,
+  Footer,
+  Header,
+  SkipLinks,
+} from '../components/organisms/index.js'
 import { getUserProfile } from '../helpers/user.js'
 import { useDiscourseFeed } from '../hooks/feed.js'
 import { usePreferenceItem } from '../hooks/user.js'
-
-import CommunityAlerts from '../components/CommunityAlerts.jsx'
-import DevModeAlert from '../components/DevModeAlert.jsx'
-import Footer from '../components/Footer.jsx'
-import Header from '../components/Header.jsx'
-import SkipLinks from '../components/SkipLinks.jsx'
 
 /**
  * Loads user data from localStorage JWT

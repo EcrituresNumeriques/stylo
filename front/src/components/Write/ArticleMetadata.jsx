@@ -6,10 +6,8 @@ import { useSelector } from 'react-redux'
 
 import { useArticleMetadata } from '../../hooks/article.js'
 import { usePreferenceItem } from '../../hooks/user.js'
+import { Alert, Loading, Toggle } from '../molecules/index.js'
 
-import Alert from '../molecules/Alert.jsx'
-import Loading from '../molecules/Loading.jsx'
-import Toggle from '../molecules/Toggle.jsx'
 import MonacoYamlEditor from './providers/monaco/YamlEditor.jsx'
 import ArticleEditorMetadataForm from './yamleditor/ArticleEditorMetadataForm.jsx'
 

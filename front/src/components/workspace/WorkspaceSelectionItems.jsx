@@ -2,9 +2,8 @@ import React, { useCallback } from 'react'
 
 import useFetchData from '../../hooks/graphql.js'
 import { useWorkspaces } from '../../hooks/workspace.js'
+import { Alert, Loading } from '../molecules/index.js'
 
-import Alert from '../molecules/Alert.jsx'
-import Loading from '../molecules/Loading.jsx'
 import WorkspaceSelectItem from './WorkspaceSelectItem.jsx'
 
 import { getArticleWorkspaces } from '../../hooks/Workspaces.graphql'

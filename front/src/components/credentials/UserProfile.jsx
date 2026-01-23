@@ -7,10 +7,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { useGraphQLClient } from '../../helpers/graphQL'
 
 import { fromFormData } from '../../helpers/forms.js'
-
-import Button from '../atoms/Button.jsx'
-import Field from '../atoms/Field.jsx'
-import TimeAgo from '../atoms/TimeAgo.jsx'
+import { Button, Field, TimeAgo } from '../atoms/index.js'
 
 import { updateUser } from '../../hooks/Credentials.graphql'
 

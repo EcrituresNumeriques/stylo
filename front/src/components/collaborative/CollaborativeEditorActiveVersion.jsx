@@ -3,9 +3,7 @@ import React from 'react'
 import i18n from '../../i18n.js'
 
 import { useArticleVersion } from '../../hooks/article.js'
-
-import Alert from '../molecules/Alert.jsx'
-import Loading from '../molecules/Loading.jsx'
+import { Alert, Loading } from '../molecules/index.js'
 
 export default function CollaborativeEditorActiveVersion({ versionId }) {
   const { version, isLoading, error } = useArticleVersion({ versionId })

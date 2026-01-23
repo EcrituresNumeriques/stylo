@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import Button from '../atoms/Button.jsx'
+import { Button } from '../atoms/index.js'
 
 import styles from './FormActions.module.scss'
 

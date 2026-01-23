@@ -3,8 +3,7 @@ import React, { useCallback } from 'react'
 import ArticleTag from './Tag'
 
 import { useArticleTagActions } from '../hooks/article.js'
-
-import Loading from './molecules/Loading.jsx'
+import { Loading } from './molecules/index.js'
 
 export default function ArticleTags({
   articleId,

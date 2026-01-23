@@ -7,12 +7,8 @@ import { useGraphQLClient } from '../helpers/graphQL'
 import { fromFormData } from '../helpers/forms.js'
 import { useUserTags } from '../hooks/user.js'
 import { useWorkspaces } from '../hooks/workspace.js'
-
-import Checkbox from './atoms/Checkbox.jsx'
-import Field from './atoms/Field.jsx'
-import Alert from './molecules/Alert.jsx'
-import FormActions from './molecules/FormActions.jsx'
-import Loading from './molecules/Loading.jsx'
+import { Checkbox, Field } from './atoms/index.js'
+import { Alert, FormActions, Loading } from './molecules/index.js'
 
 import { createArticle } from '../hooks/Articles.graphql'
 

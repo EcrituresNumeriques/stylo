@@ -1,17 +1,15 @@
 import React, { useCallback, useMemo } from 'react'
 import { DndProvider } from 'react-dnd'
-import { Trans, useTranslation } from 'react-i18next'
-import { Link } from 'react-router'
+import { useTranslation } from 'react-i18next'
 
 import { dragAndDropManager } from '../../hooks/dnd.js'
 import useFetchData from '../../hooks/graphql.js'
 import { useModal } from '../../hooks/modal.js'
 import { useActiveWorkspaceId } from '../../hooks/workspace.js'
+import { Button } from '../atoms/index.js'
+import { Loading } from '../molecules/index.js'
 
 import ArticlesSelectorModal from '../articles/ArticlesSelectorModal.jsx'
-import Button from '../atoms/Button.jsx'
-import Alert from '../molecules/Alert.jsx'
-import Loading from '../molecules/Loading.jsx'
 import CorpusArticleItems from './CorpusArticleItems.jsx'
 
 import { getCorpus } from '../../hooks/Corpus.graphql'

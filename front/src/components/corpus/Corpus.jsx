@@ -5,11 +5,10 @@ import { useParams } from 'react-router'
 
 import { useCorpus } from '../../hooks/corpus.js'
 import { useModal } from '../../hooks/modal.js'
+import { Button } from '../atoms/index.js'
+import { Alert, Loading } from '../molecules/index.js'
 
 import Modal from '../Modal.jsx'
-import Button from '../atoms/Button.jsx'
-import Alert from '../molecules/Alert.jsx'
-import Loading from '../molecules/Loading.jsx'
 import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
 import CorpusForm from './CorpusForm.jsx'
 import CorpusItem from './CorpusItem.jsx'

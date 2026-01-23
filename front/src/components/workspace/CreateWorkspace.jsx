@@ -4,9 +4,8 @@ import { toast } from 'react-toastify'
 
 import { fromFormData } from '../../helpers/forms.js'
 import { useWorkspaceActions } from '../../hooks/workspace.js'
-
-import Field from '../atoms/Field.jsx'
-import FormActions from '../molecules/FormActions.jsx'
+import { Field } from '../atoms/index.js'
+import { FormActions } from '../molecules/index.js'
 
 import styles from './createWorkspace.module.scss'
 

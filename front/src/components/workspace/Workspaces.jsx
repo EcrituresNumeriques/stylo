@@ -7,10 +7,9 @@ import { shallowEqual, useSelector } from 'react-redux'
 import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { useModal } from '../../hooks/modal.js'
 import { useWorkspaces } from '../../hooks/workspace.js'
+import { Button, Field } from '../atoms/index.js'
+import { Loading } from '../molecules/index.js'
 
-import Button from '../atoms/Button.jsx'
-import Field from '../atoms/Field.jsx'
-import Loading from '../molecules/Loading.jsx'
 import WorkspaceItem from '../workspace/WorkspaceItem.jsx'
 import CreateWorkspaceModal from './CreateWorkspaceModal.jsx'
 

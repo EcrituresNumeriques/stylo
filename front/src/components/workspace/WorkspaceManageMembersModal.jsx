@@ -2,8 +2,9 @@ import { Users } from 'lucide-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { Button } from '../atoms/index.js'
+
 import Modal from '../Modal.jsx'
-import Button from '../atoms/Button.jsx'
 import WorkspaceLabel from './WorkspaceLabel.jsx'
 import WorkspaceManageMembers from './WorkspaceManageMembers.jsx'
 
