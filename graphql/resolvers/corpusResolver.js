@@ -1,9 +1,9 @@
 const { NotFoundError, NotAuthenticatedError } = require('../helpers/errors.js')
 const Corpus = require('../models/corpus')
 const Workspace = require('../models/workspace')
-
 const { logger } = require('../logger')
 const { NotAuthorizedError } = require('../helpers/errors')
+const { diff } = require('../helpers/diff')
 
 async function getCorpusByContext(corpusId, context) {
   if (context.token?.admin) {
@@ -130,6 +130,26 @@ module.exports = {
      */
     async corpus(_root, { corpusId }, context) {
       return getCorpusByContext(corpusId, context)
+    },
+
+    async setCorpusArticles(_, args, context) {
+      const { articleIds, corpusId } = args.setCorpusArticlesInput
+      const corpus = await getCorpusByContext(corpusId, context)
+      const initialArticleIds = corpus.articles.map((a) =>
+        a.article._id.toString()
+      )
+      const { toAdd, toDelete } = diff(initialArticleIds, articleIds)
+      if (toAdd.size > 0 || toDelete.size > 0) {
+        corpus.articles = [
+          ...corpus.articles.filter((a) => !toDelete.has(a.article.toString())),
+          ...Array.from(toAdd).map((addition) => ({
+            article: { _id: addition },
+            order: 0,
+          })),
+        ]
+        return corpus.save()
+      }
+      return corpus
     },
   },
 

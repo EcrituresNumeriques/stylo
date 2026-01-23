@@ -5,19 +5,23 @@ import { Link } from 'react-router'
 
 import { dragAndDropManager } from '../../hooks/dnd.js'
 import useFetchData from '../../hooks/graphql.js'
+import { useModal } from '../../hooks/modal.js'
 import { useActiveWorkspaceId } from '../../hooks/workspace.js'
 
+import ArticlesSelectorModal from '../articles/ArticlesSelectorModal.jsx'
+import Button from '../atoms/Button.jsx'
 import Alert from '../molecules/Alert.jsx'
 import Loading from '../molecules/Loading.jsx'
 import CorpusArticleItems from './CorpusArticleItems.jsx'
 
 import { getCorpus } from '../../hooks/Corpus.graphql'
 
-import styles from './corpusItem.module.scss'
+import styles from './CorpusArticles.module.scss'
 
 export default function CorpusArticles({ corpusId }) {
   const { t } = useTranslation()
   const activeWorkspaceId = useActiveWorkspaceId()
+  const addArticlesModal = useModal()
   const { data, isLoading, mutate } = useFetchData(
     {
       query: getCorpus,
@@ -39,7 +43,13 @@ export default function CorpusArticles({ corpusId }) {
 
   return (
     <>
-      <h3 className={styles.partsTitle}>{t('corpus.parts.label')}</h3>
+      <div className={styles.header}>
+        <h4>{t('corpus.parts.label')}</h4>
+        <Button onClick={() => addArticlesModal.show()}>
+          {t('article.addToCorpus.action')}
+        </Button>
+      </div>
+
       {isLoading && <Loading />}
       {!isLoading && corpusArticles.length > 0 && (
         <ul>
@@ -52,27 +62,13 @@ export default function CorpusArticles({ corpusId }) {
           </DndProvider>
         </ul>
       )}
-      {!isLoading && corpusArticles.length === 0 && (
-        <Alert
-          className={styles.message}
-          type={'info'}
-          message={
-            <Trans i18nKey="corpus.addPart.note">
-              To add a new chapter, go to the
-              <Link
-                to={
-                  activeWorkspaceId
-                    ? `/workspaces/${activeWorkspaceId}/articles`
-                    : '/articles'
-                }
-              >
-                articles page
-              </Link>
-              and select this corpus.
-            </Trans>
-          }
-        />
-      )}
+      <ArticlesSelectorModal
+        corpusId={corpusId}
+        corpusArticles={corpusArticles}
+        bindings={addArticlesModal.bindings}
+        close={addArticlesModal.close}
+        onUpdate={handleUpdate}
+      />
     </>
   )
 }

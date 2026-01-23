@@ -1,5 +1,17 @@
 {
   "annotate.title": "Annoter",
+  "article.addToCorpus": {
+    "action": "Ajouter des chapitres",
+    "add": "Ajouter",
+    "added": "Ajouté",
+    "error": "Impossible d'associer ces chapitres au corpus : {{errMessage}}",
+    "label": "Choisir ces chapitres",
+    "modal": {
+      "title": "Choix des chapitres"
+    },
+    "success": "Articles associés au corpus avec succès.",
+    "title": "Choisir ces chapitres"
+  },
   "article.annotate.button": "Annoter (ouvre une nouvelle fenêtre)",
   "article.by.text": "par",
   "article.contributors.added": "{{ name }} peut désormais contribuer à cet article.",
@@ -40,6 +52,8 @@
   "article.editor.modes.menuLabel": "Modes d'article",
   "article.editor.preview": "Aperçu",
   "article.editors.label": "Collaborateurs en ligne",
+  "article.filter.label": "Filtrer",
+  "article.filter.placeholder": "Par titre dʼarticle",
   "article.getTags.error": "Impossible de récupérer les étiquettes: {{errMessage}}",
   "article.legacyEditor.edit.title": "[LEGACY] Modifier l'article",
   "article.page.title": "{{ title }} (modification)",
@@ -109,7 +123,6 @@
   "common.updatedAt.label": "mis à jour",
   "contact.searchField.placeholder": "Email du contact",
   "contact.userNotFound.message": "Aucun utilisateur à cette adresse courriel",
-  "corpus.addPart.note": "Pour ajouter un chapitre, allez sur la <1>page des articles</1> afin de sélectionner ce corpus.",
   "corpus.articlesOrder.toastFailure": "Impossible de mettre à jour lʼordre des articles : {{errorMessage}}",
   "corpus.articlesOrder.toastSuccess": "Lʼordre des articles a été modifié avec succès.",
   "corpus.by.text": "par",

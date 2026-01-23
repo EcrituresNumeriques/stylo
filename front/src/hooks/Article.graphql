@@ -11,6 +11,7 @@ fragment basicVersionFields on Version {
   revision
   version
 }
+
 fragment articleVersionFields on Version {
   name
   md
