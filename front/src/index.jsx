@@ -31,7 +31,7 @@ import Login, { Logout } from './components/Login.jsx'
 import RequireAuth from './components/PrivateRoute.jsx'
 import CollaborativeEditor, {
   loader as ArticleLoader,
-} from './components/collaborative/CollaborativeEditor.jsx'
+} from './components/pages/CollaborativeEditor.jsx'
 import RedirectIfAuth from './components/pages/auth/RedirectIfAuth.jsx'
 import NotFound from './components/pages/errors/404.jsx'
 import ErrorBoundary from './components/pages/errors/AppError.jsx'
