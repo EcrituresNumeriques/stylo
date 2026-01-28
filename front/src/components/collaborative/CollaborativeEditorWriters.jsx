@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import { useDisplayName } from '../../hooks/user.js'
-
-import Avatar from '../molecules/Avatar.jsx'
+import { Avatar } from '../molecules/index.js'
 
 import styles from './CollaborativeEditorWriters.module.scss'
 

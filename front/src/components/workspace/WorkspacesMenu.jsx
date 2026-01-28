@@ -3,11 +3,9 @@ import { NavLink } from 'react-router'
 
 import { usePreferenceItem } from '../../hooks/user.js'
 import { useWorkspaces } from '../../hooks/workspace.js'
+import { Alert, Loading } from '../molecules/index.js'
 
-import Alert from '../molecules/Alert.jsx'
-import Loading from '../molecules/Loading.jsx'
-
-import styles from '../header.module.scss'
+import styles from '../organisms/header/header.module.scss'
 
 export default function WorkspacesMenu({ activeTool }) {
   const { workspaces, error, isLoading } = useWorkspaces()

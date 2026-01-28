@@ -4,8 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useDisplayName } from '../hooks/user.js'
-
-import Button from './atoms/Button.jsx'
+import { Button } from './atoms/index.js'
 
 import styles from './ContactItem.module.scss'
 

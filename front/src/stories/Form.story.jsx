@@ -4,10 +4,10 @@ import React from 'react'
 import uiSchema from './form-story-ui-schema.json'
 import schema from './form-story.schema.json'
 
+import { Field, Select } from '../components/atoms/index.js'
+import { Toggle } from '../components/molecules/index.js'
+
 import SchemaForm from '../components/Form.jsx'
-import Field from '../components/atoms/Field.jsx'
-import Select from '../components/atoms/Select.jsx'
-import Toggle from '../components/molecules/Toggle.jsx'
 
 import buttonStyles from '../components/atoms/Button.module.scss'
 

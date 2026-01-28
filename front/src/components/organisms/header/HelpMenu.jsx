@@ -3,9 +3,9 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router'
 
-import useComponentVisible from '../../hooks/componentVisible.js'
+import useComponentVisible from '../../../hooks/componentVisible.js'
 
-import styles from '../header.module.scss'
+import styles from './header.module.scss'
 
 export default function HelpMenu() {
   const { t } = useTranslation(['home', 'translation'])

@@ -2,9 +2,9 @@ import React, { useCallback } from 'react'
 import { toast } from 'react-toastify'
 
 import { useWorkspaceMembersActions } from '../../hooks/workspace.js'
+import { Loading } from '../molecules/index.js'
 
 import ContactSearch from '../ContactSearch.jsx'
-import Loading from '../molecules/Loading.jsx'
 
 export default function WorkspaceManageMembers({ workspace }) {
   const workspaceId = workspace._id

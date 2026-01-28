@@ -7,8 +7,7 @@ import { applicationConfig } from '../config.js'
 import useFetchData from '../hooks/graphql.js'
 import { useStyloExportPreview } from '../hooks/stylo-export.js'
 import { toYaml } from './Write/metadata/yaml.js'
-
-import Loading from './molecules/Loading.jsx'
+import { Loading } from './molecules/index.js'
 
 import { getArticlePreview } from '../hooks/Article.graphql'
 import { getCorpusPreview } from '../hooks/Corpus.graphql'

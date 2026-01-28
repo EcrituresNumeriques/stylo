@@ -4,10 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 
 import useFetchData from '../../hooks/graphql.js'
-
-import Button from '../atoms/Button.jsx'
-import Field from '../atoms/Field.jsx'
-import Loading from '../molecules/Loading.jsx'
+import { Button, Field } from '../atoms/index.js'
+import { Loading } from '../molecules/index.js'
 
 import { getWorkspaceArticles } from '../../hooks/Articles.graphql'
 

@@ -6,9 +6,7 @@ import { toast } from 'react-toastify'
 
 import { fromFormData, validateSameFieldValue } from '../helpers/forms.js'
 import { useGraphQLClient } from '../helpers/graphQL.js'
-
-import Button from './atoms/Button.jsx'
-import Field from './atoms/Field.jsx'
+import { Button, Field } from './atoms/index.js'
 
 import * as queries from '../hooks/Credentials.graphql'
 

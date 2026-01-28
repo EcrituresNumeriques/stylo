@@ -1,5 +1,5 @@
-@use '../styles/defaults' as *;
-@use '../styles/variables' as *;
+@use '../../../styles/defaults' as *;
+@use '../../../styles/variables' as *;
 
 .header {
   background-color: $main-color;

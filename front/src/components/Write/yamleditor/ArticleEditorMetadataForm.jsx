@@ -4,8 +4,7 @@ import { useTranslation } from 'react-i18next'
 import Form from '../../Form'
 
 import { ArticleSchemas } from '../../../schemas/schemas.js'
-
-import Select from '../../atoms/Select.jsx'
+import { Select } from '../../atoms/index.js'
 
 import styles from './ArticleEditorMetadataForm.module.scss'
 

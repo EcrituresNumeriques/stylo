@@ -22,10 +22,8 @@ import { useCollaboration } from '../../hooks/collaboration.js'
 import { useStyloExportPreview } from '../../hooks/stylo-export.js'
 import defaultEditorOptions from '../Write/providers/monaco/options.js'
 import { onDropIntoEditor } from '../Write/providers/monaco/support.js'
+import { Alert, Loading, MonacoEditor } from '../molecules/index.js'
 
-import Alert from '../molecules/Alert.jsx'
-import Loading from '../molecules/Loading.jsx'
-import MonacoEditor from '../molecules/MonacoEditor.jsx'
 import CollaborativeEditorArticleHeader from './CollaborativeEditorArticleHeader.jsx'
 import CollaborativeEditorWebSocketStatus from './CollaborativeEditorWebSocketStatus.jsx'
 

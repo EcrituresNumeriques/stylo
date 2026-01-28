@@ -2,8 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useSetAuthToken } from '../../hooks/user.js'
-
-import Button from '../atoms/Button.jsx'
+import { Button } from '../atoms/index.js'
 
 import styles from '../credentials.module.scss'
 

@@ -3,10 +3,9 @@ import React, { useCallback } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 
 import { useWorkspaceActions } from '../../hooks/workspace.js'
+import { Alert, FormActions } from '../molecules/index.js'
 
 import Modal from '../Modal.jsx'
-import Alert from '../molecules/Alert.jsx'
-import FormActions from '../molecules/FormActions.jsx'
 import WorkspaceLabel from './WorkspaceLabel.jsx'
 
 import styles from './workspaceItem.module.scss'

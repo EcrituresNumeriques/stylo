@@ -7,13 +7,13 @@ import { Link, NavLink, useLocation, useRouteLoaderData } from 'react-router'
 
 import logoContent from '/images/logo.svg?inline'
 
-import useComponentVisible from '../hooks/componentVisible.js'
-import { useActiveWorkspaceId } from '../hooks/workspace.js'
+import useComponentVisible from '../../../hooks/componentVisible.js'
+import { useActiveWorkspaceId } from '../../../hooks/workspace.js'
 
-import HelpMenu from './header/HelpMenu.jsx'
-import LanguagesMenu from './header/LanguagesMenu.jsx'
-import UserMenu from './header/UserMenu.jsx'
-import WorkspacesMenu from './workspace/WorkspacesMenu.jsx'
+import WorkspacesMenu from '../../workspace/WorkspacesMenu.jsx'
+import HelpMenu from './HelpMenu.jsx'
+import LanguagesMenu from './LanguagesMenu.jsx'
+import UserMenu from './UserMenu.jsx'
 
 import styles from './header.module.scss'
 

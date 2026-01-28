@@ -4,10 +4,8 @@ import { describe, expect, test } from 'vitest'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { renderWithProviders } from '../../tests/setup.js'
+import { Alert, Loading } from '../components/molecules/index.js'
 import { useCorpus, useCorpusActions } from './corpus.js'
-
-import Alert from '../components/molecules/Alert.jsx'
-import Loading from '../components/molecules/Loading.jsx'
 
 describe('Corpus', () => {
   test.skip('create', async () => {

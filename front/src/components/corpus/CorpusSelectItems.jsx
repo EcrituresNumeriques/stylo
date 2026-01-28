@@ -2,8 +2,8 @@ import React, { useCallback, useMemo } from 'react'
 
 import useFetchData from '../../hooks/graphql.js'
 import { useActiveWorkspaceId } from '../../hooks/workspace.js'
+import { Loading } from '../molecules/index.js'
 
-import Loading from '../molecules/Loading.jsx'
 import CorpusSelectItem from './CorpusSelectItem.jsx'
 
 import { getCorpus } from '../../hooks/Corpus.graphql'

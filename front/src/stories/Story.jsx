@@ -2,14 +2,19 @@ import React from 'react'
 
 import i18n from '../i18n.js'
 
-import CreatedByLabel from '../components/atoms/CreatedByLabel.jsx'
-import PageTitle from '../components/atoms/PageTitle.jsx'
-import UpdatedAtLabel from '../components/atoms/UpdatedAtLabel.jsx'
+import {
+  CreatedByLabel,
+  PageTitle,
+  UpdatedAtLabel,
+} from '../components/atoms/index.js'
+import {
+  Alert,
+  Avatar,
+  Loading,
+  Version,
+} from '../components/molecules/index.js'
+
 import CollaborativeEditorWebSocketStatus from '../components/collaborative/CollaborativeEditorWebSocketStatus.jsx'
-import Alert from '../components/molecules/Alert.jsx'
-import Avatar from '../components/molecules/Avatar.jsx'
-import Loading from '../components/molecules/Loading.jsx'
-import Version from '../components/molecules/Version.jsx'
 import ButtonStory from './Button.story.jsx'
 import FormStory from './Form.story.jsx'
 import SidebarStory from './Sidebar.story.jsx'

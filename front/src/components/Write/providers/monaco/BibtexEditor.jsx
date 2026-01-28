@@ -6,9 +6,8 @@ import React, { useCallback, useMemo } from 'react'
 import languageDefinition from './lang/bibtex.json'
 import { loader } from '@monaco-editor/react'
 
+import { MonacoEditor } from '../../../molecules/index.js'
 import defaultEditorOptions from './options.js'
-
-import MonacoEditor from '../../../molecules/MonacoEditor.jsx'
 
 import fieldStyles from '../../../atoms/Field.module.scss'
 import styles from './BibtexEditor.module.scss'

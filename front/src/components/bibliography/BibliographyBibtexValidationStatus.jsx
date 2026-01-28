@@ -1,8 +1,7 @@
 import React from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 
-import Alert from '../molecules/Alert.jsx'
-import Loading from '../molecules/Loading.jsx'
+import { Alert, Loading } from '../molecules/index.js'
 
 import styles from './BibliographyBibtexValidationStatus.module.scss'
 

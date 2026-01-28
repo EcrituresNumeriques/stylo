@@ -4,8 +4,7 @@ import { useDispatch } from 'react-redux'
 import { Link, useParams } from 'react-router'
 
 import { useGraphQLClient } from '../helpers/graphQL.js'
-
-import Button from './atoms/Button.jsx'
+import { Button } from './atoms/index.js'
 
 import * as queries from '../hooks/Credentials.graphql'
 

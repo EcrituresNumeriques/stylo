@@ -4,8 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import { compileTemplate } from '../../helpers/preview.js'
 import { useStyloExportPreview } from '../../hooks/stylo-export.js'
-
-import Loading from '../molecules/Loading.jsx'
+import { Loading } from '../molecules/index.js'
 
 import styles from './PreviewPaged.module.scss'
 

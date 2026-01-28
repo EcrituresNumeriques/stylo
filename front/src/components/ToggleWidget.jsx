@@ -1,6 +1,6 @@
 import { Translation } from 'react-i18next'
 
-import Toggle from './molecules/Toggle.jsx'
+import { Toggle } from './molecules/index.js'
 
 import styles from './ToggleWidget.module.scss'
 

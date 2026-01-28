@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Loading from './molecules/Loading.jsx'
+import { Loading } from './molecules/index.js'
 
 import styles from './Page.module.scss'
 

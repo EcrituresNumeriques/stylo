@@ -5,11 +5,11 @@ import { toast } from 'react-toastify'
 import { useCopyToClipboard } from 'react-use'
 
 import { useModal } from '../../hooks/modal.js'
+import { Button } from '../atoms/index.js'
+import { FormActions } from '../molecules/index.js'
 
 import Modal from '../Modal.jsx'
 import ReferenceTypeIcon from '../ReferenceTypeIcon.jsx'
-import Button from '../atoms/Button.jsx'
-import FormActions from '../molecules/FormActions.jsx'
 
 import styles from './BibliographyReference.module.scss'
 

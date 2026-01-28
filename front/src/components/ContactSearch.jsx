@@ -9,9 +9,9 @@ import debounce from 'lodash.debounce'
 import { useGraphQLClient } from '../helpers/graphQL.js'
 import { useContactActions } from '../hooks/contact.js'
 import { useDisplayName } from '../hooks/user.js'
+import { Field } from './atoms/index.js'
 
 import ContactItem from './ContactItem.jsx'
-import Field from './atoms/Field.jsx'
 
 import { getUserByEmail } from '../hooks/Contacts.graphql'
 

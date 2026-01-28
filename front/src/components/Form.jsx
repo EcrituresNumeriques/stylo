@@ -13,11 +13,11 @@ import isidoreKeywordSearch from './Write/metadata/isidoreKeyword'
 import Form, { getDefaultRegistry } from '@rjsf/core'
 import validator from '@rjsf/validator-ajv8'
 
+import { Button } from './atoms/index.js'
+
 import ToggleWidget from './ToggleWidget.jsx'
-import Button from './atoms/Button.jsx'
 
 // REMIND: use a custom SelectWidget to support "ui:emptyValue"
-
 import styles from './form.module.scss'
 
 const {

@@ -6,8 +6,8 @@ import { toast } from 'react-toastify'
 import debounce from 'lodash.debounce'
 
 import { useGraphQLClient } from '../../helpers/graphQL.js'
+import { Loading } from '../molecules/index.js'
 
-import Loading from '../molecules/Loading.jsx'
 import CorpusArticleCard from './CorpusArticleCard.jsx'
 
 import { updateArticlesOrder } from '../../hooks/Corpus.graphql'

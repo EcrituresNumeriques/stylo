@@ -4,10 +4,8 @@ import { useTranslation } from 'react-i18next'
 
 import { useModal } from '../../hooks/modal.js'
 import { useDisplayName } from '../../hooks/user.js'
+import { Button, Field, TimeAgo } from '../atoms/index.js'
 
-import Button from '../atoms/Button.jsx'
-import Field from '../atoms/Field.jsx'
-import TimeAgo from '../atoms/TimeAgo.jsx'
 import LeaveWorkspaceModal from './LeaveWorkspaceModal.jsx'
 import WorkspaceManageMembersModal from './WorkspaceManageMembersModal.jsx'
 import WorkspaceUpdateFormMetadataModal from './WorkspaceUpdateFormMetadataModal.jsx'
