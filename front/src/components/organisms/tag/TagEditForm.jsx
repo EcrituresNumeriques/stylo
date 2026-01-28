@@ -2,11 +2,11 @@ import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
-import { randomColor } from '../../helpers/colors.js'
-import { fromFormData } from '../../helpers/forms.js'
-import { useUserTagActions } from '../../hooks/user.js'
-import { Field } from '../atoms/index.js'
-import { FormActions } from '../molecules/index.js'
+import { randomColor } from '../../../helpers/colors.js'
+import { fromFormData } from '../../../helpers/forms.js'
+import { useUserTagActions } from '../../../hooks/user.js'
+import { Field } from '../../atoms/index.js'
+import { FormActions } from '../../molecules/index.js'
 
 import styles from './TagEditForm.module.scss'
 

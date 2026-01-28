@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next'
 
-import CreatedByLabel from '../atoms/CreatedByLabel.jsx'
-import UpdatedAtLabel from '../atoms/UpdatedAtLabel.jsx'
+import { CreatedByLabel, UpdatedAtLabel } from '../atoms/index.js'
 
 export default function ObjectMetadataLabel({
   updatedAtDate,
