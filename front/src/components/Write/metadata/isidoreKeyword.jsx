@@ -2,9 +2,9 @@ import clsx from 'clsx'
 import { useCombobox } from 'downshift'
 import React, { useCallback, useState } from 'react'
 
+import { searchKeyword as isidoreKeywordSearch } from '../../../helpers/isidore'
 import throttle from 'lodash.throttle'
 
-import { searchKeyword as isidoreKeywordSearch } from '../../../helpers/isidore.js'
 import { Field } from '../../atoms/index.js'
 
 import fieldStyles from '../../atoms/Field.module.scss'

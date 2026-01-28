@@ -1,0 +1,14 @@
+{
+  "addButton.text": "Añadir",
+  "cancelButton.label": "Cancelar y cerrar el modal",
+  "cancelButton.text": "Cancelar",
+  "close.label": "Cerrar el modal",
+  "close.text": "Cerrar",
+  "closeButton.text": "Cerrar",
+  "confirmButton.label": "Confirmar y cerrar el modal",
+  "confirmButton.text": "Confirmar",
+  "createButton.text": "Crear",
+  "deleteButton.text": "Eliminar",
+  "open.text": "Abrir",
+  "saveButton.text": "Guardar"
+}

@@ -1,0 +1,60 @@
+{
+  "actions": {
+    "menu": {
+      "title": "Más acciones sobre el artículo"
+    },
+    "annotate": {
+      "label": "Anotar",
+      "title": "Anotar el artículo"
+    },
+    "copyId": {
+      "label": "Copiar identificador",
+      "title": "Copiar el identificador del artículo",
+      "success": "Identificador copiado al portapapeles."
+    },
+    "create": {
+      "error": "No se pudo crear un nuevo artículo: {{errMessage}}",
+      "label": "Crear",
+      "success": "Nuevo artículo creado",
+      "title": "Crear un nuevo artículo"
+    },
+    "delete": {
+      "confirm": "¿Estás seguro de que quieres eliminar este artículo?",
+      "contributorsRemovalNote": "Si eliminas este artículo, los colaboradores ya no podrán acceder a él.",
+      "error": "No se pudo eliminar el artículo: {{errMessage}}",
+      "label": "Eliminar",
+      "success": "Artículo eliminado exitosamente.",
+      "title": "Eliminar el artículo"
+    },
+    "duplicate": {
+      "label": "Duplicar",
+      "title": "Duplicar el artículo"
+    },
+    "edit": {
+      "label": "Editar",
+      "title": "Editar el artículo"
+    },
+    "export": {
+      "label": "Exportar",
+      "title": "Exportar el artículo"
+    },
+    "sendCopy": {
+      "description": "Permite enviar una copia del artículo a uno de tus contactos haciendo clic en el icono",
+      "error": "No se pudo enviar una copia del artículo: {{errMessage}}",
+      "label": "Enviar una copia",
+      "success": "Copia del artículo enviada a {{username}}",
+      "title": "Enviar una copia del artículo"
+    },
+    "share": {
+      "description": "Permite compartir un artículo con uno de tus contactos.",
+      "label": "Compartir",
+      "title": "Compartir el artículo con un contacto"
+    },
+    "update": {
+      "error": "No se pudo actualizar el artículo: {{errMessage}}",
+      "label": "Modificar",
+      "success": "Artículo actualizado",
+      "title": "Modificar el artículo"
+    }
+  }
+}

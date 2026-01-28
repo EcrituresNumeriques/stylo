@@ -1,0 +1,14 @@
+{
+  "addButton.text": "Add",
+  "cancelButton.label": "Cancel and close modal",
+  "cancelButton.text": "Cancel",
+  "close.label": "Close modal",
+  "close.text": "Close",
+  "closeButton.text": "Close",
+  "confirmButton.label": "Confirm and close modal",
+  "confirmButton.text": "Confirm",
+  "createButton.text": "Create",
+  "deleteButton.text": "Delete",
+  "open.text": "Open",
+  "saveButton.text": "Save"
+}

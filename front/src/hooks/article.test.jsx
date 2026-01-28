@@ -156,31 +156,6 @@ describe('Article', () => {
       })
     )
   })
-  test('rename article', async () => {
-    const Component = () => {
-      const { rename } = useArticleActions({
-        articleId: '777',
-      })
-
-      return (
-        <div>
-          <button
-            data-testid="rename"
-            onClick={() => rename('New title')}
-          ></button>
-        </div>
-      )
-    }
-    renderWithProviders(<Component />, {})
-    const addTagButton = await screen.findByTestId('rename')
-    fireEvent.click(addTagButton)
-    expect(fetch).toHaveBeenLastCalledWith(
-      'http://localhost:3000/graphql',
-      expect.objectContaining({
-        body: expect.stringMatching(/"query":"query renameArticle\(/),
-      })
-    )
-  })
   test('remove article', async () => {
     const Component = () => {
       const { remove } = useArticleActions({

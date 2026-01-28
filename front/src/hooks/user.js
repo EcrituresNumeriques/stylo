@@ -193,6 +193,13 @@ export function useLogout() {
 }
 
 /**
+ * @typedef {object} User
+ * @property {boolean?} deletedAt
+ * @property {string?} displayName
+ * @property {string} username
+ */
+
+/**
  * @returns {(user: User) => string}
  */
 export function useDisplayName() {

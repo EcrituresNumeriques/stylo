@@ -14,7 +14,6 @@ import merge from 'lodash.merge'
 
 import createReduxStore, { initialState } from '../src/createReduxStore.js'
 
-
 // mock queryCommandSupported
 document.queryCommandSupported = () => true
 
