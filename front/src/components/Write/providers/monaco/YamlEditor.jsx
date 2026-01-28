@@ -20,6 +20,7 @@ export default function MonacoYamlEditor({
   const options = useMemo(
     () => ({
       ...defaultEditorOptions,
+      height,
       readOnly,
       fontSize,
       lineNumbers: false,
