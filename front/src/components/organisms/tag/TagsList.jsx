@@ -8,7 +8,7 @@ import { useModal } from '../../../hooks/modal.js'
 import { Button } from '../../atoms/index.js'
 import { Loading } from '../../molecules/index.js'
 
-import Modal from '../../Modal.jsx'
+import Modal from '../../molecules/Modal.jsx'
 import ArticleTag from './ArticleTag.jsx'
 import TagEditForm from './TagEditForm.jsx'
 

@@ -1,0 +1,20 @@
+@use '../../../styles/defaults' as *;
+@use '../../../styles/variables' as *;
+
+.error {
+  background-color: red;
+  padding: 0.5rem;
+  color: $main-background-color;
+  text-align: center;
+  margin-top: 0;
+}
+
+.toggle {
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+}

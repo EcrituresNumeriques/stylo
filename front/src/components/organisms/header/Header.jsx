@@ -10,7 +10,7 @@ import logoContent from '/images/logo.svg?inline'
 import useComponentVisible from '../../../hooks/componentVisible.js'
 import { useActiveWorkspaceId } from '../../../hooks/workspace.js'
 
-import WorkspacesMenu from '../../workspace/WorkspacesMenu.jsx'
+import WorkspacesMenu from '../workspace/WorkspacesMenu.jsx'
 import HelpMenu from './HelpMenu.jsx'
 import LanguagesMenu from './LanguagesMenu.jsx'
 import UserMenu from './UserMenu.jsx'

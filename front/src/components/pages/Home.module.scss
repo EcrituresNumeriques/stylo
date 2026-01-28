@@ -1,0 +1,26 @@
+@use '../organisms/header/header.module' as global;
+
+.changelog {
+  > summary,
+  .generated-content {
+    margin-bottom: 1em;
+  }
+
+  h2 {
+    font-size: 1.1em;
+  }
+
+  h3 {
+    font-size: 1em;
+  }
+
+  p,
+  ul,
+  ol {
+    font-size: 0.9rem;
+  }
+}
+
+.moreLink {
+  margin-top: auto;
+}

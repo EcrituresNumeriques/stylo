@@ -1,0 +1,45 @@
+@use '../../../styles/defaults' as *;
+@use '../../../styles/variables' as *;
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.readonly {
+  margin-bottom: 1rem;
+}
+
+.headingActions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.toggle {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  font-size: 1.125rem;
+  cursor: pointer;
+
+  > label {
+    cursor: pointer;
+    font-weight: 500;
+    user-select: none;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

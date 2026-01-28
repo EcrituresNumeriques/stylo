@@ -3,9 +3,9 @@ import { useParams, useSearchParams } from 'react-router'
 
 import { executeQuery } from '../../helpers/graphQL.js'
 
-import ArticleStats from '../ArticleStats.jsx'
-import CollaborativeEditorMenu from '../collaborative/CollaborativeEditorMenu.jsx'
-import CollaborativeTextEditor from '../collaborative/CollaborativeTextEditor.jsx'
+import ArticleStats from '../organisms/article/ArticleStats.jsx'
+import CollaborativeEditorMenu from '../organisms/textEditor/CollaborativeEditorMenu.jsx'
+import CollaborativeTextEditor from '../organisms/textEditor/CollaborativeTextEditor.jsx'
 
 import { getArticleInfo } from '../../hooks/Article.graphql'
 

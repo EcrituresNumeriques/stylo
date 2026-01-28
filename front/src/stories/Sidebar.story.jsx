@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import Sidebar from '../components/Sidebar.jsx'
+import Sidebar from '../components/molecules/Sidebar.jsx'
 
 import styles from './Sidebar.story.module.scss'
 

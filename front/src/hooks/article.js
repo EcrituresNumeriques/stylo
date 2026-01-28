@@ -1,7 +1,7 @@
 import { merge } from 'allof-merge'
 import { useSelector } from 'react-redux'
 
-import { toYaml } from '../components/Write/metadata/yaml.js'
+import { toYaml } from '../components/organisms/metadata/yaml.js'
 import { toEntries } from '../helpers/bibtex.js'
 import { executeQuery } from '../helpers/graphQL.js'
 import { clean } from '../schemas/schemas.js'

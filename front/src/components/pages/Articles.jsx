@@ -12,9 +12,9 @@ import { Button, Field, PageTitle } from '../atoms/index.js'
 import { Loading } from '../molecules/index.js'
 import { ArticleForm, TagEditForm, TagsList } from '../organisms/index.js'
 
-import Article from '../Article.jsx'
-import Modal from '../Modal.jsx'
-import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
+import Modal from '../molecules/Modal.jsx'
+import Article from '../organisms/article/Article.jsx'
+import WorkspaceLabel from '../organisms/workspace/WorkspaceLabel.jsx'
 
 import { getWorkspaceArticles } from '../../hooks/Articles.graphql'
 

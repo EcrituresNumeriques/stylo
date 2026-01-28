@@ -1,0 +1,84 @@
+import React, { useCallback, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
+
+import { fromFormData } from '../../../helpers/forms.js'
+import { useArticleVersionActions } from '../../../hooks/article.js'
+import { FormActions, Toggle } from '../../molecules/index.js'
+
+import buttonStyles from '../../atoms/Button.module.scss'
+import styles from './createVersion.module.scss'
+
+/**
+ * @param props
+ * @param {string} props.articleId
+ * @param {() => {}} props.onClose
+ * @param {() => {}} props.onSubmit
+ * @return {Element}
+ */
+export default function CreateVersion({ articleId, onClose, onSubmit }) {
+  const { t } = useTranslation()
+  const { create } = useArticleVersionActions({ articleId })
+  const activeUser = useSelector((state) => state.activeUser)
+  const [majorVersion, setMajorVersion] = useState(false)
+  const handleCreateVersion = useCallback(
+    async (event) => {
+      event.preventDefault()
+      const details = fromFormData(event.target)
+      try {
+        await create({
+          major: majorVersion,
+          description: details.description,
+        })
+        toast(t('write.createVersion.defaultNotification'), { type: 'info' })
+        onSubmit()
+      } catch (err) {
+        const errorMessage =
+          err.messages && err.messages.length
+            ? err.messages[0].message
+            : err.message
+        toast(errorMessage, {
+          type: 'error',
+        })
+      }
+    },
+    [activeUser, majorVersion]
+  )
+
+  return (
+    <form
+      className={styles.form}
+      onSubmit={(e) => handleCreateVersion(e)}
+      data-testid="create-version-form"
+    >
+      <label htmlFor="description">Description</label>
+      <textarea
+        id="description"
+        name="description"
+        className={buttonStyles.textarea}
+        rows="10"
+        style={{ width: '100%', fontFamily: 'Inter' }}
+        placeholder={t('write.createVersion.placeholder')}
+      ></textarea>
+
+      <Toggle
+        id="major-version"
+        data-testid="major-version-toggle"
+        name="majorVersion"
+        checked={majorVersion}
+        onChange={setMajorVersion}
+        className={styles.toggle}
+      >
+        Version majeure
+      </Toggle>
+
+      <FormActions
+        submitButton={{
+          text: t('modal.createButton.text'),
+        }}
+        onCancel={() => onClose()}
+      />
+    </form>
+  )
+}

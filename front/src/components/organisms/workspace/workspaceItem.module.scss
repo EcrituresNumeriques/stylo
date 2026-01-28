@@ -1,0 +1,74 @@
+@use '../../../styles/defaults' as *;
+@use '../../../styles/variables' as *;
+
+.container {
+  background-color: #f0f0f0;
+  padding: 1.25em 2em;
+  margin-bottom: 1em;
+}
+
+.chip {
+  display: inline-block;
+  height: 1.35em;
+  width: 1.35em;
+  border-radius: 4px;
+  margin-right: 0.75em;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  text-transform: none !important;
+}
+
+.field {
+  margin: 0;
+  padding: 0;
+}
+
+.creator {
+  font-weight: 500;
+  font-style: italic;
+}
+
+.field > label {
+  font-weight: 600;
+  padding: 0.25em;
+}
+
+.actionButtons {
+  margin-top: 1.5em;
+  display: flex;
+  gap: 1em;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.primaryActionButtons {
+  display: flex;
+  gap: 1em;
+}
+
+.workspaceLabel {
+  font-weight: 600;
+  padding-top: 0;
+  padding-bottom: 1em;
+  font-size: 1em;
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.message {
+  margin-top: 0.75rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  gap: 1rem;
+}
