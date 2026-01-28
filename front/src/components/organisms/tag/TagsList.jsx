@@ -3,19 +3,18 @@ import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-import useFetchData from '../../hooks/graphql'
+import useFetchData from '../../../hooks/graphql.js'
+import { useModal } from '../../../hooks/modal.js'
+import { Button } from '../../atoms/index.js'
+import { Loading } from '../../molecules/index.js'
 
-import { useModal } from '../../hooks/modal.js'
-import { Button } from '../atoms/index.js'
-import { Loading } from '../molecules/index.js'
-
-import Modal from '../Modal.jsx'
-import ArticleTag from '../Tag.jsx'
+import Modal from '../../Modal.jsx'
+import ArticleTag from './ArticleTag.jsx'
 import TagEditForm from './TagEditForm.jsx'
 
-import { getTags } from '../../hooks/Tag.graphql'
+import { getTags } from '../../../hooks/Tag.graphql'
 
-import styles from './tagsList.module.scss'
+import styles from './TagsList.module.scss'
 
 export default function TagsList({ action }) {
   const { t } = useTranslation()
