@@ -20,7 +20,7 @@ import styles from './corpusCreate.module.scss'
  * @constructor
  */
 export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('corpus', { useSuspense: false })
   const titleInputRef = useRef(null)
   const { createCorpus, updateCorpus } = useCorpusActions()
 
@@ -48,11 +48,11 @@ export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
         await createCorpus(editCorpusInput)
       }
       onSubmit()
-      toast(t(`corpus.${action}.toastSuccess`), {
+      toast(t(`actions.${action}.success`), {
         type: 'info',
       })
     } catch (err) {
-      toast(t(`corpus.${action}.toastFailure`, { errorMessage: err.message }), {
+      toast(t(`actions.${action}.error`, { errorMessage: err.message }), {
         type: 'error',
       })
     }
@@ -65,38 +65,38 @@ export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
           required={true}
           ref={titleInputRef}
           name="title"
-          label={t('corpus.createForm.titleField')}
+          label={t('actions.create.fields.name')}
           type="text"
           defaultValue={corpus?.name}
         />
         <Select
           name="type"
           id="type"
-          label={t('corpus.createForm.type')}
+          label={t('actions.create.fields.type')}
           defaultValue={corpus?.type}
           disabled={corpus !== undefined}
         >
           <option value={'neutral'} key={'neutral'}>
-            {t('corpus.type.neutral')}
+            {t('types.neutral')}
           </option>
           <option value={'journal'} key={'journal'}>
-            {t('corpus.type.journal')}
+            {t('types.journal')}
           </option>
           <option value={'thesis'} key={'thesis'}>
-            {t('corpus.type.thesis')}
+            {t('types.thesis')}
           </option>
           <option value={'book'} key={'book'}>
-            {t('corpus.type.book')}
+            {t('types.book')}
           </option>
         </Select>
         <div className={clsx(fieldStyles.field, 'control-field')}>
           <label htmlFor="description">
-            {t('corpus.createForm.descriptionField')}
+            {t('actions.create.fields.description.label')}
           </label>
           <textarea
             name="description"
             id="description"
-            placeholder={t('corpus.createForm.descriptionPlaceholder')}
+            placeholder={t('actions.create.fields.description.placeholder')}
             rows="5"
             defaultValue={corpus?.description}
           ></textarea>
@@ -104,8 +104,8 @@ export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
         <FormActions
           onCancel={onCancel}
           submitButton={{
-            text: t(`corpus.${action}Form.buttonText`),
-            title: t(`corpus.${action}Form.buttonTitle`),
+            text: t(`actions.${action}.submit`),
+            title: t(`actions.${action}.submit`),
           }}
         />
       </form>

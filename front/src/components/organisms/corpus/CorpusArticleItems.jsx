@@ -12,9 +12,8 @@ import CorpusArticleCard from './CorpusArticleCard.jsx'
 
 import { updateArticlesOrder } from '../../../hooks/Corpus.graphql'
 
-import styles from './corpusArticleItems.module.scss'
-
 export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
+  const { t } = useTranslation('corpus', { useSuspense: false })
   const [isLoading, setLoading] = useState(true)
   const [articleCards, setArticleCards] = useState([])
   useEffect(() => {
@@ -25,7 +24,7 @@ export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
     }
   }, [articles])
   const { query } = useGraphQLClient()
-  const { t } = useTranslation()
+
   const updateArticleOrder = useCallback(
     debounce(
       async (orderedArticles) => {
@@ -39,10 +38,10 @@ export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
             variables: { corpusId, articlesOrderInput },
           })
           onUpdate()
-          toast(t('corpus.articlesOrder.toastSuccess'), { type: 'info' })
+          toast(t('actions.reorderArticles.success'), { type: 'info' })
         } catch (err) {
           toast(
-            t('corpus.articlesOrder.toastFailure', {
+            t('actions.reorderArticles.error', {
               errorMessage: err.toString(),
             }),
             { type: 'error' }
@@ -90,11 +89,7 @@ export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
     return <Loading />
   }
 
-  return (
-    <div className={styles.container}>
-      {articleCards.map((card, i) => renderCard(card, i))}
-    </div>
-  )
+  return <div>{articleCards.map((card, i) => renderCard(card, i))}</div>
 }
 
 CorpusArticleItems.propTypes = {

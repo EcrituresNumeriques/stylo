@@ -1,6 +1,5 @@
 import { merge } from 'allof-merge'
 import YAML from 'js-yaml'
-import { List } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -13,26 +12,25 @@ import corpusThesisMetadataSchema from '../../../schemas/corpus-thesis-metadata.
 import corpusThesisUiSchema from '../../../schemas/corpus-thesis-ui-schema.json'
 
 import { useCorpusActions } from '../../../hooks/corpus.js'
-import { useModal } from '../../../hooks/modal.js'
 import { usePreferenceItem } from '../../../hooks/user.js'
-import { Button } from '../../atoms/index.js'
 import { FormActions, Toggle } from '../../molecules/index.js'
 import { toYaml } from '../metadata/yaml.js'
 
-import Modal from '../../molecules/Modal.jsx'
 import MetadataForm from '../metadata/MetadataForm.jsx'
 import MonacoYamlEditor from '../metadata/YamlEditor.jsx'
 
-import styles from './CorpusMetadataModal.module.scss'
+import styles from './CorpusMetadata.module.scss'
 
-export default function CorpusMetadataModal({
+export default function CorpusMetadata({
   corpusId,
   corpusType,
   initialValue,
+  onSubmit,
+  onCancel,
 }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('corpus', { useSuspense: false })
+  const { t: tModal } = useTranslation('modal', { useSuspense: false })
   const { updateCorpus } = useCorpusActions()
-  const modal = useModal()
 
   const [metadata, setMetadata] = useState(initialValue)
   const yaml = useMemo(() => toYaml(metadata), [metadata])
@@ -90,14 +88,14 @@ export default function CorpusMetadataModal({
   const handleUpdateMetadata = useCallback(async () => {
     try {
       await updateCorpus({ corpusId, metadata })
-      modal.close()
-      toast(t(`corpus.update.toastSuccess`), { type: 'info' })
+      onSubmit()
+      toast(t(`actions.metadata.success`), { type: 'info' })
     } catch (err) {
-      toast(t(`corpus.update.toastFailure`, { errorMessage: err.message }), {
+      toast(t(`actions.metadata.error`, { errorMessage: err.message }), {
         type: 'error',
       })
     }
-  }, [corpusId, modal, corpusId, metadata])
+  }, [corpusId, corpusId, metadata])
   const handleMetadataUpdated = useCallback(
     (metadata) => {
       setMetadata(metadata)
@@ -106,8 +104,8 @@ export default function CorpusMetadataModal({
   )
   const handleCancel = useCallback(() => {
     setMetadata(initialValue)
-    modal.close()
-  }, [setMetadata, initialValue, modal])
+    onCancel()
+  }, [setMetadata, initialValue])
 
   const showYamlEditor = useMemo(
     () => corpusType === 'neutral' || selector === 'raw',
@@ -121,63 +119,46 @@ export default function CorpusMetadataModal({
 
   return (
     <>
-      <Button
-        title={t('metadata.title')}
-        icon={true}
-        onClick={() => modal.show()}
-      >
-        <List />
-      </Button>
-      <Modal
-        {...modal.bindings}
-        cancel={handleCancel}
-        title={
-          <>
-            <List /> {t('corpus.metadataModal.title')}
-          </>
-        }
-      >
-        <div className={styles.header}>
-          <Toggle
-            disabled={corpusType === 'neutral'}
-            id="raw-mode"
-            checked={selector === 'raw' || corpusType === 'neutral'}
-            title={t('metadata.showYaml')}
-            onChange={(checked) => {
-              setSelector(checked ? 'raw' : 'basic')
-            }}
-            className={styles.toggle}
-          >
-            YAML
-          </Toggle>
-        </div>
-        {showYamlEditor && (
-          <>
-            {error !== '' && <p className={styles.error}>{error}</p>}
-            <MonacoYamlEditor
-              height="calc(100vh - 350px)"
-              fontSize="14"
-              text={yaml}
-              onTextUpdate={handleYamlChange}
-            />
-          </>
-        )}
-        {showMetadataForm && (
-          <MetadataForm
-            data={metadata}
-            schema={corpusMetadataSchema}
-            uiSchema={corpusUiSchema}
-            onChange={handleMetadataUpdated}
-          />
-        )}
-        <FormActions
-          onCancel={handleCancel}
-          onSubmit={handleUpdateMetadata}
-          submitButton={{
-            text: t('modal.saveButton.text'),
+      <div className={styles.header}>
+        <Toggle
+          disabled={corpusType === 'neutral'}
+          id="raw-mode"
+          checked={selector === 'raw' || corpusType === 'neutral'}
+          title={t('actions.metadata.yaml.toggle')}
+          onChange={(checked) => {
+            setSelector(checked ? 'raw' : 'basic')
           }}
+          className={styles.toggle}
+        >
+          {t('actions.metadata.yaml.label')}
+        </Toggle>
+      </div>
+      {showYamlEditor && (
+        <>
+          {error !== '' && <p className={styles.error}>{error}</p>}
+          <MonacoYamlEditor
+            height="calc(100vh - 350px)"
+            fontSize="14"
+            text={yaml}
+            onTextUpdate={handleYamlChange}
+          />
+        </>
+      )}
+      {showMetadataForm && (
+        <MetadataForm
+          data={metadata}
+          schema={corpusMetadataSchema}
+          uiSchema={corpusUiSchema}
+          onChange={handleMetadataUpdated}
         />
-      </Modal>
+      )}
+      <FormActions
+        onCancel={handleCancel}
+        onSubmit={handleUpdateMetadata}
+        submitButton={{
+          text: tModal('saveButton.text'),
+        }}
+      />
     </>
   )
 }

@@ -1,0 +1,85 @@
+@use '../../../styles/defaults' as *;
+@use '../../../styles/variables' as *;
+
+.dropdownMenu {
+  position: relative;
+
+  .menu {
+    position: absolute;
+    background-color: white;
+    //padding: 0.5rem 2.5rem 0.5rem 0.5rem;
+    z-index: 9999;
+    border: 1px solid $main-color;
+    right: 0;
+    margin-top: 0.15rem;
+    > ul {
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      display: flex;
+      flex-direction: column;
+      text-align: start;
+
+      > li {
+        cursor: pointer;
+        padding: 0.75rem 2.5rem 0.75rem 0.5rem;
+      }
+
+      > li:hover {
+        background-color: $hover-background;
+      }
+    }
+  }
+}
+
+.corpus {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem;
+  position: relative;
+
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .heading {
+    flex: 250px 1;
+    display: inline-flex;
+    align-items: center;
+    text-wrap: balance;
+  }
+
+  .title {
+    margin-right: 0.75rem;
+  }
+
+  .badge {
+    font-size: 0.8rem;
+  }
+
+  .actionButtons {
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
+    align-items: flex-start;
+  }
+
+  .details {
+    font-size: 0.875em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .metadata {
+    color: $main-lighter-color;
+  }
+}
+
+.primaryAction {
+  background-color: $main-color;
+  color: $main-background-color;
+}

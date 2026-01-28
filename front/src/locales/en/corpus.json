@@ -1,0 +1,91 @@
+{
+  "actions": {
+    "addArticles": {
+      "add": "Add",
+      "added": "Added",
+      "error": "Unable to associate these articles to the corpus: {{errMessage}}",
+      "filter": {
+        "label": "Filter",
+        "placeholder": "By article title"
+      },
+      "label": "Choose articles",
+      "modal": {
+        "submit": "Choose these articles",
+        "title": "Articles selection"
+      },
+      "success": "Articles successfully associated to the corpus.",
+      "title": "Associate/dissociate articles to/from corpus"
+    },
+    "annotate": {
+      "label": "Annotate",
+      "title": "Annotate the corpus"
+    },
+    "copyId": {
+      "label": "Copy identifier",
+      "success": "Identifier copied to clipboard.",
+      "title": "Copy corpus identifier"
+    },
+    "create": {
+      "error": "Unable to create a new corpus: {{errMessage}}",
+      "fields": {
+        "description": {
+          "label": "Description",
+          "placeholder": ""
+        },
+        "name": "Name",
+        "type": "Type"
+      },
+      "label": "Create corpus",
+      "submit": "Create corpus",
+      "success": "New corpus created",
+      "title": "Create a new corpus"
+    },
+    "delete": {
+      "confirm": "Are you sure you want to delete this corpus?",
+      "error": "Unable to delete the corpus: {{errMessage}}",
+      "label": "Delete",
+      "success": "Corpus successfully deleted.",
+      "title": "Delete corpus"
+    },
+    "export": {
+      "label": "Export",
+      "title": "Export corpus"
+    },
+    "menu": {
+      "title": "More actions on corpus"
+    },
+    "metadata": {
+      "error": "Unable to update corpus metadata: {{errMessage}}",
+      "label": "Edit metadata",
+      "success": "Corpus metadata updated",
+      "title": "Edit corpus metadata",
+      "yaml": {
+        "label": "YAML",
+        "toggle": "Enable YAML mode"
+      }
+    },
+    "reorderArticles": {
+      "error": "Unable to update articles order: {{errorMessage}}",
+      "success": "Articles order has been successfully modified."
+    },
+    "update": {
+      "error": "Unable to update the corpus: {{errMessage}}",
+      "label": "Edit",
+      "submit": "Update corpus",
+      "success": "Corpus updated",
+      "title": "Update corpus"
+    }
+  },
+  "articles": {
+    "label": "Articles"
+  },
+  "description": "A corpus is a collection of articles that can be sorted and exported in one action.",
+  "header": "Corpus",
+  "title": "Corpus list - {{ workspace }}",
+  "types": {
+    "book": "Book",
+    "journal": "Journal",
+    "neutral": "Neutral",
+    "thesis": "Thesis"
+  }
+}

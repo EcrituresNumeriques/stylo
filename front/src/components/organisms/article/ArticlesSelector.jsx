@@ -15,7 +15,7 @@ export function ArticlesSelector({ corpusArticles, onUpdate }) {
   const [selectedArticleIds, setSelectedArticleIds] = useState(
     corpusArticles.map((a) => a.article._id)
   )
-  const { t } = useTranslation()
+  const { t } = useTranslation('corpus', { useSuspense: false })
   const [filter, setFilter] = useState('')
 
   const { workspaceId: activeWorkspaceId } = useParams()
@@ -77,14 +77,14 @@ export function ArticlesSelector({ corpusArticles, onUpdate }) {
 
   return (
     <>
-      <search aria-label={t('article.filter.label')}>
+      <search aria-label={t('actions.addArticles.filter.label')}>
         <Field
           className={styles.searchField}
           type="search"
           icon={Search}
           value={filter}
-          label={t('article.filter.label')}
-          placeholder={t('article.filter.placeholder')}
+          label={t('actions.addArticles.filter.label')}
+          placeholder={t('actions.addArticles.filter.placeholder')}
           onChange={(e) => setFilter(e.target.value)}
         />
       </search>
@@ -105,8 +105,8 @@ export function ArticlesSelector({ corpusArticles, onUpdate }) {
               >
                 {isArticleSelected(article._id) && <CheckIcon />}
                 {isArticleSelected(article._id)
-                  ? t('article.addToCorpus.added')
-                  : t('article.addToCorpus.add')}
+                  ? t('actions.addArticles.added')
+                  : t('actions.addArticles.add')}
               </Button>
             </div>
           ))}

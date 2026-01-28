@@ -3,7 +3,7 @@
 
 .section {
   @extend .wrapped-center;
-  padding: 1.5rem 1rem;
+  padding: 2rem;
   border: 1px solid $main-border-color;
   background-color: $extra-background-color;
 
@@ -12,11 +12,8 @@
   }
 
   > p {
-    margin-bottom: 1rem;
-  }
-
-  > article:nth-of-type(2n + 1) {
-    background-color: $alternate-row-color;
+    margin-top: 0.35rem;
+    margin-bottom: 0.5rem;
   }
 }
 
@@ -33,6 +30,10 @@
 
 .corpusList {
   margin-top: 0.5em;
+
+  article:nth-of-type(2n + 1) {
+    background-color: $alternate-row-color;
+  }
 }
 
 .message {

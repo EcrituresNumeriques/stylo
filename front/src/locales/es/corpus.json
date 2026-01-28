@@ -1,0 +1,91 @@
+{
+  "actions": {
+    "addArticles": {
+      "add": "Añadir",
+      "added": "Añadido",
+      "error": "Imposible asociar estos artículos al corpus: {{errMessage}}",
+      "filter": {
+        "label": "Filtrar",
+        "placeholder": "Por título de artículo"
+      },
+      "label": "Elegir artículos",
+      "modal": {
+        "submit": "Elegir estos artículos",
+        "title": "Selección de artículos"
+      },
+      "success": "Artículos asociados al corpus con éxito.",
+      "title": "Asociar/disociar artículos al corpus"
+    },
+    "annotate": {
+      "label": "Anotar",
+      "title": "Anotar el corpus"
+    },
+    "copyId": {
+      "label": "Copiar identificador",
+      "success": "Identificador copiado al portapapeles.",
+      "title": "Copiar identificador del corpus"
+    },
+    "create": {
+      "error": "Imposible crear un nuevo corpus: {{errMessage}}",
+      "fields": {
+        "description": {
+          "label": "Descripción",
+          "placeholder": ""
+        },
+        "name": "Nombre",
+        "type": "Tipo"
+      },
+      "label": "Crear un corpus",
+      "submit": "Crear corpus",
+      "success": "Nuevo corpus creado",
+      "title": "Crear un nuevo corpus"
+    },
+    "delete": {
+      "confirm": "¿Está seguro de que desea eliminar este corpus?",
+      "error": "Imposible eliminar el corpus: {{errMessage}}",
+      "label": "Eliminar",
+      "success": "Corpus eliminado con éxito.",
+      "title": "Eliminar corpus"
+    },
+    "export": {
+      "label": "Exportar",
+      "title": "Exportar corpus"
+    },
+    "menu": {
+      "title": "Más acciones en el corpus"
+    },
+    "metadata": {
+      "error": "Imposible actualizar los metadatos del corpus: {{errMessage}}",
+      "label": "Editar metadatos",
+      "success": "Metadatos del corpus actualizados",
+      "title": "Editar metadatos del corpus",
+      "yaml": {
+        "label": "YAML",
+        "toggle": "Activar modo YAML"
+      }
+    },
+    "reorderArticles": {
+      "error": "Imposible actualizar el orden de los artículos: {{errorMessage}}",
+      "success": "El orden de los artículos se ha modificado con éxito."
+    },
+    "update": {
+      "error": "Imposible actualizar el corpus: {{errMessage}}",
+      "label": "Editar",
+      "submit": "Modificar el corpus",
+      "success": "Corpus actualizado",
+      "title": "Editar corpus"
+    }
+  },
+  "articles": {
+    "label": "Artículos"
+  },
+  "description": "Un corpus es una colección de artículos que se pueden ordenar y exportar en una sola acción.",
+  "header": "Corpus",
+  "title": "Lista de corpus - {{ workspace }}",
+  "types": {
+    "book": "Libro",
+    "journal": "Revista",
+    "neutral": "Neutral",
+    "thesis": "Tesis"
+  }
+}
