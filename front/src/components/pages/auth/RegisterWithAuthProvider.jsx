@@ -12,7 +12,7 @@ import { Button, Field } from '../../atoms/index.js'
 import * as queries from '../../../hooks/Credentials.graphql'
 
 import formStyles from '../../molecules/form.module.scss'
-import styles from './pages/login.module.scss'
+import styles from './Login.module.scss'
 
 export default function RegisterWithAuthProvider() {
   const { t } = useTranslation()
