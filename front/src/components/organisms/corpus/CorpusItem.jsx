@@ -1,23 +1,28 @@
+import clsx from 'clsx'
 import {
   ChevronDown,
   ChevronRight,
   Clipboard,
+  EllipsisVertical,
   MessageSquareShare,
+  Pencil,
   Printer,
   Settings,
   Trash,
+  UserPlus,
 } from 'lucide-react'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { toast } from 'react-toastify'
 import { useCopyToClipboard } from 'react-use'
 
+import useComponentVisible from '../../../hooks/componentVisible.js'
 import { useCorpusActions } from '../../../hooks/corpus.js'
 import { useModal } from '../../../hooks/modal.js'
 import { useDisplayName } from '../../../hooks/user.js'
 import { Button, TimeAgo } from '../../atoms/index.js'
-import { FormActions } from '../../molecules/index.js'
+import { FormActions, ObjectMetadataLabel } from '../../molecules/index.js'
 
 import Modal from '../../molecules/Modal.jsx'
 import Export from '../export/Export.jsx'
@@ -26,7 +31,7 @@ import CorpusForm from './CorpusForm.jsx'
 import CorpusMetadataModal from './CorpusMetadataModal.jsx'
 
 import buttonStyles from '../../atoms/Button.module.scss'
-import styles from './corpusItem.module.scss'
+import styles from './CorpusItem.module.scss'
 
 /**
  * @typedef Article
@@ -56,9 +61,15 @@ import styles from './corpusItem.module.scss'
  * @return {Element}
  */
 export default function CorpusItem({ corpus }) {
+  const displayName = useDisplayName()
   const { t } = useTranslation()
   const [, copyToClipboard] = useCopyToClipboard()
-  const displayName = useDisplayName()
+
+  const {
+    ref: actionsRef,
+    isComponentVisible: areActionsVisible,
+    toggleComponentIsVisible: toggleActions,
+  } = useComponentVisible(false, 'actions')
 
   const deleteCorpusModal = useModal()
   const exportCorpusModal = useModal()
@@ -85,104 +96,68 @@ export default function CorpusItem({ corpus }) {
     toast(t('corpus.copyId.successToast'), { type: 'success' })
   }, [])
 
-  const toggleExpansion = useCallback(
-    (event) => {
-      if (!event.key || [' ', 'Enter'].includes(event.key)) {
-        setExpanded(!expanded)
-      }
-    },
-    [expanded]
-  )
-
   return (
-    <div
-      className={styles.container}
+    <article
+      className={styles.corpus}
       aria-labelledby={`corpus-${corpus._id}-title`}
+      role="listitem"
     >
-      <div className={styles.header}>
-        <div className={styles.heading} onClick={toggleExpansion}>
-          <h2 className={styles.title} id={`corpus-${corpus._id}-title`}>
-            <span
-              tabIndex={0}
-              role="button"
-              aria-expanded={expanded}
-              aria-controls={`corpus-${corpus._id}-chapters`}
-              onKeyUp={toggleExpansion}
-              className={styles.icon}
-            >
-              {expanded ? <ChevronDown /> : <ChevronRight />}
-            </span>
-            {corpus.name}
-          </h2>
-          <p className={styles.metadata}>
-            <span className={styles.by}>{t('corpus.by.text')}</span>
-            <span className={styles.creator}>
-              {displayName(corpus.creator)}
-            </span>
-            <TimeAgo date={corpus.updatedAt} className={styles.updatedAt} />
-          </p>
+      <header className={styles.header}>
+        <div className={styles.title}>
+          <h2 id={`corpus-${corpus._id}-title`}>{corpus.name}</h2>
         </div>
 
         <div role="menu" className={styles.actionButtons}>
           <Button
             role="menuitem"
             icon={true}
-            onClick={() => editCorpusModal.show()}
+            onClick={() => sharingModal.show()}
+            title={t('actions.share.title')}
           >
-            <Settings aria-label={t('corpus.edit.buttonTitle')} />
+            <UserPlus aria-label={t('actions.share.label')} />
           </Button>
 
-          <CorpusMetadataModal
-            corpusId={corpusId}
-            corpusType={corpus.type}
-            initialValue={corpus.metadata}
-          />
+          <div className={styles.dropdownMenu} ref={actionsRef}>
+            <Button
+              title={t('actions.menu.title')}
+              onClick={() => toggleActions()}
+              icon
+            >
+              <EllipsisVertical />
+            </Button>
 
-          <Button
-            role="menuitem"
-            icon={true}
-            onClick={(event) => {
-              event.preventDefault()
-              deleteCorpusModal.show()
-            }}
-          >
-            <Trash aria-label={t('corpus.delete.buttonTitle')} />
-          </Button>
-          <Button
-            role="menuitem"
-            icon={true}
-            onClick={() => exportCorpusModal.show()}
-          >
-            <Printer aria-label={t('corpus.export.buttonTitle')} />
-          </Button>
-
-          <Link
-            role="menuitem"
-            target="_blank"
-            className={buttonStyles.icon}
-            to={`/corpus/${corpus._id}/annotate`}
-          >
-            <MessageSquareShare aria-label={t('article.annotate.button')} />
-          </Link>
-
-          <Button
-            title={t('corpus.copyId.button')}
-            className={styles.copyToClipboard}
-            onClick={handleCopyId}
-            icon
-          >
-            <Clipboard />
-          </Button>
-        </div>
-      </div>
-      {expanded && (
-        <>
-          <div id={`corpus-${corpus._id}-chapters`} className={styles.detail}>
-            {corpus.description && <p>{corpus.description}</p>}
-            <CorpusArticles corpusId={corpusId} />
+            <div className={styles.menu} hidden={!areActionsVisible}>
+              <ul>
+                <li title={t('actions.export.title')}>
+                  {t('actions.export.label')}
+                </li>
+                <li title={t('actions.update.title')}>
+                  {t('actions.update.label')}
+                </li>
+                <li title={t('actions.duplicate.title')}>
+                  {t('actions.duplicate.label')}
+                </li>
+                <li title={t('actions.sendCopy.title')}>
+                  {t('actions.sendCopy.label')}
+                </li>
+                <li title={t('actions.copyId.title')}>
+                  {t('actions.copyId.label')}
+                </li>
+              </ul>
+            </div>
           </div>
-        </>
-      )}
+        </div>
+      </header>
+
+      <div id={`corpus-${corpus._id}-chapters`} className={styles.details}>
+        <ObjectMetadataLabel
+          className={styles.metadata}
+          updatedAtDate={corpus.updatedAt}
+          creatorName={displayName(corpus.creator)}
+        />
+        {corpus.description && <p>{corpus.description}</p>}
+        <CorpusArticles corpusId={corpusId} />
+      </div>
 
       <Modal
         {...deleteCorpusModal.bindings}
@@ -228,6 +203,6 @@ export default function CorpusItem({ corpus }) {
           onCancel={() => editCorpusModal.close()}
         />
       </Modal>
-    </div>
+    </article>
   )
 }

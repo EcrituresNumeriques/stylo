@@ -55,15 +55,11 @@ export default function Corpus() {
       {isLoading ? (
         <Loading />
       ) : (
-        <ul className={styles.corpusList}>
-          {corpus.map((c) => {
-            return (
-              <li key={c._id}>
-                <CorpusItem corpus={c} />
-              </li>
-            )
-          })}
-        </ul>
+        <div className={styles.corpusList}>
+          {corpus.map((c) => (
+            <CorpusItem key={c._id} corpus={c} />
+          ))}
+        </div>
       )}
     </section>
   )

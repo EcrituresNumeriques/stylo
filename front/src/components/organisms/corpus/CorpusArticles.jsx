@@ -18,7 +18,6 @@ import styles from './CorpusArticles.module.scss'
 
 export default function CorpusArticles({ corpusId }) {
   const { t } = useTranslation()
-  const activeWorkspaceId = useActiveWorkspaceId()
   const addArticlesModal = useModal()
   const { data, isLoading, mutate } = useFetchData(
     {
