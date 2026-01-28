@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { isRouteErrorResponse, useRouteError } from 'react-router'
 
-import { Loading } from '../molecules/index.js'
+import { Loading } from '../../molecules/index.js'
 
 import Unauthorized from './401.jsx'
 

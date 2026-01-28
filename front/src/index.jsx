@@ -29,12 +29,12 @@ import AuthCallback from './components/AuthCallback.jsx'
 import LoadingPage from './components/LoadingPage.jsx'
 import Login, { Logout } from './components/Login.jsx'
 import RequireAuth from './components/PrivateRoute.jsx'
-import RedirectIfAuth from './components/auth/RedirectIfAuth.jsx'
 import CollaborativeEditor, {
   loader as ArticleLoader,
 } from './components/collaborative/CollaborativeEditor.jsx'
-import NotFound from './components/errors/404.jsx'
-import ErrorBoundary from './components/errors/AppError.jsx'
+import RedirectIfAuth from './components/pages/auth/RedirectIfAuth.jsx'
+import NotFound from './components/pages/errors/404.jsx'
+import ErrorBoundary from './components/pages/errors/AppError.jsx'
 import App, { loader as AppLoader } from './layouts/App.jsx'
 
 if (SENTRY_DSN) {

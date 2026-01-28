@@ -2,7 +2,7 @@ import React from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
-import { Loading } from '../molecules/index.js'
+import { Loading } from '../../molecules/index.js'
 
 export default function Unauthorized() {
   // REMIND: can't use `Suspense` inside an ErrorBoundary component
