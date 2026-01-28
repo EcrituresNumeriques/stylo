@@ -1,0 +1,13 @@
+@use '../../../styles/defaults' as *;
+@use '../../../styles/variables' as *;
+
+.editor {
+  min-height: 200px;
+  border: 1px solid $main-border-color;
+
+  :global {
+    .monaco-editor {
+      position: absolute;
+    }
+  }
+}

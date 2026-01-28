@@ -1,6 +1,6 @@
 @use '../../../styles/defaults' as *;
 @use '../../../styles/variables' as *;
-@use '../../Page.module' as *;
+@use '../Page.module' as *;
 
 .error {
   @extend .simplePage;

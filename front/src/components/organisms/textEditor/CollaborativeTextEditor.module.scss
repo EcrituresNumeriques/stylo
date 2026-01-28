@@ -1,0 +1,157 @@
+@use '../../../styles/defaults' as *;
+@use '../../../styles/variables' as *;
+@use '../../pages/Page.module' as page;
+
+.editor {
+  border: 1px solid $main-border-color;
+  min-height: 200px;
+
+  :global {
+    .monaco-editor {
+      position: absolute;
+    }
+
+    .monaco-menu .action-menu-item {
+      font-size: 1.1em;
+      text-decoration: none;
+    }
+  }
+}
+
+.collaborativeEditor {
+  display: flex;
+  flex: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+.previewPage {
+  @extend .simplePage;
+
+  box-shadow: none;
+  border: 1px solid #cccccc;
+  margin: 0;
+  display: block;
+  overflow-y: auto;
+  max-width: 100%;
+
+  hr {
+    display: none;
+  }
+
+  > :is(header, nav) {
+    display: none;
+  }
+
+  > article {
+    a:link,
+    a:visited {
+      color: #00f;
+    }
+
+    a[href] {
+      word-break: break-word;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.15;
+      margin: 2.25rem 0 1rem;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    h1 {
+      font-size: 2.986rem;
+    }
+
+    h2 {
+      font-size: 2.488rem;
+    }
+
+    h3 {
+      font-size: 2.074rem;
+    }
+
+    h4 {
+      font-size: 1.728rem;
+    }
+
+    h5 {
+      font-size: 1.44rem;
+    }
+
+    h6 {
+      font-size: 1.2rem;
+    }
+
+    img,
+    video,
+    figure,
+    iframe,
+    audio,
+    canvas,
+    table {
+      max-width: 100%;
+    }
+
+    ul,
+    ol,
+    p,
+    figure {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 0 0 0.75em;
+    }
+
+    ul {
+      list-style: disc;
+      padding-left: 2em;
+    }
+
+    ol {
+      list-style: decimal;
+      padding-left: 2em;
+    }
+
+    li,
+    li > p {
+      margin: 0;
+    }
+
+    figure {
+      margin: 1em 0;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    small {
+      font-size: 0.833rem;
+    }
+  }
+
+  a[id^='fnref']:target {
+    background-color: $text-highlight-color;
+  }
+
+  li[id^='fn']:target {
+    background-color: $text-highlight-color;
+    outline: 1px solid #000;
+  }
+}
+
+.inlineStatus {
+  position: absolute;
+  z-index: 999;
+  width: 100%;
+}

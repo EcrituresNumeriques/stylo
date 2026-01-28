@@ -1,0 +1,29 @@
+@use '../../../styles/defaults' as *;
+@use '../../../styles/variables' as *;
+
+.actions {
+  display: flex;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  justify-content: flex-end;
+  font-size: 0.8em;
+
+  > li:not(:first-child) {
+    margin-left: 0.25em;
+  }
+}
+
+.toggle {
+  margin-top: 1rem;
+}
+
+.form {
+  :global {
+    label {
+      display: block;
+      font-weight: 500;
+      padding-bottom: 0.15rem;
+      font-size: 0.875rem;
+    }
+  }
+}

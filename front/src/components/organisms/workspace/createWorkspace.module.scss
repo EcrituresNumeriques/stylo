@@ -1,0 +1,20 @@
+@use '../../../styles/defaults' as *;
+@use '../../../styles/variables' as *;
+
+.fields {
+  display: flex;
+}
+
+.color {
+  width: 3em;
+}
+
+.name {
+  flex: 1;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

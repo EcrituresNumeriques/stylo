@@ -1,0 +1,71 @@
+@use 'sass:color';
+@use '../../../styles/defaults' as *;
+@use '../../../styles/variables' as *;
+
+.beware {
+  background-color: $beware-background;
+}
+
+.box {
+  max-width: 30rem;
+  padding: 1rem;
+  border: 1px solid $main-border-color;
+  background-color: $extra-background-color;
+  margin: 1rem auto;
+
+  :last-child {
+    margin-bottom: 0;
+  }
+
+  p {
+    padding-bottom: 0.5rem;
+  }
+
+  p:last-child {
+    padding-bottom: 0;
+  }
+
+  hr {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+}
+
+.help {
+  font-size: 0.9em;
+  margin: 0;
+  padding: 0;
+}
+
+.inlineIcon {
+  margin-right: 0.25em;
+  vertical-align: middle;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  margin: 1rem 0;
+}
+
+.disclaimer {
+  max-width: 30rem;
+  padding: 1rem;
+  border: 1px solid $main-border-color;
+  background-color: $extra-background-color;
+  margin: 1rem auto;
+
+  p {
+    text-align: center;
+  }
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 0;
+  margin: 1rem 0 2rem;
+  padding: 0;
+}

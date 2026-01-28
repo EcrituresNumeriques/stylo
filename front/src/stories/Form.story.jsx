@@ -7,7 +7,7 @@ import schema from './form-story.schema.json'
 import { Field, Select } from '../components/atoms/index.js'
 import { Toggle } from '../components/molecules/index.js'
 
-import SchemaForm from '../components/Form.jsx'
+import SchemaForm from '../components/molecules/Form.jsx'
 
 import buttonStyles from '../components/atoms/Button.module.scss'
 

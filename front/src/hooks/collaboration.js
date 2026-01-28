@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
-import * as collaborating from '../components/collaborative/collaborating.js'
+import * as collaborating from '../components/organisms/textEditor/collaborating.js'
 import { applicationConfig } from '../config.js'
 
 const colors = [

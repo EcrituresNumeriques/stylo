@@ -8,10 +8,10 @@ import { useModal } from '../../hooks/modal.js'
 import { Button, PageTitle } from '../atoms/index.js'
 import { Alert, Loading } from '../molecules/index.js'
 
-import Modal from '../Modal.jsx'
-import CorpusForm from '../corpus/CorpusForm.jsx'
-import CorpusItem from '../corpus/CorpusItem.jsx'
-import WorkspaceLabel from '../workspace/WorkspaceLabel.jsx'
+import Modal from '../molecules/Modal.jsx'
+import CorpusForm from '../organisms/corpus/CorpusForm.jsx'
+import CorpusItem from '../organisms/corpus/CorpusItem.jsx'
+import WorkspaceLabel from '../organisms/workspace/WorkspaceLabel.jsx'
 
 import styles from './Corpus.module.scss'
 
