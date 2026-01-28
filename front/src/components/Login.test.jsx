@@ -13,7 +13,7 @@ import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from '../../tests/setup.js'
 
 import Component from './Login.jsx'
-import RedirectIfAuth from './auth/RedirectIfAuth.jsx'
+import RedirectIfAuth from './pages/auth/RedirectIfAuth.jsx'
 
 describe('Login', () => {
   const preloadedState = {
