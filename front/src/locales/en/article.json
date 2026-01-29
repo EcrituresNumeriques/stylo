@@ -1,16 +1,13 @@
 {
   "actions": {
-    "menu": {
-      "title": "More actions on the article"
-    },
     "annotate": {
       "label": "Annotate",
       "title": "Annotate the article"
     },
     "copyId": {
       "label": "Copy identifier",
-      "title": "Copy the article identifier",
-      "success": "Identifier copied to clipboard."
+      "success": "Identifier copied to clipboard.",
+      "title": "Copy the article identifier"
     },
     "create": {
       "error": "Unable to create a new article: {{errMessage}}",
@@ -37,6 +34,9 @@
     "export": {
       "label": "Export",
       "title": "Export the article"
+    },
+    "menu": {
+      "title": "More actions on the article"
     },
     "sendCopy": {
       "description": "Allows sending a copy of the article to one of your contacts by clicking on the icon",

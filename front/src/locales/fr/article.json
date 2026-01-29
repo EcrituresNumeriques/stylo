@@ -1,16 +1,13 @@
 {
   "actions": {
-    "menu": {
-      "title": "Plus d'actions sur lʼarticle"
-    },
     "annotate": {
       "label": "Annoter",
       "title": "Annoter lʼarticle"
     },
     "copyId": {
       "label": "Copier lʼidentifiant",
-      "title": "Copier lʼidentifiant de lʼarticle",
-      "success": "Identifiant copié dans le presse-papier."
+      "success": "Identifiant copié dans le presse-papier.",
+      "title": "Copier lʼidentifiant de lʼarticle"
     },
     "create": {
       "error": "Impossible de créer un nouvel article: {{errMessage}}",
@@ -37,6 +34,9 @@
     "export": {
       "label": "Exporter",
       "title": "Exporter lʼarticle"
+    },
+    "menu": {
+      "title": "Plus d'actions sur lʼarticle"
     },
     "sendCopy": {
       "description": "Permet dʼenvoyer une copie de lʼarticle à lʼun de vos contacts en cliquant sur lʼicône",
