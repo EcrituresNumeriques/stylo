@@ -251,7 +251,6 @@ details.secondary {
   &:hover:not([disabled]),
   &:focus-visible:not([disabled]),
   &.isDisabled {
-    background: none;
     opacity: 0.5;
   }
   &:active:not([disabled]) {

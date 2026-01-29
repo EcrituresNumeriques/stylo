@@ -19,7 +19,7 @@ export default function ArticlesSelectorModal({
   bindings,
   onUpdate,
 }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('corpus', { useSuspense: false })
   const [selectedArticleIds, setSelectedArticleIds] = useState([])
   const { query } = useGraphQLClient()
 
@@ -29,18 +29,18 @@ export default function ArticlesSelectorModal({
         query: setCorpusArticles,
         variables: { corpusId, articleIds: selectedArticleIds },
       })
-      toast(t('article.addToCorpus.success'), { type: 'info' })
+      toast(t('actions.addArticles.success'), { type: 'info' })
       close()
       onUpdate()
     } catch (err) {
-      toast(t('article.addToCorpus.error', { errMessage: err }), {
+      toast(t('actions.addArticles.error', { errMessage: err }), {
         type: 'error',
       })
     }
   }, [corpusId, selectedArticleIds])
 
   return (
-    <Modal {...bindings} title={t('article.addToCorpus.modal.title')}>
+    <Modal {...bindings} title={t('actions.addArticles.modal.title')}>
       <div className={styles.container}>
         <ArticlesSelector
           corpusArticles={corpusArticles}
@@ -55,8 +55,8 @@ export default function ArticlesSelectorModal({
           title: t('modal.closeButton.text'),
         }}
         submitButton={{
-          text: t(`article.addToCorpus.label`),
-          title: t(`article.addToCorpus.title`),
+          text: t(`actions.addArticles.modal.submit`),
+          title: t(`actions.addArticles.modal.submit`),
         }}
       />
     </Modal>

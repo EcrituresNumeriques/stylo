@@ -8,4 +8,5 @@ export { default as PageTitle } from './PageTitle.jsx'
 export { default as Select } from './Select.jsx'
 export { default as TimeAgo } from './TimeAgo.jsx'
 export { default as UpdatedAtLabel } from './UpdatedAtLabel.jsx'
+export { default as Badge } from './Badge.jsx'
 export const Color = { rrggbbaa }

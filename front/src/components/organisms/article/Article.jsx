@@ -277,7 +277,7 @@ export default function Article({ article, corpus }) {
         {...exportModal.bindings}
         title={
           <>
-            <Printer /> Export
+            <Printer /> {t('actions.export.title')}
           </>
         }
       >

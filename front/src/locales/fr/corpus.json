@@ -1,0 +1,91 @@
+{
+  "actions": {
+    "addArticles": {
+      "add": "Ajouter",
+      "added": "Ajouté",
+      "error": "Impossible dʼassocier ces articles au corpus : {{errMessage}}",
+      "filter": {
+        "label": "Filtrer",
+        "placeholder": "Par titre dʼarticle"
+      },
+      "label": "Choisir des articles",
+      "modal": {
+        "submit": "Choisir ces articles",
+        "title": "Choix des articles"
+      },
+      "success": "Articles associés au corpus avec succès.",
+      "title": "Associer/dissocier des articles au corpus"
+    },
+    "annotate": {
+      "label": "Annoter",
+      "title": "Annoter le corpus"
+    },
+    "copyId": {
+      "label": "Copier lʼidentifiant",
+      "success": "Identifiant copié dans le presse-papier.",
+      "title": "Copier lʼidentifiant du corpus"
+    },
+    "create": {
+      "error": "Impossible de créer un nouveau corpus : {{errMessage}}",
+      "fields": {
+        "description": {
+          "label": "Description",
+          "placeholder": ""
+        },
+        "name": "Nom",
+        "type": "Type"
+      },
+      "label": "Créer un corpus",
+      "submit": "Créer le corpus",
+      "success": "Nouveau corpus créé",
+      "title": "Créer un nouveau corpus"
+    },
+    "delete": {
+      "confirm": "Êtes-vous sûr de vouloir supprimer ce corpus ?",
+      "error": "Impossible de supprimer le corpus : {{errMessage}}",
+      "label": "Supprimer",
+      "success": "Corpus supprimé avec succès.",
+      "title": "Supprimer le corpus"
+    },
+    "export": {
+      "label": "Exporter",
+      "title": "Exporter le corpus"
+    },
+    "menu": {
+      "title": "Plus dʼactions sur le corpus"
+    },
+    "metadata": {
+      "error": "Impossible de mettre à jour les métadonnées du corpus : {{errMessage}}",
+      "label": "Modifier les métadonnées",
+      "success": "Métadonnées du corpus mis à jour",
+      "title": "Modifier les métadonnées du corpus",
+      "yaml": {
+        "label": "YAML",
+        "toggle": "Activer le mode YAML"
+      }
+    },
+    "reorderArticles": {
+      "error": "Impossible de mettre à jour lʼordre des articles : {{errorMessage}}",
+      "success": "Lʼordre des articles a été modifié avec succès."
+    },
+    "update": {
+      "error": "Impossible de mettre à jour le corpus : {{errMessage}}",
+      "label": "Modifier",
+      "submit": "Modifier le corpus",
+      "success": "Corpus mis à jour",
+      "title": "Modifier le corpus"
+    }
+  },
+  "articles": {
+    "label": "Articles"
+  },
+  "description": "Un corpus est une collection dʼarticles triables et exportables en une seule action.",
+  "header": "Corpus",
+  "title": "Liste des corpus - {{ workspace }}",
+  "types": {
+    "book": "Livre",
+    "journal": "Revue",
+    "neutral": "Neutre",
+    "thesis": "Thèse"
+  }
+}

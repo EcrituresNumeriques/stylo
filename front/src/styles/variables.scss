@@ -42,3 +42,8 @@ $large-screen-width: calc($large-screen-breakpoint - 1rem);
 html {
   font-size: inherit;
 }
+
+:root {
+  --main-border-color: #{$main-border-color};
+  --main-color: #{$main-color};
+}

@@ -16,7 +16,7 @@ import WorkspaceLabel from '../organisms/workspace/WorkspaceLabel.jsx'
 import styles from './Corpus.module.scss'
 
 export default function Corpus() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('corpus', { useSuspense: false })
   const { workspaceId } = useParams()
   const { corpus, workspace, isLoading, error } = useCorpus({ workspaceId })
   const createCorpusModal = useModal()
@@ -25,25 +25,22 @@ export default function Corpus() {
     <section className={styles.section}>
       <Helmet>
         <title>
-          {t('corpus.page.title', {
+          {t('title', {
             workspace: workspace.name ?? '$t(workspace.myspace)',
           })}
         </title>
       </Helmet>
 
       <header className={styles.header}>
-        <PageTitle title={t('header.corpus.link')}></PageTitle>
+        <PageTitle title={t('header')}></PageTitle>
         <Button primary onClick={() => createCorpusModal.show()}>
-          {t('corpus.createAction.buttonText')}
+          {t('actions.create.label')}
         </Button>
       </header>
       <WorkspaceLabel color={workspace.color} name={workspace.name} />
-      <p className={styles.introduction}>{t('corpus.page.description')}</p>
+      <p className={styles.introduction}>{t('description')}</p>
 
-      <Modal
-        {...createCorpusModal.bindings}
-        title={t('corpus.createModal.title')}
-      >
+      <Modal {...createCorpusModal.bindings} title={t('actions.create.title')}>
         <CorpusForm
           onSubmit={() => createCorpusModal.close()}
           onCancel={() => createCorpusModal.close()}
@@ -55,15 +52,11 @@ export default function Corpus() {
       {isLoading ? (
         <Loading />
       ) : (
-        <ul className={styles.corpusList}>
-          {corpus.map((c) => {
-            return (
-              <li key={c._id}>
-                <CorpusItem corpus={c} />
-              </li>
-            )
-          })}
-        </ul>
+        <div className={styles.corpusList}>
+          {corpus.map((c) => (
+            <CorpusItem key={c._id} corpus={c} />
+          ))}
+        </div>
       )}
     </section>
   )

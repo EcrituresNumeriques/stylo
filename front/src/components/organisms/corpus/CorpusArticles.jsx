@@ -17,8 +17,7 @@ import { getCorpus } from '../../../hooks/Corpus.graphql'
 import styles from './CorpusArticles.module.scss'
 
 export default function CorpusArticles({ corpusId }) {
-  const { t } = useTranslation()
-  const activeWorkspaceId = useActiveWorkspaceId()
+  const { t } = useTranslation('corpus', { useSuspense: false })
   const addArticlesModal = useModal()
   const { data, isLoading, mutate } = useFetchData(
     {
@@ -40,18 +39,21 @@ export default function CorpusArticles({ corpusId }) {
   }, [mutate])
 
   return (
-    <>
+    <section className={styles.container}>
       <div className={styles.header}>
-        <h4>{t('corpus.parts.label')}</h4>
-        <Button onClick={() => addArticlesModal.show()}>
-          {t('article.addToCorpus.action')}
+        <h4>{t('articles.label')}</h4>
+        <Button
+          onClick={() => addArticlesModal.show()}
+          title={t('actions.addArticles.title')}
+        >
+          {t('actions.addArticles.label')}
         </Button>
       </div>
 
       {isLoading && <Loading />}
       {!isLoading && corpusArticles.length > 0 && (
         <ul>
-          <DndProvider manager={dragAndDropManager}>
+          <DndProvider manager={dragAndDropManager} backend={undefined}>
             <CorpusArticleItems
               corpusId={corpusId}
               articles={corpusArticles}
@@ -67,6 +69,6 @@ export default function CorpusArticles({ corpusId }) {
         close={addArticlesModal.close}
         onUpdate={handleUpdate}
       />
-    </>
+    </section>
   )
 }
