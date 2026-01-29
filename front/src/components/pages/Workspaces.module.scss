@@ -3,7 +3,7 @@
 
 .section {
   @extend .wrapped-center;
-  padding: 1rem;
+  padding: 2rem;
   border: 1px solid $main-border-color;
   background-color: $extra-background-color;
 
@@ -15,8 +15,45 @@
     margin-bottom: 1rem;
   }
 
-  > article:nth-of-type(2n + 1) {
+  article:nth-of-type(2n + 1) {
     background-color: $alternate-row-color;
+  }
+}
+
+.pageHeader {
+  display: flex;
+  column-gap: 1rem;
+  row-gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.pageTitle {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.title {
+  white-space: nowrap;
+  flex: 0;
+}
+
+.button {
+  flex: 0;
+  margin-right: auto;
+  white-space: nowrap;
+}
+
+.search {
+  flex: 1;
+  min-width: 400px;
+  @media screen and (min-width: $large-screen-breakpoint) {
+    & {
+      max-width: 550px;
+    }
   }
 }
 
@@ -24,10 +61,7 @@
   input {
     width: 100%;
   }
-
-  padding: 0.5rem 0;
 }
-
 .workspacesList {
   margin-top: 1em;
 }

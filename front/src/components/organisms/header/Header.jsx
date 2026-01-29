@@ -123,7 +123,7 @@ export default function Header() {
                             className={styles.chip}
                             style={{ backgroundColor: '#ccc' }}
                           />
-                          {t('workspace.myspace')}
+                          {t('header.mainMenu.workspace.myspace')}
                         </Link>
                       </li>
 
@@ -131,7 +131,7 @@ export default function Header() {
 
                       <li>
                         <NavLink to={`/workspaces`} end>
-                          {t('workspace.all')}
+                          {t('header.mainMenu.workspace.all')}
                         </NavLink>
                       </li>
                     </ul>

@@ -66,6 +66,11 @@
 .search {
   flex: 1;
   min-width: 400px;
+  @media screen and (min-width: $large-screen-breakpoint) {
+    & {
+      max-width: 550px;
+    }
+  }
 }
 
 .searchField {

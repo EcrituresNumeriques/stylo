@@ -1,0 +1,70 @@
+{
+  "actions": {
+    "create": {
+      "error": "Imposible crear un nuevo espacio de trabajo: {{errMessage}}",
+      "fields": {
+        "color": "Color",
+        "description": {
+          "label": "Descripción",
+          "placeholder": ""
+        },
+        "name": "Nombre"
+      },
+      "label": "Crear",
+      "submit": "Crear un nuevo espacio de trabajo",
+      "success": "Nuevo espacio de trabajo creado",
+      "title": "Crear un espacio de trabajo"
+    },
+    "filter": {
+      "label": "Filtrar",
+      "placeholder": "Por nombre de espacio de trabajo"
+    },
+    "leave": {
+      "confirm": "¿Está seguro de que desea abandonar este espacio de trabajo?",
+      "error": "Imposible abandonar el espacio de trabajo: {{errMessage}}",
+      "label": "Abandonar espacio",
+      "success": "Espacio de trabajo abandonado con éxito.",
+      "title": "Abandonar espacio",
+      "workspaceRemovalNote": "El espacio de trabajo será <1>eliminado</1> ya que usted es la última persona que pertenece a este espacio."
+    },
+    "menu": {
+      "title": "Más acciones en el espacio de trabajo"
+    },
+    "metadata": {
+      "error": "Imposible actualizar el formulario de metadatos: {{errMessage}}",
+      "fields": {
+        "data": "Esquema de datos (JSON Schema)",
+        "ui": "Configuración de la interfaz (JSON)"
+      },
+      "label": "Formulario de metadatos",
+      "success": "Formulario de metadatos actualizado con éxito",
+      "title": "Configurar formulario de metadatos"
+    },
+    "share": {
+      "add": {
+        "error": "Imposible invitar al usuario como miembro: {{errMessage}}",
+        "success": "Usuario {{displayName}} invitado como miembro con éxito"
+      },
+      "label": "Gestionar miembros",
+      "remove": {
+        "error": "Imposible eliminar al usuario de los miembros: {{errMessage}}",
+        "success": "Usuario {{displayName}} eliminado de los miembros con éxito"
+      },
+      "subtitle": "Permite agregar o eliminar un miembro",
+      "title": "Gestionar miembros del espacio de trabajo"
+    }
+  },
+  "header": "Espacios de trabajo",
+  "myspace": {
+    "name": "Mi espacio"
+  },
+  "stats": {
+    "articles_one": "{{ count }} artículo",
+    "articles_other": "{{ count }} artículos",
+    "articles_zero": "ningún artículo",
+    "members_one": "{{ count }} miembro",
+    "members_other": "{{ count }} miembros",
+    "members_zero": "ningún miembro"
+  },
+  "title": "Lista de espacios de trabajo"
+}

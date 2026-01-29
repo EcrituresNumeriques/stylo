@@ -1,16 +1,78 @@
-import { Braces, CircleOff, Users } from 'lucide-react'
+import { Newspaper, UserPlus, Users } from 'lucide-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useModal } from '../../../hooks/modal.js'
 import { useDisplayName } from '../../../hooks/user.js'
-import { Button, Field, TimeAgo } from '../../atoms/index.js'
+import { Button } from '../../atoms/index.js'
+import { DropdownMenu, ObjectMetadataLabel } from '../../molecules/index.js'
 
 import LeaveWorkspaceModal from './LeaveWorkspaceModal.jsx'
+/**
+ * @typedef {Object} WorkspaceItemProps
+ * @property {{
+ *   color: string,
+ *   name: string,
+ *   description: string,
+ *   personal: boolean,
+ *   articlesCount: number,
+ *   creator: {
+ *     displayName: string,
+ *     username: string
+ *   },
+ *   formMetadata: {
+ *     data: string,
+ *     ui: string
+ *   },
+ *   createdAt: string,
+ *   updatedAt: string
+ * }} workspace
+ */
 import WorkspaceManageMembersModal from './WorkspaceManageMembersModal.jsx'
 import WorkspaceUpdateFormMetadataModal from './WorkspaceUpdateFormMetadataModal.jsx'
 
-import styles from './workspaceItem.module.scss'
+/**
+ * @typedef {Object} WorkspaceItemProps
+ * @property {{
+ *   color: string,
+ *   name: string,
+ *   description: string,
+ *   personal: boolean,
+ *   articlesCount: number,
+ *   creator: {
+ *     displayName: string,
+ *     username: string
+ *   },
+ *   formMetadata: {
+ *     data: string,
+ *     ui: string
+ *   },
+ *   createdAt: string,
+ *   updatedAt: string
+ * }} workspace
+ */
+import styles from './WorkspaceItem.module.scss'
+
+/**
+ * @typedef {Object} WorkspaceItemProps
+ * @property {{
+ *   color: string,
+ *   name: string,
+ *   description: string,
+ *   personal: boolean,
+ *   articlesCount: number,
+ *   creator: {
+ *     displayName: string,
+ *     username: string
+ *   },
+ *   formMetadata: {
+ *     data: string,
+ *     ui: string
+ *   },
+ *   createdAt: string,
+ *   updatedAt: string
+ * }} workspace
+ */
 
 /**
  * @typedef {Object} WorkspaceItemProps
@@ -38,119 +100,97 @@ import styles from './workspaceItem.module.scss'
  * @returns {React.ReactHTMLElement}
  */
 export default function WorkspaceItem({ workspace }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('workspace', { useSuspense: false })
   const displayName = useDisplayName()
   const workspaceLeaveModal = useModal()
   const workspaceManageMembersModal = useModal()
   const workspaceUpdateFormMetadataModal = useModal()
 
-  const workspaceTitle = (
-    <>
-      <h2 className={styles.title}>
-        <span
-          className={styles.chip}
-          style={{ backgroundColor: workspace.color }}
-          role="presentation"
-        ></span>
+  const articlesCount = workspace.personal
+    ? workspace.articlesCount
+    : workspace.stats.articlesCount
 
-        <span>{workspace.name}</span>
-      </h2>
-    </>
-  )
+  const membersCount = workspace.personal ? 0 : workspace.stats.membersCount
 
   return (
-    <div className={styles.container}>
-      {workspaceTitle}
-      {workspace.personal && (
-        <>
-          <Field className={styles.field} label="Articles">
-            <span>{workspace.articlesCount}</span>
-          </Field>
-        </>
-      )}
-      {!workspace.personal && (
-        <>
-          <div>
-            {workspace.description && (
-              <Field
-                className={styles.field}
-                label={t('workspace.description.label')}
-              >
-                <span>{workspace.description}</span>
-              </Field>
-            )}
-            <Field
-              className={styles.field}
-              label={t('workspace.createdAt.label')}
-            >
-              <>
-                <TimeAgo date={workspace.createdAt} />
-                {workspace.creator && (
-                  <>
-                    {' '}
-                    <span>{t('workspace.createdBy.label')}</span>{' '}
-                    <span className={styles.creator}>
-                      {displayName(workspace.creator)}
-                    </span>
-                  </>
-                )}
-              </>
-            </Field>
-            <Field
-              className={styles.field}
-              label={t('workspace.updatedAt.label')}
-            >
-              <TimeAgo date={workspace.updatedAt} />
-            </Field>
-            <Field
-              className={styles.field}
-              label={t('workspace.membersCount.label')}
-            >
-              <span>{workspace.stats.membersCount}</span>
-            </Field>
-            <Field
-              className={styles.field}
-              label={t('workspace.articlesCount.label')}
-            >
-              <span>{workspace.stats.articlesCount}</span>
-            </Field>
-          </div>
-          <aside className={styles.actionButtons}>
-            <div className={styles.primaryActionButtons}>
-              <Button
-                title={t('workspace.manageMember.title')}
-                onClick={() => workspaceManageMembersModal.show()}
-              >
-                <Users /> {t('workspace.manageMember.button')}
-              </Button>
-              <Button
-                title={t('workspace.updateFormMetadata.title')}
-                onClick={() => workspaceUpdateFormMetadataModal.show()}
-              >
-                <Braces /> {t('workspace.updateFormMetadata.button')}
-              </Button>
-            </div>
+    <article className={styles.article}>
+      <header className={styles.header}>
+        <div className={styles.heading}>
+          <h2 className={styles.title} id={`workspace-${workspace._id}-title`}>
+            <span
+              className={styles.chip}
+              style={{ backgroundColor: workspace.color }}
+              role="presentation"
+            ></span>
+            {workspace.name}
+          </h2>
+        </div>
+
+        {!workspace.personal && (
+          <div role="menu" className={styles.actionButtons}>
             <Button
-              title={t('workspace.leave.title')}
-              onClick={() => workspaceLeaveModal.show()}
+              role="menuitem"
+              icon={true}
+              title={t('actions.share.title')}
+              onClick={() => workspaceManageMembersModal.show()}
             >
-              <CircleOff /> {t('workspace.leave.button')}
+              <UserPlus aria-label={t('actions.share.label')} />
             </Button>
-          </aside>
 
-          <LeaveWorkspaceModal {...workspaceLeaveModal} workspace={workspace} />
+            <DropdownMenu title={t('actions.menu.title')}>
+              <ul>
+                <li
+                  onClick={() => workspaceUpdateFormMetadataModal.show()}
+                  title={t('actions.metadata.title')}
+                >
+                  {t('actions.metadata.label')}
+                </li>
+                <li
+                  onClick={() => workspaceLeaveModal.show()}
+                  title={t('actions.leave.title')}
+                >
+                  {t('actions.leave.label')}
+                </li>
+              </ul>
+            </DropdownMenu>
+          </div>
+        )}
+      </header>
 
-          <WorkspaceManageMembersModal
-            {...workspaceManageMembersModal}
-            workspace={workspace}
+      <section className={styles.details}>
+        {workspace.description && <p>{workspace.description}</p>}
+
+        <div className={styles.counters}>
+          <div className={styles.counter}>
+            <Newspaper /> {t('stats.articles', { count: articlesCount })}
+          </div>
+          {membersCount > 0 && (
+            <div className={styles.counter}>
+              <Users /> {t('stats.members', { count: membersCount })}
+            </div>
+          )}
+        </div>
+
+        {!workspace.personal && (
+          <ObjectMetadataLabel
+            className={styles.metadata}
+            creatorName={displayName(workspace.creator)}
+            updatedAtDate={workspace.updatedAt}
           />
+        )}
+      </section>
 
-          <WorkspaceUpdateFormMetadataModal
-            {...workspaceUpdateFormMetadataModal}
-            workspace={workspace}
-          />
-        </>
-      )}
-    </div>
+      <LeaveWorkspaceModal {...workspaceLeaveModal} workspace={workspace} />
+
+      <WorkspaceManageMembersModal
+        {...workspaceManageMembersModal}
+        workspace={workspace}
+      />
+
+      <WorkspaceUpdateFormMetadataModal
+        {...workspaceUpdateFormMetadataModal}
+        workspace={workspace}
+      />
+    </article>
   )
 }

@@ -10,5 +10,6 @@
   "createButton.text": "Créer",
   "deleteButton.text": "Supprimer",
   "open.text": "Ouvrir",
-  "saveButton.text": "Enregistrer"
+  "saveButton.text": "Enregistrer",
+  "update.text": "Mettre à jour"
 }

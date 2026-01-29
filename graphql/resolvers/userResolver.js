@@ -318,7 +318,7 @@ module.exports = {
       const contributedArticlesCount = await Article.countDocuments({
         contributors: { $elemMatch: { user: user._id } },
       })
-      const myArticlesCount = await Article.countDocuments({ owner: this._id })
+      const myArticlesCount = await Article.countDocuments({ owner: user._id })
       return {
         myArticlesCount,
         contributedArticlesCount,
