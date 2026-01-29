@@ -202,6 +202,7 @@
     "list": "Outils d'écriture et de collaboration",
     "workspace.all": "Tous les espaces",
     "workspace.myspace": "Mon espace",
+    "workspaces": "Espaces de travail",
     "workspaces.list": "Choix d'un espace de travail"
   },
   "header.skiplinks": {
