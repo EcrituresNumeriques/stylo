@@ -1,12 +1,16 @@
 import React, { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
+import { useDisplayName } from '../../../hooks/user.js'
 import { useWorkspaceMembersActions } from '../../../hooks/workspace.js'
-import { Loading } from '../../molecules/index.js'
+import { Alert, Loading } from '../../molecules/index.js'
 
 import ContactSearch from '../contact/ContactSearch.jsx'
 
 export default function WorkspaceManageMembers({ workspace }) {
+  const { t } = useTranslation('workspace', { useSuspense: false })
+  const displayName = useDisplayName()
   const workspaceId = workspace._id
   const { members, error, isLoading, inviteMember, removeMember } =
     useWorkspaceMembersActions(workspaceId)
@@ -17,15 +21,13 @@ export default function WorkspaceManageMembers({ workspace }) {
         try {
           await inviteMember(user)
           toast(
-            `Utilisateur ${
-              user.displayName || user.username
-            } invité en tant que membre.`,
+            t('actions.share.add.success', { displayName: displayName(user) }),
             {
               type: 'info',
             }
           )
         } catch (err) {
-          toast(String(err), {
+          toast(t('actions.share.add.error', { errMessage: err }), {
             type: 'error',
           })
         }
@@ -33,15 +35,15 @@ export default function WorkspaceManageMembers({ workspace }) {
         try {
           await removeMember(user)
           toast(
-            `Utilisateur ${
-              user.displayName || user.username
-            } supprimé des membres.`,
+            t('actions.share.remove.success', {
+              displayName: displayName(user),
+            }),
             {
               type: 'warning',
             }
           )
         } catch (err) {
-          toast(String(err), {
+          toast(t('actions.share.remove.error', { errMessage: err }), {
             type: 'error',
           })
         }
@@ -51,7 +53,7 @@ export default function WorkspaceManageMembers({ workspace }) {
   )
 
   if (error) {
-    return <div>Unable to load workspace members</div>
+    return <Alert message={error.message} />
   }
 
   if (isLoading) {

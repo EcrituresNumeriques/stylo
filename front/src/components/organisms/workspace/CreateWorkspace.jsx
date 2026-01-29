@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -7,6 +8,7 @@ import { useWorkspaceActions } from '../../../hooks/workspace.js'
 import { Field } from '../../atoms/index.js'
 import { FormActions } from '../../molecules/index.js'
 
+import fieldStyles from '../../atoms/Field.module.scss'
 import styles from './createWorkspace.module.scss'
 
 /**
@@ -16,7 +18,7 @@ import styles from './createWorkspace.module.scss'
  * @return {JSX.Element}
  */
 export default function CreateWorkspace({ onSubmit, onCancel }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('workspace', { useSuspense: false })
   const { addWorkspace } = useWorkspaceActions()
 
   const handleSubmit = useCallback(async (event) => {
@@ -24,13 +26,13 @@ export default function CreateWorkspace({ onSubmit, onCancel }) {
     try {
       const createWorkspaceInput = fromFormData(event.target)
       await addWorkspace(createWorkspaceInput)
-      toast(t('workspace.create.successNotification'), {
+      toast(t('actions.create.success'), {
         type: 'info',
       })
 
       onSubmit()
     } catch (err) {
-      toast(t('workspace.create.errorNotification', { errMessage: err }), {
+      toast(t('actions.create.error', { errMessage: err }), {
         type: 'error',
       })
     }
@@ -44,24 +46,30 @@ export default function CreateWorkspace({ onSubmit, onCancel }) {
           required={true}
           type="text"
           name="name"
-          label={t('workspace.createForm.nameField')}
+          label={t('actions.create.fields.name')}
           className={styles.name}
         />
+        <div className={clsx(fieldStyles.field, 'control-field')}>
+          <label htmlFor="description">
+            {t('actions.create.fields.description.label')}
+          </label>
+          <textarea
+            name="description"
+            id="description"
+            placeholder={t('actions.create.fields.description.placeholder')}
+            rows="5"
+          ></textarea>
+        </div>
         <Field
-          label={t('workspace.createForm.descriptionField')}
-          type="text"
-          name="description"
-        />
-        <Field
-          label={t('workspace.createForm.colorField')}
+          label={t('actions.create.fields.color')}
           type="color"
           name="color"
         />
         <FormActions
           onCancel={onCancel}
           submitButton={{
-            text: t('workspace.createForm.buttonText'),
-            title: t('workspace.createForm.buttonTitle'),
+            text: t('actions.create.label'),
+            title: t('actions.create.submit'),
           }}
         />
       </form>

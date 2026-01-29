@@ -5,37 +5,32 @@ import { useTranslation } from 'react-i18next'
 import { Button } from '../../atoms/index.js'
 
 import Modal from '../../molecules/Modal.jsx'
-import WorkspaceLabel from './WorkspaceLabel.jsx'
 import WorkspaceManageMembers from './WorkspaceManageMembers.jsx'
 
-import styles from './workspaceItem.module.scss'
+import styles from './WorkspaceManageMembersModal.module.scss'
 
 export default function WorkspaceManageMembersModal({
   close,
   bindings,
   workspace,
 }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('workspace', { useSuspense: false })
+  const { t: tModal } = useTranslation('modal', { useSuspense: false })
   return (
     <Modal
       {...bindings}
       title={
         <>
           <Users />
-          {t('workspace.manageMembersModal.title')}
+          {t('actions.share.title')}
         </>
       }
-      subtitle={t('workspace.manageMembersModal.subtitle')}
+      subtitle={t('actions.share.subtitle')}
     >
-      <WorkspaceLabel
-        className={styles.workspaceLabel}
-        color={workspace.color}
-        name={workspace.name}
-      />
       <WorkspaceManageMembers workspace={workspace} />
       <div className={styles.actions}>
         <Button secondary onClick={() => close()}>
-          {t('modal.close.text')}
+          {tModal('close.text')}
         </Button>
       </div>
     </Modal>

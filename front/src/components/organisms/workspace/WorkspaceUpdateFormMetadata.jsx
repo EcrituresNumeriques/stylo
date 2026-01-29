@@ -21,7 +21,8 @@ export default function WorkspaceUpdateFormMetadata({
   onCancel,
   workspace,
 }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('workspace', { useSuspense: false })
+  const { t: tModal } = useTranslation('modal', { useSuspense: false })
   const { updateFormMetadata } = useWorkspaceActions()
 
   const handleSubmit = useCallback(async (event) => {
@@ -29,27 +30,22 @@ export default function WorkspaceUpdateFormMetadata({
     try {
       const updateFormMetadataInput = fromFormData(event.target)
       await updateFormMetadata(workspace._id, updateFormMetadataInput)
-      toast(t('workspace.updateFormMetadata.successNotification'), {
+      toast(t('actions.metadata.success'), {
         type: 'info',
       })
 
       onSubmit()
     } catch (err) {
-      toast(
-        t('workspace.updateFormMetadata.errorNotification', {
-          errMessage: err,
-        }),
-        {
-          type: 'error',
-        }
-      )
+      toast(t('actions.metadata.error', { errMessage: err }), {
+        type: 'error',
+      })
     }
   }, [])
 
   return (
     <section>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <label htmlFor="data">{t('workspace.formMetadata.data')}</label>
+        <label htmlFor="data">{t('actions.metadata.fields.data')}</label>
         <div>
           <textarea
             id="data"
@@ -61,7 +57,7 @@ export default function WorkspaceUpdateFormMetadata({
             {workspace.formMetadata?.data}
           </textarea>
         </div>
-        <label htmlFor="ui">{t('workspace.formMetadata.ui')}</label>
+        <label htmlFor="ui">{t('actions.metadata.fields.ui')}</label>
         <div>
           <textarea
             id="ui"
@@ -77,8 +73,8 @@ export default function WorkspaceUpdateFormMetadata({
         <FormActions
           onCancel={onCancel}
           submitButton={{
-            text: t('workspace.updateFormMetadata.buttonText'),
-            title: t('workspace.updateFormMetadata.buttonTitle'),
+            text: tModal('update.text'),
+            title: tModal('update.text'),
           }}
         />
       </form>

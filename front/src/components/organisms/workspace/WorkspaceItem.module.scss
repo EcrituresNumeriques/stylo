@@ -1,0 +1,76 @@
+@use '../../../styles/defaults' as *;
+@use '../../../styles/variables' as *;
+
+.article {
+  display: flex;
+  flex-direction: column;
+
+  column-gap: 2.5rem;
+  row-gap: 0.5rem;
+
+  padding: 1rem;
+  position: relative;
+
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .heading {
+    flex: 250px 1;
+    display: inline-flex;
+    align-items: center;
+    text-wrap: balance;
+  }
+  
+  .title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem
+  }
+
+  .chip {
+    display: inline-block;
+    height: 1.15em;
+    width: 1.15em;
+    border-radius: 4px;
+  }
+
+  .actionButtons {
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
+    align-items: flex-start;
+  }
+
+  .details {
+    font-size: 0.9em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    
+    p {
+      margin-bottom: 0.5rem;
+      font-size: 1em;
+    }
+  }
+
+  .metadata {
+    padding-top: 0.45rem;
+    color: $main-lighter-color;
+  }
+
+  .counters {
+    display: flex;
+    gap: 1.5rem;
+    color: $main-lighter-color;
+  }
+
+  .counter {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+}

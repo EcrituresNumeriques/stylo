@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
@@ -7,8 +7,8 @@ import { shallowEqual, useSelector } from 'react-redux'
 import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { useModal } from '../../hooks/modal.js'
 import { useWorkspaces } from '../../hooks/workspace.js'
-import { Button, Field } from '../atoms/index.js'
-import { Loading } from '../molecules/index.js'
+import { Button, Field, PageTitle } from '../atoms/index.js'
+import { Alert, Loading } from '../molecules/index.js'
 
 import CreateWorkspaceModal from '../organisms/workspace/CreateWorkspaceModal.jsx'
 import WorkspaceItem from '../organisms/workspace/WorkspaceItem.jsx'
@@ -18,7 +18,7 @@ import { getUserStats } from '../../hooks/Workspaces.graphql'
 import styles from './Workspaces.module.scss'
 
 export default function Workspaces() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('workspace', { useSuspense: false })
   const activeUser = useSelector((state) => state.activeUser, shallowEqual)
   const [filter, setFilter] = useState('')
   const { workspaces, error, isLoading } = useWorkspaces()
@@ -26,6 +26,7 @@ export default function Workspaces() {
 
   const [personalWorkspace, setPersonalWorkspace] = useState({
     _id: activeUser._id,
+    name: t('myspace.name'),
     personal: true,
     members: [],
   })
@@ -39,7 +40,7 @@ export default function Workspaces() {
         setPersonalWorkspace({
           _id: activeUser._id,
           personal: true,
-          name: t('workspace.myspace'),
+          name: t('myspace.name'),
           description: '',
           color: '#D9D9D9',
           createdAt: activeUser.createdAt,
@@ -54,8 +55,15 @@ export default function Workspaces() {
     })()
   }, [activeUser._id, t])
 
+  const filteredWorkspaces = useMemo(() => {
+    return [personalWorkspace, ...workspaces].filter(
+      (workspace) =>
+        workspace.name.toLowerCase().indexOf(filter.toLowerCase()) > -1
+    )
+  }, [filter, workspaces, personalWorkspace])
+
   if (error) {
-    return <div>Unable to load the workspaces</div>
+    return <Alert message={error.message} />
   }
   if (isLoading) {
     return <Loading />
@@ -64,33 +72,47 @@ export default function Workspaces() {
   return (
     <section className={styles.section}>
       <Helmet>
-        <title>{t('workspace.title')}</title>
+        <title>{t('title')}</title>
       </Helmet>
 
-      <h1>{t('workspace.title')}</h1>
-      <div>
-        <Field
-          className={styles.searchField}
-          type="text"
-          icon={Search}
-          value={filter}
-          placeholder={t('search.placeholder')}
-          onChange={(e) => setFilter(e.target.value)}
+      <header className={styles.pageHeader}>
+        <PageTitle
+          className={styles.title}
+          id="workspaces-list-headline"
+          title={t('header')}
         />
-      </div>
-      <Button primary onClick={() => workspaceCreateModal.show()}>
-        {t('workspace.createNew.button')}
-      </Button>
+        <Button
+          className={styles.button}
+          primary
+          onClick={() => workspaceCreateModal.show()}
+        >
+          {t('actions.create.title')}
+        </Button>
+        <search
+          className={styles.search}
+          aria-label={t('actions.filter.label')}
+        >
+          <Field
+            className={styles.searchField}
+            type="search"
+            icon={Search}
+            value={filter}
+            placeholder={t('actions.filter.placeholder')}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+        </search>
+      </header>
 
       <CreateWorkspaceModal {...workspaceCreateModal} />
 
-      <ul className={styles.workspacesList}>
-        {[personalWorkspace, ...workspaces].map((workspace) => (
-          <li key={`workspace-${workspace._id}`}>
-            <WorkspaceItem workspace={workspace} />
-          </li>
+      <div className={styles.workspacesList}>
+        {filteredWorkspaces.map((workspace) => (
+          <WorkspaceItem
+            key={`workspace-${workspace._id}`}
+            workspace={workspace}
+          />
         ))}
-      </ul>
+      </div>
     </section>
   )
 }

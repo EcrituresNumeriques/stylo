@@ -18,12 +18,12 @@ export default function WorkspaceLabel({
   color: backgroundColor = '#ccc',
   className,
 }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('workspace', { useSuspense: false })
 
   return (
     <div className={clsx(className, styles.container)} aria-label={name}>
       <span className={styles.chip} style={{ backgroundColor }} />
-      <span className={styles.name}>{name ?? t('workspace.myspace')}</span>
+      <span className={styles.name}>{name ?? t('myspace.name')}</span>
     </div>
   )
 }

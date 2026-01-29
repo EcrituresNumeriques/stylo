@@ -190,9 +190,16 @@ export function useWorkspaceActions() {
 }
 
 export function useWorkspaces() {
-  const { data, error, isLoading } = useFetchData({
-    query: getWorkspaces,
-  })
+  const { data, error, isLoading } = useFetchData(
+    {
+      query: getWorkspaces,
+    },
+    {
+      fallbackData: {
+        workspaces: [],
+      },
+    }
+  )
 
   return {
     workspaces: data?.workspaces,

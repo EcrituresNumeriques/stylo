@@ -1,0 +1,70 @@
+{
+  "actions": {
+    "create": {
+      "error": "Unable to create a new workspace: {{errMessage}}",
+      "fields": {
+        "color": "Color",
+        "description": {
+          "label": "Description",
+          "placeholder": ""
+        },
+        "name": "Name"
+      },
+      "label": "Create",
+      "submit": "Create a new workspace",
+      "success": "New workspace created",
+      "title": "Create a workspace"
+    },
+    "filter": {
+      "label": "Filter",
+      "placeholder": "By workspace name"
+    },
+    "leave": {
+      "confirm": "Are you sure you want to leave this workspace?",
+      "error": "Unable to leave the workspace: {{errMessage}}",
+      "label": "Leave workspace",
+      "success": "Workspace left successfully.",
+      "title": "Leave workspace",
+      "workspaceRemovalNote": "The workspace will be <1>deleted</1> as you are the last person belonging to this workspace."
+    },
+    "menu": {
+      "title": "More actions on workspace"
+    },
+    "metadata": {
+      "error": "Unable to update metadata form: {{errMessage}}",
+      "fields": {
+        "data": "Data schema (JSON Schema)",
+        "ui": "Interface configuration (JSON)"
+      },
+      "label": "Metadata form",
+      "success": "Metadata form updated successfully",
+      "title": "Configure metadata form"
+    },
+    "share": {
+      "add": {
+        "error": "Unable to invite user as member: {{errMessage}}",
+        "success": "User {{displayName}} successfully invited as member"
+      },
+      "label": "Manage members",
+      "remove": {
+        "error": "Unable to remove user from members: {{errMessage}}",
+        "success": "User {{displayName}} successfully removed from members"
+      },
+      "subtitle": "Allows adding or removing a member",
+      "title": "Manage workspace members"
+    }
+  },
+  "header": "Workspaces",
+  "myspace": {
+    "name": "My space"
+  },
+  "stats": {
+    "articles_one": "{{ count }} article",
+    "articles_other": "{{ count }} articles",
+    "articles_zero": "no articles",
+    "members_one": "{{ count }} member",
+    "members_other": "{{ count }} members",
+    "members_zero": "no members"
+  },
+  "title": "Workspaces list"
+}
