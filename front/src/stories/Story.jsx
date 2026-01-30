@@ -3,6 +3,7 @@ import React from 'react'
 import i18n from '../i18n.js'
 
 import {
+  Button,
   CreatedByLabel,
   PageTitle,
   UpdatedAtLabel,
@@ -10,9 +11,13 @@ import {
 import {
   Alert,
   Avatar,
+  Combobox,
+  FormActions,
   Loading,
+  Modal,
   Version,
 } from '../components/molecules/index.js'
+import { useModal } from '../hooks/modal.js'
 
 import CollaborativeEditorWebSocketStatus from '../components/organisms/textEditor/CollaborativeEditorWebSocketStatus.jsx'
 import ButtonStory from './Button.story.jsx'
@@ -24,6 +29,8 @@ import styles from '../layout.module.scss'
 import storyStyles from './story.module.scss'
 
 export default function Story() {
+  const modalText = useModal()
+  const modalForm = useModal()
   return (
     <div className={styles.container}>
       <section aria-label="Typographie">
@@ -250,6 +257,35 @@ export default function Story() {
         <CreatedByLabel name={"Nom de l'utilisateur"} />
         <br />
         <UpdatedAtLabel date={new Date()} />
+      </section>
+
+      <section aria-label="Dialogues">
+        <Button onClick={() => modalText.show()}>
+          Ouvrir un dialogue avec du texte
+        </Button>
+        <Modal {...modalText.bindings}>Bonjour :)</Modal>
+
+        <Button onClick={() => modalForm.show()}>
+          Ouvrir un dialogue avec un formulaire
+        </Button>
+        <Modal {...modalForm.bindings}>
+          <Combobox
+            onChange={() => {}}
+            items={[
+              {
+                key: '1',
+                name: 'Bonjour',
+                index: 1,
+              },
+              {
+                key: '2',
+                name: 'Salut',
+                index: 2,
+              },
+            ]}
+          />
+          <FormActions></FormActions>
+        </Modal>
       </section>
     </div>
   )

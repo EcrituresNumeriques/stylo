@@ -113,6 +113,11 @@ export default function Combobox({
     },
   })
 
+  const handleOnFocus = useCallback(
+    () => !isOpen && openMenu(),
+    [isOpen, openMenu]
+  )
+
   return (
     <div className={styles.combobox}>
       <label {...getLabelProps()}>{label}</label>
@@ -121,8 +126,9 @@ export default function Combobox({
           {...getInputProps({
             type: 'search',
             autoComplete: 'disabled',
-            onFocus: () => !isOpen && openMenu(),
+            onFocus: handleOnFocus,
           })}
+          onClick={handleOnFocus}
           name={id}
           className={styles.autocompleteField}
         />
