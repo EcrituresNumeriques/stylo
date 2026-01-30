@@ -306,7 +306,7 @@ export async function toApiUrl(plainUrl, token) {
   }
 
   if (strategy === 'WEB' && username) {
-    const user = await fetchUserFromToken()
+    const user = await fetchUserFromToken(token)
 
     if (user.username !== username) {
       throw new Error('Cannot fetch another member personal library')
