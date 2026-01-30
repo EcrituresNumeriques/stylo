@@ -201,7 +201,9 @@
   position: absolute;
   width: 100%;
   z-index: 900;
-  max-height: min(30cqh, 20rem);
+  // not sure why but cqh is equals to 0 in the bibliography modal
+  //max-height: min(30cqh, 20rem);
+  max-height: 20rem;
   overflow-y: auto;
 }
 
