@@ -5,6 +5,7 @@ import uiSchema from './form-story-ui-schema.json'
 import schema from './form-story.schema.json'
 
 import SchemaForm from '../components/Form.jsx'
+import Combobox from '../components/SelectCombobox.jsx'
 import Field from '../components/atoms/Field.jsx'
 import Select from '../components/atoms/Select.jsx'
 import Toggle from '../components/molecules/Toggle.jsx'
@@ -60,6 +61,28 @@ export default function FormStory() {
         <Field label="Acceptez-vous de cocher cette case ?" id="example-toggle">
           <Toggle id="example-toggle" />
         </Field>
+      </fieldset>
+
+      <fieldset>
+        <legend>
+          <h4>Liste déroulante</h4>
+        </legend>
+
+        <Combobox
+          onChange={() => {}}
+          items={[
+            {
+              key: '1',
+              name: 'Bonjour',
+              index: 1,
+            },
+            {
+              key: '2',
+              name: 'Salut',
+              index: 2,
+            },
+          ]}
+        />
       </fieldset>
 
       <SchemaForm formData={{}} uiSchema={uiSchema} schema={schema} />
