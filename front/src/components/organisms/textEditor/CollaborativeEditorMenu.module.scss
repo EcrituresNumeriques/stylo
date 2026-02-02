@@ -3,6 +3,11 @@
 .opened {
   scrollbar-gutter: stable;
   overflow-x: hidden;
+  display: flex;
+
+  .content {
+    flex: 1;
+  }
 }
 
 a.external:after {

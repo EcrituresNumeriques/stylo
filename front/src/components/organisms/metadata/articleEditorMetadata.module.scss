@@ -84,6 +84,7 @@
 .yamlEditor {
   display: flex;
   flex-direction: column;
+  height: calc(100% - 2rem);
 
   > section {
     :global {
