@@ -5,12 +5,12 @@
   @extend .wrapped-center;
 
   display: grid;
-  grid-template-columns: minmax(200px, 1fr) minmax(100px, auto);
-  gap: 1rem;
+  grid-template-columns: minmax(200px, 1fr) auto;
   flex: 1;
   container-type: size;
   margin-left: auto;
   margin-right: auto;
+  padding-left: 0.5rem;
 }
 
 .editor {

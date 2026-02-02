@@ -19,7 +19,7 @@ const relativeTimeFormatOptions = {
  * @param {string} props.type
  * @param {string} props.date
  * @param {boolean} props.selected
- * @param {(event => void)} props.onClick
+ * @param {() => {}} props.onClick
  * @returns {React.ReactElement}
  */
 export default function Version({

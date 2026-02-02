@@ -2,10 +2,11 @@ import React from 'react'
 import { useParams, useSearchParams } from 'react-router'
 
 import { executeQuery } from '../../helpers/graphQL.js'
-
-import ArticleStats from '../organisms/article/ArticleStats.jsx'
-import CollaborativeEditorMenu from '../organisms/textEditor/CollaborativeEditorMenu.jsx'
-import CollaborativeTextEditor from '../organisms/textEditor/CollaborativeTextEditor.jsx'
+import {
+  ArticleStats,
+  CollaborativeTextEditor,
+  EditorMenu,
+} from '../organisms/index.js'
 
 import { getArticleInfo } from '../../hooks/Article.graphql'
 
@@ -56,7 +57,7 @@ export default function CollaborativeEditor(props) {
         <ArticleStats />
       </div>
 
-      <CollaborativeEditorMenu
+      <EditorMenu
         className={styles.editorMenu}
         articleId={articleId}
         versionId={versionId}

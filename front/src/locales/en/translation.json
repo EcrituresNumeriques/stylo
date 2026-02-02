@@ -105,6 +105,7 @@
   "bibliography.title": "Bibliography",
   "bibliography.warnings_one": "Thereʼs a warning in your BibTeX. <1>Unable to save.</1>",
   "bibliography.warnings_other": "There are {{count}} warnings in your BibTeX. <1>Unable to save.</1>",
+  "collapse.title": "Collapse",
   "common.createdBy.label": "created by",
   "common.updatedAt.label": "updated at",
   "contact.searchField.placeholder": "Contact email",

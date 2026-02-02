@@ -19,11 +19,10 @@ import styles from './ArticleBibliography.module.scss'
  * @param props
  * @param props.articleId
  * @param props.versionId
- * @param props.onBack
- * @return {Element}
+ * @return {JSX.Element}
  * @constructor
  */
-export default function ArticleBibliography({ articleId, versionId, onBack }) {
+export default function ArticleBibliography({ articleId, versionId }) {
   /** @type {object} */
   const articleWriters = useSelector((state) => state.articleWriters || {})
   const readOnly = useMemo(
@@ -62,25 +61,10 @@ export default function ArticleBibliography({ articleId, versionId, onBack }) {
     return <Alert message={error.message} />
   }
 
-  const title = onBack ? (
-    <h2
-      className={styles.title}
-      onClick={onBack}
-      style={{ cursor: 'pointer', userSelect: 'none' }}
-    >
-      <span onClick={onBack} style={{ display: 'flex' }}>
-        <ArrowLeft style={{ strokeWidth: 3 }} />
-      </span>
-      <span>{t('bibliography.title')}</span>
-    </h2>
-  ) : (
-    <h2 className={styles.title}>{t('bibliography.title')}</h2>
-  )
-
   return (
     <section>
       <header className={styles.header}>
-        {title}
+        <h2 className={styles.title}>{t('bibliography.title')}</h2>
 
         <Toggle
           id="raw-mode"
