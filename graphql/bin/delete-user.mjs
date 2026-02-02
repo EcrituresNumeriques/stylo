@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import { parseArgs } from 'node:util'
 
 import config from '../config.js'
+import Article from '../models/article.js'
 import Corpus from '../models/corpus.js'
 import Tag from '../models/tag.js'
 import User from '../models/user.js'
@@ -28,8 +29,6 @@ if (!email) {
 const dbClient = await mongoose.connect(config.get('mongo.databaseUrl'), {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: true,
 })
 
 const u = await User.findOne(
@@ -51,12 +50,15 @@ if (!u) {
   throw new Error(`No user found with "${email}"`)
 }
 
-const [corpuses, tags, versions, workspaces] = await Promise.all([
-  Corpus.findByUser({ user: u }),
-  Tag.findByUser(u),
-  Version.findByUser(u),
-  Workspace.findByUser(u),
-])
+const [corpuses, tags, versions, workspaces, articlesCount] = await Promise.all(
+  [
+    Corpus.findByUser({ user: u }),
+    Tag.findByUser(u),
+    Version.findByUser(u),
+    Workspace.findByUser(u),
+    Article.countDocuments({ owner: u._id }),
+  ]
+)
 
 /*
  * Print summary
@@ -64,7 +66,7 @@ const [corpuses, tags, versions, workspaces] = await Promise.all([
 console.info([
   {
     user: u,
-    articles: u.articles.length,
+    articles: articlesCount,
     corpuses: corpuses.length,
     tags: tags.length,
     versions: versions.length,
