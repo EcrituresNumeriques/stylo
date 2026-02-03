@@ -30,7 +30,6 @@ export default function Articles() {
   const createArticleModal = useModal()
   const [filter, setFilter] = useState('')
   const { workspaceId: activeWorkspaceId } = useParams()
-  const workspaceName = useWorkspaceName({ workspace })
 
   const { data, isLoading } = useFetchData(
     {
@@ -54,6 +53,7 @@ export default function Articles() {
     }
   )
   const { articles, corpus, workspace = {} } = data
+  const workspaceName = useWorkspaceName({ workspace })
 
   const keepArticles = useMemo(
     () =>
