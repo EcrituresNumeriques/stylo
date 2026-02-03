@@ -23,7 +23,6 @@ import styles from './Articles.module.scss'
 
 export default function Articles() {
   const { t } = useTranslation()
-  const { t: tWorkspace } = useTranslation('workspace', { useSuspense: false })
   const selectedTagIds = useSelector(
     (state) => state.activeUser.selectedTagIds || []
   )
@@ -31,6 +30,7 @@ export default function Articles() {
   const createArticleModal = useModal()
   const [filter, setFilter] = useState('')
   const { workspaceId: activeWorkspaceId } = useParams()
+  const workspaceName = useWorkspaceName({ workspace })
 
   const { data, isLoading } = useFetchData(
     {
@@ -82,7 +82,6 @@ export default function Articles() {
     )
   }
 
-  const workspaceName = useWorkspaceName({ workspace })
   return (
     <div className={styles.section}>
       <Helmet>
