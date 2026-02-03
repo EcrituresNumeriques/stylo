@@ -8,6 +8,7 @@ import { useParams } from 'react-router'
 import etv from '../../helpers/eventTargetValue.js'
 import useFetchData from '../../hooks/graphql.js'
 import { useModal } from '../../hooks/modal.js'
+import { useWorkspaceName } from '../../hooks/workspace.js'
 import { Button, Field, PageTitle } from '../atoms/index.js'
 import { Loading } from '../molecules/index.js'
 import { ArticleForm, TagEditForm, TagsList } from '../organisms/index.js'
@@ -22,6 +23,7 @@ import styles from './Articles.module.scss'
 
 export default function Articles() {
   const { t } = useTranslation()
+  const { t: tWorkspace } = useTranslation('workspace', { useSuspense: false })
   const selectedTagIds = useSelector(
     (state) => state.activeUser.selectedTagIds || []
   )
@@ -80,14 +82,11 @@ export default function Articles() {
     )
   }
 
+  const workspaceName = useWorkspaceName({ workspace })
   return (
     <div className={styles.section}>
       <Helmet>
-        <title>
-          {t('articles.page.title', {
-            workspace: workspace.name ?? '$t(workspace.myspace)',
-          })}
-        </title>
+        <title>{t('articles.page.title', { workspace: workspaceName })}</title>
       </Helmet>
 
       <header className={styles.pageHeader}>

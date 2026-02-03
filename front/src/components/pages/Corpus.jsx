@@ -5,6 +5,7 @@ import { useParams } from 'react-router'
 
 import { useCorpus } from '../../hooks/corpus.js'
 import { useModal } from '../../hooks/modal.js'
+import { useWorkspaceName } from '../../hooks/workspace.js'
 import { Button, PageTitle } from '../atoms/index.js'
 import { Alert, Loading } from '../molecules/index.js'
 
@@ -20,15 +21,11 @@ export default function Corpus() {
   const { workspaceId } = useParams()
   const { corpus, workspace, isLoading, error } = useCorpus({ workspaceId })
   const createCorpusModal = useModal()
-
+  const workspaceName = useWorkspaceName({ workspace })
   return (
     <section className={styles.section}>
       <Helmet>
-        <title>
-          {t('title', {
-            workspace: workspace.name ?? '$t(workspace.myspace)',
-          })}
-        </title>
+        <title>{t('title', { workspace: workspaceName })}</title>
       </Helmet>
 
       <header className={styles.header}>

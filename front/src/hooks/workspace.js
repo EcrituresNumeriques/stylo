@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 
@@ -206,4 +207,9 @@ export function useWorkspaces() {
     error,
     isLoading,
   }
+}
+
+export function useWorkspaceName({ workspace }) {
+  const { t: tWorkspace } = useTranslation('workspace', { useSuspense: false })
+  return workspace?.name ?? tWorkspace('myspace.name')
 }
