@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  background: none;
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  flex-direction: row-reverse;
+}
+
+.selected {
+  background-color: #636363;
+  color: white;
+}
+
+.hide {
+  display: none;
+}

@@ -105,6 +105,7 @@
   "bibliography.title": "Bibliografía",
   "bibliography.warnings_one": "Hay una advertencia en tu BibTeX. <1>No se puede guardar.</1>",
   "bibliography.warnings_other": "Hay {{count}} advertencias en tu BibTeX. <1>No se puede guardar.</1>",
+  "collapse.title": "Contraer",
   "common.createdBy.label": "creado por",
   "common.updatedAt.label": "actualizado",
   "contact.searchField.placeholder": "Correo del contacto",

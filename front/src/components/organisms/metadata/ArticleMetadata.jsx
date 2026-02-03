@@ -1,5 +1,4 @@
 import YAML from 'js-yaml'
-import { ArrowLeft } from 'lucide-react'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -15,12 +14,11 @@ import styles from './articleEditorMetadata.module.scss'
 
 /**
  * @param {object} props
- * @param {(object) => void} props.onBack
  * @param {string} props.articleId
  * @param {string} props.versionId
- * @returns {Element}
+ * @returns {JSX.Element}
  */
-export default function ArticleMetadata({ onBack, articleId, versionId }) {
+export default function ArticleMetadata({ articleId, versionId }) {
   /** @type {object} */
   const articleWriters = useSelector((state) => state.articleWriters || {})
   const multiUserActive = useMemo(
@@ -82,25 +80,10 @@ export default function ArticleMetadata({ onBack, articleId, versionId }) {
     return <Loading />
   }
 
-  const title = onBack ? (
-    <h2
-      className={styles.title}
-      onClick={onBack}
-      style={{ cursor: 'pointer', userSelect: 'none' }}
-    >
-      <span onClick={onBack} style={{ display: 'flex' }}>
-        <ArrowLeft style={{ strokeWidth: 3 }} />
-      </span>
-      <span>{t('metadata.title')}</span>
-    </h2>
-  ) : (
-    <h2 className={styles.title}>{t('metadata.title')}</h2>
-  )
-
   return (
     <div className={styles.yamlEditor}>
       <header className={styles.header}>
-        {title}
+        <h2 className={styles.title}>{t('metadata.title')}</h2>
 
         <Toggle
           id="raw-mode"

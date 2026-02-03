@@ -1,4 +1,3 @@
-import { ArrowLeft } from 'lucide-react'
 import React from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
@@ -20,14 +19,12 @@ import styles from './CollaborativeVersions.module.scss'
 /**
  * @param {object} props
  * @param {boolean} props.showTitle
- * @param {() => void} props.onBack
  * @param {string} props.articleId
  * @param {string} props.selectedVersion
  * @returns {JSX.Element}
  */
 export default function CollaborativeVersions({
   showTitle,
-  onBack,
   articleId,
   selectedVersion,
 }) {
@@ -50,21 +47,6 @@ export default function CollaborativeVersions({
   if (error) {
     return <Alert message={error.message} />
   }
-
-  const title = onBack ? (
-    <h2
-      className={styles.title}
-      onClick={onBack}
-      style={{ cursor: 'pointer', userSelect: 'none' }}
-    >
-      <span onClick={onBack} style={{ display: 'flex' }}>
-        <ArrowLeft style={{ strokeWidth: 3 }} />
-      </span>
-      <span>{t('versions.title')}</span>
-    </h2>
-  ) : (
-    <h2 className={styles.title}>{t('versions.title')}</h2>
-  )
 
   const monthYearFormat = new Intl.DateTimeFormat(i18n.language, {
     month: 'long',
@@ -121,7 +103,7 @@ export default function CollaborativeVersions({
 
   return (
     <section>
-      {showTitle && title}
+      {showTitle && <h2 className={styles.title}>{t('versions.title')}</h2>}
       <Button
         small={true}
         disabled={syncing}

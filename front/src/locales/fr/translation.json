@@ -105,6 +105,7 @@
   "bibliography.title": "Bibliographie",
   "bibliography.warnings_one": "Il y a un avertissement dans le BibTeX. <1>Impossible d'enregistrer.</1>",
   "bibliography.warnings_other": "Il y a {{count}} avertissements dans le BibTeX. <1>Impossible d'enregistrer.</1>",
+  "collapse.title": "Réduire",
   "common.createdBy.label": "créé par",
   "common.updatedAt.label": "mis à jour",
   "contact.searchField.placeholder": "Email du contact",
