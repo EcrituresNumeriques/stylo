@@ -22,7 +22,6 @@ import { useModal } from '../hooks/modal.js'
 import CollaborativeEditorWebSocketStatus from '../components/organisms/textEditor/CollaborativeEditorWebSocketStatus.jsx'
 import ButtonStory from './Button.story.jsx'
 import FormStory from './Form.story.jsx'
-import SidebarStory from './Sidebar.story.jsx'
 
 import buttonStyles from '../components/atoms/Button.module.scss'
 import styles from '../layout.module.scss'
@@ -197,10 +196,6 @@ export default function Story() {
 
       <section aria-label="Formulaires">
         <FormStory />
-      </section>
-
-      <section aria-label="Barre latérale">
-        <SidebarStory />
       </section>
 
       <section aria-label="Éditeur de texte">
