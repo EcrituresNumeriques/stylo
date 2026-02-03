@@ -7,7 +7,7 @@ import styles from './CollaborativeEditorWebSocketStatus.module.scss'
 /**
  * @param props
  * @param {string} props.status
- * @return {Element}
+ * @return {JSX.Element}
  * @constructor
  */
 export default function CollaborativeEditorWebSocketStatus({ status }) {
