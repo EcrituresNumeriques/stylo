@@ -40,7 +40,7 @@ export default function EditorMenu({ articleId, versionId }) {
   )
 
   return (
-    <div className={styles.container}>
+    <>
       {activeMenu !== '' && (
         <div className={clsx(styles.content, styles.active)}>
           {activeMenu === 'metadata' && (
@@ -124,6 +124,6 @@ export default function EditorMenu({ articleId, versionId }) {
           />
         </div>
       </div>
-    </div>
+    </>
   )
 }

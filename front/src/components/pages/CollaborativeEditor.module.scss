@@ -5,7 +5,7 @@
   @extend .wrapped-center;
 
   display: grid;
-  grid-template-columns: minmax(200px, 1fr) auto;
+  grid-template-columns: minmax(200px, 1fr) auto auto;
   flex: 1;
   container-type: size;
   margin-left: auto;
