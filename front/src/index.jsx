@@ -25,11 +25,13 @@ import './styles/general.scss'
 import createStore from './createReduxStore.js'
 import { getUserProfile } from './helpers/user.js'
 
+import NakalaRecords from './components/organisms/nakala/NakalaRecords.jsx'
 import App, { loader as AppLoader } from './components/pages/App.jsx'
 import CollaborativeEditor, {
   loader as ArticleLoader,
 } from './components/pages/CollaborativeEditor.jsx'
 import LoadingPage from './components/pages/LoadingPage.jsx'
+import Nakala from './components/pages/Nakala.jsx'
 import RequireAuth from './components/pages/PrivateRoute.jsx'
 import AuthCallback from './components/pages/auth/AuthCallback.jsx'
 import Login, { Logout } from './components/pages/auth/Login.jsx'
@@ -193,6 +195,10 @@ const router = createBrowserRouter(
           {import.meta.env.DEV && (
             <Route exact path="loading" element={<LoadingPage />} />
           )}
+        </Route>
+
+        <Route path="prototype">
+          <Route path="nakala" element={<Nakala />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

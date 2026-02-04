@@ -246,6 +246,17 @@ app.use(
   })
 )
 
+/* Nakala */
+app.use(
+  '/nakala',
+  proxy(config.get('nakala.apiUrl'), {
+    proxyReqOptDecorator: function (proxyReqOpts, _srcReq) {
+      proxyReqOpts.headers = { 'X-API-KEY': config.get('nakala.apiKey') }
+      return proxyReqOpts
+    },
+  })
+)
+
 /*
  * GraphQL interface
  */

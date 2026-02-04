@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+}
+
+.identifier {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

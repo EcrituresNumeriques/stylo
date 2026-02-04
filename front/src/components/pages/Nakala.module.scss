@@ -1,0 +1,37 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
+.section {
+  @extend .wrapped-center;
+  padding: 2rem;
+  border: 1px solid $main-border-color;
+  background-color: $extra-background-color;
+
+  > h1 {
+    margin-bottom: 1rem;
+  }
+
+  > p {
+    margin-bottom: 1rem;
+  }
+
+  article:nth-of-type(2n + 1) {
+    background-color: $alternate-row-color;
+  }
+}
+
+.pageHeader {
+  display: flex;
+  column-gap: 1rem;
+  row-gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.pageTitle {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex: 1;
+}
