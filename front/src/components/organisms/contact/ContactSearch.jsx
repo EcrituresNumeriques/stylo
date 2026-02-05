@@ -164,7 +164,7 @@ export default function ContactSearch({
         <Field
           className={styles.searchField}
           type="text"
-          icon={Search}
+          icon={<Search />}
           value={filter}
           placeholder={t('contact.searchField.placeholder')}
           onChange={updateFilter}

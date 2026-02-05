@@ -1,16 +1,16 @@
-import { useNakalaUsersData } from '../../../hooks/nakala.js'
+import {
+  useNakalaCollectionData,
+  useNakalaUsersData,
+} from '../../../hooks/nakala.js'
 import { Alert, Loading } from '../../molecules/index.js'
 
 import NakalaRecord from './NakalaRecord.jsx'
 
 import styles from './NakalaRecords.module.scss'
 
-export default function NakalaRecords() {
-  const { records, total, isLoading, error } = useNakalaUsersData('readable', {
-    page: 1,
-    limit: 20,
-    orders: ['creDate,desc'],
-  })
+export default function NakalaRecords({ collection }) {
+  const { records, total, isLoading, error } =
+    useNakalaCollectionData(collection)
   if (isLoading) return <Loading />
   if (error) return <Alert message={error.message} />
 

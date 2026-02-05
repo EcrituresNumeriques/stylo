@@ -45,7 +45,7 @@ export default function BibliographyReferenceList({ bibliography, onUpdate }) {
       <Field
         className={styles.searchField}
         type="text"
-        icon={Search}
+        icon={<Search />}
         value={filter}
         placeholder={t('write.searchFieldBiblio.placeholder')}
         onChange={(e) => setFilter(e.target.value)}

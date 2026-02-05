@@ -110,7 +110,7 @@ export default function Articles() {
           <Field
             className={styles.searchField}
             type="search"
-            icon={Search}
+            icon={<Search />}
             value={filter}
             placeholder={t('article.search.placeholder')}
             onChange={(e) => setFilter(etv(e))}

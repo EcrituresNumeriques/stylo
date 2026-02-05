@@ -25,7 +25,6 @@ import './styles/general.scss'
 import createStore from './createReduxStore.js'
 import { getUserProfile } from './helpers/user.js'
 
-import NakalaRecords from './components/organisms/nakala/NakalaRecords.jsx'
 import App, { loader as AppLoader } from './components/pages/App.jsx'
 import CollaborativeEditor, {
   loader as ArticleLoader,

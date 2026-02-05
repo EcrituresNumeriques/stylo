@@ -25,10 +25,6 @@ export default function NakalaRecord({ data }) {
           <FingerprintPattern size={16} /> <pre>{data.identifier}</pre>
         </div>
       </div>
-      <ObjectMetadataLabel
-        creatorName={data.owner.name}
-        updatedAtDate={data.modDate}
-      ></ObjectMetadataLabel>
     </div>
   )
 }
