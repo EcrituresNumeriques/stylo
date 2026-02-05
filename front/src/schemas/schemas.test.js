@@ -5,6 +5,7 @@ import { ArticleSchemas, clean } from './schemas.js'
 describe('schemas', () => {
   test('it has const metadata properties', () => {
     const schema = ArticleSchemas.find((s) => s.name === 'default')
+    // eslint-disable-next-line vitest/valid-expect
     expect(schema.const).to.deep.equal({
       type: 'article',
       '@version': '1.0',
@@ -30,6 +31,7 @@ describe('schemas', () => {
         categories: [],
       },
     }
+    // eslint-disable-next-line vitest/valid-expect
     expect(clean(data)).to.deep.equal({
       type: 'article',
       '@version': '1.0',
