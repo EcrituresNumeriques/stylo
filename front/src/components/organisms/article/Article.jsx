@@ -240,6 +240,7 @@ export default function Article({ article, corpus }) {
               <Tag size={18} />
               {tags.map((t) => (
                 <div
+                  key={t._id}
                   className={styles.tag}
                   style={{
                     backgroundColor: Color.rrggbbaa(t.color || '#cccccc', 10),
@@ -261,7 +262,7 @@ export default function Article({ article, corpus }) {
             <div className={styles.corpuses}>
               <Book size={18} />
               {corpus.map((c) => (
-                <div>{c.name}</div>
+                <div key={c.id}>{c.name}</div>
               ))}
             </div>
           )}
