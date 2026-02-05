@@ -38,7 +38,6 @@ process.env.YPERSISTENCE = config.get(
 )
 
 const express = require('express')
-const bodyParser = require('body-parser')
 const { createHandler } = require('graphql-http/lib/use/express')
 const mongoose = require('mongoose')
 const cors = require('cors')
@@ -162,7 +161,7 @@ app.set('trust proxy', true)
 app.set('x-powered-by', false)
 app.use(pino)
 app.use(cors(corsOptions))
-app.use(bodyParser.json({ limit: '50mb' }))
+app.use(express.json({ limit: '50mb' }))
 app.use(session(sessionOptions))
 
 app.use(passport.session(sessionOptions))
