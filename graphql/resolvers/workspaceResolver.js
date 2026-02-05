@@ -100,7 +100,7 @@ module.exports = {
       if (data) {
         try {
           JSON.parse(data.trim())
-        } catch (e) {
+        } catch {
           throw new BadRequestError(
             'INVALID_INPUT',
             'formMetadata.data must be a valid JSON.'
@@ -110,7 +110,7 @@ module.exports = {
       if (ui) {
         try {
           JSON.parse(ui.trim())
-        } catch (e) {
+        } catch {
           throw new BadRequestError(
             'INVALID_INPUT',
             'formMetadata.ui must be a valid JSON.'
