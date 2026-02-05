@@ -49,7 +49,7 @@ module.exports.populateUserFromJWT = function populateUserFromJWT({
     // 1. Decode Token
     try {
       req.token = jwt.verify(jwtToken, jwtSecret)
-    } catch (error) {
+    } catch {
       Sentry.setUser(null)
 
       return next()
