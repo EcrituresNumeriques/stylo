@@ -32,11 +32,6 @@ export default defineConfig(async ({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            metadata: [
-              'biblatex-csl-converter',
-              '@rjsf/core',
-              '@rjsf/validator-ajv8',
-            ],
             pagedPreview: ['pagedjs'],
             react: [
               'core-js',
