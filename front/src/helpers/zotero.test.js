@@ -303,6 +303,7 @@ describe('prefixLegacyUrl', () => {
     ],
     'do not prefix fully resolved URLs',
     (url) => {
+      // eslint-disable-next-line vitest/no-standalone-expect
       expect(prefixLegacyUrl(url)).toBe(url)
     }
   )

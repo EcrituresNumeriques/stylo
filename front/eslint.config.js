@@ -2,10 +2,10 @@ import prettier from 'eslint-config-prettier'
 import jsdoc from 'eslint-plugin-jsdoc'
 import jsonc from 'eslint-plugin-jsonc'
 import react from 'eslint-plugin-react'
-import vitest from 'eslint-plugin-vitest'
 import globals from 'globals'
 
 import js from '@eslint/js'
+import vitest from '@vitest/eslint-plugin'
 
 export default [
   {
@@ -48,6 +48,7 @@ export default [
       vitest,
     },
     rules: {
+      ...vitest.configs.recommended.rules,
       'jsdoc/require-description': 'off',
       'jsdoc/require-example': 'off',
       'jsdoc/require-jsdoc': 'off',

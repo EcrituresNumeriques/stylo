@@ -79,8 +79,8 @@
     "yjs": "^13.6.6"
   },
   "optionalDependencies": {
-    "@esbuild/linux-x64": "^0.25.0",
-    "@rollup/rollup-linux-x64-gnu": "^4.31.0"
+    "@esbuild/linux-x64": "~0.27",
+    "@rollup/rollup-linux-x64-gnu": "~4.57"
   },
   "repository": {
     "type": "git",
@@ -103,7 +103,7 @@
     "eslint-plugin-jsdoc": "~62.5",
     "eslint-plugin-jsonc": "~2.21",
     "eslint-plugin-react": "~7.37",
-    "eslint-plugin-vitest": "~0.5",
+    "@vitest/eslint-plugin": "~1.6",
     "globals": "^17.3.0",
     "jsdom": "^26.0.0",
     "lodash.merge": "^4.6.2",
@@ -111,7 +111,7 @@
     "vitest": "~4.0"
   },
   "volta": {
-    "node": "22.21.0",
-    "npm": "10.9.4"
+    "node": "24.13.0",
+    "npm": "11.9.0"
   }
 }
