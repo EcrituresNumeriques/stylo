@@ -1,4 +1,5 @@
 import {
+  Database,
   History,
   Maximize2,
   MessageSquareShare,
@@ -64,6 +65,13 @@ export default function EditorMenu({ onChange }) {
           minimized={minimized}
           icon={<Quote />}
           text={t('bibliography.title')}
+        />
+        <EditorMenuItem
+          onClick={toggleActiveMenu('data')}
+          selected={activeMenu === 'data'}
+          minimized={minimized}
+          icon={<Database />}
+          text={t('data.title')}
         />
         <EditorMenuItem
           onClick={toggleActiveMenu('versions')}

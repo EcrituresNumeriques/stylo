@@ -1,7 +1,18 @@
 .container {
   display: flex;
-  padding: 1rem;
+  padding: 0.5rem 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.content {
+  display: flex;
+  padding: 0.5rem 0.75rem;
   flex-direction: column;
+}
+
+.title {
+  font-size: 1rem;
 }
 
 .identifier {

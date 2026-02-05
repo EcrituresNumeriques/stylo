@@ -1,6 +1,8 @@
-import { FingerprintPattern } from 'lucide-react'
+import { Clipboard, FingerprintPattern } from 'lucide-react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { Button } from '../../atoms/index.js'
 import { ObjectMetadataLabel } from '../../molecules/index.js'
 
 import styles from './NakalaRecord.module.scss'
@@ -19,11 +21,18 @@ export default function NakalaRecord({ data }) {
   }
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>{metaTitle?.value}</h2>
-      <div>
-        <div className={styles.identifier}>
-          <FingerprintPattern size={16} /> <pre>{data.identifier}</pre>
+      <div className={styles.content}>
+        <h3 className={styles.title}>{metaTitle?.value}</h3>
+        <div>
+          <div className={styles.identifier}>
+            <FingerprintPattern size={16} /> <pre>{data.identifier}</pre>
+          </div>
         </div>
+      </div>
+      <div className={styles.actions}>
+        <Button title={''} onClick={() => {}} icon>
+          <Clipboard />
+        </Button>
       </div>
     </div>
   )

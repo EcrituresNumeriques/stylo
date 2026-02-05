@@ -1,0 +1,9 @@
+{
+  "title": "Données",
+  "actions": {
+    "fetch": {
+      "label": "Récupérer les données dépuis Nakala",
+      "collection": "Remplacer les données actuelles par cette collection"
+    }
+  }
+}

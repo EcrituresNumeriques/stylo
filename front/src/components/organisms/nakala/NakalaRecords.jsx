@@ -9,15 +9,12 @@ import NakalaRecord from './NakalaRecord.jsx'
 import styles from './NakalaRecords.module.scss'
 
 export default function NakalaRecords({ collection }) {
-  const { records, total, isLoading, error } =
-    useNakalaCollectionData(collection)
+  const { records, isLoading, error } = useNakalaCollectionData(collection)
   if (isLoading) return <Loading />
   if (error) return <Alert message={error.message} />
 
-  console.log({ records })
   return (
-    <section className={styles.container}>
-      <div className={styles.counter}>{total} données</div>
+    <section>
       <div className={styles.records}>
         {records &&
           records.map((item, index) => (
