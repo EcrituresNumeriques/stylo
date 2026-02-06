@@ -68,7 +68,7 @@ describe('remove', () => {
     })
 
     // when
-    await chapter1.remove()
+    await chapter1.deleteOne()
 
     // then...
     // chapter 1 must be removed from workspace

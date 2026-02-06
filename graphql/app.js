@@ -109,12 +109,8 @@ const corsOptions = {
 /*
  * Setup database
  */
-mongoose.set('strictQuery', false)
 const mongooseP = mongoose
-  .connect(config.get('mongo.databaseUrl'), {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(config.get('mongo.databaseUrl'))
   .then((m) => m.connection.getClient())
 
 /*

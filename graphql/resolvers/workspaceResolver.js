@@ -213,8 +213,8 @@ module.exports = {
 
       // TODO: remove workspace if there's no member left!
       return Workspace.findOneAndUpdate(
-        { _id: ObjectId(workspace._id) },
-        { $pull: { members: { user: ObjectId(user.id) } } },
+        { _id: new ObjectId(workspace._id) },
+        { $pull: { members: { user: new ObjectId(user.id) } } },
         { lean: true }
       )
     },
