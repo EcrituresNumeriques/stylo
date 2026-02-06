@@ -429,8 +429,8 @@ module.exports = {
      * @returns {boolean} true if the article was deleted, false otherwise
      */
     async delete(article) {
-      await article.remove()
-      return article.$isDeleted()
+      await article.deleteOne()
+      return true
     },
 
     async rename(article, { title }) {

@@ -216,33 +216,38 @@ articleSchema.methods.createNewVersion = async function createNewVersion({
   return createdVersion
 }
 
-articleSchema.pre('remove', async function () {
-  await this.populate('owner')
+articleSchema.pre(
+  'deleteOne',
+  { document: true, query: false },
+  async function () {
+    await this.populate('owner')
 
-  const session = await this.db.startSession()
+    const session = await this.db.startSession()
 
-  await session.withTransaction(async () => {
-    // remove article from tags owned by this user
-    await Tag.updateMany(
-      { owner: this.owner.id },
-      { $pull: { articles: this.id } },
-      { safe: true }
-    )
+    try {
+      await session.withTransaction(async () => {
+        // remove article from tags owned by this user
+        await Tag.updateMany(
+          { owner: this.owner.id },
+          { $pull: { articles: this.id } },
+          { safe: true }
+        )
 
-    // remove versions associated with this article
-    const versions = this.versions
-    for (const versionId of versions) {
-      await Version.findByIdAndDelete(versionId)
+        // remove versions associated with this article
+        const versions = this.versions
+        for (const versionId of versions) {
+          await Version.findByIdAndDelete(versionId)
+        }
+
+        // remove article from corpuses
+        await this.model('Corpus').removeArticle(this.id)
+        // remove article from workspaces
+        await this.model('Workspace').removeArticle(this.id)
+      })
+    } finally {
+      await session.endSession()
     }
-
-    // remove article from corpuses
-    await this.model('Corpus').removeArticle(this.id)
-    // remove article from workspaces
-    await this.model('Workspace').removeArticle(this.id)
-  })
-
-  await session.commitTransaction()
-  return session.endSession()
-})
+  }
+)
 
 module.exports = mongoose.model('Article', articleSchema)

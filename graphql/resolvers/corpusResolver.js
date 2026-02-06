@@ -273,7 +273,7 @@ module.exports = {
     },
 
     async delete(corpus) {
-      await corpus.remove()
+      await corpus.deleteOne()
 
       return corpus
     },

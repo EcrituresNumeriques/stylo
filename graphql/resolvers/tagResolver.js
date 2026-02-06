@@ -30,8 +30,8 @@ module.exports = {
       if (!tag) {
         throw new Error('Unable to find tag')
       }
-      await tag.remove()
-      return tag.$isDeleted()
+      await tag.deleteOne()
+      return true
     },
     async updateTag(_, args, context) {
       const { userId } = isUser(args, context)
