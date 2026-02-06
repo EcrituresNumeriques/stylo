@@ -73,6 +73,75 @@ export class BibliographyCompletionProvider {
   }
 }
 
+const legend = {
+  tokenTypes: ['string.link.md'],
+  tokenModifiers: [],
+}
+
+function getType(type) {
+  return legend.tokenTypes.indexOf(type)
+}
+
+export class CitationSemanticTokensProvider {
+  register(monaco) {
+    const self = this
+    return monaco.languages.registerDocumentSemanticTokensProvider(
+      'markdown',
+      self
+    )
+  }
+
+  getLegend() {
+    return legend
+  }
+
+  releaseDocumentSemanticTokens(resultId) {}
+
+  provideDocumentSemanticTokens(model, lastResultId, token) {
+    console.log('provideDocumentSemanticTokens', {
+      model,
+      lastResultId,
+      token,
+    })
+    const lines = model.getLinesContent()
+
+    /** @type {number[]} */
+    const data = []
+
+    let prevLine = 0
+    let prevChar = 0
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i]
+
+      for (let match = null; (match = tokenPattern.exec(line)); ) {
+        let type = getType('string.link.md')
+        if (type === -1) {
+          continue
+        }
+        let modifier = 0
+
+        data.push(
+          // translate line to deltaLine
+          i - prevLine,
+          // for the same line, translate start to deltaStart
+          prevLine === i ? match.index - prevChar : match.index,
+          match[0].length,
+          type,
+          modifier
+        )
+
+        prevLine = i
+        prevChar = match.index
+      }
+    }
+    return {
+      data: new Uint32Array(data),
+      resultId: null,
+    }
+  }
+}
+
 export function onDropIntoEditor(editor) {
   return async ({ position, event }) => {
     event.preventDefault()
@@ -155,3 +224,5 @@ export function onDropIntoEditor(editor) {
     }
   }
 }
+
+const tokenPattern = new RegExp('@[a-zA-Z_0-9\.]+', 'g')

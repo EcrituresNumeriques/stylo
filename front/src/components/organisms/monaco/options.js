@@ -12,7 +12,7 @@ export default {
   },
   overviewRulerBorder: false,
   overviewRulerLanes: 0,
-  renderLineHighlight: false,
+  renderLineHighlight: true,
   showFoldingControls: 'always',
   scrollBeyondLastLine: false,
   suggest: {
@@ -20,4 +20,5 @@ export default {
   },
   wordWrap: 'on',
   wrappingIndent: 'none',
+  'semanticHighlighting.enabled': true,
 }

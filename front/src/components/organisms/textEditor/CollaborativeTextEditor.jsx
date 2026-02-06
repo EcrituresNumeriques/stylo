@@ -17,7 +17,10 @@ import { useBibliographyCompletion } from '../../../hooks/bibliography.js'
 import { useCollaboration } from '../../../hooks/collaboration.js'
 import { useStyloExportPreview } from '../../../hooks/stylo-export.js'
 import { Alert, Loading, MonacoEditor } from '../../molecules/index.js'
-import { onDropIntoEditor } from '../bibliography/support.js'
+import {
+  CitationSemanticTokensProvider,
+  onDropIntoEditor,
+} from '../bibliography/support.js'
 import defaultEditorOptions from '../monaco/options.js'
 import {
   MarkdownMenu,
@@ -61,6 +64,9 @@ export default function CollaborativeTextEditor({
   } = useArticleVersion({ versionId })
   const { provider: bibliographyCompletionProvider } =
     useBibliographyCompletion()
+
+  const citationSemanticTokensProvider = new CitationSemanticTokensProvider()
+
   const {
     article,
     bibliography,
@@ -131,6 +137,9 @@ export default function CollaborativeTextEditor({
       editorRef.current = editor
 
       editor.onDropIntoEditor(onDropIntoEditor(editor))
+
+      const tokensProvider = citationSemanticTokensProvider.register(monaco)
+      editor.onDidDispose(() => tokensProvider.dispose())
 
       const contextMenu = editor.getContribution('editor.contrib.contextmenu')
       const originalMenuActions = contextMenu._getMenuActions(
