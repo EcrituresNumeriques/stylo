@@ -18,7 +18,7 @@ const { previewEntries } = require('../helpers/bibliography.js')
 const { logger } = require('../logger.js')
 const { toLegacyFormat } = require('../helpers/metadata.js')
 const Y = require('yjs')
-const { mongo } = require('mongoose')
+const mongoose = require('mongoose')
 const Sentry = require('@sentry/node')
 const {
   NotAuthenticatedError,
@@ -26,7 +26,9 @@ const {
 } = require('../helpers/errors.js')
 
 function getTextFromYjsDoc(yjsdocBase64) {
-  const wsDoc = new WSSharedDoc(`ws/${new mongo.ObjectID().toString()}`)
+  const wsDoc = new WSSharedDoc(
+    `ws/${new mongoose.Types.ObjectId().toString()}`
+  )
   try {
     Y.applyUpdate(wsDoc, Buffer.from(yjsdocBase64, 'base64'))
     return wsDoc.getText('main').toString()

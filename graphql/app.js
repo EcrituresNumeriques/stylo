@@ -71,7 +71,6 @@ const Y = require('yjs')
 const yjsUtils = require('@y/websocket-server/utils')
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
-const { mongo } = require('mongoose')
 const wss = new WebSocket.Server({ noServer: true })
 
 const jwtSecret = config.get('security.jwt.secret')
@@ -282,7 +281,7 @@ yjsUtils.setPersistence({
       const articleId = roomName.split('/')[1] // format: ws/{articleId}
       const result = await mongoose.connection.collection('articles').findOne({
         $and: [
-          { _id: new mongo.ObjectID(articleId) },
+          { _id: new mongoose.Types.ObjectId(articleId) },
           { 'workingVersion.ydoc': { $ne: null } },
         ],
       })
@@ -310,7 +309,7 @@ yjsUtils.setPersistence({
             try {
               const documentState = Y.encodeStateAsUpdate(ydoc) // is a Uint8Array
               await mongoose.connection.collection('articles').updateOne(
-                { _id: new mongo.ObjectID(articleId) },
+                { _id: new mongoose.Types.ObjectId(articleId) },
                 {
                   $set: {
                     'workingVersion.ydoc':
