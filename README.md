@@ -17,8 +17,8 @@ Plus d'informations sur [la documentation](http://stylo-doc.ecrituresnumeriques.
 
 # Pré-requis
 
-- Node.js v22+
-- MongoDB 6
+- Node.js v24+
+- MongoDB 7
 
 ## Sous MacOS
 
@@ -28,7 +28,7 @@ brew tap mongodb/brew
 brew install mongodb-community nvm
 brew install --cask docker
 
-nvm install v18 --default
+nvm install v24 --default
 ```
 
 # Développement local
