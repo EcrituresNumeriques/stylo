@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const migrate = require('db-migrate')
 
 async function setup() {
-  const container = await new MongoDBContainer('mongo:6.0.19').start()
+  const container = await new MongoDBContainer('mongo:7.0.29').start()
   const migrateInstance = migrate.getInstance(true, {
     env: 'dev',
     config: {
