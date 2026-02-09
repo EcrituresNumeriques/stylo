@@ -1,36 +1,6 @@
 @use '../../../styles/defaults' as *;
 @use '../../../styles/variables' as *;
 
-.dropdownMenu {
-  position: relative;
-
-  .menu {
-    position: absolute;
-    background-color: white;
-    //padding: 0.5rem 2.5rem 0.5rem 0.5rem;
-    z-index: 9999;
-    border: 1px solid $main-color;
-    right: 0;
-    margin-top: 0.15rem;
-    > ul {
-      flex-wrap: nowrap;
-      white-space: nowrap;
-      display: flex;
-      flex-direction: column;
-      text-align: start;
-
-      > li {
-        cursor: pointer;
-        padding: 0.75rem 2.5rem 0.75rem 0.5rem;
-      }
-
-      > li:hover {
-        background-color: $hover-background;
-      }
-    }
-  }
-}
-
 .corpus {
   display: flex;
   flex-direction: column;

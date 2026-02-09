@@ -1,24 +1,17 @@
 import clsx from 'clsx'
-import {
-  EllipsisVertical,
-  List,
-  MessageSquareShare,
-  Printer,
-  Settings,
-  Trash,
-} from 'lucide-react'
+import { MessageSquareShare, Printer, Settings, Trash } from 'lucide-react'
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { toast } from 'react-toastify'
 import { useCopyToClipboard } from 'react-use'
 
-import useComponentVisible from '../../../hooks/componentVisible.js'
 import { useCorpusActions } from '../../../hooks/corpus.js'
 import { useModal } from '../../../hooks/modal.js'
 import { useDisplayName } from '../../../hooks/user.js'
 import { Badge, Button } from '../../atoms/index.js'
 import {
+  DropdownMenu,
   FormActions,
   Modal,
   ObjectMetadataLabel,
@@ -63,12 +56,6 @@ export default function CorpusItem({ corpus }) {
   const displayName = useDisplayName()
   const { t } = useTranslation('corpus', { useSuspense: false })
   const [, copyToClipboard] = useCopyToClipboard()
-
-  const {
-    ref: actionsRef,
-    isComponentVisible: areActionsVisible,
-    toggleComponentIsVisible: toggleActions,
-  } = useComponentVisible(false, 'actions')
 
   const deleteCorpusModal = useModal()
   const exportCorpusModal = useModal()
@@ -129,41 +116,31 @@ export default function CorpusItem({ corpus }) {
             <Printer aria-label={t('actions.export.label')} />
           </Button>
 
-          <div className={styles.dropdownMenu} ref={actionsRef}>
-            <Button
-              title={t('actions.menu.title')}
-              onClick={() => toggleActions()}
-              icon
-            >
-              <EllipsisVertical />
-            </Button>
-
-            <div className={styles.menu} hidden={!areActionsVisible}>
-              <ul>
-                <li
-                  onClick={() => metadataCorpusModal.show()}
-                  title={t('actions.metadata.title')}
-                >
-                  {t('actions.metadata.label')}
-                </li>
-                <li
-                  onClick={() => updateCorpusModal.show()}
-                  title={t('actions.update.title')}
-                >
-                  {t('actions.update.label')}
-                </li>
-                <li onClick={handleCopyId} title={t('actions.copyId.title')}>
-                  {t('actions.copyId.label')}
-                </li>
-                <li
-                  onClick={() => deleteCorpusModal.show()}
-                  title={t('actions.delete.title')}
-                >
-                  {t('actions.delete.label')}
-                </li>
-              </ul>
-            </div>
-          </div>
+          <DropdownMenu title={t('actions.menu.title')}>
+            <ul>
+              <li
+                onClick={() => metadataCorpusModal.show()}
+                title={t('actions.metadata.title')}
+              >
+                {t('actions.metadata.label')}
+              </li>
+              <li
+                onClick={() => updateCorpusModal.show()}
+                title={t('actions.update.title')}
+              >
+                {t('actions.update.label')}
+              </li>
+              <li onClick={handleCopyId} title={t('actions.copyId.title')}>
+                {t('actions.copyId.label')}
+              </li>
+              <li
+                onClick={() => deleteCorpusModal.show()}
+                title={t('actions.delete.title')}
+              >
+                {t('actions.delete.label')}
+              </li>
+            </ul>
+          </DropdownMenu>
         </div>
       </header>
 

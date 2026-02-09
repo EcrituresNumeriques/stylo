@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import {
   Book,
-  EllipsisVertical,
   MessageSquareShare,
   Pencil,
   Printer,
@@ -18,12 +17,15 @@ import { toast } from 'react-toastify'
 import { useCopyToClipboard } from 'react-use'
 
 import { useArticleActions } from '../../../hooks/article.js'
-import useComponentVisible from '../../../hooks/componentVisible.js'
 import useFetchData from '../../../hooks/graphql.js'
 import { useModal } from '../../../hooks/modal.js'
 import { useDisplayName } from '../../../hooks/user.js'
 import { Button, Color } from '../../atoms/index.js'
-import { FormActions, ObjectMetadataLabel } from '../../molecules/index.js'
+import {
+  DropdownMenu,
+  FormActions,
+  ObjectMetadataLabel,
+} from '../../molecules/index.js'
 import { ArticleForm } from '../index.js'
 
 import Modal from '../../molecules/Modal.jsx'
@@ -43,7 +45,7 @@ import styles from './Article.module.scss'
  * @param props
  * @param {{title: string, owner: {displayName: string?, username: string}, updatedAt: string, _id: string }} props.article
  * @param {{id: string, name: string}[]} props.corpus
- * @return {Element}
+ * @return {JSX.Element}
  * @constructor
  */
 export default function Article({ article, corpus }) {
@@ -92,12 +94,6 @@ export default function Article({ article, corpus }) {
 
   const isArticleOwner = activeUser._id === article.owner._id
 
-  const {
-    ref: actionsRef,
-    isComponentVisible: areActionsVisible,
-    toggleComponentIsVisible: toggleActions,
-  } = useComponentVisible(false, 'actions')
-
   useEffect(() => {
     if (contributorsError) {
       toast(`Unable to load contributors: ${contributorsError.toString()}`, {
@@ -107,15 +103,13 @@ export default function Article({ article, corpus }) {
   }, [contributorsError])
 
   const handleDuplicate = useCallback(async () => {
-    toggleActions()
     await articleActions.duplicate(article)
-  }, [toggleActions, articleActions])
+  }, [articleActions])
 
   const handleCopyId = useCallback(() => {
-    toggleActions()
     copyToClipboard(articleId)
     toast(t('actions.copyId.success'), { type: 'success' })
-  }, [toggleActions, articleId])
+  }, [articleId])
 
   const handleDeleteArticle = async () => {
     deleteModal.close()
@@ -169,68 +163,53 @@ export default function Article({ article, corpus }) {
           >
             <Pencil aria-label={t('actions.edit.label')} />
           </Link>
-
-          <div className={styles.dropdownMenu} ref={actionsRef}>
-            <Button
-              title={t('actions.menu.title')}
-              onClick={() => toggleActions()}
-              icon
-            >
-              <EllipsisVertical />
-            </Button>
-
-            <div className={styles.menu} hidden={!areActionsVisible}>
-              <ul>
+          <DropdownMenu title={t('actions.menu.title')}>
+            <ul>
+              <li
+                onClick={() => {
+                  exportModal.show()
+                }}
+                title={t('actions.export.title')}
+              >
+                {t('actions.export.label')}
+              </li>
+              <li
+                onClick={() => {
+                  updateModal.show()
+                }}
+                title={t('actions.update.title')}
+              >
+                {t('actions.update.label')}
+              </li>
+              <li
+                onClick={handleDuplicate}
+                title={t('actions.duplicate.title')}
+              >
+                {t('actions.duplicate.label')}
+              </li>
+              <li
+                onClick={() => {
+                  sendCopyModal.show()
+                }}
+                title={t('actions.sendCopy.title')}
+              >
+                {t('actions.sendCopy.label')}
+              </li>
+              <li onClick={handleCopyId} title={t('actions.copyId.title')}>
+                {t('actions.copyId.label')}
+              </li>
+              {canDeleteArticle && (
                 <li
                   onClick={() => {
-                    toggleActions()
-                    exportModal.show()
+                    deleteModal.show()
                   }}
-                  title={t('actions.export.title')}
+                  title={t('actions.delete.title')}
                 >
-                  {t('actions.export.label')}
+                  {t('actions.delete.label')}
                 </li>
-                <li
-                  onClick={() => {
-                    toggleActions()
-                    updateModal.show()
-                  }}
-                  title={t('actions.update.title')}
-                >
-                  {t('actions.update.label')}
-                </li>
-                <li
-                  onClick={handleDuplicate}
-                  title={t('actions.duplicate.title')}
-                >
-                  {t('actions.duplicate.label')}
-                </li>
-                <li
-                  onClick={() => {
-                    toggleActions()
-                    sendCopyModal.show()
-                  }}
-                  title={t('actions.sendCopy.title')}
-                >
-                  {t('actions.sendCopy.label')}
-                </li>
-                <li onClick={handleCopyId} title={t('actions.copyId.title')}>
-                  {t('actions.copyId.label')}
-                </li>
-                {canDeleteArticle && (
-                  <li
-                    onClick={() => {
-                      toggleActions()
-                      deleteModal.show()
-                    }}
-                    title={t('actions.delete.title')}
-                  >
-                    {t('actions.delete.label')}
-                  </li>
-                )}
-              </ul>
-            </div>
-          </div>
+              )}
+            </ul>
+          </DropdownMenu>
         </div>
       </header>
       <section style={{ width: '100%' }}>
