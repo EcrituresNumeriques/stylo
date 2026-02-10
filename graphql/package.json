@@ -48,7 +48,7 @@
     "jsonwebtoken": "~9.0",
     "lodash.debounce": "^4.0.8",
     "mongodb": "~7.0",
-    "mongoose": "~7.8",
+    "mongoose": "~8.23",
     "passport": "~0.7",
     "passport-local": "~1.0",
     "passport-oauth1": "~1.3",
