@@ -14,11 +14,11 @@ Stylo est par ailleurs utilisé par différent·e·s auteur·e·s et étudiant·
 
 Cette instance de Stylo est déployée et maintenue par [Huma-Num](https://www.huma-num.fr/), qui assure la sauvegarde et la sécurité des données. Le code source de Stylo est disponible sur [GitHub](https://github.com/EcrituresNumeriques/stylo/).
 
-## Stylo-sophie
+## Stylosophie
 
-Prototypique d’une approche réflexive de la textualité numérique, Stylo encourage le développement d’une littératie critique, par une interaction active avec des langages et technologies open source adaptés à l'écriture, l'évaluation et la publication savante.
+Stylo encourage le développement d’une littératie critique et une approche réflxive de la textualité numérique, par une interaction active avec des langages et technologies open source adaptés à l'écriture, l'évaluation et la publication savante.
 
-À l'origine, Stylo est un éditeur de texte conçu pour transformer et intégrer l’ensemble de la chaîne éditoriale numérique des revues savantes en sciences humaines et sociales. Basé sur l'idée d'une séparation entre le balisage sémantique et les affichages graphiques d'un document, Stylo permet à l’auteur·e de se consacrer au sens du texte durant son écriture, plutôt qu’à sa mise en forme.
+À l'origine, Stylo est un éditeur de texte conçu pour transformer et intégrer l’ensemble de la chaîne éditoriale numérique des revues savantes en sciences humaines et sociales. Basé sur l'idée d'une séparation de la structuration sémantique et de la mise en page d'un document, Stylo permet à l’auteur·e de se consacrer intégralement au sens du texte durant son écriture, pour se pencher sur sa mise en forme dans un deuxième temps.
 
 Stylo propose aujourd'hui une solution libre et collaborative, basée sur des standards ouverts (Markdown, YAML, BibTeX), permettant de multiples sorties (PDF, HTML, XML-TEI, TEI Commons Publishing, ODT) à partir d’un seul document ou d'un corpus - facilitant ainsi une circulation des documents hors des formats, environnements et serveurs propriétaires des grands groupes de la Sillicon Valley.
 
