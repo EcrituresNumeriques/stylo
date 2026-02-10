@@ -41,7 +41,6 @@ export default function CorpusArticles({ corpusId }) {
   return (
     <section className={styles.container}>
       <div className={styles.header}>
-        <h4>{t('articles.label')}</h4>
         <Button
           onClick={() => addArticlesModal.show()}
           title={t('actions.addArticles.title')}

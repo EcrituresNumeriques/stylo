@@ -6,12 +6,21 @@
   background: none;
   border-radius: 0.75rem;
   padding: 0.5rem 0.75rem;
-  flex-direction: row-reverse;
 }
 
 .selected {
   background-color: #636363;
   color: white;
+}
+
+.text {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.external::after {
+  content: '↗';
+  display: block;
 }
 
 .hide {

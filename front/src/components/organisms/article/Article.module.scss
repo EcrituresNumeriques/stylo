@@ -59,6 +59,18 @@
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    flex-wrap: wrap;
+
+    > div {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    > div:not(:last-child)::after {
+      content: '—';
+      display: block;
+    }
   }
 
   .tag {

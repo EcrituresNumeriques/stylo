@@ -13,13 +13,15 @@
   padding-left: 0.5rem;
 }
 
+.content {
+  position: relative;
+  display: flex;
+  container-type: size;
+}
+
 .editor {
   flex: 1;
   display: flex;
   flex-direction: column;
   container-type: size;
-}
-
-.editorMenu .opened {
-  min-width: 415px;
 }

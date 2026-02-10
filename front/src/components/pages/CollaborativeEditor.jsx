@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router'
 
 import { executeQuery } from '../../helpers/graphQL.js'
@@ -7,6 +7,8 @@ import {
   CollaborativeTextEditor,
   EditorMenu,
 } from '../organisms/index.js'
+
+import EditorMenuContent from '../organisms/textEditor/EditorMenuContent.jsx'
 
 import { getArticleInfo } from '../../hooks/Article.graphql'
 
@@ -46,23 +48,36 @@ export default function CollaborativeEditor(props) {
   const [searchParams] = useSearchParams({ mode: props.mode ?? 'write' })
   const mode = searchParams.get('mode')
 
+  const [activeMenu, setActiveMenu] = useState('')
+
+  const handleActiveMenuChange = useCallback(
+    (value) => {
+      setActiveMenu(value)
+    },
+    [setActiveMenu]
+  )
+
   return (
     <section className={styles.container}>
-      <div className={styles.editor}>
-        <CollaborativeTextEditor
-          mode={mode}
+      <div className={styles.content}>
+        <div className={styles.editor}>
+          <CollaborativeTextEditor
+            mode={mode}
+            articleId={articleId}
+            versionId={versionId}
+          />
+          <ArticleStats />
+        </div>
+        <EditorMenuContent
           articleId={articleId}
           versionId={versionId}
+          activeMenu={activeMenu}
         />
-        <ArticleStats />
       </div>
 
-      <EditorMenu
-        className={styles.editorMenu}
-        articleId={articleId}
-        versionId={versionId}
-        compareTo={compareTo}
-      />
+      <div>
+        <EditorMenu onChange={handleActiveMenuChange} />
+      </div>
     </section>
   )
 }

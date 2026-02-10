@@ -9,9 +9,9 @@ export default function WorkspaceUpdateFormMetadataModal({
   bindings,
   workspace,
 }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('workspace', { useSuspense: false })
   return (
-    <Modal {...bindings} title={t('workspace.updateFormMetadataModal.title')}>
+    <Modal {...bindings} title={t('actions.metadata.label')}>
       <WorkspaceUpdateFormMetadata
         onSubmit={() => close()}
         onCancel={() => close()}
