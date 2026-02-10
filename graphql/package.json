@@ -23,7 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "@ggrossetie/db-migrate-mongodb": "2.0.0-beta.15",
-    "@graphql-tools/schema": "^9.0.12",
+    "@graphql-tools/schema": "~10.0",
     "@sentry/node": "^9.2.0",
     "@sentry/profiling-node": "^9.2.0",
     "@y/websocket-server": "^0.1.1",
