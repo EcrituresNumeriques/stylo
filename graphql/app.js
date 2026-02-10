@@ -43,7 +43,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 
 const session = require('express-session')
-const MongoStore = require('connect-mongo')
+const { MongoStore } = require('connect-mongo')
 const passport = require('passport')
 const { logger } = require('./logger')
 const pino = require('pino-http')({
