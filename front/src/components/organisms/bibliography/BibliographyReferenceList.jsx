@@ -45,7 +45,7 @@ export default function BibliographyReferenceList({ bibliography, onUpdate }) {
       <Field
         className={styles.searchField}
         type="text"
-        icon={Search}
+        icon={<Search />}
         value={filter}
         placeholder={t('write.searchFieldBiblio.placeholder')}
         onChange={(e) => setFilter(e.target.value)}
@@ -55,13 +55,15 @@ export default function BibliographyReferenceList({ bibliography, onUpdate }) {
           {bibTeXFound.length} found
         </span>
       )}
-      {bibTeXFound.map((entry, index) => (
-        <BibliographyReference
-          key={`ref-${entry.key}-${index}`}
-          entry={entry}
-          onRemove={() => handleRemove(index)}
-        />
-      ))}
+      <section className={styles.list} role="list">
+        {bibTeXFound.map((entry, index) => (
+          <BibliographyReference
+            key={`ref-${entry.key}-${index}`}
+            entry={entry}
+            onRemove={() => handleRemove(index)}
+          />
+        ))}
+      </section>
       {!showAll && bibliographyEntries.length > 25 && (
         <Button className={styles.showAll} onClick={handleShowAll}>
           {t('write.showBiblio.button', { length: bibliographyEntries.length })}

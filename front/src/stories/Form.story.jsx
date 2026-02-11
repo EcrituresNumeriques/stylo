@@ -15,7 +15,7 @@ export default function FormStory() {
   return (
     <>
       <h4>Recherche</h4>
-      <Field placeholder="Search" icon={Search} />
+      <Field placeholder="Search" icon={<Search />} />
       <h4>Champ de texte</h4>
       <div style={{ 'max-width': '50%' }}>
         <textarea className={buttonStyles.textarea} rows="10">

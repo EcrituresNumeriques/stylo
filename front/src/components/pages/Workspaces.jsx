@@ -95,7 +95,7 @@ export default function Workspaces() {
           <Field
             className={styles.searchField}
             type="search"
-            icon={Search}
+            icon={<Search />}
             value={filter}
             placeholder={t('actions.filter.placeholder')}
             onChange={(e) => setFilter(e.target.value)}

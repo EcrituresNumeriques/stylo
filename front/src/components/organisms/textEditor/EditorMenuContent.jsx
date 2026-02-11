@@ -6,6 +6,7 @@ import { useRouteLoaderData } from 'react-router'
 import ArticleBibliography from '../bibliography/ArticleBibliography.jsx'
 import Export from '../export/Export.jsx'
 import ArticleMetadata from '../metadata/ArticleMetadata.jsx'
+import ArticleData from '../nakala/ArticleData.jsx'
 import ArticleTableOfContents from './ArticleTableOfContents.jsx'
 import CollaborativeVersions from './CollaborativeVersions.jsx'
 
@@ -32,6 +33,7 @@ export default function EditorMenuContent({
       {activeMenu === 'bibliography' && (
         <ArticleBibliography articleId={articleId} />
       )}
+      {activeMenu === 'data' && <ArticleData articleId={articleId} />}
       {activeMenu === 'export' && (
         <>
           <h2 style={{ cursor: 'pointer', userSelect: 'none' }}>

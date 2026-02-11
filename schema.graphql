@@ -21,11 +21,13 @@ type Article {
   createVersion(articleVersionInput: ArticleVersionInput!): Article
   createdAt: DateTime
   delete(dryRun: Boolean): Boolean
+  nakalaLink: String
   owner: User
   preview: ArticlePreviewSettings
   removeContributor(userId: ID!): Article
   removeTags(tags: [ID]!): [Tag]
   rename(title: String!): Boolean
+  setNakalaLink(nakala: String!): Boolean
   setPreviewSettings(settings: ArticlePreviewInput!): Article
   setZoteroLink(zotero: String!): Boolean
   tags(limit: Int, page: Int): [Tag!]!
@@ -58,6 +60,15 @@ type AuthProvidersMap {
   humanid: AuthProvider
   hypothesis: AuthProvider
   zotero: AuthProvider
+}
+
+type BibliographyEntry {
+  authorName: String
+  date: String
+  entry: JSON
+  key: String!
+  title: String!
+  type: String!
 }
 
 type Corpus {
@@ -164,6 +175,7 @@ type Mutation {
   unsetAuthToken(service: AuthTokenService!): User
   "remove a user to an article"
   unshareArticle(article: ID!, to: ID!, user: ID): Article
+  updateArticle(updateArticleInput: UpdateArticleInput!): Article!
   "update name and description of a tag [need to be authenticated as specified user]"
   updateTag(color: HexColorCode, description: String, name: String, tag: ID!): Tag
   "Change user information"
@@ -260,6 +272,7 @@ type Version {
   article: Article
   bib: String
   bibPreview: String
+  bibliography: [BibliographyEntry]
   createdAt: DateTime
   md: String
   message: String
@@ -279,6 +292,7 @@ type Version {
 type WorkingVersion {
   bib: String
   bibPreview: String
+  bibliography: [BibliographyEntry]
   md: String
   metadata: JSON
   metadataFormType: String
@@ -436,6 +450,13 @@ input NewUserWithAuthInput {
 input SetCorpusArticlesInput {
   articleIds: [ID]
   corpusId: ID!
+}
+
+input UpdateArticleInput {
+  id: ID!
+  tags: [ID]
+  title: String!
+  workspaces: [ID]
 }
 
 input UpdateCorpusInput {

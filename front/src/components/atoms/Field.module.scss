@@ -83,13 +83,12 @@
     }
 
     .icon {
-      left: 0;
       color: #898989;
       height: 2.5em;
       pointer-events: none;
       position: absolute;
       top: 0;
-      width: 2.5em;
+      left: 0.5rem;
       z-index: 4;
       align-items: center;
       display: inline-flex;

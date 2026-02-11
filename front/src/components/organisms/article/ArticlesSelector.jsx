@@ -81,7 +81,7 @@ export function ArticlesSelector({ corpusArticles, onUpdate }) {
         <Field
           className={styles.searchField}
           type="search"
-          icon={Search}
+          icon={<Search />}
           value={filter}
           label={t('actions.addArticles.filter.label')}
           placeholder={t('actions.addArticles.filter.placeholder')}

@@ -1,10 +1,11 @@
 import {
+  BookKey,
+  Database,
   History,
   Maximize2,
   MessageSquareShare,
   Minimize2,
   Printer,
-  Quote,
   TableOfContents,
   TextCursorInput,
 } from 'lucide-react'
@@ -62,8 +63,15 @@ export default function EditorMenu({ onChange }) {
           onClick={toggleActiveMenu('bibliography')}
           selected={activeMenu === 'bibliography'}
           minimized={minimized}
-          icon={<Quote />}
+          icon={<BookKey />}
           text={t('bibliography.title')}
+        />
+        <EditorMenuItem
+          onClick={toggleActiveMenu('data')}
+          selected={activeMenu === 'data'}
+          minimized={minimized}
+          icon={<Database />}
+          text={t('data.title')}
         />
         <EditorMenuItem
           onClick={toggleActiveMenu('versions')}

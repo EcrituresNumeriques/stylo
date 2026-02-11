@@ -29,7 +29,7 @@ import formStyles from '../../atoms/Field.module.scss'
  * @param {Function} props.onSubmit
  * @param {Function} props.onCancel
  * @param {string|undefined} props.workspaceId
- * @returns {React.ReactHTMLElement}
+ * @returns {JSX.Element}
  */
 export default function ArticleForm({
   article,
@@ -69,7 +69,6 @@ export default function ArticleForm({
         type: 'info',
       })
     } catch (err) {
-      console.log({ err })
       toast(
         t(`article.${action}.errorNotification`, { errMessage: err.message }),
         {

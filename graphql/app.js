@@ -246,6 +246,9 @@ app.use(
   })
 )
 
+/* Nakala */
+app.use('/nakala', proxy(config.get('nakala.apiUrl')))
+
 /*
  * GraphQL interface
  */

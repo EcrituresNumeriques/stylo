@@ -1,0 +1,12 @@
+{
+  "actions": {
+    "fetch": {
+      "collection": "Replace current data with this collection",
+      "errors": {
+        "humanid.missing": "Fetching data from Nakala requires a HumanID account."
+      },
+      "label": "Fetch data from Nakala"
+    }
+  },
+  "title": "Data"
+}

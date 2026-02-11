@@ -105,9 +105,19 @@ type Tag {
   updatedAt: DateTime
 }
 
+type BibliographyEntry {
+  authorName: String
+  date: String
+  entry: JSON
+  key: String!
+  title: String!
+  type: String!
+}
+
 type WorkingVersion {
   bib: String
   bibPreview: String
+  bibliography: [BibliographyEntry]
   md: String
   metadata: JSON
   metadataFormType: String
@@ -127,6 +137,7 @@ type Version {
   yaml (options: YamlFormattingInput): String
   bib: String
   bibPreview: String
+  bibliography: [BibliographyEntry]
   message: String
   article: Article
   owner: User
@@ -159,6 +170,7 @@ type Article {
   _id: ID!
   title: String
   zoteroLink: String
+  nakalaLink: String
   owner: User
   contributors: [ArticleContributor]!
   workingVersion: WorkingVersion
@@ -174,6 +186,7 @@ type Article {
   rename(title: String!): Boolean
   setPreviewSettings(settings: ArticlePreviewInput!): Article
   setZoteroLink(zotero: String!): Boolean
+  setNakalaLink(nakala: String!): Boolean
   updateWorkingVersion(content: WorkingVersionInput!): Article
   workspaces: [Workspace!]
 

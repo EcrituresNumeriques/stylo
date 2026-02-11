@@ -242,6 +242,13 @@ module.exports = convict({
       },
     },
   },
+  nakala: {
+    apiUrl: {
+      format: 'url',
+      env: 'NAKALA_API_URL',
+      default: 'https://apitest.nakala.fr',
+    },
+  },
   sentry: {
     dsn: {
       format: 'url',

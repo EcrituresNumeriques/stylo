@@ -110,7 +110,7 @@ export default function Articles() {
           <Field
             className={styles.searchField}
             type="search"
-            icon={Search}
+            icon={<Search />}
             value={filter}
             placeholder={t('article.search.placeholder')}
             onChange={(e) => setFilter(etv(e))}
@@ -143,7 +143,7 @@ export default function Articles() {
           </span>
         </div>
 
-        <div className={styles.articlesList}>
+        <div>
           {keepArticles.map((article) => (
             <Article
               key={`article-${article._id}`}

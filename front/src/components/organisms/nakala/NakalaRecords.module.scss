@@ -1,0 +1,17 @@
+@use '../../../styles/variables' as *;
+
+.records {
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  padding-top: 1rem;
+
+  article:nth-of-type(2n + 1) {
+    background-color: $alternate-row-color;
+  }
+}
+
+.counter {
+  font-size: 1.5rem;
+  font-weight: 600;
+}

@@ -118,6 +118,9 @@ export default defineConfig(async ({ mode }) => {
     server: {
       port: 3000,
       proxy: {
+        '/nakala': {
+          target: 'http://127.0.0.1:3030',
+        },
         '/graphql': {
           target: 'http://127.0.0.1:3030',
         },

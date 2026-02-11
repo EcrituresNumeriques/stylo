@@ -74,9 +74,15 @@ small {
     cursor: pointer;
   }
 
+  pre {
+    font-size: 0.9rem;
+    margin: 0.15rem 0;
+  }
+
   button,
   textarea {
     font-family: 'Inter', serif;
+    font-size: 1rem;
   }
 
   textarea {
@@ -174,9 +180,7 @@ input[type='search']::-webkit-search-results-decoration {
 
 .icon {
   margin-right: 0.25em;
-  height: 1.2em;
   vertical-align: middle;
-  width: 1.2em;
 }
 
 input:read-only,

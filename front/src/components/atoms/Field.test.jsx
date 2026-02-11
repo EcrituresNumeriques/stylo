@@ -35,7 +35,7 @@ describe('Field', () => {
   })
 
   test('renders with an icon', () => {
-    const { getByRole } = render(<Component icon={Bean} label="Haricot" />)
+    const { getByRole } = render(<Component icon={<Bean />} label="Haricot" />)
 
     const field = getByRole('textbox')
     const iconElement = field.nextElementSibling

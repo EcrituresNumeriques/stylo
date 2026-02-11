@@ -1,0 +1,27 @@
+@use '../../../styles/defaults' as *;
+@use '../../../styles/variables' as *;
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.headingActions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}

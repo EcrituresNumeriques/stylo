@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  padding: 0.5rem 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.content {
+  display: flex;
+  gap: 0.35rem;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 1rem;
+}
+
+.identifier {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

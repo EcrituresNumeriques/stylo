@@ -1,0 +1,6 @@
+{
+  "copyButton": {
+    "success": "'{{text}}' copied to clipboard",
+    "title": "Copy '{{text}}' to clipboard"
+  }
+}

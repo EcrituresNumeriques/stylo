@@ -2,7 +2,6 @@ import { merge } from 'allof-merge'
 import { useSelector } from 'react-redux'
 
 import { toYaml } from '../components/organisms/metadata/yaml.js'
-import { toEntries } from '../helpers/bibtex.js'
 import { executeQuery } from '../helpers/graphQL.js'
 import { clean } from '../schemas/schemas.js'
 import useFetchData, {
@@ -18,9 +17,10 @@ import {
   getArticleTags,
   getEditableArticle,
   removeTags,
-  updateArticleQuery,
+  setNakalaLink,
+  setZoteroLink,
+  updateArticle,
   updateWorkingVersion,
-  updateZoteroLinkMutation,
 } from './Article.graphql'
 import { createArticle, getWorkspaceArticles } from './Articles.graphql'
 import {
@@ -208,7 +208,7 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
   const update = async (article, { title, tags, workspaces }) => {
     const response = await executeQuery({
       sessionToken,
-      query: updateArticleQuery,
+      query: updateArticle,
       variables: {
         updateArticleInput: {
           id: articleId,
@@ -434,7 +434,7 @@ export function useEditableArticle({ articleId, versionId }) {
   const updateZoteroLink = async (url) => {
     await executeQuery({
       sessionToken,
-      query: updateZoteroLinkMutation,
+      query: setZoteroLink,
       variables: {
         articleId: articleId,
         url,
@@ -454,16 +454,42 @@ export function useEditableArticle({ articleId, versionId }) {
     )
   }
 
+  const updateNakalaLink = async (url) => {
+    await executeQuery({
+      sessionToken,
+      query: setNakalaLink,
+      variables: {
+        articleId: articleId,
+        url,
+      },
+      type: 'mutate',
+    })
+    await mutate(
+      async (data) => {
+        return {
+          article: {
+            ...data.article,
+            nakalaLink: url,
+          },
+        }
+      },
+      { revalidate: false }
+    )
+  }
+
   const bibtext = hasVersion
     ? (data?.article?.version?.bib ?? '')
     : (data?.article?.workingVersion?.bib ?? '')
 
-  const entries = toEntries(bibtext)
+  const entries = hasVersion
+    ? (data?.article?.version?.bibliography ?? [])
+    : (data?.article?.workingVersion?.bibliography ?? [])
 
   return {
     article: data?.article,
     updateBibliography,
     updateZoteroLink,
+    updateNakalaLink,
     bibliography: {
       bibtext,
       entries,

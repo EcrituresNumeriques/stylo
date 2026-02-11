@@ -24,6 +24,7 @@ const {
   NotAuthenticatedError,
   BadRequestError,
 } = require('../helpers/errors.js')
+const { toEntries } = require('../helpers/bibtex')
 
 function getTextFromYjsDoc(yjsdocBase64) {
   const wsDoc = new WSSharedDoc(
@@ -447,6 +448,12 @@ module.exports = {
       return result === article
     },
 
+    async setNakalaLink(article, { nakala }) {
+      article.set('nakalaLink', nakala)
+      const result = await article.save({ timestamps: false })
+      return result === article
+    },
+
     async addTags(article, { tags }) {
       await article.addTags(...tags)
       return article.tags
@@ -507,6 +514,9 @@ module.exports = {
     },
     bibPreview({ bib }) {
       return previewEntries(bib)
+    },
+    bibliography({ bib = '' }) {
+      return toEntries(bib)
     },
     yaml({ metadata = {} }, { options }) {
       const legacyMetadata = toLegacyFormat(metadata)

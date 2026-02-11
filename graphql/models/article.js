@@ -38,6 +38,10 @@ const articleSchema = new Schema(
       type: String,
       default: '',
     },
+    nakalaLink: {
+      type: String,
+      default: '',
+    },
     workingVersion: {
       ydoc: {
         type: Object,
