@@ -13,7 +13,7 @@ La structure d’une référence en BibTeX est relativement simple. Sa forme gé
 }
 ```
 
-À l’intérieur du gestionnaire de références bibliographiques de Stylo, nous avons accès à un mode brut qui nous permet de visualiser et d’éditer les données des références en BibTeX. Il est situé dans le volet de gauche, sous « Bibliographie », « Gestion », puis dans l'onglet « BibTex brut ».
+À l’intérieur du gestionnaire de références bibliographiques de Stylo, nous avons accès à un mode brut qui nous permet de visualiser et d’éditer les données des références en BibTeX. Il s'agit d'un bouton à bascule situé dans « Bibliographie ». Vous pouvez aussi ajouter une référence directement en BibTeX au travers du bouton « Ajouter une référence ».
 
 **Attention :** Si vous corrigez manuellement votre BibTex brut dans l'éditeur Stylo, cela ne modifiera pas votre entrée bibliographique dans la collection Zotero associée. Assurez-vous de corriger aussi votre source dans Zotero si vous pensez recharger votre collection.
 

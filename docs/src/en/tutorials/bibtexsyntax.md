@@ -13,7 +13,7 @@ The structure of a BibTeX reference is relatively simple. Its general form looks
 }
 ```
 
-Within Stylo's bibliographic reference manager, we have access to a raw mode that allows us to view and edit reference data in BibTeX. It is located in the left-hand pane, under “Bibliography”, “Management”, then in the “BibTex raw” tab.
+Withing Stylo's bibliographic reference manager, we have access to a raw mode that allows us to view and edit reference data in BibTeX. This is a toggle button located in "Bibliography". You can also add a reference directly in BibTeX using the "Add reference" button.
 
 **Warning:** If you manually correct your raw BibTex in the Stylo editor, this will not modify your bibliographic entry in the associated Zotero collection. Make sure you also edit your source in Zotero if you plan to reload your collection.
 

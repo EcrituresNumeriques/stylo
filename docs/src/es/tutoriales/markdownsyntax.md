@@ -279,7 +279,7 @@ Esto da:
 
 El marcado semántico se utiliza para especificar la función de una palabra, expresión o párrafo.
 
-Stylo permite el marcado semántico libre: cada autor puede definir su propia semántica en función de sus necesidades particulares. Esto puede implementarse en las plantillas de exportación u hojas de estilo personalizadas (ver la sección [Personalice su exportación](/es/misartículos)).
+Stylo permite el marcado semántico libre: cada autor puede definir su propia semántica en función de sus necesidades particulares. Esto puede implementarse en las plantillas de exportación u hojas de estilo personalizadas.
 
 La sintaxis Markdown para el marcado semántico es la siguiente: `[término a etiquetar]{.etiqueta}`.
 

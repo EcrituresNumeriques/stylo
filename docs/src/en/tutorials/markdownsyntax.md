@@ -277,7 +277,7 @@ This gives:
 
 Semantic markup allows you to specify the function of a word, phrase or paragraph.
 
-Stylo allows free semantic markup: each author can define his or her own semantics according to his or her particular needs. This can then be implemented in export templates or custom style sheets (see section [Customize your export](/en/myarticles)).
+Stylo allows free semantic markup: each author can define his or her own semantics according to his or her particular needs. This can then be implemented in export templates or custom style sheets.
 
 The markdown syntax for semantic tagging is as follows: `[term to tag]{.category}`.
 

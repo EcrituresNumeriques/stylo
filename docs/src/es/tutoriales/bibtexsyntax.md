@@ -13,7 +13,7 @@ La estructura de una referencia en BibTeX es relativamente sencilla. Su forma ge
 }
 ```
 
-Dentro del gestor de referencias bibliográficas de Stylo, tenemos acceso a un modo raw que nos permite ver y editar los datos de las referencias en BibTeX. Se encuentra en el panel de la izquierda, en 'Bibliografía', 'Gestión', y luego en la pestaña 'BibTex en bruto'.
+Dentro del gestor de referencias bibliográficas de Stylo, renemos acceso a un modo sin procesar que nos permite ver y editar datos de referencia en BibTeX. Este botón se encuentra en "Bibliografía". También puede agregar una referencia directamente en BibTeX con el botón "Añadir referencia".
 
 **Advertencia:** Si corrige manualmente su BibTex sin procesar en el editor Stylo, esto no cambiará su entrada bibliográfica en la colección Zotero asociada. Asegúrese de corregir también su fuente en Zotero si piensa recargar su colección.
 

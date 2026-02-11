@@ -278,7 +278,7 @@ Cela donne&nbsp;:
 
 Le balisage sémantique permet de spécifier la fonction d'un mot, d'une expression ou d'un paragraphe.
 
-Stylo permet un balisage sémantique libre&nbsp;: chaque auteur·e peut définir sa propre sémantique en fonction de ses besoins particuliers. Elle pourra ensuite être implémentée dans les modèles d'export ou les feuilles de style personnalisées (voir la section [Personnaliser son export](/fr/mesarticles)).
+Stylo permet un balisage sémantique libre&nbsp;: chaque auteur·e peut définir sa propre sémantique en fonction de ses besoins particuliers. Elle pourra ensuite être implémentée dans les modèles d'export ou les feuilles de style personnalisées.
 
 La syntaxe markdown de balisage sémantique est la suivante&nbsp;: `[terme à baliser]{.categorie}`.
 
