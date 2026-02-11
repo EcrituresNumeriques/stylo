@@ -3,6 +3,8 @@ import { Alert } from '../../molecules/index.js'
 
 import Combobox from '../../molecules/SelectCombobox.jsx'
 
+import styles from './NakalaUserCollectionsCombobox.module.scss'
+
 export default function NakalaUserCollectionsCombobox({
   scope,
   value,
@@ -24,6 +26,7 @@ export default function NakalaUserCollectionsCombobox({
     })) ?? []
   return (
     <Combobox
+      className={styles.combobox}
       isLoading={isLoading}
       label=""
       items={items}

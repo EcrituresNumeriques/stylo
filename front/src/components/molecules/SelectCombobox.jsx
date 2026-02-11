@@ -26,6 +26,7 @@ import styles from '../atoms/Field.module.scss'
  * @param {boolean} [props.isLoading]
  * @param {(string) => void} props.onChange
  * @param {string} props.value
+ * @param {string} [props.className]
  * @returns {React.ReactElement}
  */
 export default function Combobox({
@@ -34,6 +35,7 @@ export default function Combobox({
   items,
   value: selectedItem,
   isLoading = false,
+  className,
   onChange,
 }) {
   const [inputItems, setInputItems] = useState(items)
@@ -122,7 +124,7 @@ export default function Combobox({
   )
 
   return (
-    <div className={styles.combobox}>
+    <div className={clsx(styles.combobox, className && className)}>
       <label {...getLabelProps()}>{label}</label>
       <div className={styles.comboboxController}>
         <Field
