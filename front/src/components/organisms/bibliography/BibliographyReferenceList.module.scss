@@ -1,3 +1,6 @@
+@use '../../../styles/defaults' as *;
+@use '../../../styles/variables' as *;
+
 .searchField {
   input {
     width: 100%;
@@ -10,6 +13,14 @@
   display: flex;
   padding: 0 0.5rem 1rem 0;
   justify-content: flex-end;
+}
+
+.list {
+  padding-top: 1rem;
+
+  article:nth-of-type(2n + 1) {
+    background-color: $alternate-row-color;
+  }
 }
 
 .showAll {

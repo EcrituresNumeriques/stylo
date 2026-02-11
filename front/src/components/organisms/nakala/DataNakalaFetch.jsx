@@ -7,21 +7,31 @@ import NakalaUserCollectionsCombobox from './NakalaUserCollectionsCombobox.jsx'
 
 import styles from './DataNakalaFetch.module.scss'
 
-export default function DataNakalaFetch({ onChange }) {
+export default function DataNakalaFetch({
+  humanid,
+  initialCollectionUri,
+  onChange,
+}) {
   const { t } = useTranslation('data', { useSuspense: false })
-  const [collectionIdentifier, setCollectionIdentifier] = useState('')
+  const [collectionUri, setCollectionUri] = useState(initialCollectionUri)
   const handleCollectionChange = useCallback(
-    (value) => setCollectionIdentifier(value),
-    [setCollectionIdentifier]
+    (value) => setCollectionUri(value),
+    [setCollectionUri]
   )
   return (
     <div className={styles.container}>
-      <NakalaUserCollectionsCombobox onChange={handleCollectionChange} />
+      {/* pour le moment, le scope share retourne aussi les collections dont l'utilisateur est propriétaire */}
+      <NakalaUserCollectionsCombobox
+        scope={'share'}
+        value={collectionUri}
+        humanid={humanid}
+        onChange={handleCollectionChange}
+      />
       <Button
         type="submit"
         primary
-        disabled={collectionIdentifier === ''}
-        onClick={() => onChange(collectionIdentifier)}
+        disabled={!collectionUri}
+        onClick={() => onChange(collectionUri)}
       >
         {t('actions.fetch.collection')}
       </Button>

@@ -1,13 +1,19 @@
 import React from 'react'
 
-import { useNakalaUserCollection } from '../../../hooks/nakala.js'
+import { useNakalaSearchCollections } from '../../../hooks/nakala.js'
 import { Alert } from '../../molecules/index.js'
 
 import Combobox from '../../molecules/SelectCombobox.jsx'
 
-export default function NakalaUserCollectionsCombobox({ onChange }) {
-  const { records, isLoading, error } = useNakalaUserCollection('all', {
-    orders: ['creDate,desc'],
+export default function NakalaUserCollectionsCombobox({
+  scope,
+  value,
+  humanid,
+  onChange,
+}) {
+  const { records, isLoading, error } = useNakalaSearchCollections({
+    scope,
+    humanid,
   })
 
   if (error) return <Alert message={error.message} />
@@ -15,7 +21,7 @@ export default function NakalaUserCollectionsCombobox({ onChange }) {
   const items =
     records?.map((r, index) => ({
       name: `${r.name} (${r.identifier})`,
-      key: r.identifier,
+      key: r.uri,
       index,
     })) ?? []
   return (
@@ -23,7 +29,7 @@ export default function NakalaUserCollectionsCombobox({ onChange }) {
       isLoading={isLoading}
       label=""
       items={items}
-      value={''}
+      value={value}
       onChange={onChange}
     />
   )

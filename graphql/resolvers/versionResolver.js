@@ -7,6 +7,7 @@ const { NotFoundError } = require('../helpers/errors')
 const { reformat } = require('../helpers/metadata.js')
 const { previewEntries } = require('../helpers/bibliography')
 const { toLegacyFormat } = require('../helpers/metadata')
+const { toEntries } = require('../helpers/bibtex')
 
 module.exports = {
   Query: {
@@ -37,6 +38,10 @@ module.exports = {
 
     bibPreview({ bib }) {
       return previewEntries(bib)
+    },
+
+    bibliography({ bib = '' }) {
+      return toEntries(bib)
     },
 
     yaml({ metadata = {} }, { options }) {

@@ -33,7 +33,7 @@ export default function EditorMenuContent({
       {activeMenu === 'bibliography' && (
         <ArticleBibliography articleId={articleId} />
       )}
-      {activeMenu === 'data' && <ArticleData />}
+      {activeMenu === 'data' && <ArticleData articleId={articleId} />}
       {activeMenu === 'export' && (
         <>
           <h2 style={{ cursor: 'pointer', userSelect: 'none' }}>

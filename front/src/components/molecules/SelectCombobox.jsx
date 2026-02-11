@@ -23,6 +23,7 @@ import styles from '../atoms/Field.module.scss'
  * @param {string} props.id
  * @param {string} props.label
  * @param {ComboboxItem[]} props.items
+ * @param {boolean} [props.isLoading=false]
  * @param {(string) => void} props.onChange
  * @param {string} props.value
  * @returns {React.ReactElement}
@@ -33,7 +34,6 @@ export default function Combobox({
   items,
   value: selectedItem,
   isLoading = false,
-  icon,
   onChange,
 }) {
   const [inputItems, setInputItems] = useState(items)
@@ -44,7 +44,7 @@ export default function Combobox({
 
     if (selectedItem) {
       const item = items.find(({ key }) => key === selectedItem)
-      setInputValue(item.name)
+      setInputValue(item?.name)
       setHighlightedIndex(items.findIndex(({ key }) => key === selectedItem))
     }
   }, [items])
@@ -163,7 +163,7 @@ export default function Combobox({
             <ul
               className={styles.comboboxGroup}
               data-label={section}
-              key={section}
+              key={section || 'main'}
             >
               {items.map((item) => (
                 <li

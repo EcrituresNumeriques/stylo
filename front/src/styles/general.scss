@@ -74,9 +74,15 @@ small {
     cursor: pointer;
   }
 
+  pre {
+    font-size: 0.9rem;
+    margin: 0.15rem 0;
+  }
+
   button,
   textarea {
     font-family: 'Inter', serif;
+    font-size: 1rem;
   }
 
   textarea {

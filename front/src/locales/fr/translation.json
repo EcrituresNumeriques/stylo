@@ -1,5 +1,4 @@
 {
-  "data.title": "Données",
   "annotate.title": "Annoter",
   "article.annotate.button": "Annoter (ouvre une nouvelle fenêtre)",
   "article.by.text": "par",
@@ -156,6 +155,7 @@
   "credentials.registerWithAuth.title": "Création d'un compte Stylo",
   "credentials.updatePassword.confirmButton": "Mettre à jour",
   "credentials.updatePassword.updatingButton": "Mise à jour…",
+  "data.title": "Données",
   "editorMenu.close.label": "Menu",
   "editorMenu.open.label": "Fermer",
   "export.additionnalOptions.label": "Other settings",
@@ -299,8 +299,6 @@
   "write.charCountPlusSpaceStat.text": "Caractères (espaces comprises) : {{stats}}",
   "write.citationsStat.text": "Citations : {{stats}}",
   "write.compareVersion.button": "Comparer",
-  "write.copyReferenceToClipboard.Button": "Copier '{{text}}' dans le presse-papiers",
-  "write.copyReferenceToClipboard.successToast": "'{{text}}' copié dans le presse-papiers",
   "write.createMajorVersion.Button": "Version majeure",
   "write.createMinorVersion.Button": "Version mineure",
   "write.createVersion.button": "Nouvelle version",

@@ -1,9 +1,11 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router'
 
+import { useEditableArticle } from '../../../hooks/article.js'
 import { useModal } from '../../../hooks/modal.js'
 import { Button } from '../../atoms/index.js'
+import { Alert, Loading } from '../../molecules/index.js'
 
 import Modal from '../../molecules/Modal.jsx'
 import DataNakalaFetch from './DataNakalaFetch.jsx'
@@ -11,19 +13,26 @@ import NakalaRecords from './NakalaRecords.jsx'
 
 import styles from './ArticleData.module.scss'
 
-export default function ArticleData({}) {
+export default function ArticleData({ articleId }) {
   const { user } = useRouteLoaderData('app')
-  console.log({ user })
+  const { article, updateNakalaLink, isLoading } = useEditableArticle({
+    articleId,
+  })
   const { t } = useTranslation('data', { useSuspense: false })
   const nakalaModal = useModal()
-  const [collection, setCollection] = useState('')
   const handleCollectionChange = useCallback(
-    (value) => {
+    async (value) => {
       nakalaModal.close()
-      setCollection(value)
+      await updateNakalaLink(value)
     },
-    [setCollection, nakalaModal]
+    [nakalaModal, updateNakalaLink]
   )
+  //const humanid = user.authProviders?.humanid?.id
+  const humanid = 'tnakala'
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   return (
     <section>
@@ -31,15 +40,29 @@ export default function ArticleData({}) {
         <h2 className={styles.title}>{t('title')}</h2>
       </header>
       <section>
-        <div className={styles.headingActions}>
-          <Button small={true} onClick={() => nakalaModal.show()}>
-            {t('actions.fetch.label')}
-          </Button>
-        </div>
-        <NakalaRecords collection={collection} />
-        <Modal {...nakalaModal.bindings} title={t('actions.fetch.label')}>
-          <DataNakalaFetch onChange={handleCollectionChange} />
-        </Modal>
+        {!humanid && (
+          <Alert
+            message={t('actions.fetch.errors.humanid.missing')}
+            type={'warning'}
+          />
+        )}
+        {humanid && (
+          <>
+            <div className={styles.headingActions}>
+              <Button small={true} onClick={() => nakalaModal.show()}>
+                {t('actions.fetch.label')}
+              </Button>
+            </div>
+            <NakalaRecords collectionUri={article?.nakalaLink} />
+            <Modal {...nakalaModal.bindings} title={t('actions.fetch.label')}>
+              <DataNakalaFetch
+                humanid={humanid}
+                initialCollectionUri={article?.nakalaLink}
+                onChange={handleCollectionChange}
+              />
+            </Modal>
+          </>
+        )}
       </section>
     </section>
   )

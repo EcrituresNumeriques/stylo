@@ -1,77 +1,49 @@
-import { Clipboard, Trash } from 'lucide-react'
-import React, { memo, useCallback } from 'react'
+import { Trash } from 'lucide-react'
+import React, { useMemo } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { toast } from 'react-toastify'
-import { useCopyToClipboard } from 'react-use'
 
 import { useModal } from '../../../hooks/modal.js'
 import { Button } from '../../atoms/index.js'
-import { FormActions } from '../../molecules/index.js'
+import { CopyButton, FormActions } from '../../molecules/index.js'
 
 import Modal from '../../molecules/Modal.jsx'
 import ReferenceTypeIcon from './ReferenceTypeIcon.jsx'
 
 import styles from './BibliographyReference.module.scss'
 
-const CopyButton = memo(function ReferenceCopyButton({ text }) {
-  const { t } = useTranslation()
-  const [, copyToClipboard] = useCopyToClipboard()
-
-  const handleCopy = useCallback(() => {
-    copyToClipboard(text)
-    toast(t('write.copyReferenceToClipboard.successToast', { text }), {
-      type: 'info',
-    })
-  }, [])
-
-  return (
-    <Button
-      title={t('write.copyReferenceToClipboard.Button', { text })}
-      className={styles.copyToClipboard}
-      onClick={handleCopy}
-      icon
-    >
-      <Clipboard />
-    </Button>
-  )
-})
-
 export default function BibliographyReference({ entry, onRemove }) {
   const { key, title, type, date, authorName } = entry
-  const text = `[@${key}]`
   const { t } = useTranslation()
   const deleteReferenceModal = useModal()
 
+  const text = useMemo(() => `[@${key}]`, [key])
+  const referenceTitle = useMemo(
+    () => [authorName, title, date].filter((e) => e).join(' | '),
+    [authorName, title, date]
+  )
   return (
     <>
-      <div className={styles.reference}>
-        <ReferenceTypeIcon type={type} className={styles.referenceTypeIcon} />
-
-        <div className={styles.referenceInfo}>
-          <p
-            className={styles.referencePrimaryInfo}
-            title={authorName + ' | ' + title}
-          >
-            {authorName && (
-              <span className={styles.referenceAuthor}>{authorName}</span>
-            )}
-            <span className={styles.referenceTitle} title={title}>
-              {title}
-            </span>
-            <span className={styles.referenceDate}>{date}</span>
-          </p>
-          <p className={styles.referenceSecondaryInfo}>
-            <span className={styles.referenceKey} title={'@' + key}>
-              @{key}
-            </span>
-          </p>
+      <article className={styles.container}>
+        <div className={styles.content}>
+          <header>
+            <ReferenceTypeIcon type={type} className={styles.icon} />
+            <h3 className={styles.title} title={referenceTitle}>
+              {referenceTitle}
+            </h3>
+          </header>
+          <div>
+            <div className={styles.identifier} title={'@' + key}>
+              <pre>@{key}</pre>
+            </div>
+          </div>
         </div>
-
-        <CopyButton text={text} />
-        <Button icon={true} onClick={() => deleteReferenceModal.show()}>
-          <Trash />
-        </Button>
-      </div>
+        <div className={styles.actions}>
+          <CopyButton text={text} />
+          <Button icon={true} onClick={() => deleteReferenceModal.show()}>
+            <Trash />
+          </Button>
+        </div>
+      </article>
 
       <Modal
         {...deleteReferenceModal.bindings}

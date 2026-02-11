@@ -143,7 +143,7 @@ export default function Articles() {
           </span>
         </div>
 
-        <div className={styles.articlesList}>
+        <div>
           {keepArticles.map((article) => (
             <Article
               key={`article-${article._id}`}

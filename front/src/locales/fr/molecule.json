@@ -1,0 +1,6 @@
+{
+  "copyButton": {
+    "success": "'{{text}}' copié dans le presse-papiers",
+    "title": "Copier '{{text}}' dans le presse-papiers"
+  }
+}
