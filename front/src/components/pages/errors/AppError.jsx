@@ -1,6 +1,6 @@
 import { captureException } from '@sentry/react'
 
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { isRouteErrorResponse, useRouteError } from 'react-router'
 
@@ -26,7 +26,7 @@ export default function AppError() {
 
 function getErrorContent(error) {
   // REMIND: can't use `Suspense` inside an ErrorBoundary component
-  const { t, _, ready } = useTranslation('errors', { useSuspense: false })
+  const { t, ready } = useTranslation('errors', { useSuspense: false })
   if (!ready) {
     return <Loading />
   }

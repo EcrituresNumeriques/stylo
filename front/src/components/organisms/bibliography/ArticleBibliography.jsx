@@ -1,5 +1,4 @@
-import { ArrowLeft } from 'lucide-react'
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
@@ -16,11 +15,11 @@ import BibliographyZoteroImport from './BibliographyZoteroImport.jsx'
 import styles from './ArticleBibliography.module.scss'
 
 /**
- * @param props
- * @param props.articleId
- * @param props.versionId
- * @return {JSX.Element}
- * @constructor
+ * @param {object} props
+ * @param {string} props.articleId
+ * @param {string} props.versionId
+ * @returns {JSX.Element}
+ * @class
  */
 export default function ArticleBibliography({ articleId, versionId }) {
   /** @type {object} */

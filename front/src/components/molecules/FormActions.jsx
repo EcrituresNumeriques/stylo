@@ -1,4 +1,3 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Button } from '../atoms/index.js'
@@ -14,12 +13,12 @@ import styles from './FormActions.module.scss'
  */
 
 /**
- * @param props
- * @param {function} props.onSubmit
- * @param {function} props.onCancel
+ * @param {object} props
+ * @param {(() => void)=} props.onSubmit
+ * @param {() => void} props.onCancel
  * @param {ButtonInfo|undefined} props.cancelButton
  * @param {ButtonInfo|undefined} props.submitButton
- * @constructor
+ * @class
  */
 export default function FormActions({
   onSubmit,

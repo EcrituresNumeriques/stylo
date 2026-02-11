@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
 

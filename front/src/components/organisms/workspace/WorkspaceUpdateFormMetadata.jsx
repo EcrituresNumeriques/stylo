@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
@@ -10,11 +10,11 @@ import buttonStyles from '../../atoms/Button.module.scss'
 import styles from './createWorkspace.module.scss'
 
 /**
- * @param {Object} props
- * @param {Function} props.onSubmit
- * @param {Function} props.onCancel
- * @param {Object} props.workspace
- * @return {JSX.Element}
+ * @param {object} props
+ * @param {() => void} props.onSubmit
+ * @param {() => void} props.onCancel
+ * @param {object} props.workspace
+ * @returns {JSX.Element}
  */
 export default function WorkspaceUpdateFormMetadata({
   onSubmit,

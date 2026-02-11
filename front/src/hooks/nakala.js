@@ -8,11 +8,10 @@ import useSWR from 'swr'
 
 /**
  * JSON fetcher for Nakala API requests.
- *
- * @param {Object} params - Request parameters.
+ * @param {object} params - Request parameters.
  * @param {string} params.url - The request URL.
- * @param {Object} [params.payload] - The payload for POST requests (optional).
- * @returns {Promise<Object>} The JSON response from the API.
+ * @param {object} [params.payload] - The payload for POST requests (optional).
+ * @returns {Promise<object>} The JSON response from the API.
  */
 function jsonFetcher({ url, payload }) {
   return fetch(url, {
@@ -28,10 +27,9 @@ function jsonFetcher({ url, payload }) {
 
 /**
  * Internal hook for making requests to the Nakala API.
- *
  * @param {string} path - The API endpoint path (without the `/nakala/` prefix).
- * @param {Object} [payload] - The payload for POST requests (optional).
- * @param {import('swr').SWRConfiguration} [swrOptions={}] - SWR configuration options.
+ * @param {object} [payload] - The payload for POST requests (optional).
+ * @param {import('swr').SWRConfiguration} [swrOptions] - SWR configuration options.
  * @returns {import('swr').SWRResponse} The SWR response containing data, error, isLoading, etc.
  */
 function useNakalaApi(path, payload = undefined, swrOptions = {}) {
@@ -49,9 +47,8 @@ function useNakalaApi(path, payload = undefined, swrOptions = {}) {
 
 /**
  * Transforms a raw Nakala search record into a data object.
- *
- * @param {Object} record - A raw data record from the Nakala search API.
- * @param {Array<{propertyUri: string, value: *}>} record.metas - Metadata entries.
+ * @param {object} record - A raw data record from the Nakala search API.
+ * @param {Array<{propertyUri: string, value: unknown}>} record.metas - Metadata entries.
  * @param {Array<{role: string, name: string}>} record.rights - Access rights, used to extract the owner.
  * @param {string} record.creDate - Creation date of the record.
  * @param {string} record.status - Publication status (e.g. "published", "pending").
@@ -79,11 +76,10 @@ function toSearchCollectionData(record) {
 
 /**
  * Hook to fetch data records belonging to a specific Nakala collection.
- *
- * @param {Object} query - Query parameters.
+ * @param {object} query - Query parameters.
  * @param {string} [query.collectionIdentifier] - The Nakala collection identifier. When undefined, the request is not executed.
- * @param {import('swr').SWRConfiguration} [swrOptions={}] - SWR configuration options.
- * @returns {{isLoading: boolean, total: number|undefined, records: Array|undefined, error: *}}
+ * @param {import('swr').SWRConfiguration} [swrOptions] - SWR configuration options.
+ * @returns {{isLoading: boolean, total: number|undefined, records: Array|undefined, error: unknown}}
  */
 export function useNakalaSearchCollectionDatas(query, swrOptions = {}) {
   const { collectionIdentifier } = query
@@ -101,9 +97,8 @@ export function useNakalaSearchCollectionDatas(query, swrOptions = {}) {
 
 /**
  * Transforms a raw Nakala search record into a collection object.
- *
- * @param {Object} record - A raw collection record from the Nakala search API.
- * @param {Array<{propertyUri: string, value: *}>} record.metas - Metadata entries.
+ * @param {object} record - A raw collection record from the Nakala search API.
+ * @param {Array<{propertyUri: string, value: unknown}>} record.metas - Metadata entries.
  * @param {Array<{role: string, name: string}>} record.rights - Access rights, used to extract the owner.
  * @param {string} record.uri - Collection URI.
  * @param {string} record.creDate - Creation date of the collection.
@@ -128,12 +123,11 @@ function toSearchCollection(record) {
 
 /**
  * Hook to search for Nakala collections owned by or accessible to a given user.
- *
- * @param {Object} query - Query parameters.
+ * @param {object} query - Query parameters.
  * @param {string} query.scope - The search scope filter (e.g. "owner", "share").
  * @param {string} query.humanid - The humanID of the user.
- * @param {import('swr').SWRConfiguration} [swrOptions={}] - SWR configuration options.
- * @returns {{isLoading: boolean, total: number|undefined, records: Array|undefined, error: *}}
+ * @param {import('swr').SWRConfiguration} [swrOptions] - SWR configuration options.
+ * @returns {{isLoading: boolean, total: number|undefined, records: Array|undefined, error: unknown}}
  */
 export function useNakalaSearchCollections(query, swrOptions = {}) {
   const { scope, humanid } = query

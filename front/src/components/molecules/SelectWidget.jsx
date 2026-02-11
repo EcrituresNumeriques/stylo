@@ -1,6 +1,5 @@
 // copied from https://github.com/rjsf-team/react-jsonschema-form/blob/b78d9ef280eddf5bda0f97e5a3445c6a1fd35c99/packages/core/src/components/widgets/SelectWidget.js
 // workaround https://github.com/rjsf-team/react-jsonschema-form/issues/1041
-import React from 'react'
 
 //import { asNumber, guessType } from "../../utils";
 
@@ -56,6 +55,10 @@ const nums = new Set(['number', 'integer'])
 /**
  * This is a silly limitation in the DOM where option change event values are
  * always retrieved as strings.
+ * @param {object} schema
+ * @param {object} uiSchema
+ * @param {string|string[]} value
+ * @returns {undefined|boolean|number|string|string[]}
  */
 function processValue(schema, uiSchema, value) {
   // "enum" is a reserved word, so only "type" and "items" can be destructured

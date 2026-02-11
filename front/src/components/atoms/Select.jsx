@@ -1,5 +1,5 @@
 import { clsx } from 'clsx'
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react'
 
 import styles from './Button.module.scss'
 import fieldStyles from './Field.module.scss'

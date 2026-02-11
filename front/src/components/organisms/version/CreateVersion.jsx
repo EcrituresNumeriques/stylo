@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -11,11 +11,11 @@ import buttonStyles from '../../atoms/Button.module.scss'
 import styles from './createVersion.module.scss'
 
 /**
- * @param props
+ * @param {object} props
  * @param {string} props.articleId
- * @param {() => {}} props.onClose
- * @param {() => {}} props.onSubmit
- * @return {Element}
+ * @param {() => void} props.onClose
+ * @param {() => void} props.onSubmit
+ * @returns {Element}
  */
 export default function CreateVersion({ articleId, onClose, onSubmit }) {
   const { t } = useTranslation()

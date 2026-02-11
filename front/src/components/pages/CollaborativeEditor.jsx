@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router'
 
 import { executeQuery } from '../../helpers/graphQL.js'
@@ -44,7 +44,7 @@ export async function loader({ params }) {
 }
 
 export default function CollaborativeEditor(props) {
-  const { id: articleId, compareTo, version: versionId } = useParams()
+  const { id: articleId, version: versionId } = useParams()
   const [searchParams] = useSearchParams({ mode: props.mode ?? 'write' })
   const mode = searchParams.get('mode')
 

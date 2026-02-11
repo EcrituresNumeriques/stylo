@@ -1,5 +1,5 @@
 import { Check, Loader } from 'lucide-react'
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'

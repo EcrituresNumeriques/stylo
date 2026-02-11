@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { Plus, Trash } from 'lucide-react'
 import { set } from 'object-path-immutable'
 import PropTypes from 'prop-types'
-import React, { Fragment, useCallback, useMemo, useState } from 'react'
+import { Fragment, useCallback, useMemo, useState } from 'react'
 import { Translation } from 'react-i18next'
 
 import Form, { getDefaultRegistry } from '@rjsf/core'
@@ -233,7 +233,7 @@ function FieldTemplate(properties) {
 
 /**
  * @param {ObjectFieldTemplateProps} properties
- * @returns {Element}
+ * @returns {JSX.Element|undefined}
  */
 function ObjectFieldTemplate(properties) {
   if (properties.uiSchema['ui:groups']) {
@@ -313,11 +313,11 @@ const customFields = {
 
 /**
  * @param {object} props properties
- * @param {any} props.formData
+ * @param {Record<string, unknown>} props.formData
  * @param {boolean} props.readOnly
- * @param {any} props.schema
- * @param {any} props.uiSchema
- * @param {(any) => void} props.onChange
+ * @param {Record<string, unknown>} props.schema
+ * @param {Record<string, unknown>} props.uiSchema
+ * @param {(formData: Record<string, unknown>) => void} props.onChange
  * @returns {Element}
  */
 export default function SchemaForm({

@@ -1,5 +1,4 @@
 import { Check, Copy } from 'lucide-react'
-import React from 'react'
 
 import { Button } from '../components/atoms/index.js'
 

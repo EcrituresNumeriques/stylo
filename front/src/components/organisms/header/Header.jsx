@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { Menu } from 'lucide-react'
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Link, NavLink, useLocation, useRouteLoaderData } from 'react-router'

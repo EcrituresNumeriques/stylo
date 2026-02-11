@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import * as monaco from 'monaco-editor'
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 // Taken from https://github.com/koka-lang/madoko/blob/master/styles/lang/bibtex.json
 import languageDefinition from './lang/bibtex.json'

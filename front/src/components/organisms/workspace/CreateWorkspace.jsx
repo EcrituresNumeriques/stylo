@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
@@ -12,10 +12,10 @@ import fieldStyles from '../../atoms/Field.module.scss'
 import styles from './createWorkspace.module.scss'
 
 /**
- * @param {Object} props
- * @param {Function} props.onSubmit
- * @param {Function} props.onCancel
- * @return {JSX.Element}
+ * @param {object} props
+ * @param {() => void} props.onSubmit
+ * @param {() => void} props.onCancel
+ * @returns {JSX.Element}
  */
 export default function CreateWorkspace({ onSubmit, onCancel }) {
   const { t } = useTranslation('workspace', { useSuspense: false })

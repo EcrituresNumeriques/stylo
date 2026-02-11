@@ -1,5 +1,4 @@
 import { Newspaper, UserPlus, Users } from 'lucide-react'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useModal } from '../../../hooks/modal.js'
@@ -9,7 +8,7 @@ import { DropdownMenu, ObjectMetadataLabel } from '../../molecules/index.js'
 
 import LeaveWorkspaceModal from './LeaveWorkspaceModal.jsx'
 /**
- * @typedef {Object} WorkspaceItemProps
+ * @typedef {object} WorkspaceItemProps
  * @property {{
  *   color: string,
  *   name: string,
@@ -32,7 +31,7 @@ import WorkspaceManageMembersModal from './WorkspaceManageMembersModal.jsx'
 import WorkspaceUpdateFormMetadataModal from './WorkspaceUpdateFormMetadataModal.jsx'
 
 /**
- * @typedef {Object} WorkspaceItemProps
+ * @typedef {object} WorkspaceItemProps
  * @property {{
  *   color: string,
  *   name: string,
@@ -54,7 +53,7 @@ import WorkspaceUpdateFormMetadataModal from './WorkspaceUpdateFormMetadataModal
 import styles from './WorkspaceItem.module.scss'
 
 /**
- * @typedef {Object} WorkspaceItemProps
+ * @typedef {object} WorkspaceItemProps
  * @property {{
  *   color: string,
  *   name: string,
@@ -75,7 +74,7 @@ import styles from './WorkspaceItem.module.scss'
  */
 
 /**
- * @typedef {Object} WorkspaceItemProps
+ * @typedef {object} WorkspaceItemProps
  * @property {{
  *   color: string,
  *   name: string,

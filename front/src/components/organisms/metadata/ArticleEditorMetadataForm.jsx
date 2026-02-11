@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ArticleSchemas } from '../../../schemas/schemas.js'
@@ -10,12 +10,12 @@ import styles from './ArticleEditorMetadataForm.module.scss'
 
 /**
  * @param {object} props properties
- * @param {any} props.metadata
+ * @param {Record<string, unknown>} props.metadata
  * @param {string} props.metadataFormType
- * @param {any} props.metadataFormTypeOptions
+ * @param {Array<{name: string, data: Record<string, unknown>, ui: Record<string, unknown>}>} props.metadataFormTypeOptions
  * @param {boolean} props.readOnly
- * @param {(any) => void} props.onChange
- * @param {(any) => void} props.onTypeChange
+ * @param {(formData: Record<string, unknown>) => void} props.onChange
+ * @param {(type: string) => void} props.onTypeChange
  * @returns {Element}
  */
 export default function ArticleEditorMetadataForm({
@@ -70,7 +70,9 @@ export default function ArticleEditorMetadataForm({
         })
       } else {
         // remove default const properties `@version` and `type` since we are using a custom schema
-        const { ['@version']: del, type, ...customMetadata } = metadata
+        const customMetadata = Object.fromEntries(
+          Object.entries(metadata).filter(([key]) => key !== '@version' && key !== 'type')
+        )
         handleChange(customMetadata)
       }
       onTypeChange(type)

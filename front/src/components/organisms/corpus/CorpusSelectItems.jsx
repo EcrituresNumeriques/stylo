@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import useFetchData from '../../../hooks/graphql.js'
 import { useActiveWorkspaceId } from '../../../hooks/workspace.js'
@@ -9,9 +9,9 @@ import CorpusSelectItem from './CorpusSelectItem.jsx'
 import { getCorpus } from '../../../hooks/Corpus.graphql'
 
 /**
- * @param props
+ * @param {object} props
  * @param {string} props.articleId
- * @return {Element}
+ * @returns {Element}
  */
 export default function CorpusSelectItems({ articleId }) {
   const activeWorkspaceId = useActiveWorkspaceId()

@@ -1,11 +1,10 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { DndProvider } from 'react-dnd'
 import { useTranslation } from 'react-i18next'
 
 import { dragAndDropManager } from '../../../hooks/dnd.js'
 import useFetchData from '../../../hooks/graphql.js'
 import { useModal } from '../../../hooks/modal.js'
-import { useActiveWorkspaceId } from '../../../hooks/workspace.js'
 import { Button } from '../../atoms/index.js'
 import { Loading } from '../../molecules/index.js'
 

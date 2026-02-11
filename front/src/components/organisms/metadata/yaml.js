@@ -2,7 +2,7 @@ import YAML from 'js-yaml'
 
 /**
  * Crée une copie de l'objet et supprime les valeurs vides/null/undefined.
- * @param {any} object
+ * @param {unknown} object
  * @returns {unknown|null} null si l'objet est vide, sinon l'objet sans les valeurs vides/null/undefined.
  */
 function clean(object) {
@@ -43,7 +43,7 @@ function clean(object) {
 
 /**
  * Est-ce que l'objet est vide.
- * @param {any} object
+ * @param {unknown} object
  * @returns {boolean} vrai si l'objet est vide, sinon faux.
  */
 function objectIsEmpty(object) {
@@ -52,7 +52,7 @@ function objectIsEmpty(object) {
 
 /**
  * Transforme un objet en YAML.
- * @param {any} object
+ * @param {unknown} object
  * @returns {string} une chaine vide si l'objet est vide, sinon la représentation YAML de l'objet.
  */
 export function toYaml(object) {

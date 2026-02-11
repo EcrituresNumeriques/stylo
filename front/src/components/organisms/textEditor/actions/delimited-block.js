@@ -1,6 +1,4 @@
 import {
-  KeyCode,
-  KeyMod,
   Range,
   Selection,
 } from 'monaco-editor/esm/vs/editor/editor.api'
@@ -18,6 +16,7 @@ import { blockAttributes } from './index.js'
  * @param {string?} opts.label
  * @param {string?} opts.contextMenuGroupId
  * @param {string?} opts.delimiters
+ * @param {string=} opts.separator
  * @param {number?} opts.keybindings
  * @param {string?} opts.className
  * @param {{[key: string]: string}?} opts.attrs

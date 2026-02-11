@@ -96,7 +96,7 @@ export function isWebUrl(url) {
 
 /**
  * Get the next link from headers.
- * @param headers HTTP headers (from a response)
+ * @param {Headers} headers HTTP headers (from a response)
  * @returns {URL|null}
  */
 function getNextLink(headers) {
@@ -130,7 +130,7 @@ function copySearchParams(from, to) {
  *
  * @param {URL} initialUrl
  * @param {'json' | 'text'} resolveAs
- * @returns {Generator<string[]|Object[]>} a list of aggregated responses
+ * @returns {Generator<string[] | object[]>} a list of aggregated responses
  */
 async function fetchAll(initialUrl, resolveAs = 'json') {
   const agg = []

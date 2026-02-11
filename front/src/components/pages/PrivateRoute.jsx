@@ -1,4 +1,3 @@
-import React from 'react'
 import { Navigate, Outlet, useLocation, useRouteLoaderData } from 'react-router'
 
 /**

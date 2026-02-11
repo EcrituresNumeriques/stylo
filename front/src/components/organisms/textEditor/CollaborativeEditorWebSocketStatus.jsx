@@ -1,14 +1,13 @@
 import clsx from 'clsx'
 import { Loader } from 'lucide-react'
-import React from 'react'
 
 import styles from './CollaborativeEditorWebSocketStatus.module.scss'
 
 /**
- * @param props
+ * @param {object} props
  * @param {string} props.status
- * @return {JSX.Element}
- * @constructor
+ * @returns {JSX.Element}
+ * @class
  */
 export default function CollaborativeEditorWebSocketStatus({ status }) {
   if (status === 'connected') {

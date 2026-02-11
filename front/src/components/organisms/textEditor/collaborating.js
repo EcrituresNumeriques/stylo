@@ -22,7 +22,7 @@ export function connect({
     awareness: awareness,
   })
 
-  awareness.on('change', (change, transactionOrigin) => {
+  awareness.on('change', () => {
     onChange({
       states: awareness.getStates(),
       // args

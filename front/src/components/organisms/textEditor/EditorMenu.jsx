@@ -9,7 +9,7 @@ import {
   TableOfContents,
   TextCursorInput,
 } from 'lucide-react'
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import EditorMenuItem from './EditorMenuItem.jsx'
@@ -27,7 +27,7 @@ export default function EditorMenu({ onChange }) {
   )
 
   const toggleActiveMenu = useCallback(
-    (name) => (_) => {
+    (name) => () => {
       const value = activeMenu === name ? '' : name
       setActiveMenu(value)
       onChange(value)

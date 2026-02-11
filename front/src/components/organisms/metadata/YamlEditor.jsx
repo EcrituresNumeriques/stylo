@@ -1,5 +1,5 @@
 import * as monaco from 'monaco-editor'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { loader } from '@monaco-editor/react'
 

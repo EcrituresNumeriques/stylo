@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
@@ -12,12 +12,11 @@ import fieldStyles from '../../atoms/Field.module.scss'
 import styles from './corpusCreate.module.scss'
 
 /**
- * @param props
- * @param {{[key: string]: any}|undefined} props.corpus
- * @param {function} props.onSubmit
- * @param {function} props.onCancel
- * @return {Element}
- * @constructor
+ * @param {object} props
+ * @param {{[key: string]: unknown}|undefined} props.corpus
+ * @param {() => void} props.onSubmit
+ * @param {() => void} props.onCancel
+ * @returns {Element}
  */
 export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
   const { t } = useTranslation('corpus', { useSuspense: false })

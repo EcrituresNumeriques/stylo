@@ -9,7 +9,7 @@ import {
   Trash,
   UserPlus,
 } from 'lucide-react'
-import React, { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router'
@@ -42,11 +42,11 @@ import buttonStyles from '../../atoms/Button.module.scss'
 import styles from './Article.module.scss'
 
 /**
- * @param props
- * @param {{title: string, owner: {displayName: string?, username: string}, updatedAt: string, _id: string }} props.article
+ * @param {object} props
+ * @param {{title: string, owner: {displayName: string|undefined, username: string}, updatedAt: string, _id: string }} props.article
  * @param {{id: string, name: string}[]} props.corpus
- * @return {JSX.Element}
- * @constructor
+ * @returns {JSX.Element}
+ * @class
  */
 export default function Article({ article, corpus }) {
   const displayName = useDisplayName()

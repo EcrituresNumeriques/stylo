@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router'
 import { useWindowSize } from 'react-use'
@@ -25,7 +25,7 @@ const strategies = new Map([
 
         return `${applicationConfig.canonicalBaseUrl}/api/v1/${hasVersion ? 'htmlVersion' : 'htmlArticle'}/${hasVersion ? version : id}?preview=true`
       },
-      query({ id, version, workspaceId }) {
+      query({ id, version }) {
         const hasVersion = Boolean(version)
 
         return {
@@ -57,7 +57,7 @@ const strategies = new Map([
       canonical_url({ id }) {
         return `${applicationConfig.canonicalBaseUrl}/api/v1/htmlBook/${id}?preview=true`
       },
-      query({ id, workspaceId }) {
+      query({ id }) {
         return {
           query: getCorpusPreview,
           variables: {

@@ -1,5 +1,5 @@
 import { Clipboard, Rss } from 'lucide-react'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -48,7 +48,6 @@ export default function BibliographyZoteroImport({
 
   /**
    * User collections fetched from Zotero, when logged in.
-   *
    * @type {Array.<ZoteroCollection[], function(ZoteroCollection[]): undefined>}
    */
   const [zoteroCollections, setZoteroCollections] = useState([])

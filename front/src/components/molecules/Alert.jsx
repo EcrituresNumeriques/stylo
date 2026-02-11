@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import { AlertOctagon, CheckCircle, Info, XOctagon } from 'lucide-react'
-import React from 'react'
 
 import styles from './Alert.module.scss'
 
@@ -37,12 +36,12 @@ function getStyle(type) {
 }
 
 /**
- * @param props
+ * @param {object} props
  * @param {string|JSX.Element} props.message
  * @param {'error'|'warning'|'info'|'success'} props.type (default: 'error')
  * @param {boolean=} props.showIcon (default: true)
  * @param {string|undefined} props.className
- * @return {JSX.Element}
+ * @returns {JSX.Element}
  */
 export default function Alert({
   message,

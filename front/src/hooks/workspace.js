@@ -22,7 +22,6 @@ import {
  * In order of priority:
  * - URL
  * - redux store
- *
  * @returns {string|undefined}
  */
 export function useActiveWorkspaceId() {

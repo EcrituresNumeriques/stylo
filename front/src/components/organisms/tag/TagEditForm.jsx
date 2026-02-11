@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
@@ -11,11 +11,11 @@ import { FormActions } from '../../molecules/index.js'
 import styles from './TagEditForm.module.scss'
 
 /**
- * @param props
- * @param {any|null} props.tag
- * @param {function} props.onSubmit
- * @param {function} props.onCancel
- * @return {Element}
+ * @param {object} props
+ * @param {{_id?: string, name?: string, description?: string, color?: string}|null} props.tag
+ * @param {(result: unknown) => void} props.onSubmit
+ * @param {() => void} props.onCancel
+ * @returns {Element}
  */
 export default function TagEditForm({ tag, onSubmit, onCancel }) {
   const { create, update } = useUserTagActions()

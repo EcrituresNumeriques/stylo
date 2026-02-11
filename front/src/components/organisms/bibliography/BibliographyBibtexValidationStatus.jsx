@@ -1,4 +1,3 @@
-import React from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 
 import { Alert, Loading } from '../../molecules/index.js'

@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { CheckSquare, Square, User, UserCheck } from 'lucide-react'
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useDisplayName } from '../../../hooks/user.js'

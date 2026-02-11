@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import { Info } from 'lucide-react'
-import React from 'react'
 
 import styles from '../../molecules/Alert.module.scss'
 

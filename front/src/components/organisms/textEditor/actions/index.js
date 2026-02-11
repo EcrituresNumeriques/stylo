@@ -10,7 +10,7 @@ import createInlineBlockCommand from './inline-block.js'
 
 export { Separator } from 'monaco-editor/esm/vs/base/common/actions'
 
-/** @type {object.<string,object.<string, IActionDescriptor>>} */
+/** @type {Record<string, Record<string, IActionDescriptor>>} */
 export const actions = {
   md: {
     italic: createInlineBlockCommand('italic', {
@@ -101,7 +101,6 @@ export const actions = {
  * This ensures context menu action and command palette action
  * both receive an editor instance as first parameter
  * It enforces a translated label as well.
- *
  * @param {ICodeEditor} editor
  * @param {TFunction} t
  * @param {IActionDescriptor} action
@@ -125,13 +124,12 @@ function isURL(text) {
   try {
     new URL(text)
     return true
-  } catch (error) {
+  } catch {
     return false
   }
 }
 
 export function copyPasteUrlFn({
-  attributes,
   body_template,
   clipboardText,
   selectionText,
@@ -170,13 +168,12 @@ export function copyPasteUrlFn({
 
 /**
  * Registers actions as Command Palette items
- *
  * @param {ICodeEditor} editor
  * @param {TFunction} t
- * @param {object?} options
+ * @param {Record<string, IActionDescriptor>} actions
+ * @param {object} [options]
  * @param {boolean} options.palette
  * @param {boolean} options.shortcuts
- * @param {object.<string, IActionDescriptor>} actions
  */
 export function registerActions(
   editor,
@@ -205,10 +202,10 @@ export function registerActions(
 /**
  * Generates pandoc markdown-compliant inline code attributes
  * @see https://pandoc.org/MANUAL.html#extension-inline_code_attributes
- * @param {object} attributes
+ * @param {object} [attributes]
  * @param {Array.<string>} attributes.classNames
  * @param {{[key: string]: string}?} attributes.attrs
- * @returns {string}
+ * @returns {string|undefined}
  */
 export function blockAttributes({ classNames = [], attrs = {} } = {}) {
   if (attrs === null || attrs === undefined) {

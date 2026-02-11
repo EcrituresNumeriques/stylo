@@ -1,6 +1,6 @@
 import { clsx } from 'clsx'
 import { Bot, User } from 'lucide-react'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import styles from './Version.module.scss'
@@ -12,14 +12,14 @@ const relativeTimeFormatOptions = {
 }
 
 /**
- * @param {Object} props
+ * @param {object} props
  * @param {string} props.title
  * @param {string} props.description
  * @param {string} props.creator
  * @param {string} props.type
  * @param {string} props.date
  * @param {boolean} props.selected
- * @param {() => {}} props.onClick
+ * @param {() => void} props.onClick
  * @returns {React.ReactElement}
  */
 export default function Version({

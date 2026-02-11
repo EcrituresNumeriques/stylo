@@ -1,6 +1,6 @@
 import clsx from 'clsx'
-import { Building2, CalendarDays, MapPin } from 'lucide-react'
-import React, { useId } from 'react'
+import { CalendarDays } from 'lucide-react'
+import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import styles from '../../../layout.module.scss'

@@ -1,5 +1,5 @@
 import * as monaco from 'monaco-editor'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import useBibliography, {

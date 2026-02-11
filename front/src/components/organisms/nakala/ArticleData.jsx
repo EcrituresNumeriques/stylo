@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router'
 
@@ -27,8 +27,7 @@ export default function ArticleData({ articleId }) {
     },
     [nakalaModal, updateNakalaLink]
   )
-  //const humanid = user.authProviders?.humanid?.id
-  const humanid = 'tnakala'
+  const humanid = useMemo(() => user.authProviders?.humanid?.id, [user])
 
   if (isLoading) {
     return <Loading />

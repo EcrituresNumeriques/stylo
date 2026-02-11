@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import slugify from 'slugify'
@@ -20,7 +20,7 @@ import styles from './Export.module.scss'
  * @param {string?} props.articleId
  * @param {string} props.bib
  * @param {string} props.name
- * @param {() => {}} props.onCancel
+ * @param {() => void} props.onCancel
  * @returns {React.ReactElement}
  */
 export default function Export({
@@ -41,13 +41,11 @@ export default function Export({
     link_citations,
     with_nocite,
     formats,
-    unnumbered,
-    book_division,
   } = useSelector((state) => state.exportPreferences, shallowEqual)
 
   const setPreference = useCallback(
-    /** @param {string} key */ (key) =>
-      /** @param {string|Event} event */ (event) =>
+(key) =>
+      (event) =>
         dispatch({
           type: 'SET_EXPORT_PREFERENCES',
           key,

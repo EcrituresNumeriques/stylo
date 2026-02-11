@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { Previewer } from 'pagedjs'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { compileTemplate } from '../../../helpers/preview.js'
 import { useStyloExportPreview } from '../../../hooks/stylo-export.js'

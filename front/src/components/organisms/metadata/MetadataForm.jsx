@@ -1,14 +1,13 @@
-import React from 'react'
 
 import Form from '../../molecules/Form.jsx'
 
 /**
  * @param {object} props properties
- * @param {any} props.data Values in JSON format
- * @param {boolean} props.readOnly Values in JSON format
- * @param {any} props.schema Data schema
- * @param {any} props.uiSchema UI schema
- * @param {(any) => void} props.onChange Function that return the values in JSON format
+ * @param {Record<string, unknown>} props.data Values in JSON format
+ * @param {boolean} props.readOnly Whether the form is read-only
+ * @param {Record<string, unknown>} props.schema Data schema
+ * @param {Record<string, unknown>} props.uiSchema UI schema
+ * @param {(formData: Record<string, unknown>) => void} props.onChange Function that return the values in JSON format
  * @returns {Element}
  */
 export default function MetadataForm({

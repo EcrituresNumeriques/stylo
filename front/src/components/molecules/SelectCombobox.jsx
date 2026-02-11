@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { useCombobox } from 'downshift'
 import { ChevronDown, X } from 'lucide-react'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Field } from '../atoms/index.js'
 import { groupItems } from './SelectCombobox.js'
@@ -23,7 +23,7 @@ import styles from '../atoms/Field.module.scss'
  * @param {string} props.id
  * @param {string} props.label
  * @param {ComboboxItem[]} props.items
- * @param {boolean} [props.isLoading=false]
+ * @param {boolean} [props.isLoading]
  * @param {(string) => void} props.onChange
  * @param {string} props.value
  * @returns {React.ReactElement}

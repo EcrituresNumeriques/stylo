@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
@@ -20,14 +20,15 @@ import formStyles from '../../atoms/Field.module.scss'
 
 /**
  * @typedef {object} ArticleCreateProps
- * @property {Function=} onSubmit
+ * @property {(() => void)=} onSubmit
  * @property {string=} workspaceId
  */
 
 /**
  * @param {object} props
- * @param {Function} props.onSubmit
- * @param {Function} props.onCancel
+ * @param {object} props.article
+ * @param {() => void} props.onSubmit
+ * @param {() => void} props.onCancel
  * @param {string|undefined} props.workspaceId
  * @returns {JSX.Element}
  */

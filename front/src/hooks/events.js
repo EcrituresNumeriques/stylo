@@ -2,7 +2,6 @@
  *
  * @param {string[]} keys
  * @param {() => void} fn
- * @param {string[]?} cacheKeys
  * @returns {() => void}
  */
 export function useKeyPress(keys, fn) {

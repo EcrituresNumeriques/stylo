@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { useCombobox } from 'downshift'
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import throttle from 'lodash.throttle'
 

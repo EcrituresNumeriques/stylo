@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { Children, useCallback, useEffect, useState } from 'react'
+import { Children, useCallback, useEffect, useState } from 'react'
 
 import { useKeyPress } from '../../hooks/events.js'
 

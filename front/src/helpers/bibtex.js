@@ -3,9 +3,9 @@ import { BibLatexParser } from 'biblatex-csl-converter'
 /**
  * @typedef BibTeXParseResult
  * @type {object}
- * @property {{[key: string]: {}}} entries
- * @property {{[key: string]: {}}} strings
- * @property {{groups: *, meta: *}} jabref
+ * @property {{[key: string]: Record<string, unknown>}} entries
+ * @property {{[key: string]: Record<string, unknown>}} strings
+ * @property {{groups: unknown, meta: unknown}} jabref
  * @property {{type: string, line: number, entry: string|undefined, key: string|undefined, expected: string|undefined, found: string|undefined}[]} errors
  * @property {{type: string, line: number, type_name: string|undefined}[]} warnings
  * @property {{type: string, line: number}[]} comments
@@ -14,14 +14,14 @@ import { BibLatexParser } from 'biblatex-csl-converter'
 /**
  * @typedef BibTeXValidationResult
  * @type {object}
- * @property {{[key: string]: {}}} entries
+ * @property {{[key: string]: Record<string, unknown>}} entries
  * @property {boolean} empty
  * @property {{type: string, line: number, entry: string|undefined, key: string|undefined, expected: string|undefined, found: string|undefined}[]} errors
  * @property {{type: string, line: number, type_name: string|undefined}[]} warnings
  */
 
 /**
- * @param bibtex
+ * @param {string} bibtex
  * @returns {Promise<BibTeXParseResult>}
  */
 export async function parse(bibtex) {
@@ -94,7 +94,7 @@ const IconNameMap = {
 
 /**
  * Get the icon name for a given Bibtex type.
- * @param bibtexType
+ * @param {string} bibtexType
  * @returns {string}
  */
 export function iconName(bibtexType) {

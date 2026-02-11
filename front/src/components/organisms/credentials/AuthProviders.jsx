@@ -1,4 +1,3 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useSetAuthToken } from '../../../hooks/user.js'
@@ -9,7 +8,7 @@ import styles from '../user/credentials.module.scss'
 export function AuthProvider({ service }) {
   const { t } = useTranslation()
 
-  const { link, unlink, isLinked, error } = useSetAuthToken(service)
+  const { link, unlink, isLinked } = useSetAuthToken(service)
 
   return (
     <div className={styles.authProvider}>

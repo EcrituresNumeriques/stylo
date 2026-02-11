@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
@@ -173,7 +173,7 @@ export default function CollaborativeTextEditor({
   useEffect(() => {
     if (yText) {
       updateArticleStructureAndStats({ text: yText.toString() })
-      yText.observe(function (yTextEvent, transaction) {
+      yText.observe(function () {
         dispatch({
           type: 'UPDATE_ARTICLE_WORKING_COPY_STATUS',
           status: 'syncing',

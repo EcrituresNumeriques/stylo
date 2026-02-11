@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { MessageSquareShare, Printer, Settings, Trash } from 'lucide-react'
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import { toast } from 'react-toastify'
@@ -39,7 +39,7 @@ import styles from './CorpusItem.module.scss'
  * @property {string} type
  * @property {string} name
  * @property {string} description
- * @property {any} metadata
+ * @property {Record<string, unknown>} metadata
  * @property {object} creator
  * @property {string} creator.displayName
  * @property {string} creator.username
@@ -50,7 +50,7 @@ import styles from './CorpusItem.module.scss'
 
 /**
  * @param {Corpus} corpus
- * @return {Element}
+ * @returns {Element}
  */
 export default function CorpusItem({ corpus }) {
   const displayName = useDisplayName()

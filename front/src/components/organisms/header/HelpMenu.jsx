@@ -1,5 +1,4 @@
 import { MessageCircleQuestionMark } from 'lucide-react'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router'
 

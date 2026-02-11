@@ -1,5 +1,5 @@
 import { CheckIcon, Search } from 'lucide-react'
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 

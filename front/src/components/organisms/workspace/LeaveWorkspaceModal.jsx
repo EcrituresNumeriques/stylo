@@ -1,5 +1,5 @@
 import { CircleOff } from 'lucide-react'
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 
 import { useWorkspaceActions } from '../../../hooks/workspace.js'

@@ -1,4 +1,3 @@
-import React from 'react'
 import { describe, expect, test, vi } from 'vitest'
 
 import { renderWithProviders } from '../../../../tests/setup.js'

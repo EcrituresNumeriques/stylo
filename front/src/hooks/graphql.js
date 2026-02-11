@@ -15,7 +15,7 @@ import { executeQuery } from '../helpers/graphQL.js'
  * Fetch data using SWR.
  * @param {object} config config
  * @param {string|ASTNode} config.query GraphQL query
- * @param {{[key : string]: any}} config.variables query arguments
+ * @param {{[key : string]: unknown}} config.variables query arguments
  * @param {SWRConfiguration} [options] - SWR options (optional)
  * @returns {SWRResponse}
  */
@@ -30,7 +30,7 @@ export default function useFetchData(
 
 /**
  * Fetch data conditionally using SWR.
- * @param {object | Function} param config
+ * @param {object | (() => object|null)} param config
  * @param {SWRConfiguration} [options] - SWR options (optional)
  * @returns {SWRResponse}
  */
@@ -78,8 +78,8 @@ function resolveQuery(queryOrAST) {
  * This function relies on https://swr.vercel.app/docs/mutation#mutate.
  * @param {object} config config
  * @param {string|ASTNode} config.query GraphQL query
- * @param {{[key : string]: any}|undefined} config.variables query arguments
- * @returns {{mutate: (function(function(): Promise?, any?): Promise<any>)}}
+ * @param {{[key : string]: unknown}|undefined} config.variables query arguments
+ * @returns {{mutate: (function(function(): Promise?, unknown?): Promise<unknown>)}}
  */
 export function useMutateData({ query, variables }) {
   const { mutate } = useSWRConfig()
@@ -97,8 +97,8 @@ export function useMutateData({ query, variables }) {
 /**
  * @param {object} config config
  * @param {string|ASTNode} config.query GraphQL query
- * @param {{[key : string]: any}} config.variables query arguments
- * @returns {{query: string, variables: {[key : string]: any}, sessionToken: string}} an SWR key
+ * @param {{[key : string]: unknown}} config.variables query arguments
+ * @returns {{query: string, variables: {[key : string]: unknown}, sessionToken: string}} an SWR key
  */
 function useSWRKey({ query: queryOrAST, variables }) {
   const sessionToken = useSelector((state) => state.sessionToken)

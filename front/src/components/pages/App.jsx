@@ -1,6 +1,6 @@
 import { setUser as setSentryUser } from '@sentry/react'
 
-import React, { useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import {

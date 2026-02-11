@@ -1,5 +1,5 @@
 import { Trash } from 'lucide-react'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 
 import { useModal } from '../../../hooks/modal.js'

@@ -1,4 +1,3 @@
-import React from 'react'
 
 import { useNakalaSearchCollections } from '../../../hooks/nakala.js'
 import { Alert } from '../../molecules/index.js'

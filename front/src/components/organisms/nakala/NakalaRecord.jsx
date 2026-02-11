@@ -1,5 +1,4 @@
 import { FingerprintPattern } from 'lucide-react'
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { CopyButton } from '../../molecules/index.js'

@@ -1,5 +1,4 @@
 import { Bean } from 'lucide-react'
-import React from 'react'
 import { describe, expect, test, vi } from 'vitest'
 
 import { render } from '@testing-library/react'

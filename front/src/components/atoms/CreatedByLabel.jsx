@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next'
 
 /**
- * @param name
+ * @param {object} name
+ * @param {string} name.name
  * @returns {JSX.Element}
- * @constructor
  */
 export default function CreatedByLabel({ name }) {
   const { t } = useTranslation()

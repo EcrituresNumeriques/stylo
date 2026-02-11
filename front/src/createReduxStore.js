@@ -81,10 +81,9 @@ export const initialState = {
 
 /**
  *
- * @param {*} state
- * @param initialState
- * @param handlers
- * @returns
+ * @param {unknown} initialState
+ * @param {Record<string, unknown>} handlers
+ * @returns {(state: unknown, action: {type: string}) => unknown}
  */
 function createReducer(initialState, handlers) {
   return function reducer(state = initialState, action) {
@@ -98,8 +97,8 @@ function createReducer(initialState, handlers) {
 
 /**
  *
- * @param {*} state
- * @returns
+ * @param {unknown} state
+ * @returns {(state: unknown, action: {type: string}) => unknown}
  */
 function createRootReducer(state) {
   return createReducer(state, {

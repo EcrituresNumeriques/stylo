@@ -15,7 +15,6 @@ function findToggleableElements(node) {
 
 export default function useComponentVisible(
   initialIsVisible,
-  name = 'default'
 ) {
   const [isComponentVisible, setIsComponentVisible] = useState(initialIsVisible)
   const ref = useRef(null)

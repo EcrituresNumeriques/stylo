@@ -1,4 +1,3 @@
-import React from 'react'
 import { useRouteLoaderData } from 'react-router'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 

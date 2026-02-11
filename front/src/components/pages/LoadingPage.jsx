@@ -1,4 +1,3 @@
-import React from 'react'
 
 import { Loading } from '../molecules/index.js'
 

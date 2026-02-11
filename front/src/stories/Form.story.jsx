@@ -1,5 +1,4 @@
 import { Search } from 'lucide-react'
-import React from 'react'
 
 import uiSchema from './form-story-ui-schema.json'
 import schema from './form-story.schema.json'

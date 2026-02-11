@@ -1,5 +1,5 @@
 import { X } from 'lucide-react'
-import React, { forwardRef } from 'react'
+import { forwardRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Button } from '../atoms/index.js'

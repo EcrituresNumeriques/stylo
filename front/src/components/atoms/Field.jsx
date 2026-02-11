@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { forwardRef, useEffect, useId, useRef } from 'react'
+import { forwardRef, useEffect, useId, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import styles from './Field.module.scss'

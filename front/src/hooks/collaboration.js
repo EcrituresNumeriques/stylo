@@ -35,7 +35,7 @@ const colors = [
   '#DDDDDD',
 ]
 
-export function useCollaboration({ articleId, versionId }) {
+export function useCollaboration({ articleId }) {
   const connectingRef = useRef(false)
   const [dynamicStyles, setDynamicStyles] = useState('')
   const [websocketStatus, setWebsocketStatus] = useState('')

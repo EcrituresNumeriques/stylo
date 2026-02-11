@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { CalendarDays, CircleUser } from 'lucide-react'
-import React, { useId } from 'react'
+import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import styles from '../../../layout.module.scss'

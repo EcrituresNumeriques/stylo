@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router'
 
@@ -10,10 +10,10 @@ import CollaborativeEditorWriters from './CollaborativeEditorWriters.jsx'
 import styles from './CollaborativeEditorArticleHeader.module.scss'
 
 /**
- * @param props
+ * @param {object} props
  * @param {string} props.articleTitle
- * @param {string?} props.versionId
- * @returns {import('react').ReactElementElement}
+ * @param {string|undefined} props.versionId
+ * @returns {import('react').ReactElement}
  */
 export default function CollaborativeEditorArticleHeader({
   articleTitle,

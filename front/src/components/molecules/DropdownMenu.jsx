@@ -1,5 +1,4 @@
 import { EllipsisVertical } from 'lucide-react'
-import React from 'react'
 
 import useComponentVisible from '../../hooks/componentVisible.js'
 import { Button } from '../atoms/index.js'

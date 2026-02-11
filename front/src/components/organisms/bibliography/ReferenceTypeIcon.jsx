@@ -1,4 +1,3 @@
-import React from 'react'
 
 import { iconName } from '../../../helpers/bibtex.js'
 

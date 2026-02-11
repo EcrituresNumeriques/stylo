@@ -1,9 +1,9 @@
-import React, { useId } from 'react'
+import { useId } from 'react'
 
 import styles from './Checkbox.module.scss'
 
 /**
- * @typedef {Object} CheckboxProps
+ * @typedef {object} CheckboxProps
  * @property {(event: React.ChangeEvent) => undefined} onChange
  * @property {string} name
  * @property {string} value
@@ -14,7 +14,7 @@ import styles from './Checkbox.module.scss'
 
 /**
  * @param {React.PropsWithChildren<CheckboxProps>} props
- * @returns
+ * @returns {JSX.Element}
  */
 export default function Checkbox({
   onChange,

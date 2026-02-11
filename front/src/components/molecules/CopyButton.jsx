@@ -1,5 +1,5 @@
 import { Clipboard } from 'lucide-react'
-import React, { memo, useCallback } from 'react'
+import { memo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { useCopyToClipboard } from 'react-use'

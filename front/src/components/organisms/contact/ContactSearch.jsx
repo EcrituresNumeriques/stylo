@@ -1,6 +1,6 @@
 import { CheckSquare, Search, Square } from 'lucide-react'
 import PropTypes from 'prop-types'
-import React, { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
@@ -18,13 +18,13 @@ import { getUserByEmail } from '../../../hooks/Contacts.graphql'
 import styles from './ContactSearch.module.scss'
 
 /**
- * @param members
- * @param onUserUpdated
- * @param selectedIcon
- * @param unselectedIcon
- * @param showActiveUser
+ * @param {object} props
+ * @param {Array<{_id: string, email: string}>} props.members
+ * @param {(event: {action: string, user: {_id: string}}) => void} props.onUserUpdated
+ * @param {React.ReactElement} props.selectedIcon
+ * @param {React.ReactElement} props.unselectedIcon
+ * @param {boolean} props.showActiveUser
  * @returns {JSX.Element}
- * @constructor
  */
 export default function ContactSearch({
   members,
