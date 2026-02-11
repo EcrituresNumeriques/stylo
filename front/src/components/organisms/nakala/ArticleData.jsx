@@ -1,11 +1,10 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useRouteLoaderData } from 'react-router'
 
 import { useEditableArticle } from '../../../hooks/article.js'
 import { useModal } from '../../../hooks/modal.js'
 import { Button } from '../../atoms/index.js'
-import { Alert, Loading } from '../../molecules/index.js'
+import { Loading } from '../../molecules/index.js'
 
 import Modal from '../../molecules/Modal.jsx'
 import DataNakalaFetch from './DataNakalaFetch.jsx'
@@ -14,7 +13,6 @@ import NakalaRecords from './NakalaRecords.jsx'
 import styles from './ArticleData.module.scss'
 
 export default function ArticleData({ articleId }) {
-  const { user } = useRouteLoaderData('app')
   const { article, updateNakalaLink, isLoading } = useEditableArticle({
     articleId,
   })
@@ -27,7 +25,6 @@ export default function ArticleData({ articleId }) {
     },
     [nakalaModal, updateNakalaLink]
   )
-  const humanid = useMemo(() => user.authProviders?.humanid?.id, [user])
 
   if (isLoading) {
     return <Loading />
@@ -39,29 +36,18 @@ export default function ArticleData({ articleId }) {
         <h2 className={styles.title}>{t('title')}</h2>
       </header>
       <section>
-        {!humanid && (
-          <Alert
-            message={t('actions.fetch.errors.humanid.missing')}
-            type={'warning'}
+        <div className={styles.headingActions}>
+          <Button small={true} onClick={() => nakalaModal.show()}>
+            {t('actions.fetch.label')}
+          </Button>
+        </div>
+        <NakalaRecords collectionUri={article?.nakalaLink} />
+        <Modal {...nakalaModal.bindings} title={t('actions.fetch.label')}>
+          <DataNakalaFetch
+            initialCollectionUri={article?.nakalaLink}
+            onChange={handleCollectionChange}
           />
-        )}
-        {humanid && (
-          <>
-            <div className={styles.headingActions}>
-              <Button small={true} onClick={() => nakalaModal.show()}>
-                {t('actions.fetch.label')}
-              </Button>
-            </div>
-            <NakalaRecords collectionUri={article?.nakalaLink} />
-            <Modal {...nakalaModal.bindings} title={t('actions.fetch.label')}>
-              <DataNakalaFetch
-                humanid={humanid}
-                initialCollectionUri={article?.nakalaLink}
-                onChange={handleCollectionChange}
-              />
-            </Modal>
-          </>
-        )}
+        </Modal>
       </section>
     </section>
   )

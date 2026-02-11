@@ -5,6 +5,13 @@
       "errors": {
         "humanid.missing": "La obtención de datos desde Nakala requiere una cuenta HumanID."
       },
+      "fromAccount": {
+        "title": "Obtener desde mi cuenta"
+      },
+      "fromUrl": {
+        "description": "Esta URL debe ser una colección pública.",
+        "title": "Obtener desde una URL"
+      },
       "label": "Obtener datos desde Nakala"
     }
   },
