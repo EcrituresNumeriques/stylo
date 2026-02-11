@@ -6,6 +6,14 @@ export function useModal() {
 
   const onClick = (event) => {
     if (!event.target.contains(ref.current)) return
+
+    if (
+      event.offsetX < event.target.offsetWidth &&
+      event.offsetY < event.target.offsetHeight
+    ) {
+      // click is on scrollbar
+      return
+    }
     close()
   }
 
