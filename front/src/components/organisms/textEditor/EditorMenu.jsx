@@ -1,10 +1,10 @@
 import {
-  BookMarked,
   History,
   Maximize2,
   MessageSquareShare,
   Minimize2,
   Printer,
+  Quote,
   TableOfContents,
   TextCursorInput,
 } from 'lucide-react'
@@ -62,7 +62,7 @@ export default function EditorMenu({ onChange }) {
           onClick={toggleActiveMenu('bibliography')}
           selected={activeMenu === 'bibliography'}
           minimized={minimized}
-          icon={<BookMarked />}
+          icon={<Quote />}
           text={t('bibliography.title')}
         />
         <EditorMenuItem
