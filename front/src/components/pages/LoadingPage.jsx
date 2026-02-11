@@ -1,4 +1,3 @@
-
 import { Loading } from '../molecules/index.js'
 
 import styles from './Page.module.scss'

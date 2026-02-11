@@ -1,4 +1,3 @@
-
 import i18n from '../../../i18n.js'
 
 import { useArticleVersion } from '../../../hooks/article.js'

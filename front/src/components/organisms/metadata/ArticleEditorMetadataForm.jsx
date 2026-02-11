@@ -71,7 +71,9 @@ export default function ArticleEditorMetadataForm({
       } else {
         // remove default const properties `@version` and `type` since we are using a custom schema
         const customMetadata = Object.fromEntries(
-          Object.entries(metadata).filter(([key]) => key !== '@version' && key !== 'type')
+          Object.entries(metadata).filter(
+            ([key]) => key !== '@version' && key !== 'type'
+          )
         )
         handleChange(customMetadata)
       }

@@ -35,22 +35,16 @@ export default function Export({
   const dispatch = useDispatch()
   const { pandocExportHost, pandocExportEndpoint } = applicationConfig
 
-  const {
-    bibliography_style,
-    with_toc,
-    link_citations,
-    with_nocite,
-    formats,
-  } = useSelector((state) => state.exportPreferences, shallowEqual)
+  const { bibliography_style, with_toc, link_citations, with_nocite, formats } =
+    useSelector((state) => state.exportPreferences, shallowEqual)
 
   const setPreference = useCallback(
-(key) =>
-      (event) =>
-        dispatch({
-          type: 'SET_EXPORT_PREFERENCES',
-          key,
-          value: event?.target?.value ?? event,
-        }),
+    (key) => (event) =>
+      dispatch({
+        type: 'SET_EXPORT_PREFERENCES',
+        key,
+        value: event?.target?.value ?? event,
+      }),
     []
   )
 

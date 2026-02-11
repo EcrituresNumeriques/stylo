@@ -1,7 +1,4 @@
-import {
-  Range,
-  Selection,
-} from 'monaco-editor/esm/vs/editor/editor.api'
+import { Range, Selection } from 'monaco-editor/esm/vs/editor/editor.api'
 
 import { blockAttributes } from './index.js'
 

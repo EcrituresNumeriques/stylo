@@ -1,4 +1,3 @@
-
 import { iconName } from '../../../helpers/bibtex.js'
 
 import styles from './ReferenceTypeIcon.module.scss'
