@@ -1,3 +1,5 @@
+version: '2.1'
+
 services:
   mongodb-stylo:
     image: mongo:6
@@ -47,7 +49,7 @@ services:
       - graphql-stylo
 
   export-stylo:
-    image: 'davidbgk/stylo-export:3.6.0'
+    image: 'davidbgk/stylo-export:3.3.1'
     container_name: 'export-stylo'
     env_file:
       - .env
@@ -60,7 +62,7 @@ services:
       - 'host.docker.internal:host-gateway'
 
   pandoc-api:
-    image: 'davidbgk/pandoc-api:3.3.0'
+    image: 'davidbgk/pandoc-api:3.1.1'
     container_name: 'pandoc-api'
     ports:
       - 127.0.0.1:3090:8000
