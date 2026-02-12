@@ -69,7 +69,7 @@
     "eslint-plugin-security": "~3.0"
   },
   "volta": {
-    "node": "24.13.0",
-    "npm": "11.9.0"
+    "node": "24.13.1",
+    "npm": "11.10.0"
   }
 }
