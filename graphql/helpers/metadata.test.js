@@ -381,7 +381,7 @@ test('should convert to legacy format', async () => {
         text_f: undefined,
       },
     ],
-    translationOf: [undefined],
+    translationOf: [],
     translations: undefined,
     translator: [
       {
@@ -537,4 +537,18 @@ test('should not throw an exception when converting legacy keywords', async () =
   const legacyMetadata = toLegacyFormat(input)
   const yaml = YAML.dump(legacyMetadata)
   reformat(yaml, { replaceBibliography: false })
+})
+
+test('should not produce empty object in list', async () => {
+  const legacyMetadata = toLegacyFormat({})
+  const actual = YAML.dump(legacyMetadata)
+  assert.equal(
+    actual,
+    `funder: {}
+abstract: []
+dossier: []
+keywords: []
+translationOf: []
+`
+  )
 })
