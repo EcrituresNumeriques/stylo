@@ -1,3 +1,4 @@
+const Y = require('yjs')
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const { randomUUID } = require('node:crypto')
@@ -97,19 +98,27 @@ userSchema.methods.getAuthProvidersCount = function getAuthProvidersCount() {
 
 userSchema.methods.createDefaultArticle =
   async function createDefaultArticle() {
-    const newArticle = await this.model('Article').create({
-      title: defaultArticle.title,
-      zoteroLink: defaultArticle.zoteroLink,
-      owner: this,
-      workingVersion: {
-        metadata: defaultArticle.metadata,
-        bib: defaultArticle.bib,
-        md: defaultArticle.md,
-      },
-    })
-
-    await newArticle.createNewVersion({ mode: 'MINOR', user: this })
-    return this.save()
+    // create a yjs document from the default text (Markdown)
+    const yDoc = new Y.Doc()
+    try {
+      const yText = yDoc.getText('main')
+      yText.insert(0, defaultArticle.md)
+      const documentState = Y.encodeStateAsUpdate(yDoc) // is a Uint8Array
+      const newArticle = await this.model('Article').create({
+        title: defaultArticle.title,
+        zoteroLink: defaultArticle.zoteroLink,
+        owner: this,
+        workingVersion: {
+          metadata: defaultArticle.metadata,
+          bib: defaultArticle.bib,
+          ydoc: Buffer.from(documentState).toString('base64'),
+        },
+      })
+      await newArticle.createNewVersion({ mode: 'MINOR', user: this })
+      return this.save()
+    } finally {
+      yDoc.destroy()
+    }
   }
 
 userSchema.virtual('authTypes').get(function authTypes() {
