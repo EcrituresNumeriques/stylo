@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
+import { Link } from 'react-router'
 
 import styles from './corpusArticleCard.module.scss'
 
@@ -62,10 +63,11 @@ export default function CorpusArticleCard({ id, article, index, moveCard }) {
   })
   const opacity = isDragging ? 0 : 1
   drag(drop(ref))
+
   return (
     <div
-      ref={ref}
       className={styles.card}
+      ref={ref}
       style={{ opacity }}
       data-handler-id={handlerId}
     >
@@ -88,7 +90,10 @@ export default function CorpusArticleCard({ id, article, index, moveCard }) {
         <path d="M15 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
         <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
       </svg>
-      <span className={styles.title}>{article.title}</span>
+
+      <Link to={`/article/${article._id}`} className={styles.title}>
+        {article.title}
+      </Link>
     </div>
   )
 }
