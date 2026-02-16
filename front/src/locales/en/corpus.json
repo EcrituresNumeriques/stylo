@@ -51,6 +51,9 @@
       "label": "Export",
       "title": "Export corpus"
     },
+    "importFromArticle": {
+      "title": "Import from an article"
+    },
     "menu": {
       "title": "More actions on corpus"
     },

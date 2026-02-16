@@ -49,6 +49,21 @@ query getCorpus(
   }
 }
 
+query getCorpusArticles($filter: FilterCorpusInput) {
+  corpus(filter: $filter) {
+    articles {
+      article {
+        _id
+        title
+
+        workingVersion {
+          metadata
+        }
+      }
+    }
+  }
+}
+
 query getCorpusPreview(
   $corpusId: ID!
   $isPersonalWorkspace: Boolean = true

@@ -50,7 +50,7 @@ import styles from './CorpusItem.module.scss'
 
 /**
  * @param {Corpus} corpus
- * @returns {Element}
+ * @returns {JSX.Element}
  */
 export default function CorpusItem({ corpus }) {
   const displayName = useDisplayName()

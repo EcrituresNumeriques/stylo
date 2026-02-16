@@ -11,7 +11,7 @@ import corpusJournalUiSchema from '../../../schemas/corpus-journal-ui-schema.jso
 import corpusThesisMetadataSchema from '../../../schemas/corpus-thesis-metadata.schema.json'
 import corpusThesisUiSchema from '../../../schemas/corpus-thesis-ui-schema.json'
 
-import { useCorpusActions } from '../../../hooks/corpus.js'
+import { useCorpusActions, useCorpusArticles } from '../../../hooks/corpus.js'
 import { usePreferenceItem } from '../../../hooks/user.js'
 import { FormActions, Toggle } from '../../molecules/index.js'
 import { toYaml } from '../metadata/yaml.js'
@@ -137,7 +137,7 @@ export default function CorpusMetadata({
         <>
           {error !== '' && <p className={styles.error}>{error}</p>}
           <MonacoYamlEditor
-            height="calc(100vh - 350px)"
+            height="calc(100vh - 450px)"
             fontSize="14"
             text={yaml}
             onTextUpdate={handleYamlChange}
@@ -150,6 +150,7 @@ export default function CorpusMetadata({
           schema={corpusMetadataSchema}
           uiSchema={corpusUiSchema}
           onChange={handleMetadataUpdated}
+          context={{ corpusId }}
         />
       )}
       <FormActions

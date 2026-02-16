@@ -51,6 +51,9 @@
       "label": "Exportar",
       "title": "Exportar corpus"
     },
+    "importFromArticle": {
+      "title": "Importar desde un artículo"
+    },
     "menu": {
       "title": "Más acciones en el corpus"
     },

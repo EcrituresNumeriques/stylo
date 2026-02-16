@@ -255,6 +255,13 @@
   }
 }
 
+.legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
 .fieldset {
   display: flex;
   flex-direction: column;

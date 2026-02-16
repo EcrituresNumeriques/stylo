@@ -7,7 +7,8 @@ import Form from '../../molecules/Form.jsx'
  * @param {Record<string, unknown>} props.schema Data schema
  * @param {Record<string, unknown>} props.uiSchema UI schema
  * @param {(formData: Record<string, unknown>) => void} props.onChange Function that return the values in JSON format
- * @returns {Element}
+ * @param {Record<string, unknown>} props.context
+ * @returns {JSX.Element}
  */
 export default function MetadataForm({
   data,
@@ -15,6 +16,7 @@ export default function MetadataForm({
   schema,
   uiSchema,
   onChange,
+  context = {},
 }) {
   return (
     <Form
@@ -23,6 +25,7 @@ export default function MetadataForm({
       schema={schema}
       uiSchema={uiSchema}
       onChange={onChange}
+      context={context}
     />
   )
 }
