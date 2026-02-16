@@ -272,21 +272,43 @@ function toLegacyFormat(metadata) {
     keywords,
     reviewers,
     transcribers,
-    translationOf,
+    translationOf: mainTranslationOf,
     translators,
     senspublic,
     ...extra
   } = metadata
-  const abstract = [
-    ...(localizedContent?.map((c) => ({
+  const localizedAbstracts =
+    localizedContent?.map((c) => ({
       lang: c.lang,
       text_f: c.abstract,
-    })) ?? []),
-    {
+    })) ?? []
+  if (lang && mainAbstract) {
+    localizedAbstracts.push({
       lang: lang,
       text_f: mainAbstract,
-    },
-  ]
+    })
+  }
+  const localizedKeywords =
+    localizedContent?.map((c) => ({
+      lang: c.lang,
+      list_f: c.keywords,
+    })) ?? []
+  if (lang && keywords) {
+    localizedKeywords.unshift({
+      lang: lang,
+      list_f: keywords,
+    })
+  }
+  const dossier = issue
+    ? [
+        {
+          id: issue.identifier,
+          title_f: issue.title,
+        },
+      ]
+    : []
+
+  const translationOf = mainTranslationOf ? [mainTranslationOf] : []
   return {
     ...extra,
     id,
@@ -315,34 +337,20 @@ function toLegacyFormat(metadata) {
       funder_id: funder?.id,
       funder_name: funder?.organization,
     },
-    abstract: abstract,
+    abstract: localizedAbstracts,
     authors: authors?.map((p) => toLegacyPerson(p)),
     controlledKeywords: controlledKeywords,
     director: journalDirectors?.map((p) => toLegacyPerson(p)),
-    dossier: [
-      {
-        id: issue?.identifier,
-        title_f: issue?.title,
-      },
-    ],
+    dossier,
     issueDirectors: issueDirectors?.map((p) => toLegacyPerson(p)),
-    keywords: [
-      {
-        lang: lang,
-        list_f: keywords,
-      },
-      ...(localizedContent?.map((c) => ({
-        lang: c.lang,
-        list_f: c.keywords,
-      })) ?? []),
-    ],
+    keywords: localizedKeywords,
     reviewers: reviewers?.map((p) => toLegacyPerson(p)),
     transcribers: transcribers?.map((p) => toLegacyPerson(p)),
     translatedTitle: localizedContent?.map((c) => ({
       lang: c.lang,
       text_f: c.title,
     })),
-    translationOf: [translationOf],
+    translationOf,
     articleslies: senspublic?.linkedArticles,
     translations: senspublic?.translations,
     translator: translators?.map((p) => toLegacyPerson(p)),
