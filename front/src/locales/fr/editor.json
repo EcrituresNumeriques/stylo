@@ -13,6 +13,7 @@
       "outline": "$t(types.block) encadré",
       "question": "$t(types.block) question",
       "quote-alt": "$t(types.block) citation bis",
+      "refs": "$t(types.block) bibliographie",
       "sig": "$t(types.block) signature",
       "sponsor": "$t(types.block) sponsor"
     },
