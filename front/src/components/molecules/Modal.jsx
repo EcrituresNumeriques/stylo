@@ -1,5 +1,5 @@
 import { X } from 'lucide-react'
-import { forwardRef } from 'react'
+import { forwardRef, useId } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Button } from '../atoms/index.js'
@@ -22,11 +22,13 @@ export default forwardRef(function Modal(
   forwardedRef
 ) {
   const { t } = useTranslation()
+  const modalId = useId()
 
   return (
     <dialog
-      open={false}
+      open={visible}
       className={styles.modal}
+      id={modalId}
       ref={forwardedRef}
       onClose={cancel}
       aria-labelledby="modal-title"

@@ -241,7 +241,7 @@ export default function Article({ article, corpus }) {
             <div className={styles.corpuses}>
               <Book size={18} />
               {corpus.map((c) => (
-                <div key={c.id}>{c.name}</div>
+                <div key={c._id}>{c.name}</div>
               ))}
             </div>
           )}
