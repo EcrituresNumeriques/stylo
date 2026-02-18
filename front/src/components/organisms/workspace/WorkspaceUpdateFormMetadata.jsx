@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { fromFormData } from '../../../helpers/forms.js'
 import { useWorkspaceActions } from '../../../hooks/workspace.js'
 import { FormActions } from '../../molecules/index.js'
+import { Field } from '../../atoms/index.js'
 
 import buttonStyles from '../../atoms/Button.module.scss'
 import styles from './createWorkspace.module.scss'
@@ -43,41 +44,31 @@ export default function WorkspaceUpdateFormMetadata({
   }, [])
 
   return (
-    <section>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <label htmlFor="data">{t('actions.metadata.fields.data')}</label>
-        <div>
-          <textarea
-            id="data"
-            name="data"
-            className={buttonStyles.textarea}
-            style={{ width: '100%' }}
-            rows="12"
-          >
-            {workspace.formMetadata?.data}
-          </textarea>
-        </div>
-        <label htmlFor="ui">{t('actions.metadata.fields.ui')}</label>
-        <div>
-          <textarea
-            id="ui"
-            name="ui"
-            className={buttonStyles.textarea}
-            style={{ width: '100%' }}
-            rows="10"
-          >
-            {workspace.formMetadata?.ui}
-          </textarea>
-        </div>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <Field
+        autoFocus={true}
+        label={t('actions.metadata.fields.data')}
+        type="textarea"
+        rows={12}
+        name="data"
+        defaultValue={workspace.formMetadata?.data}
+      />
 
-        <FormActions
-          onCancel={onCancel}
-          submitButton={{
-            text: tModal('update.text'),
-            title: tModal('update.text'),
-          }}
+      <Field
+        label={t('actions.metadata.fields.ui')}
+        type="textarea"
+        rows={12}
+        name="ui"
+        defaultValue={workspace.formMetadata?.ui}
         />
-      </form>
-    </section>
+
+      <FormActions
+        onCancel={onCancel}
+        submitButton={{
+          text: tModal('update.text'),
+          title: tModal('update.text'),
+        }}
+      />
+    </form>
   )
 }

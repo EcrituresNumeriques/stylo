@@ -48,25 +48,36 @@ export default forwardRef(function Field(
           )}
         </label>
       )}
+
+
       <div className={clsx('control', icon && 'has-icons-left')}>
         {children && { ...children }}
-        {!children && (
-          <>
-            <input
-              {...inputProps}
-              id={id}
-              required={otherProps.required || mandatory}
-              className="input"
-              type={type}
-              ref={inputRef}
-              disabled={isLoading}
-            />
-            {icon && (
-              <span className="icon is-small is-left" aria-hidden>
-                {icon}
-              </span>
-            )}
-          </>
+
+        {!children && type === 'textarea' && (
+          <textarea
+            {...inputProps}
+            id={id}
+            required={otherProps.required || mandatory}
+            className="input"
+            ref={inputRef}
+            disabled={isLoading}
+        />)}
+
+        {!children && type !== 'textarea' && (
+          <input
+            {...inputProps}
+            id={id}
+            required={otherProps.required || mandatory}
+            className="input"
+            type={type}
+            ref={inputRef}
+            disabled={isLoading}
+          />)}
+
+        {!children && icon && (
+          <span className="icon is-small is-left" aria-hidden>
+            {icon}
+          </span>
         )}
       </div>
     </div>

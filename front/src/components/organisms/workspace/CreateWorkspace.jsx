@@ -8,7 +8,6 @@ import { useWorkspaceActions } from '../../../hooks/workspace.js'
 import { Field } from '../../atoms/index.js'
 import { FormActions } from '../../molecules/index.js'
 
-import fieldStyles from '../../atoms/Field.module.scss'
 import styles from './createWorkspace.module.scss'
 
 /**
@@ -39,40 +38,32 @@ export default function CreateWorkspace({ onSubmit, onCancel }) {
   }, [])
 
   return (
-    <section>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <Field
-          autoFocus={true}
-          required={true}
-          type="text"
-          name="name"
-          label={t('actions.create.fields.name')}
-          className={styles.name}
-        />
-        <div className={clsx(fieldStyles.field, 'control-field')}>
-          <label htmlFor="description">
-            {t('actions.create.fields.description.label')}
-          </label>
-          <textarea
-            name="description"
-            id="description"
-            placeholder={t('actions.create.fields.description.placeholder')}
-            rows="5"
-          ></textarea>
-        </div>
-        <Field
-          label={t('actions.create.fields.color')}
-          type="color"
-          name="color"
-        />
-        <FormActions
-          onCancel={onCancel}
-          submitButton={{
-            text: t('actions.create.label'),
-            title: t('actions.create.submit'),
-          }}
-        />
-      </form>
-    </section>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <Field
+        autoFocus={true}
+        required={true}
+        type="text"
+        name="name"
+        label={t('actions.create.fields.name')}
+      />
+      <Field
+        type="textarea"
+        name="description"
+        label={t('actions.create.fields.description.label')}
+        placeholder={t('actions.create.fields.description.placeholder')}
+      />
+      <Field
+        label={t('actions.create.fields.color')}
+        type="color"
+        name="color"
+      />
+      <FormActions
+        onCancel={onCancel}
+        submitButton={{
+          text: t('actions.create.label'),
+          title: t('actions.create.submit'),
+        }}
+      />
+    </form>
   )
 }
