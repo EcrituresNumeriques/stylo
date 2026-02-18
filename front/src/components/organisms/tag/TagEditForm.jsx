@@ -8,7 +8,7 @@ import { useUserTagActions } from '../../../hooks/user.js'
 import { Field } from '../../atoms/index.js'
 import { FormActions } from '../../molecules/index.js'
 
-import styles from './TagEditForm.module.scss'
+import formStyles from '../../atoms/Field.module.scss'
 
 /**
  * @param {object} props
@@ -39,39 +39,37 @@ export default function TagEditForm({ tag, onSubmit, onCancel }) {
   }, [])
 
   return (
-    <section className={styles.create}>
-      <form onSubmit={handleTagFormSubmit} name={title}>
-        <Field
-          autoFocus={true}
-          label={t('tag.createForm.nameField')}
-          type="text"
-          name="name"
-          required
-          defaultValue={tag?.name}
-        />
-        <Field
-          label={t('tag.createForm.descriptionField')}
-          type="text"
-          name="description"
-          defaultValue={tag?.description}
-        />
-        <Field
-          label={t('tag.createForm.colorField')}
-          type="color"
-          name="color"
-          defaultValue={tag?.color ?? randomColor()}
-        />
+    <form onSubmit={handleTagFormSubmit} name={title} className={formStyles.form}>
+      <Field
+        autoFocus={true}
+        label={t('tag.createForm.nameField')}
+        type="text"
+        name="name"
+        required
+        defaultValue={tag?.name}
+      />
+      <Field
+        label={t('tag.createForm.descriptionField')}
+        type="text"
+        name="description"
+        defaultValue={tag?.description}
+      />
+      <Field
+        label={t('tag.createForm.colorField')}
+        type="color"
+        name="color"
+        defaultValue={tag?.color ?? randomColor()}
+      />
 
-        <FormActions
-          onCancel={onCancel}
-          submitButton={{
-            title: t('tag.createForm.buttonTitle'),
-            text: isNew
-              ? t('tag.createForm.buttonText')
-              : t('tag.editForm.buttonText'),
-          }}
-        />
-      </form>
-    </section>
+      <FormActions
+        onCancel={onCancel}
+        submitButton={{
+          title: t('tag.createForm.buttonTitle'),
+          text: isNew
+            ? t('tag.createForm.buttonText')
+            : t('tag.editForm.buttonText'),
+        }}
+      />
+    </form>
   )
 }

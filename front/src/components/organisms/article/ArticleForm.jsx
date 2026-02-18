@@ -80,29 +80,27 @@ export default function ArticleForm({
   }, [])
 
   return (
-    <section>
-      <form onSubmit={handleSubmit} className={formStyles.form}>
-        <Field
-          autoFocus={true}
-          label={t('article.createForm.titleField')}
-          type="text"
-          name="title"
-          required={true}
-          defaultValue={article?.title}
-        />
+    <form onSubmit={handleSubmit} className={formStyles.form}>
+      <Field
+        autoFocus={true}
+        label={t('article.createForm.titleField')}
+        type="text"
+        name="title"
+        required={true}
+        defaultValue={article?.title}
+      />
 
-        <TagsField defaultValues={article?.tags?.map((t) => t._id)} />
-        <WorkspacesField articleId={article?._id} workspaceId={workspaceId} />
+      <TagsField defaultValues={article?.tags?.map((t) => t._id)} />
+      <WorkspacesField articleId={article?._id} workspaceId={workspaceId} />
 
-        <FormActions
-          onCancel={onCancel}
-          submitButton={{
-            text: t(`article.${action}Form.buttonText`),
-            title: t(`article.${action}Form.buttonText`),
-          }}
-        />
-      </form>
-    </section>
+      <FormActions
+        onCancel={onCancel}
+        submitButton={{
+          text: t(`article.${action}Form.buttonText`),
+          title: t(`article.${action}Form.buttonText`),
+        }}
+      />
+    </form>
   )
 }
 
