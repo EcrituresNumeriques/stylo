@@ -1,5 +1,6 @@
 @use '../../../styles/defaults' as *;
 @use '../../../styles/variables' as *;
+@use '../../molecules/FormActions.module';
 
 .primaryAction {
   margin-left: 0.75rem;
@@ -126,11 +127,4 @@
   display: inline-flex;
   content: '⚠️';
   font-size: 1.25rem;
-}
-
-.actions {
-  margin-top: 1.5rem;
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
 }

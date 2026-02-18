@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -8,7 +7,6 @@ import { useCorpusActions } from '../../../hooks/corpus.js'
 import { Field, Select } from '../../atoms/index.js'
 import { FormActions } from '../../molecules/index.js'
 
-import fieldStyles from '../../atoms/Field.module.scss'
 import styles from './corpusCreate.module.scss'
 
 /**
@@ -58,56 +56,50 @@ export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
   }, [])
 
   return (
-    <section>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <Field
-          required={true}
-          ref={titleInputRef}
-          name="title"
-          label={t('actions.create.fields.name')}
-          type="text"
-          defaultValue={corpus?.name}
-        />
-        <Select
-          name="type"
-          id="type"
-          label={t('actions.create.fields.type')}
-          defaultValue={corpus?.type}
-          disabled={corpus !== undefined}
-        >
-          <option value={'neutral'} key={'neutral'}>
-            {t('types.neutral')}
-          </option>
-          <option value={'journal'} key={'journal'}>
-            {t('types.journal')}
-          </option>
-          <option value={'thesis'} key={'thesis'}>
-            {t('types.thesis')}
-          </option>
-          <option value={'book'} key={'book'}>
-            {t('types.book')}
-          </option>
-        </Select>
-        <div className={clsx(fieldStyles.field, 'control-field')}>
-          <label htmlFor="description">
-            {t('actions.create.fields.description.label')}
-          </label>
-          <textarea
-            name="description"
-            id="description"
-            placeholder={t('actions.create.fields.description.placeholder')}
-            rows="5"
-            defaultValue={corpus?.description}
-          ></textarea>
-        </div>
-        <FormActions
-          onCancel={onCancel}
-          submitButton={{
-            text: t(`actions.${action}.submit`),
-            title: t(`actions.${action}.submit`),
-          }}
-        />
-      </form>
-    </section>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <Field
+        required={true}
+        ref={titleInputRef}
+        name="title"
+        label={t('actions.create.fields.name')}
+        type="text"
+        defaultValue={corpus?.name}
+      />
+      <Select
+        name="type"
+        id="type"
+        label={t('actions.create.fields.type')}
+        defaultValue={corpus?.type}
+        disabled={corpus !== undefined}
+      >
+        <option value={'neutral'} key={'neutral'}>
+          {t('types.neutral')}
+        </option>
+        <option value={'journal'} key={'journal'}>
+          {t('types.journal')}
+        </option>
+        <option value={'thesis'} key={'thesis'}>
+          {t('types.thesis')}
+        </option>
+        <option value={'book'} key={'book'}>
+          {t('types.book')}
+        </option>
+      </Select>
+      <Field
+        name="tdescriptione"
+        label={t('actions.create.fields.description.label')}
+        placeholder={t('actions.create.fields.description.placeholder')}
+        type="textarea"
+        rows={5}
+        defaultValue={corpus?.description}
+      />
+      <FormActions
+        onCancel={onCancel}
+        submitButton={{
+          text: t(`actions.${action}.submit`),
+          title: t(`actions.${action}.submit`),
+        }}
+      />
+    </form>
   )
 }

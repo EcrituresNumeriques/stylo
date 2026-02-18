@@ -29,6 +29,8 @@ dialog::backdrop {
 }
 
 .modal {
+  container-type: scroll-state;
+  container-name: modal;
   width: 90vw;
   max-width: 750px;
   max-height: 90vh;

@@ -186,6 +186,7 @@ export default function BibliographyZoteroImport({
           <Rss aria-hidden />
           {t('zoteroPanel.titleImportCollection.text')}
         </h3>
+
         {zoteroToken && (
           <Combobox
             label=""

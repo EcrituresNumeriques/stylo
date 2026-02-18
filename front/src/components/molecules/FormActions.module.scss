@@ -1,6 +1,30 @@
+@use '../../styles/variables.scss' as *;
+
 .actions {
   display: flex;
   justify-content: flex-end;
   margin-top: 1rem;
   gap: 1rem;
+
+  // TODO à décommenter avec https://bugzilla.mozilla.org/show_bug.cgi?id=1931980
+  // @container modal scroll-state(scrollable: top) {
+    & {
+      background-color: $extra-background-color;
+      border-top: 1px solid $main-border-color;
+      position: sticky;
+      bottom: 0rem;
+      margin-bottom: -1rem;
+      margin-left: -1rem;
+      margin-right: -1rem;
+      padding: 1rem;
+      z-index: 1000;
+    }
+  // }
+
+  //
+  // @container modal scroll-state(stuck: bottom) {
+    & {
+      border-top: 1px solid $main-border-color;
+    }
+  // }
 }

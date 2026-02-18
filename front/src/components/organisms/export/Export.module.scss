@@ -1,5 +1,6 @@
 @use '../../../styles/defaults' as *;
 @use '../../../styles/variables' as *;
+@use '../../molecules/FormActions.module';
 
 .export {
   > h1 {
@@ -18,11 +19,4 @@
     flex-direction: column;
     gap: 0.5em;
   }
-}
-
-.actions {
-  margin-top: 1.5rem;
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
 }

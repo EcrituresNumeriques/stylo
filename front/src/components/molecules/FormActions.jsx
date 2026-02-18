@@ -28,7 +28,7 @@ export default function FormActions({
 }) {
   const { t } = useTranslation()
   return (
-    <div className={styles.actions}>
+    <footer className={styles.actions}>
       <Button
         onClick={onCancel}
         secondary
@@ -46,6 +46,6 @@ export default function FormActions({
       >
         {t(submitButton?.text ?? 'modal.confirmButton.text')}
       </Button>
-    </div>
+    </footer>
   )
 }
