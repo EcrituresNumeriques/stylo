@@ -13,6 +13,7 @@
       "outline": "$t(types.block) cuadro",
       "question": "$t(types.block) pregunta",
       "quote-alt": "$t(types.block) cita bis",
+      "refs": "$t(types.block) bibliografía",
       "sig": "$t(types.block) firma",
       "sponsor": "$t(types.block) patrocinador"
     },
