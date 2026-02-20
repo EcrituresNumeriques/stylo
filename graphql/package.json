@@ -24,8 +24,8 @@
   "dependencies": {
     "@ggrossetie/db-migrate-mongodb": "~2.0",
     "@graphql-tools/schema": "~10.0",
-    "@sentry/node": "~10.38",
-    "@sentry/profiling-node": "~10.38",
+    "@sentry/node": "~10.39.0",
+    "@sentry/profiling-node": "~10.39.0",
     "@y/websocket-server": "^0.1.1",
     "atob": "^2.1.2",
     "bcryptjs": "^2.4.3",
@@ -69,7 +69,7 @@
     "eslint-plugin-security": "~3.0"
   },
   "volta": {
-    "node": "24.13.0",
-    "npm": "11.9.0"
+    "node": "24.13.1",
+    "npm": "11.10.1"
   }
 }
