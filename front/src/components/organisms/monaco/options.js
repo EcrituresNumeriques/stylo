@@ -25,7 +25,7 @@ export default {
   },
   unicodeHighlight: {
     ambiguousCharacters: false,
-    invisibleCharacters: true
+    invisibleCharacters: true,
   },
   wordWrap: 'on',
   wrappingIndent: 'none',

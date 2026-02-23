@@ -4,8 +4,8 @@ import { toast } from 'react-toastify'
 
 import { fromFormData } from '../../../helpers/forms.js'
 import { useWorkspaceActions } from '../../../hooks/workspace.js'
-import { FormActions } from '../../molecules/index.js'
 import { Field } from '../../atoms/index.js'
+import { FormActions } from '../../molecules/index.js'
 
 import buttonStyles from '../../atoms/Button.module.scss'
 import styles from './createWorkspace.module.scss'
@@ -60,7 +60,7 @@ export default function WorkspaceUpdateFormMetadata({
         rows={12}
         name="ui"
         defaultValue={workspace.formMetadata?.ui}
-        />
+      />
 
       <FormActions
         onCancel={onCancel}

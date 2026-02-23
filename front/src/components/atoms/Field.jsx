@@ -49,7 +49,6 @@ export default forwardRef(function Field(
         </label>
       )}
 
-
       <div className={clsx('control', icon && 'has-icons-left')}>
         {children && { ...children }}
 
@@ -61,7 +60,8 @@ export default forwardRef(function Field(
             className="input"
             ref={inputRef}
             disabled={isLoading}
-        />)}
+          />
+        )}
 
         {!children && type !== 'textarea' && (
           <input
@@ -72,7 +72,8 @@ export default forwardRef(function Field(
             type={type}
             ref={inputRef}
             disabled={isLoading}
-          />)}
+          />
+        )}
 
         {!children && icon && (
           <span className="icon is-small is-left" aria-hidden>

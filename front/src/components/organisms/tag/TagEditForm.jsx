@@ -39,7 +39,11 @@ export default function TagEditForm({ tag, onSubmit, onCancel }) {
   }, [])
 
   return (
-    <form onSubmit={handleTagFormSubmit} name={title} className={formStyles.form}>
+    <form
+      onSubmit={handleTagFormSubmit}
+      name={title}
+      className={formStyles.form}
+    >
       <Field
         autoFocus={true}
         label={t('tag.createForm.nameField')}
