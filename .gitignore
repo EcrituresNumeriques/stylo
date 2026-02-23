@@ -11,3 +11,5 @@ sails/.tmp
 coverage/
 infrastructure/env
 infrastructure/venv
+
+/.claude/settings.local.json
