@@ -140,7 +140,7 @@ function WorkspacesField({ workspaceId, articleId }) {
   if (workspaces.length > 0) {
     return (
       <div>
-        <span className={formStyles.fieldLabel}>{t('workspace.title')}</span>
+        <span className={formStyles.fieldLabel}>{t('workspaces')}</span>
 
         <ul className={checkboxStyles.inlineList}>
           {workspaces.map((workspace) => (
