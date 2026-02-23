@@ -43,13 +43,13 @@ export default function ArticleBibliography({ articleId, versionId }) {
     })
 
   const handleAddReferences = useCallback(async () => {
-    const bibtex = addReferencesText + '\n\n' + bibliography.bibtext
+    const bibtex = addReferencesText + '\n\n' + bibliography.bibtex
     await updateBibliography(bibtex)
     addReferenceModal.close()
   }, [addReferencesText, addReferenceModal, bibliography])
 
-  const onChange = useCallback(async (bib) => {
-    await updateBibliography(bib)
+  const onChange = useCallback(async (bibtex) => {
+    await updateBibliography(bibtex)
   }, [])
 
   if (isLoading) {
@@ -106,7 +106,7 @@ export default function ArticleBibliography({ articleId, versionId }) {
         {selector === 'raw' && (
           <BibliographyBibtexEditor
             onChange={(result) => onChange(result.text)}
-            initialValue={bibliography.bibtext}
+            initialValue={bibliography.bibtex}
             readOnly={readOnly}
           />
         )}

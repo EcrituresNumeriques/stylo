@@ -12,6 +12,7 @@
   gap: 0.5rem;
   flex-direction: column;
   overflow: hidden;
+  flex: 1;
 
   > header {
     display: flex;
@@ -23,6 +24,12 @@
 .identifier {
   display: flex;
   gap: 0.5rem;
+
+  > pre {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 }
 
 .icon {

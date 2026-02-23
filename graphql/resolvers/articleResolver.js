@@ -325,6 +325,14 @@ module.exports = {
 
       return newArticle
     },
+
+    async updateArticleBibliography(_root, args, context) {
+      const { articleId, bib } = args.input
+      const article = await getArticleByContext(articleId, context)
+      article.set('workingVersion.bib', bib)
+      await article.save()
+      return toEntries(bib)
+    },
   },
 
   Query: {

@@ -142,6 +142,17 @@ mutation duplicateArticle($user: ID, $articleId: ID!, $to: ID!) {
   }
 }
 
+mutation updateArticleBibliography($input: UpdateArticleBibliographyInput!) {
+  updateArticleBibliography(input: $input) {
+    authorName
+    date
+    entry
+    key
+    title
+    type
+  }
+}
+
 query addTags($articleId: ID!, $tags: [ID]!) {
   article(article: $articleId) {
     addTags(tags: $tags) {

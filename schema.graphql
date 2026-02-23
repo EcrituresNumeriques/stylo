@@ -123,45 +123,102 @@ type InstanceUserStats implements InstanceObjectUsageStats {
 }
 
 type Mutation {
-  "Add an email to your acquintances [need to be authentificated as user]"
+  """
+
+  Add a user to your contacts list by their email address.
+  Requires authentication as the specified user.
+  """
   addAcquintance(email: EmailAddress!, user: ID): User
-  "Give access to a user using a password's email"
+  """
+
+  Grant access to a user account via an additional email address (credential).
+  To create a new user with a credential: call createUser first, then addCredential.
+  Requires authentication as the specified user.
+  """
   addCredential(email: EmailAddress!, user: ID): User
   """
 
-  Get an article for a given id.
-  Returns an error if the corpus does not exist or cannot be accessed.
+  Retrieve an article by ID to perform mutations on it.
+  Returns an error if the article does not exist or cannot be accessed.
   """
   article(articleId: ID!): Article
-  "Change password"
+  """
+
+  Change the password for the specified user account.
+  Requires authentication as the specified user.
+  """
   changePassword(new: String!, old: String!, user: ID): User
   """
 
-  Get a corpus for a given id.
+  Retrieve a corpus by ID to perform mutations on it.
   Returns an error if the corpus does not exist or cannot be accessed.
   """
   corpus(corpusId: ID!): Corpus
-  "Create article for specified user [need to be authenticated as specified user]"
+  """
+
+  Create a new article for the authenticated user.
+  Optionally assigns tags and workspaces to the article at creation time.
+  Requires authentication as the specified user.
+  """
   createArticle(createArticleInput: CreateArticleInput!): Article
-  "Create a new corpus"
+  """
+
+  Create a new corpus in a workspace.
+  A corpus groups articles together for publication or export purposes.
+  """
   createCorpus(createCorpusInput: CreateCorpusInput!): Corpus
-  "Create tag [need to be authenticated as specified user]"
+  """
+
+  Create a new tag for the authenticated user.
+  Tags can be used to organise and filter articles.
+  Requires authentication.
+  """
   createTag(color: HexColorCode!, description: String, name: String!): Tag
-  "Create user + password + default article"
+  """
+
+  Create a new user account with email/password authentication.
+  Also creates a default article for the new user.
+  """
   createUser(details: NewUserInput!): User!
-  "Create user after authentication with an auth provider"
+  """
+
+  Finalize user account creation after authentication with an external provider (e.g. OIDC).
+  Returns a JWT token for the newly created session.
+  """
   createUserWithAuth(details: NewUserWithAuthInput!, service: AuthTokenService!): String
-  "Create a new workspace"
+  """
+
+  Create a new workspace.
+  The authenticated user becomes the creator and first member of the workspace.
+  """
   createWorkspace(createWorkspaceInput: CreateWorkspaceInput!): Workspace
-  "Delete tag, and remove it from all related articles"
+  """
+
+  Delete a tag and remove it from all articles it was applied to.
+  Requires authentication as the tag owner.
+  """
   deleteTag(tag: ID!, user: ID): Boolean
-  "Duplicate the working version of an article, with someone, or yourself"
+  """
+
+  Duplicate the working version of an article and assign it to another user (or yourself).
+  The duplicate is created as a new, independent article.
+  Requires authentication as the specified user.
+  """
   duplicateArticle(article: ID!, to: ID!, user: ID): Article
-  "Log out a user"
+  "Log out the currently authenticated user and invalidate the current session."
   logout: User
-  "Remove access to a user using a password's email (can't be the main email)"
+  """
+
+  Revoke access to a user account for a given email address.
+  The email must not be the account's primary email.
+  Requires authentication as the specified user.
+  """
   removeCredential(email: EmailAddress!, user: ID): User
-  "Sets a user authentication token (to something, or nothing if unlinking services"
+  """
+
+  Link an external service token (HumanID, Hypothesis, Zotero) to the current user account.
+  Requires authentication.
+  """
   setAuthToken(service: AuthTokenService!): User
   """
 
@@ -169,20 +226,62 @@ type Mutation {
   Existing articles that are not in the list will be removed, and articles not currently present will be added.
   """
   setCorpusArticles(setCorpusArticlesInput: SetCorpusArticlesInput!): Corpus
-  "add a user to an article"
+  """
+
+  Share an article with another user, granting them contributor access.
+  Requires authentication as the article owner.
+  """
   shareArticle(article: ID!, to: ID!, user: ID): Article
-  "Disconnect Stylo account from an authentication service"
+  """
+
+  Unlink an external authentication service from the current user account.
+  Removes the stored token for the given service.
+  Requires authentication.
+  """
   unsetAuthToken(service: AuthTokenService!): User
-  "remove a user to an article"
+  """
+
+  Remove a user's contributor access from an article.
+  Requires authentication as the article owner.
+  """
   unshareArticle(article: ID!, to: ID!, user: ID): Article
+  """
+
+  Update an article's title, tags, or workspaces.
+  Requires authentication as the article owner.
+  """
   updateArticle(updateArticleInput: UpdateArticleInput!): Article!
-  "update name and description of a tag [need to be authenticated as specified user]"
+  """
+
+  Update the bibliography of an article from a BibTeX string.
+  Returns the updated bibliography as a list of structured entries.
+  Requires authentication with access to the article (as owner, contributor, or via a workspace).
+  """
+  updateArticleBibliography(input: UpdateArticleBibliographyInput!): [BibliographyEntry]
+  """
+
+  Update the name, description, or color of an existing tag.
+  Requires authentication as the tag owner.
+  """
   updateTag(color: HexColorCode, description: String, name: String, tag: ID!): Tag
-  "Change user information"
+  """
+
+  Update profile information for the specified user (display name, first/last name, institution).
+  Requires authentication as the specified user.
+  """
   updateUser(details: UserProfileInput!, user: ID): User
-  "Update workspace form metadata"
+  """
+
+  Update the JSON schema form metadata for a workspace.
+  Controls the custom metadata form displayed in the workspace editor.
+  Requires authentication as a workspace member.
+  """
   updateWorkspaceFormMetadata(details: UpdateWorkspaceFormMetadataInput!, workspaceId: ID!): Workspace
-  "Get a workspace for mutation"
+  """
+
+  Retrieve a workspace by ID to perform mutations on it (e.g. adding members or articles).
+  Returns an error if the workspace does not exist or cannot be accessed.
+  """
   workspace(workspaceId: ID!): Workspace
 }
 
@@ -450,6 +549,11 @@ input NewUserWithAuthInput {
 input SetCorpusArticlesInput {
   articleIds: [ID]
   corpusId: ID!
+}
+
+input UpdateArticleBibliographyInput {
+  articleId: ID!
+  bib: String!
 }
 
 input UpdateArticleInput {

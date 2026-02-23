@@ -31,11 +31,11 @@ export default function BibliographyReferenceList({ bibliography, onUpdate }) {
 
   const handleRemove = useCallback(
     (indexToRemove) => {
-      const newBibTeXEntries = [
+      const newBibliographyEntries = [
         ...bibliographyEntries.slice(0, indexToRemove),
         ...bibliographyEntries.slice(indexToRemove + 1),
       ]
-      onUpdate(toBibtex(newBibTeXEntries.map(({ entry }) => entry)))
+      onUpdate(toBibtex(newBibliographyEntries.map(({ entry }) => entry)))
     },
     [bibliographyEntries]
   )
