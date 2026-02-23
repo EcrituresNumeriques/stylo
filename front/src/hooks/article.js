@@ -20,6 +20,7 @@ import {
   setNakalaLink,
   setZoteroLink,
   updateArticle,
+  updateArticleBibliography,
   updateWorkingVersion,
 } from './Article.graphql'
 import { createArticle, getWorkspaceArticles } from './Articles.graphql'
@@ -400,21 +401,23 @@ export function useEditableArticle({ articleId, versionId }) {
     }
   )
 
-  const updateBibliography = async (bib) => {
+  const updateBibliography = async (bibtex) => {
     if (hasVersion) {
       // can only update the bibliography on the working copy
       return
     }
-    await executeQuery({
+    const result = await executeQuery({
       sessionToken,
-      query: updateWorkingVersion,
+      query: updateArticleBibliography,
       variables: {
-        userId: activeUser._id,
-        articleId: articleId,
-        content: { bib },
+        input: {
+          articleId,
+          bib: bibtex,
+        },
       },
       type: 'mutate',
     })
+    const bibliography = result.updateArticleBibliography
     await mutate(
       async (data) => {
         return {
@@ -422,7 +425,8 @@ export function useEditableArticle({ articleId, versionId }) {
             ...data.article,
             workingVersion: {
               ...data.article.workingVersion,
-              bib,
+              bib: bibtex,
+              bibliography,
             },
           },
         }
@@ -477,7 +481,7 @@ export function useEditableArticle({ articleId, versionId }) {
     )
   }
 
-  const bibtext = hasVersion
+  const bibtex = hasVersion
     ? (data?.article?.version?.bib ?? '')
     : (data?.article?.workingVersion?.bib ?? '')
 
@@ -491,7 +495,7 @@ export function useEditableArticle({ articleId, versionId }) {
     updateZoteroLink,
     updateNakalaLink,
     bibliography: {
-      bibtext,
+      bibtex,
       entries,
     },
     isLoading,

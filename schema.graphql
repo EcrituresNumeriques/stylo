@@ -176,6 +176,8 @@ type Mutation {
   "remove a user to an article"
   unshareArticle(article: ID!, to: ID!, user: ID): Article
   updateArticle(updateArticleInput: UpdateArticleInput!): Article!
+  "Update an article bibliography"
+  updateArticleBibliography(input: UpdateArticleBibliographyInput!): [BibliographyEntry]
   "update name and description of a tag [need to be authenticated as specified user]"
   updateTag(color: HexColorCode, description: String, name: String, tag: ID!): Tag
   "Change user information"
@@ -450,6 +452,11 @@ input NewUserWithAuthInput {
 input SetCorpusArticlesInput {
   articleIds: [ID]
   corpusId: ID!
+}
+
+input UpdateArticleBibliographyInput {
+  articleId: ID!
+  bib: String!
 }
 
 input UpdateArticleInput {

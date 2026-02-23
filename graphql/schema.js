@@ -166,6 +166,11 @@ input UpdateArticleInput {
   workspaces: [ID]
 }
 
+input UpdateArticleBibliographyInput {
+  articleId: ID!
+  bib: String!
+}
+
 type Article {
   _id: ID!
   title: String
@@ -549,6 +554,10 @@ type Mutation {
 
   "Create a new corpus"
   createCorpus(createCorpusInput: CreateCorpusInput!): Corpus
+
+  "Update an article bibliography"
+  updateArticleBibliography(input: UpdateArticleBibliographyInput!): [BibliographyEntry]
+
 }`
 
 module.exports = makeExecutableSchema({ typeDefs, resolvers })
