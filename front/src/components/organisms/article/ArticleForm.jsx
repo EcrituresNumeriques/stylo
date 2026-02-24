@@ -105,7 +105,7 @@ export default function ArticleForm({
 }
 
 function WorkspacesField({ workspaceId, articleId }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('workspace', { useSuspense: false })
   const { workspaces, error, isLoading } = useWorkspaces()
   const {
     data,
