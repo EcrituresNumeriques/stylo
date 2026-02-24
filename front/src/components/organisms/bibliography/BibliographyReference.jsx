@@ -59,7 +59,10 @@ export default function BibliographyReference({ entry, onRemove }) {
           </Trans>
         </span>
         <FormActions
-          onSubmit={() => onRemove()}
+          onSubmit={() => {
+            onRemove()
+            deleteReferenceModal.close()
+          }}
           onCancel={() => deleteReferenceModal.close()}
           submitButton={{
             text: t('modal.deleteButton.text'),
