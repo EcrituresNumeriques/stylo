@@ -105,7 +105,7 @@ export default function ArticleForm({
 }
 
 function WorkspacesField({ workspaceId, articleId }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('workspace', { useSuspense: false })
   const { workspaces, error, isLoading } = useWorkspaces()
   const {
     data,
@@ -140,7 +140,7 @@ function WorkspacesField({ workspaceId, articleId }) {
   if (workspaces.length > 0) {
     return (
       <div>
-        <span className={formStyles.fieldLabel}>{t('workspace.title')}</span>
+        <span className={formStyles.fieldLabel}>{t('header')}</span>
 
         <ul className={checkboxStyles.inlineList}>
           {workspaces.map((workspace) => (
