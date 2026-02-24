@@ -291,6 +291,7 @@
   "workingVersion.stateUiProps.saveErrorText": "Error",
   "workingVersion.stateUiProps.savedText": "Last saved",
   "workingVersion.stateUiProps.savingText": "Saving",
+  "workspace.title": "Espace de travail",
   "write.basicMode.metadataButton": "Basic mode",
   "write.biblioModal.title": "Bibliography manager",
   "write.cancelVersionName.buttonText": "Cancel",
