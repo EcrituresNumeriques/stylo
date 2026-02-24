@@ -7,6 +7,7 @@ import { useActiveWorkspaceId } from './workspace.js'
 import {
   createCorpus as createCorpusQuery,
   deleteCorpus as deleteCorpusQuery,
+  getCorpusArticles as getCorpusArticlesQuery,
   getCorpus as getCorpusQuery,
   updateCorpus as updateCorpusQuery,
 } from './Corpus.graphql'
@@ -123,5 +124,31 @@ export function useCorpus({ workspaceId = null }) {
     isLoading,
     corpus: data.corpus,
     workspace: data.workspace ?? {},
+  }
+}
+
+export function useCorpusArticles({ corpusId }) {
+  const { data, error, isLoading } = useGraphQL(
+    {
+      query: getCorpusArticlesQuery,
+      variables: {
+        filter: {
+          corpusId,
+        },
+      },
+    },
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      fallbackData: {
+        corpus: [],
+      },
+    }
+  )
+
+  return {
+    error,
+    isLoading,
+    corpus: data.corpus,
   }
 }

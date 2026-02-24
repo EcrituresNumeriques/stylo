@@ -2,7 +2,8 @@
   "ui:groups": [
     {
       "title": "issue",
-      "fields": ["issue"]
+      "fields": ["issue"],
+      "importFromArticle": true
     }
   ],
   "type": {

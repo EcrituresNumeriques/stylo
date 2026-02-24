@@ -5,18 +5,34 @@ import { Button } from '../atoms/index.js'
 
 import styles from './DropdownMenu.module.scss'
 
-export default function DropdownMenu({ title, children }) {
+function DropdownEllipsisToggleButton({ title, toggleActions }) {
+  return (
+    <Button title={title} onClick={() => toggleActions()} icon>
+      <EllipsisVertical />
+    </Button>
+  )
+}
+
+/**
+ *
+ * @param title
+ * @param toggleButton
+ * @param children
+ * @returns {JSX.Element}
+ * @constructor
+ */
+export default function DropdownMenu({ title, toggleButton, children }) {
   const {
     ref: actionsRef,
     isComponentVisible: areActionsVisible,
     toggleComponentIsVisible: toggleActions,
   } = useComponentVisible(false, 'actions')
 
+  const button = toggleButton ?? DropdownEllipsisToggleButton
+
   return (
     <div className={styles.container} ref={actionsRef}>
-      <Button title={title} onClick={() => toggleActions()} icon>
-        <EllipsisVertical />
-      </Button>
+      {button({ title, toggleActions })}
 
       <div className={styles.menu} hidden={!areActionsVisible}>
         {children}

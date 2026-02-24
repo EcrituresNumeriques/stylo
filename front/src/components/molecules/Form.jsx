@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import { Plus, Trash } from 'lucide-react'
 import { set } from 'object-path-immutable'
-import PropTypes from 'prop-types'
 import { Fragment, useCallback, useMemo, useState } from 'react'
 import { Translation } from 'react-i18next'
 
@@ -10,6 +9,7 @@ import validator from '@rjsf/validator-ajv8'
 
 import { Button } from '../atoms/index.js'
 
+import CorpusArticleMetadataSelector from '../organisms/corpus/CorpusArticleMetadataSelector.jsx'
 import isidoreAuthorSearch from '../organisms/metadata/isidoreAuthor.jsx'
 import IsidoreAuthorAPIAutocompleteField from '../organisms/metadata/isidoreAuthor.jsx'
 import isidoreKeywordSearch from '../organisms/metadata/isidoreKeyword.jsx'
@@ -27,7 +27,7 @@ const {
 
 /**
  * @param {BaseInputTemplate} properties
- * @returns {Element}
+ * @returns {JSX.Element}
  */
 function BaseInputTemplate(properties) {
   const { placeholder } = properties
@@ -45,7 +45,7 @@ function BaseInputTemplate(properties) {
 
 /**
  * @param {SelectWidget} properties
- * @returns {Element}
+ * @returns {JSX.Element}
  */
 function CustomSelectWidget(properties) {
   const { options, title, placeholder } = properties
@@ -86,7 +86,7 @@ function CustomSelectWidget(properties) {
 
 /**
  * @param {WidgetProps} properties
- * @returns {Element}
+ * @returns {JSX.Element}
  */
 function CustomCheckboxesWidget(properties) {
   const { options, title } = properties
@@ -119,7 +119,7 @@ function CustomCheckboxesWidget(properties) {
 
 /**
  * @param {ArrayFieldTemplateProps} properties
- * @returns {Element}
+ * @returns {JSX.Element}
  */
 function ArrayFieldTemplate(properties) {
   const addItemTitle =
@@ -233,59 +233,82 @@ function FieldTemplate(properties) {
 
 /**
  * @param {ObjectFieldTemplateProps} properties
+ * @param {Record<string, unknown>} context
  * @returns {JSX.Element|undefined}
  */
-function ObjectFieldTemplate(properties) {
+function ObjectFieldTemplate(properties, context) {
   if (properties.uiSchema['ui:groups']) {
     const groups = properties.uiSchema['ui:groups']
-    const groupedElements = groups.map(({ fields, title }) => {
-      const elements = fields
-        .filter(
-          (field) =>
-            (properties.uiSchema[field] || {})['ui:widget'] !== 'hidden'
-        )
-        .map((field) => {
-          const element = properties.properties.find(
-            (element) => element.name === field
+    const groupedElements = groups.map(
+      ({ fields, title, importFromArticle }) => {
+        const elements = fields
+          .filter(
+            (field) =>
+              (properties.uiSchema[field] || {})['ui:widget'] !== 'hidden'
           )
-
-          if (!element) {
-            console.error(
-              'Field configuration not found for "%s" in \'ui:groups\' "%s" — part of %o',
-              field,
-              title || '',
-              fields
+          .map((field) => {
+            const element = properties.properties.find(
+              (element) => element.name === field
             )
-          }
 
-          return [field, element]
-        })
-
-      if (elements && elements.length > 0) {
-        return (
-          <fieldset className={styles.fieldset} key={fields.join('-')}>
-            {title && (
-              <legend>
-                <Translation ns="form" useSuspense={false}>
-                  {(t) => <>{t(title)}</>}
-                </Translation>
-              </legend>
-            )}
-            {elements.map(([field, element]) => {
-              return element ? (
-                <Fragment key={field}>{element.content}</Fragment>
-              ) : (
-                <p key={field} className={styles.fieldHasNoElementError}>
-                  Field <code>{field}</code> defined in <code>ui:groups</code>{' '}
-                  is not an entry of <code>data-schema.json[properties]</code>{' '}
-                  object.
-                </p>
+            if (!element) {
+              console.error(
+                'Field configuration not found for "%s" in \'ui:groups\' "%s" — part of %o',
+                field,
+                title || '',
+                fields
               )
-            })}
-          </fieldset>
-        )
+            }
+
+            return [field, element]
+          })
+
+        if (elements && elements.length > 0) {
+          return (
+            <fieldset className={styles.fieldset} key={fields.join('-')}>
+              {title && (
+                <legend className={styles.legend}>
+                  <Translation ns="form" useSuspense={false}>
+                    {(t) => <>{t(title)}</>}
+                  </Translation>
+                  {importFromArticle && (
+                    <CorpusArticleMetadataSelector
+                      corpusId={context.corpusId}
+                      onSelectedItem={(item) => {
+                        const { $id: id } = properties.idSchema
+                        const partialMetadata = Object.keys(
+                          item.workingVersion.metadata
+                        )
+                          .filter((key) => fields.includes(key))
+                          .reduce((obj, key) => {
+                            obj[key] = item.workingVersion.metadata[key]
+                            return obj
+                          }, {})
+                        properties.formContext.partialUpdate({
+                          id,
+                          value: partialMetadata,
+                        })
+                      }}
+                    />
+                  )}
+                </legend>
+              )}
+              {elements.map(([field, element]) => {
+                return element ? (
+                  <Fragment key={field}>{element.content}</Fragment>
+                ) : (
+                  <p key={field} className={styles.fieldHasNoElementError}>
+                    Field <code>{field}</code> defined in <code>ui:groups</code>{' '}
+                    is not an entry of <code>data-schema.json[properties]</code>{' '}
+                    object.
+                  </p>
+                )
+              })}
+            </fieldset>
+          )
+        }
       }
-    })
+    )
 
     return <>{groupedElements}</>
   }
@@ -326,13 +349,14 @@ export default function SchemaForm({
   schema,
   uiSchema,
   onChange = () => {},
+  context = {},
 }) {
   const [formData, setFormData] = useState(initialFormData)
   const [, setErrors] = useState({})
   const formContext = useMemo(
     () => ({
       partialUpdate: ({ id, value }) => {
-        const path = id.replace('root_', '').replace('_', '.')
+        const path = id.replace('root', '').replace(/^_/, '').replace('_', '.')
         setFormData((state) => {
           const newFormData = set(state, path, value)
           onChange(newFormData)
@@ -350,7 +374,8 @@ export default function SchemaForm({
   }
 
   const customTemplates = {
-    ObjectFieldTemplate,
+    ObjectFieldTemplate: (properties) =>
+      ObjectFieldTemplate(properties, context),
     FieldTemplate,
     BaseInputTemplate,
     ArrayFieldTemplate,
@@ -385,12 +410,4 @@ export default function SchemaForm({
       <hr hidden={true} />
     </Form>
   )
-}
-
-SchemaForm.propTypes = {
-  formData: PropTypes.object,
-  schema: PropTypes.object,
-  uiSchema: PropTypes.object,
-  basicMode: PropTypes.bool,
-  onChange: PropTypes.func,
 }

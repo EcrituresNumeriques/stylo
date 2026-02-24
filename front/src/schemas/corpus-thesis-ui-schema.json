@@ -14,7 +14,8 @@
     },
     {
       "title": "authors",
-      "fields": ["authors"]
+      "fields": ["authors"],
+      "importFromArticle": true
     },
     {
       "title": "directors",
