@@ -2,7 +2,7 @@
   "ui:groups": [
     {
       "title": "chapter.title",
-      "fields": ["title", "subtitle", "url"]
+      "fields": ["title", "subtitle", "url", "abstract"]
     },
     {
       "title": "keywords",
@@ -25,6 +25,10 @@
   },
   "url": {
     "ui:title": "url"
+  },
+  "abstract": {
+    "ui:title": "abstract",
+    "ui:widget": "textarea"
   },
   "keywords": {
     "ui:add-item-title": "keywords.itemAdd",
