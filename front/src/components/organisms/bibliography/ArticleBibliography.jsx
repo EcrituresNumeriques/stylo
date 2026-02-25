@@ -61,7 +61,7 @@ export default function ArticleBibliography({ articleId, versionId }) {
   }
 
   return (
-    <section>
+    <>
       <header className={styles.header}>
         <h2 className={styles.title}>{t('bibliography.title')}</h2>
 
@@ -74,7 +74,7 @@ export default function ArticleBibliography({ articleId, versionId }) {
           BibTeX
         </Toggle>
       </header>
-      <section>
+      <section className={styles.section}>
         {readOnly && (
           <div className={styles.readonly}>
             <Alert message={t('bibliography.readonly')} type="warning" />
@@ -154,6 +154,6 @@ export default function ArticleBibliography({ articleId, versionId }) {
           />
         </Modal>
       </section>
-    </section>
+    </>
   )
 }

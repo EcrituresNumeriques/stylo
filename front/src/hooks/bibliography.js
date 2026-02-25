@@ -18,6 +18,8 @@ export const validationResultInitialState = (text) => {
 }
 
 export default function useBibliography({ initialText }) {
+  const [text, setText] = useState(initialText)
+
   const [validationResult, setValidationResult] = useState(
     validationResultInitialState(initialText)
   )
@@ -36,6 +38,7 @@ export default function useBibliography({ initialText }) {
   const updateText = async function (bibtex, callback) {
     setValidationResult(validationResultInitialState(bibtex))
     await validateBibTeX(bibtex, callback)
+    setText(bibtex)
   }
 
   useEffect(() => {
@@ -46,6 +49,7 @@ export default function useBibliography({ initialText }) {
 
   return {
     updateText,
+    text,
     references: validationResult.entries,
     isValid:
       validationResult.errors.length === 0 &&
@@ -55,6 +59,7 @@ export default function useBibliography({ initialText }) {
     warnings: validationResult.warnings,
   }
 }
+
 // TODO use an isolated store to manage shared data between components
 export function useBibliographyCompletion() {
   const bibliographyCompletionProvider = useRef(

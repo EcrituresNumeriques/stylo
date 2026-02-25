@@ -15,17 +15,15 @@ export default function BibliographyBibtexEditor({
   initialValue,
   onChange,
   readOnly,
-  editorHeight = 'calc(100vh - 350px)',
+  editorHeight = 'calc(100cqh - 250px)',
 }) {
-  const { updateText, errors, warnings, isLoading, references } =
+  const { updateText, text, errors, warnings, isLoading, references } =
     useBibliography({ initialText: initialValue })
   const { t } = useTranslation()
   const editorRef = useRef(null)
-  const [text, setText] = useState(initialValue)
   const [errorDecorations, setErrorDecorations] = useState()
   const [warningDecorations, setWarningDecorations] = useState()
   const handleTextUpdate = useCallback(async (bibtex) => {
-    setText(bibtex)
     onChange(validationResultInitialState(bibtex))
     await updateText(bibtex, (result) => {
       onChange(result)

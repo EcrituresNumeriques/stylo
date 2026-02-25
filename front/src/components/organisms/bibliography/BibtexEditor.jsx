@@ -48,7 +48,7 @@ export default function MonacoBibtexEditor({
   return (
     <MonacoEditor
       height={height}
-      defaultValue={text}
+      value={text}
       className={clsx(fieldStyles.textEditor, styles.editor)}
       defaultLanguage="bibtex"
       onChange={onTextUpdate}

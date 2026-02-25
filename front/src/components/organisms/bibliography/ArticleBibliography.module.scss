@@ -7,6 +7,12 @@
   gap: 0.5rem;
 }
 
+.section {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
 .readonly {
   margin-bottom: 1rem;
 }
