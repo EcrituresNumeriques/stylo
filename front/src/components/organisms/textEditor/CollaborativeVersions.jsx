@@ -112,21 +112,19 @@ export default function CollaborativeVersions({
         {t('versions.createVersion.button')}
         {syncing && <Loading className={styles.loading} />}
       </Button>
-      {articleVersions.length === 0 && (
-        <p className={styles.info}>
-          <Alert
-            type={'info'}
-            message={
-              <Trans i18nKey="versions.explanation.text">
-                <strong>All changes are automatically saved.</strong>
-                <span className={styles.tip}>
-                  Create a new version to keep track of particular changes.
-                </span>
-              </Trans>
-            }
-          />
-        </p>
-      )}
+      <p className={styles.info}>
+        <Alert
+          type={'info'}
+          message={
+            <Trans i18nKey="versions.explanation.text">
+              <strong>All changes are automatically saved.</strong>
+              <span className={styles.tip}>
+                Create a new version to keep track of particular changes.
+              </span>
+            </Trans>
+          }
+        />
+      </p>
       <Modal
         title={t('versions.createVersion.title')}
         {...createVersionModal.bindings}

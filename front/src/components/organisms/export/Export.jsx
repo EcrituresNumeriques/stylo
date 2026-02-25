@@ -170,7 +170,7 @@ export default function Export({
         </form>
       </section>
 
-      <footer className={styles.actions}>
+      <footer className={onCancel && styles.actions}>
         {onCancel && (
           <Button
             aria-label={t('modal.cancelButton.label')}

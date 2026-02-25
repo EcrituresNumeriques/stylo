@@ -1,11 +1,16 @@
+@use '../../styles/defaults' as *;
+@use '../../styles/variables' as *;
+
 .container {
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  box-shadow:
-    1px 2px 2px hsla(221, 10%, 50%, 0.1),
-    2px 4px 4px hsl(220deg 10% 50% / 0.1),
-    3px 6px 6px hsl(220deg 10% 50% / 0.1);
+  border: 1px solid $main-border-color;
+  cursor: pointer;
+}
+
+.container:hover {
+  border: 1px solid $main-color;
 }
 
 .columns {
@@ -24,12 +29,11 @@
 
 .info {
   padding: 0.35rem 0.75rem 1rem 1.25rem;
-  cursor: pointer;
   flex: 1;
 }
 
 .selected {
-  background-color: #ebf4fe;
+  border: 1px solid $main-color;
 }
 
 .title {
@@ -42,8 +46,12 @@
 
 .separator {
   position: relative;
-  background-color: #326feb;
-  border-left: 3px solid #326feb;
+  background-color: $info-color;
+  border-left: 3px solid $info-color;
+
+  &.short {
+    margin-top: 0.95rem;
+  }
 }
 
 .indicator {
@@ -56,14 +64,13 @@
   top: 0.75rem;
   height: 1.5rem;
   width: 1.5rem;
-  border: 3px solid #326feb;
+  border: 3px solid $info-color;
   border-radius: 50%;
-  outline: #ffffff solid 2px;
   background-color: #fff;
 }
 
 .automated {
-  background-color: #326feb;
+  background-color: $info-color;
   color: #fff;
 }
 
@@ -73,18 +80,9 @@
   height: 1rem;
   width: 1rem;
   left: calc(-0.5rem - 1.5px);
-  background-color: #326feb;
+  background-color: $info-color;
   top: 0.9rem;
-}
-
-.workingCopy:before {
-  content: ' ';
-  display: block;
-  position: absolute;
-  width: 11px;
-  height: 5px;
-  background-color: #fff;
-  transform: rotate(45deg) translate(-17px, 0px);
+  margin-top: -0.95rem;
 }
 
 .description {
@@ -96,7 +94,7 @@
 .attributes {
   margin-top: 0.35rem;
   font-size: 0.9rem;
-  color: #4e4e4e;
+  color: $main-lighter-color;
 }
 
 .attribute {

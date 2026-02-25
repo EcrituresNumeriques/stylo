@@ -17,7 +17,7 @@ const relativeTimeFormatOptions = {
  * @param {string} props.description
  * @param {string} props.creator
  * @param {string} props.type
- * @param {string} props.date
+ * @param {Date} props.date
  * @param {boolean} props.selected
  * @param {() => void} props.onClick
  * @returns {React.ReactElement}
@@ -60,10 +60,13 @@ export default function Version({
   const workingCopy = type === 'workingCopy'
 
   return (
-    <div className={styles.container}>
+    <div
+      className={clsx(styles.container, selected && styles.selected)}
+      onClick={onClick}
+    >
       <div className={styles.columns}>
         <div className={styles.date}>{shortDate}</div>
-        <div className={styles.separator}>
+        <div className={clsx(styles.separator, workingCopy && styles.short)}>
           <div
             className={clsx(
               styles.indicator,
@@ -74,10 +77,7 @@ export default function Version({
             {automatedVersion && <Bot size="0.9rem" />}
           </div>
         </div>
-        <div
-          className={clsx(styles.info, selected && styles.selected)}
-          onClick={onClick}
-        >
+        <div className={styles.info}>
           <div className={styles.title}>{title}</div>
           <div className={styles.description}>{description}</div>
           <div className={styles.attributes}>

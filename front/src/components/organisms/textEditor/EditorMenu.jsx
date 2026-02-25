@@ -12,14 +12,22 @@ import {
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { usePreferenceItem } from '../../../hooks/user.js'
+
 import EditorMenuItem from './EditorMenuItem.jsx'
 
 import styles from './EditorMenu.module.scss'
 
-export default function EditorMenu({ onChange }) {
+export default function EditorMenu({ articleId, onChange }) {
   const { t } = useTranslation()
-  const [minimized, setMinimized] = useState(false)
-  const [activeMenu, setActiveMenu] = useState('')
+  const { value: minimized, setValue: setMinimized } = usePreferenceItem(
+    'minimized',
+    'article'
+  )
+  const { value: activeMenu, setValue: setActiveMenu } = usePreferenceItem(
+    `${articleId}.activeMenu`,
+    'article'
+  )
 
   const handleAnnotate = useCallback(
     () => window.open(location.pathname + '/annotate', '_blank').focus(),

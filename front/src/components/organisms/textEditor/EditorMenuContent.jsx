@@ -19,7 +19,7 @@ export default function EditorMenuContent({
   const { article } = useRouteLoaderData('article')
   const { t } = useTranslation()
 
-  if (activeMenu === '') {
+  if (!activeMenu) {
     return <></>
   }
 

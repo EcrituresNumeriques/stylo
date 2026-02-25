@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router'
 
 import { executeQuery } from '../../helpers/graphQL.js'
+import { usePreferenceItem } from '../../hooks/user.js'
 import {
   ArticleStats,
   CollaborativeTextEditor,
@@ -47,8 +48,10 @@ export default function CollaborativeEditor(props) {
   const { id: articleId, version: versionId } = useParams()
   const [searchParams] = useSearchParams({ mode: props.mode ?? 'write' })
   const mode = searchParams.get('mode')
-
-  const [activeMenu, setActiveMenu] = useState('')
+  const { value: activeMenu, setValue: setActiveMenu } = usePreferenceItem(
+    `${articleId}.activeMenu`,
+    'article'
+  )
 
   const handleActiveMenuChange = useCallback(
     (value) => {
@@ -76,7 +79,7 @@ export default function CollaborativeEditor(props) {
       </div>
 
       <div>
-        <EditorMenu onChange={handleActiveMenuChange} />
+        <EditorMenu articleId={articleId} onChange={handleActiveMenuChange} />
       </div>
     </section>
   )
