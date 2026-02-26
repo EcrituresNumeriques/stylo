@@ -5,6 +5,7 @@ const process = require('node:process')
 const debounce = require('lodash.debounce')
 const config = require('./config.js')
 const proxy = require('express-http-proxy')
+const bodyParser = require('body-parser')
 
 config.validate({ allowed: 'strict' })
 
@@ -71,6 +72,7 @@ const Y = require('yjs')
 const yjsUtils = require('@y/websocket-server/utils')
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
+const { backup, BackupValidationError } = require('./backup')
 const wss = new WebSocket.Server({ noServer: true })
 
 const jwtSecret = config.get('security.jwt.secret')
@@ -248,6 +250,52 @@ app.use(
 
 /* Nakala */
 app.use('/nakala', proxy(config.get('nakala.apiUrl')))
+
+/* Backup */
+app.post(
+  '/backup',
+  populateUserFromJWT({ jwtSecret }),
+  bodyParser.json(),
+  async (req, res) => {
+    const user = req.user
+    if (!user) {
+      return res.status(401).json({
+        status: 401,
+        error: 'UNAUTHORIZED',
+        message: 'A valid JWT token is required.',
+      })
+    }
+    const config = req.body
+    const isAdmin = req.token.admin ?? false
+    if (!isAdmin && typeof config.userId === 'string' && config.userId !== '') {
+      return res.status(403).json({
+        status: 403,
+        error: 'FORBIDDEN',
+        message:
+          'Only administrators can request a backup for a specific user.',
+      })
+    }
+    try {
+      const articles = await backup({
+        userId: user._id,
+        ...config,
+      })
+      res.status(200).json({ articles })
+    } catch (error) {
+      const status = error instanceof BackupValidationError ? 400 : 500
+      const code = status === 400 ? 'BAD_REQUEST' : 'INTERNAL_SERVER_ERROR'
+      const message =
+        status === 400
+          ? error.message
+          : 'An unexpected error occurred while processing the backup request.'
+      res.status(status).json({
+        status,
+        error: code,
+        message,
+      })
+    }
+  }
+)
 
 /*
  * GraphQL interface
