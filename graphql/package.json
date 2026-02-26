@@ -30,6 +30,7 @@
     "atob": "^2.1.2",
     "bcryptjs": "^2.4.3",
     "biblatex-csl-converter": "^3.2.2",
+    "body-parser": "^2.2.2",
     "colornames": "^1.1.1",
     "connect-mongo": "~6.0",
     "convict": "^6.2.4",
