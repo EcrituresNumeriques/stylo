@@ -1,50 +1,35 @@
 import clsx from 'clsx'
 import { Menu } from 'lucide-react'
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
-import { Link, NavLink, useLocation, useRouteLoaderData } from 'react-router'
+import { NavLink, useRouteLoaderData } from 'react-router'
 
 import logoContent from '/images/logo.svg?inline'
 
 import useComponentVisible from '../../../hooks/componentVisible.js'
 import { useActiveWorkspaceId } from '../../../hooks/workspace.js'
 
-import WorkspacesMenu from '../workspace/WorkspacesMenu.jsx'
 import HelpMenu from './HelpMenu.jsx'
 import LanguagesMenu from './LanguagesMenu.jsx'
 import UserMenu from './UserMenu.jsx'
+import WorkspacesMenu from './WorkspacesMenu.jsx'
 
 import styles from './header.module.scss'
 
 export default function Header() {
   const { t } = useTranslation()
   const activeWorkspaceId = useActiveWorkspaceId()
-  const dispatch = useDispatch()
   const { user } = useRouteLoaderData('app')
-  const location = useLocation()
-  const activeTool = location.pathname.includes('/corpus')
-    ? 'corpus'
-    : 'articles'
   const userId = user?._id
   const baseUrl = useMemo(
     () => (activeWorkspaceId ? `/workspaces/${activeWorkspaceId}` : ''),
     [activeWorkspaceId]
   )
   const {
-    ref: workspacesRef,
-    isComponentVisible: areWorkspacesVisible,
-    toggleComponentIsVisible: toggleWorkspaces,
-  } = useComponentVisible(false, 'workspaces')
-  const {
     ref: toolsRef,
     isComponentVisible: areToolsVisible,
     toggleComponentIsVisible: toggleTools,
   } = useComponentVisible(false, 'tools')
-
-  const resetWorkspaceId = useCallback(() => {
-    dispatch({ type: 'SET_USER_PREFERENCES', key: 'workspaceId', value: null })
-  }, [])
 
   return (
     <header className={styles.header} role="banner">
@@ -91,51 +76,8 @@ export default function Header() {
                     {t('header.mainMenu.corpus')}
                   </NavLink>
                 </li>
-                <li
-                  hidden={!userId}
-                  ref={workspacesRef}
-                  className={styles.toggleMenu}
-                >
-                  <button
-                    aria-controls="header-workspaces-list"
-                    aria-expanded={areWorkspacesVisible}
-                    onClick={toggleWorkspaces}
-                  >
-                    {t('header.mainMenu.workspaces')}
-                  </button>
-
-                  <div
-                    className={styles.toggleMenuContainer}
-                    id="header-workspaces-list"
-                    hidden={!areWorkspacesVisible}
-                  >
-                    <ul
-                      className={styles.toggleMenuList}
-                      aria-label={t('header.mainMenu.workspaces.list')}
-                    >
-                      <li>
-                        <Link
-                          to={`/${activeTool}`}
-                          onClick={resetWorkspaceId}
-                          aria-current={!activeWorkspaceId ? 'page' : false}
-                        >
-                          <span
-                            className={styles.chip}
-                            style={{ backgroundColor: '#ccc' }}
-                          />
-                          {t('header.mainMenu.workspace.myspace')}
-                        </Link>
-                      </li>
-
-                      <WorkspacesMenu activeTool={activeTool} />
-
-                      <li>
-                        <NavLink to={`/workspaces`} end>
-                          {t('header.mainMenu.workspace.all')}
-                        </NavLink>
-                      </li>
-                    </ul>
-                  </div>
+                <li hidden={!userId} className={styles.toggleMenu}>
+                  <WorkspacesMenu />
                 </li>
               </ul>
             </div>
