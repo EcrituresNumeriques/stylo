@@ -1,4 +1,4 @@
-# Stylo [![Coverage Status](https://coveralls.io/repos/github/EcrituresNumeriques/stylo/badge.svg?branch=master)](https://coveralls.io/github/EcrituresNumeriques/stylo?branch=master) [![tests](https://github.com/EcrituresNumeriques/stylo/actions/workflows/node.yml/badge.svg)](https://github.com/EcrituresNumeriques/stylo/actions/workflows/node.yml)
+# Stylo [![Coverage Status](https://coveralls.io/repos/github/EcrituresNumeriques/stylo/badge.svg?branch=master)](https://coveralls.io/github/EcrituresNumeriques/stylo?branch=master) [![Node `front` application](https://github.com/EcrituresNumeriques/stylo/actions/workflows/node-front.yml/badge.svg)](https://github.com/EcrituresNumeriques/stylo/actions/workflows/node-front.yml) [![Node `graphql` application](https://github.com/EcrituresNumeriques/stylo/actions/workflows/node-graphql.yml/badge.svg)](https://github.com/EcrituresNumeriques/stylo/actions/workflows/node-graphql.yml)
 
 Stylo est un éditeur de textes pour articles scientifiques en sciences humaines et sociales.
 
