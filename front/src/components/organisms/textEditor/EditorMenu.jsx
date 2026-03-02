@@ -9,7 +9,7 @@ import {
   TableOfContents,
   TextCursorInput,
 } from 'lucide-react'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { usePreferenceItem } from '../../../hooks/user.js'
@@ -19,6 +19,11 @@ import EditorMenuItem from './EditorMenuItem.jsx'
 import styles from './EditorMenu.module.scss'
 
 export default function EditorMenu({ articleId, onChange }) {
+  const enableNakala = useMemo(
+    () =>
+      !window.location.href.startsWith('https://https://stylo.huma-num.fr/'),
+    [window.location.href]
+  ) // disable Nakala in production
   const { t } = useTranslation()
   const { value: minimized, setValue: setMinimized } = usePreferenceItem(
     'minimized',
@@ -74,13 +79,15 @@ export default function EditorMenu({ articleId, onChange }) {
           icon={<BookKey />}
           text={t('bibliography.title')}
         />
-        <EditorMenuItem
-          onClick={toggleActiveMenu('data')}
-          selected={activeMenu === 'data'}
-          minimized={minimized}
-          icon={<Database />}
-          text={t('data.title')}
-        />
+        {enableNakala && (
+          <EditorMenuItem
+            onClick={toggleActiveMenu('data')}
+            selected={activeMenu === 'data'}
+            minimized={minimized}
+            icon={<Database />}
+            text={t('data.title')}
+          />
+        )}
         <EditorMenuItem
           onClick={toggleActiveMenu('versions')}
           selected={activeMenu === 'versions'}
