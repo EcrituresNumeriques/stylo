@@ -88,43 +88,49 @@ export default function Articles() {
         <title>{t('articles.page.title', { workspace: workspaceName })}</title>
       </Helmet>
 
-      <header className={styles.pageHeader}>
-        <div className={styles.pageTitle}>
-          <PageTitle
-            id="articles-list-headline"
-            title={t('header.articles.link')}
-          />
-          <Button
-            className={styles.button}
-            testId="create-article-button"
-            primary
-            onClick={() => createArticleModal.show()}
+      <div className={styles.header}>
+        <header className={styles.pageHeader}>
+          <div className={styles.pageTitle}>
+            <PageTitle
+              id="articles-list-headline"
+              title={t('header.articles.link')}
+            />
+            <Button
+              className={styles.button}
+              testId="create-article-button"
+              primary
+              onClick={() => createArticleModal.show()}
+            >
+              {t('article.createAction.buttonText')}
+            </Button>
+          </div>
+          <search
+            className={styles.search}
+            aria-label={t('article.search.label')}
           >
-            {t('article.createAction.buttonText')}
-          </Button>
-        </div>
-        <search
-          className={styles.search}
-          aria-label={t('article.search.label')}
+            <Field
+              className={styles.searchField}
+              type="search"
+              icon={<Search />}
+              value={filter}
+              placeholder={t('article.search.placeholder')}
+              onChange={(e) => setFilter(etv(e))}
+            />
+          </search>
+        </header>
+        <WorkspaceLabel color={workspace.color} name={workspace.name} />
+        <fieldset
+          className={styles.filtersTags}
+          aria-label={t('tag.list.title')}
         >
-          <Field
-            className={styles.searchField}
-            type="search"
-            icon={<Search />}
-            value={filter}
-            placeholder={t('article.search.placeholder')}
-            onChange={(e) => setFilter(etv(e))}
-          />
-        </search>
-      </header>
-      <WorkspaceLabel color={workspace.color} name={workspace.name} />
-      <fieldset className={styles.filtersTags} aria-label={t('tag.list.title')}>
-        <legend>
-          <h4 aria-level="2">{t('tag.list.title')}</h4>
-        </legend>
+          <legend>
+            <h4 aria-level="2">{t('tag.list.title')}</h4>
+          </legend>
 
-        <TagsList action={TagEditForm} />
-      </fieldset>
+          <TagsList action={TagEditForm} />
+        </fieldset>
+      </div>
+
       <Modal
         {...createArticleModal.bindings}
         title={t('article.createModal.title')}

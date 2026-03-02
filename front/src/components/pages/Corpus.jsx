@@ -27,15 +27,16 @@ export default function Corpus() {
         <title>{t('title', { workspace: workspaceName })}</title>
       </Helmet>
 
-      <header className={styles.header}>
-        <PageTitle title={t('header')}></PageTitle>
-        <Button primary onClick={() => createCorpusModal.show()}>
-          {t('actions.create.label')}
-        </Button>
-      </header>
-      <WorkspaceLabel color={workspace.color} name={workspace.name} />
-      <p className={styles.introduction}>{t('description')}</p>
-
+      <div className={styles.header}>
+        <header className={styles.pageHeader}>
+          <PageTitle title={t('header')}></PageTitle>
+          <Button primary onClick={() => createCorpusModal.show()}>
+            {t('actions.create.label')}
+          </Button>
+        </header>
+        <WorkspaceLabel color={workspace.color} name={workspace.name} />
+        <p className={styles.introduction}>{t('description')}</p>
+      </div>
       <Modal {...createCorpusModal.bindings} title={t('actions.create.title')}>
         <CorpusForm
           onSubmit={() => createCorpusModal.close()}

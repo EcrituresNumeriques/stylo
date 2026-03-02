@@ -17,16 +17,9 @@
 .filterByTags {
   display: flex;
   flex-wrap: wrap;
+  gap: 0.5rem;
 
   > li {
     display: flex;
-    margin-bottom: 0.5rem;
   }
-
-  > li:not(:last-child) {
-    margin-right: 0.5rem;
-  }
-
-  margin-top: 0.25rem;
-  margin-bottom: 0.5rem;
 }
