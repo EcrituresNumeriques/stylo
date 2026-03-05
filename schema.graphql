@@ -30,7 +30,7 @@ type Article {
   setNakalaLink(nakala: String!): Boolean
   setPreviewSettings(settings: ArticlePreviewInput!): Article
   setZoteroLink(zotero: String!): Boolean
-  tags(limit: Int, page: Int): [Tag!]!
+  tags: [Tag!]!
   title: String
   updateWorkingVersion(content: WorkingVersionInput!): Article
   updatedAt: DateTime
@@ -341,7 +341,7 @@ type User {
   permissions: [UserPermission]
   removeContact(userId: ID!): User
   stats: UserStats
-  tags(limit: Int, page: Int): [Tag]
+  tags: [Tag]
   updatedAt: DateTime
   username: String
   workspaces: [Workspace!]
