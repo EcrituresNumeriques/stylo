@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongoose').Types
 const { Mutation } = require('./userResolver.js')
 const User = require('../models/user.js')
 const { before, beforeEach, after, describe, test } = require('node:test')
@@ -367,6 +368,126 @@ describe('user resolver', () => {
         jwt,
         // eslint-disable-next-line security/detect-unsafe-regex
         /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/
+      )
+    })
+  })
+
+  describe('addContact', () => {
+    test('rejects adding oneself as a contact', async () => {
+      const user1 = new User({ email: 'user1@example.com' })
+      await user1.save()
+      const context = {
+        user1,
+        token: { admin: false, _id: user1.id },
+        session: {},
+      }
+      await assert.rejects(() =>
+        Mutation.addContact({}, { contactUserId: user1.id }, context)
+      )
+    })
+    test('adds a new contact', async () => {
+      const user1 = new User({ email: 'user1@example.com' })
+      const user2 = new User({ email: 'user2@example.com' })
+      await user1.save()
+      await user2.save()
+      const context = {
+        user1,
+        token: { admin: false, _id: user1.id },
+        session: {},
+      }
+      const user1Updated = await Mutation.addContact(
+        {},
+        { contactUserId: user2.id },
+        context
+      )
+      assert.deepStrictEqual(
+        user1Updated.acquintances.map((id) => id.toString()),
+        [user2.id]
+      )
+    })
+    test('adds an existing contact', async () => {
+      const user1 = new User({ email: 'user1@example.com' })
+      const user2 = new User({ email: 'user2@example.com' })
+      await user1.save()
+      await user2.save()
+      const context = {
+        user1,
+        token: { admin: false, _id: user1.id },
+        session: {},
+      }
+      await Mutation.addContact({}, { contactUserId: user2.id }, context)
+      // try to add the same contact
+      const user1Updated = await Mutation.addContact(
+        {},
+        { contactUserId: user2.id },
+        context
+      )
+      assert.deepStrictEqual(
+        user1Updated.acquintances.map((id) => id.toString()),
+        [user2.id]
+      )
+    })
+  })
+
+  describe('removeContact', () => {
+    test('rejects removing an unexisting user', async () => {
+      const user1 = new User({ email: 'user1@example.com' })
+      await user1.save()
+      const context = {
+        user1,
+        token: { admin: false, _id: user1.id },
+        session: {},
+      }
+      await assert.rejects(() =>
+        Mutation.removeContact({}, { contactUserId: new ObjectId() }, context)
+      )
+    })
+    test('removes an existing contact', async () => {
+      const user3Id = new ObjectId()
+      const user2 = new User({ email: 'user2@example.com' })
+      await user2.save()
+      const user1 = new User({
+        email: 'user1@example.com',
+        acquintances: [user2.id, user3Id],
+      })
+      await user1.save()
+      const context = {
+        user1,
+        token: { admin: false, _id: user1.id },
+        session: {},
+      }
+      const user1Updated = await Mutation.removeContact(
+        {},
+        { contactUserId: user2.id },
+        context
+      )
+      assert.deepStrictEqual(
+        user1Updated.acquintances.map((id) => id.toString()),
+        [user3Id.toString()]
+      )
+    })
+    test('removes an unexisting contact', async () => {
+      const user3Id = new ObjectId()
+      const user1 = new User({
+        email: 'user1@example.com',
+        acquintances: [user3Id],
+      })
+      const user2 = new User({ email: 'user2@example.com' })
+      await user1.save()
+      await user2.save()
+      const context = {
+        user1,
+        token: { admin: false, _id: user1.id },
+        session: {},
+      }
+      const user1Updated = await Mutation.removeContact(
+        {},
+        { contactUserId: user2.id },
+        context
+      )
+      assert.deepStrictEqual(
+        user1Updated.acquintances.map((id) => id.toString()),
+        [user3Id.toString()]
       )
     })
   })

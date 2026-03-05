@@ -21,7 +21,6 @@ export function useContactActions() {
     const result = await executeQuery({
       query: addContact,
       variables: {
-        userId: activeUserId,
         contactId,
       },
       sessionToken,
@@ -30,7 +29,7 @@ export function useContactActions() {
     await mutate(
       {
         user: {
-          acquintances: result.user.addContact.acquintances,
+          acquintances: result.addContact.acquintances,
         },
       },
       { revalidate: false }
@@ -39,14 +38,14 @@ export function useContactActions() {
   const remove = async (contactId) => {
     const result = await executeQuery({
       query: removeContact,
-      variables: { userId: activeUserId, contactId },
+      variables: { contactId },
       sessionToken,
       type: 'mutation',
     })
     await mutate(
       {
         user: {
-          acquintances: result.user.removeContact.acquintances,
+          acquintances: result.removeContact.acquintances,
         },
       },
       { revalidate: false }
