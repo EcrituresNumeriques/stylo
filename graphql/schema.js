@@ -130,7 +130,6 @@ type Version {
   version: Int
   revision: Int
   md: String
-  sommaire: String
   type: String
   metadata: JSON
   metadataFormType: String
