@@ -381,7 +381,6 @@ type Version {
   owner: User
   rename(name: String): Boolean
   revision: Int
-  sommaire: String
   type: String
   updatedAt: DateTime
   version: Int
