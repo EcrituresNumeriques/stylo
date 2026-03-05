@@ -44,13 +44,6 @@ const userSchema = new Schema(
         return String(value).trim()
       },
     },
-    // TODO remove this link
-    tags: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Tag',
-      },
-    ],
     acquintances: [
       {
         type: Schema.Types.ObjectId,
