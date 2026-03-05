@@ -1,23 +1,19 @@
 #import './Credentials.graphql'
 
-query addContact($userId: ID!, $contactId: ID!) {
-  user(user: $userId) {
-    addContact(userId: $contactId) {
-      _id
-      acquintances {
-        ...extendedPublicUserFields
-      }
+mutation addContact($contactId: ID!) {
+  addContact(contactUserId: $contactId) {
+    _id
+    acquintances {
+      ...extendedPublicUserFields
     }
   }
 }
 
-query removeContact($userId: ID!, $contactId: ID!) {
-  user(user: $userId) {
-    removeContact(userId: $contactId) {
-      _id
-      acquintances {
-        ...extendedPublicUserFields
-      }
+mutation removeContact($contactId: ID!) {
+  removeContact(contactUserId: $contactId) {
+    _id
+    acquintances {
+      ...extendedPublicUserFields
     }
   }
 }
