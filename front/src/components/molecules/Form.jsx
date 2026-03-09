@@ -334,6 +334,14 @@ const customFields = {
   IsidoreAuthorSearch: isidoreAuthorSearch,
 }
 
+const customWidgets = {
+  SelectWidget: CustomSelectWidget,
+  CheckboxesWidget: CustomCheckboxesWidget,
+  toggle: ToggleWidget,
+}
+
+const EMPTY_CONTEXT = {}
+
 /**
  * @param {object} props properties
  * @param {Record<string, unknown>} props.formData
@@ -349,7 +357,7 @@ export default function SchemaForm({
   schema,
   uiSchema,
   onChange = () => {},
-  context = {},
+  context = EMPTY_CONTEXT,
 }) {
   const [formData, setFormData] = useState(initialFormData)
   const [, setErrors] = useState({})
@@ -367,19 +375,16 @@ export default function SchemaForm({
     [onChange, setFormData]
   )
 
-  const customWidgets = {
-    SelectWidget: CustomSelectWidget,
-    CheckboxesWidget: CustomCheckboxesWidget,
-    toggle: ToggleWidget,
-  }
-
-  const customTemplates = {
-    ObjectFieldTemplate: (properties) =>
-      ObjectFieldTemplate(properties, context),
-    FieldTemplate,
-    BaseInputTemplate,
-    ArrayFieldTemplate,
-  }
+  const customTemplates = useMemo(
+    () => ({
+      ObjectFieldTemplate: (properties) =>
+        ObjectFieldTemplate(properties, context),
+      FieldTemplate,
+      BaseInputTemplate,
+      ArrayFieldTemplate,
+    }),
+    [context]
+  )
 
   const handleUpdate = useCallback(
     (event) => {
