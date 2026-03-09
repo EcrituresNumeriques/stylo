@@ -68,6 +68,7 @@ export default function CorpusItem({ corpus }) {
   const handleDeleteCorpus = useCallback(async () => {
     try {
       await deleteCorpus(corpusId)
+      deleteCorpusModal.close()
       toast(t('actions.delete.success'), { type: 'info' })
     } catch (err) {
       toast(`Unable to delete corpus ${corpus.name}: ${err}`, {
