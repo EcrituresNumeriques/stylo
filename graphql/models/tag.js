@@ -43,11 +43,6 @@ tagSchema.statics.findByUser = function findTagByUser(user) {
 
 // TODO: middleware name will change in future version of Mongoose
 tagSchema.post('remove', async function () {
-  await this.model('User').updateOne(
-    { _id: this.owner },
-    { $pull: { tags: this.id } }
-  )
-
   await this.model('Article').updateMany(
     { tags: this.id },
     { $pull: { tags: this.id } }

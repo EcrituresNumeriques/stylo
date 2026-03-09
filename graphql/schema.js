@@ -73,7 +73,7 @@ type User {
   firstName: String
   lastName: String
   institution: String
-  tags(limit: Int, page: Int): [Tag]
+  tags: [Tag]
   permissions: [UserPermission]
   acquintances(limit: Int, page: Int): [User]
   articles(limit: Int, page: Int): [Article]
@@ -179,7 +179,7 @@ type Article {
   contributors: [ArticleContributor]!
   workingVersion: WorkingVersion
   versions(limit: Int, page: Int): [Version!]
-  tags(limit: Int, page: Int): [Tag!]!
+  tags: [Tag!]!
   preview: ArticlePreviewSettings
   createdAt: DateTime
   updatedAt: DateTime
