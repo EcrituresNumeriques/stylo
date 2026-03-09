@@ -127,8 +127,15 @@ type Mutation {
 
   Add a user to your contacts list by their email address.
   Requires authentication as the specified user.
+  @deprecated Use addContact instead.
   """
   addAcquintance(email: EmailAddress!, user: ID): User
+  """
+
+  Add a user to your contacts list by their user ID.
+  Requires authentication.
+  """
+  addContact(contactUserId: ID!): User
   """
 
   Grant access to a user account via an additional email address (credential).
@@ -207,6 +214,12 @@ type Mutation {
   duplicateArticle(article: ID!, to: ID!, user: ID): Article
   "Log out the currently authenticated user and invalidate the current session."
   logout: User
+  """
+
+  Remove a user from your contacts list by their user ID.
+  Requires authentication.
+  """
+  removeContact(contactUserId: ID!): User
   """
 
   Revoke access to a user account for a given email address.
@@ -327,6 +340,7 @@ type Tag {
 type User {
   _id: ID
   acquintances(limit: Int, page: Int): [User]
+  "@deprecated Use addContact mutation at the root instead."
   addContact(userId: ID!): User
   articles(limit: Int, page: Int): [Article]
   authProviders: AuthProvidersMap
@@ -339,6 +353,7 @@ type User {
   institution: String
   lastName: String
   permissions: [UserPermission]
+  "@deprecated Use removeContact mutation at the root instead."
   removeContact(userId: ID!): User
   stats: UserStats
   tags: [Tag]

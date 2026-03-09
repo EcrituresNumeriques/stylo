@@ -81,8 +81,13 @@ type User {
   createdAt: DateTime
   updatedAt: DateTime
   deletedAt: DateTime
-
+  """
+  @deprecated Use addContact mutation at the root instead.
+  """
   addContact(userId: ID!): User
+  """
+  @deprecated Use removeContact mutation at the root instead.
+  """
   removeContact(userId: ID!): User
 
   stats: UserStats
@@ -492,8 +497,21 @@ type Mutation {
   unsetAuthToken(service: AuthTokenService!): User
 
   """
+  Add a user to your contacts list by their user ID.
+  Requires authentication.
+  """
+  addContact(contactUserId: ID!): User
+
+  """
+  Remove a user from your contacts list by their user ID.
+  Requires authentication.
+  """
+  removeContact(contactUserId: ID!): User
+
+  """
   Add a user to your contacts list by their email address.
   Requires authentication as the specified user.
+  @deprecated Use addContact instead.
   """
   addAcquintance(email: EmailAddress!, user: ID): User
 

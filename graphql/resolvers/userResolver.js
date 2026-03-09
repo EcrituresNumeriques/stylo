@@ -176,6 +176,37 @@ module.exports = {
       return await user.save()
     },
 
+    async addContact(_, { contactUserId }, context) {
+      const { userId } = isUser({}, context)
+
+      if (userId === contactUserId) {
+        throw new Error('You cannot add yourself as a contact!')
+      }
+      const contact = await User.findById(contactUserId)
+      if (!contact) {
+        throw new Error(`No user found with this id: ${contactUserId}`)
+      }
+      return User.findOneAndUpdate(
+        { _id: userId },
+        { $addToSet: { acquintances: contact._id } },
+        { new: true }
+      )
+    },
+
+    async removeContact(_, { contactUserId }, context) {
+      const { userId } = isUser({}, context)
+
+      const contact = await User.findById(contactUserId)
+      if (!contact) {
+        throw new Error(`No user found with this id: ${contactUserId}`)
+      }
+      return User.findOneAndUpdate(
+        { _id: userId },
+        { $pull: { acquintances: contact._id } },
+        { new: true }
+      )
+    },
+
     async addAcquintance(_, args, context) {
       const { userId } = isUser(args, context)
 
