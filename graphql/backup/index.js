@@ -1,8 +1,10 @@
-const Article = require('./models/article')
-const { createLoaders } = require('./loaders')
-const Workspace = require('./models/workspace')
-const Version = require('./models/version')
 const mongoose = require('mongoose')
+
+const { zip } = require('./zip')
+const Article = require('../models/article')
+const { createLoaders } = require('../loaders')
+const Workspace = require('../models/workspace')
+const Version = require('../models/version')
 
 /**
  * Error thrown when the backup request contains invalid parameters.
@@ -152,4 +154,5 @@ async function backup(config) {
 module.exports = {
   backup,
   BackupValidationError,
+  zip,
 }
