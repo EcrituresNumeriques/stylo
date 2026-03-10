@@ -72,7 +72,7 @@ const Y = require('yjs')
 const yjsUtils = require('@y/websocket-server/utils')
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
-const { backup, BackupValidationError } = require('./backup')
+const { backup, BackupValidationError, zip } = require('./backup')
 const wss = new WebSocket.Server({ noServer: true })
 
 const jwtSecret = config.get('security.jwt.secret')
@@ -275,12 +275,23 @@ app.post(
           'Only administrators can request a backup for a specific user.',
       })
     }
+    const format = config.format || 'json'
     try {
       const articles = await backup({
         userId: user._id,
         ...config,
       })
-      res.status(200).json({ articles })
+      if (format === 'json') {
+        res.status(200).json({ articles })
+      } else if (format === 'zip') {
+        const buffer = await zip(articles)
+        res.set({
+          'Content-Type': 'application/zip',
+          'Content-Disposition': 'attachment; filename="backup.zip"',
+          'Content-Length': buffer.length,
+        })
+        res.send(buffer)
+      }
     } catch (error) {
       const status = error instanceof BackupValidationError ? 400 : 500
       const code = status === 400 ? 'BAD_REQUEST' : 'INTERNAL_SERVER_ERROR'
