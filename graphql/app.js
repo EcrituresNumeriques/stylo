@@ -72,7 +72,7 @@ const Y = require('yjs')
 const yjsUtils = require('@y/websocket-server/utils')
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
-const { backup, BackupValidationError, zip } = require('./backup')
+const { requestHandler: backupRequestHandler } = require('./backup')
 const wss = new WebSocket.Server({ noServer: true })
 
 const jwtSecret = config.get('security.jwt.secret')
@@ -256,56 +256,7 @@ app.post(
   '/backup',
   populateUserFromJWT({ jwtSecret }),
   bodyParser.json(),
-  async (req, res) => {
-    const user = req.user
-    if (!user) {
-      return res.status(401).json({
-        status: 401,
-        error: 'UNAUTHORIZED',
-        message: 'A valid JWT token is required.',
-      })
-    }
-    const config = req.body
-    const isAdmin = req.token.admin ?? false
-    if (!isAdmin && typeof config.userId === 'string' && config.userId !== '') {
-      return res.status(403).json({
-        status: 403,
-        error: 'FORBIDDEN',
-        message:
-          'Only administrators can request a backup for a specific user.',
-      })
-    }
-    const format = config.format || 'json'
-    try {
-      const articles = await backup({
-        userId: user._id,
-        ...config,
-      })
-      if (format === 'json') {
-        res.status(200).json({ articles })
-      } else if (format === 'zip') {
-        const buffer = await zip(articles)
-        res.set({
-          'Content-Type': 'application/zip',
-          'Content-Disposition': 'attachment; filename="backup.zip"',
-          'Content-Length': buffer.length,
-        })
-        res.send(buffer)
-      }
-    } catch (error) {
-      const status = error instanceof BackupValidationError ? 400 : 500
-      const code = status === 400 ? 'BAD_REQUEST' : 'INTERNAL_SERVER_ERROR'
-      const message =
-        status === 400
-          ? error.message
-          : 'An unexpected error occurred while processing the backup request.'
-      res.status(status).json({
-        status,
-        error: code,
-        message,
-      })
-    }
-  }
+  backupRequestHandler
 )
 
 /*

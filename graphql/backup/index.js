@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const { zip } = require('./zip')
+const { json } = require('./json')
 const Article = require('../models/article')
 const { createLoaders } = require('../loaders')
 const Workspace = require('../models/workspace')
@@ -15,6 +16,73 @@ class BackupValidationError extends Error {
     super(message)
     this.name = 'BackupValidationError'
     this.status = 400
+  }
+}
+
+/**
+ * Express request handler for the backup endpoint.
+ *
+ * Expects a JSON body with:
+ * - `scope` (`'mine' | 'workspace' | 'all'`, default `'mine'`)
+ * - `versions` (`'latest' | 'all'`, default `'latest'`)
+ * - `format` (`'json' | 'zip'`, default `'json'`)
+ * - `workspaceId` (string, required when `scope` is `'workspace'`)
+ * - `userId` (string, admin only — overrides the authenticated user)
+ *
+ * Responds with:
+ * - `200` JSON backup or ZIP attachment
+ * - `400` on invalid parameters
+ * - `401` if unauthenticated
+ * - `403` if a non-admin requests a backup for another user
+ * - `500` on unexpected errors
+ */
+async function requestHandler(req, res) {
+  const user = req.user
+  if (!user) {
+    return res.status(401).json({
+      status: 401,
+      error: 'UNAUTHORIZED',
+      message: 'A valid JWT token is required.',
+    })
+  }
+  const config = req.body
+  const isAdmin = req.token.admin ?? false
+  if (!isAdmin && typeof config.userId === 'string' && config.userId !== '') {
+    return res.status(403).json({
+      status: 403,
+      error: 'FORBIDDEN',
+      message: 'Only administrators can request a backup for a specific user.',
+    })
+  }
+  const format = config.format || 'json'
+  try {
+    const articles = await getArticles({
+      userId: user._id,
+      ...config,
+    })
+    if (format === 'json') {
+      res.status(200).json(json(articles))
+    } else if (format === 'zip') {
+      const buffer = await zip(articles)
+      res.set({
+        'Content-Type': 'application/zip',
+        'Content-Disposition': 'attachment; filename="backup.zip"',
+        'Content-Length': buffer.length,
+      })
+      res.send(buffer)
+    }
+  } catch (error) {
+    const status = error instanceof BackupValidationError ? 400 : 500
+    const code = status === 400 ? 'BAD_REQUEST' : 'INTERNAL_SERVER_ERROR'
+    const message =
+      status === 400
+        ? error.message
+        : 'An unexpected error occurred while processing the backup request.'
+    res.status(status).json({
+      status,
+      error: code,
+      message,
+    })
   }
 }
 
@@ -36,7 +104,9 @@ async function retrieveVersions(articles, versions) {
       article.versions = await Promise.all(
         versions.map(
           async (versionId) =>
-            await Version.findById(new mongoose.Types.ObjectId(versionId))
+            await Version.findById(
+              new mongoose.Types.ObjectId(versionId)
+            ).populate('owner')
         )
       )
     }
@@ -52,25 +122,38 @@ async function retrieveVersions(articles, versions) {
 }
 
 /**
- * Returns a list of articles for backup purposes, based on the given scope.
+ * Retrieves and structures articles for backup, based on the given scope.
  *
  * - `"mine"`: articles owned by or contributed to by the user.
  * - `"workspace"`: articles belonging to a specific workspace (requires `workspaceId`).
  * - `"all"`: union of `"mine"` and all workspace articles for the user.
  *
- * In all cases, the owner and contributors are reduced to `{ _id, email, username }` and the `workingVersion.ydoc` field is stripped from each article.
+ * Owner and contributors are reduced to `{ _id, email, username }`. Tags are stripped
+ * of their `articles` back-reference. `workingVersion.ydoc` is removed.
+ *
+ * Each article is returned as a structured object:
+ * ```
+ * {
+ *   id: string,
+ *   info: { title, creator, contributors, tags, zoteroLink, nakalaLink, createdAt, updatedAt },
+ *   latest: { article, bibliography, metadata },
+ *   versions: {
+ *     "<version>.<revision>": { info: { creator, message }, article, bibliography, metadata }
+ *   }
+ * }
+ * ```
+ * When `versions` is `"latest"`, the `versions` object is empty (`{}`).
  *
  * @param {object} config
  * @param {'mine' | 'workspace' | 'all'} [config.scope='mine'] - Scope of the backup
  * @param {string} config.userId - ID of the requesting user
  * @param {string} [config.workspaceId] - Required when scope is `"workspace"`
  * @param {'latest' | 'all'} [config.versions='latest'] - Version retrieval strategy:
- *   `"latest"` strips the version history (working version only);
- *   `"all"` resolves and includes the full version history.
- * @returns {Promise<Array>} Resolved list of articles
+ *   `"latest"` returns an empty `versions` object; `"all"` populates it with the full version history.
+ * @returns {Promise<Array<{id: string, info: object, latest: object, versions: object}>>} Structured article list
  * @throws {BackupValidationError} If scope or versions value is invalid, or `workspaceId` is missing for scope `"workspace"`
  */
-async function backup(config) {
+async function getArticles(config) {
   const { scope = 'mine', userId, versions = 'latest' } = config
   const loaders = createLoaders()
   let articles
@@ -125,7 +208,7 @@ async function backup(config) {
   for (const article of articles) {
     const { _id, email, username } = article.owner
     article.owner = {
-      _id,
+      id: _id,
       email,
       username,
     }
@@ -139,7 +222,7 @@ async function backup(config) {
       const { _id, email, username } = user
       return {
         user: {
-          _id,
+          id: _id,
           email,
           username,
         },
@@ -148,11 +231,49 @@ async function backup(config) {
     })
   }
   await retrieveVersions(articles, versions)
-  return articles
+  return articles.map((article) => {
+    const id = String(article._id)
+    const wv = article.workingVersion ?? {}
+    const versions = article.versions ?? []
+    const history = versions.reduce((acc, version) => {
+      acc[`${version.version}.${version.revision}`] = {
+        info: {
+          creator: {
+            id: version.owner._id,
+            email: version.owner.email,
+            username: version.owner.username,
+          },
+          message: version.message,
+        },
+        article: version.md ?? '',
+        bibliography: version.bib ?? '',
+        metadata: version.metadata ?? {},
+      }
+      return acc
+    }, {})
+
+    return {
+      id,
+      info: {
+        title: article.title,
+        creator: article.owner,
+        contributors: article.contributors,
+        tags: article.tags,
+        zoteroLink: article.zoteroLink,
+        nakalaLink: article.nakalaLink,
+        createdAt: article.createdAt,
+        updatedAt: article.updatedAt,
+      },
+      latest: {
+        article: wv.md ?? '',
+        bibliography: wv.bib ?? '',
+        metadata: wv.metadata ?? {},
+      },
+      versions: history,
+    }
+  })
 }
 
 module.exports = {
-  backup,
-  BackupValidationError,
-  zip,
+  requestHandler,
 }
