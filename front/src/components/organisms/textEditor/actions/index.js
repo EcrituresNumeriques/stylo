@@ -15,8 +15,8 @@ export const actions = {
   md: {
     italic: createInlineBlockCommand('italic', {
       attrs: null,
-      body_pre: '__',
-      body_post: '__',
+      body_pre: '_',
+      body_post: '_',
       keybindings: [KeyMod.CtrlCmd | KeyCode.KeyI],
     }),
     bold: createInlineBlockCommand('bold', {
