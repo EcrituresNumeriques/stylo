@@ -5,6 +5,7 @@ const process = require('node:process')
 const debounce = require('lodash.debounce')
 const config = require('./config.js')
 const proxy = require('express-http-proxy')
+const bodyParser = require('body-parser')
 
 config.validate({ allowed: 'strict' })
 
@@ -71,6 +72,7 @@ const Y = require('yjs')
 const yjsUtils = require('@y/websocket-server/utils')
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
+const { requestHandler: backupRequestHandler } = require('./backup')
 const wss = new WebSocket.Server({ noServer: true })
 
 const jwtSecret = config.get('security.jwt.secret')
@@ -248,6 +250,14 @@ app.use(
 
 /* Nakala */
 app.use('/nakala', proxy(config.get('nakala.apiUrl')))
+
+/* Backup */
+app.post(
+  '/backup',
+  populateUserFromJWT({ jwtSecret }),
+  bodyParser.json(),
+  backupRequestHandler
+)
 
 /*
  * GraphQL interface
