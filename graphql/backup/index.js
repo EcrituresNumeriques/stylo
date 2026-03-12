@@ -54,15 +54,21 @@ async function requestHandler(req, res) {
       message: 'Only administrators can request a backup for a specific user.',
     })
   }
-  const format = config.format || 'json'
   try {
+    const format = validateFormat(config)
     const articles = await getArticles({
       userId: user._id,
       ...config,
     })
     if (format === 'json') {
-      res.status(200).json(json(articles))
-    } else if (format === 'zip') {
+      const body = JSON.stringify(json(articles))
+      res.set({
+        'Content-Type': 'application/json',
+        'Content-Disposition': 'attachment; filename="backup.json"',
+        'Content-Length': Buffer.byteLength(body),
+      })
+      res.status(200).send(body)
+    } else {
       const buffer = await zip(articles)
       res.set({
         'Content-Type': 'application/zip',
@@ -84,6 +90,26 @@ async function requestHandler(req, res) {
       message,
     })
   }
+}
+
+/**
+ * Validates and returns the backup format from the request config.
+ *
+ * Defaults to `"json"` if no format is provided.
+ *
+ * @param {object} config - Request body config
+ * @param {'json' | 'zip' | undefined} config.format - Requested format
+ * @returns {'json' | 'zip'} The validated format
+ * @throws {BackupValidationError} If the format is not `"json"` or `"zip"`
+ */
+function validateFormat(config) {
+  const format = config.format || 'json'
+  if (format === 'zip' || format === 'json') {
+    return format
+  }
+  throw new BackupValidationError(
+    `Invalid format "${format}": must be one of "zip", or "json".`
+  )
 }
 
 /**

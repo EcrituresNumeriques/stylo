@@ -275,6 +275,8 @@
   "user.account.username": "Identifiant de compte",
   "user.authProviders.description": "Relier des comptes externes permet de bénéficier de fonctionnalités avancées (synchronisation de données, authentification, etc.).",
   "user.authProviders.title": "Comptes externes",
+  "user.data.download": "Télécharger mes données",
+  "user.data.title": "Mes données",
   "user.languages.title": "Langues",
   "validating.label": "Validation…",
   "version.by.text": "par {{owner}}",

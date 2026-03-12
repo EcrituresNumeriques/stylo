@@ -1,6 +1,7 @@
-import AuthProviders from '../credentials/AuthProviders.jsx'
-import PasswordChange from '../credentials/PasswordChange.jsx'
-import UserProfile from '../credentials/UserProfile.jsx'
+import AuthProviders from './AuthProviders.jsx'
+import PasswordChange from './PasswordChange.jsx'
+import UserBackup from './UserBackup.jsx'
+import UserProfile from './UserProfile.jsx'
 
 export default function Credentials() {
   return (
@@ -8,6 +9,7 @@ export default function Credentials() {
       <UserProfile />
       <AuthProviders />
       <PasswordChange />
+      <UserBackup />
     </>
   )
 }

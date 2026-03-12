@@ -11,7 +11,7 @@ import { Button, Field, TimeAgo } from '../../atoms/index.js'
 import { updateUser } from '../../../hooks/Credentials.graphql'
 
 import formStyles from '../../atoms/Field.module.scss'
-import styles from '../user/credentials.module.scss'
+import styles from './Credentials.module.scss'
 
 export default function UserInfos() {
   const dispatch = useDispatch()

@@ -275,6 +275,8 @@
   "user.account.username": "Username",
   "user.authProviders.description": "Link with external accounts to benefit from advanced features (data synchronization, authentication, etc.).",
   "user.authProviders.title": "External accounts",
+  "user.data.download": "Download my data",
+  "user.data.title": "My data",
   "user.languages.title": "Languages",
   "validating.label": "Validation…",
   "version.by.text": "by {{owner}}",

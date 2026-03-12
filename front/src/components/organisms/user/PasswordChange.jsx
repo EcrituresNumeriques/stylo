@@ -8,7 +8,7 @@ import { Button, Field } from '../../atoms/index.js'
 import { changePassword as changePasswordQuery } from '../../../hooks/Credentials.graphql'
 
 import formStyles from '../../molecules/form.module.scss'
-import styles from '../user/credentials.module.scss'
+import styles from './Credentials.module.scss'
 
 export default function Credentials() {
   const [password, setPassword] = useState('')
@@ -106,13 +106,13 @@ export default function Credentials() {
           onChange={(e) => setPasswordC(e.target.value)}
         />
 
-        <p>
+        <div>
           <Button disabled={!canSubmit} primary={true}>
             {isUpdating
               ? t('credentials.updatePassword.updatingButton')
               : t('credentials.updatePassword.confirmButton')}
           </Button>
-        </p>
+        </div>
       </form>
     </section>
   )
