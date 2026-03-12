@@ -25,7 +25,7 @@ export default function Publication({ entry }) {
 
   return (
     <article className={styles.article} aria-labelledby={itemId}>
-      <h3 id={itemId}>{title}</h3>
+      <h3 id={itemId} dangerouslySetInnerHTML={{ __html: title }}></h3>
 
       <ul className={styles.articleMetadata}>
         <li>
