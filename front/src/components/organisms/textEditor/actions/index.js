@@ -6,39 +6,28 @@ import {
 } from 'monaco-editor/esm/vs/editor/editor.api'
 
 import createDelimitedBlockCommand from './delimited-block.js'
-import createInlineBlockCommand from './inline-block.js'
+import {
+  createEnclosingTextFormattingCommand,
+  createEnclosingTextStyleCommand,
+  createHyperlinkCommand,
+  createInlineFootnoteCommand,
+} from './inline-block.js'
 
 export { Separator } from 'monaco-editor/esm/vs/base/common/actions'
 
 /** @type {Record<string, Record<string, IActionDescriptor>>} */
 export const actions = {
   md: {
-    italic: createInlineBlockCommand('italic', {
-      attrs: null,
-      body_pre: '_',
-      body_post: '_',
+    italic: createEnclosingTextFormattingCommand('italic', {
+      formattingMark: '_',
       keybindings: [KeyMod.CtrlCmd | KeyCode.KeyI],
     }),
-    bold: createInlineBlockCommand('bold', {
-      attrs: null,
-      body_pre: '**',
-      body_post: '**',
+    bold: createEnclosingTextFormattingCommand('bold', {
+      formattingMark: '**',
       keybindings: [KeyMod.CtrlCmd | KeyCode.KeyB],
     }),
-    footnoteInline: createInlineBlockCommand('footnote-inline', {
-      attrs: null,
-      body_pre: '^[',
-      body_post: ']',
-      delimiters: '',
-      keybindings: [[KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF]],
-      separator: ' ',
-    }),
-    hyperlink: createInlineBlockCommand('hyperlink', {
-      attrs: null,
-      body_template: '[{{text}}]({{url}})',
-      body_fn: copyPasteUrlFn,
-      keybindings: [KeyMod.CtrlCmd | KeyCode.KeyK],
-    }),
+    footnoteInline: createInlineFootnoteCommand('footnote-inline'),
+    hyperlink: createHyperlinkCommand('hyperlink'),
   },
   metopes: {
     acknowledgement: createDelimitedBlockCommand('ack', {
@@ -65,7 +54,7 @@ export const actions = {
       className: 'encadre',
       body_post: '[[nom]{.name}[prenom]{.surname}]{.auth}',
     }),
-    inlinequote: createInlineBlockCommand('inlinequote'),
+    inlinequote: createEnclosingTextStyleCommand('inlinequote'),
     notepreAuthor: createDelimitedBlockCommand('notepre.aut', {
       attrs: { origin: 'aut' },
       className: 'notepre',
@@ -86,7 +75,7 @@ export const actions = {
       body_pre: '[nom de personne]{.speaker}',
     }),
     signature: createDelimitedBlockCommand('sig'),
-    smallcaps: createInlineBlockCommand('smallcaps'),
+    smallcaps: createEnclosingTextStyleCommand('smallcaps'),
     sponsor: createDelimitedBlockCommand('sponsor'),
   },
 }
@@ -113,57 +102,6 @@ export function bindAction(editor, t, action) {
     label: t(action.label),
     run: action.run.bind(null, editor),
   }
-}
-
-/**
- *
- * @param {string} [text]
- * @returns {boolean}
- */
-function isURL(text) {
-  try {
-    new URL(text)
-    return true
-  } catch {
-    return false
-  }
-}
-
-export function copyPasteUrlFn({
-  body_template,
-  clipboardText,
-  selectionText,
-}) {
-  const hasClipboardText = Boolean(clipboardText)
-  const hasSelectionText = Boolean(selectionText)
-  const isClipboardTextUrl = hasClipboardText ? isURL(clipboardText) : false
-  const isSelectionTextUrl = hasSelectionText ? isURL(selectionText) : false
-
-  let textPart = ''
-  let urlPart = 'https://example.com'
-
-  if (hasClipboardText) {
-    textPart = isClipboardTextUrl ? textPart : clipboardText
-    urlPart = isClipboardTextUrl ? clipboardText : urlPart
-  }
-
-  if (hasSelectionText) {
-    textPart =
-      isSelectionTextUrl && !isClipboardTextUrl ? textPart : selectionText
-    urlPart =
-      isSelectionTextUrl && !isClipboardTextUrl ? selectionText : urlPart
-  }
-
-  const text = body_template
-    .replace('{{text}}', textPart)
-    .replace('{{url}}', urlPart)
-  const lastLine = textPart.split('\n').at(-1)
-  const columnNumber =
-    lastLine === textPart
-      ? text.indexOf(textPart) + textPart.length
-      : lastLine.length
-
-  return [columnNumber + 1, text]
 }
 
 /**
