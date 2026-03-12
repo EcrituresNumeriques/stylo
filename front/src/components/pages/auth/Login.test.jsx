@@ -14,6 +14,12 @@ import { renderWithProviders } from '../../../../tests/setup.js'
 import Component from './Login.jsx'
 import RedirectIfAuth from './RedirectIfAuth.jsx'
 
+vi.mock('../../../config.js', () => ({
+  applicationConfig: {
+    backendEndpoint: 'http://localhost:3000',
+  },
+}))
+
 describe('Login', () => {
   const preloadedState = {
     activeUser: { _id: 'test-user-id' },
