@@ -8,9 +8,15 @@ import DropdownMenu from '../../molecules/DropdownMenu.jsx'
 
 import styles from './CorpusArticleMetadataSelector.module.scss'
 
+/**
+ * @param {object} props
+ * @param {string} props.corpusId - Corpus identifier
+ * @param {function(object): void} props.onSelectedItem - Callback called with the selected article
+ * @returns {JSX.Element}
+ */
 export default function CorpusArticleMetadataSelector({
   corpusId,
-  onSelectedItem = (_item) => {},
+  onSelectedItem = () => {},
 }) {
   const { t } = useTranslation('corpus', { useSuspense: false })
   const { corpus, error, isLoading } = useCorpusArticles({ corpusId })

@@ -381,7 +381,6 @@ export function useArticleMetadata({ articleId, versionId }) {
 
 export function useEditableArticle({ articleId, versionId }) {
   const sessionToken = useSelector((state) => state.sessionToken)
-  const activeUser = useSelector((state) => state.activeUser)
   const hasVersion = typeof versionId === 'string'
   const { data, mutate, error, isLoading } = useFetchData(
     {

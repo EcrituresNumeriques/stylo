@@ -14,12 +14,11 @@ function DropdownEllipsisToggleButton({ title, toggleActions }) {
 }
 
 /**
- *
- * @param title
- * @param toggleButton
- * @param children
+ * @param {object} props
+ * @param {string} props.title
+ * @param {function(object): JSX.Element} props.toggleButton
+ * @param {JSX.Element} props.children
  * @returns {JSX.Element}
- * @constructor
  */
 export default function DropdownMenu({ title, toggleButton, children }) {
   const {

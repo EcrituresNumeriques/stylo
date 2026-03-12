@@ -11,7 +11,7 @@ import corpusJournalUiSchema from '../../../schemas/corpus-journal-ui-schema.jso
 import corpusThesisMetadataSchema from '../../../schemas/corpus-thesis-metadata.schema.json'
 import corpusThesisUiSchema from '../../../schemas/corpus-thesis-ui-schema.json'
 
-import { useCorpusActions, useCorpusArticles } from '../../../hooks/corpus.js'
+import { useCorpusActions } from '../../../hooks/corpus.js'
 import { usePreferenceItem } from '../../../hooks/user.js'
 import { FormActions, Toggle } from '../../molecules/index.js'
 import { toYaml } from '../metadata/yaml.js'

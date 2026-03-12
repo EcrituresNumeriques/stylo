@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { useParams, useSearchParams } from 'react-router'
 
 import { executeQuery } from '../../helpers/graphQL.js'

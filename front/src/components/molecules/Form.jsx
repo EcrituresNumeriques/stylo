@@ -349,6 +349,7 @@ const EMPTY_CONTEXT = {}
  * @param {Record<string, unknown>} props.schema
  * @param {Record<string, unknown>} props.uiSchema
  * @param {(formData: Record<string, unknown>) => void} props.onChange
+ * @param {Record<string, unknown>} props.context
  * @returns {Element}
  */
 export default function SchemaForm({
