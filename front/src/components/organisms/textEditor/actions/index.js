@@ -43,16 +43,16 @@ export const actions = {
       keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyD],
     }),
     epigraph: createDelimitedBlockCommand('epigraph', {
-      body_pre: '[@source]',
+      contentBefore: '[@source]',
     }),
     figure: createDelimitedBlockCommand('figure', {
-      body_pre: '\n[titre]{.head}\n\n![caption](image.png)',
-      body_post: ':::{.credits}\n[]{.credits} [@source]\n:::',
+      contentBefore: '\n[titre]{.head}\n\n![caption](image.png)',
+      contentAfter: ':::{.credits}\n[]{.credits} [@source]\n:::',
     }),
     outline: createDelimitedBlockCommand('outline', {
       attrs: { titre: 'valeurtitre' },
       className: 'encadre',
-      body_post: '[[nom]{.name}[prenom]{.surname}]{.auth}',
+      contentAfter: '[[nom]{.name}[prenom]{.surname}]{.auth}',
     }),
     inlinequote: createEnclosingTextStyleCommand('inlinequote'),
     notepreAuthor: createDelimitedBlockCommand('notepre.aut', {
@@ -68,11 +68,11 @@ export const actions = {
       className: 'notepre',
     }),
     question: createDelimitedBlockCommand('question', {
-      body_pre: '[nom de personne]{.speaker}',
+      contentBefore: '[nom de personne]{.speaker}',
     }),
     quoteAlt: createDelimitedBlockCommand('quote-alt'),
     reponse: createDelimitedBlockCommand('answ', {
-      body_pre: '[nom de personne]{.speaker}',
+      contentBefore: '[nom de personne]{.speaker}',
     }),
     signature: createDelimitedBlockCommand('sig'),
     smallcaps: createEnclosingTextStyleCommand('smallcaps'),
