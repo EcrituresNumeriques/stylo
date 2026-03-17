@@ -20,8 +20,7 @@ import styles from './EditorMenu.module.scss'
 
 export default function EditorMenu({ articleId, onChange }) {
   const enableNakala = useMemo(
-    () =>
-      !window.location.href.startsWith('https://https://stylo.huma-num.fr/'),
+    () => !window.location.href.startsWith('https://stylo.huma-num.fr/'),
     [window.location.href]
   ) // disable Nakala in production
   const { t } = useTranslation()
