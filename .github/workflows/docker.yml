@@ -60,12 +60,12 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: ${{ (inputs.release-version  && format('v{0}', inputs.release-version)) || github.ref }}
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
       - run: cp stylo-example.env .env
 
       # Needed to expose ACTIONS_CACHE_URL and ACTIONS_RUNTIME_URL variables
       # Which are unreachable outside of an action context
-      - uses: crazy-max/ghaction-github-runtime@v3
+      - uses: crazy-max/ghaction-github-runtime@v4
 
       # https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-from
       # https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-to
