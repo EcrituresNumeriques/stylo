@@ -2,9 +2,7 @@ import * as monaco from 'monaco-editor'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import useBibliography, {
-  validationResultInitialState,
-} from '../../../hooks/bibliography.js'
+import useBibliography from '../../../hooks/bibliography.js'
 
 import BibliographyBibtexValidationStatus from './BibliographyBibtexValidationStatus.jsx'
 import MonacoBibtexEditor from './BibtexEditor.jsx'
@@ -24,7 +22,6 @@ export default function BibliographyBibtexEditor({
   const [errorDecorations, setErrorDecorations] = useState()
   const [warningDecorations, setWarningDecorations] = useState()
   const handleTextUpdate = useCallback(async (bibtex) => {
-    onChange(validationResultInitialState(bibtex))
     await updateText(bibtex, (result) => {
       onChange(result)
     })
