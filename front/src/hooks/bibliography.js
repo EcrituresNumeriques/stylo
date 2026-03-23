@@ -45,7 +45,7 @@ export default function useBibliography({ initialText }) {
     ;(async () => {
       await updateText(initialText)
     })()
-  }, [initialText])
+  }, [])
 
   return {
     updateText,
