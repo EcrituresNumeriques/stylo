@@ -43,6 +43,7 @@ export default function CorpusMetadata({
     () => merge(corpusThesisMetadataSchema),
     [corpusThesisMetadataSchema]
   )
+  const metadataContext = useMemo(() => ({ corpusId }), [corpusId])
   const corpusBookMetadataSchemaMerged = useMemo(
     () => merge(corpusBookMetadataSchema),
     [corpusBookMetadataSchema]
@@ -150,7 +151,7 @@ export default function CorpusMetadata({
           schema={corpusMetadataSchema}
           uiSchema={corpusUiSchema}
           onChange={handleMetadataUpdated}
-          context={{ corpusId }}
+          context={metadataContext}
         />
       )}
       <FormActions
