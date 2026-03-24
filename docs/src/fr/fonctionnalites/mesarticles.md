@@ -2,44 +2,27 @@
 title: "Gestion des articles"
 ---
 
-Vos articles sont disponibles dans la page _Articles_ cliquable via la barre latérale de votre compte Stylo :
+Vos articles sont disponibles dans la page _Articles_, accessible au travers de la barre latérale en haut de l'interface de Stylo :
 
 ![BarreLaterale](/uploads/images/BarreLateraleStyloNoire-V2.PNG)
 
 En haut de cette page, vous sont proposées plusieurs fonctionnalités :
 
-- la création d'un nouvel article;
-- l'édition et la gestion des tags;
-- la recherche d'un article.
+- la création d'un nouvel article ;
+- la création et la modification d'étiquettes, le filtrage d'articles au travers d'étiquettes ;
+- la recherche d'un article selon son nom.
 
 ## Créer un article et l'éditer
 
-Pour créer un article, rien de plus simple. Il vous suffit de cliquer sur la bouton noir « Créer un article » situé à gauche dans votre espace personnel. Une boîte de dialogue s'ouvrira et vous demandera d'attribuer un titre à votre article. Ensuite, il ne vous reste qu'à appuyer sur le bouton noir « Créer ». Vous avez aussi l'option d'attribuer des étiquettes et un espace de travail à votre article.
+Pour créer un article, il vous suffit de cliquer sur la bouton noir « Créer un article » situé à gauche dans votre espace personnel. Une boîte de dialogue s'ouvrira et vous demandera d'attribuer un titre à votre article. Vous pouvez attribuer des étiquettes à votre article et le rattacher à d'autres espaces de travail que celui, personnel, « Mon espace ».
 
 Pour commencer à l'éditer, cliquez sur le bouton ![Bouton éditer](/uploads/images/refonte_doc/edit.png) à droite. 
 
 Dans votre espace personnel, vos articles seront affichés les uns à la suite des autres selon les modifications les plus récentes.
 
-Vous pouvez renommer vos articles en cliquant sur le petit crayon à côté du titre.
+Vous pouvez renommer vos articles ou lui attribuer a posteri des tags, le rattacher à un autre espace de travail en cliquant sur « Modifier », accessible au travers du « menu à trois points » ![menu à trois points](/uploads/images/menu-trois-points.png).
 
-![Renommer un article](/uploads/images/refonte_doc/Renommer.png)
-
-**À noter**, par défaut, un premier article « How to Stylo » est présent sur la plateforme et a vocation à vous guider dans une première prise en main de la syntaxe Markdown ainsi que quelques fonctionnalités de base de Stylo. N’hésitez pas à vous y référer.
-
-## Développer les fonctionnalités d'un l’article
-
-Pour avoir accès aux fonctionnalités d'un article depuis votre espace personnel ou un espace de travail, vous devez cliquer sur le chevron situé à gauche du titre.
-
-![Chevron](/uploads/images/refonte_doc/Chevron.png)
-
-Vous aurez accès aux :
-
-- Versions majeures et mineures de l'articles (un clic sur une version précédente vous conduit à sa page en mode lecture seule) ;
-- Étiquettes (Voir la section créer des étiquettes) ;
-- Espaces de travail (Voir la section espace de travail) ;
-- Corpus (Voir la section Corpus).
-
-![Fonctionnalités](/uploads/images/refonte_doc/Fonction.png)
+**À noter** : par défaut, un premier article « How to Stylo » est présent sur la plateforme et a vocation à vous guider dans une première prise en main de la syntaxe Markdown ainsi que quelques fonctionnalités de base de Stylo. N’hésitez pas à vous y référer.
 
 ## Créer des étiquettes
 
@@ -51,9 +34,7 @@ Une boîte de dialogue s'ouvrira, vous demandant de donner un nom à votre étiq
 
 ![Créer une étiquette](/uploads/images/refonte_doc/Creertag.png)
 
-En cliquant sur le bouton « Créer », votre étiquette sera maintenant disponible. Vous pourrez les attribuer dès la création de vos articles ou par après, en cliquant sur le chevron à côté du titre de votre article.
-
-![Chevron](/uploads/images/refonte_doc/Chevron.png)
+En cliquant sur le bouton « Créer », votre étiquette sera maintenant disponible et vous pourrez l'attribuer aux articles qui lui correspondent.
 
 ## Partager un article 
 
@@ -61,18 +42,11 @@ Vous pouvez partager votre article avec d'autres utilisateurs·ices Stylo en cli
 
 ![Share](/uploads/images/refonte_doc/Partager.png)
 
-{% figure "/uploads/gif/how-to-share.gif", "Partager un article" %}
-
 Pour partager, vous devez renseigner l'adresse courriel de l'utilisateur·ice Stylo : il s'agit de l'adresse courriel avec laquelle l'utilisateur·rice a créé son compte Stylo. Une fois l'adresse renseignée, il vous faut l'ajouter en cliquant sur la case à cocher.
 
 ![Share](/uploads/images/refonte_doc/Share.png)
 
-Vous avez aussi la possibilité d’envoyer une copie de votre article à un·e autre utilisateur·ice Stylo en cliquant sur le bouton 
-**[Envoyer une copie]** depuis votre espace personnel.
-
-![envoyer une copie](/uploads/images/refonte_doc/Copie.png)
-
-Seule la dernière version de l’article sera visible par l’utilisateur·ice et les modifications futures ne seront pas visibles par les deux utilisateur·rices. Dans le processus, deux versions de l’article sont créées et les utilisateurs·ices travaillent chacun·e sur une version qui n’est pas visible par l’autre.
+Vous avez aussi la possibilité d’envoyer une copie de votre article à un·e autre utilisateur·ice Stylo en cliquant sur l'option **[Envoyer une copie]** dans le menu à trois points. Dans ce cas, seule la dernière version de l’article sera visible par le ou la destinataire, avec des modifications futures qui ne seront pas visibles. En effet, dans le processus, une nouvelle copie est créée : les utilisateurs·ices travaillent ainsi chacun·e sur leur propre document.
 
 ## Aperçu d'un article
 
@@ -84,19 +58,17 @@ Pour avoir l'aperçu, cliquez sur l'interrupteur "aperçu" juste au dessus de vo
 
 ## Dupliquer un article
 
-Depuis votre espace personnel ou vos espaces de travail, vous pouvez dupliquer un article en cliquant sur l’icône suivante :
-
-![Dupliquer](/uploads/images/refonte_doc/Dupliquer.png)
+Depuis votre espace personnel ou vos espaces de travail, vous pouvez dupliquer un article en cliquant sur l'option « dupliquer » dans le menu à trois points. 
 
 Un doublon de l’article sera alors généré et apparaîtra en haut de la liste sur la page de vos articles Stylo. Cet article sera intitulé automatiquement : [Copy]*Titre de l’article* . Ce doublon est créé à partir de la version actuelle (la plus récente) de l’article et ne comporte pas d’historique de versions.
 
 ## Copier l'identifiant d'un article
 
-Pour copier l'identifiant d'un article, il vous suffit de cliquer sur l'icône en forme de presse-papiers ![Copier l'ID](/uploads/images/refonte_doc/copier-id.png), dans votre espace personnel ou l'espace de travail dans lequel se situe l'article.
+Pour copier l'identifiant d'un article, vous devez choisir « copier l'identifiant » dans le menu à trois points. Vous pouvez noter qu'il correspond à celui dans l'URL de l'article lorsqu'en mode édition (après `/article`).
 
 ## Supprimer un article 
 
-Pour supprimer un article, il vous suffit de cliquer sur l'icône en forme de poubelle ![Supprimer](/uploads/images/refonte_doc/Supprimer.png), dans votre espace personnel.
+Pour supprimer un article, il vous faut cliquer sur « Supprimer » dans le menu à trois points.
 
 Une boîte de dialogue s'ouvrira pour s'assurer que c'est bien l'action que vous souhaitez effectuer, cliquez sur « Confirmer » si c'est le cas.
 

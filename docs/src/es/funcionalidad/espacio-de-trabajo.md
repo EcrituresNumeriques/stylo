@@ -32,15 +32,10 @@ El gestor de espacios de trabajo tiene tres funciones:
 
 - la creación de un espacio de trabajo haciendo clic en el botón correspondiente \[Crear un espacio de trabajo\]. Se abre un formulario con tres campos: el nombre, la descripción y la elección del color.
 - la posibilidad de abandonar un espacio de trabajo. Para ello, haga clic en el botón \[Salir del espacio de trabajo\]. (_Nota : Al hacer clic en este botón, si los astros lo desean, podrá vivir una aventura sin precedentes, hasta ahora desconocida para la memoria humana..._)
-- administrar los miembros de un espacio de trabajo desde el formulario \[Administrar miembros\] visible en la información de cada uno de los espacios de trabajo creados.
+- Gestiona los miembros del espacio de trabajo desde el formulario [Gestionar miembros], accesible mediante el icono de "compartir". [icono de compartir](/uploads/images/Share-V2.png).
+- Crea un formulario y un esquema de metadatos JSON específicos para este espacio de trabajo.
 
-**No existen roles de administrador en los espacios de trabajo. Todos los miembros, incluido el creador del espacio de trabajo, tienen el mismo nivel de derechos. Cada miembro es responsable de gestionar la información y las dinámicas de colaboración.*
-
-</alert-block>
-
-{% figure "/uploads/gif/espace-de-travail.gif", "Crear un espacio de trabajo" %}
-
-{% figure "/uploads/gif/ajout-utilisateur-workspace.gif", "Añadir un usuario Stylo al espacio de trabajo" %}
+**Importante:** *No existe un rol de administrador en los espacios de trabajo. Todos los miembros, incluido el creador del espacio de trabajo, tienen el mismo nivel de acceso. Cada miembro es responsable de gestionar la información, los miembros y la dinámica de colaboración dentro de su espacio de trabajo.*
 
 ## Visualizar un espacio de trabajo
 

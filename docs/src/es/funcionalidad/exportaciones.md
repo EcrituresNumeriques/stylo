@@ -38,4 +38,4 @@ Seleccionando exportar con archivos originales, es posible realizar exportacione
 
 Para más información sobre el uso de plantillas, consulte este [tutorial](https://gitlab.huma-num.fr/ecrinum/manuels/tutoriel-markdown-pandoc).
 
-*El módulo de exportación también está disponible en [esta página dedicada a las exportaciones](https://export.stylo.huma-num.fr/), para exportaciones adaptadas a los estilos y necesidades de las revistas. Para utilizarlo, necesitará el identificador de su artículo o corpus, que encontrará, por ejemplo, en el enlace URL "compartir y anotar" para un artículo, o "exportar" para un corpus.*
+*También se puede acceder al módulo de exportación en [esta página dedicada a las exportaciones](https://export.stylo.huma-num.fr/), para exportaciones adaptadas a estilos y necesidades particulares. Para usarlo, necesitará el identificador de su artículo o corpus, que puede encontrar a través del ícono de tres puntos en las páginas de administración de artículos y administración de corpus.*

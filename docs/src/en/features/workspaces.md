@@ -32,15 +32,10 @@ The workspace manager has three functions:
 
 - create a workspace by clicking on the corresponding button \[Create workspace\]. This opens a form with three fields: Name, Description and Color.
 - the ability to exit a workspace. To do this, click on the \[Exit workspace\] button.
-- administrate workspace members using the \[Manage members\] form visible in the information for each workspace created.
+- Manage workspace members from the [Manage Members] form, accessible via the "share" icon! [share icon](/uploads/images/Share-V2.png).
+- Create a form and JSON metadata schema specific to this workspace.
 
-**There are no administrator roles in workspaces. All members, including the workspace creator, have the same rights. Everyone is responsible for managing information and collaborative dynamics.*
-
-</alert-block>
-
-{% figure "/uploads/gif/espace-de-travail.gif", "Creating a workspace" %}
-
-{% figure "/uploads/gif/ajout-utilisateur-workspace.gif", "Adding a Stylo user to the workspace" %}
+**Important:** *There is no administrator role in workspaces. All members, including the workspace creator, have the same access level. Each member is responsible for managing information, members, and collaborative dynamics within their workspace.*
 
 ## Displaying a workspace
 

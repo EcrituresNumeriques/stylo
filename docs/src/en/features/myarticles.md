@@ -2,46 +2,27 @@
 title: Manage my articles
 ---
 
-Your articles are available on the page *Articles*, clickable via the top sidebar of your Stylo account:
+Your articles are available on the page *Articles*, accessible via the top sidebar of your Stylo account:
 
 ![Top sidebar](/uploads/images/BarreLateraleStyloNoire-V2.PNG)
 
 At the top of this page, there are a number of functions:
 
 - Create a new article;
-- Edit and manage tags;
-- Search for an article.
-
-![BarreLaterale2](/uploads/images/CreateNewTag-V2.PNG)
+- Create and manage tags, filter articles through them;
+- Search for an article via its chosen name on Stylo.
 
 ## Creating and editing articles
 
-Creating an article couldn't be easier. Simply click on the black “Create article” button on the left-hand side of your personal space. A dialog box will open, asking you to give your article a title. Then simply press the black “Create” button. You also have the option of assigning Tags and a Workspace to your article. 
+To create an article, simply click on the black “Create article” button on the left-hand side of your personal space. A dialog box will open, asking you to give your article a title. You also have the option of assigning Tags to your article, and to have it belong to other Workspaces than your own personal one. 
 
 To start editing it, simply click on the button ![Edit button](/uploads/images/refonte_doc/edit.png) on the right. 
 
 In your personal workspace, your articles will be displayed one after the other according to the most recent modifications.
 
-You can rename your articles by clicking on the little pencil next to the title.
-
-![Rename an article](/uploads/images/refonte_doc/ANG/Renommer_ANG.png)
+You can rename your articles or assign tags to them a posteriori, attach them to another workspace by clicking on "Edit", accessible through the "three-dot menu" ![three-dot menu](/uploads/images/menu-trois-points.png).
 
 **Please note**, by default, an initial “How to Stylo” article is available on the platform, detailing each stage in the writing of an article. Feel free to refer to it.
-
-## Expand article features
-
-To access an article's functionalities from your personal space or workspace, click on the arrow to the left of the title.
-
-![Arrow](/uploads/images/refonte_doc/ANG/Chevron_ANG.png)
-
-You'll have access to :
-
-- Major and minor versions of the article (clicking on a previous version takes you to its page in read-only mode) ;
-- Labels (See Create tags) ;
-- Workspaces (See Workspaces section) ;
-- Corpus (See Corpus section) ;
-
-![Features](/uploads/images/refonte_doc/ANG/Fonction_ANG.png)
 
 ## Create tags
 
@@ -53,9 +34,7 @@ A dialog box will open, asking you to give your tag a name and a description. Yo
 
 ![Create a Tag](/uploads/images/refonte_doc/ANG/Creertag_ANG.png)
 
-By clicking on the “Create” button, your tag will now be available. You can assign them as soon as you've created your articles, or afterwards by clicking on the arrow next to the title of your article.
-
-![Arrow](/uploads/images/refonte_doc/ANG/Chevron_ANG.png)
+By clicking the "Create" button, your label will now be available and you can assign it to the items that correspond to it.
 
 ## Share an article 
 
@@ -63,17 +42,11 @@ You can share your article with other Stylo users by clicking on the following i
 
 ![Share](/uploads/images/refonte_doc/Partager.png)
 
-{% figure "/uploads/gif/how-to-share.gif", "Share an article" %}
-
 To share, you need to enter the email address of the Stylo user: this is the email address with which the user created their Stylo account. Once you've entered the address, you need to add it by clicking on the checkbox.
 
 ![Share](/uploads/images/refonte_doc/ANG/Share_ANG.png)
 
-You can also send a copy of your article to another Stylo user by clicking on the **[Send a copy]** button in your personal space.
-
-![Send a copy](/uploads/images/refonte_doc/Copie.png)
-
-Only the latest version of the article will be visible to the user, and future modifications will not be visible to both users. In the process, two versions of the article are created, with each user working on a version that is not visible to the other.
+You also have the option to send a copy of your article to another Stylo user by clicking on the **[Send a copy]** option in the three-dot icon. In this case, only the latest version of the article will be visible to the recipient, with future changes not visible. Indeed, in the process, a new copy is created: the users each work on their own document.
 
 ## Preview an article
 
@@ -85,19 +58,17 @@ To have the preview, click on the "preview" switch just above your article, in t
 
 ## Duplicate an article
 
-From your personal space or workspaces, you can duplicate an article by clicking on the following icon:
-
-![Duplicate](/uploads/images/refonte_doc/Dupliquer.png)
+From your personal space or workspaces, you can duplicate an article by clicking on the option "Duplicate" via the three-dot icon. 
 
 A duplicate article will then be generated and will appear at the top of the list on your Stylo articles page. This article will automatically be entitled: [Copy]*Article title* . This duplicate is created from the current (most recent) version of the article and has no version history.
 
 ## Copy an article ID
 
-To copy the ID of an article, simply click on the clipboard icon ![Copy ID](/uploads/images/refonte_doc/copier-id.png), in your personal space or the workspace in which the article is located.
+To copy the ID of an article, simply click on the corresponding option via the three-dot icon. 
 
 ## Delete an article 
 
-To delete an article, simply click on the trash can icon [Delete](/uploads/images/refonte_doc/Supprimer.png).
+To delete an article, click on "Delete" via the three-dot icon.
 
 A dialog box will open to ensure that this is the action you wish to perform, click on “Confirm” if it is the case.
 

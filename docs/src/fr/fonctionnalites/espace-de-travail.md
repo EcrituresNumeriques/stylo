@@ -32,15 +32,10 @@ Le gestionnaire des espaces de travail comporte trois fonctionnalités :
 
 - la création d'un espace de travail en cliquant sur le bouton correspondant \[Créer un espace de travail\]. Celui-ci ouvre un formulaire composé de trois champs que sont le \[Nom\], la \[Description\] et le choix d'une \[Couleur\].
 - la possibilité de quitter un espace de travail. Pour cela il faut cliquer sur le bouton \[Quitter l'espace\]. (_Note : En cliquant sur ce bouton, si les étoiles le souhaitent, vous pourrez vivre une aventure inédite, jusqu'alors inconnue des mémoires humaines..._)
-- administrer les membres d'un espace de travail depuis le formulaire \[Gérer les membres\] visible dans les informations de chacun des espaces de travail créé.
+- administrer les membres d'un espace de travail depuis le formulaire \[Gérer les membres\], accessible via l'icône « partager » ![icone partager](/uploads/images/Share-V2.png).
+- créer un formulaire et schéma de métadonnées JSON particulier à cet espace de travail.
 
-**Attention :** *Il n'y a pas de rôle administrateur dans les espaces de travail. Tous les membres, y compris le·la créateur·rice de l'espace de travail, sont au même niveau de droit. Il incombe à chacun·e la responsabilité de la gestion des informations et des dynamiques collaboratives.*
-
-</alert-block>
-
-{% figure "/uploads/gif/espace-de-travail.gif", "Création d'un espace de travail" %}
-
-{% figure "/uploads/gif/ajout-utilisateur-workspace.gif", "Ajouter un·e utilisateur·ice Stylo à l'espace de travail" %}
+**Attention :** *Il n'y a pas de rôle administrateur dans les espaces de travail. Tous les membres, y compris le·la créateur·rice de l'espace de travail, sont au même niveau de droit. Il incombe à chacun·e la responsabilité de la gestion des informations, des membres et des dynamiques collaboratives en son sein.*
 
 ## Afficher un espace de travail
 

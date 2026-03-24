@@ -38,5 +38,5 @@ En sélectionnant l'export avec les fichiers originaux, il est possible de produ
 
 Pour plus d’informations sur l’emploi des templates, voir ce [tutoriel](https://gitlab.huma-num.fr/ecrinum/manuels/tutoriel-markdown-pandoc).
 
-*Le module d'export est aussi accessible sur [cette page dédiée aux exports](https://export.stylo.huma-num.fr/), pour des exports adaptés aux styles et besoins des revues. Pour l'utiliser, il vous faudra l'identifiant de votre article ou de votre corpus, que vous pourrez par exemple trouver sur le lien URL "partager et annoter" d'un article, ou "exporter" d'un corpus.*
+*Le module d'export est aussi accessible sur [cette page dédiée aux exports](https://export.stylo.huma-num.fr/), pour des exports adaptés à des styles et besoins particuliers. Pour l'utiliser, il vous faudra l'identifiant de votre article ou de votre corpus, que vous pourrez trouver via le menu à trois points sur les pages de gestion d'article et de gestion de corpus.*
 

@@ -36,4 +36,4 @@ Export also lets you download Stylo source files (.md, .bib, .yaml) and any medi
 
 For more information on the use of templates, see this [tutorial](https://gitlab.huma-num.fr/ecrinum/manuels/tutoriel-markdown-pandoc).
 
-*The export module is also available on [this page dedicated to exports](https://export.stylo.huma-num.fr/), for exports adapted to the styles and needs of your journals. To use it, you'll need the identifier of your article or corpus, which you can find, for example, on the URL link "share and annotate" for an article, or "export" for a corpus.*
+*The export module is also accessible on [this page dedicated to exports](https://export.stylo.huma-num.fr/), for exports adapted to particular styles and needs. To use it, you will need the identifier of your article or corpus, which you can find via the three-dot icon on the article management and corpus management pages.*
