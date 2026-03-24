@@ -6,9 +6,15 @@
   background-color: #f9f9f9;
   padding: 0.5rem;
   border: 1px solid #d8d8d8;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.stats > li {
+  text-wrap: nowrap;
 }
 
 .stats > li:not(:last-child)::after {
-  content: '•' / '';
-  margin: 0 0.5em;
+  content: ',' / '';
+  margin: 0;
 }

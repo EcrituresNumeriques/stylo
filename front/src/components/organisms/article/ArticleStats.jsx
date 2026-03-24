@@ -8,13 +8,13 @@ export default function ArticleStats() {
   const articleStats = useSelector((state) => state.articleStats, shallowEqual)
   return (
     <ul className={styles.stats} aria-label={t('article.stats.menuLabel')}>
-      <li>{t('article.stats.words', { count: articleStats.wordCount })}</li>
       <li>
         {t('article.stats.chars', {
           count: articleStats.charCountNoSpace,
           countWithSpaces: articleStats.charCountPlusSpace,
         })}
       </li>
+      <li>{t('article.stats.words', { count: articleStats.wordCount })}</li>
       <li>
         {t('article.stats.citations', { count: articleStats.citationNb })}
       </li>
