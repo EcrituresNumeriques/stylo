@@ -3,7 +3,7 @@
 
 .container {
   @extend .wrapped-center;
-
+  
   display: grid;
   grid-template-columns: minmax(200px, 1fr) auto auto;
   flex: 1;

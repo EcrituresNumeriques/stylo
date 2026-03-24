@@ -1,10 +1,10 @@
 import {
+  ArrowLeftToLine,
+  ArrowRightToLine,
   BookKey,
   Database,
   History,
-  Maximize2,
   MessageSquareShare,
-  Minimize2,
   Printer,
   TableOfContents,
   TextCursorInput,
@@ -53,8 +53,12 @@ export default function EditorMenu({ articleId, onChange }) {
         className={styles.toggleMinimized}
         onClick={() => setMinimized(!minimized)}
       >
-        {!minimized && <span>{t('collapse.title')}</span>}
-        <span>{minimized ? <Maximize2 /> : <Minimize2 />}</span>
+        {!minimized && <span>{t('menu.collapse.text')}</span>}
+        <span
+          title={minimized ? t('menu.expand.title') : t('menu.collapse.title')}
+        >
+          {minimized ? <ArrowLeftToLine /> : <ArrowRightToLine />}
+        </span>
       </button>
       <div className={styles.items}>
         <EditorMenuItem
