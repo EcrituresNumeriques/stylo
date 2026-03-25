@@ -374,4 +374,61 @@ describe('article resolver', () => {
       assert.equal(chapter2After, null)
     })
   })
+
+  describe('import article', () => {
+    const context = {
+      user: {},
+      userId: null,
+      token: {},
+    }
+
+    before(async () => {
+      context.user = user3
+      context.userId = user3._id
+    })
+
+    test('imports an article with only a title', async () => {
+      const article = await ArticleMutation.importArticle(
+        {},
+        { input: { title: 'My imported article' } },
+        context
+      )
+
+      assert.equal(article.title, 'My imported article')
+      assert.equal(article.workingVersion.bib, '')
+      assert.deepEqual(article.workingVersion.metadata, {})
+    })
+
+    test('imports an article with all fields', async () => {
+      const bib = '@article{test2024, title={Test}}'
+      const metadata = { title: 'My article', author: [{ name: 'Doe, John' }] }
+
+      const article = await ArticleMutation.importArticle(
+        {},
+        {
+          input: {
+            title: 'My full article',
+            content: '# Hello World',
+            bibliography: bib,
+            metadata,
+          },
+        },
+        context
+      )
+
+      assert.equal(article.title, 'My full article')
+      assert.equal(article.workingVersion.bib, bib)
+      assert.deepEqual(article.workingVersion.metadata, metadata)
+    })
+
+    test('rejects unauthenticated import', async () => {
+      await assert.rejects(async () =>
+        ArticleMutation.importArticle(
+          {},
+          { input: { title: 'Unauthorized article' } },
+          { user: {}, userId: null, token: {} }
+        )
+      )
+    })
+  })
 })

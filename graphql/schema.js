@@ -421,6 +421,13 @@ input FilterCorpusInput {
   corpusId: ID
 }
 
+input ImportArticleInput {
+  title: String!
+  content: String
+  bibliography: String
+  metadata: JSON
+}
+
 type Query {
   """
   Get authenticated user info.
@@ -650,6 +657,13 @@ type Mutation {
   Requires authentication with access to the article (as owner, contributor, or via a workspace).
   """
   updateArticleBibliography(input: UpdateArticleBibliographyInput!): [BibliographyEntry]
+  
+  """
+  Import an article from external content (title, Markdown body, BibTeX bibliography, JSON metadata).
+  Creates a new article owned by the authenticated user with the provided content as its working copy.
+  Requires authentication.
+  """
+  importArticle(input: ImportArticleInput!): Article
 }`
 
 module.exports = makeExecutableSchema({ typeDefs, resolvers })
