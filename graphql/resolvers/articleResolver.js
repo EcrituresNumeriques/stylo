@@ -336,6 +336,16 @@ module.exports = {
       return newArticle
     },
 
+    /**
+     * Update the bibliography of an article's working copy from a BibTeX string.
+     * Replaces workingVersion.bib and returns the parsed bibliography as structured entries.
+     * Requires authentication with access to the article (as owner, contributor, or via a workspace).
+     *
+     * @param {null} _root
+     * @param {{ input: { articleId: string, bib: string } }} args
+     * @param {{ userId: string, token: object }} context
+     * @returns {Promise<Array<object>>} Parsed bibliography entries
+     */
     async updateArticleBibliography(_root, args, context) {
       const { articleId, bib } = args.input
       const article = await getArticleByContext(articleId, context)

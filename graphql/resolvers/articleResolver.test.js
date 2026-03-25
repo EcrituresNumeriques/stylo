@@ -375,6 +375,88 @@ describe('article resolver', () => {
     })
   })
 
+  describe('update article bibliography', () => {
+    const context = {
+      user: {},
+      userId: null,
+      token: {},
+    }
+
+    before(async () => {
+      context.user = user4
+      context.userId = user4._id
+    })
+
+    test('updates bibliography on an owned article and returns parsed entries', async () => {
+      const article = await Article.create({
+        title: 'Article with bibliography',
+        owner: [context.userId],
+      })
+      const bib = '@article{doe2024, title={A Great Paper}, author={Doe, John}, year={2024}}'
+
+      const entries = await ArticleMutation.updateArticleBibliography(
+        {},
+        { input: { articleId: article._id, bib } },
+        context
+      )
+
+      const updated = await Article.findById(article._id)
+      assert.equal(updated.workingVersion.bib, bib)
+      assert.ok(Array.isArray(entries))
+      assert.ok(entries.length > 0)
+    })
+
+    test('replaces existing bibliography entirely', async () => {
+      const article = await Article.create({
+        title: 'Article with existing bibliography',
+        owner: [context.userId],
+        workingVersion: {
+          bib: '@article{old2020, title={Old Paper}, author={Smith, Jane}, year={2020}}',
+        },
+      })
+      const newBib = '@article{new2024, title={New Paper}, author={Doe, John}, year={2024}}'
+
+      await ArticleMutation.updateArticleBibliography(
+        {},
+        { input: { articleId: article._id, bib: newBib } },
+        context
+      )
+
+      const updated = await Article.findById(article._id)
+      assert.equal(updated.workingVersion.bib, newBib)
+    })
+
+    test('rejects update on an article the user does not own', async () => {
+      const article = await Article.create({
+        title: 'Someone else article',
+        owner: [user2._id],
+      })
+
+      await assert.rejects(async () =>
+        ArticleMutation.updateArticleBibliography(
+          {},
+          { input: { articleId: article._id, bib: '@article{x}' } },
+          context
+        )
+      )
+    })
+
+    test('rejects unauthenticated update', async () => {
+      const article = await Article.create({
+        title: 'Protected article',
+        owner: [context.userId],
+      })
+
+      await assert.rejects(async () =>
+        ArticleMutation.updateArticleBibliography(
+          {},
+          { input: { articleId: article._id, bib: '' } },
+          { user: {}, userId: null, token: {} }
+        )
+      )
+    })
+  })
+
   describe('update article metadata', () => {
     const context = {
       user: {},
