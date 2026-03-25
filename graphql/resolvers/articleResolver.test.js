@@ -392,7 +392,8 @@ describe('article resolver', () => {
         title: 'Article with bibliography',
         owner: [context.userId],
       })
-      const bib = '@article{doe2024, title={A Great Paper}, author={Doe, John}, year={2024}}'
+      const bib =
+        '@article{doe2024, title={A Great Paper}, author={Doe, John}, year={2024}}'
 
       const entries = await ArticleMutation.updateArticleBibliography(
         {},
@@ -414,7 +415,8 @@ describe('article resolver', () => {
           bib: '@article{old2020, title={Old Paper}, author={Smith, Jane}, year={2020}}',
         },
       })
-      const newBib = '@article{new2024, title={New Paper}, author={Doe, John}, year={2024}}'
+      const newBib =
+        '@article{new2024, title={New Paper}, author={Doe, John}, year={2024}}'
 
       await ArticleMutation.updateArticleBibliography(
         {},
