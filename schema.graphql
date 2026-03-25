@@ -207,7 +207,7 @@ type Mutation {
   deleteTag(tag: ID!, user: ID): Boolean
   """
 
-  Duplicate the working version of an article and assign it to another user (or yourself).
+  Duplicate the working copy of an article and assign it to another user (or yourself).
   The duplicate is created as a new, independent article.
   Requires authentication as the specified user.
   """
@@ -278,6 +278,13 @@ type Mutation {
   Requires authentication with access to the article (as owner, contributor, or via a workspace).
   """
   updateArticleBibliography(input: UpdateArticleBibliographyInput!): [BibliographyEntry]
+  """
+
+  Update the metadata of an article's working copy.
+  Replaces the entire metadata object stored in the working copy.
+  Requires authentication with access to the article (as owner, contributor, or via a workspace).
+  """
+  updateArticleMetadata(input: UpdateArticleMetadataInput!): Article
   """
 
   Update the name, description, or color of an existing tag.
@@ -589,6 +596,11 @@ input UpdateArticleInput {
   tags: [ID]
   title: String!
   workspaces: [ID]
+}
+
+input UpdateArticleMetadataInput {
+  articleId: ID!
+  metadata: JSON!
 }
 
 input UpdateCorpusInput {

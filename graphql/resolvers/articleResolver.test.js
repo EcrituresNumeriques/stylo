@@ -375,6 +375,85 @@ describe('article resolver', () => {
     })
   })
 
+  describe('update article metadata', () => {
+    const context = {
+      user: {},
+      userId: null,
+      token: {},
+    }
+
+    before(async () => {
+      context.user = user6
+      context.userId = user6._id
+    })
+
+    test('updates metadata on an owned article', async () => {
+      const article = await Article.create({
+        title: 'Article with metadata',
+        owner: [context.userId],
+      })
+      const metadata = {
+        title: 'Updated title',
+        author: [{ name: 'Doe, Jane' }],
+      }
+
+      const updated = await ArticleMutation.updateArticleMetadata(
+        {},
+        { input: { articleId: article._id, metadata } },
+        context
+      )
+
+      assert.deepEqual(updated.workingVersion.metadata, metadata)
+    })
+
+    test('replaces existing metadata entirely', async () => {
+      const article = await Article.create({
+        title: 'Article with existing metadata',
+        owner: [context.userId],
+        workingVersion: { metadata: { title: 'Old title', lang: 'fr' } },
+      })
+      const newMetadata = { title: 'New title' }
+
+      const updated = await ArticleMutation.updateArticleMetadata(
+        {},
+        { input: { articleId: article._id, metadata: newMetadata } },
+        context
+      )
+
+      assert.deepEqual(updated.workingVersion.metadata, newMetadata)
+    })
+
+    test('rejects update on an article the user does not own', async () => {
+      const article = await Article.create({
+        title: 'Someone else article',
+        owner: [user2._id],
+      })
+
+      await assert.rejects(async () =>
+        ArticleMutation.updateArticleMetadata(
+          {},
+          { input: { articleId: article._id, metadata: { title: 'Hacked' } } },
+          context
+        )
+      )
+    })
+
+    test('rejects unauthenticated update', async () => {
+      const article = await Article.create({
+        title: 'Protected article',
+        owner: [context.userId],
+      })
+
+      await assert.rejects(async () =>
+        ArticleMutation.updateArticleMetadata(
+          {},
+          { input: { articleId: article._id, metadata: {} } },
+          { user: {}, userId: null, token: {} }
+        )
+      )
+    })
+  })
+
   describe('import article', () => {
     const context = {
       user: {},

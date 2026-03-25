@@ -42,6 +42,7 @@ const articleSchema = new Schema(
       type: String,
       default: '',
     },
+    // TODO: rename to "workingCopy" to avoid confusion with versions (history snapshots)
     workingVersion: {
       ydoc: {
         type: Object,

@@ -175,6 +175,11 @@ input UpdateArticleBibliographyInput {
   bib: String!
 }
 
+input UpdateArticleMetadataInput {
+  articleId: ID!
+  metadata: JSON!
+}
+
 type Article {
   _id: ID!
   title: String
@@ -596,7 +601,7 @@ type Mutation {
   unshareArticle(article: ID!, to: ID!, user: ID): Article
 
   """
-  Duplicate the working version of an article and assign it to another user (or yourself).
+  Duplicate the working copy of an article and assign it to another user (or yourself).
   The duplicate is created as a new, independent article.
   Requires authentication as the specified user.
   """
@@ -657,6 +662,13 @@ type Mutation {
   Requires authentication with access to the article (as owner, contributor, or via a workspace).
   """
   updateArticleBibliography(input: UpdateArticleBibliographyInput!): [BibliographyEntry]
+
+  """
+  Update the metadata of an article's working copy.
+  Replaces the entire metadata object stored in the working copy.
+  Requires authentication with access to the article (as owner, contributor, or via a workspace).
+  """
+  updateArticleMetadata(input: UpdateArticleMetadataInput!): Article
   
   """
   Import an article from external content (title, Markdown body, BibTeX bibliography, JSON metadata).
