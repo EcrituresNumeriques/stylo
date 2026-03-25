@@ -46,6 +46,12 @@ async function getUser(userId) {
   return user
 }
 
+/**
+ *
+ * @param articleId
+ * @param context
+ * @returns {Promise<HydratedDocument<import('../models/article').schema>>}
+ */
 async function getArticleByContext(articleId, context) {
   if (context.token.admin === true) {
     return await getArticle(articleId)
@@ -59,6 +65,10 @@ async function getArticleByContext(articleId, context) {
   return await getArticleByUser(articleId, userId)
 }
 
+/**
+ * @param articleId
+ * @returns {Promise<HydratedDocument<import('../models/article').schema>>}
+ */
 async function getArticle(articleId) {
   const article = await Article.findById(articleId)
     .populate('owner tags')
@@ -332,6 +342,23 @@ module.exports = {
       article.set('workingVersion.bib', bib)
       await article.save()
       return toEntries(bib)
+    },
+
+    /**
+     * Update the metadata of an article's working copy.
+     * Replaces the entire metadata object stored in workingVersion.metadata.
+     * Requires authentication with access to the article (as owner, contributor, or via a workspace).
+     *
+     * @param {null} _root
+     * @param {{ input: { articleId: string, metadata: object } }} args
+     * @param {{ userId: string, token: object }} context
+     * @returns {Promise<HydratedDocument<import('../models/article').schema>>}
+     */
+    async updateArticleMetadata(_root, args, context) {
+      const { articleId, metadata } = args.input
+      const article = await getArticleByContext(articleId, context)
+      article.set('workingVersion.metadata', metadata)
+      return await article.save()
     },
 
     /**
