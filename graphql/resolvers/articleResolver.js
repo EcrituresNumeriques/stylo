@@ -333,6 +333,40 @@ module.exports = {
       await article.save()
       return toEntries(bib)
     },
+
+    /**
+     * Import an article from external content as the current user.
+     * Creates a new article with the provided title, Markdown body, BibTeX bibliography,
+     * and YAML metadata stored in the working version.
+     *
+     * @param {null} _root
+     * @param {{ input: { title: string, content?: string, bibliography?: string, metadata?: object } }} args
+     * @param {{ user?: object, userId: string|null, token?: object }} context
+     * @returns {Promise<HydratedDocument<import('../models/article').schema>>}
+     */
+    async importArticle(_root, args, context) {
+      const user = await getUser(context.userId)
+      const { title, content, bibliography, metadata } = args.input
+
+      const yDoc = new Y.Doc({ gc: false })
+      try {
+        const yText = yDoc.getText('main')
+        const text = content || ''
+        yText.insert(0, text)
+        const documentState = Y.encodeStateAsUpdate(yDoc) // is a Uint8Array
+        return await Article.create({
+          title,
+          owner: user,
+          workingVersion: {
+            bib: bibliography || '',
+            metadata: metadata || {},
+            ydoc: Buffer.from(documentState).toString('base64'),
+          },
+        })
+      } finally {
+        yDoc.destroy()
+      }
+    },
   },
 
   Query: {

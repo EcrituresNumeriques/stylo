@@ -212,6 +212,13 @@ type Mutation {
   Requires authentication as the specified user.
   """
   duplicateArticle(article: ID!, to: ID!, user: ID): Article
+  """
+
+  Import an article from external content (title, Markdown body, BibTeX bibliography, JSON metadata).
+  Creates a new article owned by the authenticated user with the provided content as its working copy.
+  Requires authentication.
+  """
+  importArticle(input: ImportArticleInput!): Article
   "Log out the currently authenticated user and invalidate the current session."
   logout: User
   """
@@ -540,6 +547,13 @@ input CreateWorkspaceInput {
 input FilterCorpusInput {
   corpusId: ID
   workspaceId: ID
+}
+
+input ImportArticleInput {
+  bibliography: String
+  content: String
+  metadata: JSON
+  title: String!
 }
 
 input NewUserInput {
