@@ -2,11 +2,18 @@
   "ui:groups": [
     {
       "title": "article.title",
-      "fields": ["id", "publicationDate", "url", "license", "acknowledgements"]
+      "fields": [
+        "id",
+        "lang",
+        "publicationDate",
+        "url",
+        "license",
+        "acknowledgements"
+      ]
     },
     {
       "title": "article.titleAndAbstract",
-      "fields": ["lang", "title", "subtitle", "abstract"]
+      "fields": ["title", "subtitle", "abstract"]
     },
     {
       "title": "keywords",
@@ -74,7 +81,7 @@
     "ui:placeholder": "XXXX"
   },
   "lang": {
-    "ui:title": "language",
+    "ui:title": "article.language",
     "ui:placeholder": "language.placeholder"
   },
   "authors": {
