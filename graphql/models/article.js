@@ -144,8 +144,7 @@ articleSchema.methods.addTags = async function addTags(...tagIds) {
   // now, add the article reference in these tags
   await Tag.updateMany(
     { _id: { $in: tagIds } },
-    { $push: { articles: this.id } },
-    { safe: true }
+    { $push: { articles: this.id } }
   )
 
   return this.save({ timestamps: false })
@@ -161,8 +160,7 @@ articleSchema.methods.removeTags = async function removeTags(...tagIds) {
   // now, add the article reference in these tags
   await Tag.updateMany(
     { _id: { $in: tagIds } },
-    { $pull: { articles: this.id } },
-    { safe: true }
+    { $pull: { articles: this.id } }
   )
 
   return this.save({ timestamps: false })
@@ -234,8 +232,7 @@ articleSchema.pre(
         // remove article from tags owned by this user
         await Tag.updateMany(
           { owner: this.owner.id },
-          { $pull: { articles: this.id } },
-          { safe: true }
+          { $pull: { articles: this.id } }
         )
 
         // remove versions associated with this article
