@@ -72,8 +72,9 @@ export const actions = {
     }),
     quoteAlt: createDelimitedBlockCommand('quote-alt'),
     refs: createDelimitedBlockCommand('refs', {
+      preamble: '## Bibliographie',
       attrs: { id: 'refs' },
-      className: ''
+      className: '',
     }),
     reponse: createDelimitedBlockCommand('answ', {
       contentBefore: '[nom de personne]{.speaker}',
@@ -160,8 +161,8 @@ export function blockAttributes({ classNames = [], attrs = {} } = {}) {
     id ? `#${id}` : null,
     classNames.filter((d) => d).map((c) => `.${c}`),
     Object.entries(attrs)
-        .filter(([key]) => key !== 'id')
-        .map(([key, value]) => `${key}="${value}"`),
+      .filter(([key]) => key !== 'id')
+      .map(([key, value]) => `${key}="${value}"`),
   ]
     .flatMap((d) => d)
     .filter((d) => d)
