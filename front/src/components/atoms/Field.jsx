@@ -19,7 +19,7 @@ export default forwardRef(function Field(
   },
   forwardedRef
 ) {
-  const inputRef = forwardedRef ?? useRef()
+  const inputRef = forwardedRef ?? useRef(null)
   const { t } = useTranslation()
   const classNames = clsx(
     styles.field,
