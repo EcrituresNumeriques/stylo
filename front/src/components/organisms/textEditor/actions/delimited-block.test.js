@@ -114,6 +114,32 @@ describe('createDelimitedBlockEdit()', () => {
     expect(endCursorState).toMatchObject({ startLineNumber: 8, startColumn: 0 })
   })
 
+  test('with preamble: appears before the opening delimiter', () => {
+    const { text } = createDelimitedBlockEdit({
+      selection: sel(1, 1, 1, 1),
+      selectionText: '',
+      className: '',
+      attrs: { id: 'refs' },
+      preamble: '## Bibliographie',
+      contentBefore: '',
+      contentAfter: '',
+    })
+    expect(text).toBe('## Bibliographie\n\n:::{#refs}\n\n:::\n')
+  })
+
+  test('with preamble and selection: preamble before delimiter, selection inside', () => {
+    const { text } = createDelimitedBlockEdit({
+      selection: sel(1, 1, 1, 8),
+      selectionText: 'my text',
+      className: 'note',
+      attrs: {},
+      preamble: '## Section',
+      contentBefore: '',
+      contentAfter: '',
+    })
+    expect(text).toBe('## Section\n\n:::{.note}\nmy text\n:::\n')
+  })
+
   test('cursor position: no selection → lands on first line inside the block', () => {
     const { endCursorState } = createDelimitedBlockEdit({
       selection: sel(7, 1, 7, 1),

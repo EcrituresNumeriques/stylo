@@ -16,6 +16,8 @@ import { blockAttributes } from './index.js'
  *
  * The generated block looks like:
  * ```
+ * preamble
+ *
  * :::{.className attr="value"}
  * contentBefore
  *
@@ -27,7 +29,7 @@ import { blockAttributes } from './index.js'
  *
  * The cursor lands on the first line after the closing delimiter when text
  * was selected, or on the first line inside the block otherwise.
- * @param {{ selection: Selection, selectionText: string, className: string, attrs: {[key: string]: string}, contentBefore: string, contentAfter: string }} params
+ * @param {{ selection: Selection, selectionText: string, className: string, attrs: {[key: string]: string}, preamble: string, contentBefore: string, contentAfter: string }} params
  * @returns {EditResult}
  */
 export function createDelimitedBlockEdit({
@@ -35,6 +37,7 @@ export function createDelimitedBlockEdit({
   selectionText,
   className,
   attrs,
+  preamble,
   contentBefore,
   contentAfter,
 }) {
@@ -43,7 +46,8 @@ export function createDelimitedBlockEdit({
     (d) => d
   )
 
-  const text = `:::${attributes}\n${bodyParts.join('\n\n')}\n:::\n`
+  const preambleText = preamble ? `${preamble}\n\n` : ''
+  const text = `${preambleText}:::${attributes}\n${bodyParts.join('\n\n')}\n:::\n`
   const lineReturnCount = (text.match(/\n/g) ?? []).length
 
   const newStartLineNumber =
@@ -67,6 +71,7 @@ export function createDelimitedBlockEdit({
  * @param {number[]} [opts.keybindings] - Optional Monaco keybinding(s)
  * @param {string} [opts.className] - CSS class for the fenced div (defaults to `id`)
  * @param {{[key: string]: string}} [opts.attrs] - Additional pandoc attributes
+ * @param {string} [opts.preamble] - Static content inserted before the opening delimiter
  * @param {string} [opts.contentBefore] - Static content inserted before the selected text
  * @param {string} [opts.contentAfter] - Static content inserted after the selected text
  * @returns {IActionDescriptor}
@@ -77,6 +82,7 @@ export default function createDelimitedBlockCommand(
     keybindings = undefined,
     className = undefined,
     attrs = {},
+    preamble = '',
     contentBefore = '',
     contentAfter = '',
   } = {}
@@ -90,6 +96,7 @@ export default function createDelimitedBlockCommand(
       selectionText,
       className: className ?? id,
       attrs,
+      preamble,
       contentBefore,
       contentAfter,
     })

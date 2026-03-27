@@ -71,6 +71,11 @@ export const actions = {
       contentBefore: '[nom de personne]{.speaker}',
     }),
     quoteAlt: createDelimitedBlockCommand('quote-alt'),
+    refs: createDelimitedBlockCommand('refs', {
+      preamble: '## Bibliographie',
+      attrs: { id: 'refs' },
+      className: '',
+    }),
     reponse: createDelimitedBlockCommand('answ', {
       contentBefore: '[nom de personne]{.speaker}',
     }),
@@ -142,7 +147,7 @@ export function registerActions(
  * @see https://pandoc.org/MANUAL.html#extension-inline_code_attributes
  * @param {object} [attributes]
  * @param {Array.<string>} attributes.classNames
- * @param {{[key: string]: string}?} attributes.attrs
+ * @param {{[key: string]: string}?} attributes.attrs key/value attributes
  * @returns {string|undefined}
  */
 export function blockAttributes({ classNames = [], attrs = {} } = {}) {
@@ -150,9 +155,14 @@ export function blockAttributes({ classNames = [], attrs = {} } = {}) {
     return ''
   }
 
+  const id = Object.hasOwn(attrs, 'id') ? attrs.id : null
+
   const parts = [
-    classNames.map((c) => `.${c}`),
-    Object.entries(attrs).map(([key, value]) => `${key}="${value}"`),
+    id ? `#${id}` : null,
+    classNames.filter((d) => d).map((c) => `.${c}`),
+    Object.entries(attrs)
+      .filter(([key]) => key !== 'id')
+      .map(([key, value]) => `${key}="${value}"`),
   ]
     .flatMap((d) => d)
     .filter((d) => d)
@@ -197,6 +207,7 @@ export function MetopesMenu({ editor, t }) {
         [
           _bindAction(actions.metopes.inlinequote),
           _bindAction(actions.metopes.quoteAlt),
+          _bindAction(actions.metopes.refs),
         ]
       ),
       new SubmenuAction('stylo--metopes--texte', t('stylo.metopes.texte'), [
