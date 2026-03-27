@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
 import i18n from '../../i18n.js'
@@ -16,6 +15,12 @@ const DIVISIONS = [
   { amount: Number.POSITIVE_INFINITY, name: 'years' },
 ]
 
+/**
+ * @param {object} props
+ * @param {string} [props.date] - ISO 8601 date to display in relative format
+ * @param {string} [props.className]
+ * @returns {JSX.Element}
+ */
 export default function TimeAgo({ date, className }) {
   if (date === null || date === undefined) {
     return <time className={clsx(className, styles.time)}>-</time>
@@ -44,9 +49,4 @@ export default function TimeAgo({ date, className }) {
       {value}
     </time>
   )
-}
-
-TimeAgo.propTypes = {
-  date: PropTypes.string,
-  className: PropTypes.string,
 }

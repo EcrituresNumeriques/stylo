@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import PropTypes from 'prop-types'
 import { useCallback } from 'react'
 
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
@@ -9,6 +8,16 @@ import { addArticle, removeArticle } from '../../../hooks/Workspaces.graphql'
 
 import styles from './WorkspaceSelectItem.module.scss'
 
+/**
+ * @param {object} props
+ * @param {string} props.articleId
+ * @param {string} props.name
+ * @param {string} props.color - Workspace hex color
+ * @param {boolean} [props.selected]
+ * @param {string} [props.id]
+ * @param {(event: {workspaceId: string}) => void} [props.onChange]
+ * @returns {JSX.Element}
+ */
 export default function WorkspaceSelectItem({
   articleId,
   selected,
@@ -51,13 +60,4 @@ export default function WorkspaceSelectItem({
       </li>
     </>
   )
-}
-
-WorkspaceSelectItem.propTypes = {
-  name: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
-  id: PropTypes.string,
-  selected: PropTypes.bool,
-  articleId: PropTypes.string.isRequired,
-  onChange: PropTypes.func,
 }

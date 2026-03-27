@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import PropTypes from 'prop-types'
 import { useCallback } from 'react'
 
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
@@ -11,6 +10,15 @@ import {
 
 import styles from './CorpusSelectItem.module.scss'
 
+/**
+ * @param {object} props
+ * @param {string} props.name
+ * @param {string} props.articleId
+ * @param {boolean} props.selected
+ * @param {string} [props.id]
+ * @param {(event: {corpusId: string}) => void} [props.onChange]
+ * @returns {JSX.Element}
+ */
 export default function CorpusSelectItem({
   selected,
   name,
@@ -51,12 +59,4 @@ export default function CorpusSelectItem({
       </li>
     </>
   )
-}
-
-CorpusSelectItem.propTypes = {
-  name: PropTypes.string.isRequired,
-  id: PropTypes.string,
-  articleId: PropTypes.string.isRequired,
-  selected: PropTypes.bool.isRequired,
-  onChange: PropTypes.func,
 }

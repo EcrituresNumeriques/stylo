@@ -1,5 +1,4 @@
 import { CheckSquare, Search, Square } from 'lucide-react'
-import PropTypes from 'prop-types'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -216,13 +215,4 @@ export default function ContactSearch({
       </div>
     </>
   )
-}
-
-ContactSearch.propTypes = {
-  members: PropTypes.array,
-  className: PropTypes.string,
-  onUserUpdated: PropTypes.func,
-  selectedIcon: PropTypes.element,
-  unselectedIcon: PropTypes.element,
-  showActiveUser: PropTypes.bool,
 }

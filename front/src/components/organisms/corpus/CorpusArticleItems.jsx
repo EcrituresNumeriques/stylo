@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -12,6 +11,13 @@ import CorpusArticleCard from './CorpusArticleCard.jsx'
 
 import { updateArticlesOrder } from '../../../hooks/Corpus.graphql'
 
+/**
+ * @param {object} props
+ * @param {string} [props.corpusId]
+ * @param {Array<{article: {_id: string}}>} [props.articles]
+ * @param {() => void} props.onUpdate - Called after the article order has been updated
+ * @returns {JSX.Element}
+ */
 export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
   const { t } = useTranslation('corpus', { useSuspense: false })
   const [isLoading, setLoading] = useState(true)
@@ -90,9 +96,4 @@ export default function CorpusArticleItems({ corpusId, articles, onUpdate }) {
   }
 
   return <div>{articleCards.map((card, i) => renderCard(card, i))}</div>
-}
-
-CorpusArticleItems.propTypes = {
-  corpusId: PropTypes.string,
-  articles: PropTypes.array,
 }

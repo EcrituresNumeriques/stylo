@@ -55,7 +55,6 @@ export default [
       'jsdoc/require-param-description': 'off',
       'jsdoc/require-returns-description': 'off',
       'jsdoc/require-property-description': 'off',
-      'react/prop-types': 'off',
       'no-unused-vars': 'warn',
     },
   },
