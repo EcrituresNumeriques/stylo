@@ -14,9 +14,7 @@
     "test": "c8 --reporter=lcov node --test **/*.test.js",
     "migrations": "DOTENV_CONFIG_PATH=${DOTENV_CONFIG_PATH:-../.env} node -r dotenv/config ./node_modules/.bin/db-migrate up",
     "posttest": "eslint '**/*.js'",
-    "prestart": "npm run migrations",
     "start": "node app.js",
-    "preprod": "npm run migrations",
     "prod": "NODE_ENV=production node --tls-max-v1.2 --heapsnapshot-signal=SIGUSR2 app.js"
   },
   "author": "",
