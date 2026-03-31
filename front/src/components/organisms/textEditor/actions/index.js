@@ -47,7 +47,7 @@ export const actions = {
     }),
     figure: createDelimitedBlockCommand('figure', {
       contentBefore: '\n[titre]{.head}\n\n![caption](image.png)',
-      contentAfter: ':::{.credits}\n[]{.credits} [@source]\n:::',
+      contentAfter: ':::{.credits}\n[@source]\n:::',
     }),
     outline: createDelimitedBlockCommand('outline', {
       attrs: { titre: 'valeurtitre' },
@@ -59,8 +59,8 @@ export const actions = {
       attrs: { origin: 'aut' },
       className: 'notepre',
     }),
-    noteprePublisher: createDelimitedBlockCommand('notepre.pb', {
-      attrs: { origin: 'pb' },
+    noteprePublisher: createDelimitedBlockCommand('notepre.pbl', {
+      attrs: { origin: 'pbl' },
       className: 'notepre',
     }),
     notepreTranslator: createDelimitedBlockCommand('notepre.tr', {
@@ -76,7 +76,7 @@ export const actions = {
       attrs: { id: 'refs' },
       className: '',
     }),
-    reponse: createDelimitedBlockCommand('answ', {
+    reponse: createDelimitedBlockCommand('answer', {
       contentBefore: '[nom de personne]{.speaker}',
     }),
     signature: createDelimitedBlockCommand('sig'),
