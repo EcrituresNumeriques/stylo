@@ -86,7 +86,7 @@ export default function CorpusForm({ corpus, onSubmit = () => {}, onCancel }) {
         </option>
       </Select>
       <Field
-        name="tdescriptione"
+        name="description"
         label={t('actions.create.fields.description.label')}
         placeholder={t('actions.create.fields.description.placeholder')}
         type="textarea"
