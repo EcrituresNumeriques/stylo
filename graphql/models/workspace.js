@@ -82,10 +82,12 @@ workspaceSchema.methods.findMembersByArticle =
     return result[0].members
   }
 
-workspaceSchema.statics.deleteArticle = function deleteArticle(
+workspaceSchema.statics.deleteArticle = async function deleteArticle(
   workspaceId,
   articleId
 ) {
+  // remove article from corpuses associated to this workspace
+  await this.model('Corpus').removeArticle(articleId, workspaceId)
   return this.updateOne(
     { _id: workspaceId, articles: articleId },
     {
