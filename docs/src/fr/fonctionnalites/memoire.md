@@ -1,88 +1,74 @@
 ---
 title: "Mémoires et thèses"
-header-includes: |
-  <style> 
-
-  .highlight-brush-blue {
-  position: relative;
-  display: inline;
-  white-space: nowrap;
-  z-index: 1;}
-
-  .highlight-brush-blue::before {
-    content: '';
-    position: absolute;
-    left: -3px;
-    right: -3px;
-    top: 10%;
-    bottom: 5%;
-    background: #88b9bb;
-    border-radius: 2px 4px 3px 2px / 3px 2px 4px 3px;
-    transform: rotate(-0.4deg) skewX(-1deg);
-    z-index: -1;
-    clip-path: polygon(
-      0% 15%, 3% 5%, 8% 0%, 20% 3%, 35% 1%,
-      50% 4%, 65% 0%, 80% 3%, 92% 0%, 100% 8%,
-      98% 30%, 100% 55%, 99% 75%, 100% 90%,
-      95% 100%, 80% 96%, 65% 100%, 50% 97%,
-      35% 100%, 20% 97%, 8% 100%, 2% 92%,
-      0% 70%, 1% 45%
-    );}
-
-  </style>
-
 ---
 
-## Principe et tuto
+## Principe
 
-Un mémoire ou une thèse est un **corpus** composé d'autant de **chapitres** que d'**articles** Stylo. 
+Sur Stylo un mémoire ou une thèse est un type de **corpus** composé de **d'articles** Stylo. 
 
-Voici les étapes à suivre : 
+Pour créer un mémoire ou une thèse au travers de Stylo, il faut donc : 
 
-- Écrire un article Stylo par chapitre
-- Créer un corpus type `Thèse`
+- Écrire un article Stylo par partie
+- Créer un corpus de type `Thèse`
 
-![Corpus de type Thèse](docs/uploads/images/refonte_doc/thesiscorpus.png)
+![Corpus de type Thèse](uploads/images/refonte_doc/thesiscorpus.png)
 
-- Rassembler tous les articles qui correspondent à vos chapitres dans ce corpus
+- Rassembler tous les articles qui correspondent à vos parties dans ce corpus
 - Les ordonner en les faisant glisser
 
-![ordonner des articles dans un corpus](docs/uploads/images/refonte_doc/classer.gif)
+![ordonner des articles dans un corpus](uploads/images/refonte_doc/classer.gif)
 
-Chaque chapitre ou partie fonctionne donc comme un document Stylo :
+Chaque partie du mémoire ou de la thèse fonctionne donc comme « article » Stylo, c'est-à-dire que :
 
-- il possède ses propres métadonnées
-- il possède sa propre bibliographie
-- il peut être partagé en tant que tel (annotation, preview, etc.). C'est au moment de l'export du mémoire que les différentes parties sont éditées ensemble
+- Il possède ses propres métadonnées ;
+- Il possède sa propre bibliographie ;
+- Il peut être partagé en tant que tel (lien public d'annotation, partage pour de la collaboration, etc.) ;  
+- C'est au moment de l'export du mémoire ou de la thèse que les différentes parties sont mises ensemble.
 
-## Quelques points d'attention pour la rédaction
+## Où remplir les métadonnées ? 
 
-### Où remplir les métadonnées ? 
+Les métadonnées concernant une partie du mémoire et de la thèse sont à renseigner au niveau de l'**article**. Il existe un formulaire spécial qui repose sur les mêmes clés de métadonnées YAML que l'article, mais il renomme et trie les champs de formulaire pour que pour avoir uniquement des champs pertinents visibles : il s'agit du formulaire « chapitre ». La seule métadonnée importante et la seule à remplir *a minima* est le titre (voir plus bas). 
 
-Les métadonnées concernant le chapitre sont à renseigner au niveau de l'**article**. Il existe un formulaire spécial qui repose sur les mêmes clés YAML que l'article, mais il renomme et trie les champs de formulaire pour que pour avoir uniquement des champs pertinents visibles. La seule métadonnée importante et la seule à remplir *a minima* est le titre. 
+![métadonnées de chapitre](uploads/images/refonte_doc/titlechap.png)
 
-![métadonnées de chapitre](docs/uploads/images/refonte_doc/titlechap.png)
+Les métadonnées globales concernant la thèse (auteur, date, etc.) doivent être renseignées au niveau du **corpus**. Du choix du type « Thèse » découle également un formulaire spécialisé avec des champs pertinents et dédiés à ce type de document.
 
-Les métadonnées globales concernant la thèse doivent être renseignées au niveau du **corpus**. Du choix du type "Thèse" découle l'affichage d'un formulaire spécialisé. Ne pas oublier d'*enregistrer*, et non simplement fermer la modale. 
+![métadonnées de corpus](uploads/images/refonte_doc/corpusmetadata.gif)
 
-![métadonnées de corpus](docs/uploads/images/refonte_doc/corpusmetadata.gif)
+N'oubliez pas d'*enregistrer* la modale des métadonnées avant de la fermer !
 
-### Niveaux de titre
+## Niveaux de titre
 
-Comme il est d'usage sur Stylo, le titre principal du chapitre / article est celui renseigné dans les métadonnées. Il est donc important de remplir le champ titre *a minima*. Ensuite on commence avec deux croisillons `##` pour le premier niveau de section à l'intérieur du chapitre. 
+Comme il est d'usage sur Stylo, le titre de l'article est celui renseigné dans les métadonnées (à ne pas confondre avec le nom du document donné à sa création sur Stylo). Il est donc important de remplir le champ titre *a minima*. Ensuite on commence avec deux croisillons `##` pour la première sous-section à l'intérieur de la partie, puis davantage de croisillons pour des sous-sous-section. 
 
-### Bibliographie
+## Bibliographie
 
-Par défaut la bibliographie générée est celle de l'ensemble des références citées ou présentes dans les différents articles qui composent le mémoire ou la thèse. Le module d'export se charge d'empiler les fichiers bibtex de chaque article et de dédoublonner si besoin. Les références apparaîtront par ordre alphabétique sous le titre *Bibliographie* à la fin.
+Par défaut la bibliographie générée est celle de l'ensemble des références citées ou présentes dans les différents articles qui composent le mémoire ou la thèse. Le module d'export se charge d'empiler les [fichiers BibTeX](src/fr/tutoriels/syntaxebibtex) de chaque article et de dédoublonner les références au besoin. Elles apparaîtront par ordre alphabétique sous le titre *Bibliographie* à la fin.
 
-Mais il est également possible de diviser la bibliographie en plusieurs sections :
+Il est également possible de diviser la bibliographie en plusieurs sections. Pour cela, il faut :
 
-1. Pour chaque item bibliographique, ajouter dans le champ keyword une clé identifiant la section bibliographique. Elle doit être en un mot et sans tiret (par exemple `prim` pour les références primaires et `sec` pour les références secondaires). Cette étape peut être réalisée dans Zotero ou dans le BibTeX brut.
+1. Pour chaque élément bibliographique en BibTeX, ajouter dans le champ _keyword_ une clef identifiant la section bibliographique. Elle doit être en un mot et sans tiret (par exemple `prim` pour les références primaires et `sec` pour les références secondaires). Cette étape peut être réalisée ou bien dans un gestionnaire de références bibliographiques comme Zotero (voir l'image ci-dessous), ou bien directement sur Stylo en modifiant le BibTeX brut.
 
-![Tags dans Zotero](docs/uploads/images/refonte_doc/zotero.png)
+![Tags dans Zotero](uploads/images/refonte_doc/zotero.png)
 
-2. Créer un article dont le titre est "Bibliographie" et l'ajouter comme dernier chapitre du corpus.
-3. Pour chaque sous-section, ajouter un titre de niveau 2 (`##`) et le snippet de code suivant : 
+Ce qui donnera dans le BibTeX, en dernière ligne (_keyword_) : 
+
+```bibtex
+@article{wevers_visual_2020,
+	title = {The visual digital turn: {Using} neural networks to study historical images},
+	volume = {35},
+	issn = {2055-7671},
+	shorttitle = {The visual digital turn},
+	url = {https://doi.org/10.1093/llc/fqy085},
+	doi = {10.1093/llc/fqy085},
+  ...
+	keywords = {sec},
+}
+```
+
+2. Créer un article dont le titre en métadonnée est « Bibliographie » et l'ajouter comme dernier chapitre du corpus.
+
+3. Pour chaque sous-section, ajouter un titre de niveau 2 (`##`) suivi du snippet de code suivant : 
 
 ```
 ::: {#refs-<clé-identifiant-cette-section>}
@@ -103,89 +89,50 @@ Exemple :
 :::
 ```
 
-<pre>
-## Corpus Primaire
-
-::: {#refs-<span class="highlight-brush-blue">prim</span>}
-:::
-
-## Références secondaires
-
-::: {#refs-<span class="highlight-brush-blue">sec</span>}
-:::
-</pre>
-
-donnant dans le bibtex 
-
-```bibtex
-@article{wevers_visual_2020,
-	title = {The visual digital turn: {Using} neural networks to study historical images},
-	volume = {35},
-	issn = {2055-7671},
-	shorttitle = {The visual digital turn},
-	url = {https://doi.org/10.1093/llc/fqy085},
-	doi = {10.1093/llc/fqy085},
-  ...
-	keywords = {ia},
-}
-```
-
-<pre>
-@article{wevers_visual_2020,
-	title = {The visual digital turn: {Using} neural networks to study historical images},
-	volume = {35},
-	issn = {2055-7671},
-	shorttitle = {The visual digital turn},
-	url = {https://doi.org/10.1093/llc/fqy085},
-	doi = {10.1093/llc/fqy085},
-  ...
-	<span class="highlight-brush-blue">keywords = {sec},</span>
-}
-</pre>
-
-
-<!--Alerte Nicolaserie : tentative de surligner les identifiants, mais si ça marche pas on laisse juste la syntaxe markdown, il suffit d'effacer ce sui ne va pas rester-->
-
-
 ### Remerciements
 
-Les remerciements peuvent être injectées automatiquement dans le template. Un champ sera bientôt disponible dans le formulaire de métadonnées du template. En attendant, il est possible de les ajouter à la main dans le YAML brut. 
+Les remerciements peuvent être injectés directement dans les métadonnées en YAML brut, en attendant que la clef soit rajoutée dans le formulaire : 
 
 ```yaml
 '@version': '1.0'
 abstract: voici l'abstract
 ackowledgements: |
-  merci Pierre
-  merci Paul
-  merci Jacques
+  merci Jacques pour ...
+  merci Jacqueline pour ...
 ```
 
 ## Exports 
 
 ### Version imprimée
 
-L'export PDF du mémoire ou de la thèse se fait via le module d'export : https://export.stylo.huma-num.fr/
+L'export PDF du mémoire ou de la thèse se fait via le module d'export à ce lien : <https://export.stylo.huma-num.fr/>
 
-Il utilise un template LaTeX satisfaisant les exigences de la plupart des départements de l'UdeM (et nous vous invitons fortement à vérifier). Le choix de la font *Old Standard* est peu conventionnel mis permet d'imprimer les carcatères grecs. 
+Il utilise un template LaTeX satisfaisant les exigences de la plupart des départements de l'UdeM (nous vous invitons toutefois à bien vérifier cela). Le choix de la police *Old Standard* est peu conventionnel mais permet le traitement des carcatères en grecs ancien. 
 
-Voici la marche à suivre : 
+Dans le module d'export dédié, voici la marche à suivre : 
 
-1. Sélectionner Thèses/Mémoires
-2. Donner un titre à l'export et aller chercher l'identifiant du corpus <!--lien : il existe un tuto pour trouver l'id du corpus ?-->
-3. Sélectionner les options
+1. Sélectionner l'option Thèses/Mémoires ;
 
-- `avec table des matière` pour afficher cette dernière
-- `avec toutes les citations` pour avoir tous les items de votre collection biblio dans la biblio finale, même les référence pas citées
-- `avec citations liées` pour avoir un lien sur chaque référence citée vers la bibliographie
+2. Donner un titre à l'export et aller chercher l'identifiant du corpus sur la page des corpus (que l'on peut trouver dans le menu à trois points) ;
 
-### HTML / GSS
+3. Sélectionner les options : 
 
-L'export de l'ensemble des articles d'un corpus se fait dans le gestionnaire de corpus. Cliquer sur l'icône 🖨 et sélectionner "HTML" comme format. Cette opération crée une archive contenant un fichier HTML indépendant par article. La même opération, en sélectionnant "fichiers originaux (md, yaml, bib)", crée une archive contenant pour chaque article les fichiers sources. Ces derniers s'insèrent alors dans une architecture, qui, grâce à l'usage d'un GSS (Quarto, Jekyll, Hugo), crée un site web. 
+- `avec table des matière` pour afficher cette dernière ;
+- `avec toutes les citations` pour avoir tous les éléments de votre collection bibliographique dans la biblio finale, même les référence qui ne sont pas citées dans le corps du texte ;
+- `avec citations liées` pour avoir un hyperlien créé sur chaque référence citée dans le texte, menant vers la référence bibliographique complet dans la Bibliographie.
+
+### Export en HTML ou en fichiers originaux
+
+L'export en HTML de l'ensemble de votre mémoire ou thèse se fait dans le gestionnaire de corpus sur Stylo. Il vous faut cliquer sur l'icône imprimante 🖨 et sélectionner « HTML » comme format. Cette opération créé une archive ZIP contenant un fichier HTML indépendant par article. 
+
+Vous pouvez aussi faire la même opération avec l'option « fichiers originaux (md, yaml, bib) », qui crée une archive ZIP contenant, pour chaque article, les fichiers sources. Ces derniers peuvent alors être donnés comme fichiers sources (_input_) à un générateur de site statique (tel que Quarto, Jekyll, Hugo, ou encore [le Pressoir](https://ecrinum.gitpages.huma-num.fr/pressoir)), qui peut générer (en _output_) un site web pour votre mémoire ou votre thèse.
 
 ## Mise en perspective et avertissement
 
-Stylo peut être un bon compagnons dans la rédaction d'un mémoire ou d'une thèse portée par une démarche d'affranchissement des environnements proprétaires. Markdown a l'avantage de la légèreté du balisage, ce qui permet d'écrire en évitant le bruit que peuvent présenter des syntaxes plus verbeuses comme LaTeX ou HTML. Stylo facilite également la collaboration avec vos relecteur.ices et assure le formatage (stylage) de la bibliographie, utilisant les styles de la bibliothèque Zotero. Enfin, ses nombreuses options d'export ouvrent la voie à une publication multiformat.
+Stylo peut être un bon compagnon dans la rédaction d'un mémoire ou d'une thèse portée par une démarche d'affranchissement des environnements proprétaires. Le Markdown a l'avantage de la légèreté du balisage, ce qui permet d'écrire en évitant le bruit que peuvent présenter des syntaxes plus verbeuses comme le LaTeX ou le HTML. Stylo facilite également la collaboration avec vos relecteurs·ices et assure le formatage de la bibliographie à partir d'un style choisi. Enfin, ses nombreuses options d'export ouvrent la voie à une publication multiformat.
 
-Cela dit, un mémoire ou une thèse est un document complexe dont les exigences de mise en forme dépassent ce que Stylo et Markdown peuvent offrir pour la version imprimée finale. L'export PDF d'un corpus thèse, actuellement, présente ainsi de nombreuses limites. La plus bloquante concerne les niveaux de titre : il n'est pas possible de distinguer les titres de mêmes niveaux non numérotés (par exemple introduction ou conclusion), ni de créer des parties englobant les chapitres. Stylo ne gère pas non plus la création automatique d'indexes et de glossaire^[il est possible d'insérer du code LaTeX dans le Markdown, mais cette syntaxe est lourde. Le template ne prend pas en charge l'impression de ces deux appendices]. Les critères de présentation peuvent également varier d'une institution à une autre. L'aménagement des pages liminaires pourrait ne pas convenir selon la quantité d'informations que vous souhaitez y voir figurer. Enfin, il n'est pas possible d'inclure des annexes. 
+Cela dit, un mémoire ou une thèse est un document complexe dont les exigences de mise en forme dépassent ce que Stylo et le Markdown peuvent offrir pour la version imprimée finale. L'export PDF d'un corpus thèse, présente ainsi, actuellement, de nombreuses limites. La plus bloquante concerne les numérotations automatique des titres des parties : il n'est pas possible de faire distinguer les titres de mêmes niveaux entre ceux qui doivent être numérotés (chapitre 1, chapitre 2, ...) des autres qui ne devraient pas être numérotés (introduction, conclusion, ...). Pour parvenir à un rendu plus convenable sur ce plan-là, il faut modifier quelque peu le fichier `.tex` en sortie. Il n'est pas possible non plus de créer des parties englobant les « chapitres ». 
 
-Pour ces raisons, et même si les développement futur palieront certains de ces manques, nous vous déconseillons de compter sur un export PDF directement en sortie de Stylo pour votre rendu final. En revanche, Stylo génère un fichier `.tex` bien structuré et commenté, qui constitue une bonne base à personnaliser. N'hésitez pas à nous contacter : nous serons ravis de vous accompagner dans la prise en main de LaTeX afin de produire un PDF conforme à vos attentes.
+En outre, Stylo ne gère pas la création automatique d'indexes et de glossaires^[il est possible d'insérer du code LaTeX dans le Markdown, mais cette syntaxe est lourde. Le template ne prend pas en charge l'impression de ces deux appendices]. Pour ce qui est des critères de présentation, ils varient le plus souvent d'une institution à une autre : l'aménagement des pages liminaires pourrait ne pas convenir selon la quantité d'informations que vous souhaitez y voir figurer. Enfin, il n'est pas possible d'inclure des annexes. 
+
+Pour ces raisons, et même si de potentiels développements futurs pallieront certains de ces manques, nous vous déconseillons de compter directement sur un export PDF en sortie de Stylo pour votre rendu final. En revanche, Stylo génère un fichier `.tex` bien structuré et commenté, qui constitue une bonne base à personnaliser. N'hésitez pas à nous contacter : nous serons ravis de vous accompagner dans la prise en main de LaTeX afin de produire un PDF conforme à vos attentes.

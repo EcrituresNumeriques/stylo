@@ -1,80 +1,147 @@
+--- 
+title: "Disertaciones y Tesis"
 ---
-title: tesis y disertaciones
----
 
-Stylo permite crear documentos más complejos que los simples artículos, como disertaciones o tesis; esta función se denomina **Corpus**.
+## Principio
 
-**Por favor, ten en cuenta: esta opción no es completamente funcional, por lo que te recomendamos que esperes a futuras actualizaciones antes de utilizarla como renderizado final.**
+En Stylo, una disertación o tesis es un tipo de **corpus** compuesto por **artículos**.
 
-## Principios básicos
+Para crear una disertación o tesis con Stylo, debe:
 
-Una disertación está formada por uno o más documentos Stylo colocados uno al lado del otro.
+- Escribir un artículo de Stylo por sección.
+- Crear un corpus de tipo «Tesis».
 
-- Estos documentos pueden ser capítulos o partes de la tesis.
-- Se agrupan en un resumen utilizando la misma _[etiqueta]_, que debe estar asociada a cada documento Pen.
-- Cada capítulo o parte funciona, por tanto, como un documento Stylo:
- - tiene sus propios metadatos y bibliografía.
-  - puede compartirse como tal (anotación, vista previa, etc.). Cuando se exporta la tesis, las distintas partes se editan juntas.
-- Los metadatos de la tesis son los del primer documento.
+[Corpus de Tesis](uploads/images/refonte_doc/thesiscorpus.png)
 
-**Los documentos de una tesina se clasifican por orden alfabético. La forma más sencilla de controlar el orden es colocar un número al principio del nombre de cada documento en cuestión (tenga en cuenta que el nombre del documento no debe confundirse con el título del documento introducido en los metadatos).**
+- Reunir todos los artículos que corresponden a sus secciones en este corpus.
+- Organizarlos arrastrándolos y soltándolos.
 
-## Algunas particularidades
+[Organizar artículos en un corpus](uploads/images/refonte_doc/classer.gif)
 
-### Niveles de títulos
+Cada sección de la disertación o tesis funciona, por lo tanto, como un «artículo» de Stylo, lo que significa que:
 
-Su tesina o tesis puede estar estructurada en partes y capítulos o sólo en capítulos. Los títulos de las **partes** deben ser **títulos de nivel 1** (ejemplo: `# Parte 1: título de mi parte`) y los títulos de los **capítulos** serán **títulos de nivel 2**. En el caso de una tesis estructurada sólo en capítulos, los títulos de los **capítulos** serán **títulos de nivel 1** (ejemplo: `# título de mi capítulo`)
+- Tiene sus propios metadatos;
 
-Al exportar, puede declarar la organización de su tesis:
+- Tiene su propia bibliografía;
 
-1. **En partes y capítulos**
-2. **Sólo capítulos** **Sólo en capítulos**
+- Se puede compartir tal cual (enlace de anotación pública, para compartir con fines colaborativos, etc.).
 
-### Bibliografía
+- Las diferentes partes se combinan al exportar la tesis.
 
-Por defecto, la bibliografía generada es la de todas las referencias citadas o presentes en los distintos artículos que componen la tesina.
+## ¿Dónde introducir los metadatos?
 
-Pero también es posible estructurar esta bibliografía: en una tesina o tesis, la bibliografía suele dividirse en diferentes secciones. Stylo permite crear una bibliografía organizada en subapartados. He aquí los dos pasos a seguir:
+Los metadatos de una parte de la tesis deben introducirse a nivel de **artículo**. Existe un formulario especial que utiliza las mismas claves de metadatos YAML que el artículo, pero renombra y ordena los campos para que solo sean visibles los relevantes: este es el formulario de «capítulo». El único metadato importante, y el único que debe completarse como mínimo, es el título (véase más abajo).
 
-1. En los metadatos de la tesis, debe declarar las diferentes secciones de la bibliografía. Para ello, ponga los metadatos en modo YAML.
+![metadatos del capítulo](uploads/images/refonte_doc/titlechap.png)
 
-![YAML](/uploads/images/refonte_doc/YAML.png)
+Los metadatos globales de la tesis (autor, fecha, etc.) deben introducirse a nivel de **corpus**. Seleccionar el tipo «Tesis» también genera un formulario especializado con campos específicos para este tipo de documento. ![Metadatos del corpus](uploads/images/refonte_doc/corpusmetadata.gif)
 
-Luego, al final, antes de `---`, añada las siguientes líneas:
+¡No olvides guardar la ventana modal de metadatos antes de cerrarla!
 
-```yaml
-subbiblio:
- - key: pratique
- title: Pratique littéraire
- - key: theorie
- title: Théorie
+## Niveles de título
+
+Como es práctica habitual en Stylo, el título del artículo es el que se introduce en los metadatos (no confundir con el nombre del documento que se le dio al crearlo en Stylo). Por lo tanto, es importante completar el campo del título como mínimo. A continuación, empieza con dos símbolos de almohadilla `##` para la primera subsección dentro de la sección, y luego añade más símbolos de almohadilla para las sub-subsecciones.
+
+## Bibliografía
+
+Por defecto, la bibliografía generada incluye todas las referencias citadas o presentes en los distintos artículos que componen la disertación o tesis. El módulo de exportación se encarga de apilar los archivos BibTeX de cada artículo y eliminar las referencias duplicadas según sea necesario. Aparecerán en orden alfabético bajo el encabezado *Bibliografía* al final.
+
+También es posible dividir la bibliografía en varias secciones. Para ello, debe:
+
+1. Para cada entrada bibliográfica en BibTeX, añada una clave que identifique la sección bibliográfica en el campo `_keyword_`. Esta clave debe ser una sola palabra sin guiones (por ejemplo, `prim` para referencias primarias y `sec` para referencias secundarias). Este paso puede realizarse en un gestor de referencias bibliográficas como Zotero (véase la imagen a continuación) o directamente en Stylo modificando el archivo BibTeX original.
+
+![Etiquetas en Zotero](uploads/images/refonte_doc/zotero.png)
+
+Esto generará lo siguiente en BibTeX, en la última línea (_keyword_):
+
+```bibtex
+@article{wevers_visual_2020,
+title = {El giro visual digital: {Uso de} redes neuronales para el estudio de imágenes históricas},
+volume = {35},
+issn = {2055-7671},
+shorttitle = {El giro visual digital},
+
+url = {https://doi.org/10.1093/llc/fqy085},
+
+doi = {10.1093/llc/fqy085},
+...
+keywords = {sec},
+
+}
 ```
 
-La estructura es la siguiente:
-- `key` es la «clave de sección», es decir, una etiqueta que se utilizará en el paso siguiente.
-- `título` será el título de su sección bibliográfica, tal y como aparecerá en la tesina.
+2. Crea un artículo con el título de metadatos "Bibliografía" y añádelo como último capítulo del corpus.
 
-2. Para cada una de las referencias bibliográficas en cuestión, añada la clave de sección (por ejemplo «práctica» o “teoría”) en el campo «palabras clave». Esto puede hacerse en Zotero o en Stylo directamente, editando el BibTeX.
+3. Para cada subsección, agregue un encabezado de nivel 2 (`##`) seguido del siguiente fragmento de código:
 
-### Metadatos de tesis
+```
+::: {#refs-<clave-que-identifica-esta-sección>}
+:::
+```
 
-_En una versión futura, la interfaz «Tesis» incluirá un editor de metadatos para metadatos de tesis._
+Ejemplo:
 
-En esta versión de Stylo, los metadatos de tesis serán los del primer documento declarado. Los demás metadatos serán ignorados. **Por lo tanto, las subdivisiones de la bibliografía** deben declararse en el primer documento de la tesina.
+```markdown
+## Corpus principal
 
-## Exportar
+::: {#refs-prim}
+:::
 
-La tesis se exporta utilizando una plantilla LaTeX específica. Corresponde a la plantilla de tesis y tesinas de la Université de Montréal. Puede hacerlo a través de [esta página dedicada a las exportaciones](https://export.stylo.huma-num.fr/).
+## Referencias secundarias
 
-En breve estarán disponibles otras plantillas.
+::: {#refs-sec}
+:::
+```
 
-Dispone de varias opciones:
+### Agradecimientos
 
-1. Formato del documento exportado
-2. Estilo bibliográfico Estilo bibliográfico
-3. Índice
-4. Numeración (o no) de las secciones y capítulos 5. Estructura de la tesis: en partes y capítulos, o sólo en capítulos Numeración (o no) de secciones y capítulos
-5. Estructura de la tesis: en partes y capítulos, o sólo en capítulos
+Los agradecimientos se pueden insertar directamente en los metadatos YAML sin procesar, previa adición de la clave al formato:
 
-Para personalizar la exportación a PDF, es posible insertar código LaTeX en el contenido Markdown (excluidos los metadatos).
+```yaml
+'@version': '1.0'
+abstract: este es el resumen
+agradecimientos: |
 
+Gracias Jacques por...
+
+Gracias Jacqueline por...
+
+```
+
+## Exportaciones
+
+### Versión impresa
+
+La exportación a PDF de la tesis o disertación se realiza mediante el módulo de exportación en este enlace: <https://export.stylo.huma-num.fr/>
+
+Utiliza una plantilla LaTeX que cumple con los requisitos de la mayoría de los departamentos de la UdeM (sin embargo, le recomendamos que lo verifique). La elección de la fuente *Old Standard* es algo inusual, pero permite el procesamiento de caracteres griegos antiguos.
+
+En el módulo de exportación, siga estos pasos:
+
+1. Seleccione la opción Tesis/Disertaciones;
+
+2. Asigne un título a la exportación y localice el identificador del corpus en la página del corpus (que se encuentra en el menú de tres puntos);
+
+3. Seleccione las opciones:
+
+- `con índice` para mostrar el índice;
+
+- `con todas las citas` para incluir todos los elementos de su bibliografía en la bibliografía final, incluso las referencias no citadas en el texto;
+
+- `con citas enlazadas` para crear un hipervínculo para cada referencia citada en el texto, que lleva a la referencia bibliográfica completa en la bibliografía.
+
+### Exportar a HTML o archivos originales
+
+La exportación de su tesis o disertación completa a HTML se realiza en el gestor de corpus de Stylo. Haga clic en el icono de la impresora 🖨 y seleccione "HTML" como formato. Esto crea un archivo ZIP que contiene un archivo HTML independiente por artículo.
+
+También puede realizar la misma operación con la opción "archivos originales (md, yaml, bib)", que crea un archivo ZIP que contiene los archivos fuente de cada artículo. Estos archivos pueden proporcionarse como archivos de entrada a un generador de sitios estáticos (como Quarto, Jekyll, Hugo o Le Pressoir), que generará (como resultado) un sitio web para su tesis doctoral o de maestría.
+
+## Contexto y una advertencia
+
+Stylo puede ser una herramienta valiosa para la redacción de tesis doctorales o de maestría que busca alejarse de entornos propietarios. Markdown tiene la ventaja de un marcado ligero, lo que permite escribir evitando la complejidad que pueden presentar sintaxis más extensas como LaTeX o HTML. Stylo también facilita la colaboración con los revisores y garantiza que la bibliografía esté formateada según el estilo elegido. Finalmente, sus numerosas opciones de exportación permiten la publicación en múltiples formatos.
+
+Dicho esto, una tesis doctoral o de maestría es un documento complejo cuyos requisitos de formato superan las capacidades de Stylo y Markdown para la versión impresa final. La exportación de un corpus de tesis a PDF presenta actualmente varias limitaciones. La principal preocupación reside en la numeración automática de los títulos de sección: no es posible distinguir entre títulos del mismo nivel que deben numerarse (Capítulo 1, Capítulo 2, etc.) y aquellos que no (Introducción, Conclusión, etc.). Para obtener un resultado más adecuado, es necesario modificar el archivo `.tex` de salida. Tampoco es posible crear secciones que abarquen los capítulos.
+
+Además, Stylo no gestiona la creación automática de índices y glosarios [si bien es posible insertar código LaTeX en Markdown, esta sintaxis resulta engorrosa. La plantilla no permite imprimir estos dos apéndices]. En cuanto a los criterios de presentación, suelen variar entre instituciones: el diseño de las páginas preliminares puede no ser el adecuado según la cantidad de información que se desee incluir. Por último, no es posible incluir apéndices.
+
+Por estos motivos, y aunque es posible que futuras actualizaciones solucionen algunas de estas deficiencias, desaconsejamos utilizar directamente la exportación a PDF de Stylo para el resultado final. Sin embargo, Stylo genera un archivo `.tex` bien estructurado y comentado, que constituye un buen punto de partida para la personalización. No dude en contactarnos: estaremos encantados de ayudarle a aprender LaTeX y a generar un PDF que cumpla con sus expectativas.
