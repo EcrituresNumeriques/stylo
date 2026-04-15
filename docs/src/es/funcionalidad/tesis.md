@@ -11,12 +11,12 @@ Para crear una disertación o tesis con Stylo, debe:
 - Escribir un artículo de Stylo por sección.
 - Crear un corpus de tipo «Tesis».
 
-[Corpus de Tesis](uploads/images/refonte_doc/thesiscorpus.png)
+[Corpus de Tesis](/uploads/images/refonte_doc/thesiscorpus.png)
 
 - Reunir todos los artículos que corresponden a sus secciones en este corpus.
 - Organizarlos arrastrándolos y soltándolos.
 
-[Organizar artículos en un corpus](uploads/images/refonte_doc/classer.gif)
+[Organizar artículos en un corpus](/uploads/images/refonte_doc/classer.gif)
 
 Cada sección de la disertación o tesis funciona, por lo tanto, como un «artículo» de Stylo, lo que significa que:
 
@@ -32,9 +32,9 @@ Cada sección de la disertación o tesis funciona, por lo tanto, como un «artí
 
 Los metadatos de una parte de la tesis deben introducirse a nivel de **artículo**. Existe un formulario especial que utiliza las mismas claves de metadatos YAML que el artículo, pero renombra y ordena los campos para que solo sean visibles los relevantes: este es el formulario de «capítulo». El único metadato importante, y el único que debe completarse como mínimo, es el título (véase más abajo).
 
-![metadatos del capítulo](uploads/images/refonte_doc/titlechap.png)
+![metadatos del capítulo](/uploads/images/refonte_doc/titlechap.png)
 
-Los metadatos globales de la tesis (autor, fecha, etc.) deben introducirse a nivel de **corpus**. Seleccionar el tipo «Tesis» también genera un formulario especializado con campos específicos para este tipo de documento. ![Metadatos del corpus](uploads/images/refonte_doc/corpusmetadata.gif)
+Los metadatos globales de la tesis (autor, fecha, etc.) deben introducirse a nivel de **corpus**. Seleccionar el tipo «Tesis» también genera un formulario especializado con campos específicos para este tipo de documento. ![Metadatos del corpus](/uploads/images/refonte_doc/corpusmetadata.gif)
 
 ¡No olvides guardar la ventana modal de metadatos antes de cerrarla!
 
@@ -50,7 +50,7 @@ También es posible dividir la bibliografía en varias secciones. Para ello, deb
 
 1. Para cada entrada bibliográfica en BibTeX, añada una clave que identifique la sección bibliográfica en el campo `_keyword_`. Esta clave debe ser una sola palabra sin guiones (por ejemplo, `prim` para referencias primarias y `sec` para referencias secundarias). Este paso puede realizarse en un gestor de referencias bibliográficas como Zotero (véase la imagen a continuación) o directamente en Stylo modificando el archivo BibTeX original.
 
-![Etiquetas en Zotero](uploads/images/refonte_doc/zotero.png)
+![Etiquetas en Zotero](/uploads/images/refonte_doc/zotero.png)
 
 Esto generará lo siguiente en BibTeX, en la última línea (_keyword_):
 

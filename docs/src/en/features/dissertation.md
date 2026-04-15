@@ -12,13 +12,13 @@ To create a dissertation or thesis using Stylo, you must:
 
 - Create a corpus of type `Thesis`
 
-[Thesis Corpus](uploads/images/refonte_doc/thesiscorpus.png)
+[Thesis Corpus](/uploads/images/refonte_doc/thesiscorpus.png)
 
 - Gather all the articles that correspond to your sections in this corpus
 
 - Arrange them by dragging and dropping
 
-[Arrange articles in a corpus](uploads/images/refonte_doc/classer.gif)
+[Arrange articles in a corpus](/uploads/images/refonte_doc/classer.gif)
 
 Each section of the dissertation or thesis therefore functions as a Stylo "article", meaning that:
 
@@ -34,11 +34,11 @@ Each section of the dissertation or thesis therefore functions as a Stylo "artic
 
 Metadata for a part of the dissertation or thesis should be entered at the **article** level. There is a special form that uses the same YAML metadata keys as the article, but it renames and sorts the form fields so that only relevant fields are visible: this is the "chapter" form. The only important metadata field, and the only one that should be filled in *at a minimum*, is the "title" field (see below).
 
-![chapter metadata](uploads/images/refonte_doc/titlechap.png)
+![chapter metadata](/uploads/images/refonte_doc/titlechap.png)
 
 Global metadata for the thesis (author, date, etc.) must be entered at the **corpus** level. Selecting the "Thesis" type also results in a specialized form with relevant fields dedicated to this type of document.
 
-![corpus metadata](uploads/images/refonte_doc/corpusmetadata.gif)
+![corpus metadata](/uploads/images/refonte_doc/corpusmetadata.gif)
 
 Don't forget to *save* the metadata modal before closing it!
 
@@ -54,7 +54,7 @@ It is also possible to divide the bibliography into several sections. To do this
 
 1. For each bibliographic entry in BibTeX, add a key identifying the bibliographic section in the _keyword_ field. This key must be a single word without hyphens (for example, `prim` for primary references and `sec` for secondary references). This step can be performed either in a bibliographic reference manager such as Zotero (see the image below), or directly in Stylo by modifying the raw BibTeX file.
 
-![Tags in Zotero](uploads/images/refonte_doc/zotero.png)
+![Tags in Zotero](/uploads/images/refonte_doc/zotero.png)
 
 This will result in the following in BibTeX, on the last line (_keyword_):
 

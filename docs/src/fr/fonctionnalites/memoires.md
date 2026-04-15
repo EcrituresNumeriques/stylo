@@ -11,12 +11,12 @@ Pour créer un mémoire ou une thèse au travers de Stylo, il faut donc :
 - Écrire un article Stylo par partie
 - Créer un corpus de type `Thèse`
 
-![Corpus de type Thèse](uploads/images/refonte_doc/thesiscorpus.png)
+![Corpus de type Thèse](/uploads/images/refonte_doc/thesiscorpus.png)
 
 - Rassembler tous les articles qui correspondent à vos parties dans ce corpus
 - Les ordonner en les faisant glisser
 
-![ordonner des articles dans un corpus](uploads/images/refonte_doc/classer.gif)
+![ordonner des articles dans un corpus](/uploads/images/refonte_doc/classer.gif)
 
 Chaque partie du mémoire ou de la thèse fonctionne donc comme « article » Stylo, c'est-à-dire que :
 
@@ -29,11 +29,11 @@ Chaque partie du mémoire ou de la thèse fonctionne donc comme « article » St
 
 Les métadonnées concernant une partie du mémoire et de la thèse sont à renseigner au niveau de l'**article**. Il existe un formulaire spécial qui repose sur les mêmes clés de métadonnées YAML que l'article, mais il renomme et trie les champs de formulaire pour que pour avoir uniquement des champs pertinents visibles : il s'agit du formulaire « chapitre ». La seule métadonnée importante et la seule à remplir *a minima* est le titre (voir plus bas). 
 
-![métadonnées de chapitre](uploads/images/refonte_doc/titlechap.png)
+![métadonnées de chapitre](/uploads/images/refonte_doc/titlechap.png)
 
 Les métadonnées globales concernant la thèse (auteur, date, etc.) doivent être renseignées au niveau du **corpus**. Du choix du type « Thèse » découle également un formulaire spécialisé avec des champs pertinents et dédiés à ce type de document.
 
-![métadonnées de corpus](uploads/images/refonte_doc/corpusmetadata.gif)
+![métadonnées de corpus](/uploads/images/refonte_doc/corpusmetadata.gif)
 
 N'oubliez pas d'*enregistrer* la modale des métadonnées avant de la fermer !
 
@@ -43,13 +43,13 @@ Comme il est d'usage sur Stylo, le titre de l'article est celui renseigné dans 
 
 ## Bibliographie
 
-Par défaut la bibliographie générée est celle de l'ensemble des références citées ou présentes dans les différents articles qui composent le mémoire ou la thèse. Le module d'export se charge d'empiler les [fichiers BibTeX](src/fr/tutoriels/syntaxebibtex) de chaque article et de dédoublonner les références au besoin. Elles apparaîtront par ordre alphabétique sous le titre *Bibliographie* à la fin.
+Par défaut la bibliographie générée est celle de l'ensemble des références citées ou présentes dans les différents articles qui composent le mémoire ou la thèse. Le module d'export se charge d'empiler les [fichiers BibTeX](/src/fr/tutoriels/syntaxebibtex) de chaque article et de dédoublonner les références au besoin. Elles apparaîtront par ordre alphabétique sous le titre *Bibliographie* à la fin.
 
 Il est également possible de diviser la bibliographie en plusieurs sections. Pour cela, il faut :
 
 1. Pour chaque élément bibliographique en BibTeX, ajouter dans le champ _keyword_ une clef identifiant la section bibliographique. Elle doit être en un mot et sans tiret (par exemple `prim` pour les références primaires et `sec` pour les références secondaires). Cette étape peut être réalisée ou bien dans un gestionnaire de références bibliographiques comme Zotero (voir l'image ci-dessous), ou bien directement sur Stylo en modifiant le BibTeX brut.
 
-![Tags dans Zotero](uploads/images/refonte_doc/zotero.png)
+![Tags dans Zotero](/uploads/images/refonte_doc/zotero.png)
 
 Ce qui donnera dans le BibTeX, en dernière ligne (_keyword_) : 
 
