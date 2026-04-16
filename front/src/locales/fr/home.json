@@ -12,7 +12,7 @@
   "news.title": "Actualités",
   "news.workshops.title": "Prochains ateliers",
   "project.features": [
-    "Langages de balisage légers (Markown, YAML) ;",
+    "Langages de balisage légers (Markdown, YAML) ;",
     "Palette de commande et raccourcis claviers ;",
     "Sauvegarde automatique et système de versionnage des documents ;",
     "Espaces de travail partagés et écriture collaborative ;",
