@@ -18,16 +18,16 @@ Pour créer un mémoire ou une thèse au travers de Stylo, il faut donc :
 
 ![ordonner des articles dans un corpus](/uploads/images/refonte_doc/classer.gif)
 
-Chaque partie du mémoire ou de la thèse fonctionne donc comme « article » Stylo, c'est-à-dire que :
+Chaque partie du mémoire ou de la thèse fonctionne donc comme « article » Stylo, c'est-à-dire que :
 
 - Il possède ses propres métadonnées ;
 - Il possède sa propre bibliographie ;
 - Il peut être partagé en tant que tel (lien public d'annotation, partage pour de la collaboration, etc.) ;  
 - C'est au moment de l'export du mémoire ou de la thèse que les différentes parties sont mises ensemble.
 
-## Où remplir les métadonnées ? 
+## Où remplir les métadonnées ? 
 
-Les métadonnées concernant une partie du mémoire et de la thèse sont à renseigner au niveau de l'**article**. Il existe un formulaire spécial qui repose sur les mêmes clés de métadonnées YAML que l'article, mais il renomme et trie les champs de formulaire pour que pour avoir uniquement des champs pertinents visibles : il s'agit du formulaire « chapitre ». La seule métadonnée importante et la seule à remplir *a minima* est le titre (voir plus bas). 
+Les métadonnées concernant une partie du mémoire et de la thèse sont à renseigner au niveau de l'**article**. Il existe un formulaire spécial qui repose sur les mêmes clés de métadonnées YAML que l'article, mais il renomme et trie les champs de formulaire pour afficher uniquement des champs pertinents : il s'agit du formulaire « chapitre ». La seule métadonnée importante et la seule à remplir *a minima* est le titre (voir plus bas). 
 
 ![métadonnées de chapitre](/uploads/images/refonte_doc/titlechap.png)
 
@@ -45,13 +45,13 @@ Comme il est d'usage sur Stylo, le titre de l'article est celui renseigné dans 
 
 Par défaut la bibliographie générée est celle de l'ensemble des références citées ou présentes dans les différents articles qui composent le mémoire ou la thèse. Le module d'export se charge d'empiler les [fichiers BibTeX](/src/fr/tutoriels/syntaxebibtex) de chaque article et de dédoublonner les références au besoin. Elles apparaîtront par ordre alphabétique sous le titre *Bibliographie* à la fin.
 
-Il est également possible de diviser la bibliographie en plusieurs sections. Pour cela, il faut :
+Il est également possible de diviser la bibliographie en plusieurs sections. Pour cela, il faut :
 
 1. Pour chaque élément bibliographique en BibTeX, ajouter dans le champ _keyword_ une clef identifiant la section bibliographique. Elle doit être en un mot et sans tiret (par exemple `prim` pour les références primaires et `sec` pour les références secondaires). Cette étape peut être réalisée ou bien dans un gestionnaire de références bibliographiques comme Zotero (voir l'image ci-dessous), ou bien directement sur Stylo en modifiant le BibTeX brut.
 
 ![Tags dans Zotero](/uploads/images/refonte_doc/zotero.png)
 
-Ce qui donnera dans le BibTeX, en dernière ligne (_keyword_) : 
+Ce qui donnera dans le BibTeX, en dernière ligne (_keyword_) : 
 
 ```bibtex
 @article{wevers_visual_2020,
@@ -68,14 +68,14 @@ Ce qui donnera dans le BibTeX, en dernière ligne (_keyword_) :
 
 2. Créer un article dont le titre en métadonnée est « Bibliographie » et l'ajouter comme dernier chapitre du corpus.
 
-3. Pour chaque sous-section, ajouter un titre de niveau 2 (`##`) suivi du snippet de code suivant : 
+3. Pour chaque sous-section, ajouter un titre de niveau 2 (`##`) suivi du snippet de code suivant : 
 
 ```
 ::: {#refs-<clé-identifiant-cette-section>}
 :::
 ```
 
-Exemple : 
+Exemple : 
 
 ```markdown
 ## Corpus Primaire
@@ -91,7 +91,7 @@ Exemple :
 
 ### Remerciements
 
-Les remerciements peuvent être injectés directement dans les métadonnées en YAML brut, en attendant que la clef soit rajoutée dans le formulaire : 
+Les remerciements peuvent être injectés directement dans les métadonnées en YAML brut, en attendant que la clef soit rajoutée dans le formulaire : 
 
 ```yaml
 '@version': '1.0'
@@ -100,12 +100,13 @@ ackowledgements: |
   merci Jacques pour ...
   merci Jacqueline pour ...
 ```
+Il est aussi possible de considérer les remerciement comme un chapitre indépendant.
 
 ## Exports 
 
 ### Version imprimée
 
-L'export PDF du mémoire ou de la thèse se fait via le module d'export à ce lien : <https://export.stylo.huma-num.fr/>
+L'export PDF du mémoire ou de la thèse se fait via le module d'export à ce lien : <https://export.stylo.huma-num.fr/>
 
 Il utilise un template LaTeX satisfaisant les exigences de la plupart des départements de l'UdeM (nous vous invitons toutefois à bien vérifier cela). Le choix de la police *Old Standard* est peu conventionnel mais permet le traitement des carcatères en grecs ancien. 
 
@@ -115,7 +116,7 @@ Dans le module d'export dédié, voici la marche à suivre :
 
 2. Donner un titre à l'export et aller chercher l'identifiant du corpus sur la page des corpus (que l'on peut trouver dans le menu à trois points) ;
 
-3. Sélectionner les options : 
+3. Sélectionner les options : 
 
 - `avec table des matière` pour afficher cette dernière ;
 - `avec toutes les citations` pour avoir tous les éléments de votre collection bibliographique dans la biblio finale, même les référence qui ne sont pas citées dans le corps du texte ;
@@ -131,8 +132,8 @@ Vous pouvez aussi faire la même opération avec l'option « fichiers originaux 
 
 Stylo peut être un bon compagnon dans la rédaction d'un mémoire ou d'une thèse portée par une démarche d'affranchissement des environnements proprétaires. Le Markdown a l'avantage de la légèreté du balisage, ce qui permet d'écrire en évitant le bruit que peuvent présenter des syntaxes plus verbeuses comme le LaTeX ou le HTML. Stylo facilite également la collaboration avec vos relecteurs·ices et assure le formatage de la bibliographie à partir d'un style choisi. Enfin, ses nombreuses options d'export ouvrent la voie à une publication multiformat.
 
-Cela dit, un mémoire ou une thèse est un document complexe dont les exigences de mise en forme dépassent ce que Stylo et le Markdown peuvent offrir pour la version imprimée finale. L'export PDF d'un corpus thèse, présente ainsi, actuellement, de nombreuses limites. La plus bloquante concerne les numérotations automatique des titres des parties : il n'est pas possible de faire distinguer les titres de mêmes niveaux entre ceux qui doivent être numérotés (chapitre 1, chapitre 2, ...) des autres qui ne devraient pas être numérotés (introduction, conclusion, ...). Pour parvenir à un rendu plus convenable sur ce plan-là, il faut modifier quelque peu le fichier `.tex` en sortie. Il n'est pas possible non plus de créer des parties englobant les « chapitres ». 
+Cela dit, un mémoire ou une thèse est un document complexe dont les exigences de mise en forme dépassent ce que Stylo et le Markdown peuvent offrir pour la version imprimée finale. L'export PDF d'un corpus thèse, présente ainsi, actuellement, de nombreuses limites. La plus bloquante concerne les numérotations automatique des titres des parties : il n'est pas possible de distinguer les titres numérotés (chapitre 1, chapitre 2, ...) des autres qui ne devraient pas être numérotés (introduction, conclusion…). Pour parvenir à un rendu plus conforme sur ce plan, il faut modifier quelque peu le fichier `.tex` en sortie. Il n'est pas possible non plus de créer des parties englobant les « chapitres ». 
 
-En outre, Stylo ne gère pas la création automatique d'indexes et de glossaires^[il est possible d'insérer du code LaTeX dans le Markdown, mais cette syntaxe est lourde. Le template ne prend pas en charge l'impression de ces deux appendices]. Pour ce qui est des critères de présentation, ils varient le plus souvent d'une institution à une autre : l'aménagement des pages liminaires pourrait ne pas convenir selon la quantité d'informations que vous souhaitez y voir figurer. Enfin, il n'est pas possible d'inclure des annexes. 
+En outre, Stylo ne gère pas la création automatique d'indexes et de glossaires(il est possible d'insérer du code LaTeX dans le Markdown, mais cette syntaxe est lourde. Le template ne prend pas en charge l'impression de ces deux appendices). Pour ce qui est des critères de présentation, ils varient le plus souvent d'une institution à une autre : l'aménagement des pages liminaires pourrait ne pas convenir selon la quantité d'informations que vous souhaitez y voir figurer. Enfin, il n'est pas possible d'inclure des annexes. 
 
-Pour ces raisons, et même si de potentiels développements futurs pallieront certains de ces manques, nous vous déconseillons de compter directement sur un export PDF en sortie de Stylo pour votre rendu final. En revanche, Stylo génère un fichier `.tex` bien structuré et commenté, qui constitue une bonne base à personnaliser. N'hésitez pas à nous contacter : nous serons ravis de vous accompagner dans la prise en main de LaTeX afin de produire un PDF conforme à vos attentes.
+Pour ces raisons, et même si de potentiels développements futurs pallieront certains de ces manques, nous vous déconseillons de compter directement sur un export PDF en sortie de Stylo pour votre rendu final. En revanche, Stylo génère un fichier `.tex` bien structuré et commenté, qui constitue une bonne base à personnaliser. N'hésitez pas à nous contacter : nous serons ravis de vous accompagner dans la prise en main de LaTeX afin de produire un PDF conforme à vos attentes.
