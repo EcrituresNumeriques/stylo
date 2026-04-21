@@ -61,11 +61,19 @@ corpusSchema.statics.findByUser = function findCorpusByUser({
  * Removes an article from all corpuses where it appears.
  *
  * @param articleId article unique identifier
+ * @param workspaceId optional workspace identifier
  * @returns {Promise<import('mongodb').UpdateResult<import('./corpus')>>}
  */
-corpusSchema.statics.removeArticle = function removeArticle(articleId) {
+corpusSchema.statics.removeArticle = function removeArticle(
+  articleId,
+  workspaceId
+) {
+  const query = { 'articles.article': articleId }
+  if (workspaceId && workspaceId !== '') {
+    query.workspace = workspaceId
+  }
   return this.updateMany(
-    { 'articles.article': articleId },
+    query,
     {
       $pull: {
         articles: {
