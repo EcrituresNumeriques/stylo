@@ -19,7 +19,7 @@
     "Prévisualisation, partage et annotation web des articles ;",
     "Gestionnaire de bibliographie (BibTeX) et synchronisation avec Zotero ;",
     "Gestionnaire de métadonnées et accès aux données avec l'API Graph QL ;",
-    "Export d'articles en PDF, HTML, XML-TEI, LaTeX, ODT ;",
+    "Export d'articles en PDF, HTML, XML-TEI, LaTeX, ODT, docx ;",
     "Création, manipulation et export de corpus d’articles."
   ],
   "project.features.title": "Fonctionnalités",
