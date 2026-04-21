@@ -19,7 +19,7 @@
     "Web preview, sharing and article annotation;",
     "Bibliography manager (BibTeX) and synchronisation with Zotero;",
     "Metadata manager and access to data via the Graph QL API;",
-    "Export of articles in PDF, HTML, XML, LaTeX, ODT;",
+    "Export of articles in PDF, HTML, XML, LaTeX, ODT, docx;",
     "Creation, manipulation, and export of a corpus of articles."
   ],
   "project.features.title": "Features",
