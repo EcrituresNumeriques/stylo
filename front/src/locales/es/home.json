@@ -19,7 +19,7 @@
     "Previsualización y anotación web de un artículo;",
     "Gestor de bibliografía (BibTeX) y sincronización con Zotero;",
     "Gestor de metadatos y acceso a datos con la API Graph QL;",
-    "Exportación de artículos en PDF, HTML, XML, LaTeX, ODT;",
+    "Exportación de artículos en PDF, HTML, XML, LaTeX, ODT, docx;",
     "Creación, manipulación y exportación de un corpus de artículos."
   ],
   "project.features.title": "Características",
