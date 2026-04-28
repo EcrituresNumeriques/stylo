@@ -213,3 +213,44 @@ export function useDisplayName() {
     return user.displayName || user.username
   }
 }
+
+export function useBackup() {
+  const sessionToken = useSelector((state) => state.sessionToken)
+
+  async function download({
+    scope = 'mine',
+    versions = 'latest',
+    format = 'zip',
+    workspaceId,
+  } = {}) {
+    const response = await fetch(
+      applicationConfig.backendEndpoint + '/backup',
+      {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'omit',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {}),
+        },
+        body: JSON.stringify({ scope, versions, format, workspaceId }),
+      }
+    )
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.message ?? 'Backup request failed')
+    }
+
+    const filename = format === 'zip' ? 'backup.zip' : 'backup.json'
+    const blob = await response.blob()
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = filename
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  return { download }
+}

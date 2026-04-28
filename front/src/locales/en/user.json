@@ -1,0 +1,34 @@
+{
+  "actions": {
+    "download": {
+      "form": {
+        "error": "An error occurred during download: {{errMessage}}",
+        "format": {
+          "json": ".json",
+          "label": "Data format",
+          "zip": ".zip with sources"
+        },
+        "scope": {
+          "all": "All",
+          "label": "Type",
+          "mine": "My space",
+          "workspace": "A workspace"
+        },
+        "submit": {
+          "text": "Download",
+          "title": "Download my data"
+        },
+        "success": "Your data has been downloaded.",
+        "versions": {
+          "all": "All versions",
+          "label": "Versions",
+          "latest": "The latest version of each article"
+        },
+        "workspace": {
+          "label": "Workspace"
+        }
+      },
+      "title": "Download my data"
+    }
+  }
+}

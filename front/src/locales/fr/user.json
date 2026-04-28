@@ -1,0 +1,34 @@
+{
+  "actions": {
+    "download": {
+      "form": {
+        "error": "Une erreur est survenue lors du téléchargement : {{errMessage}}",
+        "format": {
+          "json": ".json",
+          "label": "Format des données",
+          "zip": ".zip avec les sources"
+        },
+        "scope": {
+          "all": "Tout",
+          "label": "Type",
+          "mine": "Mon espace",
+          "workspace": "Un espace de travail"
+        },
+        "submit": {
+          "text": "Télécharger",
+          "title": "Télécharger mes données"
+        },
+        "success": "Vos données ont été téléchargées.",
+        "versions": {
+          "all": "Toutes les versions",
+          "label": "Versions",
+          "latest": "La dernière version de chaque article"
+        },
+        "workspace": {
+          "label": "Espace de travail"
+        }
+      },
+      "title": "Télécharger mes données"
+    }
+  }
+}

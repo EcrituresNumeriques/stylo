@@ -280,6 +280,8 @@
   "user.account.username": "Nombre de usuario",
   "user.authProviders.description": "Vincula con cuentas externas para beneficiarte de funciones avanzadas (sincronización de datos, autenticación, etc.).",
   "user.authProviders.title": "Cuentas externas",
+  "user.data.download": "Descargar mis datos",
+  "user.data.title": "Mis datos",
   "user.languages.title": "Idiomas",
   "validating.label": "Validando…",
   "version.by.text": "por {{owner}}",
