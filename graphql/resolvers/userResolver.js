@@ -189,7 +189,7 @@ module.exports = {
       return User.findOneAndUpdate(
         { _id: userId },
         { $addToSet: { acquintances: contact._id } },
-        { new: true }
+        { returnDocument: 'after' }
       )
     },
 
@@ -203,7 +203,7 @@ module.exports = {
       return User.findOneAndUpdate(
         { _id: userId },
         { $pull: { acquintances: contact._id } },
-        { new: true }
+        { returnDocument: 'after' }
       )
     },
 
@@ -329,7 +329,7 @@ module.exports = {
       return User.findOneAndUpdate(
         { _id: user._id },
         { $push: { acquintances: contact._id } },
-        { new: true }
+        { returnDocument: 'after' }
       )
     },
 
@@ -341,7 +341,7 @@ module.exports = {
       return User.findOneAndUpdate(
         { _id: user._id },
         { $pull: { acquintances: contact._id } },
-        { new: true }
+        { returnDocument: 'after' }
       )
     },
 
