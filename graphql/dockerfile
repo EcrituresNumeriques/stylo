@@ -1,15 +1,23 @@
-FROM node:24-alpine
+FROM dhi.io/node:24-alpine3.23-dev AS build-stage
 
+ENV NODE_ENV="production"
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm clean-install
+RUN npm clean-install --omit=dev
 
-COPY . .
+FROM dhi.io/node:24-alpine3.23 AS runtime-stage
 
 ENV NODE_ENV="production"
+WORKDIR /usr/src/app
+
+COPY --from=build-stage /usr/src/app/node_modules ./node_modules
+
+COPY package*.json ./
+COPY . .
+
 EXPOSE 3030
 
-CMD ["npm", "run", "prod"]
+CMD ["node", "--tls-max-v1.2", "--heapsnapshot-signal=SIGUSR2", "app.js"]
 
