@@ -24,8 +24,8 @@
   "dependencies": {
     "@ggrossetie/db-migrate-mongodb": "~2.0",
     "@graphql-tools/schema": "~10.0",
-    "@sentry/node": "~10.38",
-    "@sentry/profiling-node": "~10.38",
+    "@sentry/node": "~10.51.0",
+    "@sentry/profiling-node": "~10.51.0",
     "@y/websocket-server": "^0.1.1",
     "archiver": "^7.0.1",
     "atob": "^2.1.2",
@@ -40,7 +40,7 @@
     "css-tree": "^2.3.1",
     "dataloader": "^2.2.2",
     "db-migrate": "^0.11.14",
-    "dompurify": "~3.3",
+    "dompurify": "~3.4.0",
     "dotenv": "^16.4.5",
     "express": "~5.2",
     "express-http-proxy": "~2.1",
@@ -60,7 +60,7 @@
     "pino": "~10.3",
     "pino-http": "~11.0",
     "remove-markdown": "~0.6",
-    "ws": "~8.19",
+    "ws": "~8.20.0",
     "y-websocket": "~3.0"
   },
   "devDependencies": {
@@ -71,7 +71,7 @@
     "eslint-plugin-security": "~3.0"
   },
   "volta": {
-    "node": "24.13.0",
-    "npm": "11.9.0"
+    "node": "24.15.0",
+    "npm": "11.13.0"
   }
 }
