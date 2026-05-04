@@ -16,7 +16,7 @@ $hover-background: #d1d1d1;
 
 $main-border-color: #dee2e6;
 
-$error-color: rgb(255, 77, 79);
+$error-color: rgb(204 43 25);
 $warn-color: rgb(250, 173, 20);
 $info-color: #326feb;
 
@@ -47,4 +47,5 @@ html {
 :root {
   --main-border-color: #{$main-border-color};
   --main-color: #{$main-color};
+  --toastify-color-error: #{$error-color};
 }

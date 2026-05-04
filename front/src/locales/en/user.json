@@ -1,5 +1,15 @@
 {
   "actions": {
+    "delete": {
+      "description": "Deleting your account is a permanent and irreversible action. Once the request is confirmed, it will no longer be possible to restore your account or recover your data.\n\nThis action will result in the deletion of all data (articles and corpora) for which you are the sole owner.\n\nHowever, data you have shared with other users, whether directly or via a workspace, will remain accessible to those users after your account is deleted.\n\nWe invite you to review your shares and export your data if necessary before proceeding with the deletion.",
+      "form": {
+        "confirm": "Deleting your account is irreversible.\nYour articles and corpora for which you are the sole owner will be permanently deleted. Content you have shared with other users will remain accessible to them. Please save your data before continuing.\n\nAre you sure you want to continue?",
+        "error": "An error occurred while deleting your account: {{errMessage}}",
+        "submit": "Delete my account",
+        "success": "Your account has been successfully deleted."
+      },
+      "title": "Delete my account"
+    },
     "download": {
       "form": {
         "error": "An error occurred during download: {{errMessage}}",

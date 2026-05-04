@@ -1,5 +1,15 @@
 {
   "actions": {
+    "delete": {
+      "description": "La eliminación de tu cuenta es una acción definitiva e irreversible. Una vez confirmada la solicitud, ya no será posible restaurar tu cuenta ni recuperar tus datos.\n\nEsta acción conlleva la eliminación de todos los datos (artículos y corpus) de los que eres el único propietario.\n\nSin embargo, los datos que has compartido con otros usuarios, ya sea directamente o a través de un espacio de trabajo, seguirán siendo accesibles para esos usuarios después de la eliminación de tu cuenta.\n\nTe invitamos a revisar tus compartidos y a exportar tus datos si es necesario antes de proceder con la eliminación.",
+      "form": {
+        "confirm": "La eliminación de tu cuenta es irreversible.\nTus artículos y corpus de los que eres el único propietario serán eliminados permanentemente. Los contenidos que has compartido con otros usuarios seguirán siendo accesibles para ellos. Por favor, guarda tus datos antes de continuar.\n\n¿Estás seguro de que deseas continuar?",
+        "error": "Se produjo un error al eliminar tu cuenta: {{errMessage}}",
+        "submit": "Eliminar mi cuenta",
+        "success": "Tu cuenta ha sido eliminada con éxito."
+      },
+      "title": "Eliminar mi cuenta"
+    },
     "download": {
       "form": {
         "error": "Se produjo un error durante la descarga: {{errMessage}}",

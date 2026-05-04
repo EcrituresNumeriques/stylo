@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useSetAuthToken } from '../../../hooks/user.js'
 import { Button } from '../../atoms/index.js'
 
-import styles from './Credentials.module.scss'
+import styles from './UserSection.module.scss'
 
 export function AuthProvider({ service }) {
   const { t } = useTranslation()

@@ -1,6 +1,5 @@
 import { Check, Loader } from 'lucide-react'
 import { useCallback, useState } from 'react'
-import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
@@ -11,7 +10,7 @@ import { Button, Field, TimeAgo } from '../../atoms/index.js'
 import { updateUser } from '../../../hooks/Credentials.graphql'
 
 import formStyles from '../../atoms/Field.module.scss'
-import styles from './Credentials.module.scss'
+import styles from './UserSection.module.scss'
 
 export default function UserInfos() {
   const dispatch = useDispatch()
@@ -48,9 +47,6 @@ export default function UserInfos() {
 
   return (
     <>
-      <Helmet>
-        <title>{t('user.account.title')}</title>
-      </Helmet>
       <section className={styles.section}>
         <h2>{t('user.account.title')}</h2>
 

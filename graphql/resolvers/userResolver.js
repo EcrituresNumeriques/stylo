@@ -17,6 +17,17 @@ const config = require('../config.js')
 
 module.exports = {
   Mutation: {
+    async deleteAccount(_, { contactUserId }, context) {
+      const { userId } = isUser({}, context)
+      const user = await User.findById(userId)
+      if (!user) {
+        throw new Error(`No user found with this id: ${userId}`)
+      }
+      console.log({ user })
+      await user.softDelete()
+      return true
+    },
+
     async createUser(_, { details: userInput }) {
       // check for user uniqueness
       const existingUser = await User.findOne({ email: userInput.email })

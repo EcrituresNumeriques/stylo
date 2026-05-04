@@ -479,6 +479,16 @@ type Query {
 
 type Mutation {
   """
+  Permanently and irreversibly delete the authenticated user's account.
+  Once confirmed, the account and all associated data cannot be restored or recovered.
+
+  Deletes all articles and corpus for which the authenticated user is the sole owner.
+  Data shared with other users (directly or via a workspace) remains accessible to those users after deletion.
+
+  Requires authentication.
+  """
+  deleteAccount: Boolean
+  """
   Create a new user account with email/password authentication.
   Also creates a default article for the new user.
   """

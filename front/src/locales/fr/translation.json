@@ -280,6 +280,8 @@
   "user.account.username": "Identifiant de compte",
   "user.authProviders.description": "Relier des comptes externes permet de bénéficier de fonctionnalités avancées (synchronisation de données, authentification, etc.).",
   "user.authProviders.title": "Comptes externes",
+  "user.bye.description": " Votre compte Stylo a été supprimé. Merci d'avoir utilisé Stylo.",
+  "user.bye.title": "Compte supprimé",
   "user.data.download": "Télécharger mes données",
   "user.data.title": "Mes données",
   "user.languages.title": "Langues",
