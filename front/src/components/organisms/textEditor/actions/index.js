@@ -38,6 +38,7 @@ export const actions = {
         ),
       ],
     }),
+    argument: createDelimitedBlockCommand('argument'),
     dedication: createDelimitedBlockCommand('dedi'),
     endnote: createDelimitedBlockCommand('endnote', {
       keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyD],
@@ -192,6 +193,7 @@ export function MetopesMenu({ editor, t }) {
         t('stylo.metopes.liminaires'),
         [
           _bindAction(actions.metopes.acknowledgement),
+          _bindAction(actions.metopes.argument),
           _bindAction(actions.metopes.epigraph),
           _bindAction(actions.metopes.notepreAuthor),
           _bindAction(actions.metopes.noteprePublisher),

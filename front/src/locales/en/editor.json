@@ -3,6 +3,7 @@
     "infratextual-block": {
       "ack": "$t(types.block) acknowledgement",
       "answ": "$t(types.block) answer",
+      "argument": "$t(types.block) argument",
       "dedi": "$t(types.block) dedication",
       "endnote": "$t(types.block) end note",
       "epigraph": "$t(types.block) epigraph",

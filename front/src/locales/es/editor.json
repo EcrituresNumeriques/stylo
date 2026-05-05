@@ -3,6 +3,7 @@
     "infratextual-block": {
       "ack": "$t(types.block) agradecimiento",
       "answ": "$t(types.block) respuesta",
+      "argument": "$t(types.block) entradilla",
       "dedi": "$t(types.block) dedicatoria",
       "endnote": "$t(types.block) nota final",
       "epigraph": "$t(types.block) epígrafe",
