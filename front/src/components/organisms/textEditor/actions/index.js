@@ -204,7 +204,6 @@ export function MetopesMenu({ editor, t }) {
           _bindAction(actions.metopes.prenoteAuthor),
           _bindAction(actions.metopes.prenotePublisher),
           _bindAction(actions.metopes.prenoteTranslator),
-          _bindAction(actions.metopes.endnote),
           _bindAction(actions.metopes.dedication),
           _bindAction(actions.metopes.sponsor),
         ]
@@ -228,6 +227,7 @@ export function MetopesMenu({ editor, t }) {
             _bindAction(actions.metopes.reponse),
           ]
         ),
+        _bindAction(actions.metopes.endnote),
         _bindAction(actions.metopes.signature),
         _bindAction(actions.metopes.smallcaps),
       ]),
