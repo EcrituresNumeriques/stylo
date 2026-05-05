@@ -57,17 +57,17 @@ export const actions = {
       contentAfter: '[[nom]{.name}[prenom]{.surname}]{.auth}',
     }),
     inlinequote: createEnclosingTextStyleCommand('inlinequote'),
-    notepreAuthor: createDelimitedBlockCommand('notepre.aut', {
+    prenoteAuthor: createDelimitedBlockCommand('prenote.aut', {
       attrs: { origin: 'aut' },
-      className: 'notepre',
+      className: 'prenote',
     }),
-    noteprePublisher: createDelimitedBlockCommand('notepre.pbl', {
+    prenotePublisher: createDelimitedBlockCommand('prenote.pbl', {
       attrs: { origin: 'pbl' },
-      className: 'notepre',
+      className: 'prenote',
     }),
-    notepreTranslator: createDelimitedBlockCommand('notepre.tr', {
+    prenoteTranslator: createDelimitedBlockCommand('prenote.tr', {
       attrs: { origin: 'tr' },
-      className: 'notepre',
+      className: 'prenote',
     }),
     question: createDelimitedBlockCommand('question', {
       contentBefore: '[nom de personne]{.speaker}',
@@ -201,9 +201,9 @@ export function MetopesMenu({ editor, t }) {
           _bindAction(actions.metopes.acknowledgement),
           _bindAction(actions.metopes.argument),
           _bindAction(actions.metopes.epigraph),
-          _bindAction(actions.metopes.notepreAuthor),
-          _bindAction(actions.metopes.noteprePublisher),
-          _bindAction(actions.metopes.notepreTranslator),
+          _bindAction(actions.metopes.prenoteAuthor),
+          _bindAction(actions.metopes.prenotePublisher),
+          _bindAction(actions.metopes.prenoteTranslator),
           _bindAction(actions.metopes.endnote),
           _bindAction(actions.metopes.dedication),
           _bindAction(actions.metopes.sponsor),
