@@ -15,6 +15,7 @@
       "question": "$t(types.block) question",
       "quote-alt": "$t(types.block) citation bis",
       "refs": "$t(types.block) bibliographie",
+      "rich-quote": "$t(types.block) citation complexe",
       "sig": "$t(types.block) signature",
       "sponsor": "$t(types.block) sponsor"
     },

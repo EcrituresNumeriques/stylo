@@ -78,6 +78,11 @@ export const actions = {
       attrs: { id: 'refs' },
       className: '',
     }),
+    richQuote: createDelimitedBlockCommand('rich-quote', {
+      attrs: { lang: 'lang-value' },
+      contentBefore: '> ',
+      contentAfter: '> \n[@<source>]\n\n:::{.translation lang="lang-value"}\n> \n> \n[@<source>]\n:::\n\n:::{.translation lang="lang-value"}\n> \n> \n> \n:::\n'
+    }),
     reponse: createDelimitedBlockCommand('answer', {
       contentBefore: '[nom de personne]{.speaker}',
     }),
@@ -211,6 +216,7 @@ export function MetopesMenu({ editor, t }) {
           _bindAction(actions.metopes.inlinequote),
           _bindAction(actions.metopes.quoteAlt),
           _bindAction(actions.metopes.refs),
+          _bindAction(actions.metopes.richQuote),
         ]
       ),
       new SubmenuAction('stylo--metopes--texte', t('stylo.metopes.texte'), [
