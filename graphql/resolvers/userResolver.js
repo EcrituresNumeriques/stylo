@@ -17,7 +17,7 @@ const config = require('../config.js')
 
 module.exports = {
   Mutation: {
-    async deleteAccount(_, { contactUserId }, context) {
+    async deleteAccount(_, _args, context) {
       const { userId } = isUser({}, context)
       const user = await User.findById(userId)
       if (!user) {
