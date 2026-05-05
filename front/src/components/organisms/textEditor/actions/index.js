@@ -52,9 +52,9 @@ export const actions = {
       contentAfter: ':::{.credits}\n[@source]\n:::',
     }),
     outline: createDelimitedBlockCommand('outline', {
-      attrs: { titre: 'valeurtitre' },
-      className: 'encadre',
-      contentAfter: '[[nom]{.name}[prenom]{.surname}]{.auth}',
+      attrs: { title: 'title-value' },
+      className: 'box',
+      contentAfter: '[[nom]{.name}[prenom]{.surname}]{.aut}',
     }),
     inlinequote: createEnclosingTextStyleCommand('inlinequote'),
     prenoteAuthor: createDelimitedBlockCommand('prenote.aut', {
