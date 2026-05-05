@@ -44,7 +44,8 @@ export const actions = {
       keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyD],
     }),
     epigraph: createDelimitedBlockCommand('epigraph', {
-      contentBefore: '[@source]',
+      contentBefore: ':::{.rich-quote}',
+      contentAfter: '\n[@source]\n:::'
     }),
     figure: createDelimitedBlockCommand('figure', {
       contentBefore: '\n[titre]{.head}\n\n![caption](image.png)',

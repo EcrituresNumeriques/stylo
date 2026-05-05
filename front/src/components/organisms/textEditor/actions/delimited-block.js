@@ -38,8 +38,8 @@ export function createDelimitedBlockEdit({
   className,
   attrs,
   preamble,
-  contentBefore,
-  contentAfter,
+  contentBefore = '',
+  contentAfter = '',
 }) {
   const attributes = blockAttributes({ classNames: [className], attrs })
   const bodyParts = [contentBefore, selectionText, contentAfter].filter(
@@ -53,7 +53,7 @@ export function createDelimitedBlockEdit({
   const newStartLineNumber =
     selectionText !== ''
       ? selection.endLineNumber + lineReturnCount
-      : selection.startLineNumber + 1
+      : selection.startLineNumber + (contentBefore.match(/\n/g) || []).length + 1
 
   return {
     text,
