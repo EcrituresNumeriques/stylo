@@ -2,7 +2,7 @@
   "actions": {
     "infratextual-block": {
       "ack": "$t(types.block) agradecimiento",
-      "answ": "$t(types.block) respuesta",
+      "answer": "$t(types.block) respuesta",
       "argument": "$t(types.block) entradilla",
       "dedi": "$t(types.block) dedicatoria",
       "endnote": "$t(types.block) nota final",
@@ -10,11 +10,11 @@
       "figure": "$t(types.block) figura",
       "outline": "$t(types.block) cuadro",
       "prenote.aut": "$t(types.block) nota preliminar del autor",
-      "prenote.pb": "$t(types.block) nota preliminar del editor",
+      "prenote.pbl": "$t(types.block) nota preliminar del editor",
       "prenote.tr": "$t(types.block) nota preliminar del traductor",
       "question": "$t(types.block) pregunta",
       "quote-alt": "$t(types.block) cita bis",
-      "refs": "$t(types.block) bibliografía",
+      "refs": "Personalizar el título de la bibliografía",
       "rich-quote": "$t(types.block) cita compleja",
       "sig": "$t(types.block) firma",
       "sponsor": "$t(types.block) patrocinador"
@@ -26,6 +26,9 @@
       "inlinequote": "$t(types.inline) cita",
       "italic": "Cursiva",
       "smallcaps": "$t(types.inline) versalitas"
+    },
+    "preamble": {
+      "refs": "Título personalizado de bibliografía"
     }
   },
   "stylo": {

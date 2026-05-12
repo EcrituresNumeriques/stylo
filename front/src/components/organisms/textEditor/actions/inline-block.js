@@ -7,12 +7,15 @@ import {
 /**
  * @typedef {import('monaco-editor').editor.IActionDescriptor} IActionDescriptor
  * @typedef {import('monaco-editor').editor.ICodeEditor} ICodeEditor
+ * @typedef {import('monaco-editor').IRange} IRange
+ * @typedef {import('monaco-editor').ISelection} ISelection
  */
 
 /**
  * @typedef {object} EditResult
  * @property {string} text - The text to insert
- * @property {Selection} endCursorState - The cursor position after the edit
+ * @property {IRange} range - The range selection to position at/replace
+ * @property {ISelection} endCursorState - The cursor position after the edit
  */
 
 // Helpers

@@ -4,11 +4,44 @@ import { blockAttributes } from './index.js'
 
 /**
  * @typedef {import('monaco-editor').editor.IActionDescriptor} IActionDescriptor
+ * @typedef {import('i18next').TFunction} TFunction
  * @typedef {import('monaco-editor').editor.ICodeEditor} ICodeEditor
  * @typedef {import('./inline-block.js').EditResult} EditResult
  */
+const newLineRE = /\n/g
 
-// Edit function (pure — no Monaco editor instance required)
+function countLines (text) {
+  return (text.match(newLineRE) || []).length
+}
+
+function joinContents (joinSeparator, ...texts) {
+  return texts.filter(d => d).join(joinSeparator)
+}
+
+function defaultSelectionState (editor) {
+  return editor.getSelection()
+}
+
+function defaultEndCursorState ({ contentBefore, contentAfter, joinSeparator, preambleText, selection, selectionText, text }) {
+  const lineReturnCount = countLines(text)
+
+  const isSelection = selectionText.length > 0
+
+  let newStartLineNumber = 0
+  let newStartColumnNumber = selection.getEndPosition().column
+
+  // in case of selection, we position the cursor at the end of it
+  if (isSelection) {
+    newStartLineNumber = selection.startLineNumber + (selection.endLineNumber - selection.startLineNumber) + countLines(joinSeparator) + countLines(joinContents(joinSeparator, preambleText, contentBefore)) + countLines(joinSeparator)
+  }
+  // otherwise, we move "in the middle" of the block
+  else {
+    newStartLineNumber = selection.startLineNumber + countLines(joinContents(joinSeparator, preambleText, contentBefore)) + countLines(joinSeparator)
+    newStartColumnNumber += contentBefore.length
+  }
+
+  return new Selection(newStartLineNumber, newStartColumnNumber, newStartLineNumber, newStartColumnNumber)
+}
 
 /**
  * Builds the text and cursor state for a pandoc fenced div wrapping the
@@ -30,6 +63,7 @@ import { blockAttributes } from './index.js'
  * The cursor lands on the first line after the closing delimiter when text
  * was selected, or on the first line inside the block otherwise.
  * @param {{ selection: Selection, selectionText: string, className: string, attrs: {[key: string]: string}, preamble: string, contentBefore: string, contentAfter: string }} params
+ * @param {{ t: TFunction }?} helpers
  * @returns {EditResult}
  */
 export function createDelimitedBlockEdit({
@@ -40,24 +74,37 @@ export function createDelimitedBlockEdit({
   preamble,
   contentBefore = '',
   contentAfter = '',
-}) {
+  endCursorState
+}, { t } = {}) {
+  const joinSeparator = '\n'
   const attributes = blockAttributes({ classNames: [className], attrs })
   const bodyParts = [contentBefore, selectionText, contentAfter].filter(
     (d) => d
   )
 
-  const preambleText = preamble ? `${preamble}\n\n` : ''
-  const text = `${preambleText}:::${attributes}\n${bodyParts.join('\n\n')}\n:::\n`
-  const lineReturnCount = (text.match(/\n/g) ?? []).length
+  let preambleText = ''
+  if (typeof preamble === 'function' && typeof t === 'function') {
+    preambleText = `${preamble(t)}\n\n`
+  }
 
-  const newStartLineNumber =
-    selectionText !== ''
-      ? selection.endLineNumber + lineReturnCount
-      : selection.startLineNumber + (contentBefore.match(/\n/g) || []).length + 1
+  console.log({       preamble, preambleText,
+      contentBefore,
+      contentAfter,})
+
+  const text = `${preambleText}:::${attributes}\n${joinContents(joinSeparator, ...bodyParts)}\n:::\n`
 
   return {
-    text,
-    endCursorState: new Selection(newStartLineNumber, 0, newStartLineNumber, 0),
+    endCursorState: endCursorState({
+      joinSeparator,
+      selection,
+      selectionText,
+      text,
+      preambleText,
+      contentBefore,
+      contentAfter
+    }),
+    selection,
+    text
   }
 }
 
@@ -71,7 +118,7 @@ export function createDelimitedBlockEdit({
  * @param {number[]} [opts.keybindings] - Optional Monaco keybinding(s)
  * @param {string} [opts.className] - CSS class for the fenced div (defaults to `id`)
  * @param {{[key: string]: string}} [opts.attrs] - Additional pandoc attributes
- * @param {string} [opts.preamble] - Static content inserted before the opening delimiter
+ * @param {null|function(t) => string} [opts.preamble] - Static content inserted before the opening delimiter
  * @param {string} [opts.contentBefore] - Static content inserted before the selected text
  * @param {string} [opts.contentAfter] - Static content inserted after the selected text
  * @returns {IActionDescriptor}
@@ -82,15 +129,22 @@ export default function createDelimitedBlockCommand(
     keybindings = undefined,
     className = undefined,
     attrs = {},
-    preamble = '',
+    preamble = null,
     contentBefore = '',
     contentAfter = '',
+    endCursorState = defaultEndCursorState,
+    selectionState = defaultSelectionState,
+    forceMoveMarkers = true
   } = {}
 ) {
-  /** @param {ICodeEditor} editor */
-  function run(editor) {
+  /**
+   * @param {ICodeEditor} editor
+   * @param {TFunction} t
+   */
+  function run(editor, t) {
     const selection = editor.getSelection()
     const selectionText = editor.getModel().getValueInRange(selection) || ''
+
     const edit = createDelimitedBlockEdit({
       selection,
       selectionText,
@@ -99,10 +153,18 @@ export default function createDelimitedBlockCommand(
       preamble,
       contentBefore,
       contentAfter,
-    })
+      endCursorState
+    }, { t })
+
     editor.executeEdits(
       id,
-      [{ range: selection, text: edit.text, forceMoveMarkers: true }],
+      [
+        {
+          range: selectionState(editor),
+          text: edit.text,
+          forceMoveMarkers
+        }
+      ],
       [edit.endCursorState]
     )
   }

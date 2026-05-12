@@ -3,6 +3,7 @@ import {
   KeyCode,
   KeyMod,
   editor as _editor,
+  Selection
 } from 'monaco-editor/esm/vs/editor/editor.api'
 
 import createDelimitedBlockCommand from './delimited-block.js'
@@ -44,17 +45,17 @@ export const actions = {
       keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyD],
     }),
     epigraph: createDelimitedBlockCommand('epigraph', {
-      contentBefore: ':::{.rich-quote}',
+      contentBefore: ':::{.rich-quote}\n',
       contentAfter: '\n[@source]\n:::'
     }),
     figure: createDelimitedBlockCommand('figure', {
-      contentBefore: '\n[titre]{.head}\n\n![caption](image.png)',
-      contentAfter: ':::{.credits}\n[@source]\n:::',
+      contentBefore: '\n[titre]{.head}\n\n![caption](image.png)\n\n',
+      contentAfter: '\n:::{.credits}\n[@source]\n:::',
     }),
     outline: createDelimitedBlockCommand('outline', {
       attrs: { title: 'title-value' },
       className: 'box',
-      contentAfter: '[[nom]{.name}[prenom]{.surname}]{.aut}',
+      contentAfter: '\n[[nom]{.name} [prenom]{.surname}]{.aut}',
     }),
     inlinequote: createEnclosingTextStyleCommand('inlinequote'),
     prenoteAuthor: createDelimitedBlockCommand('prenote.aut', {
@@ -74,14 +75,28 @@ export const actions = {
     }),
     quoteAlt: createDelimitedBlockCommand('quote-alt'),
     refs: createDelimitedBlockCommand('refs', {
-      preamble: '## Bibliographie',
+      preamble (t) {
+        return `\n\n## ${t('actions.preamble.refs')}`
+      },
       attrs: { id: 'refs' },
       className: '',
+      // returns the cursor to its initial position
+      endCursorState ({ selection }) {
+        return selection
+      },
+      // insert content at the last char of the last column
+      selectionState (editor) {
+        const model = editor.getModel()
+        const lastLineNumber = model.getLineCount()
+        const lastLineMaxChar = model.getLineMaxColumn(lastLineNumber)
+
+        return new Selection(lastLineNumber, lastLineMaxChar, lastLineNumber, lastLineMaxChar)
+      }
     }),
     richQuote: createDelimitedBlockCommand('rich-quote', {
       attrs: { lang: 'lang-value' },
       contentBefore: '> ',
-      contentAfter: '> \n[@<source>]\n\n:::{.translation lang="lang-value"}\n> \n> \n[@<source>]\n:::\n\n:::{.translation lang="lang-value"}\n> \n> \n> \n:::\n'
+      contentAfter: '> \n[@<source>]\n\n:::{.translation lang="lang-value"}\n> \n> \n[@<source>]\n:::\n\n:::{.translation lang="lang-value"}\n> \n> \n> \n:::\n',
     }),
     reponse: createDelimitedBlockCommand('answer', {
       contentBefore: '[nom de personne]{.speaker}',
@@ -112,7 +127,7 @@ export function bindAction(editor, t, action) {
     ...action,
     enabled: true,
     label: t(action.label),
-    run: action.run.bind(null, editor),
+    run: action.run.bind(null, editor, t),
   }
 }
 
