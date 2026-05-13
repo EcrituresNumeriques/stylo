@@ -5,7 +5,6 @@
       "answer": "$t(types.block) respuesta",
       "argument": "$t(types.block) entradilla",
       "dedi": "$t(types.block) dedicatoria",
-      "endnote": "$t(types.block) nota final",
       "epigraph": "$t(types.block) epígrafe",
       "figure": "$t(types.block) figura",
       "outline": "$t(types.block) cuadro",
@@ -21,7 +20,8 @@
     },
     "infratextual-inline": {
       "bold": "Negrita",
-      "footnote-inline": "Nota",
+      "endnote": "$t(types.inline) nota final",
+      "footnote": "$t(types.inline) nota",
       "hyperlink": "Hipervínculo",
       "inlinequote": "$t(types.inline) cita",
       "italic": "Cursiva",

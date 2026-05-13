@@ -5,7 +5,6 @@
       "answer": "$t(types.block) answer",
       "argument": "$t(types.block) argument",
       "dedi": "$t(types.block) dedication",
-      "endnote": "$t(types.block) end note",
       "epigraph": "$t(types.block) epigraph",
       "figure": "$t(types.block) figure",
       "outline": "$t(types.block) outline",
@@ -21,7 +20,8 @@
     },
     "infratextual-inline": {
       "bold": "Bold",
-      "footnote-inline": "Note",
+      "endnote": "$t(types.bloinlineck) end note",
+      "footnote": "$t(types.bloinlineck) footnote",
       "hyperlink": "Hyperlink",
       "inlinequote": "$t(types.inline) citation",
       "italic": "Italic",

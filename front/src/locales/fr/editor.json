@@ -5,7 +5,6 @@
       "answer": "$t(types.block) réponse",
       "argument": "$t(types.block) chapô introductif",
       "dedi": "$t(types.block) dédicace",
-      "endnote": "$t(types.block) note de fin",
       "epigraph": "$t(types.block) épigraphe",
       "figure": "$t(types.block) figure",
       "outline": "$t(types.block) encadré",
@@ -21,7 +20,8 @@
     },
     "infratextual-inline": {
       "bold": "Gras",
-      "footnote-inline": "Note",
+      "endnote": "$t(types.inline) note de fin",
+      "footnote": "$t(types.inline) note de bas de page",
       "hyperlink": "Hyperlien",
       "inlinequote": "$t(types.inline) citation",
       "italic": "Italique",

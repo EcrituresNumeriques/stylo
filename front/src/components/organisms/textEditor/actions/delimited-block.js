@@ -87,10 +87,6 @@ export function createDelimitedBlockEdit({
     preambleText = `${preamble(t)}\n\n`
   }
 
-  console.log({       preamble, preambleText,
-      contentBefore,
-      contentAfter,})
-
   const text = `${preambleText}:::${attributes}\n${joinContents(joinSeparator, ...bodyParts)}\n:::\n`
 
   return {

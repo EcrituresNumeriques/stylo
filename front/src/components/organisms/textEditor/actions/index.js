@@ -7,11 +7,9 @@ import {
 } from 'monaco-editor/esm/vs/editor/editor.api'
 
 import createDelimitedBlockCommand from './delimited-block.js'
-import {
+import createInlineBlockCommand, {
   createEnclosingTextFormattingCommand,
-  createEnclosingTextStyleCommand,
   createHyperlinkCommand,
-  createInlineFootnoteCommand,
 } from './inline-block.js'
 
 export { Separator } from 'monaco-editor/esm/vs/base/common/actions'
@@ -27,7 +25,10 @@ export const actions = {
       formattingMark: '**',
       keybindings: [KeyMod.CtrlCmd | KeyCode.KeyB],
     }),
-    footnoteInline: createInlineFootnoteCommand('footnote-inline'),
+    footnote: createInlineBlockCommand('footnote', {
+      contentBefore: '^[',
+      keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF]
+    }),
     hyperlink: createHyperlinkCommand('hyperlink'),
   },
   metopes: {
@@ -41,7 +42,8 @@ export const actions = {
     }),
     argument: createDelimitedBlockCommand('argument'),
     dedication: createDelimitedBlockCommand('dedi'),
-    endnote: createDelimitedBlockCommand('endnote', {
+    endnote: createInlineBlockCommand('endnote', {
+      className: 'endnote',
       keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyD],
     }),
     epigraph: createDelimitedBlockCommand('epigraph', {
@@ -57,7 +59,8 @@ export const actions = {
       className: 'box',
       contentAfter: '\n[[nom]{.name} [prenom]{.surname}]{.aut}',
     }),
-    inlinequote: createEnclosingTextStyleCommand('inlinequote'),
+    inlinequote: createInlineBlockCommand('inlinequote', {
+    }),
     prenoteAuthor: createDelimitedBlockCommand('prenote.aut', {
       attrs: { origin: 'aut' },
       className: 'prenote',
@@ -102,7 +105,8 @@ export const actions = {
       contentBefore: '[nom de personne]{.speaker}',
     }),
     signature: createDelimitedBlockCommand('sig'),
-    smallcaps: createEnclosingTextStyleCommand('smallcaps'),
+    smallcaps: createInlineBlockCommand('smallcaps', {
+    }),
     sponsor: createDelimitedBlockCommand('sponsor'),
   },
 }
@@ -189,9 +193,8 @@ export function blockAttributes({ classNames = [], attrs = {} } = {}) {
     .flatMap((d) => d)
     .filter((d) => d)
 
-  if (parts.length) {
-    return `{${parts.join(' ')}}`
-  }
+
+  return parts.length ? `{${parts.join(' ')}}` : ''
 }
 
 /**
@@ -262,7 +265,7 @@ export function MarkdownMenu({ editor, t }) {
       _bindAction(actions.md.italic),
       _bindAction(actions.md.bold),
       _bindAction(actions.md.hyperlink),
-      _bindAction(actions.md.footnoteInline),
+      _bindAction(actions.md.footnote),
     ]
   )
 }
