@@ -41,6 +41,16 @@ describe('createDelimitedBlockEdit()', () => {
     expect(text).toBe(':::{.notepre origin="aut"}\n\n:::\n')
   })
 
+  test('with multiple className', () => {
+    const { text } = createDelimitedBlockEdit({
+      selection: new Selection(1, 1, 1, 1),
+      selectionText: '',
+      className: 'index, index-type',
+      attrs: { origin: () => 'random-text' },
+    })
+    expect(text).toBe(':::{.index .index-type origin="random-text"}\n\n:::\n')
+  })
+
   test('with contentBefore only: appears inside the block', () => {
     const { text } = createDelimitedBlockEdit({
       selection: new Selection(1, 1, 1, 1),

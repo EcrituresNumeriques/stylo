@@ -23,6 +23,7 @@
       "endnote": "$t(types.bloinlineck) end note",
       "footnote": "$t(types.bloinlineck) footnote",
       "hyperlink": "Hyperlink",
+      "index-entry": "Index entry",
       "inlinequote": "$t(types.inline) citation",
       "italic": "Italic",
       "smallcaps": "$t(types.inline) small caps"

@@ -54,9 +54,14 @@ export const actions = {
       contentBefore: '\n[titre]{.head}\n\n![caption](image.png)\n\n',
       contentAfter: '\n:::{.credits}\n[@source]\n:::',
     }),
+    indexEntry: createInlineBlockCommand('index-entry', {
+      className: 'index-type',
+      attrs: { idref: () => self.crypto.randomUUID() }
+    }),
     outline: createDelimitedBlockCommand('outline', {
       attrs: { title: 'title-value' },
       className: 'box',
+      contentBefore: '\n[titre]{.head}\n',
       contentAfter: '\n[[nom]{.name} [prenom]{.surname}]{.aut}',
     }),
     inlinequote: createInlineBlockCommand('inlinequote', {
@@ -185,10 +190,10 @@ export function blockAttributes({ classNames = [], attrs = {} } = {}) {
 
   const parts = [
     id ? `#${id}` : null,
-    classNames.filter((d) => d).map((c) => `.${c}`),
+    classNames.filter((d) => d).map(c => c.split(',')).flat().map((c) => `.${c.trim()}`),
     Object.entries(attrs)
       .filter(([key]) => key !== 'id')
-      .map(([key, value]) => `${key}="${value}"`),
+      .map(([key, value]) => `${key}="${typeof value === 'function' ? value(key) : value}"`),
   ]
     .flatMap((d) => d)
     .filter((d) => d)
@@ -246,6 +251,7 @@ export function MetopesMenu({ editor, t }) {
           ]
         ),
         _bindAction(actions.metopes.endnote),
+        _bindAction(actions.metopes.indexEntry),
         _bindAction(actions.metopes.signature),
         _bindAction(actions.metopes.smallcaps),
       ]),

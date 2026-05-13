@@ -23,6 +23,7 @@
       "endnote": "$t(types.inline) note de fin",
       "footnote": "$t(types.inline) note de bas de page",
       "hyperlink": "Hyperlien",
+      "index-entry": "Entrée d'index",
       "inlinequote": "$t(types.inline) citation",
       "italic": "Italique",
       "smallcaps": "$t(types.inline) petites capitales"
