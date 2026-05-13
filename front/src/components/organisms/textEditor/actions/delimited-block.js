@@ -71,10 +71,10 @@ export function createDelimitedBlockEdit({
   selectionText,
   className,
   attrs,
-  preamble,
+  preamble = null,
   contentBefore = '',
   contentAfter = '',
-  endCursorState
+  endCursorState = defaultEndCursorState
 }, { t } = {}) {
   const joinSeparator = '\n'
   const attributes = blockAttributes({ classNames: [className], attrs })

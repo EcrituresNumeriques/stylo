@@ -185,8 +185,8 @@ export function createInlineBlockEdit({
   selectionText,
   className,
   attrs,
-  contentBefore = '',
-  contentAfter = '',
+  contentBefore = '[',
+  contentAfter = ']',
 }, { t } = {}) {
   const attributes = blockAttributes({ classNames: [className], attrs })
   const hasSelectionText = selectionText.length > 1
