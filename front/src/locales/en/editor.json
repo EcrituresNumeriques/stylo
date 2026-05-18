@@ -2,28 +2,34 @@
   "actions": {
     "infratextual-block": {
       "ack": "$t(types.block) acknowledgement",
-      "answ": "$t(types.block) answer",
+      "answer": "$t(types.block) answer",
+      "argument": "$t(types.block) argument",
       "dedi": "$t(types.block) dedication",
-      "endnote": "$t(types.block) end note",
       "epigraph": "$t(types.block) epigraph",
       "figure": "$t(types.block) figure",
-      "notepre.aut": "$t(types.block) preliminary note from author",
-      "notepre.pb": "$t(types.block) preliminary note from publisher",
-      "notepre.tr": "$t(types.block) preliminary note from translator",
       "outline": "$t(types.block) outline",
+      "prenote.aut": "$t(types.block) preliminary note from author",
+      "prenote.pbl": "$t(types.block) preliminary note from publisher",
+      "prenote.tr": "$t(types.block) preliminary note from translator",
       "question": "$t(types.block) question",
       "quote-alt": "$t(types.block) citation bis",
-      "refs": "$t(types.block) bibliography",
+      "refs": "Customize bibliography heading",
+      "rich-quote": "$t(types.block) rich quote",
       "sig": "$t(types.block) signature",
       "sponsor": "$t(types.block) sponsor"
     },
     "infratextual-inline": {
       "bold": "Bold",
-      "footnote-inline": "Note",
+      "endnote": "$t(types.bloinlineck) end note",
+      "footnote": "$t(types.bloinlineck) footnote",
       "hyperlink": "Hyperlink",
+      "index-entry": "Index entry",
       "inlinequote": "$t(types.inline) citation",
       "italic": "Italic",
       "smallcaps": "$t(types.inline) small caps"
+    },
+    "preamble": {
+      "refs": "Custom bibliography title"
     }
   },
   "stylo": {

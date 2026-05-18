@@ -2,9 +2,8 @@ import { describe, expect, test } from 'vitest'
 
 import {
   createEnclosingTextFormattingEdit,
-  createEnclosingTextStyleEdit,
+  createInlineBlockEdit,
   createHyperlinkEdit,
-  createInlineFootnoteEdit,
 } from './inline-block.js'
 
 // Minimal selection helper
@@ -76,12 +75,12 @@ describe('createEnclosingTextFormattingEdit()', () => {
   })
 })
 
-describe('createEnclosingTextStyleEdit()', () => {
+describe('createInlineBlockEdit()', () => {
   test('wraps selection in a Pandoc CSS-class span', () => {
-    const { text, endCursorState } = createEnclosingTextStyleEdit({
+    const { text, endCursorState } = createInlineBlockEdit({
       selection: sel(1, 1, 1, 9),
       selectionText: 'citation',
-      styleName: 'inlinequote',
+      className: 'inlinequote',
     })
     expect(text).toBe('[citation]{.inlinequote}')
     // endColumn(9) + styleAttr.length("{.inlinequote}"=14) + 2 brackets = 25
@@ -89,41 +88,34 @@ describe('createEnclosingTextStyleEdit()', () => {
   })
 
   test('empty selection: cursor placed inside brackets', () => {
-    const { text, endCursorState } = createEnclosingTextStyleEdit({
-      selection: sel(1, 5, 1, 5),
+    const { text, endCursorState } = createInlineBlockEdit({
+      selection: sel(1, 1, 1, 1),
       selectionText: '',
-      styleName: 'smallcaps',
+      className: 'smallcaps',
     })
     expect(text).toBe('[]{.smallcaps}')
     // startColumn(5) + 1 = 6 (inside the brackets)
-    expect(endCursorState).toMatchObject({ startColumn: 6 })
+    expect(endCursorState).toMatchObject({ startColumn: 2 })
   })
 
-  test('uses styleName, not id, for the class attribute', () => {
-    const { text } = createEnclosingTextStyleEdit({
-      selection: sel(1, 1, 1, 5),
-      selectionText: 'word',
-      styleName: 'notepre',
-    })
-    expect(text).toBe('[word]{.notepre}')
-  })
-})
-
-describe('createInlineFootnoteEdit()', () => {
-  test('appends ^[] after selection and places cursor inside brackets', () => {
-    const { text, endCursorState } = createInlineFootnoteEdit({
+  test('wraps text as a footnote ^[] and places cursor inside brackets', () => {
+    const { text, endCursorState } = createInlineBlockEdit({
       selection: sel(2, 1, 2, 5),
       selectionText: 'text',
+      contentBefore: '^[',
+      contentAfter: ']'
     })
-    expect(text).toBe('text^[]')
+    expect(text).toBe('^[text]')
     // endColumn(5) + 2 = 7
-    expect(endCursorState).toMatchObject({ startLineNumber: 2, startColumn: 7 })
+    expect(endCursorState).toMatchObject({ startLineNumber: 2, startColumn: 8 })
   })
 
   test('empty selection: produces ^[] with cursor inside', () => {
-    const { text, endCursorState } = createInlineFootnoteEdit({
+    const { text, endCursorState } = createInlineBlockEdit({
       selection: sel(1, 3, 1, 3),
       selectionText: '',
+      contentBefore: '^[',
+      contentAfter: ']'
     })
     expect(text).toBe('^[]')
     expect(endCursorState).toMatchObject({ startColumn: 5 })

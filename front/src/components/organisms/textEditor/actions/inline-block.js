@@ -4,15 +4,20 @@ import {
   Selection,
 } from 'monaco-editor/esm/vs/editor/editor.api'
 
+import { blockAttributes } from './index.js'
+
 /**
  * @typedef {import('monaco-editor').editor.IActionDescriptor} IActionDescriptor
  * @typedef {import('monaco-editor').editor.ICodeEditor} ICodeEditor
+ * @typedef {import('monaco-editor').IRange} IRange
+ * @typedef {import('monaco-editor').ISelection} ISelection
  */
 
 /**
  * @typedef {object} EditResult
  * @property {string} text - The text to insert
- * @property {Selection} endCursorState - The cursor position after the edit
+ * @property {IRange} range - The range selection to position at/replace
+ * @property {ISelection} endCursorState - The cursor position after the edit
  */
 
 // Helpers
@@ -29,6 +34,10 @@ function isURL(text) {
   } catch {
     return false
   }
+}
+
+function defaultSelectionState (editor) {
+  return editor.getSelection()
 }
 
 /**
@@ -48,6 +57,48 @@ function buildCommandDescriptor(id, { keybindings = undefined, run }) {
     keybindings,
     run,
   }
+}
+
+export default function createInlineBlockCommand (id, {
+    keybindings = undefined,
+    className = undefined,
+    attrs = {},
+    contentBefore = '[',
+    contentAfter = ']',
+    forceMoveMarkers = true,
+    selectionState = defaultSelectionState,
+  } = {}) {
+/**
+   * @param {ICodeEditor} editor
+   * @param {TFunction} t
+   */
+  function run(editor, t) {
+    const selection = editor.getSelection()
+    const selectionText = editor.getModel().getValueInRange(selection) || ''
+
+    const edit = createInlineBlockEdit({
+      selection,
+      selectionText,
+      className,
+      attrs,
+      contentBefore,
+      contentAfter,
+    }, { t })
+
+    editor.executeEdits(
+      id,
+      [
+        {
+          range: selectionState(editor),
+          text: edit.text,
+          forceMoveMarkers
+        }
+      ],
+      [edit.endCursorState]
+    )
+  }
+
+  return buildCommandDescriptor(id, { keybindings, run })
 }
 
 //  Edit functions (pure — no Monaco editor instance required)
@@ -124,50 +175,35 @@ export function createEnclosingTextFormattingEdit({
 /**
  * Wraps the selection with a Pandoc span carrying a CSS class attribute,
  * e.g. `[text]{.smallcaps}`.
- * @param {{ selection: Selection, selectionText: string, styleName: string }} params
+ *
+ * @param {{ selection: Selection, selectionText: string, className: string, attrs: {[key: string]: string}, preamble: string, contentBefore: string, contentAfter: string }} params
+ * @param {{ t: TFunction }?} helpers
  * @returns {EditResult}
  */
-export function createEnclosingTextStyleEdit({
+export function createInlineBlockEdit({
   selection,
   selectionText,
-  styleName,
-}) {
-  const hasSelectionText = Boolean(selectionText)
-  const styleAttr = `{.${styleName}}`
-  // When there is selected text the cursor lands after the closing `}`,
-  // otherwise it lands inside the brackets ready to type.
-  const positionColumn = hasSelectionText
-    ? selection.endColumn + styleAttr.length + 2
-    : selection.startColumn + 1
-  const endLineNumber = selection.endLineNumber
-  return {
-    text: `[${selectionText}]${styleAttr}`,
-    endCursorState: new Selection(
-      endLineNumber,
-      positionColumn,
-      endLineNumber,
-      positionColumn
-    ),
-  }
-}
+  className,
+  attrs,
+  contentBefore = '[',
+  contentAfter = ']',
+}, { t } = {}) {
+  const attributes = blockAttributes({ classNames: [className], attrs })
+  const hasSelectionText = selectionText.length > 1
 
-/**
- * Appends an inline footnote marker `^[]` after the selection and places the
- * cursor inside the brackets.
- * @param {{ selection: Selection, selectionText: string }} params
- * @returns {EditResult}
- */
-export function createInlineFootnoteEdit({ selection, selectionText }) {
-  const positionColumn = selection.endColumn + 2
-  const endLineNumber = selection.endLineNumber
+  let endLineNumber = selection.endLineNumber
+  let endPositionColumn = selection.startColumn + contentBefore.length
+
+  if (hasSelectionText) {
+    endPositionColumn = selection.endColumn + attributes.length + contentAfter.length + contentBefore.length
+  }
+
+  const text = `${contentBefore}${selectionText}${contentAfter}${attributes}`
+
   return {
-    text: `${selectionText}^[]`,
-    endCursorState: new Selection(
-      endLineNumber,
-      positionColumn,
-      endLineNumber,
-      positionColumn
-    ),
+    endCursorState: new Selection(endLineNumber, endPositionColumn, endLineNumber, endPositionColumn),
+    selection,
+    text
   }
 }
 
@@ -251,60 +287,6 @@ export function createEnclosingTextFormattingCommand(
   }
 
   return buildCommandDescriptor(id, { keybindings, run })
-}
-
-/**
- * Creates a command that wraps the selection in a Pandoc CSS-class span.
- * @param {string} id
- * @param {{ styleName?: string }} [options]
- * @returns {IActionDescriptor}
- */
-export function createEnclosingTextStyleCommand(
-  id,
-  { styleName } = { styleName: id }
-) {
-  /** @param {ICodeEditor} editor */
-  async function run(editor) {
-    const selection = editor.getSelection()
-    const selectionText = editor.getModel().getValueInRange(selection)
-    const edit = createEnclosingTextStyleEdit({
-      selection,
-      selectionText,
-      styleName: styleName ?? id,
-    })
-    editor.executeEdits(
-      id,
-      [{ range: selection, text: edit.text, forceMoveMarkers: true }],
-      [edit.endCursorState]
-    )
-  }
-
-  return buildCommandDescriptor(id, { run })
-}
-
-/**
- * Creates a command that appends an inline footnote `^[]` after the selection.
- * Default keybinding: Ctrl/Cmd + Alt + F.
- * @param {string} id
- * @returns {IActionDescriptor}
- */
-export function createInlineFootnoteCommand(id) {
-  /** @param {ICodeEditor} editor */
-  async function run(editor) {
-    const selection = editor.getSelection()
-    const selectionText = editor.getModel().getValueInRange(selection)
-    const edit = createInlineFootnoteEdit({ selection, selectionText })
-    editor.executeEdits(
-      id,
-      [{ range: selection, text: edit.text, forceMoveMarkers: true }],
-      [edit.endCursorState]
-    )
-  }
-
-  return buildCommandDescriptor(id, {
-    keybindings: [[KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF]],
-    run,
-  })
 }
 
 /**

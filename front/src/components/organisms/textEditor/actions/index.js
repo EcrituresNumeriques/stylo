@@ -3,14 +3,13 @@ import {
   KeyCode,
   KeyMod,
   editor as _editor,
+  Selection
 } from 'monaco-editor/esm/vs/editor/editor.api'
 
 import createDelimitedBlockCommand from './delimited-block.js'
-import {
+import createInlineBlockCommand, {
   createEnclosingTextFormattingCommand,
-  createEnclosingTextStyleCommand,
   createHyperlinkCommand,
-  createInlineFootnoteCommand,
 } from './inline-block.js'
 
 export { Separator } from 'monaco-editor/esm/vs/base/common/actions'
@@ -26,7 +25,10 @@ export const actions = {
       formattingMark: '**',
       keybindings: [KeyMod.CtrlCmd | KeyCode.KeyB],
     }),
-    footnoteInline: createInlineFootnoteCommand('footnote-inline'),
+    footnote: createInlineBlockCommand('footnote', {
+      contentBefore: '^[',
+      keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF]
+    }),
     hyperlink: createHyperlinkCommand('hyperlink'),
   },
   metopes: {
@@ -38,49 +40,78 @@ export const actions = {
         ),
       ],
     }),
+    argument: createDelimitedBlockCommand('argument'),
     dedication: createDelimitedBlockCommand('dedi'),
-    endnote: createDelimitedBlockCommand('endnote', {
+    endnote: createInlineBlockCommand('endnote', {
+      className: 'endnote',
       keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyD],
     }),
     epigraph: createDelimitedBlockCommand('epigraph', {
-      contentBefore: '[@source]',
+      contentBefore: ':::{.rich-quote}\n',
+      contentAfter: '\n[@source]\n:::'
     }),
     figure: createDelimitedBlockCommand('figure', {
-      contentBefore: '\n[titre]{.head}\n\n![caption](image.png)',
-      contentAfter: ':::{.credits}\n[@source]\n:::',
+      contentBefore: '\n[titre]{.head}\n\n![caption](image.png)\n\n',
+      contentAfter: '\n:::{.credits}\n[@source]\n:::',
+    }),
+    indexEntry: createInlineBlockCommand('index-entry', {
+      className: 'index-type',
+      attrs: { idref: () => self.crypto.randomUUID() }
     }),
     outline: createDelimitedBlockCommand('outline', {
-      attrs: { titre: 'valeurtitre' },
-      className: 'encadre',
-      contentAfter: '[[nom]{.name}[prenom]{.surname}]{.auth}',
+      attrs: { title: 'title-value' },
+      className: 'box',
+      contentBefore: '\n[titre]{.head}\n',
+      contentAfter: '\n[[nom]{.name} [prenom]{.surname}]{.aut}',
     }),
-    inlinequote: createEnclosingTextStyleCommand('inlinequote'),
-    notepreAuthor: createDelimitedBlockCommand('notepre.aut', {
+    inlinequote: createInlineBlockCommand('inlinequote', {
+    }),
+    prenoteAuthor: createDelimitedBlockCommand('prenote.aut', {
       attrs: { origin: 'aut' },
-      className: 'notepre',
+      className: 'prenote',
     }),
-    noteprePublisher: createDelimitedBlockCommand('notepre.pbl', {
+    prenotePublisher: createDelimitedBlockCommand('prenote.pbl', {
       attrs: { origin: 'pbl' },
-      className: 'notepre',
+      className: 'prenote',
     }),
-    notepreTranslator: createDelimitedBlockCommand('notepre.tr', {
+    prenoteTranslator: createDelimitedBlockCommand('prenote.tr', {
       attrs: { origin: 'tr' },
-      className: 'notepre',
+      className: 'prenote',
     }),
     question: createDelimitedBlockCommand('question', {
       contentBefore: '[nom de personne]{.speaker}',
     }),
     quoteAlt: createDelimitedBlockCommand('quote-alt'),
     refs: createDelimitedBlockCommand('refs', {
-      preamble: '## Bibliographie',
+      preamble (t) {
+        return `\n\n## ${t('actions.preamble.refs')}`
+      },
       attrs: { id: 'refs' },
       className: '',
+      // returns the cursor to its initial position
+      endCursorState ({ selection }) {
+        return selection
+      },
+      // insert content at the last char of the last column
+      selectionState (editor) {
+        const model = editor.getModel()
+        const lastLineNumber = model.getLineCount()
+        const lastLineMaxChar = model.getLineMaxColumn(lastLineNumber)
+
+        return new Selection(lastLineNumber, lastLineMaxChar, lastLineNumber, lastLineMaxChar)
+      }
+    }),
+    richQuote: createDelimitedBlockCommand('rich-quote', {
+      attrs: { lang: 'lang-value' },
+      contentBefore: '> ',
+      contentAfter: '> \n[@<source>]\n\n:::{.translation lang="lang-value"}\n> \n> \n[@<source>]\n:::\n\n:::{.translation lang="lang-value"}\n> \n> \n> \n:::\n',
     }),
     reponse: createDelimitedBlockCommand('answer', {
       contentBefore: '[nom de personne]{.speaker}',
     }),
     signature: createDelimitedBlockCommand('sig'),
-    smallcaps: createEnclosingTextStyleCommand('smallcaps'),
+    smallcaps: createInlineBlockCommand('smallcaps', {
+    }),
     sponsor: createDelimitedBlockCommand('sponsor'),
   },
 }
@@ -105,7 +136,7 @@ export function bindAction(editor, t, action) {
     ...action,
     enabled: true,
     label: t(action.label),
-    run: action.run.bind(null, editor),
+    run: action.run.bind(null, editor, t),
   }
 }
 
@@ -159,17 +190,16 @@ export function blockAttributes({ classNames = [], attrs = {} } = {}) {
 
   const parts = [
     id ? `#${id}` : null,
-    classNames.filter((d) => d).map((c) => `.${c}`),
+    classNames.filter((d) => d).map(c => c.split(',')).flat().map((c) => `.${c.trim()}`),
     Object.entries(attrs)
       .filter(([key]) => key !== 'id')
-      .map(([key, value]) => `${key}="${value}"`),
+      .map(([key, value]) => `${key}="${typeof value === 'function' ? value(key) : value}"`),
   ]
     .flatMap((d) => d)
     .filter((d) => d)
 
-  if (parts.length) {
-    return `{${parts.join(' ')}}`
-  }
+
+  return parts.length ? `{${parts.join(' ')}}` : ''
 }
 
 /**
@@ -192,11 +222,11 @@ export function MetopesMenu({ editor, t }) {
         t('stylo.metopes.liminaires'),
         [
           _bindAction(actions.metopes.acknowledgement),
+          _bindAction(actions.metopes.argument),
           _bindAction(actions.metopes.epigraph),
-          _bindAction(actions.metopes.notepreAuthor),
-          _bindAction(actions.metopes.noteprePublisher),
-          _bindAction(actions.metopes.notepreTranslator),
-          _bindAction(actions.metopes.endnote),
+          _bindAction(actions.metopes.prenoteAuthor),
+          _bindAction(actions.metopes.prenotePublisher),
+          _bindAction(actions.metopes.prenoteTranslator),
           _bindAction(actions.metopes.dedication),
           _bindAction(actions.metopes.sponsor),
         ]
@@ -208,6 +238,7 @@ export function MetopesMenu({ editor, t }) {
           _bindAction(actions.metopes.inlinequote),
           _bindAction(actions.metopes.quoteAlt),
           _bindAction(actions.metopes.refs),
+          _bindAction(actions.metopes.richQuote),
         ]
       ),
       new SubmenuAction('stylo--metopes--texte', t('stylo.metopes.texte'), [
@@ -219,6 +250,8 @@ export function MetopesMenu({ editor, t }) {
             _bindAction(actions.metopes.reponse),
           ]
         ),
+        _bindAction(actions.metopes.endnote),
+        _bindAction(actions.metopes.indexEntry),
         _bindAction(actions.metopes.signature),
         _bindAction(actions.metopes.smallcaps),
       ]),
@@ -238,7 +271,7 @@ export function MarkdownMenu({ editor, t }) {
       _bindAction(actions.md.italic),
       _bindAction(actions.md.bold),
       _bindAction(actions.md.hyperlink),
-      _bindAction(actions.md.footnoteInline),
+      _bindAction(actions.md.footnote),
     ]
   )
 }
