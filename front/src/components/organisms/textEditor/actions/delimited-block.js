@@ -1,7 +1,6 @@
 import { Selection } from 'monaco-editor/esm/vs/editor/editor.api'
 
 import { blockAttributes } from './index.js'
-import { join } from 'node:path'
 
 /**
  * @typedef {import('monaco-editor').editor.IActionDescriptor} IActionDescriptor
