@@ -165,7 +165,9 @@ export function createDelimitedBlockEdit(
  * @param {number[]} [opts.keybindings] - Optional Monaco keybinding(s)
  * @param {string} [opts.className] - CSS class for the fenced div (defaults to `id`)
  * @param {{[key: string]: string}} [opts.attrs] - Additional pandoc attributes
- * @param {null|function(t) => string} [opts.preamble] - Static content inserted before the opening delimiter
+ * @param {null|TFunction} [opts.preamble] - Static content inserted before the opening delimiter
+ * @param {string?} [opts.blockDelimiter] - Callout delimiter. Usually ':::' but can be empty too in edge cases
+ * @param {null|TFunction} [opts.preamble] - Static content inserted before the opening delimiter
  * @param {string} [opts.contentBefore] - Static content inserted before the selected text
  * @param {string} [opts.contentAfter] - Static content inserted after the selected text
  * @returns {IActionDescriptor}
