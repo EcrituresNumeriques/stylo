@@ -59,7 +59,6 @@ export const actions = {
       attrs: { idref: () => self.crypto.randomUUID() }
     }),
     outline: createDelimitedBlockCommand('outline', {
-      attrs: { title: 'title-value' },
       className: 'box',
       contentBefore: '\n[titre]{.head}\n',
       contentAfter: '\n[[nom]{.name} [prenom]{.surname}]{.aut}',
