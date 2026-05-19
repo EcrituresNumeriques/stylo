@@ -64,6 +64,7 @@ export const actions = {
       contentAfter: '\n[[nom]{.name} [prenom]{.surname}]{.aut}',
     }),
     inlinequote: createInlineBlockCommand('inlinequote', {
+      className: 'inlinequote'
     }),
     prenoteAuthor: createDelimitedBlockCommand('prenote.aut', {
       attrs: { origin: 'aut' },
@@ -110,6 +111,7 @@ export const actions = {
     }),
     signature: createDelimitedBlockCommand('sig'),
     smallcaps: createInlineBlockCommand('smallcaps', {
+      className: 'smallcaps'
     }),
     sponsor: createDelimitedBlockCommand('sponsor'),
   },
