@@ -4,6 +4,7 @@
       "ack": "$t(types.block) agradecimiento",
       "answer": "$t(types.block) respuesta",
       "argument": "$t(types.block) entradilla",
+      "credits": "$t(types.block) créditos",
       "dedication": "$t(types.block) dedicatoria",
       "epigraph": "$t(types.block) epígrafe",
       "figure": "$t(types.block) figura",
@@ -20,6 +21,7 @@
     },
     "infratextual-inline": {
       "bold": "Negrita",
+      "credits": "$t(types.inline) créditos",
       "endnote": "$t(types.inline) nota final",
       "footnote": "$t(types.inline) nota",
       "hyperlink": "Hipervínculo",
@@ -39,6 +41,7 @@
     "metopes": {
       "citations": "Citas",
       "entretien": "Entrevistas",
+      "figure": "Figura",
       "liminaires": "Liminarios",
       "rootMenu": "Métopes",
       "texte": "Texto"
