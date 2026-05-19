@@ -85,7 +85,7 @@ export const actions = {
       preamble (t) {
         return `\n\n## ${t('actions.preamble.refs')}`
       },
-      attrs: { id: 'refs' },
+      blockDelimiter: '',
       className: '',
       // returns the cursor to its initial position
       endCursorState ({ selection }) {
