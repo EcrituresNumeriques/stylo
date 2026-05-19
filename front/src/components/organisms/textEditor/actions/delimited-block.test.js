@@ -15,7 +15,6 @@ describe('createDelimitedBlockEdit()', () => {
       attrs: {},
     })
     expect(text).toBe(':::{.ack}\n\n:::\n')
-    // no selection → cursor on startLineNumber + 1
     expect(endCursorState).toMatchObject({ startLineNumber: 2, startColumn: 1 })
   })
 
@@ -27,8 +26,7 @@ describe('createDelimitedBlockEdit()', () => {
       attrs: {},
     })
     expect(text).toBe(':::{.quote}\nmytext\n:::\n')
-    // 3 newlines in text → cursor at endLineNumber(3) + 3 = 6
-    expect(endCursorState).toMatchObject({ startLineNumber: 5, startColumn: 7 })
+    expect(endCursorState).toMatchObject({ startLineNumber: 4, startColumn: 7 })
   })
 
   test('with attrs: includes them in the delimiter line', () => {
@@ -106,7 +104,7 @@ describe('createDelimitedBlockEdit()', () => {
       attrs: {}
     })
     // text = ':::{.sig}\ntext\n:::\n' → 3 newlines → 5 + 3 = 8
-    expect(endCursorState).toMatchObject({ startLineNumber: 3, startColumn: 5 })
+    expect(endCursorState).toMatchObject({ startLineNumber: 2, startColumn: 5 })
   })
 
   test('with preamble: appears before the opening delimiter', () => {

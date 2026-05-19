@@ -138,6 +138,165 @@
     small {
       font-size: 0.833rem;
     }
+
+    /**
+     * Styles des balisages infra-textuels
+     */
+     :global {
+      /* ─────────── LIMINAIRES ─────────── */
+        .ack, .acknowledgement {
+          font-style: italic;
+          opacity: 0.8;
+          margin-top: 1.5em;
+        }
+
+        .dedi, .dedication {
+          text-align: right;
+          font-style: italic;
+          margin: 2em 0;
+        }
+
+        .prenote, .endnote {
+          font-style: italic;
+          border-left: 3px solid;
+          padding-left: 1em;
+          margin: 1.5em 0;
+        }
+
+        .argument {
+          background: rgba(0,0,0,0.04);
+          padding: 1em;
+          border-radius: 6px;
+          font-weight: bold;
+          margin-bottom: 1.5em;
+        }
+
+        .epigraph {
+          font-style: italic;
+          margin: 2em 1em;
+          padding-left: 1em;
+          border-left: 2px solid;
+          opacity: 0.9;
+          line-height: 1.4;
+        }
+
+        .sponsor {
+          font-size: 0.95em;
+          opacity: 0.8;
+          margin: 1.5em 0;
+        }
+
+
+        /* ─────────── SIGNATURE ─────────── */
+
+        .sig, .sig p {
+          font-family: serif;
+          text-align: right;
+          font-style: italic;
+          margin-top: 2em;
+        }
+
+        /* ─────────── ENTRETIENS ─────────── */
+
+        .question, .answ, .answer {
+          margin: 1.5em 0;
+          padding: 1em;
+          border-left: 3px solid;
+          background: rgba(0,0,0,0.02);
+          border-radius: 4px;
+        }
+
+        .question .speaker {
+          font-weight: bold;
+          display: block;
+          margin-bottom: 0.5em;
+        }
+
+        :is(.answ, .answer) .speaker {
+          font-weight: bold;
+          display: block;
+          margin-bottom: 0.5em;
+        }
+
+
+        /* ─────────── CITATIONS ─────────── */
+
+        .quote-alt {
+          font-style: italic;
+          background: rgba(0,0,0,0.03);
+          padding: 1em;
+          border-radius: 6px;
+          margin: 1.5em 0;
+        }
+
+        .inlinequote::before {
+          content: "« ";
+        }
+
+        .inlinequote::after {
+          content: " »";
+        }
+
+
+
+        /* ─────────── FIGURES ─────────── */
+
+        .figure {
+          margin: 2em 0;
+          padding: 1em;
+          border: 1px solid rgba(0,0,0,0.1);
+          border-radius: 8px;
+          background: rgba(0,0,0,0.02);
+        }
+
+        .figure figure {
+          margin: 1em 0;
+          text-align: center;
+        }
+
+        .figure img {
+          max-width: 100%;
+          border-radius: 6px;
+        }
+
+        .figure figcaption {
+          font-size: 0.9em;
+          opacity: 0.8;
+        }
+
+        .figure .head {
+          font-weight: bold;
+        }
+
+      .figure .credits {
+        font-size: 0.85em;
+        opacity: 0.7;
+        margin-top: 1em;
+        border-top: 1px solid rgba(0,0,0,0.08);
+        padding-top: 0.6em;
+      }
+
+
+      /* ─────────── ENCADRÉS ─────────── */
+
+      .box {
+        border: 2px solid;
+        padding: 1em;
+        border-radius: 8px;
+        margin: 2em 0;
+        background: rgba(0,0,0,0.02);
+      }
+
+      :is(.auth, .aut) :is(.name, .surname) {
+        font-weight: bold;
+      }
+
+      .auth, .aut {
+        display: block;
+        margin-bottom: 0.8em;
+        font-variant: small-caps;
+      }
+     }
   }
 
   a[id^='fnref']:target {
