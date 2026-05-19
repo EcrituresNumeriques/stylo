@@ -115,7 +115,7 @@ describe('createDelimitedBlockEdit()', () => {
       selectionText: '',
       className: '',
       attrs: { id: 'refs' },
-      preamble: () => '## Bibliographie',
+      preamble: () => '## Bibliographie\n',
     }, { t: dummyT } )
     expect(text).toBe('## Bibliographie\n\n:::{#refs}\n\n:::\n')
   })
@@ -126,9 +126,19 @@ describe('createDelimitedBlockEdit()', () => {
       selectionText: 'my text',
       className: 'note',
       attrs: {},
-      preamble: () => '## Section',
+      preamble: () => '## Section\n',
     }, { t: dummyT } )
     expect(text).toBe('## Section\n\n:::{.note}\nmy text\n:::\n')
+  })
+
+  test('with preamble and nothing else (like custom bibliography headline)', () => {
+    const { text } = createDelimitedBlockEdit({
+      selection: new Selection(1, 1, 1, 1),
+      selectionText: '',
+      preamble: () => '## Section',
+      blockDelimiter: ''
+    }, { t: dummyT } )
+    expect(text).toBe('## Section\n\n')
   })
 
   test('cursor position: no selection → lands on first line inside the block', () => {

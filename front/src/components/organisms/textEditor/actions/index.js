@@ -59,12 +59,12 @@ export const actions = {
       attrs: { idref: () => self.crypto.randomUUID() }
     }),
     outline: createDelimitedBlockCommand('outline', {
-      attrs: { title: 'title-value' },
       className: 'box',
       contentBefore: '\n[titre]{.head}\n',
       contentAfter: '\n[[nom]{.name} [prenom]{.surname}]{.aut}',
     }),
     inlinequote: createInlineBlockCommand('inlinequote', {
+      className: 'inlinequote'
     }),
     prenoteAuthor: createDelimitedBlockCommand('prenote.aut', {
       attrs: { origin: 'aut' },
@@ -86,7 +86,7 @@ export const actions = {
       preamble (t) {
         return `\n\n## ${t('actions.preamble.refs')}`
       },
-      attrs: { id: 'refs' },
+      blockDelimiter: '',
       className: '',
       // returns the cursor to its initial position
       endCursorState ({ selection }) {
@@ -111,6 +111,7 @@ export const actions = {
     }),
     signature: createDelimitedBlockCommand('sig'),
     smallcaps: createInlineBlockCommand('smallcaps', {
+      className: 'smallcaps'
     }),
     sponsor: createDelimitedBlockCommand('sponsor'),
   },

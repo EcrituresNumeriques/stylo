@@ -1,6 +1,7 @@
 import { Selection } from 'monaco-editor/esm/vs/editor/editor.api'
 
 import { blockAttributes } from './index.js'
+import { join } from 'node:path'
 
 /**
  * @typedef {import('monaco-editor').editor.IActionDescriptor} IActionDescriptor
@@ -14,8 +15,26 @@ function countLines (text) {
   return (text.match(newLineRE) || []).length
 }
 
+/**
+ * Array filter function for trueish values
+ * It drops any falsy value.
+ * @param {string|null|undefined} value
+ * @returns {boolean}
+ */
+function dropEmptyValue (value) {
+  return Boolean(value)
+}
+
+/**
+ * Array flter function to keep any value
+ * @returns {boolean}
+ */
+function keepValue () {
+  return true
+}
+
 function joinContents (joinSeparator, ...texts) {
-  return texts.filter(d => d).join(joinSeparator)
+  return texts.filter(dropEmptyValue).join(joinSeparator)
 }
 
 function defaultSelectionState (editor) {
@@ -72,22 +91,28 @@ export function createDelimitedBlockEdit({
   className,
   attrs,
   preamble = null,
+  blockDelimiter = ':::',
+  joinSeparator = '\n',
   contentBefore = '',
   contentAfter = '',
   endCursorState = defaultEndCursorState
-}, { t } = {}) {
-  const joinSeparator = '\n'
+}, { t = (translationKey) => translationKey } = {}) {
   const attributes = blockAttributes({ classNames: [className], attrs })
-  const bodyParts = [contentBefore, selectionText, contentAfter].filter(
-    (d) => d
-  )
 
   let preambleText = ''
   if (typeof preamble === 'function' && typeof t === 'function') {
-    preambleText = `${preamble(t)}\n\n`
+    preambleText = preamble(t)
   }
 
-  const text = `${preambleText}:::${attributes}\n${joinContents(joinSeparator, ...bodyParts)}\n:::\n`
+  const intro = `${blockDelimiter}${attributes}`
+  const body = joinContents(joinSeparator, contentBefore, selectionText, contentAfter)
+  const outro = `${blockDelimiter}`
+
+  const text = [
+    joinContents(joinSeparator, preambleText, intro),
+    body,
+    outro
+  ].join(joinSeparator) + (outro ? joinSeparator : '')
 
   return {
     endCursorState: endCursorState({
@@ -126,6 +151,7 @@ export default function createDelimitedBlockCommand(
     className = undefined,
     attrs = {},
     preamble = null,
+    blockDelimiter = ':::',
     contentBefore = '',
     contentAfter = '',
     endCursorState = defaultEndCursorState,
@@ -140,6 +166,7 @@ export default function createDelimitedBlockCommand(
   function run(editor, t) {
     const selection = editor.getSelection()
     const selectionText = editor.getModel().getValueInRange(selection) || ''
+    const joinSeparator = editor.getModel().getEOL()
 
     const edit = createDelimitedBlockEdit({
       selection,
@@ -147,6 +174,8 @@ export default function createDelimitedBlockCommand(
       className: className ?? id,
       attrs,
       preamble,
+      joinSeparator,
+      blockDelimiter,
       contentBefore,
       contentAfter,
       endCursorState
