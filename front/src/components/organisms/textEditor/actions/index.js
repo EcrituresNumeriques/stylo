@@ -41,7 +41,11 @@ export const actions = {
       ],
     }),
     argument: createDelimitedBlockCommand('argument'),
+    credits: createDelimitedBlockCommand('credits'),
     dedication: createDelimitedBlockCommand('dedication'),
+    inlineCredits: createInlineBlockCommand('credits', {
+      className: 'credits'
+    }),
     endnote: createInlineBlockCommand('endnote', {
       className: 'endnote',
       keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyD],
@@ -51,8 +55,8 @@ export const actions = {
       contentAfter: '\n[@source]\n:::'
     }),
     figure: createDelimitedBlockCommand('figure', {
-      contentBefore: '\n[titre]{.head}\n\n![caption](image.png)\n\n',
-      contentAfter: '\n:::{.credits}\n[@source]\n:::',
+      contentBefore: '\n[titre]{.head}\n',
+      contentAfter: '\n![caption](image.png)',
     }),
     indexEntry: createInlineBlockCommand('index-entry', {
       className: 'index-type',
@@ -63,7 +67,7 @@ export const actions = {
       contentBefore: '\n[titre]{.head}\n',
       contentAfter: '\n[[nom]{.name} [prenom]{.surname}]{.aut}',
     }),
-    inlinequote: createInlineBlockCommand('inlinequote', {
+    inlineQuote: createInlineBlockCommand('inlinequote', {
       className: 'inlinequote'
     }),
     prenoteAuthor: createDelimitedBlockCommand('prenote.aut', {
@@ -81,7 +85,7 @@ export const actions = {
     question: createDelimitedBlockCommand('question', {
       contentBefore: '[nom de personne]{.speaker}',
     }),
-    quoteAlt: createDelimitedBlockCommand('quote-alt'),
+    altQuote: createDelimitedBlockCommand('quote-alt'),
     refs: createDelimitedBlockCommand('refs', {
       preamble (t) {
         return `\n\n## ${t('actions.preamble.refs')}`
@@ -236,8 +240,8 @@ export function MetopesMenu({ editor, t }) {
         'stylo--metopes--citations',
         t('stylo.metopes.citations'),
         [
-          _bindAction(actions.metopes.inlinequote),
-          _bindAction(actions.metopes.quoteAlt),
+          _bindAction(actions.metopes.inlineQuote),
+          _bindAction(actions.metopes.altQuote),
           _bindAction(actions.metopes.refs),
           _bindAction(actions.metopes.richQuote),
         ]
@@ -256,7 +260,11 @@ export function MetopesMenu({ editor, t }) {
         _bindAction(actions.metopes.signature),
         _bindAction(actions.metopes.smallcaps),
       ]),
-      _bindAction(actions.metopes.figure),
+      new SubmenuAction('stylo--metopes--figure', t('stylo.metopes.figure'), [
+        _bindAction(actions.metopes.figure),
+        _bindAction(actions.metopes.credits),
+        _bindAction(actions.metopes.inlineCredits)
+      ]),
       _bindAction(actions.metopes.outline),
     ]
   )

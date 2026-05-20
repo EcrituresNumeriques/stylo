@@ -4,6 +4,7 @@
       "ack": "$t(types.block) remerciements",
       "answer": "$t(types.block) réponse",
       "argument": "$t(types.block) chapô introductif",
+      "credits": "$t(types.block) crédits",
       "dedication": "$t(types.block) dédicace",
       "epigraph": "$t(types.block) épigraphe",
       "figure": "$t(types.block) figure",
@@ -20,6 +21,7 @@
     },
     "infratextual-inline": {
       "bold": "Gras",
+      "credits": "$t(types.inline) crédits",
       "endnote": "$t(types.inline) note de fin",
       "footnote": "$t(types.inline) note de bas de page",
       "hyperlink": "Hyperlien",
@@ -39,6 +41,7 @@
     "metopes": {
       "citations": "Citations",
       "entretien": "Entretien",
+      "figure": "Figure",
       "liminaires": "Liminaires",
       "rootMenu": "Métopes",
       "texte": "Texte"

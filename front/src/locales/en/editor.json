@@ -4,6 +4,7 @@
       "ack": "$t(types.block) acknowledgement",
       "answer": "$t(types.block) answer",
       "argument": "$t(types.block) argument",
+      "credits": "$t(types.block) credits",
       "dedication": "$t(types.block) dedication",
       "epigraph": "$t(types.block) epigraph",
       "figure": "$t(types.block) figure",
@@ -20,8 +21,9 @@
     },
     "infratextual-inline": {
       "bold": "Bold",
-      "endnote": "$t(types.bloinlineck) end note",
-      "footnote": "$t(types.bloinlineck) footnote",
+      "credits": "$t(types.inline) credits",
+      "endnote": "$t(types.inline) end note",
+      "footnote": "$t(types.inline) footnote",
       "hyperlink": "Hyperlink",
       "index-entry": "Index entry",
       "inlinequote": "$t(types.inline) citation",
@@ -39,6 +41,7 @@
     "metopes": {
       "citations": "Citations",
       "entretien": "Interviews",
+      "figure": "Figure",
       "liminaires": "Liminaires",
       "rootMenu": "Métopes",
       "texte": "Text"
