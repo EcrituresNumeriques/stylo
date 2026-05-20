@@ -1,12 +1,10 @@
-import { Delete, Download } from 'lucide-react'
-import { Helmet } from 'react-helmet-async'
+import { Delete } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { useModal } from '../../../hooks/modal.js'
 import { Button } from '../../atoms/index.js'
 
 import Modal from '../../molecules/Modal.jsx'
-import UserBackupDownload from './UserBackupDownload.jsx'
 import UserDeleteConfirm from './UserDeleteConfirm.jsx'
 
 import styles from './UserSection.module.scss'

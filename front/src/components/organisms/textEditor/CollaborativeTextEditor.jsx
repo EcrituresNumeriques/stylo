@@ -14,6 +14,7 @@ import {
 import { useBibliographyCompletion } from '../../../hooks/bibliography.js'
 import { useCollaboration } from '../../../hooks/collaboration.js'
 import { useStyloExportPreview } from '../../../hooks/stylo-export.js'
+import { useMarkdownValidator } from '../../../hooks/useMarkdownValidator.js'
 import { Alert, Loading, MonacoEditor } from '../../molecules/index.js'
 import { onDropIntoEditor } from '../bibliography/support.js'
 import defaultEditorOptions from '../monaco/options.js'
@@ -46,6 +47,8 @@ import styles from './CollaborativeTextEditor.module.scss'
  * @param {function} props.onStatsChange
  * @param {function} props.onStructureChange
  * @param {function} props.onWorkingCopyStatusChange
+ * @param {string[]} [props.profiles] - active validator profile ids
+ * @param {(api: {validate: () => Promise<void>, clearDiagnostics: () => void, diagnostics: Array, isValidating: boolean}) => void} [props.onValidatorReady]
  * @returns {Element}
  */
 export default function CollaborativeTextEditor({
@@ -58,6 +61,9 @@ export default function CollaborativeTextEditor({
   onStatsChange,
   onStructureChange,
   onWorkingCopyStatusChange,
+  profiles = [],
+  onValidatorReady,
+  onEditorReady,
 }) {
   const { yText, awareness, websocketStatus, dynamicStyles } = useCollaboration(
     { articleId, versionId, onWritersChange }
@@ -96,6 +102,20 @@ export default function CollaborativeTextEditor({
   })
 
   const editorRef = useRef(null)
+  const onEditorReadyRef = useRef(onEditorReady)
+  onEditorReadyRef.current = onEditorReady
+  const {
+    validate,
+    diagnostics,
+    isValidating,
+    hasValidated,
+    clearDiagnostics,
+    navigateTo,
+  } = useMarkdownValidator(editorRef, profiles)
+  const editorCursorPosition = useSelector(
+    (state) => state.editorCursorPosition,
+    shallowEqual
+  )
 
   const hasVersion = useMemo(() => Boolean(versionId), [versionId])
   const isLoading =
@@ -166,12 +186,15 @@ export default function CollaborativeTextEditor({
       if (yText && awareness) {
         new MonacoBinding(yText, model, new Set([editor]), awareness)
       }
+
+      onEditorReadyRef.current?.()
     },
     [yText, awareness]
   )
 
   const handleEditorDidMount = useCallback((editor) => {
     editorRef.current = editor
+    onEditorReadyRef.current?.()
   }, [])
 
   let timeoutId
@@ -204,6 +227,25 @@ export default function CollaborativeTextEditor({
       bibliographyCompletionProvider.bibTeXEntries = bibliography.entries
     }
   }, [bibliography])
+
+  useEffect(() => {
+    onValidatorReady?.({
+      validate,
+      diagnostics,
+      isValidating,
+      hasValidated,
+      clearDiagnostics,
+      navigateTo,
+    })
+  }, [
+    validate,
+    diagnostics,
+    isValidating,
+    hasValidated,
+    clearDiagnostics,
+    navigateTo,
+    onValidatorReady,
+  ])
 
   useEffect(() => {
     if (!cursorPosition) return

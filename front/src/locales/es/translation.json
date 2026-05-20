@@ -286,6 +286,7 @@
   "user.data.title": "Mis datos",
   "user.languages.title": "Idiomas",
   "validating.label": "Validando…",
+  "validation.title": "Validación",
   "version.by.text": "por {{owner}}",
   "versions.collaborativeSessionEnded.text": "Fin de la sesión de colaboración",
   "versions.createVersion.button": "Nueva versión",

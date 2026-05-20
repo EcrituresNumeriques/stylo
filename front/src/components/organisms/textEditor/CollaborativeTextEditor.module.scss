@@ -15,6 +15,34 @@
       font-size: 1.1em;
       text-decoration: none;
     }
+
+    /* Monaco étire les décorations de lignes sur toute la zone (lineDecorationsWidth
+       + 16px réservés aux contrôles de pliage) : on dessine une pastille ronde
+       dans un pseudo-élément, légèrement décalée du numéro de ligne. */
+    .monaco-editor
+      .margin-view-overlays
+      :is(.validator-error, .validator-warning) {
+      width: 10px !important;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 7px;
+        width: 7px;
+        height: 7px;
+        transform: translateY(-50%);
+        border-radius: 50%;
+      }
+    }
+
+    .monaco-editor .margin-view-overlays .validator-error::before {
+      background: $error-color;
+    }
+
+    .monaco-editor .margin-view-overlays .validator-warning::before {
+      background: $warn-color;
+    }
   }
 }
 

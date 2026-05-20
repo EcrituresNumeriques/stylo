@@ -4,6 +4,7 @@ import {
   BookKey,
   FileDownIcon,
   History,
+  ListChecks,
   MessageSquareShare,
   TableOfContents,
   TextCursorInput,
@@ -18,7 +19,7 @@ import EditorMenuItem from './EditorMenuItem.jsx'
 export default function EditorMenu({ articleId, onChange }) {
   const enableNakala = useMemo(
     () => !window.location.href.startsWith('https://stylo.huma-num.fr/'),
-    [window.location.href]
+    []
   ) // disable Nakala in production
   const { t } = useTranslation()
   const { value: minimized, setValue: setMinimized } = usePreferenceItem(
@@ -31,7 +32,7 @@ export default function EditorMenu({ articleId, onChange }) {
   )
 
   const handleAnnotate = useCallback(
-    () => window.open(location.pathname + '/annotate', '_blank').focus(),
+    () => window.open(`${location.pathname}/annotate`, '_blank').focus(),
     []
   )
 
@@ -41,12 +42,13 @@ export default function EditorMenu({ articleId, onChange }) {
       setActiveMenu(value)
       onChange(value)
     },
-    [activeMenu, onChange]
+    [activeMenu, onChange, setActiveMenu]
   )
 
   return (
     <div className={styles.menu}>
       <button
+        type="button"
         className={styles.toggleMinimized}
         onClick={() => setMinimized(!minimized)}
       >
@@ -101,6 +103,13 @@ export default function EditorMenu({ articleId, onChange }) {
           minimized={minimized}
           icon={<FileDownIcon />}
           text={t('export.title')}
+        />
+        <EditorMenuItem
+          onClick={toggleActiveMenu('validation')}
+          selected={activeMenu === 'validation'}
+          minimized={minimized}
+          icon={<ListChecks />}
+          text={t('validation.title')}
         />
         <EditorMenuItem
           onClick={handleAnnotate}

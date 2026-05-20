@@ -1,0 +1,102 @@
+@use '../../../styles/defaults' as *;
+@use '../../../styles/variables' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0 0 1rem;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.profilesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.sectionTitle {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $main-lighter-color;
+  margin: 0;
+}
+
+.profiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0 1rem 0 0;
+}
+
+.profileLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.diagnosticList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.error,
+.warning {
+  @extend .clickable;
+
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  border-left: 3px solid transparent;
+
+  &:hover {
+    background-color: $muted-background-color;
+  }
+}
+
+.error {
+  border-left-color: $error-color;
+
+  .icon {
+    color: $error-color;
+    flex-shrink: 0;
+    display: flex;
+  }
+}
+
+.warning {
+  border-left-color: $warn-color;
+
+  .icon {
+    color: $warn-color;
+    flex-shrink: 0;
+    display: flex;
+  }
+}
+
+.message {
+  flex: 1;
+}
+
+.location {
+  color: $muted-color;
+  flex-shrink: 0;
+  font-family: monospace;
+  font-size: 0.8em;
+}

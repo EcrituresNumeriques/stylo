@@ -286,6 +286,7 @@
   "user.data.title": "My data",
   "user.languages.title": "Languages",
   "validating.label": "Validation…",
+  "validation.title": "Validation",
   "version.by.text": "by {{owner}}",
   "versions.collaborativeSessionEnded.text": "Collaborative session ended",
   "versions.createVersion.button": "New version",
