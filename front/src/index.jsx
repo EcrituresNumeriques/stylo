@@ -71,11 +71,10 @@ const RegisterWithAuthProvider = lazy(
 const Corpus = lazy(() => import('./components/pages/Corpus.jsx'))
 const Articles = lazy(() => import('./components/pages/Articles.jsx'))
 const Workspaces = lazy(() => import('./components/pages/Workspaces.jsx'))
-const Credentials = lazy(
-  () => import('./components/organisms/user/Credentials.jsx')
-)
+const UserAccount = lazy(() => import('./components/pages/UserAccount.jsx'))
 const Annotate = lazy(() => import('./components/pages/Annotate.jsx'))
 const Privacy = lazy(() => import('./components/pages/Privacy.jsx'))
+const Bye = lazy(() => import('./components/pages/Bye.jsx'))
 const Story = lazy(() => import('./stories/Story.jsx'))
 
 const store = createStore()
@@ -179,14 +178,16 @@ const router = createBrowserRouter(
           </Route>
         </Route>
 
-        {/* Credentials and auth callbacks */}
+        {/* User account and auth callbacks */}
         <Route path="credentials" element={<RequireAuth />}>
-          <Route index element={<Credentials />} />
+          <Route index element={<UserAccount />} />
           <Route path="auth-callback/:service" element={<AuthCallback />} />
         </Route>
 
         {/* Generic pages */}
         <Route path="privacy" element={<Privacy />} />
+
+        <Route path="bye" element={<Bye />} />
 
         <Route path="ux">
           <Route index element={<Story />} />

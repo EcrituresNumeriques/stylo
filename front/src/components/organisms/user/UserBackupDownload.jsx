@@ -3,14 +3,14 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 import { fromFormData } from '../../../helpers/forms.js'
-import { useBackup } from '../../../hooks/user.js'
+import { useAccount } from '../../../hooks/user.js'
 import { Select } from '../../atoms/index.js'
 import { FormActions } from '../../molecules/index.js'
 
 import WorkspaceSelector from '../../molecules/WorkspaceSelector.jsx'
 
 import fieldStyles from '../../atoms/Field.module.scss'
-import styles from './Credentials.module.scss'
+import styles from './UserSection.module.scss'
 
 export default function UserBackupDownload({ onCancel }) {
   const { t } = useTranslation('user', { useSuspense: false })
@@ -18,7 +18,7 @@ export default function UserBackupDownload({ onCancel }) {
   const [scope, setScope] = useState('mine')
   const [format, setFormat] = useState('zip')
   const [versions, setVersions] = useState('latest')
-  const { download } = useBackup()
+  const { download } = useAccount()
   return (
     <form
       onSubmit={async (event) => {

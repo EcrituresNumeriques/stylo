@@ -66,3 +66,17 @@
   max-width: 32em;
   word-break: break-all;
 }
+
+.description {
+  white-space: break-spaces;
+}
+
+.danger {
+  background-color: $error-color;
+  border-color: $error-color;
+  color: white;
+}
+
+.danger:hover:not([disabled]) {
+  background-color: rgba($error-color, 0.8);
+}

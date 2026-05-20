@@ -7,7 +7,11 @@ import { applicationConfig } from '../config.js'
 import { useGraphQLClient } from '../helpers/graphQL.js'
 import useFetchData, { useMutateData } from './graphql.js'
 
-import { logoutMutation, unsetAuthTokenMutation } from './Credentials.graphql'
+import {
+  deleteAccount as deleteAccountMutation,
+  logoutMutation,
+  unsetAuthTokenMutation,
+} from './Credentials.graphql'
 import { createTag, getTags, updateTag } from './Tag.graphql'
 
 /**
@@ -214,8 +218,14 @@ export function useDisplayName() {
   }
 }
 
-export function useBackup() {
+export function useAccount() {
   const sessionToken = useSelector((state) => state.sessionToken)
+  const { query } = useGraphQLClient()
+
+  async function deleteAccount() {
+    const result = await query({ query: deleteAccountMutation })
+    return result.deleteAccount === true
+  }
 
   async function download({
     scope = 'mine',
@@ -252,5 +262,5 @@ export function useBackup() {
     URL.revokeObjectURL(url)
   }
 
-  return { download }
+  return { download, deleteAccount }
 }

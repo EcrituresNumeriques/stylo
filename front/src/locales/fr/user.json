@@ -1,5 +1,15 @@
 {
   "actions": {
+    "delete": {
+      "description": "La suppression de votre compte est une action définitive et irréversible. Une fois la demande confirmée, il ne sera plus possible de restaurer votre compte ni de récupérer vos données.\n\nCette action entraîne la suppression de l’ensemble des données (articles et corpus) dont vous êtes l’unique propriétaire.\n\nToutefois, les données que vous avez partagées avec d’autres utilisateurs, que ce soit directement ou via un espace de travail, resteront accessibles à ces utilisateurs après la suppression de votre compte.\n\nNous vous invitons à vérifier vos partages et à exporter vos données si nécessaire avant de procéder à la suppression.",
+      "form": {
+        "confirm": "La suppression de votre compte est irréversible.\nVos articles et corpus dont vous êtes l’unique propriétaire seront définitivement supprimés. Les contenus que vous avez partagés avec d’autres utilisateurs leur resteront accessibles. Pensez à sauvegarder vos données avant de continuer.\n\nÊtes-vous sûr de vouloir continuer ?",
+        "error": "Une erreur est survenue lors de la suppression de votre compte : {{errMessage}}",
+        "submit": "Supprimer mon compte",
+        "success": "Votre compte a été supprimé avec succès."
+      },
+      "title": "Supprimer mon compte"
+    },
     "download": {
       "form": {
         "error": "Une erreur est survenue lors du téléchargement : {{errMessage}}",

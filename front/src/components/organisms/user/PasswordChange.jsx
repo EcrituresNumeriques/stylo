@@ -8,7 +8,7 @@ import { Button, Field } from '../../atoms/index.js'
 import { changePassword as changePasswordQuery } from '../../../hooks/Credentials.graphql'
 
 import formStyles from '../../molecules/form.module.scss'
-import styles from './Credentials.module.scss'
+import styles from './UserSection.module.scss'
 
 export default function Credentials() {
   const [password, setPassword] = useState('')

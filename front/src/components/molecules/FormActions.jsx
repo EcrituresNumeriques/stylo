@@ -43,6 +43,7 @@ export default function FormActions({
         disabled={submitButton?.disabled || false}
         aria-label={submitButton?.label && t(submitButton.label)}
         title={submitButton?.title && t(submitButton.title)}
+        className={submitButton?.className}
       >
         {t(submitButton?.text ?? 'modal.confirmButton.text')}
       </Button>
