@@ -280,7 +280,7 @@
   "user.account.username": "Nombre de usuario",
   "user.authProviders.description": "Vincula con cuentas externas para beneficiarte de funciones avanzadas (sincronización de datos, autenticación, etc.).",
   "user.authProviders.title": "Cuentas externas",
-  "user.bye.description": "Tu cuenta de Stylo ha sido eliminada. Gracias por usar Stylo.",
+  "user.bye.description": "Tu cuenta ha sido eliminada. Tus datos no compartidos han sido eliminados de forma permanente. Tus datos compartidos siguen siendo accesibles para tus colaboradores·as. Gracias por usar Stylo.",
   "user.bye.title": "Cuenta eliminada",
   "user.data.download": "Descargar mis datos",
   "user.data.title": "Mis datos",

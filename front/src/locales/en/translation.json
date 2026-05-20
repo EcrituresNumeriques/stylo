@@ -280,7 +280,7 @@
   "user.account.username": "Username",
   "user.authProviders.description": "Link with external accounts to benefit from advanced features (data synchronization, authentication, etc.).",
   "user.authProviders.title": "External accounts",
-  "user.bye.description": "Your Stylo account has been deleted. Thank you for using Stylo.",
+  "user.bye.description": "Your account has been deleted. Your unshared data has been permanently erased. Your shared data remains accessible to your collaborators. Thank you for using Stylo.",
   "user.bye.title": "Account deleted",
   "user.data.download": "Download my data",
   "user.data.title": "My data",
