@@ -41,7 +41,7 @@ export const actions = {
       ],
     }),
     argument: createDelimitedBlockCommand('argument'),
-    dedication: createDelimitedBlockCommand('dedi'),
+    dedication: createDelimitedBlockCommand('dedication'),
     endnote: createInlineBlockCommand('endnote', {
       className: 'endnote',
       keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyD],

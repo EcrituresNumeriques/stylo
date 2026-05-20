@@ -4,7 +4,7 @@
       "ack": "$t(types.block) agradecimiento",
       "answer": "$t(types.block) respuesta",
       "argument": "$t(types.block) entradilla",
-      "dedi": "$t(types.block) dedicatoria",
+      "dedication": "$t(types.block) dedicatoria",
       "epigraph": "$t(types.block) epígrafe",
       "figure": "$t(types.block) figura",
       "outline": "$t(types.block) cuadro",

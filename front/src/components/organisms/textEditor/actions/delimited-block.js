@@ -50,7 +50,7 @@ function defaultEndCursorState ({ contentBefore, contentAfter, joinSeparator, pr
 
   // in case of selection, we position the cursor at the end of it
   if (isSelection) {
-    newStartLineNumber = selection.startLineNumber + (selection.endLineNumber - selection.startLineNumber) + countLines(joinSeparator) + countLines(joinContents(joinSeparator, preambleText, contentBefore)) + countLines(joinSeparator)
+    newStartLineNumber = selection.startLineNumber + (selection.endLineNumber - selection.startLineNumber) + countLines(joinContents(joinSeparator, preambleText, contentBefore)) + countLines(joinSeparator)
   }
   // otherwise, we move "in the middle" of the block
   else {
