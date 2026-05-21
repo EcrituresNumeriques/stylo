@@ -26,30 +26,19 @@ export default function Workshop({ entry }) {
     <article className={styles.article} aria-labelledby={itemId}>
       <h3 id={itemId}>{title}</h3>
 
-      <ul className={styles.articleMetadata}>
-        {/*<li>
-          <MapPin className="icon" aria-label="Lieu :" /> Lyon
-        </li>*/}
-        <li>
-          <CalendarDays className="icon" aria-label={t('publication.date')} />
-          {date}
-        </li>
-        {/*<li>
-          <Building2 className="icon" aria-label="Organisateur :" /> Urfist
-        </li>*/}
-      </ul>
-
-      <a
-        href={link}
-        target="_blank"
-        rel="noreferrer noopener"
-        className={clsx(buttonStyles.linkSecondary, homeStyles.moreLink)}
-        aria-label={t('more.about.accessibleLabel', {
-          about: title,
-        })}
-      >
-        {t('more.about')}
-      </a>
+      <p>
+        <a
+          href={link}
+          target="_blank"
+          rel="noreferrer noopener"
+          className={clsx(buttonStyles.linkSecondary, homeStyles.moreLink)}
+          aria-label={t('more.about.accessibleLabel', {
+            about: title,
+          })}
+        >
+          {t('more.about')}
+        </a>
+      </p>
     </article>
   )
 }

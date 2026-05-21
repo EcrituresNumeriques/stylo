@@ -102,24 +102,29 @@ $base-spacing: 2em;
   display: flex;
   flex-direction: column;
   align-items: first baseline;
+  gap: calc($base-spacing / 2);
   padding: calc($base-spacing / 2);
   width: 100%;
 
-  :is(h1, h2, h3) {
-    margin: 0 0 calc($base-spacing / 4) 0;
+  :is(h1, h2, h3), p, ul {
+    margin: 0;
   }
 
   > :last-child {
     margin-bottom: 0;
+    margin-top: auto;
   }
 }
 
 .articleMetadata {
   list-style: none !important;
-  margin: calc($base-spacing / 2) 0 !important;
 
   li {
-    margin: 0 0 calc($base-spacing / 4) 0 !important;
+    margin: 0 0 .25em !important;
+
+    &:last-of-type {
+      margin-bottom: 0 !important;
+    }
   }
 }
 
