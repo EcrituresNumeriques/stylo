@@ -1,7 +1,6 @@
 @use '../organisms/header/header.module' as global;
 
 .changelog {
-  > summary,
   .generated-content {
     margin-bottom: 1em;
   }
