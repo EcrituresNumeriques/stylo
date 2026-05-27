@@ -123,14 +123,18 @@ export default function Annotate({ strategy: strategyId }) {
         },
       }
     }
+  }, [windowWidth])
+
+  useEffect(() => {
+    if (isPreviewLoading || isDataLoading) return
 
     const script = document.createElement('script')
     script.src = 'https://hypothes.is/embed.js'
     script.async = true
     document.body.appendChild(script)
 
-    return () => document.body.removeChild(script)
-  }, [])
+    return () => { document.body.removeChild(script) }
+  }, [isPreviewLoading, isDataLoading])
 
   const { data, isLoading: isDataLoading } = useFetchData(
     strategy.query({ id, version, workspaceId }),
