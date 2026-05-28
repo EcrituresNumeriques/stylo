@@ -101,41 +101,50 @@ describe('createDelimitedBlockEdit()', () => {
       selection: new Selection(1, 5, 1, 5),
       selectionText: 'text',
       className: 'sig',
-      attrs: {}
+      attrs: {},
     })
     // text = ':::{.sig}\ntext\n:::\n' → 3 newlines → 5 + 3 = 8
     expect(endCursorState).toMatchObject({ startLineNumber: 2, startColumn: 5 })
   })
 
   test('with preamble: appears before the opening delimiter', () => {
-    const { text } = createDelimitedBlockEdit({
-      selection: new Selection(1, 1, 1, 1),
-      selectionText: '',
-      className: '',
-      attrs: { id: 'refs' },
-      preamble: () => '## Bibliographie\n',
-    }, { t: dummyT } )
+    const { text } = createDelimitedBlockEdit(
+      {
+        selection: new Selection(1, 1, 1, 1),
+        selectionText: '',
+        className: '',
+        attrs: { id: 'refs' },
+        preamble: () => '## Bibliographie\n',
+      },
+      { t: dummyT }
+    )
     expect(text).toBe('## Bibliographie\n\n:::{#refs}\n\n:::\n')
   })
 
   test('with preamble and selection: preamble before delimiter, selection inside', () => {
-    const { text } = createDelimitedBlockEdit({
-      selection: new Selection(1, 1, 1, 8),
-      selectionText: 'my text',
-      className: 'note',
-      attrs: {},
-      preamble: () => '## Section\n',
-    }, { t: dummyT } )
+    const { text } = createDelimitedBlockEdit(
+      {
+        selection: new Selection(1, 1, 1, 8),
+        selectionText: 'my text',
+        className: 'note',
+        attrs: {},
+        preamble: () => '## Section\n',
+      },
+      { t: dummyT }
+    )
     expect(text).toBe('## Section\n\n:::{.note}\nmy text\n:::\n')
   })
 
   test('with preamble and nothing else (like custom bibliography headline)', () => {
-    const { text } = createDelimitedBlockEdit({
-      selection: new Selection(1, 1, 1, 1),
-      selectionText: '',
-      preamble: () => '## Section',
-      blockDelimiter: ''
-    }, { t: dummyT } )
+    const { text } = createDelimitedBlockEdit(
+      {
+        selection: new Selection(1, 1, 1, 1),
+        selectionText: '',
+        preamble: () => '## Section',
+        blockDelimiter: '',
+      },
+      { t: dummyT }
+    )
     expect(text).toBe('## Section\n\n')
   })
 

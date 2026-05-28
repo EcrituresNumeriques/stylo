@@ -106,7 +106,9 @@ $base-spacing: 2em;
   padding: calc($base-spacing / 2);
   width: 100%;
 
-  :is(h1, h2, h3), p, ul {
+  :is(h1, h2, h3),
+  p,
+  ul {
     margin: 0;
   }
 
@@ -120,7 +122,7 @@ $base-spacing: 2em;
   list-style: none !important;
 
   li {
-    margin: 0 0 .25em !important;
+    margin: 0 0 0.25em !important;
 
     &:last-of-type {
       margin-bottom: 0 !important;

@@ -2,8 +2,8 @@ import { SubmenuAction } from 'monaco-editor/esm/vs/base/common/actions'
 import {
   KeyCode,
   KeyMod,
+  Selection,
   editor as _editor,
-  Selection
 } from 'monaco-editor/esm/vs/editor/editor.api'
 
 import createDelimitedBlockCommand from './delimited-block.js'
@@ -27,7 +27,7 @@ export const actions = {
     }),
     footnote: createInlineBlockCommand('footnote', {
       contentBefore: '^[',
-      keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF]
+      keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF],
     }),
     hyperlink: createHyperlinkCommand('hyperlink'),
   },
@@ -44,7 +44,7 @@ export const actions = {
     credits: createDelimitedBlockCommand('credits'),
     dedication: createDelimitedBlockCommand('dedication'),
     inlineCredits: createInlineBlockCommand('credits', {
-      className: 'credits'
+      className: 'credits',
     }),
     endnote: createInlineBlockCommand('endnote', {
       className: 'endnote',
@@ -52,7 +52,7 @@ export const actions = {
     }),
     epigraph: createDelimitedBlockCommand('epigraph', {
       contentBefore: ':::{.rich-quote}\n',
-      contentAfter: '\n[@source]\n:::'
+      contentAfter: '\n[@source]\n:::',
     }),
     figure: createDelimitedBlockCommand('figure', {
       contentBefore: '\n[titre]{.head}\n',
@@ -60,7 +60,7 @@ export const actions = {
     }),
     indexEntry: createInlineBlockCommand('index-entry', {
       className: 'index-type',
-      attrs: { idref: () => self.crypto.randomUUID() }
+      attrs: { idref: () => self.crypto.randomUUID() },
     }),
     outline: createDelimitedBlockCommand('outline', {
       className: 'box',
@@ -68,7 +68,7 @@ export const actions = {
       contentAfter: '\n[[nom]{.name} [prenom]{.surname}]{.aut}',
     }),
     inlineQuote: createInlineBlockCommand('inlinequote', {
-      className: 'inlinequote'
+      className: 'inlinequote',
     }),
     prenoteAuthor: createDelimitedBlockCommand('prenote.aut', {
       attrs: { origin: 'aut' },
@@ -87,35 +87,41 @@ export const actions = {
     }),
     altQuote: createDelimitedBlockCommand('quote-alt'),
     refs: createDelimitedBlockCommand('refs', {
-      preamble (t) {
+      preamble(t) {
         return `\n\n## ${t('actions.preamble.refs')}`
       },
       blockDelimiter: '',
       className: '',
       // returns the cursor to its initial position
-      endCursorState ({ selection }) {
+      endCursorState({ selection }) {
         return selection
       },
       // insert content at the last char of the last column
-      selectionState (editor) {
+      selectionState(editor) {
         const model = editor.getModel()
         const lastLineNumber = model.getLineCount()
         const lastLineMaxChar = model.getLineMaxColumn(lastLineNumber)
 
-        return new Selection(lastLineNumber, lastLineMaxChar, lastLineNumber, lastLineMaxChar)
-      }
+        return new Selection(
+          lastLineNumber,
+          lastLineMaxChar,
+          lastLineNumber,
+          lastLineMaxChar
+        )
+      },
     }),
     richQuote: createDelimitedBlockCommand('rich-quote', {
       attrs: { lang: 'lang-value' },
       contentBefore: '> ',
-      contentAfter: '> \n[@<source>]\n\n:::{.translation lang="lang-value"}\n> \n> \n[@<source>]\n:::\n\n:::{.translation lang="lang-value"}\n> \n> \n> \n:::\n',
+      contentAfter:
+        '> \n[@<source>]\n\n:::{.translation lang="lang-value"}\n> \n> \n[@<source>]\n:::\n\n:::{.translation lang="lang-value"}\n> \n> \n> \n:::\n',
     }),
     reponse: createDelimitedBlockCommand('answer', {
       contentBefore: '[nom de personne]{.speaker}',
     }),
     signature: createDelimitedBlockCommand('sig'),
     smallcaps: createInlineBlockCommand('smallcaps', {
-      className: 'smallcaps'
+      className: 'smallcaps',
     }),
     sponsor: createDelimitedBlockCommand('sponsor'),
   },
@@ -195,14 +201,20 @@ export function blockAttributes({ classNames = [], attrs = {} } = {}) {
 
   const parts = [
     id ? `#${id}` : null,
-    classNames.filter((d) => d).map(c => c.split(',')).flat().map((c) => `.${c.trim()}`),
+    classNames
+      .filter((d) => d)
+      .map((c) => c.split(','))
+      .flat()
+      .map((c) => `.${c.trim()}`),
     Object.entries(attrs)
       .filter(([key]) => key !== 'id')
-      .map(([key, value]) => `${key}="${typeof value === 'function' ? value(key) : value}"`),
+      .map(
+        ([key, value]) =>
+          `${key}="${typeof value === 'function' ? value(key) : value}"`
+      ),
   ]
     .flatMap((d) => d)
     .filter((d) => d)
-
 
   return parts.length ? `{${parts.join(' ')}}` : ''
 }
@@ -263,7 +275,7 @@ export function MetopesMenu({ editor, t }) {
       new SubmenuAction('stylo--metopes--figure', t('stylo.metopes.figure'), [
         _bindAction(actions.metopes.figure),
         _bindAction(actions.metopes.credits),
-        _bindAction(actions.metopes.inlineCredits)
+        _bindAction(actions.metopes.inlineCredits),
       ]),
       _bindAction(actions.metopes.outline),
     ]

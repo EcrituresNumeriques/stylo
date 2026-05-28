@@ -36,7 +36,7 @@ function isURL(text) {
   }
 }
 
-function defaultSelectionState (editor) {
+function defaultSelectionState(editor) {
   return editor.getSelection()
 }
 
@@ -59,7 +59,9 @@ function buildCommandDescriptor(id, { keybindings = undefined, run }) {
   }
 }
 
-export default function createInlineBlockCommand (id, {
+export default function createInlineBlockCommand(
+  id,
+  {
     keybindings = undefined,
     className = undefined,
     attrs = {},
@@ -67,8 +69,9 @@ export default function createInlineBlockCommand (id, {
     contentAfter = ']',
     forceMoveMarkers = true,
     selectionState = defaultSelectionState,
-  } = {}) {
-/**
+  } = {}
+) {
+  /**
    * @param {ICodeEditor} editor
    * @param {TFunction} t
    */
@@ -76,14 +79,17 @@ export default function createInlineBlockCommand (id, {
     const selection = editor.getSelection()
     const selectionText = editor.getModel().getValueInRange(selection) || ''
 
-    const edit = createInlineBlockEdit({
-      selection,
-      selectionText,
-      className,
-      attrs,
-      contentBefore,
-      contentAfter,
-    }, { t })
+    const edit = createInlineBlockEdit(
+      {
+        selection,
+        selectionText,
+        className,
+        attrs,
+        contentBefore,
+        contentAfter,
+      },
+      { t }
+    )
 
     editor.executeEdits(
       id,
@@ -91,8 +97,8 @@ export default function createInlineBlockCommand (id, {
         {
           range: selectionState(editor),
           text: edit.text,
-          forceMoveMarkers
-        }
+          forceMoveMarkers,
+        },
       ],
       [edit.endCursorState]
     )
@@ -180,14 +186,17 @@ export function createEnclosingTextFormattingEdit({
  * @param {{ t: TFunction }?} helpers
  * @returns {EditResult}
  */
-export function createInlineBlockEdit({
-  selection,
-  selectionText,
-  className,
-  attrs,
-  contentBefore = '[',
-  contentAfter = ']',
-}, { t } = {}) {
+export function createInlineBlockEdit(
+  {
+    selection,
+    selectionText,
+    className,
+    attrs,
+    contentBefore = '[',
+    contentAfter = ']',
+  },
+  { t } = {}
+) {
   const attributes = blockAttributes({ classNames: [className], attrs })
   const hasSelectionText = selectionText.length > 1
 
@@ -195,15 +204,24 @@ export function createInlineBlockEdit({
   let endPositionColumn = selection.startColumn + contentBefore.length
 
   if (hasSelectionText) {
-    endPositionColumn = selection.endColumn + attributes.length + contentAfter.length + contentBefore.length
+    endPositionColumn =
+      selection.endColumn +
+      attributes.length +
+      contentAfter.length +
+      contentBefore.length
   }
 
   const text = `${contentBefore}${selectionText}${contentAfter}${attributes}`
 
   return {
-    endCursorState: new Selection(endLineNumber, endPositionColumn, endLineNumber, endPositionColumn),
+    endCursorState: new Selection(
+      endLineNumber,
+      endPositionColumn,
+      endLineNumber,
+      endPositionColumn
+    ),
     selection,
-    text
+    text,
   }
 }
 

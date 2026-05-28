@@ -2,8 +2,8 @@ import { describe, expect, test } from 'vitest'
 
 import {
   createEnclosingTextFormattingEdit,
-  createInlineBlockEdit,
   createHyperlinkEdit,
+  createInlineBlockEdit,
 } from './inline-block.js'
 
 // Minimal selection helper
@@ -103,7 +103,7 @@ describe('createInlineBlockEdit()', () => {
       selection: sel(2, 1, 2, 5),
       selectionText: 'text',
       contentBefore: '^[',
-      contentAfter: ']'
+      contentAfter: ']',
     })
     expect(text).toBe('^[text]')
     // endColumn(5) + 2 = 7
@@ -115,7 +115,7 @@ describe('createInlineBlockEdit()', () => {
       selection: sel(1, 3, 1, 3),
       selectionText: '',
       contentBefore: '^[',
-      contentAfter: ']'
+      contentAfter: ']',
     })
     expect(text).toBe('^[]')
     expect(endCursorState).toMatchObject({ startColumn: 5 })

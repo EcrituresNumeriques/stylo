@@ -10,7 +10,7 @@ import { blockAttributes } from './index.js'
  */
 const newLineRE = /\n/g
 
-function countLines (text) {
+function countLines(text) {
   return (text.match(newLineRE) || []).length
 }
 
@@ -20,7 +20,7 @@ function countLines (text) {
  * @param {string|null|undefined} value
  * @returns {boolean}
  */
-function dropEmptyValue (value) {
+function dropEmptyValue(value) {
   return Boolean(value)
 }
 
@@ -28,19 +28,27 @@ function dropEmptyValue (value) {
  * Array flter function to keep any value
  * @returns {boolean}
  */
-function keepValue () {
+function keepValue() {
   return true
 }
 
-function joinContents (joinSeparator, ...texts) {
+function joinContents(joinSeparator, ...texts) {
   return texts.filter(dropEmptyValue).join(joinSeparator)
 }
 
-function defaultSelectionState (editor) {
+function defaultSelectionState(editor) {
   return editor.getSelection()
 }
 
-function defaultEndCursorState ({ contentBefore, contentAfter, joinSeparator, preambleText, selection, selectionText, text }) {
+function defaultEndCursorState({
+  contentBefore,
+  contentAfter,
+  joinSeparator,
+  preambleText,
+  selection,
+  selectionText,
+  text,
+}) {
   const lineReturnCount = countLines(text)
 
   const isSelection = selectionText.length > 0
@@ -50,15 +58,27 @@ function defaultEndCursorState ({ contentBefore, contentAfter, joinSeparator, pr
 
   // in case of selection, we position the cursor at the end of it
   if (isSelection) {
-    newStartLineNumber = selection.startLineNumber + (selection.endLineNumber - selection.startLineNumber) + countLines(joinContents(joinSeparator, preambleText, contentBefore)) + countLines(joinSeparator)
+    newStartLineNumber =
+      selection.startLineNumber +
+      (selection.endLineNumber - selection.startLineNumber) +
+      countLines(joinContents(joinSeparator, preambleText, contentBefore)) +
+      countLines(joinSeparator)
   }
   // otherwise, we move "in the middle" of the block
   else {
-    newStartLineNumber = selection.startLineNumber + countLines(joinContents(joinSeparator, preambleText, contentBefore)) + countLines(joinSeparator)
+    newStartLineNumber =
+      selection.startLineNumber +
+      countLines(joinContents(joinSeparator, preambleText, contentBefore)) +
+      countLines(joinSeparator)
     newStartColumnNumber += contentBefore.length
   }
 
-  return new Selection(newStartLineNumber, newStartColumnNumber, newStartLineNumber, newStartColumnNumber)
+  return new Selection(
+    newStartLineNumber,
+    newStartColumnNumber,
+    newStartLineNumber,
+    newStartColumnNumber
+  )
 }
 
 /**
@@ -84,18 +104,21 @@ function defaultEndCursorState ({ contentBefore, contentAfter, joinSeparator, pr
  * @param {{ t: TFunction }?} helpers
  * @returns {EditResult}
  */
-export function createDelimitedBlockEdit({
-  selection,
-  selectionText,
-  className,
-  attrs,
-  preamble = null,
-  blockDelimiter = ':::',
-  joinSeparator = '\n',
-  contentBefore = '',
-  contentAfter = '',
-  endCursorState = defaultEndCursorState
-}, { t = (translationKey) => translationKey } = {}) {
+export function createDelimitedBlockEdit(
+  {
+    selection,
+    selectionText,
+    className,
+    attrs,
+    preamble = null,
+    blockDelimiter = ':::',
+    joinSeparator = '\n',
+    contentBefore = '',
+    contentAfter = '',
+    endCursorState = defaultEndCursorState,
+  },
+  { t = (translationKey) => translationKey } = {}
+) {
   const attributes = blockAttributes({ classNames: [className], attrs })
 
   let preambleText = ''
@@ -104,14 +127,18 @@ export function createDelimitedBlockEdit({
   }
 
   const intro = `${blockDelimiter}${attributes}`
-  const body = joinContents(joinSeparator, contentBefore, selectionText, contentAfter)
+  const body = joinContents(
+    joinSeparator,
+    contentBefore,
+    selectionText,
+    contentAfter
+  )
   const outro = `${blockDelimiter}`
 
-  const text = [
-    joinContents(joinSeparator, preambleText, intro),
-    body,
-    outro
-  ].join(joinSeparator) + (outro ? joinSeparator : '')
+  const text =
+    [joinContents(joinSeparator, preambleText, intro), body, outro].join(
+      joinSeparator
+    ) + (outro ? joinSeparator : '')
 
   return {
     endCursorState: endCursorState({
@@ -121,10 +148,10 @@ export function createDelimitedBlockEdit({
       text,
       preambleText,
       contentBefore,
-      contentAfter
+      contentAfter,
     }),
     selection,
-    text
+    text,
   }
 }
 
@@ -155,7 +182,7 @@ export default function createDelimitedBlockCommand(
     contentAfter = '',
     endCursorState = defaultEndCursorState,
     selectionState = defaultSelectionState,
-    forceMoveMarkers = true
+    forceMoveMarkers = true,
   } = {}
 ) {
   /**
@@ -167,18 +194,21 @@ export default function createDelimitedBlockCommand(
     const selectionText = editor.getModel().getValueInRange(selection) || ''
     const joinSeparator = editor.getModel().getEOL()
 
-    const edit = createDelimitedBlockEdit({
-      selection,
-      selectionText,
-      className: className ?? id,
-      attrs,
-      preamble,
-      joinSeparator,
-      blockDelimiter,
-      contentBefore,
-      contentAfter,
-      endCursorState
-    }, { t })
+    const edit = createDelimitedBlockEdit(
+      {
+        selection,
+        selectionText,
+        className: className ?? id,
+        attrs,
+        preamble,
+        joinSeparator,
+        blockDelimiter,
+        contentBefore,
+        contentAfter,
+        endCursorState,
+      },
+      { t }
+    )
 
     editor.executeEdits(
       id,
@@ -186,8 +216,8 @@ export default function createDelimitedBlockCommand(
         {
           range: selectionState(editor),
           text: edit.text,
-          forceMoveMarkers
-        }
+          forceMoveMarkers,
+        },
       ],
       [edit.endCursorState]
     )

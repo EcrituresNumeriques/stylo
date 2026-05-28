@@ -133,7 +133,9 @@ export default function Annotate({ strategy: strategyId }) {
     script.async = true
     document.body.appendChild(script)
 
-    return () => { document.body.removeChild(script) }
+    return () => {
+      document.body.removeChild(script)
+    }
   }, [isPreviewLoading, isDataLoading])
 
   const { data, isLoading: isDataLoading } = useFetchData(
