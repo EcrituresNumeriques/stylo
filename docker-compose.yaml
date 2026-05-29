@@ -20,7 +20,8 @@ services:
 
   graphql-stylo:
     build:
-      context: ./graphql/
+      context: .
+      dockerfile: graphql/dockerfile
       labels:
         - org.opencontainers.image.source=https://github.com/EcrituresNumeriques/stylo
     image: 'ghcr.io/ecrituresnumeriques/stylo-graphql:${TAG:-latest}'

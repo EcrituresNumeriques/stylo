@@ -1,9 +1,10 @@
 {
-  "name": "@EcrituresNumeriques/stylo",
+  "name": "@ecrituresnumeriques/stylo",
   "private": true,
   "version": "3.11.0",
   "description": "Stylo est un éditeur de textes pour articles scientifiques en sciences humaines et sociales.",
   "main": "graphql/app.js",
+  "workspaces": ["front", "graphql"],
   "directories": {
     "doc": "docs"
   },
@@ -12,14 +13,14 @@
     "npm": ">=10"
   },
   "scripts": {
-    "dev": "DOTENV_CONFIG_PATH=.env node -r dotenv/config ./node_modules/.bin/concurrently --kill-others-on-fail --prefix-colors yellow,blue 'npm:dev:*'",
-    "dev:front": "./front/node_modules/.bin/vite ./front",
-    "predev:graphql": "DOTENV_CONFIG_PATH=.env node -r dotenv/config ./graphql/node_modules/.bin/db-migrate up --migrations-dir ./graphql/migrations --config ./graphql/database.json",
-    "dev:graphql": "node --watch ./graphql/app.js --watch",
-    "start": "DOTENV_CONFIG_PATH=.env node -r dotenv/config ./node_modules/.bin/concurrently --kill-others-on-fail --prefix-colors yellow,blue 'npm:start:*'",
-    "start:front": "./front/node_modules/.bin/vite build ./front",
+    "dev": "DOTENV_CONFIG_PATH=.env node -r dotenv/config concurrently --kill-others-on-fail --prefix-colors yellow,blue 'npm:dev:*'",
+    "dev:front": "vite ./front",
+    "predev:graphql": "DOTENV_CONFIG_PATH=.env node -r dotenv/config db-migrate up --migrations-dir ./graphql/migrations --config ./graphql/database.json",
+    "dev:graphql": "node --watch ./graphql/app.js",
+    "start": "DOTENV_CONFIG_PATH=.env node -r dotenv/config concurrently --kill-others-on-fail --prefix-colors yellow,blue 'npm:start:*'",
+    "start:front": "vite build ./front",
     "start:graphql": "node --watch ./graphql/app.js",
-    "lint": "prettier --check front graphql ",
+    "lint": "prettier --check front graphql",
     "lint:fix": "prettier --write front graphql"
   },
   "repository": {

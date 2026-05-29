@@ -1,5 +1,5 @@
 {
-  "name": "graphql-stylo",
+  "name": "@ecrituresnumeriques/stylo-graphql",
   "version": "3.11.0",
   "description": "",
   "main": "app.js",
@@ -12,7 +12,7 @@
     "delete-user": "node bin/delete-user.mjs",
     "generate-service-token": "node -p \"require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year' })\"",
     "test": "c8 --reporter=lcov node --test **/*.test.js",
-    "migrations": "DOTENV_CONFIG_PATH=${DOTENV_CONFIG_PATH:-../.env} node -r dotenv/config ./node_modules/.bin/db-migrate up",
+    "migrations": "DOTENV_CONFIG_PATH=${DOTENV_CONFIG_PATH:-../.env} node -r dotenv/config db-migrate up",
     "posttest": "eslint '**/*.js'",
     "prestart": "npm run migrations",
     "start": "node app.js",
@@ -26,7 +26,7 @@
     "@graphql-tools/schema": "~10.0",
     "@sentry/node": "~10.38",
     "@sentry/profiling-node": "~10.38",
-    "@y/websocket-server": "^0.1.1",
+    "@y/websocket-server": "0.1.2",
     "archiver": "^7.0.1",
     "atob": "^2.1.2",
     "bcryptjs": "^2.4.3",
@@ -64,8 +64,9 @@
     "y-websocket": "~3.0"
   },
   "devDependencies": {
-    "@testcontainers/mongodb": "~11.11",
     "c8": "~10.1",
+    "globals": "^17.3.0",
+    "testcontainers": "~11.14",
     "eslint": "~9.39",
     "eslint-config-prettier": "~10.1",
     "eslint-plugin-security": "~3.0"
