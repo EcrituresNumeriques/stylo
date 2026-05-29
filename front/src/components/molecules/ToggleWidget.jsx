@@ -10,9 +10,9 @@ export default function ToggleWidget(props) {
     <Translation ns="form" useSuspense={false}>
       {(t) => (
         <Toggle
-          checked={props.value === 'checked'}
+          checked={props.value}
           title={t(title)}
-          onChange={() => props.onChange(!props.value)}
+          onChange={(value) => props.onChange(value)}
           className={styles.toggle}
         >
           {t(title)}

@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { Children, useCallback, useEffect, useState } from 'react'
+import { Children, useCallback, useEffect, useRef, useState } from 'react'
 
 import { useKeyPress } from '../../hooks/events.js'
 
@@ -36,6 +36,7 @@ export default function ToggleSwitch({
 }) {
   const [isChecked, setChecked] = useState(checked)
   const [isActive, setActiveState] = useState(false)
+  const isMounted = useRef(false)
   const setActive = useCallback(() => setActiveState(true))
   const setInactive = useCallback(() => setActiveState(false))
   const a11yLabel = labels[isChecked] ? labels[isChecked] : null
@@ -48,7 +49,11 @@ export default function ToggleSwitch({
   const handleKeyEvents = useKeyPress(['Enter', 'Space'], toggle)
 
   useEffect(() => {
-    onChange(isChecked)
+    if (isMounted.current) {
+      onChange(isChecked)
+    } else {
+      isMounted.current = true
+    }
   }, [isChecked])
 
   if (!a11yLabel && !Children.count(children)) {
