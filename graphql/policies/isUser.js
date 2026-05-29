@@ -1,4 +1,4 @@
-const { format } = require('util')
+const { format } = require('node:util')
 
 module.exports = function resolveUserIdFromContext(args, { token, user } = {}) {
   const isAdmin = token.admin || user?.admin || false

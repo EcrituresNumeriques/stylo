@@ -36,7 +36,7 @@ async function getProfileFromToken(token) {
   }
 }
 
-async function verify(req, token, tokenSecret, profile, params, done) {
+async function verify(req, token, _tokenSecret, _profile, _params, done) {
   const { id, username } = await getProfileFromToken(token)
 
   const user = await User.findOne({ 'authProviders.zotero.id': id })

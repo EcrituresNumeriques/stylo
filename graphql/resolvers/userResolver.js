@@ -89,7 +89,7 @@ module.exports = {
       })
     },
 
-    async logout(_, args, { token, user, session }) {
+    async logout(_, _args, { token, user, session }) {
       isUser({}, { token, user })
 
       delete session.fromAccount
@@ -273,7 +273,7 @@ module.exports = {
   },
 
   Query: {
-    async user(_root, args, context) {
+    async user(_root, _args, context) {
       if (!context.userId) {
         return null
       }
@@ -298,7 +298,7 @@ module.exports = {
       })
     },
 
-    async acquintances(user, args, context) {
+    async acquintances(user, _args, context) {
       return Promise.all(
         user.acquintances.map((contactId) =>
           context.loaders.users.load(contactId)
@@ -322,7 +322,7 @@ module.exports = {
       return Tag.find({ owner: user._id }).lean()
     },
 
-    async workspaces(user, args, { token }) {
+    async workspaces(user, _args, { token }) {
       if (token?.admin) {
         return Workspace.find()
       }

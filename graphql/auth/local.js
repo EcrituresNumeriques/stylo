@@ -13,10 +13,10 @@ const strategy = new LocalStrategy({ session: false }, verify)
 /**
  *
  * @param {Error} error
- * @param {Request} req
+ * @param {Request} _req
  * @param {Error} res
  */
-function onFailure(error, req, res) {
+function onFailure(error, _req, res) {
   res.statusCode = 401
   res.json({ error })
 }

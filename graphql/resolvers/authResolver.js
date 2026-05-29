@@ -16,7 +16,7 @@ async function checkCredentials({ username, password }) {
     ],
   })
 
-  if (!user || !user.password || !(await user.comparePassword(password))) {
+  if (!user?.password || !(await user.comparePassword(password))) {
     const error = new Error(
       'Unable to authenticate, please check your username and password!'
     )

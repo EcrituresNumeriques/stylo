@@ -147,7 +147,7 @@ module.exports = {
   },
 
   WorkspaceArticle: {
-    async article(workspaceArticle, { articleId }) {
+    async article(_workspaceArticle, { articleId }) {
       const article = workspace.articles.find(
         (a) => String(a._id) === articleId
       )
@@ -206,7 +206,7 @@ module.exports = {
 
     // mutations
 
-    async leave(workspace, args, { user }) {
+    async leave(workspace, _args, { user }) {
       if (!user) {
         throw new NotAuthenticatedError()
       }

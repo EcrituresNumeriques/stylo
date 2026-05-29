@@ -39,7 +39,7 @@ module.exports.createJWTToken = async function createJWTToken({
 module.exports.populateUserFromJWT = function populateUserFromJWT({
   jwtSecret,
 }) {
-  return async function populateUserFromJWTMiddleware(req, res, next) {
+  return async function populateUserFromJWTMiddleware(req, _res, next) {
     const jwtToken = req.headers.authorization?.replace(/^Bearer\s+/, '')
 
     if (!jwtToken) {
