@@ -1,14 +1,23 @@
-const { MongoDBContainer } = require('@testcontainers/mongodb')
+const { GenericContainer, Wait } = require('testcontainers')
 const mongoose = require('mongoose')
 const migrate = require('db-migrate')
 
+const MONGODB_PORT = 27017
+
 async function setup() {
-  const container = await new MongoDBContainer('mongo:7.0.29').start()
+  const container = await new GenericContainer('mongo:7.0.29')
+    .withExposedPorts(MONGODB_PORT)
+    .withStartupTimeout(120_000)
+    .withWaitStrategy(Wait.forLogMessage(/[Ww]aiting for connections/))
+    .start()
+
+  const connectionString = `mongodb://${container.getHost()}:${container.getMappedPort(MONGODB_PORT)}`
+
   const migrateInstance = migrate.getInstance(true, {
     env: 'dev',
     config: {
       dev: {
-        url: container.getConnectionString() + '/stylo-tests',
+        url: connectionString + '/stylo-tests',
         options: {
           directConnection: true,
         },
@@ -24,7 +33,7 @@ async function setup() {
   await migrateInstance.reset()
   await migrateInstance.up()
   mongoose.set('strictQuery', true)
-  await mongoose.connect(container.getConnectionString() + '/stylo-tests', {
+  await mongoose.connect(connectionString + '/stylo-tests', {
     directConnection: true,
   })
   return container
