@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 COPY graphql/package.json ./graphql/
 
-RUN npm clean-install --workspace=graphql
+RUN npm clean-install --workspace=@ecrituresnumeriques/stylo-graphql
 
 COPY graphql/ ./graphql/
 

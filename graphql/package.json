@@ -12,7 +12,7 @@
     "delete-user": "node bin/delete-user.mjs",
     "generate-service-token": "node -p \"require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year' })\"",
     "test": "c8 --reporter=lcov node --test **/*.test.js",
-    "migrations": "DOTENV_CONFIG_PATH=${DOTENV_CONFIG_PATH:-../.env} node -r dotenv/config db-migrate up",
+    "migrations": "DOTENV_CONFIG_PATH=${DOTENV_CONFIG_PATH:-../.env} node -r dotenv/config ../node_modules/.bin/db-migrate up",
     "lint": "biome ci .",
     "lint:fix": "biome check --write .",
     "posttest": "npm run lint",
