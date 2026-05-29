@@ -66,7 +66,6 @@ export default defineConfig(async ({ mode }) => {
             ? '@welldone-software/why-did-you-render'
             : 'react',
       }),
-      // legacy({ target }),
       handlebars({
         context: {
           SNOWPACK_MATOMO:

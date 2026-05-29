@@ -2,7 +2,7 @@ import { MongoClient, ServerApiVersion } from 'mongodb'
 
 import { test as teardown } from '@playwright/test'
 
-teardown('teardown', async ({}) => {
+teardown('teardown', async () => {
   const uri = 'mongodb://localhost:27017/stylo-dev'
   const client = new MongoClient(uri, {
     serverApi: {
