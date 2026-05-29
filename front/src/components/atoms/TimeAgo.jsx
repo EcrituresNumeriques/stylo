@@ -22,10 +22,12 @@ const DIVISIONS = [
  * @returns {JSX.Element}
  */
 export default function TimeAgo({ date, className }) {
+  const { t } = useTranslation()
+
   if (date === null || date === undefined) {
     return <time className={clsx(className, styles.time)}>-</time>
   }
-  const { t } = useTranslation()
+
   const formatter = new Intl.RelativeTimeFormat(i18n.language, {
     numeric: 'auto',
   })
