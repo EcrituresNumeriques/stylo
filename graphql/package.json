@@ -65,6 +65,7 @@
   },
   "devDependencies": {
     "c8": "~10.1",
+    "globals": "^17.3.0",
     "testcontainers": "~11.14",
     "eslint": "~9.39",
     "eslint-config-prettier": "~10.1",
