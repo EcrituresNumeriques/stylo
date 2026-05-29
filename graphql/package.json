@@ -64,7 +64,7 @@
     "y-websocket": "~3.0"
   },
   "devDependencies": {
-    "@testcontainers/mongodb": "~11.11",
+    "@testcontainers/mongodb": "~11.14",
     "c8": "~10.1",
     "eslint": "~9.39",
     "eslint-config-prettier": "~10.1",
