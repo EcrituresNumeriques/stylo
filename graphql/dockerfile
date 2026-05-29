@@ -3,13 +3,14 @@ FROM node:24-alpine
 WORKDIR /usr/src/app
 
 COPY package*.json ./
+COPY graphql/package.json ./graphql/
 
-RUN npm clean-install
+RUN npm clean-install --workspace=graphql
 
-COPY . .
+COPY graphql/ ./graphql/
 
 ENV NODE_ENV="production"
 EXPOSE 3030
 
+WORKDIR /usr/src/app/graphql
 CMD ["npm", "run", "prod"]
-

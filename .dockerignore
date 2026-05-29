@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+front/
+docs/
+graphql/node_modules
+graphql/ydata
+graphql/yeditingsession
+graphql/npm-debug.log

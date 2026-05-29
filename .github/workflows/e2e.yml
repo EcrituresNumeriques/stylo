@@ -14,10 +14,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - name: Install dependencies
-        run: |
-          npm clean-install
-          npm clean-install --prefix=front
-          npm clean-install --prefix=graphql
+        run: npm clean-install
       - name: Install playwright
         run: |
           npx playwright install --with-deps chromium

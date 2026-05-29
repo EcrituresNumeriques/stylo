@@ -20,7 +20,6 @@ jobs:
           cache: npm
 
       - name: Install
-        working-directory: ${{ inputs.app-dir }}
         run: npm clean-install --no-audit --no-fund
 
       - name: Run tests
