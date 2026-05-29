@@ -5,7 +5,7 @@
 const elasticlunr = require('elasticlunr');
 const striptags = require("striptags");
 
-module.exports = function (collection) {
+module.exports = (collection) => {
   // what fields we'd like our index to consist of
   var index = elasticlunr(function () {
     this.addField('title');

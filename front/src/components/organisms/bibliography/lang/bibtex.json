@@ -127,9 +127,6 @@
       ["[{}()\\[\\]]", "@brackets"]
     ],
 
-    "whitespace": [
-      ["[ \\t\\r\\n]+", "white"],
-      ["%.*$", "comment"]
-    ]
+    "whitespace": [["[ \\t\\r\\n]+", "white"], ["%.*$", "comment"]]
   }
 }

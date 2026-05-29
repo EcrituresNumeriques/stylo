@@ -2,13 +2,11 @@ import clsx from 'clsx'
 import { useCombobox } from 'downshift'
 import { ChevronDown, X } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-
-import { Field } from '../atoms/index.js'
-import { groupItems } from './SelectCombobox.js'
-import { Loading } from './index.js'
-
 import buttonStyles from '../atoms/Button.module.scss'
 import styles from '../atoms/Field.module.scss'
+import { Field } from '../atoms/index.js'
+import { Loading } from './index.js'
+import { groupItems } from './SelectCombobox.js'
 
 /**
  * @typedef {object} ComboboxItem

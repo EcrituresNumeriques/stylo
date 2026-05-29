@@ -5,13 +5,12 @@ import { useRouteLoaderData } from 'react-router'
 
 import { applicationConfig } from '../config.js'
 import { useGraphQLClient } from '../helpers/graphQL.js'
-import useFetchData, { useMutateData } from './graphql.js'
-
 import {
   deleteAccount as deleteAccountMutation,
   logoutMutation,
   unsetAuthTokenMutation,
 } from './Credentials.graphql'
+import useFetchData, { useMutateData } from './graphql.js'
 import { createTag, getTags, updateTag } from './Tag.graphql'
 
 /**

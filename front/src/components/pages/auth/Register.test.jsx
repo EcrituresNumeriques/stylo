@@ -1,6 +1,5 @@
-import { describe, expect, test } from 'vitest'
-
 import userEvent from '@testing-library/user-event'
+import { describe, expect, test } from 'vitest'
 
 import { renderWithProviders } from '../../../../tests/setup.js'
 

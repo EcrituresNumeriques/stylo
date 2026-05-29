@@ -2,9 +2,8 @@ import { useTranslation } from 'react-i18next'
 
 import { useCorpusArticles } from '../../../hooks/corpus.js'
 import { Button } from '../../atoms/index.js'
-import { Alert, Loading } from '../../molecules/index.js'
-
 import DropdownMenu from '../../molecules/DropdownMenu.jsx'
+import { Alert, Loading } from '../../molecules/index.js'
 
 import styles from './CorpusArticleMetadataSelector.module.scss'
 

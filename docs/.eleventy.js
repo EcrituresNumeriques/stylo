@@ -25,7 +25,7 @@ const mdAnchorOpts = {
   level: [1, 2, 3, 4]
 };
 
-module.exports = function(eleventyConfig) {
+module.exports = (eleventyConfig) => {
 
   //Markdown : ajout des ancres sur les titres et la classe 'anchor-link'
   eleventyConfig.setLibrary(
@@ -57,23 +57,19 @@ module.exports = function(eleventyConfig) {
 
   // Collections
   // Tous les contenus sous /fr
-  eleventyConfig.addCollection('docs__fr', function(collection) {
-    return collection.getFilteredByGlob('src/fr/**/*.md').sort((a,b) => {
+  eleventyConfig.addCollection('docs__fr', (collection) => collection.getFilteredByGlob('src/fr/**/*.md').sort((a,b) => {
       // ordonner selon la date
       if(a.data.data < b.data.date) return -1;
       if(a.data.date > b.date.date) return 1;
       return 0;
-    });
-  });
+    }));
   // Tous les contenus sous /en
-  eleventyConfig.addCollection('docs__en', function(collection) {
-    return collection.getFilteredByGlob('src/en/**/*.md').sort((a,b) => {
+  eleventyConfig.addCollection('docs__en', (collection) => collection.getFilteredByGlob('src/en/**/*.md').sort((a,b) => {
       // ordonner selon la date
       if(a.data.data < b.data.date) return -1;
       if(a.data.date > b.date.date) return 1;
       return 0;
-    });
-  });
+    }));
 
   // Nous pourrions ajouter d’autres collections
   // ex. pour les annonces, ou sous /blog
@@ -81,7 +77,7 @@ module.exports = function(eleventyConfig) {
 
   // Les shortcodes vont ici
   // shortcode sert pour créer le composant bouton
-  eleventyConfig.addPairedShortcode("link-button", function (content, href, color, size) { 
+  eleventyConfig.addPairedShortcode("link-button", (content, href, color, size) => { 
     if (size != undefined) {
       size = size;
     } else {
@@ -93,7 +89,7 @@ module.exports = function(eleventyConfig) {
 
 
   // shortcode pour les alert-block
-  eleventyConfig.addPairedShortcode("alert-block", function (content, heading, type) {
+  eleventyConfig.addPairedShortcode("alert-block", (content, heading, type) => {
     if (type != undefined) {
       type = type;
     } else {
@@ -104,8 +100,8 @@ module.exports = function(eleventyConfig) {
   });
 
   // shortcode pour rendre l'image cliquable
-  eleventyConfig.addShortcode("figure", function (src, caption, alt) {
-    let figcaption_html = (caption != "") ? `<figcaption>${caption}</figcaption>` : '';
+  eleventyConfig.addShortcode("figure", (src, caption, alt) => {
+    const figcaption_html = (caption != "") ? `<figcaption>${caption}</figcaption>` : '';
     return `
 <figure>
   <a href="#${src}" id="_${src}">

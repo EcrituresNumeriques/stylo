@@ -9,12 +9,12 @@ import { createRoot } from 'react-dom/client'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { Provider as ReduxProvider } from 'react-redux'
 import {
-  Route,
-  RouterProvider,
   createBrowserRouter,
   createRoutesFromChildren,
   createRoutesFromElements,
   matchRoutes,
+  Route,
+  RouterProvider,
   useLocation,
   useNavigationType,
 } from 'react-router'
@@ -22,20 +22,19 @@ import {
 import './i18n.js'
 import './styles/general.scss'
 
-import createStore from './createReduxStore.js'
-import { getUserProfile } from './helpers/user.js'
-
 import App, { loader as AppLoader } from './components/pages/App.jsx'
-import CollaborativeEditor, {
-  loader as ArticleLoader,
-} from './components/pages/CollaborativeEditor.jsx'
-import LoadingPage from './components/pages/LoadingPage.jsx'
-import RequireAuth from './components/pages/PrivateRoute.jsx'
 import AuthCallback from './components/pages/auth/AuthCallback.jsx'
 import Login, { Logout } from './components/pages/auth/Login.jsx'
 import RedirectIfAuth from './components/pages/auth/RedirectIfAuth.jsx'
+import CollaborativeEditor, {
+  loader as ArticleLoader,
+} from './components/pages/CollaborativeEditor.jsx'
 import NotFound from './components/pages/errors/404.jsx'
 import ErrorBoundary from './components/pages/errors/AppError.jsx'
+import LoadingPage from './components/pages/LoadingPage.jsx'
+import RequireAuth from './components/pages/PrivateRoute.jsx'
+import createStore from './createReduxStore.js'
+import { getUserProfile } from './helpers/user.js'
 
 if (SENTRY_DSN) {
   Sentry.init({

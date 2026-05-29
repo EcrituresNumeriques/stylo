@@ -27,9 +27,7 @@ import LeaveWorkspaceModal from './LeaveWorkspaceModal.jsx'
  *   updatedAt: string
  * }} workspace
  */
-import WorkspaceManageMembersModal from './WorkspaceManageMembersModal.jsx'
-import WorkspaceUpdateFormMetadataModal from './WorkspaceUpdateFormMetadataModal.jsx'
-
+import styles from './WorkspaceItem.module.scss'
 /**
  * @typedef {object} WorkspaceItemProps
  * @property {{
@@ -50,7 +48,8 @@ import WorkspaceUpdateFormMetadataModal from './WorkspaceUpdateFormMetadataModal
  *   updatedAt: string
  * }} workspace
  */
-import styles from './WorkspaceItem.module.scss'
+import WorkspaceManageMembersModal from './WorkspaceManageMembersModal.jsx'
+import WorkspaceUpdateFormMetadataModal from './WorkspaceUpdateFormMetadataModal.jsx'
 
 /**
  * @typedef {object} WorkspaceItemProps

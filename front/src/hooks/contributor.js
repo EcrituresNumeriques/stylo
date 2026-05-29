@@ -1,13 +1,12 @@
 import { useSelector } from 'react-redux'
 
 import { executeQuery } from '../helpers/graphQL.js'
-import { useMutateData } from './graphql.js'
-
 import { getArticleContributors } from './Article.graphql'
 import {
   addContributor as addContributorQuery,
   removeContributor as removeContributorQuery,
 } from './ArticleContributors.graphql'
+import { useMutateData } from './graphql.js'
 
 export function useArticleContributorActions({ articleId }) {
   const { mutate } = useMutateData({

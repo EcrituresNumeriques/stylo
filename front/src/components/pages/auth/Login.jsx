@@ -9,9 +9,8 @@ import { toast } from 'react-toastify'
 import { applicationConfig } from '../../../config.js'
 import { fromFormData } from '../../../helpers/forms.js'
 import { useLogout } from '../../../hooks/user.js'
-import { Button, Field } from '../../atoms/index.js'
-
 import buttonStyles from '../../atoms/Button.module.scss'
+import { Button, Field } from '../../atoms/index.js'
 import formStyles from '../../molecules/form.module.scss'
 import styles from './Login.module.scss'
 

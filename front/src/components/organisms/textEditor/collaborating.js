@@ -1,7 +1,6 @@
+import * as awarenessProtocol from 'y-protocols/awareness.js'
 import { WebsocketProvider } from 'y-websocket'
 import * as Y from 'yjs'
-
-import * as awarenessProtocol from 'y-protocols/awareness.js'
 
 const noop = () => {}
 
@@ -34,13 +33,13 @@ export function connect({
       states: awareness.getStates(),
     })
   )
-  wsProvider.on('status', function (event) {
+  wsProvider.on('status', (event) => {
     onStatusUpdated(event.status)
   })
-  wsProvider.on('connection-close', function (wsClosedEvent) {
+  wsProvider.on('connection-close', (wsClosedEvent) => {
     onConnectionClosed(wsClosedEvent)
   })
-  wsProvider.on('connection-error', function (wsErrorEvent) {
+  wsProvider.on('connection-error', (wsErrorEvent) => {
     onConnectionError(wsErrorEvent)
   })
 

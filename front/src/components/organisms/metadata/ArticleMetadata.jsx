@@ -8,9 +8,8 @@ import { usePreferenceItem } from '../../../hooks/user.js'
 import { Alert, Loading, Toggle } from '../../molecules/index.js'
 
 import ArticleEditorMetadataForm from './ArticleEditorMetadataForm.jsx'
-import MonacoYamlEditor from './YamlEditor.jsx'
-
 import styles from './articleEditorMetadata.module.scss'
+import MonacoYamlEditor from './YamlEditor.jsx'
 
 /**
  * @param {object} props

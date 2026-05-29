@@ -1,6 +1,5 @@
-import { describe, expect, test } from 'vitest'
-
 import { Selection } from 'monaco-editor/esm/vs/editor/editor.api'
+import { describe, expect, test } from 'vitest'
 
 import { createDelimitedBlockEdit } from './delimited-block.js'
 

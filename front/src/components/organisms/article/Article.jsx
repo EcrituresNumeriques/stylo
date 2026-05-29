@@ -15,31 +15,27 @@ import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router'
 import { toast } from 'react-toastify'
 import { useCopyToClipboard } from 'react-use'
-
+import {
+  getArticleContributors,
+  getArticleTags,
+} from '../../../hooks/Article.graphql'
 import { useArticleActions } from '../../../hooks/article.js'
 import useFetchData from '../../../hooks/graphql.js'
 import { useModal } from '../../../hooks/modal.js'
 import { useDisplayName } from '../../../hooks/user.js'
+import buttonStyles from '../../atoms/Button.module.scss'
 import { Button, Color } from '../../atoms/index.js'
 import {
   DropdownMenu,
   FormActions,
   ObjectMetadataLabel,
 } from '../../molecules/index.js'
-import { ArticleForm } from '../index.js'
-
 import Modal from '../../molecules/Modal.jsx'
 import Export from '../export/Export.jsx'
+import { ArticleForm } from '../index.js'
+import styles from './Article.module.scss'
 import ArticleContributors from './sharing/ArticleContributors.jsx'
 import ArticleSendCopy from './sharing/ArticleSendCopy.jsx'
-
-import {
-  getArticleContributors,
-  getArticleTags,
-} from '../../../hooks/Article.graphql'
-
-import buttonStyles from '../../atoms/Button.module.scss'
-import styles from './Article.module.scss'
 
 /**
  * @param {object} props

@@ -1,12 +1,9 @@
 import { useCallback, useMemo } from 'react'
-
+import { getCorpus } from '../../../hooks/Corpus.graphql'
 import useFetchData from '../../../hooks/graphql.js'
 import { useActiveWorkspaceId } from '../../../hooks/workspace.js'
 import { Loading } from '../../molecules/index.js'
-
 import CorpusSelectItem from './CorpusSelectItem.jsx'
-
-import { getCorpus } from '../../../hooks/Corpus.graphql'
 
 /**
  * @param {object} props

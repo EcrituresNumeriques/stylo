@@ -9,6 +9,7 @@
     "ignoreUnknown": true,
     "includes": [
       "**",
+      "!docs",
       "!**/build",
       "!**/dist",
       "!front/public",
@@ -46,6 +47,10 @@
     "rules": {
       "recommended": true,
       "a11y": {
+        "noRedundantRoles": "warn",
+        "noInteractiveElementToNoninteractiveRole": "warn",
+        "noNoninteractiveElementToInteractiveRole": "warn",
+        "noAutofocus": "warn",
         "noLabelWithoutControl": "warn",
         "noStaticElementInteractions": "warn",
         "noSvgWithoutTitle": "warn",
@@ -64,7 +69,8 @@
         "noUnusedFunctionParameters": "warn",
         "noUnusedVariables": "warn",
         "useExhaustiveDependencies": "warn",
-        "useHookAtTopLevel": "warn"
+        "useHookAtTopLevel": "warn",
+        "noChildrenProp": "warn"
       },
       "performance": {
         "noAccumulatingSpread": "warn"

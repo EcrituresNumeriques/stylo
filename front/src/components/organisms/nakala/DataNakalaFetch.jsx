@@ -5,10 +5,8 @@ import { useRouteLoaderData } from 'react-router'
 
 import { Button, Field } from '../../atoms/index.js'
 import { Alert } from '../../molecules/index.js'
-
-import NakalaUserCollectionsCombobox from './NakalaUserCollectionsCombobox.jsx'
-
 import styles from './DataNakalaFetch.module.scss'
+import NakalaUserCollectionsCombobox from './NakalaUserCollectionsCombobox.jsx'
 
 export default function DataNakalaFetch({ initialCollectionUri, onChange }) {
   const { user } = useRouteLoaderData('app')

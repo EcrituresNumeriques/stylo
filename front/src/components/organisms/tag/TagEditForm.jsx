@@ -5,10 +5,9 @@ import { toast } from 'react-toastify'
 import { randomColor } from '../../../helpers/colors.js'
 import { fromFormData } from '../../../helpers/forms.js'
 import { useUserTagActions } from '../../../hooks/user.js'
+import formStyles from '../../atoms/Field.module.scss'
 import { Field } from '../../atoms/index.js'
 import { FormActions } from '../../molecules/index.js'
-
-import formStyles from '../../atoms/Field.module.scss'
 
 /**
  * @param {object} props

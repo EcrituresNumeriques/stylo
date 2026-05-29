@@ -2,9 +2,8 @@ import clsx from 'clsx'
 import { useCallback } from 'react'
 
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
-import { useActiveWorkspaceId } from '../../../hooks/workspace.js'
-
 import { addArticle, removeArticle } from '../../../hooks/Workspaces.graphql'
+import { useActiveWorkspaceId } from '../../../hooks/workspace.js'
 
 import styles from './WorkspaceSelectItem.module.scss'
 

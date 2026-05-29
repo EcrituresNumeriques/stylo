@@ -10,11 +10,10 @@ import useComponentVisible from '../../../hooks/componentVisible.js'
 import { useActiveWorkspaceId } from '../../../hooks/workspace.js'
 
 import HelpMenu from './HelpMenu.jsx'
+import styles from './header.module.scss'
 import LanguagesMenu from './LanguagesMenu.jsx'
 import UserMenu from './UserMenu.jsx'
 import WorkspacesMenu from './WorkspacesMenu.jsx'
-
-import styles from './header.module.scss'
 
 export default function Header() {
   const { t } = useTranslation()

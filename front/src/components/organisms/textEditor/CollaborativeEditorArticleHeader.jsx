@@ -5,9 +5,8 @@ import { useSearchParams } from 'react-router'
 import { Toggle } from '../../molecules/index.js'
 
 import CollaborativeEditorActiveVersion from './CollaborativeEditorActiveVersion.jsx'
-import CollaborativeEditorWriters from './CollaborativeEditorWriters.jsx'
-
 import styles from './CollaborativeEditorArticleHeader.module.scss'
+import CollaborativeEditorWriters from './CollaborativeEditorWriters.jsx'
 
 /**
  * @param {object} props

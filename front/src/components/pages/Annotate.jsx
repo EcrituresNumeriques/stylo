@@ -4,13 +4,12 @@ import { useParams } from 'react-router'
 import { useWindowSize } from 'react-use'
 
 import { applicationConfig } from '../../config.js'
+import { getArticlePreview } from '../../hooks/Article.graphql'
+import { getCorpusPreview } from '../../hooks/Corpus.graphql'
 import useFetchData from '../../hooks/graphql.js'
 import { useStyloExportPreview } from '../../hooks/stylo-export.js'
 import { Loading } from '../molecules/index.js'
 import { toYaml } from '../organisms/metadata/yaml.js'
-
-import { getArticlePreview } from '../../hooks/Article.graphql'
-import { getCorpusPreview } from '../../hooks/Corpus.graphql'
 
 import './Annotate.scss'
 

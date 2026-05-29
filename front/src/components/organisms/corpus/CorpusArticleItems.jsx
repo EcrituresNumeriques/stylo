@@ -1,15 +1,12 @@
+import debounce from 'lodash.debounce'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
-import debounce from 'lodash.debounce'
-
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
-import { Loading } from '../../molecules/index.js'
-
-import CorpusArticleCard from './CorpusArticleCard.jsx'
-
 import { updateArticlesOrder } from '../../../hooks/Corpus.graphql'
+import { Loading } from '../../molecules/index.js'
+import CorpusArticleCard from './CorpusArticleCard.jsx'
 
 /**
  * @param {object} props

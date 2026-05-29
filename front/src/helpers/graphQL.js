@@ -1,6 +1,5 @@
-import { useSelector } from 'react-redux'
-
 import { print } from 'graphql/language/printer'
+import { useSelector } from 'react-redux'
 
 import { applicationConfig } from '../config.js'
 

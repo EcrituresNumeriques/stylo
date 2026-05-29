@@ -1,18 +1,15 @@
+import debounce from 'lodash.debounce'
 import { CheckSquare, Search, Square } from 'lucide-react'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
-import debounce from 'lodash.debounce'
-
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
+import { getUserByEmail } from '../../../hooks/Contacts.graphql'
 import { useContactActions } from '../../../hooks/contact.js'
 import { useDisplayName } from '../../../hooks/user.js'
 import { Field } from '../../atoms/index.js'
-
 import ContactItem from './ContactItem.jsx'
-
-import { getUserByEmail } from '../../../hooks/Contacts.graphql'
 
 import styles from './ContactSearch.module.scss'
 

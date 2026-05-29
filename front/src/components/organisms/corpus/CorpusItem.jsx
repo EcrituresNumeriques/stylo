@@ -9,6 +9,7 @@ import { useCopyToClipboard } from 'react-use'
 import { useCorpusActions } from '../../../hooks/corpus.js'
 import { useModal } from '../../../hooks/modal.js'
 import { useDisplayName } from '../../../hooks/user.js'
+import buttonStyles from '../../atoms/Button.module.scss'
 import { Badge, Button } from '../../atoms/index.js'
 import {
   DropdownMenu,
@@ -16,14 +17,11 @@ import {
   Modal,
   ObjectMetadataLabel,
 } from '../../molecules/index.js'
-
 import Export from '../export/Export.jsx'
 import CorpusArticles from './CorpusArticles.jsx'
 import CorpusForm from './CorpusForm.jsx'
-import CorpusMetadata from './CorpusMetadata.jsx'
-
-import buttonStyles from '../../atoms/Button.module.scss'
 import styles from './CorpusItem.module.scss'
+import CorpusMetadata from './CorpusMetadata.jsx'
 
 /**
  * @typedef Article

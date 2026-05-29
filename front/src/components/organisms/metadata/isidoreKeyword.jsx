@@ -1,13 +1,11 @@
 import clsx from 'clsx'
 import { useCombobox } from 'downshift'
+import throttle from 'lodash.throttle'
 import { useCallback, useState } from 'react'
 
-import throttle from 'lodash.throttle'
-
 import { searchKeyword as isidoreKeywordSearch } from '../../../helpers/isidore.js'
-import { Field } from '../../atoms/index.js'
-
 import fieldStyles from '../../atoms/Field.module.scss'
+import { Field } from '../../atoms/index.js'
 import styles from '../../molecules/form.module.scss'
 
 const toValueFn = (el) => ({

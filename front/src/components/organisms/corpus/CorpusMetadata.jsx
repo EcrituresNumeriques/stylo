@@ -3,21 +3,18 @@ import YAML from 'js-yaml'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
-
+import { useCorpusActions } from '../../../hooks/corpus.js'
+import { usePreferenceItem } from '../../../hooks/user.js'
 import corpusBookMetadataSchema from '../../../schemas/corpus-book-metadata.schema.json'
 import corpusBookUiSchema from '../../../schemas/corpus-book-ui-schema.json'
 import corpusJournalMetadataSchema from '../../../schemas/corpus-journal-metadata.schema.json'
 import corpusJournalUiSchema from '../../../schemas/corpus-journal-ui-schema.json'
 import corpusThesisMetadataSchema from '../../../schemas/corpus-thesis-metadata.schema.json'
 import corpusThesisUiSchema from '../../../schemas/corpus-thesis-ui-schema.json'
-
-import { useCorpusActions } from '../../../hooks/corpus.js'
-import { usePreferenceItem } from '../../../hooks/user.js'
 import { FormActions, Toggle } from '../../molecules/index.js'
-import { toYaml } from '../metadata/yaml.js'
-
 import MetadataForm from '../metadata/MetadataForm.jsx'
 import MonacoYamlEditor from '../metadata/YamlEditor.jsx'
+import { toYaml } from '../metadata/yaml.js'
 
 import styles from './CorpusMetadata.module.scss'
 

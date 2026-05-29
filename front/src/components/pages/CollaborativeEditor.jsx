@@ -2,16 +2,14 @@ import { useCallback } from 'react'
 import { useParams, useSearchParams } from 'react-router'
 
 import { executeQuery } from '../../helpers/graphQL.js'
+import { getArticleInfo } from '../../hooks/Article.graphql'
 import { usePreferenceItem } from '../../hooks/user.js'
 import {
   ArticleStats,
   CollaborativeTextEditor,
   EditorMenu,
 } from '../organisms/index.js'
-
 import EditorMenuContent from '../organisms/textEditor/EditorMenuContent.jsx'
-
-import { getArticleInfo } from '../../hooks/Article.graphql'
 
 import styles from './CollaborativeEditor.module.scss'
 
