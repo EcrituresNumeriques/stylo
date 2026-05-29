@@ -1,9 +1,0 @@
-plugins = ["@trivago/prettier-plugin-sort-imports"]
-importOrder = [".*wdyr\\.js$", "^core-js/modules/.*$", "^@sentry\\/react$", "^react.*$|^[a-z-]+$", ".*styles\\/general\\.scss$|.*i18n\\.js$", "<THIRD_PARTY_MODULES>", ".*\\.js$", ".*\\.jsx$", ".*\\.graphql$", "^.*\\.scss$"]
-importOrderSeparation = true
-importOrderSortSpecifiers = true
-trailingComma = "es5"
-tabWidth = 2
-useTabs = false
-semi = false
-singleQuote = true

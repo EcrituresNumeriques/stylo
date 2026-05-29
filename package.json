@@ -20,8 +20,8 @@
     "start": "DOTENV_CONFIG_PATH=.env node -r dotenv/config concurrently --kill-others-on-fail --prefix-colors yellow,blue 'npm:start:*'",
     "start:front": "vite build ./front",
     "start:graphql": "node --watch ./graphql/app.js",
-    "lint": "prettier --check front graphql",
-    "lint:fix": "prettier --write front graphql"
+    "lint": "npm run lint --workspaces --if-present",
+    "lint:fix": "npm run lint:fix --workspaces --if-present"
   },
   "repository": {
     "type": "git",
@@ -35,10 +35,9 @@
   },
   "homepage": "https://github.com/EcrituresNumeriques/stylo#readme",
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "~6.0",
+    "@biomejs/biome": "~2.4",
     "concurrently": "~9.2",
-    "dotenv": "~17.2",
-    "prettier": "~3.8"
+    "dotenv": "~17.2"
   },
   "volta": {
     "node": "24.13.0",
