@@ -1,14 +1,10 @@
 import { Search } from 'lucide-react'
-
-import uiSchema from './form-story-ui-schema.json'
-import schema from './form-story.schema.json'
-
-import { Field, Select } from '../components/atoms/index.js'
-import { Combobox, Toggle } from '../components/molecules/index.js'
-
-import SchemaForm from '../components/molecules/Form.jsx'
-
 import buttonStyles from '../components/atoms/Button.module.scss'
+import { Field, Select } from '../components/atoms/index.js'
+import SchemaForm from '../components/molecules/Form.jsx'
+import { Combobox, Toggle } from '../components/molecules/index.js'
+import schema from './form-story.schema.json'
+import uiSchema from './form-story-ui-schema.json'
 
 export default function FormStory() {
   return (

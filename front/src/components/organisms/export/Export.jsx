@@ -6,11 +6,10 @@ import slugify from 'slugify'
 
 import { applicationConfig } from '../../../config.js'
 import useStyloExport from '../../../hooks/stylo-export.js'
-import { Button, Select } from '../../atoms/index.js'
-import { Combobox, Loading } from '../../molecules/index.js'
-
 import buttonStyles from '../../atoms/Button.module.scss'
+import { Button, Select } from '../../atoms/index.js'
 import formStyles from '../../molecules/form.module.scss'
+import { Combobox, Loading } from '../../molecules/index.js'
 import styles from './Export.module.scss'
 
 /**

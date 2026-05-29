@@ -4,11 +4,6 @@ import { useSelector } from 'react-redux'
 import { toYaml } from '../components/organisms/metadata/yaml.js'
 import { executeQuery } from '../helpers/graphQL.js'
 import { clean } from '../schemas/schemas.js'
-import useFetchData, {
-  useConditionalFetchData,
-  useMutateData,
-} from './graphql.js'
-
 import {
   addTags,
   deleteArticle,
@@ -24,6 +19,10 @@ import {
   updateWorkingVersion,
 } from './Article.graphql'
 import { createArticle, getWorkspaceArticles } from './Articles.graphql'
+import useFetchData, {
+  useConditionalFetchData,
+  useMutateData,
+} from './graphql.js'
 import {
   createVersion,
   getArticleVersion,

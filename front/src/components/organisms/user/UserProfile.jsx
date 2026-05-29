@@ -5,11 +5,9 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
 import { fromFormData } from '../../../helpers/forms.js'
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
-import { Button, Field, TimeAgo } from '../../atoms/index.js'
-
 import { updateUser } from '../../../hooks/Credentials.graphql'
-
 import formStyles from '../../atoms/Field.module.scss'
+import { Button, Field, TimeAgo } from '../../atoms/index.js'
 import styles from './UserSection.module.scss'
 
 export default function UserInfos() {

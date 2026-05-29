@@ -8,11 +8,10 @@ import { Button } from '../../atoms/index.js'
 import { Alert, FormActions, Loading, Toggle } from '../../molecules/index.js'
 
 import Modal from '../../molecules/Modal.jsx'
+import styles from './ArticleBibliography.module.scss'
 import BibliographyBibtexEditor from './BibliographyBibtexEditor.jsx'
 import BibliographyReferenceList from './BibliographyReferenceList.jsx'
 import BibliographyZoteroImport from './BibliographyZoteroImport.jsx'
-
-import styles from './ArticleBibliography.module.scss'
 
 /**
  * @param {object} props

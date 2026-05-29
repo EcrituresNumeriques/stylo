@@ -6,18 +6,17 @@ import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 
 import etv from '../../helpers/eventTargetValue.js'
+import { getWorkspaceArticles } from '../../hooks/Articles.graphql'
 import useFetchData from '../../hooks/graphql.js'
 import { useModal } from '../../hooks/modal.js'
 import { useWorkspaceName } from '../../hooks/workspace.js'
 import { Button, Field, PageTitle } from '../atoms/index.js'
 import { Loading } from '../molecules/index.js'
-import { ArticleForm, TagEditForm, TagsList } from '../organisms/index.js'
 
 import Modal from '../molecules/Modal.jsx'
 import Article from '../organisms/article/Article.jsx'
+import { ArticleForm, TagEditForm, TagsList } from '../organisms/index.js'
 import WorkspaceLabel from '../organisms/workspace/WorkspaceLabel.jsx'
-
-import { getWorkspaceArticles } from '../../hooks/Articles.graphql'
 
 import styles from './Articles.module.scss'
 

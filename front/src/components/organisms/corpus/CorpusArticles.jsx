@@ -1,17 +1,14 @@
 import { useCallback, useMemo } from 'react'
 import { DndProvider } from 'react-dnd'
 import { useTranslation } from 'react-i18next'
-
+import { getCorpus } from '../../../hooks/Corpus.graphql'
 import { dragAndDropManager } from '../../../hooks/dnd.js'
 import useFetchData from '../../../hooks/graphql.js'
 import { useModal } from '../../../hooks/modal.js'
 import { Button } from '../../atoms/index.js'
 import { Loading } from '../../molecules/index.js'
-
 import ArticlesSelectorModal from '../article/ArticlesSelectorModal.jsx'
 import CorpusArticleItems from './CorpusArticleItems.jsx'
-
-import { getCorpus } from '../../../hooks/Corpus.graphql'
 
 import styles from './CorpusArticles.module.scss'
 

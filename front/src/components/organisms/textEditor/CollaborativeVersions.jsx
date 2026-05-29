@@ -1,12 +1,10 @@
 import { Trans, useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-
-import i18n from '../../../i18n.js'
-
 import { useArticleVersions } from '../../../hooks/article.js'
 import { useModal } from '../../../hooks/modal.js'
 import { useDisplayName } from '../../../hooks/user.js'
+import i18n from '../../../i18n.js'
 import { Button } from '../../atoms/index.js'
 import { Alert, Loading, Version } from '../../molecules/index.js'
 

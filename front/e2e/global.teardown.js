@@ -1,6 +1,5 @@
-import { MongoClient, ServerApiVersion } from 'mongodb'
-
 import { test as teardown } from '@playwright/test'
+import { MongoClient, ServerApiVersion } from 'mongodb'
 
 teardown('teardown', async () => {
   const uri = 'mongodb://localhost:27017/stylo-dev'

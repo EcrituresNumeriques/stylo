@@ -1,16 +1,14 @@
+import { loader } from '@monaco-editor/react'
 import clsx from 'clsx'
 import * as monaco from 'monaco-editor'
 import { useCallback, useMemo } from 'react'
-
-// Taken from https://github.com/koka-lang/madoko/blob/master/styles/lang/bibtex.json
-import languageDefinition from './lang/bibtex.json'
-import { loader } from '@monaco-editor/react'
+import fieldStyles from '../../atoms/Field.module.scss'
 
 import { MonacoEditor } from '../../molecules/index.js'
 import defaultEditorOptions from '../monaco/options.js'
-
-import fieldStyles from '../../atoms/Field.module.scss'
 import styles from './BibtexEditor.module.scss'
+// Taken from https://github.com/koka-lang/madoko/blob/master/styles/lang/bibtex.json
+import languageDefinition from './lang/bibtex.json'
 
 loader.config({ monaco })
 

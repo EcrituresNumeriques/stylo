@@ -17,10 +17,9 @@ export class BibliographyCompletionProvider {
   }
 
   register(monaco) {
-    const self = this
     return monaco.languages.registerCompletionItemProvider('markdown', {
       triggerCharacters: '@',
-      provideCompletionItems: function (model, position) {
+      provideCompletionItems: (model, position) => {
         const textUntilPosition = model.getValueInRange({
           startLineNumber: position.lineNumber,
           endLineNumber: position.lineNumber,
@@ -48,7 +47,7 @@ export class BibliographyCompletionProvider {
         })
         const startsWithSquareBracket = match.groups.square_bracket === '['
         return {
-          suggestions: self.createBibliographyProposals(
+          suggestions: this.createBibliographyProposals(
             range,
             { startsWithSquareBracket, endCharacter },
             monaco

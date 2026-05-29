@@ -1,11 +1,10 @@
+import Form, { getDefaultRegistry } from '@rjsf/core'
+import validator from '@rjsf/validator-ajv8'
 import clsx from 'clsx'
 import { Plus, Trash } from 'lucide-react'
 import { set } from 'object-path-immutable'
 import { Fragment, useCallback, useMemo, useState } from 'react'
 import { Translation } from 'react-i18next'
-
-import Form, { getDefaultRegistry } from '@rjsf/core'
-import validator from '@rjsf/validator-ajv8'
 
 import { Button } from '../atoms/index.js'
 
@@ -13,12 +12,11 @@ import CorpusArticleMetadataSelector from '../organisms/corpus/CorpusArticleMeta
 import isidoreAuthorSearch from '../organisms/metadata/isidoreAuthor.jsx'
 import IsidoreAuthorAPIAutocompleteField from '../organisms/metadata/isidoreAuthor.jsx'
 import isidoreKeywordSearch from '../organisms/metadata/isidoreKeyword.jsx'
+// REMIND: use a custom SelectWidget to support "ui:emptyValue"
+import styles from './form.module.scss'
 // remove once fixed in https://github.com/rjsf-team/react-jsonschema-form/issues/1041
 import SelectWidget from './SelectWidget.jsx'
 import ToggleWidget from './ToggleWidget.jsx'
-
-// REMIND: use a custom SelectWidget to support "ui:emptyValue"
-import styles from './form.module.scss'
 
 const {
   templates: { BaseInputTemplate: DefaultBaseInputTemplate },

@@ -7,10 +7,9 @@ import { Button } from '../../atoms/index.js'
 import { Loading } from '../../molecules/index.js'
 
 import Modal from '../../molecules/Modal.jsx'
+import styles from './ArticleData.module.scss'
 import DataNakalaFetch from './DataNakalaFetch.jsx'
 import NakalaRecords from './NakalaRecords.jsx'
-
-import styles from './ArticleData.module.scss'
 
 export default function ArticleData({ articleId }) {
   const { article, updateNakalaLink, isLoading } = useEditableArticle({

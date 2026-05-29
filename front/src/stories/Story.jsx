@@ -1,4 +1,4 @@
-import i18n from '../i18n.js'
+import buttonStyles from '../components/atoms/Button.module.scss'
 
 import {
   Button,
@@ -15,14 +15,12 @@ import {
   Modal,
   Version,
 } from '../components/molecules/index.js'
-import { useModal } from '../hooks/modal.js'
-
 import CollaborativeEditorWebSocketStatus from '../components/organisms/textEditor/CollaborativeEditorWebSocketStatus.jsx'
+import { useModal } from '../hooks/modal.js'
+import i18n from '../i18n.js'
+import styles from '../layout.module.scss'
 import ButtonStory from './Button.story.jsx'
 import FormStory from './Form.story.jsx'
-
-import buttonStyles from '../components/atoms/Button.module.scss'
-import styles from '../layout.module.scss'
 import storyStyles from './story.module.scss'
 
 export default function Story() {

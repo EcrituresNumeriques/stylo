@@ -1,6 +1,3 @@
-import { useRouteLoaderData } from 'react-router'
-import { beforeEach, describe, expect, test, vi } from 'vitest'
-
 import {
   getByLabelText,
   getByRole,
@@ -8,6 +5,8 @@ import {
   screen,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useRouteLoaderData } from 'react-router'
+import { beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { renderWithProviders } from '../../../../tests/setup.js'
 

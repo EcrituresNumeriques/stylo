@@ -1,9 +1,9 @@
 import { SubmenuAction } from 'monaco-editor/esm/vs/base/common/actions'
 import {
+  editor as _editor,
   KeyCode,
   KeyMod,
   Selection,
-  editor as _editor,
 } from 'monaco-editor/esm/vs/editor/editor.api'
 
 import createDelimitedBlockCommand from './delimited-block.js'
@@ -203,8 +203,7 @@ export function blockAttributes({ classNames = [], attrs = {} } = {}) {
     id ? `#${id}` : null,
     classNames
       .filter((d) => d)
-      .map((c) => c.split(','))
-      .flat()
+      .flatMap((c) => c.split(','))
       .map((c) => `.${c.trim()}`),
     Object.entries(attrs)
       .filter(([key]) => key !== 'id')

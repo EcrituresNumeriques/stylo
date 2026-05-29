@@ -1,7 +1,6 @@
+import { print } from 'graphql/language/printer'
 import { useSelector } from 'react-redux'
 import useSWR, { useSWRConfig } from 'swr'
-
-import { print } from 'graphql/language/printer'
 
 import { executeQuery } from '../helpers/graphQL.js'
 

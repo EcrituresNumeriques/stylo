@@ -3,9 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
-import { Button, Field } from '../../atoms/index.js'
-
 import { changePassword as changePasswordQuery } from '../../../hooks/Credentials.graphql'
+import { Button, Field } from '../../atoms/index.js'
 
 import formStyles from '../../molecules/form.module.scss'
 import styles from './UserSection.module.scss'

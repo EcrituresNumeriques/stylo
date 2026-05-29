@@ -3,11 +3,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import useBibliography from '../../../hooks/bibliography.js'
-
+import styles from './BibliographyBibtexEditor.module.scss'
 import BibliographyBibtexValidationStatus from './BibliographyBibtexValidationStatus.jsx'
 import MonacoBibtexEditor from './BibtexEditor.jsx'
-
-import styles from './BibliographyBibtexEditor.module.scss'
 
 export default function BibliographyBibtexEditor({
   initialValue,

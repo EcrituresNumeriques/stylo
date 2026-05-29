@@ -7,9 +7,8 @@ import { Button } from '../../atoms/index.js'
 import { CopyButton, FormActions } from '../../molecules/index.js'
 
 import Modal from '../../molecules/Modal.jsx'
-import ReferenceTypeIcon from './ReferenceTypeIcon.jsx'
-
 import styles from './BibliographyReference.module.scss'
+import ReferenceTypeIcon from './ReferenceTypeIcon.jsx'
 
 export default function BibliographyReference({ entry, onRemove }) {
   const { key, title, type, date, authorName } = entry

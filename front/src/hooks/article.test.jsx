@@ -1,6 +1,5 @@
-import { describe, expect, test } from 'vitest'
-
 import { fireEvent, screen } from '@testing-library/react'
+import { describe, expect, test } from 'vitest'
 
 import { renderWithProviders } from '../../tests/setup.js'
 import {

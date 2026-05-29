@@ -4,12 +4,10 @@ import { toast } from 'react-toastify'
 
 import { fromFormData } from '../../../helpers/forms.js'
 import { useAccount } from '../../../hooks/user.js'
+import fieldStyles from '../../atoms/Field.module.scss'
 import { Select } from '../../atoms/index.js'
 import { FormActions } from '../../molecules/index.js'
-
 import WorkspaceSelector from '../../molecules/WorkspaceSelector.jsx'
-
-import fieldStyles from '../../atoms/Field.module.scss'
 import styles from './UserSection.module.scss'
 
 export default function UserBackupDownload({ onCancel }) {

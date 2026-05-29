@@ -1,7 +1,6 @@
+import { loader } from '@monaco-editor/react'
 import * as monaco from 'monaco-editor'
 import { useMemo } from 'react'
-
-import { loader } from '@monaco-editor/react'
 
 import { MonacoEditor } from '../../molecules/index.js'
 import defaultEditorOptions from '../monaco/options.js'

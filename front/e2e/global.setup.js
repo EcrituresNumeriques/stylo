@@ -1,6 +1,5 @@
-import { MongoClient, ServerApiVersion } from 'mongodb'
-
 import { test as setup } from '@playwright/test'
+import { MongoClient, ServerApiVersion } from 'mongodb'
 
 setup('setup', async () => {
   const uri = 'mongodb://localhost:27017/stylo-dev'

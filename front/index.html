@@ -46,7 +46,7 @@
       _paq.push(['requireConsent'])
       _paq.push(['trackPageView'])
       _paq.push(['enableLinkTracking'])
-      ;(function () {
+      ;(() => {
         var u = '{{ SNOWPACK_MATOMO_URL }}'
         _paq.push(['setTrackerUrl', u + 'piwik.php'])
         _paq.push(['setSiteId', '{{ SNOWPACK_MATOMO_SITE_ID }}'])

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import mongoose from 'mongoose'
 
 import { parseArgs } from 'node:util'
+import mongoose from 'mongoose'
 
 import config from '../config.js'
 import Article from '../models/article.js'

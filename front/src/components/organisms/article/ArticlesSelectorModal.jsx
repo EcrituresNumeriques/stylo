@@ -3,12 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
+import { setCorpusArticles } from '../../../hooks/Corpus.graphql'
 import { FormActions } from '../../molecules/index.js'
-
 import Modal from '../../molecules/Modal.jsx'
 import { ArticlesSelector } from './ArticlesSelector.jsx'
-
-import { setCorpusArticles } from '../../../hooks/Corpus.graphql'
 
 import styles from './ArticlesSelectorModal.module.scss'
 

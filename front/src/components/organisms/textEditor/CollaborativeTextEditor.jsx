@@ -1,12 +1,11 @@
+import { DiffEditor } from '@monaco-editor/react'
 import clsx from 'clsx'
+import throttle from 'lodash.throttle'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
-
-import { DiffEditor } from '@monaco-editor/react'
-import throttle from 'lodash.throttle'
 import 'monaco-editor/esm/vs/base/browser/ui/codicons/codicon/codicon.css'
 
 import {
@@ -20,11 +19,11 @@ import { Alert, Loading, MonacoEditor } from '../../molecules/index.js'
 import { onDropIntoEditor } from '../bibliography/support.js'
 import defaultEditorOptions from '../monaco/options.js'
 import {
+  actions,
   MarkdownMenu,
   MetopesMenu,
-  Separator,
-  actions,
   registerActions,
+  Separator,
 } from './actions/index.js'
 
 import CollaborativeEditorArticleHeader from './CollaborativeEditorArticleHeader.jsx'
@@ -173,7 +172,7 @@ export default function CollaborativeTextEditor({
   useEffect(() => {
     if (yText) {
       updateArticleStructureAndStats({ text: yText.toString() })
-      yText.observe(function () {
+      yText.observe(() => {
         dispatch({
           type: 'UPDATE_ARTICLE_WORKING_COPY_STATUS',
           status: 'syncing',

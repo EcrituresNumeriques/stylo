@@ -13,7 +13,9 @@
     "generate-service-token": "node -p \"require('jsonwebtoken').sign({ admin: true, roles: ['read'], readonly: true }, process.env.JWT_SECRET_SESSION_COOKIE, { expiresIn: '1 year' })\"",
     "test": "c8 --reporter=lcov node --test **/*.test.js",
     "migrations": "DOTENV_CONFIG_PATH=${DOTENV_CONFIG_PATH:-../.env} node -r dotenv/config db-migrate up",
-    "posttest": "eslint '**/*.js'",
+    "lint": "biome ci .",
+    "lint:fix": "biome check --write .",
+    "posttest": "npm run lint",
     "prestart": "npm run migrations",
     "start": "node app.js",
     "preprod": "npm run migrations",
@@ -65,11 +67,7 @@
   },
   "devDependencies": {
     "c8": "~10.1",
-    "globals": "^17.3.0",
-    "testcontainers": "~11.14",
-    "eslint": "~9.39",
-    "eslint-config-prettier": "~10.1",
-    "eslint-plugin-security": "~3.0"
+    "testcontainers": "~11.14"
   },
   "volta": {
     "node": "24.13.0",

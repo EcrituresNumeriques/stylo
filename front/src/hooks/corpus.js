@@ -1,9 +1,6 @@
 import { useSelector } from 'react-redux'
 
 import { executeQuery } from '../helpers/graphQL.js'
-import useGraphQL, { useMutateData } from './graphql.js'
-import { useActiveWorkspaceId } from './workspace.js'
-
 import {
   createCorpus as createCorpusQuery,
   deleteCorpus as deleteCorpusQuery,
@@ -11,6 +8,8 @@ import {
   getCorpus as getCorpusQuery,
   updateCorpus as updateCorpusQuery,
 } from './Corpus.graphql'
+import useGraphQL, { useMutateData } from './graphql.js'
+import { useActiveWorkspaceId } from './workspace.js'
 
 export function useCorpusActions() {
   const workspaceId = useActiveWorkspaceId() ?? null

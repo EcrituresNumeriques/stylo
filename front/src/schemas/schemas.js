@@ -45,7 +45,7 @@ function getConstMetadata(schema) {
   const props = schema.properties
   return Object.entries(props)
     .filter(([, value]) => value.const !== undefined)
-    .reduce(function (map, [key, val]) {
+    .reduce((map, [key, val]) => {
       map[key] = val.const
       return map
     }, {})

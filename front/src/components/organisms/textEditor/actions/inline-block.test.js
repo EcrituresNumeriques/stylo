@@ -174,17 +174,18 @@ describe('createHyperlinkEdit()', () => {
     },
   ]
 
-  test.each(cases)(
-    '$name',
-    ({ clipboardText, selectionText, expectedText }) => {
-      const { text } = createHyperlinkEdit({
-        selection: sel(1, 1, 1, selectionText.length + 1),
-        clipboardText,
-        selectionText,
-      })
-      expect(text).toBe(expectedText)
-    }
-  )
+  test.each(cases)('$name', ({
+    clipboardText,
+    selectionText,
+    expectedText,
+  }) => {
+    const { text } = createHyperlinkEdit({
+      selection: sel(1, 1, 1, selectionText.length + 1),
+      clipboardText,
+      selectionText,
+    })
+    expect(text).toBe(expectedText)
+  })
 
   test('multiline label: cursor placed at end of last line', () => {
     const { endCursorState } = createHyperlinkEdit({

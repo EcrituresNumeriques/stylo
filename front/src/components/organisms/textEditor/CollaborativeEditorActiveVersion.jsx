@@ -1,6 +1,5 @@
-import i18n from '../../../i18n.js'
-
 import { useArticleVersion } from '../../../hooks/article.js'
+import i18n from '../../../i18n.js'
 import { Alert, Loading } from '../../molecules/index.js'
 
 export default function CollaborativeEditorActiveVersion({ versionId }) {

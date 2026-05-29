@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-
 import debounce from 'lodash.debounce'
+import { useEffect, useRef, useState } from 'react'
 
 import { BibliographyCompletionProvider } from '../components/organisms/bibliography/support.js'
 import { validate } from '../helpers/bibtex.js'
@@ -35,7 +34,7 @@ export default function useBibliography({ initialText }) {
     callback && callback(validationResult)
   }, 700)
 
-  const updateText = async function (bibtex, callback) {
+  const updateText = async (bibtex, callback) => {
     setValidationResult(validationResultInitialState(bibtex))
     await validateBibTeX(bibtex, callback)
     setText(bibtex)

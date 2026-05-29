@@ -4,11 +4,9 @@ import { useDispatch } from 'react-redux'
 import { Link, useParams } from 'react-router'
 
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
-import { Button } from '../../atoms/index.js'
-
 import * as queries from '../../../hooks/Credentials.graphql'
-
 import buttonStyles from '../../atoms/Button.module.scss'
+import { Button } from '../../atoms/index.js'
 import styles from '../Page.module.scss'
 
 export default function AuthCallbackPopup() {

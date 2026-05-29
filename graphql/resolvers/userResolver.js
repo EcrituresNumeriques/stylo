@@ -221,11 +221,11 @@ module.exports = {
     async addAcquintance(_, args, context) {
       const { userId } = isUser(args, context)
 
-      let thisAcquintance = await User.findOne({ email: args.email })
+      const thisAcquintance = await User.findOne({ email: args.email })
       if (!thisAcquintance) {
         throw new Error('No user found with this email')
       }
-      let thisUser = await User.findById(userId)
+      const thisUser = await User.findById(userId)
       if (!thisUser) {
         throw new Error('Unable to find user')
       }
@@ -254,7 +254,7 @@ module.exports = {
       const { userId } = isUser(args, context)
       const { details } = args
 
-      let thisUser = await User.findById(userId)
+      const thisUser = await User.findById(userId)
       if (!thisUser) {
         throw new Error('Unable to find user')
       }

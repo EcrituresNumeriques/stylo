@@ -6,14 +6,12 @@ import { shallowEqual, useSelector } from 'react-redux'
 
 import { useGraphQLClient } from '../../helpers/graphQL.js'
 import { useModal } from '../../hooks/modal.js'
+import { getUserStats } from '../../hooks/Workspaces.graphql'
 import { useWorkspaces } from '../../hooks/workspace.js'
 import { Button, Field, PageTitle } from '../atoms/index.js'
 import { Alert, Loading } from '../molecules/index.js'
-
 import CreateWorkspaceModal from '../organisms/workspace/CreateWorkspaceModal.jsx'
 import WorkspaceItem from '../organisms/workspace/WorkspaceItem.jsx'
-
-import { getUserStats } from '../../hooks/Workspaces.graphql'
 
 import styles from './Workspaces.module.scss'
 
