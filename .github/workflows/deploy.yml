@@ -35,8 +35,8 @@ jobs:
 
       - name: Build front assets
         run: |
-          npm clean-install --prefix=front
-          npm run build --prefix=front -- --mode=development
+          npm clean-install
+          npm run build -w=@ecrituresnumeriques/stylo-front -- --mode=development
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
@@ -103,7 +103,7 @@ jobs:
             --private-key ~/.ssh/id_ed25519 \
             --vault-password-file ./.ansible-vault-password \
             playbook.yml
-      
+
       - name: Get latest commit message
         run: |
           echo "MESSAGE=$(git log -1 --pretty='`%h` %s')" >> $GITHUB_OUTPUT
@@ -120,4 +120,4 @@ jobs:
           MATTERMOST_USERNAME: ${{ github.triggering_actor }}
           MATTERMOST_ICON_URL: https://cdn3.iconfinder.com/data/icons/leto-space/64/__rocket_spaceship-512.png
         env:
-          LATEST_COMMIT_MESSAGE: 
+          LATEST_COMMIT_MESSAGE:

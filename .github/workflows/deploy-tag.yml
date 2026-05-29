@@ -39,8 +39,8 @@ jobs:
 
       - name: Build front assets
         run: |
-          npm clean-install --prefix=front
-          npm run build --prefix=front
+          npm clean-install
+          npm run build -w=@ecrituresnumeriques/stylo-front
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
