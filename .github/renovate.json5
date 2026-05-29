@@ -3,16 +3,15 @@
   dependencyDashboard: true,
   separateMajorMinor: true,
   extends: [':preserveSemverRanges'],
+  schedule: ['before 9am on monday'],
+  minimumReleaseAge: '7 days',
+  prConcurrentLimit: 3,
+  prHourlyLimit: 2,
   packageRules: [
     {
-      matchDepTypes: ['devDependencies'],
-      matchUpdateTypes: ['patch', 'minor'],
-      groupName: 'Development dependencies (non-major)',
-    },
-    {
-      matchDepTypes: ['devDependencies'],
-      matchUpdateTypes: ['major'],
-      groupName: 'Development dependencies',
+      // manually upgrade Docker images (MongoDB, Node...)
+      matchManagers: ['dockerfile', 'docker-compose'],
+      enabled: false,
     },
     {
       // libcrypto.so.1.1 is missing in ubuntu-24.04
@@ -26,44 +25,112 @@
       groupName: 'GitHub Actions',
     },
     {
-      // manually upgrade Docker imaged (MongoDB, Node...)
-      matchManagers: ['dockerfile', 'docker-compose'],
-      groupName: 'Docker images',
+      matchManagers: ['pip_requirements'],
+      groupName: 'Ansible',
+    },
+    {
+      matchFileNames: ['package.json'],
+      matchDepTypes: ['devDependencies'],
+      matchUpdateTypes: ['patch', 'minor'],
+      groupName: 'Dev dependencies (patch & minor)',
+    },
+    {
+      matchFileNames: ['docs/package.json'],
       enabled: false,
     },
     {
       matchFileNames: ['front/package.json'],
-      groupName: 'Frontend dependencies',
+      matchUpdateTypes: ['patch', 'minor'],
+      groupName: 'Frontend (patch & minor)',
     },
     {
       matchFileNames: ['front/package.json'],
-      groupName: 'React dependencies',
-      matchPackageNames: ['/react/'],
+      matchPackageNames: ['/^@sentry\\//'],
+      groupName: 'Frontend: Sentry',
     },
     {
       matchFileNames: ['front/package.json'],
-      groupName: 'i18n dependencies',
-      matchPackageNames: ['/i18next/'],
+      matchPackageNames: ['/i18next/', 'react-i18next'],
+      groupName: 'Frontend: i18n',
     },
     {
-      matchFileNames: ['docs/package.json'],
-      groupName: 'Documentation dependencies',
+      matchFileNames: ['front/package.json'],
+      matchPackageNames: ['/^vite/', '/^@vitejs\\//', '/^@rollup\\//', '/^rollup-/', '/^@esbuild\\//', 'terser'],
+      groupName: 'Frontend: Vite & build',
+    },
+    {
+      matchFileNames: ['front/package.json'],
+      matchPackageNames: ['/^@rjsf\\//', 'allof-merge'],
+      groupName: 'Frontend: rjsf',
+    },
+    {
+      matchFileNames: ['front/package.json'],
+      matchPackageNames: ['monaco-editor', '/^@monaco-editor\\//', 'y-monaco'],
+      groupName: 'Frontend: Monaco',
+    },
+    {
+      matchFileNames: ['front/package.json'],
+      matchPackageNames: ['yjs', 'y-websocket'],
+      groupName: 'Frontend: Yjs',
+    },
+    {
+      matchFileNames: ['front/package.json'],
+      matchPackageNames: ['/^react/', '/^redux/', '/^react-redux/'],
+      groupName: 'Frontend: React',
+    },
+    {
+      matchFileNames: ['front/package.json'],
+      matchPackageNames: ['/^@playwright\\//', '/^@testing-library\\//', '/^vitest$/', '/^@vitest\\//', 'jsdom'],
+      groupName: 'Frontend: tests',
     },
     {
       matchFileNames: ['graphql/package.json'],
-      groupName: 'Backend dependencies',
+      matchUpdateTypes: ['patch', 'minor'],
+      groupName: 'Backend (patch & minor)',
     },
     {
       matchFileNames: ['graphql/package.json'],
-      groupName: 'Backend dependencies related to MongoDB',
-      matchPackageNames: ['/mongodb/', '/mongoose/', '/connect-mongo/'],
+      matchPackageNames: ['/^@sentry\\//', ],
+      groupName: 'Backend: Sentry',
     },
     {
-      matchManagers: ['pip_requirements'],
-      groupName: 'Ansible dependencies',
+      matchFileNames: ['graphql/package.json'],
+      matchPackageNames: ['express', '/^express-/', 'body-parser', 'cors'],
+      groupName: 'Backend: Express',
+    },
+    {
+      matchFileNames: ['graphql/package.json'],
+      matchPackageNames: ['/^graphql/', '/^@graphql-tools\\//', 'dataloader'],
+      groupName: 'Backend: GraphQL',
+    },
+    {
+      matchFileNames: ['graphql/package.json'],
+      matchPackageNames: ['/^convict/'],
+      groupName: 'Backend: Convict',
+    },
+    {
+      matchFileNames: ['graphql/package.json'],
+      matchPackageNames: ['/^passport/'],
+      groupName: 'Backend: Passport',
+    },
+    {
+      matchFileNames: ['graphql/package.json'],
+      matchPackageNames: ['/^pino/'],
+      groupName: 'Backend: Pino',
+    },
+    {
+      matchFileNames: ['graphql/package.json'],
+      matchPackageNames: ['/mongodb/', '/^mongoose/', 'connect-mongo', '/^db-migrate/', '/^@ggrossetie\\/db-migrate/'],
+      groupName: 'Backend: MongoDB',
+    },
+    {
+      // versions after 0.1.2 are incompatible with yjs 13
+      matchPackageNames: ['@y/websocket-server'],
+      allowedVersions: '<=0.1.2',
     },
   ],
   lockFileMaintenance: {
     enabled: true,
+    schedule: ['before 9am on monday'],
   },
 }
