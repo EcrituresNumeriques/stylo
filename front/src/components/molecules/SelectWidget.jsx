@@ -12,7 +12,7 @@ const guessType = function guessType(value) {
     return 'null'
   } else if (typeof value === 'boolean') {
     return 'boolean'
-  } else if (!isNaN(value)) {
+  } else if (!Number.isNaN(value)) {
     return 'number'
   } else if (typeof value === 'object') {
     return 'object'
