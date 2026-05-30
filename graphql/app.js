@@ -313,7 +313,16 @@ yjsUtils.setPersistence({
           )
         }
       }
-      await builtinPersistence.bindState(roomName, ydoc)
+      try {
+        // noinspection ES6RedundantAwait — le type est déclaré void mais l'implémentation LevelDB (initialisée quand YPERSISTENCE est configuré) est bien async
+        await builtinPersistence.bindState(roomName, ydoc)
+      } catch (error) {
+        Sentry.captureException(error)
+        console.error(
+          `Unable to bind persistence state for article: ${articleId}`,
+          error
+        )
+      }
       ydoc.on(
         'update',
         debounce(
@@ -347,7 +356,15 @@ yjsUtils.setPersistence({
   },
   writeState: async (roomName, ydoc) => {
     if (roomName) {
-      await builtinPersistence.writeState(roomName, ydoc)
+      try {
+        await builtinPersistence.writeState(roomName, ydoc)
+      } catch (error) {
+        Sentry.captureException(error)
+        console.error(
+          `Unable to write persistence state for room: ${roomName}`,
+          error
+        )
+      }
     }
   },
 })
