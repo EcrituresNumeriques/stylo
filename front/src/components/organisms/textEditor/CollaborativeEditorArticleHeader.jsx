@@ -12,11 +12,13 @@ import CollaborativeEditorWriters from './CollaborativeEditorWriters.jsx'
  * @param {object} props
  * @param {string} props.articleTitle
  * @param {string|undefined} props.versionId
+ * @param {object} props.writers
  * @returns {import('react').ReactElement}
  */
 export default function CollaborativeEditorArticleHeader({
   articleTitle,
   versionId,
+  writers,
 }) {
   const { t } = useTranslation()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -43,7 +45,7 @@ export default function CollaborativeEditorArticleHeader({
         </Toggle>
 
         <div className={styles.writers}>
-          <CollaborativeEditorWriters />
+          <CollaborativeEditorWriters writers={writers} />
         </div>
       </div>
       <CollaborativeEditorActiveVersion versionId={versionId} />

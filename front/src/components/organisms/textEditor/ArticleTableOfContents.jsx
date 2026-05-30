@@ -1,17 +1,19 @@
 import { ArrowLeft } from 'lucide-react'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
 import { useMatch } from 'react-router'
 
 import { usePandocAnchoring } from '../../../hooks/pandoc.js'
 
 import styles from './ArticleTableOfContents.module.scss'
 
-export default function ArticleTableOfContents({ onBack }) {
+export default function ArticleTableOfContents({
+  onBack,
+  structure = [],
+  onCursorPositionChange,
+}) {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const articleStructure = useSelector((state) => state.articleStructure)
+  const articleStructure = structure
   const getAnchor = usePandocAnchoring()
   const routeMatch =
     useMatch('/article/:id/version/:versionId/*') || useMatch('/article/:id/*')
@@ -24,13 +26,12 @@ export default function ArticleTableOfContents({ onBack }) {
         ? document
             .querySelector(`#${target.dataset.headingAnchor}`)
             ?.scrollIntoView()
-        : dispatch({
-            type: 'UPDATE_EDITOR_CURSOR_POSITION',
+        : onCursorPositionChange?.({
             lineNumber: parseInt(target.dataset.index, 10),
             column: 0,
           })
     },
-    [hasHtmlAnchors]
+    [hasHtmlAnchors, onCursorPositionChange]
   )
 
   const title = onBack ? (

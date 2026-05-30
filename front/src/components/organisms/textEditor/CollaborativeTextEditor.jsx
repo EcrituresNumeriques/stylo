@@ -4,7 +4,6 @@ import throttle from 'lodash.throttle'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { MonacoBinding } from 'y-monaco'
 import 'monaco-editor/esm/vs/base/browser/ui/codicons/codicon/codicon.css'
 
@@ -41,15 +40,27 @@ import styles from './CollaborativeTextEditor.module.scss'
  * @param {string} props.articleId
  * @param {string|undefined} props.versionId
  * @param {'write' | 'compare' | 'preview'} props.mode
+ * @param {object} props.writers
+ * @param {{ lineNumber: number, column: number }} props.cursorPosition
+ * @param {function} props.onWritersChange
+ * @param {function} props.onStatsChange
+ * @param {function} props.onStructureChange
+ * @param {function} props.onWorkingCopyStatusChange
  * @returns {Element}
  */
 export default function CollaborativeTextEditor({
   articleId,
   versionId,
   mode,
+  writers,
+  cursorPosition,
+  onWritersChange,
+  onStatsChange,
+  onStructureChange,
+  onWorkingCopyStatusChange,
 }) {
   const { yText, awareness, websocketStatus, dynamicStyles } = useCollaboration(
-    { articleId, versionId }
+    { articleId, versionId, onWritersChange }
   )
   const { t } = useTranslation('editor')
 
@@ -84,12 +95,7 @@ export default function CollaborativeTextEditor({
     with_link_citations: true,
   })
 
-  const dispatch = useDispatch()
   const editorRef = useRef(null)
-  const editorCursorPosition = useSelector(
-    (state) => state.editorCursorPosition,
-    shallowEqual
-  )
 
   const hasVersion = useMemo(() => !!versionId, [versionId])
   const isLoading =
@@ -113,8 +119,8 @@ export default function CollaborativeTextEditor({
   const updateArticleStructureAndStats = useCallback(
     throttle(
       ({ text: md }) => {
-        dispatch({ type: 'UPDATE_ARTICLE_STATS', md })
-        dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md })
+        onStatsChange?.(md)
+        onStructureChange?.(md)
       },
       250,
       { leading: false, trailing: true }
@@ -173,18 +179,12 @@ export default function CollaborativeTextEditor({
     if (yText) {
       updateArticleStructureAndStats({ text: yText.toString() })
       yText.observe(() => {
-        dispatch({
-          type: 'UPDATE_ARTICLE_WORKING_COPY_STATUS',
-          status: 'syncing',
-        })
+        onWorkingCopyStatusChange?.('syncing')
         if (timeoutId) {
           clearTimeout(timeoutId)
         }
         timeoutId = setTimeout(() => {
-          dispatch({
-            type: 'UPDATE_ARTICLE_WORKING_COPY_STATUS',
-            status: 'synced',
-          })
+          onWorkingCopyStatusChange?.('synced')
         }, 4000)
 
         updateArticleStructureAndStats({ text: yText.toString() })
@@ -194,8 +194,8 @@ export default function CollaborativeTextEditor({
 
   useEffect(() => {
     if (versionId) {
-      dispatch({ type: 'UPDATE_ARTICLE_STATS', md: version.md })
-      dispatch({ type: 'UPDATE_ARTICLE_STRUCTURE', md: version.md })
+      onStatsChange?.(version.md)
+      onStructureChange?.(version.md)
     }
   }, [versionId])
 
@@ -206,13 +206,14 @@ export default function CollaborativeTextEditor({
   }, [bibliography])
 
   useEffect(() => {
-    const line = editorCursorPosition.lineNumber
+    if (!cursorPosition) return
+    const line = cursorPosition.lineNumber
     const editor = editorRef.current
     editor?.focus()
     const endOfLineColumn = editor?.getModel()?.getLineMaxColumn(line + 1)
     editor?.setPosition({ lineNumber: line + 1, column: endOfLineColumn })
     editor?.revealLineNearTop(line + 1, 1) // smooth
-  }, [editorRef, editorCursorPosition])
+  }, [editorRef, cursorPosition])
 
   if (isLoading) {
     return <Loading />
@@ -232,6 +233,7 @@ export default function CollaborativeTextEditor({
       <CollaborativeEditorArticleHeader
         articleTitle={article.title}
         versionId={versionId}
+        writers={writers}
       />
 
       <CollaborativeEditorWebSocketStatus

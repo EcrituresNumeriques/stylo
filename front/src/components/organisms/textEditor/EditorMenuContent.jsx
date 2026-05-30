@@ -15,6 +15,10 @@ export default function EditorMenuContent({
   articleId,
   versionId,
   activeMenu,
+  writers,
+  structure,
+  workingCopyStatus,
+  onCursorPositionChange,
 }) {
   const { article } = useRouteLoaderData('article')
   const { t } = useTranslation()
@@ -26,9 +30,18 @@ export default function EditorMenuContent({
   return (
     <div className={clsx(styles.content, styles.active)}>
       {activeMenu === 'metadata' && (
-        <ArticleMetadata articleId={articleId} versionId={versionId} />
+        <ArticleMetadata
+          articleId={articleId}
+          versionId={versionId}
+          writers={writers}
+        />
       )}
-      {activeMenu === 'toc' && <ArticleTableOfContents />}
+      {activeMenu === 'toc' && (
+        <ArticleTableOfContents
+          structure={structure}
+          onCursorPositionChange={onCursorPositionChange}
+        />
+      )}
       {activeMenu === 'bibliography' && (
         <ArticleBibliography articleId={articleId} />
       )}
@@ -50,6 +63,7 @@ export default function EditorMenuContent({
           articleId={articleId}
           selectedVersion={versionId}
           showTitle={true}
+          workingCopyStatus={workingCopyStatus}
         />
       )}
     </div>

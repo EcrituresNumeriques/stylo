@@ -2,8 +2,6 @@ import { createReduxEnhancer as createSentryReduxEnhancer } from '@sentry/react'
 
 import { applyMiddleware, compose, createStore } from 'redux'
 
-import { computeTextStats } from './helpers/markdown.js'
-
 const sessionTokenName = 'sessionToken'
 
 /**
@@ -26,11 +24,6 @@ const sessionTokenName = 'sessionToken'
 // Définition du store Redux et de l'ensemble des actions
 export const initialState = {
   sessionToken: localStorage.getItem(sessionTokenName),
-  articleWorkingCopy: {
-    status: 'synced',
-  },
-  articleStructure: [],
-  articleWriters: [],
   articlePreferences: localStorage.getItem('articlePreferences')
     ? JSON.parse(localStorage.getItem('articlePreferences'))
     : {
@@ -41,12 +34,6 @@ export const initialState = {
   articleFilters: {
     tagIds: [],
     text: '',
-  },
-  articleStats: {
-    wordCount: 0,
-    charCountNoSpace: 0,
-    charCountPlusSpace: 0,
-    citationNb: 0,
   },
   // Active user (authenticated)
   activeUser: {
@@ -73,10 +60,6 @@ export const initialState = {
         unnumbered: 0,
         book_division: 'part',
       },
-  editorCursorPosition: {
-    lineNumber: 0,
-    column: 0,
-  },
 }
 
 /**
@@ -108,12 +91,6 @@ function createRootReducer(state) {
     UPDATE_ACTIVE_USER_DETAILS: updateActiveUserDetails,
     LOGOUT: logoutUser,
 
-    // article reducers
-    UPDATE_ARTICLE_STATS: updateArticleStats,
-    UPDATE_ARTICLE_STRUCTURE: updateArticleStructure,
-    UPDATE_ARTICLE_WRITERS: updateArticleWriters,
-    UPDATE_ARTICLE_WORKING_COPY_STATUS: updateArticleWorkingCopyStatus,
-
     // user preferences reducers
     ARTICLE_PREFERENCES_TOGGLE: toggleArticlePreferences,
     CORPUS_PREFERENCES_TOGGLE: toggleCorpusPreferences,
@@ -123,8 +100,6 @@ function createRootReducer(state) {
     SET_CORPUS_PREFERENCES: setCorpusPreferences,
     SET_EXPORT_PREFERENCES: setExportPreferences,
     SET_USER_PREFERENCES: setUserPreferences,
-
-    UPDATE_EDITOR_CURSOR_POSITION: updateEditorCursorPosition,
 
     UPDATE_SELECTED_TAG: updateSelectedTag,
   })
@@ -226,43 +201,6 @@ function logoutUser() {
   return structuredClone(initialState)
 }
 
-function updateArticleStats(state, { md }) {
-  return {
-    ...state,
-    articleStats: computeTextStats(md),
-  }
-}
-
-function updateArticleStructure(state, { md }) {
-  const text = (md || '').trim()
-  const articleStructure = text
-    .split('\n')
-    .map((line, index) => ({ line, index }))
-    .filter((lineWithIndex) => lineWithIndex.line.match(/^##+ /))
-    .map((lineWithIndex) => {
-      const title = lineWithIndex.line
-        .replace(/##/, '')
-        //arrow backspace (\u21B3)
-        .replace(/#\s/g, '\u21B3')
-        // middle dot (\u00B7) + non-breaking space (\xa0)
-        .replace(/#/g, '\u00B7\xa0')
-      return { ...lineWithIndex, title }
-    })
-
-  return { ...state, articleStructure }
-}
-
-function updateArticleWriters(state, { articleWriters }) {
-  return { ...state, articleWriters }
-}
-
-function updateArticleWorkingCopyStatus(state, { status }) {
-  return {
-    ...state,
-    articleWorkingCopy: { ...state.articleWorkingCopy, status },
-  }
-}
-
 function togglePreferences(storeKey) {
   return function togglePreferencesReducer(state, { key, value }) {
     const preferences = state[storeKey]
@@ -298,16 +236,6 @@ const setUserPreferences = setPreferences('userPreferences')
 const toggleCorpusPreferences = togglePreferences('corpusPreferences')
 const setExportPreferences = setPreferences('exportPreferences')
 const setCorpusPreferences = setPreferences('corpusPreferences')
-
-function updateEditorCursorPosition(state, { lineNumber, column }) {
-  return {
-    ...state,
-    editorCursorPosition: {
-      lineNumber,
-      column,
-    },
-  }
-}
 
 function updateSelectedTag(state, { tagId }) {
   const { selectedTagIds } = state.activeUser

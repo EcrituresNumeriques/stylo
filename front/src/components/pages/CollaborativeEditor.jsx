@@ -1,7 +1,7 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router'
-
 import { executeQuery } from '../../helpers/graphQL.js'
+import { computeTextStats } from '../../helpers/markdown.js'
 import { getArticleInfo } from '../../hooks/Article.graphql'
 import { usePreferenceItem } from '../../hooks/user.js'
 import {
@@ -12,6 +12,23 @@ import {
 import EditorMenuContent from '../organisms/textEditor/EditorMenuContent.jsx'
 
 import styles from './CollaborativeEditor.module.scss'
+
+function parseArticleStructure(md) {
+  const text = (md || '').trim()
+  return text
+    .split('\n')
+    .map((line, index) => ({ line, index }))
+    .filter((lineWithIndex) => lineWithIndex.line.match(/^##+ /))
+    .map((lineWithIndex) => {
+      const title = lineWithIndex.line
+        .replace(/##/, '')
+        //arrow backspace (↳)
+        .replace(/#\s/g, '↳')
+        // middle dot (·) + non-breaking space (\xa0)
+        .replace(/#/g, '·\xa0')
+      return { ...lineWithIndex, title }
+    })
+}
 
 const articleIdRx = /^[a-f\d]{24}$/i
 
@@ -51,6 +68,30 @@ export default function CollaborativeEditor(props) {
     'article'
   )
 
+  const [articleStats, setArticleStats] = useState({
+    wordCount: 0,
+    charCountNoSpace: 0,
+    charCountPlusSpace: 0,
+    citationNb: 0,
+  })
+  const [articleStructure, setArticleStructure] = useState([])
+  const [writers, setWriters] = useState({})
+  const [workingCopyStatus, setWorkingCopyStatus] = useState('synced')
+  const [cursorPosition, setCursorPosition] = useState(null)
+
+  const handleStatsChange = useCallback(
+    (md) => setArticleStats(computeTextStats(md)),
+    []
+  )
+  const handleStructureChange = useCallback(
+    (md) => setArticleStructure(parseArticleStructure(md)),
+    []
+  )
+  const handleCursorPositionChange = useCallback(
+    (position) => setCursorPosition(position),
+    []
+  )
+
   const handleActiveMenuChange = useCallback(
     (value) => {
       setActiveMenu(value)
@@ -66,13 +107,23 @@ export default function CollaborativeEditor(props) {
             mode={mode}
             articleId={articleId}
             versionId={versionId}
+            writers={writers}
+            cursorPosition={cursorPosition}
+            onWritersChange={setWriters}
+            onStatsChange={handleStatsChange}
+            onStructureChange={handleStructureChange}
+            onWorkingCopyStatusChange={setWorkingCopyStatus}
           />
-          <ArticleStats />
+          <ArticleStats stats={articleStats} />
         </div>
         <EditorMenuContent
           articleId={articleId}
           versionId={versionId}
           activeMenu={activeMenu}
+          writers={writers}
+          structure={articleStructure}
+          workingCopyStatus={workingCopyStatus}
+          onCursorPositionChange={handleCursorPositionChange}
         />
       </div>
 

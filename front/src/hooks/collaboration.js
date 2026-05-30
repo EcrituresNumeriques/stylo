@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
 
 import * as collaborating from '../components/organisms/textEditor/collaborating.js'
 import { applicationConfig } from '../config.js'
@@ -35,7 +35,7 @@ const colors = [
   '#DDDDDD',
 ]
 
-export function useCollaboration({ articleId }) {
+export function useCollaboration({ articleId, onWritersChange }) {
   const connectingRef = useRef(false)
   const [dynamicStyles, setDynamicStyles] = useState('')
   const [websocketStatus, setWebsocketStatus] = useState('')
@@ -51,7 +51,6 @@ export function useCollaboration({ articleId }) {
     }),
     shallowEqual
   )
-  const dispatch = useDispatch()
 
   const writerInfo = useMemo(
     () => ({
@@ -67,7 +66,7 @@ export function useCollaboration({ articleId }) {
   const handleWritersUpdated = useCallback(
     ({ states }) => {
       const writers = Object.fromEntries(states)
-      dispatch({ type: 'UPDATE_ARTICLE_WRITERS', articleWriters: writers })
+      onWritersChange?.(writers)
       setDynamicStyles(
         Object.entries(writers)
           .map(([key, writer]) => {

@@ -1,11 +1,17 @@
 import { useTranslation } from 'react-i18next'
-import { shallowEqual, useSelector } from 'react-redux'
 
 import styles from './ArticleStats.module.scss'
 
-export default function ArticleStats() {
+export default function ArticleStats({
+  stats = {
+    wordCount: 0,
+    charCountNoSpace: 0,
+    charCountPlusSpace: 0,
+    citationNb: 0,
+  },
+}) {
   const { t } = useTranslation()
-  const articleStats = useSelector((state) => state.articleStats, shallowEqual)
+  const articleStats = stats
   return (
     <ul className={styles.stats} aria-label={t('article.stats.menuLabel')}>
       <li>
