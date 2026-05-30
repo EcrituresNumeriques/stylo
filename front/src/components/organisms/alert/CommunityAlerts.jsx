@@ -7,11 +7,11 @@ import { applicationConfig } from '../../../config.js'
 import styles from '../../molecules/Alert.module.scss'
 
 export default function CommunityAlerts({ topics = [] }) {
-  if (!topics || !topics.length) {
+  const { t } = useTranslation()
+
+  if (!topics?.length) {
     return null
   }
-
-  const { t } = useTranslation()
 
   return (
     <section aria-label={t('main.alerts.listTitle')} role="list">
