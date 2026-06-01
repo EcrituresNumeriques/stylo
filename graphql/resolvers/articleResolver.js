@@ -558,12 +558,14 @@ module.exports = {
       })
     },
 
+    /** @deprecated Use removeArticleContributor root mutation instead. */
     async removeContributor(article, { userId }) {
       const contributorUser = await getUser(userId)
       await article.unshareWith(contributorUser)
       return article
     },
 
+    /** @deprecated Use addArticleContributor root mutation instead. */
     async addContributor(article, { userId }) {
       const contributorUser = await User.findById(userId)
       if (!contributorUser) {
@@ -586,8 +588,7 @@ module.exports = {
     },
 
     /**
-     * Delete an article.
-     *
+     * @deprecated Use deleteArticle root mutation instead.
      * @param {import('mongoose').Document<ObjectId, any, Article>} article
      * @returns {boolean} true if the article was deleted, false otherwise
      */
@@ -596,42 +597,44 @@ module.exports = {
       return true
     },
 
+    /** @deprecated Use renameArticle root mutation instead. */
     async rename(article, { title }) {
       return article.rename(title)
     },
 
+    /** @deprecated Use setArticleZoteroLink root mutation instead. */
     async setZoteroLink(article, { zotero }) {
       return article.setZoteroLink(zotero)
     },
 
+    /** @deprecated Use setArticleNakalaLink root mutation instead. */
     async setNakalaLink(article, { nakala }) {
       return article.setNakalaLink(nakala)
     },
 
+    /** @deprecated Use addArticleTags root mutation instead. */
     async addTags(article, { tags }) {
       await article.addTags(...tags)
       return article.tags
     },
 
+    /** @deprecated Use removeArticleTags root mutation instead. */
     async removeTags(article, { tags }) {
       await article.removeTags(...tags)
       return article.tags
     },
 
+    /** @deprecated Use setArticlePreviewSettings root mutation instead. */
     async setPreviewSettings(article, { settings }) {
       return article.setPreviewSettings(settings)
     },
 
+    /** @deprecated Use updateArticleWorkingVersion root mutation instead. */
     async updateWorkingVersion(article, { content }) {
       return article.updateWorkingVersion(content)
     },
 
-    /**
-     * @param article
-     * @param articleVersionInput
-     * @param context
-     * @return {Promise<Article>}
-     */
+    /** @deprecated Use createArticleVersion root mutation instead. */
     async createVersion(article, { articleVersionInput }) {
       const result = await createVersion(article, {
         ...articleVersionInput,
