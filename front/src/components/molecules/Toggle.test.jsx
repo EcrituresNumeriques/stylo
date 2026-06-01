@@ -32,11 +32,38 @@ describe('Toggle', () => {
     )
 
     const el = getByLabelText('label')
+
+    expect(onChange).not.toHaveBeenCalled()
+
     await user.click(el)
 
     await expect(el).toBeChecked()
-    // it is called once on mount, and once on change
+    expect(onChange).toHaveBeenCalledOnce()
     await expect(onChange).toHaveBeenLastCalledWith(true)
+  })
+
+  test('does not call onChange on mount when checked=false', () => {
+    const onChange = vi.fn()
+
+    render(
+      <Component checked={false} onChange={onChange}>
+        label
+      </Component>
+    )
+
+    expect(onChange).not.toHaveBeenCalled()
+  })
+
+  test('does not call onChange on mount when checked=true', () => {
+    const onChange = vi.fn()
+
+    render(
+      <Component checked onChange={onChange}>
+        label
+      </Component>
+    )
+
+    expect(onChange).not.toHaveBeenCalled()
   })
 
   test('w/ a11y labels', async () => {
