@@ -126,6 +126,35 @@ module.exports = {
      *
      */
     workspace,
+
+    async leaveWorkspace(_, { workspaceId }, { user, token }) {
+      const ws = await getWorkspace(workspaceId, token, user)
+      return ws.leave(user.id)
+    },
+
+    async inviteWorkspaceMember(_, { workspaceId, userId }, { user, token }) {
+      const ws = await getWorkspace(workspaceId, token, user)
+      return ws.inviteMember(userId)
+    },
+
+    async addWorkspaceArticle(_, { workspaceId, articleId }, { user, token }) {
+      const ws = await getWorkspace(workspaceId, token, user)
+      return ws.addArticleById(articleId)
+    },
+
+    async removeWorkspaceMember(_, { workspaceId, userId }, { user, token }) {
+      const ws = await getWorkspace(workspaceId, token, user)
+      return ws.removeMember(userId)
+    },
+
+    async removeWorkspaceArticle(
+      _,
+      { workspaceId, articleId },
+      { user, token }
+    ) {
+      const ws = await getWorkspace(workspaceId, token, user)
+      return ws.removeArticleById(articleId)
+    },
   },
 
   Query: {
@@ -206,6 +235,7 @@ module.exports = {
 
     // mutations
 
+    /** @deprecated Use leaveWorkspace root mutation instead. */
     async leave(workspace, _args, { user }) {
       if (!user) {
         throw new NotAuthenticatedError()
@@ -219,6 +249,7 @@ module.exports = {
       )
     },
 
+    /** @deprecated Use addWorkspaceArticle root mutation instead. */
     async addArticle(workspace, { articleId }) {
       const articleAlreadyAdded = workspace.articles.find(
         (id) => String(id) === articleId
@@ -230,6 +261,7 @@ module.exports = {
       return workspace.save()
     },
 
+    /** @deprecated Use inviteWorkspaceMember root mutation instead. */
     async inviteMember(workspace, { userId }) {
       // question: should we check that the authenticated user "knows" the member?
       const memberAlreadyInvited = workspace.members.find(

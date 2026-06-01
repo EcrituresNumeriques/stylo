@@ -10,9 +10,9 @@ import {
   create as createMutation,
   getWorkspaceMembers,
   getWorkspaces,
-  inviteMember as inviteMemberMutation,
-  leave as leaveMutation,
-  removeMember as removeMemberMutation,
+  inviteWorkspaceMember as inviteMemberMutation,
+  leaveWorkspace as leaveMutation,
+  removeWorkspaceMember as removeMemberMutation,
   updateFormMetadata as updateFormMetadataMutation,
 } from './Workspaces.graphql'
 
