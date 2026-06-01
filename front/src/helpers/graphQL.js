@@ -79,12 +79,11 @@ export class GraphQLError extends Error {
 export function useGraphQLClient() {
   const sessionToken = useSelector((state) => state.sessionToken)
   return {
-    query: ({ query, variables, type = 'fetch', withCredentials = false }) =>
+    query: ({ query, variables, withCredentials = false }) =>
       executeQuery({
         query,
         variables,
         sessionToken,
-        type,
         credentials: withCredentials === false ? 'omit' : corsStrategy,
       }),
   }
@@ -96,7 +95,6 @@ export function useGraphQLClient() {
  * @param {'omit' | 'same-origin' | 'include'} context.credentials request variables
  * @param {{[key: string]: unknown}|undefined} context.variables request variables
  * @param {string} context.sessionToken session token (for authentication)
- * @param {'fetch'|'mutate'} context.type request type (either fetch or mutate)
  * @returns {Promise<string|{[key: string]: unknown}>}
  * @throws {Error} if something went wrong
  */
@@ -105,8 +103,7 @@ export function executeQuery({
   variables,
   sessionToken,
   credentials = 'omit',
-  type = 'fetch',
 }) {
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
-  return executeRequest({ query, variables, sessionToken, type, credentials })
+  return executeRequest({ query, variables, sessionToken, credentials })
 }

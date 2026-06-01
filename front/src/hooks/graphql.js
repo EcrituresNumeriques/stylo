@@ -110,6 +110,5 @@ async function fetch({ query, variables, sessionToken }) {
     query,
     variables,
     sessionToken,
-    type: 'fetch',
   })
 }

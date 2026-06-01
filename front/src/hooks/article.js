@@ -48,7 +48,6 @@ export function useArticleTagActions({ articleId }) {
         tags: [tagId],
       },
       sessionToken,
-      type: 'mutation',
     })
     const tags = result.addArticleTags
     mutate(
@@ -69,7 +68,6 @@ export function useArticleTagActions({ articleId }) {
         tags: [tagId],
       },
       sessionToken,
-      type: 'mutation',
     })
     const tags = result.removeArticleTags
     mutate(
@@ -109,7 +107,6 @@ export function useArticlesActions({ activeWorkspaceId }) {
       query: createArticle,
       variables: { createArticleInput: createInput },
       sessionToken,
-      type: 'mutation',
     })
     await mutateArticles(async (data) => {
       console.log({ data })
@@ -154,7 +151,6 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
         articleId,
       },
       sessionToken,
-      type: 'mutation',
     })
   }
   const duplicate = async (article) => {
@@ -166,7 +162,6 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
         articleId,
       },
       sessionToken,
-      type: 'mutation',
     })
     const duplicatedArticle = {
       ...article,
@@ -190,7 +185,6 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
       query: deleteArticle,
       variables: { articleId },
       sessionToken,
-      type: 'mutation',
     })
     await mutateArticles(async (data) => {
       const updatedArticles =
@@ -285,7 +279,6 @@ export function useArticleMetadata({ articleId, versionId }) {
         articleId: articleId,
         content: { metadataFormType },
       },
-      type: 'mutate',
     })
     // TODO use a common query for all mutations
     await mutate(
@@ -316,7 +309,6 @@ export function useArticleMetadata({ articleId, versionId }) {
         articleId: articleId,
         content: { metadata },
       },
-      type: 'mutate',
     })
     await mutate(
       async (data) => {
@@ -413,7 +405,6 @@ export function useEditableArticle({ articleId, versionId }) {
           bib: bibtex,
         },
       },
-      type: 'mutate',
     })
     const bibliography = result.updateArticleBibliography
     await mutate(
@@ -441,7 +432,6 @@ export function useEditableArticle({ articleId, versionId }) {
         articleId: articleId,
         url,
       },
-      type: 'mutation',
     })
     await mutate(
       async (data) => {
@@ -464,7 +454,6 @@ export function useEditableArticle({ articleId, versionId }) {
         articleId: articleId,
         url,
       },
-      type: 'mutation',
     })
     await mutate(
       async (data) => {
@@ -553,7 +542,6 @@ export function useArticleVersionActions({ articleId }) {
         message: version.description,
       },
       sessionToken,
-      type: 'mutation',
     })
     await mutate(async (data) => ({
       article: {
@@ -570,7 +558,6 @@ export function useArticleVersionActions({ articleId }) {
         name: description,
       },
       sessionToken,
-      type: 'mutation',
     })
     await mutate(async (data) => ({
       article: {

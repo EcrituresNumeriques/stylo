@@ -130,7 +130,6 @@ export function useUserTagActions() {
     const result = await query({
       query: createTag,
       variables: tag,
-      type: 'mutation',
     })
     await mutate(
       async (data) => {
@@ -149,7 +148,6 @@ export function useUserTagActions() {
     const result = await query({
       query: updateTag,
       variables: tag,
-      type: 'mutation',
     })
     await mutate(
       async (data) => ({

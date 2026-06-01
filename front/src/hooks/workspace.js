@@ -68,7 +68,6 @@ export function useWorkspaceMembersActions(workspaceId) {
       query: removeMemberMutation,
       variables: { workspaceId, userId },
       sessionToken,
-      type: 'mutation',
     })
     const result = await mutate(
       async (data) => {
@@ -89,7 +88,6 @@ export function useWorkspaceMembersActions(workspaceId) {
       query: inviteMemberMutation,
       variables: { workspaceId, userId },
       sessionToken,
-      type: 'mutation',
     })
     const result = await mutate(
       async (data) => {

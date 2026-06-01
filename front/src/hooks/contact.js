@@ -23,7 +23,6 @@ export function useContactActions() {
         contactId,
       },
       sessionToken,
-      type: 'mutation',
     })
     await mutate(
       {
@@ -39,7 +38,6 @@ export function useContactActions() {
       query: removeContact,
       variables: { contactId },
       sessionToken,
-      type: 'mutation',
     })
     await mutate(
       {
