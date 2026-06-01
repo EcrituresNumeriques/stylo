@@ -39,19 +39,18 @@ query getArticleVersion($versionId: ID!) {
   }
 }
 
-mutation createVersion(
+mutation createArticleVersion(
   $articleId: ID!
   $userId: ID!
   $major: Boolean!
   $message: String
 ) {
-  article(articleId: $articleId) {
-    createVersion(
-      articleVersionInput: { major: $major, message: $message, userId: $userId }
-    ) {
-      versions {
-        ...basicVersionFields
-      }
+  createArticleVersion(
+    articleId: $articleId
+    articleVersionInput: { major: $major, message: $message, userId: $userId }
+  ) {
+    versions {
+      ...basicVersionFields
     }
   }
 }

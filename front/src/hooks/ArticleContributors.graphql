@@ -1,28 +1,24 @@
 #import './Credentials.graphql'
 
-query addContributor($userId: ID!, $articleId: ID!) {
-  article(article: $articleId) {
-    addContributor(userId: $userId) {
-      _id
-      contributors {
-        roles
-        user {
-          ...extendedPublicUserFields
-        }
+mutation addArticleContributor($userId: ID!, $articleId: ID!) {
+  addArticleContributor(articleId: $articleId, userId: $userId) {
+    _id
+    contributors {
+      roles
+      user {
+        ...extendedPublicUserFields
       }
     }
   }
 }
 
-query removeContributor($userId: ID!, $articleId: ID!) {
-  article(article: $articleId) {
-    removeContributor(userId: $userId) {
-      _id
-      contributors {
-        roles
-        user {
-          ...extendedPublicUserFields
-        }
+mutation removeArticleContributor($userId: ID!, $articleId: ID!) {
+  removeArticleContributor(articleId: $articleId, userId: $userId) {
+    _id
+    contributors {
+      roles
+      user {
+        ...extendedPublicUserFields
       }
     }
   }

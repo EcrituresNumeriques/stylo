@@ -5,18 +5,18 @@ import { toYaml } from '../components/organisms/metadata/yaml.js'
 import { executeQuery } from '../helpers/graphQL.js'
 import { clean } from '../schemas/schemas.js'
 import {
-  addTags,
+  addArticleTags,
   deleteArticle,
   duplicateArticle,
   getArticleMetadata,
   getArticleTags,
   getEditableArticle,
-  removeTags,
-  setNakalaLink,
-  setZoteroLink,
+  removeArticleTags,
+  setArticleNakalaLink,
+  setArticleZoteroLink,
   updateArticle,
   updateArticleBibliography,
-  updateWorkingVersion,
+  updateArticleWorkingVersion,
 } from './Article.graphql'
 import { createArticle, getWorkspaceArticles } from './Articles.graphql'
 import useFetchData, {
@@ -24,7 +24,7 @@ import useFetchData, {
   useMutateData,
 } from './graphql.js'
 import {
-  createVersion,
+  createArticleVersion,
   getArticleVersion,
   getArticleVersions,
   renameVersion,
@@ -42,15 +42,14 @@ export function useArticleTagActions({ articleId }) {
   )
   const add = async (tagId) => {
     const result = await executeQuery({
-      query: addTags,
+      query: addArticleTags,
       variables: {
         articleId,
         tags: [tagId],
       },
       sessionToken,
-      type: 'mutation',
     })
-    const tags = result.article.addTags
+    const tags = result.addArticleTags
     mutate(
       {
         article: {
@@ -63,15 +62,14 @@ export function useArticleTagActions({ articleId }) {
   }
   const remove = async (tagId) => {
     const result = await executeQuery({
-      query: removeTags,
+      query: removeArticleTags,
       variables: {
         articleId,
         tags: [tagId],
       },
       sessionToken,
-      type: 'mutation',
     })
-    const tags = result.article.removeTags
+    const tags = result.removeArticleTags
     mutate(
       {
         article: {
@@ -109,7 +107,6 @@ export function useArticlesActions({ activeWorkspaceId }) {
       query: createArticle,
       variables: { createArticleInput: createInput },
       sessionToken,
-      type: 'mutation',
     })
     await mutateArticles(async (data) => {
       console.log({ data })
@@ -154,7 +151,6 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
         articleId,
       },
       sessionToken,
-      type: 'mutation',
     })
   }
   const duplicate = async (article) => {
@@ -166,7 +162,6 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
         articleId,
       },
       sessionToken,
-      type: 'mutation',
     })
     const duplicatedArticle = {
       ...article,
@@ -190,7 +185,6 @@ export function useArticleActions({ articleId, activeWorkspaceId }) {
       query: deleteArticle,
       variables: { articleId },
       sessionToken,
-      type: 'mutation',
     })
     await mutateArticles(async (data) => {
       const updatedArticles =
@@ -279,13 +273,12 @@ export function useArticleMetadata({ articleId, versionId }) {
 
     await executeQuery({
       sessionToken,
-      query: updateWorkingVersion,
+      query: updateArticleWorkingVersion,
       variables: {
         userId: activeUser._id,
         articleId: articleId,
         content: { metadataFormType },
       },
-      type: 'mutate',
     })
     // TODO use a common query for all mutations
     await mutate(
@@ -310,13 +303,12 @@ export function useArticleMetadata({ articleId, versionId }) {
     }
     await executeQuery({
       sessionToken,
-      query: updateWorkingVersion,
+      query: updateArticleWorkingVersion,
       variables: {
         userId: activeUser._id,
         articleId: articleId,
         content: { metadata },
       },
-      type: 'mutate',
     })
     await mutate(
       async (data) => {
@@ -413,7 +405,6 @@ export function useEditableArticle({ articleId, versionId }) {
           bib: bibtex,
         },
       },
-      type: 'mutate',
     })
     const bibliography = result.updateArticleBibliography
     await mutate(
@@ -436,12 +427,11 @@ export function useEditableArticle({ articleId, versionId }) {
   const updateZoteroLink = async (url) => {
     await executeQuery({
       sessionToken,
-      query: setZoteroLink,
+      query: setArticleZoteroLink,
       variables: {
         articleId: articleId,
         url,
       },
-      type: 'mutate',
     })
     await mutate(
       async (data) => {
@@ -459,12 +449,11 @@ export function useEditableArticle({ articleId, versionId }) {
   const updateNakalaLink = async (url) => {
     await executeQuery({
       sessionToken,
-      query: setNakalaLink,
+      query: setArticleNakalaLink,
       variables: {
         articleId: articleId,
         url,
       },
-      type: 'mutate',
     })
     await mutate(
       async (data) => {
@@ -545,7 +534,7 @@ export function useArticleVersionActions({ articleId }) {
   })
   const create = async (version) => {
     const response = await executeQuery({
-      query: createVersion,
+      query: createArticleVersion,
       variables: {
         userId: activeUser._id,
         articleId,
@@ -553,12 +542,11 @@ export function useArticleVersionActions({ articleId }) {
         message: version.description,
       },
       sessionToken,
-      type: 'mutation',
     })
     await mutate(async (data) => ({
       article: {
         ...data?.article,
-        versions: response.article.createVersion.versions,
+        versions: response.createArticleVersion.versions,
       },
     }))
   }
@@ -570,7 +558,6 @@ export function useArticleVersionActions({ articleId }) {
         name: description,
       },
       sessionToken,
-      type: 'mutation',
     })
     await mutate(async (data) => ({
       article: {
