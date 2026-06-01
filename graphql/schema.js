@@ -81,14 +81,8 @@ type User {
   createdAt: DateTime
   updatedAt: DateTime
   deletedAt: DateTime
-  """
-  @deprecated Use addContact mutation at the root instead.
-  """
-  addContact(userId: ID!): User
-  """
-  @deprecated Use removeContact mutation at the root instead.
-  """
-  removeContact(userId: ID!): User
+  addContact(userId: ID!): User @deprecated(reason: "Use addContact mutation at the root instead.")
+  removeContact(userId: ID!): User @deprecated(reason: "Use removeContact mutation at the root instead.")
 
   stats: UserStats
 }
@@ -193,6 +187,7 @@ type Article {
   preview: ArticlePreviewSettings
   createdAt: DateTime
   updatedAt: DateTime
+  workspaces: [Workspace!]
 
   addTags(tags: [ID]!): [Tag]
   delete(dryRun: Boolean): Boolean
@@ -202,8 +197,6 @@ type Article {
   setZoteroLink(zotero: String!): Boolean
   setNakalaLink(nakala: String!): Boolean
   updateWorkingVersion(content: WorkingVersionInput!): Article
-  workspaces: [Workspace!]
-
   addContributor(userId: ID!): Article
   removeContributor(userId: ID!): Article
   createVersion(articleVersionInput: ArticleVersionInput!): Article
@@ -533,9 +526,8 @@ type Mutation {
   """
   Add a user to your contacts list by their email address.
   Requires authentication as the specified user.
-  @deprecated Use addContact instead.
   """
-  addAcquintance(email: EmailAddress!, user: ID): User
+  addAcquintance(email: EmailAddress!, user: ID): User @deprecated(reason: "Use addContact instead.")
 
   """
   Change the password for the specified user account.
