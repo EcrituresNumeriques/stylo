@@ -6,6 +6,7 @@ const debounce = require('lodash.debounce')
 const config = require('./config.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
+const git = require('isomorphic-git')
 
 config.validate({ allowed: 'strict' })
 
@@ -73,6 +74,7 @@ const yjsUtils = require('@y/websocket-server/utils')
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
 const { requestHandler: backupRequestHandler } = require('./backup')
+const fs = require('node:fs')
 const wss = new WebSocket.Server({ noServer: true })
 
 const jwtSecret = config.get('security.jwt.secret')
@@ -258,6 +260,53 @@ app.post(
   bodyParser.json(),
   backupRequestHandler
 )
+
+app.get('/git/corpus/:corpusId.git/info/refs', async (req, res) => {
+  const corpusId = req.params.corpusId
+  const{ service } = req.query
+  console.log({corpusId, service})
+  const styloFS = {
+    promises: {
+      readFile: function (path, opts) {
+        console.log(arguments)
+        console.log('readFile', {path, opts})
+        return Buffer.from("aaa")
+      },
+      writeFile: () => {},
+      unlink: () => {},
+      readdir: (path) => {
+        console.log('readdir', {path})
+      },
+      mkdir: () => {},
+      rmdir: () => {},
+      stat: (path) => {
+        console.log('stat', {path})
+        return {
+          isDirectory: () => true
+        }
+      },
+      lstat: (path) => {
+        console.log('lstat', {path})
+        return {
+
+        }
+      },
+      readlink: () => {},
+      symlink: () => {},
+      chmod: () => {},
+    }
+  }
+  //const fs = require('node:fs')
+  let { packfile } = await git.packObjects({
+    fs: styloFS,
+    dir: 'foo',
+    gitdir: '/corpus/.git',
+    write: false,
+    oids: ['4b825dc642cb6eb9a060e54bf8d69288fbee4904']
+  })
+  console.log(packfile)
+  res.status(200).send()
+})
 
 /*
  * GraphQL interface

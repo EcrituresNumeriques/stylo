@@ -126,6 +126,9 @@ export default defineConfig(async ({ mode }) => {
         '/graphql': {
           target: 'http://127.0.0.1:3030',
         },
+        '/git': {
+          target: 'http://127.0.0.1:3030',
+        },
         '^/(login/|authorize/|logout|feed/|community/|authorization-code|version)':
           {
             target: 'http://127.0.0.1:3030',
