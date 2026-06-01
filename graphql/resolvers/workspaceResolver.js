@@ -1,4 +1,3 @@
-const { ObjectId } = require('mongoose').Types
 const {
   NotFoundError,
   NotAuthenticatedError,
@@ -27,6 +26,10 @@ async function getWorkspace(workspaceId, token, user) {
     return workspace
   }
 
+  if (!user) {
+    throw new NotAuthenticatedError()
+  }
+
   const workspace = await Workspace.findOne({
     $and: [{ _id: workspaceId }, { 'members.user': user?._id }],
   })
@@ -49,11 +52,8 @@ class WorkspaceArticle {
   }
 
   async remove() {
-    if (this.article) {
-      this.workspace.articles.pull({ _id: this.article._id })
-      return this.workspace.save()
-    }
-    return this.workspace
+    if (!this.article) return this.workspace
+    return this.workspace.removeArticleById(String(this.article._id))
   }
 }
 
@@ -64,11 +64,8 @@ class WorkspaceMember {
   }
 
   async remove() {
-    if (this.member) {
-      this.workspace.members.pull({ _id: this.member._id })
-      return this.workspace.save()
-    }
-    return this.workspace
+    if (!this.member) return this.workspace
+    return this.workspace.removeMember(String(this.member.user))
   }
 }
 
@@ -240,38 +237,17 @@ module.exports = {
       if (!user) {
         throw new NotAuthenticatedError()
       }
-
-      // TODO: remove workspace if there's no member left!
-      return Workspace.findOneAndUpdate(
-        { _id: new ObjectId(workspace._id) },
-        { $pull: { members: { user: new ObjectId(user.id) } } },
-        { lean: true }
-      )
+      return workspace.leave(user.id)
     },
 
     /** @deprecated Use addWorkspaceArticle root mutation instead. */
     async addArticle(workspace, { articleId }) {
-      const articleAlreadyAdded = workspace.articles.find(
-        (id) => String(id) === articleId
-      )
-      if (articleAlreadyAdded) {
-        return workspace
-      }
-      workspace.articles.push({ _id: articleId })
-      return workspace.save()
+      return workspace.addArticleById(articleId)
     },
 
     /** @deprecated Use inviteWorkspaceMember root mutation instead. */
     async inviteMember(workspace, { userId }) {
-      // question: should we check that the authenticated user "knows" the member?
-      const memberAlreadyInvited = workspace.members.find(
-        (id) => String(id) === userId
-      )
-      if (memberAlreadyInvited) {
-        return workspace
-      }
-      workspace.members.push({ user: userId })
-      return workspace.save()
+      return workspace.inviteMember(userId)
     },
   },
 }

@@ -54,7 +54,9 @@ describe('Workspace', () => {
     expect(fetch).toHaveBeenLastCalledWith(
       'http://localhost:3000/graphql',
       expect.objectContaining({
-        body: expect.stringMatching(/"query":"mutation inviteMember\(/),
+        body: expect.stringMatching(
+          /"query":"mutation inviteWorkspaceMember\(/
+        ),
       })
     )
   })
