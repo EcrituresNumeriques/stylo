@@ -5,18 +5,18 @@ import { toYaml } from '../components/organisms/metadata/yaml.js'
 import { executeQuery } from '../helpers/graphQL.js'
 import { clean } from '../schemas/schemas.js'
 import {
-  addTags,
+  addArticleTags,
   deleteArticle,
   duplicateArticle,
   getArticleMetadata,
   getArticleTags,
   getEditableArticle,
-  removeTags,
-  setNakalaLink,
-  setZoteroLink,
+  removeArticleTags,
+  setArticleNakalaLink,
+  setArticleZoteroLink,
   updateArticle,
   updateArticleBibliography,
-  updateWorkingVersion,
+  updateArticleWorkingVersion,
 } from './Article.graphql'
 import { createArticle, getWorkspaceArticles } from './Articles.graphql'
 import useFetchData, {
@@ -24,7 +24,7 @@ import useFetchData, {
   useMutateData,
 } from './graphql.js'
 import {
-  createVersion,
+  createArticleVersion,
   getArticleVersion,
   getArticleVersions,
   renameVersion,
@@ -42,7 +42,7 @@ export function useArticleTagActions({ articleId }) {
   )
   const add = async (tagId) => {
     const result = await executeQuery({
-      query: addTags,
+      query: addArticleTags,
       variables: {
         articleId,
         tags: [tagId],
@@ -50,7 +50,7 @@ export function useArticleTagActions({ articleId }) {
       sessionToken,
       type: 'mutation',
     })
-    const tags = result.article.addTags
+    const tags = result.addArticleTags
     mutate(
       {
         article: {
@@ -63,7 +63,7 @@ export function useArticleTagActions({ articleId }) {
   }
   const remove = async (tagId) => {
     const result = await executeQuery({
-      query: removeTags,
+      query: removeArticleTags,
       variables: {
         articleId,
         tags: [tagId],
@@ -71,7 +71,7 @@ export function useArticleTagActions({ articleId }) {
       sessionToken,
       type: 'mutation',
     })
-    const tags = result.article.removeTags
+    const tags = result.removeArticleTags
     mutate(
       {
         article: {
@@ -279,7 +279,7 @@ export function useArticleMetadata({ articleId, versionId }) {
 
     await executeQuery({
       sessionToken,
-      query: updateWorkingVersion,
+      query: updateArticleWorkingVersion,
       variables: {
         userId: activeUser._id,
         articleId: articleId,
@@ -310,7 +310,7 @@ export function useArticleMetadata({ articleId, versionId }) {
     }
     await executeQuery({
       sessionToken,
-      query: updateWorkingVersion,
+      query: updateArticleWorkingVersion,
       variables: {
         userId: activeUser._id,
         articleId: articleId,
@@ -436,12 +436,12 @@ export function useEditableArticle({ articleId, versionId }) {
   const updateZoteroLink = async (url) => {
     await executeQuery({
       sessionToken,
-      query: setZoteroLink,
+      query: setArticleZoteroLink,
       variables: {
         articleId: articleId,
         url,
       },
-      type: 'mutate',
+      type: 'mutation',
     })
     await mutate(
       async (data) => {
@@ -459,12 +459,12 @@ export function useEditableArticle({ articleId, versionId }) {
   const updateNakalaLink = async (url) => {
     await executeQuery({
       sessionToken,
-      query: setNakalaLink,
+      query: setArticleNakalaLink,
       variables: {
         articleId: articleId,
         url,
       },
-      type: 'mutate',
+      type: 'mutation',
     })
     await mutate(
       async (data) => {
@@ -545,7 +545,7 @@ export function useArticleVersionActions({ articleId }) {
   })
   const create = async (version) => {
     const response = await executeQuery({
-      query: createVersion,
+      query: createArticleVersion,
       variables: {
         userId: activeUser._id,
         articleId,
@@ -558,7 +558,7 @@ export function useArticleVersionActions({ articleId }) {
     await mutate(async (data) => ({
       article: {
         ...data?.article,
-        versions: response.article.createVersion.versions,
+        versions: response.createArticleVersion.versions,
       },
     }))
   }

@@ -87,16 +87,12 @@ mutation updateArticle($updateArticleInput: UpdateArticleInput!) {
   }
 }
 
-query setZoteroLink($articleId: ID!, $url: String!) {
-  article(article: $articleId) {
-    setZoteroLink(zotero: $url)
-  }
+mutation setArticleZoteroLink($articleId: ID!, $url: String!) {
+  setArticleZoteroLink(articleId: $articleId, zotero: $url)
 }
 
-query setNakalaLink($articleId: ID!, $url: String!) {
-  article(article: $articleId) {
-    setNakalaLink(nakala: $url)
-  }
+mutation setArticleNakalaLink($articleId: ID!, $url: String!) {
+  setArticleNakalaLink(articleId: $articleId, nakala: $url)
 }
 
 query getArticleVersions($articleId: ID!) {
@@ -127,10 +123,8 @@ query getArticleContributors($articleId: ID!) {
   }
 }
 
-query deleteArticle($articleId: ID!) {
-  article(article: $articleId) {
-    delete(dryRun: false)
-  }
+mutation deleteArticle($articleId: ID!) {
+  deleteArticle(articleId: $articleId)
 }
 
 mutation duplicateArticle($user: ID, $articleId: ID!, $to: ID!) {
@@ -153,23 +147,19 @@ mutation updateArticleBibliography($input: UpdateArticleBibliographyInput!) {
   }
 }
 
-query addTags($articleId: ID!, $tags: [ID]!) {
-  article(article: $articleId) {
-    addTags(tags: $tags) {
-      _id
-      name
-      color
-    }
+mutation addArticleTags($articleId: ID!, $tags: [ID]!) {
+  addArticleTags(articleId: $articleId, tags: $tags) {
+    _id
+    name
+    color
   }
 }
 
-query removeTags($articleId: ID!, $tags: [ID]!) {
-  article(article: $articleId) {
-    removeTags(tags: $tags) {
-      _id
-      name
-      color
-    }
+mutation removeArticleTags($articleId: ID!, $tags: [ID]!) {
+  removeArticleTags(articleId: $articleId, tags: $tags) {
+    _id
+    name
+    color
   }
 }
 
@@ -193,11 +183,12 @@ query getArticleTags($articleId: ID!) {
   }
 }
 
-query updateWorkingVersion($articleId: ID!, $content: WorkingVersionInput!) {
-  article(article: $articleId) {
-    updateWorkingVersion(content: $content) {
-      updatedAt
-    }
+mutation updateArticleWorkingVersion(
+  $articleId: ID!
+  $content: WorkingVersionInput!
+) {
+  updateArticleWorkingVersion(articleId: $articleId, content: $content) {
+    updatedAt
   }
 }
 

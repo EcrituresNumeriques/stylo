@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux'
 import { executeQuery } from '../helpers/graphQL.js'
 import { getArticleContributors } from './Article.graphql'
 import {
-  addContributor as addContributorQuery,
-  removeContributor as removeContributorQuery,
+  addArticleContributor as addContributorQuery,
+  removeArticleContributor as removeContributorQuery,
 } from './ArticleContributors.graphql'
 import { useMutateData } from './graphql.js'
 
@@ -22,7 +22,7 @@ export function useArticleContributorActions({ articleId }) {
     })
     await mutate(async () => ({
       article: {
-        contributors: response.article.addContributor.contributors,
+        contributors: response.addArticleContributor.contributors,
       },
     }))
   }
@@ -35,7 +35,7 @@ export function useArticleContributorActions({ articleId }) {
     })
     await mutate(async () => ({
       article: {
-        contributors: response.article.removeContributor.contributors,
+        contributors: response.removeArticleContributor.contributors,
       },
     }))
   }

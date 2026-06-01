@@ -189,17 +189,17 @@ type Article {
   updatedAt: DateTime
   workspaces: [Workspace!]
 
-  addTags(tags: [ID]!): [Tag]
-  delete(dryRun: Boolean): Boolean
-  removeTags(tags: [ID]!): [Tag]
-  rename(title: String!): Boolean
-  setPreviewSettings(settings: ArticlePreviewInput!): Article
-  setZoteroLink(zotero: String!): Boolean
-  setNakalaLink(nakala: String!): Boolean
-  updateWorkingVersion(content: WorkingVersionInput!): Article
-  addContributor(userId: ID!): Article
-  removeContributor(userId: ID!): Article
-  createVersion(articleVersionInput: ArticleVersionInput!): Article
+  addTags(tags: [ID]!): [Tag] @deprecated(reason: "Use addArticleTags mutation at the root instead.")
+  delete(dryRun: Boolean): Boolean @deprecated(reason: "Use deleteArticle mutation at the root instead.")
+  removeTags(tags: [ID]!): [Tag] @deprecated(reason: "Use removeArticleTags mutation at the root instead.")
+  rename(title: String!): Boolean @deprecated(reason: "Use renameArticle mutation at the root instead.")
+  setPreviewSettings(settings: ArticlePreviewInput!): Article @deprecated(reason: "Use setArticlePreviewSettings mutation at the root instead.")
+  setZoteroLink(zotero: String!): Boolean @deprecated(reason: "Use setArticleZoteroLink mutation at the root instead.")
+  setNakalaLink(nakala: String!): Boolean @deprecated(reason: "Use setArticleNakalaLink mutation at the root instead.")
+  updateWorkingVersion(content: WorkingVersionInput!): Article @deprecated(reason: "Use updateArticleWorkingVersion mutation at the root instead.")
+  addContributor(userId: ID!): Article @deprecated(reason: "Use addArticleContributor mutation at the root instead.")
+  removeContributor(userId: ID!): Article @deprecated(reason: "Use removeArticleContributor mutation at the root instead.")
+  createVersion(articleVersionInput: ArticleVersionInput!): Article @deprecated(reason: "Use createArticleVersion mutation at the root instead.")
 }
 
 type ArticlePreviewSettings {
@@ -678,6 +678,73 @@ type Mutation {
   Requires authentication.
   """
   importArticle(input: ImportArticleInput!): Article
+
+  """
+  Delete an article by ID.
+  Returns true if the article was deleted.
+  Requires authentication with access to the article.
+  """
+  deleteArticle(articleId: ID!, dryRun: Boolean): Boolean
+
+  """
+  Rename an article by ID.
+  Requires authentication with access to the article.
+  """
+  renameArticle(articleId: ID!, title: String!): Boolean
+
+  """
+  Set the Zotero library link on an article.
+  Requires authentication with access to the article.
+  """
+  setArticleZoteroLink(articleId: ID!, zotero: String!): Boolean
+
+  """
+  Set the Nakala dataset link on an article.
+  Requires authentication with access to the article.
+  """
+  setArticleNakalaLink(articleId: ID!, nakala: String!): Boolean
+
+  """
+  Add tags to an article. Returns the updated list of tags.
+  Requires authentication with access to the article.
+  """
+  addArticleTags(articleId: ID!, tags: [ID]!): [Tag]
+
+  """
+  Remove tags from an article. Returns the updated list of tags.
+  Requires authentication with access to the article.
+  """
+  removeArticleTags(articleId: ID!, tags: [ID]!): [Tag]
+
+  """
+  Update the preview settings (stylesheet, template) of an article.
+  Requires authentication with access to the article.
+  """
+  setArticlePreviewSettings(articleId: ID!, settings: ArticlePreviewInput!): Article
+
+  """
+  Update the working version content of an article (markdown, bibliography, metadata).
+  Requires authentication with access to the article.
+  """
+  updateArticleWorkingVersion(articleId: ID!, content: WorkingVersionInput!): Article
+
+  """
+  Add a contributor to an article, granting them write access.
+  Requires authentication with access to the article.
+  """
+  addArticleContributor(articleId: ID!, userId: ID!): Article
+
+  """
+  Remove a contributor from an article, revoking their write access.
+  Requires authentication with access to the article.
+  """
+  removeArticleContributor(articleId: ID!, userId: ID!): Article
+
+  """
+  Create a new version snapshot of an article's working copy.
+  Requires authentication with access to the article.
+  """
+  createArticleVersion(articleId: ID!, articleVersionInput: ArticleVersionInput!): Article
 }`
 
 module.exports = makeExecutableSchema({ typeDefs, resolvers })

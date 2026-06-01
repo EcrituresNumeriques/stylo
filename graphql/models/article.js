@@ -166,6 +166,39 @@ articleSchema.methods.removeTags = async function removeTags(...tagIds) {
   return this.save({ timestamps: false })
 }
 
+articleSchema.methods.rename = async function rename(title) {
+  this.set('title', title)
+  const result = await this.save({ timestamps: false })
+  return result === this
+}
+
+articleSchema.methods.setZoteroLink = async function setZoteroLink(zotero) {
+  this.set('zoteroLink', zotero)
+  const result = await this.save({ timestamps: false })
+  return result === this
+}
+
+articleSchema.methods.setNakalaLink = async function setNakalaLink(nakala) {
+  this.set('nakalaLink', nakala)
+  const result = await this.save({ timestamps: false })
+  return result === this
+}
+
+articleSchema.methods.setPreviewSettings = async function setPreviewSettings(
+  settings
+) {
+  await this.set('preview', settings, { merge: true }).save()
+  return this
+}
+
+articleSchema.methods.updateWorkingVersion =
+  async function updateWorkingVersion(content) {
+    Object.entries(content).forEach(([key, value]) =>
+      this.set(`workingVersion.${key}`, value)
+    )
+    return this.save()
+  }
+
 articleSchema.methods.shareWith = async function shareWith(user) {
   const isAlreadyShared = this.contributors.find(({ user: u }) =>
     u.equals(user)

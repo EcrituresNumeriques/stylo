@@ -57,7 +57,7 @@ describe('Article', () => {
     expect(fetch).toHaveBeenLastCalledWith(
       'http://localhost:3000/graphql',
       expect.objectContaining({
-        body: expect.stringMatching(/"query":"query addTags\(/),
+        body: expect.stringMatching(/"query":"mutation addArticleTags\(/),
       })
     )
   })
@@ -106,7 +106,7 @@ describe('Article', () => {
     expect(fetch).toHaveBeenLastCalledWith(
       'http://localhost:3000/graphql',
       expect.objectContaining({
-        body: expect.stringMatching(/"query":"query removeTags\(/),
+        body: expect.stringMatching(/"query":"mutation removeArticleTags\(/),
       })
     )
   })
@@ -172,7 +172,7 @@ describe('Article', () => {
     expect(fetch).toHaveBeenLastCalledWith(
       'http://localhost:3000/graphql',
       expect.objectContaining({
-        body: expect.stringMatching(/"query":"query deleteArticle\(/),
+        body: expect.stringMatching(/"query":"mutation deleteArticle\(/),
       })
     )
   })
@@ -186,10 +186,8 @@ describe('Article versions', () => {
         new Promise((resolve) =>
           resolve({
             data: {
-              article: {
-                createVersion: {
-                  versions: ['111', '222'],
-                },
+              createArticleVersion: {
+                versions: ['111', '222'],
               },
             },
           })
@@ -220,7 +218,7 @@ describe('Article versions', () => {
     expect(fetch).toHaveBeenLastCalledWith(
       'http://localhost:3000/graphql',
       expect.objectContaining({
-        body: expect.stringMatching(/"query":"mutation createVersion\(/),
+        body: expect.stringMatching(/"query":"mutation createArticleVersion\(/),
       })
     )
   })
@@ -231,19 +229,17 @@ describe('Article versions', () => {
         new Promise((resolve) =>
           resolve({
             data: {
-              article: {
-                createVersion: {
-                  versions: [
-                    {
-                      _id: '111',
-                      message: 'This is a minor version!',
-                    },
-                    {
-                      _id: '222',
-                      message: 'This is a major version!',
-                    },
-                  ],
-                },
+              createArticleVersion: {
+                versions: [
+                  {
+                    _id: '111',
+                    message: 'This is a minor version!',
+                  },
+                  {
+                    _id: '222',
+                    message: 'This is a major version!',
+                  },
+                ],
               },
             },
           })

@@ -404,6 +404,87 @@ module.exports = {
         yDoc.destroy()
       }
     },
+
+    async deleteArticle(_root, { articleId, dryRun }, context) {
+      const article = await getArticleByContext(articleId, context)
+      if (dryRun) return true
+      await article.deleteOne()
+      return true
+    },
+
+    async renameArticle(_root, { articleId, title }, context) {
+      const article = await getArticleByContext(articleId, context)
+      return article.rename(title)
+    },
+
+    async setArticleZoteroLink(_root, { articleId, zotero }, context) {
+      const article = await getArticleByContext(articleId, context)
+      return article.setZoteroLink(zotero)
+    },
+
+    async setArticleNakalaLink(_root, { articleId, nakala }, context) {
+      const article = await getArticleByContext(articleId, context)
+      return article.setNakalaLink(nakala)
+    },
+
+    async addArticleTags(_root, { articleId, tags }, context) {
+      const article = await getArticleByContext(articleId, context)
+      await article.addTags(...tags)
+      return article.tags
+    },
+
+    async removeArticleTags(_root, { articleId, tags }, context) {
+      const article = await getArticleByContext(articleId, context)
+      await article.removeTags(...tags)
+      return article.tags
+    },
+
+    async setArticlePreviewSettings(_root, { articleId, settings }, context) {
+      const article = await getArticleByContext(articleId, context)
+      return article.setPreviewSettings(settings)
+    },
+
+    async updateArticleWorkingVersion(_root, { articleId, content }, context) {
+      const article = await getArticleByContext(articleId, context)
+      return article.updateWorkingVersion(content)
+    },
+
+    async addArticleContributor(_root, { articleId, userId }, context) {
+      const article = await getArticleByContext(articleId, context)
+      const contributorUser = await User.findById(userId)
+      if (!contributorUser) {
+        throw new Error(`Unable to find user with id: ${userId}`)
+      }
+      await article.shareWith(contributorUser)
+      return article
+    },
+
+    async removeArticleContributor(_root, { articleId, userId }, context) {
+      const article = await getArticleByContext(articleId, context)
+      const contributorUser = await getUser(userId)
+      await article.unshareWith(contributorUser)
+      return article
+    },
+
+    async createArticleVersion(
+      _root,
+      { articleId, articleVersionInput },
+      context
+    ) {
+      const article = await getArticleByContext(articleId, context)
+      const result = await createVersion(article, {
+        ...articleVersionInput,
+        type: 'userAction',
+      })
+      if (result === false) {
+        throw new BadRequestError(
+          'NO_CHANGE',
+          'Unable to create a new version since there is no change'
+        )
+      }
+      await article.save()
+      return article
+    },
   },
 
   Query: {
@@ -516,21 +597,15 @@ module.exports = {
     },
 
     async rename(article, { title }) {
-      article.set('title', title)
-      const result = await article.save({ timestamps: false })
-      return result === article
+      return article.rename(title)
     },
 
     async setZoteroLink(article, { zotero }) {
-      article.set('zoteroLink', zotero)
-      const result = await article.save({ timestamps: false })
-      return result === article
+      return article.setZoteroLink(zotero)
     },
 
     async setNakalaLink(article, { nakala }) {
-      article.set('nakalaLink', nakala)
-      const result = await article.save({ timestamps: false })
-      return result === article
+      return article.setNakalaLink(nakala)
     },
 
     async addTags(article, { tags }) {
@@ -544,16 +619,11 @@ module.exports = {
     },
 
     async setPreviewSettings(article, { settings }) {
-      await article.set('preview', settings, { merge: true }).save()
-      return article
+      return article.setPreviewSettings(settings)
     },
 
     async updateWorkingVersion(article, { content }) {
-      Object.entries(content).forEach(([key, value]) =>
-        article.set(`workingVersion.${key}`, value)
-      )
-
-      return article.save()
+      return article.updateWorkingVersion(content)
     },
 
     /**
