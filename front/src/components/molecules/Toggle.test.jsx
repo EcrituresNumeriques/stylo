@@ -37,9 +37,9 @@ describe('Toggle', () => {
 
     await user.click(el)
 
-    await expect(el).toBeChecked()
+    expect(el).toBeChecked()
     expect(onChange).toHaveBeenCalledOnce()
-    await expect(onChange).toHaveBeenLastCalledWith(true)
+    expect(onChange).toHaveBeenLastCalledWith(true)
   })
 
   test('does not call onChange on mount when checked=false', () => {
