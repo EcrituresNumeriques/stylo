@@ -193,9 +193,9 @@ articleSchema.methods.setPreviewSettings = async function setPreviewSettings(
 
 articleSchema.methods.updateWorkingVersion =
   async function updateWorkingVersion(content) {
-    Object.entries(content).forEach(([key, value]) =>
+    for (const [key, value] of Object.entries(content)) {
       this.set(`workingVersion.${key}`, value)
-    )
+    }
     return this.save()
   }
 

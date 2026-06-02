@@ -163,7 +163,7 @@ app.use(session(sessionOptions))
 
 app.use(passport.session(sessionOptions))
 
-app.get('/version', (req, res) =>
+app.get('/version', (_req, res) =>
   res.json({
     name: pkg.name,
     version: pkg.version,

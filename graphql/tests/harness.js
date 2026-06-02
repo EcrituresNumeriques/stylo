@@ -17,7 +17,7 @@ async function setup() {
     env: 'dev',
     config: {
       dev: {
-        url: connectionString + '/stylo-tests',
+        url: `${connectionString}/stylo-tests`,
         options: {
           directConnection: true,
         },
@@ -33,7 +33,7 @@ async function setup() {
   await migrateInstance.reset()
   await migrateInstance.up()
   mongoose.set('strictQuery', true)
-  await mongoose.connect(connectionString + '/stylo-tests', {
+  await mongoose.connect(`${connectionString}/stylo-tests`, {
     directConnection: true,
   })
   return container

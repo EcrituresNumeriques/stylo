@@ -32,7 +32,7 @@ async function getProfileFromToken(accessToken) {
   }
 }
 
-async function verify(req, accessToken, refreshToken, _, done) {
+async function verify(req, accessToken, _refreshToken, _, done) {
   const { id, displayName } = await getProfileFromToken(accessToken)
 
   let user = await User.findOne({

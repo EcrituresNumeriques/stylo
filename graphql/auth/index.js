@@ -15,7 +15,7 @@ const config = require('../config.js')
  * @return {import('express').RequestHandler}
  */
 function stampAuth(service, { alreadyLoggedIn = false } = {}) {
-  return function handler(req, res, next) {
+  return function handler(req, _res, next) {
     // enables dynamic redirect based on the Styll instance which originated the request
     // this way it also works on dynamic netlify deployments
     const origin = new URL(req.header('origin') || req.header('referer'))
@@ -35,7 +35,7 @@ function stampAuth(service, { alreadyLoggedIn = false } = {}) {
 /**
  * @type {import('express').RequestHandler}
  */
-function onAuthFailure(error, req, res) {
+function onAuthFailure(error, _req, res) {
   res.statusCode = 401
 
   res.redirect(`${res.session.origin}/login#error&message=${error.message}`)

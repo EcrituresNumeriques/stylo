@@ -26,23 +26,23 @@ const strategy = new OidcStrategy(
 /**
  *
  * @param {import('express').Request} req
- * @param {string} issuer
+ * @param {string} _issuer
  * @param {import('passport').Profile} profile
- * @param {{{timestamp: number?, class: string?, methods: string[]?}}} context
- * @param {string} idToken
+ * @param {{{timestamp: number?, class: string?, methods: string[]?}}} _context
+ * @param {string} _idToken
  * @param {string} accessToken
- * @param {string} refreshToken
+ * @param {string} _refreshToken
  * @param {import('passport').DoneCallback} done
  * @returns {Promise<void>}
  */
 async function verify(
   req,
-  issuer,
+  _issuer,
   profile,
-  context,
-  idToken,
+  _context,
+  _idToken,
   accessToken,
-  refreshToken,
+  _refreshToken,
   done
 ) {
   const { id, displayName, emails } = profile
