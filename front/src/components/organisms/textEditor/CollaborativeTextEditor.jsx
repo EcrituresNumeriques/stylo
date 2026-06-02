@@ -91,7 +91,7 @@ export default function CollaborativeTextEditor({
     shallowEqual
   )
 
-  const hasVersion = useMemo(() => !!versionId, [versionId])
+  const hasVersion = useMemo(() => Boolean(versionId), [versionId])
   const isLoading =
     yText === null ||
     isPreviewLoading ||

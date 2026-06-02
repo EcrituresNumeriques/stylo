@@ -33,10 +33,9 @@ export default function CreateVersion({ articleId, onClose, onSubmit }) {
         toast(t('write.createVersion.defaultNotification'), { type: 'info' })
         onSubmit()
       } catch (err) {
-        const errorMessage =
-          err.messages && err.messages.length
-            ? err.messages[0].message
-            : err.message
+        const errorMessage = err.messages?.length
+          ? err.messages[0].message
+          : err.message
         toast(errorMessage, {
           type: 'error',
         })

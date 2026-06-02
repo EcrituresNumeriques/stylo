@@ -26,7 +26,7 @@ export default function CorpusArticleMetadataSelector({
     }) ?? []
   if (error) return <Alert message={error.message} />
   if (isLoading) return <Loading />
-  if (articles.length === 0) return <></>
+  if (articles.length === 0) return null
 
   return (
     <DropdownMenu

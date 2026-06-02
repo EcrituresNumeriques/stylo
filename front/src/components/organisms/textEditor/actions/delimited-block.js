@@ -175,8 +175,8 @@ export function createDelimitedBlockEdit(
 export default function createDelimitedBlockCommand(
   id,
   {
-    keybindings = undefined,
-    className = undefined,
+    keybindings,
+    className,
     attrs = {},
     preamble = null,
     blockDelimiter = ':::',

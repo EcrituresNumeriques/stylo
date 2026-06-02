@@ -134,34 +134,34 @@ function WorkspacesField({ workspaceId, articleId }) {
     return <Loading />
   }
 
-  const defaultValues = data.article.workspaces.map((w) => w._id)
-  if (workspaces.length > 0) {
-    return (
-      <div>
-        <span className={formStyles.fieldLabel}>{t('header')}</span>
-
-        <ul className={checkboxStyles.inlineList}>
-          {workspaces.map((workspace) => (
-            <li key={`selectWorkspace-${workspace._id}`}>
-              <Checkbox
-                name="workspaces[]"
-                value={workspace._id}
-                color={workspace.color}
-                defaultChecked={
-                  workspaceId === workspace._id ||
-                  defaultValues.includes(workspace._id)
-                }
-              >
-                {workspace.name}
-              </Checkbox>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )
+  if (workspaces.length === 0) {
+    return null
   }
 
-  return <></>
+  const defaultValues = data.article.workspaces.map((w) => w._id)
+  return (
+    <div>
+      <span className={formStyles.fieldLabel}>{t('header')}</span>
+
+      <ul className={checkboxStyles.inlineList}>
+        {workspaces.map((workspace) => (
+          <li key={`selectWorkspace-${workspace._id}`}>
+            <Checkbox
+              name="workspaces[]"
+              value={workspace._id}
+              color={workspace.color}
+              defaultChecked={
+                workspaceId === workspace._id ||
+                defaultValues.includes(workspace._id)
+              }
+            >
+              {workspace.name}
+            </Checkbox>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
 }
 
 function TagsField({ defaultValues = [] }) {
@@ -174,30 +174,30 @@ function TagsField({ defaultValues = [] }) {
     return <Loading />
   }
 
-  if (tags.length > 0) {
-    return (
-      <div>
-        <span className={formStyles.fieldLabel}>
-          {t('article.createForm.tagsField')}
-        </span>
-
-        <ul className={checkboxStyles.inlineList}>
-          {tags.map((t) => (
-            <li key={`selectTag-${t._id}`}>
-              <Checkbox
-                name="tags[]"
-                value={t._id}
-                color={t.color}
-                defaultChecked={defaultValues.includes(t._id)}
-              >
-                {t.name}
-              </Checkbox>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )
+  if (tags.length === 0) {
+    return null
   }
 
-  return <></>
+  return (
+    <div>
+      <span className={formStyles.fieldLabel}>
+        {t('article.createForm.tagsField')}
+      </span>
+
+      <ul className={checkboxStyles.inlineList}>
+        {tags.map((t) => (
+          <li key={`selectTag-${t._id}`}>
+            <Checkbox
+              name="tags[]"
+              value={t._id}
+              color={t.color}
+              defaultChecked={defaultValues.includes(t._id)}
+            >
+              {t.name}
+            </Checkbox>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
 }

@@ -212,7 +212,7 @@ export function blockAttributes({ classNames = [], attrs = {} } = {}) {
           `${key}="${typeof value === 'function' ? value(key) : value}"`
       ),
   ]
-    .flatMap((d) => d)
+    .flat()
     .filter((d) => d)
 
   return parts.length ? `{${parts.join(' ')}}` : ''

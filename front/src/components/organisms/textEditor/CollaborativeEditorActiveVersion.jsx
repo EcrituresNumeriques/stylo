@@ -13,24 +13,24 @@ export default function CollaborativeEditorActiveVersion({ versionId }) {
     return <Alert versionId={error.message()} />
   }
 
-  if (versionId && version) {
-    const versionNumber = `${version.version}.${version.revision}`
-    const versionCodename =
-      version.message.trim().length > 0 ? `"${version.message}"` : null
-
-    const versionDate = new Intl.DateTimeFormat(i18n.language, {
-      dateStyle: 'full',
-      timeStyle: 'short',
-    }).format(new Date(version.createdAt))
-    return (
-      <Alert
-        type="info"
-        message={`Vous êtes sur la version ${versionNumber}${
-          versionCodename ? ` ${versionCodename}` : ''
-        } du ${versionDate}`}
-      ></Alert>
-    )
+  if (!(versionId && version)) {
+    return null
   }
 
-  return <></>
+  const versionNumber = `${version.version}.${version.revision}`
+  const versionCodename =
+    version.message.trim().length > 0 ? `"${version.message}"` : null
+
+  const versionDate = new Intl.DateTimeFormat(i18n.language, {
+    dateStyle: 'full',
+    timeStyle: 'short',
+  }).format(new Date(version.createdAt))
+  return (
+    <Alert
+      type="info"
+      message={`Vous êtes sur la version ${versionNumber}${
+        versionCodename ? ` ${versionCodename}` : ''
+      } du ${versionDate}`}
+    ></Alert>
+  )
 }

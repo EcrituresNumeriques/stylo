@@ -7,7 +7,9 @@ const fetcher = (url) => fetch(url).then((response) => response.json())
 function postFetcher([url, formData]) {
   const body = new FormData()
 
-  Object.entries(formData).forEach(([key, value]) => body.append(key, value))
+  for (const [key, value] of Object.entries(formData)) {
+    body.append(key, value)
+  }
 
   return fetch(url, { method: 'POST', body }).then((response) =>
     response.text()

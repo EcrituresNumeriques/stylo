@@ -42,21 +42,19 @@ export default function WorkspaceSelectItem({
     [articleId, id]
   )
   return (
-    <>
-      <li className={activeWorkspaceId === id ? clsx(styles.active) : ''}>
-        <label className={clsx(styles.workspace, selected && styles.selected)}>
-          <input
-            name={id}
-            value={id}
-            data-id={id}
-            type="checkbox"
-            checked={selected}
-            onChange={toggleWorkspaceArticle}
-          />
-          <span>{name}</span>
-          <span className={styles.chip} style={{ backgroundColor: color }} />
-        </label>
-      </li>
-    </>
+    <li className={activeWorkspaceId === id ? clsx(styles.active) : ''}>
+      <label className={clsx(styles.workspace, selected && styles.selected)}>
+        <input
+          name={id}
+          value={id}
+          data-id={id}
+          type="checkbox"
+          checked={selected}
+          onChange={toggleWorkspaceArticle}
+        />
+        <span>{name}</span>
+        <span className={styles.chip} style={{ backgroundColor: color }} />
+      </label>
+    </li>
   )
 }

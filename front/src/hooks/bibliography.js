@@ -31,7 +31,7 @@ export default function useBibliography({ initialText }) {
       text: bibtex,
     }
     setValidationResult(validationResult)
-    callback && callback(validationResult)
+    callback?.(validationResult)
   }, 700)
 
   const updateText = async (bibtex, callback) => {

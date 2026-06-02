@@ -43,20 +43,18 @@ export default function CorpusSelectItem({
     [articleId, id, onChange]
   )
   return (
-    <>
-      <li>
-        <label className={clsx(styles.corpus, selected && styles.selected)}>
-          <input
-            name={id}
-            value={id}
-            data-id={id}
-            type="checkbox"
-            checked={selected}
-            onChange={toggleCorpusArticle}
-          />
-          <span>{name}</span>
-        </label>
-      </li>
-    </>
+    <li>
+      <label className={clsx(styles.corpus, selected && styles.selected)}>
+        <input
+          name={id}
+          value={id}
+          data-id={id}
+          type="checkbox"
+          checked={selected}
+          onChange={toggleCorpusArticle}
+        />
+        <span>{name}</span>
+      </label>
+    </li>
   )
 }

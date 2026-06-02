@@ -99,7 +99,7 @@ export default function ContactSearch({
       } else if (event.action === 'inactive') {
         await remove(userId)
       }
-      onUserUpdated && onUserUpdated(event)
+      onUserUpdated?.(event)
     },
     [activeUserId, contacts]
   )

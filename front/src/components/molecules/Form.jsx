@@ -152,44 +152,43 @@ function ArrayFieldTemplate(properties) {
           </Translation>
         </Button>
       )}
-      {items &&
-        items.map((element) => {
-          return (
-            <div
-              id={element.key}
-              key={element.key}
-              className={clsx(
-                element.className,
-                'can-add-remove',
-                element?.uiSchema?.['ui:className']
-              )}
-            >
-              {element.children}
-              {element.hasRemove && (
-                <Button
-                  icon={inlineRemoveButton}
-                  type="button"
-                  className={[
-                    styles.removeButton,
-                    inlineRemoveButton ? styles.inlineRemoveButton : '',
-                  ].join(' ')}
-                  tabIndex={-1}
-                  disabled={element.disabled || element.readonly}
-                  onClick={element.onDropIndexClick(element.index)}
-                >
-                  <Trash />
-                  {inlineRemoveButton ? (
-                    ''
-                  ) : (
-                    <Translation ns="form" useSuspense={false}>
-                      {(t) => t(removeItemTitle)}
-                    </Translation>
-                  )}
-                </Button>
-              )}
-            </div>
-          )
-        })}
+      {items?.map((element) => {
+        return (
+          <div
+            id={element.key}
+            key={element.key}
+            className={clsx(
+              element.className,
+              'can-add-remove',
+              element?.uiSchema?.['ui:className']
+            )}
+          >
+            {element.children}
+            {element.hasRemove && (
+              <Button
+                icon={inlineRemoveButton}
+                type="button"
+                className={[
+                  styles.removeButton,
+                  inlineRemoveButton ? styles.inlineRemoveButton : '',
+                ].join(' ')}
+                tabIndex={-1}
+                disabled={element.disabled || element.readonly}
+                onClick={element.onDropIndexClick(element.index)}
+              >
+                <Trash />
+                {inlineRemoveButton ? (
+                  ''
+                ) : (
+                  <Translation ns="form" useSuspense={false}>
+                    {(t) => t(removeItemTitle)}
+                  </Translation>
+                )}
+              </Button>
+            )}
+          </div>
+        )
+      })}
     </fieldset>
   )
 }
@@ -210,7 +209,7 @@ function FieldTemplate(properties) {
     : properties.label
 
   if (properties.hidden) {
-    return <></>
+    return null
   }
   return (
     <div className={classNames} style={style}>
@@ -241,8 +240,7 @@ function ObjectFieldTemplate(properties, context) {
       ({ fields, title, importFromArticle }) => {
         const elements = fields
           .filter(
-            (field) =>
-              (properties.uiSchema[field] || {})['ui:widget'] !== 'hidden'
+            (field) => properties.uiSchema[field]?.['ui:widget'] !== 'hidden'
           )
           .map((field) => {
             const element = properties.properties.find(

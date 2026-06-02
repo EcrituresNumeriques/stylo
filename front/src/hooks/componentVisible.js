@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 /**
  * @see https://zellwk.com/blog/keyboard-focusable-elements/
  * @param {HTMLElement} node
- * @returns {HTMLElement}
+ * @returns {T[]}
  */
 function findToggleableElements(node) {
   return Array.from(
@@ -38,7 +38,7 @@ export default function useComponentVisible(initialIsVisible) {
       if (event.key === 'Tab') {
         // const relatedMenu =
         const all = findToggleableElements(ref.current)
-        const index = all.findIndex((el) => el === event.target)
+        const index = all.indexOf(event.target)
 
         // out of range, we rotate back
         if (!event.shiftKey && index + 1 === all.length) {

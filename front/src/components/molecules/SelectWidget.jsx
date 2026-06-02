@@ -23,7 +23,7 @@ const guessType = function guessType(value) {
 
 function asNumber(value) {
   if (value === '') {
-    return undefined
+    return
   }
   if (value === null) {
     return null
@@ -68,7 +68,7 @@ function processValue(schema, uiSchema, value) {
     if (uiSchema && typeof uiSchema['ui:emptyValue'] !== 'undefined') {
       return uiSchema['ui:emptyValue']
     }
-    return undefined
+    return
   } else if (type === 'array' && items && nums.has(items.type)) {
     return value.map(asNumber)
   } else if (type === 'boolean') {

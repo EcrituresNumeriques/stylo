@@ -32,7 +32,7 @@ describe('Article', () => {
       })
 
       if (isLoading || error) {
-        return <></>
+        return null
       }
 
       return (
@@ -81,7 +81,7 @@ describe('Article', () => {
       })
 
       if (isLoading || error) {
-        return <></>
+        return null
       }
 
       return (
