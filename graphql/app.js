@@ -7,6 +7,9 @@ const config = require('./config.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 const git = require('isomorphic-git')
+const zlib = require('node:zlib')
+const { promisify } = require('node:util')
+const deflateRaw = promisify(zlib.deflateRaw)
 
 config.validate({ allowed: 'strict' })
 
@@ -261,31 +264,28 @@ app.post(
   backupRequestHandler
 )
 
-app.get('/git/corpus/:corpusId.git/info/refs', async (req, res) => {
-  const corpusId = req.params.corpusId
-  const{ service } = req.query
-  console.log({corpusId, service})
-  const styloFS = {
+const styloFS = {
     promises: {
-      readFile: function (path, opts) {
+      async readFile (path, opts) {
         console.log(arguments)
         console.log('readFile', {path, opts})
-        return Buffer.from("aaa")
+        const compressed = await deflateRaw("blob 3\0aaa")
+        return compressed.toString('hex')
       },
       writeFile: () => {},
       unlink: () => {},
-      readdir: (path) => {
+      async readdir (path) {
         console.log('readdir', {path})
       },
       mkdir: () => {},
       rmdir: () => {},
-      stat: (path) => {
+      async stat(path) {
         console.log('stat', {path})
         return {
           isDirectory: () => true
         }
       },
-      lstat: (path) => {
+      async lstat(path) {
         console.log('lstat', {path})
         return {
 
@@ -297,15 +297,46 @@ app.get('/git/corpus/:corpusId.git/info/refs', async (req, res) => {
     }
   }
   //const fs = require('node:fs')
+  // let { packfile } = await git.packObjects({
+  //   fs: styloFS,
+  //   dir: 'foo',
+  //   gitdir: '/corpus/.git',
+  //   write: false,
+  //   oids: ['4b825dc642cb6eb9a060e54bf8d69288fbee4904']
+  // })
+
+
+app.get('/git/corpus/:corpusId.git/info/refs', async (req, res) => {
+  const corpusId = req.params.corpusId
+  const{ service } = req.query
+
+  const repo = `001e# service=git-upload-pack
+0000
+0048000000000000000000000000000000000000 HEAD multi_ack thin-pack symref=HEAD:refs/heads/main
+003f1234567890abcdef1234567890abcdef12345678 refs/heads/main
+0000`
+
+  res.set('Git-Protocol', 'version=2')
+  res.contentType('application/x-git-upload-pack-advertisement')
+  return res.status(200).send(repo)
+})
+
+app.get('/git/corpus/:corpusId.git/HEAD', async (req, res) => {
+
+})
+
+app.post('/git/corpus/:corpusId.git/git-upload-pack', async (req, res) => {
+  const objectId = req.params.dir + req.params.filename
+
   let { packfile } = await git.packObjects({
     fs: styloFS,
-    dir: 'foo',
+    dir: '/',
     gitdir: '/corpus/.git',
     write: false,
     oids: ['4b825dc642cb6eb9a060e54bf8d69288fbee4904']
   })
-  console.log(packfile)
-  res.status(200).send()
+
+  return res.status(200).send(packfile)
 })
 
 /*
