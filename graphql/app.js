@@ -331,7 +331,7 @@ app.post('/git/corpus/:corpusId.git/git-upload-pack', bodyParser.text({ type: 'a
       dir: '/',
       gitdir: '/corpus/.git',
       write: false,
-      oids: ['05eb314c66e91cadd02c0d0e2d9993920f723f8']
+      oids: [/* dépôt vide '4b825dc642cb6eb9a060e54bf8d69288fbee4904'*/, '405eb314c66e91cadd02c0d0e2d9993920f723f8']
     })
 
     return res.status(200).send(`000dpackfile
