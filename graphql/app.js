@@ -267,8 +267,6 @@ app.post(
 const styloFS = {
     promises: {
       async readFile (path, opts) {
-        console.log(arguments)
-        console.log('readFile', {path, opts})
         const compressed = await deflateRaw("blob 3\0aaa")
         return compressed.toString('hex')
       },
@@ -280,13 +278,11 @@ const styloFS = {
       mkdir: () => {},
       rmdir: () => {},
       async stat(path) {
-        console.log('stat', {path})
         return {
           isDirectory: () => true
         }
       },
       async lstat(path) {
-        console.log('lstat', {path})
         return {
 
         }
@@ -296,24 +292,17 @@ const styloFS = {
       chmod: () => {},
     }
   }
-  //const fs = require('node:fs')
-  // let { packfile } = await git.packObjects({
-  //   fs: styloFS,
-  //   dir: 'foo',
-  //   gitdir: '/corpus/.git',
-  //   write: false,
-  //   oids: ['4b825dc642cb6eb9a060e54bf8d69288fbee4904']
-  // })
-
 
 app.get('/git/corpus/:corpusId.git/info/refs', async (req, res) => {
   const corpusId = req.params.corpusId
   const{ service } = req.query
 
   const repo = `001e# service=git-upload-pack
-0000
-0048000000000000000000000000000000000000 HEAD multi_ack thin-pack symref=HEAD:refs/heads/main
-003f1234567890abcdef1234567890abcdef12345678 refs/heads/main
+0000000eversion 2
+0013ls-refs=unborn
+0027fetch=shallow wait-for-done filter
+0012server-option
+0017object-format=sha1
 0000`
 
   res.set('Git-Protocol', 'version=2')
@@ -325,18 +314,34 @@ app.get('/git/corpus/:corpusId.git/HEAD', async (req, res) => {
 
 })
 
-app.post('/git/corpus/:corpusId.git/git-upload-pack', async (req, res) => {
+app.post('/git/corpus/:corpusId.git/git-upload-pack', bodyParser.text({ type: 'application/x-git-upload-pack-request'}), async (req, res) => {
   const objectId = req.params.dir + req.params.filename
 
-  let { packfile } = await git.packObjects({
-    fs: styloFS,
-    dir: '/',
-    gitdir: '/corpus/.git',
-    write: false,
-    oids: ['4b825dc642cb6eb9a060e54bf8d69288fbee4904']
-  })
+  if (/command=ls-refs/.test(req.body)) {
+    const refs = `0050405eb314c66e91cadd02c0d0e2d9993920f723f8 HEAD symref-target:refs/heads/main
+003d405eb314c66e91cadd02c0d0e2d9993920f723f8 refs/heads/main
+0000`
 
-  return res.status(200).send(packfile)
+    res.contentType('application/x-git-upload-pack-result')
+    return res.status(200).send(refs)
+  }
+  else {
+    let { packfile } = await git.packObjects({
+      fs: styloFS,
+      dir: '/',
+      gitdir: '/corpus/.git',
+      write: false,
+      oids: ['05eb314c66e91cadd02c0d0e2d9993920f723f8']
+    })
+
+    return res.status(200).send(`000dpackfile
+0025 Enumerating objects: 1, done.
+0010 ${new TextDecoder().decode(packfile)}
+0000`)
+  }
+
+
+  return res.status(201).send()
 })
 
 /*
