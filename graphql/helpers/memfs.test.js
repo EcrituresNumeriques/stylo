@@ -20,10 +20,13 @@ test('writeFile keeps buffers as-is', async () => {
 
 test('readFile throws ENOENT for a missing file', async () => {
   const { promises: fs } = createMemFS()
-  await assert.rejects(() => fs.readFile('/repo/missing'), (err) => {
-    assert.equal(err.code, 'ENOENT')
-    return true
-  })
+  await assert.rejects(
+    () => fs.readFile('/repo/missing'),
+    (err) => {
+      assert.equal(err.code, 'ENOENT')
+      return true
+    }
+  )
 })
 
 test('unlink removes a file', async () => {

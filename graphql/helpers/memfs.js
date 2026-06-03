@@ -1,5 +1,3 @@
-'use strict'
-
 // In-memory filesystem compatible with isomorphic-git's `fs` interface.
 function createMemFS() {
   const files = new Map()

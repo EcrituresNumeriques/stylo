@@ -78,6 +78,7 @@ const WebSocket = require('ws')
 const { handleEvents } = require('./events')
 const { requestHandler: backupRequestHandler } = require('./backup')
 const fs = require('node:fs')
+const yaml = require('js-yaml')
 const wss = new WebSocket.Server({ noServer: true })
 
 const jwtSecret = config.get('security.jwt.secret')
@@ -264,38 +265,75 @@ app.post(
   backupRequestHandler
 )
 
-const styloFS = {
-    promises: {
-      async readFile (path, opts) {
-        const compressed = await deflateRaw("blob 3\0aaa")
-        return compressed.toString('hex')
-      },
-      writeFile: () => {},
-      unlink: () => {},
-      async readdir (path) {
-        console.log('readdir', {path})
-      },
-      mkdir: () => {},
-      rmdir: () => {},
-      async stat(path) {
-        return {
-          isDirectory: () => true
-        }
-      },
-      async lstat(path) {
-        return {
+const files = new Map()
 
+const styloFS = {
+  promises: {
+    async readFile(filePath, opts) {
+      console.log('readFile', filePath)
+      if (!files.has(filePath)) {
+        const err = new Error(
+          `ENOENT: no such file or directory, open '${filePath}'`
+        )
+        err.code = 'ENOENT'
+        throw err
+      }
+      return files.get(filePath)
+    },
+    writeFile: (filePath, data) => {
+      console.log('writeFile', filePath)
+      files.set(filePath, Buffer.isBuffer(data) ? data : Buffer.from(data))
+    },
+    unlink: (filePath) => {
+      console.log('unlink', filePath)
+    },
+    async readdir(path) {
+      console.log('readdir', { path })
+      return []
+    },
+    mkdir: (dirPath) => {
+      console.log('mkdir', dirPath)
+    },
+    rmdir: (dirPath) => {
+      console.log('rmdir', dirPath)
+    },
+    async stat(path) {
+      console.log('stat', path)
+      if (path.endsWith('.git')) {
+        return {
+          isDirectory: () => true,
         }
-      },
-      readlink: () => {},
-      symlink: () => {},
-      chmod: () => {},
-    }
-  }
+      }
+      return {
+        isDirectory: () => false,
+        isFile: () => true,
+      }
+    },
+    async lstat(path) {
+      return {}
+    },
+    readlink: () => {},
+    symlink: () => {},
+    chmod: () => {},
+  },
+}
 
 app.get('/git/corpus/:corpusId.git/info/refs', async (req, res) => {
   const corpusId = req.params.corpusId
-  const{ service } = req.query
+  const { service } = req.query
+
+  await git.init({
+    fs: styloFS,
+    dir: '/',
+    gitdir: '/corpus/.git',
+  })
+
+  const blobOid = await git.writeBlob({
+    fs: styloFS,
+    dir: '/',
+    gitdir: '/corpus/.git',
+    blob: Buffer.from('aaa', 'utf8'),
+  })
 
   const repo = `001e# service=git-upload-pack
 0000000eversion 2
@@ -310,28 +348,71 @@ app.get('/git/corpus/:corpusId.git/info/refs', async (req, res) => {
   return res.status(200).send(repo)
 })
 
-app.get('/git/corpus/:corpusId.git/HEAD', async (req, res) => {
+app.get('/git/corpus/:corpusId.git/HEAD', async (req, res) => {})
 
-})
+app.post(
+  '/git/corpus/:corpusId.git/git-upload-pack',
+  bodyParser.text({ type: 'application/x-git-upload-pack-request' }),
+  async (req, res) => {
+    const objectId = req.params.dir + req.params.filename
+    await git.init({
+      fs: styloFS,
+      dir: '/',
+      gitdir: '/corpus/.git',
+    })
 
-app.post('/git/corpus/:corpusId.git/git-upload-pack', bodyParser.text({ type: 'application/x-git-upload-pack-request'}), async (req, res) => {
-  const objectId = req.params.dir + req.params.filename
+    const blobOid = await git.writeBlob({
+      fs: styloFS,
+      dir: '/',
+      gitdir: '/corpus/.git',
+      blob: Buffer.from('aaa', 'utf8'),
+    })
 
-  if (/command=ls-refs/.test(req.body)) {
-    const refs = `0050405eb314c66e91cadd02c0d0e2d9993920f723f8 HEAD symref-target:refs/heads/main
-003d405eb314c66e91cadd02c0d0e2d9993920f723f8 refs/heads/main
+    const treeOid = await git.writeTree({
+      fs: styloFS,
+      dir: '/',
+      gitdir: '/corpus/.git',
+      tree: [{ mode: '100644', path: 'text.md', oid: blobOid, type: 'blob' }],
+    })
+    const timestamp = Math.floor(new Date().getTime() / 1000)
+    const commitOid = await git.writeCommit({
+      fs: styloFS,
+      dir: '/',
+      gitdir: '/corpus/.git',
+      commit: {
+        tree: treeOid,
+        parent: [],
+        author: {
+          name: 'Stylo',
+          email: 'stylo@ecrituresnumeriques.ca',
+          timestamp,
+          timezoneOffset: 0,
+        },
+        committer: {
+          name: 'Stylo',
+          email: 'stylo@ecrituresnumeriques.ca',
+          timestamp,
+          timezoneOffset: 0,
+        },
+        message: `init\n`,
+      },
+    })
+
+    if (/command=ls-refs/.test(req.body)) {
+      const refs = `0050${commitOid} HEAD symref-target:refs/heads/main
+003d${commitOid} refs/heads/main
 0000`
 
-    res.contentType('application/x-git-upload-pack-result')
-    return res.status(200).send(refs)
-  }
-  else {
-    let { packfile } = await git.packObjects({
+      res.contentType('application/x-git-upload-pack-result')
+      return res.status(200).send(refs)
+    }
+
+    const { packfile } = await git.packObjects({
       fs: styloFS,
       dir: '/',
       gitdir: '/corpus/.git',
       write: false,
-      oids: [/* dépôt vide '4b825dc642cb6eb9a060e54bf8d69288fbee4904'*/, '405eb314c66e91cadd02c0d0e2d9993920f723f8']
+      oids: [commitOid, treeOid, blobOid],
     })
 
     return res.status(200).send(`000dpackfile
@@ -339,10 +420,7 @@ app.post('/git/corpus/:corpusId.git/git-upload-pack', bodyParser.text({ type: 'a
 0010 ${new TextDecoder().decode(packfile)}
 0000`)
   }
-
-
-  return res.status(201).send()
-})
+)
 
 /*
  * GraphQL interface
