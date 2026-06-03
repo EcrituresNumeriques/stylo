@@ -7,9 +7,8 @@ const config = require('./config.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 const git = require('isomorphic-git')
-const zlib = require('node:zlib')
-const { promisify } = require('node:util')
-const deflateRaw = promisify(zlib.deflateRaw)
+const { createGitRepository } = require('./helpers/git.js')
+const { createMemFS } = require('./helpers/memfs.js')
 
 config.validate({ allowed: 'strict' })
 
@@ -265,76 +264,9 @@ app.post(
   backupRequestHandler
 )
 
-const files = new Map()
-
-const styloFS = {
-  promises: {
-    async readFile(filePath, opts) {
-      console.log('readFile', filePath)
-      if (!files.has(filePath)) {
-        const err = new Error(
-          `ENOENT: no such file or directory, open '${filePath}'`
-        )
-        err.code = 'ENOENT'
-        throw err
-      }
-      return files.get(filePath)
-    },
-    writeFile: (filePath, data) => {
-      console.log('writeFile', filePath)
-      files.set(filePath, Buffer.isBuffer(data) ? data : Buffer.from(data))
-    },
-    unlink: (filePath) => {
-      console.log('unlink', filePath)
-    },
-    async readdir(path) {
-      console.log('readdir', { path })
-      return []
-    },
-    mkdir: (dirPath) => {
-      console.log('mkdir', dirPath)
-    },
-    rmdir: (dirPath) => {
-      console.log('rmdir', dirPath)
-    },
-    async stat(path) {
-      console.log('stat', path)
-      if (path.endsWith('.git')) {
-        return {
-          isDirectory: () => true,
-        }
-      }
-      return {
-        isDirectory: () => false,
-        isFile: () => true,
-      }
-    },
-    async lstat(path) {
-      return {}
-    },
-    readlink: () => {},
-    symlink: () => {},
-    chmod: () => {},
-  },
-}
-
 app.get('/git/corpus/:corpusId.git/info/refs', async (req, res) => {
   const corpusId = req.params.corpusId
   const { service } = req.query
-
-  await git.init({
-    fs: styloFS,
-    dir: '/',
-    gitdir: '/corpus/.git',
-  })
-
-  const blobOid = await git.writeBlob({
-    fs: styloFS,
-    dir: '/',
-    gitdir: '/corpus/.git',
-    blob: Buffer.from('aaa', 'utf8'),
-  })
-
   const repo = `001e# service=git-upload-pack
 0000000eversion 2
 0013ls-refs=unborn
@@ -355,47 +287,13 @@ app.post(
   bodyParser.text({ type: 'application/x-git-upload-pack-request' }),
   async (req, res) => {
     const objectId = req.params.dir + req.params.filename
-    await git.init({
-      fs: styloFS,
-      dir: '/',
-      gitdir: '/corpus/.git',
-    })
-
-    const blobOid = await git.writeBlob({
-      fs: styloFS,
-      dir: '/',
-      gitdir: '/corpus/.git',
-      blob: Buffer.from('aaa', 'utf8'),
-    })
-
-    const treeOid = await git.writeTree({
-      fs: styloFS,
-      dir: '/',
-      gitdir: '/corpus/.git',
-      tree: [{ mode: '100644', path: 'text.md', oid: blobOid, type: 'blob' }],
-    })
-    const timestamp = Math.floor(new Date().getTime() / 1000)
-    const commitOid = await git.writeCommit({
-      fs: styloFS,
-      dir: '/',
-      gitdir: '/corpus/.git',
-      commit: {
-        tree: treeOid,
-        parent: [],
-        author: {
-          name: 'Stylo',
-          email: 'stylo@ecrituresnumeriques.ca',
-          timestamp,
-          timezoneOffset: 0,
-        },
-        committer: {
-          name: 'Stylo',
-          email: 'stylo@ecrituresnumeriques.ca',
-          timestamp,
-          timezoneOffset: 0,
-        },
-        message: `init\n`,
-      },
+    const dir = '/'
+    const gitdir = '/corpus/.git'
+    const fs = createMemFS()
+    const { oids, commitOid } = await createGitRepository({
+      fs,
+      dir,
+      gitdir,
     })
 
     if (/command=ls-refs/.test(req.body)) {
@@ -408,11 +306,11 @@ app.post(
     }
 
     const { packfile } = await git.packObjects({
-      fs: styloFS,
-      dir: '/',
-      gitdir: '/corpus/.git',
+      fs,
+      dir,
+      gitdir,
       write: false,
-      oids: [commitOid, treeOid, blobOid],
+      oids,
     })
 
     return res.status(200).send(`000dpackfile
