@@ -7,7 +7,7 @@ const config = require('./config.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 const git = require('isomorphic-git')
-const { createGitRepository } = require('./helpers/git.js')
+const { createGitRepository, pktLine, FLUSH_PKT } = require('./helpers/git.js')
 const { createMemFS } = require('./helpers/memfs.js')
 
 config.validate({ allowed: 'strict' })
@@ -94,7 +94,7 @@ const allowedOrigins = config.get('security.cors.origin')
 // SameSite should be None on cross-site response.
 // Please note that "SameSite=None" must also specify the Secure attribute (they require a secure context/HTTPS).
 /**
- * @type {boolean | "lax" | "strict" | "none"}
+ * @type {boolean | 'lax' | 'strict' | 'none'}
  */
 const sameSiteCookies =
   allowedOrigins.length > 1 && secureCookie ? 'none' : 'lax'
@@ -267,17 +267,35 @@ app.post(
 app.get('/git/corpus/:corpusId.git/info/refs', async (req, res) => {
   const corpusId = req.params.corpusId
   const { service } = req.query
-  const repo = `001e# service=git-upload-pack
-0000000eversion 2
-0013ls-refs=unborn
-0027fetch=shallow wait-for-done filter
-0012server-option
-0017object-format=sha1
-0000`
 
-  res.set('Git-Protocol', 'version=2')
-  res.contentType('application/x-git-upload-pack-advertisement')
-  return res.status(200).send(repo)
+  const dir = '/'
+  const gitdir = '/corpus/.git'
+  const fs = createMemFS()
+  const { commitOid } = await createGitRepository({
+    fs,
+    dir,
+    gitdir,
+  })
+
+  if (service !== 'git-upload-pack') {
+    res.status(403).send('Unsupported service')
+    return
+  }
+
+  try {
+    const caps = 'symref=HEAD:refs/heads/main agent=stylo/1.0'
+    res.set('Content-Type', 'application/x-git-upload-pack-advertisement')
+    res.set('Cache-Control', 'no-cache')
+    res.set('Git-Protocol', 'version=2')
+    res.write(pktLine('# service=git-upload-pack\n'))
+    res.write(FLUSH_PKT)
+    res.write(pktLine(`${commitOid} HEAD\0${caps}\n`))
+    res.write(pktLine(`${commitOid} refs/heads/main\n`))
+    res.write(FLUSH_PKT)
+    res.end()
+  } catch (err) {
+    res.status(err.status || 500).send(err.message)
+  }
 })
 
 app.get('/git/corpus/:corpusId.git/HEAD', async (req, res) => {})
@@ -287,36 +305,33 @@ app.post(
   bodyParser.text({ type: 'application/x-git-upload-pack-request' }),
   async (req, res) => {
     const objectId = req.params.dir + req.params.filename
-    const dir = '/'
-    const gitdir = '/corpus/.git'
-    const fs = createMemFS()
-    const { oids, commitOid } = await createGitRepository({
-      fs,
-      dir,
-      gitdir,
-    })
 
-    if (/command=ls-refs/.test(req.body)) {
-      const refs = `0050${commitOid} HEAD symref-target:refs/heads/main
-003d${commitOid} refs/heads/main
-0000`
+    try {
+      const dir = '/'
+      const gitdir = '/corpus/.git'
+      const fs = createMemFS()
+      const { oids } = await createGitRepository({
+        fs,
+        dir,
+        gitdir,
+      })
 
-      res.contentType('application/x-git-upload-pack-result')
-      return res.status(200).send(refs)
+      const { packfile } = await git.packObjects({
+        fs,
+        dir,
+        gitdir,
+        write: false,
+        oids,
+      })
+
+      res.set('Content-Type', 'application/x-git-upload-pack-result')
+      res.set('Cache-Control', 'no-cache')
+      res.write(pktLine('NAK\n'))
+      res.write(Buffer.from(packfile))
+      res.end()
+    } catch (err) {
+      res.status(err.status || 500).send(err.message)
     }
-
-    const { packfile } = await git.packObjects({
-      fs,
-      dir,
-      gitdir,
-      write: false,
-      oids,
-    })
-
-    return res.status(200).send(`000dpackfile
-0025 Enumerating objects: 1, done.
-0010 ${new TextDecoder().decode(packfile)}
-0000`)
   }
 )
 
