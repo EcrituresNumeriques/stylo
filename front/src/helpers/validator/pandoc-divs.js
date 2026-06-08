@@ -38,7 +38,7 @@ export function parsePandocFencedDivs(markdown) {
     const line = lines[i]
     const lineNum = i + 1
 
-    const openMatch = line.match(/^(:::+)\{([^}]*)\}\s*$/)
+    const openMatch = line.match(/^(:::+)\{([^}]*)}\s*$/)
     if (openMatch) {
       const attrs = parseAttrs(openMatch[2])
       const node = {

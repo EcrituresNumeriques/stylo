@@ -10,21 +10,21 @@ import { metopesRules } from './rules/metopes.js'
  * @param {string} markdown
  * @returns {string}
  */
-function preprocessPandocDivs(markdown) {
-  return markdown.replace(/^(:::+)\{([^}]*)\}/gm, (_, colons, attrs) => {
+export function preprocessPandocDivs(markdown) {
+  return markdown.replace(/^(:::+)\{([^}]*)}/gm, (_, colons, attrs) => {
     const classMatch = attrs.match(/\.([a-zA-Z0-9_-]+)/)
     const name = classMatch ? classMatch[1] : 'div'
     return `${colons}${name}{${attrs}}`
   })
 }
 
+export const processor = unified().use(remarkParse).use(remarkDirective)
+
 /**
  * @param {Array<(tree: object, markdown: string, diagnostics: Array) => void>} rules
  * @returns {(markdown: string) => Promise<Array>}
  */
 export function createValidator(rules) {
-  const processor = unified().use(remarkParse).use(remarkDirective)
-
   return async function validate(markdown) {
     const preprocessed = preprocessPandocDivs(markdown)
     const tree = processor.parse(preprocessed)
