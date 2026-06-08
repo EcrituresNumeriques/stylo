@@ -53,7 +53,7 @@ export default function ToggleSwitch({
 
   const handleKeyEvents = useKeyPress(['Enter', 'Space'], toggle)
 
-  if (!a11yLabel && !Children.count(children)) {
+  if (!(a11yLabel || Children.count(children))) {
     console.warn(
       'This component is not accessible as it lacks a label (either as a child node or with the `labels` props).'
     )

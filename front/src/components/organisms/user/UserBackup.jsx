@@ -13,25 +13,23 @@ export default function UserBackup() {
   const { t } = useTranslation()
   const downloadDataModal = useModal()
   return (
-    <>
-      <section className={styles.section}>
-        <h2>{t('user.data.title')}</h2>
-        <div>
-          <Button primary={true} onClick={() => downloadDataModal.show()}>
-            {t('user.data.download')}
-          </Button>
-        </div>
-        <Modal
-          {...downloadDataModal.bindings}
-          title={
-            <>
-              <Download /> {t('user.data.download')}
-            </>
-          }
-        >
-          <UserBackupDownload onCancel={() => downloadDataModal.close()} />
-        </Modal>
-      </section>
-    </>
+    <section className={styles.section}>
+      <h2>{t('user.data.title')}</h2>
+      <div>
+        <Button primary={true} onClick={() => downloadDataModal.show()}>
+          {t('user.data.download')}
+        </Button>
+      </div>
+      <Modal
+        {...downloadDataModal.bindings}
+        title={
+          <>
+            <Download /> {t('user.data.download')}
+          </>
+        }
+      >
+        <UserBackupDownload onCancel={() => downloadDataModal.close()} />
+      </Modal>
+    </section>
   )
 }

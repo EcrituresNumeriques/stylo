@@ -32,7 +32,7 @@ function jsonFetcher({ url, payload }) {
  * @param {import('swr').SWRConfiguration} [swrOptions] - SWR configuration options.
  * @returns {import('swr').SWRResponse} The SWR response containing data, error, isLoading, etc.
  */
-function useNakalaApi(path, payload = undefined, swrOptions = {}) {
+function useNakalaApi(path, payload, swrOptions = {}) {
   const key = () => {
     if (path === undefined) {
       throw new Error('Missing required value')

@@ -40,7 +40,7 @@ export default function FormActions({
       <Button
         onClick={onSubmit && (() => onSubmit())}
         primary
-        disabled={submitButton?.disabled || false}
+        disabled={submitButton?.disabled}
         aria-label={submitButton?.label && t(submitButton.label)}
         title={submitButton?.title && t(submitButton.title)}
         className={submitButton?.className}

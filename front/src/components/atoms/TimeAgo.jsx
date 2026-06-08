@@ -31,7 +31,7 @@ export default function TimeAgo({ date, className }) {
   const formatter = new Intl.RelativeTimeFormat(i18n.language, {
     numeric: 'auto',
   })
-  let duration = (new Date(date) - new Date()) / 1000
+  let duration = (new Date(date) - Date.now()) / 1000
   let value
   if (Math.abs(duration) < 60) {
     value = t('time.fewSecondsAgo')

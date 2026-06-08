@@ -20,7 +20,7 @@ export default function EditorMenuContent({
   const { t } = useTranslation()
 
   if (!activeMenu) {
-    return <></>
+    return null
   }
 
   return (

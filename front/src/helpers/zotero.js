@@ -107,7 +107,7 @@ function getNextLink(headers) {
   // response has a Link header with a rel=next which indicate that there a next page
   const linkNext = links.refs.find((ref) => ref.rel === 'next')
 
-  return linkNext && linkNext.uri ? new URL(linkNext.uri) : null
+  return linkNext?.uri ? new URL(linkNext.uri) : null
 }
 
 /**

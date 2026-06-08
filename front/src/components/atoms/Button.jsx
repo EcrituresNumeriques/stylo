@@ -6,7 +6,7 @@ export default function Button(props) {
   const classNames = clsx({
     [styles.primary]: props.primary,
     [styles.secondary]:
-      props.secondary || (!props.primary && !props.tertiary && !props.link),
+      props.secondary || !(props.primary || props.tertiary || props.link),
     [styles.tertiary]: props.tertiary,
     [styles.small]: props.small,
     [styles.link]: props.link,

@@ -46,7 +46,7 @@ function defaultSelectionState(editor) {
  * @param {{ keybindings?: number[], run: (editor: ICodeEditor) => Promise<void> }} options
  * @returns {IActionDescriptor}
  */
-function buildCommandDescriptor(id, { keybindings = undefined, run }) {
+function buildCommandDescriptor(id, { keybindings, run }) {
   return {
     id: `stylo--infratextual-markup--${id}`,
     label: `actions.infratextual-inline.${id}`,
@@ -62,8 +62,8 @@ function buildCommandDescriptor(id, { keybindings = undefined, run }) {
 export default function createInlineBlockCommand(
   id,
   {
-    keybindings = undefined,
-    className = undefined,
+    keybindings,
+    className,
     attrs = {},
     contentBefore = '[',
     contentAfter = ']',

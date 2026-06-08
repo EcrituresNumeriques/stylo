@@ -11,7 +11,7 @@ import styles from './CollaborativeEditorWebSocketStatus.module.scss'
  */
 export default function CollaborativeEditorWebSocketStatus({ status }) {
   if (status === 'connected') {
-    return <></>
+    return null
   }
 
   if (status === 'connecting') {

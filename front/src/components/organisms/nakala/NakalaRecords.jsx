@@ -18,12 +18,11 @@ export default function NakalaRecords({ collectionUri }) {
   return (
     <section>
       <div className={styles.records}>
-        {records &&
-          records.map((item, index) => (
-            <article key={index}>
-              <NakalaRecord data={item} />
-            </article>
-          ))}
+        {records?.map((item, index) => (
+          <article key={index}>
+            <NakalaRecord data={item} />
+          </article>
+        ))}
       </div>
     </section>
   )

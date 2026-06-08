@@ -62,7 +62,13 @@
         "useValidAnchor": "warn"
       },
       "complexity": {
-        "noUselessFragments": "warn"
+        "noUselessFragments": "warn",
+        "noExcessiveLinesPerFunction": {
+          "level": "warn",
+          "options": {
+            "maxLines": 150
+          }
+        }
       },
       "correctness": {
         "noInvalidUseBeforeDeclaration": "warn",

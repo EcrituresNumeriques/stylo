@@ -59,17 +59,17 @@ export function clean(obj) {
 }
 
 export function removeEmptyArray(obj) {
-  Object.keys(obj).forEach((key) => {
+  for (const key of Object.keys(obj)) {
     const prop = obj[key]
     if (Array.isArray(prop) && prop.length === 0) delete obj[key]
     if (typeof prop === 'object' && prop !== null) {
       removeEmptyArray(prop)
     }
-  })
+  }
 }
 
 export function removeEmptyObject(obj) {
-  Object.keys(obj).forEach((key) => {
+  for (const key of Object.keys(obj)) {
     const prop = obj[key]
     if (typeof prop === 'object' && prop !== null) {
       if (Object.keys(prop).length === 0) {
@@ -78,5 +78,5 @@ export function removeEmptyObject(obj) {
         removeEmptyObject(prop)
       }
     }
-  })
+  }
 }

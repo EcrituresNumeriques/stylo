@@ -26,11 +26,7 @@ export async function searchKeyword(searchValue) {
             )
       })
       .then((json) => {
-        if (
-          json.response &&
-          json.response.replies &&
-          json.response.replies.reply
-        ) {
+        if (json.response?.replies?.reply) {
           if (Array.isArray(json.response.replies.reply)) {
             return json.response.replies.reply
           } else {
@@ -73,11 +69,7 @@ export async function searchAuthor(searchValue) {
             )
       })
       .then((json) => {
-        if (
-          json.response &&
-          json.response.replies &&
-          json.response.replies.reply
-        ) {
+        if (json.response?.replies?.reply) {
           if (Array.isArray(json.response.replies.reply)) {
             return json.response.replies.reply
           } else {

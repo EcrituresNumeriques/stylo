@@ -16,7 +16,7 @@ function getIcon(type) {
   if (type === 'info') {
     return <Info color={'rgb(22, 119, 255)'} />
   }
-  return <></>
+  return null
 }
 
 function getStyle(type) {
@@ -49,7 +49,7 @@ export default function Alert({
   showIcon = true,
   className,
 }) {
-  const icon = showIcon ? getIcon(type) : <></>
+  const icon = showIcon ? getIcon(type) : null
   return (
     <div role="alert" className={clsx(styles.alert, getStyle(type), className)}>
       {icon} <span>{message}</span>

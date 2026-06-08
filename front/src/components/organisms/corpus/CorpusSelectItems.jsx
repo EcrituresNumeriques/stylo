@@ -38,21 +38,20 @@ export default function CorpusSelectItems({ articleId }) {
 
   return (
     <>
-      {data &&
-        data.corpus
-          .sort((a, b) => a.name.localeCompare(b.name))
-          .map((c) => (
-            <CorpusSelectItem
-              key={c._id}
-              id={c._id}
-              name={c.name}
-              articleId={articleId}
-              selected={c.articles
-                .map((a) => a?.article?._id)
-                .includes(articleId)}
-              onChange={handleCorpusUpdate}
-            />
-          ))}
+      {data?.corpus
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((c) => (
+          <CorpusSelectItem
+            key={c._id}
+            id={c._id}
+            name={c.name}
+            articleId={articleId}
+            selected={c.articles
+              .map((a) => a?.article?._id)
+              .includes(articleId)}
+            onChange={handleCorpusUpdate}
+          />
+        ))}
     </>
   )
 }

@@ -24,7 +24,7 @@ describe('Workspace', () => {
         useWorkspaceMembersActions('123')
 
       if (isLoading || error) {
-        return <></>
+        return null
       }
       return (
         <div>
