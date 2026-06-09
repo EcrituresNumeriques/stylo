@@ -1,4 +1,7 @@
 const mongoose = require('mongoose')
+const mongooseLeanVirtuals = require('mongoose-lean-virtuals')
+const { WSSharedDoc } = require('@y/websocket-server/utils')
+const Y = require('yjs')
 const Schema = mongoose.Schema
 
 /*
@@ -13,6 +16,19 @@ const {
   computeMinorVersion,
 } = require('../helpers/versions.js')
 const { prefixRulesWith, sanitizeTemplate } = require('../helpers/preview.js')
+const Sentry = require('@sentry/node')
+
+function getTextFromYjsDoc(yjsdocBase64) {
+  const wsDoc = new WSSharedDoc(
+    `ws/${new mongoose.Types.ObjectId().toString()}`
+  )
+  try {
+    Y.applyUpdate(wsDoc, Buffer.from(yjsdocBase64, 'base64'))
+    return wsDoc.getText('main').toString()
+  } finally {
+    wsDoc.destroy()
+  }
+}
 
 const ArticleContributorSchema = new Schema({
   user: {
@@ -46,10 +62,6 @@ const articleSchema = new Schema(
     workingVersion: {
       ydoc: {
         type: Object,
-      },
-      md: {
-        type: String,
-        default: '',
       },
       bib: {
         type: String,
@@ -90,7 +102,26 @@ const articleSchema = new Schema(
       },
     },
   },
-  { timestamps: true, minimize: false }
+  {
+    virtuals: {
+      'workingVersion.md': {
+        get() {
+          try {
+            return getTextFromYjsDoc(this.workingVersion.ydoc)
+          } catch (err) {
+            Sentry.captureException(err)
+            console.error(
+              'Unable to load text content (Markdown) from the Y.js document on article',
+              err
+            )
+            return ''
+          }
+        },
+      },
+    },
+    timestamps: true,
+    minimize: false,
+  }
 )
 
 /**
@@ -284,5 +315,7 @@ articleSchema.pre(
     }
   }
 )
+
+articleSchema.plugin(mongooseLeanVirtuals)
 
 module.exports = mongoose.model('Article', articleSchema)

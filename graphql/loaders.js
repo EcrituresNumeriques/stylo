@@ -29,7 +29,7 @@ async function getVersions(versionIds) {
 }
 
 async function findByIds(ids, model) {
-  const items = await model.find({ _id: { $in: ids } }).lean()
+  const items = await model.find({ _id: { $in: ids } }).lean({ virtuals: true })
   const itemByIds = items.reduce((acc, item) => {
     acc[item._id] = item
     return acc
@@ -38,12 +38,15 @@ async function findByIds(ids, model) {
   return ids.map((id) => itemByIds[id])
 }
 
+const articlesLoader = new DataLoader(getArticles)
+
 module.exports = {
+  articlesLoader,
   createLoaders() {
     return {
       tags: new DataLoader(getTags),
       users: new DataLoader(getUsers),
-      articles: new DataLoader(getArticles),
+      articles: articlesLoader,
       versions: new DataLoader(getVersions),
     }
   },

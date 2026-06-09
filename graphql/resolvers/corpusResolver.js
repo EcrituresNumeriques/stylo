@@ -1,7 +1,6 @@
 const { NotFoundError, NotAuthenticatedError } = require('../helpers/errors.js')
 const Corpus = require('../models/corpus')
 const Workspace = require('../models/workspace')
-const { logger } = require('../logger')
 const { NotAuthorizedError } = require('../helpers/errors')
 const { diff } = require('../helpers/diff')
 
@@ -217,31 +216,8 @@ module.exports = {
   },
 
   Corpus: {
-    async articles(corpus, _args, context) {
-      const articles = (
-        await Promise.all(
-          corpus.articles
-            .map(async (article) => {
-              const articleLoaded = await context.loaders.articles.load(
-                article.article
-              )
-              if (articleLoaded === undefined) {
-                logger.warn(
-                  `Unable to find article ${article.article} on corpus ${corpus._id}`
-                )
-                return undefined
-              }
-              return {
-                _id: article._id,
-                order: article.order,
-                article: articleLoaded,
-              }
-            })
-            .filter((a) => a)
-        )
-      ).filter((a) => a)
-      articles.sort((a, b) => (a.order < b.order ? -1 : 1))
-      return articles
+    async articles(corpus) {
+      return corpus.getArticles()
     },
 
     async article(corpus, { articleId }) {

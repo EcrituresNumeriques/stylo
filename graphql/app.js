@@ -7,7 +7,13 @@ const config = require('./config.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 const git = require('isomorphic-git')
-const { createGitRepository, pktLine, FLUSH_PKT } = require('./helpers/git.js')
+const {
+  buildCorpusRepo,
+  pktLine,
+  FLUSH_PKT,
+  sideBand,
+  parseReceivePackRequest,
+} = require('./helpers/git.js')
 const { createMemFS } = require('./helpers/memfs.js')
 
 config.validate({ allowed: 'strict' })
@@ -271,49 +277,125 @@ app.get('/git/corpus/:corpusId.git/info/refs', async (req, res) => {
   const dir = '/'
   const gitdir = '/corpus/.git'
   const fs = createMemFS()
-  const { commitOid } = await createGitRepository({
+  const { commitOid } = await buildCorpusRepo({
     fs,
     dir,
     gitdir,
+    corpusId,
   })
 
-  if (service !== 'git-upload-pack') {
-    res.status(403).send('Unsupported service')
-    return
-  }
-
-  try {
-    const caps = 'symref=HEAD:refs/heads/main agent=stylo/1.0'
-    res.set('Content-Type', 'application/x-git-upload-pack-advertisement')
+  console.log({ service })
+  if (service === 'git-receive-pack') {
+    // report-status / report-status-v2 sont indispensables : sans eux le client
+    // active le démultiplexeur side-band mais n'attend aucun rapport, et part en
+    // « error in sideband demultiplexer » quand on lui envoie le report sur le canal 1.
+    const caps =
+      'report-status report-status-v2 delete-refs side-band-64k ofs-delta agent=stylo/1.0'
+    res.set('Content-Type', 'application/x-git-receive-pack-advertisement')
     res.set('Cache-Control', 'no-cache')
     res.set('Git-Protocol', 'version=2')
-    res.write(pktLine('# service=git-upload-pack\n'))
+    res.write(pktLine('# service=git-receive-pack\n'))
     res.write(FLUSH_PKT)
     res.write(pktLine(`${commitOid} HEAD\0${caps}\n`))
     res.write(pktLine(`${commitOid} refs/heads/main\n`))
     res.write(FLUSH_PKT)
     res.end()
-  } catch (err) {
-    res.status(err.status || 500).send(err.message)
+    console.log('2')
+    return
   }
+  if (service === 'git-upload-pack') {
+    try {
+      const caps = 'symref=HEAD:refs/heads/main agent=stylo/1.0'
+      res.set('Content-Type', 'application/x-git-upload-pack-advertisement')
+      res.set('Cache-Control', 'no-cache')
+      res.set('Git-Protocol', 'version=2')
+      res.write(pktLine('# service=git-upload-pack\n'))
+      res.write(FLUSH_PKT)
+      res.write(pktLine(`${commitOid} HEAD\0${caps}\n`))
+      res.write(pktLine(`${commitOid} refs/heads/main\n`))
+      res.write(FLUSH_PKT)
+      res.end()
+    } catch (err) {
+      res.status(err.status || 500).send(err.message)
+    }
+    return
+  }
+
+  res.status(403).send('Unsupported service')
 })
 
 app.get('/git/corpus/:corpusId.git/HEAD', async (req, res) => {})
 
 app.post(
+  '/git/corpus/:corpusId.git/git-receive-pack',
+  // Le corps contient un packfile binaire : il faut le récupérer en Buffer brut.
+  // `bodyParser.text` le décoderait en UTF-8 et corromprait les objets.
+  bodyParser.raw({
+    type: 'application/x-git-receive-pack-request',
+    limit: '50mb',
+  }),
+  async (req, res) => {
+    const corpusId = req.params.corpusId
+    const { commands, capabilities } = parseReceivePackRequest(req.body)
+
+    // Tout git moderne annonce side-band-64k pour receive-pack ; on ne peut
+    // afficher des messages « remote: » que dans ce cas.
+    const useSideBand =
+      capabilities.includes('side-band-64k') ||
+      capabilities.includes('side-band')
+
+    res.set('Content-Type', 'application/x-git-receive-pack-result')
+    res.set('Cache-Control', 'no-cache')
+
+    // TODO: désérialiser le packfile (req.body après la liste des refs) et
+    // persister réellement les objets. Pour l'instant on accepte tel quel.
+
+    // report-status : un bloc PKT-LINE (unpack + statut par ref) terminé par un flush.
+    const report = [pktLine('unpack ok\n')]
+    console.log({ commands })
+    for (const { ref } of commands) {
+      report.push(pktLine(`ok ${ref}\n`))
+    }
+    report.push(FLUSH_PKT)
+    const reportStatus = Buffer.concat(report)
+
+    if (useSideBand) {
+      for (const message of [
+        '\n',
+        `Can't write data using git, use the UI: https://stylo.huma-num.fr/corpus/\n`,
+        `\n`,
+      ]) {
+        res.write(sideBand(2, message))
+      }
+
+      // Le report-status passe par le canal 1, puis un flush termine le flux multiplexé.
+      res.write(sideBand(1, reportStatus))
+
+      res.write(FLUSH_PKT)
+    } else {
+      // Pas de side-band : on ne peut envoyer que le report-status brut.
+      res.write(reportStatus)
+    }
+
+    res.end()
+  }
+)
+
+app.post(
   '/git/corpus/:corpusId.git/git-upload-pack',
   bodyParser.text({ type: 'application/x-git-upload-pack-request' }),
   async (req, res) => {
-    const objectId = req.params.dir + req.params.filename
+    const corpusId = req.params.corpusId
 
     try {
       const dir = '/'
       const gitdir = '/corpus/.git'
       const fs = createMemFS()
-      const { oids } = await createGitRepository({
+      const { allOids } = await buildCorpusRepo({
         fs,
         dir,
         gitdir,
+        corpusId,
       })
 
       const { packfile } = await git.packObjects({
@@ -321,7 +403,7 @@ app.post(
         dir,
         gitdir,
         write: false,
-        oids,
+        oids: [...allOids],
       })
 
       res.set('Content-Type', 'application/x-git-upload-pack-result')
