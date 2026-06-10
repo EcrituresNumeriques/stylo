@@ -49,11 +49,12 @@ const versionSchema = new Schema(
     minimize: false,
     statics: {
       /**
+       * Retrieves versions owned by a given user.
        *
        * @param {import('./user')} user
-       * @returns {mongoose.Collection} versions
+       * @returns {mongoose.Query<import('./version')[], import('./version')>} versions
        */
-      findByUser: function findVersionByUser(user) {
+      findByUser(user) {
         return this.find({ owner: user?._id }).sort([['updatedAt', -1]])
       },
     },

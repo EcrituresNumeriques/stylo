@@ -96,11 +96,12 @@ const articleSchema = new Schema(
     statics: {
       /**
        * Load associated data on a list of articles using data loaders.
-       * @param articles a list of lean articles
-       * @param {{ users, tags }} loaders
-       * @returns {Promise<Article[]>}
+       *
+       * @param {Record<string, any>[]} articles a list of lean articles
+       * @param {import('../loaders').Loaders} loaders
+       * @returns {Promise<Record<string, any>[]>} the same articles with their relations populated
        */
-      complete: async function complete(articles, loaders) {
+      async complete(articles, loaders) {
         return Promise.all(
           articles.map(async (article) => {
             article.tags = await Promise.all(
@@ -120,14 +121,14 @@ const articleSchema = new Schema(
 
       /**
        * Get populated articles.
-       * @param {{ filter: {}, options: {}, loaders: { users, tags } }} context
-       * @returns {Promise<Article[]>}
+       *
+       * @param {object} context
+       * @param {import('mongoose').FilterQuery<import('./article')>} context.filter
+       * @param {import('mongoose').QueryOptions} [context.options]
+       * @param {import('../loaders').Loaders} context.loaders
+       * @returns {Promise<Record<string, any>[]>} lean articles with their relations populated
        */
-      getArticles: async function getArticles({
-        filter,
-        options = {},
-        loaders,
-      }) {
+      async getArticles({ filter, options = {}, loaders }) {
         options = options || {}
         const articles = await this.find(filter, null, options)
           .sort({ updatedAt: -1 })
@@ -136,7 +137,7 @@ const articleSchema = new Schema(
       },
     },
     methods: {
-      addTags: async function addTags(...tagIds) {
+      async addTags(...tagIds) {
         // Step 1 : add tags to article
         this.tags.push(...tagIds)
 
@@ -152,7 +153,7 @@ const articleSchema = new Schema(
         return this.save({ timestamps: false })
       },
 
-      removeTags: async function removeTags(...tagIds) {
+      async removeTags(...tagIds) {
         // Step 1 : remove tags to article
         this.tags.pull(...tagIds)
 
@@ -168,37 +169,37 @@ const articleSchema = new Schema(
         return this.save({ timestamps: false })
       },
 
-      rename: async function rename(title) {
+      async rename(title) {
         this.set('title', title)
         const result = await this.save({ timestamps: false })
         return result === this
       },
 
-      setZoteroLink: async function setZoteroLink(zotero) {
+      async setZoteroLink(zotero) {
         this.set('zoteroLink', zotero)
         const result = await this.save({ timestamps: false })
         return result === this
       },
 
-      setNakalaLink: async function setNakalaLink(nakala) {
+      async setNakalaLink(nakala) {
         this.set('nakalaLink', nakala)
         const result = await this.save({ timestamps: false })
         return result === this
       },
 
-      setPreviewSettings: async function setPreviewSettings(settings) {
+      async setPreviewSettings(settings) {
         await this.set('preview', settings, { merge: true }).save()
         return this
       },
 
-      updateWorkingVersion: async function updateWorkingVersion(content) {
+      async updateWorkingVersion(content) {
         for (const [key, value] of Object.entries(content)) {
           this.set(`workingVersion.${key}`, value)
         }
         return this.save()
       },
 
-      shareWith: async function shareWith(user) {
+      async shareWith(user) {
         const isAlreadyShared = this.contributors.find(({ user: u }) =>
           u.equals(user)
         )
@@ -212,7 +213,7 @@ const articleSchema = new Schema(
         return this.save({ timestamps: false })
       },
 
-      unshareWith: async function unshareWith(user) {
+      async unshareWith(user) {
         // we keep only contributors who are not the one we unshare with
         // @see https://mongoosejs.com/docs/api.html#document_Document-equals
         this.contributors = this.contributors.filter(
@@ -222,11 +223,7 @@ const articleSchema = new Schema(
         return this.save({ timestamps: false })
       },
 
-      createNewVersion: async function createNewVersion({
-        mode,
-        message,
-        user,
-      }) {
+      async createNewVersion({ mode, message, user }) {
         const { bib, yaml, md } = this.workingVersion
         const mostRecentVersion = this.versions.at(0)
 

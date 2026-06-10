@@ -80,16 +80,16 @@ const userSchema = new Schema(
        * @param {String} password
        * @returns {Promise<Boolean>}
        */
-      comparePassword: async function comparePassword(password) {
+      async comparePassword(password) {
         const oldPassword = this.password ?? bcrypt.hashSync(password, 10)
         return bcrypt.compare(password, oldPassword)
       },
 
-      getAuthProvidersCount: function getAuthProvidersCount() {
+      getAuthProvidersCount() {
         return Array.from(this.authProviders.values()).filter((d) => d).length
       },
 
-      createDefaultArticle: async function createDefaultArticle() {
+      async createDefaultArticle() {
         // create a yjs document from the default text (Markdown)
         const yDoc = new Y.Doc()
         try {
@@ -113,7 +113,7 @@ const userSchema = new Schema(
         }
       },
 
-      softDelete: async function softDeleteUser() {
+      async softDelete() {
         // generate a random/unguessable email because email is a unique index
         const email = `deleted-user-${randomUUID({ disableEntropyCache: true })}@example.com`
 

@@ -48,9 +48,9 @@ const corpusSchema = new Schema(
        * @param {object} params
        * @param {import('./user')} params.user
        * @param {import('./workspace')} [params.workspace]
-       * @returns {mongoose.Collection<import('./corpus')>} corpuses
+       * @returns {mongoose.Query<import('./corpus')[], import('./corpus')>} corpuses
        */
-      findByUser: function findCorpusByUser({ user, workspace = null }) {
+      findByUser({ user, workspace = null }) {
         return this.find({ creator: user._id, workspace }).sort([
           ['updatedAt', -1],
         ])
@@ -59,11 +59,11 @@ const corpusSchema = new Schema(
       /**
        * Removes an article from all corpuses where it appears.
        *
-       * @param articleId article unique identifier
-       * @param workspaceId optional workspace identifier
-       * @returns {Promise<import('mongodb').UpdateResult<import('./corpus')>>}
+       * @param {import('mongoose').Types.ObjectId | string} articleId article unique identifier
+       * @param {string} [workspaceId] optional workspace identifier
+       * @returns {Promise<import('mongodb').UpdateResult>}
        */
-      removeArticle: function removeArticle(articleId, workspaceId) {
+      removeArticle(articleId, workspaceId) {
         const query = { 'articles.article': articleId }
         if (workspaceId && workspaceId !== '') {
           query.workspace = workspaceId
