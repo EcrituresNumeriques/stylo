@@ -39,50 +39,49 @@ const corpusSchema = new Schema(
       ref: 'User',
     },
   },
-  { timestamps: true }
-)
+  {
+    timestamps: true,
+    statics: {
+      /**
+       * Retrieves corpuses owned by a given user in a given workspace.
+       *
+       * @param {object} params
+       * @param {import('./user')} params.user
+       * @param {import('./workspace')} [params.workspace]
+       * @returns {mongoose.Collection<import('./corpus')>} corpuses
+       */
+      findByUser: function findCorpusByUser({ user, workspace = null }) {
+        return this.find({ creator: user._id, workspace }).sort([
+          ['updatedAt', -1],
+        ])
+      },
 
-/**
- * Retrieves corpuses owned by a given user in a given workspace.
- *
- * @param {object} params
- * @param {import('./user')} params.user
- * @param {import('./workspace')} [params.workspace]
- * @returns {mongoose.Collection<import('./corpus')>} corpuses
- */
-corpusSchema.statics.findByUser = function findCorpusByUser({
-  user,
-  workspace = null,
-}) {
-  return this.find({ creator: user._id, workspace }).sort([['updatedAt', -1]])
-}
-
-/**
- * Removes an article from all corpuses where it appears.
- *
- * @param articleId article unique identifier
- * @param workspaceId optional workspace identifier
- * @returns {Promise<import('mongodb').UpdateResult<import('./corpus')>>}
- */
-corpusSchema.statics.removeArticle = function removeArticle(
-  articleId,
-  workspaceId
-) {
-  const query = { 'articles.article': articleId }
-  if (workspaceId && workspaceId !== '') {
-    query.workspace = workspaceId
-  }
-  return this.updateMany(
-    query,
-    {
-      $pull: {
-        articles: {
-          article: articleId,
-        },
+      /**
+       * Removes an article from all corpuses where it appears.
+       *
+       * @param articleId article unique identifier
+       * @param workspaceId optional workspace identifier
+       * @returns {Promise<import('mongodb').UpdateResult<import('./corpus')>>}
+       */
+      removeArticle: function removeArticle(articleId, workspaceId) {
+        const query = { 'articles.article': articleId }
+        if (workspaceId && workspaceId !== '') {
+          query.workspace = workspaceId
+        }
+        return this.updateMany(
+          query,
+          {
+            $pull: {
+              articles: {
+                article: articleId,
+              },
+            },
+          },
+          { timestamps: true }
+        )
       },
     },
-    { timestamps: true }
-  )
-}
+  }
+)
 
 module.exports = mongoose.model('Corpus', corpusSchema)

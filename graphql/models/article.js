@@ -90,167 +90,169 @@ const articleSchema = new Schema(
       },
     },
   },
-  { timestamps: true, minimize: false }
+  {
+    timestamps: true,
+    minimize: false,
+    statics: {
+      /**
+       * Load associated data on a list of articles using data loaders.
+       * @param articles a list of lean articles
+       * @param {{ users, tags }} loaders
+       * @returns {Promise<Article[]>}
+       */
+      complete: async function complete(articles, loaders) {
+        return Promise.all(
+          articles.map(async (article) => {
+            article.tags = await Promise.all(
+              article.tags.map(async (tagId) => await loaders.tags.load(tagId))
+            )
+            article.owner = await loaders.users.load(article.owner)
+            article.contributors = await Promise.all(
+              article.contributors.map(async (contributor) => {
+                contributor.user = await loaders.users.load(contributor.user)
+                return contributor
+              })
+            )
+            return article
+          })
+        )
+      },
+
+      /**
+       * Get populated articles.
+       * @param {{ filter: {}, options: {}, loaders: { users, tags } }} context
+       * @returns {Promise<Article[]>}
+       */
+      getArticles: async function getArticles({
+        filter,
+        options = {},
+        loaders,
+      }) {
+        options = options || {}
+        const articles = await this.find(filter, null, options)
+          .sort({ updatedAt: -1 })
+          .lean()
+        return this.complete(articles, loaders)
+      },
+    },
+    methods: {
+      addTags: async function addTags(...tagIds) {
+        // Step 1 : add tags to article
+        this.tags.push(...tagIds)
+
+        // Step 2 : populate article tags
+        await this.populate('tags')
+
+        // now, add the article reference in these tags
+        await Tag.updateMany(
+          { _id: { $in: tagIds } },
+          { $push: { articles: this.id } }
+        )
+
+        return this.save({ timestamps: false })
+      },
+
+      removeTags: async function removeTags(...tagIds) {
+        // Step 1 : remove tags to article
+        this.tags.pull(...tagIds)
+
+        // Step 2 : populate article tags
+        await this.populate('tags')
+
+        // now, add the article reference in these tags
+        await Tag.updateMany(
+          { _id: { $in: tagIds } },
+          { $pull: { articles: this.id } }
+        )
+
+        return this.save({ timestamps: false })
+      },
+
+      rename: async function rename(title) {
+        this.set('title', title)
+        const result = await this.save({ timestamps: false })
+        return result === this
+      },
+
+      setZoteroLink: async function setZoteroLink(zotero) {
+        this.set('zoteroLink', zotero)
+        const result = await this.save({ timestamps: false })
+        return result === this
+      },
+
+      setNakalaLink: async function setNakalaLink(nakala) {
+        this.set('nakalaLink', nakala)
+        const result = await this.save({ timestamps: false })
+        return result === this
+      },
+
+      setPreviewSettings: async function setPreviewSettings(settings) {
+        await this.set('preview', settings, { merge: true }).save()
+        return this
+      },
+
+      updateWorkingVersion: async function updateWorkingVersion(content) {
+        for (const [key, value] of Object.entries(content)) {
+          this.set(`workingVersion.${key}`, value)
+        }
+        return this.save()
+      },
+
+      shareWith: async function shareWith(user) {
+        const isAlreadyShared = this.contributors.find(({ user: u }) =>
+          u.equals(user)
+        )
+
+        if (isAlreadyShared) {
+          return
+        }
+
+        this.contributors.push({ user, roles: ['read', 'write'] })
+
+        return this.save({ timestamps: false })
+      },
+
+      unshareWith: async function unshareWith(user) {
+        // we keep only contributors who are not the one we unshare with
+        // @see https://mongoosejs.com/docs/api.html#document_Document-equals
+        this.contributors = this.contributors.filter(
+          ({ user: u }) => u.equals(user) === false
+        )
+
+        return this.save({ timestamps: false })
+      },
+
+      createNewVersion: async function createNewVersion({
+        mode,
+        message,
+        user,
+      }) {
+        const { bib, yaml, md } = this.workingVersion
+        const mostRecentVersion = this.versions.at(0)
+
+        const { revision, version } =
+          mode === 'MAJOR'
+            ? computeMajorVersion(mostRecentVersion)
+            : computeMinorVersion(mostRecentVersion)
+
+        const createdVersion = await Version.create({
+          md,
+          yaml,
+          bib,
+          version,
+          revision,
+          message,
+          owner: user.id,
+        }).then((v) => v.populate('owner'))
+
+        this.versions.push(createdVersion)
+        await this.save()
+
+        return createdVersion
+      },
+    },
+  }
 )
-
-/**
- * Load associated data on a list of articles using data loaders.
- * @param articles a list of lean articles
- * @param {{ users, tags }} loaders
- * @returns {Promise<Article[]>}
- */
-articleSchema.statics.complete = async function complete(articles, loaders) {
-  return Promise.all(
-    articles.map(async (article) => {
-      article.tags = await Promise.all(
-        article.tags.map(async (tagId) => await loaders.tags.load(tagId))
-      )
-      article.owner = await loaders.users.load(article.owner)
-      article.contributors = await Promise.all(
-        article.contributors.map(async (contributor) => {
-          contributor.user = await loaders.users.load(contributor.user)
-          return contributor
-        })
-      )
-      return article
-    })
-  )
-}
-
-/**
- * Get populated articles.
- * @param {{ filter: {}, options: {}, loaders: { users, tags } }} context
- * @returns {Promise<Article[]>}
- */
-articleSchema.statics.getArticles = async function getArticles({
-  filter,
-  options = {},
-  loaders,
-}) {
-  options = options || {}
-  const articles = await this.find(filter, null, options)
-    .sort({ updatedAt: -1 })
-    .lean()
-  return this.complete(articles, loaders)
-}
-
-articleSchema.methods.addTags = async function addTags(...tagIds) {
-  // Step 1 : add tags to article
-  this.tags.push(...tagIds)
-
-  // Step 2 : populate article tags
-  await this.populate('tags')
-
-  // now, add the article reference in these tags
-  await Tag.updateMany(
-    { _id: { $in: tagIds } },
-    { $push: { articles: this.id } }
-  )
-
-  return this.save({ timestamps: false })
-}
-
-articleSchema.methods.removeTags = async function removeTags(...tagIds) {
-  // Step 1 : remove tags to article
-  this.tags.pull(...tagIds)
-
-  // Step 2 : populate article tags
-  await this.populate('tags')
-
-  // now, add the article reference in these tags
-  await Tag.updateMany(
-    { _id: { $in: tagIds } },
-    { $pull: { articles: this.id } }
-  )
-
-  return this.save({ timestamps: false })
-}
-
-articleSchema.methods.rename = async function rename(title) {
-  this.set('title', title)
-  const result = await this.save({ timestamps: false })
-  return result === this
-}
-
-articleSchema.methods.setZoteroLink = async function setZoteroLink(zotero) {
-  this.set('zoteroLink', zotero)
-  const result = await this.save({ timestamps: false })
-  return result === this
-}
-
-articleSchema.methods.setNakalaLink = async function setNakalaLink(nakala) {
-  this.set('nakalaLink', nakala)
-  const result = await this.save({ timestamps: false })
-  return result === this
-}
-
-articleSchema.methods.setPreviewSettings = async function setPreviewSettings(
-  settings
-) {
-  await this.set('preview', settings, { merge: true }).save()
-  return this
-}
-
-articleSchema.methods.updateWorkingVersion =
-  async function updateWorkingVersion(content) {
-    for (const [key, value] of Object.entries(content)) {
-      this.set(`workingVersion.${key}`, value)
-    }
-    return this.save()
-  }
-
-articleSchema.methods.shareWith = async function shareWith(user) {
-  const isAlreadyShared = this.contributors.find(({ user: u }) =>
-    u.equals(user)
-  )
-
-  if (isAlreadyShared) {
-    return
-  }
-
-  this.contributors.push({ user, roles: ['read', 'write'] })
-
-  return this.save({ timestamps: false })
-}
-
-articleSchema.methods.unshareWith = async function shareWith(user) {
-  // we keep only contributors who are not the one we unshare with
-  // @see https://mongoosejs.com/docs/api.html#document_Document-equals
-  this.contributors = this.contributors.filter(
-    ({ user: u }) => u.equals(user) === false
-  )
-
-  return this.save({ timestamps: false })
-}
-
-articleSchema.methods.createNewVersion = async function createNewVersion({
-  mode,
-  message,
-  user,
-}) {
-  const { bib, yaml, md } = this.workingVersion
-  const mostRecentVersion = this.versions.at(0)
-
-  const { revision, version } =
-    mode === 'MAJOR'
-      ? computeMajorVersion(mostRecentVersion)
-      : computeMinorVersion(mostRecentVersion)
-
-  const createdVersion = await Version.create({
-    md,
-    yaml,
-    bib,
-    version,
-    revision,
-    message,
-    owner: user.id,
-  }).then((v) => v.populate('owner'))
-
-  this.versions.push(createdVersion)
-  await this.save()
-
-  return createdVersion
-}
 
 articleSchema.pre(
   'deleteOne',

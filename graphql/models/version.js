@@ -44,16 +44,20 @@ const versionSchema = new Schema(
       default: '',
     },
   },
-  { timestamps: true, minimize: false }
+  {
+    timestamps: true,
+    minimize: false,
+    statics: {
+      /**
+       *
+       * @param {import('./user')} user
+       * @returns {mongoose.Collection} versions
+       */
+      findByUser: function findVersionByUser(user) {
+        return this.find({ owner: user?._id }).sort([['updatedAt', -1]])
+      },
+    },
+  }
 )
-
-/**
- *
- * @param {import('./user')} user
- * @returns {mongoose.Collection} versions
- */
-versionSchema.statics.findByUser = function findVersionByUser(user) {
-  return this.find({ owner: user?._id }).sort([['updatedAt', -1]])
-}
 
 module.exports = mongoose.model('Version', versionSchema)
