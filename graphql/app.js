@@ -62,7 +62,7 @@ const pino = require('pino-http')({
 
 const schema = require('./schema')
 
-const { populateUserFromJWT } = require('./helpers/token.js')
+const { enforceUser, populateUserFromJWT } = require('./helpers/token.js')
 
 const User = require('./models/user')
 const {
@@ -270,7 +270,7 @@ app.post(
   backupRequestHandler
 )
 
-app.get('/git/corpus/:corpusId.git/info/refs', async (req, res) => {
+app.get('/git/corpus/:corpusId.git/info/refs', populateUserFromJWT({ jwtSecret }), enforceUser(), async (req, res) => {
   const corpusId = req.params.corpusId
   const { service } = req.query
 

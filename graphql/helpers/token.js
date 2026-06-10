@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const Sentry = require('@sentry/node')
+const { ApiError } = require('./errors.js')
 
 /**
  * @typedef {Object} RequestContext
@@ -34,6 +35,17 @@ module.exports.createJWTToken = async function createJWTToken({
     expiresIn: '30d',
   }*/
   )
+}
+
+module.exports.enforceUser = function enforceUser () {
+  return function enforceUserMiddleware(req, res, next) {
+    if (!req.user) {
+      res.status(401)
+      return next(new ApiError('UNAUTHORIZED'))
+    }
+
+    return next()
+  }
 }
 
 module.exports.populateUserFromJWT = function populateUserFromJWT({
