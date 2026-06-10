@@ -68,51 +68,71 @@ const userSchema = new Schema(
     connectedAt: Date,
     deletedAt: Date,
   },
-  { timestamps: true }
-)
+  {
+    timestamps: true,
+    methods: {
+      /**
+       * Compare an existing password against a user input one.
+       *
+       * There is a possibility the initial password is not set.
+       * If that's the case, we compare the login password to itself.
+       *
+       * @param {String} password
+       * @returns {Promise<Boolean>}
+       */
+      comparePassword: async function comparePassword(password) {
+        const oldPassword = this.password ?? bcrypt.hashSync(password, 10)
+        return bcrypt.compare(password, oldPassword)
+      },
 
-/**
- * Compare an existing password against a user input one.
- *
- * There is a possibility the initial password is not set.
- * If that's the case, we compare the login password to itself.
- *
- * @param {String} password
- * @returns {Promise<Boolean>}
- */
-userSchema.methods.comparePassword = async function comparePassword(password) {
-  const oldPassword = this.password ?? bcrypt.hashSync(password, 10)
-  return bcrypt.compare(password, oldPassword)
-}
+      getAuthProvidersCount: function getAuthProvidersCount() {
+        return Array.from(this.authProviders.values()).filter((d) => d).length
+      },
 
-userSchema.methods.getAuthProvidersCount = function getAuthProvidersCount() {
-  return Array.from(this.authProviders.values()).filter((d) => d).length
-}
+      createDefaultArticle: async function createDefaultArticle() {
+        // create a yjs document from the default text (Markdown)
+        const yDoc = new Y.Doc()
+        try {
+          const yText = yDoc.getText('main')
+          yText.insert(0, defaultArticle.md)
+          const documentState = Y.encodeStateAsUpdate(yDoc) // is a Uint8Array
+          const newArticle = await this.model('Article').create({
+            title: defaultArticle.title,
+            zoteroLink: defaultArticle.zoteroLink,
+            owner: this,
+            workingVersion: {
+              metadata: defaultArticle.metadata,
+              bib: defaultArticle.bib,
+              ydoc: Buffer.from(documentState).toString('base64'),
+            },
+          })
+          await newArticle.createNewVersion({ mode: 'MINOR', user: this })
+          return this.save()
+        } finally {
+          yDoc.destroy()
+        }
+      },
 
-userSchema.methods.createDefaultArticle =
-  async function createDefaultArticle() {
-    // create a yjs document from the default text (Markdown)
-    const yDoc = new Y.Doc()
-    try {
-      const yText = yDoc.getText('main')
-      yText.insert(0, defaultArticle.md)
-      const documentState = Y.encodeStateAsUpdate(yDoc) // is a Uint8Array
-      const newArticle = await this.model('Article').create({
-        title: defaultArticle.title,
-        zoteroLink: defaultArticle.zoteroLink,
-        owner: this,
-        workingVersion: {
-          metadata: defaultArticle.metadata,
-          bib: defaultArticle.bib,
-          ydoc: Buffer.from(documentState).toString('base64'),
-        },
-      })
-      await newArticle.createNewVersion({ mode: 'MINOR', user: this })
-      return this.save()
-    } finally {
-      yDoc.destroy()
-    }
+      softDelete: async function softDeleteUser() {
+        // generate a random/unguessable email because email is a unique index
+        const email = `deleted-user-${randomUUID({ disableEntropyCache: true })}@example.com`
+
+        this.set({
+          authProviders: {},
+          deletedAt: Date.now(),
+          displayName: '[deleted user]',
+          email,
+          firstName: '',
+          institution: null,
+          lastName: '',
+          password: null,
+        })
+
+        return await this.save()
+      },
+    },
   }
+)
 
 userSchema.virtual('authTypes').get(function authTypes() {
   const types = new Set()
@@ -131,23 +151,5 @@ userSchema.virtual('authTypes').get(function authTypes() {
 
   return Array.from(types)
 })
-
-userSchema.methods.softDelete = async function softDeleteUser() {
-  // generate a random/unguessable email because email is a unique index
-  const email = `deleted-user-${randomUUID({ disableEntropyCache: true })}@example.com`
-
-  this.set({
-    authProviders: {},
-    deletedAt: Date.now(),
-    displayName: '[deleted user]',
-    email,
-    firstName: '',
-    institution: null,
-    lastName: '',
-    password: null,
-  })
-
-  return await this.save()
-}
 
 module.exports = mongoose.model('User', userSchema)
