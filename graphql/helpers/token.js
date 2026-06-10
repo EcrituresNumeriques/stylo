@@ -41,6 +41,7 @@ module.exports.enforceUser = function enforceUser () {
   return function enforceUserMiddleware(req, res, next) {
     if (!req.user) {
       res.status(401)
+      res.set('www-authenticate', 'Basic realm="Stylo"')
       return next(new ApiError('UNAUTHORIZED'))
     }
 
