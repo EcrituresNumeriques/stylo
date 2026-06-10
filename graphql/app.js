@@ -360,10 +360,13 @@ app.post(
     const reportStatus = Buffer.concat(report)
 
     if (useSideBand) {
+      const corpusUrl = `${config.get('frontend.baseUrl')}/corpus/${corpusId}`
       for (const message of [
         '\n',
-        `Can't write data using git, use the UI: https://stylo.huma-num.fr/corpus/\n`,
-        `\n`,
+        'Stylo does not support pushing changes over Git.\n',
+        'Please edit your corpus from the web interface instead:\n',
+        `  ${corpusUrl}\n`,
+        '\n',
       ]) {
         res.write(sideBand(2, message))
       }

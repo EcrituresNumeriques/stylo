@@ -102,6 +102,13 @@ module.exports = convict({
     env: 'SENTRY_ENVIRONMENT',
     default: 'dev',
   },
+  frontend: {
+    baseUrl: {
+      format: 'url',
+      env: 'FRONTEND_BASE_URL',
+      default: 'https://stylo.huma-num.fr',
+    },
+  },
   export: {
     baseUrl: {
       format: String,
