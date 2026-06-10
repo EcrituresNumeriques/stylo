@@ -54,7 +54,7 @@ const versionSchema = new Schema(
        * @param {import('./user')} user
        * @returns {mongoose.Query<import('./version')[], import('./version')>} versions
        */
-      findByUser: function findVersionByUser(user) {
+      findByUser(user) {
         return this.find({ owner: user?._id }).sort([['updatedAt', -1]])
       },
     },

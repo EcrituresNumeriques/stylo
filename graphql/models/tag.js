@@ -31,7 +31,7 @@ const tagSchema = new Schema(
        * @param {import('./user')} user
        * @returns {mongoose.Query<import('./tag')[], import('./tag')>} tags
        */
-      findByUser: function findTagByUser(user) {
+      findByUser(user) {
         return this.find({ owner: user?._id }).sort([['updatedAt', -1]])
       },
     },

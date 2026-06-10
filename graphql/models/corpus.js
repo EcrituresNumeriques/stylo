@@ -50,7 +50,7 @@ const corpusSchema = new Schema(
        * @param {import('./workspace')} [params.workspace]
        * @returns {mongoose.Query<import('./corpus')[], import('./corpus')>} corpuses
        */
-      findByUser: function findCorpusByUser({ user, workspace = null }) {
+      findByUser({ user, workspace = null }) {
         return this.find({ creator: user._id, workspace }).sort([
           ['updatedAt', -1],
         ])
@@ -63,7 +63,7 @@ const corpusSchema = new Schema(
        * @param {string} [workspaceId] optional workspace identifier
        * @returns {Promise<import('mongodb').UpdateResult>}
        */
-      removeArticle: function removeArticle(articleId, workspaceId) {
+      removeArticle(articleId, workspaceId) {
         const query = { 'articles.article': articleId }
         if (workspaceId && workspaceId !== '') {
           query.workspace = workspaceId
