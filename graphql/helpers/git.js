@@ -31,6 +31,7 @@ async function buildCorpusRepo({ fs, dir, gitdir, corpusId }) {
   const allOids = new Set()
   const usedSlugs = new Map()
   const treeEntries = []
+  const corpusArticles = []
 
   for (const { article } of articles) {
     const wv = article.workingVersion || {}
@@ -43,6 +44,8 @@ async function buildCorpusRepo({ fs, dir, gitdir, corpusId }) {
     } else {
       usedSlugs.set(slug, 1)
     }
+
+    corpusArticles.push({ id: String(article._id), path: slug })
 
     const mdOid = await git.writeBlob({
       fs,
@@ -60,7 +63,14 @@ async function buildCorpusRepo({ fs, dir, gitdir, corpusId }) {
       fs,
       dir,
       gitdir,
-      blob: Buffer.from(JSON.stringify(wv.metadata || {}), 'utf8'),
+      blob: Buffer.from(
+        JSON.stringify(
+          { id: String(article._id), ...(wv.metadata || {}) },
+          null,
+          2
+        ),
+        'utf8'
+      ),
     })
     allOids.add(mdOid)
     allOids.add(bibOid)
@@ -74,7 +84,7 @@ async function buildCorpusRepo({ fs, dir, gitdir, corpusId }) {
       tree: [
         { mode: '100644', path: 'bibliography.bib', oid: bibOid, type: 'blob' },
         { mode: '100644', path: 'metadata.json', oid: metaOid, type: 'blob' },
-        { mode: '100644', path: 'text.md', oid: mdOid, type: 'blob' },
+        { mode: '100644', path: 'article.md', oid: mdOid, type: 'blob' },
       ],
     })
     allOids.add(articleTreeOid)
@@ -86,6 +96,36 @@ async function buildCorpusRepo({ fs, dir, gitdir, corpusId }) {
       type: 'tree',
     })
   }
+
+  const corpusMetadataOid = await git.writeBlob({
+    fs,
+    dir,
+    gitdir,
+    blob: Buffer.from(
+      JSON.stringify(
+        {
+          id: String(corpus._id),
+          name: corpus.name,
+          type: corpus.type,
+          description: corpus.description,
+          creatorId: corpus.creator,
+          workspaceId: corpus.workspace,
+          metadata: corpus.metadata || {},
+          articles: corpusArticles,
+        },
+        null,
+        2
+      ),
+      'utf8'
+    ),
+  })
+  allOids.add(corpusMetadataOid)
+  treeEntries.push({
+    mode: '100644',
+    path: 'metadata.json',
+    oid: corpusMetadataOid,
+    type: 'blob',
+  })
 
   const rootTreeOid = await git.writeTree({
     fs,
