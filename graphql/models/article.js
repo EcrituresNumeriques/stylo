@@ -96,9 +96,10 @@ const articleSchema = new Schema(
     statics: {
       /**
        * Load associated data on a list of articles using data loaders.
-       * @param articles a list of lean articles
-       * @param {{ users, tags }} loaders
-       * @returns {Promise<Article[]>}
+       *
+       * @param {Record<string, any>[]} articles a list of lean articles
+       * @param {import('../loaders').Loaders} loaders
+       * @returns {Promise<Record<string, any>[]>} the same articles with their relations populated
        */
       complete: async function complete(articles, loaders) {
         return Promise.all(
@@ -120,8 +121,12 @@ const articleSchema = new Schema(
 
       /**
        * Get populated articles.
-       * @param {{ filter: {}, options: {}, loaders: { users, tags } }} context
-       * @returns {Promise<Article[]>}
+       *
+       * @param {object} context
+       * @param {import('mongoose').FilterQuery<import('./article')>} context.filter
+       * @param {import('mongoose').QueryOptions} [context.options]
+       * @param {import('../loaders').Loaders} context.loaders
+       * @returns {Promise<Record<string, any>[]>} lean articles with their relations populated
        */
       getArticles: async function getArticles({
         filter,

@@ -26,9 +26,10 @@ const tagSchema = new Schema(
     timestamps: true,
     statics: {
       /**
+       * Retrieves tags owned by a given user.
        *
        * @param {import('./user')} user
-       * @returns {mongoose.Collection} tags
+       * @returns {mongoose.Query<import('./tag')[], import('./tag')>} tags
        */
       findByUser: function findTagByUser(user) {
         return this.find({ owner: user?._id }).sort([['updatedAt', -1]])

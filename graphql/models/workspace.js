@@ -46,9 +46,10 @@ const workspaceSchema = new Schema(
     timestamps: true,
     statics: {
       /**
+       * Retrieves workspaces the given user is a member of.
        *
        * @param {import('./user')} user
-       * @returns {mongoose.Collection} workspaces
+       * @returns {mongoose.Query<import('./workspace')[], import('./workspace')>} workspaces
        */
       findByUser: function findWorkspaceByUser(user) {
         return this.find({ 'members.user': user?._id }).sort([
@@ -57,7 +58,10 @@ const workspaceSchema = new Schema(
       },
 
       /**
-       * @returns {mongoose.Collection} workspaces
+       * Retrieves workspaces that contain the given article.
+       *
+       * @param {import('mongoose').Types.ObjectId | string} articleId
+       * @returns {mongoose.Query<import('./workspace')[], import('./workspace')>} workspaces
        */
       findByArticleId: function findWorkspaceByArticleId(articleId) {
         return this.find({ articles: articleId }).sort([['updatedAt', -1]])
@@ -102,8 +106,8 @@ const workspaceSchema = new Schema(
       /**
        * Removes an article from all workspaces where it appears.
        *
-       * @param articleId article unique identifier
-       * @returns {Promise<import('mongodb').UpdateResult<import('./workspace')>>}
+       * @param {import('mongoose').Types.ObjectId | string} articleId article unique identifier
+       * @returns {Promise<import('mongodb').UpdateResult>}
        */
       removeArticle: function removeArticle(articleId) {
         return this.updateMany(
