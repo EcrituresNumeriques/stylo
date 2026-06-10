@@ -22,17 +22,20 @@ const tagSchema = new Schema(
       },
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    statics: {
+      /**
+       *
+       * @param {import('./user')} user
+       * @returns {mongoose.Collection} tags
+       */
+      findByUser: function findTagByUser(user) {
+        return this.find({ owner: user?._id }).sort([['updatedAt', -1]])
+      },
+    },
+  }
 )
-
-/**
- *
- * @param {import('./user')} user
- * @returns {mongoose.Collection} tags
- */
-tagSchema.statics.findByUser = function findTagByUser(user) {
-  return this.find({ owner: user?._id }).sort([['updatedAt', -1]])
-}
 
 tagSchema.post(
   'deleteOne',
