@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const Sentry = require('@sentry/node')
 const { ApiError } = require('./errors.js')
+const Corpus = require('../models/corpus')
+const { NotFoundError } = require('./errors')
 
 /**
  * @typedef {Object} RequestContext
@@ -37,7 +39,7 @@ module.exports.createJWTToken = async function createJWTToken({
   )
 }
 
-module.exports.enforceUser = function enforceUser () {
+module.exports.enforceUser = function enforceUser() {
   return function enforceUserMiddleware(req, res, next) {
     if (!req.user) {
       res.status(401)
@@ -49,11 +51,26 @@ module.exports.enforceUser = function enforceUser () {
   }
 }
 
+function extractToken(authorization) {
+  if (authorization) {
+    if (authorization.startsWith('Basic ')) {
+      const basicAuth = Buffer.from(
+        authorization.replace(/^Basic\s+/, ''),
+        'base64'
+      ).toString('ascii')
+      return basicAuth.split(':')[1]
+    }
+    if (authorization.startsWith('Bearer ')) {
+      return authorization?.replace(/^Bearer\s+/, '')
+    }
+  }
+}
+
 module.exports.populateUserFromJWT = function populateUserFromJWT({
   jwtSecret,
 }) {
   return async function populateUserFromJWTMiddleware(req, res, next) {
-    const jwtToken = req.headers.authorization?.replace(/^Bearer\s+/, '')
+    const jwtToken = extractToken(req.headers.authorization)
 
     if (!jwtToken) {
       return next()
@@ -64,15 +81,16 @@ module.exports.populateUserFromJWT = function populateUserFromJWT({
       req.token = jwt.verify(jwtToken, jwtSecret)
     } catch {
       Sentry.setUser(null)
-
-      return next()
+      res.status(403)
+      return next(new ApiError('Unauthorized'))
     }
 
     // 2. Fetch associated user, only if not populated by Passport Session before
     if (req.token._id && !req.user) {
-      // question: should we throw an error is the user does not exist?
-      req.user = await User.findById(req.token._id)
-
+      req.user = await User.findOne({ _id: req.token._id }).orFail(() => {
+        res.status(403)
+        return new ApiError('Unauthorized')
+      })
       Sentry.setUser(req.user ? { id: req.user?._id } : null)
     }
 

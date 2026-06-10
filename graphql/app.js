@@ -270,59 +270,62 @@ app.post(
   backupRequestHandler
 )
 
-app.get('/git/corpus/:corpusId.git/info/refs', populateUserFromJWT({ jwtSecret }), enforceUser(), async (req, res) => {
-  const corpusId = req.params.corpusId
-  const { service } = req.query
+app.get(
+  '/git/corpus/:corpusId.git/info/refs',
+  populateUserFromJWT({ jwtSecret }),
+  enforceUser(),
+  async (req, res) => {
+    const corpusId = req.params.corpusId
+    const { service } = req.query
 
-  const dir = '/'
-  const gitdir = '/corpus/.git'
-  const fs = createMemFS()
-  const { commitOid } = await buildCorpusRepo({
-    fs,
-    dir,
-    gitdir,
-    corpusId,
-  })
+    const dir = '/'
+    const gitdir = '/corpus/.git'
+    const fs = createMemFS()
+    const { commitOid } = await buildCorpusRepo({
+      fs,
+      dir,
+      gitdir,
+      corpusId,
+    })
 
-  console.log({ service })
-  if (service === 'git-receive-pack') {
-    // report-status / report-status-v2 sont indispensables : sans eux le client
-    // active le démultiplexeur side-band mais n'attend aucun rapport, et part en
-    // « error in sideband demultiplexer » quand on lui envoie le report sur le canal 1.
-    const caps =
-      'report-status report-status-v2 delete-refs side-band-64k ofs-delta agent=stylo/1.0'
-    res.set('Content-Type', 'application/x-git-receive-pack-advertisement')
-    res.set('Cache-Control', 'no-cache')
-    res.set('Git-Protocol', 'version=2')
-    res.write(pktLine('# service=git-receive-pack\n'))
-    res.write(FLUSH_PKT)
-    res.write(pktLine(`${commitOid} HEAD\0${caps}\n`))
-    res.write(pktLine(`${commitOid} refs/heads/main\n`))
-    res.write(FLUSH_PKT)
-    res.end()
-    console.log('2')
-    return
-  }
-  if (service === 'git-upload-pack') {
-    try {
-      const caps = 'symref=HEAD:refs/heads/main agent=stylo/1.0'
-      res.set('Content-Type', 'application/x-git-upload-pack-advertisement')
+    if (service === 'git-receive-pack') {
+      // report-status / report-status-v2 sont indispensables : sans eux le client
+      // active le démultiplexeur side-band mais n'attend aucun rapport, et part en
+      // « error in sideband demultiplexer » quand on lui envoie le report sur le canal 1.
+      const caps =
+        'report-status report-status-v2 delete-refs side-band-64k ofs-delta agent=stylo/1.0'
+      res.set('Content-Type', 'application/x-git-receive-pack-advertisement')
       res.set('Cache-Control', 'no-cache')
       res.set('Git-Protocol', 'version=2')
-      res.write(pktLine('# service=git-upload-pack\n'))
+      res.write(pktLine('# service=git-receive-pack\n'))
       res.write(FLUSH_PKT)
       res.write(pktLine(`${commitOid} HEAD\0${caps}\n`))
       res.write(pktLine(`${commitOid} refs/heads/main\n`))
       res.write(FLUSH_PKT)
       res.end()
-    } catch (err) {
-      res.status(err.status || 500).send(err.message)
+      return
     }
-    return
-  }
+    if (service === 'git-upload-pack') {
+      try {
+        const caps = 'symref=HEAD:refs/heads/main agent=stylo/1.0'
+        res.set('Content-Type', 'application/x-git-upload-pack-advertisement')
+        res.set('Cache-Control', 'no-cache')
+        res.set('Git-Protocol', 'version=2')
+        res.write(pktLine('# service=git-upload-pack\n'))
+        res.write(FLUSH_PKT)
+        res.write(pktLine(`${commitOid} HEAD\0${caps}\n`))
+        res.write(pktLine(`${commitOid} refs/heads/main\n`))
+        res.write(FLUSH_PKT)
+        res.end()
+      } catch (err) {
+        res.status(err.status || 500).send(err.message)
+      }
+      return
+    }
 
-  res.status(403).send('Unsupported service')
-})
+    res.status(403).send('Unsupported service')
+  }
+)
 
 app.get('/git/corpus/:corpusId.git/HEAD', async (req, res) => {})
 
