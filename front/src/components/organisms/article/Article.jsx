@@ -1,9 +1,9 @@
 import clsx from 'clsx'
 import {
   Book,
+  FileDownIcon,
   MessageSquareShare,
   Pencil,
-  Printer,
   Send,
   Tag,
   Trash,
@@ -253,7 +253,7 @@ export default function Article({ article, corpus }) {
         {...exportModal.bindings}
         title={
           <>
-            <Printer /> {t('actions.export.title')}
+            <FileDownIcon aria-hidden /> {t('actions.export.title')}
           </>
         }
       >

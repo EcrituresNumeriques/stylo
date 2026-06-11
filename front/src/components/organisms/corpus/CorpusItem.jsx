@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { MessageSquareShare, Printer, Settings, Trash } from 'lucide-react'
+import { FileDownIcon, MessageSquareShare, Settings, Trash } from 'lucide-react'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
@@ -112,7 +112,7 @@ export default function CorpusItem({ corpus }) {
             onClick={() => exportCorpusModal.show()}
             title={t('actions.export.title')}
           >
-            <Printer aria-label={t('actions.export.label')} />
+            <FileDownIcon aria-label={t('actions.export.label')} />
           </Button>
 
           <DropdownMenu title={t('actions.menu.title')}>
@@ -185,7 +185,7 @@ export default function CorpusItem({ corpus }) {
         {...exportCorpusModal.bindings}
         title={
           <>
-            <Printer /> {t('actions.export.title')}
+            <FileDownIcon aria-hidden /> {t('actions.export.title')}
           </>
         }
       >

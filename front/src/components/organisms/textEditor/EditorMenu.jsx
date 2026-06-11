@@ -2,10 +2,9 @@ import {
   ArrowLeftToLine,
   ArrowRightToLine,
   BookKey,
-  Database,
+  FileDownIcon,
   History,
   MessageSquareShare,
-  Printer,
   TableOfContents,
   TextCursorInput,
 } from 'lucide-react'
@@ -100,7 +99,7 @@ export default function EditorMenu({ articleId, onChange }) {
           onClick={toggleActiveMenu('export')}
           selected={activeMenu === 'export'}
           minimized={minimized}
-          icon={<Printer />}
+          icon={<FileDownIcon />}
           text={t('export.title')}
         />
         <EditorMenuItem
