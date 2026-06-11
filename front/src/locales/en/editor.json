@@ -28,7 +28,8 @@
       "index-entry": "Index entry",
       "inlinequote": "$t(types.inline) citation",
       "italic": "Italic",
-      "smallcaps": "$t(types.inline) small caps"
+      "smallcaps": "$t(types.inline) small caps",
+      "verse": "$t(types.inline) verse"
     },
     "preamble": {
       "refs": "Custom bibliography title"
