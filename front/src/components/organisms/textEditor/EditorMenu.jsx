@@ -2,17 +2,16 @@ import {
   ArrowLeftToLine,
   ArrowRightToLine,
   BookKey,
-  Database,
+  FileDownIcon,
   History,
   MessageSquareShare,
-  Printer,
   TableOfContents,
   TextCursorInput,
 } from 'lucide-react'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { usePreferenceItem } from '../../../hooks/user.js'
+import NakalaIcon from '../../atoms/NakalaIcon.jsx'
 import styles from './EditorMenu.module.scss'
 import EditorMenuItem from './EditorMenuItem.jsx'
 
@@ -85,7 +84,7 @@ export default function EditorMenu({ articleId, onChange }) {
             onClick={toggleActiveMenu('data')}
             selected={activeMenu === 'data'}
             minimized={minimized}
-            icon={<Database />}
+            icon={<NakalaIcon className="icon as-lucide" />}
             text={t('data.title')}
           />
         )}
@@ -100,7 +99,7 @@ export default function EditorMenu({ articleId, onChange }) {
           onClick={toggleActiveMenu('export')}
           selected={activeMenu === 'export'}
           minimized={minimized}
-          icon={<Printer />}
+          icon={<FileDownIcon />}
           text={t('export.title')}
         />
         <EditorMenuItem
