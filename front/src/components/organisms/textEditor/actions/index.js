@@ -6,7 +6,9 @@ import {
   Selection,
 } from 'monaco-editor/esm/vs/editor/editor.api'
 
-import createDelimitedBlockCommand from './delimited-block.js'
+import createDelimitedBlockCommand, {
+  createBlockCommand,
+} from './delimited-block.js'
 import createInlineBlockCommand, {
   createEnclosingTextFormattingCommand,
   createHyperlinkCommand,
@@ -17,6 +19,17 @@ export { Separator } from 'monaco-editor/esm/vs/base/common/actions'
 /** @type {Record<string, Record<string, IActionDescriptor>>} */
 export const actions = {
   md: {
+    citation: createBlockCommand('citation', '> \n> \n> '),
+    delete: createEnclosingTextFormattingCommand('delete', {
+      formattingMark: '~~',
+      keybindings: [KeyMod.CtrlCmd | KeyCode.KeyD],
+    }),
+    headline1: createBlockCommand('section1', '# '),
+    headline2: createBlockCommand('section2', '## '),
+    headline3: createBlockCommand('section3', '### '),
+    headline4: createBlockCommand('section4', '#### '),
+    headline5: createBlockCommand('section5', '##### '),
+    headline6: createBlockCommand('section6', '###### '),
     italic: createEnclosingTextFormattingCommand('italic', {
       formattingMark: '_',
       keybindings: [KeyMod.CtrlCmd | KeyCode.KeyI],
@@ -30,6 +43,13 @@ export const actions = {
       keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF],
     }),
     hyperlink: createHyperlinkCommand('hyperlink'),
+    separator: createBlockCommand('separator', '---'),
+    sub: createEnclosingTextFormattingCommand('sub', {
+      formattingMark: '~',
+    }),
+    sup: createEnclosingTextFormattingCommand('sup', {
+      formattingMark: '^',
+    }),
   },
   metopes: {
     acknowledgement: createDelimitedBlockCommand('ack', {
@@ -70,6 +90,12 @@ export const actions = {
     inlineQuote: createInlineBlockCommand('inlinequote', {
       className: 'inlinequote',
     }),
+    linguistic: createDelimitedBlockCommand('linguistic', {
+      attrs: { lang: 'lang-value', num: '123', label: 'value' },
+      contentBefore: '> ',
+      contentAfter:
+        '> \n[@<source>]\n\n:::{.translation lang="lang-value"}\n> \n> \n[@<source>]\n:::\n\n:::{.translation lang="lang-value"}\n> \n> \n> \n:::\n',
+    }),
     prenoteAuthor: createDelimitedBlockCommand('prenote.aut', {
       attrs: { origin: 'aut' },
       className: 'prenote',
@@ -86,30 +112,29 @@ export const actions = {
       contentBefore: '[nom de personne]{.speaker}',
     }),
     altQuote: createDelimitedBlockCommand('quote-alt'),
-    refs: createDelimitedBlockCommand('refs', {
-      preamble(t) {
-        return `\n\n## ${t('actions.preamble.refs')}`
-      },
-      blockDelimiter: '',
-      className: '',
-      // returns the cursor to its initial position
-      endCursorState({ selection }) {
-        return selection
-      },
-      // insert content at the last char of the last column
-      selectionState(editor) {
-        const model = editor.getModel()
-        const lastLineNumber = model.getLineCount()
-        const lastLineMaxChar = model.getLineMaxColumn(lastLineNumber)
+    refs: createBlockCommand(
+      'refs',
+      (t) => `\n\n## ${t('actions.preamble.refs')}`,
+      {
+        // returns the cursor to its initial position
+        endCursorState({ selection }) {
+          return selection
+        },
+        // insert content at the last char of the last column
+        selectionState(editor) {
+          const model = editor.getModel()
+          const lastLineNumber = model.getLineCount()
+          const lastLineMaxChar = model.getLineMaxColumn(lastLineNumber)
 
-        return new Selection(
-          lastLineNumber,
-          lastLineMaxChar,
-          lastLineNumber,
-          lastLineMaxChar
-        )
-      },
-    }),
+          return new Selection(
+            lastLineNumber,
+            lastLineMaxChar,
+            lastLineNumber,
+            lastLineMaxChar
+          )
+        },
+      }
+    ),
     richQuote: createDelimitedBlockCommand('rich-quote', {
       attrs: { lang: 'lang-value' },
       contentBefore: '> ',
@@ -124,10 +149,14 @@ export const actions = {
       className: 'smallcaps',
     }),
     sponsor: createDelimitedBlockCommand('sponsor'),
+    surtitle: createInlineBlockCommand('surtitle', { className: 'surtitle' }),
+    translation: createDelimitedBlockCommand('translation', {
+      attrs: { lang: 'lang-value' },
+    }),
     verse: createInlineBlockCommand('verse', {
       className: 'verse',
       contentBefore: '> [',
-      attrs: { num: '123' }
+      attrs: { num: '123' },
     }),
   },
 }
@@ -274,8 +303,11 @@ export function MetopesMenu({ editor, t }) {
         ),
         _bindAction(actions.metopes.endnote),
         _bindAction(actions.metopes.indexEntry),
+        _bindAction(actions.metopes.linguistic),
         _bindAction(actions.metopes.signature),
         _bindAction(actions.metopes.smallcaps),
+        _bindAction(actions.metopes.surtitle),
+        _bindAction(actions.metopes.translation),
       ]),
       new SubmenuAction('stylo--metopes--figure', t('stylo.metopes.figure'), [
         _bindAction(actions.metopes.figure),
@@ -294,10 +326,27 @@ export function MarkdownMenu({ editor, t }) {
     'stylo--markdown--root',
     t('stylo.markdown.rootMenu'),
     [
+      _bindAction(actions.md.hyperlink),
       _bindAction(actions.md.italic),
       _bindAction(actions.md.bold),
-      _bindAction(actions.md.hyperlink),
+      _bindAction(actions.md.delete),
+      _bindAction(actions.md.citation),
+      _bindAction(actions.md.sub),
+      _bindAction(actions.md.sup),
       _bindAction(actions.md.footnote),
+      _bindAction(actions.md.separator),
+      new SubmenuAction(
+        'stylo--markdown--headings',
+        t('stylo.markdown.headings'),
+        [
+          _bindAction(actions.md.headline1),
+          _bindAction(actions.md.headline2),
+          _bindAction(actions.md.headline3),
+          _bindAction(actions.md.headline4),
+          _bindAction(actions.md.headline5),
+          _bindAction(actions.md.headline6),
+        ]
+      ),
     ]
   )
 }
