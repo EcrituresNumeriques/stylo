@@ -124,6 +124,11 @@ export const actions = {
       className: 'smallcaps',
     }),
     sponsor: createDelimitedBlockCommand('sponsor'),
+    verse: createInlineBlockCommand('verse', {
+      className: 'verse',
+      contentBefore: '> [',
+      attrs: { num: '123' }
+    }),
   },
 }
 
@@ -255,6 +260,7 @@ export function MetopesMenu({ editor, t }) {
           _bindAction(actions.metopes.altQuote),
           _bindAction(actions.metopes.refs),
           _bindAction(actions.metopes.richQuote),
+          _bindAction(actions.metopes.verse),
         ]
       ),
       new SubmenuAction('stylo--metopes--texte', t('stylo.metopes.texte'), [

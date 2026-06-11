@@ -28,7 +28,8 @@
       "index-entry": "Entrada de índice",
       "inlinequote": "$t(types.inline) cita",
       "italic": "Cursiva",
-      "smallcaps": "$t(types.inline) versalitas"
+      "smallcaps": "$t(types.inline) versalitas",
+      "verse": "$t(types.inline) verso"
     },
     "preamble": {
       "refs": "Título personalizado de bibliografía"
