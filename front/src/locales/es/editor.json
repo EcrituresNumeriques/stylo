@@ -4,10 +4,12 @@
       "ack": "$t(types.block) agradecimiento",
       "answer": "$t(types.block) respuesta",
       "argument": "$t(types.block) entradilla",
+      "citation": "Cita",
       "credits": "$t(types.block) créditos",
       "dedication": "$t(types.block) dedicatoria",
       "epigraph": "$t(types.block) epígrafe",
       "figure": "$t(types.block) figura",
+      "linguistic": "$t(types.block) lingüístico",
       "outline": "$t(types.block) cuadro",
       "prenote.aut": "$t(types.block) nota preliminar del autor",
       "prenote.pbl": "$t(types.block) nota preliminar del editor",
@@ -16,12 +18,21 @@
       "quote-alt": "$t(types.block) cita bis",
       "refs": "Personalizar el título de la bibliografía",
       "rich-quote": "$t(types.block) cita compleja",
+      "section1": "Encabezado 1",
+      "section2": "Encabezado 2",
+      "section3": "Encabezado 3",
+      "section4": "Encabezado 4",
+      "section5": "Encabezado 5",
+      "section6": "Encabezado 6",
+      "separator": "Línea separadora",
       "sig": "$t(types.block) firma",
-      "sponsor": "$t(types.block) patrocinador"
+      "sponsor": "$t(types.block) patrocinador",
+      "translation": "$t(types.block) traducción"
     },
     "infratextual-inline": {
       "bold": "Negrita",
       "credits": "$t(types.inline) créditos",
+      "delete": "Eliminado",
       "endnote": "$t(types.inline) nota final",
       "footnote": "$t(types.inline) nota",
       "hyperlink": "Hipervínculo",
@@ -29,6 +40,9 @@
       "inlinequote": "$t(types.inline) cita",
       "italic": "Cursiva",
       "smallcaps": "$t(types.inline) versalitas",
+      "sub": "Subíndice",
+      "sup": "Superíndice",
+      "surtitle": "$t(types.inline) subtítulo",
       "verse": "$t(types.inline) verso"
     },
     "preamble": {
@@ -37,6 +51,7 @@
   },
   "stylo": {
     "markdown": {
+      "headings": "Títulos",
       "rootMenu": "Lenguaje de marcado ligero"
     },
     "metopes": {

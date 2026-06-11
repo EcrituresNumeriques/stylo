@@ -158,6 +158,31 @@ export function createDelimitedBlockEdit(
 // Command (depends on a Monaco editor instance)
 
 /**
+ *
+ * @param {string} id - Command id and default CSS class (unless `className` is provided)
+ * @param {string|(t: TFunction) => string} content - Content to insert
+ * @param {object} [opts]
+ * @param {number[]} [opts.keybindings] - Optional Monaco keybinding(s)
+ * @param {string} [opts.className] - CSS class for the fenced div (defaults to `id`)
+ * @param {{[key: string]: string}} [opts.attrs] - Additional pandoc attributes
+ * @param {null|TFunction} [opts.preamble] - Static content inserted before the opening delimiter
+ * @param {null|TFunction} [opts.preamble] - Static content inserted before the opening delimiter
+ * @param {string} [opts.contentBefore] - Static content inserted before the selected text
+ * @param {string} [opts.contentAfter] - Static content inserted after the selected text
+ * @returns {IActionDescriptor}
+ */
+export function createBlockCommand(id, content, options = {}) {
+  return createDelimitedBlockCommand(id, {
+    ...options,
+    className: '',
+    blockDelimiter: '',
+    contentBefore: '',
+    contentAfter: '',
+    preamble: typeof content === 'function' ? content : () => content,
+  })
+}
+
+/**
  * Creates a Monaco editor action that wraps the selected text (or cursor
  * position) in a pandoc fenced div (`:::`).
  * @param {string} id - Command id and default CSS class (unless `className` is provided)
