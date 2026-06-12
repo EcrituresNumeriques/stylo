@@ -112,10 +112,6 @@ export default function CollaborativeTextEditor({
     clearDiagnostics,
     navigateTo,
   } = useMarkdownValidator(editorRef, profiles)
-  const editorCursorPosition = useSelector(
-    (state) => state.editorCursorPosition,
-    shallowEqual
-  )
 
   const hasVersion = useMemo(() => Boolean(versionId), [versionId])
   const isLoading =

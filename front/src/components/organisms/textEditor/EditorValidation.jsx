@@ -29,7 +29,6 @@ export default function EditorValidation({
       </header>
 
       <section className={styles.profilesSection}>
-        <h3 className={styles.sectionTitle}>{t('validation.profiles')}</h3>
         <div className={styles.profiles}>
           {VALIDATOR_PROFILE_DEFS.map(({ id, labelKey }) => (
             <label key={id} className={styles.profileLabel}>
