@@ -76,26 +76,20 @@ query getWorkspaceMembers($workspaceId: ID!) {
 
 ## mutations
 
-mutation inviteMember($workspaceId: ID!, $userId: ID!) {
-  workspace(workspaceId: $workspaceId) {
-    inviteMember(userId: $userId) {
-      _id
-      members {
-        ...extendedPublicUserFields
-      }
+mutation inviteWorkspaceMember($workspaceId: ID!, $userId: ID!) {
+  inviteWorkspaceMember(workspaceId: $workspaceId, userId: $userId) {
+    _id
+    members {
+      ...extendedPublicUserFields
     }
   }
 }
 
-mutation removeMember($workspaceId: ID!, $userId: ID!) {
-  workspace(workspaceId: $workspaceId) {
-    member(userId: $userId) {
-      remove {
-        _id
-        members {
-          ...extendedPublicUserFields
-        }
-      }
+mutation removeWorkspaceMember($workspaceId: ID!, $userId: ID!) {
+  removeWorkspaceMember(workspaceId: $workspaceId, userId: $userId) {
+    _id
+    members {
+      ...extendedPublicUserFields
     }
   }
 }
@@ -122,11 +116,9 @@ mutation create($data: CreateWorkspaceInput!) {
   }
 }
 
-mutation leave($workspaceId: ID!) {
-  workspace(workspaceId: $workspaceId) {
-    leave {
-      _id
-    }
+mutation leaveWorkspace($workspaceId: ID!) {
+  leaveWorkspace(workspaceId: $workspaceId) {
+    _id
   }
 }
 
@@ -141,20 +133,14 @@ mutation updateFormMetadata(
 
 # Add/remove article
 
-mutation addArticle($workspaceId: ID!, $articleId: ID!) {
-  workspace(workspaceId: $workspaceId) {
-    addArticle(articleId: $articleId) {
-      _id
-    }
+mutation addWorkspaceArticle($workspaceId: ID!, $articleId: ID!) {
+  addWorkspaceArticle(workspaceId: $workspaceId, articleId: $articleId) {
+    _id
   }
 }
 
-mutation removeArticle($workspaceId: ID!, $articleId: ID!) {
-  workspace(workspaceId: $workspaceId) {
-    article(articleId: $articleId) {
-      remove {
-        _id
-      }
-    }
+mutation removeWorkspaceArticle($workspaceId: ID!, $articleId: ID!) {
+  removeWorkspaceArticle(workspaceId: $workspaceId, articleId: $articleId) {
+    _id
   }
 }

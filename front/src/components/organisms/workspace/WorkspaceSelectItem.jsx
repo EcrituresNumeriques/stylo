@@ -2,7 +2,10 @@ import clsx from 'clsx'
 import { useCallback } from 'react'
 
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
-import { addArticle, removeArticle } from '../../../hooks/Workspaces.graphql'
+import {
+  addWorkspaceArticle,
+  removeWorkspaceArticle,
+} from '../../../hooks/Workspaces.graphql'
 import { useActiveWorkspaceId } from '../../../hooks/workspace.js'
 
 import styles from './WorkspaceSelectItem.module.scss'
@@ -32,7 +35,9 @@ export default function WorkspaceSelectItem({
     async (event) => {
       event.preventDefault()
       const [id, checked] = [event.target.value, event.target.checked]
-      const graphqlQuery = checked ? addArticle : removeArticle
+      const graphqlQuery = checked
+        ? addWorkspaceArticle
+        : removeWorkspaceArticle
       await query({
         query: graphqlQuery,
         variables: { articleId: articleId, workspaceId: id },

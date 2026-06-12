@@ -143,4 +143,56 @@ const workspaceSchema = new Schema(
   }
 )
 
+workspaceSchema.methods.leave = async function leave(userId) {
+  return this.constructor.findOneAndUpdate(
+    { _id: this._id },
+    { $pull: { members: { user: new mongoose.Types.ObjectId(userId) } } },
+    { lean: true }
+  )
+}
+
+workspaceSchema.methods.inviteMember = async function inviteMember(userId) {
+  const memberAlreadyInvited = this.members.find(
+    (m) => String(m.user) === userId
+  )
+  if (memberAlreadyInvited) {
+    return this
+  }
+  this.members.push({ user: userId })
+  return this.save()
+}
+
+workspaceSchema.methods.addArticleById = async function addArticleById(
+  articleId
+) {
+  const articleAlreadyAdded = this.articles.find(
+    (id) => String(id) === articleId
+  )
+  if (articleAlreadyAdded) {
+    return this
+  }
+  this.articles.push({ _id: articleId })
+  return this.save()
+}
+
+workspaceSchema.methods.removeMember = async function removeMember(userId) {
+  const member = this.members.find((m) => String(m.user) === userId)
+  if (member) {
+    this.members.pull({ _id: member._id })
+    return this.save()
+  }
+  return this
+}
+
+workspaceSchema.methods.removeArticleById = async function removeArticleById(
+  articleId
+) {
+  const article = this.articles.find((a) => String(a._id) === articleId)
+  if (article) {
+    this.articles.pull({ _id: article._id })
+    return this.save()
+  }
+  return this
+}
+
 module.exports = mongoose.model('Workspace', workspaceSchema)

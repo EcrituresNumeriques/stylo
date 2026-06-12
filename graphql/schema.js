@@ -289,16 +289,14 @@ type WorkspaceArticle {
   workspace: Workspace!
   article: Article
 
-  # mutation
-  remove: Workspace!
+  remove: Workspace! @deprecated(reason: "Use removeWorkspaceArticle mutation at the root instead.")
 }
 
 type WorkspaceMember {
   workspace: Workspace!
   user: User
 
-  # mutation
-  remove: Workspace!
+  remove: Workspace! @deprecated(reason: "Use removeWorkspaceMember mutation at the root instead.")
 }
 
 type WorkspaceStats {
@@ -338,10 +336,9 @@ type Workspace {
 
   stats: WorkspaceStats
 
-  # mutations
-  leave: Workspace
-  inviteMember(userId: ID!): Workspace
-  addArticle(articleId: ID!): Workspace
+  leave: Workspace @deprecated(reason: "Use leaveWorkspace mutation at the root instead.")
+  inviteMember(userId: ID!): Workspace @deprecated(reason: "Use inviteWorkspaceMember mutation at the root instead.")
+  addArticle(articleId: ID!): Workspace @deprecated(reason: "Use addWorkspaceArticle mutation at the root instead.")
 }
 
 "Input to update the form metadata on a workspace"
@@ -627,6 +624,21 @@ type Mutation {
   Returns an error if the workspace does not exist or cannot be accessed.
   """
   workspace(workspaceId: ID!): Workspace
+
+  "Leave a workspace as the authenticated user."
+  leaveWorkspace(workspaceId: ID!): Workspace
+
+  "Invite a user to a workspace as a member."
+  inviteWorkspaceMember(workspaceId: ID!, userId: ID!): Workspace
+
+  "Add an article to a workspace."
+  addWorkspaceArticle(workspaceId: ID!, articleId: ID!): Workspace
+
+  "Remove a member from a workspace."
+  removeWorkspaceMember(workspaceId: ID!, userId: ID!): Workspace
+
+  "Remove an article from a workspace."
+  removeWorkspaceArticle(workspaceId: ID!, articleId: ID!): Workspace
 
   """
   Retrieve an article by ID to perform mutations on it.
