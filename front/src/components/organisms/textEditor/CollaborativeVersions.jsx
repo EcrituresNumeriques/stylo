@@ -1,5 +1,4 @@
 import { Trans, useTranslation } from 'react-i18next'
-import { shallowEqual, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { useArticleVersions } from '../../../hooks/article.js'
 import { useModal } from '../../../hooks/modal.js'
@@ -24,12 +23,9 @@ export default function CollaborativeVersions({
   showTitle,
   articleId,
   selectedVersion,
+  workingCopyStatus = 'synced',
 }) {
-  const articleWorkingCopyStatus = useSelector(
-    (state) => state.articleWorkingCopy.status,
-    shallowEqual
-  )
-  const syncing = articleWorkingCopyStatus === 'syncing'
+  const syncing = workingCopyStatus === 'syncing'
   const navigate = useNavigate()
   const { article, isLoading, error } = useArticleVersions({ articleId })
   const articleVersions = article?.versions

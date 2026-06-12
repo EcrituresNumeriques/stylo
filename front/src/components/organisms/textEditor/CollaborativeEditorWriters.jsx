@@ -1,13 +1,12 @@
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 
 import { useDisplayName } from '../../../hooks/user.js'
 import { Avatar } from '../../molecules/index.js'
 
 import styles from './CollaborativeEditorWriters.module.scss'
 
-export default function CollaborativeEditorWriters() {
-  const articleWriters = useSelector((state) => state.articleWriters)
+export default function CollaborativeEditorWriters({ writers = {} }) {
+  const articleWriters = writers
   const { t } = useTranslation()
   const displayName = useDisplayName()
 

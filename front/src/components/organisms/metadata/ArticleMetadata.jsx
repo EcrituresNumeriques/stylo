@@ -1,7 +1,6 @@
 import YAML from 'js-yaml'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 
 import { useArticleMetadata } from '../../../hooks/article.js'
 import { usePreferenceItem } from '../../../hooks/user.js'
@@ -17,12 +16,14 @@ import MonacoYamlEditor from './YamlEditor.jsx'
  * @param {string} props.versionId
  * @returns {JSX.Element}
  */
-export default function ArticleMetadata({ articleId, versionId }) {
-  /** @type {object} */
-  const articleWriters = useSelector((state) => state.articleWriters || {})
+export default function ArticleMetadata({
+  articleId,
+  versionId,
+  writers = {},
+}) {
   const multiUserActive = useMemo(
-    () => Object.keys(articleWriters).length > 1,
-    [articleWriters]
+    () => Object.keys(writers).length > 1,
+    [writers]
   )
   const readOnly = multiUserActive || versionId
   const { t } = useTranslation()
