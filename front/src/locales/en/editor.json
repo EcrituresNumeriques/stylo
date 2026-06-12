@@ -50,5 +50,24 @@
   "types": {
     "block": "Block",
     "inline": "Element"
+  },
+  "validation": {
+    "clear": "Clear",
+    "empty": "Click \"Validate\" to analyse the document.",
+    "errorSummary_one": "{{count}} error found",
+    "errorSummary_other": "{{count}} errors found",
+    "line": "line",
+    "navigateTo": "Go to line {{line}}",
+    "noProfile": "Select at least one validation profile.",
+    "profile": {
+      "metopes": "Métopes"
+    },
+    "refreshing": "Updating…",
+    "run": "Validate",
+    "running": "Validating…",
+    "success": "No issues found",
+    "title": "Validation",
+    "warningSummary_one": "{{count}} warning",
+    "warningSummary_other": "{{count}} warnings"
   }
 }

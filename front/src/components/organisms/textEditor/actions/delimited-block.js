@@ -24,14 +24,6 @@ function dropEmptyValue(value) {
   return Boolean(value)
 }
 
-/**
- * Array flter function to keep any value
- * @returns {boolean}
- */
-function keepValue() {
-  return true
-}
-
 function joinContents(joinSeparator, ...texts) {
   return texts.filter(dropEmptyValue).join(joinSeparator)
 }
@@ -170,6 +162,10 @@ export function createDelimitedBlockEdit(
  * @param {null|TFunction} [opts.preamble] - Static content inserted before the opening delimiter
  * @param {string} [opts.contentBefore] - Static content inserted before the selected text
  * @param {string} [opts.contentAfter] - Static content inserted after the selected text
+ * @param {string} [opts.blockDelimiter] - Fenced div delimiter (defaults to `:::`)
+ * @param {function(object): ISelection} [opts.endCursorState] - Computes the cursor position after the edit
+ * @param {function(ICodeEditor): ISelection} [opts.selectionState] - Returns the range to replace
+ * @param {boolean} [opts.forceMoveMarkers] - Whether to force-move Monaco markers
  * @returns {IActionDescriptor}
  */
 export default function createDelimitedBlockCommand(

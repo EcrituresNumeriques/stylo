@@ -104,7 +104,7 @@ a.icon:not(.primary) {
   color: currentColor;
 }
 
-a.icon:after {
+a[target=_blank].icon:after {
   display: none;
 }
 
@@ -170,6 +170,7 @@ a.icon:after {
 
   background-color: $main-color;
   color: $main-background-color;
+  border: 1px solid transparent;
 
   &:disabled {
     color: rgb(170, 170, 170);

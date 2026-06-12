@@ -50,5 +50,24 @@
   "types": {
     "block": "Bloque",
     "inline": "Elemento"
+  },
+  "validation": {
+    "clear": "Limpiar",
+    "empty": "Haga clic en «Validar» para analizar el documento.",
+    "errorSummary_one": "{{count}} error encontrado",
+    "errorSummary_other": "{{count}} errores encontrados",
+    "line": "línea",
+    "navigateTo": "Ir a la línea {{line}}",
+    "noProfile": "Seleccione al menos un perfil de validación.",
+    "profile": {
+      "metopes": "Métopes"
+    },
+    "refreshing": "Actualizando…",
+    "run": "Validar",
+    "running": "Validando…",
+    "success": "No se encontraron problemas",
+    "title": "Validación",
+    "warningSummary_one": "{{count}} advertencia",
+    "warningSummary_other": "{{count}} advertencias"
   }
 }

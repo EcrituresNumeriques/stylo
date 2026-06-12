@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router'
 import { executeQuery } from '../../helpers/graphQL.js'
 import { computeTextStats } from '../../helpers/markdown.js'
@@ -92,12 +92,102 @@ export default function CollaborativeEditor(props) {
     []
   )
 
+  // One preference per profile — default false (opt-in)
+  const { value: metopesEnabled, setValue: setMetopesEnabled } =
+    usePreferenceItem(`${articleId}.validation.profile.metopes`, 'article')
+
+  const enabledProfiles = useMemo(
+    () => (metopesEnabled === true ? ['metopes'] : []),
+    [metopesEnabled]
+  )
+
+  const handleProfileToggle = useCallback(
+    (profileId) => {
+      if (profileId === 'metopes') {
+        setMetopesEnabled(!(metopesEnabled === true))
+      }
+    },
+    [metopesEnabled, setMetopesEnabled]
+  )
+
+  const [validationState, setValidationState] = useState({
+    diagnostics: [],
+    isValidating: false,
+    hasValidated: false,
+  })
+  const validatorApiRef = useRef(null)
+  const activeMenuRef = useRef(activeMenu)
+  activeMenuRef.current = activeMenu
+  const enabledProfilesRef = useRef(enabledProfiles)
+  enabledProfilesRef.current = enabledProfiles
+
+  const handleValidatorReady = useCallback(
+    ({
+      validate,
+      diagnostics,
+      isValidating,
+      hasValidated,
+      clearDiagnostics,
+      navigateTo,
+    }) => {
+      validatorApiRef.current = { validate, clearDiagnostics, navigateTo }
+      setValidationState({ diagnostics, isValidating, hasValidated })
+    },
+    []
+  )
+
+  const handleValidate = useCallback(() => {
+    if (enabledProfilesRef.current.length > 0) {
+      validatorApiRef.current?.validate()
+    }
+  }, [])
+
+  const handleEditorReady = useCallback(() => {
+    if (
+      activeMenuRef.current === 'validation' &&
+      enabledProfilesRef.current.length > 0
+    ) {
+      handleValidate()
+    }
+  }, [handleValidate])
+
+  const handleClearDiagnostics = useCallback(() => {
+    validatorApiRef.current?.clearDiagnostics()
+  }, [])
+
+  const handleNavigateTo = useCallback((line, column) => {
+    validatorApiRef.current?.navigateTo(line, column)
+  }, [])
+
   const handleActiveMenuChange = useCallback(
     (value) => {
       setActiveMenu(value)
     },
     [setActiveMenu]
   )
+
+  // Auto-validate when opening the panel, clear when closing
+  const prevActiveMenuRef = useRef(activeMenu)
+  useEffect(() => {
+    if (activeMenu === 'validation') {
+      handleValidate()
+    } else if (prevActiveMenuRef.current === 'validation') {
+      handleClearDiagnostics()
+    }
+    prevActiveMenuRef.current = activeMenu
+  }, [activeMenu, handleValidate, handleClearDiagnostics])
+
+  // Re-validate (or clear) when the profile selection changes while panel is open.
+  // activeMenu is intentionally read via ref to avoid firing on panel open/close
+  // (that case is already handled by the effect above).
+  useEffect(() => {
+    if (activeMenuRef.current !== 'validation') return
+    if (enabledProfiles.length > 0) {
+      handleValidate()
+    } else {
+      handleClearDiagnostics()
+    }
+  }, [enabledProfiles, handleValidate, handleClearDiagnostics])
 
   return (
     <section className={styles.container}>
@@ -113,6 +203,9 @@ export default function CollaborativeEditor(props) {
             onStatsChange={handleStatsChange}
             onStructureChange={handleStructureChange}
             onWorkingCopyStatusChange={setWorkingCopyStatus}
+            profiles={enabledProfiles}
+            onValidatorReady={handleValidatorReady}
+            onEditorReady={handleEditorReady}
           />
           <ArticleStats stats={articleStats} />
         </div>
@@ -124,6 +217,12 @@ export default function CollaborativeEditor(props) {
           structure={articleStructure}
           workingCopyStatus={workingCopyStatus}
           onCursorPositionChange={handleCursorPositionChange}
+          validationDiagnostics={validationState.diagnostics}
+          isValidating={validationState.isValidating}
+          hasValidated={validationState.hasValidated}
+          enabledProfiles={enabledProfiles}
+          onProfileToggle={handleProfileToggle}
+          onNavigateToDiagnostic={handleNavigateTo}
         />
       </div>
 
