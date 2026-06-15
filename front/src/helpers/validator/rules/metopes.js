@@ -108,6 +108,45 @@ export function singleEpigraphClass(tree, _markdown, diagnostics) {
   })
 }
 
+const QA_DISALLOWED_LABELS = {
+  list: 'liste',
+  blockquote: 'citation',
+  table: 'tableau',
+  code: 'bloc de code',
+  heading: 'titre',
+  thematicBreak: 'séparateur',
+  containerDirective: 'bloc imbriqué',
+  leafDirective: 'bloc imbriqué',
+}
+
+/**
+ * Le contenu des blocs question/answer est limité au texte : pas de listes,
+ * citations, tableaux ou autres éléments de bloc.
+ *
+ * @param {import('unist').Node} tree
+ * @param {string} _markdown
+ * @param {Array} diagnostics
+ */
+export function questionAnswerTextOnly(tree, _markdown, diagnostics) {
+  visit(tree, 'containerDirective', (node) => {
+    if (node.name !== 'question' && node.name !== 'answer') return
+    for (const child of node.children || []) {
+      // Seuls les paragraphes de texte (y compris le label) sont autorisés.
+      if (child.type === 'paragraph') continue
+      const label = QA_DISALLOWED_LABELS[child.type] || 'cet élément'
+      diagnostics.push({
+        line: child.position.start.line,
+        column: child.position.start.column,
+        endLine: child.position.end.line,
+        endColumn: child.position.end.column,
+        severity: 'error',
+        message: `Un bloc ${node.name} ne peut contenir que du texte (${label} non autorisé)`,
+        code: 'qa-text-only',
+      })
+    }
+  })
+}
+
 /**
  * @param {import('unist').Node} tree
  * @param {string} markdown
@@ -269,6 +308,7 @@ export const metopesRules = [
   unknownBlockClass,
   unknownInlineClass,
   singleEpigraphClass,
+  questionAnswerTextOnly,
   figureMustContainImage,
   prenoteRequiresOrigin,
   translationRequiresLang,
