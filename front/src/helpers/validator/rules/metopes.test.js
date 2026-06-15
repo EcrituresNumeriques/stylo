@@ -7,6 +7,7 @@ import {
   figureMustContainImage,
   indexEntryRequiresIdref,
   prenoteRequiresOrigin,
+  questionAnswerTextOnly,
   singleEpigraphClass,
   translationNotNested,
   translationRequiresLang,
@@ -106,6 +107,52 @@ describe('singleEpigraphClass()', () => {
     expect(diagnostics[0].severity).toBe('warning')
     expect(diagnostics[0].code).toBe('single-epigraph-class')
     expect(diagnostics[0].line).toBe(4)
+  })
+})
+
+// ─── questionAnswerTextOnly ──────────────────────────────────────────────────
+
+describe('questionAnswerTextOnly()', () => {
+  test('no diagnostic for text-only question', () => {
+    const md = `:::{.question}
+Quelle est la question ?
+:::`
+    expect(run(questionAnswerTextOnly, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic for text-only answer', () => {
+    const md = `:::{.answer}
+Voici la réponse.
+:::`
+    expect(run(questionAnswerTextOnly, md)).toHaveLength(0)
+  })
+
+  test('error for a list inside a question', () => {
+    const md = `:::{.question}
+- un
+- deux
+:::`
+    const [d] = run(questionAnswerTextOnly, md)
+    expect(d.severity).toBe('error')
+    expect(d.code).toBe('qa-text-only')
+    expect(d.message).toContain('liste')
+  })
+
+  test('error for a blockquote inside an answer', () => {
+    const md = `:::{.answer}
+> une citation
+:::`
+    const [d] = run(questionAnswerTextOnly, md)
+    expect(d.code).toBe('qa-text-only')
+    expect(d.message).toContain('citation')
+  })
+
+  test('no false positive outside question/answer', () => {
+    const md = `:::{.box}
+- un
+- deux
+:::`
+    expect(run(questionAnswerTextOnly, md)).toHaveLength(0)
   })
 })
 
