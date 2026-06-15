@@ -85,6 +85,31 @@ export function unknownBlockClass(tree, _markdown, diagnostics) {
 
 /**
  * @param {import('unist').Node} tree
+ * @param {string} _markdown
+ * @param {Array} diagnostics
+ */
+export function singleEpigraphClass(tree, _markdown, diagnostics) {
+  let epigraphFound = 0
+  visit(tree, 'containerDirective', (node) => {
+    const classes = [node.name, ...parseClasses(node.attributes?.class)]
+    if (!classes.includes('epigraph')) return
+    epigraphFound++
+    if (epigraphFound > 1) {
+      diagnostics.push({
+        line: node.position.start.line,
+        column: node.position.start.column,
+        endLine: node.position.start.line,
+        endColumn: node.position.start.column + 3,
+        severity: 'warning',
+        message: `Un seul épigraphe autorisé par document.`,
+        code: 'single-epigraph-class',
+      })
+    }
+  })
+}
+
+/**
+ * @param {import('unist').Node} tree
  * @param {string} markdown
  * @param {Array} diagnostics
  */
@@ -243,6 +268,7 @@ export function indexEntryRequiresIdref(tree, markdown, diagnostics) {
 export const metopesRules = [
   unknownBlockClass,
   unknownInlineClass,
+  singleEpigraphClass,
   figureMustContainImage,
   prenoteRequiresOrigin,
   translationRequiresLang,
