@@ -1,6 +1,6 @@
 const { NotFoundError } = require('../helpers/errors.js')
 const YAML = require('js-yaml')
-const { WSSharedDoc } = require('@y/websocket-server/utils')
+const { WSSharedDoc } = require('../helpers/yjs-utils.mjs')
 
 const Article = require('../models/article.js')
 const User = require('../models/user.js')
