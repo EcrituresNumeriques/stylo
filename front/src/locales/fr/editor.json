@@ -4,10 +4,12 @@
       "ack": "$t(types.block) remerciements",
       "answer": "$t(types.block) réponse",
       "argument": "$t(types.block) chapô introductif",
+      "citation": "Citation",
       "credits": "$t(types.block) crédits",
       "dedication": "$t(types.block) dédicace",
       "epigraph": "$t(types.block) épigraphe",
       "figure": "$t(types.block) figure",
+      "linguistic": "$t(types.block) linguistique",
       "outline": "$t(types.block) encadré",
       "prenote.aut": "$t(types.block) note préliminaire d'auteur·ice",
       "prenote.pbl": "$t(types.block) note préliminaire d'éditeur·ice",
@@ -16,19 +18,32 @@
       "quote-alt": "$t(types.block) citation bis",
       "refs": "Personnaliser le titre de la bibliographie",
       "rich-quote": "$t(types.block) citation complexe",
+      "section1": "Titre de niveau 1",
+      "section2": "Titre de niveau 2",
+      "section3": "Titre de niveau 3",
+      "section4": "Titre de niveau 4",
+      "section5": "Titre de niveau 5",
+      "section6": "Titre de niveau 6",
+      "separator": "Ligne de séparation",
       "sig": "$t(types.block) signature",
-      "sponsor": "$t(types.block) sponsor"
+      "sponsor": "$t(types.block) sponsor",
+      "translation": "$t(types.block) traduction"
     },
     "infratextual-inline": {
       "bold": "Gras",
       "credits": "$t(types.inline) crédits",
+      "delete": "Supprimé",
       "endnote": "$t(types.inline) note de fin",
       "footnote": "$t(types.inline) note de bas de page",
       "hyperlink": "Hyperlien",
       "index-entry": "Entrée d'index",
       "inlinequote": "$t(types.inline) citation",
       "italic": "Italique",
-      "smallcaps": "$t(types.inline) petites capitales"
+      "smallcaps": "$t(types.inline) petites capitales",
+      "sub": "Indice",
+      "sup": "Exposant",
+      "surtitle": "$t(types.inline) surtitre",
+      "verse": "$t(types.inline) vers"
     },
     "preamble": {
       "refs": "Titre personnalisé de bibliographie"
@@ -36,6 +51,7 @@
   },
   "stylo": {
     "markdown": {
+      "headings": "Titres",
       "rootMenu": "Balisage léger"
     },
     "metopes": {
