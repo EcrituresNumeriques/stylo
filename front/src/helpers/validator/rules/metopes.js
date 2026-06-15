@@ -203,6 +203,139 @@ export function figureMustContainImage(tree, _markdown, diagnostics) {
   })
 }
 
+const FIGURE_INLINE_RX = /\[[^\]]*\]\{([^}]*)\}/g
+// Lazy alt so it tolerates span syntax hijacked into the légende, e.g.
+// `![caption [crédit]{.credits}](url)`.
+const FIGURE_IMAGE_RX = /!\[[^\n]*?\]\([^)]*\)/g
+
+/**
+ * Returns the free text left on a figure body line once the allowed direct
+ * content has been removed: the image (and its légende/alt), and the `head`
+ * and `credits` inline spans. Typographic markup nested inside those is kept
+ * within them, so it is never reported as free text.
+ * @param {string} line
+ * @returns {string}
+ */
+function figureLineFreeText(line) {
+  return line
+    .replace(FIGURE_IMAGE_RX, ' ')
+    .replace(FIGURE_INLINE_RX, (span, attrs) => {
+      const classes = parseClasses(attrs)
+      return classes.includes('head') || classes.includes('credits')
+        ? ' '
+        : span
+    })
+    .trim()
+}
+
+/**
+ * Whether a figure body line carries an inline `.credits` span. The image is
+ * stripped first so that credits hijacked into the légende (alt) do not count.
+ * @param {string} line
+ * @returns {boolean}
+ */
+function hasInlineCredits(line) {
+  const text = line.replace(FIGURE_IMAGE_RX, ' ')
+  let match
+  FIGURE_INLINE_RX.lastIndex = 0
+  while ((match = FIGURE_INLINE_RX.exec(text)) !== null) {
+    if (parseClasses(match[1]).includes('credits')) return true
+  }
+  return false
+}
+
+/**
+ * Iterate the body lines of a figure that are not inside a child div.
+ * @param {import('../pandoc-divs.js').DivNode} figure
+ * @param {string[]} lines
+ * @param {(line: string, lineNum: number) => void} fn
+ */
+function eachFigureDirectLine(figure, lines, fn) {
+  const end = figure.endLine ?? lines.length
+  const childRanges = figure.children.map((c) => [
+    c.startLine,
+    c.endLine ?? end,
+  ])
+  for (let ln = figure.startLine + 1; ln < end; ln++) {
+    if (childRanges.some(([s, e]) => ln >= s && ln <= e)) continue
+    fn(lines[ln - 1], ln)
+  }
+}
+
+/**
+ * Le contenu direct d'un bloc figure est limité à l'image, au head et aux
+ * crédits : aucun texte libre ni autre bloc.
+ *
+ * @param {import('unist').Node} _tree
+ * @param {string} markdown
+ * @param {Array} diagnostics
+ */
+export function figureContentRestricted(_tree, markdown, diagnostics) {
+  const lines = markdown.split('\n')
+  walkDivs(parsePandocFencedDivs(markdown), (figure) => {
+    if (figure.className !== 'figure') return
+    for (const child of figure.children) {
+      if (child.className === 'credits') continue
+      diagnostics.push({
+        line: child.startLine,
+        column: 1,
+        endLine: child.startLine,
+        endColumn: 4,
+        severity: 'error',
+        message: `Un bloc figure ne peut contenir que l'image, le head et les crédits (bloc ".${child.className}" non autorisé)`,
+        code: 'figure-content-restricted',
+      })
+    }
+    eachFigureDirectLine(figure, lines, (line, lineNum) => {
+      if (figureLineFreeText(line) === '') return
+      const column = line.length - line.trimStart().length + 1
+      diagnostics.push({
+        line: lineNum,
+        column,
+        endLine: lineNum,
+        endColumn: line.length + 1,
+        severity: 'error',
+        message: `Un bloc figure ne peut contenir que l'image, le head et les crédits (texte libre non autorisé)`,
+        code: 'figure-content-restricted',
+      })
+    })
+  })
+}
+
+/**
+ * Les crédits d'une figure sont autorisés soit en span, soit en div, mais pas
+ * les deux simultanément.
+ *
+ * @param {import('unist').Node} _tree
+ * @param {string} markdown
+ * @param {Array} diagnostics
+ */
+export function figureCreditsSpanOrDiv(_tree, markdown, diagnostics) {
+  const lines = markdown.split('\n')
+  walkDivs(parsePandocFencedDivs(markdown), (figure) => {
+    if (figure.className !== 'figure') return
+    const hasCreditsDiv = figure.children.some((c) => c.className === 'credits')
+    let inlineCreditsLine = null
+    eachFigureDirectLine(figure, lines, (line, lineNum) => {
+      if (inlineCreditsLine === null && hasInlineCredits(line)) {
+        inlineCreditsLine = lineNum
+      }
+    })
+    if (hasCreditsDiv && inlineCreditsLine !== null) {
+      diagnostics.push({
+        line: inlineCreditsLine,
+        column: 1,
+        endLine: inlineCreditsLine,
+        endColumn: 4,
+        severity: 'error',
+        message:
+          'Les crédits doivent être en span ou en div, mais pas les deux à la fois',
+        code: 'figure-credits-span-and-div',
+      })
+    }
+  })
+}
+
 /**
  * @param {import('unist').Node} tree
  * @param {string} _markdown
@@ -310,6 +443,8 @@ export const metopesRules = [
   singleEpigraphClass,
   questionAnswerTextOnly,
   figureMustContainImage,
+  figureContentRestricted,
+  figureCreditsSpanOrDiv,
   prenoteRequiresOrigin,
   translationRequiresLang,
   translationNotNested,

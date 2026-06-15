@@ -4,6 +4,8 @@ import { unified } from 'unified'
 import { describe, expect, test } from 'vitest'
 
 import {
+  figureContentRestricted,
+  figureCreditsSpanOrDiv,
   figureMustContainImage,
   indexEntryRequiresIdref,
   prenoteRequiresOrigin,
@@ -216,6 +218,121 @@ just text
     expect(d.severity).toBe('error')
     expect(d.code).toBe('figure-missing-image')
     expect(d.line).toBe(1)
+  })
+})
+
+// ─── figureContentRestricted ─────────────────────────────────────────────────
+
+describe('figureContentRestricted()', () => {
+  test('no diagnostic for image + head + credits div', () => {
+    const md = `:::{.figure}
+
+[Carte de l'Europe après le congrès de Vienne]{.head}
+
+![Carte de l'Europe en 1815](cartes/europe-1815.png)
+
+:::{.credits}
+© Bibliothèque nationale de France, département Cartes et plans
+:::
+
+:::`
+    expect(run(figureContentRestricted, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic for image + head + inline credits', () => {
+    const md = `:::{.figure}
+
+[Portrait de John Dewey]{.head}
+
+![John Dewey vers 1902](portraits/dewey.jpg)
+
+[Source : Eva Watson-Schütze, domaine public]{.credits}
+:::`
+    expect(run(figureContentRestricted, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic for credits hijacked in the légende (alt)', () => {
+    const md = `:::{.figure}
+![Vue de la bibliothèque [© Gallica / BnF]{.credits}](photos/bibliotheque.jpg)
+:::`
+    expect(run(figureContentRestricted, md)).toHaveLength(0)
+  })
+
+  test('error for free text', () => {
+    const md = `:::{.figure}
+![Carte de l'Europe en 1815](cartes/europe-1815.png)
+Cette carte illustre le redécoupage des frontières.
+:::`
+    const [d] = run(figureContentRestricted, md)
+    expect(d.severity).toBe('error')
+    expect(d.code).toBe('figure-content-restricted')
+    expect(d.line).toBe(3)
+  })
+
+  test('error for a disallowed nested block', () => {
+    const md = `:::{.figure}
+![Carte de l'Europe en 1815](cartes/europe-1815.png)
+:::{.box}
+Encadré explicatif
+:::
+:::`
+    const [d] = run(figureContentRestricted, md)
+    expect(d.code).toBe('figure-content-restricted')
+    expect(d.message).toContain('.box')
+    expect(d.line).toBe(3)
+  })
+
+  test('no false positive outside a figure', () => {
+    const md = `:::{.box}
+Un encadré peut contenir du texte libre.
+:::`
+    expect(run(figureContentRestricted, md)).toHaveLength(0)
+  })
+})
+
+// ─── figureCreditsSpanOrDiv ──────────────────────────────────────────────────
+
+describe('figureCreditsSpanOrDiv()', () => {
+  test('no diagnostic for credits as div only', () => {
+    const md = `:::{.figure}
+![John Dewey vers 1902](portraits/dewey.jpg)
+:::{.credits}
+Source : Eva Watson-Schütze, domaine public
+:::
+:::`
+    expect(run(figureCreditsSpanOrDiv, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic for credits as span only', () => {
+    const md = `:::{.figure}
+![John Dewey vers 1902](portraits/dewey.jpg)
+[Source : Eva Watson-Schütze, domaine public]{.credits}
+:::`
+    expect(run(figureCreditsSpanOrDiv, md)).toHaveLength(0)
+  })
+
+  test('error for credits as both span and div', () => {
+    const md = `:::{.figure}
+![John Dewey vers 1902](portraits/dewey.jpg)
+[Source : Eva Watson-Schütze, domaine public]{.credits}
+:::{.credits}
+Source : Eva Watson-Schütze, domaine public
+:::
+:::`
+    const [d] = run(figureCreditsSpanOrDiv, md)
+    expect(d.severity).toBe('error')
+    expect(d.code).toBe('figure-credits-span-and-div')
+    expect(d.line).toBe(3)
+  })
+
+  test('credits in the légende (alt) does not count as a span', () => {
+    const md = `:::{.figure}
+![Vue de la bibliothèque [© Gallica / BnF]{.credits}](photos/bibliotheque.jpg)
+:::{.credits}
+© Bibliothèque nationale de France
+:::
+:::`
+    expect(run(figureCreditsSpanOrDiv, md)).toHaveLength(0)
   })
 })
 
