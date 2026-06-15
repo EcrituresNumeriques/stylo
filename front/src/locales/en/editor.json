@@ -63,6 +63,30 @@
       "metopes": "Métopes"
     },
     "refreshing": "Updating…",
+    "rules": {
+      "elements": {
+        "list": "a list",
+        "blockquote": "a quotation",
+        "table": "a table",
+        "code": "a code block",
+        "heading": "a heading",
+        "thematicBreak": "a separator",
+        "nested": "a nested block",
+        "default": "this element"
+      },
+      "figureContentRestrictedBlock": "A figure block may only contain the image, the head and the credits (block `.{{class}}` is not allowed).",
+      "figureContentRestrictedText": "A figure block may only contain the image, the head and the credits (free text is not allowed).",
+      "figureCreditsSpanOrDiv": "Figure credits must be provided either inline or as a block, but not both at once.",
+      "figureMustContainImage": "A figure block must contain an image `![caption](url)`.",
+      "indexEntryRequiresIdref": "An index entry must have an `idref` attribute.",
+      "prenoteRequiresOrigin": "A prenote block must have an `origin` attribute (aut, pbl or tr).",
+      "questionAnswerTextOnly": "A `{{block}}` block may only contain text (disallowed element: $t({{element}})).",
+      "singleEpigraph": "Only one epigraph is allowed per document.",
+      "translationNotNested": "Translation blocks cannot be nested.",
+      "translationRequiresLang": "A translation block must have a `lang` attribute.",
+      "unknownBlockClass": "Unknown block class: `.{{class}}`",
+      "unknownInlineClass": "Unknown inline class: `.{{class}}`"
+    },
     "run": "Validate",
     "running": "Validating…",
     "success": "No issues found",

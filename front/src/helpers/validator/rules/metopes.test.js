@@ -137,7 +137,11 @@ Voici la réponse.
     const [d] = run(questionAnswerTextOnly, md)
     expect(d.severity).toBe('error')
     expect(d.code).toBe('qa-text-only')
-    expect(d.message).toContain('liste')
+    expect(d.messageKey).toBe('validation.rules.questionAnswerTextOnly')
+    expect(d.messageParams).toEqual({
+      block: 'question',
+      element: 'validation.rules.elements.list',
+    })
   })
 
   test('error for a blockquote inside an answer', () => {
@@ -146,7 +150,7 @@ Voici la réponse.
 :::`
     const [d] = run(questionAnswerTextOnly, md)
     expect(d.code).toBe('qa-text-only')
-    expect(d.message).toContain('citation')
+    expect(d.messageParams.element).toBe('validation.rules.elements.blockquote')
   })
 
   test('no false positive outside question/answer', () => {
@@ -278,7 +282,8 @@ Encadré explicatif
 :::`
     const [d] = run(figureContentRestricted, md)
     expect(d.code).toBe('figure-content-restricted')
-    expect(d.message).toContain('.box')
+    expect(d.messageKey).toBe('validation.rules.figureContentRestrictedBlock')
+    expect(d.messageParams).toEqual({ class: 'box' })
     expect(d.line).toBe(3)
   })
 

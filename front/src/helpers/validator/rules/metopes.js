@@ -75,7 +75,8 @@ export function unknownBlockClass(tree, _markdown, diagnostics) {
           endLine: node.position.start.line,
           endColumn: node.position.start.column + 3,
           severity: 'warning',
-          message: `Classe de bloc inconnue : ".${cls}"`,
+          messageKey: 'validation.rules.unknownBlockClass',
+          messageParams: { class: cls },
           code: 'unknown-block-class',
         })
       }
@@ -101,22 +102,22 @@ export function singleEpigraphClass(tree, _markdown, diagnostics) {
         endLine: node.position.start.line,
         endColumn: node.position.start.column + 3,
         severity: 'warning',
-        message: `Un seul épigraphe autorisé par document.`,
+        messageKey: 'validation.rules.singleEpigraph',
         code: 'single-epigraph-class',
       })
     }
   })
 }
 
-const QA_DISALLOWED_LABELS = {
-  list: 'liste',
-  blockquote: 'citation',
-  table: 'tableau',
-  code: 'bloc de code',
-  heading: 'titre',
-  thematicBreak: 'séparateur',
-  containerDirective: 'bloc imbriqué',
-  leafDirective: 'bloc imbriqué',
+const QA_DISALLOWED_ELEMENTS = {
+  list: 'list',
+  blockquote: 'blockquote',
+  table: 'table',
+  code: 'code',
+  heading: 'heading',
+  thematicBreak: 'thematicBreak',
+  containerDirective: 'nested',
+  leafDirective: 'nested',
 }
 
 /**
@@ -133,14 +134,18 @@ export function questionAnswerTextOnly(tree, _markdown, diagnostics) {
     for (const child of node.children || []) {
       // Seuls les paragraphes de texte (y compris le label) sont autorisés.
       if (child.type === 'paragraph') continue
-      const label = QA_DISALLOWED_LABELS[child.type] || 'cet élément'
+      const element = QA_DISALLOWED_ELEMENTS[child.type] || 'default'
       diagnostics.push({
         line: child.position.start.line,
         column: child.position.start.column,
         endLine: child.position.end.line,
         endColumn: child.position.end.column,
         severity: 'error',
-        message: `Un bloc ${node.name} ne peut contenir que du texte (${label} non autorisé)`,
+        messageKey: 'validation.rules.questionAnswerTextOnly',
+        messageParams: {
+          block: node.name,
+          element: `validation.rules.elements.${element}`,
+        },
         code: 'qa-text-only',
       })
     }
@@ -172,7 +177,8 @@ export function unknownInlineClass(tree, markdown, diagnostics) {
             endLine: lineIndex + 1,
             endColumn: match.index + match[0].length + 1,
             severity: 'warning',
-            message: `Classe inline inconnue : ".${cls}"`,
+            messageKey: 'validation.rules.unknownInlineClass',
+            messageParams: { class: cls },
             code: 'unknown-inline-class',
           })
         }
@@ -196,7 +202,7 @@ export function figureMustContainImage(tree, _markdown, diagnostics) {
         endLine: node.position.start.line,
         endColumn: node.position.start.column + 3,
         severity: 'error',
-        message: 'Un bloc figure doit contenir une image `![caption](url)`',
+        messageKey: 'validation.rules.figureMustContainImage',
         code: 'figure-missing-image',
       })
     }
@@ -282,7 +288,8 @@ export function figureContentRestricted(_tree, markdown, diagnostics) {
         endLine: child.startLine,
         endColumn: 4,
         severity: 'error',
-        message: `Un bloc figure ne peut contenir que l'image, le head et les crédits (bloc ".${child.className}" non autorisé)`,
+        messageKey: 'validation.rules.figureContentRestrictedBlock',
+        messageParams: { class: child.className },
         code: 'figure-content-restricted',
       })
     }
@@ -295,7 +302,7 @@ export function figureContentRestricted(_tree, markdown, diagnostics) {
         endLine: lineNum,
         endColumn: line.length + 1,
         severity: 'error',
-        message: `Un bloc figure ne peut contenir que l'image, le head et les crédits (texte libre non autorisé)`,
+        messageKey: 'validation.rules.figureContentRestrictedText',
         code: 'figure-content-restricted',
       })
     })
@@ -328,8 +335,7 @@ export function figureCreditsSpanOrDiv(_tree, markdown, diagnostics) {
         endLine: inlineCreditsLine,
         endColumn: 4,
         severity: 'error',
-        message:
-          'Les crédits doivent être en span ou en div, mais pas les deux à la fois',
+        messageKey: 'validation.rules.figureCreditsSpanOrDiv',
         code: 'figure-credits-span-and-div',
       })
     }
@@ -351,8 +357,7 @@ export function prenoteRequiresOrigin(tree, _markdown, diagnostics) {
         endLine: node.position.start.line,
         endColumn: node.position.start.column + 3,
         severity: 'error',
-        message:
-          'Un bloc prenote doit avoir un attribut `origin` (aut, pbl ou tr)',
+        messageKey: 'validation.rules.prenoteRequiresOrigin',
         code: 'prenote-missing-origin',
       })
     }
@@ -376,7 +381,7 @@ export function translationRequiresLang(_tree, markdown, diagnostics) {
           endLine: child.startLine,
           endColumn: 4,
           severity: 'error',
-          message: 'Un bloc translation doit avoir un attribut `lang`',
+          messageKey: 'validation.rules.translationRequiresLang',
           code: 'translation-missing-lang',
         })
       }
@@ -401,7 +406,7 @@ export function translationNotNested(_tree, markdown, diagnostics) {
           endLine: child.startLine,
           endColumn: 4,
           severity: 'error',
-          message: 'Les blocs translation ne peuvent pas être imbriqués',
+          messageKey: 'validation.rules.translationNotNested',
           code: 'translation-nesting-invalid',
         })
       }
@@ -429,7 +434,7 @@ export function indexEntryRequiresIdref(tree, markdown, diagnostics) {
           endLine: lineIndex + 1,
           endColumn: match.index + match[0].length + 1,
           severity: 'warning',
-          message: "Une entrée d'index doit avoir un attribut `idref`",
+          messageKey: 'validation.rules.indexEntryRequiresIdref',
           code: 'index-entry-missing-idref',
         })
       }

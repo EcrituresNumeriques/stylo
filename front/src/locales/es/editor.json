@@ -63,6 +63,30 @@
       "metopes": "Métopes"
     },
     "refreshing": "Actualizando…",
+    "rules": {
+      "elements": {
+        "list": "una lista",
+        "blockquote": "una cita",
+        "table": "una tabla",
+        "code": "un bloque de código",
+        "heading": "un título",
+        "thematicBreak": "un separador",
+        "nested": "un bloque anidado",
+        "default": "este elemento"
+      },
+      "figureContentRestrictedBlock": "Un bloque figure solo puede contener la imagen, el encabezado y los créditos (no se permite el bloque `.{{class}}`).",
+      "figureContentRestrictedText": "Un bloque figure solo puede contener la imagen, el encabezado y los créditos (no se permite texto libre).",
+      "figureCreditsSpanOrDiv": "Los créditos de una figura deben indicarse en línea o en bloque, pero no de ambas formas a la vez.",
+      "figureMustContainImage": "Un bloque figure debe contener una imagen `![leyenda](url)`.",
+      "indexEntryRequiresIdref": "Una entrada de índice debe tener un atributo `idref`.",
+      "prenoteRequiresOrigin": "Un bloque prenote debe tener un atributo `origin` (aut, pbl o tr).",
+      "questionAnswerTextOnly": "Un bloque `{{block}}` solo puede contener texto (elemento no permitido: $t({{element}})).",
+      "singleEpigraph": "Solo se permite un epígrafe por documento.",
+      "translationNotNested": "Los bloques translation no pueden anidarse.",
+      "translationRequiresLang": "Un bloque translation debe tener un atributo `lang`.",
+      "unknownBlockClass": "Clase de bloque desconocida: `.{{class}}`",
+      "unknownInlineClass": "Clase en línea desconocida: `.{{class}}`"
+    },
     "run": "Validar",
     "running": "Validando…",
     "success": "No se encontraron problemas",
