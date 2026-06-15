@@ -3,6 +3,7 @@ import * as monaco from 'monaco-editor'
 import { useCallback, useRef, useState } from 'react'
 
 import { VALIDATORS } from '../helpers/validator/index.js'
+import i18n from '../i18n.js'
 
 const MARKER_OWNER = 'stylo-validator'
 
@@ -14,6 +15,15 @@ function toMonacoSeverity(severity) {
   return severity === 'error'
     ? monaco.MarkerSeverity.Error
     : monaco.MarkerSeverity.Warning
+}
+
+/**
+ * Translate a diagnostic message from its i18n key and params.
+ * @param {{ messageKey: string, messageParams?: object }} diagnostic
+ * @returns {string}
+ */
+function translateMessage({ messageKey, messageParams }) {
+  return i18n.t(messageKey, { ns: 'editor', ...messageParams })
 }
 
 /**
@@ -62,7 +72,7 @@ export function useMarkdownValidator(editorRef, profiles = ['metopes']) {
             startColumn: d.column,
             endLineNumber: d.endLine,
             endColumn: d.endColumn,
-            message: d.message,
+            message: translateMessage(d),
             severity: toMonacoSeverity(d.severity),
             code: d.code,
           }))
@@ -76,7 +86,7 @@ export function useMarkdownValidator(editorRef, profiles = ['metopes']) {
         results.map((d) => ({
           range: new monaco.Range(d.line, 1, d.endLine || d.line, 1),
           options: {
-            linesDecorationsTooltip: d.message,
+            linesDecorationsTooltip: translateMessage(d),
             linesDecorationsClassName:
               d.severity === 'error' ? 'validator-error' : 'validator-warning',
             isWholeLine: false,
