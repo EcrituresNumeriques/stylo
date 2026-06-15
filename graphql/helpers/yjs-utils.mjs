@@ -1,3 +1,5 @@
+// Code adapted from https://github.com/yjs/y-websocket-server/blob/v0.1.1/src/utils.js
+// see https://github.com/EcrituresNumeriques/stylo/issues/2027
 import * as decoding from 'lib0/decoding'
 import * as encoding from 'lib0/encoding'
 import * as map from 'lib0/map'
