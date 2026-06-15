@@ -28,7 +28,6 @@
     "@graphql-tools/schema": "~10.0",
     "@sentry/node": "~10.56.0",
     "@sentry/profiling-node": "~10.56.0",
-    "@y/websocket-server": "0.1.1",
     "archiver": "^7.0.1",
     "atob": "^2.1.2",
     "bcryptjs": "^2.4.3",
@@ -52,6 +51,7 @@
     "js-yaml": "^4.1.0",
     "jsdom": "^21.0.0",
     "jsonwebtoken": "~9.0",
+    "lib0": "^0.2.102",
     "lodash.debounce": "^4.0.8",
     "mongodb": "~7.2.0",
     "mongoose": "~9.6.0",
@@ -65,6 +65,7 @@
     "remove-markdown": "~0.6",
     "ws": "~8.21.0",
     "y-leveldb": "^0.1.0",
+    "y-protocols": "^1.0.5",
     "y-websocket": "~3.0"
   },
   "devDependencies": {

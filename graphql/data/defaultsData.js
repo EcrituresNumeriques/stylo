@@ -194,7 +194,7 @@ Pour plus d'informations, consultez la documentation.
 	publisher = {Peeters Publishers},
 	author = {Petit, Daniel},
 	year = {1999},
-	keywords = {Language Arts \& Disciplines / Linguistics / General},
+	keywords = {Language Arts & Disciplines / Linguistics / General},
 }
 @incollection{pitavy_au_2006,
 	address = {Saint-Étienne},
