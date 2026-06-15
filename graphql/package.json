@@ -26,8 +26,8 @@
   "dependencies": {
     "@ggrossetie/db-migrate-mongodb": "~2.0",
     "@graphql-tools/schema": "~10.0",
-    "@sentry/node": "~10.38",
-    "@sentry/profiling-node": "~10.38",
+    "@sentry/node": "~10.56.0",
+    "@sentry/profiling-node": "~10.56.0",
     "@y/websocket-server": "0.1.1",
     "archiver": "^7.0.1",
     "atob": "^2.1.2",
@@ -64,6 +64,7 @@
     "pino-http": "~11.0",
     "remove-markdown": "~0.6",
     "ws": "~8.21.0",
+    "y-leveldb": "^0.1.0",
     "y-websocket": "~3.0"
   },
   "devDependencies": {
