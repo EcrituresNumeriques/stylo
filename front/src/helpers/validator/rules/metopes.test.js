@@ -7,6 +7,7 @@ import {
   figureMustContainImage,
   indexEntryRequiresIdref,
   prenoteRequiresOrigin,
+  singleEpigraphClass,
   translationNotNested,
   translationRequiresLang,
   unknownBlockClass,
@@ -76,6 +77,35 @@ describe('unknownBlockClass()', () => {
         `unexpected warning for .${cls}`
       ).toHaveLength(0)
     }
+  })
+})
+
+// ─── singleEpigraphClass ─────────────────────────────────────────────────────
+
+describe('singleEpigraphClass()', () => {
+  test('no diagnostic for a single epigraph', () => {
+    const md = `:::{.epigraph}
+:::`
+    expect(run(singleEpigraphClass, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic when there is no epigraph', () => {
+    const md = `:::{.figure}
+:::`
+    expect(run(singleEpigraphClass, md)).toHaveLength(0)
+  })
+
+  test('warning for a second epigraph', () => {
+    const md = `:::{.epigraph}
+:::
+
+:::{.epigraph}
+:::`
+    const diagnostics = run(singleEpigraphClass, md)
+    expect(diagnostics).toHaveLength(1)
+    expect(diagnostics[0].severity).toBe('warning')
+    expect(diagnostics[0].code).toBe('single-epigraph-class')
+    expect(diagnostics[0].line).toBe(4)
   })
 })
 
