@@ -47,11 +47,23 @@ async function buildCorpusRepo({ fs, dir, gitdir, corpusId }) {
 
     corpusArticles.push({ id: String(article._id), path: slug })
 
+    const metadata = { id: String(article._id), ...(wv.metadata || {}) }
+    const eleventyData = {
+      eleventyComputed: {
+        permalink: '{{ page.filePathStem }}/index.html',
+      },
+    }
+
     const mdOid = await git.writeBlob({
       fs,
       dir,
       gitdir,
-      blob: Buffer.from(wv.md || '', 'utf8'),
+      blob: Buffer.from(
+        `---json
+${JSON.stringify({ ...metadata, ...eleventyData }, null, 2)}\n---\n
+${wv.md || ''}`,
+        'utf8'
+      ),
     })
     const bibOid = await git.writeBlob({
       fs,
@@ -63,14 +75,7 @@ async function buildCorpusRepo({ fs, dir, gitdir, corpusId }) {
       fs,
       dir,
       gitdir,
-      blob: Buffer.from(
-        JSON.stringify(
-          { id: String(article._id), ...(wv.metadata || {}) },
-          null,
-          2
-        ),
-        'utf8'
-      ),
+      blob: Buffer.from(JSON.stringify(metadata, null, 2), 'utf8'),
     })
     allOids.add(mdOid)
     allOids.add(bibOid)
