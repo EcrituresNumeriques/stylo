@@ -4,31 +4,46 @@
       "ack": "$t(types.block) acknowledgement",
       "answer": "$t(types.block) answer",
       "argument": "$t(types.block) argument",
+      "citation": "Quote",
       "credits": "$t(types.block) credits",
       "dedication": "$t(types.block) dedication",
       "epigraph": "$t(types.block) epigraph",
       "figure": "$t(types.block) figure",
+      "linguistic": "$t(types.block) linguistic",
       "outline": "$t(types.block) outline",
       "prenote.aut": "$t(types.block) preliminary note from author",
       "prenote.pbl": "$t(types.block) preliminary note from publisher",
       "prenote.tr": "$t(types.block) preliminary note from translator",
       "question": "$t(types.block) question",
-      "quote-alt": "$t(types.block) citation bis",
+      "quote-alt": "$t(types.block) alternative quote",
       "refs": "Customize bibliography heading",
       "rich-quote": "$t(types.block) rich quote",
+      "section1": "Heading 1",
+      "section2": "Heading 2",
+      "section3": "Heading 3",
+      "section4": "Heading 4",
+      "section5": "Heading 5",
+      "section6": "Heading 6",
+      "separator": "Separation line",
       "sig": "$t(types.block) signature",
-      "sponsor": "$t(types.block) sponsor"
+      "sponsor": "$t(types.block) sponsor",
+      "translation": "$t(types.block) translation"
     },
     "infratextual-inline": {
       "bold": "Bold",
       "credits": "$t(types.inline) credits",
+      "delete": "Deleted",
       "endnote": "$t(types.inline) end note",
       "footnote": "$t(types.inline) footnote",
       "hyperlink": "Hyperlink",
       "index-entry": "Index entry",
       "inlinequote": "$t(types.inline) citation",
       "italic": "Italic",
-      "smallcaps": "$t(types.inline) small caps"
+      "smallcaps": "$t(types.inline) small caps",
+      "sub": "Subscript",
+      "sup": "Superscript",
+      "surtitle": "$t(types.inline) surtitle",
+      "verse": "$t(types.inline) verse"
     },
     "preamble": {
       "refs": "Custom bibliography title"
@@ -36,6 +51,7 @@
   },
   "stylo": {
     "markdown": {
+      "headings": "Titles",
       "rootMenu": "Lightweight markup language"
     },
     "metopes": {
