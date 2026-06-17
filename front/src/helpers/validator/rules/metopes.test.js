@@ -255,6 +255,15 @@ describe('figureContentRestricted()', () => {
     expect(run(figureContentRestricted, md)).toHaveLength(0)
   })
 
+  test('no diagnostic for a credits span nested in a head span', () => {
+    const md = `:::{.figure}
+[L'image dans sa splendeur, telle qu'on peut l'admirer au [Musée du Louvre]{.credits}]{.head}
+
+![Image mirobolante](mkdreference/medias/image.png)
+:::`
+    expect(run(figureContentRestricted, md)).toHaveLength(0)
+  })
+
   test('no diagnostic for credits hijacked in the légende (alt)', () => {
     const md = `:::{.figure}
 ![Vue de la bibliothèque [© Gallica / BnF]{.credits}](photos/bibliotheque.jpg)

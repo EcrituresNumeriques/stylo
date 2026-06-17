@@ -209,43 +209,90 @@ export function figureMustContainImage(tree, _markdown, diagnostics) {
   })
 }
 
-const FIGURE_INLINE_RX = /\[[^\]]*\]\{([^}]*)\}/g
 // Lazy alt so it tolerates span syntax hijacked into the légende, e.g.
 // `![caption [crédit]{.credits}](url)`.
 const FIGURE_IMAGE_RX = /!\[[^\n]*?\]\([^)]*\)/g
 
 /**
+ * @typedef {{ start: number, end: number, inner: string, attrs: string }} InlineSpan
+ */
+
+/**
+ * Parse the top-level `[text]{attrs}` inline spans of a line, matching brackets
+ * by depth so a span nested inside another (e.g. a `.credits` span inside a
+ * `.head` span) is kept inside its parent rather than splitting it.
+ * @param {string} line
+ * @returns {InlineSpan[]}
+ */
+function topLevelSpans(line) {
+  const spans = []
+  let i = 0
+  while (i < line.length) {
+    if (line[i] !== '[') {
+      i++
+      continue
+    }
+    let depth = 1
+    let j = i + 1
+    for (; j < line.length && depth > 0; j++) {
+      if (line[j] === '[') depth++
+      else if (line[j] === ']') depth--
+      if (depth === 0) break
+    }
+    if (depth === 0 && line[j + 1] === '{') {
+      const close = line.indexOf('}', j + 2)
+      if (close !== -1) {
+        spans.push({
+          start: i,
+          end: close,
+          inner: line.slice(i + 1, j),
+          attrs: line.slice(j + 2, close),
+        })
+        i = close + 1
+        continue
+      }
+    }
+    i = j + 1
+  }
+  return spans
+}
+
+/**
  * Returns the free text left on a figure body line once the allowed direct
  * content has been removed: the image (and its légende/alt), and the `head`
- * and `credits` inline spans. Typographic markup nested inside those is kept
- * within them, so it is never reported as free text.
+ * and `credits` inline spans. Markup nested inside those (including a `credits`
+ * span within a `head` span) is kept within them, so it is never reported as
+ * free text.
  * @param {string} line
  * @returns {string}
  */
 function figureLineFreeText(line) {
-  return line
-    .replace(FIGURE_IMAGE_RX, ' ')
-    .replace(FIGURE_INLINE_RX, (span, attrs) => {
-      const classes = parseClasses(attrs)
-      return classes.includes('head') || classes.includes('credits')
-        ? ' '
-        : span
-    })
-    .trim()
+  let text = line.replace(FIGURE_IMAGE_RX, ' ')
+  const spans = topLevelSpans(text)
+  for (let k = spans.length - 1; k >= 0; k--) {
+    const { start, end, attrs } = spans[k]
+    const classes = parseClasses(attrs)
+    if (classes.includes('head') || classes.includes('credits')) {
+      text = `${text.slice(0, start)} ${text.slice(end + 1)}`
+    }
+  }
+  return text.trim()
 }
 
 /**
- * Whether a figure body line carries an inline `.credits` span. The image is
- * stripped first so that credits hijacked into the légende (alt) do not count.
+ * Whether a figure body line carries an inline `.credits` span, at any nesting
+ * depth (e.g. inside a `.head` span). The image is stripped first so that
+ * credits hijacked into the légende (alt) do not count.
  * @param {string} line
  * @returns {boolean}
  */
 function hasInlineCredits(line) {
   const text = line.replace(FIGURE_IMAGE_RX, ' ')
-  let match
-  FIGURE_INLINE_RX.lastIndex = 0
-  while ((match = FIGURE_INLINE_RX.exec(text)) !== null) {
-    if (parseClasses(match[1]).includes('credits')) return true
+  const stack = topLevelSpans(text)
+  while (stack.length > 0) {
+    const span = stack.pop()
+    if (parseClasses(span.attrs).includes('credits')) return true
+    stack.push(...topLevelSpans(span.inner))
   }
   return false
 }
