@@ -362,6 +362,22 @@ describe('prenoteRequiresOrigin()', () => {
 // ─── translationRequiresLang ─────────────────────────────────────────────────
 
 describe('translationRequiresLang()', () => {
+  test('no diagnostic when all translations have lang without double quotes', () => {
+    const md = `:::{.rich-quote}
+:::{.translation lang=en}
+> Tatitata in English.
+>
+> On two paragraphs.
+:::
+
+:::{.translation lang=no}
+> Tatitata på norsk bokmål.
+>
+> På to avsnitt.
+:::
+:::`
+    expect(run(translationRequiresLang, md)).toHaveLength(0)
+  })
   test('no diagnostic when all translations have lang', () => {
     const md = `:::{.rich-quote}
 :::{.translation lang="fr"}
