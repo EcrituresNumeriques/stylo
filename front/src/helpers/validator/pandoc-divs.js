@@ -11,10 +11,10 @@
  */
 function parseAttrs(attrsStr) {
   const attrs = {}
-  const attrRx = /([a-zA-Z0-9_-]+)="([^"]*)"/g
+  const attrRx = /([a-zA-Z0-9_-]+)=(?:"([^"]*)"|([^\s"}]+))/g
   let m
   while ((m = attrRx.exec(attrsStr)) !== null) {
-    attrs[m[1]] = m[2]
+    attrs[m[1]] = m[2] ?? m[3]
   }
   const classMatch = attrsStr.match(/\.([a-zA-Z0-9_-]+)/)
   if (classMatch) {
