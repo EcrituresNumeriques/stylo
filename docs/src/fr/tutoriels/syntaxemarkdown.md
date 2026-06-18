@@ -322,10 +322,13 @@ La prévisualisation Stylo implémente l'affichage des classes sémantiques suiv
 - concept
 - definition
 - question
-- epigraphe
-- dedicace
+- epigraph
+- dedication
+- prenote
 - credits
 - source
+
+D'autres classes, construites spécialement pour Métopes, sont disponibles et accessibles via un clic droit dans l'éditeur.
 
 Il est possible de baliser un élément textuel avec plusieurs attributs. Par exemple&nbsp;:
 
