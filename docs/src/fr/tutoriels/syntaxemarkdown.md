@@ -322,9 +322,9 @@ La prévisualisation Stylo implémente l'affichage des classes sémantiques suiv
 - concept
 - definition
 - question
-- epigraph
-- dedication
-- prenote
+- epigraph : utiliser la classe Métopes *Épigraphe* via un clic droit dans l'éditeur de Stylo
+- dedication : utiliser la classe Métopes *Dédicace* via un clic droit dans l'éditeur de Stylo
+- prenote : utiliser la classe Métopes *Note Préliminaire* via un clic droit dans l'éditeur de Stylo
 - credits
 - source
 
