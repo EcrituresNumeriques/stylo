@@ -104,7 +104,7 @@ Une citation dans le corps du texte est indiquée par guillemets « Stat rosa pr
 
 ### Métadonnées
 
-Les métadonnées de l'article s'éditent dans le menu en haut à droite. Vous pouvez y indiquer le titre, sous-titre, le nom de l'auteur et son identifiant de l'Orcid[^orcid], le résumé et les mot-clés de l'article. Pour les éditeurs de revue, une série plus complète de métadonnées est également disponible.
+Les métadonnées de l'article s'éditent dans le menu en haut à droite. Vous pouvez y indiquer le titre, sous-titre, le nom de l'auteur et son identifiant de l'Orcid[^orcid], le résumé et les mot-clés de l'article. Pour les éditeurs de revue, une série plus complète de métadonnées est également disponible. Vous pouvez également spécifier des métadonnées de chapitre, de billet de blog ou de note de réunion en choisissant le schéma de métadonnées qui correspond.
 
 [^orcid]: L'identifiant Orcid permettra de récupérer automatiquement l'affiliation et la biographie de l'auteur.
 
@@ -145,9 +145,11 @@ Dans la preview vous pouvez visualiser les classes:
 - definition
 - exemple
 - concept
-- epigraphe
-- dedicace
-- note
+- épigraphe → utiliser la classe Métopes *Épigraphe*
+- dédicace → utiliser la classe Métopes *Dédicace*
+- note préliminaire → utiliser la classe Métopes *Note Préliminaire*
+
+D'autres classes Métopes sont disponibles, accessibles via *clic droit > Métopes* dans l'éditeur.
 
 ### Annotation de plusieurs paragraphes
 
