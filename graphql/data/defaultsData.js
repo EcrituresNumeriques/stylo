@@ -145,9 +145,9 @@ Dans la preview vous pouvez visualiser les classes:
 - definition
 - exemple
 - concept
-- épigraphe → utiliser la classe Métopes *Épigraphe*
-- dédicace → utiliser la classe Métopes *Dédicace*
-- note préliminaire → utiliser la classe Métopes *Note Préliminaire*
+- epigraph → utiliser la classe Métopes *Épigraphe*
+- dedication → utiliser la classe Métopes *Dédicace*
+- prenote → utiliser la classe Métopes *Note Préliminaire*
 
 D'autres classes Métopes sont disponibles, accessibles via *clic droit > Métopes* dans l'éditeur.
 
