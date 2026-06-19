@@ -321,10 +321,18 @@ The Stylo preview implements the display of the following semantic classes:
 - concept
 - definition
 - question
-- epigraphe
-- dedicace
+- epigraph : use Métopes class *Épigraphe* available via right-click on the Stylo editor
+- dedication : use Métopes class *Dédicace* available via right-click on the Stylo editor
+- prenote : use Métopes class *Note préliminaire* available via right-click on the Stylo editor
 - credits
 - source
+
+→ utiliser la classe Métopes *Épigraphe*
+- dédicace → utiliser la classe Métopes *Dédicace*
+- note préliminaire → utiliser la classe Métopes *Note Préliminaire*
+- autres classes Métopes disponibles → accessibles via *clic droit > Métopes* dans l'éditeur
+
+Other classes are available via right-click in the "Métopes" category, on the Stylo editor.
 
 It is possible to tag a text element with several attributes. For example:
 
