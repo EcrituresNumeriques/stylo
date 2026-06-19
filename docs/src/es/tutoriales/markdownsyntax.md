@@ -323,10 +323,13 @@ La vista previa Stylo implementa la visualización de las siguientes etiquetas s
 - concepto
 - definición
 - pregunta
-- epígrafe
-- dedicatoria
+- epigrafe : utilizar la clase "Métopes" *Epígrafe* haciendo clic con el botón derecho del ratón en el editor de Stylo
+- dedicatoria : utilizar la clase "Métopes" *Epígrafe* haciendo clic con el botón derecho del ratón en el editor de Stylo
+- nota preliminar: utiliza la clase "Métopes»" *nota preliminar* haciendo clic con el botón derecho del ratón en el editor de Stylo
 - créditos
 - fuente
+
+Hay otras clases diseñadas específicamente para Métopes disponibles al hacer clic con el botón derecho del ratón en el editor de Stylo.
 
 Es posible marcar un elemento de texto con varios atributos. Por ejemplo
 
