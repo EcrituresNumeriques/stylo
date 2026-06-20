@@ -1,0 +1,170 @@
+type Query {
+  me: User
+
+  tag(tagId: ID!): Tag
+  tags(name: String): [Tag!]
+
+  article(articleId: ID!): Article
+  articles(corpusId: ID, workspaceId: ID, tagId: ID, metadata: [MetadataFilter!], name: String): [Article!]
+  sharedArticle(articleId: ID!, accessKey: JWT): Article
+
+  workspace(workspaceId: ID!): Workspace
+  workspaces(name: String): [Workspace!]
+
+  corpus(corpusId: ID!): Corpus
+  corpuses(workspaceId: ID, metadata: [MetadataFilter!], name: String): [Corpus!]
+  sharedCorpus(corpusId: ID!, accessKey: JWT): Corpus
+
+  # public
+  stats: InstanceUsageStats
+
+  # admin
+  users(userId: ID, username: String, email: String): [User]
+}
+
+
+# no access to articles nor corpuses
+type Workspace {
+  id: ID!
+  name: String!
+  description: String
+  color: HexColorCode!
+  members: [User!]!
+  bibliographyStyle: String
+  formMetadata: WorkspaceFormMetadata
+  creator: UserIdentity!
+  createdAt: DateTime
+  updatedAt: DateTime
+  stats: WorkspaceStats
+}
+
+input MetadataFilter {
+  key: String!
+  value: JSON!
+}
+
+type Article {
+  id: ID!
+  name: String # rename title to name
+
+  workingCopy: WorkingCopy # rename workingVersion to workingCopy
+
+  nakalaLink: String
+  zoteroLink: String
+  preview: ArticlePreviewSettings
+
+  tags: [Tag!]!
+  contributors: [ArticleContributor]!
+  versions(versionId: ID, first: Int, last: Int): [ArticleVersion!]
+
+  creator: UserIdentity! # rename owner to creator
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type ArticleVersion {
+  id: ID!
+  type: String # deprecated?
+  message: String
+
+  major: Int! # rename version to major
+  minor: Int! # rename revision to minor
+  revisionNumber: String! # format "major.minor"
+
+  bibliography: String
+  text: String
+  metadata: JSON
+
+  metadataFormType: String
+  metadataYaml(options: YamlFormattingInput): String
+
+  bibliographyEntries: [BibliographyEntry]
+  bibliographyPreview: String
+
+  creator: UserIdentity!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type WorkingCopy {
+  bibliography: String
+  text: String
+  metadata: JSON
+
+  metadataFormType: String
+  metadataYaml(options: YamlFormattingInput): String
+
+  bibliographyEntries: [BibliographyEntry]
+  bibliographyPreview: String
+}
+
+type Tag {
+  id: ID!
+  name: String!
+  description: String
+  color: HexColorCode
+
+  creator: UserIdentity!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type Corpus {
+  id: ID!
+  name: String!
+  description: String
+  type: CorpusType!
+  metadata: JSON
+  workspaceId: ID
+
+  articles: [CorpusArticle!]!
+
+  creatorId: Creator!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type CorpusArticle {
+  articleId: ID!
+  order: Int
+}
+
+type UserIdentity {
+  id: ID!
+  email: EmailAddress
+  username: String
+  displayName: String
+  firstName: String
+  lastName: String
+  institution: String
+}
+
+type User {
+  id: ID!
+  email: EmailAddress
+  username: String
+  displayName: String
+  firstName: String
+  lastName: String
+  institution: String
+
+  contacts(userId: ID, email: String, username: String): [UserIdentity!]! # rename acquintances to contacts
+
+  collaborators: [UserIdentity!]! # ensemble des utilisateurs collaborant avec cet utilisateur (i.e., utilisateurs travaillant au sein d'un même espace de travail ou d'un même article)
+
+  permissions: [UserPermission]
+  authProviders: AuthProvidersMap
+  authTypes: [AuthType]
+
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+
+  stats: UserStats
+}
+
+type UserPermission {
+  roles: [String]
+  scope: String!
+  userId: ID!
+}
