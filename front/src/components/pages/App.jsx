@@ -105,7 +105,7 @@ export default function StyloApp() {
     )
   }, [location.pathname])
 
-  const restoreScroll = useMemo(() => location.hash === '', [location.hash])
+  const restoreScroll = useMemo(() => location.hash !== '', [location.hash])
 
   return (
     <>
