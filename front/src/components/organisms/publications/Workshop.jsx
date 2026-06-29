@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import { CalendarDays } from 'lucide-react'
 import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
 

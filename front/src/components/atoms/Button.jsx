@@ -13,6 +13,7 @@ export default function Button(props) {
     [styles.icon]: props.icon === true,
     [styles.toggle]: props.toggle === true,
     [props.className]: Boolean(props.className),
+    [styles.active]: Boolean(props['aria-pressed']),
   })
 
   return (
@@ -24,6 +25,8 @@ export default function Button(props) {
       disabled={props.disabled}
       aria-label={props['aria-label']}
       data-testid={props.testId}
+      aria-pressed={props['aria-pressed']}
+      aria-controls={props['aria-controls']}
     >
       {props.children}
     </button>

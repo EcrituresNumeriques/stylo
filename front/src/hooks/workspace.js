@@ -31,6 +31,21 @@ export function useActiveWorkspaceId() {
   return workspaceId ?? value
 }
 
+/**
+ * Returns the active workspace identifier
+ *
+ * In order of priority:
+ * - URL
+ * - redux store
+ * @returns {string|undefined}
+ */
+export function useActiveWorkspace() {
+  const workspaceId = useActiveWorkspaceId()
+  const { workspaces, isLoading } = useWorkspaces()
+
+  return isLoading ? null : workspaces.find(({ _id }) => _id === workspaceId)
+}
+
 export function useWorkspaceMembersActions(workspaceId) {
   const { mutate: workspacesMutate } = useMutateData({
     query: getWorkspaces,

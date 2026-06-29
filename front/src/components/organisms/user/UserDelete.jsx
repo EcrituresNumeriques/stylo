@@ -13,7 +13,7 @@ export default function UserDelete() {
   const { t } = useTranslation('user', { useSuspense: false })
   const deleteAccountModal = useModal()
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="account-delete">
       <h2>{t('actions.delete.title')}</h2>
       <div className={styles.description}>
         {t('actions.delete.description')}

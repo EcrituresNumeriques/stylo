@@ -143,7 +143,6 @@
   "credentials.login.withLocalAccount": "Iniciar sesión con una cuenta local",
   "credentials.login.withRemoteAccount": "Iniciar sesión con una cuenta externa",
   "credentials.login.withService": "Iniciar sesión con {{ name }}",
-  "credentials.logout.confirmButton": "Cerrar sesión",
   "credentials.manage": "Gestionar mi cuenta",
   "credentials.newPassword.label": "Nueva contraseña",
   "credentials.oldPassword.label": "Contraseña antigua",
@@ -191,32 +190,50 @@
   "form.removeItem.title": "Borrar",
   "form.removePerson.title": "Eliminar a esta persona",
   "header.articles.link": "Artículos",
+  "header.backButton": "Atrás",
   "header.corpus.link": "Corpus",
+  "header.helpMenu": {
+    "button": "Ayuda y contacto",
+    "community": "Foros de la comunidad",
+    "contact": "Contactar con nuestro laboratorio de investigación",
+    "listLabel": "Lista de enlaces de documentación y soporte",
+    "documentation": "Documentación",
+    "openIssue": "Informar de un problema"
+  },
   "header.home": "Inicio",
   "header.languagesMenu": {
-    "button": "Idiomas",
-    "description": "Cambiar el idioma de la interfaz",
-    "list": "Selección de idioma"
+    "menuButton": "Idiomas",
+    "label": "Cambiar el idioma de la interfaz",
+    "listLabel": "Lista de idiomas disponibles"
   },
   "header.mainMenu": {
     "articles": "Artículos",
-    "button": "Menú",
+    "label": "Navegación principal",
+    "mobileButton": "Menu",
     "corpus": "Corpus",
-    "description": "Organiza conjuntos de artículos en corpus y trabaja en ellos junto con otros en los espacios de trabajo.",
-    "list": "Herramientas de escritura y colaboración",
-    "workspace.all": "Todos los espacios",
-    "workspace.myspace": "Mi espacio",
-    "workspaces": "Espacios de trabajo",
-    "workspaces.list": "Elegir un espacio de trabajo"
+    "listLabel": "Herramientas de redacción y colaboración"
+  },
+  "header.workspaces": {
+    "listLabel": "Lista de espacios de trabajo disponibles",
+    "menuButton": "Cambiar de espacio de trabajo. Espacio actual: {{ workspace }}",
+    "myspace": "Mi espacio",
+    "selectButton": "Cambiar al espacio de trabajo {{ workspace }}",
+    "settings": "Gestionar mis espacios"
   },
   "header.skiplinks": {
     "title": "Navegación rápida"
   },
+  "header.secondaryMenu": {
+    "label": "Navegación secundaria"
+  },
   "header.userMenu": {
-    "profile": "Perfil",
-    "profile.description": "Gestiona mi perfil y cuentas vinculadas.",
-    "shortLabel": "Cuenta",
-    "title": "Configuración de la cuenta"
+    "backupLink": "Hacer copia de seguridad de mis datos",
+    "displayNameLabel": "Conectado como {{ user.displayName }}",
+    "menuButton": "Mi cuenta",
+    "menuButtonLabel": "Gestionar mi cuenta",
+    "listLabel": "Lista de acciones de cuenta disponibles",
+    "logoutLink": "Cerrar sesión",
+    "profileLink": "Actualizar mi perfil"
   },
   "loading.label": "Cargando…",
   "main.alerts.listTitle": "Mensajes de servicio",

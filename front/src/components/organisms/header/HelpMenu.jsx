@@ -1,4 +1,6 @@
-import { MessageCircleQuestionMark } from 'lucide-react'
+import clsx from 'clsx'
+import { ArrowLeft, MessageCircleQuestionMark } from 'lucide-react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { useRouteLoaderData } from 'react-router'
 
@@ -6,74 +8,107 @@ import useComponentVisible from '../../../hooks/componentVisible.js'
 
 import styles from './header.module.scss'
 
-export default function HelpMenu() {
-  const { t } = useTranslation(['home', 'translation'])
-  const { user } = useRouteLoaderData('app')
-  const { ref, isComponentVisible, toggleComponentIsVisible } =
-    useComponentVisible(false)
+/**
+ *
+ * @param {Object} props
+ * @param {'full'|'compact'} props.mode
+ * @param {import('react').Ref<HTMLDivElement>} props.teleportRef
+ * @returns
+ */
+export default function HelpMenu({ mode = 'full', teleportRef }) {
+  const { t } = useTranslation()
+  const {
+    ref,
+    id: menuId,
+    isComponentVisible,
+    toggleComponentIsVisible,
+  } = useComponentVisible({ track: [teleportRef] })
+
+  const isFullMode = mode !== 'compact'
+
+  const renderedSubmenu = (
+    <Submenu
+      {...{ id: menuId, isComponentVisible, toggleComponentIsVisible }}
+    />
+  )
 
   return (
-    <nav
-      ref={ref}
-      className={styles.dropdownMenu}
-      aria-labelledby="help-selection"
-      aria-description={t('header.helpMenu.description')}
-    >
+    <div ref={ref} className={styles.dropdownMenu}>
       <button
-        id="help-selection"
         aria-expanded={isComponentVisible}
-        aria-controls="header-help-menu"
+        aria-controls={menuId}
         onClick={toggleComponentIsVisible}
+        className={clsx(isFullMode && styles.hasDropdown)}
+        type="button"
+        aria-label={t('header.helpMenu.button')}
       >
-        <MessageCircleQuestionMark size={20} aria-hidden />
-        <span className="sr-only">{t('header.helpMenu.button')}</span>
+        <MessageCircleQuestionMark className="icon" aria-hidden />
+        <span hidden={!isFullMode}>{t('header.helpMenu.button')}</span>
       </button>
 
-      <div
-        className={styles.toggleMenuContainerAlignEnd}
-        id="header-languages-menu"
-        hidden={!isComponentVisible}
+      {teleportRef?.current && isComponentVisible
+        ? createPortal(renderedSubmenu, teleportRef.current)
+        : renderedSubmenu}
+    </div>
+  )
+}
+
+function Submenu({ id, isComponentVisible, toggleComponentIsVisible }) {
+  const { t } = useTranslation()
+  const { user } = useRouteLoaderData('app')
+
+  return (
+    <div id={id} hidden={!isComponentVisible}>
+      <button
+        aria-controls={id}
+        title={t('header.backButtonLabel')}
+        className={clsx(styles.toggleMenuButton, styles.hiddenIfDesktop)}
+        onClick={toggleComponentIsVisible}
+        type="button"
       >
-        <ul
-          className={styles.toggleMenuList}
-          aria-label={t('header.languagesMenu.list')}
-        >
-          <li>
-            <a
-              href="https://stylo-doc.ecrituresnumeriques.ca/"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              {t('footer.documentation.link', { ns: 'translation' })}
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://discussions.revue30.org/c/stylo/entraide-stylo/7"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              {t('footer.community.link', { ns: 'translation' })}
-            </a>
-          </li>
-          {user?._id && (
-            <li>
-              <a href="mailto:contact@ecrituresnumeriques.ca">
-                {t('contactus.mailto')}
-              </a>
-            </li>
-          )}
-          <li>
-            <a
-              href="https://github.com/EcrituresNumeriques/stylo/issues"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              {t('contactus.newBug')}
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+        <ArrowLeft size={20} className="icon" aria-hidden />
+        <span>{t('header.backButton')}</span>
+      </button>
+
+      <ul
+        className={styles.toggleMenuList}
+        aria-label={t('header.helpMenu.listLabel')}
+      >
+        <li>
+          <a
+            href="https://stylo-doc.ecrituresnumeriques.ca/"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {t('header.helpMenu.documentation')}
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://discussions.revue30.org/c/stylo/entraide-stylo/7"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {t('header.helpMenu.community')}
+          </a>
+        </li>
+
+        <li>
+          <a href="mailto:contact@ecrituresnumeriques.ca">
+            {t('header.helpMenu.contact')}
+          </a>
+        </li>
+
+        <li>
+          <a
+            href="https://github.com/EcrituresNumeriques/stylo/issues"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            {t('header.helpMenu.openIssue')}
+          </a>
+        </li>
+      </ul>
+    </div>
   )
 }

@@ -16,7 +16,6 @@ import { Loading } from '../molecules/index.js'
 import Modal from '../molecules/Modal.jsx'
 import Article from '../organisms/article/Article.jsx'
 import { ArticleForm, TagEditForm, TagsList } from '../organisms/index.js'
-import WorkspaceLabel from '../organisms/workspace/WorkspaceLabel.jsx'
 
 import styles from './Articles.module.scss'
 
@@ -117,7 +116,7 @@ export default function Articles() {
             />
           </search>
         </header>
-        <WorkspaceLabel color={workspace.color} name={workspace.name} />
+
         <fieldset
           className={styles.filtersTags}
           aria-label={t('tag.list.title')}

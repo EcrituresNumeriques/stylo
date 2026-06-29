@@ -1,5 +1,9 @@
-@use '../../../styles/defaults' as *;
-@use '../../../styles/variables' as *;
+@use "../../../styles/defaults" as *;
+@use "../../../styles/variables" as *;
+
+@mixin border-top {
+  border-top: 1px solid $main-border-color;
+}
 
 .header {
   background-color: $main-color;
@@ -13,45 +17,138 @@
 
   .container {
     @extend .wrapped-center;
+    padding: 0.75rem;
+  }
 
+  .brand {
     display: flex;
     align-items: center;
     gap: 1em;
     justify-content: space-between;
-    padding: 0.75rem;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
-  a,
-  button {
+  &.isModal {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 9999;
+  }
+
+  a:not(.logo),
+  button,
+  span.link {
     background-color: $main-color;
     border: none;
     color: currentColor;
-    font-weight: bold;
     font-size: 1em;
-    text-decoration: underline;
+    text-decoration: none;
 
-    &:hover,
-    &:focus,
-    &[aria-pressed='true'],
-    &[aria-current='page'] {
-      text-decoration: none;
+    &.link {
+      cursor: default;
+    }
+
+    &:not(span.link):hover,
+    &:not(span.link):focus {
+      background-color: $alternate-row-color;
+      color: $main-color;
+      text-decoration: underline;
+    }
+
+    &[aria-pressed="true"],
+    &[aria-current="page"] {
+      text-decoration: underline;
     }
   }
 }
 
 .logo {
-  margin-right: auto;
+  align-self: flex-end;
+  padding: 0.5em;
 
   img {
-    max-height: 2rem;
+    max-height: 1.64rem;
+  }
+}
+
+.isDesktop {
+  .hiddenIfDesktop {
+    display: none;
+  }
+}
+
+.mainMenuList {
+  display: flex;
+  flex-direction: column;
+
+  &.isMobile {
+    @extend .list;
+
+    margin-inline: 2rem;
+    margin-block: 2rem;
+  }
+
+  .isDesktop & {
+    flex-direction: row;
+
+    a,
+    button,
+    span.link {
+      border: none;
+    }
+  }
+
+  .topNav a[aria-current="page"] {
+    background-color: white;
+    color: black;
+    font-weight: normal;
+  }
+}
+
+.hasDropdown {
+  position: relative;
+
+  &:is(button) {
+    white-space: nowrap;
+  }
+
+  &:after {
+    content: "▸" / "";
+    display: inline-block;
+    margin-left: 0.5em;
+    width: 1ch;
+    transform: transform 0.2s;
+  }
+
+  &[aria-expanded="true"]:after {
+    transform: rotate(90deg);
+  }
+}
+
+.userNavigationMenu .hasDropdown:after {
+  position: absolute;
+  right: 1em;
+}
+
+.mainMenu {
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+}
+
+.secondaryMenu {
+  &.isMobile {
+    &:has(~ .mobileSubmenu:not(:empty)) {
+      display: none;
+    }
   }
 }
 
 .skiplinks {
   @extend .header;
-  @extend .navigation;
 
   background-color: $main-color;
+  display: flex;
   gap: 1em;
   padding: 1em;
   position: absolute;
@@ -61,24 +158,13 @@
   &:focus-within {
     z-index: 1000;
   }
-}
 
-.navigation {
-  display: flex;
-
-  .menuButton {
-    display: flex;
-
-    @media screen and (min-width: $screen-breakpoint) {
-      & {
-        display: none;
-      }
+  @media screen and (min-width: $screen-breakpoint) {
+    & {
+      display: none;
     }
   }
 
-  /*
-   * 1. Outils
-   */
   .menuLinks {
     display: none;
     margin: 0;
@@ -91,142 +177,72 @@
       }
     }
   }
-
-  .menuLinksMobileVisible {
-    background-color: $main-color;
-    left: 0;
-    margin-top: 2em;
-    position: absolute;
-    width: 100%;
-    z-index: 1000;
-
-    .menuLinks {
-      @extend .wrapped-center;
-
-      display: flex;
-      flex-direction: column;
-      padding: 1em 0;
-
-      a,
-      button {
-        display: inline-block;
-        font-size: 1em;
-        font-weight: initial;
-        padding: 0.5em;
-      }
-
-      .toggleMenuContainer {
-        display: block;
-        position: initial;
-      }
-
-      .toggleMenuList {
-        padding: 0;
-      }
-    }
-  }
 }
 
 /*
  * 2. Utilisateur·ice
  */
 .userMenu {
+  @media screen and (min-width: $screen-breakpoint) {
+  }
+}
+
+.toggleMenuButton {
+  padding: 1em;
+}
+
+.workspacesMenu {
+  @media screen and (max-width: $screen-breakpoint) {
+    margin-block-start: 4em;
+  }
+}
+
+/**
+ * nav > ul > li > a|button
+ */
+.list {
   display: flex;
-  align-items: baseline;
-  gap: 1em;
+  flex-direction: column;
 
-  @media screen and (min-width: $screen-breakpoint) {
-    margin: 0 5em;
-  }
-}
-
-/*
- * 3. Langues
- */
-.dropdownMenu {
-  position: relative;
-
-  > button {
-    display: flex;
-  }
-
-  button,
-  a {
-    display: inline-block;
-    font-size: 1em;
-    font-weight: initial;
-    padding: 0.5em;
-  }
-}
-
-/*
- * Toggleable menu
- * Used by languages and workspaces
-   nav.toggleMenu
-     button.toggleMenuButton
-     div.toggleMenuContainer
-      ul.toggleMenuList
- */
-
-.toggleMenuContainer {
-  background-color: $main-color;
-  left: 0;
-  margin-top: 0.5em;
-  position: absolute;
-  min-width: max-content;
-  width: 100%;
-  z-index: 1000;
-
-  @media screen and (min-width: $screen-breakpoint) {
-    // compensates .toggleMenuList padding
-    left: -1em;
-  }
-}
-
-.toggleMenuContainerAlignEnd {
-  @extend .toggleMenuContainer;
-  left: auto;
-  right: 0;
-  text-align: right;
-
-  @media screen and (min-width: $screen-breakpoint) {
-    left: auto;
-    right: -1em;
-  }
-
-  .toggleMenuList {
-    padding: 0.5em;
-
-    @media screen and (min-width: $screen-breakpoint) {
-      padding: 1em;
-    }
-  }
-}
-
-.toggleMenu {
   a,
-  button {
-    background-color: transparent;
+  button,
+  span.link {
+    border-bottom: 1px solid $main-border-color;
+
+    display: block;
+    padding: 0.9em; /* .9em max otherwise navbar height is not even with buttons padding */
+    width: 100%;
+    text-align: left;
+  }
+}
+
+.listInline {
+  @extend .list;
+
+  flex-direction: row;
+
+  a,
+  button,
+  span.link {
+    border: none;
+  }
+}
+
+.toggleMenuList {
+  .isDesktop & {
+    border: 1px solid $main-border-color;
+    position: absolute;
+    z-index: 1000;
   }
 
   @media screen and (min-width: $screen-breakpoint) {
-    position: relative;
   }
 
-  .toggleMenuList {
-    @extend .wrapped-center;
-    padding: 0.5em;
-
-    @media screen and (min-width: $screen-breakpoint) {
-      padding: 1em;
-    }
-
+  &.withIcons {
     button,
-    a {
-      display: inline-block;
-      font-size: 1em;
-      font-weight: initial;
-      padding: 0.5em;
+    a,
+    span.link {
+      padding-inline-start: 2.5em;
     }
   }
 }

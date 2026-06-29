@@ -65,9 +65,20 @@
       },
       "correctness": {
         "noInvalidUseBeforeDeclaration": "warn",
+        "noUndeclaredVariables": "error",
         "noUnusedFunctionParameters": "warn",
         "noUnusedVariables": "warn",
-        "useExhaustiveDependencies": "warn",
+        "useExhaustiveDependencies": {
+          "level": "warn",
+          "options": {
+            "hooks": [
+              {
+                "name": "useDispatch",
+                "stableResult": true
+              }
+            ]
+          }
+        },
         "useHookAtTopLevel": "warn",
         "noChildrenProp": "warn"
       },

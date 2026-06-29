@@ -27,8 +27,7 @@
 
 .pageHeader {
   display: flex;
-  column-gap: 1rem;
-  row-gap: 0.5rem;
+  gap: 1rem;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -36,9 +35,14 @@
 
 .pageTitle {
   display: flex;
-  gap: 1rem;
-  align-items: center;
+  flex-direction: column;
   flex: 1;
+
+  @media screen and (width > $tablet-breakpoint) {
+    align-items: center;
+    flex-direction: row;
+    gap: 1rem;
+  }
 }
 
 .header {
@@ -70,10 +74,10 @@
 
 .search {
   flex: 1;
-  min-width: 400px;
+  min-width: min(400px, 100%);
   @media screen and (min-width: $large-screen-breakpoint) {
     & {
-      max-width: 550px;
+      max-width: max(550px, 100%);
     }
   }
 }

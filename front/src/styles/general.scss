@@ -12,7 +12,8 @@
   box-sizing: border-box;
 }
 
-.sr-only {
+.sr-only,
+.visually-hidden {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -113,6 +114,11 @@ small {
     color: $main-color;
     font-family: 'Inter', serif;
     font-size: 100%;
+
+    // prevents page scroll when mobile menu
+    &.modal-open {
+      overflow: hidden;
+    }
   }
 
   a {
@@ -179,8 +185,10 @@ input[type='search']::-webkit-search-results-decoration {
 }
 
 .icon {
+  height: 1.8ch;
   margin-right: 0.25em;
   vertical-align: middle;
+  width: 1.8ch;
 }
 
 input:read-only,
@@ -195,7 +203,7 @@ select:disabled {
 .hidden-below-tablet {
   @media screen and (max-width: $tablet-breakpoint) {
     & {
-      display: none;
+      display: none !important;
     }
   }
 }
@@ -203,7 +211,7 @@ select:disabled {
 .hidden-above-tablet {
   @media screen and (min-width: $tablet-breakpoint) {
     & {
-      display: none;
+      display: none !important;
     }
   }
 }
