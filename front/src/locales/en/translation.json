@@ -143,7 +143,6 @@
   "credentials.login.withLocalAccount": "Login with a local account",
   "credentials.login.withRemoteAccount": "Login with an external account",
   "credentials.login.withService": "Login with {{ name }}",
-  "credentials.logout.confirmButton": "Logout",
   "credentials.manage": "Manage my account",
   "credentials.newPassword.label": "New password",
   "credentials.oldPassword.label": "Old password",
@@ -191,32 +190,51 @@
   "form.removeItem.title": "Remove",
   "form.removePerson.title": "Remove this person",
   "header.articles.link": "Articles",
+  "header.backButton": "Back",
+  "header.backButtonLabel": "Back to previous menu",
   "header.corpus.link": "Corpus",
+  "header.helpMenu": {
+    "button": "Help & Contact",
+    "community": "Community forums",
+    "contact": "Contact our research lab",
+    "listLabel": "List of documentation and support links",
+    "documentation": "Documentation",
+    "openIssue": "Report an issue"
+  },
   "header.home": "Home",
   "header.languagesMenu": {
-    "button": "Languages",
-    "description": "Change interface language",
-    "list": "Language selection"
+    "menuButton": "Languages",
+    "label": "Change interface language",
+    "listLabel": "Available languages list"
   },
   "header.mainMenu": {
     "articles": "Articles",
-    "button": "Menu",
+    "label": "Main navigation",
+    "mobileButton": "Menu",
     "corpus": "Corpus",
-    "description": "Organize sets of articles into corpora and work on them with multiple users using workspaces.",
-    "list": "Writing and collaboration tools",
-    "workspace.all": "All spaces",
-    "workspace.myspace": "My space",
-    "workspaces": "Workspaces",
-    "workspaces.list": "Choice of workspace"
+    "listLabel": "Writing and collaboration tools"
+  },
+  "header.workspaces": {
+    "listLabel": "List of available workspaces",
+    "menuButton": "Switch workspace. Current workspace: {{ workspace }}",
+    "myspace": "My space",
+    "selectButton": "Switch to workspace {{ workspace }}",
+    "settings": "Manage my workspaces"
   },
   "header.skiplinks": {
     "title": "Quick navigation"
   },
+  "header.secondaryMenu": {
+    "label": "Secondary navigation"
+  },
   "header.userMenu": {
-    "profile": "Profile",
-    "profile.description": "Manage my profile and linked accounts.",
-    "shortLabel": "Account",
-    "title": "Account parameters"
+    "backupLink": "Backup my data",
+    "displayNameLabel": "Connected as {{ user.displayName }}",
+    "menuButton": "My account",
+    "menuButtonLabel": "Manage my account",
+    "listLabel": "List of available account actions",
+    "logoutLink": "Logout",
+    "profileLink": "Update my profile"
   },
   "loading.label": "Loading…",
   "main.alerts.listTitle": "Service messages",

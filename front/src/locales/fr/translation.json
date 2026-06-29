@@ -143,7 +143,6 @@
   "credentials.login.withLocalAccount": "Connexion avec un compte local",
   "credentials.login.withRemoteAccount": "Connexion avec un compte externe",
   "credentials.login.withService": "Se connecter avec {{ name }}",
-  "credentials.logout.confirmButton": "Se déconnecter",
   "credentials.manage": "Gérer mon compte",
   "credentials.newPassword.label": "Nouveau mot de passe",
   "credentials.oldPassword.label": "Ancien mot de passe",
@@ -191,32 +190,51 @@
   "form.removeItem.title": "Supprimer",
   "form.removePerson.title": "Supprimer cette personne",
   "header.articles.link": "Articles",
+  "header.backButton": "Retour",
+  "header.backButtonLabel": "Retour au menu précédent",
   "header.corpus.link": "Corpus",
+  "header.helpMenu": {
+    "button": "Aide & Contact",
+    "community": "Forums d'entraide",
+    "contact": "Contacter le laboratoire",
+    "listLabel": "Liste des liens d'aide et de contacts",
+    "documentation": "Documentation",
+    "openIssue": "Signaler un problème"
+  },
   "header.home": "Accueil",
   "header.languagesMenu": {
-    "button": "Langues",
-    "description": "Modifier la langue de l'interface",
-    "list": "Choix de la langue"
+    "menuButton": "Langues",
+    "label": "Changer de langue",
+    "listLabel": "Liste des langues de l'interface"
   },
   "header.mainMenu": {
     "articles": "Articles",
-    "button": "Menu",
+    "label": "Navigation principale",
+    "mobileButton": "Menu",
     "corpus": "Corpus",
-    "description": "Organisez des ensembles d'articles dans des corpus et travaillez dessus à plusieurs avec les espaces de travail.",
-    "list": "Outils d'écriture et de collaboration",
-    "workspace.all": "Tous les espaces",
-    "workspace.myspace": "Mon espace",
-    "workspaces": "Espaces de travail",
-    "workspaces.list": "Choix d'un espace de travail"
+    "listLabel": "Outils d'écriture et de collaboration"
+  },
+  "header.workspaces": {
+    "listLabel": "Choix d'un espace de travail",
+    "menuButton": "Changer d'espace de travail. Espace courant : {{ workspace }}",
+    "myspace": "Espace personnel",
+    "selectButton": "Basculer vers l'espace {{ workspace }}",
+    "settings": "Gérer mes espaces"
   },
   "header.skiplinks": {
     "title": "Navigation rapide"
   },
+  "header.secondaryMenu": {
+    "label": "Navigation secondaire"
+  },
   "header.userMenu": {
-    "profile": "Profil",
-    "profile.description": "Gérer mon profil et comptes associés",
-    "shortLabel": "Compte",
-    "title": "Paramètres de compte"
+    "backupLink": "Sauvegarder mes données",
+    "displayNameLabel": "Connecté·e en tant que {{ user.displayName }}",
+    "menuButton": "Mon compte",
+    "menuButtonLabel": "Gérer mon compte",
+    "listLabel": "Liste des actions de gestion de compte",
+    "logoutLink": "Me déconnecter",
+    "profileLink": "Modifier mon profil"
   },
   "loading.label": "Chargement…",
   "main.alerts.listTitle": "Messages de service",
@@ -241,7 +259,7 @@
   "modal.open.text": "Ouvrir",
   "modal.saveButton.text": "Enregistrer",
   "more.about": "En savoir plus",
-  "more.about.accessibleLabel": "En savoir plus à propos de {{about}}.",
+  "more.about.accessibleLabel": "En savoir plus à propos de {{about}}",
   "publication.date": "Date",
   "publication.publishedAt": "Publié le",
   "publication.release.details": "Détails de la mise à jour",
@@ -284,7 +302,6 @@
   "user.bye.title": "Compte supprimé",
   "user.data.download": "Télécharger mes données",
   "user.data.title": "Mes données",
-  "user.languages.title": "Langues",
   "validating.label": "Validation…",
   "validation.title": "Validation",
   "version.by.text": "par {{owner}}",
@@ -340,7 +357,7 @@
   "writeBibliographe.tips.citationPanel": "Coller les citations BibTeX ci-dessus pour la validation syntaxique.",
   "writeBibliographe.zotero.tabItem": "Zotero",
   "zoteroPanel.buttonZoteroAccount.text": "Connecter d'abord mon compte Zotero",
-  "zoteroPanel.fetchingButton.text": "Récupération...",
+  "zoteroPanel.fetchingButton.text": "Récupération…",
   "zoteroPanel.replaceAccountCollection.text": "Remplacer la bibliographie actuelle par cette collection",
   "zoteroPanel.textImportByUrl.withToken": "Cette URL peut être un·e utilisateur, un groupe ou une collection, privée ou publique.",
   "zoteroPanel.textImportByUrl.withoutToken": "Cette URL peut être un groupe public ou une collection de groupe public.",

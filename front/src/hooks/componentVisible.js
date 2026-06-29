@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 
 /**
  * @see https://zellwk.com/blog/keyboard-focusable-elements/
@@ -13,31 +13,59 @@ function findToggleableElements(node) {
   )
 }
 
-export default function useComponentVisible(initialIsVisible) {
-  const [isComponentVisible, setIsComponentVisible] = useState(initialIsVisible)
-  const ref = useRef(null)
+export default function useComponentVisible({
+  initialVisible = false,
+  namespace = 'default',
+  ref: baseRef,
+  track = [],
+  trapNavigation = true,
+} = {}) {
+  const [isComponentVisible, setIsComponentVisible] = useState(initialVisible)
+  const uniqueId = useId()
+  const selfRef = useRef(null)
+  const clickOutsideRefs = [baseRef, selfRef, ...track].filter(
+    (d) => d?.current
+  )
+  const rotorRef = baseRef ?? selfRef
 
-  const handleClickOutside = useCallback((event) => {
-    if (ref.current && !ref.current.contains(event.target)) {
-      setIsComponentVisible(false)
-    }
-  }, [])
+  const handleClickOutside = useCallback(
+    (event) => {
+      if (!isComponentVisible) {
+        return
+      }
 
-  const handleEscapeKey = useCallback(function componenteVisibleHandleEscapeKey(
-    event
-  ) {
-    if (event.key === 'Escape') {
-      setIsComponentVisible(false)
-      const first = findToggleableElements(ref.current).at(0)
-      first?.focus()
-    }
-  }, [])
+      const hasClickedOutside =
+        clickOutsideRefs.some((r) => r.current.contains(event.target)) === false
 
+      if (
+        (clickOutsideRefs.length && hasClickedOutside) ||
+        (event.target.nodeName === 'A' && event.target.getAttribute('href'))
+      ) {
+        setIsComponentVisible(false)
+      }
+    },
+    [isComponentVisible, clickOutsideRefs]
+  )
+
+  const handleEscapeKey = useCallback(
+    function componenteVisibleHandleEscapeKey(event) {
+      if (event.key === 'Escape') {
+        setIsComponentVisible(false)
+        const first = findToggleableElements(rotorRef.current).at(0)
+        first?.focus()
+      }
+    },
+    [rotorRef]
+  )
+
+  /*
+   * It is acceptable not to have rotorRef otherwise unregistering the event does not work
+   * (therefore, it blocks shift+tab navigation when menu is closed)
+   */
   const handleTabulation = useCallback(
     function componenteVisibleTabulationRotor(event) {
       if (event.key === 'Tab') {
-        // const relatedMenu =
-        const all = findToggleableElements(ref.current)
+        const all = findToggleableElements(rotorRef.current)
         const index = all.indexOf(event.target)
 
         // out of range, we rotate back
@@ -49,10 +77,12 @@ export default function useComponentVisible(initialIsVisible) {
         else if (event.shiftKey && index - 1 < 0) {
           event.preventDefault()
           all.at(-1).focus()
+        } else if (event.shiftKey) {
+          all.at(index - 1).focus()
         }
       }
     },
-    []
+    [rotorRef]
   )
 
   // uninstall on keyup if element was inside ref.current[aria-controls]
@@ -64,22 +94,23 @@ export default function useComponentVisible(initialIsVisible) {
   const uninstallListeners = useCallback(() => {
     document.removeEventListener('click', handleClickOutside, true)
     document.removeEventListener('keyup', handleEscapeKey)
-    document.removeEventListener('keydown', handleTabulation)
-  }, [])
+    trapNavigation && document.removeEventListener('keydown', handleTabulation)
+  }, [rotorRef])
 
   useEffect(() => {
     if (isComponentVisible) {
       document.addEventListener('click', handleClickOutside, true)
       document.addEventListener('keyup', handleEscapeKey)
-      document.addEventListener('keydown', handleTabulation)
+      trapNavigation && document.addEventListener('keydown', handleTabulation)
     } else {
       uninstallListeners()
     }
-  }, [isComponentVisible])
+  }, [isComponentVisible, uniqueId])
 
   return {
-    ref,
+    id: uniqueId,
     isComponentVisible,
+    ref: baseRef ?? selfRef,
     setIsComponentVisible,
     toggleComponentIsVisible,
   }
