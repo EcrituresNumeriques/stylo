@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { CalendarDays, CircleUser } from 'lucide-react'
+import { CalendarDaysIcon, CircleUserIcon } from 'lucide-react'
 import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -29,20 +29,21 @@ export default function Publication({ entry }) {
 
       <ul className={styles.articleMetadata}>
         <li>
-          <CircleUser className="icon" aria-label={t('publication.author')} />
+          <CircleUserIcon
+            role="img"
+            className="icon"
+            aria-label={t('publication.author')}
+          />
           {author}
         </li>
         <li>
-          <CalendarDays
+          <CalendarDaysIcon
+            role="img"
             className="icon"
             aria-label={t('publication.publishedAt')}
           />
           {date}
         </li>
-        {/*<li>
-          <Star className="icon" aria-label="Type de publication :" /> Video
-          Recording
-        </li>*/}
       </ul>
 
       <a

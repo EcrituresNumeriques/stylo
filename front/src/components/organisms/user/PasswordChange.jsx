@@ -65,7 +65,7 @@ export default function Credentials() {
   }
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="password">
       <h2>{t('credentials.changePassword.title')}</h2>
 
       <form

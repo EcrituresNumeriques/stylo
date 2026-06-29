@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { CalendarDays } from 'lucide-react'
+import { CalendarDaysIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import styles from '../../../layout.module.scss'
@@ -35,7 +35,8 @@ export default function Release({ entry }) {
 
       <ul className={styles.articleMetadata}>
         <li>
-          <CalendarDays
+          <CalendarDaysIcon
+            role="img"
             className="icon"
             aria-label={t('publication.publishedAt')}
           />

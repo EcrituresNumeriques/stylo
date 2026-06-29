@@ -35,7 +35,7 @@ export default function AuthProviders() {
   const { t } = useTranslation()
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="external-accounts">
       <h2>{t('user.authProviders.title')}</h2>
 
       <AuthProvider service="humanid" />

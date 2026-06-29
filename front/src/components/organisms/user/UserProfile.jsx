@@ -10,7 +10,7 @@ import formStyles from '../../atoms/Field.module.scss'
 import { Button, Field, TimeAgo } from '../../atoms/index.js'
 import styles from './UserSection.module.scss'
 
-export default function UserInfos() {
+export default function UserProfile() {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const { query } = useGraphQLClient()
@@ -45,7 +45,7 @@ export default function UserInfos() {
 
   return (
     <>
-      <section className={styles.section}>
+      <section className={styles.section} id="profile">
         <h2>{t('user.account.title')}</h2>
 
         <form onSubmit={updateInfo} className={styles.form}>

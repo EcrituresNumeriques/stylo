@@ -13,7 +13,7 @@ export default function UserBackup() {
   const { t } = useTranslation()
   const downloadDataModal = useModal()
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="backup">
       <h2>{t('user.data.title')}</h2>
       <div>
         <Button primary={true} onClick={() => downloadDataModal.show()}>
