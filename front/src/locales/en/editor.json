@@ -47,7 +47,8 @@
     },
     "preamble": {
       "refs": "Custom bibliography title"
-    }
+    },
+    "save-version": "Save new version"
   },
   "stylo": {
     "markdown": {
