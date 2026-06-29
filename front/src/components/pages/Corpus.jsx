@@ -11,7 +11,6 @@ import { Alert, Loading } from '../molecules/index.js'
 import Modal from '../molecules/Modal.jsx'
 import CorpusForm from '../organisms/corpus/CorpusForm.jsx'
 import CorpusItem from '../organisms/corpus/CorpusItem.jsx'
-import WorkspaceLabel from '../organisms/workspace/WorkspaceLabel.jsx'
 
 import styles from './Corpus.module.scss'
 
@@ -34,7 +33,7 @@ export default function Corpus() {
             {t('actions.create.label')}
           </Button>
         </header>
-        <WorkspaceLabel color={workspace.color} name={workspace.name} />
+
         <p className={styles.introduction}>{t('description')}</p>
       </div>
       <Modal {...createCorpusModal.bindings} title={t('actions.create.title')}>
