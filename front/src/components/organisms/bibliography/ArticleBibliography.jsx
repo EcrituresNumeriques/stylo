@@ -67,11 +67,9 @@ export default function ArticleBibliography({ articleId, versionId }) {
         <Toggle
           id="raw-mode"
           checked={selector === 'raw'}
-          title={t('bibliography.showBibTeX')}
           onChange={(checked) => setSelector(checked ? 'raw' : 'basic')}
-        >
-          BibTeX
-        </Toggle>
+          labelKey="BibTeX"
+        />
       </header>
       <section className={styles.section}>
         {readOnly && (

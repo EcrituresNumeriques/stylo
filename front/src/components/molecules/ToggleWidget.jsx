@@ -11,12 +11,11 @@ export default function ToggleWidget(props) {
       {(t) => (
         <Toggle
           checked={props.value}
-          title={t(title)}
           onChange={(value) => props.onChange(value)}
           className={styles.toggle}
-        >
-          {t(title)}
-        </Toggle>
+          labelKey={title}
+          t={t}
+        />
       )}
     </Translation>
   )

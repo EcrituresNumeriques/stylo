@@ -127,9 +127,9 @@ export default function CorpusMetadata({
             setSelector(checked ? 'raw' : 'basic')
           }}
           className={styles.toggle}
-        >
-          {t('actions.metadata.yaml.label')}
-        </Toggle>
+          labelKey="actions.metadata.yaml.label"
+          t={t}
+        />
       </div>
       {showYamlEditor && (
         <>

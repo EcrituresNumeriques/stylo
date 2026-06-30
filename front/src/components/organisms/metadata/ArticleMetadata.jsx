@@ -89,11 +89,9 @@ export default function ArticleMetadata({
           id="raw-mode"
           data-testid="raw-mode-toggle"
           checked={selector === 'raw'}
-          title={t('metadata.showYaml')}
+          labelKey={'metadata.showYaml'}
           onChange={(checked) => setSelector(checked ? 'raw' : 'basic')}
-        >
-          YAML
-        </Toggle>
+        />
       </header>
 
       {versionId && (

@@ -67,9 +67,8 @@ export default function CreateVersion({ articleId, onClose, onSubmit }) {
         checked={majorVersion}
         onChange={setMajorVersion}
         className={styles.toggle}
-      >
-        Version majeure
-      </Toggle>
+        labelKey="write.createVersion.majorVersion"
+      />
 
       <FormActions
         submitButton={{
