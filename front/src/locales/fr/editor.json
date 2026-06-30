@@ -47,7 +47,8 @@
     },
     "preamble": {
       "refs": "Titre personnalisé de bibliographie"
-    }
+    },
+    "save-version": "Enregistrer une nouvelle version"
   },
   "stylo": {
     "markdown": {

@@ -159,6 +159,20 @@ export const actions = {
       attrs: { num: '123' },
     }),
   },
+  saveShortcut(run) {
+    return [
+      {
+        id: 'stylo--save-version',
+        label: 'actions.save-version',
+        contextMenuGroupId: '1_modification',
+        contextMenuOrder: 1,
+        keybindingContext: null,
+        enabled: true,
+        keybindings: [KeyMod.CtrlCmd | KeyCode.KeyS],
+        run,
+      },
+    ]
+  },
 }
 
 /**

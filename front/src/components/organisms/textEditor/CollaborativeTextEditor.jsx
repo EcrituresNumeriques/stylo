@@ -15,6 +15,7 @@ import { useBibliographyCompletion } from '../../../hooks/bibliography.js'
 import { useCollaboration } from '../../../hooks/collaboration.js'
 import { useStyloExportPreview } from '../../../hooks/stylo-export.js'
 import { useMarkdownValidator } from '../../../hooks/useMarkdownValidator.js'
+import { usePreferenceItem } from '../../../hooks/user.js'
 import { Alert, Loading, MonacoEditor } from '../../molecules/index.js'
 import { onDropIntoEditor } from '../bibliography/support.js'
 import defaultEditorOptions from '../monaco/options.js'
@@ -85,6 +86,11 @@ export default function CollaborativeTextEditor({
     articleId,
     versionId,
   })
+
+  const { value: activeMenu, setValue: setActiveMenu } = usePreferenceItem(
+    `${articleId}.activeMenu`,
+    'article'
+  )
 
   const { html: __html, isLoading: isPreviewLoading } = useStyloExportPreview({
     ...(mode === 'preview'
@@ -170,7 +176,12 @@ export default function CollaborativeTextEditor({
 
       // Command Palette commands
       registerActions(editor, t, actions.metopes)
-      registerActions(editor, t, actions.md, { palette: false })
+      registerActions(editor, t, actions.md)
+      registerActions(
+        editor,
+        t,
+        actions.saveShortcut(() => setActiveMenu('versions'))
+      )
 
       const completionProvider = bibliographyCompletionProvider.register(monaco)
       editor.onDidDispose(() => completionProvider.dispose())
