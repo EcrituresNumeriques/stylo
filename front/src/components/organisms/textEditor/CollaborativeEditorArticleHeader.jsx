@@ -36,13 +36,11 @@ export default function CollaborativeEditorArticleHeader({
         <Toggle
           id="preview-mode"
           checked={searchParamMode === 'preview'}
-          title={t('article.editor.preview')}
+          labelKey="article.editor.preview"
           onChange={(checked) =>
             setSearchParams(checked ? { mode: 'preview' } : {})
           }
-        >
-          {t('article.editor.preview')}
-        </Toggle>
+        />
 
         <div className={styles.writers}>
           <CollaborativeEditorWriters writers={writers} />

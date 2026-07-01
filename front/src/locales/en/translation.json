@@ -244,7 +244,9 @@
   "menu.expand.title": "Show menu labels",
   "metadata.readonly.multiUserActive": "Metadata are editable only when you are the only one working on the article.",
   "metadata.readonly.versionView": "Metadata are editable only when you are on the working copy.",
-  "metadata.showYaml": "Enable YAML mode",
+  "metadata.showYaml": "YAML mode",
+  "metadata.showYaml_checked": "Disable YAML mode",
+  "metadata.showYaml_unchecked": "Enable YAML mode",
   "metadata.title": "Metadata",
   "modal.addButton.text": "Add",
   "modal.cancelButton.label": "Cancel and close modal",
@@ -264,6 +266,11 @@
   "publication.publishedAt": "Published on",
   "publication.release.details": "Changelog",
   "search.placeholder": "Search",
+  "story": {
+    "ux.toggle_unchecked": "Unchecked",
+    "ux.toggle_checked": "Checked",
+    "ux.toggle_unique": "YAML"
+  },
   "tag.createAction.buttonText": "add more tags…",
   "tag.createForm.buttonText": "Create",
   "tag.createForm.buttonTitle": "Create a new tag",

@@ -1,7 +1,6 @@
-@use '../../styles/variables' as *;
+@use "../../styles/variables" as *;
 
 .element {
-  --border-color: #202020;
   cursor: pointer;
 
   &.elementActive {
@@ -10,43 +9,47 @@
   }
 
   &.elementDisabled {
-    --border-color: #818181;
+    color: $muted-color;
   }
 
   .label {
-    color: var(--border-color);
+    color: $muted-color;
   }
 
   .state {
-    --border-width: 1px;
-    --padding: calc(var(--border-width) * 3);
-    --square-size: 0.8em;
+    --border-width: 2px;
+    --padding: calc(var(--border-width) * 1.4);
+    --button-size: 0.8em;
 
+    color: $muted-color;
     display: flex;
     gap: 0.3em;
     user-select: none;
 
     .stateContainer {
-      background-color: $extra-background-color;
-      border: var(--border-width) solid var(--border-color);
+      background-color: transparent;
+      border: var(--border-width) solid currentColor;
+      border-radius: 50rem;
       display: inline-block;
       height: calc(
-        var(--square-size) + (var(--padding) * 2) + (var(--border-width) * 2)
+        var(--button-size) + (var(--padding) * 2) + (var(--border-width) * 2)
       );
       padding: 0 var(--padding);
       position: relative;
       width: calc(
-        (var(--square-size) * 1.9) + (var(--padding) * 2) +
+        (var(--button-size) * 1.9) + (var(--padding) * 2) +
           (var(--border-width) * 2)
       );
     }
 
     .position {
-      background-color: var(--border-color);
+      background-color: $extra-background-color;
+      border: var(--border-width) solid $muted-color;
       display: inline-block;
-      height: var(--square-size);
+      border-radius: 50%;
+      height: var(--button-size);
       position: relative;
-      width: var(--square-size);
+      width: var(--button-size);
     }
   }
 }
@@ -56,8 +59,28 @@
   left: -9999em;
 
   &:checked ~ .state {
+    .stateContainer {
+      background-color: $muted-color;
+    }
+
     .position {
-      left: calc(var(--square-size) * 0.9);
+      border-color: $extra-background-color;
+      left: calc(var(--button-size) * 0.9);
+    }
+  }
+
+  &:checked:not([disabled]) ~ .state {
+    .label {
+      color: $main-color;
+    }
+
+    .stateContainer {
+      border-color: $main-color;
+      background-color: $main-color;
+    }
+
+    .position {
+      border-color: $extra-background-color;
     }
   }
 }

@@ -1,44 +1,52 @@
 import clsx from 'clsx'
-import { Children, useCallback, useEffect, useState } from 'react'
-
+import { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useKeyPress } from '../../hooks/events.js'
-
 import styles from './Toggle.module.scss'
 
 /**
  * @typedef {object} ToggleSwitchProps
+ * @property {string} labelKey
+ * @property {string} name
  * @property {boolean} [checked=false]
  * @property {boolean} [disabled=false]
  * @property {string} [id]
- * @property {{true: string, false: string}} [labels]
- * @property {string} [name]
+ * @property {string} [value]
  * @property {(value: boolean) => void} [onChange]
  */
 
 /**
- * @typedef {React.PropsWithChildren & ToggleSwitchProps} ComponentProps
- */
-
-/**
  *
- * @param {ComponentProps} props
+ * @param {ToggleSwitchProps & React.} props
  * @returns {React.ReactElement}
  */
 export default function ToggleSwitch({
   checked = false,
-  children,
   disabled = false,
   id,
-  labels = {},
+  labelKey = null,
   name,
   onChange = () => {},
   className,
+  value = null,
+  t = null,
 }) {
   const [isChecked, setChecked] = useState(checked)
   const [isActive, setActiveState] = useState(false)
   const setActive = useCallback(() => setActiveState(true), [])
   const setInactive = useCallback(() => setActiveState(false), [])
-  const a11yLabel = labels[isChecked] ? labels[isChecked] : null
+  const { t: _t } = useTranslation()
+  const tFunc = t ?? _t
+
+  const a11yLabel = tFunc(labelKey, {
+    context: isChecked ? 'checked' : 'unchecked',
+  })
+
+  let uiLabel = a11yLabel
+
+  if (labelKey !== tFunc(labelKey)) {
+    uiLabel = tFunc(labelKey)
+  }
 
   useEffect(() => {
     setChecked(checked)
@@ -52,12 +60,6 @@ export default function ToggleSwitch({
   }, [isChecked, onChange])
 
   const handleKeyEvents = useKeyPress(['Enter', 'Space'], toggle)
-
-  if (!(a11yLabel || Children.count(children))) {
-    console.warn(
-      'This component is not accessible as it lacks a label (either as a child node or with the `labels` props).'
-    )
-  }
 
   return (
     <label
@@ -80,17 +82,16 @@ export default function ToggleSwitch({
         onChange={toggle}
         type="checkbox"
         role="switch"
+        value={value}
         aria-label={a11yLabel}
       />
 
-      <span className={styles.state}>
+      <span className={styles.state} aria-hidden="true">
         <span className={styles.stateContainer}>
           <span className={styles.position} />
         </span>
 
-        <span className={styles.label} aria-hidden={!a11yLabel}>
-          {Children.count(children) ? children : a11yLabel}
-        </span>
+        <span className={styles.label}>{uiLabel}</span>
       </span>
     </label>
   )
