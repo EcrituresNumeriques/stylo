@@ -1,6 +1,6 @@
 const { NotFoundError } = require('../helpers/errors.js')
 const YAML = require('js-yaml')
-const { WSSharedDoc } = require('../helpers/yjs-utils.mjs')
+const { WSSharedDoc, Y } = require('../helpers/yjs-utils.mjs')
 
 const Article = require('../models/article.js')
 const User = require('../models/user.js')
@@ -17,7 +17,6 @@ const {
 const { previewEntries } = require('../helpers/bibliography.js')
 const { logger } = require('../logger.js')
 const { toLegacyFormat } = require('../helpers/metadata.js')
-const Y = require('yjs')
 const mongoose = require('mongoose')
 const Sentry = require('@sentry/node')
 const {

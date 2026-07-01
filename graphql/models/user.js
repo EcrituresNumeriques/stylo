@@ -1,4 +1,4 @@
-const Y = require('yjs')
+const { Y } = require('../helpers/yjs-utils.mjs')
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const { randomUUID } = require('node:crypto')
