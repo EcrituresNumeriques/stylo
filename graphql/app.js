@@ -68,8 +68,10 @@ const {
 
 const { createLoaders } = require('./loaders.js')
 
-const Y = require('yjs')
 const yjsUtils = require('./helpers/yjs-utils.mjs')
+// Reuse the single (ESM) Yjs instance exposed by yjs-utils instead of
+// require('yjs') (CJS build) to avoid loading Yjs twice. See yjs#438.
+const Y = yjsUtils.Y
 const WebSocket = require('ws')
 const { handleEvents } = require('./events')
 const { requestHandler: backupRequestHandler } = require('./backup')
