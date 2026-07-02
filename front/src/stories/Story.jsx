@@ -13,6 +13,7 @@ import {
   FormActions,
   Loading,
   Modal,
+  Toggle,
   Version,
 } from '../components/molecules/index.js'
 import CollaborativeEditorWebSocketStatus from '../components/organisms/textEditor/CollaborativeEditorWebSocketStatus.jsx'

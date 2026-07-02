@@ -29,22 +29,28 @@ export default function FormStory() {
           <h4>Interrupteur</h4>
         </legend>
 
-        <Toggle />
-        <Toggle disabled checked={true} />
-        <Toggle id="toggle-id" name="toggle-name">
-          YAML
-        </Toggle>
-        <Toggle disabled>YAML</Toggle>
-        <Toggle
-          checked={true}
-          labels={{ true: 'coche activée', false: 'coche désactivée' }}
-        />
-        <Toggle
-          checked={true}
-          labels={{ true: 'coche activée', false: 'coche désactivée' }}
-        >
-          Texte fixe (<code>aria-label</code> dynamique)
-        </Toggle>
+        <p>
+          <Toggle name="example-toggle" />
+        </p>
+        <p>
+          <Toggle disabled checked={true} />
+        </p>
+        <p>
+          <Toggle
+            id="toggle-id"
+            name="toggle-name"
+            labelKey="story.ux.toggle_unique"
+          />
+        </p>
+        <p>
+          <Toggle disabled labelKey="story.ux.toggle_unique" />
+        </p>
+        <p>
+          <Toggle checked={true} labelKey="story.ux.toggle" />
+        </p>
+        <p>
+          <Toggle checked={true} labelKey="story.ux.toggle" />
+        </p>
       </fieldset>
 
       <fieldset>
