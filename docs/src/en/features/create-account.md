@@ -1,5 +1,5 @@
 ---
-title: “Create an account”
+title: "Create an account"
 ---
 
 From the Stylo home page, you have two options for creating an account: a local account on Stylo or an account via the Huma-num authentication service.
@@ -23,3 +23,15 @@ Back on Stylo, log in with your new Huma-Num account, enter your name, surname a
 See also: [video to accompany the creation of a Huma-Num account](/en/videos/humanum-account)
 
 Having trouble creating your account? Don't hesitate to [contact us](/en/contacts)!
+
+## Delete your account
+
+It is possible to delete your account and all of your data (articles and corpus) of which you are the sole owner.
+
+To do this, you must click on “My account” at the top right of the Stylo interface, then in “Modify my profile”. At the very bottom of this page is the red “Delete my account” button.
+
+The deletion of your account is irreversible: once the request is confirmed, it will no longer be possible to restore your account or recover your data.
+
+Data that you have shared with other users, whether directly or through a workspace, will remain accessible to those users after you delete your account.
+
+We invite you to check your shared articles and [backup your data](/en/features/backup) if necessary before deleting.

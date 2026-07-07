@@ -2,7 +2,7 @@
 title: "Créer un compte"
 ---
 
-Par la page d'accueil de Stylo, vous avez deux options pour la création d'un compte : un compte en local sur Stylo ou un compte via l’utilisation du service d’authentification d’Huma-num.
+Sur la page d'accueil de Stylo, vous avez deux options pour la création d'un compte : un compte en local sur Stylo ou un compte via l’utilisation du service d’authentification d’Huma-num.
 
 On vous suggère de [créer un compte avec Huma-Num](https://humanid.huma-num.fr/register?skin=humanid&lmAuth=1HumanID), vous aurez ainsi accès à d'autres outils hébergés par cette plateforme. Vous aurez aussi la possibilité de récupérer votre mot de passe si vous l’oubliez, ce qui n'est pas possible avec un compte en local sur Stylo.
 
@@ -22,3 +22,15 @@ De retour sur Stylo, connectez-vous avec votre nouveau compte Huma-Num, rentrez 
 Voir aussi : [vidéo pour accompagner la création d’un compte Huma-Num](/fr/videos/compte-humanum)
 
 Vous rencontrez des difficultés avec la création de votre compte ? N'hésitez pas à [nous contacter](/fr/contacts) !
+
+## Supprimer son compte
+
+Il est possible de supprimer votre compte et l'ensemble de vos données (articles et corpus) dont vous êtes l’unique propriétaire.
+
+Pour cela, vous devez cliquer sur « Mon compte » en haut à droite de l'interface de Stylo, puis dans « Modifier mon profil ». Tout en bas de cette page se trouve le bouton rouge « Supprimer mon compte ».
+
+La suppression de son compte est irréversible : une fois la demande confirmée, il ne sera plus possible de restaurer votre compte ni de récupérer vos données.
+
+Les données que vous avez partagées avec d’autres utilisateurs, que ce soit directement ou via un espace de travail, resteront accessibles à ces utilisateurs après la suppression de votre compte. 
+
+Nous vous invitons à vérifier vos partages et à [sauvegarder vos données](/fr/fonctionnalites/sauvegarde) si nécessaire avant de procéder à la suppression.

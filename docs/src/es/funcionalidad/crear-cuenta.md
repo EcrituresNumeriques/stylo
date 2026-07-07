@@ -23,3 +23,15 @@ Cuando vuelvas a Stylo, conéctate con tu nueva cuenta Huma-Num, introduce tus d
 Véase también: [vídeo para acompañar la creación de una cuenta Huma-Num](/es/videos/cuenta-humanum)
 
 ¿Tienes problemas para crear tu cuenta? No dudes en [ponerte en contacto](/es/contacts.md) con nosotros.
+
+## Elimina tu cuenta
+
+Es posible eliminar tu cuenta y todos tus datos (artículos y corpus) de los que eres el único propietario.
+
+Para ello, debes hacer clic en “Mi cuenta” en la parte superior derecha de la interfaz de Stylo, luego en “Modificar mi perfil”. En la parte inferior de esta página se encuentra el botón rojo "Eliminar mi cuenta".
+
+La eliminación de su cuenta es irreversible: una vez confirmada la solicitud, ya no será posible restaurar su cuenta ni recuperar sus datos.
+
+Los datos que haya compartido con otros usuarios, ya sea directamente o a través de un espacio de trabajo, seguirán siendo accesibles para esos usuarios después de que elimine su cuenta.
+
+Le invitamos a verificar sus acciones y [crear una copia de seguridad sus datos](/es/funcionalidad/copia-seguridad) si es necesario antes de eliminarlos.
