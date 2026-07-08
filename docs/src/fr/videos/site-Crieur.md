@@ -2,7 +2,7 @@
 title: "Générer un site Web pour ses articles Stylo avec le Crieur"
 ---
 
-Crieur est un générateur de site statiques à partir de corpus d'articles sur Stylo, développé dans le cadre du Laboratoire de recherche du Canada sur les écritures numérique. Dans ce scénario d'utilisation, nous nous penchons sur l'ensemble du processus et sur les commandes générales pour le prendre en main.
+Crieur est un générateur de site statiques à partir de corpus d'articles sur Stylo, développé dans le cadre du Laboratoire de recherche sur les écritures numérique. Dans ce scénario d'utilisation, nous nous penchons sur l'ensemble du processus et sur les commandes générales pour le prendre en main.
 
 [lien vers la vidéo sur le Peertube de la Maison des Sciences de l'Homme - Paris Nord](https://video.mshparisnord.fr/w/4kLtWqJ9osTNxcW8nECRuG)
 

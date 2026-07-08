@@ -2,7 +2,7 @@
 title: "Travailler sur un livre augmenté Le Pressoir avec Stylo"
 ---
 
-Le Pressoir est un outil de génération de livres Web augmentés, développé dans le cadre du Laboratoire de recherche du Canada sur les écritures numérique, qui peut désormais prendre en entrée des sources sur Stylo. Dans ce scénario d'utilisation, nous présentons le Pressoir puis nous expliquons sa prise en main avec des articles sur Stylo.
+Le Pressoir est un outil de génération de livres Web augmentés, développé dans le cadre du Laboratoire de recherche sur les écritures numérique, qui peut désormais prendre en entrée des sources sur Stylo. Dans ce scénario d'utilisation, nous présentons le Pressoir puis nous expliquons sa prise en main avec des articles sur Stylo.
 
 [lien vers la vidéo sur le Peertube de la Maison des Sciences de l'Homme - Paris Nord](https://video.mshparisnord.fr/w/nE1MqsgL4uTQz1qh1zQgbQ)
 
