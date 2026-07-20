@@ -1,11 +1,11 @@
-import { Selection } from 'monaco-editor/esm/vs/editor/editor.api'
+import { Selection } from 'monaco-editor/editor'
 
 import { blockAttributes } from './index.js'
 
 /**
- * @typedef {import('monaco-editor').editor.IActionDescriptor} IActionDescriptor
+ * @typedef {import('monaco-editor/editor').editor.IActionDescriptor} IActionDescriptor
  * @typedef {import('i18next').TFunction} TFunction
- * @typedef {import('monaco-editor').editor.ICodeEditor} ICodeEditor
+ * @typedef {import('monaco-editor/editor').editor.ICodeEditor} ICodeEditor
  * @typedef {import('./inline-block.js').EditResult} EditResult
  */
 const newLineRE = /\n/g

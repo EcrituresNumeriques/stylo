@@ -1,6 +1,10 @@
 import Editor, { loader } from '@monaco-editor/react'
-import * as monaco from 'monaco-editor'
-import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+import * as monaco from 'monaco-editor/editor'
+import editorWorker from 'monaco-editor/editor/editor.worker?worker'
+import 'monaco-editor/features/register.all.js'
+
+import 'monaco-editor/languages/definitions/markdown/register.js'
+import 'monaco-editor/languages/definitions/yaml/register.js'
 import { useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import styles from './MonacoEditor.module.scss'

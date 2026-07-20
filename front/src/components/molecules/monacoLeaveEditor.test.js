@@ -1,4 +1,4 @@
-import { KeyCode } from 'monaco-editor'
+import { KeyCode } from 'monaco-editor/editor'
 import { describe, expect, test, vi } from 'vitest'
 
 import { registerLeaveEditor } from './monacoLeaveEditor.js'

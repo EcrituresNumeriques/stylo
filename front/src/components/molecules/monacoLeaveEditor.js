@@ -1,7 +1,7 @@
 /**
- * @import { editor } from 'monaco-editor'
+ * @import { editor } from 'monaco-editor/editor'
  */
-import { KeyCode, editor as monacoEditor } from 'monaco-editor'
+import { KeyCode, editor as monacoEditor } from 'monaco-editor/editor'
 
 /**
  * Escape is only handled when Monaco has nothing to dismiss: otherwise it
