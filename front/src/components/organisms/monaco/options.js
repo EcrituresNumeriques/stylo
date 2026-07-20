@@ -1,5 +1,5 @@
 /**
- * @import { editor } from 'monaco-editor'
+ * @import { editor } from 'monaco-editor/editor'
  */
 
 /** @type {editor.IEditorOptions|editor.IDiffEditorOptions} */

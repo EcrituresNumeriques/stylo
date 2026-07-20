@@ -1,5 +1,5 @@
 import throttle from 'lodash.throttle'
-import * as monaco from 'monaco-editor'
+import * as monaco from 'monaco-editor/editor'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { compareDiagnostics, VALIDATORS } from '../helpers/validator/index.js'
@@ -152,7 +152,7 @@ export function useMarkdownValidator(
     const editor = editorRef.current
     const model = editor?.getModel()
     if (model) {
-      monaco.editor.setModelMarkers(model, MARKER_OWNER, [])
+      editor.setModelMarkers(model, MARKER_OWNER, [])
     }
     if (decorationsRef.current) {
       decorationsRef.current.clear()
