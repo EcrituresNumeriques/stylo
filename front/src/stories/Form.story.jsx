@@ -33,17 +33,11 @@ export default function FormStory() {
           <Toggle name="example-toggle" />
         </p>
         <p>
-          <Toggle disabled checked={true} />
-        </p>
-        <p>
           <Toggle
             id="toggle-id"
             name="toggle-name"
             labelKey="story.ux.toggle_unique"
           />
-        </p>
-        <p>
-          <Toggle disabled labelKey="story.ux.toggle_unique" />
         </p>
         <p>
           <Toggle checked={true} labelKey="story.ux.toggle" />

@@ -9,7 +9,6 @@ import styles from './Toggle.module.scss'
  * @property {string} labelKey
  * @property {string} name
  * @property {boolean} [checked=false]
- * @property {boolean} [disabled=false]
  * @property {string} [id]
  * @property {string} [value]
  * @property {(value: boolean) => void} [onChange]
@@ -22,7 +21,6 @@ import styles from './Toggle.module.scss'
  */
 export default function ToggleSwitch({
   checked = false,
-  disabled = false,
   id,
   labelKey = null,
   name,
@@ -66,13 +64,11 @@ export default function ToggleSwitch({
       className={clsx(
         styles.element,
         isActive && styles.elementActive,
-        disabled && styles.elementDisabled,
         className
       )}
     >
       <input
         id={id}
-        disabled={disabled}
         name={name}
         className={styles.input}
         checked={isChecked}

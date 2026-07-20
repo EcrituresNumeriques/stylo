@@ -31,12 +31,6 @@ describe('Toggle', () => {
     expect(getByLabelText('label')).toBeChecked()
   })
 
-  test('w/o label w/ disabled', () => {
-    const { getByLabelText } = render(<Component disabled labelKey="label" />)
-
-    expect(getByLabelText('label')).toBeDisabled()
-  })
-
   test('w/ onChange trigger', async () => {
     const user = userEvent.setup()
     const onChange = vi.fn()
