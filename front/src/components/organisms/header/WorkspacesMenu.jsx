@@ -102,11 +102,12 @@ function Submenu({
 
   const articlesMatch = useMatch('/articles/*')
   const corpusMatch = useMatch('/corpus/*')
+  const workspaceMatch = useMatch('/workspaces/*')
   const isPrefixableRoute = Boolean(articlesMatch || corpusMatch)
+  const isWorkspaceUnprefixable = Boolean(workspaceMatch)
 
   const setActiveWorkspaceId = useCallback(
-    (workspaceId = '') => {
-      console.log({ workspaceId })
+    (workspaceId = null) => {
       setWorkspaceIdUserPreference(workspaceId)
 
       if (routeParams.workspaceId && workspaceId) {
@@ -117,7 +118,7 @@ function Submenu({
       } else if (workspaceId && isPrefixableRoute) {
         // If there is no workspace in URL, we might prefix it
         navigate(`/workspaces/${workspaceId}${location.pathname}`)
-      } else if (routeParams.workspaceId && !workspaceId) {
+      } else if (isWorkspaceUnprefixable && !workspaceId) {
         // if there *was* a workspace in URL, we unprefix it
         navigate(
           location.pathname.replace(
@@ -127,10 +128,14 @@ function Submenu({
         )
       }
     },
-    [location.pathname, routeParams, id]
+    [
+      isPrefixableRoute,
+      isWorkspaceUnprefixable,
+      location.pathname,
+      routeParams.workspaceId,
+      setWorkspaceIdUserPreference,
+    ]
   )
-
-  const resetWorkspaceId = useCallback(() => setActiveWorkspaceId(null), [])
 
   return (
     <div id={id} hidden={!isComponentVisible}>
@@ -151,7 +156,7 @@ function Submenu({
       >
         <li>
           <button
-            onClick={resetWorkspaceId}
+            onClick={() => setActiveWorkspaceId(null)}
             aria-pressed={!activeWorkspace?._id}
             title={t('header.workspaces.selectButton', {
               workspace: '$t(header.workspaces.myspace)',
