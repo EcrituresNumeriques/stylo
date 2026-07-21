@@ -117,20 +117,22 @@ export default function CorpusMetadata({
 
   return (
     <>
-      <div className={styles.header}>
-        <Toggle
-          disabled={corpusType === 'neutral'}
-          id="raw-mode"
-          checked={selector === 'raw' || corpusType === 'neutral'}
-          title={t('actions.metadata.yaml.toggle')}
-          onChange={(checked) => {
-            setSelector(checked ? 'raw' : 'basic')
-          }}
-          className={styles.toggle}
-          labelKey="actions.metadata.yaml.label"
-          t={t}
-        />
-      </div>
+      {corpusType !== 'neutral' && (
+        <div className={styles.header}>
+          <Toggle
+            id="raw-mode"
+            checked={selector === 'raw'}
+            title={t('actions.metadata.yaml.toggle')}
+            onChange={(checked) => {
+              setSelector(checked ? 'raw' : 'basic')
+            }}
+            className={styles.toggle}
+            labelKey="actions.metadata.yaml.label"
+            t={t}
+          />
+        </div>
+      )}
+
       {showYamlEditor && (
         <>
           {error !== '' && <p className={styles.error}>{error}</p>}
@@ -142,6 +144,7 @@ export default function CorpusMetadata({
           />
         </>
       )}
+
       {showMetadataForm && (
         <MetadataForm
           data={metadata}
