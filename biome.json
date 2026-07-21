@@ -75,6 +75,10 @@
               {
                 "name": "useDispatch",
                 "stableResult": true
+              },
+              {
+                "name": "useNavigate",
+                "stableResult": true
               }
             ]
           }
