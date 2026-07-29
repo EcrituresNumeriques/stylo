@@ -1,6 +1,6 @@
 const { NotFoundError } = require('../helpers/errors.js')
 const YAML = require('js-yaml')
-const { WSSharedDoc, Y } = require('../helpers/yjs-utils.mjs')
+const { Y, getTextFromYjsDoc } = require('../helpers/yjs-utils.mjs')
 
 const Article = require('../models/article.js')
 const User = require('../models/user.js')
@@ -17,25 +17,12 @@ const {
 const { previewEntries } = require('../helpers/bibliography.js')
 const { logger } = require('../logger.js')
 const { toLegacyFormat } = require('../helpers/metadata.js')
-const mongoose = require('mongoose')
 const Sentry = require('@sentry/node')
 const {
   NotAuthenticatedError,
   BadRequestError,
 } = require('../helpers/errors.js')
 const { toEntries } = require('../helpers/bibtex')
-
-function getTextFromYjsDoc(yjsdocBase64) {
-  const wsDoc = new WSSharedDoc(
-    `ws/${new mongoose.Types.ObjectId().toString()}`
-  )
-  try {
-    Y.applyUpdate(wsDoc, Buffer.from(yjsdocBase64, 'base64'))
-    return wsDoc.getText('main').toString()
-  } finally {
-    wsDoc.destroy()
-  }
-}
 
 async function getUser(userId) {
   const user = await User.findById(userId)
@@ -651,14 +638,14 @@ module.exports = {
   },
 
   WorkingVersion: {
-    md({ ydoc = '' }) {
+    md({ ydoc = '' }, { articleId } = {}) {
       try {
         return getTextFromYjsDoc(ydoc)
       } catch (err) {
         Sentry.captureException(err)
-        console.error(
-          'Unable to load text content (Markdown) from the Y.js document on article',
-          err
+        logger.error(
+          { err, articleId },
+          'Unable to load text content (Markdown) from the Y.js document on the working version'
         )
         return ''
       }
