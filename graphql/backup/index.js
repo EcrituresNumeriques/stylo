@@ -6,6 +6,7 @@ const Article = require('../models/article')
 const { createLoaders } = require('../loaders')
 const Workspace = require('../models/workspace')
 const Version = require('../models/version')
+const { WorkingVersion } = require('../resolvers/articleResolver')
 
 /**
  * Error thrown when the backup request contains invalid parameters.
@@ -238,6 +239,13 @@ async function getArticles(config) {
       email,
       username,
     }
+    // The working copy's Markdown content lives in the Y.js CRDT document
+    // (`workingVersion.ydoc`), kept up to date by the collaborative editor.
+    // `workingVersion.md` is a legacy field that is no longer written to, so
+    // it must be derived from `ydoc` before the latter is discarded.
+    article.workingVersion.md = WorkingVersion.md(article.workingVersion, {
+      articleId: article._id,
+    })
     delete article.workingVersion.ydoc
     for (const tag of article.tags) {
       delete tag.articles

@@ -132,6 +132,25 @@ export class WSSharedDoc extends Y.Doc {
 }
 
 /**
+ * Decodes the plain text (Markdown) content stored in a base64-encoded Y.js document update.
+ *
+ * @param {string} yjsdocBase64 - base64-encoded Y.js document state (`workingVersion.ydoc`)
+ * @return {string} the text content of the "main" shared text
+ */
+export const getTextFromYjsDoc = (yjsdocBase64) => {
+  if (!yjsdocBase64) {
+    return ''
+  }
+  const wsDoc = new WSSharedDoc(`ws/${Math.random().toString(36).slice(2)}`)
+  try {
+    Y.applyUpdate(wsDoc, Buffer.from(yjsdocBase64, 'base64'))
+    return wsDoc.getText('main').toString()
+  } finally {
+    wsDoc.destroy()
+  }
+}
+
+/**
  * Gets a Y.Doc by name, whether in memory or on disk
  *
  * @param {string} docname - the name of the Y.Doc to find or create
