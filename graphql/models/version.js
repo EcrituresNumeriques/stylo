@@ -61,4 +61,10 @@ const versionSchema = new Schema(
   }
 )
 
+versionSchema.methods.rename = async function rename(name) {
+  this.set('message', name)
+  const result = await this.save({ timestamps: false })
+  return result === this
+}
+
 module.exports = mongoose.model('Version', versionSchema)

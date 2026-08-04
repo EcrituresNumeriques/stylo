@@ -554,7 +554,7 @@ export function useArticleVersionActions({ articleId }) {
     await executeQuery({
       query: renameVersion,
       variables: {
-        version: versionId,
+        versionId,
         name: description,
       },
       sessionToken,

@@ -142,7 +142,7 @@ type Version {
   createdAt: DateTime
   updatedAt: DateTime
 
-  rename(name: String): Boolean
+  rename(name: String): Boolean @deprecated(reason: "Use renameVersion mutation at the root instead.")
 }
 
 input ArticleVersionInput {
@@ -365,8 +365,8 @@ type CorpusArticle {
   order: Int
 
   # mutation
-  remove: Corpus!
-  move(order: Int): Corpus
+  remove: Corpus! @deprecated(reason: "Use removeCorpusArticle mutation at the root instead.")
+  move(order: Int): Corpus @deprecated(reason: "Use moveCorpusArticle mutation at the root instead.")
 }
 
 input ArticleOrder {
@@ -395,12 +395,12 @@ type Corpus {
   article(articleId: ID!): CorpusArticle
 
   # mutations
-  addArticle(articleId: ID!): Corpus
-  rename(name: String!): Corpus
-  updateMetadata(metadata: JSON!): Corpus
-  updateArticlesOrder(articlesOrderInput: [ArticleOrder!]!): Corpus
-  delete: Corpus!
-  update(updateCorpusInput: UpdateCorpusInput!): Corpus!
+  addArticle(articleId: ID!): Corpus @deprecated(reason: "Use addCorpusArticle mutation at the root instead.")
+  rename(name: String!): Corpus @deprecated(reason: "Use renameCorpus mutation at the root instead.")
+  updateMetadata(metadata: JSON!): Corpus @deprecated(reason: "Use updateCorpusMetadata mutation at the root instead.")
+  updateArticlesOrder(articlesOrderInput: [ArticleOrder!]!): Corpus @deprecated(reason: "Use updateCorpusArticlesOrder mutation at the root instead.")
+  delete: Corpus! @deprecated(reason: "Use deleteCorpus mutation at the root instead.")
+  update(updateCorpusInput: UpdateCorpusInput!): Corpus! @deprecated(reason: "Use updateCorpus mutation at the root instead.")
 }
 
 input CreateCorpusInput {
@@ -671,6 +671,54 @@ type Mutation {
   createCorpus(createCorpusInput: CreateCorpusInput!): Corpus
 
   """
+  Delete a corpus by ID.
+  Requires authentication with access to the corpus.
+  """
+  deleteCorpus(corpusId: ID!): Corpus!
+
+  """
+  Rename a corpus by ID.
+  Requires authentication with access to the corpus.
+  """
+  renameCorpus(corpusId: ID!, name: String!): Corpus
+
+  """
+  Update the metadata of a corpus.
+  Requires authentication with access to the corpus.
+  """
+  updateCorpusMetadata(corpusId: ID!, metadata: JSON!): Corpus
+
+  """
+  Update a corpus's name, description, or metadata.
+  Requires authentication with access to the corpus.
+  """
+  updateCorpus(corpusId: ID!, updateCorpusInput: UpdateCorpusInput!): Corpus!
+
+  """
+  Add an article to a corpus.
+  Requires authentication with access to the corpus.
+  """
+  addCorpusArticle(corpusId: ID!, articleId: ID!): Corpus
+
+  """
+  Remove an article from a corpus.
+  Requires authentication with access to the corpus.
+  """
+  removeCorpusArticle(corpusId: ID!, articleId: ID!): Corpus!
+
+  """
+  Move an article to a new position within a corpus.
+  Requires authentication with access to the corpus.
+  """
+  moveCorpusArticle(corpusId: ID!, articleId: ID!, order: Int): Corpus
+
+  """
+  Reorder the articles within a corpus.
+  Requires authentication with access to the corpus.
+  """
+  updateCorpusArticlesOrder(corpusId: ID!, articlesOrderInput: [ArticleOrder!]!): Corpus
+
+  """
   Update the bibliography of an article from a BibTeX string.
   Returns the updated bibliography as a list of structured entries.
   Requires authentication with access to the article (as owner, contributor, or via a workspace).
@@ -757,6 +805,11 @@ type Mutation {
   Requires authentication with access to the article.
   """
   createArticleVersion(articleId: ID!, articleVersionInput: ArticleVersionInput!): Article
+
+  """
+  Rename a version by ID (updates its message).
+  """
+  renameVersion(versionId: ID!, name: String): Boolean
 }`
 
 module.exports = makeExecutableSchema({ typeDefs, resolvers })
