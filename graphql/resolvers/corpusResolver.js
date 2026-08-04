@@ -58,37 +58,26 @@ class CorpusArticle {
 
   async remove() {
     if (this._article) {
-      this.corpus.articles.pull({ _id: this._article._id })
-      return this.corpus.save()
+      return this.corpus.removeArticleById(articleRefId(this._article.article))
     }
     return this.corpus
   }
 
   async move(order) {
     if (this._article) {
-      const articles = this.corpus.articles
-      const map = new Map(articles.map((obj) => [obj.order, obj]))
-      const currentOrder = this._article.order
-      if (order < currentOrder) {
-        for (let i = order; i < currentOrder; i++) {
-          const article = map.get(i)
-          if (article) {
-            article.order = article.order + 1
-          }
-        }
-      } else {
-        for (let i = currentOrder; i < order; i++) {
-          const article = map.get(i)
-          if (article) {
-            article.order = article.order - 1
-          }
-        }
-      }
-      this._article.order = order
-      return this.corpus.save()
+      return this.corpus.moveArticle(articleRefId(this._article.article), order)
     }
     return this.corpus
   }
+}
+
+/**
+ * A corpus article's `article` ref field is normally a bare ObjectId, but
+ * some code paths (and fixtures) store the whole Article document instead.
+ * Extract the actual article id string in either case.
+ */
+function articleRefId(article) {
+  return String(article?._id ?? article)
 }
 
 module.exports = {
@@ -150,6 +139,51 @@ module.exports = {
         return corpus.save()
       }
       return corpus
+    },
+
+    async deleteCorpus(_, { corpusId }, context) {
+      const corpus = await getCorpusByContext(corpusId, context)
+      await corpus.deleteOne()
+      return corpus
+    },
+
+    async renameCorpus(_, { corpusId, name }, context) {
+      const corpus = await getCorpusByContext(corpusId, context)
+      return corpus.rename(name)
+    },
+
+    async updateCorpusMetadata(_, { corpusId, metadata }, context) {
+      const corpus = await getCorpusByContext(corpusId, context)
+      return corpus.updateMetadata(metadata)
+    },
+
+    async updateCorpus(_, { corpusId, updateCorpusInput }, context) {
+      const corpus = await getCorpusByContext(corpusId, context)
+      return corpus.update(updateCorpusInput)
+    },
+
+    async addCorpusArticle(_, { corpusId, articleId }, context) {
+      const corpus = await getCorpusByContext(corpusId, context)
+      return corpus.addArticleById(articleId)
+    },
+
+    async removeCorpusArticle(_, { corpusId, articleId }, context) {
+      const corpus = await getCorpusByContext(corpusId, context)
+      return corpus.removeArticleById(articleId)
+    },
+
+    async moveCorpusArticle(_, { corpusId, articleId, order }, context) {
+      const corpus = await getCorpusByContext(corpusId, context)
+      return corpus.moveArticle(articleId, order)
+    },
+
+    async updateCorpusArticlesOrder(
+      _,
+      { corpusId, articlesOrderInput },
+      context
+    ) {
+      const corpus = await getCorpusByContext(corpusId, context)
+      return corpus.updateArticlesOrder(articlesOrderInput)
     },
   },
 
@@ -251,62 +285,36 @@ module.exports = {
       return new CorpusArticle(corpus, article)
     },
 
+    /** @deprecated Use renameCorpus root mutation instead. */
     async rename(corpus, { name }) {
-      corpus.name = name
-      return corpus.save()
+      return corpus.rename(name)
     },
 
+    /** @deprecated Use updateCorpusMetadata root mutation instead. */
     async updateMetadata(corpus, { metadata }) {
-      corpus.metadata = metadata
-      return corpus.save()
+      return corpus.updateMetadata(metadata)
     },
 
+    /** @deprecated Use addCorpusArticle root mutation instead. */
     async addArticle(corpus, { articleId, order }) {
-      const articleAlreadyAdded = corpus.articles.find(
-        ({ article }) => article.id === articleId
-      )
-      if (articleAlreadyAdded) {
-        return corpus
-      }
-      corpus.articles.push({ article: { _id: articleId }, order })
-      return corpus.save()
+      return corpus.addArticleById(articleId, order)
     },
 
+    /** @deprecated Use deleteCorpus root mutation instead. */
     async delete(corpus) {
       await corpus.deleteOne()
 
       return corpus
     },
 
+    /** @deprecated Use updateCorpus root mutation instead. */
     async update(corpus, { updateCorpusInput }) {
-      const name = updateCorpusInput.name
-      if (name !== undefined && name !== null) {
-        corpus.name = name
-      }
-      const description = updateCorpusInput.description
-      if (description !== undefined && description !== null) {
-        corpus.description = description
-      }
-      const metadata = updateCorpusInput.metadata
-      if (metadata !== undefined) {
-        corpus.metadata = metadata
-      }
-      return await corpus.save()
+      return corpus.update(updateCorpusInput)
     },
 
+    /** @deprecated Use updateCorpusArticlesOrder root mutation instead. */
     async updateArticlesOrder(corpus, { articlesOrderInput }) {
-      const articlesOrderMap = articlesOrderInput.reduce((acc, item) => {
-        acc[item.articleId] = item.order
-        return acc
-      }, {})
-      corpus.articles = corpus.articles.map((corpusArticle) => {
-        const order = articlesOrderMap[corpusArticle.article._id]
-        return {
-          article: corpusArticle.article,
-          order,
-        }
-      })
-      return corpus.save()
+      return corpus.updateArticlesOrder(articlesOrderInput)
     },
   },
 }

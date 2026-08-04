@@ -10,6 +10,17 @@ const { toLegacyFormat } = require('../helpers/metadata')
 const { toEntries } = require('../helpers/bibtex')
 
 module.exports = {
+  Mutation: {
+    async renameVersion(_, { versionId, name }) {
+      // TODO need to make sure user should have access to this version
+      const version = await Version.findById(versionId)
+      if (!version) {
+        throw new NotFoundError('Version', versionId)
+      }
+      return version.rename(name)
+    },
+  },
+
   Query: {
     async version(_, { version: versionId }) {
       // TODO need to make sure user should have access to this version
@@ -29,11 +40,9 @@ module.exports = {
       return context.loaders.users.load(version.owner._id)
     },
 
+    /** @deprecated Use renameVersion root mutation instead. */
     async rename(version, { name }) {
-      version.set('message', name)
-      const result = await version.save({ timestamps: false })
-
-      return result === version
+      return version.rename(name)
     },
 
     bibPreview({ bib }) {

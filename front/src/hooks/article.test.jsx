@@ -270,7 +270,7 @@ describe('Article versions', () => {
     expect(fetch).toHaveBeenLastCalledWith(
       'http://localhost:3000/graphql',
       expect.objectContaining({
-        body: expect.stringMatching(/"query":"query renameVersion\(/),
+        body: expect.stringMatching(/"query":"mutation renameVersion\(/),
       })
     )
   })
