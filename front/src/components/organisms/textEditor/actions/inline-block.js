@@ -1,16 +1,12 @@
-import {
-  KeyCode,
-  KeyMod,
-  Selection,
-} from 'monaco-editor/esm/vs/editor/editor.api'
+import { KeyCode, KeyMod, Selection } from 'monaco-editor/editor'
 
 import { blockAttributes } from './index.js'
 
 /**
- * @typedef {import('monaco-editor').editor.IActionDescriptor} IActionDescriptor
- * @typedef {import('monaco-editor').editor.ICodeEditor} ICodeEditor
- * @typedef {import('monaco-editor').IRange} IRange
- * @typedef {import('monaco-editor').ISelection} ISelection
+ * @typedef {import('monaco-editor/editor').editor.IActionDescriptor} IActionDescriptor
+ * @typedef {import('monaco-editor/editor').editor.ICodeEditor} ICodeEditor
+ * @typedef {import('monaco-editor/editor').IRange} IRange
+ * @typedef {import('monaco-editor/editor').ISelection} ISelection
  */
 
 /**

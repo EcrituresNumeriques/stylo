@@ -1,5 +1,5 @@
 import throttle from 'lodash.throttle'
-import * as monaco from 'monaco-editor'
+import { MarkerSeverity, Range } from 'monaco-editor/editor'
 import { useCallback, useRef, useState } from 'react'
 
 import { VALIDATORS } from '../helpers/validator/index.js'
@@ -12,9 +12,7 @@ const MARKER_OWNER = 'stylo-validator'
  * @returns {number}
  */
 function toMonacoSeverity(severity) {
-  return severity === 'error'
-    ? monaco.MarkerSeverity.Error
-    : monaco.MarkerSeverity.Warning
+  return severity === 'error' ? MarkerSeverity.Error : MarkerSeverity.Warning
 }
 
 /**
@@ -64,7 +62,7 @@ export function useMarkdownValidator(editorRef, profiles = ['metopes']) {
 
       const model = editor.getModel()
       if (model) {
-        monaco.editor.setModelMarkers(
+        editor.setModelMarkers(
           model,
           MARKER_OWNER,
           results.map((d) => ({
@@ -84,7 +82,7 @@ export function useMarkdownValidator(editorRef, profiles = ['metopes']) {
       }
       decorationsRef.current = editor.createDecorationsCollection(
         results.map((d) => ({
-          range: new monaco.Range(d.line, 1, d.endLine || d.line, 1),
+          range: new Range(d.line, 1, d.endLine || d.line, 1),
           options: {
             linesDecorationsTooltip: translateMessage(d),
             linesDecorationsClassName:
@@ -133,7 +131,7 @@ export function useMarkdownValidator(editorRef, profiles = ['metopes']) {
     const editor = editorRef.current
     const model = editor?.getModel()
     if (model) {
-      monaco.editor.setModelMarkers(model, MARKER_OWNER, [])
+      editor.setModelMarkers(model, MARKER_OWNER, [])
     }
     if (decorationsRef.current) {
       decorationsRef.current.clear()
