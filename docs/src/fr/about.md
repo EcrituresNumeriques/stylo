@@ -16,7 +16,7 @@ Cette instance de Stylo est déployée et maintenue par [Huma-Num](https://www.h
 
 ## Stylosophie
 
-Stylo encourage le développement d’une littératie critique et une approche réflxive de la textualité numérique, par une interaction active avec des langages et technologies open source adaptés à l'écriture, l'évaluation et la publication savante.
+Stylo encourage le développement d’une littératie critique et une approche réflexive de la textualité numérique, par une interaction avec des langages et technologies open source adaptés à l'écriture, l'évaluation et la publication savante.
 
 À l'origine, Stylo est un éditeur de texte conçu pour transformer et intégrer l’ensemble de la chaîne éditoriale numérique des revues savantes en sciences humaines et sociales. Basé sur l'idée d'une séparation de la structuration sémantique et de la mise en page d'un document, Stylo permet à l’auteur·e de se consacrer intégralement au sens du texte durant son écriture, pour se pencher sur sa mise en forme dans un deuxième temps.
 
