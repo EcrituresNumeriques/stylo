@@ -20,7 +20,7 @@ Stylo encourage le développement d’une littératie critique et une approche r
 
 À l'origine, Stylo est un éditeur de texte conçu pour transformer et intégrer l’ensemble de la chaîne éditoriale numérique des revues savantes en sciences humaines et sociales. Basé sur l'idée d'une séparation de la structuration sémantique et de la mise en page d'un document, Stylo permet à l’auteur·e de se consacrer intégralement au sens du texte durant son écriture, pour se pencher sur sa mise en forme dans un deuxième temps.
 
-Stylo propose aujourd'hui une solution libre et collaborative, basée sur des standards ouverts (Markdown, YAML, BibTeX), permettant de multiples sorties (PDF, HTML, XML-TEI, TEI Commons Publishing, ODT) à partir d’un seul document ou d'un corpus - facilitant ainsi une circulation des documents hors des formats, environnements et serveurs propriétaires des grands groupes de la Sillicon Valley.
+Stylo propose aujourd'hui une solution libre et collaborative, basée sur des standards ouverts (Markdown, YAML, BibTeX), permettant de multiples sorties (PDF, HTML, XML-TEI, TEI Commons Publishing, ODT) à partir d’un seul document ou d'un corpus - facilitant ainsi une circulation des documents hors des formats, environnements et serveurs propriétaires des grands groupes de la Silicon Valley.
 
 ### Contributeur·rice·s 
 
