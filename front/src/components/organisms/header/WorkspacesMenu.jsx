@@ -3,14 +3,7 @@ import { ArrowLeftIcon, SettingsIcon } from 'lucide-react'
 import { useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
-import {
-  Link,
-  NavLink,
-  useLocation,
-  useMatch,
-  useNavigate,
-  useParams,
-} from 'react-router'
+import { NavLink, useNavigate } from 'react-router'
 import useComponentVisible from '../../../hooks/componentVisible.js'
 import { usePreferenceItem } from '../../../hooks/user.js'
 import {
@@ -96,46 +89,12 @@ function Submenu({
     'workspaceId',
     'user'
   )
-  const location = useLocation()
-  const routeParams = useParams()
   const navigate = useNavigate()
 
-  const articlesMatch = useMatch('/articles/*')
-  const corpusMatch = useMatch('/corpus/*')
-  const workspaceMatch = useMatch('/workspaces/*')
-  const isPrefixableRoute = Boolean(articlesMatch || corpusMatch)
-  const isWorkspaceUnprefixable = Boolean(workspaceMatch)
-
-  const setActiveWorkspaceId = useCallback(
-    (workspaceId = null) => {
-      setWorkspaceIdUserPreference(workspaceId)
-
-      if (routeParams.workspaceId && workspaceId) {
-        // If there is a workspace in URL, we replace it by a new one
-        navigate(
-          location.pathname.replace(routeParams.workspaceId, workspaceId)
-        )
-      } else if (workspaceId && isPrefixableRoute) {
-        // If there is no workspace in URL, we might prefix it
-        navigate(`/workspaces/${workspaceId}${location.pathname}`)
-      } else if (isWorkspaceUnprefixable && !workspaceId) {
-        // if there *was* a workspace in URL, we unprefix it
-        navigate(
-          location.pathname.replace(
-            `/workspaces/${routeParams.workspaceId}`,
-            ''
-          )
-        )
-      }
-    },
-    [
-      isPrefixableRoute,
-      isWorkspaceUnprefixable,
-      location.pathname,
-      routeParams.workspaceId,
-      setWorkspaceIdUserPreference,
-    ]
-  )
+  const setActiveWorkspaceId = useCallback((workspaceId = null) => {
+    setWorkspaceIdUserPreference(workspaceId)
+    navigate(workspaceId ? `/workspaces/${workspaceId}/articles` : '/articles')
+  }, [])
 
   return (
     <div id={id} hidden={!isComponentVisible}>
