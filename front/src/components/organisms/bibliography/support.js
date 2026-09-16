@@ -1,4 +1,4 @@
-import * as vscode from 'monaco-editor'
+import { Range } from 'monaco-editor/editor'
 
 import { applicationConfig } from '../../../config.js'
 
@@ -96,7 +96,7 @@ export function onDropIntoEditor(editor) {
         const placeholder = `<!-- Uploading ${file.name} -->`
         editor.executeEdits('insert-uploading-placeholder', [
           {
-            range: new vscode.Range(lineNumber, column, lineNumber, column),
+            range: new Range(lineNumber, column, lineNumber, column),
             text: `${placeholder} `,
             forceMoveMarkers: true,
           },

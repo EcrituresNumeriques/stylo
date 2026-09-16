@@ -1,4 +1,4 @@
-import * as monaco from 'monaco-editor'
+import { Range } from 'monaco-editor/editor'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -37,7 +37,7 @@ export default function BibliographyBibtexEditor({
         setErrorDecorations(
           editorRef.current.createDecorationsCollection(
             errors.map((error) => ({
-              range: new monaco.Range(error.line, 1, error.line, 1),
+              range: new Range(error.line, 1, error.line, 1),
               options: {
                 glyphMarginHoverMessage: {
                   value: t(`biblatexparser.error.${error.type}`, error),
@@ -56,7 +56,7 @@ export default function BibliographyBibtexEditor({
         setWarningDecorations(
           editorRef.current.createDecorationsCollection(
             warnings.map((warning) => ({
-              range: new monaco.Range(warning.line, 1, warning.line, 1),
+              range: new Range(warning.line, 1, warning.line, 1),
               options: {
                 glyphMarginHoverMessage: {
                   value: t(`biblatexparser.warning.${warning.type}`, warning),

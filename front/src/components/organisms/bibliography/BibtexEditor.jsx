@@ -1,6 +1,6 @@
 import { loader } from '@monaco-editor/react'
 import clsx from 'clsx'
-import * as monaco from 'monaco-editor'
+import * as monaco from 'monaco-editor/editor'
 import { useCallback, useMemo } from 'react'
 import fieldStyles from '../../atoms/Field.module.scss'
 
