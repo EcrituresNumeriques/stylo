@@ -1,10 +1,11 @@
-import { SubmenuAction } from 'monaco-editor/esm/vs/base/common/actions'
 import {
   editor as _editor,
   KeyCode,
   KeyMod,
   Selection,
-} from 'monaco-editor/esm/vs/editor/editor.api'
+} from 'monaco-editor/editor'
+
+export { Separator, SubmenuAction } from 'monaco-editor/base/common/actions'
 
 import createDelimitedBlockCommand, {
   createBlockCommand,
@@ -13,8 +14,6 @@ import createInlineBlockCommand, {
   createEnclosingTextFormattingCommand,
   createHyperlinkCommand,
 } from './inline-block.js'
-
-export { Separator } from 'monaco-editor/esm/vs/base/common/actions'
 
 /** @type {Record<string, Record<string, IActionDescriptor>>} */
 export const actions = {

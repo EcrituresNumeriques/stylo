@@ -4,8 +4,9 @@ import throttle from 'lodash.throttle'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
-import { MonacoBinding } from 'y-monaco'
-import 'monaco-editor/esm/vs/base/browser/ui/codicons/codicon/codicon.css'
+// import { MonacoBinding } from 'y-monaco'
+
+import 'monaco-editor/features/codicon/register.js'
 
 import {
   useArticleVersion,
@@ -191,7 +192,7 @@ export default function CollaborativeTextEditor({
       // https://github.com/yjs/y-monaco/issues/27
       model.setEOL(monaco.editor.EndOfLineSequence.LF)
       if (yText && awareness) {
-        new MonacoBinding(yText, model, new Set([editor]), awareness)
+        // new MonacoBinding(yText, model, new Set([editor]), awareness)
       }
 
       onEditorReadyRef.current?.()
