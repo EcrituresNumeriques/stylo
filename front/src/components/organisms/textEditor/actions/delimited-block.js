@@ -247,7 +247,6 @@ export default function createDelimitedBlockCommand(
   }
 
   return {
-    id: `stylo--infratextual-markup--${id}`,
     label: `actions.infratextual-block.${id}`,
     contextMenuGroupId: '1_modification',
     contextMenuOrder: 1,

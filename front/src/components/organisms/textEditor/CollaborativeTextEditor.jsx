@@ -176,7 +176,7 @@ export default function CollaborativeTextEditor({
 
       // Command Palette commands
       registerActions(editor, t, actions.metopes)
-      registerActions(editor, t, actions.md)
+      registerActions(editor, t, actions.markdown)
       registerActions(
         editor,
         t,

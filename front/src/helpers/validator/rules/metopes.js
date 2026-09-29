@@ -1,40 +1,9 @@
 import { visit } from 'unist-util-visit'
-
+import { knownClasses } from '../../../components/organisms/textEditor/actions/index.js'
 import { parsePandocFencedDivs, walkDivs } from '../pandoc-divs.js'
 
-const KNOWN_BLOCK_CLASSES = new Set([
-  'ack',
-  'argument',
-  'credits',
-  'dedication',
-  'epigraph',
-  'figure',
-  'outline',
-  'box',
-  'prenote',
-  'question',
-  'answer',
-  'quote-alt',
-  'refs',
-  'rich-quote',
-  'sig',
-  'sponsor',
-  'translation',
-])
-
-const KNOWN_INLINE_CLASSES = new Set([
-  'credits',
-  'endnote',
-  'footnote',
-  'index-type',
-  'inlinequote',
-  'smallcaps',
-  'head',
-  'speaker',
-  'name',
-  'surname',
-  'aut',
-])
+const { blocks: KNOWN_BLOCK_CLASSES, inlines: KNOWN_INLINE_CLASSES } =
+  knownClasses('metopes')
 
 /**
  * @param {string} value
