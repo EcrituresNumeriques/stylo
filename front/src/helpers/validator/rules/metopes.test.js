@@ -72,6 +72,7 @@ describe('unknownBlockClass()', () => {
       'sig',
       'sponsor',
       'translation',
+      'linguistic',
     ]
     for (const cls of knownClasses) {
       const md = `:::{.${cls}}\n:::`
@@ -194,6 +195,8 @@ describe('unknownInlineClass()', () => {
       'name',
       'surname',
       'aut',
+      'surtitle',
+      'verse',
     ]
     for (const cls of knownClasses) {
       expect(
