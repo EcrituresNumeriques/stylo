@@ -67,7 +67,6 @@ describe('unknownBlockClass()', () => {
       'question',
       'answer',
       'quote-alt',
-      'refs',
       'rich-quote',
       'sig',
       'sponsor',
@@ -186,7 +185,6 @@ describe('unknownInlineClass()', () => {
     const knownClasses = [
       'credits',
       'endnote',
-      'footnote',
       'index-type',
       'inlinequote',
       'smallcaps',

@@ -42,13 +42,13 @@ function defaultSelectionState(editor) {
 
 /**
  * Builds a Monaco command descriptor with the common Stylo infratextual fields.
+ * Its `id` is set by `buildActions()`.
  * @param {string} id
  * @param {{ keybindings?: number[], run: (editor: ICodeEditor) => Promise<void> }} options
  * @returns {IActionDescriptor}
  */
 function buildCommandDescriptor(id, { keybindings, run }) {
   return {
-    id: `stylo--infratextual-markup--${id}`,
     label: `actions.infratextual-inline.${id}`,
     contextMenuGroupId: '1_modification',
     keybindingContext: null,
