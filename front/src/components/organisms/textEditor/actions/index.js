@@ -16,106 +16,109 @@ import createInlineBlockCommand, {
 
 export { Separator } from 'monaco-editor/esm/vs/base/common/actions'
 
-/** @type {Record<string, Record<string, IActionDescriptor>>} */
-export const actions = {
-  md: {
-    citation: createBlockCommand('citation', '> \n> \n> '),
-    delete: createEnclosingTextFormattingCommand('delete', {
-      formattingMark: '~~',
-      keybindings: [KeyMod.CtrlCmd | KeyCode.KeyD],
-    }),
-    headline1: createBlockCommand('section1', '# '),
-    headline2: createBlockCommand('section2', '## '),
-    headline3: createBlockCommand('section3', '### '),
-    headline4: createBlockCommand('section4', '#### '),
-    headline5: createBlockCommand('section5', '##### '),
-    headline6: createBlockCommand('section6', '###### '),
-    italic: createEnclosingTextFormattingCommand('italic', {
-      formattingMark: '_',
-      keybindings: [KeyMod.CtrlCmd | KeyCode.KeyI],
-    }),
-    bold: createEnclosingTextFormattingCommand('bold', {
-      formattingMark: '**',
-      keybindings: [KeyMod.CtrlCmd | KeyCode.KeyB],
-    }),
-    footnote: createInlineBlockCommand('footnote', {
-      contentBefore: '^[',
-      keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF],
-    }),
-    hyperlink: createHyperlinkCommand('hyperlink'),
-    separator: createBlockCommand('separator', '---'),
-    sub: createEnclosingTextFormattingCommand('sub', {
-      formattingMark: '~',
-    }),
-    sup: createEnclosingTextFormattingCommand('sup', {
-      formattingMark: '^',
-    }),
+const actionTypes = {
+  BLOCK: 'block',
+  DELIMITED_BLOCK: 'delimited-block',
+  INLINE: 'inline',
+  ENCLOSING: 'enclosing',
+  HYPERLINK: 'hyperlink',
+}
+
+const factories = {
+  [actionTypes.BLOCK]: (id, { content, options }) =>
+    createBlockCommand(id, content, options),
+  [actionTypes.DELIMITED_BLOCK]: (id, { options }) =>
+    createDelimitedBlockCommand(id, options),
+  [actionTypes.INLINE]: (id, { options }) =>
+    createInlineBlockCommand(id, options),
+  [actionTypes.ENCLOSING]: (id, { options }) =>
+    createEnclosingTextFormattingCommand(id, options),
+  [actionTypes.HYPERLINK]: (id) => createHyperlinkCommand(id),
+}
+
+/**
+ * @typedef {object} ActionSchema
+ * @property {string} type - One of `actionTypes`, selects the command factory
+ * @property {string|(t: TFunction) => string} [content] - Content inserted by `BLOCK` actions
+ * @property {object} [options] - Options passed to the command factory
+ * @property {{ block?: string[], inline?: string[] }} [classes] - Additional classes found in the inserted content
+ */
+
+/**
+ * Actions, grouped by namespace. Keys are the command ids.
+ * @type {Record<string, Record<string, ActionSchema>>}
+ */
+export const actionsSchema = {
+  markdown: {
+    blockquote: {
+      type: actionTypes.BLOCK,
+      content: '> \n> \n> ',
+    },
+    section1: {
+      type: actionTypes.BLOCK,
+      content: '# ',
+    },
+    section2: {
+      type: actionTypes.BLOCK,
+      content: '## ',
+    },
+    section3: {
+      type: actionTypes.BLOCK,
+      content: '### ',
+    },
+    section4: {
+      type: actionTypes.BLOCK,
+      content: '#### ',
+    },
+    section5: {
+      type: actionTypes.BLOCK,
+      content: '##### ',
+    },
+    section6: {
+      type: actionTypes.BLOCK,
+      content: '###### ',
+    },
+    separator: {
+      type: actionTypes.BLOCK,
+      content: '---',
+    },
+    strikethrough: {
+      type: actionTypes.ENCLOSING,
+      options: {
+        formattingMark: '~~',
+        keybindings: [KeyMod.CtrlCmd | KeyCode.KeyD],
+      },
+    },
+    italic: {
+      type: actionTypes.ENCLOSING,
+      options: {
+        formattingMark: '_',
+        keybindings: [KeyMod.CtrlCmd | KeyCode.KeyI],
+      },
+    },
+    bold: {
+      type: actionTypes.ENCLOSING,
+      options: {
+        formattingMark: '**',
+        keybindings: [KeyMod.CtrlCmd | KeyCode.KeyB],
+      },
+    },
+    sub: { type: actionTypes.ENCLOSING, options: { formattingMark: '~' } },
+    sup: { type: actionTypes.ENCLOSING, options: { formattingMark: '^' } },
+    footnote: {
+      type: actionTypes.INLINE,
+      options: {
+        contentBefore: '^[',
+        keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF],
+      },
+    },
+    hyperlink: { type: actionTypes.HYPERLINK },
   },
   metopes: {
-    acknowledgement: createDelimitedBlockCommand('ack', {
-      keybindings: [
-        KeyMod.chord(
-          KeyMod.CtrlCmd | KeyCode.KeyM,
-          KeyMod.CtrlCmd | KeyCode.KeyA
-        ),
-      ],
-    }),
-    argument: createDelimitedBlockCommand('argument'),
-    credits: createDelimitedBlockCommand('credits'),
-    dedication: createDelimitedBlockCommand('dedication'),
-    inlineCredits: createInlineBlockCommand('credits', {
-      className: 'credits',
-    }),
-    endnote: createInlineBlockCommand('endnote', {
-      className: 'endnote',
-      keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyD],
-    }),
-    epigraph: createDelimitedBlockCommand('epigraph', {
-      contentBefore: ':::{.rich-quote}\n',
-      contentAfter: '\n[@source]\n:::',
-    }),
-    figure: createDelimitedBlockCommand('figure', {
-      contentBefore: '\n[titre]{.head}\n',
-      contentAfter: '\n![caption](image.png)',
-    }),
-    indexEntry: createInlineBlockCommand('index-entry', {
-      className: 'index-type',
-      attrs: { idref: () => self.crypto.randomUUID() },
-    }),
-    outline: createDelimitedBlockCommand('outline', {
-      className: 'box',
-      contentBefore: '\n[titre]{.head}\n',
-      contentAfter: '\n[[nom]{.name} [prenom]{.surname}]{.aut}',
-    }),
-    inlineQuote: createInlineBlockCommand('inlinequote', {
-      className: 'inlinequote',
-    }),
-    linguistic: createDelimitedBlockCommand('linguistic', {
-      attrs: { lang: 'lang-value', num: '123', label: 'value' },
-      contentBefore: '> ',
-      contentAfter:
-        '> \n[@<source>]\n\n:::{.translation lang="lang-value"}\n> \n> \n[@<source>]\n:::\n\n:::{.translation lang="lang-value"}\n> \n> \n> \n:::\n',
-    }),
-    prenoteAuthor: createDelimitedBlockCommand('prenote.aut', {
-      attrs: { origin: 'aut' },
-      className: 'prenote',
-    }),
-    prenotePublisher: createDelimitedBlockCommand('prenote.pbl', {
-      attrs: { origin: 'pbl' },
-      className: 'prenote',
-    }),
-    prenoteTranslator: createDelimitedBlockCommand('prenote.tr', {
-      attrs: { origin: 'tr' },
-      className: 'prenote',
-    }),
-    question: createDelimitedBlockCommand('question', {
-      contentBefore: '[nom de personne]{.speaker}',
-    }),
-    altQuote: createDelimitedBlockCommand('quote-alt'),
-    refs: createBlockCommand(
-      'refs',
-      (t) => `\n\n## ${t('actions.preamble.refs')}`,
-      {
+    refs: {
+      type: actionTypes.BLOCK,
+      content: (t) => `\n\n## ${t('actions.preamble.refs')}`,
+      options: {
         // returns the cursor to its initial position
         endCursorState({ selection }) {
           return selection
@@ -133,32 +136,193 @@ export const actions = {
             lastLineMaxChar
           )
         },
-      }
-    ),
-    richQuote: createDelimitedBlockCommand('rich-quote', {
-      attrs: { lang: 'lang-value' },
-      contentBefore: '> ',
-      contentAfter:
-        '> \n[@<source>]\n\n:::{.translation lang="lang-value"}\n> \n> \n[@<source>]\n:::\n\n:::{.translation lang="lang-value"}\n> \n> \n> \n:::\n',
-    }),
-    reponse: createDelimitedBlockCommand('answer', {
-      contentBefore: '[nom de personne]{.speaker}',
-    }),
-    signature: createDelimitedBlockCommand('sig'),
-    smallcaps: createInlineBlockCommand('smallcaps', {
-      className: 'smallcaps',
-    }),
-    sponsor: createDelimitedBlockCommand('sponsor'),
-    surtitle: createInlineBlockCommand('surtitle', { className: 'surtitle' }),
-    translation: createDelimitedBlockCommand('translation', {
-      attrs: { lang: 'lang-value' },
-    }),
-    verse: createInlineBlockCommand('verse', {
-      className: 'verse',
-      contentBefore: '> [',
-      attrs: { num: '123' },
-    }),
+      },
+    },
+    ack: {
+      type: actionTypes.DELIMITED_BLOCK,
+      options: {
+        keybindings: [
+          KeyMod.chord(
+            KeyMod.CtrlCmd | KeyCode.KeyM,
+            KeyMod.CtrlCmd | KeyCode.KeyA
+          ),
+        ],
+      },
+    },
+    answer: {
+      type: actionTypes.DELIMITED_BLOCK,
+      options: { contentBefore: '[nom de personne]{.speaker}' },
+      classes: { inline: ['speaker'] },
+    },
+    argument: { type: actionTypes.DELIMITED_BLOCK },
+    credits: { type: actionTypes.DELIMITED_BLOCK },
+    dedication: { type: actionTypes.DELIMITED_BLOCK },
+    epigraph: {
+      type: actionTypes.DELIMITED_BLOCK,
+      options: {
+        contentBefore: ':::{.rich-quote}\n',
+        contentAfter: '\n[@source]\n:::',
+      },
+      classes: { block: ['rich-quote'] },
+    },
+    figure: {
+      type: actionTypes.DELIMITED_BLOCK,
+      options: {
+        contentBefore: '\n[titre]{.head}\n',
+        contentAfter: '\n![caption](image.png)',
+      },
+      classes: { inline: ['head'] },
+    },
+    linguistic: {
+      type: actionTypes.DELIMITED_BLOCK,
+      options: {
+        attrs: { lang: 'lang-value', num: '123', label: 'value' },
+        contentBefore: '> ',
+        contentAfter:
+          '> \n[@<source>]\n\n:::{.translation lang="lang-value"}\n> \n> \n[@<source>]\n:::\n\n:::{.translation lang="lang-value"}\n> \n> \n> \n:::\n',
+      },
+      classes: { block: ['translation'] },
+    },
+    outline: {
+      type: actionTypes.DELIMITED_BLOCK,
+      options: {
+        className: 'box',
+        contentBefore: '\n[titre]{.head}\n',
+        contentAfter: '\n[[nom]{.name} [prenom]{.surname}]{.aut}',
+      },
+      classes: {
+        block: ['outline'],
+        inline: ['head', 'name', 'surname', 'aut'],
+      },
+    },
+    'prenote-aut': {
+      type: actionTypes.DELIMITED_BLOCK,
+      options: { attrs: { origin: 'aut' }, className: 'prenote' },
+    },
+    'prenote-pbl': {
+      type: actionTypes.DELIMITED_BLOCK,
+      options: { attrs: { origin: 'pbl' }, className: 'prenote' },
+    },
+    'prenote-tr': {
+      type: actionTypes.DELIMITED_BLOCK,
+      options: { attrs: { origin: 'tr' }, className: 'prenote' },
+    },
+    question: {
+      type: actionTypes.DELIMITED_BLOCK,
+      options: { contentBefore: '[nom de personne]{.speaker}' },
+      classes: { inline: ['speaker'] },
+    },
+    'quote-alt': { type: actionTypes.DELIMITED_BLOCK },
+    'quote-rich': {
+      type: actionTypes.DELIMITED_BLOCK,
+      options: {
+        className: 'rich-quote',
+        attrs: { lang: 'lang-value' },
+        contentBefore: '> ',
+        contentAfter:
+          '> \n[@<source>]\n\n:::{.translation lang="lang-value"}\n> \n> \n[@<source>]\n:::\n\n:::{.translation lang="lang-value"}\n> \n> \n> \n:::\n',
+      },
+      classes: { block: ['translation'] },
+    },
+    sig: { type: actionTypes.DELIMITED_BLOCK },
+    sponsor: { type: actionTypes.DELIMITED_BLOCK },
+    translation: {
+      type: actionTypes.DELIMITED_BLOCK,
+      options: { attrs: { lang: 'lang-value' } },
+    },
+    'credits-inline': {
+      type: actionTypes.INLINE,
+      options: { className: 'credits' },
+    },
+    endnote: {
+      type: actionTypes.INLINE,
+      options: {
+        className: 'endnote',
+        keybindings: [KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyD],
+      },
+    },
+    'index-entry': {
+      type: actionTypes.INLINE,
+      options: {
+        className: 'index-type',
+        attrs: { idref: () => self.crypto.randomUUID() },
+      },
+    },
+    'quote-inline': {
+      type: actionTypes.INLINE,
+      options: { className: 'inlinequote' },
+    },
+    smallcaps: {
+      type: actionTypes.INLINE,
+      options: { className: 'smallcaps' },
+    },
+    surtitle: {
+      type: actionTypes.INLINE,
+      options: { className: 'surtitle' },
+    },
+    verse: {
+      type: actionTypes.INLINE,
+      options: {
+        className: 'verse',
+        contentBefore: '> [',
+        attrs: { num: '123' },
+      },
+    },
   },
+}
+
+/**
+ * Turns a static actions schema namespace into Monaco action descriptors,
+ * keeping the same keys.
+ * @param {string} namespace
+ * @returns {Record<string, IActionDescriptor>}
+ */
+export function buildActions(namespace) {
+  return Object.fromEntries(
+    Object.entries(actionsSchema[namespace]).map(([key, action]) => [
+      key,
+      {
+        ...factories[action.type](key, action),
+        id: `stylo--${namespace}--${action.type}--${key}`,
+      },
+    ])
+  )
+}
+
+/**
+ * Lists the block and inline classes an actions namespace can insert.
+ * @param {string} namespace
+ * @returns {{ blocks: Set<string>, inlines: Set<string> }}
+ */
+export function knownClasses(namespace) {
+  const blocks = new Set()
+  const inlines = new Set()
+
+  const classesByType = {
+    [actionTypes.DELIMITED_BLOCK]: blocks,
+    [actionTypes.INLINE]: inlines,
+  }
+
+  for (const [key, action] of Object.entries(actionsSchema[namespace])) {
+    // Only fenced divs default their class to the command id
+    const className =
+      action.options?.className ??
+      (action.type === actionTypes.DELIMITED_BLOCK ? key : null)
+
+    if (className) {
+      classesByType[action.type]?.add(className)
+    }
+    for (const c of action.classes?.block ?? []) blocks.add(c)
+    for (const c of action.classes?.inline ?? []) inlines.add(c)
+  }
+
+  return { blocks, inlines }
+}
+
+/** @type {Record<string, Record<string, IActionDescriptor>>} */
+export const actions = {
+  markdown: buildActions('markdown'),
+  metopes: buildActions('metopes'),
   saveShortcut(run) {
     return [
       {
@@ -214,7 +378,9 @@ export function registerActions(
   actions,
   { palette = true, shortcuts = true } = {}
 ) {
-  for (const action of Object.values(actions)) {
+  const list = Array.isArray(actions) ? actions : Object.values(actions)
+
+  for (const action of list) {
     // adding an entry in the command palette also registers its keybinding
     if (palette) {
       editor.addAction(bindAction(editor, t, action))
@@ -285,12 +451,12 @@ export function MetopesMenu({ editor, t }) {
         'stylo--metopes--liminaires',
         t('stylo.metopes.liminaires'),
         [
-          _bindAction(actions.metopes.acknowledgement),
+          _bindAction(actions.metopes.ack),
           _bindAction(actions.metopes.argument),
           _bindAction(actions.metopes.epigraph),
-          _bindAction(actions.metopes.prenoteAuthor),
-          _bindAction(actions.metopes.prenotePublisher),
-          _bindAction(actions.metopes.prenoteTranslator),
+          _bindAction(actions.metopes['prenote-aut']),
+          _bindAction(actions.metopes['prenote-pbl']),
+          _bindAction(actions.metopes['prenote-tr']),
           _bindAction(actions.metopes.dedication),
           _bindAction(actions.metopes.sponsor),
         ]
@@ -299,10 +465,10 @@ export function MetopesMenu({ editor, t }) {
         'stylo--metopes--citations',
         t('stylo.metopes.citations'),
         [
-          _bindAction(actions.metopes.inlineQuote),
-          _bindAction(actions.metopes.altQuote),
+          _bindAction(actions.metopes['quote-inline']),
+          _bindAction(actions.metopes['quote-alt']),
           _bindAction(actions.metopes.refs),
-          _bindAction(actions.metopes.richQuote),
+          _bindAction(actions.metopes['quote-rich']),
           _bindAction(actions.metopes.verse),
         ]
       ),
@@ -312,13 +478,13 @@ export function MetopesMenu({ editor, t }) {
           t('stylo.metopes.entretien'),
           [
             _bindAction(actions.metopes.question),
-            _bindAction(actions.metopes.reponse),
+            _bindAction(actions.metopes.answer),
           ]
         ),
         _bindAction(actions.metopes.endnote),
-        _bindAction(actions.metopes.indexEntry),
+        _bindAction(actions.metopes['index-entry']),
         _bindAction(actions.metopes.linguistic),
-        _bindAction(actions.metopes.signature),
+        _bindAction(actions.metopes.sig),
         _bindAction(actions.metopes.smallcaps),
         _bindAction(actions.metopes.surtitle),
         _bindAction(actions.metopes.translation),
@@ -326,7 +492,7 @@ export function MetopesMenu({ editor, t }) {
       new SubmenuAction('stylo--metopes--figure', t('stylo.metopes.figure'), [
         _bindAction(actions.metopes.figure),
         _bindAction(actions.metopes.credits),
-        _bindAction(actions.metopes.inlineCredits),
+        _bindAction(actions.metopes['credits-inline']),
       ]),
       _bindAction(actions.metopes.outline),
     ]
@@ -340,25 +506,25 @@ export function MarkdownMenu({ editor, t }) {
     'stylo--markdown--root',
     t('stylo.markdown.rootMenu'),
     [
-      _bindAction(actions.md.hyperlink),
-      _bindAction(actions.md.italic),
-      _bindAction(actions.md.bold),
-      _bindAction(actions.md.delete),
-      _bindAction(actions.md.citation),
-      _bindAction(actions.md.sub),
-      _bindAction(actions.md.sup),
-      _bindAction(actions.md.footnote),
-      _bindAction(actions.md.separator),
+      _bindAction(actions.markdown.hyperlink),
+      _bindAction(actions.markdown.italic),
+      _bindAction(actions.markdown.bold),
+      _bindAction(actions.markdown.strikethrough),
+      _bindAction(actions.markdown.blockquote),
+      _bindAction(actions.markdown.sub),
+      _bindAction(actions.markdown.sup),
+      _bindAction(actions.markdown.footnote),
+      _bindAction(actions.markdown.separator),
       new SubmenuAction(
         'stylo--markdown--headings',
         t('stylo.markdown.headings'),
         [
-          _bindAction(actions.md.headline1),
-          _bindAction(actions.md.headline2),
-          _bindAction(actions.md.headline3),
-          _bindAction(actions.md.headline4),
-          _bindAction(actions.md.headline5),
-          _bindAction(actions.md.headline6),
+          _bindAction(actions.markdown.section1),
+          _bindAction(actions.markdown.section2),
+          _bindAction(actions.markdown.section3),
+          _bindAction(actions.markdown.section4),
+          _bindAction(actions.markdown.section5),
+          _bindAction(actions.markdown.section6),
         ]
       ),
     ]

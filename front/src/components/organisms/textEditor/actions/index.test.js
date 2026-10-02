@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 
-import { blockAttributes } from './index.js'
+import { blockAttributes, knownClasses } from './index.js'
 
 describe('blockAttributes', () => {
   test('works with a single className', () => {
@@ -29,5 +29,19 @@ describe('blockAttributes', () => {
         attrs: null,
       })
     ).toEqual('')
+  })
+})
+
+describe('knownClasses', () => {
+  test('ignores actions which insert no class', () => {
+    const { blocks, inlines } = knownClasses('markdown')
+    expect([...blocks]).toEqual([])
+    expect([...inlines]).toEqual([])
+  })
+
+  test('defaults fenced div classes to the command id', () => {
+    const { blocks, inlines } = knownClasses('metopes')
+    expect(blocks.has('argument')).toBe(true)
+    expect(inlines.has('credits')).toBe(true)
   })
 })
