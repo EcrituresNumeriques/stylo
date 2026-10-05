@@ -491,9 +491,8 @@ module.exports = {
     },
 
     /**
-     * Fetch all the articles related to a user:
-     * - one stated by the JWT token (context.user), a User object
-     * - one we are supposedly able ot impersonate (args.user), an ID
+     * Fetch all the articles related to the authenticated user.
+     * The user is only derived from the JWT token (context.user).
      *
      * We list:
      * - their articles
@@ -501,7 +500,7 @@ module.exports = {
      * - BUT not the granted account shared articles — we switch into their view for this
      *
      * @param {null} _root
-     * @param {{ user?: String, filter?: { workspaceId?: string, corpusId?: string } }} args
+     * @param {{ filter?: { workspaceId?: string, corpusId?: string } }} args
      * @param {{ user: User, token: Object, userId: String, loaders: { tags, users } }} context
      * @returns {Promise<import('./article')[]>}
      */
