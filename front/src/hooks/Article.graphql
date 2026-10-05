@@ -127,8 +127,8 @@ mutation deleteArticle($articleId: ID!) {
   deleteArticle(articleId: $articleId)
 }
 
-mutation duplicateArticle($user: ID, $articleId: ID!, $to: ID!) {
-  duplicateArticle(article: $articleId, to: $to, user: $user) {
+mutation duplicateArticle($articleId: ID!, $to: ID!) {
+  duplicateArticle(article: $articleId, to: $to) {
     _id
     title
     createdAt

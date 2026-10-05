@@ -28,20 +28,22 @@ export default function UserProfile() {
     []
   )
 
-  const updateInfo = useCallback(async (e) => {
-    e.preventDefault()
-    setIsSaving(true)
-    const variables = {
-      user: activeUser._id,
-      details: fromFormData(e.target),
-    }
-    const { updateUser: userDetails } = await query({
-      query: updateUser,
-      variables,
-    })
-    updateActiveUserDetails(userDetails)
-    setIsSaving(false)
-  }, [])
+  const updateInfo = useCallback(
+    async (e) => {
+      e.preventDefault()
+      setIsSaving(true)
+      const variables = {
+        details: fromFormData(e.target),
+      }
+      const { updateUser: userDetails } = await query({
+        query: updateUser,
+        variables,
+      })
+      updateActiveUserDetails(userDetails)
+      setIsSaving(false)
+    },
+    [query, updateActiveUserDetails]
+  )
 
   return (
     <>

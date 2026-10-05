@@ -5,11 +5,9 @@ import { addContact, getContacts, removeContact } from './Contacts.graphql'
 import useFetchData from './graphql.js'
 
 export function useContactActions() {
-  const activeUser = useSelector((state) => state.activeUser)
   const sessionToken = useSelector((state) => state.sessionToken)
-  const activeUserId = activeUser._id
   const { data, mutate, isLoading, error } = useFetchData(
-    { query: getContacts, variables: { userId: activeUserId } },
+    { query: getContacts },
     {
       revalidateIfStale: false,
       revalidateOnFocus: false,

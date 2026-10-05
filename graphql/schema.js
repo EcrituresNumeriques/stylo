@@ -427,21 +427,21 @@ type Query {
   """
   Get authenticated user info.
   """
-  user(user: ID): User
+  user: User
 
   getUser(filter: UserFilter): User
 
-  "Fetch tagged articles for a given user"
-  tags(user: ID): [Tag]
+  "Fetch the authenticated user's tags"
+  tags: [Tag]
 
-  "Fetch tagged articles for a given user"
-  tag(user: ID, tag: ID!): Tag
+  "Fetch a tag of the authenticated user"
+  tag(tag: ID!): Tag
 
-  "Fetch articles, optionally from a given Workspace"
-  articles (user: ID, filter: FilterCorpusInput): [Article]
+  "Fetch the authenticated user's articles, optionally filtered by workspace or corpus"
+  articles (filter: FilterCorpusInput): [Article]
 
   "Fetch article info [need to have access to this article]"
-  article(user: ID, article: ID!): Article
+  article(article: ID!): Article
 
   "Fetch an article [with an access key]"
   sharedArticle(article: ID!, accessKey: JWT): Article
@@ -522,40 +522,26 @@ type Mutation {
 
   """
   Add a user to your contacts list by their email address.
-  Requires authentication as the specified user.
+  Requires authentication.
   """
-  addAcquintance(email: EmailAddress!, user: ID): User @deprecated(reason: "Use addContact instead.")
+  addAcquintance(email: EmailAddress!): User @deprecated(reason: "Use addContact instead.")
 
   """
-  Change the password for the specified user account.
-  Requires authentication as the specified user.
+  Change the password of the authenticated user.
+  Requires authentication.
   """
-  changePassword(old: String!, new: String!, user: ID): User
+  changePassword(old: String!, new: String!): User
 
   """
-  Update profile information for the specified user (display name, first/last name, institution).
-  Requires authentication as the specified user.
+  Update profile information of the authenticated user (display name, first/last name, institution).
+  Requires authentication.
   """
-  updateUser(user: ID, details: UserProfileInput!): User
-
-  """
-  Grant access to a user account via an additional email address (credential).
-  To create a new user with a credential: call createUser first, then addCredential.
-  Requires authentication as the specified user.
-  """
-  addCredential(email: EmailAddress!, user: ID): User
-
-  """
-  Revoke access to a user account for a given email address.
-  The email must not be the account's primary email.
-  Requires authentication as the specified user.
-  """
-  removeCredential(email: EmailAddress!, user: ID): User
+  updateUser(details: UserProfileInput!): User
 
   """
   Create a new article for the authenticated user.
   Optionally assigns tags and workspaces to the article at creation time.
-  Requires authentication as the specified user.
+  Requires authentication.
   """
   createArticle(createArticleInput: CreateArticleInput!): Article
 
@@ -585,26 +571,26 @@ type Mutation {
   Delete a tag and remove it from all articles it was applied to.
   Requires authentication as the tag owner.
   """
-  deleteTag(tag: ID!, user: ID): Boolean
+  deleteTag(tag: ID!): Boolean
 
   """
   Share an article with another user, granting them contributor access.
   Requires authentication as the article owner.
   """
-  shareArticle(article: ID!, to: ID!, user: ID): Article
+  shareArticle(article: ID!, to: ID!): Article
 
   """
   Remove a user's contributor access from an article.
   Requires authentication as the article owner.
   """
-  unshareArticle(article: ID!, to: ID!, user: ID): Article
+  unshareArticle(article: ID!, to: ID!): Article
 
   """
   Duplicate the working copy of an article and assign it to another user (or yourself).
   The duplicate is created as a new, independent article.
-  Requires authentication as the specified user.
+  Requires authentication and access to the article.
   """
-  duplicateArticle(article: ID!, to: ID!, user: ID): Article
+  duplicateArticle(article: ID!, to: ID!): Article
 
   """
   Create a new workspace.

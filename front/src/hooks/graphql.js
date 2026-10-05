@@ -5,7 +5,7 @@ import useSWR, { useSWRConfig } from 'swr'
 import { executeQuery } from '../helpers/graphQL.js'
 
 /**
- * @typedef {import('graphql/language/ast').ASTNode} ASTNode
+ * @typedef {import('graphql').ASTNode} ASTNode
  * @typedef {import('swr/_internal').SWRConfiguration} SWRConfiguration
  * @typedef {import('swr/_internal').SWRResponse} SWRResponse
  */
@@ -14,7 +14,7 @@ import { executeQuery } from '../helpers/graphQL.js'
  * Fetch data using SWR.
  * @param {object} config config
  * @param {string|ASTNode} config.query GraphQL query
- * @param {{[key : string]: unknown}} config.variables query arguments
+ * @param {{[key : string]: unknown}} [config.variables] query arguments
  * @param {SWRConfiguration} [options] - SWR options (optional)
  * @returns {SWRResponse}
  */
@@ -68,6 +68,10 @@ function resolveKeyFunction(fn, sessionToken) {
   return null
 }
 
+/**
+ * @param queryOrAST
+ * @returns {string|ASTNode}
+ */
 function resolveQuery(queryOrAST) {
   return typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
 }
@@ -77,7 +81,7 @@ function resolveQuery(queryOrAST) {
  * This function relies on https://swr.vercel.app/docs/mutation#mutate.
  * @param {object} config config
  * @param {string|ASTNode} config.query GraphQL query
- * @param {{[key : string]: unknown}|undefined} config.variables query arguments
+ * @param {{[key : string]: unknown}} [config.variables] query arguments
  * @returns {{mutate: (function(function(): Promise?, unknown?): Promise<unknown>)}}
  */
 export function useMutateData({ query, variables }) {
@@ -96,7 +100,7 @@ export function useMutateData({ query, variables }) {
 /**
  * @param {object} config config
  * @param {string|ASTNode} config.query GraphQL query
- * @param {{[key : string]: unknown}} config.variables query arguments
+ * @param {{[key : string]: unknown}} [config.variables] query arguments
  * @returns {{query: string, variables: {[key : string]: unknown}, sessionToken: string}} an SWR key
  */
 function useSWRKey({ query: queryOrAST, variables }) {

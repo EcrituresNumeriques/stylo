@@ -14,7 +14,6 @@ export default function Credentials() {
   const [passwordO, setPasswordO] = useState('')
   const [passwordC, setPasswordC] = useState('')
   const [isUpdating, setIsUpdating] = useState(false)
-  const userId = useSelector((state) => state.activeUser._id)
   const hasExistingPassword = useSelector((state) =>
     state.activeUser.authTypes.includes('local')
   )
@@ -28,7 +27,7 @@ export default function Credentials() {
     } else {
       return password && passwordC && password === passwordC
     }
-  }, [passwordO, password, passwordC])
+  }, [passwordO, password, passwordC, hasExistingPassword])
 
   const updateActiveUserDetails = useCallback(
     (payload) =>
@@ -46,7 +45,6 @@ export default function Credentials() {
       const variables = {
         old: passwordO,
         new: password,
-        user: userId,
       }
       const { changePassword: details } = await query({
         query: changePasswordQuery,

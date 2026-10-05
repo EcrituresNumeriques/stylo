@@ -24,8 +24,8 @@ query getUserByEmail($userEmail: String!) {
   }
 }
 
-query getContacts($userId: ID!) {
-  user(user: $userId) {
+query getContacts {
+  user {
     acquintances {
       ...extendedPublicUserFields
     }
