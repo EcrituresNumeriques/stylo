@@ -1,467 +1,577 @@
 # This file was generated. Do not edit manually.
 
 schema {
-    query: Query
-    mutation: Mutation
+  query: Query
+  mutation: Mutation
 }
 
 "Indicates exactly one field must be supplied and this field must not be `null`."
 directive @oneOf on INPUT_OBJECT
 
 interface InstanceObjectUsageStats {
-    total: Int!
-    years: [InstanceObjectUsageYearlyStats]
+  total: Int!
+  years: [InstanceObjectUsageYearlyStats]
 }
 
 type Article {
-    _id: ID!
-    addContributor(userId: ID!): Article
-    addTags(tags: [ID]!): [Tag]
-    contributors: [ArticleContributor]!
-    createVersion(articleVersionInput: ArticleVersionInput!): Article
-    createdAt: DateTime
-    delete(dryRun: Boolean): Boolean
-    nakalaLink: String
-    owner: User
-    preview: ArticlePreviewSettings
-    removeContributor(userId: ID!): Article
-    removeTags(tags: [ID]!): [Tag]
-    rename(title: String!): Boolean
-    setNakalaLink(nakala: String!): Boolean
-    setPreviewSettings(settings: ArticlePreviewInput!): Article
-    setZoteroLink(zotero: String!): Boolean
-    tags: [Tag!]!
-    title: String
-    updateWorkingVersion(content: WorkingVersionInput!): Article
-    updatedAt: DateTime
-    versions(limit: Int, page: Int): [Version!]
-    workingVersion: WorkingVersion
-    workspaces: [Workspace!]
-    zoteroLink: String
+  _id: ID!
+  addContributor(userId: ID!): Article @deprecated(reason: "Use addArticleContributor mutation at the root instead.")
+  addTags(tags: [ID]!): [Tag] @deprecated(reason: "Use addArticleTags mutation at the root instead.")
+  contributors: [ArticleContributor]!
+  createVersion(articleVersionInput: ArticleVersionInput!): Article @deprecated(reason: "Use createArticleVersion mutation at the root instead.")
+  createdAt: DateTime
+  delete(dryRun: Boolean): Boolean @deprecated(reason: "Use deleteArticle mutation at the root instead.")
+  nakalaLink: String
+  owner: User
+  preview: ArticlePreviewSettings
+  removeContributor(userId: ID!): Article @deprecated(reason: "Use removeArticleContributor mutation at the root instead.")
+  removeTags(tags: [ID]!): [Tag] @deprecated(reason: "Use removeArticleTags mutation at the root instead.")
+  rename(title: String!): Boolean @deprecated(reason: "Use renameArticle mutation at the root instead.")
+  setNakalaLink(nakala: String!): Boolean @deprecated(reason: "Use setArticleNakalaLink mutation at the root instead.")
+  setPreviewSettings(settings: ArticlePreviewInput!): Article @deprecated(reason: "Use setArticlePreviewSettings mutation at the root instead.")
+  setZoteroLink(zotero: String!): Boolean @deprecated(reason: "Use setArticleZoteroLink mutation at the root instead.")
+  tags: [Tag!]!
+  title: String
+  updateWorkingVersion(content: WorkingVersionInput!): Article @deprecated(reason: "Use updateArticleWorkingVersion mutation at the root instead.")
+  updatedAt: DateTime
+  versions(limit: Int, page: Int): [Version!]
+  workingVersion: WorkingVersion
+  workspaces: [Workspace!]
+  zoteroLink: String
 }
 
 type ArticleContributor {
-    roles: [String]
-    user: User!
+  roles: [String]
+  user: User!
 }
 
 type ArticlePreviewSettings {
-    stylesheet: String!
-    template: String
+  stylesheet: String!
+  template: String
 }
 
 type AuthProvider {
-    id: String
-    token: String
-    updatedAt: DateTime
+  id: String
+  token: String
+  updatedAt: DateTime
 }
 
 type AuthProvidersMap {
-    humanid: AuthProvider
-    hypothesis: AuthProvider
-    zotero: AuthProvider
+  humanid: AuthProvider
+  hypothesis: AuthProvider
+  zotero: AuthProvider
 }
 
 type BibliographyEntry {
-    authorName: String
-    date: String
-    entry: JSON
-    key: String!
-    title: String!
-    type: String!
+  authorName: String
+  date: String
+  entry: JSON
+  key: String!
+  title: String!
+  type: String!
 }
 
 type Corpus {
-    _id: String!
-    addArticle(articleId: ID!): Corpus
-    article(articleId: ID!): CorpusArticle
-    articles: [CorpusArticle!]!
-    createdAt: DateTime
-    creator: User!
-    delete: Corpus!
-    description: String
-    metadata: JSON
-    name: String!
-    rename(name: String!): Corpus
-    type: CorpusType!
-    update(updateCorpusInput: UpdateCorpusInput!): Corpus!
-    updateArticlesOrder(articlesOrderInput: [ArticleOrder!]!): Corpus
-    updateMetadata(metadata: JSON!): Corpus
-    updatedAt: DateTime
-    workspace: String
+  _id: String!
+  addArticle(articleId: ID!): Corpus @deprecated(reason: "Use addCorpusArticle mutation at the root instead.")
+  article(articleId: ID!): CorpusArticle
+  articles: [CorpusArticle!]!
+  createdAt: DateTime
+  creator: User!
+  delete: Corpus! @deprecated(reason: "Use deleteCorpus mutation at the root instead.")
+  description: String
+  metadata: JSON
+  name: String!
+  rename(name: String!): Corpus @deprecated(reason: "Use renameCorpus mutation at the root instead.")
+  type: CorpusType!
+  update(updateCorpusInput: UpdateCorpusInput!): Corpus! @deprecated(reason: "Use updateCorpus mutation at the root instead.")
+  updateArticlesOrder(articlesOrderInput: [ArticleOrder!]!): Corpus @deprecated(reason: "Use updateCorpusArticlesOrder mutation at the root instead.")
+  updateMetadata(metadata: JSON!): Corpus @deprecated(reason: "Use updateCorpusMetadata mutation at the root instead.")
+  updatedAt: DateTime
+  workspace: String
 }
 
 type CorpusArticle {
-    article: Article
-    corpus: Corpus!
-    move(order: Int): Corpus
-    order: Int
-    remove: Corpus!
+  article: Article
+  corpus: Corpus!
+  move(order: Int): Corpus @deprecated(reason: "Use moveCorpusArticle mutation at the root instead.")
+  order: Int
+  remove: Corpus! @deprecated(reason: "Use removeCorpusArticle mutation at the root instead.")
 }
 
 type InstanceArticleStats implements InstanceObjectUsageStats {
-    total: Int!
-    years: [InstanceObjectUsageYearlyStats]
+  total: Int!
+  years: [InstanceObjectUsageYearlyStats]
 }
 
 type InstanceObjectUsageYearlyStats {
-    count: Int
-    year: Int
+  count: Int
+  year: Int
 }
 
 type InstanceUsageStats {
-    articles: InstanceArticleStats
-    users: InstanceUserStats
-    version: String
+  articles: InstanceArticleStats
+  users: InstanceUserStats
+  version: String
 }
 
 type InstanceUserStats implements InstanceObjectUsageStats {
-    local: Int
-    openid: Int
-    total: Int!
-    years: [InstanceObjectUsageYearlyStats]
+  local: Int
+  openid: Int
+  total: Int!
+  years: [InstanceObjectUsageYearlyStats]
 }
 
 type Mutation {
-    """
+  """
 
-    Add a user to your contacts list by their email address.
-    Requires authentication as the specified user.
-    @deprecated Use addContact instead.
-    """
-    addAcquintance(email: EmailAddress!, user: ID): User
-    """
+  Add a user to your contacts list by their email address.
+  Requires authentication.
+  """
+  addAcquintance(email: EmailAddress!): User @deprecated(reason: "Use addContact instead.")
+  """
 
-    Add a user to your contacts list by their user ID.
-    Requires authentication.
-    """
-    addContact(contactUserId: ID!): User
-    """
+  Add a contributor to an article, granting them write access.
+  Requires authentication with access to the article.
+  """
+  addArticleContributor(articleId: ID!, userId: ID!): Article
+  """
 
-    Grant access to a user account via an additional email address (credential).
-    To create a new user with a credential: call createUser first, then addCredential.
-    Requires authentication as the specified user.
-    """
-    addCredential(email: EmailAddress!, user: ID): User
-    """
+  Add tags to an article. Returns the updated list of tags.
+  Requires authentication with access to the article.
+  """
+  addArticleTags(articleId: ID!, tags: [ID]!): [Tag]
+  """
 
-    Retrieve an article by ID to perform mutations on it.
-    Returns an error if the article does not exist or cannot be accessed.
-    """
-    article(articleId: ID!): Article
-    """
+  Add a user to your contacts list by their user ID.
+  Requires authentication.
+  """
+  addContact(contactUserId: ID!): User
+  """
 
-    Change the password for the specified user account.
-    Requires authentication as the specified user.
-    """
-    changePassword(new: String!, old: String!, user: ID): User
-    """
+  Add an article to a corpus.
+  Requires authentication with access to the corpus.
+  """
+  addCorpusArticle(articleId: ID!, corpusId: ID!): Corpus
+  "Add an article to a workspace."
+  addWorkspaceArticle(articleId: ID!, workspaceId: ID!): Workspace
+  """
 
-    Retrieve a corpus by ID to perform mutations on it.
-    Returns an error if the corpus does not exist or cannot be accessed.
-    """
-    corpus(corpusId: ID!): Corpus
-    """
+  Retrieve an article by ID to perform mutations on it.
+  Returns an error if the article does not exist or cannot be accessed.
+  """
+  article(articleId: ID!): Article
+  """
 
-    Create a new article for the authenticated user.
-    Optionally assigns tags and workspaces to the article at creation time.
-    Requires authentication as the specified user.
-    """
-    createArticle(createArticleInput: CreateArticleInput!): Article
-    """
+  Change the password of the authenticated user.
+  Requires authentication.
+  """
+  changePassword(new: String!, old: String!): User
+  """
 
-    Create a new corpus in a workspace.
-    A corpus groups articles together for publication or export purposes.
-    """
-    createCorpus(createCorpusInput: CreateCorpusInput!): Corpus
-    """
+  Retrieve a corpus by ID to perform mutations on it.
+  Returns an error if the corpus does not exist or cannot be accessed.
+  """
+  corpus(corpusId: ID!): Corpus
+  """
 
-    Create a new tag for the authenticated user.
-    Tags can be used to organise and filter articles.
-    Requires authentication.
-    """
-    createTag(color: HexColorCode!, description: String, name: String!): Tag
-    """
+  Create a new article for the authenticated user.
+  Optionally assigns tags and workspaces to the article at creation time.
+  Requires authentication.
+  """
+  createArticle(createArticleInput: CreateArticleInput!): Article
+  """
 
-    Create a new user account with email/password authentication.
-    Also creates a default article for the new user.
-    """
-    createUser(details: NewUserInput!): User!
-    """
+  Create a new version snapshot of an article's working copy.
+  Requires authentication with access to the article.
+  """
+  createArticleVersion(articleId: ID!, articleVersionInput: ArticleVersionInput!): Article
+  """
 
-    Finalize user account creation after authentication with an external provider (e.g. OIDC).
-    Returns a JWT token for the newly created session.
-    """
-    createUserWithAuth(details: NewUserWithAuthInput!, service: AuthTokenService!): String
-    """
+  Create a new corpus in a workspace.
+  A corpus groups articles together for publication or export purposes.
+  """
+  createCorpus(createCorpusInput: CreateCorpusInput!): Corpus
+  """
 
-    Create a new workspace.
-    The authenticated user becomes the creator and first member of the workspace.
-    """
-    createWorkspace(createWorkspaceInput: CreateWorkspaceInput!): Workspace
-    """
+  Create a new tag for the authenticated user.
+  Tags can be used to organise and filter articles.
+  Requires authentication.
+  """
+  createTag(color: HexColorCode!, description: String, name: String!): Tag
+  """
 
-    Permanently and irreversibly delete the authenticated user's account.
-    Once confirmed, the account and all associated data cannot be restored or recovered.
+  Create a new user account with email/password authentication.
+  Also creates a default article for the new user.
+  """
+  createUser(details: NewUserInput!): User!
+  """
 
-    Deletes all articles and corpora for which the authenticated user is the sole owner.
-    Data shared with other users (directly or via a workspace) remains accessible to those users after deletion.
+  Finalize user account creation after authentication with an external provider (e.g. OIDC).
+  Returns a JWT token for the newly created session.
+  """
+  createUserWithAuth(details: NewUserWithAuthInput!, service: AuthTokenService!): String
+  """
 
-    Requires authentication.
-    """
-    deleteAccount: Boolean
-    """
+  Create a new workspace.
+  The authenticated user becomes the creator and first member of the workspace.
+  """
+  createWorkspace(createWorkspaceInput: CreateWorkspaceInput!): Workspace
+  """
 
-    Delete a tag and remove it from all articles it was applied to.
-    Requires authentication as the tag owner.
-    """
-    deleteTag(tag: ID!, user: ID): Boolean
-    """
+  Permanently and irreversibly delete the authenticated user's account.
+  Once confirmed, the account and all associated data cannot be restored or recovered.
 
-    Duplicate the working copy of an article and assign it to another user (or yourself).
-    The duplicate is created as a new, independent article.
-    Requires authentication as the specified user.
-    """
-    duplicateArticle(article: ID!, to: ID!, user: ID): Article
-    """
+  Deletes all articles and corpus for which the authenticated user is the sole owner.
+  Data shared with other users (directly or via a workspace) remains accessible to those users after deletion.
 
-    Import an article from external content (title, Markdown body, BibTeX bibliography, JSON metadata).
-    Creates a new article owned by the authenticated user with the provided content as its working copy.
-    Requires authentication.
-    """
-    importArticle(input: ImportArticleInput!): Article
-    "Log out the currently authenticated user and invalidate the current session."
-    logout: User
-    """
+  Requires authentication.
+  """
+  deleteAccount: Boolean
+  """
 
-    Remove a user from your contacts list by their user ID.
-    Requires authentication.
-    """
-    removeContact(contactUserId: ID!): User
-    """
+  Delete an article by ID.
+  Returns true if the article was deleted.
+  Requires authentication with access to the article.
+  """
+  deleteArticle(articleId: ID!, dryRun: Boolean): Boolean
+  """
 
-    Revoke access to a user account for a given email address.
-    The email must not be the account's primary email.
-    Requires authentication as the specified user.
-    """
-    removeCredential(email: EmailAddress!, user: ID): User
-    """
+  Delete a corpus by ID.
+  Requires authentication with access to the corpus.
+  """
+  deleteCorpus(corpusId: ID!): Corpus!
+  """
 
-    Link an external service token (HumanID, Hypothesis, Zotero) to the current user account.
-    Requires authentication.
-    """
-    setAuthToken(service: AuthTokenService!): User
-    """
+  Delete a tag and remove it from all articles it was applied to.
+  Requires authentication as the tag owner.
+  """
+  deleteTag(tag: ID!): Boolean
+  """
 
-    Updates the articles associated with the corpus.
-    Existing articles that are not in the list will be removed, and articles not currently present will be added.
-    """
-    setCorpusArticles(setCorpusArticlesInput: SetCorpusArticlesInput!): Corpus
-    """
+  Duplicate the working copy of an article and assign it to another user (or yourself).
+  The duplicate is created as a new, independent article.
+  Requires authentication and access to the article.
+  """
+  duplicateArticle(article: ID!, to: ID!): Article
+  """
 
-    Share an article with another user, granting them contributor access.
-    Requires authentication as the article owner.
-    """
-    shareArticle(article: ID!, to: ID!, user: ID): Article
-    """
+  Import an article from external content (title, Markdown body, BibTeX bibliography, JSON metadata).
+  Creates a new article owned by the authenticated user with the provided content as its working copy.
+  Requires authentication.
+  """
+  importArticle(input: ImportArticleInput!): Article
+  "Invite a user to a workspace as a member."
+  inviteWorkspaceMember(userId: ID!, workspaceId: ID!): Workspace
+  "Leave a workspace as the authenticated user."
+  leaveWorkspace(workspaceId: ID!): Workspace
+  "Log out the currently authenticated user and invalidate the current session."
+  logout: User
+  """
 
-    Unlink an external authentication service from the current user account.
-    Removes the stored token for the given service.
-    Requires authentication.
-    """
-    unsetAuthToken(service: AuthTokenService!): User
-    """
+  Move an article to a new position within a corpus.
+  Requires authentication with access to the corpus.
+  """
+  moveCorpusArticle(articleId: ID!, corpusId: ID!, order: Int): Corpus
+  """
 
-    Remove a user's contributor access from an article.
-    Requires authentication as the article owner.
-    """
-    unshareArticle(article: ID!, to: ID!, user: ID): Article
-    """
+  Remove a contributor from an article, revoking their write access.
+  Requires authentication with access to the article.
+  """
+  removeArticleContributor(articleId: ID!, userId: ID!): Article
+  """
 
-    Update an article's title, tags, or workspaces.
-    Requires authentication as the article owner.
-    """
-    updateArticle(updateArticleInput: UpdateArticleInput!): Article!
-    """
+  Remove tags from an article. Returns the updated list of tags.
+  Requires authentication with access to the article.
+  """
+  removeArticleTags(articleId: ID!, tags: [ID]!): [Tag]
+  """
 
-    Update the bibliography of an article from a BibTeX string.
-    Returns the updated bibliography as a list of structured entries.
-    Requires authentication with access to the article (as owner, contributor, or via a workspace).
-    """
-    updateArticleBibliography(input: UpdateArticleBibliographyInput!): [BibliographyEntry]
-    """
+  Remove a user from your contacts list by their user ID.
+  Requires authentication.
+  """
+  removeContact(contactUserId: ID!): User
+  """
 
-    Update the metadata of an article's working copy.
-    Replaces the entire metadata object stored in the working copy.
-    Requires authentication with access to the article (as owner, contributor, or via a workspace).
-    """
-    updateArticleMetadata(input: UpdateArticleMetadataInput!): Article
-    """
+  Remove an article from a corpus.
+  Requires authentication with access to the corpus.
+  """
+  removeCorpusArticle(articleId: ID!, corpusId: ID!): Corpus!
+  "Remove an article from a workspace."
+  removeWorkspaceArticle(articleId: ID!, workspaceId: ID!): Workspace
+  "Remove a member from a workspace."
+  removeWorkspaceMember(userId: ID!, workspaceId: ID!): Workspace
+  """
 
-    Update the name, description, or color of an existing tag.
-    Requires authentication as the tag owner.
-    """
-    updateTag(color: HexColorCode, description: String, name: String, tag: ID!): Tag
-    """
+  Rename an article by ID.
+  Requires authentication with access to the article.
+  """
+  renameArticle(articleId: ID!, title: String!): Boolean
+  """
 
-    Update profile information for the specified user (display name, first/last name, institution).
-    Requires authentication as the specified user.
-    """
-    updateUser(details: UserProfileInput!, user: ID): User
-    """
+  Rename a corpus by ID.
+  Requires authentication with access to the corpus.
+  """
+  renameCorpus(corpusId: ID!, name: String!): Corpus
+  "Rename a version by ID (updates its message)."
+  renameVersion(name: String, versionId: ID!): Boolean
+  """
 
-    Update the JSON schema form metadata for a workspace.
-    Controls the custom metadata form displayed in the workspace editor.
-    Requires authentication as a workspace member.
-    """
-    updateWorkspaceFormMetadata(details: UpdateWorkspaceFormMetadataInput!, workspaceId: ID!): Workspace
-    """
+  Set the Nakala dataset link on an article.
+  Requires authentication with access to the article.
+  """
+  setArticleNakalaLink(articleId: ID!, nakala: String!): Boolean
+  """
 
-    Retrieve a workspace by ID to perform mutations on it (e.g. adding members or articles).
-    Returns an error if the workspace does not exist or cannot be accessed.
-    """
-    workspace(workspaceId: ID!): Workspace
+  Update the preview settings (stylesheet, template) of an article.
+  Requires authentication with access to the article.
+  """
+  setArticlePreviewSettings(articleId: ID!, settings: ArticlePreviewInput!): Article
+  """
+
+  Set the Zotero library link on an article.
+  Requires authentication with access to the article.
+  """
+  setArticleZoteroLink(articleId: ID!, zotero: String!): Boolean
+  """
+
+  Link an external service token (HumanID, Hypothesis, Zotero) to the current user account.
+  Requires authentication.
+  """
+  setAuthToken(service: AuthTokenService!): User
+  """
+
+  Updates the articles associated with the corpus.
+  Existing articles that are not in the list will be removed, and articles not currently present will be added.
+  """
+  setCorpusArticles(setCorpusArticlesInput: SetCorpusArticlesInput!): Corpus
+  """
+
+  Share an article with another user, granting them contributor access.
+  Requires authentication as the article owner.
+  """
+  shareArticle(article: ID!, to: ID!): Article
+  """
+
+  Unlink an external authentication service from the current user account.
+  Removes the stored token for the given service.
+  Requires authentication.
+  """
+  unsetAuthToken(service: AuthTokenService!): User
+  """
+
+  Remove a user's contributor access from an article.
+  Requires authentication as the article owner.
+  """
+  unshareArticle(article: ID!, to: ID!): Article
+  """
+
+  Update an article's title, tags, or workspaces.
+  Requires authentication as the article owner.
+  """
+  updateArticle(updateArticleInput: UpdateArticleInput!): Article!
+  """
+
+  Update the bibliography of an article from a BibTeX string.
+  Returns the updated bibliography as a list of structured entries.
+  Requires authentication with access to the article (as owner, contributor, or via a workspace).
+  """
+  updateArticleBibliography(input: UpdateArticleBibliographyInput!): [BibliographyEntry]
+  """
+
+  Update the metadata of an article's working copy.
+  Replaces the entire metadata object stored in the working copy.
+  Requires authentication with access to the article (as owner, contributor, or via a workspace).
+  """
+  updateArticleMetadata(input: UpdateArticleMetadataInput!): Article
+  """
+
+  Update the working version content of an article (markdown, bibliography, metadata).
+  Requires authentication with access to the article.
+  """
+  updateArticleWorkingVersion(articleId: ID!, content: WorkingVersionInput!): Article
+  """
+
+  Update a corpus's name, description, or metadata.
+  Requires authentication with access to the corpus.
+  """
+  updateCorpus(corpusId: ID!, updateCorpusInput: UpdateCorpusInput!): Corpus!
+  """
+
+  Reorder the articles within a corpus.
+  Requires authentication with access to the corpus.
+  """
+  updateCorpusArticlesOrder(articlesOrderInput: [ArticleOrder!]!, corpusId: ID!): Corpus
+  """
+
+  Update the metadata of a corpus.
+  Requires authentication with access to the corpus.
+  """
+  updateCorpusMetadata(corpusId: ID!, metadata: JSON!): Corpus
+  """
+
+  Update the name, description, or color of an existing tag.
+  Requires authentication as the tag owner.
+  """
+  updateTag(color: HexColorCode, description: String, name: String, tag: ID!): Tag
+  """
+
+  Update profile information of the authenticated user (display name, first/last name, institution).
+  Requires authentication.
+  """
+  updateUser(details: UserProfileInput!): User
+  """
+
+  Update the JSON schema form metadata for a workspace.
+  Controls the custom metadata form displayed in the workspace editor.
+  Requires authentication as a workspace member.
+  """
+  updateWorkspaceFormMetadata(details: UpdateWorkspaceFormMetadataInput!, workspaceId: ID!): Workspace
+  """
+
+  Retrieve a workspace by ID to perform mutations on it (e.g. adding members or articles).
+  Returns an error if the workspace does not exist or cannot be accessed.
+  """
+  workspace(workspaceId: ID!): Workspace
 }
 
 type Query {
-    "Fetch article info [need to have access to this article]"
-    article(article: ID!, user: ID): Article
-    "Fetch articles, optionally from a given Workspace"
-    articles(filter: FilterCorpusInput, user: ID): [Article]
-    "Get a list of corpus with an optional filter"
-    corpus(filter: FilterCorpusInput): [Corpus!]
-    getUser(filter: UserFilter): User
-    "Fetch an article [with an access key]"
-    sharedArticle(accessKey: JWT, article: ID!): Article
-    "Get a corpus [with an access key]"
-    sharedCorpus(accessKey: JWT, corpusId: ID!): Corpus
-    "Fetch instance stats"
-    stats: InstanceUsageStats
-    "Fetch tagged articles for a given user"
-    tag(tag: ID!, user: ID): Tag
-    "Fetch tagged articles for a given user"
-    tags(user: ID): [Tag]
-    "Get authenticated user info."
-    user(user: ID): User
-    "Fetch version info"
-    version(version: ID!): Version
-    "Get a given workspace"
-    workspace(workspaceId: ID): Workspace
-    "Get a list of workspaces for the authenticated user"
-    workspaces: [Workspace!]
+  "Fetch article info [need to have access to this article]"
+  article(article: ID!): Article
+  "Fetch the authenticated user's articles, optionally filtered by workspace or corpus"
+  articles(filter: FilterCorpusInput): [Article]
+  "Get a list of corpus with an optional filter"
+  corpus(filter: FilterCorpusInput): [Corpus!]
+  getUser(filter: UserFilter): User
+  "Fetch an article [with an access key]"
+  sharedArticle(accessKey: JWT, article: ID!): Article
+  "Get a corpus [with an access key]"
+  sharedCorpus(accessKey: JWT, corpusId: ID!): Corpus
+  "Fetch instance stats"
+  stats: InstanceUsageStats
+  "Fetch a tag of the authenticated user"
+  tag(tag: ID!): Tag
+  "Fetch the authenticated user's tags"
+  tags: [Tag]
+  "Get authenticated user info."
+  user: User
+  "Fetch version info"
+  version(version: ID!): Version
+  "Get a given workspace"
+  workspace(workspaceId: ID): Workspace
+  "Get a list of workspaces for the authenticated user"
+  workspaces: [Workspace!]
 }
 
 type Tag {
-    _id: ID!
-    articles: [Article]
-    color: HexColorCode
-    createdAt: DateTime
-    description: String
-    name: String!
-    owner: ID
-    updatedAt: DateTime
+  _id: ID!
+  articles: [Article]
+  color: HexColorCode
+  createdAt: DateTime
+  description: String
+  name: String!
+  owner: ID
+  updatedAt: DateTime
 }
 
 type User {
-    _id: ID
-    acquintances(limit: Int, page: Int): [User]
-    "@deprecated Use addContact mutation at the root instead."
-    addContact(userId: ID!): User
-    articles(limit: Int, page: Int): [Article]
-    authProviders: AuthProvidersMap
-    authTypes: [AuthType]
-    createdAt: DateTime
-    deletedAt: DateTime
-    displayName: String
-    email: EmailAddress
-    firstName: String
-    institution: String
-    lastName: String
-    permissions: [UserPermission]
-    "@deprecated Use removeContact mutation at the root instead."
-    removeContact(userId: ID!): User
-    stats: UserStats
-    tags: [Tag]
-    updatedAt: DateTime
-    username: String
-    workspaces: [Workspace!]
+  _id: ID
+  acquintances(limit: Int, page: Int): [User]
+  addContact(userId: ID!): User @deprecated(reason: "Use addContact mutation at the root instead.")
+  articles(limit: Int, page: Int): [Article]
+  authProviders: AuthProvidersMap
+  authTypes: [AuthType]
+  createdAt: DateTime
+  deletedAt: DateTime
+  displayName: String
+  email: EmailAddress
+  firstName: String
+  institution: String
+  lastName: String
+  permissions: [UserPermission]
+  removeContact(userId: ID!): User @deprecated(reason: "Use removeContact mutation at the root instead.")
+  stats: UserStats
+  tags: [Tag]
+  updatedAt: DateTime
+  username: String
+  workspaces: [Workspace!]
 }
 
 type UserPermission {
-    roles: [String]
-    scope: String!
-    user: User!
+  roles: [String]
+  scope: String!
+  user: User!
 }
 
 type UserSearch {
-    _id: ID
-    displayName: String
-    email: EmailAddress
-    firstName: String
-    lastName: String
+  _id: ID
+  displayName: String
+  email: EmailAddress
+  firstName: String
+  lastName: String
 }
 
 type UserStats {
-    contributedArticlesCount: Int
-    myArticlesCount: Int
+  contributedArticlesCount: Int
+  myArticlesCount: Int
 }
 
 type Version {
-    _id: ID!
-    article: Article
-    bib: String
-    bibPreview: String
-    bibliography: [BibliographyEntry]
-    createdAt: DateTime
-    md: String
-    message: String
-    metadata: JSON
-    metadataFormType: String
-    name: String
-    owner: User
-    rename(name: String): Boolean
-    revision: Int
-    type: String
-    updatedAt: DateTime
-    version: Int
-    yaml(options: YamlFormattingInput): String
+  _id: ID!
+  article: Article
+  bib: String
+  bibPreview: String
+  bibliography: [BibliographyEntry]
+  createdAt: DateTime
+  md: String
+  message: String
+  metadata: JSON
+  metadataFormType: String
+  name: String
+  owner: User
+  rename(name: String): Boolean @deprecated(reason: "Use renameVersion mutation at the root instead.")
+  revision: Int
+  type: String
+  updatedAt: DateTime
+  version: Int
+  yaml(options: YamlFormattingInput): String
 }
 
 type WorkingVersion {
-    bib: String
-    bibPreview: String
-    bibliography: [BibliographyEntry]
-    md: String
-    metadata: JSON
-    metadataFormType: String
-    yaml(options: YamlFormattingInput): String
+  bib: String
+  bibPreview: String
+  bibliography: [BibliographyEntry]
+  md: String
+  metadata: JSON
+  metadataFormType: String
+  yaml(options: YamlFormattingInput): String
 }
 
 type Workspace {
-    _id: String!
-    addArticle(articleId: ID!): Workspace
-    article(articleId: ID!): WorkspaceArticle
-    articles: [Article!]!
-    bibliographyStyle: String
-    color: HexColorCode!
-    corpus: [Corpus!]!
-    createdAt: DateTime
-    creator: User!
-    description: String
-    formMetadata: WorkspaceFormMetadata
-    inviteMember(userId: ID!): Workspace
-    leave: Workspace
-    member(userId: ID!): WorkspaceMember
-    members: [User!]!
-    name: String!
-    stats: WorkspaceStats
-    updatedAt: DateTime
+  _id: String!
+  addArticle(articleId: ID!): Workspace @deprecated(reason: "Use addWorkspaceArticle mutation at the root instead.")
+  article(articleId: ID!): WorkspaceArticle
+  articles: [Article!]!
+  bibliographyStyle: String
+  color: HexColorCode!
+  corpus: [Corpus!]!
+  createdAt: DateTime
+  creator: User!
+  description: String
+  formMetadata: WorkspaceFormMetadata
+  inviteMember(userId: ID!): Workspace @deprecated(reason: "Use inviteWorkspaceMember mutation at the root instead.")
+  leave: Workspace @deprecated(reason: "Use leaveWorkspace mutation at the root instead.")
+  member(userId: ID!): WorkspaceMember
+  members: [User!]!
+  name: String!
+  stats: WorkspaceStats
+  updatedAt: DateTime
 }
 
 type WorkspaceArticle {
-    article: Article
-    remove: Workspace!
-    workspace: Workspace!
+  article: Article
+  remove: Workspace! @deprecated(reason: "Use removeWorkspaceArticle mutation at the root instead.")
+  workspace: Workspace!
 }
 
 """
@@ -474,37 +584,37 @@ It consists of:
 Both must be valid JSON.
 """
 type WorkspaceFormMetadata {
-    data: String
-    ui: String
+  data: String
+  ui: String
 }
 
 type WorkspaceMember {
-    remove: Workspace!
-    user: User
-    workspace: Workspace!
+  remove: Workspace! @deprecated(reason: "Use removeWorkspaceMember mutation at the root instead.")
+  user: User
+  workspace: Workspace!
 }
 
 type WorkspaceStats {
-    articlesCount: Int
-    membersCount: Int
+  articlesCount: Int
+  membersCount: Int
 }
 
 enum AuthTokenService {
-    humanid
-    hypothesis
-    zotero
+  humanid
+  hypothesis
+  zotero
 }
 
 enum AuthType {
-    local
-    oidc
+  local
+  oidc
 }
 
 enum CorpusType {
-    book
-    journal
-    neutral
-    thesis
+  book
+  journal
+  neutral
+  thesis
 }
 
 "A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
@@ -526,124 +636,124 @@ scalar JSONObject
 scalar JWT
 
 input ArticleOrder {
-    articleId: ID!
-    order: Int!
+  articleId: ID!
+  order: Int!
 }
 
 input ArticlePreviewInput {
-    stylesheet: String
-    template: String
+  stylesheet: String
+  template: String
 }
 
 input ArticleVersionInput {
-    major: Boolean
-    message: String
-    userId: ID!
+  major: Boolean
+  message: String
+  userId: ID!
 }
 
 input CreateArticleInput {
-    tags: [ID]
-    title: String!
-    workspaces: [ID]
+  tags: [ID]
+  title: String!
+  workspaces: [ID]
 }
 
 input CreateCorpusInput {
-    description: String
-    metadata: JSON
-    name: String!
-    type: CorpusType!
-    workspace: String
+  description: String
+  metadata: JSON
+  name: String!
+  type: CorpusType!
+  workspace: String
 }
 
 "Input to create a new workspace"
 input CreateWorkspaceInput {
-    color: String!
-    description: String
-    name: String!
+  color: String!
+  description: String
+  name: String!
 }
 
 input FilterCorpusInput {
-    corpusId: ID
-    workspaceId: ID
+  corpusId: ID
+  workspaceId: ID
 }
 
 input ImportArticleInput {
-    bibliography: String
-    content: String
-    metadata: JSON
-    title: String!
+  bibliography: String
+  content: String
+  metadata: JSON
+  title: String!
 }
 
 input NewUserInput {
-    displayName: String
-    email: EmailAddress!
-    firstName: String
-    institution: String
-    lastName: String
-    password: String!
-    passwordC: String!
-    username: String!
+  displayName: String
+  email: EmailAddress!
+  firstName: String
+  institution: String
+  lastName: String
+  password: String!
+  passwordC: String!
+  username: String!
 }
 
 input NewUserWithAuthInput {
-    displayName: String
-    firstName: String
-    institution: String
-    lastName: String
+  displayName: String
+  firstName: String
+  institution: String
+  lastName: String
 }
 
 input SetCorpusArticlesInput {
-    articleIds: [ID]
-    corpusId: ID!
+  articleIds: [ID]
+  corpusId: ID!
 }
 
 input UpdateArticleBibliographyInput {
-    articleId: ID!
-    bib: String!
+  articleId: ID!
+  bib: String!
 }
 
 input UpdateArticleInput {
-    id: ID!
-    tags: [ID]
-    title: String!
-    workspaces: [ID]
+  id: ID!
+  tags: [ID]
+  title: String!
+  workspaces: [ID]
 }
 
 input UpdateArticleMetadataInput {
-    articleId: ID!
-    metadata: JSON!
+  articleId: ID!
+  metadata: JSON!
 }
 
 input UpdateCorpusInput {
-    description: String
-    metadata: JSON
-    name: String
+  description: String
+  metadata: JSON
+  name: String
 }
 
 "Input to update the form metadata on a workspace"
 input UpdateWorkspaceFormMetadataInput {
-    data: String
-    ui: String
+  data: String
+  ui: String
 }
 
 input UserFilter {
-    email: String!
+  email: String!
 }
 
 input UserProfileInput {
-    displayName: String
-    firstName: String
-    institution: String
-    lastName: String
+  displayName: String
+  firstName: String
+  institution: String
+  lastName: String
 }
 
 input WorkingVersionInput {
-    bib: String
-    md: String
-    metadata: JSON
-    metadataFormType: String
+  bib: String
+  md: String
+  metadata: JSON
+  metadataFormType: String
 }
 
 input YamlFormattingInput {
-    strip_markdown: Boolean
+  strip_markdown: Boolean
 }
