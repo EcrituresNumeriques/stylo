@@ -2,7 +2,7 @@
 title: Article exports
 ---
 
-To export an article, simply click on the export button. This function is accessible from your personal space, your workspaces, your corpora and the article editing page. 
+To export an article, start by clicking on the "Export" option on the articles management page or on the button with a printer figure, when editing an article : 
 
 ![Export button](/uploads/images/refonte_doc/Export.png)
 

@@ -2,7 +2,7 @@
 title: "Exports d'articles"
 ---
 
-Pour exporter un article, commencez par cliquer sur le bouton export. Cette fonctionnalité est accessible depuis votre espace personnel, vos espaces de travail et la page d'édition d'un article. 
+Pour exporter un article, commencez par cliquer sur le bouton "Exporter" sur la page de gestion des articles ou sur le bouon en forme d'imprimante, sur la page d'édition d'un article :  
 
 ![Bouton export](/uploads/images/refonte_doc/Export.png)
 
