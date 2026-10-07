@@ -42,7 +42,8 @@ module.exports = {
 
     /** @deprecated Use renameVersion root mutation instead. */
     async rename(version, { name }) {
-      return version.rename(name)
+      await version.rename(name)
+      return true
     },
 
     bibPreview({ bib }) {

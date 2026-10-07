@@ -171,20 +171,17 @@ const articleSchema = new Schema(
 
       async rename(title) {
         this.set('title', title)
-        const result = await this.save({ timestamps: false })
-        return result === this
+        return this.save({ timestamps: false })
       },
 
       async setZoteroLink(zotero) {
         this.set('zoteroLink', zotero)
-        const result = await this.save({ timestamps: false })
-        return result === this
+        return this.save({ timestamps: false })
       },
 
       async setNakalaLink(nakala) {
         this.set('nakalaLink', nakala)
-        const result = await this.save({ timestamps: false })
-        return result === this
+        return this.save({ timestamps: false })
       },
 
       async setPreviewSettings(settings) {

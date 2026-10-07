@@ -569,9 +569,10 @@ type Mutation {
 
   """
   Delete a tag and remove it from all articles it was applied to.
+  Returns the deleted tag.
   Requires authentication as the tag owner.
   """
-  deleteTag(tag: ID!): Boolean
+  deleteTag(tagId: ID!): Tag
 
   """
   Share an article with another user, granting them contributor access.
@@ -727,28 +728,28 @@ type Mutation {
 
   """
   Delete an article by ID.
-  Returns true if the article was deleted.
+  Returns the deleted article (or the article that would be deleted when dryRun is true).
   Requires authentication with access to the article.
   """
-  deleteArticle(articleId: ID!, dryRun: Boolean): Boolean
+  deleteArticle(articleId: ID!, dryRun: Boolean): Article
 
   """
-  Rename an article by ID.
+  Rename an article by ID. Returns the updated article.
   Requires authentication with access to the article.
   """
-  renameArticle(articleId: ID!, title: String!): Boolean
+  renameArticle(articleId: ID!, title: String!): Article
 
   """
-  Set the Zotero library link on an article.
+  Set the Zotero library link on an article. Returns the updated article.
   Requires authentication with access to the article.
   """
-  setArticleZoteroLink(articleId: ID!, zotero: String!): Boolean
+  setArticleZoteroLink(articleId: ID!, zotero: String!): Article
 
   """
-  Set the Nakala dataset link on an article.
+  Set the Nakala dataset link on an article. Returns the updated article.
   Requires authentication with access to the article.
   """
-  setArticleNakalaLink(articleId: ID!, nakala: String!): Boolean
+  setArticleNakalaLink(articleId: ID!, nakala: String!): Article
 
   """
   Add tags to an article. Returns the updated list of tags.
@@ -793,9 +794,9 @@ type Mutation {
   createArticleVersion(articleId: ID!, articleVersionInput: ArticleVersionInput!): Article
 
   """
-  Rename a version by ID (updates its message).
+  Rename a version by ID (updates its message). Returns the updated version.
   """
-  renameVersion(versionId: ID!, name: String): Boolean
+  renameVersion(versionId: ID!, name: String): Version
 }`
 
 module.exports = makeExecutableSchema({ typeDefs, resolvers })
