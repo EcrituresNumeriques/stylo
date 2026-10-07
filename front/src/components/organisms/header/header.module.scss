@@ -118,11 +118,10 @@
     display: inline-block;
     margin-left: 0.5em;
     width: 1ch;
-    transform: transform 0.2s;
   }
 
   &[aria-expanded="true"]:after {
-    transform: rotate(90deg);
+    content: "▾" / "";
   }
 }
 
@@ -195,6 +194,17 @@
   @media screen and (max-width: $screen-breakpoint) {
     margin-block-start: 4em;
   }
+}
+
+.workspacesLoading {
+  color: white;
+  padding: 0 1em;
+  height: 100%;
+}
+
+.workspacesError {
+  padding: 0 1em;
+  height: 100%;
 }
 
 /**
