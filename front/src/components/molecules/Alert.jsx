@@ -5,16 +5,16 @@ import styles from './Alert.module.scss'
 
 function getIcon(type) {
   if (type === 'success') {
-    return <CheckCircle color={'rgb(82, 196, 26)'} />
+    return <CheckCircle color={'rgb(38 90 12)'} />
   }
   if (type === 'warning') {
-    return <AlertOctagon color={'rgb(250, 173, 20)'} />
+    return <AlertOctagon color={'rgb(100 67 2)'} />
   }
   if (type === 'error') {
-    return <XOctagon color={'rgb(255, 77, 79)'} />
+    return <XOctagon color={'rgb(153, 0, 3)'} />
   }
   if (type === 'info') {
-    return <Info color={'rgb(22, 119, 255)'} />
+    return <Info color={'rgb(0 42 102)'} />
   }
   return null
 }

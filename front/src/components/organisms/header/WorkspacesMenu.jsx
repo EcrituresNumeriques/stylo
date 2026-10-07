@@ -29,10 +29,10 @@ export default function WorkspacesMenu({ teleportRef }) {
   } = useComponentVisible({ track: [teleportRef] })
 
   if (isLoading) {
-    return <Loading />
+    return <Loading className={styles.workspacesLoading} />
   }
   if (error) {
-    return <Alert message={error.message} />
+    return <Alert className={styles.workspacesError} message={error.message} />
   }
 
   const renderedSubmenu = (

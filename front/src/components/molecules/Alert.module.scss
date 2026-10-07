@@ -29,37 +29,25 @@
 }
 
 .warning {
-  background-color: rgb(255, 251, 230);
-  border-color: rgb(255, 229, 143);
-
-  &.fullscreen {
-    color: rgb(130, 114, 73);
-  }
+  background-color: hsl(40 96% 95%);
+  border-color: hsl(40 96% 90%);
+  color: hsl(40 96% 20%);
 }
 
 .info {
-  background-color: rgb(230, 244, 255);
-  border-color: rgb(145, 202, 255);
-
-  &.fullscreen {
-    color: rgb(81, 114, 145);
-  }
+  background-color: hsl(215.29deg 100% 95%);
+  border-color: hsl(215.29deg 100% 90%);
+  color: hsl(215.29deg 100% 20%);
 }
 
 .success {
-  background-color: rgb(246, 255, 237);
-  border-color: rgb(183, 235, 143);
-
-  &.fullscreen {
-    color: rgb(84, 110, 67);
-  }
+  background-color: hsl(100 77% 95%);
+  border-color: hsl(100 77% 90%);
+  color: hsl(100 77% 20%);
 }
 
 .error {
-  background-color: rgb(255, 242, 240);
-  border-color: rgb(255, 204, 199);
-
-  &.fullscreen {
-    color: rgb(130, 104, 99);
-  }
+  background-color: hsl(359 100% 95%);
+  border-color: hsl(359 100% 90%);
+  color: hsl(359deg 100% 20%);
 }
