@@ -86,7 +86,7 @@ export default function EditorMenu({ articleId, onChange }) {
             onClick={toggleActiveMenu('data')}
             selected={activeMenu === 'data'}
             minimized={minimized}
-            icon={<NakalaIcon className="icon as-lucide" />}
+            icon={<NakalaIcon />}
             text={t('data.title')}
           />
         )}
