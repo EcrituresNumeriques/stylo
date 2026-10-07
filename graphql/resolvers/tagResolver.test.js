@@ -1,4 +1,8 @@
-const { Query: TagQuery, Tag: TagResolver } = require('./tagResolver')
+const {
+  Query: TagQuery,
+  Mutation: TagMutation,
+  Tag: TagResolver,
+} = require('./tagResolver')
 const Tag = require('../models/tag')
 const Article = require('../models/article')
 const User = require('../models/user')
@@ -59,6 +63,31 @@ describe('Tag resolver', () => {
       const articles = await TagResolver.articles(tag, {})
 
       assert.deepEqual(articles, [])
+    })
+  })
+
+  describe('Mutation.deleteTag', () => {
+    test('returns the deleted tag', async () => {
+      const tag = await Tag.create({ name: 'To delete', owner: user._id })
+
+      const result = await TagMutation.deleteTag(
+        {},
+        { tagId: tag._id },
+        makeContext(user)
+      )
+
+      assert.equal(result._id.toString(), tag._id.toString())
+      assert.equal(await Tag.findById(tag._id), null)
+    })
+
+    test('refuses to delete a tag owned by another user', async () => {
+      const other = await User.create({ email: 'delete-other@huma-num.fr' })
+      const tag = await Tag.create({ name: 'Not mine', owner: other._id })
+
+      await assert.rejects(() =>
+        TagMutation.deleteTag({}, { tagId: tag._id }, makeContext(user))
+      )
+      assert.ok(await Tag.findById(tag._id))
     })
   })
 

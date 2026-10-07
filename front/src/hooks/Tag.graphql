@@ -8,6 +8,12 @@ query getTags {
   }
 }
 
+mutation deleteTag($tagId: ID!) {
+  deleteTag(tagId: $tagId) {
+    _id
+  }
+}
+
 mutation updateTag(
   $tag: ID!
   $color: HexColorCode!

@@ -375,6 +375,112 @@ describe('article resolver', () => {
     })
   })
 
+  describe('update article fields', () => {
+    const context = {
+      user: {},
+      userId: null,
+      token: {},
+    }
+
+    before(async () => {
+      context.user = user5
+      context.userId = user5._id
+    })
+
+    test('renameArticle returns the updated article', async () => {
+      const article = await Article.create({
+        title: 'Old title',
+        owner: [context.userId],
+      })
+
+      const result = await ArticleMutation.renameArticle(
+        {},
+        { articleId: article._id, title: 'New title' },
+        context
+      )
+
+      assert.equal(result._id.toString(), article._id.toString())
+      assert.equal(result.title, 'New title')
+      const updated = await Article.findById(article._id)
+      assert.equal(updated.title, 'New title')
+    })
+
+    test('setArticleZoteroLink returns the updated article', async () => {
+      const article = await Article.create({
+        title: 'Zotero',
+        owner: [context.userId],
+      })
+
+      const result = await ArticleMutation.setArticleZoteroLink(
+        {},
+        { articleId: article._id, zotero: 'https://www.zotero.org/groups/1' },
+        context
+      )
+
+      assert.equal(result._id.toString(), article._id.toString())
+      assert.equal(result.zoteroLink, 'https://www.zotero.org/groups/1')
+    })
+
+    test('setArticleNakalaLink returns the updated article', async () => {
+      const article = await Article.create({
+        title: 'Nakala',
+        owner: [context.userId],
+      })
+
+      const result = await ArticleMutation.setArticleNakalaLink(
+        {},
+        { articleId: article._id, nakala: 'https://nakala.fr/10.34847/nkl.1' },
+        context
+      )
+
+      assert.equal(result._id.toString(), article._id.toString())
+      assert.equal(result.nakalaLink, 'https://nakala.fr/10.34847/nkl.1')
+    })
+
+    test('deprecated Article.rename still returns a boolean', async () => {
+      const article = await Article.create({
+        title: 'Old title',
+        owner: [context.userId],
+      })
+
+      const result = await ArticleResolver.rename(article, { title: 'Renamed' })
+
+      assert.equal(result, true)
+    })
+
+    test('deleteArticle returns the deleted article', async () => {
+      const article = await Article.create({
+        title: 'To delete',
+        owner: [context.userId],
+      })
+
+      const result = await ArticleMutation.deleteArticle(
+        {},
+        { articleId: article._id },
+        context
+      )
+
+      assert.equal(result._id.toString(), article._id.toString())
+      assert.equal(await Article.findById(article._id), null)
+    })
+
+    test('deleteArticle with dryRun returns the article without deleting it', async () => {
+      const article = await Article.create({
+        title: 'Dry run',
+        owner: [context.userId],
+      })
+
+      const result = await ArticleMutation.deleteArticle(
+        {},
+        { articleId: article._id, dryRun: true },
+        context
+      )
+
+      assert.equal(result._id.toString(), article._id.toString())
+      assert.ok(await Article.findById(article._id))
+    })
+  })
+
   describe('update article bibliography', () => {
     const context = {
       user: {},
