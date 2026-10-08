@@ -2,9 +2,9 @@
 title: "Exports d'articles"
 ---
 
-Pour exporter un article, commencez par cliquer sur le bouton "Exporter" sur la page de gestion des articles ou sur le bouon en forme d'imprimante, sur la page d'édition d'un article :  
+Pour exporter un article, commencez par cliquer sur le bouton "Exporter" sur la page de gestion des articles ou sur le bouton qui correspond, sur la page d'édition d'un article :  
 
-![Bouton export](/uploads/images/refonte_doc/Export.png)
+![Bouton export](/uploads/images/icone-export.png)
 
 Une boîte de dialogue s'ouvrira, vous offrant plusieurs choix :
 

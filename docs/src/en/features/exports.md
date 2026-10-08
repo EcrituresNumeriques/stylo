@@ -2,9 +2,9 @@
 title: Article exports
 ---
 
-To export an article, start by clicking on the "Export" option on the articles management page or on the button with a printer figure, when editing an article : 
+To export an article, start by clicking on the "Export" option on the articles management page or on the export button, when editing an article : 
 
-![Export button](/uploads/images/refonte_doc/Export.png)
+![Export button](/uploads/images/icone-export.png)
 
 A dialog box will open, offering you several choices:
 
