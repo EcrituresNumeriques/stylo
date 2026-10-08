@@ -38,7 +38,7 @@ export default function LanguagesMenu({ mode = 'full', teleportRef }) {
   )
 
   return (
-    <div ref={ref} className={styles.dropdownMenu}>
+    <div ref={ref} className={clsx(styles.dropdownMenu, styles.alignEnd)}>
       <button
         aria-controls={menuId}
         aria-expanded={isComponentVisible}

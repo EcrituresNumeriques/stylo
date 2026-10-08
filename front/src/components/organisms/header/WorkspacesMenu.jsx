@@ -67,7 +67,9 @@ export default function WorkspacesMenu({ teleportRef }) {
           style={{ backgroundColor: activeWorkspace?.color ?? '#ccc' }}
         />
 
-        {activeWorkspaceName}
+        <span className={styles.workspaceName} title={activeWorkspaceName}>
+          {activeWorkspaceName}
+        </span>
       </button>
 
       {teleportRef?.current && isComponentVisible

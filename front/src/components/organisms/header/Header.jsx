@@ -80,7 +80,7 @@ export default function Header() {
             styles.mainMenu,
             styles.list,
             styles.isDesktop,
-            'hidden-below-tablet'
+            styles.hiddenIfCompact
           )}
         >
           <ul
@@ -106,7 +106,7 @@ export default function Header() {
         <nav
           id="secondary-navigation"
           aria-label={t('header.secondaryMenu.label')}
-          className={clsx(styles.isDesktop, 'hidden-below-tablet')}
+          className={clsx(styles.isDesktop, styles.hiddenIfCompact)}
         >
           <div className={clsx(styles.listInline)}>
             <UserMenu />
@@ -116,7 +116,7 @@ export default function Header() {
         </nav>
 
         <button
-          className={clsx(styles.toggleMenuButton, 'hidden-above-tablet')}
+          className={clsx(styles.toggleMenuButton, styles.hiddenIfWide)}
           aria-controls={menuId}
           aria-expanded={isMainMenuVisible}
           onClick={toggleMainMenu}
