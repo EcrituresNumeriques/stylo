@@ -34,15 +34,10 @@
 }
 
 .pageTitle {
+  align-items: center;
   display: flex;
-  flex-direction: column;
   flex: 1;
-
-  @media screen and (width > $tablet-breakpoint) {
-    align-items: center;
-    flex-direction: row;
-    gap: 1rem;
-  }
+  gap: 1rem;
 }
 
 .header {
