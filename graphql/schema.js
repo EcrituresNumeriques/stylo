@@ -280,6 +280,7 @@ input NewUserWithAuthInput {
 
 input UserProfileInput {
   displayName: String
+  email: String
   firstName: String
   lastName: String
   institution: String

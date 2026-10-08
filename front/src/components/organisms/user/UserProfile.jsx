@@ -2,6 +2,7 @@ import { Check, Loader } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 
 import { fromFormData } from '../../../helpers/forms.js'
 import { useGraphQLClient } from '../../../helpers/graphQL.js'
@@ -32,17 +33,31 @@ export default function UserProfile() {
     async (e) => {
       e.preventDefault()
       setIsSaving(true)
+      const form = e.target
       const variables = {
-        details: fromFormData(e.target),
+        details: fromFormData(form),
       }
-      const { updateUser: userDetails } = await query({
-        query: updateUser,
-        variables,
-      })
-      updateActiveUserDetails(userDetails)
-      setIsSaving(false)
+      try {
+        const { updateUser: userDetails } = await query({
+          query: updateUser,
+          variables,
+        })
+        updateActiveUserDetails(userDetails)
+        toast(t('user.account.updateSuccess'), { type: 'info' })
+      } catch (err) {
+        if (err.code === 'EMAIL_ALREADY_EXISTS') {
+          form.elements.email.value = activeUser.email ?? ''
+          toast(t('user.account.emailAlreadyExists'), { type: 'error' })
+        } else {
+          toast(t('user.account.updateError', { errMessage: err.message }), {
+            type: 'error',
+          })
+        }
+      } finally {
+        setIsSaving(false)
+      }
     },
-    [query, updateActiveUserDetails]
+    [query, updateActiveUserDetails, t, activeUser.email]
   )
 
   return (
@@ -64,7 +79,7 @@ export default function UserProfile() {
             defaultValue={activeUser.firstName}
           />
           <Field
-            id="lastName"
+            name="lastName"
             label={t('user.account.lastName')}
             type="text"
             defaultValue={activeUser.lastName}
@@ -74,6 +89,13 @@ export default function UserProfile() {
             label={t('user.account.institution')}
             type="text"
             defaultValue={activeUser.institution}
+          />
+          <Field
+            name="email"
+            label={t('user.account.email')}
+            type="email"
+            autoComplete="email"
+            defaultValue={activeUser.email}
           />
 
           <div className={formStyles.footer}>
@@ -87,9 +109,6 @@ export default function UserProfile() {
 
       <section className={styles.section}>
         <dl className={styles.info}>
-          <dt>{t('user.account.email')}</dt>
-          <dd>{activeUser.email}</dd>
-
           <dt>{t('user.account.id')}</dt>
           <dd>
             <code>{activeUser._id}</code>
