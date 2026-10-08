@@ -303,6 +303,51 @@ describe('user resolver', () => {
     })
   })
 
+  describe('updateUser', () => {
+    test('sets an email on an account without one', async () => {
+      const user = await User.create({ displayName: 'hypothesis user' })
+      const context = { user, token: { admin: false, _id: user.id } }
+
+      const u = await Mutation.updateUser(
+        {},
+        { details: { email: ' new-email@example.com ' } },
+        context
+      )
+
+      assert.equal(u.email, 'new-email@example.com')
+    })
+
+    test('ignores an empty email', async () => {
+      const user = await User.create({ email: 'user-empty@example.com' })
+      const context = { user, token: { admin: false, _id: user.id } }
+
+      const u = await Mutation.updateUser(
+        {},
+        { details: { email: '', displayName: 'Jane' } },
+        context
+      )
+
+      assert.equal(u.email, 'user-empty@example.com')
+      assert.equal(u.displayName, 'Jane')
+    })
+
+    test('rejects an email already used by another account', async () => {
+      await User.create({ email: 'taken@example.com' })
+      const user = await User.create({ email: 'mine@example.com' })
+      const context = { user, token: { admin: false, _id: user.id } }
+
+      await assert.rejects(
+        () =>
+          Mutation.updateUser(
+            {},
+            { details: { email: 'taken@example.com' } },
+            context
+          ),
+        (error) => error.extensions.code === 'EMAIL_ALREADY_EXISTS'
+      )
+    })
+  })
+
   describe('createUserWithAuth', () => {
     test('rejects when no pending registration', async () => {
       const context = {

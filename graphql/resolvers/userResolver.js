@@ -259,6 +259,19 @@ module.exports = {
         throw new Error('Unable to find user')
       }
 
+      // an empty email is ignored: the unique index does not allow blank values
+      const email = details.email?.trim()
+      if (email && email !== thisUser.email) {
+        const existingUser = await User.findOne({ email })
+        if (existingUser) {
+          throw new BadRequestError(
+            'EMAIL_ALREADY_EXISTS',
+            'User with this email already exists!'
+          )
+        }
+        thisUser.set('email', email)
+      }
+
       ;['displayName', 'firstName', 'lastName', 'institution', 'yaml'].forEach(
         (field) => {
           if (Object.hasOwn(details, field)) {
