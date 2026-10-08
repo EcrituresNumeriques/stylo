@@ -39,7 +39,7 @@ jobs:
 
       - name: Build front assets
         run: |
-          npm clean-install
+          npm clean-install -w @ecrituresnumeriques/stylo-front --no-audit --no-fund --prefer-offline --loglevel=error
           npm run build -w=@ecrituresnumeriques/stylo-front
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
