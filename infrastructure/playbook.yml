@@ -6,13 +6,6 @@
     - name: Set application version
       ansible.builtin.set_fact: app_version="{{ app_version | default('latest') }}"
 
-    - name: Install aptitude
-      become: yes
-      ansible.builtin.apt:
-        name: aptitude
-        state: latest
-        update_cache: true
-
     - name: Install required system packages
       become: yes
       ansible.builtin.apt:
@@ -21,8 +14,9 @@
           - curl
           - gnupg
           - lsb-release
-        state: latest
+        state: present
         update_cache: true
+        cache_valid_time: 3600
 
     - name: Add Docker GPG apt Key
       become: yes
@@ -45,8 +39,7 @@
           - containerd.io
           - docker-buildx-plugin
           - docker-compose-plugin
-        state: latest
-        update_cache: true
+        state: present
 
     - name: Update NGINX settings
       become: yes
@@ -66,18 +59,6 @@
         dest: /etc/nginx/sites-enabled/stylo.ecrituresnumeriques.ca.conf
       when: site == "stylo.huma-num.fr"
       notify: reload nginx
-
-    - name: Prune Docker images
-      become: yes
-      ansible.builtin.shell:
-        cmd: "docker image prune -af"
-      run_once: true
-
-    - name: Prune Docker system
-      become: yes
-      ansible.builtin.shell:
-        cmd: "docker system prune -af"
-      run_once: true
 
     - name: Copy systemd service file
       become: yes
@@ -158,6 +139,12 @@
         daemon_reload: true
       environment:
         NODE_OPTIONS: "{{ node_options_flag }}"
+
+    - name: Prune Docker system
+      become: yes
+      ansible.builtin.shell:
+        cmd: "docker system prune -af"
+      run_once: true
 
   handlers:
     - name: reload nginx
