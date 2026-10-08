@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import {
   LockKeyholeOpenIcon,
   UserIcon,
@@ -29,7 +30,7 @@ export default function UserMenu() {
   const renderedSubmenu = <Submenu {...{ id: menuId, isComponentVisible }} />
 
   return (
-    <div ref={ref} className={styles.dropdownMenu}>
+    <div ref={ref} className={clsx(styles.dropdownMenu, styles.alignEnd)}>
       <button
         aria-expanded={isComponentVisible}
         aria-controls={menuId}

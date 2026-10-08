@@ -45,8 +45,14 @@
     font-size: 1em;
     text-decoration: none;
 
+    // élément non cliquable (ex. nom du compte) : affiché comme un en-tête de menu
     &.link {
+      align-items: center;
+      background-color: $main-lighter-color;
       cursor: default;
+      display: flex;
+      font-weight: 600;
+      gap: 0.5em;
     }
 
     &:not(span.link):hover,
@@ -75,6 +81,22 @@
 .isDesktop {
   .hiddenIfDesktop {
     display: none;
+  }
+}
+
+.hiddenIfCompact {
+  @media screen and (width < $header-compact-breakpoint) {
+    & {
+      display: none !important;
+    }
+  }
+}
+
+.hiddenIfWide {
+  @media screen and (width >= $header-compact-breakpoint) {
+    & {
+      display: none !important;
+    }
   }
 }
 
@@ -187,12 +209,23 @@
 }
 
 .toggleMenuButton {
-  padding: 1em;
+  padding: 0.9em; /* même padding que .list pour garder la hauteur de l'entête */
 }
 
 .workspacesMenu {
-  @media screen and (max-width: $screen-breakpoint) {
+  @media screen and (width < $header-compact-breakpoint) {
     margin-block-start: 4em;
+  }
+}
+
+.workspaceName {
+  .isDesktop & {
+    display: inline-block;
+    max-width: 15rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+    white-space: nowrap;
   }
 }
 
@@ -238,11 +271,23 @@
   }
 }
 
+.dropdownMenu {
+  .isDesktop & {
+    position: relative;
+  }
+}
+
 .toggleMenuList {
   .isDesktop & {
     border: 1px solid $main-border-color;
     position: absolute;
+    width: max-content;
     z-index: 1000;
+  }
+
+  // aligne le menu sur le bord droit du bouton pour ne pas dépasser du viewport
+  .isDesktop .alignEnd & {
+    inset-inline-end: 0;
   }
 
   @media screen and (min-width: $screen-breakpoint) {
@@ -287,4 +332,17 @@
   cursor: pointer;
   font-size: 0.8em;
   vertical-align: middle;
+}
+
+// en mode compact, centre verticalement les icônes avec le texte
+.header {
+  .isMobile,
+  .mobileSubmenu {
+    a,
+    button,
+    span.link {
+      align-items: center;
+      display: flex;
+    }
+  }
 }

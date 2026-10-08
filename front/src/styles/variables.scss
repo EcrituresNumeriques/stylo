@@ -39,6 +39,9 @@ $screen-width: calc($screen-breakpoint - 1rem);
 $large-screen-breakpoint: 80rem;
 $large-screen-width: calc($large-screen-breakpoint - 1rem);
 
+// En dessous de cette largeur, l'entête passe en mode compact (menu burger)
+$header-compact-breakpoint: 64rem;
+
 // TODO remove when https://github.com/snowpackjs/snowpack/issues/2967 is solved
 html {
   font-size: inherit;
