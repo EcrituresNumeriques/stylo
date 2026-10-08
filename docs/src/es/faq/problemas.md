@@ -23,3 +23,6 @@ Tú decides qué cuenta utilizar, dependiendo de si quieres que tu cuenta y su c
 
 Si tiene griego antiguo en su artículo y desea que se muestre correctamente en la exportación (en HTML, PDF, etc.), active en los metadatos la opción YAML (arriba a la derecha) e introduzca `mainfont : OldStandard`, o `fontfamily: OldStandard`. Esto cambiará toda la tipografía de su artículo; en un futuro próximo, será posible especificar esta fuente sólo para los fragmentos de texto en cuestión, utilizando una marca específica.
 
+## No consigo añadir una cuenta a un espacio de trabajo ni compartir un artículo con ella
+
+La cuenta con la que intenta compartir un artículo debió registrarse a través de Hypothesis o Zotero; por tanto, no tiene una dirección de correo electrónico asociada. Debe pedir a la persona en cuestión que añada su dirección de correo electrónico modificando la información de su perfil para poder agregarla al espacio de trabajo o compartir el artículo con ella.

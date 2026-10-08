@@ -22,3 +22,7 @@ It's up to you to decide which account to use, depending on whether you want to 
 ## I have Ancient Greek in my article and I'd like it to display well in the export
 
 If you have ancient Greek in your article and would like it to be displayed in the export (in HTML, PDF, etc.), in the metadata, activate the YAML option (top right) and directly enter either `mainfont : OldStandard`, or `fontfamily : OldStandard`. This will modify the entire typography of your article; in the near future, it will be possible to specify this font only for the text sections concerned, by means of a specific markup.
+
+## Unable to add an account to a workspace or share an article to
+
+The account you are trying to share an article to likely used Hypothesis or Zotero to log in, so no email address is associated with it. You need to ask the person to add their email address by updating their profile information, so that you can add them to the workspace or share the article with them.

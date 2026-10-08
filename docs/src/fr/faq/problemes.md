@@ -21,4 +21,8 @@ Si votre compte est bien sur Huma-Num, vous pourrez récupérer un accès à vot
 
 ## J'ai du grec ancien dans mon article et j'aimerais qu'il puisse bien s'afficher dans l'export
 
-Si vous avez du Grec ancien dans votre article et souhaiteriez qu'il s'afficher dans l'export (en HTML, PDF, etc.), dans les métadonnées, activez l'option YAML (en haut à droite) et inscrivez directement ou bien `mainfont : OldStandard`, ou bien `fontfamily : OldStandard`. Cela modifiera toute la typographie de votre article ; prochainement, il sera possible de spécifier cette police seulement pour les bouts de texte concernés, au travers d'une balise précise. 
+Si vous avez du Grec ancien dans votre article et souhaiteriez qu'il s'afficher dans l'export (en HTML, PDF, etc.), dans les métadonnées, activez l'option YAML (en haut à droite) et inscrivez directement ou bien `mainfont : OldStandard`, ou bien `fontfamily : OldStandard`. Cela modifiera toute la typographie de votre article ; prochainement, il sera possible de spécifier cette police seulement pour les bouts de texte concernés, au travers d'une balise précise.
+
+## Je ne parviens pas à ajouter un compte à un espace de travail ou à lui partager un article
+
+Le compte auquel vous essayez de partager un article a dû passer par Hypothesis ou Zotero pour se connecter. Il n'a donc pas d'adresse email renseigné. Vous devez demander à la personne concernée d'ajouter son adresse email en modifiant les informations de son profil afin de pouvoir l'ajouter à l'espace de travail ou lui partager l'article.
