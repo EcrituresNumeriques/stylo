@@ -21,16 +21,33 @@ const sessionTokenName = 'sessionToken'
  * @property {string|null} workspaceId
  */
 
-// Définition du store Redux et de l'ensemble des actions
-export const initialState = {
-  sessionToken: localStorage.getItem(sessionTokenName),
-  articlePreferences: localStorage.getItem('articlePreferences')
-    ? JSON.parse(localStorage.getItem('articlePreferences'))
-    : {
-        expandSidebarRight: true,
-        activePanel: null,
-        metadataFormMode: 'basic',
-      },
+const defaultArticlePreferences = {
+  expandSidebarRight: true,
+  activePanel: null,
+  metadataFormMode: 'basic',
+}
+
+/** @type {UserPreferences} */
+const defaultUserPreferences = {
+  trackingConsent: true /* default value should be false */,
+  workspaceId: null,
+}
+
+/** @type {ExportPreferences} */
+const defaultExportPreferences = {
+  bibliography_style: 'chicagomodified',
+  with_toc: 0,
+  link_citations: 0,
+  with_nocite: 0,
+  formats: 'html',
+  unnumbered: 0,
+  book_division: 'part',
+}
+
+// État d'une session anonyme : ne doit dépendre d'aucune donnée persistée
+const defaultState = {
+  sessionToken: null,
+  articlePreferences: defaultArticlePreferences,
   articleFilters: {
     tagIds: [],
     text: '',
@@ -42,24 +59,32 @@ export const initialState = {
     selectedTagIds: [],
   },
   /** @type {UserPreferences} */
-  userPreferences: localStorage.getItem('userPreferences')
-    ? JSON.parse(localStorage.getItem('userPreferences'))
-    : {
-        trackingConsent: true /* default value should be false */,
-        workspaceId: null,
-      },
+  userPreferences: defaultUserPreferences,
   /** @type {ExportPreferences} */
-  exportPreferences: localStorage.getItem('exportPreferences')
-    ? JSON.parse(localStorage.getItem('exportPreferences'))
-    : {
-        bibliography_style: 'chicagomodified',
-        with_toc: 0,
-        link_citations: 0,
-        with_nocite: 0,
-        formats: 'html',
-        unnumbered: 0,
-        book_division: 'part',
-      },
+  exportPreferences: defaultExportPreferences,
+}
+
+function readLocalStorageItem(key, defaultValue) {
+  const value = localStorage.getItem(key)
+  return value ? JSON.parse(value) : defaultValue
+}
+
+// Définition du store Redux et de l'ensemble des actions
+export const initialState = {
+  ...defaultState,
+  sessionToken: localStorage.getItem(sessionTokenName),
+  articlePreferences: readLocalStorageItem(
+    'articlePreferences',
+    defaultArticlePreferences
+  ),
+  userPreferences: readLocalStorageItem(
+    'userPreferences',
+    defaultUserPreferences
+  ),
+  exportPreferences: readLocalStorageItem(
+    'exportPreferences',
+    defaultExportPreferences
+  ),
 }
 
 /**
@@ -197,8 +222,17 @@ function updateActiveUserDetails(state, action) {
   }
 }
 
-function logoutUser() {
-  return structuredClone(initialState)
+/**
+ * L'état initial a été lu depuis le localStorage au chargement de la page :
+ * il peut contenir le jeton ou les préférences (dont l'espace de travail actif)
+ * de l'utilisateur qui se déconnecte, on repart donc de l'état par défaut.
+ */
+function logoutUser(state) {
+  return {
+    ...structuredClone(defaultState),
+    // les préférences d'export ne sont pas liées au compte (elles restent dans le localStorage)
+    exportPreferences: state.exportPreferences,
+  }
 }
 
 function togglePreferences(storeKey) {
