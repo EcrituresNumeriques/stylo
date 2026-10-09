@@ -7,6 +7,7 @@ import {
   figureContentRestricted,
   figureCreditsSpanOrDiv,
   figureMustContainImage,
+  headingHierarchy,
   indexEntryRequiresIdref,
   prenoteRequiresOrigin,
   questionAnswerTextOnly,
@@ -474,5 +475,78 @@ describe('indexEntryRequiresIdref()', () => {
     const [d] = run(indexEntryRequiresIdref, '[term]{.index-type}')
     expect(d.severity).toBe('warning')
     expect(d.code).toBe('index-entry-missing-idref')
+  })
+})
+
+// ─── headingHierarchy ────────────────────────────────────────────────────────
+
+describe('headingHierarchy()', () => {
+  test('no diagnostic for a consistent hierarchy', () => {
+    const md = `## Introduction
+
+### Contexte
+
+#### Détail
+
+### Méthode
+
+## Conclusion`
+    expect(run(headingHierarchy, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic without headings', () => {
+    expect(run(headingHierarchy, 'Du texte.')).toHaveLength(0)
+  })
+
+  test('error for a level 1 heading', () => {
+    const md = `# Titre
+
+## Section`
+    const diagnostics = run(headingHierarchy, md)
+    expect(diagnostics).toHaveLength(1)
+    expect(diagnostics[0].severity).toBe('error')
+    expect(diagnostics[0].code).toBe('heading-level-1')
+    expect(diagnostics[0].line).toBe(1)
+  })
+
+  test('error for a setext level 1 heading', () => {
+    const md = `Titre
+=====`
+    const [d] = run(headingHierarchy, md)
+    expect(d.code).toBe('heading-level-1')
+  })
+
+  test('error when the first heading is not level 2', () => {
+    const md = `### Section
+
+#### Sous-section`
+    const diagnostics = run(headingHierarchy, md)
+    expect(diagnostics).toHaveLength(1)
+    expect(diagnostics[0].code).toBe('heading-first-level')
+    expect(diagnostics[0].messageParams).toEqual({ level: 3 })
+  })
+
+  test('error when a level is skipped', () => {
+    const md = `## Section
+
+#### Sous-sous-section
+
+##### Détail`
+    const diagnostics = run(headingHierarchy, md)
+    expect(diagnostics).toHaveLength(1)
+    expect(diagnostics[0].code).toBe('heading-level-skipped')
+    expect(diagnostics[0].line).toBe(3)
+    expect(diagnostics[0].messageParams).toEqual({ level: 4, previous: 2 })
+  })
+
+  test('going back up several levels is allowed', () => {
+    const md = `## A
+
+### B
+
+#### C
+
+## D`
+    expect(run(headingHierarchy, md)).toHaveLength(0)
   })
 })
