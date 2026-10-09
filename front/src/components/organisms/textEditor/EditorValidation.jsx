@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { AlertCircle, AlertTriangle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
@@ -77,9 +78,11 @@ export default function EditorValidation({
             {diagnostics.map((d, i) => (
               <li
                 key={i}
-                className={styles[d.severity]}
-                onClick={() => onNavigate?.(d.line, d.column)}
-                title={t('validation.navigateTo', { line: d.line })}
+                className={clsx(styles[d.severity], d.line && styles.clickable)}
+                {...(d.line && {
+                  onClick: () => onNavigate?.(d.line, d.column),
+                  title: t('validation.navigateTo', { line: d.line }),
+                })}
               >
                 <span className={styles.icon}>
                   {d.severity === 'error' ? (
@@ -92,7 +95,9 @@ export default function EditorValidation({
                   {t(d.messageKey, d.messageParams)}
                 </span>
                 <span className={styles.location}>
-                  {t('validation.line')} {d.line}
+                  {d.line
+                    ? `${t('validation.line')} ${d.line}`
+                    : t('validation.metadata')}
                 </span>
               </li>
             ))}

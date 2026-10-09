@@ -1,8 +1,8 @@
 import throttle from 'lodash.throttle'
 import * as monaco from 'monaco-editor'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { VALIDATORS } from '../helpers/validator/index.js'
+import { compareDiagnostics, VALIDATORS } from '../helpers/validator/index.js'
 import i18n from '../i18n.js'
 
 const MARKER_OWNER = 'stylo-validator'
@@ -29,14 +29,21 @@ function translateMessage({ messageKey, messageParams }) {
 /**
  * @param {import('react').RefObject} editorRef
  * @param {string[]} profiles - list of active validator profile ids (e.g. ['metopes'])
+ * @param {import('../helpers/validator/index.js').ValidationContext} [context] - article data checked alongside the text (e.g. metadata)
  * @returns {{ validate: () => Promise<void>, diagnostics: Array, isValidating: boolean, clearDiagnostics: () => void }}
  */
-export function useMarkdownValidator(editorRef, profiles = ['metopes']) {
+export function useMarkdownValidator(
+  editorRef,
+  profiles = ['metopes'],
+  context = {}
+) {
   const [diagnostics, setDiagnostics] = useState([])
   const [isValidating, setIsValidating] = useState(false)
   const [hasValidated, setHasValidated] = useState(false)
   const profilesRef = useRef(profiles)
   profilesRef.current = profiles
+  const contextRef = useRef(context)
+  contextRef.current = context
   const hasValidatedRef = useRef(false)
   const decorationsRef = useRef(null)
   const subscriptionRef = useRef(null)
@@ -53,11 +60,13 @@ export function useMarkdownValidator(editorRef, profiles = ['metopes']) {
       for (const profileId of profilesRef.current) {
         const validator = VALIDATORS[profileId]
         if (validator) {
-          const profileResults = await validator(markdown)
+          const profileResults = await validator(markdown, contextRef.current)
           all.push(...profileResults)
         }
       }
-      const results = all.sort((a, b) => a.line - b.line || a.column - b.column)
+      const results = all.sort(compareDiagnostics)
+      // Metadata diagnostics have no position in the text
+      const textResults = results.filter((d) => d.line)
       setDiagnostics(results)
       setHasValidated(true)
       hasValidatedRef.current = true
@@ -67,7 +76,7 @@ export function useMarkdownValidator(editorRef, profiles = ['metopes']) {
         monaco.editor.setModelMarkers(
           model,
           MARKER_OWNER,
-          results.map((d) => ({
+          textResults.map((d) => ({
             startLineNumber: d.line,
             startColumn: d.column,
             endLineNumber: d.endLine,
@@ -83,7 +92,7 @@ export function useMarkdownValidator(editorRef, profiles = ['metopes']) {
         decorationsRef.current.clear()
       }
       decorationsRef.current = editor.createDecorationsCollection(
-        results.map((d) => ({
+        textResults.map((d) => ({
           range: new monaco.Range(d.line, 1, d.endLine || d.line, 1),
           options: {
             linesDecorationsTooltip: translateMessage(d),
@@ -128,6 +137,13 @@ export function useMarkdownValidator(editorRef, profiles = ['metopes']) {
       setIsValidating(false)
     }
   }, [editorRef])
+
+  // Re-validate when the metadata changes after a first run
+  useEffect(() => {
+    if (hasValidatedRef.current) {
+      validate()
+    }
+  }, [context.metadata, validate])
 
   const clearDiagnostics = useCallback(() => {
     const editor = editorRef.current

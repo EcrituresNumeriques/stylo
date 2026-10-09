@@ -8,6 +8,7 @@ import { MonacoBinding } from 'y-monaco'
 import 'monaco-editor/esm/vs/base/browser/ui/codicons/codicon/codicon.css'
 
 import {
+  useArticleMetadata,
   useArticleVersion,
   useEditableArticle,
 } from '../../../hooks/article.js'
@@ -107,6 +108,9 @@ export default function CollaborativeTextEditor({
     with_link_citations: true,
   })
 
+  const { metadata } = useArticleMetadata({ articleId, versionId })
+  const validationContext = useMemo(() => ({ metadata }), [metadata])
+
   const editorRef = useRef(null)
   const onEditorReadyRef = useRef(onEditorReady)
   onEditorReadyRef.current = onEditorReady
@@ -117,7 +121,7 @@ export default function CollaborativeTextEditor({
     hasValidated,
     clearDiagnostics,
     navigateTo,
-  } = useMarkdownValidator(editorRef, profiles)
+  } = useMarkdownValidator(editorRef, profiles, validationContext)
 
   const hasVersion = useMemo(() => Boolean(versionId), [versionId])
   const isLoading =

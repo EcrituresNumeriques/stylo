@@ -21,18 +21,32 @@ export function preprocessPandocDivs(markdown) {
 export const processor = unified().use(remarkParse).use(remarkDirective)
 
 /**
- * @param {Array<(tree: object, markdown: string, diagnostics: Array) => void>} rules
- * @returns {(markdown: string) => Promise<Array>}
+ * Diagnostics on metadata (without a line) come first, then by position in the text.
+ * @param {object} a
+ * @param {object} b
+ * @returns {number}
+ */
+export function compareDiagnostics(a, b) {
+  return (a.line ?? 0) - (b.line ?? 0) || (a.column ?? 0) - (b.column ?? 0)
+}
+
+/**
+ * @typedef {{ metadata?: object }} ValidationContext
+ */
+
+/**
+ * @param {Array<(tree: object, markdown: string, diagnostics: Array, context: ValidationContext) => void>} rules
+ * @returns {(markdown: string, context?: ValidationContext) => Promise<Array>}
  */
 export function createValidator(rules) {
-  return async function validate(markdown) {
+  return async function validate(markdown, context = {}) {
     const preprocessed = preprocessPandocDivs(markdown)
     const tree = processor.parse(preprocessed)
     const diagnostics = []
     for (const rule of rules) {
-      rule(tree, markdown, diagnostics)
+      rule(tree, markdown, diagnostics, context)
     }
-    return diagnostics.sort((a, b) => a.line - b.line || a.column - b.column)
+    return diagnostics.sort(compareDiagnostics)
   }
 }
 
