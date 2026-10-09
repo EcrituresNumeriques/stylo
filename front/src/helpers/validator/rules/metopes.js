@@ -458,6 +458,56 @@ export function indexEntryRequiresIdref(tree, markdown, diagnostics) {
   })
 }
 
+/**
+ * La hiérarchie des titres doit être cohérente : pas de titre de niveau 1 (le
+ * titre de l'article provient des métadonnées), le premier titre est de niveau
+ * 2 et les niveaux s'enchaînent sans saut (un `####` ne peut pas suivre un `##`).
+ *
+ * @param {import('unist').Node} tree
+ * @param {string} _markdown
+ * @param {Array} diagnostics
+ */
+export function headingHierarchy(tree, _markdown, diagnostics) {
+  // Le titre de l'article (métadonnées) tient lieu de titre de niveau 1.
+  let previousLevel = 1
+  let first = true
+  visit(tree, 'heading', (node) => {
+    const level = node.depth
+    const position = {
+      line: node.position.start.line,
+      column: node.position.start.column,
+      endLine: node.position.end.line,
+      endColumn: node.position.end.column,
+      severity: 'error',
+    }
+    if (level === 1) {
+      diagnostics.push({
+        ...position,
+        messageKey: 'validation.rules.headingLevel1',
+        code: 'heading-level-1',
+      })
+    } else if (level > previousLevel + 1) {
+      diagnostics.push(
+        first
+          ? {
+              ...position,
+              messageKey: 'validation.rules.headingFirstLevel',
+              messageParams: { level },
+              code: 'heading-first-level',
+            }
+          : {
+              ...position,
+              messageKey: 'validation.rules.headingLevelSkipped',
+              messageParams: { level, previous: previousLevel },
+              code: 'heading-level-skipped',
+            }
+      )
+    }
+    previousLevel = level
+    first = false
+  })
+}
+
 export const metopesRules = [
   unknownBlockClass,
   unknownInlineClass,
@@ -470,4 +520,5 @@ export const metopesRules = [
   translationRequiresLang,
   translationNotNested,
   indexEntryRequiresIdref,
+  headingHierarchy,
 ]
