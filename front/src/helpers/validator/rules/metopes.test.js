@@ -11,6 +11,7 @@ import {
   indexEntryRequiresIdref,
   prenoteRequiresOrigin,
   questionAnswerTextOnly,
+  requiredMetadata,
   singleEpigraphClass,
   translationNotNested,
   translationRequiresLang,
@@ -30,9 +31,9 @@ function makeTree(md) {
   return unified().use(remarkParse).use(remarkDirective).parse(preprocessed)
 }
 
-function run(rule, md) {
+function run(rule, md, context) {
   const diagnostics = []
-  rule(makeTree(md), md, diagnostics)
+  rule(makeTree(md), md, diagnostics, context)
   return diagnostics
 }
 
@@ -548,5 +549,71 @@ describe('headingHierarchy()', () => {
 
 ## D`
     expect(run(headingHierarchy, md)).toHaveLength(0)
+  })
+})
+
+// ─── requiredMetadata ────────────────────────────────────────────────────────
+
+describe('requiredMetadata()', () => {
+  const metadata = {
+    title: 'Un titre',
+    authors: [{ forename: 'Marcello', surname: 'Vitali-Rosati' }],
+    publicationDate: '2026-10-09',
+    lang: 'fr',
+  }
+
+  test('no diagnostic when required metadata are set', () => {
+    expect(run(requiredMetadata, '', { metadata })).toHaveLength(0)
+  })
+
+  test('warnings when metadata are missing', () => {
+    const diagnostics = run(requiredMetadata, '', {})
+    expect(diagnostics.map((d) => d.messageKey)).toEqual([
+      'validation.rules.metadataMissingTitle',
+      'validation.rules.metadataMissingAuthor',
+      'validation.rules.metadataMissingPublicationDate',
+      'validation.rules.metadataMissingLang',
+    ])
+    for (const d of diagnostics) {
+      expect(d.severity).toBe('warning')
+      expect(d.code).toBe('metadata-missing')
+      expect(d.target).toBe('metadata')
+      expect(d.line).toBeUndefined()
+    }
+  })
+
+  test('warning when the title is blank', () => {
+    const [d] = run(requiredMetadata, '', {
+      metadata: { ...metadata, title: '  ' },
+    })
+    expect(d.field).toBe('title')
+  })
+
+  test('warning for each author without a surname', () => {
+    const diagnostics = run(requiredMetadata, '', {
+      metadata: {
+        ...metadata,
+        authors: [
+          { forename: 'Marcello', surname: 'Vitali-Rosati' },
+          { forename: 'Servanne' },
+          { surname: '' },
+        ],
+      },
+    })
+    expect(diagnostics).toHaveLength(2)
+    expect(diagnostics[0].messageKey).toBe(
+      'validation.rules.metadataMissingAuthorSurname'
+    )
+    expect(diagnostics.map((d) => d.messageParams)).toEqual([
+      { position: 2 },
+      { position: 3 },
+    ])
+  })
+
+  test('warning when the authors list is empty', () => {
+    const [d] = run(requiredMetadata, '', {
+      metadata: { ...metadata, authors: [] },
+    })
+    expect(d.messageKey).toBe('validation.rules.metadataMissingAuthor')
   })
 })

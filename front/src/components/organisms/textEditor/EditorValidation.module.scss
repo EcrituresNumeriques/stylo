@@ -55,8 +55,6 @@
 
 .error,
 .warning {
-  @extend .clickable;
-
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -65,7 +63,7 @@
   line-height: 1.4;
   border-left: 3px solid transparent;
 
-  &:hover {
+  &.clickable:hover {
     background-color: $muted-background-color;
   }
 }

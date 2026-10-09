@@ -508,7 +508,83 @@ export function headingHierarchy(tree, _markdown, diagnostics) {
   })
 }
 
+/**
+ * @param {unknown} value
+ * @returns {boolean}
+ */
+function isBlank(value) {
+  return typeof value !== 'string' || value.trim() === ''
+}
+
+/**
+ * @param {string} field
+ * @param {string} messageKey
+ * @param {object} [messageParams]
+ * @returns {object}
+ */
+function metadataDiagnostic(field, messageKey, messageParams) {
+  return {
+    target: 'metadata',
+    field,
+    severity: 'warning',
+    messageKey,
+    ...(messageParams && { messageParams }),
+    code: 'metadata-missing',
+  }
+}
+
+/**
+ * Métopes requiert un titre, au moins un auteur avec un nom, une date de
+ * publication et une langue. Sans ces métadonnées, la transformation Métopes
+ * utilise des valeurs par défaut qui persistent dans toute la chaîne.
+ *
+ * @param {import('unist').Node} _tree
+ * @param {string} _markdown
+ * @param {Array} diagnostics
+ * @param {{ metadata?: object }} [context]
+ */
+export function requiredMetadata(_tree, _markdown, diagnostics, context = {}) {
+  const metadata = context.metadata ?? {}
+  if (isBlank(metadata.title)) {
+    diagnostics.push(
+      metadataDiagnostic('title', 'validation.rules.metadataMissingTitle')
+    )
+  }
+  const authors = Array.isArray(metadata.authors) ? metadata.authors : []
+  if (authors.length === 0) {
+    diagnostics.push(
+      metadataDiagnostic('authors', 'validation.rules.metadataMissingAuthor')
+    )
+  } else {
+    authors.forEach((author, index) => {
+      if (isBlank(author?.surname)) {
+        diagnostics.push(
+          metadataDiagnostic(
+            'authors',
+            'validation.rules.metadataMissingAuthorSurname',
+            { position: index + 1 }
+          )
+        )
+      }
+    })
+  }
+  if (isBlank(metadata.publicationDate)) {
+    diagnostics.push(
+      metadataDiagnostic(
+        'publicationDate',
+        'validation.rules.metadataMissingPublicationDate'
+      )
+    )
+  }
+  if (isBlank(metadata.lang)) {
+    diagnostics.push(
+      metadataDiagnostic('lang', 'validation.rules.metadataMissingLang')
+    )
+  }
+}
+
 export const metopesRules = [
+  requiredMetadata,
   unknownBlockClass,
   unknownInlineClass,
   singleEpigraphClass,
