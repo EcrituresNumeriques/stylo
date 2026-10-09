@@ -88,11 +88,17 @@ mutation updateArticle($updateArticleInput: UpdateArticleInput!) {
 }
 
 mutation setArticleZoteroLink($articleId: ID!, $url: String!) {
-  setArticleZoteroLink(articleId: $articleId, zotero: $url)
+  setArticleZoteroLink(articleId: $articleId, zotero: $url) {
+    _id
+    zoteroLink
+  }
 }
 
 mutation setArticleNakalaLink($articleId: ID!, $url: String!) {
-  setArticleNakalaLink(articleId: $articleId, nakala: $url)
+  setArticleNakalaLink(articleId: $articleId, nakala: $url) {
+    _id
+    nakalaLink
+  }
 }
 
 query getArticleVersions($articleId: ID!) {
@@ -124,7 +130,9 @@ query getArticleContributors($articleId: ID!) {
 }
 
 mutation deleteArticle($articleId: ID!) {
-  deleteArticle(articleId: $articleId)
+  deleteArticle(articleId: $articleId) {
+    _id
+  }
 }
 
 mutation duplicateArticle($articleId: ID!, $to: ID!) {

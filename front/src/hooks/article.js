@@ -423,7 +423,7 @@ export function useEditableArticle({ articleId, versionId }) {
   }
 
   const updateZoteroLink = async (url) => {
-    await executeQuery({
+    const response = await executeQuery({
       sessionToken,
       query: setArticleZoteroLink,
       variables: {
@@ -436,7 +436,7 @@ export function useEditableArticle({ articleId, versionId }) {
         return {
           article: {
             ...data.article,
-            zoteroLink: url,
+            ...response.setArticleZoteroLink,
           },
         }
       },
@@ -445,7 +445,7 @@ export function useEditableArticle({ articleId, versionId }) {
   }
 
   const updateNakalaLink = async (url) => {
-    await executeQuery({
+    const response = await executeQuery({
       sessionToken,
       query: setArticleNakalaLink,
       variables: {
@@ -458,7 +458,7 @@ export function useEditableArticle({ articleId, versionId }) {
         return {
           article: {
             ...data.article,
-            nakalaLink: url,
+            ...response.setArticleNakalaLink,
           },
         }
       },
@@ -549,7 +549,7 @@ export function useArticleVersionActions({ articleId }) {
     }))
   }
   const updateDescription = async ({ versionId, description }) => {
-    await executeQuery({
+    const response = await executeQuery({
       query: renameVersion,
       variables: {
         versionId,
@@ -564,7 +564,7 @@ export function useArticleVersionActions({ articleId }) {
           if (v._id === versionId) {
             return {
               ...v,
-              message: description,
+              ...response.renameVersion,
             }
           }
           return v

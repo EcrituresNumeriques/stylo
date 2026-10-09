@@ -24,12 +24,12 @@ module.exports = {
 
     async deleteTag(_, args, context) {
       const { userId } = isUser(args, context)
-      const tag = await Tag.findOne({ _id: args.tag, owner: userId })
+      const tag = await Tag.findOne({ _id: args.tagId, owner: userId })
       if (!tag) {
         throw new Error('Unable to find tag')
       }
       await tag.deleteOne()
-      return true
+      return tag
     },
 
     async updateTag(_, args, context) {
