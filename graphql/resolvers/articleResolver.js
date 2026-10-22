@@ -393,9 +393,9 @@ module.exports = {
 
     async deleteArticle(_root, { articleId, dryRun }, context) {
       const article = await getArticleByContext(articleId, context)
-      if (dryRun) return true
+      if (dryRun) return article
       await article.deleteOne()
-      return true
+      return article
     },
 
     async renameArticle(_root, { articleId, title }, context) {
@@ -584,17 +584,20 @@ module.exports = {
 
     /** @deprecated Use renameArticle root mutation instead. */
     async rename(article, { title }) {
-      return article.rename(title)
+      await article.rename(title)
+      return true
     },
 
     /** @deprecated Use setArticleZoteroLink root mutation instead. */
     async setZoteroLink(article, { zotero }) {
-      return article.setZoteroLink(zotero)
+      await article.setZoteroLink(zotero)
+      return true
     },
 
     /** @deprecated Use setArticleNakalaLink root mutation instead. */
     async setNakalaLink(article, { nakala }) {
-      return article.setNakalaLink(nakala)
+      await article.setNakalaLink(nakala)
+      return true
     },
 
     /** @deprecated Use addArticleTags root mutation instead. */

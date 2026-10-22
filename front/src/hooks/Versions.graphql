@@ -13,7 +13,10 @@ fragment basicVersionFields on Version {
 }
 
 mutation renameVersion($versionId: ID!, $name: String) {
-  renameVersion(versionId: $versionId, name: $name)
+  renameVersion(versionId: $versionId, name: $name) {
+    _id
+    message
+  }
 }
 
 query getArticleVersions($article: ID!) {
