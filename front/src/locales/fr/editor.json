@@ -100,6 +100,7 @@
       "headingLevel1": "Les titres de niveau 1 (`#`) ne sont pas autorisés : le titre de l'article est renseigné dans les métadonnées.",
       "headingLevelSkipped": "Un titre de niveau {{level}} ne peut pas suivre un titre de niveau {{previous}} : les niveaux de titre doivent se suivre sans saut.",
       "indexEntryRequiresIdref": "Une entrée d'index doit avoir un attribut `idref`.",
+      "liminaryContentRestricted": "Un bloc `{{block}}` ne peut contenir que du texte, des citations, des tableaux, des listes et des figures (bloc `.{{class}}` non autorisé).",
       "metadataMissingAuthor": "Aucun auteur n'est renseigné dans les métadonnées.",
       "metadataMissingAuthorSurname": "Le nom de l'auteur n°{{position}} n'est pas renseigné dans les métadonnées.",
       "metadataMissingLang": "La langue du document n'est pas renseignée dans les métadonnées.",

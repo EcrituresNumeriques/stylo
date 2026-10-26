@@ -100,6 +100,7 @@
       "headingLevel1": "Level 1 headings (`#`) are not allowed: the article title is set in the metadata.",
       "headingLevelSkipped": "A level {{level}} heading cannot follow a level {{previous}} heading: heading levels must not skip a level.",
       "indexEntryRequiresIdref": "An index entry must have an `idref` attribute.",
+      "liminaryContentRestricted": "A `{{block}}` block may only contain text, quotations, tables, lists and figures (block `.{{class}}` is not allowed).",
       "metadataMissingAuthor": "No author is set in the metadata.",
       "metadataMissingAuthorSurname": "The last name of author #{{position}} is not set in the metadata.",
       "metadataMissingLang": "The document language is not set in the metadata.",
