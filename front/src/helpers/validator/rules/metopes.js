@@ -78,6 +78,59 @@ export function singleEpigraphClass(tree, _markdown, diagnostics) {
   })
 }
 
+const QUOTE_CLASSES = new Set(['rich-quote', 'quote-alt'])
+
+/**
+ * Lines at which each quotation of a div starts: quotation blocks
+ * (`.rich-quote`, `.quote-alt`) and Markdown block quotes (`>`) among its
+ * direct content. A block quote continues until a blank line, lazy
+ * continuation lines included.
+ * @param {import('../pandoc-divs.js').DivNode} div
+ * @param {string[]} lines
+ * @returns {number[]}
+ */
+function quoteStartLines(div, lines) {
+  const starts = div.children
+    .filter((c) => QUOTE_CLASSES.has(c.className))
+    .map((c) => c.startLine)
+  let inBlockquote = false
+  eachDirectLine(div, lines, (line, lineNum) => {
+    const text = line.trim()
+    if (text.startsWith('>')) {
+      if (!inBlockquote) starts.push(lineNum)
+      inBlockquote = true
+    } else if (text === '') {
+      inBlockquote = false
+    }
+  })
+  return starts.sort((a, b) => a - b)
+}
+
+/**
+ * L'usage voudrait qu'un épigraphe ne contienne qu'une seule citation.
+ *
+ * @param {import('unist').Node} _tree
+ * @param {string} markdown
+ * @param {Array} diagnostics
+ */
+export function epigraphSingleQuote(_tree, markdown, diagnostics) {
+  const lines = markdown.split('\n')
+  walkDivs(parsePandocFencedDivs(markdown), (node) => {
+    if (node.className !== 'epigraph') return
+    for (const line of quoteStartLines(node, lines).slice(1)) {
+      diagnostics.push({
+        line,
+        column: 1,
+        endLine: line,
+        endColumn: 4,
+        severity: 'warning',
+        messageKey: 'validation.rules.epigraphSingleQuote',
+        code: 'epigraph-single-quote',
+      })
+    }
+  })
+}
+
 const QA_DISALLOWED_ELEMENTS = {
   list: 'list',
   blockquote: 'blockquote',
@@ -267,18 +320,15 @@ function hasInlineCredits(line) {
 }
 
 /**
- * Iterate the body lines of a figure that are not inside a child div.
- * @param {import('../pandoc-divs.js').DivNode} figure
+ * Iterate the body lines of a div that are not inside a child div.
+ * @param {import('../pandoc-divs.js').DivNode} div
  * @param {string[]} lines
  * @param {(line: string, lineNum: number) => void} fn
  */
-function eachFigureDirectLine(figure, lines, fn) {
-  const end = figure.endLine ?? lines.length
-  const childRanges = figure.children.map((c) => [
-    c.startLine,
-    c.endLine ?? end,
-  ])
-  for (let ln = figure.startLine + 1; ln < end; ln++) {
+function eachDirectLine(div, lines, fn) {
+  const end = div.endLine ?? lines.length
+  const childRanges = div.children.map((c) => [c.startLine, c.endLine ?? end])
+  for (let ln = div.startLine + 1; ln < end; ln++) {
     if (childRanges.some(([s, e]) => ln >= s && ln <= e)) continue
     fn(lines[ln - 1], ln)
   }
@@ -309,7 +359,7 @@ export function figureContentRestricted(_tree, markdown, diagnostics) {
         code: 'figure-content-restricted',
       })
     }
-    eachFigureDirectLine(figure, lines, (line, lineNum) => {
+    eachDirectLine(figure, lines, (line, lineNum) => {
       if (figureLineFreeText(line) === '') return
       const column = line.length - line.trimStart().length + 1
       diagnostics.push({
@@ -339,7 +389,7 @@ export function figureCreditsSpanOrDiv(_tree, markdown, diagnostics) {
     if (figure.className !== 'figure') return
     const hasCreditsDiv = figure.children.some((c) => c.className === 'credits')
     let inlineCreditsLine = null
-    eachFigureDirectLine(figure, lines, (line, lineNum) => {
+    eachDirectLine(figure, lines, (line, lineNum) => {
       if (inlineCreditsLine === null && hasInlineCredits(line)) {
         inlineCreditsLine = lineNum
       }
@@ -620,6 +670,7 @@ export const metopesRules = [
   unknownBlockClass,
   unknownInlineClass,
   singleEpigraphClass,
+  epigraphSingleQuote,
   questionAnswerTextOnly,
   figureMustContainImage,
   figureContentRestricted,

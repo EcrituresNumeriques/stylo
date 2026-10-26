@@ -92,6 +92,7 @@
         "nested": "un bloque anidado",
         "default": "este elemento"
       },
+      "epigraphSingleQuote": "Un epígrafe solo debería contener una cita.",
       "figureContentRestrictedBlock": "Un bloque figure solo puede contener la imagen, el encabezado y los créditos (no se permite el bloque `.{{class}}`).",
       "figureContentRestrictedText": "Un bloque figure solo puede contener la imagen, el encabezado y los créditos (no se permite texto libre).",
       "figureCreditsSpanOrDiv": "Los créditos de una figura deben indicarse en línea o en bloque, pero no de ambas formas a la vez.",

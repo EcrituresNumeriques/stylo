@@ -4,6 +4,7 @@ import { unified } from 'unified'
 import { describe, expect, test } from 'vitest'
 
 import {
+  epigraphSingleQuote,
   figureContentRestricted,
   figureCreditsSpanOrDiv,
   figureMustContainImage,
@@ -116,6 +117,76 @@ describe('singleEpigraphClass()', () => {
 })
 
 // ─── questionAnswerTextOnly ──────────────────────────────────────────────────
+
+describe('epigraphSingleQuote()', () => {
+  test('no diagnostic for an epigraph with a single rich quote', () => {
+    const md = `:::{.epigraph}
+:::{.rich-quote}
+> Une citation
+[@source]
+
+:::{.translation lang="en"}
+> A quote
+:::
+:::
+:::`
+    expect(run(epigraphSingleQuote, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic for a multi-paragraph block quote', () => {
+    const md = `:::{.epigraph}
+> Premier paragraphe
+continuation paresseuse
+>
+> Second paragraphe
+:::`
+    expect(run(epigraphSingleQuote, md)).toHaveLength(0)
+  })
+
+  test('warning for a second rich quote', () => {
+    const md = `:::{.epigraph}
+:::{.rich-quote}
+> Une citation
+:::
+:::{.rich-quote}
+> Une autre citation
+:::
+:::`
+    const diagnostics = run(epigraphSingleQuote, md)
+    expect(diagnostics).toHaveLength(1)
+    expect(diagnostics[0].severity).toBe('warning')
+    expect(diagnostics[0].code).toBe('epigraph-single-quote')
+    expect(diagnostics[0].line).toBe(5)
+  })
+
+  test('warning for two block quotes separated by a blank line', () => {
+    const md = `:::{.epigraph}
+> Une citation
+
+> Une autre citation
+:::`
+    const diagnostics = run(epigraphSingleQuote, md)
+    expect(diagnostics.map((d) => d.line)).toEqual([4])
+  })
+
+  test('warning for a block quote next to a rich quote', () => {
+    const md = `:::{.epigraph}
+> Une citation
+
+:::{.quote-alt}
+Une autre citation
+:::
+:::`
+    expect(run(epigraphSingleQuote, md).map((d) => d.line)).toEqual([4])
+  })
+
+  test('no false positive outside an epigraph', () => {
+    const md = `> Une citation
+
+> Une autre citation`
+    expect(run(epigraphSingleQuote, md)).toHaveLength(0)
+  })
+})
 
 describe('questionAnswerTextOnly()', () => {
   test('no diagnostic for text-only question', () => {
