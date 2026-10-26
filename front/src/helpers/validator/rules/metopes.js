@@ -1,4 +1,6 @@
-import { visit } from 'unist-util-visit'
+import remarkParse from 'remark-parse'
+import { unified } from 'unified'
+import { SKIP, visit } from 'unist-util-visit'
 import { knownClasses } from '../../../components/organisms/textEditor/actions/index.js'
 import { parsePandocFencedDivs, walkDivs } from '../pandoc-divs.js'
 
@@ -554,6 +556,196 @@ export function translationNotNested(_tree, markdown, diagnostics) {
   })
 }
 
+const markdownParser = unified().use(remarkParse)
+
+/**
+ * Parse the direct content of a div (child divs excluded) as Markdown. Lines
+ * outside the direct content are blanked so that positions match the document.
+ * @param {import('../pandoc-divs.js').DivNode} div
+ * @param {string[]} lines
+ * @returns {import('unist').Node}
+ */
+function parseDirectContent(div, lines) {
+  const direct = lines.map(() => '')
+  eachDirectLine(div, lines, (line, lineNum) => {
+    direct[lineNum - 1] = line
+  })
+  return markdownParser.parse(direct.join('\n'))
+}
+
+const QUOTE_ELEMENTS = {
+  paragraph: 'text',
+  list: 'list',
+  blockquote: 'blockquote',
+  table: 'table',
+  code: 'code',
+  heading: 'heading',
+  thematicBreak: 'thematicBreak',
+}
+
+// `[@doe, p. 3; @smith]` ou `@doe`
+const BRACKETED_CITATION_RX = /\[[^[\]]*@[^[\]]*\]/g
+const BARE_CITATION_RX = /(^|\s)-?@[^\s,;\]]+/g
+
+/**
+ * Whether a paragraph only holds bibliographic references and, when allowed,
+ * index entries.
+ * @param {string} text
+ * @param {{ allowIndex: boolean }} options
+ * @returns {boolean}
+ */
+function isReferencesOnly(text, { allowIndex }) {
+  let rest = text
+  if (allowIndex) {
+    const spans = topLevelSpans(rest)
+    for (let k = spans.length - 1; k >= 0; k--) {
+      const { start, end, attrs } = spans[k]
+      if (parseClasses(attrs).includes('index-type')) {
+        rest = `${rest.slice(0, start)} ${rest.slice(end + 1)}`
+      }
+    }
+  }
+  rest = rest.replace(BRACKETED_CITATION_RX, ' ').replace(BARE_CITATION_RX, ' ')
+  return rest.trim() === ''
+}
+
+/**
+ * @param {{ position: object }} node
+ * @returns {{ line: number, column: number, endLine: number, endColumn: number }}
+ */
+function nodeRange({ position }) {
+  return {
+    line: position.start.line,
+    column: position.start.column,
+    endLine: position.end.line,
+    endColumn: position.end.column,
+  }
+}
+
+/**
+ * Checks the content of a quotation block (`.rich-quote` or `.translation`):
+ * the quoted text is a single Markdown block quote without headings nor nested
+ * quotations, accompanied only by bibliographic references (and index entries
+ * when allowed) and by the allowed child blocks.
+ * @param {import('../pandoc-divs.js').DivNode} div
+ * @param {string[]} lines
+ * @param {Array} diagnostics
+ * @param {{ prefix: string, allowIndex: boolean, allowedClasses: Set<string>, ignoredClasses: Set<string> }} options
+ */
+function checkQuotationContent(div, lines, diagnostics, options) {
+  const { prefix, allowIndex, allowedClasses, ignoredClasses } = options
+  const code = `${div.className}-content-restricted`
+  for (const child of div.children) {
+    if (allowedClasses.has(child.className)) continue
+    if (ignoredClasses.has(child.className)) continue
+    diagnostics.push({
+      line: child.startLine,
+      column: 1,
+      endLine: child.startLine,
+      endColumn: 4,
+      severity: 'error',
+      messageKey: `validation.rules.${prefix}ContentRestrictedBlock`,
+      messageParams: { class: child.className },
+      code,
+    })
+  }
+
+  let quote = null
+  for (const node of parseDirectContent(div, lines).children) {
+    if (node.type === 'blockquote' && !quote) {
+      quote = node
+      continue
+    }
+    if (node.type === 'html' && node.value.startsWith('<!--')) continue
+    if (node.type === 'paragraph') {
+      const { start, end } = node.position
+      const text = lines.slice(start.line - 1, end.line).join('\n')
+      if (isReferencesOnly(text, { allowIndex })) continue
+    }
+    diagnostics.push({
+      ...nodeRange(node),
+      severity: 'error',
+      messageKey: `validation.rules.${prefix}ContentRestricted`,
+      messageParams: {
+        element: `validation.rules.elements.${QUOTE_ELEMENTS[node.type] ?? 'default'}`,
+      },
+      code,
+    })
+  }
+
+  if (!quote) {
+    diagnostics.push({
+      line: div.startLine,
+      column: 1,
+      endLine: div.startLine,
+      endColumn: 4,
+      severity: 'error',
+      messageKey: `validation.rules.${prefix}MissingQuote`,
+      code: `${div.className}-missing-quote`,
+    })
+    return
+  }
+
+  visit(quote, (node) => {
+    if (node === quote) return
+    if (node.type !== 'heading' && node.type !== 'blockquote') return
+    diagnostics.push({
+      ...nodeRange(node),
+      severity: 'error',
+      messageKey: 'validation.rules.quotedContentRestricted',
+      messageParams: {
+        element: `validation.rules.elements.${QUOTE_ELEMENTS[node.type]}`,
+      },
+      code: 'quoted-content-restricted',
+    })
+    return SKIP
+  })
+}
+
+/**
+ * Le contenu cité d'une citation riche est une citation Markdown (`>`). À part
+ * ce contenu, seuls les traductions, les références bibliographiques et les
+ * éléments d'index sont autorisés.
+ *
+ * @param {import('unist').Node} _tree
+ * @param {string} markdown
+ * @param {Array} diagnostics
+ */
+export function richQuoteContent(_tree, markdown, diagnostics) {
+  const lines = markdown.split('\n')
+  walkDivs(parsePandocFencedDivs(markdown), (node) => {
+    if (node.className !== 'rich-quote') return
+    checkQuotationContent(node, lines, diagnostics, {
+      prefix: 'richQuote',
+      allowIndex: true,
+      allowedClasses: new Set(['translation']),
+      ignoredClasses: new Set(),
+    })
+  })
+}
+
+/**
+ * Le contenu traduit d'un bloc translation est une citation Markdown (`>`). À
+ * part ce contenu, seules des références bibliographiques sont autorisées.
+ *
+ * @param {import('unist').Node} _tree
+ * @param {string} markdown
+ * @param {Array} diagnostics
+ */
+export function translationContent(_tree, markdown, diagnostics) {
+  const lines = markdown.split('\n')
+  walkDivs(parsePandocFencedDivs(markdown), (node) => {
+    if (node.className !== 'translation') return
+    checkQuotationContent(node, lines, diagnostics, {
+      prefix: 'translation',
+      allowIndex: false,
+      allowedClasses: new Set(),
+      // Already reported by translationNotNested
+      ignoredClasses: new Set(['translation']),
+    })
+  })
+}
+
 /**
  * @param {import('unist').Node} tree
  * @param {string} markdown
@@ -783,6 +975,8 @@ export const metopesRules = [
   liminaryContentRestricted,
   translationRequiresLang,
   translationNotNested,
+  richQuoteContent,
+  translationContent,
   indexEntryRequiresIdref,
   questionAnswerSpeaker,
   headingHierarchy,

@@ -15,8 +15,10 @@ import {
   questionAnswerSpeaker,
   questionAnswerTextOnly,
   requiredMetadata,
+  richQuoteContent,
   singleEpigraphClass,
   sponsorTextOnly,
+  translationContent,
   translationNotNested,
   translationRequiresLang,
   unknownBlockClass,
@@ -659,6 +661,161 @@ describe('translationNotNested()', () => {
 })
 
 // ─── indexEntryRequiresIdref ─────────────────────────────────────────────────
+
+describe('richQuoteContent()', () => {
+  test('no diagnostic for the editor template', () => {
+    const md = `:::{.rich-quote lang="fr"}
+> Le texte cité
+> sur deux lignes
+[@source]
+
+:::{.translation lang="en"}
+> The quoted text
+[@source]
+:::
+:::`
+    expect(run(richQuoteContent, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic for a quote with lists, tables and paragraphs', () => {
+    const md = `:::{.rich-quote}
+> Premier paragraphe.
+>
+> - un
+> - deux
+>
+> | a | b |
+> |---|---|
+> | 1 | 2 |
+
+[voir @doe2020, p. 3; @smith]
+
+[mot]{.index-type idref="1"} [@doe2020]
+:::`
+    expect(run(richQuoteContent, md)).toHaveLength(0)
+  })
+
+  test('error when the quoted text is missing', () => {
+    const md = `:::{.rich-quote}
+[@source]
+:::`
+    const [d] = run(richQuoteContent, md)
+    expect(d.severity).toBe('error')
+    expect(d.code).toBe('rich-quote-missing-quote')
+    expect(d.messageKey).toBe('validation.rules.richQuoteMissingQuote')
+    expect(d.line).toBe(1)
+  })
+
+  test('error for free text next to the quoted text', () => {
+    const md = `:::{.rich-quote}
+> Le texte cité
+
+Un commentaire.
+:::`
+    const [d] = run(richQuoteContent, md)
+    expect(d.code).toBe('rich-quote-content-restricted')
+    expect(d.line).toBe(4)
+    expect(d.messageParams).toEqual({
+      element: 'validation.rules.elements.text',
+    })
+  })
+
+  test('error for a second quotation', () => {
+    const md = `:::{.rich-quote}
+> Le texte cité
+
+> Une autre citation
+:::`
+    const [d] = run(richQuoteContent, md)
+    expect(d.code).toBe('rich-quote-content-restricted')
+    expect(d.line).toBe(4)
+    expect(d.messageParams.element).toBe('validation.rules.elements.blockquote')
+  })
+
+  test('error for a custom class other than translation', () => {
+    const md = `:::{.rich-quote}
+> Le texte cité
+
+:::{.quote-alt}
+citation
+:::
+:::`
+    const [d] = run(richQuoteContent, md)
+    expect(d.code).toBe('rich-quote-content-restricted')
+    expect(d.messageKey).toBe(
+      'validation.rules.richQuoteContentRestrictedBlock'
+    )
+    expect(d.messageParams).toEqual({ class: 'quote-alt' })
+  })
+
+  test('error for a heading or a nested quotation in the quoted text', () => {
+    const md = `:::{.rich-quote}
+> ## Un titre
+>
+> > Une citation imbriquée
+:::`
+    const diagnostics = run(richQuoteContent, md)
+    expect(diagnostics.map((d) => [d.code, d.line])).toEqual([
+      ['quoted-content-restricted', 2],
+      ['quoted-content-restricted', 4],
+    ])
+  })
+})
+
+describe('translationContent()', () => {
+  test('no diagnostic for a quote and a reference', () => {
+    const md = `:::{.rich-quote}
+> Texte
+
+:::{.translation lang="en"}
+> Text
+>
+> On two paragraphs.
+
+[@source]
+:::
+:::`
+    expect(run(translationContent, md)).toHaveLength(0)
+  })
+
+  test('error when the translated text is missing', () => {
+    const md = `:::{.translation lang="en"}
+Text
+:::`
+    const diagnostics = run(translationContent, md)
+    expect(diagnostics.map((d) => d.code)).toEqual([
+      'translation-content-restricted',
+      'translation-missing-quote',
+    ])
+  })
+
+  test('error for an index entry outside the quote', () => {
+    const md = `:::{.translation lang="en"}
+> Text
+
+[word]{.index-type idref="1"}
+:::`
+    const [d] = run(translationContent, md)
+    expect(d.code).toBe('translation-content-restricted')
+    expect(d.line).toBe(4)
+  })
+
+  test('error for a child block, except a nested translation', () => {
+    const md = `:::{.translation lang="en"}
+> Text
+
+:::{.translation lang="de"}
+> Text
+:::
+:::{.box}
+:::
+:::`
+    const diagnostics = run(translationContent, md)
+    expect(diagnostics.map((d) => [d.code, d.line])).toEqual([
+      ['translation-content-restricted', 7],
+    ])
+  })
+})
 
 describe('indexEntryRequiresIdref()', () => {
   test('no diagnostic when idref is present', () => {
