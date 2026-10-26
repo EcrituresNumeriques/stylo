@@ -15,6 +15,7 @@ import {
   questionAnswerTextOnly,
   requiredMetadata,
   singleEpigraphClass,
+  sponsorTextOnly,
   translationNotNested,
   translationRequiresLang,
   unknownBlockClass,
@@ -248,6 +249,48 @@ Voici la réponse.
 })
 
 // ─── unknownInlineClass ──────────────────────────────────────────────────────
+
+describe('sponsorTextOnly()', () => {
+  test('no diagnostic for text with typographic markup', () => {
+    const md = `:::{.sponsor}
+Avec le soutien de l'*Université de Montréal* et du [CRSH]{.smallcaps}.
+
+Second paragraphe.
+:::`
+    expect(run(sponsorTextOnly, md)).toHaveLength(0)
+  })
+
+  test('error for a list inside a sponsor', () => {
+    const md = `:::{.sponsor}
+- un
+- deux
+:::`
+    const [d] = run(sponsorTextOnly, md)
+    expect(d.severity).toBe('error')
+    expect(d.code).toBe('sponsor-text-only')
+    expect(d.messageKey).toBe('validation.rules.sponsorTextOnly')
+    expect(d.messageParams).toEqual({
+      element: 'validation.rules.elements.list',
+    })
+  })
+
+  test('error for a nested block inside a sponsor', () => {
+    const md = `:::{.sponsor}
+:::{.box}
+texte
+:::
+:::`
+    const [d] = run(sponsorTextOnly, md)
+    expect(d.messageParams.element).toBe('validation.rules.elements.nested')
+  })
+
+  test('no false positive outside a sponsor', () => {
+    const md = `:::{.box}
+> une citation
+:::`
+    expect(run(sponsorTextOnly, md)).toHaveLength(0)
+  })
+})
 
 describe('unknownInlineClass()', () => {
   test('no diagnostic for known inline class', () => {
