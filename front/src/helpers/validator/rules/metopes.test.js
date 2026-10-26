@@ -4,6 +4,7 @@ import { unified } from 'unified'
 import { describe, expect, test } from 'vitest'
 
 import {
+  bibliographyTitle,
   epigraphSingleQuote,
   figureContentRestricted,
   figureCreditsSpanOrDiv,
@@ -986,6 +987,40 @@ describe('headingHierarchy()', () => {
 })
 
 // ─── requiredMetadata ────────────────────────────────────────────────────────
+
+describe('bibliographyTitle()', () => {
+  test('info when the document ends with a heading', () => {
+    const md = `## Introduction
+
+Du texte.
+
+## Bibliographie
+`
+    const diagnostics = run(bibliographyTitle, md)
+    expect(diagnostics).toHaveLength(1)
+    expect(diagnostics[0].severity).toBe('info')
+    expect(diagnostics[0].code).toBe('bibliography-title')
+    expect(diagnostics[0].line).toBe(5)
+  })
+
+  test('no diagnostic when the document ends with text', () => {
+    const md = `## Introduction
+
+Du texte.`
+    expect(run(bibliographyTitle, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic for a heading inside a block at the end', () => {
+    const md = `:::{.box}
+## Titre de l'encadré
+:::`
+    expect(run(bibliographyTitle, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic for an empty document', () => {
+    expect(run(bibliographyTitle, '')).toHaveLength(0)
+  })
+})
 
 describe('requiredMetadata()', () => {
   const metadata = {

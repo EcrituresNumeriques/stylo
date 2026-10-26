@@ -93,6 +93,7 @@
         "nested": "a nested block",
         "default": "this element"
       },
+      "bibliographyTitle": "This heading ends the document: it will be used as the bibliography title.",
       "epigraphMissingQuote": "An epigraph should contain a quotation.",
       "epigraphSingleQuote": "An epigraph should contain only one quotation.",
       "figureContentRestrictedBlock": "A figure block may only contain the image, the head and the credits (block `.{{class}}` is not allowed).",

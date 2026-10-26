@@ -93,6 +93,7 @@
         "nested": "un bloque anidado",
         "default": "este elemento"
       },
+      "bibliographyTitle": "Este título cierra el documento: se usará como título de la bibliografía.",
       "epigraphMissingQuote": "Un epígrafe debería contener una cita.",
       "epigraphSingleQuote": "Un epígrafe solo debería contener una cita.",
       "figureContentRestrictedBlock": "Un bloque figure solo puede contener la imagen, el encabezado y los créditos (no se permite el bloque `.{{class}}`).",

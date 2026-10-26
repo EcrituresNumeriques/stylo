@@ -1,11 +1,22 @@
 import clsx from 'clsx'
-import { AlertCircle, AlertTriangle } from 'lucide-react'
+import { AlertCircle, AlertTriangle, Info } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { VALIDATOR_PROFILE_DEFS } from '../../../helpers/validator/index.js'
 import { Alert, Loading } from '../../molecules/index.js'
 
 import styles from './EditorValidation.module.scss'
+
+const SEVERITY_ICONS = {
+  error: AlertCircle,
+  warning: AlertTriangle,
+  info: Info,
+}
+
+function SeverityIcon({ severity }) {
+  const Icon = SEVERITY_ICONS[severity] ?? AlertTriangle
+  return <Icon size={14} />
+}
 
 export default function EditorValidation({
   diagnostics,
@@ -55,7 +66,7 @@ export default function EditorValidation({
       {!isRefreshing &&
         !isValidating &&
         hasValidated &&
-        diagnostics.length === 0 && (
+        errorCount + warningCount === 0 && (
           <Alert type="success" message={t('validation.success')} />
         )}
 
@@ -85,11 +96,7 @@ export default function EditorValidation({
                 })}
               >
                 <span className={styles.icon}>
-                  {d.severity === 'error' ? (
-                    <AlertCircle size={14} />
-                  ) : (
-                    <AlertTriangle size={14} />
-                  )}
+                  <SeverityIcon severity={d.severity} />
                 </span>
                 <span className={styles.message}>
                   {t(d.messageKey, d.messageParams)}
