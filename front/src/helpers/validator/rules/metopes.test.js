@@ -9,6 +9,7 @@ import {
   figureMustContainImage,
   headingHierarchy,
   indexEntryRequiresIdref,
+  liminaryContentRestricted,
   prenoteRequiresOrigin,
   questionAnswerTextOnly,
   requiredMetadata,
@@ -372,6 +373,74 @@ describe('prenoteRequiresOrigin()', () => {
 })
 
 // ─── translationRequiresLang ─────────────────────────────────────────────────
+
+describe('liminaryContentRestricted()', () => {
+  test('no diagnostic for text, lists, tables and quotations', () => {
+    const md = `:::{.prenote origin="aut"}
+Un *paragraphe*.
+
+- un
+- deux
+
+> une citation
+
+| a | b |
+|---|---|
+| 1 | 2 |
+:::`
+    expect(run(liminaryContentRestricted, md)).toHaveLength(0)
+  })
+
+  test('no diagnostic for figures and rich quotes', () => {
+    const md = `:::{.argument}
+:::{.figure}
+![légende](image.png)
+:::
+:::{.rich-quote}
+> citation
+:::
+:::{.quote-alt}
+citation
+:::
+:::`
+    expect(run(liminaryContentRestricted, md)).toHaveLength(0)
+  })
+
+  test('error for a dedication inside a prenote', () => {
+    const md = `:::{.prenote origin="aut"}
+:::{.dedication}
+À ma mère.
+:::
+:::`
+    const [d] = run(liminaryContentRestricted, md)
+    expect(d.severity).toBe('error')
+    expect(d.code).toBe('liminary-content-restricted')
+    expect(d.line).toBe(2)
+    expect(d.messageParams).toEqual({ block: 'prenote', class: 'dedication' })
+  })
+
+  test('error for each disallowed class', () => {
+    const md = `:::{.dedication}
+:::{.epigraph}
+:::
+:::{.sponsor}
+:::
+:::`
+    const diagnostics = run(liminaryContentRestricted, md)
+    expect(diagnostics.map((d) => d.messageParams.class)).toEqual([
+      'epigraph',
+      'sponsor',
+    ])
+  })
+
+  test('no false positive outside liminary blocks', () => {
+    const md = `:::{.box}
+:::{.dedication}
+:::
+:::`
+    expect(run(liminaryContentRestricted, md)).toHaveLength(0)
+  })
+})
 
 describe('translationRequiresLang()', () => {
   test('no diagnostic when all translations have lang without double quotes', () => {

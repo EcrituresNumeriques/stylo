@@ -380,6 +380,38 @@ export function prenoteRequiresOrigin(tree, _markdown, diagnostics) {
   })
 }
 
+const LIMINARY_BLOCKS = new Set(['prenote', 'dedication', 'argument'])
+// Citations et figures : les listes, tableaux et le texte ne sont pas des classes.
+const LIMINARY_ALLOWED_CLASSES = new Set(['figure', 'rich-quote', 'quote-alt'])
+
+/**
+ * Les blocs prenote, dedication et argument peuvent contenir des citations,
+ * des tableaux, des listes, des figures et du texte, mais pas les autres
+ * classes (par exemple pas de dedication dans un prenote).
+ *
+ * @param {import('unist').Node} _tree
+ * @param {string} markdown
+ * @param {Array} diagnostics
+ */
+export function liminaryContentRestricted(_tree, markdown, diagnostics) {
+  walkDivs(parsePandocFencedDivs(markdown), (node) => {
+    if (!LIMINARY_BLOCKS.has(node.className)) return
+    for (const child of node.children) {
+      if (LIMINARY_ALLOWED_CLASSES.has(child.className)) continue
+      diagnostics.push({
+        line: child.startLine,
+        column: 1,
+        endLine: child.startLine,
+        endColumn: 4,
+        severity: 'error',
+        messageKey: 'validation.rules.liminaryContentRestricted',
+        messageParams: { block: node.className, class: child.className },
+        code: 'liminary-content-restricted',
+      })
+    }
+  })
+}
+
 /**
  * @param {import('unist').Node} _tree
  * @param {string} markdown
@@ -593,6 +625,7 @@ export const metopesRules = [
   figureContentRestricted,
   figureCreditsSpanOrDiv,
   prenoteRequiresOrigin,
+  liminaryContentRestricted,
   translationRequiresLang,
   translationNotNested,
   indexEntryRequiresIdref,
