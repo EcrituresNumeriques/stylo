@@ -1016,6 +1016,28 @@ export function headingHierarchy(tree, _markdown, diagnostics) {
 }
 
 /**
+ * Métopes utilise le titre qui termine le document comme titre de la
+ * bibliographie : on le signale pour que l'auteur le sache.
+ *
+ * @param {import('unist').Node} tree
+ * @param {string} _markdown
+ * @param {Array} diagnostics
+ */
+export function bibliographyTitle(tree, _markdown, diagnostics) {
+  const last = tree.children.at(-1)
+  if (last?.type !== 'heading') return
+  diagnostics.push({
+    line: last.position.start.line,
+    column: last.position.start.column,
+    endLine: last.position.end.line,
+    endColumn: last.position.end.column,
+    severity: 'info',
+    messageKey: 'validation.rules.bibliographyTitle',
+    code: 'bibliography-title',
+  })
+}
+
+/**
  * @param {unknown} value
  * @returns {boolean}
  */
@@ -1112,4 +1134,5 @@ export const metopesRules = [
   indexEntryRequiresIdref,
   questionAnswerSpeaker,
   headingHierarchy,
+  bibliographyTitle,
 ]

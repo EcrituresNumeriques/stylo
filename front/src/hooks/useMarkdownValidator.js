@@ -7,14 +7,18 @@ import i18n from '../i18n.js'
 
 const MARKER_OWNER = 'stylo-validator'
 
+const MONACO_SEVERITIES = {
+  error: monaco.MarkerSeverity.Error,
+  warning: monaco.MarkerSeverity.Warning,
+  info: monaco.MarkerSeverity.Info,
+}
+
 /**
- * @param {'error'|'warning'} severity
+ * @param {'error'|'warning'|'info'} severity
  * @returns {number}
  */
 function toMonacoSeverity(severity) {
-  return severity === 'error'
-    ? monaco.MarkerSeverity.Error
-    : monaco.MarkerSeverity.Warning
+  return MONACO_SEVERITIES[severity] ?? monaco.MarkerSeverity.Warning
 }
 
 /**
@@ -96,8 +100,7 @@ export function useMarkdownValidator(
           range: new monaco.Range(d.line, 1, d.endLine || d.line, 1),
           options: {
             linesDecorationsTooltip: translateMessage(d),
-            linesDecorationsClassName:
-              d.severity === 'error' ? 'validator-error' : 'validator-warning',
+            linesDecorationsClassName: `validator-${d.severity}`,
             isWholeLine: false,
             showIfCollapsed: true,
           },

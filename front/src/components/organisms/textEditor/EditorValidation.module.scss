@@ -54,7 +54,8 @@
 }
 
 .error,
-.warning {
+.warning,
+.info {
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -83,6 +84,16 @@
 
   .icon {
     color: $warn-color;
+    flex-shrink: 0;
+    display: flex;
+  }
+}
+
+.info {
+  border-left-color: $info-color;
+
+  .icon {
+    color: $info-color;
     flex-shrink: 0;
     display: flex;
   }

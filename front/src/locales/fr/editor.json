@@ -93,6 +93,7 @@
         "nested": "un bloc imbriqué",
         "default": "cet élément"
       },
+      "bibliographyTitle": "Ce titre termine le document : il sera utilisé comme titre de la bibliographie.",
       "epigraphMissingQuote": "Un épigraphe devrait contenir une citation.",
       "epigraphSingleQuote": "Un épigraphe ne devrait contenir qu'une seule citation.",
       "figureContentRestrictedBlock": "Un bloc figure ne peut contenir que l'image, l'en-tête et les crédits (bloc `.{{class}}` non autorisé).",

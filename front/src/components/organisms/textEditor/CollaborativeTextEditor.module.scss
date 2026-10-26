@@ -21,7 +21,7 @@
        dans un pseudo-élément, légèrement décalée du numéro de ligne. */
     .monaco-editor
       .margin-view-overlays
-      :is(.validator-error, .validator-warning) {
+      :is(.validator-error, .validator-warning, .validator-info) {
       width: 10px !important;
 
       &::before {
@@ -42,6 +42,10 @@
 
     .monaco-editor .margin-view-overlays .validator-warning::before {
       background: $warn-color;
+    }
+
+    .monaco-editor .margin-view-overlays .validator-info::before {
+      background: $info-color;
     }
   }
 }
