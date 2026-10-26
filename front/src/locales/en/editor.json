@@ -111,6 +111,7 @@
       "prenoteRequiresOrigin": "A prenote block must have an `origin` attribute (aut, pbl or tr).",
       "questionAnswerTextOnly": "A `{{block}}` block may only contain text (disallowed element: $t({{element}})).",
       "singleEpigraph": "Only one epigraph is allowed per document.",
+      "sponsorTextOnly": "A sponsor block may only contain text (disallowed element: $t({{element}})).",
       "translationNotNested": "Translation blocks cannot be nested.",
       "translationRequiresLang": "A translation block must have a `lang` attribute.",
       "unknownBlockClass": "Unknown block class: `.{{class}}`",

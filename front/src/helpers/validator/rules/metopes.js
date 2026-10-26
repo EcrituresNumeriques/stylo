@@ -143,7 +143,7 @@ export function epigraphSingleQuote(_tree, markdown, diagnostics) {
   })
 }
 
-const QA_DISALLOWED_ELEMENTS = {
+const TEXT_ONLY_DISALLOWED_ELEMENTS = {
   list: 'list',
   blockquote: 'blockquote',
   table: 'table',
@@ -165,25 +165,55 @@ const QA_DISALLOWED_ELEMENTS = {
 export function questionAnswerTextOnly(tree, _markdown, diagnostics) {
   visit(tree, 'containerDirective', (node) => {
     if (node.name !== 'question' && node.name !== 'answer') return
-    for (const child of node.children || []) {
-      // Seuls les paragraphes de texte (y compris le label) sont autorisés.
-      if (child.type === 'paragraph') continue
-      const element = QA_DISALLOWED_ELEMENTS[child.type] || 'default'
-      diagnostics.push({
-        line: child.position.start.line,
-        column: child.position.start.column,
-        endLine: child.position.end.line,
-        endColumn: child.position.end.column,
-        severity: 'error',
-        messageKey: 'validation.rules.questionAnswerTextOnly',
-        messageParams: {
-          block: node.name,
-          element: `validation.rules.elements.${element}`,
-        },
-        code: 'qa-text-only',
-      })
-    }
+    reportNonTextContent(node, diagnostics, {
+      messageKey: 'validation.rules.questionAnswerTextOnly',
+      messageParams: { block: node.name },
+      code: 'qa-text-only',
+    })
   })
+}
+
+/**
+ * Le contenu d'un bloc sponsor est limité au texte, balisage typographique
+ * compris.
+ *
+ * @param {import('unist').Node} tree
+ * @param {string} _markdown
+ * @param {Array} diagnostics
+ */
+export function sponsorTextOnly(tree, _markdown, diagnostics) {
+  visit(tree, 'containerDirective', (node) => {
+    if (node.name !== 'sponsor') return
+    reportNonTextContent(node, diagnostics, {
+      messageKey: 'validation.rules.sponsorTextOnly',
+      code: 'sponsor-text-only',
+    })
+  })
+}
+
+/**
+ * Seuls les paragraphes de texte (y compris le label) sont autorisés.
+ * @param {object} node
+ * @param {Array} diagnostics
+ * @param {{ messageKey: string, messageParams?: object, code: string }} diagnostic
+ */
+function reportNonTextContent(node, diagnostics, diagnostic) {
+  for (const child of node.children || []) {
+    if (child.type === 'paragraph') continue
+    const element = TEXT_ONLY_DISALLOWED_ELEMENTS[child.type] || 'default'
+    diagnostics.push({
+      line: child.position.start.line,
+      column: child.position.start.column,
+      endLine: child.position.end.line,
+      endColumn: child.position.end.column,
+      severity: 'error',
+      ...diagnostic,
+      messageParams: {
+        ...diagnostic.messageParams,
+        element: `validation.rules.elements.${element}`,
+      },
+    })
+  }
 }
 
 /**
@@ -684,6 +714,7 @@ export const metopesRules = [
   singleEpigraphClass,
   epigraphSingleQuote,
   questionAnswerTextOnly,
+  sponsorTextOnly,
   figureMustContainImage,
   figureContentRestricted,
   figureCreditsSpanOrDiv,
