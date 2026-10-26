@@ -12,6 +12,7 @@ import {
   indexEntryRequiresIdref,
   liminaryContentRestricted,
   prenoteRequiresOrigin,
+  questionAnswerSpeaker,
   questionAnswerTextOnly,
   requiredMetadata,
   singleEpigraphClass,
@@ -674,6 +675,67 @@ describe('indexEntryRequiresIdref()', () => {
 })
 
 // ─── headingHierarchy ────────────────────────────────────────────────────────
+
+describe('questionAnswerSpeaker()', () => {
+  test('no diagnostic when the speaker opens the block', () => {
+    const md = `:::{.question}
+[Marie Dupont]{.speaker} Quelle est la question ?
+:::
+
+:::{.answer}
+
+[Jean Martin]{.speaker}
+Voici la réponse.
+:::`
+    expect(run(questionAnswerSpeaker, md)).toHaveLength(0)
+  })
+
+  test('error when a question has no speaker', () => {
+    const md = `:::{.question}
+Quelle est la question ?
+:::`
+    const [d] = run(questionAnswerSpeaker, md)
+    expect(d.severity).toBe('error')
+    expect(d.code).toBe('qa-speaker-missing')
+    expect(d.line).toBe(1)
+    expect(d.messageParams).toEqual({ block: 'question' })
+  })
+
+  test('error when an answer has no speaker', () => {
+    const md = `:::{.answer}
+Voici la réponse.
+:::`
+    const [d] = run(questionAnswerSpeaker, md)
+    expect(d.code).toBe('qa-speaker-missing')
+    expect(d.messageParams).toEqual({ block: 'answer' })
+  })
+
+  test('error when the speaker comes after the text', () => {
+    const md = `:::{.question}
+Quelle est la question ?
+[Marie Dupont]{.speaker}
+:::`
+    const [d] = run(questionAnswerSpeaker, md)
+    expect(d.code).toBe('qa-speaker-not-first')
+    expect(d.line).toBe(3)
+  })
+
+  test('error when the speaker is not at the start of the line', () => {
+    const md = `:::{.question}
+Quelle est la question ? [Marie Dupont]{.speaker}
+:::`
+    const [d] = run(questionAnswerSpeaker, md)
+    expect(d.code).toBe('qa-speaker-not-first')
+    expect(d.column).toBe(26)
+  })
+
+  test('no false positive outside question/answer', () => {
+    const md = `:::{.box}
+Du texte.
+:::`
+    expect(run(questionAnswerSpeaker, md)).toHaveLength(0)
+  })
+})
 
 describe('headingHierarchy()', () => {
   test('no diagnostic for a consistent hierarchy', () => {

@@ -583,6 +583,67 @@ export function indexEntryRequiresIdref(tree, markdown, diagnostics) {
 }
 
 /**
+ * @param {string} line
+ * @returns {InlineSpan[]}
+ */
+function speakerSpans(line) {
+  return topLevelSpans(line).filter((span) =>
+    parseClasses(span.attrs).includes('speaker')
+  )
+}
+
+/**
+ * Chaque bloc question/answer doit inclure un élément speaker, déclaré
+ * immédiatement au début du bloc.
+ *
+ * @param {import('unist').Node} _tree
+ * @param {string} markdown
+ * @param {Array} diagnostics
+ */
+export function questionAnswerSpeaker(_tree, markdown, diagnostics) {
+  const lines = markdown.split('\n')
+  walkDivs(parsePandocFencedDivs(markdown), (node) => {
+    if (node.className !== 'question' && node.className !== 'answer') return
+    const end = node.endLine ?? lines.length
+    let firstLine = null
+    let speaker = null
+    for (let ln = node.startLine + 1; ln < end && !speaker; ln++) {
+      const line = lines[ln - 1]
+      if (firstLine === null && line.trim() !== '') firstLine = ln
+      const [span] = speakerSpans(line)
+      if (span) speaker = { line: ln, span }
+    }
+    if (!speaker) {
+      diagnostics.push({
+        line: node.startLine,
+        column: 1,
+        endLine: node.startLine,
+        endColumn: 4,
+        severity: 'error',
+        messageKey: 'validation.rules.questionAnswerSpeakerMissing',
+        messageParams: { block: node.className },
+        code: 'qa-speaker-missing',
+      })
+      return
+    }
+    const { line, span } = speaker
+    const leading = lines[line - 1].length - lines[line - 1].trimStart().length
+    if (line !== firstLine || span.start !== leading) {
+      diagnostics.push({
+        line,
+        column: span.start + 1,
+        endLine: line,
+        endColumn: span.end + 2,
+        severity: 'error',
+        messageKey: 'validation.rules.questionAnswerSpeakerNotFirst',
+        messageParams: { block: node.className },
+        code: 'qa-speaker-not-first',
+      })
+    }
+  })
+}
+
+/**
  * La hiérarchie des titres doit être cohérente : pas de titre de niveau 1 (le
  * titre de l'article provient des métadonnées), le premier titre est de niveau
  * 2 et les niveaux s'enchaînent sans saut (un `####` ne peut pas suivre un `##`).
@@ -723,5 +784,6 @@ export const metopesRules = [
   translationRequiresLang,
   translationNotNested,
   indexEntryRequiresIdref,
+  questionAnswerSpeaker,
   headingHierarchy,
 ]
