@@ -109,6 +109,8 @@
       "metadataMissingPublicationDate": "La fecha de publicación no está indicada en los metadatos.",
       "metadataMissingTitle": "El título no está indicado en los metadatos.",
       "prenoteRequiresOrigin": "Un bloque prenote debe tener un atributo `origin` (aut, pbl o tr).",
+      "questionAnswerSpeakerMissing": "Un bloque `{{block}}` debe incluir un locutor `[nombre]{.speaker}`.",
+      "questionAnswerSpeakerNotFirst": "El locutor debe declararse al principio del bloque `{{block}}`, antes del texto.",
       "questionAnswerTextOnly": "Un bloque `{{block}}` solo puede contener texto (elemento no permitido: $t({{element}})).",
       "singleEpigraph": "Solo se permite un epígrafe por documento.",
       "sponsorTextOnly": "Un bloque sponsor solo puede contener texto (elemento no permitido: $t({{element}})).",

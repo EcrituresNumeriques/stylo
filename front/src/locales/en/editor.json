@@ -109,6 +109,8 @@
       "metadataMissingPublicationDate": "The publication date is not set in the metadata.",
       "metadataMissingTitle": "The title is not set in the metadata.",
       "prenoteRequiresOrigin": "A prenote block must have an `origin` attribute (aut, pbl or tr).",
+      "questionAnswerSpeakerMissing": "A `{{block}}` block must include a speaker `[name]{.speaker}`.",
+      "questionAnswerSpeakerNotFirst": "The speaker must be declared at the start of the `{{block}}` block, before the text.",
       "questionAnswerTextOnly": "A `{{block}}` block may only contain text (disallowed element: $t({{element}})).",
       "singleEpigraph": "Only one epigraph is allowed per document.",
       "sponsorTextOnly": "A sponsor block may only contain text (disallowed element: $t({{element}})).",
