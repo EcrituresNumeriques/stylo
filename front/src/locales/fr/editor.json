@@ -92,6 +92,7 @@
         "nested": "un bloc imbriqué",
         "default": "cet élément"
       },
+      "epigraphSingleQuote": "Un épigraphe ne devrait contenir qu'une seule citation.",
       "figureContentRestrictedBlock": "Un bloc figure ne peut contenir que l'image, l'en-tête et les crédits (bloc `.{{class}}` non autorisé).",
       "figureContentRestrictedText": "Un bloc figure ne peut contenir que l'image, l'en-tête et les crédits (texte libre non autorisé).",
       "figureCreditsSpanOrDiv": "Les crédits d'une figure doivent être indiqués soit en ligne, soit en bloc, mais pas les deux à la fois.",
